@@ -1,6 +1,6 @@
 package com.gmail.nossr50.runnables.database;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -59,20 +59,20 @@ public class FormulaConversionTask extends BukkitRunnable {
     private void editValues(PlayerProfile profile) {
         mcMMO.p.debug("========================================================================");
         mcMMO.p.debug("Conversion report for " + profile.getPlayerName() + ":");
-        for (PrimarySkill primarySkill : PrimarySkill.NON_CHILD_SKILLS) {
-            int oldLevel = profile.getSkillLevel(primarySkill);
-            int oldXPLevel = profile.getSkillXpLevel(primarySkill);
+        for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+            int oldLevel = profile.getSkillLevel(primarySkillType);
+            int oldXPLevel = profile.getSkillXpLevel(primarySkillType);
             int totalOldXP = mcMMO.getFormulaManager().calculateTotalExperience(oldLevel, oldXPLevel);
 
             if (totalOldXP == 0) {
                 continue;
             }
 
-            int[] newExperienceValues = mcMMO.getFormulaManager().calculateNewLevel(primarySkill, (int) Math.floor(totalOldXP / ExperienceConfig.getInstance().getExpModifier()), formulaType);
+            int[] newExperienceValues = mcMMO.getFormulaManager().calculateNewLevel(primarySkillType, (int) Math.floor(totalOldXP / ExperienceConfig.getInstance().getExpModifier()), formulaType);
             int newLevel = newExperienceValues[0];
             int newXPlevel = newExperienceValues[1];
 
-            mcMMO.p.debug("  Skill: " + primarySkill.toString());
+            mcMMO.p.debug("  Skill: " + primarySkillType.toString());
 
             mcMMO.p.debug("    OLD:");
             mcMMO.p.debug("      Level: " + oldLevel);
@@ -84,8 +84,8 @@ public class FormulaConversionTask extends BukkitRunnable {
             mcMMO.p.debug("      XP " + newXPlevel);
             mcMMO.p.debug("------------------------------------------------------------------------");
 
-            profile.modifySkill(primarySkill, newLevel);
-            profile.setSkillXpLevel(primarySkill, newXPlevel);
+            profile.modifySkill(primarySkillType, newLevel);
+            profile.setSkillXpLevel(primarySkillType, newXPlevel);
         }
     }
 }

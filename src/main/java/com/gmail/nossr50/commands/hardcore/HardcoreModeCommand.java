@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -76,7 +76,7 @@ public abstract class HardcoreModeCommand implements TabExecutor {
                     return true;
                 }
 
-                PrimarySkill skill = PrimarySkill.getSkill(args[0]);
+                PrimarySkillType skill = PrimarySkillType.getSkill(args[0]);
 
                 if (!CommandUtils.isChildSkill(sender, skill)) {
                     return true;
@@ -125,8 +125,8 @@ public abstract class HardcoreModeCommand implements TabExecutor {
 
     protected abstract boolean checkTogglePermissions(CommandSender sender);
     protected abstract boolean checkModifyPermissions(CommandSender sender);
-    protected abstract boolean checkEnabled(PrimarySkill skill);
-    protected abstract void enable(PrimarySkill skill);
-    protected abstract void disable(PrimarySkill skill);
+    protected abstract boolean checkEnabled(PrimarySkillType skill);
+    protected abstract void enable(PrimarySkillType skill);
+    protected abstract void disable(PrimarySkillType skill);
     protected abstract void modify(CommandSender sender, double newPercentage);
 }

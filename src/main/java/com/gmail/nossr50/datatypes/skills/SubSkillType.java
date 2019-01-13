@@ -4,7 +4,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.StringUtils;
 
 public enum SubSkillType {
-    /* !! Warning -- Do not let subskills share a name with any existing PrimarySkill as it will clash with the static import !! */
+    /* !! Warning -- Do not let subskills share a name with any existing PrimarySkillType as it will clash with the static import !! */
 
     /* ACROBATICS */
     ACROBATICS_DODGE,
@@ -60,11 +60,13 @@ public enum SubSkillType {
     /* Salvage */
     SALVAGE_ADVANCED_SALVAGE,
     SALVAGE_ARCANE_SALVAGE,
+    SALVAGE_UNDERSTANDING_THE_ART,
 
     /* Smelting */
     SMELTING_FLUX_MINING,
     SMELTING_FUEL_EFFICIENCY,
     SMELTING_SECOND_SMELT,
+    SMELTING_UNDERSTANDING_THE_ART,
 
     /* Swords */
     SWORDS_BLEED,
@@ -122,11 +124,11 @@ public enum SubSkillType {
     }
 
     /**
-     * !!! This relies on the immutable lists in PrimarySkill being populated !!!
+     * !!! This relies on the immutable lists in PrimarySkillType being populated !!!
      * If we add skills, those immutable lists need to be updated
      * @return
      */
-    public PrimarySkill getParentSkill() { return PrimarySkill.bySecondaryAbility(this); }
+    public PrimarySkillType getParentSkill() { return PrimarySkillType.bySecondaryAbility(this); }
 
     /**
      * Returns the permission root address for the advanced.yml for this subskill

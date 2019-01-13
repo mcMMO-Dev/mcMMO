@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -50,7 +50,7 @@ public class ScoreboardManager {
     static final String LABEL_ABILITY_COOLDOWN = LocaleLoader.getString("Scoreboard.Misc.Cooldown");
     static final String LABEL_OVERALL = LocaleLoader.getString("Scoreboard.Misc.Overall");
 
-    static final Map<PrimarySkill, String>   skillLabels;
+    static final Map<PrimarySkillType, String>   skillLabels;
     static final Map<SuperAbilityType, String> abilityLabelsColored;
     static final Map<SuperAbilityType, String> abilityLabelsSkill;
 
@@ -61,7 +61,7 @@ public class ScoreboardManager {
         /*
          * We need immutable objects for our Scoreboard's labels
          */
-        ImmutableMap.Builder<PrimarySkill, String> skillLabelBuilder = ImmutableMap.builder();
+        ImmutableMap.Builder<PrimarySkillType, String> skillLabelBuilder = ImmutableMap.builder();
         ImmutableMap.Builder<SuperAbilityType, String> abilityLabelBuilder = ImmutableMap.builder();
         ImmutableMap.Builder<SuperAbilityType, String> abilityLabelSkillBuilder = ImmutableMap.builder();
 
@@ -90,14 +90,14 @@ public class ScoreboardManager {
             Collections.shuffle(colors, Misc.getRandom());
 
             int i = 0;
-            for (PrimarySkill type : PrimarySkill.values()) {
+            for (PrimarySkillType type : PrimarySkillType.values()) {
                 // Include child skills
                 skillLabelBuilder.put(type, getShortenedName(colors.get(i) + type.getName(), false));
 
                 if (type.getAbility() != null) {
                     abilityLabelBuilder.put(type.getAbility(), getShortenedName(colors.get(i) + type.getAbility().getName()));
 
-                    if (type == PrimarySkill.MINING) {
+                    if (type == PrimarySkillType.MINING) {
                         abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, getShortenedName(colors.get(i) + SuperAbilityType.BLAST_MINING.getName()));
                     }
                 }
@@ -112,14 +112,14 @@ public class ScoreboardManager {
          * Stylizes the targetBoard using our normal color scheme
          */
         else {
-            for (PrimarySkill type : PrimarySkill.values()) {
+            for (PrimarySkillType type : PrimarySkillType.values()) {
                 // Include child skills
                 skillLabelBuilder.put(type, getShortenedName(ChatColor.GREEN + type.getName()));
 
                 if (type.getAbility() != null) {
                     abilityLabelBuilder.put(type.getAbility(), formatAbility(type.getAbility().getName()));
 
-                    if (type == PrimarySkill.MINING) {
+                    if (type == PrimarySkillType.MINING) {
                         abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, formatAbility(SuperAbilityType.BLAST_MINING.getName()));
                     }
                 }
@@ -207,7 +207,7 @@ public class ScoreboardManager {
     }
 
     // Called by internal level-up event listener
-    public static void handleLevelUp(Player player, PrimarySkill skill) {
+    public static void handleLevelUp(Player player, PrimarySkillType skill) {
         // Selfboards
         ScoreboardWrapper selfboardWrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
@@ -234,7 +234,7 @@ public class ScoreboardManager {
     }
 
     // Called by internal xp event listener
-    public static void handleXp(Player player, PrimarySkill skill) {
+    public static void handleXp(Player player, PrimarySkillType skill) {
         // Selfboards
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
@@ -244,7 +244,7 @@ public class ScoreboardManager {
     }
 
     // Called by internal ability event listeners
-    public static void cooldownUpdate(Player player, PrimarySkill skill) {
+    public static void cooldownUpdate(Player player, PrimarySkillType skill) {
         // Selfboards
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
@@ -255,7 +255,7 @@ public class ScoreboardManager {
 
     // **** Setup methods **** //
 
-    public static void enablePlayerSkillScoreboard(Player player, PrimarySkill skill) {
+    public static void enablePlayerSkillScoreboard(Player player, PrimarySkillType skill) {
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
         wrapper.setOldScoreboard();
@@ -264,7 +264,7 @@ public class ScoreboardManager {
         changeScoreboard(wrapper, Config.getInstance().getSkillScoreboardTime());
     }
 
-    public static void enablePlayerSkillLevelUpScoreboard(Player player, PrimarySkill skill) {
+    public static void enablePlayerSkillLevelUpScoreboard(Player player, PrimarySkillType skill) {
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
         // Do NOT run if already shown
@@ -305,7 +305,7 @@ public class ScoreboardManager {
         changeScoreboard(wrapper, Config.getInstance().getCooldownScoreboardTime());
     }
 
-    public static void showPlayerRankScoreboard(Player player, Map<PrimarySkill, Integer> rank) {
+    public static void showPlayerRankScoreboard(Player player, Map<PrimarySkillType, Integer> rank) {
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
         wrapper.setOldScoreboard();
@@ -315,7 +315,7 @@ public class ScoreboardManager {
         changeScoreboard(wrapper, Config.getInstance().getRankScoreboardTime());
     }
 
-    public static void showPlayerRankScoreboardOthers(Player player, String targetName, Map<PrimarySkill, Integer> rank) {
+    public static void showPlayerRankScoreboardOthers(Player player, String targetName, Map<PrimarySkillType, Integer> rank) {
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
         wrapper.setOldScoreboard();
@@ -325,7 +325,7 @@ public class ScoreboardManager {
         changeScoreboard(wrapper, Config.getInstance().getRankScoreboardTime());
     }
 
-    public static void showTopScoreboard(Player player, PrimarySkill skill, int pageNumber, List<PlayerStat> stats) {
+    public static void showTopScoreboard(Player player, PrimarySkillType skill, int pageNumber, List<PlayerStat> stats) {
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
         wrapper.setOldScoreboard();

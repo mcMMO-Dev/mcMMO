@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.gmail.nossr50.commands.chat.McChatSpy;
 import com.gmail.nossr50.commands.skills.*;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.command.PluginCommand;
 
 import com.gmail.nossr50.mcMMO;
@@ -39,7 +40,6 @@ import com.gmail.nossr50.commands.player.McrankCommand;
 import com.gmail.nossr50.commands.player.McstatsCommand;
 import com.gmail.nossr50.commands.player.MctopCommand;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.StringUtils;
 
@@ -49,7 +49,7 @@ public final class CommandRegistrationManager {
     private static String permissionsMessage = LocaleLoader.getString("mcMMO.NoPermission");
 
     private static void registerSkillCommands() {
-        for (PrimarySkill skill : PrimarySkill.values()) {
+        for (PrimarySkillType skill : PrimarySkillType.values()) {
             String commandName = skill.toString().toLowerCase();
             String localizedName = skill.getName().toLowerCase();
 

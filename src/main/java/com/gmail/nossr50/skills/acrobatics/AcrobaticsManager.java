@@ -1,20 +1,13 @@
 package com.gmail.nossr50.skills.acrobatics;
 
-import com.gmail.nossr50.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.util.skills.SkillActivationType;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
@@ -26,7 +19,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 public class AcrobaticsManager extends SkillManager {
 
     public AcrobaticsManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkill.ACROBATICS);
+        super(mcMMOPlayer, PrimarySkillType.ACROBATICS);
     }
 
     public boolean canDodge(Entity damager) {

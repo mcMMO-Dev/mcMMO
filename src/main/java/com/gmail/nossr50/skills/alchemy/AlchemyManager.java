@@ -2,12 +2,12 @@ package com.gmail.nossr50.skills.alchemy;
 
 import java.util.List;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
 import com.gmail.nossr50.skills.SkillManager;
@@ -17,7 +17,7 @@ public class AlchemyManager extends SkillManager {
     private final double LUCKY_MODIFIER = 4.0 / 3.0;
 
     public AlchemyManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkill.ALCHEMY);
+        super(mcMMOPlayer, PrimarySkillType.ALCHEMY);
     }
 
     public int getTier() {

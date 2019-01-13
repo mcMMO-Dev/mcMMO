@@ -2,7 +2,7 @@ package com.gmail.nossr50.skills.swords;
 
 import java.util.Map;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -24,7 +24,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class SwordsManager extends SkillManager {
     public SwordsManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkill.SWORDS);
+        super(mcMMOPlayer, PrimarySkillType.SWORDS);
     }
 
     public boolean canActivateAbility() {

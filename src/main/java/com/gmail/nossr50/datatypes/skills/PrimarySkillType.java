@@ -35,7 +35,7 @@ import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 
 import com.google.common.collect.ImmutableList;
 
-public enum PrimarySkill {
+public enum PrimarySkillType {
     ACROBATICS(AcrobaticsManager.class, Color.WHITE, ImmutableList.of(SubSkillType.ACROBATICS_DODGE, SubSkillType.ACROBATICS_ROLL)),
     ALCHEMY(AlchemyManager.class, Color.FUCHSIA, ImmutableList.of(SubSkillType.ALCHEMY_CATALYSIS, SubSkillType.ALCHEMY_CONCOCTIONS)),
     ARCHERY(ArcheryManager.class, Color.MAROON, ImmutableList.of(SubSkillType.ARCHERY_DAZE, SubSkillType.ARCHERY_ARROW_RETRIEVAL, SubSkillType.ARCHERY_SKILL_SHOT)),
@@ -45,8 +45,8 @@ public enum PrimarySkill {
     HERBALISM(HerbalismManager.class, Color.GREEN, SuperAbilityType.GREEN_TERRA, ToolType.HOE, ImmutableList.of(SubSkillType.HERBALISM_FARMERS_DIET, SubSkillType.HERBALISM_GREEN_THUMB, SubSkillType.HERBALISM_DOUBLE_DROPS, SubSkillType.HERBALISM_HYLIAN_LUCK, SubSkillType.HERBALISM_SHROOM_THUMB)),
     MINING(MiningManager.class, Color.GRAY, SuperAbilityType.SUPER_BREAKER, ToolType.PICKAXE, ImmutableList.of(SubSkillType.MINING_SUPER_BREAKER, SubSkillType.MINING_DEMOLITIONS_EXPERTISE, SubSkillType.MINING_BIGGER_BOMBS, SubSkillType.MINING_BLAST_MINING, SubSkillType.MINING_DOUBLE_DROPS)),
     REPAIR(RepairManager.class, Color.SILVER, ImmutableList.of(SubSkillType.REPAIR_ARCANE_FORGING, SubSkillType.REPAIR_REPAIR_MASTERY, SubSkillType.REPAIR_SUPER_REPAIR)),
-    SALVAGE(SalvageManager.class, Color.ORANGE, ImmutableList.of(SubSkillType.SALVAGE_ADVANCED_SALVAGE, SubSkillType.SALVAGE_ARCANE_SALVAGE)),
-    SMELTING(SmeltingManager.class, Color.YELLOW, ImmutableList.of(SubSkillType.SMELTING_FLUX_MINING, SubSkillType.SMELTING_FUEL_EFFICIENCY, SubSkillType.SMELTING_SECOND_SMELT)),
+    SALVAGE(SalvageManager.class, Color.ORANGE, ImmutableList.of(SubSkillType.SALVAGE_UNDERSTANDING_THE_ART, SubSkillType.SALVAGE_ADVANCED_SALVAGE, SubSkillType.SALVAGE_ARCANE_SALVAGE)),
+    SMELTING(SmeltingManager.class, Color.YELLOW, ImmutableList.of(SubSkillType.SMELTING_UNDERSTANDING_THE_ART, SubSkillType.SMELTING_FLUX_MINING, SubSkillType.SMELTING_FUEL_EFFICIENCY, SubSkillType.SMELTING_SECOND_SMELT)),
     SWORDS(SwordsManager.class, Color.fromRGB(178, 34, 34), SuperAbilityType.SERRATED_STRIKES, ToolType.SWORD, ImmutableList.of(SubSkillType.SWORDS_SERRATED_STRIKES, SubSkillType.SWORDS_BLEED, SubSkillType.SWORDS_COUNTER_ATTACK)),
     TAMING(TamingManager.class, Color.PURPLE, ImmutableList.of(SubSkillType.TAMING_BEAST_LORE, SubSkillType.TAMING_CALL_OF_THE_WILD, SubSkillType.TAMING_ENVIRONMENTALLY_AWARE, SubSkillType.TAMING_FAST_FOOD_SERVICE, SubSkillType.TAMING_GORE, SubSkillType.TAMING_HOLY_HOUND, SubSkillType.TAMING_SHARPENED_CLAWS, SubSkillType.TAMING_SHOCK_PROOF, SubSkillType.TAMING_THICK_FUR, SubSkillType.TAMING_PUMMEL)),
     UNARMED(UnarmedManager.class, Color.BLACK, SuperAbilityType.BERSERK, ToolType.FISTS, ImmutableList.of(SubSkillType.UNARMED_BERSERK, SubSkillType.UNARMED_BLOCK_CRACKER, SubSkillType.UNARMED_ARROW_DEFLECT, SubSkillType.UNARMED_DISARM, SubSkillType.UNARMED_IRON_ARM_STYLE, SubSkillType.UNARMED_IRON_GRIP)),
@@ -61,20 +61,20 @@ public enum PrimarySkill {
     public static final List<String> SKILL_NAMES;
     public static final List<String> SUBSKILL_NAMES;
 
-    public static final List<PrimarySkill> CHILD_SKILLS;
-    public static final List<PrimarySkill> NON_CHILD_SKILLS;
+    public static final List<PrimarySkillType> CHILD_SKILLS;
+    public static final List<PrimarySkillType> NON_CHILD_SKILLS;
 
-    public static final List<PrimarySkill> COMBAT_SKILLS = ImmutableList.of(ARCHERY, AXES, SWORDS, TAMING, UNARMED);
-    public static final List<PrimarySkill> GATHERING_SKILLS = ImmutableList.of(EXCAVATION, FISHING, HERBALISM, MINING, WOODCUTTING);
-    public static final List<PrimarySkill> MISC_SKILLS = ImmutableList.of(ACROBATICS, ALCHEMY, REPAIR, SALVAGE, SMELTING);
+    public static final List<PrimarySkillType> COMBAT_SKILLS = ImmutableList.of(ARCHERY, AXES, SWORDS, TAMING, UNARMED);
+    public static final List<PrimarySkillType> GATHERING_SKILLS = ImmutableList.of(EXCAVATION, FISHING, HERBALISM, MINING, WOODCUTTING);
+    public static final List<PrimarySkillType> MISC_SKILLS = ImmutableList.of(ACROBATICS, ALCHEMY, REPAIR, SALVAGE, SMELTING);
 
     static {
-        List<PrimarySkill> childSkills = new ArrayList<PrimarySkill>();
-        List<PrimarySkill> nonChildSkills = new ArrayList<PrimarySkill>();
+        List<PrimarySkillType> childSkills = new ArrayList<PrimarySkillType>();
+        List<PrimarySkillType> nonChildSkills = new ArrayList<PrimarySkillType>();
         ArrayList<String> names = new ArrayList<String>();
         ArrayList<String> subSkillNames = new ArrayList<>();
 
-        for (PrimarySkill skill : values()) {
+        for (PrimarySkillType skill : values()) {
             if (skill.isChildSkill()) {
                 childSkills.add(skill);
             }
@@ -97,11 +97,11 @@ public enum PrimarySkill {
         NON_CHILD_SKILLS = ImmutableList.copyOf(nonChildSkills);
     }
 
-    private PrimarySkill(Class<? extends SkillManager> managerClass, Color runescapeColor, List<SubSkillType> subSkillTypes) {
+    private PrimarySkillType(Class<? extends SkillManager> managerClass, Color runescapeColor, List<SubSkillType> subSkillTypes) {
         this(managerClass, runescapeColor, null, null, subSkillTypes);
     }
 
-    private PrimarySkill(Class<? extends SkillManager> managerClass, Color runescapeColor, SuperAbilityType ability, ToolType tool, List<SubSkillType> subSkillTypes) {
+    private PrimarySkillType(Class<? extends SkillManager> managerClass, Color runescapeColor, SuperAbilityType ability, ToolType tool, List<SubSkillType> subSkillTypes) {
         this.managerClass = managerClass;
         this.runescapeColor = runescapeColor;
         this.ability = ability;
@@ -168,16 +168,16 @@ public enum PrimarySkill {
         return ExperienceConfig.getInstance().getFormulaSkillModifier(this);
     }
 
-    public static PrimarySkill getSkill(String skillName) {
+    public static PrimarySkillType getSkill(String skillName) {
         if (!Config.getInstance().getLocale().equalsIgnoreCase("en_US")) {
-            for (PrimarySkill type : values()) {
+            for (PrimarySkillType type : values()) {
                 if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(type.name()) + ".SkillName"))) {
                     return type;
                 }
             }
         }
 
-        for (PrimarySkill type : values()) {
+        for (PrimarySkillType type : values()) {
             if (type.name().equalsIgnoreCase(skillName)) {
                 return type;
             }
@@ -202,8 +202,8 @@ public enum PrimarySkill {
         }
     }
 
-    public static PrimarySkill bySecondaryAbility(SubSkillType subSkillType) {
-        for (PrimarySkill type : values()) {
+    public static PrimarySkillType bySecondaryAbility(SubSkillType subSkillType) {
+        for (PrimarySkillType type : values()) {
             if (type.getSkillAbilities().contains(subSkillType)) {
                 return type;
             }
@@ -211,8 +211,8 @@ public enum PrimarySkill {
         return null;
     }
 
-    public static PrimarySkill byAbility(SuperAbilityType ability) {
-        for (PrimarySkill type : values()) {
+    public static PrimarySkillType byAbility(SuperAbilityType ability) {
+        for (PrimarySkillType type : values()) {
             if (type.getAbility() == ability) {
                 return type;
             }

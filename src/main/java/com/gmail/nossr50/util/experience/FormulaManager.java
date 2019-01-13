@@ -4,13 +4,13 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 
 public class FormulaManager {
     private static File formulaFile = new File(mcMMO.getFlatFileDirectory() + "formula.yml");
@@ -75,15 +75,15 @@ public class FormulaManager {
      * Calculate how many levels a player should have using
      * the new formula type.
      *
-     * @param primarySkill skill where new levels and experience are calculated for
+     * @param primarySkillType skill where new levels and experience are calculated for
      * @param experience total amount of experience
      * @param formulaType The new {@link FormulaType}
      * @return the amount of levels and experience
      */
-    public int[] calculateNewLevel(PrimarySkill primarySkill, int experience, FormulaType formulaType) {
+    public int[] calculateNewLevel(PrimarySkillType primarySkillType, int experience, FormulaType formulaType) {
         int newLevel = 0;
         int remainder = 0;
-        int maxLevel = Config.getInstance().getLevelCap(primarySkill);
+        int maxLevel = Config.getInstance().getLevelCap(primarySkillType);
 
         while (experience > 0 && newLevel < maxLevel) {
             int experienceToNextLevel = getCachedXpToLevel(newLevel, formulaType);

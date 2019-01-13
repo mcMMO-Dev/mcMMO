@@ -2,7 +2,7 @@ package com.gmail.nossr50.util;
 
 import java.util.HashMap;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.Config;
@@ -23,27 +23,27 @@ public final class HardcoreManager {
         HashMap<String, Integer> levelChanged = new HashMap<String, Integer>();
         HashMap<String, Float> experienceChanged = new HashMap<String, Float>();
 
-        for (PrimarySkill primarySkill : PrimarySkill.NON_CHILD_SKILLS) {
-            if (!primarySkill.getHardcoreStatLossEnabled()) {
-                levelChanged.put(primarySkill.toString(), 0);
-                experienceChanged.put(primarySkill.toString(), 0F);
+        for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+            if (!primarySkillType.getHardcoreStatLossEnabled()) {
+                levelChanged.put(primarySkillType.toString(), 0);
+                experienceChanged.put(primarySkillType.toString(), 0F);
                 continue;
             }
 
-            int playerSkillLevel = playerProfile.getSkillLevel(primarySkill);
-            int playerSkillXpLevel = playerProfile.getSkillXpLevel(primarySkill);
+            int playerSkillLevel = playerProfile.getSkillLevel(primarySkillType);
+            int playerSkillXpLevel = playerProfile.getSkillXpLevel(primarySkillType);
 
             if (playerSkillLevel <= 0 || playerSkillLevel <= levelThreshold) {
-                levelChanged.put(primarySkill.toString(), 0);
-                experienceChanged.put(primarySkill.toString(), 0F);
+                levelChanged.put(primarySkillType.toString(), 0);
+                experienceChanged.put(primarySkillType.toString(), 0F);
                 continue;
             }
 
             double statsLost = playerSkillLevel * (statLossPercentage * 0.01D);
             int levelsLost = (int) statsLost;
             int xpLost = (int) Math.floor(playerSkillXpLevel * (statsLost - levelsLost));
-            levelChanged.put(primarySkill.toString(), levelsLost);
-            experienceChanged.put(primarySkill.toString(), (float) xpLost);
+            levelChanged.put(primarySkillType.toString(), levelsLost);
+            experienceChanged.put(primarySkillType.toString(), (float) xpLost);
 
             totalLevelsLost += levelsLost;
         }
@@ -66,29 +66,29 @@ public final class HardcoreManager {
         HashMap<String, Integer> levelChanged = new HashMap<String, Integer>();
         HashMap<String, Float> experienceChanged = new HashMap<String, Float>();
 
-        for (PrimarySkill primarySkill : PrimarySkill.NON_CHILD_SKILLS) {
-            if (!primarySkill.getHardcoreVampirismEnabled()) {
-                levelChanged.put(primarySkill.toString(), 0);
-                experienceChanged.put(primarySkill.toString(), 0F);
+        for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+            if (!primarySkillType.getHardcoreVampirismEnabled()) {
+                levelChanged.put(primarySkillType.toString(), 0);
+                experienceChanged.put(primarySkillType.toString(), 0F);
                 continue;
             }
 
-            int killerSkillLevel = killerProfile.getSkillLevel(primarySkill);
-            int victimSkillLevel = victimProfile.getSkillLevel(primarySkill);
+            int killerSkillLevel = killerProfile.getSkillLevel(primarySkillType);
+            int victimSkillLevel = victimProfile.getSkillLevel(primarySkillType);
 
             if (victimSkillLevel <= 0 || victimSkillLevel < killerSkillLevel / 2 || victimSkillLevel <= levelThreshold) {
-                levelChanged.put(primarySkill.toString(), 0);
-                experienceChanged.put(primarySkill.toString(), 0F);
+                levelChanged.put(primarySkillType.toString(), 0);
+                experienceChanged.put(primarySkillType.toString(), 0F);
                 continue;
             }
 
-            int victimSkillXpLevel = victimProfile.getSkillXpLevel(primarySkill);
+            int victimSkillXpLevel = victimProfile.getSkillXpLevel(primarySkillType);
 
             double statsStolen = victimSkillLevel * (vampirismStatLeechPercentage * 0.01D);
             int levelsStolen = (int) statsStolen;
             int xpStolen = (int) Math.floor(victimSkillXpLevel * (statsStolen - levelsStolen));
-            levelChanged.put(primarySkill.toString(), levelsStolen);
-            experienceChanged.put(primarySkill.toString(), (float) xpStolen);
+            levelChanged.put(primarySkillType.toString(), levelsStolen);
+            experienceChanged.put(primarySkillType.toString(), (float) xpStolen);
 
             totalLevelsStolen += levelsStolen;
         }
@@ -115,8 +115,8 @@ public final class HardcoreManager {
     public static boolean isStatLossEnabled() {
         boolean enabled = false;
 
-        for (PrimarySkill primarySkill : PrimarySkill.NON_CHILD_SKILLS) {
-            if (primarySkill.getHardcoreStatLossEnabled()) {
+        for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+            if (primarySkillType.getHardcoreStatLossEnabled()) {
                 enabled = true;
                 break;
             }
@@ -133,8 +133,8 @@ public final class HardcoreManager {
     public static boolean isVampirismEnabled() {
         boolean enabled = false;
 
-        for (PrimarySkill primarySkill : PrimarySkill.NON_CHILD_SKILLS) {
-            if (primarySkill.getHardcoreVampirismEnabled()) {
+        for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+            if (primarySkillType.getHardcoreVampirismEnabled()) {
                 enabled = true;
                 break;
             }

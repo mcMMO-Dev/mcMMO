@@ -3,7 +3,7 @@ package com.gmail.nossr50.util.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -26,7 +26,7 @@ public final class CommandUtils {
 
     private CommandUtils() {}
 
-    public static boolean isChildSkill(CommandSender sender, PrimarySkill skill) {
+    public static boolean isChildSkill(CommandSender sender, PrimarySkillType skill) {
         if (skill == null || !skill.isChildSkill()) {
             return false;
         }
@@ -181,7 +181,7 @@ public final class CommandUtils {
      * @param display The sender to display stats to
      */
     public static void printGatheringSkills(Player inspect, CommandSender display) {
-        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Gathering"), PrimarySkill.GATHERING_SKILLS);
+        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Gathering"), PrimarySkillType.GATHERING_SKILLS);
     }
 
     public static void printGatheringSkills(Player player) {
@@ -195,7 +195,7 @@ public final class CommandUtils {
      * @param display The sender to display stats to
      */
     public static void printCombatSkills(Player inspect, CommandSender display) {
-        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Combat"), PrimarySkill.COMBAT_SKILLS);
+        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Combat"), PrimarySkillType.COMBAT_SKILLS);
     }
 
     public static void printCombatSkills(Player player) {
@@ -209,14 +209,14 @@ public final class CommandUtils {
      * @param display The sender to display stats to
      */
     public static void printMiscSkills(Player inspect, CommandSender display) {
-        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Misc"), PrimarySkill.MISC_SKILLS);
+        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Misc"), PrimarySkillType.MISC_SKILLS);
     }
 
     public static void printMiscSkills(Player player) {
         printMiscSkills(player, player);
     }
 
-    public static String displaySkill(PlayerProfile profile, PrimarySkill skill) {
+    public static String displaySkill(PlayerProfile profile, PrimarySkillType skill) {
         if (skill.isChildSkill()) {
             return LocaleLoader.getString("Skills.ChildStats", LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill));
         }
@@ -224,13 +224,13 @@ public final class CommandUtils {
         return LocaleLoader.getString("Skills.Stats", LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill), profile.getSkillXpLevel(skill), profile.getXpToLevel(skill));
     }
 
-    private static void printGroupedSkillData(Player inspect, CommandSender display, String header, List<PrimarySkill> skillGroup) {
+    private static void printGroupedSkillData(Player inspect, CommandSender display, String header, List<PrimarySkillType> skillGroup) {
         PlayerProfile profile = UserManager.getPlayer(inspect).getProfile();
 
         List<String> displayData = new ArrayList<String>();
         displayData.add(header);
 
-        for (PrimarySkill skill : skillGroup) {
+        for (PrimarySkillType skill : skillGroup) {
             if (skill.getPermissions(inspect)) {
                 displayData.add(displaySkill(profile, skill));
             }

@@ -1,6 +1,6 @@
 package com.gmail.nossr50.util.skills;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
@@ -44,7 +44,7 @@ public final class PerksUtils {
         return ticks;
     }
 
-    public static float handleXpPerks(Player player, float xp, PrimarySkill skill) {
+    public static float handleXpPerks(Player player, float xp, PrimarySkillType skill) {
         if (Permissions.customXpBoost(player, skill)) {
             xp *= ExperienceConfig.getInstance().getCustomXpPerkBoost();
         }
@@ -74,10 +74,10 @@ public final class PerksUtils {
      * Calculate activation chance for a skill.
      *
      * @param player Player to check the activation chance for
-     * @param skill PrimarySkill to check the activation chance of
+     * @param skill PrimarySkillType to check the activation chance of
      * @return the activation chance with "lucky perk" accounted for
      */
-    public static int handleLuckyPerks(Player player, PrimarySkill skill) {
+    public static int handleLuckyPerks(Player player, PrimarySkillType skill) {
         if (Permissions.lucky(player, skill)) {
             return LUCKY_SKILL_ACTIVATION_CHANCE;
         }

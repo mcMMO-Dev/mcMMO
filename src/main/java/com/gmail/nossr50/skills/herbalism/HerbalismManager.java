@@ -28,7 +28,7 @@ import java.util.List;
 
 public class HerbalismManager extends SkillManager {
     public HerbalismManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkill.HERBALISM);
+        super(mcMMOPlayer, PrimarySkillType.HERBALISM);
     }
 
     public boolean canBlockCheck() {

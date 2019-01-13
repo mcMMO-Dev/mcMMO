@@ -5,9 +5,9 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.RandomChance;
@@ -42,7 +42,7 @@ public class SkillUtils {
     public static final DecimalFormat percent = new DecimalFormat("##0.00%");
     public static final DecimalFormat decimal = new DecimalFormat("##0.00");
 
-    public static void applyXpGain(McMMOPlayer mcMMOPlayer, PrimarySkill skill, float xp, XPGainReason xpGainReason) {
+    public static void applyXpGain(McMMOPlayer mcMMOPlayer, PrimarySkillType skill, float xp, XPGainReason xpGainReason) {
         mcMMOPlayer.beginXpGain(skill, xp, xpGainReason);
     }
 
@@ -65,7 +65,7 @@ public class SkillUtils {
         return calculateAbilityDisplayValues((AdvancedConfig.getInstance().getMaxChance(subSkillType) / maxBonusLevel) * Math.min(skillValue, maxBonusLevel), isLucky);
     }
 
-    public static String[] calculateLengthDisplayValues(Player player, float skillValue, PrimarySkill skill) {
+    public static String[] calculateLengthDisplayValues(Player player, float skillValue, PrimarySkillType skill) {
         int maxLength = skill.getAbility().getMaxLength();
         int length = 2 + (int) (skillValue / AdvancedConfig.getInstance().getAbilityLength());
         int enduranceLength = PerksUtils.handleActivationPerks(player, length, maxLength);
@@ -81,7 +81,7 @@ public class SkillUtils {
      * Others
      */
 
-    public static int handleFoodSkills(Player player, PrimarySkill skill, int eventFoodLevel, int baseLevel, int maxLevel, int rankChange) {
+    public static int handleFoodSkills(Player player, PrimarySkillType skill, int eventFoodLevel, int baseLevel, int maxLevel, int rankChange) {
         int skillLevel = UserManager.getPlayer(player).getSkillLevel(skill);
 
         int currentFoodLevel = player.getFoodLevel();
@@ -129,7 +129,7 @@ public class SkillUtils {
      * @return true if this is a valid skill, false otherwise
      */
     public static boolean isSkill(String skillName) {
-        return Config.getInstance().getLocale().equalsIgnoreCase("en_US") ? PrimarySkill.getSkill(skillName) != null : isLocalizedSkill(skillName);
+        return Config.getInstance().getLocale().equalsIgnoreCase("en_US") ? PrimarySkillType.getSkill(skillName) != null : isLocalizedSkill(skillName);
     }
 
     public static void sendSkillMessage(Player player, NotificationType notificationType, String key) {
@@ -179,7 +179,7 @@ public class SkillUtils {
             }
 
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-            PrimarySkill skill = mcMMOPlayer.getAbilityMode(SuperAbilityType.SUPER_BREAKER) ? PrimarySkill.MINING : PrimarySkill.EXCAVATION;
+            PrimarySkillType skill = mcMMOPlayer.getAbilityMode(SuperAbilityType.SUPER_BREAKER) ? PrimarySkillType.MINING : PrimarySkillType.EXCAVATION;
             int ticks = PerksUtils.handleActivationPerks(player, 2 + (mcMMOPlayer.getSkillLevel(skill) / AdvancedConfig.getInstance().getAbilityLength()), skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
 
             PotionEffect abilityBuff = new PotionEffect(PotionEffectType.FAST_DIGGING, duration + ticks, amplifier + 10);
@@ -287,7 +287,7 @@ public class SkillUtils {
      * @return returns true if all conditions are met and they event is not cancelled
      */
     public static boolean isActivationSuccessful(SkillActivationType subskillActivationType, SubSkillType subSkillType, Player player,
-                                                 PrimarySkill skill, int skillLevel, int activationChance)
+                                                 PrimarySkillType skill, int skillLevel, int activationChance)
     {
         //Maximum chance to succeed
         double maxChance = AdvancedConfig.getInstance().getMaxChance(subSkillType);
@@ -330,7 +330,7 @@ public class SkillUtils {
     public static boolean isActivationSuccessful(SkillActivationType skillActivationType, AbstractSubSkill abstractSubSkill, Player player, double maxChance, int maxBonusLevel)
     {
         int skillLevel = UserManager.getPlayer(player).getSkillLevel(abstractSubSkill.getPrimarySkill());
-        PrimarySkill skill = abstractSubSkill.getPrimarySkill();
+        PrimarySkillType skill = abstractSubSkill.getPrimarySkill();
 
         switch(skillActivationType)
         {
@@ -362,7 +362,7 @@ public class SkillUtils {
         //Maximum roll we can make
         int maxBonusLevel = randomChance.getRandomChanceMaxBonus();
         int skillLevel = UserManager.getPlayer(player).getSkillLevel(abstractSubSkill.getPrimarySkill());
-        PrimarySkill skill = abstractSubSkill.getPrimarySkill();
+        PrimarySkillType skill = abstractSubSkill.getPrimarySkill();
 
         switch(skillActivationType)
         {
@@ -433,7 +433,7 @@ public class SkillUtils {
     }
 
     private static boolean isLocalizedSkill(String skillName) {
-        for (PrimarySkill skill : PrimarySkill.values()) {
+        for (PrimarySkillType skill : PrimarySkillType.values()) {
             if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".SkillName"))) {
                 return true;
             }

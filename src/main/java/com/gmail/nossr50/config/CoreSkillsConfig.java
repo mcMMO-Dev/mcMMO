@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.util.StringUtils;
 
@@ -49,11 +49,11 @@ public class CoreSkillsConfig extends AutoUpdateConfigLoader {
 
     /**
      * Whether or not this primary skill is enabled
-     * @param primarySkill target primary skill
+     * @param primarySkillType target primary skill
      * @return true if enabled
      */
-    public boolean isPrimarySkillEnabled(PrimarySkill primarySkill)
+    public boolean isPrimarySkillEnabled(PrimarySkillType primarySkillType)
     {
-        return config.getBoolean(StringUtils.getCapitalized(primarySkill.toString())+".Enabled", true);
+        return config.getBoolean(StringUtils.getCapitalized(primarySkillType.toString())+".Enabled", true);
     }
 }

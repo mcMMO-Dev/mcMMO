@@ -2,12 +2,12 @@ package com.gmail.nossr50.runnables.commands;
 
 import java.util.Map;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 
 import org.apache.commons.lang.Validate;
 
@@ -32,7 +32,7 @@ public class McrankCommandAsyncTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        Map<PrimarySkill, Integer> skills = mcMMO.getDatabaseManager().readRank(playerName);
+        Map<PrimarySkillType, Integer> skills = mcMMO.getDatabaseManager().readRank(playerName);
 
         new McrankCommandDisplayTask(skills, sender, playerName, useBoard, useChat).runTaskLater(mcMMO.p, 1);
     }

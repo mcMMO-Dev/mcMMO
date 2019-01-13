@@ -1,10 +1,10 @@
 package com.gmail.nossr50.events.skills.salvage;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.events.skills.McMMOPlayerSkillEvent;
 
 /**
@@ -17,7 +17,7 @@ public class McMMOPlayerSalvageCheckEvent extends McMMOPlayerSkillEvent implemen
     private boolean cancelled;
 
     public McMMOPlayerSalvageCheckEvent(Player player, ItemStack salvageItem, ItemStack salvageResults, ItemStack enchantedBook) {
-        super(player, PrimarySkill.SALVAGE);
+        super(player, PrimarySkillType.SALVAGE);
         this.salvageItem = salvageItem;
         this.salvageResults = salvageResults;
         this.enchantedBook = enchantedBook;

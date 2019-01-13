@@ -3,7 +3,7 @@ package com.gmail.nossr50.api;
 import java.util.Set;
 import java.util.UUID;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
@@ -34,7 +34,7 @@ public final class ExperienceAPI {
      * @return true if this is a valid mcMMO skill
      */
     public static boolean isValidSkillType(String skillType) {
-        return PrimarySkill.getSkill(skillType) != null;
+        return PrimarySkillType.getSkill(skillType) != null;
     }
 
     /**
@@ -48,7 +48,7 @@ public final class ExperienceAPI {
      * @return true if this is a valid, non-child mcMMO skill
      */
     public static boolean isNonChildSkill(String skillType) {
-        PrimarySkill skill = PrimarySkill.getSkill(skillType);
+        PrimarySkillType skill = PrimarySkillType.getSkill(skillType);
 
         return skill != null && !skill.isChildSkill();
     }
@@ -261,7 +261,7 @@ public final class ExperienceAPI {
      * @throws InvalidXPGainReasonException if the given xpGainReason is not valid
      */
     public static void addModifiedXP(Player player, String skillType, int XP, String xpGainReason, boolean isUnshared) {
-        PrimarySkill skill = getSkillType(skillType);
+        PrimarySkillType skill = getSkillType(skillType);
 
         if (isUnshared) {
             getPlayer(player).beginUnsharedXpGain(skill, (int) (XP / skill.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()), getXPGainReason(xpGainReason));
@@ -285,7 +285,7 @@ public final class ExperienceAPI {
      */
     @Deprecated
     public static void addModifiedXPOffline(String playerName, String skillType, int XP) {
-        PrimarySkill skill = getSkillType(skillType);
+        PrimarySkillType skill = getSkillType(skillType);
 
         addOfflineXP(playerName, skill, (int) (XP / skill.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()));
     }
@@ -515,7 +515,7 @@ public final class ExperienceAPI {
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static int getXPRemaining(Player player, String skillType) {
-        PrimarySkill skill = getNonChildSkillType(skillType);
+        PrimarySkillType skill = getNonChildSkillType(skillType);
 
         PlayerProfile profile = getPlayer(player).getProfile();
 
@@ -537,7 +537,7 @@ public final class ExperienceAPI {
      */
     @Deprecated
     public static int getOfflineXPRemaining(String playerName, String skillType) {
-        PrimarySkill skill = getNonChildSkillType(skillType);
+        PrimarySkillType skill = getNonChildSkillType(skillType);
         PlayerProfile profile = getOfflineProfile(playerName);
 
         return profile.getXpToLevel(skill) - profile.getSkillXpLevel(skill);
@@ -557,7 +557,7 @@ public final class ExperienceAPI {
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static float getOfflineXPRemaining(UUID uuid, String skillType) {
-        PrimarySkill skill = getNonChildSkillType(skillType);
+        PrimarySkillType skill = getNonChildSkillType(skillType);
         PlayerProfile profile = getOfflineProfile(uuid);
 
         return profile.getXpToLevel(skill) - profile.getSkillXpLevelRaw(skill);
@@ -593,12 +593,12 @@ public final class ExperienceAPI {
     @Deprecated
     public static void addLevelOffline(String playerName, String skillType, int levels) {
         PlayerProfile profile = getOfflineProfile(playerName);
-        PrimarySkill skill = getSkillType(skillType);
+        PrimarySkillType skill = getSkillType(skillType);
 
         if (skill.isChildSkill()) {
-            Set<PrimarySkill> parentSkills = FamilyTree.getParents(skill);
+            Set<PrimarySkillType> parentSkills = FamilyTree.getParents(skill);
 
-            for (PrimarySkill parentSkill : parentSkills) {
+            for (PrimarySkillType parentSkill : parentSkills) {
                 profile.addLevels(parentSkill, (levels / parentSkills.size()));
             }
 
@@ -624,12 +624,12 @@ public final class ExperienceAPI {
      */
     public static void addLevelOffline(UUID uuid, String skillType, int levels) {
         PlayerProfile profile = getOfflineProfile(uuid);
-        PrimarySkill skill = getSkillType(skillType);
+        PrimarySkillType skill = getSkillType(skillType);
 
         if (skill.isChildSkill()) {
-            Set<PrimarySkill> parentSkills = FamilyTree.getParents(skill);
+            Set<PrimarySkillType> parentSkills = FamilyTree.getParents(skill);
 
-            for (PrimarySkill parentSkill : parentSkills) {
+            for (PrimarySkillType parentSkill : parentSkills) {
                 profile.addLevels(parentSkill, (levels / parentSkills.size()));
             }
 
@@ -716,7 +716,7 @@ public final class ExperienceAPI {
         int powerLevel = 0;
         PlayerProfile profile = getOfflineProfile(playerName);
 
-        for (PrimarySkill type : PrimarySkill.NON_CHILD_SKILLS) {
+        for (PrimarySkillType type : PrimarySkillType.NON_CHILD_SKILLS) {
             powerLevel += profile.getSkillLevel(type);
         }
 
@@ -737,7 +737,7 @@ public final class ExperienceAPI {
         int powerLevel = 0;
         PlayerProfile profile = getOfflineProfile(uuid);
 
-        for (PrimarySkill type : PrimarySkill.NON_CHILD_SKILLS) {
+        for (PrimarySkillType type : PrimarySkillType.NON_CHILD_SKILLS) {
             powerLevel += profile.getSkillLevel(type);
         }
 
@@ -1015,7 +1015,7 @@ public final class ExperienceAPI {
     }
 
     // Utility methods follow.
-    private static void addOfflineXP(UUID playerUniqueId, PrimarySkill skill, int XP) {
+    private static void addOfflineXP(UUID playerUniqueId, PrimarySkillType skill, int XP) {
         PlayerProfile profile = getOfflineProfile(playerUniqueId);
 
         profile.addXp(skill, XP);
@@ -1023,7 +1023,7 @@ public final class ExperienceAPI {
     }
 
     @Deprecated
-    private static void addOfflineXP(String playerName, PrimarySkill skill, int XP) {
+    private static void addOfflineXP(String playerName, PrimarySkillType skill, int XP) {
         PlayerProfile profile = getOfflineProfile(playerName);
 
         profile.addXp(skill, XP);
@@ -1052,8 +1052,8 @@ public final class ExperienceAPI {
         return profile;
     }
 
-    private static PrimarySkill getSkillType(String skillType) throws InvalidSkillException {
-        PrimarySkill skill = PrimarySkill.getSkill(skillType);
+    private static PrimarySkillType getSkillType(String skillType) throws InvalidSkillException {
+        PrimarySkillType skill = PrimarySkillType.getSkill(skillType);
 
         if (skill == null) {
             throw new InvalidSkillException();
@@ -1062,8 +1062,8 @@ public final class ExperienceAPI {
         return skill;
     }
 
-    private static PrimarySkill getNonChildSkillType(String skillType) throws InvalidSkillException, UnsupportedOperationException {
-        PrimarySkill skill = getSkillType(skillType);
+    private static PrimarySkillType getNonChildSkillType(String skillType) throws InvalidSkillException, UnsupportedOperationException {
+        PrimarySkillType skill = getSkillType(skillType);
 
         if (skill.isChildSkill()) {
             throw new UnsupportedOperationException("Child skills do not have XP");

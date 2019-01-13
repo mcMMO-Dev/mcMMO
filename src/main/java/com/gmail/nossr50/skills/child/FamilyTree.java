@@ -5,32 +5,32 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Set;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 
 public class FamilyTree {
-    private static HashMap<PrimarySkill, Set<PrimarySkill>> tree = new HashMap<PrimarySkill, Set<PrimarySkill>>();
+    private static HashMap<PrimarySkillType, Set<PrimarySkillType>> tree = new HashMap<PrimarySkillType, Set<PrimarySkillType>>();
 
-    public static Set<PrimarySkill> getParents(PrimarySkill childSkill) {
+    public static Set<PrimarySkillType> getParents(PrimarySkillType childSkill) {
         enforceChildSkill(childSkill);
 
         // We do not check if we have the child skill in question, as not having it would mean we did something wrong, and an NPE is desired.
         return tree.get(childSkill);
     }
 
-    protected static void registerParent(PrimarySkill childSkill, PrimarySkill parentSkill) {
+    protected static void registerParent(PrimarySkillType childSkill, PrimarySkillType parentSkill) {
         enforceChildSkill(childSkill);
         enforceNotChildSkill(parentSkill);
 
         if (!tree.containsKey(childSkill)) {
-            tree.put(childSkill, EnumSet.noneOf(PrimarySkill.class));
+            tree.put(childSkill, EnumSet.noneOf(PrimarySkillType.class));
         }
 
         tree.get(childSkill).add(parentSkill);
     }
 
     protected static void closeRegistration() {
-        for (PrimarySkill childSkill : tree.keySet()) {
-            Set<PrimarySkill> immutableSet = Collections.unmodifiableSet(tree.get(childSkill));
+        for (PrimarySkillType childSkill : tree.keySet()) {
+            Set<PrimarySkillType> immutableSet = Collections.unmodifiableSet(tree.get(childSkill));
             tree.put(childSkill, immutableSet);
         }
     }
@@ -39,13 +39,13 @@ public class FamilyTree {
         tree.clear();
     }
 
-    protected static void enforceChildSkill(PrimarySkill skill) {
+    protected static void enforceChildSkill(PrimarySkillType skill) {
         if (!skill.isChildSkill()) {
             throw new IllegalArgumentException(skill.name() + " is not a child skill!");
         }
     }
 
-    protected static void enforceNotChildSkill(PrimarySkill skill) {
+    protected static void enforceNotChildSkill(PrimarySkillType skill) {
         if (skill.isChildSkill()) {
             throw new IllegalArgumentException(skill.name() + " is a child skill!");
         }

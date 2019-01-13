@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 
 public final class SkillAPI {
     private SkillAPI() {}
@@ -18,7 +18,7 @@ public final class SkillAPI {
      * @return a list of strings with valid skill names
      */
     public static List<String> getSkills() {
-        return getListFromEnum(Arrays.asList(PrimarySkill.values()));
+        return getListFromEnum(Arrays.asList(PrimarySkillType.values()));
     }
 
     /**
@@ -30,7 +30,7 @@ public final class SkillAPI {
      * @return a list of strings with valid skill names
      */
     public static List<String> getNonChildSkills() {
-        return getListFromEnum(PrimarySkill.NON_CHILD_SKILLS);
+        return getListFromEnum(PrimarySkillType.NON_CHILD_SKILLS);
     }
 
     /**
@@ -42,7 +42,7 @@ public final class SkillAPI {
      * @return a list of strings with valid skill names
      */
     public static List<String> getChildSkills() {
-        return getListFromEnum(PrimarySkill.CHILD_SKILLS);
+        return getListFromEnum(PrimarySkillType.CHILD_SKILLS);
     }
 
     /**
@@ -54,7 +54,7 @@ public final class SkillAPI {
      * @return a list of strings with valid skill names
      */
     public static List<String> getCombatSkills() {
-        return getListFromEnum(PrimarySkill.COMBAT_SKILLS);
+        return getListFromEnum(PrimarySkillType.COMBAT_SKILLS);
     }
 
     /**
@@ -66,7 +66,7 @@ public final class SkillAPI {
      * @return a list of strings with valid skill names
      */
     public static List<String> getGatheringSkills() {
-        return getListFromEnum(PrimarySkill.GATHERING_SKILLS);
+        return getListFromEnum(PrimarySkillType.GATHERING_SKILLS);
     }
 
     /**
@@ -78,14 +78,14 @@ public final class SkillAPI {
      * @return a list of strings with valid skill names
      */
     public static List<String> getMiscSkills() {
-        return getListFromEnum(PrimarySkill.MISC_SKILLS);
+        return getListFromEnum(PrimarySkillType.MISC_SKILLS);
     }
 
-    private static List<String> getListFromEnum(List<PrimarySkill> skillsTypes) {
+    private static List<String> getListFromEnum(List<PrimarySkillType> skillsTypes) {
         List<String> skills = new ArrayList<String>();
 
-        for (PrimarySkill primarySkill : skillsTypes) {
-            skills.add(primarySkill.name());
+        for (PrimarySkillType primarySkillType : skillsTypes) {
+            skills.add(primarySkillType.name());
         }
 
         return skills;

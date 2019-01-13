@@ -1,6 +1,6 @@
 package com.gmail.nossr50.skills;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -12,9 +12,9 @@ import com.gmail.nossr50.util.skills.PerksUtils;
 public abstract class SkillManager {
     protected McMMOPlayer mcMMOPlayer;
     protected int activationChance;
-    protected PrimarySkill skill;
+    protected PrimarySkillType skill;
 
-    public SkillManager(McMMOPlayer mcMMOPlayer, PrimarySkill skill) {
+    public SkillManager(McMMOPlayer mcMMOPlayer, PrimarySkillType skill) {
         this.mcMMOPlayer = mcMMOPlayer;
         this.activationChance = PerksUtils.handleLuckyPerks(mcMMOPlayer.getPlayer(), skill);
         this.skill = skill;

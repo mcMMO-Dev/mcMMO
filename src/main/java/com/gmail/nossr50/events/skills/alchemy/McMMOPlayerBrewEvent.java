@@ -1,6 +1,6 @@
 package com.gmail.nossr50.events.skills.alchemy;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.BrewingStand;
@@ -15,7 +15,7 @@ public class McMMOPlayerBrewEvent extends McMMOPlayerSkillEvent implements Cance
     private boolean cancelled;
 
     public McMMOPlayerBrewEvent(Player player, BlockState brewingStand) {
-        super(player, PrimarySkill.ALCHEMY);
+        super(player, PrimarySkillType.ALCHEMY);
         this.brewingStand = brewingStand;
         cancelled = false;
     }

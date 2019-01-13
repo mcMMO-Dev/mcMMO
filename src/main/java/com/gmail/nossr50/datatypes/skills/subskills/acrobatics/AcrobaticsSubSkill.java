@@ -1,13 +1,11 @@
 package com.gmail.nossr50.datatypes.skills.subskills.acrobatics;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.InteractType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 
@@ -58,8 +56,8 @@ public abstract class AcrobaticsSubSkill extends AbstractSubSkill {
      * @return The name of the primary skill
      */
     @Override
-    public PrimarySkill getPrimarySkill() {
-        return PrimarySkill.ACROBATICS;
+    public PrimarySkillType getPrimarySkill() {
+        return PrimarySkillType.ACROBATICS;
     }
 
     /**

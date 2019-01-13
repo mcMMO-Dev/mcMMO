@@ -2,7 +2,7 @@ package com.gmail.nossr50.skills.excavation;
 
 import java.util.List;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
 
@@ -18,7 +18,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class ExcavationManager extends SkillManager {
     public ExcavationManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkill.EXCAVATION);
+        super(mcMMOPlayer, PrimarySkillType.EXCAVATION);
     }
 
     /**

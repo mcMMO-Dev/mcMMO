@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Set;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
@@ -30,7 +30,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 public abstract class SkillCommand implements TabExecutor {
-    protected PrimarySkill skill;
+    protected PrimarySkillType skill;
     private String skillName;
 
     protected DecimalFormat percent = new DecimalFormat("##0.00%");
@@ -38,7 +38,7 @@ public abstract class SkillCommand implements TabExecutor {
 
     private CommandExecutor skillGuideCommand;
 
-    public SkillCommand(PrimarySkill skill) {
+    public SkillCommand(PrimarySkillType skill) {
         this.skill = skill;
         skillName = skill.getName();
         skillGuideCommand = new SkillGuideCommand(skill);
@@ -143,10 +143,10 @@ public abstract class SkillCommand implements TabExecutor {
             //LEVEL
             player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, skillValue));
 
-            Set<PrimarySkill> parents = FamilyTree.getParents(skill);
+            Set<PrimarySkillType> parents = FamilyTree.getParents(skill);
 
             //TODO: Add JSON here
-            for (PrimarySkill parent : parents) {
+            for (PrimarySkillType parent : parents) {
                 player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level.Overhaul", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)));
             }
         }
@@ -161,9 +161,9 @@ public abstract class SkillCommand implements TabExecutor {
             player.sendMessage(LocaleLoader.getString("Effects.Child", skillValue));
 
             player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Skills.Parents")));
-            Set<PrimarySkill> parents = FamilyTree.getParents(skill);
+            Set<PrimarySkillType> parents = FamilyTree.getParents(skill);
 
-            for (PrimarySkill parent : parents) {
+            for (PrimarySkillType parent : parents) {
                 player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)));
             }
         }

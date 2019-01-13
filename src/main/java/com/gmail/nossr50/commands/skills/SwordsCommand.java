@@ -3,7 +3,7 @@ package com.gmail.nossr50.commands.skills;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.TextComponentFactory;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -28,7 +28,7 @@ public class SwordsCommand extends SkillCommand {
     private boolean canBleed;
 
     public SwordsCommand() {
-        super(PrimarySkill.SWORDS);
+        super(PrimarySkillType.SWORDS);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class SwordsCommand extends SkillCommand {
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.SWORDS);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.SWORDS);
 
         return textComponents;
     }

@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.treasure.Rarity;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.fishing.Fishing;
@@ -46,7 +46,7 @@ public class FishingCommand extends SkillCommand {
     private boolean canIceFish;
 
     public FishingCommand() {
-        super(PrimarySkill.FISHING);
+        super(PrimarySkillType.FISHING);
     }
 
     @Override
@@ -209,7 +209,7 @@ public class FishingCommand extends SkillCommand {
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.FISHING);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.FISHING);
 
         return textComponents;
     }

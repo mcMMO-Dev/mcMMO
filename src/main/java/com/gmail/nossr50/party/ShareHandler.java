@@ -2,7 +2,7 @@ package com.gmail.nossr50.party;
 
 import java.util.List;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -25,10 +25,10 @@ public final class ShareHandler {
      *
      * @param xp Xp without party sharing
      * @param mcMMOPlayer Player initiating the Xp gain
-     * @param primarySkill Skill being used
+     * @param primarySkillType Skill being used
      * @return True is the xp has been shared
      */
-    public static boolean handleXpShare(float xp, McMMOPlayer mcMMOPlayer, PrimarySkill primarySkill, XPGainReason xpGainReason) {
+    public static boolean handleXpShare(float xp, McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, XPGainReason xpGainReason) {
         Party party = mcMMOPlayer.getParty();
 
         if (party.getXpShareMode() != ShareMode.EQUAL) {
@@ -48,7 +48,7 @@ public final class ShareHandler {
         float splitXp = (float) (xp / partySize * shareBonus);
 
         for (Player member : nearMembers) {
-            UserManager.getPlayer(member).beginUnsharedXpGain(primarySkill, splitXp, xpGainReason);
+            UserManager.getPlayer(member).beginUnsharedXpGain(primarySkillType, splitXp, xpGainReason);
         }
 
         return true;

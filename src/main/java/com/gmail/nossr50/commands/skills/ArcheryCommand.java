@@ -3,7 +3,7 @@ package com.gmail.nossr50.commands.skills;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.TextComponentFactory;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -25,7 +25,7 @@ public class ArcheryCommand extends SkillCommand {
     private boolean canRetrieve;
 
     public ArcheryCommand() {
-        super(PrimarySkill.ARCHERY);
+        super(PrimarySkillType.ARCHERY);
     }
 
     @Override
@@ -100,7 +100,7 @@ public class ArcheryCommand extends SkillCommand {
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.ARCHERY);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.ARCHERY);
 
         return textComponents;
     }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -30,7 +30,7 @@ import com.google.common.collect.ImmutableList;
 public class SkillresetCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        PrimarySkill skill;
+        PrimarySkillType skill;
         switch (args.length) {
             case 1:
                 if (CommandUtils.noConsoleUsage(sender)) {
@@ -50,7 +50,7 @@ public class SkillresetCommand implements TabExecutor {
                     skill = null;
                 }
                 else {
-                    skill = PrimarySkill.getSkill(args[1]);
+                    skill = PrimarySkillType.getSkill(args[1]);
                 }
 
                 editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), skill);
@@ -70,7 +70,7 @@ public class SkillresetCommand implements TabExecutor {
                     skill = null;
                 }
                 else {
-                    skill = PrimarySkill.getSkill(args[1]);
+                    skill = PrimarySkillType.getSkill(args[1]);
                 }
 
                 String playerName = CommandUtils.getMatchedPlayerName(args[0]);
@@ -110,13 +110,13 @@ public class SkillresetCommand implements TabExecutor {
                 List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
                 return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<String>(playerNames.size()));
             case 2:
-                return StringUtil.copyPartialMatches(args[1], PrimarySkill.SKILL_NAMES, new ArrayList<String>(PrimarySkill.SKILL_NAMES.size()));
+                return StringUtil.copyPartialMatches(args[1], PrimarySkillType.SKILL_NAMES, new ArrayList<String>(PrimarySkillType.SKILL_NAMES.size()));
             default:
                 return ImmutableList.of();
         }
     }
 
-    protected void handleCommand(Player player, PlayerProfile profile, PrimarySkill skill) {
+    protected void handleCommand(Player player, PlayerProfile profile, PrimarySkillType skill) {
         int levelsRemoved = profile.getSkillLevel(skill);
         float xpRemoved = profile.getSkillXpLevelRaw(skill);
 
@@ -142,7 +142,7 @@ public class SkillresetCommand implements TabExecutor {
         player.sendMessage(LocaleLoader.getString("Commands.Reset.All"));
     }
 
-    protected void handlePlayerMessageSkill(Player player, PrimarySkill skill) {
+    protected void handlePlayerMessageSkill(Player player, PrimarySkillType skill) {
         player.sendMessage(LocaleLoader.getString("Commands.Reset.Single", skill.getName()));
     }
 
@@ -150,7 +150,7 @@ public class SkillresetCommand implements TabExecutor {
         return skillName.equalsIgnoreCase("all") || !CommandUtils.isInvalidSkill(sender, skillName);
     }
 
-    protected static void handleSenderMessage(CommandSender sender, String playerName, PrimarySkill skill) {
+    protected static void handleSenderMessage(CommandSender sender, String playerName, PrimarySkillType skill) {
         if (skill == null) {
             sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
         }
@@ -159,10 +159,10 @@ public class SkillresetCommand implements TabExecutor {
         }
     }
 
-    protected void editValues(Player player, PlayerProfile profile, PrimarySkill skill) {
+    protected void editValues(Player player, PlayerProfile profile, PrimarySkillType skill) {
         if (skill == null) {
-            for (PrimarySkill primarySkill : PrimarySkill.NON_CHILD_SKILLS) {
-                handleCommand(player, profile, primarySkill);
+            for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+                handleCommand(player, profile, primarySkillType);
             }
 
             if (player != null) {

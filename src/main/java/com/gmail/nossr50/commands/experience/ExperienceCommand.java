@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -23,7 +23,7 @@ import com.google.common.collect.ImmutableList;
 public abstract class ExperienceCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        PrimarySkill skill;
+        PrimarySkillType skill;
 
         switch (args.length) {
             case 2:
@@ -40,7 +40,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                     return true;
                 }
 
-                skill = PrimarySkill.getSkill(args[0]);
+                skill = PrimarySkillType.getSkill(args[0]);
 
                 if (args[1].equalsIgnoreCase("all")) {
                     skill = null;
@@ -65,7 +65,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                     return true;
                 }
 
-                skill = PrimarySkill.getSkill(args[1]);
+                skill = PrimarySkillType.getSkill(args[1]);
 
                 if (args[1].equalsIgnoreCase("all")) {
                     skill = null;
@@ -116,7 +116,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                 List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
                 return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<String>(playerNames.size()));
             case 2:
-                return StringUtil.copyPartialMatches(args[1], PrimarySkill.SKILL_NAMES, new ArrayList<String>(PrimarySkill.SKILL_NAMES.size()));
+                return StringUtil.copyPartialMatches(args[1], PrimarySkillType.SKILL_NAMES, new ArrayList<String>(PrimarySkillType.SKILL_NAMES.size()));
             default:
                 return ImmutableList.of();
         }
@@ -124,15 +124,15 @@ public abstract class ExperienceCommand implements TabExecutor {
 
     protected abstract boolean permissionsCheckSelf(CommandSender sender);
     protected abstract boolean permissionsCheckOthers(CommandSender sender);
-    protected abstract void handleCommand(Player player, PlayerProfile profile, PrimarySkill skill, int value);
+    protected abstract void handleCommand(Player player, PlayerProfile profile, PrimarySkillType skill, int value);
     protected abstract void handlePlayerMessageAll(Player player, int value);
-    protected abstract void handlePlayerMessageSkill(Player player, int value, PrimarySkill skill);
+    protected abstract void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill);
 
     private boolean validateArguments(CommandSender sender, String skillName, String value) {
         return !(CommandUtils.isInvalidInteger(sender, value) || (!skillName.equalsIgnoreCase("all") && CommandUtils.isInvalidSkill(sender, skillName)));
     }
 
-    protected static void handleSenderMessage(CommandSender sender, String playerName, PrimarySkill skill) {
+    protected static void handleSenderMessage(CommandSender sender, String playerName, PrimarySkillType skill) {
         if (skill == null) {
             sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
         }
@@ -141,10 +141,10 @@ public abstract class ExperienceCommand implements TabExecutor {
         }
     }
 
-    protected void editValues(Player player, PlayerProfile profile, PrimarySkill skill, int value) {
+    protected void editValues(Player player, PlayerProfile profile, PrimarySkillType skill, int value) {
         if (skill == null) {
-            for (PrimarySkill primarySkill : PrimarySkill.NON_CHILD_SKILLS) {
-                handleCommand(player, profile, primarySkill, value);
+            for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+                handleCommand(player, profile, primarySkillType, value);
             }
 
             if (player != null) {

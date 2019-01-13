@@ -9,7 +9,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 
@@ -21,7 +21,7 @@ public class AcrobaticsCommand extends SkillCommand {
     private boolean canRoll;
 
     public AcrobaticsCommand() {
-        super(PrimarySkill.ACROBATICS);
+        super(PrimarySkillType.ACROBATICS);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class AcrobaticsCommand extends SkillCommand {
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.ACROBATICS);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.ACROBATICS);
 
         return textComponents;
     }

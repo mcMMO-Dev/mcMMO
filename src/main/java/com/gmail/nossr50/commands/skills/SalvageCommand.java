@@ -3,7 +3,7 @@ package com.gmail.nossr50.commands.skills;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.TextComponentFactory;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -20,7 +20,7 @@ public class SalvageCommand extends SkillCommand {
     private boolean canArcaneSalvage;
 
     public SalvageCommand() {
-        super(PrimarySkill.SALVAGE);
+        super(PrimarySkillType.SALVAGE);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class SalvageCommand extends SkillCommand {
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.SALVAGE);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.SALVAGE);
 
         return textComponents;
     }

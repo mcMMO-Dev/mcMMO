@@ -1,6 +1,6 @@
 package com.gmail.nossr50.events.skills.fishing;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
@@ -10,7 +10,7 @@ public class McMMOPlayerFishingEvent extends McMMOPlayerSkillEvent implements Ca
     private boolean cancelled;
 
     protected McMMOPlayerFishingEvent(Player player) {
-        super(player, PrimarySkill.FISHING);
+        super(player, PrimarySkillType.FISHING);
         cancelled = false;
     }
 

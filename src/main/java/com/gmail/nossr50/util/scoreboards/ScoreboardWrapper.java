@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.scoreboards;
 import java.util.List;
 import java.util.Map;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.events.scoreboard.*;
 import org.bukkit.ChatColor;
@@ -19,7 +20,6 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.Misc;
@@ -44,7 +44,7 @@ public class ScoreboardWrapper {
     // Parameter variables (May be null / invalid)
     private Scoreboard oldBoard = null;
     public String targetPlayer = null;
-    public PrimarySkill targetSkill = null;
+    public PrimarySkillType targetSkill = null;
     private PlayerProfile targetProfile = null;
     public int leaderboardPage = -1;
 
@@ -290,7 +290,7 @@ public class ScoreboardWrapper {
         loadObjective("");
     }
 
-    public void setTypeSkill(PrimarySkill skill) {
+    public void setTypeSkill(PrimarySkillType skill) {
         this.sidebarType = SidebarType.SKILL_BOARD;
         targetSkill = skill;
 
@@ -369,7 +369,7 @@ public class ScoreboardWrapper {
         loadObjective(String.format("%s (%2d - %2d)", ScoreboardManager.POWER_LEVEL, startPosition, endPosition));
     }
 
-    public void setTypeTop(PrimarySkill skill, int page) {
+    public void setTypeTop(PrimarySkillType skill, int page) {
         this.sidebarType = SidebarType.TOP_BOARD;
         leaderboardPage = page;
         targetSkill = skill;
@@ -451,7 +451,7 @@ public class ScoreboardWrapper {
                     sidebarObjective.getScore(ScoreboardManager.LABEL_REMAINING_XP).setScore(mcMMOPlayer.getXpToLevel(targetSkill) - currentXP);
                 }
                 else {
-                    for (PrimarySkill parentSkill : FamilyTree.getParents(targetSkill)) {
+                    for (PrimarySkillType parentSkill : FamilyTree.getParents(targetSkill)) {
                         sidebarObjective.getScore(ScoreboardManager.skillLabels.get(parentSkill)).setScore(mcMMOPlayer.getSkillLevel(parentSkill));
                     }
                 }
@@ -461,7 +461,7 @@ public class ScoreboardWrapper {
                 if (targetSkill.getAbility() != null) {
                     boolean stopUpdating;
 
-                    if (targetSkill == PrimarySkill.MINING) {
+                    if (targetSkill == PrimarySkillType.MINING) {
                         // Special-Case: Mining has two abilities, both with cooldowns
                         Score cooldownSB = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(SuperAbilityType.SUPER_BREAKER));
                         Score cooldownBM = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(SuperAbilityType.BLAST_MINING));
@@ -529,7 +529,7 @@ public class ScoreboardWrapper {
 
                 // Calculate power level here
                 int powerLevel = 0;
-                for (PrimarySkill skill : PrimarySkill.NON_CHILD_SKILLS) { // Don't include child skills, makes the list too long
+                for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) { // Don't include child skills, makes the list too long
                     int level = newProfile.getSkillLevel(skill);
 
                     powerLevel += level;
@@ -548,7 +548,7 @@ public class ScoreboardWrapper {
             case RANK_BOARD:
             case TOP_BOARD:
             /*
-             * @see #acceptRankData(Map<PrimarySkill, Integer> rank)
+             * @see #acceptRankData(Map<PrimarySkillType, Integer> rank)
              * @see #acceptLeaderboardData(List<PlayerStat> stats)
              */
                 break;
@@ -558,11 +558,11 @@ public class ScoreboardWrapper {
         }
     }
 
-    public void acceptRankData(Map<PrimarySkill, Integer> rankData) {
+    public void acceptRankData(Map<PrimarySkillType, Integer> rankData) {
         Integer rank;
         Player player = mcMMO.p.getServer().getPlayerExact(playerName);
 
-        for (PrimarySkill skill : PrimarySkill.NON_CHILD_SKILLS) {
+        for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
             if (!skill.getPermissions(player)) {
                 continue;
             }

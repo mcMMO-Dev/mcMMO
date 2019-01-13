@@ -3,11 +3,11 @@ package com.gmail.nossr50.commands.skills;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.StringUtils;
 
@@ -17,7 +17,7 @@ public class SkillGuideCommand implements CommandExecutor {
 
     private String invalidPage = LocaleLoader.getString("Guides.Page.Invalid");
 
-    public SkillGuideCommand(PrimarySkill skill) {
+    public SkillGuideCommand(PrimarySkillType skill) {
         header = LocaleLoader.getString("Guides.Header", skill.getName());
         guide = getGuide(skill);
     }
@@ -86,7 +86,7 @@ public class SkillGuideCommand implements CommandExecutor {
         return allStrings;
     }
 
-    private ArrayList<String> getGuide(PrimarySkill skill) {
+    private ArrayList<String> getGuide(PrimarySkillType skill) {
         ArrayList<String> guide = new ArrayList<String>();
 
         for (int i = 0; i < 10; i++) {

@@ -1,11 +1,10 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.TextComponentFactory;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -35,7 +34,7 @@ public class MmoInfoCommand implements TabExecutor {
                     return false;
 
                 //Real skill
-                if(InteractionManager.getAbstractByName(args[0]) != null || PrimarySkill.SUBSKILL_NAMES.contains(args[0]))
+                if(InteractionManager.getAbstractByName(args[0]) != null || PrimarySkillType.SUBSKILL_NAMES.contains(args[0]))
                 {
                     displayInfo(player, args[0]);
                     return true;
@@ -52,7 +51,7 @@ public class MmoInfoCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         switch (args.length) {
             case 1:
-                return StringUtil.copyPartialMatches(args[0], PrimarySkill.SUBSKILL_NAMES, new ArrayList<String>(PrimarySkill.SUBSKILL_NAMES.size()));
+                return StringUtil.copyPartialMatches(args[0], PrimarySkillType.SUBSKILL_NAMES, new ArrayList<String>(PrimarySkillType.SUBSKILL_NAMES.size()));
             default:
                 return ImmutableList.of();
         }

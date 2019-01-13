@@ -12,7 +12,7 @@ import com.gmail.nossr50.config.skills.salvage.SalvageConfigManager;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.acrobatics.Roll;
 import com.gmail.nossr50.listeners.*;
 import com.gmail.nossr50.party.PartyManager;
@@ -379,6 +379,7 @@ public class mcMMO extends JavaPlugin {
         PotionConfig.getInstance();
         CoreSkillsConfig.getInstance();
         SoundConfig.getInstance();
+        RankConfig.getInstance();
 
         new ChildConfig();
 
@@ -435,7 +436,7 @@ public class mcMMO extends JavaPlugin {
          * Acrobatics skills
          */
 
-        if(CoreSkillsConfig.getInstance().isPrimarySkillEnabled(PrimarySkill.ACROBATICS))
+        if(CoreSkillsConfig.getInstance().isPrimarySkillEnabled(PrimarySkillType.ACROBATICS))
         {
             System.out.println("[mcMMO]" + " enabling Acrobatics Skills");
 

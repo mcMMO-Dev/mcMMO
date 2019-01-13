@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 
@@ -20,10 +20,10 @@ public class VampirismCommand extends HardcoreModeCommand {
     }
 
     @Override
-    protected boolean checkEnabled(PrimarySkill skill) {
+    protected boolean checkEnabled(PrimarySkillType skill) {
         if (skill == null) {
-            for (PrimarySkill primarySkill : PrimarySkill.values()) {
-                if (!primarySkill.getHardcoreVampirismEnabled()) {
+            for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+                if (!primarySkillType.getHardcoreVampirismEnabled()) {
                     return false;
                 }
             }
@@ -35,12 +35,12 @@ public class VampirismCommand extends HardcoreModeCommand {
     }
 
     @Override
-    protected void enable(PrimarySkill skill) {
+    protected void enable(PrimarySkillType skill) {
         toggle(true, skill);
     }
 
     @Override
-    protected void disable(PrimarySkill skill) {
+    protected void disable(PrimarySkillType skill) {
         toggle(false, skill);
     }
 
@@ -50,10 +50,10 @@ public class VampirismCommand extends HardcoreModeCommand {
         sender.sendMessage(LocaleLoader.getString("Hardcore.Vampirism.PercentageChanged", percent.format(newPercentage / 100.0D)));
     }
 
-    private void toggle(boolean enable, PrimarySkill skill) {
+    private void toggle(boolean enable, PrimarySkillType skill) {
         if (skill == null) {
-            for (PrimarySkill primarySkill : PrimarySkill.NON_CHILD_SKILLS) {
-                primarySkill.setHardcoreVampirismEnabled(enable);
+            for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+                primarySkillType.setHardcoreVampirismEnabled(enable);
             }
         }
         else {

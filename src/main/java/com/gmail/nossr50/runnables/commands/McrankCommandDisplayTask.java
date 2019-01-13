@@ -2,7 +2,7 @@ package com.gmail.nossr50.runnables.commands;
 
 import java.util.Map;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -15,12 +15,12 @@ import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
  * Display the results of McrankCommandAsyncTask to the sender.
  */
 public class McrankCommandDisplayTask extends BukkitRunnable {
-    private final Map<PrimarySkill, Integer> skills;
+    private final Map<PrimarySkillType, Integer> skills;
     private final CommandSender sender;
     private final String playerName;
     private final boolean useBoard, useChat;
 
-    McrankCommandDisplayTask(Map<PrimarySkill, Integer> skills, CommandSender sender, String playerName, boolean useBoard, boolean useChat) {
+    McrankCommandDisplayTask(Map<PrimarySkillType, Integer> skills, CommandSender sender, String playerName, boolean useBoard, boolean useChat) {
         this.skills = skills;
         this.sender = sender;
         this.playerName = playerName;
@@ -47,7 +47,7 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Heading"));
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Player", playerName));
 
-        for (PrimarySkill skill : PrimarySkill.NON_CHILD_SKILLS) {
+        for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
             if (!skill.getPermissions(player)) {
                 continue;
             }

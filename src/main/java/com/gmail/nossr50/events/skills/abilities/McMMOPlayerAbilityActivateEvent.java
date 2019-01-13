@@ -1,13 +1,13 @@
 package com.gmail.nossr50.events.skills.abilities;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
 public class McMMOPlayerAbilityActivateEvent extends McMMOPlayerAbilityEvent implements Cancellable {
     private boolean cancelled;
 
-    public McMMOPlayerAbilityActivateEvent(Player player, PrimarySkill skill) {
+    public McMMOPlayerAbilityActivateEvent(Player player, PrimarySkillType skill) {
         super(player, skill);
         cancelled = false;
     }

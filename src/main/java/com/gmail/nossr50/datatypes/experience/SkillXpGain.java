@@ -4,20 +4,20 @@ import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 
 public class SkillXpGain implements Delayed {
     private final long expiryTime;
     private final float xp;
-    private final PrimarySkill type;
+    private final PrimarySkillType type;
 
-    public SkillXpGain(PrimarySkill type, float xp) {
+    public SkillXpGain(PrimarySkillType type, float xp) {
         this.expiryTime = System.currentTimeMillis() + getDuration();
         this.xp = xp;
         this.type = type;
     }
 
-    public PrimarySkill getSkill() {
+    public PrimarySkillType getSkill() {
         return type;
     }
 

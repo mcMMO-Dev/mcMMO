@@ -17,10 +17,11 @@ Version 2.1.0
  + Added the tagline "Overhaul Era" to various locations until 3.0.0 comes out
  + (Sound) Volume and Pitch of sounds can now be configured in the new sounds.yml file
  + (MySQL) Added support for SSL for MySQL/MariaDB (On by default)
+ + (Skills) Adding a new subskill to child skills called 'Understanding The Art' this adds nothing new, but tracks your progress in that child skill, which was previous a bit obfuscated.
  + (Skills) Tool alerts now are sent to the Action Bar
  + (Skills) Super Ability activation alerts are now sent to the Action Bar
  + (Skills) Certain Skill messages are now sent to the Action Bar
- + (Config) Skill Ranks are now defined in skillranks.yml if a skill does not have a rank it's unlocked right away
+ + (Config) Skill Rank requirements are now defined in skillranks.yml you cannot add or remove ranks from this file
  + (Config) Added option to use SSL for MySQL in config.yml
  + (Config) Added option to disable the new URL links to config.yml
  + (Config) New config file added coreskills.yml
@@ -51,6 +52,7 @@ Version 2.1.0
  = (MySQL) When converting from MySQL to flatfile mcMMO will now properly include all users in the conversion process
  + (Party) Parties can now have size limits (configurable in config.yml), party size is unlimited by default
  ! (Party) Party member list will only include members of the party that you can see (aren't vanished)
+ ! (Skills) Some skill level rank requirements have changed
  ! (Skills) Fixed an edge case bug where Blast Mining wouldn't inform the player that it was on cooldown
  ! (Skills) mcMMO skills will now be on a scale from 1-100 instead of 0-1000 (for existing mcMMO installs this is opt-in and off by default)
  ! (Skills) Skill Super Powers (Tree Feller, etc...) will now require level 10+ to use
@@ -59,6 +61,9 @@ Version 2.1.0
  ! (Skills) Woodcutting's Double Drop subskill is now named Harvest Lumber
  ! (Skills) Archery's Skill Shot now uses a rank system
  ! (Skills) Axe's Axe Mastery now uses a rank system
+ ! (Skills) Axe's Impact now uses a rank system
+ ! (Skills) Herbalism's Farmer's Diet now uses a rank system
+ ! (Skills) Herbalism's Green Thumb now uses a rank system
  ! (Config) Unarmed.IronArm in advanced.yml is now Unarmed.IronArmStyle
  ! (Config) Unarmed.Deflect in advanced.yml is now Unarmed.ArrowDeflect
  ! (Config) Swords.Counter in advanced.yml is now Swords.CounterAttack
@@ -77,9 +82,9 @@ Version 2.1.0
  ! (Locale) Super Abilities no longer have (ABILITY) in their Skill.Effect strings
  ! (API) mcMMO is now built against Spigot-API instead of Bukkit
  ! (API) Moved a lot of methods from SkillCommand to SkillUtils
- ! (API) SkillType is now PrimarySkill
+ ! (API) SkillType is now PrimarySkillType
  ! (API) SecondarySkill is now SubSkillType
- ! (API) AbilityType is now SuperAbility
+ ! (API) AbilityType is now SuperAbilityType
  ! (API) SecondaryAbilityEvent is now SubSkillEvent
  ! (API) SubSkillType has had many helpful methods added to it
  ! (API) GREEN_THUMB_PLANT & GREEN_THUMB_BLOCK are replaced by GREEN_THUMB

@@ -1,6 +1,6 @@
 package com.gmail.nossr50.listeners;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,7 +20,7 @@ public class SelfListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerLevelUp(McMMOPlayerLevelUpEvent event) {
         Player player = event.getPlayer();
-        PrimarySkill skill = event.getSkill();
+        PrimarySkillType skill = event.getSkill();
 
         ScoreboardManager.handleLevelUp(player, skill);
 
@@ -47,8 +47,8 @@ public class SelfListener implements Listener {
     public void onPlayerXpGain(McMMOPlayerXpGainEvent event) {
         if (event.getXpGainReason() == XPGainReason.COMMAND)
             return;
-        PrimarySkill primarySkill = event.getSkill();
-        int threshold = ExperienceConfig.getInstance().getDiminishedReturnsThreshold(primarySkill);
+        PrimarySkillType primarySkillType = event.getSkill();
+        int threshold = ExperienceConfig.getInstance().getDiminishedReturnsThreshold(primarySkillType);
         if (threshold <= 0 || !ExperienceConfig.getInstance().getDiminishedReturnsEnabled()) {
             // Diminished returns is turned off
             return;
@@ -63,15 +63,15 @@ public class SelfListener implements Listener {
         Player player = event.getPlayer();
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if (primarySkill.isChildSkill()) {
+        if (primarySkillType.isChildSkill()) {
             return;
         }
 
-        float modifiedThreshold = (float) (threshold / primarySkill.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
-        float difference = (mcMMOPlayer.getProfile().getRegisteredXpGain(primarySkill) - modifiedThreshold) / modifiedThreshold;
+        float modifiedThreshold = (float) (threshold / primarySkillType.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
+        float difference = (mcMMOPlayer.getProfile().getRegisteredXpGain(primarySkillType) - modifiedThreshold) / modifiedThreshold;
 
         if (difference > 0) {
-//            System.out.println("Total XP Earned: " + mcMMOPlayer.getProfile().getRegisteredXpGain(primarySkill) + " / Threshold value: " + threshold);
+//            System.out.println("Total XP Earned: " + mcMMOPlayer.getProfile().getRegisteredXpGain(primarySkillType) + " / Threshold value: " + threshold);
 //            System.out.println(difference * 100 + "% over the threshold!");
 //            System.out.println("Previous: " + event.getRawXpGained());
 //            System.out.println("Adjusted XP " + (event.getRawXpGained() - (event.getRawXpGained() * difference)));

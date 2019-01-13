@@ -5,10 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.mining.BlastMining;
@@ -1029,7 +1028,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         //For now we will only check ranks of stuff I've overhauled
         for(SubSkillType subSkillType : SubSkillType.values())
         {
-            if(subSkillType.getParentSkill() == PrimarySkill.WOODCUTTING)
+            if(subSkillType.getParentSkill() == PrimarySkillType.WOODCUTTING)
             {
                 //Keeping track of the rank requirements and making sure there are no logical errors
                 int curRank = 0;

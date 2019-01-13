@@ -6,7 +6,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.json.McMMOUrl;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
@@ -16,7 +16,6 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.entity.Player;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -55,7 +54,7 @@ public class TextComponentFactory {
         return getNotificationTextComponent(LocaleLoader.getString(localeKey), notificationType);
     }
 
-    public static TextComponent getNotificationLevelUpTextComponent(McMMOPlayer player, PrimarySkill skill, int currentLevel)
+    public static TextComponent getNotificationLevelUpTextComponent(McMMOPlayer player, PrimarySkillType skill, int currentLevel)
     {
         //player.sendMessage(LocaleLoader.getString(StringUtils.getCapitalized(primarySkill.toString()) + ".Skillup", levelsGained, getSkillLevel(primarySkill)));
         TextComponent textComponent = new TextComponent(LocaleLoader.getString("JSON."+StringUtils.getCapitalized(skill.toString()))
@@ -513,7 +512,7 @@ public class TextComponentFactory {
         componentBuilder.append("\n");
     }
 
-    public static void getSubSkillTextComponents(Player player, List<TextComponent> textComponents, PrimarySkill parentSkill) {
+    public static void getSubSkillTextComponents(Player player, List<TextComponent> textComponents, PrimarySkillType parentSkill) {
         for(SubSkillType subSkillType : SubSkillType.values())
         {
             if(subSkillType.getParentSkill() == parentSkill)

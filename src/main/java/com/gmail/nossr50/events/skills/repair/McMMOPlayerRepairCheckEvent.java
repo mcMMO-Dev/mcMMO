@@ -1,6 +1,6 @@
 package com.gmail.nossr50.events.skills.repair;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.inventory.ItemStack;
@@ -17,7 +17,7 @@ public class McMMOPlayerRepairCheckEvent extends McMMOPlayerSkillEvent implement
     private boolean cancelled;
 
     public McMMOPlayerRepairCheckEvent(Player player, short repairAmount, ItemStack repairMaterial, ItemStack repairedObject) {
-        super(player, PrimarySkill.REPAIR);
+        super(player, PrimarySkillType.REPAIR);
         this.repairAmount = repairAmount;
         this.repairMaterial = repairMaterial;
         this.repairedObject = repairedObject;

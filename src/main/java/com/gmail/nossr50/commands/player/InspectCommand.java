@@ -3,7 +3,7 @@ package com.gmail.nossr50.commands.player;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -53,17 +53,17 @@ public class InspectCommand implements TabExecutor {
                     sender.sendMessage(LocaleLoader.getString("Inspect.OfflineStats", playerName));
 
                     sender.sendMessage(LocaleLoader.getString("Stats.Header.Gathering"));
-                    for (PrimarySkill skill : PrimarySkill.GATHERING_SKILLS) {
+                    for (PrimarySkillType skill : PrimarySkillType.GATHERING_SKILLS) {
                         sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                     }
 
                     sender.sendMessage(LocaleLoader.getString("Stats.Header.Combat"));
-                    for (PrimarySkill skill : PrimarySkill.COMBAT_SKILLS) {
+                    for (PrimarySkillType skill : PrimarySkillType.COMBAT_SKILLS) {
                         sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                     }
 
                     sender.sendMessage(LocaleLoader.getString("Stats.Header.Misc"));
-                    for (PrimarySkill skill : PrimarySkill.MISC_SKILLS) {
+                    for (PrimarySkillType skill : PrimarySkillType.MISC_SKILLS) {
                         sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                     }
 
