@@ -32,7 +32,16 @@ public class NotificationManager {
         sendNotification(player, customEvent);
     }
 
-    public static void sendOtherPlayersSkillInfo(Player source, NotificationType notificationType, String key, String... values)
+    /**
+     * Sends players notifications from mcMMO
+     * This does this by sending out an event so other plugins can cancel it
+     * This event in particular is provided with a source player, and players near the source player are sent the information
+     * @param source the source player for this event
+     * @param notificationType type of notification
+     * @param key Locale Key for the string to use with this event
+     * @param values values to be injected into the locale string
+     */
+    public static void sendNearbyPlayersInformation(Player source, NotificationType notificationType, String key, String... values)
     {
         Location location = source.getLocation();
         for (Player otherPlayer : source.getWorld().getPlayers()) {

@@ -137,7 +137,7 @@ public class SkillUtils {
 
         for (Player otherPlayer : player.getWorld().getPlayers()) {
             if (otherPlayer != player && Misc.isNear(location, otherPlayer.getLocation(), Misc.SKILL_MESSAGE_MAX_SENDING_DISTANCE)) {
-                NotificationManager.sendOtherPlayersSkillInfo(player, notificationType, key);
+                NotificationManager.sendNearbyPlayersInformation(player, notificationType, key);
             }
         }
     }
