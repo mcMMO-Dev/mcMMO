@@ -516,6 +516,10 @@ public class McMMOPlayer {
             SoundManager.sendSound(player, player.getLocation(), SoundType.LEVEL_UP);
         }
 
+        /*
+         * Check to see if the player unlocked any new skills
+         */
+
         NotificationManager.sendPlayerLevelUpNotification(UserManager.getPlayer(player), primarySkill, profile.getSkillLevel(primarySkill));
     }
 

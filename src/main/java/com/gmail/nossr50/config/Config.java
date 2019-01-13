@@ -246,13 +246,13 @@ public class Config extends AutoUpdateConfigLoader {
     /* General Settings */
 
     //Classic mode will default the value to true if the config file doesn't contain the entry (server is from a previous mcMMO install)
-    public boolean getUseOldLevelScaling() { return config.getBoolean("General.UseOldLevelScaling", true); }
+    public boolean getUseOldLevelScaling() { return config.getBoolean("General.RetroMode", true); }
 
     //XP needed to level is multiplied by this when using classic mode
-    public int getClassicModeXPFormulaFactor() { return config.getInt("General.Skill_Scaling.Classic_XP_Formula_Factor", 1); }
+    public int getClassicModeXPFormulaFactor() { return config.getInt("General.Skill_Scaling.RetroMode_XP_Formula_Factor", 1); }
 
     //Level requirements for subskills is multiplied by this when using classic mode
-    public int getClassicModeLevelReqFactor() { return config.getInt("General.Skill_Scaling.Classic_LevelReq_Factor", 10); }
+    public int getClassicModeLevelReqFactor() { return config.getInt("General.Skill_Scaling.RetroMode_LevelReq_Factor", 10); }
 
     public String getLocale() { return config.getString("General.Locale", "en_us"); }
     public boolean getMOTDEnabled() { return config.getBoolean("General.MOTD_Enabled", true); }

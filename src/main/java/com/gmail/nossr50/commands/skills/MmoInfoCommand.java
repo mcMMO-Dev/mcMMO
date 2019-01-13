@@ -19,12 +19,15 @@ import java.util.List;
 /**
  * This is the command that retrieves data about skills from in-game sources
  */
-public class MmoInfo implements TabExecutor {
+public class MmoInfoCommand implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
         if(commandSender instanceof Player)
         {
+            if(args.length < 1)
+                return false;
+
             Player player = (Player) commandSender;
             if(Permissions.mmoinfo(player))
             {

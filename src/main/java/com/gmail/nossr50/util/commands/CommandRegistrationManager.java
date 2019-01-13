@@ -162,7 +162,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.mmoinfo");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mmoinfo", "[" + LocaleLoader.getString("Commands.Usage.SubSkill") + "]"));
-        command.setExecutor(new MmoInfo());
+        command.setExecutor(new MmoInfoCommand());
     }
 
     private static void registerMcChatSpyCommand() {

@@ -10,7 +10,7 @@ Key:
 Version 2.1.0
  + Prevented exploits involving blocks made from entities (snowmen, etc..)
  + Added JSON integration to all Skill Commands
- + Added config setting to enable or disable old mcMMO skill scaling (General.UseOldLevelScaling) this is on by default for existing installs
+ + Added config setting to enable or disable old mcMMO skill scaling (General.RetroMode) this is on by default for existing installs
  + You can now disable specific skills in coreskills.yml without the need for permissions
  + Added links to mcMMO related websites to various commands
  + Certain elements of mcMMO's UI have been restyled
@@ -20,12 +20,13 @@ Version 2.1.0
  + (Skills) Tool alerts now are sent to the Action Bar
  + (Skills) Super Ability activation alerts are now sent to the Action Bar
  + (Skills) Certain Skill messages are now sent to the Action Bar
+ + (Config) Skill Ranks are now defined in skillranks.yml if a skill does not have a rank it's unlocked right away
  + (Config) Added option to use SSL for MySQL in config.yml
  + (Config) Added option to disable the new URL links to config.yml
  + (Config) New config file added coreskills.yml
  + (Config) Added rank settings for the new Woodcutting skill
  + (Config) Added configurable parameters for the new Tree Feller
- + (Config) Added classic toggle for Tree Feller
+ + (Config) Added retro toggle for Tree Feller
  + (Config) Added toggle to disable all scoreboards
  + (Chat) Added ability for admins to spy on party chat (off unless toggled on)
  + (Commands) Added new info command /mmoinfo or /mcinfo
