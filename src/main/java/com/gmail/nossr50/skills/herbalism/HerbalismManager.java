@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.herbalism;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.*;
@@ -12,6 +13,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.HerbalismBlockUpdaterTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.*;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Location;
@@ -94,7 +96,7 @@ public class HerbalismManager extends SkillManager {
         ItemStack seed = new ItemStack(Material.WHEAT_SEEDS);
 
         if (!playerInventory.containsAtLeast(seed, 1)) {
-            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTe.NeedMore"));
+            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Herbalism.Ability.GTe.NeedMore");
             return false;
         }
 
@@ -174,7 +176,7 @@ public class HerbalismManager extends SkillManager {
      */
     public boolean processGreenThumbBlocks(BlockState blockState) {
         if (!SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.HERBALISM_GREEN_THUMB, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
-            getPlayer().sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Fail"));
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILURE, "Herbalism.Ability.GTh.Fail");
             return false;
         }
 
@@ -212,7 +214,7 @@ public class HerbalismManager extends SkillManager {
                 }
                 blockState.setType(Material.AIR);
                 Misc.dropItem(location, treasure.getDrop());
-                player.sendMessage(LocaleLoader.getString("Herbalism.HylianLuck"));
+                NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Herbalism.HylianLuck");
                 return true;
             }
         }
@@ -230,12 +232,12 @@ public class HerbalismManager extends SkillManager {
         PlayerInventory playerInventory = player.getInventory();
         
         if (!playerInventory.contains(Material.BROWN_MUSHROOM, 1)) {
-            player.sendMessage(LocaleLoader.getString("Skills.NeedMore", StringUtils.getPrettyItemString(Material.BROWN_MUSHROOM)));
+            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyItemString(Material.BROWN_MUSHROOM));
             return false;
         }
 
         if (!playerInventory.contains(Material.RED_MUSHROOM, 1)) {
-            player.sendMessage(LocaleLoader.getString("Skills.NeedMore", StringUtils.getPrettyItemString(Material.RED_MUSHROOM)));
+            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyItemString(Material.RED_MUSHROOM));
             return false;
         }
 
@@ -244,7 +246,7 @@ public class HerbalismManager extends SkillManager {
         player.updateInventory();
 
         if (!SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.HERBALISM_SHROOM_THUMB, player, this.skill, getSkillLevel(), activationChance)) {
-            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.ShroomThumb.Fail"));
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, "Herbalism.Ability.ShroomThumb.Fail");
             return false;
         }
 
