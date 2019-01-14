@@ -3,6 +3,8 @@ package com.gmail.nossr50.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.util.player.NotificationManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -65,8 +67,15 @@ public class XprateCommand implements TabExecutor {
                 ExperienceConfig.getInstance().setExperienceGainsGlobalMultiplier(newXpRate);
 
                 if (mcMMO.p.isXPEventEnabled()) {
-                    mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.xprate.started.0"));
-                    mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.xprate.started.1", newXpRate));
+                    if(AdvancedConfig.getInstance().useTitlesForXPEvent())
+                    {
+                        NotificationManager.broadcastTitle(mcMMO.p.getServer(),
+                                LocaleLoader.getString("Commands.Event.Start"),
+                                LocaleLoader.getString("Commands.Event.XP", newXpRate),
+                                10, 10*20, 20);
+                    }
+                    mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Start"));
+                    mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.XP", newXpRate));
                 }
                 else {
                     sender.sendMessage(LocaleLoader.getString("Commands.xprate.modified", newXpRate));

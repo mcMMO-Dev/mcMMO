@@ -5,12 +5,14 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.TextComponentFactory;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
 public class NotificationManager {
@@ -105,5 +107,13 @@ public class NotificationManager {
         McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(mcMMOPlayer.getPlayer(), NotificationType.LEVEL_UP_MESSAGE, destination, levelUpTextComponent);
 
         sendNotification(mcMMOPlayer.getPlayer(), customEvent);
+    }
+
+    public static void broadcastTitle(Server server, String title, String subtitle, int i1, int i2, int i3)
+    {
+        for(Player player : server.getOnlinePlayers())
+        {
+            player.sendTitle(title, subtitle, i1, i2, i3);
+        }
     }
 }

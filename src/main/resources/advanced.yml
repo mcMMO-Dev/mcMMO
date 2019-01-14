@@ -14,6 +14,10 @@
 #  Settings for the Skills
 ###
 Feedback:
+    # If sendtitles is true messages will be sent using the title api (BIG TEXT ON SCREEN)
+    Events:
+        XP:
+            SendTitles: true
     #The actionbar is the message location right above the health bar
     ## If you disable the action bar messages, mcMMO will send the message to the chat system instead
     ActionBarNotifications:
@@ -22,7 +26,7 @@ Feedback:
             SendCopyOfMessageToChat: false
         HardcoreMode:
             Enabled: true
-            SendCopyOfMessageToChat: false
+            SendCopyOfMessageToChat: true
         RequirementsNotMet:
             Enabled: true
             SendCopyOfMessageToChat: false
@@ -61,7 +65,7 @@ Feedback:
             SendCopyOfMessageToChat: false
         NoPermission:
             Enabled: true
-            SendCopyOfMessageToChat: false
+            SendCopyOfMessageToChat: true
         PartyMessage:
             Enabled: true
             SendCopyOfMessageToChat: true

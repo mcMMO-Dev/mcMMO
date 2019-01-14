@@ -707,6 +707,11 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         return config.getBoolean("Feedback.ActionBarNotifications."+notificationType.toString()+".SendCopyOfMessageToChat", false);
     }
 
+    public boolean useTitlesForXPEvent()
+    {
+        return config.getBoolean("Feedback.Events.XP.SendTitles", true);
+    }
+
     /*
      * JSON Style Settings
      */
