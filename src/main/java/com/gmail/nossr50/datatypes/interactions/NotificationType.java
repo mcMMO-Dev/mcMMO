@@ -7,6 +7,7 @@ public enum NotificationType {
     XP_GAIN("ExperienceGain"),
     SUBSKILL_UNLOCKED("SubSkillUnlocked"),
     LEVEL_UP_MESSAGE("LevelUps"),
+    HOLIDAY("Holiday"),
     SUBSKILL_MESSAGE("SubSkillInteraction"),
     SUBSKILL_MESSAGE_FAILURE("SubSkillFailure"),
     TOOL("ToolReady"),

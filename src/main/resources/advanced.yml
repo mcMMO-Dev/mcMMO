@@ -21,6 +21,7 @@ Skills:
             LevelRequirementNotMet: true
             AbilityCoolDown: true
             LevelUps: true
+            Holiday: true
             ToolReady: true
             SubSkillInteraction: true
             SubSkillFailure: true

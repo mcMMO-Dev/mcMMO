@@ -1,8 +1,11 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.commands.skills.AprilCommand;
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -220,8 +223,7 @@ public final class HolidayManager {
             return;
         }
 
-        sender.sendMessage(ChatColor.BLUE + "Happy " + (currentYear - START_YEAR) + " Year Anniversary!  In honor of all of");
-        sender.sendMessage(ChatColor.BLUE + "nossr50's work and all the devs, here's a firework show!");
+        sender.sendMessage(LocaleLoader.getString("Holiday.Anniversary", (currentYear - START_YEAR)));
         if (sender instanceof Player) {
             final int firework_amount = 10;
             for (int i = 0; i < firework_amount; i++) {
@@ -360,7 +362,7 @@ public final class HolidayManager {
     public void levelUpApril(Player player, FakeSkillType fakeSkillType) {
         int levelTotal = Misc.getRandom().nextInt(1 + UserManager.getPlayer(player).getSkillLevel(PrimarySkillType.MINING)) + 1;
         SoundManager.sendSound(player, player.getLocation(), SoundType.LEVEL_UP);
-        player.sendMessage(ChatColor.YELLOW + StringUtils.getCapitalized(fakeSkillType.toString()) + " skill increased by 1. Total (" + levelTotal + ")");
+        NotificationManager.sendPlayerInformation(player, NotificationType.HOLIDAY, "Holiday.AprilFools.Levelup", StringUtils.getCapitalized(fakeSkillType.toString()), String.valueOf(levelTotal));
         ParticleEffectUtils.fireworkParticleShower(player, ALL_COLORS.get(Misc.getRandom().nextInt(ALL_COLORS.size())));
     }
 
