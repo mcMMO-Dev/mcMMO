@@ -60,9 +60,9 @@ public abstract class ChatManager {
                     {
                         //TODO: Incorporate JSON
                         if(!adminParty.getName().equalsIgnoreCase(partyChatEvent.getParty()))
-                            player.sendMessage(ChatColor.GOLD+"[SPY: "+ChatColor.GREEN+partyChatEvent.getParty()+ChatColor.GOLD+"] "+message);
+                            player.sendMessage(LocaleLoader.getString("Commands.AdminChatSpy.Chat", partyChatEvent.getParty(), message));
                     } else {
-                        player.sendMessage(ChatColor.GOLD+"[SPY: "+ChatColor.GREEN+partyChatEvent.getParty()+ChatColor.GOLD+"] "+message);
+                        player.sendMessage(LocaleLoader.getString("Commands.AdminChatSpy.Chat", partyChatEvent.getParty(), message));
                     }
                 }
             }

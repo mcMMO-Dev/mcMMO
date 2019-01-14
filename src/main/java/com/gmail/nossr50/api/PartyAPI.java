@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.UUID;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.NotificationManager;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -91,7 +93,7 @@ public final class PartyAPI {
         } else {
             if(PartyManager.isPartyFull(player, party))
             {
-                player.sendMessage(LocaleLoader.getString("Commands.Party.PartyFull", party.toString()));
+                NotificationManager.sendPlayerInformation(player, NotificationType.PARTY_MESSAGE, "Commands.Party.PartyFull", party.toString());
                 return;
             }
         }
