@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.unarmed;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -13,6 +14,7 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -94,7 +96,7 @@ public class UnarmedManager extends SkillManager {
             }
 
             defender.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-            defender.sendMessage(LocaleLoader.getString("Skills.Disarmed"));
+            NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Skills.Disarmed");
         }
     }
 
@@ -103,7 +105,7 @@ public class UnarmedManager extends SkillManager {
      */
     public boolean deflectCheck() {
         if (SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.UNARMED_ARROW_DEFLECT, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
-            getPlayer().sendMessage(LocaleLoader.getString("Combat.ArrowDeflect"));
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.ArrowDeflect");
             return true;
         }
 
@@ -141,8 +143,8 @@ public class UnarmedManager extends SkillManager {
      */
     private boolean hasIronGrip(Player defender) {
         if (!Misc.isNPCEntity(defender) && Permissions.isSubSkillEnabled(defender, SubSkillType.UNARMED_IRON_GRIP) && SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_NO_CAP, SubSkillType.UNARMED_IRON_GRIP, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
-            defender.sendMessage(LocaleLoader.getString("Unarmed.Ability.IronGrip.Defender"));
-            getPlayer().sendMessage(LocaleLoader.getString("Unarmed.Ability.IronGrip.Attacker"));
+            NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Unarmed.Ability.IronGrip.Defender");
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Unarmed.Ability.IronGrip.Attacker");
 
             return true;
         }
