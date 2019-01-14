@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.util.player.NotificationManager;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -48,7 +50,7 @@ public class BleedTimerTask extends BukkitRunnable {
                 entry.setValue(entry.getValue() - 1);
 
                 if (entry.getValue() <= 0) {
-                    player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding.Stopped"));
+                    NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Stopped");
                 }
             }
             else {

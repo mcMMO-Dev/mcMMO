@@ -4,7 +4,9 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.util.player.NotificationManager;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.AnimalTamer;
@@ -416,7 +418,7 @@ public final class CombatUtils {
             switch (type) {
                 case SWORDS:
                     if (entity instanceof Player) {
-                        ((Player) entity).sendMessage(LocaleLoader.getString("Swords.Combat.SS.Struck"));
+                        NotificationManager.sendPlayerInformation((Player)entity, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.SS.Struck");
                     }
 
                     BleedTimerTask.add(livingEntity, Swords.serratedStrikesBleedTicks);
@@ -424,7 +426,7 @@ public final class CombatUtils {
 
                 case AXES:
                     if (entity instanceof Player) {
-                        ((Player) entity).sendMessage(LocaleLoader.getString("Axes.Combat.SS.Struck"));
+                        NotificationManager.sendPlayerInformation((Player)entity, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.SS.Struck");
                     }
 
                     break;
