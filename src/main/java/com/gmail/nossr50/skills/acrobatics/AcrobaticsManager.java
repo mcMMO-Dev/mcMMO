@@ -1,7 +1,9 @@
 package com.gmail.nossr50.skills.acrobatics;
 
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LightningStrike;
@@ -48,7 +50,7 @@ public class AcrobaticsManager extends SkillManager {
             ParticleEffectUtils.playDodgeEffect(player);
 
             if (mcMMOPlayer.useChatNotifications()) {
-                player.sendMessage(LocaleLoader.getString("Acrobatics.Combat.Proc"));
+                NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Combat.Proc");
             }
 
             // Why do we check respawn cooldown here?
