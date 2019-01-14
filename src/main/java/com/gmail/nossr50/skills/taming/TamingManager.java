@@ -114,10 +114,10 @@ public class TamingManager extends SkillManager {
         BleedTimerTask.add(target, Taming.goreBleedTicks);
 
         if (target instanceof Player) {
-            target.sendMessage(LocaleLoader.getString("Combat.StruckByGore"));
+            NotificationManager.sendPlayerInformation((Player)target, NotificationType.SUBSKILL_MESSAGE, "Combat.StruckByGore");
         }
 
-        getPlayer().sendMessage(LocaleLoader.getString("Combat.Gore"));
+        NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.Gore");
 
         damage = (damage * Taming.goreModifier) - damage;
         return damage;
@@ -187,7 +187,7 @@ public class TamingManager extends SkillManager {
         Player owner = getPlayer();
 
         wolf.teleport(owner);
-        owner.sendMessage(LocaleLoader.getString("Taming.Listener.Wolf"));
+        NotificationManager.sendPlayerInformation(owner, NotificationType.SUBSKILL_MESSAGE, "Taming.Listener.Wolf");
     }
 
     public void pummel(LivingEntity target, Wolf wolf) {
@@ -205,7 +205,7 @@ public class TamingManager extends SkillManager {
             Player defender = (Player) target;
 
             if (UserManager.getPlayer(defender).useChatNotifications()) {
-                defender.sendMessage(LocaleLoader.getString("Taming.SubSkill.Pummel.TargetMessage"));
+                NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Taming.SubSkill.Pummel.TargetMessage");
             }
         }
     }
@@ -243,7 +243,8 @@ public class TamingManager extends SkillManager {
         Location location = player.getLocation();
 
         if (heldItemAmount < summonAmount) {
-            player.sendMessage(LocaleLoader.getString("Skills.NeedMore", StringUtils.getPrettyItemString(heldItem.getType())));
+            int moreAmount = summonAmount - heldItemAmount;
+            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Item.NotEnough", String.valueOf(moreAmount), StringUtils.getPrettyItemString(heldItem.getType()));
             return;
         }
 
@@ -316,7 +317,7 @@ public class TamingManager extends SkillManager {
             lifeSpan = LocaleLoader.getString("Taming.Summon.Lifespan", tamingCOTWLength);
         }
 
-        player.sendMessage(LocaleLoader.getString("Taming.Summon.Complete") + lifeSpan);
+        NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Taming.Summon.Complete", lifeSpan);
         player.playSound(location, Sound.ENTITY_FIREWORK_ROCKET_BLAST_FAR, 1F, 0.5F);
     }
 
@@ -351,7 +352,7 @@ public class TamingManager extends SkillManager {
         int summonAmount = trackedEntities == null ? 0 : trackedEntities.size();
 
         if (summonAmount >= maxAmountSummons) {
-            player.sendMessage(LocaleLoader.getString("Taming.Summon.Fail.TooMany", maxAmountSummons));
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, "Taming.Summon.Fail.TooMany", String.valueOf(maxAmountSummons));
             return false;
         }
 
