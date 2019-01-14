@@ -1,6 +1,8 @@
 package com.gmail.nossr50.skills.archery;
 
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -81,11 +83,11 @@ public class ArcheryManager extends SkillManager {
         defender.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 10, 10));
 
         if (UserManager.getPlayer(defender).useChatNotifications()) {
-            defender.sendMessage(LocaleLoader.getString("Combat.TouchedFuzzy"));
+            NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Combat.TouchedFuzzy");
         }
 
         if (mcMMOPlayer.useChatNotifications()) {
-            getPlayer().sendMessage(LocaleLoader.getString("Combat.TargetDazed"));
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.TargetDazed");
         }
 
         return Archery.dazeBonusDamage;
