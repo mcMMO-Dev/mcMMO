@@ -2,9 +2,11 @@ package com.gmail.nossr50.skills.swords;
 
 import java.util.Map;
 
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -59,14 +61,14 @@ public class SwordsManager extends SkillManager {
             }
 
             if (mcMMOPlayer.useChatNotifications()) {
-                getPlayer().sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding"));
+                NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding");
             }
 
             if (target instanceof Player) {
                 Player defender = (Player) target;
 
                 if (UserManager.getPlayer(defender).useChatNotifications()) {
-                    defender.sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding.Started"));
+                    NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Started");
                 }
             }
         }
@@ -86,10 +88,10 @@ public class SwordsManager extends SkillManager {
         if (SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_COUNTER_ATTACK, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             CombatUtils.dealDamage(attacker, damage / Swords.counterAttackModifier, getPlayer());
 
-            getPlayer().sendMessage(LocaleLoader.getString("Swords.Combat.Countered"));
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Countered");
 
             if (attacker instanceof Player) {
-                ((Player) attacker).sendMessage(LocaleLoader.getString("Swords.Combat.Counter.Hit"));
+                NotificationManager.sendPlayerInformation((Player)attacker, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Counter.Hit");
             }
         }
     }
