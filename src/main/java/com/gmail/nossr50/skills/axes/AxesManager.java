@@ -2,9 +2,11 @@ package com.gmail.nossr50.skills.axes;
 
 import java.util.Map;
 
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.skills.*;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -73,14 +75,14 @@ public class AxesManager extends SkillManager {
         Player player = getPlayer();
 
         if (mcMMOPlayer.useChatNotifications()) {
-            player.sendMessage(LocaleLoader.getString("Axes.Combat.CriticalHit"));
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.CriticalHit");
         }
 
         if (target instanceof Player) {
             Player defender = (Player) target;
 
             if (UserManager.getPlayer(defender).useChatNotifications()) {
-                defender.sendMessage(LocaleLoader.getString("Axes.Combat.CritStruck"));
+                NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.CritStruck");
             }
 
             damage = (damage * Axes.criticalHitPVPModifier) - damage;
@@ -126,14 +128,14 @@ public class AxesManager extends SkillManager {
         target.setVelocity(player.getLocation().getDirection().normalize().multiply(Axes.greaterImpactKnockbackMultiplier));
 
         if (mcMMOPlayer.useChatNotifications()) {
-            player.sendMessage(LocaleLoader.getString("Axes.Combat.GI.Proc"));
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.GI.Proc");
         }
 
         if (target instanceof Player) {
             Player defender = (Player) target;
 
             if (UserManager.getPlayer(defender).useChatNotifications()) {
-                defender.sendMessage(LocaleLoader.getString("Axes.Combat.GI.Struck"));
+                NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.GI.Struck");
             }
         }
 
