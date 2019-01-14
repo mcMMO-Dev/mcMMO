@@ -13,23 +13,25 @@
 #
 #  Settings for the Skills
 ###
+Feedback:
+    # Turning these to false will have them printed in chat instead
+    ActionBarNotifications:
+        AbilityOff: true
+        RequirementsNotMet: true
+        AbilityCoolDown: true
+        LevelUps: true
+        Holiday: true
+        ToolReady: true
+        SubSkillInteraction: true
+        SubSkillFailure: true
+        SubSkillUnlocked: true
+        SuperAbilityInteraction: true
+        SuperAbilityAlertOthers: true
+        ExperienceGain: true
+        ItemMessage: true
+        NoPermission: true
+        PartyMessage: true
 Skills:
-    Feedback:
-        # Turning these to false will have them printed in chat instead
-        ActionBarNotifications:
-            AbilityOff: true
-            LevelRequirementNotMet: true
-            AbilityCoolDown: true
-            LevelUps: true
-            Holiday: true
-            ToolReady: true
-            SubSkillInteraction: true
-            SubSkillFailure: true
-            SubSkillUnlocked: true
-            SuperAbilityInteraction: true
-            SuperAbilityAlertOthers: true
-            ExperienceGain: true
-            PartyMessage: true
     General:
         Ability:
             Length:

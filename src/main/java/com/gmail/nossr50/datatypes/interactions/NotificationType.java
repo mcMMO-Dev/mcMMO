@@ -5,18 +5,20 @@ package com.gmail.nossr50.datatypes.interactions;
  */
 public enum NotificationType {
     XP_GAIN("ExperienceGain"),
+    NO_PERMISSION("NoPermission"),
     SUBSKILL_UNLOCKED("SubSkillUnlocked"),
     LEVEL_UP_MESSAGE("LevelUps"),
     HOLIDAY("Holiday"),
     SUBSKILL_MESSAGE("SubSkillInteraction"),
     SUBSKILL_MESSAGE_FAILURE("SubSkillFailure"),
     TOOL("ToolReady"),
-    UNSKILLED("LevelRequirementNotMet"),
+    REQUIREMENTS_NOT_MET("RequirementsNotMet"),
     ABILITY_OFF("AbilityOff"),
     ABILITY_COOLDOWN("AbilityCoolDown"),
     ABILITY_REFRESHED("AbilityRefreshed"),
     SUPER_ABILITY("SuperAbilityInteraction"),
     SUPER_ABILITY_ALERT_OTHERS("SuperAbilityAlertOthers"),
+    ITEM_MESSAGE("ItemMessage"),
     PARTY_MESSAGE("PartyMessage");
 
     final String niceName;

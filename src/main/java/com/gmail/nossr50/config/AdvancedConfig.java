@@ -699,7 +699,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     /* Interaction Settings */
     public boolean doesNotificationUseActionBar(NotificationType notificationType)
     {
-        return config.getBoolean("Skills.FeedBack.ActionBarNotifications."+notificationType.toString(), true);
+        return config.getBoolean("Feedback.ActionBarNotifications."+notificationType.toString(), true);
     }
 
     /*

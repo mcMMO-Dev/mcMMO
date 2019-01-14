@@ -1,10 +1,12 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.items.ChimaeraWingWarmup;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -43,7 +45,7 @@ public final class ChimaeraWing {
         }
 
         if (!Permissions.chimaeraWing(player)) {
-            player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
+            NotificationManager.sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
             return;
         }
 
@@ -56,7 +58,7 @@ public final class ChimaeraWing {
         int amount = inHand.getAmount();
 
         if (amount < Config.getInstance().getChimaeraUseCost()) {
-            player.sendMessage(LocaleLoader.getString("Skills.NeedMore", LocaleLoader.getString("Item.ChimaeraWing.Name")));
+            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Item.ChimaeraWing.NotEnough",String.valueOf(Config.getInstance().getChimaeraUseCost() - amount), "Item.ChimaeraWing.Name");
             return;
         }
 
@@ -67,7 +69,7 @@ public final class ChimaeraWing {
             int timeRemaining = SkillUtils.calculateTimeLeft(lastTeleport * Misc.TIME_CONVERSION_FACTOR, cooldown, player);
 
             if (timeRemaining > 0) {
-                player.sendMessage(LocaleLoader.getString("Item.Generic.Wait", timeRemaining));
+                NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Item.Generic.Wait", String.valueOf(timeRemaining));
                 return;
             }
         }
@@ -79,7 +81,7 @@ public final class ChimaeraWing {
             int timeRemaining = SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, hurtCooldown, player);
 
             if (timeRemaining > 0) {
-                player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", timeRemaining));
+                NotificationManager.sendPlayerInformation(player, NotificationType.ITEM_MESSAGE, "Item.Injured.Wait", String.valueOf(timeRemaining));
                 return;
             }
         }
@@ -89,7 +91,7 @@ public final class ChimaeraWing {
         if (Config.getInstance().getChimaeraPreventUseUnderground()) {
             if (location.getY() < player.getWorld().getHighestBlockYAt(location)) {
                 player.getInventory().setItemInMainHand(new ItemStack(getChimaeraWing(amount - Config.getInstance().getChimaeraUseCost())));
-                player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Fail"));
+                NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Item.ChimaeraWing.Fail");
                 player.updateInventory();
                 player.setVelocity(new Vector(0, 0.5D, 0));
                 CombatUtils.dealDamage(player, Misc.getRandom().nextInt((int) (player.getHealth() - 10)));
@@ -103,7 +105,7 @@ public final class ChimaeraWing {
         long warmup = Config.getInstance().getChimaeraWarmup();
 
         if (warmup > 0) {
-            player.sendMessage(LocaleLoader.getString("Teleport.Commencing", warmup));
+            NotificationManager.sendPlayerInformation(player, NotificationType.ITEM_MESSAGE, "Teleport.Commencing", String.valueOf(warmup));
             new ChimaeraWingWarmup(mcMMOPlayer).runTaskLater(mcMMO.p, 20 * warmup);
         }
         else {
@@ -136,7 +138,7 @@ public final class ChimaeraWing {
             SoundManager.sendSound(player, location, SoundType.CHIMAERA_WING);
         }
 
-        player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Pass"));
+        NotificationManager.sendPlayerInformation(player, NotificationType.ITEM_MESSAGE, "Item.ChimaeraWing.Pass");
     }
 
     public static ItemStack getChimaeraWing(int amount) {
