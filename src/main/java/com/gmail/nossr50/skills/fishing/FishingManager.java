@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -21,6 +22,7 @@ import com.gmail.nossr50.runnables.skills.KrakenAttackTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.fishing.Fishing.Tier;
 import com.gmail.nossr50.util.*;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -87,7 +89,8 @@ public class FishingManager extends SkillManager {
         String unleashMessage = AdvancedConfig.getInstance().getPlayerUnleashMessage();
 
         if (!unleashMessage.isEmpty()) {
-            player.sendMessage(unleashMessage);
+            //TODO: Strange that this pull strings from the config of all places...
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, unleashMessage);
         }
 
         Location location = player.getLocation();
@@ -320,7 +323,7 @@ public class FishingManager extends SkillManager {
                 }
 
                 if (enchanted) {
-                    player.sendMessage(LocaleLoader.getString("Fishing.Ability.TH.MagicFound"));
+                    NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Fishing.Ability.TH.MagicFound");
                 }
 
                 if (Config.getInstance().getFishingExtraFish()) {
@@ -514,7 +517,7 @@ public class FishingManager extends SkillManager {
         }
 
         if (Misc.getRandom().nextBoolean()) {
-            player.sendMessage(LocaleLoader.getString("Fishing.Ability.TH.Boom"));
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Fishing.Ability.TH.Boom");
 
             TNTPrimed tnt = (TNTPrimed) player.getWorld().spawnEntity(fishingCatch.getLocation(), EntityType.PRIMED_TNT);
             fishingCatch.setPassenger(tnt);
@@ -527,7 +530,7 @@ public class FishingManager extends SkillManager {
             tnt.setFuseTicks(3 * Misc.TICK_CONVERSION_FACTOR);
         }
         else {
-            player.sendMessage(LocaleLoader.getString("Fishing.Ability.TH.Poison"));
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Fishing.Ability.TH.Poison");
 
             ThrownPotion thrownPotion = player.getWorld().spawn(fishingCatch.getLocation(), ThrownPotion.class);
             thrownPotion.setItem(new Potion(PotionType.POISON).splash().toItemStack(1));
