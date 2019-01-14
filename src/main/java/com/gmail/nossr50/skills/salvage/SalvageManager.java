@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.salvage;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -12,6 +13,7 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -44,7 +46,7 @@ public class SalvageManager extends SkillManager {
         }
 
         if (Config.getInstance().getSalvageAnvilMessagesEnabled()) {
-            player.sendMessage(LocaleLoader.getString("Salvage.Listener.Anvil"));
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Salvage.Listener.Anvil");
         }
 
         if (Config.getInstance().getSalvageAnvilPlaceSoundsEnabled()) {
@@ -60,18 +62,18 @@ public class SalvageManager extends SkillManager {
         Salvageable salvageable = mcMMO.getSalvageableManager().getSalvageable(item.getType());
 
         if (item.getItemMeta().isUnbreakable()) {
-            player.sendMessage(LocaleLoader.getString("Anvil.Unbreakable"));
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, "Anvil.Unbreakable");
             return;
         }
         
         // Permissions checks on material and item types
         if (!Permissions.salvageItemType(player, salvageable.getSalvageItemType())) {
-            player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
+            NotificationManager.sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
             return;
         }
 
         if (!Permissions.salvageMaterialType(player, salvageable.getSalvageMaterialType())) {
-            player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
+            NotificationManager.sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
             return;
         }
 
@@ -80,18 +82,19 @@ public class SalvageManager extends SkillManager {
 
         // Level check
         if (skillLevel < minimumSalvageableLevel) {
-            player.sendMessage(LocaleLoader.getString("Salvage.Skills.Adept.Level", minimumSalvageableLevel, StringUtils.getPrettyItemString(item.getType())));
+            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Salvage.Skills.Adept.Level", String.valueOf(minimumSalvageableLevel), StringUtils.getPrettyItemString(item.getType()));
             return;
         }
 
         if (item.getDurability() != 0 && (getSkillLevel() < Salvage.advancedSalvageUnlockLevel || !Permissions.advancedSalvage(player))) {
-            player.sendMessage(LocaleLoader.getString("Salvage.Skills.Adept.Damaged"));
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, "Salvage.Skills.Adept.Damaged");
             return;
         }
 
         int salvageableAmount = Salvage.calculateSalvageableAmount(item.getDurability(), salvageable.getMaximumDurability(), salvageable.getMaximumQuantity());
 
         if (salvageableAmount == 0) {
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, "Salvage.Skills.TooDamaged");
             player.sendMessage(LocaleLoader.getString("Salvage.Skills.TooDamaged"));
             return;
         }
@@ -129,7 +132,7 @@ public class SalvageManager extends SkillManager {
             //player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
         }
 
-        player.sendMessage(LocaleLoader.getString("Salvage.Skills.Success"));
+        NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Salvage.Skills.Success");
     }
 
     public double getMaxSalvagePercentage() {
@@ -181,7 +184,7 @@ public class SalvageManager extends SkillManager {
         Player player = getPlayer();
 
         if (getArcaneSalvageRank() == 0 || !Permissions.arcaneSalvage(player)) {
-            player.sendMessage(LocaleLoader.getString("Salvage.Skills.ArcaneFailed"));
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, "Salvage.Skills.ArcaneFailed");
             return null;
         }
 
@@ -208,15 +211,15 @@ public class SalvageManager extends SkillManager {
         Map<Enchantment, Integer> newEnchants = enchantMeta.getStoredEnchants();
 
         if (newEnchants.isEmpty()) {
-            player.sendMessage(LocaleLoader.getString("Salvage.Skills.ArcaneFailed"));
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, "Salvage.Skills.ArcaneFailed");
             return null;
         }
 
         if (downgraded || newEnchants.size() < enchants.size()) {
-            player.sendMessage(LocaleLoader.getString("Salvage.Skills.ArcanePartial"));
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, "Salvage.Skills.ArcanePartial");
         }
         else {
-            player.sendMessage(LocaleLoader.getString("Salvage.Skills.ArcaneSuccess"));
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Salvage.Skills.ArcanePartial");
         }
 
         book.setItemMeta(enchantMeta);
@@ -243,7 +246,7 @@ public class SalvageManager extends SkillManager {
 
         actualizeLastAnvilUse();
 
-        player.sendMessage(LocaleLoader.getString("Skills.ConfirmOrCancel", LocaleLoader.getString("Salvage.Pretty.Name")));
+        NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Skills.ConfirmOrCancel", LocaleLoader.getString("Salvage.Pretty.Name"));
 
         return false;
     }
