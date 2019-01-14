@@ -2,7 +2,10 @@ package com.gmail.nossr50.util;
 
 import java.util.HashMap;
 
+import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.util.player.NotificationManager;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.Config;
@@ -52,7 +55,7 @@ public final class HardcoreManager {
             return;
         }
 
-        player.sendMessage(LocaleLoader.getString("Hardcore.DeathStatLoss.PlayerDeath", totalLevelsLost));
+        NotificationManager.sendPlayerInformation(player, NotificationType.HARDCORE_MODE, "Hardcore.DeathStatLoss.PlayerDeath", String.valueOf(totalLevelsLost));
     }
 
     public static void invokeVampirism(Player killer, Player victim) {

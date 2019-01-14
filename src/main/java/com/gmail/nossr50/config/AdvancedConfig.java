@@ -696,10 +696,15 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         return config.getDouble("Skills."+abstractSubSkill.getPrimaryKeyName()+"."+abstractSubSkill.getConfigKeyName()+".ChanceMax", 100.0D);
     }
 
-    /* Interaction Settings */
+    /* Notification Settings */
     public boolean doesNotificationUseActionBar(NotificationType notificationType)
     {
-        return config.getBoolean("Feedback.ActionBarNotifications."+notificationType.toString(), true);
+        return config.getBoolean("Feedback.ActionBarNotifications."+notificationType.toString()+".Enabled", true);
+    }
+
+    public boolean doesNotificationSendCopyToChat(NotificationType notificationType)
+    {
+        return config.getBoolean("Feedback.ActionBarNotifications."+notificationType.toString()+".SendCopyOfMessageToChat", false);
     }
 
     /*

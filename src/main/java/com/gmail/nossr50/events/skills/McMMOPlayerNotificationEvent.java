@@ -13,23 +13,39 @@ import org.bukkit.event.player.PlayerEvent;
  */
 public class McMMOPlayerNotificationEvent extends PlayerEvent implements Cancellable {
     private boolean isCancelled;
+    /*
+     * Messages can be sent to both places, as configured in advanced.yml
+     * If isBeingSentToActionBar is false, then messages will ALWAYS be sent to the chat bar
+     * isMessageAlsoBeingSentToChat just indicates a copy of that message will be sent to chat
+     */
+    private boolean isMessageAlsoBeingSentToChat;
+
     private static final HandlerList handlers = new HandlerList();
     protected ChatMessageType chatMessageType;
 
     protected TextComponent notificationTextComponent;
     protected final NotificationType notificationType;
 
-    public McMMOPlayerNotificationEvent(Player who, NotificationType notificationType, TextComponent notificationTextComponent, ChatMessageType chatMessageType) {
+    public McMMOPlayerNotificationEvent(Player who, NotificationType notificationType, TextComponent notificationTextComponent, ChatMessageType chatMessageType, boolean isMessageAlsoBeingSentToChat) {
         super(who);
         this.notificationType = notificationType;
         this.notificationTextComponent = notificationTextComponent;
         this.chatMessageType = chatMessageType;
+        this.isMessageAlsoBeingSentToChat = isMessageAlsoBeingSentToChat;
         isCancelled = false;
     }
 
     /*
      * Getters & Setters
      */
+
+    public boolean isMessageAlsoBeingSentToChat() {
+        return isMessageAlsoBeingSentToChat;
+    }
+
+    public void setMessageAlsoBeingSentToChat(boolean messageAlsoBeingSentToChat) {
+        isMessageAlsoBeingSentToChat = messageAlsoBeingSentToChat;
+    }
 
     public TextComponent getNotificationTextComponent() {
         return notificationTextComponent;

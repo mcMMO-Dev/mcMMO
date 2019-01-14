@@ -66,13 +66,25 @@ public class NotificationManager {
         if (customEvent.isCancelled())
             return;
 
-        player.spigot().sendMessage(customEvent.getChatMessageType(), customEvent.getNotificationTextComponent());
+        //If the message is being sent to the action bar we need to check if the copy if a copy is sent to the chat system
+        if(customEvent.getChatMessageType() == ChatMessageType.ACTION_BAR)
+        {
+            player.spigot().sendMessage(customEvent.getChatMessageType(), customEvent.getNotificationTextComponent());
+
+            if(customEvent.isMessageAlsoBeingSentToChat())
+            {
+                //Send copy to chat system
+                player.spigot().sendMessage(ChatMessageType.SYSTEM, customEvent.getNotificationTextComponent());
+            }
+        } else {
+            player.spigot().sendMessage(customEvent.getChatMessageType(), customEvent.getNotificationTextComponent());
+        }
     }
 
     private static McMMOPlayerNotificationEvent checkNotificationEvent(Player player, NotificationType notificationType, ChatMessageType destination, TextComponent message) {
         //Init event
         McMMOPlayerNotificationEvent customEvent = new McMMOPlayerNotificationEvent(player,
-                notificationType, message, destination);
+                notificationType, message, destination, AdvancedConfig.getInstance().doesNotificationSendCopyToChat(notificationType));
 
         //Call event
         Bukkit.getServer().getPluginManager().callEvent(customEvent);

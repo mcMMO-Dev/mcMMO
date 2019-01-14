@@ -14,23 +14,57 @@
 #  Settings for the Skills
 ###
 Feedback:
-    # Turning these to false will have them printed in chat instead
+    #The actionbar is the message location right above the health bar
+    ## If you disable the action bar messages, mcMMO will send the message to the chat system instead
     ActionBarNotifications:
-        AbilityOff: true
-        RequirementsNotMet: true
-        AbilityCoolDown: true
-        LevelUps: true
-        Holiday: true
-        ToolReady: true
-        SubSkillInteraction: true
-        SubSkillFailure: true
-        SubSkillUnlocked: true
-        SuperAbilityInteraction: true
-        SuperAbilityAlertOthers: true
-        ExperienceGain: true
-        ItemMessage: true
-        NoPermission: true
-        PartyMessage: true
+        AbilityOff:
+            Enabled: true
+            SendCopyOfMessageToChat: false
+        HardcoreMode:
+            Enabled: true
+            SendCopyOfMessageToChat: false
+        RequirementsNotMet:
+            Enabled: true
+            SendCopyOfMessageToChat: false
+        AbilityCoolDown:
+            Enabled: true
+            SendCopyOfMessageToChat: false
+        LevelUps:
+            Enabled: true
+            SendCopyOfMessageToChat: false
+        Holiday:
+            Enabled: true
+            SendCopyOfMessageToChat: true
+        ToolReady:
+            Enabled: true
+            SendCopyOfMessageToChat: false
+        SubSkillInteraction:
+            Enabled: true
+            SendCopyOfMessageToChat: false
+        SubSkillFailure:
+            Enabled: true
+            SendCopyOfMessageToChat: false
+        SubSkillUnlocked:
+            Enabled: true
+            SendCopyOfMessageToChat: true
+        SuperAbilityInteraction:
+            Enabled: true
+            SendCopyOfMessageToChat: false
+        SuperAbilityAlertOthers:
+            Enabled: true
+            SendCopyOfMessageToChat: false
+        ExperienceGain:
+            Enabled: true
+            SendCopyOfMessageToChat: false
+        ItemMessage:
+            Enabled: true
+            SendCopyOfMessageToChat: false
+        NoPermission:
+            Enabled: true
+            SendCopyOfMessageToChat: false
+        PartyMessage:
+            Enabled: true
+            SendCopyOfMessageToChat: true
 Skills:
     General:
         Ability:

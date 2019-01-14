@@ -5,6 +5,7 @@ package com.gmail.nossr50.datatypes.interactions;
  */
 public enum NotificationType {
     XP_GAIN("ExperienceGain"),
+    HARDCORE_MODE("HardcoreMode"),
     NO_PERMISSION("NoPermission"),
     SUBSKILL_UNLOCKED("SubSkillUnlocked"),
     LEVEL_UP_MESSAGE("LevelUps"),
