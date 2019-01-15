@@ -62,10 +62,10 @@ public class AxesCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canSkullSplitter = Permissions.skullSplitter(player) && RankUtils.hasUnlockedSubskill(player, SubSkillType.AXES_SKULL_SPLITTER);
-        canCritical = Permissions.isSubSkillEnabled(player, SubSkillType.AXES_CRITICAL_STRIKES);
-        canAxeMastery = Permissions.isSubSkillEnabled(player, SubSkillType.AXES_AXE_MASTERY) && RankUtils.hasUnlockedSubskill(player, SubSkillType.AXES_AXE_MASTERY);
-        canImpact = Permissions.isSubSkillEnabled(player, SubSkillType.AXES_ARMOR_IMPACT) && RankUtils.hasUnlockedSubskill(player, SubSkillType.AXES_ARMOR_IMPACT);
-        canGreaterImpact = Permissions.isSubSkillEnabled(player, SubSkillType.AXES_GREATER_IMPACT);
+        canCritical = canUseSubskill(player, SubSkillType.AXES_CRITICAL_STRIKES);
+        canAxeMastery = canUseSubskill(player, SubSkillType.AXES_AXE_MASTERY);
+        canImpact = canUseSubskill(player, SubSkillType.AXES_ARMOR_IMPACT);
+        canGreaterImpact = canUseSubskill(player, SubSkillType.AXES_GREATER_IMPACT);
     }
 
     @Override

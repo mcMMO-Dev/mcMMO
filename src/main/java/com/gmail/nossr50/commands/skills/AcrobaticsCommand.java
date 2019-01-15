@@ -35,8 +35,8 @@ public class AcrobaticsCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canDodge = Permissions.isSubSkillEnabled(player, SubSkillType.ACROBATICS_DODGE);
-        canRoll = Permissions.isSubSkillEnabled(player, SubSkillType.ACROBATICS_ROLL);
+        canDodge = canUseSubskill(player, SubSkillType.ACROBATICS_DODGE);
+        canRoll = canUseSubskill(player, SubSkillType.ACROBATICS_ROLL);
     }
 
     @Override

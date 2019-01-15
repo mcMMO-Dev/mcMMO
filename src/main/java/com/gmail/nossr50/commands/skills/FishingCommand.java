@@ -12,6 +12,7 @@ import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -112,12 +113,12 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canTreasureHunt = Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_TREASURE_HUNTER);
-        canMagicHunt = Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_MAGIC_HUNTER);
-        canShake = Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_SHAKE);
-        canFishermansDiet = Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_FISHERMANS_DIET);
-        canMasterAngler = Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_MASTER_ANGLER);
-        canIceFish = Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_ICE_FISHING);
+        canTreasureHunt = canUseSubskill(player, SubSkillType.FISHING_TREASURE_HUNTER);
+        canMagicHunt = canUseSubskill(player, SubSkillType.FISHING_MAGIC_HUNTER);
+        canShake = canUseSubskill(player, SubSkillType.FISHING_SHAKE);
+        canFishermansDiet = canUseSubskill(player, SubSkillType.FISHING_FISHERMANS_DIET);
+        canMasterAngler = canUseSubskill(player, SubSkillType.FISHING_MASTER_ANGLER);
+        canIceFish = canUseSubskill(player, SubSkillType.FISHING_ICE_FISHING);
     }
 
     @Override

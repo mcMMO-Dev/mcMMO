@@ -36,7 +36,7 @@ public class ExcavationCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canGigaDrill = Permissions.gigaDrillBreaker(player) && RankUtils.hasUnlockedSubskill(player, SubSkillType.EXCAVATION_GIGA_DRILL_BREAKER);
-        canTreasureHunt = Permissions.isSubSkillEnabled(player, SubSkillType.EXCAVATION_TREASURE_HUNTER) && RankUtils.hasUnlockedSubskill(player, SubSkillType.EXCAVATION_TREASURE_HUNTER);
+        canTreasureHunt = canUseSubskill(player, SubSkillType.EXCAVATION_TREASURE_HUNTER);
     }
 
     @Override

@@ -53,9 +53,9 @@ public class ArcheryCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canSkillShot = Permissions.isSubSkillEnabled(player, SubSkillType.ARCHERY_SKILL_SHOT) && RankUtils.hasUnlockedSubskill(player, SubSkillType.ARCHERY_SKILL_SHOT);
-        canDaze = Permissions.isSubSkillEnabled(player, SubSkillType.ARCHERY_DAZE);
-        canRetrieve = Permissions.isSubSkillEnabled(player, SubSkillType.ARCHERY_ARROW_RETRIEVAL);
+        canSkillShot = canUseSubskill(player, SubSkillType.ARCHERY_SKILL_SHOT);
+        canDaze = canUseSubskill(player, SubSkillType.ARCHERY_DAZE);
+        canRetrieve = canUseSubskill(player, SubSkillType.ARCHERY_ARROW_RETRIEVAL);
     }
 
     @Override

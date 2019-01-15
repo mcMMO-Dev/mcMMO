@@ -61,8 +61,8 @@ public class AlchemyCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canCatalysis = Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CATALYSIS);
-        canConcoctions = Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CONCOCTIONS);
+        canCatalysis = canUseSubskill(player, SubSkillType.ALCHEMY_CATALYSIS);
+        canConcoctions = canUseSubskill(player, SubSkillType.ALCHEMY_CONCOCTIONS);
     }
 
     @Override
@@ -85,21 +85,12 @@ public class AlchemyCommand extends SkillCommand {
         List<String> messages = new ArrayList<String>();
 
         if (canCatalysis) {
-            int unlockLevel = AdvancedConfig.getInstance().getCatalysisUnlockLevel();
-
-            if (skillValue < unlockLevel) {
-                //messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Alchemy.Ability.Locked.0", unlockLevel)));
-            }
-            else {
-                messages.add(LocaleLoader.getString("Alchemy.Catalysis.Speed", brewSpeed) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", brewSpeedLucky) : ""));
-            }
+            messages.add(LocaleLoader.getString("Alchemy.Catalysis.Speed", brewSpeed) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", brewSpeedLucky) : ""));
         }
 
         if (canConcoctions) {
-            if(RankUtils.hasUnlockedSubskill(player, SubSkillType.ALCHEMY_CONCOCTIONS)) {
-                messages.add(LocaleLoader.getString("Alchemy.Concoctions.Rank", tier, Tier.values().length));
-                messages.add(LocaleLoader.getString("Alchemy.Concoctions.Ingredients", ingredientCount, ingredientList));
-            }
+            messages.add(LocaleLoader.getString("Alchemy.Concoctions.Rank", tier, Tier.values().length));
+            messages.add(LocaleLoader.getString("Alchemy.Concoctions.Ingredients", ingredientCount, ingredientList));
         }
 
         return messages;

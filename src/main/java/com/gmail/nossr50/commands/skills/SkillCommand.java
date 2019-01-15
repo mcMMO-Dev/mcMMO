@@ -14,6 +14,7 @@ import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.PerksUtils;
+import com.gmail.nossr50.util.skills.RankUtils;
 import com.google.common.collect.ImmutableList;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -219,4 +220,15 @@ public abstract class SkillCommand implements TabExecutor {
     protected abstract List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky);
 
     protected abstract List<TextComponent> getTextComponents(Player player);
+
+    /**
+     * Checks if a player can use a skill
+     * @param player target player
+     * @param subSkillType target subskill
+     * @return true if the player has permission and has the skill unlocked
+     */
+    protected boolean canUseSubskill(Player player, SubSkillType subSkillType)
+    {
+        return Permissions.isSubSkillEnabled(player, subSkillType) && RankUtils.hasUnlockedSubskill(player, subSkillType);
+    }
 }
