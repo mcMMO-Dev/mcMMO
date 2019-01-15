@@ -46,6 +46,7 @@ Version 2.1.0
  - (Locale) Removed localizations with the following codes for being almost empty: id, HR_hr, et_EE, lv, lt, no, pl_PL, pt_PT, tr_TR
  - (Config) Removed SkillShot's IncreaseLevel & IncreasePercentage (replaced by RankDamageMultiplier)
  - (Config) Removed AxeMastery's MaxBonus & MaxBonusLevel (replaced by RankDamageMultiplier)
+ = (Events) Fixed bug where XP rate could be a negative number
  = (Experience) Fixed a bug where you could set a players levels into the negative and bad things would happen
  = (Plugin Compatibility) mcMMO now fires new custom events relating to changes it makes to player scoreboards, plugin authors can listen to these events to improve compatibility
  = (Items) Chimaera Wing now tracks cooldowns between sessions for players (no more disconnect abuse)

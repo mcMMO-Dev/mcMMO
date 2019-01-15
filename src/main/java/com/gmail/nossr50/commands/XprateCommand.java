@@ -9,6 +9,7 @@ import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.google.common.collect.ImmutableList;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -24,7 +25,7 @@ public class XprateCommand implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 1:
-                if (!args[0].equalsIgnoreCase("reset")) {
+                if (!args[0].equalsIgnoreCase("reset") &&  !args[0].equalsIgnoreCase("clear")) {
                     return false;
                 }
 
@@ -34,7 +35,18 @@ public class XprateCommand implements TabExecutor {
                 }
 
                 if (mcMMO.p.isXPEventEnabled()) {
-                    mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.xprate.over"));
+
+                    if(AdvancedConfig.getInstance().useTitlesForXPEvent())
+                    {
+                        NotificationManager.broadcastTitle(mcMMO.p.getServer(),
+                                LocaleLoader.getString("Commands.Event.Stop"),
+                                LocaleLoader.getString("Commands.Event.Stop.Subtitle"),
+                                10, 10*20, 20);
+                    }
+
+                    mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop"));
+                    mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop.Subtitle"));
+
                     mcMMO.p.toggleXpEventEnabled();
                 }
 
@@ -62,6 +74,13 @@ public class XprateCommand implements TabExecutor {
                 }
 
                 int newXpRate = Integer.parseInt(args[0]);
+
+                if(newXpRate < 0)
+                {
+                    sender.sendMessage(ChatColor.RED+LocaleLoader.getString("Commands.NegativeNumberWarn"));
+                    return true;
+                }
+
                 ExperienceConfig.getInstance().setExperienceGainsGlobalMultiplier(newXpRate);
 
                 if (mcMMO.p.isXPEventEnabled()) {
