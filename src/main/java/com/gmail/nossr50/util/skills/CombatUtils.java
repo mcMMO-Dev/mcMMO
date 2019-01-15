@@ -703,7 +703,7 @@ public final class CombatUtils {
         return tier;
     }
 
-    public static void handleHealthbars(Entity attacker, LivingEntity target, double damage) {
+    public static void handleHealthbars(Entity attacker, LivingEntity target, double damage, mcMMO plugin) {
         if (!(attacker instanceof Player)) {
             return;
         }
@@ -718,6 +718,6 @@ public final class CombatUtils {
             return;
         }
 
-        MobHealthbarUtils.handleMobHealthbars(player, target, damage);
+        MobHealthbarUtils.handleMobHealthbars(player, target, damage, plugin);
     }
 }

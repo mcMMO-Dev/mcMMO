@@ -3,6 +3,7 @@ package com.gmail.nossr50.util;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
+import com.gmail.nossr50.datatypes.meta.OldName;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.MobHealthDisplayUpdaterTask;
@@ -13,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 
 public final class MobHealthbarUtils {
     private MobHealthbarUtils() {}
@@ -38,7 +40,7 @@ public final class MobHealthbarUtils {
      * @param target the targetted entity
      * @param damage damage done by the attack triggering this
      */
-    public static void handleMobHealthbars(Player player, LivingEntity target, double damage) {
+    public static void handleMobHealthbars(Player player, LivingEntity target, double damage, mcMMO plugin) {
         if (mcMMO.isHealthBarPluginEnabled() || !Permissions.mobHealthDisplay(player) || !Config.getInstance().getMobHealthbarEnabled()) {
             return;
         }
@@ -57,7 +59,15 @@ public final class MobHealthbarUtils {
             return;
         }
 
+        String originalName = target.getName();
         String oldName = target.getCustomName();
+
+
+        /*
+         * Store the name in metadata
+         */
+        if(target.getMetadata("mcMMO_oldName").size() <= 0 && originalName != null)
+            target.setMetadata("mcMMO_oldName", new OldName(originalName, plugin));
 
         if (oldName == null) {
             oldName = "";
