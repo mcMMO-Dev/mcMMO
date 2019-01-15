@@ -1,10 +1,9 @@
 package com.gmail.nossr50.events.skills.unarmed;
 
-import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
-
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerSkillEvent;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 
 public class McMMOPlayerDisarmEvent extends McMMOPlayerSkillEvent implements Cancellable {
     private boolean cancelled;

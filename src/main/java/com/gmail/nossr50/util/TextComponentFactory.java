@@ -15,6 +15,7 @@ import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.entity.Player;
+
 import java.util.ArrayList;
 import java.util.List;
 

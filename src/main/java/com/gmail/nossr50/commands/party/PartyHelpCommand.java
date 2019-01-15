@@ -1,10 +1,9 @@
 package com.gmail.nossr50.commands.party;
 
+import com.gmail.nossr50.locale.LocaleLoader;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-
-import com.gmail.nossr50.locale.LocaleLoader;
 
 public class PartyHelpCommand implements CommandExecutor {
 

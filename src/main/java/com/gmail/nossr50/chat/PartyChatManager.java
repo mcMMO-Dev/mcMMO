@@ -1,11 +1,10 @@
 package com.gmail.nossr50.chat;
 
-import org.bukkit.plugin.Plugin;
-
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.runnables.party.PartyChatTask;
+import org.bukkit.plugin.Plugin;
 
 public class PartyChatManager extends ChatManager {
     private Party party;

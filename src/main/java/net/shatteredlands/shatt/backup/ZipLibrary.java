@@ -1,5 +1,8 @@
 package net.shatteredlands.shatt.backup;
 
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.mcMMO;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -11,9 +14,6 @@ import java.util.List;
 import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
 
 public class ZipLibrary {
     private static String BACKUP_DIRECTORY = mcMMO.getMainDirectory() + "backup" + File.separator;

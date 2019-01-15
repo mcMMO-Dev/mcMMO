@@ -1,11 +1,10 @@
 package com.gmail.nossr50.util.blockmeta.conversion;
 
-import java.io.File;
-
+import com.gmail.nossr50.config.HiddenConfig;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.HiddenConfig;
+import java.io.File;
 
 public class BlockStoreConversionXDirectory implements Runnable {
     private int taskID, i;

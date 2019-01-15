@@ -1,8 +1,7 @@
 package com.gmail.nossr50.runnables.player;
 
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerProfileSaveTask extends BukkitRunnable {
     private PlayerProfile playerProfile;

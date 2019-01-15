@@ -1,12 +1,12 @@
 package com.gmail.nossr50.config.skills.repair;
 
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.skills.repair.repairables.Repairable;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.repair.repairables.Repairable;
 
 public class RepairConfigManager {
     private final List<Repairable> repairables = new ArrayList<Repairable>();

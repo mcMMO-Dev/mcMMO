@@ -1,13 +1,12 @@
 package com.gmail.nossr50.runnables;
 
-import java.util.List;
-
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.BlockUtils;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.BlockUtils;
+import java.util.List;
 
 public class PistonTrackerTask extends BukkitRunnable {
     private List<Block> blocks;

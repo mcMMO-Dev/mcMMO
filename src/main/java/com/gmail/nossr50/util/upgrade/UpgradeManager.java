@@ -1,11 +1,11 @@
 package com.gmail.nossr50.util.upgrade;
 
+import com.gmail.nossr50.config.ConfigLoader;
+import com.gmail.nossr50.datatypes.database.UpgradeType;
+
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
-
-import com.gmail.nossr50.config.ConfigLoader;
-import com.gmail.nossr50.datatypes.database.UpgradeType;
 
 public class UpgradeManager extends ConfigLoader {
     private final Set<UpgradeType> setNeededUpgrades;

@@ -1,12 +1,11 @@
 package com.gmail.nossr50.datatypes.party;
 
-import org.bukkit.entity.Player;
-
 import com.gmail.nossr50.commands.party.PartySubcommandType;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
+import org.bukkit.entity.Player;
 
 public enum PartyFeature {
     CHAT,

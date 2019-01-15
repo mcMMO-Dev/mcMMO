@@ -1,8 +1,8 @@
 package com.gmail.nossr50.database;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
+import com.gmail.nossr50.mcMMO;
 
 public class DatabaseManagerFactory {
     private static Class<? extends DatabaseManager> customManager = null;

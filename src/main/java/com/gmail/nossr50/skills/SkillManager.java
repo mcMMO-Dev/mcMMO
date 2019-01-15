@@ -1,13 +1,12 @@
 package com.gmail.nossr50.skills;
 
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.XPGainReason;
+import com.gmail.nossr50.util.skills.PerksUtils;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.XPGainReason;
-import com.gmail.nossr50.util.skills.PerksUtils;
 
 public abstract class SkillManager {
     protected McMMOPlayer mcMMOPlayer;

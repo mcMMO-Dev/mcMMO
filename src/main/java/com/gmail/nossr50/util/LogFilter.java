@@ -1,9 +1,9 @@
 package com.gmail.nossr50.util;
 
+import com.gmail.nossr50.mcMMO;
+
 import java.util.logging.Filter;
 import java.util.logging.LogRecord;
-
-import com.gmail.nossr50.mcMMO;
 
 public class LogFilter implements Filter {
     private boolean debug;

@@ -1,23 +1,16 @@
 package com.gmail.nossr50.commands;
 
-import java.io.BufferedReader;
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import com.gmail.nossr50.datatypes.skills.ModConfigType;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.Misc;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.skills.ModConfigType;
-import com.gmail.nossr50.util.Misc;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class McImportCommand implements CommandExecutor {
     int fileAmount;

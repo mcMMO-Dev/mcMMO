@@ -1,12 +1,12 @@
 package com.gmail.nossr50.config.skills.salvage;
 
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 
 public class SalvageConfigManager {
     private final List<Salvageable> salvageables = new ArrayList<Salvageable>();

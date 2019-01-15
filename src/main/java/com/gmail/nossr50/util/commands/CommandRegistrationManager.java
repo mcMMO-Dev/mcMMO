@@ -1,27 +1,8 @@
 package com.gmail.nossr50.util.commands;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.gmail.nossr50.commands.chat.McChatSpy;
-import com.gmail.nossr50.commands.skills.*;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import org.bukkit.command.PluginCommand;
-
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.commands.KrakenCommand;
-import com.gmail.nossr50.commands.MHDCommand;
-import com.gmail.nossr50.commands.McImportCommand;
-import com.gmail.nossr50.commands.McabilityCommand;
-import com.gmail.nossr50.commands.McconvertCommand;
-import com.gmail.nossr50.commands.McgodCommand;
-import com.gmail.nossr50.commands.McmmoCommand;
-import com.gmail.nossr50.commands.McnotifyCommand;
-import com.gmail.nossr50.commands.McrefreshCommand;
-import com.gmail.nossr50.commands.McscoreboardCommand;
-import com.gmail.nossr50.commands.MobhealthCommand;
-import com.gmail.nossr50.commands.XprateCommand;
+import com.gmail.nossr50.commands.*;
 import com.gmail.nossr50.commands.chat.AdminChatCommand;
+import com.gmail.nossr50.commands.chat.McChatSpy;
 import com.gmail.nossr50.commands.chat.PartyChatCommand;
 import com.gmail.nossr50.commands.database.McpurgeCommand;
 import com.gmail.nossr50.commands.database.McremoveCommand;
@@ -34,14 +15,17 @@ import com.gmail.nossr50.commands.hardcore.HardcoreCommand;
 import com.gmail.nossr50.commands.hardcore.VampirismCommand;
 import com.gmail.nossr50.commands.party.PartyCommand;
 import com.gmail.nossr50.commands.party.teleport.PtpCommand;
-import com.gmail.nossr50.commands.player.InspectCommand;
-import com.gmail.nossr50.commands.player.MccooldownCommand;
-import com.gmail.nossr50.commands.player.McrankCommand;
-import com.gmail.nossr50.commands.player.McstatsCommand;
-import com.gmail.nossr50.commands.player.MctopCommand;
+import com.gmail.nossr50.commands.player.*;
+import com.gmail.nossr50.commands.skills.*;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
+import org.bukkit.command.PluginCommand;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public final class CommandRegistrationManager {
     private CommandRegistrationManager() {};

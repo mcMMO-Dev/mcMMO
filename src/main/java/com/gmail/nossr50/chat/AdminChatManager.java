@@ -1,9 +1,8 @@
 package com.gmail.nossr50.chat;
 
-import org.bukkit.plugin.Plugin;
-
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
+import org.bukkit.plugin.Plugin;
 
 public class AdminChatManager extends ChatManager {
     protected AdminChatManager(Plugin plugin) {

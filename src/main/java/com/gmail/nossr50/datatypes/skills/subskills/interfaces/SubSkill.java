@@ -4,8 +4,6 @@ import com.gmail.nossr50.datatypes.skills.interfaces.Skill;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-
 public interface SubSkill extends Skill {
     /**
      * Grabs the permission node for this skill

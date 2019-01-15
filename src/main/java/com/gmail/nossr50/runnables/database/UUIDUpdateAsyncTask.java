@@ -1,19 +1,18 @@
 package com.gmail.nossr50.runnables.database;
 
+import com.gmail.nossr50.config.HiddenConfig;
+import com.gmail.nossr50.database.DatabaseManager;
+import com.gmail.nossr50.datatypes.database.UpgradeType;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.uuid.UUIDFetcher;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
-
-import org.bukkit.scheduler.BukkitRunnable;
-
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.HiddenConfig;
-import com.gmail.nossr50.database.DatabaseManager;
-import com.gmail.nossr50.datatypes.database.UpgradeType;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.uuid.UUIDFetcher;
 
 public class UUIDUpdateAsyncTask extends BukkitRunnable {
     private mcMMO plugin;

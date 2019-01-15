@@ -1,14 +1,12 @@
 package com.gmail.nossr50.config.mods;
 
-import java.util.HashMap;
-
+import com.gmail.nossr50.config.ConfigLoader;
+import com.gmail.nossr50.datatypes.mods.CustomEntity;
+import org.apache.commons.lang.ClassUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.config.ConfigLoader;
-import com.gmail.nossr50.datatypes.mods.CustomEntity;
-
-import org.apache.commons.lang.ClassUtils;
+import java.util.HashMap;
 
 public class CustomEntityConfig extends ConfigLoader {
     public HashMap<String, CustomEntity> customEntityClassMap = new HashMap<String, CustomEntity>();

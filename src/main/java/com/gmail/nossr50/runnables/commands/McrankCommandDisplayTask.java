@@ -1,15 +1,14 @@
 package com.gmail.nossr50.runnables.commands;
 
-import java.util.Map;
-
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
+import java.util.Map;
 
 /**
  * Display the results of McrankCommandAsyncTask to the sender.

@@ -1,9 +1,8 @@
 package com.gmail.nossr50.events.experience;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import org.bukkit.entity.Player;
-
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
+import org.bukkit.entity.Player;
 
 /**
  * Called when a user levels change

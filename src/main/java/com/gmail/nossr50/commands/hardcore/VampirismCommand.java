@@ -1,12 +1,11 @@
 package com.gmail.nossr50.commands.hardcore;
 
-import org.bukkit.command.CommandSender;
-
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
+import org.bukkit.command.CommandSender;
 
 public class VampirismCommand extends HardcoreModeCommand {
     @Override

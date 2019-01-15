@@ -1,12 +1,11 @@
 package com.gmail.nossr50.datatypes.skills.alchemy;
 
-import java.util.List;
-
 import org.bukkit.Material;
-import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionType;
+
+import java.util.List;
 
 public enum PotionStage {
     FIVE(5),

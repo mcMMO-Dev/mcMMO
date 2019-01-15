@@ -1,11 +1,10 @@
 package com.gmail.nossr50.events.skills;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
-
-import com.gmail.nossr50.util.player.UserManager;
 
 /**
  * Generic event for mcMMO skill handling.

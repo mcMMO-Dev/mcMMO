@@ -1,9 +1,8 @@
 package com.gmail.nossr50.skills.salvage;
 
-import org.bukkit.Material;
-
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import org.bukkit.Material;
 
 public class Salvage {
     // The order of the values is extremely important, a few methods depend on it to work properly

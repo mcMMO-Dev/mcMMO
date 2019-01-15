@@ -1,9 +1,8 @@
 package com.gmail.nossr50.skills.repair;
 
-import org.bukkit.Material;
-
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import org.bukkit.Material;
 
 public class Repair {
     public static int    repairMasteryMaxBonusLevel = AdvancedConfig.getInstance().getRepairMasteryMaxLevel();

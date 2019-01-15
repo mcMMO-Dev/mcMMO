@@ -1,10 +1,9 @@
 package com.gmail.nossr50.events.skills.alchemy;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.events.skills.McMMOPlayerSkillEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-
-import com.gmail.nossr50.events.skills.McMMOPlayerSkillEvent;
 
 public class McMMOPlayerCatalysisEvent extends McMMOPlayerSkillEvent implements Cancellable {
     private double speed;

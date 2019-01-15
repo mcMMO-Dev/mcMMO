@@ -1,12 +1,11 @@
 package com.gmail.nossr50.api;
 
-import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.util.player.UserManager;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 
 public final class AbilityAPI {
     private AbilityAPI() {}

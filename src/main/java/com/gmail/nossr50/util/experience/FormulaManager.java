@@ -1,16 +1,15 @@
 package com.gmail.nossr50.util.experience;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
+import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FormulaManager {
     private static File formulaFile = new File(mcMMO.getFlatFileDirectory() + "formula.yml");

@@ -1,9 +1,6 @@
 package com.gmail.nossr50.datatypes.skills.alchemy;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -12,7 +9,9 @@ import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 
-import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class AlchemyPotion {
     private Material material;

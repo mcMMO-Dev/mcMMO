@@ -1,13 +1,10 @@
 package com.gmail.nossr50.skills.unarmed;
 
-import java.util.Iterator;
-
+import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.Config;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 
 public class Unarmed {
     public static double ironArmMinBonusDamage = AdvancedConfig.getInstance().getIronArmMinBonus();

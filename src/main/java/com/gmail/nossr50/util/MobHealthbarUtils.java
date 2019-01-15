@@ -1,19 +1,18 @@
 package com.gmail.nossr50.util;
 
+import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.MobHealthbarType;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.runnables.MobHealthDisplayUpdaterTask;
+import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.metadata.FixedMetadataValue;
-
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.MobHealthbarType;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.runnables.MobHealthDisplayUpdaterTask;
-import com.gmail.nossr50.util.player.UserManager;
 
 public final class MobHealthbarUtils {
     private MobHealthbarUtils() {}

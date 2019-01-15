@@ -1,9 +1,9 @@
 package com.gmail.nossr50.skills.repair.repairables;
 
-import java.util.List;
-
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 public interface RepairableManager {
     /**

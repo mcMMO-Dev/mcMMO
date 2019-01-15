@@ -1,23 +1,21 @@
 package com.gmail.nossr50.commands;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import com.gmail.nossr50.commands.database.ConvertDatabaseCommand;
+import com.gmail.nossr50.commands.experience.ConvertExperienceCommand;
+import com.gmail.nossr50.database.DatabaseManagerFactory;
+import com.gmail.nossr50.datatypes.database.DatabaseType;
+import com.gmail.nossr50.datatypes.experience.FormulaType;
+import com.gmail.nossr50.mcMMO;
+import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.util.StringUtil;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.commands.database.ConvertDatabaseCommand;
-import com.gmail.nossr50.commands.experience.ConvertExperienceCommand;
-import com.gmail.nossr50.database.DatabaseManagerFactory;
-import com.gmail.nossr50.datatypes.database.DatabaseType;
-import com.gmail.nossr50.datatypes.experience.FormulaType;
-
-import com.google.common.collect.ImmutableList;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class McconvertCommand implements TabExecutor {
     private static final List<String> FORMULA_TYPES;

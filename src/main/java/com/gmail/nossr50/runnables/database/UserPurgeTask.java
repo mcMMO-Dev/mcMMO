@@ -1,11 +1,10 @@
 package com.gmail.nossr50.runnables.database;
 
-import java.util.concurrent.locks.ReentrantLock;
-
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class UserPurgeTask extends BukkitRunnable {
     private ReentrantLock lock = new ReentrantLock();

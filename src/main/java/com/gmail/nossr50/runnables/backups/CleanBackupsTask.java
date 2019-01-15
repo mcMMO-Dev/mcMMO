@@ -1,19 +1,14 @@
 package com.gmail.nossr50.runnables.backups;
 
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.mcMMO;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
-
-import org.bukkit.scheduler.BukkitRunnable;
-
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
 
 public class CleanBackupsTask extends BukkitRunnable {
     private static final String BACKUP_DIRECTORY = mcMMO.getMainDirectory() + "backup" + File.separator;

@@ -1,9 +1,8 @@
 package com.gmail.nossr50.skills.repair.repairables;
 
-import org.bukkit.Material;
-
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
+import org.bukkit.Material;
 
 
 public class RepairableFactory {

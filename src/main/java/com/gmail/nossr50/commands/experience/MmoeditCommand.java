@@ -1,14 +1,13 @@
 package com.gmail.nossr50.commands.experience;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class MmoeditCommand extends ExperienceCommand {
     @Override

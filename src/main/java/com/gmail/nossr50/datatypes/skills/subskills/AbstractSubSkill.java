@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.skills.subskills.interfaces.Rank;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.SubSkill;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.SubSkillProperties;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.TextComponentFactory;
 import org.bukkit.entity.Player;
 
 public abstract class AbstractSubSkill implements SubSkill, Interaction, Rank, SubSkillProperties {

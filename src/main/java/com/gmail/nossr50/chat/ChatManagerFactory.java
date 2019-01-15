@@ -1,10 +1,9 @@
 package com.gmail.nossr50.chat;
 
-import java.util.HashMap;
-
+import com.gmail.nossr50.datatypes.chat.ChatMode;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.nossr50.datatypes.chat.ChatMode;
+import java.util.HashMap;
 
 public class ChatManagerFactory {
     private static final HashMap<Plugin, AdminChatManager> adminChatManagers = new HashMap<Plugin, AdminChatManager>();

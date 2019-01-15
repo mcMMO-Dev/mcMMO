@@ -1,14 +1,12 @@
 package com.gmail.nossr50.chat;
 
 import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.events.chat.McMMOChatEvent;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.player.UserManager;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-
-import com.gmail.nossr50.events.chat.McMMOChatEvent;
-import com.gmail.nossr50.locale.LocaleLoader;
 
 public abstract class ChatManager {
     protected Plugin plugin;

@@ -1,10 +1,9 @@
 package com.gmail.nossr50.config;
 
-import java.io.InputStreamReader;
-
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import com.gmail.nossr50.mcMMO;
+import java.io.InputStreamReader;
 
 public class HiddenConfig {
     private static HiddenConfig instance;

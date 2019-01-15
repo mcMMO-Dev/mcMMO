@@ -1,19 +1,18 @@
 package com.gmail.nossr50.skills.archery;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
+import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.util.Misc;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class Archery {
     private static List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();

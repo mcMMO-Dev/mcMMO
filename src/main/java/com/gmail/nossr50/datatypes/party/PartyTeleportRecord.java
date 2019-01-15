@@ -1,9 +1,8 @@
 package com.gmail.nossr50.datatypes.party;
 
-import org.bukkit.entity.Player;
-
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.util.Misc;
+import org.bukkit.entity.Player;
 
 public class PartyTeleportRecord {
     private Player  requestor;

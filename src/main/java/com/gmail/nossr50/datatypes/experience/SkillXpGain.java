@@ -1,10 +1,10 @@
 package com.gmail.nossr50.datatypes.experience;
 
-import java.util.concurrent.Delayed;
-import java.util.concurrent.TimeUnit;
-
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+
+import java.util.concurrent.Delayed;
+import java.util.concurrent.TimeUnit;
 
 public class SkillXpGain implements Delayed {
     private final long expiryTime;

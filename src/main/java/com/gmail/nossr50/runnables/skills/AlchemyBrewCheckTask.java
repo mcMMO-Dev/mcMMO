@@ -1,15 +1,14 @@
 package com.gmail.nossr50.runnables.skills;
 
-import java.util.Arrays;
-
+import com.gmail.nossr50.skills.alchemy.Alchemy;
+import com.gmail.nossr50.skills.alchemy.AlchemyPotionBrewer;
 import org.bukkit.Location;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.gmail.nossr50.skills.alchemy.Alchemy;
-import com.gmail.nossr50.skills.alchemy.AlchemyPotionBrewer;
+import java.util.Arrays;
 
 public class AlchemyBrewCheckTask extends BukkitRunnable {
     private Player player;

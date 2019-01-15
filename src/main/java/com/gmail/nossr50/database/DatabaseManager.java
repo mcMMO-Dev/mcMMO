@@ -1,14 +1,14 @@
 package com.gmail.nossr50.database;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public interface DatabaseManager {
     // One month in milliseconds

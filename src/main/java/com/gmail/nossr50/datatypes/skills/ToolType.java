@@ -1,10 +1,8 @@
 package com.gmail.nossr50.datatypes.skills;
 
+import com.gmail.nossr50.util.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.ItemUtils;
 
 public enum ToolType {
     AXE("Axes.Ability.Lower", "Axes.Ability.Ready"),

@@ -1,14 +1,13 @@
 package com.gmail.nossr50.locale;
 
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.mcMMO;
+import org.bukkit.ChatColor;
+
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-
-import org.bukkit.ChatColor;
-
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
 
 public final class LocaleLoader {
     private static final String BUNDLE_ROOT = "com.gmail.nossr50.locale.locale";

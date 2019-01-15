@@ -2,11 +2,7 @@ package com.gmail.nossr50.util.adapter;
 
 import org.bukkit.block.Biome;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class BiomeAdapter {
     public static final Set<Biome> WATER_BIOMES;

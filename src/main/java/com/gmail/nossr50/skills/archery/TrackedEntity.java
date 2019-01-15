@@ -1,11 +1,10 @@
 package com.gmail.nossr50.skills.archery;
 
-import java.util.UUID;
-
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.gmail.nossr50.mcMMO;
+import java.util.UUID;
 
 public class TrackedEntity extends BukkitRunnable {
     private LivingEntity livingEntity;

@@ -1,15 +1,13 @@
 package com.gmail.nossr50.runnables.commands;
 
-import java.util.Map;
-
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
+import org.apache.commons.lang.Validate;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.gmail.nossr50.mcMMO;
-
-import org.apache.commons.lang.Validate;
+import java.util.Map;
 
 public class McrankCommandAsyncTask extends BukkitRunnable {
     private final String playerName;

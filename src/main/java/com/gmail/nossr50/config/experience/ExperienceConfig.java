@@ -166,6 +166,7 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     public double getCustomXpPerkBoost() { return config.getDouble("Experience_Formula.Custom_XP_Perk.Boost", 1.25); }
 
     /* Diminished Returns */
+    public float getDiminishedReturnsCap() { return (float) config.getDouble("Dimished_Returns.Guaranteed_Minimum_Percentage", 0.05D); }
     public boolean getDiminishedReturnsEnabled() { return config.getBoolean("Diminished_Returns.Enabled", false); }
     public int getDiminishedReturnsThreshold(PrimarySkillType skill) { return config.getInt("Diminished_Returns.Threshold." + StringUtils.getCapitalized(skill.toString()), 20000); }
     public int getDiminishedReturnsTimeInterval() { return config.getInt("Diminished_Returns.Time_Interval", 10); }

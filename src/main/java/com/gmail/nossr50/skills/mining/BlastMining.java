@@ -1,18 +1,17 @@
 package com.gmail.nossr50.skills.mining;
 
-import java.util.Arrays;
-import java.util.List;
-
+import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.util.player.UserManager;
+import java.util.Arrays;
+import java.util.List;
 
 public class BlastMining {
     // The order of the values is extremely important, a few methods depend on it to work properly

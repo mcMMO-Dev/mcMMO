@@ -1,16 +1,14 @@
 package com.gmail.nossr50.commands.database;
 
-import java.util.List;
-
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
+import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.locale.LocaleLoader;
-
-import com.google.common.collect.ImmutableList;
+import java.util.List;
 
 public class McpurgeCommand implements TabExecutor {
     @Override

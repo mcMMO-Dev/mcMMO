@@ -1,8 +1,15 @@
 package com.gmail.nossr50.skills.alchemy;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
+import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
+import com.gmail.nossr50.events.fake.FakeBrewEvent;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
+import com.gmail.nossr50.runnables.skills.AlchemyBrewCheckTask;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.BrewingStand;
@@ -14,16 +21,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
-import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
-import com.gmail.nossr50.events.fake.FakeBrewEvent;
-import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
-import com.gmail.nossr50.runnables.skills.AlchemyBrewCheckTask;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class AlchemyPotionBrewer {
     public static boolean isValidBrew(Player player, ItemStack[] contents) {

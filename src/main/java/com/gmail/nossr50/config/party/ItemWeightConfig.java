@@ -1,11 +1,10 @@
 package com.gmail.nossr50.config.party;
 
-import java.util.HashSet;
-
-import org.bukkit.Material;
-
 import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.util.StringUtils;
+import org.bukkit.Material;
+
+import java.util.HashSet;
 
 public class ItemWeightConfig extends ConfigLoader {
     private static ItemWeightConfig instance;

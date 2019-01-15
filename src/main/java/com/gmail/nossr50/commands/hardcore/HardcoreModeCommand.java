@@ -1,20 +1,18 @@
 package com.gmail.nossr50.commands.hardcore;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.commands.CommandUtils;
+import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.util.StringUtil;
 
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.commands.CommandUtils;
-
-import com.google.common.collect.ImmutableList;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class HardcoreModeCommand implements TabExecutor {
     protected final DecimalFormat percent = new DecimalFormat("##0.00%");

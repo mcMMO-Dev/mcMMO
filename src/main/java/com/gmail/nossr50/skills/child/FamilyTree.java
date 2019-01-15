@@ -1,11 +1,11 @@
 package com.gmail.nossr50.skills.child;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Set;
-
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 
 public class FamilyTree {
     private static HashMap<PrimarySkillType, Set<PrimarySkillType>> tree = new HashMap<PrimarySkillType, Set<PrimarySkillType>>();

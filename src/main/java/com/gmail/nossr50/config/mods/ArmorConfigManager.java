@@ -1,10 +1,10 @@
 package com.gmail.nossr50.config.mods;
 
-import java.io.File;
-import java.util.regex.Pattern;
-
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.ModManager;
+
+import java.io.File;
+import java.util.regex.Pattern;
 
 public class ArmorConfigManager {
     public ArmorConfigManager(mcMMO plugin) {

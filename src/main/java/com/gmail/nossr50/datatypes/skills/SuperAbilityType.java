@@ -1,13 +1,12 @@
 package com.gmail.nossr50.datatypes.skills;
 
-import org.bukkit.Material;
-import org.bukkit.block.BlockState;
-import org.bukkit.entity.Player;
-
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
+import org.bukkit.Material;
+import org.bukkit.block.BlockState;
+import org.bukkit.entity.Player;
 
 public enum SuperAbilityType {
     BERSERK(

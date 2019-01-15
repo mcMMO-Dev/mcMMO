@@ -1,8 +1,8 @@
 package com.gmail.nossr50.util.blockmeta.chunkmeta;
 
-import java.io.Serializable;
-
 import com.gmail.nossr50.util.blockmeta.ChunkletStore;
+
+import java.io.Serializable;
 
 /**
  * A ChunkStore should be responsible for a 16x16xWorldHeight area of data
