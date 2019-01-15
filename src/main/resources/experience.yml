@@ -160,6 +160,16 @@ Experience:
         Red_Mushroom_Block: 70
         Brown_Mushroom_Block: 70
     Herbalism:
+        Tube_Coral_Fan: 80
+        Brain_Coral: 90
+        Bubble_Coral: 75
+        Fire_Coral: 120
+        Horn_Coral: 175
+        Dead_Tube_Coral: 30
+        Dead_Brain_Coral: 30
+        Dead_Bubble_Coral: 30
+        Dead_Fire_Coral: 30
+        Dead_Horn_Coral: 30
         Allium: 300
         Azure_Bluet: 150
         Beetroots_Ripe: 50
@@ -211,6 +221,7 @@ Experience:
         Netherrack: 30
         Obsidian: 150
         Packed_Ice: 50
+        Blue_Ice: 100
         Nether_Quartz_Ore: 100
         Redstone_Ore: 150
         Sandstone: 30

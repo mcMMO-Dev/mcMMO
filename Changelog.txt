@@ -15,6 +15,8 @@ Version 2.1.0
  + Added links to mcMMO related websites to various commands
  + Certain elements of mcMMO's UI have been restyled
  + Added the tagline "Overhaul Era" to various locations until 3.0.0 comes out
+ + (Experience) Coral (plants) now give Herbalism XP
+ + (Experience) Blue Ice now gives Mining XP
  + (Experience) Drowned mobs now count towards combat XP
  + (Experience) You can now set guaranteed minimum values for XP gained if diminishing returns are enabled, this value defaults to 5% (experience.yml)
  + (Events) Starting an XP event will now use the title API (toggle this in advanced.yml)

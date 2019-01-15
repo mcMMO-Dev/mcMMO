@@ -219,7 +219,7 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
         return 0;
     }
 
-    public boolean isSkillBlock(PrimarySkillType skill, Material data)
+    public boolean doesBlockGiveSkillXP(PrimarySkillType skill, Material data)
     {
         String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
         String explicitString = baseString + StringUtils.getExplicitConfigMaterialString(data);
@@ -232,7 +232,7 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
         return config.contains(wildcardString);
     }
 
-    public boolean isSkillBlock(PrimarySkillType skill, BlockData data)
+    public boolean doesBlockGiveSkillXP(PrimarySkillType skill, BlockData data)
     {
         String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
         String explicitString = baseString + StringUtils.getExplicitConfigBlockDataString(data);
