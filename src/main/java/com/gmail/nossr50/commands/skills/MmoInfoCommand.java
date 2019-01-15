@@ -22,6 +22,9 @@ public class MmoInfoCommand implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
+        /*
+         * Only allow players to use this command
+         */
         if(commandSender instanceof Player)
         {
             if(args.length < 1)
@@ -33,8 +36,14 @@ public class MmoInfoCommand implements TabExecutor {
                 if(args == null || args[0] == null)
                     return false;
 
-                //Real skill
-                if(InteractionManager.getAbstractByName(args[0]) != null || PrimarySkillType.SUBSKILL_NAMES.contains(args[0]))
+                if(args[0].equalsIgnoreCase( "???"))
+                {
+                    player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.Header"));
+                    player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.SubSkillHeader", "???"));
+                    player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.DetailsHeader"));
+                    player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.Mystery"));
+                    return true;
+                } else if(InteractionManager.getAbstractByName(args[0]) != null || PrimarySkillType.SUBSKILL_NAMES.contains(args[0]))
                 {
                     displayInfo(player, args[0]);
                     return true;
@@ -42,8 +51,10 @@ public class MmoInfoCommand implements TabExecutor {
 
                 //Not a real skill
                 player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.NoMatch"));
+                return true;
             }
         }
+
         return false;
     }
 
@@ -59,8 +70,6 @@ public class MmoInfoCommand implements TabExecutor {
 
     private void displayInfo(Player player, String subSkillName)
     {
-        System.out.println("[mcMMO] Debug: Grabbing info for skill "+subSkillName);
-
         //Check to see if the skill exists in the new system
         AbstractSubSkill abstractSubSkill = InteractionManager.getAbstractByName(subSkillName);
         if(abstractSubSkill != null)

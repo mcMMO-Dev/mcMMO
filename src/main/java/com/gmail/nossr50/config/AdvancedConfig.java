@@ -37,11 +37,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         // Validate all the settings!
         List<String> reason = new ArrayList<String>();
 
-        /*
-         * In the future this method will check keys for all skills, but for now it only checks overhauled skills
-         */
-        checkKeys(reason);
-
         /* GENERAL */
         if (getAbilityLengthRetro() < 1) {
             reason.add("Skills.General.Ability.Length.RetroMode.IncreaseLevel should be at least 1!");
@@ -814,51 +809,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         return config.getBoolean(keyLocation);
     }*/
 
-
-    /**
-     * Gets the level required to unlock a subskill at a given rank
-     * @param subSkillType The subskill
-     * @param rank The rank of the skill
-     * @return The level required to use this rank of the subskill
-     * @deprecated Right now mcMMO is an overhaul process, this will only work for skills I have overhauled. I will be removing the deprecated tag when that is true.
-     */
-    @Deprecated
-    public int getSubSkillUnlockLevel(SubSkillType subSkillType, int rank)
-    {
-        /*
-         * This is a bit messy but
-         *
-         * Some skills have per-rank settings as child nodes for Rank_x nodes
-         * If they do, we have to grab the child node named LevelReq from Rank_x for that skill
-         *
-         * Other skills which do not have complex per-rank settings will instead find their Level Requirement returned at Rank_x
-         */
-        if(config.get(subSkillType.getAdvConfigAddress() + ".Rank_Levels.Rank_"+rank+".LevelReq") != null)
-            return config.getInt(subSkillType.getAdvConfigAddress() + ".Rank_Levels.Rank_"+rank+".LevelReq");
-        else
-            return config.getInt(subSkillType.getAdvConfigAddress() + ".Rank_Levels.Rank_"+rank);
-    }
-
-    @Deprecated /* NEW VERSION */
-    public int getSubSkillUnlockLevel(AbstractSubSkill abstractSubSkill, int rank)
-    {
-        /*
-         * This is a bit messy but
-         *
-         * Some skills have per-rank settings as child nodes for Rank_x nodes
-         * If they do, we have to grab the child node named LevelReq from Rank_x for that skill
-         *
-         * Other skills which do not have complex per-rank settings will instead find their Level Requirement returned at Rank_x
-         */
-
-        String key = "Skills."+abstractSubSkill.getPrimaryKeyName()+"."+abstractSubSkill.getConfigKeyName();
-
-        if(config.get(key + ".Rank_Levels.Rank_"+rank+".LevelReq") != null)
-            return config.getInt(key + ".Rank_Levels.Rank_"+rank+".LevelReq");
-        else
-            return config.getInt(key + ".Rank_Levels.Rank_"+rank);
-    }
-
     /**
      * Some SubSkills have the ability to retain classic functionality
      * @param subSkillType SubSkillType with classic functionality
@@ -1034,39 +984,4 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public String getPlayerUnleashMessage() { return config.getString("Kraken.Unleashed_Message.Player", ""); }
     public String getPlayerDefeatMessage() { return config.getString("Kraken.Defeated_Message.Killed", ""); }
     public String getPlayerEscapeMessage() { return config.getString("Kraken.Defeated_Message.Escape", ""); }
-
-    /**
-     * Checks for valid keys in the advanced.yml file for subskill ranks
-     */
-    private void checkKeys(List<String> reasons)
-    {
-        //For now we will only check ranks of stuff I've overhauled
-        for(SubSkillType subSkillType : SubSkillType.values())
-        {
-            if(subSkillType.getParentSkill() == PrimarySkillType.WOODCUTTING)
-            {
-                //Keeping track of the rank requirements and making sure there are no logical errors
-                int curRank = 0;
-                int prevRank = 0;
-
-                for(int x = 0; x < subSkillType.getNumRanks(); x++)
-                {
-                    if(curRank > 0)
-                        prevRank = curRank;
-
-                    curRank = getSubSkillUnlockLevel(subSkillType, x);
-
-                    //Do we really care if its below 0? Probably not
-                    if(curRank < 0)
-                        reasons.add(subSkillType.getAdvConfigAddress() + ".Rank_Levels.Rank_"+curRank+".LevelReq should be above or equal to 0!");
-
-                    if(prevRank > curRank)
-                    {
-                        //We're going to allow this but we're going to warn them
-                        plugin.getLogger().info("You have the ranks for the subskill "+ subSkillType.toString()+" set up poorly, sequential ranks should have ascending requirements");
-                    }
-                }
-            }
-        }
-    }
 }

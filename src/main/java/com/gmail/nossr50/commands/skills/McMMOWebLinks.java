@@ -1,6 +1,7 @@
 package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.json.McMMOUrl;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.StringUtils;
 
 public enum McMMOWebLinks {
@@ -19,5 +20,26 @@ public enum McMMOWebLinks {
     public String getNiceTitle()
     {
         return StringUtils.getCapitalized(toString());
+    }
+
+    public String getLocaleDescription()
+    {
+        switch (this)
+        {
+            case WEBSITE:
+                return LocaleLoader.getString( "JSON.URL.Website");
+            case DISCORD:
+                return LocaleLoader.getString( "JSON.URL.Discord");
+            case PATREON:
+                return LocaleLoader.getString( "JSON.URL.Patreon");
+            case HELP_TRANSLATE:
+                return LocaleLoader.getString( "JSON.URL.Translation");
+            case SPIGOT:
+                return LocaleLoader.getString("JSON.URL.Spigot");
+            case WIKI:
+                return LocaleLoader.getString("JSON.URL.Wiki");
+            default:
+                return "";
+        }
     }
 }

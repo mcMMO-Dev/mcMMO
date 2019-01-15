@@ -557,9 +557,10 @@ public class Config extends AutoUpdateConfigLoader {
         return (cap <= 0) ? Integer.MAX_VALUE : cap;
     }
 
-    public int getSkillAbilityGate(PrimarySkillType skill) {
+
+    /*public int isSuperAbilityUnlocked(PrimarySkillType skill) {
         return config.getInt("Skills." + StringUtils.getCapitalized(skill.toString()) + ".Ability_Activation_Level_Gate");
-    }
+    }*/
 
     public boolean getTruncateSkills() { return config.getBoolean("General.TruncateSkills", false); }
 

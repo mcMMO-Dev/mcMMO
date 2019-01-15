@@ -59,7 +59,7 @@ Version 2.1.0
  ! (Skills) Some skill level rank requirements have changed
  ! (Skills) Fixed an edge case bug where Blast Mining wouldn't inform the player that it was on cooldown
  ! (Skills) mcMMO skills will now be on a scale from 1-100 instead of 0-1000 (for existing mcMMO installs this is opt-in and off by default)
- ! (Skills) Skill Super Powers (Tree Feller, etc...) will now require level 10+ to use
+ ! (Skills) Skill Super Powers are now unlockabled skills, unlocking at level 10
  ! (Skills) Acrobatics' Roll exploit detection was tweaked to still allow for Roll to trigger even if it rewards no XP
  ! (Skills) Acrobatics' Roll & Gracefull Roll are now considered the same skill (both mechanics are still there)
  ! (Skills) Woodcutting's Double Drop subskill is now named Harvest Lumber
@@ -92,7 +92,7 @@ Version 2.1.0
  ! (API) SecondaryAbilityEvent is now SubSkillEvent
  ! (API) SubSkillType has had many helpful methods added to it
  ! (API) GREEN_THUMB_PLANT & GREEN_THUMB_BLOCK are replaced by GREEN_THUMB
- ! (Code) Refactored some unreadable code relating to SecondaryAbility activation in SkillUtils
+ ! (Code) Refactored some unreadable code relating to SecondaryAbilityType activation in SkillUtils
 
 Version 2.0.0
  = Fixed an interaction between Tree Feller and Stripped Wood

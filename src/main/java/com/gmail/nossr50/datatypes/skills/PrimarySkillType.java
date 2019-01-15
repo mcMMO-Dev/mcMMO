@@ -23,6 +23,7 @@ import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
+import com.gmail.nossr50.util.skills.RankUtils;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.Color;
 import org.bukkit.entity.Entity;
@@ -40,7 +41,7 @@ public enum PrimarySkillType {
     AXES(AxesManager.class, Color.AQUA, SuperAbilityType.SKULL_SPLITTER, ToolType.AXE, ImmutableList.of(SubSkillType.AXES_SKULL_SPLITTER, SubSkillType.AXES_ARMOR_IMPACT, SubSkillType.AXES_AXE_MASTERY, SubSkillType.AXES_CRITICAL_STRIKES, SubSkillType.AXES_GREATER_IMPACT)),
     EXCAVATION(ExcavationManager.class, Color.fromRGB(139, 69, 19), SuperAbilityType.GIGA_DRILL_BREAKER, ToolType.SHOVEL, ImmutableList.of(SubSkillType.EXCAVATION_GIGA_DRILL_BREAKER, SubSkillType.EXCAVATION_TREASURE_HUNTER)),
     FISHING(FishingManager.class, Color.NAVY, ImmutableList.of(SubSkillType.FISHING_FISHERMANS_DIET, SubSkillType.FISHING_TREASURE_HUNTER, SubSkillType.FISHING_ICE_FISHING, SubSkillType.FISHING_MAGIC_HUNTER, SubSkillType.FISHING_MASTER_ANGLER, SubSkillType.FISHING_SHAKE)),
-    HERBALISM(HerbalismManager.class, Color.GREEN, SuperAbilityType.GREEN_TERRA, ToolType.HOE, ImmutableList.of(SubSkillType.HERBALISM_FARMERS_DIET, SubSkillType.HERBALISM_GREEN_THUMB, SubSkillType.HERBALISM_DOUBLE_DROPS, SubSkillType.HERBALISM_HYLIAN_LUCK, SubSkillType.HERBALISM_SHROOM_THUMB)),
+    HERBALISM(HerbalismManager.class, Color.GREEN, SuperAbilityType.GREEN_TERRA, ToolType.HOE, ImmutableList.of(SubSkillType.HERBALISM_GREEN_TERRA, SubSkillType.HERBALISM_FARMERS_DIET, SubSkillType.HERBALISM_GREEN_THUMB, SubSkillType.HERBALISM_DOUBLE_DROPS, SubSkillType.HERBALISM_HYLIAN_LUCK, SubSkillType.HERBALISM_SHROOM_THUMB)),
     MINING(MiningManager.class, Color.GRAY, SuperAbilityType.SUPER_BREAKER, ToolType.PICKAXE, ImmutableList.of(SubSkillType.MINING_SUPER_BREAKER, SubSkillType.MINING_DEMOLITIONS_EXPERTISE, SubSkillType.MINING_BIGGER_BOMBS, SubSkillType.MINING_BLAST_MINING, SubSkillType.MINING_DOUBLE_DROPS)),
     REPAIR(RepairManager.class, Color.SILVER, ImmutableList.of(SubSkillType.REPAIR_ARCANE_FORGING, SubSkillType.REPAIR_REPAIR_MASTERY, SubSkillType.REPAIR_SUPER_REPAIR)),
     SALVAGE(SalvageManager.class, Color.ORANGE, ImmutableList.of(SubSkillType.SALVAGE_UNDERSTANDING_THE_ART, SubSkillType.SALVAGE_ADVANCED_SALVAGE, SubSkillType.SALVAGE_ARCANE_SALVAGE)),
@@ -124,7 +125,7 @@ public enum PrimarySkillType {
         return Config.getInstance().getLevelCap(this);
     }
 
-    public int getSkillAbilityGate() { return Config.getInstance().getSkillAbilityGate(this); }
+    public boolean isSuperAbilityUnlocked(Player player) { return RankUtils.getRank(player, getAbility().getSubSkillTypeDefinition()) >= 1; }
 
     public boolean getPVPEnabled() {
         return Config.getInstance().getPVPEnabled(this);

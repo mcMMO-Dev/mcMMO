@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Set;
 
 public final class Woodcutting {
-    public static int leafBlowerUnlockLevel = AdvancedConfig.getInstance().getLeafBlowUnlockLevel();
     public static int treeFellerThreshold = Config.getInstance().getTreeFellerThreshold();
 
 

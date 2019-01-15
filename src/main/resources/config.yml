@@ -277,8 +277,6 @@ Abilities:
     Enabled: true
     Messages: true
     Activation:
-        # If set to true, abilities will not be available until they meet specific level requirements to use
-        Level_Gate_Abilities: true
         Only_Activate_When_Sneaking: false
     Cooldowns:
         Berserk: 240

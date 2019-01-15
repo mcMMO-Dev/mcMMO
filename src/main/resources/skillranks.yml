@@ -3,13 +3,12 @@
 # You can however, change when they unlock, if you make all ranks of a skill level 0 for example every player will have the most powerful version of that skill right away.
 # Retro Mode and Standard have separate config settings to make it easier for server owners to understand the difference between the two
 # Retro Mode is setup to be an entirely cosmetic change, keeping the old 0-1000 feeling of mcMMO
-# Retro Mode has 10x faster leveling and 10x higher skill requirements, if you do the math you can see its the same as Standard other than cosmetics!
+# Retro Mode has 10x faster leveling and 10x higher skill requirements, if you do the math you can see its the same as Standrd and only cosmetic!
 ###
 Alchemy:
-    Alchemy:
-        Catalysis:
-            Standard:
-                Rank_1: 10
+    Catalysis:
+        Standard:
+            Rank_1: 10
         RetroMode:
             Rank_1: 100
     Concoctions:
@@ -55,7 +54,7 @@ Archery:
             Rank_19: 95
             Rank_20: 100
         Retro:
-            Rank_1: 5
+            Rank_1: 50
             Rank_2: 100
             Rank_3: 150
             Rank_4: 200
@@ -76,6 +75,11 @@ Archery:
             Rank_19: 950
             Rank_20: 1000
 Axes:
+    SkullSplitter:
+        Standard:
+            Rank_1: 10
+        RetroMode:
+            Rank_1: 100
     ArmorImpact:
         Standard:
             Rank_1: 5
@@ -99,7 +103,7 @@ Axes:
             Rank_19: 95
             Rank_20: 100
         Retro:
-            Rank_1: 5
+            Rank_1: 50
             Rank_2: 100
             Rank_3: 150
             Rank_4: 200
@@ -202,6 +206,11 @@ Salvage:
             Rank_7: 850
             Rank_8: 1000
 Mining:
+    SuperBreaker:
+        Standard:
+            Rank_1: 10
+        RetroMode:
+            Rank_1: 100
     BlastMining:
         Standard:
             Rank_1: 10
@@ -222,6 +231,11 @@ Mining:
             Rank_7: 850
             Rank_8: 1000
 Herbalism:
+    GreenTerra:
+        Standard:
+            Rank_1: 10
+        RetroMode:
+            Rank_1: 100
     GreenThumb:
         Standard:
             Rank_1: 20
@@ -291,3 +305,70 @@ Fishing:
             Rank_6: 750
             Rank_7: 850
             Rank_8: 1000
+Swords:
+    SerratedStrikes:
+        Standard:
+            Rank_1: 10
+        RetroMode:
+            Rank_1: 100
+Unarmed:
+    Berserk:
+        Standard:
+            Rank_1: 10
+        RetroMode:
+            Rank_1: 100
+Woodcutting:
+    Splinter:
+        Standard:
+            Rank_1: 5
+            Rank_2: 30
+            Rank_3: 55
+        RetroMode:
+            Rank_1: 50
+            Rank_2: 300
+            Rank_3: 550
+    TreeFeller:
+        Standard:
+            Rank_1: 10
+            Rank_2: 25
+            Rank_3: 50
+            Rank_4: 75
+            Rank_5: 100
+        RetroMode:
+            Rank_1: 100
+            Rank_2: 250
+            Rank_3: 500
+            Rank_4: 750
+            Rank_5: 1000
+    BarkSurgeon:
+        Standard:
+            Rank_1: 70
+            Rank_2: 80
+            Rank_3: 95
+        RetroMode:
+            Rank_1: 700
+            Rank_2: 800
+            Rank_3: 950
+    NaturesBounty:
+        Standard:
+            Rank_1: 40
+            Rank_2: 60
+            Rank_3: 90
+        RetroMode:
+            Rank_1: 400
+            Rank_2: 600
+            Rank_3: 900
+    HarvestLumber:
+        Standard:
+            Rank_1: 1
+        RetroMode:
+            Rank_1: 10
+    LeafBlower:
+        Standard:
+            Rank_1: 15
+            Rank_2: 35
+            Rank_3: 65
+        RetroMode:
+            Rank_1: 150
+            Rank_2: 350
+            Rank_3: 650

@@ -1,9 +1,15 @@
 package com.gmail.nossr50.datatypes.skills;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.subskills.interfaces.SubSkill;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.RankUtils;
+import com.google.common.collect.ImmutableList;
+import jdk.nashorn.internal.ir.annotations.Immutable;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
@@ -69,11 +75,27 @@ public enum SuperAbilityType {
             null),
     ;
 
+    /*
+     * Defining their associated SubSkillType definitions
+     * This is a bit of a band-aid fix until the new skill system is in place
+     */
+    static {
+        BERSERK.subSkillTypeDefinition              = SubSkillType.UNARMED_BERSERK;
+        SUPER_BREAKER.subSkillTypeDefinition        = SubSkillType.MINING_SUPER_BREAKER;
+        GIGA_DRILL_BREAKER.subSkillTypeDefinition   = SubSkillType.EXCAVATION_GIGA_DRILL_BREAKER;
+        GREEN_TERRA.subSkillTypeDefinition          = SubSkillType.HERBALISM_GREEN_TERRA;
+        SKULL_SPLITTER.subSkillTypeDefinition       = SubSkillType.AXES_SKULL_SPLITTER;
+        TREE_FELLER.subSkillTypeDefinition          = SubSkillType.WOODCUTTING_TREE_FELLER;
+        SERRATED_STRIKES.subSkillTypeDefinition     = SubSkillType.SWORDS_SERRATED_STRIKES;
+        BLAST_MINING.subSkillTypeDefinition         = SubSkillType.MINING_BLAST_MINING;
+    }
+
     private String abilityOn;
     private String abilityOff;
     private String abilityPlayer;
     private String abilityRefresh;
     private String abilityPlayerOff;
+    private SubSkillType subSkillTypeDefinition;
 
     private SuperAbilityType(String abilityOn, String abilityOff, String abilityPlayer, String abilityRefresh, String abilityPlayerOff) {
         this.abilityOn = abilityOn;
@@ -199,5 +221,13 @@ public enum SuperAbilityType {
             default:
                 return false;
         }
+    }
+
+    /**
+     * Grabs the associated SubSkillType definition for this SuperAbilityType
+     * @return the matching SubSkillType definition for this SuperAbilityType
+     */
+    public SubSkillType getSubSkillTypeDefinition() {
+        return subSkillTypeDefinition;
     }
 }

@@ -11,20 +11,20 @@ public enum SubSkillType {
     ACROBATICS_ROLL,
 
     /* ALCHEMY */
-    ALCHEMY_CATALYSIS,
+    ALCHEMY_CATALYSIS(1),
     ALCHEMY_CONCOCTIONS(8),
 
     /* ARCHERY */
-    ARCHERY_DAZE(),
+    ARCHERY_DAZE,
     ARCHERY_ARROW_RETRIEVAL,
     ARCHERY_SKILL_SHOT(20),
 
     /* Axes */
-    AXES_ARMOR_IMPACT,
+    AXES_ARMOR_IMPACT(20),
     AXES_AXE_MASTERY(4),
     AXES_CRITICAL_STRIKES,
     AXES_GREATER_IMPACT,
-    AXES_SKULL_SPLITTER(0),
+    AXES_SKULL_SPLITTER(1),
 
     /* Excavation */
     EXCAVATION_TREASURE_HUNTER,
@@ -44,11 +44,12 @@ public enum SubSkillType {
     HERBALISM_DOUBLE_DROPS,
     HERBALISM_HYLIAN_LUCK,
     HERBALISM_SHROOM_THUMB,
+    HERBALISM_GREEN_TERRA,
 
     /* Mining */
     MINING_DOUBLE_DROPS,
-    MINING_SUPER_BREAKER(0),
-    MINING_BLAST_MINING,
+    MINING_SUPER_BREAKER(1),
+    MINING_BLAST_MINING(8),
     MINING_BIGGER_BOMBS,
     MINING_DEMOLITIONS_EXPERTISE,
 
@@ -60,29 +61,29 @@ public enum SubSkillType {
     /* Salvage */
     SALVAGE_ADVANCED_SALVAGE,
     SALVAGE_ARCANE_SALVAGE,
-    SALVAGE_UNDERSTANDING_THE_ART,
+    SALVAGE_UNDERSTANDING_THE_ART(8),
 
     /* Smelting */
     SMELTING_FLUX_MINING,
     SMELTING_FUEL_EFFICIENCY,
     SMELTING_SECOND_SMELT,
-    SMELTING_UNDERSTANDING_THE_ART,
+    SMELTING_UNDERSTANDING_THE_ART(8),
 
     /* Swords */
     SWORDS_BLEED,
     SWORDS_COUNTER_ATTACK,
-    SWORDS_SERRATED_STRIKES,
+    SWORDS_SERRATED_STRIKES(1),
 
     /* Taming */
     TAMING_BEAST_LORE,
     TAMING_CALL_OF_THE_WILD,
-    TAMING_ENVIRONMENTALLY_AWARE,
-    TAMING_FAST_FOOD_SERVICE,
+    TAMING_ENVIRONMENTALLY_AWARE(1),
+    TAMING_FAST_FOOD_SERVICE(1),
     TAMING_GORE,
-    TAMING_HOLY_HOUND,
-    TAMING_SHARPENED_CLAWS,
-    TAMING_SHOCK_PROOF,
-    TAMING_THICK_FUR,
+    TAMING_HOLY_HOUND(1),
+    TAMING_SHARPENED_CLAWS(1),
+    TAMING_SHOCK_PROOF(1),
+    TAMING_THICK_FUR(1),
     TAMING_PUMMEL,
 
     /* Unarmed */
@@ -91,7 +92,7 @@ public enum SubSkillType {
     UNARMED_DISARM,
     UNARMED_IRON_ARM_STYLE,
     UNARMED_IRON_GRIP,
-    UNARMED_BERSERK(0),
+    UNARMED_BERSERK(1),
 
     /* Woodcutting */
     WOODCUTTING_TREE_FELLER(5),
@@ -99,7 +100,7 @@ public enum SubSkillType {
     WOODCUTTING_BARK_SURGEON(3),
     WOODCUTTING_NATURES_BOUNTY(3),
     WOODCUTTING_SPLINTER(3),
-    WOODCUTTING_HARVEST_LUMBER(3);
+    WOODCUTTING_HARVEST_LUMBER(1);
 
     private final int numRanks;
     //TODO: SuperAbilityType should also contain flags for active by default? Not sure if it should work that way.
@@ -131,11 +132,19 @@ public enum SubSkillType {
     public PrimarySkillType getParentSkill() { return PrimarySkillType.bySecondaryAbility(this); }
 
     /**
-     * Returns the permission root address for the advanced.yml for this subskill
-     * @return permission root address in advanced.yml for this subskill
+     * Returns the root address for this skill in the advanced.yml file
+     * @return the root address for this skill in advanced.yml
      */
     public String getAdvConfigAddress() {
         return "Skills." + StringUtils.getCapitalized(getParentSkill().toString()) + "." + getConfigName(toString());
+    }
+
+    /**
+     * Returns the root address for this skill in the rankskills.yml file
+     * @return the root address for this skill in rankskills.yml
+     */
+    public String getRankConfigAddress() {
+        return StringUtils.getCapitalized(getParentSkill().toString()) + "." + getConfigName(toString());
     }
 
     /**

@@ -64,9 +64,7 @@ public final class Alchemy {
 
         List<AlchemyBrewTask> toFinish = new ArrayList<AlchemyBrewTask>();
 
-        for (AlchemyBrewTask alchemyBrewTask : brewingStandMap.values()) {
-            toFinish.add(alchemyBrewTask);
-        }
+        toFinish.addAll(brewingStandMap.values());
 
         for (AlchemyBrewTask alchemyBrewTask : toFinish) {
             alchemyBrewTask.finishImmediately();

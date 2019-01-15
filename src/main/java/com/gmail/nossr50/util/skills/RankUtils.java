@@ -1,7 +1,8 @@
 package com.gmail.nossr50.util.skills;
 
-import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.RankConfig;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.Player;
@@ -36,6 +37,58 @@ public class RankUtils {
             //TODO: Remove debug code
             /*System.out.println("DEBUG: Adding rank "+(numRanks-i)+" to "+subSkillType.toString());*/
         }
+    }
+
+    /**
+     * Returns whether or not the player has unlocked the first rank in target subskill
+     * @param player the player
+     * @param subSkillType the target subskill
+     * @return true if the player has at least one rank in the skill
+     */
+    public static boolean hasUnlockedSubskill(Player player, SubSkillType subSkillType)
+    {
+        int curRank = getRank(player, subSkillType);
+
+        //-1 means the skill has no unlockable levels and is therefor unlocked
+        return curRank == -1 || curRank >= 1;
+    }
+
+    /**
+     * Returns whether or not the player has unlocked the first rank in target subskill
+     * @param player the player
+     * @param abstractSubSkill the target subskill
+     * @return true if the player has at least one rank in the skill
+     */
+    public static boolean hasUnlockedSubskill(Player player, AbstractSubSkill abstractSubSkill)
+    {
+        int curRank = getRank(player, abstractSubSkill);
+
+        //-1 means the skill has no unlockable levels and is therefor unlocked
+        return curRank == -1 || curRank >= 1;
+    }
+
+    /**
+     * Returns whether or not the player has reached the specified rank in target subskill
+     * @param rank the target rank
+     * @param player the player
+     * @param subSkillType the target subskill
+     * @return true if the player is at least that rank in this subskill
+     */
+    public static boolean hasReachedRank(int rank, Player player, SubSkillType subSkillType)
+    {
+        return getRank(player, subSkillType) >= rank;
+    }
+
+    /**
+     * Returns whether or not the player has reached the specified rank in target subskill
+     * @param rank the target rank
+     * @param player the player
+     * @param abstractSubSkill the target subskill
+     * @return true if the player is at least that rank in this subskill
+     */
+    public static boolean hasReachedRank(int rank, Player player, AbstractSubSkill abstractSubSkill)
+    {
+        return getRank(player, abstractSubSkill) >= rank;
     }
 
     /**
@@ -162,6 +215,23 @@ public class RankUtils {
             subSkillRanks.put(s, new HashMap<>());
     }
 
+/*    public static int getSubSkillUnlockRequirement(SubSkillType subSkillType)
+    {
+        String skillName = subSkillType.toString();
+        int numRanks = subSkillType.getNumRanks();
+
+        if(subSkillRanks == null)
+            subSkillRanks = new HashMap<>();
+
+        if(numRanks == 0)
+            return -1; //-1 Means the skill doesn't have ranks
+
+        if(subSkillRanks.get(skillName) == null && numRanks > 0)
+            addRanks(subSkillType);
+
+        return subSkillRanks.get(subSkillType.toString()).get(1);
+    }*/
+
     /**
      * Gets the unlock level for a specific rank in a subskill
      * @param subSkillType The target subskill
@@ -169,13 +239,18 @@ public class RankUtils {
      * @return The level at which this rank unlocks
      */
     @Deprecated
-    private static int getUnlockLevel(SubSkillType subSkillType, int rank)
+    public static int getUnlockLevel(SubSkillType subSkillType, int rank)
     {
-        return AdvancedConfig.getInstance().getSubSkillUnlockLevel(subSkillType, rank);
+        return RankConfig.getInstance().getSubSkillUnlockLevel(subSkillType, rank);
     }
 
-    private static int getUnlockLevel(AbstractSubSkill abstractSubSkill, int rank)
+    public static int getUnlockLevel(AbstractSubSkill abstractSubSkill, int rank)
     {
-        return AdvancedConfig.getInstance().getSubSkillUnlockLevel(abstractSubSkill, rank);
+        return RankConfig.getInstance().getSubSkillUnlockLevel(abstractSubSkill, rank);
+    }
+
+    public static int getSuperAbilityUnlockRequirement(SuperAbilityType superAbilityType)
+    {
+        return getUnlockLevel(superAbilityType.getSubSkillTypeDefinition(), 1);
     }
 }

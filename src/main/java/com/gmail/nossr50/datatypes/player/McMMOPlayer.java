@@ -44,6 +44,7 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.PerksUtils;
+import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -739,19 +740,16 @@ public class McMMOPlayer {
             return;
         }
 
-        /*
-         * Check if the player has passed the gate requirement
-         */
-        if(Config.getInstance().getAbilitiesGateEnabled())
-        {
-            if(getSkillLevel(skill) < skill.getSkillAbilityGate())
-            {
-                int diff = skill.getSkillAbilityGate() - getSkillLevel(skill);
 
-                //Inform the player they are not yet skilled enough
-                NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.AbilityGateRequirementFail", String.valueOf(diff), skill.getName());
-                return;
-            }
+        //TODO: This is hacky and temporary solution until skills are move to the new system
+        //Potential problems with this include skills with two super abilities (ie mining)
+        if(!skill.isSuperAbilityUnlocked(getPlayer()))
+        {
+            int diff = RankUtils.getSuperAbilityUnlockRequirement(skill.getAbility()) - getSkillLevel(skill);
+
+            //Inform the player they are not yet skilled enough
+            NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.AbilityGateRequirementFail", String.valueOf(diff), skill.getName());
+            return;
         }
 
         int timeRemaining = calculateTimeRemaining(ability);

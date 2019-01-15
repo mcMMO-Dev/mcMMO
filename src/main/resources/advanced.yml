@@ -122,43 +122,11 @@ Skills:
             MaxBonusLevel: 100
             MinSpeed: 1.0
             MaxSpeed: 4.0
-            
-        # Rank_Levels: Alchemy level where rank gets unlocked
-        Rank_Levels:
-            Rank_1: 0
-            Rank_2: 12
-            Rank_3: 25
-            Rank_4: 37
-            Rank_5: 50
-            Rank_6: 62
-            Rank_7: 75
-            Rank_8: 87
     #
     #  Settings for Archery
     ###
     Archery:
         SkillShot:
-            Rank_Levels:
-                Rank_1: 5
-                Rank_2: 10
-                Rank_3: 15
-                Rank_4: 20
-                Rank_5: 25
-                Rank_6: 30
-                Rank_7: 35
-                Rank_8: 40
-                Rank_9: 45
-                Rank_10: 50
-                Rank_11: 55
-                Rank_12: 60
-                Rank_13: 65
-                Rank_14: 70
-                Rank_15: 75
-                Rank_16: 80
-                Rank_17: 85
-                Rank_18: 90
-                Rank_19: 95
-                Rank_20: 100
             # RankDamageMultiplier: The current rank of this subskill is multiplied by this value to determine the bonus damage, rank 20 would result in 200% damage increase with a value of 10.0 for RankDamageMultiplier
             # RankDamageMultiplier is a percentage
             RankDamageMultiplier: 10.0
@@ -189,11 +157,6 @@ Skills:
             # This number is multiplied by the current rank the player has in this subskill to find the amount of additional damage to apply
             # With the default config value of 1.0, at rank 4 a player will deal 4.0 extra damage with Axes (1.0 * 4)
             RankDamageMultiplier: 1.0
-            Rank_Levels:
-                Rank_1: 5
-                Rank_2: 10
-                Rank_3: 15
-                Rank_4: 20
         CriticalStrikes:
             # ChanceMax: Maximum chance of causing a critical hit when on <MaxBonusLevel> or higher
             # MaxBonusLevel: Level where <ChanceMax> of causing critical hits is reached
@@ -226,16 +189,6 @@ Skills:
     #  Settings for Fishing
     ###
     Fishing:
-        # Rank_Levels: Fishing level where rank gets unlocked
-        Rank_Levels:
-            Rank_1: 0
-            Rank_2: 12
-            Rank_3: 25
-            Rank_4: 37
-            Rank_5: 50
-            Rank_6: 62
-            Rank_7: 70
-            Rank_8: 87
 
         ShakeChance:
             Rank_1: 15.0
@@ -277,15 +230,11 @@ Skills:
     #  Settings for Herbalism
     ###
     Herbalism:
-        FarmersDiet:
-            # This determines when Farmers Diet adds extra hunger recovery to food
-            RankChange: 20
 
         GreenThumb:
             # StageChange: Level value when the GreenThumb stage rank goes up
             # ChanceMax: Maximum chance of GreenThumb when on <MaxBonusLevel> or higher
             # MaxBonusLevel: On this level, GreenThumb chance will be <ChanceMax>
-            StageChange: 20
             ChanceMax: 100.0
             MaxBonusLevel: 100
 
@@ -318,15 +267,6 @@ Skills:
 
         # BlastMining_Rank: BlastMining rank unlocks
         BlastMining:
-            Rank_Levels:
-                Rank_1: 12
-                Rank_2: 25
-                Rank_3: 37
-                Rank_4: 50
-                Rank_5: 62
-                Rank_6: 75
-                Rank_7: 87
-                Rank_8: 100
 
             # BlastDamageDecrease Ranks: % of damage reduced from TNT explosions
             BlastDamageDecrease:
@@ -400,15 +340,6 @@ Skills:
 
         ArcaneForging:
             May_Lose_Enchants: true
-            Rank_Levels:
-                Rank_1: 12
-                Rank_2: 25
-                Rank_3: 37
-                Rank_4: 50
-                Rank_5: 62
-                Rank_6: 75
-                Rank_7: 87
-                Rank_8: 100
             Keep_Enchants_Chance:
                 Rank_1: 10.0
                 Rank_2: 20.0
@@ -489,17 +420,6 @@ Skills:
             # Chance: Chance for Flux Mining to activate
             UnlockLevel: 25
             Chance: 33.0
-
-        # Rank_Levels: Smelting level where rank gets unlocked
-        Rank_Levels:
-            Rank_1: 12
-            Rank_2: 25
-            Rank_3: 37
-            Rank_4: 50
-            Rank_5: 62
-            Rank_6: 75
-            Rank_7: 87
-            Rank_8: 100
 
         # VanillaXPMultiplier: Vanilla XP gained from smelting ores is multiplied by these values.
         VanillaXPMultiplier:
@@ -630,14 +550,6 @@ Skills:
     #  Settings for Woodcutting
     ###
     Woodcutting:
-        Splinter:
-            Rank_Levels:
-                Rank_1:
-                    LevelReq: 5
-                Rank_2:
-                    LevelReq: 30
-                Rank_3:
-                    LevelReq: 55
         TreeFeller:
             # If set to true then tree feller will not use the new system and will use its old behaviour
             Classic: false
@@ -645,64 +557,27 @@ Skills:
             ChargeRate: 600
             Rank_Levels:
                 Rank_1:
-                    LevelReq: 10
                     TreeSizeMax: 100
                     Charges: 1
                 Rank_2:
-                    LevelReq: 25
                     TreeSizeMax: 200
                     Charges: 1
                 Rank_3:
-                    LevelReq: 50
                     TreeSizeMax: 200
                     Charges: 2
                 Rank_4:
-                    LevelReq: 75
                     TreeSizeMax: 200
                     Charges: 3
                 Rank_5:
-                    LevelReq: 100
                     TreeSizeMax: 500
                     Charges: 3
-        BarkSurgeon:
-            Rank_Levels:
-                Rank_1:
-                    LevelReq: 70
-                Rank_2:
-                    LevelReq: 80
-                Rank_3:
-                    LevelReq: 95
-        NaturesBounty:
-            Rank_Levels:
-                Rank_1:
-                    LevelReq: 40
-                Rank_2:
-                    LevelReq: 60
-                Rank_3:
-                    LevelReq: 90
         # Double Drops
         HarvestLumber:
-            Classic: false
             # ChanceMax & MaxBonusLevel are only used for Classic, I'll make that more clear in the future.
             # ChanceMax: Maximum chance of receiving double drops (100 = 100%)
             # MaxBonusLevel: Level when the maximum chance of receiving double drops is reached
             ChanceMax: 100.0
             MaxBonusLevel: 100
-            Rank_Levels:
-                Rank_1:
-                    LevelReq: 20
-                Rank_2:
-                    LevelReq: 45
-                Rank_3:
-                    LevelReq: 85
-        LeafBlower:
-            Rank_Levels:
-                Rank_1:
-                    LevelReq: 15
-                Rank_2:
-                    LevelReq: 35
-                Rank_3:
-                    LevelReq: 65
 Style:
     JSON:
         Notification:

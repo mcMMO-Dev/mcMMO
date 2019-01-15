@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
+import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -40,12 +41,7 @@ public class WoodcuttingCommand extends SkillCommand {
 
         // DOUBLE DROPS
         if (canDoubleDrop) {
-            if(AdvancedConfig.getInstance().isSubSkillClassic(SubSkillType.WOODCUTTING_HARVEST_LUMBER))
-                setDoubleDropClassicChanceStrings(skillValue, isLucky);
-            else
-            {
-                //TODO: Set up datastrings for new harvest
-            }
+            setDoubleDropClassicChanceStrings(skillValue, isLucky);
         }
     }
 
@@ -58,7 +54,7 @@ public class WoodcuttingCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canTreeFell = Permissions.treeFeller(player);
-        canDoubleDrop = Permissions.isSubSkillEnabled(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER) && !skill.getDoubleDropsDisabled();
+        canDoubleDrop = Permissions.isSubSkillEnabled(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER) && !skill.getDoubleDropsDisabled() && RankUtils.getRank(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER) >= 1;
         canLeafBlow = Permissions.isSubSkillEnabled(player, SubSkillType.WOODCUTTING_LEAF_BLOWER);
         canSplinter = Permissions.isSubSkillEnabled(player, SubSkillType.WOODCUTTING_SPLINTER);
         canBarkSurgeon = Permissions.isSubSkillEnabled(player, SubSkillType.WOODCUTTING_BARK_SURGEON);
