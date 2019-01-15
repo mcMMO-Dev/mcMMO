@@ -372,3 +372,28 @@ Woodcutting:
             Rank_1: 150
             Rank_2: 350
             Rank_3: 650
+Excavation:
+    GigaDrillBreaker:
+        Standard:
+            Rank_1: 10
+        RetroMode:
+            Rank_1: 100
+    TreasureHunter:
+        Standard:
+            Rank_1: 10
+            Rank_2: 25
+            Rank_3: 35
+            Rank_4: 50
+            Rank_5: 65
+            Rank_6: 75
+            Rank_7: 85
+            Rank_8: 100
+        RetroMode:
+            Rank_1: 100
+            Rank_2: 250
+            Rank_3: 350
+            Rank_4: 500
+            Rank_5: 650
+            Rank_6: 750
+            Rank_7: 850
+            Rank_8: 1000
