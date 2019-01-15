@@ -9,6 +9,7 @@ import com.gmail.nossr50.skills.alchemy.AlchemyManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -87,7 +88,7 @@ public class AlchemyCommand extends SkillCommand {
             int unlockLevel = AdvancedConfig.getInstance().getCatalysisUnlockLevel();
 
             if (skillValue < unlockLevel) {
-                messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Alchemy.Ability.Locked.0", unlockLevel)));
+                //messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Alchemy.Ability.Locked.0", unlockLevel)));
             }
             else {
                 messages.add(LocaleLoader.getString("Alchemy.Catalysis.Speed", brewSpeed) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", brewSpeedLucky) : ""));
@@ -95,8 +96,10 @@ public class AlchemyCommand extends SkillCommand {
         }
 
         if (canConcoctions) {
-            messages.add(LocaleLoader.getString("Alchemy.Concoctions.Rank", tier, Tier.values().length));
-            messages.add(LocaleLoader.getString("Alchemy.Concoctions.Ingredients", ingredientCount, ingredientList));
+            if(RankUtils.hasUnlockedSubskill(player, SubSkillType.ALCHEMY_CONCOCTIONS)) {
+                messages.add(LocaleLoader.getString("Alchemy.Concoctions.Rank", tier, Tier.values().length));
+                messages.add(LocaleLoader.getString("Alchemy.Concoctions.Ingredients", ingredientCount, ingredientList));
+            }
         }
 
         return messages;
