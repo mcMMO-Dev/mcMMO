@@ -65,6 +65,10 @@ public class SkillUtils {
         return calculateAbilityDisplayValues((AdvancedConfig.getInstance().getMaxChance(subSkillType) / maxBonusLevel) * Math.min(skillValue, maxBonusLevel), isLucky);
     }
 
+    public static String[] calculateAbilityDisplayValuesCustom(float skillValue, SubSkillType subSkillType, boolean isLucky, int maxBonusLevel, double maxChance) {
+        return calculateAbilityDisplayValues((maxChance / maxBonusLevel) * Math.min(skillValue, maxBonusLevel), isLucky);
+    }
+
     public static String[] calculateLengthDisplayValues(Player player, float skillValue, PrimarySkillType skill) {
         int maxLength = skill.getAbility().getMaxLength();
         int abilityLengthVar = Config.getInstance().getIsRetroMode() ? AdvancedConfig.getInstance().getAbilityLengthRetro() : AdvancedConfig.getInstance().getAbilityLengthStandard();
@@ -285,10 +289,10 @@ public class SkillUtils {
      * @param player The owner of this sub-skill
      * @param skill The identifier for the parent of our sub-skill
      * @param activationChance This is the value that we roll against, 100 is normal, and 75 is for lucky perk
-     * @param subskillActivationType this value represents what kind of activation procedures this sub-skill uses
+     * @param skillActivationType this value represents what kind of activation procedures this sub-skill uses
      * @return returns true if all conditions are met and they event is not cancelled
      */
-    public static boolean isActivationSuccessful(SkillActivationType subskillActivationType, SubSkillType subSkillType, Player player,
+    public static boolean isActivationSuccessful(SkillActivationType skillActivationType, SubSkillType subSkillType, Player player,
                                                  PrimarySkillType skill, int skillLevel, int activationChance)
     {
         //Maximum chance to succeed
@@ -296,7 +300,7 @@ public class SkillUtils {
         //Maximum roll we can make
         int maxBonusLevel = AdvancedConfig.getInstance().getMaxBonusLevel(subSkillType);
 
-        switch(subskillActivationType)
+        switch(skillActivationType)
         {
             //100 Skill = Guaranteed
             case RANDOM_LINEAR_100_SCALE_NO_CAP:
@@ -313,6 +317,24 @@ public class SkillUtils {
                 default:
                     return false;
         }
+    }
+
+    /**
+     * This method is for running a random success check with custom maxChance and maxBonusLevel values
+     * Mostly used for RNG effects that can't be directly associated with a specific AbstractSubSkill
+     * @param player target player
+     * @param abstractSubSkill this abstract subskill
+     * @param maxChance custom max chance
+     * @param maxBonusLevel custom max bonus level
+     * @return true if activation was successful
+     */
+    public static boolean isActivationSuccessfulCustom(Player player, AbstractSubSkill abstractSubSkill, double maxChance, int maxBonusLevel)
+    {
+
+        int skillLevel = UserManager.getPlayer(player).getSkillLevel(abstractSubSkill.getPrimarySkill());
+
+
+        return performRandomSkillCheck(abstractSubSkill, player, skillLevel, PerksUtils.handleLuckyPerks(player, abstractSubSkill.getPrimarySkill()), maxChance, maxBonusLevel);
     }
 
     public static double getChanceOfSuccess(int skillLevel, double maxLevelBonus, double curve)

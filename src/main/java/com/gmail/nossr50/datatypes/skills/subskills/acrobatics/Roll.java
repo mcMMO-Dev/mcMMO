@@ -128,7 +128,14 @@ public class Roll extends AcrobaticsSubSkill implements RandomChance {
         rollChance = rollStrings[0];
         rollChanceLucky = rollStrings[1];
 
-        String[] gracefulRollStrings = SkillUtils.calculateAbilityDisplayValues(skillValue, SubSkillType.ACROBATICS_ROLL, isLucky);
+        /*
+         * Graceful is double the odds of a normal roll
+         */
+        String[] gracefulRollStrings = SkillUtils.calculateAbilityDisplayValuesCustom(skillValue,
+                SubSkillType.ACROBATICS_ROLL,
+                isLucky,
+                AdvancedConfig.getInstance().getMaxBonusLevel(this) / 2,
+                AdvancedConfig.getInstance().getMaxChance(this));
         gracefulRollChance = gracefulRollStrings[0];
         gracefulRollChanceLucky = gracefulRollStrings[1];
 
@@ -250,7 +257,12 @@ public class Roll extends AcrobaticsSubSkill implements RandomChance {
     private double gracefulRollCheck(Player player, McMMOPlayer mcMMOPlayer, double damage, int skillLevel) {
         double modifiedDamage = calculateModifiedRollDamage(damage, Acrobatics.gracefulRollThreshold);
 
-        if (!isFatal(player, modifiedDamage) && SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ACROBATICS_ROLL, player, getPrimarySkill(), skillLevel, getActivationChance(mcMMOPlayer))) {
+        if (!isFatal(player, modifiedDamage)
+                && SkillUtils.isActivationSuccessfulCustom(player,
+                this,
+                AdvancedConfig.getInstance().getMaxChance(SubSkillType.ACROBATICS_ROLL),
+                AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL) / 2)) //This effectively makes it so you reach the max chance for success at half the requirements of roll's max chance (which would make graceful roll twice as likely per skill level)
+        {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Ability.Proc");
             SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, damage, true), XPGainReason.PVE);
 
@@ -373,7 +385,7 @@ public class Roll extends AcrobaticsSubSkill implements RandomChance {
         chancePerLevel = (1/curve) * maxBonusLevel;
 
 
-        return LocaleLoader.getString("Acrobatics.SubSkill.Roll.Mechanics", rollChanceHalfMax, graceChanceHalfMax, maxBonusLevel, chancePerLevel, damageThreshold);
+        return LocaleLoader.getString("Acrobatics.SubSkill.Roll.Mechanics", rollChanceHalfMax, graceChanceHalfMax, maxBonusLevel, chancePerLevel, damageThreshold, damageThreshold * 2);
     }
 
     /**
