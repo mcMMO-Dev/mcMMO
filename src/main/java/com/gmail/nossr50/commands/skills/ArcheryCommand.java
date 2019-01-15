@@ -6,6 +6,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
+import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -52,7 +53,7 @@ public class ArcheryCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canSkillShot = Permissions.isSubSkillEnabled(player, SubSkillType.ARCHERY_SKILL_SHOT);
+        canSkillShot = Permissions.isSubSkillEnabled(player, SubSkillType.ARCHERY_SKILL_SHOT) && RankUtils.hasUnlockedSubskill(player, SubSkillType.ARCHERY_SKILL_SHOT);
         canDaze = Permissions.isSubSkillEnabled(player, SubSkillType.ARCHERY_DAZE);
         canRetrieve = Permissions.isSubSkillEnabled(player, SubSkillType.ARCHERY_ARROW_RETRIEVAL);
     }
