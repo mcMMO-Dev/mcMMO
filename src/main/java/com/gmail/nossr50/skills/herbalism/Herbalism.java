@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.herbalism;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
@@ -11,13 +10,6 @@ import org.bukkit.block.BlockState;
 import java.util.HashSet;
 
 public class Herbalism {
-
-    public static int farmersDietRankLevel1 = AdvancedConfig.getInstance().getFarmerDietRankChange();
-    public static int farmersDietRankLevel2 = farmersDietRankLevel1 * 2;
-    public static int farmersDietMaxLevel   = farmersDietRankLevel1 * 5;
-
-    public static int greenThumbStageChangeLevel = AdvancedConfig.getInstance().getGreenThumbStageChange();
-    public static int greenThumbStageMaxLevel    = greenThumbStageChangeLevel * 4;
 
     /**
      * Convert blocks affected by the Green Thumb & Green Terra abilities.

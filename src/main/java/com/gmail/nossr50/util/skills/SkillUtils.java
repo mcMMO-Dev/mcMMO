@@ -86,17 +86,13 @@ public class SkillUtils {
      * Others
      */
 
-    public static int handleFoodSkills(Player player, PrimarySkillType skill, int eventFoodLevel, int baseLevel, int maxLevel, int rankChange) {
-        int skillLevel = UserManager.getPlayer(player).getSkillLevel(skill);
+    public static int handleFoodSkills(Player player, int eventFoodLevel, SubSkillType subSkillType) {
+        int curRank = RankUtils.getRank(player, subSkillType);
 
         int currentFoodLevel = player.getFoodLevel();
         int foodChange = eventFoodLevel - currentFoodLevel;
 
-        for (int i = baseLevel; i <= maxLevel; i += rankChange) {
-            if (skillLevel >= i) {
-                foodChange++;
-            }
-        }
+        foodChange+=curRank;
 
         return currentFoodLevel + foodChange;
     }

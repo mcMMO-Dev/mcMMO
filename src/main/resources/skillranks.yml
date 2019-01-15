@@ -238,17 +238,15 @@ Herbalism:
             Rank_1: 100
     GreenThumb:
         Standard:
-            Rank_1: 20
-            Rank_2: 40
-            Rank_3: 60
-            Rank_4: 80
-            Rank_5: 100
+            Rank_1: 25
+            Rank_2: 50
+            Rank_3: 75
+            Rank_4: 100
         RetroMode:
-            Rank_1: 200
-            Rank_2: 400
-            Rank_3: 600
-            Rank_4: 800
-            Rank_5: 1000
+            Rank_1: 250
+            Rank_2: 500
+            Rank_3: 750
+            Rank_4: 1000
     FarmersDiet:
         Standard:
             Rank_1: 20

@@ -51,12 +51,12 @@ public class HerbalismCommand extends SkillCommand {
 
         // FARMERS DIET
         if (canFarmersDiet) {
-            farmersDietRank = calculateRank(skillValue, Herbalism.farmersDietMaxLevel, Herbalism.farmersDietRankLevel1);
+            farmersDietRank = RankUtils.getRank(player, SubSkillType.HERBALISM_FARMERS_DIET);
         }
 
         // GREEN THUMB
         if (canGreenThumbBlocks || canGreenThumbPlants) {
-            greenThumbStage = calculateRank(skillValue, Herbalism.greenThumbStageMaxLevel, Herbalism.greenThumbStageChangeLevel);
+            greenThumbStage = RankUtils.getRank(player, SubSkillType.HERBALISM_GREEN_THUMB);
 
             String[] greenThumbStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.HERBALISM_GREEN_THUMB, isLucky);
             greenThumbChance = greenThumbStrings[0];

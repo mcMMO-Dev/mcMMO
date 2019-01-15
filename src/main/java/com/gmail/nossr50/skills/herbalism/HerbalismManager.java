@@ -13,6 +13,7 @@ import com.gmail.nossr50.runnables.skills.HerbalismBlockUpdaterTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Location;
@@ -75,7 +76,7 @@ public class HerbalismManager extends SkillManager {
      * @return the modified change in hunger for the event
      */
     public int farmersDiet(int rankChange, int eventFoodLevel) {
-        return SkillUtils.handleFoodSkills(getPlayer(), skill, eventFoodLevel, Herbalism.farmersDietRankLevel1, Herbalism.farmersDietMaxLevel, rankChange);
+        return SkillUtils.handleFoodSkills(getPlayer(), eventFoodLevel, SubSkillType.HERBALISM_FARMERS_DIET);
     }
 
     /**
@@ -315,7 +316,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     private boolean handleBlockState(BlockState blockState, boolean greenTerra) {
-        byte greenThumbStage = getGreenThumbStage();
+        int greenThumbStage = getGreenThumbStage();
 
         blockState.setMetadata(mcMMO.greenThumbDataKey, new FixedMetadataValue(mcMMO.p, (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)));
         Ageable crops = (Ageable) blockState.getBlockData();
@@ -365,7 +366,7 @@ public class HerbalismManager extends SkillManager {
         return true;
     }
 
-    private byte getGreenThumbStage() {
-        return (byte) Math.min(Math.min(getSkillLevel(), Herbalism.greenThumbStageMaxLevel) / Herbalism.greenThumbStageChangeLevel, 4);
+    private int getGreenThumbStage() {
+        return RankUtils.getRank(getPlayer(), SubSkillType.HERBALISM_GREEN_THUMB);
     }
 }

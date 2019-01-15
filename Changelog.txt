@@ -64,9 +64,11 @@ Version 2.1.0
  ! (Item) Improved some of the messages sent to the player regarding the Chimaera Wing
  ! (Party) Party member list will only include members of the party that you can see (aren't vanished)
  ! (Skills) Some skill level rank requirements have changed
+ ! (Skills) Green Thumb now uses a rank system
+ ! (Skills) Farmer's Diet & Fisherman's Diet now use a rank system
  ! (Skills) Fixed an edge case bug where Blast Mining wouldn't inform the player that it was on cooldown
  ! (Skills) mcMMO skills will now be on a scale from 1-100 instead of 0-1000 (for existing mcMMO installs this is opt-in and off by default)
- ! (Skills) Skill Super Powers are now unlockabled skills, unlocking at level 10
+ ! (Skills) Skill Super Powers now use a rank system, almost all of them unlocking first at level 10
  ! (Skills) Acrobatics' Roll exploit detection was tweaked to still allow for Roll to trigger even if it rewards no XP
  ! (Skills) Acrobatics' Roll & Gracefull Roll are now considered the same skill (both mechanics are still there)
  ! (Skills) Woodcutting's Double Drop subskill is now named Harvest Lumber
