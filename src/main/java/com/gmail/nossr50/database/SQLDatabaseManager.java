@@ -41,6 +41,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     "?verifyServerCertificate=false"+
                     "&useSSL=true"+
                     "&requireSSL=true";
+        else
+            connectionString+=
+                    "?useSSL=false";
 
         try {
             // Force driver to load if not yet loaded

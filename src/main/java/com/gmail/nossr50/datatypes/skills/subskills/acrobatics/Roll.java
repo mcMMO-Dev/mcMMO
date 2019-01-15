@@ -204,7 +204,7 @@ public class Roll extends AcrobaticsSubSkill implements RandomChance {
     }
 
     private boolean canRoll(Player player) {
-        return !exploitPrevention(player) && Permissions.isSubSkillEnabled(player, SubSkillType.ACROBATICS_ROLL);
+        return !isExploiting(player) && Permissions.isSubSkillEnabled(player, SubSkillType.ACROBATICS_ROLL);
     }
 
     /**
@@ -281,7 +281,7 @@ public class Roll extends AcrobaticsSubSkill implements RandomChance {
      *
      * @return true if exploits are detected, false otherwise
      */
-    private boolean exploitPrevention(Player player) {
+    private boolean isExploiting(Player player) {
         if (!Config.getInstance().getAcrobaticsPreventAFK()) {
             return false;
         }
