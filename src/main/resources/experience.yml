@@ -298,7 +298,7 @@ Experience:
             Horse: 1.0
             Zombie_Villager: 2.0
             Skeleton_Horse: 1.0
-            Zombie_Horse: 1.0
+            Zombie_Horse: 1.2
             Husk: 3.0
             Evoker: 3.0
             Polar_Bear: 1.0
@@ -308,8 +308,9 @@ Experience:
             Rabbit: 1.0
             Chicken: 1.0
             Bat: 1.0
-            Mushroom_Cow: 1.0
+            Mushroom_Cow: 1.2
             Cow: 1.0
+            Turtle: 1.1
             Sheep: 1.0
             Pig: 1.0
             Squid: 1.0
@@ -318,3 +319,4 @@ Experience:
             Snowman: 0.0
             Parrot: 1.0
             Illusioner: 3.0
+            Drowned: 1.0
