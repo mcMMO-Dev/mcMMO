@@ -10,6 +10,7 @@ import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -70,11 +71,11 @@ public class MiningCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canBiggerBombs = Permissions.biggerBombs(player);
-        canBlast = Permissions.remoteDetonation(player);
-        canDemoExpert = Permissions.demolitionsExpertise(player);
+        canBiggerBombs = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_BLAST_MINING) && Permissions.biggerBombs(player);
+        canBlast = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_BLAST_MINING) && Permissions.remoteDetonation(player);
+        canDemoExpert = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_BLAST_MINING) && Permissions.demolitionsExpertise(player);
         canDoubleDrop = Permissions.isSubSkillEnabled(player, SubSkillType.MINING_DOUBLE_DROPS) && !skill.getDoubleDropsDisabled();
-        canSuperBreaker = Permissions.superBreaker(player);
+        canSuperBreaker = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_SUPER_BREAKER) && Permissions.superBreaker(player);
     }
 
     @Override

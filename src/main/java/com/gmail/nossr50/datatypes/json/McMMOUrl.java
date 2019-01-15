@@ -1,7 +1,5 @@
 package com.gmail.nossr50.datatypes.json;
 
-import com.gmail.nossr50.commands.skills.McMMOWebLinks;
-
 public class McMMOUrl {
     public static final String urlWebsite   = "https://www.mcmmo.org";
     public static final String urlDiscord   = "https://discord.gg/bJ7pFS9";

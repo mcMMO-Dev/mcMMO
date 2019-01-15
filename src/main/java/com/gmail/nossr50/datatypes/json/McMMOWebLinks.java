@@ -1,4 +1,4 @@
-package com.gmail.nossr50.commands.skills;
+package com.gmail.nossr50.datatypes.json;
 
 import com.gmail.nossr50.datatypes.json.McMMOUrl;
 import com.gmail.nossr50.locale.LocaleLoader;
