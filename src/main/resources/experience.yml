@@ -206,6 +206,11 @@ Experience:
         White_Tulip: 150
         Dandelion: 100
     Mining:
+        Tube_Coral_Block: 75
+        Brain_Coral_Block: 80
+        Bubble_Coral_Block: 70
+        Fire_Coral_Block: 90
+        Horn_Coral_Block: 125
         Coal_Ore: 100
         Diamond_Ore: 750
         Emerald_Ore: 1000
