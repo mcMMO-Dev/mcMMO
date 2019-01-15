@@ -125,10 +125,10 @@ Experience:
     Archery:
         Distance_Multiplier: 0.025
     Fishing:
-        Cod: 800
-        Salmon: 800
-        Tropical_Fish: 800
-        Pufferfish: 800
+        Cod: 100
+        Salmon: 600
+        Tropical_Fish: 10000
+        Pufferfish: 2400
         Shake: 50
     Excavation:
         Clay: 40
