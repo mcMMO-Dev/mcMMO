@@ -1,9 +1,9 @@
-# This file defines the rank level requirements for a subskill
-# You cannot alter how many ranks a skill has, that is coded into mcMMO directly
+# This file defines the rank level requirements for a subskill.
+# You cannot alter how many ranks a skill has, that is coded into mcMMO directly.
 # You can however, change when they unlock, if you make all ranks of a skill level 0 for example every player will have the most powerful version of that skill right away.
-# Retro Mode and Standard have separate config settings to make it easier for server owners to understand the difference between the two
-# Retro Mode is setup to be an entirely cosmetic change, keeping the old 0-1000 feeling of mcMMO
-# Retro Mode has 10x faster leveling and 10x higher skill requirements, if you do the math you can see its the same as Standrd and only cosmetic!
+# Retro Mode and Standard have separate config settings to make it easier for server owners to understand the difference between the two.
+# Retro Mode is setup to be an entirely cosmetic change, keeping the old 0-1000 feeling of mcMMO.
+# Retro Mode has 10x faster leveling and 10x higher skill requirements, if you do the math you can see its the same as Standard and only cosmetic!.
 ###
 Alchemy:
     Catalysis:
