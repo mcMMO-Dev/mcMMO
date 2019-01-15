@@ -280,6 +280,10 @@ public class PlayerProfile {
 
         changed = true;
 
+        //Don't allow levels to be negative
+        if(level < 0)
+            level = 0;
+
         skills.put(skill, level);
         skillsXp.put(skill, 0F);
     }
