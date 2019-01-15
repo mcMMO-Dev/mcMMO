@@ -130,6 +130,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         lastPlayed = Long.parseLong(character[37]) * Misc.TIME_CONVERSION_FACTOR;
                     }
                     catch (NumberFormatException e) {
+                        e.printStackTrace();
                     }
                     if (lastPlayed == 0) {
                         OfflinePlayer player = mcMMO.p.getServer().getOfflinePlayer(name);

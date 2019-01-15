@@ -151,7 +151,7 @@ public class HashChunkManager implements ChunkManager {
         try {
             chunkStore = readChunkStore(world, cx, cz);
         }
-        catch (Exception e) {}
+        catch (Exception e) { e.printStackTrace(); }
 
         if (chunkStore == null) {
             return;

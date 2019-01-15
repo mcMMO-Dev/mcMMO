@@ -139,7 +139,7 @@ public class PrimitiveChunkStore implements ChunkStore {
                     try {
                         store[x][z][y] = temp[x][y][z];
                     }
-                    catch (Exception e) {}
+                    catch (Exception e) { e.printStackTrace(); }
                 }
             }
         }

@@ -1164,6 +1164,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + "DROP INDEX `user`,"
                     + "ADD INDEX `user` (`user`(20) ASC)");
         } catch (SQLException ex) {
+            ex.printStackTrace();
         } finally {
             tryClose(resultSet);
         }
