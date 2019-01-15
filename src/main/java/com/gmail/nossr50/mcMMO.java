@@ -89,7 +89,7 @@ public class mcMMO extends JavaPlugin {
     // XP Event Check
     private boolean xpEventEnabled;
 
-    private boolean UseOldLevelScalingEnabled;
+    private boolean isRetroModeEnabled;
 
     /* Metadata Values */
     public final static String entityMetadataKey   = "mcMMO: Spawned Entity";
@@ -137,6 +137,9 @@ public class mcMMO extends JavaPlugin {
             if (!noErrorsInConfigFiles) {
                 return;
             }
+
+            //Store this value so other plugins can check it
+            isRetroModeEnabled = Config.getInstance().getIsRetroMode();
 
             if (getServer().getName().equals("Cauldron") || getServer().getName().equals("MCPC+")) {
                 checkModConfigs();
@@ -532,5 +535,15 @@ public class mcMMO extends JavaPlugin {
     public InputStreamReader getResourceAsReader(String fileName) {
         InputStream in = getResource(fileName);
         return in == null ? null : new InputStreamReader(in, Charsets.UTF_8);
+    }
+
+    /**
+     * Checks if this plugin is using retro mode
+     * Retro mode is a 0-1000 skill system
+     * Standard mode is scaled for 1-100
+     * @return true if retro mode is enabled
+     */
+    public boolean isRetroModeEnabled() {
+        return isRetroModeEnabled;
     }
 }

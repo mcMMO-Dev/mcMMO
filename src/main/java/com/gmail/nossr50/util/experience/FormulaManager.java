@@ -21,13 +21,11 @@ public class FormulaManager {
     private FormulaType previousFormula;
 
     //Used for XP formula scaling
-    private boolean classicModeEnabled;
-    private int classicModeXPFormulaFactor;
+    private boolean retroModeEnabled;
 
     public FormulaManager() {
         /* Setting for Classic Mode (Scales a lot of stuff up by * 10) */
-        classicModeEnabled = Config.getInstance().getIsRetroMode();
-        classicModeXPFormulaFactor = Config.getInstance().getClassicModeXPFormulaFactor();
+        retroModeEnabled = Config.getInstance().getIsRetroMode();
         loadFormula();
     }
 
@@ -111,8 +109,11 @@ public class FormulaManager {
     public int getCachedXpToLevel(int level, FormulaType formulaType) {
         int experience;
 
-        //If we're in classic we use the XP factor from config settings
-        int skillSystemMultiplier = classicModeEnabled ? classicModeXPFormulaFactor : 10;
+        /**
+         * Retro mode XP requirements are the default requirements
+         * Standard mode XP requirements are multiplied by a factor of 10
+         */
+        int xpNeededMultiplier = retroModeEnabled ? 1 : 10;
 
         if (formulaType == FormulaType.UNKNOWN) {
             formulaType = FormulaType.LINEAR;
@@ -125,7 +126,7 @@ public class FormulaManager {
         switch (formulaType) {
             case LINEAR:
                 if (!experienceNeededLinear.containsKey(level)) {
-                    experience = (int) Math.floor( skillSystemMultiplier * (base + level * multiplier));
+                    experience = (int) Math.floor( xpNeededMultiplier * (base + level * multiplier));
                     experienceNeededLinear.put(level, experience);
                 }
 
@@ -133,7 +134,7 @@ public class FormulaManager {
 
             case EXPONENTIAL:
                 if (!experienceNeededExponential.containsKey(level)) {
-                    experience = (int) Math.floor( skillSystemMultiplier * (multiplier * Math.pow(level, exponent) + base));
+                    experience = (int) Math.floor( xpNeededMultiplier * (multiplier * Math.pow(level, exponent) + base));
                     experienceNeededExponential.put(level, experience);
                 }
 
