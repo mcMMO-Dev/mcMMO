@@ -71,9 +71,9 @@ public class MiningCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canBiggerBombs = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_BLAST_MINING) && Permissions.biggerBombs(player);
+        canBiggerBombs = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_BIGGER_BOMBS) && Permissions.biggerBombs(player);
         canBlast = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_BLAST_MINING) && Permissions.remoteDetonation(player);
-        canDemoExpert = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_BLAST_MINING) && Permissions.demolitionsExpertise(player);
+        canDemoExpert = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_DEMOLITIONS_EXPERTISE) && Permissions.demolitionsExpertise(player);
         canDoubleDrop = Permissions.isSubSkillEnabled(player, SubSkillType.MINING_DOUBLE_DROPS) && !skill.getDoubleDropsDisabled();
         canSuperBreaker = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_SUPER_BREAKER) && Permissions.superBreaker(player);
     }

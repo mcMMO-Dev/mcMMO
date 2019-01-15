@@ -211,6 +211,18 @@ Mining:
             Rank_1: 10
         RetroMode:
             Rank_1: 100
+    # For now make sure rank 1 is the same as blast mining rank 1, it's a bit hacky, I'll fix it later
+    BiggerBombs:
+        Standard:
+            Rank_1: 10
+        RetroMode:
+            Rank_1: 100
+    # For now make sure rank 1 is the same as blast mining rank 1, it's a bit hacky, I'll fix it later
+    DemolitionsExpertise:
+        Standard:
+            Rank_1: 10
+        RetroMode:
+            Rank_1: 100
     BlastMining:
         Standard:
             Rank_1: 10
