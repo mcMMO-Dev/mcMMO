@@ -2,10 +2,12 @@ package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.subskills.interfaces.SubSkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.axes.Axes;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
+import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -59,10 +61,10 @@ public class AxesCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canSkullSplitter = Permissions.skullSplitter(player);
+        canSkullSplitter = Permissions.skullSplitter(player) && RankUtils.hasUnlockedSubskill(player, SubSkillType.AXES_SKULL_SPLITTER);
         canCritical = Permissions.isSubSkillEnabled(player, SubSkillType.AXES_CRITICAL_STRIKES);
-        canAxeMastery = Permissions.isSubSkillEnabled(player, SubSkillType.AXES_AXE_MASTERY);
-        canImpact = Permissions.isSubSkillEnabled(player, SubSkillType.AXES_ARMOR_IMPACT);
+        canAxeMastery = Permissions.isSubSkillEnabled(player, SubSkillType.AXES_AXE_MASTERY) && RankUtils.hasUnlockedSubskill(player, SubSkillType.AXES_AXE_MASTERY);
+        canImpact = Permissions.isSubSkillEnabled(player, SubSkillType.AXES_ARMOR_IMPACT) && RankUtils.hasUnlockedSubskill(player, SubSkillType.AXES_ARMOR_IMPACT);
         canGreaterImpact = Permissions.isSubSkillEnabled(player, SubSkillType.AXES_GREATER_IMPACT);
     }
 
