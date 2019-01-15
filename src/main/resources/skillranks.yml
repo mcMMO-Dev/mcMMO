@@ -53,7 +53,7 @@ Archery:
             Rank_18: 90
             Rank_19: 95
             Rank_20: 100
-        Retro:
+        RetroMode:
             Rank_1: 50
             Rank_2: 100
             Rank_3: 150
@@ -102,7 +102,7 @@ Axes:
             Rank_18: 90
             Rank_19: 95
             Rank_20: 100
-        Retro:
+        RetroMode:
             Rank_1: 50
             Rank_2: 100
             Rank_3: 150
