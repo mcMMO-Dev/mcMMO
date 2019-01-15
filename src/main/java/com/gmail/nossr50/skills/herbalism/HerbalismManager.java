@@ -71,11 +71,10 @@ public class HerbalismManager extends SkillManager {
     /**
      * Handle the Farmer's Diet ability
      *
-     * @param rankChange The # of levels to change rank for the food
      * @param eventFoodLevel The initial change in hunger from the event
      * @return the modified change in hunger for the event
      */
-    public int farmersDiet(int rankChange, int eventFoodLevel) {
+    public int farmersDiet(int eventFoodLevel) {
         return SkillUtils.handleFoodSkills(getPlayer(), eventFoodLevel, SubSkillType.HERBALISM_FARMERS_DIET);
     }
 
