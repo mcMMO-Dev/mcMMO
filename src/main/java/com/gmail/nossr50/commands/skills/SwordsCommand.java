@@ -7,6 +7,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.swords.Swords;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
+import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -58,9 +59,9 @@ public class SwordsCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canBleed = Permissions.isSubSkillEnabled(player, SubSkillType.SWORDS_BLEED);
-        canCounter = Permissions.isSubSkillEnabled(player, SubSkillType.SWORDS_COUNTER_ATTACK);
-        canSerratedStrike = Permissions.serratedStrikes(player);
+        canBleed = canUseSubskill(player, SubSkillType.SWORDS_BLEED);
+        canCounter = canUseSubskill(player, SubSkillType.SWORDS_COUNTER_ATTACK);
+        canSerratedStrike = RankUtils.hasUnlockedSubskill(player, SubSkillType.SWORDS_SERRATED_STRIKES) && Permissions.serratedStrikes(player);
     }
 
     @Override

@@ -30,8 +30,8 @@ public class SalvageCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canAdvancedSalvage = Permissions.isSubSkillEnabled(player, SubSkillType.SALVAGE_ADVANCED_SALVAGE);
-        canArcaneSalvage = Permissions.isSubSkillEnabled(player, SubSkillType.SALVAGE_ARCANE_SALVAGE);
+        canAdvancedSalvage = canUseSubskill(player, SubSkillType.SALVAGE_ADVANCED_SALVAGE);
+        canArcaneSalvage = canUseSubskill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE);
     }
 
     @Override

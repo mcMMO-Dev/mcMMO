@@ -6,6 +6,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.unarmed.Unarmed;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
+import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -71,11 +72,11 @@ public class UnarmedCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canBerserk = Permissions.berserk(player);
-        canIronArm = Permissions.isSubSkillEnabled(player, SubSkillType.UNARMED_IRON_ARM_STYLE);
-        canDeflect = Permissions.isSubSkillEnabled(player, SubSkillType.UNARMED_ARROW_DEFLECT);
-        canDisarm = Permissions.isSubSkillEnabled(player, SubSkillType.UNARMED_DISARM);
-        canIronGrip = Permissions.isSubSkillEnabled(player, SubSkillType.UNARMED_IRON_GRIP);
+        canBerserk = RankUtils.hasUnlockedSubskill(player, SubSkillType.UNARMED_BERSERK) && Permissions.berserk(player);
+        canIronArm = canUseSubskill(player, SubSkillType.UNARMED_IRON_ARM_STYLE);
+        canDeflect = canUseSubskill(player, SubSkillType.UNARMED_ARROW_DEFLECT);
+        canDisarm = canUseSubskill(player, SubSkillType.UNARMED_DISARM);
+        canIronGrip = canUseSubskill(player, SubSkillType.UNARMED_IRON_GRIP);
         // TODO: Apparently we forgot about block cracker?
     }
 
