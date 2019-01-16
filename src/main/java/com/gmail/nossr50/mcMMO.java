@@ -44,6 +44,7 @@ import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
 import com.google.common.base.Charsets;
 import net.shatteredlands.shatt.backup.ZipLibrary;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -178,6 +179,20 @@ public class mcMMO extends JavaPlugin {
 
             if (Config.getInstance().getPTPCommandWorldPermissions()) {
                 Permissions.generateWorldTeleportPermissions();
+            }
+
+            //If anonymous statistics are enabled then use them
+
+            Metrics metrics;
+
+            if(Config.getInstance().getIsMetricsEnabled()) {
+                metrics = new Metrics(this);
+                metrics.addCustomChart(new Metrics.SimplePie("version", () -> getDescription().getVersion()));
+
+                if(Config.getInstance().getIsRetroMode())
+                    metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Standard"));
+                else
+                    metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Retro"));
             }
         }
         catch (Throwable t) {

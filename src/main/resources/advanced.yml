@@ -13,6 +13,9 @@
 #
 #  Settings for the Skills
 ###
+# Enables anonymous statistics
+Metrics:
+    bstats: true
 Feedback:
     # If sendtitles is true messages will be sent using the title api (BIG TEXT ON SCREEN)
     Events:

@@ -87,6 +87,7 @@
                             <include>commons-logging:commons-logging</include>
                             <include>org.apache.tomcat:tomcat-jdbc</include>
                             <include>org.apache.tomcat:tomcat-juli</include>
+                            <include>org.bstats:bstats-bukkit</include>
                         </includes>
                     </artifactSet>
                     <relocations>
@@ -101,6 +102,10 @@
                         <relocation>
                             <pattern>org.apache.tomcat</pattern>
                             <shadedPattern>com.gmail.nossr50.database.tomcat</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.bstats</pattern>
+                            <shadedPattern>com.gmail.nossr50.metrics.bstat</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -127,8 +132,18 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
+        <repository>
+            <id>CodeMC</id>
+            <url>https://repo.codemc.org/repository/maven-public</url>
+        </repository>
     </repositories>
     <dependencies>
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>1.4</version>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
