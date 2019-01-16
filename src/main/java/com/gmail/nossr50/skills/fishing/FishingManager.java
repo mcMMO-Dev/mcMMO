@@ -31,6 +31,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -439,7 +440,7 @@ public class FishingManager extends SkillManager {
             }
 
             Misc.dropItem(target.getLocation(), drop);
-            CombatUtils.dealDamage(target, Math.max(target.getMaxHealth() / 4, 1), getPlayer()); // Make it so you can shake a mob no more than 4 times.
+            CombatUtils.dealDamage(target, Math.max(target.getMaxHealth() / 4, 1), EntityDamageEvent.DamageCause.CUSTOM, getPlayer()); // Make it so you can shake a mob no more than 4 times.
             applyXpGain(ExperienceConfig.getInstance().getFishingShakeXP(), XPGainReason.PVE);
         }
     }
