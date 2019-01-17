@@ -280,7 +280,7 @@ Herbalism:
 Fishing:
     Shake:
         Standard:
-            Rank_1: 50
+            Rank_1: 15
         RetroMode:
             Rank_1: 150
     MasterAngler:
