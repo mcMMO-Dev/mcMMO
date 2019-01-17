@@ -35,7 +35,8 @@ public class TextComponentFactory {
     public static TextComponent getNotificationMultipleValues(String localeKey, NotificationType notificationType, String... values)
     {
         String preColoredString = LocaleLoader.getString(localeKey, (Object[]) values);
-        return new TextComponent(preColoredString);
+        TextComponent msg = new TextComponent(preColoredString);
+        return new TextComponent(msg);
     }
 
     public static TextComponent getNotificationTextComponentFromLocale(String localeKey, NotificationType notificationType)

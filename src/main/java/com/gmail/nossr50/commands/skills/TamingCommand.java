@@ -164,7 +164,9 @@ public class TamingCommand extends SkillCommand {
         }
 
         if (canGore) {
-            messages.add(LocaleLoader.getString("Taming.Combat.Chance.Gore", goreChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", goreChanceLucky) : ""));
+            messages.add(LocaleLoader.getString("Ability.Generic.Template",
+                    LocaleLoader.getString("Taming.Combat.Chance.Gore"),
+                    goreChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", goreChanceLucky) : ""));
         }
 
         return messages;

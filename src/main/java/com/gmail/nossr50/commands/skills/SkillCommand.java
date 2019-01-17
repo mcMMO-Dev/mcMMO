@@ -65,10 +65,6 @@ public abstract class SkillCommand implements TabExecutor {
                 permissionsCheck(player);
                 dataCalculations(player, skillValue, isLucky);
 
-                if (Config.getInstance().getSkillUseBoard()) {
-                    ScoreboardManager.enablePlayerSkillScoreboard(player, skill);
-                }
-
                 sendSkillCommandHeader(player, mcMMOPlayer, (int) skillValue);
 
                 //Make JSON text components
@@ -89,17 +85,17 @@ public abstract class SkillCommand implements TabExecutor {
                 //Stats
                 getStatMessages(player, isLucky, hasEndurance, skillValue);
 
-                ChatColor hd1 = ChatColor.DARK_AQUA;
-                ChatColor c1 = ChatColor.GOLD;
-                ChatColor c2 = ChatColor.RED;
-
                 //Header
-                player.sendMessage(hd1+"[]=====[]"+c1+" mcMMO "+c2+"Overhaul"+c1+" Era "+hd1+"[]=====[]");
+                player.sendMessage(LocaleLoader.getString("Overhaul.mcMMO.Header"));
+
                 //Link Header
                 TextComponentFactory.sendPlayerUrlHeader(player);
 
-                return true;
+                if (Config.getInstance().getSkillUseBoard()) {
+                    ScoreboardManager.enablePlayerSkillScoreboard(player, skill);
+                }
 
+                return true;
             default:
                 return skillGuideCommand.onCommand(sender, command, label, args);
         }
