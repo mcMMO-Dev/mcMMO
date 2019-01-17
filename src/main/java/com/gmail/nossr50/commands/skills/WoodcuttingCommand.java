@@ -99,14 +99,7 @@ public class WoodcuttingCommand extends SkillCommand {
         List<String> messages = new ArrayList<String>();
 
         if (canLeafBlow) {
-            int leafBlowerUnlockLevel = AdvancedConfig.getInstance().getLeafBlowUnlockLevel();
-
-            if (skillValue < leafBlowerUnlockLevel) {
-                messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Woodcutting.Ability.Locked.0", leafBlowerUnlockLevel)));
-            }
-            else {
-                messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Woodcutting.Ability.0"), LocaleLoader.getString("Woodcutting.Ability.1")));
-            }
+            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Woodcutting.Ability.0"), LocaleLoader.getString("Woodcutting.Ability.1")));
         }
 
         if (canDoubleDrop) {

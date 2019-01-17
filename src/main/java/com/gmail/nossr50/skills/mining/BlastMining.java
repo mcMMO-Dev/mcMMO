@@ -2,8 +2,10 @@ package com.gmail.nossr50.skills.mining;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
@@ -15,7 +17,7 @@ import java.util.List;
 
 public class BlastMining {
     // The order of the values is extremely important, a few methods depend on it to work properly
-    public enum Tier {
+   /* public enum Tier {
         EIGHT(8),
         SEVEN(7),
         SIX(6),
@@ -39,52 +41,58 @@ public class BlastMining {
             return AdvancedConfig.getInstance().getBlastMiningRankLevel(this);
         }
 
-        protected double getBlastRadiusModifier() {
-            return AdvancedConfig.getInstance().getBlastRadiusModifier(this);
-        }
 
-        protected double getOreBonus() {
-            return AdvancedConfig.getInstance().getOreBonus(this);
-        }
-
-        protected double getDebrisReduction() {
-            return AdvancedConfig.getInstance().getDebrisReduction(this);
-        }
-
-        protected double getBlastDamageDecrease() {
-            return AdvancedConfig.getInstance().getBlastDamageDecrease(this);
-        }
-
-        protected int getDropMultiplier() {
-            return AdvancedConfig.getInstance().getDropMultiplier(this);
-        }
-    }
+    }*/
 
     public static Material detonator = Config.getInstance().getDetonatorItem();
 
     public final static int MAXIMUM_REMOTE_DETONATION_DISTANCE = 100;
 
+    public static double getBlastRadiusModifier(int rank) {
+        return AdvancedConfig.getInstance().getBlastRadiusModifier(rank);
+    }
+
+
+
+    public static double getBlastDamageDecrease(int rank) {
+        return AdvancedConfig.getInstance().getBlastDamageDecrease(rank);
+    }
+
+
+
     public static int getDemolitionExpertUnlockLevel() {
-        List<Tier> tierList = Arrays.asList(Tier.values());
+        /*List<Tier> tierList = Arrays.asList(Tier.values());
         for (Tier tier : tierList) {
             if (tier.getBlastDamageDecrease() > 0) {
                 continue;
             }
 
             return tier == Tier.EIGHT ? tier.getLevel() : tierList.get(tierList.indexOf(tier) - 1).getLevel();
+        }*/
+
+        for(int i = 0; i < SubSkillType.MINING_BLAST_MINING.getNumRanks()-1; i++)
+        {
+            if(getBlastDamageDecrease(i+1) > 0)
+                return RankUtils.getRankUnlockLevel(SubSkillType.MINING_BLAST_MINING, i+1);
         }
 
         return 0;
     }
 
     public static int getBiggerBombsUnlockLevel() {
-        List<Tier> tierList = Arrays.asList(Tier.values());
+        /*List<Tier> tierList = Arrays.asList(Tier.values());
         for (Tier tier : tierList) {
             if (tier.getBlastRadiusModifier() > 1.0) {
                 continue;
             }
 
             return tier == Tier.EIGHT ? tier.getLevel() : tierList.get(tierList.indexOf(tier) - 1).getLevel();
+        }*/
+
+        for(int i = 0; i < SubSkillType.MINING_BLAST_MINING.getNumRanks()-1; i++)
+        {
+            if(getBlastRadiusModifier(i+1) > 0)
+                return RankUtils.getRankUnlockLevel(SubSkillType.MINING_BLAST_MINING, i+1);
         }
 
         return 0;

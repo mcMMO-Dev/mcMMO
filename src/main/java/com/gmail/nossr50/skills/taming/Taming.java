@@ -1,26 +1,28 @@
 package com.gmail.nossr50.skills.taming;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.EntityEffect;
 import org.bukkit.entity.*;
 
 public class Taming {
     public static int environmentallyAwareUnlockLevel = AdvancedConfig.getInstance().getEnviromentallyAwareUnlock();
-    public static int holyHoundUnlockLevel            = AdvancedConfig.getInstance().getHolyHoundUnlock();
+    public static int holyHoundUnlockLevel            = RankUtils.getUnlockLevel(SubSkillType.TAMING_HOLY_HOUND);
 
-    public static int    fastFoodServiceUnlockLevel      = AdvancedConfig.getInstance().getFastFoodUnlock();
+    public static int    fastFoodServiceUnlockLevel      = RankUtils.getUnlockLevel(SubSkillType.TAMING_FAST_FOOD_SERVICE);
     public static double fastFoodServiceActivationChance = AdvancedConfig.getInstance().getFastFoodChance();
 
     public static int    goreBleedTicks    = AdvancedConfig.getInstance().getGoreBleedTicks();
     public static double goreModifier      = AdvancedConfig.getInstance().getGoreModifier();
 
-    public static int    sharpenedClawsUnlockLevel = AdvancedConfig.getInstance().getSharpenedClawsUnlock();
+    public static int    sharpenedClawsUnlockLevel = RankUtils.getUnlockLevel(SubSkillType.TAMING_SHARPENED_CLAWS);
     public static double sharpenedClawsBonusDamage = AdvancedConfig.getInstance().getSharpenedClawsBonus();
 
-    public static int    shockProofUnlockLevel = AdvancedConfig.getInstance().getShockProofUnlock();
+    public static int    shockProofUnlockLevel = RankUtils.getUnlockLevel(SubSkillType.TAMING_SHOCK_PROOF);
     public static double shockProofModifier    = AdvancedConfig.getInstance().getShockProofModifier();
 
-    public static int    thickFurUnlockLevel = AdvancedConfig.getInstance().getThickFurUnlock();
+    public static int    thickFurUnlockLevel = RankUtils.getUnlockLevel(SubSkillType.TAMING_THICK_FUR);
     public static double thickFurModifier    = AdvancedConfig.getInstance().getThickFurModifier();
 
     public static boolean canPreventDamage(Tameable pet, AnimalTamer owner) {

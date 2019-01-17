@@ -1,19 +1,21 @@
 package com.gmail.nossr50.skills.salvage;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.salvage.Salvage.Tier;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -65,7 +67,7 @@ public class SalvageManager extends SkillManager {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, "Anvil.Unbreakable");
             return;
         }
-        
+
         // Permissions checks on material and item types
         if (!Permissions.salvageItemType(player, salvageable.getSalvageItemType())) {
             NotificationManager.sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
@@ -145,18 +147,10 @@ public class SalvageManager extends SkillManager {
      * @return the current Arcane Salvage rank
      */
     public int getArcaneSalvageRank() {
-        int skillLevel = getSkillLevel();
-
-        for (Tier tier : Tier.values()) {
-            if (skillLevel >= tier.getLevel()) {
-                return tier.toNumerical();
-            }
-        }
-
-        return 0;
+        return RankUtils.getRank(getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE);
     }
 
-    public double getExtractFullEnchantChance() {
+    /*public double getExtractFullEnchantChance() {
         int skillLevel = getSkillLevel();
 
         for (Tier tier : Tier.values()) {
@@ -178,6 +172,14 @@ public class SalvageManager extends SkillManager {
         }
 
         return 0;
+    }*/
+
+    public double getExtractFullEnchantChance() {
+        return AdvancedConfig.getInstance().getArcaneSalvageExtractFullEnchantsChance(getArcaneSalvageRank());
+    }
+
+    public double getExtractPartialEnchantChance() {
+        return AdvancedConfig.getInstance().getArcaneSalvageExtractPartialEnchantsChance(getArcaneSalvageRank());
     }
 
     private ItemStack arcaneSalvageCheck(Map<Enchantment, Integer> enchants) {

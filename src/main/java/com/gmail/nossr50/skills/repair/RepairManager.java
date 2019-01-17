@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.repair;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -10,13 +11,13 @@ import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.repair.ArcaneForging.Tier;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -67,7 +68,7 @@ public class RepairManager extends SkillManager {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, "Anvil.Unbreakable");
             return;
         }
-        
+
         // Permissions checks on material and item types
         if (!Permissions.repairMaterialType(player, repairable.getRepairMaterialType())) {
             NotificationManager.sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
@@ -194,15 +195,7 @@ public class RepairManager extends SkillManager {
      * @return the current Arcane Forging rank
      */
     public int getArcaneForgingRank() {
-        int skillLevel = getSkillLevel();
-
-        for (Tier tier : Tier.values()) {
-            if (skillLevel >= tier.getLevel()) {
-                return tier.toNumerical();
-            }
-        }
-
-        return 0;
+        return RankUtils.getRank(getPlayer(), SubSkillType.REPAIR_ARCANE_FORGING);
     }
 
     /**
@@ -211,6 +204,24 @@ public class RepairManager extends SkillManager {
      * @return The chance of keeping the enchantment
      */
     public double getKeepEnchantChance() {
+        return AdvancedConfig.getInstance().getArcaneForgingKeepEnchantsChance(getArcaneForgingRank());
+    }
+
+    /**
+     * Gets chance of enchantment being downgraded during repair.
+     *
+     * @return The chance of the enchantment being downgraded
+     */
+    public double getDowngradeEnchantChance() {
+        return AdvancedConfig.getInstance().getArcaneForgingDowngradeChance(getArcaneForgingRank());
+    }
+
+    /**
+     * Gets chance of keeping enchantment during repair.
+     *
+     * @return The chance of keeping the enchantment
+     */
+    /*public double getKeepEnchantChance() {
         int skillLevel = getSkillLevel();
 
         for (Tier tier : Tier.values()) {
@@ -220,14 +231,14 @@ public class RepairManager extends SkillManager {
         }
 
         return 0;
-    }
+    }*/
 
     /**
      * Gets chance of enchantment being downgraded during repair.
      *
      * @return The chance of the enchantment being downgraded
      */
-    public double getDowngradeEnchantChance() {
+    /*public double getDowngradeEnchantChance() {
         int skillLevel = getSkillLevel();
 
         for (Tier tier : Tier.values()) {
@@ -237,7 +248,7 @@ public class RepairManager extends SkillManager {
         }
 
         return 100;
-    }
+    }*/
 
     /**
      * Computes repair bonuses.

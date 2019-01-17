@@ -1,11 +1,9 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.mining.BlastMining;
-import com.gmail.nossr50.skills.mining.BlastMining.Tier;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
@@ -118,14 +116,7 @@ public class MiningCommand extends SkillCommand {
         }
 
         if (canBlast) {
-            int unlockLevel = AdvancedConfig.getInstance().getBlastMiningRankLevel(Tier.ONE);
-
-            if (skillValue < unlockLevel) {
-                messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.0", unlockLevel)));
-            }
-            else {
-                messages.add(LocaleLoader.getString("Mining.Blast.Rank", blastMiningRank, Tier.values().length, LocaleLoader.getString("Mining.Blast.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
-            }
+            messages.add(LocaleLoader.getString("Mining.Blast.Rank", blastMiningRank, RankUtils.getHighestRank(SubSkillType.MINING_BLAST_MINING), LocaleLoader.getString("Mining.Blast.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
         }
 
         if (canBiggerBombs) {

@@ -1,8 +1,10 @@
 package com.gmail.nossr50.skills.alchemy;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.AlchemyBrewTask;
+import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
@@ -11,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public final class Alchemy {
-    public enum Tier {
+    /*public enum Tier {
         EIGHT(8),
         SEVEN(7),
         SIX(6),
@@ -43,11 +45,11 @@ public final class Alchemy {
         protected int getLevel() {
             return AdvancedConfig.getInstance().getConcoctionsTierLevel(this);
         }
-    }
+    }*/
 
     public static final int INGREDIENT_SLOT = 3;
 
-    public static int    catalysisUnlockLevel   = AdvancedConfig.getInstance().getCatalysisUnlockLevel();
+    public static int    catalysisUnlockLevel   = RankUtils.getUnlockLevel(SubSkillType.ALCHEMY_CATALYSIS);
     public static int    catalysisMaxBonusLevel = AdvancedConfig.getInstance().getCatalysisMaxBonusLevel();
     public static double catalysisMinSpeed      = AdvancedConfig.getInstance().getCatalysisMinSpeed();
     public static double catalysisMaxSpeed      = AdvancedConfig.getInstance().getCatalysisMaxSpeed();

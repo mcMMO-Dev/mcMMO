@@ -4,10 +4,12 @@ import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -20,13 +22,7 @@ public class AlchemyManager extends SkillManager {
     }
 
     public int getTier() {
-        for (Alchemy.Tier tier : Alchemy.Tier.values()) {
-            if (getSkillLevel() >= tier.getLevel()) {
-                return tier.toNumerical();
-            }
-        }
-
-        return 0;
+        return RankUtils.getRank(getPlayer(), SubSkillType.ALCHEMY_CONCOCTIONS);
     }
 
     public List<ItemStack> getIngredients() {

@@ -121,7 +121,7 @@ public class RankUtils {
         {
             //Compare against the highest to lowest rank in that order
             int rank = numRanks-i;
-            int unlockLevel = getUnlockLevel(subSkillType, rank);
+            int unlockLevel = getRankUnlockLevel(subSkillType, rank);
 
             //If we check all ranks and still cannot unlock the skill, we return rank 0
             if(rank == 0)
@@ -165,7 +165,7 @@ public class RankUtils {
         {
             //Compare against the highest to lowest rank in that order
             int rank = numRanks-i;
-            int unlockLevel = getUnlockLevel(abstractSubSkill, rank);
+            int unlockLevel = getRankUnlockLevel(abstractSubSkill, rank);
 
             //If we check all ranks and still cannot unlock the skill, we return rank 0
             if(rank == 0)
@@ -191,8 +191,8 @@ public class RankUtils {
         HashMap<Integer, Integer> rankMap = subSkillRanks.get(abstractSubSkill.getConfigKeyName());
 
         //TODO: Remove this debug code
-        //System.out.println("[DEBUG]: Rank "+rank+" for "+subSkillName.toString()+" requires skill level "+getUnlockLevel(subSkillType, rank));
-        rankMap.put(rank, getUnlockLevel(abstractSubSkill, rank));
+        //System.out.println("[DEBUG]: Rank "+rank+" for "+subSkillName.toString()+" requires skill level "+getRankUnlockLevel(subSkillType, rank));
+        rankMap.put(rank, getRankUnlockLevel(abstractSubSkill, rank));
     }
 
     @Deprecated
@@ -203,8 +203,8 @@ public class RankUtils {
         HashMap<Integer, Integer> rankMap = subSkillRanks.get(subSkillType.toString());
 
         //TODO: Remove this debug code
-        //System.out.println("[DEBUG]: Rank "+rank+" for "+subSkillName.toString()+" requires skill level "+getUnlockLevel(subSkillType, rank));
-        rankMap.put(rank, getUnlockLevel(subSkillType, rank));
+        //System.out.println("[DEBUG]: Rank "+rank+" for "+subSkillName.toString()+" requires skill level "+getRankUnlockLevel(subSkillType, rank));
+        rankMap.put(rank, getRankUnlockLevel(subSkillType, rank));
     }
 
     private static void initMaps(String s) {
@@ -239,18 +239,58 @@ public class RankUtils {
      * @return The level at which this rank unlocks
      */
     @Deprecated
-    public static int getUnlockLevel(SubSkillType subSkillType, int rank)
+    public static int getRankUnlockLevel(SubSkillType subSkillType, int rank)
     {
         return RankConfig.getInstance().getSubSkillUnlockLevel(subSkillType, rank);
     }
 
-    public static int getUnlockLevel(AbstractSubSkill abstractSubSkill, int rank)
+    public static int getRankUnlockLevel(AbstractSubSkill abstractSubSkill, int rank)
     {
         return RankConfig.getInstance().getSubSkillUnlockLevel(abstractSubSkill, rank);
     }
 
+    /**
+     * Get the level at which a skill is unlocked for a player (this is the first rank of a skill)
+     * @param subSkillType target subskill
+     * @return The unlock requirements for rank 1 in this skill
+     */
+    public static int getUnlockLevel(SubSkillType subSkillType)
+    {
+        return RankConfig.getInstance().getSubSkillUnlockLevel(subSkillType, 1);
+    }
+
+    /**
+     * Get the level at which a skill is unlocked for a player (this is the first rank of a skill)
+     * @param abstractSubSkill target subskill
+     * @return The unlock requirements for rank 1 in this skill
+     */
+    public static int getUnlockLevel(AbstractSubSkill abstractSubSkill)
+    {
+        return RankConfig.getInstance().getSubSkillUnlockLevel(abstractSubSkill, 1);
+    }
+
+    /**
+     * Get the highest rank of a subskill
+     * @param subSkillType target subskill
+     * @return the last rank of a subskill
+     */
+    public static int getHighestRank(SubSkillType subSkillType)
+    {
+        return subSkillType.getNumRanks();
+    }
+
+    /**
+     * Get the highest rank of a subskill
+     * @param abstractSubSkill target subskill
+     * @return the last rank of a subskill
+     */
+    public static int getHighestRank(AbstractSubSkill abstractSubSkill)
+    {
+        return abstractSubSkill.getNumRanks();
+    }
+
     public static int getSuperAbilityUnlockRequirement(SuperAbilityType superAbilityType)
     {
-        return getUnlockLevel(superAbilityType.getSubSkillTypeDefinition(), 1);
+        return getRankUnlockLevel(superAbilityType.getSubSkillTypeDefinition(), 1);
     }
 }

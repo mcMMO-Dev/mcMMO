@@ -2,49 +2,17 @@ package com.gmail.nossr50.skills.salvage;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Material;
 
 public class Salvage {
-    // The order of the values is extremely important, a few methods depend on it to work properly
-    public enum Tier {
-        EIGHT(8),
-        SEVEN(7),
-        SIX(6),
-        FIVE(5),
-        FOUR(4),
-        THREE(3),
-        TWO(2),
-        ONE(1);
-
-        int numerical;
-
-        private Tier(int numerical) {
-            this.numerical = numerical;
-        }
-
-        public int toNumerical() {
-            return numerical;
-        }
-
-        protected int getLevel() {
-            return AdvancedConfig.getInstance().getArcaneSalvageRankLevel(this);
-        }
-
-        protected double getExtractFullEnchantChance() {
-            return AdvancedConfig.getInstance().getArcaneSalvageExtractFullEnchantsChance(this);
-        }
-
-        protected double getExtractPartialEnchantChance() {
-            return AdvancedConfig.getInstance().getArcaneSalvageExtractPartialEnchantsChance(this);
-        }
-    }
-
     public static Material anvilMaterial = Config.getInstance().getSalvageAnvilMaterial();
 
     public static int    salvageMaxPercentageLevel = AdvancedConfig.getInstance().getSalvageMaxPercentageLevel();
     public static double salvageMaxPercentage      = AdvancedConfig.getInstance().getSalvageMaxPercentage();
 
-    public static int advancedSalvageUnlockLevel = AdvancedConfig.getInstance().getAdvancedSalvageUnlockLevel();
+    public static int advancedSalvageUnlockLevel = RankUtils.getRankUnlockLevel(SubSkillType.SALVAGE_ADVANCED_SALVAGE, 1);
 
     public static boolean arcaneSalvageDowngrades  = AdvancedConfig.getInstance().getArcaneSalvageEnchantDowngradeEnabled();
     public static boolean arcaneSalvageEnchantLoss = AdvancedConfig.getInstance().getArcaneSalvageEnchantLossEnabled();

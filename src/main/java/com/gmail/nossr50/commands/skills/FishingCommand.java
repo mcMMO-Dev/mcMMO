@@ -7,9 +7,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.treasure.Rarity;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.fishing.Fishing;
-import com.gmail.nossr50.skills.fishing.Fishing.Tier;
 import com.gmail.nossr50.skills.fishing.FishingManager;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
@@ -157,7 +155,7 @@ public class FishingCommand extends SkillCommand {
         List<String> messages = new ArrayList<String>();
 
         if (canTreasureHunt) {
-            messages.add(LocaleLoader.getString("Fishing.Ability.Rank", lootTier, Tier.values().length));
+            messages.add(LocaleLoader.getString("Fishing.Ability.Rank", lootTier, RankUtils.getHighestRank(SubSkillType.FISHING_TREASURE_HUNTER)));
             messages.add(LocaleLoader.getString("Fishing.Ability.TH.DropRate", trapTreasure, commonTreasure, uncommonTreasure, rareTreasure, epicTreasure, legendaryTreasure, recordTreasure));
         }
 
@@ -166,36 +164,15 @@ public class FishingCommand extends SkillCommand {
         }
 
         if (canIceFish) {
-            int unlockLevel = AdvancedConfig.getInstance().getIceFishingUnlockLevel();
-
-            if (skillValue < unlockLevel) {
-                messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Fishing.Ability.Locked.1", unlockLevel)));
-            }
-            else {
-                messages.add(LocaleLoader.getString("Fishing.Ability.IceFishing"));
-            }
+            messages.add(LocaleLoader.getString("Fishing.Ability.IceFishing"));
         }
 
         if (canMasterAngler) {
-            int unlockLevel = AdvancedConfig.getInstance().getMasterAnglerUnlockLevel();
-
-            if (skillValue < unlockLevel) {
-                messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Fishing.Ability.Locked.2", unlockLevel)));
-            }
-            else {
-                messages.add(LocaleLoader.getString("Fishing.Ability.Chance", biteChance));
-            }
+            messages.add(LocaleLoader.getString("Fishing.Ability.Chance", biteChance));
         }
 
         if (canShake) {
-            int unlockLevel = AdvancedConfig.getInstance().getFishingTierLevel(Tier.ONE);
-
-            if (skillValue < unlockLevel) {
-                messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Fishing.Ability.Locked.0", unlockLevel)));
-            }
-            else {
-                messages.add(LocaleLoader.getString("Fishing.Ability.Shake", shakeChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", shakeChanceLucky) : ""));
-            }
+            messages.add(LocaleLoader.getString("Fishing.Ability.Shake", shakeChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", shakeChanceLucky) : ""));
         }
 
         if (canFishermansDiet) {

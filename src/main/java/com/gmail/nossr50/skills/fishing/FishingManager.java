@@ -19,10 +19,10 @@ import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillWeightedActiva
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.KrakenAttackTask;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.fishing.Fishing.Tier;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
+import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -56,11 +56,11 @@ public class FishingManager extends SkillManager {
     }
 
     public boolean canShake(Entity target) {
-        return target instanceof LivingEntity && getSkillLevel() >= Tier.ONE.getLevel() && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_SHAKE);
+        return target instanceof LivingEntity && RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.FISHING_SHAKE) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_SHAKE);
     }
 
     public boolean canMasterAngler() {
-        return getSkillLevel() >= AdvancedConfig.getInstance().getMasterAnglerUnlockLevel() && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_MASTER_ANGLER);
+        return getSkillLevel() >= RankUtils.getUnlockLevel(SubSkillType.FISHING_MASTER_ANGLER) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_MASTER_ANGLER);
     }
 
     public boolean unleashTheKraken() {
@@ -173,7 +173,7 @@ public class FishingManager extends SkillManager {
     }
 
     public boolean canIceFish(Block block) {
-        if (getSkillLevel() < AdvancedConfig.getInstance().getIceFishingUnlockLevel()) {
+        if (getSkillLevel() < RankUtils.getUnlockLevel(SubSkillType.FISHING_ICE_FISHING)) {
             return false;
         }
 
@@ -201,15 +201,15 @@ public class FishingManager extends SkillManager {
      * @return the loot tier
      */
     public int getLootTier() {
-        int skillLevel = getSkillLevel();
+        return RankUtils.getRank(getPlayer(), SubSkillType.FISHING_TREASURE_HUNTER);
+    }
 
-        for (Tier tier : Tier.values()) {
-            if (skillLevel >= tier.getLevel()) {
-                return tier.toNumerical();
-            }
-        }
+    protected double getShakeChance() {
+        return AdvancedConfig.getInstance().getShakeChance(getLootTier());
+    }
 
-        return 0;
+    protected int getVanillaXPBoostModifier() {
+        return AdvancedConfig.getInstance().getFishingVanillaXPModifier(getLootTier());
     }
 
     /**
@@ -218,15 +218,7 @@ public class FishingManager extends SkillManager {
      * @return Shake Mob probability
      */
     public double getShakeProbability() {
-        int skillLevel = getSkillLevel();
-
-        for (Tier tier : Tier.values()) {
-            if (skillLevel >= tier.getLevel()) {
-                return tier.getShakeChance();
-            }
-        }
-
-        return 0.0;
+        return getShakeChance();
     }
 
     /**
@@ -428,7 +420,7 @@ public class FishingManager extends SkillManager {
                     }
                     break;
                 default:
-                	break;
+                    break;
             }
 
             McMMOPlayerShakeEvent shakeEvent = new McMMOPlayerShakeEvent(getPlayer(), drop);
@@ -459,7 +451,7 @@ public class FishingManager extends SkillManager {
         }
         else {
             // We know something was caught, so if the rod wasn't in the main hand it must be in the offhand
-        	luck = getPlayer().getInventory().getItemInOffHand().getEnchantmentLevel(Enchantment.LUCK);
+            luck = getPlayer().getInventory().getItemInOffHand().getEnchantmentLevel(Enchantment.LUCK);
         }
 
         // Rather than subtracting luck (and causing a minimum 3% chance for every drop), scale by luck.
@@ -634,14 +626,6 @@ public class FishingManager extends SkillManager {
      * @return the vanilla XP multiplier
      */
     private int getVanillaXpMultiplier() {
-        int skillLevel = getSkillLevel();
-
-        for (Tier tier : Tier.values()) {
-            if (skillLevel >= tier.getLevel()) {
-                return tier.getVanillaXPBoostModifier();
-            }
-        }
-
-        return 1;
+        return getVanillaXPBoostModifier();
     }
 }

@@ -17,33 +17,6 @@ import java.util.Set;
 
 public final class Fishing {
 
-    // The order of the values is extremely important, a few methods depend on it to work properly
-    public enum Tier {
-        EIGHT(8), SEVEN(7), SIX(6), FIVE(5), FOUR(4), THREE(3), TWO(2), ONE(1);
-
-        int numerical;
-
-        private Tier(int numerical) {
-            this.numerical = numerical;
-        }
-
-        public int toNumerical() {
-            return numerical;
-        }
-
-        protected int getLevel() {
-            return AdvancedConfig.getInstance().getFishingTierLevel(this);
-        }
-
-        protected double getShakeChance() {
-            return AdvancedConfig.getInstance().getShakeChance(this);
-        }
-
-        protected int getVanillaXPBoostModifier() {
-            return AdvancedConfig.getInstance().getFishingVanillaXPModifier(this);
-        }
-    }
-
     protected static final HashMap<Material, List<Enchantment>> ENCHANTABLE_CACHE = new HashMap<Material, List<Enchantment>>();
 
     public static int fishermansDietRankLevel1 = AdvancedConfig.getInstance().getFishermanDietRankChange();

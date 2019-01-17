@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.mining;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -10,12 +11,12 @@ import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.AbilityCooldownTask;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.mining.BlastMining.Tier;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
@@ -45,7 +46,8 @@ public class MiningManager extends SkillManager {
     }
 
     public boolean canUseBlastMining() {
-        return getSkillLevel() >= BlastMining.Tier.ONE.getLevel();
+        //Not checking permissions?
+        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_BLAST_MINING);
     }
 
     public boolean canUseBiggerBombs() {
@@ -193,15 +195,7 @@ public class MiningManager extends SkillManager {
      * @return the Blast Mining tier
      */
     public int getBlastMiningTier() {
-        int skillLevel = getSkillLevel();
-
-        for (Tier tier : Tier.values()) {
-            if (skillLevel >= tier.getLevel()) {
-                return tier.toNumerical();
-            }
-        }
-
-        return 0;
+        return RankUtils.getRank(getPlayer(), SubSkillType.MINING_BLAST_MINING);
     }
 
     /**
@@ -210,15 +204,15 @@ public class MiningManager extends SkillManager {
      * @return the Blast Mining tier
      */
     public double getOreBonus() {
-        int skillLevel = getSkillLevel();
+        return getOreBonus(getBlastMiningTier());
+    }
 
-        for (Tier tier : Tier.values()) {
-            if (skillLevel >= tier.getLevel()) {
-                return tier.getOreBonus();
-            }
-        }
+    public static double getOreBonus(int rank) {
+        return AdvancedConfig.getInstance().getOreBonus(rank);
+    }
 
-        return 0;
+    public static double getDebrisReduction(int rank) {
+        return AdvancedConfig.getInstance().getDebrisReduction(rank);
     }
 
     /**
@@ -227,15 +221,11 @@ public class MiningManager extends SkillManager {
      * @return the Blast Mining tier
      */
     public double getDebrisReduction() {
-        int skillLevel = getSkillLevel();
+        return getDebrisReduction(getBlastMiningTier());
+    }
 
-        for (Tier tier : Tier.values()) {
-            if (skillLevel >= tier.getLevel()) {
-                return tier.getDebrisReduction();
-            }
-        }
-
-        return 0;
+    public static int getDropMultiplier(int rank) {
+        return AdvancedConfig.getInstance().getDropMultiplier(rank);
     }
 
     /**
@@ -244,15 +234,7 @@ public class MiningManager extends SkillManager {
      * @return the Blast Mining tier
      */
     public int getDropMultiplier() {
-        int skillLevel = getSkillLevel();
-
-        for (Tier tier : Tier.values()) {
-            if (skillLevel >= tier.getLevel()) {
-                return tier.getDropMultiplier();
-            }
-        }
-
-        return 0;
+        return getDropMultiplier(getBlastMiningTier());
     }
 
     /**
@@ -261,15 +243,7 @@ public class MiningManager extends SkillManager {
      * @return the Blast Mining tier
      */
     public double getBlastRadiusModifier() {
-        int skillLevel = getSkillLevel();
-
-        for (Tier tier : Tier.values()) {
-            if (skillLevel >= tier.getLevel()) {
-                return tier.getBlastRadiusModifier();
-            }
-        }
-
-        return 0;
+        return BlastMining.getBlastRadiusModifier(getBlastMiningTier());
     }
 
     /**
@@ -278,15 +252,7 @@ public class MiningManager extends SkillManager {
      * @return the Blast Mining tier
      */
     public double getBlastDamageModifier() {
-        int skillLevel = getSkillLevel();
-
-        for (Tier tier : Tier.values()) {
-            if (skillLevel >= tier.getLevel()) {
-                return tier.getBlastDamageDecrease();
-            }
-        }
-
-        return 0;
+        return BlastMining.getBlastDamageDecrease(getBlastMiningTier());
     }
 
     private boolean blastMiningCooldownOver() {
