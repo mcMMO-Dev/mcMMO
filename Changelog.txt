@@ -24,7 +24,7 @@ Version 2.1.0
  + (Events) Starting an XP event will now use the title API (toggle this in advanced.yml)
  + (Sound) Volume and Pitch of sounds can now be configured in the new sounds.yml file
  + (MySQL) Added support for SSL for MySQL/MariaDB (On by default)
- + (Skills) Adding a new subskill to child skills called 'Understanding The Art' this adds nothing new, but tracks your progress in that child skill, which was previous a bit obfuscated.
+ + (Skills) Added a new subskill to some skills 'Understanding The Art' this adds nothing new, but tracks benefits that increase together that seemed unrelated, which was previously a bit obfuscated.
  + (Skills) Tool alerts now are sent to the Action Bar
  + (Skills) Super Ability activation alerts are now sent to the Action Bar
  + (Skills) Certain Skill messages are now sent to the Action Bar

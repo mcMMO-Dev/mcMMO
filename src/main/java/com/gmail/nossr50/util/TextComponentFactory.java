@@ -70,10 +70,10 @@ public class TextComponentFactory {
 
         Player.Spigot spigotPlayer = player.spigot();
 
-        TextComponent prefix = new TextComponent("[| ");
-        prefix.setColor(ChatColor.DARK_AQUA);
-        TextComponent suffix = new TextComponent(" |]");
-        suffix.setColor(ChatColor.DARK_AQUA);
+        TextComponent prefix = new TextComponent(LocaleLoader.getString("Overhaul.mcMMO.Url.Wrap.Prefix") + " ");
+        /*prefix.setColor(ChatColor.DARK_AQUA);*/
+        TextComponent suffix = new TextComponent(" "+LocaleLoader.getString("Overhaul.mcMMO.Url.Wrap.Suffix"));
+        /*suffix.setColor(ChatColor.DARK_AQUA);*/
 
         TextComponent emptySpace = new TextComponent(" ");
 

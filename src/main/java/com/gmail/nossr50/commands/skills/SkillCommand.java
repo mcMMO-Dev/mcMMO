@@ -25,6 +25,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -125,6 +126,10 @@ public abstract class SkillCommand implements TabExecutor {
 
         if(!skill.isChildSkill())
         {
+            /*
+             * NON-CHILD SKILLS
+             */
+
             //XP GAIN METHOD
             player.sendMessage(LocaleLoader.getString("Commands.XPGain.Overhaul", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
 
@@ -132,18 +137,40 @@ public abstract class SkillCommand implements TabExecutor {
             player.sendMessage(LocaleLoader.getString("Effects.Level.Overhaul", skillValue, mcMMOPlayer.getSkillXpLevel(skill), mcMMOPlayer.getXpToLevel(skill)));
 
         } else {
-            //XP GAIN METHOD
-            player.sendMessage(LocaleLoader.getString("Commands.XPGain.Overhaul", LocaleLoader.getString("Commands.XPGain.Child")));
+            /*
+             * CHILD SKILLS
+             */
 
-            //LEVEL
-            player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, skillValue));
 
             Set<PrimarySkillType> parents = FamilyTree.getParents(skill);
+            ArrayList<PrimarySkillType> parentList = new ArrayList<>();
 
             //TODO: Add JSON here
             for (PrimarySkillType parent : parents) {
-                player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level.Overhaul", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)));
+                parentList.add(parent);
+                /*player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level.Overhaul", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)))*/;
             }
+
+            String parentMessage = "";
+
+            for(int i = 0; i < parentList.size(); i++)
+            {
+                if(i+1 < parentList.size())
+                {
+                    parentMessage += LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i)));
+                    parentMessage += ChatColor.GRAY+", ";
+                } else {
+                    parentMessage += LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i)));
+                }
+            }
+
+            //XP GAIN METHOD
+            player.sendMessage(LocaleLoader.getString("Commands.XPGain.Overhaul", LocaleLoader.getString("Commands.XPGain.Child")));
+
+            player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, parentMessage));
+            //LEVEL
+            //player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, skillValue));
+
         }
         /*
         if (!skill.isChildSkill()) {

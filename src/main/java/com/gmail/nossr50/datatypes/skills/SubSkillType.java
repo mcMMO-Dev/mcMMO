@@ -60,8 +60,7 @@ public enum SubSkillType {
 
     /* Salvage */
     SALVAGE_ADVANCED_SALVAGE,
-    SALVAGE_ARCANE_SALVAGE,
-    SALVAGE_UNDERSTANDING_THE_ART(8),
+    SALVAGE_ARCANE_SALVAGE(8),
 
     /* Smelting */
     SMELTING_FLUX_MINING(1),

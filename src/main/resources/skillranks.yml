@@ -191,7 +191,7 @@ Smelting:
             Rank_7: 850
             Rank_8: 1000
 Salvage:
-    UnderstandingTheArt:
+    ArcaneSalvage:
         Standard:
             Rank_1: 10
             Rank_2: 25
