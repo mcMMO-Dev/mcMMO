@@ -6,6 +6,43 @@
 #
 #####
 
+
+
+# https://hub.spigotmc.org/javadocs/spigot/org/bukkit/boss/BarColor.html
+# These are the only valid colors for Experience Bars, use the exact name found here
+# BLUE, GREEN, PINK, PURPLE, RED, WHITE, YELLOW (As of the time of this update these are the only Bar colors available, this could change in the future so check the BarColor enum to see if it has)
+Experience_Bars:
+    Style:
+        Acrobatics:
+            Color: BLUE
+        Alchemy:
+            Color: BLUE
+        Archery:
+            Color: RED
+        Axes:
+            Color: RED
+        Excavation:
+            Color: YELLOW
+        Fishing:
+            Color: BLUE
+        Herbalism:
+            Color: GREEN
+        Mining:
+            Color: YELLOW
+        Repair:
+            Color: BLUE
+        Salvage:
+            Color: BLUE
+        Smelting:
+            Color: BLUE
+        Swords:
+            Color: RED
+        Taming:
+            Color: PURPLE
+        Unarmed:
+            Color: RED
+        Woodcutting:
+            Color: GREEN
 #
 #  Settings for XP formula
 ###
