@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.experience;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -55,12 +56,16 @@ public class ExperienceBarWrapper {
     }
 
     private String getTitleTemplate() {
-        return niceSkillName + " Lv." + ChatColor.GOLD + getLevel();
+        return LocaleLoader.getString("XPBar."+niceSkillName, getLevel(), getCurrentXP(), getMaxXP(), getPowerLevel(), getPercentageOfLevel());
     }
 
     private int getLevel() {
         return mcMMOPlayer.getSkillLevel(primarySkillType);
     }
+    private int getCurrentXP() { return mcMMOPlayer.getSkillXpLevel(primarySkillType); }
+    private int getMaxXP() { return mcMMOPlayer.getXpToLevel(primarySkillType); }
+    private int getPowerLevel() { return mcMMOPlayer.getPowerLevel(); }
+    private int getPercentageOfLevel() { return (int) (mcMMOPlayer.getProgressInCurrentSkillLevel(primarySkillType) * 100); }
 
     public String getTitle() {
         return bossBar.getTitle();
@@ -97,7 +102,7 @@ public class ExperienceBarWrapper {
             bossBar.setProgress(v);
 
         //Every time progress updates we need to check for a title update
-        if(getLevel() != lastLevelUpdated)
+        if(getLevel() != lastLevelUpdated || ExperienceConfig.getInstance().getDoExperienceBarsAlwaysUpdateTitle())
         {
             updateTitle();
             lastLevelUpdated = getLevel();

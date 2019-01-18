@@ -23,6 +23,10 @@
 #SOLID
 #   The bar is one solid piece
 Experience_Bars:
+    # If you want to use a fancy edited title from the locale, then you'll probably want to turn this on, but it will make your server do a lot more work!
+    # I recommend leaving this off!
+    ThisMayCauseLag:
+        AlwaysUpdateTitlesWhenXPIsGained: false
     Style:
         Acrobatics:
             Color: PINK

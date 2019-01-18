@@ -250,6 +250,10 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     /*
      * Experience Bar Stuff
      */
+    public boolean getDoExperienceBarsAlwaysUpdateTitle()
+    {
+        return config.getBoolean("Experience_Bars.ThisMayCauseLag.AlwaysUpdateTitlesWhenXPIsGained", false);
+    }
     public BarColor getExperienceBarColor(PrimarySkillType primarySkillType)
     {
         String colorValueFromConfig = config.getString("Experience_Bars.Style."+StringUtils.getCapitalized(primarySkillType.toString())+".Color");
