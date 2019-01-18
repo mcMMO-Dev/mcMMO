@@ -40,7 +40,7 @@ public class InspectCommand implements TabExecutor {
                         return true;
                     }
 
-                    if (sender instanceof Player && Config.getInstance().getInspectUseBoard()) {
+                    if (Config.getInstance().getScoreboardsEnabled() && sender instanceof Player && Config.getInstance().getInspectUseBoard()) {
                         ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, profile);
 
                         if (!Config.getInstance().getInspectUseChat()) {
@@ -79,7 +79,7 @@ public class InspectCommand implements TabExecutor {
                         return true;
                     }
 
-                    if (sender instanceof Player && Config.getInstance().getInspectUseBoard()) {
+                    if (Config.getInstance().getScoreboardsEnabled() && sender instanceof Player && Config.getInstance().getInspectUseBoard()) {
                         ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, mcMMOPlayer.getProfile());
 
                         if (!Config.getInstance().getInspectUseChat()) {

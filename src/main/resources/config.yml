@@ -44,7 +44,7 @@ General:
 ###
 Scoreboard:
     # Set this to true to enable scoreboards
-    Enable: true
+    UseScoreboards: false
     # Display player's power levels below their names?
     Power_Level_Tags: false
 

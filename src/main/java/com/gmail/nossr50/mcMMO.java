@@ -219,7 +219,11 @@ public class mcMMO extends JavaPlugin {
             UserManager.saveAll();      // Make sure to save player information if the server shuts down
             UserManager.clearAll();
             PartyManager.saveParties(); // Save our parties
-            ScoreboardManager.teardownAll();
+
+            //TODO: Needed?
+            if(Config.getInstance().getScoreboardsEnabled())
+                ScoreboardManager.teardownAll();
+
             formulaManager.saveFormula();
             holidayManager.saveAnniversaryFiles();
             placeStore.saveAll();       // Save our metadata

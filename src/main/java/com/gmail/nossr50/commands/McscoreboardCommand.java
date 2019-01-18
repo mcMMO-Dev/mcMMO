@@ -31,7 +31,7 @@ public class McscoreboardCommand implements TabExecutor {
                 }
 
                 if (args[0].equalsIgnoreCase("keep")) {
-                    if (!Config.getInstance().getAllowKeepBoard()) {
+                    if (!Config.getInstance().getAllowKeepBoard() || !Config.getInstance().getScoreboardsEnabled()) {
                         sender.sendMessage(LocaleLoader.getString("Commands.Disabled"));
                         return true;
                     }

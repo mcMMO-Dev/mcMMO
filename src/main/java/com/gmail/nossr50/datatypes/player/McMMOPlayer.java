@@ -956,7 +956,9 @@ public class McMMOPlayer {
         }
 
         UserManager.remove(thisPlayer);
-        ScoreboardManager.teardownPlayer(thisPlayer);
+
+        if(Config.getInstance().getScoreboardsEnabled())
+            ScoreboardManager.teardownPlayer(thisPlayer);
 
         if (inParty()) {
             party.removeOnlineMember(thisPlayer);

@@ -289,7 +289,7 @@ public class Config extends AutoUpdateConfigLoader {
     public int getMobHealthbarTime() { return config.getInt("Mob_Healthbar.Display_Time", 3); }
 
     /* Scoreboards */
-    public boolean getScoreboardsEnabled() { return config.getBoolean("Scoreboard.Enabled", true); }
+    public boolean getScoreboardsEnabled() { return config.getBoolean("Scoreboard.UseScoreboards", true); }
     public boolean getPowerLevelTagsEnabled() { return config.getBoolean("Scoreboard.Power_Level_Tags", false); }
     public boolean getAllowKeepBoard() { return config.getBoolean("Scoreboard.Allow_Keep", true); }
     public int getTipsAmount() { return config.getInt("Scoreboard.Tips_Amount", 5); }

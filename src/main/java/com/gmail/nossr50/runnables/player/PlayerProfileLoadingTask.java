@@ -76,16 +76,21 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
             mcMMOPlayer.setupPartyData();
             UserManager.track(mcMMOPlayer);
             mcMMOPlayer.actualizeRespawnATS();
-            ScoreboardManager.setupPlayer(player);
+
+            if (Config.getInstance().getScoreboardsEnabled()) {
+                ScoreboardManager.setupPlayer(player);
+
+                if (Config.getInstance().getShowStatsAfterLogin()) {
+                    ScoreboardManager.enablePlayerStatsScoreboard(player);
+                    new McScoreboardKeepTask(player).runTaskLater(mcMMO.p, 1 * Misc.TICK_CONVERSION_FACTOR);
+                }
+            }
 
             if (Config.getInstance().getShowProfileLoadedMessage()) {
                 player.sendMessage(LocaleLoader.getString("Profile.Loading.Success"));
             }
 
-            if (Config.getInstance().getShowStatsAfterLogin()) {
-                ScoreboardManager.enablePlayerStatsScoreboard(player);
-                new McScoreboardKeepTask(player).runTaskLater(mcMMO.p, 1 * Misc.TICK_CONVERSION_FACTOR);
-            }
+
         }
     }
 }

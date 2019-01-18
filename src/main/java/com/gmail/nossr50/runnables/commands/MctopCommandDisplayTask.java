@@ -1,5 +1,6 @@
 package com.gmail.nossr50.runnables.commands;
 
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -33,7 +34,7 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (useBoard) {
+        if (useBoard && Config.getInstance().getScoreboardsEnabled()) {
             displayBoard();
         }
 

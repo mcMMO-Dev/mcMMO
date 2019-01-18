@@ -92,7 +92,7 @@ public abstract class SkillCommand implements TabExecutor {
                 //Link Header
                 TextComponentFactory.sendPlayerUrlHeader(player);
 
-                if (Config.getInstance().getSkillUseBoard()) {
+                if (Config.getInstance().getScoreboardsEnabled() && Config.getInstance().getSkillUseBoard()) {
                     ScoreboardManager.enablePlayerSkillScoreboard(player, skill);
                 }
 

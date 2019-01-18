@@ -28,7 +28,7 @@ public class McstatsCommand implements TabExecutor {
             case 0:
                 Player player = (Player) sender;
 
-                if (Config.getInstance().getStatsUseBoard()) {
+                if (Config.getInstance().getStatsUseBoard() && Config.getInstance().getScoreboardsEnabled()) {
                     ScoreboardManager.enablePlayerStatsScoreboard(player);
 
                     if (!Config.getInstance().getStatsUseChat()) {

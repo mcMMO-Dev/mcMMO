@@ -30,7 +30,7 @@ public class MccooldownCommand implements TabExecutor {
             case 0:
                 Player player = (Player) sender;
 
-                if (Config.getInstance().getCooldownUseBoard()) {
+                if (Config.getInstance().getScoreboardsEnabled() && Config.getInstance().getCooldownUseBoard()) {
                     ScoreboardManager.enablePlayerCooldownScoreboard(player);
 
                     if (!Config.getInstance().getCooldownUseChat()) {
