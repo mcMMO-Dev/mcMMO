@@ -39,6 +39,7 @@ import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.experience.ExperienceBarManager;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
@@ -65,6 +66,7 @@ public class McMMOPlayer {
     private PlayerProfile profile;
 
     private final Map<PrimarySkillType, SkillManager> skillManagers = new HashMap<PrimarySkillType, SkillManager>();
+    private ExperienceBarManager experienceBarManager;
 
     private Party   party;
     private Party   invite;
@@ -131,6 +133,34 @@ public class McMMOPlayer {
         for (ToolType toolType : ToolType.values()) {
             toolMode.put(toolType, false);
         }
+
+        experienceBarManager = new ExperienceBarManager(this);
+    }
+
+    /*public void hideXpBar(PrimarySkillType primarySkillType)
+    {
+        experienceBarManager.hideExperienceBar(primarySkillType);
+    }*/
+
+    public void processPostXpEvent(PrimarySkillType primarySkillType, mcMMO plugin)
+    {
+        updateXPBar(primarySkillType, plugin);
+    }
+
+    public void updateXPBar(PrimarySkillType primarySkillType, mcMMO plugin)
+    {
+        /*if(experienceBarManager == null)
+            experienceBarManager = new ExperienceBarManager(this);*/
+
+        experienceBarManager.updateExperienceBar(primarySkillType, plugin);
+    }
+
+    public double getProgressInCurrentSkillLevel(PrimarySkillType primarySkillType)
+    {
+        double currentXP = profile.getSkillXpLevel(primarySkillType);
+        double maxXP = profile.getXpToLevel(primarySkillType);
+
+        return (currentXP / maxXP);
     }
 
     public AcrobaticsManager getAcrobaticsManager() {

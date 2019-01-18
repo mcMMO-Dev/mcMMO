@@ -1,149 +1,139 @@
 package com.gmail.nossr50.util.experience;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.util.StringUtils;
+import org.bukkit.ChatColor;
+import org.bukkit.Server;
 import org.bukkit.boss.*;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A visual representation of a players skill level progress for a PrimarySkillType
  */
-public class ExperienceBar {
+public class ExperienceBarWrapper {
 
     private final PrimarySkillType primarySkillType; //Primary Skill
-    protected String experienceBarTitle; //Name Shown Above XP Bar
-    protected BarColor barColor; //Color of the XP Bar
-    protected BarStyle barStyle;
-    protected Player player;
-    protected double progress;
-    protected boolean isVisible;
+    private BossBar bossBar;
+    private final Server server;
+    protected final McMMOPlayer mcMMOPlayer;
+    private int lastLevelUpdated;
 
-    public ExperienceBar(PrimarySkillType primarySkillType, Player player)
+    /*
+     * This is stored to help optimize updating the title
+     */
+    protected String niceSkillName;
+    protected String title;
+
+    public ExperienceBarWrapper(PrimarySkillType primarySkillType, McMMOPlayer mcMMOPlayer)
     {
-        this.player = player;
+        this.mcMMOPlayer = mcMMOPlayer;
+        this.server = mcMMOPlayer.getPlayer().getServer(); //Might not be good for bungee to do this
         this.primarySkillType = primarySkillType;
-        experienceBarTitle = StringUtils.getCapitalized(primarySkillType.getName());
-        barColor = ExperienceConfig.getInstance().getExperienceBarColor(primarySkillType);
-        barStyle = BarStyle.SOLID;
-        isVisible = false;
-        progress = 0.0D;
+        title = "";
+        lastLevelUpdated = 0;
+
+        //These vars are stored to help reduce operations involving strings
+        niceSkillName = StringUtils.getCapitalized(primarySkillType.toString());
+
+        //Create the bar
+        initBar();
+    }
+
+    private void initBar()
+    {
+        title = getTitleTemplate();
+        createBossBar();
+    }
+
+    public void updateTitle() {
+        title = getTitleTemplate();
+        bossBar.setTitle(title);
+    }
+
+    private String getTitleTemplate() {
+        return niceSkillName + " Lv." + ChatColor.GOLD + getLevel();
+    }
+
+    private int getLevel() {
+        return mcMMOPlayer.getSkillLevel(primarySkillType);
     }
 
     public String getTitle() {
-        return experienceBarTitle;
+        return bossBar.getTitle();
     }
 
     public void setTitle(String s) {
-        experienceBarTitle = s;
+        bossBar.setTitle(s);
     }
 
     public BarColor getColor() {
-        return barColor;
+        return bossBar.getColor();
     }
 
     public void setColor(BarColor barColor) {
-        this.barColor = barColor;
+        bossBar.setColor(barColor);
     }
-
 
     public BarStyle getStyle() {
-        //TODO: Add config for style
-        return barStyle;
+        return bossBar.getStyle();
     }
-
 
     public void setStyle(BarStyle barStyle) {
-        this.barStyle = barStyle;
+        bossBar.setStyle(barStyle);
     }
-
-
-    public void removeFlag(BarFlag barFlag) {
-        //Do nothing
-    }
-
-
-    public void addFlag(BarFlag barFlag) {
-        //Do nothing
-    }
-
-
-    public boolean hasFlag(BarFlag barFlag) {
-        return false;
-    }
-
 
     public void setProgress(double v) {
-        //Clamp progress between 0.00 -> 1.00
-
+        //Clamp Values
         if(v < 0)
-            progress = 0.0D;
-        else if(progress > 1)
-            progress = 1.0D;
-        else progress = v;
-    }
+            bossBar.setProgress(0.0D);
 
+        else if(v > 1)
+            bossBar.setProgress(1.0D);
+        else
+            bossBar.setProgress(v);
+
+        //Every time progress updates we need to check for a title update
+        if(getLevel() != lastLevelUpdated)
+        {
+            updateTitle();
+            lastLevelUpdated = getLevel();
+        }
+    }
 
     public double getProgress() {
-        return progress;
+        return bossBar.getProgress();
     }
-
-
-    public void addPlayer(Player player) {
-        //Do nothing
-    }
-
-
-    public void removePlayer(Player player) {
-        //Do nothing
-    }
-
-
-    public void removeAll() {
-        //Do nothing
-    }
-
 
     public List<Player> getPlayers() {
-        List<Player> players = new ArrayList<>();
-        players.add(player);
-        return players;
+        return bossBar.getPlayers();
     }
-
-
-    public void setVisible(boolean b) {
-        isVisible = b;
-
-        if(isVisible)
-            showExperienceBar();
-    }
-
 
     public boolean isVisible() {
-        return isVisible;
+        return bossBar.isVisible();
+    }
+
+    public void hideExperienceBar()
+    {
+        bossBar.setVisible(false);
     }
 
     public void showExperienceBar()
     {
-        player.getServer().createBossBar()
+        bossBar.setVisible(true);
     }
 
-    /**
-     * @deprecated
-     */
+    /*public NamespacedKey getKey()
+    {
+        return bossBar
+    }*/
 
-    public void show() {
-        //Do nothing
-    }
-
-    /**
-     * @deprecated
-     */
-
-    public void hide() {
-        //Do nothing
+    private void createBossBar()
+    {
+        bossBar = mcMMOPlayer.getPlayer().getServer().createBossBar(title, ExperienceConfig.getInstance().getExperienceBarColor(primarySkillType), ExperienceConfig.getInstance().getExperienceBarStyle(primarySkillType));
+        bossBar.addPlayer(mcMMOPlayer.getPlayer());
     }
 }

@@ -8,6 +8,8 @@ import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
@@ -243,6 +245,37 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
             return true;
         String wildcardString = baseString + StringUtils.getWildcardConfigBlockDataString(data);
         return config.contains(wildcardString);
+    }
+
+    /*
+     * Experience Bar Stuff
+     */
+    public BarColor getExperienceBarColor(PrimarySkillType primarySkillType)
+    {
+        String colorValueFromConfig = config.getString("Experience_Bars.Style."+StringUtils.getCapitalized(primarySkillType.toString())+".Color");
+
+        for(BarColor barColor : BarColor.values())
+        {
+            if(barColor.toString().equalsIgnoreCase(colorValueFromConfig))
+                return barColor;
+        }
+
+        //In case the value is invalid
+        return BarColor.WHITE;
+    }
+
+    public BarStyle getExperienceBarStyle(PrimarySkillType primarySkillType)
+    {
+        String colorValueFromConfig = config.getString("Experience_Bars.Style."+StringUtils.getCapitalized(primarySkillType.toString())+".BarStyle");
+
+        for(BarStyle barStyle : BarStyle.values())
+        {
+            if(barStyle.toString().equalsIgnoreCase(colorValueFromConfig))
+                return barStyle;
+        }
+
+        //In case the value is invalid
+        return BarStyle.SOLID;
     }
 
     /* Acrobatics */

@@ -11,38 +11,64 @@
 # https://hub.spigotmc.org/javadocs/spigot/org/bukkit/boss/BarColor.html
 # These are the only valid colors for Experience Bars, use the exact name found here
 # BLUE, GREEN, PINK, PURPLE, RED, WHITE, YELLOW (As of the time of this update these are the only Bar colors available, this could change in the future so check the BarColor enum to see if it has)
+# BarStyle Settings (USE THE EXACT NAME) :
+#SEGMENTED_10
+#   Splits the boss bar into 10 segments
+#SEGMENTED_12
+#   Splits the boss bar into 12 segments
+#SEGMENTED_20
+#   Splits the boss bar into 20 segments
+#SEGMENTED_6
+#   Splits the boss bar into 6 segments
+#SOLID
+#   The bar is one solid piece
 Experience_Bars:
     Style:
         Acrobatics:
-            Color: BLUE
+            Color: PINK
+            BarStyle: SEGMENTED_6
         Alchemy:
-            Color: BLUE
+            Color: PURPLE
+            BarStyle: SEGMENTED_6
         Archery:
-            Color: RED
+            Color: BLUE
+            BarStyle: SEGMENTED_6
         Axes:
-            Color: RED
+            Color: BLUE
+            BarStyle: SEGMENTED_6
         Excavation:
             Color: YELLOW
+            BarStyle: SEGMENTED_6
         Fishing:
-            Color: BLUE
+            Color: PURPLE
+            BarStyle: SEGMENTED_6
         Herbalism:
             Color: GREEN
+            BarStyle: SEGMENTED_6
         Mining:
             Color: YELLOW
+            BarStyle: SEGMENTED_6
         Repair:
-            Color: BLUE
-        Salvage:
-            Color: BLUE
-        Smelting:
-            Color: BLUE
-        Swords:
-            Color: RED
-        Taming:
             Color: PURPLE
-        Unarmed:
+            BarStyle: SEGMENTED_6
+        Salvage:
+            Color: PURPLE
+            BarStyle: SEGMENTED_6
+        Smelting:
+            Color: PURPLE
+            BarStyle: SEGMENTED_6
+        Swords:
+            Color: BLUE
+            BarStyle: SEGMENTED_6
+        Taming:
             Color: RED
+            BarStyle: SEGMENTED_6
+        Unarmed:
+            Color: BLUE
+            BarStyle: SEGMENTED_6
         Woodcutting:
             Color: GREEN
+            BarStyle: SEGMENTED_6
 #
 #  Settings for XP formula
 ###

@@ -8,6 +8,7 @@ import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import org.bukkit.entity.Player;
@@ -16,6 +17,14 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 public class SelfListener implements Listener {
+    //Used in task scheduling and other things
+    private final mcMMO plugin;
+
+    public SelfListener(mcMMO plugin)
+    {
+        this.plugin = plugin;
+    }
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerLevelUp(McMMOPlayerLevelUpEvent event) {
         Player player = event.getPlayer();
@@ -44,12 +53,23 @@ public class SelfListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerXpGain(McMMOPlayerXpGainEvent event) {
-        if (event.getXpGainReason() == XPGainReason.COMMAND)
-            return;
+        Player player = event.getPlayer();
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         PrimarySkillType primarySkillType = event.getSkill();
+
+        if (event.getXpGainReason() == XPGainReason.COMMAND)
+        {
+            //Update the XP Bar
+            mcMMOPlayer.processPostXpEvent(primarySkillType, plugin);
+            return;
+        }
+
         int threshold = ExperienceConfig.getInstance().getDiminishedReturnsThreshold(primarySkillType);
+
         if (threshold <= 0 || !ExperienceConfig.getInstance().getDiminishedReturnsEnabled()) {
             // Diminished returns is turned off
+            //Update the XP Bar
+            mcMMOPlayer.processPostXpEvent(primarySkillType, plugin);
             return;
         }
 
@@ -58,9 +78,6 @@ public class SelfListener implements Listener {
             // Don't calculate for XP subtraction
             return;
         }
-
-        Player player = event.getPlayer();
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         if (primarySkillType.isChildSkill()) {
             return;
@@ -95,5 +112,9 @@ public class SelfListener implements Listener {
             }
 
         }
+
+        //Update the XP Bar
+        if(!event.isCancelled())
+            mcMMOPlayer.processPostXpEvent(primarySkillType, plugin);
     }
 }
