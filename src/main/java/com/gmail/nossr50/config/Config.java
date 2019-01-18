@@ -57,7 +57,7 @@ public class Config extends AutoUpdateConfigLoader {
         }
 
         /* Scoreboards */
-        if (getRankScoreboardTime() != -1 && getRankScoreboardTime() <= 0) {
+        /*if (getRankScoreboardTime() != -1 && getRankScoreboardTime() <= 0) {
             reason.add("Scoreboard.Types.Rank.Display_Time should be greater than 0, or -1!");
         }
 
@@ -95,7 +95,7 @@ public class Config extends AutoUpdateConfigLoader {
 
         if (!(getInspectUseChat() || getInspectUseBoard())) {
             reason.add("Either Board or Print in Scoreboard.Types.Inspect must be true!");
-        }
+        }*/
 
         /* Database Purging */
         if (getPurgeInterval() < -1) {
