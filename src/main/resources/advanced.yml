@@ -74,6 +74,7 @@ Feedback:
             SendCopyOfMessageToChat: true
 Skills:
     General:
+        StartingLevel: 1
         Ability:
             Length:
                 Standard:

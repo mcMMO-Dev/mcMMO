@@ -1,5 +1,6 @@
 package com.gmail.nossr50.database;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
@@ -385,22 +386,24 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 // Open the file to write the player
                 out = new BufferedWriter(new FileWriter(mcMMO.getUsersFilePath(), true));
 
+                String startingLevel = AdvancedConfig.getInstance().getStartingLevel() + ":";
+
                 // Add the player to the end
                 out.append(playerName).append(":");
-                out.append("0:"); // Mining
+                out.append(startingLevel); // Mining
                 out.append(":");
                 out.append(":");
                 out.append("0:"); // Xp
-                out.append("0:"); // Woodcutting
+                out.append(startingLevel); // Woodcutting
                 out.append("0:"); // WoodCuttingXp
-                out.append("0:"); // Repair
-                out.append("0:"); // Unarmed
-                out.append("0:"); // Herbalism
-                out.append("0:"); // Excavation
-                out.append("0:"); // Archery
-                out.append("0:"); // Swords
-                out.append("0:"); // Axes
-                out.append("0:"); // Acrobatics
+                out.append(startingLevel); // Repair
+                out.append(startingLevel); // Unarmed
+                out.append(startingLevel); // Herbalism
+                out.append(startingLevel); // Excavation
+                out.append(startingLevel); // Archery
+                out.append(startingLevel); // Swords
+                out.append(startingLevel); // Axes
+                out.append(startingLevel); // Acrobatics
                 out.append("0:"); // RepairXp
                 out.append("0:"); // UnarmedXp
                 out.append("0:"); // HerbalismXp
@@ -410,7 +413,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 out.append("0:"); // AxesXp
                 out.append("0:"); // AcrobaticsXp
                 out.append(":");
-                out.append("0:"); // Taming
+                out.append(startingLevel); // Taming
                 out.append("0:"); // TamingXp
                 out.append("0:"); // DATS
                 out.append("0:"); // DATS
@@ -420,12 +423,12 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 out.append("0:"); // DATS
                 out.append("0:"); // DATS
                 out.append(":");
-                out.append("0:"); // Fishing
+                out.append(startingLevel); // Fishing
                 out.append("0:"); // FishingXp
                 out.append("0:"); // Blast Mining
                 out.append(String.valueOf(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)).append(":"); // LastLogin
                 out.append(Config.getInstance().getMobHealthbarDefault().toString()).append(":"); // Mob Healthbar HUD
-                out.append("0:"); // Alchemy
+                out.append(startingLevel); // Alchemy
                 out.append("0:"); // AlchemyXp
                 out.append(uuid != null ? uuid.toString() : "NULL").append(":"); // UUID
                 out.append("0:"); // Scoreboard tips shown

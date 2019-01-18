@@ -1,6 +1,8 @@
 package com.gmail.nossr50.database;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
@@ -839,23 +841,25 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setString(2, tablePrefix + "skills");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
+                String startingLevel = "'" + AdvancedConfig.getInstance().getStartingLevel() + "'";
+                String totalLevel = "'" + (AdvancedConfig.getInstance().getStartingLevel() * (PrimarySkillType.values().length - PrimarySkillType.CHILD_SKILLS.size())) + "'";
                 createStatement = connection.createStatement();
                 createStatement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "skills` ("
                         + "`user_id` int(10) unsigned NOT NULL,"
-                        + "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`mining` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`woodcutting` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`repair` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`unarmed` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`herbalism` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`excavation` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`archery` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`swords` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`total` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`taming` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
+                        + "`mining` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
+                        + "`woodcutting` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
+                        + "`repair` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
+                        + "`unarmed` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
+                        + "`herbalism` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
+                        + "`excavation` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
+                        + "`archery` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
+                        + "`swords` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
+                        + "`axes` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
+                        + "`acrobatics` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
+                        + "`fishing` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
+                        + "`alchemy` int(10) unsigned NOT NULL DEFAULT "+startingLevel+","
+                        + "`total` int(10) unsigned NOT NULL DEFAULT "+totalLevel+","
                         + "PRIMARY KEY (`user_id`)) "
                         + "DEFAULT CHARSET=latin1;");
                 tryClose(createStatement);

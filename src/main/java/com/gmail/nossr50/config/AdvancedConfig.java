@@ -675,6 +675,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     protected void loadKeys() {}
 
     /* GENERAL */
+    public int getStartingLevel() { return config.getInt("Skills.General.StartingLevel", 1); }
     public int getAbilityLengthStandard() { return config.getInt("Skills.General.Ability.Length.Standard.IncreaseLevel", 5); }
     public int getAbilityLengthRetro() { return config.getInt("Skills.General.Ability.Length.RetroMode.IncreaseLevel", 50); }
     public int getEnchantBuff() { return config.getInt("Skills.General.Ability.EnchantBuff", 5); }

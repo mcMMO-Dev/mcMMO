@@ -1,5 +1,6 @@
 package com.gmail.nossr50.datatypes.player;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
@@ -56,7 +57,7 @@ public class PlayerProfile {
         }
 
         for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
-            skills.put(primarySkillType, 0);
+            skills.put(primarySkillType, AdvancedConfig.getInstance().getStartingLevel());
             skillsXp.put(primarySkillType, 0F);
         }
 

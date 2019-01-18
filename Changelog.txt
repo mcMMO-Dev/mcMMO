@@ -63,6 +63,7 @@ Version 2.1.0
  + (Party) Parties can now have size limits (configurable in config.yml), party size is unlimited by default
  ! (Deaths) Fixed the bug where mob names would be replaced by hearts
  ! (Experience) The XP values of fish are now based on their rarity and have been drastically changed
+ ! (Experience) Skills now start at level 1 (configurable in advanced.yml)
  ! (Item) Improved some of the messages sent to the player regarding the Chimaera Wing
  ! (Party) Party member list will only include members of the party that you can see (aren't vanished)
  ! (Skills) Some skill level rank requirements have changed
