@@ -77,9 +77,9 @@ Archery:
 Axes:
     SkullSplitter:
         Standard:
-            Rank_1: 10
+            Rank_1: 5
         RetroMode:
-            Rank_1: 100
+            Rank_1: 50
     ArmorImpact:
         Standard:
             Rank_1: 5
@@ -213,9 +213,9 @@ Salvage:
 Mining:
     SuperBreaker:
         Standard:
-            Rank_1: 10
+            Rank_1: 5
         RetroMode:
-            Rank_1: 100
+            Rank_1: 50
     # For now make sure rank 1 is the same as blast mining rank 1, it's a bit hacky, I'll fix it later
     BiggerBombs:
         Standard:
@@ -250,9 +250,9 @@ Mining:
 Herbalism:
     GreenTerra:
         Standard:
-            Rank_1: 10
+            Rank_1: 5
         RetroMode:
-            Rank_1: 100
+            Rank_1: 50
     GreenThumb:
         Standard:
             Rank_1: 25
@@ -349,13 +349,13 @@ Woodcutting:
             Rank_3: 550
     TreeFeller:
         Standard:
-            Rank_1: 10
+            Rank_1: 5
             Rank_2: 25
             Rank_3: 50
             Rank_4: 75
             Rank_5: 100
         RetroMode:
-            Rank_1: 100
+            Rank_1: 50
             Rank_2: 250
             Rank_3: 500
             Rank_4: 750
@@ -395,9 +395,9 @@ Woodcutting:
 Excavation:
     GigaDrillBreaker:
         Standard:
-            Rank_1: 10
+            Rank_1: 5
         RetroMode:
-            Rank_1: 100
+            Rank_1: 50
     TreasureHunter:
         Standard:
             Rank_1: 10
