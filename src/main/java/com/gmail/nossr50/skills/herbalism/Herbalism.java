@@ -42,58 +42,32 @@ public class Herbalism {
         }
     }
 
-    public static HashSet<Block> findChorusPlant(Block target) {
-        return findChorusPlant(target, new HashSet<Block>());
+    private static int calculateChorusPlantDrops(Block target) {
+        return calculateChorusPlantDropsRecursive(target, new HashSet<>());
     }
 
-    private static HashSet<Block> findChorusPlant(Block target, HashSet<Block> traversed) {
-        if (target.getType() != Material.CHORUS_PLANT) {
-            return traversed;
-        }
+    private static int calculateChorusPlantDropsRecursive(Block target, HashSet<Block> traversed) {
+        if (target.getType() != Material.CHORUS_PLANT)
+            return 0;
+
         // Prevent any infinite loops, who needs more than 64 chorus anyways
         if (traversed.size() > 64)
-        {
-            return traversed;
-        }
+            return 0;
 
-        traversed.add(target);
+        if (!traversed.add(target))
+            return 0;
 
-        Block relative = target.getRelative(BlockFace.UP, 1);
-        if (!traversed.contains(relative)) {
-            if (relative.getType() == Material.CHORUS_PLANT) {
-                traversed.addAll(findChorusPlant(relative, traversed));
-            }
-        }
+        int dropAmount = 0;
 
-        relative = target.getRelative(BlockFace.NORTH, 1);
-        if (!traversed.contains(relative)) {
-            if (relative.getType() == Material.CHORUS_PLANT) {
-                traversed.addAll(findChorusPlant(relative, traversed));
-            }
-        }
+        if (mcMMO.getPlaceStore().isTrue(target))
+            mcMMO.getPlaceStore().setFalse(target);
+        else
+            dropAmount++;
 
-        relative = target.getRelative(BlockFace.SOUTH, 1);
-        if (!traversed.contains(relative)) {
-            if (relative.getType() == Material.CHORUS_PLANT) {
-                traversed.addAll(findChorusPlant(relative, traversed));
-            }
-        }
+        for (BlockFace blockFace : new BlockFace[] { BlockFace.UP, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST ,BlockFace.WEST})
+            dropAmount += calculateChorusPlantDropsRecursive(target.getRelative(blockFace, 1), traversed);
 
-        relative = target.getRelative(BlockFace.EAST, 1);
-        if (!traversed.contains(relative)) {
-            if (relative.getType() == Material.CHORUS_PLANT) {
-                traversed.addAll(findChorusPlant(relative, traversed));
-            }
-        }
-
-        relative = target.getRelative(BlockFace.WEST, 1);
-        if (!traversed.contains(relative)) {
-            if (relative.getType() == Material.CHORUS_PLANT) {
-                traversed.addAll(findChorusPlant(relative, traversed));
-            }
-        }
-
-        return traversed;
+        return dropAmount;
     }
 
     /**
@@ -113,15 +87,7 @@ public class Herbalism {
             dropAmount = 1;
 
             if (block.getRelative(BlockFace.DOWN, 1).getType() == Material.END_STONE) {
-                HashSet<Block> blocks = findChorusPlant(block);
-
-                dropAmount = blocks.size();
-
-                /*
-                 * for(Block b : blocks) {
-                 * b.breakNaturally();
-                 * }
-                 */
+                dropAmount = calculateChorusPlantDrops(block);
             }
         } else {
             // Handle the two blocks above it - cacti & sugar cane can only grow 3 high naturally
