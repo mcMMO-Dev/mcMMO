@@ -63,7 +63,7 @@ public class SelfListener implements Listener {
         if (event.getXpGainReason() == XPGainReason.COMMAND)
         {
             //Update the XP Bar
-            mcMMOPlayer.processPostXpEvent(primarySkillType, plugin);
+            mcMMOPlayer.processPostXpEvent(event.getXpGainReason(), primarySkillType, plugin);
             return;
         }
 
@@ -72,7 +72,7 @@ public class SelfListener implements Listener {
         if (threshold <= 0 || !ExperienceConfig.getInstance().getDiminishedReturnsEnabled()) {
             // Diminished returns is turned off
             //Update the XP Bar
-            mcMMOPlayer.processPostXpEvent(primarySkillType, plugin);
+            mcMMOPlayer.processPostXpEvent(event.getXpGainReason(), primarySkillType, plugin);
             return;
         }
 
@@ -118,6 +118,6 @@ public class SelfListener implements Listener {
 
         //Update the XP Bar
         if(!event.isCancelled())
-            mcMMOPlayer.processPostXpEvent(primarySkillType, plugin);
+            mcMMOPlayer.processPostXpEvent(event.getXpGainReason(), primarySkillType, plugin);
     }
 }

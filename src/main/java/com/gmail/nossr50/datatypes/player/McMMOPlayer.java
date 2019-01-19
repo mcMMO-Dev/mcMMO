@@ -142,9 +142,10 @@ public class McMMOPlayer {
         experienceBarManager.hideExperienceBar(primarySkillType);
     }*/
 
-    public void processPostXpEvent(PrimarySkillType primarySkillType, mcMMO plugin)
+    public void processPostXpEvent(XPGainReason xpGainReason, PrimarySkillType primarySkillType, mcMMO plugin)
     {
-        updateXPBar(primarySkillType, plugin);
+        if(xpGainReason != XPGainReason.SHARED_PVP && xpGainReason != XPGainReason.SHARED_PVE && xpGainReason != XPGainReason.VAMPIRISM)
+            updateXPBar(primarySkillType, plugin);
     }
 
     public void updateXPBar(PrimarySkillType primarySkillType, mcMMO plugin)
