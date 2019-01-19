@@ -166,6 +166,30 @@ public class BlockListener implements Listener {
         }
     }
 
+    /**
+     * Monitor BlockMultiPlace events.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onBlockMultiPlace(BlockMultiPlaceEvent event) {
+        Player player = event.getPlayer();
+
+        if (!UserManager.hasPlayerDataKey(player)) {
+            return;
+        }
+
+        for (BlockState replacedBlockState : event.getReplacedBlockStates())
+        {
+            BlockState blockState = replacedBlockState.getBlock().getState();
+
+            /* Check if the blocks placed should be monitored so they do not give out XP in the future */
+            if (BlockUtils.shouldBeWatched(blockState) && blockState.getType() != Material.CHORUS_FLOWER) {
+                mcMMO.getPlaceStore().setTrue(blockState);
+            }
+        }
+    }
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockGrow(BlockGrowEvent event)
     {
