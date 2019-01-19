@@ -150,7 +150,7 @@ public class BlockListener implements Listener {
         BlockState blockState = event.getBlock().getState();
 
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
-        if (BlockUtils.shouldBeWatched(blockState) && blockState.getType() != Material.CHORUS_FLOWER) {
+        if (BlockUtils.shouldBeWatched(blockState)) {
             // Don't count de-barking wood
             if (!Tag.LOGS.isTagged(event.getBlockReplacedState().getType()) || !Tag.LOGS.isTagged(event.getBlockPlaced().getType()))
                 mcMMO.getPlaceStore().setTrue(blockState);
@@ -184,7 +184,7 @@ public class BlockListener implements Listener {
             BlockState blockState = replacedBlockState.getBlock().getState();
 
             /* Check if the blocks placed should be monitored so they do not give out XP in the future */
-            if (BlockUtils.shouldBeWatched(blockState) && blockState.getType() != Material.CHORUS_FLOWER) {
+            if (BlockUtils.shouldBeWatched(blockState)) {
                 mcMMO.getPlaceStore().setTrue(blockState);
             }
         }
