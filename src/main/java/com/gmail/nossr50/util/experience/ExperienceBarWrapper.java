@@ -55,6 +55,10 @@ public class ExperienceBarWrapper {
     }
 
     private String getTitleTemplate() {
+        //If they are using extra details
+        if(ExperienceConfig.getInstance().getAddExtraDetails())
+            return LocaleLoader.getString("XPBar.Complex.Template", LocaleLoader.getString("XPBar."+niceSkillName, getLevel()), getCurrentXP(), getMaxXP(), getPowerLevel(), getPercentageOfLevel());
+
         return LocaleLoader.getString("XPBar."+niceSkillName, getLevel(), getCurrentXP(), getMaxXP(), getPowerLevel(), getPercentageOfLevel());
     }
 

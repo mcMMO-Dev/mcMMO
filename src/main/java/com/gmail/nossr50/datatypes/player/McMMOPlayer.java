@@ -149,8 +149,8 @@ public class McMMOPlayer {
 
     public void updateXPBar(PrimarySkillType primarySkillType, mcMMO plugin)
     {
-        /*if(experienceBarManager == null)
-            experienceBarManager = new ExperienceBarManager(this);*/
+        if(primarySkillType.isChildSkill())
+            return;
 
         experienceBarManager.updateExperienceBar(primarySkillType, plugin);
     }

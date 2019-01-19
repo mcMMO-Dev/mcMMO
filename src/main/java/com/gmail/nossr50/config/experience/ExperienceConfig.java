@@ -252,11 +252,12 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
      */
     public boolean getDoExperienceBarsAlwaysUpdateTitle()
     {
-        return config.getBoolean("Experience_Bars.ThisMayCauseLag.AlwaysUpdateTitlesWhenXPIsGained", false);
+        return config.getBoolean("Experience_Bars.ThisMayCauseLag.AlwaysUpdateTitlesWhenXPIsGained.Enable", false);
     }
 
-    public boolean isExperienceBarsEnabled() { return config.getBoolean("Experience_Bars.Enable"); }
-    public boolean isExperienceBarEnabled(PrimarySkillType primarySkillType) { return config.getBoolean("Experience_Bars."+StringUtils.getCapitalized(primarySkillType.toString())+".Enable");}
+    public boolean getAddExtraDetails() { return config.getBoolean("Experience_Bars.ThisMayCauseLag.AlwaysUpdateTitlesWhenXPIsGained.ExtraDetails", false);}
+    public boolean isExperienceBarsEnabled() { return config.getBoolean("Experience_Bars.Enable", true); }
+    public boolean isExperienceBarEnabled(PrimarySkillType primarySkillType) { return config.getBoolean("Experience_Bars."+StringUtils.getCapitalized(primarySkillType.toString())+".Enable", true);}
 
     public BarColor getExperienceBarColor(PrimarySkillType primarySkillType)
     {
