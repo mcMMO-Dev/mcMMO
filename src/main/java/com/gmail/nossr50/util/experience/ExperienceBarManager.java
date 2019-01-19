@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util.experience;
 
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
@@ -28,6 +29,9 @@ public class ExperienceBarManager {
 
     public void updateExperienceBar(PrimarySkillType primarySkillType, mcMMO plugin)
     {
+        if(!ExperienceConfig.getInstance().isExperienceBarsEnabled() || !ExperienceConfig.getInstance().isExperienceBarEnabled(primarySkillType))
+            return;
+
         //Init Bar
         if(experienceBars.get(primarySkillType) == null)
             experienceBars.put(primarySkillType, new ExperienceBarWrapper(primarySkillType, mcMMOPlayer));

@@ -254,9 +254,13 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     {
         return config.getBoolean("Experience_Bars.ThisMayCauseLag.AlwaysUpdateTitlesWhenXPIsGained", false);
     }
+
+    public boolean isExperienceBarsEnabled() { return config.getBoolean("Experience_Bars.Enable"); }
+    public boolean isExperienceBarEnabled(PrimarySkillType primarySkillType) { return config.getBoolean("Experience_Bars."+StringUtils.getCapitalized(primarySkillType.toString())+".Enable");}
+
     public BarColor getExperienceBarColor(PrimarySkillType primarySkillType)
     {
-        String colorValueFromConfig = config.getString("Experience_Bars.Style."+StringUtils.getCapitalized(primarySkillType.toString())+".Color");
+        String colorValueFromConfig = config.getString("Experience_Bars."+StringUtils.getCapitalized(primarySkillType.toString())+".Color");
 
         for(BarColor barColor : BarColor.values())
         {
@@ -270,7 +274,7 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
 
     public BarStyle getExperienceBarStyle(PrimarySkillType primarySkillType)
     {
-        String colorValueFromConfig = config.getString("Experience_Bars.Style."+StringUtils.getCapitalized(primarySkillType.toString())+".BarStyle");
+        String colorValueFromConfig = config.getString("Experience_Bars."+StringUtils.getCapitalized(primarySkillType.toString())+".BarStyle");
 
         for(BarStyle barStyle : BarStyle.values())
         {
