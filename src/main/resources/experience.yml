@@ -28,12 +28,10 @@ Experience_Bars:
     # If you want to use a fancy edited title from the locale, then you'll probably want to turn this on, but it will make your server do a lot more work!
     # I recommend leaving this off!
     ThisMayCauseLag:
-        ExtraDetails:
-            Enable: false
         AlwaysUpdateTitlesWhenXPIsGained:
             Enable: false
             # You can make your own custom details in the locale file without having to use the ExtraDetails setting!
-            ExtraDetails: true
+            ExtraDetails: false
     Acrobatics:
         Enable: true
         Color: PINK
