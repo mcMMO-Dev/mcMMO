@@ -41,6 +41,7 @@ import com.gmail.nossr50.util.commands.CommandRegistrationManager;
 import com.gmail.nossr50.util.experience.FormulaManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
+import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
 import com.google.common.base.Charsets;
 import net.shatteredlands.shatt.backup.ZipLibrary;
@@ -180,6 +181,9 @@ public class mcMMO extends JavaPlugin {
             if (Config.getInstance().getPTPCommandWorldPermissions()) {
                 Permissions.generateWorldTeleportPermissions();
             }
+
+            //Populate Ranked Skill Maps (DO THIS LAST)
+            RankUtils.populateRanks();
 
             //If anonymous statistics are enabled then use them
 

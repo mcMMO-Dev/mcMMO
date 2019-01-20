@@ -34,7 +34,7 @@ public class Roll extends AcrobaticsSubSkill implements RandomChance {
     protected Location lastFallLocation;
 
     public Roll() {
-        super("Roll", EventPriority.HIGHEST);
+        super("Roll", EventPriority.HIGHEST, SubSkillType.ACROBATICS_ROLL);
     }
 
     /**

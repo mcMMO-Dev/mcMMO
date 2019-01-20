@@ -1,6 +1,7 @@
 package com.gmail.nossr50.datatypes.skills.subskills;
 
 import com.gmail.nossr50.config.CoreSkillsConfig;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.Interaction;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.Rank;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.SubSkill;
@@ -14,11 +15,13 @@ public abstract class AbstractSubSkill implements SubSkill, Interaction, Rank, S
      */
     protected String configKeySubSkill;
     protected String configKeyPrimary;
+    protected SubSkillType subSkillType;
 
-    public AbstractSubSkill(String configKeySubSkill, String configKeyPrimary)
+    public AbstractSubSkill(String configKeySubSkill, String configKeyPrimary, SubSkillType subSkillType)
     {
         this.configKeySubSkill = configKeySubSkill;
         this.configKeyPrimary = configKeyPrimary;
+        this.subSkillType = subSkillType;
     }
 
     /**
@@ -55,6 +58,9 @@ public abstract class AbstractSubSkill implements SubSkill, Interaction, Rank, S
         player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.Header"));
         player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.SubSkillHeader", getConfigKeyName()));
         player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.DetailsHeader"));
+    }
 
+    public SubSkillType getSubSkillType() {
+        return subSkillType;
     }
 }

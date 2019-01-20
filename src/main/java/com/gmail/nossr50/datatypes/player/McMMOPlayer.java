@@ -55,6 +55,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -142,17 +143,25 @@ public class McMMOPlayer {
         experienceBarManager.hideExperienceBar(primarySkillType);
     }*/
 
-    public void processPostXpEvent(XPGainReason xpGainReason, PrimarySkillType primarySkillType, mcMMO plugin)
+    public void processPostXpEvent(XPGainReason xpGainReason, PrimarySkillType primarySkillType, mcMMO plugin, int xpGained)
     {
         if(xpGainReason != XPGainReason.SHARED_PVP && xpGainReason != XPGainReason.SHARED_PVE && xpGainReason != XPGainReason.VAMPIRISM)
             updateXPBar(primarySkillType, plugin);
     }
 
+    public void processUnlockNotifications(mcMMO plugin, PrimarySkillType primarySkillType, int level)
+    {
+        RankUtils.executeSkillUnlockNotifications(plugin, this, primarySkillType, profile.getSkillLevel(primarySkillType));
+    }
+
     public void updateXPBar(PrimarySkillType primarySkillType, mcMMO plugin)
     {
+        //Skill Unlock Notifications
+
         if(primarySkillType.isChildSkill())
             return;
 
+        //XP BAR UPDATES
         experienceBarManager.updateExperienceBar(primarySkillType, plugin);
     }
 

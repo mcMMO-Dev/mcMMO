@@ -17,6 +17,7 @@ Version 2.1.0
  + Certain elements of mcMMO's UI have been restyled
  + Added the tagline "Overhaul Era" to various locations until 3.0.0 comes out
  ! (Scoreboards) Scoreboards are now disabled by default, I don't like them. You can turn them back on in config.yml
+ + (Experience) mcMMO now notifies you when you progress in a skill!
  + (Experience) Coral (blocks) now give Mining XP
  + (Experience) Coral (plants) now give Herbalism XP
  + (Experience) Blue Ice now gives Mining XP

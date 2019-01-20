@@ -4,9 +4,12 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.TextComponentFactory;
+import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -114,5 +117,18 @@ public class NotificationManager {
         {
             player.sendTitle(title, subtitle, i1, i2, i3);
         }
+    }
+
+    public static void sendPlayerUnlockNotification(McMMOPlayer mcMMOPlayer, SubSkillType subSkillType)
+    {
+        //CHAT MESSAGE
+        mcMMOPlayer.getPlayer().spigot().sendMessage(TextComponentFactory.getSubSkillUnlockedNotificationComponents(mcMMOPlayer.getPlayer(), subSkillType));
+
+        //ACTION BAR MESSAGE
+        /*if(AdvancedConfig.getInstance().doesNotificationUseActionBar(NotificationType.SUBSKILL_UNLOCKED))
+            mcMMOPlayer.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(LocaleLoader.getString("JSON.SkillUnlockMessage",
+                    subSkillType.getLocaleName(),
+                    String.valueOf(RankUtils.getRank(mcMMOPlayer.getPlayer(),
+                            subSkillType)))));*/
     }
 }

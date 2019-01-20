@@ -516,6 +516,15 @@ public class TextComponentFactory {
             }
         }
     }
+
+    public static TextComponent getSubSkillUnlockedNotificationComponents(Player player, SubSkillType subSkillType)
+    {
+        TextComponent unlockMessage = new TextComponent("");
+        unlockMessage.setText(LocaleLoader.getString("JSON.SkillUnlockMessage", subSkillType.getLocaleName(), RankUtils.getRank(player, subSkillType)));
+        unlockMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, getSubSkillHoverComponent(player, subSkillType)));
+        unlockMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/"+subSkillType.getParentSkill().toString().toLowerCase()));
+        return unlockMessage;
+    }
 }
 
 

@@ -1,6 +1,7 @@
 package com.gmail.nossr50.datatypes.skills.subskills.acrobatics;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.InteractType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -13,8 +14,8 @@ public abstract class AcrobaticsSubSkill extends AbstractSubSkill {
 
     protected EventPriority interactionPriority;
 
-    public AcrobaticsSubSkill(String configKeySub, EventPriority interactionPriority) {
-        super(configKeySub, "Acrobatics");
+    public AcrobaticsSubSkill(String configKeySub, EventPriority interactionPriority, SubSkillType subSkillType) {
+        super(configKeySub, "Acrobatics", subSkillType);
 
         this.interactionPriority = interactionPriority;
     }
