@@ -43,3 +43,6 @@ Sounds:
     ABILITY_ACTIVATED_BERSERK:
         Volume: 0.5
         Pitch: 1.7
+    TIRED:
+        Volume: 1.0
+        Pitch: 1.7

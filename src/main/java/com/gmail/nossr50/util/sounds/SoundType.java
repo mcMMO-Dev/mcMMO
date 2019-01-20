@@ -13,7 +13,8 @@ public enum SoundType {
     DEFLECT_ARROWS,
     TOOL_READY,
     ABILITY_ACTIVATED_GENERIC,
-    ABILITY_ACTIVATED_BERSERK;
+    ABILITY_ACTIVATED_BERSERK,
+    TIRED;
 
     public boolean usesCustomPitch()
     {

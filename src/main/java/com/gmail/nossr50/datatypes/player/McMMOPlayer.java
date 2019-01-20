@@ -806,6 +806,7 @@ public class McMMOPlayer {
              */
             if (skill == PrimarySkillType.WOODCUTTING || skill == PrimarySkillType.AXES) {
                 NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf(timeRemaining));
+                SoundManager.sendSound(player, player.getLocation(), SoundType.TIRED);
             }
 
             return;
@@ -827,6 +828,10 @@ public class McMMOPlayer {
         }
 
         SkillUtils.sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, ability.getAbilityPlayer());
+
+        //Sounds
+        SoundManager.worldSendSound(player.getWorld(), player.getLocation(), SoundType.ABILITY_ACTIVATED_GENERIC);
+
 
         // Enable the ability
         profile.setAbilityDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));

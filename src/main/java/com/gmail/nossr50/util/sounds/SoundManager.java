@@ -86,6 +86,8 @@ public class SoundManager {
                 return Sound.ITEM_TRIDENT_RIPTIDE_3;
             case DEFLECT_ARROWS:
                 return Sound.ENTITY_ENDER_EYE_DEATH;
+            case TIRED:
+                return Sound.BLOCK_CONDUIT_AMBIENT;
             default:
                 return null;
         }
