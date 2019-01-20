@@ -30,7 +30,8 @@ public class SelfListener implements Listener {
         Player player = event.getPlayer();
         PrimarySkillType skill = event.getSkill();
 
-        UserManager.getPlayer(player).processUnlockNotifications(plugin, event.getSkill(), event.getSkillLevel());
+        //Send player skill unlock notifications
+        UserManager.getPlayer(player).processUnlockNotifications(plugin, event.getSkill());
 
         if(Config.getInstance().getScoreboardsEnabled())
             ScoreboardManager.handleLevelUp(player, skill);
@@ -64,8 +65,6 @@ public class SelfListener implements Listener {
 
         if (event.getXpGainReason() == XPGainReason.COMMAND)
         {
-            //Update the XP Bar
-            mcMMOPlayer.processPostXpEvent(event.getXpGainReason(), primarySkillType, plugin, (int) event.getRawXpGained());
             return;
         }
 
@@ -73,8 +72,6 @@ public class SelfListener implements Listener {
 
         if (threshold <= 0 || !ExperienceConfig.getInstance().getDiminishedReturnsEnabled()) {
             // Diminished returns is turned off
-            //Update the XP Bar
-            mcMMOPlayer.processPostXpEvent(event.getXpGainReason(), primarySkillType, plugin, (int) event.getRawXpGained());
             return;
         }
 
@@ -117,9 +114,5 @@ public class SelfListener implements Listener {
             }
 
         }
-
-        //Update the XP Bar
-        if(!event.isCancelled())
-            mcMMOPlayer.processPostXpEvent(event.getXpGainReason(), primarySkillType, plugin, (int) event.getRawXpGained());
     }
 }

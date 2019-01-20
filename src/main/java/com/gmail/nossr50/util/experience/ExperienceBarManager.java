@@ -3,8 +3,8 @@ package com.gmail.nossr50.util.experience;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.ExperienceBarHideTask;
+import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 
@@ -27,7 +27,7 @@ public class ExperienceBarManager {
         this.mcMMOPlayer = mcMMOPlayer;
     }
 
-    public void updateExperienceBar(PrimarySkillType primarySkillType, mcMMO plugin)
+    public void updateExperienceBar(PrimarySkillType primarySkillType, Plugin plugin)
     {
         if(!ExperienceConfig.getInstance().isExperienceBarsEnabled() || !ExperienceConfig.getInstance().isExperienceBarEnabled(primarySkillType))
             return;
@@ -55,7 +55,7 @@ public class ExperienceBarManager {
         }
     }
 
-    private void scheduleHideTask(PrimarySkillType primarySkillType, mcMMO plugin) {
+    private void scheduleHideTask(PrimarySkillType primarySkillType, Plugin plugin) {
         ExperienceBarHideTask experienceBarHideTask = new ExperienceBarHideTask(this, mcMMOPlayer, primarySkillType);
         experienceBarHideTask.runTaskLater(plugin, 20*2);
         experienceBarHideTaskHashMap.put(primarySkillType, experienceBarHideTask);

@@ -50,6 +50,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -143,18 +144,18 @@ public class McMMOPlayer {
         experienceBarManager.hideExperienceBar(primarySkillType);
     }*/
 
-    public void processPostXpEvent(XPGainReason xpGainReason, PrimarySkillType primarySkillType, mcMMO plugin, int xpGained)
+    public void processPostXpEvent(XPGainReason xpGainReason, PrimarySkillType primarySkillType, Plugin plugin)
     {
         if(xpGainReason != XPGainReason.SHARED_PVP && xpGainReason != XPGainReason.SHARED_PVE && xpGainReason != XPGainReason.VAMPIRISM)
             updateXPBar(primarySkillType, plugin);
     }
 
-    public void processUnlockNotifications(mcMMO plugin, PrimarySkillType primarySkillType, int level)
+    public void processUnlockNotifications(mcMMO plugin, PrimarySkillType primarySkillType)
     {
         RankUtils.executeSkillUnlockNotifications(plugin, this, primarySkillType, profile.getSkillLevel(primarySkillType));
     }
 
-    public void updateXPBar(PrimarySkillType primarySkillType, mcMMO plugin)
+    public void updateXPBar(PrimarySkillType primarySkillType, Plugin plugin)
     {
         //Skill Unlock Notifications
 
@@ -533,6 +534,7 @@ public class McMMOPlayer {
      */
     private void checkXp(PrimarySkillType primarySkillType, XPGainReason xpGainReason) {
         if (getSkillXpLevelRaw(primarySkillType) < getXpToLevel(primarySkillType)) {
+            UserManager.getPlayer(player).processPostXpEvent(xpGainReason, primarySkillType, mcMMO.p);
             return;
         }
 
@@ -550,6 +552,7 @@ public class McMMOPlayer {
         }
 
         if (!EventUtils.handleLevelChangeEvent(player, primarySkillType, levelsGained, xpRemoved, true, xpGainReason)) {
+            UserManager.getPlayer(player).processPostXpEvent(xpGainReason, primarySkillType, mcMMO.p);
             return;
         }
 
@@ -562,6 +565,9 @@ public class McMMOPlayer {
          */
 
         NotificationManager.sendPlayerLevelUpNotification(UserManager.getPlayer(player), primarySkillType, profile.getSkillLevel(primarySkillType));
+
+        //UPDATE XP BARS
+        UserManager.getPlayer(player).processPostXpEvent(xpGainReason, primarySkillType, mcMMO.p);
     }
 
     /*
