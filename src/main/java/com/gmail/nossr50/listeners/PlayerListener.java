@@ -509,7 +509,7 @@ public class PlayerListener implements Listener {
                 BlockState blockState = block.getState();
 
                 /* ACTIVATION & ITEM CHECKS */
-                if (BlockUtils.canActivateAbilities(blockState)) {
+                if (BlockUtils.canActivateTools(blockState)) {
                     if (Config.getInstance().getAbilitiesEnabled()) {
                         if (BlockUtils.canActivateHerbalism(blockState)) {
                             mcMMOPlayer.processAbilityActivation(PrimarySkillType.HERBALISM);

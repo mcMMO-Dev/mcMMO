@@ -129,6 +129,132 @@ public final class BlockUtils {
     }
 
     /**
+     * Check if a given block should allow for the activation of tools
+     * Activating a tool is step 1 of a 2 step process for super ability activation
+     *
+     * @param blockState
+     *            The {@link BlockState} of the block to check
+     * @return true if the block should allow ability activation, false
+     *         otherwise
+     */
+    public static boolean canActivateTools(BlockState blockState) {
+        switch (blockState.getType()) {
+            case BLACK_BED:
+            case BLUE_BED:
+            case BROWN_BED:
+            case CYAN_BED:
+            case GRAY_BED:
+            case GREEN_BED:
+            case LIGHT_BLUE_BED:
+            case LIGHT_GRAY_BED:
+            case LIME_BED:
+            case MAGENTA_BED:
+            case ORANGE_BED:
+            case PINK_BED:
+            case PURPLE_BED:
+            case RED_BED:
+            case WHITE_BED:
+            case YELLOW_BED:
+            case BREWING_STAND :
+            case BOOKSHELF :
+            case CAKE:
+            case CHEST :
+            case DISPENSER :
+            case ENCHANTING_TABLE:
+            case ENDER_CHEST :
+            case OAK_FENCE_GATE:
+            case ACACIA_FENCE_GATE :
+            case DARK_OAK_FENCE_GATE :
+            case SPRUCE_FENCE_GATE :
+            case BIRCH_FENCE_GATE :
+            case JUNGLE_FENCE_GATE :
+            case FURNACE :
+            case JUKEBOX :
+            case LEVER :
+            case NOTE_BLOCK :
+            case STONE_BUTTON :
+            case OAK_BUTTON:
+            case BIRCH_BUTTON:
+            case ACACIA_BUTTON:
+            case DARK_OAK_BUTTON:
+            case JUNGLE_BUTTON:
+            case SPRUCE_BUTTON:
+            case ACACIA_TRAPDOOR:
+            case BIRCH_TRAPDOOR:
+            case DARK_OAK_TRAPDOOR:
+            case JUNGLE_TRAPDOOR:
+            case OAK_TRAPDOOR:
+            case SPRUCE_TRAPDOOR:
+            case WALL_SIGN :
+            case CRAFTING_TABLE:
+            case BEACON :
+            case ANVIL :
+            case DROPPER :
+            case HOPPER :
+            case TRAPPED_CHEST :
+            case IRON_DOOR :
+            case IRON_TRAPDOOR :
+            case OAK_DOOR:
+            case ACACIA_DOOR :
+            case SPRUCE_DOOR :
+            case BIRCH_DOOR :
+            case JUNGLE_DOOR :
+            case DARK_OAK_DOOR :
+            case OAK_FENCE:
+            case ACACIA_FENCE :
+            case DARK_OAK_FENCE :
+            case BIRCH_FENCE :
+            case JUNGLE_FENCE :
+            case SPRUCE_FENCE :
+            case ARMOR_STAND :
+            case BLACK_SHULKER_BOX :
+            case BLUE_SHULKER_BOX :
+            case BROWN_SHULKER_BOX :
+            case CYAN_SHULKER_BOX :
+            case GRAY_SHULKER_BOX :
+            case GREEN_SHULKER_BOX :
+            case LIGHT_BLUE_SHULKER_BOX :
+            case LIME_SHULKER_BOX :
+            case MAGENTA_SHULKER_BOX :
+            case ORANGE_SHULKER_BOX :
+            case PINK_SHULKER_BOX :
+            case PURPLE_SHULKER_BOX :
+            case RED_SHULKER_BOX :
+            case LIGHT_GRAY_SHULKER_BOX:
+            case WHITE_SHULKER_BOX :
+            case YELLOW_SHULKER_BOX :
+            case STRIPPED_ACACIA_LOG:
+            case STRIPPED_ACACIA_WOOD:
+            case STRIPPED_BIRCH_LOG:
+            case STRIPPED_BIRCH_WOOD:
+            case STRIPPED_DARK_OAK_LOG:
+            case STRIPPED_DARK_OAK_WOOD:
+            case STRIPPED_JUNGLE_LOG:
+            case STRIPPED_JUNGLE_WOOD:
+            case STRIPPED_OAK_LOG:
+            case STRIPPED_OAK_WOOD:
+            case STRIPPED_SPRUCE_LOG:
+            case STRIPPED_SPRUCE_WOOD:
+            case ACACIA_LOG:
+            case ACACIA_WOOD:
+            case BIRCH_LOG:
+            case BIRCH_WOOD:
+            case DARK_OAK_LOG:
+            case DARK_OAK_WOOD:
+            case JUNGLE_LOG:
+            case JUNGLE_WOOD:
+            case OAK_LOG:
+            case OAK_WOOD:
+            case SPRUCE_LOG:
+            case SPRUCE_WOOD:
+                return false;
+
+            default :
+                return !isMcMMOAnvil(blockState) && !mcMMO.getModManager().isCustomAbilityBlock(blockState);
+        }
+    }
+
+    /**
      * Check if a given block is an ore
      *
      * @param blockState

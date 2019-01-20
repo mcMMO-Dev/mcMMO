@@ -73,6 +73,7 @@ Version 2.1.0
  ! (Experience) Skills now start at level 1 (configurable in advanced.yml)
  ! (Item) Improved some of the messages sent to the player regarding the Chimaera Wing
  ! (Party) Party member list will only include members of the party that you can see (aren't vanished)
+ ! (Skills) Stripping wood and right clicking on stripped wood will no longer ready your Axe
  ! (Skills) Some skill level rank requirements have changed
  ! (Skills) Green Thumb now uses a rank system
  ! (Skills) Farmer's Diet & Fisherman's Diet now use a rank system
