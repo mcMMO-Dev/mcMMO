@@ -23,6 +23,12 @@ public class SoundManager {
         player.playSound(location, getSound(soundType), soundCategory, getVolume(soundType), getPitch(soundType));
     }
 
+    public static void sendCategorizedSound(Player player, Location location, SoundType soundType, SoundCategory soundCategory, float pitchModifier)
+    {
+        float totalPitch = Math.min(2.0F, (getPitch(soundType) + pitchModifier));
+        player.playSound(location, getSound(soundType), soundCategory, getVolume(soundType), totalPitch);
+    }
+
     public static void worldSendSound(World world, Location location, SoundType soundType)
     {
         world.playSound(location, getSound(soundType), getVolume(soundType), getPitch(soundType));
