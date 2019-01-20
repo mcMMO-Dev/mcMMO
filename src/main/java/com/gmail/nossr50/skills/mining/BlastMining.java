@@ -12,9 +12,6 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class BlastMining {
     // The order of the values is extremely important, a few methods depend on it to work properly
    /* public enum Tier {

@@ -50,7 +50,6 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -881,6 +880,7 @@ public class McMMOPlayer {
 
             if (Config.getInstance().getAbilityMessagesEnabled()) {
                 NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, tool.getRaiseTool());
+                SoundManager.sendSound(player, player.getLocation(), SoundType.TOOL_READY);
             }
 
             setToolPreparationMode(tool, true);

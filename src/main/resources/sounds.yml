@@ -5,23 +5,41 @@ Sounds:
     # 0.0 = No Volume
     MasterVolume: 1.0
     ANVIL:
-      Volume: 1.0
-      Pitch: 0.3
+        Volume: 1.0
+        Pitch: 0.3
     #Fizz, Pop, and Kraken make use of a adding and multiplying random numbers together to make a unique pitch everytime they are heard
     FIZZ:
-      Volume: 0.5
+        Volume: 0.5
     LEVEL_UP:
-      Volume: 0.75
-      Pitch: 0.5
+        Volume: 0.75
+        Pitch: 0.5
     ITEM_BREAK:
-      Volume: 1.0
-      Pitch: 1.0
+        Volume: 1.0
+        Pitch: 1.0
     #Fizz, Pop, and Kraken make use of a adding and multiplying random numbers together to make a unique pitch everytime they are heard
     POP:
-      Volume: 0.2
+        Volume: 0.2
     #Fizz, Pop, and Kraken make use of a adding and multiplying random numbers together to make a unique pitch everytime they are heard
     KRAKEN:
-      Volume: 1.0
+        Volume: 1.0
     CHIMAERA_WING:
-      Volume: 1.0
-      Pitch: 0.6
+        Volume: 1.0
+        Pitch: 0.6
+    ROLL_ACTIVATED:
+        Volume: 1.0
+        Pitch: 0.7
+    SKILL_UNLOCKED:
+        Volume: 1.0
+        Pitch: 1.4
+    DEFLECT_ARROWS:
+        Volume: 1.0
+        Pitch: 2.0
+    TOOL_READY:
+        Volume: 1.0
+        Pitch: 0.4
+    ABILITY_ACTIVATED_GENERIC:
+        Volume: 1.0
+        Pitch: 0.1
+    ABILITY_ACTIVATED_BERSERK:
+        Volume: 0.5
+        Pitch: 1.7

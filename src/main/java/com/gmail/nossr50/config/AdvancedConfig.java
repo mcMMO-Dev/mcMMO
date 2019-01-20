@@ -1,19 +1,11 @@
 package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
-import com.gmail.nossr50.skills.alchemy.Alchemy;
-import com.gmail.nossr50.skills.fishing.Fishing;
-import com.gmail.nossr50.skills.mining.BlastMining;
-import com.gmail.nossr50.skills.repair.ArcaneForging;
-import com.gmail.nossr50.skills.salvage.Salvage;
-import com.gmail.nossr50.skills.smelting.Smelting;
 import net.md_5.bungee.api.ChatColor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class AdvancedConfig extends AutoUpdateConfigLoader {

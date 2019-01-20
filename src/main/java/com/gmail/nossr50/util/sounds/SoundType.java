@@ -7,7 +7,13 @@ public enum SoundType {
     ITEM_BREAK,
     POP,
     KRAKEN,
-    CHIMAERA_WING;
+    CHIMAERA_WING,
+    ROLL_ACTIVATED,
+    SKILL_UNLOCKED,
+    DEFLECT_ARROWS,
+    TOOL_READY,
+    ABILITY_ACTIVATED_GENERIC,
+    ABILITY_ACTIVATED_BERSERK;
 
     public boolean usesCustomPitch()
     {

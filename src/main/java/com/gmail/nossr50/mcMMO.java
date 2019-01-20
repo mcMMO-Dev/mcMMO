@@ -91,7 +91,7 @@ public class mcMMO extends JavaPlugin {
     // XP Event Check
     private boolean xpEventEnabled;
 
-    private boolean isRetroModeEnabled;
+    private static boolean isRetroModeEnabled;
 
     /* Metadata Values */
     public final static String entityMetadataKey   = "mcMMO: Spawned Entity";
@@ -566,7 +566,7 @@ public class mcMMO extends JavaPlugin {
      * Standard mode is scaled for 1-100
      * @return true if retro mode is enabled
      */
-    public boolean isRetroModeEnabled() {
+    public static boolean isRetroModeEnabled() {
         return isRetroModeEnabled;
     }
 }

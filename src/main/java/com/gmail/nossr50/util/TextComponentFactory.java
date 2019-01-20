@@ -1,11 +1,11 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.datatypes.json.McMMOWebLinks;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.RankConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.json.McMMOUrl;
+import com.gmail.nossr50.datatypes.json.McMMOWebLinks;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;

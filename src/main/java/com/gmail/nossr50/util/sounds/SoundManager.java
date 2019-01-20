@@ -62,6 +62,18 @@ public class SoundManager {
                 return Sound.ENTITY_PLAYER_LEVELUP;
             case FIZZ:
                 return Sound.BLOCK_FIRE_EXTINGUISH;
+            case TOOL_READY:
+                return Sound.ITEM_ARMOR_EQUIP_GOLD;
+            case ROLL_ACTIVATED:
+                return Sound.ENTITY_LLAMA_SWAG;
+            case SKILL_UNLOCKED:
+                return Sound.UI_TOAST_CHALLENGE_COMPLETE;
+            case ABILITY_ACTIVATED_BERSERK:
+                return Sound.BLOCK_CONDUIT_AMBIENT;
+            case ABILITY_ACTIVATED_GENERIC:
+                return Sound.ITEM_TRIDENT_RIPTIDE_3;
+            case DEFLECT_ARROWS:
+                return Sound.ENTITY_ENDER_EYE_DEATH;
             default:
                 return null;
         }

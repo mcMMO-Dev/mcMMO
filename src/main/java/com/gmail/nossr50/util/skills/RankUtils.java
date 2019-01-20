@@ -12,7 +12,6 @@ import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class RankUtils {
@@ -44,7 +43,7 @@ public class RankUtils {
             {
                 SkillUnlockNotificationTask skillUnlockNotificationTask = new SkillUnlockNotificationTask(mcMMOPlayer, subSkillType, newLevel);
 
-                skillUnlockNotificationTask.runTaskLater(plugin, ((count * 5) + 1) * 20);
+                skillUnlockNotificationTask.runTaskLater(plugin, ((count * 4) + 1) * 20);
 
                 count++;
             }
