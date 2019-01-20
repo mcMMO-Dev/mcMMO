@@ -62,10 +62,16 @@ public class SkillUtils {
     public static String[] calculateAbilityDisplayValues(float skillValue, SubSkillType subSkillType, boolean isLucky) {
         int maxBonusLevel = AdvancedConfig.getInstance().getMaxBonusLevel(subSkillType);
 
+        if(Config.getInstance().getIsRetroMode())
+            maxBonusLevel = maxBonusLevel * 10;
+
         return calculateAbilityDisplayValues((AdvancedConfig.getInstance().getMaxChance(subSkillType) / maxBonusLevel) * Math.min(skillValue, maxBonusLevel), isLucky);
     }
 
     public static String[] calculateAbilityDisplayValuesCustom(float skillValue, SubSkillType subSkillType, boolean isLucky, int maxBonusLevel, double maxChance) {
+        if(Config.getInstance().getIsRetroMode())
+            maxBonusLevel = maxBonusLevel * 10;
+
         return calculateAbilityDisplayValues((maxChance / maxBonusLevel) * Math.min(skillValue, maxBonusLevel), isLucky);
     }
 
@@ -259,12 +265,18 @@ public class SkillUtils {
      * @return true if random chance succeeds and the event isn't cancelled
      */
     private static boolean performRandomSkillCheck(SubSkillType subSkillType, Player player, int skillLevel, int activationChance, double maxChance, int maxLevel) {
+        if(Config.getInstance().getIsRetroMode())
+            maxLevel = maxLevel * 10;
+
         double chance = (maxChance / maxLevel) * Math.min(skillLevel, maxLevel) / activationChance;
         return performRandomSkillCheckStatic(subSkillType, player, activationChance, chance);
     }
 
     /* NEW VERSION */
     private static boolean performRandomSkillCheck(AbstractSubSkill abstractSubSkill, Player player, int skillLevel, int activationChance, double maxChance, int maxLevel) {
+        if(Config.getInstance().getIsRetroMode())
+            maxLevel = maxLevel * 10;
+
         double chance = (maxChance / maxLevel) * Math.min(skillLevel, maxLevel) / activationChance;
         return performRandomSkillCheckStatic(abstractSubSkill, player, activationChance, chance);
     }
@@ -326,9 +338,7 @@ public class SkillUtils {
      */
     public static boolean isActivationSuccessfulCustom(Player player, AbstractSubSkill abstractSubSkill, double maxChance, int maxBonusLevel)
     {
-
         int skillLevel = UserManager.getPlayer(player).getSkillLevel(abstractSubSkill.getPrimarySkill());
-
 
         return performRandomSkillCheck(abstractSubSkill, player, skillLevel, PerksUtils.handleLuckyPerks(player, abstractSubSkill.getPrimarySkill()), maxChance, maxBonusLevel);
     }

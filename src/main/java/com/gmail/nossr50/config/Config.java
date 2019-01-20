@@ -246,7 +246,6 @@ public class Config extends AutoUpdateConfigLoader {
      */
 
     /* General Settings */
-
     public boolean getIsMetricsEnabled() { return config.getBoolean("Metrics.bstats", true); }
 
     //Retro mode will default the value to true if the config file doesn't contain the entry (server is from a previous mcMMO install)

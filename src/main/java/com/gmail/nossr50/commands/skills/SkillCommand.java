@@ -216,7 +216,7 @@ public abstract class SkillCommand implements TabExecutor {
     }
 
     protected String[] calculateAbilityDisplayValues(float skillValue, SubSkillType subSkill, boolean isLucky) {
-        int maxBonusLevel = AdvancedConfig.getInstance().getMaxBonusLevel(subSkill);
+        int maxBonusLevel = Config.getInstance().getIsRetroMode() ? AdvancedConfig.getInstance().getMaxBonusLevel(subSkill) * 10 : AdvancedConfig.getInstance().getMaxBonusLevel(subSkill);
 
         return calculateAbilityDisplayValues((AdvancedConfig.getInstance().getMaxChance(subSkill) / maxBonusLevel) * Math.min(skillValue, maxBonusLevel), isLucky);
     }
