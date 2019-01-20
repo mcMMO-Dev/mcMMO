@@ -30,8 +30,13 @@ public class SelfListener implements Listener {
         Player player = event.getPlayer();
         PrimarySkillType skill = event.getSkill();
 
-        //Send player skill unlock notifications
-        UserManager.getPlayer(player).processUnlockNotifications(plugin, event.getSkill());
+        //Players can gain multiple levels especially during xprate events
+        for(int i = 0; i < event.getLevelsGained(); i++)
+        {
+            int previousLevelGained = event.getSkillLevel() - i;
+            //Send player skill unlock notifications
+            UserManager.getPlayer(player).processUnlockNotifications(plugin, event.getSkill(), previousLevelGained);
+        }
 
         if(Config.getInstance().getScoreboardsEnabled())
             ScoreboardManager.handleLevelUp(player, skill);

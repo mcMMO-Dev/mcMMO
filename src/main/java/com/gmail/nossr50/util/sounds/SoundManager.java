@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.SoundConfig;
 import com.gmail.nossr50.util.Misc;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -14,7 +15,12 @@ public class SoundManager {
      */
     public static void sendSound(Player player, Location location, SoundType soundType)
     {
-        player.playSound(location, getSound(soundType), getVolume(soundType), getPitch(soundType));
+        player.playSound(location, getSound(soundType), SoundCategory.MASTER, getVolume(soundType), getPitch(soundType));
+    }
+
+    public static void sendCategorizedSound(Player player, Location location, SoundType soundType, SoundCategory soundCategory)
+    {
+        player.playSound(location, getSound(soundType), soundCategory, getVolume(soundType), getPitch(soundType));
     }
 
     public static void worldSendSound(World world, Location location, SoundType soundType)
