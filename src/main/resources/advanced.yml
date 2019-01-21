@@ -78,8 +78,10 @@ Skills:
         Ability:
             Length:
                 Standard:
+                    CapLevel: 50
                     IncreaseLevel: 5
                 RetroMode:
+                    CapLevel: 500
                     IncreaseLevel: 50
             EnchantBuff: 5
             # IncreaseLevel: This setting will determine when the length of every ability gets longer with 1 second

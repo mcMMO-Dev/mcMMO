@@ -188,7 +188,8 @@ public class SkillUtils {
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
             PrimarySkillType skill = mcMMOPlayer.getAbilityMode(SuperAbilityType.SUPER_BREAKER) ? PrimarySkillType.MINING : PrimarySkillType.EXCAVATION;
             int abilityLengthVar = Config.getInstance().getIsRetroMode() ? AdvancedConfig.getInstance().getAbilityLengthRetro() : AdvancedConfig.getInstance().getAbilityLengthStandard();
-            int ticks = PerksUtils.handleActivationPerks(player, 2 + (mcMMOPlayer.getSkillLevel(skill) / abilityLengthVar), skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
+            int abilityLengthCap = Config.getInstance().getIsRetroMode() ? AdvancedConfig.getInstance().getAbilityLengthCapRetro() : AdvancedConfig.getInstance().getAbilityLengthCapStandard();
+            int ticks = PerksUtils.handleActivationPerks(player, 2 + (Math.min(abilityLengthCap, mcMMOPlayer.getSkillLevel(skill)) / abilityLengthVar), skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
 
             PotionEffect abilityBuff = new PotionEffect(PotionEffectType.FAST_DIGGING, duration + ticks, amplifier + 10);
             player.addPotionEffect(abilityBuff, true);

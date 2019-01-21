@@ -817,7 +817,8 @@ public class McMMOPlayer {
         }
 
         int abilityLengthVar = Config.getInstance().getIsRetroMode() ? AdvancedConfig.getInstance().getAbilityLengthRetro() : AdvancedConfig.getInstance().getAbilityLengthStandard();
-        int ticks = PerksUtils.handleActivationPerks(player, 2 + (getSkillLevel(skill) / abilityLengthVar), ability.getMaxLength());
+        int abilityLengthCap = Config.getInstance().getIsRetroMode() ? AdvancedConfig.getInstance().getAbilityLengthCapRetro() : AdvancedConfig.getInstance().getAbilityLengthCapStandard();
+        int ticks = PerksUtils.handleActivationPerks(player, 2 + (Math.min(abilityLengthCap, getSkillLevel(skill)) / abilityLengthVar), ability.getMaxLength());
 
         // Notify people that ability has been activated
         ParticleEffectUtils.playAbilityEnabledEffect(player);

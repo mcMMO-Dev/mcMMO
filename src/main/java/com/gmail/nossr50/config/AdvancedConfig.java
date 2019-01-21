@@ -668,6 +668,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     /* GENERAL */
     public int getStartingLevel() { return config.getInt("Skills.General.StartingLevel", 1); }
+    public int getAbilityLengthCapStandard() { return config.getInt("Skills.General.Ability.Length.Standard.Cap", 50); }
+    public int getAbilityLengthCapRetro() { return config.getInt("Skills.General.Ability.Length.RetroMode.Cap", 500); }
     public int getAbilityLengthStandard() { return config.getInt("Skills.General.Ability.Length.Standard.IncreaseLevel", 5); }
     public int getAbilityLengthRetro() { return config.getInt("Skills.General.Ability.Length.RetroMode.IncreaseLevel", 50); }
     public int getEnchantBuff() { return config.getInt("Skills.General.Ability.EnchantBuff", 5); }
