@@ -235,14 +235,33 @@ public abstract class SkillCommand implements TabExecutor {
         return new String[] { String.valueOf(length), String.valueOf(enduranceLength) };
     }
 
-    /**
-     * Grab the stat string for a given subskill
-     * @param subSkillType target subskill
-     */
-    protected String getStatMessage(SubSkillType subSkillType, String stat)
+    protected String getStatMessage(SubSkillType subSkillType, String... vars)
     {
-        String statDescription = subSkillType.getLocaleStatDescription();
-        return subSkillType.getLocaleStat(statDescription, stat);
+        return getStatMessage(false, false, subSkillType, vars);
+    }
+
+    protected String getStatMessage(boolean isExtra, boolean isCustom, SubSkillType subSkillType, String... vars)
+    {
+        String templateKey = isCustom ? "Ability.Generic.Template.Custom" : "Ability.Generic.Template";
+        String statDescriptionKey = !isExtra ? subSkillType.getLocaleKeyStatDescription() : subSkillType.getLocaleKeyStatExtraDescription();
+
+        if(isCustom)
+            return LocaleLoader.getString(templateKey, LocaleLoader.getString(statDescriptionKey, vars));
+        else
+        {
+            String[] mergedList = addItemToFirstPositionOfArray(LocaleLoader.getString(statDescriptionKey), vars);
+            return LocaleLoader.getString(templateKey, mergedList);
+        }
+    }
+
+
+    public static String[] addItemToFirstPositionOfArray(String itemToAdd, String... existingArray) {
+        String[] newArray = new String[existingArray.length + 1];
+        newArray[0] = itemToAdd;
+
+        System.arraycopy(existingArray, 0, newArray, 1, existingArray.length);
+
+        return newArray;
     }
 
     protected abstract void dataCalculations(Player player, float skillValue, boolean isLucky);

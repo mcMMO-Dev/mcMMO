@@ -251,6 +251,10 @@ public enum SubSkillType {
     }
 
     public String getLocaleStatDescription() { return getFromLocaleSubAddress(".Stat"); }
+    public String getLocaleKeyStatDescription() { return getLocaleKeyFromSubAddress(".Stat"); }
+
+    public String getLocaleStatExtraDescription() { return getFromLocaleSubAddress(".Stat.Extra"); }
+    public String getLocaleKeyStatExtraDescription() { return getLocaleKeyFromSubAddress(".Stat.Extra"); }
 
     public String getLocaleStat(String... vars)
     {
@@ -258,7 +262,18 @@ public enum SubSkillType {
         return statMsg;
     }
 
+    public String getCustomLocaleStat(String... vars)
+    {
+        String statMsg = LocaleLoader.getString("Ability.Generic.Template.Custom", (Object[]) vars);
+        return statMsg;
+    }
+
     private String getFromLocaleSubAddress(String s) {
         return LocaleLoader.getString(getLocaleKeyRoot() + s);
+    }
+
+    private String getLocaleKeyFromSubAddress(String s)
+    {
+        return getLocaleKeyRoot() + s;
     }
 }
