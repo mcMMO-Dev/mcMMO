@@ -13,7 +13,7 @@ public class Taming {
     public static int    fastFoodServiceUnlockLevel      = RankUtils.getUnlockLevel(SubSkillType.TAMING_FAST_FOOD_SERVICE);
     public static double fastFoodServiceActivationChance = AdvancedConfig.getInstance().getFastFoodChance();
 
-    public static int    goreBleedTicks    = AdvancedConfig.getInstance().getGoreBleedTicks();
+    public static int    goreBleedTicks    = AdvancedConfig.getInstance().getGoreRuptureTicks();
     public static double goreModifier      = AdvancedConfig.getInstance().getGoreModifier();
 
     public static int    sharpenedClawsUnlockLevel = RankUtils.getUnlockLevel(SubSkillType.TAMING_SHARPENED_CLAWS);

@@ -93,6 +93,8 @@ public class SoundManager {
                 return Sound.ENTITY_ENDER_EYE_DEATH;
             case TIRED:
                 return Sound.BLOCK_CONDUIT_AMBIENT;
+            case BLEED:
+                return Sound.ENTITY_ENDER_EYE_DEATH;
             default:
                 return null;
         }

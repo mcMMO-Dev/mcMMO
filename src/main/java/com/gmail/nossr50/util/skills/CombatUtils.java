@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
@@ -375,6 +376,18 @@ public final class CombatUtils {
         target.damage(callFakeDamageEvent(attacker, target, cause, damage));
     }
 
+    public static void dealNoInvulnerabilityTickDamage(LivingEntity target, double damage, Entity attacker) {
+        if (target.isDead()) {
+            return;
+        }
+
+        //target.damage(callFakeDamageEvent(attacker, target, cause, damage));
+        double incDmg = callFakeDamageEvent(attacker, target, DamageCause.CUSTOM, damage);
+
+        if(incDmg > 0)
+            target.setHealth(incDmg);
+    }
+
     /**
      * Apply Area-of-Effect ability actions.
      *
@@ -405,7 +418,7 @@ public final class CombatUtils {
                         NotificationManager.sendPlayerInformation((Player)entity, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.SS.Struck");
                     }
 
-                    BleedTimerTask.add(livingEntity, Swords.serratedStrikesBleedTicks);
+                    BleedTimerTask.add(livingEntity, Swords.serratedStrikesBleedTicks, RankUtils.getRank(attacker, SubSkillType.SWORDS_RUPTURE));
                     break;
 
                 case AXES:

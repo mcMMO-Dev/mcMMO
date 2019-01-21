@@ -22,6 +22,7 @@ Version 2.1.0
  + (Sounds) Activating Super abilities plays a sound (other plays can hear this)
  + (Sounds) Skill Unlock Notifications have sounds
  + (Sounds) Readying a tool for a super ability now plays a sound
+ + (Sounds) Bleed DOT now plays a sound
  + (Experience) mcMMO now notifies you when you progress in a skill!
  + (Experience) Coral (blocks) now give Mining XP
  + (Experience) Coral (plants) now give Herbalism XP
@@ -32,6 +33,13 @@ Version 2.1.0
  + (Events) Starting an XP event will now use the title API (toggle this in advanced.yml)
  + (Sound) Volume and Pitch of sounds can now be configured in the new sounds.yml file
  + (MySQL) Added support for SSL for MySQL/MariaDB (On by default)
+ ! (Skills) Taming's Gore now uses Bleed Rank 1 for its DoT
+ ! (Skills) Sword's Rupture now ticks four times as fast
+ ! (Skills) Sword's Bleed has been renamed to Rupture
+ ! (Skills) Sword's Rupture now reaches its max proc chance at level 20 (200 in Retro)
+ ! (Skills) Sword's Rupture now has a max chance to proc of 33% instead of 70%
+ ! (Skills) Sword's Rupture now deals 50% more damage at above Rank 3 and can last much longer! The base damage for Bleed has been increased as well (update your advanced.yml admins)
+ ! (Skills) Sword's Rupture no longer triggers invincibility frames when damaging your opponent
  + (Skills) Ability Lengths now have a default skill cap at which they stop increasing in length, configurable in advanced.yml
  + (Skills) Added a new subskill to some skills 'Understanding The Art' this adds nothing new, but tracks benefits that increase together that seemed unrelated, which was previously a bit obfuscated.
  + (Skills) Tool alerts now are sent to the Action Bar
@@ -89,6 +97,7 @@ Version 2.1.0
  ! (Skills) Acrobatics' Roll & Gracefull Roll are now considered the same skill (both mechanics are still there)
  ! (Skills) Woodcutting's Double Drop subskill is now named Harvest Lumber
  ! (Skills) Archery's Skill Shot now uses a rank system
+ ! (Skills) Swords' Bleed now uses a rank system
  ! (Skills) Axe's Axe Mastery now uses a rank system
  ! (Skills) Axe's Impact now uses a rank system
  ! (Skills) Herbalism's Farmer's Diet now uses a rank system

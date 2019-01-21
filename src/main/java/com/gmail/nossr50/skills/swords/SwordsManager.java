@@ -13,6 +13,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
+import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.entity.Entity;
@@ -32,7 +33,7 @@ public class SwordsManager extends SkillManager {
     }
 
     public boolean canUseBleed() {
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_BLEED);
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_RUPTURE);
     }
 
     public boolean canUseCounterAttack(Entity target) {
@@ -49,13 +50,13 @@ public class SwordsManager extends SkillManager {
      * @param target The defending entity
      */
     public void bleedCheck(LivingEntity target) {
-        if (SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_BLEED, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+        if (SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_RUPTURE, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
 
-            if (getSkillLevel() >= AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.SWORDS_BLEED)) {
-                BleedTimerTask.add(target, Swords.bleedMaxTicks);
+            if (getSkillLevel() >= AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.SWORDS_RUPTURE)) {
+                BleedTimerTask.add(target, getBleedTicks(), RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE));
             }
             else {
-                BleedTimerTask.add(target, Swords.bleedBaseTicks);
+                BleedTimerTask.add(target, getBleedTicks(), RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE));
             }
 
             if (mcMMOPlayer.useChatNotifications()) {
@@ -70,6 +71,16 @@ public class SwordsManager extends SkillManager {
                 }
             }
         }
+    }
+
+    public int getBleedTicks()
+    {
+        int bleedTicks = 2 * RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE);
+
+        if(bleedTicks > Swords.bleedMaxTicks)
+            bleedTicks = Swords.bleedMaxTicks;
+
+        return bleedTicks;
     }
 
     /**
@@ -98,6 +109,6 @@ public class SwordsManager extends SkillManager {
      */
     public void serratedStrikes(LivingEntity target, double damage, Map<DamageModifier, Double> modifiers) {
         CombatUtils.applyAbilityAoE(getPlayer(), target, damage / Swords.serratedStrikesModifier, modifiers, skill);
-        BleedTimerTask.add(target, Swords.serratedStrikesBleedTicks);
+        BleedTimerTask.add(target, Swords.serratedStrikesBleedTicks, RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE));
     }
 }

@@ -60,3 +60,7 @@ Sounds:
         Enable: true
         Volume: 1.0
         Pitch: 1.7
+    BLEED:
+        Enable: true
+        Volume: 2.0
+        Pitch: 2.0

@@ -442,19 +442,19 @@ Skills:
     #  Settings for Swords
     ###
     Swords:
-        Bleed:
+        Rupture:
             # ChanceMax: Maximum chance of triggering bleeding
             # MaxBonusLevel: On this level, the chance to cause Bleeding will be <ChanceMax>
-            ChanceMax: 75.0
-            MaxBonusLevel: 75
+            ChanceMax: 33.0
+            MaxBonusLevel: 20
 
             # DamagePlayer: Bleeding damage dealt to players
             # DamageMobs: Bleeding damage dealt to mobs
-            DamagePlayer: 1.0
-            DamageMobs: 2.0
+            DamagePlayer: 2.0
+            DamageMobs: 3.0
 
             # These settings determine how long the Bleeding effect lasts
-            MaxTicks: 3
+            MaxTicks: 8
             BaseTicks: 2
 
         CounterAttack:

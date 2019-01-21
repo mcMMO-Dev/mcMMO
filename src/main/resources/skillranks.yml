@@ -326,6 +326,17 @@ Fishing:
             Rank_7: 850
             Rank_8: 1000
 Swords:
+    Rupture:
+        Standard:
+            Rank_1: 5
+            Rank_2: 15
+            Rank_3: 75
+            Rank_4: 90
+        RetroMode:
+            Rank_1: 50
+            Rank_2: 150
+            Rank_3: 750
+            Rank_4: 900
     SerratedStrikes:
         Standard:
             Rank_1: 10

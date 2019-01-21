@@ -69,7 +69,7 @@ public enum SubSkillType {
     SMELTING_UNDERSTANDING_THE_ART(8),
 
     /* Swords */
-    SWORDS_BLEED,
+    SWORDS_RUPTURE(4),
     SWORDS_COUNTER_ATTACK,
     SWORDS_SERRATED_STRIKES(1),
 

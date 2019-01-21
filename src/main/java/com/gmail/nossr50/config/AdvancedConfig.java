@@ -486,24 +486,24 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }*/
 
         /* SWORDS */
-        if (getMaxChance(SubSkillType.SWORDS_BLEED) < 1) {
-            reason.add("Skills.Swords.Bleed.ChanceMax should be at least 1!");
+        if (getMaxChance(SubSkillType.SWORDS_RUPTURE) < 1) {
+            reason.add("Skills.Swords.Rupture.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkillType.SWORDS_BLEED) < 1) {
-            reason.add("Skills.Swords.Bleed.MaxBonusLevel should be at least 1!");
+        if (getMaxBonusLevel(SubSkillType.SWORDS_RUPTURE) < 1) {
+            reason.add("Skills.Swords.Rupture.MaxBonusLevel should be at least 1!");
         }
 
-        if (getBleedMaxTicks() < 1) {
-            reason.add("Skills.Swords.Bleed.MaxTicks should be at least 1!");
+        if (getRuptureMaxTicks() < 1) {
+            reason.add("Skills.Swords.Rupture.MaxTicks should be at least 1!");
         }
 
-        if (getBleedMaxTicks() < getBleedBaseTicks()) {
-            reason.add("Skills.Swords.Bleed.MaxTicks should be at least Skills.Swords.Bleed.BaseTicks!");
+        if (getRuptureMaxTicks() < getRuptureBaseTicks()) {
+            reason.add("Skills.Swords.Rupture.MaxTicks should be at least Skills.Swords.Rupture.BaseTicks!");
         }
 
-        if (getBleedBaseTicks() < 1) {
-            reason.add("Skills.Swords.Bleed.BaseTicks should be at least 1!");
+        if (getRuptureBaseTicks() < 1) {
+            reason.add("Skills.Swords.Rupture.BaseTicks should be at least 1!");
         }
 
         if (getMaxChance(SubSkillType.SWORDS_COUNTER_ATTACK) < 1) {
@@ -523,7 +523,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }
 
         if (getSerratedStrikesTicks() < 1) {
-            reason.add("Skills.Swords.SerratedStrikes.BleedTicks should be at least 1!");
+            reason.add("Skills.Swords.SerratedStrikes.RuptureTicks should be at least 1!");
         }
 
         /* TAMING */
@@ -536,8 +536,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Taming.Gore.MaxBonusLevel should be at least 1!");
         }
 
-        if (getGoreBleedTicks() < 1) {
-            reason.add("Skills.Taming.Gore.BleedTicks should be at least 1!");
+        if (getGoreRuptureTicks() < 1) {
+            reason.add("Skills.Taming.Gore.RuptureTicks should be at least 1!");
         }
 
         if (getGoreModifier() < 1) {
@@ -922,19 +922,19 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getSmeltingVanillaXPBoostMultiplier(int rank) { return config.getInt("Skills.Smelting.VanillaXPMultiplier.Rank_" + rank); }
 
     /* SWORDS */
-    public double getBleedDamagePlayer() { return config.getDouble("Skills.Swords.Bleed.DamagePlayer", 1.0); }
-    public double getBleedDamageMobs() { return config.getDouble("Skills.Swords.Bleed.DamageMobs", 2.0); }
+    public double getRuptureDamagePlayer() { return config.getDouble("Skills.Swords.Rupture.DamagePlayer", 1.0); }
+    public double getRuptureDamageMobs() { return config.getDouble("Skills.Swords.Rupture.DamageMobs", 2.0); }
 
-    public int getBleedMaxTicks() { return config.getInt("Skills.Swords.Bleed.MaxTicks", 3); }
-    public int getBleedBaseTicks() { return config.getInt("Skills.Swords.Bleed.BaseTicks", 2); }
+    public int getRuptureMaxTicks() { return config.getInt("Skills.Swords.Rupture.MaxTicks", 3); }
+    public int getRuptureBaseTicks() { return config.getInt("Skills.Swords.Rupture.BaseTicks", 2); }
 
     public double getCounterModifier() { return config.getDouble("Skills.Swords.CounterAttack.DamageModifier", 2.0D); }
 
     public double getSerratedStrikesModifier() { return config.getDouble("Skills.Swords.SerratedStrikes.DamageModifier", 4.0D); }
-    public int getSerratedStrikesTicks() { return config.getInt("Skills.Swords.SerratedStrikes.BleedTicks", 5); }
+    public int getSerratedStrikesTicks() { return config.getInt("Skills.Swords.SerratedStrikes.RuptureTicks", 5); }
 
     /* TAMING */
-    public int getGoreBleedTicks() { return config.getInt("Skills.Taming.Gore.BleedTicks", 2); }
+    public int getGoreRuptureTicks() { return config.getInt("Skills.Taming.Gore.RuptureTicks", 2); }
     public double getGoreModifier() { return config.getDouble("Skills.Taming.Gore.Modifier", 2.0D); }
 
     /*public int getFastFoodUnlock() { return config.getInt("Skills.Taming.FastFood.UnlockLevel", 50); }*/
