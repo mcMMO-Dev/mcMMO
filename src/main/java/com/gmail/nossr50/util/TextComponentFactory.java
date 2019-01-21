@@ -14,6 +14,7 @@ import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.entity.Player;
 
@@ -62,6 +63,27 @@ public class TextComponentFactory {
     {
         //textComponent.setColor(getNotificationColor(notificationType));
         return new TextComponent(text);
+    }
+
+    public static void sendPlayerSubSkillWikiLink(Player player, String subskillformatted)
+    {
+        if(!Config.getInstance().getUrlLinksEnabled())
+            return;
+
+        Player.Spigot spigotPlayer = player.spigot();
+
+        TextComponent wikiLinkComponent = new TextComponent(LocaleLoader.getString("Overhaul.mcMMO.MmoInfo.Wiki"));
+        wikiLinkComponent.setUnderlined(true);
+
+        String wikiUrl = "https://mcmmo.org/wiki/"+subskillformatted;
+
+        wikiLinkComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, wikiUrl));
+
+        ComponentBuilder componentBuilder = new ComponentBuilder(subskillformatted).append("\n").append(wikiUrl).color(ChatColor.GRAY).italic(true);
+
+        wikiLinkComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, componentBuilder.create()));
+
+        spigotPlayer.sendMessage(ChatMessageType.SYSTEM, wikiLinkComponent);
     }
 
     public static void sendPlayerUrlHeader(Player player) {
