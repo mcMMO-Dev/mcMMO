@@ -27,7 +27,7 @@ public enum SubSkillType {
     AXES_SKULL_SPLITTER(1),
 
     /* Excavation */
-    EXCAVATION_TREASURE_HUNTER(8),
+    EXCAVATION_ARCHAEOLOGY(8),
     EXCAVATION_GIGA_DRILL_BREAKER(1),
 
     /* Fishing */

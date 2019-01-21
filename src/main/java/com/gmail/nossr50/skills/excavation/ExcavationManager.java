@@ -28,7 +28,7 @@ public class ExcavationManager extends SkillManager {
     public void excavationBlockCheck(BlockState blockState) {
         int xp = Excavation.getBlockXP(blockState);
 
-        if (Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.EXCAVATION_TREASURE_HUNTER)) {
+        if (Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
             List<ExcavationTreasure> treasures = Excavation.getTreasures(blockState);
 
             if (!treasures.isEmpty()) {

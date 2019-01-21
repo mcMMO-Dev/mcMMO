@@ -457,7 +457,7 @@ public class SkillUtils {
     }
 
     public static boolean treasureDropSuccessful(Player player, double dropChance, int activationChance) {
-        SubSkillWeightedActivationCheckEvent event = new SubSkillWeightedActivationCheckEvent(player, SubSkillType.EXCAVATION_TREASURE_HUNTER, dropChance / activationChance);
+        SubSkillWeightedActivationCheckEvent event = new SubSkillWeightedActivationCheckEvent(player, SubSkillType.EXCAVATION_ARCHAEOLOGY, dropChance / activationChance);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
         return (event.getChance() * activationChance) > (Misc.getRandom().nextDouble() * activationChance) && !event.isCancelled();
     }

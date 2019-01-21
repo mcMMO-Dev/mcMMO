@@ -1,5 +1,6 @@
 package com.gmail.nossr50.datatypes.treasure;
 
+import com.gmail.nossr50.config.Config;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class Treasure {
@@ -40,6 +41,10 @@ public abstract class Treasure {
     }
 
     public int getDropLevel() {
+        //If they are in retro mode all requirements are scaled up by 10
+        if(Config.getInstance().getIsRetroMode())
+            return dropLevel * 10;
+
         return dropLevel;
     }
 
