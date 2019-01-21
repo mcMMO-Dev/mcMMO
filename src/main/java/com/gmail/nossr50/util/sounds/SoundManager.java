@@ -15,23 +15,28 @@ public class SoundManager {
      */
     public static void sendSound(Player player, Location location, SoundType soundType)
     {
-        player.playSound(location, getSound(soundType), SoundCategory.MASTER, getVolume(soundType), getPitch(soundType));
+        if(SoundConfig.getInstance().getIsEnabled(soundType))
+            player.playSound(location, getSound(soundType), SoundCategory.MASTER, getVolume(soundType), getPitch(soundType));
     }
 
     public static void sendCategorizedSound(Player player, Location location, SoundType soundType, SoundCategory soundCategory)
     {
-        player.playSound(location, getSound(soundType), soundCategory, getVolume(soundType), getPitch(soundType));
+        if(SoundConfig.getInstance().getIsEnabled(soundType))
+            player.playSound(location, getSound(soundType), soundCategory, getVolume(soundType), getPitch(soundType));
     }
 
     public static void sendCategorizedSound(Player player, Location location, SoundType soundType, SoundCategory soundCategory, float pitchModifier)
     {
         float totalPitch = Math.min(2.0F, (getPitch(soundType) + pitchModifier));
-        player.playSound(location, getSound(soundType), soundCategory, getVolume(soundType), totalPitch);
+
+        if(SoundConfig.getInstance().getIsEnabled(soundType))
+            player.playSound(location, getSound(soundType), soundCategory, getVolume(soundType), totalPitch);
     }
 
     public static void worldSendSound(World world, Location location, SoundType soundType)
     {
-        world.playSound(location, getSound(soundType), getVolume(soundType), getPitch(soundType));
+        if(SoundConfig.getInstance().getIsEnabled(soundType))
+            world.playSound(location, getSound(soundType), getVolume(soundType), getPitch(soundType));
     }
 
     /**

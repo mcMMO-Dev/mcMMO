@@ -61,4 +61,10 @@ public class SoundConfig extends AutoUpdateConfigLoader {
         String key = "Sounds."+soundType.toString()+".Pitch";
         return (float) config.getDouble(key);
     }
+
+    public boolean getIsEnabled(SoundType soundType)
+    {
+        String key = "Sounds."+soundType.toString()+".Enabled";
+        return config.getBoolean(key, true);
+    }
 }
