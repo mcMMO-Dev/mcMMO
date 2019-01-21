@@ -1,7 +1,10 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
+import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -58,16 +61,27 @@ public class AcrobaticsCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 
-        /*if (canRoll) {
-            messages.add(getStatMessage(SubSkillType.ACROBATICS_ROLL, dazeChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", dazeChanceLucky) : ""));
-            messages.add(LocaleLoader.getString("Acrobatics.Roll.Chance", rollChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", rollChanceLucky) : ""));
-        }
-
         if (canRoll) {
-            messages.add(LocaleLoader.getString("Acrobatics.Roll.GraceChance", gracefulRollChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", gracefulRollChanceLucky) : ""));
-        }*/
 
+            AbstractSubSkill abstractSubSkill = InteractionManager.getAbstractByName("Roll");
+
+            if(abstractSubSkill != null)
+            {
+                double maxBonusLevel = AdvancedConfig.getInstance().getMaxBonusLevel(abstractSubSkill);
+                double maxChance = AdvancedConfig.getInstance().getMaxChance(abstractSubSkill);
+                double rollChance   = SkillUtils.getChanceOfSuccess(skillValue, maxBonusLevel, maxChance);
+                double graceChance  = SkillUtils.getChanceOfSuccess(skillValue, maxBonusLevel, maxChance / 2);
+
+                String rollChanceLucky = isLucky ? percent.format(Math.min(rollChance * 1.3333D, 100.0D) / 100.0D) : null;
+                String graceChanceLucky = isLucky ? percent.format(Math.min(rollChance * 1.3333D, 100.0D) / 100.0D) : null;
+
+
+                messages.add(getStatMessage(SubSkillType.ACROBATICS_ROLL, percent.format(rollChance))
+                        + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", rollChanceLucky) : ""));
+                messages.add(getStatMessage(true, false, SubSkillType.ACROBATICS_ROLL, percent.format(graceChance))
+                        + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", graceChanceLucky) : ""));
+            }
+        }
 
         if (canDodge) {
             messages.add(getStatMessage(SubSkillType.ACROBATICS_DODGE, dodgeChance)
