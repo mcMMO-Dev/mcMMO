@@ -89,17 +89,26 @@ public class SwordsCommand extends SkillCommand {
         List<String> messages = new ArrayList<String>();
 
         if (canCounter) {
-            messages.add(LocaleLoader.getString("Swords.Combat.Counter.Chance", counterChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", counterChanceLucky) : ""));
+            messages.add(getStatMessage(SubSkillType.SWORDS_COUNTER_ATTACK, counterChance)
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", counterChanceLucky) : ""));
+
+            //messages.add(LocaleLoader.getString("Swords.Combat.Counter.Chance", counterChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", counterChanceLucky) : ""));
         }
 
         if (canBleed) {
-            messages.add(LocaleLoader.getString("Swords.Combat.Bleed.Length", bleedLength));
+            messages.add(getStatMessage(SubSkillType.SWORDS_BLEED, bleedChance)
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", bleedChanceLucky) : ""));
+            messages.add(getStatMessage(true, true, SubSkillType.SWORDS_BLEED, String.valueOf(bleedLength)));
+            //messages.add(LocaleLoader.getString("Swords.Combat.Bleed.Length", bleedLength));
             messages.add(LocaleLoader.getString("Swords.Combat.Bleed.Note"));
-            messages.add(LocaleLoader.getString("Swords.Combat.Bleed.Chance", bleedChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", bleedChanceLucky) : ""));
+            //messages.add(LocaleLoader.getString("Swords.Combat.Bleed.Chance", bleedChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", bleedChanceLucky) : ""));
         }
 
         if (canSerratedStrike) {
-            messages.add(LocaleLoader.getString("Swords.SS.Length", serratedStrikesLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", serratedStrikesLengthEndurance) : ""));
+            messages.add(getStatMessage(SubSkillType.SWORDS_SERRATED_STRIKES, serratedStrikesLength)
+                    + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", serratedStrikesLengthEndurance) : ""));
+
+            //messages.add(LocaleLoader.getString("Swords.SS.Length", serratedStrikesLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", serratedStrikesLengthEndurance) : ""));
         }
 
         return messages;
