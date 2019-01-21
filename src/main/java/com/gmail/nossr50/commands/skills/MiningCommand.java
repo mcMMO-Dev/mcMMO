@@ -115,7 +115,7 @@ public class MiningCommand extends SkillCommand {
 
         if (canSuperBreaker) {
             messages.add(getStatMessage(SubSkillType.MINING_SUPER_BREAKER, superBreakerLength)
-                    + (isLucky ? LocaleLoader.getString("Perks.ActivationTime.Bonus", superBreakerLengthEndurance) : ""));
+                    + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", superBreakerLengthEndurance) : ""));
             //messages.add(LocaleLoader.getString("Mining.Ability.Length", superBreakerLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", superBreakerLengthEndurance) : ""));
         }
 

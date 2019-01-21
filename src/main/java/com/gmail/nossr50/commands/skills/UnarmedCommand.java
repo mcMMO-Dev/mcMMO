@@ -136,7 +136,7 @@ public class UnarmedCommand extends SkillCommand {
 
         if (canBerserk) {
             messages.add(getStatMessage(SubSkillType.UNARMED_BERSERK, berserkLength)
-                    + (isLucky ? LocaleLoader.getString("Perks.ActivationTime.Bonus", berserkLengthEndurance) : ""));
+                    + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", berserkLengthEndurance) : ""));
             //messages.add(LocaleLoader.getString("Unarmed.Ability.Berserk.Length", berserkLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", berserkLengthEndurance) : ""));
         }
 
