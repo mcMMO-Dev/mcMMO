@@ -80,15 +80,17 @@ public class ArcheryCommand extends SkillCommand {
         List<String> messages = new ArrayList<String>();
 
         if (canSkillShot) {
-            messages.add(LocaleLoader.getString("Archery.Combat.SkillshotBonus", skillShotBonus));
+            messages.add(getStatMessage(SubSkillType.ARCHERY_SKILL_SHOT, skillShotBonus));
         }
 
         if (canDaze) {
-            messages.add(LocaleLoader.getString("Archery.Combat.DazeChance", dazeChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", dazeChanceLucky) : ""));
+            messages.add(getStatMessage(SubSkillType.ARCHERY_DAZE, dazeChance)
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", dazeChanceLucky) : ""));
         }
 
         if (canRetrieve) {
-            messages.add(LocaleLoader.getString("Archery.Combat.RetrieveChance", retrieveChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", retrieveChanceLucky) : ""));
+            messages.add(getStatMessage(SubSkillType.ARCHERY_ARROW_RETRIEVAL, retrieveChance)
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", retrieveChanceLucky) : ""));
         }
 
         return messages;

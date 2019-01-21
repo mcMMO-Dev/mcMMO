@@ -235,6 +235,16 @@ public abstract class SkillCommand implements TabExecutor {
         return new String[] { String.valueOf(length), String.valueOf(enduranceLength) };
     }
 
+    /**
+     * Grab the stat string for a given subskill
+     * @param subSkillType target subskill
+     */
+    protected String getStatMessage(SubSkillType subSkillType, String stat)
+    {
+        String statDescription = subSkillType.getLocaleStatDescription();
+        return subSkillType.getLocaleStat(statDescription, stat);
+    }
+
     protected abstract void dataCalculations(Player player, float skillValue, boolean isLucky);
 
     protected abstract void permissionsCheck(Player player);

@@ -242,11 +242,23 @@ public enum SubSkillType {
 
     public String getLocaleName()
     {
-        return LocaleLoader.getString(getLocaleKeyRoot()+".Name");
+        return getFromLocaleSubAddress(".Name");
     }
 
     public String getLocaleDescription()
     {
-        return LocaleLoader.getString(getLocaleKeyRoot()+".Description");
+        return getFromLocaleSubAddress(".Description");
+    }
+
+    public String getLocaleStatDescription() { return getFromLocaleSubAddress(".Stat"); }
+
+    public String getLocaleStat(String... vars)
+    {
+        String statMsg = LocaleLoader.getString("Ability.Generic.Template", (Object[]) vars);
+        return statMsg;
+    }
+
+    private String getFromLocaleSubAddress(String s) {
+        return LocaleLoader.getString(getLocaleKeyRoot() + s);
     }
 }
