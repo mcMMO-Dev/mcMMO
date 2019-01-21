@@ -105,7 +105,7 @@ public class McrankCommand implements TabExecutor {
             mcMMOPlayer.actualizeDatabaseATS();
         }
 
-        boolean useBoard = (sender instanceof Player) && (Config.getInstance().getRankUseBoard());
+        boolean useBoard = Config.getInstance().getScoreboardsEnabled() && (sender instanceof Player) && (Config.getInstance().getRankUseBoard());
         boolean useChat = !useBoard || Config.getInstance().getRankUseChat();
 
         new McrankCommandAsyncTask(playerName, sender, useBoard, useChat).runTaskAsynchronously(mcMMO.p);
