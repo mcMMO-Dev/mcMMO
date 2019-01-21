@@ -9,6 +9,7 @@ Key:
 
 Version 2.1.0
  + mcMMO now features XP bars! Configurable in experience.yml
+ + Locale files now support & codes for colors and formatting!
  + Prevented exploits involving blocks made from entities (snowmen, etc..)
  + Added JSON integration to all Skill Commands
  + Added config setting to enable or disable old mcMMO skill scaling (General.RetroMode) this is on by default for existing installs
