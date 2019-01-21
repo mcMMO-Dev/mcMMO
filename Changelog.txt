@@ -37,6 +37,7 @@ Version 2.1.0
  + (Skills) Tool alerts now are sent to the Action Bar
  + (Skills) Super Ability activation alerts are now sent to the Action Bar
  + (Skills) Certain Skill messages are now sent to the Action Bar
+ + (Skills) Added some missing information to skill stats
  + (Config) Skill Rank requirements are now defined in skillranks.yml you cannot add or remove ranks from this file
  + (Config) Added option to use SSL for MySQL in config.yml
  + (Config) Added option to disable the new URL links to config.yml

@@ -155,28 +155,37 @@ public class FishingCommand extends SkillCommand {
         List<String> messages = new ArrayList<String>();
 
         if (canTreasureHunt) {
-            messages.add(LocaleLoader.getString("Fishing.Ability.Rank", lootTier, RankUtils.getHighestRank(SubSkillType.FISHING_TREASURE_HUNTER)));
-            messages.add(LocaleLoader.getString("Fishing.Ability.TH.DropRate", trapTreasure, commonTreasure, uncommonTreasure, rareTreasure, epicTreasure, legendaryTreasure, recordTreasure));
+            messages.add(getStatMessage(false, true, SubSkillType.FISHING_TREASURE_HUNTER, String.valueOf(lootTier), String.valueOf(RankUtils.getHighestRank(SubSkillType.FISHING_TREASURE_HUNTER))));
+            messages.add(getStatMessage(true, true, SubSkillType.FISHING_TREASURE_HUNTER,
+                    String.valueOf(trapTreasure),
+                    String.valueOf(commonTreasure),
+                    String.valueOf(uncommonTreasure),
+                    String.valueOf(rareTreasure),
+                    String.valueOf(epicTreasure),
+                    String.valueOf(legendaryTreasure),
+                    String.valueOf(recordTreasure)));
         }
 
         if (canMagicHunt) {
-            messages.add(LocaleLoader.getString("Fishing.Ability.TH.MagicRate", magicChance));
+            messages.add(getStatMessage(SubSkillType.FISHING_MAGIC_HUNTER, magicChance));
         }
 
         if (canIceFish) {
-            messages.add(LocaleLoader.getString("Fishing.Ability.IceFishing"));
+            messages.add(getStatMessage(SubSkillType.FISHING_ICE_FISHING, SubSkillType.FISHING_ICE_FISHING.getLocaleStatDescription()));
         }
 
         if (canMasterAngler) {
-            messages.add(LocaleLoader.getString("Fishing.Ability.Chance", biteChance));
+            //TODO: Update this with more details
+            messages.add(getStatMessage(SubSkillType.FISHING_MASTER_ANGLER, biteChance));
         }
 
         if (canShake) {
-            messages.add(LocaleLoader.getString("Fishing.Ability.Shake", shakeChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", shakeChanceLucky) : ""));
+            messages.add(getStatMessage(SubSkillType.FISHING_SHAKE, shakeChance)
+            + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", shakeChanceLucky) : ""));
         }
 
         if (canFishermansDiet) {
-            messages.add(LocaleLoader.getString("Fishing.Ability.FD", fishermansDietRank));
+            messages.add(getStatMessage(false, true, SubSkillType.FISHING_FISHERMANS_DIET, String.valueOf(fishermansDietRank)));
         }
 
         return messages;
