@@ -1,6 +1,7 @@
 package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.meta.OldName;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -150,10 +151,12 @@ public class EntityListener implements Listener {
                 Player defendingPlayer = (Player) defender;
                 Player attackingPlayer = (Player) attacker;
                 if (event.getDamage(DamageModifier.ABSORPTION) > 0) {
-                    if ((PartyManager.inSameParty(defendingPlayer, attackingPlayer) || PartyManager.areAllies(defendingPlayer, attackingPlayer)) && !(Permissions.friendlyFire(attackingPlayer) && Permissions.friendlyFire(defendingPlayer))) {
-                        event.setCancelled(true);
-                        return;
-                    }
+                    //If friendly fire is off don't allow players to hurt one another
+                    if(!Config.getInstance().getPartyFriendlyFire())
+                        if ((PartyManager.inSameParty(defendingPlayer, attackingPlayer) || PartyManager.areAllies(defendingPlayer, attackingPlayer)) && !(Permissions.friendlyFire(attackingPlayer) && Permissions.friendlyFire(defendingPlayer))) {
+                            event.setCancelled(true);
+                            return;
+                        }
                 }
             }
             return;
@@ -219,10 +222,12 @@ public class EntityListener implements Listener {
                 return;
             }
 
-            if ((PartyManager.inSameParty(defendingPlayer, attackingPlayer) || PartyManager.areAllies(defendingPlayer, attackingPlayer)) && !(Permissions.friendlyFire(attackingPlayer) && Permissions.friendlyFire(defendingPlayer))) {
-                event.setCancelled(true);
-                return;
-            }
+            //Party Friendly Fire
+            if(!Config.getInstance().getPartyFriendlyFire())
+                if ((PartyManager.inSameParty(defendingPlayer, attackingPlayer) || PartyManager.areAllies(defendingPlayer, attackingPlayer)) && !(Permissions.friendlyFire(attackingPlayer) && Permissions.friendlyFire(defendingPlayer))) {
+                    event.setCancelled(true);
+                    return;
+                }
         }
 
         CombatUtils.processCombatAttack(event, attacker, target);

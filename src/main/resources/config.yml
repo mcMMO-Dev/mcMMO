@@ -237,6 +237,8 @@ Items:
 #  Settings for Parties
 ###
 Party:
+    # Enable Hurting other players in the same party
+    FriendlyFire: false
     # Maximum size for a party, -1 for infinite
     MaxSize: -1
     # Amount of time (in hours) to wait between automatically kicking old party members
