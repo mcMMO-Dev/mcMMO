@@ -38,7 +38,7 @@ Feedback:
             SendCopyOfMessageToChat: false
         LevelUps:
             Enabled: true
-            SendCopyOfMessageToChat: false
+            SendCopyOfMessageToChat: true
         Holiday:
             Enabled: true
             SendCopyOfMessageToChat: true
@@ -59,7 +59,7 @@ Feedback:
             SendCopyOfMessageToChat: false
         SuperAbilityAlertOthers:
             Enabled: true
-            SendCopyOfMessageToChat: false
+            SendCopyOfMessageToChat: true
         ExperienceGain:
             Enabled: true
             SendCopyOfMessageToChat: false

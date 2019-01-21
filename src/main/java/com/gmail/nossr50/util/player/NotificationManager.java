@@ -102,11 +102,11 @@ public class NotificationManager {
      * @param skillName skill that leveled up
      * @param newLevel new level of that skill
      */
-    public static void sendPlayerLevelUpNotification(McMMOPlayer mcMMOPlayer, PrimarySkillType skillName, int newLevel)
+    public static void sendPlayerLevelUpNotification(McMMOPlayer mcMMOPlayer, PrimarySkillType skillName, int levelsGained, int newLevel)
     {
         ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(NotificationType.LEVEL_UP_MESSAGE) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
 
-        TextComponent levelUpTextComponent = TextComponentFactory.getNotificationLevelUpTextComponent(mcMMOPlayer, skillName, newLevel);
+        TextComponent levelUpTextComponent = TextComponentFactory.getNotificationLevelUpTextComponent(skillName, levelsGained, newLevel);
         McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(mcMMOPlayer.getPlayer(), NotificationType.LEVEL_UP_MESSAGE, destination, levelUpTextComponent);
 
         sendNotification(mcMMOPlayer.getPlayer(), customEvent);

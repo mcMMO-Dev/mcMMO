@@ -563,7 +563,7 @@ public class McMMOPlayer {
          * Check to see if the player unlocked any new skills
          */
 
-        NotificationManager.sendPlayerLevelUpNotification(UserManager.getPlayer(player), primarySkillType, profile.getSkillLevel(primarySkillType));
+        NotificationManager.sendPlayerLevelUpNotification(UserManager.getPlayer(player), primarySkillType, levelsGained, profile.getSkillLevel(primarySkillType));
 
         //UPDATE XP BARS
         UserManager.getPlayer(player).processPostXpEvent(xpGainReason, primarySkillType, mcMMO.p);

@@ -13,6 +13,7 @@ import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.*;
@@ -45,17 +46,9 @@ public class TextComponentFactory {
         return getNotificationTextComponent(LocaleLoader.getString(localeKey));
     }
 
-    public static TextComponent getNotificationLevelUpTextComponent(McMMOPlayer player, PrimarySkillType skill, int currentLevel)
+    public static TextComponent getNotificationLevelUpTextComponent(PrimarySkillType skill, int levelsGained, int currentLevel)
     {
-        //player.sendMessage(LocaleLoader.getString(StringUtils.getCapitalized(primarySkill.toString()) + ".Skillup", levelsGained, getSkillLevel(primarySkill)));
-        TextComponent textComponent = new TextComponent(LocaleLoader.getString("JSON."+StringUtils.getCapitalized(skill.toString()))
-                +" "+LocaleLoader.getString("JSON.LevelUp"));
-        textComponent.setColor(AdvancedConfig.getInstance().getJSONActionBarColor(NotificationType.LEVEL_UP_MESSAGE));
-        TextComponent childComponent = new TextComponent(" "+currentLevel);
-        //TODO: Config
-        childComponent.setColor(ChatColor.GREEN);
-        childComponent.setBold(true);
-        textComponent.addExtra(childComponent);
+        TextComponent textComponent = new TextComponent(LocaleLoader.getString("Overhaul.Levelup", LocaleLoader.getString("Overhaul.Name."+StringUtils.getCapitalized(skill.toString())), levelsGained, currentLevel));
         return textComponent;
     }
 
