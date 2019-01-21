@@ -108,37 +108,30 @@ public class MiningCommand extends SkillCommand {
         List<String> messages = new ArrayList<String>();
 
         if (canDoubleDrop) {
-            messages.add(LocaleLoader.getString("Mining.Effect.DropChance", doubleDropChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
+            messages.add(getStatMessage(SubSkillType.HERBALISM_DOUBLE_DROPS, doubleDropChance)
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
+            //messages.add(LocaleLoader.getString("Mining.Effect.DropChance", doubleDropChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
         }
 
         if (canSuperBreaker) {
-            messages.add(LocaleLoader.getString("Mining.Ability.Length", superBreakerLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", superBreakerLengthEndurance) : ""));
+            messages.add(getStatMessage(SubSkillType.MINING_SUPER_BREAKER, superBreakerLength)
+                    + (isLucky ? LocaleLoader.getString("Perks.ActivationTime.Bonus", superBreakerLengthEndurance) : ""));
+            //messages.add(LocaleLoader.getString("Mining.Ability.Length", superBreakerLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", superBreakerLengthEndurance) : ""));
         }
 
         if (canBlast) {
-            messages.add(LocaleLoader.getString("Mining.Blast.Rank", blastMiningRank, RankUtils.getHighestRank(SubSkillType.MINING_BLAST_MINING), LocaleLoader.getString("Mining.Blast.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
+            messages.add(getStatMessage(false, true, SubSkillType.MINING_BLAST_MINING, String.valueOf(blastMiningRank), String.valueOf(RankUtils.getHighestRank(SubSkillType.MINING_BLAST_MINING)), LocaleLoader.getString("Mining.Blast.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
+            //messages.add(LocaleLoader.getString("Mining.Blast.Rank", blastMiningRank, RankUtils.getHighestRank(SubSkillType.MINING_BLAST_MINING), LocaleLoader.getString("Mining.Blast.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
         }
 
         if (canBiggerBombs) {
-            int unlockLevel = BlastMining.getBiggerBombsUnlockLevel();
-
-            if (skillValue < unlockLevel) {
-                messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.1", unlockLevel)));
-            }
-            else {
-                messages.add(LocaleLoader.getString("Mining.Blast.Radius.Increase", blastRadiusIncrease));
-            }
+            messages.add(getStatMessage(true, true, SubSkillType.MINING_BLAST_MINING, String.valueOf(blastRadiusIncrease)));
+            //messages.add(LocaleLoader.getString("Mining.Blast.Radius.Increase", blastRadiusIncrease));
         }
 
         if (canDemoExpert) {
-            int unlockLevel = BlastMining.getDemolitionExpertUnlockLevel();
-
-            if (skillValue < unlockLevel) {
-                messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.2", unlockLevel)));
-            }
-            else {
-                messages.add(LocaleLoader.getString("Mining.Effect.Decrease", blastDamageDecrease));
-            }
+            messages.add(getStatMessage(SubSkillType.MINING_DEMOLITIONS_EXPERTISE, blastDamageDecrease));
+            //messages.add(LocaleLoader.getString("Mining.Effect.Decrease", blastDamageDecrease));
         }
 
         return messages;
