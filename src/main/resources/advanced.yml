@@ -456,8 +456,6 @@ Skills:
             BaseTicks: 2
 
         CounterAttack:
-            # RequiresBlock: Determines if blocking is required to trigger counter attack
-            RequiresBlock: true
 
             # ChanceMax: Maximum chance of triggering a counter attack
             # MaxBonusLevel: On this level, the chance to Counter will be <ChanceMax>

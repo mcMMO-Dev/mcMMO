@@ -79,10 +79,6 @@ public class SwordsManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public void counterAttackChecks(LivingEntity attacker, double damage) {
-        if (Swords.counterAttackRequiresBlock && !getPlayer().isBlocking()) {
-            return;
-        }
-
         if (SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_COUNTER_ATTACK, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             CombatUtils.dealDamage(attacker, damage / Swords.counterAttackModifier, getPlayer());
 

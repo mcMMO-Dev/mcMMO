@@ -926,7 +926,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getBleedMaxTicks() { return config.getInt("Skills.Swords.Bleed.MaxTicks", 3); }
     public int getBleedBaseTicks() { return config.getInt("Skills.Swords.Bleed.BaseTicks", 2); }
 
-    public boolean getCounterRequiresBlock() { return config.getBoolean("Skills.Swords.CounterAttack.RequiresBlock"); }
     public double getCounterModifier() { return config.getDouble("Skills.Swords.CounterAttack.DamageModifier", 2.0D); }
 
     public double getSerratedStrikesModifier() { return config.getDouble("Skills.Swords.SerratedStrikes.DamageModifier", 4.0D); }
