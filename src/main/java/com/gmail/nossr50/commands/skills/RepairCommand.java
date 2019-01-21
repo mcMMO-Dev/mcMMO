@@ -134,24 +134,23 @@ public class RepairCommand extends SkillCommand {
         List<String> messages = new ArrayList<String>();
 
         if (canMasterRepair) {
-            messages.add(LocaleLoader.getString("Repair.Skills.Mastery", repairMasteryBonus));
+            messages.add(getStatMessage(false, true, SubSkillType.REPAIR_REPAIR_MASTERY, repairMasteryBonus));
         }
 
         if (canSuperRepair) {
-            messages.add(LocaleLoader.getString("Repair.Skills.Super.Chance", superRepairChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", superRepairChanceLucky) : ""));
+            messages.add(getStatMessage(SubSkillType.REPAIR_SUPER_REPAIR, superRepairChance)
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", superRepairChanceLucky) : ""));
         }
 
         if (canArcaneForge) {
             RepairManager repairManager = UserManager.getPlayer(player).getRepairManager();
 
-            messages.add(LocaleLoader.getString("Repair.Arcane.Rank", repairManager.getArcaneForgingRank(), RankUtils.getHighestRank(SubSkillType.REPAIR_ARCANE_FORGING)));
+            messages.add(getStatMessage(false, true, SubSkillType.REPAIR_ARCANE_FORGING, RankUtils.getHighestRankStr(SubSkillType.REPAIR_ARCANE_FORGING)));
 
-            if (ArcaneForging.arcaneForgingEnchantLoss) {
-                messages.add(LocaleLoader.getString("Repair.Arcane.Chance.Success", (arcaneBypass ? 100 : repairManager.getKeepEnchantChance())));
-            }
-
-            if (ArcaneForging.arcaneForgingDowngrades) {
-                messages.add(LocaleLoader.getString("Repair.Arcane.Chance.Downgrade", (arcaneBypass ? 0 : repairManager.getDowngradeEnchantChance())));
+            if (ArcaneForging.arcaneForgingEnchantLoss || ArcaneForging.arcaneForgingDowngrades) {
+                messages.add(getStatMessage(true, true, SubSkillType.REPAIR_ARCANE_FORGING,
+                        String.valueOf(arcaneBypass ? 100 : repairManager.getKeepEnchantChance()),
+                        String.valueOf(arcaneBypass ? 0 : repairManager.getDowngradeEnchantChance()))); //Jesus those parentheses
             }
         }
 

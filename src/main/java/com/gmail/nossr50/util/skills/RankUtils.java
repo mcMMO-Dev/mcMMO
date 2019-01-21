@@ -329,6 +329,11 @@ public class RankUtils {
         return subSkillType.getNumRanks();
     }
 
+    public static String getHighestRankStr(SubSkillType subSkillType)
+    {
+        return String.valueOf(subSkillType.getNumRanks());
+    }
+
     /**
      * Get the highest rank of a subskill
      * @param abstractSubSkill target subskill
