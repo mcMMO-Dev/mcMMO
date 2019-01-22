@@ -1,6 +1,7 @@
 package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
@@ -67,7 +68,7 @@ public class AcrobaticsCommand extends SkillCommand {
 
             if(abstractSubSkill != null)
             {
-                double maxBonusLevel = AdvancedConfig.getInstance().getMaxBonusLevel(abstractSubSkill);
+                double maxBonusLevel = Config.getInstance().getIsRetroMode() ? AdvancedConfig.getInstance().getMaxBonusLevel(abstractSubSkill) * 10 : AdvancedConfig.getInstance().getMaxBonusLevel(abstractSubSkill);
                 double maxChance = AdvancedConfig.getInstance().getMaxChance(abstractSubSkill);
                 double rollChance   = SkillUtils.getChanceOfSuccess(skillValue, maxBonusLevel, maxChance);
                 double graceChance  = SkillUtils.getChanceOfSuccess(skillValue, maxBonusLevel, maxChance / 2);
