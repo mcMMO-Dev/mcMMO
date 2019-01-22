@@ -1,19 +1,16 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.RankConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.json.McMMOUrl;
 import com.gmail.nossr50.datatypes.json.McMMOWebLinks;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.*;
@@ -80,9 +77,6 @@ public class TextComponentFactory {
     }
 
     public static void sendPlayerUrlHeader(Player player) {
-        if(!Config.getInstance().getUrlLinksEnabled())
-            return;
-
         Player.Spigot spigotPlayer = player.spigot();
 
         TextComponent prefix = new TextComponent(LocaleLoader.getString("Overhaul.mcMMO.Url.Wrap.Prefix") + " ");

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class WorldBlacklist {
     private static ArrayList<String> blacklist;
     private mcMMO plugin;
+
     private final String blackListFileName = "world_blacklist.txt";
 
     public WorldBlacklist(mcMMO plugin)
@@ -35,6 +36,7 @@ public class WorldBlacklist {
 
         //Load up the blacklist
         loadBlacklist(blackListFile);
+        //registerFlags();
     }
 
     private void loadBlacklist(File blackListFile) {
@@ -68,6 +70,7 @@ public class WorldBlacklist {
 
     public static boolean isWorldBlacklisted(World world)
     {
+
         for(String s : blacklist)
         {
             if(world.getName().equalsIgnoreCase(s))
