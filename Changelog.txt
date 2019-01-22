@@ -17,6 +17,7 @@ Version 2.1.0
  + Added links to mcMMO related websites to various commands
  + Certain elements of mcMMO's UI have been restyled
  + Added the tagline "Overhaul Era" to various locations until 3.0.0 comes out
+ + You can now disable mcMMO completely for specific worlds via world_blacklist.txt in /plugins/mcMMO/
  ! (Scoreboards) Scoreboards are now disabled by default, I don't like them. You can turn them back on in config.yml
  + (Sounds) Rolling now plays a sound (Graceful Roll has a different sound :) )
  + (Sounds) Activating Super abilities plays a sound (other plays can hear this)

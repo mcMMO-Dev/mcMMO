@@ -71,6 +71,9 @@ public class mcMMO extends JavaPlugin {
     private static HolidayManager     holidayManager;
     private static UpgradeManager     upgradeManager;
 
+    /* Blacklist */
+    private static WorldBlacklist worldBlacklist;
+
     /* File Paths */
     private static String mainDirectory;
     private static String flatFileDirectory;
@@ -211,6 +214,9 @@ public class mcMMO extends JavaPlugin {
 
             getServer().getPluginManager().disablePlugin(this);
         }
+
+        //Init the blacklist
+        worldBlacklist = new WorldBlacklist(this);
     }
 
     /**
@@ -568,5 +574,9 @@ public class mcMMO extends JavaPlugin {
      */
     public static boolean isRetroModeEnabled() {
         return isRetroModeEnabled;
+    }
+
+    public static WorldBlacklist getWorldBlacklist() {
+        return worldBlacklist;
     }
 }

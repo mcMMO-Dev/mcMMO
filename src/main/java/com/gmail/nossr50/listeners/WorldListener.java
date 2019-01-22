@@ -1,5 +1,6 @@
 package com.gmail.nossr50.listeners;
 
+import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.blockmeta.conversion.BlockStoreConversionMain;
 import org.bukkit.Chunk;
@@ -29,6 +30,10 @@ public class WorldListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onStructureGrow(StructureGrowEvent event) {
+        /* WORLD BLACKLIST CHECK */
+        if(WorldBlacklist.isWorldBlacklisted(event.getWorld()))
+            return;
+
         if (!mcMMO.getPlaceStore().isTrue(event.getLocation().getBlock())) {
             return;
         }
@@ -45,6 +50,10 @@ public class WorldListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldInit(WorldInitEvent event) {
+        /* WORLD BLACKLIST CHECK */
+        if(WorldBlacklist.isWorldBlacklisted(event.getWorld()))
+            return;
+
         World world = event.getWorld();
 
         if (!new File(world.getWorldFolder(), "mcmmo_data").exists() || plugin == null) {
@@ -63,6 +72,10 @@ public class WorldListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldUnload(WorldUnloadEvent event) {
+        /* WORLD BLACKLIST CHECK */
+        if(WorldBlacklist.isWorldBlacklisted(event.getWorld()))
+            return;
+
         mcMMO.getPlaceStore().unloadWorld(event.getWorld());
     }
 
@@ -73,6 +86,10 @@ public class WorldListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent event) {
+        /* WORLD BLACKLIST CHECK */
+        if(WorldBlacklist.isWorldBlacklisted(event.getWorld()))
+            return;
+
         Chunk chunk = event.getChunk();
 
         mcMMO.getPlaceStore().chunkUnloaded(chunk.getX(), chunk.getZ(), event.getWorld());

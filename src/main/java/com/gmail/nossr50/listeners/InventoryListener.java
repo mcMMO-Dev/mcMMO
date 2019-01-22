@@ -1,6 +1,7 @@
 package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakeBrewEvent;
@@ -38,6 +39,10 @@ public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryOpen(InventoryOpenEvent event) {
+        /* WORLD BLACKLIST CHECK */
+        if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
+            return;
+
         Block furnaceBlock = processInventoryOpenOrCloseEvent(event.getInventory());
 
         if (furnaceBlock == null || furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey)) {
@@ -55,6 +60,10 @@ public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent event) {
+        /* WORLD BLACKLIST CHECK */
+        if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
+            return;
+
         Block furnaceBlock = processInventoryOpenOrCloseEvent(event.getInventory());
 
         if (furnaceBlock == null || furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey)) {
@@ -72,6 +81,10 @@ public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceBurnEvent(FurnaceBurnEvent event) {
+        /* WORLD BLACKLIST CHECK */
+        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+            return;
+
         Block furnaceBlock = event.getBlock();
         BlockState furnaceState = furnaceBlock.getState();
         ItemStack smelting = furnaceState instanceof Furnace ? ((Furnace) furnaceState).getInventory().getSmelting() : null;
@@ -91,6 +104,10 @@ public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceSmeltEvent(FurnaceSmeltEvent event) {
+        /* WORLD BLACKLIST CHECK */
+        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+            return;
+
         Block furnaceBlock = event.getBlock();
         ItemStack smelting = event.getSource();
 
@@ -109,6 +126,10 @@ public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceExtractEvent(FurnaceExtractEvent event) {
+        /* WORLD BLACKLIST CHECK */
+        if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
+            return;
+
         Block furnaceBlock = event.getBlock();
 
         if (!ItemUtils.isSmelted(new ItemStack(event.getItemType(), event.getItemAmount()))) {
@@ -127,6 +148,10 @@ public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onInventoryClickEventNormal(InventoryClickEvent event) {
+        /* WORLD BLACKLIST CHECK */
+        if(WorldBlacklist.isWorldBlacklisted(event.getWhoClicked().getWorld()))
+            return;
+
         Inventory inventory = event.getInventory();
 
         if (!(inventory instanceof BrewerInventory)) {
@@ -226,6 +251,10 @@ public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onInventoryDragEvent(InventoryDragEvent event) {
+        /* WORLD BLACKLIST CHECK */
+        if(WorldBlacklist.isWorldBlacklisted(event.getWhoClicked().getWorld()))
+            return;
+
         Inventory inventory = event.getInventory();
 
         if (!(inventory instanceof BrewerInventory)) {
@@ -269,6 +298,10 @@ public class InventoryListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBrew(BrewEvent event)
     {
+        /* WORLD BLACKLIST CHECK */
+        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+            return;
+
         if (event instanceof FakeBrewEvent)
             return;
         Location location = event.getBlock().getLocation();
@@ -280,6 +313,10 @@ public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onInventoryMoveItemEvent(InventoryMoveItemEvent event) {
+        /* WORLD BLACKLIST CHECK */
+        if(WorldBlacklist.isWorldBlacklisted(event.getSource().getLocation().getWorld()))
+            return;
+
         Inventory inventory = event.getDestination();
 
         if (!(inventory instanceof BrewerInventory)) {
@@ -324,6 +361,10 @@ public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCraftItem(CraftItemEvent event) {
+        /* WORLD BLACKLIST CHECK */
+        if(WorldBlacklist.isWorldBlacklisted(event.getWhoClicked().getWorld()))
+            return;
+
         final HumanEntity whoClicked = event.getWhoClicked();
 
         if (!whoClicked.hasMetadata(mcMMO.playerDataKey)) {

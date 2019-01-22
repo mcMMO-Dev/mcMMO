@@ -2,6 +2,7 @@ package com.gmail.nossr50.datatypes.player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -759,7 +760,8 @@ public class McMMOPlayer {
     }
 
     public void checkGodMode() {
-        if (godMode && !Permissions.mcgod(player)) {
+        if (godMode && !Permissions.mcgod(player)
+            || godMode && WorldBlacklist.isWorldBlacklisted(player.getWorld())) {
             toggleGodMode();
             player.sendMessage(LocaleLoader.getString("Commands.GodMode.Forbidden"));
         }
