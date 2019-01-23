@@ -54,8 +54,8 @@ public final class CombatUtils {
             mcMMOPlayer.checkAbilityActivation(PrimarySkillType.SWORDS);
         }
 
-        if (swordsManager.canUseBleed()) {
-            swordsManager.bleedCheck(target);
+        if (swordsManager.canUseRupture()) {
+            swordsManager.ruptureCheck(target);
         }
 
         if (swordsManager.canUseSerratedStrike()) {

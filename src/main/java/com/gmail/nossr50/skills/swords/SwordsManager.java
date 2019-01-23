@@ -32,8 +32,8 @@ public class SwordsManager extends SkillManager {
         return mcMMOPlayer.getToolPreparationMode(ToolType.SWORD) && Permissions.serratedStrikes(getPlayer());
     }
 
-    public boolean canUseBleed() {
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_RUPTURE);
+    public boolean canUseRupture() {
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_RUPTURE) && RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_RUPTURE);
     }
 
     public boolean canUseCounterAttack(Entity target) {
@@ -49,7 +49,7 @@ public class SwordsManager extends SkillManager {
      *
      * @param target The defending entity
      */
-    public void bleedCheck(LivingEntity target) {
+    public void ruptureCheck(LivingEntity target) {
         if (SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_RUPTURE, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
 
             if (getSkillLevel() >= AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.SWORDS_RUPTURE)) {
