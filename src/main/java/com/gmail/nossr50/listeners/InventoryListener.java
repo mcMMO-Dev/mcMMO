@@ -1,5 +1,7 @@
 package com.gmail.nossr50.listeners;
 
+import com.gmail.nossr50.WorldGuardManager;
+import com.gmail.nossr50.WorldGuardUtils;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -95,6 +97,13 @@ public class InventoryListener implements Listener {
 
         Player player = getPlayerFromFurnace(furnaceBlock);
 
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                return;
+        }
+
         if (!UserManager.hasPlayerDataKey(player) || !Permissions.isSubSkillEnabled(player, SubSkillType.SMELTING_FUEL_EFFICIENCY)) {
             return;
         }
@@ -117,6 +126,13 @@ public class InventoryListener implements Listener {
 
         Player player = getPlayerFromFurnace(furnaceBlock);
 
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                return;
+        }
+
         if (!UserManager.hasPlayerDataKey(player) || !PrimarySkillType.SMELTING.getPermissions(player)) {
             return;
         }
@@ -137,6 +153,13 @@ public class InventoryListener implements Listener {
         }
 
         Player player = getPlayerFromFurnace(furnaceBlock);
+
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                return;
+        }
 
         if (!UserManager.hasPlayerDataKey(player) || !Permissions.vanillaXpBoost(player, PrimarySkillType.SMELTING)) {
             return;
@@ -171,6 +194,14 @@ public class InventoryListener implements Listener {
         }
 
         Player player = (Player) whoClicked;
+
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                return;
+        }
+
         BrewingStand stand = (BrewingStand) holder;
         ItemStack clicked = event.getCurrentItem();
         ItemStack cursor = event.getCursor();
@@ -283,6 +314,13 @@ public class InventoryListener implements Listener {
         if (AlchemyPotionBrewer.isEmpty(ingredient) || ingredient.isSimilar(cursor)) {
             Player player = (Player) whoClicked;
 
+            /* WORLD GUARD MAIN FLAG CHECK */
+            if(WorldGuardUtils.isWorldGuardLoaded())
+            {
+                if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                    return;
+            }
+
             if (AlchemyPotionBrewer.isValidIngredient(player, cursor)) {
                 // Not handled: dragging custom ingredients over ingredient slot (does not trigger any event)
                 AlchemyPotionBrewer.scheduleCheck(player, (BrewingStand) holder);
@@ -375,6 +413,15 @@ public class InventoryListener implements Listener {
 
         if (!ItemUtils.isMcMMOItem(result)) {
             return;
+        }
+
+        Player player = (Player) whoClicked;
+
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                return;
         }
 
         new PlayerUpdateInventoryTask((Player) whoClicked).runTaskLater(plugin, 0);

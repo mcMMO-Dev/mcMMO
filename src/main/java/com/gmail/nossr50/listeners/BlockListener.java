@@ -1,5 +1,7 @@
 package com.gmail.nossr50.listeners;
 
+import com.gmail.nossr50.WorldGuardManager;
+import com.gmail.nossr50.WorldGuardUtils;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
@@ -241,6 +243,13 @@ public class BlockListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
 
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(event.getPlayer()))
+                return;
+        }
+
         if (event instanceof FakeBlockBreakEvent) {
             return;
         }
@@ -326,6 +335,13 @@ public class BlockListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
 
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(event.getPlayer()))
+                return;
+        }
+
         if (event instanceof FakeBlockBreakEvent) {
             return;
         }
@@ -381,6 +397,13 @@ public class BlockListener implements Listener {
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
+
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(event.getPlayer()))
+                return;
+        }
 
         if (event instanceof FakeBlockDamageEvent) {
             return;
@@ -451,6 +474,13 @@ public class BlockListener implements Listener {
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
+
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(event.getPlayer()))
+                return;
+        }
 
         if (event instanceof FakeBlockDamageEvent) {
             return;

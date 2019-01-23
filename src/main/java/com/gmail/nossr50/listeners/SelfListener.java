@@ -1,5 +1,7 @@
 package com.gmail.nossr50.listeners;
 
+import com.gmail.nossr50.WorldGuardManager;
+import com.gmail.nossr50.WorldGuardUtils;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -67,6 +69,21 @@ public class SelfListener implements Listener {
         Player player = event.getPlayer();
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         PrimarySkillType primarySkillType = event.getSkill();
+
+        //WorldGuard XP Check
+        if(event.getXpGainReason() == XPGainReason.PVE ||
+                event.getXpGainReason() == XPGainReason.PVP ||
+                event.getXpGainReason() == XPGainReason.SHARED_PVE ||
+                event.getXpGainReason() == XPGainReason.SHARED_PVP)
+        {
+            if(WorldGuardUtils.isWorldGuardLoaded())
+            {
+                if(!WorldGuardManager.getInstance().hasXPFlag(player))
+                    event.setRawXpGained(0);
+
+                event.setCancelled(true);
+            }
+        }
 
         if (event.getXpGainReason() == XPGainReason.COMMAND)
         {

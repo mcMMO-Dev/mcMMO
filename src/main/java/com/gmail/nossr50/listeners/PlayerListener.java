@@ -1,5 +1,7 @@
 package com.gmail.nossr50.listeners;
 
+import com.gmail.nossr50.WorldGuardManager;
+import com.gmail.nossr50.WorldGuardUtils;
 import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.chat.ChatManagerFactory;
 import com.gmail.nossr50.chat.PartyChatManager;
@@ -66,6 +68,13 @@ public class PlayerListener implements Listener {
 
         Player player = event.getPlayer();
 
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                return;
+        }
+
         if (!UserManager.hasPlayerDataKey(player) || Config.getInstance().getXPAfterTeleportCooldown() <= 0 || event.getFrom().equals(event.getTo())) {
             return;
         }
@@ -89,6 +98,13 @@ public class PlayerListener implements Listener {
             return;
 
         String deathMessage = event.getDeathMessage();
+
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(event.getEntity()))
+                return;
+        }
 
         if (deathMessage == null) {
             return;
@@ -128,6 +144,13 @@ public class PlayerListener implements Listener {
         }
 
         Player killer = killedPlayer.getKiller();
+
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(killedPlayer))
+                return;
+        }
 
         if (statLossEnabled || (killer != null && vampirismEnabled)) {
             if (EventUtils.callPreDeathPenaltyEvent(killedPlayer).isCancelled()) {
@@ -182,6 +205,13 @@ public class PlayerListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
             return;
 
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(event.getPlayer()))
+                return;
+        }
+
         Item drop = event.getItemDrop();
         ItemStack dropStack = drop.getItemStack();
 
@@ -207,6 +237,13 @@ public class PlayerListener implements Listener {
             return;
 
         Player player = event.getPlayer();
+
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                return;
+        }
 
         if (!UserManager.hasPlayerDataKey(player) || !PrimarySkillType.FISHING.getPermissions(player)) {
             return;
@@ -267,6 +304,13 @@ public class PlayerListener implements Listener {
 
         Player player = event.getPlayer();
 
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                return;
+        }
+
         if (!UserManager.hasPlayerDataKey(player) || !PrimarySkillType.FISHING.getPermissions(player)) {
             return;
         }
@@ -311,6 +355,13 @@ public class PlayerListener implements Listener {
             return;
 
         Player player = event.getPlayer();
+
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                return;
+        }
 
         if (!UserManager.hasPlayerDataKey(player)) {
             return;
@@ -433,6 +484,13 @@ public class PlayerListener implements Listener {
 
         Player player = event.getPlayer();
 
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                return;
+        }
+
         if (event.getHand() != EquipmentSlot.HAND || !UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
@@ -528,6 +586,13 @@ public class PlayerListener implements Listener {
             return;
 
         Player player = event.getPlayer();
+
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                return;
+        }
 
         if (event.getHand() != EquipmentSlot.HAND || !UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
@@ -657,10 +722,6 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
-        /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
-            return;
-
         Player player = event.getPlayer();
 
         if (Misc.isNPCEntity(player) || !UserManager.hasPlayerDataKey(player)) {

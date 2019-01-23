@@ -1,5 +1,7 @@
 package com.gmail.nossr50.listeners;
 
+import com.gmail.nossr50.WorldGuardManager;
+import com.gmail.nossr50.WorldGuardUtils;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
@@ -58,6 +60,18 @@ public class EntityListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
+        if(event.getEntity() instanceof Player)
+        {
+            Player player = (Player) event.getEntity();
+
+            /* WORLD GUARD MAIN FLAG CHECK */
+            if(WorldGuardUtils.isWorldGuardLoaded())
+            {
+                if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                    return;
+            }
+        }
+
         Entity projectile = event.getProjectile();
 
         if (!(projectile instanceof Arrow)) {
@@ -79,6 +93,18 @@ public class EntityListener implements Listener {
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
+
+        if(event.getEntity() instanceof Player)
+        {
+            Player player = (Player) event.getEntity();
+
+            /* WORLD GUARD MAIN FLAG CHECK */
+            if(WorldGuardUtils.isWorldGuardLoaded())
+            {
+                if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                    return;
+            }
+        }
 
         Projectile projectile = event.getEntity();
 
@@ -162,6 +188,18 @@ public class EntityListener implements Listener {
         double damage = event.getFinalDamage();
         Entity defender = event.getEntity();
         Entity attacker = event.getDamager();
+
+        if(attacker instanceof Player)
+        {
+            Player player = (Player) attacker;
+
+            /* WORLD GUARD MAIN FLAG CHECK */
+            if(WorldGuardUtils.isWorldGuardLoaded())
+            {
+                if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                    return;
+            }
+        }
 
         if (damage <= 0) {
             if (defender instanceof Player && attacker instanceof Player) {
@@ -284,6 +322,17 @@ public class EntityListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
+        if(event.getEntity() instanceof Player)
+        {
+            Player player = (Player) event.getEntity();
+            /* WORLD GUARD MAIN FLAG CHECK */
+            if(WorldGuardUtils.isWorldGuardLoaded())
+            {
+                if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                    return;
+            }
+        }
+
         /*
          * Process Registered Interactions
          */
@@ -350,6 +399,17 @@ public class EntityListener implements Listener {
         else if (livingEntity instanceof Tameable) {
             Tameable pet = (Tameable) livingEntity;
             AnimalTamer owner = pet.getOwner();
+
+            if(owner instanceof Player)
+            {
+                Player player = (Player) owner;
+                /* WORLD GUARD MAIN FLAG CHECK */
+                if(WorldGuardUtils.isWorldGuardLoaded())
+                {
+                    if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                        return;
+                }
+            }
 
             if (Taming.canPreventDamage(pet, owner)) {
                 Player player = (Player) owner;
@@ -533,6 +593,13 @@ public class EntityListener implements Listener {
             return;
         }
 
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                return;
+        }
+
         MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
 
         if (miningManager.canUseBiggerBombs()) {
@@ -564,6 +631,13 @@ public class EntityListener implements Listener {
 
         if (!UserManager.hasPlayerDataKey(player)) {
             return;
+        }
+
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                return;
         }
 
         MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
@@ -614,6 +688,13 @@ public class EntityListener implements Listener {
         }
 
         Player player = (Player) entity;
+
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                return;
+        }
 
         if (!UserManager.hasPlayerDataKey(player)) {
             return;
@@ -709,6 +790,14 @@ public class EntityListener implements Listener {
         }
 
         Player player = (Player) event.getOwner();
+
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                return;
+        }
+
         LivingEntity entity = event.getEntity();
 
         if (!UserManager.hasPlayerDataKey(player) || Misc.isNPCEntity(entity) || entity.hasMetadata(mcMMO.entityMetadataKey)) {
@@ -739,6 +828,14 @@ public class EntityListener implements Listener {
         }
 
         Player player = (Player) target;
+
+        /* WORLD GUARD MAIN FLAG CHECK */
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                return;
+        }
+
         Tameable tameable = (Tameable) entity;
 
         if (!UserManager.hasPlayerDataKey(player) || !CombatUtils.isFriendlyPet(player, tameable)) {
