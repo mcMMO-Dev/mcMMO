@@ -79,9 +79,10 @@ public class SelfListener implements Listener {
             if(WorldGuardUtils.isWorldGuardLoaded())
             {
                 if(!WorldGuardManager.getInstance().hasXPFlag(player))
+                {
                     event.setRawXpGained(0);
-
-                event.setCancelled(true);
+                    event.setCancelled(true);
+                }
             }
         }
 
