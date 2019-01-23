@@ -76,33 +76,6 @@ public class MiningCommand extends SkillCommand {
     }
 
     @Override
-    protected List<String> effectsDisplay() {
-        List<String> messages = new ArrayList<String>();
-
-        if (canSuperBreaker) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Mining.Effect.0"), LocaleLoader.getString("Mining.Effect.1")));
-        }
-
-        if (canDoubleDrop) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Mining.Effect.2"), LocaleLoader.getString("Mining.Effect.3")));
-        }
-
-        if (canBlast) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Mining.Effect.4"), LocaleLoader.getString("Mining.Effect.5")));
-        }
-
-        if (canBiggerBombs) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Mining.Effect.6"), LocaleLoader.getString("Mining.Effect.7")));
-        }
-
-        if (canDemoExpert) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Mining.Effect.8"), LocaleLoader.getString("Mining.Effect.9")));
-        }
-
-        return messages;
-    }
-
-    @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 

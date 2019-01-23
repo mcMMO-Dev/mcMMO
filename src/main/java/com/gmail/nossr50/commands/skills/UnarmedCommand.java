@@ -81,34 +81,6 @@ public class UnarmedCommand extends SkillCommand {
     }
 
     @Override
-    protected List<String> effectsDisplay() {
-        List<String> messages = new ArrayList<String>();
-
-        if (canBerserk) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.0"), LocaleLoader.getString("Unarmed.Effect.1")));
-        }
-        // TODO: Apparently we forgot about block cracker?
-
-        if (canDisarm) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.2"), LocaleLoader.getString("Unarmed.Effect.3")));
-        }
-
-        if (canIronArm) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.4"), LocaleLoader.getString("Unarmed.Effect.5")));
-        }
-
-        if (canDeflect) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.6"), LocaleLoader.getString("Unarmed.Effect.7")));
-        }
-
-        if (canIronGrip) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.8"), LocaleLoader.getString("Unarmed.Effect.9")));
-        }
-
-        return messages;
-    }
-
-    @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 

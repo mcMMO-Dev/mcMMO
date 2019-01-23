@@ -66,26 +66,6 @@ public class SwordsCommand extends SkillCommand {
     }
 
     @Override
-    protected List<String> effectsDisplay() {
-        List<String> messages = new ArrayList<String>();
-
-        if (canCounter) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Swords.Effect.0"), LocaleLoader.getString("Swords.Effect.1", percent.format(1.0D / Swords.counterAttackModifier))));
-        }
-
-        if (canSerratedStrike) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Swords.Effect.2"), LocaleLoader.getString("Swords.Effect.3", percent.format(1.0D / Swords.serratedStrikesModifier))));
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Swords.Effect.4"), LocaleLoader.getString("Swords.Effect.5", Swords.serratedStrikesBleedTicks)));
-        }
-
-        if (canBleed) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Swords.Effect.6"), LocaleLoader.getString("Swords.Effect.7")));
-        }
-
-        return messages;
-    }
-
-    @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 

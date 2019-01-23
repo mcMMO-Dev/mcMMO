@@ -273,7 +273,7 @@ public abstract class SkillCommand implements TabExecutor {
 
     protected abstract void permissionsCheck(Player player);
 
-    protected abstract List<String> effectsDisplay();
+    //protected abstract List<String> effectsDisplay();
 
     protected abstract List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky);
 

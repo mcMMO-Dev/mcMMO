@@ -56,56 +56,6 @@ public class TamingCommand extends SkillCommand {
     }
 
     @Override
-    protected List<String> effectsDisplay() {
-        List<String> messages = new ArrayList<String>();
-
-        if (canBeastLore) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.0"), LocaleLoader.getString("Taming.Effect.1")));
-        }
-
-        if (canGore) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.2"), LocaleLoader.getString("Taming.Effect.3")));
-        }
-
-        if (canSharpenedClaws) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.4"), LocaleLoader.getString("Taming.Effect.5")));
-        }
-
-        if (canEnvironmentallyAware) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.6"), LocaleLoader.getString("Taming.Effect.7")));
-        }
-
-        if (canThickFur) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.8"), LocaleLoader.getString("Taming.Effect.9")));
-        }
-
-        if (canShockProof) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.10"), LocaleLoader.getString("Taming.Effect.11")));
-        }
-
-        if (canFastFood) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.16"), LocaleLoader.getString("Taming.Effect.17")));
-        }
-
-        if (canHolyHound) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.18"), LocaleLoader.getString("Taming.Effect.19")));
-        }
-
-        if (canCallWild) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.12"), LocaleLoader.getString("Taming.Effect.13")));
-            int costOcelot = Config.getInstance().getTamingCOTWCost(EntityType.OCELOT);
-            String itemOcelot = StringUtils.getPrettyItemString(Config.getInstance().getTamingCOTWMaterial(EntityType.OCELOT));
-            int costWolf = Config.getInstance().getTamingCOTWCost(EntityType.WOLF);
-            String itemWolf = StringUtils.getPrettyItemString(Config.getInstance().getTamingCOTWMaterial(EntityType.WOLF));
-            int costHorse = Config.getInstance().getTamingCOTWCost(EntityType.HORSE);
-            String itemHorse = StringUtils.getPrettyItemString(Config.getInstance().getTamingCOTWMaterial(EntityType.HORSE));
-            messages.add(LocaleLoader.getString("Taming.Effect.14", costOcelot, itemOcelot, costWolf, itemWolf, costHorse, itemHorse));
-        }
-
-        return messages;
-    }
-
-    @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 

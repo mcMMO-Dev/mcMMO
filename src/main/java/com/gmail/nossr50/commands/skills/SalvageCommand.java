@@ -35,21 +35,6 @@ public class SalvageCommand extends SkillCommand {
     }
 
     @Override
-    protected List<String> effectsDisplay() {
-        List<String> messages = new ArrayList<String>();
-
-        if (canAdvancedSalvage) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Salvage.Effect.0"), LocaleLoader.getString("Salvage.Effect.1")));
-        }
-
-        if (canArcaneSalvage) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Salvage.Effect.2"), LocaleLoader.getString("Salvage.Effect.3")));
-        }
-
-        return messages;
-    }
-
-    @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
         SalvageManager salvageManager = UserManager.getPlayer(player).getSalvageManager();

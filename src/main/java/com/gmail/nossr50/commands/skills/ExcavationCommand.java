@@ -40,21 +40,6 @@ public class ExcavationCommand extends SkillCommand {
     }
 
     @Override
-    protected List<String> effectsDisplay() {
-        List<String> messages = new ArrayList<String>();
-
-        if (canGigaDrill) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Excavation.Effect.0"), LocaleLoader.getString("Excavation.Effect.1")));
-        }
-
-        if (canTreasureHunt) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Excavation.Effect.2"), LocaleLoader.getString("Excavation.Effect.3")));
-        }
-
-        return messages;
-    }
-
-    @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 

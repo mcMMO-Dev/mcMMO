@@ -89,47 +89,6 @@ public class RepairCommand extends SkillCommand {
     }
 
     @Override
-    protected List<String> effectsDisplay() {
-        List<String> messages = new ArrayList<String>();
-
-        if (canRepairLeather || canRepairString || canRepairWood || canRepairStone || canRepairIron || canRepairGold || canRepairDiamond) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Repair.Effect.0"), LocaleLoader.getString("Repair.Effect.1")));
-        }
-
-        if (canMasterRepair) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Repair.Effect.2"), LocaleLoader.getString("Repair.Effect.3")));
-        }
-
-        if (canSuperRepair) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Repair.Effect.4"), LocaleLoader.getString("Repair.Effect.5")));
-        }
-
-        /* Repair Level Requirements */
-
-        if (canRepairStone && stoneLevel > 0) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Repair.Effect.14", stoneLevel), LocaleLoader.getString("Repair.Effect.15")));
-        }
-
-        if (canRepairIron && ironLevel > 0) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Repair.Effect.12", ironLevel), LocaleLoader.getString("Repair.Effect.13")));
-        }
-
-        if (canRepairGold && goldLevel > 0) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Repair.Effect.10", goldLevel), LocaleLoader.getString("Repair.Effect.11")));
-        }
-
-        if (canRepairDiamond && diamondLevel > 0) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Repair.Effect.6", diamondLevel), LocaleLoader.getString("Repair.Effect.7")));
-        }
-
-        if (canArcaneForge) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Repair.Effect.8"), LocaleLoader.getString("Repair.Effect.9")));
-        }
-
-        return messages;
-    }
-
-    @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 

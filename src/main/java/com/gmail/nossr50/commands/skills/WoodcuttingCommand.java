@@ -61,39 +61,6 @@ public class WoodcuttingCommand extends SkillCommand {
     }
 
     @Override
-    protected List<String> effectsDisplay() {
-        List<String> messages = new ArrayList<String>();
-
-        if (canTreeFell) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Woodcutting.Effect.0"), LocaleLoader.getString("Woodcutting.Effect.1")));
-        }
-
-        if (canLeafBlow) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Woodcutting.Effect.2"), LocaleLoader.getString("Woodcutting.Effect.3")));
-        }
-
-        if (canDoubleDrop) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Woodcutting.Effect.4"), LocaleLoader.getString("Woodcutting.Effect.5")));
-        }
-
-        if (canSplinter) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Woodcutting.Effect.6"), LocaleLoader.getString("Woodcutting.Effect.7")));
-        }
-
-        if(canBarkSurgeon) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Woodcutting.Effect.8"), LocaleLoader.getString("Woodcutting.Effect.9")));
-        }
-
-        if(canNaturesBounty) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Woodcutting.Effect.10"), LocaleLoader.getString("Woodcutting.Effect.11")));
-        }
-
-
-
-        return messages;
-    }
-
-    @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 

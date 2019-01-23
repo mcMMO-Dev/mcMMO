@@ -96,41 +96,6 @@ public class HerbalismCommand extends SkillCommand {
     }
 
     @Override
-    protected List<String> effectsDisplay() {
-        List<String> messages = new ArrayList<String>();
-
-        if (canGreenTerra) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Herbalism.Effect.0"), LocaleLoader.getString("Herbalism.Effect.1")));
-        }
-
-        if (canGreenThumbPlants) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Herbalism.Effect.2"), LocaleLoader.getString("Herbalism.Effect.3")));
-        }
-
-        if (canGreenThumbBlocks) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Herbalism.Effect.4"), LocaleLoader.getString("Herbalism.Effect.5")));
-        }
-
-        if (canFarmersDiet) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Herbalism.Effect.6"), LocaleLoader.getString("Herbalism.Effect.7")));
-        }
-
-        if (hasHylianLuck) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Herbalism.Effect.10"), LocaleLoader.getString("Herbalism.Effect.11")));
-        }
-
-        if (canShroomThumb) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Herbalism.Effect.12"), LocaleLoader.getString("Herbalism.Effect.13")));
-        }
-
-        if (canDoubleDrop) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Herbalism.Effect.8"), LocaleLoader.getString("Herbalism.Effect.9")));
-        }
-
-        return messages;
-    }
-
-    @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 
