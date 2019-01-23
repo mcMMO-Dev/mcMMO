@@ -1,4 +1,4 @@
-package com.gmail.nossr50;
+package com.gmail.nossr50.worldguard;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.BukkitPlayer;

@@ -1,7 +1,7 @@
 package com.gmail.nossr50.listeners;
 
-import com.gmail.nossr50.WorldGuardManager;
-import com.gmail.nossr50.WorldGuardUtils;
+import com.gmail.nossr50.worldguard.WorldGuardManager;
+import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.chat.ChatManagerFactory;
 import com.gmail.nossr50.chat.PartyChatManager;

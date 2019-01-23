@@ -1,4 +1,4 @@
-package com.gmail.nossr50;
+package com.gmail.nossr50.worldguard;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import org.bukkit.plugin.Plugin;
