@@ -36,6 +36,13 @@ public class UnarmedCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
+        // UNARMED_ARROW_DEFLECT
+        if (canDeflect) {
+            String[] deflectStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.UNARMED_ARROW_DEFLECT, isLucky);
+            deflectChance = deflectStrings[0];
+            deflectChanceLucky = deflectStrings[1];
+        }
+        
         // BERSERK
         if (canBerserk) {
             String[] berserkStrings = calculateLengthDisplayValues(player, skillValue);
@@ -48,13 +55,6 @@ public class UnarmedCommand extends SkillCommand {
             String[] disarmStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.UNARMED_DISARM, isLucky);
             disarmChance = disarmStrings[0];
             disarmChanceLucky = disarmStrings[1];
-        }
-
-        // UNARMED_ARROW_DEFLECT
-        if (canDeflect) {
-            String[] deflectStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.UNARMED_ARROW_DEFLECT, isLucky);
-            deflectChance = deflectStrings[0];
-            deflectChanceLucky = deflectStrings[1];
         }
 
         // IRON ARM
@@ -84,32 +84,32 @@ public class UnarmedCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 
-        if (canIronArm) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Unarmed.Ability.Bonus.0"), LocaleLoader.getString("Unarmed.Ability.Bonus.1", ironArmBonus)));
-        }
-
         if (canDeflect) {
             messages.add(getStatMessage(SubSkillType.UNARMED_ARROW_DEFLECT, deflectChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", deflectChanceLucky) : ""));
             //messages.add(LocaleLoader.getString("Unarmed.Ability.Chance.ArrowDeflect", deflectChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", deflectChanceLucky) : ""));
         }
-
+        
+        if (canBerserk) {
+            messages.add(getStatMessage(SubSkillType.UNARMED_BERSERK, berserkLength)
+                    + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", berserkLengthEndurance) : ""));
+            //messages.add(LocaleLoader.getString("Unarmed.Ability.Berserk.Length", berserkLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", berserkLengthEndurance) : ""));
+        }
+        
         if (canDisarm) {
             messages.add(getStatMessage(SubSkillType.UNARMED_DISARM, disarmChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", disarmChanceLucky) : ""));
             //messages.add(LocaleLoader.getString("Unarmed.Ability.Chance.Disarm", disarmChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", disarmChanceLucky) : ""));
+        }
+        
+        if (canIronArm) {
+            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Unarmed.Ability.Bonus.0"), LocaleLoader.getString("Unarmed.Ability.Bonus.1", ironArmBonus)));
         }
 
         if (canIronGrip) {
             messages.add(getStatMessage(SubSkillType.UNARMED_IRON_GRIP, ironGripChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", ironGripChanceLucky) : ""));
             //messages.add(LocaleLoader.getString("Unarmed.Ability.Chance.IronGrip", ironGripChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", ironGripChanceLucky) : ""));
-        }
-
-        if (canBerserk) {
-            messages.add(getStatMessage(SubSkillType.UNARMED_BERSERK, berserkLength)
-                    + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", berserkLengthEndurance) : ""));
-            //messages.add(LocaleLoader.getString("Unarmed.Ability.Berserk.Length", berserkLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", berserkLengthEndurance) : ""));
         }
 
         return messages;

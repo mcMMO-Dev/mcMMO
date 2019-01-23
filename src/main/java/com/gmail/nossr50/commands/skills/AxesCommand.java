@@ -38,23 +38,23 @@ public class AxesCommand extends SkillCommand {
             impactDamage = 1 + (skillValue / Axes.impactIncreaseLevel);
         }
 
-        // SKULL SPLITTER
-        if (canSkullSplitter) {
-            String[] skullSplitterStrings = calculateLengthDisplayValues(player, skillValue);
-            skullSplitterLength = skullSplitterStrings[0];
-            skullSplitterLengthEndurance = skullSplitterStrings[1];
+        // AXE MASTERY
+        if (canAxeMastery) {
+            axeMasteryDamage = Axes.getAxeMasteryBonusDamage(player);
         }
-
+        
         // CRITICAL HIT
         if (canCritical) {
             String[] criticalHitStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.AXES_CRITICAL_STRIKES, isLucky);
             critChance = criticalHitStrings[0];
             critChanceLucky = criticalHitStrings[1];
         }
-
-        // AXE MASTERY
-        if (canAxeMastery) {
-            axeMasteryDamage = Axes.getAxeMasteryBonusDamage(player);
+        
+        // SKULL SPLITTER
+        if (canSkullSplitter) {
+            String[] skullSplitterStrings = calculateLengthDisplayValues(player, skillValue);
+            skullSplitterLength = skullSplitterStrings[0];
+            skullSplitterLengthEndurance = skullSplitterStrings[1];
         }
     }
 
@@ -71,21 +71,21 @@ public class AxesCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 
-        if (canAxeMastery) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Axes.Ability.Bonus.0"), LocaleLoader.getString("Axes.Ability.Bonus.1", axeMasteryDamage)));
-        }
-
         if (canImpact) {
             messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Axes.Ability.Bonus.2"), LocaleLoader.getString("Axes.Ability.Bonus.3", impactDamage)));
         }
-
-        if (canGreaterImpact) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Axes.Ability.Bonus.4"), LocaleLoader.getString("Axes.Ability.Bonus.5", Axes.greaterImpactBonusDamage)));
+        
+        if (canAxeMastery) {
+            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Axes.Ability.Bonus.0"), LocaleLoader.getString("Axes.Ability.Bonus.1", axeMasteryDamage)));
         }
 
         if (canCritical) {
             messages.add(getStatMessage(SubSkillType.AXES_CRITICAL_STRIKES, critChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", critChanceLucky) : ""));
+        }
+        
+        if (canGreaterImpact) {
+            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Axes.Ability.Bonus.4"), LocaleLoader.getString("Axes.Ability.Bonus.5", Axes.greaterImpactBonusDamage)));
         }
 
         if (canSkullSplitter) {

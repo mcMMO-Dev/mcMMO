@@ -92,15 +92,6 @@ public class RepairCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 
-        if (canMasterRepair) {
-            messages.add(getStatMessage(false, true, SubSkillType.REPAIR_REPAIR_MASTERY, repairMasteryBonus));
-        }
-
-        if (canSuperRepair) {
-            messages.add(getStatMessage(SubSkillType.REPAIR_SUPER_REPAIR, superRepairChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", superRepairChanceLucky) : ""));
-        }
-
         if (canArcaneForge) {
             RepairManager repairManager = UserManager.getPlayer(player).getRepairManager();
 
@@ -111,6 +102,15 @@ public class RepairCommand extends SkillCommand {
                         String.valueOf(arcaneBypass ? 100 : repairManager.getKeepEnchantChance()),
                         String.valueOf(arcaneBypass ? 0 : repairManager.getDowngradeEnchantChance()))); //Jesus those parentheses
             }
+        }
+        
+        if (canMasterRepair) {
+            messages.add(getStatMessage(false, true, SubSkillType.REPAIR_REPAIR_MASTERY, repairMasteryBonus));
+        }
+
+        if (canSuperRepair) {
+            messages.add(getStatMessage(SubSkillType.REPAIR_SUPER_REPAIR, superRepairChance)
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", superRepairChanceLucky) : ""));
         }
 
         return messages;
