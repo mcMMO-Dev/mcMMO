@@ -58,9 +58,9 @@ public class BleedTimerTask extends BukkitRunnable {
 
                 entry.setValue(entry.getValue() - 1);
 
-                if (entry.getValue() <= 0) {
+                /*if (entry.getValue() <= 0) {
                     NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Stopped");
-                }
+                }*/
             }
             else {
                 damage = AdvancedConfig.getInstance().getRuptureDamageMobs();
