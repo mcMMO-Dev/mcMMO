@@ -418,7 +418,7 @@ public final class CombatUtils {
                         NotificationManager.sendPlayerInformation((Player)entity, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.SS.Struck");
                     }
 
-                    BleedTimerTask.add(livingEntity, Swords.serratedStrikesBleedTicks, RankUtils.getRank(attacker, SubSkillType.SWORDS_RUPTURE));
+                    BleedTimerTask.add(livingEntity, attacker, UserManager.getPlayer(attacker).getSwordsManager().getRuptureBleedTicks(), RankUtils.getRank(attacker, SubSkillType.SWORDS_RUPTURE));
                     break;
 
                 case AXES:

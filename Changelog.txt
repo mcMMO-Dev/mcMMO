@@ -35,8 +35,9 @@ Version 2.1.0
  + (Events) Starting an XP event will now use the title API (toggle this in advanced.yml)
  + (Sound) Volume and Pitch of sounds can now be configured in the new sounds.yml file
  + (MySQL) Added support for SSL for MySQL/MariaDB (On by default)
- ! (Skills) Taming's Gore now uses Rupture Rank 1 for its DoT
+ ! (Skills) Taming's Gore now uses Rupture Rank 1 for its DoT calculations
  ! (Skills) Sword's Bleed has been renamed to Rupture
+ ! (Skills) Sword's Serrated Strikes now uses your Rupture rank to determine the damage/ticks for its bleed effect.
  ! (Skills) Sword's Rupture now ticks four times as fast
  = (Skills) Fixed a bug where Rupture would apply an incorrect amount of bleed ticks
  ! (Skills) Sword's Rupture now reaches its max proc chance at level 20 (200 in Retro)

@@ -61,7 +61,7 @@ public class SwordsManager extends SkillManager {
                 }
             }
 
-            BleedTimerTask.add(target, getRuptureBleedTicks(), RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE));
+            BleedTimerTask.add(target, getPlayer(), getRuptureBleedTicks(), RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE));
 
             if (mcMMOPlayer.useChatNotifications()) {
                 NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding");
@@ -105,6 +105,6 @@ public class SwordsManager extends SkillManager {
      */
     public void serratedStrikes(LivingEntity target, double damage, Map<DamageModifier, Double> modifiers) {
         CombatUtils.applyAbilityAoE(getPlayer(), target, damage / Swords.serratedStrikesModifier, modifiers, skill);
-        BleedTimerTask.add(target, Swords.serratedStrikesBleedTicks, RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE));
+        BleedTimerTask.add(target, getPlayer(), getRuptureBleedTicks(), RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE));
     }
 }

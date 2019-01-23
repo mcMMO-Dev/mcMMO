@@ -483,7 +483,6 @@ Skills:
             MaxBonusLevel: 100
             # BleedTicks: Determines the length of the bleeding effect
             # Modifier: Damage will get multiplied by this modifier
-            BleedTicks: 2
             Modifier: 2.0
         FastFood:
             # UnlockLevel: Level when FastFood unlocks

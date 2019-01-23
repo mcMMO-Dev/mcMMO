@@ -533,9 +533,9 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Taming.Gore.MaxBonusLevel should be at least 1!");
         }
 
-        if (getGoreRuptureTicks() < 1) {
+        /*if (getGoreRuptureTicks() < 1) {
             reason.add("Skills.Taming.Gore.RuptureTicks should be at least 1!");
-        }
+        }*/
 
         if (getGoreModifier() < 1) {
             reason.add("Skills.Taming.Gore.Modifier should be at least 1!");
@@ -967,7 +967,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getSerratedStrikesTicks() { return config.getInt("Skills.Swords.SerratedStrikes.RuptureTicks", 5); }
 
     /* TAMING */
-    public int getGoreRuptureTicks() { return config.getInt("Skills.Taming.Gore.RuptureTicks", 2); }
+    //public int getGoreRuptureTicks() { return config.getInt("Skills.Taming.Gore.RuptureTicks", 2); }
     public double getGoreModifier() { return config.getDouble("Skills.Taming.Gore.Modifier", 2.0D); }
 
     /*public int getFastFoodUnlock() { return config.getInt("Skills.Taming.FastFood.UnlockLevel", 50); }*/
