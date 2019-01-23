@@ -63,6 +63,12 @@ public abstract class SkillCommand implements TabExecutor {
                 boolean hasEndurance = (PerksUtils.handleActivationPerks(player, 0, 0) != 0);
                 float skillValue = mcMMOPlayer.getSkillLevel(skill);
 
+                //Send the players a few blank lines to make finding the top of the skill command easier
+                for(int i = 0; i < 20; i++)
+                {
+                    player.sendMessage("");
+                }
+
                 permissionsCheck(player);
                 dataCalculations(player, skillValue, isLucky);
 
