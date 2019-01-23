@@ -39,20 +39,6 @@ public class MiningCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
-        // SUPER BREAKER
-        if (canSuperBreaker) {
-            String[] superBreakerStrings = calculateLengthDisplayValues(player, skillValue);
-            superBreakerLength = superBreakerStrings[0];
-            superBreakerLengthEndurance = superBreakerStrings[1];
-        }
-
-        // DOUBLE DROPS
-        if (canDoubleDrop) {
-            String[] doubleDropStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.MINING_DOUBLE_DROPS, isLucky);
-            doubleDropChance = doubleDropStrings[0];
-            doubleDropChanceLucky = doubleDropStrings[1];
-        }
-
         // BLAST MINING
         if (canBlast || canDemoExpert || canBiggerBombs) {
             MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
@@ -63,6 +49,20 @@ public class MiningCommand extends SkillCommand {
             debrisReduction = percent.format(miningManager.getDebrisReduction() / 30.0D); // Base received in TNT is 30%
             blastDamageDecrease = percent.format(miningManager.getBlastDamageModifier() / 100.0D);
             blastRadiusIncrease = miningManager.getBlastRadiusModifier();
+        }
+        
+        // DOUBLE DROPS
+        if (canDoubleDrop) {
+            String[] doubleDropStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.MINING_DOUBLE_DROPS, isLucky);
+            doubleDropChance = doubleDropStrings[0];
+            doubleDropChanceLucky = doubleDropStrings[1];
+        }
+        
+        // SUPER BREAKER
+        if (canSuperBreaker) {
+            String[] superBreakerStrings = calculateLengthDisplayValues(player, skillValue);
+            superBreakerLength = superBreakerStrings[0];
+            superBreakerLengthEndurance = superBreakerStrings[1];
         }
     }
 
@@ -79,6 +79,21 @@ public class MiningCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 
+        if (canBiggerBombs) {
+            messages.add(getStatMessage(true, true, SubSkillType.MINING_BLAST_MINING, String.valueOf(blastRadiusIncrease)));
+            //messages.add(LocaleLoader.getString("Mining.Blast.Radius.Increase", blastRadiusIncrease));
+        }
+        
+        if (canBlast) {
+            messages.add(getStatMessage(false, true, SubSkillType.MINING_BLAST_MINING, String.valueOf(blastMiningRank), String.valueOf(RankUtils.getHighestRank(SubSkillType.MINING_BLAST_MINING)), LocaleLoader.getString("Mining.Blast.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
+            //messages.add(LocaleLoader.getString("Mining.Blast.Rank", blastMiningRank, RankUtils.getHighestRank(SubSkillType.MINING_BLAST_MINING), LocaleLoader.getString("Mining.Blast.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
+        }
+        
+         if (canDemoExpert) {
+            messages.add(getStatMessage(SubSkillType.MINING_DEMOLITIONS_EXPERTISE, blastDamageDecrease));
+            //messages.add(LocaleLoader.getString("Mining.Effect.Decrease", blastDamageDecrease));
+        }
+        
         if (canDoubleDrop) {
             messages.add(getStatMessage(SubSkillType.HERBALISM_DOUBLE_DROPS, doubleDropChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
@@ -89,21 +104,6 @@ public class MiningCommand extends SkillCommand {
             messages.add(getStatMessage(SubSkillType.MINING_SUPER_BREAKER, superBreakerLength)
                     + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", superBreakerLengthEndurance) : ""));
             //messages.add(LocaleLoader.getString("Mining.Ability.Length", superBreakerLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", superBreakerLengthEndurance) : ""));
-        }
-
-        if (canBlast) {
-            messages.add(getStatMessage(false, true, SubSkillType.MINING_BLAST_MINING, String.valueOf(blastMiningRank), String.valueOf(RankUtils.getHighestRank(SubSkillType.MINING_BLAST_MINING)), LocaleLoader.getString("Mining.Blast.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
-            //messages.add(LocaleLoader.getString("Mining.Blast.Rank", blastMiningRank, RankUtils.getHighestRank(SubSkillType.MINING_BLAST_MINING), LocaleLoader.getString("Mining.Blast.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
-        }
-
-        if (canBiggerBombs) {
-            messages.add(getStatMessage(true, true, SubSkillType.MINING_BLAST_MINING, String.valueOf(blastRadiusIncrease)));
-            //messages.add(LocaleLoader.getString("Mining.Blast.Radius.Increase", blastRadiusIncrease));
-        }
-
-        if (canDemoExpert) {
-            messages.add(getStatMessage(SubSkillType.MINING_DEMOLITIONS_EXPERTISE, blastDamageDecrease));
-            //messages.add(LocaleLoader.getString("Mining.Effect.Decrease", blastDamageDecrease));
         }
 
         return messages;

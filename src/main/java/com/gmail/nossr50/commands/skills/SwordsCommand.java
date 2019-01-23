@@ -34,11 +34,11 @@ public class SwordsCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
-        // SERRATED STRIKES
-        if (canSerratedStrike) {
-            String[] serratedStrikesStrings = calculateLengthDisplayValues(player, skillValue);
-            serratedStrikesLength = serratedStrikesStrings[0];
-            serratedStrikesLengthEndurance = serratedStrikesStrings[1];
+        // SWORDS_COUNTER_ATTACK
+        if (canCounter) {
+            String[] counterStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.SWORDS_COUNTER_ATTACK, isLucky);
+            counterChance = counterStrings[0];
+            counterChanceLucky = counterStrings[1];
         }
 
         // SWORDS_RUPTURE
@@ -49,12 +49,12 @@ public class SwordsCommand extends SkillCommand {
             bleedChance = bleedStrings[0];
             bleedChanceLucky = bleedStrings[1];
         }
-
-        // SWORDS_COUNTER_ATTACK
-        if (canCounter) {
-            String[] counterStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.SWORDS_COUNTER_ATTACK, isLucky);
-            counterChance = counterStrings[0];
-            counterChanceLucky = counterStrings[1];
+        
+        // SERRATED STRIKES
+        if (canSerratedStrike) {
+            String[] serratedStrikesStrings = calculateLengthDisplayValues(player, skillValue);
+            serratedStrikesLength = serratedStrikesStrings[0];
+            serratedStrikesLengthEndurance = serratedStrikesStrings[1];
         }
     }
 

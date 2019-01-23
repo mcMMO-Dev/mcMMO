@@ -37,18 +37,18 @@ public class SmeltingCommand extends SkillCommand {
             burnTimeModifier = decimal.format(1 + ((skillValue / Smelting.burnModifierMaxLevel) * Smelting.burnTimeMultiplier));
         }
 
-        // SECOND SMELT
-        if (canSecondSmelt) {
-            String[] secondSmeltStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.SMELTING_SECOND_SMELT, isLucky);
-            secondSmeltChance = secondSmeltStrings[0];
-            secondSmeltChanceLucky = secondSmeltStrings[1];
-        }
-
         // FLUX MINING
         if (canFluxMine) {
             String[] fluxMiningStrings = calculateAbilityDisplayValues(Smelting.fluxMiningChance, isLucky);
             fluxMiningChance = fluxMiningStrings[0];
             fluxMiningChanceLucky = fluxMiningStrings[1];
+        }
+        
+        // SECOND SMELT
+        if (canSecondSmelt) {
+            String[] secondSmeltStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.SMELTING_SECOND_SMELT, isLucky);
+            secondSmeltChance = secondSmeltStrings[0];
+            secondSmeltChanceLucky = secondSmeltStrings[1];
         }
     }
 
@@ -64,6 +64,10 @@ public class SmeltingCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 
+        if (canFluxMine) {
+            messages.add(LocaleLoader.getString("Smelting.Ability.FluxMining", fluxMiningChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", fluxMiningChanceLucky) : ""));
+        }
+        
         if (canFuelEfficiency) {
             messages.add(LocaleLoader.getString("Smelting.Ability.FuelEfficiency", burnTimeModifier));
         }
@@ -74,10 +78,6 @@ public class SmeltingCommand extends SkillCommand {
 
         if (canVanillaXPBoost) {
             messages.add(LocaleLoader.getString("Smelting.Ability.VanillaXPBoost", UserManager.getPlayer(player).getSmeltingManager().getVanillaXpMultiplier()));
-        }
-
-        if (canFluxMine) {
-            messages.add(LocaleLoader.getString("Smelting.Ability.FluxMining", fluxMiningChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", fluxMiningChanceLucky) : ""));
         }
 
         return messages;

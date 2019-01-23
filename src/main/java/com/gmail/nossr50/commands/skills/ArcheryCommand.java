@@ -28,24 +28,24 @@ public class ArcheryCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
-        // SKILL SHOT
-        if (canSkillShot) {
-            double bonus = (skillValue / Archery.skillShotIncreaseLevel) * Archery.skillShotIncreasePercentage;
-            skillShotBonus = percent.format(Archery.getSkillShotBonusDamage(player, 0));
+        // ARCHERY_ARROW_RETRIEVAL
+        if (canRetrieve) {
+            String[] retrieveStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.ARCHERY_ARROW_RETRIEVAL, isLucky);
+            retrieveChance = retrieveStrings[0];
+            retrieveChanceLucky = retrieveStrings[1];
         }
-
+        
         // ARCHERY_DAZE
         if (canDaze) {
             String[] dazeStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.ARCHERY_DAZE, isLucky);
             dazeChance = dazeStrings[0];
             dazeChanceLucky = dazeStrings[1];
         }
-
-        // ARCHERY_ARROW_RETRIEVAL
-        if (canRetrieve) {
-            String[] retrieveStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.ARCHERY_ARROW_RETRIEVAL, isLucky);
-            retrieveChance = retrieveStrings[0];
-            retrieveChanceLucky = retrieveStrings[1];
+        
+        // SKILL SHOT
+        if (canSkillShot) {
+            double bonus = (skillValue / Archery.skillShotIncreaseLevel) * Archery.skillShotIncreasePercentage;
+            skillShotBonus = percent.format(Archery.getSkillShotBonusDamage(player, 0));
         }
     }
 
@@ -60,18 +60,18 @@ public class ArcheryCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 
-        if (canSkillShot) {
-            messages.add(getStatMessage(SubSkillType.ARCHERY_SKILL_SHOT, skillShotBonus));
+        if (canRetrieve) {
+            messages.add(getStatMessage(SubSkillType.ARCHERY_ARROW_RETRIEVAL, retrieveChance)
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", retrieveChanceLucky) : ""));
         }
-
+        
         if (canDaze) {
             messages.add(getStatMessage(SubSkillType.ARCHERY_DAZE, dazeChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", dazeChanceLucky) : ""));
         }
-
-        if (canRetrieve) {
-            messages.add(getStatMessage(SubSkillType.ARCHERY_ARROW_RETRIEVAL, retrieveChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", retrieveChanceLucky) : ""));
+        
+        if (canSkillShot) {
+            messages.add(getStatMessage(SubSkillType.ARCHERY_SKILL_SHOT, skillShotBonus));
         }
 
         return messages;
