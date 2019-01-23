@@ -14,79 +14,54 @@ import org.bukkit.plugin.Plugin;
 import static org.bukkit.Bukkit.getServer;
 
 public class WorldGuardManager {
-
     private static WorldGuardManager instance;
-    private Plugin worldGuardPluginRef;
-    private boolean flagsRegistered = false;
+    private WorldGuardPlugin worldGuardPluginRef;
+
+    public static WorldGuardManager getInstance() {
+        if(instance == null)
+            instance = new WorldGuardManager();
+
+        return instance;
+    }
 
     public WorldGuardManager()
     {
-        instance = this;
 
-        init();
-    }
-
-    public void init()
-    {
-        if(getWorldGuard() != null)
-        {
-            worldGuardPluginRef = getWorldGuard();
-            registerFlags();
-        }
     }
 
     public boolean hasMainFlag(Player player)
     {
-        //Not sure when we're supposed to know when WorldGuard is loaded
-        if(!flagsRegistered)
-            registerFlags();
+        if(player == null)
+            return false;
 
         BukkitPlayer localPlayer = BukkitAdapter.adapt(player);
         com.sk89q.worldedit.util.Location loc = localPlayer.getLocation();
 
-        if(flagsRegistered)
-        {
-            if(getWorldGuard() != null)
-            {
-                //WorldGuardPlugin worldGuard = getWorldGuard();
-                RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-                RegionQuery query = container.createQuery();
 
-                //ApplicableRegionSet set = query.getApplicableRegions(loc);
+        //WorldGuardPlugin worldGuard = getWorldGuard();
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionQuery query = container.createQuery();
 
-                return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(player), WorldGuardFlags.MCMMO_ENABLE_WG_FLAG);
-            }
-        }
-        //Return False if these fail
-        mcMMO.p.getLogger().severe("Failed to detect WG flags, is WG running properly?");
-        return false;
+        //ApplicableRegionSet set = query.getApplicableRegions(loc);
+
+        return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(player), WorldGuardFlags.MCMMO_ENABLE_WG_FLAG);
     }
 
     public boolean hasXPFlag(Player player)
     {
-        //Not sure when we're supposed to know when WorldGuard is loaded
-        if(!flagsRegistered)
-            registerFlags();
+        if(player == null)
+            return false;
 
         BukkitPlayer localPlayer = BukkitAdapter.adapt(player);
         com.sk89q.worldedit.util.Location loc = localPlayer.getLocation();
 
-        if(flagsRegistered)
-        {
-            if(getWorldGuard() != null)
-            {
-                //WorldGuardPlugin worldGuard = getWorldGuard();
-                RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-                RegionQuery query = container.createQuery();
+        //WorldGuardPlugin worldGuard = getWorldGuard();
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionQuery query = container.createQuery();
 
-                //ApplicableRegionSet set = query.getApplicableRegions(loc);
+        //ApplicableRegionSet set = query.getApplicableRegions(loc);
 
-                return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(player), WorldGuardFlags.MCMMO_XP_WG_FLAG);
-            }
-        }
-        //Return False if these fail
-        mcMMO.p.getLogger().severe("Failed to detect WG flags, is WG running properly?");
-        return false;
+        return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(player), WorldGuardFlags.MCMMO_XP_WG_FLAG);
     }
 
     private WorldGuardPlugin getWorldGuard() {
@@ -97,10 +72,11 @@ public class WorldGuardManager {
             return null; // Maybe you want throw an exception instead
         }
 
-        return (WorldGuardPlugin) plugin;
+        worldGuardPluginRef = (WorldGuardPlugin) plugin;
+        return worldGuardPluginRef;
     }
 
-    private void registerFlags()
+    public void registerFlags()
     {
         if(getWorldGuard() == null)
             return;
@@ -108,11 +84,14 @@ public class WorldGuardManager {
         FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
         try {
             // register our flag with the registry
+            /*registry.register(WorldGuardFlags.MCMMO_ENABLE_WG_FLAG);
+            registry.register(WorldGuardFlags.MCMMO_XP_WG_FLAG);*/
             registry.register(WorldGuardFlags.MCMMO_ENABLE_WG_FLAG);
             registry.register(WorldGuardFlags.MCMMO_XP_WG_FLAG);
-            flagsRegistered = true;
+            System.out.println("mcMMO has registered WG flags successfully!");
         } catch (FlagConflictException e) {
             e.printStackTrace();
+            System.out.println("mcMMO has failed to register WG flags!");
             // some other plugin registered a flag by the same name already.
             // you may want to re-register with a different name, but this
             // could cause issues with saved flags in region files. it's better
@@ -120,7 +99,5 @@ public class WorldGuardManager {
         }
     }
 
-    public static WorldGuardManager getInstance() {
-        return instance;
-    }
+
 }

@@ -16,8 +16,10 @@ public class WorldGuardUtils {
                 return false; // Maybe you want throw an exception instead
             }
         } catch (Exception e) {
+            e.printStackTrace();
             //Silently Fail
-            mcMMO.p.getLogger().severe("Failed to detect worldguard.");
+            //mcMMO.p.getLogger().severe("Failed to detect worldguard.");
+            return false;
         }
 
         return true;

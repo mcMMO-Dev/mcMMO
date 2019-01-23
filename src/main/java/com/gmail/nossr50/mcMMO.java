@@ -219,6 +219,13 @@ public class mcMMO extends JavaPlugin {
         worldBlacklist = new WorldBlacklist(this);
     }
 
+    @Override
+    public void onLoad()
+    {
+        if(getServer().getPluginManager().getPlugin("WorldGuard") != null)
+            WorldGuardManager.getInstance().registerFlags();
+    }
+
     /**
      * Things to be run when the plugin is disabled.
      */
