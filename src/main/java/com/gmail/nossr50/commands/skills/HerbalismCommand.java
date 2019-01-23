@@ -41,16 +41,24 @@ public class HerbalismCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
+        
+        // DOUBLE DROPS
+        if (canDoubleDrop) {
+            String[] doubleDropStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.HERBALISM_DOUBLE_DROPS, isLucky);
+            doubleDropChance = doubleDropStrings[0];
+            doubleDropChanceLucky = doubleDropStrings[1];
+        }
+        
+        // FARMERS DIET
+        if (canFarmersDiet) {
+            farmersDietRank = RankUtils.getRank(player, SubSkillType.HERBALISM_FARMERS_DIET);
+        }
+        
         // GREEN TERRA
         if (canGreenTerra) {
             String[] greenTerraStrings = calculateLengthDisplayValues(player, skillValue);
             greenTerraLength = greenTerraStrings[0];
             greenTerraLengthEndurance = greenTerraStrings[1];
-        }
-
-        // FARMERS DIET
-        if (canFarmersDiet) {
-            farmersDietRank = RankUtils.getRank(player, SubSkillType.HERBALISM_FARMERS_DIET);
         }
 
         // GREEN THUMB
@@ -60,13 +68,6 @@ public class HerbalismCommand extends SkillCommand {
             String[] greenThumbStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.HERBALISM_GREEN_THUMB, isLucky);
             greenThumbChance = greenThumbStrings[0];
             greenThumbChanceLucky = greenThumbStrings[1];
-        }
-
-        // DOUBLE DROPS
-        if (canDoubleDrop) {
-            String[] doubleDropStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.HERBALISM_DOUBLE_DROPS, isLucky);
-            doubleDropChance = doubleDropStrings[0];
-            doubleDropChanceLucky = doubleDropStrings[1];
         }
 
         // HYLIAN LUCK
@@ -99,6 +100,15 @@ public class HerbalismCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 
+        if (canDoubleDrop) {
+            messages.add(getStatMessage(SubSkillType.HERBALISM_DOUBLE_DROPS, doubleDropChance)
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
+        }
+        
+        if (canFarmersDiet) {
+            messages.add(getStatMessage(false, true, SubSkillType.HERBALISM_FARMERS_DIET, String.valueOf(farmersDietRank)));
+        }
+        
         if (canGreenTerra) {
             messages.add(getStatMessage(SubSkillType.HERBALISM_GREEN_TERRA, greenTerraLength)
                     + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", greenTerraLengthEndurance) : ""));
@@ -116,10 +126,6 @@ public class HerbalismCommand extends SkillCommand {
             messages.add(getStatMessage(true, true,SubSkillType.HERBALISM_GREEN_THUMB, String.valueOf(greenThumbStage)));
         }
 
-        if (canFarmersDiet) {
-            messages.add(getStatMessage(false, true, SubSkillType.HERBALISM_FARMERS_DIET, String.valueOf(farmersDietRank)));
-        }
-
         if (hasHylianLuck) {
             messages.add(getStatMessage(SubSkillType.HERBALISM_HYLIAN_LUCK, hylianLuckChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", hylianLuckChanceLucky) : ""));
@@ -128,11 +134,6 @@ public class HerbalismCommand extends SkillCommand {
         if (canShroomThumb) {
             messages.add(getStatMessage(SubSkillType.HERBALISM_SHROOM_THUMB, shroomThumbChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", shroomThumbChanceLucky) : ""));
-        }
-
-        if (canDoubleDrop) {
-            messages.add(getStatMessage(SubSkillType.HERBALISM_DOUBLE_DROPS, doubleDropChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
         }
 
         return messages;
