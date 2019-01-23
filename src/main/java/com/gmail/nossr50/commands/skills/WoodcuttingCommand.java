@@ -31,16 +31,16 @@ public class WoodcuttingCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
+        // DOUBLE DROPS
+        if (canDoubleDrop) {
+            setDoubleDropClassicChanceStrings(skillValue, isLucky);
+        }
+        
         // TREE FELLER
         if (canTreeFell) {
             String[] treeFellerStrings = calculateLengthDisplayValues(player, skillValue);
             treeFellerLength = treeFellerStrings[0];
             treeFellerLengthEndurance = treeFellerStrings[1];
-        }
-
-        // DOUBLE DROPS
-        if (canDoubleDrop) {
-            setDoubleDropClassicChanceStrings(skillValue, isLucky);
         }
     }
 
@@ -64,13 +64,13 @@ public class WoodcuttingCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 
-        if (canLeafBlow) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Woodcutting.Ability.0"), LocaleLoader.getString("Woodcutting.Ability.1")));
-        }
-
         if (canDoubleDrop) {
             messages.add(getStatMessage(SubSkillType.WOODCUTTING_HARVEST_LUMBER, doubleDropChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
+        }
+        
+        if (canLeafBlow) {
+            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Woodcutting.Ability.0"), LocaleLoader.getString("Woodcutting.Ability.1")));
         }
 
         if (canTreeFell) {
