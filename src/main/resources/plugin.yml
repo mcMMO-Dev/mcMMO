@@ -157,10 +157,6 @@ commands:
         aliases: [notify]
         description: Toggle mcMMO abilities chat display notifications on/off
         permission: mcmmo.commands.mcnotify
-    mobhealth:
-        aliases: [mcmobhealth]
-        description: Change the style of the mob healthbar
-        permission: mcmmo.commands.mobhealth
     mhd:
         description: Sets all players mob health settings to default
         permission: mcmmo.commands.mhd
@@ -771,7 +767,6 @@ permissions:
             mcmmo.commands.mcstats: true
             mcmmo.commands.mctop.all: true
             mcmmo.commands.mining: true
-            mcmmo.commands.mobhealth: true
             mcmmo.commands.party.all: true
             mcmmo.commands.ptp.all: true
             mcmmo.commands.repair: true
@@ -1019,8 +1014,6 @@ permissions:
         description: Allows access to the mmoedit command for other players
     mcmmo.commands.mmoshowdb:
         description: Allows access to the mmoshowdb command
-    mcmmo.commands.mobhealth:
-         description: Allows access to the mobhealth command
     mcmmo.commands.mhd:
         default: false
         description: Allows access to the mhd command
@@ -1295,7 +1288,6 @@ permissions:
         children:
             mcmmo.chat.partychat: true
             mcmmo.commands.defaults: true
-            mcmmo.mobhealthdisplay: true
             mcmmo.motd: true 
             mcmmo.skills.all: true
     mcmmo.defaultsop:
@@ -1317,8 +1309,6 @@ permissions:
             mcmmo.item.chimaerawing: true
     mcmmo.item.chimaerawing:
         description: Allows use of Chimaera Wing item
-    mcmmo.mobhealthdisplay:
-         description: Allows viewing of mob health display during combat
     mcmmo.party.*:
         default: false
         description: Implies access to all mcmmo party permissions

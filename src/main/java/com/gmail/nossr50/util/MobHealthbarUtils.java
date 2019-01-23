@@ -4,10 +4,8 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.meta.OldName;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.MobHealthDisplayUpdaterTask;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -34,13 +32,11 @@ public final class MobHealthbarUtils {
 
     /**
      * Handle the creation of mob healthbars.
-     *
-     * @param player the attacking player
-     * @param target the targetted entity
+     *  @param target the targetted entity
      * @param damage damage done by the attack triggering this
      */
-    public static void handleMobHealthbars(Player player, LivingEntity target, double damage, mcMMO plugin) {
-        if (mcMMO.isHealthBarPluginEnabled() || !Permissions.mobHealthDisplay(player) || !Config.getInstance().getMobHealthbarEnabled()) {
+    public static void handleMobHealthbars(LivingEntity target, double damage, mcMMO plugin) {
+        if (mcMMO.isHealthBarPluginEnabled() || !Config.getInstance().getMobHealthbarEnabled()) {
             return;
         }
 
@@ -48,19 +44,8 @@ public final class MobHealthbarUtils {
             return;
         }
 
-        PlayerProfile profile = UserManager.getPlayer(player).getProfile();
-
-        if (profile.getMobHealthbarType() == null) {
-            profile.setMobHealthbarType(Config.getInstance().getMobHealthbarDefault());
-        }
-
-        if (profile.getMobHealthbarType() == MobHealthbarType.DISABLED) {
-            return;
-        }
-
         String originalName = target.getName();
         String oldName = target.getCustomName();
-
 
         /*
          * Store the name in metadata
@@ -76,7 +61,7 @@ public final class MobHealthbarUtils {
         }
 
         boolean oldNameVisible = target.isCustomNameVisible();
-        String newName = createHealthDisplay(profile, target, damage);
+        String newName = createHealthDisplay(Config.getInstance().getMobHealthbarDefault(), target, damage);
 
         target.setCustomName(newName);
         target.setCustomNameVisible(true);
@@ -99,7 +84,7 @@ public final class MobHealthbarUtils {
         }
     }
 
-    private static String createHealthDisplay(PlayerProfile profile, LivingEntity entity, double damage) {
+    private static String createHealthDisplay(MobHealthbarType mobHealthbarType, LivingEntity entity, double damage) {
         double maxHealth = entity.getMaxHealth();
         double currentHealth = Math.max(entity.getHealth() - damage, 0);
         double healthPercentage = (currentHealth / maxHealth) * 100.0D;
@@ -108,7 +93,7 @@ public final class MobHealthbarUtils {
         ChatColor color = ChatColor.BLACK;
         String symbol;
 
-        switch (profile.getMobHealthbarType()) {
+        switch (mobHealthbarType) {
             case HEARTS:
                 fullDisplay = Math.min((int) (maxHealth / 2), 10);
                 color = ChatColor.DARK_RED;

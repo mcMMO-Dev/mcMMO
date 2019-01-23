@@ -371,15 +371,6 @@ public final class CommandRegistrationManager {
         command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcnotify"));
         command.setExecutor(new McnotifyCommand());
     }
-
-    private static void registerMobhealthCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mobhealth");
-        command.setDescription("Change the style of the mob healthbar"); //TODO: Localize
-        command.setPermission("mcmmo.commands.mobhealth");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mobhealth", "<DISABLED | HEARTS | BAR>"));
-        command.setExecutor(new MobhealthCommand());
-    }
     
     private static void registerMHDCommand() {
         PluginCommand command = mcMMO.p.getCommand("mhd");
@@ -430,7 +421,6 @@ public final class CommandRegistrationManager {
         registerMcnotifyCommand();
         registerMcrefreshCommand();
         registerMcscoreboardCommand();
-        registerMobhealthCommand();
         registerMHDCommand();
         registerXprateCommand();
 

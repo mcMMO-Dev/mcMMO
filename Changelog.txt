@@ -123,6 +123,8 @@ Version 2.1.0
  ! (Permissions) Counter Attack permission node renamed to mcmmo.ability.swords.counterattack
  ! (Permissions) Arrow Deflect permission node renamed to mcmmo.ability.unarmed.arrowdeflect
  ! (Permissions) Iron Arm Style permission node renamed to mcmmo.ability.unarmed.ironarmstyle
+ ! (Permissions) Remove all mob health bar permissions, this is no longer a per-player setting.
+ ! (Commands) Removed the mobhealthbar command, this is no longer a per-player setting.
  ! (Locale) The descriptions of a few skills have changed
  ! (Locale) Removed redundant information from some skill names and descriptions en_US (other locales will need to be updated)
  ! (Locale) SubSkill locale keys are now located at {ParentSkill}.SubSkill.SubSkillName
