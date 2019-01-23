@@ -28,24 +28,24 @@ public class ArcheryCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
-        // SKILL SHOT
-        if (canSkillShot) {
-            double bonus = (skillValue / Archery.skillShotIncreaseLevel) * Archery.skillShotIncreasePercentage;
-            skillShotBonus = percent.format(Archery.getSkillShotBonusDamage(player, 0));
+        // ARCHERY_ARROW_RETRIEVAL
+        if (canRetrieve) {
+            String[] retrieveStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.ARCHERY_ARROW_RETRIEVAL, isLucky);
+            retrieveChance = retrieveStrings[0];
+            retrieveChanceLucky = retrieveStrings[1];
         }
-
+        
         // ARCHERY_DAZE
         if (canDaze) {
             String[] dazeStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.ARCHERY_DAZE, isLucky);
             dazeChance = dazeStrings[0];
             dazeChanceLucky = dazeStrings[1];
         }
-
-        // ARCHERY_ARROW_RETRIEVAL
-        if (canRetrieve) {
-            String[] retrieveStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.ARCHERY_ARROW_RETRIEVAL, isLucky);
-            retrieveChance = retrieveStrings[0];
-            retrieveChanceLucky = retrieveStrings[1];
+        
+        // SKILL SHOT
+        if (canSkillShot) {
+            double bonus = (skillValue / Archery.skillShotIncreaseLevel) * Archery.skillShotIncreasePercentage;
+            skillShotBonus = percent.format(Archery.getSkillShotBonusDamage(player, 0));
         }
     }
 
