@@ -46,6 +46,11 @@ public class AcrobaticsCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 
+        if (canDodge) {
+            messages.add(getStatMessage(SubSkillType.ACROBATICS_DODGE, dodgeChance)
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", dodgeChanceLucky) : ""));
+        }
+        
         if (canRoll) {
 
             AbstractSubSkill abstractSubSkill = InteractionManager.getAbstractByName("Roll");
@@ -66,11 +71,6 @@ public class AcrobaticsCommand extends SkillCommand {
                 messages.add(getStatMessage(true, false, SubSkillType.ACROBATICS_ROLL, percent.format(graceChance))
                         + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", graceChanceLucky) : ""));
             }
-        }
-
-        if (canDodge) {
-            messages.add(getStatMessage(SubSkillType.ACROBATICS_DODGE, dodgeChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", dodgeChanceLucky) : ""));
         }
 
         return messages;
