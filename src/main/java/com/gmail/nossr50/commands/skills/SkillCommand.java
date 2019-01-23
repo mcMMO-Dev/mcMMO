@@ -64,7 +64,7 @@ public abstract class SkillCommand implements TabExecutor {
                 float skillValue = mcMMOPlayer.getSkillLevel(skill);
 
                 //Send the players a few blank lines to make finding the top of the skill command easier
-                for(int i = 0; i < 20; i++)
+                for(int i = 0; i < 19; i++)
                 {
                     player.sendMessage("");
                 }
@@ -227,16 +227,26 @@ public abstract class SkillCommand implements TabExecutor {
     }
 
     protected String[] calculateAbilityDisplayValues(float skillValue, SubSkillType subSkill, boolean isLucky) {
-        int maxBonusLevel = Config.getInstance().getIsRetroMode() ? AdvancedConfig.getInstance().getMaxBonusLevel(subSkill) * 10 : AdvancedConfig.getInstance().getMaxBonusLevel(subSkill);
+        int maxBonusLevel = AdvancedConfig.getInstance().getMaxBonusLevel(subSkill);
 
         return calculateAbilityDisplayValues((AdvancedConfig.getInstance().getMaxChance(subSkill) / maxBonusLevel) * Math.min(skillValue, maxBonusLevel), isLucky);
     }
 
     protected String[] calculateLengthDisplayValues(Player player, float skillValue) {
         int maxLength = skill.getAbility().getMaxLength();
-        int abilityLengthVar = Config.getInstance().getIsRetroMode() ? AdvancedConfig.getInstance().getAbilityLengthRetro() : AdvancedConfig.getInstance().getAbilityLengthStandard();
-        int abilityLengthCap = Config.getInstance().getIsRetroMode() ? AdvancedConfig.getInstance().getAbilityLengthCapRetro() : AdvancedConfig.getInstance().getAbilityLengthCapStandard();
-        int length = 2 + (int) (Math.min(abilityLengthCap, skillValue) / abilityLengthVar);
+        int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
+        int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
+
+        int length;
+
+        if(abilityLengthCap < 0)
+        {
+            length = 2 + (int) (skillValue / abilityLengthVar);
+        }
+        else {
+            length = 2 + (int) (Math.min(abilityLengthCap, skillValue) / abilityLengthVar);
+        }
+
         int enduranceLength = PerksUtils.handleActivationPerks(player, length, maxLength);
 
         if (maxLength != 0) {

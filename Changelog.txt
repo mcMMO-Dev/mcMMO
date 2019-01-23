@@ -42,7 +42,7 @@ Version 2.1.0
  ! (Skills) Sword's Rupture now has a max chance to proc of 33% instead of 70%
  ! (Skills) Sword's Rupture now deals 50% more damage at above Rank 3 and can last much longer! The base damage for Bleed has been increased as well (update your advanced.yml admins)
  ! (Skills) Sword's Rupture no longer triggers invincibility frames when damaging your opponent
- + (Skills) Ability Lengths now have a default skill cap at which they stop increasing in length, configurable in advanced.yml
+ + (Skills) Ability Lengths now have a default skill cap at which they stop increasing in length, configurable in advanced.yml (endurance perks extend this limit)
  + (Skills) Added a new subskill to some skills 'Understanding The Art' this adds nothing new, but tracks benefits that increase together that seemed unrelated, which was previously a bit obfuscated.
  + (Skills) Tool alerts now are sent to the Action Bar
  + (Skills) Super Ability activation alerts are now sent to the Action Bar

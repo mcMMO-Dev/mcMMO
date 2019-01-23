@@ -135,7 +135,6 @@ public class Roll extends AcrobaticsSubSkill implements RandomChance {
          * Graceful is double the odds of a normal roll
          */
         String[] gracefulRollStrings = SkillUtils.calculateAbilityDisplayValuesCustom(skillValue,
-                SubSkillType.ACROBATICS_ROLL,
                 isLucky,
                 AdvancedConfig.getInstance().getMaxBonusLevel(this) / 2,
                 AdvancedConfig.getInstance().getMaxChance(this));

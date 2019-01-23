@@ -3,6 +3,7 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
+import com.gmail.nossr50.mcMMO;
 import net.md_5.bungee.api.ChatColor;
 
 import java.util.ArrayList;
@@ -30,12 +31,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         List<String> reason = new ArrayList<String>();
 
         /* GENERAL */
-        if (getAbilityLengthRetro() < 1) {
-            reason.add("Skills.General.Ability.Length.RetroMode.IncreaseLevel should be at least 1!");
-        }
-
-        if (getAbilityLengthStandard() < 1) {
-            reason.add("Skills.General.Ability.Length.Standard.IncreaseLevel should be at least 1!");
+        if (getAbilityLength() < 1) {
+            reason.add("Skills.General.Ability.Length.<mode>.IncreaseLevel should be at least 1!");
         }
 
         if (getEnchantBuff() < 1) {
@@ -668,13 +665,49 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     /* GENERAL */
     public int getStartingLevel() { return config.getInt("Skills.General.StartingLevel", 1); }
-    public int getAbilityLengthCapStandard() { return config.getInt("Skills.General.Ability.Length.Standard.Cap", 50); }
-    public int getAbilityLengthCapRetro() { return config.getInt("Skills.General.Ability.Length.RetroMode.Cap", 500); }
-    public int getAbilityLengthStandard() { return config.getInt("Skills.General.Ability.Length.Standard.IncreaseLevel", 5); }
-    public int getAbilityLengthRetro() { return config.getInt("Skills.General.Ability.Length.RetroMode.IncreaseLevel", 50); }
+
+    /**
+     * This returns the maximum level at which superabilities will stop lengthening from scaling alongside skill level.
+     * It returns a different value depending on whether or not the server is in retro mode
+     * @return the level at which abilities stop increasing in length
+     */
+    public int getAbilityLengthCap() {
+        if(!mcMMO.isRetroModeEnabled())
+            return config.getInt("Skills.General.Ability.Length.Standard.Cap", 50);
+        else
+            return config.getInt("Skills.General.Ability.Length.RetroMode.Cap", 500);
+    }
+
+    /**
+     * This returns the frequency at which abilities will increase in length
+     * It returns a different value depending on whether or not the server is in retro mode
+     * @return the number of levels required per ability length increase
+     */
+    public int getAbilityLength() {
+        if(!mcMMO.isRetroModeEnabled())
+            return config.getInt("Skills.General.Ability.Length.Standard.IncreaseLevel", 5);
+        else
+            return config.getInt("Skills.General.Ability.Length.RetroMode.IncreaseLevel", 50);
+    }
+
     public int getEnchantBuff() { return config.getInt("Skills.General.Ability.EnchantBuff", 5); }
 
-    public int getMaxBonusLevel(SubSkillType subSkillType) { return config.getInt(subSkillType.getAdvConfigAddress() + ".MaxBonusLevel"); }
+    /**
+     * Grabs the max bonus level for a skill used in RNG calculations
+     * All max level values in the config are multiplied by 10 if the server is in retro mode as the values in the config are based around the new 1-100 skill system scaling
+     * A value of 10 in the file will be returned as 100 for retro mode servers to accommodate the change in scaling
+     * @param subSkillType target subskill
+     * @return the level at which this skills max benefits will be reached on the curve
+     */
+    public int getMaxBonusLevel(SubSkillType subSkillType) {
+        int maxBonusLevel = config.getInt(subSkillType.getAdvConfigAddress() + ".MaxBonusLevel");
+
+        if(mcMMO.isRetroModeEnabled())
+            maxBonusLevel *= 10;
+
+        return maxBonusLevel;
+    }
+
     public double getMaxChance(SubSkillType subSkillType) { return config.getDouble(subSkillType.getAdvConfigAddress() + ".ChanceMax", 100.0D);}
 
     public int getMaxBonusLevel(AbstractSubSkill abstractSubSkill) {
@@ -886,7 +919,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     /* REPAIR */
     public double getRepairMasteryMaxBonus() { return config.getDouble("Skills.Repair.RepairMastery.MaxBonusPercentage", 200.0D); }
-    public int getRepairMasteryMaxLevel() { return config.getInt("Skills.Repair.RepairMastery.MaxBonusLevel", 1000); }
+    public int getRepairMasteryMaxLevel() { return config.getInt("Skills.Repair.RepairMastery.MaxBonusLevel", 100); }
 
     /* Arcane Forging */
     public int getArcaneForgingRankLevel(int rank) { return config.getInt("Skills.Repair.ArcaneForging.Rank_Levels.Rank_" + rank); }
@@ -911,7 +944,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getArcaneSalvageExtractPartialEnchantsChance(int rank) { return config.getDouble("Skills.Salvage.ArcaneSalvage.ExtractPartialEnchant.Rank_" + rank); }
 
     /* SMELTING */
-    public int getBurnModifierMaxLevel() { return config.getInt("Skills.Smelting.FuelEfficiency.MaxBonusLevel", 1000); }
+    public int getBurnModifierMaxLevel() { return config.getInt("Skills.Smelting.FuelEfficiency.MaxBonusLevel", 100); }
     public double getBurnTimeMultiplier() { return config.getDouble("Skills.Smelting.FuelEfficiency.Multiplier", 3.0D); }
 
     /*public int getFluxMiningUnlockLevel() { return config.getInt("Skills.Smelting.FluxMining.UnlockLevel", 250); }*/
@@ -925,7 +958,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getRuptureDamagePlayer() { return config.getDouble("Skills.Swords.Rupture.DamagePlayer", 1.0); }
     public double getRuptureDamageMobs() { return config.getDouble("Skills.Swords.Rupture.DamageMobs", 2.0); }
 
-    public int getRuptureMaxTicks() { return config.getInt("Skills.Swords.Rupture.MaxTicks", 3); }
+    public int getRuptureMaxTicks() { return config.getInt("Skills.Swords.Rupture.MaxTicks", 8); }
     public int getRuptureBaseTicks() { return config.getInt("Skills.Swords.Rupture.BaseTicks", 2); }
 
     public double getCounterModifier() { return config.getDouble("Skills.Swords.CounterAttack.DamageModifier", 2.0D); }

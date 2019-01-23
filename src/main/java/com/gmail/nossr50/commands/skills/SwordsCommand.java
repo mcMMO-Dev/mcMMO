@@ -43,7 +43,7 @@ public class SwordsCommand extends SkillCommand {
 
         // SWORDS_RUPTURE
         if (canBleed) {
-            bleedLength = (skillValue >= AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.SWORDS_RUPTURE)) ? Swords.bleedMaxTicks : Swords.bleedBaseTicks;
+            bleedLength = UserManager.getPlayer(player).getSwordsManager().getBleedTicks();
 
             String[] bleedStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.SWORDS_RUPTURE, isLucky);
             bleedChance = bleedStrings[0];

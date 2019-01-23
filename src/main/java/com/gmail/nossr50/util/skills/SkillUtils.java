@@ -62,23 +62,27 @@ public class SkillUtils {
     public static String[] calculateAbilityDisplayValues(float skillValue, SubSkillType subSkillType, boolean isLucky) {
         int maxBonusLevel = AdvancedConfig.getInstance().getMaxBonusLevel(subSkillType);
 
-        if(Config.getInstance().getIsRetroMode())
-            maxBonusLevel = maxBonusLevel * 10;
-
         return calculateAbilityDisplayValues((AdvancedConfig.getInstance().getMaxChance(subSkillType) / maxBonusLevel) * Math.min(skillValue, maxBonusLevel), isLucky);
     }
 
-    public static String[] calculateAbilityDisplayValuesCustom(float skillValue, SubSkillType subSkillType, boolean isLucky, int maxBonusLevel, double maxChance) {
-        if(Config.getInstance().getIsRetroMode())
-            maxBonusLevel = maxBonusLevel * 10;
-
+    public static String[] calculateAbilityDisplayValuesCustom(float skillValue, boolean isLucky, int maxBonusLevel, double maxChance) {
         return calculateAbilityDisplayValues((maxChance / maxBonusLevel) * Math.min(skillValue, maxBonusLevel), isLucky);
     }
 
     public static String[] calculateLengthDisplayValues(Player player, float skillValue, PrimarySkillType skill) {
         int maxLength = skill.getAbility().getMaxLength();
-        int abilityLengthVar = Config.getInstance().getIsRetroMode() ? AdvancedConfig.getInstance().getAbilityLengthRetro() : AdvancedConfig.getInstance().getAbilityLengthStandard();
-        int length = 2 + (int) (skillValue / abilityLengthVar);
+        int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
+        int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
+
+        int length;
+
+        if(abilityLengthCap > 0)
+        {
+            length =     (int) Math.min(abilityLengthCap, 2 + (skillValue / abilityLengthVar));
+        } else {
+            length = 2 + (int) (skillValue / abilityLengthVar);
+        }
+
         int enduranceLength = PerksUtils.handleActivationPerks(player, length, maxLength);
 
         if (maxLength != 0) {
@@ -187,9 +191,20 @@ public class SkillUtils {
 
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
             PrimarySkillType skill = mcMMOPlayer.getAbilityMode(SuperAbilityType.SUPER_BREAKER) ? PrimarySkillType.MINING : PrimarySkillType.EXCAVATION;
-            int abilityLengthVar = Config.getInstance().getIsRetroMode() ? AdvancedConfig.getInstance().getAbilityLengthRetro() : AdvancedConfig.getInstance().getAbilityLengthStandard();
-            int abilityLengthCap = Config.getInstance().getIsRetroMode() ? AdvancedConfig.getInstance().getAbilityLengthCapRetro() : AdvancedConfig.getInstance().getAbilityLengthCapStandard();
-            int ticks = PerksUtils.handleActivationPerks(player, 2 + (Math.min(abilityLengthCap, mcMMOPlayer.getSkillLevel(skill)) / abilityLengthVar), skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
+
+            int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
+            int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
+
+            int ticks;
+
+            if(abilityLengthCap > 0)
+            {
+                ticks = PerksUtils.handleActivationPerks(player,  Math.min(abilityLengthCap, 2 + (mcMMOPlayer.getSkillLevel(skill) / abilityLengthVar)),
+                        skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
+            } else {
+                ticks = PerksUtils.handleActivationPerks(player, 2 + ((mcMMOPlayer.getSkillLevel(skill)) / abilityLengthVar),
+                        skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
+            }
 
             PotionEffect abilityBuff = new PotionEffect(PotionEffectType.FAST_DIGGING, duration + ticks, amplifier + 10);
             player.addPotionEffect(abilityBuff, true);
