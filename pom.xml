@@ -9,6 +9,7 @@
         <url>https://github.com/mcMMO-Dev/mcMMO</url>
         <connection>scm:git:git://github.com/mcMMO-Dev/mcMMO.git</connection>
         <developerConnection>scm:git:git@github.com:mcMMO-Dev/mcMMO.git</developerConnection>
+        <tag>HEAD</tag>
     </scm>
     <issueManagement>
         <url>https://github.com/mcMMO-Dev/mcMMO/issues</url>
