@@ -586,7 +586,7 @@ permissions:
         description: Allows access to all Taming abilities
         children:
             mcmmo.ability.taming.beastlore: true
-            mcmmo.ability.taming.callofthewild.all: true
+            mcmmo.ability.taming.callofthewild: true
             mcmmo.ability.taming.environmentallyaware: true
             mcmmo.ability.taming.fastfoodservice: true
             mcmmo.ability.taming.gore: true
@@ -601,13 +601,8 @@ permissions:
         default: false
         description: Allows access to the Call of the Wild ability
         children:
-            mcmmo.ability.taming.callofthewild.all: true
+            mcmmo.ability.taming.callofthewild: true
     mcmmo.ability.taming.callofthewild:
-        default: false
-        description: Allows access to the Call of the Wild ability
-        children:
-            mcmmo.ability.taming.callofthewild.all: true
-    mcmmo.ability.taming.callofthewild.all:
         description: Allows access to the Call of the Wild abilities
         children:
             mcmmo.ability.taming.callofthewild.horse: true

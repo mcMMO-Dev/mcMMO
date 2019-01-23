@@ -63,6 +63,7 @@ Version 2.1.0
  + (Permissions) Added permission node mcmmo.commands.mcchatspy & mcmmo.commands.mcchatspy.others
  + (Permissions) Added permission nodes for Harvest Lumber, Splinter, Nature's Bounty, and Bark Surgeon
  + (Permissions) Added mcmmo.commands.mmoinfo for the new mmoinfo/mcinfo command
+ ! (Permissions) Call of the wild now uses mcmmo.ability.taming.callofthewild instead of mcmmo.ability.taming.callofthewild.all
  + (Locale) Added locale strings for new Woodcutting abilities
  + (Locale) Added locale strings for mcchatspy command
  + (Locale) Added locale strings for JSON integration
