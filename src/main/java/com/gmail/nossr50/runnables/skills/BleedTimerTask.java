@@ -52,7 +52,7 @@ public class BleedTimerTask extends BukkitRunnable {
 
                 // Never kill with Bleeding
                 if (player.getHealth() - damage > 0) {
-                    CombatUtils.dealDamage(player, damage);
+                    CombatUtils.dealNoInvulnerabilityTickDamage(entity, damage, null);
                     ParticleEffectUtils.playBleedEffect(entity);
                 }
 
@@ -73,7 +73,7 @@ public class BleedTimerTask extends BukkitRunnable {
                     bleedIterator.remove();
                 }
 
-                CombatUtils.dealDamage(entity, damage);
+                CombatUtils.dealNoInvulnerabilityTickDamage(entity, damage, null);
                 ParticleEffectUtils.playBleedEffect(entity);
             }
         }
