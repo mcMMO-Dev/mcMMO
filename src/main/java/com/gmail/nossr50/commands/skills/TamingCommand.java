@@ -59,15 +59,6 @@ public class TamingCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 
-        if (canFastFood) {
-            if (skillValue < Taming.fastFoodServiceUnlockLevel) {
-                messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Taming.Ability.Locked.4", Taming.fastFoodServiceUnlockLevel)));
-            }
-            else {
-                messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.8"), LocaleLoader.getString("Taming.Ability.Bonus.9", percent.format(Taming.fastFoodServiceActivationChance / 100D))));
-            }
-        }
-
         if (canEnvironmentallyAware) {
             if (skillValue < Taming.environmentallyAwareUnlockLevel) {
                 messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Taming.Ability.Locked.0", Taming.environmentallyAwareUnlockLevel)));
@@ -76,31 +67,28 @@ public class TamingCommand extends SkillCommand {
                 messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.0"), LocaleLoader.getString("Taming.Ability.Bonus.1")));
             }
         }
-
-        if (canThickFur) {
-            if (skillValue < Taming.thickFurUnlockLevel) {
-                messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Taming.Ability.Locked.1", Taming.thickFurUnlockLevel)));
+        
+        if (canFastFood) {
+            if (skillValue < Taming.fastFoodServiceUnlockLevel) {
+                messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Taming.Ability.Locked.4", Taming.fastFoodServiceUnlockLevel)));
             }
             else {
-                messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.2"), LocaleLoader.getString("Taming.Ability.Bonus.3", Taming.thickFurModifier)));
+                messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.8"), LocaleLoader.getString("Taming.Ability.Bonus.9", percent.format(Taming.fastFoodServiceActivationChance / 100D))));
             }
         }
-
+        
+        if (canGore) {
+            messages.add(LocaleLoader.getString("Ability.Generic.Template",
+                    LocaleLoader.getString("Taming.Combat.Chance.Gore"),
+                    goreChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", goreChanceLucky) : ""));
+        }
+        
         if (canHolyHound) {
             if (skillValue < Taming.holyHoundUnlockLevel) {
                 messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Taming.Ability.Locked.5", Taming.holyHoundUnlockLevel)));
             }
             else {
                 messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.10"), LocaleLoader.getString("Taming.Ability.Bonus.11")));
-            }
-        }
-
-        if (canShockProof) {
-            if (skillValue < Taming.shockProofUnlockLevel) {
-                messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Taming.Ability.Locked.2", Taming.shockProofUnlockLevel)));
-            }
-            else {
-                messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.4"), LocaleLoader.getString("Taming.Ability.Bonus.5", Taming.shockProofModifier)));
             }
         }
 
@@ -112,11 +100,23 @@ public class TamingCommand extends SkillCommand {
                 messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.6"), LocaleLoader.getString("Taming.Ability.Bonus.7", Taming.sharpenedClawsBonusDamage)));
             }
         }
-
-        if (canGore) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template",
-                    LocaleLoader.getString("Taming.Combat.Chance.Gore"),
-                    goreChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", goreChanceLucky) : ""));
+        
+        if (canShockProof) {
+            if (skillValue < Taming.shockProofUnlockLevel) {
+                messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Taming.Ability.Locked.2", Taming.shockProofUnlockLevel)));
+            }
+            else {
+                messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.4"), LocaleLoader.getString("Taming.Ability.Bonus.5", Taming.shockProofModifier)));
+            }
+        }
+        
+        if (canThickFur) {
+            if (skillValue < Taming.thickFurUnlockLevel) {
+                messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Taming.Ability.Locked.1", Taming.thickFurUnlockLevel)));
+            }
+            else {
+                messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.2"), LocaleLoader.getString("Taming.Ability.Bonus.3", Taming.thickFurModifier)));
+            }
         }
 
         return messages;
