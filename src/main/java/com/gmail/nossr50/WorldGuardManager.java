@@ -37,6 +37,10 @@ public class WorldGuardManager {
 
     public boolean hasMainFlag(Player player)
     {
+        //Not sure when we're supposed to know when WorldGuard is loaded
+        if(!flagsRegistered)
+            registerFlags();
+
         BukkitPlayer localPlayer = BukkitAdapter.adapt(player);
         com.sk89q.worldedit.util.Location loc = localPlayer.getLocation();
 
@@ -60,6 +64,10 @@ public class WorldGuardManager {
 
     public boolean hasXPFlag(Player player)
     {
+        //Not sure when we're supposed to know when WorldGuard is loaded
+        if(!flagsRegistered)
+            registerFlags();
+
         BukkitPlayer localPlayer = BukkitAdapter.adapt(player);
         com.sk89q.worldedit.util.Location loc = localPlayer.getLocation();
 
