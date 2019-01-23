@@ -511,7 +511,7 @@ public class mcMMO extends JavaPlugin {
         // Cleanup the backups folder
         new CleanBackupsTask().runTaskAsynchronously(mcMMO.p);
 
-        // Bleed timer (Runs every two seconds)
+        // Bleed timer (Runs every 0.5 seconds)
         new BleedTimerTask().runTaskTimer(this, 1 * Misc.TICK_CONVERSION_FACTOR, 1 * (Misc.TICK_CONVERSION_FACTOR / 2));
 
         // Old & Powerless User remover

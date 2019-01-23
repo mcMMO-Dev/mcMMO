@@ -61,12 +61,7 @@ public class SwordsManager extends SkillManager {
                 }
             }
 
-            if (getSkillLevel() >= AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.SWORDS_RUPTURE)) {
-                BleedTimerTask.add(target, getBleedTicks(), RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE));
-            }
-            else {
-                BleedTimerTask.add(target, getBleedTicks(), RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE));
-            }
+            BleedTimerTask.add(target, getRuptureBleedTicks(), RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE));
 
             if (mcMMOPlayer.useChatNotifications()) {
                 NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding");
@@ -74,7 +69,7 @@ public class SwordsManager extends SkillManager {
         }
     }
 
-    public int getBleedTicks()
+    public int getRuptureBleedTicks()
     {
         int bleedTicks = 2 * RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE);
 

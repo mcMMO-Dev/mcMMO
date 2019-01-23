@@ -4,7 +4,6 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.swords.Swords;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.player.UserManager;
@@ -43,7 +42,7 @@ public class SwordsCommand extends SkillCommand {
 
         // SWORDS_RUPTURE
         if (canBleed) {
-            bleedLength = UserManager.getPlayer(player).getSwordsManager().getBleedTicks();
+            bleedLength = UserManager.getPlayer(player).getSwordsManager().getRuptureBleedTicks();
 
             String[] bleedStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.SWORDS_RUPTURE, isLucky);
             bleedChance = bleedStrings[0];
@@ -69,7 +68,7 @@ public class SwordsCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 
-        int ruptureTicks = UserManager.getPlayer(player).getSwordsManager().getBleedTicks();
+        int ruptureTicks = UserManager.getPlayer(player).getSwordsManager().getRuptureBleedTicks();
         double ruptureDamagePlayers =  RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? AdvancedConfig.getInstance().getRuptureDamagePlayer() * 1.5D : AdvancedConfig.getInstance().getRuptureDamagePlayer();
         double ruptureDamageMobs =  RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? AdvancedConfig.getInstance().getRuptureDamageMobs() * 1.5D : AdvancedConfig.getInstance().getRuptureDamageMobs();
 

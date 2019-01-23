@@ -17,9 +17,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class BleedTimerTask extends BukkitRunnable {
-    private final static int MAX_BLEED_TICKS = 10;
+    private final static int MAX_BLEED_TICKS = 100; //The cap has been raised :)
     private static Map<LivingEntity, Integer> bleedList = new HashMap<LivingEntity, Integer>();
     private static Map<LivingEntity, Integer> bleedDamage = new HashMap<LivingEntity, Integer>();
+    private static Map<LivingEntity, LivingEntity> attackerMap = new HashMap<>();
 
     @Override
     public void run() {
@@ -73,7 +74,8 @@ public class BleedTimerTask extends BukkitRunnable {
                     bleedIterator.remove();
                 }
 
-                CombatUtils.dealNoInvulnerabilityTickDamage(entity, damage, null);
+
+                CombatUtils.dealNoInvulnerabilityTickDamage(entity, damage, attackerMap.get(entity));
                 ParticleEffectUtils.playBleedEffect(entity);
             }
         }
@@ -86,9 +88,10 @@ public class BleedTimerTask extends BukkitRunnable {
      */
     public static void bleedOut(LivingEntity entity) {
         if (bleedList.containsKey(entity)) {
-            CombatUtils.dealNoInvulnerabilityTickDamage(entity, bleedList.get(entity) * 2, null);
+            CombatUtils.dealNoInvulnerabilityTickDamage(entity, bleedList.get(entity) * 2, attackerMap.get(entity));
             bleedList.remove(entity);
             bleedDamage.remove(entity);
+            attackerMap.remove(entity);
         }
     }
 
@@ -101,6 +104,7 @@ public class BleedTimerTask extends BukkitRunnable {
         if (bleedList.containsKey(entity)) {
             bleedList.remove(entity);
             bleedDamage.remove(entity);
+            attackerMap.remove(entity);
         }
     }
 
@@ -110,20 +114,21 @@ public class BleedTimerTask extends BukkitRunnable {
      * @param entity LivingEntity to add
      * @param ticks Number of bleeding ticks
      */
-    public static void add(LivingEntity entity, int ticks, int bleedRank) {
+    public static void add(LivingEntity entity, LivingEntity attacker, int ticks, int bleedRank) {
         int newTicks = ticks;
 
         if (bleedList.containsKey(entity)) {
             newTicks += bleedList.get(entity);
-            bleedList.put(entity, Math.min(newTicks, MAX_BLEED_TICKS));
+            bleedList.put(entity, Math.min(MAX_BLEED_TICKS, newTicks));
 
             //Override the current bleed rank only if this one is higher
             if(bleedDamage.get(entity) < bleedRank)
                 bleedDamage.put(entity, bleedRank);
         }
         else {
-            bleedList.put(entity, Math.min(newTicks, MAX_BLEED_TICKS));
+            bleedList.put(entity, Math.min(MAX_BLEED_TICKS, newTicks));
             bleedDamage.put(entity, bleedRank);
+            attackerMap.put(entity, attacker);
         }
     }
 
