@@ -52,6 +52,15 @@ public class SwordsManager extends SkillManager {
     public void ruptureCheck(LivingEntity target) {
         if (SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_RUPTURE, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
 
+            if (target instanceof Player) {
+                Player defender = (Player) target;
+
+                if (UserManager.getPlayer(defender).useChatNotifications()) {
+                    if(!BleedTimerTask.isBleeding(defender))
+                        NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Started");
+                }
+            }
+
             if (getSkillLevel() >= AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.SWORDS_RUPTURE)) {
                 BleedTimerTask.add(target, getBleedTicks(), RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE));
             }
@@ -61,14 +70,6 @@ public class SwordsManager extends SkillManager {
 
             if (mcMMOPlayer.useChatNotifications()) {
                 NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding");
-            }
-
-            if (target instanceof Player) {
-                Player defender = (Player) target;
-
-                if (UserManager.getPlayer(defender).useChatNotifications()) {
-                    NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Started");
-                }
             }
         }
     }
