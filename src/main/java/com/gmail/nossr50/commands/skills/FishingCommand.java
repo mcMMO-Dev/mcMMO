@@ -122,7 +122,29 @@ public class FishingCommand extends SkillCommand {
     @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
+        
+        if (canFishermansDiet) {
+            messages.add(getStatMessage(false, true, SubSkillType.FISHING_FISHERMANS_DIET, String.valueOf(fishermansDietRank)));
+        }
+        
+        if (canIceFish) {
+            messages.add(getStatMessage(SubSkillType.FISHING_ICE_FISHING, SubSkillType.FISHING_ICE_FISHING.getLocaleStatDescription()));
+        }
+        
+        if (canMagicHunt) {
+            messages.add(getStatMessage(SubSkillType.FISHING_MAGIC_HUNTER, magicChance));
+        }
 
+        if (canMasterAngler) {
+            //TODO: Update this with more details
+            messages.add(getStatMessage(SubSkillType.FISHING_MASTER_ANGLER, biteChance));
+        }
+        
+        if (canShake) {
+            messages.add(getStatMessage(SubSkillType.FISHING_SHAKE, shakeChance)
+            + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", shakeChanceLucky) : ""));
+        }
+        
         if (canTreasureHunt) {
             messages.add(getStatMessage(false, true, SubSkillType.FISHING_TREASURE_HUNTER, String.valueOf(lootTier), String.valueOf(RankUtils.getHighestRank(SubSkillType.FISHING_TREASURE_HUNTER))));
             messages.add(getStatMessage(true, true, SubSkillType.FISHING_TREASURE_HUNTER,
@@ -133,28 +155,6 @@ public class FishingCommand extends SkillCommand {
                     String.valueOf(epicTreasure),
                     String.valueOf(legendaryTreasure),
                     String.valueOf(recordTreasure)));
-        }
-
-        if (canMagicHunt) {
-            messages.add(getStatMessage(SubSkillType.FISHING_MAGIC_HUNTER, magicChance));
-        }
-
-        if (canIceFish) {
-            messages.add(getStatMessage(SubSkillType.FISHING_ICE_FISHING, SubSkillType.FISHING_ICE_FISHING.getLocaleStatDescription()));
-        }
-
-        if (canMasterAngler) {
-            //TODO: Update this with more details
-            messages.add(getStatMessage(SubSkillType.FISHING_MASTER_ANGLER, biteChance));
-        }
-
-        if (canShake) {
-            messages.add(getStatMessage(SubSkillType.FISHING_SHAKE, shakeChance)
-            + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", shakeChanceLucky) : ""));
-        }
-
-        if (canFishermansDiet) {
-            messages.add(getStatMessage(false, true, SubSkillType.FISHING_FISHERMANS_DIET, String.valueOf(fishermansDietRank)));
         }
 
         return messages;
