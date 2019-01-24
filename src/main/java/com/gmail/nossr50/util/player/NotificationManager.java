@@ -28,7 +28,6 @@ public class NotificationManager {
      */
     public static void sendPlayerInformation(Player player, NotificationType notificationType, String key)
     {
-
         ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
 
         TextComponent message = TextComponentFactory.getNotificationTextComponentFromLocale(key, notificationType);

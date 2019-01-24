@@ -54,8 +54,11 @@ public final class CombatUtils {
             mcMMOPlayer.checkAbilityActivation(PrimarySkillType.SWORDS);
         }
 
-        if (swordsManager.canUseRupture()) {
-            swordsManager.ruptureCheck(target);
+        if(target.getHealth() - event.getFinalDamage() >= 1)
+        {
+            if (swordsManager.canUseRupture()) {
+                swordsManager.ruptureCheck(target);
+            }
         }
 
         if (swordsManager.canUseSerratedStrike()) {
