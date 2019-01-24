@@ -69,7 +69,8 @@ public class BleedTimerTask extends BukkitRunnable {
     }
 
     private void lowerBleedDurationTicks(LivingEntity target) {
-        bleedList.put(target, bleedList.get(target) - 1);
+        if(bleedList.get(target) != null)
+            bleedList.put(target, bleedList.get(target) - 1);
     }
 
     /**
