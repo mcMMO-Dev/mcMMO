@@ -381,11 +381,10 @@ public final class CombatUtils {
             return;
         }
 
-        //target.damage(callFakeDamageEvent(attacker, target, cause, damage));
         double incDmg = callFakeDamageEvent(attacker, target, DamageCause.CUSTOM, damage);
 
-        if(incDmg > 0)
-            target.setHealth(incDmg);
+        double newHealth = Math.max(0, target.getHealth() - incDmg);
+        target.setHealth(newHealth);
     }
 
     /**

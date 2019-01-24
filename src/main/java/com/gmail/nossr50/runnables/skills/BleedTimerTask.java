@@ -26,7 +26,7 @@ public class BleedTimerTask extends BukkitRunnable {
     public void run() {
         for(LivingEntity target : bleedList.keySet())
         {
-            mcMMO.p.getServer().broadcastMessage("Entity "+target.getName()+" has "+bleedList.get(target)+" ticks of bleed left");
+            //mcMMO.p.getServer().broadcastMessage("Entity "+target.getName()+" has "+bleedList.get(target)+" ticks of bleed left");
 
             if (bleedList.get(target) <= 0 || !target.isValid()) {
                 remove(target);
@@ -34,9 +34,6 @@ public class BleedTimerTask extends BukkitRunnable {
             }
 
             double damage;
-
-            //Play Bleed Sound
-            SoundManager.worldSendSound(target.getWorld(), target.getLocation(), SoundType.BLEED);
 
             if (target instanceof Player) {
                 damage = AdvancedConfig.getInstance().getRuptureDamagePlayer();
@@ -61,7 +58,11 @@ public class BleedTimerTask extends BukkitRunnable {
                 MobHealthbarUtils.handleMobHealthbars(target, damage, mcMMO.p); //Update health bars
             }
 
+
             CombatUtils.dealNoInvulnerabilityTickDamage(target, damage, attackerMap.get(target));
+            //Play Bleed Sound
+            SoundManager.worldSendSound(target.getWorld(), target.getLocation(), SoundType.BLEED);
+
             ParticleEffectUtils.playBleedEffect(target);
             lowerBleedDurationTicks(target);
         }

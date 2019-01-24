@@ -39,6 +39,7 @@ Version 2.1.0
  ! (Skills) Sword's Bleed has been renamed to Rupture
  ! (Skills) Sword's Serrated Strikes now uses your Rupture rank to determine the damage/ticks for its bleed effect.
  ! (Skills) Sword's Rupture now ticks four times as fast
+ ! (Skills) Sword's Rupture will now deal lethal damage
  = (Skills) Fixed a bug where Rupture would apply an incorrect amount of bleed ticks
  ! (Skills) Sword's Rupture now reaches its max proc chance at level 20 (200 in Retro)
  ! (Skills) Sword's Rupture now has a max chance to proc of 33% instead of 70%
