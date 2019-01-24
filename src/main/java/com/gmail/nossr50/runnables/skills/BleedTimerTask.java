@@ -11,25 +11,29 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public class BleedTimerTask extends BukkitRunnable {
     private final static int MAX_BLEED_TICKS = 100; //The cap has been raised :)
     private static Map<LivingEntity, Integer> bleedList = new HashMap<LivingEntity, Integer>();
     private static Map<LivingEntity, Integer> bleedDamage = new HashMap<LivingEntity, Integer>();
     private static Map<LivingEntity, LivingEntity> attackerMap = new HashMap<>();
+    private static ArrayList<LivingEntity> cleanupList = new ArrayList<>();
+    private static ArrayList<LivingEntity> lowerList = new ArrayList<>();
 
     @Override
     public void run() {
+        lowerBleedTicks(); //Lower bleed ticks
+        cleanEntities(); //Remove unwanted entities
+
         for(LivingEntity target : bleedList.keySet())
         {
             //mcMMO.p.getServer().broadcastMessage("Entity "+target.getName()+" has "+bleedList.get(target)+" ticks of bleed left");
 
             if (bleedList.get(target) <= 0 || !target.isValid()) {
-                remove(target);
+                cleanupList.add(target);
                 continue;
             }
 
@@ -45,7 +49,7 @@ public class BleedTimerTask extends BukkitRunnable {
                 Player player = (Player) target;
 
                 if (!player.isOnline()) {
-                    remove(target);
+                    cleanupList.add(target);
                     continue;
                 }
 
@@ -68,9 +72,31 @@ public class BleedTimerTask extends BukkitRunnable {
         }
     }
 
+    private void lowerBleedTicks() {
+        for(LivingEntity lower : lowerList)
+        {
+            if(bleedList.containsKey(lower))
+                bleedList.put(lower, bleedList.get(lower) - 1);
+        }
+
+        lowerList.clear();
+    }
+
+    private void cleanEntities() {
+        for(LivingEntity cleanTarget : cleanupList)
+        {
+            if(bleedList.containsKey(cleanTarget))
+            {
+                remove(cleanTarget);
+            }
+        }
+
+        cleanupList.clear(); //Reset List
+    }
+
     private void lowerBleedDurationTicks(LivingEntity target) {
         if(bleedList.get(target) != null)
-            bleedList.put(target, bleedList.get(target) - 1);
+            lowerList.add(target);
     }
 
     /**
