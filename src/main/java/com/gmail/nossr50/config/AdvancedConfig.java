@@ -711,7 +711,12 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getMaxChance(SubSkillType subSkillType) { return config.getDouble(subSkillType.getAdvConfigAddress() + ".ChanceMax", 100.0D);}
 
     public int getMaxBonusLevel(AbstractSubSkill abstractSubSkill) {
-        return config.getInt("Skills."+abstractSubSkill.getPrimaryKeyName()+"."+abstractSubSkill.getConfigKeyName()+".MaxBonusLevel");
+        int maxBonusLevel = config.getInt("Skills."+abstractSubSkill.getPrimaryKeyName()+"."+abstractSubSkill.getConfigKeyName()+".MaxBonusLevel");
+
+        if(mcMMO.isRetroModeEnabled())
+            maxBonusLevel *= 10;
+
+        return maxBonusLevel;
     }
 
     public double getMaxChance(AbstractSubSkill abstractSubSkill)

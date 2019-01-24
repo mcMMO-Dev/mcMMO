@@ -57,19 +57,22 @@ public class AcrobaticsCommand extends SkillCommand {
 
             if(abstractSubSkill != null)
             {
-                double maxBonusLevel = Config.getInstance().getIsRetroMode() ? AdvancedConfig.getInstance().getMaxBonusLevel(abstractSubSkill) * 10 : AdvancedConfig.getInstance().getMaxBonusLevel(abstractSubSkill);
+                double maxBonusLevel = AdvancedConfig.getInstance().getMaxBonusLevel(abstractSubSkill);
                 double maxChance = AdvancedConfig.getInstance().getMaxChance(abstractSubSkill);
                 double rollChance   = SkillUtils.getChanceOfSuccess(skillValue, maxBonusLevel, maxChance);
                 double graceChance  = SkillUtils.getChanceOfSuccess(skillValue, maxBonusLevel, maxChance / 2);
 
-                String rollChanceLucky = isLucky ? percent.format(Math.min(rollChance * 1.3333D, 100.0D) / 100.0D) : null;
-                String graceChanceLucky = isLucky ? percent.format(Math.min(rollChance * 1.3333D, 100.0D) / 100.0D) : null;
+                rollChance = Math.min(100.0D, rollChance);
+                graceChance = Math.min(100.0D, graceChance);
 
+                String rollChanceLucky = isLucky ? percent.format(Math.min(100.0D, (rollChance * 1.3333D) / 100.0D)) : null;
+                String graceChanceLucky = isLucky ? percent.format(Math.min(100.0D, (graceChance * 1.3333D) / 100.0D)) : null;
 
-                messages.add(getStatMessage(SubSkillType.ACROBATICS_ROLL, percent.format(rollChance))
-                        + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", rollChanceLucky) : ""));
-                messages.add(getStatMessage(true, false, SubSkillType.ACROBATICS_ROLL, percent.format(graceChance))
-                        + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", graceChanceLucky) : ""));
+                messages.add(getStatMessage(SubSkillType.ACROBATICS_ROLL, percent.format(rollChance)
+                        + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", rollChanceLucky) : "")));
+
+                messages.add(getStatMessage(true, false, SubSkillType.ACROBATICS_ROLL, percent.format(graceChance)
+                        + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", graceChanceLucky) : "")));
             }
         }
 
