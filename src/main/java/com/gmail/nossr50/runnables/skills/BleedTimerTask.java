@@ -1,8 +1,8 @@
 package com.gmail.nossr50.runnables.skills;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.MobHealthbarUtils;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -24,61 +24,51 @@ public class BleedTimerTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        for (Iterator<Entry<LivingEntity, Integer>> bleedIterator = bleedList.entrySet().iterator(); bleedIterator.hasNext(); ) {
-            Entry<LivingEntity, Integer> entry = bleedIterator.next();
-            LivingEntity entity = entry.getKey();
+        for(LivingEntity target : bleedList.keySet())
+        {
+            mcMMO.p.getServer().broadcastMessage("Entity "+target.getName()+" has "+bleedList.get(target)+" ticks of bleed left");
 
-            if (entry.getValue() <= 0 || !entity.isValid()) {
-                bleedIterator.remove();
+            if (bleedList.get(target) <= 0 || !target.isValid()) {
+                remove(target);
                 continue;
             }
 
             double damage;
 
             //Play Bleed Sound
-            SoundManager.worldSendSound(entity.getWorld(), entity.getLocation(), SoundType.BLEED);
+            SoundManager.worldSendSound(target.getWorld(), target.getLocation(), SoundType.BLEED);
 
-            if (entity instanceof Player) {
+            if (target instanceof Player) {
                 damage = AdvancedConfig.getInstance().getRuptureDamagePlayer();
 
                 //Above Bleed Rank 3 deals 50% more damage
-                if(bleedDamage.get(entity) >= 3)
+                if(bleedDamage.get(target) >= 3)
                     damage = damage * 1.5;
 
-                Player player = (Player) entity;
+                Player player = (Player) target;
 
                 if (!player.isOnline()) {
+                    remove(target);
                     continue;
                 }
 
-                // Never kill with Bleeding
-                if (player.getHealth() - damage > 0) {
-                    CombatUtils.dealNoInvulnerabilityTickDamage(entity, damage, null);
-                    ParticleEffectUtils.playBleedEffect(entity);
-                }
-
-                entry.setValue(entry.getValue() - 1);
-
-                /*if (entry.getValue() <= 0) {
+                /*if (bleedList.get(target) <= 0) {
                     NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Stopped");
                 }*/
             }
             else {
                 damage = AdvancedConfig.getInstance().getRuptureDamageMobs();
-
-                // Anticipate the entity's death to prevent CME because of our EntityDeathEvent listener
-                if (entity.getHealth() - damage > 0) {
-                    entry.setValue(entry.getValue() - 1);
-                }
-                else {
-                    bleedIterator.remove();
-                }
-
-
-                CombatUtils.dealNoInvulnerabilityTickDamage(entity, damage, attackerMap.get(entity));
-                ParticleEffectUtils.playBleedEffect(entity);
+                MobHealthbarUtils.handleMobHealthbars(target, damage, mcMMO.p); //Update health bars
             }
+
+            CombatUtils.dealNoInvulnerabilityTickDamage(target, damage, attackerMap.get(target));
+            ParticleEffectUtils.playBleedEffect(target);
+            lowerBleedDurationTicks(target);
         }
+    }
+
+    private void lowerBleedDurationTicks(LivingEntity target) {
+        bleedList.put(target, bleedList.get(target) - 1);
     }
 
     /**

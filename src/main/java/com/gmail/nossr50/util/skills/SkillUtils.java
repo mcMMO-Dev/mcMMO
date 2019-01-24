@@ -309,15 +309,14 @@ public class SkillUtils {
      * Random skills check for success based on numbers and then fire a cancellable event, if that event is not cancelled they succeed
      * All other skills just fire the cancellable event and succeed if it is not cancelled
      *
+     * @param skillActivationType this value represents what kind of activation procedures this sub-skill uses
      * @param subSkillType The identifier for this specific sub-skill
      * @param player The owner of this sub-skill
-     * @param skill The identifier for the parent of our sub-skill
      * @param activationChance This is the value that we roll against, 100 is normal, and 75 is for lucky perk
-     * @param skillActivationType this value represents what kind of activation procedures this sub-skill uses
      * @return returns true if all conditions are met and they event is not cancelled
      */
     public static boolean isActivationSuccessful(SkillActivationType skillActivationType, SubSkillType subSkillType, Player player,
-                                                 PrimarySkillType skill, int skillLevel, int activationChance)
+                                                 int skillLevel, int activationChance)
     {
         //Maximum chance to succeed
         double maxChance = AdvancedConfig.getInstance().getMaxChance(subSkillType);
@@ -328,9 +327,9 @@ public class SkillUtils {
         {
             //100 Skill = Guaranteed
             case RANDOM_LINEAR_100_SCALE_NO_CAP:
-                return performRandomSkillCheck(subSkillType, player, skillLevel, PerksUtils.handleLuckyPerks(player, skill), 100.0D, 100);
+                return performRandomSkillCheck(subSkillType, player, skillLevel, PerksUtils.handleLuckyPerks(player, subSkillType.getParentSkill()), 100.0D, 100);
             case RANDOM_LINEAR_100_SCALE_WITH_CAP:
-                return performRandomSkillCheck(subSkillType, player, skillLevel, PerksUtils.handleLuckyPerks(player, skill), maxChance, maxBonusLevel);
+                return performRandomSkillCheck(subSkillType, player, skillLevel, PerksUtils.handleLuckyPerks(player, subSkillType.getParentSkill()), maxChance, maxBonusLevel);
             case RANDOM_STATIC_CHANCE:
                 //Grab the static activation chance of this skill
                 double staticRoll = getSecondaryAbilityStaticChance(subSkillType) / activationChance;
