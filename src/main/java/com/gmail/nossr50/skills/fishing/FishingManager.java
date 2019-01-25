@@ -17,28 +17,22 @@ import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerShakeEvent;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillRandomCheckEvent;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.skills.KrakenAttackTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
-import com.gmail.nossr50.util.sounds.SoundManager;
-import com.gmail.nossr50.util.sounds.SoundType;
-import org.bukkit.*;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.potion.Potion;
-import org.bukkit.potion.PotionType;
-import org.bukkit.util.Vector;
 
 import java.util.*;
 
@@ -63,93 +57,7 @@ public class FishingManager extends SkillManager {
         return getSkillLevel() >= RankUtils.getUnlockLevel(SubSkillType.FISHING_MASTER_ANGLER) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_MASTER_ANGLER);
     }
 
-    public boolean unleashTheKraken() {
-        return unleashTheKraken(true);
-    }
-
-    private boolean unleashTheKraken(boolean forceSpawn) {
-        if (!forceSpawn && (fishingTries < AdvancedConfig.getInstance().getKrakenTriesBeforeRelease() || fishingTries <= Misc.getRandom().nextInt(200))) {
-            return false;
-        }
-
-        Player player = getPlayer();
-        World world = player.getWorld();
-
-        player.setPlayerWeather(WeatherType.DOWNFALL);
-
-        Entity vehicle = player.getVehicle();
-
-        if (vehicle != null && vehicle.getType() == EntityType.BOAT) {
-            vehicle.eject();
-            vehicle.remove();
-        }
-
-        player.teleport(player.getTargetBlock(null, 100).getLocation(), TeleportCause.PLUGIN);
-
-        String unleashMessage = AdvancedConfig.getInstance().getPlayerUnleashMessage();
-
-        if (!unleashMessage.isEmpty()) {
-            //TODO: Strange that this pull strings from the config of all places...
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, unleashMessage);
-        }
-
-        Location location = player.getLocation();
-        boolean globalEffectsEnabled = AdvancedConfig.getInstance().getKrakenGlobalEffectsEnabled();
-
-        if (globalEffectsEnabled) {
-            world.strikeLightningEffect(location);
-            world.strikeLightningEffect(location);
-            world.strikeLightningEffect(location);
-
-            SoundManager.worldSendSound(world, location, SoundType.KRAKEN);
-            mcMMO.p.getServer().broadcastMessage(ChatColor.RED + AdvancedConfig.getInstance().getServerUnleashMessage().replace("(PLAYER)", player.getDisplayName()));
-        }
-        else {
-            world.createExplosion(location.getX(), location.getY(), location.getZ(), 0F, false, false);
-            world.createExplosion(location.getX(), location.getY(), location.getZ(), 0F, false, false);
-            world.createExplosion(location.getX(), location.getY(), location.getZ(), 0F, false, false);
-
-            SoundManager.sendSound(player, location, SoundType.KRAKEN);
-        }
-
-        if (player.getInventory().getItemInMainHand().getType() == Material.FISHING_ROD) {
-            player.getInventory().setItemInMainHand(null);
-        }
-        else if (player.getInventory().getItemInOffHand().getType() == Material.FISHING_ROD) {
-            player.getInventory().setItemInOffHand(null);
-        }
-
-        LivingEntity kraken = (LivingEntity) world.spawnEntity(player.getEyeLocation(), (Misc.getRandom().nextInt(100) == 0 ? EntityType.CHICKEN : EntityType.SQUID));
-        kraken.setCustomName(AdvancedConfig.getInstance().getKrakenName());
-
-        if (!kraken.isValid()) {
-            int attackInterval = AdvancedConfig.getInstance().getKrakenAttackInterval() * Misc.TICK_CONVERSION_FACTOR;
-            new KrakenAttackTask(kraken, player, player.getLocation()).runTaskTimer(mcMMO.p, attackInterval, attackInterval);
-
-            if (!forceSpawn) {
-                fishingTries = 0;
-            }
-
-            return true;
-        }
-
-        kraken.setMaxHealth(AdvancedConfig.getInstance().getKrakenHealth());
-        kraken.setHealth(kraken.getMaxHealth());
-
-        int attackInterval = AdvancedConfig.getInstance().getKrakenAttackInterval() * Misc.TICK_CONVERSION_FACTOR;
-        new KrakenAttackTask(kraken, player).runTaskTimer(mcMMO.p, attackInterval, attackInterval);
-
-        if (!forceSpawn) {
-            fishingTries = 0;
-        }
-
-        return true;
-    }
-
     public boolean exploitPrevention() {
-        if (!AdvancedConfig.getInstance().getKrakenEnabled()) {
-            return false;
-        }
 
         Block targetBlock = getPlayer().getTargetBlock(BlockUtils.getTransparentBlocks(), 100);
 
@@ -160,16 +68,11 @@ public class FishingManager extends SkillManager {
         long currentTime = System.currentTimeMillis();
         boolean hasFished = (currentTime < fishingTimestamp + FISHING_COOLDOWN_SECONDS);
 
-        fishingTries = hasFished ? fishingTries + 1 : Math.max(fishingTries - 1, 0);
         fishingTimestamp = currentTime;
 
         Location targetLocation = targetBlock.getLocation();
         boolean sameTarget = (fishingTarget != null && fishingTarget.equals(targetLocation));
-
-        fishingTries = sameTarget ? fishingTries + 1 : Math.max(fishingTries - 1, 0);
-        fishingTarget = targetLocation;
-
-        return unleashTheKraken(false);
+        return hasFished && sameTarget;
     }
 
     public boolean canIceFish(Block block) {
@@ -499,36 +402,6 @@ public class FishingManager extends SkillManager {
         treasure.setDrop(treasureDrop);
 
         return treasure;
-    }
-
-    private void handleTraps() {
-        Player player = getPlayer();
-
-        if (Permissions.trapsBypass(player)) {
-            return;
-        }
-
-        if (Misc.getRandom().nextBoolean()) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Fishing.Ability.TH.Boom");
-
-            TNTPrimed tnt = (TNTPrimed) player.getWorld().spawnEntity(fishingCatch.getLocation(), EntityType.PRIMED_TNT);
-            fishingCatch.setPassenger(tnt);
-
-            Vector velocity = fishingCatch.getVelocity();
-            double magnitude = velocity.length();
-            fishingCatch.setVelocity(velocity.multiply((magnitude + 1) / magnitude));
-
-            tnt.setMetadata(mcMMO.tntsafeMetadataKey, mcMMO.metadataValue);
-            tnt.setFuseTicks(3 * Misc.TICK_CONVERSION_FACTOR);
-        }
-        else {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Fishing.Ability.TH.Poison");
-
-            ThrownPotion thrownPotion = player.getWorld().spawn(fishingCatch.getLocation(), ThrownPotion.class);
-            thrownPotion.setItem(new Potion(PotionType.POISON).splash().toItemStack(1));
-
-            fishingCatch.setPassenger(thrownPotion);
-        }
     }
 
     /**

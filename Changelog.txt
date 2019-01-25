@@ -114,6 +114,7 @@ Version 2.1.0
  ! (Skills) Shake now uses a rank system
  ! (Skills) Flux Mining now uses a rank system
  ! (Skills) Removed traps from fishing
+ ! (Kraken) Removed everything involving the kraken
  = (Skills) Shake now sends custom damage types for better nocheat compat
  ! (Config) Unarmed.IronArm in advanced.yml is now Unarmed.IronArmStyle
  ! (Config) Unarmed.Deflect in advanced.yml is now Unarmed.ArrowDeflect

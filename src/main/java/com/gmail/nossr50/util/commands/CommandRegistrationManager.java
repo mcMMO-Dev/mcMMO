@@ -391,15 +391,6 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McscoreboardCommand());
     }
 
-    private static void registerKrakenCommand() {
-        PluginCommand command = mcMMO.p.getCommand("kraken");
-        command.setDescription("Unleash the kraken!"); //TODO: Localize
-        command.setPermission("mcmmo.commands.kraken;mcmmo.commands.kraken.others");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "kraken", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
-        command.setExecutor(new KrakenCommand());
-    }
-
     private static void registerMcImportCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcimport");
         command.setDescription("Import mod config files"); //TODO: Localize
@@ -413,7 +404,6 @@ public final class CommandRegistrationManager {
         // Generic Commands
         registerMmoInfoCommand();
         registerMcImportCommand();
-        registerKrakenCommand();
         registerMcabilityCommand();
         registerMcgodCommand();
         registerMcChatSpyCommand();

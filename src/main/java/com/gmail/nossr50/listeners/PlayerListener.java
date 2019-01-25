@@ -252,11 +252,6 @@ public class PlayerListener implements Listener {
         FishingManager fishingManager = UserManager.getPlayer(player).getFishingManager();
 
         switch (event.getState()) {
-            case FISHING:
-                if (!Permissions.krakenBypass(player)) {
-                    event.setCancelled(fishingManager.exploitPrevention());
-                }
-                return;
             case CAUGHT_FISH:
                 //TODO Update to new API once available! Waiting for case CAUGHT_TREASURE:
                 Item fishingCatch = (Item) event.getCaught();

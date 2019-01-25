@@ -657,25 +657,3 @@ Style:
                         Italics: false
                         Underline: false
                         Color: GREEN
-
-
-
-
-#
-#  Customize the kraken!
-###
-Kraken:
-    Enabled: true
-    Tries_Before_Release: 50
-    Health: 50.0
-    Name: The Kraken
-    Attack_Interval_Seconds: 1
-    Attack_Damage: 1.0
-    Global_Effects: false
-    Allow_Escaping: false
-    Unleashed_Message:
-        Server: (PLAYER) has unleashed the kraken!
-        Player: THE KRAKEN HAS BEEN UNLEASHED!
-    Defeated_Message:
-        Escape: You have escaped from the kraken!
-        Killed: You have slain the kraken!

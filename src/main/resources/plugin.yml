@@ -164,10 +164,6 @@ commands:
         aliases: [mcsb]
         description: Manage your mcMMO Scoreboard
         permission: mcmmo.commands.mcscoreboard
-    kraken:
-        aliases: [mckraken]
-        description: Unleash the kraken!
-        permission: mcmmo.commands.kraken
     mcfools:
         aliases: [macho, jumping, throwing, wrecking, crafting, walking, swimming, falling, climbing, flying, diving, piggy]
         description: Deploy jokes
@@ -699,8 +695,6 @@ permissions:
             mcmmo.bypass.partylimit: true
             mcmmo.bypass.arcanebypass: true
             mcmmo.bypass.hardcoremode: true
-            mcmmo.bypass.kraken: true
-            mcmmo.bypass.fishingtraps: true
             mcmmo.commands.inspect.far: true
             mcmmo.commands.inspect.hidden: true
             mcmmo.commands.inspect.offline: true
@@ -713,12 +707,6 @@ permissions:
     mcmmo.bypass.hardcoremode:
         default: false
         description: Allows user to bypass negative penalties of Hardcore mode
-    mcmmo.bypass.kraken:
-        default: false
-        description: Allows user to bypass the effects of the exploit prevention when Fishing
-    mcmmo.bypass.fishingtraps:
-        default: false
-        description: Allows user to bypass finding traps when Fishing
     mcmmo.chat.*:
         default: false
         description: Implies all mcmmo.chat permissions. (Warning, contains adminchat)
@@ -788,8 +776,6 @@ permissions:
             mcmmo.commands.inspect.far: true
             mcmmo.commands.inspect.hidden: true
             mcmmo.commands.inspect.offline: true
-            mcmmo.commands.kraken: true
-            mcmmo.commands.kraken.others: true
             mcmmo.commands.mcability.others: true
             mcmmo.commands.mcconvert.all: true
             mcmmo.commands.mcchatspy: true
@@ -869,10 +855,6 @@ permissions:
         description: Allows access to the inspect command for hidden players
     mcmmo.commands.inspect.offline:
         description: Allows access to the inspect command for offline players
-    mcmmo.commands.kraken:
-        description: Allows access to the kraken command
-    mcmmo.commands.kraken.others:
-        description: Allows access to the kraken command for other players
     mcmmo.commands.mcability:
         description: Allows access to the mcability command
     mcmmo.commands.mcability.others:
