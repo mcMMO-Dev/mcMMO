@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.util.TextComponentFactory;
+import com.gmail.nossr50.util.skills.SkillActivationType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -27,17 +28,17 @@ public class ArcheryCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
+    protected void dataCalculations(Player player, float skillValue) {
         // ARCHERY_ARROW_RETRIEVAL
         if (canRetrieve) {
-            String[] retrieveStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.ARCHERY_ARROW_RETRIEVAL, isLucky);
+            String[] retrieveStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.ARCHERY_ARROW_RETRIEVAL);
             retrieveChance = retrieveStrings[0];
             retrieveChanceLucky = retrieveStrings[1];
         }
         
         // ARCHERY_DAZE
         if (canDaze) {
-            String[] dazeStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.ARCHERY_DAZE, isLucky);
+            String[] dazeStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.ARCHERY_DAZE);
             dazeChance = dazeStrings[0];
             dazeChanceLucky = dazeStrings[1];
         }

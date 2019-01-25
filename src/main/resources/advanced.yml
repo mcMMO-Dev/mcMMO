@@ -103,18 +103,10 @@ Skills:
         Roll:
             # ChanceMax: Maximum chance of rolling when on <MaxBonusLevel> or higher
             # MaxBonusLevel: On this level or higher, the roll chance will not go higher than <ChanceMax>
-            # DamageThreshold: The max damage a player can negate with a roll
+            # DamageThreshold: The max damage a player can negate with a roll, graceful roll doubles this number
             ChanceMax: 100.0
             MaxBonusLevel: 100
             DamageThreshold: 7.0
-
-        GracefulRoll:
-            # ChanceMax: Maximum chance of graceful rolling when on <MaxBonusLevel> or higher
-            # MaxBonusLevel: On this level or higher, the graceful roll chance will not go higher than <ChanceMax>
-            # DamageThreshold: The max damage a player can negate with a graceful roll
-            ChanceMax: 100.0
-            MaxBonusLevel: 50
-            DamageThreshold: 14.0
     #
     #  Settings for Alchemy
     ###

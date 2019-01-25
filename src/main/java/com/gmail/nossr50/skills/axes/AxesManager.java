@@ -11,6 +11,7 @@ import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -55,7 +56,7 @@ public class AxesManager extends SkillManager {
      * Handle the effects of the Axe Mastery ability
      */
     public double axeMastery() {
-        if (!SkillUtils.isActivationSuccessful(SkillActivationType.ALWAYS_FIRES, SubSkillType.AXES_AXE_MASTERY, getPlayer(), 0, 0)) {
+        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.ALWAYS_FIRES, SubSkillType.AXES_AXE_MASTERY, getPlayer())) {
             return 0;
         }
 
@@ -69,7 +70,7 @@ public class AxesManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public double criticalHit(LivingEntity target, double damage) {
-        if (!SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.AXES_CRITICAL_STRIKES, getPlayer(), getSkillLevel(), activationChance)) {
+        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.AXES_CRITICAL_STRIKES, getPlayer())) {
             return 0;
         }
 
@@ -101,15 +102,19 @@ public class AxesManager extends SkillManager {
      * @param target The {@link LivingEntity} being affected by Impact
      */
     public void impactCheck(LivingEntity target) {
-        int durabilityDamage = 1 + (getSkillLevel() / Axes.impactIncreaseLevel);
+        int durabilityDamage = getImpactDurabilityDamage();
 
         for (ItemStack armor : target.getEquipment().getArmorContents()) {
             if (armor != null && ItemUtils.isArmor(armor)) {
-                if (SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_STATIC_CHANCE, SubSkillType.AXES_ARMOR_IMPACT, getPlayer(), getSkillLevel(), activationChance)) {
+                if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_STATIC_CHANCE, SubSkillType.AXES_ARMOR_IMPACT, getPlayer())) {
                     SkillUtils.handleDurabilityChange(armor, durabilityDamage, Axes.impactMaxDurabilityModifier);
                 }
             }
         }
+    }
+
+    public int getImpactDurabilityDamage() {
+        return 1 + (getSkillLevel() / Axes.impactIncreaseLevel);
     }
 
     /**
@@ -119,7 +124,7 @@ public class AxesManager extends SkillManager {
      */
     public double greaterImpact(LivingEntity target) {
         //static chance (3rd param)
-        if (!SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_STATIC_CHANCE, SubSkillType.AXES_GREATER_IMPACT, getPlayer(), getSkillLevel(), activationChance)) {
+        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_STATIC_CHANCE, SubSkillType.AXES_GREATER_IMPACT, getPlayer())) {
             return 0;
         }
 

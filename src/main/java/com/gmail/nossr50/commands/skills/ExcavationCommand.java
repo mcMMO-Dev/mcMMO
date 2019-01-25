@@ -24,7 +24,7 @@ public class ExcavationCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
+    protected void dataCalculations(Player player, float skillValue) {
         // GIGA DRILL BREAKER
         if (canGigaDrill) {
             String gigaDrillStrings[] = calculateLengthDisplayValues(player, skillValue);

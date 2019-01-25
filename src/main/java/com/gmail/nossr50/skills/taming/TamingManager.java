@@ -9,7 +9,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
-import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillWeightedActivationCheckEvent;
+import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillRandomCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
@@ -19,9 +19,9 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.*;
@@ -87,7 +87,7 @@ public class TamingManager extends SkillManager {
      */
     public void fastFoodService(Wolf wolf, double damage) {
         //static chance (3rd param)
-        if (!SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_STATIC_CHANCE, SubSkillType.TAMING_FAST_FOOD_SERVICE, getPlayer(), getSkillLevel(), activationChance)) {
+        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_STATIC_CHANCE, SubSkillType.TAMING_FAST_FOOD_SERVICE, getPlayer())) {
             return;
         }
 
@@ -107,7 +107,7 @@ public class TamingManager extends SkillManager {
      * @param damage The initial damage
      */
     public double gore(LivingEntity target, double damage) {
-        if (!SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.TAMING_GORE, getPlayer(), getSkillLevel(), activationChance)) {
+        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.TAMING_GORE, getPlayer())) {
             return 0;
         }
 
@@ -192,7 +192,7 @@ public class TamingManager extends SkillManager {
 
     public void pummel(LivingEntity target, Wolf wolf) {
         double chance = 10 / activationChance;
-        SubSkillWeightedActivationCheckEvent event = new SubSkillWeightedActivationCheckEvent(getPlayer(), SubSkillType.TAMING_PUMMEL, chance);
+        SubSkillRandomCheckEvent event = new SubSkillRandomCheckEvent(getPlayer(), SubSkillType.TAMING_PUMMEL, chance);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
         if ((event.getChance() * activationChance) <= Misc.getRandom().nextInt(activationChance)) {
             return;

@@ -8,6 +8,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.skills.SkillActivationType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -32,10 +33,10 @@ public class SwordsCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
+    protected void dataCalculations(Player player, float skillValue) {
         // SWORDS_COUNTER_ATTACK
         if (canCounter) {
-            String[] counterStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.SWORDS_COUNTER_ATTACK, isLucky);
+            String[] counterStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.SWORDS_COUNTER_ATTACK);
             counterChance = counterStrings[0];
             counterChanceLucky = counterStrings[1];
         }
@@ -44,7 +45,7 @@ public class SwordsCommand extends SkillCommand {
         if (canBleed) {
             bleedLength = UserManager.getPlayer(player).getSwordsManager().getRuptureBleedTicks();
 
-            String[] bleedStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.SWORDS_RUPTURE, isLucky);
+            String[] bleedStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.SWORDS_RUPTURE);
             bleedChance = bleedStrings[0];
             bleedChanceLucky = bleedStrings[1];
         }

@@ -23,7 +23,7 @@ public class SalvageCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
+    protected void dataCalculations(Player player, float skillValue) {
         // TODO Auto-generated method stub
 
     }

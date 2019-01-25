@@ -6,7 +6,9 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.axes.Axes;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.skills.SkillActivationType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -32,10 +34,10 @@ public class AxesCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
+    protected void dataCalculations(Player player, float skillValue) {
         // ARMOR IMPACT
         if (canImpact) {
-            impactDamage = 1 + (skillValue / Axes.impactIncreaseLevel);
+            impactDamage = UserManager.getPlayer(player).getAxesManager().getImpactDurabilityDamage();
         }
 
         // AXE MASTERY
@@ -45,7 +47,7 @@ public class AxesCommand extends SkillCommand {
         
         // CRITICAL HIT
         if (canCritical) {
-            String[] criticalHitStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.AXES_CRITICAL_STRIKES, isLucky);
+            String[] criticalHitStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.AXES_CRITICAL_STRIKES);
             critChance = criticalHitStrings[0];
             critChanceLucky = criticalHitStrings[1];
         }

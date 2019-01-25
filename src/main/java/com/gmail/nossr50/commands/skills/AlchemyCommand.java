@@ -4,6 +4,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.alchemy.AlchemyManager;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
@@ -28,9 +29,11 @@ public class AlchemyCommand extends SkillCommand {
         super(PrimarySkillType.ALCHEMY);
     }
 
-    protected String[] calculateAbilityDisplayValues(Player player, boolean isLucky) {
+    protected String[] calculateAbilityDisplayValues(Player player) {
         AlchemyManager alchemyManager = UserManager.getPlayer(player).getAlchemyManager();
         String[] displayValues = new String[2];
+
+        boolean isLucky = Permissions.lucky(player, PrimarySkillType.ALCHEMY);
 
         displayValues[0] = decimal.format(alchemyManager.calculateBrewSpeed(false)) + "x";
         displayValues[1] = isLucky ? decimal.format(alchemyManager.calculateBrewSpeed(true)) + "x" : null;
@@ -39,10 +42,10 @@ public class AlchemyCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
+    protected void dataCalculations(Player player, float skillValue) {
         // ALCHEMY_CATALYSIS
         if (canCatalysis) {
-            String[] catalysisStrings = calculateAbilityDisplayValues(player, isLucky);
+            String[] catalysisStrings = calculateAbilityDisplayValues(player);
             brewSpeed = catalysisStrings[0];
             brewSpeedLucky = catalysisStrings[1];
         }

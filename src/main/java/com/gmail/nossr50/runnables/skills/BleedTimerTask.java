@@ -62,7 +62,6 @@ public class BleedTimerTask extends BukkitRunnable {
                 MobHealthbarUtils.handleMobHealthbars(target, damage, mcMMO.p); //Update health bars
             }
 
-
             CombatUtils.dealNoInvulnerabilityTickDamage(target, damage, attackerMap.get(target));
             //Play Bleed Sound
             SoundManager.worldSendSound(target.getWorld(), target.getLocation(), SoundType.BLEED);

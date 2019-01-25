@@ -9,6 +9,9 @@ import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
+import com.gmail.nossr50.util.random.RandomChanceStatic;
+import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
@@ -36,7 +39,8 @@ public class ExcavationManager extends SkillManager {
                 Location location = Misc.getBlockCenter(blockState);
 
                 for (ExcavationTreasure treasure : treasures) {
-                    if (skillLevel >= treasure.getDropLevel() && SkillUtils.treasureDropSuccessful(getPlayer(), treasure.getDropChance(), activationChance)) {
+                    if (skillLevel >= treasure.getDropLevel()
+                            && RandomChanceUtil.checkRandomChanceExecutionSuccess(treasure.getDropChance())) {
                         xp += treasure.getXp();
                         Misc.dropItem(location, treasure.getDrop());
                     }

@@ -8,6 +8,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.skills.SkillActivationType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -16,10 +17,10 @@ import java.util.List;
 
 public class SmeltingCommand extends SkillCommand {
     private String burnTimeModifier;
-    private String secondSmeltChance;
-    private String secondSmeltChanceLucky;
-    private String fluxMiningChance;
-    private String fluxMiningChanceLucky;
+    private String str_secondSmeltChance;
+    private String str_secondSmeltChanceLucky;
+    private String str_fluxMiningChance;
+    private String str_fluxMiningChanceLucky;
 
     private boolean canFuelEfficiency;
     private boolean canSecondSmelt;
@@ -31,7 +32,7 @@ public class SmeltingCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
+    protected void dataCalculations(Player player, float skillValue) {
         // FUEL EFFICIENCY
         if (canFuelEfficiency) {
             burnTimeModifier = decimal.format(1 + ((skillValue / Smelting.burnModifierMaxLevel) * Smelting.burnTimeMultiplier));
@@ -39,16 +40,16 @@ public class SmeltingCommand extends SkillCommand {
 
         // FLUX MINING
         if (canFluxMine) {
-            String[] fluxMiningStrings = calculateAbilityDisplayValues(Smelting.fluxMiningChance, isLucky);
-            fluxMiningChance = fluxMiningStrings[0];
-            fluxMiningChanceLucky = fluxMiningStrings[1];
+            String[] fluxMiningStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.SMELTING_FLUX_MINING);
+            str_fluxMiningChance = fluxMiningStrings[0];
+            str_fluxMiningChanceLucky = fluxMiningStrings[1];
         }
         
         // SECOND SMELT
         if (canSecondSmelt) {
-            String[] secondSmeltStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.SMELTING_SECOND_SMELT, isLucky);
-            secondSmeltChance = secondSmeltStrings[0];
-            secondSmeltChanceLucky = secondSmeltStrings[1];
+            String[] secondSmeltStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.SMELTING_SECOND_SMELT);
+            str_secondSmeltChance = secondSmeltStrings[0];
+            str_secondSmeltChanceLucky = secondSmeltStrings[1];
         }
     }
 
@@ -65,7 +66,7 @@ public class SmeltingCommand extends SkillCommand {
         List<String> messages = new ArrayList<String>();
 
         if (canFluxMine) {
-            messages.add(LocaleLoader.getString("Smelting.Ability.FluxMining", fluxMiningChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", fluxMiningChanceLucky) : ""));
+            messages.add(LocaleLoader.getString("Smelting.Ability.FluxMining", str_fluxMiningChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", str_fluxMiningChanceLucky) : ""));
         }
         
         if (canFuelEfficiency) {
@@ -73,7 +74,7 @@ public class SmeltingCommand extends SkillCommand {
         }
 
         if (canSecondSmelt) {
-            messages.add(LocaleLoader.getString("Smelting.Ability.SecondSmelt", secondSmeltChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", secondSmeltChanceLucky) : ""));
+            messages.add(LocaleLoader.getString("Smelting.Ability.SecondSmelt", str_secondSmeltChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", str_secondSmeltChanceLucky) : ""));
         }
 
         if (canVanillaXPBoost) {

@@ -4,6 +4,9 @@
 /.settings
 /dependency-reduced-pom.xml
 
+#vs code
+/.vscode
+
 # netbeans
 /nbproject
 

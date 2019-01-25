@@ -10,7 +10,9 @@ import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.skills.SkillActivationType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -48,7 +50,7 @@ public class FishingCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
+    protected void dataCalculations(Player player, float skillValue) {
         FishingManager fishingManager = UserManager.getPlayer(player).getFishingManager();
 
         // TREASURE HUNTER
@@ -78,7 +80,7 @@ public class FishingCommand extends SkillCommand {
 
         // FISHING_SHAKE
         if (canShake) {
-            String[] shakeStrings = calculateAbilityDisplayValues(UserManager.getPlayer(player).getFishingManager().getShakeProbability(), isLucky);
+            String[] shakeStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.FISHING_SHAKE);
             shakeChance = shakeStrings[0];
             shakeChanceLucky = shakeStrings[1];
         }
@@ -105,7 +107,7 @@ public class FishingCommand extends SkillCommand {
                 rawBiteChance = rawBiteChance * AdvancedConfig.getInstance().getMasterAnglerBoatModifier();
             }
 
-            biteChance = calculateAbilityDisplayValues(rawBiteChance * 100.0, isLucky)[0];
+            biteChance = RandomChanceUtil.calculateAbilityDisplayValuesStatic(player,PrimarySkillType.FISHING,rawBiteChance)[0];
         }
     }
 

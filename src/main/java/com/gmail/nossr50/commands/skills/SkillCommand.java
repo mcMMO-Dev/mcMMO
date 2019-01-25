@@ -12,9 +12,11 @@ import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.google.common.collect.ImmutableList;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -70,7 +72,7 @@ public abstract class SkillCommand implements TabExecutor {
                 }
 
                 permissionsCheck(player);
-                dataCalculations(player, skillValue, isLucky);
+                dataCalculations(player, skillValue);
 
                 sendSkillCommandHeader(player, mcMMOPlayer, (int) skillValue);
 
@@ -217,19 +219,8 @@ public abstract class SkillCommand implements TabExecutor {
         return Math.min((int) skillValue, maxLevel) / rankChangeLevel;
     }
 
-    protected String[] calculateAbilityDisplayValues(double chance, boolean isLucky) {
-        String[] displayValues = new String[2];
-
-        displayValues[0] = percent.format(Math.min(chance, 100.0D) / 100.0D);
-        displayValues[1] = isLucky ? percent.format(Math.min(chance * 1.3333D, 100.0D) / 100.0D) : null;
-
-        return displayValues;
-    }
-
-    protected String[] calculateAbilityDisplayValues(float skillValue, SubSkillType subSkill, boolean isLucky) {
-        int maxBonusLevel = AdvancedConfig.getInstance().getMaxBonusLevel(subSkill);
-
-        return calculateAbilityDisplayValues((AdvancedConfig.getInstance().getMaxChance(subSkill) / maxBonusLevel) * Math.min(skillValue, maxBonusLevel), isLucky);
+    protected String[] getAbilityDisplayValues(SkillActivationType skillActivationType, Player player, SubSkillType subSkill) {
+        return RandomChanceUtil.calculateAbilityDisplayValues(skillActivationType, player, subSkill);
     }
 
     protected String[] calculateLengthDisplayValues(Player player, float skillValue) {
@@ -285,7 +276,7 @@ public abstract class SkillCommand implements TabExecutor {
         return newArray;
     }
 
-    protected abstract void dataCalculations(Player player, float skillValue, boolean isLucky);
+    protected abstract void dataCalculations(Player player, float skillValue);
 
     protected abstract void permissionsCheck(Player player);
 

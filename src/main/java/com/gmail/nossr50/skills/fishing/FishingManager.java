@@ -15,7 +15,7 @@ import com.gmail.nossr50.datatypes.treasure.Rarity;
 import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerShakeEvent;
-import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillWeightedActivationCheckEvent;
+import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillRandomCheckEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.KrakenAttackTask;
 import com.gmail.nossr50.skills.SkillManager;
@@ -352,7 +352,7 @@ public class FishingManager extends SkillManager {
     public void shakeCheck(LivingEntity target) {
         fishingTries--; // Because autoclicking to shake is OK.
 
-        SubSkillWeightedActivationCheckEvent activationEvent = new SubSkillWeightedActivationCheckEvent(getPlayer(), SubSkillType.FISHING_SHAKE, getShakeProbability() / activationChance);
+        SubSkillRandomCheckEvent activationEvent = new SubSkillRandomCheckEvent(getPlayer(), SubSkillType.FISHING_SHAKE, getShakeProbability() / activationChance);
         mcMMO.p.getServer().getPluginManager().callEvent(activationEvent);
         if ((activationEvent.getChance() * activationChance) > Misc.getRandom().nextInt(activationChance)) {
             List<ShakeTreasure> possibleDrops = Fishing.findPossibleDrops(target);

@@ -9,13 +9,8 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
-import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
-import com.gmail.nossr50.datatypes.skills.subskills.interfaces.RandomChance;
-import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillEvent;
-import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillWeightedActivationCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
@@ -33,14 +28,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SkillUtils {
-
-    public static final DecimalFormat percent = new DecimalFormat("##0.00%");
-    public static final DecimalFormat decimal = new DecimalFormat("##0.00");
 
     public static void applyXpGain(McMMOPlayer mcMMOPlayer, PrimarySkillType skill, float xp, XPGainReason xpGainReason) {
         mcMMOPlayer.beginXpGain(skill, xp, xpGainReason);
@@ -49,25 +40,6 @@ public class SkillUtils {
     /*
      * Skill Stat Calculations
      */
-
-    public static String[] calculateAbilityDisplayValues(double chance, boolean isLucky) {
-        String[] displayValues = new String[2];
-
-        displayValues[0] = percent.format(Math.min(chance, 100.0D) / 100.0D);
-        displayValues[1] = isLucky ? percent.format(Math.min(chance * 1.3333D, 100.0D) / 100.0D) : null;
-
-        return displayValues;
-    }
-
-    public static String[] calculateAbilityDisplayValues(float skillValue, SubSkillType subSkillType, boolean isLucky) {
-        int maxBonusLevel = AdvancedConfig.getInstance().getMaxBonusLevel(subSkillType);
-
-        return calculateAbilityDisplayValues((AdvancedConfig.getInstance().getMaxChance(subSkillType) / maxBonusLevel) * Math.min(skillValue, maxBonusLevel), isLucky);
-    }
-
-    public static String[] calculateAbilityDisplayValuesCustom(float skillValue, boolean isLucky, int maxBonusLevel, double maxChance) {
-        return calculateAbilityDisplayValues((maxChance / maxBonusLevel) * Math.min(skillValue, maxBonusLevel), isLucky);
-    }
 
     public static String[] calculateLengthDisplayValues(Player player, float skillValue, PrimarySkillType skill) {
         int maxLength = skill.getAbility().getMaxLength();
@@ -268,213 +240,6 @@ public class SkillUtils {
         durabilityModifier = (int) Math.min(durabilityModifier / (itemStack.getEnchantmentLevel(Enchantment.DURABILITY) + 1), maxDurability * maxDamageModifier);
 
         itemStack.setDurability((short) Math.min(itemStack.getDurability() + durabilityModifier, maxDurability));
-    }
-
-    /**
-     * Checks whether or not the given skill succeeds
-     * @param subSkillType The ability corresponding to this check
-     * @param player The player whose skill levels we are checking against
-     * @param skillLevel The skill level of the corresponding skill
-     * @param activationChance used to determine activation chance
-     * @param maxChance maximum chance
-     * @param maxLevel maximum skill level bonus
-     * @return true if random chance succeeds and the event isn't cancelled
-     */
-    private static boolean performRandomSkillCheck(SubSkillType subSkillType, Player player, int skillLevel, int activationChance, double maxChance, int maxLevel) {
-        if(Config.getInstance().getIsRetroMode())
-            maxLevel = maxLevel * 10;
-
-        double chance = (maxChance / maxLevel) * Math.min(skillLevel, maxLevel) / activationChance;
-        return performRandomSkillCheckStatic(subSkillType, player, activationChance, chance);
-    }
-
-    /* NEW VERSION */
-    private static boolean performRandomSkillCheck(AbstractSubSkill abstractSubSkill, Player player, int skillLevel, int activationChance, double maxChance, int maxLevel) {
-        if(Config.getInstance().getIsRetroMode())
-            maxLevel = maxLevel * 10;
-
-        double chance = (maxChance / maxLevel) * Math.min(skillLevel, maxLevel) / activationChance;
-        return performRandomSkillCheckStatic(abstractSubSkill, player, activationChance, chance);
-    }
-
-    /**
-     * This method is the final step in determining if a Sub-Skill / Secondary Skill in mcMMO successfully activates either from chance or otherwise
-     *
-     * There are 4 types of Sub-Skill / Secondary Skill activations in mcMMO
-     * 1) Random Chance with a linear increase to 100% (At 100 Skill Level)
-     * 2) Random Chance with a linear increase to 100% at 100 Skill Level but caps out earlier in the curve (At x/100 Skill Level)
-     * 3) Random Chance with a pre-determined activation roll and threshold roll
-     * 4) Skills that are not chance based
-     *
-     * Random skills check for success based on numbers and then fire a cancellable event, if that event is not cancelled they succeed
-     * All other skills just fire the cancellable event and succeed if it is not cancelled
-     *
-     * @param skillActivationType this value represents what kind of activation procedures this sub-skill uses
-     * @param subSkillType The identifier for this specific sub-skill
-     * @param player The owner of this sub-skill
-     * @param activationChance This is the value that we roll against, 100 is normal, and 75 is for lucky perk
-     * @return returns true if all conditions are met and they event is not cancelled
-     */
-    public static boolean isActivationSuccessful(SkillActivationType skillActivationType, SubSkillType subSkillType, Player player,
-                                                 int skillLevel, int activationChance)
-    {
-        //Maximum chance to succeed
-        double maxChance = AdvancedConfig.getInstance().getMaxChance(subSkillType);
-        //Maximum roll we can make
-        int maxBonusLevel = AdvancedConfig.getInstance().getMaxBonusLevel(subSkillType);
-
-        switch(skillActivationType)
-        {
-            //100 Skill = Guaranteed
-            case RANDOM_LINEAR_100_SCALE_NO_CAP:
-                return performRandomSkillCheck(subSkillType, player, skillLevel, PerksUtils.handleLuckyPerks(player, subSkillType.getParentSkill()), 100.0D, 100);
-            case RANDOM_LINEAR_100_SCALE_WITH_CAP:
-                return performRandomSkillCheck(subSkillType, player, skillLevel, PerksUtils.handleLuckyPerks(player, subSkillType.getParentSkill()), maxChance, maxBonusLevel);
-            case RANDOM_STATIC_CHANCE:
-                //Grab the static activation chance of this skill
-                double staticRoll = getSecondaryAbilityStaticChance(subSkillType) / activationChance;
-                return performRandomSkillCheckStatic(subSkillType, player, activationChance, staticRoll);
-            case ALWAYS_FIRES:
-                SubSkillEvent event = EventUtils.callSubSkillEvent(player, subSkillType);
-                return !event.isCancelled();
-                default:
-                    return false;
-        }
-    }
-
-    /**
-     * This method is for running a random success check with custom maxChance and maxBonusLevel values
-     * Mostly used for RNG effects that can't be directly associated with a specific AbstractSubSkill
-     * @param player target player
-     * @param abstractSubSkill this abstract subskill
-     * @param maxChance custom max chance
-     * @param maxBonusLevel custom max bonus level
-     * @return true if activation was successful
-     */
-    public static boolean isActivationSuccessfulCustom(Player player, AbstractSubSkill abstractSubSkill, double maxChance, int maxBonusLevel)
-    {
-        int skillLevel = UserManager.getPlayer(player).getSkillLevel(abstractSubSkill.getPrimarySkill());
-
-        return performRandomSkillCheck(abstractSubSkill, player, skillLevel, PerksUtils.handleLuckyPerks(player, abstractSubSkill.getPrimarySkill()), maxChance, maxBonusLevel);
-    }
-
-    public static double getChanceOfSuccess(int skillLevel, double maxLevelBonus, double curve)
-    {
-        return getChanceOfSuccess((double) skillLevel, maxLevelBonus, curve);
-    }
-
-    public static double getChanceOfSuccess(double skillLevel, double maxLevelBonus, double curve)
-    {
-        if(skillLevel > maxLevelBonus)
-            return maxLevelBonus / curve;
-
-       return skillLevel / curve;
-    }
-
-    /* NEW VERSION */
-    public static boolean isActivationSuccessful(SkillActivationType skillActivationType, AbstractSubSkill abstractSubSkill, Player player, double maxChance, int maxBonusLevel)
-    {
-        int skillLevel = UserManager.getPlayer(player).getSkillLevel(abstractSubSkill.getPrimarySkill());
-        PrimarySkillType skill = abstractSubSkill.getPrimarySkill();
-
-        switch(skillActivationType)
-        {
-            //100 Skill = Guaranteed
-            case RANDOM_LINEAR_100_SCALE_NO_CAP:
-                return performRandomSkillCheck(abstractSubSkill, player, skillLevel, PerksUtils.handleLuckyPerks(player, skill), 100.0D, 100);
-            case RANDOM_LINEAR_100_SCALE_WITH_CAP:
-                return performRandomSkillCheck(abstractSubSkill, player, skillLevel, PerksUtils.handleLuckyPerks(player, skill), maxChance, maxBonusLevel);
-            case RANDOM_STATIC_CHANCE:
-                //TODO: Add this in for the new system
-                //Grab the static activation chance of this skill
-                //double staticRoll = getSecondaryAbilityStaticChance(subSkillType) / activationChance;
-                //return performRandomSkillCheckStatic(subSkillType, player, activationChance, staticRoll);
-                return false;
-            case ALWAYS_FIRES:
-                SubSkillEvent event = EventUtils.callSubSkillEvent(player, abstractSubSkill);
-                return !event.isCancelled();
-            default:
-                return false;
-        }
-    }
-
-    public static boolean isActivationSuccessful(SkillActivationType skillActivationType, AbstractSubSkill abstractSubSkill, Player player)
-    {
-        //Maximum chance to succeed
-        RandomChance randomChance = (RandomChance) abstractSubSkill;
-        double maxChance = randomChance.getRandomChanceMaxChance();
-
-        //Maximum roll we can make
-        int maxBonusLevel = randomChance.getRandomChanceMaxBonus();
-        int skillLevel = UserManager.getPlayer(player).getSkillLevel(abstractSubSkill.getPrimarySkill());
-        PrimarySkillType skill = abstractSubSkill.getPrimarySkill();
-
-        switch(skillActivationType)
-        {
-            //100 Skill = Guaranteed
-            case RANDOM_LINEAR_100_SCALE_NO_CAP:
-                return performRandomSkillCheck(abstractSubSkill, player, skillLevel, PerksUtils.handleLuckyPerks(player, skill), 100.0D, 100);
-            case RANDOM_LINEAR_100_SCALE_WITH_CAP:
-                return performRandomSkillCheck(abstractSubSkill, player, skillLevel, PerksUtils.handleLuckyPerks(player, skill), maxChance, maxBonusLevel);
-            case RANDOM_STATIC_CHANCE:
-                //TODO: Add this in for the new system
-                //Grab the static activation chance of this skill
-                //double staticRoll = getSecondaryAbilityStaticChance(subSkillType) / activationChance;
-                //return performRandomSkillCheckStatic(subSkillType, player, activationChance, staticRoll);
-                return false;
-            case ALWAYS_FIRES:
-                SubSkillEvent event = EventUtils.callSubSkillEvent(player, abstractSubSkill);
-                return !event.isCancelled();
-            default:
-                return false;
-        }
-    }
-
-    /**
-     * Grabs static activation rolls for Secondary Abilities
-     * @param subSkillType The secondary ability to grab properties of
-     * @return The static activation roll involved in the RNG calculation
-     */
-    public static double getSecondaryAbilityStaticChance(SubSkillType subSkillType)
-    {
-        switch(subSkillType)
-        {
-            case AXES_ARMOR_IMPACT:
-                return AdvancedConfig.getInstance().getImpactChance();
-            case AXES_GREATER_IMPACT:
-                return AdvancedConfig.getInstance().getGreaterImpactChance();
-            case TAMING_FAST_FOOD_SERVICE:
-                return AdvancedConfig.getInstance().getFastFoodChance();
-                default:
-                    return 100.0D;
-        }
-    }
-
-    /**
-     * Used to determine whether or not a sub-skill activates from random chance (using static values)
-     * @param subSkillType The identifier for this specific sub-skill
-     * @param player The owner of this sub-skill
-     * @param activationChance This is the value that we roll against, 100 is normal, and 75 is for lucky perk
-     * @param chance This is the static modifier for our random calculations
-     * @return true if random chance was successful and the event wasn't cancelled
-     */
-    private static boolean performRandomSkillCheckStatic(SubSkillType subSkillType, Player player, int activationChance, double chance) {
-        SubSkillWeightedActivationCheckEvent event = new SubSkillWeightedActivationCheckEvent(player, subSkillType, chance);
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
-        return (event.getChance() * activationChance) > Misc.getRandom().nextInt(activationChance) && !event.isCancelled();
-    }
-
-    /* NEW VERSION */
-    private static boolean performRandomSkillCheckStatic(AbstractSubSkill abstractSubSkill, Player player, int activationChance, double chance) {
-        SubSkillWeightedActivationCheckEvent event = new SubSkillWeightedActivationCheckEvent(player, abstractSubSkill, chance);
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
-        return (event.getChance() * activationChance) > Misc.getRandom().nextInt(activationChance) && !event.isCancelled();
-    }
-
-    public static boolean treasureDropSuccessful(Player player, double dropChance, int activationChance) {
-        SubSkillWeightedActivationCheckEvent event = new SubSkillWeightedActivationCheckEvent(player, SubSkillType.EXCAVATION_ARCHAEOLOGY, dropChance / activationChance);
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
-        return (event.getChance() * activationChance) > (Misc.getRandom().nextDouble() * activationChance) && !event.isCancelled();
     }
 
     private static boolean isLocalizedSkill(String skillName) {
