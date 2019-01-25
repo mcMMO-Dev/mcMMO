@@ -527,7 +527,6 @@ public class EntityListener implements Listener {
             return;
         }
 
-        BleedTimerTask.remove(entity);
         Archery.arrowRetrievalCheck(entity);
     }
 

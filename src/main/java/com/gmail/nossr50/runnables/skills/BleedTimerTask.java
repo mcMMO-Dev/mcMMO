@@ -1,8 +1,10 @@
 package com.gmail.nossr50.runnables.skills;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.MobHealthbarUtils;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -11,29 +13,26 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class BleedTimerTask extends BukkitRunnable {
-    private final static int MAX_BLEED_TICKS = 100; //The cap has been raised :)
-    private static Map<LivingEntity, Integer> bleedList = new HashMap<LivingEntity, Integer>();
-    private static Map<LivingEntity, Integer> bleedDamage = new HashMap<LivingEntity, Integer>();
-    private static Map<LivingEntity, LivingEntity> attackerMap = new HashMap<>();
-    private static ArrayList<LivingEntity> cleanupList = new ArrayList<>();
-    private static ArrayList<LivingEntity> lowerList = new ArrayList<>();
+    private static Map<LivingEntity, BleedContainer> bleedList = new HashMap<LivingEntity, BleedContainer>();
 
     @Override
-    public void run() {
-        lowerBleedTicks(); //Lower bleed ticks
-        cleanEntities(); //Remove unwanted entities
+    synchronized public void run() {
+        Iterator<Entry<LivingEntity, BleedContainer>> bleedIterator = bleedList.entrySet().iterator();
 
-        for(LivingEntity target : bleedList.keySet())
-        {
-            //mcMMO.p.getServer().broadcastMessage("Entity "+target.getName()+" has "+bleedList.get(target)+" ticks of bleed left");
+        while (bleedIterator.hasNext()) {
+            Entry<LivingEntity, BleedContainer> containerEntry = bleedIterator.next();
+            LivingEntity target = containerEntry.getKey();
 
-            if (bleedList.get(target) <= 0 || !target.isValid()) {
-                cleanupList.add(target);
+            int bleedTicks = containerEntry.getValue().bleedTicks;
+
+            if (containerEntry.getValue().bleedTicks <= 0 || !target.isValid()) {
+                bleedIterator.remove();
                 continue;
             }
 
@@ -43,59 +42,49 @@ public class BleedTimerTask extends BukkitRunnable {
                 damage = AdvancedConfig.getInstance().getRuptureDamagePlayer();
 
                 //Above Bleed Rank 3 deals 50% more damage
-                if(bleedDamage.get(target) >= 3)
+                if (containerEntry.getValue().bleedRank >= 3)
                     damage = damage * 1.5;
 
                 Player player = (Player) target;
 
                 if (!player.isOnline()) {
-                    cleanupList.add(target);
                     continue;
                 }
 
-                /*if (bleedList.get(target) <= 0) {
-                    NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Stopped");
-                }*/
-            }
-            else {
+                NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Stopped");
+            } else {
                 damage = AdvancedConfig.getInstance().getRuptureDamageMobs();
+
+                //Above Bleed Rank 3 deals 50% more damage
+                if (containerEntry.getValue().bleedRank >= 3)
+                    damage = damage * 1.5;
+
+
                 MobHealthbarUtils.handleMobHealthbars(target, damage, mcMMO.p); //Update health bars
             }
 
-            CombatUtils.dealNoInvulnerabilityTickDamage(target, damage, attackerMap.get(target));
+            CombatUtils.dealNoInvulnerabilityTickDamage(target, damage, containerEntry.getValue().damageSource);
             //Play Bleed Sound
             SoundManager.worldSendSound(target.getWorld(), target.getLocation(), SoundType.BLEED);
 
             ParticleEffectUtils.playBleedEffect(target);
-            lowerBleedDurationTicks(target);
+
+            //Lower Bleed Ticks
+            BleedContainer loweredBleedContainer = copyContainer(containerEntry.getValue());
+            loweredBleedContainer.bleedTicks -= 1;
+            containerEntry.setValue(loweredBleedContainer);
         }
     }
 
-    private void lowerBleedTicks() {
-        for(LivingEntity lower : lowerList)
-        {
-            if(bleedList.containsKey(lower))
-                bleedList.put(lower, bleedList.get(lower) - 1);
-        }
+    public static BleedContainer copyContainer(BleedContainer container)
+    {
+        LivingEntity target = container.target;
+        LivingEntity source = container.damageSource;
+        int bleedTicks = container.bleedTicks;
+        int bleedRank = container.bleedRank;
 
-        lowerList.clear();
-    }
-
-    private void cleanEntities() {
-        for(LivingEntity cleanTarget : cleanupList)
-        {
-            if(bleedList.containsKey(cleanTarget))
-            {
-                remove(cleanTarget);
-            }
-        }
-
-        cleanupList.clear(); //Reset List
-    }
-
-    private void lowerBleedDurationTicks(LivingEntity target) {
-        if(bleedList.get(target) != null)
-            lowerList.add(target);
+        BleedContainer newContainer = new BleedContainer(target, bleedTicks, bleedRank, source);
+        return newContainer;
     }
 
     /**
@@ -104,24 +93,12 @@ public class BleedTimerTask extends BukkitRunnable {
      * @param entity LivingEntity to bleed out
      */
     public static void bleedOut(LivingEntity entity) {
-        if (bleedList.containsKey(entity)) {
-            CombatUtils.dealNoInvulnerabilityTickDamage(entity, bleedList.get(entity) * 2, attackerMap.get(entity));
-            bleedList.remove(entity);
-            bleedDamage.remove(entity);
-            attackerMap.remove(entity);
-        }
-    }
+        /*
+         * Don't remove anything from the list outside of run()
+         */
 
-    /**
-     * Remove a LivingEntity from the bleedList if it is in it
-     *
-     * @param entity LivingEntity to remove
-     */
-    public static void remove(LivingEntity entity) {
         if (bleedList.containsKey(entity)) {
-            bleedList.remove(entity);
-            bleedDamage.remove(entity);
-            attackerMap.remove(entity);
+            CombatUtils.dealNoInvulnerabilityTickDamage(entity, bleedList.get(entity).bleedTicks * 2, bleedList.get(entity).damageSource);
         }
     }
 
@@ -131,22 +108,9 @@ public class BleedTimerTask extends BukkitRunnable {
      * @param entity LivingEntity to add
      * @param ticks Number of bleeding ticks
      */
-    public static void add(LivingEntity entity, LivingEntity attacker, int ticks, int bleedRank) {
-        int newTicks = ticks;
-
-        if (bleedList.containsKey(entity)) {
-            newTicks += bleedList.get(entity);
-            bleedList.put(entity, Math.min(MAX_BLEED_TICKS, newTicks));
-
-            //Override the current bleed rank only if this one is higher
-            if(bleedDamage.get(entity) < bleedRank)
-                bleedDamage.put(entity, bleedRank);
-        }
-        else {
-            bleedList.put(entity, Math.min(MAX_BLEED_TICKS, newTicks));
-            bleedDamage.put(entity, bleedRank);
-            attackerMap.put(entity, attacker);
-        }
+    public synchronized static void add(LivingEntity entity, LivingEntity attacker, int ticks, int bleedRank) {
+        BleedContainer newBleedContainer = new BleedContainer(entity, ticks, bleedRank, attacker);
+        bleedList.put(entity, newBleedContainer);
     }
 
     public static boolean isBleeding(LivingEntity entity) {

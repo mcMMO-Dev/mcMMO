@@ -37,8 +37,10 @@ Version 2.1.0
  + (MySQL) Added support for SSL for MySQL/MariaDB (On by default)
  ! (Skills) Taming's Gore now uses Rupture Rank 1 for its DoT calculations
  ! (Skills) Sword's Bleed has been renamed to Rupture
+ ! (Skills) Sword's Rupture no longer has an internal hard coded limit
  ! (Skills) Sword's Serrated Strikes now uses your Rupture rank to determine the damage/ticks for its bleed effect.
  ! (Skills) Sword's Rupture now ticks four times as fast
+ ! (Skills) Sword's Rupture now refreshes bleed duration instead of adding duration when applying bleed to the same target
  ! (Skills) Sword's Rupture will now deal lethal damage
  = (Skills) Fixed a bug where Rupture would apply an incorrect amount of bleed ticks
  ! (Skills) Sword's Rupture now reaches its max proc chance at level 20 (200 in Retro)
