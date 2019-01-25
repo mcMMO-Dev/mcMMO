@@ -230,7 +230,7 @@ public abstract class SkillCommand implements TabExecutor {
 
         int length;
 
-        if(abilityLengthCap < 0)
+        if(abilityLengthCap <= 0)
         {
             length = 2 + (int) (skillValue / abilityLengthVar);
         }
