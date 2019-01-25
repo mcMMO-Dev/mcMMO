@@ -673,9 +673,9 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
      */
     public int getAbilityLengthCap() {
         if(!mcMMO.isRetroModeEnabled())
-            return config.getInt("Skills.General.Ability.Length.Standard.Cap", 50);
+            return config.getInt("Skills.General.Ability.Length.Standard.CapLevel", 50);
         else
-            return config.getInt("Skills.General.Ability.Length.RetroMode.Cap", 500);
+            return config.getInt("Skills.General.Ability.Length.RetroMode.CapLevel", 500);
     }
 
     /**
