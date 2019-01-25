@@ -881,7 +881,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     //public int getConcoctionsTierLevel(Alchemy.Tier tier) { return config.getInt("Skills.Alchemy.Rank_Levels.Rank_" + rank); }
 
     /* ARCHERY */
-    public int getSkillShotIncreaseLevel() { return config.getInt("Skills.Archery.SkillShot.IncreaseLevel", 50); }
     public double getSkillShotRankDamageMultiplier() { return config.getDouble("Skills.Archery.SkillShot.RankDamageMultiplier", 10.0D); }
     public double getSkillShotDamageMax() { return config.getDouble("Skills.Archery.SkillShot.MaxDamage", 9.0D); }
 

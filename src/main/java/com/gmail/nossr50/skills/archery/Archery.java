@@ -17,8 +17,6 @@ import java.util.List;
 public class Archery {
     private static List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
 
-    public static int    skillShotIncreaseLevel      = AdvancedConfig.getInstance().getSkillShotIncreaseLevel();
-    public static double skillShotIncreasePercentage = AdvancedConfig.getInstance().getSkillShotRankDamageMultiplier();
     public static double skillShotMaxBonusDamage     = AdvancedConfig.getInstance().getSkillShotDamageMax();
 
     public static double dazeBonusDamage = AdvancedConfig.getInstance().getDazeBonusDamage();
@@ -64,18 +62,14 @@ public class Archery {
         }
     }
 
-    /**
-     * Every rank we increase Skill Shot's bonus damage % by the IncreaseDamage percentage value from advanced.yml
-     * Divide end result by 100.0D to get proper scale
-     * Damage is capped in advanced.yml by Archery.SkillShot.MaxDamage
-     *
-     * @param player The target player
-     * @param oldDamage The raw damage of the arrow before we add bonus damage
-     * @return The damage that the arrow will deal after we've added bonus damage, damage is capped by Archery.SkillShot.MaxDamage
-     */
     public static double getSkillShotBonusDamage(Player player, double oldDamage)
     {
-        double damageBonusPercent = ((RankUtils.getRank(player, SubSkillType.ARCHERY_SKILL_SHOT)) * Archery.skillShotIncreasePercentage) / 100.0D;
-        return Math.min(oldDamage * damageBonusPercent, Archery.skillShotMaxBonusDamage);
+        double damageBonusPercent = getDamageBonusPercent(player);
+        double newDamage = oldDamage + (oldDamage * damageBonusPercent);
+        return Math.min(newDamage, Archery.skillShotMaxBonusDamage);
+    }
+
+    public static double getDamageBonusPercent(Player player) {
+        return ((RankUtils.getRank(player, SubSkillType.ARCHERY_SKILL_SHOT)) * AdvancedConfig.getInstance().getSkillShotRankDamageMultiplier()) / 100.0D;
     }
 }

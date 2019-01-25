@@ -29,7 +29,7 @@ public class ArcheryManager extends SkillManager {
     }
 
     public boolean canSkillShot() {
-        return getSkillLevel() >= Archery.skillShotIncreaseLevel && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.ARCHERY_SKILL_SHOT);
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.ARCHERY_SKILL_SHOT);
     }
 
     public boolean canRetrieveArrows() {
