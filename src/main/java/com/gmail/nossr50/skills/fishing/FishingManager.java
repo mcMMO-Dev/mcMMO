@@ -463,10 +463,10 @@ public class FishingManager extends SkillManager {
             double dropRate = TreasureConfig.getInstance().getItemDropRate(getLootTier(), rarity);
 
             if (diceRoll <= dropRate) {
-                if (rarity == Rarity.TRAP) {
+                /*if (rarity == Rarity.TRAP) {
                     handleTraps();
                     break;
-                }
+                }*/
 
                 List<FishingTreasure> fishingTreasures = TreasureConfig.getInstance().fishingRewards.get(rarity);
 
