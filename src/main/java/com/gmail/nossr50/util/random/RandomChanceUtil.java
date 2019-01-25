@@ -154,10 +154,10 @@ public class RandomChanceUtil
      *
      * @return the chance of success from 0-100 (100 = guaranteed)
      */
-    private static int getChanceOfSuccess(double x, double y, double z)
+    private static int getChanceOfSuccess(double skillLevel, double maxProbability, double maxLevel)
     {
         //return (int) (x / (y / LINEAR_CURVE_VAR));
-        return (int) (y * (x/z));
+        return (int) (maxProbability * (skillLevel/maxLevel));
         // max probability * (weight/maxlevel) = chance of success
     }
 
@@ -170,7 +170,7 @@ public class RandomChanceUtil
     public static double getRandomChanceExecutionSuccess(Player player, SubSkillType subSkillType, boolean hasCap)
     {
         RandomChanceSkill rcs = new RandomChanceSkill(player, subSkillType, hasCap);
-        return getRandomChanceExecutionChance(rcs);
+        return calculateChanceOfSuccess(rcs);
     }
 
     public static double getRandomStaticChanceExecutionSuccess(Player player, SubSkillType subSkillType)

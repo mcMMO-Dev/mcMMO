@@ -71,15 +71,17 @@ public class AcrobaticsCommand extends SkillCommand {
                 graceChance      = RandomChanceUtil.getRandomChanceExecutionChance(grace_rcs);
                 //damageThreshold  = AdvancedConfig.getInstance().getRollDamageThreshold();
 
+                String rollStrings[] = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.MINING_DOUBLE_DROPS);
+
                 //Format
                 double rollChanceLucky  = rollChance * 1.333D;
                 double graceChanceLucky = graceChance * 1.333D;
 
-                messages.add(getStatMessage(SubSkillType.ACROBATICS_ROLL, String.valueOf(rollChance))
-                        + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", String.valueOf(rollChanceLucky)) : ""));
+                messages.add(getStatMessage(SubSkillType.ACROBATICS_ROLL, rollStrings[0])
+                        + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", rollStrings[1]) : ""));
 
-                messages.add(getStatMessage(true, false, SubSkillType.ACROBATICS_ROLL, String.valueOf(graceChance))
-                        + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", String.valueOf(graceChanceLucky)) : ""));
+                /*messages.add(getStatMessage(true, false, SubSkillType.ACROBATICS_ROLL, String.valueOf(graceChance))
+                        + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", String.valueOf(graceChanceLucky)) : ""));*/
             }
         }
 

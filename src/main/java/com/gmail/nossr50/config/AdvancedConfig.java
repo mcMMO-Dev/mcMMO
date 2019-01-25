@@ -720,8 +720,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getMaximumProbability(SubSkillType subSkillType) {
         double maximumProbability = config.getDouble(subSkillType.getAdvConfigAddress() + ".ChanceMax", 100.0D);
 
-        if(mcMMO.isRetroModeEnabled())
-            maximumProbability *= 10; // It seems weird but our formulas need this
+        /*if(mcMMO.isRetroModeEnabled())
+            maximumProbability *= 10; // It seems weird but our formulas need this*/
 
         return maximumProbability;
     }
