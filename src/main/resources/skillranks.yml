@@ -96,6 +96,11 @@ Axes:
             Rank_1: 2
         RetroMode:
             Rank_1: 20
+    GreaterImpact:
+        Standard:
+            Rank_1: 25
+        RetroMode:
+            Rank_1: 250
     ArmorImpact:
         Standard:
             Rank_1: 5

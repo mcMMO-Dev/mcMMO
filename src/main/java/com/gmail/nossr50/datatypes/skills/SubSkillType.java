@@ -23,7 +23,7 @@ public enum SubSkillType {
     AXES_ARMOR_IMPACT(20),
     AXES_AXE_MASTERY(4),
     AXES_CRITICAL_STRIKES(1),
-    AXES_GREATER_IMPACT,
+    AXES_GREATER_IMPACT(1),
     AXES_SKULL_SPLITTER(1),
 
     /* Excavation */
