@@ -68,7 +68,8 @@ public class FishingManager extends SkillManager {
         long currentTime = System.currentTimeMillis();
         boolean hasFished = (currentTime < fishingTimestamp + FISHING_COOLDOWN_SECONDS);
 
-        fishingTimestamp = currentTime;
+        if(hasFished == true)
+            fishingTimestamp = currentTime;
 
         Location targetLocation = targetBlock.getLocation();
         boolean sameTarget = (fishingTarget != null && fishingTarget.equals(targetLocation));
