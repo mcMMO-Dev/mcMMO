@@ -22,7 +22,7 @@ public class BleedTimerTask extends BukkitRunnable {
     private static Map<LivingEntity, BleedContainer> bleedList = new HashMap<LivingEntity, BleedContainer>();
 
     @Override
-    synchronized public void run() {
+    public void run() {
         Iterator<Entry<LivingEntity, BleedContainer>> bleedIterator = bleedList.entrySet().iterator();
 
         while (bleedIterator.hasNext()) {
@@ -108,7 +108,7 @@ public class BleedTimerTask extends BukkitRunnable {
      * @param entity LivingEntity to add
      * @param ticks Number of bleeding ticks
      */
-    public synchronized static void add(LivingEntity entity, LivingEntity attacker, int ticks, int bleedRank) {
+    public static void add(LivingEntity entity, LivingEntity attacker, int ticks, int bleedRank) {
         BleedContainer newBleedContainer = new BleedContainer(entity, ticks, bleedRank, attacker);
         bleedList.put(entity, newBleedContainer);
     }
