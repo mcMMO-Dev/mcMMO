@@ -737,6 +737,12 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     }
 
     /* Notification Settings */
+
+    public boolean doesSkillCommandSendBlankLines()
+    {
+        return config.getBoolean("Feedback.SkillCommand.BlankLinesAboveHeader", true);
+    }
+
     public boolean doesNotificationUseActionBar(NotificationType notificationType)
     {
         return config.getBoolean("Feedback.ActionBarNotifications."+notificationType.toString()+".Enabled", true);

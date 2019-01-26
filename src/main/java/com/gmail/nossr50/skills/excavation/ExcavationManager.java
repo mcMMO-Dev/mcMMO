@@ -11,8 +11,12 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import com.gmail.nossr50.worldguard.WorldGuardManager;
+import com.gmail.nossr50.worldguard.WorldGuardUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -47,6 +51,33 @@ public class ExcavationManager extends SkillManager {
         }
 
         applyXpGain(xp, XPGainReason.PVE);
+    }
+
+    public void printExcavationDebug(Player player, BlockState blockState)
+    {
+        if (Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
+            List<ExcavationTreasure> treasures = Excavation.getTreasures(blockState);
+
+            if (!treasures.isEmpty()) {
+                for (ExcavationTreasure treasure : treasures) {
+                    player.sendMessage("|||||||||||||||||||||||||||||||||");
+                    player.sendMessage("[mcMMO DEBUG] Treasure found: ("+treasure.getDrop().getType().toString()+")");
+                    player.sendMessage("[mcMMO DEBUG] Drop Chance for Treasure: "+treasure.getDropChance());
+                    player.sendMessage("[mcMMO DEBUG] Skill Level Required: "+treasure.getDropLevel());
+                    player.sendMessage("[mcMMO DEBUG] XP for Treasure: "+treasure.getXp());
+
+                    if(WorldGuardUtils.isWorldGuardLoaded())
+                    {
+                        if(WorldGuardManager.getInstance().hasMainFlag(player))
+                            player.sendMessage("[mcMMO DEBUG] World Guard main flag is permitted for this player");
+                        else
+                            player.sendMessage("[mcMMO DEBUG] World Guard main flag is DENIED for this player");
+                    }
+                }
+            } else {
+                player.sendMessage("[mcMMO DEBUG] No treasures found for this block.");
+            }
+        }
     }
 
     /**

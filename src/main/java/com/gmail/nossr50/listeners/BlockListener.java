@@ -3,6 +3,7 @@ package com.gmail.nossr50.listeners;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -394,6 +395,20 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockDamage(BlockDamageEvent event) {
+        Player player = event.getPlayer();
+        BlockState blockState = event.getBlock().getState();
+
+        if(player.getInventory().getItemInMainHand().getType() == Material.DEBUG_STICK)
+        {
+            if(mcMMO.getPlaceStore().isTrue(blockState))
+                player.sendMessage("[mcMMO DEBUG] This block is not natural and does not reward treasures/XP");
+            else
+            {
+                player.sendMessage("[mcMMO DEBUG] This block is natural");
+                UserManager.getPlayer(player).getExcavationManager().printExcavationDebug(player, blockState);
+            }
+        }
+
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
@@ -408,15 +423,11 @@ public class BlockListener implements Listener {
         if (event instanceof FakeBlockDamageEvent) {
             return;
         }
-
-        Player player = event.getPlayer();
-
         if (!UserManager.hasPlayerDataKey(player)) {
             return;
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        BlockState blockState = event.getBlock().getState();
 
         /*
          * ABILITY PREPARATION CHECKS
