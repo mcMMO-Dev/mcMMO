@@ -66,7 +66,7 @@ public abstract class SkillCommand implements TabExecutor {
                 float skillValue = mcMMOPlayer.getSkillLevel(skill);
 
                 //Send the players a few blank lines to make finding the top of the skill command easier
-                for(int i = 0; i < 19; i++)
+                for(int i = 0; i < 2; i++)
                 {
                     player.sendMessage("");
                 }
