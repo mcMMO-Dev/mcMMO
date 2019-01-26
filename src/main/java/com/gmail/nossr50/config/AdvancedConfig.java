@@ -775,7 +775,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
      * Used to color our details header in our JSON Hover Object tooltips
      * @return the ChatColor for this element
      */
-    public ChatColor getJSONStatHoverDetailsColor()
+    /*public ChatColor getJSONStatHoverDetailsColor()
     {
         String keyLocation = "Style.JSON.Hover.Details.Header.Color";
         return getChatColorFromKey(keyLocation);
@@ -820,7 +820,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public ChatColor getJSONActionBarColor(NotificationType notificationType)
     {
         return getChatColor(config.getString("Style.JSON.Notification."+notificationType.toString()+".Color"));
-    }
+    }*/
 
     private ChatColor getChatColorFromKey(String keyLocation) {
         String colorName = config.getString(keyLocation);

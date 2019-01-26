@@ -88,6 +88,7 @@ Version 2.1.0
  = (Commands) '/mcMMO help' no longer displays the other/special commands category to players lacking permissions
  + (Party) Parties can now have size limits (configurable in config.yml), party size is unlimited by default
  + (Party) You can now turn on Friendly Fire for parties in config.yml
+ + (Debug Stick) The Debug stick can now tell you about properties of a block related to Excavation
  ! (Deaths) Fixed the bug where mob names would be replaced by hearts
  ! (Experience) The XP values of fish are now based on their rarity and have been drastically changed
  ! (Experience) Skills now start at level 1 (configurable in advanced.yml)
