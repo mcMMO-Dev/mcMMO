@@ -196,6 +196,37 @@ public enum SubSkillType {
         return endResult;
     }
 
+    public String getWikiName(String subSkillName) {
+        /*
+         * Find where to begin our substring (after the prefix)
+         */
+        String endResult = "";
+        int subStringIndex = getSubStringIndex(subSkillName);
+
+        /*
+         * Split the string up so we can capitalize each part
+         */
+        String subskillNameWithoutPrefix = subSkillName.substring(subStringIndex);
+        if(subskillNameWithoutPrefix.contains("_"))
+        {
+            String splitStrings[] = subskillNameWithoutPrefix.split("_");
+
+            for(int i = 0; i < splitStrings.length; i++)
+            {
+                if(i+1 >= splitStrings.length)
+                    endResult+=StringUtils.getCapitalized(splitStrings[i]);
+                else {
+                    endResult += StringUtils.getCapitalized(splitStrings[i]);
+                    endResult += "_";
+                }
+            }
+        } else {
+            endResult += StringUtils.getCapitalized(subskillNameWithoutPrefix);
+        }
+
+        return endResult;
+    }
+
     /**
      * Returns the name of the parent skill from the Locale file
      * @return The parent skill as defined in the locale
