@@ -367,6 +367,11 @@ Fishing:
             Rank_7: 850
             Rank_8: 1000
 Swords:
+    CounterAttack:
+        Standard:
+            Rank_1: 20
+        RetroMode:
+            Rank_1: 200
     Rupture:
         Standard:
             Rank_1: 5

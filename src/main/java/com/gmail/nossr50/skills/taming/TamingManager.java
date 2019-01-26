@@ -209,7 +209,7 @@ public class TamingManager extends SkillManager {
     public void pummel(LivingEntity target, Wolf wolf) {
         if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_PUMMEL))
             return;
-        
+
         double chance = 10 / activationChance;
         SubSkillRandomCheckEvent event = new SubSkillRandomCheckEvent(getPlayer(), SubSkillType.TAMING_PUMMEL, chance);
         mcMMO.p.getServer().getPluginManager().callEvent(event);

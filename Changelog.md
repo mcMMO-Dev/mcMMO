@@ -33,6 +33,7 @@ Rank System
     Woodcutting's Double Drop subskill is now named Harvest Lumber
     Archery's Skill Shot now uses a rank system
     Swords' Bleed now uses a rank system
+    Swords' Counter Attack now uses a rank system
     Axe's Axe Mastery now uses a rank system
     Axe's Impact now uses a rank system
     Herbalism's Farmer's Diet now uses a rank system
@@ -45,6 +46,9 @@ Rank System
     Axes' Critical Strikes now uses a rank system
     Axes' Greater Impact now uses a rank system
     Taming's Beast Lore now uses a rank system
+    Taming's Gore now uses a rank system
+    Taming's Call of the Wild now uses a rank system
+    Taming's Pummel now uses a rank system
     Green Thumb now uses a rank system
     Farmer's Diet & Fisherman's Diet now use a rank system
 

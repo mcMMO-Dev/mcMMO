@@ -109,6 +109,7 @@ Version 2.1.0
  ! (Skills) Woodcutting's Double Drop subskill is now named Harvest Lumber
  ! (Skills) Archery's Skill Shot now uses a rank system
  ! (Skills) Swords' Bleed now uses a rank system
+ ! (Skills) Swords' Counter Attack now uses a rank system
  ! (Skills) Axe's Axe Mastery now uses a rank system
  ! (Skills) Axe's Impact now uses a rank system
  ! (Skills) Herbalism's Farmer's Diet now uses a rank system
@@ -121,6 +122,9 @@ Version 2.1.0
  ! (Skills) Axes' Critical Strikes now uses a rank system
  ! (Skills) Axes' Greater Impact now uses a rank system
  ! (Skills) Taming's Beast Lore now uses a rank system
+ ! (Skills) Taming's Gore now uses a rank system
+ ! (Skills) Taming's Call of the Wild now uses a rank system
+ ! (Skills) Taming's Pummel now uses a rank system
  ! (Kraken) Removed everything involving the kraken
  = (Skills) Shake now sends custom damage types for better nocheat compat
  ! (Config) Unarmed.IronArm in advanced.yml is now Unarmed.IronArmStyle
