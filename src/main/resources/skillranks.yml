@@ -161,11 +161,26 @@ Taming:
             Rank_1: 2
         RetroMode:
             Rank_1: 20
-    FastFoodService:
+    Gore:
+        Standard:
+            Rank_1: 15
+        RetroMode:
+            Rank_1: 150
+    CallOfTheWild:
         Standard:
             Rank_1: 5
         RetroMode:
             Rank_1: 50
+    Pummel:
+        Standard:
+            Rank_1: 20
+        RetroMode:
+            Rank_1: 200
+    FastFoodService:
+        Standard:
+            Rank_1: 20
+        RetroMode:
+            Rank_1: 200
     EnvironmentallyAware:
         Standard:
             Rank_1: 10

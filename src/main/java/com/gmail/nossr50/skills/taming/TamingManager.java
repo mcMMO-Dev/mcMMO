@@ -64,6 +64,9 @@ public class TamingManager extends SkillManager {
     }
 
     public boolean canUseGore() {
+        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_GORE))
+            return false;
+
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.TAMING_GORE);
     }
 
@@ -135,6 +138,9 @@ public class TamingManager extends SkillManager {
      * Summon an ocelot to your side.
      */
     public void summonOcelot() {
+        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_CALL_OF_THE_WILD))
+            return;
+
         if (!Permissions.callOfTheWild(getPlayer(), EntityType.OCELOT)) {
             return;
         }
@@ -146,6 +152,9 @@ public class TamingManager extends SkillManager {
      * Summon a wolf to your side.
      */
     public void summonWolf() {
+        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_CALL_OF_THE_WILD))
+            return;
+
         if (!Permissions.callOfTheWild(getPlayer(), EntityType.WOLF)) {
             return;
         }
@@ -157,6 +166,9 @@ public class TamingManager extends SkillManager {
      * Summon a horse to your side.
      */
     public void summonHorse() {
+        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_CALL_OF_THE_WILD))
+            return;
+
         if (!Permissions.callOfTheWild(getPlayer(), EntityType.HORSE)) {
             return;
         }
@@ -195,6 +207,9 @@ public class TamingManager extends SkillManager {
     }
 
     public void pummel(LivingEntity target, Wolf wolf) {
+        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_PUMMEL))
+            return;
+        
         double chance = 10 / activationChance;
         SubSkillRandomCheckEvent event = new SubSkillRandomCheckEvent(getPlayer(), SubSkillType.TAMING_PUMMEL, chance);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
