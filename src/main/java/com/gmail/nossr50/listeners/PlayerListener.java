@@ -324,16 +324,19 @@ public class PlayerListener implements Listener {
             case FISHING:
                 if (fishingManager.canMasterAngler()) {
                     fishingManager.masterAngler(event.getHook());
+                    fishingManager.setFishingTarget();
                 }
                 return;
 
             case CAUGHT_FISH:
                 fishingManager.handleFishing((Item) caught);
+                fishingManager.setFishingTarget();
                 return;
 
             case CAUGHT_ENTITY:
                 if (fishingManager.canShake(caught)) {
                     fishingManager.shakeCheck((LivingEntity) caught);
+                    fishingManager.setFishingTarget();
                 }
                 return;
 

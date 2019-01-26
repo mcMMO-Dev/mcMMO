@@ -66,7 +66,7 @@ public class FishingManager extends SkillManager {
         }
 
         long currentTime = System.currentTimeMillis();
-        boolean hasFished = (currentTime < fishingTimestamp + FISHING_COOLDOWN_SECONDS);
+        boolean hasFished = (currentTime < fishingTimestamp + (FISHING_COOLDOWN_SECONDS * 10));
 
         if(hasFished == true)
             fishingTimestamp = currentTime;
@@ -75,6 +75,10 @@ public class FishingManager extends SkillManager {
         boolean sameTarget = (fishingTarget != null && fishingTarget.equals(targetLocation));
 
         return hasFished || sameTarget;
+    }
+
+    public void setFishingTarget() {
+        getPlayer().getTargetBlock(BlockUtils.getTransparentBlocks(), 100);
     }
 
     public boolean canIceFish(Block block) {
