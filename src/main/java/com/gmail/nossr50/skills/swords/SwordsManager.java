@@ -36,10 +36,16 @@ public class SwordsManager extends SkillManager {
     }
 
     public boolean canUseCounterAttack(Entity target) {
+        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_COUNTER_ATTACK))
+            return false;
+
         return target instanceof LivingEntity && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_COUNTER_ATTACK);
     }
 
     public boolean canUseSerratedStrike() {
+        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_SERRATED_STRIKES))
+            return false;
+
         return mcMMOPlayer.getAbilityMode(SuperAbilityType.SERRATED_STRIKES) && Permissions.serratedStrikes(getPlayer());
     }
 

@@ -156,6 +156,11 @@ Axes:
             Rank_3: 150
             Rank_4: 200
 Taming:
+    BeastLore:
+        Standard:
+            Rank_1: 2
+        RetroMode:
+            Rank_1: 20
     FastFoodService:
         Standard:
             Rank_1: 5

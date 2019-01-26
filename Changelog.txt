@@ -120,6 +120,7 @@ Version 2.1.0
  ! (Skills) Arrow Retrieval now uses a rank system
  ! (Skills) Axes' Critical Strikes now uses a rank system
  ! (Skills) Axes' Greater Impact now uses a rank system
+ ! (Skills) Taming's Beast Lore now uses a rank system
  ! (Kraken) Removed everything involving the kraken
  = (Skills) Shake now sends custom damage types for better nocheat compat
  ! (Config) Unarmed.IronArm in advanced.yml is now Unarmed.IronArmStyle
