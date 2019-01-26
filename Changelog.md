@@ -1,7 +1,7 @@
 
-Version 2.1.0
+###### **Version 2.1.0**
 
-Please use Spigot or Paper!
+##### Please use Spigot or Paper!
     
     mcMMO is now built against Spigot-API instead of Bukkit
 
@@ -27,6 +27,7 @@ World Blacklist
     
 Rank System
 
+    Skills that are not yet unlocked will show up as ??? until learned
     Many skills now make use of a rank system!
     Rank level requirements are modified in skillranks.yml
     Woodcutting's Double Drop subskill is now named Harvest Lumber
