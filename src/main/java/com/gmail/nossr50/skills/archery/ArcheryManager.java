@@ -26,10 +26,16 @@ public class ArcheryManager extends SkillManager {
     }
 
     public boolean canDaze(LivingEntity target) {
+        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.ARCHERY_DAZE))
+            return false;
+
         return target instanceof Player && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.ARCHERY_DAZE);
     }
 
     public boolean canSkillShot() {
+        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.ARCHERY_SKILL_SHOT))
+            return false;
+
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.ARCHERY_SKILL_SHOT);
     }
 

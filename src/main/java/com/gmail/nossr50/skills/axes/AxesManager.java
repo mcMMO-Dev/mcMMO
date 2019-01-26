@@ -12,10 +12,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
-import com.gmail.nossr50.util.skills.CombatUtils;
-import com.gmail.nossr50.util.skills.ParticleEffectUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
-import com.gmail.nossr50.util.skills.SkillUtils;
+import com.gmail.nossr50.util.skills.*;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
@@ -29,22 +26,37 @@ public class AxesManager extends SkillManager {
     }
 
     public boolean canUseAxeMastery() {
+        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_AXE_MASTERY))
+            return false;
+
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.AXES_AXE_MASTERY);
     }
 
     public boolean canCriticalHit(LivingEntity target) {
+        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_CRITICAL_STRIKES))
+            return false;
+
         return target.isValid() && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.AXES_CRITICAL_STRIKES);
     }
 
     public boolean canImpact(LivingEntity target) {
+        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_ARMOR_IMPACT))
+            return false;
+
         return target.isValid() && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.AXES_ARMOR_IMPACT) && Axes.hasArmor(target);
     }
 
     public boolean canGreaterImpact(LivingEntity target) {
+        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_GREATER_IMPACT))
+            return false;
+
         return target.isValid() && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.AXES_GREATER_IMPACT) && !Axes.hasArmor(target);
     }
 
     public boolean canUseSkullSplitter(LivingEntity target) {
+        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_SKULL_SPLITTER))
+            return false;
+
         return target.isValid() && mcMMOPlayer.getAbilityMode(SuperAbilityType.SKULL_SPLITTER) && Permissions.skullSplitter(getPlayer());
     }
 

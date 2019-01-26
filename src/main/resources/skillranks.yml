@@ -91,6 +91,11 @@ Axes:
             Rank_1: 5
         RetroMode:
             Rank_1: 50
+    CriticalStrikes:
+        Standard:
+            Rank_1: 2
+        RetroMode:
+            Rank_1: 20
     ArmorImpact:
         Standard:
             Rank_1: 5
