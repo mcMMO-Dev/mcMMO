@@ -39,7 +39,7 @@ public class InventoryListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onInventoryOpen(InventoryOpenEvent event) {
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
@@ -47,7 +47,7 @@ public class InventoryListener implements Listener {
 
         Block furnaceBlock = processInventoryOpenOrCloseEvent(event.getInventory());
 
-        if (furnaceBlock == null || furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey)) {
+        if (furnaceBlock == null) {
             return;
         }
 
@@ -57,7 +57,8 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        furnaceBlock.setMetadata(mcMMO.furnaceMetadataKey, UserManager.getPlayer((Player) player).getPlayerMetadata());
+        if(!furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey) && furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey).size() == 0)
+            furnaceBlock.setMetadata(mcMMO.furnaceMetadataKey, UserManager.getPlayer((Player) player).getPlayerMetadata());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -176,6 +177,22 @@ public class InventoryListener implements Listener {
             return;
 
         Inventory inventory = event.getInventory();
+
+        Block furnaceBlock = processInventoryOpenOrCloseEvent(event.getInventory());
+
+        if (furnaceBlock == null) {
+            return;
+        }
+
+        if(event.getWhoClicked() instanceof Player)
+        {
+            Player player = ((Player) event.getWhoClicked()).getPlayer();
+            
+            if(furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey).size() > 0)
+                furnaceBlock.removeMetadata(mcMMO.furnaceMetadataKey, mcMMO.p);
+
+            furnaceBlock.setMetadata(mcMMO.furnaceMetadataKey, UserManager.getPlayer(player).getPlayerMetadata());
+        }
 
         if (!(inventory instanceof BrewerInventory)) {
             return;
@@ -434,7 +451,7 @@ public class InventoryListener implements Listener {
 
         Furnace furnace = (Furnace) inventory.getHolder();
 
-        if (furnace == null || furnace.getBurnTime() != 0) {
+        if (furnace == null) {
             return null;
         }
 

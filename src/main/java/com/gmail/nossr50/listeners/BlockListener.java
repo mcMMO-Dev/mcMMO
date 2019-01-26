@@ -34,10 +34,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Tag;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.BrewingStand;
+import org.bukkit.block.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -407,6 +404,22 @@ public class BlockListener implements Listener {
                 player.sendMessage("[mcMMO DEBUG] This block is natural");
                 UserManager.getPlayer(player).getExcavationManager().printExcavationDebug(player, blockState);
             }
+
+            if(blockState instanceof Furnace)
+            {
+                Furnace furnace = (Furnace) blockState;
+                if(furnace.hasMetadata(mcMMO.furnaceMetadataKey))
+                {
+                    player.sendMessage("[mcMMO DEBUG] This furnace has a registered owner");
+                    Player furnacePlayer = getPlayerFromFurnace(furnace.getBlock());
+                    if(furnacePlayer != null)
+                    {
+                        player.sendMessage("[mcMMO DEBUG] This furnace is owned by player "+furnacePlayer.getName());
+                    }
+                }
+                else
+                    player.sendMessage("[mcMMO DEBUG] This furnace does not have a registered owner");
+            }
         }
 
         /* WORLD BLACKLIST CHECK */
@@ -473,6 +486,16 @@ public class BlockListener implements Listener {
         if (mcMMOPlayer.getAbilityMode(SuperAbilityType.TREE_FELLER) && BlockUtils.isLog(blockState) && Config.getInstance().getTreeFellerSoundsEnabled()) {
             SoundManager.sendSound(player, blockState.getLocation(), SoundType.FIZZ);
         }
+    }
+
+    private Player getPlayerFromFurnace(Block furnaceBlock) {
+        List<MetadataValue> metadata = furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey);
+
+        if (metadata.isEmpty()) {
+            return null;
+        }
+
+        return plugin.getServer().getPlayerExact(metadata.get(0).asString());
     }
 
     /**
