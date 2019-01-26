@@ -378,7 +378,15 @@ public class TextComponentFactory {
             addSubSkillTypeToHoverEventJSON(abstractSubSkill, componentBuilder);
 
             //RANK
-            addRanked(ccRank, ccCurRank, ccPossessive, ccNumRanks, componentBuilder, abstractSubSkill.getNumRanks(), RankUtils.getRank(player, abstractSubSkill));
+            int curRank = RankUtils.getRank(player, abstractSubSkill);
+            int nextRank = 0;
+
+            if(curRank < abstractSubSkill.getNumRanks() && abstractSubSkill.getNumRanks() > 0)
+            {
+                nextRank = RankUtils.getRankUnlockLevel(abstractSubSkill, curRank+1);
+            }
+
+            addRanked(ccRank, ccCurRank, ccPossessive, ccNumRanks, componentBuilder, abstractSubSkill.getNumRanks(), RankUtils.getRank(player, abstractSubSkill), nextRank);
 
             componentBuilder.append(LocaleLoader.getString("JSON.DescriptionHeader"));
             componentBuilder.append("\n").append(abstractSubSkill.getDescription()).append("\n");
@@ -401,15 +409,19 @@ public class TextComponentFactory {
         return componentBuilder;
     }
 
-    private static void addRanked(ChatColor ccRank, ChatColor ccCurRank, ChatColor ccPossessive, ChatColor ccNumRanks, ComponentBuilder componentBuilder, int numRanks, int rank) {
+    private static void addRanked(ChatColor ccRank, ChatColor ccCurRank, ChatColor ccPossessive, ChatColor ccNumRanks, ComponentBuilder componentBuilder, int numRanks, int rank, int nextRank) {
         if (numRanks > 0) {
-            //Rank
-            componentBuilder.append(LocaleLoader.getString("JSON.Rank") + ": ").bold(false).color(ccRank);
+            //Rank: x
+            componentBuilder.append(LocaleLoader.getString("JSON.Hover.Rank", String.valueOf(rank))).append("\n")
+                    .bold(false).italic(false).strikethrough(false).underlined(false);
 
-            //x of y
-            componentBuilder.append(String.valueOf(rank)).color(ccCurRank);
-            componentBuilder.append(" " + LocaleLoader.getString("JSON.RankPossesive") + " ").color(ccPossessive);
-            componentBuilder.append(String.valueOf(numRanks)).color(ccNumRanks);
+            //Next Rank: x
+            if(nextRank > rank)
+                componentBuilder.append(LocaleLoader.getString("JSON.Hover.NextRank", String.valueOf(nextRank))).append("\n")
+                        .bold(false).italic(false).strikethrough(false).underlined(false);
+
+            /*componentBuilder.append(" " + LocaleLoader.getString("JSON.RankPossesive") + " ").color(ccPossessive);
+            componentBuilder.append(String.valueOf(numRanks)).color(ccNumRanks);*/
         }
     }
 
@@ -468,12 +480,19 @@ public class TextComponentFactory {
             //RANK
             if(subSkillType.getNumRanks() > 0)
             {
-                addRanked(ccRank, ccCurRank, ccPossessive, ccNumRanks, componentBuilder, subSkillType.getNumRanks(), RankUtils.getRank(player, subSkillType));
+                int curRank = RankUtils.getRank(player, subSkillType);
+                int nextRank = 0;
 
-                //Empty line
-                componentBuilder.append("\n").bold(false);
+                if(curRank < subSkillType.getNumRanks() && subSkillType.getNumRanks() > 0)
+                {
+                    nextRank = RankUtils.getRankUnlockLevel(subSkillType, curRank+1);
+                }
+
+                addRanked(ccRank, ccCurRank, ccPossessive, ccNumRanks, componentBuilder, subSkillType.getNumRanks(), RankUtils.getRank(player, subSkillType), nextRank);
+
             }
 
+            componentBuilder.append("\n").bold(false);
             componentBuilder.append(LocaleLoader.getString("JSON.DescriptionHeader"));
             componentBuilder.color(ccDescriptionHeader);
             componentBuilder.append("\n");
