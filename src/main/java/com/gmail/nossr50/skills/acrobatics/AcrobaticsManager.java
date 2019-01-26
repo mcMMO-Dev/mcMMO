@@ -11,6 +11,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
+import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.entity.Entity;
@@ -24,6 +25,9 @@ public class AcrobaticsManager extends SkillManager {
     }
 
     public boolean canDodge(Entity damager) {
+        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.ACROBATICS_DODGE))
+            return false;
+
         if (Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.ACROBATICS_DODGE)) {
             if (damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled) {
                 return false;

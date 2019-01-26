@@ -31,6 +31,11 @@ Alchemy:
             Rank_7: 850
             Rank_8: 1000
 Archery:
+    ArrowRetrieval:
+        Standard:
+            Rank_1: 2
+        RetroMode:
+            Rank_1: 20
     SkillShot:
         Standard:
             Rank_1: 5
@@ -74,6 +79,12 @@ Archery:
             Rank_18: 900
             Rank_19: 950
             Rank_20: 1000
+Acrobatics:
+    Dodge:
+        Standard:
+            Rank_1: 2
+        RetroMode:
+            Rank_1: 20
 Axes:
     SkullSplitter:
         Standard:

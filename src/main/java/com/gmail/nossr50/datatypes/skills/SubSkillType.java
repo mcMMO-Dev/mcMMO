@@ -7,7 +7,7 @@ public enum SubSkillType {
     /* !! Warning -- Do not let subskills share a name with any existing PrimarySkillType as it will clash with the static import !! */
 
     /* ACROBATICS */
-    ACROBATICS_DODGE,
+    ACROBATICS_DODGE(1),
     ACROBATICS_ROLL,
 
     /* ALCHEMY */
@@ -15,7 +15,7 @@ public enum SubSkillType {
     ALCHEMY_CONCOCTIONS(8),
 
     /* ARCHERY */
-    ARCHERY_ARROW_RETRIEVAL,
+    ARCHERY_ARROW_RETRIEVAL(1),
     ARCHERY_DAZE,
     ARCHERY_SKILL_SHOT(20),
 
