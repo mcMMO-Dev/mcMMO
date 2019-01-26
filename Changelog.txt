@@ -9,6 +9,7 @@ Key:
 
 Version 2.1.1
     = Fixed an issue where excavation wasn't using the correct permission node
+    = Added protection against AFK fishing
 
 Version 2.1.0
  + mcMMO now features XP bars! Configurable in experience.yml

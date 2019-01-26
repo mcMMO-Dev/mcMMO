@@ -251,6 +251,9 @@ public class PlayerListener implements Listener {
 
         FishingManager fishingManager = UserManager.getPlayer(player).getFishingManager();
 
+        if(fishingManager.exploitPrevention())
+            return;
+
         switch (event.getState()) {
             case CAUGHT_FISH:
                 //TODO Update to new API once available! Waiting for case CAUGHT_TREASURE:
@@ -311,6 +314,10 @@ public class PlayerListener implements Listener {
         }
 
         FishingManager fishingManager = UserManager.getPlayer(player).getFishingManager();
+
+        if(fishingManager.exploitPrevention())
+            return;
+
         Entity caught = event.getCaught();
 
         switch (event.getState()) {
