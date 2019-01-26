@@ -8,8 +8,7 @@ Key:
   - Removal
 
 Version 2.1.1
-
-
+    = Fixed an issue where excavation wasn't using the correct permission node
 
 Version 2.1.0
  + mcMMO now features XP bars! Configurable in experience.yml
