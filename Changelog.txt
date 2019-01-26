@@ -7,6 +7,10 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.1
+
+
+
 Version 2.1.0
  + mcMMO now features XP bars! Configurable in experience.yml
  + Locale files now support & codes for colors and formatting!

@@ -286,10 +286,10 @@ permissions:
         description: Allows access to all Excavation abilities
         children:
             mcmmo.ability.excavation.gigadrillbreaker: true
-            mcmmo.ability.excavation.treasurehunter: true
+            mcmmo.ability.excavation.archaeology: true
     mcmmo.ability.excavation.gigadrillbreaker:
         description: Allows access to the Giga Drill Breaker ability
-    mcmmo.ability.excavation.treasurehunter:
+    mcmmo.ability.excavation.archaeology:
         description: Allows treasure drops from Excavation
     mcmmo.ability.fishing.*:
         default: false
