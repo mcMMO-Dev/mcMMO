@@ -3,6 +3,7 @@ package com.gmail.nossr50.datatypes.skills.subskills.acrobatics;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.LimitedSizeList;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -18,6 +19,7 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.PerksUtils;
+import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -33,12 +35,14 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
+
 public class Roll extends AcrobaticsSubSkill {
-    private int fallTries = 0;
-    protected Location lastFallLocation;
+    protected HashMap<Player, LimitedSizeList> fallLocationMap;
 
     public Roll() {
         super("Roll", EventPriority.HIGHEST, SubSkillType.ACROBATICS_ROLL);
+        fallLocationMap = new HashMap<>();
     }
 
     /**
@@ -75,7 +79,6 @@ public class Roll extends AcrobaticsSubSkill {
                  */
                 Player player = (Player) ((EntityDamageEvent) event).getEntity();
                 if (canRoll(player)) {
-                    if(Permissions.isSubSkillEnabled(player, SubSkillType.ACROBATICS_ROLL))
                     entityDamageEvent.setDamage(rollCheck(player, mcMMOPlayer, entityDamageEvent.getDamage()));
 
                     if (entityDamageEvent.getFinalDamage() == 0) {
@@ -182,7 +185,7 @@ public class Roll extends AcrobaticsSubSkill {
     }
 
     private boolean canRoll(Player player) {
-        return !isExploiting(player) && Permissions.isSubSkillEnabled(player, SubSkillType.ACROBATICS_ROLL);
+        return RankUtils.hasUnlockedSubskill(player, SubSkillType.ACROBATICS_ROLL) && Permissions.isSubSkillEnabled(player, SubSkillType.ACROBATICS_ROLL);
     }
 
     /**
@@ -208,19 +211,21 @@ public class Roll extends AcrobaticsSubSkill {
             //player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Text"));
 
             //if (!SkillUtils.cooldownExpired((long) mcMMOPlayer.getTeleportATS(), Config.getInstance().getXPAfterTeleportCooldown())) {
+            if(!isExploiting(player))
                 SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, damage, true), XPGainReason.PVE);
             //}
 
+            addFallLocation(player);
             return modifiedDamage;
         }
         else if (!isFatal(player, damage)) {
             //if (!SkillUtils.cooldownExpired((long) mcMMOPlayer.getTeleportATS(), Config.getInstance().getXPAfterTeleportCooldown())) {
+            if(!isExploiting(player))
                 SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, damage, false), XPGainReason.PVE);
             //}
         }
 
-        lastFallLocation = player.getLocation();
-
+        addFallLocation(player);
         return damage;
     }
 
@@ -245,12 +250,17 @@ public class Roll extends AcrobaticsSubSkill {
         {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Ability.Proc");
             SoundManager.sendCategorizedSound(player, player.getLocation(), SoundType.ROLL_ACTIVATED, SoundCategory.PLAYERS,0.5F);
-            SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, damage, true), XPGainReason.PVE);
+            if(!isExploiting(player))
+                SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, damage, true), XPGainReason.PVE);
 
+            addFallLocation(player);
             return modifiedDamage;
         }
         else if (!isFatal(player, damage)) {
-            SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, damage, false), XPGainReason.PVE);
+            if(!isExploiting(player))
+                SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, damage, false), XPGainReason.PVE);
+            
+            addFallLocation(player);
         }
 
         return damage;
@@ -271,6 +281,16 @@ public class Roll extends AcrobaticsSubSkill {
             return true;
         }
 
+        if(fallLocationMap.get(player) == null)
+            fallLocationMap.put(player, new LimitedSizeList(20));
+
+        LimitedSizeList fallLocations = fallLocationMap.get(player);
+        
+        if(fallLocations.contains(getBlockLocation(player)))
+            return true;
+
+        return false; //NOT EXPLOITING
+/*
         Location fallLocation = player.getLocation();
         int maxTries = Config.getInstance().getAcrobaticsAFKMaxTries();
 
@@ -279,7 +299,7 @@ public class Roll extends AcrobaticsSubSkill {
         fallTries = sameLocation ? Math.min(fallTries + 1, maxTries) : Math.max(fallTries - 1, 0);
         lastFallLocation = fallLocation;
 
-        return fallTries + 1 > maxTries;
+        return fallTries + 1 > maxTries;*/
     }
 
     private float calculateRollXP(Player player, double damage, boolean isRoll) {
@@ -403,5 +423,21 @@ public class Roll extends AcrobaticsSubSkill {
 
         Double[] stats = { playerChanceRoll, playerChanceGrace }; //DEBUG
         return stats;
+    }
+
+    public void addFallLocation(Player player)
+    {
+        if(fallLocationMap.get(player) == null)
+            fallLocationMap.put(player, new LimitedSizeList(20));
+
+        LimitedSizeList fallLocations = fallLocationMap.get(player);
+
+        Location loc = getBlockLocation(player);
+        fallLocations.add(loc);
+    }
+
+    public Location getBlockLocation(Player player)
+    {
+        return player.getLocation().getBlock().getLocation();
     }
 }
