@@ -1,4 +1,4 @@
-# **Version 2.1.0**
+# **Version 2.1.0+**
 
 ### Please use Spigot or Paper!
 
@@ -156,6 +156,8 @@
 * Prevented exploits involving blocks made from entities (snowmen, etc..)
 * Chimaera Wing now tracks cooldowns between sessions for players (no more disconnect abuse)
 * Tridents will no longer be considered unarmed
+* Prevented exploits involving 2 high herbs and chorus flowers
+* Vastly Improved the Acrobatics exploit detection checks
 
 ### Parties
 
