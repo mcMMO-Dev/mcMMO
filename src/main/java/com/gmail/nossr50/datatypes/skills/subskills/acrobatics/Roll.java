@@ -282,7 +282,7 @@ public class Roll extends AcrobaticsSubSkill {
         }
 
         if(fallLocationMap.get(player) == null)
-            fallLocationMap.put(player, new LimitedSizeList(20));
+            fallLocationMap.put(player, new LimitedSizeList(100));
 
         LimitedSizeList fallLocations = fallLocationMap.get(player);
         
