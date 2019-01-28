@@ -449,16 +449,7 @@ public class BlockListener implements Listener {
         if (BlockUtils.canActivateAbilities(blockState)) {
             ItemStack heldItem = player.getInventory().getItemInMainHand();
 
-            if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
-                if ((ItemUtils.isPickaxe(heldItem) && !mcMMOPlayer.getAbilityMode(SuperAbilityType.SUPER_BREAKER)) || (ItemUtils.isShovel(heldItem) && !mcMMOPlayer.getAbilityMode(SuperAbilityType.GIGA_DRILL_BREAKER))) {
-                    SkillUtils.removeAbilityBuff(heldItem);
-                }
-            }
-            else {
-                if ((mcMMOPlayer.getAbilityMode(SuperAbilityType.SUPER_BREAKER) && !BlockUtils.affectedBySuperBreaker(blockState)) || (mcMMOPlayer.getAbilityMode(SuperAbilityType.GIGA_DRILL_BREAKER) && !BlockUtils.affectedByGigaDrillBreaker(blockState))) {
-                    SkillUtils.handleAbilitySpeedDecrease(player);
-                }
-            }
+            cleanupAbilityTools(player, mcMMOPlayer, blockState, heldItem);
 
             if (mcMMOPlayer.getToolPreparationMode(ToolType.HOE) && ItemUtils.isHoe(heldItem) && (BlockUtils.affectedByGreenTerra(blockState) || BlockUtils.canMakeMossy(blockState)) && Permissions.greenTerra(player)) {
                 mcMMOPlayer.checkAbilityActivation(PrimarySkillType.HERBALISM);
@@ -556,4 +547,28 @@ public class BlockListener implements Listener {
             SoundManager.sendSound(player, block.getLocation(), SoundType.POP);
         }
     }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onBlockDamageCleanup(BlockDamageEvent event) {
+        Player player = event.getPlayer();
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        BlockState blockState = event.getBlock().getState();
+
+        ItemStack heldItem = player.getInventory().getItemInMainHand();
+
+        cleanupAbilityTools(player, mcMMOPlayer, blockState, heldItem);
+    }
+
+    public void cleanupAbilityTools(Player player, McMMOPlayer mcMMOPlayer, BlockState blockState, ItemStack heldItem) {
+        if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
+            if ((ItemUtils.isPickaxe(heldItem) && !mcMMOPlayer.getAbilityMode(SuperAbilityType.SUPER_BREAKER)) || (ItemUtils.isShovel(heldItem) && !mcMMOPlayer.getAbilityMode(SuperAbilityType.GIGA_DRILL_BREAKER))) {
+                SkillUtils.removeAbilityBuff(heldItem);
+            }
+        } else {
+            if ((mcMMOPlayer.getAbilityMode(SuperAbilityType.SUPER_BREAKER) && !BlockUtils.affectedBySuperBreaker(blockState)) || (mcMMOPlayer.getAbilityMode(SuperAbilityType.GIGA_DRILL_BREAKER) && !BlockUtils.affectedByGigaDrillBreaker(blockState))) {
+                SkillUtils.handleAbilitySpeedDecrease(player);
+            }
+        }
+    }
+
 }
