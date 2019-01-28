@@ -449,8 +449,6 @@ public class BlockListener implements Listener {
         if (BlockUtils.canActivateAbilities(blockState)) {
             ItemStack heldItem = player.getInventory().getItemInMainHand();
 
-            cleanupAbilityTools(player, mcMMOPlayer, blockState, heldItem);
-
             if (mcMMOPlayer.getToolPreparationMode(ToolType.HOE) && ItemUtils.isHoe(heldItem) && (BlockUtils.affectedByGreenTerra(blockState) || BlockUtils.canMakeMossy(blockState)) && Permissions.greenTerra(player)) {
                 mcMMOPlayer.checkAbilityActivation(PrimarySkillType.HERBALISM);
             }

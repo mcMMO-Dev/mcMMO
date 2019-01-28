@@ -9,6 +9,7 @@ Key:
 
 Version 2.1.2
     (Perks) Fixed a bug where the Lucky perk wasn't adding to success
+    (Skills) mcMMO will now listen to cancelled events to remove our temporary enchantments from tools
     (Skills) Fixing a bug where Shake didn't calculate success correctly
     (Skills) Fixed a bug where Arcane Forging didn't calculate success and failure correctly
     (Skills) Fixed a bug where Salvage didn't calculate success and failure correctly

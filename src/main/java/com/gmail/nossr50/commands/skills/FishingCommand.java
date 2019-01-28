@@ -75,7 +75,10 @@ public class FishingCommand extends SkillCommand {
                 }
             }
 
-            magicChance = percent.format(totalEnchantChance / 100.0);
+            if(totalEnchantChance > 0)
+                magicChance = percent.format(totalEnchantChance / 100.0);
+            else
+                magicChance = percent.format(magicChance);
         }
 
         // FISHING_SHAKE
