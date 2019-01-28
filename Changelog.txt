@@ -15,6 +15,7 @@ Version 2.1.2
     (Skills) Fixed a bug where Arcane Forging didn't calculate success and failure correctly
     (Skills) Fixed a bug where Salvage didn't calculate success and failure correctly
     (Skills) Fixed a bug where Flux Mining didn't calculate success correctly
+    (Skills) Fixed a bug where Shake didn't calculate correctly
     (Skills) Tree Feller now works on Mushroom Stems
     (Skills) Fixed a bug where magic chance would show as null
     (Skills) Fixed a bug where Trap percentages were added to Fishing even though they no longer exist
