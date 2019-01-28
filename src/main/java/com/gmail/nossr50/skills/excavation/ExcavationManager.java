@@ -64,14 +64,6 @@ public class ExcavationManager extends SkillManager {
                     player.sendMessage("[mcMMO DEBUG] Drop Chance for Treasure: "+treasure.getDropChance());
                     player.sendMessage("[mcMMO DEBUG] Skill Level Required: "+treasure.getDropLevel());
                     player.sendMessage("[mcMMO DEBUG] XP for Treasure: "+treasure.getXp());
-
-                    if(WorldGuardUtils.isWorldGuardLoaded())
-                    {
-                        if(WorldGuardManager.getInstance().hasMainFlag(player))
-                            player.sendMessage("[mcMMO DEBUG] World Guard main flag is permitted for this player");
-                        else
-                            player.sendMessage("[mcMMO DEBUG] World Guard main flag is DENIED for this player");
-                    }
                 }
             } else {
                 player.sendMessage("[mcMMO DEBUG] No treasures found for this block.");

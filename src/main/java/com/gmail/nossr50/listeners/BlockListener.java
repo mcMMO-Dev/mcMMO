@@ -1,8 +1,10 @@
 package com.gmail.nossr50.listeners;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -394,33 +396,6 @@ public class BlockListener implements Listener {
         Player player = event.getPlayer();
         BlockState blockState = event.getBlock().getState();
 
-        if(player.getInventory().getItemInMainHand().getType() == Material.DEBUG_STICK)
-        {
-            if(mcMMO.getPlaceStore().isTrue(blockState))
-                player.sendMessage("[mcMMO DEBUG] This block is not natural and does not reward treasures/XP");
-            else
-            {
-                player.sendMessage("[mcMMO DEBUG] This block is natural");
-                UserManager.getPlayer(player).getExcavationManager().printExcavationDebug(player, blockState);
-            }
-
-            if(blockState instanceof Furnace)
-            {
-                Furnace furnace = (Furnace) blockState;
-                if(furnace.hasMetadata(mcMMO.furnaceMetadataKey))
-                {
-                    player.sendMessage("[mcMMO DEBUG] This furnace has a registered owner");
-                    Player furnacePlayer = getPlayerFromFurnace(furnace.getBlock());
-                    if(furnacePlayer != null)
-                    {
-                        player.sendMessage("[mcMMO DEBUG] This furnace is owned by player "+furnacePlayer.getName());
-                    }
-                }
-                else
-                    player.sendMessage("[mcMMO DEBUG] This furnace does not have a registered owner");
-            }
-        }
-
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
@@ -555,6 +530,53 @@ public class BlockListener implements Listener {
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         cleanupAbilityTools(player, mcMMOPlayer, blockState, heldItem);
+
+        debugStickDump(player, blockState);
+    }
+
+    public void debugStickDump(Player player, BlockState blockState) {
+        if(player.getInventory().getItemInMainHand().getType() == Material.DEBUG_STICK)
+        {
+            if(mcMMO.getPlaceStore().isTrue(blockState))
+                player.sendMessage("[mcMMO DEBUG] This block is not natural and does not reward treasures/XP");
+            else
+            {
+                player.sendMessage("[mcMMO DEBUG] This block is considered natural by mcMMO");
+                UserManager.getPlayer(player).getExcavationManager().printExcavationDebug(player, blockState);
+            }
+
+            if(WorldGuardUtils.isWorldGuardLoaded())
+            {
+                if(WorldGuardManager.getInstance().hasMainFlag(player))
+                    player.sendMessage("[mcMMO DEBUG] World Guard main flag is permitted for this player in this region");
+                else
+                    player.sendMessage("[mcMMO DEBUG] World Guard main flag is DENIED for this player in this region");
+
+                if(WorldGuardManager.getInstance().hasXPFlag(player))
+                    player.sendMessage("[mcMMO DEBUG] World Guard xp flag is permitted for this  in this region");
+                else
+                    player.sendMessage("[mcMMO DEBUG] World Guard xp flag is not permitted for this player in this region");
+            }
+
+            if(blockState instanceof Furnace)
+            {
+                Furnace furnace = (Furnace) blockState;
+                if(furnace.hasMetadata(mcMMO.furnaceMetadataKey))
+                {
+                    player.sendMessage("[mcMMO DEBUG] This furnace has a registered owner");
+                    Player furnacePlayer = getPlayerFromFurnace(furnace.getBlock());
+                    if(furnacePlayer != null)
+                    {
+                        player.sendMessage("[mcMMO DEBUG] This furnace is owned by player "+furnacePlayer.getName());
+                    }
+                }
+                else
+                    player.sendMessage("[mcMMO DEBUG] This furnace does not have a registered owner");
+            }
+
+            if(ExperienceConfig.getInstance().isExperienceBarsEnabled())
+                player.sendMessage("[mcMMO DEBUG] XP bars are enabled, however you should check per-skill settings to make sure those are enabled.");
+        }
     }
 
     public void cleanupAbilityTools(Player player, McMMOPlayer mcMMOPlayer, BlockState blockState, ItemStack heldItem) {
