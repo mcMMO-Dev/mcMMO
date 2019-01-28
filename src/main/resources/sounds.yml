@@ -8,7 +8,7 @@ Sounds:
         Enable: true
         Volume: 1.0
         Pitch: 0.3
-    #Fizz, Pop, and Kraken make use of a adding and multiplying random numbers together to make a unique pitch everytime they are heard
+    #Fizz, and Pop make use of a adding and multiplying random numbers together to make a unique pitch everytime they are heard
     FIZZ:
         Enable: true
         Volume: 0.5
@@ -20,14 +20,10 @@ Sounds:
         Enable: true
         Volume: 1.0
         Pitch: 1.0
-    #Fizz, Pop, and Kraken make use of a adding and multiplying random numbers together to make a unique pitch everytime they are heard
+    #Fizz, and Pop make use of a adding and multiplying random numbers together to make a unique pitch everytime they are heard
     POP:
         Enable: true
         Volume: 0.2
-    #Fizz, Pop, and Kraken make use of a adding and multiplying random numbers together to make a unique pitch everytime they are heard
-    KRAKEN:
-        Enable: true
-        Volume: 1.0
     CHIMAERA_WING:
         Enable: true
         Volume: 1.0

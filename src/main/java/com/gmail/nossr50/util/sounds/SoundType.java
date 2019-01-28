@@ -6,7 +6,6 @@ public enum SoundType {
     FIZZ,
     ITEM_BREAK,
     POP,
-    KRAKEN,
     CHIMAERA_WING,
     ROLL_ACTIVATED,
     SKILL_UNLOCKED,
@@ -22,7 +21,6 @@ public enum SoundType {
         switch(this){
             case POP:
             case FIZZ:
-            case KRAKEN:
                 return true;
             default:
                 return false;

@@ -55,8 +55,6 @@ public class SoundManager {
             return getFizzPitch();
         else if (soundType == SoundType.POP)
             return getPopPitch();
-        else if (soundType == SoundType.KRAKEN)
-            return getKrakenPitch();
         else
             return SoundConfig.getInstance().getPitch(soundType);
     }
@@ -71,8 +69,6 @@ public class SoundManager {
                 return Sound.ENTITY_ITEM_BREAK;
             case POP:
                 return Sound.ENTITY_ITEM_PICKUP;
-            case KRAKEN:
-                return Sound.ENTITY_GHAST_SCREAM;
             case CHIMAERA_WING:
                 return Sound.ENTITY_BAT_TAKEOFF;
             case LEVEL_UP:

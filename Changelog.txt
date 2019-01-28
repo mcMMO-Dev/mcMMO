@@ -21,6 +21,10 @@ Version 2.1.2
     (Skills) Magic Hunter now uses a rank system
     (Skills) Fixed a bug where Magic Hunter would work without treasure hunter
     (Skills) As long are you are empty handed mcMMO will no longer put items into your hands
+    (Skills) Improved the styling on /smelting
+    (Style) Locked skills now are styled differently in the skill command display
+    (Style) Added @ symbol styling for hover tooltips to the locale
+    (Style) Added the skill names in the skill commands display to the locale so it can now be edited and styled
     (Experience) Renamed Grass to Grass_Block in treasures.yml to allow grass to give items again (update your configs manually or delete to regen)
     (Experience) Wood blocks now give XP and are affected by Tree Feller (6 sided bark blocks)
     (API) Moved XPGainReason from skills to experience package
