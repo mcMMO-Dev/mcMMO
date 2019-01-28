@@ -72,8 +72,7 @@ public class FishingManager extends SkillManager {
         Location targetLocation = targetBlock.getLocation();
         boolean sameTarget = (fishingTarget != null && fishingTarget.equals(targetLocation));
 
-        if(!sameTarget)
-            fishingTarget = targetLocation;
+        fishingTarget = targetLocation;
 
         return hasFished || sameTarget;
     }
