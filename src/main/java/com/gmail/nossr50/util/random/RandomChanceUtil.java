@@ -123,6 +123,15 @@ public class RandomChanceUtil
      */
     public static double getRandomChanceExecutionChance(RandomChanceExecution randomChance) {
         double chanceOfSuccess = getChanceOfSuccess(randomChance.getXPos(), randomChance.getProbabilityCap(), LINEAR_CURVE_VAR);
+
+        return chanceOfSuccess;
+    }
+
+    public static double getRandomChanceExecutionChance(RandomChanceStatic randomChance) {
+        double chanceOfSuccess = getChanceOfSuccess(randomChance.getXPos(), randomChance.getProbabilityCap(), LINEAR_CURVE_VAR);
+
+        chanceOfSuccess = addLuck(randomChance.isLucky(), chanceOfSuccess);
+
         return chanceOfSuccess;
     }
 
@@ -262,15 +271,18 @@ public class RandomChanceUtil
     }
 
     public static String[] calculateAbilityDisplayValuesStatic(Player player, PrimarySkillType primarySkillType, double chance) {
-        RandomChanceStatic rcs = new RandomChanceStatic(chance);
+        RandomChanceStatic rcs = new RandomChanceStatic(chance, false);
         double successChance = getRandomChanceExecutionChance(rcs);
+
+        RandomChanceStatic rcs_lucky = new RandomChanceStatic(chance, true);
+        double successChance_lucky = getRandomChanceExecutionChance(rcs_lucky);
 
         String[] displayValues = new String[2];
 
         boolean isLucky = Permissions.lucky(player, primarySkillType);
 
         displayValues[0] = percent.format(Math.min(successChance, 100.0D) / 100.0D);
-        displayValues[1] = isLucky ? percent.format(Math.min(successChance * 1.3333D, 100.0D) / 100.0D) : null;
+        displayValues[1] = isLucky ? percent.format(Math.min(successChance_lucky, 100.0D) / 100.0D) : null;
 
         return displayValues;
     }
@@ -279,6 +291,8 @@ public class RandomChanceUtil
         double successChance = getActivationChance(skillActivationType, subSkillType, player);
         successChance *= multiplier; //Currently only used for graceful roll
         String[] displayValues = new String[2];
+
+        //TODO: Account for lucky in this
 
         boolean isLucky = Permissions.lucky(player, subSkillType.getParentSkill());
 

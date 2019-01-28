@@ -3,11 +3,13 @@ package com.gmail.nossr50.util.random;
 public class RandomChanceStatic implements RandomChanceExecution {
     private final double xPos;
     private final double probabilityCap;
+    private final boolean isLucky;
 
-    public RandomChanceStatic(double xPos)
+    public RandomChanceStatic(double xPos, boolean isLucky)
     {
         this.xPos = xPos;
         this.probabilityCap = xPos;
+        this.isLucky = isLucky;
     }
 
     /**
@@ -29,5 +31,9 @@ public class RandomChanceStatic implements RandomChanceExecution {
     @Override
     public double getProbabilityCap() {
         return probabilityCap;
+    }
+
+    public boolean isLucky() {
+        return isLucky;
     }
 }
