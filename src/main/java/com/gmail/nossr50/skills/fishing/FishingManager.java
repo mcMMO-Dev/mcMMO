@@ -67,7 +67,7 @@ public class FishingManager extends SkillManager {
         long currentTime = System.currentTimeMillis();
         boolean hasFished = (currentTime < fishingTimestamp + (FISHING_COOLDOWN_SECONDS * 10));
 
-        if(hasFished == true)
+        if(hasFished)
             fishingTimestamp = currentTime;
 
         Location targetLocation = targetBlock.getLocation();
@@ -421,7 +421,7 @@ public class FishingManager extends SkillManager {
         double diceRoll = Misc.getRandom().nextDouble() * 100;
 
         for (Rarity rarity : Rarity.values()) {
-            if (rarity == Rarity.TRAP || rarity == Rarity.RECORD) {
+            if (rarity == Rarity.RECORD) {
                 continue;
             }
 

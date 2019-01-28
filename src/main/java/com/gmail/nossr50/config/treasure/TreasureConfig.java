@@ -58,7 +58,7 @@ public class TreasureConfig extends ConfigLoader {
                 double enchantDropRate = config.getDouble("Enchantment_Drop_Rates." + tier + "." + rarity.toString());
                 double itemDropRate = config.getDouble("Item_Drop_Rates." + tier + "." + rarity.toString());
 
-                if ((enchantDropRate < 0.0 || enchantDropRate > 100.0) && rarity != Rarity.TRAP && rarity != Rarity.RECORD) {
+                if ((enchantDropRate < 0.0 || enchantDropRate > 100.0) && rarity != Rarity.RECORD) {
                     reason.add("The enchant drop rate for " + tier + " items that are " + rarity.toString() + "should be between 0.0 and 100.0!");
                 }
 
@@ -311,7 +311,7 @@ public class TreasureConfig extends ConfigLoader {
 
     private void loadEnchantments() {
         for (Rarity rarity : Rarity.values()) {
-            if (rarity == Rarity.TRAP || rarity == Rarity.RECORD) {
+            if (rarity == Rarity.RECORD) {
                 continue;
             }
 

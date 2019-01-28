@@ -58,7 +58,6 @@ public class FishingCommand extends SkillCommand {
             lootTier = fishingManager.getLootTier();
 
             // Item drop rates
-            trapTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.TRAP) / 100.0);
             commonTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.COMMON) / 100.0);
             uncommonTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.UNCOMMON) / 100.0);
             rareTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.RARE) / 100.0);
@@ -70,7 +69,7 @@ public class FishingCommand extends SkillCommand {
             double totalEnchantChance = 0;
 
             for (Rarity rarity : Rarity.values()) {
-                if (rarity != Rarity.TRAP && rarity != Rarity.RECORD) {
+                if (rarity != Rarity.RECORD) {
                     totalEnchantChance += TreasureConfig.getInstance().getEnchantmentDropRate(lootTier, rarity);
                 }
             }
@@ -78,7 +77,7 @@ public class FishingCommand extends SkillCommand {
             if(totalEnchantChance > 0)
                 magicChance = percent.format(totalEnchantChance / 100.0);
             else
-                magicChance = percent.format(magicChance);
+                magicChance = percent.format(0);
         }
 
         // FISHING_SHAKE
@@ -153,7 +152,6 @@ public class FishingCommand extends SkillCommand {
         if (canTreasureHunt) {
             messages.add(getStatMessage(false, true, SubSkillType.FISHING_TREASURE_HUNTER, String.valueOf(lootTier), String.valueOf(RankUtils.getHighestRank(SubSkillType.FISHING_TREASURE_HUNTER))));
             messages.add(getStatMessage(true, true, SubSkillType.FISHING_TREASURE_HUNTER,
-                    String.valueOf(trapTreasure),
                     String.valueOf(commonTreasure),
                     String.valueOf(uncommonTreasure),
                     String.valueOf(rareTreasure),

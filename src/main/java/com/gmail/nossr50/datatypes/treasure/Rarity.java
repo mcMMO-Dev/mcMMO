@@ -6,8 +6,7 @@ public enum Rarity {
     EPIC,
     RARE,
     UNCOMMON,
-    COMMON,
-    TRAP;
+    COMMON;
 
     public static Rarity getRarity(String string) {
         try {
