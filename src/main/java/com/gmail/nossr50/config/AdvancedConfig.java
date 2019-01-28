@@ -989,6 +989,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     /*public int getFastFoodUnlock() { return config.getInt("Skills.Taming.FastFood.UnlockLevel", 50); }*/
     public double getFastFoodChance() { return config.getDouble("Skills.Taming.FastFood.Chance", 50.0D); }
+    public double getPummelChance() { return config.getDouble("Skills.Taming.Pummel.Chance", 10.0D); }
 
     public int getEnviromentallyAwareUnlock() { return config.getInt("Skills.Taming.EnvironmentallyAware.UnlockLevel", 100); }
 
