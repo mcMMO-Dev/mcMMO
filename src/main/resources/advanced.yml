@@ -541,9 +541,7 @@ Skills:
             # BonusMin: Minimum bonus damage for unarmed
             # BonusMax: Maximum bonus damage for unarmed
             # IncreaseLevel: Bonus damage increases every increase level
-            BonusMin: 3.0
-            BonusMax: 8.0
-            IncreaseLevel: 5
+            IncreaseLevel: 10
     #
     #  Settings for Woodcutting
     ###

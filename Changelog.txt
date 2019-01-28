@@ -22,6 +22,11 @@ Version 2.1.2
     (Skills) Fixed a bug where Magic Hunter would work without treasure hunter
     (Skills) As long are you are empty handed mcMMO will no longer put items into your hands
     (Skills) Improved the styling on /smelting
+    (Skills) Iron Arm Style can now reach a bonus damage of 10 (up from 8)
+    (Skills) Iron Arm Style now uses a rank system
+    (Skills) Iron Grip now uses a rank system
+    (Skills) Disarm now uses a rank system
+    (Skills) Arrow Deflect now uses a rank system
     (Style) Locked skills now are styled differently in the skill command display
     (Style) Added @ symbol styling for hover tooltips to the locale
     (Style) Added the skill names in the skill commands display to the locale so it can now be edited and styled
@@ -34,6 +39,7 @@ Version 2.1.2
     (Config) Added an option for Party XP gains to not update XP bars
     (Config) Added an option for Passive XP gains to not update XP bars (smelting/brewing)
     (Config) Added warnings if mcMMO finds a MaxBonusLevel of 0 for any skill that incorporates RNG
+    (Config) Removed config options for Iron Arm
 
 Version 2.1.1
     = Fixed an issue where excavation wasn't using the correct permission node

@@ -16,6 +16,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
+import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
@@ -35,6 +36,9 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canUseIronArm() {
+        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_IRON_GRIP))
+            return false;
+
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_IRON_ARM_STYLE);
     }
 
@@ -43,16 +47,25 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canDisarm(LivingEntity target) {
+        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_DISARM))
+            return false;
+
         return target instanceof Player && ((Player) target).getInventory().getItemInMainHand().getType() != Material.AIR && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_DISARM);
     }
 
     public boolean canDeflect() {
+        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_ARROW_DEFLECT))
+            return false;
+
         Player player = getPlayer();
 
         return ItemUtils.isUnarmed(player.getInventory().getItemInMainHand()) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_ARROW_DEFLECT);
     }
 
     public boolean canUseBlockCracker() {
+        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_BLOCK_CRACKER))
+            return false;
+
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_BLOCK_CRACKER);
     }
 
@@ -130,12 +143,11 @@ public class UnarmedManager extends SkillManager {
             return 0;
         }
 
-        //linear check no cap
         return getIronArmDamage();
     }
 
     public double getIronArmDamage() {
-        return Math.min(Unarmed.ironArmMinBonusDamage + (getSkillLevel() / Unarmed.ironArmIncreaseLevel), Unarmed.ironArmMaxBonusDamage);
+        return RankUtils.getRank(getPlayer(), SubSkillType.UNARMED_IRON_ARM_STYLE) * 2;
     }
 
     /**

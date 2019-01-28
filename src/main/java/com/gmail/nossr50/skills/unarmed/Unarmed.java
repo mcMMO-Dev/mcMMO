@@ -1,16 +1,11 @@
 package com.gmail.nossr50.skills.unarmed;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 public class Unarmed {
-    public static double ironArmMinBonusDamage = AdvancedConfig.getInstance().getIronArmMinBonus();
-    public static double ironArmMaxBonusDamage = AdvancedConfig.getInstance().getIronArmMaxBonus();
-    public static int    ironArmIncreaseLevel  = AdvancedConfig.getInstance().getIronArmIncreaseLevel();
-
     public static boolean blockCrackerSmoothBrick = Config.getInstance().getUnarmedBlockCrackerSmoothbrickToCracked();
 
     public static double berserkDamageModifier = 1.5;

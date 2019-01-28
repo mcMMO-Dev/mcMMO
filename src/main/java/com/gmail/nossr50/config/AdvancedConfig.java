@@ -610,22 +610,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Unarmed.IronGrip.MaxBonusLevel should be at least 1!");
         }
 
-        if (getIronArmMinBonus() < 0) {
-            reason.add("Skills.Unarmed.IronArmStyle.BonusMin should be at least 0!");
-        }
-
-        if (getIronArmMaxBonus() < 0) {
-            reason.add("Skills.Unarmed.IronArmStyle.BonusMax should be at least 0!");
-        }
-
-        if (getIronArmMaxBonus() < getIronArmMinBonus()) {
-            reason.add("Skills.Unarmed.IronArmStyle.BonusMax should be greater than or equal to Skills.Unarmed.IronArm.BonusMin!");
-        }
-
-        if (getIronArmIncreaseLevel() < 1) {
-            reason.add("Skills.Unarmed.IronArmStyle.IncreaseLevel should be at least 1!");
-        }
-
         /* WOODCUTTING */
 
         /*if (getLeafBlowUnlockLevel() < 0) {
@@ -1023,17 +1007,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getMaxHorseJumpStrength() { return config.getDouble("Skills.Taming.CallOfTheWild.MaxHorseJumpStrength", 2.0D); }
 
     /* UNARMED */
-    public double getIronArmMinBonus() { return config.getDouble("Skills.Unarmed.IronArmStyle.BonusMin", 3.0D); }
-    public double getIronArmMaxBonus() { return config.getDouble("Skills.Unarmed.IronArmStyle.BonusMax", 8.0D); }
-
-    public int getIronArmIncreaseLevel() {
-        int increaseLevel = config.getInt("Skills.Unarmed.IronArmStyle.IncreaseLevel", 5);
-
-        if(mcMMO.isRetroModeEnabled())
-            return increaseLevel * 10;
-
-        return increaseLevel;
-    }
 
     public boolean getDisarmProtected() { return config.getBoolean("Skills.Unarmed.Disarm.AntiTheft", false); }
 

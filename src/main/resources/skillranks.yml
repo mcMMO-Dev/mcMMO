@@ -399,6 +399,35 @@ Unarmed:
             Rank_1: 10
         RetroMode:
             Rank_1: 100
+    ArrowDeflect:
+        Standard:
+            Rank_1: 20
+        RetroMode:
+            Rank_1: 200
+    Disarm:
+        Standard:
+            Rank_1: 25
+        RetroMode:
+            Rank_1: 250
+    IronGrip:
+        Standard:
+            Rank_1: 60
+        RetroMode:
+            Rank_1: 600
+    IronArmStyle:
+        Standard:
+            Rank_1: 2
+            Rank_2: 25
+            Rank_3: 50
+            Rank_4: 75
+            Rank_5: 100
+        RetroMode:
+            Rank_1: 20
+            Rank_2: 250
+            Rank_3: 500
+            Rank_4: 750
+            Rank_5: 1000
+
 Woodcutting:
     Splinter:
         Standard:
