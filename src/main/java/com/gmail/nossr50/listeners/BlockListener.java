@@ -553,7 +553,7 @@ public class BlockListener implements Listener {
                     player.sendMessage("[mcMMO DEBUG] World Guard main flag is DENIED for this player in this region");
 
                 if(WorldGuardManager.getInstance().hasXPFlag(player))
-                    player.sendMessage("[mcMMO DEBUG] World Guard xp flag is permitted for this  in this region");
+                    player.sendMessage("[mcMMO DEBUG] World Guard xp flag is permitted for this player in this region");
                 else
                     player.sendMessage("[mcMMO DEBUG] World Guard xp flag is not permitted for this player in this region");
             }

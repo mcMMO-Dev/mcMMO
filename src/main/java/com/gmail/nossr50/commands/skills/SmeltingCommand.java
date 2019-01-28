@@ -25,7 +25,7 @@ public class SmeltingCommand extends SkillCommand {
     private boolean canFuelEfficiency;
     private boolean canSecondSmelt;
     private boolean canFluxMine;
-    private boolean canVanillaXPBoost;
+    private boolean canUnderstandTheArt;
 
     public SmeltingCommand() {
         super(PrimarySkillType.SMELTING);
@@ -58,7 +58,7 @@ public class SmeltingCommand extends SkillCommand {
         canFuelEfficiency = canUseSubskill(player, SubSkillType.SMELTING_FUEL_EFFICIENCY);
         canSecondSmelt = canUseSubskill(player, SubSkillType.SMELTING_SECOND_SMELT);
         canFluxMine = canUseSubskill(player, SubSkillType.SMELTING_FLUX_MINING);
-        canVanillaXPBoost = Permissions.vanillaXpBoost(player, skill) && RankUtils.hasUnlockedSubskill(player, SubSkillType.SMELTING_UNDERSTANDING_THE_ART);
+        canUnderstandTheArt = Permissions.vanillaXpBoost(player, skill) && RankUtils.hasUnlockedSubskill(player, SubSkillType.SMELTING_UNDERSTANDING_THE_ART);
     }
 
     @Override
@@ -66,19 +66,23 @@ public class SmeltingCommand extends SkillCommand {
         List<String> messages = new ArrayList<String>();
 
         if (canFluxMine) {
-            messages.add(LocaleLoader.getString("Smelting.Ability.FluxMining", str_fluxMiningChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", str_fluxMiningChanceLucky) : ""));
+            messages.add(getStatMessage(SubSkillType.SMELTING_FLUX_MINING, str_fluxMiningChance)
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", str_fluxMiningChanceLucky) : ""));
+            //messages.add(LocaleLoader.getString("Smelting.Ability.FluxMining", str_fluxMiningChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", str_fluxMiningChanceLucky) : ""));
         }
         
         if (canFuelEfficiency) {
-            messages.add(LocaleLoader.getString("Smelting.Ability.FuelEfficiency", burnTimeModifier));
+            messages.add(getStatMessage(false, true, SubSkillType.SMELTING_FUEL_EFFICIENCY, burnTimeModifier));
         }
 
         if (canSecondSmelt) {
-            messages.add(LocaleLoader.getString("Smelting.Ability.SecondSmelt", str_secondSmeltChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", str_secondSmeltChanceLucky) : ""));
+            messages.add(getStatMessage(SubSkillType.SMELTING_SECOND_SMELT, str_fluxMiningChance)
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", str_secondSmeltChanceLucky) : ""));
         }
 
-        if (canVanillaXPBoost) {
-            messages.add(LocaleLoader.getString("Smelting.Ability.VanillaXPBoost", UserManager.getPlayer(player).getSmeltingManager().getVanillaXpMultiplier()));
+        if (canUnderstandTheArt) {
+            messages.add(getStatMessage(false, true, SubSkillType.SMELTING_UNDERSTANDING_THE_ART,
+                    String.valueOf(UserManager.getPlayer(player).getSmeltingManager().getVanillaXpMultiplier())));
         }
 
         return messages;
