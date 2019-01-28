@@ -60,9 +60,7 @@ public class SmeltingManager extends SkillManager {
     public boolean processFluxMining(BlockState blockState) {
         Player player = getPlayer();
 
-        SubSkillRandomCheckEvent event = new SubSkillRandomCheckEvent(getPlayer(), SubSkillType.SMELTING_FLUX_MINING, Smelting.fluxMiningChance / activationChance);
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
-        if ((event.getChance() * activationChance) > Misc.getRandom().nextInt(activationChance)) {
+        if (RandomChanceUtil.checkRandomChanceExecutionSuccess(getPlayer(), SubSkillType.SMELTING_FLUX_MINING, true)) {
             ItemStack item = null;
 
             switch (blockState.getType()) {

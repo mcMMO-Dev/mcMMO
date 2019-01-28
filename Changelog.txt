@@ -9,6 +9,10 @@ Key:
 
 Version 2.1.2
     (Perks) Fixed a bug where the Lucky perk wasn't adding to success
+    (Skills) Fixing a bug where Shake didn't calculate success correctly
+    (Skills) Fixed a bug where Arcane Forging didn't calculate success and failure correctly
+    (Skills) Fixed a bug where Salvage didn't calculate success and failure correctly
+    (Skills) Fixed a bug where Flux Mining didn't calculate success correctly
     (Skills) Tree Feller now works on Mushroom Stems
     (Experience) Wood blocks now give XP and are affected by Tree Feller (6 sided bark blocks)
     (API) Moved XPGainReason from skills to experience package
@@ -17,6 +21,7 @@ Version 2.1.2
     (Config) The Extra Stats option for XP bars now overrides the setting for updating XP bars every time XP is gained
     (Config) Added an option for Party XP gains to not update XP bars
     (Config) Added an option for Passive XP gains to not update XP bars (smelting/brewing)
+    (Config) Added warnings if mcMMO finds a MaxBonusLevel of 0 for any skill that incorporates RNG
 
 Version 2.1.1
     = Fixed an issue where excavation wasn't using the correct permission node

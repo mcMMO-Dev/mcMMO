@@ -705,6 +705,9 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         if(mcMMO.isRetroModeEnabled())
             maxBonusLevel *= 10;
 
+        if(maxBonusLevel == 0)
+            mcMMO.p.getLogger().severe("Warning Max Bonus Level for "+subSkillType.getAdvConfigAddress() + ".MaxBonusLevel"+" is set to 0! Typically this value should be 100.");
+
         return maxBonusLevel;
     }
 

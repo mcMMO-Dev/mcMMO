@@ -420,6 +420,7 @@ Skills:
             # Chance: Chance for Flux Mining to activate
             UnlockLevel: 25
             Chance: 33.0
+            MaxBonusLevel: 100
 
         # VanillaXPMultiplier: Vanilla XP gained from smelting ores is multiplied by these values.
         VanillaXPMultiplier:
