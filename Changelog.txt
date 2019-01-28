@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 2.1.2
+    (Perks) Fixed a bug where the Lucky perk wasn't adding to success
     (Skills) Tree Feller now works on Mushroom Stems
     (Experience) Wood blocks now give XP and are affected by Tree Feller (6 sided bark blocks)
     (API) Moved XPGainReason from skills to experience package

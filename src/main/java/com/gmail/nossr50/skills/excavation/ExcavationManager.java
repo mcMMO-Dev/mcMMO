@@ -41,7 +41,7 @@ public class ExcavationManager extends SkillManager {
 
                 for (ExcavationTreasure treasure : treasures) {
                     if (skillLevel >= treasure.getDropLevel()
-                            && RandomChanceUtil.checkRandomChanceExecutionSuccess(treasure.getDropChance())) {
+                            && RandomChanceUtil.checkRandomChanceExecutionSuccess(getPlayer(), PrimarySkillType.EXCAVATION, treasure.getDropChance())) {
                         xp += treasure.getXp();
                         Misc.dropItem(location, treasure.getDrop());
                     }

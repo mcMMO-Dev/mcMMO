@@ -63,10 +63,12 @@ public class RandomChanceUtil
      * Checks whether or not the random chance succeeds
      * @return true if the random chance succeeds
      */
-    public static boolean checkRandomChanceExecutionSuccess(double chance)
+    public static boolean checkRandomChanceExecutionSuccess(Player player, PrimarySkillType primarySkillType, double chance)
     {
         //Check the odds
         chance *= 100;
+
+        chance = addLuck(player, primarySkillType, chance);
 
         /*
          * Stuff like treasures can specify a drop chance from 0.05 to 100
@@ -143,6 +145,10 @@ public class RandomChanceUtil
             //Get chance of success
             chanceOfSuccess = getChanceOfSuccess(randomChance.getXPos(), maximumProbability, maximumBonusLevel);
         }
+
+        //Add Luck
+        chanceOfSuccess = addLuck(randomChance.isLucky(), chanceOfSuccess);
+
         return chanceOfSuccess;
     }
 
@@ -280,5 +286,21 @@ public class RandomChanceUtil
         displayValues[1] = isLucky ? percent.format(Math.min(successChance * 1.3333D, 100.0D) / 100.0D) : null;
 
         return displayValues;
+    }
+
+    public static double addLuck(Player player, PrimarySkillType primarySkillType, double chance)
+    {
+        if(Permissions.lucky(player, primarySkillType))
+            return chance * 1.333D;
+        else
+            return chance;
+    }
+
+    public static double addLuck(boolean isLucky, double chance)
+    {
+        if(isLucky)
+            return chance * 1.333D;
+        else
+            return chance;
     }
 }

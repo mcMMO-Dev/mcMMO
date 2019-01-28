@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.random;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.Player;
 
@@ -11,6 +12,7 @@ public class RandomChanceSkill implements RandomChanceExecution {
     protected final PrimarySkillType primarySkillType;
     protected final SubSkillType subSkillType;
     protected final double probabilityCap;
+    protected final boolean isLucky;
     private int skillLevel;
 
     public RandomChanceSkill(Player player, SubSkillType subSkillType)
@@ -23,6 +25,11 @@ public class RandomChanceSkill implements RandomChanceExecution {
             this.skillLevel = UserManager.getPlayer(player).getSkillLevel(primarySkillType);
         else
             this.skillLevel = 0;
+
+        if(player != null)
+            isLucky = Permissions.lucky(player, primarySkillType);
+        else
+            isLucky = false;
     }
 
     public RandomChanceSkill(Player player, SubSkillType subSkillType, boolean hasCap)
@@ -39,6 +46,11 @@ public class RandomChanceSkill implements RandomChanceExecution {
             this.skillLevel = UserManager.getPlayer(player).getSkillLevel(primarySkillType);
         else
             this.skillLevel = 0;
+
+        if(player != null)
+            isLucky = Permissions.lucky(player, primarySkillType);
+        else
+            isLucky = false;
     }
 
     /**
@@ -96,5 +108,9 @@ public class RandomChanceSkill implements RandomChanceExecution {
     @Override
     public double getProbabilityCap() {
         return probabilityCap;
+    }
+
+    public boolean isLucky() {
+        return isLucky;
     }
 }
