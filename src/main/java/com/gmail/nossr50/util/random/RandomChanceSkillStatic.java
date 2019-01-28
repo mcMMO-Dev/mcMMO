@@ -33,4 +33,16 @@ public class RandomChanceSkillStatic extends RandomChanceSkill {
     public double getProbabilityCap() {
         return probabilityCap;
     }
+
+    /**
+     * The maximum bonus level for this skill
+     * This is when the skills level no longer increases the odds of success
+     * For example, a value of 25 will mean the success chance no longer grows after skill level 25
+     *
+     * @return the maximum bonus from skill level for this skill
+     */
+    @Override
+    public double getMaximumBonusLevelCap() {
+        return 100;
+    }
 }
