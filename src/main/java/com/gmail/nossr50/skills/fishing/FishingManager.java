@@ -38,7 +38,6 @@ import java.util.*;
 public class FishingManager extends SkillManager {
     private final long FISHING_COOLDOWN_SECONDS = 1000L;
 
-    private int fishingTries = 0;
     private long fishingTimestamp = 0L;
     private Location fishingTarget;
     private Item fishingCatch;
@@ -72,6 +71,9 @@ public class FishingManager extends SkillManager {
 
         Location targetLocation = targetBlock.getLocation();
         boolean sameTarget = (fishingTarget != null && fishingTarget.equals(targetLocation));
+
+        if(!sameTarget)
+            fishingTarget = targetLocation;
 
         return hasFished || sameTarget;
     }
@@ -258,8 +260,6 @@ public class FishingManager extends SkillManager {
      * @param target The {@link LivingEntity} affected by the ability
      */
     public void shakeCheck(LivingEntity target) {
-        fishingTries--; // Because autoclicking to shake is OK.
-
         if (RandomChanceUtil.checkRandomChanceExecutionSuccess(getPlayer(), SubSkillType.FISHING_SHAKE, true)) {
             List<ShakeTreasure> possibleDrops = Fishing.findPossibleDrops(target);
 

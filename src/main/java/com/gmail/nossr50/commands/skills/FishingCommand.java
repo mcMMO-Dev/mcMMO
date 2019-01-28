@@ -74,7 +74,7 @@ public class FishingCommand extends SkillCommand {
                 }
             }
 
-            if(totalEnchantChance > 0)
+            if(totalEnchantChance >= 1)
                 magicChance = percent.format(totalEnchantChance / 100.0);
             else
                 magicChance = percent.format(0);
@@ -116,7 +116,7 @@ public class FishingCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canTreasureHunt = canUseSubskill(player, SubSkillType.FISHING_TREASURE_HUNTER);
-        canMagicHunt = canUseSubskill(player, SubSkillType.FISHING_MAGIC_HUNTER);
+        canMagicHunt = canUseSubskill(player, SubSkillType.FISHING_MAGIC_HUNTER) && canUseSubskill(player, SubSkillType.FISHING_TREASURE_HUNTER);
         canShake = canUseSubskill(player, SubSkillType.FISHING_SHAKE);
         canFishermansDiet = canUseSubskill(player, SubSkillType.FISHING_FISHERMANS_DIET);
         canMasterAngler = canUseSubskill(player, SubSkillType.FISHING_MASTER_ANGLER);
