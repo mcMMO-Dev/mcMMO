@@ -344,7 +344,7 @@ public final class CombatUtils {
      */
     @Deprecated
     public static void dealDamage(LivingEntity target, double damage, LivingEntity attacker) {
-        dealDamage(target, damage, DamageCause.ENTITY_ATTACK, attacker);
+        dealDamage(target, damage, DamageCause.CUSTOM, attacker);
     }
 
     /**

@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 2.1.2
+    (Compatibility) mcMMO now deals custom damage type for all damage sources to be more compatible with other plugins (such as anti-cheat)
     (Perks) Fixed a bug where the Lucky perk wasn't adding to success
     (Skills) mcMMO will now listen to cancelled events to remove our temporary enchantments from tools
     (Skills) Fixing a bug where Shake didn't calculate success correctly
