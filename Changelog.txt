@@ -17,6 +17,8 @@ Version 2.1.2
     (Skills) Tree Feller now works on Mushroom Stems
     (Skills) Fixed a bug where magic chance would show as null
     (Skills) Fixed a bug where Trap percentages were added to Fishing even though they no longer exist
+    (Skills) Magic Hunter now uses a rank system
+    (Skills) Fixed a bug where Magic Hunter would work without treasure hunter
     (Experience) Wood blocks now give XP and are affected by Tree Feller (6 sided bark blocks)
     (API) Moved XPGainReason from skills to experience package
     (API) Added XpGainSource for tracking sources of XP

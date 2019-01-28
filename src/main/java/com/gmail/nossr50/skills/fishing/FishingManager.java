@@ -179,6 +179,13 @@ public class FishingManager extends SkillManager {
         hook.setBiteChance(Math.min(biteChance, 1.0));
     }
 
+    public boolean isMagicHunterEnabled()
+    {
+        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.FISHING_MAGIC_HUNTER)
+                && RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.FISHING_TREASURE_HUNTER)
+                && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_TREASURE_HUNTER);
+    }
+
     /**
      * Process the results from a successful fishing trip
      *
@@ -200,7 +207,8 @@ public class FishingManager extends SkillManager {
             ItemStack treasureDrop = treasure.getDrop().clone(); // Not cloning is bad, m'kay?
             Map<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
 
-            if (Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_MAGIC_HUNTER) && ItemUtils.isEnchantable(treasureDrop)) {
+            if (isMagicHunterEnabled()
+                    && ItemUtils.isEnchantable(treasureDrop)) {
                 enchants = handleMagicHunter(treasureDrop);
             }
 
