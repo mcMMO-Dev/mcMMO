@@ -5,6 +5,8 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
+import com.gmail.nossr50.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.datatypes.party.Party;
@@ -12,7 +14,6 @@ import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
-import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
@@ -144,10 +145,17 @@ public class McMMOPlayer {
         experienceBarManager.hideExperienceBar(primarySkillType);
     }*/
 
-    public void processPostXpEvent(XPGainReason xpGainReason, PrimarySkillType primarySkillType, Plugin plugin)
+    public void processPostXpEvent(XPGainReason xpGainReason, PrimarySkillType primarySkillType, Plugin plugin, XPGainSource xpGainSource)
     {
-        if(xpGainReason != XPGainReason.SHARED_PVP && xpGainReason != XPGainReason.SHARED_PVE && xpGainReason != XPGainReason.VAMPIRISM)
-            updateXPBar(primarySkillType, plugin);
+        //Updates from Party sources
+        if(xpGainSource == XPGainSource.PARTY_MEMBERS && !ExperienceConfig.getInstance().isPartyExperienceBarsEnabled())
+            return;
+
+        //Updates from passive sources (Alchemy, Smelting, etc...)
+        if(xpGainSource == XPGainSource.PASSIVE && !ExperienceConfig.getInstance().isPassiveGainsExperienceBarsEnabled())
+            return;
+
+        updateXPBar(primarySkillType, plugin);
     }
 
     public void processUnlockNotifications(mcMMO plugin, PrimarySkillType primarySkillType, int skillLevel)
@@ -452,7 +460,7 @@ public class McMMOPlayer {
      * @param skill Skill being used
      * @param xp Experience amount to process
      */
-    public void beginXpGain(PrimarySkillType skill, float xp, XPGainReason xpGainReason) {
+    public void beginXpGain(PrimarySkillType skill, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
         Validate.isTrue(xp >= 0.0, "XP gained should be greater than or equal to zero.");
 
         if (xp <= 0.0) {
@@ -465,7 +473,7 @@ public class McMMOPlayer {
 
             for (PrimarySkillType parentSkill : parentSkills) {
                 if (parentSkill.getPermissions(player)) {
-                    beginXpGain(parentSkill, splitXp, xpGainReason);
+                    beginXpGain(parentSkill, splitXp, xpGainReason, xpGainSource);
                 }
             }
 
@@ -477,7 +485,7 @@ public class McMMOPlayer {
             return;
         }
 
-        beginUnsharedXpGain(skill, xp, xpGainReason);
+        beginUnsharedXpGain(skill, xp, xpGainReason, xpGainSource);
     }
 
     /**
@@ -486,8 +494,8 @@ public class McMMOPlayer {
      * @param skill Skill being used
      * @param xp Experience amount to process
      */
-    public void beginUnsharedXpGain(PrimarySkillType skill, float xp, XPGainReason xpGainReason) {
-        applyXpGain(skill, modifyXpGain(skill, xp), xpGainReason);
+    public void beginUnsharedXpGain(PrimarySkillType skill, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
+        applyXpGain(skill, modifyXpGain(skill, xp), xpGainReason, xpGainSource);
 
         if (party == null) {
             return;
@@ -504,7 +512,7 @@ public class McMMOPlayer {
      * @param primarySkillType Skill being used
      * @param xp Experience amount to add
      */
-    public void applyXpGain(PrimarySkillType primarySkillType, float xp, XPGainReason xpGainReason) {
+    public void applyXpGain(PrimarySkillType primarySkillType, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
         if (!primarySkillType.getPermissions(player)) {
             return;
         }
@@ -513,7 +521,7 @@ public class McMMOPlayer {
             Set<PrimarySkillType> parentSkills = FamilyTree.getParents(primarySkillType);
 
             for (PrimarySkillType parentSkill : parentSkills) {
-                applyXpGain(parentSkill, xp / parentSkills.size(), xpGainReason);
+                applyXpGain(parentSkill, xp / parentSkills.size(), xpGainReason, xpGainSource);
             }
 
             return;
@@ -524,7 +532,7 @@ public class McMMOPlayer {
         }
 
         isUsingUnarmed = (primarySkillType == PrimarySkillType.UNARMED);
-        checkXp(primarySkillType, xpGainReason);
+        checkXp(primarySkillType, xpGainReason, xpGainSource);
     }
 
     /**
@@ -532,9 +540,9 @@ public class McMMOPlayer {
      *
      * @param primarySkillType The skill to check
      */
-    private void checkXp(PrimarySkillType primarySkillType, XPGainReason xpGainReason) {
+    private void checkXp(PrimarySkillType primarySkillType, XPGainReason xpGainReason, XPGainSource xpGainSource) {
         if (getSkillXpLevelRaw(primarySkillType) < getXpToLevel(primarySkillType)) {
-            UserManager.getPlayer(player).processPostXpEvent(xpGainReason, primarySkillType, mcMMO.p);
+            UserManager.getPlayer(player).processPostXpEvent(xpGainReason, primarySkillType, mcMMO.p, xpGainSource);
             return;
         }
 
@@ -552,7 +560,7 @@ public class McMMOPlayer {
         }
 
         if (!EventUtils.handleLevelChangeEvent(player, primarySkillType, levelsGained, xpRemoved, true, xpGainReason)) {
-            UserManager.getPlayer(player).processPostXpEvent(xpGainReason, primarySkillType, mcMMO.p);
+            UserManager.getPlayer(player).processPostXpEvent(xpGainReason, primarySkillType, mcMMO.p, xpGainSource);
             return;
         }
 
@@ -567,7 +575,7 @@ public class McMMOPlayer {
         NotificationManager.sendPlayerLevelUpNotification(UserManager.getPlayer(player), primarySkillType, levelsGained, profile.getSkillLevel(primarySkillType));
 
         //UPDATE XP BARS
-        UserManager.getPlayer(player).processPostXpEvent(xpGainReason, primarySkillType, mcMMO.p);
+        UserManager.getPlayer(player).processPostXpEvent(xpGainReason, primarySkillType, mcMMO.p, xpGainSource);
     }
 
     /*

@@ -1,10 +1,11 @@
 package com.gmail.nossr50.skills.smelting;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillRandomCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -39,11 +40,15 @@ public class SmeltingManager extends SkillManager {
     }
 
     public boolean canUseFluxMining(BlockState blockState) {
-        return getSkillLevel() >= Smelting.fluxMiningUnlockLevel && BlockUtils.affectedByFluxMining(blockState) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SMELTING_FLUX_MINING) && !mcMMO.getPlaceStore().isTrue(blockState);
+        return getSkillLevel() >= Smelting.fluxMiningUnlockLevel
+                && BlockUtils.affectedByFluxMining(blockState)
+                && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SMELTING_FLUX_MINING)
+                && !mcMMO.getPlaceStore().isTrue(blockState);
     }
 
     public boolean isSecondSmeltSuccessful() {
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SMELTING_SECOND_SMELT) && RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SMELTING_SECOND_SMELT, getPlayer());
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SMELTING_SECOND_SMELT)
+                && RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SMELTING_SECOND_SMELT, getPlayer());
     }
 
     /**
@@ -82,7 +87,7 @@ public class SmeltingManager extends SkillManager {
             }
 
             // We need to distribute Mining XP here, because the block break event gets cancelled
-            applyXpGain(Mining.getBlockXp(blockState), XPGainReason.PVE);
+            applyXpGain(Mining.getBlockXp(blockState), XPGainReason.PVE, XPGainSource.PASSIVE);
 
             SkillUtils.handleDurabilityChange(getPlayer().getInventory().getItemInMainHand(), Config.getInstance().getAbilityToolDamage());
 
@@ -133,7 +138,7 @@ public class SmeltingManager extends SkillManager {
     }
 
     public ItemStack smeltProcessing(ItemStack smelting, ItemStack result) {
-        applyXpGain(Smelting.getResourceXp(smelting), XPGainReason.PVE);
+        applyXpGain(Smelting.getResourceXp(smelting), XPGainReason.PVE, XPGainSource.PASSIVE);
 
         if (isSecondSmeltSuccessful()) {
             ItemStack newResult = result.clone();

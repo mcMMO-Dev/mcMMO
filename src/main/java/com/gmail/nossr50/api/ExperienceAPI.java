@@ -4,10 +4,11 @@ import com.gmail.nossr50.api.exceptions.*;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
+import com.gmail.nossr50.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.player.UserManager;
@@ -102,11 +103,11 @@ public final class ExperienceAPI {
      */
     public static void addRawXP(Player player, String skillType, float XP, String xpGainReason, boolean isUnshared) {
         if (isUnshared) {
-            getPlayer(player).beginUnsharedXpGain(getSkillType(skillType), XP, getXPGainReason(xpGainReason));
+            getPlayer(player).beginUnsharedXpGain(getSkillType(skillType), XP, getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
             return;
         }
 
-        getPlayer(player).applyXpGain(getSkillType(skillType), XP, getXPGainReason(xpGainReason));
+        getPlayer(player).applyXpGain(getSkillType(skillType), XP, getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
     }
 
     /**
@@ -188,7 +189,7 @@ public final class ExperienceAPI {
      * @throws InvalidXPGainReasonException if the given xpGainReason is not valid
      */
     public static void addMultipliedXP(Player player, String skillType, int XP, String xpGainReason) {
-        getPlayer(player).applyXpGain(getSkillType(skillType), (int) (XP * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()), getXPGainReason(xpGainReason));
+        getPlayer(player).applyXpGain(getSkillType(skillType), (int) (XP * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()), getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
     }
 
     /**
@@ -259,11 +260,11 @@ public final class ExperienceAPI {
         PrimarySkillType skill = getSkillType(skillType);
 
         if (isUnshared) {
-            getPlayer(player).beginUnsharedXpGain(skill, (int) (XP / skill.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()), getXPGainReason(xpGainReason));
+            getPlayer(player).beginUnsharedXpGain(skill, (int) (XP / skill.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()), getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
             return;
         }
 
-        getPlayer(player).applyXpGain(skill, (int) (XP / skill.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()), getXPGainReason(xpGainReason));
+        getPlayer(player).applyXpGain(skill, (int) (XP / skill.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()), getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
     }
 
     /**
@@ -337,11 +338,11 @@ public final class ExperienceAPI {
      */
     public static void addXP(Player player, String skillType, int XP, String xpGainReason, boolean isUnshared) {
         if (isUnshared) {
-            getPlayer(player).beginUnsharedXpGain(getSkillType(skillType), XP, getXPGainReason(xpGainReason));
+            getPlayer(player).beginUnsharedXpGain(getSkillType(skillType), XP, getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
             return;
         }
 
-        getPlayer(player).beginXpGain(getSkillType(skillType), XP, getXPGainReason(xpGainReason));
+        getPlayer(player).beginXpGain(getSkillType(skillType), XP, getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
     }
 
     /**

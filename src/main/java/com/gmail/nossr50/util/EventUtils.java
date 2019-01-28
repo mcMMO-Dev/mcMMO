@@ -1,12 +1,13 @@
 package com.gmail.nossr50.util;
 
+import com.gmail.nossr50.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelChangeEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelDownEvent;
@@ -336,7 +337,7 @@ public class EventUtils {
                 int victimSkillLevel = victimProfile.getSkillLevel(primarySkillType);
 
                 killerPlayer.addLevels(primarySkillType, levelChangedKiller.get(skillName));
-                killerPlayer.beginUnsharedXpGain(primarySkillType, experienceChangedKiller.get(skillName), XPGainReason.VAMPIRISM);
+                killerPlayer.beginUnsharedXpGain(primarySkillType, experienceChangedKiller.get(skillName), XPGainReason.VAMPIRISM, XPGainSource.VAMPIRISM);
 
                 victimProfile.modifySkill(primarySkillType, victimSkillLevel - levelChangedVictim.get(skillName));
                 victimProfile.removeXp(primarySkillType, experienceChangedVictim.get(skillName));

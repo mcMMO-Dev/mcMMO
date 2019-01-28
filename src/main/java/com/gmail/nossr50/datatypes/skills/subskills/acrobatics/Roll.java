@@ -4,15 +4,14 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.LimitedSizeList;
+import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EventUtils;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
@@ -282,7 +281,7 @@ public class Roll extends AcrobaticsSubSkill {
         }
 
         if(fallLocationMap.get(player) == null)
-            fallLocationMap.put(player, new LimitedSizeList(100));
+            fallLocationMap.put(player, new LimitedSizeList(50));
 
         LimitedSizeList fallLocations = fallLocationMap.get(player);
         
@@ -428,7 +427,7 @@ public class Roll extends AcrobaticsSubSkill {
     public void addFallLocation(Player player)
     {
         if(fallLocationMap.get(player) == null)
-            fallLocationMap.put(player, new LimitedSizeList(20));
+            fallLocationMap.put(player, new LimitedSizeList(50));
 
         LimitedSizeList fallLocations = fallLocationMap.get(player);
 

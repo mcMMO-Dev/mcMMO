@@ -7,6 +7,15 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.2
+    (Experience) Wood blocks now give XP and are affected by Tree Feller (6 sided bark blocks)
+    (API) Moved XPGainReason from skills to experience package
+    (API) Added XpGainSource for tracking sources of XP
+    (API) You can now specify XpGainSource when adding xp to players
+    (Config) The Extra Stats option for XP bars now overrides the setting for updating XP bars every time XP is gained
+    (Config) Added an option for Party XP gains to not update XP bars
+    (Config) Added an option for Passive XP gains to not update XP bars (smelting/brewing)
+
 Version 2.1.1
     = Fixed an issue where excavation wasn't using the correct permission node
     = Added protection against AFK fishing

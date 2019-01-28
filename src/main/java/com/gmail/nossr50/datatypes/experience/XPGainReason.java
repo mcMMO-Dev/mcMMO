@@ -1,4 +1,4 @@
-package com.gmail.nossr50.datatypes.skills;
+package com.gmail.nossr50.datatypes.experience;
 
 public enum XPGainReason {
     PVP,

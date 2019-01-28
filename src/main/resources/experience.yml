@@ -25,6 +25,11 @@
 Experience_Bars:
     # Turn this to false if you wanna disable XP bars
     Enable: true
+    Update:
+        # XP that you gained from your party but not yourself
+        Party: true
+        # Passive is stuff like smelting, brewing
+        Passive: true
     # If you want to use a fancy edited title from the locale, then you'll probably want to turn this on, but it will make your server do a lot more work!
     # I recommend leaving this off!
     ThisMayCauseLag:
@@ -242,6 +247,12 @@ Experience:
         Stripped_Jungle_Log: 100
         Stripped_Acacia_Log: 90
         Stripped_Dark_Oak_Log: 90
+        Oak_Wood: 70
+        Spruce_Wood: 70
+        Birch_Wood: 70
+        Jungle_Wood: 70
+        Acacia_Wood: 70
+        Dark_Oak_Wood: 70
         Mycelium: 70
         Red_Mushroom_Block: 70
         Brown_Mushroom_Block: 70

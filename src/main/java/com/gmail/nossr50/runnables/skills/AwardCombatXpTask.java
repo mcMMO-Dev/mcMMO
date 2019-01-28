@@ -1,8 +1,9 @@
 package com.gmail.nossr50.runnables.skills;
 
+import com.gmail.nossr50.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -38,6 +39,6 @@ public class AwardCombatXpTask extends BukkitRunnable {
             damage += health;
         }
 
-        mcMMOPlayer.beginXpGain(primarySkillType, (int) (damage * baseXp), xpGainReason);
+        mcMMOPlayer.beginXpGain(primarySkillType, (int) (damage * baseXp), xpGainReason, XPGainSource.SELF);
     }
 }

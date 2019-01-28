@@ -250,9 +250,20 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     /*
      * Experience Bar Stuff
      */
+
+    public boolean isPartyExperienceBarsEnabled()
+    {
+        return config.getBoolean("Experience_Bars.Update.Party", true);
+    }
+
+    public boolean isPassiveGainsExperienceBarsEnabled()
+    {
+        return config.getBoolean("Experience_Bars.Update.Passive", true);
+    }
+
     public boolean getDoExperienceBarsAlwaysUpdateTitle()
     {
-        return config.getBoolean("Experience_Bars.ThisMayCauseLag.AlwaysUpdateTitlesWhenXPIsGained.Enable", false);
+        return config.getBoolean("Experience_Bars.ThisMayCauseLag.AlwaysUpdateTitlesWhenXPIsGained.Enable", false) || getAddExtraDetails();
     }
 
     public boolean getAddExtraDetails() { return config.getBoolean("Experience_Bars.ThisMayCauseLag.AlwaysUpdateTitlesWhenXPIsGained.ExtraDetails", false);}
