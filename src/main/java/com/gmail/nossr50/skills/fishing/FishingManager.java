@@ -32,6 +32,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.util.BoundingBox;
 
 import java.util.*;
 
@@ -39,7 +40,7 @@ public class FishingManager extends SkillManager {
     private final long FISHING_COOLDOWN_SECONDS = 1000L;
 
     private long fishingTimestamp = 0L;
-    private Location fishingTarget;
+    private BoundingBox lastFishingBoundingBox;
     private Item fishingCatch;
     private Location hookLocation;
 
@@ -55,7 +56,7 @@ public class FishingManager extends SkillManager {
         return getSkillLevel() >= RankUtils.getUnlockLevel(SubSkillType.FISHING_MASTER_ANGLER) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_MASTER_ANGLER);
     }
 
-    public boolean exploitPrevention() {
+    public boolean exploitPrevention(BoundingBox boundingBox) {
 
         Block targetBlock = getPlayer().getTargetBlock(BlockUtils.getTransparentBlocks(), 100);
 
@@ -69,10 +70,9 @@ public class FishingManager extends SkillManager {
         if(hasFished)
             fishingTimestamp = currentTime;
 
-        Location targetLocation = targetBlock.getLocation();
-        boolean sameTarget = (fishingTarget != null && fishingTarget.equals(targetLocation));
+        boolean sameTarget = (lastFishingBoundingBox != null && lastFishingBoundingBox.overlaps(boundingBox));
 
-        fishingTarget = targetLocation;
+        lastFishingBoundingBox = boundingBox;
 
         return hasFished || sameTarget;
     }
