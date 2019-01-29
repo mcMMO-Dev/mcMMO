@@ -34,7 +34,6 @@ Version 2.1.2
     (Style) Locked skills now are styled differently in the skill command display
     (Experience) Phantoms have been added to the default experience.yml with a value of 4.0 (update your config!)
     (Experience) Default XP value for witch set to 0.1 instead of 0.0
-    (Experience) Default XP value for endermen set to 0.1 instead of 1.0
     (Experience) Default XP value for ender dragon set to 1.0 instead of 0.0
     (Style) Added @ symbol styling for hover tooltips to the locale
     (Style) Added the skill names in the skill commands display to the locale so it can now be edited and styled
