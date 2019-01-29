@@ -32,6 +32,9 @@ Version 2.1.2
     (Skills) Flux Mining is now a passive effect when you mine ore instead of requiring a special pickaxe
     (Skills) Removed the Flux Mining mcMMO Pickaxe Item
     (Style) Locked skills now are styled differently in the skill command display
+    (Experience) Phantoms have been added to the default experience.yml with a value of 4.0 (update your config!)
+    (Experience) Default XP value for witch set to 1.0 instead of 0.0
+    (Experience) Default XP value for ender dragon set to 1.0 instead of 0.0
     (Style) Added @ symbol styling for hover tooltips to the locale
     (Style) Added the skill names in the skill commands display to the locale so it can now be edited and styled
     (Experience) Renamed Grass to Grass_Block in treasures.yml to allow grass to give items again (update your configs manually or delete to regen)
