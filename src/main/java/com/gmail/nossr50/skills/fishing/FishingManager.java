@@ -114,7 +114,7 @@ public class FishingManager extends SkillManager {
         return RankUtils.getRank(getPlayer(), SubSkillType.FISHING_TREASURE_HUNTER);
     }
 
-    protected double getShakeChance() {
+    public double getShakeChance() {
         return AdvancedConfig.getInstance().getShakeChance(getLootTier());
     }
 

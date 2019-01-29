@@ -10,6 +10,7 @@ import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -82,7 +83,7 @@ public class FishingCommand extends SkillCommand {
 
         // FISHING_SHAKE
         if (canShake) {
-            String[] shakeStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.FISHING_SHAKE);
+            String[] shakeStrings = RandomChanceUtil.calculateAbilityDisplayValuesStatic(player, PrimarySkillType.FISHING, fishingManager.getShakeChance());
             shakeChance = shakeStrings[0];
             shakeChanceLucky = shakeStrings[1];
         }
