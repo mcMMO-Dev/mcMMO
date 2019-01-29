@@ -737,13 +737,4 @@ public final class ItemUtils {
         ItemMeta itemMeta = item.getItemMeta();
         return itemMeta.hasDisplayName() && itemMeta.getDisplayName().equals(ChatColor.GOLD + LocaleLoader.getString("Item.ChimaeraWing.Name"));
     }
-
-    public static boolean isFluxPickaxe(ItemStack item) {
-        if (!isMcMMOItem(item)) {
-            return false;
-        }
-
-        ItemMeta itemMeta = item.getItemMeta();
-        return itemMeta.hasDisplayName() && itemMeta.getDisplayName().equals(ChatColor.GOLD + LocaleLoader.getString("Item.FluxPickaxe.Name"));
-    }
 }

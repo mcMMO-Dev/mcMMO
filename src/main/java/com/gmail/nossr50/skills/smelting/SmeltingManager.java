@@ -103,26 +103,6 @@ public class SmeltingManager extends SkillManager {
         return false;
     }
 
-    public static ItemStack getFluxPickaxe(Material material, int amount) {
-        ItemStack itemStack = new ItemStack(material, amount);
-
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.GOLD + LocaleLoader.getString("Item.FluxPickaxe.Name"));
-
-        List<String> itemLore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<String>();
-        itemLore.add("mcMMO Item");
-        itemLore.add(LocaleLoader.getString("Item.FluxPickaxe.Lore.1"));
-        itemLore.add(LocaleLoader.getString("Item.FluxPickaxe.Lore.2", Smelting.fluxMiningUnlockLevel));
-        itemMeta.setLore(itemLore);
-
-        itemStack.setItemMeta(itemMeta);
-        return itemStack;
-    }
-
-    public static FurnaceRecipe getFluxPickaxeRecipe(Material material) {
-        return new FurnaceRecipe(getFluxPickaxe(material, 1), material);
-    }
-
     /**
      * Increases burn time for furnace fuel.
      *

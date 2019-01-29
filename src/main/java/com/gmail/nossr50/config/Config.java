@@ -393,7 +393,6 @@ public class Config extends AutoUpdateConfigLoader {
     public int getChimaeraRecentlyHurtCooldown() { return config.getInt("Items.Chimaera_Wing.RecentlyHurt_Cooldown", 60); }
     public boolean getChimaeraSoundEnabled() { return config.getBoolean("Items.Chimaera_Wing.Sound_Enabled", true); }
 
-    public boolean getFluxPickaxeEnabled() { return config.getBoolean("Items.Flux_Pickaxe.Enabled", true); }
     public boolean getFluxPickaxeSoundEnabled() { return config.getBoolean("Items.Flux_Pickaxe.Sound_Enabled", true); }
 
     /* Particles */

@@ -412,7 +412,7 @@ Skills:
         SecondSmelt:
             # ChanceMax: Maximum chance of triggering Second Smelt
             # MaxBonusLevel: On this level, the chance to cause Second Smelt will be <ChanceMax>
-            ChanceMax: 100.0
+            ChanceMax: 50.0
             MaxBonusLevel: 100
 
         FluxMining:

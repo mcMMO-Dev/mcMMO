@@ -230,7 +230,6 @@ Items:
         Item_Name: FEATHER
         Sound_Enabled: true
     Flux_Pickaxe:
-        Enabled: true
         Sound_Enabled: true
 
 #
