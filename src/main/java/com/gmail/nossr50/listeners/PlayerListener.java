@@ -39,6 +39,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
@@ -350,55 +351,57 @@ public class PlayerListener implements Listener {
      * @param event The event to modify
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onPlayerPickupItem(PlayerPickupItemEvent event) {
+    public void onPlayerPickupItem(EntityPickupItemEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
+        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
-        Player player = event.getPlayer();
-
-        /* WORLD GUARD MAIN FLAG CHECK */
-        if(WorldGuardUtils.isWorldGuardLoaded())
+        if(event.getEntity() instanceof Player)
         {
-            if(!WorldGuardManager.getInstance().hasMainFlag(player))
-                return;
-        }
+            Player player = (Player) event.getEntity();
 
-        if (!UserManager.hasPlayerDataKey(player)) {
-            return;
-        }
-
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-
-        Item drop = event.getItem();
-        ItemStack dropStack = drop.getItemStack();
-
-        if (drop.hasMetadata(mcMMO.disarmedItemKey)) {
-            if (!player.getName().equals(drop.getMetadata(mcMMO.disarmedItemKey).get(0).asString())) {
-                event.setCancelled(true);
+            /* WORLD GUARD MAIN FLAG CHECK */
+            if(WorldGuardUtils.isWorldGuardLoaded())
+            {
+                if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                    return;
             }
 
-            return;
-        }
-
-        if (!drop.hasMetadata(mcMMO.droppedItemKey) && mcMMOPlayer.inParty() && ItemUtils.isSharable(dropStack)) {
-            event.setCancelled(ShareHandler.handleItemShare(drop, mcMMOPlayer));
-
-            if (event.isCancelled()) {
-                SoundManager.sendSound(player, player.getLocation(), SoundType.POP);
+            if (!UserManager.hasPlayerDataKey(player)) {
                 return;
             }
-        }
 
-        if (player.getInventory().getItemInMainHand().getType() == Material.AIR) {
-            boolean pickupSuccess = Unarmed.handleItemPickup(player.getInventory(), drop);
-            boolean cancel = Config.getInstance().getUnarmedItemPickupDisabled() || pickupSuccess;
-            event.setCancelled(cancel);
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-            if (pickupSuccess) {
-                SoundManager.sendSound(player, player.getLocation(), SoundType.POP);
-                player.updateInventory();
+            Item drop = event.getItem();
+            ItemStack dropStack = drop.getItemStack();
+
+            if (drop.hasMetadata(mcMMO.disarmedItemKey)) {
+                if (!player.getName().equals(drop.getMetadata(mcMMO.disarmedItemKey).get(0).asString())) {
+                    event.setCancelled(true);
+                }
+
                 return;
+            }
+
+            if (!drop.hasMetadata(mcMMO.droppedItemKey) && mcMMOPlayer.inParty() && ItemUtils.isSharable(dropStack)) {
+                event.setCancelled(ShareHandler.handleItemShare(drop, mcMMOPlayer));
+
+                if (event.isCancelled()) {
+                    SoundManager.sendSound(player, player.getLocation(), SoundType.POP);
+                    return;
+                }
+            }
+
+            if (player.getInventory().getItemInMainHand().getType() == Material.AIR) {
+                Unarmed.handleItemPickup(player, event);
+                /*boolean cancel = Config.getInstance().getUnarmedItemPickupDisabled() || pickupSuccess;
+                event.setCancelled(cancel);
+
+                if (pickupSuccess) {
+
+                    return;
+                }*/
             }
         }
     }
