@@ -393,16 +393,16 @@ public class PlayerListener implements Listener {
                 }
             }
 
-            if (player.getInventory().getItemInMainHand().getType() == Material.AIR) {
+            /*if (player.getInventory().getItemInMainHand().getType() == Material.AIR) {
                 Unarmed.handleItemPickup(player, event);
-                /*boolean cancel = Config.getInstance().getUnarmedItemPickupDisabled() || pickupSuccess;
+                *//*boolean cancel = Config.getInstance().getUnarmedItemPickupDisabled() || pickupSuccess;
                 event.setCancelled(cancel);
 
                 if (pickupSuccess) {
 
                     return;
-                }*/
-            }
+                }*//*
+            }*/
         }
     }
 

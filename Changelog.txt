@@ -7,6 +7,9 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.3
+    Temporarily removed the unarmed no-item pickup feature until its fixed
+
 Version 2.1.2
     (Compatibility) mcMMO now deals custom damage type for all damage sources to be more compatible with other plugins (such as anti-cheat)
     (Perks) Fixed a bug where the Lucky perk wasn't adding to success
