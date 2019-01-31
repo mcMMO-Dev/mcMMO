@@ -141,6 +141,9 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
      * FORMULA SETTINGS
      */
 
+    /* EXPLOIT TOGGLES */
+    public boolean isEndermanEndermiteFarmingPrevented() { return config.getBoolean("ExploitFix.EndermanEndermiteFarms", true); }
+
     /* Curve settings */
     public FormulaType getFormulaType() { return FormulaType.getFormulaType(config.getString("Experience_Formula.Curve")); }
     public boolean getCumulativeCurveEnabled() { return config.getBoolean("Experience_Formula.Cumulative_Curve", false); }
