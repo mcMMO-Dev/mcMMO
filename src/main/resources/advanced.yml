@@ -114,11 +114,9 @@ Skills:
     ###
     Alchemy:
         Catalysis:
-            # UnlockLevel: Alchemy level when the Catalysis ability unlocks
             # MaxBonusLevel: Maximum bonus level of Catalysis, when a player reaches this level his brewing speed will be <MaxSpeed>
             # MinSpeed: Minimum brewing speed allowed when at <UnlockLevel> or lower
             # MaxSpeed: Maximum brewing speed allowed when at <MaxBonusLevel> or higher
-            UnlockLevel: 10
             MaxBonusLevel: 100
             MinSpeed: 1.0
             MaxSpeed: 4.0
@@ -215,15 +213,9 @@ Skills:
             # This determines when Fisherman's Diet adds extra hunger recovery to food
             RankChange: 20
 
-        IceFishing:
-            # UnlockLevel: Fishing level when the Ice Fishing ability unlocks
-            UnlockLevel: 5
-
         MasterAngler:
-            # UnlockLevel: Fishing level when the Master Angler ability unlocks
             # BoatMultiplier: Catch rate is multiplied by this modifier
             # BiomeModifier: Catch rate is multiplied by this modifier
-            UnlockLevel: 12
             BoatModifier: 2.0
             BiomeModifier: 2.0
     #
@@ -265,9 +257,7 @@ Skills:
             ChanceMax: 100.0
             MaxBonusLevel: 100
 
-        # BlastMining_Rank: BlastMining rank unlocks
         BlastMining:
-
             # BlastDamageDecrease Ranks: % of damage reduced from TNT explosions
             BlastDamageDecrease:
                 Rank_1: 0.0
@@ -363,15 +353,6 @@ Skills:
     #  Settings for Salvage
     ###
     Salvage:
-        # MaxPercentage: Maximum percentage of materials to be returned when Salvaging
-        # MaxPercentageLevel: On this level, the Salvage percentage will be <MaxPercentage>
-        MaxPercentage: 100.0
-        MaxPercentageLevel: 100
-
-        # AdvancedSalvage_UnlockLevel: The level at which Advance Salvage become available
-        AdvancedSalvage:
-            UnlockLevel: 35
-
         ArcaneSalvage:
             # EnchantLossEnabled: When salvaging enchanted items, the enchants may be lost
             # EnchantDowngradeEnabled: When salvaging enchanted items, the enchants may be downgraded
@@ -416,9 +397,7 @@ Skills:
             MaxBonusLevel: 100
 
         FluxMining:
-            # UnlockLevel: Level when Flux Mining becomes available
             # Chance: Chance for Flux Mining to activate
-            UnlockLevel: 25
             Chance: 33.0
             MaxBonusLevel: 100
 
@@ -479,31 +458,18 @@ Skills:
             # BleedTicks: Determines the length of the bleeding effect
             # Modifier: Damage will get multiplied by this modifier
             Modifier: 2.0
-        FastFood:
-            # UnlockLevel: Level when FastFood unlocks
+        FastFoodService:
             # Chance: The chance for wolves to heal hp when inflicting damage
-            UnlockLevel: 5
             Chance: 50.0
         EnvironmentallyAware:
-            # UnlockLevel: Level when EnvironmentallyAware unlocks
-            UnlockLevel: 10
         ThickFur:
-            # UnlockLevel: Level when ThickFur unlocks
             # Modifier: Damage will get divided by this modifier
-            UnlockLevel: 25
             Modifier: 2.0
-        HolyHound:
-            # UnlockLevel: Level when HolyHound unlocks
-            UnlockLevel: 37
         ShockProof:
-            # UnlockLevel: Level when ShockProof unlocks
             # Modifier: Damage will get divided by this modifier
-            UnlockLevel: 50
             Modifier: 6.0
         SharpenedClaws:
-            # UnlockLevel: Level when SharpenedClaws unlocks
             # Bonus: This bonus will get added to the damage caused
-            UnlockLevel: 75
             Bonus: 2.0
         CallOfTheWild:
             # MinHorseJumpStrength: The minimum jump strength a summoned horse must have

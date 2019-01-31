@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillEvent;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillRandomCheckEvent;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -154,6 +155,17 @@ public class RandomChanceUtil
             //Get chance of success
             chanceOfSuccess = getChanceOfSuccess(randomChance.getXPos(), maximumProbability, maximumBonusLevel);
         }
+
+        //Add Luck
+        chanceOfSuccess = addLuck(randomChance.isLucky(), chanceOfSuccess);
+
+        return chanceOfSuccess;
+    }
+
+    private static double calculateChanceOfSuccess(RandomChanceSkillStatic randomChance) {
+        mcMMO.p.getServer().broadcastMessage("DEBUG: USING CORRECT STATIC CALCULATION METHOD");
+
+        double chanceOfSuccess = getChanceOfSuccess(randomChance.getXPos(), 100, 100);
 
         //Add Luck
         chanceOfSuccess = addLuck(randomChance.isLucky(), chanceOfSuccess);

@@ -232,6 +232,11 @@ Smelting:
             Rank_7: 850
             Rank_8: 1000
 Salvage:
+    AdvancedSalvage:
+        Standard:
+            Rank_1: 35
+        RetroMode:
+            Rank_1: 350
     ArcaneSalvage:
         Standard:
             Rank_1: 10

@@ -81,16 +81,16 @@ public class SalvageManager extends SkillManager {
             return;
         }
 
-        int skillLevel = getSkillLevel();
-        int minimumSalvageableLevel = salvageable.getMinimumLevel();
+        /*int skillLevel = getSkillLevel();
+        int minimumSalvageableLevel = salvageable.getMinimumLevel();*/
 
         // Level check
-        if (skillLevel < minimumSalvageableLevel) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Salvage.Skills.Adept.Level", String.valueOf(minimumSalvageableLevel), StringUtils.getPrettyItemString(item.getType()));
+        if (!RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE)) {
+            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Salvage.Skills.Adept.Level", String.valueOf(RankUtils.getUnlockLevel(SubSkillType.SALVAGE_ARCANE_SALVAGE)), StringUtils.getPrettyItemString(item.getType()));
             return;
         }
 
-        if (item.getDurability() != 0 && (getSkillLevel() < Salvage.advancedSalvageUnlockLevel || !Permissions.advancedSalvage(player))) {
+        if (item.getDurability() != 0 && (!RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_ADVANCED_SALVAGE) || !Permissions.advancedSalvage(player))) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, "Salvage.Skills.Adept.Damaged");
             return;
         }
@@ -103,7 +103,8 @@ public class SalvageManager extends SkillManager {
             return;
         }
 
-        salvageableAmount = Math.max((int) (salvageableAmount * getMaxSalvagePercentage()), 1); // Always get at least something back, if you're capable of salvaging it.
+        //Amount of materials to salvage based on rank
+        salvageableAmount = getSalvageableAmount();
 
         player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
         location.add(0.5, 1, 0.5);
@@ -139,8 +140,12 @@ public class SalvageManager extends SkillManager {
         NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Salvage.Skills.Success");
     }
 
-    public double getMaxSalvagePercentage() {
+    /*public double getMaxSalvagePercentage() {
         return Math.min((((Salvage.salvageMaxPercentage / Salvage.salvageMaxPercentageLevel) * getSkillLevel()) / 100.0D), Salvage.salvageMaxPercentage / 100.0D);
+    }*/
+
+    public int getSalvageableAmount() {
+        return (RankUtils.getRank(getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE) * 1);
     }
 
     /**
@@ -187,7 +192,7 @@ public class SalvageManager extends SkillManager {
     private ItemStack arcaneSalvageCheck(Map<Enchantment, Integer> enchants) {
         Player player = getPlayer();
 
-        if (getArcaneSalvageRank() == 0 || !Permissions.arcaneSalvage(player)) {
+        if (!RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE) || !Permissions.arcaneSalvage(player)) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, "Salvage.Skills.ArcaneFailed");
             return null;
         }
@@ -199,9 +204,14 @@ public class SalvageManager extends SkillManager {
 
         for (Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
 
+
+            getPlayer().sendMessage("DEBUG SALVAGE CHANCE: "+RandomChanceUtil.getRandomChanceExecutionChance(new RandomChanceSkillStatic(getExtractFullEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE)));
+
             if (!Salvage.arcaneSalvageEnchantLoss
                     || RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractFullEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchant.getValue(), true);
+
+                getPlayer().sendMessage("DEBUG: FULL ENCHANT RECOVERY SUCCESS");
             }
             else if (enchant.getValue() > 1
                     && Salvage.arcaneSalvageDowngrades

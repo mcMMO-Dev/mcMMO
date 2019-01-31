@@ -389,13 +389,13 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }*/
 
         /* SALVAGE */
-        if (getSalvageMaxPercentage() < 1) {
+        /*if (getSalvageMaxPercentage() < 1) {
             reason.add("Skills.Salvage.MaxPercentage should be at least 1!");
         }
 
         if (getSalvageMaxPercentageLevel() < 1) {
             reason.add("Skills.Salvage.MaxPercentageLevel should be at least 1!");
-        }
+        }*/
 
         /*if (getAdvancedSalvageUnlockLevel() < 0) {
             reason.add("Skills.Salvage.AdvancedSalvage.UnlockLevel should be at least 0!");
@@ -684,7 +684,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
      * @return the level at which this skills max benefits will be reached on the curve
      */
     public int getMaxBonusLevel(SubSkillType subSkillType) {
-        int maxBonusLevel = config.getInt(subSkillType.getAdvConfigAddress() + ".MaxBonusLevel");
+        int maxBonusLevel = config.getInt(subSkillType.getAdvConfigAddress() + ".MaxBonusLevel", 100);
 
         if(mcMMO.isRetroModeEnabled())
             maxBonusLevel *= 10;
@@ -696,7 +696,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     }
 
     public int getMaxBonusLevel(AbstractSubSkill abstractSubSkill) {
-        int maxBonusLevel = config.getInt("Skills."+abstractSubSkill.getPrimaryKeyName()+"."+abstractSubSkill.getConfigKeyName()+".MaxBonusLevel");
+        int maxBonusLevel = config.getInt("Skills."+abstractSubSkill.getPrimaryKeyName()+"."+abstractSubSkill.getConfigKeyName()+".MaxBonusLevel", 100);
 
         if(mcMMO.isRetroModeEnabled())
             maxBonusLevel *= 10;
@@ -939,7 +939,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getRepairMasteryMaxLevel() { return config.getInt("Skills.Repair.RepairMastery.MaxBonusLevel", 100); }
 
     /* Arcane Forging */
-    public int getArcaneForgingRankLevel(int rank) { return config.getInt("Skills.Repair.ArcaneForging.Rank_Levels.Rank_" + rank); }
+    //public int getArcaneForgingRankLevel(int rank) { return config.getInt("Skills.Repair.ArcaneForging.Rank_Levels.Rank_" + rank); }
 
     public boolean getArcaneForgingEnchantLossEnabled() { return config.getBoolean("Skills.Repair.ArcaneForging.May_Lose_Enchants", true); }
     public double getArcaneForgingKeepEnchantsChance(int rank) { return config.getDouble("Skills.Repair.ArcaneForging.Keep_Enchants_Chance.Rank_" + rank); }
@@ -948,10 +948,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getArcaneForgingDowngradeChance(int rank) { return config.getDouble("Skills.Repair.ArcaneForging.Downgrades_Chance.Rank_" + rank); }
 
     /* SALVAGE */
-    public double getSalvageMaxPercentage() { return config.getDouble("Skills.Salvage.MaxPercentage", 100.0D); }
-    public int getSalvageMaxPercentageLevel() { return config.getInt("Skills.Salvage.MaxPercentageLevel", 1000); }
-
-    /*public int getAdvancedSalvageUnlockLevel() { return config.getInt("Skills.Salvage.AdvancedSalvage.UnlockLevel", 350); }*/
+    //public double getSalvageMaxPercentage() { return config.getDouble("Skills.Salvage.MaxPercentage", 100.0D); }
+    //public int getSalvageMaxPercentageLevel() { return config.getInt("Skills.Salvage.MaxPercentageLevel", 1000); }
 
     public boolean getArcaneSalvageEnchantDowngradeEnabled() { return config.getBoolean("Skills.Salvage.ArcaneSalvage.EnchantDowngradeEnabled", true); }
     public boolean getArcaneSalvageEnchantLossEnabled() { return config.getBoolean("Skills.Salvage.ArcaneSalvage.EnchantLossEnabled", true); }
@@ -988,10 +986,10 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getGoreModifier() { return config.getDouble("Skills.Taming.Gore.Modifier", 2.0D); }
 
     /*public int getFastFoodUnlock() { return config.getInt("Skills.Taming.FastFood.UnlockLevel", 50); }*/
-    public double getFastFoodChance() { return config.getDouble("Skills.Taming.FastFood.Chance", 50.0D); }
+    public double getFastFoodChance() { return config.getDouble("Skills.Taming.FastFoodService.Chance", 50.0D); }
     public double getPummelChance() { return config.getDouble("Skills.Taming.Pummel.Chance", 10.0D); }
 
-    public int getEnviromentallyAwareUnlock() { return config.getInt("Skills.Taming.EnvironmentallyAware.UnlockLevel", 100); }
+    //public int getEnviromentallyAwareUnlock() { return config.getInt("Skills.Taming.EnvironmentallyAware.UnlockLevel", 100); }
 
     /*public int getThickFurUnlock() { return config.getInt("Skills.Taming.ThickFur.UnlockLevel", 250); }*/
     public double getThickFurModifier() { return config.getDouble("Skills.Taming.ThickFur.Modifier", 2.0D); }

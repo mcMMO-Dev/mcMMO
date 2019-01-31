@@ -7,10 +7,6 @@ import org.bukkit.EntityEffect;
 import org.bukkit.entity.*;
 
 public class Taming {
-    public static int environmentallyAwareUnlockLevel = AdvancedConfig.getInstance().getEnviromentallyAwareUnlock();
-    public static int holyHoundUnlockLevel            = RankUtils.getUnlockLevel(SubSkillType.TAMING_HOLY_HOUND);
-
-    public static int    fastFoodServiceUnlockLevel      = RankUtils.getUnlockLevel(SubSkillType.TAMING_FAST_FOOD_SERVICE);
     public static double fastFoodServiceActivationChance = AdvancedConfig.getInstance().getFastFoodChance();
 
     public static int    goreBleedTicks    = 2; //Equivalent to rank 1 in Rupture
