@@ -14,6 +14,7 @@ Version 2.1.4
     Advanced Salvage now uses a rank system
     Arcane Salvage now goes by your rank to determine the maximum amount of materials salvaged and is no longer percentage based
     Fixed a bug where Iron Arm was checking for Iron Grip to be unlocked instead of itself
+    (Plugin Compatibility) mcMMO no longer ignores cancelled block place events (this is to prevent XP gains from placed blocks)
     (Plugin Compatibility) mcMMO now ignores cancelled events relating to the player left or right clicking
     (Locale) Changed the string for "Salvage.Ability.Bonus.1" to fit the new material recovery mechanics of Salvage
     (Config) Added a toggle for the new endermite enderman xp farm fix in experience.yml "ExploitFix.EndermanEndermiteFarms"
