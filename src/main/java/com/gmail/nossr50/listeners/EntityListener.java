@@ -54,6 +54,17 @@ public class EntityListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onEntityTargetEntity(EntityTargetLivingEntityEvent event)
+    {
+        //Prevent entities from giving XP if they target endermite
+        if(event.getTarget() instanceof Endermite)
+        {
+            if(event.getTarget().getMetadata(mcMMO.entityMetadataKey) == null || event.getTarget().getMetadata(mcMMO.entityMetadataKey).size() <= 0)
+                event.getTarget().setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityShootBow(EntityShootBowEvent event) {
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))

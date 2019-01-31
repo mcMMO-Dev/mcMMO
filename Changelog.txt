@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 2.1.4
+    Removed XP from entities that target endermite to prevent easy exploitation (Credits to BentoBox for the tip!)
     Fixed a bug where static chance skills like Arcane Salvage were using incorrect calculations for success
     Advanced Salvage now uses a rank system
     Arcane Salvage now goes by your rank to determine the maximum amount of materials salvaged and is no longer percentage based
