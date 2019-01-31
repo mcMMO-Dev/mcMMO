@@ -163,8 +163,6 @@ public class RandomChanceUtil
     }
 
     private static double calculateChanceOfSuccess(RandomChanceSkillStatic randomChance) {
-        mcMMO.p.getServer().broadcastMessage("DEBUG: USING CORRECT STATIC CALCULATION METHOD");
-
         double chanceOfSuccess = getChanceOfSuccess(randomChance.getXPos(), 100, 100);
 
         //Add Luck
