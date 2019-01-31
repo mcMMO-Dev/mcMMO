@@ -203,15 +203,10 @@ public class SalvageManager extends SkillManager {
         boolean downgraded = false;
 
         for (Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
-
-
-            getPlayer().sendMessage("DEBUG SALVAGE CHANCE: "+RandomChanceUtil.getRandomChanceExecutionChance(new RandomChanceSkillStatic(getExtractFullEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE)));
-
             if (!Salvage.arcaneSalvageEnchantLoss
                     || RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractFullEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchant.getValue(), true);
 
-                getPlayer().sendMessage("DEBUG: FULL ENCHANT RECOVERY SUCCESS");
             }
             else if (enchant.getValue() > 1
                     && Salvage.arcaneSalvageDowngrades
