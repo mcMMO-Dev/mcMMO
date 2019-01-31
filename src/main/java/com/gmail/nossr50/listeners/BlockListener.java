@@ -374,7 +374,7 @@ public class BlockListener implements Listener {
                 }
             }
         }
-        else if (!heldItem.containsEnchantment(Enchantment.SILK_TOUCH)) {
+        /*else if (!heldItem.containsEnchantment(Enchantment.SILK_TOUCH)) {
             SmeltingManager smeltingManager = UserManager.getPlayer(player).getSmeltingManager();
 
             if (smeltingManager.canUseFluxMining(blockState)) {
@@ -383,7 +383,7 @@ public class BlockListener implements Listener {
                     event.setCancelled(true);
                 }
             }
-        }
+        }*/
     }
 
     /**

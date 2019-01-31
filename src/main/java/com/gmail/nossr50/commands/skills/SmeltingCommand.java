@@ -39,11 +39,11 @@ public class SmeltingCommand extends SkillCommand {
         }
 
         // FLUX MINING
-        if (canFluxMine) {
+        /*if (canFluxMine) {
             String[] fluxMiningStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.SMELTING_FLUX_MINING);
             str_fluxMiningChance = fluxMiningStrings[0];
             str_fluxMiningChanceLucky = fluxMiningStrings[1];
-        }
+        }*/
         
         // SECOND SMELT
         if (canSecondSmelt) {
@@ -65,11 +65,11 @@ public class SmeltingCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 
-        if (canFluxMine) {
+        /*if (canFluxMine) {
             messages.add(getStatMessage(SubSkillType.SMELTING_FLUX_MINING, str_fluxMiningChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", str_fluxMiningChanceLucky) : ""));
             //messages.add(LocaleLoader.getString("Smelting.Ability.FluxMining", str_fluxMiningChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", str_fluxMiningChanceLucky) : ""));
-        }
+        }*/
         
         if (canFuelEfficiency) {
             messages.add(getStatMessage(false, true, SubSkillType.SMELTING_FUEL_EFFICIENCY, burnTimeModifier));
