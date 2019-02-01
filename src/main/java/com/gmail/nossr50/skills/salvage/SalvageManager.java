@@ -207,7 +207,6 @@ public class SalvageManager extends SkillManager {
             if (!Salvage.arcaneSalvageEnchantLoss
                     || RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractFullEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchant.getValue(), true);
-
             }
             else if (enchant.getValue() > 1
                     && Salvage.arcaneSalvageDowngrades
@@ -234,7 +233,10 @@ public class SalvageManager extends SkillManager {
 
             book.setItemMeta(enchantMeta);
         } else {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.ArcaneFailed");
+            if(enchantMeta.getStoredEnchants().size() > 0)
+            {
+                NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.ArcaneFailed");
+            }
             return null;
         }
 
