@@ -6,6 +6,11 @@ Key:
   = Fix
   ! Change
   - Removal
+Version 2.1.7
+    (API) Added addXpFromBlocks to ExperienceAPI to help make adding XP for a player easier
+    (API) Added addXpFromBlocksBySkill to ExperienceAPI to help make adding XP for a player easier
+    (API) Added addXpFromBlock to ExperienceAPI to help make adding XP for a player easier
+    (API) Added addXpFromBlockBySkill to ExperienceAPI to help make adding XP for a player easier
 
 Version 2.1.6
     Fixed a bug where Arcane Salvage could never fail
