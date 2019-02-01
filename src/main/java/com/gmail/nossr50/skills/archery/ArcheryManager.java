@@ -52,15 +52,15 @@ public class ArcheryManager extends SkillManager {
      * @param target The {@link LivingEntity} damaged by the arrow
      * @param damager The {@link Entity} who shot the arrow
      */
-    public void distanceXpBonus(LivingEntity target, Entity damager) {
+    public double distanceXpBonusMultiplier(LivingEntity target, Entity damager) {
         Location firedLocation = (Location) damager.getMetadata(mcMMO.arrowDistanceKey).get(0).value();
         Location targetLocation = target.getLocation();
 
         if (firedLocation.getWorld() != targetLocation.getWorld()) {
-            return;
+            return 1;
         }
 
-        applyXpGain((int) (Math.min(firedLocation.distanceSquared(targetLocation), 2500) * Archery.DISTANCE_XP_MULTIPLIER), getXPGainReason(target, damager));
+        return 1 + Math.min(firedLocation.distance(targetLocation), 50) * Archery.DISTANCE_XP_MULTIPLIER;
     }
 
     /**

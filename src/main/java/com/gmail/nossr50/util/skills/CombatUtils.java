@@ -194,10 +194,10 @@ public final class CombatUtils {
             archeryManager.retrieveArrows(target);
         }
 
-        archeryManager.distanceXpBonus(target, arrow);
+        double distanceMultiplier = archeryManager.distanceXpBonusMultiplier(target, arrow);
 
         applyScaledModifiers(initialDamage, finalDamage, event);
-        startGainXp(mcMMOPlayer, target, PrimarySkillType.ARCHERY, arrow.getMetadata(mcMMO.bowForceKey).get(0).asDouble());
+        startGainXp(mcMMOPlayer, target, PrimarySkillType.ARCHERY, arrow.getMetadata(mcMMO.bowForceKey).get(0).asDouble() * distanceMultiplier);
     }
 
     /**
