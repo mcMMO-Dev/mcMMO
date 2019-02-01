@@ -76,9 +76,9 @@ public class RepairCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canSuperRepair = Permissions.isSubSkillEnabled(player, SubSkillType.REPAIR_SUPER_REPAIR);
-        canMasterRepair = Permissions.isSubSkillEnabled(player, SubSkillType.REPAIR_REPAIR_MASTERY);
-        canArcaneForge = Permissions.isSubSkillEnabled(player, SubSkillType.REPAIR_ARCANE_FORGING);
+        canSuperRepair = canUseSubskill(player, SubSkillType.REPAIR_SUPER_REPAIR);
+        canMasterRepair = canUseSubskill(player, SubSkillType.REPAIR_REPAIR_MASTERY);
+        canArcaneForge = canUseSubskill(player, SubSkillType.REPAIR_ARCANE_FORGING);
         canRepairDiamond = Permissions.repairMaterialType(player, MaterialType.DIAMOND);
         canRepairGold = Permissions.repairMaterialType(player, MaterialType.GOLD);
         canRepairIron = Permissions.repairMaterialType(player, MaterialType.IRON);
@@ -96,7 +96,10 @@ public class RepairCommand extends SkillCommand {
         if (canArcaneForge) {
             RepairManager repairManager = UserManager.getPlayer(player).getRepairManager();
 
-            messages.add(getStatMessage(false, true, SubSkillType.REPAIR_ARCANE_FORGING, RankUtils.getHighestRankStr(SubSkillType.REPAIR_ARCANE_FORGING)));
+            messages.add(getStatMessage(false, true,
+                    SubSkillType.REPAIR_ARCANE_FORGING,
+                    String.valueOf(RankUtils.getRank(player, SubSkillType.REPAIR_ARCANE_FORGING)),
+                    RankUtils.getHighestRankStr(SubSkillType.REPAIR_ARCANE_FORGING)));
 
             if (ArcaneForging.arcaneForgingEnchantLoss || ArcaneForging.arcaneForgingDowngrades) {
                 messages.add(getStatMessage(true, true, SubSkillType.REPAIR_ARCANE_FORGING,

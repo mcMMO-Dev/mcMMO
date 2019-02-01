@@ -8,6 +8,7 @@ import com.gmail.nossr50.datatypes.treasure.Rarity;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.fishing.FishingManager;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
@@ -96,6 +97,7 @@ public class FishingCommand extends SkillCommand {
         // MASTER ANGLER
         if (canMasterAngler) {
             double rawBiteChance = 1.0 / (player.getWorld().hasStorm() ? 300 : 500);
+
             Location location = fishingManager.getHookLocation();
 
             if (location == null) {
@@ -110,7 +112,9 @@ public class FishingCommand extends SkillCommand {
                 rawBiteChance = rawBiteChance * AdvancedConfig.getInstance().getMasterAnglerBoatModifier();
             }
 
-            biteChance = RandomChanceUtil.calculateAbilityDisplayValuesStatic(player,PrimarySkillType.FISHING,rawBiteChance)[0];
+            double luckyModifier = Permissions.lucky(player, PrimarySkillType.FISHING) ? 1.333D : 1.0D;
+
+            biteChance = String.valueOf((rawBiteChance * 100.0D) * luckyModifier);
         }
     }
 
@@ -142,7 +146,7 @@ public class FishingCommand extends SkillCommand {
 
         if (canMasterAngler) {
             //TODO: Update this with more details
-            messages.add(getStatMessage(SubSkillType.FISHING_MASTER_ANGLER, biteChance));
+            messages.add(getStatMessage(false, true, SubSkillType.FISHING_MASTER_ANGLER, biteChance));
         }
         
         if (canShake) {

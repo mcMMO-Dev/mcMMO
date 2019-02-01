@@ -514,6 +514,16 @@ Excavation:
             Rank_7: 850
             Rank_8: 1000
 Repair:
+    RepairMastery:
+        Standard:
+            Rank_1: 20
+        RetroMode:
+            Rank_1: 200
+    SuperRepair:
+        Standard:
+            Rank_1: 40
+        RetroMode:
+            Rank_1: 400
     ArcaneForging:
         Standard:
             Rank_1: 10

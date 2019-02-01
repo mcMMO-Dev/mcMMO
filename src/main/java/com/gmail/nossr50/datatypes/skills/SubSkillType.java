@@ -55,8 +55,8 @@ public enum SubSkillType {
 
     /* Repair */
     REPAIR_ARCANE_FORGING(8),
-    REPAIR_REPAIR_MASTERY,
-    REPAIR_SUPER_REPAIR,
+    REPAIR_REPAIR_MASTERY(1),
+    REPAIR_SUPER_REPAIR(1),
 
     /* Salvage */
     SALVAGE_ADVANCED_SALVAGE(1),

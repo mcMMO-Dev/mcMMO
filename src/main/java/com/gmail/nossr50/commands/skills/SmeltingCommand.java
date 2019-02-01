@@ -76,7 +76,7 @@ public class SmeltingCommand extends SkillCommand {
         }
 
         if (canSecondSmelt) {
-            messages.add(getStatMessage(SubSkillType.SMELTING_SECOND_SMELT, str_fluxMiningChance)
+            messages.add(getStatMessage(SubSkillType.SMELTING_SECOND_SMELT, str_secondSmeltChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", str_secondSmeltChanceLucky) : ""));
         }
 

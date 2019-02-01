@@ -262,7 +262,7 @@ public class RepairManager extends SkillManager {
     private short repairCalculate(short durability, int repairAmount) {
         Player player = getPlayer();
 
-        if (Permissions.isSubSkillEnabled(player, SubSkillType.REPAIR_REPAIR_MASTERY)) {
+        if (Permissions.isSubSkillEnabled(player, SubSkillType.REPAIR_REPAIR_MASTERY) && RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.REPAIR_REPAIR_MASTERY)) {
             double bonus = repairAmount * Math.min((((Repair.repairMasteryMaxBonus / Repair.repairMasteryMaxBonusLevel) * getSkillLevel()) / 100.0D), Repair.repairMasteryMaxBonus / 100.0D);
             repairAmount += bonus;
         }
@@ -284,6 +284,9 @@ public class RepairManager extends SkillManager {
      * @return true if bonus granted, false otherwise
      */
     private boolean checkPlayerProcRepair() {
+        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.REPAIR_SUPER_REPAIR))
+            return false;
+
         if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.REPAIR_SUPER_REPAIR, getPlayer())) {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Repair.Skills.FeltEasy");
             return true;
