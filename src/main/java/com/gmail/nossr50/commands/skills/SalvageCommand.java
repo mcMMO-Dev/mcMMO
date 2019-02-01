@@ -40,11 +40,14 @@ public class SalvageCommand extends SkillCommand {
         SalvageManager salvageManager = UserManager.getPlayer(player).getSalvageManager();
 
         if (canAdvancedSalvage) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Salvage.Ability.Bonus.0"), LocaleLoader.getString("Salvage.Ability.Bonus.1", salvageManager.getSalvageableAmount())));
+            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Salvage.Ability.Bonus.0"),
+                    LocaleLoader.getString("Salvage.Ability.Bonus.1", salvageManager.getSalvageableAmount())));
         }
 
         if (canArcaneSalvage) {
-            messages.add(LocaleLoader.getString("Salvage.Arcane.Rank", salvageManager.getArcaneSalvageRank(), RankUtils.getHighestRank(SubSkillType.SALVAGE_ARCANE_SALVAGE)));
+            messages.add(getStatMessage(false, true, SubSkillType.SALVAGE_ARCANE_SALVAGE,
+                    String.valueOf(salvageManager.getArcaneSalvageRank()),
+                    String.valueOf(RankUtils.getHighestRank(SubSkillType.SALVAGE_ARCANE_SALVAGE))));
 
             if (Salvage.arcaneSalvageEnchantLoss) {
                 messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Salvage.Arcane.ExtractFull"), percent.format(salvageManager.getExtractFullEnchantChance() / 100)));
