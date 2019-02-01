@@ -8,7 +8,11 @@ Key:
   - Removal
 
 Version 2.1.6
+    Fixed a bug where Arcane Salvage could never fail
     Fixed a bug where Salvage was giving back too many resources
+    SubSkillFailure renamed to SubSkillFailed in config.yml
+    SubSkillFailed now sends copies to chat by default
+    SubSkillFailed no longer sends messages to the action bar by default
 
 Version 2.1.5
     mcMMO no longer ignores cancelled events relating to the player left or right clicking

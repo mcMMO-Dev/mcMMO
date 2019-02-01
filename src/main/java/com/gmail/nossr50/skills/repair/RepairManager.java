@@ -67,7 +67,7 @@ public class RepairManager extends SkillManager {
         Repairable repairable = mcMMO.getRepairableManager().getRepairable(item.getType());
 
         if (item.getItemMeta().isUnbreakable()) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, "Anvil.Unbreakable");
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Anvil.Unbreakable");
             return;
         }
 
@@ -87,7 +87,7 @@ public class RepairManager extends SkillManager {
 
         // Level check
         if (skillLevel < minimumRepairableLevel) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, "Repair.Skills.Adept", String.valueOf(minimumRepairableLevel), StringUtils.getPrettyItemString(item.getType()));
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Skills.Adept", String.valueOf(minimumRepairableLevel), StringUtils.getPrettyItemString(item.getType()));
             return;
         }
 
@@ -101,7 +101,7 @@ public class RepairManager extends SkillManager {
 
         // Do not repair if at full durability
         if (startDurability <= 0) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, "Repair.Skills.FullDurability");
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Skills.FullDurability");
             return;
         }
 
@@ -115,13 +115,13 @@ public class RepairManager extends SkillManager {
                 materialsNeeded += ":" + repairMaterialMetadata;
             }
 
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, "Skills.NeedMore.Extra", prettyName, materialsNeeded);
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Skills.NeedMore.Extra", prettyName, materialsNeeded);
             return;
         }
 
         // Do not repair stacked items
         if (item.getAmount() != 1) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, "Repair.Skills.StackedItems");
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Skills.StackedItems");
             return;
         }
 
@@ -319,7 +319,7 @@ public class RepairManager extends SkillManager {
                 item.removeEnchantment(enchant);
             }
 
-            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILURE, "Repair.Arcane.Lost");
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Arcane.Lost");
             return;
         }
 
@@ -345,10 +345,10 @@ public class RepairManager extends SkillManager {
         Map<Enchantment, Integer> newEnchants = item.getEnchantments();
 
         if (newEnchants.isEmpty()) {
-            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILURE, "Repair.Arcane.Fail");
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Arcane.Fail");
         }
         else if (downgraded || newEnchants.size() < enchants.size()) {
-            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILURE, "Repair.Arcane.Downgrade");
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Arcane.Downgrade");
         }
         else {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Repair.Arcane.Perfect");

@@ -50,9 +50,9 @@ Feedback:
         SubSkillInteraction:
             Enabled: true
             SendCopyOfMessageToChat: false
-        SubSkillFailure:
-            Enabled: true
-            SendCopyOfMessageToChat: false
+        SubSkillFailed:
+            Enabled: false
+            SendCopyOfMessageToChat: true
         SubSkillUnlocked:
             Enabled: true
             SendCopyOfMessageToChat: true

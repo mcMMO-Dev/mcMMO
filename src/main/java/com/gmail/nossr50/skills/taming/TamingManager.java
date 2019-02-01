@@ -351,7 +351,7 @@ public class TamingManager extends SkillManager {
 
         for (Entity entity : player.getNearbyEntities(range, range, range)) {
             if (entity.getType() == type) {
-                NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, Taming.getCallOfTheWildFailureMessage(type));
+                NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, Taming.getCallOfTheWildFailureMessage(type));
                 return false;
             }
         }
@@ -372,7 +372,7 @@ public class TamingManager extends SkillManager {
         int summonAmount = trackedEntities == null ? 0 : trackedEntities.size();
 
         if (summonAmount >= maxAmountSummons) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, "Taming.Summon.Fail.TooMany", String.valueOf(maxAmountSummons));
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Taming.Summon.Fail.TooMany", String.valueOf(maxAmountSummons));
             return false;
         }
 

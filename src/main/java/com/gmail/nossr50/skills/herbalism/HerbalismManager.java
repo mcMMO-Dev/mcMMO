@@ -190,7 +190,7 @@ public class HerbalismManager extends SkillManager {
      */
     public boolean processGreenThumbBlocks(BlockState blockState) {
         if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.HERBALISM_GREEN_THUMB, getPlayer())) {
-            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILURE, "Herbalism.Ability.GTh.Fail");
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILED, "Herbalism.Ability.GTh.Fail");
             return false;
         }
 
@@ -261,7 +261,7 @@ public class HerbalismManager extends SkillManager {
         player.updateInventory();
 
         if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.HERBALISM_SHROOM_THUMB, player)) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, "Herbalism.Ability.ShroomThumb.Fail");
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Herbalism.Ability.ShroomThumb.Fail");
             return false;
         }
 

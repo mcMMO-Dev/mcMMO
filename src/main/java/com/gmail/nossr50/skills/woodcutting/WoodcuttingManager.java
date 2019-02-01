@@ -86,13 +86,13 @@ public class WoodcuttingManager extends SkillManager {
         if (Woodcutting.treeFellerReachedThreshold) {
             Woodcutting.treeFellerReachedThreshold = false;
 
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, "Woodcutting.Skills.TreeFeller.Threshold");
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Woodcutting.Skills.TreeFeller.Threshold");
             return;
         }
 
         // If the tool can't sustain the durability loss
         if (!Woodcutting.handleDurabilityLoss(treeFellerBlocks, player.getInventory().getItemInMainHand())) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, "Woodcutting.Skills.TreeFeller.Splinter");
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Woodcutting.Skills.TreeFeller.Splinter");
 
             double health = player.getHealth();
 

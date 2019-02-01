@@ -11,7 +11,7 @@ public enum NotificationType {
     LEVEL_UP_MESSAGE("LevelUps"),
     HOLIDAY("Holiday"),
     SUBSKILL_MESSAGE("SubSkillInteraction"),
-    SUBSKILL_MESSAGE_FAILURE("SubSkillFailure"),
+    SUBSKILL_MESSAGE_FAILED("SubSkillFailed"),
     TOOL("ToolReady"),
     REQUIREMENTS_NOT_MET("RequirementsNotMet"),
     ABILITY_OFF("AbilityOff"),
