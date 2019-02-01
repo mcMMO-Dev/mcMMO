@@ -9,6 +9,7 @@ Key:
 
 Version 2.1.6
     Fixed a bug where Arcane Salvage could never fail
+    Recolored some lines in the locale related to failure from white to red
     Fixed a bug where Salvage was giving back too many resources
     SubSkillFailure renamed to SubSkillFailed in config.yml
     SubSkillFailed now sends copies to chat by default
