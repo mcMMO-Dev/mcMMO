@@ -7,6 +7,9 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.6
+    Fixed a bug where Salvage was giving back too many resources
+
 Version 2.1.5
     mcMMO no longer ignores cancelled events relating to the player left or right clicking
 

@@ -103,8 +103,8 @@ public class SalvageManager extends SkillManager {
             return;
         }
 
-        //Amount of materials to salvage based on rank
-        salvageableAmount = getSalvageableAmount();
+        salvageableAmount = Math.min(salvageableAmount, getSalvageableAmount()); // Always get at least something back, if you're capable of salvaging it.
+
 
         player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
         location.add(0.5, 1, 0.5);
