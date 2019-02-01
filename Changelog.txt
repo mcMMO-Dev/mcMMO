@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 2.1.4
+    Fixed a bug where Alchemy didn't gain XP
     Temporarily disabled Flux Mining
     Removed XP from entities that target endermite to prevent easy exploitation (Credits to TheBentoBox for the tip!) [Can be turned off in experience.yml]
     Fixed a bug where static chance skills like Arcane Salvage were using incorrect calculations for success

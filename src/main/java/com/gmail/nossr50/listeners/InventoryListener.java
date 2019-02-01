@@ -178,20 +178,18 @@ public class InventoryListener implements Listener {
 
         Inventory inventory = event.getInventory();
 
-        Block furnaceBlock = processInventoryOpenOrCloseEvent(event.getInventory());
-
-        if (furnaceBlock == null) {
-            return;
-        }
-
         if(event.getWhoClicked() instanceof Player)
         {
             Player player = ((Player) event.getWhoClicked()).getPlayer();
-            
-            if(furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey).size() > 0)
-                furnaceBlock.removeMetadata(mcMMO.furnaceMetadataKey, mcMMO.p);
+            Block furnaceBlock = processInventoryOpenOrCloseEvent(event.getInventory());
 
-            furnaceBlock.setMetadata(mcMMO.furnaceMetadataKey, UserManager.getPlayer(player).getPlayerMetadata());
+            if (furnaceBlock != null)
+            {
+                if (furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey).size() > 0)
+                    furnaceBlock.removeMetadata(mcMMO.furnaceMetadataKey, mcMMO.p);
+
+                furnaceBlock.setMetadata(mcMMO.furnaceMetadataKey, UserManager.getPlayer(player).getPlayerMetadata());
+            }
         }
 
         if (!(inventory instanceof BrewerInventory)) {
