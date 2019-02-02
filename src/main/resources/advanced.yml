@@ -455,7 +455,6 @@ Skills:
             # MaxBonusLevel: On this level, the chance to cause Gore will be <ChanceMax>
             ChanceMax: 100.0
             MaxBonusLevel: 100
-            # BleedTicks: Determines the length of the bleeding effect
             # Modifier: Damage will get multiplied by this modifier
             Modifier: 2.0
         FastFoodService:

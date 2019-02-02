@@ -1026,7 +1026,7 @@ public final class ExperienceAPI {
             {
                 if(ExperienceConfig.getInstance().getXp(skillType, bs.getType()) > 0)
                 {
-                    mcMMOPlayer.addXp(skillType, ExperienceConfig.getInstance().getXp(skillType, bs.getType()));
+                    mcMMOPlayer.applyXpGain(skillType, ExperienceConfig.getInstance().getXp(skillType, bs.getType()), XPGainReason.PVE, XPGainSource.SELF);
                 }
             }
         }
@@ -1044,7 +1044,7 @@ public final class ExperienceAPI {
         {
             if(ExperienceConfig.getInstance().getXp(skillType, bs.getType()) > 0)
             {
-                mcMMOPlayer.addXp(skillType, ExperienceConfig.getInstance().getXp(skillType, bs.getType()));
+                mcMMOPlayer.applyXpGain(skillType, ExperienceConfig.getInstance().getXp(skillType, bs.getType()), XPGainReason.PVE, XPGainSource.SELF);
             }
         }
     }
@@ -1060,7 +1060,7 @@ public final class ExperienceAPI {
         {
             if(ExperienceConfig.getInstance().getXp(skillType, blockState.getType()) > 0)
             {
-                mcMMOPlayer.addXp(skillType, ExperienceConfig.getInstance().getXp(skillType, blockState.getType()));
+                mcMMOPlayer.applyXpGain(skillType, ExperienceConfig.getInstance().getXp(skillType, blockState.getType()), XPGainReason.PVE, XPGainSource.SELF);
             }
         }
     }
@@ -1075,7 +1075,7 @@ public final class ExperienceAPI {
     {
         if(ExperienceConfig.getInstance().getXp(skillType, blockState.getType()) > 0)
         {
-            mcMMOPlayer.addXp(skillType, ExperienceConfig.getInstance().getXp(skillType, blockState.getType()));
+            mcMMOPlayer.applyXpGain(skillType, ExperienceConfig.getInstance().getXp(skillType, blockState.getType()), XPGainReason.PVE, XPGainSource.SELF);
         }
     }
 
