@@ -146,6 +146,10 @@ public class UnarmedManager extends SkillManager {
         return getIronArmDamage();
     }
 
+    public boolean isPunchingCooldownOver() {
+        return (Unarmed.lastAttacked + Unarmed.attackInterval) <= System.currentTimeMillis();
+    }
+
     public double getIronArmDamage() {
         return RankUtils.getRank(getPlayer(), SubSkillType.UNARMED_IRON_ARM_STYLE) * 2;
     }

@@ -17,6 +17,7 @@ import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
+import com.gmail.nossr50.skills.unarmed.Unarmed;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -122,20 +123,26 @@ public final class CombatUtils {
             mcMMOPlayer.checkAbilityActivation(PrimarySkillType.UNARMED);
         }
 
-        if (unarmedManager.canUseIronArm()) {
-            finalDamage += unarmedManager.ironArm();
-        }
+        //Only execute bonuses if the player is not spamming
+        if(unarmedManager.isPunchingCooldownOver())
+        {
+            if (unarmedManager.canUseIronArm()) {
+                finalDamage += unarmedManager.ironArm();
+            }
 
-        if (unarmedManager.canUseBerserk()) {
-            finalDamage += unarmedManager.berserkDamage(initialDamage);
-        }
+            if (unarmedManager.canUseBerserk()) {
+                finalDamage += unarmedManager.berserkDamage(initialDamage);
+            }
 
-        if (unarmedManager.canDisarm(target)) {
-            unarmedManager.disarmCheck((Player) target);
+            if (unarmedManager.canDisarm(target)) {
+                unarmedManager.disarmCheck((Player) target);
+            }
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
         startGainXp(mcMMOPlayer, target, PrimarySkillType.UNARMED);
+
+        Unarmed.lastAttacked = System.currentTimeMillis(); //Track how often the player is punching
     }
 
     private static void processTamingCombat(LivingEntity target, Player master, Wolf wolf, EntityDamageByEntityEvent event) {

@@ -338,7 +338,7 @@ Fishing:
         Standard:
             Rank_1: 50
         RetroMode:
-            Rank_1: 150
+            Rank_1: 500
     IceFishing:
         Standard:
             Rank_1: 5

@@ -65,7 +65,8 @@ public class TamingManager extends SkillManager {
     }
 
     public boolean canUseSharpenedClaws() {
-        return getSkillLevel() >= Taming.sharpenedClawsUnlockLevel && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.TAMING_SHARPENED_CLAWS);
+        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_SHARPENED_CLAWS)
+                && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.TAMING_SHARPENED_CLAWS);
     }
 
     public boolean canUseGore() {

@@ -12,13 +12,10 @@ public class Taming {
     public static int    goreBleedTicks    = 2; //Equivalent to rank 1 in Rupture
     public static double goreModifier      = AdvancedConfig.getInstance().getGoreModifier();
 
-    public static int    sharpenedClawsUnlockLevel = RankUtils.getUnlockLevel(SubSkillType.TAMING_SHARPENED_CLAWS);
     public static double sharpenedClawsBonusDamage = AdvancedConfig.getInstance().getSharpenedClawsBonus();
 
-    public static int    shockProofUnlockLevel = RankUtils.getUnlockLevel(SubSkillType.TAMING_SHOCK_PROOF);
     public static double shockProofModifier    = AdvancedConfig.getInstance().getShockProofModifier();
 
-    public static int    thickFurUnlockLevel = RankUtils.getUnlockLevel(SubSkillType.TAMING_THICK_FUR);
     public static double thickFurModifier    = AdvancedConfig.getInstance().getThickFurModifier();
 
     public static boolean canPreventDamage(Tameable pet, AnimalTamer owner) {
