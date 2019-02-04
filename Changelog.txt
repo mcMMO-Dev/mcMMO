@@ -10,6 +10,7 @@ Version 2.1.7
     Fixed an almost 6 year old bug where Salvage materials did not have a defined material count so they defaulted to 2 (which could lead to shovels giving back more diamonds than normal)
     Added spam detection for Unarmed's bonus damage and disarm
     Corrected an error where master angler for retro only required level 150 instead of 500 (update your skillranks.yml)
+    Fixed a bug where Players could see hidden party members in the party member listings
     (API) Added addXpFromBlocks to ExperienceAPI to help make adding XP for a player easier
     (API) Added addXpFromBlocksBySkill to ExperienceAPI to help make adding XP for a player easier
     (API) Added addXpFromBlock to ExperienceAPI to help make adding XP for a player easier
