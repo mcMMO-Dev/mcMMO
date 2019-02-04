@@ -331,7 +331,7 @@ public class Party {
         for (Player otherPlayer : this.getVisibleMembers(player)) {
             String memberName = otherPlayer.getName();
 
-            if (this.getLeader().getUniqueId().equals(player.getUniqueId())) {
+            if (this.getLeader().getUniqueId().equals(otherPlayer.getUniqueId())) {
                 memberList.append(ChatColor.GOLD);
 
                 if (otherPlayer == null) {
