@@ -6,6 +6,9 @@ Key:
   = Fix
   ! Change
   - Removal
+Version 2.1.8
+
+
 Version 2.1.7
     Fixed an almost 6 year old bug where Salvage materials did not have a defined material count so they defaulted to 2 (which could lead to shovels giving back more diamonds than normal)
     Added spam detection for Unarmed's bonus damage and disarm
