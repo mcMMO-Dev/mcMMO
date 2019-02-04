@@ -82,7 +82,7 @@ public class Party {
 
         for(Player p : onlineMembers)
         {
-            if(player.canSee(p) && p.canSee(p))
+            if(player.canSee(p))
                 visibleMembers.add(p);
         }
 
