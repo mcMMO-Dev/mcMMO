@@ -120,10 +120,10 @@ public class PartyInfoCommand implements CommandExecutor {
          */
 
         List<Player> nearMembers = PartyManager.getNearVisibleMembers(mcMMOPlayer);
-        int membersOnline = party.getVisibleMembers(player).size() - 1;
+        int membersOnline = party.getVisibleMembers(player).size();
 
         player.sendMessage(LocaleLoader.getString("Commands.Party.Members.Header"));
         player.sendMessage(LocaleLoader.getString("Commands.Party.MembersNear", nearMembers.size(), membersOnline));
-        player.sendMessage(party.createMembersList(player.getName(), nearMembers));
+        player.sendMessage(party.createMembersList(player));
     }
 }

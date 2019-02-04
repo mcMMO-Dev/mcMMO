@@ -152,7 +152,9 @@ public final class PartyManager {
             double range = Config.getInstance().getPartyShareRange();
 
             for (Player member : party.getVisibleMembers(player)) {
-                if (!player.equals(member) && member.isValid() && Misc.isNear(player.getLocation(), member.getLocation(), range)) {
+                if (!player.equals(member)
+                        && member.isValid()
+                        && Misc.isNear(player.getLocation(), member.getLocation(), range)) {
                     nearMembers.add(member);
                 }
             }

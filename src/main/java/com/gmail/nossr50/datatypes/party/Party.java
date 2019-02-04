@@ -76,13 +76,13 @@ public class Party {
         return onlineMembers;
     }
 
-    public List<Player> getVisibleMembers(Player commandSender)
+    public List<Player> getVisibleMembers(Player player)
     {
         ArrayList<Player> visibleMembers = new ArrayList<>();
 
         for(Player p : onlineMembers)
         {
-            if(commandSender.canSee(p))
+            if(player.canSee(p) && p.canSee(p))
                 visibleMembers.add(p);
         }
 
@@ -325,30 +325,27 @@ public class Party {
         return this.getMembers().keySet().contains(uuid);
     }
 
-    public String createMembersList(String playerName, List<Player> nearMembers) {
+    public String createMembersList(Player player) {
         StringBuilder memberList = new StringBuilder();
 
-        for (Entry<UUID, String> memberEntry : this.getMembers().entrySet()) {
-            UUID uuid = memberEntry.getKey();
-            String memberName = memberEntry.getValue();
+        for (Player otherPlayer : this.getVisibleMembers(player)) {
+            String memberName = otherPlayer.getName();
 
-            Player member = mcMMO.p.getServer().getPlayer(uuid);
-
-            if (this.getLeader().getUniqueId().equals(uuid)) {
+            if (this.getLeader().getUniqueId().equals(player.getUniqueId())) {
                 memberList.append(ChatColor.GOLD);
 
-                if (member == null) {
+                if (otherPlayer == null) {
                     memberName = memberName.substring(0, 1) + ChatColor.GRAY + ChatColor.ITALIC + "" + memberName.substring(1);
                 }
             }
-            else if (member != null) {
+            else if (otherPlayer != null) {
                 memberList.append(ChatColor.WHITE);
             }
             else {
                 memberList.append(ChatColor.GRAY);
             }
 
-            if (!nearMembers.contains(member) && !playerName.equalsIgnoreCase(memberName)) {
+            if (player.getName().equalsIgnoreCase(otherPlayer.getName())) {
                 memberList.append(ChatColor.ITALIC);
             }
 
