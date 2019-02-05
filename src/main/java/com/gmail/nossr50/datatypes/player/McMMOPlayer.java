@@ -791,7 +791,7 @@ public class McMMOPlayer {
         ToolType tool = skill.getTool();
         SuperAbilityType ability = skill.getAbility();
 
-        if (getAbilityMode(ability)) {
+        if (getAbilityMode(ability) || !ability.getPermissions(player)) {
             return;
         }
 
@@ -894,7 +894,7 @@ public class McMMOPlayer {
          * Woodcutting & Axes need to be treated differently.
          * Basically the tool always needs to ready and we check to see if the cooldown is over when the user takes action
          */
-        if (ability.getPermissions(player) && tool.inHand(inHand) && !getToolPreparationMode(tool)) {
+        if (tool.inHand(inHand) && !getToolPreparationMode(tool)) {
             if (skill != PrimarySkillType.WOODCUTTING && skill != PrimarySkillType.AXES) {
                 int timeRemaining = calculateTimeRemaining(ability);
 

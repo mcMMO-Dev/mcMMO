@@ -43,7 +43,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canUseBerserk() {
-        return mcMMOPlayer.getAbilityMode(SuperAbilityType.BERSERK) && Permissions.berserk(getPlayer());
+        return mcMMOPlayer.getAbilityMode(SuperAbilityType.BERSERK);
     }
 
     public boolean canDisarm(LivingEntity target) {

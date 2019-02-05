@@ -198,7 +198,6 @@ public final class Permissions {
     /*
      * PARTY
      */
-
     public static boolean partySizeBypass(Permissible permissible) { return permissible.hasPermission("mcmmo.bypass.partylimit" ); }
     public static boolean party(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.party"); }
     public static boolean partySubcommand(Permissible permissible, PartySubcommandType subcommand) { return permissible.hasPermission("mcmmo.commands.party." + subcommand.toString().toLowerCase()); }

@@ -7,6 +7,7 @@ Key:
   ! Change
   - Removal
 Version 2.1.8
+    Fixed a bug where Abilities didn't check for permission nodes before activating
     MaxBonusLevel now has specific entries for Standard and Retro in advanced.yml
     MaxBonusLevel for Critical Strikes changed from 75/750 to 100/1000
     MaxBonusLevel of Dodge changed from 80/800 to 100/1000

@@ -46,7 +46,7 @@ public class SwordsManager extends SkillManager {
         if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_SERRATED_STRIKES))
             return false;
 
-        return mcMMOPlayer.getAbilityMode(SuperAbilityType.SERRATED_STRIKES) && Permissions.serratedStrikes(getPlayer());
+        return mcMMOPlayer.getAbilityMode(SuperAbilityType.SERRATED_STRIKES);
     }
 
     /**
