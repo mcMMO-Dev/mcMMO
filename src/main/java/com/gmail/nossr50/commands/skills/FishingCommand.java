@@ -114,7 +114,7 @@ public class FishingCommand extends SkillCommand {
 
             double luckyModifier = Permissions.lucky(player, PrimarySkillType.FISHING) ? 1.333D : 1.0D;
 
-            biteChance = String.valueOf((rawBiteChance * 100.0D) * luckyModifier);
+            biteChance = percent.format(String.valueOf((rawBiteChance * 100.0D) * luckyModifier));
         }
     }
 
