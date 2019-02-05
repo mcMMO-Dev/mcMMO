@@ -11,7 +11,6 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.child.FamilyTree;
-import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;

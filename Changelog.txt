@@ -7,6 +7,8 @@ Key:
   ! Change
   - Removal
 Version 2.1.8
+    mcMMO now checks for WG 7 before attempting to use the WG API
+    Made some optimizations for our WG integration
     Fixed a bug where Bite chance for Master Angler was displaying too many decimal places
     Fixed a bug where Abilities didn't check for permission nodes before activating
     MaxBonusLevel now has specific entries for Standard and Retro in advanced.yml

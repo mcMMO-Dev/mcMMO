@@ -11,8 +11,6 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.SkillUtils;
-import com.gmail.nossr50.worldguard.WorldGuardManager;
-import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;

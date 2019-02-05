@@ -2,8 +2,6 @@ package com.gmail.nossr50.skills.salvage;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Material;
 
 public class Salvage {

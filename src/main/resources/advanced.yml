@@ -236,7 +236,6 @@ Skills:
     Herbalism:
 
         GreenThumb:
-            # StageChange: Level value when the GreenThumb stage rank goes up
             # ChanceMax: Maximum chance of GreenThumb when on <MaxBonusLevel> or higher
             # MaxBonusLevel: On this level, GreenThumb chance will be <ChanceMax>
             ChanceMax: 100.0

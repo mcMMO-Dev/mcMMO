@@ -1,20 +1,38 @@
 package com.gmail.nossr50.worldguard;
 
+import com.gmail.nossr50.mcMMO;
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import org.bukkit.plugin.Plugin;
 
 import static org.bukkit.Bukkit.getServer;
 
 public class WorldGuardUtils {
+    private static WorldGuardPlugin worldGuardPluginRef;
+    private static boolean isLoaded = false;
+    private static boolean hasWarned = false;
+
     public static boolean isWorldGuardLoaded()
     {
-        Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
+        WorldGuardPlugin plugin = getWorldGuard();
 
         try {
             // WorldGuard may not be loaded
-            if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
+            if (plugin == null) {
                 return false; // Maybe you want throw an exception instead
             }
+
+            if(!WorldGuard.getVersion().startsWith("7"))
+            {
+                if(!hasWarned)
+                {
+                    mcMMO.p.getLogger().severe("mcMMO only supports WorldGuard version 7! Make sure you have WG 7! This warning will not appear again.");
+                    hasWarned = true;
+                }
+
+                return false; // WG 7 is required
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             //Silently Fail
@@ -22,6 +40,25 @@ public class WorldGuardUtils {
             return false;
         }
 
+
         return true;
+    }
+
+    private static WorldGuardPlugin getWorldGuard()
+    {
+        if(isLoaded)
+            return worldGuardPluginRef;
+
+        Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
+
+        if(plugin instanceof WorldGuardPlugin)
+        {
+            worldGuardPluginRef = (WorldGuardPlugin) plugin;
+
+            if(worldGuardPluginRef != null)
+                isLoaded = true;
+        }
+
+        return worldGuardPluginRef;
     }
 }
