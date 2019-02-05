@@ -684,43 +684,23 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
      * @return the level at which this skills max benefits will be reached on the curve
      */
     public int getMaxBonusLevel(SubSkillType subSkillType) {
-        int maxBonusLevel = config.getInt(subSkillType.getAdvConfigAddress() + ".MaxBonusLevel", 100);
-
-        if(mcMMO.isRetroModeEnabled())
-            maxBonusLevel *= 10;
-
-        if(maxBonusLevel == 0)
-            mcMMO.p.getLogger().severe("Warning Max Bonus Level for "+subSkillType.getAdvConfigAddress() + ".MaxBonusLevel"+" is set to 0! Typically this value should be 100.");
-
-        return maxBonusLevel;
+        String keyPath = subSkillType.getAdvConfigAddress() + ".MaxBonusLevel.";
+        return mcMMO.isRetroModeEnabled() ? config.getInt(keyPath+"RetroMode", 1000) : config.getInt(keyPath+"Standard", 100);
     }
 
     public int getMaxBonusLevel(AbstractSubSkill abstractSubSkill) {
-        int maxBonusLevel = config.getInt("Skills."+abstractSubSkill.getPrimaryKeyName()+"."+abstractSubSkill.getConfigKeyName()+".MaxBonusLevel", 100);
-
-        if(mcMMO.isRetroModeEnabled())
-            maxBonusLevel *= 10;
-
-        return maxBonusLevel;
+        return getMaxBonusLevel(abstractSubSkill.getSubSkillType());
     }
 
     public double getMaximumProbability(SubSkillType subSkillType) {
         double maximumProbability = config.getDouble(subSkillType.getAdvConfigAddress() + ".ChanceMax", 100.0D);
-
-        /*if(mcMMO.isRetroModeEnabled())
-            maximumProbability *= 10; // It seems weird but our formulas need this*/
 
         return maximumProbability;
     }
 
     public double getMaximumProbability(AbstractSubSkill abstractSubSkill)
     {
-        double maximumProbability = config.getDouble("Skills."+abstractSubSkill.getPrimaryKeyName()+"."+abstractSubSkill.getConfigKeyName()+".ChanceMax", 100.0D);
-
-        if(mcMMO.isRetroModeEnabled())
-            maximumProbability *= 10; // It seems weird but our formulas need this
-
-        return maximumProbability;
+        return getMaximumProbability(abstractSubSkill.getSubSkillType());
     }
 
     /* Notification Settings */

@@ -7,7 +7,11 @@ Key:
   ! Change
   - Removal
 Version 2.1.8
-
+    MaxBonusLevel now has specific entries for Standard and Retro in advanced.yml
+    MaxBonusLevel for Critical Strikes changed from 75/750 to 100/1000
+    MaxBonusLevel of Dodge changed from 80/800 to 100/1000
+    MaxBonusLevel of Rupture changed from 20/200 to 100/1000
+    MaxBonusLevel of Counter Attack changed from 60/600 to 100/1000
 
 Version 2.1.7
     Fixed an almost 6 year old bug where Salvage materials did not have a defined material count so they defaulted to 2 (which could lead to shovels giving back more diamonds than normal)
