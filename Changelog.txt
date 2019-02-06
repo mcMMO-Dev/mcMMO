@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 2.2.0
+    Endstone now gives the same XP as Stone (update your experience.yml)
 
 Version 2.1.9
     Fixed a bug where grabbing the version of WG would throw classnotdefined errors
