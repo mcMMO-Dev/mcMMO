@@ -6,7 +6,10 @@ Key:
   = Fix
   ! Change
   - Removal
+
 Version 2.2.0
+
+Version 2.1.9
     Fixed a bug where grabbing the version of WG would throw classnotdefined errors
 
 Version 2.1.8
