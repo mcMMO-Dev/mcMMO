@@ -7,6 +7,9 @@
 #vs code
 /.vscode
 
+# Maven Depends
+/lib
+
 # netbeans
 /nbproject
 
