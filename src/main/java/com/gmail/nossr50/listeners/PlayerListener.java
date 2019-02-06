@@ -264,7 +264,9 @@ public class PlayerListener implements Listener {
                 }
 
                 if (Permissions.vanillaXpBoost(player, PrimarySkillType.FISHING)) {
-                    event.setExpToDrop(fishingManager.handleVanillaXpBoost(event.getExpToDrop()));
+                    //Don't modify XP below vanilla values
+                    if(fishingManager.handleVanillaXpBoost(event.getExpToDrop()) > 1)
+                        event.setExpToDrop(fishingManager.handleVanillaXpBoost(event.getExpToDrop()));
                 }
                 return;
 
@@ -272,7 +274,9 @@ public class PlayerListener implements Listener {
                 Block block = player.getTargetBlock(null, 100);
 
                 if (fishingManager.canIceFish(block)) {
-                    event.setCancelled(true);
+
+                    cancelFishingEventAndDropXp(event, player);
+
                     fishingManager.iceFishing(event.getHook(), block);
                 }
                 return;
@@ -280,6 +284,12 @@ public class PlayerListener implements Listener {
             default:
                 return;
         }
+    }
+
+    private void cancelFishingEventAndDropXp(PlayerFishEvent event, Player player) {
+        event.setCancelled(true);
+        ExperienceOrb experienceOrb = (ExperienceOrb) player.getWorld().spawnEntity(player.getEyeLocation(), EntityType.EXPERIENCE_ORB);
+        experienceOrb.setExperience(event.getExpToDrop());
     }
 
     /**
@@ -312,6 +322,7 @@ public class PlayerListener implements Listener {
         FishingManager fishingManager = UserManager.getPlayer(player).getFishingManager();
 
         Entity caught = event.getCaught();
+        //event.setExpToDrop(event.getExpToDrop()); //Redundant?
 
         switch (event.getState()) {
             case FISHING:
