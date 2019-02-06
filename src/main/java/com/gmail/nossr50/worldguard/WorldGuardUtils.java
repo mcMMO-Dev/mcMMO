@@ -21,18 +21,6 @@ public class WorldGuardUtils {
             if (plugin == null) {
                 return false; // Maybe you want throw an exception instead
             }
-
-            if(!WorldGuard.getVersion().startsWith("7"))
-            {
-                if(!hasWarned)
-                {
-                    mcMMO.p.getLogger().severe("mcMMO only supports WorldGuard version 7! Make sure you have WG 7! This warning will not appear again.");
-                    hasWarned = true;
-                }
-
-                return false; // WG 7 is required
-            }
-
         } catch (Exception e) {
             e.printStackTrace();
             //Silently Fail
@@ -53,10 +41,20 @@ public class WorldGuardUtils {
 
         if(plugin instanceof WorldGuardPlugin)
         {
-            worldGuardPluginRef = (WorldGuardPlugin) plugin;
+            if(plugin.getDescription().getVersion().startsWith("7"))
+            {
+                worldGuardPluginRef = (WorldGuardPlugin) plugin;
 
-            if(worldGuardPluginRef != null)
-                isLoaded = true;
+                if(worldGuardPluginRef != null)
+                    isLoaded = true;
+
+            } else {
+                if(!hasWarned)
+                {
+                    mcMMO.p.getLogger().severe("mcMMO only supports WorldGuard version 7! Make sure you have WG 7! This warning will not appear again.");
+                    hasWarned = true;
+                }
+            }
         }
 
         return worldGuardPluginRef;

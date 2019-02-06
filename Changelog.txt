@@ -6,6 +6,9 @@ Key:
   = Fix
   ! Change
   - Removal
+Version 2.2.0
+    Fixed a bug where grabbing the version of WG would throw classnotdefined errors
+
 Version 2.1.8
     mcMMO now checks for WG 7 before attempting to use the WG API
     Made some optimizations for our WG integration
