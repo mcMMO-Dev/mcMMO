@@ -560,10 +560,10 @@ permissions:
     mcmmo.ability.swords.all:
         description: Allows access to all Swords abilities
         children:
-            mcmmo.ability.swords.bleed: true
+            mcmmo.ability.swords.rupture: true
             mcmmo.ability.swords.counterattack: true
             mcmmo.ability.swords.serratedstrikes: true
-    mcmmo.ability.swords.bleed:
+    mcmmo.ability.swords.rupture:
         description: Allows access to the Bleed ability
     mcmmo.ability.swords.counterattack:
         description: Allows access to the Counter Attack ability

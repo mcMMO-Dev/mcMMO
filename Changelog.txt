@@ -7,6 +7,9 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.11
+    Fixed a bug where Rupture was using the wrong permission node (new permission node: mcmmo.ability.swords.rupture)
+
 Version 2.1.10
     Fishing command did an oopsie
     Endstone now gives the same XP as Stone (update your experience.yml)
