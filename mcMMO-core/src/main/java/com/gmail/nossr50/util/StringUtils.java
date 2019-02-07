@@ -42,13 +42,13 @@ public class StringUtils {
 
     public static String getFriendlyConfigBlockDataString(BlockData data) {
         switch(data.getMaterial()){
-            case Material.CHORUS_FLOWER:
-            case Material.COCOA:
-            case Material.WHEAT:
-            case Material.BEETROOTS:
-            case Material.CARROTS:
-            case Material.POTATOES:
-            case Material.NETHER_WART: {
+            case CHORUS_FLOWER:
+            case COCOA:
+            case WHEAT:
+            case BEETROOTS:
+            case CARROTS:
+            case POTATOES:
+            case NETHER_WART: {
                 if (data instanceof Ageable) {
                     Ageable ageData = (Ageable) data;
                     if (ageData.getAge() == ageData.getMaximumAge()) {

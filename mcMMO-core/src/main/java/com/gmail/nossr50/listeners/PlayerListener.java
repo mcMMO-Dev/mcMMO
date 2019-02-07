@@ -37,6 +37,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
@@ -251,7 +252,7 @@ public class PlayerListener implements Listener {
         FishingManager fishingManager = UserManager.getPlayer(player).getFishingManager();
 
         switch (event.getState()) {
-            case State.CAUGHT_FISH:
+            case CAUGHT_FISH:
                 //TODO Update to new API once available! Waiting for case CAUGHT_TREASURE:
                 Item fishingCatch = (Item) event.getCaught();
 
@@ -270,7 +271,7 @@ public class PlayerListener implements Listener {
                 }
                 return;
 
-            case State.IN_GROUND:
+            case IN_GROUND:
                 Block block = player.getTargetBlock(null, 100);
 
                 if (fishingManager.canIceFish(block)) {
@@ -325,21 +326,21 @@ public class PlayerListener implements Listener {
         //event.setExpToDrop(event.getExpToDrop()); //Redundant?
 
         switch (event.getState()) {
-            case State.FISHING:
+            case FISHING:
                 if (fishingManager.canMasterAngler()) {
                     fishingManager.masterAngler(event.getHook());
                     fishingManager.setFishingTarget();
                 }
                 return;
 
-            case State.CAUGHT_FISH:
+            case CAUGHT_FISH:
                 if(fishingManager.exploitPrevention(event.getHook().getBoundingBox()))
                     return;
                 fishingManager.handleFishing((Item) caught);
                 fishingManager.setFishingTarget();
                 return;
 
-            case State.CAUGHT_ENTITY:
+            case CAUGHT_ENTITY:
                 if (fishingManager.canShake(caught)) {
                     fishingManager.shakeCheck((LivingEntity) caught);
                     fishingManager.setFishingTarget();
@@ -514,7 +515,7 @@ public class PlayerListener implements Listener {
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         switch (event.getAction()) {
-            case Action.RIGHT_CLICK_BLOCK:
+            case RIGHT_CLICK_BLOCK:
                 Material type = block.getType();
 
                 if (!Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
@@ -554,7 +555,7 @@ public class PlayerListener implements Listener {
 
                 break;
 
-            case Action.LEFT_CLICK_BLOCK:
+            case LEFT_CLICK_BLOCK:
                 type = block.getType();
 
                 if (!Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
@@ -615,7 +616,7 @@ public class PlayerListener implements Listener {
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         switch (event.getAction()) {
-            case Action.RIGHT_CLICK_BLOCK:
+            case RIGHT_CLICK_BLOCK:
                 if(player.getInventory().getItemInOffHand().getType() != Material.AIR && !player.isInsideVehicle() && !player.isSneaking()) {
                     break;
                 }
@@ -646,12 +647,12 @@ public class PlayerListener implements Listener {
 
                 if (heldItem.getType() == Material.BONE_MEAL) {
                     switch (blockState.getType()) {
-                        case Material.BEETROOTS:
-                        case Material.CARROT:
-                        case Material.COCOA:
-                        case Material.WHEAT:
-                        case Material.NETHER_WART_BLOCK:
-                        case Material.POTATO:
+                        case BEETROOTS:
+                        case CARROT:
+                        case COCOA:
+                        case WHEAT:
+                        case NETHER_WART_BLOCK:
+                        case POTATO:
                             mcMMO.getPlaceStore().setFalse(blockState);
                     }
                 }
@@ -673,7 +674,7 @@ public class PlayerListener implements Listener {
                 }
                 break;
 
-            case Action.RIGHT_CLICK_AIR:
+            case RIGHT_CLICK_AIR:
                 if(player.getInventory().getItemInOffHand().getType() != Material.AIR && !player.isInsideVehicle() && !player.isSneaking()) {
                     break;
                 }
@@ -700,8 +701,8 @@ public class PlayerListener implements Listener {
 
                 break;
 
-            case Action.LEFT_CLICK_AIR:
-            case Action.LEFT_CLICK_BLOCK:
+            case LEFT_CLICK_AIR:
+            case LEFT_CLICK_BLOCK:
 
                 if (!player.isSneaking()) {
                     break;

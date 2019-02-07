@@ -298,16 +298,16 @@ public class TamingManager extends SkillManager {
             addToTracker(entity);
 
             switch (type) {
-                case EntityType.OCELOT:
+                case OCELOT:
                     ((Ocelot) entity).setCatType(Ocelot.Type.values()[1 + Misc.getRandom().nextInt(3)]);
                     break;
 
-                case EntityType.WOLF:
+                case WOLF:
                     entity.setMaxHealth(20.0);
                     entity.setHealth(entity.getMaxHealth());
                     break;
 
-                case EntityType.HORSE:
+                case HORSE:
                     Horse horse = (Horse) entity;
 
                     entity.setMaxHealth(15.0 + (Misc.getRandom().nextDouble() * 15));

@@ -44,13 +44,13 @@ public class Taming {
 
     protected static String getCallOfTheWildFailureMessage(EntityType type) {
         switch (type) {
-            case EntityType.OCELOT:
+            case OCELOT:
                 return "Taming.Summon.Fail.Ocelot";
 
-            case EntityType.WOLF:
+            case WOLF:
                 return "Taming.Summon.Fail.Wolf";
 
-            case EntityType.HORSE:
+            case HORSE:
                 return "Taming.Summon.Fail.Horse";
 
             default:

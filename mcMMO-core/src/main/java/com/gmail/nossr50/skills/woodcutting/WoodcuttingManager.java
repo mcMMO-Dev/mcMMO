@@ -57,8 +57,8 @@ public class WoodcuttingManager extends SkillManager {
         int xp = Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.DEFAULT);
 
         switch (blockState.getType()) {
-            case Material.BROWN_MUSHROOM_BLOCK:
-            case Material.RED_MUSHROOM_BLOCK:
+            case BROWN_MUSHROOM_BLOCK:
+            case RED_MUSHROOM_BLOCK:
                 break;
 
             default:

@@ -37,90 +37,90 @@ public final class BlockUtils {
      */
     public static boolean canActivateAbilities(BlockState blockState) {
         switch (blockState.getType()) {
-            case Material.BLACK_BED:
-            case Material.BLUE_BED:
-            case Material.BROWN_BED:
-            case Material.CYAN_BED:
-            case Material.GRAY_BED:
-            case Material.GREEN_BED:
-            case Material.LIGHT_BLUE_BED:
-            case Material.LIGHT_GRAY_BED:
-            case Material.LIME_BED:
-            case Material.MAGENTA_BED:
-            case Material.ORANGE_BED:
-            case Material.PINK_BED:
-            case Material.PURPLE_BED:
-            case Material.RED_BED:
-            case Material.WHITE_BED:
-            case Material.YELLOW_BED:
-            case Material.BREWING_STAND :
-            case Material.BOOKSHELF :
-            case Material.CAKE:
-            case Material.CHEST :
-            case Material.DISPENSER :
-            case Material.ENCHANTING_TABLE:
-            case Material.ENDER_CHEST :
-            case Material.OAK_FENCE_GATE:
-            case Material.ACACIA_FENCE_GATE :
-            case Material.DARK_OAK_FENCE_GATE :
-            case Material.SPRUCE_FENCE_GATE :
-            case Material.BIRCH_FENCE_GATE :
-            case Material.JUNGLE_FENCE_GATE :
-            case Material.FURNACE :
-            case Material.JUKEBOX :
-            case Material.LEVER :
-            case Material.NOTE_BLOCK :
-            case Material.STONE_BUTTON :
-            case Material.OAK_BUTTON:
-            case Material.BIRCH_BUTTON:
-            case Material.ACACIA_BUTTON:
-            case Material.DARK_OAK_BUTTON:
-            case Material.JUNGLE_BUTTON:
-            case Material.SPRUCE_BUTTON:
-            case Material.ACACIA_TRAPDOOR:
-            case Material.BIRCH_TRAPDOOR:
-            case Material.DARK_OAK_TRAPDOOR:
-            case Material.JUNGLE_TRAPDOOR:
-            case Material.OAK_TRAPDOOR:
-            case Material.SPRUCE_TRAPDOOR:
-            case Material.WALL_SIGN :
-            case Material.CRAFTING_TABLE:
-            case Material.BEACON :
-            case Material.ANVIL :
-            case Material.DROPPER :
-            case Material.HOPPER :
-            case Material.TRAPPED_CHEST :
-            case Material.IRON_DOOR :
-            case Material.IRON_TRAPDOOR :
-            case Material.OAK_DOOR:
-            case Material.ACACIA_DOOR :
-            case Material.SPRUCE_DOOR :
-            case Material.BIRCH_DOOR :
-            case Material.JUNGLE_DOOR :
-            case Material.DARK_OAK_DOOR :
-            case Material.OAK_FENCE:
-            case Material.ACACIA_FENCE :
-            case Material.DARK_OAK_FENCE :
-            case Material.BIRCH_FENCE :
-            case Material.JUNGLE_FENCE :
-            case Material.SPRUCE_FENCE :
-            case Material.ARMOR_STAND :
-            case Material.BLACK_SHULKER_BOX :
-            case Material.BLUE_SHULKER_BOX :
-            case Material.BROWN_SHULKER_BOX :
-            case Material.CYAN_SHULKER_BOX :
-            case Material.GRAY_SHULKER_BOX :
-            case Material.GREEN_SHULKER_BOX :
-            case Material.LIGHT_BLUE_SHULKER_BOX :
-            case Material.LIME_SHULKER_BOX :
-            case Material.MAGENTA_SHULKER_BOX :
-            case Material.ORANGE_SHULKER_BOX :
-            case Material.PINK_SHULKER_BOX :
-            case Material.PURPLE_SHULKER_BOX :
-            case Material.RED_SHULKER_BOX :
-            case Material.LIGHT_GRAY_SHULKER_BOX:
-            case Material.WHITE_SHULKER_BOX :
-            case Material.YELLOW_SHULKER_BOX :
+            case BLACK_BED:
+            case BLUE_BED:
+            case BROWN_BED:
+            case CYAN_BED:
+            case GRAY_BED:
+            case GREEN_BED:
+            case LIGHT_BLUE_BED:
+            case LIGHT_GRAY_BED:
+            case LIME_BED:
+            case MAGENTA_BED:
+            case ORANGE_BED:
+            case PINK_BED:
+            case PURPLE_BED:
+            case RED_BED:
+            case WHITE_BED:
+            case YELLOW_BED:
+            case BREWING_STAND :
+            case BOOKSHELF :
+            case CAKE:
+            case CHEST :
+            case DISPENSER :
+            case ENCHANTING_TABLE:
+            case ENDER_CHEST :
+            case OAK_FENCE_GATE:
+            case ACACIA_FENCE_GATE :
+            case DARK_OAK_FENCE_GATE :
+            case SPRUCE_FENCE_GATE :
+            case BIRCH_FENCE_GATE :
+            case JUNGLE_FENCE_GATE :
+            case FURNACE :
+            case JUKEBOX :
+            case LEVER :
+            case NOTE_BLOCK :
+            case STONE_BUTTON :
+            case OAK_BUTTON:
+            case BIRCH_BUTTON:
+            case ACACIA_BUTTON:
+            case DARK_OAK_BUTTON:
+            case JUNGLE_BUTTON:
+            case SPRUCE_BUTTON:
+            case ACACIA_TRAPDOOR:
+            case BIRCH_TRAPDOOR:
+            case DARK_OAK_TRAPDOOR:
+            case JUNGLE_TRAPDOOR:
+            case OAK_TRAPDOOR:
+            case SPRUCE_TRAPDOOR:
+            case WALL_SIGN :
+            case CRAFTING_TABLE:
+            case BEACON :
+            case ANVIL :
+            case DROPPER :
+            case HOPPER :
+            case TRAPPED_CHEST :
+            case IRON_DOOR :
+            case IRON_TRAPDOOR :
+            case OAK_DOOR:
+            case ACACIA_DOOR :
+            case SPRUCE_DOOR :
+            case BIRCH_DOOR :
+            case JUNGLE_DOOR :
+            case DARK_OAK_DOOR :
+            case OAK_FENCE:
+            case ACACIA_FENCE :
+            case DARK_OAK_FENCE :
+            case BIRCH_FENCE :
+            case JUNGLE_FENCE :
+            case SPRUCE_FENCE :
+            case ARMOR_STAND :
+            case BLACK_SHULKER_BOX :
+            case BLUE_SHULKER_BOX :
+            case BROWN_SHULKER_BOX :
+            case CYAN_SHULKER_BOX :
+            case GRAY_SHULKER_BOX :
+            case GREEN_SHULKER_BOX :
+            case LIGHT_BLUE_SHULKER_BOX :
+            case LIME_SHULKER_BOX :
+            case MAGENTA_SHULKER_BOX :
+            case ORANGE_SHULKER_BOX :
+            case PINK_SHULKER_BOX :
+            case PURPLE_SHULKER_BOX :
+            case RED_SHULKER_BOX :
+            case LIGHT_GRAY_SHULKER_BOX:
+            case WHITE_SHULKER_BOX :
+            case YELLOW_SHULKER_BOX :
                 return false;
 
             default :
@@ -139,114 +139,114 @@ public final class BlockUtils {
      */
     public static boolean canActivateTools(BlockState blockState) {
         switch (blockState.getType()) {
-            case Material.BLACK_BED:
-            case Material.BLUE_BED:
-            case Material.BROWN_BED:
-            case Material.CYAN_BED:
-            case Material.GRAY_BED:
-            case Material.GREEN_BED:
-            case Material.LIGHT_BLUE_BED:
-            case Material.LIGHT_GRAY_BED:
-            case Material.LIME_BED:
-            case Material.MAGENTA_BED:
-            case Material.ORANGE_BED:
-            case Material.PINK_BED:
-            case Material.PURPLE_BED:
-            case Material.RED_BED:
-            case Material.WHITE_BED:
-            case Material.YELLOW_BED:
-            case Material.BREWING_STAND :
-            case Material.BOOKSHELF :
-            case Material.CAKE:
-            case Material.CHEST :
-            case Material.DISPENSER :
-            case Material.ENCHANTING_TABLE:
-            case Material.ENDER_CHEST :
-            case Material.OAK_FENCE_GATE:
-            case Material.ACACIA_FENCE_GATE :
-            case Material.DARK_OAK_FENCE_GATE :
-            case Material.SPRUCE_FENCE_GATE :
-            case Material.BIRCH_FENCE_GATE :
-            case Material.JUNGLE_FENCE_GATE :
-            case Material.FURNACE :
-            case Material.JUKEBOX :
-            case Material.LEVER :
-            case Material.NOTE_BLOCK :
-            case Material.STONE_BUTTON :
-            case Material.OAK_BUTTON:
-            case Material.BIRCH_BUTTON:
-            case Material.ACACIA_BUTTON:
-            case Material.DARK_OAK_BUTTON:
-            case Material.JUNGLE_BUTTON:
-            case Material.SPRUCE_BUTTON:
-            case Material.ACACIA_TRAPDOOR:
-            case Material.BIRCH_TRAPDOOR:
-            case Material.DARK_OAK_TRAPDOOR:
-            case Material.JUNGLE_TRAPDOOR:
-            case Material.OAK_TRAPDOOR:
-            case Material.SPRUCE_TRAPDOOR:
-            case Material.WALL_SIGN :
-            case Material.CRAFTING_TABLE:
-            case Material.BEACON :
-            case Material.ANVIL :
-            case Material.DROPPER :
-            case Material.HOPPER :
-            case Material.TRAPPED_CHEST :
-            case Material.IRON_DOOR :
-            case Material.IRON_TRAPDOOR :
-            case Material.OAK_DOOR:
-            case Material.ACACIA_DOOR :
-            case Material.SPRUCE_DOOR :
-            case Material.BIRCH_DOOR :
-            case Material.JUNGLE_DOOR :
-            case Material.DARK_OAK_DOOR :
-            case Material.OAK_FENCE:
-            case Material.ACACIA_FENCE :
-            case Material.DARK_OAK_FENCE :
-            case Material.BIRCH_FENCE :
-            case Material.JUNGLE_FENCE :
-            case Material.SPRUCE_FENCE :
-            case Material.ARMOR_STAND :
-            case Material.BLACK_SHULKER_BOX :
-            case Material.BLUE_SHULKER_BOX :
-            case Material.BROWN_SHULKER_BOX :
-            case Material.CYAN_SHULKER_BOX :
-            case Material.GRAY_SHULKER_BOX :
-            case Material.GREEN_SHULKER_BOX :
-            case Material.LIGHT_BLUE_SHULKER_BOX :
-            case Material.LIME_SHULKER_BOX :
-            case Material.MAGENTA_SHULKER_BOX :
-            case Material.ORANGE_SHULKER_BOX :
-            case Material.PINK_SHULKER_BOX :
-            case Material.PURPLE_SHULKER_BOX :
-            case Material.RED_SHULKER_BOX :
-            case Material.LIGHT_GRAY_SHULKER_BOX:
-            case Material.WHITE_SHULKER_BOX :
-            case Material.YELLOW_SHULKER_BOX :
-            case Material.STRIPPED_ACACIA_LOG:
-            case Material.STRIPPED_ACACIA_WOOD:
-            case Material.STRIPPED_BIRCH_LOG:
-            case Material.STRIPPED_BIRCH_WOOD:
-            case Material.STRIPPED_DARK_OAK_LOG:
-            case Material.STRIPPED_DARK_OAK_WOOD:
-            case Material.STRIPPED_JUNGLE_LOG:
-            case Material.STRIPPED_JUNGLE_WOOD:
-            case Material.STRIPPED_OAK_LOG:
-            case Material.STRIPPED_OAK_WOOD:
-            case Material.STRIPPED_SPRUCE_LOG:
-            case Material.STRIPPED_SPRUCE_WOOD:
-            case Material.ACACIA_LOG:
-            case Material.ACACIA_WOOD:
-            case Material.BIRCH_LOG:
-            case Material.BIRCH_WOOD:
-            case Material.DARK_OAK_LOG:
-            case Material.DARK_OAK_WOOD:
-            case Material.JUNGLE_LOG:
-            case Material.JUNGLE_WOOD:
-            case Material.OAK_LOG:
-            case Material.OAK_WOOD:
-            case Material.SPRUCE_LOG:
-            case Material.SPRUCE_WOOD:
+            case BLACK_BED:
+            case BLUE_BED:
+            case BROWN_BED:
+            case CYAN_BED:
+            case GRAY_BED:
+            case GREEN_BED:
+            case LIGHT_BLUE_BED:
+            case LIGHT_GRAY_BED:
+            case LIME_BED:
+            case MAGENTA_BED:
+            case ORANGE_BED:
+            case PINK_BED:
+            case PURPLE_BED:
+            case RED_BED:
+            case WHITE_BED:
+            case YELLOW_BED:
+            case BREWING_STAND :
+            case BOOKSHELF :
+            case CAKE:
+            case CHEST :
+            case DISPENSER :
+            case ENCHANTING_TABLE:
+            case ENDER_CHEST :
+            case OAK_FENCE_GATE:
+            case ACACIA_FENCE_GATE :
+            case DARK_OAK_FENCE_GATE :
+            case SPRUCE_FENCE_GATE :
+            case BIRCH_FENCE_GATE :
+            case JUNGLE_FENCE_GATE :
+            case FURNACE :
+            case JUKEBOX :
+            case LEVER :
+            case NOTE_BLOCK :
+            case STONE_BUTTON :
+            case OAK_BUTTON:
+            case BIRCH_BUTTON:
+            case ACACIA_BUTTON:
+            case DARK_OAK_BUTTON:
+            case JUNGLE_BUTTON:
+            case SPRUCE_BUTTON:
+            case ACACIA_TRAPDOOR:
+            case BIRCH_TRAPDOOR:
+            case DARK_OAK_TRAPDOOR:
+            case JUNGLE_TRAPDOOR:
+            case OAK_TRAPDOOR:
+            case SPRUCE_TRAPDOOR:
+            case WALL_SIGN :
+            case CRAFTING_TABLE:
+            case BEACON :
+            case ANVIL :
+            case DROPPER :
+            case HOPPER :
+            case TRAPPED_CHEST :
+            case IRON_DOOR :
+            case IRON_TRAPDOOR :
+            case OAK_DOOR:
+            case ACACIA_DOOR :
+            case SPRUCE_DOOR :
+            case BIRCH_DOOR :
+            case JUNGLE_DOOR :
+            case DARK_OAK_DOOR :
+            case OAK_FENCE:
+            case ACACIA_FENCE :
+            case DARK_OAK_FENCE :
+            case BIRCH_FENCE :
+            case JUNGLE_FENCE :
+            case SPRUCE_FENCE :
+            case ARMOR_STAND :
+            case BLACK_SHULKER_BOX :
+            case BLUE_SHULKER_BOX :
+            case BROWN_SHULKER_BOX :
+            case CYAN_SHULKER_BOX :
+            case GRAY_SHULKER_BOX :
+            case GREEN_SHULKER_BOX :
+            case LIGHT_BLUE_SHULKER_BOX :
+            case LIME_SHULKER_BOX :
+            case MAGENTA_SHULKER_BOX :
+            case ORANGE_SHULKER_BOX :
+            case PINK_SHULKER_BOX :
+            case PURPLE_SHULKER_BOX :
+            case RED_SHULKER_BOX :
+            case LIGHT_GRAY_SHULKER_BOX:
+            case WHITE_SHULKER_BOX :
+            case YELLOW_SHULKER_BOX :
+            case STRIPPED_ACACIA_LOG:
+            case STRIPPED_ACACIA_WOOD:
+            case STRIPPED_BIRCH_LOG:
+            case STRIPPED_BIRCH_WOOD:
+            case STRIPPED_DARK_OAK_LOG:
+            case STRIPPED_DARK_OAK_WOOD:
+            case STRIPPED_JUNGLE_LOG:
+            case STRIPPED_JUNGLE_WOOD:
+            case STRIPPED_OAK_LOG:
+            case STRIPPED_OAK_WOOD:
+            case STRIPPED_SPRUCE_LOG:
+            case STRIPPED_SPRUCE_WOOD:
+            case ACACIA_LOG:
+            case ACACIA_WOOD:
+            case BIRCH_LOG:
+            case BIRCH_WOOD:
+            case DARK_OAK_LOG:
+            case DARK_OAK_WOOD:
+            case JUNGLE_LOG:
+            case JUNGLE_WOOD:
+            case OAK_LOG:
+            case OAK_WOOD:
+            case SPRUCE_LOG:
+            case SPRUCE_WOOD:
                 return false;
 
             default :
@@ -274,15 +274,15 @@ public final class BlockUtils {
      */
     public static boolean canMakeMossy(BlockState blockState) {
         switch (blockState.getType()) {
-            case Material.COBBLESTONE :
-            case Material.DIRT :
-            case Material.GRASS_PATH :
+            case COBBLESTONE :
+            case DIRT :
+            case GRASS_PATH :
                 return true;
 
-            case Material.STONE_BRICKS:
+            case STONE_BRICKS:
                 return true;
 
-            case Material.COBBLESTONE_WALL:
+            case COBBLESTONE_WALL:
                 return true;
 
             default :
@@ -356,12 +356,12 @@ public final class BlockUtils {
      */
     public static boolean isLeaves(BlockState blockState) {
         switch (blockState.getType()) {
-            case Material.OAK_LEAVES:
-            case Material.ACACIA_LEAVES:
-            case Material.BIRCH_LEAVES:
-            case Material.DARK_OAK_LEAVES:
-            case Material.JUNGLE_LEAVES:
-            case Material.SPRUCE_LEAVES:
+            case OAK_LEAVES:
+            case ACACIA_LEAVES:
+            case BIRCH_LEAVES:
+            case DARK_OAK_LEAVES:
+            case JUNGLE_LEAVES:
+            case SPRUCE_LEAVES:
                 return true;
 
             default :
@@ -378,8 +378,8 @@ public final class BlockUtils {
      */
     public static boolean affectedByFluxMining(BlockState blockState) {
         switch (blockState.getType()) {
-            case Material.IRON_ORE :
-            case Material.GOLD_ORE :
+            case IRON_ORE :
+            case GOLD_ORE :
                 return true;
 
             default :
@@ -397,10 +397,10 @@ public final class BlockUtils {
      */
     public static boolean canActivateHerbalism(BlockState blockState) {
         switch (blockState.getType()) {
-            case Material.DIRT :
-            case Material.GRASS :
-            case Material.GRASS_PATH :
-            case Material.FARMLAND:
+            case DIRT :
+            case GRASS :
+            case GRASS_PATH :
+            case FARMLAND:
                 return false;
 
             default :
@@ -418,7 +418,7 @@ public final class BlockUtils {
      */
     public static boolean affectedByBlockCracker(BlockState blockState) {
         switch (blockState.getType()) {
-            case Material.STONE_BRICKS:
+            case STONE_BRICKS:
                 return true;
 
             default :
@@ -435,9 +435,9 @@ public final class BlockUtils {
      */
     public static boolean canMakeShroomy(BlockState blockState) {
         switch (blockState.getType()) {
-            case Material.DIRT :
-            case Material.GRASS :
-            case Material.GRASS_PATH :
+            case DIRT :
+            case GRASS :
+            case GRASS_PATH :
                 return true;
 
             default :

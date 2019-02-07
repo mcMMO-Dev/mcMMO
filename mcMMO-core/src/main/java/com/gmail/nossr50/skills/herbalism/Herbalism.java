@@ -20,20 +20,20 @@ public class Herbalism {
      */
     protected static boolean convertGreenTerraBlocks(BlockState blockState) {
         switch (blockState.getType()) {
-            case Material.COBBLESTONE_WALL:
+            case COBBLESTONE_WALL:
                 blockState.setType(Material.MOSSY_COBBLESTONE_WALL);
                 return true;
 
-            case Material.STONE_BRICKS:
+            case STONE_BRICKS:
                 blockState.setType(Material.MOSSY_STONE_BRICKS);
                 return true;
 
-            case Material.DIRT :
-            case Material.GRASS_PATH :
+            case DIRT :
+            case GRASS_PATH :
                 blockState.setType(Material.GRASS_BLOCK);
                 return true;
 
-            case Material.COBBLESTONE :
+            case COBBLESTONE :
                 blockState.setType(Material.MOSSY_COBBLESTONE);
                 return true;
 
@@ -118,9 +118,9 @@ public class Herbalism {
      */
     protected static boolean convertShroomThumb(BlockState blockState) {
         switch (blockState.getType()) {
-            case Material.DIRT :
-            case Material.GRASS_BLOCK:
-            case Material.GRASS_PATH :
+            case DIRT :
+            case GRASS_BLOCK:
+            case GRASS_PATH :
                 blockState.setType(Material.MYCELIUM);
                 return true;
 

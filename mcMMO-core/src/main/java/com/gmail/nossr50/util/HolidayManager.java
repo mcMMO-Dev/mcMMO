@@ -60,30 +60,30 @@ public final class HolidayManager {
 
         public static FakeSkillType getByStatistic(Statistic statistic) {
             switch (statistic) {
-                case Statistic.DAMAGE_TAKEN:
+                case DAMAGE_TAKEN:
                     return FakeSkillType.MACHO;
-                case Statistic.JUMP:
+                case JUMP:
                     return FakeSkillType.JUMPING;
-                case Statistic.DROP:
+                case DROP:
                     return FakeSkillType.THROWING;
-                case Statistic.MINE_BLOCK:
-                case Statistic.BREAK_ITEM:
+                case MINE_BLOCK:
+                case BREAK_ITEM:
                     return FakeSkillType.WRECKING;
-                case Statistic.CRAFT_ITEM:
+                case CRAFT_ITEM:
                     return FakeSkillType.CRAFTING;
-                case Statistic.WALK_ONE_CM:
+                case WALK_ONE_CM:
                     return FakeSkillType.WALKING;
-                case Statistic.SWIM_ONE_CM:
+                case SWIM_ONE_CM:
                     return FakeSkillType.SWIMMING;
-                case Statistic.FALL_ONE_CM:
+                case FALL_ONE_CM:
                     return FakeSkillType.FALLING;
-                case Statistic.CLIMB_ONE_CM:
+                case CLIMB_ONE_CM:
                     return FakeSkillType.CLIMBING;
-                case Statistic.FLY_ONE_CM:
+                case FLY_ONE_CM:
                     return FakeSkillType.FLYING;
-                case Statistic.WALK_UNDER_WATER_ONE_CM:
+                case WALK_UNDER_WATER_ONE_CM:
                     return FakeSkillType.DIVING;
-                case Statistic.PIG_ONE_CM:
+                case PIG_ONE_CM:
                     return FakeSkillType.PIGGY;
                 default:
                     return FakeSkillType.UNKNOWN;
@@ -334,20 +334,20 @@ public final class HolidayManager {
 
         int modifier;
         switch (statistic) {
-            case Statistic.DAMAGE_TAKEN:
+            case DAMAGE_TAKEN:
                 modifier = 500;
                 break;
-            case Statistic.JUMP:
+            case JUMP:
                 modifier = 500;
                 break;
-            case Statistic.DROP:
+            case DROP:
                 modifier = 200;
                 break;
-            case Statistic.MINE_BLOCK:
-            case Statistic.BREAK_ITEM:
+            case MINE_BLOCK:
+            case BREAK_ITEM:
                 modifier = 500;
                 break;
-            case Statistic.CRAFT_ITEM:
+            case CRAFT_ITEM:
                 modifier = 100;
                 break;
             default:

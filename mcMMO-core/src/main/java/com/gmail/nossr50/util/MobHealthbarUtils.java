@@ -7,6 +7,7 @@ import com.gmail.nossr50.datatypes.meta.OldName;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.MobHealthDisplayUpdaterTask;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -155,8 +156,8 @@ public final class MobHealthbarUtils {
      */
     private static boolean isBoss(LivingEntity livingEntity) {
         switch (livingEntity.getType()) {
-            case EntityType.ENDER_DRAGON:
-            case EntityType.WITHER:
+            case ENDER_DRAGON:
+            case WITHER:
                 return true;
 
             default:

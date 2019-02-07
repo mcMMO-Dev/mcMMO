@@ -283,27 +283,27 @@ public class HerbalismManager extends SkillManager {
         Material seed = null;
 
         switch (blockState.getType()) {
-            case Material.CARROTS:
+            case CARROTS:
                 seed = Material.CARROT;
                 break;
 
-            case Material.WHEAT:
+            case WHEAT:
                 seed = Material.WHEAT_SEEDS;
                 break;
 
-            case Material.NETHER_WART:
+            case NETHER_WART:
                 seed = Material.NETHER_WART;
                 break;
 
-            case Material.POTATOES:
+            case POTATOES:
                 seed = Material.POTATO;
                 break;
 
-            case Material.BEETROOTS:
+            case BEETROOTS:
                 seed = Material.BEETROOT_SEEDS;
                 break;
 
-            case Material.COCOA:
+            case COCOA:
                 seed = Material.COCOA_BEANS;
                 break;
 
@@ -338,9 +338,9 @@ public class HerbalismManager extends SkillManager {
 
         switch (blockState.getType()) {
 
-            case Material.POTATOES:
-            case Material.CARROTS:
-            case Material.WHEAT:
+            case POTATOES:
+            case CARROTS:
+            case WHEAT:
 
                 if (greenTerra) {
                     crops.setAge(3);
@@ -350,8 +350,8 @@ public class HerbalismManager extends SkillManager {
                 }
                 break;
 
-            case Material.BEETROOTS:
-            case Material.NETHER_WART:
+            case BEETROOTS:
+            case NETHER_WART:
 
                 if (greenTerra || greenThumbStage > 2) {
                     crops.setAge(2);
@@ -364,7 +364,7 @@ public class HerbalismManager extends SkillManager {
                 }
                break;
 
-            case Material.COCOA:
+            case COCOA:
 
                 if (greenTerra || getGreenThumbStage() > 1) {
                     crops.setAge(1);

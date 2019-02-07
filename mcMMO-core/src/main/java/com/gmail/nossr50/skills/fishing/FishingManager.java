@@ -284,18 +284,18 @@ public class FishingManager extends SkillManager {
 
             // Extra processing depending on the mob and drop type
             switch (target.getType()) {
-                case EntityType.PLAYER:
+                case PLAYER:
                     Player targetPlayer = (Player) target;
 
                     switch (drop.getType()) {
-                        case Material.PLAYER_HEAD:
+                        case PLAYER_HEAD:
                             drop.setDurability((short) 3);
                             SkullMeta skullMeta = (SkullMeta) drop.getItemMeta();
                             skullMeta.setOwningPlayer(targetPlayer);
                             drop.setItemMeta(skullMeta);
                             break;
 
-                        case Material.BEDROCK:
+                        case BEDROCK:
                             if (TreasureConfig.getInstance().getInventoryStealEnabled()) {
                                 PlayerInventory inventory = targetPlayer.getInventory();
                                 int length = inventory.getContents().length;
@@ -323,7 +323,7 @@ public class FishingManager extends SkillManager {
                     }
                     break;
 
-                case EntityType.SHEEP:
+                case SHEEP:
                     Sheep sheep = (Sheep) target;
 
                     if (drop.getType().name().endsWith("WOOL")) {

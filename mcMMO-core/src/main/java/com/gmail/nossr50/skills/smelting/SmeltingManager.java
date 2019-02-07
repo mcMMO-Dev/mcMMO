@@ -56,11 +56,11 @@ public class SmeltingManager extends SkillManager {
             ItemStack item = null;
 
             switch (blockState.getType()) {
-                case Material.IRON_ORE:
+                case IRON_ORE:
                     item = new ItemStack(Material.IRON_INGOT);
                     break;
 
-                case Material.GOLD_ORE:
+                case GOLD_ORE:
                     item = new ItemStack(Material.GOLD_INGOT);
                     break;
 

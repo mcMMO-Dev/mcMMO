@@ -77,7 +77,7 @@ public class UnarmedManager extends SkillManager {
         BlockData data = blockState.getBlockData();
 
         switch (blockState.getType()) {
-            case Material.STONE_BRICKS:
+            case STONE_BRICKS:
                 if (!Unarmed.blockCrackerSmoothBrick) {
                     return false;
                 }

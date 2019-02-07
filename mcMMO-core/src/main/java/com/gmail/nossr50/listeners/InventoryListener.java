@@ -231,11 +231,11 @@ public class InventoryListener implements Listener {
 
         if (click.isShiftClick()) {
             switch (slot) {
-                case SlotType.FUEL:
+                case FUEL:
                     AlchemyPotionBrewer.scheduleCheck(player, stand);
                     return;
-                case SlotType.CONTAINER:
-                case SlotType.QUICKBAR:
+                case CONTAINER:
+                case QUICKBAR:
                     if (!AlchemyPotionBrewer.isValidIngredient(player, clicked)) {
                         return;
                     }

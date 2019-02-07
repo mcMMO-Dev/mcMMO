@@ -11,6 +11,9 @@
 /lib
 
 # gradle
+*.bin
+*.lock
+bin
 /.gradle
 /mcMMO-core/.gradle
 /mcMMO-core/gradle

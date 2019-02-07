@@ -432,22 +432,22 @@ public class EntityListener implements Listener {
                 TamingManager tamingManager = UserManager.getPlayer(player).getTamingManager();
 
                 switch (cause) {
-                    case DamageCause.CONTACT:
-                    case DamageCause.FIRE:
-                    case DamageCause.LAVA:
+                    case CONTACT:
+                    case FIRE:
+                    case LAVA:
                         if (tamingManager.canUseEnvironmentallyAware()) {
                             tamingManager.processEnvironmentallyAware(wolf, event.getDamage());
                         }
                         return;
 
-                    case DamageCause.FALL:
+                    case FALL:
                         if (tamingManager.canUseEnvironmentallyAware()) {
                             event.setCancelled(true);
                         }
                         return;
 
-                    case DamageCause.ENTITY_ATTACK:
-                    case DamageCause.PROJECTILE:
+                    case ENTITY_ATTACK:
+                    case PROJECTILE:
                         if (tamingManager.canUseThickFur()) {
                             event.setDamage(Taming.processThickFur(wolf, event.getDamage()));
 
@@ -457,23 +457,23 @@ public class EntityListener implements Listener {
                         }
                         return;
 
-                    case DamageCause.FIRE_TICK:
+                    case FIRE_TICK:
                         if (tamingManager.canUseThickFur()) {
                             Taming.processThickFurFire(wolf);
                         }
                         return;
 
-                    case DamageCause.MAGIC:
-                    case DamageCause.POISON:
-                    case DamageCause.WITHER:
+                    case MAGIC:
+                    case POISON:
+                    case WITHER:
                         if (tamingManager.canUseHolyHound()) {
                             Taming.processHolyHound(wolf, event.getDamage());
                         }
                         return;
 
-                    case DamageCause.BLOCK_EXPLOSION:
-                    case DamageCause.ENTITY_EXPLOSION:
-                    case DamageCause.LIGHTNING:
+                    case BLOCK_EXPLOSION:
+                    case ENTITY_EXPLOSION:
+                    case LIGHTNING:
                         if (tamingManager.canUseShockProof()) {
                             event.setDamage(Taming.processShockProof(wolf, event.getDamage()));
 
@@ -559,9 +559,9 @@ public class EntityListener implements Listener {
         LivingEntity entity = event.getEntity();
 
         switch (event.getSpawnReason()) {
-            case SpawnReason.NETHER_PORTAL:
-            case SpawnReason.SPAWNER:
-            case SpawnReason.SPAWNER_EGG:
+            case NETHER_PORTAL:
+            case SPAWNER:
+            case SPAWNER_EGG:
                 entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
 
                 Entity passenger = entity.getPassenger();
@@ -571,7 +571,7 @@ public class EntityListener implements Listener {
                 }
                 return;
 
-            case SpawnReason.BREEDING:
+            case BREEDING:
                 entity.setMetadata(mcMMO.bredMetadataKey, mcMMO.metadataValue);
                 return;
 
@@ -727,25 +727,25 @@ public class EntityListener implements Listener {
          * if we find something is giving too much of a bonus
          */
         switch (player.getInventory().getItemInMainHand().getType()) {
-            case Material.BAKED_POTATO: /*
+            case BAKED_POTATO: /*
                                 * RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @
                                 * 1000
                                 */
-            case Material.BEETROOT:
-            case Material.BREAD: /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
-            case Material.CARROT: /*
+            case BEETROOT:
+            case BREAD: /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
+            case CARROT: /*
                                * RESTORES 2 HUNGER - RESTORES 4 1/2 HUNGER @
                                * 1000
                                */
-            case Material.GOLDEN_CARROT: /*
+            case GOLDEN_CARROT: /*
                                  * RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @
                                  * 1000
                                  */
-            case Material.MUSHROOM_STEW: /*
+            case MUSHROOM_STEW: /*
                                  * RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @
                                  * 1000
                                  */
-            case Material.PUMPKIN_PIE: /*
+            case PUMPKIN_PIE: /*
                                * RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @
                                * 1000
                                */
@@ -754,19 +754,19 @@ public class EntityListener implements Listener {
                 }
                 return;
 
-            case Material.COOKIE: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-            case Material.MELON_SLICE: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-            case Material.POISONOUS_POTATO: /*
+            case COOKIE: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
+            case MELON_SLICE: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+            case POISONOUS_POTATO: /*
                                     * RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER
                                     * @ 1000
                                     */
-            case Material.POTATO: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
+            case POTATO: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
                 if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
                     event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(newFoodLevel));
                 }
                 return;
 
-            case Material.COOKED_SALMON: /*
+            case COOKED_SALMON: /*
                                * RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @
                                * 1000
                                */
@@ -775,7 +775,7 @@ public class EntityListener implements Listener {
                 }
                 return;
 
-            case Material.SALMON: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+            case SALMON: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
                 if (Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_FISHERMANS_DIET)) {
                     event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel2, newFoodLevel));
                 }

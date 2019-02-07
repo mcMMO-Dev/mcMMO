@@ -24,7 +24,7 @@ public final class ItemUtils {
         Material type = item.getType();
 
         switch (type) {
-            case Material.BOW:
+            case BOW:
                 return true;
 
             default:
@@ -42,11 +42,11 @@ public final class ItemUtils {
         Material type = item.getType();
 
         switch (type) {
-            case Material.DIAMOND_SWORD:
-            case Material.GOLDEN_SWORD:
-            case Material.IRON_SWORD:
-            case Material.STONE_SWORD:
-            case Material.WOODEN_SWORD:
+            case DIAMOND_SWORD:
+            case GOLDEN_SWORD:
+            case IRON_SWORD:
+            case STONE_SWORD:
+            case WOODEN_SWORD:
                 return true;
 
             default:
@@ -64,11 +64,11 @@ public final class ItemUtils {
         Material type = item.getType();
 
         switch (type) {
-            case Material.DIAMOND_HOE:
-            case Material.GOLDEN_HOE:
-            case Material.IRON_HOE:
-            case Material.STONE_HOE:
-            case Material.WOODEN_HOE:
+            case DIAMOND_HOE:
+            case GOLDEN_HOE:
+            case IRON_HOE:
+            case STONE_HOE:
+            case WOODEN_HOE:
                 return true;
 
             default:
@@ -86,11 +86,11 @@ public final class ItemUtils {
         Material type = item.getType();
 
         switch (type) {
-            case Material.DIAMOND_SHOVEL:
-            case Material.GOLDEN_SHOVEL:
-            case Material.IRON_SHOVEL:
-            case Material.STONE_SHOVEL:
-            case Material.WOODEN_SHOVEL:
+            case DIAMOND_SHOVEL:
+            case GOLDEN_SHOVEL:
+            case IRON_SHOVEL:
+            case STONE_SHOVEL:
+            case WOODEN_SHOVEL:
                 return true;
 
             default:
@@ -108,11 +108,11 @@ public final class ItemUtils {
         Material type = item.getType();
 
         switch (type) {
-            case Material.DIAMOND_AXE:
-            case Material.GOLDEN_AXE:
-            case Material.IRON_AXE:
-            case Material.STONE_AXE:
-            case Material.WOODEN_AXE:
+            case DIAMOND_AXE:
+            case GOLDEN_AXE:
+            case IRON_AXE:
+            case STONE_AXE:
+            case WOODEN_AXE:
                 return true;
 
             default:
@@ -130,11 +130,11 @@ public final class ItemUtils {
         Material type = item.getType();
 
         switch (type) {
-            case Material.DIAMOND_PICKAXE:
-            case Material.GOLDEN_PICKAXE:
-            case Material.IRON_PICKAXE:
-            case Material.STONE_PICKAXE:
-            case Material.WOODEN_PICKAXE:
+            case DIAMOND_PICKAXE:
+            case GOLDEN_PICKAXE:
+            case IRON_PICKAXE:
+            case STONE_PICKAXE:
+            case WOODEN_PICKAXE:
                 return true;
 
             default:
@@ -166,11 +166,11 @@ public final class ItemUtils {
         Material type = item.getType();
 
         switch (type) {
-            case Material.DIAMOND_HELMET:
-            case Material.GOLDEN_HELMET:
-            case Material.IRON_HELMET:
-            case Material.CHAINMAIL_HELMET:
-            case Material.LEATHER_HELMET:
+            case DIAMOND_HELMET:
+            case GOLDEN_HELMET:
+            case IRON_HELMET:
+            case CHAINMAIL_HELMET:
+            case LEATHER_HELMET:
                 return true;
 
             default:
@@ -188,11 +188,11 @@ public final class ItemUtils {
         Material type = item.getType();
 
         switch (type) {
-            case Material.DIAMOND_CHESTPLATE:
-            case Material.GOLDEN_CHESTPLATE:
-            case Material.IRON_CHESTPLATE:
-            case Material.CHAINMAIL_CHESTPLATE:
-            case Material.LEATHER_CHESTPLATE:
+            case DIAMOND_CHESTPLATE:
+            case GOLDEN_CHESTPLATE:
+            case IRON_CHESTPLATE:
+            case CHAINMAIL_CHESTPLATE:
+            case LEATHER_CHESTPLATE:
                 return true;
 
             default:
@@ -210,11 +210,11 @@ public final class ItemUtils {
         Material type = item.getType();
 
         switch (type) {
-            case Material.DIAMOND_LEGGINGS:
-            case Material.GOLDEN_LEGGINGS:
-            case Material.IRON_LEGGINGS:
-            case Material.CHAINMAIL_LEGGINGS:
-            case Material.LEATHER_LEGGINGS:
+            case DIAMOND_LEGGINGS:
+            case GOLDEN_LEGGINGS:
+            case IRON_LEGGINGS:
+            case CHAINMAIL_LEGGINGS:
+            case LEATHER_LEGGINGS:
                 return true;
 
             default:
@@ -232,11 +232,11 @@ public final class ItemUtils {
         Material type = item.getType();
 
         switch (type) {
-            case Material.DIAMOND_BOOTS:
-            case Material.GOLDEN_BOOTS:
-            case Material.IRON_BOOTS:
-            case Material.CHAINMAIL_BOOTS:
-            case Material.LEATHER_BOOTS:
+            case DIAMOND_BOOTS:
+            case GOLDEN_BOOTS:
+            case IRON_BOOTS:
+            case CHAINMAIL_BOOTS:
+            case LEATHER_BOOTS:
                 return true;
 
             default:
@@ -272,10 +272,10 @@ public final class ItemUtils {
      */
     public static boolean isLeatherArmor(ItemStack item) {
         switch (item.getType()) {
-            case Material.LEATHER_BOOTS:
-            case Material.LEATHER_CHESTPLATE:
-            case Material.LEATHER_HELMET:
-            case Material.LEATHER_LEGGINGS:
+            case LEATHER_BOOTS:
+            case LEATHER_CHESTPLATE:
+            case LEATHER_HELMET:
+            case LEATHER_LEGGINGS:
                 return true;
 
             default:
@@ -291,10 +291,10 @@ public final class ItemUtils {
      */
     public static boolean isGoldArmor(ItemStack item) {
         switch (item.getType()) {
-            case Material.GOLDEN_BOOTS:
-            case Material.GOLDEN_CHESTPLATE:
-            case Material.GOLDEN_HELMET:
-            case Material.GOLDEN_LEGGINGS:
+            case GOLDEN_BOOTS:
+            case GOLDEN_CHESTPLATE:
+            case GOLDEN_HELMET:
+            case GOLDEN_LEGGINGS:
                 return true;
 
             default:
@@ -310,10 +310,10 @@ public final class ItemUtils {
      */
     public static boolean isIronArmor(ItemStack item) {
         switch (item.getType()) {
-            case Material.IRON_BOOTS:
-            case Material.IRON_CHESTPLATE:
-            case Material.IRON_HELMET:
-            case Material.IRON_LEGGINGS:
+            case IRON_BOOTS:
+            case IRON_CHESTPLATE:
+            case IRON_HELMET:
+            case IRON_LEGGINGS:
                 return true;
 
             default:
@@ -329,10 +329,10 @@ public final class ItemUtils {
      */
     public static boolean isDiamondArmor(ItemStack item) {
         switch (item.getType()) {
-            case Material.DIAMOND_BOOTS:
-            case Material.DIAMOND_CHESTPLATE:
-            case Material.DIAMOND_HELMET:
-            case Material.DIAMOND_LEGGINGS:
+            case DIAMOND_BOOTS:
+            case DIAMOND_CHESTPLATE:
+            case DIAMOND_HELMET:
+            case DIAMOND_LEGGINGS:
                 return true;
 
             default:
@@ -348,10 +348,10 @@ public final class ItemUtils {
      */
     public static boolean isChainmailArmor(ItemStack item) {
         switch (item.getType()) {
-            case Material.CHAINMAIL_BOOTS:
-            case Material.CHAINMAIL_CHESTPLATE:
-            case Material.CHAINMAIL_HELMET:
-            case Material.CHAINMAIL_LEGGINGS:
+            case CHAINMAIL_BOOTS:
+            case CHAINMAIL_CHESTPLATE:
+            case CHAINMAIL_HELMET:
+            case CHAINMAIL_LEGGINGS:
                 return true;
 
             default:
@@ -377,11 +377,11 @@ public final class ItemUtils {
      */
     public static boolean isStoneTool(ItemStack item) {
         switch (item.getType()) {
-            case Material.STONE_AXE:
-            case Material.STONE_HOE:
-            case Material.STONE_PICKAXE:
-            case Material.STONE_SHOVEL:
-            case Material.STONE_SWORD:
+            case STONE_AXE:
+            case STONE_HOE:
+            case STONE_PICKAXE:
+            case STONE_SHOVEL:
+            case STONE_SWORD:
                 return true;
 
             default:
@@ -397,11 +397,11 @@ public final class ItemUtils {
      */
     public static boolean isWoodTool(ItemStack item) {
         switch (item.getType()) {
-            case Material.WOODEN_AXE:
-            case Material.WOODEN_HOE:
-            case Material.WOODEN_PICKAXE:
-            case Material.WOODEN_SHOVEL:
-            case Material.WOODEN_SWORD:
+            case WOODEN_AXE:
+            case WOODEN_HOE:
+            case WOODEN_PICKAXE:
+            case WOODEN_SHOVEL:
+            case WOODEN_SWORD:
                 return true;
 
             default:
@@ -417,9 +417,9 @@ public final class ItemUtils {
      */
     public static boolean isStringTool(ItemStack item) {
         switch (item.getType()) {
-            case Material.BOW:
-            case Material.CARROT_ON_A_STICK:
-            case Material.FISHING_ROD:
+            case BOW:
+            case CARROT_ON_A_STICK:
+            case FISHING_ROD:
                 return true;
 
             default:
@@ -435,11 +435,11 @@ public final class ItemUtils {
      */
     public static boolean isGoldTool(ItemStack item) {
         switch (item.getType()) {
-            case Material.GOLDEN_AXE:
-            case Material.GOLDEN_HOE:
-            case Material.GOLDEN_PICKAXE:
-            case Material.GOLDEN_SHOVEL:
-            case Material.GOLDEN_SWORD:
+            case GOLDEN_AXE:
+            case GOLDEN_HOE:
+            case GOLDEN_PICKAXE:
+            case GOLDEN_SHOVEL:
+            case GOLDEN_SWORD:
                 return true;
 
             default:
@@ -455,14 +455,14 @@ public final class ItemUtils {
      */
     public static boolean isIronTool(ItemStack item) {
         switch (item.getType()) {
-            case Material.BUCKET:
-            case Material.FLINT_AND_STEEL:
-            case Material.IRON_AXE:
-            case Material.IRON_HOE:
-            case Material.IRON_PICKAXE:
-            case Material.IRON_SHOVEL:
-            case Material.IRON_SWORD:
-            case Material.SHEARS:
+            case BUCKET:
+            case FLINT_AND_STEEL:
+            case IRON_AXE:
+            case IRON_HOE:
+            case IRON_PICKAXE:
+            case IRON_SHOVEL:
+            case IRON_SWORD:
+            case SHEARS:
                 return true;
 
             default:
@@ -478,11 +478,11 @@ public final class ItemUtils {
      */
     public static boolean isDiamondTool(ItemStack item) {
         switch (item.getType()) {
-            case Material.DIAMOND_AXE:
-            case Material.DIAMOND_HOE:
-            case Material.DIAMOND_PICKAXE:
-            case Material.DIAMOND_SHOVEL:
-            case Material.DIAMOND_SWORD:
+            case DIAMOND_AXE:
+            case DIAMOND_HOE:
+            case DIAMOND_PICKAXE:
+            case DIAMOND_SHOVEL:
+            case DIAMOND_SWORD:
                 return true;
 
             default:
@@ -498,12 +498,12 @@ public final class ItemUtils {
      */
     public static boolean isEnchantable(ItemStack item) {
         switch (item.getType()) {
-            case Material.ENCHANTED_BOOK:
-            case Material.SHEARS:
-            case Material.FISHING_ROD:
-            case Material.CARROT_ON_A_STICK:
-            case Material.FLINT_AND_STEEL:
-            case Material.TRIDENT:
+            case ENCHANTED_BOOK:
+            case SHEARS:
+            case FISHING_ROD:
+            case CARROT_ON_A_STICK:
+            case FLINT_AND_STEEL:
+            case TRIDENT:
                 return true;
 
             default:
@@ -553,21 +553,21 @@ public final class ItemUtils {
      */
     public static boolean isMiningDrop(ItemStack item) {
         switch (item.getType()) {
-            case Material.COAL:
-            case Material.COAL_ORE:
-            case Material.DIAMOND:
-            case Material.DIAMOND_ORE:
-            case Material.EMERALD:
-            case Material.EMERALD_ORE:
-            case Material.GOLD_ORE:
-            case Material.IRON_ORE:
-            case Material.LAPIS_ORE:
-            case Material.REDSTONE_ORE: // Should we also have Glowing Redstone Ore here?
-            case Material.REDSTONE:
-            case Material.GLOWSTONE_DUST: // Should we also have Glowstone here?
-            case Material.QUARTZ:
-            case Material.NETHER_QUARTZ_ORE:
-            case Material.LAPIS_LAZULI:
+            case COAL:
+            case COAL_ORE:
+            case DIAMOND:
+            case DIAMOND_ORE:
+            case EMERALD:
+            case EMERALD_ORE:
+            case GOLD_ORE:
+            case IRON_ORE:
+            case LAPIS_ORE:
+            case REDSTONE_ORE: // Should we also have Glowing Redstone Ore here?
+            case REDSTONE:
+            case GLOWSTONE_DUST: // Should we also have Glowstone here?
+            case QUARTZ:
+            case NETHER_QUARTZ_ORE:
+            case LAPIS_LAZULI:
                 return true;
 
             default:
@@ -583,29 +583,29 @@ public final class ItemUtils {
      */
     public static boolean isHerbalismDrop(ItemStack item) {
         switch (item.getType()) {
-            case Material.WHEAT:
-            case Material.WHEAT_SEEDS:
-            case Material.CARROT:
-            case Material.CHORUS_FRUIT:
-            case Material.CHORUS_FLOWER:
-            case Material.POTATO:
-            case Material.BEETROOT:
-            case Material.BEETROOT_SEEDS:
-            case Material.NETHER_WART:
-            case Material.BROWN_MUSHROOM:
-            case Material.RED_MUSHROOM:
-            case Material.ROSE_RED:
-            case Material.DANDELION_YELLOW:
-            case Material.CACTUS:
-            case Material.SUGAR_CANE:
-            case Material.MELON:
-            case Material.MELON_SEEDS:
-            case Material.PUMPKIN:
-            case Material.PUMPKIN_SEEDS:
-            case Material.LILY_PAD:
-            case Material.VINE:
-            case Material.TALL_GRASS:
-            case Material.COCOA_BEANS:
+            case WHEAT:
+            case WHEAT_SEEDS:
+            case CARROT:
+            case CHORUS_FRUIT:
+            case CHORUS_FLOWER:
+            case POTATO:
+            case BEETROOT:
+            case BEETROOT_SEEDS:
+            case NETHER_WART:
+            case BROWN_MUSHROOM:
+            case RED_MUSHROOM:
+            case ROSE_RED:
+            case DANDELION_YELLOW:
+            case CACTUS:
+            case SUGAR_CANE:
+            case MELON:
+            case MELON_SEEDS:
+            case PUMPKIN:
+            case PUMPKIN_SEEDS:
+            case LILY_PAD:
+            case VINE:
+            case TALL_GRASS:
+            case COCOA_BEANS:
                 return true;
 
             default:
@@ -621,48 +621,48 @@ public final class ItemUtils {
      */
     public static boolean isMobDrop(ItemStack item) {
         switch (item.getType()) {
-            case Material.STRING:
-            case Material.FEATHER:
-            case Material.CHICKEN:
-            case Material.COOKED_CHICKEN:
-            case Material.LEATHER:
-            case Material.BEEF:
-            case Material.COOKED_BEEF:
-            case Material.PORKCHOP:
-            case Material.COOKED_PORKCHOP:
-            case Material.WHITE_WOOL:
-            case Material.BLACK_WOOL:
-            case Material.BLUE_WOOL:
-            case Material.BROWN_WOOL:
-            case Material.CYAN_WOOL:
-            case Material.GRAY_WOOL:
-            case Material.GREEN_WOOL:
-            case Material.LIGHT_BLUE_WOOL:
-            case Material.LIGHT_GRAY_WOOL:
-            case Material.LIME_WOOL:
-            case Material.MAGENTA_WOOL:
-            case Material.ORANGE_WOOL:
-            case Material.PINK_WOOL:
-            case Material.PURPLE_WOOL:
-            case Material.RED_WOOL:
-            case Material.YELLOW_WOOL:
-            case Material.IRON_INGOT:
-            case Material.SNOWBALL:
-            case Material.BLAZE_ROD:
-            case Material.SPIDER_EYE:
-            case Material.GUNPOWDER:
-            case Material.ENDER_PEARL:
-            case Material.GHAST_TEAR:
-            case Material.MAGMA_CREAM:
-            case Material.BONE:
-            case Material.ARROW:
-            case Material.SLIME_BALL:
-            case Material.NETHER_STAR:
-            case Material.ROTTEN_FLESH:
-            case Material.GOLD_NUGGET:
-            case Material.EGG:
-            case Material.ROSE_RED:
-            case Material.COAL:
+            case STRING:
+            case FEATHER:
+            case CHICKEN:
+            case COOKED_CHICKEN:
+            case LEATHER:
+            case BEEF:
+            case COOKED_BEEF:
+            case PORKCHOP:
+            case COOKED_PORKCHOP:
+            case WHITE_WOOL:
+            case BLACK_WOOL:
+            case BLUE_WOOL:
+            case BROWN_WOOL:
+            case CYAN_WOOL:
+            case GRAY_WOOL:
+            case GREEN_WOOL:
+            case LIGHT_BLUE_WOOL:
+            case LIGHT_GRAY_WOOL:
+            case LIME_WOOL:
+            case MAGENTA_WOOL:
+            case ORANGE_WOOL:
+            case PINK_WOOL:
+            case PURPLE_WOOL:
+            case RED_WOOL:
+            case YELLOW_WOOL:
+            case IRON_INGOT:
+            case SNOWBALL:
+            case BLAZE_ROD:
+            case SPIDER_EYE:
+            case GUNPOWDER:
+            case ENDER_PEARL:
+            case GHAST_TEAR:
+            case MAGMA_CREAM:
+            case BONE:
+            case ARROW:
+            case SLIME_BALL:
+            case NETHER_STAR:
+            case ROTTEN_FLESH:
+            case GOLD_NUGGET:
+            case EGG:
+            case ROSE_RED:
+            case COAL:
                 return true;
 
             default:
@@ -678,31 +678,31 @@ public final class ItemUtils {
      */
     public static boolean isWoodcuttingDrop(ItemStack item) {
         switch (item.getType()) {
-            case Material.ACACIA_LOG:
-            case Material.BIRCH_LOG:
-            case Material.DARK_OAK_LOG:
-            case Material.JUNGLE_LOG:
-            case Material.OAK_LOG:
-            case Material.SPRUCE_LOG:
-            case Material.STRIPPED_ACACIA_LOG:
-            case Material.STRIPPED_BIRCH_LOG:
-            case Material.STRIPPED_DARK_OAK_LOG:
-            case Material.STRIPPED_JUNGLE_LOG:
-            case Material.STRIPPED_OAK_LOG:
-            case Material.STRIPPED_SPRUCE_LOG:
-            case Material.ACACIA_SAPLING:
-            case Material.SPRUCE_SAPLING:
-            case Material.BIRCH_SAPLING:
-            case Material.DARK_OAK_SAPLING:
-            case Material.JUNGLE_SAPLING:
-            case Material.OAK_SAPLING:
-            case Material.ACACIA_LEAVES:
-            case Material.BIRCH_LEAVES:
-            case Material.DARK_OAK_LEAVES:
-            case Material.JUNGLE_LEAVES:
-            case Material.OAK_LEAVES:
-            case Material.SPRUCE_LEAVES:
-            case Material.APPLE:
+            case ACACIA_LOG:
+            case BIRCH_LOG:
+            case DARK_OAK_LOG:
+            case JUNGLE_LOG:
+            case OAK_LOG:
+            case SPRUCE_LOG:
+            case STRIPPED_ACACIA_LOG:
+            case STRIPPED_BIRCH_LOG:
+            case STRIPPED_DARK_OAK_LOG:
+            case STRIPPED_JUNGLE_LOG:
+            case STRIPPED_OAK_LOG:
+            case STRIPPED_SPRUCE_LOG:
+            case ACACIA_SAPLING:
+            case SPRUCE_SAPLING:
+            case BIRCH_SAPLING:
+            case DARK_OAK_SAPLING:
+            case JUNGLE_SAPLING:
+            case OAK_SAPLING:
+            case ACACIA_LEAVES:
+            case BIRCH_LEAVES:
+            case DARK_OAK_LEAVES:
+            case JUNGLE_LEAVES:
+            case OAK_LEAVES:
+            case SPRUCE_LEAVES:
+            case APPLE:
                 return true;
 
             default:
