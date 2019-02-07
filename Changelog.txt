@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 2.2.0
+    Salvage config entries are no longer case sensitive
     Fixed a bug where Fishing was not rewarding vanilla XP orbs
 
 Version 2.1.11

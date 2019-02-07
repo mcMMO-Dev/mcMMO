@@ -72,7 +72,7 @@ public class SalvageConfig extends ConfigLoader {
             }
             else {
                 try {
-                    salvageMaterialType = MaterialType.valueOf(salvageMaterialTypeString);
+                    salvageMaterialType = MaterialType.valueOf(salvageMaterialTypeString.replace(" ", "_").toUpperCase());
                 }
                 catch (IllegalArgumentException ex) {
                     reason.add(key + " has an invalid MaterialType of " + salvageMaterialTypeString);
@@ -106,7 +106,7 @@ public class SalvageConfig extends ConfigLoader {
             }
             else {
                 try {
-                    salvageItemType = ItemType.valueOf(salvageItemTypeString);
+                    salvageItemType = ItemType.valueOf(salvageItemTypeString.replace(" ", "_").toUpperCase());
                 }
                 catch (IllegalArgumentException ex) {
                     reason.add(key + " has an invalid ItemType of " + salvageItemTypeString);
