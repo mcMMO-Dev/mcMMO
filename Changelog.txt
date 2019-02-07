@@ -9,6 +9,8 @@ Key:
 
 Version 2.2.0
     Salvage config entries are no longer case sensitive
+    mcMMO has changed from using maven to gradle!
+    mcMMO is now a gradle project (this makes it much easier for us to support older versions of MC and other APIs)
     Fixed a bug where Fishing was not rewarding vanilla XP orbs
 
 Version 2.1.11
@@ -439,7 +441,7 @@ Version 1.4.08
  = Fixed bug which prevented players from gaining Acrobatics XP when the setting 'Prevent_XP_After_Teleport' was set to false
  = Fixed bug where cooldown donor perks were reducing more than expected
  = Fixed bug where disabling hardcore mode for specific skills didn't work
- = Fixed bug which caused the backup cleanup to delete old backups while it should have kept those
+ = Fixed bug which caused the net.shatteredlands.shatt.backup cleanup to delete old backups while it should have kept those
  = Fixed bug where party chat broke if the display name contained special characters
  = Fixed bug where `/addlevels all` and `/skillreset all` didn't work
  = Fixed bug which made it possible to gain XP by taming the same horse multiple times, if a player "untamed" that horse
@@ -787,7 +789,7 @@ Version 1.4.00
  ! Changed Excavation to have individual XP values for each block type, rather than a base XP value.
  ! Changed the way party teleportation works. When using /ptp, the target player needs to confirm the teleport before it takes place. (Configurable)
  ! Changed BeastLore: Now also displays offline player names
- ! Changed backup task to include ALL config files
+ ! Changed net.shatteredlands.shatt.backup task to include ALL config files
  ! Deprecated most functions in ExperienceAPI, replaced them with identical versions that use a String for the SkillName rather than the SkillType enum values
  ! Changed Super Breaker & Giga Drill Breaker to be an enchantment-based boost, rather than an instabreak. Option exists in hidden.yml to change this to an potion-based buff.
  ! Changed locales to fall back on English when translated strings cannot be found.
@@ -1010,7 +1012,7 @@ Version 1.3.07
  + Added permission nodes for Treasure & Magic Hunter for Fishing
  + Added a permission node for Farmer's Diet
  + Added config options for enabling/disabling specific double drops
- + Added automatic zip backup of flatfile database & config files
+ + Added automatic zip net.shatteredlands.shatt.backup of flatfile database & config files
  + Added config options to enable/disable specific skills for PVP & PVE
  = Fixed bug where Tree Feller was looking at the wrong blocks for determining how much to take down.
  = Fixed bug where Green Terra consumed seeds even on Mossy Stone Brick
@@ -1596,7 +1598,7 @@ Fixed bug with randomly receiving Taming XP
 mcmmo.users file moved into /plugins/mcMMO/FlatFileStuff/
 Leaderboard files now moved into /plugins/mcMMO/FlatFileStuff/Leaderboards
 Locale files now have the prefix locale_ instead of messages_
-Locale files are now located inside com/gmail/nossr50/locale/ instead of com/gmail/nossr50/
+Locale files are now located inside com/com.gmail/com.gmail.nossr50/locale/ instead of com/com.gmail/com.gmail.nossr50/
 Updated the code that handles permissions (this may mean 3.1.6 will finally play well!)
 Some more source code organization
 Fixed warnings for compiler

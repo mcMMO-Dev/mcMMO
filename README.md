@@ -19,7 +19,7 @@ The goal of mcMMO is to take core Minecraft game mechanics and expand them into 
 mcMMO is currently developed by a team of individuals from all over the world.
 
 ### Project Lead & Founder
-[![nossr50](http://www.gravatar.com/avatar/f2ee41eedfd645fb4a3a2c8f6cb1b18c.png)](https://github.com/nossr50)
+[![com.gmail.nossr50](http://www.gravatar.com/avatar/f2ee41eedfd645fb4a3a2c8f6cb1b18c.png)](https://github.com/com.gmail.nossr50)
 
 ### Former Lead
 [![gmcferrin](http://www.gravatar.com/avatar/b64c52daf25d206b27650788b5813b7b.png)](https://github.com/gmcferrin)
