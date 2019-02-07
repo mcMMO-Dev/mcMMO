@@ -1,11 +1,11 @@
 package com.gmail.nossr50.config;
 
+import com.gmail.nossr50.database.SQLDatabaseManager;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.database.SQLDatabaseManager;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
