@@ -1,30 +1,32 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 plugins {
     java
-    id("org.spongepowered.plugin") version "0.9.0" // supplies sponge repo and plugin metadata creation tasks
-    id("com.github.johnrengelman.shadow")
 }
-dependencies {
-    compile("org.spongepowered", "spongeapi", "7.1.0")  // SpongeAPI
-    compile(project(":core"))
 
-    compile("org.bstats", "bstats-sponge", "1.4") // Sponge bstats
-}
+val core: Project by rootProject.extra
+val sponge: Project by rootProject.extra
 
 description = "mcMMO for Sponge"
 
-val jar by tasks.getting(Jar::class) {
-    manifest {
-        attributes(mapOf(
-                "Implementation-Title" to "mcMMO",
-                "Implementation-Version" to rootProject.properties["pluginVersion"]!!
-        ))
+repositories {
+    // sponge
+    maven("https://repo.spongepowered.org/maven")
+}
+
+dependencies {
+    implementation(group="org.spongepowered", name="spongeapi", version="7.1.0") // Base version
+}
+
+allprojects {
+    dependencies {
+        compile(core)
     }
 }
 
-val shadowJar by tasks.getting(ShadowJar::class) {
+subprojects {
     dependencies {
-        include(project(":core"))
+        (compile(sponge) as ModuleDependency).apply {
+            exclude("org.spongepowered")
+        }
     }
 }
+

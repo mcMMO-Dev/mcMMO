@@ -7,7 +7,20 @@
  * in the user guide at https://docs.gradle.org/4.9/userguide/multi_project_builds.html
  */
 rootProject.name = "mcMMO"
-include("core", "bukkit", "sponge")
+include(
+        // Core abstraction layer of mcMMO
+        "core",
+
+        // Bukkit/Spigot versions, core bukkit has plugin class
+        "bukkit",
+        "bukkit:1_13",
+        "bukkit:1_12",
+        "bukkit:1_8_8",
+
+        // Sponge Projects - SpongeAPI follows semver, so API versions can change
+        "sponge", // Generic plugin class contains references to load specific listeners and registrations between APIs.
+        "sponge:api7" // API 7 is special for MC 1.12.2
+)
 
 pluginManagement {
     repositories {
