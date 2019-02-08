@@ -48,6 +48,7 @@ hs_err_pid*
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/
 
 # Sensitive or high-churn files
 .idea/**/dataSources/
