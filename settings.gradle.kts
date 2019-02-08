@@ -8,3 +8,11 @@
  */
 rootProject.name = "mcMMO"
 include("core", "bukkit", "sponge")
+
+pluginManagement {
+    repositories {
+        jcenter()
+        maven("https://repo.spongepowered.org/maven/")
+        gradlePluginPortal()
+    }
+}

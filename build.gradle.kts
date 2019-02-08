@@ -1,9 +1,7 @@
 buildscript {
-    repositories {
-        mavenLocal()
-        mavenCentral()
+    dependencies {
+        classpath("com.github.jengelman.gradle.plugins:shadow:4.0.4")
     }
-
 }
 
 group = properties["pluginGroup"]!!
@@ -14,6 +12,7 @@ plugins {
     java
 }
 
+// Set up defaults for all projects, maven repositories, java compatibility level and compiling encoding
 allprojects {
 
     apply(plugin="java-library")
@@ -28,6 +27,10 @@ allprojects {
     java {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    tasks.getting(JavaCompile::class) {
+        options.encoding = "UTF-8"
     }
 
 }

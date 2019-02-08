@@ -9,7 +9,8 @@ import org.spongepowered.api.plugin.Plugin;
     authors = {"nossr50", "gabizou", "bloodmage"},
     version = "2.2.0-SNAPSHOT",
     name = "mcMMO",
-    url = "https://www.mcmmo.org/"
+    url = "https://www.mcmmo.org/",
+    description = "mcMMO plugin for Sponge"
 )
 public class SpongePlugin {
 
