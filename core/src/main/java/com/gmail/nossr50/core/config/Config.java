@@ -1,4 +1,4 @@
-package com.gmail.nossr50.core.config.skills;
+package com.gmail.nossr50.core.config;
 
 import com.gmail.nossr50.core.data.database.SQLDatabaseManager;
 import com.gmail.nossr50.core.mcmmo.MobHealthbarType;
