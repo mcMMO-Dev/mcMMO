@@ -1,6 +1,7 @@
-package com.gmail.nossr50.core.datatypes.entity;
+package com.gmail.nossr50.core.mcmmo.entity;
 
-import com.gmail.nossr50.core.datatypes.Nameable;
+import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.mcmmo.Nameable;
 
 /**
  * Players

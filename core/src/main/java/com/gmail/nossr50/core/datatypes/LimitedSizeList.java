@@ -1,7 +1,6 @@
 package com.gmail.nossr50.core.datatypes;
 
-
-import org.bukkit.Location;
+import com.gmail.nossr50.core.mcmmo.Location;
 
 public class LimitedSizeList {
     public Location[] limitedSizeOrderedList;

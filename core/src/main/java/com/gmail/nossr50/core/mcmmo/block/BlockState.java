@@ -1,6 +1,6 @@
-package com.gmail.nossr50.core.datatypes.block;
+package com.gmail.nossr50.core.mcmmo.block;
 
-import com.gmail.nossr50.core.datatypes.Property;
+import com.gmail.nossr50.core.mcmmo.Property;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.Collection;

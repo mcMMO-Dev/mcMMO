@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.data.database;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.core.datatypes.database.DatabaseType;
+import com.gmail.nossr50.core.mcmmo.database.DatabaseType;
 import com.gmail.nossr50.mcMMO;
 
 public class DatabaseManagerFactory {

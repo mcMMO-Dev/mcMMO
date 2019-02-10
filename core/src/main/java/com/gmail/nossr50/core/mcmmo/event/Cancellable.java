@@ -1,4 +1,4 @@
-package com.gmail.nossr50.core.datatypes.event;
+package com.gmail.nossr50.core.mcmmo.event;
 
 /**
  * This class handles cancellations for an event

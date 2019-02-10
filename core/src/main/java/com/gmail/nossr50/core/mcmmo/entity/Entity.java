@@ -1,7 +1,7 @@
-package com.gmail.nossr50.core.datatypes.entity;
+package com.gmail.nossr50.core.mcmmo.entity;
 
-import com.gmail.nossr50.core.datatypes.Location;
-import com.gmail.nossr50.core.datatypes.Named;
+import com.gmail.nossr50.core.mcmmo.Location;
+import com.gmail.nossr50.core.mcmmo.Named;
 
 import java.util.UUID;
 

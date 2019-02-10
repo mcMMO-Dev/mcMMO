@@ -1,11 +1,11 @@
 package com.gmail.nossr50.core.datatypes.skills.subskills;
 
 import com.gmail.nossr50.core.config.skills.CoreSkillsConfig;
-import com.gmail.nossr50.core.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.core.datatypes.skills.subskills.interfaces.Interaction;
 import com.gmail.nossr50.core.datatypes.skills.subskills.interfaces.Rank;
 import com.gmail.nossr50.core.datatypes.skills.subskills.interfaces.SubSkill;
 import com.gmail.nossr50.core.datatypes.skills.subskills.interfaces.SubSkillProperties;
+import com.gmail.nossr50.core.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import org.bukkit.entity.Player;
 

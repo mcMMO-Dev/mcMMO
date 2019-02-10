@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.config.mods;
 
 import com.gmail.nossr50.core.config.skills.ConfigLoader;
-import com.gmail.nossr50.core.datatypes.mods.CustomEntity;
+import com.gmail.nossr50.core.mcmmo.mods.CustomEntity;
 import org.apache.commons.lang.ClassUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

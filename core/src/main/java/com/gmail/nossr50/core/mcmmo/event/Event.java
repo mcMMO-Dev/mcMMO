@@ -1,4 +1,4 @@
-package com.gmail.nossr50.core.datatypes.event;
+package com.gmail.nossr50.core.mcmmo.event;
 
 /**
  * Represents an event for a given API

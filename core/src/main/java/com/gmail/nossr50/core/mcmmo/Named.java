@@ -1,4 +1,4 @@
-package com.gmail.nossr50.core.datatypes;
+package com.gmail.nossr50.core.mcmmo;
 
 /**
  * A lot of Objects in MC have names

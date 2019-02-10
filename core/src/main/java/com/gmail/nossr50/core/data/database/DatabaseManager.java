@@ -1,10 +1,10 @@
 package com.gmail.nossr50.core.data.database;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.core.datatypes.database.DatabaseType;
-import com.gmail.nossr50.core.datatypes.database.PlayerStat;
-import com.gmail.nossr50.core.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.core.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.core.mcmmo.database.DatabaseType;
+import com.gmail.nossr50.core.mcmmo.database.PlayerStat;
+import com.gmail.nossr50.core.mcmmo.player.PlayerProfile;
+import com.gmail.nossr50.core.mcmmo.skills.PrimarySkillType;
 
 import java.util.List;
 import java.util.Map;

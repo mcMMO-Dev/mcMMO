@@ -1,7 +1,7 @@
 package com.gmail.nossr50.config.skills.alchemy;
 
 import com.gmail.nossr50.config.ConfigLoader;
-import com.gmail.nossr50.core.datatypes.skills.alchemy.AlchemyPotion;
+import com.gmail.nossr50.core.mcmmo.skills.alchemy.AlchemyPotion;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;

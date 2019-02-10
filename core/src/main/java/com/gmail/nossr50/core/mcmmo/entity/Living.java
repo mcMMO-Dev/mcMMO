@@ -1,4 +1,4 @@
-package com.gmail.nossr50.core.datatypes.entity;
+package com.gmail.nossr50.core.mcmmo.entity;
 
 /**
  * Living means you can die, you have health, and you can be damaged

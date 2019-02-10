@@ -1,8 +1,8 @@
 package com.gmail.nossr50.config.skills.repair;
 
 import com.gmail.nossr50.config.ConfigLoader;
-import com.gmail.nossr50.core.datatypes.skills.ItemType;
-import com.gmail.nossr50.core.datatypes.skills.MaterialType;
+import com.gmail.nossr50.core.mcmmo.skills.ItemType;
+import com.gmail.nossr50.core.mcmmo.skills.MaterialType;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
 import com.gmail.nossr50.util.ItemUtils;

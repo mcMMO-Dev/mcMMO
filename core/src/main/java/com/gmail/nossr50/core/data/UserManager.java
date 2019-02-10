@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.data;
 
-import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.mcmmo.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.OfflinePlayer;

@@ -1,8 +1,8 @@
 package com.gmail.nossr50.config.skills.salvage;
 
 import com.gmail.nossr50.config.ConfigLoader;
-import com.gmail.nossr50.core.datatypes.skills.ItemType;
-import com.gmail.nossr50.core.datatypes.skills.MaterialType;
+import com.gmail.nossr50.core.mcmmo.skills.ItemType;
+import com.gmail.nossr50.core.mcmmo.skills.MaterialType;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.skills.salvage.salvageables.SalvageableFactory;
 import com.gmail.nossr50.util.ItemUtils;

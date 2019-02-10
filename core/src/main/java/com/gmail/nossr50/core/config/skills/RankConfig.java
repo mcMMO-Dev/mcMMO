@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.config.skills;
 
-import com.gmail.nossr50.core.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.core.datatypes.skills.subskills.AbstractSubSkill;
+import com.gmail.nossr50.core.mcmmo.skills.SubSkillType;
+import com.gmail.nossr50.core.mcmmo.skills.subskills.AbstractSubSkill;
 
 import java.util.ArrayList;
 import java.util.List;

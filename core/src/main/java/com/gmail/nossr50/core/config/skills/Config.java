@@ -1,10 +1,10 @@
 package com.gmail.nossr50.core.config.skills;
 
 import com.gmail.nossr50.core.data.database.SQLDatabaseManager;
-import com.gmail.nossr50.core.datatypes.MobHealthbarType;
-import com.gmail.nossr50.core.datatypes.party.PartyFeature;
-import com.gmail.nossr50.core.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.core.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.core.mcmmo.MobHealthbarType;
+import com.gmail.nossr50.core.mcmmo.party.PartyFeature;
+import com.gmail.nossr50.core.mcmmo.skills.PrimarySkillType;
+import com.gmail.nossr50.core.mcmmo.skills.SuperAbilityType;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;

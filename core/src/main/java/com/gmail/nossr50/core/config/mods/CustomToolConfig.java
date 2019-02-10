@@ -1,9 +1,9 @@
 package com.gmail.nossr50.core.config.mods;
 
 import com.gmail.nossr50.core.config.skills.ConfigLoader;
-import com.gmail.nossr50.core.datatypes.mods.CustomTool;
-import com.gmail.nossr50.core.datatypes.skills.ItemType;
-import com.gmail.nossr50.core.datatypes.skills.MaterialType;
+import com.gmail.nossr50.core.mcmmo.mods.CustomTool;
+import com.gmail.nossr50.core.mcmmo.skills.ItemType;
+import com.gmail.nossr50.core.mcmmo.skills.MaterialType;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
 import com.gmail.nossr50.util.skills.SkillUtils;

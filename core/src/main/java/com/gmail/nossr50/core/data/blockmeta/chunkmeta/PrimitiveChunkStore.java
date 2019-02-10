@@ -1,8 +1,7 @@
 package com.gmail.nossr50.core.data.blockmeta.chunkmeta;
 
 import com.gmail.nossr50.core.data.blockmeta.ChunkletStore;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
+import com.gmail.nossr50.core.mcmmo.World;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

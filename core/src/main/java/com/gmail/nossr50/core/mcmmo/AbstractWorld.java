@@ -1,4 +1,4 @@
-package com.gmail.nossr50.core.datatypes;
+package com.gmail.nossr50.core.mcmmo;
 
 import java.util.Objects;
 
