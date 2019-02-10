@@ -1,12 +1,12 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.core.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.core.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.TextComponentFactory;
-import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
+import com.gmail.nossr50.core.skills.SubSkillType;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.util.Permissions;
+import com.gmail.nossr50.core.util.TextComponentFactory;
+import com.gmail.nossr50.core.util.skills.RankUtils;
+import com.gmail.nossr50.core.util.skills.SkillActivationType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

@@ -1,6 +1,6 @@
 package com.gmail.nossr50.events.skills;
 
-import com.gmail.nossr50.core.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.data.UserManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;

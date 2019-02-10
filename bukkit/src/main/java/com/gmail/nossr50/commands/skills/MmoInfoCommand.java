@@ -1,12 +1,12 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.core.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.core.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.core.datatypes.skills.subskills.AbstractSubSkill;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
+import com.gmail.nossr50.core.skills.SubSkillType;
+import com.gmail.nossr50.core.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.TextComponentFactory;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.util.Permissions;
+import com.gmail.nossr50.core.util.TextComponentFactory;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

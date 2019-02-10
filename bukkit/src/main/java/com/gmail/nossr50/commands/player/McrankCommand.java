@@ -2,11 +2,11 @@ package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.core.config.skills.Config;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.commands.McrankCommandAsyncTask;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.commands.CommandUtils;
+import com.gmail.nossr50.core.runnables.commands.McrankCommandAsyncTask;
+import com.gmail.nossr50.core.util.Permissions;
+import com.gmail.nossr50.core.util.commands.CommandUtils;
 import com.gmail.nossr50.core.data.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;

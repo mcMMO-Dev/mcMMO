@@ -1,10 +1,10 @@
 package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.core.config.skills.Config;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.commands.CommandUtils;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.util.commands.CommandUtils;
 import com.gmail.nossr50.core.data.UserManager;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
+import com.gmail.nossr50.core.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

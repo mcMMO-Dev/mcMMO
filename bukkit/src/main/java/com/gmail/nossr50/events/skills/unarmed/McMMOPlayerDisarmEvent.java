@@ -1,6 +1,6 @@
 package com.gmail.nossr50.events.skills.unarmed;
 
-import com.gmail.nossr50.core.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerSkillEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;

@@ -2,7 +2,7 @@ package com.gmail.nossr50.commands.database;
 
 import com.gmail.nossr50.core.config.skills.Config;
 import com.gmail.nossr50.core.data.database.DatabaseManagerFactory;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

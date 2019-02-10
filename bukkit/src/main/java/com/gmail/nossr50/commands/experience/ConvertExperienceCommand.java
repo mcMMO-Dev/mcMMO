@@ -1,10 +1,10 @@
 package com.gmail.nossr50.commands.experience;
 
 import com.gmail.nossr50.core.datatypes.experience.FormulaType;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.database.FormulaConversionTask;
-import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
+import com.gmail.nossr50.core.runnables.database.FormulaConversionTask;
+import com.gmail.nossr50.core.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.core.data.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

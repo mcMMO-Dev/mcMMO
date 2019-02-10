@@ -1,9 +1,9 @@
 package com.gmail.nossr50.commands.hardcore;
 
-import com.gmail.nossr50.core.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.commands.CommandUtils;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
+import com.gmail.nossr50.core.util.Permissions;
+import com.gmail.nossr50.core.util.StringUtils;
+import com.gmail.nossr50.core.util.commands.CommandUtils;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

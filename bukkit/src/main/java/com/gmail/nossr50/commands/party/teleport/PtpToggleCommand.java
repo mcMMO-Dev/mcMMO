@@ -1,8 +1,8 @@
 package com.gmail.nossr50.commands.party.teleport;
 
 import com.gmail.nossr50.core.datatypes.party.PartyTeleportRecord;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.util.Permissions;
 import com.gmail.nossr50.core.data.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

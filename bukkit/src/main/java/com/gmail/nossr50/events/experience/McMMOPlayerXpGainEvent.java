@@ -1,7 +1,7 @@
 package com.gmail.nossr50.events.experience;
 
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
-import com.gmail.nossr50.core.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 

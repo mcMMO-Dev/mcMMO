@@ -2,12 +2,12 @@ package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.core.config.skills.AdvancedConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.core.util.Permissions;
+import com.gmail.nossr50.core.util.StringUtils;
+import com.gmail.nossr50.core.util.commands.CommandUtils;
+import com.gmail.nossr50.core.util.player.NotificationManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

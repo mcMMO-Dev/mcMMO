@@ -1,10 +1,10 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.HolidayManager.FakeSkillType;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.commands.CommandUtils;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.util.HolidayManager.FakeSkillType;
+import com.gmail.nossr50.core.util.Misc;
+import com.gmail.nossr50.core.util.StringUtils;
+import com.gmail.nossr50.core.util.commands.CommandUtils;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
