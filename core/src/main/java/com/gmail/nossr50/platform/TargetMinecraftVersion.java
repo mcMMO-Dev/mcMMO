@@ -1,6 +1,4 @@
-package com.gmail.nossr50.datatypes;
-
-import com.gmail.nossr50.platform.Platform;
+package com.gmail.nossr50.platform;
 
 /**
  * Constants for targeted versions of MC
