@@ -1,15 +1,15 @@
 package com.gmail.nossr50.core.runnables.skills;
 
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SubSkillType;
+import com.gmail.nossr50.core.skills.primary.alchemy.Alchemy;
+import com.gmail.nossr50.core.skills.primary.alchemy.AlchemyPotionBrewer;
 import com.gmail.nossr50.events.skills.alchemy.McMMOPlayerBrewEvent;
 import com.gmail.nossr50.events.skills.alchemy.McMMOPlayerCatalysisEvent;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.core.skills.primary.alchemy.Alchemy;
-import com.gmail.nossr50.core.skills.primary.alchemy.AlchemyPotionBrewer;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.core.data.UserManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
@@ -19,7 +19,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class AlchemyBrewTask extends BukkitRunnable {
     private static double DEFAULT_BREW_SPEED = 1.0;
-    private static int    DEFAULT_BREW_TICKS = 400;
+    private static int DEFAULT_BREW_TICKS = 400;
 
     private BlockState brewingStand;
     private Location location;
@@ -84,8 +84,7 @@ public class AlchemyBrewTask extends BukkitRunnable {
         if (brewTimer < Math.max(brewSpeed, 2)) {
             this.cancel();
             finish();
-        }
-        else {
+        } else {
             ((BrewingStand) brewingStand).setBrewingTime((int) brewTimer);
         }
     }

@@ -1,10 +1,10 @@
 package com.gmail.nossr50.commands.party.teleport;
 
 import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.util.Permissions;
-import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.util.skills.SkillUtils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -49,8 +49,7 @@ public class PtpAcceptCommand implements CommandExecutor {
                 if (!Permissions.partyTeleportWorld(target, targetWorld)) {
                     target.sendMessage(LocaleLoader.getString("Commands.ptp.NoWorldPermissions", targetWorld.getName()));
                     return true;
-                }
-                else if (targetWorld != playerWorld && !Permissions.partyTeleportWorld(target, playerWorld)) {
+                } else if (targetWorld != playerWorld && !Permissions.partyTeleportWorld(target, playerWorld)) {
                     target.sendMessage(LocaleLoader.getString("Commands.ptp.NoWorldPermissions", playerWorld.getName()));
                     return true;
                 }

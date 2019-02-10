@@ -2,7 +2,6 @@ package com.gmail.nossr50.core.util.skills;
 
 import com.gmail.nossr50.core.config.skills.Config;
 import com.gmail.nossr50.mcMMO;
-import org.bukkit.*;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -15,7 +14,10 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 public final class ParticleEffectUtils {
 
-    private ParticleEffectUtils() {};
+    private ParticleEffectUtils() {
+    }
+
+    ;
 
     public static void playBleedEffect(LivingEntity livingEntity) {
         if (!Config.getInstance().getBleedEffectEnabled()) {

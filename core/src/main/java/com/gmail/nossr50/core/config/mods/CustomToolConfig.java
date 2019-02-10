@@ -17,18 +17,15 @@ import java.util.List;
 import java.util.Set;
 
 public class CustomToolConfig extends ConfigLoader {
-    private boolean needsUpdate = false;
-
-    public List<Material> customAxes     = new ArrayList<Material>();
-    public List<Material> customBows     = new ArrayList<Material>();
-    public List<Material> customHoes     = new ArrayList<Material>();
+    public List<Material> customAxes = new ArrayList<Material>();
+    public List<Material> customBows = new ArrayList<Material>();
+    public List<Material> customHoes = new ArrayList<Material>();
     public List<Material> customPickaxes = new ArrayList<Material>();
-    public List<Material> customShovels  = new ArrayList<Material>();
-    public List<Material> customSwords   = new ArrayList<Material>();
-
+    public List<Material> customShovels = new ArrayList<Material>();
+    public List<Material> customSwords = new ArrayList<Material>();
     public HashMap<Material, CustomTool> customToolMap = new HashMap<Material, CustomTool>();
-
     public List<Repairable> repairables = new ArrayList<Repairable>();
+    private boolean needsUpdate = false;
 
     protected CustomToolConfig(String fileName) {
         super("mods", fileName);

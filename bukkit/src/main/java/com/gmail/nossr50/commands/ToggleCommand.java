@@ -1,8 +1,8 @@
 package com.gmail.nossr50.commands;
 
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.util.commands.CommandUtils;
-import com.gmail.nossr50.core.data.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -71,7 +71,10 @@ public abstract class ToggleCommand implements TabExecutor {
     }
 
     protected abstract boolean hasOtherPermission(CommandSender sender);
+
     protected abstract boolean hasSelfPermission(CommandSender sender);
+
     protected abstract void applyCommandAction(McMMOPlayer mcMMOPlayer);
+
     protected abstract void sendSuccessMessage(CommandSender sender, String playerName);
 }

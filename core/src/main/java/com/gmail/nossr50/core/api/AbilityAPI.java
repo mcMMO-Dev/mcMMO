@@ -1,14 +1,15 @@
 package com.gmail.nossr50.core.api;
 
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.skills.SuperAbilityType;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
-import com.gmail.nossr50.core.data.UserManager;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public final class AbilityAPI {
-    private AbilityAPI() {}
+    private AbilityAPI() {
+    }
 
     public static boolean berserkEnabled(Player player) {
         return UserManager.getPlayer(player).getAbilityMode(SuperAbilityType.BERSERK);

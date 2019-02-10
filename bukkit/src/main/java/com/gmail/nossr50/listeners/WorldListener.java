@@ -1,8 +1,8 @@
 package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.core.config.skills.WorldBlacklist;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.core.data.blockmeta.conversion.BlockStoreConversionMain;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
@@ -31,7 +31,7 @@ public class WorldListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onStructureGrow(StructureGrowEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getWorld()))
             return;
 
         if (!mcMMO.getPlaceStore().isTrue(event.getLocation().getBlock())) {
@@ -51,7 +51,7 @@ public class WorldListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldInit(WorldInitEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getWorld()))
             return;
 
         World world = event.getWorld();
@@ -73,7 +73,7 @@ public class WorldListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldUnload(WorldUnloadEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getWorld()))
             return;
 
         mcMMO.getPlaceStore().unloadWorld(event.getWorld());
@@ -87,7 +87,7 @@ public class WorldListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getWorld()))
             return;
 
         Chunk chunk = event.getChunk();

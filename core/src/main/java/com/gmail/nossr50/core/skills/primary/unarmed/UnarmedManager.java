@@ -1,20 +1,16 @@
 package com.gmail.nossr50.core.skills.primary.unarmed;
 
 import com.gmail.nossr50.core.config.skills.AdvancedConfig;
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.core.skills.PrimarySkillType;
-import com.gmail.nossr50.core.skills.SubSkillType;
-import com.gmail.nossr50.core.skills.SuperAbilityType;
-import com.gmail.nossr50.core.skills.ToolType;
-import com.gmail.nossr50.core.skills.SkillManager;
+import com.gmail.nossr50.core.skills.*;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -36,7 +32,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canUseIronArm() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_IRON_ARM_STYLE))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_IRON_ARM_STYLE))
             return false;
 
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_IRON_ARM_STYLE);
@@ -47,14 +43,14 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canDisarm(LivingEntity target) {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_DISARM))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_DISARM))
             return false;
 
         return target instanceof Player && ((Player) target).getInventory().getItemInMainHand().getType() != Material.AIR && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_DISARM);
     }
 
     public boolean canDeflect() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_ARROW_DEFLECT))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_ARROW_DEFLECT))
             return false;
 
         Player player = getPlayer();
@@ -63,7 +59,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canUseBlockCracker() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_BLOCK_CRACKER))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_BLOCK_CRACKER))
             return false;
 
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_BLOCK_CRACKER);

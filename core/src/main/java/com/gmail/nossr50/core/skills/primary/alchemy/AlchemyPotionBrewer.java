@@ -1,14 +1,14 @@
 package com.gmail.nossr50.core.skills.primary.alchemy;
 
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
-import com.gmail.nossr50.core.skills.SubSkillType;
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.skills.PotionStage;
+import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakeBrewEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
 import com.gmail.nossr50.runnables.skills.AlchemyBrewCheckTask;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.core.data.UserManager;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.BrewingStand;
@@ -59,12 +59,10 @@ public final class AlchemyPotionBrewer {
 
         if (isEmpty(ingredient) || !isValidIngredient(player, ingredient)) {
             return;
-        }
-        else if (ingredient.getAmount() <= 1) {
+        } else if (ingredient.getAmount() <= 1) {
             inventory.setIngredient(null);
             return;
-        }
-        else {
+        } else {
             ingredient.setAmount(ingredient.getAmount() - 1);
             inventory.setIngredient(ingredient);
             return;
@@ -157,8 +155,7 @@ public final class AlchemyPotionBrewer {
 
         if (click.isLeftClick()) {
             success = transferItems(view, fromSlot);
-        }
-        else if (click.isRightClick()) {
+        } else if (click.isRightClick()) {
             success = transferOneItem(view, fromSlot);
         }
 
@@ -178,13 +175,11 @@ public final class AlchemyPotionBrewer {
 
         if (!emptyTo && fromAmount >= from.getType().getMaxStackSize()) {
             return false;
-        }
-        else if (emptyTo || from.isSimilar(to)) {
+        } else if (emptyTo || from.isSimilar(to)) {
             if (emptyTo) {
                 to = from.clone();
                 to.setAmount(1);
-            }
-            else {
+            } else {
                 to.setAmount(to.getAmount() + 1);
             }
 
@@ -207,14 +202,12 @@ public final class AlchemyPotionBrewer {
 
         if (isEmpty(from)) {
             return false;
-        }
-        else if (isEmpty(to)) {
+        } else if (isEmpty(to)) {
             view.setItem(Alchemy.INGREDIENT_SLOT, from);
             view.setItem(fromSlot, null);
 
             return true;
-        }
-        else if (from.isSimilar(to)) {
+        } else if (from.isSimilar(to)) {
             int fromAmount = from.getAmount();
             int toAmount = to.getAmount();
             int maxSize = to.getType().getMaxStackSize();

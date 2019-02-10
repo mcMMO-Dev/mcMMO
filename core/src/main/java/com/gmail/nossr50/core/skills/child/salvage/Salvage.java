@@ -12,7 +12,7 @@ public class Salvage {
 
     public static int advancedSalvageUnlockLevel = RankUtils.getRankUnlockLevel(SubSkillType.SALVAGE_ADVANCED_SALVAGE, 1);*/
 
-    public static boolean arcaneSalvageDowngrades  = AdvancedConfig.getInstance().getArcaneSalvageEnchantDowngradeEnabled();
+    public static boolean arcaneSalvageDowngrades = AdvancedConfig.getInstance().getArcaneSalvageEnchantDowngradeEnabled();
     public static boolean arcaneSalvageEnchantLoss = AdvancedConfig.getInstance().getArcaneSalvageEnchantLossEnabled();
 
     protected static int calculateSalvageableAmount(short currentDurability, short maxDurability, int baseAmount) {

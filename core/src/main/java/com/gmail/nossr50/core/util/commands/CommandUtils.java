@@ -1,15 +1,15 @@
 package com.gmail.nossr50.core.util.commands;
 
 import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.util.Misc;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.core.util.StringUtils;
-import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.util.skills.SkillUtils;
+import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -22,7 +22,8 @@ public final class CommandUtils {
     public static final List<String> TRUE_FALSE_OPTIONS = ImmutableList.of("on", "off", "true", "false", "enabled", "disabled");
     public static final List<String> RESET_OPTIONS = ImmutableList.of("clear", "reset");
 
-    private CommandUtils() {}
+    private CommandUtils() {
+    }
 
     public static boolean isChildSkill(CommandSender sender, PrimarySkillType skill) {
         if (skill == null || !skill.isChildSkill()) {
@@ -80,10 +81,9 @@ public final class CommandUtils {
     /**
      * Checks if there is a valid mcMMOPlayer object.
      *
-     * @param sender CommandSender who used the command
-     * @param playerName name of the target player
+     * @param sender      CommandSender who used the command
+     * @param playerName  name of the target player
      * @param mcMMOPlayer mcMMOPlayer object of the target player
-     *
      * @return true if the player is online and a valid mcMMOPlayer object was found
      */
     public static boolean checkPlayerExistence(CommandSender sender, String playerName, McMMOPlayer mcMMOPlayer) {
@@ -258,7 +258,6 @@ public final class CommandUtils {
      * Get a matched player name if one was found in the database.
      *
      * @param partialName Name to match
-     *
      * @return Matched name or {@code partialName} if no match was found
      */
     public static String getMatchedPlayerName(String partialName) {
@@ -268,8 +267,7 @@ public final class CommandUtils {
             if (matches.size() == 1) {
                 partialName = matches.get(0);
             }
-        }
-        else {
+        } else {
             Player player = mcMMO.p.getServer().getPlayer(partialName);
 
             if (player != null) {
@@ -282,7 +280,7 @@ public final class CommandUtils {
 
     /**
      * Attempts to match any player names with the given name, and returns a list of all possibly matches.
-     *
+     * <p>
      * This list is not sorted in any particular order.
      * If an exact match is found, the returned list will only contain a single result.
      *
@@ -294,10 +292,10 @@ public final class CommandUtils {
 
         for (OfflinePlayer offlinePlayer : mcMMO.p.getServer().getOfflinePlayers()) {
             String playerName = offlinePlayer.getName();
-            
+
             if (playerName == null) { //Do null checking here to detect corrupted data before sending it throuogh .equals
-            	System.err.println("[McMMO] Player data file with UIID " + offlinePlayer.getUniqueId() + " is missing a player name. This may be a legacy file from before bukkit.lastKnownName. This should be okay to ignore.");
-            	continue; //Don't let an error here interrupt the loop
+                System.err.println("[McMMO] Player data file with UIID " + offlinePlayer.getUniqueId() + " is missing a player name. This may be a legacy file from before bukkit.lastKnownName. This should be okay to ignore.");
+                continue; //Don't let an error here interrupt the loop
             }
 
             if (partialName.equalsIgnoreCase(playerName)) {

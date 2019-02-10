@@ -51,13 +51,11 @@ public class CleanBackupsTask extends BukkitRunnable {
             if (isPast24Hours(date) && Config.getInstance().getKeepLast24Hours()) {
                 // Keep all files from the last 24 hours
                 continue;
-            }
-            else if (isLastWeek(date) && !savedDays.contains(dayOfWeek) && Config.getInstance().getKeepDailyLastWeek()) {
+            } else if (isLastWeek(date) && !savedDays.contains(dayOfWeek) && Config.getInstance().getKeepDailyLastWeek()) {
                 // Keep daily backups of the past week
                 savedDays.add(dayOfWeek);
                 continue;
-            }
-            else {
+            } else {
                 List<Integer> savedWeeks = savedYearsWeeks.get(year);
                 if (savedWeeks == null) {
                     savedWeeks = new ArrayList<Integer>();
@@ -92,7 +90,6 @@ public class CleanBackupsTask extends BukkitRunnable {
      * Check if date is within last 24 hours
      *
      * @param date date to check
-     *
      * @return true is date is within last 24 hours, false if otherwise
      */
     private boolean isPast24Hours(Date date) {
@@ -104,7 +101,6 @@ public class CleanBackupsTask extends BukkitRunnable {
      * Check if date is within the last week
      *
      * @param date date to check
-     *
      * @return true is date is within the last week, false if otherwise
      */
     private boolean isLastWeek(Date date) {
@@ -118,8 +114,7 @@ public class CleanBackupsTask extends BukkitRunnable {
 
         try {
             date = dateFormat.parse(fileName);
-        }
-        catch (ParseException e) {
+        } catch (ParseException e) {
             return null;
         }
 

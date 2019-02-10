@@ -4,12 +4,12 @@ import com.gmail.nossr50.core.config.skills.AdvancedConfig;
 import com.gmail.nossr50.core.config.skills.Config;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.core.skills.PrimarySkillType;
-import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SkillManager;
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.skills.child.salvage.salvageables.Salvageable;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -33,7 +33,7 @@ import java.util.Map.Entry;
 
 public class SalvageManager extends SkillManager {
     private boolean placedAnvil;
-    private int     lastClick;
+    private int lastClick;
 
     public SalvageManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.SALVAGE);
@@ -207,34 +207,29 @@ public class SalvageManager extends SkillManager {
             if (!Salvage.arcaneSalvageEnchantLoss
                     || RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractFullEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchant.getValue(), true);
-            }
-            else if (enchant.getValue() > 1
+            } else if (enchant.getValue() > 1
                     && Salvage.arcaneSalvageDowngrades
                     && RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractPartialEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchant.getValue() - 1, true);
                 downgraded = true;
-            }
-            else {
+            } else {
                 arcaneFailure = true;
                 downgraded = true;
             }
         }
 
-        if(!arcaneFailure)
-        {
+        if (!arcaneFailure) {
             Map<Enchantment, Integer> newEnchants = enchantMeta.getStoredEnchants();
 
             if (downgraded || newEnchants.size() < enchants.size()) {
                 NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.ArcanePartial");
-            }
-            else {
+            } else {
                 NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.ArcanePartial");
             }
 
             book.setItemMeta(enchantMeta);
         } else {
-            if(enchantMeta.getStoredEnchants().size() > 0)
-            {
+            if (enchantMeta.getStoredEnchants().size() > 0) {
                 NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.ArcaneFailed");
             }
             return null;
@@ -245,8 +240,8 @@ public class SalvageManager extends SkillManager {
 
     /**
      * Check if the player has tried to use an Anvil before.
-     * @param actualize
      *
+     * @param actualize
      * @return true if the player has confirmed using an Anvil
      */
     public boolean checkConfirmation(boolean actualize) {

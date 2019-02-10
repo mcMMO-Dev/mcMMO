@@ -1,11 +1,11 @@
 package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.core.config.skills.Config;
-import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.core.skills.SuperAbilityType;
-import com.gmail.nossr50.core.locale.LocaleLoader;
-import com.gmail.nossr50.core.util.commands.CommandUtils;
 import com.gmail.nossr50.core.data.UserManager;
+import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.skills.SuperAbilityType;
+import com.gmail.nossr50.core.util.commands.CommandUtils;
 import com.gmail.nossr50.core.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -52,8 +52,7 @@ public class MccooldownCommand implements TabExecutor {
 
                     if (seconds <= 0) {
                         player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.Y", ability.getName()));
-                    }
-                    else {
+                    } else {
                         player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.N", ability.getName(), seconds));
                     }
                 }

@@ -15,12 +15,11 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 public class UUIDUpdateAsyncTask extends BukkitRunnable {
-    private mcMMO plugin;
     private static final int MAX_LOOKUP = Math.max(HiddenConfig.getInstance().getUUIDConvertAmount(), 100);
     private static final int RATE_LIMIT = HiddenConfig.getInstance().getMojangRateLimit();
     private static final long LIMIT_PERIOD = HiddenConfig.getInstance().getMojangLimitPeriod();
     private static final int BATCH_SIZE = MAX_LOOKUP * 3;
-
+    private mcMMO plugin;
     private List<String> userNames;
     private int size;
     private int checkedUsers;
@@ -57,16 +56,14 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
             if (size > MAX_LOOKUP) {
                 userNamesSection = userNames.subList(size - MAX_LOOKUP, size);
                 size -= MAX_LOOKUP;
-            }
-            else {
+            } else {
                 userNamesSection = userNames.subList(0, size);
                 size = 0;
             }
 
             try {
                 fetchedUUIDs.putAll(new UUIDFetcher(userNamesSection).call());
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 // Handle 429
                 if (e.getMessage().contains("429")) {
                     size += userNamesSection.size();

@@ -295,7 +295,7 @@ public class HashChunkletManager implements ChunkletManager {
     }
 
     /**
-     * @param cStore ChunkletStore to save
+     * @param cStore   ChunkletStore to save
      * @param location Where on the disk to put it
      */
     private void serializeChunkletStore(ChunkletStore cStore, File location) {
@@ -309,17 +309,14 @@ public class HashChunkletManager implements ChunkletManager {
             fileOut = new FileOutputStream(location);
             objOut = new ObjectOutputStream(fileOut);
             objOut.writeObject(cStore);
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
-        }
-        finally {
+        } finally {
             if (objOut != null) {
                 try {
                     objOut.flush();
                     objOut.close();
-                }
-                catch (IOException ex) {
+                } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -327,8 +324,7 @@ public class HashChunkletManager implements ChunkletManager {
             if (fileOut != null) {
                 try {
                     fileOut.close();
-                }
-                catch (IOException ex) {
+                } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -348,35 +344,29 @@ public class HashChunkletManager implements ChunkletManager {
             fileIn = new FileInputStream(location);
             objIn = new ObjectInputStream(fileIn);
             storeIn = (ChunkletStore) objIn.readObject();
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             if (ex instanceof EOFException) {
                 // EOF should only happen on Chunklets that somehow have been corrupted.
                 //mcMMO.p.getLogger().severe("Chunklet data at " + location.toString() + " could not be read due to an EOFException, data in this area will be lost.");
                 return ChunkletStoreFactory.getChunkletStore();
-            }
-            else if (ex instanceof StreamCorruptedException) {
+            } else if (ex instanceof StreamCorruptedException) {
                 // StreamCorrupted happens when the Chunklet is no good.
                 //mcMMO.p.getLogger().severe("Chunklet data at " + location.toString() + " is corrupted, data in this area will be lost.");
                 return ChunkletStoreFactory.getChunkletStore();
-            }
-            else if (ex instanceof UTFDataFormatException) {
+            } else if (ex instanceof UTFDataFormatException) {
                 // UTF happens when the Chunklet cannot be read or is corrupted
                 //mcMMO.p.getLogger().severe("Chunklet data at " + location.toString() + " could not be read due to an UTFDataFormatException, data in this area will be lost.");
                 return ChunkletStoreFactory.getChunkletStore();
             }
 
             ex.printStackTrace();
-        }
-        catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
-        }
-        finally {
+        } finally {
             if (objIn != null) {
                 try {
                     objIn.close();
-                }
-                catch (IOException ex) {
+                } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
@@ -384,8 +374,7 @@ public class HashChunkletManager implements ChunkletManager {
             if (fileIn != null) {
                 try {
                     fileIn.close();
-                }
-                catch (IOException ex) {
+                } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }

@@ -7,9 +7,9 @@ public interface ChunkletManager {
     /**
      * Loads a specific chunklet
      *
-     * @param cx Chunklet X coordinate that needs to be loaded
-     * @param cy Chunklet Y coordinate that needs to be loaded
-     * @param cz Chunklet Z coordinate that needs to be loaded
+     * @param cx    Chunklet X coordinate that needs to be loaded
+     * @param cy    Chunklet Y coordinate that needs to be loaded
+     * @param cz    Chunklet Z coordinate that needs to be loaded
      * @param world World that the chunklet needs to be loaded in
      */
     public void loadChunklet(int cx, int cy, int cz, World world);
@@ -17,9 +17,9 @@ public interface ChunkletManager {
     /**
      * Unload a specific chunklet
      *
-     * @param cx Chunklet X coordinate that needs to be unloaded
-     * @param cy Chunklet Y coordinate that needs to be unloaded
-     * @param cz Chunklet Z coordinate that needs to be unloaded
+     * @param cx    Chunklet X coordinate that needs to be unloaded
+     * @param cy    Chunklet Y coordinate that needs to be unloaded
+     * @param cz    Chunklet Z coordinate that needs to be unloaded
      * @param world World that the chunklet needs to be unloaded from
      */
     public void unloadChunklet(int cx, int cy, int cz, World world);
@@ -27,8 +27,8 @@ public interface ChunkletManager {
     /**
      * Load a given Chunk's Chunklet data
      *
-     * @param cx Chunk X coordinate that is to be loaded
-     * @param cz Chunk Z coordinate that is to be loaded
+     * @param cx    Chunk X coordinate that is to be loaded
+     * @param cz    Chunk Z coordinate that is to be loaded
      * @param world World that the Chunk is in
      */
     public void loadChunk(int cx, int cz, World world);
@@ -36,8 +36,8 @@ public interface ChunkletManager {
     /**
      * Unload a given Chunk's Chunklet data
      *
-     * @param cx Chunk X coordinate that is to be unloaded
-     * @param cz Chunk Z coordinate that is to be unloaded
+     * @param cx    Chunk X coordinate that is to be unloaded
+     * @param cz    Chunk Z coordinate that is to be unloaded
      * @param world World that the Chunk is in
      */
     public void unloadChunk(int cx, int cz, World world);
@@ -45,8 +45,8 @@ public interface ChunkletManager {
     /**
      * Informs the ChunkletManager a chunk is loaded
      *
-     * @param cx Chunk X coordinate that is loaded
-     * @param cz Chunk Z coordinate that is loaded
+     * @param cx    Chunk X coordinate that is loaded
+     * @param cz    Chunk Z coordinate that is loaded
      * @param world World that the chunk was loaded in
      */
     public void chunkLoaded(int cx, int cz, World world);
@@ -54,8 +54,8 @@ public interface ChunkletManager {
     /**
      * Informs the ChunkletManager a chunk is unloaded
      *
-     * @param cx Chunk X coordinate that is unloaded
-     * @param cz Chunk Z coordinate that is unloaded
+     * @param cx    Chunk X coordinate that is unloaded
+     * @param cz    Chunk Z coordinate that is unloaded
      * @param world World that the chunk was unloaded in
      */
     public void chunkUnloaded(int cx, int cz, World world);
@@ -94,9 +94,9 @@ public interface ChunkletManager {
     /**
      * Check to see if a given location is set to true
      *
-     * @param x X coordinate to check
-     * @param y Y coordinate to check
-     * @param z Z coordinate to check
+     * @param x     X coordinate to check
+     * @param y     Y coordinate to check
+     * @param z     Z coordinate to check
      * @param world World to check in
      * @return true if the given location is set to true, false if otherwise
      */
@@ -113,9 +113,9 @@ public interface ChunkletManager {
     /**
      * Set a given location to true, should create stores as necessary if the location does not exist
      *
-     * @param x X coordinate to set
-     * @param y Y coordinate to set
-     * @param z Z coordinate to set
+     * @param x     X coordinate to set
+     * @param y     Y coordinate to set
+     * @param z     Z coordinate to set
      * @param world World to set in
      */
     public void setTrue(int x, int y, int z, World world);
@@ -130,9 +130,9 @@ public interface ChunkletManager {
     /**
      * Set a given location to false, should not create stores if one does not exist for the given location
      *
-     * @param x X coordinate to set
-     * @param y Y coordinate to set
-     * @param z Z coordinate to set
+     * @param x     X coordinate to set
+     * @param y     Y coordinate to set
+     * @param z     Z coordinate to set
      * @param world World to set in
      */
     public void setFalse(int x, int y, int z, World world);

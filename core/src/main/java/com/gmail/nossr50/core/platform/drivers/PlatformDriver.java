@@ -8,12 +8,14 @@ import com.gmail.nossr50.core.platform.Platform;
 public interface PlatformDriver {
     /**
      * Return the platform for this Driver
+     *
      * @return this platform
      */
     Platform getPlatform();
 
     /**
      * Gets the target MC Version for this driver
+     *
      * @return the target MC Version for this driver
      */
     String getTargetMinecraftVersion();

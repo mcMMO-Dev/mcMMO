@@ -10,8 +10,8 @@ import java.util.List;
 public abstract class ConfigLoader {
     protected static final mcMMO plugin = mcMMO.p;
     protected String fileName;
-    private File configFile;
     protected FileConfiguration config;
+    private File configFile;
 
     public ConfigLoader(String relativePath, String fileName) {
         this.fileName = fileName;
@@ -31,12 +31,10 @@ public abstract class ConfigLoader {
 
             try {
                 plugin.saveResource(fileName, false); // Normal files
-            }
-            catch (IllegalArgumentException ex) {
+            } catch (IllegalArgumentException ex) {
                 plugin.saveResource(configFile.getParentFile().getName() + File.separator + fileName, false); // Mod files
             }
-        }
-        else {
+        } else {
             plugin.debug("Loading mcMMO " + fileName + " File...");
         }
 
@@ -60,8 +58,7 @@ public abstract class ConfigLoader {
     protected void validate() {
         if (validateKeys()) {
             plugin.debug("No errors found in " + fileName + "!");
-        }
-        else {
+        } else {
             plugin.getLogger().warning("Errors were found in " + fileName + "! mcMMO was disabled!");
             plugin.getServer().getPluginManager().disablePlugin(plugin);
             plugin.noErrorsInConfigFiles = false;

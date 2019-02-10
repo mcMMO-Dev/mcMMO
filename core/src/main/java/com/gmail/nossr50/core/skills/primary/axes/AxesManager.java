@@ -1,16 +1,12 @@
 package com.gmail.nossr50.core.skills.primary.axes;
 
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.core.skills.PrimarySkillType;
-import com.gmail.nossr50.core.skills.SubSkillType;
-import com.gmail.nossr50.core.skills.SuperAbilityType;
-import com.gmail.nossr50.core.skills.ToolType;
-import com.gmail.nossr50.core.skills.SkillManager;
+import com.gmail.nossr50.core.skills.*;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -25,35 +21,35 @@ public class AxesManager extends SkillManager {
     }
 
     public boolean canUseAxeMastery() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_AXE_MASTERY))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_AXE_MASTERY))
             return false;
 
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.AXES_AXE_MASTERY);
     }
 
     public boolean canCriticalHit(LivingEntity target) {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_CRITICAL_STRIKES))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_CRITICAL_STRIKES))
             return false;
 
         return target.isValid() && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.AXES_CRITICAL_STRIKES);
     }
 
     public boolean canImpact(LivingEntity target) {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_ARMOR_IMPACT))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_ARMOR_IMPACT))
             return false;
 
         return target.isValid() && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.AXES_ARMOR_IMPACT) && Axes.hasArmor(target);
     }
 
     public boolean canGreaterImpact(LivingEntity target) {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_GREATER_IMPACT))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_GREATER_IMPACT))
             return false;
 
         return target.isValid() && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.AXES_GREATER_IMPACT) && !Axes.hasArmor(target);
     }
 
     public boolean canUseSkullSplitter(LivingEntity target) {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_SKULL_SPLITTER))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_SKULL_SPLITTER))
             return false;
 
         return target.isValid() && mcMMOPlayer.getAbilityMode(SuperAbilityType.SKULL_SPLITTER) && Permissions.skullSplitter(getPlayer());
@@ -99,8 +95,7 @@ public class AxesManager extends SkillManager {
             }
 
             damage = (damage * Axes.criticalHitPVPModifier) - damage;
-        }
-        else {
+        } else {
             damage = (damage * Axes.criticalHitPVEModifier) - damage;
         }
 

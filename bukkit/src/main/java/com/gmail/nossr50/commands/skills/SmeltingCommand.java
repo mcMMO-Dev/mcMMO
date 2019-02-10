@@ -1,12 +1,12 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.core.data.UserManager;
+import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SubSkillType;
-import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.skills.child.smelting.Smelting;
 import com.gmail.nossr50.core.util.Permissions;
 import com.gmail.nossr50.core.util.TextComponentFactory;
-import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.util.skills.RankUtils;
 import com.gmail.nossr50.core.util.skills.SkillActivationType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -44,7 +44,7 @@ public class SmeltingCommand extends SkillCommand {
             str_fluxMiningChance = fluxMiningStrings[0];
             str_fluxMiningChanceLucky = fluxMiningStrings[1];
         }*/
-        
+
         // SECOND SMELT
         if (canSecondSmelt) {
             String[] secondSmeltStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.SMELTING_SECOND_SMELT);
@@ -70,7 +70,7 @@ public class SmeltingCommand extends SkillCommand {
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", str_fluxMiningChanceLucky) : ""));
             //messages.add(LocaleLoader.getString("Smelting.Ability.FluxMining", str_fluxMiningChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", str_fluxMiningChanceLucky) : ""));
         }*/
-        
+
         if (canFuelEfficiency) {
             messages.add(getStatMessage(false, true, SubSkillType.SMELTING_FUEL_EFFICIENCY, burnTimeModifier));
         }

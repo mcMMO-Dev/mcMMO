@@ -1,18 +1,14 @@
 package com.gmail.nossr50.core.skills.primary.herbalism;
 
-import com.gmail.nossr50.core.config.skills.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.config.skills.Config;
 import com.gmail.nossr50.core.config.treasure.TreasureConfig;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.core.skills.PrimarySkillType;
-import com.gmail.nossr50.core.skills.SubSkillType;
-import com.gmail.nossr50.core.skills.SuperAbilityType;
-import com.gmail.nossr50.core.skills.ToolType;
+import com.gmail.nossr50.core.skills.*;
 import com.gmail.nossr50.core.skills.treasure.HylianTreasure;
-import com.gmail.nossr50.core.skills.SkillManager;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.HerbalismBlockUpdaterTask;
 import com.gmail.nossr50.util.*;
@@ -44,7 +40,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canGreenThumbBlock(BlockState blockState) {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_GREEN_THUMB))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_GREEN_THUMB))
             return false;
 
         Player player = getPlayer();
@@ -54,7 +50,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canUseShroomThumb(BlockState blockState) {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_SHROOM_THUMB))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_SHROOM_THUMB))
             return false;
 
         Player player = getPlayer();
@@ -65,7 +61,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canUseHylianLuck() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_HYLIAN_LUCK))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_HYLIAN_LUCK))
             return false;
 
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.HERBALISM_HYLIAN_LUCK);
@@ -149,8 +145,7 @@ public class HerbalismManager extends SkillManager {
             if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_DOUBLE_DROPS) && customBlock.isDoubleDropEnabled()) {
                 drops = blockState.getBlock().getDrops();
             }
-        }
-        else {
+        } else {
             xp = ExperienceConfig.getInstance().getXp(skill, blockState.getBlockData());
 
             if (Config.getInstance().getDoubleDropsEnabled(skill, material) && Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_DOUBLE_DROPS)) {
@@ -161,7 +156,7 @@ public class HerbalismManager extends SkillManager {
                 amount = Herbalism.calculateMultiBlockPlantDrops(blockState);
                 xp *= amount;
             }
-            
+
             if (Permissions.greenThumbPlant(player, material)) {
                 processGreenThumbPlants(blockState, greenTerra);
             }
@@ -245,7 +240,7 @@ public class HerbalismManager extends SkillManager {
     public boolean processShroomThumb(BlockState blockState) {
         Player player = getPlayer();
         PlayerInventory playerInventory = player.getInventory();
-        
+
         if (!playerInventory.contains(Material.BROWN_MUSHROOM, 1)) {
             NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyItemString(Material.BROWN_MUSHROOM));
             return false;
@@ -344,8 +339,7 @@ public class HerbalismManager extends SkillManager {
 
                 if (greenTerra) {
                     crops.setAge(3);
-                }
-                else {
+                } else {
                     crops.setAge(greenThumbStage);
                 }
                 break;
@@ -355,21 +349,18 @@ public class HerbalismManager extends SkillManager {
 
                 if (greenTerra || greenThumbStage > 2) {
                     crops.setAge(2);
-                }
-                else if (greenThumbStage == 2) {
+                } else if (greenThumbStage == 2) {
                     crops.setAge(1);
-                }
-                else {
+                } else {
                     crops.setAge(0);
                 }
-               break;
+                break;
 
             case Material.COCOA:
 
                 if (greenTerra || getGreenThumbStage() > 1) {
                     crops.setAge(1);
-                }
-                else {
+                } else {
                     crops.setAge(0);
                 }
                 break;

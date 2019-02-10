@@ -94,11 +94,11 @@ public enum SubSkillType {
     UNARMED_IRON_GRIP(1),
 
     /* Woodcutting */
-/*    WOODCUTTING_BARK_SURGEON(3),*/
+    /*    WOODCUTTING_BARK_SURGEON(3),*/
     WOODCUTTING_HARVEST_LUMBER(1),
     WOODCUTTING_LEAF_BLOWER(1),
-/*    WOODCUTTING_NATURES_BOUNTY(3),
-    WOODCUTTING_SPLINTER(3),*/
+    /*    WOODCUTTING_NATURES_BOUNTY(3),
+        WOODCUTTING_SPLINTER(3),*/
     WOODCUTTING_TREE_FELLER(1);
 
     private final int numRanks;
@@ -106,32 +106,34 @@ public enum SubSkillType {
 
     /**
      * If our SubSkillType has more than 1 rank define it
+     *
      * @param numRanks The number of ranks our SubSkillType has
      */
-    SubSkillType(int numRanks)
-    {
+    SubSkillType(int numRanks) {
         this.numRanks = numRanks;
     }
 
-    SubSkillType()
-    {
+    SubSkillType() {
         this.numRanks = 0;
     }
 
-    public int getNumRanks()
-    {
+    public int getNumRanks() {
         return numRanks;
     }
 
     /**
      * !!! This relies on the immutable lists in PrimarySkillType being populated !!!
      * If we add skills, those immutable lists need to be updated
+     *
      * @return
      */
-    public PrimarySkillType getParentSkill() { return PrimarySkillType.bySecondaryAbility(this); }
+    public PrimarySkillType getParentSkill() {
+        return PrimarySkillType.bySecondaryAbility(this);
+    }
 
     /**
      * Returns the root address for this skill in the advanced.yml file
+     *
      * @return the root address for this skill in advanced.yml
      */
     public String getAdvConfigAddress() {
@@ -140,6 +142,7 @@ public enum SubSkillType {
 
     /**
      * Returns the root address for this skill in the rankskills.yml file
+     *
      * @return the root address for this skill in rankskills.yml
      */
     public String getRankConfigAddress() {
@@ -148,16 +151,17 @@ public enum SubSkillType {
 
     /**
      * Get the string representation of the permission node for this subskill
+     *
      * @return the permission node for this subskill
      */
-    public String getPermissionNodeAddress()
-    {
+    public String getPermissionNodeAddress() {
         //TODO: This could be optimized
         return "mcmmo.ability." + getParentSkill().toString().toLowerCase() + "." + getConfigName(toString()).toLowerCase();
     }
 
     /**
      * Returns the name of the skill as it is used in advanced.yml and other config files
+     *
      * @return the yaml identifier for this skill
      */
     private String getConfigName(String subSkillName) {
@@ -181,12 +185,10 @@ public enum SubSkillType {
          * Split the string up so we can capitalize each part
          */
         String subskillNameWithoutPrefix = subSkillName.substring(subStringIndex);
-        if(subskillNameWithoutPrefix.contains("_"))
-        {
+        if (subskillNameWithoutPrefix.contains("_")) {
             String splitStrings[] = subskillNameWithoutPrefix.split("_");
 
-            for(String string : splitStrings)
-            {
+            for (String string : splitStrings) {
                 endResult += StringUtils.getCapitalized(string);
             }
         } else {
@@ -207,14 +209,12 @@ public enum SubSkillType {
          * Split the string up so we can capitalize each part
          */
         String subskillNameWithoutPrefix = subSkillName.substring(subStringIndex);
-        if(subskillNameWithoutPrefix.contains("_"))
-        {
+        if (subskillNameWithoutPrefix.contains("_")) {
             String splitStrings[] = subskillNameWithoutPrefix.split("_");
 
-            for(int i = 0; i < splitStrings.length; i++)
-            {
-                if(i+1 >= splitStrings.length)
-                    endResult+=StringUtils.getCapitalized(splitStrings[i]);
+            for (int i = 0; i < splitStrings.length; i++) {
+                if (i + 1 >= splitStrings.length)
+                    endResult += StringUtils.getCapitalized(splitStrings[i]);
                 else {
                     endResult += StringUtils.getCapitalized(splitStrings[i]);
                     endResult += "_";
@@ -229,25 +229,26 @@ public enum SubSkillType {
 
     /**
      * Returns the name of the parent skill from the Locale file
+     *
      * @return The parent skill as defined in the locale
      */
-    public String getParentNiceNameLocale()
-    {
-        return LocaleLoader.getString(StringUtils.getCapitalized(getParentSkill().toString())+".SkillName");
+    public String getParentNiceNameLocale() {
+        return LocaleLoader.getString(StringUtils.getCapitalized(getParentSkill().toString()) + ".SkillName");
     }
 
     /**
      * Gets the "nice" name of the subskill without spaces
+     *
      * @param subSkillType target subskill
      * @return the "nice" name without spaces
      */
-    public String getNiceNameNoSpaces(SubSkillType subSkillType)
-    {
+    public String getNiceNameNoSpaces(SubSkillType subSkillType) {
         return getConfigName(subSkillType.toString());
     }
 
     /**
      * This finds the substring index for our SubSkillType's name after its parent name prefix
+     *
      * @param subSkillName The name to process
      * @return The value of the substring index after our parent's prefix
      */
@@ -266,35 +267,40 @@ public enum SubSkillType {
         return subStringIndex;
     }
 
-    public String getLocaleKeyRoot()
-    {
-        return StringUtils.getCapitalized(getParentSkill().toString())+".SubSkill."+getConfigName(toString());
+    public String getLocaleKeyRoot() {
+        return StringUtils.getCapitalized(getParentSkill().toString()) + ".SubSkill." + getConfigName(toString());
     }
 
-    public String getLocaleName()
-    {
+    public String getLocaleName() {
         return getFromLocaleSubAddress(".Name");
     }
 
-    public String getLocaleDescription()
-    {
+    public String getLocaleDescription() {
         return getFromLocaleSubAddress(".Description");
     }
 
-    public String getLocaleStatDescription() { return getFromLocaleSubAddress(".Stat"); }
-    public String getLocaleKeyStatDescription() { return getLocaleKeyFromSubAddress(".Stat"); }
+    public String getLocaleStatDescription() {
+        return getFromLocaleSubAddress(".Stat");
+    }
 
-    public String getLocaleStatExtraDescription() { return getFromLocaleSubAddress(".Stat.Extra"); }
-    public String getLocaleKeyStatExtraDescription() { return getLocaleKeyFromSubAddress(".Stat.Extra"); }
+    public String getLocaleKeyStatDescription() {
+        return getLocaleKeyFromSubAddress(".Stat");
+    }
 
-    public String getLocaleStat(String... vars)
-    {
+    public String getLocaleStatExtraDescription() {
+        return getFromLocaleSubAddress(".Stat.Extra");
+    }
+
+    public String getLocaleKeyStatExtraDescription() {
+        return getLocaleKeyFromSubAddress(".Stat.Extra");
+    }
+
+    public String getLocaleStat(String... vars) {
         String statMsg = LocaleLoader.getString("Ability.Generic.Template", (Object[]) vars);
         return statMsg;
     }
 
-    public String getCustomLocaleStat(String... vars)
-    {
+    public String getCustomLocaleStat(String... vars) {
         String statMsg = LocaleLoader.getString("Ability.Generic.Template.Custom", (Object[]) vars);
         return statMsg;
     }
@@ -303,8 +309,7 @@ public enum SubSkillType {
         return LocaleLoader.getString(getLocaleKeyRoot() + s);
     }
 
-    private String getLocaleKeyFromSubAddress(String s)
-    {
+    private String getLocaleKeyFromSubAddress(String s) {
         return getLocaleKeyRoot() + s;
     }
 }

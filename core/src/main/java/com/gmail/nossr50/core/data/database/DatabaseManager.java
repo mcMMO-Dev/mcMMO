@@ -43,13 +43,13 @@ public interface DatabaseManager {
     public boolean saveUser(PlayerProfile profile);
 
     /**
-    * Retrieve leaderboard info.
-    *
-    * @param skill The skill to retrieve info on
-    * @param pageNumber Which page in the leaderboards to retrieve
-    * @param statsPerPage The number of stats per page
-    * @return the requested leaderboard information
-    */
+     * Retrieve leaderboard info.
+     *
+     * @param skill        The skill to retrieve info on
+     * @param pageNumber   Which page in the leaderboards to retrieve
+     * @param statsPerPage The number of stats per page
+     * @return the requested leaderboard information
+     */
     public List<PlayerStat> readLeaderboard(PrimarySkillType skill, int pageNumber, int statsPerPage);
 
     /**
@@ -67,20 +67,19 @@ public interface DatabaseManager {
      * Add a new user to the database.
      *
      * @param playerName The name of the player to be added to the database
-     * @param uuid The uuid of the player to be added to the database
+     * @param uuid       The uuid of the player to be added to the database
      */
     public void newUser(String playerName, UUID uuid);
 
     /**
      * Load a player from the database.
      *
-     * @deprecated replaced by {@link #loadPlayerProfile(String playerName, UUID uuid, boolean createNew)}
-     *
      * @param playerName The name of the player to load from the database
-     * @param createNew Whether to create a new record if the player is not
-     *          found
+     * @param createNew  Whether to create a new record if the player is not
+     *                   found
      * @return The player's data, or an unloaded PlayerProfile if not found
-     *          and createNew is false
+     * and createNew is false
+     * @deprecated replaced by {@link #loadPlayerProfile(String playerName, UUID uuid, boolean createNew)}
      */
     @Deprecated
     public PlayerProfile loadPlayerProfile(String playerName, boolean createNew);
@@ -97,11 +96,11 @@ public interface DatabaseManager {
      * Load a player from the database. Attempt to use uuid, fall back on playername
      *
      * @param playerName The name of the player to load from the database
-     * @param uuid The uuid of the player to load from the database
-     * @param createNew Whether to create a new record if the player is not
-     *          found
+     * @param uuid       The uuid of the player to load from the database
+     * @param createNew  Whether to create a new record if the player is not
+     *                   found
      * @return The player's data, or an unloaded PlayerProfile if not found
-     *          and createNew is false
+     * and createNew is false
      */
     public PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean createNew);
 

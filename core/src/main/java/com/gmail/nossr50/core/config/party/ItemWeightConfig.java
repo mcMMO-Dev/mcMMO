@@ -39,5 +39,6 @@ public class ItemWeightConfig extends ConfigLoader {
     }
 
     @Override
-    protected void loadKeys() {}
+    protected void loadKeys() {
+    }
 }

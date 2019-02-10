@@ -5,11 +5,11 @@ import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
+import com.gmail.nossr50.core.skills.SkillManager;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.skills.SuperAbilityType;
-import com.gmail.nossr50.core.skills.SkillManager;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.core.skills.primary.woodcutting.Woodcutting.ExperienceGainMethod;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
@@ -129,8 +129,7 @@ public class WoodcuttingManager extends SkillManager {
             if (material == Material.BROWN_MUSHROOM_BLOCK || material == Material.RED_MUSHROOM_BLOCK) {
                 xp += Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.TREE_FELLER);
                 Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
-            }
-            else if (mcMMO.getModManager().isCustomLog(blockState)) {
+            } else if (mcMMO.getModManager().isCustomLog(blockState)) {
                 if (canGetDoubleDrops()) {
                     Woodcutting.checkForDoubleDrop(blockState);
                 }
@@ -139,11 +138,9 @@ public class WoodcuttingManager extends SkillManager {
                 xp = customBlock.getXpGain();
 
                 Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
-            }
-            else if (mcMMO.getModManager().isCustomLeaf(blockState)) {
+            } else if (mcMMO.getModManager().isCustomLeaf(blockState)) {
                 Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
-            }
-            else {
+            } else {
 
                 if (BlockUtils.isLog(blockState)) {
                     if (canGetDoubleDrops()) {

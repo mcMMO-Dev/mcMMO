@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.datatypes.party;
 
-import com.gmail.nossr50.core.config.skills.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.config.skills.Config;
 import com.gmail.nossr50.core.datatypes.experience.FormulaType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -31,14 +31,14 @@ public class Party {
     private int level;
     private float xp;
 
-    private ShareMode xpShareMode   = ShareMode.NONE;
+    private ShareMode xpShareMode = ShareMode.NONE;
     private ShareMode itemShareMode = ShareMode.NONE;
 
-    private boolean shareLootDrops        = true;
-    private boolean shareMiningDrops      = true;
-    private boolean shareHerbalismDrops   = true;
+    private boolean shareLootDrops = true;
+    private boolean shareMiningDrops = true;
+    private boolean shareHerbalismDrops = true;
     private boolean shareWoodcuttingDrops = true;
-    private boolean shareMiscDrops        = true;
+    private boolean shareMiscDrops = true;
 
     public Party(String name) {
         this.name = name;
@@ -75,13 +75,11 @@ public class Party {
         return onlineMembers;
     }
 
-    public List<Player> getVisibleMembers(Player player)
-    {
+    public List<Player> getVisibleMembers(Player player) {
         ArrayList<Player> visibleMembers = new ArrayList<>();
 
-        for(Player p : onlineMembers)
-        {
-            if(player.canSee(p))
+        for (Player p : onlineMembers) {
+            if (player.canSee(p))
                 visibleMembers.add(p);
         }
 
@@ -113,20 +111,40 @@ public class Party {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public PartyLeader getLeader() {
         return leader;
+    }
+
+    public void setLeader(PartyLeader leader) {
+        this.leader = leader;
     }
 
     public String getPassword() {
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public boolean isLocked() {
         return locked;
     }
 
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
     public Party getAlly() {
         return ally;
+    }
+
+    public void setAlly(Party ally) {
+        this.ally = ally;
     }
 
     public List<String> getItemShareCategories() {
@@ -139,26 +157,6 @@ public class Party {
         }
 
         return shareCategories;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setLeader(PartyLeader leader) {
-        this.leader = leader;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setLocked(boolean locked) {
-        this.locked = locked;
-    }
-
-    public void setAlly(Party ally) {
-        this.ally = ally;
     }
 
     public int getLevel() {
@@ -251,20 +249,20 @@ public class Party {
         return Config.getInstance().getPartyLevelCap() < getLevel() + 1;
     }
 
-    public void setXpShareMode(ShareMode xpShareMode) {
-        this.xpShareMode = xpShareMode;
-    }
-
     public ShareMode getXpShareMode() {
         return xpShareMode;
     }
 
-    public void setItemShareMode(ShareMode itemShareMode) {
-        this.itemShareMode = itemShareMode;
+    public void setXpShareMode(ShareMode xpShareMode) {
+        this.xpShareMode = xpShareMode;
     }
 
     public ShareMode getItemShareMode() {
         return itemShareMode;
+    }
+
+    public void setItemShareMode(ShareMode itemShareMode) {
+        this.itemShareMode = itemShareMode;
     }
 
     public boolean sharingDrops(ItemShareType shareType) {
@@ -336,11 +334,9 @@ public class Party {
                 if (otherPlayer == null) {
                     memberName = memberName.substring(0, 1) + ChatColor.GRAY + ChatColor.ITALIC + "" + memberName.substring(1);
                 }
-            }
-            else if (otherPlayer != null) {
+            } else if (otherPlayer != null) {
                 memberList.append(ChatColor.WHITE);
-            }
-            else {
+            } else {
                 memberList.append(ChatColor.GRAY);
             }
 

@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.skills.primary.archery;
 
-import com.gmail.nossr50.core.config.skills.AdvancedConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.config.skills.AdvancedConfig;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.RankUtils;
@@ -15,13 +15,11 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Archery {
-    private static List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
-
-    public static double skillShotMaxBonusDamage     = AdvancedConfig.getInstance().getSkillShotDamageMax();
+    public static final double DISTANCE_XP_MULTIPLIER = ExperienceConfig.getInstance().getArcheryDistanceMultiplier();
+    public static double skillShotMaxBonusDamage = AdvancedConfig.getInstance().getSkillShotDamageMax();
 
     public static double dazeBonusDamage = AdvancedConfig.getInstance().getDazeBonusDamage();
-
-    public static final double DISTANCE_XP_MULTIPLIER = ExperienceConfig.getInstance().getArcheryDistanceMultiplier();
+    private static List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
 
     protected static void incrementTrackerValue(LivingEntity livingEntity) {
         for (TrackedEntity trackedEntity : trackedEntities) {
@@ -51,7 +49,7 @@ public class Archery {
      * @param livingEntity The entity hit by the arrows
      */
     public static void arrowRetrievalCheck(LivingEntity livingEntity) {
-        for (Iterator<TrackedEntity> entityIterator = trackedEntities.iterator(); entityIterator.hasNext();) {
+        for (Iterator<TrackedEntity> entityIterator = trackedEntities.iterator(); entityIterator.hasNext(); ) {
             TrackedEntity trackedEntity = entityIterator.next();
 
             if (trackedEntity.getID() == livingEntity.getUniqueId()) {
@@ -62,8 +60,7 @@ public class Archery {
         }
     }
 
-    public static double getSkillShotBonusDamage(Player player, double oldDamage)
-    {
+    public static double getSkillShotBonusDamage(Player player, double oldDamage) {
         double damageBonusPercent = getDamageBonusPercent(player);
         double newDamage = oldDamage + (oldDamage * damageBonusPercent);
         return Math.min(newDamage, Archery.skillShotMaxBonusDamage);

@@ -25,10 +25,10 @@ public class TreasureConfig extends ConfigLoader {
 
     public HashMap<String, List<ExcavationTreasure>> excavationMap = new HashMap<String, List<ExcavationTreasure>>();
 
-    public HashMap<EntityType, List<ShakeTreasure>> shakeMap  = new HashMap<EntityType, List<ShakeTreasure>>();
-    public HashMap<String, List<HylianTreasure>>    hylianMap = new HashMap<String, List<HylianTreasure>>();
+    public HashMap<EntityType, List<ShakeTreasure>> shakeMap = new HashMap<EntityType, List<ShakeTreasure>>();
+    public HashMap<String, List<HylianTreasure>> hylianMap = new HashMap<String, List<HylianTreasure>>();
 
-    public HashMap<Rarity, List<FishingTreasure>>     fishingRewards      = new HashMap<Rarity, List<FishingTreasure>>();
+    public HashMap<Rarity, List<FishingTreasure>> fishingRewards = new HashMap<Rarity, List<FishingTreasure>>();
     public HashMap<Rarity, List<EnchantmentTreasure>> fishingEnchantments = new HashMap<Rarity, List<EnchantmentTreasure>>();
 
     private TreasureConfig() {

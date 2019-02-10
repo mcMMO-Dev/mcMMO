@@ -1,12 +1,12 @@
 package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.core.config.skills.AdvancedConfig;
+import com.gmail.nossr50.core.data.UserManager;
+import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SubSkillType;
-import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.util.Permissions;
 import com.gmail.nossr50.core.util.TextComponentFactory;
-import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.util.skills.RankUtils;
 import com.gmail.nossr50.core.util.skills.SkillActivationType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -49,7 +49,7 @@ public class SwordsCommand extends SkillCommand {
             bleedChance = bleedStrings[0];
             bleedChanceLucky = bleedStrings[1];
         }
-        
+
         // SERRATED STRIKES
         if (canSerratedStrike) {
             String[] serratedStrikesStrings = calculateLengthDisplayValues(player, skillValue);
@@ -70,8 +70,8 @@ public class SwordsCommand extends SkillCommand {
         List<String> messages = new ArrayList<String>();
 
         int ruptureTicks = UserManager.getPlayer(player).getSwordsManager().getRuptureBleedTicks();
-        double ruptureDamagePlayers =  RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? AdvancedConfig.getInstance().getRuptureDamagePlayer() * 1.5D : AdvancedConfig.getInstance().getRuptureDamagePlayer();
-        double ruptureDamageMobs =  RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? AdvancedConfig.getInstance().getRuptureDamageMobs() * 1.5D : AdvancedConfig.getInstance().getRuptureDamageMobs();
+        double ruptureDamagePlayers = RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? AdvancedConfig.getInstance().getRuptureDamagePlayer() * 1.5D : AdvancedConfig.getInstance().getRuptureDamagePlayer();
+        double ruptureDamageMobs = RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? AdvancedConfig.getInstance().getRuptureDamageMobs() * 1.5D : AdvancedConfig.getInstance().getRuptureDamageMobs();
 
         if (canCounter) {
             messages.add(getStatMessage(SubSkillType.SWORDS_COUNTER_ATTACK, counterChance)

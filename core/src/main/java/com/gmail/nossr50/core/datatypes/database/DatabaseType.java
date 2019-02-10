@@ -14,8 +14,7 @@ public enum DatabaseType {
 
         if (typeName.equalsIgnoreCase("file")) {
             return FLATFILE;
-        }
-        else if (typeName.equalsIgnoreCase("mysql")) {
+        } else if (typeName.equalsIgnoreCase("mysql")) {
             return SQL;
         }
 

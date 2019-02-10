@@ -1,17 +1,16 @@
 package com.gmail.nossr50.core.util;
 
 import com.gmail.nossr50.commands.skills.AprilCommand;
-import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.core.skills.PrimarySkillType;
-import com.gmail.nossr50.core.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.core.util.player.NotificationManager;
 import com.gmail.nossr50.core.data.UserManager;
+import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
+import com.gmail.nossr50.core.util.player.NotificationManager;
 import com.gmail.nossr50.core.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.core.util.sounds.SoundManager;
 import com.gmail.nossr50.core.util.sounds.SoundType;
+import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
-import org.bukkit.*;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
@@ -26,75 +25,10 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public final class HolidayManager {
-    private ArrayList<String> hasCelebrated;
-    private int currentYear;
     private static final int START_YEAR = 2011;
-
     private static final List<Color> ALL_COLORS;
     private static final List<ChatColor> ALL_CHAT_COLORS;
     private static final List<ChatColor> CHAT_FORMATS;
-
-    public enum FakeSkillType {
-        MACHO,
-        JUMPING,
-        THROWING,
-        WRECKING,
-        CRAFTING,
-        WALKING,
-        SWIMMING,
-        FALLING,
-        CLIMBING,
-        FLYING,
-        DIVING,
-        PIGGY,
-        UNKNOWN;
-
-        public static FakeSkillType getByName(String skillName) {
-            for (FakeSkillType type : values()) {
-                if (type.name().equalsIgnoreCase(skillName)) {
-                    return type;
-                }
-            }
-            return null;
-        }
-
-        public static FakeSkillType getByStatistic(Statistic statistic) {
-            switch (statistic) {
-                case Statistic.DAMAGE_TAKEN:
-                    return FakeSkillType.MACHO;
-                case Statistic.JUMP:
-                    return FakeSkillType.JUMPING;
-                case Statistic.DROP:
-                    return FakeSkillType.THROWING;
-                case Statistic.MINE_BLOCK:
-                case Statistic.BREAK_ITEM:
-                    return FakeSkillType.WRECKING;
-                case Statistic.CRAFT_ITEM:
-                    return FakeSkillType.CRAFTING;
-                case Statistic.WALK_ONE_CM:
-                    return FakeSkillType.WALKING;
-                case Statistic.SWIM_ONE_CM:
-                    return FakeSkillType.SWIMMING;
-                case Statistic.FALL_ONE_CM:
-                    return FakeSkillType.FALLING;
-                case Statistic.CLIMB_ONE_CM:
-                    return FakeSkillType.CLIMBING;
-                case Statistic.FLY_ONE_CM:
-                    return FakeSkillType.FLYING;
-                case Statistic.WALK_UNDER_WATER_ONE_CM:
-                    return FakeSkillType.DIVING;
-                case Statistic.PIG_ONE_CM:
-                    return FakeSkillType.PIGGY;
-                default:
-                    return FakeSkillType.UNKNOWN;
-            }
-        }
-    }
-
-    public final Set<Statistic> movementStatistics = EnumSet.of(
-            Statistic.WALK_ONE_CM, Statistic.SWIM_ONE_CM, Statistic.FALL_ONE_CM,
-            Statistic.CLIMB_ONE_CM, Statistic.FLY_ONE_CM, Statistic.WALK_UNDER_WATER_ONE_CM,
-            Statistic.PIG_ONE_CM);
 
     static {
         List<Color> colors = new ArrayList<Color>();
@@ -104,8 +38,7 @@ public final class HolidayManager {
         for (ChatColor color : ChatColor.values()) {
             if (color.isColor()) {
                 chatColors.add(color);
-            }
-            else {
+            } else {
                 chatFormats.add(color);
             }
         }
@@ -123,6 +56,13 @@ public final class HolidayManager {
         CHAT_FORMATS = ImmutableList.copyOf(chatFormats);
     }
 
+    public final Set<Statistic> movementStatistics = EnumSet.of(
+            Statistic.WALK_ONE_CM, Statistic.SWIM_ONE_CM, Statistic.FALL_ONE_CM,
+            Statistic.CLIMB_ONE_CM, Statistic.FLY_ONE_CM, Statistic.WALK_UNDER_WATER_ONE_CM,
+            Statistic.PIG_ONE_CM);
+    private ArrayList<String> hasCelebrated;
+    private int currentYear;
+
     // This gets called onEnable
     public HolidayManager() {
         currentYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -132,8 +72,7 @@ public final class HolidayManager {
         if (!anniversaryFile.exists()) {
             try {
                 anniversaryFile.createNewFile();
-            }
-            catch (IOException ex) {
+            } catch (IOException ex) {
                 mcMMO.p.getLogger().severe(ex.toString());
             }
         }
@@ -151,12 +90,27 @@ public final class HolidayManager {
             }
 
             reader.close();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             mcMMO.p.getLogger().severe(ex.toString());
         }
 
         cleanupFiles();
+    }
+
+    private static List<Color> colorChoose() {
+        return ALL_COLORS.subList(0, Math.max(Misc.getRandom().nextInt(ALL_COLORS.size() + 1), 1));
+    }
+
+    private static String chatColorChoose() {
+        StringBuilder ret = new StringBuilder(ALL_CHAT_COLORS.get(Misc.getRandom().nextInt(ALL_CHAT_COLORS.size())).toString());
+
+        for (ChatColor chatFormat : CHAT_FORMATS) {
+            if (Misc.getRandom().nextInt(CHAT_FORMATS.size()) == 0) {
+                ret.append(chatFormat);
+            }
+        }
+
+        return ret.toString();
     }
 
     private void cleanupFiles() {
@@ -203,8 +157,7 @@ public final class HolidayManager {
                 writer.newLine();
             }
             writer.close();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             mcMMO.p.getLogger().severe(ex.toString());
         }
     }
@@ -235,34 +188,33 @@ public final class HolidayManager {
                     }
                 }, delay);
             }
-        }
-        else {
-                /*
-                 * Credit: http://www.geocities.com/spunk1111/
-                 *  (good luck finding that in 3 years heh)
-                 *       .''.      .        *''*    :_\/_:     .
-                 *      :_\/_:   _\(/_  .:.*_\/_*   : /\ :  .'.:.'.
-                 *  .''.: /\ :    /)\   ':'* /\ *  : '..'.  -=:o:=-
-                 * :_\/_:'.:::.    ' *''*    * '.\'/.'_\(/_ '.':'.'
-                 * : /\ : :::::     *_\/_*     -= o =- /)\     '
-                 *  '..'  ':::'     * /\ *     .'/.\'.  '      *
-                 *      *            *..*         :           *
-                 *       *                        *          *
-                 *       *                        *          *
-                 */
+        } else {
+            /*
+             * Credit: http://www.geocities.com/spunk1111/
+             *  (good luck finding that in 3 years heh)
+             *       .''.      .        *''*    :_\/_:     .
+             *      :_\/_:   _\(/_  .:.*_\/_*   : /\ :  .'.:.'.
+             *  .''.: /\ :    /)\   ':'* /\ *  : '..'.  -=:o:=-
+             * :_\/_:'.:::.    ' *''*    * '.\'/.'_\(/_ '.':'.'
+             * : /\ : :::::     *_\/_*     -= o =- /)\     '
+             *  '..'  ':::'     * /\ *     .'/.\'.  '      *
+             *      *            *..*         :           *
+             *       *                        *          *
+             *       *                        *          *
+             */
 
-                /*
-                 * Color map
-                 *       AAAA      D        GGGG    JJJJJJ     K
-                 *      AAAAAA   DDDDD  EEEGGGGGG   JJJJJJ  KKKKKKK
-                 *  BBBBAAAAAA    DDD   EEEGGGGGG  I JJJJJ  KKKKKKK
-                 * BBBBBBACCCCC    D FFFF    G IIIIIIIHHHHH KKKKKKK
-                 * BBBBBB CCCCC     FFFFFF     IIIIIII HHH     K
-                 *  BBBB  CCCCC     FFFFFF     IIIIIII  H      k
-                 *      b            FFFF         I           k
-                 *       b                        i          k
-                 *       b                        i          k
-                 */
+            /*
+             * Color map
+             *       AAAA      D        GGGG    JJJJJJ     K
+             *      AAAAAA   DDDDD  EEEGGGGGG   JJJJJJ  KKKKKKK
+             *  BBBBAAAAAA    DDD   EEEGGGGGG  I JJJJJ  KKKKKKK
+             * BBBBBBACCCCC    D FFFF    G IIIIIIIHHHHH KKKKKKK
+             * BBBBBB CCCCC     FFFFFF     IIIIIII HHH     K
+             *  BBBB  CCCCC     FFFFFF     IIIIIII  H      k
+             *      b            FFFF         I           k
+             *       b                        i          k
+             *       b                        i          k
+             */
             Object[] colorParams = new Object[]{chatColorChoose(), chatColorChoose(), chatColorChoose(), chatColorChoose(), chatColorChoose(), chatColorChoose(), chatColorChoose(), chatColorChoose(), chatColorChoose(), chatColorChoose(), chatColorChoose()};
             sender.sendMessage(String.format("      %1$s.''.      %4$s.        %7$s*''*    %10$s:_\\/_:     %11$s.", colorParams));
             sender.sendMessage(String.format("     %1$s:_\\/_:   %4$s_\\(/_  %5$s.:.%7$s*_\\/_*   %10$s: /\\ :  %11$s.'.:.'.", colorParams));
@@ -294,22 +246,6 @@ public final class HolidayManager {
         fireworkmeta.addEffect(effect);
         fireworkmeta.setPower(power);
         fireworks.setFireworkMeta(fireworkmeta);
-    }
-
-    private static List<Color> colorChoose() {
-        return ALL_COLORS.subList(0, Math.max(Misc.getRandom().nextInt(ALL_COLORS.size() + 1), 1));
-    }
-
-    private static String chatColorChoose() {
-        StringBuilder ret = new StringBuilder(ALL_CHAT_COLORS.get(Misc.getRandom().nextInt(ALL_CHAT_COLORS.size())).toString());
-
-        for (ChatColor chatFormat : CHAT_FORMATS) {
-            if (Misc.getRandom().nextInt(CHAT_FORMATS.size()) == 0) {
-                ret.append(chatFormat);
-            }
-        }
-
-        return ret.toString();
     }
 
     public boolean isAprilFirst() {
@@ -369,5 +305,62 @@ public final class HolidayManager {
     public void registerAprilCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcfools");
         command.setExecutor(new AprilCommand());
+    }
+
+    public enum FakeSkillType {
+        MACHO,
+        JUMPING,
+        THROWING,
+        WRECKING,
+        CRAFTING,
+        WALKING,
+        SWIMMING,
+        FALLING,
+        CLIMBING,
+        FLYING,
+        DIVING,
+        PIGGY,
+        UNKNOWN;
+
+        public static FakeSkillType getByName(String skillName) {
+            for (FakeSkillType type : values()) {
+                if (type.name().equalsIgnoreCase(skillName)) {
+                    return type;
+                }
+            }
+            return null;
+        }
+
+        public static FakeSkillType getByStatistic(Statistic statistic) {
+            switch (statistic) {
+                case Statistic.DAMAGE_TAKEN:
+                    return FakeSkillType.MACHO;
+                case Statistic.JUMP:
+                    return FakeSkillType.JUMPING;
+                case Statistic.DROP:
+                    return FakeSkillType.THROWING;
+                case Statistic.MINE_BLOCK:
+                case Statistic.BREAK_ITEM:
+                    return FakeSkillType.WRECKING;
+                case Statistic.CRAFT_ITEM:
+                    return FakeSkillType.CRAFTING;
+                case Statistic.WALK_ONE_CM:
+                    return FakeSkillType.WALKING;
+                case Statistic.SWIM_ONE_CM:
+                    return FakeSkillType.SWIMMING;
+                case Statistic.FALL_ONE_CM:
+                    return FakeSkillType.FALLING;
+                case Statistic.CLIMB_ONE_CM:
+                    return FakeSkillType.CLIMBING;
+                case Statistic.FLY_ONE_CM:
+                    return FakeSkillType.FLYING;
+                case Statistic.WALK_UNDER_WATER_ONE_CM:
+                    return FakeSkillType.DIVING;
+                case Statistic.PIG_ONE_CM:
+                    return FakeSkillType.PIGGY;
+                default:
+                    return FakeSkillType.UNKNOWN;
+            }
+        }
     }
 }

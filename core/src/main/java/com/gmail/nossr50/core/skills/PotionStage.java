@@ -21,10 +21,6 @@ public enum PotionStage {
         this.numerical = numerical;
     }
 
-    public int toNumerical() {
-        return numerical;
-    }
-
     private static PotionStage getPotionStageNumerical(int numerical) {
         for (PotionStage potionStage : values()) {
             if (numerical >= potionStage.toNumerical()) {
@@ -60,12 +56,12 @@ public enum PotionStage {
         }
 
         // Check if potion has a glowstone dust amplifier
-        // Else check if the potion has a custom effect with an amplifier added by mcMMO 
+        // Else check if the potion has a custom effect with an amplifier added by mcMMO
         if (data.isUpgraded()) {
             stage++;
-        } else if(!effects.isEmpty()) {
-            for (PotionEffect effect : effects){
-                if(effect.getAmplifier() > 0){
+        } else if (!effects.isEmpty()) {
+            for (PotionEffect effect : effects) {
+                if (effect.getAmplifier() > 0) {
                     stage++;
                     break;
                 }
@@ -83,5 +79,9 @@ public enum PotionStage {
         }
 
         return PotionStage.getPotionStageNumerical(stage);
+    }
+
+    public int toNumerical() {
+        return numerical;
     }
 }

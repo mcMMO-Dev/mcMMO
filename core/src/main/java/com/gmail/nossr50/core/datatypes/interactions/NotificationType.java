@@ -24,8 +24,7 @@ public enum NotificationType {
 
     final String niceName;
 
-    NotificationType(String niceName)
-    {
+    NotificationType(String niceName) {
         this.niceName = niceName;
     }
 

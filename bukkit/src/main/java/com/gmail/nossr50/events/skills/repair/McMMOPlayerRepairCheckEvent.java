@@ -44,7 +44,9 @@ public class McMMOPlayerRepairCheckEvent extends McMMOPlayerSkillEvent implement
         return repairedObject;
     }
 
-    /** Following are required for Cancellable **/
+    /**
+     * Following are required for Cancellable
+     **/
     @Override
     public boolean isCancelled() {
         return cancelled;

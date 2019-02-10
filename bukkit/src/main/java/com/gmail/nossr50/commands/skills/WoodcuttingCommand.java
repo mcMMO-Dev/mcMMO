@@ -1,8 +1,8 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SubSkillType;
-import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.util.Permissions;
 import com.gmail.nossr50.core.util.TextComponentFactory;
 import com.gmail.nossr50.core.util.skills.RankUtils;
@@ -36,7 +36,7 @@ public class WoodcuttingCommand extends SkillCommand {
         if (canDoubleDrop) {
             setDoubleDropClassicChanceStrings(player);
         }
-        
+
         // TREE FELLER
         if (canTreeFell) {
             String[] treeFellerStrings = calculateLengthDisplayValues(player, skillValue);
@@ -46,7 +46,8 @@ public class WoodcuttingCommand extends SkillCommand {
     }
 
     private void setDoubleDropClassicChanceStrings(Player player) {
-        String[] doubleDropStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.WOODCUTTING_HARVEST_LUMBER);;
+        String[] doubleDropStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.WOODCUTTING_HARVEST_LUMBER);
+        ;
         doubleDropChance = doubleDropStrings[0];
         doubleDropChanceLucky = doubleDropStrings[1];
     }
@@ -69,7 +70,7 @@ public class WoodcuttingCommand extends SkillCommand {
             messages.add(getStatMessage(SubSkillType.WOODCUTTING_HARVEST_LUMBER, doubleDropChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
         }
-        
+
         if (canLeafBlow) {
             messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Woodcutting.Ability.0"), LocaleLoader.getString("Woodcutting.Ability.1")));
         }

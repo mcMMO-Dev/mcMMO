@@ -1,13 +1,13 @@
 package com.gmail.nossr50.core.runnables.player;
 
 import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.runnables.commands.McScoreboardKeepTask;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;

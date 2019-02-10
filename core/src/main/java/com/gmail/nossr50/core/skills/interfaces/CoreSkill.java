@@ -11,6 +11,7 @@ import com.gmail.nossr50.core.skills.SubSkillType;
 public interface CoreSkill {
     /**
      * Gets the associated SubSkillType for this subskill
+     *
      * @return the associated SubSkillType ENUM definition
      */
     SubSkillType getSubSkillType();

@@ -1,17 +1,17 @@
 package com.gmail.nossr50.core.datatypes.player;
 
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.config.skills.AdvancedConfig;
 import com.gmail.nossr50.core.config.skills.Config;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.experience.FormulaType;
 import com.gmail.nossr50.core.datatypes.experience.SkillXpGain;
+import com.gmail.nossr50.core.skills.MobHealthbarType;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SuperAbilityType;
-import com.gmail.nossr50.core.skills.MobHealthbarType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerProfileSaveTask;
 import com.gmail.nossr50.skills.child.FamilyTree;
-import com.gmail.nossr50.core.data.UserManager;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.HashMap;
@@ -22,20 +22,17 @@ import java.util.concurrent.DelayQueue;
 
 public class PlayerProfile {
     private final String playerName;
+    /* Skill Data */
+    private final Map<PrimarySkillType, Integer> skills = new HashMap<PrimarySkillType, Integer>();   // Skill & Level
+    private final Map<PrimarySkillType, Float> skillsXp = new HashMap<PrimarySkillType, Float>();     // Skill & XP
+    private final Map<SuperAbilityType, Integer> abilityDATS = new HashMap<SuperAbilityType, Integer>(); // Ability & Cooldown
+    private final Map<UniqueDataType, Integer> uniquePlayerData = new HashMap<>(); //Misc data that doesn't fit into other categories (chimaera wing, etc..)
     private UUID uuid;
     private boolean loaded;
     private volatile boolean changed;
-
     /* HUDs */
     private MobHealthbarType mobHealthbarType;
     private int scoreboardTipsShown;
-
-    /* Skill Data */
-    private final Map<PrimarySkillType, Integer>   skills     = new HashMap<PrimarySkillType, Integer>();   // Skill & Level
-    private final Map<PrimarySkillType, Float>     skillsXp   = new HashMap<PrimarySkillType, Float>();     // Skill & XP
-    private final Map<SuperAbilityType, Integer> abilityDATS = new HashMap<SuperAbilityType, Integer>(); // Ability & Cooldown
-    private final Map<UniqueDataType, Integer> uniquePlayerData = new HashMap<>(); //Misc data that doesn't fit into other categories (chimaera wing, etc..)
-
     // Store previous XP gains for deminished returns
     private DelayQueue<SkillXpGain> gainedSkillsXp = new DelayQueue<SkillXpGain>();
     private HashMap<PrimarySkillType, Float> rollingSkillsXp = new HashMap<PrimarySkillType, Float>();
@@ -158,7 +155,9 @@ public class PlayerProfile {
      * Cooldowns
      */
 
-    public int getChimaerWingDATS() { return uniquePlayerData.get(UniqueDataType.CHIMAERA_WING_DATS);}
+    public int getChimaerWingDATS() {
+        return uniquePlayerData.get(UniqueDataType.CHIMAERA_WING_DATS);
+    }
 
     protected void setChimaeraWingDATS(int DATS) {
         changed = true;
@@ -170,7 +169,9 @@ public class PlayerProfile {
         uniquePlayerData.put(uniqueDataType, newData);
     }
 
-    public long getUniqueData(UniqueDataType uniqueDataType) { return uniquePlayerData.get(uniqueDataType); }
+    public long getUniqueData(UniqueDataType uniqueDataType) {
+        return uniquePlayerData.get(uniqueDataType);
+    }
 
     /**
      * Get the current deactivation timestamp of an ability.
@@ -186,7 +187,7 @@ public class PlayerProfile {
      * Set the current deactivation timestamp of an ability.
      *
      * @param ability The {@link SuperAbilityType} to set the DATS for
-     * @param DATS the DATS of the ability
+     * @param DATS    the DATS of the ability
      */
     protected void setAbilityDATS(SuperAbilityType ability, long DATS) {
         changed = true;
@@ -246,7 +247,7 @@ public class PlayerProfile {
      * Remove Xp from a skill.
      *
      * @param skill Type of skill to modify
-     * @param xp Amount of xp to remove
+     * @param xp    Amount of xp to remove
      */
     public void removeXp(PrimarySkillType skill, int xp) {
         if (skill.isChildSkill()) {
@@ -282,7 +283,7 @@ public class PlayerProfile {
         changed = true;
 
         //Don't allow levels to be negative
-        if(level < 0)
+        if (level < 0)
             level = 0;
 
         skills.put(skill, level);
@@ -292,7 +293,7 @@ public class PlayerProfile {
     /**
      * Add levels to a skill.
      *
-     * @param skill Type of skill to add levels to
+     * @param skill  Type of skill to add levels to
      * @param levels Number of levels to add
      */
     public void addLevels(PrimarySkillType skill, int levels) {
@@ -303,7 +304,7 @@ public class PlayerProfile {
      * Add Experience to a skill.
      *
      * @param skill Type of skill to add experience to
-     * @param xp Number of experience to add
+     * @param xp    Number of experience to add
      */
     public void addXp(PrimarySkillType skill, float xp) {
         changed = true;
@@ -315,8 +316,7 @@ public class PlayerProfile {
             for (PrimarySkillType parentSkill : parentSkills) {
                 skillsXp.put(parentSkill, skillsXp.get(parentSkill) + dividedXP);
             }
-        }
-        else {
+        } else {
             skillsXp.put(skill, skillsXp.get(skill) + xp);
         }
     }
@@ -342,7 +342,7 @@ public class PlayerProfile {
      * This is used for diminished XP returns
      *
      * @param primarySkillType Skill being used
-     * @param xp Experience amount to add
+     * @param xp               Experience amount to add
      */
     public void registerXpGain(PrimarySkillType primarySkillType, float xp) {
         gainedSkillsXp.add(new SkillXpGain(primarySkillType, xp));

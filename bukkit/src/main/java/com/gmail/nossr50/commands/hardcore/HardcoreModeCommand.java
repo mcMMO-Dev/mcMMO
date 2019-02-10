@@ -28,8 +28,7 @@ public abstract class HardcoreModeCommand implements TabExecutor {
 
                 if (checkEnabled(null)) {
                     disable(null);
-                }
-                else {
+                } else {
                     enable(null);
                 }
 
@@ -122,9 +121,14 @@ public abstract class HardcoreModeCommand implements TabExecutor {
     }
 
     protected abstract boolean checkTogglePermissions(CommandSender sender);
+
     protected abstract boolean checkModifyPermissions(CommandSender sender);
+
     protected abstract boolean checkEnabled(PrimarySkillType skill);
+
     protected abstract void enable(PrimarySkillType skill);
+
     protected abstract void disable(PrimarySkillType skill);
+
     protected abstract void modify(CommandSender sender, double newPercentage);
 }

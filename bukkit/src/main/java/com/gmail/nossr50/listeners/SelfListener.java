@@ -1,18 +1,18 @@
 package com.gmail.nossr50.listeners;
 
-import com.gmail.nossr50.core.config.skills.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
+import com.gmail.nossr50.core.util.scoreboards.ScoreboardManager;
+import com.gmail.nossr50.core.worldguard.WorldGuardManager;
+import com.gmail.nossr50.core.worldguard.WorldGuardUtils;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.core.data.UserManager;
-import com.gmail.nossr50.core.util.scoreboards.ScoreboardManager;
-import com.gmail.nossr50.core.worldguard.WorldGuardManager;
-import com.gmail.nossr50.core.worldguard.WorldGuardUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -22,8 +22,7 @@ public class SelfListener implements Listener {
     //Used in task scheduling and other things
     private final mcMMO plugin;
 
-    public SelfListener(mcMMO plugin)
-    {
+    public SelfListener(mcMMO plugin) {
         this.plugin = plugin;
     }
 
@@ -33,14 +32,13 @@ public class SelfListener implements Listener {
         PrimarySkillType skill = event.getSkill();
 
         //Players can gain multiple levels especially during xprate events
-        for(int i = 0; i < event.getLevelsGained(); i++)
-        {
+        for (int i = 0; i < event.getLevelsGained(); i++) {
             int previousLevelGained = event.getSkillLevel() - i;
             //Send player skill unlock notifications
             UserManager.getPlayer(player).processUnlockNotifications(plugin, event.getSkill(), previousLevelGained);
         }
 
-        if(Config.getInstance().getScoreboardsEnabled())
+        if (Config.getInstance().getScoreboardsEnabled())
             ScoreboardManager.handleLevelUp(player, skill);
 
         if (!Config.getInstance().getLevelUpEffectsEnabled()) {
@@ -54,13 +52,13 @@ public class SelfListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerXp(McMMOPlayerXpGainEvent event) {
-        if(Config.getInstance().getScoreboardsEnabled())
+        if (Config.getInstance().getScoreboardsEnabled())
             ScoreboardManager.handleXp(event.getPlayer(), event.getSkill());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onAbility(McMMOPlayerAbilityActivateEvent event) {
-        if(Config.getInstance().getScoreboardsEnabled())
+        if (Config.getInstance().getScoreboardsEnabled())
             ScoreboardManager.cooldownUpdate(event.getPlayer(), event.getSkill());
     }
 
@@ -71,23 +69,19 @@ public class SelfListener implements Listener {
         PrimarySkillType primarySkillType = event.getSkill();
 
         //WorldGuard XP Check
-        if(event.getXpGainReason() == XPGainReason.PVE ||
+        if (event.getXpGainReason() == XPGainReason.PVE ||
                 event.getXpGainReason() == XPGainReason.PVP ||
                 event.getXpGainReason() == XPGainReason.SHARED_PVE ||
-                event.getXpGainReason() == XPGainReason.SHARED_PVP)
-        {
-            if(WorldGuardUtils.isWorldGuardLoaded())
-            {
-                if(!WorldGuardManager.getInstance().hasXPFlag(player))
-                {
+                event.getXpGainReason() == XPGainReason.SHARED_PVP) {
+            if (WorldGuardUtils.isWorldGuardLoaded()) {
+                if (!WorldGuardManager.getInstance().hasXPFlag(player)) {
                     event.setRawXpGained(0);
                     event.setCancelled(true);
                 }
             }
         }
 
-        if (event.getXpGainReason() == XPGainReason.COMMAND)
-        {
+        if (event.getXpGainReason() == XPGainReason.COMMAND) {
             return;
         }
 
@@ -124,12 +118,10 @@ public class SelfListener implements Listener {
              * Make sure players get a guaranteed minimum of XP
              */
             //If there is no guaranteed minimum proceed, otherwise only proceed if newValue would be higher than our guaranteed minimum
-            if(guaranteedMinimum <= 0 || newValue > guaranteedMinimum)
-            {
+            if (guaranteedMinimum <= 0 || newValue > guaranteedMinimum) {
                 if (newValue > 0) {
                     event.setRawXpGained(newValue);
-                }
-                else {
+                } else {
                     event.setCancelled(true);
                 }
             } else {

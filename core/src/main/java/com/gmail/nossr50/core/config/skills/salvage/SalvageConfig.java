@@ -50,31 +50,23 @@ public class SalvageConfig extends ConfigLoader {
 
                 if (ItemUtils.isWoodTool(salvageItem)) {
                     salvageMaterialType = MaterialType.WOOD;
-                }
-                else if (ItemUtils.isStoneTool(salvageItem)) {
+                } else if (ItemUtils.isStoneTool(salvageItem)) {
                     salvageMaterialType = MaterialType.STONE;
-                }
-                else if (ItemUtils.isStringTool(salvageItem)) {
+                } else if (ItemUtils.isStringTool(salvageItem)) {
                     salvageMaterialType = MaterialType.STRING;
-                }
-                else if (ItemUtils.isLeatherArmor(salvageItem)) {
+                } else if (ItemUtils.isLeatherArmor(salvageItem)) {
                     salvageMaterialType = MaterialType.LEATHER;
-                }
-                else if (ItemUtils.isIronArmor(salvageItem) || ItemUtils.isIronTool(salvageItem)) {
+                } else if (ItemUtils.isIronArmor(salvageItem) || ItemUtils.isIronTool(salvageItem)) {
                     salvageMaterialType = MaterialType.IRON;
-                }
-                else if (ItemUtils.isGoldArmor(salvageItem) || ItemUtils.isGoldTool(salvageItem)) {
+                } else if (ItemUtils.isGoldArmor(salvageItem) || ItemUtils.isGoldTool(salvageItem)) {
                     salvageMaterialType = MaterialType.GOLD;
-                }
-                else if (ItemUtils.isDiamondArmor(salvageItem) || ItemUtils.isDiamondTool(salvageItem)) {
+                } else if (ItemUtils.isDiamondArmor(salvageItem) || ItemUtils.isDiamondTool(salvageItem)) {
                     salvageMaterialType = MaterialType.DIAMOND;
                 }
-            }
-            else {
+            } else {
                 try {
                     salvageMaterialType = MaterialType.valueOf(salvageMaterialTypeString.replace(" ", "_").toUpperCase());
-                }
-                catch (IllegalArgumentException ex) {
+                } catch (IllegalArgumentException ex) {
                     reason.add(key + " has an invalid MaterialType of " + salvageMaterialTypeString);
                 }
             }
@@ -99,16 +91,13 @@ public class SalvageConfig extends ConfigLoader {
 
                 if (ItemUtils.isMinecraftTool(salvageItem)) {
                     salvageItemType = ItemType.TOOL;
-                }
-                else if (ItemUtils.isArmor(salvageItem)) {
+                } else if (ItemUtils.isArmor(salvageItem)) {
                     salvageItemType = ItemType.ARMOR;
                 }
-            }
-            else {
+            } else {
                 try {
                     salvageItemType = ItemType.valueOf(salvageItemTypeString.replace(" ", "_").toUpperCase());
-                }
-                catch (IllegalArgumentException ex) {
+                } catch (IllegalArgumentException ex) {
                     reason.add(key + " has an invalid ItemType of " + salvageItemTypeString);
                 }
             }

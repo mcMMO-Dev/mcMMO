@@ -10,8 +10,7 @@ public class WorldGuardUtils {
     private static boolean isLoaded = false;
     private static boolean hasWarned = false;
 
-    public static boolean isWorldGuardLoaded()
-    {
+    public static boolean isWorldGuardLoaded() {
         WorldGuardPlugin plugin = getWorldGuard();
 
         try {
@@ -30,25 +29,21 @@ public class WorldGuardUtils {
         return true;
     }
 
-    private static WorldGuardPlugin getWorldGuard()
-    {
-        if(isLoaded)
+    private static WorldGuardPlugin getWorldGuard() {
+        if (isLoaded)
             return worldGuardPluginRef;
 
         Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
 
-        if(plugin instanceof WorldGuardPlugin)
-        {
-            if(plugin.getDescription().getVersion().startsWith("7"))
-            {
+        if (plugin instanceof WorldGuardPlugin) {
+            if (plugin.getDescription().getVersion().startsWith("7")) {
                 worldGuardPluginRef = (WorldGuardPlugin) plugin;
 
-                if(worldGuardPluginRef != null)
+                if (worldGuardPluginRef != null)
                     isLoaded = true;
 
             } else {
-                if(!hasWarned)
-                {
+                if (!hasWarned) {
                     mcMMO.p.getLogger().severe("mcMMO only supports WorldGuard version 7! Make sure you have WG 7! This warning will not appear again.");
                     hasWarned = true;
                 }

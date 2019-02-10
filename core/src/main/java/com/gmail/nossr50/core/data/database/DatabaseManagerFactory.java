@@ -11,12 +11,10 @@ public class DatabaseManagerFactory {
         if (customManager != null) {
             try {
                 return createDefaultCustomDatabaseManager();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 mcMMO.p.debug("Could not create custom database manager");
                 e.printStackTrace();
-            }
-            catch (Throwable e) {
+            } catch (Throwable e) {
                 mcMMO.p.debug("Failed to create custom database manager");
                 e.printStackTrace();
             }
@@ -24,6 +22,10 @@ public class DatabaseManagerFactory {
         }
 
         return Config.getInstance().getUseMySQL() ? new SQLDatabaseManager() : new FlatfileDatabaseManager();
+    }
+
+    public static Class<? extends DatabaseManager> getCustomDatabaseManagerClass() {
+        return customManager;
     }
 
     /**
@@ -38,7 +40,6 @@ public class DatabaseManagerFactory {
      * versions.
      *
      * @param clazz the DatabaseManager class to use
-     *
      * @throws IllegalArgumentException if the provided class does not have
      *                                  an empty constructor
      */
@@ -46,14 +47,9 @@ public class DatabaseManagerFactory {
         try {
             clazz.getConstructor();
             customManager = clazz;
-        }
-        catch (Throwable e) {
+        } catch (Throwable e) {
             throw new IllegalArgumentException("Provided database manager class must have an empty constructor", e);
         }
-    }
-
-    public static Class<? extends DatabaseManager> getCustomDatabaseManagerClass() {
-        return customManager;
     }
 
     public static DatabaseManager createDatabaseManager(DatabaseType type) {
@@ -67,8 +63,7 @@ public class DatabaseManagerFactory {
             case DatabaseType.CUSTOM:
                 try {
                     return createDefaultCustomDatabaseManager();
-                }
-                catch (Throwable e) {
+                } catch (Throwable e) {
                     e.printStackTrace();
                 }
 

@@ -72,8 +72,7 @@ public class BlockStoreConversionZDirectory implements Runnable {
         try {
             this.cx = Integer.parseInt(this.cxs);
             this.cz = Integer.parseInt(this.czs);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             this.dataDir.delete();
             stop();
             return;
@@ -87,8 +86,7 @@ public class BlockStoreConversionZDirectory implements Runnable {
 
             if (this.tempChunklet instanceof PrimitiveChunkletStore) {
                 this.primitiveChunklet = (PrimitiveChunkletStore) this.tempChunklet;
-            }
-            else if (this.tempChunklet instanceof PrimitiveExChunkletStore) {
+            } else if (this.tempChunklet instanceof PrimitiveExChunkletStore) {
                 this.primitiveExChunklet = (PrimitiveExChunkletStore) this.tempChunklet;
             }
 
@@ -115,8 +113,9 @@ public class BlockStoreConversionZDirectory implements Runnable {
                                 }
 
                                 this.newManager.setTrue(this.cxPos, this.y2, this.czPos, this.world);
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                            catch (Exception e) { e.printStackTrace(); }
                         }
                     }
                 }
@@ -136,8 +135,7 @@ public class BlockStoreConversionZDirectory implements Runnable {
 
                     if (this.primitiveExChunklet != null) {
                         this.oldArray = this.primitiveExChunklet.store[x][z];
-                    }
-                    else {
+                    } else {
                         return;
                     }
 
@@ -145,8 +143,7 @@ public class BlockStoreConversionZDirectory implements Runnable {
 
                     if (this.oldArray.length < 64) {
                         return;
-                    }
-                    else if (this.newArray.length < ((this.y * 64) + 64)) {
+                    } else if (this.newArray.length < ((this.y * 64) + 64)) {
                         return;
                     }
 

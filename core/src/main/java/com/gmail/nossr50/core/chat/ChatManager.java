@@ -1,10 +1,10 @@
 package com.gmail.nossr50.core.chat;
 
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.party.Party;
+import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.events.chat.McMMOChatEvent;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
-import com.gmail.nossr50.core.locale.LocaleLoader;
-import com.gmail.nossr50.core.data.UserManager;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -40,24 +40,20 @@ public abstract class ChatManager {
          * Party Chat Spying
          * Party messages will be copied to people with the mcmmo.admin.chatspy permission node
          */
-        if(event instanceof McMMOPartyChatEvent)
-        {
+        if (event instanceof McMMOPartyChatEvent) {
             //We need to grab the party chat name
             McMMOPartyChatEvent partyChatEvent = (McMMOPartyChatEvent) event;
 
             //Find the people with permissions
-            for(Player player : event.getPlugin().getServer().getOnlinePlayers())
-            {
+            for (Player player : event.getPlugin().getServer().getOnlinePlayers()) {
                 //Check for toggled players
-                if(UserManager.getPlayer(player).isPartyChatSpying())
-                {
+                if (UserManager.getPlayer(player).isPartyChatSpying()) {
                     Party adminParty = UserManager.getPlayer(player).getParty();
 
                     //Only message admins not part of this party
-                    if(adminParty != null)
-                    {
+                    if (adminParty != null) {
                         //TODO: Incorporate JSON
-                        if(!adminParty.getName().equalsIgnoreCase(partyChatEvent.getParty()))
+                        if (!adminParty.getName().equalsIgnoreCase(partyChatEvent.getParty()))
                             player.sendMessage(LocaleLoader.getString("Commands.AdminChatSpy.Chat", partyChatEvent.getParty(), message));
                     } else {
                         player.sendMessage(LocaleLoader.getString("Commands.AdminChatSpy.Chat", partyChatEvent.getParty(), message));

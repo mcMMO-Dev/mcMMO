@@ -1,13 +1,13 @@
 package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.core.runnables.commands.McrankCommandAsyncTask;
 import com.gmail.nossr50.core.util.Permissions;
 import com.gmail.nossr50.core.util.commands.CommandUtils;
-import com.gmail.nossr50.core.data.UserManager;
+import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -61,8 +61,7 @@ public class McrankCommand implements TabExecutor {
                     if (CommandUtils.tooFar(sender, player, Permissions.mcrankFar(sender))) {
                         return true;
                     }
-                }
-                else if (CommandUtils.inspectOffline(sender, mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false), Permissions.mcrankOffline(sender))) {
+                } else if (CommandUtils.inspectOffline(sender, mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false), Permissions.mcrankOffline(sender))) {
                     return true;
                 }
 

@@ -49,14 +49,15 @@ public final class Alchemy {
 
     public static final int INGREDIENT_SLOT = 3;
 
-    public static int    catalysisUnlockLevel   = RankUtils.getUnlockLevel(SubSkillType.ALCHEMY_CATALYSIS);
-    public static int    catalysisMaxBonusLevel = AdvancedConfig.getInstance().getCatalysisMaxBonusLevel();
-    public static double catalysisMinSpeed      = AdvancedConfig.getInstance().getCatalysisMinSpeed();
-    public static double catalysisMaxSpeed      = AdvancedConfig.getInstance().getCatalysisMaxSpeed();
+    public static int catalysisUnlockLevel = RankUtils.getUnlockLevel(SubSkillType.ALCHEMY_CATALYSIS);
+    public static int catalysisMaxBonusLevel = AdvancedConfig.getInstance().getCatalysisMaxBonusLevel();
+    public static double catalysisMinSpeed = AdvancedConfig.getInstance().getCatalysisMinSpeed();
+    public static double catalysisMaxSpeed = AdvancedConfig.getInstance().getCatalysisMaxSpeed();
 
     public static Map<Location, AlchemyBrewTask> brewingStandMap = new HashMap<Location, AlchemyBrewTask>();
 
-    private Alchemy() {}
+    private Alchemy() {
+    }
 
     /**
      * Finish all active brews.  Used upon Disable to prevent vanilla potions from being brewed upon next Enable.

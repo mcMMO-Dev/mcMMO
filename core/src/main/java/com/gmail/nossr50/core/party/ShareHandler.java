@@ -1,7 +1,8 @@
 package com.gmail.nossr50.core.party;
 
-import com.gmail.nossr50.core.config.skills.Config;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
+import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.core.datatypes.party.ItemShareType;
@@ -10,7 +11,6 @@ import com.gmail.nossr50.core.datatypes.party.ShareMode;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.util.Misc;
-import com.gmail.nossr50.core.data.UserManager;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -18,13 +18,14 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public final class ShareHandler {
-    private ShareHandler() {}
+    private ShareHandler() {
+    }
 
     /**
      * Distribute Xp amongst party members.
      *
-     * @param xp Xp without party sharing
-     * @param mcMMOPlayer Player initiating the Xp gain
+     * @param xp               Xp without party sharing
+     * @param mcMMOPlayer      Player initiating the Xp gain
      * @param primarySkillType Skill being used
      * @return True is the xp has been shared
      */
@@ -57,7 +58,7 @@ public final class ShareHandler {
     /**
      * Distribute Items amongst party members.
      *
-     * @param drop Item that will get shared
+     * @param drop        Item that will get shared
      * @param mcMMOPlayer Player who picked up the item
      * @return True if the item has been shared
      */
@@ -146,11 +147,9 @@ public final class ShareHandler {
     public static XPGainReason getSharedXpGainReason(XPGainReason xpGainReason) {
         if (xpGainReason == XPGainReason.PVE) {
             return XPGainReason.SHARED_PVE;
-        }
-        else if (xpGainReason == XPGainReason.PVP) {
+        } else if (xpGainReason == XPGainReason.PVP) {
             return XPGainReason.SHARED_PVP;
-        }
-        else {
+        } else {
             return xpGainReason;
         }
     }

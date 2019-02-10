@@ -1,8 +1,8 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SubSkillType;
-import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.skills.primary.taming.Taming;
 import com.gmail.nossr50.core.util.Permissions;
 import com.gmail.nossr50.core.util.TextComponentFactory;
@@ -61,17 +61,17 @@ public class TamingCommand extends SkillCommand {
         if (canEnvironmentallyAware) {
             messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.0"), LocaleLoader.getString("Taming.Ability.Bonus.1")));
         }
-        
+
         if (canFastFood) {
             messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.8"), LocaleLoader.getString("Taming.Ability.Bonus.9", percent.format(Taming.fastFoodServiceActivationChance / 100D))));
         }
-        
+
         if (canGore) {
             messages.add(LocaleLoader.getString("Ability.Generic.Template",
                     LocaleLoader.getString("Taming.Combat.Chance.Gore"),
                     goreChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", goreChanceLucky) : ""));
         }
-        
+
         if (canHolyHound) {
             messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.10"), LocaleLoader.getString("Taming.Ability.Bonus.11")));
         }
@@ -79,11 +79,11 @@ public class TamingCommand extends SkillCommand {
         if (canSharpenedClaws) {
             messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.6"), LocaleLoader.getString("Taming.Ability.Bonus.7", Taming.sharpenedClawsBonusDamage)));
         }
-        
+
         if (canShockProof) {
             messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.4"), LocaleLoader.getString("Taming.Ability.Bonus.5", Taming.shockProofModifier)));
         }
-        
+
         if (canThickFur) {
             messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.2"), LocaleLoader.getString("Taming.Ability.Bonus.3", Taming.thickFurModifier)));
         }

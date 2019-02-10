@@ -10,8 +10,7 @@ public abstract class AbstractWorld implements World {
 
     private final String worldName;
 
-    public AbstractWorld(String worldName)
-    {
+    public AbstractWorld(String worldName) {
         this.worldName = worldName;
     }
 
@@ -27,6 +26,7 @@ public abstract class AbstractWorld implements World {
 
     /**
      * Compares this object to another to see if they are equal
+     *
      * @param o the other object
      * @return true if they are equal
      */
@@ -40,6 +40,7 @@ public abstract class AbstractWorld implements World {
 
     /**
      * The hash code for the object, used for comparisons
+     *
      * @return hash code for this object
      */
     @Override

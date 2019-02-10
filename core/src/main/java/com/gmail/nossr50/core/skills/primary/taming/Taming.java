@@ -2,19 +2,18 @@ package com.gmail.nossr50.core.skills.primary.taming;
 
 import com.gmail.nossr50.core.config.skills.AdvancedConfig;
 import org.bukkit.EntityEffect;
-import org.bukkit.entity.*;
 
 public class Taming {
     public static double fastFoodServiceActivationChance = AdvancedConfig.getInstance().getFastFoodChance();
 
-    public static int    goreBleedTicks    = 2; //Equivalent to rank 1 in Rupture
-    public static double goreModifier      = AdvancedConfig.getInstance().getGoreModifier();
+    public static int goreBleedTicks = 2; //Equivalent to rank 1 in Rupture
+    public static double goreModifier = AdvancedConfig.getInstance().getGoreModifier();
 
     public static double sharpenedClawsBonusDamage = AdvancedConfig.getInstance().getSharpenedClawsBonus();
 
-    public static double shockProofModifier    = AdvancedConfig.getInstance().getShockProofModifier();
+    public static double shockProofModifier = AdvancedConfig.getInstance().getShockProofModifier();
 
-    public static double thickFurModifier    = AdvancedConfig.getInstance().getThickFurModifier();
+    public static double thickFurModifier = AdvancedConfig.getInstance().getThickFurModifier();
 
     public static boolean canPreventDamage(Tameable pet, AnimalTamer owner) {
         return pet.isTamed() && owner instanceof Player && pet instanceof Wolf;

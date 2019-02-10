@@ -16,9 +16,8 @@ public enum SoundType {
     BLEED,
     TIRED;
 
-    public boolean usesCustomPitch()
-    {
-        switch(this){
+    public boolean usesCustomPitch() {
+        switch (this) {
             case POP:
             case FIZZ:
                 return true;

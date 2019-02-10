@@ -55,31 +55,23 @@ public class RepairConfig extends ConfigLoader {
 
                 if (ItemUtils.isWoodTool(repairItem)) {
                     repairMaterialType = MaterialType.WOOD;
-                }
-                else if (ItemUtils.isStoneTool(repairItem)) {
+                } else if (ItemUtils.isStoneTool(repairItem)) {
                     repairMaterialType = MaterialType.STONE;
-                }
-                else if (ItemUtils.isStringTool(repairItem)) {
+                } else if (ItemUtils.isStringTool(repairItem)) {
                     repairMaterialType = MaterialType.STRING;
-                }
-                else if (ItemUtils.isLeatherArmor(repairItem)) {
+                } else if (ItemUtils.isLeatherArmor(repairItem)) {
                     repairMaterialType = MaterialType.LEATHER;
-                }
-                else if (ItemUtils.isIronArmor(repairItem) || ItemUtils.isIronTool(repairItem)) {
+                } else if (ItemUtils.isIronArmor(repairItem) || ItemUtils.isIronTool(repairItem)) {
                     repairMaterialType = MaterialType.IRON;
-                }
-                else if (ItemUtils.isGoldArmor(repairItem) || ItemUtils.isGoldTool(repairItem)) {
+                } else if (ItemUtils.isGoldArmor(repairItem) || ItemUtils.isGoldTool(repairItem)) {
                     repairMaterialType = MaterialType.GOLD;
-                }
-                else if (ItemUtils.isDiamondArmor(repairItem) || ItemUtils.isDiamondTool(repairItem)) {
+                } else if (ItemUtils.isDiamondArmor(repairItem) || ItemUtils.isDiamondTool(repairItem)) {
                     repairMaterialType = MaterialType.DIAMOND;
                 }
-            }
-            else {
+            } else {
                 try {
                     repairMaterialType = MaterialType.valueOf(repairMaterialTypeString);
-                }
-                catch (IllegalArgumentException ex) {
+                } catch (IllegalArgumentException ex) {
                     reason.add(key + " has an invalid MaterialType of " + repairMaterialTypeString);
                 }
             }
@@ -112,16 +104,13 @@ public class RepairConfig extends ConfigLoader {
 
                 if (ItemUtils.isMinecraftTool(repairItem)) {
                     repairItemType = ItemType.TOOL;
-                }
-                else if (ItemUtils.isArmor(repairItem)) {
+                } else if (ItemUtils.isArmor(repairItem)) {
                     repairItemType = ItemType.ARMOR;
                 }
-            }
-            else {
+            } else {
                 try {
                     repairItemType = ItemType.valueOf(repairItemTypeString);
-                }
-                catch (IllegalArgumentException ex) {
+                } catch (IllegalArgumentException ex) {
                     reason.add(key + " has an invalid ItemType of " + repairItemTypeString);
                 }
             }

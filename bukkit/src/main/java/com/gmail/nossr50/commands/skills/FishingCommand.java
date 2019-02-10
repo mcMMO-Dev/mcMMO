@@ -2,15 +2,15 @@ package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.core.config.skills.AdvancedConfig;
 import com.gmail.nossr50.core.config.treasure.TreasureConfig;
+import com.gmail.nossr50.core.data.UserManager;
+import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SubSkillType;
-import com.gmail.nossr50.core.skills.treasure.Rarity;
-import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.skills.primary.fishing.Fishing;
 import com.gmail.nossr50.core.skills.primary.fishing.FishingManager;
+import com.gmail.nossr50.core.skills.treasure.Rarity;
 import com.gmail.nossr50.core.util.Permissions;
 import com.gmail.nossr50.core.util.TextComponentFactory;
-import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.util.random.RandomChanceUtil;
 import com.gmail.nossr50.core.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -74,7 +74,7 @@ public class FishingCommand extends SkillCommand {
                 }
             }
 
-            if(totalEnchantChance >= 1)
+            if (totalEnchantChance >= 1)
                 magicChance = percent.format(totalEnchantChance / 100.0);
             else
                 magicChance = percent.format(0);
@@ -129,15 +129,15 @@ public class FishingCommand extends SkillCommand {
     @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
-        
+
         if (canFishermansDiet) {
             messages.add(getStatMessage(false, true, SubSkillType.FISHING_FISHERMANS_DIET, String.valueOf(fishermansDietRank)));
         }
-        
+
         if (canIceFish) {
             messages.add(getStatMessage(SubSkillType.FISHING_ICE_FISHING, SubSkillType.FISHING_ICE_FISHING.getLocaleStatDescription()));
         }
-        
+
         if (canMagicHunt) {
             messages.add(getStatMessage(SubSkillType.FISHING_MAGIC_HUNTER, magicChance));
         }
@@ -146,12 +146,12 @@ public class FishingCommand extends SkillCommand {
             //TODO: Update this with more details
             messages.add(getStatMessage(false, true, SubSkillType.FISHING_MASTER_ANGLER, biteChance));
         }
-        
+
         if (canShake) {
             messages.add(getStatMessage(SubSkillType.FISHING_SHAKE, shakeChance)
-            + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", shakeChanceLucky) : ""));
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", shakeChanceLucky) : ""));
         }
-        
+
         if (canTreasureHunt) {
             messages.add(getStatMessage(false, true, SubSkillType.FISHING_TREASURE_HUNTER, String.valueOf(lootTier), String.valueOf(RankUtils.getHighestRank(SubSkillType.FISHING_TREASURE_HUNTER))));
             messages.add(getStatMessage(true, true, SubSkillType.FISHING_TREASURE_HUNTER,

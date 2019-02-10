@@ -1,13 +1,13 @@
 package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.party.Party;
 import com.gmail.nossr50.core.datatypes.party.PartyFeature;
 import com.gmail.nossr50.core.datatypes.party.ShareMode;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.party.PartyManager;
-import com.gmail.nossr50.core.data.UserManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -65,8 +65,7 @@ public class PartyInfoCommand implements CommandExecutor {
 
             if (isUnlockedFeature(party, partyFeature)) {
                 unlockedPartyFeatures.add(partyFeature.getLocaleString());
-            }
-            else {
+            } else {
                 lockedPartyFeatures.add(partyFeature.getFeatureLockedLocaleString());
             }
         }
@@ -123,7 +122,7 @@ public class PartyInfoCommand implements CommandExecutor {
         int membersOnline = party.getVisibleMembers(player).size();
 
         player.sendMessage(LocaleLoader.getString("Commands.Party.Members.Header"));
-        player.sendMessage(LocaleLoader.getString("Commands.Party.MembersNear", nearMembers.size()+1, membersOnline));
+        player.sendMessage(LocaleLoader.getString("Commands.Party.MembersNear", nearMembers.size() + 1, membersOnline));
         player.sendMessage(party.createMembersList(player));
     }
 }

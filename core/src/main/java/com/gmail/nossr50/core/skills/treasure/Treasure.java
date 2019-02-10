@@ -42,7 +42,7 @@ public abstract class Treasure {
 
     public int getDropLevel() {
         //If they are in retro mode all requirements are scaled up by 10
-        if(Config.getInstance().getIsRetroMode())
+        if (Config.getInstance().getIsRetroMode())
             return dropLevel * 10;
 
         return dropLevel;

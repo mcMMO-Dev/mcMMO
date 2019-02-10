@@ -16,10 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AprilCommand implements TabExecutor {
-    private String skillName;
-
     protected DecimalFormat percent = new DecimalFormat("##0.00%");
     protected DecimalFormat decimal = new DecimalFormat("##0.00");
+    private String skillName;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

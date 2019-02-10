@@ -12,12 +12,14 @@ import java.util.UUID;
 public interface Entity extends Location, Named {
     /**
      * The UUID for this entity
+     *
      * @return this entity's UUID
      */
     UUID getUUID();
 
     /**
      * The Location for this entity
+     *
      * @return this entity's location
      */
     Location getLocation();

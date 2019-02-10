@@ -36,8 +36,7 @@ public class PistonTrackerTask extends BukkitRunnable {
             if (nextBlock.hasMetadata(mcMMO.blockMetadataKey)) {
                 mcMMO.getPlaceStore().setTrue(nextBlock);
                 nextBlock.removeMetadata(mcMMO.blockMetadataKey, mcMMO.p);
-            }
-            else if (mcMMO.getPlaceStore().isTrue(nextBlock)) {
+            } else if (mcMMO.getPlaceStore().isTrue(nextBlock)) {
                 // Block doesn't have metadatakey but isTrue - set it to false
                 mcMMO.getPlaceStore().setFalse(nextBlock);
             }

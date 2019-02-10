@@ -1,13 +1,13 @@
 package com.gmail.nossr50.commands.party.alliance;
 
 import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.party.Party;
 import com.gmail.nossr50.core.datatypes.party.PartyFeature;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.party.PartyManager;
 import com.gmail.nossr50.core.util.commands.CommandUtils;
-import com.gmail.nossr50.core.data.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -21,12 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PartyAllianceCommand implements TabExecutor {
+    public static final List<String> ALLIANCE_SUBCOMMANDS = ImmutableList.of("invite", "accept", "disband");
     private Player player;
     private Party playerParty;
     private Party targetParty;
-
-    public static final List<String> ALLIANCE_SUBCOMMANDS = ImmutableList.of("invite", "accept", "disband");
-
     private CommandExecutor partyAllianceInviteCommand = new PartyAllianceInviteCommand();
     private CommandExecutor partyAllianceAcceptCommand = new PartyAllianceAcceptCommand();
     private CommandExecutor partyAllianceDisbandCommand = new PartyAllianceDisbandCommand();

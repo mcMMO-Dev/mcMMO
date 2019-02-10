@@ -9,6 +9,7 @@ import org.bukkit.event.HandlerList;
  * Called when a user loses levels in a skill
  */
 public class McMMOPlayerLevelDownEvent extends McMMOPlayerLevelChangeEvent {
+    private static final HandlerList handlers = new HandlerList();
     private int levelsLost;
 
     @Deprecated
@@ -33,11 +34,8 @@ public class McMMOPlayerLevelDownEvent extends McMMOPlayerLevelChangeEvent {
         this.levelsLost = levelsLost;
     }
 
-    /**
-     * @param levelsLost Set the number of levels lost in this event
-     */
-    public void setLevelsLost(int levelsLost) {
-        this.levelsLost = levelsLost;
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 
     /**
@@ -47,14 +45,15 @@ public class McMMOPlayerLevelDownEvent extends McMMOPlayerLevelChangeEvent {
         return levelsLost;
     }
 
-    private static final HandlerList handlers = new HandlerList();
+    /**
+     * @param levelsLost Set the number of levels lost in this event
+     */
+    public void setLevelsLost(int levelsLost) {
+        this.levelsLost = levelsLost;
+    }
 
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 }

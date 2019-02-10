@@ -36,8 +36,7 @@ public class ZipLibrary {
             if (BACKUP_DIR.mkdir()) {
                 mcMMO.p.debug("Created Backup Directory.");
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             mcMMO.p.getLogger().severe(e.toString());
         }
 
@@ -73,8 +72,7 @@ public class ZipLibrary {
         for (File source : sources) {
             if (source.isDirectory()) {
                 zipDir(zipOut, "", source);
-            }
-            else {
+            } else {
                 zipFile(zipOut, "", source);
             }
         }
@@ -104,8 +102,7 @@ public class ZipLibrary {
         for (File source : files) {
             if (source.isDirectory()) {
                 zipDir(zos, path, source);
-            }
-            else {
+            } else {
                 zipFile(zos, path, source);
             }
         }

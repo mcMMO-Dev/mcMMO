@@ -10,12 +10,14 @@ public interface Player extends Living, Nameable {
 
     /**
      * Players are not always online
+     *
      * @return true if the player is online
      */
     Boolean isOnline();
 
     /**
      * Gets the McMMOPlayer for this Player
+     *
      * @return the associated McMMOPlayer, can be null
      */
     McMMOPlayer getMcMMOPlayer();

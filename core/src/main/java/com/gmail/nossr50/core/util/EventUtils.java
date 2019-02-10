@@ -1,19 +1,21 @@
 package com.gmail.nossr50.core.util;
 
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.core.datatypes.party.Party;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.skills.SuperAbilityType;
 import com.gmail.nossr50.core.skills.subskills.AbstractSubSkill;
+import com.gmail.nossr50.core.util.skills.CombatUtils;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelChangeEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelDownEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
-import com.gmail.nossr50.events.fake.*;
 import com.gmail.nossr50.events.hardcore.McMMOPlayerPreDeathPenaltyEvent;
 import com.gmail.nossr50.events.hardcore.McMMOPlayerStatLossEvent;
 import com.gmail.nossr50.events.hardcore.McMMOPlayerVampirismEvent;
@@ -28,10 +30,7 @@ import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
 import com.gmail.nossr50.events.skills.salvage.McMMOPlayerSalvageCheckEvent;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillEvent;
 import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
-import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.core.data.UserManager;
-import com.gmail.nossr50.core.util.skills.CombatUtils;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -54,6 +53,7 @@ public class EventUtils {
     /*
      * Quality of Life methods
      */
+
     /**
      * Checks to see if damage is from natural sources
      * This cannot be used to determine if damage is from vanilla MC, it just checks to see if the damage is from a complex behaviour in mcMMO such as bleed.
@@ -70,19 +70,19 @@ public class EventUtils {
 
     /**
      * This little method is just to make the code more readable
+     *
      * @param entity target entity
      * @return the associated McMMOPlayer for this entity
      */
-    public static McMMOPlayer getMcMMOPlayer(Entity entity)
-    {
-        return UserManager.getPlayer((Player)entity);
+    public static McMMOPlayer getMcMMOPlayer(Entity entity) {
+        return UserManager.getPlayer((Player) entity);
     }
 
     /**
      * Checks to see if a Player was damaged in this EntityDamageEvent
-     *
+     * <p>
      * This method checks for the following things and if they are all true it returns true
-     *
+     * <p>
      * 1) The player is real and not an NPC
      * 2) The player is not in god mode
      * 3) The damage dealt is above 0
@@ -91,8 +91,7 @@ public class EventUtils {
      * @param entityDamageEvent
      * @return
      */
-    public static boolean isRealPlayerDamaged(EntityDamageEvent entityDamageEvent)
-    {
+    public static boolean isRealPlayerDamaged(EntityDamageEvent entityDamageEvent) {
         //Make sure the damage is above 0
         double damage = entityDamageEvent.getFinalDamage();
 
@@ -103,7 +102,7 @@ public class EventUtils {
         Entity entity = entityDamageEvent.getEntity();
 
         //Check to make sure the entity is not an NPC
-        if(Misc.isNPCEntity(entity))
+        if (Misc.isNPCEntity(entity))
             return false;
 
         if (!entity.isValid() || !(entity instanceof LivingEntity)) {
@@ -150,7 +149,8 @@ public class EventUtils {
 
     /**
      * Calls a new SubSkillEvent for this SubSkill and then returns it
-     * @param player target player
+     *
+     * @param player       target player
      * @param subSkillType target subskill
      * @return the event after it has been fired
      */
@@ -164,7 +164,8 @@ public class EventUtils {
 
     /**
      * Calls a new SubSkillEvent for this SubSkill and then returns it
-     * @param player target player
+     *
+     * @param player           target player
      * @param abstractSubSkill target subskill
      * @return the event after it has been fired
      */
@@ -201,8 +202,8 @@ public class EventUtils {
     /**
      * Simulate a block break event.
      *
-     * @param block The block to break
-     * @param player The player breaking the block
+     * @param block          The block to break
+     * @param player         The player breaking the block
      * @param shouldArmSwing true if an armswing event should be fired, false otherwise
      * @return true if the event wasn't cancelled, false otherwise
      */

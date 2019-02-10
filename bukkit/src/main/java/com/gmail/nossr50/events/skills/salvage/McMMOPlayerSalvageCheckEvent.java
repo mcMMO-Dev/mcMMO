@@ -44,7 +44,9 @@ public class McMMOPlayerSalvageCheckEvent extends McMMOPlayerSkillEvent implemen
         return enchantedBook;
     }
 
-    /** Following are required for Cancellable **/
+    /**
+     * Following are required for Cancellable
+     **/
     @Override
     public boolean isCancelled() {
         return cancelled;

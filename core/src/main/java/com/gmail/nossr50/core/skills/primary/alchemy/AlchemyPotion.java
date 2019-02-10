@@ -54,7 +54,7 @@ public class AlchemyPotion {
                 meta.addCustomEffect(effect, true);
             }
         }
-        
+
         if (this.getColor() != null) {
             meta.setColor(this.getColor());
         }
@@ -106,11 +106,11 @@ public class AlchemyPotion {
     public Color getColor() {
         return color;
     }
-    
+
     public void setColor(Color color) {
         this.color = color;
     }
-    
+
     public Map<ItemStack, String> getChildren() {
         return children;
     }

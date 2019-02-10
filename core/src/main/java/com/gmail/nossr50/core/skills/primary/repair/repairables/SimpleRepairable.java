@@ -10,10 +10,10 @@ public class SimpleRepairable implements Repairable {
     private final int minimumQuantity, minimumLevel;
     private final short maximumDurability, baseRepairDurability;
     private final byte repairMetadata;
-    private String repairMaterialPrettyName;
     private final ItemType repairItemType;
     private final MaterialType repairMaterialType;
     private final double xpMultiplier;
+    private String repairMaterialPrettyName;
 
     protected SimpleRepairable(Material type, Material repairMaterial, byte repairMetadata, String repairMaterialPrettyName, int minimumLevel, int minimumQuantity, short maximumDurability, ItemType repairItemType, MaterialType repairMaterialType, double xpMultiplier) {
         this.itemMaterial = type;

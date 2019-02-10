@@ -1,6 +1,5 @@
 package com.gmail.nossr50.core.util.commands;
 
-import com.gmail.nossr50.commands.*;
 import com.gmail.nossr50.commands.chat.AdminChatCommand;
 import com.gmail.nossr50.commands.chat.McChatSpy;
 import com.gmail.nossr50.commands.chat.PartyChatCommand;
@@ -15,22 +14,23 @@ import com.gmail.nossr50.commands.hardcore.HardcoreCommand;
 import com.gmail.nossr50.commands.hardcore.VampirismCommand;
 import com.gmail.nossr50.commands.party.PartyCommand;
 import com.gmail.nossr50.commands.party.teleport.PtpCommand;
-import com.gmail.nossr50.commands.player.*;
-import com.gmail.nossr50.commands.skills.*;
 import com.gmail.nossr50.core.config.skills.Config;
-import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.util.StringUtils;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.command.PluginCommand;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public final class CommandRegistrationManager {
-    private CommandRegistrationManager() {};
-
     private static String permissionsMessage = LocaleLoader.getString("mcMMO.NoPermission");
+
+    ;
+
+    private CommandRegistrationManager() {
+    }
 
     private static void registerSkillCommands() {
         for (PrimarySkillType skill : PrimarySkillType.values()) {
@@ -326,9 +326,9 @@ public final class CommandRegistrationManager {
         PluginCommand command = mcMMO.p.getCommand("party");
         command.setDescription(LocaleLoader.getString("Commands.Description.party"));
         command.setPermission("mcmmo.commands.party;mcmmo.commands.party.accept;mcmmo.commands.party.create;mcmmo.commands.party.disband;" +
-                              "mcmmo.commands.party.xpshare;mcmmo.commands.party.invite;mcmmo.commands.party.itemshare;mcmmo.commands.party.join;" +
-                              "mcmmo.commands.party.kick;mcmmo.commands.party.lock;mcmmo.commands.party.owner;mcmmo.commands.party.password;" +
-                              "mcmmo.commands.party.quit;mcmmo.commands.party.rename;mcmmo.commands.party.unlock");
+                "mcmmo.commands.party.xpshare;mcmmo.commands.party.invite;mcmmo.commands.party.itemshare;mcmmo.commands.party.join;" +
+                "mcmmo.commands.party.kick;mcmmo.commands.party.lock;mcmmo.commands.party.owner;mcmmo.commands.party.password;" +
+                "mcmmo.commands.party.quit;mcmmo.commands.party.rename;mcmmo.commands.party.unlock");
         command.setPermissionMessage(permissionsMessage);
         command.setExecutor(new PartyCommand());
     }
@@ -371,7 +371,7 @@ public final class CommandRegistrationManager {
         command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcnotify"));
         command.setExecutor(new McnotifyCommand());
     }
-    
+
     private static void registerMHDCommand() {
         PluginCommand command = mcMMO.p.getCommand("mhd");
         command.setDescription("Resets all mob health bar settings for all players to the default"); //TODO: Localize

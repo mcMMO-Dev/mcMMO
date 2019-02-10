@@ -1,10 +1,9 @@
 package com.gmail.nossr50.core.skills;
 
-import com.gmail.nossr50.core.config.skills.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.config.skills.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.alchemy.AlchemyManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
@@ -51,18 +50,10 @@ public enum PrimarySkillType {
     UNARMED(UnarmedManager.class, Color.BLACK, SuperAbilityType.BERSERK, ToolType.FISTS, ImmutableList.of(SubSkillType.UNARMED_BERSERK, SubSkillType.UNARMED_BLOCK_CRACKER, SubSkillType.UNARMED_ARROW_DEFLECT, SubSkillType.UNARMED_DISARM, SubSkillType.UNARMED_IRON_ARM_STYLE, SubSkillType.UNARMED_IRON_GRIP)),
     WOODCUTTING(WoodcuttingManager.class, Color.OLIVE, SuperAbilityType.TREE_FELLER, ToolType.AXE, ImmutableList.of(SubSkillType.WOODCUTTING_LEAF_BLOWER, SubSkillType.WOODCUTTING_TREE_FELLER, SubSkillType.WOODCUTTING_HARVEST_LUMBER));
 
-    private Class<? extends SkillManager> managerClass;
-    private Color runescapeColor;
-    private SuperAbilityType ability;
-    private ToolType tool;
-    private List<SubSkillType> subSkillTypes;
-
     public static final List<String> SKILL_NAMES;
     public static final List<String> SUBSKILL_NAMES;
-
     public static final List<PrimarySkillType> CHILD_SKILLS;
     public static final List<PrimarySkillType> NON_CHILD_SKILLS;
-
     public static final List<PrimarySkillType> COMBAT_SKILLS = ImmutableList.of(ARCHERY, AXES, SWORDS, TAMING, UNARMED);
     public static final List<PrimarySkillType> GATHERING_SKILLS = ImmutableList.of(EXCAVATION, FISHING, HERBALISM, MINING, WOODCUTTING);
     public static final List<PrimarySkillType> MISC_SKILLS = ImmutableList.of(ACROBATICS, ALCHEMY, REPAIR, SALVAGE, SMELTING);
@@ -76,13 +67,11 @@ public enum PrimarySkillType {
         for (PrimarySkillType skill : values()) {
             if (skill.isChildSkill()) {
                 childSkills.add(skill);
-            }
-            else {
+            } else {
                 nonChildSkills.add(skill);
             }
 
-            for(SubSkillType subSkillType : skill.subSkillTypes)
-            {
+            for (SubSkillType subSkillType : skill.subSkillTypes) {
                 subSkillNames.add(subSkillType.getNiceNameNoSpaces(subSkillType));
             }
             names.add(skill.getName());
@@ -96,6 +85,12 @@ public enum PrimarySkillType {
         NON_CHILD_SKILLS = ImmutableList.copyOf(nonChildSkills);
     }
 
+    private Class<? extends SkillManager> managerClass;
+    private Color runescapeColor;
+    private SuperAbilityType ability;
+    private ToolType tool;
+    private List<SubSkillType> subSkillTypes;
+
     private PrimarySkillType(Class<? extends SkillManager> managerClass, Color runescapeColor, List<SubSkillType> subSkillTypes) {
         this(managerClass, runescapeColor, null, null, subSkillTypes);
     }
@@ -106,6 +101,47 @@ public enum PrimarySkillType {
         this.ability = ability;
         this.tool = tool;
         this.subSkillTypes = subSkillTypes;
+    }
+
+    public static PrimarySkillType getSkill(String skillName) {
+        if (!Config.getInstance().getLocale().equalsIgnoreCase("en_US")) {
+            for (PrimarySkillType type : values()) {
+                if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(type.name()) + ".SkillName"))) {
+                    return type;
+                }
+            }
+        }
+
+        for (PrimarySkillType type : values()) {
+            if (type.name().equalsIgnoreCase(skillName)) {
+                return type;
+            }
+        }
+
+        if (!skillName.equalsIgnoreCase("all")) {
+            mcMMO.p.getLogger().warning("Invalid mcMMO skill (" + skillName + ")"); //TODO: Localize
+        }
+
+        return null;
+    }
+
+    public static PrimarySkillType bySecondaryAbility(SubSkillType subSkillType) {
+        for (PrimarySkillType type : values()) {
+            if (type.getSkillAbilities().contains(subSkillType)) {
+                return type;
+            }
+        }
+        return null;
+    }
+
+    public static PrimarySkillType byAbility(SuperAbilityType ability) {
+        for (PrimarySkillType type : values()) {
+            if (type.getAbility() == ability) {
+                return type;
+            }
+        }
+
+        return null;
     }
 
     public Class<? extends SkillManager> getManagerClass() {
@@ -125,7 +161,9 @@ public enum PrimarySkillType {
         return Config.getInstance().getLevelCap(this);
     }
 
-    public boolean isSuperAbilityUnlocked(Player player) { return RankUtils.getRank(player, getAbility().getSubSkillTypeDefinition()) >= 1; }
+    public boolean isSuperAbilityUnlocked(Player player) {
+        return RankUtils.getRank(player, getAbility().getSubSkillTypeDefinition()) >= 1;
+    }
 
     public boolean getPVPEnabled() {
         return Config.getInstance().getPVPEnabled(this);
@@ -167,28 +205,6 @@ public enum PrimarySkillType {
         return ExperienceConfig.getInstance().getFormulaSkillModifier(this);
     }
 
-    public static PrimarySkillType getSkill(String skillName) {
-        if (!Config.getInstance().getLocale().equalsIgnoreCase("en_US")) {
-            for (PrimarySkillType type : values()) {
-                if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(type.name()) + ".SkillName"))) {
-                    return type;
-                }
-            }
-        }
-
-        for (PrimarySkillType type : values()) {
-            if (type.name().equalsIgnoreCase(skillName)) {
-                return type;
-            }
-        }
-
-        if (!skillName.equalsIgnoreCase("all")) {
-            mcMMO.p.getLogger().warning("Invalid mcMMO skill (" + skillName + ")"); //TODO: Localize
-        }
-
-        return null;
-    }
-
     // TODO: This is a little "hacky", we probably need to add something to distinguish child skills in the enum, or to use another enum for them
     public boolean isChildSkill() {
         switch (this) {
@@ -199,25 +215,6 @@ public enum PrimarySkillType {
             default:
                 return false;
         }
-    }
-
-    public static PrimarySkillType bySecondaryAbility(SubSkillType subSkillType) {
-        for (PrimarySkillType type : values()) {
-            if (type.getSkillAbilities().contains(subSkillType)) {
-                return type;
-            }
-        }
-        return null;
-    }
-
-    public static PrimarySkillType byAbility(SuperAbilityType ability) {
-        for (PrimarySkillType type : values()) {
-            if (type.getAbility() == ability) {
-                return type;
-            }
-        }
-
-        return null;
     }
 
     public String getName() {

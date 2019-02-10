@@ -2,12 +2,12 @@ package com.gmail.nossr50.commands.chat;
 
 import com.gmail.nossr50.core.chat.PartyChatManager;
 import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.chat.ChatMode;
 import com.gmail.nossr50.core.datatypes.party.Party;
 import com.gmail.nossr50.core.datatypes.party.PartyFeature;
 import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.party.PartyManager;
-import com.gmail.nossr50.core.data.UserManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -35,8 +35,7 @@ public class PartyChatCommand extends ChatCommand {
             }
 
             message = buildChatMessage(args, 0);
-        }
-        else {
+        } else {
             if (args.length < 2) {
                 sender.sendMessage(LocaleLoader.getString("Party.Specify"));
                 return;

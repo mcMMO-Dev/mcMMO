@@ -21,18 +21,18 @@ public final class Fishing {
 
     public static int fishermansDietRankLevel1 = AdvancedConfig.getInstance().getFishermanDietRankChange();
     public static int fishermansDietRankLevel2 = fishermansDietRankLevel1 * 2;
-    public static int fishermansDietMaxLevel   = fishermansDietRankLevel1 * 5;
+    public static int fishermansDietMaxLevel = fishermansDietRankLevel1 * 5;
 
     public static Set<Biome> masterAnglerBiomes = BiomeAdapter.WATER_BIOMES;
-    public static Set<Biome> iceFishingBiomes   = BiomeAdapter.ICE_BIOMES;
+    public static Set<Biome> iceFishingBiomes = BiomeAdapter.ICE_BIOMES;
 
-    private Fishing() {}
+    private Fishing() {
+    }
 
     /**
      * Finds the possible drops of an entity
      *
-     * @param target
-     *            Targeted entity
+     * @param target Targeted entity
      * @return possibleDrops List of ItemStack that can be dropped
      */
     protected static List<ShakeTreasure> findPossibleDrops(LivingEntity target) {
@@ -45,8 +45,7 @@ public final class Fishing {
     /**
      * Randomly chooses a drop among the list
      *
-     * @param possibleDrops
-     *            List of ItemStack that can be dropped
+     * @param possibleDrops List of ItemStack that can be dropped
      * @return Chosen ItemStack
      */
     protected static ItemStack chooseDrop(List<ShakeTreasure> possibleDrops) {

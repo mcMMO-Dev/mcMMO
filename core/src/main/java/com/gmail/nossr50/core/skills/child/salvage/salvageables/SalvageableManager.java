@@ -24,7 +24,6 @@ public interface SalvageableManager {
      * Checks if an item is salvageable
      *
      * @param type Material to check if salvageable
-     *
      * @return true if salvageable, false if not
      */
     public boolean isSalvageable(Material type);
@@ -33,7 +32,6 @@ public interface SalvageableManager {
      * Checks if an item is salvageable
      *
      * @param itemStack Item to check if salvageable
-     *
      * @return true if salvageable, false if not
      */
     public boolean isSalvageable(ItemStack itemStack);
@@ -42,7 +40,6 @@ public interface SalvageableManager {
      * Gets the salvageable with this type
      *
      * @param type Material of the salvageable to look for
-     *
      * @return the salvageable, can be null
      */
     public Salvageable getSalvageable(Material type);

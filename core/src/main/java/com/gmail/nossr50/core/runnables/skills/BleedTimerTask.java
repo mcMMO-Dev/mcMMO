@@ -21,6 +21,46 @@ import java.util.Map.Entry;
 public class BleedTimerTask extends BukkitRunnable {
     private static Map<LivingEntity, BleedContainer> bleedList = new HashMap<LivingEntity, BleedContainer>();
 
+    public static BleedContainer copyContainer(BleedContainer container) {
+        LivingEntity target = container.target;
+        LivingEntity source = container.damageSource;
+        int bleedTicks = container.bleedTicks;
+        int bleedRank = container.bleedRank;
+
+        BleedContainer newContainer = new BleedContainer(target, bleedTicks, bleedRank, source);
+        return newContainer;
+    }
+
+    /**
+     * Instantly Bleed out a LivingEntity
+     *
+     * @param entity LivingEntity to bleed out
+     */
+    public static void bleedOut(LivingEntity entity) {
+        /*
+         * Don't remove anything from the list outside of run()
+         */
+
+        if (bleedList.containsKey(entity)) {
+            CombatUtils.dealNoInvulnerabilityTickDamage(entity, bleedList.get(entity).bleedTicks * 2, bleedList.get(entity).damageSource);
+        }
+    }
+
+    /**
+     * Add a LivingEntity to the bleedList if it is not in it.
+     *
+     * @param entity LivingEntity to add
+     * @param ticks  Number of bleeding ticks
+     */
+    public static void add(LivingEntity entity, LivingEntity attacker, int ticks, int bleedRank) {
+        BleedContainer newBleedContainer = new BleedContainer(entity, ticks, bleedRank, attacker);
+        bleedList.put(entity, newBleedContainer);
+    }
+
+    public static boolean isBleeding(LivingEntity entity) {
+        return bleedList.containsKey(entity);
+    }
+
     @Override
     public void run() {
         Iterator<Entry<LivingEntity, BleedContainer>> bleedIterator = bleedList.entrySet().iterator();
@@ -74,46 +114,5 @@ public class BleedTimerTask extends BukkitRunnable {
             loweredBleedContainer.bleedTicks -= 1;
             containerEntry.setValue(loweredBleedContainer);
         }
-    }
-
-    public static BleedContainer copyContainer(BleedContainer container)
-    {
-        LivingEntity target = container.target;
-        LivingEntity source = container.damageSource;
-        int bleedTicks = container.bleedTicks;
-        int bleedRank = container.bleedRank;
-
-        BleedContainer newContainer = new BleedContainer(target, bleedTicks, bleedRank, source);
-        return newContainer;
-    }
-
-    /**
-     * Instantly Bleed out a LivingEntity
-     *
-     * @param entity LivingEntity to bleed out
-     */
-    public static void bleedOut(LivingEntity entity) {
-        /*
-         * Don't remove anything from the list outside of run()
-         */
-
-        if (bleedList.containsKey(entity)) {
-            CombatUtils.dealNoInvulnerabilityTickDamage(entity, bleedList.get(entity).bleedTicks * 2, bleedList.get(entity).damageSource);
-        }
-    }
-
-    /**
-     * Add a LivingEntity to the bleedList if it is not in it.
-     *
-     * @param entity LivingEntity to add
-     * @param ticks Number of bleeding ticks
-     */
-    public static void add(LivingEntity entity, LivingEntity attacker, int ticks, int bleedRank) {
-        BleedContainer newBleedContainer = new BleedContainer(entity, ticks, bleedRank, attacker);
-        bleedList.put(entity, newBleedContainer);
-    }
-
-    public static boolean isBleeding(LivingEntity entity) {
-        return bleedList.containsKey(entity);
     }
 }

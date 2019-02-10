@@ -1,16 +1,12 @@
 package com.gmail.nossr50.core.skills.primary.swords;
 
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.core.skills.PrimarySkillType;
-import com.gmail.nossr50.core.skills.SubSkillType;
-import com.gmail.nossr50.core.skills.SuperAbilityType;
-import com.gmail.nossr50.core.skills.ToolType;
+import com.gmail.nossr50.core.skills.*;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
-import com.gmail.nossr50.core.skills.SkillManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
@@ -36,14 +32,14 @@ public class SwordsManager extends SkillManager {
     }
 
     public boolean canUseCounterAttack(Entity target) {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_COUNTER_ATTACK))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_COUNTER_ATTACK))
             return false;
 
         return target instanceof LivingEntity && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_COUNTER_ATTACK);
     }
 
     public boolean canUseSerratedStrike() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_SERRATED_STRIKES))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_SERRATED_STRIKES))
             return false;
 
         return mcMMOPlayer.getAbilityMode(SuperAbilityType.SERRATED_STRIKES);
@@ -61,7 +57,7 @@ public class SwordsManager extends SkillManager {
                 Player defender = (Player) target;
 
                 if (UserManager.getPlayer(defender).useChatNotifications()) {
-                    if(!BleedTimerTask.isBleeding(defender))
+                    if (!BleedTimerTask.isBleeding(defender))
                         NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Started");
                 }
             }
@@ -74,11 +70,10 @@ public class SwordsManager extends SkillManager {
         }
     }
 
-    public int getRuptureBleedTicks()
-    {
+    public int getRuptureBleedTicks() {
         int bleedTicks = 2 * RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE);
 
-        if(bleedTicks > Swords.bleedMaxTicks)
+        if (bleedTicks > Swords.bleedMaxTicks)
             bleedTicks = Swords.bleedMaxTicks;
 
         return bleedTicks;
@@ -88,7 +83,7 @@ public class SwordsManager extends SkillManager {
      * Handle the effects of the Counter Attack ability
      *
      * @param attacker The {@link LivingEntity} being affected by the ability
-     * @param damage The amount of damage initially dealt by the event
+     * @param damage   The amount of damage initially dealt by the event
      */
     public void counterAttackChecks(LivingEntity attacker, double damage) {
         if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_COUNTER_ATTACK, getPlayer())) {
@@ -97,7 +92,7 @@ public class SwordsManager extends SkillManager {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Countered");
 
             if (attacker instanceof Player) {
-                NotificationManager.sendPlayerInformation((Player)attacker, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Counter.Hit");
+                NotificationManager.sendPlayerInformation((Player) attacker, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Counter.Hit");
             }
         }
     }

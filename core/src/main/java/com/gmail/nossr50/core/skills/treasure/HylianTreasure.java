@@ -1,6 +1,5 @@
 package com.gmail.nossr50.core.skills.treasure;
 
-import com.gmail.nossr50.core.skills.treasure.Treasure;
 import org.bukkit.inventory.ItemStack;
 
 public class HylianTreasure extends Treasure {

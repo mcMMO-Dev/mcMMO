@@ -1,17 +1,17 @@
 package com.gmail.nossr50.core.util;
 
 import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.runnables.items.ChimaeraWingWarmup;
 import com.gmail.nossr50.core.util.player.NotificationManager;
 import com.gmail.nossr50.core.util.skills.CombatUtils;
 import com.gmail.nossr50.core.util.skills.SkillUtils;
 import com.gmail.nossr50.core.util.sounds.SoundManager;
 import com.gmail.nossr50.core.util.sounds.SoundType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.core.runnables.items.ChimaeraWingWarmup;
-import com.gmail.nossr50.core.data.UserManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,7 +29,8 @@ public final class ChimaeraWing {
     private static McMMOPlayer mcMMOPlayer;
     private static Location location;
 
-    private ChimaeraWing() {}
+    private ChimaeraWing() {
+    }
 
     /**
      * Check for item usage.
@@ -61,7 +62,7 @@ public final class ChimaeraWing {
         int amount = inHand.getAmount();
 
         if (amount < Config.getInstance().getChimaeraUseCost()) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Item.ChimaeraWing.NotEnough",String.valueOf(Config.getInstance().getChimaeraUseCost() - amount), "Item.ChimaeraWing.Name");
+            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Item.ChimaeraWing.NotEnough", String.valueOf(Config.getInstance().getChimaeraUseCost() - amount), "Item.ChimaeraWing.Name");
             return;
         }
 
@@ -110,8 +111,7 @@ public final class ChimaeraWing {
         if (warmup > 0) {
             NotificationManager.sendPlayerInformation(player, NotificationType.ITEM_MESSAGE, "Teleport.Commencing", String.valueOf(warmup));
             new ChimaeraWingWarmup(mcMMOPlayer).runTaskLater(mcMMO.p, 20 * warmup);
-        }
-        else {
+        } else {
             chimaeraExecuteTeleport();
         }
     }
@@ -121,13 +121,11 @@ public final class ChimaeraWing {
 
         if (Config.getInstance().getChimaeraUseBedSpawn() && player.getBedSpawnLocation() != null) {
             player.teleport(player.getBedSpawnLocation());
-        }
-        else {
+        } else {
             Location spawnLocation = player.getWorld().getSpawnLocation();
             if (spawnLocation.getBlock().getType() == Material.AIR) {
                 player.teleport(spawnLocation);
-            }
-            else {
+            } else {
                 player.teleport(player.getWorld().getHighestBlockAt(spawnLocation).getLocation());
             }
         }

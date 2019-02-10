@@ -31,8 +31,7 @@ public class AlchemyBrewCheckTask extends BukkitRunnable {
             if (oldInventory[Alchemy.INGREDIENT_SLOT] == null || newInventory[Alchemy.INGREDIENT_SLOT] == null || !oldInventory[Alchemy.INGREDIENT_SLOT].isSimilar(newInventory[Alchemy.INGREDIENT_SLOT]) || !validBrew) {
                 Alchemy.brewingStandMap.get(location).cancelBrew();
             }
-        }
-        else if (validBrew) {
+        } else if (validBrew) {
             Alchemy.brewingStandMap.put(location, new AlchemyBrewTask(brewingStand, player));
         }
     }

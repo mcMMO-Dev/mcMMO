@@ -1,10 +1,10 @@
 package com.gmail.nossr50.core.util.random;
 
 import com.gmail.nossr50.core.config.skills.AdvancedConfig;
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.util.Permissions;
-import com.gmail.nossr50.core.data.UserManager;
 import org.bukkit.entity.Player;
 
 public class RandomChanceSkill implements RandomChanceExecution {
@@ -15,26 +15,24 @@ public class RandomChanceSkill implements RandomChanceExecution {
     protected final boolean isLucky;
     private int skillLevel;
 
-    public RandomChanceSkill(Player player, SubSkillType subSkillType)
-    {
+    public RandomChanceSkill(Player player, SubSkillType subSkillType) {
         this.primarySkillType = subSkillType.getParentSkill();
         this.subSkillType = subSkillType;
         this.probabilityCap = RandomChanceUtil.LINEAR_CURVE_VAR;
 
-        if(player != null)
+        if (player != null)
             this.skillLevel = UserManager.getPlayer(player).getSkillLevel(primarySkillType);
         else
             this.skillLevel = 0;
 
-        if(player != null)
+        if (player != null)
             isLucky = Permissions.lucky(player, primarySkillType);
         else
             isLucky = false;
     }
 
-    public RandomChanceSkill(Player player, SubSkillType subSkillType, boolean hasCap)
-    {
-        if(hasCap)
+    public RandomChanceSkill(Player player, SubSkillType subSkillType, boolean hasCap) {
+        if (hasCap)
             this.probabilityCap = AdvancedConfig.getInstance().getMaximumProbability(subSkillType);
         else
             this.probabilityCap = RandomChanceUtil.LINEAR_CURVE_VAR;
@@ -42,12 +40,12 @@ public class RandomChanceSkill implements RandomChanceExecution {
         this.primarySkillType = subSkillType.getParentSkill();
         this.subSkillType = subSkillType;
 
-        if(player != null)
+        if (player != null)
             this.skillLevel = UserManager.getPlayer(player).getSkillLevel(primarySkillType);
         else
             this.skillLevel = 0;
 
-        if(player != null)
+        if (player != null)
             isLucky = Permissions.lucky(player, primarySkillType);
         else
             isLucky = false;
@@ -55,6 +53,7 @@ public class RandomChanceSkill implements RandomChanceExecution {
 
     /**
      * The subskill corresponding to this RandomChanceSkill
+     *
      * @return this subskill
      */
     public SubSkillType getSubSkill() {
@@ -63,15 +62,16 @@ public class RandomChanceSkill implements RandomChanceExecution {
 
     /**
      * Gets the skill level of the player who owns this RandomChanceSkill
+     *
      * @return the current skill level relating to this RandomChanceSkill
      */
-    public int getSkillLevel()
-    {
+    public int getSkillLevel() {
         return skillLevel;
     }
 
     /**
      * Modify the skill level used for this skill's RNG calculations
+     *
      * @param newSkillLevel new skill level
      */
     public void setSkillLevel(int newSkillLevel) {

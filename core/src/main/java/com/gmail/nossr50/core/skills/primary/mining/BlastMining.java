@@ -2,9 +2,9 @@ package com.gmail.nossr50.core.skills.primary.mining;
 
 import com.gmail.nossr50.core.config.skills.AdvancedConfig;
 import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -41,20 +41,17 @@ public class BlastMining {
 
     }*/
 
-    public static Material detonator = Config.getInstance().getDetonatorItem();
-
     public final static int MAXIMUM_REMOTE_DETONATION_DISTANCE = 100;
+    public static Material detonator = Config.getInstance().getDetonatorItem();
 
     public static double getBlastRadiusModifier(int rank) {
         return AdvancedConfig.getInstance().getBlastRadiusModifier(rank);
     }
 
 
-
     public static double getBlastDamageDecrease(int rank) {
         return AdvancedConfig.getInstance().getBlastDamageDecrease(rank);
     }
-
 
 
     public static int getDemolitionExpertUnlockLevel() {
@@ -67,10 +64,9 @@ public class BlastMining {
             return tier == Tier.EIGHT ? tier.getLevel() : tierList.get(tierList.indexOf(tier) - 1).getLevel();
         }*/
 
-        for(int i = 0; i < SubSkillType.MINING_BLAST_MINING.getNumRanks()-1; i++)
-        {
-            if(getBlastDamageDecrease(i+1) > 0)
-                return RankUtils.getRankUnlockLevel(SubSkillType.MINING_BLAST_MINING, i+1);
+        for (int i = 0; i < SubSkillType.MINING_BLAST_MINING.getNumRanks() - 1; i++) {
+            if (getBlastDamageDecrease(i + 1) > 0)
+                return RankUtils.getRankUnlockLevel(SubSkillType.MINING_BLAST_MINING, i + 1);
         }
 
         return 0;
@@ -86,10 +82,9 @@ public class BlastMining {
             return tier == Tier.EIGHT ? tier.getLevel() : tierList.get(tierList.indexOf(tier) - 1).getLevel();
         }*/
 
-        for(int i = 0; i < SubSkillType.MINING_BLAST_MINING.getNumRanks()-1; i++)
-        {
-            if(getBlastRadiusModifier(i+1) > 0)
-                return RankUtils.getRankUnlockLevel(SubSkillType.MINING_BLAST_MINING, i+1);
+        for (int i = 0; i < SubSkillType.MINING_BLAST_MINING.getNumRanks() - 1; i++) {
+            if (getBlastRadiusModifier(i + 1) > 0)
+                return RankUtils.getRankUnlockLevel(SubSkillType.MINING_BLAST_MINING, i + 1);
         }
 
         return 0;
@@ -107,7 +102,7 @@ public class BlastMining {
             return false;
         }
 
-        MiningManager miningManager =  UserManager.getPlayer(defender).getMiningManager();
+        MiningManager miningManager = UserManager.getPlayer(defender).getMiningManager();
 
         if (!miningManager.canUseDemolitionsExpertise()) {
             return false;

@@ -14,8 +14,7 @@ public class Herbalism {
     /**
      * Convert blocks affected by the Green Thumb & Green Terra abilities.
      *
-     * @param blockState
-     *            The {@link BlockState} to check ability activation for
+     * @param blockState The {@link BlockState} to check ability activation for
      * @return true if the ability was successful, false otherwise
      */
     protected static boolean convertGreenTerraBlocks(BlockState blockState) {
@@ -28,16 +27,16 @@ public class Herbalism {
                 blockState.setType(Material.MOSSY_STONE_BRICKS);
                 return true;
 
-            case Material.DIRT :
-            case Material.GRASS_PATH :
+            case Material.DIRT:
+            case Material.GRASS_PATH:
                 blockState.setType(Material.GRASS_BLOCK);
                 return true;
 
-            case Material.COBBLESTONE :
+            case Material.COBBLESTONE:
                 blockState.setType(Material.MOSSY_COBBLESTONE);
                 return true;
 
-            default :
+            default:
                 return false;
         }
     }
@@ -64,7 +63,7 @@ public class Herbalism {
         else
             dropAmount++;
 
-        for (BlockFace blockFace : new BlockFace[] { BlockFace.UP, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST ,BlockFace.WEST})
+        for (BlockFace blockFace : new BlockFace[]{BlockFace.UP, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST})
             dropAmount += calculateChorusPlantDropsRecursive(target.getRelative(blockFace, 1), traversed);
 
         return dropAmount;
@@ -74,8 +73,7 @@ public class Herbalism {
      * Calculate the drop amounts for multi block plants based on the blocks
      * relative to them.
      *
-     * @param blockState
-     *            The {@link BlockState} of the bottom block of the plant
+     * @param blockState The {@link BlockState} of the bottom block of the plant
      * @return the number of bonus drops to award from the blocks in this plant
      */
     protected static int calculateMultiBlockPlantDrops(BlockState blockState) {
@@ -112,19 +110,18 @@ public class Herbalism {
     /**
      * Convert blocks affected by the Green Thumb & Green Terra abilities.
      *
-     * @param blockState
-     *            The {@link BlockState} to check ability activation for
+     * @param blockState The {@link BlockState} to check ability activation for
      * @return true if the ability was successful, false otherwise
      */
     protected static boolean convertShroomThumb(BlockState blockState) {
         switch (blockState.getType()) {
-            case Material.DIRT :
+            case Material.DIRT:
             case Material.GRASS_BLOCK:
-            case Material.GRASS_PATH :
+            case Material.GRASS_PATH:
                 blockState.setType(Material.MYCELIUM);
                 return true;
 
-            default :
+            default:
                 return false;
         }
     }
@@ -132,8 +129,7 @@ public class Herbalism {
     /**
      * Check if the block has a recently grown crop from Green Thumb
      *
-     * @param blockState
-     *            The {@link BlockState} to check green thumb regrown for
+     * @param blockState The {@link BlockState} to check green thumb regrown for
      * @return true if the block is recently regrown, false otherwise
      */
     public static boolean isRecentlyRegrown(BlockState blockState) {

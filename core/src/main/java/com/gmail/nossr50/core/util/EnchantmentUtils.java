@@ -40,7 +40,6 @@ public class EnchantmentUtils {
      * Method to get an {@link Enchantment} using it's Vanilla Minecraft name or Bukkit enum name
      *
      * @param enchantmentName Vanilla or Bukkit name of enchantment
-     *
      * @return Enchantment or null if no enchantment was found
      */
     public static Enchantment getByName(String enchantmentName) {

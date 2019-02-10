@@ -1,17 +1,17 @@
 package com.gmail.nossr50.core.skills.primary.repair;
 
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.config.skills.AdvancedConfig;
 import com.gmail.nossr50.core.config.skills.Config;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.core.skills.PrimarySkillType;
-import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
+import com.gmail.nossr50.core.skills.SkillManager;
+import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.skills.primary.repair.repairables.Repairable;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.core.skills.SkillManager;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -35,7 +35,7 @@ import java.util.Map.Entry;
 
 public class RepairManager extends SkillManager {
     private boolean placedAnvil;
-    private int     lastClick;
+    private int lastClick;
 
     public RepairManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.REPAIR);
@@ -255,7 +255,7 @@ public class RepairManager extends SkillManager {
     /**
      * Computes repair bonuses.
      *
-     * @param durability The durability of the item being repaired
+     * @param durability   The durability of the item being repaired
      * @param repairAmount The base amount of durability repaired to the item
      * @return The final amount of durability repaired to the item
      */
@@ -284,7 +284,7 @@ public class RepairManager extends SkillManager {
      * @return true if bonus granted, false otherwise
      */
     private boolean checkPlayerProcRepair() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.REPAIR_SUPER_REPAIR))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.REPAIR_SUPER_REPAIR))
             return false;
 
         if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.REPAIR_SUPER_REPAIR, getPlayer())) {
@@ -336,8 +336,7 @@ public class RepairManager extends SkillManager {
                     item.addUnsafeEnchantment(enchantment, enchantLevel - 1);
                     downgraded = true;
                 }
-            }
-            else {
+            } else {
                 item.removeEnchantment(enchantment);
             }
         }
@@ -346,11 +345,9 @@ public class RepairManager extends SkillManager {
 
         if (newEnchants.isEmpty()) {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Arcane.Fail");
-        }
-        else if (downgraded || newEnchants.size() < enchants.size()) {
+        } else if (downgraded || newEnchants.size() < enchants.size()) {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Arcane.Downgrade");
-        }
-        else {
+        } else {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Repair.Arcane.Perfect");
         }
     }

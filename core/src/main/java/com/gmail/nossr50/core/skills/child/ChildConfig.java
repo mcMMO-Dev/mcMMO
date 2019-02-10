@@ -30,8 +30,7 @@ public class ChildConfig extends AutoUpdateConfigLoader {
                     PrimarySkillType parentSkill = PrimarySkillType.valueOf(name.toUpperCase());
                     FamilyTree.enforceNotChildSkill(parentSkill);
                     parentSkills.add(parentSkill);
-                }
-                catch (IllegalArgumentException ex) {
+                } catch (IllegalArgumentException ex) {
                     plugin.getLogger().warning(name + " is not a valid skill type, or is a child skill!");
                     useDefaults = true;
                     break;

@@ -10,18 +10,20 @@ public class SkillUnlockNotificationTask extends BukkitRunnable {
     private McMMOPlayer mcMMOPlayer;
     private SubSkillType subSkillType;
     private int rank;
+
     /**
      * Notify a player about a newly unlocked subskill
-     * @param mcMMOPlayer target player
+     *
+     * @param mcMMOPlayer  target player
      * @param subSkillType the subskill that they just unlocked
-     * @param rank the rank of the subskill
+     * @param rank         the rank of the subskill
      */
-    public SkillUnlockNotificationTask(McMMOPlayer mcMMOPlayer, SubSkillType subSkillType, int rank)
-    {
+    public SkillUnlockNotificationTask(McMMOPlayer mcMMOPlayer, SubSkillType subSkillType, int rank) {
         this.mcMMOPlayer = mcMMOPlayer;
         this.subSkillType = subSkillType;
         this.rank = rank;
     }
+
     /**
      * When an object implementing interface <code>Runnable</code> is used
      * to create a thread, starting the thread causes the object's

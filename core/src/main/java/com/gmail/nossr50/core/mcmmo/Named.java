@@ -7,6 +7,7 @@ package com.gmail.nossr50.core.mcmmo;
 public interface Named {
     /**
      * Returns the name of this entity
+     *
      * @return this entity
      */
     String getName();

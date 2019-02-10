@@ -7,12 +7,12 @@ import org.bukkit.scheduler.BukkitScheduler;
 import java.io.File;
 
 public class BlockStoreConversionXDirectory implements Runnable {
-    private int taskID, i;
-    private org.bukkit.World world;
     BukkitScheduler scheduler;
     File dataDir;
     File[] zDirs;
     BlockStoreConversionZDirectory[] converters;
+    private int taskID, i;
+    private org.bukkit.World world;
 
     public BlockStoreConversionXDirectory() {
         this.taskID = -1;

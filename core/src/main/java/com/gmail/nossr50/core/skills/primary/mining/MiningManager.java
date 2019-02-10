@@ -6,11 +6,11 @@ import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
+import com.gmail.nossr50.core.skills.SkillManager;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.AbilityCooldownTask;
-import com.gmail.nossr50.core.skills.SkillManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
@@ -36,8 +36,20 @@ public class MiningManager extends SkillManager {
         super(mcMMOPlayer, PrimarySkillType.MINING);
     }
 
+    public static double getOreBonus(int rank) {
+        return AdvancedConfig.getInstance().getOreBonus(rank);
+    }
+
+    public static double getDebrisReduction(int rank) {
+        return AdvancedConfig.getInstance().getDebrisReduction(rank);
+    }
+
+    public static int getDropMultiplier(int rank) {
+        return AdvancedConfig.getInstance().getDropMultiplier(rank);
+    }
+
     public boolean canUseDemolitionsExpertise() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_DEMOLITIONS_EXPERTISE))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_DEMOLITIONS_EXPERTISE))
             return false;
 
         return getSkillLevel() >= BlastMining.getDemolitionExpertUnlockLevel() && Permissions.demolitionsExpertise(getPlayer());
@@ -55,7 +67,7 @@ public class MiningManager extends SkillManager {
     }
 
     public boolean canUseBiggerBombs() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_BIGGER_BOMBS))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_BIGGER_BOMBS))
             return false;
 
         return getSkillLevel() >= BlastMining.getBiggerBombsUnlockLevel() && Permissions.biggerBombs(getPlayer());
@@ -92,8 +104,7 @@ public class MiningManager extends SkillManager {
             if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.MINING_DOUBLE_DROPS, player)) {
                 if (silkTouch) {
                     Mining.handleSilkTouchDrops(blockState);
-                }
-                else {
+                } else {
                     Mining.handleMiningDrops(blockState);
                 }
             }
@@ -130,7 +141,7 @@ public class MiningManager extends SkillManager {
     /**
      * Handler for explosion drops and XP gain.
      *
-     * @param yield The % of blocks to drop
+     * @param yield     The % of blocks to drop
      * @param blockList The list of blocks to drop
      */
     public void blastMiningDropProcessing(float yield, List<Block> blockList) {
@@ -149,8 +160,7 @@ public class MiningManager extends SkillManager {
 
             if (BlockUtils.isOre(blockState)) {
                 ores.add(blockState);
-            }
-            else {
+            } else {
                 debris.add(blockState);
             }
         }
@@ -214,14 +224,6 @@ public class MiningManager extends SkillManager {
         return getOreBonus(getBlastMiningTier());
     }
 
-    public static double getOreBonus(int rank) {
-        return AdvancedConfig.getInstance().getOreBonus(rank);
-    }
-
-    public static double getDebrisReduction(int rank) {
-        return AdvancedConfig.getInstance().getDebrisReduction(rank);
-    }
-
     /**
      * Gets the Blast Mining tier
      *
@@ -229,10 +231,6 @@ public class MiningManager extends SkillManager {
      */
     public double getDebrisReduction() {
         return getDebrisReduction(getBlastMiningTier());
-    }
-
-    public static int getDropMultiplier(int rank) {
-        return AdvancedConfig.getInstance().getDropMultiplier(rank);
     }
 
     /**

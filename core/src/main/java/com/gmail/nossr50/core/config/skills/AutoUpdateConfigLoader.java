@@ -73,16 +73,15 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
                 while ((line = reader.readLine()) != null) {
                     if (line.contains("#")) {
                         temp += line + "\n";
-                    }
-                    else if (line.contains(":")) {
+                    } else if (line.contains(":")) {
                         line = line.substring(0, line.indexOf(":") + 1);
                         if (!temp.isEmpty()) {
-                            if(comments.containsKey(line)) {
+                            if (comments.containsKey(line)) {
                                 int index = 0;
-                                while(comments.containsKey(line + index)) {
+                                while (comments.containsKey(line + index)) {
                                     index++;
                                 }
-                                
+
                                 line = line + index;
                             }
 
@@ -98,7 +97,7 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
                     String actualkey = key.substring(0, key.indexOf(":") + 1);
 
                     int index = 0;
-                    if(indexed.containsKey(actualkey)) {
+                    if (indexed.containsKey(actualkey)) {
                         index = indexed.get(actualkey);
                     }
                     boolean isAtTop = !output.contains("\n" + actualkey);
@@ -109,8 +108,7 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
                         indexed.put(actualkey, index + comments.get(key).length() + actualkey.length() + 1);
                     }
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -126,8 +124,7 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
                 writer.write(output);
                 writer.flush();
                 writer.close();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

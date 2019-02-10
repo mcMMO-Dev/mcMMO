@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class CustomEntityConfig extends ConfigLoader {
     public HashMap<String, CustomEntity> customEntityClassMap = new HashMap<String, CustomEntity>();
-    public HashMap<String, CustomEntity> customEntityTypeMap  = new HashMap<String, CustomEntity>();
+    public HashMap<String, CustomEntity> customEntityTypeMap = new HashMap<String, CustomEntity>();
 
     protected CustomEntityConfig(String fileName) {
         super("mods", fileName);
@@ -30,8 +30,7 @@ public class CustomEntityConfig extends ConfigLoader {
 
             try {
                 clazz = ClassUtils.getClass(className);
-            }
-            catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException e) {
                 plugin.getLogger().warning("Invalid class (" + className + ") detected for " + entityName + ".");
                 plugin.getLogger().warning("This custom entity may not function properly.");
             }

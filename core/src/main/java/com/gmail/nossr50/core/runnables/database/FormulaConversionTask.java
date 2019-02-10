@@ -1,15 +1,15 @@
 package com.gmail.nossr50.core.runnables.database;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.data.database.DatabaseManager;
 import com.gmail.nossr50.core.datatypes.experience.FormulaType;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.core.data.UserManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -42,8 +42,7 @@ public class FormulaConversionTask extends BukkitRunnable {
                 editValues(profile);
                 // Since this is a temporary profile, we save it here.
                 profile.scheduleAsyncSave();
-            }
-            else {
+            } else {
                 profile = mcMMOPlayer.getProfile();
                 editValues(profile);
             }

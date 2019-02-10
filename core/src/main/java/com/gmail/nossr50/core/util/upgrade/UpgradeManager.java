@@ -22,7 +22,6 @@ public class UpgradeManager extends ConfigLoader {
      * Check if the given {@link UpgradeType} is necessary.
      *
      * @param type Upgrade type to check
-     *
      * @return true if plugin data needs to have the given upgrade
      */
     public boolean shouldUpgrade(final UpgradeType type) {
@@ -46,8 +45,7 @@ public class UpgradeManager extends ConfigLoader {
 
         try {
             config.save(getFile());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

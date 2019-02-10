@@ -17,6 +17,10 @@ public class SkillXpGain implements Delayed {
         this.type = type;
     }
 
+    private static long getDuration() {
+        return TimeUnit.MINUTES.toMillis(ExperienceConfig.getInstance().getDiminishedReturnsTimeInterval());
+    }
+
     public PrimarySkillType getSkill() {
         return type;
     }
@@ -25,15 +29,10 @@ public class SkillXpGain implements Delayed {
         return xp;
     }
 
-    private static long getDuration() {
-        return TimeUnit.MINUTES.toMillis(ExperienceConfig.getInstance().getDiminishedReturnsTimeInterval());
-    }
-
     public int compareTo(SkillXpGain other) {
         if (this.expiryTime < other.expiryTime) {
             return -1;
-        }
-        else if (this.expiryTime > other.expiryTime) {
+        } else if (this.expiryTime > other.expiryTime) {
             return 1;
         }
         return 0;

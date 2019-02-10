@@ -1,8 +1,8 @@
 package com.gmail.nossr50.core.runnables.commands;
 
 import com.gmail.nossr50.core.config.skills.Config;
-import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import org.bukkit.command.CommandSender;
@@ -63,8 +63,7 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
     public void displayBoard() {
         if (sender.getName().equalsIgnoreCase(playerName)) {
             ScoreboardManager.showPlayerRankScoreboard((Player) sender, skills);
-        }
-        else {
+        } else {
             ScoreboardManager.showPlayerRankScoreboardOthers((Player) sender, playerName, skills);
         }
     }

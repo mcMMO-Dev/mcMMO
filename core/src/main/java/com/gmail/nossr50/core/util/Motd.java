@@ -1,8 +1,8 @@
 package com.gmail.nossr50.core.util;
 
 import com.gmail.nossr50.core.config.skills.Config;
-import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.util.skills.PerksUtils;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.entity.Player;
@@ -14,7 +14,8 @@ public final class Motd {
     public static final String PERK_PREFIX = LocaleLoader.getString("MOTD.PerksPrefix") + " ";
     private static final PluginDescriptionFile pluginDescription = mcMMO.p.getDescription();
 
-    private Motd() {}
+    private Motd() {
+    }
 
     public static void displayAll(Player player) {
         displayVersion(player, pluginDescription.getVersion());

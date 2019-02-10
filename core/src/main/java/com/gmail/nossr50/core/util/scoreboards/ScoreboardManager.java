@@ -1,15 +1,15 @@
 package com.gmail.nossr50.core.util.scoreboards;
 
 import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.database.PlayerStat;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SuperAbilityType;
-import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.util.Misc;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.core.data.UserManager;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -44,9 +44,10 @@ public class ScoreboardManager {
     static final String LABEL_ABILITY_COOLDOWN = LocaleLoader.getString("Scoreboard.Misc.Cooldown");
     static final String LABEL_OVERALL = LocaleLoader.getString("Scoreboard.Misc.Overall");
 
-    static final Map<PrimarySkillType, String>   skillLabels;
+    static final Map<PrimarySkillType, String> skillLabels;
     static final Map<SuperAbilityType, String> abilityLabelsColored;
     static final Map<SuperAbilityType, String> abilityLabelsSkill;
+    private static List<String> dirtyPowerLevels = new ArrayList<String>();
 
     /*
      * Initializes the static properties of this class
@@ -129,17 +130,6 @@ public class ScoreboardManager {
         abilityLabelsSkill = abilityLabelSkillBuilder.build();
     }
 
-    private static List<String> dirtyPowerLevels = new ArrayList<String>();
-
-    public enum SidebarType {
-        NONE,
-        SKILL_BOARD,
-        STATS_BOARD,
-        COOLDOWNS_BOARD,
-        RANK_BOARD,
-        TOP_BOARD;
-    }
-
     private static String formatAbility(String abilityName) {
         return formatAbility(ChatColor.AQUA, abilityName);
     }
@@ -147,8 +137,7 @@ public class ScoreboardManager {
     private static String formatAbility(ChatColor color, String abilityName) {
         if (Config.getInstance().getShowAbilityNames()) {
             return getShortenedName(color + abilityName);
-        }
-        else {
+        } else {
             return color + LocaleLoader.getString("Scoreboard.Misc.Ability");
         }
     }
@@ -165,13 +154,13 @@ public class ScoreboardManager {
         return name;
     }
 
-    // **** Listener call-ins **** //
-
     // Called by PlayerJoinEvent listener
     public static void setupPlayer(Player player) {
         PLAYER_SCOREBOARDS.put(player.getName(), ScoreboardWrapper.create(player));
         dirtyPowerLevels.add(player.getName());
     }
+
+    // **** Listener call-ins **** //
 
     // Called by PlayerQuitEvent listener
     public static void teardownPlayer(Player player) {
@@ -247,8 +236,6 @@ public class ScoreboardManager {
         }
     }
 
-    // **** Setup methods **** //
-
     public static void enablePlayerSkillScoreboard(Player player, PrimarySkillType skill) {
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
@@ -257,6 +244,8 @@ public class ScoreboardManager {
 
         changeScoreboard(wrapper, Config.getInstance().getSkillScoreboardTime());
     }
+
+    // **** Setup methods **** //
 
     public static void enablePlayerSkillLevelUpScoreboard(Player player, PrimarySkillType skill) {
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
@@ -339,8 +328,6 @@ public class ScoreboardManager {
         changeScoreboard(wrapper, Config.getInstance().getTopScoreboardTime());
     }
 
-    // **** Helper methods **** //
-
     /**
      * @return false if power levels are disabled
      */
@@ -371,6 +358,8 @@ public class ScoreboardManager {
         dirtyPowerLevels.clear();
         return true;
     }
+
+    // **** Helper methods **** //
 
     /**
      * Gets or creates the power level objective on the main targetBoard.
@@ -406,8 +395,7 @@ public class ScoreboardManager {
     private static void changeScoreboard(ScoreboardWrapper wrapper, int displayTime) {
         if (displayTime == -1) {
             wrapper.showBoardWithNoRevert();
-        }
-        else {
+        } else {
             wrapper.showBoardAndScheduleRevert(displayTime * Misc.TICK_CONVERSION_FACTOR);
         }
     }
@@ -426,5 +414,14 @@ public class ScoreboardManager {
 
     public static void setRevertTimer(String playerName, int seconds) {
         PLAYER_SCOREBOARDS.get(playerName).showBoardAndScheduleRevert(seconds * Misc.TICK_CONVERSION_FACTOR);
+    }
+
+    public enum SidebarType {
+        NONE,
+        SKILL_BOARD,
+        STATS_BOARD,
+        COOLDOWNS_BOARD,
+        RANK_BOARD,
+        TOP_BOARD;
     }
 }

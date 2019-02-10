@@ -9,6 +9,7 @@ import org.bukkit.event.HandlerList;
  * Called when a player gains XP in a skill
  */
 public class McMMOPlayerXpGainEvent extends McMMOPlayerExperienceEvent {
+    private static final HandlerList handlers = new HandlerList();
     private float xpGained;
 
     @Deprecated
@@ -22,11 +23,22 @@ public class McMMOPlayerXpGainEvent extends McMMOPlayerExperienceEvent {
         this.xpGained = xpGained;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     /**
      * @return The amount of experience gained in this event
      */
     public float getRawXpGained() {
         return xpGained;
+    }
+
+    /**
+     * @param xpGained int amount of experience gained in this event
+     */
+    public void setRawXpGained(float xpGained) {
+        this.xpGained = xpGained;
     }
 
     /**
@@ -40,26 +52,13 @@ public class McMMOPlayerXpGainEvent extends McMMOPlayerExperienceEvent {
     /**
      * @param xpGained int amount of experience gained in this event
      */
-    public void setRawXpGained(float xpGained) {
-        this.xpGained = xpGained;
-    }
-
-    /**
-     * @param xpGained int amount of experience gained in this event
-     */
     @Deprecated
     public void setXpGained(int xpGained) {
         this.xpGained = xpGained;
     }
 
-    private static final HandlerList handlers = new HandlerList();
-
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 }

@@ -1,20 +1,21 @@
 package com.gmail.nossr50.core.api;
 
 import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.party.Party;
 import com.gmail.nossr50.core.datatypes.party.PartyLeader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.core.data.UserManager;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.*;
 
 public final class PartyAPI {
-    private PartyAPI() {}
+    private PartyAPI() {
+    }
 
     /**
      * Get the name of the party a player is in.
@@ -73,7 +74,7 @@ public final class PartyAPI {
      * </br>
      * This function is designed for API usage.
      *
-     * @param player The player to add to the party
+     * @param player    The player to add to the party
      * @param partyName The party to add the player to
      * @deprecated parties can have limits, use the other method
      */
@@ -84,8 +85,7 @@ public final class PartyAPI {
         if (party == null) {
             party = new Party(new PartyLeader(player.getUniqueId(), player.getName()), partyName);
         } else {
-            if(PartyManager.isPartyFull(player, party))
-            {
+            if (PartyManager.isPartyFull(player, party)) {
                 NotificationManager.sendPlayerInformation(player, NotificationType.PARTY_MESSAGE, "Commands.Party.PartyFull", party.toString());
                 return;
             }
@@ -97,10 +97,10 @@ public final class PartyAPI {
     /**
      * The max party size of the server
      * 0 or less for no size limit
+     *
      * @return the max party size on this server
      */
-    public static int getMaxPartySize()
-    {
+    public static int getMaxPartySize() {
         return Config.getInstance().getPartyMaxSize();
     }
 
@@ -109,8 +109,8 @@ public final class PartyAPI {
      * </br>
      * This function is designed for API usage.
      *
-     * @param player The player to add to the party
-     * @param partyName The party to add the player to
+     * @param player      The player to add to the party
+     * @param partyName   The party to add the player to
      * @param bypassLimit if true bypasses party size limits
      */
     public static void addToParty(Player player, String partyName, boolean bypassLimit) {
@@ -151,7 +151,7 @@ public final class PartyAPI {
      * </br>
      * This function is designed for API usage.
      *
-     * @param partyName The name of the party to set the leader of
+     * @param partyName  The name of the party to set the leader of
      * @param playerName The playerName to set as leader
      */
     @Deprecated

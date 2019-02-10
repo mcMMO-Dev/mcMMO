@@ -24,7 +24,6 @@ public interface RepairableManager {
      * Checks if an item is repairable
      *
      * @param type Material to check if repairable
-     *
      * @return true if repairable, false if not
      */
     public boolean isRepairable(Material type);
@@ -33,7 +32,6 @@ public interface RepairableManager {
      * Checks if an item is repairable
      *
      * @param itemStack Item to check if repairable
-     *
      * @return true if repairable, false if not
      */
     public boolean isRepairable(ItemStack itemStack);
@@ -42,7 +40,6 @@ public interface RepairableManager {
      * Gets the repairable with this type
      *
      * @param type Material of the repairable to look for
-     *
      * @return the repairable, can be null
      */
     public Repairable getRepairable(Material type);

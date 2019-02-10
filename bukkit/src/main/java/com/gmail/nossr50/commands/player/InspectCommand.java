@@ -1,15 +1,15 @@
 package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.util.Permissions;
 import com.gmail.nossr50.core.util.commands.CommandUtils;
-import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.util.scoreboards.ScoreboardManager;
+import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -65,8 +65,7 @@ public class InspectCommand implements TabExecutor {
                         sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                     }
 
-                }
-                else {
+                } else {
                     Player target = mcMMOPlayer.getPlayer();
 
                     if (CommandUtils.hidden(sender, target, Permissions.inspectHidden(sender))) {
@@ -74,8 +73,7 @@ public class InspectCommand implements TabExecutor {
                             sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
                             return true;
                         }
-                    }
-                    else if (CommandUtils.tooFar(sender, target, Permissions.inspectFar(sender))) {
+                    } else if (CommandUtils.tooFar(sender, target, Permissions.inspectFar(sender))) {
                         return true;
                     }
 

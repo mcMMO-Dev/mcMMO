@@ -11,28 +11,24 @@ public enum McMMOWebLinks {
     HELP_TRANSLATE,
     WIKI;
 
-    public String getUrl()
-    {
+    public String getUrl() {
         return McMMOUrl.getUrl(this);
     }
 
-    public String getNiceTitle()
-    {
+    public String getNiceTitle() {
         return StringUtils.getCapitalized(toString());
     }
 
-    public String getLocaleDescription()
-    {
-        switch (this)
-        {
+    public String getLocaleDescription() {
+        switch (this) {
             case WEBSITE:
-                return LocaleLoader.getString( "JSON.URL.Website");
+                return LocaleLoader.getString("JSON.URL.Website");
             case DISCORD:
-                return LocaleLoader.getString( "JSON.URL.Discord");
+                return LocaleLoader.getString("JSON.URL.Discord");
             case PATREON:
-                return LocaleLoader.getString( "JSON.URL.Patreon");
+                return LocaleLoader.getString("JSON.URL.Patreon");
             case HELP_TRANSLATE:
-                return LocaleLoader.getString( "JSON.URL.Translation");
+                return LocaleLoader.getString("JSON.URL.Translation");
             case SPIGOT:
                 return LocaleLoader.getString("JSON.URL.Spigot");
             case WIKI:

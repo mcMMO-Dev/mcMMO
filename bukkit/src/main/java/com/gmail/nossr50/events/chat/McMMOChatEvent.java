@@ -6,6 +6,10 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 
 public abstract class McMMOChatEvent extends Event implements Cancellable {
+    /**
+     * Rest of file is required boilerplate for custom events
+     **/
+    private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
     private Plugin plugin;
     private String sender;
@@ -25,6 +29,10 @@ public abstract class McMMOChatEvent extends Event implements Cancellable {
         this.sender = sender;
         this.displayName = displayName;
         this.message = message;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 
     /**
@@ -49,17 +57,17 @@ public abstract class McMMOChatEvent extends Event implements Cancellable {
     }
 
     /**
-     * @return String message that will be sent
-     */
-    public String getMessage() {
-        return message;
-    }
-
-    /**
      * @param displayName String display name of the player who sent the chat
      */
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    /**
+     * @return String message that will be sent
+     */
+    public String getMessage() {
+        return message;
     }
 
     /**
@@ -69,7 +77,9 @@ public abstract class McMMOChatEvent extends Event implements Cancellable {
         this.message = message;
     }
 
-    /** Following are required for Cancellable **/
+    /**
+     * Following are required for Cancellable
+     **/
     @Override
     public boolean isCancelled() {
         return cancelled;
@@ -80,15 +90,8 @@ public abstract class McMMOChatEvent extends Event implements Cancellable {
         this.cancelled = cancelled;
     }
 
-    /** Rest of file is required boilerplate for custom events **/
-    private static final HandlerList handlers = new HandlerList();
-
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 }

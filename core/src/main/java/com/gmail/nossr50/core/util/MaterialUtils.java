@@ -4,7 +4,8 @@ import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
 
 public final class MaterialUtils {
-    private MaterialUtils() {}
+    private MaterialUtils() {
+    }
 
     protected static boolean isOre(Material data) {
         switch (data) {

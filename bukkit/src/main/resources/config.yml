@@ -8,9 +8,9 @@
 #  Settings for mcMMO in general
 ###
 General:
-        # Turning this on will scale mcMMO around 1-1000 with default scaling factor
-        # Everything in your config related to skill level requirements, skill level bonuses, etc will be multiplied by 10 when this mode is on
-        # This change is purely cosmetic, it retains the old feel of mcMMO where you could level up thousands of times
+    # Turning this on will scale mcMMO around 1-1000 with default scaling factor
+    # Everything in your config related to skill level requirements, skill level bonuses, etc will be multiplied by 10 when this mode is on
+    # This change is purely cosmetic, it retains the old feel of mcMMO where you could level up thousands of times
     RetroMode:
         Enabled: false
     Locale: en_US

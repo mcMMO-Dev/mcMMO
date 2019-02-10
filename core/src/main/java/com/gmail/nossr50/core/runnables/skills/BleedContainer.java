@@ -8,11 +8,10 @@ public class BleedContainer {
     public LivingEntity target;
     public LivingEntity damageSource;
 
-    public BleedContainer(LivingEntity target, int bleedTicks, int bleedRank, LivingEntity damageSource)
-    {
-        this.target         = target;
-        this.bleedTicks     = bleedTicks;
-        this.bleedRank      = bleedRank;
-        this.damageSource   = damageSource;
+    public BleedContainer(LivingEntity target, int bleedTicks, int bleedRank, LivingEntity damageSource) {
+        this.target = target;
+        this.bleedTicks = bleedTicks;
+        this.bleedRank = bleedRank;
+        this.damageSource = damageSource;
     }
 }

@@ -3,13 +3,13 @@ package com.gmail.nossr50.commands.chat;
 import com.gmail.nossr50.core.chat.ChatManager;
 import com.gmail.nossr50.core.chat.ChatManagerFactory;
 import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.chat.ChatMode;
 import com.gmail.nossr50.core.datatypes.party.PartyFeature;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.core.util.commands.CommandUtils;
-import com.gmail.nossr50.core.data.UserManager;
+import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ChatCommand implements TabExecutor {
-    private ChatMode chatMode;
     protected ChatManager chatManager;
+    private ChatMode chatMode;
 
     public ChatCommand(ChatMode chatMode) {
         this.chatMode = chatMode;
@@ -47,8 +47,7 @@ public abstract class ChatCommand implements TabExecutor {
 
                 if (mcMMOPlayer.isChatEnabled(chatMode)) {
                     disableChatMode(mcMMOPlayer, sender);
-                }
-                else {
+                } else {
                     enableChatMode(mcMMOPlayer, sender);
                 }
 

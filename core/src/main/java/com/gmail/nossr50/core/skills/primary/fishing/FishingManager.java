@@ -1,19 +1,19 @@
 package com.gmail.nossr50.core.skills.primary.fishing;
 
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.config.skills.AdvancedConfig;
 import com.gmail.nossr50.core.config.skills.Config;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.config.treasure.TreasureConfig;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
+import com.gmail.nossr50.core.skills.SkillManager;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.skills.treasure.EnchantmentTreasure;
 import com.gmail.nossr50.core.skills.treasure.FishingTreasure;
 import com.gmail.nossr50.core.skills.treasure.Rarity;
 import com.gmail.nossr50.core.skills.treasure.ShakeTreasure;
-import com.gmail.nossr50.core.skills.SkillManager;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerShakeEvent;
 import com.gmail.nossr50.util.*;
@@ -28,7 +28,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -68,7 +69,7 @@ public class FishingManager extends SkillManager {
         long currentTime = System.currentTimeMillis();
         boolean hasFished = (currentTime < fishingTimestamp + (FISHING_COOLDOWN_SECONDS * 10));
 
-        if(hasFished)
+        if (hasFished)
             fishingTimestamp = currentTime;
 
         boolean sameTarget = (lastFishingBoundingBox != null && lastFishingBoundingBox.overlaps(boundingBox));
@@ -136,7 +137,6 @@ public class FishingManager extends SkillManager {
      *
      * @param rankChange     The # of levels to change rank for the food
      * @param eventFoodLevel The initial change in hunger from the event
-     *
      * @return the modified change in hunger for the event
      */
     public int handleFishermanDiet(int rankChange, int eventFoodLevel) {
@@ -179,8 +179,7 @@ public class FishingManager extends SkillManager {
         hook.setBiteChance(Math.min(biteChance, 1.0));
     }
 
-    public boolean isMagicHunterEnabled()
-    {
+    public boolean isMagicHunterEnabled() {
         return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.FISHING_MAGIC_HUNTER)
                 && RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.FISHING_TREASURE_HUNTER)
                 && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_TREASURE_HUNTER);
@@ -217,8 +216,7 @@ public class FishingManager extends SkillManager {
             if (!event.isCancelled()) {
                 treasureDrop = event.getTreasure();
                 treasureXp = event.getXp();
-            }
-            else {
+            } else {
                 treasureDrop = null;
                 treasureXp = 0;
             }
@@ -251,7 +249,6 @@ public class FishingManager extends SkillManager {
      * Handle the vanilla XP boost for Fishing
      *
      * @param experience The amount of experience initially awarded by the event
-     *
      * @return the modified event damage
      */
     public int handleVanillaXpBoost(int experience) {
@@ -308,8 +305,7 @@ public class FishingManager extends SkillManager {
 
                                 if (TreasureConfig.getInstance().getInventoryStealStacks()) {
                                     inventory.setItem(slot, null);
-                                }
-                                else {
+                                } else {
                                     inventory.setItem(slot, (drop.getAmount() > 1) ? new ItemStack(drop.getType(), drop.getAmount() - 1) : null);
                                     drop.setAmount(1);
                                 }
@@ -362,8 +358,7 @@ public class FishingManager extends SkillManager {
 
         if (getPlayer().getInventory().getItemInMainHand().getType() == Material.FISHING_ROD) {
             luck = getPlayer().getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.LUCK);
-        }
-        else {
+        } else {
             // We know something was caught, so if the rod wasn't in the main hand it must be in the offhand
             luck = getPlayer().getInventory().getItemInOffHand().getEnchantmentLevel(Enchantment.LUCK);
         }
@@ -419,7 +414,6 @@ public class FishingManager extends SkillManager {
      * Process the Magic Hunter ability
      *
      * @param treasureDrop The {@link ItemStack} to enchant
-     *
      * @return true if the item has been enchanted
      */
     private Map<Enchantment, Integer> handleMagicHunter(ItemStack treasureDrop) {

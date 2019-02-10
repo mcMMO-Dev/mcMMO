@@ -1,10 +1,10 @@
 package com.gmail.nossr50.commands.hardcore;
 
 import com.gmail.nossr50.core.config.skills.Config;
-import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.util.Permissions;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.command.CommandSender;
 
 public class HardcoreCommand extends HardcoreModeCommand {
@@ -54,8 +54,7 @@ public class HardcoreCommand extends HardcoreModeCommand {
             for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
                 primarySkillType.setHardcoreStatLossEnabled(enable);
             }
-        }
-        else {
+        } else {
             skill.setHardcoreStatLossEnabled(enable);
         }
 

@@ -13,7 +13,8 @@ import java.util.Collection;
 
 public final class UserManager {
 
-    private UserManager() {}
+    private UserManager() {
+    }
 
     /**
      * Track a new user.
@@ -50,12 +51,9 @@ public final class UserManager {
         mcMMO.p.debug("Saving mcMMOPlayers... (" + onlinePlayers.size() + ")");
 
         for (Player player : onlinePlayers) {
-            try
-            {
+            try {
                 getPlayer(player).getProfile().save();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 mcMMO.p.getLogger().warning("Could not save mcMMO player data for player: " + player.getName());
             }
         }

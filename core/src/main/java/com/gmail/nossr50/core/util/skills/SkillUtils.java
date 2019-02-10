@@ -3,20 +3,20 @@ package com.gmail.nossr50.core.util.skills;
 import com.gmail.nossr50.core.config.skills.AdvancedConfig;
 import com.gmail.nossr50.core.config.skills.Config;
 import com.gmail.nossr50.core.config.skills.HiddenConfig;
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.skills.SuperAbilityType;
-import com.gmail.nossr50.core.locale.LocaleLoader;
-import com.gmail.nossr50.core.util.Misc;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.core.util.ItemUtils;
+import com.gmail.nossr50.core.util.Misc;
 import com.gmail.nossr50.core.util.StringUtils;
 import com.gmail.nossr50.core.util.player.NotificationManager;
-import com.gmail.nossr50.core.data.UserManager;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -53,9 +53,8 @@ public class SkillUtils {
 
         int length;
 
-        if(abilityLengthCap > 0)
-        {
-            length =     (int) Math.min(abilityLengthCap, 2 + (skillValue / abilityLengthVar));
+        if (abilityLengthCap > 0) {
+            length = (int) Math.min(abilityLengthCap, 2 + (skillValue / abilityLengthVar));
         } else {
             length = 2 + (int) (skillValue / abilityLengthVar);
         }
@@ -66,7 +65,7 @@ public class SkillUtils {
             length = Math.min(length, maxLength);
         }
 
-        return new String[] { String.valueOf(length), String.valueOf(enduranceLength) };
+        return new String[]{String.valueOf(length), String.valueOf(enduranceLength)};
     }
 
     /*
@@ -79,7 +78,7 @@ public class SkillUtils {
         int currentFoodLevel = player.getFoodLevel();
         int foodChange = eventFoodLevel - currentFoodLevel;
 
-        foodChange+=curRank;
+        foodChange += curRank;
 
         return currentFoodLevel + foodChange;
     }
@@ -88,9 +87,8 @@ public class SkillUtils {
      * Calculate the time remaining until the cooldown expires.
      *
      * @param deactivatedTimeStamp Time of deactivation
-     * @param cooldown The length of the cooldown
-     * @param player The Player to check for cooldown perks
-     *
+     * @param cooldown             The length of the cooldown
+     * @param player               The Player to check for cooldown perks
      * @return the number of seconds remaining before the cooldown expires
      */
     public static int calculateTimeLeft(long deactivatedTimeStamp, int cooldown, Player player) {
@@ -102,8 +100,7 @@ public class SkillUtils {
      * This does NOT account for cooldown perks!
      *
      * @param deactivatedTimeStamp Time of deactivation in seconds
-     * @param cooldown The length of the cooldown in seconds
-     *
+     * @param cooldown             The length of the cooldown in seconds
      * @return true if the cooldown is expired
      */
     public static boolean cooldownExpired(long deactivatedTimeStamp, int cooldown) {
@@ -151,8 +148,7 @@ public class SkillUtils {
 
             itemMeta.setLore(itemLore);
             heldItem.setItemMeta(itemMeta);
-        }
-        else {
+        } else {
             int duration = 0;
             int amplifier = 0;
 
@@ -174,9 +170,8 @@ public class SkillUtils {
 
             int ticks;
 
-            if(abilityLengthCap > 0)
-            {
-                ticks = PerksUtils.handleActivationPerks(player,  Math.min(abilityLengthCap, 2 + (mcMMOPlayer.getSkillLevel(skill) / abilityLengthVar)),
+            if (abilityLengthCap > 0) {
+                ticks = PerksUtils.handleActivationPerks(player, Math.min(abilityLengthCap, 2 + (mcMMOPlayer.getSkillLevel(skill) / abilityLengthVar)),
                         skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
             } else {
                 ticks = PerksUtils.handleActivationPerks(player, 2 + ((mcMMOPlayer.getSkillLevel(skill)) / abilityLengthVar),
@@ -213,8 +208,7 @@ public class SkillUtils {
 
                 if (efficiencyLevel <= AdvancedConfig.getInstance().getEnchantBuff()) {
                     itemMeta.removeEnchant(Enchantment.DIG_SPEED);
-                }
-                else {
+                } else {
                     itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel - AdvancedConfig.getInstance().getEnchantBuff(), true);
                 }
 
@@ -231,9 +225,9 @@ public class SkillUtils {
     /**
      * Modify the durability of an ItemStack.
      *
-     * @param itemStack The ItemStack which durability should be modified
+     * @param itemStack          The ItemStack which durability should be modified
      * @param durabilityModifier the amount to modify the durability by
-     * @param maxDamageModifier the amount to adjust the max damage by
+     * @param maxDamageModifier  the amount to adjust the max damage by
      */
     public static void handleDurabilityChange(ItemStack itemStack, int durabilityModifier, double maxDamageModifier) {
         if (itemStack.hasItemMeta() && itemStack.getItemMeta().isUnbreakable()) {
@@ -260,26 +254,19 @@ public class SkillUtils {
     protected static Material getRepairAndSalvageItem(ItemStack inHand) {
         if (ItemUtils.isDiamondTool(inHand) || ItemUtils.isDiamondArmor(inHand)) {
             return Material.DIAMOND;
-        }
-        else if (ItemUtils.isGoldTool(inHand) || ItemUtils.isGoldArmor(inHand)) {
+        } else if (ItemUtils.isGoldTool(inHand) || ItemUtils.isGoldArmor(inHand)) {
             return Material.GOLD_INGOT;
-        }
-        else if (ItemUtils.isIronTool(inHand) || ItemUtils.isIronArmor(inHand)) {
+        } else if (ItemUtils.isIronTool(inHand) || ItemUtils.isIronArmor(inHand)) {
             return Material.IRON_INGOT;
-        }
-        else if (ItemUtils.isStoneTool(inHand)) {
+        } else if (ItemUtils.isStoneTool(inHand)) {
             return Material.COBBLESTONE;
-        }
-        else if (ItemUtils.isWoodTool(inHand)) {
+        } else if (ItemUtils.isWoodTool(inHand)) {
             return Material.OAK_WOOD;
-        }
-        else if (ItemUtils.isLeatherArmor(inHand)) {
+        } else if (ItemUtils.isLeatherArmor(inHand)) {
             return Material.LEATHER;
-        }
-        else if (ItemUtils.isStringTool(inHand)) {
+        } else if (ItemUtils.isStringTool(inHand)) {
             return Material.STRING;
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -308,8 +295,7 @@ public class SkillUtils {
                     quantity += ingredient.getAmount();
                 }
             }
-        }
-        else if (recipe instanceof ShapedRecipe) {
+        } else if (recipe instanceof ShapedRecipe) {
             for (ItemStack ingredient : ((ShapedRecipe) recipe).getIngredientMap().values()) {
                 if (ingredient != null && (repairMaterial == null || ingredient.getType() == repairMaterial) && (repairMetadata == -1 || ingredient.getType().equals(repairMaterial))) {
                     quantity += ingredient.getAmount();

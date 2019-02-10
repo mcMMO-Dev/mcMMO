@@ -8,8 +8,41 @@ import java.io.ObjectOutput;
 public class PrimitiveExChunkletStore implements ChunkletStore, Externalizable {
     private static final long serialVersionUID = 8603603827094383873L;
 
-    /** X, Z, Y */
+    /**
+     * X, Z, Y
+     */
     public boolean[][][] store = new boolean[16][16][64];
+
+    /*
+     * The address byte: A single byte which contains x and z values which correspond to the x and z Chunklet-coordinates
+     *
+     * In Chunklet-coordinates, the only valid values are 0-15, so we can fit both into a single byte.
+     *
+     * The top 4 bits of the address byte are for the x value
+     * The bottom 4 bits of the address byte are for the z value
+     *
+     * Examples:
+     * An address byte with a value 00000001 would be split like so:
+     *  - x = 0000 = 0
+     *  - z = 0001 = 1
+     *  => Chunklet coordinates (0, 1)
+     *
+     * 01011111
+     *  - x = 0101 = 5
+     *  - z = 1111 = 15
+     *  => Chunklet coordinates (5, 15)
+     */
+    protected static byte makeAddressByte(int x, int z) {
+        return (byte) ((x << 4) + z);
+    }
+
+    protected static int addressByteX(byte address) {
+        return (address & 0xF0) >>> 4;
+    }
+
+    protected static int addressByteZ(byte address) {
+        return address & 0x0F;
+    }
 
     @Override
     public boolean isTrue(int x, int y, int z) {
@@ -145,36 +178,5 @@ public class PrimitiveExChunkletStore implements ChunkletStore, Externalizable {
         }
 
         return column;
-    }
-
-    /*
-     * The address byte: A single byte which contains x and z values which correspond to the x and z Chunklet-coordinates
-     *
-     * In Chunklet-coordinates, the only valid values are 0-15, so we can fit both into a single byte.
-     *
-     * The top 4 bits of the address byte are for the x value
-     * The bottom 4 bits of the address byte are for the z value
-     *
-     * Examples:
-     * An address byte with a value 00000001 would be split like so:
-     *  - x = 0000 = 0
-     *  - z = 0001 = 1
-     *  => Chunklet coordinates (0, 1)
-     *
-     * 01011111
-     *  - x = 0101 = 5
-     *  - z = 1111 = 15
-     *  => Chunklet coordinates (5, 15)
-     */
-    protected static byte makeAddressByte(int x, int z) {
-        return (byte) ((x << 4) + z);
-    }
-
-    protected static int addressByteX(byte address) {
-        return (address & 0xF0) >>> 4;
-    }
-
-    protected static int addressByteZ(byte address) {
-        return address & 0x0F;
     }
 }

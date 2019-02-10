@@ -1,15 +1,15 @@
 package com.gmail.nossr50.core.util;
 
-import com.gmail.nossr50.core.config.skills.Config;
 import com.gmail.nossr50.config.mods.CustomArmorConfig;
 import com.gmail.nossr50.config.mods.CustomBlockConfig;
 import com.gmail.nossr50.config.mods.CustomEntityConfig;
 import com.gmail.nossr50.config.mods.CustomToolConfig;
+import com.gmail.nossr50.core.config.skills.Config;
 import com.gmail.nossr50.core.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.core.datatypes.mods.CustomEntity;
 import com.gmail.nossr50.core.datatypes.mods.CustomTool;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.core.skills.primary.repair.repairables.Repairable;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -25,32 +25,32 @@ public class ModManager {
     private List<Repairable> repairables = new ArrayList<Repairable>();
 
     // Armor Mods
-    private List<Material> customBoots       = new ArrayList<Material>();
+    private List<Material> customBoots = new ArrayList<Material>();
     private List<Material> customChestplates = new ArrayList<Material>();
-    private List<Material> customHelmets     = new ArrayList<Material>();
-    private List<Material> customLeggings    = new ArrayList<Material>();
+    private List<Material> customHelmets = new ArrayList<Material>();
+    private List<Material> customLeggings = new ArrayList<Material>();
 
     // Block Mods
-    private List<Material> customExcavationBlocks  = new ArrayList<Material>();
-    private List<Material> customHerbalismBlocks   = new ArrayList<Material>();
-    private List<Material> customMiningBlocks      = new ArrayList<Material>();
-    private List<Material> customOres              = new ArrayList<Material>();
-    private List<Material> customLogs              = new ArrayList<Material>();
-    private List<Material> customLeaves            = new ArrayList<Material>();
-    private List<Material> customAbilityBlocks     = new ArrayList<Material>();
+    private List<Material> customExcavationBlocks = new ArrayList<Material>();
+    private List<Material> customHerbalismBlocks = new ArrayList<Material>();
+    private List<Material> customMiningBlocks = new ArrayList<Material>();
+    private List<Material> customOres = new ArrayList<Material>();
+    private List<Material> customLogs = new ArrayList<Material>();
+    private List<Material> customLeaves = new ArrayList<Material>();
+    private List<Material> customAbilityBlocks = new ArrayList<Material>();
     private HashMap<Material, CustomBlock> customBlockMap = new HashMap<>();
 
     // Entity Mods
     private HashMap<String, CustomEntity> customEntityClassMap = new HashMap<String, CustomEntity>();
-    private HashMap<String, CustomEntity> customEntityTypeMap  = new HashMap<String, CustomEntity>();
+    private HashMap<String, CustomEntity> customEntityTypeMap = new HashMap<String, CustomEntity>();
 
     // Tool Mods
-    private List<Material> customAxes     = new ArrayList<Material>();
-    private List<Material> customBows     = new ArrayList<Material>();
-    private List<Material> customHoes     = new ArrayList<Material>();
+    private List<Material> customAxes = new ArrayList<Material>();
+    private List<Material> customBows = new ArrayList<Material>();
+    private List<Material> customHoes = new ArrayList<Material>();
     private List<Material> customPickaxes = new ArrayList<Material>();
-    private List<Material> customShovels  = new ArrayList<Material>();
-    private List<Material> customSwords   = new ArrayList<Material>();
+    private List<Material> customShovels = new ArrayList<Material>();
+    private List<Material> customSwords = new ArrayList<Material>();
     private HashMap<Material, CustomTool> customToolMap = new HashMap<Material, CustomTool>();
 
     public void registerCustomArmor(CustomArmorConfig config) {
@@ -199,8 +199,7 @@ public class ModManager {
 
         try {
             return customEntityClassMap.containsKey(((Class<?>) entity.getClass().getDeclaredField("entityClass").get(entity)).getName());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             if (e instanceof NoSuchFieldException || e instanceof IllegalArgumentException || e instanceof IllegalAccessException) {
                 return customEntityClassMap.containsKey(entity.getClass().getName());
             }
@@ -216,12 +215,10 @@ public class ModManager {
         if (customEntity == null) {
             try {
                 customEntity = customEntityClassMap.get(((Class<?>) entity.getClass().getDeclaredField("entityClass").get(entity)).getName());
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 if (e instanceof NoSuchFieldException || e instanceof IllegalArgumentException || e instanceof IllegalAccessException) {
                     customEntity = customEntityClassMap.get(entity.getClass().getName());
-                }
-                else {
+                } else {
                     e.printStackTrace();
                 }
             }
@@ -257,12 +254,10 @@ public class ModManager {
 
         try {
             className = ((Class<?>) entity.getClass().getDeclaredField("entityClass").get(entity)).getName();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             if (e instanceof NoSuchFieldException || e instanceof IllegalArgumentException || e instanceof IllegalAccessException) {
                 className = entity.getClass().getName();
-            }
-            else {
+            } else {
                 e.printStackTrace();
             }
         }
@@ -274,8 +269,7 @@ public class ModManager {
         try {
             entitiesFile.save(entityFile);
             mcMMO.p.debug(entity.getType().toString() + " was added to the custom entities file!");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
