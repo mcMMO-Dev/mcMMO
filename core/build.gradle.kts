@@ -8,5 +8,5 @@ repositories {
 }
 
 dependencies {
-    compile("org.spongepowered", "configurate-hocon", "3.6") // Configurable (config library from Sponge)
+    compile("org.spongepowered", "configurate-yaml", "3.6") // Configurable (config library from Sponge)
 }
