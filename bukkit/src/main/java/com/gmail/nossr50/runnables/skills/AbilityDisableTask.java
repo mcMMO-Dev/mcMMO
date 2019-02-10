@@ -1,9 +1,9 @@
 package com.gmail.nossr50.runnables.skills;
 
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;

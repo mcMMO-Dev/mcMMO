@@ -1,11 +1,11 @@
 package com.gmail.nossr50.skills.smelting;
 
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.experience.XPGainReason;
-import com.gmail.nossr50.datatypes.experience.XPGainSource;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.core.datatypes.experience.XPGainSource;
+import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.core.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.mining.Mining;

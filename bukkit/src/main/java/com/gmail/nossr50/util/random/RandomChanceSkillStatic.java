@@ -1,6 +1,6 @@
 package com.gmail.nossr50.util.random;
 
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.core.datatypes.skills.SubSkillType;
 import org.bukkit.entity.Player;
 
 public class RandomChanceSkillStatic extends RandomChanceSkill {

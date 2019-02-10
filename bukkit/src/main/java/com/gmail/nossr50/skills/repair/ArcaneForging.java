@@ -1,6 +1,6 @@
 package com.gmail.nossr50.skills.repair;
 
-import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.core.config.skills.AdvancedConfig;
 
 public class ArcaneForging {
 

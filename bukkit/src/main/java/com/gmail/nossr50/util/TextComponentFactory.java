@@ -1,13 +1,13 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.RankConfig;
-import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.json.McMMOUrl;
-import com.gmail.nossr50.datatypes.json.McMMOWebLinks;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
+import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.config.skills.RankConfig;
+import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.core.datatypes.json.McMMOUrl;
+import com.gmail.nossr50.core.datatypes.json.McMMOWebLinks;
+import com.gmail.nossr50.core.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.core.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.core.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.skills.RankUtils;

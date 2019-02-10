@@ -1,8 +1,8 @@
 package com.gmail.nossr50.skills.archery;
 
-import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.core.config.skills.AdvancedConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.core.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Material;

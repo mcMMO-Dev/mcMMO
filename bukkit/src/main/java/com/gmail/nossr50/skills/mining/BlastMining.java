@@ -1,10 +1,10 @@
 package com.gmail.nossr50.skills.mining;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.core.config.skills.AdvancedConfig;
+import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

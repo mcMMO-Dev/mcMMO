@@ -2,9 +2,9 @@ package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.commands.database.ConvertDatabaseCommand;
 import com.gmail.nossr50.commands.experience.ConvertExperienceCommand;
-import com.gmail.nossr50.database.DatabaseManagerFactory;
-import com.gmail.nossr50.datatypes.database.DatabaseType;
-import com.gmail.nossr50.datatypes.experience.FormulaType;
+import com.gmail.nossr50.core.data.database.DatabaseManagerFactory;
+import com.gmail.nossr50.core.datatypes.database.DatabaseType;
+import com.gmail.nossr50.core.datatypes.experience.FormulaType;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;

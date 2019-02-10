@@ -1,13 +1,13 @@
 package com.gmail.nossr50.commands.party.alliance;
 
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.party.PartyFeature;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.datatypes.party.Party;
+import com.gmail.nossr50.core.datatypes.party.PartyFeature;
+import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.core.data.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

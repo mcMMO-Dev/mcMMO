@@ -1,6 +1,6 @@
 package com.gmail.nossr50.chat;
 
-import com.gmail.nossr50.datatypes.chat.ChatMode;
+import com.gmail.nossr50.core.datatypes.chat.ChatMode;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;

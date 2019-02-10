@@ -3,7 +3,7 @@ package com.gmail.nossr50.util;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
-import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.core.data.UserManager;
 import com.google.common.collect.ImmutableSet;
 import org.bukkit.Location;
 import org.bukkit.Material;

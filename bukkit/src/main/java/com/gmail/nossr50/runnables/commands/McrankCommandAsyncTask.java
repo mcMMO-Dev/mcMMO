@@ -1,6 +1,6 @@
 package com.gmail.nossr50.runnables.commands;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.core.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import org.apache.commons.lang.Validate;
 import org.bukkit.command.CommandSender;

@@ -1,6 +1,6 @@
 package com.gmail.nossr50.chat;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.core.config.skills.Config;
 import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
 import org.bukkit.plugin.Plugin;
 

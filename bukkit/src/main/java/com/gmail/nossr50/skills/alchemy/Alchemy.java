@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills.alchemy;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.core.config.skills.AdvancedConfig;
+import com.gmail.nossr50.core.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.AlchemyBrewTask;
 import com.gmail.nossr50.util.skills.RankUtils;

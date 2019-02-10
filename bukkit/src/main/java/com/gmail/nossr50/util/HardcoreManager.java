@@ -1,11 +1,11 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.core.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.core.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.core.data.UserManager;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

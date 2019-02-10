@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills.child;
 
-import com.gmail.nossr50.config.AutoUpdateConfigLoader;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.core.config.skills.AutoUpdateConfigLoader;
+import com.gmail.nossr50.core.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 

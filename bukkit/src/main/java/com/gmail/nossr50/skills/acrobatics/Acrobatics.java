@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills.acrobatics;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.core.config.skills.AdvancedConfig;
+import com.gmail.nossr50.core.config.skills.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 
 public final class Acrobatics {

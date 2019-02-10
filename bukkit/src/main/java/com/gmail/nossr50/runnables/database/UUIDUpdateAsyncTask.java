@@ -1,8 +1,8 @@
 package com.gmail.nossr50.runnables.database;
 
-import com.gmail.nossr50.config.HiddenConfig;
-import com.gmail.nossr50.database.DatabaseManager;
-import com.gmail.nossr50.datatypes.database.UpgradeType;
+import com.gmail.nossr50.core.config.skills.HiddenConfig;
+import com.gmail.nossr50.core.data.database.DatabaseManager;
+import com.gmail.nossr50.core.datatypes.database.UpgradeType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.uuid.UUIDFetcher;

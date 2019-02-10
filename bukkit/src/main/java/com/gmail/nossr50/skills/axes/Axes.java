@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills.axes;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.core.config.skills.AdvancedConfig;
+import com.gmail.nossr50.core.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.entity.LivingEntity;

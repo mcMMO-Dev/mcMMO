@@ -1,15 +1,15 @@
 package com.gmail.nossr50.skills.alchemy;
 
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
-import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
+import com.gmail.nossr50.core.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.core.datatypes.skills.alchemy.AlchemyPotion;
+import com.gmail.nossr50.core.datatypes.skills.alchemy.PotionStage;
 import com.gmail.nossr50.events.fake.FakeBrewEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
 import com.gmail.nossr50.runnables.skills.AlchemyBrewCheckTask;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.core.data.UserManager;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.BrewingStand;

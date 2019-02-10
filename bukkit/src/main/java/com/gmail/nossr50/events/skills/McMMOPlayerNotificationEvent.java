@@ -1,6 +1,6 @@
 package com.gmail.nossr50.events.skills;
 
-import com.gmail.nossr50.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;

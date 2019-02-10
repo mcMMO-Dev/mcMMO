@@ -1,6 +1,6 @@
 package com.gmail.nossr50.events.skills.alchemy;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.core.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerSkillEvent;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;

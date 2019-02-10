@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills.salvage.salvageables;
 
-import com.gmail.nossr50.datatypes.skills.ItemType;
-import com.gmail.nossr50.datatypes.skills.MaterialType;
+import com.gmail.nossr50.core.datatypes.skills.ItemType;
+import com.gmail.nossr50.core.datatypes.skills.MaterialType;
 import org.bukkit.Material;
 
 

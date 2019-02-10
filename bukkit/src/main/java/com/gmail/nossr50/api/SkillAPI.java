@@ -1,6 +1,6 @@
 package com.gmail.nossr50.api;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.core.datatypes.skills.PrimarySkillType;
 
 import java.util.ArrayList;
 import java.util.Arrays;

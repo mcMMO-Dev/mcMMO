@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.chat;
 
-import com.gmail.nossr50.datatypes.chat.ChatMode;
+import com.gmail.nossr50.core.datatypes.chat.ChatMode;
 import org.bukkit.command.CommandSender;
 
 public class AdminChatCommand extends ChatCommand {

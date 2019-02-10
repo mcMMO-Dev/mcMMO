@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands;
 
-import com.gmail.nossr50.datatypes.skills.ModConfigType;
+import com.gmail.nossr50.core.datatypes.skills.ModConfigType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import org.bukkit.Material;

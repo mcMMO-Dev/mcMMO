@@ -1,8 +1,8 @@
 package com.gmail.nossr50.events.experience;
 
-import com.gmail.nossr50.datatypes.experience.XPGainReason;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.core.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.core.data.UserManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;

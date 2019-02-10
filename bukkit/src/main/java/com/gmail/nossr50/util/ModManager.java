@@ -1,13 +1,13 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.core.config.skills.Config;
 import com.gmail.nossr50.config.mods.CustomArmorConfig;
 import com.gmail.nossr50.config.mods.CustomBlockConfig;
 import com.gmail.nossr50.config.mods.CustomEntityConfig;
 import com.gmail.nossr50.config.mods.CustomToolConfig;
-import com.gmail.nossr50.datatypes.mods.CustomBlock;
-import com.gmail.nossr50.datatypes.mods.CustomEntity;
-import com.gmail.nossr50.datatypes.mods.CustomTool;
+import com.gmail.nossr50.core.datatypes.mods.CustomBlock;
+import com.gmail.nossr50.core.datatypes.mods.CustomEntity;
+import com.gmail.nossr50.core.datatypes.mods.CustomTool;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import org.bukkit.Material;

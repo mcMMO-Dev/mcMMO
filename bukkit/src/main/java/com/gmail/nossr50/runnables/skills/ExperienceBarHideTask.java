@@ -1,7 +1,7 @@
 package com.gmail.nossr50.runnables.skills;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.util.experience.ExperienceBarManager;
 import org.bukkit.scheduler.BukkitRunnable;
 

@@ -1,10 +1,10 @@
 package com.gmail.nossr50.runnables;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.player.PlayerProfileSaveTask;
-import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.core.data.UserManager;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class SaveTimerTask extends BukkitRunnable {

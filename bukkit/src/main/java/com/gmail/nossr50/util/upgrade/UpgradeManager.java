@@ -1,7 +1,7 @@
 package com.gmail.nossr50.util.upgrade;
 
-import com.gmail.nossr50.config.ConfigLoader;
-import com.gmail.nossr50.datatypes.database.UpgradeType;
+import com.gmail.nossr50.core.config.skills.ConfigLoader;
+import com.gmail.nossr50.core.datatypes.database.UpgradeType;
 
 import java.util.Arrays;
 import java.util.EnumSet;
