@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.skills.primary.taming;
 
-import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.config.Config;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.CombatUtils;

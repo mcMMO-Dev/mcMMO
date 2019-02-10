@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.config.experience;
 
-import com.gmail.nossr50.core.config.skills.AutoUpdateConfigLoader;
+import com.gmail.nossr50.core.config.AutoUpdateConfigLoader;
 import com.gmail.nossr50.core.mcmmo.experience.FormulaType;
 import com.gmail.nossr50.core.mcmmo.skills.MaterialType;
 import com.gmail.nossr50.core.mcmmo.skills.PrimarySkillType;

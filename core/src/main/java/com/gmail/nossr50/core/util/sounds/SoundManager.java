@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.util.sounds;
 
-import com.gmail.nossr50.core.config.skills.SoundConfig;
+import com.gmail.nossr50.core.config.SoundConfig;
 import com.gmail.nossr50.core.util.Misc;
 import org.bukkit.Location;
 import org.bukkit.Sound;

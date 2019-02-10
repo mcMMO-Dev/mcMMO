@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.skills.primary.axes;
 
-import com.gmail.nossr50.core.config.skills.AdvancedConfig;
+import com.gmail.nossr50.core.config.AdvancedConfig;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.skills.RankUtils;

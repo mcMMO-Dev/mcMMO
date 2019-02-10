@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.util;
 
 import com.gmail.nossr50.config.party.ItemWeightConfig;
-import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.config.Config;
 import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.ChatColor;

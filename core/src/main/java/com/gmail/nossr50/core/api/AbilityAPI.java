@@ -2,10 +2,10 @@ package com.gmail.nossr50.core.api;
 
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.mcmmo.entity.Living;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.core.skills.SuperAbilityType;
-import com.gmail.nossr50.runnables.skills.BleedTimerTask;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 
 public final class AbilityAPI {
     private AbilityAPI() {
@@ -83,7 +83,7 @@ public final class AbilityAPI {
         UserManager.getPlayer(player).setAbilityDATS(SuperAbilityType.TREE_FELLER, cooldown);
     }
 
-    public static boolean isBleeding(LivingEntity entity) {
+    public static boolean isBleeding(Living entity) {
         return BleedTimerTask.isBleeding(entity);
     }
 }

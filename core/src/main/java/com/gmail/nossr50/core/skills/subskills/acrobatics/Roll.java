@@ -1,8 +1,8 @@
 package com.gmail.nossr50.core.skills.subskills.acrobatics;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.core.config.skills.AdvancedConfig;
-import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.config.AdvancedConfig;
+import com.gmail.nossr50.core.config.Config;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.LimitedSizeList;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;

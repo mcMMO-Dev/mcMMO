@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.util.skills;
 
-import com.gmail.nossr50.core.config.skills.RankConfig;
+import com.gmail.nossr50.core.config.RankConfig;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.runnables.skills.SkillUnlockNotificationTask;

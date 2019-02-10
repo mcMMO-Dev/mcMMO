@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.skills.primary.mining;
 
-import com.gmail.nossr50.core.config.skills.AdvancedConfig;
-import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.config.AdvancedConfig;
+import com.gmail.nossr50.core.config.Config;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;

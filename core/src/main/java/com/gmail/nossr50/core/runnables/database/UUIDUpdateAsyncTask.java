@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.runnables.database;
 
-import com.gmail.nossr50.core.config.skills.HiddenConfig;
+import com.gmail.nossr50.core.config.HiddenConfig;
 import com.gmail.nossr50.core.data.database.DatabaseManager;
 import com.gmail.nossr50.core.datatypes.database.UpgradeType;
 import com.gmail.nossr50.mcMMO;

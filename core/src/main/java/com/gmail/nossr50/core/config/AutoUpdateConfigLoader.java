@@ -1,4 +1,4 @@
-package com.gmail.nossr50.core.config.skills;
+package com.gmail.nossr50.core.config;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.skills.primary.fishing;
 
-import com.gmail.nossr50.core.config.skills.AdvancedConfig;
+import com.gmail.nossr50.core.config.AdvancedConfig;
 import com.gmail.nossr50.core.config.treasure.TreasureConfig;
 import com.gmail.nossr50.core.skills.treasure.ShakeTreasure;
 import com.gmail.nossr50.util.Misc;

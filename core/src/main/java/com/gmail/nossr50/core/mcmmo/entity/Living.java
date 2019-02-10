@@ -3,7 +3,7 @@ package com.gmail.nossr50.core.mcmmo.entity;
 /**
  * Living means you can die, you have health, and you can be damaged
  */
-public interface Living {
+public interface Living extends Entity {
     /**
      * Whether or not this entity is still alive
      *
@@ -34,4 +34,10 @@ public interface Living {
      * @param damage the damage to deal to this entity
      */
     void damage(Entity source, int damage);
+
+    /**
+     * Whether or not this entity still exists
+     * @return true if valid
+     */
+    Boolean isValid();
 }

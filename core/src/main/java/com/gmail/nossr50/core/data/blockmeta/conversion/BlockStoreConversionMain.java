@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.data.blockmeta.conversion;
 
-import com.gmail.nossr50.core.config.skills.HiddenConfig;
+import com.gmail.nossr50.core.config.HiddenConfig;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.scheduler.BukkitScheduler;
 

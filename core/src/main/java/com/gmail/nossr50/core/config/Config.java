@@ -1,15 +1,11 @@
 package com.gmail.nossr50.core.config;
 
 import com.gmail.nossr50.core.data.database.SQLDatabaseManager;
-import com.gmail.nossr50.core.mcmmo.MobHealthbarType;
-import com.gmail.nossr50.core.mcmmo.party.PartyFeature;
-import com.gmail.nossr50.core.mcmmo.skills.PrimarySkillType;
-import com.gmail.nossr50.core.mcmmo.skills.SuperAbilityType;
-import com.gmail.nossr50.util.StringUtils;
-import org.bukkit.Material;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.EntityType;
+import com.gmail.nossr50.core.datatypes.party.PartyFeature;
+import com.gmail.nossr50.core.skills.MobHealthbarType;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
+import com.gmail.nossr50.core.skills.SuperAbilityType;
+import com.gmail.nossr50.core.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;

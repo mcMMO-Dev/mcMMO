@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.database;
 
-import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.config.Config;
 import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;

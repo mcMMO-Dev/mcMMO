@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.util.upgrade;
 
-import com.gmail.nossr50.core.config.skills.ConfigLoader;
+import com.gmail.nossr50.core.config.ConfigLoader;
 import com.gmail.nossr50.core.datatypes.database.UpgradeType;
 
 import java.util.Arrays;

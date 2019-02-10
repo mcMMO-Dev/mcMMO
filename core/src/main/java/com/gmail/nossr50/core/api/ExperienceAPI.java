@@ -1,20 +1,18 @@
 package com.gmail.nossr50.core.api;
 
-import com.gmail.nossr50.api.exceptions.*;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.api.exceptions.*;
-import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.config.Config;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.experience.FormulaType;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.core.mcmmo.block.BlockState;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.child.FamilyTree;
-import org.bukkit.block.BlockState;
-import org.bukkit.entity.Player;
+import com.gmail.nossr50.core.skills.child.FamilyTree;
 
 import java.util.ArrayList;
 import java.util.Set;

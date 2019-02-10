@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.util.player;
 
-import com.gmail.nossr50.core.config.skills.AdvancedConfig;
+import com.gmail.nossr50.core.config.AdvancedConfig;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.skills.PrimarySkillType;

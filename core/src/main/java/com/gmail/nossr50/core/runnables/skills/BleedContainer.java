@@ -1,14 +1,15 @@
 package com.gmail.nossr50.core.runnables.skills;
 
-import org.bukkit.entity.LivingEntity;
+
+import com.gmail.nossr50.core.mcmmo.entity.Living;
 
 public class BleedContainer {
     public int bleedTicks;
     public int bleedRank;
-    public LivingEntity target;
-    public LivingEntity damageSource;
+    public Living target;
+    public Living damageSource;
 
-    public BleedContainer(LivingEntity target, int bleedTicks, int bleedRank, LivingEntity damageSource) {
+    public BleedContainer(Living target, int bleedTicks, int bleedRank, Living damageSource) {
         this.target = target;
         this.bleedTicks = bleedTicks;
         this.bleedRank = bleedRank;

@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.datatypes.party;
 
 import com.gmail.nossr50.commands.party.PartySubcommandType;
-import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;

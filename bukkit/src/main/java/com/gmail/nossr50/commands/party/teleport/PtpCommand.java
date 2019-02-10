@@ -1,7 +1,7 @@
 package com.gmail.nossr50.commands.party.teleport;
 
-import com.gmail.nossr50.core.config.skills.Config;
-import com.gmail.nossr50.core.config.skills.WorldBlacklist;
+import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.WorldBlacklist;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.party.Party;
 import com.gmail.nossr50.core.datatypes.party.PartyFeature;

@@ -4,7 +4,7 @@ import com.gmail.nossr50.config.mods.CustomArmorConfig;
 import com.gmail.nossr50.config.mods.CustomBlockConfig;
 import com.gmail.nossr50.config.mods.CustomEntityConfig;
 import com.gmail.nossr50.config.mods.CustomToolConfig;
-import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.config.Config;
 import com.gmail.nossr50.core.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.core.datatypes.mods.CustomEntity;
 import com.gmail.nossr50.core.datatypes.mods.CustomTool;

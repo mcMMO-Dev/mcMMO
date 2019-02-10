@@ -8,7 +8,7 @@ import com.gmail.nossr50.config.mods.ToolConfigManager;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.config.skills.repair.RepairConfigManager;
 import com.gmail.nossr50.config.skills.salvage.SalvageConfigManager;
-import com.gmail.nossr50.core.config.skills.*;
+import com.gmail.nossr50.core.config.*;
 import com.gmail.nossr50.core.config.treasure.TreasureConfig;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.data.blockmeta.chunkmeta.ChunkManager;

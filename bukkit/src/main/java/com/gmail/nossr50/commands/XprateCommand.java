@@ -1,7 +1,7 @@
 package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.core.config.skills.AdvancedConfig;
+import com.gmail.nossr50.core.config.AdvancedConfig;
 import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.util.Permissions;
 import com.gmail.nossr50.core.util.StringUtils;

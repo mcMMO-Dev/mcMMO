@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.party;
 
-import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.config.Config;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.chat.ChatMode;
 import com.gmail.nossr50.core.datatypes.database.UpgradeType;

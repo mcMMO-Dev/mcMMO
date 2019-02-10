@@ -1,8 +1,8 @@
 package com.gmail.nossr50.core.skills.primary.acrobatics;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.core.config.skills.AdvancedConfig;
-import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.config.AdvancedConfig;
+import com.gmail.nossr50.core.config.Config;
 
 public final class Acrobatics {
     public static double dodgeDamageModifier = AdvancedConfig.getInstance().getDodgeDamageModifier();

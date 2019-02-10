@@ -2,7 +2,7 @@ package com.gmail.nossr50.commands.chat;
 
 import com.gmail.nossr50.core.chat.ChatManager;
 import com.gmail.nossr50.core.chat.ChatManagerFactory;
-import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.config.Config;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.chat.ChatMode;
 import com.gmail.nossr50.core.datatypes.party.PartyFeature;

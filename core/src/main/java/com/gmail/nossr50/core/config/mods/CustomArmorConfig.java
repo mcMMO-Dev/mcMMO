@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.config.mods;
 
-import com.gmail.nossr50.core.config.skills.ConfigLoader;
+import com.gmail.nossr50.core.config.ConfigLoader;
 import com.gmail.nossr50.core.mcmmo.skills.ItemType;
 import com.gmail.nossr50.core.mcmmo.skills.MaterialType;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;

@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.skills.primary.taming;
 
-import com.gmail.nossr50.core.config.skills.AdvancedConfig;
+import com.gmail.nossr50.core.config.AdvancedConfig;
 import org.bukkit.EntityEffect;
 
 public class Taming {

@@ -1,12 +1,8 @@
 package com.gmail.nossr50.core.data;
 
-import com.gmail.nossr50.core.mcmmo.player.McMMOPlayer;
-import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 import com.google.common.collect.ImmutableList;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.ArrayList;
 import java.util.Collection;

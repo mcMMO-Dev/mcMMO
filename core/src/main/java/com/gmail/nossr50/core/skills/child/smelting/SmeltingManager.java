@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.skills.child.smelting;
 
-import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.config.Config;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;

@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.skills.treasure;
 
-import com.gmail.nossr50.core.config.skills.Config;
+import com.gmail.nossr50.core.config.Config;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class Treasure {

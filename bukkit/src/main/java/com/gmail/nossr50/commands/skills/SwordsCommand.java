@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.core.config.skills.AdvancedConfig;
+import com.gmail.nossr50.core.config.AdvancedConfig;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.skills.PrimarySkillType;

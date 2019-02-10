@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.skills.subskills;
 
-import com.gmail.nossr50.core.config.skills.CoreSkillsConfig;
+import com.gmail.nossr50.core.config.CoreSkillsConfig;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.skills.subskills.interfaces.Interaction;
 import com.gmail.nossr50.core.skills.subskills.interfaces.Rank;

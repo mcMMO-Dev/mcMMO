@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.config.treasure;
 
-import com.gmail.nossr50.core.config.skills.ConfigLoader;
+import com.gmail.nossr50.core.config.ConfigLoader;
 import com.gmail.nossr50.util.EnchantmentUtils;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.ChatColor;

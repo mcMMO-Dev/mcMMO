@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.config.party;
 
-import com.gmail.nossr50.core.config.skills.ConfigLoader;
+import com.gmail.nossr50.core.config.ConfigLoader;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.Material;
 
