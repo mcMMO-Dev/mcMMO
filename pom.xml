@@ -140,6 +140,10 @@
     </build>
     <repositories>
         <repository>
+            <id>sponge</id>
+            <url>https://repo.spongepowered.org/maven</url>
+        </repository>
+        <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
@@ -153,6 +157,12 @@
         </repository>
     </repositories>
     <dependencies>
+        <dependency>
+            <groupId>org.spongepowered</groupId>
+            <!-- Modify this line to target the loader you wish to use. -->
+            <artifactId>configurate-yaml</artifactId>
+            <version>3.6</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.maven.scm</groupId>
             <artifactId>maven-scm-provider-gitexe</artifactId>
