@@ -99,6 +99,8 @@
                             <include>org.apache.tomcat:tomcat-jdbc</include>
                             <include>org.apache.tomcat:tomcat-juli</include>
                             <include>org.bstats:bstats-bukkit</include>
+                            <include>org.spongepowered:configurate-yaml</include>
+                            <include>org.spongepowered:configurate-core</include>
                         </includes>
                     </artifactSet>
                     <relocations>

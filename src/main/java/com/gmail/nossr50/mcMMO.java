@@ -414,6 +414,13 @@ public class mcMMO extends JavaPlugin {
     }
 
     private void loadConfigFiles() {
+        // New Config System
+
+        ConfigurableTest.getInstance(); //Init
+
+        // End New Config System
+
+
         // Force the loading of config files
         TreasureConfig.getInstance();
         HiddenConfig.getInstance();
