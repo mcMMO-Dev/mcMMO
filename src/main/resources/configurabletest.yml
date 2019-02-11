@@ -1,3 +1,9 @@
+# The writing is on the wall!
 TheBidoofNotation:
     MudkipSquareRoot: 7
     CharmanderDivisor: 2
+# Woof!
+Woof:
+    Bark:
+        Meow: "Reeeee"
+    Bone: 8.3827

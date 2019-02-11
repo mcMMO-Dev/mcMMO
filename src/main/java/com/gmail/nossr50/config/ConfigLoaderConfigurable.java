@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config;
 
+import com.gmail.nossr50.DefaultKeys;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.io.Files;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -9,13 +10,12 @@ import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
 
 /**
  * Handles loading and cacheing configuration settings from a configurable compatible config file
  */
 @ConfigSerializable
-public abstract class ConfigLoaderConfigurable {
+public abstract class ConfigLoaderConfigurable implements DefaultKeys {
 
     /* PATH VARS */
 
@@ -65,6 +65,8 @@ public abstract class ConfigLoaderConfigurable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        validateKeys(); // Validate Keys
     }
 
     /**
@@ -215,10 +217,8 @@ public abstract class ConfigLoaderConfigurable {
         int version = this.rootNode.getNode("ConfigVersion").getInt();
         mcMMO.p.getLogger().info(FILE_RELATIVE_PATH + " version is " + version);
 
+        //Update our config
         updateConfig();
-
-        //Update config version
-        updateConfigVersion();
     }
 
     /**
@@ -226,10 +226,18 @@ public abstract class ConfigLoaderConfigurable {
      */
     private void updateConfig()
     {
-        for(Object key : defaultRootNode.getChildrenMap().keySet())
+        boolean addedValues = false;
+
+        mcMMO.p.getLogger().info(defaultRootNode.getChildrenMap().size() +" items in default children map");
+        mcMMO.p.getLogger().info(rootNode.getChildrenMap().size() +" items in default root map");
+
+        if(addedValues)
         {
-            
+            System.out.println("[mcMMO INFO] New config options were added, edit "+FILE_RELATIVE_PATH+" to customize!");
         }
+
+        // Update config version
+        updateConfigVersion();
     }
 
     /**
@@ -237,15 +245,15 @@ public abstract class ConfigLoaderConfigurable {
      */
     private void updateConfigVersion() {
         // Set a version for our config
-        /*this.rootNode.getNode("ConfigVersion").setValue(getConfigVersion());
-        mcMMO.p.getLogger().info("Updated config to ["+getConfigVersion()+"] - " + FILE_RELATIVE_PATH);*/
+        this.rootNode.getNode("ConfigVersion").setValue(getConfigVersion());
+        mcMMO.p.getLogger().info("Updated config to ["+getConfigVersion()+"] - " + FILE_RELATIVE_PATH);
     }
 
     /**
      * Returns the root node of this config
      * @return the root node of this config
      */
-    public ConfigurationNode getRootNode() {
+    protected ConfigurationNode getRootNode() {
         return rootNode;
     }
 }

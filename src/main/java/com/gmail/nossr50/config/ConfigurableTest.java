@@ -7,6 +7,8 @@ public class ConfigurableTest extends ConfigLoaderConfigurable {
     public final static String relativePath = "configurabletest.yml";
     private static ConfigurableTest instance;
 
+
+
     public ConfigurableTest() {
         super(mcMMO.p.getDataFolder(), relativePath);
     }
@@ -18,4 +20,8 @@ public class ConfigurableTest extends ConfigLoaderConfigurable {
         return instance;
     }
 
+    @Override
+    public boolean validateKeys() {
+        return false;
+    }
 }
