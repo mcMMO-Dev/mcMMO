@@ -1,4 +1,4 @@
-package com.gmail.nossr50.core.mcmmo;
+package com.gmail.nossr50.core.mcmmo.block;
 
 import java.util.Collection;
 

@@ -1,4 +1,7 @@
-package com.gmail.nossr50.core.mcmmo;
+package com.gmail.nossr50.core.mcmmo.world;
+
+import com.flowpowered.math.vector.Vector3d;
+import com.gmail.nossr50.core.mcmmo.world.World;
 
 /**
  * This class represents a Location in MC
@@ -7,25 +10,31 @@ package com.gmail.nossr50.core.mcmmo;
 public interface Location {
 
     /**
+     * The Vector3d of this location
+     * @return this vector
+     */
+    Vector3d getVector();
+
+    /**
      * Returns the position of this location on the x-axis
      *
      * @return x-axis position
      */
-    double getX();
+    //double getX();
 
     /**
      * Returns the position of this location on the y-axis
      *
      * @return y-axis position
      */
-    double getY();
+    //double getY();
 
     /**
      * Returns the position of this location on the z-axis
      *
      * @return z-axis position
      */
-    double getZ();
+    //double getZ();
 
     /**
      * The world for this Location

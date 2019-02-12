@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.data.blockmeta.chunkmeta;
 
 import com.gmail.nossr50.core.data.blockmeta.ChunkletStore;
-import com.gmail.nossr50.core.mcmmo.World;
+import com.gmail.nossr50.core.mcmmo.world.World;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

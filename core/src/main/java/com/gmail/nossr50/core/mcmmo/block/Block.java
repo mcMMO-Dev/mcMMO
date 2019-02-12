@@ -1,7 +1,5 @@
 package com.gmail.nossr50.core.mcmmo.block;
 
-import com.gmail.nossr50.core.mcmmo.Property;
-
 /**
  * Represents a container of properties and values for a Block
  *

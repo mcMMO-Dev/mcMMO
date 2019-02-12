@@ -1,5 +1,7 @@
 package com.gmail.nossr50.core.mcmmo;
 
+import com.gmail.nossr50.core.mcmmo.Named;
+
 public interface Nameable extends Named {
     /**
      * Change the name for this entity

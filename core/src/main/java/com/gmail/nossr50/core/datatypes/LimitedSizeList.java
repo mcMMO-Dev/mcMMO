@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.datatypes;
 
-import com.gmail.nossr50.core.mcmmo.Location;
+import com.gmail.nossr50.core.mcmmo.world.Location;
 
 public class LimitedSizeList {
     private final int size;
