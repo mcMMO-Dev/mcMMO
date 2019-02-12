@@ -3,6 +3,8 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.io.Files;
 import ninja.leaping.configurate.ConfigurationNode;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import ninja.leaping.configurate.loader.ConfigurationLoader;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 
@@ -37,6 +39,10 @@ public abstract class ConfigLoaderConfigurable implements DefaultKeys {
 
     private ConfigurationNode userRootNode = null;
     private ConfigurationNode defaultRootNode = null;
+    private CommentedConfigurationNode userCommentedRootNode = null;
+
+    /* CONFIG MANAGER */
+    private ConfigurationLoader<CommentedConfigurationNode> configManager;
 
     //TODO: Needed?
     //private ConfigurationLoader<CommentedConfigurationNode> configManager;
@@ -104,6 +110,9 @@ public abstract class ConfigLoaderConfigurable implements DefaultKeys {
 
             final ConfigurationNode userConfig = this.userCopyLoader.load();
             userRootNode = userConfig;
+
+            //TESTING THIS
+            userCommentedRootNode = configManager.load();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -282,28 +291,23 @@ public abstract class ConfigLoaderConfigurable implements DefaultKeys {
         return userRootNode;
     }
 
-    /**
-     * Attempts to get an int value from the config
-     * @param path path the node from the root node
-     * @return int value of the node
-     */
     int getIntValue(String path)
     {
-        return userRootNode.getNode(path).getInt();
+        return userRootNode.getNode(path.split(".")).getInt();
     }
 
     double getDoubleValue(String path)
     {
-        return userRootNode.getNode(path).getDouble();
+        return userRootNode.getNode(path.split(".")).getDouble();
     }
 
     boolean getBooleanValue(String path)
     {
-        return userRootNode.getNode(path).getBoolean();
+        return userRootNode.getNode(path.split(".")).getBoolean();
     }
 
     String getStringValue(String path)
     {
-        return userRootNode.getNode(path).getString();
+        return userRootNode.getNode(path.split(".")).getString();
     }
 }

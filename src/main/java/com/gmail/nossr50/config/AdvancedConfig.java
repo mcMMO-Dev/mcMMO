@@ -5,10 +5,13 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.mcMMO;
 import net.md_5.bungee.api.ChatColor;
+import ninja.leaping.configurate.objectmapping.Setting;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@ConfigSerializable
 public class AdvancedConfig extends ConfigLoaderConfigurable {
     private static AdvancedConfig instance;
 
@@ -23,6 +26,9 @@ public class AdvancedConfig extends ConfigLoaderConfigurable {
 
         return instance;
     }
+
+    @Setting(value = "Skills.General.StartingLevel", comment = "The starting level for players on your server.\nHistorically this has been 0.\nRecently is has changed to 1.")
+    private int startingLevel = 1;
 
     @Override
     public List<String> validateKeys() {
@@ -369,7 +375,7 @@ public class AdvancedConfig extends ConfigLoaderConfigurable {
     }
 
     /* GENERAL */
-    public int getStartingLevel() { return getIntValue("Skills.General.StartingLevel"); }
+    public int getStartingLevel() { return startingLevel; }
 
     /**
      * This returns the maximum level at which superabilities will stop lengthening from scaling alongside skill level.
