@@ -72,7 +72,7 @@ public abstract class ConfigLoaderConfigurable implements DefaultKeys {
 
         List<String> validKeyErrors = validateKeys(); // Validate Keys
 
-        if(validKeyErrors.size() > 0)
+        if(validKeyErrors != null && validKeyErrors.size() > 0)
         {
             for(String error : validKeyErrors)
             {
@@ -280,5 +280,30 @@ public abstract class ConfigLoaderConfigurable implements DefaultKeys {
      */
     protected ConfigurationNode getUserRootNode() {
         return userRootNode;
+    }
+
+    /**
+     * Attempts to get an int value from the config
+     * @param path path the node from the root node
+     * @return int value of the node
+     */
+    int getIntValue(String path)
+    {
+        return userRootNode.getNode(path).getInt();
+    }
+
+    double getDoubleValue(String path)
+    {
+        return userRootNode.getNode(path).getDouble();
+    }
+
+    boolean getBooleanValue(String path)
+    {
+        return userRootNode.getNode(path).getBoolean();
+    }
+
+    String getStringValue(String path)
+    {
+        return userRootNode.getNode(path).getString();
     }
 }

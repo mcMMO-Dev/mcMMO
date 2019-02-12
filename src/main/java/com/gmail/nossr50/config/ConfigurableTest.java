@@ -2,6 +2,8 @@ package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.mcMMO;
 
+import java.util.List;
+
 public class ConfigurableTest extends ConfigLoaderConfigurable {
 
     public final static String relativePath = "configurabletest.yml";
@@ -21,7 +23,7 @@ public class ConfigurableTest extends ConfigLoaderConfigurable {
     }
 
     @Override
-    public boolean validateKeys() {
-        return false;
+    public List<String> validateKeys() {
+        return null;
     }
 }
