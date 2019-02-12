@@ -101,6 +101,7 @@
                             <include>org.bstats:bstats-bukkit</include>
                             <include>org.spongepowered:configurate-yaml</include>
                             <include>org.spongepowered:configurate-core</include>
+                            <!--<include>com.flowpowered:flow-math</include>-->
                         </includes>
                     </artifactSet>
                     <relocations>
@@ -119,6 +120,14 @@
                         <relocation>
                             <pattern>org.bstats</pattern>
                             <shadedPattern>com.gmail.nossr50.metrics.bstat</shadedPattern>
+                        </relocation>
+                        <!--<relocation>
+                            <pattern>com.flowpowered</pattern>
+                            <shadedPattern>com.gmail.nossr50.flow</shadedPattern>
+                        </relocation>-->
+                        <relocation>
+                            <pattern>ninja.leaping</pattern>
+                            <shadedPattern>com.gmail.nossr50.configurable</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -146,6 +155,10 @@
             <url>https://repo.spongepowered.org/maven</url>
         </repository>
         <repository>
+            <id>flow</id>
+            <url>https://oss.sonatype.org/content/groups/public/</url>
+        </repository>
+        <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
@@ -159,6 +172,11 @@
         </repository>
     </repositories>
     <dependencies>
+        <!--<dependency>
+            <groupId>com.flowpowered</groupId>
+            <artifactId>flow-math</artifactId>
+            <version>1.0.4-SNAPSHOT</version>
+        </dependency>-->
         <dependency>
             <groupId>org.spongepowered</groupId>
             <!-- Modify this line to target the loader you wish to use. -->

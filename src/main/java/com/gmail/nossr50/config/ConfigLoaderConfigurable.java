@@ -35,7 +35,7 @@ public abstract class ConfigLoaderConfigurable implements DefaultKeys {
 
     /* ROOT NODES */
 
-    private ConfigurationNode rootNode = null;
+    private ConfigurationNode userRootNode = null;
     private ConfigurationNode defaultRootNode = null;
 
     //TODO: Needed?
@@ -91,7 +91,7 @@ public abstract class ConfigLoaderConfigurable implements DefaultKeys {
             defaultRootNode = defaultConfig;
 
             final ConfigurationNode userConfig = this.userCopyLoader.load();
-            rootNode = userConfig;
+            userRootNode = userConfig;
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -214,7 +214,7 @@ public abstract class ConfigLoaderConfigurable implements DefaultKeys {
     public void readConfig() {
         mcMMO.p.getLogger().info("Attempting to read " + FILE_RELATIVE_PATH + ".");
 
-        int version = this.rootNode.getNode("ConfigVersion").getInt();
+        int version = this.userRootNode.getNode("ConfigVersion").getInt();
         mcMMO.p.getLogger().info(FILE_RELATIVE_PATH + " version is " + version);
 
         //Update our config
@@ -226,18 +226,31 @@ public abstract class ConfigLoaderConfigurable implements DefaultKeys {
      */
     private void updateConfig()
     {
-        boolean addedValues = false;
-
         mcMMO.p.getLogger().info(defaultRootNode.getChildrenMap().size() +" items in default children map");
-        mcMMO.p.getLogger().info(rootNode.getChildrenMap().size() +" items in default root map");
+        mcMMO.p.getLogger().info(userRootNode.getChildrenMap().size() +" items in default root map");
 
-        if(addedValues)
-        {
-            System.out.println("[mcMMO INFO] New config options were added, edit "+FILE_RELATIVE_PATH+" to customize!");
-        }
+        // Merge Values from default
+        userRootNode = userRootNode.mergeValuesFrom(defaultRootNode);
 
         // Update config version
         updateConfigVersion();
+
+        //Attempt to save
+        try {
+            saveUserCopy();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Saves the current state information of the config to the users copy (which they may edit)
+     * @throws IOException
+     */
+    private void saveUserCopy() throws IOException
+    {
+        mcMMO.p.getLogger().info("Saving new node");
+        userCopyLoader.save(userRootNode);
     }
 
     /**
@@ -245,7 +258,7 @@ public abstract class ConfigLoaderConfigurable implements DefaultKeys {
      */
     private void updateConfigVersion() {
         // Set a version for our config
-        this.rootNode.getNode("ConfigVersion").setValue(getConfigVersion());
+        this.userRootNode.getNode("ConfigVersion").setValue(getConfigVersion());
         mcMMO.p.getLogger().info("Updated config to ["+getConfigVersion()+"] - " + FILE_RELATIVE_PATH);
     }
 
@@ -253,7 +266,7 @@ public abstract class ConfigLoaderConfigurable implements DefaultKeys {
      * Returns the root node of this config
      * @return the root node of this config
      */
-    protected ConfigurationNode getRootNode() {
-        return rootNode;
+    protected ConfigurationNode getUserRootNode() {
+        return userRootNode;
     }
 }
