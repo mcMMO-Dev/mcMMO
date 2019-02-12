@@ -1,6 +1,5 @@
 #
 #  Settings for Fishing
-#  Last updated on ${project.version}-b${BUILD_NUMBER}
 ###
 Fishing:
     LEATHER_BOOTS:

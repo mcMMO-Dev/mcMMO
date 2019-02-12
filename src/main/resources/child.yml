@@ -1,6 +1,5 @@
 #
 #  mcMMO child skill configuration
-#  Last updated on ${project.version}-b${BUILD_NUMBER}
 #
 #  You do not need to modify this file except to change parents of child skills
 #

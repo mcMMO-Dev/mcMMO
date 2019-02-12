@@ -1,6 +1,5 @@
 #
 #  Settings for Concoctions
-#  Last updated on ${project.version}-b${BUILD_NUMBER}
 ###
 Concoctions:
     Tier_One_Ingredients:

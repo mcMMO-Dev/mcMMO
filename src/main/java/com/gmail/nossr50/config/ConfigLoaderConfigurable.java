@@ -1,6 +1,5 @@
 package com.gmail.nossr50.config;
 
-import com.gmail.nossr50.DefaultKeys;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.io.Files;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -10,6 +9,7 @@ import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * Handles loading and cacheing configuration settings from a configurable compatible config file
@@ -66,7 +66,19 @@ public abstract class ConfigLoaderConfigurable implements DefaultKeys {
             e.printStackTrace();
         }
 
-        validateKeys(); // Validate Keys
+        /*
+         * Print Errors about Keys
+         */
+
+        List<String> validKeyErrors = validateKeys(); // Validate Keys
+
+        if(validKeyErrors.size() > 0)
+        {
+            for(String error : validKeyErrors)
+            {
+                mcMMO.p.getLogger().severe(error);
+            }
+        }
     }
 
     /**

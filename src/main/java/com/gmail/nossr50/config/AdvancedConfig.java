@@ -9,12 +9,11 @@ import net.md_5.bungee.api.ChatColor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdvancedConfig extends AutoUpdateConfigLoader {
+public class AdvancedConfig extends ConfigLoaderConfigurable {
     private static AdvancedConfig instance;
 
     private AdvancedConfig() {
-        super("advanced.yml");
-        validate();
+        super(mcMMO.p.getDataFolder(), "advanced.yml");
     }
 
     public static AdvancedConfig getInstance() {
@@ -26,7 +25,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     }
 
     @Override
-    protected boolean validateKeys() {
+    public List<String> validateKeys() {
         // Validate all the settings!
         List<String> reason = new ArrayList<String>();
 
@@ -637,11 +636,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Kraken.Attack_Damage should be at least 1!");
         }
 
-        return noErrorsInConfig(reason);
+        return reason;
     }
-
-    @Override
-    protected void loadKeys() {}
 
     /* GENERAL */
     public int getStartingLevel() { return config.getInt("Skills.General.StartingLevel", 1); }

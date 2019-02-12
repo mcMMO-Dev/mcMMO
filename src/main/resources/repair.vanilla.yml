@@ -1,6 +1,5 @@
 #
 #  Repair configuration
-#  Last updated on ${project.version}-b${BUILD_NUMBER}
 #
 # Any file named repair.*.yml in the mcmmmo folder will be loaded as a repair config
 # All repair configs have a main section titled "Repairables"
