@@ -1,9 +1,10 @@
 package com.gmail.nossr50.core.datatypes.player;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.McmmoCore;
 import com.gmail.nossr50.core.config.AdvancedConfig;
 import com.gmail.nossr50.core.config.Config;
 import com.gmail.nossr50.core.config.WorldBlacklist;
+import com.gmail.nossr50.core.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.chat.ChatMode;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
@@ -12,52 +13,48 @@ import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.mods.CustomTool;
 import com.gmail.nossr50.core.datatypes.party.Party;
 import com.gmail.nossr50.core.datatypes.party.PartyTeleportRecord;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.meta.Metadata;
+import com.gmail.nossr50.core.mcmmo.meta.MetadataDefinitions;
+import com.gmail.nossr50.core.mcmmo.world.Location;
+import com.gmail.nossr50.core.party.PartyManager;
+import com.gmail.nossr50.core.party.ShareHandler;
+import com.gmail.nossr50.core.runnables.skills.AbilityDisableTask;
+import com.gmail.nossr50.core.runnables.skills.BleedTimerTask;
+import com.gmail.nossr50.core.runnables.skills.ToolLowerTask;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
+import com.gmail.nossr50.core.skills.SkillManager;
 import com.gmail.nossr50.core.skills.SuperAbilityType;
 import com.gmail.nossr50.core.skills.ToolType;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.party.ShareHandler;
-import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
-import com.gmail.nossr50.runnables.skills.BleedTimerTask;
-import com.gmail.nossr50.runnables.skills.ToolLowerTask;
-import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
-import com.gmail.nossr50.skills.alchemy.AlchemyManager;
-import com.gmail.nossr50.skills.archery.ArcheryManager;
-import com.gmail.nossr50.skills.axes.AxesManager;
-import com.gmail.nossr50.skills.child.FamilyTree;
-import com.gmail.nossr50.skills.excavation.ExcavationManager;
-import com.gmail.nossr50.skills.fishing.FishingManager;
-import com.gmail.nossr50.skills.herbalism.HerbalismManager;
-import com.gmail.nossr50.skills.mining.MiningManager;
-import com.gmail.nossr50.skills.repair.RepairManager;
-import com.gmail.nossr50.skills.salvage.SalvageManager;
-import com.gmail.nossr50.skills.smelting.SmeltingManager;
-import com.gmail.nossr50.skills.swords.SwordsManager;
-import com.gmail.nossr50.skills.taming.TamingManager;
-import com.gmail.nossr50.skills.unarmed.UnarmedManager;
-import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
-import com.gmail.nossr50.util.EventUtils;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.experience.ExperienceBarManager;
-import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
-import com.gmail.nossr50.util.skills.ParticleEffectUtils;
-import com.gmail.nossr50.util.skills.PerksUtils;
-import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
-import com.gmail.nossr50.util.sounds.SoundManager;
-import com.gmail.nossr50.util.sounds.SoundType;
-import org.apache.commons.lang.Validate;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.plugin.Plugin;
+import com.gmail.nossr50.core.skills.child.FamilyTree;
+import com.gmail.nossr50.core.skills.child.salvage.SalvageManager;
+import com.gmail.nossr50.core.skills.child.smelting.SmeltingManager;
+import com.gmail.nossr50.core.skills.primary.acrobatics.AcrobaticsManager;
+import com.gmail.nossr50.core.skills.primary.alchemy.AlchemyManager;
+import com.gmail.nossr50.core.skills.primary.archery.ArcheryManager;
+import com.gmail.nossr50.core.skills.primary.axes.AxesManager;
+import com.gmail.nossr50.core.skills.primary.excavation.ExcavationManager;
+import com.gmail.nossr50.core.skills.primary.fishing.FishingManager;
+import com.gmail.nossr50.core.skills.primary.herbalism.HerbalismManager;
+import com.gmail.nossr50.core.skills.primary.mining.MiningManager;
+import com.gmail.nossr50.core.skills.primary.repair.RepairManager;
+import com.gmail.nossr50.core.skills.primary.swords.SwordsManager;
+import com.gmail.nossr50.core.skills.primary.taming.TamingManager;
+import com.gmail.nossr50.core.skills.primary.unarmed.UnarmedManager;
+import com.gmail.nossr50.core.skills.primary.woodcutting.WoodcuttingManager;
+import com.gmail.nossr50.core.util.EventUtils;
+import com.gmail.nossr50.core.util.Misc;
+import com.gmail.nossr50.core.util.Permissions;
+import com.gmail.nossr50.core.util.experience.ExperienceBarManager;
+import com.gmail.nossr50.core.util.player.NotificationManager;
+import com.gmail.nossr50.core.util.scoreboards.ScoreboardManager;
+import com.gmail.nossr50.core.util.skills.ParticleEffectUtils;
+import com.gmail.nossr50.core.util.skills.PerksUtils;
+import com.gmail.nossr50.core.util.skills.RankUtils;
+import com.gmail.nossr50.core.util.skills.SkillUtils;
+import com.gmail.nossr50.core.util.sounds.SoundManager;
+import com.gmail.nossr50.core.util.sounds.SoundType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -69,7 +66,7 @@ public class McMMOPlayer {
     private final Map<SuperAbilityType, Boolean> abilityMode = new HashMap<SuperAbilityType, Boolean>();
     private final Map<SuperAbilityType, Boolean> abilityInformed = new HashMap<SuperAbilityType, Boolean>();
     private final Map<ToolType, Boolean> toolMode = new HashMap<ToolType, Boolean>();
-    private final FixedMetadataValue playerMetadata;
+    private final Metadata playerMetadata;
     private Player player;
     private PlayerProfile profile;
     private ExperienceBarManager experienceBarManager;
@@ -94,10 +91,10 @@ public class McMMOPlayer {
 
     public McMMOPlayer(Player player, PlayerProfile profile) {
         String playerName = player.getName();
-        UUID uuid = player.getUniqueId();
+        UUID uuid = player.getUUID();
 
         this.player = player;
-        playerMetadata = new FixedMetadataValue(mcMMO.p, playerName);
+        playerMetadata = player.setMetadata(MetadataDefinitions.MCMMO_METADATA_PLAYERDATA_KEY, playerName); //new FixedMetadataValue(mcMMO.p, playerName);
         this.profile = profile;
 
         if (profile.getUniqueId() == null) {
@@ -115,7 +112,8 @@ public class McMMOPlayer {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
+            McmmoCore.p.disablePlugin(); //Disable Plugin
+            //mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
         }
 
         for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {

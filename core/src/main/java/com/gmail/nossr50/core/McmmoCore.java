@@ -1,5 +1,7 @@
 package com.gmail.nossr50.core;
 
-public class McmmoCore {
+import com.gmail.nossr50.core.mcmmo.plugin.Plugin;
 
+public class McmmoCore {
+    public static Plugin p;
 }

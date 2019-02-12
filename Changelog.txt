@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 2.2.0
+    mcMMO is now abstracted from the Bukkit API in order to support more platforms (WIP)
     Salvage config entries are no longer case sensitive
     mcMMO has changed from using maven to gradle!
     mcMMO is now a gradle project (this makes it much easier for us to support older versions of MC and other APIs)

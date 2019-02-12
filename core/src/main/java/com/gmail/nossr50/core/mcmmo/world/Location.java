@@ -1,7 +1,6 @@
 package com.gmail.nossr50.core.mcmmo.world;
 
 import com.flowpowered.math.vector.Vector3d;
-import com.gmail.nossr50.core.mcmmo.world.World;
 
 /**
  * This class represents a Location in MC

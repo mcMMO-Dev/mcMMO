@@ -1,8 +1,8 @@
 package com.gmail.nossr50.core.api;
 
 import com.gmail.nossr50.core.api.exceptions.*;
-import com.gmail.nossr50.core.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.experience.FormulaType;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
