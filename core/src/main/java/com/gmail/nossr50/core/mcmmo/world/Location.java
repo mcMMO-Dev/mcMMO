@@ -19,21 +19,21 @@ public interface Location {
      *
      * @return x-axis position
      */
-    //double getX();
+    default double getX() { return getVector().getX(); }
 
     /**
      * Returns the position of this location on the y-axis
      *
      * @return y-axis position
      */
-    //double getY();
+    default double getY() { return getVector().getY(); }
 
     /**
      * Returns the position of this location on the z-axis
      *
      * @return z-axis position
      */
-    //double getZ();
+    default double getZ() { return getVector().getZ(); }
 
     /**
      * The world for this Location

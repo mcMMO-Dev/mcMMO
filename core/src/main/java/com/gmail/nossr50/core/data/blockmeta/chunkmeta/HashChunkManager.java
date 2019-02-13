@@ -1,11 +1,11 @@
 package com.gmail.nossr50.core.data.blockmeta.chunkmeta;
 
-import com.gmail.nossr50.core.data.blockmeta.blockmeta.conversion.BlockStoreConversionZDirectory;
-import com.gmail.nossr50.mcMMO;
-import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.entity.Entity;
+import com.gmail.nossr50.core.McmmoCore;
+import com.gmail.nossr50.core.data.blockmeta.conversion.BlockStoreConversionZDirectory;
+import com.gmail.nossr50.core.mcmmo.block.Block;
+import com.gmail.nossr50.core.mcmmo.block.BlockState;
+import com.gmail.nossr50.core.mcmmo.entity.Entity;
+import com.gmail.nossr50.core.mcmmo.world.World;
 
 import java.io.*;
 import java.util.*;
@@ -90,7 +90,7 @@ public class HashChunkManager implements ChunkManager {
 
         directory.mkdirs();
 
-        UUID key = world.getUID();
+        UUID key = world.getUUID();
 
         HashMap<Long, McMMOSimpleRegionFile> worldRegions = regionFiles.get(key);
 
@@ -131,7 +131,7 @@ public class HashChunkManager implements ChunkManager {
             return;
         }
 
-        UUID key = world.getUID();
+        UUID key = world.getUUID();
 
         if (!oldData.containsKey(key)) {
             oldData.put(key, (new File(world.getWorldFolder(), "mcmmo_data")).exists());
@@ -260,7 +260,7 @@ public class HashChunkManager implements ChunkManager {
     public synchronized void saveAll() {
         closeAll();
 
-        for (World world : mcMMO.p.getServer().getWorlds()) {
+        for (World world : McmmoCore.getServer().getWorlds()) {
             saveWorld(world);
         }
     }
@@ -269,7 +269,7 @@ public class HashChunkManager implements ChunkManager {
     public synchronized void unloadAll() {
         closeAll();
 
-        for (World world : mcMMO.p.getServer().getWorlds()) {
+        for (World world : McmmoCore.getServer().getWorlds()) {
             unloadWorld(world);
         }
     }
@@ -315,7 +315,7 @@ public class HashChunkManager implements ChunkManager {
             return false;
         }
 
-        return isTrue(blockState.getX(), blockState.getY(), blockState.getZ(), blockState.getWorld());
+        return isTrue(blockState.getBlock().getX(), blockState.getBlock().getY(), blockState.getBlock().getZ(), blockState.getBlock().getWorld());
     }
 
     @Override
@@ -361,7 +361,7 @@ public class HashChunkManager implements ChunkManager {
             return;
         }
 
-        setTrue(blockState.getX(), blockState.getY(), blockState.getZ(), blockState.getWorld());
+        setTrue(blockState.getBlock().getX(), blockState.getBlock().getY(), blockState.getBlock().getZ(), blockState.getBlock().getWorld());
     }
 
     @Override
@@ -406,7 +406,7 @@ public class HashChunkManager implements ChunkManager {
             return;
         }
 
-        setFalse(blockState.getX(), blockState.getY(), blockState.getZ(), blockState.getWorld());
+        setFalse(blockState.getBlock().getX(), blockState.getBlock().getY(), blockState.getBlock().getZ(), blockState.getBlock().getWorld());
     }
 
     @Override

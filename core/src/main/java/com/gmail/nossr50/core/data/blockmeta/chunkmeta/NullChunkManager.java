@@ -1,9 +1,9 @@
 package com.gmail.nossr50.core.data.blockmeta.chunkmeta;
 
-import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.entity.Entity;
+import com.gmail.nossr50.core.mcmmo.block.Block;
+import com.gmail.nossr50.core.mcmmo.block.BlockState;
+import com.gmail.nossr50.core.mcmmo.entity.Entity;
+import com.gmail.nossr50.core.mcmmo.world.World;
 
 import java.io.IOException;
 

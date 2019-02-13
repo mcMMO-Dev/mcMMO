@@ -32,7 +32,7 @@ public interface Platform {
      *
      * @return true if the platform is loaded
      */
-    Boolean isPlatformLoaded();
+    boolean isPlatformLoaded();
 
     /**
      * Gets the PlatformSoftwareType for this platform

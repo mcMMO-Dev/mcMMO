@@ -24,7 +24,7 @@ public class PrimitiveChunkStore implements ChunkStore {
     public PrimitiveChunkStore(World world, int cx, int cz) {
         this.cx = cx;
         this.cz = cz;
-        this.worldUid = world.getUID();
+        this.worldUid = world.getUUID();
         this.store = new boolean[16][16][world.getMaxHeight()];
     }
 

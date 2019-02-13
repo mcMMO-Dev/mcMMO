@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.data.blockmeta.chunkmeta;
 
-import org.bukkit.World;
+import com.gmail.nossr50.core.mcmmo.world.World;
 
 public class ChunkStoreFactory {
     protected static ChunkStore getChunkStore(World world, int x, int z) {
