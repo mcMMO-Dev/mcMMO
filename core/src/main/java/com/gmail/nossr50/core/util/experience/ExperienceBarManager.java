@@ -25,7 +25,7 @@ public class ExperienceBarManager {
         this.mcMMOPlayer = mcMMOPlayer;
     }
 
-    public void updateExperienceBar(PrimarySkillType primarySkillType, Plugin plugin) {
+    public void updateExperienceBar(PrimarySkillType primarySkillType) {
         if (!ExperienceConfig.getInstance().isExperienceBarsEnabled() || !ExperienceConfig.getInstance().isExperienceBarEnabled(primarySkillType))
             return;
 
@@ -45,15 +45,15 @@ public class ExperienceBarManager {
         //Setup Hide Bar Task
         if (experienceBarHideTaskHashMap.get(primarySkillType) != null) {
             experienceBarHideTaskHashMap.get(primarySkillType).cancel();
-            scheduleHideTask(primarySkillType, plugin);
+            scheduleHideTask(primarySkillType);
         } else {
-            scheduleHideTask(primarySkillType, plugin);
+            scheduleHideTask(primarySkillType);
         }
     }
 
-    private void scheduleHideTask(PrimarySkillType primarySkillType, Plugin plugin) {
+    private void scheduleHideTask(PrimarySkillType primarySkillType) {
         ExperienceBarHideTask experienceBarHideTask = new ExperienceBarHideTask(this, mcMMOPlayer, primarySkillType);
-        experienceBarHideTask.runTaskLater(plugin, 20 * 2);
+        experienceBarHideTask.runTaskLater(20 * 2);
         experienceBarHideTaskHashMap.put(primarySkillType, experienceBarHideTask);
     }
 

@@ -92,7 +92,7 @@ public final class Misc {
      *
      * @param location  The location to drop the item at
      * @param itemStack The item to drop
-     * @return Dropped Item entity or null if invalid or cancelled
+     * @return Dropped ItemStack entity or null if invalid or cancelled
      */
     public static Item dropItem(Location location, ItemStack itemStack) {
         if (itemStack.getType() == Material.AIR) {

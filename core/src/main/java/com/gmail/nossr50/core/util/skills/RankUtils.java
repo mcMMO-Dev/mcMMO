@@ -3,14 +3,12 @@ package com.gmail.nossr50.core.util.skills;
 import com.gmail.nossr50.core.config.RankConfig;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 import com.gmail.nossr50.core.runnables.skills.SkillUnlockNotificationTask;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.skills.SuperAbilityType;
 import com.gmail.nossr50.core.skills.subskills.AbstractSubSkill;
-import com.gmail.nossr50.listeners.InteractionManager;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 
@@ -18,12 +16,11 @@ public class RankUtils {
     private static HashMap<String, HashMap<Integer, Integer>> subSkillRanks;
 
     /**
-     * @param plugin           plugin instance ref
      * @param mcMMOPlayer      target player
      * @param primarySkillType
      * @param newLevel         the new level of this skill
      */
-    public static void executeSkillUnlockNotifications(Plugin plugin, McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, int newLevel) {
+    public static void executeSkillUnlockNotifications(McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, int newLevel) {
         int count = 0;
 
         for (SubSkillType subSkillType : primarySkillType.getSkillAbilities()) {
@@ -39,7 +36,7 @@ public class RankUtils {
             if (newLevel == innerMap.get(playerRankInSkill)) {
                 SkillUnlockNotificationTask skillUnlockNotificationTask = new SkillUnlockNotificationTask(mcMMOPlayer, subSkillType, newLevel);
 
-                skillUnlockNotificationTask.runTaskLater(plugin, ((count * 4) + 1) * 20);
+                skillUnlockNotificationTask.runTaskLater(((count * 4) + 1) * 20);
 
                 count++;
             }

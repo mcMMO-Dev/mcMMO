@@ -1,5 +1,5 @@
 #
-#  Item Weights configuration
+#  ItemStack Weights configuration
 #  
 #  This file is used to determine the value of an item. This will only 
 #  happen when users are sharing items in a party using the EQUAL item share mode.
@@ -27,7 +27,7 @@ Item_Weights:
     Coal: 10
     Coal_Ore: 10
 
-    # Item weights for armor and tools
+    # ItemStack weights for armor and tools
     Diamond_Sword: 150
     Diamond_Shovel: 150
     Diamond_Pickaxe: 150

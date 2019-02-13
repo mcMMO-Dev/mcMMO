@@ -3,9 +3,9 @@ package com.gmail.nossr50.core.skills;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import com.gmail.nossr50.core.mcmmo.entity.Entity;
+import com.gmail.nossr50.core.mcmmo.entity.Living;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 
 public abstract class SkillManager {
     protected McMMOPlayer mcMMOPlayer;
@@ -47,7 +47,7 @@ public abstract class SkillManager {
         mcMMOPlayer.beginXpGain(skill, xp, xpGainReason, xpGainSource);
     }
 
-    public XPGainReason getXPGainReason(LivingEntity target, Entity damager) {
+    public XPGainReason getXPGainReason(Living target, Entity damager) {
         return (damager instanceof Player && target instanceof Player) ? XPGainReason.PVP : XPGainReason.PVE;
     }
 }

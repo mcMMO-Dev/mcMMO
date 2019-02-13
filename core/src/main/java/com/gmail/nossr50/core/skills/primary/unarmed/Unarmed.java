@@ -59,7 +59,7 @@ public class Unarmed {
         }
 
         if (amount <= 0)
-            event.getItem().remove(); //Cleanup Item
+            event.getItem().remove(); //Cleanup ItemStack
         else
             event.getItem().getItemStack().setAmount(amount);
 

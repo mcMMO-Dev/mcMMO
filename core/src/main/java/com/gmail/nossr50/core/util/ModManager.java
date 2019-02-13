@@ -167,7 +167,7 @@ public class ModManager {
     /**
      * Checks to see if an item is a custom tool.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is a custom tool, false otherwise
      */
     public boolean isCustomTool(ItemStack item) {

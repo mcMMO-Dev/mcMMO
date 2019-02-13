@@ -31,7 +31,7 @@ public interface RepairableManager {
     /**
      * Checks if an item is repairable
      *
-     * @param itemStack Item to check if repairable
+     * @param itemStack ItemStack to check if repairable
      * @return true if repairable, false if not
      */
     public boolean isRepairable(ItemStack itemStack);

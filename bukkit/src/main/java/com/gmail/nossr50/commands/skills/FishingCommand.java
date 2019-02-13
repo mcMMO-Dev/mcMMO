@@ -57,7 +57,7 @@ public class FishingCommand extends SkillCommand {
         if (canTreasureHunt) {
             lootTier = fishingManager.getLootTier();
 
-            // Item drop rates
+            // ItemStack drop rates
             commonTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.COMMON) / 100.0);
             uncommonTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.UNCOMMON) / 100.0);
             rareTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.RARE) / 100.0);

@@ -34,7 +34,7 @@ public class SalvageConfig extends ConfigLoader {
             // Validate all the things!
             List<String> reason = new ArrayList<String>();
 
-            // Item Material
+            // ItemStack Material
             Material itemMaterial = Material.matchMaterial(key);
 
             if (itemMaterial == null) {
@@ -82,7 +82,7 @@ public class SalvageConfig extends ConfigLoader {
             // Maximum Durability
             short maximumDurability = (itemMaterial != null ? itemMaterial.getMaxDurability() : (short) config.getInt("Salvageables." + key + ".MaximumDurability"));
 
-            // Item Type
+            // ItemStack Type
             ItemType salvageItemType = ItemType.OTHER;
             String salvageItemTypeString = config.getString("Salvageables." + key + ".ItemType", "OTHER");
 

@@ -298,7 +298,7 @@ public class RepairManager extends SkillManager {
     /**
      * Handles removing & downgrading enchants.
      *
-     * @param item Item being repaired
+     * @param item ItemStack being repaired
      */
     private void addEnchants(ItemStack item) {
         Player player = getPlayer();

@@ -39,7 +39,7 @@ public class RepairConfig extends ConfigLoader {
             // Validate all the things!
             List<String> reason = new ArrayList<String>();
 
-            // Item Material
+            // ItemStack Material
             Material itemMaterial = Material.matchMaterial(key);
 
             if (itemMaterial == null) {
@@ -95,7 +95,7 @@ public class RepairConfig extends ConfigLoader {
                 reason.add("Maximum durability of " + key + " must be greater than 0!");
             }
 
-            // Item Type
+            // ItemStack Type
             ItemType repairItemType = ItemType.OTHER;
             String repairItemTypeString = config.getString("Repairables." + key + ".ItemType", "OTHER");
 

@@ -15,6 +15,7 @@ import com.gmail.nossr50.core.datatypes.party.Party;
 import com.gmail.nossr50.core.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 import com.gmail.nossr50.core.mcmmo.meta.Metadata;
 import com.gmail.nossr50.core.mcmmo.meta.MetadataDefinitions;
 import com.gmail.nossr50.core.mcmmo.world.Location;
@@ -133,7 +134,7 @@ public class McMMOPlayer {
         experienceBarManager.hideExperienceBar(primarySkillType);
     }*/
 
-    public void processPostXpEvent(XPGainReason xpGainReason, PrimarySkillType primarySkillType, Plugin plugin, XPGainSource xpGainSource) {
+    public void processPostXpEvent(XPGainReason xpGainReason, PrimarySkillType primarySkillType, XPGainSource xpGainSource) {
         //Updates from Party sources
         if (xpGainSource == XPGainSource.PARTY_MEMBERS && !ExperienceConfig.getInstance().isPartyExperienceBarsEnabled())
             return;
@@ -142,21 +143,21 @@ public class McMMOPlayer {
         if (xpGainSource == XPGainSource.PASSIVE && !ExperienceConfig.getInstance().isPassiveGainsExperienceBarsEnabled())
             return;
 
-        updateXPBar(primarySkillType, plugin);
+        updateXPBar(primarySkillType);
     }
 
-    public void processUnlockNotifications(mcMMO plugin, PrimarySkillType primarySkillType, int skillLevel) {
-        RankUtils.executeSkillUnlockNotifications(plugin, this, primarySkillType, skillLevel);
+    public void processUnlockNotifications(PrimarySkillType primarySkillType, int skillLevel) {
+        RankUtils.executeSkillUnlockNotifications(primarySkillType, skillLevel);
     }
 
-    public void updateXPBar(PrimarySkillType primarySkillType, Plugin plugin) {
+    public void updateXPBar(PrimarySkillType primarySkillType) {
         //Skill Unlock Notifications
 
         if (primarySkillType.isChildSkill())
             return;
 
         //XP BAR UPDATES
-        experienceBarManager.updateExperienceBar(primarySkillType, plugin);
+        experienceBarManager.updateExperienceBar(primarySkillType);
     }
 
     public double getProgressInCurrentSkillLevel(PrimarySkillType primarySkillType) {

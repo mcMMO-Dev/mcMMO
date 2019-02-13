@@ -18,7 +18,7 @@ public final class ItemUtils {
     /**
      * Checks if the item is a bow.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is a bow, false otherwise
      */
     public static boolean isBow(ItemStack item) {
@@ -36,7 +36,7 @@ public final class ItemUtils {
     /**
      * Checks if the item is a sword.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is a sword, false otherwise
      */
     public static boolean isSword(ItemStack item) {
@@ -58,7 +58,7 @@ public final class ItemUtils {
     /**
      * Checks if the item is a hoe.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is a hoe, false otherwise
      */
     public static boolean isHoe(ItemStack item) {
@@ -80,7 +80,7 @@ public final class ItemUtils {
     /**
      * Checks if the item is a shovel.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is a shovel, false otherwise
      */
     public static boolean isShovel(ItemStack item) {
@@ -102,7 +102,7 @@ public final class ItemUtils {
     /**
      * Checks if the item is an axe.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is an axe, false otherwise
      */
     public static boolean isAxe(ItemStack item) {
@@ -124,7 +124,7 @@ public final class ItemUtils {
     /**
      * Checks if the item is a pickaxe.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is a pickaxe, false otherwise
      */
     public static boolean isPickaxe(ItemStack item) {
@@ -146,7 +146,7 @@ public final class ItemUtils {
     /**
      * Checks if the item counts as unarmed.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item counts as unarmed, false otherwise
      */
     public static boolean isUnarmed(ItemStack item) {
@@ -160,7 +160,7 @@ public final class ItemUtils {
     /**
      * Checks if the item is a helmet.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is a helmet, false otherwise
      */
     public static boolean isHelmet(ItemStack item) {
@@ -182,7 +182,7 @@ public final class ItemUtils {
     /**
      * Checks if the item is a chestplate.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is a chestplate, false otherwise
      */
     public static boolean isChestplate(ItemStack item) {
@@ -204,7 +204,7 @@ public final class ItemUtils {
     /**
      * Checks if the item is a pair of pants.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is a pair of pants, false otherwise
      */
     public static boolean isLeggings(ItemStack item) {
@@ -226,7 +226,7 @@ public final class ItemUtils {
     /**
      * Checks if the item is a pair of boots.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is a pair of boots, false otherwise
      */
     public static boolean isBoots(ItemStack item) {
@@ -248,7 +248,7 @@ public final class ItemUtils {
     /**
      * Checks to see if an item is a wearable armor piece.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is armor, false otherwise
      */
     public static boolean isArmor(ItemStack item) {
@@ -258,7 +258,7 @@ public final class ItemUtils {
     /**
      * Checks to see if an item is a wearable *vanilla* armor piece.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is armor, false otherwise
      */
     public static boolean isMinecraftArmor(ItemStack item) {
@@ -268,7 +268,7 @@ public final class ItemUtils {
     /**
      * Checks to see if an item is a leather armor piece.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is leather armor, false otherwise
      */
     public static boolean isLeatherArmor(ItemStack item) {
@@ -287,7 +287,7 @@ public final class ItemUtils {
     /**
      * Checks to see if an item is a gold armor piece.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is gold armor, false otherwise
      */
     public static boolean isGoldArmor(ItemStack item) {
@@ -306,7 +306,7 @@ public final class ItemUtils {
     /**
      * Checks to see if an item is an iron armor piece.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is iron armor, false otherwise
      */
     public static boolean isIronArmor(ItemStack item) {
@@ -325,7 +325,7 @@ public final class ItemUtils {
     /**
      * Checks to see if an item is a diamond armor piece.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is diamond armor, false otherwise
      */
     public static boolean isDiamondArmor(ItemStack item) {
@@ -344,7 +344,7 @@ public final class ItemUtils {
     /**
      * Checks to see if an item is a chainmail armor piece.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is chainmail armor, false otherwise
      */
     public static boolean isChainmailArmor(ItemStack item) {
@@ -363,7 +363,7 @@ public final class ItemUtils {
     /**
      * Checks to see if an item is a *vanilla* tool.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is a tool, false otherwise
      */
     public static boolean isMinecraftTool(ItemStack item) {
@@ -373,7 +373,7 @@ public final class ItemUtils {
     /**
      * Checks to see if an item is a stone tool.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is a stone tool, false otherwise
      */
     public static boolean isStoneTool(ItemStack item) {
@@ -393,7 +393,7 @@ public final class ItemUtils {
     /**
      * Checks to see if an item is a wooden tool.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is a wooden tool, false otherwise
      */
     public static boolean isWoodTool(ItemStack item) {
@@ -413,7 +413,7 @@ public final class ItemUtils {
     /**
      * Checks to see if an item is a string tool.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is a string tool, false otherwise
      */
     public static boolean isStringTool(ItemStack item) {
@@ -431,7 +431,7 @@ public final class ItemUtils {
     /**
      * Checks to see if an item is a gold tool.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is a stone tool, false otherwise
      */
     public static boolean isGoldTool(ItemStack item) {
@@ -451,7 +451,7 @@ public final class ItemUtils {
     /**
      * Checks to see if an item is an iron tool.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is an iron tool, false otherwise
      */
     public static boolean isIronTool(ItemStack item) {
@@ -474,7 +474,7 @@ public final class ItemUtils {
     /**
      * Checks to see if an item is a diamond tool.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is a diamond tool, false otherwise
      */
     public static boolean isDiamondTool(ItemStack item) {
@@ -494,7 +494,7 @@ public final class ItemUtils {
     /**
      * Checks to see if an item is enchantable.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is enchantable, false otherwise
      */
     public static boolean isEnchantable(ItemStack item) {
@@ -535,7 +535,7 @@ public final class ItemUtils {
     /**
      * Check if an item is sharable.
      *
-     * @param item Item that will get shared
+     * @param item ItemStack that will get shared
      * @return True if the item can be shared.
      */
     public static boolean isSharable(ItemStack item) {
@@ -549,7 +549,7 @@ public final class ItemUtils {
     /**
      * Checks to see if an item is a mining drop.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is a mining drop, false otherwise
      */
     public static boolean isMiningDrop(ItemStack item) {
@@ -579,7 +579,7 @@ public final class ItemUtils {
     /**
      * Checks to see if an item is a herbalism drop.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is a herbalism drop, false otherwise
      */
     public static boolean isHerbalismDrop(ItemStack item) {
@@ -617,7 +617,7 @@ public final class ItemUtils {
     /**
      * Checks to see if an item is a mob drop.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is a mob drop, false otherwise
      */
     public static boolean isMobDrop(ItemStack item) {
@@ -674,7 +674,7 @@ public final class ItemUtils {
     /**
      * Checks to see if an item is a woodcutting drop.
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is a woodcutting drop, false otherwise
      */
     public static boolean isWoodcuttingDrop(ItemStack item) {
@@ -714,7 +714,7 @@ public final class ItemUtils {
     /**
      * Checks to see if an item is a miscellaneous drop. These items are read from the config file
      *
-     * @param item Item to check
+     * @param item ItemStack to check
      * @return true if the item is a miscellaneous drop, false otherwise
      */
     public static boolean isMiscDrop(ItemStack item) {

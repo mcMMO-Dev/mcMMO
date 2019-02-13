@@ -31,7 +31,7 @@ public interface SalvageableManager {
     /**
      * Checks if an item is salvageable
      *
-     * @param itemStack Item to check if salvageable
+     * @param itemStack ItemStack to check if salvageable
      * @return true if salvageable, false if not
      */
     public boolean isSalvageable(ItemStack itemStack);

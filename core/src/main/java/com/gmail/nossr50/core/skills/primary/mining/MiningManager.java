@@ -5,28 +5,23 @@ import com.gmail.nossr50.core.config.Config;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.mcmmo.block.BlockState;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
+import com.gmail.nossr50.core.runnables.skills.AbilityCooldownTask;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SkillManager;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.skills.SuperAbilityType;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.skills.AbilityCooldownTask;
-import com.gmail.nossr50.util.BlockUtils;
-import com.gmail.nossr50.util.EventUtils;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
-import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
-import com.gmail.nossr50.util.skills.SkillUtils;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.TNTPrimed;
-import org.bukkit.inventory.ItemStack;
+import com.gmail.nossr50.core.util.BlockUtils;
+import com.gmail.nossr50.core.util.EventUtils;
+import com.gmail.nossr50.core.util.Misc;
+import com.gmail.nossr50.core.util.Permissions;
+import com.gmail.nossr50.core.util.player.NotificationManager;
+import com.gmail.nossr50.core.util.random.RandomChanceUtil;
+import com.gmail.nossr50.core.util.skills.RankUtils;
+import com.gmail.nossr50.core.util.skills.SkillActivationType;
+import com.gmail.nossr50.core.util.skills.SkillUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +53,7 @@ public class MiningManager extends SkillManager {
     public boolean canDetonate() {
         Player player = getPlayer();
 
-        return canUseBlastMining() && player.isSneaking() && player.getInventory().getItemInMainHand().getType() == BlastMining.detonator && Permissions.remoteDetonation(player);
+        return canUseBlastMining() && player.isSneaking() && player.getItemInMainHand().getType() == BlastMining.detonator && Permissions.remoteDetonation(player);
     }
 
     public boolean canUseBlastMining() {
