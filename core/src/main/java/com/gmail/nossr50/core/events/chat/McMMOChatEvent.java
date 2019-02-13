@@ -1,9 +1,7 @@
 package com.gmail.nossr50.core.events.chat;
 
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.Plugin;
+import com.gmail.nossr50.core.mcmmo.event.Cancellable;
+import com.gmail.nossr50.core.mcmmo.event.Event;
 
 public abstract class McMMOChatEvent extends Event implements Cancellable {
     /**
@@ -11,36 +9,36 @@ public abstract class McMMOChatEvent extends Event implements Cancellable {
      **/
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
-    private Plugin plugin;
     private String sender;
     private String displayName;
     private String message;
 
-    protected McMMOChatEvent(Plugin plugin, String sender, String displayName, String message) {
-        this.plugin = plugin;
+    protected McMMOChatEvent(String sender, String displayName, String message) {
         this.sender = sender;
         this.displayName = displayName;
         this.message = message;
     }
 
-    protected McMMOChatEvent(Plugin plugin, String sender, String displayName, String message, boolean isAsync) {
+    protected McMMOChatEvent(String sender, String displayName, String message, boolean isAsync) {
         super(isAsync);
-        this.plugin = plugin;
         this.sender = sender;
         this.displayName = displayName;
         this.message = message;
     }
 
+    /*
     public static HandlerList getHandlerList() {
         return handlers;
     }
+    */
 
     /**
      * @return The plugin responsible for this event, note this can be null
      */
-    public Plugin getPlugin() {
+    //TODO: Why do we even need this?
+    /*public Plugin getPlugin() {
         return plugin;
-    }
+    }*/
 
     /**
      * @return String name of the player who sent the chat, or "Console"

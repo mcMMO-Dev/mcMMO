@@ -10,7 +10,7 @@ public interface Cancellable {
      *
      * @return true if cancelled
      */
-    Boolean isCancelled();
+    boolean isCancelled();
 
     /**
      * Sets an events cancellation to b

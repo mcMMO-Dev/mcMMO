@@ -30,4 +30,10 @@ public interface Player extends Living, Nameable, InventoryHolder, Permissible {
      * @return the item in the main hand
      */
     ItemStack getItemInMainHand();
+
+    /**
+     * Sends a message to this player
+     * @param msg the message to send
+     */
+    void sendMessage(String msg);
 }

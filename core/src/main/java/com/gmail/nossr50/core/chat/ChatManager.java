@@ -43,7 +43,7 @@ public abstract class ChatManager {
             McMMOPartyChatEvent partyChatEvent = (McMMOPartyChatEvent) event;
 
             //Find the people with permissions
-            for (Player player : event.getPlugin().getServer().getOnlinePlayers()) {
+            for (Player player : McmmoCore.getServer().getOnlinePlayers()) {
                 //Check for toggled players
                 if (UserManager.getPlayer(player).isPartyChatSpying()) {
                     Party adminParty = UserManager.getPlayer(player).getParty();

@@ -14,6 +14,13 @@ public interface Server {
     void broadcast(String msg);
 
     /**
+     * Broadcasts a message only to players with the appropriate permission node
+     * @param msg the message to broadcast
+     * @param permission the permission node required to hear the message
+     */
+    void broadcast(String msg, String permission);
+
+    /**
      * Gets the online players for this server
      * @return the online players for this server
      */

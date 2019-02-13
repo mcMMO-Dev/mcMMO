@@ -14,4 +14,10 @@ public interface Nameable extends Named {
      * @return the original name of this entity
      */
     String getOriginalName();
+
+    /**
+     * This is the name used for chat messages and other things
+     * @return the display name of this entity
+     */
+    String getDisplayName();
 }

@@ -1,5 +1,6 @@
 package com.gmail.nossr50.core.chat;
 
+import com.gmail.nossr50.core.McmmoCore;
 import com.gmail.nossr50.core.config.Config;
 import com.gmail.nossr50.core.events.chat.McMMOAdminChatEvent;
 
@@ -15,6 +16,6 @@ public class AdminChatManager extends ChatManager {
 
     @Override
     protected void sendMessage() {
-        plugin.getServer().broadcast(message, "mcmmo.chat.adminchat");
+        McmmoCore.getServer().broadcast(message, "mcmmo.chat.adminchat");
     }
 }
