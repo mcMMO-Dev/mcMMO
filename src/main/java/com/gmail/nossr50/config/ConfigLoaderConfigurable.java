@@ -39,7 +39,6 @@ public abstract class ConfigLoaderConfigurable implements DefaultKeys {
 
     private ConfigurationNode userRootNode = null;
     private ConfigurationNode defaultRootNode = null;
-    private CommentedConfigurationNode userCommentedRootNode = null;
 
     /* CONFIG MANAGER */
     private ConfigurationLoader<CommentedConfigurationNode> configManager;
@@ -110,9 +109,6 @@ public abstract class ConfigLoaderConfigurable implements DefaultKeys {
 
             final ConfigurationNode userConfig = this.userCopyLoader.load();
             userRootNode = userConfig;
-
-            //TESTING THIS
-            userCommentedRootNode = configManager.load();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -188,7 +184,10 @@ public abstract class ConfigLoaderConfigurable implements DefaultKeys {
         }
 
         if(!targetFile.exists())
+        {
+            targetFile.getParentFile().mkdirs();
             targetFile.createNewFile(); //New File Boys
+        }
 
         Files.write(buffer, targetFile);
         mcMMO.p.getLogger().info("Created config file - " + relativeOutputPath);

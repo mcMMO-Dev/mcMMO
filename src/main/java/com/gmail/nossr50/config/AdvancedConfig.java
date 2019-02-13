@@ -16,7 +16,7 @@ public class AdvancedConfig extends ConfigLoaderConfigurable {
     private static AdvancedConfig instance;
 
     private AdvancedConfig() {
-        super(mcMMO.p.getDataFolder(), "advanced.yml");
+        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "advanced.yml");
     }
 
     public static AdvancedConfig getInstance() {

@@ -13,7 +13,7 @@ public class ConfigurableTest extends ConfigLoaderConfigurable {
     private static ConfigurableTest instance;
 
     public ConfigurableTest() {
-        super(mcMMO.p.getDataFolder(), relativePath);
+        super(mcMMO.p.getDataFolder().getAbsoluteFile(), relativePath);
 
         mcMMO.p.getLogger().severe("The value of bone "+boneValue);
     }
