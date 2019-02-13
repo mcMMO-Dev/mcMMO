@@ -292,21 +292,21 @@ public abstract class ConfigLoaderConfigurable implements DefaultKeys {
 
     int getIntValue(String path)
     {
-        return userRootNode.getNode(path.split(".")).getInt();
+        return userRootNode.getNode(path.split("\\.")).getInt();
     }
 
     double getDoubleValue(String path)
     {
-        return userRootNode.getNode(path.split(".")).getDouble();
+        return userRootNode.getNode(path.split("\\.")).getDouble();
     }
 
     boolean getBooleanValue(String path)
     {
-        return userRootNode.getNode(path.split(".")).getBoolean();
+        return userRootNode.getNode(path.split("\\.")).getBoolean();
     }
 
     String getStringValue(String path)
     {
-        return userRootNode.getNode(path.split(".")).getString();
+        return userRootNode.getNode(path.split("\\.")).getString();
     }
 }
