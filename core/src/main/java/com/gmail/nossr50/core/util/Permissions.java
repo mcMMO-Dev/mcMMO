@@ -1,20 +1,12 @@
 package com.gmail.nossr50.core.util;
 
-import com.gmail.nossr50.commands.party.PartySubcommandType;
+import com.gmail.nossr50.core.mcmmo.permissions.Permissible;
+import com.gmail.nossr50.core.mcmmo.world.World;
 import com.gmail.nossr50.core.skills.ItemType;
 import com.gmail.nossr50.core.skills.MaterialType;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.skills.subskills.AbstractSubSkill;
-import com.gmail.nossr50.mcMMO;
-import org.bukkit.Material;
-import org.bukkit.Server;
-import org.bukkit.World;
-import org.bukkit.entity.EntityType;
-import org.bukkit.permissions.Permissible;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
-import org.bukkit.plugin.PluginManager;
 
 public final class Permissions {
     private Permissions() {

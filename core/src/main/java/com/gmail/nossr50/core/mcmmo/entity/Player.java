@@ -4,11 +4,12 @@ import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.mcmmo.Nameable;
 import com.gmail.nossr50.core.mcmmo.inventory.InventoryHolder;
 import com.gmail.nossr50.core.mcmmo.item.ItemStack;
+import com.gmail.nossr50.core.mcmmo.permissions.Permissible;
 
 /**
  * Players
  */
-public interface Player extends Living, Nameable, InventoryHolder {
+public interface Player extends Living, Nameable, InventoryHolder, Permissible {
 
     /**
      * Players are not always online

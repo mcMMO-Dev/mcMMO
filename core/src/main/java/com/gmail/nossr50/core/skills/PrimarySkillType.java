@@ -1,11 +1,13 @@
 package com.gmail.nossr50.core.skills;
 
+import com.gmail.nossr50.core.McmmoCore;
 import com.gmail.nossr50.core.config.Config;
 import com.gmail.nossr50.core.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.mcmmo.colors.Color;
 import com.gmail.nossr50.core.mcmmo.entity.Entity;
 import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.entity.Tameable;
 import com.gmail.nossr50.core.skills.child.salvage.SalvageManager;
 import com.gmail.nossr50.core.skills.child.smelting.SmeltingManager;
 import com.gmail.nossr50.core.skills.primary.acrobatics.AcrobaticsManager;
@@ -26,9 +28,6 @@ import com.gmail.nossr50.core.util.StringUtils;
 import com.gmail.nossr50.core.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.core.util.skills.RankUtils;
 import com.google.common.collect.ImmutableList;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Tameable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -120,7 +119,7 @@ public enum PrimarySkillType {
         }
 
         if (!skillName.equalsIgnoreCase("all")) {
-            mcMMO.p.getLogger().warning("Invalid mcMMO skill (" + skillName + ")"); //TODO: Localize
+            McmmoCore.getLogger().warning("Invalid mcMMO skill (" + skillName + ")"); //TODO: Localize
         }
 
         return null;

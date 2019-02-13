@@ -147,7 +147,7 @@ public class McMMOPlayer {
     }
 
     public void processUnlockNotifications(PrimarySkillType primarySkillType, int skillLevel) {
-        RankUtils.executeSkillUnlockNotifications(primarySkillType, skillLevel);
+        RankUtils.executeSkillUnlockNotifications(this, primarySkillType, skillLevel);
     }
 
     public void updateXPBar(PrimarySkillType primarySkillType) {

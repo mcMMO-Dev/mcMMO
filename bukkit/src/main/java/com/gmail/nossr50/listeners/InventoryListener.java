@@ -13,7 +13,7 @@ import com.gmail.nossr50.core.util.Permissions;
 import com.gmail.nossr50.core.util.skills.SkillUtils;
 import com.gmail.nossr50.core.worldguard.WorldGuardManager;
 import com.gmail.nossr50.core.worldguard.WorldGuardUtils;
-import com.gmail.nossr50.events.fake.FakeBrewEvent;
+import com.gmail.nossr50.core.events.fake.FakeBrewEvent;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.Location;
 import org.bukkit.Material;

@@ -1,15 +1,14 @@
 package com.gmail.nossr50.core.chat;
 
+import com.gmail.nossr50.core.McmmoCore;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.party.Party;
+import com.gmail.nossr50.core.events.chat.McMMOChatEvent;
+import com.gmail.nossr50.core.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.core.locale.LocaleLoader;
-import com.gmail.nossr50.events.chat.McMMOChatEvent;
-import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 
 public abstract class ChatManager {
-    protected Plugin plugin;
     protected boolean useDisplayNames;
     protected String chatPrefix;
 
@@ -17,14 +16,13 @@ public abstract class ChatManager {
     protected String displayName;
     protected String message;
 
-    protected ChatManager(Plugin plugin, boolean useDisplayNames, String chatPrefix) {
-        this.plugin = plugin;
+    protected ChatManager(boolean useDisplayNames, String chatPrefix) {
         this.useDisplayNames = useDisplayNames;
         this.chatPrefix = chatPrefix;
     }
 
     protected void handleChat(McMMOChatEvent event) {
-        plugin.getServer().getPluginManager().callEvent(event);
+        McmmoCore.getEventCommander().callEvent(event);
 
         if (event.isCancelled()) {
             return;

@@ -25,6 +25,6 @@ public enum Color {
 
     Color fromRGB(int r, int g, int b)
     {
-
+        //TODO: Figure this out later
     }
 }

@@ -5,7 +5,7 @@ import com.gmail.nossr50.core.datatypes.party.Party;
 import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.party.PartyManager;
 import com.gmail.nossr50.core.util.commands.CommandUtils;
-import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
+import com.gmail.nossr50.core.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
