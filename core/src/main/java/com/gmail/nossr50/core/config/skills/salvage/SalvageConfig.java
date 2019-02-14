@@ -1,6 +1,8 @@
 package com.gmail.nossr50.config.skills.salvage;
 
 import com.gmail.nossr50.config.ConfigLoader;
+import com.gmail.nossr50.core.McmmoCore;
+import com.gmail.nossr50.core.config.ConfigurableLoader;
 import com.gmail.nossr50.core.mcmmo.skills.ItemType;
 import com.gmail.nossr50.core.mcmmo.skills.MaterialType;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
@@ -15,11 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class SalvageConfig extends ConfigLoader {
+public class SalvageConfig extends ConfigurableLoader {
     private List<Salvageable> salvageables;
 
     public SalvageConfig(String fileName) {
-        super(fileName);
+        super(McmmoCore.getDataFolderPath().getAbsoluteFile(), fileName);
         loadKeys();
     }
 

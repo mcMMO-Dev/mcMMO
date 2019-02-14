@@ -1,6 +1,8 @@
 package com.gmail.nossr50.core.config.mods;
 
+import com.gmail.nossr50.core.McmmoCore;
 import com.gmail.nossr50.core.config.ConfigLoader;
+import com.gmail.nossr50.core.config.ConfigurableLoader;
 import com.gmail.nossr50.core.mcmmo.mods.CustomTool;
 import com.gmail.nossr50.core.mcmmo.skills.ItemType;
 import com.gmail.nossr50.core.mcmmo.skills.MaterialType;
@@ -16,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-public class CustomToolConfig extends ConfigLoader {
+public class CustomToolConfig extends ConfigurableLoader {
     public List<Material> customAxes = new ArrayList<Material>();
     public List<Material> customBows = new ArrayList<Material>();
     public List<Material> customHoes = new ArrayList<Material>();
@@ -28,7 +30,7 @@ public class CustomToolConfig extends ConfigLoader {
     private boolean needsUpdate = false;
 
     protected CustomToolConfig(String fileName) {
-        super("mods", fileName);
+        super(McmmoCore.getDataFolderPath().getPath() + "mods", fileName);
         loadKeys();
     }
 

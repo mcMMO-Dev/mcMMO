@@ -1,25 +1,18 @@
 package com.gmail.nossr50.core.config.treasure;
 
-import com.gmail.nossr50.core.config.ConfigLoader;
-import com.gmail.nossr50.util.EnchantmentUtils;
-import com.gmail.nossr50.util.StringUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Tag;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.EntityType;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionData;
-import org.bukkit.potion.PotionType;
+import com.gmail.nossr50.core.McmmoCore;
+import com.gmail.nossr50.core.config.ConfigurableLoader;
+import com.gmail.nossr50.core.mcmmo.colors.ChatColor;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
+import com.gmail.nossr50.core.skills.treasure.*;
+import com.gmail.nossr50.core.util.EnchantmentUtils;
+import com.gmail.nossr50.core.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class TreasureConfig extends ConfigLoader {
+public class TreasureConfig extends ConfigurableLoader {
 
     private static TreasureConfig instance;
 
@@ -32,7 +25,7 @@ public class TreasureConfig extends ConfigLoader {
     public HashMap<Rarity, List<EnchantmentTreasure>> fishingEnchantments = new HashMap<Rarity, List<EnchantmentTreasure>>();
 
     private TreasureConfig() {
-        super("treasures.yml");
+        super(McmmoCore.getDataFolderPath().getAbsoluteFile(),"treasures.yml");
         loadKeys();
         validate();
     }

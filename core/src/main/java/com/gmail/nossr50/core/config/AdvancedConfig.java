@@ -10,7 +10,7 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@ConfigSerializable
+//@ConfigSerializable
 public class AdvancedConfig extends ConfigurableLoader {
 
     public static final String SKILLS = "Skills";

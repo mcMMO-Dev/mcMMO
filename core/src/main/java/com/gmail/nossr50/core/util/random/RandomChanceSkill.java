@@ -2,10 +2,10 @@ package com.gmail.nossr50.core.util.random;
 
 import com.gmail.nossr50.core.config.AdvancedConfig;
 import com.gmail.nossr50.core.data.UserManager;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.util.Permissions;
-import org.bukkit.entity.Player;
 
 public class RandomChanceSkill implements RandomChanceExecution {
 

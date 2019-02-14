@@ -1,6 +1,8 @@
 package com.gmail.nossr50.core.config.mods;
 
+import com.gmail.nossr50.core.McmmoCore;
 import com.gmail.nossr50.core.config.ConfigLoader;
+import com.gmail.nossr50.core.config.ConfigurableLoader;
 import com.gmail.nossr50.core.mcmmo.mods.CustomEntity;
 import org.apache.commons.lang.ClassUtils;
 import org.bukkit.Material;
@@ -8,12 +10,12 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 
-public class CustomEntityConfig extends ConfigLoader {
+public class CustomEntityConfig extends ConfigurableLoader {
     public HashMap<String, CustomEntity> customEntityClassMap = new HashMap<String, CustomEntity>();
     public HashMap<String, CustomEntity> customEntityTypeMap = new HashMap<String, CustomEntity>();
 
     protected CustomEntityConfig(String fileName) {
-        super("mods", fileName);
+        super(McmmoCore.getDataFolderPath().getPath() + "mods", fileName);
         loadKeys();
     }
 

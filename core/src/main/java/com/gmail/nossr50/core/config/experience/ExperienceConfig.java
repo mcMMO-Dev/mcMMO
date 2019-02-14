@@ -1,25 +1,21 @@
 package com.gmail.nossr50.core.config.experience;
 
-import com.gmail.nossr50.core.config.AutoUpdateConfigLoader;
-import com.gmail.nossr50.core.mcmmo.experience.FormulaType;
-import com.gmail.nossr50.core.mcmmo.skills.MaterialType;
-import com.gmail.nossr50.core.mcmmo.skills.PrimarySkillType;
-import com.gmail.nossr50.core.mcmmo.skills.alchemy.PotionStage;
-import com.gmail.nossr50.util.StringUtils;
-import org.bukkit.Material;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
-import org.bukkit.entity.EntityType;
+import com.gmail.nossr50.core.McmmoCore;
+import com.gmail.nossr50.core.config.ConfigurableLoader;
+import com.gmail.nossr50.core.datatypes.experience.FormulaType;
+import com.gmail.nossr50.core.skills.MaterialType;
+import com.gmail.nossr50.core.skills.PotionStage;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
+import com.gmail.nossr50.core.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExperienceConfig extends AutoUpdateConfigLoader {
+public class ExperienceConfig extends ConfigurableLoader {
     private static ExperienceConfig instance;
 
     private ExperienceConfig() {
-        super("experience.yml");
+        super(McmmoCore.getDataFolderPath().getAbsoluteFile(),"experience.yml");
         validate();
     }
 

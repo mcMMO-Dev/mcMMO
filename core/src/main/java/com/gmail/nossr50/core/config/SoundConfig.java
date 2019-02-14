@@ -1,12 +1,13 @@
 package com.gmail.nossr50.core.config;
 
-import com.gmail.nossr50.util.sounds.SoundType;
+import com.gmail.nossr50.core.McmmoCore;
+import com.gmail.nossr50.core.util.sounds.SoundType;
 
-public class SoundConfig extends AutoUpdateConfigLoader {
+public class SoundConfig extends ConfigurableLoader {
     private static SoundConfig instance;
 
     public SoundConfig() {
-        super("sounds.yml");
+        super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "sounds.yml");
         validate();
         this.instance = this;
     }

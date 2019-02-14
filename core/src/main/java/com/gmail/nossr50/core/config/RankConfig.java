@@ -1,16 +1,17 @@
 package com.gmail.nossr50.core.config;
 
-import com.gmail.nossr50.core.mcmmo.skills.SubSkillType;
-import com.gmail.nossr50.core.mcmmo.skills.subskills.AbstractSubSkill;
+import com.gmail.nossr50.core.McmmoCore;
+import com.gmail.nossr50.core.skills.SubSkillType;
+import com.gmail.nossr50.core.skills.subskills.AbstractSubSkill;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RankConfig extends AutoUpdateConfigLoader {
+public class RankConfig extends ConfigurableLoader {
     private static RankConfig instance;
 
     public RankConfig() {
-        super("skillranks.yml");
+        super(McmmoCore.getDataFolderPath().getAbsoluteFile(),"skillranks.yml");
         validate();
         this.instance = this;
     }

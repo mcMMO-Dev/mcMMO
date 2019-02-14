@@ -1,7 +1,7 @@
-package com.gmail.nossr50.config.skills.salvage;
+package com.gmail.nossr50.core.config.skills.salvage;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
+
+import com.gmail.nossr50.core.skills.child.salvage.salvageables.Salvageable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class SalvageConfigManager {
                 continue;
             }
 
-            SalvageConfig salvageConfig = new SalvageConfig(fileName);
+            com.gmail.nossr50.config.skills.salvage.SalvageConfig salvageConfig = new com.gmail.nossr50.config.skills.salvage.SalvageConfig(fileName);
             salvageables.addAll(salvageConfig.getLoadedSalvageables());
         }
     }

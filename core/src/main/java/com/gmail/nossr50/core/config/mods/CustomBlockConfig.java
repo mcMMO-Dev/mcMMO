@@ -1,6 +1,8 @@
 package com.gmail.nossr50.core.config.mods;
 
+import com.gmail.nossr50.core.McmmoCore;
 import com.gmail.nossr50.core.config.ConfigLoader;
+import com.gmail.nossr50.core.config.ConfigurableLoader;
 import com.gmail.nossr50.core.mcmmo.mods.CustomBlock;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -10,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-public class CustomBlockConfig extends ConfigLoader {
+public class CustomBlockConfig extends ConfigurableLoader {
     public List<Material> customExcavationBlocks = new ArrayList<>();
     public List<Material> customHerbalismBlocks = new ArrayList<>();
     public List<Material> customMiningBlocks = new ArrayList<>();
@@ -22,7 +24,7 @@ public class CustomBlockConfig extends ConfigLoader {
     private boolean needsUpdate = false;
 
     protected CustomBlockConfig(String fileName) {
-        super("mods", fileName);
+        super(McmmoCore.getDataFolderPath().getPath() + "mods", fileName);
         loadKeys();
     }
 

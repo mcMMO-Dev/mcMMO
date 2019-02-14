@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.config;
 
-import com.gmail.nossr50.mcMMO;
-import org.bukkit.World;
+import com.gmail.nossr50.core.McmmoCore;
+import com.gmail.nossr50.core.mcmmo.world.World;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -12,10 +12,8 @@ import java.util.ArrayList;
 public class WorldBlacklist {
     private static ArrayList<String> blacklist;
     private final String blackListFileName = "world_blacklist.txt";
-    private mcMMO plugin;
 
-    public WorldBlacklist(mcMMO plugin) {
-        this.plugin = plugin;
+    public WorldBlacklist() {
         blacklist = new ArrayList<>();
         init();
     }
@@ -32,7 +30,8 @@ public class WorldBlacklist {
 
     public void init() {
         //Make the blacklist file if it doesn't exist
-        File blackListFile = new File(plugin.getDataFolder() + File.separator + blackListFileName);
+        //TODO: Check if this works
+        File blackListFile = new File(McmmoCore.getDataFolderPath().getAbsoluteFile() + File.separator + blackListFileName);
 
         try {
             if (!blackListFile.exists())
@@ -70,6 +69,6 @@ public class WorldBlacklist {
             e.printStackTrace();
         }
 
-        plugin.getLogger().info(blacklist.size() + " entries in mcMMO World Blacklist");
+        McmmoCore.getLogger().info(blacklist.size() + " entries in mcMMO World Blacklist");
     }
 }

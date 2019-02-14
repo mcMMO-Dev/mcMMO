@@ -43,15 +43,18 @@ public abstract class ConfigurableLoader implements DefaultKeys, VersionedConfig
     /* CONFIG MANAGER */
     private ConfigurationLoader<CommentedConfigurationNode> configManager;
 
-    //TODO: Needed?
-    //private ConfigurationLoader<CommentedConfigurationNode> configManager;
+    public ConfigurableLoader(String pathToParentFolder, String relativePath) {
+        //TODO: Check if this works...
+        this(new File(pathToParentFolder), relativePath);
+        System.out.println("mcMMO Debug: Don't forget to check if loading config file by string instead of File works...");
+    }
 
-    public ConfigurableLoader(File pathToDataFolder, String relativePath) {
+    public ConfigurableLoader(File pathToParentFolder, String relativePath) {
         /*
          * These must be at the top
          */
         mkdirDefaults(); // Make our default config dir
-        DIRECTORY_DATA_FOLDER = pathToDataFolder; //Data Folder for our plugin
+        DIRECTORY_DATA_FOLDER = pathToParentFolder; //Data Folder for our plugin
         FILE_RELATIVE_PATH = relativePath; //Relative path to config from a parent folder
 
         //Attempt IO Operations

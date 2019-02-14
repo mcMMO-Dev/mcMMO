@@ -1,7 +1,6 @@
 package com.gmail.nossr50.core.config.mods;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.ModManager;
+import com.gmail.nossr50.core.util.ModManager;
 
 import java.io.File;
 import java.util.regex.Pattern;

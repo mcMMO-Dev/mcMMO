@@ -1,16 +1,18 @@
 package com.gmail.nossr50.core.config.party;
 
+import com.gmail.nossr50.core.McmmoCore;
 import com.gmail.nossr50.core.config.ConfigLoader;
+import com.gmail.nossr50.core.config.ConfigurableLoader;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.Material;
 
 import java.util.HashSet;
 
-public class ItemWeightConfig extends ConfigLoader {
+public class ItemWeightConfig extends ConfigurableLoader {
     private static ItemWeightConfig instance;
 
     private ItemWeightConfig() {
-        super("itemweights.yml");
+        super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "itemweights.yml");
     }
 
     public static ItemWeightConfig getInstance() {
