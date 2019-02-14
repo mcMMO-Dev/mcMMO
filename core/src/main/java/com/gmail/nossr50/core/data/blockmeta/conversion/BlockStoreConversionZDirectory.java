@@ -1,21 +1,23 @@
 package com.gmail.nossr50.core.data.blockmeta.conversion;
 
+import com.gmail.nossr50.core.McmmoCore;
 import com.gmail.nossr50.core.data.blockmeta.ChunkletStore;
 import com.gmail.nossr50.core.data.blockmeta.HashChunkletManager;
 import com.gmail.nossr50.core.data.blockmeta.PrimitiveChunkletStore;
 import com.gmail.nossr50.core.data.blockmeta.PrimitiveExChunkletStore;
 import com.gmail.nossr50.core.data.blockmeta.chunkmeta.HashChunkManager;
 import com.gmail.nossr50.core.data.blockmeta.chunkmeta.PrimitiveChunkStore;
-import com.gmail.nossr50.mcMMO;
-import org.bukkit.scheduler.BukkitScheduler;
+import com.gmail.nossr50.core.mcmmo.tasks.TaskScheduler;
+import com.gmail.nossr50.core.mcmmo.world.World;
 
 import java.io.File;
 
 public class BlockStoreConversionZDirectory implements Runnable {
     public int taskID, cx, cz, x, y, z, y2, xPos, zPos, cxPos, czPos;
     private String cxs, czs, chunkletName, chunkName;
-    private org.bukkit.World world;
-    private BukkitScheduler scheduler;
+    private World world;
+    //private BukkitScheduler scheduler;
+    private TaskScheduler scheduler;
     private File xDir, dataDir;
     private HashChunkletManager manager;
     private HashChunkManager newManager;
@@ -29,9 +31,9 @@ public class BlockStoreConversionZDirectory implements Runnable {
         this.taskID = -1;
     }
 
-    public void start(org.bukkit.World world, File xDir, File dataDir) {
+    public void start(World world, File xDir, File dataDir) {
         this.world = world;
-        this.scheduler = mcMMO.p.getServer().getScheduler();
+        this.scheduler = McmmoCore.getTaskScheduler();
         this.manager = new HashChunkletManager();
         this.newManager = (HashChunkManager) mcMMO.getPlaceStore();
         this.dataDir = dataDir;
@@ -41,7 +43,8 @@ public class BlockStoreConversionZDirectory implements Runnable {
             return;
         }
 
-        this.taskID = this.scheduler.runTaskLater(mcMMO.p, this, 1).getTaskId();
+        // Bukkit - this.taskID = this.scheduler.runTaskLater(mcMMO.p, this, 1).getTaskId();
+        this.taskID = scheduler.scheduleTask(this, 1).getTaskId();
         return;
     }
 

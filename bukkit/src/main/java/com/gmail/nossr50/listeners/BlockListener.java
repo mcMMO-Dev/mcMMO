@@ -2,7 +2,7 @@ package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.config.Config;
-import com.gmail.nossr50.core.config.HiddenConfig;
+import com.gmail.nossr50.core.config.ChunkConversionOptions;
 import com.gmail.nossr50.core.config.WorldBlacklist;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
@@ -552,7 +552,7 @@ public class BlockListener implements Listener {
     }
 
     public void cleanupAbilityTools(Player player, McMMOPlayer mcMMOPlayer, BlockState blockState, ItemStack heldItem) {
-        if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
+        if (ChunkConversionOptions.getInstance().useEnchantmentBuffs()) {
             if ((ItemUtils.isPickaxe(heldItem) && !mcMMOPlayer.getAbilityMode(SuperAbilityType.SUPER_BREAKER)) || (ItemUtils.isShovel(heldItem) && !mcMMOPlayer.getAbilityMode(SuperAbilityType.GIGA_DRILL_BREAKER))) {
                 SkillUtils.removeAbilityBuff(heldItem);
             }

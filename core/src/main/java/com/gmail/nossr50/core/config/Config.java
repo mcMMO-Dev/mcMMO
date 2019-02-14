@@ -1,5 +1,6 @@
 package com.gmail.nossr50.core.config;
 
+import com.gmail.nossr50.core.McmmoCore;
 import com.gmail.nossr50.core.data.database.SQLDatabaseManager;
 import com.gmail.nossr50.core.datatypes.party.PartyFeature;
 import com.gmail.nossr50.core.skills.MobHealthbarType;
@@ -11,11 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class Config extends AutoUpdateConfigLoader {
+public class Config extends ConfigurableLoader {
     private static Config instance;
 
     private Config() {
-        super("config.yml");
+        super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "config.yml");
         validate();
     }
 

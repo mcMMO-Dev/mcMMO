@@ -1,10 +1,10 @@
 package com.gmail.nossr50.core.data.blockmeta.chunkmeta;
 
-import com.gmail.nossr50.core.config.HiddenConfig;
+import com.gmail.nossr50.core.config.ChunkConversionOptions;
 
 public class ChunkManagerFactory {
     public static ChunkManager getChunkManager() {
-        HiddenConfig hConfig = HiddenConfig.getInstance();
+        ChunkConversionOptions hConfig = ChunkConversionOptions.getInstance();
 
         if (hConfig.getChunkletsEnabled()) {
             return new HashChunkManager();

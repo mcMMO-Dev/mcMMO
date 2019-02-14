@@ -1,13 +1,9 @@
-package com.gmail.nossr50.config.skills.alchemy;
+package com.gmail.nossr50.core.config.skills.alchemy;
 
-import com.gmail.nossr50.config.ConfigLoader;
-import com.gmail.nossr50.core.mcmmo.skills.alchemy.AlchemyPotion;
-import com.gmail.nossr50.mcMMO;
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.Material;
+import com.gmail.nossr50.core.mcmmo.colors.ChatColor;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
+import com.gmail.nossr50.core.skills.primary.alchemy.AlchemyPotion;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;

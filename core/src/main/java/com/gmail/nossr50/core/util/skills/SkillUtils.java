@@ -2,7 +2,7 @@ package com.gmail.nossr50.core.util.skills;
 
 import com.gmail.nossr50.core.config.AdvancedConfig;
 import com.gmail.nossr50.core.config.Config;
-import com.gmail.nossr50.core.config.HiddenConfig;
+import com.gmail.nossr50.core.config.ChunkConversionOptions;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.experience.XPGainSource;
@@ -128,7 +128,7 @@ public class SkillUtils {
     }
 
     public static void handleAbilitySpeedIncrease(Player player) {
-        if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
+        if (ChunkConversionOptions.getInstance().useEnchantmentBuffs()) {
             ItemStack heldItem = player.getInventory().getItemInMainHand();
 
             if (heldItem == null || heldItem.getType() == Material.AIR) {
@@ -184,7 +184,7 @@ public class SkillUtils {
     }
 
     public static void handleAbilitySpeedDecrease(Player player) {
-        if (!HiddenConfig.getInstance().useEnchantmentBuffs()) {
+        if (!ChunkConversionOptions.getInstance().useEnchantmentBuffs()) {
             return;
         }
 

@@ -1,14 +1,15 @@
 package com.gmail.nossr50.core.config;
 
-import com.gmail.nossr50.core.mcmmo.skills.PrimarySkillType;
-import com.gmail.nossr50.core.mcmmo.skills.subskills.AbstractSubSkill;
-import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.core.McmmoCore;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
+import com.gmail.nossr50.core.skills.subskills.AbstractSubSkill;
+import com.gmail.nossr50.core.util.StringUtils;
 
-public class CoreSkillsConfig extends AutoUpdateConfigLoader {
+public class CoreSkillsConfig extends ConfigurableLoader {
     private static CoreSkillsConfig instance;
 
     public CoreSkillsConfig() {
-        super("coreskills.yml");
+        super(McmmoCore.getDataFolderPath().getAbsoluteFile(),"coreskills.yml");
         validate();
     }
 

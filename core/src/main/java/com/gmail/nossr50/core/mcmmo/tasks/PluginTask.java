@@ -20,4 +20,10 @@ public interface PluginTask {
      * Schedule this task (begins ASAP)
      */
     void scheduleTask();
+
+    /**
+     * Get the ID of this task
+     * @return the id of this task
+     */
+    int getTaskId();
 }
