@@ -145,8 +145,8 @@ public enum SubSkillType {
      *
      * @return the root address for this skill in rankskills.yml
      */
-    public String getRankConfigAddress() {
-        //return StringUtils.getCapitalized(getParentSkill().toString()) + "." + getConfigName(toString());
+    public String[] getRankConfigAddress() {
+        return new String[] {StringUtils.getCapitalized(getParentSkill().toString()), getConfigName(toString()) };
     }
 
     /**
