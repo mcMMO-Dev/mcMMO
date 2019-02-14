@@ -1,11 +1,11 @@
 package com.gmail.nossr50.core.skills.child.salvage;
 
 import com.gmail.nossr50.core.config.AdvancedConfig;
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import org.bukkit.Material;
 
 public class Salvage {
-    public static Material anvilMaterial = Config.getInstance().getSalvageAnvilMaterial();
+    public static Material anvilMaterial = MainConfig.getInstance().getSalvageAnvilMaterial();
 
     /*public static int    salvageMaxPercentageLevel = AdvancedConfig.getInstance().getSalvageMaxPercentageLevel();
     public static double salvageMaxPercentage      = AdvancedConfig.getInstance().getSalvageMaxPercentage();

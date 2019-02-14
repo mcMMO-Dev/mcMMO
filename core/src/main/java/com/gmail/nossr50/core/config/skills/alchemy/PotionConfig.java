@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.config.skills.alchemy;
 
 import com.gmail.nossr50.core.McmmoCore;
-import com.gmail.nossr50.core.config.ConfigurableLoader;
+import com.gmail.nossr50.core.config.Config;
 import com.gmail.nossr50.core.mcmmo.colors.ChatColor;
 import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 import com.gmail.nossr50.core.skills.primary.alchemy.AlchemyPotion;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PotionConfig extends ConfigurableLoader {
+public class PotionConfig extends Config {
     private static PotionConfig instance;
 
     private List<ItemStack> concoctionsIngredientsTierOne = new ArrayList<ItemStack>();

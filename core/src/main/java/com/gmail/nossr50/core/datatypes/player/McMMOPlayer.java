@@ -2,7 +2,7 @@ package com.gmail.nossr50.core.datatypes.player;
 
 import com.gmail.nossr50.core.McmmoCore;
 import com.gmail.nossr50.core.config.AdvancedConfig;
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.config.WorldBlacklist;
 import com.gmail.nossr50.core.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.data.UserManager;
@@ -490,7 +490,7 @@ public class McMMOPlayer {
             return;
         }
 
-        if (!Config.getInstance().getPartyXpNearMembersNeeded() || !PartyManager.getNearMembers(this).isEmpty()) {
+        if (!MainConfig.getInstance().getPartyXpNearMembersNeeded() || !PartyManager.getNearMembers(this).isEmpty()) {
             party.applyXpGain(modifyXpGain(skill, xp));
         }
     }
@@ -553,7 +553,7 @@ public class McMMOPlayer {
             return;
         }
 
-        if (Config.getInstance().getLevelUpSoundsEnabled()) {
+        if (MainConfig.getInstance().getLevelUpSoundsEnabled()) {
             SoundManager.sendSound(player, player.getLocation(), SoundType.LEVEL_UP);
         }
 
@@ -739,13 +739,13 @@ public class McMMOPlayer {
      * @return Modified experience
      */
     private float modifyXpGain(PrimarySkillType primarySkillType, float xp) {
-        if (player.getGameMode() == GameMode.CREATIVE || (primarySkillType.getMaxLevel() <= getSkillLevel(primarySkillType)) || (Config.getInstance().getPowerLevelCap() <= getPowerLevel())) {
+        if (player.getGameMode() == GameMode.CREATIVE || (primarySkillType.getMaxLevel() <= getSkillLevel(primarySkillType)) || (MainConfig.getInstance().getPowerLevelCap() <= getPowerLevel())) {
             return 0;
         }
 
         xp = (float) (xp / primarySkillType.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
 
-        if (Config.getInstance().getToolModsEnabled()) {
+        if (MainConfig.getInstance().getToolModsEnabled()) {
             CustomTool tool = mcMMO.getModManager().getTool(player.getInventory().getItemInMainHand());
 
             if (tool != null) {
@@ -854,7 +854,7 @@ public class McMMOPlayer {
     }
 
     public void processAbilityActivation(PrimarySkillType skill) {
-        if (Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() && !player.isSneaking()) {
+        if (MainConfig.getInstance().getAbilitiesOnlyActivateWhenSneaking() && !player.isSneaking()) {
             return;
         }
 
@@ -891,7 +891,7 @@ public class McMMOPlayer {
                 }
             }
 
-            if (Config.getInstance().getAbilityMessagesEnabled()) {
+            if (MainConfig.getInstance().getAbilityMessagesEnabled()) {
                 NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, tool.getRaiseTool());
                 SoundManager.sendSound(player, player.getLocation(), SoundType.TOOL_READY);
             }
@@ -913,7 +913,7 @@ public class McMMOPlayer {
     }
 
     private boolean hasReachedLevelCap(PrimarySkillType skill) {
-        return (skill.getMaxLevel() < getSkillLevel(skill) + 1) || (Config.getInstance().getPowerLevelCap() < getPowerLevel() + 1);
+        return (skill.getMaxLevel() < getSkillLevel(skill) + 1) || (MainConfig.getInstance().getPowerLevelCap() < getPowerLevel() + 1);
     }
 
     /*
@@ -985,7 +985,7 @@ public class McMMOPlayer {
 
         UserManager.remove(thisPlayer);
 
-        if (Config.getInstance().getScoreboardsEnabled())
+        if (MainConfig.getInstance().getScoreboardsEnabled())
             ScoreboardManager.teardownPlayer(thisPlayer);
 
         if (inParty()) {

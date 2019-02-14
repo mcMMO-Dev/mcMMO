@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.party.teleport;
 
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.core.locale.LocaleLoader;
@@ -28,7 +28,7 @@ public class PtpAcceptCommand implements CommandExecutor {
             return true;
         }
 
-        if (SkillUtils.cooldownExpired(ptpRecord.getTimeout(), Config.getInstance().getPTPCommandTimeout())) {
+        if (SkillUtils.cooldownExpired(ptpRecord.getTimeout(), MainConfig.getInstance().getPTPCommandTimeout())) {
             ptpRecord.removeRequest();
             player.sendMessage(LocaleLoader.getString("Commands.ptp.RequestExpired"));
             return true;
@@ -41,7 +41,7 @@ public class PtpAcceptCommand implements CommandExecutor {
             return true;
         }
 
-        if (Config.getInstance().getPTPCommandWorldPermissions()) {
+        if (MainConfig.getInstance().getPTPCommandWorldPermissions()) {
             World targetWorld = target.getWorld();
             World playerWorld = player.getWorld();
 

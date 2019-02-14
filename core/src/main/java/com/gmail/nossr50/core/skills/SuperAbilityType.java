@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.skills;
 
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.mcmmo.block.BlockState;
 import com.gmail.nossr50.core.mcmmo.entity.Player;
 import com.gmail.nossr50.core.util.BlockUtils;
@@ -99,11 +99,11 @@ public enum SuperAbilityType {
     }
 
     public int getCooldown() {
-        return Config.getInstance().getCooldown(this);
+        return MainConfig.getInstance().getCooldown(this);
     }
 
     public int getMaxLength() {
-        return Config.getInstance().getMaxLength(this);
+        return MainConfig.getInstance().getMaxLength(this);
     }
 
     public String getAbilityOn() {

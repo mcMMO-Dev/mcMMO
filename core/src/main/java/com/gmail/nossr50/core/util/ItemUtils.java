@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.util;
 
 import com.gmail.nossr50.config.party.ItemWeightConfig;
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.ChatColor;
@@ -150,7 +150,7 @@ public final class ItemUtils {
      * @return true if the item counts as unarmed, false otherwise
      */
     public static boolean isUnarmed(ItemStack item) {
-        if (Config.getInstance().getUnarmedItemsAsUnarmed()) {
+        if (MainConfig.getInstance().getUnarmedItemsAsUnarmed()) {
             return !isMinecraftTool(item);
         }
 

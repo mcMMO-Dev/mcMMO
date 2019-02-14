@@ -2,7 +2,7 @@ package com.gmail.nossr50.config.skills.salvage;
 
 import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.core.McmmoCore;
-import com.gmail.nossr50.core.config.ConfigurableLoader;
+import com.gmail.nossr50.core.config.Config;
 import com.gmail.nossr50.core.mcmmo.skills.ItemType;
 import com.gmail.nossr50.core.mcmmo.skills.MaterialType;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class SalvageConfig extends ConfigurableLoader {
+public class SalvageConfig extends Config {
     private List<Salvageable> salvageables;
 
     public SalvageConfig(String fileName) {
@@ -45,7 +45,7 @@ public class SalvageConfig extends ConfigurableLoader {
 
             // Salvage Material Type
             MaterialType salvageMaterialType = MaterialType.OTHER;
-            String salvageMaterialTypeString = config.getString("Salvageables." + key + ".MaterialType", "OTHER");
+            String salvageMaterialTypeString = getStringValue("Salvageables." + key + ".MaterialType", "OTHER");
 
             if (!config.contains("Salvageables." + key + ".MaterialType") && itemMaterial != null) {
                 ItemStack salvageItem = new ItemStack(itemMaterial);
@@ -74,7 +74,7 @@ public class SalvageConfig extends ConfigurableLoader {
             }
 
             // Salvage Material
-            String salvageMaterialName = config.getString("Salvageables." + key + ".SalvageMaterial");
+            String salvageMaterialName = getStringValue("Salvageables." + key + ".SalvageMaterial");
             Material salvageMaterial = (salvageMaterialName == null ? salvageMaterialType.getDefaultMaterial() : Material.matchMaterial(salvageMaterialName));
 
             if (salvageMaterial == null) {
@@ -82,11 +82,11 @@ public class SalvageConfig extends ConfigurableLoader {
             }
 
             // Maximum Durability
-            short maximumDurability = (itemMaterial != null ? itemMaterial.getMaxDurability() : (short) config.getInt("Salvageables." + key + ".MaximumDurability"));
+            short maximumDurability = (itemMaterial != null ? itemMaterial.getMaxDurability() : (short) getIntValue("Salvageables." + key + ".MaximumDurability"));
 
             // ItemStack Type
             ItemType salvageItemType = ItemType.OTHER;
-            String salvageItemTypeString = config.getString("Salvageables." + key + ".ItemType", "OTHER");
+            String salvageItemTypeString = getStringValue("Salvageables." + key + ".ItemType", "OTHER");
 
             if (!config.contains("Salvageables." + key + ".ItemType") && itemMaterial != null) {
                 ItemStack salvageItem = new ItemStack(itemMaterial);
@@ -104,22 +104,22 @@ public class SalvageConfig extends ConfigurableLoader {
                 }
             }
 
-            byte salvageMetadata = (byte) config.getInt("Salvageables." + key + ".SalvageMaterialMetadata", -1);
-            int minimumLevel = config.getInt("Salvageables." + key + ".MinimumLevel");
-            double xpMultiplier = config.getDouble("Salvageables." + key + ".XpMultiplier", 1);
+            byte salvageMetadata = (byte) getIntValue("Salvageables." + key + ".SalvageMaterialMetadata", -1);
+            int minimumLevel = getIntValue("Salvageables." + key + ".MinimumLevel");
+            double xpMultiplier = getDoubleValue("Salvageables." + key + ".XpMultiplier", 1);
 
             if (minimumLevel < 0) {
                 reason.add(key + " has an invalid MinimumLevel of " + minimumLevel);
             }
 
             // Maximum Quantity
-            int maximumQuantity = (itemMaterial != null ? SkillUtils.getRepairAndSalvageQuantities(new ItemStack(itemMaterial), salvageMaterial, salvageMetadata) : config.getInt("Salvageables." + key + ".MaximumQuantity", 2));
+            int maximumQuantity = (itemMaterial != null ? SkillUtils.getRepairAndSalvageQuantities(new ItemStack(itemMaterial), salvageMaterial, salvageMetadata) : getIntValue("Salvageables." + key + ".MaximumQuantity", 2));
 
             if (maximumQuantity <= 0 && itemMaterial != null) {
-                maximumQuantity = config.getInt("Salvageables." + key + ".MaximumQuantity", 1);
+                maximumQuantity = getIntValue("Salvageables." + key + ".MaximumQuantity", 1);
             }
 
-            int configMaximumQuantity = config.getInt("Salvageables." + key + ".MaximumQuantity", -1);
+            int configMaximumQuantity = getIntValue("Salvageables." + key + ".MaximumQuantity", -1);
 
             if (configMaximumQuantity > 0) {
                 maximumQuantity = configMaximumQuantity;

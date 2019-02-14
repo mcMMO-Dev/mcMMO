@@ -14,7 +14,7 @@ import com.gmail.nossr50.commands.hardcore.HardcoreCommand;
 import com.gmail.nossr50.commands.hardcore.VampirismCommand;
 import com.gmail.nossr50.commands.party.PartyCommand;
 import com.gmail.nossr50.commands.party.teleport.PtpCommand;
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.util.StringUtils;
@@ -265,7 +265,7 @@ public final class CommandRegistrationManager {
 
     private static void registerMcpurgeCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcpurge");
-        command.setDescription(LocaleLoader.getString("Commands.Description.mcpurge", Config.getInstance().getOldUsersCutoff()));
+        command.setDescription(LocaleLoader.getString("Commands.Description.mcpurge", MainConfig.getInstance().getOldUsersCutoff()));
         command.setPermission("mcmmo.commands.mcpurge");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcpurge"));

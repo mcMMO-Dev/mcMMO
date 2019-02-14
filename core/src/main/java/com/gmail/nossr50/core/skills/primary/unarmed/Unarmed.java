@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.skills.primary.unarmed;
 
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.entity.Player;
@@ -8,7 +8,7 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class Unarmed {
-    public static boolean blockCrackerSmoothBrick = Config.getInstance().getUnarmedBlockCrackerSmoothbrickToCracked();
+    public static boolean blockCrackerSmoothBrick = MainConfig.getInstance().getUnarmedBlockCrackerSmoothbrickToCracked();
     public static double berserkDamageModifier = 1.5;
     public static long lastAttacked = 0;
     public static long attackInterval = 750;

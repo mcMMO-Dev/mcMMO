@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.util;
 
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.config.RankConfig;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.json.McMMOUrl;
@@ -52,7 +52,7 @@ public class TextComponentFactory {
     }
 
     public static void sendPlayerSubSkillWikiLink(Player player, String subskillformatted) {
-        if (!Config.getInstance().getUrlLinksEnabled())
+        if (!MainConfig.getInstance().getUrlLinksEnabled())
             return;
 
         Player.Spigot spigotPlayer = player.spigot();

@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.database;
 
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.data.database.DatabaseManagerFactory;
 import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.google.common.collect.ImmutableList;
@@ -22,7 +22,7 @@ public class MmoshowdbCommand implements TabExecutor {
                     return true;
                 }
 
-                sender.sendMessage(LocaleLoader.getString("Commands.mmoshowdb", (Config.getInstance().getUseMySQL() ? "sql" : "flatfile")));
+                sender.sendMessage(LocaleLoader.getString("Commands.mmoshowdb", (MainConfig.getInstance().getUseMySQL() ? "sql" : "flatfile")));
                 return true;
 
             default:

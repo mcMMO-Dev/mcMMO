@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.api;
 
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.party.Party;
@@ -101,7 +101,7 @@ public final class PartyAPI {
      * @return the max party size on this server
      */
     public static int getMaxPartySize() {
-        return Config.getInstance().getPartyMaxSize();
+        return MainConfig.getInstance().getPartyMaxSize();
     }
 
     /**

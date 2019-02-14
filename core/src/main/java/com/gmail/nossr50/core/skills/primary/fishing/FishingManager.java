@@ -2,7 +2,7 @@ package com.gmail.nossr50.core.skills.primary.fishing;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.config.AdvancedConfig;
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.config.treasure.TreasureConfig;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
@@ -197,7 +197,7 @@ public class FishingManager extends SkillManager {
         Player player = getPlayer();
         FishingTreasure treasure = null;
 
-        if (Config.getInstance().getFishingDropsEnabled() && Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_TREASURE_HUNTER)) {
+        if (MainConfig.getInstance().getFishingDropsEnabled() && Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_TREASURE_HUNTER)) {
             treasure = getFishingTreasure();
             this.fishingCatch = null;
         }
@@ -234,7 +234,7 @@ public class FishingManager extends SkillManager {
                     NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Fishing.Ability.TH.MagicFound");
                 }
 
-                if (Config.getInstance().getFishingExtraFish()) {
+                if (MainConfig.getInstance().getFishingExtraFish()) {
                     Misc.dropItem(player.getEyeLocation(), fishingCatch.getItemStack());
                 }
 
@@ -364,7 +364,7 @@ public class FishingManager extends SkillManager {
         }
 
         // Rather than subtracting luck (and causing a minimum 3% chance for every drop), scale by luck.
-        diceRoll *= (1.0 - luck * Config.getInstance().getFishingLureModifier() / 100);
+        diceRoll *= (1.0 - luck * MainConfig.getInstance().getFishingLureModifier() / 100);
 
         FishingTreasure treasure = null;
 

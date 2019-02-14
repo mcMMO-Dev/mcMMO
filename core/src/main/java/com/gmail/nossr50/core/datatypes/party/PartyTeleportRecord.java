@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.datatypes.party;
 
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.util.Misc;
 import org.bukkit.entity.Player;
 
@@ -12,7 +12,7 @@ public class PartyTeleportRecord {
     public PartyTeleportRecord() {
         requestor = null;
         enabled = true;
-        confirmRequired = Config.getInstance().getPTPCommandConfirmRequired();
+        confirmRequired = MainConfig.getInstance().getPTPCommandConfirmRequired();
         timeout = 0;
         lastUse = 0;
     }

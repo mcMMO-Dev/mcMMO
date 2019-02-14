@@ -1,6 +1,6 @@
 package com.gmail.nossr50.listeners;
 
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.config.WorldBlacklist;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.runnables.player.PlayerUpdateInventoryTask;
@@ -373,17 +373,17 @@ public class InventoryListener implements Listener {
 
         ItemStack item = event.getItem();
 
-        if (Config.getInstance().getPreventHopperTransferIngredients() && item.getType() != Material.POTION && item.getType() != Material.SPLASH_POTION && item.getType() != Material.LINGERING_POTION) {
+        if (MainConfig.getInstance().getPreventHopperTransferIngredients() && item.getType() != Material.POTION && item.getType() != Material.SPLASH_POTION && item.getType() != Material.LINGERING_POTION) {
             event.setCancelled(true);
             return;
         }
 
-        if (Config.getInstance().getPreventHopperTransferBottles() && (item.getType() == Material.POTION || item.getType() == Material.SPLASH_POTION || item.getType() == Material.LINGERING_POTION)) {
+        if (MainConfig.getInstance().getPreventHopperTransferBottles() && (item.getType() == Material.POTION || item.getType() == Material.SPLASH_POTION || item.getType() == Material.LINGERING_POTION)) {
             event.setCancelled(true);
             return;
         }
 
-        if (Config.getInstance().getEnabledForHoppers() && AlchemyPotionBrewer.isValidIngredient(null, item)) {
+        if (MainConfig.getInstance().getEnabledForHoppers() && AlchemyPotionBrewer.isValidIngredient(null, item)) {
             AlchemyPotionBrewer.scheduleCheck(null, (BrewingStand) holder);
         }
     }

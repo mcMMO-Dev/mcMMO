@@ -1,7 +1,7 @@
 package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.config.ChunkConversionOptions;
 import com.gmail.nossr50.core.config.WorldBlacklist;
 import com.gmail.nossr50.core.data.UserManager;
@@ -429,7 +429,7 @@ public class BlockListener implements Listener {
          *
          * We don't need to check permissions here because they've already been checked for the ability to even activate.
          */
-        if (mcMMOPlayer.getAbilityMode(SuperAbilityType.TREE_FELLER) && BlockUtils.isLog(blockState) && Config.getInstance().getTreeFellerSoundsEnabled()) {
+        if (mcMMOPlayer.getAbilityMode(SuperAbilityType.TREE_FELLER) && BlockUtils.isLog(blockState) && MainConfig.getInstance().getTreeFellerSoundsEnabled()) {
             SoundManager.sendSound(player, blockState.getLocation(), SoundType.FIZZ);
         }
     }

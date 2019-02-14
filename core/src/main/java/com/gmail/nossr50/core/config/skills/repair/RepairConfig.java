@@ -1,22 +1,19 @@
-package com.gmail.nossr50.config.skills.repair;
+package com.gmail.nossr50.core.config.skills.repair;
 
-import com.gmail.nossr50.config.ConfigLoader;
-import com.gmail.nossr50.core.config.ConfigurableLoader;
-import com.gmail.nossr50.core.mcmmo.skills.ItemType;
-import com.gmail.nossr50.core.mcmmo.skills.MaterialType;
-import com.gmail.nossr50.skills.repair.repairables.Repairable;
-import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
-import com.gmail.nossr50.util.ItemUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
-import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemStack;
+import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
+import com.gmail.nossr50.core.skills.ItemType;
+import com.gmail.nossr50.core.skills.MaterialType;
+import com.gmail.nossr50.core.skills.primary.repair.repairables.Repairable;
+import com.gmail.nossr50.core.skills.primary.repair.repairables.RepairableFactory;
+import com.gmail.nossr50.core.util.ItemUtils;
+import com.gmail.nossr50.core.util.skills.SkillUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class RepairConfig extends ConfigurableLoader {
+public class RepairConfig extends Config {
     private List<Repairable> repairables;
 
     public RepairConfig(String fileName) {
@@ -49,7 +46,7 @@ public class RepairConfig extends ConfigurableLoader {
 
             // Repair Material Type
             MaterialType repairMaterialType = MaterialType.OTHER;
-            String repairMaterialTypeString = config.getString("Repairables." + key + ".MaterialType", "OTHER");
+            String repairMaterialTypeString = getStringValue("Repairables." + key + ".MaterialType", "OTHER");
 
             if (!config.contains("Repairables." + key + ".MaterialType") && itemMaterial != null) {
                 ItemStack repairItem = new ItemStack(itemMaterial);
@@ -78,7 +75,7 @@ public class RepairConfig extends ConfigurableLoader {
             }
 
             // Repair Material
-            String repairMaterialName = config.getString("Repairables." + key + ".RepairMaterial");
+            String repairMaterialName = getStringValue("Repairables." + key + ".RepairMaterial");
             Material repairMaterial = (repairMaterialName == null ? repairMaterialType.getDefaultMaterial() : Material.matchMaterial(repairMaterialName));
 
             if (repairMaterial == null) {
@@ -86,10 +83,10 @@ public class RepairConfig extends ConfigurableLoader {
             }
 
             // Maximum Durability
-            short maximumDurability = (itemMaterial != null ? itemMaterial.getMaxDurability() : (short) config.getInt("Repairables." + key + ".MaximumDurability"));
+            short maximumDurability = (itemMaterial != null ? itemMaterial.getMaxDurability() : (short) getIntValue("Repairables." + key + ".MaximumDurability"));
 
             if (maximumDurability <= 0) {
-                maximumDurability = (short) config.getInt("Repairables." + key + ".MaximumDurability");
+                maximumDurability = (short) getIntValue("Repairables." + key + ".MaximumDurability");
             }
 
             if (maximumDurability <= 0) {
@@ -98,7 +95,7 @@ public class RepairConfig extends ConfigurableLoader {
 
             // ItemStack Type
             ItemType repairItemType = ItemType.OTHER;
-            String repairItemTypeString = config.getString("Repairables." + key + ".ItemType", "OTHER");
+            String repairItemTypeString = getStringValue("Repairables." + key + ".ItemType", "OTHER");
 
             if (!config.contains("Repairables." + key + ".ItemType") && itemMaterial != null) {
                 ItemStack repairItem = new ItemStack(itemMaterial);
@@ -116,19 +113,19 @@ public class RepairConfig extends ConfigurableLoader {
                 }
             }
 
-            byte repairMetadata = (byte) config.getInt("Repairables." + key + ".RepairMaterialMetadata", -1);
-            int minimumLevel = config.getInt("Repairables." + key + ".MinimumLevel");
-            double xpMultiplier = config.getDouble("Repairables." + key + ".XpMultiplier", 1);
+            byte repairMetadata = (byte) getIntValue("Repairables." + key + ".RepairMaterialMetadata", -1);
+            int minimumLevel = getIntValue("Repairables." + key + ".MinimumLevel");
+            double xpMultiplier = getDoubleValue("Repairables." + key + ".XpMultiplier", 1);
 
             if (minimumLevel < 0) {
                 reason.add(key + " has an invalid MinimumLevel of " + minimumLevel);
             }
 
             // Minimum Quantity
-            int minimumQuantity = (itemMaterial != null ? SkillUtils.getRepairAndSalvageQuantities(new ItemStack(itemMaterial), repairMaterial, repairMetadata) : config.getInt("Repairables." + key + ".MinimumQuantity", 2));
+            int minimumQuantity = (itemMaterial != null ? SkillUtils.getRepairAndSalvageQuantities(new ItemStack(itemMaterial), repairMaterial, repairMetadata) : getIntValue("Repairables." + key + ".MinimumQuantity", 2));
 
             if (minimumQuantity <= 0 && itemMaterial != null) {
-                minimumQuantity = config.getInt("Repairables." + key + ".MinimumQuantity", 2);
+                minimumQuantity = getIntValue("Repairables." + key + ".MinimumQuantity", 2);
             }
 
             if (minimumQuantity <= 0) {

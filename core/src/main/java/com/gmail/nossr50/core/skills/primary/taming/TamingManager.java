@@ -2,7 +2,7 @@ package com.gmail.nossr50.core.skills.primary.taming;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.config.AdvancedConfig;
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
@@ -168,7 +168,7 @@ public class TamingManager extends SkillManager {
             return;
         }
 
-        callOfTheWild(EntityType.OCELOT, Config.getInstance().getTamingCOTWCost(EntityType.OCELOT));
+        callOfTheWild(EntityType.OCELOT, MainConfig.getInstance().getTamingCOTWCost(EntityType.OCELOT));
     }
 
     /**
@@ -182,7 +182,7 @@ public class TamingManager extends SkillManager {
             return;
         }
 
-        callOfTheWild(EntityType.WOLF, Config.getInstance().getTamingCOTWCost(EntityType.WOLF));
+        callOfTheWild(EntityType.WOLF, MainConfig.getInstance().getTamingCOTWCost(EntityType.WOLF));
     }
 
     /**
@@ -196,7 +196,7 @@ public class TamingManager extends SkillManager {
             return;
         }
 
-        callOfTheWild(EntityType.HORSE, Config.getInstance().getTamingCOTWCost(EntityType.HORSE));
+        callOfTheWild(EntityType.HORSE, MainConfig.getInstance().getTamingCOTWCost(EntityType.HORSE));
     }
 
     /**
@@ -290,8 +290,8 @@ public class TamingManager extends SkillManager {
             return;
         }
 
-        int amount = Config.getInstance().getTamingCOTWAmount(type);
-        int tamingCOTWLength = Config.getInstance().getTamingCOTWLength(type);
+        int amount = MainConfig.getInstance().getTamingCOTWAmount(type);
+        int tamingCOTWLength = MainConfig.getInstance().getTamingCOTWLength(type);
 
         for (int i = 0; i < amount; i++) {
             if (!summonAmountCheck(type)) {
@@ -360,7 +360,7 @@ public class TamingManager extends SkillManager {
     }
 
     private boolean rangeCheck(EntityType type) {
-        double range = Config.getInstance().getTamingCOTWRange();
+        double range = MainConfig.getInstance().getTamingCOTWRange();
         Player player = getPlayer();
 
         if (range == 0) {
@@ -380,7 +380,7 @@ public class TamingManager extends SkillManager {
     private boolean summonAmountCheck(EntityType entityType) {
         Player player = getPlayer();
 
-        int maxAmountSummons = Config.getInstance().getTamingCOTWMaxAmount(entityType);
+        int maxAmountSummons = MainConfig.getInstance().getTamingCOTWMaxAmount(entityType);
 
         if (maxAmountSummons <= 0) {
             return true;

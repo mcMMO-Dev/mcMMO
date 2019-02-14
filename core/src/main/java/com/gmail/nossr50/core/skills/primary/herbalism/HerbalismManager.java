@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.skills.primary.herbalism;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.config.treasure.TreasureConfig;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
@@ -36,7 +36,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canBlockCheck() {
-        return !(Config.getInstance().getHerbalismPreventAFK() && getPlayer().isInsideVehicle());
+        return !(MainConfig.getInstance().getHerbalismPreventAFK() && getPlayer().isInsideVehicle());
     }
 
     public boolean canGreenThumbBlock(BlockState blockState) {
@@ -148,7 +148,7 @@ public class HerbalismManager extends SkillManager {
         } else {
             xp = ExperienceConfig.getInstance().getXp(skill, blockState.getBlockData());
 
-            if (Config.getInstance().getDoubleDropsEnabled(skill, material) && Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_DOUBLE_DROPS)) {
+            if (MainConfig.getInstance().getDoubleDropsEnabled(skill, material) && Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_DOUBLE_DROPS)) {
                 drops = blockState.getBlock().getDrops();
             }
 

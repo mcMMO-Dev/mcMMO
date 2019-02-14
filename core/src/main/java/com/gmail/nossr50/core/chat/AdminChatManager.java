@@ -1,12 +1,12 @@
 package com.gmail.nossr50.core.chat;
 
 import com.gmail.nossr50.core.McmmoCore;
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.events.chat.McMMOAdminChatEvent;
 
 public class AdminChatManager extends ChatManager {
     protected AdminChatManager() {
-        super(Config.getInstance().getAdminDisplayNames(), Config.getInstance().getAdminChatPrefix());
+        super(MainConfig.getInstance().getAdminDisplayNames(), MainConfig.getInstance().getAdminChatPrefix());
     }
 
     @Override

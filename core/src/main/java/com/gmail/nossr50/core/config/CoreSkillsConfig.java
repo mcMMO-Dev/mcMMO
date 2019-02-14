@@ -5,12 +5,11 @@ import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.core.util.StringUtils;
 
-public class CoreSkillsConfig extends ConfigurableLoader {
+public class CoreSkillsConfig extends Config {
     private static CoreSkillsConfig instance;
 
     public CoreSkillsConfig() {
         super(McmmoCore.getDataFolderPath().getAbsoluteFile(),"coreskills.yml");
-        validate();
     }
 
     public static CoreSkillsConfig getInstance() {
@@ -20,15 +19,19 @@ public class CoreSkillsConfig extends ConfigurableLoader {
         return instance;
     }
 
+    /**
+     * The version of this config
+     *
+     * @return
+     */
     @Override
-    protected void loadKeys() {
-
+    public double getConfigVersion() {
+        return 1;
     }
 
     @Override
-    protected boolean validateKeys() {
-
-        return true;
+    public void unload() {
+        instance = null;
     }
 
     /*
@@ -43,7 +46,7 @@ public class CoreSkillsConfig extends ConfigurableLoader {
      * @return true if subskill is enabled
      */
     public boolean isSkillEnabled(AbstractSubSkill abstractSubSkill) {
-        return config.getBoolean(StringUtils.getCapitalized(abstractSubSkill.getPrimarySkill().toString()) + "." + abstractSubSkill.getConfigKeyName() + ".Enabled", true);
+        return getBooleanValue(StringUtils.getCapitalized(abstractSubSkill.getPrimarySkill().toString()) + "." + abstractSubSkill.getConfigKeyName() + ".Enabled", true);
     }
 
     /**
@@ -53,6 +56,6 @@ public class CoreSkillsConfig extends ConfigurableLoader {
      * @return true if enabled
      */
     public boolean isPrimarySkillEnabled(PrimarySkillType primarySkillType) {
-        return config.getBoolean(StringUtils.getCapitalized(primarySkillType.toString()) + ".Enabled", true);
+        return getBooleanValue(StringUtils.getCapitalized(primarySkillType.toString()) + ".Enabled", true);
     }
 }

@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.skills.primary.mining;
 
 import com.gmail.nossr50.core.config.AdvancedConfig;
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
@@ -85,10 +85,10 @@ public class MiningManager extends SkillManager {
         Material material = blockState.getType();
 
         if (mcMMOPlayer.getAbilityMode(skill.getAbility())) {
-            SkillUtils.handleDurabilityChange(getPlayer().getInventory().getItemInMainHand(), Config.getInstance().getAbilityToolDamage());
+            SkillUtils.handleDurabilityChange(getPlayer().getInventory().getItemInMainHand(), MainConfig.getInstance().getAbilityToolDamage());
         }
 
-        if ((mcMMO.getModManager().isCustomMiningBlock(blockState) && !mcMMO.getModManager().getBlock(blockState).isDoubleDropEnabled()) || !Config.getInstance().getDoubleDropsEnabled(skill, material)) {
+        if ((mcMMO.getModManager().isCustomMiningBlock(blockState) && !mcMMO.getModManager().getBlock(blockState).isDoubleDropEnabled()) || !MainConfig.getInstance().getDoubleDropsEnabled(skill, material)) {
             return;
         }
 

@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.hardcore;
 
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.util.Permissions;
@@ -45,7 +45,7 @@ public class VampirismCommand extends HardcoreModeCommand {
 
     @Override
     protected void modify(CommandSender sender, double newPercentage) {
-        Config.getInstance().setHardcoreVampirismStatLeechPercentage(newPercentage);
+        MainConfig.getInstance().setHardcoreVampirismStatLeechPercentage(newPercentage);
         sender.sendMessage(LocaleLoader.getString("Hardcore.Vampirism.PercentageChanged", percent.format(newPercentage / 100.0D)));
     }
 

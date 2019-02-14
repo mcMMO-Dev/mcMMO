@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.util.skills;
 
 import com.gmail.nossr50.core.config.AdvancedConfig;
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.config.ChunkConversionOptions;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
@@ -114,7 +114,7 @@ public class SkillUtils {
      * @return true if this is a valid skill, false otherwise
      */
     public static boolean isSkill(String skillName) {
-        return Config.getInstance().getLocale().equalsIgnoreCase("en_US") ? PrimarySkillType.getSkill(skillName) != null : isLocalizedSkill(skillName);
+        return MainConfig.getInstance().getLocale().equalsIgnoreCase("en_US") ? PrimarySkillType.getSkill(skillName) != null : isLocalizedSkill(skillName);
     }
 
     public static void sendSkillMessage(Player player, NotificationType notificationType, String key) {

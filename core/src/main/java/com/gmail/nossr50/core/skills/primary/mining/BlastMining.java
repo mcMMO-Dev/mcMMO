@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.skills.primary.mining;
 
 import com.gmail.nossr50.core.config.AdvancedConfig;
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
@@ -42,7 +42,7 @@ public class BlastMining {
     }*/
 
     public final static int MAXIMUM_REMOTE_DETONATION_DISTANCE = 100;
-    public static Material detonator = Config.getInstance().getDetonatorItem();
+    public static Material detonator = MainConfig.getInstance().getDetonatorItem();
 
     public static double getBlastRadiusModifier(int rank) {
         return AdvancedConfig.getInstance().getBlastRadiusModifier(rank);

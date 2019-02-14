@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.chat;
 
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.datatypes.party.Party;
 import com.gmail.nossr50.core.runnables.party.PartyChatTask;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
@@ -10,7 +10,7 @@ public class PartyChatManager extends ChatManager {
     private Party party;
 
     protected PartyChatManager(Plugin plugin) {
-        super(plugin, Config.getInstance().getPartyDisplayNames(), Config.getInstance().getPartyChatPrefix());
+        super(plugin, MainConfig.getInstance().getPartyDisplayNames(), MainConfig.getInstance().getPartyChatPrefix());
     }
 
     public void setParty(Party party) {

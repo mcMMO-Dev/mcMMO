@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.util;
 
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.util.skills.PerksUtils;
@@ -71,11 +71,11 @@ public final class Motd {
         player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Enabled", statLossInfo + seperator + vampirismInfo));
 
         if (deathStatLossEnabled) {
-            player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.DeathStatLoss.Stats", Config.getInstance().getHardcoreDeathStatPenaltyPercentage()));
+            player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.DeathStatLoss.Stats", MainConfig.getInstance().getHardcoreDeathStatPenaltyPercentage()));
         }
 
         if (vampirismEnabled) {
-            player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Vampirism.Stats", Config.getInstance().getHardcoreVampirismStatLeechPercentage()));
+            player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Vampirism.Stats", MainConfig.getInstance().getHardcoreVampirismStatLeechPercentage()));
         }
     }
 

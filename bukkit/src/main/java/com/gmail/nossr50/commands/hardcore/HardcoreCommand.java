@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.hardcore;
 
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.util.Permissions;
@@ -45,7 +45,7 @@ public class HardcoreCommand extends HardcoreModeCommand {
 
     @Override
     protected void modify(CommandSender sender, double newPercentage) {
-        Config.getInstance().setHardcoreDeathStatPenaltyPercentage(newPercentage);
+        MainConfig.getInstance().setHardcoreDeathStatPenaltyPercentage(newPercentage);
         sender.sendMessage(LocaleLoader.getString("Hardcore.DeathStatLoss.PercentageChanged", percent.format(newPercentage / 100.0D)));
     }
 

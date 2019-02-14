@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.runnables.items;
 
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
@@ -40,7 +40,7 @@ public class TeleportationWarmup extends BukkitRunnable {
             return;
         }
 
-        int hurtCooldown = Config.getInstance().getPTPCommandRecentlyHurtCooldown();
+        int hurtCooldown = MainConfig.getInstance().getPTPCommandRecentlyHurtCooldown();
 
         if (hurtCooldown > 0) {
             int timeRemaining = SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, hurtCooldown, teleportingPlayer);

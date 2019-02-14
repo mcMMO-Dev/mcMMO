@@ -7,12 +7,11 @@ import com.gmail.nossr50.core.skills.subskills.AbstractSubSkill;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RankConfig extends ConfigurableLoader {
+public class RankConfig extends ConfigValidated {
     private static RankConfig instance;
 
     public RankConfig() {
         super(McmmoCore.getDataFolderPath().getAbsoluteFile(),"skillranks.yml");
-        validate();
         this.instance = this;
     }
 
@@ -24,12 +23,22 @@ public class RankConfig extends ConfigurableLoader {
     }
 
     @Override
-    protected void loadKeys() {
+    public void unload() {
+        instance = null;
+    }
 
+    /**
+     * The version of this config
+     *
+     * @return
+     */
+    @Override
+    public double getConfigVersion() {
+        return 1;
     }
 
     @Override
-    protected boolean validateKeys() {
+    public List<String> validateKeys() {
         List<String> reason = new ArrayList<String>();
 
         /*
@@ -37,7 +46,7 @@ public class RankConfig extends ConfigurableLoader {
          */
         checkKeys(reason);
 
-        return noErrorsInConfig(reason);
+        return reason;
     }
 
     /**
@@ -74,14 +83,14 @@ public class RankConfig extends ConfigurableLoader {
      * @return the level requirement for a subskill at this particular rank
      */
     private int findRankByRootAddress(int rank, String key) {
-        String scalingKey = Config.getInstance().getIsRetroMode() ? ".RetroMode." : ".Standard.";
+        String scalingKey = MainConfig.getInstance().getIsRetroMode() ? ".RetroMode." : ".Standard.";
 
         String targetRank = "Rank_" + rank;
 
         key += scalingKey;
         key += targetRank;
 
-        return config.getInt(key);
+        return getIntValue(key);
     }
 
     /**

@@ -71,4 +71,10 @@ public interface Platform {
      * @return this platform's data folder
      */
     File getDataFolderPath();
+
+    /**
+     * Gets the path of the mods config folder inside the Data folder for this platform
+     * @return this platform's mod config subdirectory
+     */
+    String getModDataFolderPath();
 }

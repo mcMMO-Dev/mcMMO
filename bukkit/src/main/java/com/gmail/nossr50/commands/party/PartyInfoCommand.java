@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.party;
 
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.party.Party;
 import com.gmail.nossr50.core.datatypes.party.PartyFeature;
@@ -78,7 +78,7 @@ public class PartyInfoCommand implements CommandExecutor {
     }
 
     private boolean isUnlockedFeature(Party party, PartyFeature partyFeature) {
-        return party.getLevel() >= Config.getInstance().getPartyFeatureUnlockLevel(partyFeature);
+        return party.getLevel() >= MainConfig.getInstance().getPartyFeatureUnlockLevel(partyFeature);
     }
 
     private void displayShareModeInfo(Player player, Party party) {

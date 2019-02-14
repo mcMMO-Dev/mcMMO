@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.party.alliance;
 
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.party.Party;
 import com.gmail.nossr50.core.datatypes.party.PartyFeature;
@@ -42,7 +42,7 @@ public class PartyAllianceCommand implements TabExecutor {
 
         switch (args.length) {
             case 1:
-                if (playerParty.getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.ALLIANCE)) {
+                if (playerParty.getLevel() < MainConfig.getInstance().getPartyFeatureUnlockLevel(PartyFeature.ALLIANCE)) {
                     sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.3"));
                     return true;
                 }
@@ -60,7 +60,7 @@ public class PartyAllianceCommand implements TabExecutor {
 
             case 2:
             case 3:
-                if (playerParty.getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.ALLIANCE)) {
+                if (playerParty.getLevel() < MainConfig.getInstance().getPartyFeatureUnlockLevel(PartyFeature.ALLIANCE)) {
                     sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.3"));
                     return true;
                 }

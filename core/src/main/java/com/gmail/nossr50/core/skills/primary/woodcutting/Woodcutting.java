@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.skills.primary.woodcutting;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
@@ -28,7 +28,7 @@ public final class Woodcutting {
             new int[]{1, -2}, new int[]{1, -1}, new int[]{1, 0}, new int[]{1, 1}, new int[]{1, 2},
             new int[]{2, -1}, new int[]{2, 0}, new int[]{2, 1},
     };
-    public static int treeFellerThreshold = Config.getInstance().getTreeFellerThreshold();
+    public static int treeFellerThreshold = MainConfig.getInstance().getTreeFellerThreshold();
     protected static boolean treeFellerReachedThreshold = false;
 
     private Woodcutting() {
@@ -58,7 +58,7 @@ public final class Woodcutting {
         if (mcMMO.getModManager().isCustomLog(blockState) && mcMMO.getModManager().getBlock(blockState).isDoubleDropEnabled()) {
             Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
         } else {
-            if (Config.getInstance().getWoodcuttingDoubleDropsEnabled(blockState.getBlockData())) {
+            if (MainConfig.getInstance().getWoodcuttingDoubleDropsEnabled(blockState.getBlockData())) {
                 Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
             }
         }
@@ -143,7 +143,7 @@ public final class Woodcutting {
 
         for (BlockState blockState : treeFellerBlocks) {
             if (BlockUtils.isLog(blockState)) {
-                durabilityLoss += Config.getInstance().getAbilityToolDamage();
+                durabilityLoss += MainConfig.getInstance().getAbilityToolDamage();
             }
         }
 

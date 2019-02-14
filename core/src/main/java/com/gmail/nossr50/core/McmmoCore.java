@@ -6,6 +6,7 @@ import com.gmail.nossr50.core.mcmmo.plugin.Plugin;
 import com.gmail.nossr50.core.mcmmo.server.Server;
 import com.gmail.nossr50.core.mcmmo.tasks.TaskScheduler;
 import com.gmail.nossr50.core.platform.Platform;
+import com.gmail.nossr50.core.util.ModManager;
 import com.gmail.nossr50.core.util.experience.FormulaManager;
 import com.gmail.nossr50.core.util.upgrade.UpgradeManager;
 
@@ -22,8 +23,9 @@ public class McmmoCore {
 
     //Why do all these things need to be here? Sigh...
     private static DatabaseManager databaseManager;
-    private static UpgradeManager upgradeManager;
+    private static UpgradeManager upgradeManager; //TODO: I can't even remember what this one did
     private static FormulaManager formulaManager;
+    private static ModManager modManager; //TODO: Probably need to rewrite this
 
     /**
      * Returns our Logger
@@ -64,4 +66,8 @@ public class McmmoCore {
     public static FormulaManager getFormulaManager() { return formulaManager; }
 
     public static boolean isRetroModeEnabled() { return retroModeEnabled; }
+
+    public static ModManager getModManager() { return modManager; }
+
+    public static String getModDataFolderPath() { return platform.getModDataFolderPath(); }
 }

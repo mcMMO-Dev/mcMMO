@@ -5,13 +5,12 @@ import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.mcmmo.colors.ChatColor;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.skills.subskills.AbstractSubSkill;
-import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 //@ConfigSerializable
-public class AdvancedConfig extends ConfigurableLoader {
+public class AdvancedConfig extends ConfigValidated {
 
     public static final String SKILLS = "Skills";
     public static final String GENERAL = "General";

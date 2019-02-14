@@ -1,7 +1,7 @@
 package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
@@ -38,27 +38,27 @@ public class SelfListener implements Listener {
             UserManager.getPlayer(player).processUnlockNotifications(plugin, event.getSkill(), previousLevelGained);
         }
 
-        if (Config.getInstance().getScoreboardsEnabled())
+        if (MainConfig.getInstance().getScoreboardsEnabled())
             ScoreboardManager.handleLevelUp(player, skill);
 
-        if (!Config.getInstance().getLevelUpEffectsEnabled()) {
+        if (!MainConfig.getInstance().getLevelUpEffectsEnabled()) {
             return;
         }
 
-        if ((event.getSkillLevel() % Config.getInstance().getLevelUpEffectsTier()) == 0) {
+        if ((event.getSkillLevel() % MainConfig.getInstance().getLevelUpEffectsTier()) == 0) {
             skill.celebrateLevelUp(player);
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerXp(McMMOPlayerXpGainEvent event) {
-        if (Config.getInstance().getScoreboardsEnabled())
+        if (MainConfig.getInstance().getScoreboardsEnabled())
             ScoreboardManager.handleXp(event.getPlayer(), event.getSkill());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onAbility(McMMOPlayerAbilityActivateEvent event) {
-        if (Config.getInstance().getScoreboardsEnabled())
+        if (MainConfig.getInstance().getScoreboardsEnabled())
             ScoreboardManager.cooldownUpdate(event.getPlayer(), event.getSkill());
     }
 

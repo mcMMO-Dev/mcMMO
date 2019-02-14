@@ -1,15 +1,16 @@
 package com.gmail.nossr50.core.config.mods;
 
+import com.gmail.nossr50.core.McmmoCore;
 import com.gmail.nossr50.core.util.ModManager;
 
 import java.io.File;
 import java.util.regex.Pattern;
 
 public class ArmorConfigManager {
-    public ArmorConfigManager(mcMMO plugin) {
+    public ArmorConfigManager() {
         Pattern middlePattern = Pattern.compile("armor\\.(?:.+)\\.yml");
         Pattern startPattern = Pattern.compile("(?:.+)\\.armor\\.yml");
-        File dataFolder = new File(mcMMO.getModDirectory());
+        File dataFolder = new File(McmmoCore.getModDataFolderPath());
         File vanilla = new File(dataFolder, "armor.default.yml");
         ModManager modManager = mcMMO.getModManager();
 

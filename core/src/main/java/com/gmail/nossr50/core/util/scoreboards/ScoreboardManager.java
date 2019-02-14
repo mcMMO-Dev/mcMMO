@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.util.scoreboards;
 
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.database.PlayerStat;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
@@ -65,7 +65,7 @@ public class ScoreboardManager {
          * Stylizes the targetBoard in a Rainbow Pattern
          * This is off by default
          */
-        if (Config.getInstance().getScoreboardRainbows()) {
+        if (MainConfig.getInstance().getScoreboardRainbows()) {
             // Everything but black, gray, gold
             List<ChatColor> colors = Lists.newArrayList(
                     ChatColor.WHITE,
@@ -135,7 +135,7 @@ public class ScoreboardManager {
     }
 
     private static String formatAbility(ChatColor color, String abilityName) {
-        if (Config.getInstance().getShowAbilityNames()) {
+        if (MainConfig.getInstance().getShowAbilityNames()) {
             return getShortenedName(color + abilityName);
         } else {
             return color + LocaleLoader.getString("Scoreboard.Misc.Ability");
@@ -207,11 +207,11 @@ public class ScoreboardManager {
             }
         }
 
-        if (Config.getInstance().getPowerLevelTagsEnabled() && !dirtyPowerLevels.contains(playerName)) {
+        if (MainConfig.getInstance().getPowerLevelTagsEnabled() && !dirtyPowerLevels.contains(playerName)) {
             dirtyPowerLevels.add(playerName);
         }
 
-        if (Config.getInstance().getSkillLevelUpBoard()) {
+        if (MainConfig.getInstance().getSkillLevelUpBoard()) {
             enablePlayerSkillLevelUpScoreboard(player, skill);
         }
     }
@@ -242,7 +242,7 @@ public class ScoreboardManager {
         wrapper.setOldScoreboard();
         wrapper.setTypeSkill(skill);
 
-        changeScoreboard(wrapper, Config.getInstance().getSkillScoreboardTime());
+        changeScoreboard(wrapper, MainConfig.getInstance().getSkillScoreboardTime());
     }
 
     // **** Setup methods **** //
@@ -258,7 +258,7 @@ public class ScoreboardManager {
         wrapper.setOldScoreboard();
         wrapper.setTypeSkill(skill);
 
-        changeScoreboard(wrapper, Config.getInstance().getSkillLevelUpTime());
+        changeScoreboard(wrapper, MainConfig.getInstance().getSkillLevelUpTime());
     }
 
     public static void enablePlayerStatsScoreboard(Player player) {
@@ -267,7 +267,7 @@ public class ScoreboardManager {
         wrapper.setOldScoreboard();
         wrapper.setTypeSelfStats();
 
-        changeScoreboard(wrapper, Config.getInstance().getStatsScoreboardTime());
+        changeScoreboard(wrapper, MainConfig.getInstance().getStatsScoreboardTime());
     }
 
     public static void enablePlayerInspectScoreboard(Player player, PlayerProfile targetProfile) {
@@ -276,7 +276,7 @@ public class ScoreboardManager {
         wrapper.setOldScoreboard();
         wrapper.setTypeInspectStats(targetProfile);
 
-        changeScoreboard(wrapper, Config.getInstance().getInspectScoreboardTime());
+        changeScoreboard(wrapper, MainConfig.getInstance().getInspectScoreboardTime());
     }
 
     public static void enablePlayerCooldownScoreboard(Player player) {
@@ -285,7 +285,7 @@ public class ScoreboardManager {
         wrapper.setOldScoreboard();
         wrapper.setTypeCooldowns();
 
-        changeScoreboard(wrapper, Config.getInstance().getCooldownScoreboardTime());
+        changeScoreboard(wrapper, MainConfig.getInstance().getCooldownScoreboardTime());
     }
 
     public static void showPlayerRankScoreboard(Player player, Map<PrimarySkillType, Integer> rank) {
@@ -295,7 +295,7 @@ public class ScoreboardManager {
         wrapper.setTypeSelfRank();
         wrapper.acceptRankData(rank);
 
-        changeScoreboard(wrapper, Config.getInstance().getRankScoreboardTime());
+        changeScoreboard(wrapper, MainConfig.getInstance().getRankScoreboardTime());
     }
 
     public static void showPlayerRankScoreboardOthers(Player player, String targetName, Map<PrimarySkillType, Integer> rank) {
@@ -305,7 +305,7 @@ public class ScoreboardManager {
         wrapper.setTypeInspectRank(targetName);
         wrapper.acceptRankData(rank);
 
-        changeScoreboard(wrapper, Config.getInstance().getRankScoreboardTime());
+        changeScoreboard(wrapper, MainConfig.getInstance().getRankScoreboardTime());
     }
 
     public static void showTopScoreboard(Player player, PrimarySkillType skill, int pageNumber, List<PlayerStat> stats) {
@@ -315,7 +315,7 @@ public class ScoreboardManager {
         wrapper.setTypeTop(skill, pageNumber);
         wrapper.acceptLeaderboardData(stats);
 
-        changeScoreboard(wrapper, Config.getInstance().getTopScoreboardTime());
+        changeScoreboard(wrapper, MainConfig.getInstance().getTopScoreboardTime());
     }
 
     public static void showTopPowerScoreboard(Player player, int pageNumber, List<PlayerStat> stats) {
@@ -325,7 +325,7 @@ public class ScoreboardManager {
         wrapper.setTypeTopPower(pageNumber);
         wrapper.acceptLeaderboardData(stats);
 
-        changeScoreboard(wrapper, Config.getInstance().getTopScoreboardTime());
+        changeScoreboard(wrapper, MainConfig.getInstance().getTopScoreboardTime());
     }
 
     /**
@@ -370,7 +370,7 @@ public class ScoreboardManager {
      * @return the main targetBoard objective, or null if disabled
      */
     public static Objective getPowerLevelObjective() {
-        if (!Config.getInstance().getPowerLevelTagsEnabled()) {
+        if (!MainConfig.getInstance().getPowerLevelTagsEnabled()) {
             Objective objective = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard().getObjective(POWER_OBJECTIVE);
 
             if (objective != null) {

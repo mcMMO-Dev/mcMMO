@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.player;
 
-import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.locale.LocaleLoader;
@@ -87,7 +87,7 @@ public class McrankCommand implements TabExecutor {
     private void display(CommandSender sender, String playerName) {
         if (sender instanceof Player) {
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
-            long cooldownMillis = Math.max(Config.getInstance().getDatabasePlayerCooldown(), 1750);
+            long cooldownMillis = Math.max(MainConfig.getInstance().getDatabasePlayerCooldown(), 1750);
 
             if (mcMMOPlayer.getDatabaseATS() + cooldownMillis > System.currentTimeMillis()) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Database.Cooldown"));
@@ -104,8 +104,8 @@ public class McrankCommand implements TabExecutor {
             mcMMOPlayer.actualizeDatabaseATS();
         }
 
-        boolean useBoard = Config.getInstance().getScoreboardsEnabled() && (sender instanceof Player) && (Config.getInstance().getRankUseBoard());
-        boolean useChat = !useBoard || Config.getInstance().getRankUseChat();
+        boolean useBoard = MainConfig.getInstance().getScoreboardsEnabled() && (sender instanceof Player) && (MainConfig.getInstance().getRankUseBoard());
+        boolean useChat = !useBoard || MainConfig.getInstance().getRankUseChat();
 
         new McrankCommandAsyncTask(playerName, sender, useBoard, useChat).runTaskAsynchronously(mcMMO.p);
     }

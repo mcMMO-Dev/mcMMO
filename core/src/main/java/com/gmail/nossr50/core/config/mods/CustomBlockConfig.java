@@ -2,7 +2,7 @@ package com.gmail.nossr50.core.config.mods;
 
 import com.gmail.nossr50.core.McmmoCore;
 import com.gmail.nossr50.core.config.ConfigLoader;
-import com.gmail.nossr50.core.config.ConfigurableLoader;
+import com.gmail.nossr50.core.config.ConfigKeyRegister;
 import com.gmail.nossr50.core.mcmmo.mods.CustomBlock;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-public class CustomBlockConfig extends ConfigurableLoader {
+public class CustomBlockConfig extends ConfigKeyRegister {
     public List<Material> customExcavationBlocks = new ArrayList<>();
     public List<Material> customHerbalismBlocks = new ArrayList<>();
     public List<Material> customMiningBlocks = new ArrayList<>();
@@ -78,14 +78,14 @@ public class CustomBlockConfig extends ConfigurableLoader {
                 continue;
             }
 
-            int xp = config.getInt(skillType + "." + blockName + ".XP_Gain");
+            int xp = getIntValue(skillType + "." + blockName + ".XP_Gain");
             int smeltingXp = 0;
 
-            if (skillType.equals("Mining") && config.getBoolean(skillType + "." + blockName + ".Is_Ore")) {
+            if (skillType.equals("Mining") && getBooleanValue(skillType + "." + blockName + ".Is_Ore")) {
                 customOres.add(blockMaterial);
-                smeltingXp = config.getInt(skillType + "." + blockName + ".Smelting_XP_Gain", xp / 10);
+                smeltingXp = getIntValue(skillType + "." + blockName + ".Smelting_XP_Gain", xp / 10);
             } else if (skillType.equals("Woodcutting")) {
-                if (config.getBoolean(skillType + "." + blockName + ".Is_Log")) {
+                if (getBooleanValue(skillType + "." + blockName + ".Is_Log")) {
                     customLogs.add(blockMaterial);
                 } else {
                     customLeaves.add(blockMaterial);
@@ -93,7 +93,7 @@ public class CustomBlockConfig extends ConfigurableLoader {
                 }
             }
 
-            customBlockMap.put(blockMaterial, new CustomBlock(xp, config.getBoolean(skillType + "." + blockName + ".Double_Drops_Enabled"), smeltingXp));
+            customBlockMap.put(blockMaterial, new CustomBlock(xp, getBooleanValue(skillType + "." + blockName + ".Double_Drops_Enabled"), smeltingXp));
         }
     }
 }
