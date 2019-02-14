@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.skills;
 
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.util.StringUtils;
 
 public enum SubSkillType {
     /* !! Warning -- Do not let subskills share a name with any existing PrimarySkillType as it will clash with the static import !! */
@@ -136,8 +136,8 @@ public enum SubSkillType {
      *
      * @return the root address for this skill in advanced.yml
      */
-    public String getAdvConfigAddress() {
-        return "Skills." + StringUtils.getCapitalized(getParentSkill().toString()) + "." + getConfigName(toString());
+    public String[] getAdvConfigAddress() {
+        return new String[] {"Skills", StringUtils.getCapitalized(getParentSkill().toString()), getConfigName(toString())};
     }
 
     /**
@@ -146,7 +146,7 @@ public enum SubSkillType {
      * @return the root address for this skill in rankskills.yml
      */
     public String getRankConfigAddress() {
-        return StringUtils.getCapitalized(getParentSkill().toString()) + "." + getConfigName(toString());
+        //return StringUtils.getCapitalized(getParentSkill().toString()) + "." + getConfigName(toString());
     }
 
     /**

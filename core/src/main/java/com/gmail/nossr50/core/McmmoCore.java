@@ -18,6 +18,7 @@ public class McmmoCore {
     private static EventCommander eventCommander;
     private static Logger logger;
     private static Platform platform;
+    private static boolean retroModeEnabled;
 
     //Why do all these things need to be here? Sigh...
     private static DatabaseManager databaseManager;
@@ -61,4 +62,6 @@ public class McmmoCore {
     public static UpgradeManager getUpgradeManager() { return upgradeManager; }
 
     public static FormulaManager getFormulaManager() { return formulaManager; }
+
+    public static boolean isRetroModeEnabled() { return retroModeEnabled; }
 }

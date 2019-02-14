@@ -436,7 +436,7 @@ public class AdvancedConfig extends ConfigurableLoader {
      * @return the level at which abilities stop increasing in length
      */
     public int getAbilityLengthCap() {
-        if(!mcMMO.isRetroModeEnabled())
+        if(!McmmoCore.isRetroModeEnabled())
             return getIntValue(SKILLS, GENERAL, ABILITY, LENGTH, STANDARD, CAP_LEVEL);
         else
             return getIntValue(SKILLS, GENERAL, ABILITY, LENGTH, RETRO_MODE, CAP_LEVEL);
@@ -448,7 +448,7 @@ public class AdvancedConfig extends ConfigurableLoader {
      * @return the number of levels required per ability length increase
      */
     public int getAbilityLength() {
-        if(!mcMMO.isRetroModeEnabled())
+        if(!McmmoCore.isRetroModeEnabled())
             return getIntValue(SKILLS, GENERAL, ABILITY, LENGTH, STANDARD, INCREASE_LEVEL);
         else
             return getIntValue(SKILLS, GENERAL, ABILITY, LENGTH, RETRO_MODE, INCREASE_LEVEL);
@@ -464,10 +464,10 @@ public class AdvancedConfig extends ConfigurableLoader {
      * @return the level at which this skills max benefits will be reached on the curve
      */
     public int getMaxBonusLevel(SubSkillType subSkillType) {
-        if(!mcMMO.isRetroModeEnabled())
-
-            String[] keyPath = {subSkillType.getAdvConfigAddress(), MAX_BONUS_LEVEL};
-        return mcMMO.isRetroModeEnabled() ? getIntValue(keyPath+ RETRO_MODE) : getIntValue(keyPath+ STANDARD);
+        if(!McmmoCore.isRetroModeEnabled())
+            return getIntValue(subSkillType.getAdvConfigAddress(), MAX_BONUS_LEVEL, STANDARD);
+        else
+            return getIntValue(subSkillType.getAdvConfigAddress(), MAX_BONUS_LEVEL, RETRO_MODE);
     }
 
     public int getMaxBonusLevel(AbstractSubSkill abstractSubSkill) {
