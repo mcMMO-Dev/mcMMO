@@ -478,24 +478,27 @@ public class PlayerListener implements Listener {
     }
 
     /**
-     * Handle PlayerInteractEvents at the lowest priority.
+     * Handle PlayerInteractEvents at high priority.
      *
-     * @param event The event to modify
+     * @param event The event to watch
      */
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onPlayerInteractLowest(PlayerInteractEvent event) {
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onPlayerInteract(PlayerInteractEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
-            return;
+        if (WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld())) {
+        	return;
+        }
 
         Player player = event.getPlayer();
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(player))
-                return;
+            if (!WorldGuardManager.getInstance().hasMainFlag(player)) {
+            	return;
+            }
         }
-
+        
+        /* PLAYER ELIGABILITY CHECK */
         if (event.getHand() != EquipmentSlot.HAND || !UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
@@ -503,13 +506,13 @@ public class PlayerListener implements Listener {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         MiningManager miningManager = mcMMOPlayer.getMiningManager();
         Block block = event.getClickedBlock();
+        BlockState blockState = block.getState();
+        Material type = block.getType();
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         switch (event.getAction()) {
             case RIGHT_CLICK_BLOCK:
-                Material type = block.getType();
-
-                if (!MainConfig.getInstance().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
+                if (!Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
                     /* REPAIR CHECKS */
                     if (type == Repair.anvilMaterial && PrimarySkillType.REPAIR.getPermissions(player) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
                         RepairManager repairManager = mcMMOPlayer.getRepairManager();
@@ -542,84 +545,18 @@ public class PlayerListener implements Listener {
                         miningManager.remoteDetonation();
                     }
                 }
-
-                break;
-
-            case LEFT_CLICK_BLOCK:
-                type = block.getType();
-
-                if (!MainConfig.getInstance().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
-                    /* REPAIR CHECKS */
-                    if (type == Repair.anvilMaterial && PrimarySkillType.REPAIR.getPermissions(player) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
-                        RepairManager repairManager = mcMMOPlayer.getRepairManager();
-
-                        // Cancel repairing an enchanted item
-                        if (repairManager.checkConfirmation(false)) {
-                            repairManager.setLastAnvilUse(0);
-                            player.sendMessage(LocaleLoader.getString("Skills.Cancelled", LocaleLoader.getString("Repair.Pretty.Name")));
-                        }
-                    }
-                    /* SALVAGE CHECKS */
-                    else if (type == Salvage.anvilMaterial && PrimarySkillType.SALVAGE.getPermissions(player) && mcMMO.getSalvageableManager().isSalvageable(heldItem)) {
-                        SalvageManager salvageManager = mcMMOPlayer.getSalvageManager();
-
-                        // Cancel salvaging an enchanted item
-                        if (salvageManager.checkConfirmation(false)) {
-                            salvageManager.setLastAnvilUse(0);
-                            player.sendMessage(LocaleLoader.getString("Skills.Cancelled", LocaleLoader.getString("Salvage.Pretty.Name")));
-                        }
-                    }
-                }
-
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    /**
-     * Monitor PlayerInteractEvents.
-     *
-     * @param event The event to monitor
-     */
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerInteractMonitor(PlayerInteractEvent event) {
-        /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
-            return;
-
-        Player player = event.getPlayer();
-
-        /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(player))
-                return;
-        }
-
-        if (event.getHand() != EquipmentSlot.HAND || !UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
-            return;
-        }
-
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        ItemStack heldItem = player.getInventory().getItemInMainHand();
-
-        switch (event.getAction()) {
-            case RIGHT_CLICK_BLOCK:
+                
                 if (player.getInventory().getItemInOffHand().getType() != Material.AIR && !player.isInsideVehicle() && !player.isSneaking()) {
                     break;
                 }
-
-                Block block = event.getClickedBlock();
-                BlockState blockState = block.getState();
-
+                
                 /* ACTIVATION & ITEM CHECKS */
                 if (BlockUtils.canActivateTools(blockState)) {
-                    if (MainConfig.getInstance().getAbilitiesEnabled()) {
+                    if (Config.getInstance().getAbilitiesEnabled()) {
                         if (BlockUtils.canActivateHerbalism(blockState)) {
                             mcMMOPlayer.processAbilityActivation(PrimarySkillType.HERBALISM);
                         }
-
+                        
                         mcMMOPlayer.processAbilityActivation(PrimarySkillType.AXES);
                         mcMMOPlayer.processAbilityActivation(PrimarySkillType.EXCAVATION);
                         mcMMOPlayer.processAbilityActivation(PrimarySkillType.MINING);
@@ -643,6 +580,8 @@ public class PlayerListener implements Listener {
                         case NETHER_WART_BLOCK:
                         case POTATO:
                             mcMMO.getPlaceStore().setFalse(blockState);
+                        default:
+                        	break;
                     }
                 }
 
@@ -662,14 +601,56 @@ public class PlayerListener implements Listener {
                     }
                 }
                 break;
+            case LEFT_CLICK_AIR:
+            case LEFT_CLICK_BLOCK:
+                if (!Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
+                    /* REPAIR CHECKS */
+                    if (type == Repair.anvilMaterial && PrimarySkillType.REPAIR.getPermissions(player) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
+                        RepairManager repairManager = mcMMOPlayer.getRepairManager();
 
-            case RIGHT_CLICK_AIR:
-                if (player.getInventory().getItemInOffHand().getType() != Material.AIR && !player.isInsideVehicle() && !player.isSneaking()) {
+                        // Cancel repairing an enchanted item
+                        if (repairManager.checkConfirmation(false)) {
+                            repairManager.setLastAnvilUse(0);
+                            player.sendMessage(LocaleLoader.getString("Skills.Cancelled", LocaleLoader.getString("Repair.Pretty.Name")));
+                        }
+                    }
+                    /* SALVAGE CHECKS */
+                    else if (type == Salvage.anvilMaterial && PrimarySkillType.SALVAGE.getPermissions(player) && mcMMO.getSalvageableManager().isSalvageable(heldItem)) {
+                        SalvageManager salvageManager = mcMMOPlayer.getSalvageManager();
+
+                        // Cancel salvaging an enchanted item
+                        if (salvageManager.checkConfirmation(false)) {
+                            salvageManager.setLastAnvilUse(0);
+                            player.sendMessage(LocaleLoader.getString("Skills.Cancelled", LocaleLoader.getString("Salvage.Pretty.Name")));
+                        }
+                    }
+                }
+                
+                if (!player.isSneaking()) {
                     break;
                 }
 
+                /* CALL OF THE WILD CHECKS */
+                TamingManager tamingManager = mcMMOPlayer.getTamingManager();
+
+                if (type == Config.getInstance().getTamingCOTWMaterial(EntityType.WOLF)) {
+                    tamingManager.summonWolf();
+                }
+                else if (type == Config.getInstance().getTamingCOTWMaterial(EntityType.OCELOT)) {
+                    tamingManager.summonOcelot();
+                }
+                else if (type == Config.getInstance().getTamingCOTWMaterial(EntityType.HORSE)) {
+                    tamingManager.summonHorse();
+                }
+
+                break;
+            case RIGHT_CLICK_AIR: // NOTE: DOES NOT RUN IF PLAYER CLICKS WITH EMPTY HAND; CLIENT PACKET LIMITATION
+                if (player.getInventory().getItemInOffHand().getType() != Material.AIR && !player.isInsideVehicle() && !player.isSneaking()) {
+                    break;
+                }
+                
                 /* ACTIVATION CHECKS */
-                if (MainConfig.getInstance().getAbilitiesEnabled()) {
+                if (Config.getInstance().getAbilitiesEnabled()) {
                     mcMMOPlayer.processAbilityActivation(PrimarySkillType.AXES);
                     mcMMOPlayer.processAbilityActivation(PrimarySkillType.EXCAVATION);
                     mcMMOPlayer.processAbilityActivation(PrimarySkillType.HERBALISM);
@@ -683,34 +664,11 @@ public class PlayerListener implements Listener {
                 ChimaeraWing.activationCheck(player);
 
                 /* BLAST MINING CHECK */
-                MiningManager miningManager = mcMMOPlayer.getMiningManager();
                 if (miningManager.canDetonate()) {
                     miningManager.remoteDetonation();
                 }
 
                 break;
-
-            case LEFT_CLICK_AIR:
-            case LEFT_CLICK_BLOCK:
-
-                if (!player.isSneaking()) {
-                    break;
-                }
-
-                /* CALL OF THE WILD CHECKS */
-                Material type = heldItem.getType();
-                TamingManager tamingManager = mcMMOPlayer.getTamingManager();
-
-                if (type == MainConfig.getInstance().getTamingCOTWMaterial(EntityType.WOLF)) {
-                    tamingManager.summonWolf();
-                } else if (type == MainConfig.getInstance().getTamingCOTWMaterial(EntityType.OCELOT)) {
-                    tamingManager.summonOcelot();
-                } else if (type == MainConfig.getInstance().getTamingCOTWMaterial(EntityType.HORSE)) {
-                    tamingManager.summonHorse();
-                }
-
-                break;
-
             default:
                 break;
         }
