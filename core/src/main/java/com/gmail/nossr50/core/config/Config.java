@@ -280,23 +280,32 @@ public abstract class Config implements VersionedConfig, Unload {
         return userRootNode;
     }
 
-    int getIntValue(String... path)
+    public int getIntValue(String... path)
     {
         return userRootNode.getNode(path).getInt();
     }
 
-    double getDoubleValue(String... path)
+    public double getDoubleValue(String... path)
     {
         return userRootNode.getNode(path).getDouble();
     }
 
-    boolean getBooleanValue(String... path)
+    public boolean getBooleanValue(String... path)
     {
         return userRootNode.getNode(path).getBoolean();
     }
 
-    String getStringValue(String... path)
+    public String getStringValue(String... path)
     {
         return userRootNode.getNode(path).getString();
+    }
+
+    /**
+     * Checks to see if a node exists in the user's config file
+     * @param path path to the node
+     * @return true if the node exists
+     */
+    public boolean hasNode(String... path) {
+        return (userRootNode.getNode(path) != null);
     }
 }

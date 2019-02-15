@@ -1,11 +1,8 @@
 package com.gmail.nossr50.core.util;
 
 import com.gmail.nossr50.core.datatypes.party.PartyFeature;
+import com.gmail.nossr50.core.mcmmo.entity.EntityType;
 import com.gmail.nossr50.core.skills.SuperAbilityType;
-import org.bukkit.Material;
-import org.bukkit.block.data.Ageable;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.entity.EntityType;
 
 public class StringUtils {
 

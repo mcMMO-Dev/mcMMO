@@ -8,10 +8,14 @@ Key:
   - Removal
 
 Version 2.2.0
+    mcMMO has a new config system (WIP)
+    mcMMO for Bukkit no longer requires Spigot in order to play, you can now use Bukkit instead (WIP)
     mcMMO is now abstracted from the Bukkit API in order to support more platforms (WIP)
-    Salvage config entries are no longer case sensitive
     mcMMO has changed from using maven to gradle!
     mcMMO is now a gradle project (this makes it much easier for us to support older versions of MC and other APIs)
+
+Version 2.1.12
+    Salvage config entries are no longer case sensitive
     Fixed a bug where Fishing was not rewarding vanilla XP orbs
 
 Version 2.1.11

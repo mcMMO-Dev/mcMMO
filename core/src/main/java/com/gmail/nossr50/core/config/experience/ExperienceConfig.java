@@ -3,6 +3,10 @@ package com.gmail.nossr50.core.config.experience;
 import com.gmail.nossr50.core.McmmoCore;
 import com.gmail.nossr50.core.config.ConfigValidated;
 import com.gmail.nossr50.core.datatypes.experience.FormulaType;
+import com.gmail.nossr50.core.mcmmo.BlockType;
+import com.gmail.nossr50.core.mcmmo.bossbars.BarColor;
+import com.gmail.nossr50.core.mcmmo.bossbars.BarStyle;
+import com.gmail.nossr50.core.mcmmo.entity.EntityType;
 import com.gmail.nossr50.core.skills.MaterialType;
 import com.gmail.nossr50.core.skills.PotionStage;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
@@ -12,6 +16,64 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExperienceConfig extends ConfigValidated {
+    public static final String EXPLOIT_FIX = "ExploitFix";
+    public static final String ENDERMAN_ENDERMITE_FARMS = "EndermanEndermiteFarms";
+    public static final String EXPERIENCE = "Experience";
+    public static final String EXPERIENCE_FORMULA = EXPERIENCE + "_Formula";
+    public static final String CURVE = "Curve";
+    public static final String VALUES = "_Values";
+    public static final String MULTIPLIER = "multiplier";
+    public static final String BASE = "base";
+    public static final String EXPONENT = "exponent";
+    public static final String MULTIPLIER1 = "Multiplier";
+    public static final String GLOBAL = "Global";
+    public static final String MOBSPAWNERS = "Mobspawners";
+    public static final String BREEDING = "Breeding";
+    public static final String MODIFIER = "Modifier";
+    public static final String CUSTOM_XP_PERK = "Custom_XP_Perk";
+    public static final String BOOST = "Boost";
+    public static final String DIMISHED_RETURNS = "Dimished_Returns";
+    public static final String GUARANTEED_MINIMUM_PERCENTAGE = "Guaranteed_Minimum_Percentage";
+    public static final String DIMINISHED_RETURNS = "Diminished_Returns";
+    public static final String ENABLE = "Enable";
+    public static final String ENABLED = ENABLE + "d";
+    public static final String TIME_INTERVAL = "Time_Interval";
+    public static final String CONVERSION = "Conversion";
+    public static final String EXP = "Exp_";
+    public static final String PVP = "PVP";
+    public static final String REWARDS = "Rewards";
+    public static final String COMBAT = "Combat";
+    public static final String ANIMALS = "Animals";
+    public static final String BARS = "_Bars";
+    public static final String UPDATE = "Update";
+    public static final String PASSIVE = "Passive";
+    public static final String THIS_MAY_CAUSE_LAG = "ThisMayCauseLag";
+    public static final String ALWAYS = "Always";
+    public static final String TITLES_WHEN_XPIS_GAINED = "TitlesWhenXPIsGained";
+    public static final String EXTRA_DETAILS = "ExtraDetails";
+    public static final String COLOR = "Color";
+    public static final String BAR_STYLE = "BarStyle";
+    public static final String ACROBATICS = "Acrobatics";
+    public static final String DODGE = "Dodge";
+    public static final String ROLL = "Roll";
+    public static final String FALL = "Fall";
+    public static final String FEATHER = "Feather";
+    public static final String ALCHEMY = "Alchemy";
+    public static final String POTION_STAGE = "Potion_Stage_";
+    public static final String ARCHERY = "Archery";
+    public static final String DISTANCE = "Distance_";
+    public static final String FISHING = "Fishing";
+    public static final String SHAKE = "Shake";
+    public static final String REPAIR = "Repair";
+    public static final String BASE1 = "Base";
+    public static final String TAMING = "Taming";
+    public static final String ANIMAL_TAMING = "Animal_Taming";
+    public static final String PARTY = "Party";
+    public static final String THRESHOLD = "Threshold";
+    public static final String CUMULATIVE = "Cumulative_";
+    public static final String OCELOT = "Ocelot";
+    public static final String WOLF = "Wolf";
+    public static final String FEATHER_FALL_MULTIPLIER = "FeatherFall_Multiplier";
     private static ExperienceConfig instance;
 
     private ExperienceConfig() {
@@ -51,40 +113,40 @@ public class ExperienceConfig extends ConfigValidated {
 
         /* Curve values */
         if (getMultiplier(FormulaType.EXPONENTIAL) <= 0) {
-            reason.add("Experience_Formula.Exponential_Values.multiplier should be greater than 0!");
+            reason.add(EXPERIENCE_FORMULA + ".Exponential" + VALUES + "." + MULTIPLIER + " should be greater than 0!");
         }
 
         if (getMultiplier(FormulaType.LINEAR) <= 0) {
-            reason.add("Experience_Formula.Linear_Values.multiplier should be greater than 0!");
+            reason.add(EXPERIENCE_FORMULA + ".Linear" + VALUES + "." + MULTIPLIER + " should be greater than 0!");
         }
 
         if (getExponent(FormulaType.EXPONENTIAL) <= 0) {
-            reason.add("Experience_Formula.Exponential_Values.exponent should be greater than 0!");
+            reason.add(EXPERIENCE_FORMULA + ".Exponential" + VALUES + "." + EXPONENT + " should be greater than 0!");
         }
 
         /* Global modifier */
         if (getExperienceGainsGlobalMultiplier() <= 0) {
-            reason.add("Experience_Formula.Multiplier.Global should be greater than 0!");
+            reason.add(EXPERIENCE_FORMULA + "." + MULTIPLIER1 + "." + GLOBAL + " should be greater than 0!");
         }
 
         /* PVP modifier */
         if (getPlayerVersusPlayerXP() < 0) {
-            reason.add("Experience_Formula.Multiplier.PVP should be at least 0!");
+            reason.add(EXPERIENCE_FORMULA + "." + MULTIPLIER1 + "." + PVP + " should be at least 0!");
         }
 
         /* Spawned Mob modifier */
         if (getSpawnedMobXpMultiplier() < 0) {
-            reason.add("Experience_Formula.Mobspawners.Multiplier should be at least 0!");
+            reason.add(EXPERIENCE_FORMULA + "." + MOBSPAWNERS + "." + MULTIPLIER1 + " should be at least 0!");
         }
 
         /* Bred Mob modifier */
         if (getBredMobXpMultiplier() < 0) {
-            reason.add("Experience_Formula.Breeding.Multiplier should be at least 0!");
+            reason.add(EXPERIENCE_FORMULA + "." + BREEDING + "." + MULTIPLIER1 + " should be at least 0!");
         }
 
         /* Conversion */
         if (getExpModifier() <= 0) {
-            reason.add("Conversion.Exp_Modifier should be greater than 0!");
+            reason.add(CONVERSION + "." + EXP + MODIFIER + " should be greater than 0!");
         }
 
         /*
@@ -94,51 +156,51 @@ public class ExperienceConfig extends ConfigValidated {
         /* Alchemy */
         for (PotionStage potionStage : PotionStage.values()) {
             if (getPotionXP(potionStage) < 0) {
-                reason.add("Experience.Alchemy.Potion_Stage_" + potionStage.toNumerical() + " should be at least 0!");
+                reason.add(EXPERIENCE + "." + ALCHEMY + "." + POTION_STAGE + potionStage.toNumerical() + " should be at least 0!");
             }
         }
 
         /* Archery */
         if (getArcheryDistanceMultiplier() < 0) {
-            reason.add("Experience.Archery.Distance_Multiplier should be at least 0!");
+            reason.add(EXPERIENCE + "." + ARCHERY + "." + DISTANCE + MULTIPLIER1 + " should be at least 0!");
         }
 
         /* Combat XP Multipliers */
         if (getAnimalsXP() < 0) {
-            reason.add("Experience.Combat.Multiplier.Animals should be at least 0!");
+            reason.add(EXPERIENCE + "." + COMBAT + "." + MULTIPLIER1 + "." + ANIMALS + " should be at least 0!");
         }
 
         if (getDodgeXPModifier() < 0) {
-            reason.add("Skills.Acrobatics.Dodge_XP_Modifier should be at least 0!");
+            reason.add("Skills." + ACROBATICS + "." + DODGE + "_XP_" + MODIFIER + " should be at least 0!");
         }
 
         if (getRollXPModifier() < 0) {
-            reason.add("Skills.Acrobatics.Roll_XP_Modifier should be at least 0!");
+            reason.add("Skills." + ACROBATICS + "." + ROLL + "_XP_" + MODIFIER + " should be at least 0!");
         }
 
         if (getFallXPModifier() < 0) {
-            reason.add("Skills.Acrobatics.Fall_XP_Modifier should be at least 0!");
+            reason.add("Skills." + ACROBATICS + "." + FALL + "_XP_" + MODIFIER + " should be at least 0!");
         }
 
         /* Fishing */
         // TODO: Add validation for each fish type once enum is available.
 
         if (getFishingShakeXP() <= 0) {
-            reason.add("Experience.Fishing.Shake should be greater than 0!");
+            reason.add(EXPERIENCE + "." + FISHING + "." + SHAKE + " should be greater than 0!");
         }
 
         /* Repair */
         if (getRepairXPBase() <= 0) {
-            reason.add("Experience.Repair.Base should be greater than 0!");
+            reason.add(EXPERIENCE + "." + REPAIR + "." + BASE1 + " should be greater than 0!");
         }
 
         /* Taming */
         if (getTamingXP(EntityType.WOLF) <= 0) {
-            reason.add("Experience.Taming.Animal_Taming.Wolf should be greater than 0!");
+            reason.add(EXPERIENCE + "." + TAMING + "." + ANIMAL_TAMING + "." + WOLF + " should be greater than 0!");
         }
 
         if (getTamingXP(EntityType.OCELOT) <= 0) {
-            reason.add("Experience.Taming.Animal_Taming.Ocelot should be greater than 0!");
+            reason.add(EXPERIENCE + "." + TAMING + "." + ANIMAL_TAMING + "." + OCELOT + " should be greater than 0!");
         }
 
         return reason;
@@ -150,84 +212,85 @@ public class ExperienceConfig extends ConfigValidated {
 
     /* EXPLOIT TOGGLES */
     public boolean isEndermanEndermiteFarmingPrevented() {
-        return getBooleanValue("ExploitFix.EndermanEndermiteFarms", true);
+        return getBooleanValue(EXPLOIT_FIX, ENDERMAN_ENDERMITE_FARMS);
     }
 
     /* Curve settings */
     public FormulaType getFormulaType() {
-        return FormulaType.getFormulaType(getStringValue("Experience_Formula.Curve"));
+        return FormulaType.getFormulaType(getStringValue(EXPERIENCE_FORMULA, CURVE));
     }
 
     public boolean getCumulativeCurveEnabled() {
-        return getBooleanValue("Experience_Formula.Cumulative_Curve", false);
+        return getBooleanValue(EXPERIENCE_FORMULA, CUMULATIVE + CURVE);
     }
 
     /* Curve values */
     public double getMultiplier(FormulaType type) {
-        return getDoubleValue("Experience_Formula." + StringUtils.getCapitalized(type.toString()) + "_Values.multiplier");
+        return getDoubleValue(EXPERIENCE_FORMULA, StringUtils.getCapitalized(type.toString()) + VALUES, MULTIPLIER);
     }
 
     public int getBase(FormulaType type) {
-        return getIntValue("Experience_Formula." + StringUtils.getCapitalized(type.toString()) + "_Values.base");
+        return getIntValue(EXPERIENCE_FORMULA, StringUtils.getCapitalized(type.toString()) + VALUES, BASE);
     }
 
     public double getExponent(FormulaType type) {
-        return getDoubleValue("Experience_Formula." + StringUtils.getCapitalized(type.toString()) + "_Values.exponent");
+        return getDoubleValue(EXPERIENCE_FORMULA, StringUtils.getCapitalized(type.toString()) + VALUES, EXPONENT);
     }
 
     /* Global modifier */
     public double getExperienceGainsGlobalMultiplier() {
-        return getDoubleValue("Experience_Formula.Multiplier.Global", 1.0);
+        return getDoubleValue(EXPERIENCE_FORMULA, MULTIPLIER1, GLOBAL);
     }
 
-    public void setExperienceGainsGlobalMultiplier(double value) {
-        config.set("Experience_Formula.Multiplier.Global", value);
-    }
+    //TODO: Rewrite this
+    /*public void setExperienceGainsGlobalMultiplier(double value) {
+        config.set(EXPERIENCE_FORMULA, MULTIPLIER1, GLOBAL, value);
+    }*/
 
     /* PVP modifier */
     public double getPlayerVersusPlayerXP() {
-        return getDoubleValue("Experience_Formula.Multiplier.PVP", 1.0);
+        return getDoubleValue(EXPERIENCE_FORMULA, MULTIPLIER1, PVP);
     }
 
     /* Spawned Mob modifier */
     public double getSpawnedMobXpMultiplier() {
-        return getDoubleValue("Experience_Formula.Mobspawners.Multiplier", 0.0);
+        return getDoubleValue(EXPERIENCE_FORMULA, MOBSPAWNERS, MULTIPLIER1);
     }
 
     public double getBredMobXpMultiplier() {
-        return getDoubleValue("Experience_Formula.Breeding.Multiplier", 1.0);
+        return getDoubleValue(EXPERIENCE_FORMULA, BREEDING, MULTIPLIER1);
     }
 
     /* Skill modifiers */
     public double getFormulaSkillModifier(PrimarySkillType skill) {
-        return getDoubleValue("Experience_Formula.Modifier." + StringUtils.getCapitalized(skill.toString()));
+        return getDoubleValue(EXPERIENCE_FORMULA, MODIFIER, StringUtils.getCapitalized(skill.toString()));
     }
 
     /* Custom XP perk */
     public double getCustomXpPerkBoost() {
-        return getDoubleValue("Experience_Formula.Custom_XP_Perk.Boost", 1.25);
+        return getDoubleValue(EXPERIENCE_FORMULA, CUSTOM_XP_PERK, BOOST);
     }
 
     /* Diminished Returns */
     public float getDiminishedReturnsCap() {
-        return (float) getDoubleValue("Dimished_Returns.Guaranteed_Minimum_Percentage", 0.05D);
+        return (float) getDoubleValue(DIMISHED_RETURNS, GUARANTEED_MINIMUM_PERCENTAGE);
     }
 
     public boolean getDiminishedReturnsEnabled() {
-        return getBooleanValue("Diminished_Returns.Enabled", false);
+        return getBooleanValue(DIMINISHED_RETURNS, ENABLED);
     }
 
     public int getDiminishedReturnsThreshold(PrimarySkillType skill) {
-        return getIntValue("Diminished_Returns.Threshold." + StringUtils.getCapitalized(skill.toString()), 20000);
+        return getIntValue(DIMINISHED_RETURNS, THRESHOLD, StringUtils.getCapitalized(skill.toString()));
     }
 
     public int getDiminishedReturnsTimeInterval() {
-        return getIntValue("Diminished_Returns.Time_Interval", 10);
+        return getIntValue(DIMINISHED_RETURNS, TIME_INTERVAL);
     }
 
     /* Conversion */
     public double getExpModifier() {
-        return getDoubleValue("Conversion.Exp_Modifier", 1);
+        return getDoubleValue(CONVERSION, EXP + MODIFIER);
     }
 
     /*
@@ -236,78 +299,53 @@ public class ExperienceConfig extends ConfigValidated {
 
     /* General Settings */
     public boolean getExperienceGainsPlayerVersusPlayerEnabled() {
-        return getBooleanValue("Experience.PVP.Rewards", true);
+        return getBooleanValue(EXPERIENCE, PVP, REWARDS);
     }
 
     /* Combat XP Multipliers */
     public double getCombatXP(EntityType entity) {
-        return getDoubleValue("Experience.Combat.Multiplier." + StringUtils.getPrettyEntityTypeString(entity).replace(" ", "_"));
+        return getDoubleValue(EXPERIENCE, COMBAT, MULTIPLIER1, entity.getConfigName());
     }
 
     public double getAnimalsXP(EntityType entity) {
-        return getDoubleValue("Experience.Combat.Multiplier." + StringUtils.getPrettyEntityTypeString(entity).replace(" ", "_"), getAnimalsXP());
+        return getDoubleValue(EXPERIENCE, COMBAT, MULTIPLIER1, entity.getConfigName());
     }
 
     public double getAnimalsXP() {
-        return getDoubleValue("Experience.Combat.Multiplier.Animals", 1.0);
+        return getDoubleValue(EXPERIENCE, COMBAT, MULTIPLIER1, ANIMALS);
     }
 
     public boolean hasCombatXP(EntityType entity) {
-        return config.contains("Experience.Combat.Multiplier." + StringUtils.getPrettyEntityTypeString(entity).replace(" ", "_"));
+        return hasNode(EXPERIENCE, COMBAT, MULTIPLIER1, entity.getConfigName());
     }
 
     /* Materials  */
-    public int getXp(PrimarySkillType skill, Material data) {
-        String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
-        String explicitString = baseString + StringUtils.getExplicitConfigMaterialString(data);
-        if (config.contains(explicitString))
-            return getIntValue(explicitString);
-        String friendlyString = baseString + StringUtils.getFriendlyConfigMaterialString(data);
-        if (config.contains(friendlyString))
-            return getIntValue(friendlyString);
-        String wildcardString = baseString + StringUtils.getWildcardConfigMaterialString(data);
-        if (config.contains(wildcardString))
-            return getIntValue(wildcardString);
-        return 0;
+
+    /**
+     * Gets the raw XP given for breaking this block, this does not include modifiers
+     * @param skill The skill to give XP for
+     * @param blockType the type of block
+     * @return the raw amount of XP for this block before modifiers
+     */
+    public int getXp(PrimarySkillType skill, BlockType blockType) {
+        //TODO: This is going to need to be changed, this code here is only placeholder
+        String[] path = new String[]{ EXPERIENCE, StringUtils.getCapitalized(skill.toString()), blockType.getConfigName() };
+        return getIntValue(path);
     }
 
-    /* Materials  */
-    public int getXp(PrimarySkillType skill, BlockData data) {
-        String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
-        String explicitString = baseString + StringUtils.getExplicitConfigBlockDataString(data);
-        if (config.contains(explicitString))
-            return getIntValue(explicitString);
-        String friendlyString = baseString + StringUtils.getFriendlyConfigBlockDataString(data);
-        if (config.contains(friendlyString))
-            return getIntValue(friendlyString);
-        String wildcardString = baseString + StringUtils.getWildcardConfigBlockDataString(data);
-        if (config.contains(wildcardString))
-            return getIntValue(wildcardString);
-        return 0;
-    }
-
-    public boolean doesBlockGiveSkillXP(PrimarySkillType skill, Material data) {
-        String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
-        String explicitString = baseString + StringUtils.getExplicitConfigMaterialString(data);
-        if (config.contains(explicitString))
-            return true;
-        String friendlyString = baseString + StringUtils.getFriendlyConfigMaterialString(data);
-        if (config.contains(friendlyString))
-            return true;
-        String wildcardString = baseString + StringUtils.getWildcardConfigMaterialString(data);
-        return config.contains(wildcardString);
-    }
-
-    public boolean doesBlockGiveSkillXP(PrimarySkillType skill, BlockData data) {
-        String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
-        String explicitString = baseString + StringUtils.getExplicitConfigBlockDataString(data);
-        if (config.contains(explicitString))
-            return true;
-        String friendlyString = baseString + StringUtils.getFriendlyConfigBlockDataString(data);
-        if (config.contains(friendlyString))
-            return true;
-        String wildcardString = baseString + StringUtils.getWildcardConfigBlockDataString(data);
-        return config.contains(wildcardString);
+    /**
+     * Checks if a block gives XP
+     * This is used to determine whether or not mcMMO should track a block that is placed by a user, among other things.
+     * Note: If the block has an entry in the config that will return true even if the XP is 0, this does not check the value of the XP
+     * @param skill The skill to check for
+     * @param blockType the type of block
+     * @return true if the block does give XP
+     */
+    public boolean doesBlockGiveSkillXP(PrimarySkillType skill, BlockType blockType) {
+        //TODO: This used to support wildcard characters, seems a bit unnecessary to do so.
+        //TODO: This is going to need to be changed, this code here is only placeholder
+        String[] path = new String[] {EXPERIENCE, StringUtils.getCapitalized(skill.toString()), blockType.getConfigName()};
+        return hasNode(path);
     }
 
     /*
@@ -315,31 +353,31 @@ public class ExperienceConfig extends ConfigValidated {
      */
 
     public boolean isPartyExperienceBarsEnabled() {
-        return getBooleanValue("Experience_Bars.Update.Party", true);
+        return getBooleanValue(EXPERIENCE + BARS, UPDATE, PARTY);
     }
 
     public boolean isPassiveGainsExperienceBarsEnabled() {
-        return getBooleanValue("Experience_Bars.Update.Passive", true);
+        return getBooleanValue(EXPERIENCE + BARS, UPDATE, PASSIVE);
     }
 
     public boolean getDoExperienceBarsAlwaysUpdateTitle() {
-        return getBooleanValue("Experience_Bars.ThisMayCauseLag.AlwaysUpdateTitlesWhenXPIsGained.Enable", false) || getAddExtraDetails();
+        return getBooleanValue(EXPERIENCE + BARS, THIS_MAY_CAUSE_LAG, ALWAYS + UPDATE + TITLES_WHEN_XPIS_GAINED, ENABLE) || getAddExtraDetails();
     }
 
     public boolean getAddExtraDetails() {
-        return getBooleanValue("Experience_Bars.ThisMayCauseLag.AlwaysUpdateTitlesWhenXPIsGained.ExtraDetails", false);
+        return getBooleanValue(EXPERIENCE + BARS, THIS_MAY_CAUSE_LAG, ALWAYS + UPDATE + TITLES_WHEN_XPIS_GAINED, EXTRA_DETAILS);
     }
 
     public boolean isExperienceBarsEnabled() {
-        return getBooleanValue("Experience_Bars.Enable", true);
+        return getBooleanValue(EXPERIENCE + BARS, ENABLE);
     }
 
     public boolean isExperienceBarEnabled(PrimarySkillType primarySkillType) {
-        return getBooleanValue("Experience_Bars." + StringUtils.getCapitalized(primarySkillType.toString()) + ".Enable", true);
+        return getBooleanValue(EXPERIENCE + BARS, StringUtils.getCapitalized(primarySkillType.toString()), ENABLE);
     }
 
     public BarColor getExperienceBarColor(PrimarySkillType primarySkillType) {
-        String colorValueFromConfig = getStringValue("Experience_Bars." + StringUtils.getCapitalized(primarySkillType.toString()) + ".Color");
+        String colorValueFromConfig = getStringValue(EXPERIENCE + BARS, StringUtils.getCapitalized(primarySkillType.toString()), COLOR);
 
         for (BarColor barColor : BarColor.values()) {
             if (barColor.toString().equalsIgnoreCase(colorValueFromConfig))
@@ -351,7 +389,7 @@ public class ExperienceConfig extends ConfigValidated {
     }
 
     public BarStyle getExperienceBarStyle(PrimarySkillType primarySkillType) {
-        String colorValueFromConfig = getStringValue("Experience_Bars." + StringUtils.getCapitalized(primarySkillType.toString()) + ".BarStyle");
+        String colorValueFromConfig = getStringValue(EXPERIENCE + BARS, StringUtils.getCapitalized(primarySkillType.toString()), BAR_STYLE);
 
         for (BarStyle barStyle : BarStyle.values()) {
             if (barStyle.toString().equalsIgnoreCase(colorValueFromConfig))
@@ -364,46 +402,46 @@ public class ExperienceConfig extends ConfigValidated {
 
     /* Acrobatics */
     public int getDodgeXPModifier() {
-        return getIntValue("Experience.Acrobatics.Dodge", 120);
+        return getIntValue(EXPERIENCE, ACROBATICS, DODGE);
     }
 
     public int getRollXPModifier() {
-        return getIntValue("Experience.Acrobatics.Roll", 80);
+        return getIntValue(EXPERIENCE, ACROBATICS, ROLL);
     }
 
     public int getFallXPModifier() {
-        return getIntValue("Experience.Acrobatics.Fall", 120);
+        return getIntValue(EXPERIENCE, ACROBATICS, FALL);
     }
 
     public double getFeatherFallXPModifier() {
-        return getDoubleValue("Experience.Acrobatics.FeatherFall_Multiplier", 2.0);
+        return getDoubleValue(EXPERIENCE, ACROBATICS, FEATHER_FALL_MULTIPLIER);
     }
 
     /* Alchemy */
     public double getPotionXP(PotionStage stage) {
-        return getDoubleValue("Experience.Alchemy.Potion_Stage_" + stage.toNumerical(), 10D);
+        return getDoubleValue(EXPERIENCE, ALCHEMY, POTION_STAGE + stage.toNumerical());
     }
 
     /* Archery */
     public double getArcheryDistanceMultiplier() {
-        return getDoubleValue("Experience.Archery.Distance_Multiplier", 0.025);
+        return getDoubleValue(EXPERIENCE, ARCHERY, DISTANCE + MULTIPLIER1);
     }
 
     public int getFishingShakeXP() {
-        return getIntValue("Experience.Fishing.Shake", 50);
+        return getIntValue(EXPERIENCE, FISHING, SHAKE);
     }
 
     /* Repair */
     public double getRepairXPBase() {
-        return getDoubleValue("Experience.Repair.Base", 1000.0);
+        return getDoubleValue(EXPERIENCE, REPAIR, BASE1);
     }
 
     public double getRepairXP(MaterialType repairMaterialType) {
-        return getDoubleValue("Experience.Repair." + StringUtils.getCapitalized(repairMaterialType.toString()));
+        return getDoubleValue(EXPERIENCE, REPAIR, StringUtils.getCapitalized(repairMaterialType.toString()));
     }
 
     /* Taming */
     public int getTamingXP(EntityType type) {
-        return getIntValue("Experience.Taming.Animal_Taming." + StringUtils.getPrettyEntityTypeString(type));
+        return getIntValue(EXPERIENCE, TAMING, ANIMAL_TAMING, type.getConfigName());
     }
 }
