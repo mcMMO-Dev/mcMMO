@@ -1,7 +1,7 @@
 This file is just going to take note of all the caveats of mcMMO code as I abstract out bukkit
 
 1) In several places mcMMO is disabling itself, pretty sure this is not a good idea and this should be changed
-    eg: in McMMOPlayer, and when loading configs and finding bad vlaues
+    eg: in McMMOPlayer, and when loading configs and finding bad values
 
 2) mcMMO uses a a global reference of its Plugin class for Bukkit in order to schedule tasks
 
@@ -10,3 +10,9 @@ This file is just going to take note of all the caveats of mcMMO code as I abstr
 4) Safety check the hardcore/vampirism commands
 
 5) Tweak configs to not do any string operations
+
+6) Need to add and check validation for all current configs
+
+7) Weird stuff going on with ageables and strings in general in StringUtils
+
+8) Reduce the amount of string operations in mcMMO as much as possible
