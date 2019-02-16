@@ -1,7 +1,7 @@
-package com.gmail.nossr50.core.config.skills.repair;
+package com.gmail.nossr50.core.config.collectionconfigs;
 
 import com.gmail.nossr50.core.McmmoCore;
-import com.gmail.nossr50.core.config.ConfigKeyRegister;
+import com.gmail.nossr50.core.config.ConfigCollections;
 import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 import com.gmail.nossr50.core.skills.ConfigItemCategory;
 import com.gmail.nossr50.core.skills.MaterialType;
@@ -13,23 +13,28 @@ import com.gmail.nossr50.core.util.skills.SkillUtils;
 import ninja.leaping.configurate.ConfigurationNode;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 /**
  * This config
  */
-public class RepairConfig extends ConfigKeyRegister {
+public class RepairConfig extends ConfigCollections {
     private List<Repairable> repairables;
 
     public RepairConfig(String fileName) {
         super(McmmoCore.getDataFolderPath().getAbsoluteFile(), fileName, false);
-        loadKeys();
     }
 
     @Override
     public void unload() {
+        repairables = null;
+    }
 
+    @Override
+    public Collection getLoadedCollection() {
+        return repairables == null ? new ArrayList<Repairable>() : repairables;
     }
 
     /**
@@ -58,8 +63,6 @@ public class RepairConfig extends ConfigKeyRegister {
 
             // Validate all the things!
             List<String> reason = new ArrayList<String>();
-
-
 
             try {
                 // ItemStack Material
@@ -167,13 +170,15 @@ public class RepairConfig extends ConfigKeyRegister {
         }
     }
 
-    protected List<Repairable> getLoadedRepairables() {
-        return repairables == null ? new ArrayList<Repairable>() : repairables;
-    }
 
+    /**
+     * Check if there are any errors for this repairable and if there are reports them to console
+     * @param issues errors related to loading a repairable
+     * @return returns true if there are no errors for this repairable
+     */
     private boolean noErrorsInRepairable(List<String> issues) {
         for (String issue : issues) {
-            plugin.getLogger().warning(issue);
+            McmmoCore.getLogger().warning(issue);
         }
 
         return issues.isEmpty();

@@ -1,15 +1,14 @@
 package com.gmail.nossr50.core.api;
 
+import com.gmail.nossr50.core.McmmoCore;
 import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.party.Party;
 import com.gmail.nossr50.core.datatypes.party.PartyLeader;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.player.NotificationManager;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.party.PartyManager;
+import com.gmail.nossr50.core.util.player.NotificationManager;
 
 import java.util.*;
 
@@ -83,7 +82,7 @@ public final class PartyAPI {
         Party party = PartyManager.getParty(partyName);
 
         if (party == null) {
-            party = new Party(new PartyLeader(player.getUniqueId(), player.getName()), partyName);
+            party = new Party(new PartyLeader(player.getUUID(), player.getName()), partyName);
         } else {
             if (PartyManager.isPartyFull(player, party)) {
                 NotificationManager.sendPlayerInformation(player, NotificationType.PARTY_MESSAGE, "Commands.Party.PartyFull", party.toString());
@@ -117,7 +116,7 @@ public final class PartyAPI {
         Party party = PartyManager.getParty(partyName);
 
         if (party == null) {
-            party = new Party(new PartyLeader(player.getUniqueId(), player.getName()), partyName);
+            party = new Party(new PartyLeader(player.getUUID(), player.getName()), partyName);
         }
 
         PartyManager.addToParty(UserManager.getPlayer(player), party);
@@ -156,7 +155,7 @@ public final class PartyAPI {
      */
     @Deprecated
     public static void setPartyLeader(String partyName, String playerName) {
-        PartyManager.setPartyLeader(mcMMO.p.getServer().getOfflinePlayer(playerName).getUniqueId(), PartyManager.getParty(partyName));
+        PartyManager.setPartyLeader(McmmoCore.getServer().getOfflinePlayer(playerName).getUniqueId(), PartyManager.getParty(partyName));
     }
 
     /**

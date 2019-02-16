@@ -1,7 +1,9 @@
-package com.gmail.nossr50.core.config.skills.salvage;
+package com.gmail.nossr50.core.config.collectionconfigs;
 
 import com.gmail.nossr50.core.McmmoCore;
 import com.gmail.nossr50.core.config.Config;
+import com.gmail.nossr50.core.config.ConfigCollection;
+import com.gmail.nossr50.core.config.ConfigCollections;
 import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 import com.gmail.nossr50.core.skills.MaterialType;
 import com.gmail.nossr50.core.skills.child.salvage.salvageables.Salvageable;
@@ -10,15 +12,35 @@ import com.gmail.nossr50.core.util.ItemUtils;
 import com.gmail.nossr50.core.util.skills.SkillUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public class SalvageConfig extends Config {
+public class SalvageConfig extends ConfigCollections {
     private List<Salvageable> salvageables;
 
     public SalvageConfig(String fileName) {
-        super(McmmoCore.getDataFolderPath().getAbsoluteFile(), fileName);
-        loadKeys();
+        super(McmmoCore.getDataFolderPath().getAbsoluteFile(), fileName, false);
+    }
+
+    @Override
+    public Collection getLoadedCollection() {
+        return salvageables == null ? new ArrayList<Salvageable>() : salvageables;
+    }
+
+    @Override
+    public void unload() {
+        salvageables = null;
+    }
+
+    /**
+     * The version of this config
+     *
+     * @return
+     */
+    @Override
+    public double getConfigVersion() {
+        return 1;
     }
 
     @Override
@@ -130,10 +152,6 @@ public class SalvageConfig extends Config {
                 salvageables.add(salvageable);
             }
         }
-    }
-
-    protected List<Salvageable> getLoadedSalvageables() {
-        return salvageables == null ? new ArrayList<Salvageable>() : salvageables;
     }
 
     private boolean noErrorsInSalvageable(List<String> issues) {

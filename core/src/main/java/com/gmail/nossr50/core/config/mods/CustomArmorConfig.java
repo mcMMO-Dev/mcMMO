@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.config.mods;
 
 import com.gmail.nossr50.core.McmmoCore;
-import com.gmail.nossr50.core.config.ConfigKeyRegister;
+import com.gmail.nossr50.core.config.ConfigCollections;
 import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 import com.gmail.nossr50.core.skills.ConfigItemCategory;
 import com.gmail.nossr50.core.skills.MaterialType;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class CustomArmorConfig extends ConfigKeyRegister {
+public class CustomArmorConfig extends ConfigCollections {
     public List<Material> customBoots = new ArrayList<Material>();
     public List<Material> customChestplates = new ArrayList<Material>();
     public List<Material> customHelmets = new ArrayList<Material>();
