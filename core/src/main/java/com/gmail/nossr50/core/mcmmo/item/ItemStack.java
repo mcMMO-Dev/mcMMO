@@ -10,6 +10,13 @@ import java.util.ArrayList;
 public interface ItemStack {
 
     /**
+     * Makes a new ItemStack for a given itemType with a size of 1 and default properties
+     * @param itemType the item type for the item stack
+     * @return a new item stack of size 1 with default properties
+     */
+    ItemStack makeNew(ItemType itemType);
+
+    /**
      * The maximum amount of this item allowed in a stack
      * @return the maximum stack size of the item
      */

@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.skills.child.salvage.salvageables;
 
-import com.gmail.nossr50.core.skills.ItemType;
+import com.gmail.nossr50.core.skills.ConfigItemCategory;
 import com.gmail.nossr50.core.skills.MaterialType;
 import org.bukkit.Material;
 
@@ -31,7 +31,7 @@ public interface Salvageable {
      *
      * @return the ItemType for this salvageable
      */
-    public ItemType getSalvageItemType();
+    public ConfigItemCategory getSalvageConfigItemCategory();
 
     /**
      * Gets the MaterialType value for this salvageable item

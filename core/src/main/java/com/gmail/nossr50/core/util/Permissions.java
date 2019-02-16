@@ -1,8 +1,11 @@
 package com.gmail.nossr50.core.util;
 
+import com.gmail.nossr50.core.McmmoCore;
+import com.gmail.nossr50.core.mcmmo.BlockType;
+import com.gmail.nossr50.core.mcmmo.entity.EntityType;
 import com.gmail.nossr50.core.mcmmo.permissions.Permissible;
 import com.gmail.nossr50.core.mcmmo.world.World;
-import com.gmail.nossr50.core.skills.ItemType;
+import com.gmail.nossr50.core.skills.ConfigItemCategory;
 import com.gmail.nossr50.core.skills.MaterialType;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SubSkillType;
@@ -366,12 +369,12 @@ public final class Permissions {
         return permissible.hasPermission("mcmmo.ability.herbalism.greenterra");
     }
 
-    public static boolean greenThumbBlock(Permissible permissible, Material material) {
-        return permissible.hasPermission("mcmmo.ability.herbalism.greenthumb.blocks." + material.toString().replace("_", "").toLowerCase());
+    public static boolean greenThumbBlock(Permissible permissible, BlockType blockType) {
+        return permissible.hasPermission("mcmmo.ability.herbalism.greenthumb.blocks." + blockType.getConfigName().toLowerCase());
     }
 
-    public static boolean greenThumbPlant(Permissible permissible, Material material) {
-        return permissible.hasPermission("mcmmo.ability.herbalism.greenthumb.plants." + material.toString().replace("_", "").toLowerCase());
+    public static boolean greenThumbPlant(Permissible permissible, BlockType blockType) {
+        return permissible.hasPermission("mcmmo.ability.herbalism.greenthumb.plants." + blockType.getConfigName().toLowerCase());
     }
 
     /* MINING */
@@ -392,8 +395,8 @@ public final class Permissions {
     }
 
     /* REPAIR */
-    public static boolean repairItemType(Permissible permissible, ItemType repairItemType) {
-        return permissible.hasPermission("mcmmo.ability.repair." + repairItemType.toString().toLowerCase() + "repair");
+    public static boolean repairItemType(Permissible permissible, ConfigItemCategory repairConfigItemCategory) {
+        return permissible.hasPermission("mcmmo.ability.repair." + repairConfigItemCategory.toString().toLowerCase() + "repair");
     }
 
     public static boolean repairMaterialType(Permissible permissible, MaterialType repairMaterialType) {
@@ -409,8 +412,8 @@ public final class Permissions {
         return permissible.hasPermission("mcmmo.ability.salvage.arcanesalvage");
     }
 
-    public static boolean salvageItemType(Permissible permissible, ItemType salvageItemType) {
-        return permissible.hasPermission("mcmmo.ability.salvage." + salvageItemType.toString().toLowerCase() + "salvage");
+    public static boolean salvageItemType(Permissible permissible, ConfigItemCategory salvageConfigItemCategory) {
+        return permissible.hasPermission("mcmmo.ability.salvage." + salvageConfigItemCategory.toString().toLowerCase() + "salvage");
     }
 
     public static boolean salvageMaterialType(Permissible permissible, MaterialType salvageMaterialType) {
@@ -494,11 +497,9 @@ public final class Permissions {
         return permissible.hasPermission("mcmmo.commands.ptp.world." + world.getName());
     }
 
+    //TODO: Do we even document that server admins can do this anywhere?
     public static void generateWorldTeleportPermissions() {
-        Server server = mcMMO.p.getServer();
-        PluginManager pluginManager = server.getPluginManager();
-
-        for (World world : server.getWorlds()) {
+        for (World world : McmmoCore.getServer().getWorlds()) {
             addDynamicPermission("mcmmo.commands.ptp.world." + world.getName(), PermissionDefault.OP, pluginManager);
         }
     }

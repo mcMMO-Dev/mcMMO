@@ -126,7 +126,7 @@ public class AdvancedConfig extends ConfigValidated {
     private static AdvancedConfig instance;
 
     private AdvancedConfig() {
-        super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "advanced.yml");
+        super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "advanced.yml", true);
     }
 
     public static AdvancedConfig getInstance() {

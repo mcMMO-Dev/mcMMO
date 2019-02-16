@@ -3,7 +3,7 @@ package com.gmail.nossr50.core.config.mods;
 import com.gmail.nossr50.core.McmmoCore;
 import com.gmail.nossr50.core.config.ConfigKeyRegister;
 import com.gmail.nossr50.core.mcmmo.item.ItemStack;
-import com.gmail.nossr50.core.skills.ItemType;
+import com.gmail.nossr50.core.skills.ConfigItemCategory;
 import com.gmail.nossr50.core.skills.MaterialType;
 import com.gmail.nossr50.core.skills.primary.repair.repairables.Repairable;
 import com.gmail.nossr50.core.skills.primary.repair.repairables.RepairableFactory;
@@ -22,7 +22,7 @@ public class CustomArmorConfig extends ConfigKeyRegister {
     private boolean needsUpdate = false;
 
     protected CustomArmorConfig(String fileName) {
-        super(McmmoCore.getDataFolderPath().getPath() + "mods", fileName);
+        super(McmmoCore.getDataFolderPath().getPath() + "mods", fileName, false);
         loadKeys();
     }
 
@@ -101,7 +101,7 @@ public class CustomArmorConfig extends ConfigKeyRegister {
                     durability = (short) getIntValue(armorType + "." + armorName + ".Durability", 70);
                 }
 
-                repairables.add(RepairableFactory.getRepairable(armorMaterial, repairMaterial, repairData, repairItemName, repairMinimumLevel, repairQuantity, durability, ItemType.ARMOR, MaterialType.OTHER, repairXpMultiplier));
+                repairables.add(RepairableFactory.getRepairable(armorMaterial, repairMaterial, repairData, repairItemName, repairMinimumLevel, repairQuantity, durability, ConfigItemCategory.ARMOR, MaterialType.OTHER, repairXpMultiplier));
             }
 
             materialList.add(armorMaterial);

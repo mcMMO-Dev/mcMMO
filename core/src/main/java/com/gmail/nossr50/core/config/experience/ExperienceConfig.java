@@ -76,8 +76,9 @@ public class ExperienceConfig extends ConfigValidated {
     public static final String FEATHER_FALL_MULTIPLIER = "FeatherFall_Multiplier";
     private static ExperienceConfig instance;
 
+    //TODO: Should merge be false? Seems okay to leave it as true..
     private ExperienceConfig() {
-        super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "experience.yml");
+        super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "experience.yml", true);
     }
 
     public static ExperienceConfig getInstance() {

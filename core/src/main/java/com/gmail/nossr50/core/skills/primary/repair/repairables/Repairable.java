@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.skills.primary.repair.repairables;
 
-import com.gmail.nossr50.core.skills.ItemType;
+import com.gmail.nossr50.core.skills.ConfigItemCategory;
 import com.gmail.nossr50.core.skills.MaterialType;
 import org.bukkit.Material;
 
@@ -39,7 +39,7 @@ public interface Repairable {
      *
      * @return the RepairItemType for this repairable
      */
-    public ItemType getRepairItemType();
+    public ConfigItemCategory getRepairConfigItemCategory();
 
     /**
      * Gets the RepairMaterialType value for this repairable item

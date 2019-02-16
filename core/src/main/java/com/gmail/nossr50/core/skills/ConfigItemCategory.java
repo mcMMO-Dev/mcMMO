@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.skills;
 
-public enum ItemType {
+public enum ConfigItemCategory {
     ARMOR,
     TOOL,
     OTHER;

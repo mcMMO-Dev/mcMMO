@@ -1,18 +1,32 @@
 package com.gmail.nossr50.core.util;
 
-import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.core.config.MainConfig;
+import com.gmail.nossr50.core.config.party.ItemWeightConfig;
 import com.gmail.nossr50.core.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.inventory.FurnaceRecipe;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.meta.ItemMeta;
+import com.gmail.nossr50.core.mcmmo.colors.ChatColor;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
+import com.gmail.nossr50.core.mcmmo.item.ItemType;
 
 public final class ItemUtils {
     private ItemUtils() {
+
+    }
+
+    /**
+     * Get an ItemType matching a string
+     * @param itemTypeString the string to match
+     * @return the matching ItemType for this string
+     */
+    public static ItemType matchItemType(String itemTypeString)
+    {
+        for(ItemType itemType : ItemType.values())
+        {
+            if(itemType.toString().equalsIgnoreCase(itemTypeString))
+                return itemType;
+        }
+
+        //TODO: Add custom exception
+        throw new InvalidItemException("[mcMMO] ItemType of name "+itemTypeString+" is invalid!");
     }
 
     /**

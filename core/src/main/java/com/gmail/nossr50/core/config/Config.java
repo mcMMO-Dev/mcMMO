@@ -18,6 +18,9 @@ import java.io.InputStream;
 //@ConfigSerializable
 public abstract class Config implements VersionedConfig, Unload {
 
+    /* SETTINGS */
+    private boolean mergeNewKeys;
+
     /* PATH VARS */
 
     public final File DIRECTORY_DATA_FOLDER; //Directory that the file is in
@@ -42,16 +45,17 @@ public abstract class Config implements VersionedConfig, Unload {
     /* CONFIG MANAGER */
     private ConfigurationLoader<CommentedConfigurationNode> configManager;
 
-    public Config(String pathToParentFolder, String relativePath) {
+    public Config(String pathToParentFolder, String relativePath, boolean mergeNewKeys) {
         //TODO: Check if this works...
-        this(new File(pathToParentFolder), relativePath);
+        this(new File(pathToParentFolder), relativePath, mergeNewKeys);
         System.out.println("mcMMO Debug: Don't forget to check if loading config file by string instead of File works...");
     }
 
-    public Config(File pathToParentFolder, String relativePath) {
+    public Config(File pathToParentFolder, String relativePath, boolean mergeNewKeys) {
         /*
          * These must be at the top
          */
+        this.mergeNewKeys = mergeNewKeys; //Whether or not we add new keys when they are found
         mkdirDefaults(); // Make our default config dir
         DIRECTORY_DATA_FOLDER = pathToParentFolder; //Data Folder for our plugin
         FILE_RELATIVE_PATH = relativePath; //Relative path to config from a parent folder
@@ -240,7 +244,8 @@ public abstract class Config implements VersionedConfig, Unload {
         McmmoCore.getLogger().info(userRootNode.getChildrenMap().size() +" items in default root map");
 
         // Merge Values from default
-        userRootNode = userRootNode.mergeValuesFrom(defaultRootNode);
+        if(mergeNewKeys)
+            userRootNode = userRootNode.mergeValuesFrom(defaultRootNode);
 
         // Update config version
         updateConfigVersion();
@@ -280,21 +285,41 @@ public abstract class Config implements VersionedConfig, Unload {
         return userRootNode;
     }
 
+    /**
+     * Grabs an int from the specified node
+     * @param path
+     * @return the int from the node, null references will zero initialize
+     */
     public int getIntValue(String... path)
     {
         return userRootNode.getNode(path).getInt();
     }
 
+    /**
+     * Grabs a double from the specified node
+     * @param path
+     * @return the double from the node, null references will zero initialize
+     */
     public double getDoubleValue(String... path)
     {
         return userRootNode.getNode(path).getDouble();
     }
 
+    /**
+     * Grabs a boolean from the specified node
+     * @param path
+     * @return the boolean from the node, null references will zero initialize
+     */
     public boolean getBooleanValue(String... path)
     {
         return userRootNode.getNode(path).getBoolean();
     }
 
+    /**
+     * Grabs a string from the specified node
+     * @param path
+     * @return the string from the node, null references will zero initialize
+     */
     public String getStringValue(String... path)
     {
         return userRootNode.getNode(path).getString();

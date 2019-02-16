@@ -7,13 +7,13 @@ import java.io.File;
  */
 public abstract class ConfigKeyRegister extends Config implements RegistersKeys {
 
-    public ConfigKeyRegister(String pathToParentFolder, String relativePath) {
-        super(pathToParentFolder, relativePath);
+    public ConfigKeyRegister(String pathToParentFolder, String relativePath, boolean mergeNewKeys) {
+        super(pathToParentFolder, relativePath, mergeNewKeys);
         loadKeys();
     }
 
-    public ConfigKeyRegister(File pathToParentFolder, String relativePath) {
-        super(pathToParentFolder, relativePath);
+    public ConfigKeyRegister(File pathToParentFolder, String relativePath, boolean mergeNewKeys) {
+        super(pathToParentFolder, relativePath, mergeNewKeys);
         loadKeys();
     }
 }

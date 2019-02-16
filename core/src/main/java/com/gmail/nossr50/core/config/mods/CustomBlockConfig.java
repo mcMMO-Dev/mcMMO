@@ -24,7 +24,7 @@ public class CustomBlockConfig extends ConfigKeyRegister {
     private boolean needsUpdate = false;
 
     protected CustomBlockConfig(String fileName) {
-        super(McmmoCore.getDataFolderPath().getPath() + "mods", fileName);
+        super(McmmoCore.getDataFolderPath().getPath() + "mods", fileName, false);
         loadKeys();
     }
 

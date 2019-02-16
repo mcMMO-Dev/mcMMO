@@ -9,15 +9,15 @@ import java.util.List;
  * This class is used for config files that validate their entries
  */
 public abstract class ConfigValidated extends Config implements DefaultKeys {
-    public ConfigValidated(String parentFolderPath, String relativePath)
+    public ConfigValidated(String parentFolderPath, String relativePath, boolean mergeNewKeys)
     {
-        super(parentFolderPath, relativePath);
+        super(parentFolderPath, relativePath, mergeNewKeys);
         validateEntries();
     }
 
-    public ConfigValidated(File parentFolderFile, String relativePath)
+    public ConfigValidated(File parentFolderFile, String relativePath, boolean mergeNewKeys)
     {
-        super(parentFolderFile, relativePath);
+        super(parentFolderFile, relativePath, mergeNewKeys);
         validateEntries();
     }
 

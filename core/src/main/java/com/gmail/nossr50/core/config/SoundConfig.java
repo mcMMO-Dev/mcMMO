@@ -10,7 +10,7 @@ public class SoundConfig extends ConfigValidated {
     private static SoundConfig instance;
 
     public SoundConfig() {
-        super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "sounds.yml");
+        super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "sounds.yml", true);
         this.instance = this;
     }
 

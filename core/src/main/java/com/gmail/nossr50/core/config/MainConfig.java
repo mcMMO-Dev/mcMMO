@@ -3,6 +3,7 @@ package com.gmail.nossr50.core.config;
 import com.gmail.nossr50.core.McmmoCore;
 import com.gmail.nossr50.core.data.database.SQLDatabaseManager;
 import com.gmail.nossr50.core.datatypes.party.PartyFeature;
+import com.gmail.nossr50.core.mcmmo.entity.EntityType;
 import com.gmail.nossr50.core.skills.MobHealthbarType;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SuperAbilityType;
@@ -16,7 +17,7 @@ public class MainConfig extends ConfigValidated {
     private static MainConfig instance;
 
     private MainConfig() {
-        super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "config.yml");
+        super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "config.yml", true);
     }
 
     public static MainConfig getInstance() {

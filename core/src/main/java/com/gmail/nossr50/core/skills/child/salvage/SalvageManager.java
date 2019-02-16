@@ -71,7 +71,7 @@ public class SalvageManager extends SkillManager {
         }
 
         // Permissions checks on material and item types
-        if (!Permissions.salvageItemType(player, salvageable.getSalvageItemType())) {
+        if (!Permissions.salvageItemType(player, salvageable.getSalvageConfigItemCategory())) {
             NotificationManager.sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
             return;
         }

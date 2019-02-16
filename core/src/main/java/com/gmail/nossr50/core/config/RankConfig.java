@@ -11,7 +11,7 @@ public class RankConfig extends ConfigValidated {
     private static RankConfig instance;
 
     public RankConfig() {
-        super(McmmoCore.getDataFolderPath().getAbsoluteFile(),"skillranks.yml");
+        super(McmmoCore.getDataFolderPath().getAbsoluteFile(),"skillranks.yml", true);
         this.instance = this;
     }
 

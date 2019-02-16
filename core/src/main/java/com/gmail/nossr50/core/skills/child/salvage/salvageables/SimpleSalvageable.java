@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.skills.child.salvage.salvageables;
 
-import com.gmail.nossr50.core.skills.ItemType;
+import com.gmail.nossr50.core.skills.ConfigItemCategory;
 import com.gmail.nossr50.core.skills.MaterialType;
 import org.bukkit.Material;
 
@@ -10,15 +10,15 @@ public class SimpleSalvageable implements Salvageable {
     private final int maximumQuantity, minimumLevel;
     private final short maximumDurability, baseSalvageDurability;
     private final byte salvageMetadata;
-    private final ItemType salvageItemType;
+    private final ConfigItemCategory salvageConfigItemCategory;
     private final MaterialType salvageMaterialType;
     private final double xpMultiplier;
 
-    protected SimpleSalvageable(Material type, Material salvageMaterial, byte salvageMetadata, int minimumLevel, int maximumQuantity, short maximumDurability, ItemType salvageItemType, MaterialType salvageMaterialType, double xpMultiplier) {
+    protected SimpleSalvageable(Material type, Material salvageMaterial, byte salvageMetadata, int minimumLevel, int maximumQuantity, short maximumDurability, ConfigItemCategory salvageConfigItemCategory, MaterialType salvageMaterialType, double xpMultiplier) {
         this.itemMaterial = type;
         this.salvageMaterial = salvageMaterial;
         this.salvageMetadata = salvageMetadata;
-        this.salvageItemType = salvageItemType;
+        this.salvageConfigItemCategory = salvageConfigItemCategory;
         this.salvageMaterialType = salvageMaterialType;
         this.minimumLevel = minimumLevel;
         this.maximumQuantity = maximumQuantity;
@@ -43,8 +43,8 @@ public class SimpleSalvageable implements Salvageable {
     }
 
     @Override
-    public ItemType getSalvageItemType() {
-        return salvageItemType;
+    public ConfigItemCategory getSalvageConfigItemCategory() {
+        return salvageConfigItemCategory;
     }
 
     @Override

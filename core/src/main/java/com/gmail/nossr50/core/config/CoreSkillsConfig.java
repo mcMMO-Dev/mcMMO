@@ -9,7 +9,7 @@ public class CoreSkillsConfig extends Config {
     private static CoreSkillsConfig instance;
 
     public CoreSkillsConfig() {
-        super(McmmoCore.getDataFolderPath().getAbsoluteFile(),"coreskills.yml");
+        super(McmmoCore.getDataFolderPath().getAbsoluteFile(),"coreskills.yml", true);
     }
 
     public static CoreSkillsConfig getInstance() {
