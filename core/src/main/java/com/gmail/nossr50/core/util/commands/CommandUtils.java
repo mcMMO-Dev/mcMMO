@@ -5,15 +5,13 @@ import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.mcmmo.commands.CommandSender;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.util.Misc;
 import com.gmail.nossr50.core.util.StringUtils;
 import com.gmail.nossr50.core.util.skills.SkillUtils;
-import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;

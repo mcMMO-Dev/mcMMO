@@ -1,14 +1,11 @@
 package com.gmail.nossr50.core.skills.subskills.acrobatics;
 
+import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.core.skills.subskills.interfaces.InteractType;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.StringUtils;
-import org.bukkit.event.Event;
-import org.bukkit.event.EventPriority;
+import com.gmail.nossr50.core.util.StringUtils;
 
 public abstract class AcrobaticsSubSkill extends AbstractSubSkill {
 

@@ -5,25 +5,19 @@ import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.mcmmo.colors.ChatColor;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 import com.gmail.nossr50.core.runnables.items.ChimaeraWingWarmup;
 import com.gmail.nossr50.core.util.player.NotificationManager;
 import com.gmail.nossr50.core.util.skills.CombatUtils;
 import com.gmail.nossr50.core.util.skills.SkillUtils;
 import com.gmail.nossr50.core.util.sounds.SoundManager;
 import com.gmail.nossr50.core.util.sounds.SoundType;
-import com.gmail.nossr50.mcMMO;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapelessRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 public final class ChimaeraWing {
     private static McMMOPlayer mcMMOPlayer;

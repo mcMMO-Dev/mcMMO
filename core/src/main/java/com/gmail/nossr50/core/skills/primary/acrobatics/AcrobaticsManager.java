@@ -3,20 +3,18 @@ package com.gmail.nossr50.core.skills.primary.acrobatics;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SkillManager;
 import com.gmail.nossr50.core.skills.SubSkillType;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
-import com.gmail.nossr50.util.skills.ParticleEffectUtils;
-import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
-import com.gmail.nossr50.util.skills.SkillUtils;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LightningStrike;
-import org.bukkit.entity.Player;
+import com.gmail.nossr50.core.util.Misc;
+import com.gmail.nossr50.core.util.Permissions;
+import com.gmail.nossr50.core.util.player.NotificationManager;
+import com.gmail.nossr50.core.util.random.RandomChanceUtil;
+import com.gmail.nossr50.core.util.skills.ParticleEffectUtils;
+import com.gmail.nossr50.core.util.skills.RankUtils;
+import com.gmail.nossr50.core.util.skills.SkillActivationType;
+import com.gmail.nossr50.core.util.skills.SkillUtils;
 
 public class AcrobaticsManager extends SkillManager {
 

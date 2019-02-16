@@ -2,11 +2,9 @@ package com.gmail.nossr50.core.util;
 
 import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.util.skills.PerksUtils;
-import com.gmail.nossr50.mcMMO;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.text.DecimalFormat;
 

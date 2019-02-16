@@ -1,16 +1,13 @@
 package com.gmail.nossr50.core.skills.primary.woodcutting;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.config.MainConfig;
+import com.gmail.nossr50.core.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.mcmmo.block.BlockState;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.BlockUtils;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.skills.SkillUtils;
-import org.bukkit.Material;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.inventory.ItemStack;
+import com.gmail.nossr50.core.util.BlockUtils;
+import com.gmail.nossr50.core.util.Misc;
+import com.gmail.nossr50.core.util.skills.SkillUtils;
 
 import java.util.ArrayList;
 import java.util.List;

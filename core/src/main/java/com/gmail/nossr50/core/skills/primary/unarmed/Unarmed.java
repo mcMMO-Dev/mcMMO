@@ -1,11 +1,10 @@
 package com.gmail.nossr50.core.skills.primary.unarmed;
 
 import com.gmail.nossr50.core.config.MainConfig;
-import com.gmail.nossr50.util.sounds.SoundManager;
-import com.gmail.nossr50.util.sounds.SoundType;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.inventory.ItemStack;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
+import com.gmail.nossr50.core.util.sounds.SoundManager;
+import com.gmail.nossr50.core.util.sounds.SoundType;
 
 public class Unarmed {
     public static boolean blockCrackerSmoothBrick = MainConfig.getInstance().getUnarmedBlockCrackerSmoothbrickToCracked();

@@ -1,8 +1,7 @@
 package com.gmail.nossr50.core.data.blockmeta;
 
-import com.gmail.nossr50.mcMMO;
-import org.bukkit.World;
-import org.bukkit.block.Block;
+import com.gmail.nossr50.core.mcmmo.block.Block;
+import com.gmail.nossr50.core.mcmmo.world.World;
 
 import java.io.*;
 import java.util.HashMap;

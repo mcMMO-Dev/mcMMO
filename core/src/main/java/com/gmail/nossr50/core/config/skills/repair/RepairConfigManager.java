@@ -1,7 +1,7 @@
-package com.gmail.nossr50.config.skills.repair;
+package com.gmail.nossr50.core.config.skills.repair;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.repair.repairables.Repairable;
+import com.gmail.nossr50.core.config.skills.repair.RepairConfig;
+import com.gmail.nossr50.core.skills.primary.repair.repairables.Repairable;
 
 import java.io.File;
 import java.util.ArrayList;

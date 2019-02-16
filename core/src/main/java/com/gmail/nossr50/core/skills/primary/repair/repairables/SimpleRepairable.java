@@ -2,7 +2,6 @@ package com.gmail.nossr50.core.skills.primary.repair.repairables;
 
 import com.gmail.nossr50.core.skills.ConfigItemCategory;
 import com.gmail.nossr50.core.skills.MaterialType;
-import org.bukkit.Material;
 
 
 public class SimpleRepairable implements Repairable {

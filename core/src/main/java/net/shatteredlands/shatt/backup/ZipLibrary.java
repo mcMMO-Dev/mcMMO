@@ -1,7 +1,6 @@
 package net.shatteredlands.shatt.backup;
 
 import com.gmail.nossr50.core.config.MainConfig;
-import com.gmail.nossr50.mcMMO;
 
 import java.io.File;
 import java.io.FileInputStream;

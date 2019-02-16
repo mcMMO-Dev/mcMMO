@@ -1,17 +1,17 @@
 package com.gmail.nossr50.core.skills.primary.alchemy;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
+import com.gmail.nossr50.core.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 import com.gmail.nossr50.core.skills.PotionStage;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SkillManager;
 import com.gmail.nossr50.core.skills.SubSkillType;
-import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.skills.RankUtils;
-import org.bukkit.inventory.ItemStack;
+import com.gmail.nossr50.core.util.StringUtils;
+import com.gmail.nossr50.core.util.skills.RankUtils;
 
 import java.util.List;
 

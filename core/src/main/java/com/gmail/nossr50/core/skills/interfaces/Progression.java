@@ -1,7 +1,6 @@
 package com.gmail.nossr50.core.skills.interfaces;
 
 import com.gmail.nossr50.core.skills.subskills.interfaces.InteractType;
-import org.bukkit.event.Event;
 
 public interface Progression {
     /**

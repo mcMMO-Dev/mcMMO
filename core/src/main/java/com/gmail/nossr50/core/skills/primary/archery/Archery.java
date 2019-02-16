@@ -1,14 +1,12 @@
 package com.gmail.nossr50.core.skills.primary.archery;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.config.AdvancedConfig;
+import com.gmail.nossr50.core.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 import com.gmail.nossr50.core.skills.SubSkillType;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.skills.RankUtils;
-import org.bukkit.Material;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import com.gmail.nossr50.core.util.Misc;
+import com.gmail.nossr50.core.util.skills.RankUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;

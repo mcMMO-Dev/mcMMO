@@ -16,3 +16,19 @@ This file is just going to take note of all the caveats of mcMMO code as I abstr
 7) Weird stuff going on with ageables and strings in general in StringUtils
 
 8) Reduce the amount of string operations in mcMMO as much as possible
+
+
+
+////////////
+
+CONFIG NOTES
+
+///////////
+
+1) All Config files need their validation redone and checked
+
+2) All Config files need unload programmed in
+
+3) All Config files need string operations reduced and to be double checked for errors in paths
+
+4) Need to setup removing old keys on configs

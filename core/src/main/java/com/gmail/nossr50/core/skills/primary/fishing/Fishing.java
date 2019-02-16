@@ -2,18 +2,12 @@ package com.gmail.nossr50.core.skills.primary.fishing;
 
 import com.gmail.nossr50.core.config.AdvancedConfig;
 import com.gmail.nossr50.core.config.treasure.TreasureConfig;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 import com.gmail.nossr50.core.skills.treasure.ShakeTreasure;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.adapter.BiomeAdapter;
-import org.bukkit.Material;
-import org.bukkit.block.Biome;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.inventory.ItemStack;
+import com.gmail.nossr50.core.util.Misc;
+import com.gmail.nossr50.core.util.adapter.BiomeAdapter;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 public final class Fishing {
 

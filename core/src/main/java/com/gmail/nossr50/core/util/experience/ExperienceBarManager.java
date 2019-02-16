@@ -1,10 +1,9 @@
 package com.gmail.nossr50.core.util.experience;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.runnables.skills.ExperienceBarHideTask;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
-import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 

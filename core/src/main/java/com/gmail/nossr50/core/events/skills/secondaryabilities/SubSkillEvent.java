@@ -1,11 +1,10 @@
 package com.gmail.nossr50.core.events.skills.secondaryabilities;
 
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.core.events.skills.McMMOPlayerSkillEvent;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 
 public class SubSkillEvent extends McMMOPlayerSkillEvent implements Cancellable {
     private SubSkillType subSkillType;

@@ -1,12 +1,17 @@
 package com.gmail.nossr50.core.skills.primary.fishing;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.config.AdvancedConfig;
 import com.gmail.nossr50.core.config.MainConfig;
+import com.gmail.nossr50.core.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.config.treasure.TreasureConfig;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
+import com.gmail.nossr50.core.events.skills.fishing.McMMOPlayerShakeEvent;
+import com.gmail.nossr50.core.mcmmo.entity.EntityType;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SkillManager;
 import com.gmail.nossr50.core.skills.SubSkillType;
@@ -14,28 +19,13 @@ import com.gmail.nossr50.core.skills.treasure.EnchantmentTreasure;
 import com.gmail.nossr50.core.skills.treasure.FishingTreasure;
 import com.gmail.nossr50.core.skills.treasure.Rarity;
 import com.gmail.nossr50.core.skills.treasure.ShakeTreasure;
-import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
-import com.gmail.nossr50.events.skills.fishing.McMMOPlayerShakeEvent;
-import com.gmail.nossr50.util.*;
-import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
-import com.gmail.nossr50.util.skills.CombatUtils;
-import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.util.BoundingBox;
-
+import com.gmail.nossr50.core.util.*;
+import com.gmail.nossr50.core.util.player.NotificationManager;
+import com.gmail.nossr50.core.util.random.RandomChanceSkillStatic;
+import com.gmail.nossr50.core.util.random.RandomChanceUtil;
+import com.gmail.nossr50.core.util.skills.CombatUtils;
+import com.gmail.nossr50.core.util.skills.RankUtils;
+import com.gmail.nossr50.core.util.skills.SkillUtils;
 import java.util.*;
 
 public class FishingManager extends SkillManager {

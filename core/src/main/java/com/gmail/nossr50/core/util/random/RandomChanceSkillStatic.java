@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.util.random;
 
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 import com.gmail.nossr50.core.skills.SubSkillType;
-import org.bukkit.entity.Player;
 
 public class RandomChanceSkillStatic extends RandomChanceSkill {
     private final double xPos;

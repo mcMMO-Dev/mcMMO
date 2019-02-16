@@ -1,11 +1,9 @@
 package com.gmail.nossr50.core.skills.primary.herbalism;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.skills.SkillUtils;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
+
+import com.gmail.nossr50.core.mcmmo.block.Block;
+import com.gmail.nossr50.core.mcmmo.block.BlockState;
+import com.gmail.nossr50.core.util.skills.SkillUtils;
 
 import java.util.HashSet;
 

@@ -1,9 +1,9 @@
 package com.gmail.nossr50.core.datatypes.party;
 
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.ItemUtils;
-import com.gmail.nossr50.util.StringUtils;
-import org.bukkit.inventory.ItemStack;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
+import com.gmail.nossr50.core.util.ItemUtils;
+import com.gmail.nossr50.core.util.StringUtils;
 
 public enum ItemShareType {
     LOOT,

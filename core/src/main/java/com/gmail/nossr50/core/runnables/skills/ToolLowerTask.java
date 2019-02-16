@@ -4,8 +4,7 @@ import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.skills.ToolType;
-import com.gmail.nossr50.util.player.NotificationManager;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.core.util.player.NotificationManager;
 
 public class ToolLowerTask extends BukkitRunnable {
     private McMMOPlayer mcMMOPlayer;

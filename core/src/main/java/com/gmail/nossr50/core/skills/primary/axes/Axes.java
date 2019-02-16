@@ -1,12 +1,11 @@
 package com.gmail.nossr50.core.skills.primary.axes;
 
 import com.gmail.nossr50.core.config.AdvancedConfig;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 import com.gmail.nossr50.core.skills.SubSkillType;
-import com.gmail.nossr50.util.ItemUtils;
-import com.gmail.nossr50.util.skills.RankUtils;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import com.gmail.nossr50.core.util.ItemUtils;
+import com.gmail.nossr50.core.util.skills.RankUtils;
 
 public class Axes {
     public static double axeMasteryRankDamageMultiplier = AdvancedConfig.getInstance().getAxeMasteryRankDamageMultiplier();

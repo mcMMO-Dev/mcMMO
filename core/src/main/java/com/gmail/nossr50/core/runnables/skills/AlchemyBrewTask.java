@@ -1,21 +1,16 @@
 package com.gmail.nossr50.core.runnables.skills;
 
 import com.gmail.nossr50.core.data.UserManager;
+import com.gmail.nossr50.core.events.skills.alchemy.McMMOPlayerBrewEvent;
+import com.gmail.nossr50.core.events.skills.alchemy.McMMOPlayerCatalysisEvent;
+import com.gmail.nossr50.core.mcmmo.block.BlockState;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.skills.primary.alchemy.Alchemy;
 import com.gmail.nossr50.core.skills.primary.alchemy.AlchemyPotionBrewer;
-import com.gmail.nossr50.events.skills.alchemy.McMMOPlayerBrewEvent;
-import com.gmail.nossr50.events.skills.alchemy.McMMOPlayerCatalysisEvent;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.BrewingStand;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.core.util.Misc;
+import com.gmail.nossr50.core.util.Permissions;
 
 public class AlchemyBrewTask extends BukkitRunnable {
     private static double DEFAULT_BREW_SPEED = 1.0;

@@ -1,8 +1,6 @@
 package com.gmail.nossr50.core.events.fake;
 
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockBreakEvent;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 
 /**
  * Called when mcMMO breaks a block due to a special ability.

@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.runnables.player;
 
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 
 @SuppressWarnings("deprecation")
 public class PlayerUpdateInventoryTask extends BukkitRunnable {

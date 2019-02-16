@@ -1,37 +1,30 @@
 package com.gmail.nossr50.core.skills.primary.repair;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.config.AdvancedConfig;
 import com.gmail.nossr50.core.config.MainConfig;
+import com.gmail.nossr50.core.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SkillManager;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.skills.primary.repair.repairables.Repairable;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.EventUtils;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
-import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
-import com.gmail.nossr50.util.skills.SkillUtils;
-import com.gmail.nossr50.util.sounds.SoundManager;
-import com.gmail.nossr50.util.sounds.SoundType;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-
-import java.util.Map;
-import java.util.Map.Entry;
+import com.gmail.nossr50.core.util.EventUtils;
+import com.gmail.nossr50.core.util.Misc;
+import com.gmail.nossr50.core.util.Permissions;
+import com.gmail.nossr50.core.util.StringUtils;
+import com.gmail.nossr50.core.util.player.NotificationManager;
+import com.gmail.nossr50.core.util.random.RandomChanceSkillStatic;
+import com.gmail.nossr50.core.util.random.RandomChanceUtil;
+import com.gmail.nossr50.core.util.skills.RankUtils;
+import com.gmail.nossr50.core.util.skills.SkillActivationType;
+import com.gmail.nossr50.core.util.skills.SkillUtils;
+import com.gmail.nossr50.core.util.sounds.SoundManager;
+import com.gmail.nossr50.core.util.sounds.SoundType;
 
 public class RepairManager extends SkillManager {
     private boolean placedAnvil;

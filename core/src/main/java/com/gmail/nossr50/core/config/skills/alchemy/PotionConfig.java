@@ -5,7 +5,6 @@ import com.gmail.nossr50.core.config.Config;
 import com.gmail.nossr50.core.mcmmo.colors.ChatColor;
 import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 import com.gmail.nossr50.core.skills.primary.alchemy.AlchemyPotion;
-import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
 import java.util.HashMap;

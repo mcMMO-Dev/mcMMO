@@ -1,18 +1,12 @@
 package com.gmail.nossr50.core.util;
 
 import com.gmail.nossr50.core.data.UserManager;
+import com.gmail.nossr50.core.events.items.McMMOItemSpawnEvent;
+import com.gmail.nossr50.core.mcmmo.block.BlockState;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 import com.gmail.nossr50.core.runnables.player.PlayerProfileLoadingTask;
-import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
-import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableSet;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.BlockState;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.NPC;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
 import java.util.Random;

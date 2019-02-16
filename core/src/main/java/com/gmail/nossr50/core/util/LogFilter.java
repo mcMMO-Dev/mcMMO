@@ -1,6 +1,5 @@
 package com.gmail.nossr50.core.util;
 
-import com.gmail.nossr50.mcMMO;
 
 import java.util.logging.Filter;
 import java.util.logging.LogRecord;

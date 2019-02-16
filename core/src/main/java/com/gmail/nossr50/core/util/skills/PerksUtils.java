@@ -1,9 +1,9 @@
 package com.gmail.nossr50.core.util.skills;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.util.Permissions;
-import org.bukkit.entity.Player;
 
 public final class PerksUtils {
     private static final int LUCKY_SKILL_ACTIVATION_CHANCE = 75;

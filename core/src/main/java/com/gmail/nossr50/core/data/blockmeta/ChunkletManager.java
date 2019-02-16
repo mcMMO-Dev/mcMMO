@@ -1,7 +1,8 @@
 package com.gmail.nossr50.core.data.blockmeta;
 
-import org.bukkit.World;
-import org.bukkit.block.Block;
+
+import com.gmail.nossr50.core.mcmmo.block.Block;
+import com.gmail.nossr50.core.mcmmo.world.World;
 
 public interface ChunkletManager {
     /**

@@ -1,17 +1,13 @@
 package com.gmail.nossr50.core.util.experience;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.mcmmo.bossbars.BarColor;
+import com.gmail.nossr50.core.mcmmo.bossbars.BarStyle;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.util.StringUtils;
-import org.bukkit.Server;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.BossBar;
-import org.bukkit.entity.Player;
-
-import java.util.List;
 
 /**
  * A visual representation of a players skill level progress for a PrimarySkillType

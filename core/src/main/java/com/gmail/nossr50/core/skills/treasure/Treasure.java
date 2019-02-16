@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.skills.treasure;
 
 import com.gmail.nossr50.core.config.MainConfig;
-import org.bukkit.inventory.ItemStack;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 
 public abstract class Treasure {
     private int xp;

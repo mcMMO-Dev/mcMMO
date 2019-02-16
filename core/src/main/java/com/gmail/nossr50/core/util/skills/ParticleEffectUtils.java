@@ -1,16 +1,10 @@
 package com.gmail.nossr50.core.util.skills;
 
 import com.gmail.nossr50.core.config.MainConfig;
-import com.gmail.nossr50.mcMMO;
-import org.bukkit.FireworkEffect.Type;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Firework;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.metadata.FixedMetadataValue;
+import com.gmail.nossr50.core.mcmmo.entity.EntityType;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.world.Location;
+import com.gmail.nossr50.core.mcmmo.world.World;
 
 public final class ParticleEffectUtils {
 

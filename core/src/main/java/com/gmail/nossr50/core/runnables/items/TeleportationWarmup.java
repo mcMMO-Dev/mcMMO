@@ -3,13 +3,12 @@ package com.gmail.nossr50.core.runnables.items;
 import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.locale.LocaleLoader;
-import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.EventUtils;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.skills.SkillUtils;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.world.Location;
+import com.gmail.nossr50.core.party.PartyManager;
+import com.gmail.nossr50.core.util.EventUtils;
+import com.gmail.nossr50.core.util.Misc;
+import com.gmail.nossr50.core.util.skills.SkillUtils;
 
 public class TeleportationWarmup extends BukkitRunnable {
     private McMMOPlayer mcMMOPlayer;

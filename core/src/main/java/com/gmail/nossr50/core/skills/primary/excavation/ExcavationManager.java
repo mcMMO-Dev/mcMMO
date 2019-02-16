@@ -3,17 +3,16 @@ package com.gmail.nossr50.core.skills.primary.excavation;
 import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.mcmmo.block.BlockState;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SkillManager;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.skills.treasure.ExcavationTreasure;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
-import com.gmail.nossr50.util.skills.SkillUtils;
-import org.bukkit.Location;
-import org.bukkit.block.BlockState;
-import org.bukkit.entity.Player;
+import com.gmail.nossr50.core.util.Misc;
+import com.gmail.nossr50.core.util.Permissions;
+import com.gmail.nossr50.core.util.random.RandomChanceUtil;
+import com.gmail.nossr50.core.util.skills.SkillUtils;
 
 import java.util.List;
 

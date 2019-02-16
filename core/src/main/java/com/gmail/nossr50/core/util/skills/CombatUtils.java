@@ -1,10 +1,17 @@
 package com.gmail.nossr50.core.util.skills;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.events.fake.FakeEntityDamageByEntityEvent;
+import com.gmail.nossr50.core.events.fake.FakeEntityDamageEvent;
+import com.gmail.nossr50.core.mcmmo.entity.EntityType;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.entity.Tameable;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
+import com.gmail.nossr50.core.party.PartyManager;
 import com.gmail.nossr50.core.runnables.skills.AwardCombatXpTask;
 import com.gmail.nossr50.core.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
@@ -18,25 +25,7 @@ import com.gmail.nossr50.core.skills.primary.unarmed.Unarmed;
 import com.gmail.nossr50.core.skills.primary.unarmed.UnarmedManager;
 import com.gmail.nossr50.core.util.*;
 import com.gmail.nossr50.core.util.player.NotificationManager;
-import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
-import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.*;
 import com.google.common.collect.ImmutableMap;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.projectiles.ProjectileSource;
-
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
 
 public final class CombatUtils {
     private CombatUtils() {

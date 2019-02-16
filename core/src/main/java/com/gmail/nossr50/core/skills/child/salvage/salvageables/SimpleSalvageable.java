@@ -2,7 +2,6 @@ package com.gmail.nossr50.core.skills.child.salvage.salvageables;
 
 import com.gmail.nossr50.core.skills.ConfigItemCategory;
 import com.gmail.nossr50.core.skills.MaterialType;
-import org.bukkit.Material;
 
 
 public class SimpleSalvageable implements Salvageable {

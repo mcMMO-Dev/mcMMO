@@ -1,6 +1,7 @@
 package com.gmail.nossr50.core.skills.interfaces;
 
-import org.bukkit.inventory.ItemStack;
+
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 
 import java.util.Collection;
 

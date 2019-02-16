@@ -1,7 +1,9 @@
 package com.gmail.nossr50.core.skills.primary.taming;
 
 import com.gmail.nossr50.core.config.AdvancedConfig;
-import org.bukkit.EntityEffect;
+import com.gmail.nossr50.core.mcmmo.entity.EntityType;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.entity.Tameable;
 
 public class Taming {
     public static double fastFoodServiceActivationChance = AdvancedConfig.getInstance().getFastFoodChance();

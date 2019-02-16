@@ -1,6 +1,7 @@
 package com.gmail.nossr50.core.datatypes.party;
 
-import com.gmail.nossr50.util.commands.CommandUtils;
+
+import com.gmail.nossr50.core.util.commands.CommandUtils;
 
 public enum ShareMode {
     NONE,

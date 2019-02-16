@@ -1,13 +1,13 @@
 package com.gmail.nossr50.core.skills.subskills;
 
 import com.gmail.nossr50.core.config.CoreSkillsConfig;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.skills.subskills.interfaces.Interaction;
 import com.gmail.nossr50.core.skills.subskills.interfaces.Rank;
 import com.gmail.nossr50.core.skills.subskills.interfaces.SubSkill;
 import com.gmail.nossr50.core.skills.subskills.interfaces.SubSkillProperties;
-import com.gmail.nossr50.locale.LocaleLoader;
-import org.bukkit.entity.Player;
 
 public abstract class AbstractSubSkill implements SubSkill, Interaction, Rank, SubSkillProperties {
     /*

@@ -1,8 +1,8 @@
 package com.gmail.nossr50.core.events.skills.secondaryabilities;
 
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.skills.subskills.AbstractSubSkill;
-import org.bukkit.entity.Player;
 
 public class SubSkillRandomCheckEvent extends SubSkillEvent {
     private double chance;

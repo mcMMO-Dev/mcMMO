@@ -1,9 +1,7 @@
 package com.gmail.nossr50.core.events.fake;
 
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockDamageEvent;
-import org.bukkit.inventory.ItemStack;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 
 /**
  * Called when mcMMO damages a block due to a special ability.

@@ -1,15 +1,11 @@
 package com.gmail.nossr50.core.config.mods;
 
 import com.gmail.nossr50.core.McmmoCore;
-import com.gmail.nossr50.core.config.ConfigLoader;
 import com.gmail.nossr50.core.config.ConfigKeyRegister;
-import com.gmail.nossr50.core.mcmmo.mods.CustomBlock;
-import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
+import com.gmail.nossr50.core.datatypes.mods.CustomBlock;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 public class CustomBlockConfig extends ConfigKeyRegister {

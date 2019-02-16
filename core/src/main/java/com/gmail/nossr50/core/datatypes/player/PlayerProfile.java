@@ -1,17 +1,16 @@
 package com.gmail.nossr50.core.datatypes.player;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.config.AdvancedConfig;
 import com.gmail.nossr50.core.config.MainConfig;
+import com.gmail.nossr50.core.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.experience.FormulaType;
 import com.gmail.nossr50.core.datatypes.experience.SkillXpGain;
+import com.gmail.nossr50.core.runnables.player.PlayerProfileSaveTask;
 import com.gmail.nossr50.core.skills.MobHealthbarType;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SuperAbilityType;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.player.PlayerProfileSaveTask;
-import com.gmail.nossr50.skills.child.FamilyTree;
+import com.gmail.nossr50.core.skills.child.FamilyTree;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.HashMap;

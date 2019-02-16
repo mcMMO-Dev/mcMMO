@@ -1,6 +1,5 @@
 package com.gmail.nossr50.core.util.adapter;
 
-import org.bukkit.block.Biome;
 
 import java.util.*;
 

@@ -1,20 +1,16 @@
 package com.gmail.nossr50.core.util;
 
-import com.gmail.nossr50.config.mods.CustomArmorConfig;
-import com.gmail.nossr50.config.mods.CustomBlockConfig;
-import com.gmail.nossr50.config.mods.CustomEntityConfig;
-import com.gmail.nossr50.config.mods.CustomToolConfig;
 import com.gmail.nossr50.core.config.MainConfig;
+import com.gmail.nossr50.core.config.mods.CustomArmorConfig;
+import com.gmail.nossr50.core.config.mods.CustomBlockConfig;
+import com.gmail.nossr50.core.config.mods.CustomEntityConfig;
+import com.gmail.nossr50.core.config.mods.CustomToolConfig;
 import com.gmail.nossr50.core.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.core.datatypes.mods.CustomEntity;
 import com.gmail.nossr50.core.datatypes.mods.CustomTool;
+import com.gmail.nossr50.core.mcmmo.block.BlockState;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 import com.gmail.nossr50.core.skills.primary.repair.repairables.Repairable;
-import com.gmail.nossr50.mcMMO;
-import org.bukkit.Material;
-import org.bukkit.block.BlockState;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Entity;
-import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.util.ArrayList;

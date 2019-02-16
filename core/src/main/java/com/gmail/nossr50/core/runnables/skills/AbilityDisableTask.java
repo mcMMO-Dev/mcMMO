@@ -3,18 +3,15 @@ package com.gmail.nossr50.core.runnables.skills;
 import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.world.World;
 import com.gmail.nossr50.core.skills.SuperAbilityType;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.EventUtils;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.skills.ParticleEffectUtils;
-import com.gmail.nossr50.util.skills.PerksUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
-import org.bukkit.Chunk;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.core.util.EventUtils;
+import com.gmail.nossr50.core.util.Misc;
+import com.gmail.nossr50.core.util.player.NotificationManager;
+import com.gmail.nossr50.core.util.skills.ParticleEffectUtils;
+import com.gmail.nossr50.core.util.skills.PerksUtils;
+import com.gmail.nossr50.core.util.skills.SkillUtils;
 
 public class AbilityDisableTask extends BukkitRunnable {
     private McMMOPlayer mcMMOPlayer;

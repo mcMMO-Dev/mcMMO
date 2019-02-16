@@ -1,16 +1,11 @@
 package com.gmail.nossr50.core.skills.primary.alchemy;
 
 import com.gmail.nossr50.core.config.AdvancedConfig;
+import com.gmail.nossr50.core.runnables.skills.AlchemyBrewTask;
 import com.gmail.nossr50.core.skills.SubSkillType;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.skills.AlchemyBrewTask;
-import com.gmail.nossr50.util.skills.RankUtils;
-import org.bukkit.Location;
-
+import com.gmail.nossr50.core.util.skills.RankUtils;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public final class Alchemy {
     /*public enum Tier {

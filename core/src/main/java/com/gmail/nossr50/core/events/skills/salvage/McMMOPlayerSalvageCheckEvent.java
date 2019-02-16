@@ -1,10 +1,9 @@
 package com.gmail.nossr50.core.events.skills.salvage;
 
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.events.skills.McMMOPlayerSkillEvent;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
-import org.bukkit.inventory.ItemStack;
 
 /**
  * Called just before a player salvages an item with mcMMO.

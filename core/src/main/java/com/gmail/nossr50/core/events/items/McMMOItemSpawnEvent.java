@@ -1,10 +1,6 @@
 package com.gmail.nossr50.core.events.items;
 
-import org.bukkit.Location;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
-import org.bukkit.inventory.ItemStack;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 
 /**
  * Called when mcMMO is preparing to drop an item.

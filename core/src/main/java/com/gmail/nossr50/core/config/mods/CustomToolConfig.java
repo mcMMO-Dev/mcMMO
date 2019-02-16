@@ -1,20 +1,15 @@
 package com.gmail.nossr50.core.config.mods;
 
 import com.gmail.nossr50.core.McmmoCore;
-import com.gmail.nossr50.core.config.ConfigLoader;
 import com.gmail.nossr50.core.config.Config;
-import com.gmail.nossr50.core.mcmmo.mods.CustomTool;
-import com.gmail.nossr50.core.mcmmo.skills.ItemType;
-import com.gmail.nossr50.core.mcmmo.skills.MaterialType;
-import com.gmail.nossr50.skills.repair.repairables.Repairable;
-import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
-import com.gmail.nossr50.util.skills.SkillUtils;
-import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemStack;
+import com.gmail.nossr50.core.datatypes.mods.CustomTool;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
+import com.gmail.nossr50.core.skills.MaterialType;
+import com.gmail.nossr50.core.skills.primary.repair.repairables.Repairable;
+import com.gmail.nossr50.core.skills.primary.repair.repairables.RepairableFactory;
+import com.gmail.nossr50.core.util.skills.SkillUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 

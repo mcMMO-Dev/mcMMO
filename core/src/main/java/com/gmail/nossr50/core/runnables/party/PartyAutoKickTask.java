@@ -2,15 +2,10 @@ package com.gmail.nossr50.core.runnables.party;
 
 import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.datatypes.party.Party;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.core.party.PartyManager;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.UUID;
 
 public class PartyAutoKickTask extends BukkitRunnable {

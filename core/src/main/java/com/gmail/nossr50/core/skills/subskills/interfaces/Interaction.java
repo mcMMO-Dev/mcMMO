@@ -1,8 +1,5 @@
 package com.gmail.nossr50.core.skills.subskills.interfaces;
 
-import com.gmail.nossr50.mcMMO;
-import org.bukkit.event.Event;
-import org.bukkit.event.EventPriority;
 
 public interface Interaction {
     /**

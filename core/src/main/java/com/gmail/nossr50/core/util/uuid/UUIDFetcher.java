@@ -1,9 +1,7 @@
 package com.gmail.nossr50.core.util.uuid;
 
 import com.google.common.collect.ImmutableList;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import jdk.nashorn.internal.parser.JSONParser;
 
 import java.io.InputStreamReader;
 import java.io.OutputStream;

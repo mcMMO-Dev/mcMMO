@@ -1,8 +1,5 @@
 package com.gmail.nossr50.core.skills.primary.archery;
 
-import com.gmail.nossr50.mcMMO;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 

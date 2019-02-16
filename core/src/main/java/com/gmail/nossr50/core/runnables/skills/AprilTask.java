@@ -1,14 +1,11 @@
 package com.gmail.nossr50.core.runnables.skills;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.HolidayManager;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.sounds.SoundManager;
-import com.gmail.nossr50.util.sounds.SoundType;
-import org.bukkit.ChatColor;
-import org.bukkit.Statistic;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.core.mcmmo.colors.ChatColor;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.util.HolidayManager;
+import com.gmail.nossr50.core.util.Misc;
+import com.gmail.nossr50.core.util.sounds.SoundManager;
+import com.gmail.nossr50.core.util.sounds.SoundType;
 
 public class AprilTask extends BukkitRunnable {
 

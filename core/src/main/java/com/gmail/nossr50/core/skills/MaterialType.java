@@ -1,6 +1,5 @@
 package com.gmail.nossr50.core.skills;
 
-import org.bukkit.Material;
 
 public enum MaterialType {
     STRING,

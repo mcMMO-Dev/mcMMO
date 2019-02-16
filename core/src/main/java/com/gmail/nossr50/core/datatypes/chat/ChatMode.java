@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.datatypes.chat;
 
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.core.locale.LocaleLoader;
 
 public enum ChatMode {
     ADMIN(LocaleLoader.getString("Commands.AdminChat.On"), LocaleLoader.getString("Commands.AdminChat.Off")),

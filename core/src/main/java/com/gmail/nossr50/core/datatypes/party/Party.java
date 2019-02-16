@@ -1,17 +1,16 @@
 package com.gmail.nossr50.core.datatypes.party;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.config.MainConfig;
+import com.gmail.nossr50.core.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.datatypes.experience.FormulaType;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.EventUtils;
-import com.gmail.nossr50.util.sounds.SoundManager;
-import com.gmail.nossr50.util.sounds.SoundType;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.mcmmo.colors.ChatColor;
+import com.gmail.nossr50.core.mcmmo.commands.CommandSender;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.party.PartyManager;
+import com.gmail.nossr50.core.util.EventUtils;
+import com.gmail.nossr50.core.util.sounds.SoundManager;
+import com.gmail.nossr50.core.util.sounds.SoundType;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

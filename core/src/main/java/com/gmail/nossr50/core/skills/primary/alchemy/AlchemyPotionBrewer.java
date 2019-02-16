@@ -1,24 +1,17 @@
 package com.gmail.nossr50.core.skills.primary.alchemy;
 
-import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
+import com.gmail.nossr50.core.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.core.data.UserManager;
+import com.gmail.nossr50.core.events.fake.FakeBrewEvent;
+import com.gmail.nossr50.core.mcmmo.block.BlockState;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.inventory.Inventory;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
+import com.gmail.nossr50.core.runnables.player.PlayerUpdateInventoryTask;
+import com.gmail.nossr50.core.runnables.skills.AlchemyBrewCheckTask;
 import com.gmail.nossr50.core.skills.PotionStage;
 import com.gmail.nossr50.core.skills.SubSkillType;
-import com.gmail.nossr50.events.fake.FakeBrewEvent;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
-import com.gmail.nossr50.runnables.skills.AlchemyBrewCheckTask;
-import com.gmail.nossr50.util.Permissions;
-import org.bukkit.Material;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.BrewingStand;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.inventory.BrewerInventory;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
-import org.bukkit.inventory.ItemStack;
+import com.gmail.nossr50.core.util.Permissions;
 
 import java.util.ArrayList;
 import java.util.List;

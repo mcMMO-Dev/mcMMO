@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.runnables.player;
 
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
-import org.bukkit.scheduler.BukkitRunnable;
+
+import com.gmail.nossr50.core.util.scoreboards.ScoreboardManager;
 
 public class PowerLevelUpdatingTask extends BukkitRunnable {
     @Override

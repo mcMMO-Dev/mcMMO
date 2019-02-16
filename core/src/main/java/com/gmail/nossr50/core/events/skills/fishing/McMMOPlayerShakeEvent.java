@@ -1,7 +1,8 @@
 package com.gmail.nossr50.core.events.skills.fishing;
 
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 
 public class McMMOPlayerShakeEvent extends McMMOPlayerFishingEvent {
     private ItemStack drop;

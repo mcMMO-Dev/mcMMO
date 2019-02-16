@@ -2,11 +2,6 @@ package com.gmail.nossr50.core.events.fake;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
-import org.bukkit.entity.Entity;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-
-import java.util.EnumMap;
-import java.util.Map;
 
 /**
  * Called when mcMMO applies damage from an entity due to special abilities.

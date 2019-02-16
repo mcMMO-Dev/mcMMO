@@ -1,11 +1,8 @@
 package com.gmail.nossr50.core.runnables.commands;
 
+import com.gmail.nossr50.core.mcmmo.commands.CommandSender;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
-import com.gmail.nossr50.mcMMO;
-import org.apache.commons.lang.Validate;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Map;
 

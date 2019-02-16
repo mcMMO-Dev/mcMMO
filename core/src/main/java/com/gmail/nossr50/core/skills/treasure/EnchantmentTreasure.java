@@ -1,6 +1,5 @@
 package com.gmail.nossr50.core.skills.treasure;
 
-import org.bukkit.enchantments.Enchantment;
 
 public class EnchantmentTreasure {
     private Enchantment enchantment;

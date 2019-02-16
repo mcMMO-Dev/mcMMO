@@ -2,8 +2,7 @@ package com.gmail.nossr50.core.runnables.skills;
 
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
-import com.gmail.nossr50.util.experience.ExperienceBarManager;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.core.util.experience.ExperienceBarManager;
 
 public class ExperienceBarHideTask extends BukkitRunnable {
     public final McMMOPlayer mcMMOPlayer;

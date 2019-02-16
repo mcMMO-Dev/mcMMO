@@ -2,9 +2,7 @@ package com.gmail.nossr50.core.runnables.database;
 
 import com.gmail.nossr50.core.data.database.DatabaseManager;
 import com.gmail.nossr50.core.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
-import org.bukkit.command.CommandSender;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.core.mcmmo.commands.CommandSender;
 
 public class DatabaseConversionTask extends BukkitRunnable {
     private final DatabaseManager sourceDatabase;

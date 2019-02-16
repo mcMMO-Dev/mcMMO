@@ -1,8 +1,7 @@
 package com.gmail.nossr50.core.skills.subskills.interfaces;
 
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 import com.gmail.nossr50.core.skills.interfaces.Skill;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import org.bukkit.entity.Player;
 
 public interface SubSkill extends Skill {
     /**

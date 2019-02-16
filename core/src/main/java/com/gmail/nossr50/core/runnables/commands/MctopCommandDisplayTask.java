@@ -3,13 +3,11 @@ package com.gmail.nossr50.core.runnables.commands;
 import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.datatypes.database.PlayerStat;
 import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.mcmmo.colors.ChatColor;
+import com.gmail.nossr50.core.mcmmo.commands.CommandSender;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.core.util.scoreboards.ScoreboardManager;
 
 import java.util.List;
 

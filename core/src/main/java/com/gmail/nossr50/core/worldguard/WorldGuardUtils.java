@@ -1,10 +1,5 @@
 package com.gmail.nossr50.core.worldguard;
 
-import com.gmail.nossr50.mcMMO;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-
 public class WorldGuardUtils {
     private static WorldGuardPlugin worldGuardPluginRef;
     private static boolean isLoaded = false;

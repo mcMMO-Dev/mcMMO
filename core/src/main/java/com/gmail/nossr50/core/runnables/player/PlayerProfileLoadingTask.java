@@ -5,13 +5,10 @@ import com.gmail.nossr50.core.data.UserManager;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 import com.gmail.nossr50.core.runnables.commands.McScoreboardKeepTask;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
-import org.bukkit.Server;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.core.util.Misc;
+import com.gmail.nossr50.core.util.scoreboards.ScoreboardManager;
 
 public class PlayerProfileLoadingTask extends BukkitRunnable {
     private static final int MAX_TRIES = 5;

@@ -1,9 +1,6 @@
 package com.gmail.nossr50.core.events.party;
 
 import com.gmail.nossr50.core.datatypes.party.Party;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 
 public class McMMOPartyLevelUpEvent extends Event implements Cancellable {
     /**

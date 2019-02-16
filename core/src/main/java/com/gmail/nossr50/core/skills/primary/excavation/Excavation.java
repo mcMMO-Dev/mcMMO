@@ -1,12 +1,11 @@
 package com.gmail.nossr50.core.skills.primary.excavation;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.config.treasure.TreasureConfig;
+import com.gmail.nossr50.core.mcmmo.block.BlockState;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.treasure.ExcavationTreasure;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.StringUtils;
-import org.bukkit.block.BlockState;
+import com.gmail.nossr50.core.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;

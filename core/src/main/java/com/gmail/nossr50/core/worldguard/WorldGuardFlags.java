@@ -1,6 +1,5 @@
 package com.gmail.nossr50.core.worldguard;
 
-import com.sk89q.worldguard.protection.flags.StateFlag;
 
 public class WorldGuardFlags {
     // StateFlag with the name "my-custom-flag", which defaults to "allow"

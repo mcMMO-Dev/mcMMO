@@ -1,25 +1,9 @@
 package com.gmail.nossr50.core.util.commands;
 
-import com.gmail.nossr50.commands.chat.AdminChatCommand;
-import com.gmail.nossr50.commands.chat.McChatSpy;
-import com.gmail.nossr50.commands.chat.PartyChatCommand;
-import com.gmail.nossr50.commands.database.McpurgeCommand;
-import com.gmail.nossr50.commands.database.McremoveCommand;
-import com.gmail.nossr50.commands.database.MmoshowdbCommand;
-import com.gmail.nossr50.commands.experience.AddlevelsCommand;
-import com.gmail.nossr50.commands.experience.AddxpCommand;
-import com.gmail.nossr50.commands.experience.MmoeditCommand;
-import com.gmail.nossr50.commands.experience.SkillresetCommand;
-import com.gmail.nossr50.commands.hardcore.HardcoreCommand;
-import com.gmail.nossr50.commands.hardcore.VampirismCommand;
-import com.gmail.nossr50.commands.party.PartyCommand;
-import com.gmail.nossr50.commands.party.teleport.PtpCommand;
 import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.locale.LocaleLoader;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.util.StringUtils;
-import com.gmail.nossr50.mcMMO;
-import org.bukkit.command.PluginCommand;
 
 import java.util.ArrayList;
 import java.util.List;

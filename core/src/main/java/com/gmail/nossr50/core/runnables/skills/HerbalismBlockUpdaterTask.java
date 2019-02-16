@@ -1,7 +1,7 @@
 package com.gmail.nossr50.core.runnables.skills;
 
-import org.bukkit.block.BlockState;
-import org.bukkit.scheduler.BukkitRunnable;
+
+import com.gmail.nossr50.core.mcmmo.block.BlockState;
 
 public class HerbalismBlockUpdaterTask extends BukkitRunnable {
     private BlockState blockState;

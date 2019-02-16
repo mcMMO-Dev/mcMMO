@@ -2,7 +2,6 @@ package com.gmail.nossr50.core.skills.child.salvage;
 
 import com.gmail.nossr50.core.config.AdvancedConfig;
 import com.gmail.nossr50.core.config.MainConfig;
-import org.bukkit.Material;
 
 public class Salvage {
     public static Material anvilMaterial = MainConfig.getInstance().getSalvageAnvilMaterial();

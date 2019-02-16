@@ -1,7 +1,6 @@
 package com.gmail.nossr50.core.events.scoreboard;
 
-import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Scoreboard;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 
 /**
  * This event is called when mcMMO creates its custom boards

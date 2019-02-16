@@ -1,12 +1,9 @@
 package com.gmail.nossr50.core.events.skills;
 
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerEvent;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+
+import java.awt.*;
 
 /**
  * This event is sent for when mcMMO informs a player about various important information

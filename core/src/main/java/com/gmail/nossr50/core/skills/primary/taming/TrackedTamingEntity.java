@@ -1,15 +1,9 @@
 package com.gmail.nossr50.core.skills.primary.taming;
 
 import com.gmail.nossr50.core.config.MainConfig;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.skills.CombatUtils;
-import com.gmail.nossr50.util.skills.ParticleEffectUtils;
-import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.core.util.Misc;
+import com.gmail.nossr50.core.util.skills.CombatUtils;
+import com.gmail.nossr50.core.util.skills.ParticleEffectUtils;
 
 import java.util.UUID;
 

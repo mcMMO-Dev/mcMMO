@@ -1,12 +1,10 @@
 package com.gmail.nossr50.core.skills.primary.mining;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.mcmmo.block.BlockState;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
-import org.bukkit.Material;
-import org.bukkit.block.BlockState;
-import org.bukkit.inventory.ItemStack;
+import com.gmail.nossr50.core.util.Misc;
 
 public class Mining {
 

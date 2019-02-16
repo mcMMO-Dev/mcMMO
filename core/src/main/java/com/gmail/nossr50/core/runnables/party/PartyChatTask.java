@@ -3,10 +3,8 @@ package com.gmail.nossr50.core.runnables.party;
 import com.gmail.nossr50.core.config.MainConfig;
 import com.gmail.nossr50.core.datatypes.party.Party;
 import com.gmail.nossr50.core.locale.LocaleLoader;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.core.mcmmo.colors.ChatColor;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -1,6 +1,7 @@
 package com.gmail.nossr50.core.datatypes.mods;
 
-import org.bukkit.inventory.ItemStack;
+
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 
 public class CustomEntity {
     private double xpMultiplier;

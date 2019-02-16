@@ -1,6 +1,7 @@
 package com.gmail.nossr50.core.events.chat;
 
-import org.bukkit.plugin.Plugin;
+
+import com.gmail.nossr50.core.mcmmo.plugin.Plugin;
 
 /**
  * Called when a chat is sent to a party channel

@@ -1,8 +1,5 @@
 package com.gmail.nossr50.core.runnables;
 
-import com.gmail.nossr50.mcMMO;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class MobHealthDisplayUpdaterTask extends BukkitRunnable {
     private LivingEntity target;

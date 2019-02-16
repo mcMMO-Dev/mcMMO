@@ -1,9 +1,8 @@
 package com.gmail.nossr50.core.events.skills.fishing;
 
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.events.skills.McMMOPlayerSkillEvent;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 
 public class McMMOPlayerFishingEvent extends McMMOPlayerSkillEvent implements Cancellable {
     private boolean cancelled;

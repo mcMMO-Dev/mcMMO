@@ -1,9 +1,6 @@
 package com.gmail.nossr50.core.events.scoreboard;
 
-import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 
 public class McMMOScoreboardObjectiveEvent extends McMMOScoreboardEvent implements Cancellable {
     protected final ScoreboardObjectiveEventReason objectiveEventReason;

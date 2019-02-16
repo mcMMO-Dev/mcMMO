@@ -1,9 +1,6 @@
 package com.gmail.nossr50.core.events.hardcore;
 
-import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerEvent;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 
 import java.util.HashMap;
 

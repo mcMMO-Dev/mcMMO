@@ -1,21 +1,19 @@
 package com.gmail.nossr50.core.data.database;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.core.mcmmo.MobHealthbarType;
-import com.gmail.nossr50.core.mcmmo.database.DatabaseType;
-import com.gmail.nossr50.core.mcmmo.database.PlayerStat;
-import com.gmail.nossr50.core.mcmmo.database.UpgradeType;
-import com.gmail.nossr50.core.mcmmo.player.PlayerProfile;
-import com.gmail.nossr50.core.mcmmo.player.UniqueDataType;
-import com.gmail.nossr50.core.mcmmo.skills.PrimarySkillType;
-import com.gmail.nossr50.core.mcmmo.skills.SuperAbilityType;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.core.config.AdvancedConfig;
+import com.gmail.nossr50.core.datatypes.database.DatabaseType;
+import com.gmail.nossr50.core.datatypes.database.PlayerStat;
+import com.gmail.nossr50.core.datatypes.database.UpgradeType;
+import com.gmail.nossr50.core.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.core.datatypes.player.UniqueDataType;
+import com.gmail.nossr50.core.runnables.database.UUIDUpdateAsyncTask;
+import com.gmail.nossr50.core.skills.MobHealthbarType;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
+import com.gmail.nossr50.core.skills.SuperAbilityType;
+import com.gmail.nossr50.core.util.Misc;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
-import org.bukkit.scheduler.BukkitRunnable;
+import sun.security.krb5.Config;
 
 import java.sql.*;
 import java.util.*;

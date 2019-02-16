@@ -1,9 +1,8 @@
-package com.gmail.nossr50.core.skills.child;
+package com.gmail.nossr50.core.config;
 
-import com.gmail.nossr50.core.config.AutoUpdateConfigLoader;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
-import com.gmail.nossr50.util.StringUtils;
-import org.bukkit.configuration.file.YamlConfiguration;
+import com.gmail.nossr50.core.skills.child.FamilyTree;
+import com.gmail.nossr50.core.util.StringUtils;
 
 import java.util.EnumSet;
 

@@ -1,9 +1,6 @@
 package com.gmail.nossr50.core.events.party;
 
-import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerEvent;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 
 /**
  * Called when a player attempts to join, leave, or change parties.

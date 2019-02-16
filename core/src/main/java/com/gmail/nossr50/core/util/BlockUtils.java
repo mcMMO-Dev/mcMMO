@@ -1,16 +1,10 @@
 package com.gmail.nossr50.core.util;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.mcmmo.block.BlockState;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.child.salvage.Salvage;
 import com.gmail.nossr50.core.skills.primary.repair.Repair;
-import com.gmail.nossr50.mcMMO;
-import org.bukkit.Material;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.data.Ageable;
-import org.bukkit.block.data.BlockData;
-
-import java.util.HashSet;
 
 public final class BlockUtils {
 

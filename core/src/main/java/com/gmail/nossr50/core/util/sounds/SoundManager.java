@@ -1,12 +1,9 @@
 package com.gmail.nossr50.core.util.sounds;
 
 import com.gmail.nossr50.core.config.SoundConfig;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.world.World;
 import com.gmail.nossr50.core.util.Misc;
-import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.SoundCategory;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
 
 public class SoundManager {
     /**

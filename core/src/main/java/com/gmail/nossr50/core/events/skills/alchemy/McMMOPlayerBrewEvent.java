@@ -1,12 +1,9 @@
 package com.gmail.nossr50.core.events.skills.alchemy;
 
+import com.gmail.nossr50.core.mcmmo.block.BlockState;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.events.skills.McMMOPlayerSkillEvent;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.BrewingStand;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 
 public class McMMOPlayerBrewEvent extends McMMOPlayerSkillEvent implements Cancellable {
     private BlockState brewingStand;

@@ -26,7 +26,7 @@ import com.gmail.nossr50.core.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.core.runnables.player.PowerLevelUpdatingTask;
 import com.gmail.nossr50.core.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
-import com.gmail.nossr50.core.skills.child.ChildConfig;
+import com.gmail.nossr50.core.config.ChildConfig;
 import com.gmail.nossr50.core.skills.child.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.core.skills.child.salvage.salvageables.SalvageableManager;
 import com.gmail.nossr50.core.skills.child.salvage.salvageables.SimpleSalvageableManager;

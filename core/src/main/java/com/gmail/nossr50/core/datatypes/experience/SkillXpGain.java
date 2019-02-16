@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.datatypes.experience;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 
 import java.util.concurrent.Delayed;

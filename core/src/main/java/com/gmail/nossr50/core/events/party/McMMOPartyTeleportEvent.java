@@ -1,8 +1,6 @@
 package com.gmail.nossr50.core.events.party;
 
-import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
 
 /**
  * Called just before a player teleports using the /ptp command.

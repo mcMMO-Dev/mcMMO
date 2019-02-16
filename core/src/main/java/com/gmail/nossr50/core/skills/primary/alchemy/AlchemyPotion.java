@@ -1,13 +1,7 @@
 package com.gmail.nossr50.core.skills.primary.alchemy;
 
-import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
-import org.bukkit.Color;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.Potion;
-import org.bukkit.potion.PotionData;
-import org.bukkit.potion.PotionEffect;
+import com.gmail.nossr50.core.config.skills.alchemy.PotionConfig;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
 
 import java.util.List;
 import java.util.Map;

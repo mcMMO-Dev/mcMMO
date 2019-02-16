@@ -2,8 +2,7 @@ package com.gmail.nossr50.core.runnables.skills;
 
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.core.skills.SubSkillType;
-import com.gmail.nossr50.util.player.NotificationManager;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.core.util.player.NotificationManager;
 
 
 public class SkillUnlockNotificationTask extends BukkitRunnable {

@@ -3,20 +3,17 @@ package com.gmail.nossr50.core.util.player;
 import com.gmail.nossr50.core.config.AdvancedConfig;
 import com.gmail.nossr50.core.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.events.skills.McMMOPlayerNotificationEvent;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.world.Location;
 import com.gmail.nossr50.core.skills.PrimarySkillType;
 import com.gmail.nossr50.core.skills.SubSkillType;
 import com.gmail.nossr50.core.util.Misc;
 import com.gmail.nossr50.core.util.TextComponentFactory;
 import com.gmail.nossr50.core.util.sounds.SoundManager;
 import com.gmail.nossr50.core.util.sounds.SoundType;
-import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Server;
-import org.bukkit.SoundCategory;
-import org.bukkit.entity.Player;
+
+import java.awt.*;
 
 public class NotificationManager {
     /**

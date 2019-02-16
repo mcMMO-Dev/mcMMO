@@ -247,6 +247,8 @@ public abstract class Config implements VersionedConfig, Unload {
         if(mergeNewKeys)
             userRootNode = userRootNode.mergeValuesFrom(defaultRootNode);
 
+        removeOldKeys();
+
         // Update config version
         updateConfigVersion();
 

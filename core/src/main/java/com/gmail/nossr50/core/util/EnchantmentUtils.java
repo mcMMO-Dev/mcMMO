@@ -1,8 +1,5 @@
 package com.gmail.nossr50.core.util;
 
-import org.bukkit.enchantments.Enchantment;
-
-import java.util.HashMap;
 
 public class EnchantmentUtils {
 
