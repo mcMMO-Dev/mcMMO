@@ -16,6 +16,18 @@ public class RankConfig extends ConfigValidated {
         //this.instance = this;
     }
 
+    /**
+     * This grabs an instance of this config class from the Config Manager
+     * This method is deprecated and will be removed in the future
+     * @see mcMMO#getConfigManager()
+     * @return the instance of this config
+     * @deprecated Please use mcMMO.getConfigManager() to grab a specific config instead
+     */
+    @Deprecated
+    public static RankConfig getInstance() {
+        return mcMMO.getConfigManager().getRankConfig();
+    }
+
     /*public static RankConfig getInstance() {
         if (instance == null)
             return new RankConfig();
@@ -25,7 +37,7 @@ public class RankConfig extends ConfigValidated {
 
     @Override
     public void unload() {
-        instance = null;
+        //Do nothing
     }
 
     /**
@@ -84,7 +96,7 @@ public class RankConfig extends ConfigValidated {
      * @return the level requirement for a subskill at this particular rank
      */
     private int findRankByRootAddress(int rank, String key) {
-        String scalingKey = MainMainConfig.getInstance().getIsRetroMode() ? ".RetroMode." : ".Standard.";
+        String scalingKey = MainConfig.getInstance().getIsRetroMode() ? ".RetroMode." : ".Standard.";
 
         String targetRank = "Rank_" + rank;
 
@@ -117,7 +129,7 @@ public class RankConfig extends ConfigValidated {
 
                 if (prevRank > curRank) {
                     //We're going to allow this but we're going to warn them
-                    plugin.getLogger().info("You have the ranks for the subskill " + subSkillType.toString() + " set up poorly, sequential ranks should have ascending requirements");
+                    mcMMO.p.getLogger().info("You have the ranks for the subskill " + subSkillType.toString() + " set up poorly, sequential ranks should have ascending requirements");
                 }
             }
         }

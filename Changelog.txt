@@ -114,6 +114,17 @@ Version 2.1.17
 Version 2.1.16
     Breaking Kelp should now count the whole plant for XP
     Spawned Mobs that are not supposed to award XP will no longer reward XP once transformed (ie: drowned)
+    mcMMO's config system has been rewritten
+    mcMMO will no longer shutdown if it finds invalid config entries
+    mcMMO will nag admins about invalid config entries when they join the server
+    mcMMO's mod config system has been temporarily disabled as modded bukkit servers don't exist anymore (Forge Bukkit hybrid servers)
+    Mycellium removed from woodcutting XP (whoops)
+    Optimized XP lookups for block breaking
+    Super Breaker will now break "Mining" blocks even if they have no XP entries
+    Tree Feller will now break "Woodcutting" blocks even if they have no XP entries
+    Giga Drill Breaker will now break "diggable" blocks even if they have no configured treasures
+    removed child.yml, child skills now have hard coded parents
+    removed the hardcore and vampirism commands, these are dangerous settings and should not be toggle-able (turn them on in your configs if you want to use them)
 
 Version 2.1.15
     Fixed a bug where a max rank of Fuel Efficiency would cause its benefits to be lost

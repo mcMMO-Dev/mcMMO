@@ -97,7 +97,7 @@ public final class ShareHandler {
 
         switch (shareMode) {
             case EQUAL:
-                int itemWeight = ItemWeightMainConfig.getInstance().getItemWeight(itemStack.getType());
+                int itemWeight = ItemWeightConfig.getInstance().getItemWeight(itemStack.getType());
 
                 for (int i = 0; i < itemStack.getAmount(); i++) {
                     int highestRoll = 0;

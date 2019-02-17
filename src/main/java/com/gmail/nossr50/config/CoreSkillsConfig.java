@@ -13,12 +13,17 @@ public class CoreSkillsConfig extends Config {
         super(mcMMO.p.getDataFolder().getAbsoluteFile(),"coreskills.yml", true);
     }
 
-    /*public static CoreSkillsConfig getInstance() {
-        if (instance == null)
-            return new CoreSkillsConfig();
-
-        return instance;
-    }*/
+    /**
+     * This grabs an instance of the class from the Config Manager
+     * This method is deprecated and will be removed in the future
+     * @see mcMMO#getConfigManager()
+     * @return the instance of this config
+     * @deprecated Please use mcMMO.getConfigManager() to grab a specific config instead
+     */
+    @Deprecated
+    public static CoreSkillsConfig getInstance() {
+        return mcMMO.getConfigManager().getCoreSkillsConfig();
+    }
 
     /**
      * The version of this config
@@ -32,7 +37,7 @@ public class CoreSkillsConfig extends Config {
 
     @Override
     public void unload() {
-        instance = null;
+        //Nothing to do
     }
 
     /*

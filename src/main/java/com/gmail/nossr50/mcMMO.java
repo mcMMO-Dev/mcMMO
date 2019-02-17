@@ -1,7 +1,7 @@
 package com.gmail.nossr50;
 
 import com.gmail.nossr50.config.*;
-import com.gmail.nossr50.config.collectionconfigs.ConfigManager;
+import com.gmail.nossr50.config.ConfigManager;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
@@ -314,11 +314,11 @@ public class mcMMO extends JavaPlugin {
     }
 
     public static RepairableManager getRepairableManager() {
-        return repairableManager;
+        return configManager.getSimpleRepairableManager();
     }
 
     public static SalvageableManager getSalvageableManager() {
-        return salvageableManager;
+        return configManager.getSimpleSalvageableManager();
     }
 
     public static DatabaseManager getDatabaseManager() {
@@ -532,5 +532,9 @@ public class mcMMO extends JavaPlugin {
 
     public static WorldBlacklist getWorldBlacklist() {
         return worldBlacklist;
+    }
+
+    public static ConfigManager getConfigManager() {
+        return configManager;
     }
 }

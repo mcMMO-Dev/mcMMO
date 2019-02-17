@@ -1,6 +1,8 @@
-package com.gmail.nossr50.config.collectionconfigs;
+package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.config.*;
+import com.gmail.nossr50.config.collectionconfigs.CollectionClassType;
+import com.gmail.nossr50.config.collectionconfigs.MultiConfigContainer;
 import com.gmail.nossr50.config.mods.ArmorConfigManager;
 import com.gmail.nossr50.config.mods.BlockConfigManager;
 import com.gmail.nossr50.config.mods.EntityConfigManager;
@@ -46,6 +48,7 @@ public final class ConfigManager {
 
     /* CONFIG INSTANCES */
 
+    private MainConfig mainConfig;
     private TreasureConfig treasureConfig;
     private AdvancedConfig advancedConfig;
     private PotionConfig potionConfig;
@@ -59,6 +62,11 @@ public final class ConfigManager {
 
         // Load Config Files
         // I'm pretty these are supposed to be done in a specific order, so don't rearrange them willy nilly
+
+        //TODO: Not sure about the order of MainConfig
+        mainConfig = new MainConfig();
+        unloadables.add(mainConfig);
+
         treasureConfig = new TreasureConfig();
         unloadables.add(treasureConfig);
 
@@ -80,7 +88,7 @@ public final class ConfigManager {
         //TODO: This config serves no purpose so its getting removed
         new ChildConfig();
 
-        if (MainConfig.getInstance().getToolModsEnabled()) {
+        /*if (MainConfig.getInstance().getToolModsEnabled()) {
             new ToolConfigManager();
         }
 
@@ -94,7 +102,7 @@ public final class ConfigManager {
 
         if (MainConfig.getInstance().getEntityModsEnabled()) {
             new EntityConfigManager();
-        }
+        }*/
 
         // Multi Config Containers
         initMultiConfigContainers();
@@ -162,5 +170,45 @@ public final class ConfigManager {
 
         //Clear
         unloadables.clear();
+    }
+
+    /*
+     * GETTER BOILER PLATE
+     */
+
+    public SimpleRepairableManager getSimpleRepairableManager() {
+        return simpleRepairableManager;
+    }
+
+    public SimpleSalvageableManager getSimpleSalvageableManager() {
+        return simpleSalvageableManager;
+    }
+
+    public MainConfig getMainConfig() {
+        return mainConfig;
+    }
+
+    public TreasureConfig getTreasureConfig() {
+        return treasureConfig;
+    }
+
+    public AdvancedConfig getAdvancedConfig() {
+        return advancedConfig;
+    }
+
+    public PotionConfig getPotionConfig() {
+        return potionConfig;
+    }
+
+    public CoreSkillsConfig getCoreSkillsConfig() {
+        return coreSkillsConfig;
+    }
+
+    public SoundConfig getSoundConfig() {
+        return soundConfig;
+    }
+
+    public RankConfig getRankConfig() {
+        return rankConfig;
     }
 }

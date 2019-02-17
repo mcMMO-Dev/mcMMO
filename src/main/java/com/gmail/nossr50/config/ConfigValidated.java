@@ -1,6 +1,8 @@
 package com.gmail.nossr50.config;
 
 
+import com.gmail.nossr50.mcMMO;
+
 import java.io.File;
 import java.util.List;
 
@@ -35,7 +37,7 @@ public abstract class ConfigValidated extends Config implements DefaultKeys {
         {
             for(String error : validKeyErrors)
             {
-                McmmoCore.getLogger().severe(error);
+                mcMMO.p.getLogger().severe(error);
             }
         }
     }

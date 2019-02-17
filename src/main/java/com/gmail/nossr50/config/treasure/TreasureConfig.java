@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config.treasure;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.ConfigCollection;
 import com.gmail.nossr50.datatypes.treasure.*;
 import com.gmail.nossr50.mcMMO;
@@ -37,13 +38,27 @@ public class TreasureConfig extends ConfigCollection {
         super(mcMMO.p.getDataFolder().getAbsoluteFile(), "treasures.yml", true);
     }
 
-    /*public static TreasureConfig getInstance() {
-        if (instance == null) {
-            instance = new TreasureConfig();
-        }
+    /**
+     * This grabs an instance of this config class from the Config Manager
+     * This method is deprecated and will be removed in the future
+     * @see mcMMO#getConfigManager()
+     * @return the instance of this config
+     * @deprecated Please use mcMMO.getConfigManager() to grab a specific config instead
+     */
+    @Deprecated
+    public static TreasureConfig getInstance() {
+        return mcMMO.getConfigManager().getTreasureConfig();
+    }
 
-        return instance;
-    }*/
+    /**
+     * The version of this config
+     *
+     * @return
+     */
+    @Override
+    public double getConfigVersion() {
+        return 1;
+    }
 
     @Override
     protected boolean validateKeys() {

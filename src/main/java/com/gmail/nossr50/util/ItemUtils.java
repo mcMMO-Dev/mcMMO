@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.config.MainConfig;
+import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.ChatColor;
@@ -716,7 +717,7 @@ public final class ItemUtils {
      * @return true if the item is a miscellaneous drop, false otherwise
      */
     public static boolean isMiscDrop(ItemStack item) {
-        return ItemWeightMainConfig.getInstance().getMiscItems().contains(item.getType());
+        return ItemWeightConfig.getInstance().getMiscItems().contains(item.getType());
     }
 
     public static boolean isMcMMOItem(ItemStack item) {

@@ -16,24 +16,27 @@ import java.util.List;
 import java.util.Set;
 
 public class MainConfig extends ConfigValidated {
-    private static MainConfig instance;
 
-    private MainConfig() {
+    public MainConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "config.yml", true);
         super(mcMMO.p.getDataFolder().getAbsoluteFile(), "config.yml", true);
     }
 
+    /**
+     * This grabs an instance of this config class from the Config Manager
+     * This method is deprecated and will be removed in the future
+     * @see mcMMO#getConfigManager()
+     * @return the instance of this config
+     * @deprecated Please use mcMMO.getConfigManager() to grab a specific config instead
+     */
+    @Deprecated
     public static MainConfig getInstance() {
-        if (instance == null) {
-            instance = new MainConfig();
-        }
-
-        return instance;
+        return mcMMO.getConfigManager().getMainConfig();
     }
 
     @Override
     public void unload() {
-        instance = null;
+        //do nothing
     }
 
     /**

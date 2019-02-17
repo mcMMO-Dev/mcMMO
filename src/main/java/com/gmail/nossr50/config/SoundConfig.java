@@ -12,19 +12,23 @@ public class SoundConfig extends ConfigValidated {
     public SoundConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "sounds.yml", true);
         super(mcMMO.p.getDataFolder().getAbsoluteFile(), "sounds.yml", true);
-        this.instance = this;
     }
 
-    /*public static SoundConfig getInstance() {
-        if (instance == null)
-            return new SoundConfig();
-
-        return instance;
-    }*/
+    /**
+     * This grabs an instance of this config class from the Config Manager
+     * This method is deprecated and will be removed in the future
+     * @see mcMMO#getConfigManager()
+     * @return the instance of this config
+     * @deprecated Please use mcMMO.getConfigManager() to grab a specific config instead
+     */
+    @Deprecated
+    public static SoundConfig getInstance() {
+        return mcMMO.getConfigManager().getSoundConfig();
+    }
 
     @Override
     public void unload() {
-        instance = null;
+
     }
 
     /**

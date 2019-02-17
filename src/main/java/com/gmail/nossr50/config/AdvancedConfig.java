@@ -129,15 +129,22 @@ public class AdvancedConfig extends ConfigValidated {
         super(mcMMO.p.getDataFolder().getAbsoluteFile(), "advanced.yml", true);
     }
 
+    @Override
+    public void unload() {
+        //do nothing
+    }
 
-
-    /*public static AdvancedConfig getInstance() {
-        if (instance == null) {
-            instance = new AdvancedConfig();
-        }
-
-        return instance;
-    }*/
+    /**
+     * This grabs an instance of this config class from the Config Manager
+     * This method is deprecated and will be removed in the future
+     * @see mcMMO#getConfigManager()
+     * @return the instance of this config
+     * @deprecated Please use mcMMO.getConfigManager() to grab a specific config instead
+     */
+    @Deprecated
+    public static AdvancedConfig getInstance() {
+        return mcMMO.getConfigManager().getAdvancedConfig();
+    }
 
     /**
      * The version of this config
