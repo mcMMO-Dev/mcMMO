@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.woodcutting;
 
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
@@ -17,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 public final class Woodcutting {
-    public static int treeFellerThreshold = Config.getInstance().getTreeFellerThreshold();
+    public static int treeFellerThreshold = MainConfig.getInstance().getTreeFellerThreshold();
 
 
     protected static boolean treeFellerReachedThreshold = false;
@@ -54,7 +53,7 @@ public final class Woodcutting {
             Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
         }
         else {
-            if (Config.getInstance().getWoodcuttingDoubleDropsEnabled(blockState.getBlockData())) {
+            if (MainConfig.getInstance().getWoodcuttingDoubleDropsEnabled(blockState.getBlockData())) {
                 Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
             }
         }
@@ -152,7 +151,7 @@ public final class Woodcutting {
 
         for (BlockState blockState : treeFellerBlocks) {
             if (BlockUtils.isLog(blockState)) {
-                durabilityLoss += Config.getInstance().getAbilityToolDamage();
+                durabilityLoss += MainConfig.getInstance().getAbilityToolDamage();
             }
         }
 

@@ -1,6 +1,6 @@
 package com.gmail.nossr50.database;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public interface DatabaseManager {
     // One month in milliseconds
-    public final long PURGE_TIME = 2630000000L * Config.getInstance().getOldUsersCutoff();
+    public final long PURGE_TIME = 2630000000L * MainConfig.getInstance().getOldUsersCutoff();
     // During convertUsers, how often to output a status
     public final int progressInterval = 200;
 

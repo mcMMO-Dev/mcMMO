@@ -1,7 +1,5 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.treasure.Rarity;
@@ -58,19 +56,19 @@ public class FishingCommand extends SkillCommand {
             lootTier = fishingManager.getLootTier();
 
             // Item drop rates
-            commonTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.COMMON) / 100.0);
-            uncommonTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.UNCOMMON) / 100.0);
-            rareTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.RARE) / 100.0);
-            epicTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.EPIC) / 100.0);
-            legendaryTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.LEGENDARY) / 100.0);
-            recordTreasure = percent.format(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.RECORD) / 100.0);
+            commonTreasure = percent.format(TreasureMainConfig.getInstance().getItemDropRate(lootTier, Rarity.COMMON) / 100.0);
+            uncommonTreasure = percent.format(TreasureMainConfig.getInstance().getItemDropRate(lootTier, Rarity.UNCOMMON) / 100.0);
+            rareTreasure = percent.format(TreasureMainConfig.getInstance().getItemDropRate(lootTier, Rarity.RARE) / 100.0);
+            epicTreasure = percent.format(TreasureMainConfig.getInstance().getItemDropRate(lootTier, Rarity.EPIC) / 100.0);
+            legendaryTreasure = percent.format(TreasureMainConfig.getInstance().getItemDropRate(lootTier, Rarity.LEGENDARY) / 100.0);
+            recordTreasure = percent.format(TreasureMainConfig.getInstance().getItemDropRate(lootTier, Rarity.RECORD) / 100.0);
 
             // Magic hunter drop rates
             double totalEnchantChance = 0;
 
             for (Rarity rarity : Rarity.values()) {
                 if (rarity != Rarity.RECORD) {
-                    totalEnchantChance += TreasureConfig.getInstance().getEnchantmentDropRate(lootTier, rarity);
+                    totalEnchantChance += TreasureMainConfig.getInstance().getEnchantmentDropRate(lootTier, rarity);
                 }
             }
 

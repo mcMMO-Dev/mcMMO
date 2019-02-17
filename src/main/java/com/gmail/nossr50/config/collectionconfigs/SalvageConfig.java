@@ -1,6 +1,6 @@
-package com.gmail.nossr50.config.skills.salvage;
+package com.gmail.nossr50.config.collectionconfigs;
 
-import com.gmail.nossr50.config.ConfigLoader;
+import com.gmail.nossr50.config.ConfigCollections;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
@@ -12,15 +12,35 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public class SalvageConfig extends ConfigLoader {
+public class SalvageConfig extends ConfigCollections {
     private List<Salvageable> salvageables;
 
     public SalvageConfig(String fileName) {
-        super(fileName);
-        loadKeys();
+        super(McmmoCore.getDataFolderPath().getAbsoluteFile(), fileName, false);
+    }
+
+    @Override
+    public Collection getLoadedCollection() {
+        return salvageables == null ? new ArrayList<Salvageable>() : salvageables;
+    }
+
+    @Override
+    public void unload() {
+        salvageables = null;
+    }
+
+    /**
+     * The version of this config
+     *
+     * @return
+     */
+    @Override
+    public double getConfigVersion() {
+        return 1;
     }
 
     @Override
@@ -34,7 +54,7 @@ public class SalvageConfig extends ConfigLoader {
             // Validate all the things!
             List<String> reason = new ArrayList<String>();
 
-            // Item Material
+            // ItemStack Material
             Material itemMaterial = Material.matchMaterial(key);
 
             if (itemMaterial == null) {
@@ -43,44 +63,36 @@ public class SalvageConfig extends ConfigLoader {
 
             // Salvage Material Type
             MaterialType salvageMaterialType = MaterialType.OTHER;
-            String salvageMaterialTypeString = config.getString("Salvageables." + key + ".MaterialType", "OTHER");
+            String salvageMaterialTypeString = getStringValue("Salvageables." + key + ".MaterialType", "OTHER");
 
             if (!config.contains("Salvageables." + key + ".MaterialType") && itemMaterial != null) {
                 ItemStack salvageItem = new ItemStack(itemMaterial);
 
                 if (ItemUtils.isWoodTool(salvageItem)) {
                     salvageMaterialType = MaterialType.WOOD;
-                }
-                else if (ItemUtils.isStoneTool(salvageItem)) {
+                } else if (ItemUtils.isStoneTool(salvageItem)) {
                     salvageMaterialType = MaterialType.STONE;
-                }
-                else if (ItemUtils.isStringTool(salvageItem)) {
+                } else if (ItemUtils.isStringTool(salvageItem)) {
                     salvageMaterialType = MaterialType.STRING;
-                }
-                else if (ItemUtils.isLeatherArmor(salvageItem)) {
+                } else if (ItemUtils.isLeatherArmor(salvageItem)) {
                     salvageMaterialType = MaterialType.LEATHER;
-                }
-                else if (ItemUtils.isIronArmor(salvageItem) || ItemUtils.isIronTool(salvageItem)) {
+                } else if (ItemUtils.isIronArmor(salvageItem) || ItemUtils.isIronTool(salvageItem)) {
                     salvageMaterialType = MaterialType.IRON;
-                }
-                else if (ItemUtils.isGoldArmor(salvageItem) || ItemUtils.isGoldTool(salvageItem)) {
+                } else if (ItemUtils.isGoldArmor(salvageItem) || ItemUtils.isGoldTool(salvageItem)) {
                     salvageMaterialType = MaterialType.GOLD;
-                }
-                else if (ItemUtils.isDiamondArmor(salvageItem) || ItemUtils.isDiamondTool(salvageItem)) {
+                } else if (ItemUtils.isDiamondArmor(salvageItem) || ItemUtils.isDiamondTool(salvageItem)) {
                     salvageMaterialType = MaterialType.DIAMOND;
                 }
-            }
-            else {
+            } else {
                 try {
                     salvageMaterialType = MaterialType.valueOf(salvageMaterialTypeString.replace(" ", "_").toUpperCase());
-                }
-                catch (IllegalArgumentException ex) {
+                } catch (IllegalArgumentException ex) {
                     reason.add(key + " has an invalid MaterialType of " + salvageMaterialTypeString);
                 }
             }
 
             // Salvage Material
-            String salvageMaterialName = config.getString("Salvageables." + key + ".SalvageMaterial");
+            String salvageMaterialName = getStringValue("Salvageables." + key + ".SalvageMaterial");
             Material salvageMaterial = (salvageMaterialName == null ? salvageMaterialType.getDefaultMaterial() : Material.matchMaterial(salvageMaterialName));
 
             if (salvageMaterial == null) {
@@ -88,47 +100,44 @@ public class SalvageConfig extends ConfigLoader {
             }
 
             // Maximum Durability
-            short maximumDurability = (itemMaterial != null ? itemMaterial.getMaxDurability() : (short) config.getInt("Salvageables." + key + ".MaximumDurability"));
+            short maximumDurability = (itemMaterial != null ? itemMaterial.getMaxDurability() : (short) getIntValue("Salvageables." + key + ".MaximumDurability"));
 
-            // Item Type
+            // ItemStack Type
             ItemType salvageItemType = ItemType.OTHER;
-            String salvageItemTypeString = config.getString("Salvageables." + key + ".ItemType", "OTHER");
+            String salvageItemTypeString = getStringValue("Salvageables." + key + ".ItemType", "OTHER");
 
             if (!config.contains("Salvageables." + key + ".ItemType") && itemMaterial != null) {
                 ItemStack salvageItem = new ItemStack(itemMaterial);
 
                 if (ItemUtils.isMinecraftTool(salvageItem)) {
                     salvageItemType = ItemType.TOOL;
-                }
-                else if (ItemUtils.isArmor(salvageItem)) {
+                } else if (ItemUtils.isArmor(salvageItem)) {
                     salvageItemType = ItemType.ARMOR;
                 }
-            }
-            else {
+            } else {
                 try {
                     salvageItemType = ItemType.valueOf(salvageItemTypeString.replace(" ", "_").toUpperCase());
-                }
-                catch (IllegalArgumentException ex) {
+                } catch (IllegalArgumentException ex) {
                     reason.add(key + " has an invalid ItemType of " + salvageItemTypeString);
                 }
             }
 
-            byte salvageMetadata = (byte) config.getInt("Salvageables." + key + ".SalvageMaterialMetadata", -1);
-            int minimumLevel = config.getInt("Salvageables." + key + ".MinimumLevel");
-            double xpMultiplier = config.getDouble("Salvageables." + key + ".XpMultiplier", 1);
+            byte salvageMetadata = (byte) getIntValue("Salvageables." + key + ".SalvageMaterialMetadata", -1);
+            int minimumLevel = getIntValue("Salvageables." + key + ".MinimumLevel");
+            double xpMultiplier = getDoubleValue("Salvageables." + key + ".XpMultiplier", 1);
 
             if (minimumLevel < 0) {
                 reason.add(key + " has an invalid MinimumLevel of " + minimumLevel);
             }
 
             // Maximum Quantity
-            int maximumQuantity = (itemMaterial != null ? SkillUtils.getRepairAndSalvageQuantities(new ItemStack(itemMaterial), salvageMaterial, salvageMetadata) : config.getInt("Salvageables." + key + ".MaximumQuantity", 2));
+            int maximumQuantity = (itemMaterial != null ? SkillUtils.getRepairAndSalvageQuantities(new ItemStack(itemMaterial), salvageMaterial, salvageMetadata) : getIntValue("Salvageables." + key + ".MaximumQuantity", 2));
 
             if (maximumQuantity <= 0 && itemMaterial != null) {
-                maximumQuantity = config.getInt("Salvageables." + key + ".MaximumQuantity", 1);
+                maximumQuantity = getIntValue("Salvageables." + key + ".MaximumQuantity", 1);
             }
 
-            int configMaximumQuantity = config.getInt("Salvageables." + key + ".MaximumQuantity", -1);
+            int configMaximumQuantity = getIntValue("Salvageables." + key + ".MaximumQuantity", -1);
 
             if (configMaximumQuantity > 0) {
                 maximumQuantity = configMaximumQuantity;
@@ -143,10 +152,6 @@ public class SalvageConfig extends ConfigLoader {
                 salvageables.add(salvageable);
             }
         }
-    }
-
-    protected List<Salvageable> getLoadedSalvageables() {
-        return salvageables == null ? new ArrayList<Salvageable>() : salvageables;
     }
 
     private boolean noErrorsInSalvageable(List<String> issues) {

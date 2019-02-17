@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.player;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -30,10 +30,10 @@ public class MccooldownCommand implements TabExecutor {
             case 0:
                 Player player = (Player) sender;
 
-                if (Config.getInstance().getScoreboardsEnabled() && Config.getInstance().getCooldownUseBoard()) {
+                if (MainConfig.getInstance().getScoreboardsEnabled() && MainConfig.getInstance().getCooldownUseBoard()) {
                     ScoreboardManager.enablePlayerCooldownScoreboard(player);
 
-                    if (!Config.getInstance().getCooldownUseChat()) {
+                    if (!MainConfig.getInstance().getCooldownUseChat()) {
                         return true;
                     }
                 }

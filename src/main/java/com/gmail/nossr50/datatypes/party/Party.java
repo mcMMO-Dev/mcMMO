@@ -1,7 +1,6 @@
 package com.gmail.nossr50.datatypes.party;
 
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -192,7 +191,7 @@ public class Party {
 
     public int getXpToLevel() {
         FormulaType formulaType = ExperienceConfig.getInstance().getFormulaType();
-        return (mcMMO.getFormulaManager().getCachedXpToLevel(level, formulaType)) * (getOnlineMembers().size() + Config.getInstance().getPartyXpCurveMultiplier());
+        return (mcMMO.getFormulaManager().getCachedXpToLevel(level, formulaType)) * (getOnlineMembers().size() + MainConfig.getInstance().getPartyXpCurveMultiplier());
     }
 
     public String getXpToLevelPercentage() {
@@ -231,13 +230,13 @@ public class Party {
             return;
         }
 
-        if (!Config.getInstance().getPartyInformAllMembers()) {
+        if (!MainConfig.getInstance().getPartyInformAllMembers()) {
             Player leader = mcMMO.p.getServer().getPlayer(this.leader.getUniqueId());
 
             if (leader != null) {
                 leader.sendMessage(LocaleLoader.getString("Party.LevelUp", levelsGained, getLevel()));
 
-                if (Config.getInstance().getLevelUpSoundsEnabled()) {
+                if (MainConfig.getInstance().getLevelUpSoundsEnabled()) {
                     SoundManager.sendSound(leader, leader.getLocation(), SoundType.LEVEL_UP);
                 }
             }
@@ -248,7 +247,7 @@ public class Party {
     }
 
     public boolean hasReachedLevelCap() {
-        return Config.getInstance().getPartyLevelCap() < getLevel() + 1;
+        return MainConfig.getInstance().getPartyLevelCap() < getLevel() + 1;
     }
 
     public void setXpShareMode(ShareMode xpShareMode) {

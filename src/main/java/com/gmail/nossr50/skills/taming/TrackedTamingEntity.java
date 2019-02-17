@@ -1,6 +1,6 @@
 package com.gmail.nossr50.skills.taming;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.CombatUtils;
@@ -22,7 +22,7 @@ public class TrackedTamingEntity extends BukkitRunnable {
         this.livingEntity = livingEntity;
         this.id = livingEntity.getUniqueId();
 
-        int tamingCOTWLength = Config.getInstance().getTamingCOTWLength(livingEntity.getType());
+        int tamingCOTWLength = MainConfig.getInstance().getTamingCOTWLength(livingEntity.getType());
 
         if (tamingCOTWLength > 0) {
             this.length = tamingCOTWLength * Misc.TICK_CONVERSION_FACTOR;

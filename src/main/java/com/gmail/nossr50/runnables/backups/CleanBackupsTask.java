@@ -1,6 +1,6 @@
 package com.gmail.nossr50.runnables.backups;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -48,11 +48,11 @@ public class CleanBackupsTask extends BukkitRunnable {
             int weekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
             int year = cal.get(Calendar.YEAR);
 
-            if (isPast24Hours(date) && Config.getInstance().getKeepLast24Hours()) {
+            if (isPast24Hours(date) && MainConfig.getInstance().getKeepLast24Hours()) {
                 // Keep all files from the last 24 hours
                 continue;
             }
-            else if (isLastWeek(date) && !savedDays.contains(dayOfWeek) && Config.getInstance().getKeepDailyLastWeek()) {
+            else if (isLastWeek(date) && !savedDays.contains(dayOfWeek) && MainConfig.getInstance().getKeepDailyLastWeek()) {
                 // Keep daily backups of the past week
                 savedDays.add(dayOfWeek);
                 continue;
@@ -64,7 +64,7 @@ public class CleanBackupsTask extends BukkitRunnable {
                     savedYearsWeeks.put(year, savedWeeks);
                 }
 
-                if (!savedWeeks.contains(weekOfYear) && Config.getInstance().getKeepWeeklyPastMonth()) {
+                if (!savedWeeks.contains(weekOfYear) && MainConfig.getInstance().getKeepWeeklyPastMonth()) {
                     // Keep one backup of each week
                     savedWeeks.add(weekOfYear);
                     continue;

@@ -1,7 +1,6 @@
 package com.gmail.nossr50.datatypes.skills;
 
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
@@ -137,37 +136,37 @@ public enum PrimarySkillType {
      * @return the max level of this skill
      */
     public int getMaxLevel() {
-        return Config.getInstance().getLevelCap(this);
+        return MainConfig.getInstance().getLevelCap(this);
     }
 
     public boolean isSuperAbilityUnlocked(Player player) { return RankUtils.getRank(player, getAbility().getSubSkillTypeDefinition()) >= 1; }
 
     public boolean getPVPEnabled() {
-        return Config.getInstance().getPVPEnabled(this);
+        return MainConfig.getInstance().getPVPEnabled(this);
     }
 
     public boolean getPVEEnabled() {
-        return Config.getInstance().getPVEEnabled(this);
+        return MainConfig.getInstance().getPVEEnabled(this);
     }
 
     public boolean getDoubleDropsDisabled() {
-        return Config.getInstance().getDoubleDropsDisabled(this);
+        return MainConfig.getInstance().getDoubleDropsDisabled(this);
     }
 
     public boolean getHardcoreStatLossEnabled() {
-        return Config.getInstance().getHardcoreStatLossEnabled(this);
+        return MainConfig.getInstance().getHardcoreStatLossEnabled(this);
     }
 
     public void setHardcoreStatLossEnabled(boolean enable) {
-        Config.getInstance().setHardcoreStatLossEnabled(this, enable);
+        MainConfig.getInstance().setHardcoreStatLossEnabled(this, enable);
     }
 
     public boolean getHardcoreVampirismEnabled() {
-        return Config.getInstance().getHardcoreVampirismEnabled(this);
+        return MainConfig.getInstance().getHardcoreVampirismEnabled(this);
     }
 
     public void setHardcoreVampirismEnabled(boolean enable) {
-        Config.getInstance().setHardcoreVampirismEnabled(this, enable);
+        MainConfig.getInstance().setHardcoreVampirismEnabled(this, enable);
     }
 
     public ToolType getTool() {
@@ -183,7 +182,7 @@ public enum PrimarySkillType {
     }
 
     public static PrimarySkillType getSkill(String skillName) {
-        if (!Config.getInstance().getLocale().equalsIgnoreCase("en_US")) {
+        if (!MainConfig.getInstance().getLocale().equalsIgnoreCase("en_US")) {
             for (PrimarySkillType type : values()) {
                 if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(type.name()) + ".SkillName"))) {
                     return type;
@@ -236,7 +235,7 @@ public enum PrimarySkillType {
     }
 
     public String getName() {
-        return Config.getInstance().getLocale().equalsIgnoreCase("en_US") ? StringUtils.getCapitalized(this.toString()) : StringUtils.getCapitalized(LocaleLoader.getString(StringUtils.getCapitalized(this.toString()) + ".SkillName"));
+        return MainConfig.getInstance().getLocale().equalsIgnoreCase("en_US") ? StringUtils.getCapitalized(this.toString()) : StringUtils.getCapitalized(LocaleLoader.getString(StringUtils.getCapitalized(this.toString()) + ".SkillName"));
     }
 
     public boolean getPermissions(Player player) {

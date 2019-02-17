@@ -67,13 +67,13 @@ public class SmeltingManager extends SkillManager {
             // We need to distribute Mining XP here, because the block break event gets cancelled
             applyXpGain(Mining.getBlockXp(blockState), XPGainReason.PVE, XPGainSource.PASSIVE);
 
-            SkillUtils.handleDurabilityChange(getPlayer().getInventory().getItemInMainHand(), Config.getInstance().getAbilityToolDamage());
+            SkillUtils.handleDurabilityChange(getPlayer().getInventory().getItemInMainHand(), MainConfig.getInstance().getAbilityToolDamage());
 
             Misc.dropItems(Misc.getBlockCenter(blockState), item, isSecondSmeltSuccessful() ? 2 : 1);
 
             blockState.setType(Material.AIR);
 
-            if (Config.getInstance().getFluxPickaxeSoundEnabled()) {
+            if (MainConfig.getInstance().getFluxPickaxeSoundEnabled()) {
                 SoundManager.sendSound(player, blockState.getLocation(), SoundType.FIZZ);
             }
 

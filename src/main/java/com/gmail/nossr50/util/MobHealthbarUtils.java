@@ -1,7 +1,6 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.meta.OldName;
 import com.gmail.nossr50.mcMMO;
@@ -36,7 +35,7 @@ public final class MobHealthbarUtils {
      * @param damage damage done by the attack triggering this
      */
     public static void handleMobHealthbars(LivingEntity target, double damage, mcMMO plugin) {
-        if (mcMMO.isHealthBarPluginEnabled() || !Config.getInstance().getMobHealthbarEnabled()) {
+        if (mcMMO.isHealthBarPluginEnabled() || !MainConfig.getInstance().getMobHealthbarEnabled()) {
             return;
         }
 
@@ -58,12 +57,12 @@ public final class MobHealthbarUtils {
         }
 
         boolean oldNameVisible = target.isCustomNameVisible();
-        String newName = createHealthDisplay(Config.getInstance().getMobHealthbarDefault(), target, damage);
+        String newName = createHealthDisplay(MainConfig.getInstance().getMobHealthbarDefault(), target, damage);
 
         target.setCustomName(newName);
         target.setCustomNameVisible(true);
 
-        int displayTime = Config.getInstance().getMobHealthbarTime();
+        int displayTime = MainConfig.getInstance().getMobHealthbarTime();
 
         if (displayTime != -1) {
             boolean updateName = !ChatColor.stripColor(oldName).equalsIgnoreCase(ChatColor.stripColor(newName));

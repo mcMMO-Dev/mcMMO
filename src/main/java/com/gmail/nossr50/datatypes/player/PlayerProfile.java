@@ -1,8 +1,6 @@
 package com.gmail.nossr50.datatypes.player;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.experience.SkillXpGain;
@@ -49,7 +47,7 @@ public class PlayerProfile {
         this.uuid = uuid;
         this.playerName = playerName;
 
-        mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
+        mobHealthbarType = MainConfig.getInstance().getMobHealthbarDefault();
         scoreboardTipsShown = 0;
 
         for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {

@@ -1,6 +1,6 @@
 package com.gmail.nossr50.runnables.items;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.ChimaeraWing;
@@ -36,13 +36,13 @@ public class ChimaeraWingWarmup extends BukkitRunnable {
 
         ItemStack inHand = player.getInventory().getItemInMainHand();
 
-        if (!ItemUtils.isChimaeraWing(inHand) || inHand.getAmount() < Config.getInstance().getChimaeraUseCost()) {
+        if (!ItemUtils.isChimaeraWing(inHand) || inHand.getAmount() < MainConfig.getInstance().getChimaeraUseCost()) {
             player.sendMessage(LocaleLoader.getString("Skills.NeedMore", LocaleLoader.getString("Item.ChimaeraWing.Name")));
             return;
         }
 
         long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
-        int hurtCooldown = Config.getInstance().getChimaeraRecentlyHurtCooldown();
+        int hurtCooldown = MainConfig.getInstance().getChimaeraRecentlyHurtCooldown();
 
         if (hurtCooldown > 0) {
             int timeRemaining = SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, hurtCooldown, player);

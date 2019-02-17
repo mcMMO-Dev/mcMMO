@@ -1,9 +1,7 @@
 package com.gmail.nossr50.listeners;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.meta.OldName;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -304,7 +302,7 @@ public class EntityListener implements Listener {
                 Player attackingPlayer = (Player) attacker;
                 if (event.getDamage(DamageModifier.ABSORPTION) > 0) {
                     //If friendly fire is off don't allow players to hurt one another
-                    if(!Config.getInstance().getPartyFriendlyFire())
+                    if(!MainConfig.getInstance().getPartyFriendlyFire())
                         if ((PartyManager.inSameParty(defendingPlayer, attackingPlayer) || PartyManager.areAllies(defendingPlayer, attackingPlayer)) && !(Permissions.friendlyFire(attackingPlayer) && Permissions.friendlyFire(defendingPlayer))) {
                             event.setCancelled(true);
                             return;
@@ -373,7 +371,7 @@ public class EntityListener implements Listener {
             }
 
             //Party Friendly Fire
-            if(!Config.getInstance().getPartyFriendlyFire())
+            if(!MainConfig.getInstance().getPartyFriendlyFire())
                 if ((PartyManager.inSameParty(defendingPlayer, attackingPlayer) || PartyManager.areAllies(defendingPlayer, attackingPlayer)) && !(Permissions.friendlyFire(attackingPlayer) && Permissions.friendlyFire(defendingPlayer))) {
                     event.setCancelled(true);
                     return;

@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.sounds;
 
-import com.gmail.nossr50.config.SoundConfig;
 import com.gmail.nossr50.util.Misc;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -15,13 +14,13 @@ public class SoundManager {
      */
     public static void sendSound(Player player, Location location, SoundType soundType)
     {
-        if(SoundConfig.getInstance().getIsEnabled(soundType))
+        if(SoundMainConfig.getInstance().getIsEnabled(soundType))
             player.playSound(location, getSound(soundType), SoundCategory.MASTER, getVolume(soundType), getPitch(soundType));
     }
 
     public static void sendCategorizedSound(Player player, Location location, SoundType soundType, SoundCategory soundCategory)
     {
-        if(SoundConfig.getInstance().getIsEnabled(soundType))
+        if(SoundMainConfig.getInstance().getIsEnabled(soundType))
             player.playSound(location, getSound(soundType), soundCategory, getVolume(soundType), getPitch(soundType));
     }
 
@@ -29,13 +28,13 @@ public class SoundManager {
     {
         float totalPitch = Math.min(2.0F, (getPitch(soundType) + pitchModifier));
 
-        if(SoundConfig.getInstance().getIsEnabled(soundType))
+        if(SoundMainConfig.getInstance().getIsEnabled(soundType))
             player.playSound(location, getSound(soundType), soundCategory, getVolume(soundType), totalPitch);
     }
 
     public static void worldSendSound(World world, Location location, SoundType soundType)
     {
-        if(SoundConfig.getInstance().getIsEnabled(soundType))
+        if(SoundMainConfig.getInstance().getIsEnabled(soundType))
             world.playSound(location, getSound(soundType), getVolume(soundType), getPitch(soundType));
     }
 
@@ -46,7 +45,7 @@ public class SoundManager {
      */
     private static float getVolume(SoundType soundType)
     {
-        return SoundConfig.getInstance().getVolume(soundType) * SoundConfig.getInstance().getMasterVolume();
+        return SoundMainConfig.getInstance().getVolume(soundType) * SoundMainConfig.getInstance().getMasterVolume();
     }
 
     private static float getPitch(SoundType soundType)
@@ -56,7 +55,7 @@ public class SoundManager {
         else if (soundType == SoundType.POP)
             return getPopPitch();
         else
-            return SoundConfig.getInstance().getPitch(soundType);
+            return SoundMainConfig.getInstance().getPitch(soundType);
     }
 
     private static Sound getSound(SoundType soundType)

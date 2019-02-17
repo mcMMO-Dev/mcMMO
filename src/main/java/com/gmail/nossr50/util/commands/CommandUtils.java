@@ -1,6 +1,6 @@
 package com.gmail.nossr50.util.commands;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -47,7 +47,7 @@ public final class CommandUtils {
     }
 
     public static boolean tooFar(CommandSender sender, Player target, boolean hasPermission) {
-        if (sender instanceof Player && !Misc.isNear(((Player) sender).getLocation(), target.getLocation(), Config.getInstance().getInspectDistance()) && !hasPermission) {
+        if (sender instanceof Player && !Misc.isNear(((Player) sender).getLocation(), target.getLocation(), MainConfig.getInstance().getInspectDistance()) && !hasPermission) {
             sender.sendMessage(LocaleLoader.getString("Inspect.TooFar"));
             return true;
         }
@@ -262,7 +262,7 @@ public final class CommandUtils {
      * @return Matched name or {@code partialName} if no match was found
      */
     public static String getMatchedPlayerName(String partialName) {
-        if (Config.getInstance().getMatchOfflinePlayers()) {
+        if (MainConfig.getInstance().getMatchOfflinePlayers()) {
             List<String> matches = matchPlayer(partialName);
 
             if (matches.size() == 1) {

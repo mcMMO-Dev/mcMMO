@@ -3,9 +3,8 @@ package com.gmail.nossr50.listeners;
 import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.chat.ChatManagerFactory;
 import com.gmail.nossr50.chat.PartyChatManager;
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -76,7 +75,7 @@ public class PlayerListener implements Listener {
                 return;
         }
 
-        if (!UserManager.hasPlayerDataKey(player) || Config.getInstance().getXPAfterTeleportCooldown() <= 0 || event.getFrom().equals(event.getTo())) {
+        if (!UserManager.hasPlayerDataKey(player) || MainConfig.getInstance().getXPAfterTeleportCooldown() <= 0 || event.getFrom().equals(event.getTo())) {
             return;
         }
 
@@ -257,7 +256,7 @@ public class PlayerListener implements Listener {
                 //TODO Update to new API once available! Waiting for case CAUGHT_TREASURE:
                 Item fishingCatch = (Item) event.getCaught();
 
-                if (Config.getInstance().getFishingOverrideTreasures() &&
+                if (MainConfig.getInstance().getFishingOverrideTreasures() &&
                         fishingCatch.getItemStack().getType() != Material.SALMON &&
                         fishingCatch.getItemStack().getType() != Material.COD &&
                         fishingCatch.getItemStack().getType() != Material.TROPICAL_FISH &&
@@ -435,7 +434,7 @@ public class PlayerListener implements Listener {
 
             /*if (player.getInventory().getItemInMainHand().getType() == Material.AIR) {
                 Unarmed.handleItemPickup(player, event);
-                *//*boolean cancel = Config.getInstance().getUnarmedItemPickupDisabled() || pickupSuccess;
+                *//*boolean cancel = MainConfig.getInstance().getUnarmedItemPickupDisabled() || pickupSuccess;
                 event.setCancelled(cancel);
 
                 if (pickupSuccess) {
@@ -486,7 +485,7 @@ public class PlayerListener implements Listener {
 
         new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
 
-        if (Config.getInstance().getMOTDEnabled() && Permissions.motd(player)) {
+        if (MainConfig.getInstance().getMOTDEnabled() && Permissions.motd(player)) {
             Motd.displayAll(player);
         }
 
@@ -548,7 +547,7 @@ public class PlayerListener implements Listener {
             case RIGHT_CLICK_BLOCK:
                 Material type = block.getType();
 
-                if (!Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
+                if (!MainConfig.getInstance().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
                     /* REPAIR CHECKS */
                     if (type == Repair.anvilMaterial && PrimarySkillType.REPAIR.getPermissions(player) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
                         RepairManager repairManager = mcMMOPlayer.getRepairManager();
@@ -588,7 +587,7 @@ public class PlayerListener implements Listener {
             case LEFT_CLICK_BLOCK:
                 type = block.getType();
 
-                if (!Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
+                if (!MainConfig.getInstance().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
                     /* REPAIR CHECKS */
                     if (type == Repair.anvilMaterial && PrimarySkillType.REPAIR.getPermissions(player) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
                         RepairManager repairManager = mcMMOPlayer.getRepairManager();
@@ -671,7 +670,7 @@ public class PlayerListener implements Listener {
 
                 /* ACTIVATION & ITEM CHECKS */
                 if (BlockUtils.canActivateTools(blockState)) {
-                    if (Config.getInstance().getAbilitiesEnabled()) {
+                    if (MainConfig.getInstance().getAbilitiesEnabled()) {
                         if (BlockUtils.canActivateHerbalism(blockState)) {
                             mcMMOPlayer.processAbilityActivation(PrimarySkillType.HERBALISM);
                         }
@@ -725,7 +724,7 @@ public class PlayerListener implements Listener {
                 }
                 
                 /* ACTIVATION CHECKS */
-                if (Config.getInstance().getAbilitiesEnabled()) {
+                if (MainConfig.getInstance().getAbilitiesEnabled()) {
                     mcMMOPlayer.processAbilityActivation(PrimarySkillType.AXES);
                     mcMMOPlayer.processAbilityActivation(PrimarySkillType.EXCAVATION);
                     mcMMOPlayer.processAbilityActivation(PrimarySkillType.HERBALISM);
@@ -757,13 +756,13 @@ public class PlayerListener implements Listener {
                 Material type = heldItem.getType();
                 TamingManager tamingManager = mcMMOPlayer.getTamingManager();
 
-                if (type == Config.getInstance().getTamingCOTWMaterial(EntityType.WOLF)) {
+                if (type == MainConfig.getInstance().getTamingCOTWMaterial(EntityType.WOLF)) {
                     tamingManager.summonWolf();
                 }
-                else if (type == Config.getInstance().getTamingCOTWMaterial(EntityType.OCELOT)) {
+                else if (type == MainConfig.getInstance().getTamingCOTWMaterial(EntityType.OCELOT)) {
                     tamingManager.summonOcelot();
                 }
-                else if (type == Config.getInstance().getTamingCOTWMaterial(EntityType.HORSE)) {
+                else if (type == MainConfig.getInstance().getTamingCOTWMaterial(EntityType.HORSE)) {
                     tamingManager.summonHorse();
                 }
 
@@ -826,7 +825,7 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-        if (!Config.getInstance().getLocale().equalsIgnoreCase("en_US")) {
+        if (!MainConfig.getInstance().getLocale().equalsIgnoreCase("en_US")) {
             String message = event.getMessage();
             String command = message.substring(1).split(" ")[0];
             String lowerCaseCommand = command.toLowerCase();

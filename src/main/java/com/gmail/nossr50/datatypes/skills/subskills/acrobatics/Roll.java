@@ -1,7 +1,7 @@
 package com.gmail.nossr50.datatypes.skills.subskills.acrobatics;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.LimitedSizeList;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
@@ -272,7 +272,7 @@ public class Roll extends AcrobaticsSubSkill {
      * @return true if exploits are detected, false otherwise
      */
     private boolean isExploiting(Player player) {
-        if (!Config.getInstance().getAcrobaticsPreventAFK()) {
+        if (!MainConfig.getInstance().getAcrobaticsPreventAFK()) {
             return false;
         }
 
@@ -291,7 +291,7 @@ public class Roll extends AcrobaticsSubSkill {
         return false; //NOT EXPLOITING
 /*
         Location fallLocation = player.getLocation();
-        int maxTries = Config.getInstance().getAcrobaticsAFKMaxTries();
+        int maxTries = MainConfig.getInstance().getAcrobaticsAFKMaxTries();
 
         boolean sameLocation = (lastFallLocation != null && Misc.isNear(lastFallLocation, fallLocation, 2));
 

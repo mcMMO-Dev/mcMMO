@@ -1,13 +1,11 @@
 package com.gmail.nossr50.skills.acrobatics;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.config.MainConfig;
 
 public final class Acrobatics {
     public static double dodgeDamageModifier   = AdvancedConfig.getInstance().getDodgeDamageModifier();
     public static int dodgeXpModifier = ExperienceConfig.getInstance().getDodgeXPModifier();
-    public static boolean dodgeLightningDisabled = Config.getInstance().getDodgeLightningDisabled();
+    public static boolean dodgeLightningDisabled = MainConfig.getInstance().getDodgeLightningDisabled();
 
     private Acrobatics() {}
 

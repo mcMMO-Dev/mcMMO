@@ -1,10 +1,10 @@
 package com.gmail.nossr50.config.treasure;
 
-import com.gmail.nossr50.config.ConfigLoader;
+import com.gmail.nossr50.config.ConfigCollections;
 import com.gmail.nossr50.datatypes.treasure.*;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EnchantmentUtils;
 import com.gmail.nossr50.util.StringUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.configuration.ConfigurationSection;
@@ -20,22 +20,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class TreasureConfig extends ConfigLoader {
+public class TreasureConfig extends ConfigCollections {
 
     private static TreasureConfig instance;
 
     public HashMap<String, List<ExcavationTreasure>> excavationMap = new HashMap<String, List<ExcavationTreasure>>();
 
-    public HashMap<EntityType, List<ShakeTreasure>> shakeMap  = new HashMap<EntityType, List<ShakeTreasure>>();
-    public HashMap<String, List<HylianTreasure>>    hylianMap = new HashMap<String, List<HylianTreasure>>();
+    public HashMap<EntityType, List<ShakeTreasure>> shakeMap = new HashMap<EntityType, List<ShakeTreasure>>();
+    public HashMap<String, List<HylianTreasure>> hylianMap = new HashMap<String, List<HylianTreasure>>();
 
-    public HashMap<Rarity, List<FishingTreasure>>     fishingRewards      = new HashMap<Rarity, List<FishingTreasure>>();
+    public HashMap<Rarity, List<FishingTreasure>> fishingRewards = new HashMap<Rarity, List<FishingTreasure>>();
     public HashMap<Rarity, List<EnchantmentTreasure>> fishingEnchantments = new HashMap<Rarity, List<EnchantmentTreasure>>();
 
     private TreasureConfig() {
-        super("treasures.yml");
-        loadKeys();
-        validate();
+        //super(McmmoCore.getDataFolderPath().getAbsoluteFile(),"treasures.yml");
+        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "treasures.yml");
     }
 
     public static TreasureConfig getInstance() {
@@ -55,8 +54,8 @@ public class TreasureConfig extends ConfigLoader {
             double totalItemDropRate = 0;
 
             for (Rarity rarity : Rarity.values()) {
-                double enchantDropRate = config.getDouble("Enchantment_Drop_Rates." + tier + "." + rarity.toString());
-                double itemDropRate = config.getDouble("Item_Drop_Rates." + tier + "." + rarity.toString());
+                double enchantDropRate = getDoubleValue("Enchantment_Drop_Rates." + tier + "." + rarity.toString());
+                double itemDropRate = getDoubleValue("Item_Drop_Rates." + tier + "." + rarity.toString());
 
                 if ((enchantDropRate < 0.0 || enchantDropRate > 100.0) && rarity != Rarity.RECORD) {
                     reason.add("The enchant drop rate for " + tier + " items that are " + rarity.toString() + "should be between 0.0 and 100.0!");
@@ -142,8 +141,8 @@ public class TreasureConfig extends ConfigLoader {
                 material = Material.matchMaterial(materialName);
             }
 
-            int amount = config.getInt(type + "." + treasureName + ".Amount");
-            short data = (treasureInfo.length == 2) ? Short.parseShort(treasureInfo[1]) : (short) config.getInt(type + "." + treasureName + ".Data");
+            int amount = getIntValue(type + "." + treasureName + ".Amount");
+            short data = (treasureInfo.length == 2) ? Short.parseShort(treasureInfo[1]) : (short) getIntValue(type + "." + treasureName + ".Data");
 
             if (material == null) {
                 reason.add("Invalid material: " + materialName);
@@ -161,9 +160,9 @@ public class TreasureConfig extends ConfigLoader {
              * XP, Drop Chance, and Drop Level
              */
 
-            int xp = config.getInt(type + "." + treasureName + ".XP");
-            double dropChance = config.getDouble(type + "." + treasureName + ".Drop_Chance");
-            int dropLevel = config.getInt(type + "." + treasureName + ".Drop_Level");
+            int xp = getIntValue(type + "." + treasureName + ".XP");
+            double dropChance = getDoubleValue(type + "." + treasureName + ".Drop_Chance");
+            int dropLevel = getIntValue(type + "." + treasureName + ".Drop_Level");
 
             if (xp < 0) {
                 reason.add(treasureName + " has an invalid XP value: " + xp);
@@ -183,7 +182,7 @@ public class TreasureConfig extends ConfigLoader {
             Rarity rarity = null;
 
             if (isFishing) {
-                rarity = Rarity.getRarity(config.getString(type + "." + treasureName + ".Rarity"));
+                rarity = Rarity.getRarity(getStringValue(type + "." + treasureName + ".Rarity"));
 
                 if (rarity == null) {
                     reason.add("Invalid Rarity for item: " + treasureName);
@@ -205,21 +204,21 @@ public class TreasureConfig extends ConfigLoader {
 
                     PotionType potionType = null;
                     try {
-                        potionType = PotionType.valueOf(config.getString(type + "." + treasureName + ".PotionData.PotionType", "WATER"));
+                        potionType = PotionType.valueOf(getStringValue(type + "." + treasureName + ".PotionData.PotionType", "WATER"));
                     } catch (IllegalArgumentException ex) {
-                        reason.add("Invalid Potion_Type: " + config.getString(type + "." + treasureName + ".PotionData.PotionType", "WATER"));
+                        reason.add("Invalid Potion_Type: " + getStringValue(type + "." + treasureName + ".PotionData.PotionType", "WATER"));
                     }
-                    boolean extended = config.getBoolean(type + "." + treasureName + ".PotionData.Extended", false);
-                    boolean upgraded = config.getBoolean(type + "." + treasureName + ".PotionData.Upgraded", false);
+                    boolean extended = getBooleanValue(type + "." + treasureName + ".PotionData.Extended", false);
+                    boolean upgraded = getBooleanValue(type + "." + treasureName + ".PotionData.Upgraded", false);
                     itemMeta.setBasePotionData(new PotionData(potionType, extended, upgraded));
 
                     if (config.contains(type + "." + treasureName + ".Custom_Name")) {
-                        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString(type + "." + treasureName + ".Custom_Name")));
+                        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', getStringValue(type + "." + treasureName + ".Custom_Name")));
                     }
 
                     if (config.contains(type + "." + treasureName + ".Lore")) {
                         List<String> lore = new ArrayList<String>();
-                        for (String s : config.getStringList(type + "." + treasureName + ".Lore")) {
+                        for (String s : getStringValueList(type + "." + treasureName + ".Lore")) {
                             lore.add(ChatColor.translateAlternateColorCodes('&', s));
                         }
                         itemMeta.setLore(lore);
@@ -231,14 +230,14 @@ public class TreasureConfig extends ConfigLoader {
 
                 if (config.contains(type + "." + treasureName + ".Custom_Name")) {
                     ItemMeta itemMeta = item.getItemMeta();
-                    itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString(type + "." + treasureName + ".Custom_Name")));
+                    itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', getStringValue(type + "." + treasureName + ".Custom_Name")));
                     item.setItemMeta(itemMeta);
                 }
 
                 if (config.contains(type + "." + treasureName + ".Lore")) {
                     ItemMeta itemMeta = item.getItemMeta();
                     List<String> lore = new ArrayList<String>();
-                    for (String s : config.getStringList(type + "." + treasureName + ".Lore")) {
+                    for (String s : getStringValueList(type + "." + treasureName + ".Lore")) {
                         lore.add(ChatColor.translateAlternateColorCodes('&', s));
                     }
                     itemMeta.setLore(lore);
@@ -258,7 +257,7 @@ public class TreasureConfig extends ConfigLoader {
                     shakeMap.get(entityType).add(shakeTreasure);
                 } else if (isExcavation) {
                     ExcavationTreasure excavationTreasure = new ExcavationTreasure(item, xp, dropChance, dropLevel);
-                    List<String> dropList = config.getStringList(type + "." + treasureName + ".Drops_From");
+                    List<String> dropList = getStringValueList(type + "." + treasureName + ".Drops_From");
 
                     for (String blockType : dropList) {
                         if (!excavationMap.containsKey(blockType))
@@ -267,7 +266,7 @@ public class TreasureConfig extends ConfigLoader {
                     }
                 } else if (isHylian) {
                     HylianTreasure hylianTreasure = new HylianTreasure(item, xp, dropChance, dropLevel);
-                    List<String> dropList = config.getStringList(type + "." + treasureName + ".Drops_From");
+                    List<String> dropList = getStringValueList(type + "." + treasureName + ".Drops_From");
 
                     for (String dropper : dropList) {
                         if (dropper.equals("Bushes")) {
@@ -326,7 +325,7 @@ public class TreasureConfig extends ConfigLoader {
             }
 
             for (String enchantmentName : enchantmentSection.getKeys(false)) {
-                int level = config.getInt("Enchantments_Rarity." + rarity.toString() + "." + enchantmentName);
+                int level = getIntValue("Enchantments_Rarity." + rarity.toString() + "." + enchantmentName);
                 Enchantment enchantment = EnchantmentUtils.getByName(enchantmentName);
 
                 if (enchantment == null) {
@@ -344,22 +343,22 @@ public class TreasureConfig extends ConfigLoader {
     }
 
     public boolean getInventoryStealStacks() {
-        return config.getBoolean("Shake.PLAYER.INVENTORY.Whole_Stacks");
+        return getBooleanValue("Shake.PLAYER.INVENTORY.Whole_Stacks");
     }
 
     public double getInventoryStealDropChance() {
-        return config.getDouble("Shake.PLAYER.INVENTORY.Drop_Chance");
+        return getDoubleValue("Shake.PLAYER.INVENTORY.Drop_Chance");
     }
 
     public int getInventoryStealDropLevel() {
-        return config.getInt("Shake.PLAYER.INVENTORY.Drop_Level");
+        return getIntValue("Shake.PLAYER.INVENTORY.Drop_Level");
     }
 
     public double getItemDropRate(int tier, Rarity rarity) {
-        return config.getDouble("Item_Drop_Rates.Tier_" + tier + "." + rarity.toString());
+        return getDoubleValue("Item_Drop_Rates.Tier_" + tier + "." + rarity.toString());
     }
 
     public double getEnchantmentDropRate(int tier, Rarity rarity) {
-        return config.getDouble("Enchantment_Drop_Rates.Tier_" + tier + "." + rarity.toString());
+        return getDoubleValue("Enchantment_Drop_Rates.Tier_" + tier + "." + rarity.toString());
     }
 }

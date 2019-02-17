@@ -2,7 +2,7 @@ package com.gmail.nossr50.commands.chat;
 
 import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.chat.ChatManagerFactory;
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -119,7 +119,7 @@ public abstract class ChatCommand implements TabExecutor {
             return;
         }
 
-        if (chatMode == ChatMode.PARTY && (mcMMOPlayer.getParty().getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.CHAT))) {
+        if (chatMode == ChatMode.PARTY && (mcMMOPlayer.getParty().getLevel() < MainConfig.getInstance().getPartyFeatureUnlockLevel(PartyFeature.CHAT))) {
             sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.1"));
             return;
         }

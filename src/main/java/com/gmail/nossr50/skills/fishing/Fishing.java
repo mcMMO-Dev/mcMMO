@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.fishing;
 
-import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.adapter.BiomeAdapter;
@@ -31,8 +30,8 @@ public final class Fishing {
      * @return possibleDrops List of ItemStack that can be dropped
      */
     protected static List<ShakeTreasure> findPossibleDrops(LivingEntity target) {
-        if (TreasureConfig.getInstance().shakeMap.containsKey(target.getType()))
-            return TreasureConfig.getInstance().shakeMap.get(target.getType());
+        if (TreasureMainConfig.getInstance().shakeMap.containsKey(target.getType()))
+            return TreasureMainConfig.getInstance().shakeMap.get(target.getType());
 
         return null;
     }

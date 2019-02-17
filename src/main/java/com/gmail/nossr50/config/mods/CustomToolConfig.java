@@ -1,9 +1,10 @@
 package com.gmail.nossr50.config.mods;
 
-import com.gmail.nossr50.config.ConfigLoader;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -16,22 +17,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-public class CustomToolConfig extends ConfigLoader {
+public class CustomToolConfig extends Config {
+    public List<Material> customAxes = new ArrayList<Material>();
+    public List<Material> customBows = new ArrayList<Material>();
+    public List<Material> customHoes = new ArrayList<Material>();
+    public List<Material> customPickaxes = new ArrayList<Material>();
+    public List<Material> customShovels = new ArrayList<Material>();
+    public List<Material> customSwords = new ArrayList<Material>();
+    public HashMap<Material, CustomTool> customToolMap = new HashMap<Material, CustomTool>();
+    public List<Repairable> repairables = new ArrayList<Repairable>();
     private boolean needsUpdate = false;
 
-    public List<Material> customAxes     = new ArrayList<Material>();
-    public List<Material> customBows     = new ArrayList<Material>();
-    public List<Material> customHoes     = new ArrayList<Material>();
-    public List<Material> customPickaxes = new ArrayList<Material>();
-    public List<Material> customShovels  = new ArrayList<Material>();
-    public List<Material> customSwords   = new ArrayList<Material>();
-
-    public HashMap<Material, CustomTool> customToolMap = new HashMap<Material, CustomTool>();
-
-    public List<Repairable> repairables = new ArrayList<Repairable>();
-
     protected CustomToolConfig(String fileName) {
-        super("mods", fileName);
+        //super(McmmoCore.getDataFolderPath().getPath() + "mods", fileName, false);
+        super(mcMMO.p.getDataFolder().getPath() + "mods", fileName, false);
         loadKeys();
     }
 
@@ -76,8 +75,8 @@ public class CustomToolConfig extends ConfigLoader {
                 continue;
             }
 
-            boolean repairable = config.getBoolean(toolType + "." + toolName + ".Repairable");
-            Material repairMaterial = Material.matchMaterial(config.getString(toolType + "." + toolName + ".Repair_Material", ""));
+            boolean repairable = getBooleanValue(toolType + "." + toolName + ".Repairable");
+            Material repairMaterial = Material.matchMaterial(getStringValue(toolType + "." + toolName + ".Repair_Material", ""));
 
             if (repairable && (repairMaterial == null)) {
                 plugin.getLogger().warning("Incomplete repair information. This item will be unrepairable. - " + toolName);
@@ -85,29 +84,29 @@ public class CustomToolConfig extends ConfigLoader {
             }
 
             if (repairable) {
-                byte repairData = (byte) config.getInt(toolType + "." + toolName + ".Repair_Material_Data_Value", -1);
+                byte repairData = (byte) getIntValue(toolType + "." + toolName + ".Repair_Material_Data_Value", -1);
                 int repairQuantity = SkillUtils.getRepairAndSalvageQuantities(new ItemStack(toolMaterial), repairMaterial, repairData);
 
                 if (repairQuantity == 0) {
-                    repairQuantity = config.getInt(toolType + "." + toolName + ".Repair_Material_Quantity", 2);
+                    repairQuantity = getIntValue(toolType + "." + toolName + ".Repair_Material_Quantity", 2);
                 }
 
-                String repairItemName = config.getString(toolType + "." + toolName + ".Repair_Material_Pretty_Name");
-                int repairMinimumLevel = config.getInt(toolType + "." + toolName + ".Repair_MinimumLevel", 0);
-                double repairXpMultiplier = config.getDouble(toolType + "." + toolName + ".Repair_XpMultiplier", 1);
+                String repairItemName = getStringValue(toolType + "." + toolName + ".Repair_Material_Pretty_Name");
+                int repairMinimumLevel = getIntValue(toolType + "." + toolName + ".Repair_MinimumLevel", 0);
+                double repairXpMultiplier = getDoubleValue(toolType + "." + toolName + ".Repair_XpMultiplier", 1);
 
                 short durability = toolMaterial.getMaxDurability();
 
                 if (durability == 0) {
-                    durability = (short) config.getInt(toolType + "." + toolName + ".Durability", 60);
+                    durability = (short) getIntValue(toolType + "." + toolName + ".Durability", 60);
                 }
 
                 repairables.add(RepairableFactory.getRepairable(toolMaterial, repairMaterial, repairData, repairItemName, repairMinimumLevel, repairQuantity, durability, ItemType.TOOL, MaterialType.OTHER, repairXpMultiplier));
             }
 
-            double multiplier = config.getDouble(toolType + "." + toolName + ".XP_Modifier", 1.0);
-            boolean abilityEnabled = config.getBoolean(toolType + "." + toolName + ".Ability_Enabled", true);
-            int tier = config.getInt(toolType + "." + toolName + ".Tier", 1);
+            double multiplier = getDoubleValue(toolType + "." + toolName + ".XP_Modifier", 1.0);
+            boolean abilityEnabled = getBooleanValue(toolType + "." + toolName + ".Ability_Enabled", true);
+            int tier = getIntValue(toolType + "." + toolName + ".Tier", 1);
 
             CustomTool tool = new CustomTool(tier, abilityEnabled, multiplier);
 

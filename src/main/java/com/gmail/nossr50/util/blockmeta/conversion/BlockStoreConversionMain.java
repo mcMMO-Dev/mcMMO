@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.blockmeta.conversion;
 
-import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -19,7 +18,7 @@ public class BlockStoreConversionMain implements Runnable {
         this.world = world;
         this.scheduler = mcMMO.p.getServer().getScheduler();
         this.dataDir = new File(this.world.getWorldFolder(), "mcmmo_data");
-        this.converters = new BlockStoreConversionXDirectory[HiddenConfig.getInstance().getConversionRate()];
+        this.converters = new BlockStoreConversionXDirectory[HiddenMainConfig.getInstance().getConversionRate()];
     }
 
     public void start() {
@@ -52,7 +51,7 @@ public class BlockStoreConversionMain implements Runnable {
 
         this.xDirs = this.dataDir.listFiles();
 
-        for (this.i = 0; (this.i < HiddenConfig.getInstance().getConversionRate()) && (this.i < this.xDirs.length); this.i++) {
+        for (this.i = 0; (this.i < HiddenMainConfig.getInstance().getConversionRate()) && (this.i < this.xDirs.length); this.i++) {
             if (this.converters[this.i] == null) {
                 this.converters[this.i] = new BlockStoreConversionXDirectory();
             }

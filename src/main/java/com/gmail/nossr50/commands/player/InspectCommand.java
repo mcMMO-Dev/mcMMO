@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.player;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -40,10 +40,10 @@ public class InspectCommand implements TabExecutor {
                         return true;
                     }
 
-                    if (Config.getInstance().getScoreboardsEnabled() && sender instanceof Player && Config.getInstance().getInspectUseBoard()) {
+                    if (MainConfig.getInstance().getScoreboardsEnabled() && sender instanceof Player && MainConfig.getInstance().getInspectUseBoard()) {
                         ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, profile);
 
-                        if (!Config.getInstance().getInspectUseChat()) {
+                        if (!MainConfig.getInstance().getInspectUseChat()) {
                             return true;
                         }
                     }
@@ -79,10 +79,10 @@ public class InspectCommand implements TabExecutor {
                         return true;
                     }
 
-                    if (Config.getInstance().getScoreboardsEnabled() && sender instanceof Player && Config.getInstance().getInspectUseBoard()) {
+                    if (MainConfig.getInstance().getScoreboardsEnabled() && sender instanceof Player && MainConfig.getInstance().getInspectUseBoard()) {
                         ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, mcMMOPlayer.getProfile());
 
-                        if (!Config.getInstance().getInspectUseChat()) {
+                        if (!MainConfig.getInstance().getInspectUseChat()) {
                             return true;
                         }
                     }

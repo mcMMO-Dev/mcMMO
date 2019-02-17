@@ -1,7 +1,6 @@
 package com.gmail.nossr50.party;
 
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.party.ItemWeightConfig;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.party.ItemShareType;
@@ -44,7 +43,7 @@ public final class ShareHandler {
         nearMembers.add(mcMMOPlayer.getPlayer());
 
         int partySize = nearMembers.size();
-        double shareBonus = Math.min(Config.getInstance().getPartyShareBonusBase() + (partySize * Config.getInstance().getPartyShareBonusIncrease()), Config.getInstance().getPartyShareBonusCap());
+        double shareBonus = Math.min(MainConfig.getInstance().getPartyShareBonusBase() + (partySize * MainConfig.getInstance().getPartyShareBonusIncrease()), MainConfig.getInstance().getPartyShareBonusCap());
         float splitXp = (float) (xp / partySize * shareBonus);
 
         for (Player member : nearMembers) {
@@ -98,7 +97,7 @@ public final class ShareHandler {
 
         switch (shareMode) {
             case EQUAL:
-                int itemWeight = ItemWeightConfig.getInstance().getItemWeight(itemStack.getType());
+                int itemWeight = ItemWeightMainConfig.getInstance().getItemWeight(itemStack.getType());
 
                 for (int i = 0; i < itemStack.getAmount(); i++) {
                     int highestRoll = 0;

@@ -1,7 +1,7 @@
 package com.gmail.nossr50.api;
 
 import com.gmail.nossr50.api.exceptions.*;
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
@@ -753,7 +753,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      */
     public static int getLevelCap(String skillType) {
-        return Config.getInstance().getLevelCap(getSkillType(skillType));
+        return MainConfig.getInstance().getLevelCap(getSkillType(skillType));
     }
 
     /**
@@ -764,7 +764,7 @@ public final class ExperienceAPI {
      * @return the overall power level cap
      */
     public static int getPowerLevelCap() {
-        return Config.getInstance().getPowerLevelCap();
+        return MainConfig.getInstance().getPowerLevelCap();
     }
 
     /**

@@ -1,16 +1,18 @@
 package com.gmail.nossr50.config.party;
 
-import com.gmail.nossr50.config.ConfigLoader;
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.Material;
 
 import java.util.HashSet;
 
-public class ItemWeightConfig extends ConfigLoader {
+public class ItemWeightConfig extends Config {
     private static ItemWeightConfig instance;
 
     private ItemWeightConfig() {
-        super("itemweights.yml");
+        //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "itemweights.yml");
+        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "itemweights.yml");
     }
 
     public static ItemWeightConfig getInstance() {
@@ -22,13 +24,13 @@ public class ItemWeightConfig extends ConfigLoader {
     }
 
     public int getItemWeight(Material material) {
-        return config.getInt("Item_Weights." + StringUtils.getPrettyItemString(material).replace(" ", "_"), config.getInt("Item_Weights.Default"));
+        return getIntValue("Item_Weights." + StringUtils.getPrettyItemString(material).replace(" ", "_"), getIntValue("Item_Weights.Default"));
     }
 
     public HashSet<Material> getMiscItems() {
         HashSet<Material> miscItems = new HashSet<Material>();
 
-        for (String item : config.getStringList("Party_Shareables.Misc_Items")) {
+        for (String item : getStringValueList("Party_Shareables.Misc_Items")) {
             Material material = Material.getMaterial(item.toUpperCase());
 
             if (material != null) {
@@ -39,5 +41,6 @@ public class ItemWeightConfig extends ConfigLoader {
     }
 
     @Override
-    protected void loadKeys() {}
+    protected void loadKeys() {
+    }
 }

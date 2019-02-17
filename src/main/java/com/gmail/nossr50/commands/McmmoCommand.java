@@ -1,7 +1,7 @@
 package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.commands.party.PartySubcommandType;
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
@@ -24,7 +24,7 @@ public class McmmoCommand implements CommandExecutor {
                 String[] mcSplit = description.split(",");
                 sender.sendMessage(mcSplit);
 
-                if (Config.getInstance().getDonateMessageEnabled()) {
+                if (MainConfig.getInstance().getDonateMessageEnabled()) {
                     sender.sendMessage(LocaleLoader.getString("MOTD.Donate"));
                     sender.sendMessage(ChatColor.GOLD + " - " + ChatColor.GREEN + "nossr50@gmail.com" + ChatColor.GOLD + " Paypal");
                 }

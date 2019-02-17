@@ -1,6 +1,6 @@
 package com.gmail.nossr50.locale;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.ChatColor;
 
@@ -76,7 +76,7 @@ public final class LocaleLoader {
         if (bundle == null) {
             Locale.setDefault(new Locale("en", "US"));
             Locale locale = null;
-            String[] myLocale = Config.getInstance().getLocale().split("[-_ ]");
+            String[] myLocale = MainConfig.getInstance().getLocale().split("[-_ ]");
 
             if (myLocale.length == 1) {
                 locale = new Locale(myLocale[0]);

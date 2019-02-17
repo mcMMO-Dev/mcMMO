@@ -1,7 +1,6 @@
 package com.gmail.nossr50.database;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
@@ -23,7 +22,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public final class SQLDatabaseManager implements DatabaseManager {
     private static final String ALL_QUERY_VERSION = "total";
-    private String tablePrefix = Config.getInstance().getMySQLTablePrefix();
+    private String tablePrefix = MainConfig.getInstance().getMySQLTablePrefix();
 
     private final Map<UUID, Integer> cachedUserIDs = new HashMap<UUID, Integer>();
 
@@ -34,10 +33,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private ReentrantLock massUpdateLock = new ReentrantLock();
 
     protected SQLDatabaseManager() {
-        String connectionString = "jdbc:mysql://" + Config.getInstance().getMySQLServerName()
-                + ":" + Config.getInstance().getMySQLServerPort() + "/" + Config.getInstance().getMySQLDatabaseName();
+        String connectionString = "jdbc:mysql://" + MainConfig.getInstance().getMySQLServerName()
+                + ":" + MainConfig.getInstance().getMySQLServerPort() + "/" + MainConfig.getInstance().getMySQLDatabaseName();
 
-        if(Config.getInstance().getMySQLSSL())
+        if(MainConfig.getInstance().getMySQLSSL())
             connectionString +=
                     "?verifyServerCertificate=false"+
                     "&useSSL=true"+
@@ -60,10 +59,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
         PoolProperties poolProperties = new PoolProperties();
         poolProperties.setDriverClassName("com.mysql.jdbc.Driver");
         poolProperties.setUrl(connectionString);
-        poolProperties.setUsername(Config.getInstance().getMySQLUserName());
-        poolProperties.setPassword(Config.getInstance().getMySQLUserPassword());
-        poolProperties.setMaxIdle(Config.getInstance().getMySQLMaxPoolSize(PoolIdentifier.MISC));
-        poolProperties.setMaxActive(Config.getInstance().getMySQLMaxConnections(PoolIdentifier.MISC));
+        poolProperties.setUsername(MainConfig.getInstance().getMySQLUserName());
+        poolProperties.setPassword(MainConfig.getInstance().getMySQLUserPassword());
+        poolProperties.setMaxIdle(MainConfig.getInstance().getMySQLMaxPoolSize(PoolIdentifier.MISC));
+        poolProperties.setMaxActive(MainConfig.getInstance().getMySQLMaxConnections(PoolIdentifier.MISC));
         poolProperties.setInitialSize(0);
         poolProperties.setMaxWait(-1);
         poolProperties.setRemoveAbandoned(true);
@@ -75,11 +74,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
         poolProperties = new PoolProperties();
         poolProperties.setDriverClassName("com.mysql.jdbc.Driver");
         poolProperties.setUrl(connectionString);
-        poolProperties.setUsername(Config.getInstance().getMySQLUserName());
-        poolProperties.setPassword(Config.getInstance().getMySQLUserPassword());
+        poolProperties.setUsername(MainConfig.getInstance().getMySQLUserName());
+        poolProperties.setPassword(MainConfig.getInstance().getMySQLUserPassword());
         poolProperties.setInitialSize(0);
-        poolProperties.setMaxIdle(Config.getInstance().getMySQLMaxPoolSize(PoolIdentifier.SAVE));
-        poolProperties.setMaxActive(Config.getInstance().getMySQLMaxConnections(PoolIdentifier.SAVE));
+        poolProperties.setMaxIdle(MainConfig.getInstance().getMySQLMaxPoolSize(PoolIdentifier.SAVE));
+        poolProperties.setMaxActive(MainConfig.getInstance().getMySQLMaxConnections(PoolIdentifier.SAVE));
         poolProperties.setMaxWait(-1);
         poolProperties.setRemoveAbandoned(true);
         poolProperties.setRemoveAbandonedTimeout(60);
@@ -90,11 +89,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
         poolProperties = new PoolProperties();
         poolProperties.setDriverClassName("com.mysql.jdbc.Driver");
         poolProperties.setUrl(connectionString);
-        poolProperties.setUsername(Config.getInstance().getMySQLUserName());
-        poolProperties.setPassword(Config.getInstance().getMySQLUserPassword());
+        poolProperties.setUsername(MainConfig.getInstance().getMySQLUserName());
+        poolProperties.setPassword(MainConfig.getInstance().getMySQLUserPassword());
         poolProperties.setInitialSize(0);
-        poolProperties.setMaxIdle(Config.getInstance().getMySQLMaxPoolSize(PoolIdentifier.LOAD));
-        poolProperties.setMaxActive(Config.getInstance().getMySQLMaxConnections(PoolIdentifier.LOAD));
+        poolProperties.setMaxIdle(MainConfig.getInstance().getMySQLMaxPoolSize(PoolIdentifier.LOAD));
+        poolProperties.setMaxActive(MainConfig.getInstance().getMySQLMaxConnections(PoolIdentifier.LOAD));
         poolProperties.setMaxWait(-1);
         poolProperties.setRemoveAbandoned(true);
         poolProperties.setRemoveAbandonedTimeout(60);
@@ -311,7 +310,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
 
             statement = connection.prepareStatement("UPDATE " + tablePrefix + "huds SET mobhealthbar = ?, scoreboardtips = ? WHERE user_id = ?");
-            statement.setString(1, profile.getMobHealthbarType() == null ? Config.getInstance().getMobHealthbarDefault().name() : profile.getMobHealthbarType().name());
+            statement.setString(1, profile.getMobHealthbarType() == null ? MainConfig.getInstance().getMobHealthbarDefault().name() : profile.getMobHealthbarType().name());
             statement.setInt(2, profile.getScoreboardTipsShown());
             statement.setInt(3, id);
             success = (statement.executeUpdate() != 0);
@@ -781,7 +780,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement = connection.prepareStatement("SELECT table_name FROM INFORMATION_SCHEMA.TABLES"
                     + " WHERE table_schema = ?"
                     + " AND table_name = ?");
-            statement.setString(1, Config.getInstance().getMySQLDatabaseName());
+            statement.setString(1, MainConfig.getInstance().getMySQLDatabaseName());
             statement.setString(2, tablePrefix + "users");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -797,21 +796,21 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 tryClose(createStatement);
             }
             tryClose(resultSet);
-            statement.setString(1, Config.getInstance().getMySQLDatabaseName());
+            statement.setString(1, MainConfig.getInstance().getMySQLDatabaseName());
             statement.setString(2, tablePrefix + "huds");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
                 createStatement = connection.createStatement();
                 createStatement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "huds` ("
                         + "`user_id` int(10) unsigned NOT NULL,"
-                        + "`mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "',"
+                        + "`mobhealthbar` varchar(50) NOT NULL DEFAULT '" + MainConfig.getInstance().getMobHealthbarDefault() + "',"
                         + "`scoreboardtips` int(10) NOT NULL DEFAULT '0',"
                         + "PRIMARY KEY (`user_id`)) "
                         + "DEFAULT CHARSET=latin1;");
                 tryClose(createStatement);
             }
             tryClose(resultSet);
-            statement.setString(1, Config.getInstance().getMySQLDatabaseName());
+            statement.setString(1, MainConfig.getInstance().getMySQLDatabaseName());
             statement.setString(2, tablePrefix + "cooldowns");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -836,7 +835,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 tryClose(createStatement);
             }
             tryClose(resultSet);
-            statement.setString(1, Config.getInstance().getMySQLDatabaseName());
+            statement.setString(1, MainConfig.getInstance().getMySQLDatabaseName());
             statement.setString(2, tablePrefix + "skills");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -864,7 +863,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 tryClose(createStatement);
             }
             tryClose(resultSet);
-            statement.setString(1, Config.getInstance().getMySQLDatabaseName());
+            statement.setString(1, MainConfig.getInstance().getMySQLDatabaseName());
             statement.setString(2, tablePrefix + "experience");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -895,9 +894,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 checkDatabaseStructure(connection, updateType);
             }
 
-            if (Config.getInstance().getTruncateSkills()) {
+            if (MainConfig.getInstance().getTruncateSkills()) {
                 for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
-                    int cap = Config.getInstance().getLevelCap(skill);
+                    int cap = MainConfig.getInstance().getLevelCap(skill);
                     if (cap != Integer.MAX_VALUE) {
                         statement = connection.prepareStatement("UPDATE `" + tablePrefix + "skills` SET `" + skill.name().toLowerCase() + "` = " + cap + " WHERE `" + skill.name().toLowerCase() + "` > " + cap);
                         statement.executeUpdate();
@@ -1044,7 +1043,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             statement = connection.prepareStatement("INSERT IGNORE INTO " + tablePrefix + "huds (user_id, mobhealthbar, scoreboardtips) VALUES (?, ?, ?)");
             statement.setInt(1, id);
-            statement.setString(2, Config.getInstance().getMobHealthbarDefault().name());
+            statement.setString(2, MainConfig.getInstance().getMobHealthbarDefault().name());
             statement.setInt(3, 0);
             statement.execute();
             statement.close();
@@ -1119,7 +1118,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             mobHealthbarType = MobHealthbarType.valueOf(result.getString(OFFSET_OTHER + 1));
         }
         catch (Exception e) {
-            mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
+            mobHealthbarType = MainConfig.getInstance().getMobHealthbarDefault();
         }
 
         try {
@@ -1221,7 +1220,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
         catch (SQLException ex) {
             mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for mob healthbars...");
-            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "huds` ADD `mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "'");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "huds` ADD `mobhealthbar` varchar(50) NOT NULL DEFAULT '" + MainConfig.getInstance().getMobHealthbarDefault() + "'");
         }
     }
 
@@ -1518,7 +1517,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         try {
             connection = getConnection(PoolIdentifier.MISC);
             statement = connection.prepareStatement("UPDATE " + tablePrefix + "huds SET mobhealthbar = ?");
-            statement.setString(1, Config.getInstance().getMobHealthbarDefault().toString());
+            statement.setString(1, MainConfig.getInstance().getMobHealthbarDefault().toString());
             statement.executeUpdate();
         }
         catch (SQLException ex) {

@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.taming;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import org.bukkit.EntityEffect;
 import org.bukkit.entity.*;
 

@@ -29,14 +29,14 @@ public final class Misc {
 
     // Sound Pitches & Volumes from CB
 /*    public static final float ANVIL_USE_PITCH  = 0.3F;  // Not in CB directly, I went off the place sound values
-    public static final float ANVIL_USE_VOLUME = 1.0F * Config.getInstance().getMasterVolume();  // Not in CB directly, I went off the place sound values
-    public static final float FIZZ_VOLUME      = 0.5F * Config.getInstance().getMasterVolume();
-    public static final float POP_VOLUME       = 0.2F * Config.getInstance().getMasterVolume();
-    public static final float BAT_VOLUME       = 1.0F * Config.getInstance().getMasterVolume();
+    public static final float ANVIL_USE_VOLUME = 1.0F * MainConfig.getInstance().getMasterVolume();  // Not in CB directly, I went off the place sound values
+    public static final float FIZZ_VOLUME      = 0.5F * MainConfig.getInstance().getMasterVolume();
+    public static final float POP_VOLUME       = 0.2F * MainConfig.getInstance().getMasterVolume();
+    public static final float BAT_VOLUME       = 1.0F * MainConfig.getInstance().getMasterVolume();
     public static final float BAT_PITCH        = 0.6F;
-    public static final float GHAST_VOLUME     = 1.0F * Config.getInstance().getMasterVolume();
+    public static final float GHAST_VOLUME     = 1.0F * MainConfig.getInstance().getMasterVolume();
     public static final float LEVELUP_PITCH    = 0.5F;  // Reduced to differentiate between vanilla level-up
-    public static final float LEVELUP_VOLUME   = 0.75F * Config.getInstance().getMasterVolume(); // Use max volume always*/
+    public static final float LEVELUP_VOLUME   = 0.75F * MainConfig.getInstance().getMasterVolume(); // Use max volume always*/
 
     public static final Set<String> modNames = ImmutableSet.of("LOTR", "BUILDCRAFT", "ENDERIO", "ENHANCEDBIOMES", "IC2", "METALLURGY", "FORESTRY", "GALACTICRAFT", "RAILCRAFT", "TWILIGHTFOREST", "THAUMCRAFT", "GRAVESTONEMOD", "GROWTHCRAFT", "ARCTICMOBS", "DEMONMOBS", "INFERNOMOBS", "SWAMPMOBS", "MARICULTURE", "MINESTRAPPOLATION");
 

@@ -1,6 +1,6 @@
 package com.gmail.nossr50.util.skills;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.*;
 import org.bukkit.FireworkEffect.Type;
@@ -18,7 +18,7 @@ public final class ParticleEffectUtils {
     private ParticleEffectUtils() {};
 
     public static void playBleedEffect(LivingEntity livingEntity) {
-        if (!Config.getInstance().getBleedEffectEnabled()) {
+        if (!MainConfig.getInstance().getBleedEffectEnabled()) {
             return;
         }
 
@@ -26,7 +26,7 @@ public final class ParticleEffectUtils {
     }
 
     public static void playDodgeEffect(Player player) {
-        if (!Config.getInstance().getDodgeEffectEnabled()) {
+        if (!MainConfig.getInstance().getDodgeEffectEnabled()) {
             return;
         }
 
@@ -34,7 +34,7 @@ public final class ParticleEffectUtils {
     }
 
     public static void playFluxEffect(Location location) {
-        if (!Config.getInstance().getFluxEffectEnabled()) {
+        if (!MainConfig.getInstance().getFluxEffectEnabled()) {
             return;
         }
 
@@ -58,7 +58,7 @@ public final class ParticleEffectUtils {
     }
 
     public static void playGreaterImpactEffect(LivingEntity livingEntity) {
-        if (!Config.getInstance().getGreaterImpactEffectEnabled()) {
+        if (!MainConfig.getInstance().getGreaterImpactEffectEnabled()) {
             return;
         }
 
@@ -68,7 +68,7 @@ public final class ParticleEffectUtils {
     }
 
     public static void playCallOfTheWildEffect(LivingEntity livingEntity) {
-        if (!Config.getInstance().getCallOfTheWildEffectEnabled()) {
+        if (!MainConfig.getInstance().getCallOfTheWildEffectEnabled()) {
             return;
         }
 
@@ -76,7 +76,7 @@ public final class ParticleEffectUtils {
     }
 
     public static void playAbilityEnabledEffect(Player player) {
-        if (!Config.getInstance().getAbilityActivationEffectEnabled()) {
+        if (!MainConfig.getInstance().getAbilityActivationEffectEnabled()) {
             return;
         }
 
@@ -86,7 +86,7 @@ public final class ParticleEffectUtils {
     }
 
     public static void playAbilityDisabledEffect(Player player) {
-        if (!Config.getInstance().getAbilityDeactivationEffectEnabled()) {
+        if (!MainConfig.getInstance().getAbilityDeactivationEffectEnabled()) {
             return;
         }
 
@@ -103,7 +103,7 @@ public final class ParticleEffectUtils {
         Firework firework = (Firework) player.getWorld().spawnEntity(location, EntityType.FIREWORK);
         firework.setMetadata(mcMMO.funfettiMetadataKey, new FixedMetadataValue(mcMMO.p, null));
         FireworkMeta fireworkMeta = firework.getFireworkMeta();
-        FireworkEffect effect = FireworkEffect.builder().flicker(false).withColor(color).with((Config.getInstance().getLargeFireworks() ? Type.BALL_LARGE : Type.BALL)).trail(true).build();
+        FireworkEffect effect = FireworkEffect.builder().flicker(false).withColor(color).with((MainConfig.getInstance().getLargeFireworks() ? Type.BALL_LARGE : Type.BALL)).trail(true).build();
         fireworkMeta.addEffect(effect);
         fireworkMeta.addEffect(effect);
         fireworkMeta.setPower(0);

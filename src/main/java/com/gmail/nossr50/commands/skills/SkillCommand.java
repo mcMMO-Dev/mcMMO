@@ -1,7 +1,6 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -99,14 +98,14 @@ public abstract class SkillCommand implements TabExecutor {
 
 
                 //Link Header
-                if(Config.getInstance().getUrlLinksEnabled())
+                if(MainConfig.getInstance().getUrlLinksEnabled())
                 {
                     player.sendMessage(LocaleLoader.getString("Overhaul.mcMMO.Header"));
                     TextComponentFactory.sendPlayerUrlHeader(player);
                 }
 
 
-                if (Config.getInstance().getScoreboardsEnabled() && Config.getInstance().getSkillUseBoard()) {
+                if (MainConfig.getInstance().getScoreboardsEnabled() && MainConfig.getInstance().getSkillUseBoard()) {
                     ScoreboardManager.enablePlayerSkillScoreboard(player, skill);
                 }
 

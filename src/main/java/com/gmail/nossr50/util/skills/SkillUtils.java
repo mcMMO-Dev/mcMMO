@@ -1,8 +1,6 @@
 package com.gmail.nossr50.util.skills;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.HiddenConfig;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -117,7 +115,7 @@ public class SkillUtils {
      * @return true if this is a valid skill, false otherwise
      */
     public static boolean isSkill(String skillName) {
-        return Config.getInstance().getLocale().equalsIgnoreCase("en_US") ? PrimarySkillType.getSkill(skillName) != null : isLocalizedSkill(skillName);
+        return MainConfig.getInstance().getLocale().equalsIgnoreCase("en_US") ? PrimarySkillType.getSkill(skillName) != null : isLocalizedSkill(skillName);
     }
 
     public static void sendSkillMessage(Player player, NotificationType notificationType, String key) {
@@ -131,7 +129,7 @@ public class SkillUtils {
     }
 
     public static void handleAbilitySpeedIncrease(Player player) {
-        if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
+        if (HiddenMainConfig.getInstance().useEnchantmentBuffs()) {
             ItemStack heldItem = player.getInventory().getItemInMainHand();
 
             if (heldItem == null || heldItem.getType() == Material.AIR) {
@@ -189,7 +187,7 @@ public class SkillUtils {
     }
 
     public static void handleAbilitySpeedDecrease(Player player) {
-        if (!HiddenConfig.getInstance().useEnchantmentBuffs()) {
+        if (!HiddenMainConfig.getInstance().useEnchantmentBuffs()) {
             return;
         }
 

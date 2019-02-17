@@ -7,15 +7,16 @@ import java.io.File;
 import java.util.regex.Pattern;
 
 public class BlockConfigManager {
-    public BlockConfigManager(mcMMO plugin) {
+    public BlockConfigManager() {
         Pattern middlePattern = Pattern.compile("blocks\\.(?:.+)\\.yml");
         Pattern startPattern = Pattern.compile("(?:.+)\\.blocks\\.yml");
+        //File dataFolder = new File(McmmoCore.getModDataFolderPath());
         File dataFolder = new File(mcMMO.getModDirectory());
         File vanilla = new File(dataFolder, "blocks.default.yml");
         ModManager modManager = mcMMO.getModManager();
 
         if (!vanilla.exists()) {
-            plugin.saveResource(vanilla.getParentFile().getName() + File.separator + "blocks.default.yml", false);
+            mcMMO.p.saveResource(vanilla.getParentFile().getName() + File.separator + "blocks.default.yml", false);
         }
 
         for (String fileName : dataFolder.list()) {

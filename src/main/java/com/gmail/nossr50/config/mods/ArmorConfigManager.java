@@ -7,15 +7,16 @@ import java.io.File;
 import java.util.regex.Pattern;
 
 public class ArmorConfigManager {
-    public ArmorConfigManager(mcMMO plugin) {
+    public ArmorConfigManager() {
         Pattern middlePattern = Pattern.compile("armor\\.(?:.+)\\.yml");
         Pattern startPattern = Pattern.compile("(?:.+)\\.armor\\.yml");
-        File dataFolder = new File(mcMMO.getModDirectory());
+        //File dataFolder = new File(McmmoCore.getModDataFolderPath());
+        File dataFolder = new File(mcMMO.p.getModDirectory());
         File vanilla = new File(dataFolder, "armor.default.yml");
         ModManager modManager = mcMMO.getModManager();
 
         if (!vanilla.exists()) {
-            plugin.saveResource(vanilla.getParentFile().getName() + File.separator + "armor.default.yml", false);
+            mcMMO.p.saveResource(vanilla.getParentFile().getName() + File.separator + "armor.default.yml", false);
         }
 
         for (String fileName : dataFolder.list()) {

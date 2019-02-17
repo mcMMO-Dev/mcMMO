@@ -1,6 +1,6 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.mods.CustomArmorConfig;
 import com.gmail.nossr50.config.mods.CustomBlockConfig;
 import com.gmail.nossr50.config.mods.CustomEntityConfig;
@@ -89,71 +89,71 @@ public class ModManager {
     }
 
     public boolean isCustomBoots(Material material) {
-        return Config.getInstance().getArmorModsEnabled() && customBoots.contains(material);
+        return MainConfig.getInstance().getArmorModsEnabled() && customBoots.contains(material);
     }
 
     public boolean isCustomChestplate(Material material) {
-        return Config.getInstance().getArmorModsEnabled() && customChestplates.contains(material);
+        return MainConfig.getInstance().getArmorModsEnabled() && customChestplates.contains(material);
     }
 
     public boolean isCustomHelmet(Material material) {
-        return Config.getInstance().getArmorModsEnabled() && customHelmets.contains(material);
+        return MainConfig.getInstance().getArmorModsEnabled() && customHelmets.contains(material);
     }
 
     public boolean isCustomLeggings(Material material) {
-        return Config.getInstance().getArmorModsEnabled() && customLeggings.contains(material);
+        return MainConfig.getInstance().getArmorModsEnabled() && customLeggings.contains(material);
     }
 
     public boolean isCustomAxe(Material material) {
-        return Config.getInstance().getToolModsEnabled() && customAxes.contains(material);
+        return MainConfig.getInstance().getToolModsEnabled() && customAxes.contains(material);
     }
 
     public boolean isCustomBow(Material material) {
-        return Config.getInstance().getToolModsEnabled() && customBows.contains(material);
+        return MainConfig.getInstance().getToolModsEnabled() && customBows.contains(material);
     }
 
     public boolean isCustomHoe(Material material) {
-        return Config.getInstance().getToolModsEnabled() && customHoes.contains(material);
+        return MainConfig.getInstance().getToolModsEnabled() && customHoes.contains(material);
     }
 
     public boolean isCustomPickaxe(Material material) {
-        return Config.getInstance().getToolModsEnabled() && customPickaxes.contains(material);
+        return MainConfig.getInstance().getToolModsEnabled() && customPickaxes.contains(material);
     }
 
     public boolean isCustomShovel(Material material) {
-        return Config.getInstance().getToolModsEnabled() && customShovels.contains(material);
+        return MainConfig.getInstance().getToolModsEnabled() && customShovels.contains(material);
     }
 
     public boolean isCustomSword(Material material) {
-        return Config.getInstance().getToolModsEnabled() && customSwords.contains(material);
+        return MainConfig.getInstance().getToolModsEnabled() && customSwords.contains(material);
     }
 
     public boolean isCustomOre(Material data) {
-        return Config.getInstance().getBlockModsEnabled() && customOres.contains(data);
+        return MainConfig.getInstance().getBlockModsEnabled() && customOres.contains(data);
     }
 
     public boolean isCustomLog(BlockState state) {
-        return Config.getInstance().getBlockModsEnabled() && customLogs.contains(state.getType());
+        return MainConfig.getInstance().getBlockModsEnabled() && customLogs.contains(state.getType());
     }
 
     public boolean isCustomLeaf(BlockState state) {
-        return Config.getInstance().getBlockModsEnabled() && customLeaves.contains(state.getType());
+        return MainConfig.getInstance().getBlockModsEnabled() && customLeaves.contains(state.getType());
     }
 
     public boolean isCustomAbilityBlock(BlockState state) {
-        return Config.getInstance().getBlockModsEnabled() && customAbilityBlocks.contains(state.getType());
+        return MainConfig.getInstance().getBlockModsEnabled() && customAbilityBlocks.contains(state.getType());
     }
 
     public boolean isCustomExcavationBlock(BlockState state) {
-        return Config.getInstance().getBlockModsEnabled() && customExcavationBlocks.contains(state.getType());
+        return MainConfig.getInstance().getBlockModsEnabled() && customExcavationBlocks.contains(state.getType());
     }
 
     public boolean isCustomHerbalismBlock(BlockState state) {
-        return Config.getInstance().getBlockModsEnabled() && customHerbalismBlocks.contains(state.getType());
+        return MainConfig.getInstance().getBlockModsEnabled() && customHerbalismBlocks.contains(state.getType());
     }
 
     public boolean isCustomMiningBlock(BlockState state) {
-        return Config.getInstance().getBlockModsEnabled() && customMiningBlocks.contains(state.getType());
+        return MainConfig.getInstance().getBlockModsEnabled() && customMiningBlocks.contains(state.getType());
     }
 
     public CustomBlock getBlock(BlockState state) {
@@ -171,7 +171,7 @@ public class ModManager {
      * @return true if the item is a custom tool, false otherwise
      */
     public boolean isCustomTool(ItemStack item) {
-        return Config.getInstance().getToolModsEnabled() && item != null && customToolMap.containsKey(item.getType());
+        return MainConfig.getInstance().getToolModsEnabled() && item != null && customToolMap.containsKey(item.getType());
     }
 
     /**
@@ -189,7 +189,7 @@ public class ModManager {
     }
 
     public boolean isCustomEntity(Entity entity) {
-        if (!Config.getInstance().getEntityModsEnabled()) {
+        if (!MainConfig.getInstance().getEntityModsEnabled()) {
             return false;
         }
 
@@ -231,7 +231,7 @@ public class ModManager {
     }
 
     public void addCustomEntity(Entity entity) {
-        if (!Config.getInstance().getEntityModsEnabled()) {
+        if (!MainConfig.getInstance().getEntityModsEnabled()) {
             return;
         }
 

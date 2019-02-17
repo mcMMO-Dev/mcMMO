@@ -1,6 +1,6 @@
 package com.gmail.nossr50.runnables.skills;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -40,7 +40,7 @@ public class AbilityDisableTask extends BukkitRunnable {
                 // Fallthrough
 
             case BERSERK:
-                if (Config.getInstance().getRefreshChunksEnabled()) {
+                if (MainConfig.getInstance().getRefreshChunksEnabled()) {
                     resendChunkRadiusAt(player, 1);
                 }
                 // Fallthrough

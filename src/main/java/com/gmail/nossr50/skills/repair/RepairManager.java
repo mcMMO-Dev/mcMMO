@@ -1,8 +1,6 @@
 package com.gmail.nossr50.skills.repair;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -51,11 +49,11 @@ public class RepairManager extends SkillManager {
             return;
         }
 
-        if (Config.getInstance().getRepairAnvilMessagesEnabled()) {
+        if (MainConfig.getInstance().getRepairAnvilMessagesEnabled()) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Repair.Listener.Anvil");
         }
 
-        if (Config.getInstance().getRepairAnvilPlaceSoundsEnabled()) {
+        if (MainConfig.getInstance().getRepairAnvilPlaceSoundsEnabled()) {
             SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
         }
 
@@ -155,7 +153,7 @@ public class RepairManager extends SkillManager {
         applyXpGain((float) ((getPercentageRepaired(startDurability, newDurability, repairable.getMaximumDurability()) * repairable.getXpMultiplier()) * ExperienceConfig.getInstance().getRepairXPBase() * ExperienceConfig.getInstance().getRepairXP(repairable.getRepairMaterialType())), XPGainReason.PVE);
 
         // BWONG BWONG BWONG
-        if (Config.getInstance().getRepairAnvilUseSoundsEnabled()) {
+        if (MainConfig.getInstance().getRepairAnvilUseSoundsEnabled()) {
             SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
             SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_BREAK);
         }
@@ -177,7 +175,7 @@ public class RepairManager extends SkillManager {
         Player player = getPlayer();
         long lastUse = getLastAnvilUse();
 
-        if (!SkillUtils.cooldownExpired(lastUse, 3) || !Config.getInstance().getRepairConfirmRequired()) {
+        if (!SkillUtils.cooldownExpired(lastUse, 3) || !MainConfig.getInstance().getRepairConfirmRequired()) {
             return true;
         }
 

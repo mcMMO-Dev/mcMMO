@@ -1,6 +1,6 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -14,8 +14,8 @@ public final class HardcoreManager {
     private HardcoreManager() {}
 
     public static void invokeStatPenalty(Player player) {
-        double statLossPercentage = Config.getInstance().getHardcoreDeathStatPenaltyPercentage();
-        int levelThreshold = Config.getInstance().getHardcoreDeathStatPenaltyLevelThreshold();
+        double statLossPercentage = MainConfig.getInstance().getHardcoreDeathStatPenaltyPercentage();
+        int levelThreshold = MainConfig.getInstance().getHardcoreDeathStatPenaltyLevelThreshold();
 
         PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
         int totalLevelsLost = 0;
@@ -56,8 +56,8 @@ public final class HardcoreManager {
     }
 
     public static void invokeVampirism(Player killer, Player victim) {
-        double vampirismStatLeechPercentage = Config.getInstance().getHardcoreVampirismStatLeechPercentage();
-        int levelThreshold = Config.getInstance().getHardcoreVampirismLevelThreshold();
+        double vampirismStatLeechPercentage = MainConfig.getInstance().getHardcoreVampirismStatLeechPercentage();
+        int levelThreshold = MainConfig.getInstance().getHardcoreVampirismLevelThreshold();
 
         PlayerProfile killerProfile = UserManager.getPlayer(killer).getProfile();
         PlayerProfile victimProfile = UserManager.getPlayer(victim).getProfile();

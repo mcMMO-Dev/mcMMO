@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.salvage;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -49,11 +48,11 @@ public class SalvageManager extends SkillManager {
             return;
         }
 
-        if (Config.getInstance().getSalvageAnvilMessagesEnabled()) {
+        if (MainConfig.getInstance().getSalvageAnvilMessagesEnabled()) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Salvage.Listener.Anvil");
         }
 
-        if (Config.getInstance().getSalvageAnvilPlaceSoundsEnabled()) {
+        if (MainConfig.getInstance().getSalvageAnvilPlaceSoundsEnabled()) {
             SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
         }
 
@@ -130,7 +129,7 @@ public class SalvageManager extends SkillManager {
         Misc.dropItems(location, salvageResults, 1);
 
         // BWONG BWONG BWONG - CLUNK!
-        if (Config.getInstance().getSalvageAnvilUseSoundsEnabled()) {
+        if (MainConfig.getInstance().getSalvageAnvilUseSoundsEnabled()) {
             SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
             SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_BREAK);
 
@@ -253,7 +252,7 @@ public class SalvageManager extends SkillManager {
         Player player = getPlayer();
         long lastUse = getLastAnvilUse();
 
-        if (!SkillUtils.cooldownExpired(lastUse, 3) || !Config.getInstance().getSalvageConfirmRequired()) {
+        if (!SkillUtils.cooldownExpired(lastUse, 3) || !MainConfig.getInstance().getSalvageConfirmRequired()) {
             return true;
         }
 

@@ -1,7 +1,7 @@
 package com.gmail.nossr50.commands.chat;
 
 import com.gmail.nossr50.chat.PartyChatManager;
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
@@ -29,7 +29,7 @@ public class PartyChatCommand extends ChatCommand {
                 return;
             }
 
-            if (party.getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.CHAT)) {
+            if (party.getLevel() < MainConfig.getInstance().getPartyFeatureUnlockLevel(PartyFeature.CHAT)) {
                 sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.1"));
                 return;
             }

@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.party;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.ShareMode;
@@ -18,7 +18,7 @@ public class PartyXpShareCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Party party = UserManager.getPlayer((Player) sender).getParty();
 
-        if (party.getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.XP_SHARE)) {
+        if (party.getLevel() < MainConfig.getInstance().getPartyFeatureUnlockLevel(PartyFeature.XP_SHARE)) {
             sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.5"));
             return true;
         }

@@ -1,7 +1,6 @@
 package com.gmail.nossr50.util.experience;
 
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
@@ -25,7 +24,7 @@ public class FormulaManager {
 
     public FormulaManager() {
         /* Setting for Classic Mode (Scales a lot of stuff up by * 10) */
-        retroModeEnabled = Config.getInstance().getIsRetroMode();
+        retroModeEnabled = MainConfig.getInstance().getIsRetroMode();
         loadFormula();
     }
 
@@ -80,7 +79,7 @@ public class FormulaManager {
     public int[] calculateNewLevel(PrimarySkillType primarySkillType, int experience, FormulaType formulaType) {
         int newLevel = 0;
         int remainder = 0;
-        int maxLevel = Config.getInstance().getLevelCap(primarySkillType);
+        int maxLevel = MainConfig.getInstance().getLevelCap(primarySkillType);
 
         while (experience > 0 && newLevel < maxLevel) {
             int experienceToNextLevel = getCachedXpToLevel(newLevel, formulaType);

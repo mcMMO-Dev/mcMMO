@@ -1,8 +1,8 @@
 package com.gmail.nossr50.config.mods;
 
-import com.gmail.nossr50.config.ConfigLoader;
-import com.gmail.nossr50.datatypes.skills.ItemType;
+import com.gmail.nossr50.config.ConfigCollections;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -14,23 +14,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class CustomArmorConfig extends ConfigLoader {
+public class CustomArmorConfig extends ConfigCollections {
+    public List<Material> customBoots = new ArrayList<Material>();
+    public List<Material> customChestplates = new ArrayList<Material>();
+    public List<Material> customHelmets = new ArrayList<Material>();
+    public List<Material> customLeggings = new ArrayList<Material>();
+    public List<Repairable> repairables = new ArrayList<Repairable>();
     private boolean needsUpdate = false;
 
-    public List<Material> customBoots       = new ArrayList<Material>();
-    public List<Material> customChestplates = new ArrayList<Material>();
-    public List<Material> customHelmets     = new ArrayList<Material>();
-    public List<Material> customLeggings    = new ArrayList<Material>();
-
-    public List<Repairable> repairables = new ArrayList<Repairable>();
-
     protected CustomArmorConfig(String fileName) {
-        super("mods", fileName);
-        loadKeys();
+        //super(McmmoCore.getDataFolderPath().getPath() + "mods", fileName, false);
+        super(mcMMO.p.getDataFolder().getPath() + "mods", fileName, false);        loadKeys();
+    }
+
+    /**
+     * The version of this config
+     *
+     * @return
+     */
+    @Override
+    public double getConfigVersion() {
+        return 1;
     }
 
     @Override
-    protected void loadKeys() {
+    public void loadKeys() {
         loadArmor("Boots", customBoots);
         loadArmor("Chestplates", customChestplates);
         loadArmor("Helmets", customHelmets);
@@ -68,8 +76,8 @@ public class CustomArmorConfig extends ConfigLoader {
                 continue;
             }
 
-            boolean repairable = config.getBoolean(armorType + "." + armorName + ".Repairable");
-            Material repairMaterial = Material.matchMaterial(config.getString(armorType + "." + armorName + ".Repair_Material", ""));
+            boolean repairable = getBooleanValue(armorType + "." + armorName + ".Repairable");
+            Material repairMaterial = Material.matchMaterial(getStringValue(armorType + "." + armorName + ".Repair_Material", ""));
 
             if (repairable && (repairMaterial == null)) {
                 plugin.getLogger().warning("Incomplete repair information. This item will be unrepairable. - " + armorName);
@@ -77,24 +85,24 @@ public class CustomArmorConfig extends ConfigLoader {
             }
 
             if (repairable) {
-                byte repairData = (byte) config.getInt(armorType + "." + armorName + ".Repair_Material_Data_Value", -1);
+                byte repairData = (byte) getIntValue(armorType + "." + armorName + ".Repair_Material_Data_Value", -1);
                 int repairQuantity = SkillUtils.getRepairAndSalvageQuantities(new ItemStack(armorMaterial), repairMaterial, repairData);
 
                 if (repairQuantity == 0) {
-                    repairQuantity = config.getInt(armorType + "." + armorName + ".Repair_Material_Quantity", 2);
+                    repairQuantity = getIntValue(armorType + "." + armorName + ".Repair_Material_Quantity", 2);
                 }
 
-                String repairItemName = config.getString(armorType + "." + armorName + ".Repair_Material_Pretty_Name");
-                int repairMinimumLevel = config.getInt(armorType + "." + armorName + ".Repair_MinimumLevel", 0);
-                double repairXpMultiplier = config.getDouble(armorType + "." + armorName + ".Repair_XpMultiplier", 1);
+                String repairItemName = getStringValue(armorType + "." + armorName + ".Repair_Material_Pretty_Name");
+                int repairMinimumLevel = getIntValue(armorType + "." + armorName + ".Repair_MinimumLevel", 0);
+                double repairXpMultiplier = getDoubleValue(armorType + "." + armorName + ".Repair_XpMultiplier", 1);
 
                 short durability = armorMaterial.getMaxDurability();
 
                 if (durability == 0) {
-                    durability = (short) config.getInt(armorType + "." + armorName + ".Durability", 70);
+                    durability = (short) getIntValue(armorType + "." + armorName + ".Durability", 70);
                 }
 
-                repairables.add(RepairableFactory.getRepairable(armorMaterial, repairMaterial, repairData, repairItemName, repairMinimumLevel, repairQuantity, durability, ItemType.ARMOR, MaterialType.OTHER, repairXpMultiplier));
+                repairables.add(RepairableFactory.getRepairable(armorMaterial, repairMaterial, repairData, repairItemName, repairMinimumLevel, repairQuantity, durability, ConfigItemCategory.ARMOR, MaterialType.OTHER, repairXpMultiplier));
             }
 
             materialList.add(armorMaterial);

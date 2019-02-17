@@ -4,7 +4,7 @@ import com.gmail.nossr50.config.HiddenConfig;
 
 public class ChunkManagerFactory {
     public static ChunkManager getChunkManager() {
-        HiddenConfig hConfig = HiddenConfig.getInstance();
+        HiddenConfig hConfig = HiddenMainConfig.getInstance();
 
         if (hConfig.getChunkletsEnabled()) {
             return new HashChunkManager();

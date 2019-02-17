@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.party;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.party.ItemShareType;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
@@ -19,7 +19,7 @@ public class PartyItemShareCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Party party = UserManager.getPlayer((Player) sender).getParty();
 
-        if (party.getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.ITEM_SHARE)) {
+        if (party.getLevel() < MainConfig.getInstance().getPartyFeatureUnlockLevel(PartyFeature.ITEM_SHARE)) {
             sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.4"));
             return true;
         }

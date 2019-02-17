@@ -1,15 +1,13 @@
 package com.gmail.nossr50;
 
-import com.gmail.nossr50.config.*;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.config.MainConfig;
+import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.mods.ArmorConfigManager;
 import com.gmail.nossr50.config.mods.BlockConfigManager;
 import com.gmail.nossr50.config.mods.EntityConfigManager;
 import com.gmail.nossr50.config.mods.ToolConfigManager;
-import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.config.skills.repair.RepairConfigManager;
 import com.gmail.nossr50.config.skills.salvage.SalvageConfigManager;
-import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -147,7 +145,7 @@ public class mcMMO extends JavaPlugin {
             }
 
             //Store this value so other plugins can check it
-            isRetroModeEnabled = Config.getInstance().getIsRetroMode();
+            isRetroModeEnabled = MainConfig.getInstance().getIsRetroMode();
 
             if (getServer().getName().equals("Cauldron") || getServer().getName().equals("MCPC+")) {
                 checkModConfigs();
@@ -184,7 +182,7 @@ public class mcMMO extends JavaPlugin {
 
             placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
 
-            if (Config.getInstance().getPTPCommandWorldPermissions()) {
+            if (MainConfig.getInstance().getPTPCommandWorldPermissions()) {
                 Permissions.generateWorldTeleportPermissions();
             }
 
@@ -195,11 +193,11 @@ public class mcMMO extends JavaPlugin {
 
             Metrics metrics;
 
-            if(Config.getInstance().getIsMetricsEnabled()) {
+            if(MainConfig.getInstance().getIsMetricsEnabled()) {
                 metrics = new Metrics(this);
                 metrics.addCustomChart(new Metrics.SimplePie("version", () -> getDescription().getVersion()));
 
-                if(Config.getInstance().getIsRetroMode())
+                if(MainConfig.getInstance().getIsRetroMode())
                     metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Standard"));
                 else
                     metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Retro"));
@@ -241,7 +239,7 @@ public class mcMMO extends JavaPlugin {
             PartyManager.saveParties(); // Save our parties
 
             //TODO: Needed?
-            if(Config.getInstance().getScoreboardsEnabled())
+            if(MainConfig.getInstance().getScoreboardsEnabled())
                 ScoreboardManager.teardownAll();
 
             formulaManager.saveFormula();
@@ -256,7 +254,7 @@ public class mcMMO extends JavaPlugin {
         debug("Unregister all events...");
         HandlerList.unregisterAll(this); // Cancel event registrations
 
-        if (Config.getInstance().getBackupsEnabled()) {
+        if (MainConfig.getInstance().getBackupsEnabled()) {
             // Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
             try {
                 ZipLibrary.mcMMOBackup();
@@ -422,12 +420,12 @@ public class mcMMO extends JavaPlugin {
 
 
         // Force the loading of config files
-        TreasureConfig.getInstance();
-        HiddenConfig.getInstance();
+        TreasureMainConfig.getInstance();
+        HiddenMainConfig.getInstance();
         AdvancedConfig.getInstance();
-        PotionConfig.getInstance();
-        CoreSkillsConfig.getInstance();
-        SoundConfig.getInstance();
+        PotionMainConfig.getInstance();
+        CoreSkillsMainConfig.getInstance();
+        SoundMainConfig.getInstance();
         RankConfig.getInstance();
 
         new ChildConfig();
@@ -435,19 +433,19 @@ public class mcMMO extends JavaPlugin {
         List<Repairable> repairables = new ArrayList<Repairable>();
         List<Salvageable> salvageables = new ArrayList<Salvageable>();
 
-        if (Config.getInstance().getToolModsEnabled()) {
+        if (MainConfig.getInstance().getToolModsEnabled()) {
             new ToolConfigManager(this);
         }
 
-        if (Config.getInstance().getArmorModsEnabled()) {
+        if (MainConfig.getInstance().getArmorModsEnabled()) {
             new ArmorConfigManager(this);
         }
 
-        if (Config.getInstance().getBlockModsEnabled()) {
+        if (MainConfig.getInstance().getBlockModsEnabled()) {
             new BlockConfigManager(this);
         }
 
-        if (Config.getInstance().getEntityModsEnabled()) {
+        if (MainConfig.getInstance().getEntityModsEnabled()) {
             new EntityConfigManager(this);
         }
 
@@ -485,20 +483,20 @@ public class mcMMO extends JavaPlugin {
          * Acrobatics skills
          */
 
-        if(CoreSkillsConfig.getInstance().isPrimarySkillEnabled(PrimarySkillType.ACROBATICS))
+        if(CoreSkillsMainConfig.getInstance().isPrimarySkillEnabled(PrimarySkillType.ACROBATICS))
         {
             System.out.println("[mcMMO]" + " enabling Acrobatics Skills");
 
             //TODO: Should do this differently
             Roll roll = new Roll();
-            CoreSkillsConfig.getInstance().isSkillEnabled(roll);
+            CoreSkillsMainConfig.getInstance().isSkillEnabled(roll);
             InteractionManager.registerSubSkill(new Roll());
         }
     }
 
     private void registerCustomRecipes() {
         getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
-            if (Config.getInstance().getChimaeraEnabled()) {
+            if (MainConfig.getInstance().getChimaeraEnabled()) {
                 getServer().addRecipe(ChimaeraWing.getChimaeraWingRecipe());
             }
         }, 40);
@@ -506,7 +504,7 @@ public class mcMMO extends JavaPlugin {
 
     private void scheduleTasks() {
         // Periodic save timer (Saves every 10 minutes by default)
-        long saveIntervalTicks = Config.getInstance().getSaveInterval() * 1200;
+        long saveIntervalTicks = MainConfig.getInstance().getSaveInterval() * 1200;
         new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
 
         // Cleanup the backups folder
@@ -516,7 +514,7 @@ public class mcMMO extends JavaPlugin {
         new BleedTimerTask().runTaskTimer(this, 1 * Misc.TICK_CONVERSION_FACTOR, 1 * (Misc.TICK_CONVERSION_FACTOR / 2));
 
         // Old & Powerless User remover
-        long purgeIntervalTicks = Config.getInstance().getPurgeInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
+        long purgeIntervalTicks = MainConfig.getInstance().getPurgeInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
 
         if (purgeIntervalTicks == 0) {
             new UserPurgeTask().runTaskLaterAsynchronously(this, 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
@@ -526,7 +524,7 @@ public class mcMMO extends JavaPlugin {
         }
 
         // Automatically remove old members from parties
-        long kickIntervalTicks = Config.getInstance().getAutoPartyKickInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
+        long kickIntervalTicks = MainConfig.getInstance().getAutoPartyKickInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
 
         if (kickIntervalTicks == 0) {
             new PartyAutoKickTask().runTaskLater(this, 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
@@ -549,22 +547,22 @@ public class mcMMO extends JavaPlugin {
     }
 
     private void checkModConfigs() {
-        if (!Config.getInstance().getToolModsEnabled()) {
+        if (!MainConfig.getInstance().getToolModsEnabled()) {
             getLogger().warning("Cauldron implementation found, but the custom tool config for mcMMO is disabled!");
             getLogger().info("To enable, set Mods.Tool_Mods_Enabled to TRUE in config.yml.");
         }
 
-        if (!Config.getInstance().getArmorModsEnabled()) {
+        if (!MainConfig.getInstance().getArmorModsEnabled()) {
             getLogger().warning("Cauldron implementation found, but the custom armor config for mcMMO is disabled!");
             getLogger().info("To enable, set Mods.Armor_Mods_Enabled to TRUE in config.yml.");
         }
 
-        if (!Config.getInstance().getBlockModsEnabled()) {
+        if (!MainConfig.getInstance().getBlockModsEnabled()) {
             getLogger().warning("Cauldron implementation found, but the custom block config for mcMMO is disabled!");
             getLogger().info("To enable, set Mods.Block_Mods_Enabled to TRUE in config.yml.");
         }
 
-        if (!Config.getInstance().getEntityModsEnabled()) {
+        if (!MainConfig.getInstance().getEntityModsEnabled()) {
             getLogger().warning("Cauldron implementation found, but the custom entity config for mcMMO is disabled!");
             getLogger().info("To enable, set Mods.Entity_Mods_Enabled to TRUE in config.yml.");
         }
