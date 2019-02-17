@@ -611,7 +611,7 @@ public class BlockListener implements Listener {
     }
 
     public void cleanupAbilityTools(Player player, McMMOPlayer mcMMOPlayer, BlockState blockState, ItemStack heldItem) {
-        if (HiddenMainConfig.getInstance().useEnchantmentBuffs()) {
+        if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
             if ((ItemUtils.isPickaxe(heldItem) && !mcMMOPlayer.getAbilityMode(SuperAbilityType.SUPER_BREAKER)) || (ItemUtils.isShovel(heldItem) && !mcMMOPlayer.getAbilityMode(SuperAbilityType.GIGA_DRILL_BREAKER))) {
                 SkillUtils.removeAbilityBuff(heldItem);
             }

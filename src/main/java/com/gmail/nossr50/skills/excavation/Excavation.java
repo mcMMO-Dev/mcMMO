@@ -18,8 +18,8 @@ public class Excavation {
      */
     protected static List<ExcavationTreasure> getTreasures(BlockState blockState) {
         String friendly = StringUtils.getFriendlyConfigBlockDataString(blockState.getBlockData());
-        if (TreasureMainConfig.getInstance().excavationMap.containsKey(friendly))
-            return TreasureMainConfig.getInstance().excavationMap.get(friendly);
+        if (TreasureConfig.getInstance().excavationMap.containsKey(friendly))
+            return TreasureConfig.getInstance().excavationMap.get(friendly);
         return new ArrayList<ExcavationTreasure>();
     }
 

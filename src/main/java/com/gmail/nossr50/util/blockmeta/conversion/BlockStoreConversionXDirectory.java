@@ -20,7 +20,7 @@ public class BlockStoreConversionXDirectory implements Runnable {
     public void start(org.bukkit.World world, File dataDir) {
         this.world = world;
         this.scheduler = mcMMO.p.getServer().getScheduler();
-        this.converters = new BlockStoreConversionZDirectory[HiddenMainConfig.getInstance().getConversionRate()];
+        this.converters = new BlockStoreConversionZDirectory[HiddenConfig.getInstance().getConversionRate()];
         this.dataDir = dataDir;
 
         if (this.taskID >= 0) {
@@ -52,7 +52,7 @@ public class BlockStoreConversionXDirectory implements Runnable {
 
         this.zDirs = this.dataDir.listFiles();
 
-        for (this.i = 0; (this.i < HiddenMainConfig.getInstance().getConversionRate()) && (this.i < this.zDirs.length); this.i++) {
+        for (this.i = 0; (this.i < HiddenConfig.getInstance().getConversionRate()) && (this.i < this.zDirs.length); this.i++) {
             if (this.converters[this.i] == null) {
                 this.converters[this.i] = new BlockStoreConversionZDirectory();
             }

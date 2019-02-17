@@ -14,13 +14,13 @@ public class SoundManager {
      */
     public static void sendSound(Player player, Location location, SoundType soundType)
     {
-        if(SoundMainConfig.getInstance().getIsEnabled(soundType))
+        if(SoundConfig.getInstance().getIsEnabled(soundType))
             player.playSound(location, getSound(soundType), SoundCategory.MASTER, getVolume(soundType), getPitch(soundType));
     }
 
     public static void sendCategorizedSound(Player player, Location location, SoundType soundType, SoundCategory soundCategory)
     {
-        if(SoundMainConfig.getInstance().getIsEnabled(soundType))
+        if(SoundConfig.getInstance().getIsEnabled(soundType))
             player.playSound(location, getSound(soundType), soundCategory, getVolume(soundType), getPitch(soundType));
     }
 
@@ -28,13 +28,13 @@ public class SoundManager {
     {
         float totalPitch = Math.min(2.0F, (getPitch(soundType) + pitchModifier));
 
-        if(SoundMainConfig.getInstance().getIsEnabled(soundType))
+        if(SoundConfig.getInstance().getIsEnabled(soundType))
             player.playSound(location, getSound(soundType), soundCategory, getVolume(soundType), totalPitch);
     }
 
     public static void worldSendSound(World world, Location location, SoundType soundType)
     {
-        if(SoundMainConfig.getInstance().getIsEnabled(soundType))
+        if(SoundConfig.getInstance().getIsEnabled(soundType))
             world.playSound(location, getSound(soundType), getVolume(soundType), getPitch(soundType));
     }
 
@@ -45,7 +45,7 @@ public class SoundManager {
      */
     private static float getVolume(SoundType soundType)
     {
-        return SoundMainConfig.getInstance().getVolume(soundType) * SoundMainConfig.getInstance().getMasterVolume();
+        return SoundConfig.getInstance().getVolume(soundType) * SoundConfig.getInstance().getMasterVolume();
     }
 
     private static float getPitch(SoundType soundType)
@@ -55,7 +55,7 @@ public class SoundManager {
         else if (soundType == SoundType.POP)
             return getPopPitch();
         else
-            return SoundMainConfig.getInstance().getPitch(soundType);
+            return SoundConfig.getInstance().getPitch(soundType);
     }
 
     private static Sound getSound(SoundType soundType)

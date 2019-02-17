@@ -212,9 +212,9 @@ public class HerbalismManager extends SkillManager {
         }
 
         String friendly = StringUtils.getFriendlyConfigBlockDataString(blockState.getBlockData());
-        if (!TreasureMainConfig.getInstance().hylianMap.containsKey(friendly))
+        if (!TreasureConfig.getInstance().hylianMap.containsKey(friendly))
             return false;
-        List<HylianTreasure> treasures = TreasureMainConfig.getInstance().hylianMap.get(friendly);
+        List<HylianTreasure> treasures = TreasureConfig.getInstance().hylianMap.get(friendly);
 
         Player player = getPlayer();
 

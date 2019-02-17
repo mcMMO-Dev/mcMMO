@@ -25,7 +25,7 @@ public class AlchemyManager extends SkillManager {
     }
 
     public List<ItemStack> getIngredients() {
-        return PotionMainConfig.getInstance().getIngredients(getTier());
+        return PotionConfig.getInstance().getIngredients(getTier());
     }
 
     public String getIngredientList() {

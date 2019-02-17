@@ -30,8 +30,8 @@ public final class Fishing {
      * @return possibleDrops List of ItemStack that can be dropped
      */
     protected static List<ShakeTreasure> findPossibleDrops(LivingEntity target) {
-        if (TreasureMainConfig.getInstance().shakeMap.containsKey(target.getType()))
-            return TreasureMainConfig.getInstance().shakeMap.get(target.getType());
+        if (TreasureConfig.getInstance().shakeMap.containsKey(target.getType()))
+            return TreasureConfig.getInstance().shakeMap.get(target.getType());
 
         return null;
     }

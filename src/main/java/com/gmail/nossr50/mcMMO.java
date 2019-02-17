@@ -420,12 +420,12 @@ public class mcMMO extends JavaPlugin {
 
 
         // Force the loading of config files
-        TreasureMainConfig.getInstance();
-        HiddenMainConfig.getInstance();
+        TreasureConfig.getInstance();
+        HiddenConfig.getInstance();
         AdvancedConfig.getInstance();
-        PotionMainConfig.getInstance();
+        PotionConfig.getInstance();
         CoreSkillsMainConfig.getInstance();
-        SoundMainConfig.getInstance();
+        SoundConfig.getInstance();
         RankConfig.getInstance();
 
         new ChildConfig();
