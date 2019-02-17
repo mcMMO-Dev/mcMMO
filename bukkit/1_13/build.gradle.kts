@@ -1,10 +1,12 @@
+import Config.Libs.Bukkit.`1_13` as Bukkit
 
 plugins {
     `java-library`
 }
 
 dependencies {
-    implementation("org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT") // Spigot API
-    implementation("com.sk89q.worldguard", "worldguard-core", "7.0.0-SNAPSHOT") // WorldGuard
-    implementation("com.sk89q.worldguard", "worldguard-legacy", "7.0.0-SNAPSHOT") // NEEDED
+    compileOnly(Bukkit.api) // Bukkit API
+    compileOnly(Bukkit.nms)
+    compileOnly(Bukkit.wgCore) // WorldGuard
+    compileOnly(Bukkit.wgLegacy) // WG for Bukkit
 }

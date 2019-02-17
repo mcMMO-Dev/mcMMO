@@ -26,6 +26,7 @@ pluginManagement {
     repositories {
         jcenter()
         maven("https://repo.spongepowered.org/maven/")
+        maven("https://files.minecraftforge.net/maven/")
         gradlePluginPortal()
     }
 }

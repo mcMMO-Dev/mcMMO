@@ -1,31 +1,29 @@
+import Config.Libs.Sponge as Sponge
+
 plugins {
     java
 }
 
-val core: Project by rootProject.extra
-val sponge: Project by rootProject.extra
+val core = Projects.core!! // because it's a var and potentially null by declaration
+val sponge = Projects.sponge!! // because it's a var and potentially null by declaration
 
 description = "mcMMO for Sponge"
 
-repositories {
-    // sponge
-    maven("https://repo.spongepowered.org/maven")
-}
-
 dependencies {
-    implementation(group="org.spongepowered", name="spongeapi", version="7.1.0") // Base version
+    compile(Sponge.bstats) // Bstats is used for all sponge versions
+    compileOnly(Sponge.API7.api) // Base version
 }
 
 allprojects {
     dependencies {
-        compile(core)
+        compile(Projects.core!!)
     }
 }
 
 subprojects {
     dependencies {
-        (compile(sponge) as ModuleDependency).apply {
-            exclude("org.spongepowered")
+        (compileOnly(sponge) as ModuleDependency).apply {
+            exclude(Sponge.Exclude.group, Sponge.Exclude.module)
         }
     }
 }
