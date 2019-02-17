@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes.skills.alchemy;
 
-import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -123,7 +122,7 @@ public class AlchemyPotion {
         if (!children.isEmpty()) {
             for (Entry<ItemStack, String> child : children.entrySet()) {
                 if (ingredient.isSimilar(child.getKey())) {
-                    return PotionConfig.getInstance().getPotion(child.getValue());
+                    return PotionMainConfig.getInstance().getPotion(child.getValue());
                 }
             }
         }

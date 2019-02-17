@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.skills;
 
-import com.gmail.nossr50.config.RankConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;

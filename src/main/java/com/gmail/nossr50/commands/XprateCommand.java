@@ -1,7 +1,5 @@
 package com.gmail.nossr50.commands;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
