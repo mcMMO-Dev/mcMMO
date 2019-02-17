@@ -1,3 +1,4 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import Config.Libs.Sponge as Sponge
 
 plugins {
@@ -17,6 +18,12 @@ dependencies {
 allprojects {
     dependencies {
         compile(Projects.core!!)
+    }
+    // TODO dunno if this works yet... project needs to compile.
+    val shadowJar by tasks.getting(ShadowJar::class) {
+        relocate(Deps.Groups.nossr, "${Deps.Groups.nossr}.sponge") {
+            exclude("${Deps.Groups.nossr}.core")
+        }
     }
 }
 

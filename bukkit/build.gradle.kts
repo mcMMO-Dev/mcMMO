@@ -11,8 +11,12 @@ allprojects {
         implementation(Bukkit.bstats) // Bukkit bstats
     }
 
+    // TODO dunno if this works yet... project needs to compile.
     val shadowJar by tasks.getting(ShadowJar::class) {
         relocate(Shadow.Origin.bstatsBukkit, Shadow.Target.bstatsBukkit)
+        relocate(Deps.Groups.nossr, "${Deps.Groups.nossr}.bukkit") {
+            exclude("${Deps.Groups.nossr}.core")
+        }
     }
 }
 
