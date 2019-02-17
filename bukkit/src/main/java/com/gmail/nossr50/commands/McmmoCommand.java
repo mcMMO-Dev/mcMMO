@@ -1,10 +1,10 @@
 package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.commands.party.PartySubcommandType;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.core.config.MainConfig;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.util.Permissions;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,7 +24,7 @@ public class McmmoCommand implements CommandExecutor {
                 String[] mcSplit = description.split(",");
                 sender.sendMessage(mcSplit);
 
-                if (Config.getInstance().getDonateMessageEnabled()) {
+                if (MainConfig.getInstance().getDonateMessageEnabled()) {
                     sender.sendMessage(LocaleLoader.getString("MOTD.Donate"));
                     sender.sendMessage(ChatColor.GOLD + " - " + ChatColor.GREEN + "com.gmail.nossr50@com.gmail.com" + ChatColor.GOLD + " Paypal");
                 }
@@ -71,7 +71,7 @@ public class McmmoCommand implements CommandExecutor {
 
     private void displayOtherCommands(CommandSender sender) {
         //Don't show them this category if they have none of the permissions
-        if(!Permissions.skillreset(sender) && !Permissions.mmoedit(sender) && !Permissions.adminChat(sender) && !Permissions.mcgod(sender))
+        if (!Permissions.skillreset(sender) && !Permissions.mmoedit(sender) && !Permissions.adminChat(sender) && !Permissions.mcgod(sender))
             return;
 
         sender.sendMessage(LocaleLoader.getString("Commands.Other"));

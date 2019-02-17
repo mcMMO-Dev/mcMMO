@@ -1,5 +1,6 @@
 object Versions {
     const val configurate = "3.6" // Latest configurate
+    const val flowmath = "1.0.4-SNAPSHOT"
     const val bukkit18 = "1.8.8-R0.1-SNAPSHOT" // Last bukkit 1.8.8
     const val bukkit112 = "1.12.2-R0.1-SNAPSHOT" // Last bukkit 1.12.2
     const val bukkit113 = "1.13.2-R0.1-SNAPSHOT" // Latest bukkit

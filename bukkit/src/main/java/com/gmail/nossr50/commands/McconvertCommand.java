@@ -2,9 +2,9 @@ package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.commands.database.ConvertDatabaseCommand;
 import com.gmail.nossr50.commands.experience.ConvertExperienceCommand;
-import com.gmail.nossr50.database.DatabaseManagerFactory;
-import com.gmail.nossr50.datatypes.database.DatabaseType;
-import com.gmail.nossr50.datatypes.experience.FormulaType;
+import com.gmail.nossr50.core.data.database.DatabaseManagerFactory;
+import com.gmail.nossr50.core.datatypes.database.DatabaseType;
+import com.gmail.nossr50.core.datatypes.experience.FormulaType;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -21,9 +21,6 @@ public class McconvertCommand implements TabExecutor {
     private static final List<String> FORMULA_TYPES;
     private static final List<String> DATABASE_TYPES;
     private static final List<String> SUBCOMMANDS = ImmutableList.of("database", "experience");
-
-    private CommandExecutor databaseConvertCommand = new ConvertDatabaseCommand();
-    private CommandExecutor experienceConvertCommand = new ConvertExperienceCommand();
 
     static {
         ArrayList<String> formulaTypes = new ArrayList<String>();
@@ -52,14 +49,16 @@ public class McconvertCommand implements TabExecutor {
 
     }
 
+    private CommandExecutor databaseConvertCommand = new ConvertDatabaseCommand();
+    private CommandExecutor experienceConvertCommand = new ConvertExperienceCommand();
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 2:
                 if (args[0].equalsIgnoreCase("database") || args[0].equalsIgnoreCase("db")) {
                     return databaseConvertCommand.onCommand(sender, command, label, args);
-                }
-                else if (args[0].equalsIgnoreCase("experience") || args[0].equalsIgnoreCase("xp") || args[1].equalsIgnoreCase("exp")) {
+                } else if (args[0].equalsIgnoreCase("experience") || args[0].equalsIgnoreCase("xp") || args[1].equalsIgnoreCase("exp")) {
                     return experienceConvertCommand.onCommand(sender, command, label, args);
                 }
 

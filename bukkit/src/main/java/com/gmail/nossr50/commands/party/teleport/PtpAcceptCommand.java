@@ -1,11 +1,11 @@
 package com.gmail.nossr50.commands.party.teleport;
 
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.skills.SkillUtils;
+import com.gmail.nossr50.core.config.MainConfig;
+import com.gmail.nossr50.core.data.UserManager;
+import com.gmail.nossr50.core.datatypes.party.PartyTeleportRecord;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.util.Permissions;
+import com.gmail.nossr50.core.util.skills.SkillUtils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -28,7 +28,7 @@ public class PtpAcceptCommand implements CommandExecutor {
             return true;
         }
 
-        if (SkillUtils.cooldownExpired(ptpRecord.getTimeout(), Config.getInstance().getPTPCommandTimeout())) {
+        if (SkillUtils.cooldownExpired(ptpRecord.getTimeout(), MainConfig.getInstance().getPTPCommandTimeout())) {
             ptpRecord.removeRequest();
             player.sendMessage(LocaleLoader.getString("Commands.ptp.RequestExpired"));
             return true;
@@ -41,7 +41,7 @@ public class PtpAcceptCommand implements CommandExecutor {
             return true;
         }
 
-        if (Config.getInstance().getPTPCommandWorldPermissions()) {
+        if (MainConfig.getInstance().getPTPCommandWorldPermissions()) {
             World targetWorld = target.getWorld();
             World playerWorld = player.getWorld();
 
@@ -49,8 +49,7 @@ public class PtpAcceptCommand implements CommandExecutor {
                 if (!Permissions.partyTeleportWorld(target, targetWorld)) {
                     target.sendMessage(LocaleLoader.getString("Commands.ptp.NoWorldPermissions", targetWorld.getName()));
                     return true;
-                }
-                else if (targetWorld != playerWorld && !Permissions.partyTeleportWorld(target, playerWorld)) {
+                } else if (targetWorld != playerWorld && !Permissions.partyTeleportWorld(target, playerWorld)) {
                     target.sendMessage(LocaleLoader.getString("Commands.ptp.NoWorldPermissions", playerWorld.getName()));
                     return true;
                 }

@@ -1,14 +1,14 @@
 package com.gmail.nossr50.commands.database;
 
-import com.gmail.nossr50.database.DatabaseManager;
-import com.gmail.nossr50.database.DatabaseManagerFactory;
-import com.gmail.nossr50.datatypes.database.DatabaseType;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.core.data.UserManager;
+import com.gmail.nossr50.core.data.database.DatabaseManager;
+import com.gmail.nossr50.core.data.database.DatabaseManagerFactory;
+import com.gmail.nossr50.core.datatypes.database.DatabaseType;
+import com.gmail.nossr50.core.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.runnables.database.DatabaseConversionTask;
+import com.gmail.nossr50.core.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.database.DatabaseConversionTask;
-import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -41,8 +41,7 @@ public class ConvertDatabaseCommand implements CommandExecutor {
                         }
 
                         oldDatabase = DatabaseManagerFactory.createCustomDatabaseManager((Class<? extends DatabaseManager>) clazz);
-                    }
-                    catch (Throwable e) {
+                    } catch (Throwable e) {
                         e.printStackTrace();
                         sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Database.InvalidType", args[1]));
                         return true;

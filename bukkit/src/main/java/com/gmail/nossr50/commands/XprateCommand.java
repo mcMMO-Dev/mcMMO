@@ -1,13 +1,13 @@
 package com.gmail.nossr50.commands;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.core.config.AdvancedConfig;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.util.Permissions;
+import com.gmail.nossr50.core.util.StringUtils;
+import com.gmail.nossr50.core.util.commands.CommandUtils;
+import com.gmail.nossr50.core.util.player.NotificationManager;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.NotificationManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -25,7 +25,7 @@ public class XprateCommand implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 1:
-                if (!args[0].equalsIgnoreCase("reset") &&  !args[0].equalsIgnoreCase("clear")) {
+                if (!args[0].equalsIgnoreCase("reset") && !args[0].equalsIgnoreCase("clear")) {
                     return false;
                 }
 
@@ -36,12 +36,11 @@ public class XprateCommand implements TabExecutor {
 
                 if (mcMMO.p.isXPEventEnabled()) {
 
-                    if(AdvancedConfig.getInstance().useTitlesForXPEvent())
-                    {
+                    if (AdvancedConfig.getInstance().useTitlesForXPEvent()) {
                         NotificationManager.broadcastTitle(mcMMO.p.getServer(),
                                 LocaleLoader.getString("Commands.Event.Stop"),
                                 LocaleLoader.getString("Commands.Event.Stop.Subtitle"),
-                                10, 10*20, 20);
+                                10, 10 * 20, 20);
                     }
 
                     mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop"));
@@ -65,36 +64,31 @@ public class XprateCommand implements TabExecutor {
 
                 if (CommandUtils.shouldDisableToggle(args[1])) {
                     mcMMO.p.setXPEventEnabled(false);
-                }
-                else if (CommandUtils.shouldEnableToggle(args[1])) {
+                } else if (CommandUtils.shouldEnableToggle(args[1])) {
                     mcMMO.p.setXPEventEnabled(true);
-                }
-                else {
+                } else {
                     return false;
                 }
 
                 int newXpRate = Integer.parseInt(args[0]);
 
-                if(newXpRate < 0)
-                {
-                    sender.sendMessage(ChatColor.RED+LocaleLoader.getString("Commands.NegativeNumberWarn"));
+                if (newXpRate < 0) {
+                    sender.sendMessage(ChatColor.RED + LocaleLoader.getString("Commands.NegativeNumberWarn"));
                     return true;
                 }
 
                 ExperienceConfig.getInstance().setExperienceGainsGlobalMultiplier(newXpRate);
 
                 if (mcMMO.p.isXPEventEnabled()) {
-                    if(AdvancedConfig.getInstance().useTitlesForXPEvent())
-                    {
+                    if (AdvancedConfig.getInstance().useTitlesForXPEvent()) {
                         NotificationManager.broadcastTitle(mcMMO.p.getServer(),
                                 LocaleLoader.getString("Commands.Event.Start"),
                                 LocaleLoader.getString("Commands.Event.XP", newXpRate),
-                                10, 10*20, 20);
+                                10, 10 * 20, 20);
                     }
                     mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Start"));
                     mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.XP", newXpRate));
-                }
-                else {
+                } else {
                     sender.sendMessage(LocaleLoader.getString("Commands.xprate.modified", newXpRate));
                 }
 

@@ -1,12 +1,12 @@
 package com.gmail.nossr50.commands.experience;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.core.data.UserManager;
+import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
+import com.gmail.nossr50.core.util.commands.CommandUtils;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -20,6 +20,14 @@ import java.util.List;
 import java.util.UUID;
 
 public abstract class ExperienceCommand implements TabExecutor {
+    protected static void handleSenderMessage(CommandSender sender, String playerName, PrimarySkillType skill) {
+        if (skill == null) {
+            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
+        } else {
+            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", skill.getName(), playerName));
+        }
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         PrimarySkillType skill;
@@ -45,8 +53,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                     skill = null;
                 }
 
-                if (skill != null && skill.isChildSkill())
-                {
+                if (skill != null && skill.isChildSkill()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Skill.ChildSkill"));
                     return true;
                 }
@@ -70,8 +77,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                     skill = null;
                 }
 
-                if (skill != null && skill.isChildSkill())
-                {
+                if (skill != null && skill.isChildSkill()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Skill.ChildSkill"));
                     return true;
                 }
@@ -95,8 +101,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                     }
 
                     editValues(null, profile, skill, value);
-                }
-                else {
+                } else {
                     editValues(mcMMOPlayer.getPlayer(), mcMMOPlayer.getProfile(), skill, value);
                 }
 
@@ -122,22 +127,17 @@ public abstract class ExperienceCommand implements TabExecutor {
     }
 
     protected abstract boolean permissionsCheckSelf(CommandSender sender);
+
     protected abstract boolean permissionsCheckOthers(CommandSender sender);
+
     protected abstract void handleCommand(Player player, PlayerProfile profile, PrimarySkillType skill, int value);
+
     protected abstract void handlePlayerMessageAll(Player player, int value);
+
     protected abstract void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill);
 
     private boolean validateArguments(CommandSender sender, String skillName, String value) {
         return !(CommandUtils.isInvalidInteger(sender, value) || (!skillName.equalsIgnoreCase("all") && CommandUtils.isInvalidSkill(sender, skillName)));
-    }
-
-    protected static void handleSenderMessage(CommandSender sender, String playerName, PrimarySkillType skill) {
-        if (skill == null) {
-            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
-        }
-        else {
-            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", skill.getName(), playerName));
-        }
     }
 
     protected void editValues(Player player, PlayerProfile profile, PrimarySkillType skill, int value) {
@@ -149,8 +149,7 @@ public abstract class ExperienceCommand implements TabExecutor {
             if (player != null) {
                 handlePlayerMessageAll(player, value);
             }
-        }
-        else {
+        } else {
             handleCommand(player, profile, skill, value);
 
             if (player != null) {

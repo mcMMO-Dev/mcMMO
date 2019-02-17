@@ -1,13 +1,13 @@
 package com.gmail.nossr50.commands.chat;
 
-import com.gmail.nossr50.chat.PartyChatManager;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.chat.ChatMode;
-import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.party.PartyFeature;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.core.chat.PartyChatManager;
+import com.gmail.nossr50.core.config.MainConfig;
+import com.gmail.nossr50.core.data.UserManager;
+import com.gmail.nossr50.core.datatypes.chat.ChatMode;
+import com.gmail.nossr50.core.datatypes.party.Party;
+import com.gmail.nossr50.core.datatypes.party.PartyFeature;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.party.PartyManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -29,14 +29,13 @@ public class PartyChatCommand extends ChatCommand {
                 return;
             }
 
-            if (party.getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.CHAT)) {
+            if (party.getLevel() < MainConfig.getInstance().getPartyFeatureUnlockLevel(PartyFeature.CHAT)) {
                 sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.1"));
                 return;
             }
 
             message = buildChatMessage(args, 0);
-        }
-        else {
+        } else {
             if (args.length < 2) {
                 sender.sendMessage(LocaleLoader.getString("Party.Specify"));
                 return;

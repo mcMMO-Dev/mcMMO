@@ -1,12 +1,12 @@
 package com.gmail.nossr50.commands.player;
 
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
+import com.gmail.nossr50.core.config.MainConfig;
+import com.gmail.nossr50.core.data.UserManager;
+import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.skills.SuperAbilityType;
+import com.gmail.nossr50.core.util.commands.CommandUtils;
+import com.gmail.nossr50.core.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -30,10 +30,10 @@ public class MccooldownCommand implements TabExecutor {
             case 0:
                 Player player = (Player) sender;
 
-                if (Config.getInstance().getScoreboardsEnabled() && Config.getInstance().getCooldownUseBoard()) {
+                if (MainConfig.getInstance().getScoreboardsEnabled() && MainConfig.getInstance().getCooldownUseBoard()) {
                     ScoreboardManager.enablePlayerCooldownScoreboard(player);
 
-                    if (!Config.getInstance().getCooldownUseChat()) {
+                    if (!MainConfig.getInstance().getCooldownUseChat()) {
                         return true;
                     }
                 }
@@ -52,8 +52,7 @@ public class MccooldownCommand implements TabExecutor {
 
                     if (seconds <= 0) {
                         player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.Y", ability.getName()));
-                    }
-                    else {
+                    } else {
                         player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.N", ability.getName(), seconds));
                     }
                 }

@@ -1,11 +1,11 @@
 package com.gmail.nossr50.commands.party;
 
-import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.core.data.UserManager;
+import com.gmail.nossr50.core.datatypes.party.Party;
+import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.party.PartyManager;
+import com.gmail.nossr50.core.util.commands.CommandUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -54,8 +54,7 @@ public class PartyJoinCommand implements CommandExecutor {
                     return true;
                 }
 
-                if(PartyManager.isPartyFull(player, targetParty))
-                {
+                if (PartyManager.isPartyFull(player, targetParty)) {
                     player.sendMessage(LocaleLoader.getString("Commands.Party.PartyFull", targetParty.toString()));
                     return true;
                 }

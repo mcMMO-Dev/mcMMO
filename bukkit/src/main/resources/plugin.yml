@@ -1,14 +1,14 @@
 name: mcMMO
 version: ${project.version}
 description: >
-  The goal of mcMMO is to take core Minecraft game mechanics and expand them into
-  add an extensive and quality RPG experience. Everything in mcMMO has been carefully
-  thought out and is constantly being improved upon. Currently, mcMMO adds thirteen
-  unique skills to train and level in. Each of these skills is highly customizable
-  through our configuration files, allowing server admins to tweak mcMMO to best suit
-  the needs of his or her server. Know that the mcMMO team is dedicated to providing
-  an ever-evolving experience, and that we carefully read all feedback and bug reports
-  in order to evaluate and balance the mechanics of mcMMO in every update.
+    The goal of mcMMO is to take core Minecraft game mechanics and expand them into
+    add an extensive and quality RPG experience. Everything in mcMMO has been carefully
+    thought out and is constantly being improved upon. Currently, mcMMO adds thirteen
+    unique skills to train and level in. Each of these skills is highly customizable
+    through our configuration files, allowing server admins to tweak mcMMO to best suit
+    the needs of his or her server. Know that the mcMMO team is dedicated to providing
+    an ever-evolving experience, and that we carefully read all feedback and bug reports
+    in order to evaluate and balance the mechanics of mcMMO in every update.
 
 author: com.gmail.nossr50
 authors: [GJ, NuclearW, bm01, Glitchfinder, TfT_02, t00thpick1, Riking]
@@ -715,8 +715,8 @@ permissions:
     mcmmo.chat.all:
         description: Implies all mcmmo.chat permissions. (Warning, contains adminchat)
         children:
-            mcmmo.chat.adminchat: true 
-            mcmmo.chat.partychat: true 
+            mcmmo.chat.adminchat: true
+            mcmmo.chat.partychat: true
     mcmmo.chat.adminchat:
         description: Allows participation in admin chat
     mcmmo.chat.partychat:
@@ -1270,7 +1270,7 @@ permissions:
         children:
             mcmmo.chat.partychat: true
             mcmmo.commands.defaults: true
-            mcmmo.motd: true 
+            mcmmo.motd: true
             mcmmo.skills.all: true
     mcmmo.defaultsop:
         default: op
@@ -1308,7 +1308,7 @@ permissions:
         default: false
         description: implies access to all mcmmo perks
         children:
-            mcmmo.perks.all: true 
+            mcmmo.perks.all: true
     mcmmo.perks.all:
         default: false
         description: implies access to all mcmmo perks
@@ -2045,7 +2045,7 @@ permissions:
         default: false
         description: Implies all mcmmo.tools permissions.
         children:
-            mcmmo.tools.all: true 
+            mcmmo.tools.all: true
     mcmmo.tools.all:
         default: false
         description: Implies all mcmmo.tools permissions.

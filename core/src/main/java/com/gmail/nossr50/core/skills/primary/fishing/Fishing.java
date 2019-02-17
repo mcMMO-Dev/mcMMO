@@ -1,0 +1,59 @@
+package com.gmail.nossr50.core.skills.primary.fishing;
+
+import com.gmail.nossr50.core.config.AdvancedConfig;
+import com.gmail.nossr50.core.config.treasure.TreasureConfig;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
+import com.gmail.nossr50.core.skills.treasure.ShakeTreasure;
+import com.gmail.nossr50.core.util.Misc;
+import com.gmail.nossr50.core.util.adapter.BiomeAdapter;
+
+import java.util.List;
+
+public final class Fishing {
+
+    protected static final HashMap<Material, List<Enchantment>> ENCHANTABLE_CACHE = new HashMap<Material, List<Enchantment>>();
+
+    public static int fishermansDietRankLevel1 = AdvancedConfig.getInstance().getFishermanDietRankChange();
+    public static int fishermansDietRankLevel2 = fishermansDietRankLevel1 * 2;
+    public static int fishermansDietMaxLevel = fishermansDietRankLevel1 * 5;
+
+    public static Set<Biome> masterAnglerBiomes = BiomeAdapter.WATER_BIOMES;
+    public static Set<Biome> iceFishingBiomes = BiomeAdapter.ICE_BIOMES;
+
+    private Fishing() {
+    }
+
+    /**
+     * Finds the possible drops of an entity
+     *
+     * @param target Targeted entity
+     * @return possibleDrops List of ItemStack that can be dropped
+     */
+    protected static List<ShakeTreasure> findPossibleDrops(LivingEntity target) {
+        if (TreasureConfig.getInstance().shakeMap.containsKey(target.getType()))
+            return TreasureConfig.getInstance().shakeMap.get(target.getType());
+
+        return null;
+    }
+
+    /**
+     * Randomly chooses a drop among the list
+     *
+     * @param possibleDrops List of ItemStack that can be dropped
+     * @return Chosen ItemStack
+     */
+    protected static ItemStack chooseDrop(List<ShakeTreasure> possibleDrops) {
+        int dropProbability = Misc.getRandom().nextInt(100);
+        double cumulatedProbability = 0;
+
+        for (ShakeTreasure treasure : possibleDrops) {
+            cumulatedProbability += treasure.getDropChance();
+
+            if (dropProbability < cumulatedProbability) {
+                return treasure.getDrop().clone();
+            }
+        }
+
+        return null;
+    }
+}

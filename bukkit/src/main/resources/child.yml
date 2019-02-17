@@ -9,8 +9,8 @@
 #
 #####
 Salvage:
-    - Fishing
-    - Repair
+- Fishing
+- Repair
 Smelting:
-    - Mining
-    - Repair
+- Mining
+- Repair

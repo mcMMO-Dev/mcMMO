@@ -1,9 +1,9 @@
 package com.gmail.nossr50.commands.hardcore;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.commands.CommandUtils;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
+import com.gmail.nossr50.core.util.Permissions;
+import com.gmail.nossr50.core.util.StringUtils;
+import com.gmail.nossr50.core.util.commands.CommandUtils;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -28,8 +28,7 @@ public abstract class HardcoreModeCommand implements TabExecutor {
 
                 if (checkEnabled(null)) {
                     disable(null);
-                }
-                else {
+                } else {
                     enable(null);
                 }
 
@@ -122,9 +121,14 @@ public abstract class HardcoreModeCommand implements TabExecutor {
     }
 
     protected abstract boolean checkTogglePermissions(CommandSender sender);
+
     protected abstract boolean checkModifyPermissions(CommandSender sender);
+
     protected abstract boolean checkEnabled(PrimarySkillType skill);
+
     protected abstract void enable(PrimarySkillType skill);
+
     protected abstract void disable(PrimarySkillType skill);
+
     protected abstract void modify(CommandSender sender, double newPercentage);
 }

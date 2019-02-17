@@ -1,9 +1,9 @@
 package com.gmail.nossr50.commands;
 
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
+import com.gmail.nossr50.core.config.MainConfig;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.util.commands.CommandUtils;
+import com.gmail.nossr50.core.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -31,7 +31,7 @@ public class McscoreboardCommand implements TabExecutor {
                 }
 
                 if (args[0].equalsIgnoreCase("keep")) {
-                    if (!Config.getInstance().getAllowKeepBoard() || !Config.getInstance().getScoreboardsEnabled()) {
+                    if (!MainConfig.getInstance().getAllowKeepBoard() || !MainConfig.getInstance().getScoreboardsEnabled()) {
                         sender.sendMessage(LocaleLoader.getString("Commands.Disabled"));
                         return true;
                     }

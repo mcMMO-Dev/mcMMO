@@ -1,15 +1,15 @@
 package com.gmail.nossr50.commands.chat;
 
-import com.gmail.nossr50.chat.ChatManager;
-import com.gmail.nossr50.chat.ChatManagerFactory;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.chat.ChatMode;
-import com.gmail.nossr50.datatypes.party.PartyFeature;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.core.chat.ChatManager;
+import com.gmail.nossr50.core.chat.ChatManagerFactory;
+import com.gmail.nossr50.core.config.MainConfig;
+import com.gmail.nossr50.core.data.UserManager;
+import com.gmail.nossr50.core.datatypes.chat.ChatMode;
+import com.gmail.nossr50.core.datatypes.party.PartyFeature;
+import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.util.commands.CommandUtils;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ChatCommand implements TabExecutor {
-    private ChatMode chatMode;
     protected ChatManager chatManager;
+    private ChatMode chatMode;
 
     public ChatCommand(ChatMode chatMode) {
         this.chatMode = chatMode;
@@ -47,8 +47,7 @@ public abstract class ChatCommand implements TabExecutor {
 
                 if (mcMMOPlayer.isChatEnabled(chatMode)) {
                     disableChatMode(mcMMOPlayer, sender);
-                }
-                else {
+                } else {
                     enableChatMode(mcMMOPlayer, sender);
                 }
 
@@ -119,7 +118,7 @@ public abstract class ChatCommand implements TabExecutor {
             return;
         }
 
-        if (chatMode == ChatMode.PARTY && (mcMMOPlayer.getParty().getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.CHAT))) {
+        if (chatMode == ChatMode.PARTY && (mcMMOPlayer.getParty().getLevel() < MainConfig.getInstance().getPartyFeatureUnlockLevel(PartyFeature.CHAT))) {
             sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.1"));
             return;
         }

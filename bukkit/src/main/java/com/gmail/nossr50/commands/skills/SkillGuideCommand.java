@@ -1,8 +1,8 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
+import com.gmail.nossr50.core.util.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -75,8 +75,7 @@ public class SkillGuideCommand implements CommandExecutor {
         while (allStrings.size() < 9) {
             if (pageIndexStart + allStrings.size() > guide.size()) {
                 allStrings.add("");
-            }
-            else {
+            } else {
                 allStrings.add(guide.get(pageIndexStart + (allStrings.size() - 1)));
             }
         }

@@ -1,9 +1,9 @@
 package com.gmail.nossr50.commands.database;
 
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.core.data.UserManager;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.util.commands.CommandUtils;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -26,8 +26,7 @@ public class McremoveCommand implements TabExecutor {
 
                 if (mcMMO.getDatabaseManager().removeUser(playerName)) {
                     sender.sendMessage(LocaleLoader.getString("Commands.mcremove.Success", playerName));
-                }
-                else {
+                } else {
                     sender.sendMessage(playerName + " could not be removed from the database."); // Pretty sure this should NEVER happen.
                 }
 

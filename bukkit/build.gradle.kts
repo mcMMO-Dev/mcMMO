@@ -51,4 +51,3 @@ dependencies {
         exclude(group = Shadow.Exclude.bstats)
     }
 }
-

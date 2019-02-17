@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    compileOnly(Bukkit.api) // Spigot API
+    compileOnly(Bukkit.api) // Bukkit API
     compileOnly(Bukkit.nms)
     compileOnly(Bukkit.wgLegacy) // WorldGuard
 

@@ -1,11 +1,11 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.archery.Archery;
-import com.gmail.nossr50.util.TextComponentFactory;
-import com.gmail.nossr50.util.skills.SkillActivationType;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
+import com.gmail.nossr50.core.skills.SubSkillType;
+import com.gmail.nossr50.core.skills.primary.archery.Archery;
+import com.gmail.nossr50.core.util.TextComponentFactory;
+import com.gmail.nossr50.core.util.skills.SkillActivationType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -35,14 +35,14 @@ public class ArcheryCommand extends SkillCommand {
             retrieveChance = retrieveStrings[0];
             retrieveChanceLucky = retrieveStrings[1];
         }
-        
+
         // ARCHERY_DAZE
         if (canDaze) {
             String[] dazeStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.ARCHERY_DAZE);
             dazeChance = dazeStrings[0];
             dazeChanceLucky = dazeStrings[1];
         }
-        
+
         // SKILL SHOT
         if (canSkillShot) {
             skillShotBonus = percent.format(Archery.getDamageBonusPercent(player));
@@ -64,12 +64,12 @@ public class ArcheryCommand extends SkillCommand {
             messages.add(getStatMessage(SubSkillType.ARCHERY_ARROW_RETRIEVAL, retrieveChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", retrieveChanceLucky) : ""));
         }
-        
+
         if (canDaze) {
             messages.add(getStatMessage(SubSkillType.ARCHERY_DAZE, dazeChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", dazeChanceLucky) : ""));
         }
-        
+
         if (canSkillShot) {
             messages.add(getStatMessage(SubSkillType.ARCHERY_SKILL_SHOT, skillShotBonus));
         }

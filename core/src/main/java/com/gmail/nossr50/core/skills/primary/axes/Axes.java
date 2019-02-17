@@ -1,0 +1,45 @@
+package com.gmail.nossr50.core.skills.primary.axes;
+
+import com.gmail.nossr50.core.config.AdvancedConfig;
+import com.gmail.nossr50.core.mcmmo.entity.Player;
+import com.gmail.nossr50.core.mcmmo.item.ItemStack;
+import com.gmail.nossr50.core.skills.SubSkillType;
+import com.gmail.nossr50.core.util.ItemUtils;
+import com.gmail.nossr50.core.util.skills.RankUtils;
+
+public class Axes {
+    public static double axeMasteryRankDamageMultiplier = AdvancedConfig.getInstance().getAxeMasteryRankDamageMultiplier();
+
+    public static double criticalHitPVPModifier = AdvancedConfig.getInstance().getCriticalStrikesPVPModifier();
+    public static double criticalHitPVEModifier = AdvancedConfig.getInstance().getCriticalStrikesPVEModifier();
+
+    public static int impactIncreaseLevel = AdvancedConfig.getInstance().getArmorImpactIncreaseLevel();
+    public static double impactChance = AdvancedConfig.getInstance().getImpactChance();
+    public static double impactMaxDurabilityModifier = AdvancedConfig.getInstance().getArmorImpactMaxDurabilityDamage() / 100D;
+
+    public static double greaterImpactBonusDamage = AdvancedConfig.getInstance().getGreaterImpactBonusDamage();
+    public static double greaterImpactChance = AdvancedConfig.getInstance().getGreaterImpactChance();
+    public static double greaterImpactKnockbackMultiplier = AdvancedConfig.getInstance().getGreaterImpactModifier();
+
+    public static double skullSplitterModifier = AdvancedConfig.getInstance().getSkullSplitterModifier();
+
+    protected static boolean hasArmor(LivingEntity target) {
+        for (ItemStack itemStack : target.getEquipment().getArmorContents()) {
+            if (itemStack != null && ItemUtils.isArmor(itemStack)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * For every rank in Axe Mastery we add RankDamageMultiplier to get the total bonus damage from Axe Mastery
+     *
+     * @param player The target player
+     * @return The axe mastery bonus damage which will be added to their attack
+     */
+    public static double getAxeMasteryBonusDamage(Player player) {
+        return RankUtils.getRank(player, SubSkillType.AXES_AXE_MASTERY) * Axes.axeMasteryRankDamageMultiplier;
+    }
+}

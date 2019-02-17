@@ -1,12 +1,12 @@
 package com.gmail.nossr50.commands.party;
 
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.core.config.MainConfig;
+import com.gmail.nossr50.core.data.UserManager;
+import com.gmail.nossr50.core.datatypes.party.Party;
+import com.gmail.nossr50.core.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.party.PartyManager;
+import com.gmail.nossr50.core.util.commands.CommandUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -46,9 +46,8 @@ public class PartyInviteCommand implements CommandExecutor {
 
                 Party playerParty = mcMMOPlayer.getParty();
 
-                if(PartyManager.isPartyFull(target, playerParty))
-                {
-                    player.sendMessage(LocaleLoader.getString("Commands.Party.PartyFull.Invite", target.getName(), playerParty.toString(), Config.getInstance().getPartyMaxSize()));
+                if (PartyManager.isPartyFull(target, playerParty)) {
+                    player.sendMessage(LocaleLoader.getString("Commands.Party.PartyFull.Invite", target.getName(), playerParty.toString(), MainConfig.getInstance().getPartyMaxSize()));
                     return true;
                 }
 

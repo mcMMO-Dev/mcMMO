@@ -11,6 +11,7 @@ dependencies {
         exclude(Deps.Groups.guava, Deps.Modules.guava)
         exclude(Deps.Groups.checker, Deps.Modules.checker)
     }
+    compile(Libs.flowmath)
     compile(Libs.jdbc)
     compile(Libs.juli)
     testCompile(Libs.junitDep)

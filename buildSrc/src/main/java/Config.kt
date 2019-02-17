@@ -30,6 +30,7 @@ object Config {
         const val jdbc = "${Deps.Groups.tomcat}:${Deps.Modules.jdbc}:${Versions.jdbc}"
         const val juli = "${Deps.Groups.tomcat}:${Deps.Modules.juli}:${Versions.jdbc}"
         const val junitDep = "${Deps.Groups.junit}:${Deps.Modules.junit}:${Versions.junit}"
+        const val flowmath = "${Deps.Groups.flowpowered}:${Deps.Modules.flowmath}:${Versions.flowmath}"
 
         object Bukkit {
             object `1_8` {
@@ -111,6 +112,7 @@ object Deps {
         const val tomcat = "org.apache.tomcat"
         const val junit = "junit"
         const val checker = "org.checkerframework"
+        const val flowpowered = "com.flowpowered"
     }
 
     object Modules {
@@ -137,6 +139,7 @@ object Deps {
         const val juli = "tomcat-juli"
         const val junit = "junit"
         const val checker = "checker-qual"
+        const val flowmath = "flow-math"
     }
 }
 

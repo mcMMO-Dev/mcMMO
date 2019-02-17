@@ -1,10 +1,10 @@
 package com.gmail.nossr50.commands.hardcore;
 
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.core.config.MainConfig;
+import com.gmail.nossr50.core.locale.LocaleLoader;
+import com.gmail.nossr50.core.skills.PrimarySkillType;
+import com.gmail.nossr50.core.util.Permissions;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
 import org.bukkit.command.CommandSender;
 
 public class HardcoreCommand extends HardcoreModeCommand {
@@ -45,7 +45,7 @@ public class HardcoreCommand extends HardcoreModeCommand {
 
     @Override
     protected void modify(CommandSender sender, double newPercentage) {
-        Config.getInstance().setHardcoreDeathStatPenaltyPercentage(newPercentage);
+        MainConfig.getInstance().setHardcoreDeathStatPenaltyPercentage(newPercentage);
         sender.sendMessage(LocaleLoader.getString("Hardcore.DeathStatLoss.PercentageChanged", percent.format(newPercentage / 100.0D)));
     }
 
@@ -54,8 +54,7 @@ public class HardcoreCommand extends HardcoreModeCommand {
             for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
                 primarySkillType.setHardcoreStatLossEnabled(enable);
             }
-        }
-        else {
+        } else {
             skill.setHardcoreStatLossEnabled(enable);
         }
 
