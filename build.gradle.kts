@@ -11,6 +11,10 @@ buildscript {
     }
 }
 
+val wrapper by tasks.getting(Wrapper::class) {
+  gradleVersion = "4.9"
+}
+
 // Things used by other projects
 Projects.core = project("core")
 Projects.bukkit = project("bukkit")
