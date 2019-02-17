@@ -7,13 +7,13 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.EnumSet;
 
-public class ChildConfig extends ConfigCollections {
+public class ChildConfig extends ConfigCollection {
     public ChildConfig() {
         super("child.yml");
     }
 
     @Override
-    protected void loadKeys() {
+    protected void register() {
         config.setDefaults(YamlConfiguration.loadConfiguration(plugin.getResourceAsReader("child.yml")));
 
         FamilyTree.clearRegistrations(); // when reloading, need to clear statics

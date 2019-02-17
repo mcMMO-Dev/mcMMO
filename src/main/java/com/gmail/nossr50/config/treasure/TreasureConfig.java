@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config.treasure;
 
-import com.gmail.nossr50.config.ConfigCollections;
+import com.gmail.nossr50.config.ConfigCollection;
 import com.gmail.nossr50.datatypes.treasure.*;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EnchantmentUtils;
@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class TreasureConfig extends ConfigCollections {
+public class TreasureConfig extends ConfigCollection {
 
-    private static TreasureConfig instance;
+    //private static TreasureConfig instance;
 
     public HashMap<String, List<ExcavationTreasure>> excavationMap = new HashMap<String, List<ExcavationTreasure>>();
 
@@ -32,18 +32,18 @@ public class TreasureConfig extends ConfigCollections {
     public HashMap<Rarity, List<FishingTreasure>> fishingRewards = new HashMap<Rarity, List<FishingTreasure>>();
     public HashMap<Rarity, List<EnchantmentTreasure>> fishingEnchantments = new HashMap<Rarity, List<EnchantmentTreasure>>();
 
-    private TreasureConfig() {
+    public TreasureConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(),"treasures.yml");
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "treasures.yml");
+        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "treasures.yml", true);
     }
 
-    public static TreasureConfig getInstance() {
+    /*public static TreasureConfig getInstance() {
         if (instance == null) {
             instance = new TreasureConfig();
         }
 
         return instance;
-    }
+    }*/
 
     @Override
     protected boolean validateKeys() {
@@ -82,7 +82,7 @@ public class TreasureConfig extends ConfigCollections {
     }
 
     @Override
-    protected void loadKeys() {
+    protected void register() {
         if (config.getConfigurationSection("Treasures") != null) {
             backup();
             return;

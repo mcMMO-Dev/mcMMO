@@ -10,12 +10,18 @@ import java.util.List;
 public class SimpleSalvageableManager implements SalvageableManager {
     private HashMap<Material, Salvageable> salvageables;
 
-    public SimpleSalvageableManager() {
+    /*public SimpleSalvageableManager() {
         this(55);
+    }*/
+
+    @Override
+    public void unload() {
+        salvageables.clear();
     }
 
-    public SimpleSalvageableManager(int salvageablesSize) {
-        this.salvageables = new HashMap<Material, Salvageable>(salvageablesSize);
+    public SimpleSalvageableManager(List<Salvageable> salvageablesCollection) {
+        this.salvageables = new HashMap<Material, Salvageable>(salvageablesCollection.size());
+        registerSalvageables(salvageablesCollection);
     }
 
     @Override

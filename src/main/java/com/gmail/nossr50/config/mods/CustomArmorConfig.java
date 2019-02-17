@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config.mods;
 
-import com.gmail.nossr50.config.ConfigCollections;
+import com.gmail.nossr50.config.ConfigCollection;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class CustomArmorConfig extends ConfigCollections {
+public class CustomArmorConfig extends ConfigCollection {
     public List<Material> customBoots = new ArrayList<Material>();
     public List<Material> customChestplates = new ArrayList<Material>();
     public List<Material> customHelmets = new ArrayList<Material>();
@@ -24,7 +24,7 @@ public class CustomArmorConfig extends ConfigCollections {
 
     protected CustomArmorConfig(String fileName) {
         //super(McmmoCore.getDataFolderPath().getPath() + "mods", fileName, false);
-        super(mcMMO.p.getDataFolder().getPath() + "mods", fileName, false);        loadKeys();
+        super(mcMMO.p.getDataFolder().getPath() + "mods", fileName, false);        register();
     }
 
     /**
@@ -38,7 +38,7 @@ public class CustomArmorConfig extends ConfigCollections {
     }
 
     @Override
-    public void loadKeys() {
+    public void register() {
         loadArmor("Boots", customBoots);
         loadArmor("Chestplates", customChestplates);
         loadArmor("Helmets", customHelmets);

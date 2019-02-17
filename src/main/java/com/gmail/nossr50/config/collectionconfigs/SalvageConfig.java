@@ -1,8 +1,9 @@
 package com.gmail.nossr50.config.collectionconfigs;
 
-import com.gmail.nossr50.config.ConfigCollections;
+import com.gmail.nossr50.config.ConfigCollection;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.skills.salvage.salvageables.SalvageableFactory;
 import com.gmail.nossr50.util.ItemUtils;
@@ -12,25 +13,14 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public class SalvageConfig extends ConfigCollections {
-    private List<Salvageable> salvageables;
+public class SalvageConfig extends ConfigCollection {
 
     public SalvageConfig(String fileName) {
-        super(McmmoCore.getDataFolderPath().getAbsoluteFile(), fileName, false);
-    }
-
-    @Override
-    public Collection getLoadedCollection() {
-        return salvageables == null ? new ArrayList<Salvageable>() : salvageables;
-    }
-
-    @Override
-    public void unload() {
-        salvageables = null;
+        //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), fileName, false);
+        super(mcMMO.p.getDataFolder().getAbsoluteFile(), fileName, false);
     }
 
     /**
@@ -44,9 +34,7 @@ public class SalvageConfig extends ConfigCollections {
     }
 
     @Override
-    protected void loadKeys() {
-        salvageables = new ArrayList<Salvageable>();
-
+    public void register() {
         ConfigurationSection section = config.getConfigurationSection("Salvageables");
         Set<String> keys = section.getKeys(false);
 
@@ -149,7 +137,7 @@ public class SalvageConfig extends ConfigCollections {
 
             if (noErrorsInSalvageable(reason)) {
                 Salvageable salvageable = SalvageableFactory.getSalvageable(itemMaterial, salvageMaterial, salvageMetadata, minimumLevel, maximumQuantity, maximumDurability, salvageItemType, salvageMaterialType, xpMultiplier);
-                salvageables.add(salvageable);
+                genericCollection.add(salvageable);
             }
         }
     }

@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config.skills.alchemy;
 
-import com.gmail.nossr50.config.ConfigCollections;
+import com.gmail.nossr50.config.ConfigCollection;
 import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.Color;
@@ -14,8 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PotionConfig extends ConfigCollections {
-    private static PotionConfig instance;
+public class PotionConfig extends ConfigCollection {
 
     private List<ItemStack> concoctionsIngredientsTierOne = new ArrayList<ItemStack>();
     private List<ItemStack> concoctionsIngredientsTierTwo = new ArrayList<ItemStack>();
@@ -28,21 +27,23 @@ public class PotionConfig extends ConfigCollections {
 
     private Map<String, AlchemyPotion> potionMap = new HashMap<String, AlchemyPotion>();
 
-    private PotionConfig() {
-        super(McmmoCore.getDataFolderPath().getAbsoluteFile(),"potions.yml");
-        loadKeys();
+    public PotionConfig() {
+        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "potions.yml", true);
+        register();
     }
 
-    public static PotionConfig getInstance() {
-        if (instance == null) {
-            instance = new PotionConfig();
-        }
-
-        return instance;
+    /**
+     * The version of this config
+     *
+     * @return
+     */
+    @Override
+    public double getConfigVersion() {
+        return 1;
     }
 
     @Override
-    protected void loadKeys() {
+    public void register() {
         loadConcoctions();
         loadPotionMap();
     }

@@ -1,11 +1,12 @@
 package com.gmail.nossr50.skills.repair.repairables;
 
+import com.gmail.nossr50.config.Unload;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public interface RepairableManager {
+public interface RepairableManager extends Unload {
     /**
      * Register a repairable with the RepairManager
      *

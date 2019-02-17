@@ -125,10 +125,10 @@
                             <pattern>com.flowpowered</pattern>
                             <shadedPattern>com.gmail.nossr50.flow</shadedPattern>
                         </relocation>-->
-                        <relocation>
+                        <!--<relocation>
                             <pattern>ninja.leaping</pattern>
                             <shadedPattern>com.gmail.nossr50.configurable</shadedPattern>
-                        </relocation>
+                        </relocation>-->
                     </relocations>
                 </configuration>
                 <executions>

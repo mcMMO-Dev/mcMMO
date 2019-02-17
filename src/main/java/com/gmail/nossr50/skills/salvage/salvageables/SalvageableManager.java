@@ -1,11 +1,12 @@
 package com.gmail.nossr50.skills.salvage.salvageables;
 
+import com.gmail.nossr50.config.Unload;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public interface SalvageableManager {
+public interface SalvageableManager extends Unload {
     /**
      * Register a salvageable with the SalvageManager
      *

@@ -8,20 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RankConfig extends ConfigValidated {
-    private static RankConfig instance;
+    //private static RankConfig instance;
 
     public RankConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(),"skillranks.yml", true);
         super(mcMMO.p.getDataFolder().getAbsoluteFile(),"skillranks.yml", true);
-        this.instance = this;
+        //this.instance = this;
     }
 
-    public static RankConfig getInstance() {
+    /*public static RankConfig getInstance() {
         if (instance == null)
             return new RankConfig();
 
         return instance;
-    }
+    }*/
 
     @Override
     public void unload() {

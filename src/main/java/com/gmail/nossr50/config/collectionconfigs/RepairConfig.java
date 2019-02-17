@@ -1,7 +1,8 @@
 package com.gmail.nossr50.config.collectionconfigs;
 
-import com.gmail.nossr50.config.ConfigCollections;
+import com.gmail.nossr50.config.ConfigCollection;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
 import com.gmail.nossr50.util.ItemUtils;
@@ -12,28 +13,16 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 /**
  * This config
  */
-public class RepairConfig extends ConfigCollections {
-    private List<Repairable> repairables;
-
+public class RepairConfig extends ConfigCollection {
     public RepairConfig(String fileName) {
-        super(McmmoCore.getDataFolderPath().getAbsoluteFile(), fileName, false);
-    }
-
-    @Override
-    public void unload() {
-        repairables = null;
-    }
-
-    @Override
-    public Collection getLoadedCollection() {
-        return repairables == null ? new ArrayList<Repairable>() : repairables;
+        //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), fileName, false);
+        super(mcMMO.p.getDataFolder().getAbsoluteFile(), fileName, false);
     }
 
     /**
@@ -47,9 +36,7 @@ public class RepairConfig extends ConfigCollections {
     }
 
     @Override
-    public void loadKeys() {
-        repairables = new ArrayList<Repairable>();
-
+    public void register() {
         ConfigurationNode repairablesNode = getUserRootNode().getNode("Repairables");
         List<? extends ConfigurationNode> repairablesNodeChildrenList = repairablesNode.getChildrenList();
         Iterator<? extends ConfigurationNode> configIter = repairablesNodeChildrenList.iterator();
@@ -164,7 +151,7 @@ public class RepairConfig extends ConfigCollections {
 
             if (noErrorsInRepairable(reason)) {
                 Repairable repairable = RepairableFactory.getRepairable(itemType, repairMaterial, repairMetadata, minimumLevel, minimumQuantity, maximumDurability, repairConfigItemCategory, repairMaterialType, xpMultiplier);
-                repairables.add(repairable);
+                genericCollection.add(repairable);
             }
         }
     }

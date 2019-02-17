@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SoundConfig extends ConfigValidated {
-    private static SoundConfig instance;
+    //private static SoundConfig instance;
 
     public SoundConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "sounds.yml", true);
@@ -15,12 +15,12 @@ public class SoundConfig extends ConfigValidated {
         this.instance = this;
     }
 
-    public static SoundConfig getInstance() {
+    /*public static SoundConfig getInstance() {
         if (instance == null)
             return new SoundConfig();
 
         return instance;
-    }
+    }*/
 
     @Override
     public void unload() {

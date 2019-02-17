@@ -41,7 +41,7 @@ public abstract class AbstractSubSkill implements SubSkill, Interaction, Rank, S
     @Override @Deprecated
     public boolean isEnabled() {
         //TODO: This might be troublesome...
-        return CoreSkillsMainConfig.getInstance().isSkillEnabled(this);
+        return CoreSkillConfig.getInstance().isSkillEnabled(this);
     }
 
     /**

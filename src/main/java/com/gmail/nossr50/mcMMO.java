@@ -1,13 +1,8 @@
 package com.gmail.nossr50;
 
-import com.gmail.nossr50.config.MainConfig;
-import com.gmail.nossr50.config.WorldBlacklist;
-import com.gmail.nossr50.config.mods.ArmorConfigManager;
-import com.gmail.nossr50.config.mods.BlockConfigManager;
-import com.gmail.nossr50.config.mods.EntityConfigManager;
-import com.gmail.nossr50.config.mods.ToolConfigManager;
-import com.gmail.nossr50.config.skills.repair.RepairConfigManager;
-import com.gmail.nossr50.config.skills.salvage.SalvageConfigManager;
+import com.gmail.nossr50.config.*;
+import com.gmail.nossr50.config.collectionconfigs.ConfigManager;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -24,13 +19,8 @@ import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.runnables.player.PowerLevelUpdatingTask;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
-import com.gmail.nossr50.skills.child.ChildConfig;
-import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableManager;
-import com.gmail.nossr50.skills.repair.repairables.SimpleRepairableManager;
-import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.skills.salvage.salvageables.SalvageableManager;
-import com.gmail.nossr50.skills.salvage.salvageables.SimpleSalvageableManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
@@ -54,14 +44,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 public class mcMMO extends JavaPlugin {
     /* Managers */
     private static ChunkManager       placeStore;
-    private static RepairableManager  repairableManager;
-    private static SalvageableManager salvageableManager;
+    private static ConfigManager      configManager;
     private static ModManager         modManager;
     private static DatabaseManager    databaseManager;
     private static FormulaManager     formulaManager;
@@ -217,7 +204,7 @@ public class mcMMO extends JavaPlugin {
         }
 
         //Init the blacklist
-        worldBlacklist = new WorldBlacklist(this);
+        worldBlacklist = new WorldBlacklist();
     }
 
     @Override
@@ -274,6 +261,11 @@ public class mcMMO extends JavaPlugin {
         }
 
         databaseManager.onDisable();
+
+        //Unload configs last
+        configManager.unloadAllConfigsAndRegisters();
+
+
         debug("Was disabled."); // How informative!
     }
 
@@ -412,54 +404,9 @@ public class mcMMO extends JavaPlugin {
     }
 
     private void loadConfigFiles() {
-        // New Config System
-
-        ConfigurableTest.getInstance(); //Init
-
-        // End New Config System
+        configManager = new ConfigManager();
 
 
-        // Force the loading of config files
-        TreasureConfig.getInstance();
-        HiddenConfig.getInstance();
-        AdvancedConfig.getInstance();
-        PotionConfig.getInstance();
-        CoreSkillsMainConfig.getInstance();
-        SoundConfig.getInstance();
-        RankConfig.getInstance();
-
-        new ChildConfig();
-
-        List<Repairable> repairables = new ArrayList<Repairable>();
-        List<Salvageable> salvageables = new ArrayList<Salvageable>();
-
-        if (MainConfig.getInstance().getToolModsEnabled()) {
-            new ToolConfigManager(this);
-        }
-
-        if (MainConfig.getInstance().getArmorModsEnabled()) {
-            new ArmorConfigManager(this);
-        }
-
-        if (MainConfig.getInstance().getBlockModsEnabled()) {
-            new BlockConfigManager(this);
-        }
-
-        if (MainConfig.getInstance().getEntityModsEnabled()) {
-            new EntityConfigManager(this);
-        }
-
-        // Load repair configs, make manager, and register them at this time
-        repairables.addAll(new RepairConfigManager(this).getLoadedRepairables());
-        repairables.addAll(modManager.getLoadedRepairables());
-        repairableManager = new SimpleRepairableManager(repairables.size());
-        repairableManager.registerRepairables(repairables);
-
-        // Load salvage configs, make manager and register them at this time
-        SalvageConfigManager sManager = new SalvageConfigManager(this);
-        salvageables.addAll(sManager.getLoadedSalvageables());
-        salvageableManager = new SimpleSalvageableManager(salvageables.size());
-        salvageableManager.registerSalvageables(salvageables);
     }
 
     private void registerEvents() {
@@ -483,13 +430,13 @@ public class mcMMO extends JavaPlugin {
          * Acrobatics skills
          */
 
-        if(CoreSkillsMainConfig.getInstance().isPrimarySkillEnabled(PrimarySkillType.ACROBATICS))
+        if(CoreSkillsConfig.getInstance().isPrimarySkillEnabled(PrimarySkillType.ACROBATICS))
         {
             System.out.println("[mcMMO]" + " enabling Acrobatics Skills");
 
             //TODO: Should do this differently
             Roll roll = new Roll();
-            CoreSkillsMainConfig.getInstance().isSkillEnabled(roll);
+            CoreSkillsConfig.getInstance().isSkillEnabled(roll);
             InteractionManager.registerSubSkill(new Roll());
         }
     }

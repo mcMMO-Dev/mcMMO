@@ -122,20 +122,22 @@ public class AdvancedConfig extends ConfigValidated {
     public static final String SEND_COPY_OF_MESSAGE_TO_CHAT = "SendCopyOfMessageToChat";
     public static final String EVENTS = "Events";
     public static final String SEND_TITLES = "SendTitles";
-    private static AdvancedConfig instance;
+    //private static AdvancedConfig instance;
 
-    private AdvancedConfig() {
+    public AdvancedConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "advanced.yml", true);
         super(mcMMO.p.getDataFolder().getAbsoluteFile(), "advanced.yml", true);
     }
 
-    public static AdvancedConfig getInstance() {
+
+
+    /*public static AdvancedConfig getInstance() {
         if (instance == null) {
             instance = new AdvancedConfig();
         }
 
         return instance;
-    }
+    }*/
 
     /**
      * The version of this config

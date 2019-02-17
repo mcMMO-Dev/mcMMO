@@ -5,8 +5,9 @@ import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
-import com.sk89q.worldedit.world.block.BlockType;
+import org.bukkit.Material;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.EntityType;
@@ -77,7 +78,8 @@ public class ExperienceConfig extends ConfigValidated {
 
     //TODO: Should merge be false? Seems okay to leave it as true..
     private ExperienceConfig() {
-        super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "experience.yml", true);
+        //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "experience.yml", true);
+        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "experience.yml", true);
     }
 
     public static ExperienceConfig getInstance() {
@@ -305,11 +307,11 @@ public class ExperienceConfig extends ConfigValidated {
 
     /* Combat XP Multipliers */
     public double getCombatXP(EntityType entity) {
-        return getDoubleValue(EXPERIENCE, COMBAT, MULTIPLIER1, entity.getConfigName());
+        return getDoubleValue(EXPERIENCE, COMBAT, MULTIPLIER1, StringUtils.getEntityConfigName(entity));
     }
 
     public double getAnimalsXP(EntityType entity) {
-        return getDoubleValue(EXPERIENCE, COMBAT, MULTIPLIER1, entity.getConfigName());
+        return getDoubleValue(EXPERIENCE, COMBAT, MULTIPLIER1, StringUtils.getEntityConfigName(entity));
     }
 
     public double getAnimalsXP() {
@@ -317,7 +319,7 @@ public class ExperienceConfig extends ConfigValidated {
     }
 
     public boolean hasCombatXP(EntityType entity) {
-        return hasNode(EXPERIENCE, COMBAT, MULTIPLIER1, entity.getConfigName());
+        return hasNode(EXPERIENCE, COMBAT, MULTIPLIER1, StringUtils.getEntityConfigName(entity));
     }
 
     /* Materials  */
@@ -328,9 +330,10 @@ public class ExperienceConfig extends ConfigValidated {
      * @param blockType the type of block
      * @return the raw amount of XP for this block before modifiers
      */
-    public int getXp(PrimarySkillType skill, BlockType blockType) {
+    //public int getXp(PrimarySkillType skill, BlockType blockType) {
+    public int getXp(PrimarySkillType skill, Material blockType) {
         //TODO: This is going to need to be changed, this code here is only placeholder
-        String[] path = new String[]{ EXPERIENCE, StringUtils.getCapitalized(skill.toString()), blockType.getConfigName() };
+        String[] path = new String[]{ EXPERIENCE, StringUtils.getCapitalized(skill.toString()), blockType.toString()};
         return getIntValue(path);
     }
 
@@ -342,10 +345,10 @@ public class ExperienceConfig extends ConfigValidated {
      * @param blockType the type of block
      * @return true if the block does give XP
      */
-    public boolean doesBlockGiveSkillXP(PrimarySkillType skill, BlockType blockType) {
+    public boolean doesBlockGiveSkillXP(PrimarySkillType skill, Material blockType) {
         //TODO: This used to support wildcard characters, seems a bit unnecessary to do so.
         //TODO: This is going to need to be changed, this code here is only placeholder
-        String[] path = new String[] {EXPERIENCE, StringUtils.getCapitalized(skill.toString()), blockType.getConfigName()};
+        String[] path = new String[] {EXPERIENCE, StringUtils.getCapitalized(skill.toString()), blockType.toString()};
         return hasNode(path);
     }
 
@@ -443,6 +446,6 @@ public class ExperienceConfig extends ConfigValidated {
 
     /* Taming */
     public int getTamingXP(EntityType type) {
-        return getIntValue(EXPERIENCE, TAMING, ANIMAL_TAMING, type.getConfigName());
+        return getIntValue(EXPERIENCE, TAMING, ANIMAL_TAMING, StringUtils.getEntityConfigName(type));
     }
 }

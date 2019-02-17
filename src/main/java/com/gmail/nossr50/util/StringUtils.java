@@ -20,6 +20,16 @@ public class StringUtils {
         return target.substring(0, 1).toUpperCase() + target.substring(1).toLowerCase();
     }
 
+    /**
+     * Gets the name of the entity that the config file is expecting
+     * @param entityType target entity type
+     * @return the config friendly entity type string
+     */
+    public static String getEntityConfigName(EntityType entityType)
+    {
+        return entityType.toString();
+    }
+
     public static String getPrettyItemString(Material material) {
         return createPrettyString(material.toString());
     }
