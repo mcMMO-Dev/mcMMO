@@ -16,10 +16,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-
+/*
 public class CustomToolConfig extends Config {
     //TODO: Disabled until modded servers come back
-    /*public List<Material> customAxes = new ArrayList<Material>();
+    public List<Material> customAxes = new ArrayList<Material>();
     public List<Material> customBows = new ArrayList<Material>();
     public List<Material> customHoes = new ArrayList<Material>();
     public List<Material> customPickaxes = new ArrayList<Material>();
@@ -114,5 +114,5 @@ public class CustomToolConfig extends Config {
             materialList.add(toolMaterial);
             customToolMap.put(toolMaterial, tool);
         }
-    }*/
-}
+    }
+}*/

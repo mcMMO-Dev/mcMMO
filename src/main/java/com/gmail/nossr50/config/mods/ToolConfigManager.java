@@ -1,9 +1,11 @@
+/*
 package com.gmail.nossr50.config.mods;
 
 
 public class ToolConfigManager {
     //TODO: Commented out until modded servers appear again
-    /*public ToolConfigManager(mcMMO plugin) {
+    */
+/*public ToolConfigManager(mcMMO plugin) {
         Pattern middlePattern = Pattern.compile("tools\\.(?:.+)\\.yml");
         Pattern startPattern = Pattern.compile("(?:.+)\\.tools\\.yml");
         File dataFolder = new File(mcMMO.getModDirectory());
@@ -27,5 +29,7 @@ public class ToolConfigManager {
 
             modManager.registerCustomTools(new CustomToolConfig(fileName));
         }
-    }*/
+    }*//*
+
 }
+*/

@@ -3,17 +3,12 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.config.collectionconfigs.CollectionClassType;
 import com.gmail.nossr50.config.collectionconfigs.MultiConfigContainer;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.config.mods.ArmorConfigManager;
-import com.gmail.nossr50.config.mods.BlockConfigManager;
-import com.gmail.nossr50.config.mods.EntityConfigManager;
-import com.gmail.nossr50.config.mods.ToolConfigManager;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.SimpleRepairableManager;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.skills.salvage.salvageables.SimpleSalvageableManager;
-import com.gmail.nossr50.util.ModManager;
 
 import java.util.ArrayList;
 
@@ -50,7 +45,7 @@ public final class ConfigManager {
 
     //TODO: Add these back when modded servers become a thing again
 
-    private ModManager modManager;
+    //private ModManager modManager;
 
     /*private ToolConfigManager toolConfigManager;
     private ArmorConfigManager armorConfigManager;

@@ -1,9 +1,11 @@
+/*
 package com.gmail.nossr50.config.mods;
 
 
 public class EntityConfigManager {
     //TODO: Commented out until modded servers appear again
-    /*public EntityConfigManager(mcMMO plugin) {
+    */
+/*public EntityConfigManager(mcMMO plugin) {
         Pattern middlePattern = Pattern.compile("entities\\.(?:.+)\\.yml");
         Pattern startPattern = Pattern.compile("(?:.+)\\.entities\\.yml");
         File dataFolder = new File(mcMMO.getModDirectory());
@@ -27,5 +29,7 @@ public class EntityConfigManager {
 
             modManager.registerCustomEntities(new CustomEntityConfig(fileName));
         }
-    }*/
+    }*//*
+
 }
+*/
