@@ -51,7 +51,7 @@ public class mcMMO extends JavaPlugin {
     /* Managers */
     private static ChunkManager       placeStore;
     private static ConfigManager      configManager;
-    private static ModManager         modManager;
+    //private static ModManager         modManager;
     private static DatabaseManager    databaseManager;
     private static FormulaManager     formulaManager;
     private static HolidayManager     holidayManager;
@@ -125,13 +125,13 @@ public class mcMMO extends JavaPlugin {
 
             setupFilePaths();
 
-            modManager = new ModManager();
+            //modManager = new ModManager();
 
             loadConfigFiles();
 
-            if (!noErrorsInConfigFiles) {
+            /*if (!noErrorsInConfigFiles) {
                 return;
-            }
+            }*/
 
             //Store this value so other plugins can check it
             isRetroModeEnabled = MainConfig.getInstance().getIsRetroMode();
@@ -327,9 +327,9 @@ public class mcMMO extends JavaPlugin {
         return databaseManager;
     }
 
-    public static ModManager getModManager() {
+    /*public static ModManager getModManager() {
         return modManager;
-    }
+    }*/
 
     public static UpgradeManager getUpgradeManager() {
         return upgradeManager;

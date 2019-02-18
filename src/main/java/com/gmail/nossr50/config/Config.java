@@ -324,6 +324,16 @@ public abstract class Config implements VersionedConfig, Unload {
     }
 
     /**
+     * Grabs a long from the specified node
+     * @param path
+     * @return the long from the node, null references will zero initialize
+     */
+    public long getLongValue(String... path)
+    {
+        return userRootNode.getNode(path).getLong();
+    }
+
+    /**
      * Grabs a boolean from the specified node
      * @param path
      * @return the boolean from the node, null references will zero initialize

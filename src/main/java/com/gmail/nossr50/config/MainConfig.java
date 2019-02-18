@@ -242,7 +242,7 @@ public class MainConfig extends ConfigValidated {
 
         /* General Settings */
         if (getSaveInterval() <= 0) {
-            reason.add(GENERAL + "." + SAVE_INTERVAL + " should be greater than 0!");
+            reason.add(GENERAL + SAVE_INTERVAL + " should be greater than 0!");
         }
 
         /* MySQL Settings */
@@ -446,277 +446,277 @@ public class MainConfig extends ConfigValidated {
 
     /* General Settings */
     public boolean getIsMetricsEnabled() {
-        return getBooleanValue(METRICS + "." + BSTATS);
+        return getBooleanValue(METRICS, BSTATS);
     }
 
     //Retro mode will default the value to true if the config file doesn't contain the entry (server is from a previous mcMMO install)
     public boolean getIsRetroMode() {
-        return getBooleanValue(GENERAL + "." + RETRO_MODE + "." + ENABLED);
+        return getBooleanValue(GENERAL, RETRO_MODE, ENABLED);
     }
 
     public String getLocale() {
-        return getStringValue(GENERAL + "." + LOCALE, EN_US);
+        return getStringValue(GENERAL, LOCALE, EN_US);
     }
 
     public boolean getMOTDEnabled() {
-        return getBooleanValue(GENERAL + "." + MOTD + ENABLED);
+        return getBooleanValue(GENERAL, MOTD + ENABLED);
     }
 
     public boolean getShowProfileLoadedMessage() {
-        return getBooleanValue(GENERAL + "." + SHOW_PROFILE_LOADED);
+        return getBooleanValue(GENERAL, SHOW_PROFILE_LOADED);
     }
 
     public boolean getDonateMessageEnabled() {
-        return getBooleanValue(COMMANDS + "." + MCMMO + "." + DONATE_MESSAGE);
+        return getBooleanValue(COMMANDS, MCMMO, DONATE_MESSAGE);
     }
 
     public int getSaveInterval() {
-        return getIntValue(GENERAL + "." + SAVE_INTERVAL);
+        return getIntValue(GENERAL, SAVE_INTERVAL);
     }
 
     public boolean getStatsTrackingEnabled() {
-        return getBooleanValue(GENERAL + "." + STATS_TRACKING);
+        return getBooleanValue(GENERAL, STATS_TRACKING);
     }
 
     public boolean getUpdateCheckEnabled() {
-        return getBooleanValue(GENERAL + "." + UPDATE_CHECK);
+        return getBooleanValue(GENERAL, UPDATE_CHECK);
     }
 
     public boolean getPreferBeta() {
-        return getBooleanValue(GENERAL + "." + PREFER_BETA);
+        return getBooleanValue(GENERAL, PREFER_BETA);
     }
 
     public boolean getVerboseLoggingEnabled() {
-        return getBooleanValue(GENERAL + "." + VERBOSE_LOGGING);
+        return getBooleanValue(GENERAL, VERBOSE_LOGGING);
     }
 
     public String getPartyChatPrefix() {
-        return getStringValue(COMMANDS + "." + PARTYCHAT + "." + CHAT_PREFIX_FORMAT);
+        return getStringValue(COMMANDS, PARTYCHAT, CHAT_PREFIX_FORMAT);
     }
 
     public boolean getPartyChatColorLeaderName() {
-        return getBooleanValue(COMMANDS + "." + PARTYCHAT + "." + GOLD_LEADER_NAME);
+        return getBooleanValue(COMMANDS, PARTYCHAT, GOLD_LEADER_NAME);
     }
 
     public boolean getPartyDisplayNames() {
-        return getBooleanValue(COMMANDS + "." + PARTYCHAT + "." + USE_DISPLAY_NAMES);
+        return getBooleanValue(COMMANDS, PARTYCHAT, USE_DISPLAY_NAMES);
     }
 
     public String getPartyChatPrefixAlly() {
-        return getStringValue(COMMANDS + "." + PARTYCHAT + "." + CHAT_PREFIX_FORMAT + ALLY);
+        return getStringValue(COMMANDS, PARTYCHAT, CHAT_PREFIX_FORMAT + ALLY);
     }
 
     public String getAdminChatPrefix() {
-        return getStringValue(COMMANDS + "." + ADMINCHAT + "." + CHAT_PREFIX_FORMAT);
+        return getStringValue(COMMANDS, ADMINCHAT, CHAT_PREFIX_FORMAT);
     }
 
     public boolean getAdminDisplayNames() {
-        return getBooleanValue(COMMANDS + "." + ADMINCHAT + "." + USE_DISPLAY_NAMES);
+        return getBooleanValue(COMMANDS, ADMINCHAT, USE_DISPLAY_NAMES);
     }
 
     public boolean getMatchOfflinePlayers() {
-        return getBooleanValue(COMMANDS + "." + GENERIC + "." + MATCH_OFFLINE_PLAYERS);
+        return getBooleanValue(COMMANDS, GENERIC, MATCH_OFFLINE_PLAYERS);
     }
 
     public long getDatabasePlayerCooldown() {
-        return config.getLong(COMMANDS + "." + DATABASE + "." + PLAYER_COOLDOWN);
+        return getLongValue(COMMANDS, DATABASE, PLAYER_COOLDOWN);
     }
 
     public boolean getLevelUpSoundsEnabled() {
-        return getBooleanValue(GENERAL + "." + LEVEL_UP_SOUNDS);
+        return getBooleanValue(GENERAL, LEVEL_UP_SOUNDS);
     }
 
     public boolean getRefreshChunksEnabled() {
-        return getBooleanValue(GENERAL + "." + REFRESH_CHUNKS);
+        return getBooleanValue(GENERAL, REFRESH_CHUNKS);
     }
 
     public boolean getMobHealthbarEnabled() {
-        return getBooleanValue(MOB_HEALTHBAR + "." + ENABLED);
+        return getBooleanValue(MOB_HEALTHBAR, ENABLED);
     }
 
     /* Mob Healthbar */
     public MobHealthbarType getMobHealthbarDefault() {
         try {
-            return MobHealthbarType.valueOf(getStringValue(MOB_HEALTHBAR + "." + DISPLAY_TYPE, HEARTS).toUpperCase().trim());
+            return MobHealthbarType.valueOf(getStringValue(MOB_HEALTHBAR, DISPLAY_TYPE, HEARTS).toUpperCase().trim());
         } catch (IllegalArgumentException ex) {
             return MobHealthbarType.HEARTS;
         }
     }
 
     public int getMobHealthbarTime() {
-        return getIntValue(MOB_HEALTHBAR + "." + DISPLAY_TIME);
+        return getIntValue(MOB_HEALTHBAR, DISPLAY_TIME);
     }
 
     /* Scoreboards */
     public boolean getScoreboardsEnabled() {
-        return getBooleanValue(SCOREBOARD + "." + USE_SCOREBOARDS);
+        return getBooleanValue(SCOREBOARD, USE_SCOREBOARDS);
     }
 
     public boolean getPowerLevelTagsEnabled() {
-        return getBooleanValue(SCOREBOARD + "." + POWER_LEVEL_TAGS);
+        return getBooleanValue(SCOREBOARD, POWER_LEVEL_TAGS);
     }
 
     public boolean getAllowKeepBoard() {
-        return getBooleanValue(SCOREBOARD + "." + ALLOW_KEEP);
+        return getBooleanValue(SCOREBOARD, ALLOW_KEEP);
     }
 
     public int getTipsAmount() {
-        return getIntValue(SCOREBOARD + "." + TIPS_AMOUNT);
+        return getIntValue(SCOREBOARD, TIPS_AMOUNT);
     }
 
     public boolean getShowStatsAfterLogin() {
-        return getBooleanValue(SCOREBOARD + "." + SHOW_STATS_AFTER_LOGIN);
+        return getBooleanValue(SCOREBOARD, SHOW_STATS_AFTER_LOGIN);
     }
 
     public boolean getScoreboardRainbows() {
-        return getBooleanValue(SCOREBOARD + "." + RAINBOWS);
+        return getBooleanValue(SCOREBOARD, RAINBOWS);
     }
 
     public boolean getShowAbilityNames() {
-        return getBooleanValue(SCOREBOARD + "." + ABILITY_NAMES);
+        return getBooleanValue(SCOREBOARD, ABILITY_NAMES);
     }
 
     public boolean getRankUseChat() {
-        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + RANK + "." + PRINT);
+        return getBooleanValue(SCOREBOARD, TYPES, RANK, PRINT);
     }
 
     public boolean getRankUseBoard() {
-        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + RANK + "." + BOARD);
+        return getBooleanValue(SCOREBOARD, TYPES, RANK, BOARD);
     }
 
     public int getRankScoreboardTime() {
-        return getIntValue(SCOREBOARD + "." + TYPES + "." + RANK + "." + DISPLAY_TIME);
+        return getIntValue(SCOREBOARD, TYPES, RANK, DISPLAY_TIME);
     }
 
     public boolean getTopUseChat() {
-        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + TOP + "." + PRINT);
+        return getBooleanValue(SCOREBOARD, TYPES, TOP, PRINT);
     }
 
     public boolean getTopUseBoard() {
-        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + TOP + "." + BOARD);
+        return getBooleanValue(SCOREBOARD, TYPES, TOP, BOARD);
     }
 
     public int getTopScoreboardTime() {
-        return getIntValue(SCOREBOARD + "." + TYPES + "." + TOP + "." + DISPLAY_TIME);
+        return getIntValue(SCOREBOARD, TYPES, TOP, DISPLAY_TIME);
     }
 
     public boolean getStatsUseChat() {
-        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + STATS + "." + PRINT);
+        return getBooleanValue(SCOREBOARD, TYPES, STATS, PRINT);
     }
 
     public boolean getStatsUseBoard() {
-        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + STATS + "." + BOARD);
+        return getBooleanValue(SCOREBOARD, TYPES, STATS, BOARD);
     }
 
     public int getStatsScoreboardTime() {
-        return getIntValue(SCOREBOARD + "." + TYPES + "." + STATS + "." + DISPLAY_TIME);
+        return getIntValue(SCOREBOARD, TYPES, STATS, DISPLAY_TIME);
     }
 
     public boolean getInspectUseChat() {
-        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + INSPECT + "." + PRINT);
+        return getBooleanValue(SCOREBOARD, TYPES, INSPECT, PRINT);
     }
 
     public boolean getInspectUseBoard() {
-        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + INSPECT + "." + BOARD);
+        return getBooleanValue(SCOREBOARD, TYPES, INSPECT, BOARD);
     }
 
     public int getInspectScoreboardTime() {
-        return getIntValue(SCOREBOARD + "." + TYPES + "." + INSPECT + "." + DISPLAY_TIME);
+        return getIntValue(SCOREBOARD, TYPES, INSPECT, DISPLAY_TIME);
     }
 
     public boolean getCooldownUseChat() {
-        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + COOLDOWN + "." + PRINT);
+        return getBooleanValue(SCOREBOARD, TYPES, COOLDOWN, PRINT);
     }
 
     public boolean getCooldownUseBoard() {
-        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + COOLDOWN + "." + BOARD);
+        return getBooleanValue(SCOREBOARD, TYPES, COOLDOWN, BOARD);
     }
 
     public int getCooldownScoreboardTime() {
-        return getIntValue(SCOREBOARD + "." + TYPES + "." + COOLDOWN + "." + DISPLAY_TIME);
+        return getIntValue(SCOREBOARD, TYPES, COOLDOWN, DISPLAY_TIME);
     }
 
     public boolean getSkillUseBoard() {
-        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + SKILL + "." + BOARD);
+        return getBooleanValue(SCOREBOARD, TYPES, SKILL, BOARD);
     }
 
     public int getSkillScoreboardTime() {
-        return getIntValue(SCOREBOARD + "." + TYPES + "." + SKILL + "." + DISPLAY_TIME);
+        return getIntValue(SCOREBOARD, TYPES, SKILL, DISPLAY_TIME);
     }
 
     public boolean getSkillLevelUpBoard() {
-        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + SKILL + "." + LEVEL_UP + BOARD);
+        return getBooleanValue(SCOREBOARD, TYPES, SKILL, LEVEL_UP + BOARD);
     }
 
     public int getSkillLevelUpTime() {
-        return getIntValue(SCOREBOARD + "." + TYPES + "." + SKILL + "." + LEVEL_UP + TIME);
+        return getIntValue(SCOREBOARD, TYPES, SKILL, LEVEL_UP + TIME);
     }
 
     /* Database Purging */
     public int getPurgeInterval() {
-        return getIntValue(DATABASE + PURGING + "." + PURGE_INTERVAL);
+        return getIntValue(DATABASE + PURGING, PURGE_INTERVAL);
     }
 
     public int getOldUsersCutoff() {
-        return getIntValue(DATABASE + PURGING + "." + OLD_USER_CUTOFF);
+        return getIntValue(DATABASE + PURGING, OLD_USER_CUTOFF);
     }
 
     /* Backups */
     public boolean getBackupsEnabled() {
-        return getBooleanValue(BACKUPS + "." + ENABLED);
+        return getBooleanValue(BACKUPS, ENABLED);
     }
 
     public boolean getKeepLast24Hours() {
-        return getBooleanValue(BACKUPS + "." + KEEP_LAST_24_HOURS);
+        return getBooleanValue(BACKUPS, KEEP_LAST_24_HOURS);
     }
 
     public boolean getKeepDailyLastWeek() {
-        return getBooleanValue(BACKUPS + "." + KEEP + "." + DAILY_LAST_WEEK);
+        return getBooleanValue(BACKUPS, KEEP, DAILY_LAST_WEEK);
     }
 
     public boolean getKeepWeeklyPastMonth() {
-        return getBooleanValue(BACKUPS + "." + KEEP + "." + WEEKLY_PAST_MONTHS);
+        return getBooleanValue(BACKUPS, KEEP, WEEKLY_PAST_MONTHS);
     }
 
     /* mySQL */
     public boolean getUseMySQL() {
-        return getBooleanValue(MY_SQL + "." + ENABLED);
+        return getBooleanValue(MY_SQL, ENABLED);
     }
 
     public String getMySQLTablePrefix() {
-        return getStringValue(MY_SQL + "." + DATABASE + "." + TABLE_PREFIX, DATABASE_PREFIX);
+        return getStringValue(MY_SQL, DATABASE, TABLE_PREFIX, DATABASE_PREFIX);
     }
 
     public String getMySQLDatabaseName() {
-        return getStringIncludingInts(MY_SQL + "." + DATABASE + "." + NAME);
+        return getStringIncludingInts(MY_SQL, DATABASE, NAME);
     }
 
     public String getMySQLUserName() {
-        return getStringIncludingInts(MY_SQL + "." + DATABASE + "." + USER_NAME);
+        return getStringIncludingInts(MY_SQL, DATABASE, USER_NAME);
     }
 
     public int getMySQLServerPort() {
-        return getIntValue(MY_SQL + "." + SERVER + "." + PORT);
+        return getIntValue(MY_SQL, SERVER, PORT);
     }
 
     public String getMySQLServerName() {
-        return getStringValue(MY_SQL + "." + SERVER + "." + ADDRESS, LOCALHOST);
+        return getStringValue(MY_SQL, SERVER, ADDRESS, LOCALHOST);
     }
 
     public String getMySQLUserPassword() {
-        return getStringIncludingInts(MY_SQL + "." + DATABASE + "." + USER_PASSWORD);
+        return getStringIncludingInts(MY_SQL, DATABASE, USER_PASSWORD);
     }
 
     public int getMySQLMaxConnections(SQLDatabaseManager.PoolIdentifier identifier) {
-        return getIntValue(MY_SQL + "." + DATABASE + "." + MAX_CONNECTIONS + "." + StringUtils.getCapitalized(identifier.toString()));
+        return getIntValue(MY_SQL, DATABASE, MAX_CONNECTIONS, StringUtils.getCapitalized(identifier.toString()));
     }
 
     public int getMySQLMaxPoolSize(SQLDatabaseManager.PoolIdentifier identifier) {
-        return getIntValue(MY_SQL + "." + DATABASE + "." + MAX_POOL_SIZE + "." + StringUtils.getCapitalized(identifier.toString()));
+        return getIntValue(MY_SQL, DATABASE, MAX_POOL_SIZE, StringUtils.getCapitalized(identifier.toString()));
     }
 
     public boolean getMySQLSSL() {
-        return getBooleanValue(MY_SQL + "." + SERVER + "." + SSL);
+        return getBooleanValue(MY_SQL, SERVER, SSL);
     }
 
     ssadprivate String getStringIncludingInts(String[] key) {
@@ -734,214 +734,214 @@ public class MainConfig extends ConfigValidated {
 
     /* Hardcore Mode */
     public boolean getHardcoreStatLossEnabled(PrimarySkillType primarySkillType) {
-        return getBooleanValue(HARDCORE + "." + DEATH_STAT_LOSS + "." + ENABLED + "." + StringUtils.getCapitalized(primarySkillType.toString()));
+        return getBooleanValue(HARDCORE, DEATH_STAT_LOSS, ENABLED, StringUtils.getCapitalized(primarySkillType.toString()));
     }
 
     public void setHardcoreStatLossEnabled(PrimarySkillType primarySkillType, boolean enabled) {
-        config.set(HARDCORE + "." + DEATH_STAT_LOSS + "." + ENABLED + "." + StringUtils.getCapitalized(primarySkillType.toString()), enabled);
+        config.set(HARDCORE, DEATH_STAT_LOSS, ENABLED, StringUtils.getCapitalized(primarySkillType.toString()), enabled);
     }
 
     public double getHardcoreDeathStatPenaltyPercentage() {
-        return getDoubleValue(HARDCORE + "." + DEATH_STAT_LOSS + "." + PENALTY_PERCENTAGE);
+        return getDoubleValue(HARDCORE, DEATH_STAT_LOSS, PENALTY_PERCENTAGE);
     }
 
     public void setHardcoreDeathStatPenaltyPercentage(double value) {
-        config.set(HARDCORE + "." + DEATH_STAT_LOSS + "." + PENALTY_PERCENTAGE, value);
+        config.set(HARDCORE, DEATH_STAT_LOSS, PENALTY_PERCENTAGE, value);
     }
 
     public int getHardcoreDeathStatPenaltyLevelThreshold() {
-        return getIntValue(HARDCORE + "." + DEATH_STAT_LOSS + "." + LEVEL_THRESHOLD);
+        return getIntValue(HARDCORE, DEATH_STAT_LOSS, LEVEL_THRESHOLD);
     }
 
     public boolean getHardcoreVampirismEnabled(PrimarySkillType primarySkillType) {
-        return getBooleanValue(HARDCORE + "." + VAMPIRISM + "." + ENABLED + "." + StringUtils.getCapitalized(primarySkillType.toString()));
+        return getBooleanValue(HARDCORE, VAMPIRISM, ENABLED, StringUtils.getCapitalized(primarySkillType.toString()));
     }
 
     public void setHardcoreVampirismEnabled(PrimarySkillType primarySkillType, boolean enabled) {
-        config.set(HARDCORE + "." + VAMPIRISM + "." + ENABLED + "." + StringUtils.getCapitalized(primarySkillType.toString()), enabled);
+        config.set(HARDCORE, VAMPIRISM, ENABLED, StringUtils.getCapitalized(primarySkillType.toString()), enabled);
     }
 
     public double getHardcoreVampirismStatLeechPercentage() {
-        return getDoubleValue(HARDCORE + "." + VAMPIRISM + "." + LEECH_PERCENTAGE);
+        return getDoubleValue(HARDCORE, VAMPIRISM, LEECH_PERCENTAGE);
     }
 
     public void setHardcoreVampirismStatLeechPercentage(double value) {
-        config.set(HARDCORE + "." + VAMPIRISM + "." + LEECH_PERCENTAGE, value);
+        config.set(HARDCORE, VAMPIRISM, LEECH_PERCENTAGE, value);
     }
 
     public int getHardcoreVampirismLevelThreshold() {
-        return getIntValue(HARDCORE + "." + VAMPIRISM + "." + LEVEL_THRESHOLD);
+        return getIntValue(HARDCORE, VAMPIRISM, LEVEL_THRESHOLD);
     }
 
     /* Items */
     public int getChimaeraUseCost() {
-        return getIntValue(ITEMS + "." + CHIMAERA_WING + "." + USE_COST);
+        return getIntValue(ITEMS, CHIMAERA_WING, USE_COST);
     }
 
     public int getChimaeraRecipeCost() {
-        return getIntValue(ITEMS + "." + CHIMAERA_WING + "." + RECIPE_COST);
+        return getIntValue(ITEMS, CHIMAERA_WING, RECIPE_COST);
     }
 
     public Material getChimaeraItem() {
-        return Material.matchMaterial(getStringValue(ITEMS + "." + CHIMAERA_WING + "." + ITEM + NAME, FEATHER));
+        return Material.matchMaterial(getStringValue(ITEMS, CHIMAERA_WING, ITEM + NAME, FEATHER));
     }
 
     public boolean getChimaeraEnabled() {
-        return getBooleanValue(ITEMS + "." + CHIMAERA_WING + "." + ENABLED);
+        return getBooleanValue(ITEMS, CHIMAERA_WING, ENABLED);
     }
 
     public boolean getChimaeraPreventUseUnderground() {
-        return getBooleanValue(ITEMS + "." + CHIMAERA_WING + "." + PREVENT_USE_UNDERGROUND);
+        return getBooleanValue(ITEMS, CHIMAERA_WING, PREVENT_USE_UNDERGROUND);
     }
 
     public boolean getChimaeraUseBedSpawn() {
-        return getBooleanValue(ITEMS + "." + CHIMAERA_WING + "." + USE_BED_SPAWN);
+        return getBooleanValue(ITEMS, CHIMAERA_WING, USE_BED_SPAWN);
     }
 
     public int getChimaeraCooldown() {
-        return getIntValue(ITEMS + "." + CHIMAERA_WING + "." + COOLDOWN);
+        return getIntValue(ITEMS, CHIMAERA_WING, COOLDOWN);
     }
 
     public int getChimaeraWarmup() {
-        return getIntValue(ITEMS + "." + CHIMAERA_WING + "." + WARMUP);
+        return getIntValue(ITEMS, CHIMAERA_WING, WARMUP);
     }
 
     public int getChimaeraRecentlyHurtCooldown() {
-        return getIntValue(ITEMS + "." + CHIMAERA_WING + "." + RECENTLY_HURT + COOLDOWN);
+        return getIntValue(ITEMS, CHIMAERA_WING, RECENTLY_HURT + COOLDOWN);
     }
 
     public boolean getChimaeraSoundEnabled() {
-        return getBooleanValue(ITEMS + "." + CHIMAERA_WING + "." + SOUND + "_" + ENABLED);
+        return getBooleanValue(ITEMS, CHIMAERA_WING, SOUND + "_" + ENABLED);
     }
 
     public boolean getFluxPickaxeSoundEnabled() {
-        return getBooleanValue(ITEMS + "." + FLUX + "_Pickaxe." + SOUND + "_" + ENABLED);
+        return getBooleanValue(ITEMS, FLUX + "_Pickaxe." + SOUND + "_" + ENABLED);
     }
 
     /* Particles */
     public boolean getAbilityActivationEffectEnabled() {
-        return getBooleanValue(PARTICLES + "." + ABILITY_ACTIVATION);
+        return getBooleanValue(PARTICLES, ABILITY_ACTIVATION);
     }
 
     public boolean getAbilityDeactivationEffectEnabled() {
-        return getBooleanValue(PARTICLES + "." + ABILITY_DEACTIVATION);
+        return getBooleanValue(PARTICLES, ABILITY_DEACTIVATION);
     }
 
     public boolean getBleedEffectEnabled() {
-        return getBooleanValue(PARTICLES + "." + BLEED);
+        return getBooleanValue(PARTICLES, BLEED);
     }
 
     public boolean getDodgeEffectEnabled() {
-        return getBooleanValue(PARTICLES + "." + DODGE);
+        return getBooleanValue(PARTICLES, DODGE);
     }
 
     public boolean getFluxEffectEnabled() {
-        return getBooleanValue(PARTICLES + "." + FLUX);
+        return getBooleanValue(PARTICLES, FLUX);
     }
 
     public boolean getGreaterImpactEffectEnabled() {
-        return getBooleanValue(PARTICLES + "." + GREATER_IMPACT);
+        return getBooleanValue(PARTICLES, GREATER_IMPACT);
     }
 
     public boolean getCallOfTheWildEffectEnabled() {
-        return getBooleanValue(PARTICLES + "." + CALL_OF_THE_WILD);
+        return getBooleanValue(PARTICLES, CALL_OF_THE_WILD);
     }
 
     public boolean getLevelUpEffectsEnabled() {
-        return getBooleanValue(PARTICLES + "." + LEVEL_UP + ENABLED);
+        return getBooleanValue(PARTICLES, LEVEL_UP + ENABLED);
     }
 
     public int getLevelUpEffectsTier() {
-        return getIntValue(PARTICLES + "." + LEVEL_UP + TIER);
+        return getIntValue(PARTICLES, LEVEL_UP + TIER);
     }
 
     public boolean getLargeFireworks() {
-        return getBooleanValue(PARTICLES + "." + LARGE_FIREWORKS);
+        return getBooleanValue(PARTICLES, LARGE_FIREWORKS);
     }
 
     /* PARTY SETTINGS */
     public boolean getPartyFriendlyFire() {
-        return getBooleanValue(PARTY + "." + FRIENDLY_FIRE);
+        return getBooleanValue(PARTY, FRIENDLY_FIRE);
     }
 
     public int getPartyMaxSize() {
-        return getIntValue(PARTY + "." + MAX_SIZE);
+        return getIntValue(PARTY, MAX_SIZE);
     }
 
     public int getAutoPartyKickInterval() {
-        return getIntValue(PARTY + "." + AUTO_KICK_INTERVAL);
+        return getIntValue(PARTY, AUTO_KICK_INTERVAL);
     }
 
     public int getAutoPartyKickTime() {
-        return getIntValue(PARTY + "." + OLD_PARTY_MEMBER_CUTOFF);
+        return getIntValue(PARTY, OLD_PARTY_MEMBER_CUTOFF);
     }
 
     public double getPartyShareBonusBase() {
-        return getDoubleValue(PARTY + "." + SHARING_EXP_SHARE_BONUS_BASE);
+        return getDoubleValue(PARTY, SHARING_EXP_SHARE_BONUS_BASE);
     }
 
     public double getPartyShareBonusIncrease() {
-        return getDoubleValue(PARTY + "." + SHARING + "." + EXP_SHARE_BONUS_INCREASE);
+        return getDoubleValue(PARTY, SHARING, EXP_SHARE_BONUS_INCREASE);
     }
 
     public double getPartyShareBonusCap() {
-        return getDoubleValue(PARTY + "." + SHARING + "." + EXP_SHARE_BONUS_CAP);
+        return getDoubleValue(PARTY, SHARING, EXP_SHARE_BONUS_CAP);
     }
 
     public double getPartyShareRange() {
-        return getDoubleValue(PARTY + "." + SHARING + "." + RANGE);
+        return getDoubleValue(PARTY, SHARING, RANGE);
     }
 
     public int getPartyLevelCap() {
-        int cap = getIntValue(PARTY + "." + LEVELING + "." + LEVEL_CAP);
+        int cap = getIntValue(PARTY, LEVELING, LEVEL_CAP);
         return (cap <= 0) ? Integer.MAX_VALUE : cap;
     }
 
     //TODO: Move this to Experience Config
     public int getPartyXpCurveMultiplier() {
-        return getIntValue(PARTY + "." + LEVELING + "." + XP_CURVE_MODIFIER);
+        return getIntValue(PARTY, LEVELING, XP_CURVE_MODIFIER);
     }
 
     public boolean getPartyXpNearMembersNeeded() {
-        return getBooleanValue(PARTY + "." + LEVELING + "." + NEAR_MEMBERS_NEEDED);
+        return getBooleanValue(PARTY, LEVELING, NEAR_MEMBERS_NEEDED);
     }
 
     public boolean getPartyInformAllMembers() {
-        return getBooleanValue(PARTY + "." + LEVELING + "." + INFORM_ALL_PARTY_MEMBERS_ON_LEVEL_UP);
+        return getBooleanValue(PARTY, LEVELING, INFORM_ALL_PARTY_MEMBERS_ON_LEVEL_UP);
     }
 
     public int getPartyFeatureUnlockLevel(PartyFeature partyFeature) {
-        return getIntValue(PARTY + "." + LEVELING + "." + StringUtils.getPrettyPartyFeatureString(partyFeature).replace(" ", "") + UNLOCK_LEVEL);
+        return getIntValue(PARTY, LEVELING, StringUtils.getPrettyPartyFeatureString(partyFeature).replace(" ", "") + UNLOCK_LEVEL);
     }
 
     /* Party Teleport Settings */
     public int getPTPCommandCooldown() {
-        return getIntValue(COMMANDS + "." + PTP + "." + COOLDOWN);
+        return getIntValue(COMMANDS, PTP, COOLDOWN);
     }
 
     public int getPTPCommandWarmup() {
-        return getIntValue(COMMANDS + "." + PTP + "." + WARMUP);
+        return getIntValue(COMMANDS, PTP, WARMUP);
     }
 
     public int getPTPCommandRecentlyHurtCooldown() {
-        return getIntValue(COMMANDS + "." + PTP + "." + RECENTLY_HURT + COOLDOWN);
+        return getIntValue(COMMANDS, PTP, RECENTLY_HURT + COOLDOWN);
     }
 
     public int getPTPCommandTimeout() {
-        return getIntValue(COMMANDS + "." + PTP + "." + REQUEST_TIMEOUT);
+        return getIntValue(COMMANDS, PTP, REQUEST_TIMEOUT);
     }
 
     public boolean getPTPCommandConfirmRequired() {
-        return getBooleanValue(COMMANDS + "." + PTP + "." + ACCEPT_REQUIRED);
+        return getBooleanValue(COMMANDS, PTP, ACCEPT_REQUIRED);
     }
 
     public boolean getPTPCommandWorldPermissions() {
-        return getBooleanValue(COMMANDS + "." + PTP + "." + WORLD_BASED_PERMISSIONS);
+        return getBooleanValue(COMMANDS, PTP, WORLD_BASED_PERMISSIONS);
     }
 
     /* Inspect command distance */
     public double getInspectDistance() {
-        return getDoubleValue(COMMANDS + "." + INSPECT1 + "." + MAX_DISTANCE);
+        return getDoubleValue(COMMANDS, INSPECT1, MAX_DISTANCE);
     }
 
     /*
@@ -950,7 +950,7 @@ public class MainConfig extends ConfigValidated {
 
     /* General Settings */
     public boolean getUrlLinksEnabled() {
-        return getBooleanValue(COMMANDS + "." + SKILLS + "." + URL_LINKS);
+        return getBooleanValue(COMMANDS, SKILLS, URL_LINKS);
     }
 
     public boolean getAbilityMessagesEnabled() {
@@ -1019,171 +1019,171 @@ public class MainConfig extends ConfigValidated {
 
     /* Acrobatics */
     public boolean getDodgeLightningDisabled() {
-        return getBooleanValue(SKILLS + "." + ACROBATICS + "." + PREVENT + DODGE + LIGHTNING);
+        return getBooleanValue(SKILLS, ACROBATICS, PREVENT + DODGE + LIGHTNING);
     }
 
     public int getXPAfterTeleportCooldown() {
-        return getIntValue(SKILLS + "." + ACROBATICS + "." + XP_AFTER_TELEPORT + COOLDOWN);
+        return getIntValue(SKILLS, ACROBATICS, XP_AFTER_TELEPORT + COOLDOWN);
     }
 
     /* Alchemy */
     public boolean getEnabledForHoppers() {
-        return getBooleanValue(SKILLS + "." + ALCHEMY + "." + ENABLED + FOR_HOPPERS);
+        return getBooleanValue(SKILLS, ALCHEMY, ENABLED + FOR_HOPPERS);
     }
 
     public boolean getPreventHopperTransferIngredients() {
-        return getBooleanValue(SKILLS + "." + ALCHEMY + "." + PREVENT_HOPPER_TRANSFER_INGREDIENTS);
+        return getBooleanValue(SKILLS, ALCHEMY, PREVENT_HOPPER_TRANSFER_INGREDIENTS);
     }
 
     public boolean getPreventHopperTransferBottles() {
-        return getBooleanValue(SKILLS + "." + ALCHEMY + "." + PREVENT_HOPPER_TRANSFER_BOTTLES);
+        return getBooleanValue(SKILLS, ALCHEMY, PREVENT_HOPPER_TRANSFER_BOTTLES);
     }
 
     /* Fishing */
     public boolean getFishingDropsEnabled() {
-        return getBooleanValue(SKILLS + "." + FISHING + "." + DROPS + ENABLED);
+        return getBooleanValue(SKILLS, FISHING, DROPS + ENABLED);
     }
 
     public boolean getFishingOverrideTreasures() {
-        return getBooleanValue(SKILLS + "." + FISHING + "." + OVERRIDE_VANILLA_TREASURES);
+        return getBooleanValue(SKILLS, FISHING, OVERRIDE_VANILLA_TREASURES);
     }
 
     public boolean getFishingExtraFish() {
-        return getBooleanValue(SKILLS + "." + FISHING + "." + EXTRA_FISH);
+        return getBooleanValue(SKILLS, FISHING, EXTRA_FISH);
     }
 
     public double getFishingLureModifier() {
-        return getDoubleValue(SKILLS + "." + FISHING + "." + LURE_MODIFIER);
+        return getDoubleValue(SKILLS, FISHING, LURE_MODIFIER);
     }
 
     /* Mining */
     public Material getDetonatorItem() {
-        return Material.matchMaterial(getStringValue(SKILLS + "." + MINING + "." + DETONATOR + NAME, FLINT_AND_STEEL));
+        return Material.matchMaterial(getStringValue(SKILLS, MINING, DETONATOR + NAME, FLINT_AND_STEEL));
     }
 
     /* Repair */
     public boolean getRepairAnvilMessagesEnabled() {
-        return getBooleanValue(SKILLS + "." + REPAIR + "." + ANVIL + MESSAGES);
+        return getBooleanValue(SKILLS, REPAIR, ANVIL + MESSAGES);
     }
 
     public boolean getRepairAnvilPlaceSoundsEnabled() {
-        return getBooleanValue(SKILLS + "." + REPAIR + "." + ANVIL_PLACED + SOUNDS);
+        return getBooleanValue(SKILLS, REPAIR, ANVIL_PLACED + SOUNDS);
     }
 
     public boolean getRepairAnvilUseSoundsEnabled() {
-        return getBooleanValue(SKILLS + "." + REPAIR + "." + ANVIL_USE + SOUNDS);
+        return getBooleanValue(SKILLS, REPAIR, ANVIL_USE + SOUNDS);
     }
 
     public Material getRepairAnvilMaterial() {
-        return Material.matchMaterial(getStringValue(SKILLS + "." + REPAIR + "." + ANVIL_MATERIAL, IRON_BLOCK));
+        return Material.matchMaterial(getStringValue(SKILLS, REPAIR, ANVIL_MATERIAL, IRON_BLOCK));
     }
 
     public boolean getRepairConfirmRequired() {
-        return getBooleanValue(SKILLS + "." + REPAIR + "." + CONFIRM_REQUIRED);
+        return getBooleanValue(SKILLS, REPAIR, CONFIRM_REQUIRED);
     }
 
     /* Salvage */
     public boolean getSalvageAnvilMessagesEnabled() {
-        return getBooleanValue(SKILLS + "." + SALVAGE + "." + ANVIL + MESSAGES, true);
+        return getBooleanValue(SKILLS, SALVAGE, ANVIL + MESSAGES);
     }
 
     public boolean getSalvageAnvilPlaceSoundsEnabled() {
-        return getBooleanValue(SKILLS + "." + SALVAGE + "." + ANVIL_PLACED + SOUNDS, true);
+        return getBooleanValue(SKILLS, SALVAGE, ANVIL_PLACED + SOUNDS);
     }
 
     public boolean getSalvageAnvilUseSoundsEnabled() {
-        return getBooleanValue(SKILLS + "." + SALVAGE + "." + ANVIL_USE + SOUNDS, true);
+        return getBooleanValue(SKILLS, SALVAGE, ANVIL_USE + SOUNDS);
     }
 
     public Material getSalvageAnvilMaterial() {
-        return Material.matchMaterial(getStringValue(SKILLS + "." + SALVAGE + "." + ANVIL_MATERIAL, GOLD_BLOCK));
+        return Material.matchMaterial(getStringValue(SKILLS, SALVAGE, ANVIL_MATERIAL, GOLD_BLOCK));
     }
 
     public boolean getSalvageConfirmRequired() {
-        return getBooleanValue(SKILLS + "." + SALVAGE + "." + CONFIRM_REQUIRED);
+        return getBooleanValue(SKILLS, SALVAGE, CONFIRM_REQUIRED);
     }
 
     /* Unarmed */
     public boolean getUnarmedBlockCrackerSmoothbrickToCracked() {
-        return getBooleanValue(SKILLS + "." + UNARMED + "." + BLOCK_CRACKER + "." + SMOOTH_BRICK_TO_CRACKED_BRICK);
+        return getBooleanValue(SKILLS, UNARMED, BLOCK_CRACKER, SMOOTH_BRICK_TO_CRACKED_BRICK);
     }
 
     public boolean getUnarmedItemPickupDisabled() {
-        return getBooleanValue(SKILLS + "." + UNARMED + "." + ITEM + PICKUP_DISABLED_FULL_INVENTORY);
+        return getBooleanValue(SKILLS, UNARMED, ITEM + PICKUP_DISABLED_FULL_INVENTORY);
     }
 
     public boolean getUnarmedItemsAsUnarmed() {
-        return getBooleanValue(SKILLS + "." + UNARMED + "." + ITEMS + AS + UNARMED);
+        return getBooleanValue(SKILLS, UNARMED, ITEMS + AS + UNARMED);
     }
 
     /* Taming */
     public Material getTamingCOTWMaterial(EntityType type) {
-        return Material.matchMaterial(getStringValue(SKILLS + "." + TAMING + "." + CALL_OF_THE_WILD1 + "." + StringUtils.getPrettyEntityTypeString(type) + "." + ITEM + MATERIAL));
+        return Material.matchMaterial(getStringValue(SKILLS, TAMING, CALL_OF_THE_WILD1, StringUtils.getPrettyEntityTypeString(type), ITEM + MATERIAL));
     }
 
     public int getTamingCOTWCost(EntityType type) {
-        return getIntValue(SKILLS + "." + TAMING + "." + CALL_OF_THE_WILD1 + "." + StringUtils.getPrettyEntityTypeString(type) + "." + ITEM + AMOUNT);
+        return getIntValue(SKILLS, TAMING, CALL_OF_THE_WILD1, StringUtils.getPrettyEntityTypeString(type), ITEM + AMOUNT);
     }
 
     public int getTamingCOTWAmount(EntityType type) {
-        return getIntValue(SKILLS + "." + TAMING + "." + CALL_OF_THE_WILD1 + "." + StringUtils.getPrettyEntityTypeString(type) + "." + SUMMON_AMOUNT);
+        return getIntValue(SKILLS, TAMING, CALL_OF_THE_WILD1, StringUtils.getPrettyEntityTypeString(type), SUMMON_AMOUNT);
     }
 
     public int getTamingCOTWLength(EntityType type) {
-        return getIntValue(SKILLS + "." + TAMING + "." + CALL_OF_THE_WILD1 + "." + StringUtils.getPrettyEntityTypeString(type) + "." + SUMMON_LENGTH);
+        return getIntValue(SKILLS, TAMING, CALL_OF_THE_WILD1, StringUtils.getPrettyEntityTypeString(type), SUMMON_LENGTH);
     }
 
     public int getTamingCOTWMaxAmount(EntityType type) {
-        return getIntValue(SKILLS + "." + TAMING + "." + CALL_OF_THE_WILD1 + "." + StringUtils.getPrettyEntityTypeString(type) + "." + SUMMON_MAX_AMOUNT);
+        return getIntValue(SKILLS, TAMING, CALL_OF_THE_WILD1, StringUtils.getPrettyEntityTypeString(type), SUMMON_MAX_AMOUNT);
     }
 
     public double getTamingCOTWRange() {
-        return getDoubleValue(SKILLS + "." + TAMING + "." + CALL_OF_THE_WILD1 + "." + RANGE);
+        return getDoubleValue(SKILLS, TAMING, CALL_OF_THE_WILD1, RANGE);
     }
 
     /* Woodcutting */
     public boolean getWoodcuttingDoubleDropsEnabled(BlockData material) {
-        return getBooleanValue(DOUBLE_DROPS + "." + WOODCUTTING + "." + StringUtils.getFriendlyConfigBlockDataString(material));
+        return getBooleanValue(DOUBLE_DROPS, WOODCUTTING, StringUtils.getFriendlyConfigBlockDataString(material));
     }
 
     public boolean getTreeFellerSoundsEnabled() {
-        return getBooleanValue(SKILLS + "." + WOODCUTTING + "." + TREE_FELLER + SOUNDS);
+        return getBooleanValue(SKILLS, WOODCUTTING, TREE_FELLER + SOUNDS);
     }
 
     /* AFK Leveling */
     public boolean getAcrobaticsPreventAFK() {
-        return getBooleanValue(SKILLS + "." + ACROBATICS + "." + PREVENT_AFK + LEVELING);
+        return getBooleanValue(SKILLS, ACROBATICS, PREVENT_AFK + LEVELING);
     }
 
     public int getAcrobaticsAFKMaxTries() {
-        return getIntValue(SKILLS + "." + ACROBATICS + "." + MAX_TRIES_AT_SAME_LOCATION);
+        return getIntValue(SKILLS, ACROBATICS, MAX_TRIES_AT_SAME_LOCATION);
     }
 
     public boolean getHerbalismPreventAFK() {
-        return getBooleanValue(SKILLS + "." + HERBALISM + "." + PREVENT_AFK + LEVELING);
+        return getBooleanValue(SKILLS, HERBALISM, PREVENT_AFK + LEVELING);
     }
 
     /* Level Caps */
     public int getPowerLevelCap() {
-        int cap = getIntValue(GENERAL + "." + POWER + LEVEL_CAP);
+        int cap = getIntValue(GENERAL, POWER + LEVEL_CAP);
         return (cap <= 0) ? Integer.MAX_VALUE : cap;
     }
 
     public int getLevelCap(PrimarySkillType skill) {
-        int cap = getIntValue(SKILLS + "." + StringUtils.getCapitalized(skill.toString()) + "." + LEVEL_CAP);
+        int cap = getIntValue(SKILLS, StringUtils.getCapitalized(skill.toString()), LEVEL_CAP);
         return (cap <= 0) ? Integer.MAX_VALUE : cap;
     }
 
     public boolean getTruncateSkills() {
-        return getBooleanValue(GENERAL + "." + TRUNCATE + SKILLS);
+        return getBooleanValue(GENERAL, TRUNCATE + SKILLS);
     }
 
     /* PVP & PVE Settings */
     public boolean getPVPEnabled(PrimarySkillType skill) {
-        return getBooleanValue(SKILLS + "." + StringUtils.getCapitalized(skill.toString()) + "." + ENABLED + FOR_PVP);
+        return getBooleanValue(SKILLS, StringUtils.getCapitalized(skill.toString()), ENABLED + FOR_PVP);
     }
 
     public boolean getPVEEnabled(PrimarySkillType skill) {
-        return getBooleanValue(SKILLS + "." + StringUtils.getCapitalized(skill.toString()) + "." + ENABLED + FOR_PVE);
+        return getBooleanValue(SKILLS, StringUtils.getCapitalized(skill.toString()), ENABLED + FOR_PVE);
     }
 }
