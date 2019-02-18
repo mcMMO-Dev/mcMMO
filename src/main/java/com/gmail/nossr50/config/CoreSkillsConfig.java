@@ -6,6 +6,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
 
 public class CoreSkillsConfig extends Config {
+    public static final String ENABLED = "Enabled";
     //private static CoreSkillsConfig instance;
 
     public CoreSkillsConfig() {
@@ -52,7 +53,7 @@ public class CoreSkillsConfig extends Config {
      * @return true if subskill is enabled
      */
     public boolean isSkillEnabled(AbstractSubSkill abstractSubSkill) {
-        return getBooleanValue(StringUtils.getCapitalized(abstractSubSkill.getPrimarySkill().toString()) + "." + abstractSubSkill.getConfigKeyName() + ".Enabled", true);
+        return getBooleanValue(StringUtils.getCapitalized(abstractSubSkill.getPrimarySkill().toString()),  abstractSubSkill.getConfigKeyName(),  ENABLED);
     }
 
     /**
@@ -62,6 +63,6 @@ public class CoreSkillsConfig extends Config {
      * @return true if enabled
      */
     public boolean isPrimarySkillEnabled(PrimarySkillType primarySkillType) {
-        return getBooleanValue(StringUtils.getCapitalized(primarySkillType.toString()) + ".Enabled", true);
+        return getBooleanValue(StringUtils.getCapitalized(primarySkillType.toString()),  ENABLED);
     }
 }

@@ -3,6 +3,7 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.config.collectionconfigs.CollectionClassType;
 import com.gmail.nossr50.config.collectionconfigs.MultiConfigContainer;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
@@ -62,6 +63,7 @@ public final class ConfigManager {
     private CoreSkillsConfig coreSkillsConfig;
     private SoundConfig soundConfig;
     private RankConfig rankConfig;
+    private ItemWeightConfig itemWeightConfig;
 
 
 
@@ -101,6 +103,9 @@ public final class ConfigManager {
 
         rankConfig = new RankConfig();
         unloadables.add(rankConfig);
+
+        itemWeightConfig = new ItemWeightConfig();
+        unloadables.add(itemWeightConfig);
 
         /*if (MainConfig.getInstance().getToolModsEnabled()) {
             new ToolConfigManager();
@@ -184,6 +189,16 @@ public final class ConfigManager {
 
         //Clear
         unloadables.clear();
+    }
+
+    /**
+     * Registers an unloadable
+     * Unloadables call unload() on plugin disable to cleanup registries
+     */
+    public void registerUnloadable(Unload unload)
+    {
+        if(!unloadables.contains(unload))
+            unloadables.add(unload);
     }
 
     /*

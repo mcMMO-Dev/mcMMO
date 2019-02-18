@@ -61,6 +61,8 @@ public abstract class Config implements VersionedConfig, Unload {
         DIRECTORY_DATA_FOLDER = pathToParentFolder; //Data Folder for our plugin
         FILE_RELATIVE_PATH = relativePath; //Relative path to config from a parent folder
 
+        registerUnload();
+
         //Attempt IO Operations
         try {
             //Makes sure we have valid Files corresponding to this config
@@ -77,8 +79,15 @@ public abstract class Config implements VersionedConfig, Unload {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
-
+    /**
+     * Registers with the config managers unloader
+     * The unloader runs when the plugin gets disabled which cleans up registries to make reloading safe
+     */
+    private void registerUnload()
+    {
+        mcMMO.getConfigManager().registerUnloadable(this);
     }
 
     /**

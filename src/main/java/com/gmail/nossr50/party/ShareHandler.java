@@ -1,6 +1,7 @@
 package com.gmail.nossr50.party;
 
 import com.gmail.nossr50.config.MainConfig;
+import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.party.ItemShareType;

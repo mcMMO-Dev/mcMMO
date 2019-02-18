@@ -51,7 +51,7 @@ public class MainConfig extends ConfigValidated {
     public static final String PLAYER_COOLDOWN = "Player_" + COOLDOWN;
     public static final String LEVEL_UP = "LevelUp_";
     public static final String SOUND = "Sound";
-    public static final String LEVEL_UP_SOUNDS = LEVEL_UP + SOUNDS;
+    public static final String LEVEL_UP_SOUNDS = "LevelUp_Sounds";
     public static final String REFRESH_CHUNKS = "Refresh_Chunks";
     public static final String MOB_HEALTHBAR = "Mob_Healthbar";
     public static final String DISPLAY_TYPE = "Display_Type";
@@ -688,11 +688,11 @@ public class MainConfig extends ConfigValidated {
     }
 
     public String getMySQLDatabaseName() {
-        return getStringIncludingInts(MY_SQL, DATABASE, NAME);
+        return getStringValue(MY_SQL, DATABASE, NAME);
     }
 
     public String getMySQLUserName() {
-        return getStringIncludingInts(MY_SQL, DATABASE, USER_NAME);
+        return getStringValue(MY_SQL, DATABASE, USER_NAME);
     }
 
     public int getMySQLServerPort() {
@@ -704,7 +704,7 @@ public class MainConfig extends ConfigValidated {
     }
 
     public String getMySQLUserPassword() {
-        return getStringIncludingInts(MY_SQL, DATABASE, USER_PASSWORD);
+        return getStringValue(MY_SQL, DATABASE, USER_PASSWORD);
     }
 
     public int getMySQLMaxConnections(SQLDatabaseManager.PoolIdentifier identifier) {
@@ -719,7 +719,8 @@ public class MainConfig extends ConfigValidated {
         return getBooleanValue(MY_SQL, SERVER, SSL);
     }
 
-    ssadprivate String getStringIncludingInts(String[] key) {
+    //TODO: Legit cannot tell what the point of this method was
+    /*ssadprivate String getStringIncludingInts(String[] key) {
         String str = getStringValue(key);
 
         if (str == null) {
@@ -730,24 +731,24 @@ public class MainConfig extends ConfigValidated {
             str = "No value set for '" + key + "'";
         }
         return str;
-    }
+    }*/
 
     /* Hardcore Mode */
     public boolean getHardcoreStatLossEnabled(PrimarySkillType primarySkillType) {
         return getBooleanValue(HARDCORE, DEATH_STAT_LOSS, ENABLED, StringUtils.getCapitalized(primarySkillType.toString()));
     }
 
-    public void setHardcoreStatLossEnabled(PrimarySkillType primarySkillType, boolean enabled) {
+    /*public void setHardcoreStatLossEnabled(PrimarySkillType primarySkillType, boolean enabled) {
         config.set(HARDCORE, DEATH_STAT_LOSS, ENABLED, StringUtils.getCapitalized(primarySkillType.toString()), enabled);
-    }
+    }*/
 
     public double getHardcoreDeathStatPenaltyPercentage() {
         return getDoubleValue(HARDCORE, DEATH_STAT_LOSS, PENALTY_PERCENTAGE);
     }
 
-    public void setHardcoreDeathStatPenaltyPercentage(double value) {
+    /*public void setHardcoreDeathStatPenaltyPercentage(double value) {
         config.set(HARDCORE, DEATH_STAT_LOSS, PENALTY_PERCENTAGE, value);
-    }
+    }*/
 
     public int getHardcoreDeathStatPenaltyLevelThreshold() {
         return getIntValue(HARDCORE, DEATH_STAT_LOSS, LEVEL_THRESHOLD);
@@ -757,17 +758,17 @@ public class MainConfig extends ConfigValidated {
         return getBooleanValue(HARDCORE, VAMPIRISM, ENABLED, StringUtils.getCapitalized(primarySkillType.toString()));
     }
 
-    public void setHardcoreVampirismEnabled(PrimarySkillType primarySkillType, boolean enabled) {
+    /*public void setHardcoreVampirismEnabled(PrimarySkillType primarySkillType, boolean enabled) {
         config.set(HARDCORE, VAMPIRISM, ENABLED, StringUtils.getCapitalized(primarySkillType.toString()), enabled);
-    }
+    }*/
 
     public double getHardcoreVampirismStatLeechPercentage() {
         return getDoubleValue(HARDCORE, VAMPIRISM, LEECH_PERCENTAGE);
     }
 
-    public void setHardcoreVampirismStatLeechPercentage(double value) {
+    /*public void setHardcoreVampirismStatLeechPercentage(double value) {
         config.set(HARDCORE, VAMPIRISM, LEECH_PERCENTAGE, value);
-    }
+    }*/
 
     public int getHardcoreVampirismLevelThreshold() {
         return getIntValue(HARDCORE, VAMPIRISM, LEVEL_THRESHOLD);

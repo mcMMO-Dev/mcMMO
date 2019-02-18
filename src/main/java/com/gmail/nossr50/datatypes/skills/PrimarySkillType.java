@@ -158,17 +158,17 @@ public enum PrimarySkillType {
         return MainConfig.getInstance().getHardcoreStatLossEnabled(this);
     }
 
-    public void setHardcoreStatLossEnabled(boolean enable) {
+    /*public void setHardcoreStatLossEnabled(boolean enable) {
         MainConfig.getInstance().setHardcoreStatLossEnabled(this, enable);
-    }
+    }*/
 
     public boolean getHardcoreVampirismEnabled() {
         return MainConfig.getInstance().getHardcoreVampirismEnabled(this);
     }
 
-    public void setHardcoreVampirismEnabled(boolean enable) {
+    /*public void setHardcoreVampirismEnabled(boolean enable) {
         MainConfig.getInstance().setHardcoreVampirismEnabled(this, enable);
-    }
+    }*/
 
     public ToolType getTool() {
         return tool;
