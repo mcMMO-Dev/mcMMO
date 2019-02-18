@@ -130,7 +130,7 @@ public class WoodcuttingManager extends SkillManager {
                 xp += Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.TREE_FELLER);
                 Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
             }
-            else if (mcMMO.getModManager().isCustomLog(blockState)) {
+            /*else if (mcMMO.getModManager().isCustomLog(blockState)) {
                 if (canGetDoubleDrops()) {
                     Woodcutting.checkForDoubleDrop(blockState);
                 }
@@ -142,7 +142,7 @@ public class WoodcuttingManager extends SkillManager {
             }
             else if (mcMMO.getModManager().isCustomLeaf(blockState)) {
                 Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
-            }
+            }*/
             else {
 
                 if (BlockUtils.isLog(blockState)) {

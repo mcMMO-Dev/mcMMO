@@ -1,7 +1,9 @@
 package com.gmail.nossr50.datatypes.player;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
@@ -754,13 +756,13 @@ public class McMMOPlayer {
 
         xp = (float) (xp / primarySkillType.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
 
-        if (MainConfig.getInstance().getToolModsEnabled()) {
+        /*if (MainConfig.getInstance().getToolModsEnabled()) {
             CustomTool tool = mcMMO.getModManager().getTool(player.getInventory().getItemInMainHand());
 
             if (tool != null) {
                 xp *= tool.getXpMultiplier();
             }
-        }
+        }*/
 
         return PerksUtils.handleXpPerks(player, xp, primarySkillType);
     }
@@ -871,9 +873,9 @@ public class McMMOPlayer {
 
         ItemStack inHand = player.getInventory().getItemInMainHand();
 
-        if (mcMMO.getModManager().isCustomTool(inHand) && !mcMMO.getModManager().getTool(inHand).isAbilityEnabled()) {
+        /*if (mcMMO.getModManager().isCustomTool(inHand) && !mcMMO.getModManager().getTool(inHand).isAbilityEnabled()) {
             return;
-        }
+        }*/
 
         if (!getAbilityUse()) {
             return;

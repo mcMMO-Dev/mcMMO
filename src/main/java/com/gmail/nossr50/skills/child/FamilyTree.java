@@ -1,10 +1,10 @@
 package com.gmail.nossr50.skills.child;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Set;
 
 public class FamilyTree {
     static final ImmutableSet<PrimarySkillType> salvageTree;

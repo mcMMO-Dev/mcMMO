@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.mining;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -79,7 +80,8 @@ public class MiningManager extends SkillManager {
             SkillUtils.handleDurabilityChange(getPlayer().getInventory().getItemInMainHand(), MainConfig.getInstance().getAbilityToolDamage());
         }
 
-        if ((mcMMO.getModManager().isCustomMiningBlock(blockState) && !mcMMO.getModManager().getBlock(blockState).isDoubleDropEnabled()) || !MainConfig.getInstance().getDoubleDropsEnabled(skill, material)) {
+        //if ((mcMMO.getModManager().isCustomMiningBlock(blockState) && !mcMMO.getModManager().getBlock(blockState).isDoubleDropEnabled()) || !MainConfig.getInstance().getDoubleDropsEnabled(skill, material)) {
+        if(!MainConfig.getInstance().getDoubleDropsEnabled(skill, material)) {
             return;
         }
 

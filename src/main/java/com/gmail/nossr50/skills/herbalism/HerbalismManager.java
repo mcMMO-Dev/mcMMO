@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills.herbalism;
 
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
@@ -140,17 +141,16 @@ public class HerbalismManager extends SkillManager {
         int xp;
         boolean greenTerra = mcMMOPlayer.getAbilityMode(skill.getAbility());
 
-        if (mcMMO.getModManager().isCustomHerbalismBlock(blockState)) {
-            CustomBlock customBlock = mcMMO.getModManager().getBlock(blockState);
-            xp = customBlock.getXpGain();
-
-            if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_DOUBLE_DROPS) && customBlock.isDoubleDropEnabled()) {
-                if(checkDoubleDrop(blockState))
-                    BlockUtils.markBlocksForBonusDrops(blockState, greenTerra);
-            }
-        }
-        else {
-            xp = ExperienceConfig.getInstance().getXp(skill, blockState.getBlockData());
+//        if (mcMMO.getModManager().isCustomHerbalismBlock(blockState)) {
+//            CustomBlock customBlock = mcMMO.getModManager().getBlock(blockState);
+//            xp = customBlock.getXpGain();
+//
+//            if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_DOUBLE_DROPS) && customBlock.isDoubleDropEnabled()) {
+//                drops = blockState.getBlock().getDrops();
+//            }
+//        }
+//        else {
+            xp = ExperienceConfig.getInstance().getXp(skill, blockState.getType());
 
             if (!oneBlockPlant) {
                 //Kelp is actually two blocks mixed together
@@ -170,7 +170,7 @@ public class HerbalismManager extends SkillManager {
             if (Permissions.greenThumbPlant(player, material)) {
                 processGreenThumbPlants(blockState, greenTerra);
             }
-        }
+        //} mod config close
 
         applyXpGain(xp, XPGainReason.PVE);
     }

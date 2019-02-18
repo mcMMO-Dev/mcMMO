@@ -1,7 +1,9 @@
 package com.gmail.nossr50;
 
-import com.gmail.nossr50.config.*;
 import com.gmail.nossr50.config.ConfigManager;
+import com.gmail.nossr50.config.CoreSkillsConfig;
+import com.gmail.nossr50.config.MainConfig;
+import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
@@ -134,9 +136,9 @@ public class mcMMO extends JavaPlugin {
             //Store this value so other plugins can check it
             isRetroModeEnabled = MainConfig.getInstance().getIsRetroMode();
 
-            if (getServer().getName().equals("Cauldron") || getServer().getName().equals("MCPC+")) {
+            /*if (getServer().getName().equals("Cauldron") || getServer().getName().equals("MCPC+")) {
                 checkModConfigs();
-            }
+            }*/
 
             if (healthBarPluginEnabled) {
                 getLogger().info("HealthBar plugin found, mcMMO's healthbars are automatically disabled.");
@@ -493,7 +495,7 @@ public class mcMMO extends JavaPlugin {
         }
     }
 
-    private void checkModConfigs() {
+    /*private void checkModConfigs() {
         if (!MainConfig.getInstance().getToolModsEnabled()) {
             getLogger().warning("Cauldron implementation found, but the custom tool config for mcMMO is disabled!");
             getLogger().info("To enable, set Mods.Tool_Mods_Enabled to TRUE in config.yml.");
@@ -513,7 +515,7 @@ public class mcMMO extends JavaPlugin {
             getLogger().warning("Cauldron implementation found, but the custom entity config for mcMMO is disabled!");
             getLogger().info("To enable, set Mods.Entity_Mods_Enabled to TRUE in config.yml.");
         }
-    }
+    }*/
 
     public InputStreamReader getResourceAsReader(String fileName) {
         InputStream in = getResource(fileName);

@@ -1,10 +1,8 @@
 package com.gmail.nossr50.skills.repair.repairables;
 
-import com.gmail.nossr50.config.Unload;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 

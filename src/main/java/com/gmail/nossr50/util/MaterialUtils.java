@@ -18,7 +18,9 @@ public final class MaterialUtils {
             case EMERALD_ORE:
                 return true;
             default:
-                return mcMMO.getModManager().isCustomOre(data);
+                return false;
+            /*default:
+                return mcMMO.getModManager().isCustomOre(data);*/
         }
     }
 }

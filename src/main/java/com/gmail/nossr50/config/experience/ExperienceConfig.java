@@ -1,7 +1,6 @@
 package com.gmail.nossr50.config.experience;
 
 import com.gmail.nossr50.config.ConfigValidated;
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;

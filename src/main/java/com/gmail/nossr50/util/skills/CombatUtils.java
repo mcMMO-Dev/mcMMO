@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util.skills;
 
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -560,10 +561,11 @@ public final class CombatUtils {
             }
         }
         else {
-            if (mcMMO.getModManager().isCustomEntity(target)) {
+            /*if (mcMMO.getModManager().isCustomEntity(target)) {
                 baseXP = mcMMO.getModManager().getEntity(target).getXpMultiplier();
-            }
-            else if (target instanceof Animals) {
+            }*/
+            //else if (target instanceof Animals) {
+            if (target instanceof Animals) {
                 EntityType type = target.getType();
                 baseXP = ExperienceConfig.getInstance().getAnimalsXP(type);
             }
@@ -590,7 +592,7 @@ public final class CombatUtils {
                 else
                 {
                     baseXP = 1.0;
-                    mcMMO.getModManager().addCustomEntity(target);
+                    //mcMMO.getModManager().addCustomEntity(target);
                 }
             }
 
@@ -819,9 +821,9 @@ public final class CombatUtils {
         else if (ItemUtils.isDiamondTool(inHand)) {
             tier = 4;
         }
-        else if (mcMMO.getModManager().isCustomTool(inHand)) {
+        /*else if (mcMMO.getModManager().isCustomTool(inHand)) {
             tier = mcMMO.getModManager().getTool(inHand).getTier();
-        }
+        }*/
 
         return tier;
     }

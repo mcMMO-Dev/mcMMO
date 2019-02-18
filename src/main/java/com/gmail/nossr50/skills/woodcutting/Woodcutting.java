@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.woodcutting;
 
 import com.gmail.nossr50.config.MainConfig;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
@@ -36,9 +37,9 @@ public final class Woodcutting {
      * @return Amount of experience
      */
     protected static int getExperienceFromLog(BlockState blockState, ExperienceGainMethod experienceGainMethod) {
-        if (mcMMO.getModManager().isCustomLog(blockState)) {
+        /*if (mcMMO.getModManager().isCustomLog(blockState)) {
             return mcMMO.getModManager().getBlock(blockState).getXpGain();
-        }
+        }*/
 
         return ExperienceConfig.getInstance().getXp(PrimarySkillType.WOODCUTTING, blockState.getType());
     }
@@ -49,14 +50,14 @@ public final class Woodcutting {
      * @param blockState Block being broken
      */
     protected static void checkForDoubleDrop(BlockState blockState) {
-        if (mcMMO.getModManager().isCustomLog(blockState) && mcMMO.getModManager().getBlock(blockState).isDoubleDropEnabled()) {
+        /*if (mcMMO.getModManager().isCustomLog(blockState) && mcMMO.getModManager().getBlock(blockState).isDoubleDropEnabled()) {
             Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
         }
-        else {
+        else {*/
             if (MainConfig.getInstance().getWoodcuttingDoubleDropsEnabled(blockState.getBlockData())) {
                 Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
             }
-        }
+        //}
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.mining;
 
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
@@ -17,9 +18,9 @@ public class Mining {
     public static int getBlockXp(BlockState blockState) {
         int xp = ExperienceConfig.getInstance().getXp(PrimarySkillType.MINING, blockState.getType());
 
-        if (xp == 0 && mcMMO.getModManager().isCustomMiningBlock(blockState)) {
+        /*if (xp == 0 && mcMMO.getModManager().isCustomMiningBlock(blockState)) {
             xp = mcMMO.getModManager().getBlock(blockState).getXpGain();
-        }
+        }*/
 
         return xp;
     }
@@ -93,9 +94,9 @@ public class Mining {
                 return;
 
             default:
-                if (mcMMO.getModManager().isCustomMiningBlock(blockState)) {
+                /*if (mcMMO.getModManager().isCustomMiningBlock(blockState)) {
                     Misc.dropItem(Misc.getBlockCenter(blockState), new ItemStack(blockState.getType()));
-                }
+                }*/
                 return;
         }
     }
@@ -160,9 +161,9 @@ public class Mining {
                 return;
 
             default:
-                if (mcMMO.getModManager().isCustomMiningBlock(blockState)) {
+                /*if (mcMMO.getModManager().isCustomMiningBlock(blockState)) {
                     Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
-                }
+                }*/
                 return;
         }
     }

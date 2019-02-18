@@ -1,13 +1,8 @@
 package com.gmail.nossr50.config.mods;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.ModManager;
-
-import java.io.File;
-import java.util.regex.Pattern;
-
 public class BlockConfigManager {
-    public BlockConfigManager() {
+    //TODO: Commented out until modded servers appear again
+    /*public BlockConfigManager() {
         Pattern middlePattern = Pattern.compile("blocks\\.(?:.+)\\.yml");
         Pattern startPattern = Pattern.compile("(?:.+)\\.blocks\\.yml");
         //File dataFolder = new File(McmmoCore.getModDataFolderPath());
@@ -32,5 +27,5 @@ public class BlockConfigManager {
 
             modManager.registerCustomBlocks(new CustomBlockConfig(fileName));
         }
-    }
+    }*/
 }

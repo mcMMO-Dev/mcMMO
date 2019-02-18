@@ -1,13 +1,8 @@
 package com.gmail.nossr50.config.mods;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.ModManager;
-
-import java.io.File;
-import java.util.regex.Pattern;
-
 public class ArmorConfigManager {
-    public ArmorConfigManager() {
+    //TODO: Commented out until modded servers appear again
+    /*public ArmorConfigManager() {
         Pattern middlePattern = Pattern.compile("armor\\.(?:.+)\\.yml");
         Pattern startPattern = Pattern.compile("(?:.+)\\.armor\\.yml");
         //File dataFolder = new File(McmmoCore.getModDataFolderPath());
@@ -32,5 +27,5 @@ public class ArmorConfigManager {
 
             modManager.registerCustomArmor(new CustomArmorConfig(fileName));
         }
-    }
+    }*/
 }

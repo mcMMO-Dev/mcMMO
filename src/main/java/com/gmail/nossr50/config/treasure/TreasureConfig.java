@@ -1,6 +1,5 @@
 package com.gmail.nossr50.config.treasure;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.ConfigCollection;
 import com.gmail.nossr50.datatypes.treasure.*;
 import com.gmail.nossr50.mcMMO;

@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ModManager {
-    private List<Repairable> repairables = new ArrayList<Repairable>();
+    /*private List<Repairable> repairables = new ArrayList<Repairable>();
 
     // Armor Mods
     private List<Material> customBoots       = new ArrayList<Material>();
@@ -164,22 +164,22 @@ public class ModManager {
         return customBlockMap.get(data);
     }
 
-    /**
+    *//**
      * Checks to see if an item is a custom tool.
      *
      * @param item Item to check
      * @return true if the item is a custom tool, false otherwise
-     */
+     *//*
     public boolean isCustomTool(ItemStack item) {
         return MainConfig.getInstance().getToolModsEnabled() && item != null && customToolMap.containsKey(item.getType());
     }
 
-    /**
+    *//**
      * Get the custom tool associated with an item.
      *
      * @param item The item to check
      * @return the tool if it exists, null otherwise
-     */
+     *//*
     public CustomTool getTool(ItemStack item) {
         return item == null ? null : customToolMap.get(item.getType());
     }
@@ -278,5 +278,5 @@ public class ModManager {
         catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

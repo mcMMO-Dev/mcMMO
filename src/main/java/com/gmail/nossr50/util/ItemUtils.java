@@ -28,7 +28,8 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return mcMMO.getModManager().isCustomBow(type);
+                return false;
+                //return mcMMO.getModManager().isCustomBow(type);
         }
     }
 
@@ -50,7 +51,8 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return mcMMO.getModManager().isCustomSword(type);
+                return false;
+                //return mcMMO.getModManager().isCustomSword(type);
         }
     }
 
@@ -72,7 +74,8 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return mcMMO.getModManager().isCustomHoe(type);
+                return false;
+                //return mcMMO.getModManager().isCustomHoe(type);
         }
     }
 
@@ -94,7 +97,8 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return mcMMO.getModManager().isCustomShovel(type);
+                return false;
+                //return mcMMO.getModManager().isCustomShovel(type);
         }
     }
 
@@ -116,7 +120,8 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return mcMMO.getModManager().isCustomAxe(type);
+                return false;
+                //return mcMMO.getModManager().isCustomAxe(type);
         }
     }
 
@@ -138,7 +143,8 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return mcMMO.getModManager().isCustomPickaxe(type);
+                return false;
+                //return mcMMO.getModManager().isCustomPickaxe(type);
         }
     }
 
@@ -174,7 +180,8 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return mcMMO.getModManager().isCustomHelmet(type);
+                return false;
+                //return mcMMO.getModManager().isCustomHelmet(type);
         }
     }
 
@@ -196,7 +203,8 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return mcMMO.getModManager().isCustomChestplate(type);
+                return false;
+                //return mcMMO.getModManager().isCustomChestplate(type);
         }
     }
 
@@ -218,7 +226,8 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return mcMMO.getModManager().isCustomLeggings(type);
+                return false;
+                //return mcMMO.getModManager().isCustomLeggings(type);
         }
     }
 
@@ -240,7 +249,8 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return mcMMO.getModManager().isCustomBoots(type);
+                return false;
+                //return mcMMO.getModManager().isCustomBoots(type);
         }
     }
 

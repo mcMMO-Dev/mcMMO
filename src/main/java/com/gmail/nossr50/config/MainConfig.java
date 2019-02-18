@@ -8,6 +8,7 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 
@@ -585,23 +586,6 @@ public class MainConfig extends ConfigValidated {
 
     public int getHardcoreVampirismLevelThreshold() {
         return getIntValue("Hardcore.Vampirism.Level_Threshold", 0);
-    }
-
-    /* SMP Mods */
-    public boolean getToolModsEnabled() {
-        return getBooleanValue("Mods.Tool_Mods_Enabled", false);
-    }
-
-    public boolean getArmorModsEnabled() {
-        return getBooleanValue("Mods.Armor_Mods_Enabled", false);
-    }
-
-    public boolean getBlockModsEnabled() {
-        return getBooleanValue("Mods.Block_Mods_Enabled", false);
-    }
-
-    public boolean getEntityModsEnabled() {
-        return getBooleanValue("Mods.Entity_Mods_Enabled", false);
     }
 
     /* Items */
