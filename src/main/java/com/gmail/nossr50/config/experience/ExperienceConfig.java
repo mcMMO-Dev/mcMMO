@@ -1,6 +1,7 @@
 package com.gmail.nossr50.config.experience;
 
 import com.gmail.nossr50.config.ConfigValidated;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -77,17 +78,21 @@ public class ExperienceConfig extends ConfigValidated {
     private static ExperienceConfig instance;
 
     //TODO: Should merge be false? Seems okay to leave it as true..
-    private ExperienceConfig() {
+    public ExperienceConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "experience.yml", true);
         super(mcMMO.p.getDataFolder().getAbsoluteFile(), "experience.yml", true);
     }
 
+    /**
+     * This grabs an instance of this config class from the Config Manager
+     * This method is deprecated and will be removed in the future
+     * @see mcMMO#getConfigManager()
+     * @return the instance of this config
+     * @deprecated Please use mcMMO.getConfigManager() to grab a specific config instead
+     */
+    @Deprecated
     public static ExperienceConfig getInstance() {
-        if (instance == null) {
-            instance = new ExperienceConfig();
-        }
-
-        return instance;
+        return mcMMO.getConfigManager()
     }
 
     /**

@@ -2,6 +2,7 @@ package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.config.collectionconfigs.CollectionClassType;
 import com.gmail.nossr50.config.collectionconfigs.MultiConfigContainer;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
@@ -44,6 +45,7 @@ public final class ConfigManager {
 
     private MainConfig mainConfig;
     private TreasureConfig treasureConfig;
+    private ExperienceConfig experienceConfig;
     private AdvancedConfig advancedConfig;
     private PotionConfig potionConfig;
     private CoreSkillsConfig coreSkillsConfig;
@@ -71,6 +73,10 @@ public final class ConfigManager {
         advancedConfig = new AdvancedConfig();
         unloadables.add(advancedConfig);
 
+        //TODO: Not sure about the order of experience config
+        experienceConfig = new ExperienceConfig();
+        unloadables.add(experienceConfig);
+
         potionConfig = new PotionConfig();
         unloadables.add(potionConfig);
 
@@ -82,9 +88,6 @@ public final class ConfigManager {
 
         rankConfig = new RankConfig();
         unloadables.add(rankConfig);
-
-        //TODO: This config serves no purpose so its getting removed
-        new ChildConfig();
 
         /*if (MainConfig.getInstance().getToolModsEnabled()) {
             new ToolConfigManager();
@@ -208,5 +211,9 @@ public final class ConfigManager {
 
     public RankConfig getRankConfig() {
         return rankConfig;
+    }
+
+    public ExperienceConfig getExperienceConfig() {
+        return experienceConfig;
     }
 }
