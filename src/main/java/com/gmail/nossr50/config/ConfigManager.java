@@ -1,6 +1,5 @@
 package com.gmail.nossr50.config;
 
-import com.gmail.nossr50.config.collectionconfigs.SalvageConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.hocon.CustomEnumValueSerializer;
 import com.gmail.nossr50.config.hocon.RepairableSerializer;
@@ -160,6 +159,8 @@ public final class ConfigManager {
 
     private HashMap<Material, Integer> partyItemWeights;
     private HashMap<PartyFeature, Integer> partyFeatureUnlocks;
+
+
 
     /* CONFIG ERRORS */
 
