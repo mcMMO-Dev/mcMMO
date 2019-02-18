@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config;
 
+import com.gmail.nossr50.mcMMO;
 import com.google.common.io.Files;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
@@ -14,11 +15,12 @@ import java.io.InputStream;
 /**
  * Handles loading and cacheing configuration settings from a configurable compatible config file
  */
-//@ConfigSerializable
 public abstract class Config implements VersionedConfig, Unload {
 
     /* SETTINGS */
-    private boolean mergeNewKeys;
+    private boolean mergeNewKeys; //Whether or not to merge keys found in the default config
+    private boolean removeOldKeys; //Whether or not to remove unused keys form the config
+    private boolean copyDefaults; //Whether or not to copy the default config when first creating the file
 
     /* PATH VARS */
 
@@ -160,8 +162,9 @@ public abstract class Config implements VersionedConfig, Unload {
         /*
          * Gen a Default config from inside the JAR
          */
-        McmmoCore.getLogger().info("Preparing to copy internal resource file (in JAR) - "+FILE_RELATIVE_PATH);
-        InputStream inputStream = McmmoCore.getResource(FILE_RELATIVE_PATH);
+        mcMMO.p.getLogger().info("Preparing to copy internal resource file (in JAR) - "+FILE_RELATIVE_PATH);
+        //InputStream inputStream = McmmoCore.getResource(FILE_RELATIVE_PATH);
+        InputStream inputStream = mcMMO.p.getResource(FILE_RELATIVE_PATH);
 
         byte[] buffer = new byte[inputStream.available()];
         inputStream.read(buffer);
@@ -172,7 +175,7 @@ public abstract class Config implements VersionedConfig, Unload {
         //Wipe old default file on disk
         if (targetFile.exists() && deleteOld)
         {
-            McmmoCore.getLogger().info("Updating file " + relativeOutputPath);
+            mcMMO.p.getLogger().info("Updating file " + relativeOutputPath);
             targetFile.delete(); //Necessary?
         }
 
@@ -183,7 +186,7 @@ public abstract class Config implements VersionedConfig, Unload {
         }
 
         Files.write(buffer, targetFile);
-        McmmoCore.getLogger().info("Created config file - " + relativeOutputPath);
+        mcMMO.p.getLogger().info("Created config file - " + relativeOutputPath);
 
         inputStream.close(); //Close the input stream
 
@@ -225,10 +228,10 @@ public abstract class Config implements VersionedConfig, Unload {
      * MainConfig will have any missing nodes inserted with their default value
      */
     public void readConfig() {
-        McmmoCore.getLogger().info("Attempting to read " + FILE_RELATIVE_PATH + ".");
+        mcMMO.p.getLogger().info("Attempting to read " + FILE_RELATIVE_PATH + ".");
 
         int version = this.userRootNode.getNode("ConfigVersion").getInt();
-        McmmoCore.getLogger().info(FILE_RELATIVE_PATH + " version is " + version);
+        mcMMO.p.getLogger().info(FILE_RELATIVE_PATH + " version is " + version);
 
         //Update our config
         updateConfig();
@@ -239,8 +242,8 @@ public abstract class Config implements VersionedConfig, Unload {
      */
     private void updateConfig()
     {
-        McmmoCore.getLogger().info(defaultRootNode.getChildrenMap().size() +" items in default children map");
-        McmmoCore.getLogger().info(userRootNode.getChildrenMap().size() +" items in default root map");
+        mcMMO.p.getLogger().info(defaultRootNode.getChildrenMap().size() +" items in default children map");
+        mcMMO.p.getLogger().info(userRootNode.getChildrenMap().size() +" items in default root map");
 
         // Merge Values from default
         if(mergeNewKeys)
@@ -260,12 +263,26 @@ public abstract class Config implements VersionedConfig, Unload {
     }
 
     /**
+     * Finds any keys in the users config that are not present in the default config and removes them
+     */
+    private void removeOldKeys()
+    {
+        if(!removeOldKeys)
+            return;
+
+        for(ConfigurationNode configurationNode : defaultRootNode.getChildrenList())
+        {
+
+        }
+    }
+
+    /**
      * Saves the current state information of the config to the users copy (which they may edit)
      * @throws IOException
      */
     private void saveUserCopy() throws IOException
     {
-        McmmoCore.getLogger().info("Saving new node");
+        mcMMO.p.getLogger().info("Saving new node");
         userCopyLoader.save(userRootNode);
     }
 
@@ -275,7 +292,7 @@ public abstract class Config implements VersionedConfig, Unload {
     private void updateConfigVersion() {
         // Set a version for our config
         this.userRootNode.getNode("ConfigVersion").setValue(getConfigVersion());
-        McmmoCore.getLogger().info("Updated config to ["+getConfigVersion()+"] - " + FILE_RELATIVE_PATH);
+        mcMMO.p.getLogger().info("Updated config to ["+getConfigVersion()+"] - " + FILE_RELATIVE_PATH);
     }
 
     /**
