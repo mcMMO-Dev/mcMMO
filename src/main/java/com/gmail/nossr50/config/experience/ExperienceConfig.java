@@ -91,7 +91,7 @@ public class ExperienceConfig extends ConfigValidated {
      */
     @Deprecated
     public static ExperienceConfig getInstance() {
-        return mcMMO.getConfigManager()
+        return mcMMO.getConfigManager().getExperienceConfig();
     }
 
     /**
