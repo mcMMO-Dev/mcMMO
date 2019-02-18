@@ -18,6 +18,191 @@ import java.util.Set;
 
 public class MainConfig extends ConfigValidated {
 
+    public static final String METRICS = "Metrics";
+    public static final String BSTATS = "bstats";
+    public static final String GENERAL = "General";
+    public static final String RETRO_MODE = "RetroMode";
+    public static final String ENABLED = "Enabled";
+    public static final String LOCALE = "Locale";
+    public static final String EN_US = "en_us";
+    public static final String MOTD = "MOTD_";
+    public static final String SHOW_PROFILE_LOADED = "Show_Profile_Loaded";
+    public static final String DONATE_MESSAGE = "Donate_Message";
+    public static final String MCMMO = "mcmmo";
+    public static final String DATABASE_PREFIX = MCMMO + "_";
+    public static final String COMMANDS = "Commands";
+    public static final String SAVE_INTERVAL = "Save_Interval";
+    public static final String STATS = "Stats";
+    public static final String STATS_TRACKING = STATS + "_Tracking";
+    public static final String UPDATE_CHECK = "Update_Check";
+    public static final String PREFER_BETA = "Prefer_Beta";
+    public static final String VERBOSE_LOGGING = "Verbose_Logging";
+    public static final String PARTYCHAT = "partychat";
+    public static final String CHAT_PREFIX_FORMAT = "Chat_Prefix_Format";
+    public static final String NAME = "Name";
+    public static final String GOLD_LEADER_NAME = "Gold_Leader_" + NAME;
+    public static final String USE_DISPLAY_NAMES = "Use_Display_" + NAME + "s";
+    public static final String ALLY = "_Ally";
+    public static final String ADMINCHAT = "adminchat";
+    public static final String GENERIC = "Generic";
+    public static final String MATCH_OFFLINE_PLAYERS = "Match_OfflinePlayers";
+    public static final String DATABASE = "Database";
+    public static final String COOLDOWN = "Cooldown";
+    public static final String PLAYER_COOLDOWN = "Player_" + COOLDOWN;
+    public static final String LEVEL_UP = "LevelUp_";
+    public static final String SOUND = "Sound";
+    public static final String LEVEL_UP_SOUNDS = LEVEL_UP + SOUNDS;
+    public static final String REFRESH_CHUNKS = "Refresh_Chunks";
+    public static final String MOB_HEALTHBAR = "Mob_Healthbar";
+    public static final String DISPLAY_TYPE = "Display_Type";
+    public static final String HEARTS = "HEARTS";
+    public static final String DISPLAY_TIME = "Display_Time";
+    public static final String SCOREBOARD = "Scoreboard";
+    public static final String USE_SCOREBOARDS = "UseScoreboards";
+    public static final String POWER = "Power_";
+    public static final String POWER_LEVEL_TAGS = POWER + "Level_Tags";
+    public static final String KEEP = "Keep";
+    public static final String ALLOW_KEEP = "Allow_" + KEEP;
+    public static final String TIPS_AMOUNT = "Tips_Amount";
+    public static final String SHOW_STATS_AFTER_LOGIN = "Show_" + STATS + "_After_Login";
+    public static final String RAINBOWS = "Rainbows";
+    public static final String ABILITY_NAMES = "Ability_" + NAME + "s";
+    public static final String TYPES = "Types";
+    public static final String RANK = "Rank";
+    public static final String PRINT = "Print";
+    public static final String BOARD = "Board";
+    public static final String TOP = "Top";
+    public static final String INSPECT = "Inspect";
+    public static final String SKILL = "Skill";
+    public static final String TIME = "Time";
+    public static final String PURGING = "_Purging";
+    public static final String PURGE_INTERVAL = "Purge_Interval";
+    public static final String OLD_USER_CUTOFF = "Old_User_Cutoff";
+    public static final String BACKUPS = "Backups";
+    public static final String KEEP_LAST_24_HOURS = KEEP + ".Last_24_Hours";
+    public static final String DAILY_LAST_WEEK = "Daily_Last_Week";
+    public static final String WEEKLY_PAST_MONTHS = "Weekly_Past_Months";
+    public static final String MY_SQL = "MySQL";
+    public static final String TABLE_PREFIX = "TablePrefix";
+    public static final String USER_NAME = "User_" + NAME;
+    public static final String SERVER = "Server";
+    public static final String PORT = "Port";
+    public static final String ADDRESS = "Address";
+    public static final String LOCALHOST = "localhost";
+    public static final String USER_PASSWORD = "User_Password";
+    public static final String MAX_CONNECTIONS = "MaxConnections";
+    public static final String MAX_POOL_SIZE = "MaxPoolSize";
+    public static final String SSL = "SSL";
+    public static final String HARDCORE = "Hardcore";
+    public static final String DEATH_STAT_LOSS = "Death_Stat_Loss";
+    public static final String PENALTY_PERCENTAGE = "Penalty_Percentage";
+    public static final String LEVEL_THRESHOLD = "Level_Threshold";
+    public static final String VAMPIRISM = "Vampirism";
+    public static final String LEECH_PERCENTAGE = "Leech_Percentage";
+    public static final String ITEMS = "Items";
+    public static final String CHIMAERA_WING = "Chimaera_Wing";
+    public static final String USE_COST = "Use_Cost";
+    public static final String RECIPE_COST = "Recipe_Cost";
+    public static final String ITEM = "Item_";
+    public static final String FEATHER = "Feather";
+    public static final String PREVENT = "Prevent_";
+    public static final String PREVENT_USE_UNDERGROUND = PREVENT + "Use_Underground";
+    public static final String USE_BED_SPAWN = "Use_Bed_Spawn";
+    public static final String WARMUP = "Warmup";
+    public static final String RECENTLY_HURT = "RecentlyHurt_";
+    public static final String PARTICLES = "Particles";
+    public static final String ACTIVATION = "Activation";
+    public static final String ABILITY_ACTIVATION = "Ability_" + ACTIVATION;
+    public static final String ABILITY_DEACTIVATION = "Ability_Deactivation";
+    public static final String BLEED = "Bleed";
+    public static final String DODGE = "Dodge";
+    public static final String FLUX = "Flux";
+    public static final String GREATER_IMPACT = "Greater_Impact";
+    public static final String CALL_OF_THE_WILD = "Call_of_the_Wild";
+    public static final String TIER = "Tier";
+    public static final String LARGE_FIREWORKS = "LargeFireworks";
+    public static final String PARTY = "Party";
+    public static final String FRIENDLY_FIRE = "FriendlyFire";
+    public static final String MAX_SIZE = "MaxSize";
+    public static final String AUTO_KICK_INTERVAL = "AutoKick_Interval";
+    public static final String OLD_PARTY_MEMBER_CUTOFF = "Old_Party_Member_Cutoff";
+    public static final String SHARING = "Sharing";
+    public static final String SHARING_EXP_SHARE_BONUS_BASE = SHARING + ".ExpShare_bonus_base";
+    public static final String EXP_SHARE_BONUS_INCREASE = "ExpShare_bonus_increase";
+    public static final String EXP_SHARE_BONUS_CAP = "ExpShare_bonus_cap";
+    public static final String RANGE = "Range";
+    public static final String LEVELING = "Leveling";
+    public static final String LEVEL_CAP = "Level_Cap";
+    public static final String XP_CURVE_MODIFIER = "Xp_Curve_Modifier";
+    public static final String NEAR_MEMBERS_NEEDED = "Near_Members_Needed";
+    public static final String INFORM_ALL_PARTY_MEMBERS_ON_LEVEL_UP = "Inform_All_Party_Members_On_LevelUp";
+    public static final String UNLOCK_LEVEL = "_UnlockLevel";
+    public static final String PTP = "ptp";
+    public static final String ACCEPT_REQUIRED = "Accept_Required";
+    public static final String REQUEST_TIMEOUT = "Request_Timeout";
+    public static final String WORLD_BASED_PERMISSIONS = "World_Based_Permissions";
+    public static final String INSPECT1 = "inspect";
+    public static final String MAX_DISTANCE = "Max_Distance";
+    public static final String SKILLS = "Skills";
+    public static final String URL_LINKS = "URL_Links";
+    public static final String ABILITIES = "Abilities";
+    public static final String MESSAGES = "Messages";
+    public static final String ONLY_ACTIVATE_WHEN_SNEAKING = "Only_Activate_When_Sneaking";
+    public static final String LEVEL_GATE_ABILITIES = "Level_Gate_Abilities";
+    public static final String COOLDOWNS = "Cooldowns";
+    public static final String MAX_SECONDS = "Max_Seconds";
+    public static final String TOOLS = "Tools";
+    public static final String DURABILITY_LOSS = "Durability_Loss";
+    public static final String LIMITS = "Limits";
+    public static final String TREE_FELLER = "Tree_Feller_";
+    public static final String TREE_FELLER_THRESHOLD = TREE_FELLER + "Threshold";
+    public static final String DOUBLE_DROPS = "Double_Drops";
+    public static final String AXES = "Axes";
+    public static final String TRUNCATE = "Truncate";
+    public static final String FOR_PVP = "_For_PVP";
+    public static final String FOR_PVE = "_For_PVE";
+    public static final String ACROBATICS = "Acrobatics";
+    public static final String PREVENT_AFK = PREVENT + "AFK_";
+    public static final String WOODCUTTING = "Woodcutting";
+    public static final String SOUNDS = "Sounds";
+    public static final String MAX_TRIES_AT_SAME_LOCATION = "Max_Tries_At_Same_Location";
+    public static final String HERBALISM = "Herbalism";
+    public static final String TAMING = "Taming";
+    public static final String CALL_OF_THE_WILD1 = "Call_Of_The_Wild";
+    public static final String SUMMON_AMOUNT = "Summon_Amount";
+    public static final String SUMMON_LENGTH = "Summon_Length";
+    public static final String SUMMON_MAX_AMOUNT = "Summon_Max_Amount";
+    public static final String AMOUNT = "Amount";
+    public static final String MATERIAL = "Material";
+    public static final String REPAIR = "Repair";
+    public static final String CONFIRM_REQUIRED = "Confirm_Required";
+    public static final String ANVIL = "Anvil_";
+    public static final String ANVIL_MATERIAL = ANVIL + "Material";
+    public static final String IRON_BLOCK = "IRON_BLOCK";
+    public static final String ANVIL_USE = ANVIL + "Use_";
+    public static final String ANVIL_PLACED = ANVIL + "Placed_";
+    public static final String SALVAGE = "Salvage";
+    public static final String UNARMED = "Unarmed";
+    public static final String BLOCK_CRACKER = "Block_Cracker";
+    public static final String SMOOTH_BRICK_TO_CRACKED_BRICK = "SmoothBrick_To_CrackedBrick";
+    public static final String PICKUP_DISABLED_FULL_INVENTORY = "Pickup_Disabled_Full_Inventory";
+    public static final String AS = "_As_";
+    public static final String MINING = "Mining";
+    public static final String DETONATOR = "Detonator_";
+    public static final String FLINT_AND_STEEL = "FLINT_AND_STEEL";
+    public static final String FISHING = "Fishing";
+    public static final String LURE_MODIFIER = "Lure_Modifier";
+    public static final String EXTRA_FISH = "Extra_Fish";
+    public static final String OVERRIDE_VANILLA_TREASURES = "Override_Vanilla_Treasures";
+    public static final String DROPS = "Drops_";
+    public static final String ALCHEMY = "Alchemy";
+    public static final String PREVENT_HOPPER_TRANSFER_BOTTLES = PREVENT + "Hopper_Transfer_Bottles";
+    public static final String PREVENT_HOPPER_TRANSFER_INGREDIENTS = PREVENT + "Hopper_Transfer_Ingredients";
+    public static final String FOR_HOPPERS = "_for_Hoppers";
+    public static final String XP_AFTER_TELEPORT = "XP_After_Teleport_";
+    public static final String LIGHTNING = "_Lightning";
+    public static final String GOLD_BLOCK = "GOLD_BLOCK";
+
     public MainConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "config.yml", true);
         super(mcMMO.p.getDataFolder().getAbsoluteFile(), "config.yml", true);
@@ -57,22 +242,22 @@ public class MainConfig extends ConfigValidated {
 
         /* General Settings */
         if (getSaveInterval() <= 0) {
-            reason.add("General.Save_Interval should be greater than 0!");
+            reason.add(GENERAL + "." + SAVE_INTERVAL + " should be greater than 0!");
         }
 
         /* MySQL Settings */
         for (SQLDatabaseManager.PoolIdentifier identifier : SQLDatabaseManager.PoolIdentifier.values()) {
             if (getMySQLMaxConnections(identifier) <= 0) {
-                reason.add("MySQL.Database.MaxConnections." + StringUtils.getCapitalized(identifier.toString()) + " should be greater than 0!");
+                reason.add(MY_SQL + "." + DATABASE + "." + MAX_CONNECTIONS + "." + StringUtils.getCapitalized(identifier.toString()) + " should be greater than 0!");
             }
             if (getMySQLMaxPoolSize(identifier) <= 0) {
-                reason.add("MySQL.Database.MaxPoolSize." + StringUtils.getCapitalized(identifier.toString()) + " should be greater than 0!");
+                reason.add(MY_SQL + "." + DATABASE + "." + MAX_POOL_SIZE + "." + StringUtils.getCapitalized(identifier.toString()) + " should be greater than 0!");
             }
         }
 
         /* Mob Healthbar */
         if (getMobHealthbarTime() == 0) {
-            reason.add("Mob_Healthbar.Display_Time cannot be 0! Set to -1 to disable or set a valid value.");
+            reason.add(MOB_HEALTHBAR + "." + DISPLAY_TIME + " cannot be 0! Set to -1 to disable or set a valid value.");
         }
 
         /* Scoreboards */
@@ -118,138 +303,138 @@ public class MainConfig extends ConfigValidated {
 
         /* Database Purging */
         if (getPurgeInterval() < -1) {
-            reason.add("Database_Purging.Purge_Interval should be greater than, or equal to -1!");
+            reason.add(DATABASE + PURGING + "." + PURGE_INTERVAL + " should be greater than, or equal to -1!");
         }
 
         if (getOldUsersCutoff() != -1 && getOldUsersCutoff() <= 0) {
-            reason.add("Database_Purging.Old_User_Cutoff should be greater than 0 or -1!");
+            reason.add(DATABASE + PURGING + "." + OLD_USER_CUTOFF + " should be greater than 0 or -1!");
         }
 
         /* Hardcore Mode */
         if (getHardcoreDeathStatPenaltyPercentage() < 0.01 || getHardcoreDeathStatPenaltyPercentage() > 100) {
-            reason.add("Hardcore.Death_Stat_Loss.Penalty_Percentage only accepts values from 0.01 to 100!");
+            reason.add(HARDCORE + "." + DEATH_STAT_LOSS + "." + PENALTY_PERCENTAGE + " only accepts values from 0.01 to 100!");
         }
 
         if (getHardcoreVampirismStatLeechPercentage() < 0.01 || getHardcoreVampirismStatLeechPercentage() > 100) {
-            reason.add("Hardcore.Vampirism.Leech_Percentage only accepts values from 0.01 to 100!");
+            reason.add(HARDCORE + "." + VAMPIRISM + "." + LEECH_PERCENTAGE + " only accepts values from 0.01 to 100!");
         }
 
         /* Items */
         if (getChimaeraUseCost() < 1 || getChimaeraUseCost() > 64) {
-            reason.add("Items.Chimaera_Wing.Use_Cost only accepts values from 1 to 64!");
+            reason.add(ITEMS + "." + CHIMAERA_WING + "." + USE_COST + " only accepts values from 1 to 64!");
         }
 
         if (getChimaeraRecipeCost() < 1 || getChimaeraRecipeCost() > 9) {
-            reason.add("Items.Chimaera_Wing.Recipe_Cost only accepts values from 1 to 9!");
+            reason.add(ITEMS + "." + CHIMAERA_WING + "." + RECIPE_COST + " only accepts values from 1 to 9!");
         }
 
         if (getChimaeraItem() == null) {
-            reason.add("Items.Chimaera_Wing.Item_Name is invalid!");
+            reason.add(ITEMS + "." + CHIMAERA_WING + "." + ITEM + NAME + " is invalid!");
         }
 
         /* Particles */
         if (getLevelUpEffectsTier() < 1) {
-            reason.add("Particles.LevelUp_Tier should be at least 1!");
+            reason.add(PARTICLES + "." + LEVEL_UP + "Tier should be at least 1!");
         }
 
         /* PARTY SETTINGS */
         if (getAutoPartyKickInterval() < -1) {
-            reason.add("Party.AutoKick_Interval should be at least -1!");
+            reason.add(PARTY + "." + AUTO_KICK_INTERVAL + " should be at least -1!");
         }
 
         if (getAutoPartyKickTime() < 0) {
-            reason.add("Party.Old_Party_Member_Cutoff should be at least 0!");
+            reason.add(PARTY + "." + OLD_PARTY_MEMBER_CUTOFF + " should be at least 0!");
         }
 
         if (getPartyShareBonusBase() <= 0) {
-            reason.add("Party.Sharing.ExpShare_bonus_base should be greater than 0!");
+            reason.add(PARTY + "." + SHARING_EXP_SHARE_BONUS_BASE + " should be greater than 0!");
         }
 
         if (getPartyShareBonusIncrease() < 0) {
-            reason.add("Party.Sharing.ExpShare_bonus_increase should be at least 0!");
+            reason.add(PARTY + "." + SHARING + "." + EXP_SHARE_BONUS_INCREASE + " should be at least 0!");
         }
 
         if (getPartyShareBonusCap() <= 0) {
-            reason.add("Party.Sharing.ExpShare_bonus_cap should be greater than 0!");
+            reason.add(PARTY + "." + SHARING + "." + EXP_SHARE_BONUS_CAP + " should be greater than 0!");
         }
 
         if (getPartyShareRange() <= 0) {
-            reason.add("Party.Sharing.Range should be greater than 0!");
+            reason.add(PARTY + "." + SHARING + "." + RANGE + " should be greater than 0!");
         }
 
         if (getPartyXpCurveMultiplier() < 1) {
-            reason.add("Party.Leveling.Xp_Curve_Modifier should be at least 1!");
+            reason.add(PARTY + "." + LEVELING + "." + XP_CURVE_MODIFIER + " should be at least 1!");
         }
 
         for (PartyFeature partyFeature : PartyFeature.values()) {
             if (getPartyFeatureUnlockLevel(partyFeature) < 0) {
-                reason.add("Party.Leveling." + StringUtils.getPrettyPartyFeatureString(partyFeature).replace(" ", "") + "_UnlockLevel should be at least 0!");
+                reason.add(PARTY + "." + LEVELING + "." + StringUtils.getPrettyPartyFeatureString(partyFeature).replace(" ", "") + "_UnlockLevel should be at least 0!");
             }
         }
 
         /* Inspect command distance */
         if (getInspectDistance() <= 0) {
-            reason.add("Commands.inspect.Max_Distance should be greater than 0!");
+            reason.add(COMMANDS + "." + INSPECT1 + "." + MAX_DISTANCE + " should be greater than 0!");
         }
 
         if (getTreeFellerThreshold() <= 0) {
-            reason.add("Abilities.Limits.Tree_Feller_Threshold should be greater than 0!");
+            reason.add(ABILITIES + "." + LIMITS + "." + TREE_FELLER_THRESHOLD + " should be greater than 0!");
         }
 
         if (getFishingLureModifier() < 0) {
-            reason.add("Abilities.Fishing.Lure_Modifier should be at least 0!");
+            reason.add(ABILITIES + "." + FISHING + "." + LURE_MODIFIER + " should be at least 0!");
         }
 
         if (getDetonatorItem() == null) {
-            reason.add("Skills.Mining.Detonator_Item is invalid!");
+            reason.add(SKILLS + "." + MINING + "." + DETONATOR + "Item is invalid!");
         }
 
         if (getRepairAnvilMaterial() == null) {
-            reason.add("Skills.Repair.Anvil_Type is invalid!!");
+            reason.add(SKILLS + "." + REPAIR + "." + ANVIL + "Type is invalid!!");
         }
 
         if (getSalvageAnvilMaterial() == null) {
-            reason.add("Skills.Repair.Salvage_Anvil_Type is invalid!");
+            reason.add(SKILLS + "." + REPAIR + "." + SALVAGE + "_" + ANVIL + "Type is invalid!");
         }
 
         if (getRepairAnvilMaterial() == getSalvageAnvilMaterial()) {
-            reason.add("Cannot use the same item for Repair and Salvage anvils!");
+            reason.add("Cannot use the same item for " + REPAIR + " and " + SALVAGE + " anvils!");
         }
 
         if (getTamingCOTWMaterial(EntityType.WOLF) == null) {
-            reason.add("Skills.Taming.Call_Of_The_Wild.Wolf.Item_Material is invalid!!");
+            reason.add(SKILLS + "." + TAMING + "." + CALL_OF_THE_WILD1 + ".Wolf." + ITEM + "Material is invalid!!");
         }
 
         if (getTamingCOTWMaterial(EntityType.OCELOT) == null) {
-            reason.add("Skills.Taming.Call_Of_The_Wild.Ocelot.Item_Material is invalid!!");
+            reason.add(SKILLS + "." + TAMING + "." + CALL_OF_THE_WILD1 + ".Ocelot." + ITEM + "Material is invalid!!");
         }
 
         if (getTamingCOTWMaterial(EntityType.HORSE) == null) {
-            reason.add("Skills.Taming.Call_Of_The_Wild.Horse.Item_Material is invalid!!");
+            reason.add(SKILLS + "." + TAMING + "." + CALL_OF_THE_WILD1 + ".Horse." + ITEM + "Material is invalid!!");
         }
 
         if (getTamingCOTWCost(EntityType.WOLF) <= 0) {
-            reason.add("Skills.Taming.Call_Of_The_Wild.Wolf.Item_Amount should be greater than 0!");
+            reason.add(SKILLS + "." + TAMING + "." + CALL_OF_THE_WILD1 + ".Wolf." + ITEM + "Amount should be greater than 0!");
         }
 
         if (getTamingCOTWCost(EntityType.OCELOT) <= 0) {
-            reason.add("Skills.Taming.Call_Of_The_Wild.Ocelot.Item_Amount should be greater than 0!");
+            reason.add(SKILLS + "." + TAMING + "." + CALL_OF_THE_WILD1 + ".Ocelot." + ITEM + "Amount should be greater than 0!");
         }
 
         if (getTamingCOTWCost(EntityType.HORSE) <= 0) {
-            reason.add("Skills.Taming.Call_Of_The_Wild.Horse.Item_Amount should be greater than 0!");
+            reason.add(SKILLS + "." + TAMING + "." + CALL_OF_THE_WILD1 + ".Horse." + ITEM + "Amount should be greater than 0!");
         }
 
         if (getTamingCOTWAmount(EntityType.WOLF) <= 0) {
-            reason.add("Skills.Taming.Call_Of_The_Wild.Wolf.Summon_Amount should be greater than 0!");
+            reason.add(SKILLS + "." + TAMING + "." + CALL_OF_THE_WILD1 + ".Wolf." + SUMMON_AMOUNT + " should be greater than 0!");
         }
 
         if (getTamingCOTWAmount(EntityType.OCELOT) <= 0) {
-            reason.add("Skills.Taming.Call_Of_The_Wild.Ocelot.Summon_Amount should be greater than 0!");
+            reason.add(SKILLS + "." + TAMING + "." + CALL_OF_THE_WILD1 + ".Ocelot." + SUMMON_AMOUNT + " should be greater than 0!");
         }
 
         if (getTamingCOTWAmount(EntityType.HORSE) <= 0) {
-            reason.add("Skills.Taming.Call_Of_The_Wild.Horse.Summon_Amount should be greater than 0!");
+            reason.add(SKILLS + "." + TAMING + "." + CALL_OF_THE_WILD1 + ".Horse." + SUMMON_AMOUNT + " should be greater than 0!");
         }
 
         return reason;
@@ -261,280 +446,280 @@ public class MainConfig extends ConfigValidated {
 
     /* General Settings */
     public boolean getIsMetricsEnabled() {
-        return getBooleanValue("Metrics.bstats", true);
+        return getBooleanValue(METRICS + "." + BSTATS);
     }
 
     //Retro mode will default the value to true if the config file doesn't contain the entry (server is from a previous mcMMO install)
     public boolean getIsRetroMode() {
-        return getBooleanValue("General.RetroMode.Enabled", true);
+        return getBooleanValue(GENERAL + "." + RETRO_MODE + "." + ENABLED);
     }
 
     public String getLocale() {
-        return getStringValue("General.Locale", "en_us");
+        return getStringValue(GENERAL + "." + LOCALE, EN_US);
     }
 
     public boolean getMOTDEnabled() {
-        return getBooleanValue("General.MOTD_Enabled", true);
+        return getBooleanValue(GENERAL + "." + MOTD + ENABLED);
     }
 
     public boolean getShowProfileLoadedMessage() {
-        return getBooleanValue("General.Show_Profile_Loaded", true);
+        return getBooleanValue(GENERAL + "." + SHOW_PROFILE_LOADED);
     }
 
     public boolean getDonateMessageEnabled() {
-        return getBooleanValue("Commands.mcmmo.Donate_Message", true);
+        return getBooleanValue(COMMANDS + "." + MCMMO + "." + DONATE_MESSAGE);
     }
 
     public int getSaveInterval() {
-        return getIntValue("General.Save_Interval", 10);
+        return getIntValue(GENERAL + "." + SAVE_INTERVAL);
     }
 
     public boolean getStatsTrackingEnabled() {
-        return getBooleanValue("General.Stats_Tracking", true);
+        return getBooleanValue(GENERAL + "." + STATS_TRACKING);
     }
 
     public boolean getUpdateCheckEnabled() {
-        return getBooleanValue("General.Update_Check", true);
+        return getBooleanValue(GENERAL + "." + UPDATE_CHECK);
     }
 
     public boolean getPreferBeta() {
-        return getBooleanValue("General.Prefer_Beta", false);
+        return getBooleanValue(GENERAL + "." + PREFER_BETA);
     }
 
     public boolean getVerboseLoggingEnabled() {
-        return getBooleanValue("General.Verbose_Logging", false);
+        return getBooleanValue(GENERAL + "." + VERBOSE_LOGGING);
     }
 
     public String getPartyChatPrefix() {
-        return getStringValue("Commands.partychat.Chat_Prefix_Format", "[[GREEN]]([[WHITE]]{0}[[GREEN]])");
+        return getStringValue(COMMANDS + "." + PARTYCHAT + "." + CHAT_PREFIX_FORMAT);
     }
 
     public boolean getPartyChatColorLeaderName() {
-        return getBooleanValue("Commands.partychat.Gold_Leader_Name", true);
+        return getBooleanValue(COMMANDS + "." + PARTYCHAT + "." + GOLD_LEADER_NAME);
     }
 
     public boolean getPartyDisplayNames() {
-        return getBooleanValue("Commands.partychat.Use_Display_Names", true);
+        return getBooleanValue(COMMANDS + "." + PARTYCHAT + "." + USE_DISPLAY_NAMES);
     }
 
     public String getPartyChatPrefixAlly() {
-        return getStringValue("Commands.partychat.Chat_Prefix_Format_Ally", "[[GREEN]](A)[[RESET]]");
+        return getStringValue(COMMANDS + "." + PARTYCHAT + "." + CHAT_PREFIX_FORMAT + ALLY);
     }
 
     public String getAdminChatPrefix() {
-        return getStringValue("Commands.adminchat.Chat_Prefix_Format", "[[AQUA]][[[WHITE]]{0}[[AQUA]]]");
+        return getStringValue(COMMANDS + "." + ADMINCHAT + "." + CHAT_PREFIX_FORMAT);
     }
 
     public boolean getAdminDisplayNames() {
-        return getBooleanValue("Commands.adminchat.Use_Display_Names", true);
+        return getBooleanValue(COMMANDS + "." + ADMINCHAT + "." + USE_DISPLAY_NAMES);
     }
 
     public boolean getMatchOfflinePlayers() {
-        return getBooleanValue("Commands.Generic.Match_OfflinePlayers", false);
+        return getBooleanValue(COMMANDS + "." + GENERIC + "." + MATCH_OFFLINE_PLAYERS);
     }
 
     public long getDatabasePlayerCooldown() {
-        return config.getLong("Commands.Database.Player_Cooldown", 1750);
+        return config.getLong(COMMANDS + "." + DATABASE + "." + PLAYER_COOLDOWN);
     }
 
     public boolean getLevelUpSoundsEnabled() {
-        return getBooleanValue("General.LevelUp_Sounds", true);
+        return getBooleanValue(GENERAL + "." + LEVEL_UP_SOUNDS);
     }
 
     public boolean getRefreshChunksEnabled() {
-        return getBooleanValue("General.Refresh_Chunks", false);
+        return getBooleanValue(GENERAL + "." + REFRESH_CHUNKS);
     }
 
     public boolean getMobHealthbarEnabled() {
-        return getBooleanValue("Mob_Healthbar.Enabled", true);
+        return getBooleanValue(MOB_HEALTHBAR + "." + ENABLED);
     }
 
     /* Mob Healthbar */
     public MobHealthbarType getMobHealthbarDefault() {
         try {
-            return MobHealthbarType.valueOf(getStringValue("Mob_Healthbar.Display_Type", "HEARTS").toUpperCase().trim());
+            return MobHealthbarType.valueOf(getStringValue(MOB_HEALTHBAR + "." + DISPLAY_TYPE, HEARTS).toUpperCase().trim());
         } catch (IllegalArgumentException ex) {
             return MobHealthbarType.HEARTS;
         }
     }
 
     public int getMobHealthbarTime() {
-        return getIntValue("Mob_Healthbar.Display_Time", 3);
+        return getIntValue(MOB_HEALTHBAR + "." + DISPLAY_TIME);
     }
 
     /* Scoreboards */
     public boolean getScoreboardsEnabled() {
-        return getBooleanValue("Scoreboard.UseScoreboards", true);
+        return getBooleanValue(SCOREBOARD + "." + USE_SCOREBOARDS);
     }
 
     public boolean getPowerLevelTagsEnabled() {
-        return getBooleanValue("Scoreboard.Power_Level_Tags", false);
+        return getBooleanValue(SCOREBOARD + "." + POWER_LEVEL_TAGS);
     }
 
     public boolean getAllowKeepBoard() {
-        return getBooleanValue("Scoreboard.Allow_Keep", true);
+        return getBooleanValue(SCOREBOARD + "." + ALLOW_KEEP);
     }
 
     public int getTipsAmount() {
-        return getIntValue("Scoreboard.Tips_Amount", 5);
+        return getIntValue(SCOREBOARD + "." + TIPS_AMOUNT);
     }
 
     public boolean getShowStatsAfterLogin() {
-        return getBooleanValue("Scoreboard.Show_Stats_After_Login", false);
+        return getBooleanValue(SCOREBOARD + "." + SHOW_STATS_AFTER_LOGIN);
     }
 
     public boolean getScoreboardRainbows() {
-        return getBooleanValue("Scoreboard.Rainbows", false);
+        return getBooleanValue(SCOREBOARD + "." + RAINBOWS);
     }
 
     public boolean getShowAbilityNames() {
-        return getBooleanValue("Scoreboard.Ability_Names", true);
+        return getBooleanValue(SCOREBOARD + "." + ABILITY_NAMES);
     }
 
     public boolean getRankUseChat() {
-        return getBooleanValue("Scoreboard.Types.Rank.Print", false);
+        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + RANK + "." + PRINT);
     }
 
     public boolean getRankUseBoard() {
-        return getBooleanValue("Scoreboard.Types.Rank.Board", true);
+        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + RANK + "." + BOARD);
     }
 
     public int getRankScoreboardTime() {
-        return getIntValue("Scoreboard.Types.Rank.Display_Time", 10);
+        return getIntValue(SCOREBOARD + "." + TYPES + "." + RANK + "." + DISPLAY_TIME);
     }
 
     public boolean getTopUseChat() {
-        return getBooleanValue("Scoreboard.Types.Top.Print", true);
+        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + TOP + "." + PRINT);
     }
 
     public boolean getTopUseBoard() {
-        return getBooleanValue("Scoreboard.Types.Top.Board", true);
+        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + TOP + "." + BOARD);
     }
 
     public int getTopScoreboardTime() {
-        return getIntValue("Scoreboard.Types.Top.Display_Time", 15);
+        return getIntValue(SCOREBOARD + "." + TYPES + "." + TOP + "." + DISPLAY_TIME);
     }
 
     public boolean getStatsUseChat() {
-        return getBooleanValue("Scoreboard.Types.Stats.Print", true);
+        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + STATS + "." + PRINT);
     }
 
     public boolean getStatsUseBoard() {
-        return getBooleanValue("Scoreboard.Types.Stats.Board", true);
+        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + STATS + "." + BOARD);
     }
 
     public int getStatsScoreboardTime() {
-        return getIntValue("Scoreboard.Types.Stats.Display_Time", 10);
+        return getIntValue(SCOREBOARD + "." + TYPES + "." + STATS + "." + DISPLAY_TIME);
     }
 
     public boolean getInspectUseChat() {
-        return getBooleanValue("Scoreboard.Types.Inspect.Print", true);
+        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + INSPECT + "." + PRINT);
     }
 
     public boolean getInspectUseBoard() {
-        return getBooleanValue("Scoreboard.Types.Inspect.Board", true);
+        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + INSPECT + "." + BOARD);
     }
 
     public int getInspectScoreboardTime() {
-        return getIntValue("Scoreboard.Types.Inspect.Display_Time", 25);
+        return getIntValue(SCOREBOARD + "." + TYPES + "." + INSPECT + "." + DISPLAY_TIME);
     }
 
     public boolean getCooldownUseChat() {
-        return getBooleanValue("Scoreboard.Types.Cooldown.Print", false);
+        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + COOLDOWN + "." + PRINT);
     }
 
     public boolean getCooldownUseBoard() {
-        return getBooleanValue("Scoreboard.Types.Cooldown.Board", true);
+        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + COOLDOWN + "." + BOARD);
     }
 
     public int getCooldownScoreboardTime() {
-        return getIntValue("Scoreboard.Types.Cooldown.Display_Time", 41);
+        return getIntValue(SCOREBOARD + "." + TYPES + "." + COOLDOWN + "." + DISPLAY_TIME);
     }
 
     public boolean getSkillUseBoard() {
-        return getBooleanValue("Scoreboard.Types.Skill.Board", true);
+        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + SKILL + "." + BOARD);
     }
 
     public int getSkillScoreboardTime() {
-        return getIntValue("Scoreboard.Types.Skill.Display_Time", 30);
+        return getIntValue(SCOREBOARD + "." + TYPES + "." + SKILL + "." + DISPLAY_TIME);
     }
 
     public boolean getSkillLevelUpBoard() {
-        return getBooleanValue("Scoreboard.Types.Skill.LevelUp_Board", true);
+        return getBooleanValue(SCOREBOARD + "." + TYPES + "." + SKILL + "." + LEVEL_UP + BOARD);
     }
 
     public int getSkillLevelUpTime() {
-        return getIntValue("Scoreboard.Types.Skill.LevelUp_Time", 5);
+        return getIntValue(SCOREBOARD + "." + TYPES + "." + SKILL + "." + LEVEL_UP + TIME);
     }
 
     /* Database Purging */
     public int getPurgeInterval() {
-        return getIntValue("Database_Purging.Purge_Interval", -1);
+        return getIntValue(DATABASE + PURGING + "." + PURGE_INTERVAL);
     }
 
     public int getOldUsersCutoff() {
-        return getIntValue("Database_Purging.Old_User_Cutoff", 6);
+        return getIntValue(DATABASE + PURGING + "." + OLD_USER_CUTOFF);
     }
 
     /* Backups */
     public boolean getBackupsEnabled() {
-        return getBooleanValue("Backups.Enabled", true);
+        return getBooleanValue(BACKUPS + "." + ENABLED);
     }
 
     public boolean getKeepLast24Hours() {
-        return getBooleanValue("Backups.Keep.Last_24_Hours", true);
+        return getBooleanValue(BACKUPS + "." + KEEP_LAST_24_HOURS);
     }
 
     public boolean getKeepDailyLastWeek() {
-        return getBooleanValue("Backups.Keep.Daily_Last_Week", true);
+        return getBooleanValue(BACKUPS + "." + KEEP + "." + DAILY_LAST_WEEK);
     }
 
     public boolean getKeepWeeklyPastMonth() {
-        return getBooleanValue("Backups.Keep.Weekly_Past_Months", true);
+        return getBooleanValue(BACKUPS + "." + KEEP + "." + WEEKLY_PAST_MONTHS);
     }
 
     /* mySQL */
     public boolean getUseMySQL() {
-        return getBooleanValue("MySQL.Enabled", false);
+        return getBooleanValue(MY_SQL + "." + ENABLED);
     }
 
     public String getMySQLTablePrefix() {
-        return getStringValue("MySQL.Database.TablePrefix", "mcmmo_");
+        return getStringValue(MY_SQL + "." + DATABASE + "." + TABLE_PREFIX, DATABASE_PREFIX);
     }
 
     public String getMySQLDatabaseName() {
-        return getStringIncludingInts("MySQL.Database.Name");
+        return getStringIncludingInts(MY_SQL + "." + DATABASE + "." + NAME);
     }
 
     public String getMySQLUserName() {
-        return getStringIncludingInts("MySQL.Database.User_Name");
+        return getStringIncludingInts(MY_SQL + "." + DATABASE + "." + USER_NAME);
     }
 
     public int getMySQLServerPort() {
-        return getIntValue("MySQL.Server.Port", 3306);
+        return getIntValue(MY_SQL + "." + SERVER + "." + PORT);
     }
 
     public String getMySQLServerName() {
-        return getStringValue("MySQL.Server.Address", "localhost");
+        return getStringValue(MY_SQL + "." + SERVER + "." + ADDRESS, LOCALHOST);
     }
 
     public String getMySQLUserPassword() {
-        return getStringIncludingInts("MySQL.Database.User_Password");
+        return getStringIncludingInts(MY_SQL + "." + DATABASE + "." + USER_PASSWORD);
     }
 
     public int getMySQLMaxConnections(SQLDatabaseManager.PoolIdentifier identifier) {
-        return getIntValue("MySQL.Database.MaxConnections." + StringUtils.getCapitalized(identifier.toString()), 30);
+        return getIntValue(MY_SQL + "." + DATABASE + "." + MAX_CONNECTIONS + "." + StringUtils.getCapitalized(identifier.toString()));
     }
 
     public int getMySQLMaxPoolSize(SQLDatabaseManager.PoolIdentifier identifier) {
-        return getIntValue("MySQL.Database.MaxPoolSize." + StringUtils.getCapitalized(identifier.toString()), 10);
+        return getIntValue(MY_SQL + "." + DATABASE + "." + MAX_POOL_SIZE + "." + StringUtils.getCapitalized(identifier.toString()));
     }
 
     public boolean getMySQLSSL() {
-        return getBooleanValue("MySQL.Server.SSL", true);
+        return getBooleanValue(MY_SQL + "." + SERVER + "." + SSL);
     }
 
-    private String getStringIncludingInts(String key) {
+    ssadprivate String getStringIncludingInts(String[] key) {
         String str = getStringValue(key);
 
         if (str == null) {
@@ -549,213 +734,214 @@ public class MainConfig extends ConfigValidated {
 
     /* Hardcore Mode */
     public boolean getHardcoreStatLossEnabled(PrimarySkillType primarySkillType) {
-        return getBooleanValue("Hardcore.Death_Stat_Loss.Enabled." + StringUtils.getCapitalized(primarySkillType.toString()), false);
+        return getBooleanValue(HARDCORE + "." + DEATH_STAT_LOSS + "." + ENABLED + "." + StringUtils.getCapitalized(primarySkillType.toString()));
     }
 
     public void setHardcoreStatLossEnabled(PrimarySkillType primarySkillType, boolean enabled) {
-        config.set("Hardcore.Death_Stat_Loss.Enabled." + StringUtils.getCapitalized(primarySkillType.toString()), enabled);
+        config.set(HARDCORE + "." + DEATH_STAT_LOSS + "." + ENABLED + "." + StringUtils.getCapitalized(primarySkillType.toString()), enabled);
     }
 
     public double getHardcoreDeathStatPenaltyPercentage() {
-        return getDoubleValue("Hardcore.Death_Stat_Loss.Penalty_Percentage", 75.0D);
+        return getDoubleValue(HARDCORE + "." + DEATH_STAT_LOSS + "." + PENALTY_PERCENTAGE);
     }
 
     public void setHardcoreDeathStatPenaltyPercentage(double value) {
-        config.set("Hardcore.Death_Stat_Loss.Penalty_Percentage", value);
+        config.set(HARDCORE + "." + DEATH_STAT_LOSS + "." + PENALTY_PERCENTAGE, value);
     }
 
     public int getHardcoreDeathStatPenaltyLevelThreshold() {
-        return getIntValue("Hardcore.Death_Stat_Loss.Level_Threshold", 0);
+        return getIntValue(HARDCORE + "." + DEATH_STAT_LOSS + "." + LEVEL_THRESHOLD);
     }
 
     public boolean getHardcoreVampirismEnabled(PrimarySkillType primarySkillType) {
-        return getBooleanValue("Hardcore.Vampirism.Enabled." + StringUtils.getCapitalized(primarySkillType.toString()), false);
+        return getBooleanValue(HARDCORE + "." + VAMPIRISM + "." + ENABLED + "." + StringUtils.getCapitalized(primarySkillType.toString()));
     }
 
     public void setHardcoreVampirismEnabled(PrimarySkillType primarySkillType, boolean enabled) {
-        config.set("Hardcore.Vampirism.Enabled." + StringUtils.getCapitalized(primarySkillType.toString()), enabled);
+        config.set(HARDCORE + "." + VAMPIRISM + "." + ENABLED + "." + StringUtils.getCapitalized(primarySkillType.toString()), enabled);
     }
 
     public double getHardcoreVampirismStatLeechPercentage() {
-        return getDoubleValue("Hardcore.Vampirism.Leech_Percentage", 5.0D);
+        return getDoubleValue(HARDCORE + "." + VAMPIRISM + "." + LEECH_PERCENTAGE);
     }
 
     public void setHardcoreVampirismStatLeechPercentage(double value) {
-        config.set("Hardcore.Vampirism.Leech_Percentage", value);
+        config.set(HARDCORE + "." + VAMPIRISM + "." + LEECH_PERCENTAGE, value);
     }
 
     public int getHardcoreVampirismLevelThreshold() {
-        return getIntValue("Hardcore.Vampirism.Level_Threshold", 0);
+        return getIntValue(HARDCORE + "." + VAMPIRISM + "." + LEVEL_THRESHOLD);
     }
 
     /* Items */
     public int getChimaeraUseCost() {
-        return getIntValue("Items.Chimaera_Wing.Use_Cost", 1);
+        return getIntValue(ITEMS + "." + CHIMAERA_WING + "." + USE_COST);
     }
 
     public int getChimaeraRecipeCost() {
-        return getIntValue("Items.Chimaera_Wing.Recipe_Cost", 5);
+        return getIntValue(ITEMS + "." + CHIMAERA_WING + "." + RECIPE_COST);
     }
 
     public Material getChimaeraItem() {
-        return Material.matchMaterial(getStringValue("Items.Chimaera_Wing.Item_Name", "Feather"));
+        return Material.matchMaterial(getStringValue(ITEMS + "." + CHIMAERA_WING + "." + ITEM + NAME, FEATHER));
     }
 
     public boolean getChimaeraEnabled() {
-        return getBooleanValue("Items.Chimaera_Wing.Enabled", true);
+        return getBooleanValue(ITEMS + "." + CHIMAERA_WING + "." + ENABLED);
     }
 
     public boolean getChimaeraPreventUseUnderground() {
-        return getBooleanValue("Items.Chimaera_Wing.Prevent_Use_Underground", true);
+        return getBooleanValue(ITEMS + "." + CHIMAERA_WING + "." + PREVENT_USE_UNDERGROUND);
     }
 
     public boolean getChimaeraUseBedSpawn() {
-        return getBooleanValue("Items.Chimaera_Wing.Use_Bed_Spawn", true);
+        return getBooleanValue(ITEMS + "." + CHIMAERA_WING + "." + USE_BED_SPAWN);
     }
 
     public int getChimaeraCooldown() {
-        return getIntValue("Items.Chimaera_Wing.Cooldown", 240);
+        return getIntValue(ITEMS + "." + CHIMAERA_WING + "." + COOLDOWN);
     }
 
     public int getChimaeraWarmup() {
-        return getIntValue("Items.Chimaera_Wing.Warmup", 5);
+        return getIntValue(ITEMS + "." + CHIMAERA_WING + "." + WARMUP);
     }
 
     public int getChimaeraRecentlyHurtCooldown() {
-        return getIntValue("Items.Chimaera_Wing.RecentlyHurt_Cooldown", 60);
+        return getIntValue(ITEMS + "." + CHIMAERA_WING + "." + RECENTLY_HURT + COOLDOWN);
     }
 
     public boolean getChimaeraSoundEnabled() {
-        return getBooleanValue("Items.Chimaera_Wing.Sound_Enabled", true);
+        return getBooleanValue(ITEMS + "." + CHIMAERA_WING + "." + SOUND + "_" + ENABLED);
     }
 
     public boolean getFluxPickaxeSoundEnabled() {
-        return getBooleanValue("Items.Flux_Pickaxe.Sound_Enabled", true);
+        return getBooleanValue(ITEMS + "." + FLUX + "_Pickaxe." + SOUND + "_" + ENABLED);
     }
 
     /* Particles */
     public boolean getAbilityActivationEffectEnabled() {
-        return getBooleanValue("Particles.Ability_Activation", true);
+        return getBooleanValue(PARTICLES + "." + ABILITY_ACTIVATION);
     }
 
     public boolean getAbilityDeactivationEffectEnabled() {
-        return getBooleanValue("Particles.Ability_Deactivation", true);
+        return getBooleanValue(PARTICLES + "." + ABILITY_DEACTIVATION);
     }
 
     public boolean getBleedEffectEnabled() {
-        return getBooleanValue("Particles.Bleed", true);
+        return getBooleanValue(PARTICLES + "." + BLEED);
     }
 
     public boolean getDodgeEffectEnabled() {
-        return getBooleanValue("Particles.Dodge", true);
+        return getBooleanValue(PARTICLES + "." + DODGE);
     }
 
     public boolean getFluxEffectEnabled() {
-        return getBooleanValue("Particles.Flux", true);
+        return getBooleanValue(PARTICLES + "." + FLUX);
     }
 
     public boolean getGreaterImpactEffectEnabled() {
-        return getBooleanValue("Particles.Greater_Impact", true);
+        return getBooleanValue(PARTICLES + "." + GREATER_IMPACT);
     }
 
     public boolean getCallOfTheWildEffectEnabled() {
-        return getBooleanValue("Particles.Call_of_the_Wild", true);
+        return getBooleanValue(PARTICLES + "." + CALL_OF_THE_WILD);
     }
 
     public boolean getLevelUpEffectsEnabled() {
-        return getBooleanValue("Particles.LevelUp_Enabled", true);
+        return getBooleanValue(PARTICLES + "." + LEVEL_UP + ENABLED);
     }
 
     public int getLevelUpEffectsTier() {
-        return getIntValue("Particles.LevelUp_Tier", 100);
+        return getIntValue(PARTICLES + "." + LEVEL_UP + TIER);
     }
 
     public boolean getLargeFireworks() {
-        return getBooleanValue("Particles.LargeFireworks", true);
+        return getBooleanValue(PARTICLES + "." + LARGE_FIREWORKS);
     }
 
     /* PARTY SETTINGS */
     public boolean getPartyFriendlyFire() {
-        return getBooleanValue("Party.FriendlyFire", false);
+        return getBooleanValue(PARTY + "." + FRIENDLY_FIRE);
     }
 
     public int getPartyMaxSize() {
-        return getIntValue("Party.MaxSize", -1);
+        return getIntValue(PARTY + "." + MAX_SIZE);
     }
 
     public int getAutoPartyKickInterval() {
-        return getIntValue("Party.AutoKick_Interval", 12);
+        return getIntValue(PARTY + "." + AUTO_KICK_INTERVAL);
     }
 
     public int getAutoPartyKickTime() {
-        return getIntValue("Party.Old_Party_Member_Cutoff", 7);
+        return getIntValue(PARTY + "." + OLD_PARTY_MEMBER_CUTOFF);
     }
 
     public double getPartyShareBonusBase() {
-        return getDoubleValue("Party.Sharing.ExpShare_bonus_base", 1.1D);
+        return getDoubleValue(PARTY + "." + SHARING_EXP_SHARE_BONUS_BASE);
     }
 
     public double getPartyShareBonusIncrease() {
-        return getDoubleValue("Party.Sharing.ExpShare_bonus_increase", 0.05D);
+        return getDoubleValue(PARTY + "." + SHARING + "." + EXP_SHARE_BONUS_INCREASE);
     }
 
     public double getPartyShareBonusCap() {
-        return getDoubleValue("Party.Sharing.ExpShare_bonus_cap", 1.5D);
+        return getDoubleValue(PARTY + "." + SHARING + "." + EXP_SHARE_BONUS_CAP);
     }
 
     public double getPartyShareRange() {
-        return getDoubleValue("Party.Sharing.Range", 75.0D);
+        return getDoubleValue(PARTY + "." + SHARING + "." + RANGE);
     }
 
     public int getPartyLevelCap() {
-        int cap = getIntValue("Party.Leveling.Level_Cap", 10);
+        int cap = getIntValue(PARTY + "." + LEVELING + "." + LEVEL_CAP);
         return (cap <= 0) ? Integer.MAX_VALUE : cap;
     }
 
+    //TODO: Move this to Experience Config
     public int getPartyXpCurveMultiplier() {
-        return getIntValue("Party.Leveling.Xp_Curve_Modifier", 3);
+        return getIntValue(PARTY + "." + LEVELING + "." + XP_CURVE_MODIFIER);
     }
 
     public boolean getPartyXpNearMembersNeeded() {
-        return getBooleanValue("Party.Leveling.Near_Members_Needed", false);
+        return getBooleanValue(PARTY + "." + LEVELING + "." + NEAR_MEMBERS_NEEDED);
     }
 
     public boolean getPartyInformAllMembers() {
-        return getBooleanValue("Party.Leveling.Inform_All_Party_Members_On_LevelUp", false);
+        return getBooleanValue(PARTY + "." + LEVELING + "." + INFORM_ALL_PARTY_MEMBERS_ON_LEVEL_UP);
     }
 
     public int getPartyFeatureUnlockLevel(PartyFeature partyFeature) {
-        return getIntValue("Party.Leveling." + StringUtils.getPrettyPartyFeatureString(partyFeature).replace(" ", "") + "_UnlockLevel", 0);
+        return getIntValue(PARTY + "." + LEVELING + "." + StringUtils.getPrettyPartyFeatureString(partyFeature).replace(" ", "") + UNLOCK_LEVEL);
     }
 
     /* Party Teleport Settings */
     public int getPTPCommandCooldown() {
-        return getIntValue("Commands.ptp.Cooldown", 120);
+        return getIntValue(COMMANDS + "." + PTP + "." + COOLDOWN);
     }
 
     public int getPTPCommandWarmup() {
-        return getIntValue("Commands.ptp.Warmup", 5);
+        return getIntValue(COMMANDS + "." + PTP + "." + WARMUP);
     }
 
     public int getPTPCommandRecentlyHurtCooldown() {
-        return getIntValue("Commands.ptp.RecentlyHurt_Cooldown", 60);
+        return getIntValue(COMMANDS + "." + PTP + "." + RECENTLY_HURT + COOLDOWN);
     }
 
     public int getPTPCommandTimeout() {
-        return getIntValue("Commands.ptp.Request_Timeout", 300);
+        return getIntValue(COMMANDS + "." + PTP + "." + REQUEST_TIMEOUT);
     }
 
     public boolean getPTPCommandConfirmRequired() {
-        return getBooleanValue("Commands.ptp.Accept_Required", true);
+        return getBooleanValue(COMMANDS + "." + PTP + "." + ACCEPT_REQUIRED);
     }
 
     public boolean getPTPCommandWorldPermissions() {
-        return getBooleanValue("Commands.ptp.World_Based_Permissions", false);
+        return getBooleanValue(COMMANDS + "." + PTP + "." + WORLD_BASED_PERMISSIONS);
     }
 
     /* Inspect command distance */
     public double getInspectDistance() {
-        return getDoubleValue("Commands.inspect.Max_Distance", 30.0D);
+        return getDoubleValue(COMMANDS + "." + INSPECT1 + "." + MAX_DISTANCE);
     }
 
     /*
@@ -764,60 +950,60 @@ public class MainConfig extends ConfigValidated {
 
     /* General Settings */
     public boolean getUrlLinksEnabled() {
-        return getBooleanValue("Commands.Skills.URL_Links");
+        return getBooleanValue(COMMANDS + "." + SKILLS + "." + URL_LINKS);
     }
 
     public boolean getAbilityMessagesEnabled() {
-        return getBooleanValue("Abilities.Messages", true);
+        return getBooleanValue(ABILITIES + "." + MESSAGES);
     }
 
     public boolean getAbilitiesEnabled() {
-        return getBooleanValue("Abilities.Enabled", true);
+        return getBooleanValue(ABILITIES + "." + ENABLED);
     }
 
     public boolean getAbilitiesOnlyActivateWhenSneaking() {
-        return getBooleanValue("Abilities.Activation.Only_Activate_When_Sneaking", false);
+        return getBooleanValue(ABILITIES + "." + ACTIVATION + "." + ONLY_ACTIVATE_WHEN_SNEAKING);
     }
 
     public boolean getAbilitiesGateEnabled() {
-        return getBooleanValue("Abilities.Activation.Level_Gate_Abilities");
+        return getBooleanValue(ABILITIES + "." + ACTIVATION + "." + LEVEL_GATE_ABILITIES);
     }
 
     public int getCooldown(SuperAbilityType ability) {
-        return getIntValue("Abilities.Cooldowns." + ability.toString());
+        return getIntValue(ABILITIES + "." + COOLDOWNS + ability.toString());
     }
 
     public int getMaxLength(SuperAbilityType ability) {
-        return getIntValue("Abilities.Max_Seconds." + ability.toString());
+        return getIntValue(ABILITIES + "." + MAX_SECONDS + "." + ability.toString());
     }
 
     /* Durability Settings */
     public int getAbilityToolDamage() {
-        return getIntValue("Abilities.Tools.Durability_Loss", 1);
+        return getIntValue(ABILITIES + "." + TOOLS + "." + DURABILITY_LOSS);
     }
 
     /* Thresholds */
     public int getTreeFellerThreshold() {
-        return getIntValue("Abilities.Limits.Tree_Feller_Threshold", 500);
+        return getIntValue(ABILITIES + "." + LIMITS + "." + TREE_FELLER_THRESHOLD);
     }
 
     /*
      * SKILL SETTINGS
      */
     public boolean getDoubleDropsEnabled(PrimarySkillType skill, Material material) {
-        return getBooleanValue("Double_Drops." + StringUtils.getCapitalized(skill.toString()) + "." + StringUtils.getPrettyItemString(material).replace(" ", "_"));
+        return getBooleanValue(DOUBLE_DROPS + "." + StringUtils.getCapitalized(skill.toString()) + "." + StringUtils.getPrettyItemString(material).replace(" ", "_"));
     }
 
     public boolean getDoubleDropsDisabled(PrimarySkillType skill) {
         String skillName = StringUtils.getCapitalized(skill.toString());
-        ConfigurationSection section = config.getConfigurationSection("Double_Drops." + skillName);
+        ConfigurationSection section = config.getConfigurationSection(DOUBLE_DROPS + "." + skillName);
         if (section == null)
             return false;
         Set<String> keys = section.getKeys(false);
         boolean disabled = true;
 
         for (String key : keys) {
-            if (getBooleanValue("Double_Drops." + skillName + "." + key)) {
+            if (getBooleanValue(DOUBLE_DROPS + "." + skillName + "." + key)) {
                 disabled = false;
                 break;
             }
@@ -827,206 +1013,177 @@ public class MainConfig extends ConfigValidated {
     }
 
     /* Axes */
-    public int getAxesGate() {
-        return getIntValue("Skills.Axes.Ability_Activation_Level_Gate", 10);
-    }
+    /*public int getAxesGate() {
+        return getIntValue(SKILLS + "." + AXES + "." + ABILITY_ACTIVATION + "_Level_Gate", 10);
+    }*/
 
     /* Acrobatics */
     public boolean getDodgeLightningDisabled() {
-        return getBooleanValue("Skills.Acrobatics.Prevent_Dodge_Lightning", false);
+        return getBooleanValue(SKILLS + "." + ACROBATICS + "." + PREVENT + DODGE + LIGHTNING);
     }
 
     public int getXPAfterTeleportCooldown() {
-        return getIntValue("Skills.Acrobatics.XP_After_Teleport_Cooldown", 5);
+        return getIntValue(SKILLS + "." + ACROBATICS + "." + XP_AFTER_TELEPORT + COOLDOWN);
     }
 
     /* Alchemy */
     public boolean getEnabledForHoppers() {
-        return getBooleanValue("Skills.Alchemy.Enabled_for_Hoppers", true);
+        return getBooleanValue(SKILLS + "." + ALCHEMY + "." + ENABLED + FOR_HOPPERS);
     }
 
     public boolean getPreventHopperTransferIngredients() {
-        return getBooleanValue("Skills.Alchemy.Prevent_Hopper_Transfer_Ingredients", false);
+        return getBooleanValue(SKILLS + "." + ALCHEMY + "." + PREVENT_HOPPER_TRANSFER_INGREDIENTS);
     }
 
     public boolean getPreventHopperTransferBottles() {
-        return getBooleanValue("Skills.Alchemy.Prevent_Hopper_Transfer_Bottles", false);
+        return getBooleanValue(SKILLS + "." + ALCHEMY + "." + PREVENT_HOPPER_TRANSFER_BOTTLES);
     }
 
     /* Fishing */
     public boolean getFishingDropsEnabled() {
-        return getBooleanValue("Skills.Fishing.Drops_Enabled", true);
+        return getBooleanValue(SKILLS + "." + FISHING + "." + DROPS + ENABLED);
     }
 
     public boolean getFishingOverrideTreasures() {
-        return getBooleanValue("Skills.Fishing.Override_Vanilla_Treasures", true);
+        return getBooleanValue(SKILLS + "." + FISHING + "." + OVERRIDE_VANILLA_TREASURES);
     }
 
     public boolean getFishingExtraFish() {
-        return getBooleanValue("Skills.Fishing.Extra_Fish", true);
+        return getBooleanValue(SKILLS + "." + FISHING + "." + EXTRA_FISH);
     }
 
     public double getFishingLureModifier() {
-        return getDoubleValue("Skills.Fishing.Lure_Modifier", 4.0D);
+        return getDoubleValue(SKILLS + "." + FISHING + "." + LURE_MODIFIER);
     }
 
     /* Mining */
     public Material getDetonatorItem() {
-        return Material.matchMaterial(getStringValue("Skills.Mining.Detonator_Name", "FLINT_AND_STEEL"));
-    }
-
-    public int getMiningGate() {
-        return getIntValue("Skills.Mining.Ability_Activation_Level_Gate", 10);
-    }
-
-    /* Excavation */
-    public int getExcavationGate() {
-        return getIntValue("Skills.Excavation.Ability_Activation_Level_Gate", 10);
+        return Material.matchMaterial(getStringValue(SKILLS + "." + MINING + "." + DETONATOR + NAME, FLINT_AND_STEEL));
     }
 
     /* Repair */
     public boolean getRepairAnvilMessagesEnabled() {
-        return getBooleanValue("Skills.Repair.Anvil_Messages", true);
+        return getBooleanValue(SKILLS + "." + REPAIR + "." + ANVIL + MESSAGES);
     }
 
     public boolean getRepairAnvilPlaceSoundsEnabled() {
-        return getBooleanValue("Skills.Repair.Anvil_Placed_Sounds", true);
+        return getBooleanValue(SKILLS + "." + REPAIR + "." + ANVIL_PLACED + SOUNDS);
     }
 
     public boolean getRepairAnvilUseSoundsEnabled() {
-        return getBooleanValue("Skills.Repair.Anvil_Use_Sounds", true);
+        return getBooleanValue(SKILLS + "." + REPAIR + "." + ANVIL_USE + SOUNDS);
     }
 
     public Material getRepairAnvilMaterial() {
-        return Material.matchMaterial(getStringValue("Skills.Repair.Anvil_Material", "IRON_BLOCK"));
+        return Material.matchMaterial(getStringValue(SKILLS + "." + REPAIR + "." + ANVIL_MATERIAL, IRON_BLOCK));
     }
 
     public boolean getRepairConfirmRequired() {
-        return getBooleanValue("Skills.Repair.Confirm_Required", true);
+        return getBooleanValue(SKILLS + "." + REPAIR + "." + CONFIRM_REQUIRED);
     }
 
     /* Salvage */
     public boolean getSalvageAnvilMessagesEnabled() {
-        return getBooleanValue("Skills.Salvage.Anvil_Messages", true);
+        return getBooleanValue(SKILLS + "." + SALVAGE + "." + ANVIL + MESSAGES, true);
     }
 
     public boolean getSalvageAnvilPlaceSoundsEnabled() {
-        return getBooleanValue("Skills.Salvage.Anvil_Placed_Sounds", true);
+        return getBooleanValue(SKILLS + "." + SALVAGE + "." + ANVIL_PLACED + SOUNDS, true);
     }
 
     public boolean getSalvageAnvilUseSoundsEnabled() {
-        return getBooleanValue("Skills.Salvage.Anvil_Use_Sounds", true);
+        return getBooleanValue(SKILLS + "." + SALVAGE + "." + ANVIL_USE + SOUNDS, true);
     }
 
     public Material getSalvageAnvilMaterial() {
-        return Material.matchMaterial(getStringValue("Skills.Salvage.Anvil_Material", "GOLD_BLOCK"));
+        return Material.matchMaterial(getStringValue(SKILLS + "." + SALVAGE + "." + ANVIL_MATERIAL, GOLD_BLOCK));
     }
 
     public boolean getSalvageConfirmRequired() {
-        return getBooleanValue("Skills.Salvage.Confirm_Required", true);
+        return getBooleanValue(SKILLS + "." + SALVAGE + "." + CONFIRM_REQUIRED);
     }
 
     /* Unarmed */
     public boolean getUnarmedBlockCrackerSmoothbrickToCracked() {
-        return getBooleanValue("Skills.Unarmed.Block_Cracker.SmoothBrick_To_CrackedBrick", true);
+        return getBooleanValue(SKILLS + "." + UNARMED + "." + BLOCK_CRACKER + "." + SMOOTH_BRICK_TO_CRACKED_BRICK);
     }
 
     public boolean getUnarmedItemPickupDisabled() {
-        return getBooleanValue("Skills.Unarmed.Item_Pickup_Disabled_Full_Inventory", true);
+        return getBooleanValue(SKILLS + "." + UNARMED + "." + ITEM + PICKUP_DISABLED_FULL_INVENTORY);
     }
 
     public boolean getUnarmedItemsAsUnarmed() {
-        return getBooleanValue("Skills.Unarmed.Items_As_Unarmed", false);
-    }
-
-    public int getUnarmedGate() {
-        return getIntValue("Skills.Unarmed.Ability_Activation_Level_Gate", 10);
-    }
-
-    /* Swords */
-    public int getSwordsGate() {
-        return getIntValue("Skills.Swords.Ability_Activation_Level_Gate", 10);
+        return getBooleanValue(SKILLS + "." + UNARMED + "." + ITEMS + AS + UNARMED);
     }
 
     /* Taming */
     public Material getTamingCOTWMaterial(EntityType type) {
-        return Material.matchMaterial(getStringValue("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type) + ".Item_Material"));
+        return Material.matchMaterial(getStringValue(SKILLS + "." + TAMING + "." + CALL_OF_THE_WILD1 + "." + StringUtils.getPrettyEntityTypeString(type) + "." + ITEM + MATERIAL));
     }
 
     public int getTamingCOTWCost(EntityType type) {
-        return getIntValue("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type) + ".Item_Amount");
+        return getIntValue(SKILLS + "." + TAMING + "." + CALL_OF_THE_WILD1 + "." + StringUtils.getPrettyEntityTypeString(type) + "." + ITEM + AMOUNT);
     }
 
     public int getTamingCOTWAmount(EntityType type) {
-        return getIntValue("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type) + ".Summon_Amount");
+        return getIntValue(SKILLS + "." + TAMING + "." + CALL_OF_THE_WILD1 + "." + StringUtils.getPrettyEntityTypeString(type) + "." + SUMMON_AMOUNT);
     }
 
     public int getTamingCOTWLength(EntityType type) {
-        return getIntValue("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type) + ".Summon_Length");
+        return getIntValue(SKILLS + "." + TAMING + "." + CALL_OF_THE_WILD1 + "." + StringUtils.getPrettyEntityTypeString(type) + "." + SUMMON_LENGTH);
     }
 
     public int getTamingCOTWMaxAmount(EntityType type) {
-        return getIntValue("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type) + ".Summon_Max_Amount");
+        return getIntValue(SKILLS + "." + TAMING + "." + CALL_OF_THE_WILD1 + "." + StringUtils.getPrettyEntityTypeString(type) + "." + SUMMON_MAX_AMOUNT);
     }
 
     public double getTamingCOTWRange() {
-        return getDoubleValue("Skills.Taming.Call_Of_The_Wild.Range", 40.0D);
+        return getDoubleValue(SKILLS + "." + TAMING + "." + CALL_OF_THE_WILD1 + "." + RANGE);
     }
 
     /* Woodcutting */
     public boolean getWoodcuttingDoubleDropsEnabled(BlockData material) {
-        return getBooleanValue("Double_Drops.Woodcutting." + StringUtils.getFriendlyConfigBlockDataString(material));
+        return getBooleanValue(DOUBLE_DROPS + "." + WOODCUTTING + "." + StringUtils.getFriendlyConfigBlockDataString(material));
     }
 
     public boolean getTreeFellerSoundsEnabled() {
-        return getBooleanValue("Skills.Woodcutting.Tree_Feller_Sounds", true);
-    }
-
-    public int getWoodcuttingGate() {
-        return getIntValue("Skills.Woodcutting.Ability_Activation_Level_Gate", 10);
+        return getBooleanValue(SKILLS + "." + WOODCUTTING + "." + TREE_FELLER + SOUNDS);
     }
 
     /* AFK Leveling */
     public boolean getAcrobaticsPreventAFK() {
-        return getBooleanValue("Skills.Acrobatics.Prevent_AFK_Leveling", true);
+        return getBooleanValue(SKILLS + "." + ACROBATICS + "." + PREVENT_AFK + LEVELING);
     }
 
     public int getAcrobaticsAFKMaxTries() {
-        return getIntValue("Skills.Acrobatics.Max_Tries_At_Same_Location", 3);
+        return getIntValue(SKILLS + "." + ACROBATICS + "." + MAX_TRIES_AT_SAME_LOCATION);
     }
 
     public boolean getHerbalismPreventAFK() {
-        return getBooleanValue("Skills.Herbalism.Prevent_AFK_Leveling", true);
+        return getBooleanValue(SKILLS + "." + HERBALISM + "." + PREVENT_AFK + LEVELING);
     }
 
     /* Level Caps */
     public int getPowerLevelCap() {
-        int cap = getIntValue("General.Power_Level_Cap", 0);
+        int cap = getIntValue(GENERAL + "." + POWER + LEVEL_CAP);
         return (cap <= 0) ? Integer.MAX_VALUE : cap;
     }
 
     public int getLevelCap(PrimarySkillType skill) {
-        int cap = getIntValue("Skills." + StringUtils.getCapitalized(skill.toString()) + ".Level_Cap");
+        int cap = getIntValue(SKILLS + "." + StringUtils.getCapitalized(skill.toString()) + "." + LEVEL_CAP);
         return (cap <= 0) ? Integer.MAX_VALUE : cap;
     }
 
-
-    /*public int isSuperAbilityUnlocked(PrimarySkillType skill) {
-        return getIntValue("Skills." + StringUtils.getCapitalized(skill.toString()) + ".Ability_Activation_Level_Gate");
-    }*/
-
     public boolean getTruncateSkills() {
-        return getBooleanValue("General.TruncateSkills", false);
+        return getBooleanValue(GENERAL + "." + TRUNCATE + SKILLS);
     }
 
     /* PVP & PVE Settings */
     public boolean getPVPEnabled(PrimarySkillType skill) {
-        return getBooleanValue("Skills." + StringUtils.getCapitalized(skill.toString()) + ".Enabled_For_PVP", true);
+        return getBooleanValue(SKILLS + "." + StringUtils.getCapitalized(skill.toString()) + "." + ENABLED + FOR_PVP);
     }
 
     public boolean getPVEEnabled(PrimarySkillType skill) {
-        return getBooleanValue("Skills." + StringUtils.getCapitalized(skill.toString()) + ".Enabled_For_PVE", true);
+        return getBooleanValue(SKILLS + "." + StringUtils.getCapitalized(skill.toString()) + "." + ENABLED + FOR_PVE);
     }
-
-    //public float getMasterVolume() { return (float) getDoubleValue("Sounds.MasterVolume", 1.0); }
 }
