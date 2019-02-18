@@ -80,32 +80,23 @@ public final class ConfigManager {
 
         //TODO: Not sure about the order of MainConfig
         mainConfig = new MainConfig();
-        unloadables.add(mainConfig);
 
         treasureConfig = new TreasureConfig();
-        unloadables.add(treasureConfig);
 
         advancedConfig = new AdvancedConfig();
-        unloadables.add(advancedConfig);
 
         //TODO: Not sure about the order of experience config
         experienceConfig = new ExperienceConfig();
-        unloadables.add(experienceConfig);
 
         potionConfig = new PotionConfig();
-        unloadables.add(potionConfig);
 
         coreSkillsConfig = new CoreSkillsConfig();
-        unloadables.add(coreSkillsConfig);
 
         soundConfig = new SoundConfig();
-        unloadables.add(soundConfig);
 
         rankConfig = new RankConfig();
-        unloadables.add(rankConfig);
 
         itemWeightConfig = new ItemWeightConfig();
-        unloadables.add(itemWeightConfig);
 
         /*if (MainConfig.getInstance().getToolModsEnabled()) {
             new ToolConfigManager();
@@ -243,5 +234,9 @@ public final class ConfigManager {
 
     public ExperienceConfig getExperienceConfig() {
         return experienceConfig;
+    }
+
+    public ItemWeightConfig getItemWeightConfig() {
+        return itemWeightConfig;
     }
 }

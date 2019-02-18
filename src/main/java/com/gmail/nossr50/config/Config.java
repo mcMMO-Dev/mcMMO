@@ -2,15 +2,18 @@ package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.mcMMO;
 import com.google.common.io.Files;
+import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 import org.yaml.snakeyaml.DumperOptions;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * Handles loading and cacheing configuration settings from a configurable compatible config file
@@ -369,5 +372,9 @@ public abstract class Config implements VersionedConfig, Unload {
      */
     public boolean hasNode(String... path) {
         return (userRootNode.getNode(path) != null);
+    }
+
+    public List<String> getStringValueList(String... path) throws ObjectMappingException {
+        return userRootNode.getList(TypeToken.of(String.class));
     }
 }

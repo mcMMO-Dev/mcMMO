@@ -9,12 +9,10 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class MainConfig extends ConfigValidated {
 
@@ -248,7 +246,7 @@ public class MainConfig extends ConfigValidated {
         /* MySQL Settings */
         for (SQLDatabaseManager.PoolIdentifier identifier : SQLDatabaseManager.PoolIdentifier.values()) {
             if (getMySQLMaxConnections(identifier) <= 0) {
-                reason.add(MY_SQL + "." + DATABASE + "." + MAX_CONNECTIONS + "." + StringUtils.getCapitalized(identifier.toString()) + " should be greater than 0!");
+                reason.add(MY_SQL + "." + DATABASE, MAX_CONNECTIONS + "." + StringUtils.getCapitalized(identifier.toString()) + " should be greater than 0!");
             }
             if (getMySQLMaxPoolSize(identifier) <= 0) {
                 reason.add(MY_SQL + "." + DATABASE + "." + MAX_POOL_SIZE + "." + StringUtils.getCapitalized(identifier.toString()) + " should be greater than 0!");
@@ -472,22 +470,6 @@ public class MainConfig extends ConfigValidated {
 
     public int getSaveInterval() {
         return getIntValue(GENERAL, SAVE_INTERVAL);
-    }
-
-    public boolean getStatsTrackingEnabled() {
-        return getBooleanValue(GENERAL, STATS_TRACKING);
-    }
-
-    public boolean getUpdateCheckEnabled() {
-        return getBooleanValue(GENERAL, UPDATE_CHECK);
-    }
-
-    public boolean getPreferBeta() {
-        return getBooleanValue(GENERAL, PREFER_BETA);
-    }
-
-    public boolean getVerboseLoggingEnabled() {
-        return getBooleanValue(GENERAL, VERBOSE_LOGGING);
     }
 
     public String getPartyChatPrefix() {
@@ -738,17 +720,9 @@ public class MainConfig extends ConfigValidated {
         return getBooleanValue(HARDCORE, DEATH_STAT_LOSS, ENABLED, StringUtils.getCapitalized(primarySkillType.toString()));
     }
 
-    /*public void setHardcoreStatLossEnabled(PrimarySkillType primarySkillType, boolean enabled) {
-        config.set(HARDCORE, DEATH_STAT_LOSS, ENABLED, StringUtils.getCapitalized(primarySkillType.toString()), enabled);
-    }*/
-
     public double getHardcoreDeathStatPenaltyPercentage() {
         return getDoubleValue(HARDCORE, DEATH_STAT_LOSS, PENALTY_PERCENTAGE);
     }
-
-    /*public void setHardcoreDeathStatPenaltyPercentage(double value) {
-        config.set(HARDCORE, DEATH_STAT_LOSS, PENALTY_PERCENTAGE, value);
-    }*/
 
     public int getHardcoreDeathStatPenaltyLevelThreshold() {
         return getIntValue(HARDCORE, DEATH_STAT_LOSS, LEVEL_THRESHOLD);
@@ -758,17 +732,9 @@ public class MainConfig extends ConfigValidated {
         return getBooleanValue(HARDCORE, VAMPIRISM, ENABLED, StringUtils.getCapitalized(primarySkillType.toString()));
     }
 
-    /*public void setHardcoreVampirismEnabled(PrimarySkillType primarySkillType, boolean enabled) {
-        config.set(HARDCORE, VAMPIRISM, ENABLED, StringUtils.getCapitalized(primarySkillType.toString()), enabled);
-    }*/
-
     public double getHardcoreVampirismStatLeechPercentage() {
         return getDoubleValue(HARDCORE, VAMPIRISM, LEECH_PERCENTAGE);
     }
-
-    /*public void setHardcoreVampirismStatLeechPercentage(double value) {
-        config.set(HARDCORE, VAMPIRISM, LEECH_PERCENTAGE, value);
-    }*/
 
     public int getHardcoreVampirismLevelThreshold() {
         return getIntValue(HARDCORE, VAMPIRISM, LEVEL_THRESHOLD);
@@ -955,68 +921,45 @@ public class MainConfig extends ConfigValidated {
     }
 
     public boolean getAbilityMessagesEnabled() {
-        return getBooleanValue(ABILITIES + "." + MESSAGES);
+        return getBooleanValue(ABILITIES, MESSAGES);
     }
 
     public boolean getAbilitiesEnabled() {
-        return getBooleanValue(ABILITIES + "." + ENABLED);
+        return getBooleanValue(ABILITIES, ENABLED);
     }
 
     public boolean getAbilitiesOnlyActivateWhenSneaking() {
-        return getBooleanValue(ABILITIES + "." + ACTIVATION + "." + ONLY_ACTIVATE_WHEN_SNEAKING);
+        return getBooleanValue(ABILITIES, ACTIVATION, ONLY_ACTIVATE_WHEN_SNEAKING);
     }
 
     public boolean getAbilitiesGateEnabled() {
-        return getBooleanValue(ABILITIES + "." + ACTIVATION + "." + LEVEL_GATE_ABILITIES);
+        return getBooleanValue(ABILITIES, ACTIVATION, LEVEL_GATE_ABILITIES);
     }
 
     public int getCooldown(SuperAbilityType ability) {
-        return getIntValue(ABILITIES + "." + COOLDOWNS + ability.toString());
+        return getIntValue(ABILITIES, COOLDOWNS + ability.toString());
     }
 
     public int getMaxLength(SuperAbilityType ability) {
-        return getIntValue(ABILITIES + "." + MAX_SECONDS + "." + ability.toString());
+        return getIntValue(ABILITIES, MAX_SECONDS, ability.toString());
     }
 
     /* Durability Settings */
     public int getAbilityToolDamage() {
-        return getIntValue(ABILITIES + "." + TOOLS + "." + DURABILITY_LOSS);
+        return getIntValue(ABILITIES, TOOLS, DURABILITY_LOSS);
     }
 
     /* Thresholds */
     public int getTreeFellerThreshold() {
-        return getIntValue(ABILITIES + "." + LIMITS + "." + TREE_FELLER_THRESHOLD);
+        return getIntValue(ABILITIES, LIMITS, TREE_FELLER_THRESHOLD);
     }
 
     /*
      * SKILL SETTINGS
      */
     public boolean getDoubleDropsEnabled(PrimarySkillType skill, Material material) {
-        return getBooleanValue(DOUBLE_DROPS + "." + StringUtils.getCapitalized(skill.toString()) + "." + StringUtils.getPrettyItemString(material).replace(" ", "_"));
+        return getBooleanValue(DOUBLE_DROPS, StringUtils.getCapitalized(skill.toString()), StringUtils.getPrettyItemString(material).replace(" ", "_"));
     }
-
-    public boolean getDoubleDropsDisabled(PrimarySkillType skill) {
-        String skillName = StringUtils.getCapitalized(skill.toString());
-        ConfigurationSection section = config.getConfigurationSection(DOUBLE_DROPS + "." + skillName);
-        if (section == null)
-            return false;
-        Set<String> keys = section.getKeys(false);
-        boolean disabled = true;
-
-        for (String key : keys) {
-            if (getBooleanValue(DOUBLE_DROPS + "." + skillName + "." + key)) {
-                disabled = false;
-                break;
-            }
-        }
-
-        return disabled;
-    }
-
-    /* Axes */
-    /*public int getAxesGate() {
-        return getIntValue(SKILLS + "." + AXES + "." + ABILITY_ACTIVATION + "_Level_Gate", 10);
-    }*/
 
     /* Acrobatics */
     public boolean getDodgeLightningDisabled() {

@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
 
 public final class MaterialUtils {

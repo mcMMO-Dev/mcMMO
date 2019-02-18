@@ -1,9 +1,9 @@
 package com.gmail.nossr50.config.party;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.bukkit.Material;
 
 import java.util.HashSet;
@@ -13,7 +13,6 @@ public class ItemWeightConfig extends Config {
     public static final String DEFAULT = "Default";
     public static final String PARTY_SHAREABLES = "Party_Shareables";
     public static final String MISC_ITEMS = "Misc_Items";
-    private static ItemWeightConfig instance;
 
     public ItemWeightConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "itemweights.yml");
@@ -29,7 +28,12 @@ public class ItemWeightConfig extends Config {
      */
     @Deprecated
     public static ItemWeightConfig getInstance() {
-        return mcMMO.getConfigManager().getIte();
+        return mcMMO.getConfigManager().getItemWeightConfig();
+    }
+
+    @Override
+    public void unload() {
+        //do nothing
     }
 
     /**
@@ -61,17 +65,17 @@ public class ItemWeightConfig extends Config {
     public HashSet<Material> getMiscItems() {
         HashSet<Material> miscItems = new HashSet<Material>();
 
-        for (String item : getStringValueList(PARTY_SHAREABLES, MISC_ITEMS)) {
-            Material material = Material.getMaterial(item.toUpperCase());
+        try {
+            for (String item : getStringValueList(PARTY_SHAREABLES, MISC_ITEMS)) {
+                Material material = Material.getMaterial(item.toUpperCase());
 
-            if (material != null) {
-                miscItems.add(material);
+                if (material != null) {
+                    miscItems.add(material);
+                }
             }
+        } catch (ObjectMappingException e) {
+            e.printStackTrace();
         }
         return miscItems;
-    }
-
-    @Override
-    protected void loadKeys() {
     }
 }

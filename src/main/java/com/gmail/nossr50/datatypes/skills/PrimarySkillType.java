@@ -150,9 +150,9 @@ public enum PrimarySkillType {
         return MainConfig.getInstance().getPVEEnabled(this);
     }
 
-    public boolean getDoubleDropsDisabled() {
+    /*public boolean getDoubleDropsDisabled() {
         return MainConfig.getInstance().getDoubleDropsDisabled(this);
-    }
+    }*/
 
     public boolean getHardcoreStatLossEnabled() {
         return MainConfig.getInstance().getHardcoreStatLossEnabled(this);

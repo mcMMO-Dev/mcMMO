@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills.mining;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
