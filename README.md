@@ -8,6 +8,22 @@ You can check it out here http://www.mcmmo.org
 
 I plan to post links to our new wiki (its still under development), downloads, and dev blogs there.
 
+### Contributing
+As the plugin is being developed for multiple Minecraft versions, and multiple Minecraft platforms (read: [sponge](https://spongepowered.org/), [spigot](https://spigotmc.org/), bukkit, and [paper](https://papermc.io)), the
+overall build process is handled by [Gradle](https://gradle.org/) with [Kotlin-dsl](https://github.com/gradle/kotlin-dsl) based scripts.
+As such, an IDE is strongly recommended when attempting to contribute features, additions, changes, bug fixes, etc. to mcMMO as the scripts handle a
+majority of our dependencies and rebuilding a production worthy jar.
+
+To get started, a few things need to be installed:
+- JDK 8 (not 9, 10, 11, or 7)
+- git
+- Your favorite IDE (can be [Eclipse](https://eclipse.org/), [IntelliJ](https://jetbrains.org/)
+- BuildTools.jar from [Spigot](https://www.spigotmc.org/wiki/buildtools/)
+
+##### Using BuildTools
+BuildTools is used to generate the craftbukkit/spigot dependencies used for varoius versions of Minecraft.
+The key with this tool is that it can build and deploy multiple vesions of Minecraft based on "reviewions".
+
 
 ### Builds
 Currently, you can obtain our builds via the Spigot resource page: https://spigot.mcmmo.org
