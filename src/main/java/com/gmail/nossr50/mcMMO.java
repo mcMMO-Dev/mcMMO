@@ -121,7 +121,7 @@ public class mcMMO extends JavaPlugin {
             PluginManager pluginManager = getServer().getPluginManager();
             healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;
 
-            upgradeManager = new UpgradeManager();
+            //upgradeManager = new UpgradeManager();
 
             setupFilePaths();
 
