@@ -8,6 +8,7 @@ import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.skills.salvage.salvageables.SalvageableFactory;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -35,7 +36,7 @@ public class SalvageConfig extends ConfigCollection {
 
     @Override
     public void register() {
-        ConfigurationSection section = config.getConfigurationSection("Salvageables");
+        CommentedConfigurationNode section = getUserRootNode().getNode("Salvageables");
         Set<String> keys = section.getKeys(false);
 
         for (String key : keys) {

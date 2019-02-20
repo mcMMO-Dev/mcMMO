@@ -1,6 +1,7 @@
 package com.gmail.nossr50.config.collectionconfigs;
 
 import com.gmail.nossr50.config.ConfigCollection;
+import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
@@ -9,17 +10,29 @@ import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.sk89q.worldedit.InvalidItemException;
 import ninja.leaping.configurate.ConfigurationNode;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * This config
  */
 public class RepairConfig extends ConfigCollection {
+
+    public static final String REPAIRABLES = "Repairables";
+    public static final String ITEM_ID = "ItemId";
+    public static final String MATERIAL_TYPE = "MaterialType";
+    public static final String REPAIR_MATERIAL = "RepairMaterial";
+    public static final String MAXIMUM_DURABILITY = "MaximumDurability";
+    public static final String ITEM_TYPE = "ItemType";
+    public static final String METADATA = "Metadata";
+    public static final String XP_MULTIPLIER = "XpMultiplier";
+    public static final String MINIMUM_LEVEL = "MinimumLevel";
+    public static final String MINIMUM_QUANTITY = "MinimumQuantity";
+
     public RepairConfig(String fileName) {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), fileName, false);
         super(mcMMO.p.getDataFolder().getAbsoluteFile(), fileName, false);
@@ -37,123 +50,189 @@ public class RepairConfig extends ConfigCollection {
 
     @Override
     public void register() {
-        ConfigurationNode repairablesNode = getUserRootNode().getNode("Repairables");
-        List<? extends ConfigurationNode> repairablesNodeChildrenList = repairablesNode.getChildrenList();
-        Iterator<? extends ConfigurationNode> configIter = repairablesNodeChildrenList.iterator();
+        try {
+            //Grab the "keys" under the Repairables node
+            ArrayList<String> keys = new ArrayList<>(getStringValueList(REPAIRABLES));
 
-        for(Iterator<? extends ConfigurationNode> i = repairablesNodeChildrenList.iterator(); i.hasNext();)
-        {
-            ConfigurationNode iterNode = i.next();
-            //TODO: Verify that this is getting the key
-            String key = iterNode.getKey().toString(); //Get the String of the node
-
-            // Validate all the things!
-            List<String> reason = new ArrayList<String>();
-
-            try {
-                // ItemStack Material
-                ConfigItemCategory configItemCategory = ItemUtils.matchItemType(key);
-            } catch (InvalidItemException e) {
-                e.printStackTrace();
+            //TODO: Remove Debug
+            if(keys.size() <= 0) {
+                mcMMO.p.getLogger().severe("DEBUG: Repair MultiConfigContainer key list is empty");
+                return;
             }
 
-            if (itemType == null) {
-                reason.add("Invalid material: " + key);
-            }
+            for (String key : keys) {
+                // Validate all the things!
+                List<String> errorMessages = new ArrayList<String>();
 
-            // Repair Material Type
-            MaterialType repairMaterialType = MaterialType.OTHER;
-            String repairMaterialTypeString = getStringValue("Repairables." + key + ".MaterialType", "OTHER");
+                /*
+                 * Match the name of the key to a Material constant definition
+                 */
+                Material itemMaterial = Material.matchMaterial(key);
 
-            if (!config.contains("Repairables." + key + ".MaterialType") && itemType != null) {
-                ItemStack repairItem = ItemStack.makeNew(itemType);
-
-                if (ItemUtils.isWoodTool(repairItem)) {
-                    repairMaterialType = MaterialType.WOOD;
-                } else if (ItemUtils.isStoneTool(repairItem)) {
-                    repairMaterialType = MaterialType.STONE;
-                } else if (ItemUtils.isStringTool(repairItem)) {
-                    repairMaterialType = MaterialType.STRING;
-                } else if (ItemUtils.isLeatherArmor(repairItem)) {
-                    repairMaterialType = MaterialType.LEATHER;
-                } else if (ItemUtils.isIronArmor(repairItem) || ItemUtils.isIronTool(repairItem)) {
-                    repairMaterialType = MaterialType.IRON;
-                } else if (ItemUtils.isGoldArmor(repairItem) || ItemUtils.isGoldTool(repairItem)) {
-                    repairMaterialType = MaterialType.GOLD;
-                } else if (ItemUtils.isDiamondArmor(repairItem) || ItemUtils.isDiamondTool(repairItem)) {
-                    repairMaterialType = MaterialType.DIAMOND;
+                if (itemMaterial == null) {
+                    mcMMO.p.getLogger().severe("Repair Invalid material: " + key);
+                    continue;
                 }
-            } else {
-                try {
-                    repairMaterialType = MaterialType.valueOf(repairMaterialTypeString);
-                } catch (IllegalArgumentException ex) {
-                    reason.add(key + " has an invalid MaterialType of " + repairMaterialTypeString);
+
+                /*
+                 * Determine Repair Material Type
+                 */
+                MaterialType repairMaterialType = MaterialType.OTHER;
+                String repairMaterialTypeString = getRepairMaterialTypeString(key);
+
+                if (hasNode(REPAIRABLES, key, MATERIAL_TYPE)) {
+                    ItemStack repairItem = new ItemStack(itemMaterial);
+
+                    if (ItemUtils.isWoodTool(repairItem)) {
+                        repairMaterialType = MaterialType.WOOD;
+                    }
+                    else if (ItemUtils.isStoneTool(repairItem)) {
+                        repairMaterialType = MaterialType.STONE;
+                    }
+                    else if (ItemUtils.isStringTool(repairItem)) {
+                        repairMaterialType = MaterialType.STRING;
+                    }
+                    else if (ItemUtils.isLeatherArmor(repairItem)) {
+                        repairMaterialType = MaterialType.LEATHER;
+                    }
+                    else if (ItemUtils.isIronArmor(repairItem) || ItemUtils.isIronTool(repairItem)) {
+                        repairMaterialType = MaterialType.IRON;
+                    }
+                    else if (ItemUtils.isGoldArmor(repairItem) || ItemUtils.isGoldTool(repairItem)) {
+                        repairMaterialType = MaterialType.GOLD;
+                    }
+                    else if (ItemUtils.isDiamondArmor(repairItem) || ItemUtils.isDiamondTool(repairItem)) {
+                        repairMaterialType = MaterialType.DIAMOND;
+                    }
                 }
-            }
-
-            // Repair Material
-            String repairMaterialName = getStringValue("Repairables." + key + ".RepairMaterial");
-            Material repairMaterial = (repairMaterialName == null ? repairMaterialType.getDefaultMaterial() : Material.matchMaterial(repairMaterialName));
-
-            if (repairMaterial == null) {
-                reason.add(key + " has an invalid repair material: " + repairMaterialName);
-            }
-
-            // Maximum Durability
-            short maximumDurability = (itemType != null ? itemType.getMaxDurability() : (short) getIntValue("Repairables." + key + ".MaximumDurability"));
-
-            if (maximumDurability <= 0) {
-                maximumDurability = (short) getIntValue("Repairables." + key + ".MaximumDurability");
-            }
-
-            if (maximumDurability <= 0) {
-                reason.add("Maximum durability of " + key + " must be greater than 0!");
-            }
-
-            // ItemStack Type
-            ConfigItemCategory repairConfigItemCategory = ConfigItemCategory.OTHER;
-            String repairItemTypeString = getStringValue("Repairables." + key + ".ItemType", "OTHER");
-
-            if (!config.contains("Repairables." + key + ".ItemType") && itemType != null) {
-                ItemStack repairItem = new ItemStack(itemType);
-
-                if (ItemUtils.isMinecraftTool(repairItem)) {
-                    repairConfigItemCategory = ConfigItemCategory.TOOL;
-                } else if (ItemUtils.isArmor(repairItem)) {
-                    repairConfigItemCategory = ConfigItemCategory.ARMOR;
+                else {
+                    //If a material cannot be matched, try matching the material to its repair material type string from the config
+                    try {
+                        repairMaterialType = MaterialType.valueOf(repairMaterialTypeString);
+                    }
+                    catch (IllegalArgumentException ex) {
+                        errorMessages.add(key + " has an invalid " + MATERIAL_TYPE + " of " + repairMaterialTypeString);
+                        continue;
+                    }
                 }
-            } else {
-                try {
-                    repairConfigItemCategory = ConfigItemCategory.valueOf(repairItemTypeString);
-                } catch (IllegalArgumentException ex) {
-                    reason.add(key + " has an invalid ItemType of " + repairItemTypeString);
+
+                // Repair Material
+                String repairMaterialName = getRepairMaterialStringName(key);
+                Material repairMaterial = (repairMaterialName == null ? repairMaterialType.getDefaultMaterial() : Material.matchMaterial(repairMaterialName));
+
+                if (repairMaterial == null) {
+                    errorMessages.add(key + " has an invalid repair material: " + repairMaterialName);
                 }
-            }
 
-            byte repairMetadata = (byte) getIntValue("Repairables." + key + ".RepairMaterialMetadata", -1);
-            int minimumLevel = getIntValue("Repairables." + key + ".MinimumLevel");
-            double xpMultiplier = getDoubleValue("Repairables." + key + ".XpMultiplier", 1);
+                // Maximum Durability
+                short maximumDurability = (itemMaterial != null ? itemMaterial.getMaxDurability() : getRepairableMaximumDurability(key));
 
-            if (minimumLevel < 0) {
-                reason.add(key + " has an invalid MinimumLevel of " + minimumLevel);
-            }
+                if (maximumDurability <= 0) {
+                    maximumDurability = getRepairableMaximumDurability(key);
+                }
 
-            // Minimum Quantity
-            int minimumQuantity = (itemType != null ? SkillUtils.getRepairAndSalvageQuantities(new ItemStack(itemType), repairMaterial, repairMetadata) : getIntValue("Repairables." + key + ".MinimumQuantity", 2));
+                if (maximumDurability <= 0) {
+                    errorMessages.add("Maximum durability of " + key + " must be greater than 0!");
+                }
 
-            if (minimumQuantity <= 0 && itemType != null) {
-                minimumQuantity = getIntValue("Repairables." + key + ".MinimumQuantity", 2);
-            }
+                // Item Type
+                ItemType repairItemType = ItemType.OTHER;
+                String repairItemTypeString = "";
 
-            if (minimumQuantity <= 0) {
-                reason.add("Minimum quantity of " + key + " must be greater than 0!");
-            }
+                if(hasNode(REPAIRABLES, key, ITEM_TYPE))
+                    repairItemTypeString = getStringValue(REPAIRABLES, key, ITEM_TYPE);
+                else
+                    repairItemTypeString = "OTHER";
 
-            if (noErrorsInRepairable(reason)) {
-                Repairable repairable = RepairableFactory.getRepairable(itemType, repairMaterial, repairMetadata, minimumLevel, minimumQuantity, maximumDurability, repairConfigItemCategory, repairMaterialType, xpMultiplier);
+                if (!hasNode(REPAIRABLES, key, ITEM_TYPE) && itemMaterial != null) {
+                    ItemStack repairItem = new ItemStack(itemMaterial);
+
+                    if (ItemUtils.isMinecraftTool(repairItem)) {
+                        repairItemType = ItemType.TOOL;
+                    }
+                    else if (ItemUtils.isArmor(repairItem)) {
+                        repairItemType = ItemType.ARMOR;
+                    }
+                }
+                else {
+                    try {
+                        repairItemType = ItemType.valueOf(repairItemTypeString);
+                    }
+                    catch (IllegalArgumentException ex) {
+                        errorMessages.add(key + " has an invalid ItemType of " + repairItemTypeString);
+                    }
+                }
+
+                byte repairMetadata = -1;
+
+                //Set the metadata byte
+                if(hasNode(REPAIRABLES, key, REPAIR_MATERIAL, METADATA))
+                    repairMetadata = (byte) getIntValue(REPAIRABLES, key, REPAIR_MATERIAL, METADATA);
+
+                int minimumLevel = getIntValue(REPAIRABLES, key, MINIMUM_LEVEL);
+
+                double xpMultiplier = 1;
+
+                if(hasNode(REPAIRABLES, key, XP_MULTIPLIER))
+                    xpMultiplier = getDoubleValue(REPAIRABLES, key, XP_MULTIPLIER);
+
+
+
+
+                // Minimum Quantity
+                int minimumQuantity = SkillUtils.getRepairAndSalvageQuantities(new ItemStack(itemMaterial), repairMaterial, repairMetadata);
+
+                if (minimumQuantity <= 0) {
+                    minimumQuantity = getIntValue(REPAIRABLES, key, MINIMUM_QUANTITY);
+                }
+
+                /*
+                 * VALIDATE
+                 * Just make sure the values we may have just grabbed from the config aren't below 0
+                 */
+
+                //Validate min level
+                if(minimumLevel < 0)
+                    minimumLevel = 0;
+
+                //Validate XP Mult
+                if(xpMultiplier < 0)
+                    xpMultiplier = 0;
+
+                //Validate Minimum Quantity
+                if (minimumQuantity <= 0) {
+                    minimumQuantity = 2;
+                    errorMessages.add("Minimum quantity for "+key+" in repair config should be above 0");
+                }
+
+                Repairable repairable = RepairableFactory.getRepairable(itemMaterial, repairMaterial, repairMetadata, minimumLevel, minimumQuantity, maximumDurability, repairItemType, repairMaterialType, xpMultiplier);
                 genericCollection.add(repairable);
+
+                for (String error : errorMessages) {
+                    //McmmoCore.getLogger().warning(issue);
+                    mcMMO.p.getLogger().warning(error);
+                }
             }
+        } catch (ObjectMappingException e) {
+            e.printStackTrace();
         }
+    }
+
+    private String getRepairMaterialTypeString(String key) {
+        return getStringValue(REPAIRABLES, key, MATERIAL_TYPE);
+    }
+
+    private short getRepairableMaximumDurability(String key) {
+        return getShortValue(REPAIRABLES, key, MAXIMUM_DURABILITY);
+    }
+
+    /**
+     * Gets the Repair Material String Name defined in the config
+     * @param key the key name of the repairable child node under the Repairables parent node
+     * @return the Repair Material String Name defined in the config
+     */
+    private String getRepairMaterialStringName(String key) {
+        return getStringValue(REPAIRABLES, key, REPAIR_MATERIAL);
     }
 
 
@@ -163,9 +242,7 @@ public class RepairConfig extends ConfigCollection {
      * @return returns true if there are no errors for this repairable
      */
     private boolean noErrorsInRepairable(List<String> issues) {
-        for (String issue : issues) {
-            McmmoCore.getLogger().warning(issue);
-        }
+
 
         return issues.isEmpty();
     }

@@ -3,7 +3,6 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.io.Files;
 import com.google.common.reflect.TypeToken;
-import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
@@ -33,8 +32,8 @@ public abstract class Config implements VersionedConfig, Unload {
 
     /* LOADERS */
 
-    private YAMLConfigurationLoader defaultCopyLoader;
-    private YAMLConfigurationLoader userCopyLoader;
+    private ConfigurationLoader<CommentedConfigurationNode> defaultCopyLoader;
+    private ConfigurationLoader<CommentedConfigurationNode> userCopyLoader;
 
     /* CONFIG FILES */
 
@@ -43,8 +42,8 @@ public abstract class Config implements VersionedConfig, Unload {
 
     /* ROOT NODES */
 
-    private ConfigurationNode userRootNode = null;
-    private ConfigurationNode defaultRootNode = null;
+    private CommentedConfigurationNode userRootNode = null;
+    private CommentedConfigurationNode defaultRootNode = null;
 
     /* CONFIG MANAGER */
     private ConfigurationLoader<CommentedConfigurationNode> configManager;
@@ -111,10 +110,10 @@ public abstract class Config implements VersionedConfig, Unload {
     private void loadConfig()
     {
         try {
-            final ConfigurationNode defaultConfig = this.defaultCopyLoader.load();
+            final CommentedConfigurationNode defaultConfig = this.defaultCopyLoader.load();
             defaultRootNode = defaultConfig;
 
-            final ConfigurationNode userConfig = this.userCopyLoader.load();
+            final CommentedConfigurationNode userConfig = this.userCopyLoader.load();
             userRootNode = userConfig;
 
         } catch (IOException e) {
@@ -282,7 +281,7 @@ public abstract class Config implements VersionedConfig, Unload {
         if(!removeOldKeys)
             return;
 
-        for(ConfigurationNode configurationNode : defaultRootNode.getChildrenList())
+        for(CommentedConfigurationNode configurationNode : defaultRootNode.getChildrenList())
         {
 
         }
@@ -311,9 +310,16 @@ public abstract class Config implements VersionedConfig, Unload {
      * Returns the root node of this config
      * @return the root node of this config
      */
-    protected ConfigurationNode getUserRootNode() {
+    protected CommentedConfigurationNode getUserRootNode() {
         return userRootNode;
     }
+
+    /**
+     * Gets an int from the config and casts it to short before returning
+     * @param path the path to the int
+     * @return the value of the int after being cast to short at the node, null references will zero initialize
+     */
+    public short getShortValue(String... path) { return (short) userRootNode.getNode(path).getInt();}
 
     /**
      * Grabs an int from the specified node
@@ -374,6 +380,12 @@ public abstract class Config implements VersionedConfig, Unload {
         return (userRootNode.getNode(path) != null);
     }
 
+    /**
+     * Gets a a List of type String from the Configuration file
+     * @param path path to the node
+     * @return a list of strings at the node, if null it will most likely zero initialize (empty list)
+     * @throws ObjectMappingException
+     */
     public List<String> getStringValueList(String... path) throws ObjectMappingException {
         return userRootNode.getList(TypeToken.of(String.class));
     }

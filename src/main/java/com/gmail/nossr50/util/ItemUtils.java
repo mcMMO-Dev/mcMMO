@@ -420,6 +420,26 @@ public final class ItemUtils {
     }
 
     /**
+     * Checks to see if an item is a wooden tool.
+     *
+     * @param material Material to check
+     * @return true if the item is a wooden tool, false otherwise
+     */
+    public static boolean isWoodTool(Material material) {
+        switch (material) {
+            case WOODEN_AXE:
+            case WOODEN_HOE:
+            case WOODEN_PICKAXE:
+            case WOODEN_SHOVEL:
+            case WOODEN_SWORD:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    /**
      * Checks to see if an item is a string tool.
      *
      * @param item Item to check
