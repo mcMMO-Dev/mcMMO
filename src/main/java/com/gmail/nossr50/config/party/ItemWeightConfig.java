@@ -16,7 +16,7 @@ public class ItemWeightConfig extends Config {
 
     public ItemWeightConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "itemweights.yml");
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "itemweights.yml", true);
+        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "itemweights.yml", true, true);
     }
 
     /**

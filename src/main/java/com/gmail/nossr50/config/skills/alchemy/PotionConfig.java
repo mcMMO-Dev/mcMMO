@@ -28,7 +28,7 @@ public class PotionConfig extends ConfigCollection {
     private Map<String, AlchemyPotion> potionMap = new HashMap<String, AlchemyPotion>();
 
     public PotionConfig() {
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "potions.yml", true);
+        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "potions.yml", true, true);
         register();
     }
 

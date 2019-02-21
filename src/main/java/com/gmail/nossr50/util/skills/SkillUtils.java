@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util.skills;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
@@ -129,28 +130,27 @@ public class SkillUtils {
     }
 
     public static void handleAbilitySpeedIncrease(Player player) {
-        if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
-            ItemStack heldItem = player.getInventory().getItemInMainHand();
+        ItemStack heldItem = player.getInventory().getItemInMainHand();
 
-            if (heldItem == null || heldItem.getType() == Material.AIR) {
-                return;
-            }
-
-            int efficiencyLevel = heldItem.getEnchantmentLevel(Enchantment.DIG_SPEED);
-            ItemMeta itemMeta = heldItem.getItemMeta();
-            List<String> itemLore = new ArrayList<String>();
-
-            if (itemMeta.hasLore()) {
-                itemLore = itemMeta.getLore();
-            }
-
-            itemLore.add("mcMMO Ability Tool");
-            itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel + AdvancedConfig.getInstance().getEnchantBuff(), true);
-
-            itemMeta.setLore(itemLore);
-            heldItem.setItemMeta(itemMeta);
+        if (heldItem == null || heldItem.getType() == Material.AIR) {
+            return;
         }
-        else {
+
+        int efficiencyLevel = heldItem.getEnchantmentLevel(Enchantment.DIG_SPEED);
+        ItemMeta itemMeta = heldItem.getItemMeta();
+        List<String> itemLore = new ArrayList<String>();
+
+        if (itemMeta.hasLore()) {
+            itemLore = itemMeta.getLore();
+        }
+
+        itemLore.add("mcMMO Ability Tool");
+        itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel + AdvancedConfig.getInstance().getEnchantBuff(), true);
+
+        itemMeta.setLore(itemLore);
+        heldItem.setItemMeta(itemMeta);
+
+        /*else {
             int duration = 0;
             int amplifier = 0;
 
@@ -183,14 +183,10 @@ public class SkillUtils {
 
             PotionEffect abilityBuff = new PotionEffect(PotionEffectType.FAST_DIGGING, duration + ticks, amplifier + 10);
             player.addPotionEffect(abilityBuff, true);
-        }
+        }*/
     }
 
     public static void handleAbilitySpeedDecrease(Player player) {
-        if (!HiddenConfig.getInstance().useEnchantmentBuffs()) {
-            return;
-        }
-
         for (ItemStack item : player.getInventory().getContents()) {
             removeAbilityBuff(item);
         }

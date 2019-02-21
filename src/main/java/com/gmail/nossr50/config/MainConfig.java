@@ -204,7 +204,7 @@ public class MainConfig extends ConfigValidated {
 
     public MainConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "config.yml", true);
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "config.yml", true);
+        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "config.yml", true, true);
     }
 
     /**

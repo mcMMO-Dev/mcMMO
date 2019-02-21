@@ -79,7 +79,7 @@ public class ExperienceConfig extends ConfigValidated {
     //TODO: Should merge be false? Seems okay to leave it as true..
     public ExperienceConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "experience.yml", true);
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "experience.yml", true);
+        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "experience.yml", true, true);
     }
 
     /**

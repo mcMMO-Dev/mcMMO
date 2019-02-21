@@ -125,8 +125,8 @@ public class AdvancedConfig extends ConfigValidated {
     //private static AdvancedConfig instance;
 
     public AdvancedConfig() {
-        //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "advanced.yml", true);
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "advanced.yml", true);
+        //super(mcMMO.getDataFolderPath().getAbsoluteFile(), "advanced.yml", true);
+        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "advanced.yml", true, true);
     }
 
     @Override
@@ -509,7 +509,7 @@ public class AdvancedConfig extends ConfigValidated {
      * @return the level at which abilities stop increasing in length
      */
     public int getAbilityLengthCap() {
-        if(!McmmoCore.isRetroModeEnabled())
+        if(!mcMMO.isRetroModeEnabled())
             return getIntValue(SKILLS, GENERAL, ABILITY, LENGTH, STANDARD, CAP_LEVEL);
         else
             return getIntValue(SKILLS, GENERAL, ABILITY, LENGTH, RETRO_MODE, CAP_LEVEL);
@@ -521,7 +521,7 @@ public class AdvancedConfig extends ConfigValidated {
      * @return the number of levels required per ability length increase
      */
     public int getAbilityLength() {
-        if(!McmmoCore.isRetroModeEnabled())
+        if(!mcMMO.isRetroModeEnabled())
             return getIntValue(SKILLS, GENERAL, ABILITY, LENGTH, STANDARD, INCREASE_LEVEL);
         else
             return getIntValue(SKILLS, GENERAL, ABILITY, LENGTH, RETRO_MODE, INCREASE_LEVEL);
@@ -539,7 +539,7 @@ public class AdvancedConfig extends ConfigValidated {
     public int getMaxBonusLevel(SubSkillType subSkillType) {
         String[] category = subSkillType.getAdvConfigAddress();
         
-        if(!McmmoCore.isRetroModeEnabled())
+        if(!mcMMO.isRetroModeEnabled())
             return getIntValue(category[0], category[1], category[2], MAX_BONUS_LEVEL, STANDARD);
         else
             return getIntValue(category[0], category[1], category[2], MAX_BONUS_LEVEL, RETRO_MODE);
@@ -635,7 +635,7 @@ public class AdvancedConfig extends ConfigValidated {
     public int getArmorImpactIncreaseLevel() {
         int increaseLevel = getIntValue(SKILLS, AXES, ARMOR_IMPACT, INCREASE_LEVEL);
 
-        if(McmmoCore.isRetroModeEnabled())
+        if(mcMMO.isRetroModeEnabled())
             return increaseLevel * 10;
 
         return increaseLevel;

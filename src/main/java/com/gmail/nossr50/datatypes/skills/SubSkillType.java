@@ -138,16 +138,20 @@ public enum SubSkillType {
      * Returns the root address for this skill in the advanced.yml file
      * @return the root address for this skill in advanced.yml
      */
-    public String getAdvConfigAddress() {
-        return "Skills." + StringUtils.getCapitalized(getParentSkill().toString()) + "." + getConfigName(toString());
+    public String[] getAdvConfigAddress() {
+        //return "Skills." + StringUtils.getCapitalized(getParentSkill().toString()) + "." + getConfigName(toString());
+        //TODO: Reduce string operations
+        return new String[]{"Skills", StringUtils.getCapitalized(getParentSkill().toString()), getConfigName(toString())};
     }
 
     /**
      * Returns the root address for this skill in the rankskills.yml file
      * @return the root address for this skill in rankskills.yml
      */
-    public String getRankConfigAddress() {
-        return StringUtils.getCapitalized(getParentSkill().toString()) + "." + getConfigName(toString());
+    public String[] getRankConfigAddress() {
+        //return StringUtils.getCapitalized(getParentSkill().toString()) + "." + getConfigName(toString());
+        //TODO: Reduce string operations
+        return new String[]{StringUtils.getCapitalized(getParentSkill().toString()), getConfigName(toString())};
     }
 
     /**

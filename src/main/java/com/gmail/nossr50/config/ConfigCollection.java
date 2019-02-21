@@ -12,8 +12,14 @@ public abstract class ConfigCollection<T> extends Config implements Registers, G
     //The collection held by this class
     protected Collection<T> genericCollection;
 
-    public ConfigCollection(String pathToParentFolder, String relativePath, boolean mergeNewKeys) {
-        super(pathToParentFolder, relativePath, mergeNewKeys);
+    /**
+     * @param parentFolderPath Path to the "parent" folder on disk
+     * @param relativePath Path to the config relative to the "parent" folder, this should mirror internal structure of resource files
+     * @param mergeNewKeys if true, the users config will add keys found in the internal file that are missing from the users file during load
+     * @param copyDefaults if true, the users config file when it is first made will be a copy of an internal resource file of the same name and path
+     */
+    public ConfigCollection(String parentFolderPath, String relativePath, boolean mergeNewKeys, boolean copyDefaults) {
+        super(parentFolderPath, relativePath, mergeNewKeys, copyDefaults);
 
         //init
         initCollection();
@@ -22,19 +28,28 @@ public abstract class ConfigCollection<T> extends Config implements Registers, G
         register();
     }
 
+    /**
+     * @param parentFolderPath Path to the "parent" folder on disk
+     * @param relativePath Path to the config relative to the "parent" folder, this should mirror internal structure of resource files
+     * @param mergeNewKeys if true, the users config will add keys found in the internal file that are missing from the users file during load
+     * @param copyDefaults if true, the users config file when it is first made will be a copy of an internal resource file of the same name and path
+     */
+    public ConfigCollection(File parentFolderPath, String relativePath, boolean mergeNewKeys, boolean copyDefaults) {
+        super(parentFolderPath, relativePath, mergeNewKeys, copyDefaults);
+
+        //init
+        initCollection();
+
+        //load
+        register();
+    }
+
+    /**
+     * Initializes the generic collection held by this class
+     */
     private void initCollection() {
         if (genericCollection == null)
             genericCollection = new ArrayList<>();
-    }
-
-    public ConfigCollection(File pathToParentFolder, String relativePath, boolean mergeNewKeys) {
-        super(pathToParentFolder, relativePath, mergeNewKeys);
-
-        //init
-        initCollection();
-
-        //load
-        register();
     }
 
     @Override

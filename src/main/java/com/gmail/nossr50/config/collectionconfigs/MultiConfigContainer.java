@@ -45,7 +45,7 @@ public class MultiConfigContainer<T> implements Unload {
         //Load Configs
 
         //Vanilla Config
-        initConfigAndAddCollection(getVanillaConfigName(configPrefix));
+        initConfigAndAddCollection(getVanillaConfigName(configPrefix), true);
 
         //Custom Configs
         loadCustomCollections(configPrefix);
@@ -92,13 +92,13 @@ public class MultiConfigContainer<T> implements Unload {
      * Initializes a config and attempts to load add its collection
      * @param configFileName the filename of the config to load
      */
-    private void initConfigAndAddCollection(String configFileName)
+    private void initConfigAndAddCollection(String configFileName, Boolean copyDefaults)
     {
         mcMMO.p.getLogger().info("Reading from collection config - "+configFileName);
         ConfigCollection configCollection = null;
 
         try {
-            configCollection = (ConfigCollection) getConfigClass(collectionClassType).getConstructor(String.class).newInstance(configFileName);
+            configCollection = (ConfigCollection) getConfigClass(collectionClassType).getConstructor(String.class, Boolean.class).newInstance(configFileName, copyDefaults);
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -145,7 +145,7 @@ public class MultiConfigContainer<T> implements Unload {
                 continue;
 
             //Load and add the collections
-            initConfigAndAddCollection(fileName);
+            initConfigAndAddCollection(fileName, false);
         }
     }
 

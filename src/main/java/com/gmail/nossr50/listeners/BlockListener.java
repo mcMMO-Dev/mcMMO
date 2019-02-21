@@ -2,6 +2,7 @@ package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -611,15 +612,8 @@ public class BlockListener implements Listener {
     }
 
     public void cleanupAbilityTools(Player player, McMMOPlayer mcMMOPlayer, BlockState blockState, ItemStack heldItem) {
-        if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
-            if ((ItemUtils.isPickaxe(heldItem) && !mcMMOPlayer.getAbilityMode(SuperAbilityType.SUPER_BREAKER)) || (ItemUtils.isShovel(heldItem) && !mcMMOPlayer.getAbilityMode(SuperAbilityType.GIGA_DRILL_BREAKER))) {
-                SkillUtils.removeAbilityBuff(heldItem);
-            }
-        } else {
-            if ((mcMMOPlayer.getAbilityMode(SuperAbilityType.SUPER_BREAKER) && !BlockUtils.affectedBySuperBreaker(blockState)) || (mcMMOPlayer.getAbilityMode(SuperAbilityType.GIGA_DRILL_BREAKER) && !BlockUtils.affectedByGigaDrillBreaker(blockState))) {
-                SkillUtils.handleAbilitySpeedDecrease(player);
-            }
-        }
+        SkillUtils.removeAbilityBuff(heldItem);
+        SkillUtils.handleAbilitySpeedDecrease(player);
     }
 
 }

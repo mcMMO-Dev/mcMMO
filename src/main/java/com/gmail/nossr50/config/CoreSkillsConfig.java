@@ -11,7 +11,7 @@ public class CoreSkillsConfig extends Config {
 
     public CoreSkillsConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(),"coreskills.yml", true);
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(),"coreskills.yml", true);
+        super(mcMMO.p.getDataFolder().getAbsoluteFile(),"coreskills.yml", true, true);
     }
 
     /**
