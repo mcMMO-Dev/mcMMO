@@ -33,9 +33,9 @@ public class RepairConfig extends ConfigCollection {
     public static final String MINIMUM_LEVEL = "MinimumLevel";
     public static final String MINIMUM_QUANTITY = "MinimumQuantity";
 
-    public RepairConfig(String fileName) {
+    public RepairConfig(String fileName, boolean merge) {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), fileName, false);
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(), fileName, false);
+        super(mcMMO.p.getDataFolder().getAbsoluteFile(), fileName, merge);
     }
 
     /**
@@ -108,10 +108,10 @@ public class RepairConfig extends ConfigCollection {
                 else {
                     //If a material cannot be matched, try matching the material to its repair material type string from the config
                     try {
-                        repairMaterialType = MaterialType.valueOf(repairMaterialTypeString);
+                        repairMaterialType = MaterialType.valueOf(repairMaterialTypeString.toUpperCase());
                     }
                     catch (IllegalArgumentException ex) {
-                        errorMessages.add(key + " has an invalid " + MATERIAL_TYPE + " of " + repairMaterialTypeString);
+                        errorMessages.add("Repair Config: " + key + " has an invalid " + MATERIAL_TYPE + " of " + repairMaterialTypeString);
                         continue;
                     }
                 }
@@ -233,17 +233,5 @@ public class RepairConfig extends ConfigCollection {
      */
     private String getRepairMaterialStringName(String key) {
         return getStringValue(REPAIRABLES, key, REPAIR_MATERIAL);
-    }
-
-
-    /**
-     * Check if there are any errors for this repairable and if there are reports them to console
-     * @param issues errors related to loading a repairable
-     * @return returns true if there are no errors for this repairable
-     */
-    private boolean noErrorsInRepairable(List<String> issues) {
-
-
-        return issues.isEmpty();
     }
 }
