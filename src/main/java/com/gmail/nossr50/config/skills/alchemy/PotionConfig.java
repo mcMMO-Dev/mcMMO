@@ -3,6 +3,8 @@ package com.gmail.nossr50.config.skills.alchemy;
 import com.gmail.nossr50.config.ConfigCollection;
 import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
 import com.gmail.nossr50.mcMMO;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
+import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,6 +18,15 @@ import java.util.Map;
 
 public class PotionConfig extends ConfigCollection {
 
+    public static final String CONCOCTIONS = "Concoctions";
+    public static final String TIER_ONE_INGREDIENTS = "Tier_One_Ingredients";
+    public static final String TIER_TWO_INGREDIENTS = "Tier_Two_Ingredients";
+    public static final String TIER_THREE_INGREDIENTS = "Tier_Three_Ingredients";
+    public static final String TIER_FOUR_INGREDIENTS = "Tier_Four_Ingredients";
+    public static final String TIER_FIVE_INGREDIENTS = "Tier_Five_Ingredients";
+    public static final String TIER_SIX_INGREDIENTS = "Tier_Six_Ingredients";
+    public static final String TIER_SEVEN_INGREDIENTS = "Tier_Seven_Ingredients";
+    public static final String TIER_EIGHT_INGREDIENTS = "Tier_Eight_Ingredients";
     private List<ItemStack> concoctionsIngredientsTierOne = new ArrayList<ItemStack>();
     private List<ItemStack> concoctionsIngredientsTierTwo = new ArrayList<ItemStack>();
     private List<ItemStack> concoctionsIngredientsTierThree = new ArrayList<ItemStack>();
@@ -49,24 +60,26 @@ public class PotionConfig extends ConfigCollection {
     }
 
     private void loadConcoctions() {
-        ConfigurationSection concoctionSection = config.getConfigurationSection("Concoctions");
+        try {
+            loadConcoctionsTier(concoctionsIngredientsTierOne, getStringValueList(CONCOCTIONS, TIER_ONE_INGREDIENTS));
+            loadConcoctionsTier(concoctionsIngredientsTierTwo, getStringValueList(CONCOCTIONS, TIER_TWO_INGREDIENTS));
+            loadConcoctionsTier(concoctionsIngredientsTierThree, getStringValueList(CONCOCTIONS, TIER_THREE_INGREDIENTS));
+            loadConcoctionsTier(concoctionsIngredientsTierFour, getStringValueList(CONCOCTIONS, TIER_FOUR_INGREDIENTS));
+            loadConcoctionsTier(concoctionsIngredientsTierFive, getStringValueList(CONCOCTIONS, TIER_FIVE_INGREDIENTS));
+            loadConcoctionsTier(concoctionsIngredientsTierSix, getStringValueList(CONCOCTIONS, TIER_SIX_INGREDIENTS));
+            loadConcoctionsTier(concoctionsIngredientsTierSeven, getStringValueList(CONCOCTIONS, TIER_SEVEN_INGREDIENTS));
+            loadConcoctionsTier(concoctionsIngredientsTierEight, getStringValueList(CONCOCTIONS, TIER_EIGHT_INGREDIENTS));
 
-        loadConcoctionsTier(concoctionsIngredientsTierOne, concoctionSection.getStringList("Tier_One_Ingredients"));
-        loadConcoctionsTier(concoctionsIngredientsTierTwo, concoctionSection.getStringList("Tier_Two_Ingredients"));
-        loadConcoctionsTier(concoctionsIngredientsTierThree, concoctionSection.getStringList("Tier_Three_Ingredients"));
-        loadConcoctionsTier(concoctionsIngredientsTierFour, concoctionSection.getStringList("Tier_Four_Ingredients"));
-        loadConcoctionsTier(concoctionsIngredientsTierFive, concoctionSection.getStringList("Tier_Five_Ingredients"));
-        loadConcoctionsTier(concoctionsIngredientsTierSix, concoctionSection.getStringList("Tier_Six_Ingredients"));
-        loadConcoctionsTier(concoctionsIngredientsTierSeven, concoctionSection.getStringList("Tier_Seven_Ingredients"));
-        loadConcoctionsTier(concoctionsIngredientsTierEight, concoctionSection.getStringList("Tier_Eight_Ingredients"));
-
-        concoctionsIngredientsTierTwo.addAll(concoctionsIngredientsTierOne);
-        concoctionsIngredientsTierThree.addAll(concoctionsIngredientsTierTwo);
-        concoctionsIngredientsTierFour.addAll(concoctionsIngredientsTierThree);
-        concoctionsIngredientsTierFive.addAll(concoctionsIngredientsTierFour);
-        concoctionsIngredientsTierSix.addAll(concoctionsIngredientsTierFive);
-        concoctionsIngredientsTierSeven.addAll(concoctionsIngredientsTierSix);
-        concoctionsIngredientsTierEight.addAll(concoctionsIngredientsTierSeven);
+            concoctionsIngredientsTierTwo.addAll(concoctionsIngredientsTierOne);
+            concoctionsIngredientsTierThree.addAll(concoctionsIngredientsTierTwo);
+            concoctionsIngredientsTierFour.addAll(concoctionsIngredientsTierThree);
+            concoctionsIngredientsTierFive.addAll(concoctionsIngredientsTierFour);
+            concoctionsIngredientsTierSix.addAll(concoctionsIngredientsTierFive);
+            concoctionsIngredientsTierSeven.addAll(concoctionsIngredientsTierSix);
+            concoctionsIngredientsTierEight.addAll(concoctionsIngredientsTierSeven);
+        } catch (ObjectMappingException e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadConcoctionsTier(List<ItemStack> ingredientList, List<String> ingredientStrings) {
