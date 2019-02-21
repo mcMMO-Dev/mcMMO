@@ -46,18 +46,19 @@ public abstract class Config implements VersionedConfig, Unload {
     private CommentedConfigurationNode defaultRootNode = null;
 
     /* CONFIG MANAGER */
-    private ConfigurationLoader<CommentedConfigurationNode> configManager;
+    //private ConfigurationLoader<CommentedConfigurationNode> configManager;
 
-    public Config(String pathToParentFolder, String relativePath, boolean mergeNewKeys) {
+    public Config(String pathToParentFolder, String relativePath, boolean mergeNewKeys, boolean copyDefaults) {
         //TODO: Check if this works...
-        this(new File(pathToParentFolder), relativePath, mergeNewKeys);
+        this(new File(pathToParentFolder), relativePath, mergeNewKeys, copyDefaults);
         System.out.println("mcMMO Debug: Don't forget to check if loading config file by string instead of File works...");
     }
 
-    public Config(File pathToParentFolder, String relativePath, boolean mergeNewKeys) {
+    public Config(File pathToParentFolder, String relativePath, boolean mergeNewKeys, boolean copyDefaults) {
         /*
          * These must be at the top
          */
+        this.copyDefaults = copyDefaults;
         this.mergeNewKeys = mergeNewKeys; //Whether or not we add new keys when they are found
         mkdirDefaults(); // Make our default config dir
         DIRECTORY_DATA_FOLDER = pathToParentFolder; //Data Folder for our plugin
@@ -157,7 +158,14 @@ public abstract class Config implements VersionedConfig, Unload {
         {
             //If it's gone we copy default files
             //Note that we don't copy the values from the default copy put in /defaults/ that file exists only as a reference to admins and is unreliable
-            return copyDefaultFromJar(FILE_RELATIVE_PATH, false);
+            if(copyDefaults)
+                return copyDefaultFromJar(FILE_RELATIVE_PATH, false);
+            else
+            {
+                //Make a new empty file
+                userCopy.createNewFile();
+                return userCopy;
+            }
         }
     }
 
