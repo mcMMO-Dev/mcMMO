@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RankConfig extends ConfigValidated {
+    public static final String RETRO_MODE = "RetroMode";
+    public static final String STANDARD = "Standard";
     //private static RankConfig instance;
 
     public RankConfig() {
@@ -27,13 +29,6 @@ public class RankConfig extends ConfigValidated {
     public static RankConfig getInstance() {
         return mcMMO.getConfigManager().getRankConfig();
     }
-
-    /*public static RankConfig getInstance() {
-        if (instance == null)
-            return new RankConfig();
-
-        return instance;
-    }*/
 
     @Override
     public void unload() {
@@ -70,9 +65,7 @@ public class RankConfig extends ConfigValidated {
      * @return the level requirement for a subskill at this particular rank
      */
     public int getSubSkillUnlockLevel(SubSkillType subSkillType, int rank) {
-        String key = subSkillType.getRankConfigAddress();
-
-        return findRankByRootAddress(rank, key);
+        return findRankByRootAddress(rank, subSkillType.getRankConfigAddress());
     }
 
     /**
@@ -83,9 +76,7 @@ public class RankConfig extends ConfigValidated {
      * @return the level requirement for a subskill at this particular rank
      */
     public int getSubSkillUnlockLevel(AbstractSubSkill abstractSubSkill, int rank) {
-        String key = abstractSubSkill.getPrimaryKeyName() + "." + abstractSubSkill.getConfigKeyName();
-
-        return findRankByRootAddress(rank, key);
+        return findRankByRootAddress(rank, abstractSubSkill.getSubSkillType().getRankConfigAddress());
     }
 
     /**
@@ -95,15 +86,13 @@ public class RankConfig extends ConfigValidated {
      * @param rank the rank we are checking
      * @return the level requirement for a subskill at this particular rank
      */
-    private int findRankByRootAddress(int rank, String key) {
-        String scalingKey = MainConfig.getInstance().getIsRetroMode() ? ".RetroMode." : ".Standard.";
+    private int findRankByRootAddress(int rank, String[] key) {
+        String scalingKey = mcMMO.isRetroModeEnabled() ? RETRO_MODE : STANDARD;
 
         String targetRank = "Rank_" + rank;
 
-        key += scalingKey;
-        key += targetRank;
-
-        return getIntValue(key);
+        //key[0] = parent skill config node, key[1] subskill child node, scalingkey = retro/standard, targetrank = rank node
+        return getIntValue(key[0], key[1], scalingKey, targetRank);
     }
 
     /**
@@ -122,14 +111,9 @@ public class RankConfig extends ConfigValidated {
 
                 curRank = getSubSkillUnlockLevel(subSkillType, x);
 
-                //Do we really care if its below 0? Probably not
-                if (curRank < 0) {
-                    reasons.add(subSkillType.getAdvConfigAddress() + ".Rank_Levels.Rank_" + curRank + ".LevelReq should be above or equal to 0!");
-                }
-
                 if (prevRank > curRank) {
                     //We're going to allow this but we're going to warn them
-                    mcMMO.p.getLogger().info("You have the ranks for the subskill " + subSkillType.toString() + " set up poorly, sequential ranks should have ascending requirements");
+                    mcMMO.p.getLogger().severe("You have the ranks for the subskill " + subSkillType.toString() + " in skillranks config set up poorly, sequential ranks should have ascending requirements");
                 }
             }
         }
