@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SoundConfig extends ConfigValidated {
+    public static final String SOUNDS = "Sounds";
+    public static final String VOLUME = "Volume";
+    public static final String PITCH = "Pitch";
+    public static final String ENABLED = "Enabled";
+    public static final String MASTER_VOLUME = "MasterVolume";
     //private static SoundConfig instance;
 
     public SoundConfig() {
@@ -46,13 +51,13 @@ public class SoundConfig extends ConfigValidated {
         ArrayList<String> reasons = new ArrayList<>();
 
         for (SoundType soundType : SoundType.values()) {
-            if (getDoubleValue("Sounds." + soundType.toString() + ".Volume") < 0) {
+            if (getDoubleValue(SOUNDS, soundType.toString(), VOLUME) < 0) {
                 reasons.add("[mcMMO] Sound volume cannot be below 0 for " + soundType.toString());
             }
 
             //Sounds with custom pitching don't use pitch values
             if (!soundType.usesCustomPitch()) {
-                if (getDoubleValue("Sounds." + soundType.toString() + ".Pitch") < 0) {
+                if (getDoubleValue(SOUNDS, soundType.toString(), PITCH) < 0) {
                     reasons.add("[mcMMO] Sound pitch cannot be below 0 for " + soundType.toString());
                 }
             }
@@ -62,21 +67,18 @@ public class SoundConfig extends ConfigValidated {
     }
 
     public float getMasterVolume() {
-        return (float) getDoubleValue("Sounds.MasterVolume");
+        return (float) getDoubleValue(SOUNDS, MASTER_VOLUME);
     }
 
     public float getVolume(SoundType soundType) {
-        String key = "Sounds." + soundType.toString() + ".Volume";
-        return (float) getDoubleValue(key);
+        return (float) getDoubleValue(SOUNDS, soundType.toString(), VOLUME);
     }
 
     public float getPitch(SoundType soundType) {
-        String key = "Sounds." + soundType.toString() + ".Pitch";
-        return (float) getDoubleValue(key);
+        return (float) getDoubleValue(SOUNDS, soundType.toString(), PITCH);
     }
 
     public boolean getIsEnabled(SoundType soundType) {
-        String key = "Sounds." + soundType.toString() + ".Enabled";
-        return getBooleanValue(key, true);
+        return getBooleanValue(SOUNDS, soundType.toString(), ENABLED);
     }
 }
