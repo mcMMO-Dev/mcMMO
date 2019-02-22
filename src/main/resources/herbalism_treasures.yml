@@ -1,0 +1,58 @@
+#
+#  Settings for Hylian Luck
+###
+Hylian_Luck:
+    MELON_SEEDS:
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From: [Bushes]
+    PUMPKIN_SEEDS:
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From: [Bushes]
+    COCOA_BEANS:
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From: [Bushes]
+    CARROT:
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From: [Flowers]
+    POTATO:
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From: [Flowers]
+    APPLE:
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From: [Flowers]
+    EMERALD:
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From: [Pots]
+    DIAMOND:
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From: [Pots]
+    GOLD_NUGGET:
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From: [Pots]

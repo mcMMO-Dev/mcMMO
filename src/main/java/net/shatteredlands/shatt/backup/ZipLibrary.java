@@ -22,7 +22,7 @@ public class ZipLibrary {
     private static File MOD_FILE_DIRECTORY = new File(mcMMO.getModDirectory());
     private static File CONFIG_FILE = new File(mcMMO.getMainDirectory() + "config.yml");
     private static File EXPERIENCE_FILE = new File(mcMMO.getMainDirectory() + "experience.yml");
-    private static File TREASURE_FILE = new File(mcMMO.getMainDirectory() + "treasures.yml");
+    //private static File TREASURE_FILE = new File(mcMMO.getMainDirectory() + "treasures.yml");
     private static File ADVANCED_FILE = new File(mcMMO.getMainDirectory() + "advanced.yml");
     private static File REPAIR_FILE = new File(mcMMO.getMainDirectory() + "repair.vanilla.yml");
 
