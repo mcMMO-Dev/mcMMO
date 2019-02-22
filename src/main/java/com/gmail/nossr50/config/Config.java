@@ -60,6 +60,7 @@ public abstract class Config implements VersionedConfig, Unload {
          */
         this.copyDefaults = copyDefaults;
         this.mergeNewKeys = mergeNewKeys; //Whether or not we add new keys when they are found
+        this.removeOldKeys = removeOldKeys;
         mkdirDefaults(); // Make our default config dir
         DIRECTORY_DATA_FOLDER = pathToParentFolder; //Data Folder for our plugin
         FILE_RELATIVE_PATH = relativePath; //Relative path to config from a parent folder
