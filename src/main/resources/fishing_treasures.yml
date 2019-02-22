@@ -6,242 +6,362 @@ Fishing:
         Amount: 1
         XP: 200
         Rarity: COMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     LEATHER_HELMET:
         Amount: 1
         XP: 200
         Rarity: COMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     LEATHER_LEGGINGS:
         Amount: 1
         XP: 200
         Rarity: COMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     LEATHER_CHESTPLATE:
         Amount: 1
         XP: 200
         Rarity: COMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     WOODEN_SWORD:
         Amount: 1
         XP: 200
         Rarity: COMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     WOODEN_SHOVEL:
         Amount: 1
         XP: 200
         Rarity: COMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     WOODEN_PICKAXE:
         Amount: 1
         XP: 200
         Rarity: COMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     WOODEN_AXE:
         Amount: 1
         XP: 200
         Rarity: COMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     WOODEN_HOE:
         Amount: 1
         XP: 200
         Rarity: COMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     LAPIS_LAZULI:
         Amount: 20
         XP: 200
         Rarity: COMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     STONE_SWORD:
         Amount: 1
         XP: 200
         Rarity: UNCOMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     STONE_SHOVEL:
         Amount: 1
         XP: 200
         Rarity: UNCOMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     STONE_PICKAXE:
         Amount: 1
         XP: 200
         Rarity: UNCOMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     STONE_AXE:
         Amount: 1
         XP: 200
         Rarity: UNCOMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     STONE_HOE:
         Amount: 1
         XP: 200
         Rarity: UNCOMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     GOLDEN_SWORD:
         Amount: 1
         XP: 200
         Rarity: UNCOMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     GOLDEN_SHOVEL:
         Amount: 1
         XP: 200
         Rarity: UNCOMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     GOLDEN_PICKAXE:
         Amount: 1
         XP: 200
         Rarity: UNCOMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     GOLDEN_AXE:
         Amount: 1
         XP: 200
         Rarity: UNCOMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     GOLDEN_HOE:
         Amount: 1
         XP: 200
         Rarity: UNCOMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     GOLDEN_BOOTS:
         Amount: 1
         XP: 200
         Rarity: UNCOMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     GOLDEN_HELMET:
         Amount: 1
         XP: 200
         Rarity: UNCOMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     GOLDEN_LEGGINGS:
         Amount: 1
         XP: 200
         Rarity: UNCOMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     GOLDEN_CHESTPLATE:
         Amount: 1
         XP: 200
         Rarity: UNCOMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     IRON_INGOT:
         Amount: 5
         XP: 200
         Rarity: UNCOMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     GOLD_INGOT:
         Amount: 5
         XP: 200
         Rarity: UNCOMMON
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     IRON_SWORD:
         Amount: 1
         XP: 200
         Rarity: RARE
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     IRON_SHOVEL:
         Amount: 1
         XP: 200
         Rarity: RARE
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     IRON_PICKAXE:
         Amount: 1
         XP: 200
         Rarity: RARE
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     IRON_AXE:
         Amount: 1
         XP: 200
         Rarity: RARE
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     IRON_HOE:
         Amount: 1
         XP: 200
         Rarity: RARE
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     BOW:
         Amount: 1
         XP: 200
         Rarity: RARE
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     ENDER_PEARL:
         Amount: 1
         XP: 200
         Rarity: RARE
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     BLAZE_ROD:
         Amount: 1
         XP: 200
         Rarity: RARE
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     IRON_BOOTS:
         Amount: 1
         XP: 200
         Rarity: EPIC
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     IRON_HELMET:
         Amount: 1
         XP: 200
         Rarity: EPIC
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     IRON_LEGGINGS:
         Amount: 1
         XP: 200
         Rarity: EPIC
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     IRON_CHESTPLATE:
         Amount: 1
         XP: 200
         Rarity: EPIC
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     GHAST_TEAR:
         Amount: 1
         XP: 200
         Rarity: EPIC
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     DIAMOND:
         Amount: 5
         XP: 200
         Rarity: EPIC
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     DIAMOND_SWORD:
         Amount: 1
         XP: 200
         Rarity: LEGENDARY
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     DIAMOND_SHOVEL:
         Amount: 1
         XP: 200
         Rarity: LEGENDARY
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     DIAMOND_PICKAXE:
         Amount: 1
         XP: 200
         Rarity: LEGENDARY
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     DIAMOND_AXE:
         Amount: 1
         XP: 200
         Rarity: LEGENDARY
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     DIAMOND_HOE:
         Amount: 1
         XP: 200
         Rarity: LEGENDARY
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     DIAMOND_BOOTS:
         Amount: 1
         XP: 200
         Rarity: LEGENDARY
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     DIAMOND_HELMET:
         Amount: 1
         XP: 200
         Rarity: LEGENDARY
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     DIAMOND_LEGGINGS:
         Amount: 1
         XP: 200
         Rarity: LEGENDARY
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     DIAMOND_CHESTPLATE:
         Amount: 1
         XP: 200
         Rarity: LEGENDARY
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     MUSIC_DISC_BLOCKS:
         Amount: 1
         XP: 200
         Rarity: RECORD
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     MUSIC_DISC_CHIRP:
         Amount: 1
         XP: 200
         Rarity: RECORD
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     MUSIC_DISC_FAR:
         Amount: 1
         XP: 200
         Rarity: RECORD
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     MUSIC_DISC_MALL:
         Amount: 1
         XP: 200
         Rarity: RECORD
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     MUSIC_DISC_MELLOHI:
         Amount: 1
         XP: 200
         Rarity: RECORD
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     MUSIC_DISC_STAL:
         Amount: 1
         XP: 200
         Rarity: RECORD
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     MUSIC_DISC_STRAD:
         Amount: 1
         XP: 200
         Rarity: RECORD
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     MUSIC_DISC_WARD:
         Amount: 1
         XP: 200
         Rarity: RECORD
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     MUSIC_DISC_11:
         Amount: 1
         XP: 200
         Rarity: RECORD
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     MUSIC_DISC_WAIT:
         Amount: 1
         XP: 200
         Rarity: RECORD
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     MUSIC_DISC_13:
         Amount: 1
         XP: 200
         Rarity: RECORD
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
 #
 #	Fishing drop rates
 ###
@@ -449,22 +569,30 @@ Shake:
             XP: 0
             Drop_Chance: 100.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
     CAVE_SPIDER:
         SPIDER_EYE:
             Amount: 1
             XP: 0
             Drop_Chance: 49.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         STRING:
             Amount: 1
             XP: 0
             Drop_Chance: 49.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         COBWEB:
             Amount: 1
             XP: 0
             Drop_Chance: 1.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         POTION|0|POISON:
             PotionData:
                 PotionType: POISON
@@ -472,38 +600,52 @@ Shake:
             XP: 0
             Drop_Chance: 1.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
     CHICKEN:
         FEATHER:
             Amount: 1
             XP: 0
             Drop_Chance: 33.3
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         CHICKEN:
             Amount: 1
             XP: 0
             Drop_Chance: 33.3
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         EGG:
             Amount: 1
             XP: 0
             Drop_Chance: 33.3
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
     COW:
         MILK_BUCKET:
             Amount: 1
             XP: 0
             Drop_Chance: 2.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         LEATHER:
             Amount: 1
             XP: 0
             Drop_Chance: 49.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         BEEF:
             Amount: 1
             XP: 0
             Drop_Chance: 49.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
     CREEPER:
         SKELETON_SKULL:
             Data: 4
@@ -511,110 +653,150 @@ Shake:
             XP: 0
             Drop_Chance: 1.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         GUNPOWDER:
             Amount: 1
             XP: 0
             Drop_Chance: 99.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
     ENDERMAN:
         ENDER_PEARL:
             Amount: 1
             XP: 0
             Drop_Chance: 100.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
     GHAST:
         GUNPOWDER:
             Amount: 1
             XP: 0
             Drop_Chance: 50.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         GHAST_TEAR:
             Amount: 1
             XP: 0
             Drop_Chance: 50.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
     HORSE:
         LEATHER:
             Amount: 1
             XP: 0
             Drop_Chance: 99.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         SADDLE:
             Amount: 1
             XP: 0
             Drop_Chance: 1.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
     IRON_GOLEM:
         PUMPKIN:
             Amount: 1
             XP: 0
             Drop_Chance: 3.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         IRON_INGOT:
             Amount: 1
             XP: 0
             Drop_Chance: 12.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         POPPY:
             Amount: 1
             XP: 0
             Drop_Chance: 85.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
     MAGMA_CUBE:
         MAGMA_CREAM:
             Amount: 1
             XP: 0
             Drop_Chance: 100.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
     MUSHROOM_COW:
         MILK_BUCKET:
             Amount: 1
             XP: 0
             Drop_Chance: 5.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         MUSHROOM_STEW:
             Amount: 1
             XP: 0
             Drop_Chance: 5.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         LEATHER:
             Amount: 1
             XP: 0
             Drop_Chance: 30.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         BEEF:
             Amount: 1
             XP: 0
             Drop_Chance: 30.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         RED_MUSHROOM:
             Amount: 2
             XP: 0
             Drop_Chance: 30.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
     PIG:
         PORKCHOP:
             Amount: 1
             XP: 0
             Drop_Chance: 100.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
     PIG_ZOMBIE:
         ROTTEN_FLESH:
             Amount: 1
             XP: 0
             Drop_Chance: 50.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         GOLD_NUGGET:
             Amount: 1
             XP: 0
             Drop_Chance: 50.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
     PLAYER:
         SKELETON_SKULL:
             Amount: 1
             XP: 0
             Drop_Chance: 0.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         INVENTORY:
             Whole_Stacks: false
             Drop_Chance: 0.0
@@ -625,17 +807,23 @@ Shake:
             XP: 0
             Drop_Chance: 100.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
     SHULKER:
         SHULKER_SHELL:
             Amount: 1
             XP: 0
             Drop_Chance: 25.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         PURPUR_BLOCK:
             Amount: 1
             XP: 0
             Drop_Chance: 75.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
     SKELETON:
         SKELETON_SKULL:
             Data: 0
@@ -643,50 +831,68 @@ Shake:
             XP: 0
             Drop_Chance: 2.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         BONE:
             Amount: 1
             XP: 0
             Drop_Chance: 49.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         ARROW:
             Amount: 2
             XP: 0
             Drop_Chance: 49.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
     SLIME:
         SLIME_BALL:
             Amount: 1
             XP: 0
             Drop_Chance: 100.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
     SPIDER:
         SPIDER_EYE:
             Amount: 1
             XP: 0
             Drop_Chance: 50.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         STRING:
             Amount: 1
             XP: 0
             Drop_Chance: 50.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
     SNOWMAN:
         PUMPKIN:
             Amount: 1
             XP: 0
             Drop_Chance: 3.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         SNOWBALL:
             Amount: 2
             XP: 0
             Drop_Chance: 97.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
     SQUID:
         INK_SAC:
             Amount: 1
             XP: 0
             Drop_Chance: 100.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
     WITCH:
         SPLASH_POTION|0|INSTANT_HEAL:
             PotionData:
@@ -695,6 +901,8 @@ Shake:
             XP: 0
             Drop_Chance: 1.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         SPLASH_POTION|0|FIRE_RESISTANCE:
             PotionData:
                 PotionType: FIRE_RESISTANCE
@@ -702,6 +910,8 @@ Shake:
             XP: 0
             Drop_Chance: 1.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         SPLASH_POTION|0|SPEED:
             PotionData:
                 PotionType: SPEED
@@ -709,41 +919,57 @@ Shake:
             XP: 0
             Drop_Chance: 1.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         GLASS_BOTTLE:
             Amount: 1
             XP: 0
             Drop_Chance: 7.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         GLOWSTONE_DUST:
             Amount: 1
             XP: 0
             Drop_Chance: 15.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         GUNPOWDER:
             Amount: 1
             XP: 0
             Drop_Chance: 15.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         REDSTONE:
             Amount: 1
             XP: 0
             Drop_Chance: 15.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         SPIDER_EYE:
             Amount: 1
             XP: 0
             Drop_Chance: 15.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         STICK:
             Amount: 1
             XP: 0
             Drop_Chance: 15.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         SUGAR:
             Amount: 1
             XP: 0
             Drop_Chance: 15.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
     WITHER_SKELETON:
         WITHER_SKELETON_SKULL:
             Data: 0
@@ -751,16 +977,22 @@ Shake:
             XP: 0
             Drop_Chance: 2.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         BONE:
             Amount: 1
             XP: 0
             Drop_Chance: 49.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         COAL:
             Amount: 2
             XP: 0
             Drop_Chance: 49.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
     ZOMBIE:
         SKELETON_SKULL:
             Data: 2
@@ -768,8 +1000,12 @@ Shake:
             XP: 0
             Drop_Chance: 2.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe
         ROTTEN_FLESH:
             Amount: 1
             XP: 0
             Drop_Chance: 98.0
             Drop_Level: 0
+            Custom_Name: ChangeMe
+            Lore: ChangeMe

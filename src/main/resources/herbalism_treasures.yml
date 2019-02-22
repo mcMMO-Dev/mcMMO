@@ -8,51 +8,69 @@ Hylian_Luck:
         Drop_Chance: 100.0
         Drop_Level: 0
         Drops_From: [Bushes]
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     PUMPKIN_SEEDS:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
         Drop_Level: 0
         Drops_From: [Bushes]
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     COCOA_BEANS:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
         Drop_Level: 0
         Drops_From: [Bushes]
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     CARROT:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
         Drop_Level: 0
         Drops_From: [Flowers]
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     POTATO:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
         Drop_Level: 0
         Drops_From: [Flowers]
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     APPLE:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
         Drop_Level: 0
         Drops_From: [Flowers]
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     EMERALD:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
         Drop_Level: 0
         Drops_From: [Pots]
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     DIAMOND:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
         Drop_Level: 0
         Drops_From: [Pots]
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
     GOLD_NUGGET:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
         Drop_Level: 0
         Drops_From: [Pots]
+        Custom_Name: ChangeMe
+        Lore: ChangeMe
