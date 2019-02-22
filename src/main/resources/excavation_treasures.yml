@@ -1,7 +1,7 @@
 #
 #  Settings for Excavation's Archaeology
 ###
-Excavation:
+Archaeology:
     CAKE:
         Amount: 1
         XP: 3000

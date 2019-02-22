@@ -29,20 +29,15 @@ import java.util.List;
 //TODO: Need to rewrite this too
 public class TreasureConfig extends Config implements UnsafeValueValidation, Registers {
 
-    public static final String ENCHANTMENT_DROP_RATES = "Enchantment_Drop_Rates";
-    public static final String ITEM_DROP_RATES = "Item_Drop_Rates";
-    public static final String FISHING = "Fishing";
-    public static final String EXCAVATION = "Excavation";
-    public static final String SHAKE = "Shake";
-    public static final String HYLIAN_LUCK = "Hylian_Luck";
 
-    public HashMap<String, List<ExcavationTreasure>> excavationMap = new HashMap<String, List<ExcavationTreasure>>();
 
-    public HashMap<EntityType, List<ShakeTreasure>> shakeMap = new HashMap<EntityType, List<ShakeTreasure>>();
-    public HashMap<String, List<HylianTreasure>> hylianMap = new HashMap<String, List<HylianTreasure>>();
 
-    public HashMap<Rarity, List<FishingTreasure>> fishingRewards = new HashMap<Rarity, List<FishingTreasure>>();
-    public HashMap<Rarity, List<EnchantmentTreasure>> fishingEnchantments = new HashMap<Rarity, List<EnchantmentTreasure>>();
+
+
+
+
+
+
 
     public TreasureConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(),"treasures.yml");
@@ -158,11 +153,7 @@ public class TreasureConfig extends Config implements UnsafeValueValidation, Reg
 
         loadEnchantments();
 
-        for (EntityType entity : EntityType.values()) {
-            if (entity.isAlive()) {
-                loadShake(entity);
-            }
-        }
+
     }
 
     private void initRegisters()
@@ -185,84 +176,23 @@ public class TreasureConfig extends Config implements UnsafeValueValidation, Reg
 
     private void loadFishing()
     {
-        ConfigurationNode fishingTreasureNode = getUserRootNode().getNode(FISHING);
 
-        if(fishingTreasureNode == null)
-        {
-            mcMMO.p.getLogger().info("Fishing treasures in treasures config not defined");
-            return;
-        }
 
-        // Initialize fishing HashMap
-        for (Rarity rarity : Rarity.values()) {
-            if (!fishingRewards.containsKey(rarity)) {
-                fishingRewards.put(rarity, (new ArrayList<FishingTreasure>()));
-            }
-        }
 
-        try {
-            for (String treasureName : fishingTreasureNode.getList(TypeToken.of(String.class))) {
-
-            }
-        } catch (ObjectMappingException e) {
-            e.printStackTrace();
-        }
 
     }
 
     private void loadExcavation()
     {
-        ConfigurationNode excavationTreasureNode = getUserRootNode().getNode(EXCAVATION);
 
-        if(excavationTreasureNode == null)
-        {
-            mcMMO.p.getLogger().info("Excavation treasures in treasures config not defined");
-            return;
-        }
-
-        try {
-            for (String treasureName : excavationTreasureNode.getList(TypeToken.of(String.class))) {
-
-            }
-        } catch (ObjectMappingException e) {
-            e.printStackTrace();
-        }
     }
 
     private void loadHerbalism()
     {
-        ConfigurationNode herbalismTreasureNode = getUserRootNode().getNode(HYLIAN_LUCK);
 
-        if(herbalismTreasureNode == null)
-        {
-            mcMMO.p.getLogger().info("Hylian_Luck in treasures config not defined");
-            return;
-        }
-
-        try {
-            for (String treasureName : herbalismTreasureNode.getList(TypeToken.of(String.class))) {
-
-            }
-        } catch (ObjectMappingException e) {
-            e.printStackTrace();
-        }
     }
 
-    private void loadShake(EntityType entityType)
-    {
-        ConfigurationNode shakeTreasureNode = getUserRootNode().getNode(SHAKE, entityType.toString());
 
-        if(shakeTreasureNode != null)
-            return;
-
-        try {
-            for (String treasureName : shakeTreasureNode.getList(TypeToken.of(String.class))) {
-
-            }
-        } catch (ObjectMappingException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void loadTreasures(ConfigurationNode treasureChildNode) {
         if (treasureChildNode == null) {

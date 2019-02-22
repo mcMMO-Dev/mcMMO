@@ -5,12 +5,16 @@ import com.gmail.nossr50.config.collectionconfigs.MultiConfigContainer;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
+import com.gmail.nossr50.config.treasure.ExcavationTreasureConfig;
+import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
+import com.gmail.nossr50.config.treasure.HerbalismTreasureConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.SimpleRepairableManager;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.skills.salvage.salvageables.SimpleSalvageableManager;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -31,6 +35,7 @@ public final class ConfigManager {
     /* UNLOAD REGISTER */
 
     private ArrayList<Unload> unloadables;
+    private ArrayList<File> userFiles;
 
     /* MULTI CONFIG INSTANCES */
 
@@ -56,7 +61,9 @@ public final class ConfigManager {
     /* CONFIG INSTANCES */
 
     private MainConfig mainConfig;
-    private TreasureConfig treasureConfig;
+    private FishingTreasureConfig fishingTreasureConfig;
+    private ExcavationTreasureConfig excavationTreasureConfig;
+    private HerbalismTreasureConfig herbalismTreasureConfig;
     private ExperienceConfig experienceConfig;
     private AdvancedConfig advancedConfig;
     private PotionConfig potionConfig;
@@ -74,6 +81,7 @@ public final class ConfigManager {
     public ConfigManager()
     {
         unloadables = new ArrayList<>();
+        userFiles = new ArrayList<>();
 
         // Load Config Files
         // I'm pretty these are supposed to be done in a specific order, so don't rearrange them willy nilly
@@ -81,7 +89,9 @@ public final class ConfigManager {
         //TODO: Not sure about the order of MainConfig
         mainConfig = new MainConfig();
 
-        treasureConfig = new TreasureConfig();
+        fishingTreasureConfig = new FishingTreasureConfig();
+        excavationTreasureConfig = new ExcavationTreasureConfig();
+        herbalismTreasureConfig = new HerbalismTreasureConfig();
 
         advancedConfig = new AdvancedConfig();
 
@@ -180,6 +190,7 @@ public final class ConfigManager {
 
         //Clear
         unloadables.clear();
+        userFiles.clear();
     }
 
     /**
@@ -192,9 +203,28 @@ public final class ConfigManager {
             unloadables.add(unload);
     }
 
+    /**
+     * Registers an unloadable
+     * Unloadables call unload() on plugin disable to cleanup registries
+     */
+    public void registerUserFile(File userFile)
+    {
+        if(!userFiles.contains(userFile))
+            userFiles.add(userFile);
+    }
+
     /*
      * GETTER BOILER PLATE
      */
+
+    /**
+     * Used to back up our zip files real easily
+     * @return
+     */
+    public ArrayList<File> getConfigFiles()
+    {
+        return userFiles;
+    }
 
     public SimpleRepairableManager getSimpleRepairableManager() {
         return simpleRepairableManager;
@@ -208,8 +238,16 @@ public final class ConfigManager {
         return mainConfig;
     }
 
-    public TreasureConfig getTreasureConfig() {
-        return treasureConfig;
+    public FishingTreasureConfig getFishingTreasureConfig() {
+        return fishingTreasureConfig;
+    }
+
+    public ExcavationTreasureConfig getExcavationTreasureConfig() {
+        return excavationTreasureConfig;
+    }
+
+    public HerbalismTreasureConfig getHerbalismTreasureConfig() {
+        return herbalismTreasureConfig;
     }
 
     public AdvancedConfig getAdvancedConfig() {

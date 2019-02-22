@@ -1,6 +1,7 @@
 package net.shatteredlands.shatt.backup;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.mcMMO;
 
 import java.io.File;
@@ -20,14 +21,14 @@ public class ZipLibrary {
     private static File BACKUP_DIR = new File(BACKUP_DIRECTORY);
     private static File FLAT_FILE_DIRECTORY = new File(mcMMO.getFlatFileDirectory());
     private static File MOD_FILE_DIRECTORY = new File(mcMMO.getModDirectory());
-    private static File CONFIG_FILE = new File(mcMMO.getMainDirectory() + "config.yml");
+   /* private static File CONFIG_FILE = new File(mcMMO.getMainDirectory() + "config.yml");
     private static File EXPERIENCE_FILE = new File(mcMMO.getMainDirectory() + "experience.yml");
     //private static File TREASURE_FILE = new File(mcMMO.getMainDirectory() + "treasures.yml");
     private static File ADVANCED_FILE = new File(mcMMO.getMainDirectory() + "advanced.yml");
-    private static File REPAIR_FILE = new File(mcMMO.getMainDirectory() + "repair.vanilla.yml");
+    private static File REPAIR_FILE = new File(mcMMO.getMainDirectory() + "repair.vanilla.yml");*/
 
     public static void mcMMOBackup() throws IOException {
-        if (Config.getInstance().getUseMySQL()) {
+        if (MainConfig.getInstance().getUseMySQL()) {
             mcMMO.p.debug("This server is running in SQL Mode.");
             mcMMO.p.debug("Only config files will be backed up.");
         }
@@ -50,11 +51,7 @@ public class ZipLibrary {
         List<File> sources = new ArrayList<File>();
 
         sources.add(FLAT_FILE_DIRECTORY);
-        sources.add(CONFIG_FILE);
-        sources.add(EXPERIENCE_FILE);
-        sources.add(TREASURE_FILE);
-        sources.add(ADVANCED_FILE);
-        sources.add(REPAIR_FILE);
+        sources.addAll(mcMMO.getConfigManager().getConfigFiles()); //Config File Backups
 
         if (MOD_FILE_DIRECTORY.exists()) {
             sources.add(MOD_FILE_DIRECTORY);

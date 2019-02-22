@@ -20,6 +20,7 @@ import java.util.List;
 public abstract class Config implements VersionedConfig, Unload {
 
     /* SETTINGS */
+    //private static final String FILE_EXTENSION = ".conf"; //HOCON
     private boolean mergeNewKeys; //Whether or not to merge keys found in the default config
     private boolean removeOldKeys; //Whether or not to remove unused keys form the config
     private boolean copyDefaults; //Whether or not to copy the default config when first creating the file
@@ -65,8 +66,6 @@ public abstract class Config implements VersionedConfig, Unload {
         DIRECTORY_DATA_FOLDER = pathToParentFolder; //Data Folder for our plugin
         FILE_RELATIVE_PATH = relativePath; //Relative path to config from a parent folder
 
-        registerUnload();
-
         //Attempt IO Operations
         try {
             //Makes sure we have valid Files corresponding to this config
@@ -83,6 +82,10 @@ public abstract class Config implements VersionedConfig, Unload {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        //Cleanup and backup registers
+        registerUnload();
+        registerFileBackup();
     }
 
     /**
@@ -92,6 +95,15 @@ public abstract class Config implements VersionedConfig, Unload {
     private void registerUnload()
     {
         mcMMO.getConfigManager().registerUnloadable(this);
+    }
+
+    /**
+     * Registers with the config managers file list
+     * Used for backing up configs with our zip library
+     */
+    private void registerFileBackup()
+    {
+        mcMMO.getConfigManager().registerUserFile(getUserConfigFile());
     }
 
     /**
@@ -168,6 +180,14 @@ public abstract class Config implements VersionedConfig, Unload {
                 return userCopy;
             }
         }
+    }
+
+    /**
+     * Gets the File representation of the this users config
+     * @return the users config File
+     */
+    public File getUserConfigFile() {
+        return new File(DIRECTORY_DATA_FOLDER, FILE_RELATIVE_PATH);
     }
 
     /**

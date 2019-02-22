@@ -31,7 +31,6 @@ import com.gmail.nossr50.util.experience.FormulaManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.upgrade.UpgradeManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.google.common.base.Charsets;
 import net.shatteredlands.shatt.backup.ZipLibrary;
@@ -55,7 +54,7 @@ public class mcMMO extends JavaPlugin {
     private static DatabaseManager    databaseManager;
     private static FormulaManager     formulaManager;
     private static HolidayManager     holidayManager;
-    private static UpgradeManager     upgradeManager;
+    //private static UpgradeManager     upgradeManager;
 
     /* Blacklist */
     private static WorldBlacklist worldBlacklist;
@@ -331,9 +330,9 @@ public class mcMMO extends JavaPlugin {
         return modManager;
     }*/
 
-    public static UpgradeManager getUpgradeManager() {
+    /*public static UpgradeManager getUpgradeManager() {
         return upgradeManager;
-    }
+    }*/
 
     @Deprecated
     public static void setDatabaseManager(DatabaseManager databaseManager) {
