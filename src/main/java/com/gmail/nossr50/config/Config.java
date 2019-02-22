@@ -48,13 +48,13 @@ public abstract class Config implements VersionedConfig, Unload {
     /* CONFIG MANAGER */
     //private ConfigurationLoader<CommentedConfigurationNode> configManager;
 
-    public Config(String pathToParentFolder, String relativePath, boolean mergeNewKeys, boolean copyDefaults) {
+    public Config(String pathToParentFolder, String relativePath, boolean mergeNewKeys, boolean copyDefaults, boolean removeOldKeys) {
         //TODO: Check if this works...
-        this(new File(pathToParentFolder), relativePath, mergeNewKeys, copyDefaults);
+        this(new File(pathToParentFolder), relativePath, mergeNewKeys, copyDefaults, removeOldKeys);
         System.out.println("mcMMO Debug: Don't forget to check if loading config file by string instead of File works...");
     }
 
-    public Config(File pathToParentFolder, String relativePath, boolean mergeNewKeys, boolean copyDefaults) {
+    public Config(File pathToParentFolder, String relativePath, boolean mergeNewKeys, boolean copyDefaults, boolean removeOldKeys) {
         /*
          * These must be at the top
          */
@@ -284,6 +284,7 @@ public abstract class Config implements VersionedConfig, Unload {
     /**
      * Finds any keys in the users config that are not present in the default config and removes them
      */
+    //TODO: Finish this
     private void removeOldKeys()
     {
         if(!removeOldKeys)

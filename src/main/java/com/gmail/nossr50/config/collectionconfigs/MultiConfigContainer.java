@@ -45,7 +45,7 @@ public class MultiConfigContainer<T> implements Unload {
         //Load Configs
 
         //Vanilla Config
-        initConfigAndAddCollection(getVanillaConfigName(configPrefix), true);
+        initConfigAndAddCollection(mcMMO.p.getDataFolder().getAbsolutePath(),getVanillaConfigName(configPrefix), false, true, false);
 
         //Custom Configs
         loadCustomCollections(configPrefix);
@@ -90,15 +90,20 @@ public class MultiConfigContainer<T> implements Unload {
 
     /**
      * Initializes a config and attempts to load add its collection
-     * @param configFileName the filename of the config to load
+     * @param parentFolderPath Path to the "parent" folder on disk
+     * @param relativePath Path to the config relative to the "parent" folder, this should mirror internal structure of resource files
+     * @param mergeNewKeys if true, the users config will add keys found in the internal file that are missing from the users file during load
+     * @param copyDefaults if true, the users config file when it is first made will be a copy of an internal resource file of the same name and path
+     * @param removeOldKeys if true, the users config file will have keys not found in the internal default resource file of the same name and path removed
      */
-    private void initConfigAndAddCollection(String configFileName, Boolean copyDefaults)
+    private void initConfigAndAddCollection(String parentFolderPath, String relativePath, boolean mergeNewKeys, boolean copyDefaults, boolean removeOldKeys)
     {
-        mcMMO.p.getLogger().info("Reading from collection config - "+configFileName);
+        mcMMO.p.getLogger().info("Reading from collection config - "+relativePath);
         ConfigCollection configCollection = null;
 
         try {
-            configCollection = (ConfigCollection) getConfigClass(collectionClassType).getConstructor(String.class, Boolean.class).newInstance(configFileName, copyDefaults);
+            //String parentFolderPath, String relativePath, boolean mergeNewKeys, boolean copyDefaults, boolean removeOldKeys
+            configCollection = (ConfigCollection) getConfigClass(collectionClassType).getConstructor(String.class, String.class, Boolean.class, Boolean.class, Boolean.class).newInstance(parentFolderPath, relativePath, mergeNewKeys, copyDefaults, removeOldKeys);
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -145,7 +150,7 @@ public class MultiConfigContainer<T> implements Unload {
                 continue;
 
             //Load and add the collections
-            initConfigAndAddCollection(fileName, false);
+            initConfigAndAddCollection(dataFolder.getAbsolutePath(), fileName, false, false, false);
         }
     }
 

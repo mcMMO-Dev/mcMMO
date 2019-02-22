@@ -34,7 +34,7 @@ public class TreasureConfig extends ConfigCollection {
 
     public TreasureConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(),"treasures.yml");
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "treasures.yml", true);
+        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "treasures.yml", false, true, false);
     }
 
     /**
@@ -60,7 +60,7 @@ public class TreasureConfig extends ConfigCollection {
     }
 
     @Override
-    protected boolean validateKeys() {
+    public List<String> validateKeys() {
         // Validate all the settings!
         List<String> reason = new ArrayList<String>();
         for (String tier : config.getConfigurationSection("Enchantment_Drop_Rates").getKeys(false)) {

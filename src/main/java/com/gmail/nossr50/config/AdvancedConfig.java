@@ -126,7 +126,7 @@ public class AdvancedConfig extends ConfigValidated {
 
     public AdvancedConfig() {
         //super(mcMMO.getDataFolderPath().getAbsoluteFile(), "advanced.yml", true);
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "advanced.yml", true, true);
+        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "advanced.yml", true, true, true);
     }
 
     @Override

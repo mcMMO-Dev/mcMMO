@@ -14,7 +14,7 @@ public class RankConfig extends ConfigValidated {
 
     public RankConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(),"skillranks.yml", true);
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(),"skillranks.yml", true, true);
+        super(mcMMO.p.getDataFolder().getAbsoluteFile(),"skillranks.yml", true, true, true);
         //this.instance = this;
     }
 

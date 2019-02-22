@@ -16,9 +16,9 @@ public abstract class ConfigValidated extends Config implements DefaultKeys {
      * @param mergeNewKeys if true, the users config will add keys found in the internal file that are missing from the users file during load
      * @param copyDefaults if true, the users config file when it is first made will be a copy of an internal resource file of the same name and path
      */
-    public ConfigValidated(String parentFolderPath, String relativePath, boolean mergeNewKeys, boolean copyDefaults)
+    public ConfigValidated(String parentFolderPath, String relativePath, boolean mergeNewKeys, boolean copyDefaults, boolean removeOldKeys)
     {
-        super(parentFolderPath, relativePath, mergeNewKeys, copyDefaults);
+        super(parentFolderPath, relativePath, mergeNewKeys, copyDefaults, removeOldKeys);
         validateEntries();
     }
 
@@ -28,9 +28,9 @@ public abstract class ConfigValidated extends Config implements DefaultKeys {
      * @param mergeNewKeys if true, the users config will add keys found in the internal file that are missing from the users file during load
      * @param copyDefaults if true, the users config file when it is first made will be a copy of an internal resource file of the same name and path
      */
-    public ConfigValidated(File parentFolderFile, String relativePath, boolean mergeNewKeys, boolean copyDefaults)
+    public ConfigValidated(File parentFolderFile, String relativePath, boolean mergeNewKeys, boolean copyDefaults, boolean removeOldKeys)
     {
-        super(parentFolderFile, relativePath, mergeNewKeys, copyDefaults);
+        super(parentFolderFile, relativePath, mergeNewKeys, copyDefaults, removeOldKeys);
         validateEntries();
     }
 

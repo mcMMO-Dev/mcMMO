@@ -16,7 +16,7 @@ public class SoundConfig extends ConfigValidated {
 
     public SoundConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "sounds.yml", true);
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "sounds.yml", true, true);
+        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "sounds.yml", true, true, true);
     }
 
     /**
