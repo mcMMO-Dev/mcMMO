@@ -16,6 +16,9 @@ import java.util.List;
  * Handles creating treasures for various skill loot tables
  */
 public class TreasureFactory {
+
+    public static final String CHANGE_ME = "ChangeMe";
+
     /**
      * Make a new ExcavationTreasure
      * @param material
@@ -46,7 +49,7 @@ public class TreasureFactory {
         }
 
         /* ADD CUSTOM LORE */
-        if(customLore != null)
+        if(customLore != null && !customLore.getString().equalsIgnoreCase(CHANGE_ME))
         {
             ItemMeta itemMeta = treasure.getItemMeta();
             List<String> lore = new ArrayList<String>();
