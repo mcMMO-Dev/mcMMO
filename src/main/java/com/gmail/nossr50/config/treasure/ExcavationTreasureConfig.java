@@ -80,6 +80,7 @@ public class ExcavationTreasureConfig extends Config implements UnsafeValueValid
 
                     ArrayList<String> dropsFrom = new ArrayList(currentTreasure.getNode("Drops_From").getList(TypeToken.of(String.class)));
 
+                    //VALIDATE AMOUNT
                     if(amount <= 0)
                     {
                         mcMMO.p.getLogger().severe("Excavation Treasure named "+treasureName+" in the config has an amount of 0 or below, is this intentional?");
@@ -87,12 +88,14 @@ public class ExcavationTreasureConfig extends Config implements UnsafeValueValid
                         continue;
                     }
 
+                    //VALIDATE XP
                     if(xp <= 0)
                     {
                         mcMMO.p.getLogger().info("Excavation Treasure named "+treasureName+" in the config has xp set to 0 or below, is this intentional?");
                         xp = 0;
                     }
 
+                    //VALIDATE DROP CHANCE
                     if(dropChance <= 0)
                     {
                         mcMMO.p.getLogger().severe("Excavation Treasure named "+treasureName+" in the config has a drop chance of 0 or below, is this intentional?");
@@ -100,12 +103,14 @@ public class ExcavationTreasureConfig extends Config implements UnsafeValueValid
                         continue;
                     }
 
+                    //VALIDATE DROP LEVEL
                     if(dropLevel < 0)
                     {
                         mcMMO.p.getLogger().info("Excavation Treasure named "+treasureName+" in the config has a drop level below 0, is this intentional?");
                         dropLevel = 0;
                     }
 
+                    //VALIDATE DROP SOURCES
                     if(dropsFrom == null || dropsFrom.isEmpty())
                     {
                         mcMMO.p.getLogger().severe("Excavation Treasure named "+treasureName+" in the config has no drop targets, which would make it impossible to obtain, is this intentional?");
