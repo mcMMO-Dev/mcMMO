@@ -73,7 +73,6 @@ public class ExcavationTreasureConfig extends Config implements UnsafeValueValid
                     double dropChance = currentTreasure.getNode(DROP_CHANCE).getDouble();
                     int dropLevel = currentTreasure.getNode(DROP_LEVEL).getInt();
                     String customName = null;
-                    String lore;
 
                     /*
                      * PARAMETER INIT
@@ -121,12 +120,6 @@ public class ExcavationTreasureConfig extends Config implements UnsafeValueValid
                     if(currentTreasure.getNode(CUSTOM_NAME) != null && !currentTreasure.getNode(CUSTOM_NAME).getString().equalsIgnoreCase("ChangeMe"))
                     {
                         customName = currentTreasure.getNode(CUSTOM_NAME).getString();
-                    }
-
-                    //Lore
-                    if(currentTreasure.getNode(LORE) != null && !currentTreasure.getNode(LORE).getString().equalsIgnoreCase("ChangeMe"))
-                    {
-                        lore = currentTreasure.getNode(LORE).getString();
                     }
 
                     /*
