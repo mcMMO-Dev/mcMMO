@@ -8,9 +8,12 @@ import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
 import com.gmail.nossr50.datatypes.treasure.Rarity;
 import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.EnchantmentUtils;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 
 import java.io.File;
@@ -38,8 +41,6 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
      */
     @Override
     public void register() {
-
-
         /* FISHING TREASURES */
 
         ConfigurationNode fishingTreasureNode = getUserRootNode().getNode(FISHING);
@@ -73,6 +74,9 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
                 loadShake(entity);
             }
         }
+
+        //Enchantments
+        loadEnchantments();
     }
 
     private void loadShake(EntityType entityType)
@@ -91,6 +95,36 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
         }
     }
 
+    private void loadEnchantments() {
+        for (Rarity rarity : Rarity.values()) {
+            if (rarity == Rarity.RECORD) {
+                continue;
+            }
+
+            if (!fishingEnchantments.containsKey(rarity)) {
+                fishingEnchantments.put(rarity, (new ArrayList<EnchantmentTreasure>()));
+            }
+
+            ConfigurationSection enchantmentSection = config.getConfigurationSection("Enchantments_Rarity." + rarity.toString());
+
+            if (enchantmentSection == null) {
+                return;
+            }
+
+            for (String enchantmentName : enchantmentSection.getKeys(false)) {
+                int level = getIntValue("Enchantments_Rarity." + rarity.toString() + "." + enchantmentName);
+                Enchantment enchantment = EnchantmentUtils.getByName(enchantmentName);
+
+                if (enchantment == null) {
+                    plugin.getLogger().warning("Skipping invalid enchantment in treasures.yml: " + enchantmentName);
+                    continue;
+                }
+
+                fishingEnchantments.get(rarity).add(new EnchantmentTreasure(enchantment, level));
+            }
+        }
+    }
+
     @Override
     public void unload() {
         shakeMap.clear();
@@ -100,7 +134,50 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
 
     @Override
     public List<String> validateKeys() {
-        return null;
+        // Validate all the settings!
+        List<String> errorMessages = new ArrayList<String>();
+        try {
+            for (String tier : getUserRootNode().getNode(ENCHANTMENT_DROP_RATES).getList(TypeToken.of(String.class))) {
+                /*double totalEnchantDropRate = 0;
+                double totalItemDropRate = 0;*/
+
+                for (Rarity rarity : Rarity.values()) {
+                    double enchantDropRate = getDoubleValue(ENCHANTMENT_DROP_RATES, tier, rarity.toString());
+                    double itemDropRate = getDoubleValue(ITEM_DROP_RATES, tier, rarity.toString());
+
+                    if ((enchantDropRate < 0.0 || enchantDropRate > 100.0) && rarity != Rarity.RECORD) {
+                        errorMessages.add("The enchant drop rate for " + tier + " items that are " + rarity.toString() + "should be between 0.0 and 100.0!");
+
+                        //Bound Values
+                        /*enchantDropRate = boundValues(enchantDropRate, 0.0D, 100.0D);*/
+                    }
+
+                    if (itemDropRate < 0.0 || itemDropRate > 100.0) {
+                        errorMessages.add("The item drop rate for " + tier + " items that are " + rarity.toString() + "should be between 0.0 and 100.0!");
+
+                        //Bound Values
+                        /*itemDropRate = boundValues(itemDropRate, 0.0D, 100.0D);*/
+                    }
+
+                    /*totalEnchantDropRate += enchantDropRate;
+                    totalItemDropRate += itemDropRate;*/
+                }
+
+                //TODO: Why does it matter what the total item/enchant drop rate is?
+
+                /*if (totalEnchantDropRate < 0 || totalEnchantDropRate > 100.0) {
+                    errorMessages.add("The total enchant drop rate for " + tier + " should be between 0.0 and 100.0!");
+                }
+
+                if (totalItemDropRate < 0 || totalItemDropRate > 100.0) {
+                    errorMessages.add("The total item drop rate for " + tier + " should be between 0.0 and 100.0!");
+                }*/
+            }
+        } catch (ObjectMappingException e) {
+            e.printStackTrace();
+        }
+
+        return errorMessages;
     }
 
     /**
@@ -111,5 +188,29 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
     @Override
     public double getConfigVersion() {
         return 1;
+    }
+
+    public boolean getInventoryStealEnabled() {
+        return config.contains("Shake.PLAYER.INVENTORY");
+    }
+
+    public boolean getInventoryStealStacks() {
+        return getBooleanValue("Shake.PLAYER.INVENTORY.Whole_Stacks");
+    }
+
+    public double getInventoryStealDropChance() {
+        return getDoubleValue("Shake.PLAYER.INVENTORY.Drop_Chance");
+    }
+
+    public int getInventoryStealDropLevel() {
+        return getIntValue("Shake.PLAYER.INVENTORY.Drop_Level");
+    }
+
+    public double getItemDropRate(int tier, Rarity rarity) {
+        return getDoubleValue(ITEM_DROP_RATES + ".Tier_" + tier + "." + rarity.toString());
+    }
+
+    public double getEnchantmentDropRate(int tier, Rarity rarity) {
+        return getDoubleValue("Enchantment_Drop_Rates.Tier_" + tier + "." + rarity.toString());
     }
 }

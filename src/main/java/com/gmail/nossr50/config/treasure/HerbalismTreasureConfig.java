@@ -10,6 +10,7 @@ import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,5 +63,11 @@ public class HerbalismTreasureConfig extends Config implements UnsafeValueValida
     @Override
     public double getConfigVersion() {
         return 1;
+    }
+
+    private void AddHylianTreasure(String dropper, HylianTreasure treasure) {
+        if (!hylianMap.containsKey(dropper))
+            hylianMap.put(dropper, new ArrayList<HylianTreasure>());
+        hylianMap.get(dropper).add(treasure);
     }
 }
