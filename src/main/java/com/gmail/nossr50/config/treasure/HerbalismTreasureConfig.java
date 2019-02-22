@@ -24,6 +24,18 @@ public class HerbalismTreasureConfig extends Config implements UnsafeValueValida
     }
 
     /**
+     * This grabs an instance of this config class from the Config Manager
+     * This method is deprecated and will be removed in the future
+     * @see mcMMO#getConfigManager()
+     * @return the instance of this config
+     * @deprecated Please use mcMMO.getConfigManager() to grab a specific config instead
+     */
+    @Deprecated
+    public static HerbalismTreasureConfig getInstance() {
+        return mcMMO.getConfigManager().getHerbalismTreasureConfig();
+    }
+
+    /**
      * Register stuff
      */
     @Override

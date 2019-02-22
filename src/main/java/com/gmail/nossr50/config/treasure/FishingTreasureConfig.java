@@ -31,6 +31,18 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
     public static final String ENCHANTMENT_DROP_RATES = "Enchantment_Drop_Rates";
     public static final String SHAKE = "Shake";
 
+    /**
+     * This grabs an instance of this config class from the Config Manager
+     * This method is deprecated and will be removed in the future
+     * @see mcMMO#getConfigManager()
+     * @return the instance of this config
+     * @deprecated Please use mcMMO.getConfigManager() to grab a specific config instead
+     */
+    @Deprecated
+    public static FishingTreasureConfig getInstance() {
+        return mcMMO.getConfigManager().getFishingTreasureConfig();
+    }
+
     public FishingTreasureConfig() {
         super(mcMMO.p.getDataFolder().getAbsoluteFile(), "fishing_treasures.yml", false, true, false);
         register();
