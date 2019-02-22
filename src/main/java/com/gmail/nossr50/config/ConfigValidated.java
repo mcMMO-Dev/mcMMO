@@ -1,15 +1,12 @@
 package com.gmail.nossr50.config;
 
 
-import com.gmail.nossr50.mcMMO;
-
 import java.io.File;
-import java.util.List;
 
 /**
  * This class is used for config files that validate their entries
  */
-public abstract class ConfigValidated extends Config implements DefaultKeys {
+public abstract class ConfigValidated extends Config implements UnsafeValueValidation {
     /**
      * @param parentFolderPath Path to the "parent" folder on disk
      * @param relativePath Path to the config relative to the "parent" folder, this should mirror internal structure of resource files
@@ -33,25 +30,4 @@ public abstract class ConfigValidated extends Config implements DefaultKeys {
         super(parentFolderFile, relativePath, mergeNewKeys, copyDefaults, removeOldKeys);
         validateEntries();
     }
-
-    /**
-     * Prints all errors found when validating the config
-     */
-    private void validateEntries()
-    {
-        /*
-         * Print Errors about Keys
-         */
-
-        List<String> validKeyErrors = validateKeys(); // Validate Keys
-
-        if(validKeyErrors != null && validKeyErrors.size() > 0)
-        {
-            for(String error : validKeyErrors)
-            {
-                mcMMO.p.getLogger().severe(error);
-            }
-        }
-    }
-
 }

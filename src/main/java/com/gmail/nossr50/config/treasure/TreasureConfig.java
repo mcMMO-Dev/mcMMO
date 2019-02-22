@@ -1,10 +1,13 @@
 package com.gmail.nossr50.config.treasure;
 
 import com.gmail.nossr50.config.ConfigCollection;
+import com.gmail.nossr50.config.UnsafeValueValidation;
 import com.gmail.nossr50.datatypes.treasure.*;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EnchantmentUtils;
 import com.gmail.nossr50.util.StringUtils;
+import com.google.common.reflect.TypeToken;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.configuration.ConfigurationSection;
@@ -20,9 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class TreasureConfig extends ConfigCollection {
-
-    //private static TreasureConfig instance;
+public class TreasureConfig extends ConfigCollection implements UnsafeValueValidation {
 
     public HashMap<String, List<ExcavationTreasure>> excavationMap = new HashMap<String, List<ExcavationTreasure>>();
 
@@ -35,6 +36,7 @@ public class TreasureConfig extends ConfigCollection {
     public TreasureConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(),"treasures.yml");
         super(mcMMO.p.getDataFolder().getAbsoluteFile(), "treasures.yml", false, true, false);
+        validateEntries();
     }
 
     /**
@@ -62,37 +64,41 @@ public class TreasureConfig extends ConfigCollection {
     @Override
     public List<String> validateKeys() {
         // Validate all the settings!
-        List<String> reason = new ArrayList<String>();
-        for (String tier : config.getConfigurationSection("Enchantment_Drop_Rates").getKeys(false)) {
-            double totalEnchantDropRate = 0;
-            double totalItemDropRate = 0;
+        List<String> errorMessages = new ArrayList<String>();
+        try {
+            for (String tier : getUserRootNode().getNode("Enchantment_Drop_Rates").getList(TypeToken.of(String.class))) {
+                double totalEnchantDropRate = 0;
+                double totalItemDropRate = 0;
 
-            for (Rarity rarity : Rarity.values()) {
-                double enchantDropRate = getDoubleValue("Enchantment_Drop_Rates." + tier + "." + rarity.toString());
-                double itemDropRate = getDoubleValue("Item_Drop_Rates." + tier + "." + rarity.toString());
+                for (Rarity rarity : Rarity.values()) {
+                    double enchantDropRate = getDoubleValue("Enchantment_Drop_Rates." + tier + "." + rarity.toString());
+                    double itemDropRate = getDoubleValue("Item_Drop_Rates." + tier + "." + rarity.toString());
 
-                if ((enchantDropRate < 0.0 || enchantDropRate > 100.0) && rarity != Rarity.RECORD) {
-                    reason.add("The enchant drop rate for " + tier + " items that are " + rarity.toString() + "should be between 0.0 and 100.0!");
+                    if ((enchantDropRate < 0.0 || enchantDropRate > 100.0) && rarity != Rarity.RECORD) {
+                        errorMessages.add("The enchant drop rate for " + tier + " items that are " + rarity.toString() + "should be between 0.0 and 100.0!");
+                    }
+
+                    if (itemDropRate < 0.0 || itemDropRate > 100.0) {
+                        errorMessages.add("The item drop rate for " + tier + " items that are " + rarity.toString() + "should be between 0.0 and 100.0!");
+                    }
+
+                    totalEnchantDropRate += enchantDropRate;
+                    totalItemDropRate += itemDropRate;
                 }
 
-                if (itemDropRate < 0.0 || itemDropRate > 100.0) {
-                    reason.add("The item drop rate for " + tier + " items that are " + rarity.toString() + "should be between 0.0 and 100.0!");
+                if (totalEnchantDropRate < 0 || totalEnchantDropRate > 100.0) {
+                    errorMessages.add("The total enchant drop rate for " + tier + " should be between 0.0 and 100.0!");
                 }
 
-                totalEnchantDropRate += enchantDropRate;
-                totalItemDropRate += itemDropRate;
+                if (totalItemDropRate < 0 || totalItemDropRate > 100.0) {
+                    errorMessages.add("The total item drop rate for " + tier + " should be between 0.0 and 100.0!");
+                }
             }
-
-            if (totalEnchantDropRate < 0 || totalEnchantDropRate > 100.0) {
-                reason.add("The total enchant drop rate for " + tier + " should be between 0.0 and 100.0!");
-            }
-
-            if (totalItemDropRate < 0 || totalItemDropRate > 100.0) {
-                reason.add("The total item drop rate for " + tier + " should be between 0.0 and 100.0!");
-            }
+        } catch (ObjectMappingException e) {
+            e.printStackTrace();
         }
 
-        return noErrorsInConfig(reason);
+        return errorMessages;
     }
 
     @Override
