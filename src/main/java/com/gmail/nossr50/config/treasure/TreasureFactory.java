@@ -1,6 +1,7 @@
 package com.gmail.nossr50.config.treasure;
 
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
+import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
@@ -35,6 +36,13 @@ public class TreasureFactory {
         ItemStack treasure = makeItemStack(material, dropAmount, customName, customLore);
 
         return new ExcavationTreasure(treasure, xpReward, dropChance, dropLevel);
+    }
+
+    public static HylianTreasure makeHylianTreasure(Material material, int dropAmount, int xpReward, double dropChance, int dropLevel, String customName, ConfigurationNode customLore)
+    {
+        ItemStack treasure = makeItemStack(material, dropAmount, customName, customLore);
+
+        return new HylianTreasure(treasure, xpReward, dropChance, dropLevel);
     }
 
     private static ItemStack makeItemStack(Material material, int dropAmount, String customName, ConfigurationNode customLore) {
