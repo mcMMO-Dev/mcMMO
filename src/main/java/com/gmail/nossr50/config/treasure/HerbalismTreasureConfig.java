@@ -3,13 +3,14 @@ package com.gmail.nossr50.config.treasure;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.Registers;
 import com.gmail.nossr50.config.UnsafeValueValidation;
-import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.StringUtils;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -140,10 +141,35 @@ public class HerbalismTreasureConfig extends Config implements UnsafeValueValida
                      */
                     for(String dropBlock : dropsFrom)
                     {
-                        if(hylianMap.get(dropBlock) == null)
-                            hylianMap.put(dropBlock, new ArrayList<>());
+                        if (dropBlock.equals("Bushes")) {
+                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.FERN), hylianTreasure);
+                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.TALL_GRASS), hylianTreasure);
+                            for (Material species : Tag.SAPLINGS.getValues())
+                                addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(species), hylianTreasure);
 
-                        hylianMap.get(dropBlock).add(hylianTreasure);
+                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.DEAD_BUSH), hylianTreasure);
+                            continue;
+                        }
+                        if (dropBlock.equals("Flowers")) {
+                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POPPY), hylianTreasure);
+                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.DANDELION), hylianTreasure);
+                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.BLUE_ORCHID), hylianTreasure);
+                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.ALLIUM), hylianTreasure);
+                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.AZURE_BLUET), hylianTreasure);
+                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.ORANGE_TULIP), hylianTreasure);
+                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.PINK_TULIP), hylianTreasure);
+                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.RED_TULIP), hylianTreasure);
+                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.WHITE_TULIP), hylianTreasure);
+                            continue;
+                        }
+                        if (dropBlock.equals("Pots")) {
+                            for (Material species : Tag.FLOWER_POTS.getValues())
+                                addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(species), hylianTreasure);
+                            continue;
+                        }
+
+
+                        addHylianTreasure(dropBlock, hylianTreasure);
                     }
 
                 } else {
@@ -175,9 +201,10 @@ public class HerbalismTreasureConfig extends Config implements UnsafeValueValida
         return 1;
     }
 
-    private void AddHylianTreasure(String dropper, HylianTreasure treasure) {
+    private void addHylianTreasure(String dropper, HylianTreasure treasure) {
         if (!hylianMap.containsKey(dropper))
             hylianMap.put(dropper, new ArrayList<HylianTreasure>());
+
         hylianMap.get(dropper).add(treasure);
     }
 }
