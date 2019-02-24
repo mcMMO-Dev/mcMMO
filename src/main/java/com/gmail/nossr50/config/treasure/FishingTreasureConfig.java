@@ -21,13 +21,21 @@ import java.util.HashMap;
 import java.util.List;
 
 public class FishingTreasureConfig extends Config implements UnsafeValueValidation, Registers {
+    public static final String PLAYER = "PLAYER";
+    public static final String INVENTORY = "INVENTORY";
+    public static final String WHOLE_STACKS = "Whole_Stacks";
+    public static final String DROP_CHANCE = "Drop_Chance";
+    public static final String DROP_LEVEL = "Drop_Level";
+    public static final String TIER = "Tier_";
+    public static final String ENCHANTMENTS_RARITY = "Enchantments_Rarity";
     public HashMap<EntityType, List<ShakeTreasure>> shakeMap = new HashMap<EntityType, List<ShakeTreasure>>();
     public HashMap<Rarity, List<FishingTreasure>> fishingRewards = new HashMap<Rarity, List<FishingTreasure>>();
     public HashMap<Rarity, List<EnchantmentTreasure>> fishingEnchantments = new HashMap<Rarity, List<EnchantmentTreasure>>();
 
     public static final String ITEM_DROP_RATES = "Item_Drop_Rates";
     public static final String FISHING = "Fishing";
-    public static final String ENCHANTMENT_DROP_RATES = "Enchantment_Drop_Rates";
+    public static final String ENCHANTMENT_DROP_RATES1 = "Enchantment_Drop_Rates";
+    public static final String ENCHANTMENT_DROP_RATES = ENCHANTMENT_DROP_RATES1;
     public static final String SHAKE = "Shake";
 
     /**
@@ -116,14 +124,14 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
                 fishingEnchantments.put(rarity, (new ArrayList<EnchantmentTreasure>()));
             }
 
-            ConfigurationSection enchantmentSection = config.getConfigurationSection("Enchantments_Rarity." + rarity.toString());
+            ConfigurationSection enchantmentSection = config.getConfigurationSection(ENCHANTMENTS_RARITY, rarity.toString());
 
             if (enchantmentSection == null) {
                 return;
             }
 
             for (String enchantmentName : enchantmentSection.getKeys(false)) {
-                int level = getIntValue("Enchantments_Rarity." + rarity.toString() + "." + enchantmentName);
+                int level = getIntValue(ENCHANTMENTS_RARITY, rarity.toString(), enchantmentName);
                 Enchantment enchantment = EnchantmentUtils.getByName(enchantmentName);
 
                 if (enchantment == null) {
@@ -202,26 +210,26 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
     }
 
     public boolean getInventoryStealEnabled() {
-        return config.contains("Shake.PLAYER.INVENTORY");
+        return hasNode(SHAKE, PLAYER, INVENTORY);
     }
 
     public boolean getInventoryStealStacks() {
-        return getBooleanValue("Shake.PLAYER.INVENTORY.Whole_Stacks");
+        return getBooleanValue(SHAKE, PLAYER, INVENTORY, WHOLE_STACKS);
     }
 
     public double getInventoryStealDropChance() {
-        return getDoubleValue("Shake.PLAYER.INVENTORY.Drop_Chance");
+        return getDoubleValue(SHAKE, PLAYER, INVENTORY, DROP_CHANCE);
     }
 
     public int getInventoryStealDropLevel() {
-        return getIntValue("Shake.PLAYER.INVENTORY.Drop_Level");
+        return getIntValue(SHAKE, PLAYER, INVENTORY, DROP_LEVEL);
     }
 
     public double getItemDropRate(int tier, Rarity rarity) {
-        return getDoubleValue(ITEM_DROP_RATES + ".Tier_" + tier + "." + rarity.toString());
+        return getDoubleValue(ITEM_DROP_RATES, TIER + tier, rarity.toString());
     }
 
     public double getEnchantmentDropRate(int tier, Rarity rarity) {
-        return getDoubleValue("Enchantment_Drop_Rates.Tier_" + tier + "." + rarity.toString());
+        return getDoubleValue(ENCHANTMENT_DROP_RATES, TIER + tier, rarity.toString());
     }
 }
