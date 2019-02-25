@@ -293,22 +293,27 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
                 fishingEnchantments.put(rarity, (new ArrayList<EnchantmentTreasure>()));
             }
 
-            ConfigurationSection enchantmentSection = config.getConfigurationSection(ENCHANTMENTS_RARITY, rarity.toString());
+            ConfigurationNode enchantmentSection = getUserRootNode().getNode(ENCHANTMENTS_RARITY, rarity.toString());
 
             if (enchantmentSection == null) {
+                mcMMO.p.getLogger().info("No enchantment information for fishing treasures, is this intentional?");
                 return;
             }
 
-            for (String enchantmentName : enchantmentSection.getKeys(false)) {
-                int level = getIntValue(ENCHANTMENTS_RARITY, rarity.toString(), enchantmentName);
-                Enchantment enchantment = EnchantmentUtils.getByName(enchantmentName);
+            try {
+                for (String enchantmentName : enchantmentSection.getList(TypeToken.of(String.class))) {
+                    int level = getIntValue(ENCHANTMENTS_RARITY, rarity.toString(), enchantmentName);
+                    Enchantment enchantment = EnchantmentUtils.getByName(enchantmentName);
 
-                if (enchantment == null) {
-                    plugin.getLogger().warning("Skipping invalid enchantment in treasures.yml: " + enchantmentName);
-                    continue;
+                    if (enchantment == null) {
+                        mcMMO.p.getLogger().severe("Skipping invalid enchantment in treasures.yml: " + enchantmentName);
+                        continue;
+                    }
+
+                    fishingEnchantments.get(rarity).add(new EnchantmentTreasure(enchantment, level));
                 }
-
-                fishingEnchantments.get(rarity).add(new EnchantmentTreasure(enchantment, level));
+            } catch (ObjectMappingException e) {
+                e.printStackTrace();
             }
         }
     }
