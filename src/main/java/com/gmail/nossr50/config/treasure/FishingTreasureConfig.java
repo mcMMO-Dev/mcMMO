@@ -3,15 +3,13 @@ package com.gmail.nossr50.config.treasure;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.Registers;
 import com.gmail.nossr50.config.UnsafeValueValidation;
-import com.gmail.nossr50.datatypes.treasure.EnchantmentTreasure;
-import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
-import com.gmail.nossr50.datatypes.treasure.Rarity;
-import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
+import com.gmail.nossr50.datatypes.treasure.*;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EnchantmentUtils;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -28,15 +26,19 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
     public static final String DROP_LEVEL = "Drop_Level";
     public static final String TIER = "Tier_";
     public static final String ENCHANTMENTS_RARITY = "Enchantments_Rarity";
+    public static final String ITEM_DROP_RATES = "Item_Drop_Rates";
+    public static final String FISHING = "Fishing";
+    public static final String ENCHANTMENT_DROP_RATES = "Enchantment_Drop_Rates";
+    public static final String SHAKE = "Shake";
+    public static final String AMOUNT = "Amount";
+    public static final String XP = "XP";
+    public static final String CUSTOM_NAME = "Custom_Name";
+    public static final String LORE = "Lore";
+    public static final String RARITY = "Rarity";
+
     public HashMap<EntityType, List<ShakeTreasure>> shakeMap = new HashMap<EntityType, List<ShakeTreasure>>();
     public HashMap<Rarity, List<FishingTreasure>> fishingRewards = new HashMap<Rarity, List<FishingTreasure>>();
     public HashMap<Rarity, List<EnchantmentTreasure>> fishingEnchantments = new HashMap<Rarity, List<EnchantmentTreasure>>();
-
-    public static final String ITEM_DROP_RATES = "Item_Drop_Rates";
-    public static final String FISHING = "Fishing";
-    public static final String ENCHANTMENT_DROP_RATES1 = "Enchantment_Drop_Rates";
-    public static final String ENCHANTMENT_DROP_RATES = ENCHANTMENT_DROP_RATES1;
-    public static final String SHAKE = "Shake";
 
     /**
      * This grabs an instance of this config class from the Config Manager
@@ -81,7 +83,86 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
 
         try {
             for (String treasureName : fishingTreasureNode.getList(TypeToken.of(String.class))) {
+                //Treasure Material Definition
+                Material treasureMaterial = Material.matchMaterial(treasureName.toUpperCase());
 
+                if(treasureMaterial != null)
+                {
+                    ConfigurationNode currentTreasure = fishingTreasureNode.getNode(treasureName);
+
+                    //TODO: Rewrite the entire treasure system because it sucks
+
+                    /*
+                     * TREASURE PARAMETERS
+                     */
+                    int amount = currentTreasure.getNode(AMOUNT).getInt();
+                    int xp = currentTreasure.getNode(XP).getInt();
+                    String customName = null;
+
+                    /*
+                     * PARAMETER INIT
+                     */
+
+                    ArrayList<String> dropsFrom = new ArrayList(currentTreasure.getNode("Drops_From").getList(TypeToken.of(String.class)));
+
+                    //VALIDATE AMOUNT
+                    if(amount <= 0)
+                    {
+                        mcMMO.p.getLogger().severe("Excavation Treasure named "+treasureName+" in the config has an amount of 0 or below, is this intentional?");
+                        mcMMO.p.getLogger().severe("Skipping "+treasureName+" for being invalid");
+                        continue;
+                    }
+
+                    //VALIDATE XP
+                    if(xp <= 0)
+                    {
+                        mcMMO.p.getLogger().info("Excavation Treasure named "+treasureName+" in the config has xp set to 0 or below, is this intentional?");
+                        xp = 0;
+                    }
+
+                    //VALIDATE DROP SOURCES
+                    if(dropsFrom == null || dropsFrom.isEmpty())
+                    {
+                        mcMMO.p.getLogger().severe("Excavation Treasure named "+treasureName+" in the config has no drop targets, which would make it impossible to obtain, is this intentional?");
+                        mcMMO.p.getLogger().severe("Skipping "+treasureName+" for being invalid");
+                        continue;
+                    }
+
+                    /* OPTIONAL PARAMETERS */
+
+                    //Custom Name
+
+                    if(currentTreasure.getNode(CUSTOM_NAME) != null && !currentTreasure.getNode(CUSTOM_NAME).getString().equalsIgnoreCase("ChangeMe"))
+                    {
+                        customName = currentTreasure.getNode(CUSTOM_NAME).getString();
+                    }
+
+                    /*
+                     * REGISTER TREASURE
+                     */
+
+                    FishingTreasure fishingTreasure = TreasureFactory.makeFishingTreasure(treasureMaterial, amount, xp, customName, currentTreasure.getNode(LORE));
+
+                    /*
+                     * Add to map
+                     */
+
+                    String configRarity = currentTreasure.getNode(RARITY).getString();
+
+                    for(Rarity rarity : Rarity.values())
+                    {
+                        if(rarity.toString().equalsIgnoreCase(configRarity))
+                        {
+                            if(fishingRewards.get(rarity) == null)
+                                fishingRewards.put(rarity, new ArrayList<>());
+
+                            fishingRewards.get(rarity).add(fishingTreasure);
+                        }
+                    }
+
+                } else {
+                    mcMMO.p.getLogger().severe("Excavation Treasure Config - Material named "+treasureName+" does not match any known material.");
+                }
             }
         } catch (ObjectMappingException e) {
             e.printStackTrace();
