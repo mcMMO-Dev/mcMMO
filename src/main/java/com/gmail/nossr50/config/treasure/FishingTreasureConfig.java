@@ -35,6 +35,7 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
     public static final String CUSTOM_NAME = "Custom_Name";
     public static final String LORE = "Lore";
     public static final String RARITY = "Rarity";
+    public static final String DROPS_FROM = "Drops_From";
 
     public HashMap<EntityType, List<ShakeTreasure>> shakeMap = new HashMap<EntityType, List<ShakeTreasure>>();
     public HashMap<Rarity, List<FishingTreasure>> fishingRewards = new HashMap<Rarity, List<FishingTreasure>>();
@@ -103,7 +104,7 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
                      * PARAMETER INIT
                      */
 
-                    ArrayList<String> dropsFrom = new ArrayList(currentTreasure.getNode("Drops_From").getList(TypeToken.of(String.class)));
+                    ArrayList<String> dropsFrom = new ArrayList(currentTreasure.getNode(DROPS_FROM).getList(TypeToken.of(String.class)));
 
                     //VALIDATE AMOUNT
                     if(amount <= 0)
@@ -153,8 +154,8 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
                     {
                         if(rarity.toString().equalsIgnoreCase(configRarity))
                         {
-                            if(fishingRewards.get(rarity) == null)
-                                fishingRewards.put(rarity, new ArrayList<>());
+                            /*if(fishingRewards.get(rarity) == null)
+                                fishingRewards.put(rarity, new ArrayList<>());*/
 
                             fishingRewards.get(rarity).add(fishingTreasure);
                         }
@@ -188,7 +189,94 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
 
         try {
             for (String treasureName : shakeTreasureNode.getList(TypeToken.of(String.class))) {
+                //Treasure Material Definition
+                Material treasureMaterial = Material.matchMaterial(treasureName.toUpperCase());
 
+                if(treasureMaterial != null)
+                {
+                    ConfigurationNode currentTreasure = shakeTreasureNode.getNode(treasureName);
+
+                    //TODO: Rewrite the entire treasure system because it sucks
+
+                    /*
+                     * TREASURE PARAMETERS
+                     */
+                    int amount = currentTreasure.getNode(AMOUNT).getInt();
+                    int xp = currentTreasure.getNode(XP).getInt();
+                    double dropChance = currentTreasure.getNode(DROP_CHANCE).getDouble();
+                    int dropLevel = currentTreasure.getNode(DROP_LEVEL).getInt();
+                    String customName = null;
+
+                    /*
+                     * PARAMETER INIT
+                     */
+
+                    ArrayList<String> dropsFrom = new ArrayList(currentTreasure.getNode(DROPS_FROM).getList(TypeToken.of(String.class)));
+
+                    //VALIDATE AMOUNT
+                    if(amount <= 0)
+                    {
+                        mcMMO.p.getLogger().severe("Excavation Treasure named "+treasureName+" in the config has an amount of 0 or below, is this intentional?");
+                        mcMMO.p.getLogger().severe("Skipping "+treasureName+" for being invalid");
+                        continue;
+                    }
+
+                    //VALIDATE XP
+                    if(xp <= 0)
+                    {
+                        mcMMO.p.getLogger().info("Excavation Treasure named "+treasureName+" in the config has xp set to 0 or below, is this intentional?");
+                        xp = 0;
+                    }
+
+                    //VALIDATE DROP CHANCE
+                    if(dropChance <= 0)
+                    {
+                        mcMMO.p.getLogger().severe("Excavation Treasure named "+treasureName+" in the config has a drop chance of 0 or below, is this intentional?");
+                        mcMMO.p.getLogger().severe("Skipping "+treasureName+" for being invalid");
+                        continue;
+                    }
+
+                    //VALIDATE DROP LEVEL
+                    if(dropLevel < 0)
+                    {
+                        mcMMO.p.getLogger().info("Excavation Treasure named "+treasureName+" in the config has a drop level below 0, is this intentional?");
+                        dropLevel = 0;
+                    }
+
+                    //VALIDATE DROP SOURCES
+                    if(dropsFrom == null || dropsFrom.isEmpty())
+                    {
+                        mcMMO.p.getLogger().severe("Excavation Treasure named "+treasureName+" in the config has no drop targets, which would make it impossible to obtain, is this intentional?");
+                        mcMMO.p.getLogger().severe("Skipping "+treasureName+" for being invalid");
+                        continue;
+                    }
+
+                    /* OPTIONAL PARAMETERS */
+
+                    //Custom Name
+
+                    if(currentTreasure.getNode(CUSTOM_NAME) != null && !currentTreasure.getNode(CUSTOM_NAME).getString().equalsIgnoreCase("ChangeMe"))
+                    {
+                        customName = currentTreasure.getNode(CUSTOM_NAME).getString();
+                    }
+
+                    /*
+                     * REGISTER TREASURE
+                     */
+
+                    ShakeTreasure shakeTreasure = TreasureFactory.makeShakeTreasure(treasureMaterial, amount, xp, dropChance, dropLevel, customName, currentTreasure.getNode(LORE));
+
+                    /*
+                     * Add to map
+                     */
+                    if(shakeMap.get(entityType) == null)
+                        shakeMap.put(entityType, new ArrayList<>());
+
+                    shakeMap.get(entityType).add(shakeTreasure);
+
+                } else {
+                    mcMMO.p.getLogger().severe("Excavation Treasure Config - Material named "+treasureName+" does not match any known material.");
+                }
             }
         } catch (ObjectMappingException e) {
             e.printStackTrace();
