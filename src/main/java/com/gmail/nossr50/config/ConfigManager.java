@@ -71,8 +71,6 @@ public final class ConfigManager {
     private RankConfig rankConfig;
     private ItemWeightConfig itemWeightConfig;
 
-
-
     /* CONFIG ERRORS */
 
     private ArrayList<String> configErrors; //Collect errors to whine about to server admins
@@ -81,7 +79,10 @@ public final class ConfigManager {
     {
         unloadables = new ArrayList<>();
         userFiles = new ArrayList<>();
+    }
 
+    public void loadConfigs()
+    {
         // Load Config Files
         // I'm pretty these are supposed to be done in a specific order, so don't rearrange them willy nilly
 
