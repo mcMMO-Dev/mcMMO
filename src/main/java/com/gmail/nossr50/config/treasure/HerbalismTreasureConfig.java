@@ -58,7 +58,9 @@ public class HerbalismTreasureConfig extends Config implements UnsafeValueValida
         }
 
         try {
-            for (String treasureName : herbalismTreasureNode.getList(TypeToken.of(String.class))) {
+            for (ConfigurationNode treasureNode : herbalismTreasureNode.getChildrenList()) {
+
+                String treasureName = treasureNode.getString();
                 //Treasure Material Definition
                 Material treasureMaterial = Material.matchMaterial(treasureName.toUpperCase());
 

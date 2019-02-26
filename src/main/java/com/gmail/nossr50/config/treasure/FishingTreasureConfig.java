@@ -85,7 +85,9 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
         }
 
         try {
-            for (String treasureName : fishingTreasureNode.getList(TypeToken.of(String.class))) {
+            for (ConfigurationNode treasureNode : fishingTreasureNode.getChildrenList()) {
+
+                String treasureName = treasureNode.getString();
                 //Treasure Material Definition
                 Material treasureMaterial = Material.matchMaterial(treasureName.toUpperCase());
 
@@ -190,7 +192,9 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
             return;
 
         try {
-            for (String treasureName : shakeTreasureNode.getList(TypeToken.of(String.class))) {
+            for (ConfigurationNode treasureNode : shakeTreasureNode.getChildrenList()) {
+
+                String treasureName = treasureNode.getString();
                 //Treasure Material Definition
                 Material treasureMaterial = Material.matchMaterial(treasureName.toUpperCase());
 
@@ -302,21 +306,20 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
                 return;
             }
 
-            try {
-                for (String enchantmentName : enchantmentSection.getList(TypeToken.of(String.class))) {
-                    int level = getIntValue(ENCHANTMENTS_RARITY, rarity.toString(), enchantmentName);
-                    Enchantment enchantment = EnchantmentUtils.getByName(enchantmentName);
+            for (ConfigurationNode enchantmentNode : enchantmentSection.getChildrenList()) {
 
-                    if (enchantment == null) {
-                        mcMMO.p.getLogger().severe("Skipping invalid enchantment in treasures.yml: " + enchantmentName);
-                        continue;
-                    }
+                String enchantmentName = enchantmentNode.getString();
+                int level = getIntValue(ENCHANTMENTS_RARITY, rarity.toString(), enchantmentName);
+                Enchantment enchantment = EnchantmentUtils.getByName(enchantmentName);
 
-                    fishingEnchantments.get(rarity).add(new EnchantmentTreasure(enchantment, level));
+                if (enchantment == null) {
+                    mcMMO.p.getLogger().severe("Skipping invalid enchantment in treasures.yml: " + enchantmentName);
+                    continue;
                 }
-            } catch (ObjectMappingException e) {
-                e.printStackTrace();
+
+                fishingEnchantments.get(rarity).add(new EnchantmentTreasure(enchantment, level));
             }
+
         }
     }
 

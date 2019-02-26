@@ -55,7 +55,9 @@ public class ExcavationTreasureConfig extends Config implements UnsafeValueValid
         }
 
         try {
-            for (String treasureName : excavationTreasureNode.getList(TypeToken.of(String.class))) {
+            for (ConfigurationNode treasureNode : excavationTreasureNode.getChildrenList()) {
+
+                String treasureName = treasureNode.getString();
                 //Treasure Material Definition
                 Material treasureMaterial = Material.matchMaterial(treasureName.toUpperCase());
 
