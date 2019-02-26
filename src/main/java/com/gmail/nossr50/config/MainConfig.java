@@ -751,7 +751,7 @@ public class MainConfig extends ConfigValidated {
     }
 
     public Material getChimaeraItem() {
-        return Material.matchMaterial(getStringValue(ITEMS, CHIMAERA_WING, ITEM + NAME, FEATHER));
+        return Material.matchMaterial(getStringValue(ITEMS, CHIMAERA_WING, ITEM + NAME));
     }
 
     public boolean getChimaeraEnabled() {
