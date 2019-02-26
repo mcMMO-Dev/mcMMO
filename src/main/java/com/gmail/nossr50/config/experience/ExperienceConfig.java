@@ -7,6 +7,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
+import ninja.leaping.configurate.objectmapping.Setting;
 import org.bukkit.Material;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -22,10 +23,10 @@ public class ExperienceConfig extends ConfigValidated {
     public static final String EXPERIENCE_FORMULA = EXPERIENCE + "_Formula";
     public static final String CURVE = "Curve";
     public static final String VALUES = "_Values";
-    public static final String MULTIPLIER = "multiplier";
+    //public static final String MULTIPLIER = "multiplier";
     public static final String BASE = "base";
     public static final String EXPONENT = "exponent";
-    public static final String MULTIPLIER1 = "Multiplier";
+    public static final String MULTIPLIER = "Multiplier";
     public static final String GLOBAL = "Global";
     public static final String MOBSPAWNERS = "Mobspawners";
     public static final String BREEDING = "Breeding";
@@ -132,22 +133,22 @@ public class ExperienceConfig extends ConfigValidated {
 
         /* Global modifier */
         if (getExperienceGainsGlobalMultiplier() <= 0) {
-            reason.add(EXPERIENCE_FORMULA + "." + MULTIPLIER1 + "." + GLOBAL + " should be greater than 0!");
+            reason.add(EXPERIENCE_FORMULA + "." + MULTIPLIER + "." + GLOBAL + " should be greater than 0!");
         }
 
         /* PVP modifier */
         if (getPlayerVersusPlayerXP() < 0) {
-            reason.add(EXPERIENCE_FORMULA + "." + MULTIPLIER1 + "." + PVP + " should be at least 0!");
+            reason.add(EXPERIENCE_FORMULA + "." + MULTIPLIER + "." + PVP + " should be at least 0!");
         }
 
         /* Spawned Mob modifier */
         if (getSpawnedMobXpMultiplier() < 0) {
-            reason.add(EXPERIENCE_FORMULA + "." + MOBSPAWNERS + "." + MULTIPLIER1 + " should be at least 0!");
+            reason.add(EXPERIENCE_FORMULA + "." + MOBSPAWNERS + "." + MULTIPLIER + " should be at least 0!");
         }
 
         /* Bred Mob modifier */
         if (getBredMobXpMultiplier() < 0) {
-            reason.add(EXPERIENCE_FORMULA + "." + BREEDING + "." + MULTIPLIER1 + " should be at least 0!");
+            reason.add(EXPERIENCE_FORMULA + "." + BREEDING + "." + MULTIPLIER + " should be at least 0!");
         }
 
         /* Conversion */
@@ -168,12 +169,12 @@ public class ExperienceConfig extends ConfigValidated {
 
         /* Archery */
         if (getArcheryDistanceMultiplier() < 0) {
-            reason.add(EXPERIENCE + "." + ARCHERY + "." + DISTANCE + MULTIPLIER1 + " should be at least 0!");
+            reason.add(EXPERIENCE + "." + ARCHERY + "." + DISTANCE + MULTIPLIER + " should be at least 0!");
         }
 
         /* Combat XP Multipliers */
         if (getAnimalsXP() < 0) {
-            reason.add(EXPERIENCE + "." + COMBAT + "." + MULTIPLIER1 + "." + ANIMALS + " should be at least 0!");
+            reason.add(EXPERIENCE + "." + COMBAT + "." + MULTIPLIER + "." + ANIMALS + " should be at least 0!");
         }
 
         if (getDodgeXPModifier() < 0) {
@@ -212,6 +213,9 @@ public class ExperienceConfig extends ConfigValidated {
         return reason;
     }
 
+
+
+
     /*
      * FORMULA SETTINGS
      */
@@ -246,26 +250,26 @@ public class ExperienceConfig extends ConfigValidated {
 
     /* Global modifier */
     public double getExperienceGainsGlobalMultiplier() {
-        return getDoubleValue(EXPERIENCE_FORMULA, MULTIPLIER1, GLOBAL);
+        return getDoubleValue(EXPERIENCE_FORMULA, MULTIPLIER, GLOBAL);
     }
 
     //TODO: Rewrite this
     /*public void setExperienceGainsGlobalMultiplier(double value) {
-        config.set(EXPERIENCE_FORMULA, MULTIPLIER1, GLOBAL, value);
+        config.set(EXPERIENCE_FORMULA, MULTIPLIER, GLOBAL, value);
     }*/
 
     /* PVP modifier */
     public double getPlayerVersusPlayerXP() {
-        return getDoubleValue(EXPERIENCE_FORMULA, MULTIPLIER1, PVP);
+        return getDoubleValue(EXPERIENCE_FORMULA, MULTIPLIER, PVP);
     }
 
     /* Spawned Mob modifier */
     public double getSpawnedMobXpMultiplier() {
-        return getDoubleValue(EXPERIENCE_FORMULA, MOBSPAWNERS, MULTIPLIER1);
+        return getDoubleValue(EXPERIENCE_FORMULA, MOBSPAWNERS, MULTIPLIER);
     }
 
     public double getBredMobXpMultiplier() {
-        return getDoubleValue(EXPERIENCE_FORMULA, BREEDING, MULTIPLIER1);
+        return getDoubleValue(EXPERIENCE_FORMULA, BREEDING, MULTIPLIER);
     }
 
     /* Skill modifiers */
@@ -311,19 +315,19 @@ public class ExperienceConfig extends ConfigValidated {
 
     /* Combat XP Multipliers */
     public double getCombatXP(EntityType entity) {
-        return getDoubleValue(EXPERIENCE, COMBAT, MULTIPLIER1, StringUtils.getEntityConfigName(entity));
+        return getDoubleValue(EXPERIENCE, COMBAT, MULTIPLIER, StringUtils.getEntityConfigName(entity));
     }
 
     public double getAnimalsXP(EntityType entity) {
-        return getDoubleValue(EXPERIENCE, COMBAT, MULTIPLIER1, StringUtils.getEntityConfigName(entity));
+        return getDoubleValue(EXPERIENCE, COMBAT, MULTIPLIER, StringUtils.getEntityConfigName(entity));
     }
 
     public double getAnimalsXP() {
-        return getDoubleValue(EXPERIENCE, COMBAT, MULTIPLIER1, ANIMALS);
+        return getDoubleValue(EXPERIENCE, COMBAT, MULTIPLIER, ANIMALS);
     }
 
     public boolean hasCombatXP(EntityType entity) {
-        return hasNode(EXPERIENCE, COMBAT, MULTIPLIER1, StringUtils.getEntityConfigName(entity));
+        return hasNode(EXPERIENCE, COMBAT, MULTIPLIER, StringUtils.getEntityConfigName(entity));
     }
 
     /* Materials  */
@@ -432,7 +436,7 @@ public class ExperienceConfig extends ConfigValidated {
 
     /* Archery */
     public double getArcheryDistanceMultiplier() {
-        return getDoubleValue(EXPERIENCE, ARCHERY, DISTANCE + MULTIPLIER1);
+        return getDoubleValue(EXPERIENCE, ARCHERY, DISTANCE + MULTIPLIER);
     }
 
     public int getFishingShakeXP() {

@@ -113,9 +113,9 @@ Experience_Formula:
     # If invalid values are entered mcMMO will not start and print an error in the console
     Linear_Values:
         base: 1020
-        multiplier: 20
+        Multiplier: 20
     Exponential_Values:
-        multiplier: 0.1
+        Multiplier: 0.1
         exponent: 1.80
         base: 2000
 
