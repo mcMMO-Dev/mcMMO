@@ -31,9 +31,9 @@ public class RepairConfig extends ConfigCollection {
     public static final String MINIMUM_LEVEL = "MinimumLevel";
     public static final String MINIMUM_QUANTITY = "MinimumQuantity";
 
-    public RepairConfig(String fileName, boolean merge) {
+    public RepairConfig(String fileName, boolean merge, boolean copyDefaults) {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), fileName, false);
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(), fileName, false, merge);
+        super(mcMMO.p.getDataFolder().getAbsoluteFile(), fileName, merge, copyDefaults, false);
     }
 
     /**

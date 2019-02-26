@@ -1,5 +1,6 @@
 package com.gmail.nossr50.database;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
@@ -10,7 +11,6 @@ import com.gmail.nossr50.datatypes.player.UniqueDataType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.OfflinePlayer;
@@ -32,9 +32,9 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         checkStructure();
         updateLeaderboards();
 
-        if (mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.ADD_UUIDS)) {
+        /*if (mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.ADD_UUIDS)) {
             new UUIDUpdateAsyncTask(mcMMO.p, getStoredUsers()).runTaskAsynchronously(mcMMO.p);
-        }
+        }*/
     }
 
     public void purgePowerlessUsers() {
@@ -1079,13 +1079,13 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 }
             }
 
-            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_FISHING);
+            /*mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_FISHING);
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_BLAST_MINING_COOLDOWN);
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_SQL_INDEXES);
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_MOB_HEALTHBARS);
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.DROP_SQL_PARTY_NAMES);
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.DROP_SPOUT);
-            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_ALCHEMY);
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_ALCHEMY);*/
             return;
         }
 

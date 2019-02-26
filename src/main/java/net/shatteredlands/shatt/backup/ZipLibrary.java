@@ -1,6 +1,5 @@
 package net.shatteredlands.shatt.backup;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.mcMMO;
 

@@ -27,9 +27,9 @@ public class SalvageConfig extends ConfigCollection {
     public static final String XP_MULTIPLIER = "XpMultiplier";
     public static final String MAXIMUM_QUANTITY = "MaximumQuantity";
 
-    public SalvageConfig(String fileName, boolean merge) {
+    public SalvageConfig(String fileName, boolean merge, boolean copyDefaults) {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), fileName, false);
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(), fileName, false, merge);
+        super(mcMMO.p.getDataFolder().getAbsoluteFile(), fileName, merge, copyDefaults, false);
     }
 
     /**

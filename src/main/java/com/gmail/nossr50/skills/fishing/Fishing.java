@@ -1,5 +1,7 @@
 package com.gmail.nossr50.skills.fishing;
 
+import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
 import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.adapter.BiomeAdapter;
@@ -17,6 +19,10 @@ public final class Fishing {
 
     protected static final HashMap<Material, List<Enchantment>> ENCHANTABLE_CACHE = new HashMap<Material, List<Enchantment>>();
 
+    /*public static int fishermansDietRankLevel1 = AdvancedConfig.getInstance().getFishermanDietRankChange();
+    public static int fishermansDietRankLevel2 = fishermansDietRankLevel1 * 2;
+    public static int fishermansDietMaxLevel   = fishermansDietRankLevel1 * 5;*/
+
     public static Set<Biome> masterAnglerBiomes = BiomeAdapter.WATER_BIOMES;
     public static Set<Biome> iceFishingBiomes   = BiomeAdapter.ICE_BIOMES;
 
@@ -30,8 +36,8 @@ public final class Fishing {
      * @return possibleDrops List of ItemStack that can be dropped
      */
     protected static List<ShakeTreasure> findPossibleDrops(LivingEntity target) {
-        if (TreasureConfig.getInstance().shakeMap.containsKey(target.getType()))
-            return TreasureConfig.getInstance().shakeMap.get(target.getType());
+        if (FishingTreasureConfig.getInstance().shakeMap.containsKey(target.getType()))
+            return FishingTreasureConfig.getInstance().shakeMap.get(target.getType());
 
         return null;
     }

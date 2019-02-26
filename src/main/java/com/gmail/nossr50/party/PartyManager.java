@@ -549,10 +549,10 @@ public final class PartyManager {
             return;
         }
 
-        if (mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.ADD_UUIDS_PARTY)) {
+        /*if (mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.ADD_UUIDS_PARTY)) {
             loadAndUpgradeParties();
             return;
-        }
+        }*/
 
         YamlConfiguration partiesFile = YamlConfiguration.loadConfiguration(partyFile);
 
@@ -648,7 +648,7 @@ public final class PartyManager {
         }
     }
 
-    private static void loadAndUpgradeParties() {
+    /*private static void loadAndUpgradeParties() {
         YamlConfiguration partiesFile = YamlConfiguration.loadConfiguration(partyFile);
 
         if (!partyFile.renameTo(new File(mcMMO.getFlatFileDirectory() + "parties.yml.converted"))) {
@@ -712,8 +712,8 @@ public final class PartyManager {
             party.setAlly(PartyManager.getParty(partiesFile.getString(party.getName() + ".Ally")));
         }
 
-        mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_UUIDS_PARTY);
-    }
+        //mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_UUIDS_PARTY);
+    }*/
 
     /**
      * Handle party change event.

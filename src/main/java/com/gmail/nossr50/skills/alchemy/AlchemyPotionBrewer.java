@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.alchemy;
 
+import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;

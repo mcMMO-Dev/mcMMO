@@ -1,6 +1,7 @@
 package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.config.MainConfig;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;

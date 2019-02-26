@@ -1,5 +1,6 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;

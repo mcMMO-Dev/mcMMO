@@ -1,5 +1,6 @@
 package com.gmail.nossr50.datatypes.skills.alchemy;
 
+import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

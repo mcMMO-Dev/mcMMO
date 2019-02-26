@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.config.MainConfig;
+import com.gmail.nossr50.config.RankConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.json.McMMOUrl;
 import com.gmail.nossr50.datatypes.json.McMMOWebLinks;

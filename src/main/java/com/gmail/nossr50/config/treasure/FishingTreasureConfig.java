@@ -3,14 +3,16 @@ package com.gmail.nossr50.config.treasure;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.Registers;
 import com.gmail.nossr50.config.UnsafeValueValidation;
-import com.gmail.nossr50.datatypes.treasure.*;
+import com.gmail.nossr50.datatypes.treasure.EnchantmentTreasure;
+import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
+import com.gmail.nossr50.datatypes.treasure.Rarity;
+import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EnchantmentUtils;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 

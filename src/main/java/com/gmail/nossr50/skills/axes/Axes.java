@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.axes;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
@@ -14,11 +15,11 @@ public class Axes {
     public static double criticalHitPVEModifier   = AdvancedConfig.getInstance().getCriticalStrikesPVEModifier();
 
     public static int    impactIncreaseLevel         = AdvancedConfig.getInstance().getArmorImpactIncreaseLevel();
-    public static double impactChance                = AdvancedConfig.getInstance().getImpactChance();
+    //public static double impactChance                = AdvancedConfig.getInstance().getImpactChance();
     public static double impactMaxDurabilityModifier = AdvancedConfig.getInstance().getArmorImpactMaxDurabilityDamage() / 100D;
 
     public static double greaterImpactBonusDamage         = AdvancedConfig.getInstance().getGreaterImpactBonusDamage();
-    public static double greaterImpactChance              = AdvancedConfig.getInstance().getGreaterImpactChance();
+    //public static double greaterImpactChance              = AdvancedConfig.getInstance().getGreaterImpactChance();
     public static double greaterImpactKnockbackMultiplier = AdvancedConfig.getInstance().getGreaterImpactModifier();
 
     public static double skullSplitterModifier = AdvancedConfig.getInstance().getSkullSplitterModifier();

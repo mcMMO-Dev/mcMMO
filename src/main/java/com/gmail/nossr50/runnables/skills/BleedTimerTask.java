@@ -1,5 +1,6 @@
 package com.gmail.nossr50.runnables.skills;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.MobHealthbarUtils;

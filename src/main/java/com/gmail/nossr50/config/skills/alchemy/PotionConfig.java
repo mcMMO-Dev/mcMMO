@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config.skills.alchemy;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.ConfigCollection;
 import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
 import com.gmail.nossr50.mcMMO;
@@ -65,6 +66,18 @@ public class PotionConfig extends ConfigCollection {
     public PotionConfig() {
         super(mcMMO.p.getDataFolder().getAbsoluteFile(), "potions.yml", true, true, true);
         register();
+    }
+
+    /**
+     * This grabs an instance of this config class from the Config Manager
+     * This method is deprecated and will be removed in the future
+     * @see mcMMO#getConfigManager()
+     * @return the instance of this config
+     * @deprecated Please use mcMMO.getConfigManager() to grab a specific config instead
+     */
+    @Deprecated
+    public static PotionConfig getInstance() {
+        return mcMMO.getConfigManager().getPotionConfig();
     }
 
     /**

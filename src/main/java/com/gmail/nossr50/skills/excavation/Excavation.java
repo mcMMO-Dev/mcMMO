@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills.excavation;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.config.treasure.TreasureConfig;
+import com.gmail.nossr50.config.treasure.ExcavationTreasureConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.util.StringUtils;
@@ -19,8 +19,8 @@ public class Excavation {
      */
     protected static List<ExcavationTreasure> getTreasures(BlockState blockState) {
         String friendly = StringUtils.getFriendlyConfigBlockDataString(blockState.getBlockData());
-        if (TreasureConfig.getInstance().excavationMap.containsKey(friendly))
-            return TreasureConfig.getInstance().excavationMap.get(friendly);
+        if (ExcavationTreasureConfig.getInstance().excavationMap.containsKey(friendly))
+            return ExcavationTreasureConfig.getInstance().excavationMap.get(friendly);
         return new ArrayList<ExcavationTreasure>();
     }
 

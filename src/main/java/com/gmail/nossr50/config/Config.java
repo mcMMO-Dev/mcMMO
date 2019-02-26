@@ -3,6 +3,7 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.io.Files;
 import com.google.common.reflect.TypeToken;
+import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
@@ -33,8 +34,11 @@ public abstract class Config implements VersionedConfig, Unload {
 
     /* LOADERS */
 
-    private ConfigurationLoader<CommentedConfigurationNode> defaultCopyLoader;
-    private ConfigurationLoader<CommentedConfigurationNode> userCopyLoader;
+    private YAMLConfigurationLoader defaultCopyLoader;
+    private YAMLConfigurationLoader userCopyLoader;
+
+    //private ConfigurationLoader<CommentedConfigurationNode> defaultCopyLoader;
+    //private ConfigurationLoader<CommentedConfigurationNode> userCopyLoader;
 
     /* CONFIG FILES */
 
@@ -43,8 +47,8 @@ public abstract class Config implements VersionedConfig, Unload {
 
     /* ROOT NODES */
 
-    private CommentedConfigurationNode userRootNode = null;
-    private CommentedConfigurationNode defaultRootNode = null;
+    private ConfigurationNode userRootNode = null;
+    private ConfigurationNode defaultRootNode = null;
 
     /* CONFIG MANAGER */
     //private ConfigurationLoader<CommentedConfigurationNode> configManager;
@@ -124,10 +128,10 @@ public abstract class Config implements VersionedConfig, Unload {
     private void loadConfig()
     {
         try {
-            final CommentedConfigurationNode defaultConfig = this.defaultCopyLoader.load();
+            final ConfigurationNode defaultConfig = this.defaultCopyLoader.load();
             defaultRootNode = defaultConfig;
 
-            final CommentedConfigurationNode userConfig = this.userCopyLoader.load();
+            final ConfigurationNode userConfig = this.userCopyLoader.load();
             userRootNode = userConfig;
 
         } catch (IOException e) {
@@ -311,7 +315,7 @@ public abstract class Config implements VersionedConfig, Unload {
         if(!removeOldKeys)
             return;
 
-        for(CommentedConfigurationNode configurationNode : defaultRootNode.getChildrenList())
+        for(ConfigurationNode configurationNode : defaultRootNode.getChildrenList())
         {
 
         }
@@ -340,7 +344,7 @@ public abstract class Config implements VersionedConfig, Unload {
      * Returns the root node of this config
      * @return the root node of this config
      */
-    protected CommentedConfigurationNode getUserRootNode() {
+    protected ConfigurationNode getUserRootNode() {
         return userRootNode;
     }
 

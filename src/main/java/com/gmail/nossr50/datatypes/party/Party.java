@@ -1,6 +1,7 @@
 package com.gmail.nossr50.datatypes.party;
 
 import com.gmail.nossr50.config.MainConfig;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;

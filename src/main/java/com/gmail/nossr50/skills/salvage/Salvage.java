@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.salvage;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.MainConfig;
 import org.bukkit.Material;
 

@@ -1,5 +1,6 @@
 package com.gmail.nossr50.database;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
@@ -10,11 +11,9 @@ import com.gmail.nossr50.datatypes.player.UniqueDataType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.*;
 import java.util.*;
@@ -949,10 +948,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
      * @param upgrade Upgrade to attempt to apply
      */
     private void checkDatabaseStructure(Connection connection, UpgradeType upgrade) {
-        if (!mcMMO.getUpgradeManager().shouldUpgrade(upgrade)) {
+        /*if (!mcMMO.getUpgradeManager().shouldUpgrade(upgrade)) {
             mcMMO.p.debug("Skipping " + upgrade.name() + " upgrade (unneeded)");
             return;
-        }
+        }*/
 
         Statement statement = null;
 
@@ -1012,7 +1011,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             }
 
-            mcMMO.getUpgradeManager().setUpgradeCompleted(upgrade);
+            //mcMMO.getUpgradeManager().setUpgradeCompleted(upgrade);
         }
         catch (SQLException ex) {
             printErrors(ex);
@@ -1293,10 +1292,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
             tryClose(resultSet);
         }
 
-        new GetUUIDUpdatesRequired().runTaskLaterAsynchronously(mcMMO.p, 100); // wait until after first purge
+        //new GetUUIDUpdatesRequired().runTaskLaterAsynchronously(mcMMO.p, 100); // wait until after first purge
     }
 
-    private class GetUUIDUpdatesRequired extends BukkitRunnable {
+    /*private class GetUUIDUpdatesRequired extends BukkitRunnable {
         public void run() {
             massUpdateLock.lock();
             List<String> names = new ArrayList<String>();
@@ -1327,7 +1326,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 massUpdateLock.unlock();
             }
         }
-    }
+    }*/
 
     private void checkUpgradeDropPartyNames(final Statement statement) {
         ResultSet resultSet = null;
