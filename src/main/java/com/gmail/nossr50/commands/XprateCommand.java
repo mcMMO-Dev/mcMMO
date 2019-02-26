@@ -50,7 +50,7 @@ public class XprateCommand implements TabExecutor {
                     mcMMO.p.toggleXpEventEnabled();
                 }
 
-                ExperienceConfig.getInstance().setExperienceGainsGlobalMultiplier(ORIGINAL_XP_RATE);
+                ExperienceConfig.getInstance().setGlobalXPMultiplier(ORIGINAL_XP_RATE);
                 return true;
 
             case 2:
@@ -81,7 +81,7 @@ public class XprateCommand implements TabExecutor {
                     return true;
                 }
 
-                ExperienceConfig.getInstance().setExperienceGainsGlobalMultiplier(newXpRate);
+                ExperienceConfig.getInstance().setGlobalXPMultiplier(newXpRate);
 
                 if (mcMMO.p.isXPEventEnabled()) {
                     if(AdvancedConfig.getInstance().useTitlesForXPEvent())
