@@ -1003,7 +1003,8 @@ public class MainConfig extends ConfigValidated {
 
     /* Mining */
     public Material getDetonatorItem() {
-        return Material.matchMaterial(getStringValue(SKILLS, MINING, DETONATOR + NAME, FLINT_AND_STEEL));
+        //Flint and steel
+        return Material.matchMaterial(getStringValue(SKILLS, MINING, DETONATOR + NAME));
     }
 
     /* Repair */
@@ -1020,7 +1021,8 @@ public class MainConfig extends ConfigValidated {
     }
 
     public Material getRepairAnvilMaterial() {
-        return Material.matchMaterial(getStringValue(SKILLS, REPAIR, ANVIL_MATERIAL, IRON_BLOCK));
+        //Iron block
+        return Material.matchMaterial(getStringValue(SKILLS, REPAIR, ANVIL_MATERIAL));
     }
 
     public boolean getRepairConfirmRequired() {
@@ -1041,7 +1043,8 @@ public class MainConfig extends ConfigValidated {
     }
 
     public Material getSalvageAnvilMaterial() {
-        return Material.matchMaterial(getStringValue(SKILLS, SALVAGE, ANVIL_MATERIAL, GOLD_BLOCK));
+        //Gold Block
+        return Material.matchMaterial(getStringValue(SKILLS, SALVAGE, ANVIL_MATERIAL));
     }
 
     public boolean getSalvageConfirmRequired() {
