@@ -5,7 +5,6 @@ import com.gmail.nossr50.config.Unload;
 import com.gmail.nossr50.mcMMO;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.regex.Pattern;
@@ -99,7 +98,14 @@ public class MultiConfigContainer<T> implements Unload {
         mcMMO.p.getLogger().info("Reading from collection config - "+fileName);
         ConfigCollection configCollection = null;
 
-        try {
+        if(collectionClassType == CollectionClassType.REPAIR)
+        {
+            configCollection = new RepairConfig(fileName, merge, copyDefaults);
+        } else {
+            configCollection = new SalvageConfig(fileName, merge, copyDefaults);
+        }
+
+        /*try {
             //String parentFolderPath, String relativePath, boolean mergeNewKeys, boolean copyDefaults, boolean removeOldKeys
             //String fileName, boolean merge, boolean copyDefaults
             configCollection = (ConfigCollection) getConfigClass(collectionClassType).getConstructor(String.class, Boolean.class, Boolean.class).newInstance(fileName, merge, copyDefaults);
@@ -111,7 +117,7 @@ public class MultiConfigContainer<T> implements Unload {
             e.printStackTrace();
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
-        }
+        }*/
 
         //Add the collection loaded from this config
         addCollection(configCollection.getLoadedCollection());
