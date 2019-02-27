@@ -193,13 +193,9 @@ public class mcMMO extends JavaPlugin {
         }
         catch (Throwable t) {
             getLogger().severe("There was an error while enabling mcMMO!");
-
-            if (!(t instanceof ExceptionInInitializerError)) {
-                t.printStackTrace();
-            }
-            else {
-                getLogger().info("Please do not replace the mcMMO jar while the server is running.");
-            }
+            t.printStackTrace();
+            getLogger().severe("End of error report for mcMMO");
+            getLogger().info("Please do not replace the mcMMO jar while the server is running.");
 
             getServer().getPluginManager().disablePlugin(this);
         }
