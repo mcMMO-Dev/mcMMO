@@ -34,6 +34,7 @@ public class RepairConfig extends ConfigCollection {
     public RepairConfig(String fileName, boolean merge, boolean copyDefaults) {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), fileName, false);
         super(mcMMO.p.getDataFolder().getAbsoluteFile(), fileName, merge, copyDefaults, false);
+        register();
     }
 
     /**

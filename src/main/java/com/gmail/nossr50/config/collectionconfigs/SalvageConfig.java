@@ -30,6 +30,7 @@ public class SalvageConfig extends ConfigCollection {
     public SalvageConfig(String fileName, boolean merge, boolean copyDefaults) {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), fileName, false);
         super(mcMMO.p.getDataFolder().getAbsoluteFile(), fileName, merge, copyDefaults, false);
+        register();
     }
 
     /**
