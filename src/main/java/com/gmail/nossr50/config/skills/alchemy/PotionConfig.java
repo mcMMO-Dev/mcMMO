@@ -1,6 +1,5 @@
 package com.gmail.nossr50.config.skills.alchemy;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.ConfigCollection;
 import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
 import com.gmail.nossr50.mcMMO;
@@ -98,14 +97,14 @@ public class PotionConfig extends ConfigCollection {
 
     private void loadConcoctions() {
         try {
-            loadConcoctionsTier(concoctionsIngredientsTierOne, getStringValueList(CONCOCTIONS, TIER_ONE_INGREDIENTS));
-            loadConcoctionsTier(concoctionsIngredientsTierTwo, getStringValueList(CONCOCTIONS, TIER_TWO_INGREDIENTS));
-            loadConcoctionsTier(concoctionsIngredientsTierThree, getStringValueList(CONCOCTIONS, TIER_THREE_INGREDIENTS));
-            loadConcoctionsTier(concoctionsIngredientsTierFour, getStringValueList(CONCOCTIONS, TIER_FOUR_INGREDIENTS));
-            loadConcoctionsTier(concoctionsIngredientsTierFive, getStringValueList(CONCOCTIONS, TIER_FIVE_INGREDIENTS));
-            loadConcoctionsTier(concoctionsIngredientsTierSix, getStringValueList(CONCOCTIONS, TIER_SIX_INGREDIENTS));
-            loadConcoctionsTier(concoctionsIngredientsTierSeven, getStringValueList(CONCOCTIONS, TIER_SEVEN_INGREDIENTS));
-            loadConcoctionsTier(concoctionsIngredientsTierEight, getStringValueList(CONCOCTIONS, TIER_EIGHT_INGREDIENTS));
+            loadConcoctionsTier(concoctionsIngredientsTierOne, getListFromNode(CONCOCTIONS, TIER_ONE_INGREDIENTS));
+            loadConcoctionsTier(concoctionsIngredientsTierTwo, getListFromNode(CONCOCTIONS, TIER_TWO_INGREDIENTS));
+            loadConcoctionsTier(concoctionsIngredientsTierThree, getListFromNode(CONCOCTIONS, TIER_THREE_INGREDIENTS));
+            loadConcoctionsTier(concoctionsIngredientsTierFour, getListFromNode(CONCOCTIONS, TIER_FOUR_INGREDIENTS));
+            loadConcoctionsTier(concoctionsIngredientsTierFive, getListFromNode(CONCOCTIONS, TIER_FIVE_INGREDIENTS));
+            loadConcoctionsTier(concoctionsIngredientsTierSix, getListFromNode(CONCOCTIONS, TIER_SIX_INGREDIENTS));
+            loadConcoctionsTier(concoctionsIngredientsTierSeven, getListFromNode(CONCOCTIONS, TIER_SEVEN_INGREDIENTS));
+            loadConcoctionsTier(concoctionsIngredientsTierEight, getListFromNode(CONCOCTIONS, TIER_EIGHT_INGREDIENTS));
 
             concoctionsIngredientsTierTwo.addAll(concoctionsIngredientsTierOne);
             concoctionsIngredientsTierThree.addAll(concoctionsIngredientsTierTwo);
@@ -114,15 +113,14 @@ public class PotionConfig extends ConfigCollection {
             concoctionsIngredientsTierSix.addAll(concoctionsIngredientsTierFive);
             concoctionsIngredientsTierSeven.addAll(concoctionsIngredientsTierSix);
             concoctionsIngredientsTierEight.addAll(concoctionsIngredientsTierSeven);
-
         } catch (ObjectMappingException e) {
             e.printStackTrace();
         }
     }
 
-    private void loadConcoctionsTier(List<ItemStack> ingredientList, List<String> ingredientStrings) {
-        if (ingredientStrings != null && ingredientStrings.size() > 0) {
-            for (String ingredientString : ingredientStrings) {
+    private void loadConcoctionsTier(List<ItemStack> ingredientList, List<String> ingredients) {
+        if (ingredients != null && ingredients.size() > 0) {
+            for (String ingredientString : ingredients) {
                 ItemStack ingredient = loadIngredient(ingredientString);
 
                 if (ingredient != null) {
@@ -140,23 +138,20 @@ public class PotionConfig extends ConfigCollection {
         int pass = 0;
         int fail = 0;
 
-        try {
-            for (String potionName : getStringValueList(POTIONS)) {
-                //Grab the child node corresponding to this potion
-                AlchemyPotion potion = loadPotion(getUserRootNode().getNode(POTIONS, potionName));
+        for (ConfigurationNode potionNode : getChildren(POTIONS)) {
+            //Grab the child node corresponding to this potion
+            String potionName = potionNode.getString();
+            AlchemyPotion potion = loadPotion(getUserRootNode().getNode(POTIONS, potionName));
 
-                if (potion != null) {
-                    potionMap.put(potionName, potion);
-                    pass++;
-                } else {
-                    fail++;
-                }
+            if (potion != null) {
+                potionMap.put(potionName, potion);
+                pass++;
+            } else {
+                fail++;
             }
-
-            mcMMO.p.debug("Loaded " + pass + " Alchemy potions, skipped " + fail + ".");
-        } catch (ObjectMappingException e) {
-            e.printStackTrace();
         }
+
+        mcMMO.p.debug("Loaded " + pass + " Alchemy potions, skipped " + fail + ".");
     }
 
     /**

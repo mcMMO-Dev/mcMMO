@@ -66,7 +66,7 @@ public class ItemWeightConfig extends Config {
         HashSet<Material> miscItems = new HashSet<Material>();
 
         try {
-            for (String item : getStringValueList(PARTY_SHAREABLES, MISC_ITEMS)) {
+            for (String item : getListFromNode(PARTY_SHAREABLES, MISC_ITEMS)) {
                 Material material = Material.getMaterial(item.toUpperCase());
 
                 if (material != null) {

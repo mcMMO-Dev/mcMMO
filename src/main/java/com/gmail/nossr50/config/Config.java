@@ -4,8 +4,6 @@ import com.gmail.nossr50.mcMMO;
 import com.google.common.io.Files;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import ninja.leaping.configurate.loader.ConfigurationLoader;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 import org.yaml.snakeyaml.DumperOptions;
@@ -415,12 +413,16 @@ public abstract class Config implements VersionedConfig, Unload {
     }
 
     /**
-     * Gets a a List of type String from the Configuration file
-     * @param path path to the node
-     * @return a list of strings at the node, if null it will most likely zero initialize (empty list)
-     * @throws ObjectMappingException
+     * Returns the children of a specific node
+     * @param path the path to the parent node
+     * @return the list of children for the target parent node
      */
-    public List<String> getStringValueList(String... path) throws ObjectMappingException {
-        return userRootNode.getList(TypeToken.of(String.class));
+    public List<? extends ConfigurationNode> getChildren(String... path) {
+        return userRootNode.getNode(path).getChildrenList();
+    }
+
+    public List<String> getListFromNode(String... path) throws ObjectMappingException
+    {
+        return userRootNode.getNode(path).getList(TypeToken.of(String.class));
     }
 }

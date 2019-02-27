@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.fishing;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
 import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
 import com.gmail.nossr50.util.Misc;
