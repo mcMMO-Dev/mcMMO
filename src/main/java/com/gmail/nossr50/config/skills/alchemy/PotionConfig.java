@@ -68,6 +68,11 @@ public class PotionConfig extends ConfigCollection {
         register();
     }
 
+    @Override
+    public void unload() {
+        potionMap.clear();
+    }
+
     private void initIngredientLists()
     {
         concoctionsIngredientsTierOne = new ArrayList<>();
@@ -110,6 +115,7 @@ public class PotionConfig extends ConfigCollection {
 
     private void loadConcoctions() {
         try {
+            //TODO: Rewrite this
             loadConcoctionsTier(concoctionsIngredientsTierOne, getListFromNode(CONCOCTIONS, TIER_ONE_INGREDIENTS));
             loadConcoctionsTier(concoctionsIngredientsTierTwo, getListFromNode(CONCOCTIONS, TIER_TWO_INGREDIENTS));
             loadConcoctionsTier(concoctionsIngredientsTierThree, getListFromNode(CONCOCTIONS, TIER_THREE_INGREDIENTS));
