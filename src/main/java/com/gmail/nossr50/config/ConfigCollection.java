@@ -43,7 +43,7 @@ public abstract class ConfigCollection<T> extends Config implements Registers, G
         initCollection();
 
         //load
-        register();
+        //register();
     }
 
     /**
