@@ -25,8 +25,8 @@ public abstract class ConfigCollection<T> extends Config implements Registers, G
         //init
         initCollection();
 
-        //load
-        register();
+        //DO NOT CALL THIS HERE
+        //register();
     }
 
     /**
