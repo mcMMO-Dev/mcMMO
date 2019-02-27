@@ -51,20 +51,33 @@ public class PotionConfig extends ConfigCollection {
 
     /* INGREDIENTS */
 
-    private List<ItemStack> concoctionsIngredientsTierOne = new ArrayList<ItemStack>();
-    private List<ItemStack> concoctionsIngredientsTierTwo = new ArrayList<ItemStack>();
-    private List<ItemStack> concoctionsIngredientsTierThree = new ArrayList<ItemStack>();
-    private List<ItemStack> concoctionsIngredientsTierFour = new ArrayList<ItemStack>();
-    private List<ItemStack> concoctionsIngredientsTierFive = new ArrayList<ItemStack>();
-    private List<ItemStack> concoctionsIngredientsTierSix = new ArrayList<ItemStack>();
-    private List<ItemStack> concoctionsIngredientsTierSeven = new ArrayList<ItemStack>();
-    private List<ItemStack> concoctionsIngredientsTierEight = new ArrayList<ItemStack>();
+    private List<ItemStack> concoctionsIngredientsTierOne;
+    private List<ItemStack> concoctionsIngredientsTierTwo;
+    private List<ItemStack> concoctionsIngredientsTierThree;
+    private List<ItemStack> concoctionsIngredientsTierFour;
+    private List<ItemStack> concoctionsIngredientsTierFive;
+    private List<ItemStack> concoctionsIngredientsTierSix;
+    private List<ItemStack> concoctionsIngredientsTierSeven;
+    private List<ItemStack> concoctionsIngredientsTierEight;
 
     private Map<String, AlchemyPotion> potionMap = new HashMap<String, AlchemyPotion>();
 
     public PotionConfig() {
         super(mcMMO.p.getDataFolder().getAbsoluteFile(), "potions.yml", true, true, true);
+        initIngredientLists();
         register();
+    }
+
+    private void initIngredientLists()
+    {
+        concoctionsIngredientsTierOne = new ArrayList<>();
+        concoctionsIngredientsTierTwo = new ArrayList<>();
+        concoctionsIngredientsTierThree = new ArrayList<>();
+        concoctionsIngredientsTierFour = new ArrayList<>();
+        concoctionsIngredientsTierFive = new ArrayList<>();
+        concoctionsIngredientsTierSix = new ArrayList<>();
+        concoctionsIngredientsTierSeven = new ArrayList<>();
+        concoctionsIngredientsTierEight = new ArrayList<>();
     }
 
     /**
