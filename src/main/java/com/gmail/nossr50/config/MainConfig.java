@@ -454,7 +454,10 @@ public class MainConfig extends ConfigValidated {
     }
 
     public String getLocale() {
-        return getStringValue(GENERAL, LOCALE, EN_US);
+        if(hasNode(GENERAL, LOCALE))
+            return getStringValue(GENERAL, LOCALE);
+        else
+            return "en_US";
     }
 
     public boolean getMOTDEnabled() {
