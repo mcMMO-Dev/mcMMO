@@ -123,6 +123,8 @@ Version 2.1.16
     Super Breaker will now break "Mining" blocks even if they have no XP entries
     Tree Feller will now break "Woodcutting" blocks even if they have no XP entries
     Giga Drill Breaker will now break "diggable" blocks even if they have no configured treasures
+    mcMMO's mod config system has been temporarily disabled as no modded bukkit servers even exist
+    Mycellium removed from woodcutting XP (whoops)
     removed child.yml, child skills now have hard coded parents
     removed the hardcore and vampirism commands, these are dangerous settings and should not be toggle-able (turn them on in your configs if you want to use them)
 
