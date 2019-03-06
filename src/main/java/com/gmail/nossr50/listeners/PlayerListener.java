@@ -29,6 +29,7 @@ import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -492,6 +493,12 @@ public class PlayerListener implements Listener {
 
         if (plugin.isXPEventEnabled()) {
             player.sendMessage(LocaleLoader.getString("XPRate.Event", ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()));
+        }
+
+        //TODO: Remove this warning
+        if(mcMMO.p.getDescription().getVersion().contains("SNAPSHOT"))
+        {
+            event.getPlayer().sendMessage(ChatColor.RED+"WARNING: "+ChatColor.WHITE+"This dev build version of mcMMO is in the MIDDLE of completely rewriting the configs, there may be game breaking bugs. It is not recommended to play on this version of mcMMO, please grab the latest stable release from https://www.mcmmo.org and use that instead!");
         }
     }
 
