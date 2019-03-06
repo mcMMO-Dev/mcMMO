@@ -408,16 +408,12 @@ public class AdvancedConfig extends ConfigValidated {
             reason.add(SKILLS + "." + SWORDS + "." + COUNTER_ATTACK + "." + MAX_BONUS_LEVEL + " should be at least 1!");
         }
 
-        if (getCounterModifier() < 1) {
+        if (getCounterAttackModifier() < 1) {
             reason.add(SKILLS + "." + SWORDS + "." + COUNTER_ATTACK + "." + DAMAGE_MODIFIER + " should be at least 1!");
         }
 
         if (getSerratedStrikesModifier() < 1) {
             reason.add(SKILLS + "." + SWORDS + "." + SERRATED_STRIKES + "." + DAMAGE_MODIFIER + " should be at least 1!");
-        }
-
-        if (getSerratedStrikesTicks() < 1) {
-            reason.add(SKILLS + "." + SWORDS + "." + SERRATED_STRIKES + "." + RUPTURE + "Ticks should be at least 1!");
         }
 
         /* TAMING */
@@ -699,10 +695,10 @@ public class AdvancedConfig extends ConfigValidated {
     public int getRuptureMaxTicks() { return getIntValue(SKILLS, SWORDS, RUPTURE, MAX_TICKS); }
     public int getRuptureBaseTicks() { return getIntValue(SKILLS, SWORDS, RUPTURE, BASE_TICKS); }
 
-    public double getCounterModifier() { return getDoubleValue(SKILLS, SWORDS, COUNTER_ATTACK, DAMAGE_MODIFIER); }
+    public double getCounterAttackModifier() { return getDoubleValue(SKILLS, SWORDS, COUNTER_ATTACK, DAMAGE_MODIFIER); }
 
     public double getSerratedStrikesModifier() { return getDoubleValue(SKILLS, SWORDS, SERRATED_STRIKES, DAMAGE_MODIFIER); }
-    public int getSerratedStrikesTicks() { return getIntValue(SKILLS, SWORDS, SERRATED_STRIKES, RUPTURE, TICKS); }
+    //public int getSerratedStrikesTicks() { return getIntValue(SKILLS, SWORDS, SERRATED_STRIKES, RUPTURE, TICKS); }
 
     /* TAMING */
     public double getGoreModifier() { return getDoubleValue(SKILLS, TAMING, GORE, MODIFIER); }
