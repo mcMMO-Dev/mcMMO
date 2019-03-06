@@ -269,6 +269,7 @@ public class RepairManager extends SkillManager {
             double skillLevelBonusCalc = (Repair.repairMasteryMaxBonus / Repair.repairMasteryMaxBonusLevel) * (getSkillLevel() / 100.0D);
             double bonus = repairAmount * Math.min(skillLevelBonusCalc, maxBonusCalc);
 
+
             repairAmount += bonus;
         }
 
