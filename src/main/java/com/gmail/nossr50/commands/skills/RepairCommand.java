@@ -1,5 +1,6 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -63,7 +64,7 @@ public class RepairCommand extends SkillCommand {
 
         // REPAIR MASTERY
         if (canMasterRepair) {
-            repairMasteryBonus = percent.format(Math.min(((Repair.repairMasteryMaxBonus / Repair.repairMasteryMaxBonusLevel) * skillValue), Repair.repairMasteryMaxBonus) / 100D);
+            repairMasteryBonus = percent.format(Math.min(((AdvancedConfig.getInstance().getRepairMasteryMaxBonus() / AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.REPAIR_REPAIR_MASTERY)) * skillValue), AdvancedConfig.getInstance().getRepairMasteryMaxBonus()) / 100D);
         }
 
         // SUPER REPAIR

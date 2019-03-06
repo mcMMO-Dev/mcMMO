@@ -368,7 +368,7 @@ public class AdvancedConfig extends ConfigValidated {
         }
 
         /* SMELTING */
-        if (getBurnModifierMaxLevel() < 1) {
+        if (getMaxBonusLevel(SubSkillType.SMELTING_FUEL_EFFICIENCY) < 1) {
             reason.add(SKILLS + "." + SMELTING + "." + FUEL_EFFICIENCY + "." + MAX_BONUS_LEVEL + " should be at least 1!");
         }
 
@@ -690,7 +690,7 @@ public class AdvancedConfig extends ConfigValidated {
     public double getArcaneSalvageExtractPartialEnchantsChance(int rank) { return getDoubleValue(SKILLS, SALVAGE, ARCANE_SALVAGE, EXTRACT_PARTIAL_ENCHANT, RANK, String.valueOf(rank)); }
 
     /* SMELTING */
-    public int getBurnModifierMaxLevel() { return getIntValue(SKILLS, SMELTING, FUEL_EFFICIENCY, MAX_BONUS_LEVEL); }
+    //public int getBurnModifierMaxLevel() { return getIntValue(SKILLS, SMELTING, FUEL_EFFICIENCY, MAX_BONUS_LEVEL); }
     public double getBurnTimeMultiplier() { return getDoubleValue(SKILLS, SMELTING, FUEL_EFFICIENCY, MULTIPLIER); }
 
     public double getFluxMiningChance() { return getDoubleValue(SKILLS, SMELTING, FLUX, MINING, CHANCE); }
