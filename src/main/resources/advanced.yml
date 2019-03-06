@@ -174,7 +174,6 @@ Skills:
             # Damage modifier of critical hits for PVP / PVE, when causing a critical hit the damage gets multiplied by the modifier
             PVP_Modifier: 1.5
             PVE_Modifier: 2.0
-
         GreaterImpact:
             # Chance: Chance of hitting with GreaterImpact, mobs are knocked backwards when successful
             # KnockbackModifier: Velocity modifier of GreaterImpact hits, this determines how great the knockback is
@@ -182,7 +181,6 @@ Skills:
             Chance: 25.0
             KnockbackModifier: 1.5
             BonusDamage: 2.0
-
         ArmorImpact:
             # IncreaseLevel: Every <IncreaseLevel> the durability damage goes up with 1
             # Chance: Chance of hitting with ArmorImpact
@@ -190,7 +188,6 @@ Skills:
             IncreaseLevel: 5
             Chance: 25.0
             MaxPercentageDurabilityDamage: 20.0
-
         SkullSplitter:
             # DamageModifier: Damage will get divided by this modifier
             DamageModifier: 2.0
@@ -198,7 +195,6 @@ Skills:
     #  Settings for Fishing
     ###
     Fishing:
-
         ShakeChance:
             Rank_1: 15.0
             Rank_2: 15.0
@@ -208,7 +204,6 @@ Skills:
             Rank_6: 55.0
             Rank_7: 65.0
             Rank_8: 75.0
-
         # VanillaXPMultiplier: Vanilla XP gained from fishing is multiplied by these values.
         VanillaXPMultiplier:
             Rank_1: 1
@@ -219,11 +214,9 @@ Skills:
             Rank_6: 4
             Rank_7: 5
             Rank_8: 5
-
         FishermansDiet:
             # This determines when Fisherman's Diet adds extra hunger recovery to food
             RankChange: 20
-
         MasterAngler:
             # BoatMultiplier: Catch rate is multiplied by this modifier
             # BiomeModifier: Catch rate is multiplied by this modifier
@@ -233,7 +226,6 @@ Skills:
     #  Settings for Herbalism
     ###
     Herbalism:
-
         GreenThumb:
             # ChanceMax: Maximum chance of GreenThumb when on <MaxBonusLevel> or higher
             # MaxBonusLevel: On this level, GreenThumb chance will be <ChanceMax>
@@ -241,7 +233,6 @@ Skills:
             MaxBonusLevel:
                 Standard: 100
                 RetroMode: 1000
-
         DoubleDrops:
             # ChanceMax: Maximum chance of receiving double drops when on <MaxBonusLevel> or higher
             # MaxBonusLevel: Level when <ChanceMax> of receiving double drops is reached
@@ -249,7 +240,6 @@ Skills:
             MaxBonusLevel:
                 Standard: 100
                 RetroMode: 1000
-
         HylianLuck:
             # ChanceMax: Maximum chance of Hylian Luck when on <MaxBonusLevel> or higher
             # MaxBonusLevel: On this level, Hylian Luck chance will be <ChanceMax>
@@ -257,7 +247,6 @@ Skills:
             MaxBonusLevel:
                 Standard: 100
                 RetroMode: 1000
-
         ShroomThumb:
             # ChanceMax: Maximum chance of ShroomThumb when on <MaxBonusLevel> or higher
             # MaxBonusLevel: On this level, ShroomThumb chance will be <ChanceMax>
@@ -277,7 +266,6 @@ Skills:
             MaxBonusLevel:
                 Standard: 100
                 RetroMode: 1000
-
         BlastMining:
             # BlastDamageDecrease Ranks: % of damage reduced from TNT explosions
             BlastDamageDecrease:
@@ -289,7 +277,6 @@ Skills:
                 Rank_6: 50.0
                 Rank_7: 50.0
                 Rank_8: 100.0
-
             # OreBonus Ranks: % of extra ores received when Blast Mining
             OreBonus:
                 Rank_1: 35.0
@@ -300,7 +287,6 @@ Skills:
                 Rank_6: 60.0
                 Rank_7: 65.0
                 Rank_8: 70.0
-
             # DebrisReduction_Rank: % of fewer non-ores received when Blast Mining
             DebrisReduction:
                 Rank_1: 10.0
@@ -311,7 +297,6 @@ Skills:
                 Rank_6: 30.0
                 Rank_7: 30.0
                 Rank_8: 30.0
-
             # DropMultiplier Ranks: # of times each ore will drop
             DropMultiplier:
                 Rank_1: 1
@@ -322,7 +307,6 @@ Skills:
                 Rank_6: 2
                 Rank_7: 3
                 Rank_8: 3
-
             # BlastRadiusModifier Ranks: Increases the blast radius by this amount
             BlastRadiusModifier:
                 Rank_1: 1.0
@@ -344,7 +328,6 @@ Skills:
             MaxBonusLevel:
                 Standard: 100
                 RetroMode: 1000
-
         SuperRepair:
             # ChanceMax: Maximum chance of Super Repair when on <MaxBonusLevel> or higher
             # MaxBonusLevel: On this level, Super Repair chance will be <ChanceMax>
@@ -352,7 +335,6 @@ Skills:
             MaxBonusLevel:
                 Standard: 100
                 RetroMode: 1000
-
         ArcaneForging:
             May_Lose_Enchants: true
             Keep_Enchants_Chance:
@@ -416,14 +398,12 @@ Skills:
             MaxBonusLevel:
                 Standard: 100
                 RetroMode: 1000
-
         FluxMining:
             # Chance: Chance for Flux Mining to activate
             Chance: 33.0
             MaxBonusLevel:
                 Standard: 100
                 RetroMode: 1000
-
         # VanillaXPMultiplier: Vanilla XP gained from smelting ores is multiplied by these values.
         VanillaXPMultiplier:
             Rank_1: 1
@@ -434,7 +414,6 @@ Skills:
             Rank_6: 4
             Rank_7: 5
             Rank_8: 5
-
     #
     #  Settings for Swords
     ###
@@ -446,7 +425,6 @@ Skills:
             MaxBonusLevel:
                 Standard: 100
                 RetroMode: 1000
-
             # DamagePlayer: Bleeding damage dealt to players
             # DamageMobs: Bleeding damage dealt to mobs
             DamagePlayer: 2.0
@@ -455,9 +433,7 @@ Skills:
             # These settings determine how long the Bleeding effect lasts
             MaxTicks: 8
             BaseTicks: 2
-
         CounterAttack:
-
             # ChanceMax: Maximum chance of triggering a counter attack
             # MaxBonusLevel: On this level, the chance to Counter will be <ChanceMax>
             ChanceMax: 30.0
@@ -520,7 +496,6 @@ Skills:
                 Standard: 100
                 RetroMode: 1000
             AntiTheft: false
-
         ArrowDeflect:
             # ChanceMax: Maximum chance of deflecting arrows
             # MaxBonusLevel: Level when the maximum chance to deflect is reached
@@ -528,7 +503,6 @@ Skills:
             MaxBonusLevel:
                 Standard: 100
                 RetroMode: 1000
-
         IronGrip:
             # ChanceMax: Maximum chance of preventing being disarmed
             # MaxBonusLevel: Level when the maximum chance to prevent being disarmed is reached
@@ -536,7 +510,6 @@ Skills:
             MaxBonusLevel:
                 Standard: 100
                 RetroMode: 1000
-
         IronArmStyle:
             # BonusMin: Minimum bonus damage for unarmed
             # BonusMax: Maximum bonus damage for unarmed

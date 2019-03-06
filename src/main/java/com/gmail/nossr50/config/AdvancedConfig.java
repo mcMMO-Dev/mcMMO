@@ -61,7 +61,7 @@ public class AdvancedConfig extends ConfigValidated {
     public static final String CRITICAL_STRIKES = "CriticalStrikes";
     public static final String GREATER_IMPACT = "GreaterImpact";
     public static final String ARMOR_IMPACT = "ArmorImpact";
-    public static final String SKULL_SPLITTER = "SkullSplitter.";
+    public static final String SKULL_SPLITTER = "SkullSplitter";
     public static final String MAX_PERCENTAGE_DURABILITY_DAMAGE = "MaxPercentageDurabilityDamage";
     public static final String SHAKE = "Shake";
     public static final String MINING = "Mining";
