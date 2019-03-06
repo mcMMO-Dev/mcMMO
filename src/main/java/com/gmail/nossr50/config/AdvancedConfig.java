@@ -89,7 +89,6 @@ public class AdvancedConfig extends ConfigValidated {
     public static final String EXTRACT_PARTIAL_ENCHANT = "ExtractPartialEnchant";
     public static final String SMELTING = "Smelting";
     public static final String FUEL_EFFICIENCY = "FuelEfficiency";
-    public static final String FLUX = "Flux";
     public static final String SWORDS = "Swords";
     public static final String RUPTURE = "Rupture";
     public static final String DAMAGE_PLAYER = "DamagePlayer";
@@ -378,10 +377,6 @@ public class AdvancedConfig extends ConfigValidated {
 
         if (getMaximumProbability(SubSkillType.SMELTING_SECOND_SMELT) < 1) {
             reason.add(SKILLS + "." + SMELTING + ".SecondSmelt." + CHANCE_MAX + " should be at least 1!");
-        }
-
-        if (getFluxMiningChance() < 1) {
-            reason.add(SKILLS + "." + SMELTING + "." + FLUX + MINING + "." + CHANCE + " should be at least 1!");
         }
 
         /* SWORDS */
@@ -692,8 +687,6 @@ public class AdvancedConfig extends ConfigValidated {
     /* SMELTING */
     //public int getBurnModifierMaxLevel() { return getIntValue(SKILLS, SMELTING, FUEL_EFFICIENCY, MAX_BONUS_LEVEL); }
     public double getBurnTimeMultiplier() { return getDoubleValue(SKILLS, SMELTING, FUEL_EFFICIENCY, MULTIPLIER); }
-
-    public double getFluxMiningChance() { return getDoubleValue(SKILLS, SMELTING, FLUX, MINING, CHANCE); }
 
     public int getSmeltingRankLevel(int rank) { return getIntValue(SKILLS, SMELTING, RANK, LEVELS, RANK, String.valueOf(rank)); }
 

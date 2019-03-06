@@ -398,12 +398,6 @@ Skills:
             MaxBonusLevel:
                 Standard: 100
                 RetroMode: 1000
-        FluxMining:
-            # Chance: Chance for Flux Mining to activate
-            Chance: 33.0
-            MaxBonusLevel:
-                Standard: 100
-                RetroMode: 1000
         # VanillaXPMultiplier: Vanilla XP gained from smelting ores is multiplied by these values.
         VanillaXPMultiplier:
             Rank_1: 1
