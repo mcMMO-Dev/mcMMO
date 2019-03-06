@@ -27,7 +27,7 @@ public class StringUtils {
      */
     public static String getEntityConfigName(EntityType entityType)
     {
-        return entityType.toString();
+        return getCapitalized(entityType.toString());
     }
 
     public static String getPrettyItemString(Material material) {

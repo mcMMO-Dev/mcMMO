@@ -201,6 +201,7 @@ public class MainConfig extends ConfigValidated {
     public static final String LIGHTNING = "_Lightning";
     public static final String GOLD_BLOCK = "GOLD_BLOCK";
     public static final String PICKAXE = "_Pickaxe";
+    public static final String EXP_SHARE_BONUS_BASE = "ExpShare_bonus_base";
 
     public MainConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "config.yml", true);
@@ -848,7 +849,7 @@ public class MainConfig extends ConfigValidated {
     }
 
     public double getPartyShareBonusBase() {
-        return getDoubleValue(PARTY, SHARING_EXP_SHARE_BONUS_BASE);
+        return getDoubleValue(PARTY, SHARING, EXP_SHARE_BONUS_BASE);
     }
 
     public double getPartyShareBonusIncrease() {
