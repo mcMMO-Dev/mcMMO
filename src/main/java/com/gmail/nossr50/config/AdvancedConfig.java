@@ -350,12 +350,13 @@ public class AdvancedConfig extends ConfigValidated {
         }
 
         /* REPAIR */
-        if (getRepairMasteryMaxBonus() < 1) {
-            reason.add(SKILLS + "." + REPAIR + "." + REPAIR_MASTERY + "." + MAX_BONUS_PERCENTAGE + " should be at least 1!");
-        }
-
+        /*
         if (getRepairMasteryMaxLevel() < 1) {
             reason.add(SKILLS + "." + REPAIR + "." + REPAIR_MASTERY + "." + MAX_BONUS_LEVEL + " should be at least 1!");
+        }*/
+
+        if (getRepairMasteryMaxBonus() < 1) {
+            reason.add(SKILLS + "." + REPAIR + "." + REPAIR_MASTERY + "." + MAX_BONUS_PERCENTAGE + " should be at least 1!");
         }
 
         if (getMaximumProbability(SubSkillType.REPAIR_SUPER_REPAIR) < 1) {
@@ -671,7 +672,7 @@ public class AdvancedConfig extends ConfigValidated {
 
     /* REPAIR */
     public double getRepairMasteryMaxBonus() { return getDoubleValue(SKILLS, REPAIR, REPAIR_MASTERY, MAX_BONUS_PERCENTAGE); }
-    public int getRepairMasteryMaxLevel() { return getIntValue(SKILLS, REPAIR, REPAIR_MASTERY, MAX_BONUS_LEVEL); }
+    //public int getRepairMasteryMaxLevel() { return getIntValue(SKILLS, REPAIR, REPAIR_MASTERY, MAX_BONUS_LEVEL); }
 
     /* Arcane Forging */
     public boolean getArcaneForgingEnchantLossEnabled() { return getBooleanValue(SKILLS, REPAIR, ARCANE_FORGING, MAY_LOSE_ENCHANTS); }
