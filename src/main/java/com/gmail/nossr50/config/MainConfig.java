@@ -125,7 +125,7 @@ public class MainConfig extends ConfigValidated {
     public static final String AUTO_KICK_INTERVAL = "AutoKick_Interval";
     public static final String OLD_PARTY_MEMBER_CUTOFF = "Old_Party_Member_Cutoff";
     public static final String SHARING = "Sharing";
-    public static final String SHARING_EXP_SHARE_BONUS_BASE = SHARING + ".ExpShare_bonus_base";
+    public static final String SHARING_EXP_SHARE_BONUS_BASE = SHARING + "ExpShare_bonus_base";
     public static final String EXP_SHARE_BONUS_INCREASE = "ExpShare_bonus_increase";
     public static final String EXP_SHARE_BONUS_CAP = "ExpShare_bonus_cap";
     public static final String RANGE = "Range";
