@@ -143,7 +143,7 @@ public abstract class Config implements VersionedConfig, Unload {
     private void initConfigLoaders()
     {
         this.defaultCopyLoader = YAMLConfigurationLoader.builder().setPath(resourceConfigCopy.toPath()).setFlowStyle(DumperOptions.FlowStyle.BLOCK).build();
-        this.userCopyLoader = YAMLConfigurationLoader.builder().setPath(resourceUserCopy.toPath()).setFlowStyle(DumperOptions.FlowStyle.FLOW).build();
+        this.userCopyLoader = YAMLConfigurationLoader.builder().setPath(resourceUserCopy.toPath()).setFlowStyle(DumperOptions.FlowStyle.BLOCK).build();
     }
 
     /**
