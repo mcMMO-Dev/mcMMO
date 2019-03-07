@@ -349,21 +349,6 @@ public class ExperienceConfig extends ConfigValidated {
         return getIntValue(path);
     }
 
-    /**
-     * Checks if a block gives XP
-     * This is used to determine whether or not mcMMO should track a block that is placed by a user, among other things.
-     * Note: If the block has an entry in the config that will return true even if the XP is 0, this does not check the value of the XP
-     * @param skill The skill to check for
-     * @param blockType the type of block
-     * @return true if the block does give XP
-     */
-    public boolean doesBlockGiveSkillXP(PrimarySkillType skill, Material blockType) {
-        //TODO: This used to support wildcard characters, seems a bit unnecessary to do so.
-        //TODO: This is going to need to be changed, this code here is only placeholder
-        String[] path = new String[] {EXPERIENCE, StringUtils.getCapitalized(skill.toString()), blockType.toString()};
-        return hasNode(path);
-    }
-
     /*
      * Experience Bar Stuff
      */

@@ -12,6 +12,7 @@ import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.SimpleRepairableManager;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.skills.salvage.salvageables.SimpleSalvageableManager;
+import com.gmail.nossr50.util.experience.ExperienceMapManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -49,6 +50,10 @@ public final class ConfigManager {
     /* MOD MANAGERS */
 
     //TODO: Add these back when modded servers become a thing again
+
+    /* MISC MANAGERS */
+
+    private ExperienceMapManager experienceMapManager;
 
     //private ModManager modManager;
 
@@ -127,8 +132,21 @@ public final class ConfigManager {
         // Multi Config Containers
         initMultiConfigContainers();
 
+        /*
+         * Managers
+         */
+
         // Register Managers
+        initMiscManagers();
         initCollectionManagers();
+    }
+
+    /**
+     * Misc managers
+     */
+    private void initMiscManagers()
+    {
+        experienceMapManager = new ExperienceMapManager();
     }
 
     /**
@@ -276,5 +294,9 @@ public final class ConfigManager {
 
     public ItemWeightConfig getItemWeightConfig() {
         return itemWeightConfig;
+    }
+
+    public ExperienceMapManager getExperienceMapManager() {
+        return experienceMapManager;
     }
 }
