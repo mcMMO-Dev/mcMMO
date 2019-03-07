@@ -1,9 +1,7 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.salvage.Salvage;
@@ -332,13 +330,7 @@ public final class BlockUtils {
      * @return true if the block should affected by Green Terra, false otherwise
      */
     public static boolean affectedByGreenTerra(BlockState blockState) {
-        if (ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.HERBALISM, blockState.getType())) {
-            return true;
-        }
-        else
-            return false;
-
-        //return mcMMO.getModManager().isCustomHerbalismBlock(blockState);
+        return mcMMO.getConfigManager().getExperienceMapManager().hasHerbalismXp(blockState.getType());
     }
 
     /**
@@ -350,11 +342,41 @@ public final class BlockUtils {
      *         otherwise
      */
     public static Boolean affectedBySuperBreaker(BlockState blockState) {
-        if (ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.MINING, blockState.getType()))
+        if (mcMMO.getConfigManager().getExperienceMapManager().hasMiningXp(blockState.getType()))
             return true;
 
-        return isOre(blockState); //|| mcMMO.getModManager().isCustomMiningBlock(blockState);
+        return isMineable(blockState);
     }
+
+    public static boolean isMineable(BlockState blockState)
+    {
+        switch (blockState.getType())
+        {
+            case COAL_ORE:
+            case DIAMOND_ORE:
+            case EMERALD_ORE:
+            case END_STONE:
+            case GOLD_ORE:
+            case IRON_ORE:
+            case LAPIS_ORE:
+            case NETHER_QUARTZ_ORE:
+            case REDSTONE_ORE:
+            case ANDESITE:
+            case DIORITE:
+            case GRANITE:
+            case STONE:
+            case PRISMARINE:
+            case DARK_PRISMARINE:
+            case SANDSTONE:
+            case NETHERRACK:
+            case ICE:
+            case PACKED_ICE:
+                return true;
+            default:
+                return false;
+        }
+    }
+
 
     /**
      * Determine if a given block should be affected by Giga Drill Breaker
@@ -365,11 +387,39 @@ public final class BlockUtils {
      *         otherwise
      */
     public static boolean affectedByGigaDrillBreaker(BlockState blockState) {
-        if (ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.EXCAVATION, blockState.getType()))
+        if(mcMMO.getConfigManager().getExperienceMapManager().hasExcavationXp(blockState.getType()))
             return true;
-        else
-            return false;
-        //return mcMMO.getModManager().isCustomExcavationBlock(blockState);
+
+        return isDiggable(blockState);
+    }
+
+    /**
+     * Returns true if a shovel is used for digging this block
+     * @param blockState target blockstate
+     * @return true if a shovel is typically used for digging this block
+     */
+    public static boolean isDiggable(BlockState blockState)
+    {
+        switch(blockState.getType())
+        {
+            case CLAY:
+            case FARMLAND:
+            case GRASS_BLOCK:
+            case GRASS_PATH:
+            case GRAVEL:
+            case MYCELIUM:
+            case PODZOL:
+            case COARSE_DIRT:
+            case DIRT:
+            case RED_SAND:
+            case SAND:
+            case SOUL_SAND:
+            case SNOW:
+            case SNOW_BLOCK:
+                return true;
+            default:
+                return false;
+        }
     }
 
     /**
@@ -380,11 +430,50 @@ public final class BlockUtils {
      * @return true if the block is a log, false otherwise
      */
     public static boolean isLog(BlockState blockState) {
-        if (ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.WOODCUTTING, blockState.getType()))
+        if(mcMMO.getConfigManager().getExperienceMapManager().hasWoodcuttingXp(blockState.getType()))
             return true;
-        else
-            return false;
+
+        return isLoggingRelated(blockState);
         //return mcMMO.getModManager().isCustomLog(blockState);
+    }
+
+    /**
+     * Determines if this particular block is typically gathered using an Axe
+     * @param blockState target blockstate
+     * @return true if the block is gathered via axe
+     */
+    public static boolean isLoggingRelated(BlockState blockState)
+    {
+        switch(blockState.getType())
+        {
+            case ACACIA_LOG:
+            case BIRCH_LOG:
+            case DARK_OAK_LOG:
+            case JUNGLE_LOG:
+            case OAK_LOG:
+            case SPRUCE_LOG:
+            case STRIPPED_ACACIA_LOG:
+            case STRIPPED_ACACIA_WOOD:
+            case STRIPPED_BIRCH_LOG:
+            case STRIPPED_BIRCH_WOOD:
+            case STRIPPED_DARK_OAK_LOG:
+            case STRIPPED_DARK_OAK_WOOD:
+            case STRIPPED_JUNGLE_LOG:
+            case STRIPPED_JUNGLE_WOOD:
+            case STRIPPED_OAK_LOG:
+            case STRIPPED_OAK_WOOD:
+            case STRIPPED_SPRUCE_LOG:
+            case STRIPPED_SPRUCE_WOOD:
+            case ACACIA_WOOD:
+            case BIRCH_WOOD:
+            case DARK_OAK_WOOD:
+            case JUNGLE_WOOD:
+            case OAK_WOOD:
+            case SPRUCE_WOOD:
+                return true;
+            default:
+                return false;
+        }
     }
 
     /**
@@ -407,24 +496,6 @@ public final class BlockUtils {
             default :
                 return false;
                 //return mcMMO.getModManager().isCustomLeaf(blockState);
-        }
-    }
-
-    /**
-     * Determine if a given block should be affected by Flux Mining
-     *
-     * @param blockState
-     *            The {@link BlockState} of the block to check
-     * @return true if the block should affected by Flux Mining, false otherwise
-     */
-    public static boolean affectedByFluxMining(BlockState blockState) {
-        switch (blockState.getType()) {
-            case IRON_ORE :
-            case GOLD_ORE :
-                return true;
-
-            default :
-                return false;
         }
     }
 
