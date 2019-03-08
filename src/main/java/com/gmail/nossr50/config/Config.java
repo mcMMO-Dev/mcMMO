@@ -3,7 +3,8 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.io.Files;
 import com.google.common.reflect.TypeToken;
-import ninja.leaping.configurate.ConfigurationNode;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 import org.yaml.snakeyaml.DumperOptions;
@@ -32,11 +33,11 @@ public abstract class Config implements VersionedConfig, Unload {
 
     /* LOADERS */
 
-    private YAMLConfigurationLoader defaultCopyLoader;
-    private YAMLConfigurationLoader userCopyLoader;
+    private HoconConfigurationLoader defaultCopyLoader;
+    private HoconConfigurationLoader userCopyLoader;
 
-    //private ConfigurationLoader<CommentedConfigurationNode> defaultCopyLoader;
-    //private ConfigurationLoader<CommentedConfigurationNode> userCopyLoader;
+    //private ConfigurationLoader<CommentedCommentedConfigurationNode> defaultCopyLoader;
+    //private ConfigurationLoader<CommentedCommentedConfigurationNode> userCopyLoader;
 
     /* CONFIG FILES */
 
@@ -45,11 +46,11 @@ public abstract class Config implements VersionedConfig, Unload {
 
     /* ROOT NODES */
 
-    private ConfigurationNode userRootNode = null;
-    private ConfigurationNode defaultRootNode = null;
+    private CommentedConfigurationNode userRootNode = null;
+    private CommentedConfigurationNode defaultRootNode = null;
 
     /* CONFIG MANAGER */
-    //private ConfigurationLoader<CommentedConfigurationNode> configManager;
+    //private ConfigurationLoader<CommentedCommentedConfigurationNode> configManager;
 
     public Config(String pathToParentFolder, String relativePath, boolean mergeNewKeys, boolean copyDefaults, boolean removeOldKeys) {
         //TODO: Check if this works...
@@ -126,10 +127,10 @@ public abstract class Config implements VersionedConfig, Unload {
     private void loadConfig()
     {
         try {
-            final ConfigurationNode defaultConfig = this.defaultCopyLoader.load();
+            final CommentedConfigurationNode defaultConfig = this.defaultCopyLoader.load();
             defaultRootNode = defaultConfig;
 
-            final ConfigurationNode userConfig = this.userCopyLoader.load();
+            final CommentedConfigurationNode userConfig = this.userCopyLoader.load();
             userRootNode = userConfig;
 
         } catch (IOException e) {
@@ -138,12 +139,12 @@ public abstract class Config implements VersionedConfig, Unload {
     }
 
     /**
-     * Initializes the YAMLConfigurationLoaders for this config
+     * Initializes the Configuration Loaders for this config
      */
     private void initConfigLoaders()
     {
-        this.defaultCopyLoader = YAMLConfigurationLoader.builder().setPath(resourceConfigCopy.toPath()).setFlowStyle(DumperOptions.FlowStyle.BLOCK).build();
-        this.userCopyLoader = YAMLConfigurationLoader.builder().setPath(resourceUserCopy.toPath()).setFlowStyle(DumperOptions.FlowStyle.BLOCK).build();
+        this.defaultCopyLoader = HoconConfigurationLoader.builder().setPath(resourceConfigCopy.toPath()).build();
+        this.userCopyLoader = HoconConfigurationLoader.builder().setPath(resourceUserCopy.toPath()).build();
     }
 
     /**
@@ -313,7 +314,7 @@ public abstract class Config implements VersionedConfig, Unload {
         if(!removeOldKeys)
             return;
 
-        for(ConfigurationNode configurationNode : defaultRootNode.getChildrenList())
+        for(CommentedConfigurationNode CommentedConfigurationNode : defaultRootNode.getChildrenList())
         {
 
         }
@@ -342,7 +343,7 @@ public abstract class Config implements VersionedConfig, Unload {
      * Returns the root node of this config
      * @return the root node of this config
      */
-    protected ConfigurationNode getUserRootNode() {
+    protected CommentedConfigurationNode getUserRootNode() {
         return userRootNode;
     }
 
@@ -417,7 +418,7 @@ public abstract class Config implements VersionedConfig, Unload {
      * @param path the path to the parent node
      * @return the list of children for the target parent node
      */
-    public List<? extends ConfigurationNode> getChildren(String... path) {
+    public List<? extends CommentedConfigurationNode> getChildren(String... path) {
         return userRootNode.getNode(path).getChildrenList();
     }
 

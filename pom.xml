@@ -99,6 +99,7 @@
                             <include>org.apache.tomcat:tomcat-jdbc</include>
                             <include>org.apache.tomcat:tomcat-juli</include>
                             <include>org.bstats:bstats-bukkit</include>
+                            <include>org.spongepowered:configurate-hocon</include>
                             <include>org.spongepowered:configurate-yaml</include>
                             <include>org.spongepowered:configurate-core</include>
                             <!--<include>com.flowpowered:flow-math</include>-->
@@ -181,6 +182,11 @@
             <groupId>org.spongepowered</groupId>
             <!-- Modify this line to target the loader you wish to use. -->
             <artifactId>configurate-yaml</artifactId>
+            <version>3.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.spongepowered</groupId>
+            <artifactId>configurate-hocon</artifactId>
             <version>3.6</version>
         </dependency>
         <dependency>
