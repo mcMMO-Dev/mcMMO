@@ -62,7 +62,7 @@ public class WorldListener implements Listener {
 
         plugin.getLogger().info("Converting block storage for " + world.getName() + " to a new format.");
 
-        new BlockStoreConversionMain(world).run();
+        //new BlockStoreConversionMain(world).run();
     }
 
     /**

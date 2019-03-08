@@ -48,11 +48,13 @@ public class HashChunkManager implements ChunkManager {
             throw new RuntimeException("Wrong class type read for chunk meta data for " + x + ", " + z);
         }
         catch (IOException e) {
+            e.printStackTrace();
             // Assume the format changed
             return null;
             //throw new RuntimeException("Unable to process chunk meta data for " + x + ", " + z, e);
         }
         catch (ClassNotFoundException e) {
+            e.printStackTrace();
             // Assume the format changed
             //System.out.println("[SpoutPlugin] is Unable to find serialized class for " + x + ", " + z + ", " + e.getMessage());
             return null;

@@ -7,6 +7,9 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.13
+    Fixed a bug where Archery's Arrow Retrieval was using the wrong permission node
+
 Version 2.1.12
     Salvage config entries are no longer case sensitive
     Fixed a bug where Fishing was not rewarding vanilla XP orbs

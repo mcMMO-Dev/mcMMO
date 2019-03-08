@@ -247,12 +247,12 @@ permissions:
         children:
             mcmmo.ability.archery.skillshot: true
             mcmmo.ability.archery.daze: true
-            mcmmo.ability.archery.retrieve: true
+            mcmmo.ability.archery.arrowretrieval: true
     mcmmo.ability.archery.skillshot:
         description: Allows bonus damage from the Archery SkillShot ability
     mcmmo.ability.archery.daze:
         description: Allows access to the Daze ability
-    mcmmo.ability.archery.retrieve:
+    mcmmo.ability.archery.arrowretrieval:
         description: Allows tracking & retrieval of arrows
     mcmmo.ability.axes.*:
         default: false
