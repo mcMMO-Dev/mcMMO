@@ -50,11 +50,11 @@ public abstract class Config implements VersionedConfig, Unload {
     /* CONFIG MANAGER */
     //private ConfigurationLoader<CommentedCommentedConfigurationNode> configManager;
 
-    public Config(String pathToParentFolder, String relativePath, boolean mergeNewKeys, boolean copyDefaults, boolean removeOldKeys) {
+    /*public Config(String pathToParentFolder, String relativePath, boolean mergeNewKeys, boolean copyDefaults, boolean removeOldKeys) {
         //TODO: Check if this works...
         this(new File(pathToParentFolder), relativePath, mergeNewKeys, copyDefaults, removeOldKeys);
         System.out.println("mcMMO Debug: Don't forget to check if loading config file by string instead of File works...");
-    }
+    }*/
 
     public Config(File pathToParentFolder, String relativePath, boolean mergeNewKeys, boolean copyDefaults, boolean removeOldKeys) {
         /*

@@ -6,11 +6,11 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 @ConfigSerializable
 public class ConfigCategoryMaxPoolSize {
     @Setting(value = "Misc")
-    private int misc;
+    private int misc = 10;
 
     @Setting(value = "Load")
-    private int load;
+    private int load = 20;
 
     @Setting(value = "Save")
-    private int save;
+    private int save = 20;
 }

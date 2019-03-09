@@ -7,12 +7,12 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 public class ConfigCategoryMaxConnections {
 
     @Setting(value = "Misc")
-    private int misc;
+    private int misc = 30;
 
     @Setting(value = "Load")
-    private int load;
+    private int load = 30;
 
     @Setting(value = "Save")
-    private int save;
+    private int save = 30;
 
 }

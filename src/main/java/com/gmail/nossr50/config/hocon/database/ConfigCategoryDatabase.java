@@ -7,16 +7,16 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 public class ConfigCategoryDatabase {
 
     @Setting(value = "User_Name", comment = "The authorized user for your MySQL/MariaDB DB")
-    private String username;
+    private String username = "example_user_name";
 
     @Setting(value = "User_Password", comment = "The password for your authorized user")
-    private String password;
+    private String password = "example_user_password";
 
     @Setting(value = "Database_Name", comment = "The database name for your DB, this DB must already exist on the SQL server.")
-    private String databaseName;
+    private String databaseName = "example_database_name";
 
     @Setting(value = "Table_Prefix", comment = "The Prefix that will be used for tables in your DB")
-    private String tablePrefix;
+    private String tablePrefix = "mcmmo_";
 
     @Setting(value = "Max_Connections", comment = "This setting is the max simultaneous MySQL/MariaDB connections allowed at a time, this needs to be high enough to support multiple player logins in quick succession")
     private ConfigCategoryMaxConnections configCategoryMaxConnections;

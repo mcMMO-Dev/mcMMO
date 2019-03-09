@@ -3,6 +3,7 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.config.collectionconfigs.CollectionClassType;
 import com.gmail.nossr50.config.collectionconfigs.MultiConfigContainer;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.config.hocon.database.ConfigDatabase;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.config.treasure.ExcavationTreasureConfig;
@@ -64,6 +65,7 @@ public final class ConfigManager {
 
     /* CONFIG INSTANCES */
 
+    private ConfigDatabase configDatabase;
     private MainConfig mainConfig;
     private FishingTreasureConfig fishingTreasureConfig;
     private ExcavationTreasureConfig excavationTreasureConfig;
@@ -92,6 +94,7 @@ public final class ConfigManager {
         // I'm pretty these are supposed to be done in a specific order, so don't rearrange them willy nilly
 
         //TODO: Not sure about the order of MainConfig
+        configDatabase = new ConfigDatabase();
         mainConfig = new MainConfig();
 
         fishingTreasureConfig = new FishingTreasureConfig();
@@ -299,4 +302,6 @@ public final class ConfigManager {
     public ExperienceMapManager getExperienceMapManager() {
         return experienceMapManager;
     }
+
+    public ConfigDatabase getConfigDatabase() { return configDatabase; }
 }
