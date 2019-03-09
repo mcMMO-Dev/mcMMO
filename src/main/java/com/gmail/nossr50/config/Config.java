@@ -63,6 +63,8 @@ public abstract class Config implements VersionedConfig, Unload {
     }*/
 
     public Config(String fileName, File pathToParentFolder, String relativePath, boolean generateDefaults, boolean mergeNewKeys, boolean copyDefaults, boolean removeOldKeys) {
+        mkdirDefaults(); // Make our default config dir
+
         /*
          * These must be at the top
          */
@@ -71,7 +73,7 @@ public abstract class Config implements VersionedConfig, Unload {
         this.copyDefaults = copyDefaults;
         this.mergeNewKeys = mergeNewKeys; //Whether or not we add new keys when they are found
         this.removeOldKeys = removeOldKeys;
-        mkdirDefaults(); // Make our default config dir
+
         DIRECTORY_DATA_FOLDER = pathToParentFolder; //Data Folder for our plugin
         FILE_RELATIVE_PATH = relativePath + fileName + HOCON_FILE_EXTENSION; //Relative path to config from a parent folder
 
@@ -173,13 +175,25 @@ public abstract class Config implements VersionedConfig, Unload {
      */
     private File generateDefaultFile()
     {
+        mcMMO.p.getLogger().info("Attempting to create a default config for "+fileName);
+
         //Not sure if this will work properly...
         Path potentialFile = Paths.get(getDefaultConfigCopyRelativePath());
         ConfigurationLoader<CommentedConfigurationNode> generation_loader
                 = HoconConfigurationLoader.builder().setPath(potentialFile).build();
         try {
+            mcMMO.p.getLogger().info("Config File Full Path: "+getDefaultConfigFile().getAbsolutePath());
+            //Delete any existing default config
+            if(getDefaultConfigFile().exists())
+                getDefaultConfigFile().delete();
+
+            //Load the config
             defaultRootNode = generation_loader.load();
+
+            //Save to a new file
+            getDefaultConfigFile().createNewFile();
             generation_loader.save(defaultRootNode);
+
             mcMMO.p.getLogger().info("Generated a default file for "+fileName);
         } catch(IOException e) {
             mcMMO.p.getLogger().severe("Error when trying to generate a default configuration file for " + getDefaultConfigCopyRelativePath());
@@ -277,7 +291,7 @@ public abstract class Config implements VersionedConfig, Unload {
      * @return the path to the defaults directory
      */
     private String getDefaultConfigCopyRelativePath() {
-        return DIRECTORY_DEFAULTS + File.separator + FILE_RELATIVE_PATH;
+        return getDefaultConfigFile().getPath();
     }
 
     /**
@@ -286,18 +300,14 @@ public abstract class Config implements VersionedConfig, Unload {
      * @return the copy of the default config file, stored in the defaults directory
      */
     private File getDefaultConfigFile() {
-        return new File(DIRECTORY_DATA_FOLDER, DIRECTORY_DEFAULTS + File.separator + FILE_RELATIVE_PATH);
+        return new File(ConfigConstants.getDefaultsFolder(), FILE_RELATIVE_PATH);
     }
 
     /**
      * Creates the defaults directory
      */
     private void mkdirDefaults() {
-        //Make Default Subdirectory
-        File defaultsDir = new File (DIRECTORY_DATA_FOLDER, "defaults");
-
-        if(!defaultsDir.exists())
-            defaultsDir.mkdir();
+        ConfigConstants.makeAllConfigDirectories();
     }
 
     /**
