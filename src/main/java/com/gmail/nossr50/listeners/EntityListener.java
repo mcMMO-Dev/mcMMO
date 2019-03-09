@@ -765,19 +765,14 @@ public class EntityListener implements Listener {
                     event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(newFoodLevel));
                 }
                 return;
+            case COD:
+            case SALMON:
+            case TROPICAL_FISH:
+            case COOKED_COD:
+            case COOKED_SALMON:
 
-            case COOKED_SALMON: /*
-                               * RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @
-                               * 1000
-                               */
                 if (Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_FISHERMANS_DIET)) {
-                    event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel1, newFoodLevel));
-                }
-                return;
-
-            case SALMON: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-                if (Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_FISHERMANS_DIET)) {
-                    event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel2, newFoodLevel));
+                    event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(newFoodLevel));
                 }
                 return;
 

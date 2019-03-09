@@ -89,7 +89,7 @@ public class FishingCommand extends SkillCommand {
 
         // FISHERMAN'S DIET
         if (canFishermansDiet) {
-            fishermansDietRank = calculateRank(skillValue, Fishing.fishermansDietMaxLevel, Fishing.fishermansDietRankLevel1);
+            fishermansDietRank = RankUtils.getRank(player, SubSkillType.FISHING_FISHERMANS_DIET);
         }
 
         // MASTER ANGLER

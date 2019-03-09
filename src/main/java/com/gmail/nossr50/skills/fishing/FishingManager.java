@@ -134,12 +134,11 @@ public class FishingManager extends SkillManager {
     /**
      * Handle the Fisherman's Diet ability
      *
-     * @param rankChange     The # of levels to change rank for the food
      * @param eventFoodLevel The initial change in hunger from the event
      *
      * @return the modified change in hunger for the event
      */
-    public int handleFishermanDiet(int rankChange, int eventFoodLevel) {
+    public int handleFishermanDiet(int eventFoodLevel) {
         return SkillUtils.handleFoodSkills(getPlayer(), eventFoodLevel, SubSkillType.FISHING_FISHERMANS_DIET);
     }
 
