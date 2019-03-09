@@ -5,11 +5,14 @@ import com.google.common.io.Files;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
+import ninja.leaping.configurate.loader.ConfigurationLoader;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -17,11 +20,14 @@ import java.util.List;
  */
 public abstract class Config implements VersionedConfig, Unload {
 
+    public static final String HOCON_FILE_EXTENSION = ".conf";
     /* SETTINGS */
     //private static final String FILE_EXTENSION = ".conf"; //HOCON
     private boolean mergeNewKeys; //Whether or not to merge keys found in the default config
     private boolean removeOldKeys; //Whether or not to remove unused keys form the config
     private boolean copyDefaults; //Whether or not to copy the default config when first creating the file
+    private boolean generateDefaults; //Whether or not we use Configurate to generate a default file, if this is false we copy the file from the JAR
+    private String fileName; //The file name of the config
 
     /* PATH VARS */
 
@@ -56,16 +62,18 @@ public abstract class Config implements VersionedConfig, Unload {
         System.out.println("mcMMO Debug: Don't forget to check if loading config file by string instead of File works...");
     }*/
 
-    public Config(File pathToParentFolder, String relativePath, boolean mergeNewKeys, boolean copyDefaults, boolean removeOldKeys) {
+    public Config(String fileName, File pathToParentFolder, String relativePath, boolean generateDefaults, boolean mergeNewKeys, boolean copyDefaults, boolean removeOldKeys) {
         /*
          * These must be at the top
          */
+        this.fileName = fileName;
+        this.generateDefaults = generateDefaults;
         this.copyDefaults = copyDefaults;
         this.mergeNewKeys = mergeNewKeys; //Whether or not we add new keys when they are found
         this.removeOldKeys = removeOldKeys;
         mkdirDefaults(); // Make our default config dir
         DIRECTORY_DATA_FOLDER = pathToParentFolder; //Data Folder for our plugin
-        FILE_RELATIVE_PATH = relativePath; //Relative path to config from a parent folder
+        FILE_RELATIVE_PATH = relativePath + fileName + HOCON_FILE_EXTENSION; //Relative path to config from a parent folder
 
         //Attempt IO Operations
         try {
@@ -151,8 +159,38 @@ public abstract class Config implements VersionedConfig, Unload {
      * @throws IOException
      */
     private File initDefaultConfig() throws IOException {
-        return copyDefaultFromJar(getDefaultConfigCopyRelativePath(), true);
+        if(generateDefaults)
+        {
+            return generateDefaultFile();
+        } else
+            return copyDefaultFromJar(getDefaultConfigCopyRelativePath(), true);
     }
+
+    /**
+     * Generates a default config file using the Configurate library, makes use of @Setting and @ConfigSerializable annotations in the config file
+     * Assigns the default root node to the newly loaded default config if successful
+     * @return the File for the newly created config
+     */
+    private File generateDefaultFile()
+    {
+        //Not sure if this will work properly...
+        Path potentialFile = Paths.get(getDefaultConfigCopyRelativePath());
+        ConfigurationLoader<CommentedConfigurationNode> generation_loader
+                = HoconConfigurationLoader.builder().setPath(potentialFile).build();
+        try {
+            defaultRootNode = generation_loader.load();
+            generation_loader.save(defaultRootNode);
+            mcMMO.p.getLogger().info("Generated a default file for "+fileName);
+        } catch(IOException e) {
+            mcMMO.p.getLogger().severe("Error when trying to generate a default configuration file for " + getDefaultConfigCopyRelativePath());
+            e.printStackTrace();
+        }
+
+        //Return the default file
+        return getDefaultConfigFile();
+    }
+
+
 
     /**
      * Attemps to load the config file if it exists, if it doesn't it copies a new one from within the JAR
@@ -240,6 +278,15 @@ public abstract class Config implements VersionedConfig, Unload {
      */
     private String getDefaultConfigCopyRelativePath() {
         return DIRECTORY_DEFAULTS + File.separator + FILE_RELATIVE_PATH;
+    }
+
+    /**
+     * Grabs the File representation of the default config, which is stored on disk in a defaults folder
+     * this file will be overwritten every time mcMMO starts to keep it up to date.
+     * @return the copy of the default config file, stored in the defaults directory
+     */
+    private File getDefaultConfigFile() {
+        return new File(DIRECTORY_DATA_FOLDER, DIRECTORY_DEFAULTS + File.separator + FILE_RELATIVE_PATH);
     }
 
     /**

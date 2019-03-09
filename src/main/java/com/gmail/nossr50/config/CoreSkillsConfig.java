@@ -4,14 +4,16 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
+@ConfigSerializable
 public class CoreSkillsConfig extends Config {
     public static final String ENABLED = "Enabled";
     //private static CoreSkillsConfig instance;
 
     public CoreSkillsConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(),"coreskills.yml", true);
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(),"coreskills.yml", true, true, true);
+        super("coreskills", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, true, true, true);
     }
 
     /**

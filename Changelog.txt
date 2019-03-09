@@ -115,6 +115,7 @@ Version 2.1.16
     Breaking Kelp should now count the whole plant for XP
     Spawned Mobs that are not supposed to award XP will no longer reward XP once transformed (ie: drowned)
     mcMMO's config system has been rewritten
+    Repair and Salvage configs are now confined to a single file
     mcMMO will no longer shutdown if it finds invalid config entries
     mcMMO will nag admins about invalid config entries when they join the server
     mcMMO's mod config system has been temporarily disabled as modded bukkit servers don't exist anymore (Forge Bukkit hybrid servers)

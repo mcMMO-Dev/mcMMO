@@ -1,6 +1,7 @@
 package com.gmail.nossr50.config.treasure;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.config.Registers;
 import com.gmail.nossr50.config.UnsafeValueValidation;
 import com.gmail.nossr50.datatypes.treasure.EnchantmentTreasure;
@@ -56,7 +57,7 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
     }
 
     public FishingTreasureConfig() {
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "fishing_treasures.yml", false, true, false);
+        super("fishing_drops", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, false, true, false);
         register();
     }
 

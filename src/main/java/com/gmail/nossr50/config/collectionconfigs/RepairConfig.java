@@ -1,6 +1,7 @@
 package com.gmail.nossr50.config.collectionconfigs;
 
 import com.gmail.nossr50.config.ConfigCollection;
+import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.mcMMO;
@@ -9,6 +10,7 @@ import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import ninja.leaping.configurate.ConfigurationNode;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -18,6 +20,7 @@ import java.util.List;
 /**
  * This config
  */
+@ConfigSerializable
 public class RepairConfig extends ConfigCollection {
 
     public static final String REPAIRABLES = "Repairables";
@@ -31,9 +34,9 @@ public class RepairConfig extends ConfigCollection {
     public static final String MINIMUM_LEVEL = "MinimumLevel";
     public static final String MINIMUM_QUANTITY = "MinimumQuantity";
 
-    public RepairConfig(String fileName, boolean merge, boolean copyDefaults) {
+    public RepairConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), fileName, false);
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(), fileName, merge, copyDefaults, false);
+        super("repair", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_SKILLS_DIR, true, false, true, false);
         register();
     }
 

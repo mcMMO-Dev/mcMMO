@@ -1,6 +1,7 @@
 package com.gmail.nossr50.config.collectionconfigs;
 
 import com.gmail.nossr50.config.ConfigCollection;
+import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.mcMMO;
@@ -9,12 +10,14 @@ import com.gmail.nossr50.skills.salvage.salvageables.SalvageableFactory;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import ninja.leaping.configurate.ConfigurationNode;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@ConfigSerializable
 public class SalvageConfig extends ConfigCollection {
 
     public static final String SALVAGEABLES = "Salvageables";
@@ -27,9 +30,9 @@ public class SalvageConfig extends ConfigCollection {
     public static final String XP_MULTIPLIER = "XpMultiplier";
     public static final String MAXIMUM_QUANTITY = "MaximumQuantity";
 
-    public SalvageConfig(String fileName, boolean merge, boolean copyDefaults) {
+    public SalvageConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), fileName, false);
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(), fileName, merge, copyDefaults, false);
+        super("salvage", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_SKILLS_DIR, true, false, true, false);
         register();
     }
 

@@ -3,10 +3,12 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.mcMMO;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@ConfigSerializable
 public class RankConfig extends ConfigValidated {
     public static final String RETRO_MODE = "RetroMode";
     public static final String STANDARD = "Standard";
@@ -14,7 +16,7 @@ public class RankConfig extends ConfigValidated {
 
     public RankConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(),"skillranks.yml", true);
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(),"skillranks.yml", true, true, true);
+        super("skillranks", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, true, true, true);
         //this.instance = this;
     }
 

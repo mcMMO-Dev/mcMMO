@@ -11,10 +11,12 @@ public class ConfigConstants {
     /* FOLDER NAMES */
     public static final String FOLDER_NAME_CONFIG = "config";
     public static final String FOLDER_NAME_SKILLS = "skills";
+    public static final String FOLDER_NAME_EXPERIENCE = "Experience Settings";
 
     /* RELATIVE PATHS */
-    public final static String RELATIVE_PATH_CONFIG_DIR = File.separator + FOLDER_NAME_CONFIG;
-    public final static String RELATIVE_PATH_SKILLS_DIR = RELATIVE_PATH_CONFIG_DIR + File.separator + FOLDER_NAME_SKILLS;
+    public final static String RELATIVE_PATH_CONFIG_DIR = File.separator + FOLDER_NAME_CONFIG + File.separator;
+    public final static String RELATIVE_PATH_SKILLS_DIR = RELATIVE_PATH_CONFIG_DIR + FOLDER_NAME_SKILLS + File.separator;
+    public final static String RELATIVE_PATH_XP_DIR     = RELATIVE_PATH_CONFIG_DIR + FOLDER_NAME_EXPERIENCE + File.separator;
 
     /**
      * Return the data folder for mcMMO

@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config.experience;
 
+import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.config.ConfigValidated;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
@@ -7,6 +8,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import org.bukkit.Material;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -15,6 +17,7 @@ import org.bukkit.entity.EntityType;
 import java.util.ArrayList;
 import java.util.List;
 
+@ConfigSerializable
 public class ExperienceConfig extends ConfigValidated {
     public static final String EXPLOIT_FIX = "ExploitFix";
     public static final String ENDERMAN_ENDERMITE_FARMS = "EndermanEndermiteFarms";
@@ -79,7 +82,7 @@ public class ExperienceConfig extends ConfigValidated {
     //TODO: Should merge be false? Seems okay to leave it as true..
     public ExperienceConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "experience.yml", true);
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "experience.yml", true, true, false);
+        super("experience", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, false, true, false);
     }
 
     /**

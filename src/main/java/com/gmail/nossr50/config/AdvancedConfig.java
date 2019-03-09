@@ -4,11 +4,13 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.mcMMO;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@ConfigSerializable
 public class AdvancedConfig extends ConfigValidated {
 
     public static final String SKILLS = "Skills";
@@ -125,7 +127,7 @@ public class AdvancedConfig extends ConfigValidated {
 
     public AdvancedConfig() {
         //super(mcMMO.getDataFolderPath().getAbsoluteFile(), "advanced.yml", true);
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "advanced.yml", true, true, true);
+        super("advanced", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, true, true, true);
     }
 
     @Override

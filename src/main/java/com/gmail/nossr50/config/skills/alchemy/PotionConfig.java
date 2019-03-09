@@ -1,11 +1,13 @@
 package com.gmail.nossr50.config.skills.alchemy;
 
 import com.gmail.nossr50.config.ConfigCollection;
+import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -23,6 +25,7 @@ import java.util.Map;
 /**
  * Eventually I'm going to delete all of our Alchemy code and rewrite it from scratch
  */
+@ConfigSerializable
 public class PotionConfig extends ConfigCollection {
 
     /* CONSTANTS */
@@ -63,7 +66,7 @@ public class PotionConfig extends ConfigCollection {
     private Map<String, AlchemyPotion> potionMap = new HashMap<String, AlchemyPotion>();
 
     public PotionConfig() {
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "potions.yml", true, true, true);
+        super("skillranks", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, true, true, true);
         initIngredientLists();
         register();
     }

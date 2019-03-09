@@ -12,7 +12,8 @@ public class ConfigDatabase extends Config {
     private ConfigCategoryMySQL configCategoryMySQL;
 
     public ConfigDatabase() {
-        super(ConfigConstants.getDataFolder(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, false, true);
+        super("mysql", ConfigConstants.getDataFolder(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR,
+                true,true, false, true);
     }
 
     @Override

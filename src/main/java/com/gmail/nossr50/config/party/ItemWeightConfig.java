@@ -1,6 +1,7 @@
 package com.gmail.nossr50.config.party;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
@@ -16,7 +17,7 @@ public class ItemWeightConfig extends Config {
 
     public ItemWeightConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "itemweights.yml");
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "itemweights.yml", true, true, false);
+        super("itemweights", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, true, true, false);
     }
 
     /**

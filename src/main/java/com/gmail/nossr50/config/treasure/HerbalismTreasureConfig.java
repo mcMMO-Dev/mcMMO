@@ -1,6 +1,7 @@
 package com.gmail.nossr50.config.treasure;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.config.Registers;
 import com.gmail.nossr50.config.UnsafeValueValidation;
 import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
@@ -28,7 +29,7 @@ public class HerbalismTreasureConfig extends Config implements UnsafeValueValida
     public HashMap<String, List<HylianTreasure>> hylianMap = new HashMap<String, List<HylianTreasure>>();
 
     public HerbalismTreasureConfig() {
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "herbalism_treasures.yml", false, true, false);
+        super("hylian_luck_drops", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, false, true, false);
         register();
     }
 

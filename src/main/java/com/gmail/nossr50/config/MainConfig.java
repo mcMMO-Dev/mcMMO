@@ -7,6 +7,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.EntityType;
@@ -14,6 +15,7 @@ import org.bukkit.entity.EntityType;
 import java.util.ArrayList;
 import java.util.List;
 
+@ConfigSerializable
 public class MainConfig extends ConfigValidated {
 
     public static final String METRICS = "Metrics";
@@ -205,7 +207,7 @@ public class MainConfig extends ConfigValidated {
 
     public MainConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "config.yml", true);
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "config.yml", true, true, true);
+        super("main", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, true, true, true);
     }
 
     /**

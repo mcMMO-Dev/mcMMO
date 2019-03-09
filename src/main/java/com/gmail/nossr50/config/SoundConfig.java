@@ -2,10 +2,12 @@ package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.sounds.SoundType;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@ConfigSerializable
 public class SoundConfig extends ConfigValidated {
     public static final String SOUNDS = "Sounds";
     public static final String VOLUME = "Volume";
@@ -16,7 +18,7 @@ public class SoundConfig extends ConfigValidated {
 
     public SoundConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "sounds.yml", true);
-        super(mcMMO.p.getDataFolder().getAbsoluteFile(), "sounds.yml", true, true, true);
+        super("sounds", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, true, true, true);
     }
 
     /**

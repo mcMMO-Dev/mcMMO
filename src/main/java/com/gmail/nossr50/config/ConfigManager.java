@@ -1,7 +1,7 @@
 package com.gmail.nossr50.config;
 
-import com.gmail.nossr50.config.collectionconfigs.CollectionClassType;
-import com.gmail.nossr50.config.collectionconfigs.MultiConfigContainer;
+import com.gmail.nossr50.config.collectionconfigs.RepairConfig;
+import com.gmail.nossr50.config.collectionconfigs.SalvageConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.hocon.database.ConfigDatabase;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
@@ -24,12 +24,6 @@ import java.util.ArrayList;
  * This makes sure that mcMMO properly loads and unloads its values on reload
  *
  * Config Manager also holds all of our MultiConfigContainers
- *
- * MultiConfigContainers
- *      Represents a collection of config files that serve a similar purpose
- *      As an example, with Repair you can have an unlimited number of files named repair.*.yml and each one will be treated the same and have its collections registered
- *      The master file is always named x.vanilla.yml, for example "repair.vanilla.yml"
- *          To be honest I'm not sure how many people make use of this system, but I'm keeping it since its been in mcMMO for like 6+ years
  */
 public final class ConfigManager {
 
@@ -40,8 +34,8 @@ public final class ConfigManager {
 
     /* MULTI CONFIG INSTANCES */
 
-    private MultiConfigContainer<Repairable> repairableMultiConfigContainer;
-    private MultiConfigContainer<Salvageable> salvageableMultiConfigContainer;
+    //private MultiConfigContainer<Repairable> repairableMultiConfigContainer;
+    //private MultiConfigContainer<Salvageable> salvageableMultiConfigContainer;
 
     /* COLLECTION MANAGERS */
 
@@ -77,6 +71,8 @@ public final class ConfigManager {
     private SoundConfig soundConfig;
     private RankConfig rankConfig;
     private ItemWeightConfig itemWeightConfig;
+    private RepairConfig repairConfig;
+    private SalvageConfig salvageConfig;
 
     /* CONFIG ERRORS */
 
@@ -116,6 +112,11 @@ public final class ConfigManager {
 
         itemWeightConfig = new ItemWeightConfig();
 
+        repairConfig = new RepairConfig();
+
+        salvageConfig = new SalvageConfig();
+
+
         /*if (MainConfig.getInstance().getToolModsEnabled()) {
             new ToolConfigManager();
         }
@@ -133,7 +134,7 @@ public final class ConfigManager {
         }*/
 
         // Multi Config Containers
-        initMultiConfigContainers();
+        //initMultiConfigContainers();
 
         /*
          * Managers
@@ -155,7 +156,7 @@ public final class ConfigManager {
     /**
      * Initializes all of our Multi Config Containers
      */
-    private void initMultiConfigContainers()
+    /*private void initMultiConfigContainers()
     {
         //Repair
         repairableMultiConfigContainer = new MultiConfigContainer<>("repair", CollectionClassType.REPAIR);
@@ -164,7 +165,7 @@ public final class ConfigManager {
         //Salvage
         salvageableMultiConfigContainer = new MultiConfigContainer<>("salvage", CollectionClassType.SALVAGE);
         unloadables.add(salvageableMultiConfigContainer);
-    }
+    }*/
 
     /**
      * Initializes any managers related to config collections
@@ -186,7 +187,7 @@ public final class ConfigManager {
      */
     public ArrayList<Repairable> getRepairables()
     {
-        return (ArrayList<Repairable>) repairableMultiConfigContainer.getCollection();
+        return (ArrayList<Repairable>) repairConfig.genericCollection;
     }
 
     /**
@@ -195,7 +196,7 @@ public final class ConfigManager {
      */
     public ArrayList<Salvageable> getSalvageables()
     {
-        return (ArrayList<Salvageable>) salvageableMultiConfigContainer.getCollection();
+        return (ArrayList<Salvageable>) salvageConfig.genericCollection;
     }
 
     /**
