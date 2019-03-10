@@ -271,6 +271,7 @@ Skills:
     ###
     Mining:
         DoubleDrops:
+            SilkTouch: true
             # ChanceMax: Maximum chance of receiving double drops when on <MaxBonusLevel> or higher
             # MaxBonusLevel: Level when <ChanceMax> of receiving double drops is reached
             ChanceMax: 100.0

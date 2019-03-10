@@ -87,6 +87,9 @@ public class MiningManager extends SkillManager {
 
         boolean silkTouch = player.getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH);
 
+        if(silkTouch && !AdvancedConfig.getInstance().getDoubleDropSilkTouchEnabled())
+            return;
+
         //TODO: Make this readable
         for (int i = mcMMOPlayer.getAbilityMode(skill.getAbility()) ? 2 : 1; i != 0; i--) {
             if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.MINING_DOUBLE_DROPS, player)) {

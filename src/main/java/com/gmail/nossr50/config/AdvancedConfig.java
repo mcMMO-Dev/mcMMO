@@ -903,6 +903,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getGreenThumbStageChange() { return config.getInt("Skills.Herbalism.GreenThumb.StageChange", 200); }
 
     /* MINING */
+    public boolean getDoubleDropSilkTouchEnabled() { return config.getBoolean("Skills.Mining.DoubleDrops.SilkTouch", true); }
     public int getBlastMiningRankLevel(int rank) { return config.getInt("Skills.Mining.BlastMining.Rank_Levels.Rank_" + rank); }
     public double getBlastDamageDecrease(int rank) { return config.getDouble("Skills.Mining.BlastMining.BlastDamageDecrease.Rank_" + rank); }
     public double getOreBonus(int rank) { return config.getDouble("Skills.Mining.BlastMining.OreBonus.Rank_" + rank); }

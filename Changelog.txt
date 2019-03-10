@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 2.1.14
+    Added a config option to toggle double drops for Silk Touch pickaxes (advanced.yml "Skills.Mining.DoubleDrops.SilkTouch"
     Mycelium removed from Woodcutting XP tables (because its soil!)
     Kelp added to Herbalism XP tables
     mcMMO now flags blocks moved by piston as not natural to prevent automated XP farms
