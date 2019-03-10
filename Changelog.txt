@@ -8,6 +8,9 @@ Key:
   - Removal
 
 Version 2.1.14
+    Fixed a bug where Fuel Efficiency was way too good
+    Fuel Efficiency now uses the rank system
+    Removed Fuel Efficiency config options in advanced.yml
     Added Tropical Fish, Raw Cod, Raw Salmon to the list of foods that benefit from Fisherman's Diet
     Fixed a display issue with Fisherman's Diet
 

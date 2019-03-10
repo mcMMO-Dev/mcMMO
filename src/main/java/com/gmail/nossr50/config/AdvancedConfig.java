@@ -438,10 +438,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Smelting.FuelEfficiency.MaxBonusLevel should be at least 1!");
         }
 
-        if (getBurnTimeMultiplier() < 1) {
-            reason.add("Skills.Smelting.FuelEfficiency.Multiplier should be at least 1!");
-        }
-
         if (getMaxBonusLevel(SubSkillType.SMELTING_SECOND_SMELT) < 1) {
             reason.add("Skills.Smelting.SecondSmelt.MaxBonusLevel should be at least 1!");
         }
@@ -939,8 +935,12 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getArcaneSalvageExtractPartialEnchantsChance(int rank) { return config.getDouble("Skills.Salvage.ArcaneSalvage.ExtractPartialEnchant.Rank_" + rank); }
 
     /* SMELTING */
-    public int getBurnModifierMaxLevel() { return config.getInt("Skills.Smelting.FuelEfficiency.MaxBonusLevel", 100); }
-    public double getBurnTimeMultiplier() { return config.getDouble("Skills.Smelting.FuelEfficiency.Multiplier", 3.0D); }
+    public int getBurnModifierMaxLevel() {
+        if(mcMMO.isRetroModeEnabled())
+            return config.getInt("Skills.Smelting.FuelEfficiency.RetroMode.MaxBonusLevel", 1000);
+        else
+            return config.getInt("Skills.Smelting.FuelEfficiency.Standard.MaxBonusLevel", 100);
+    }
 
     /*public int getFluxMiningUnlockLevel() { return config.getInt("Skills.Smelting.FluxMining.UnlockLevel", 250); }*/
     public double getFluxMiningChance() { return config.getDouble("Skills.Smelting.FluxMining.Chance", 33.0D); }

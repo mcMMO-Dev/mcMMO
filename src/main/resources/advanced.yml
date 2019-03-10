@@ -409,14 +409,6 @@ Skills:
     #  Settings for Smelting
     ###
     Smelting:
-        FuelEfficiency:
-            # Multiplier: The furnace burn time will be multiplied by this value.
-            # MaxBonusLevel: On this level, the efficiency multiplier will stop increasing
-            Multiplier: 3.0
-            MaxBonusLevel:
-                Standard: 100
-                RetroMode: 1000
-
         SecondSmelt:
             # ChanceMax: Maximum chance of triggering Second Smelt
             # MaxBonusLevel: On this level, the chance to cause Second Smelt will be <ChanceMax>

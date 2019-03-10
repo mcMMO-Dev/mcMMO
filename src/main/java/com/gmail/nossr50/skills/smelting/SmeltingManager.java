@@ -102,9 +102,22 @@ public class SmeltingManager extends SkillManager {
      * @param burnTime The initial burn time from the {@link FurnaceBurnEvent}
      */
     public int fuelEfficiency(int burnTime) {
-        double burnModifier = 1 + (((double) getSkillLevel() / Smelting.burnModifierMaxLevel) * Smelting.burnTimeMultiplier);
+        return burnTime * getFuelEfficiencyMultiplier();
+    }
 
-        return (int) (burnTime * burnModifier);
+    public int getFuelEfficiencyMultiplier()
+    {
+        switch(RankUtils.getRank(getPlayer(), SubSkillType.SMELTING_FUEL_EFFICIENCY))
+        {
+            case 1:
+                return 2;
+            case 2:
+                return 3;
+            case 3:
+                return 4;
+            default:
+                return 1;
+        }
     }
 
     public ItemStack smeltProcessing(ItemStack smelting, ItemStack result) {
