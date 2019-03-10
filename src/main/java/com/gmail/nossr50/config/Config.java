@@ -76,7 +76,10 @@ public abstract class Config implements VersionedConfig, Unload {
 
         DIRECTORY_DATA_FOLDER = pathToParentFolder; //Data Folder for our plugin
         FILE_RELATIVE_PATH = relativePath + fileName + HOCON_FILE_EXTENSION; //Relative path to config from a parent folder
+    }
 
+    public void initFullConfig()
+    {
         //Attempt IO Operations
         try {
             //Makes sure we have valid Files corresponding to this config
@@ -181,17 +184,20 @@ public abstract class Config implements VersionedConfig, Unload {
         Path potentialFile = Paths.get(getDefaultConfigCopyRelativePath());
         ConfigurationLoader<CommentedConfigurationNode> generation_loader
                 = HoconConfigurationLoader.builder().setPath(potentialFile).build();
+
         try {
             mcMMO.p.getLogger().info("Config File Full Path: "+getDefaultConfigFile().getAbsolutePath());
             //Delete any existing default config
             if(getDefaultConfigFile().exists())
                 getDefaultConfigFile().delete();
 
+            //Make new file
+            getDefaultConfigFile().createNewFile();
+
             //Load the config
             defaultRootNode = generation_loader.load();
 
             //Save to a new file
-            getDefaultConfigFile().createNewFile();
             generation_loader.save(defaultRootNode);
 
             mcMMO.p.getLogger().info("Generated a default file for "+fileName);

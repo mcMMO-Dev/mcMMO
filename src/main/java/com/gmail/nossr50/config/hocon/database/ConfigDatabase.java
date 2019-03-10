@@ -14,6 +14,8 @@ public class ConfigDatabase extends Config {
     public ConfigDatabase() {
         super("mysql", ConfigConstants.getDataFolder(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR,
                 true,true, false, true);
+
+        initFullConfig(); //Load Config
     }
 
     @Override
