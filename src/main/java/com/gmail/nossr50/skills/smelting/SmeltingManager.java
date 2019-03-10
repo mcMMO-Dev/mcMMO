@@ -31,12 +31,12 @@ public class SmeltingManager extends SkillManager {
         super(mcMMOPlayer, PrimarySkillType.SMELTING);
     }
 
-    public boolean canUseFluxMining(BlockState blockState) {
+    /*public boolean canUseFluxMining(BlockState blockState) {
         return getSkillLevel() >= Smelting.fluxMiningUnlockLevel
                 && BlockUtils.affectedByFluxMining(blockState)
                 && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SMELTING_FLUX_MINING)
                 && !mcMMO.getPlaceStore().isTrue(blockState);
-    }
+    }*/
 
     public boolean isSecondSmeltSuccessful() {
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SMELTING_SECOND_SMELT)
@@ -49,7 +49,7 @@ public class SmeltingManager extends SkillManager {
      * @param blockState The {@link BlockState} to check ability activation for
      * @return true if the ability was successful, false otherwise
      */
-    public boolean processFluxMining(BlockState blockState) {
+    /*public boolean processFluxMining(BlockState blockState) {
         Player player = getPlayer();
 
         if (RandomChanceUtil.checkRandomChanceExecutionSuccess(getPlayer(), SubSkillType.SMELTING_FLUX_MINING, true)) {
@@ -94,7 +94,7 @@ public class SmeltingManager extends SkillManager {
         }
 
         return false;
-    }
+    }*/
 
     /**
      * Increases burn time for furnace fuel.
