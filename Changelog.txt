@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 2.1.14
+    mcMMO now flags blocks moved by piston as not natural to prevent automated XP farms
     Fixed a bug where Fuel Efficiency was way too good
     Fuel Efficiency now uses the rank system
     Removed Fuel Efficiency config options in advanced.yml

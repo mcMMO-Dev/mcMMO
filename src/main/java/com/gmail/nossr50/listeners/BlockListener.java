@@ -70,7 +70,7 @@ public class BlockListener implements Listener {
         movedBlock = movedBlock.getRelative(direction, 2);
 
         for (Block b : event.getBlocks()) {
-            if (BlockUtils.shouldBeWatched(b.getState()) && mcMMO.getPlaceStore().isTrue(b)) {
+            if (BlockUtils.shouldBeWatched(b.getState())) {
                 movedBlock = b.getRelative(direction);
                 mcMMO.getPlaceStore().setTrue(movedBlock);
             }
