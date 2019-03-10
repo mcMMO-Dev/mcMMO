@@ -7,6 +7,9 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.15
+    Fixed a bug where a max rank of Fuel Efficiency would cause its benefits to be lost
+
 Version 2.1.14
     Added a config option to toggle double drops for Silk Touch pickaxes (advanced.yml "Skills.Mining.DoubleDrops.SilkTouch"
     Mycelium removed from Woodcutting XP tables (because its soil!)

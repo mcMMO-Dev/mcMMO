@@ -212,12 +212,10 @@ Smelting:
             Rank_1: 10
             Rank_2: 50
             Rank_3: 75
-            Rank_4: 100
         RetroMode:
             Rank_1: 100
             Rank_2: 500
             Rank_3: 750
-            Rank_4: 1000
     UnderstandingTheArt:
         Standard:
             Rank_1: 10
