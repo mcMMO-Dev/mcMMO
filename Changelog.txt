@@ -115,6 +115,9 @@ Version 2.1.16
     Breaking Kelp should now count the whole plant for XP
     Spawned Mobs that are not supposed to award XP will no longer reward XP once transformed (ie: drowned)
     mcMMO's config system has been rewritten
+    MySQL Settings can now be found in the new Database config file
+    MySQL Settings now have more comments
+    MySQL User settings are now in the User Category instead of being in the Database category
     Repair and Salvage configs are now confined to a single file
     mcMMO will no longer shutdown if it finds invalid config entries
     mcMMO will nag admins about invalid config entries when they join the server
