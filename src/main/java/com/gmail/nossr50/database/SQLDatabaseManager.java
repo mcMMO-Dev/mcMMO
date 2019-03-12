@@ -21,7 +21,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public final class SQLDatabaseManager implements DatabaseManager {
     private static final String ALL_QUERY_VERSION = "total";
-    private String tablePrefix = MainConfig.getInstance().getMySQLTablePrefix();
+    public static final String COM_MYSQL_JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    private String tablePrefix = mcMMO.getMySQLConfigSettings().getConfigCategoryDatabase().getTablePrefix();
 
     private final Map<UUID, Integer> cachedUserIDs = new HashMap<UUID, Integer>();
 
@@ -32,10 +33,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private ReentrantLock massUpdateLock = new ReentrantLock();
 
     protected SQLDatabaseManager() {
-        String connectionString = "jdbc:mysql://" + MainConfig.getInstance().getMySQLServerName()
-                + ":" + MainConfig.getInstance().getMySQLServerPort() + "/" + MainConfig.getInstance().getMySQLDatabaseName();
+        String connectionString = "jdbc:mysql://" + mcMMO.getMySQLConfigSettings().getConfigCategoryServer().getServerAddress()
+                + ":" + mcMMO.getMySQLConfigSettings().getConfigCategoryServer().getServerPort() + "/" + mcMMO.getMySQLConfigSettings().getConfigCategoryDatabase().getDatabaseName();
 
-        if(MainConfig.getInstance().getMySQLSSL())
+        if(mcMMO.getMySQLConfigSettings().getConfigCategoryServer().isUseSSL())
             connectionString +=
                     "?verifyServerCertificate=false"+
                     "&useSSL=true"+
@@ -46,7 +47,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         try {
             // Force driver to load if not yet loaded
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(COM_MYSQL_JDBC_DRIVER);
         }
         catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -54,54 +55,56 @@ public final class SQLDatabaseManager implements DatabaseManager {
             //throw e; // aborts onEnable()  Riking if you want to do this, fully implement it.
         }
 
-
-        PoolProperties poolProperties = new PoolProperties();
-        poolProperties.setDriverClassName("com.mysql.jdbc.Driver");
-        poolProperties.setUrl(connectionString);
-        poolProperties.setUsername(MainConfig.getInstance().getMySQLUserName());
-        poolProperties.setPassword(MainConfig.getInstance().getMySQLUserPassword());
-        poolProperties.setMaxIdle(MainConfig.getInstance().getMySQLMaxPoolSize(PoolIdentifier.MISC));
-        poolProperties.setMaxActive(MainConfig.getInstance().getMySQLMaxConnections(PoolIdentifier.MISC));
-        poolProperties.setInitialSize(0);
-        poolProperties.setMaxWait(-1);
-        poolProperties.setRemoveAbandoned(true);
-        poolProperties.setRemoveAbandonedTimeout(60);
-        poolProperties.setTestOnBorrow(true);
-        poolProperties.setValidationQuery("SELECT 1");
-        poolProperties.setValidationInterval(30000);
-        miscPool = new DataSource(poolProperties);
-        poolProperties = new PoolProperties();
-        poolProperties.setDriverClassName("com.mysql.jdbc.Driver");
-        poolProperties.setUrl(connectionString);
-        poolProperties.setUsername(MainConfig.getInstance().getMySQLUserName());
-        poolProperties.setPassword(MainConfig.getInstance().getMySQLUserPassword());
-        poolProperties.setInitialSize(0);
-        poolProperties.setMaxIdle(MainConfig.getInstance().getMySQLMaxPoolSize(PoolIdentifier.SAVE));
-        poolProperties.setMaxActive(MainConfig.getInstance().getMySQLMaxConnections(PoolIdentifier.SAVE));
-        poolProperties.setMaxWait(-1);
-        poolProperties.setRemoveAbandoned(true);
-        poolProperties.setRemoveAbandonedTimeout(60);
-        poolProperties.setTestOnBorrow(true);
-        poolProperties.setValidationQuery("SELECT 1");
-        poolProperties.setValidationInterval(30000);
-        savePool = new DataSource(poolProperties);
-        poolProperties = new PoolProperties();
-        poolProperties.setDriverClassName("com.mysql.jdbc.Driver");
-        poolProperties.setUrl(connectionString);
-        poolProperties.setUsername(MainConfig.getInstance().getMySQLUserName());
-        poolProperties.setPassword(MainConfig.getInstance().getMySQLUserPassword());
-        poolProperties.setInitialSize(0);
-        poolProperties.setMaxIdle(MainConfig.getInstance().getMySQLMaxPoolSize(PoolIdentifier.LOAD));
-        poolProperties.setMaxActive(MainConfig.getInstance().getMySQLMaxConnections(PoolIdentifier.LOAD));
-        poolProperties.setMaxWait(-1);
-        poolProperties.setRemoveAbandoned(true);
-        poolProperties.setRemoveAbandonedTimeout(60);
-        poolProperties.setTestOnBorrow(true);
-        poolProperties.setValidationQuery("SELECT 1");
-        poolProperties.setValidationInterval(30000);
-        loadPool = new DataSource(poolProperties);
+        //Setup Save, Load, and Misc pools
+        setupPools(connectionString);
 
         checkStructure();
+    }
+
+    /**
+     * Set up our pools
+     * @param connectionString the MySQL connection string
+     */
+    private void setupPools(String connectionString)
+    {
+        miscPool = new DataSource(setupPool(PoolIdentifier.MISC, connectionString));
+        loadPool = new DataSource(setupPool(PoolIdentifier.LOAD, connectionString));
+        savePool = new DataSource(setupPool(PoolIdentifier.SAVE, connectionString));
+    }
+
+    /**
+     * Sets up our pool using settings from the users config
+     * @param poolIdentifier the target pool
+     * @param connectionString the MySQL connection string
+     * @return the pool properties ready for conversion
+     */
+    private PoolProperties setupPool(PoolIdentifier poolIdentifier, String connectionString)
+    {
+        PoolProperties poolProperties = new PoolProperties();
+        poolProperties.setDriverClassName(COM_MYSQL_JDBC_DRIVER);
+        poolProperties.setUrl(connectionString);
+
+        //MySQL User Name
+        poolProperties.setUsername(mcMMO.getMySQLConfigSettings().getConfigCategoryUser().getUsername());
+        //MySQL User Password
+        poolProperties.setPassword(mcMMO.getMySQLConfigSettings().getConfigCategoryUser().getPassword());
+
+        //Initial Size
+        poolProperties.setInitialSize(0);
+
+        //Max Pool Size for Misc
+        poolProperties.setMaxIdle(mcMMO.getMySQLConfigSettings().getMaxPoolSize(poolIdentifier));
+        //Max Connections for Misc
+        poolProperties.setMaxActive(mcMMO.getMySQLConfigSettings().getMaxConnections(poolIdentifier));
+
+        poolProperties.setMaxWait(-1);
+        poolProperties.setRemoveAbandoned(true);
+        poolProperties.setRemoveAbandonedTimeout(60);
+        poolProperties.setTestOnBorrow(true);
+        poolProperties.setValidationQuery("SELECT 1");
+        poolProperties.setValidationInterval(30000);
+
+        return poolProperties;
     }
 
     public void purgePowerlessUsers() {
@@ -779,7 +782,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement = connection.prepareStatement("SELECT table_name FROM INFORMATION_SCHEMA.TABLES"
                     + " WHERE table_schema = ?"
                     + " AND table_name = ?");
-            statement.setString(1, MainConfig.getInstance().getMySQLDatabaseName());
+            //Database name
+            statement.setString(1, mcMMO.getMySQLConfigSettings().getConfigCategoryDatabase().getDatabaseName());
             statement.setString(2, tablePrefix + "users");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -795,7 +799,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 tryClose(createStatement);
             }
             tryClose(resultSet);
-            statement.setString(1, MainConfig.getInstance().getMySQLDatabaseName());
+            //Database name
+            statement.setString(1, mcMMO.getMySQLConfigSettings().getConfigCategoryDatabase().getDatabaseName());
             statement.setString(2, tablePrefix + "huds");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -809,7 +814,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 tryClose(createStatement);
             }
             tryClose(resultSet);
-            statement.setString(1, MainConfig.getInstance().getMySQLDatabaseName());
+            //Database name
+            statement.setString(1, mcMMO.getMySQLConfigSettings().getConfigCategoryDatabase().getDatabaseName());
             statement.setString(2, tablePrefix + "cooldowns");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -834,7 +840,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 tryClose(createStatement);
             }
             tryClose(resultSet);
-            statement.setString(1, MainConfig.getInstance().getMySQLDatabaseName());
+            //Database name
+            statement.setString(1, mcMMO.getMySQLConfigSettings().getConfigCategoryDatabase().getDatabaseName());
             statement.setString(2, tablePrefix + "skills");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -862,7 +869,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 tryClose(createStatement);
             }
             tryClose(resultSet);
-            statement.setString(1, MainConfig.getInstance().getMySQLDatabaseName());
+            //Database name
+            statement.setString(1, mcMMO.getMySQLConfigSettings().getConfigCategoryDatabase().getDatabaseName());
             statement.setString(2, tablePrefix + "experience");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {

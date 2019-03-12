@@ -12,11 +12,7 @@ public class ConfigCategoryDatabase {
     @Setting(value = "Table_Prefix", comment = "The Prefix that will be used for tables in your DB")
     private String tablePrefix = "mcmmo_";
 
-    @Setting(value = "Max_Connections", comment = "This setting is the max simultaneous MySQL/MariaDB connections allowed at a time, this needs to be high enough to support multiple player logins in quick succession")
-    private ConfigCategoryMaxConnections configCategoryMaxConnections;
 
-    @Setting(value = "Max_Pool_Size", comment = "This setting is the max size of the pool of cached connections that we hold at any given time.")
-    private ConfigCategoryMaxPoolSize configCategoryMaxPoolSize;
 
     /*
      * GETTER BOILERPLATE
@@ -30,11 +26,5 @@ public class ConfigCategoryDatabase {
         return tablePrefix;
     }
 
-    public ConfigCategoryMaxConnections getConfigCategoryMaxConnections() {
-        return configCategoryMaxConnections;
-    }
 
-    public ConfigCategoryMaxPoolSize getConfigCategoryMaxPoolSize() {
-        return configCategoryMaxPoolSize;
-    }
 }

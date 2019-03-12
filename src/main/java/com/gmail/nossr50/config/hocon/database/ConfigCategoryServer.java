@@ -17,6 +17,12 @@ public class ConfigCategoryServer {
     @Setting(value = "Server_Address", comment = "The address for your MySQL/MariaDB server")
     private String serverAddress = "localhost";
 
+    @Setting(value = "Max_Connections", comment = "This setting is the max simultaneous MySQL/MariaDB connections allowed at a time, this needs to be high enough to support multiple player logins in quick succession")
+    private ConfigCategoryMaxConnections configCategoryMaxConnections;
+
+    @Setting(value = "Max_Pool_Size", comment = "This setting is the max size of the pool of cached connections that we hold at any given time.")
+    private ConfigCategoryMaxPoolSize configCategoryMaxPoolSize;
+
     /*
      * GETTER BOILERPLATE
      */
@@ -32,4 +38,14 @@ public class ConfigCategoryServer {
     public String getServerAddress() {
         return serverAddress;
     }
+
+    public ConfigCategoryMaxConnections getConfigCategoryMaxConnections() {
+        return configCategoryMaxConnections;
+    }
+
+    public ConfigCategoryMaxPoolSize getConfigCategoryMaxPoolSize() {
+        return configCategoryMaxPoolSize;
+    }
+
+
 }

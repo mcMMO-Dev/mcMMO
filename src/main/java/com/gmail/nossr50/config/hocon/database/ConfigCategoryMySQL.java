@@ -1,5 +1,7 @@
 package com.gmail.nossr50.config.hocon.database;
 
+import com.gmail.nossr50.database.SQLDatabaseManager;
+import com.gmail.nossr50.mcMMO;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -26,11 +28,45 @@ public class ConfigCategoryMySQL {
         return enabled;
     }
 
+    public ConfigCategoryUser getConfigCategoryUser() {
+        return configCategoryUser;
+    }
+
     public ConfigCategoryDatabase getConfigCategoryDatabase() {
         return configCategoryDatabase;
     }
 
     public ConfigCategoryServer getConfigCategoryServer() {
         return configCategoryServer;
+    }
+
+    public int getMaxPoolSize(SQLDatabaseManager.PoolIdentifier poolIdentifier)
+    {
+        switch (poolIdentifier)
+        {
+            case LOAD:
+                return configCategoryServer.getConfigCategoryMaxPoolSize().getLoad();
+            case SAVE:
+                return configCategoryServer.getConfigCategoryMaxPoolSize().getSave();
+            case MISC:
+                return configCategoryServer.getConfigCategoryMaxPoolSize().getMisc();
+            default:
+                return 20;
+        }
+    }
+
+    public int getMaxConnections(SQLDatabaseManager.PoolIdentifier poolIdentifier)
+    {
+        switch (poolIdentifier)
+        {
+            case LOAD:
+                return configCategoryServer.getConfigCategoryMaxPoolSize().getLoad();
+            case SAVE:
+                return configCategoryServer.getConfigCategoryMaxPoolSize().getSave();
+            case MISC:
+                return configCategoryServer.getConfigCategoryMaxPoolSize().getMisc();
+            default:
+                return 20;
+        }
     }
 }
