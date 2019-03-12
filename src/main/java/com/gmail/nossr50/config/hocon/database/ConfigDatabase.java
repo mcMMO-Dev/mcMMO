@@ -8,15 +8,23 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 @ConfigSerializable
 public class ConfigDatabase extends Config {
 
-    @Setting(value = "MySQL", comment = "Settings for using MySQL or MariaDB database")
-    private ConfigCategoryMySQL configCategoryMySQL;
-
     public ConfigDatabase() {
         super("mysql", ConfigConstants.getDataFolder(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR,
                 true,true, false, true);
 
         initFullConfig(); //Load Config
     }
+
+    /*
+     * CONFIG NODES
+     */
+
+    @Setting(value = "MySQL", comment = "Settings for using MySQL or MariaDB database")
+    private UserConfigSectionMySQL userConfigSectionMySQL;
+
+    /*
+     * CLASS OVERRIDES
+     */
 
     @Override
     public void unload() {
@@ -37,7 +45,7 @@ public class ConfigDatabase extends Config {
      * GETTER BOILERPLATE
      */
 
-    public ConfigCategoryMySQL getConfigCategoryMySQL() {
-        return configCategoryMySQL;
+    public UserConfigSectionMySQL getUserConfigSectionMySQL() {
+        return userConfigSectionMySQL;
     }
 }

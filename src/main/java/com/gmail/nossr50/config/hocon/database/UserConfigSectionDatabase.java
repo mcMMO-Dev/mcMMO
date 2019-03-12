@@ -1,10 +1,11 @@
 package com.gmail.nossr50.config.hocon.database;
 
+import com.gmail.nossr50.config.hocon.ConfigSection;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 @ConfigSerializable
-public class ConfigCategoryDatabase {
+public class UserConfigSectionDatabase extends ConfigSection {
 
     @Setting(value = "Database_Name", comment = "The database name for your DB, this DB must already exist on the SQL server.")
     private String databaseName = "example_database_name";

@@ -5,19 +5,19 @@ import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 @ConfigSerializable
-public class ConfigCategoryMySQL {
+public class UserConfigSectionMySQL {
 
     @Setting(value = "Enabled", comment = "If set to true, mcMMO will use MySQL/MariaDB instead of FlatFile storage")
     private boolean enabled = true;
 
     @Setting(value = "User", comment = "Your MySQL User Settings")
-    private ConfigCategoryUser configCategoryUser;
+    private UserConfigSectionUser userConfigSectionUser;
 
     @Setting(value = "Database", comment = "Database settings for MySQL/MariaDB")
-    private ConfigCategoryDatabase configCategoryDatabase;
+    private UserConfigSectionDatabase userConfigSectionDatabase;
 
     @Setting(value = "Server", comment = "Your MySQL/MariaDB server settings.")
-    private ConfigCategoryServer configCategoryServer;
+    private UserConfigSectionServer userConfigSectionServer;
 
     /*
      * GETTER BOILERPLATE
@@ -27,16 +27,16 @@ public class ConfigCategoryMySQL {
         return enabled;
     }
 
-    public ConfigCategoryUser getConfigCategoryUser() {
-        return configCategoryUser;
+    public UserConfigSectionUser getUserConfigSectionUser() {
+        return userConfigSectionUser;
     }
 
-    public ConfigCategoryDatabase getConfigCategoryDatabase() {
-        return configCategoryDatabase;
+    public UserConfigSectionDatabase getUserConfigSectionDatabase() {
+        return userConfigSectionDatabase;
     }
 
-    public ConfigCategoryServer getConfigCategoryServer() {
-        return configCategoryServer;
+    public UserConfigSectionServer getUserConfigSectionServer() {
+        return userConfigSectionServer;
     }
 
     public int getMaxPoolSize(SQLDatabaseManager.PoolIdentifier poolIdentifier)
@@ -44,11 +44,11 @@ public class ConfigCategoryMySQL {
         switch (poolIdentifier)
         {
             case LOAD:
-                return configCategoryServer.getConfigCategoryMaxPoolSize().getLoad();
+                return userConfigSectionServer.getUserConfigSectionMaxPoolSize().getLoad();
             case SAVE:
-                return configCategoryServer.getConfigCategoryMaxPoolSize().getSave();
+                return userConfigSectionServer.getUserConfigSectionMaxPoolSize().getSave();
             case MISC:
-                return configCategoryServer.getConfigCategoryMaxPoolSize().getMisc();
+                return userConfigSectionServer.getUserConfigSectionMaxPoolSize().getMisc();
             default:
                 return 20;
         }
@@ -59,11 +59,11 @@ public class ConfigCategoryMySQL {
         switch (poolIdentifier)
         {
             case LOAD:
-                return configCategoryServer.getConfigCategoryMaxPoolSize().getLoad();
+                return userConfigSectionServer.getUserConfigSectionMaxPoolSize().getLoad();
             case SAVE:
-                return configCategoryServer.getConfigCategoryMaxPoolSize().getSave();
+                return userConfigSectionServer.getUserConfigSectionMaxPoolSize().getSave();
             case MISC:
-                return configCategoryServer.getConfigCategoryMaxPoolSize().getMisc();
+                return userConfigSectionServer.getUserConfigSectionMaxPoolSize().getMisc();
             default:
                 return 20;
         }

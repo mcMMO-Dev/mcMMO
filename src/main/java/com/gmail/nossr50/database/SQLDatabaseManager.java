@@ -22,7 +22,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public final class SQLDatabaseManager implements DatabaseManager {
     private static final String ALL_QUERY_VERSION = "total";
     public static final String COM_MYSQL_JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private String tablePrefix = mcMMO.getMySQLConfigSettings().getConfigCategoryDatabase().getTablePrefix();
+    private String tablePrefix = mcMMO.getMySQLConfigSettings().getUserConfigSectionDatabase().getTablePrefix();
 
     private final Map<UUID, Integer> cachedUserIDs = new HashMap<UUID, Integer>();
 
@@ -33,10 +33,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private ReentrantLock massUpdateLock = new ReentrantLock();
 
     protected SQLDatabaseManager() {
-        String connectionString = "jdbc:mysql://" + mcMMO.getMySQLConfigSettings().getConfigCategoryServer().getServerAddress()
-                + ":" + mcMMO.getMySQLConfigSettings().getConfigCategoryServer().getServerPort() + "/" + mcMMO.getMySQLConfigSettings().getConfigCategoryDatabase().getDatabaseName();
+        String connectionString = "jdbc:mysql://" + mcMMO.getMySQLConfigSettings().getUserConfigSectionServer().getServerAddress()
+                + ":" + mcMMO.getMySQLConfigSettings().getUserConfigSectionServer().getServerPort() + "/" + mcMMO.getMySQLConfigSettings().getUserConfigSectionDatabase().getDatabaseName();
 
-        if(mcMMO.getMySQLConfigSettings().getConfigCategoryServer().isUseSSL())
+        if(mcMMO.getMySQLConfigSettings().getUserConfigSectionServer().isUseSSL())
             connectionString +=
                     "?verifyServerCertificate=false"+
                     "&useSSL=true"+
@@ -85,9 +85,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
         poolProperties.setUrl(connectionString);
 
         //MySQL User Name
-        poolProperties.setUsername(mcMMO.getMySQLConfigSettings().getConfigCategoryUser().getUsername());
+        poolProperties.setUsername(mcMMO.getMySQLConfigSettings().getUserConfigSectionUser().getUsername());
         //MySQL User Password
-        poolProperties.setPassword(mcMMO.getMySQLConfigSettings().getConfigCategoryUser().getPassword());
+        poolProperties.setPassword(mcMMO.getMySQLConfigSettings().getUserConfigSectionUser().getPassword());
 
         //Initial Size
         poolProperties.setInitialSize(0);
@@ -783,7 +783,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + " WHERE table_schema = ?"
                     + " AND table_name = ?");
             //Database name
-            statement.setString(1, mcMMO.getMySQLConfigSettings().getConfigCategoryDatabase().getDatabaseName());
+            statement.setString(1, mcMMO.getMySQLConfigSettings().getUserConfigSectionDatabase().getDatabaseName());
             statement.setString(2, tablePrefix + "users");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -800,7 +800,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
             tryClose(resultSet);
             //Database name
-            statement.setString(1, mcMMO.getMySQLConfigSettings().getConfigCategoryDatabase().getDatabaseName());
+            statement.setString(1, mcMMO.getMySQLConfigSettings().getUserConfigSectionDatabase().getDatabaseName());
             statement.setString(2, tablePrefix + "huds");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -815,7 +815,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
             tryClose(resultSet);
             //Database name
-            statement.setString(1, mcMMO.getMySQLConfigSettings().getConfigCategoryDatabase().getDatabaseName());
+            statement.setString(1, mcMMO.getMySQLConfigSettings().getUserConfigSectionDatabase().getDatabaseName());
             statement.setString(2, tablePrefix + "cooldowns");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -841,7 +841,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
             tryClose(resultSet);
             //Database name
-            statement.setString(1, mcMMO.getMySQLConfigSettings().getConfigCategoryDatabase().getDatabaseName());
+            statement.setString(1, mcMMO.getMySQLConfigSettings().getUserConfigSectionDatabase().getDatabaseName());
             statement.setString(2, tablePrefix + "skills");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
@@ -870,7 +870,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
             tryClose(resultSet);
             //Database name
-            statement.setString(1, mcMMO.getMySQLConfigSettings().getConfigCategoryDatabase().getDatabaseName());
+            statement.setString(1, mcMMO.getMySQLConfigSettings().getUserConfigSectionDatabase().getDatabaseName());
             statement.setString(2, tablePrefix + "experience");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {

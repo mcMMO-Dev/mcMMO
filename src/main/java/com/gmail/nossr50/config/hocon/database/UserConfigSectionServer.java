@@ -4,7 +4,7 @@ import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 @ConfigSerializable
-public class ConfigCategoryServer {
+public class UserConfigSectionServer {
 
     @Setting(value = "Use_SSL", comment =   "Enables SSL for MySQL/MariaDB connections, newer versions of MySQL will spam your console if you aren't using SSL." +
                                             " It is recommended that you turn this on if you are using a newer version of MySQL," +
@@ -18,10 +18,10 @@ public class ConfigCategoryServer {
     private String serverAddress = "localhost";
 
     @Setting(value = "Max_Connections", comment = "This setting is the max simultaneous MySQL/MariaDB connections allowed at a time, this needs to be high enough to support multiple player logins in quick succession")
-    private ConfigCategoryMaxConnections configCategoryMaxConnections;
+    private UserConfigSectionMaxConnections userConfigSectionMaxConnections;
 
     @Setting(value = "Max_Pool_Size", comment = "This setting is the max size of the pool of cached connections that we hold at any given time.")
-    private ConfigCategoryMaxPoolSize configCategoryMaxPoolSize;
+    private UserConfigSectionMaxPoolSize userConfigSectionMaxPoolSize;
 
     /*
      * GETTER BOILERPLATE
@@ -39,12 +39,12 @@ public class ConfigCategoryServer {
         return serverAddress;
     }
 
-    public ConfigCategoryMaxConnections getConfigCategoryMaxConnections() {
-        return configCategoryMaxConnections;
+    public UserConfigSectionMaxConnections getUserConfigSectionMaxConnections() {
+        return userConfigSectionMaxConnections;
     }
 
-    public ConfigCategoryMaxPoolSize getConfigCategoryMaxPoolSize() {
-        return configCategoryMaxPoolSize;
+    public UserConfigSectionMaxPoolSize getUserConfigSectionMaxPoolSize() {
+        return userConfigSectionMaxPoolSize;
     }
 
 

@@ -4,15 +4,16 @@ import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 @ConfigSerializable
-public class ConfigCategoryMaxPoolSize {
+public class UserConfigSectionMaxConnections {
+
     @Setting(value = "Misc")
-    private int misc = 10;
+    private int misc = 30;
 
     @Setting(value = "Load")
-    private int load = 20;
+    private int load = 30;
 
     @Setting(value = "Save")
-    private int save = 20;
+    private int save = 30;
 
     /*
      * GETTER BOILERPLATE
