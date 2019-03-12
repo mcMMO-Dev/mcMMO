@@ -9,8 +9,14 @@ public class ConfigCategoryMySQL {
     @Setting(value = "Enabled", comment = "If set to true, mcMMO will use MySQL/MariaDB instead of FlatFile storage")
     private boolean enabled = true;
 
+    @Setting(value = "User", comment = "Your MySQL User Settings")
+    private ConfigCategoryUser configCategoryUser;
+
     @Setting(value = "Database", comment = "Database settings for MySQL/MariaDB")
     private ConfigCategoryDatabase configCategoryDatabase;
+
+    @Setting(value = "Server", comment = "Your MySQL/MariaDB server settings.")
+    private ConfigCategoryServer configCategoryServer;
 
     /*
      * GETTER BOILERPLATE
@@ -22,5 +28,9 @@ public class ConfigCategoryMySQL {
 
     public ConfigCategoryDatabase getConfigCategoryDatabase() {
         return configCategoryDatabase;
+    }
+
+    public ConfigCategoryServer getConfigCategoryServer() {
+        return configCategoryServer;
     }
 }

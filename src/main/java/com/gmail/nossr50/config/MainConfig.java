@@ -248,14 +248,14 @@ public class MainConfig extends ConfigValidated {
         }
 
         /* MySQL Settings */
-        for (SQLDatabaseManager.PoolIdentifier identifier : SQLDatabaseManager.PoolIdentifier.values()) {
+        /*for (SQLDatabaseManager.PoolIdentifier identifier : SQLDatabaseManager.PoolIdentifier.values()) {
             if (getMySQLMaxConnections(identifier) <= 0) {
                 reason.add(MY_SQL + "." + DATABASE + "." + MAX_CONNECTIONS + "." + StringUtils.getCapitalized(identifier.toString()) + " should be greater than 0!");
             }
             if (getMySQLMaxPoolSize(identifier) <= 0) {
                 reason.add(MY_SQL + "." + DATABASE + "." + MAX_POOL_SIZE + "." + StringUtils.getCapitalized(identifier.toString()) + " should be greater than 0!");
             }
-        }
+        }*/
 
         /* Mob Healthbar */
         if (getMobHealthbarTime() == 0) {
@@ -668,7 +668,7 @@ public class MainConfig extends ConfigValidated {
     }
 
     /* mySQL */
-    public boolean getUseMySQL() {
+    /*public boolean getUseMySQL() {
         return getBooleanValue(MY_SQL, ENABLED);
     }
 
@@ -706,7 +706,7 @@ public class MainConfig extends ConfigValidated {
 
     public boolean getMySQLSSL() {
         return getBooleanValue(MY_SQL, SERVER, SSL);
-    }
+    }*/
 
     //TODO: Legit cannot tell what the point of this method was
     /*ssadprivate String getStringIncludingInts(String[] key) {

@@ -6,12 +6,6 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 @ConfigSerializable
 public class ConfigCategoryDatabase {
 
-    @Setting(value = "User_Name", comment = "The authorized user for your MySQL/MariaDB DB")
-    private String username = "example_user_name";
-
-    @Setting(value = "User_Password", comment = "The password for your authorized user")
-    private String password = "example_user_password";
-
     @Setting(value = "Database_Name", comment = "The database name for your DB, this DB must already exist on the SQL server.")
     private String databaseName = "example_database_name";
 
@@ -27,14 +21,6 @@ public class ConfigCategoryDatabase {
     /*
      * GETTER BOILERPLATE
      */
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
 
     public String getDatabaseName() {
         return databaseName;
