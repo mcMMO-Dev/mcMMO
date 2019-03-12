@@ -15,4 +15,19 @@ public class ConfigCategoryMaxConnections {
     @Setting(value = "Save")
     private int save = 30;
 
+    /*
+     * GETTER BOILERPLATE
+     */
+
+    public int getMisc() {
+        return misc;
+    }
+
+    public int getLoad() {
+        return load;
+    }
+
+    public int getSave() {
+        return save;
+    }
 }

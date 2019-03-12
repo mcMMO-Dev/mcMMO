@@ -23,4 +23,32 @@ public class ConfigCategoryDatabase {
 
     @Setting(value = "Max_Pool_Size", comment = "This setting is the max size of the pool of cached connections that we hold at any given time.")
     private ConfigCategoryMaxPoolSize configCategoryMaxPoolSize;
+
+    /*
+     * GETTER BOILERPLATE
+     */
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getDatabaseName() {
+        return databaseName;
+    }
+
+    public String getTablePrefix() {
+        return tablePrefix;
+    }
+
+    public ConfigCategoryMaxConnections getConfigCategoryMaxConnections() {
+        return configCategoryMaxConnections;
+    }
+
+    public ConfigCategoryMaxPoolSize getConfigCategoryMaxPoolSize() {
+        return configCategoryMaxPoolSize;
+    }
 }

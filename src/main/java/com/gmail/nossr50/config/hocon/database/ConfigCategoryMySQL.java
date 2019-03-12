@@ -12,5 +12,15 @@ public class ConfigCategoryMySQL {
     @Setting(value = "Database", comment = "Database settings for MySQL/MariaDB")
     private ConfigCategoryDatabase configCategoryDatabase;
 
+    /*
+     * GETTER BOILERPLATE
+     */
 
+    public boolean isMySQLEnabled() {
+        return enabled;
+    }
+
+    public ConfigCategoryDatabase getConfigCategoryDatabase() {
+        return configCategoryDatabase;
+    }
 }

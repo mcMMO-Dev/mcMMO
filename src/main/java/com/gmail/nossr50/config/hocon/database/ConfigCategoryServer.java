@@ -16,4 +16,20 @@ public class ConfigCategoryServer {
 
     @Setting(value = "Server_Address", comment = "The address for your MySQL/MariaDB server")
     private String serverAddress = "localhost";
+
+    /*
+     * GETTER BOILERPLATE
+     */
+
+    public boolean isUseSSL() {
+        return useSSL;
+    }
+
+    public int getServerPort() {
+        return serverPort;
+    }
+
+    public String getServerAddress() {
+        return serverAddress;
+    }
 }

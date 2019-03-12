@@ -939,10 +939,6 @@ public class MainConfig extends ConfigValidated {
         return getBooleanValue(ABILITIES, ACTIVATION, ONLY_ACTIVATE_WHEN_SNEAKING);
     }
 
-    public boolean getAbilitiesGateEnabled() {
-        return getBooleanValue(ABILITIES, ACTIVATION, LEVEL_GATE_ABILITIES);
-    }
-
     public int getCooldown(SuperAbilityType ability) {
         return getIntValue(ABILITIES, COOLDOWNS + ability.toString());
     }

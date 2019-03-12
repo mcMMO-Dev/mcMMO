@@ -13,4 +13,20 @@ public class ConfigCategoryMaxPoolSize {
 
     @Setting(value = "Save")
     private int save = 20;
+
+    /*
+     * GETTER BOILERPLATE
+     */
+
+    public int getMisc() {
+        return misc;
+    }
+
+    public int getLoad() {
+        return load;
+    }
+
+    public int getSave() {
+        return save;
+    }
 }

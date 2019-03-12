@@ -332,10 +332,8 @@ Skills:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
         Level_Cap: 0
-        Ability_Activation_Level_Gate: 10
     Excavation:
         Level_Cap: 0
-        Ability_Activation_Level_Gate: 10
     Fishing:
         Level_Cap: 0
         Drops_Enabled: true
@@ -349,7 +347,6 @@ Skills:
     Mining:
         Level_Cap: 0
         Detonator_Name: FLINT_AND_STEEL
-        Ability_Activation_Level_Gate: 10
     Repair:
         Level_Cap: 0
         Anvil_Messages: true
@@ -372,7 +369,6 @@ Skills:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
         Level_Cap: 0
-        Ability_Activation_Level_Gate: 10
     Taming:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
@@ -409,7 +405,6 @@ Skills:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
         Level_Cap: 0
-        Ability_Activation_Level_Gate: 10
         Block_Cracker:
             SmoothBrick_To_CrackedBrick: true
         # When using Unarmed, picked up items will automatically get moved to a free slot instead of going in the slot
@@ -420,7 +415,6 @@ Skills:
     Woodcutting:
         Tree_Feller_Sounds: true
         Level_Cap: 0
-        Ability_Activation_Level_Gate: 10
 
 #
 #  Settings for Double Drops

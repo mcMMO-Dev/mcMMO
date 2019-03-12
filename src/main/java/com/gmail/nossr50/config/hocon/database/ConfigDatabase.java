@@ -32,4 +32,12 @@ public class ConfigDatabase extends Config {
     public double getConfigVersion() {
         return 1;
     }
+
+    /*
+     * GETTER BOILERPLATE
+     */
+
+    public ConfigCategoryMySQL getConfigCategoryMySQL() {
+        return configCategoryMySQL;
+    }
 }
