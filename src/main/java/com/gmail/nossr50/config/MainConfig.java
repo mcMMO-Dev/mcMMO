@@ -1,6 +1,5 @@
 package com.gmail.nossr50.config;
 
-import com.gmail.nossr50.database.SQLDatabaseManager;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;

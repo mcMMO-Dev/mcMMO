@@ -1,7 +1,6 @@
 package com.gmail.nossr50.config.hocon.database;
 
 import com.gmail.nossr50.database.SQLDatabaseManager;
-import com.gmail.nossr50.mcMMO;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
