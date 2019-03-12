@@ -6,22 +6,25 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 @ConfigSerializable
 public class UserConfigSectionServer {
 
-    @Setting(value = "Use_SSL", comment =   "Enables SSL for MySQL/MariaDB connections, newer versions of MySQL will spam your console if you aren't using SSL." +
-                                            " It is recommended that you turn this on if you are using a newer version of MySQL," +
-                                            " if you run into issues with SSL not being supported, turn this off.")
+    @Setting(value = "Use_SSL", comment =   "Enables SSL for MySQL/MariaDB connections." +
+                                            "\nIf your SQL server supports SSL, it is recommended to have it on but not necessary." +
+                                            "\nIf you run into any issues involving SSL, its best to just turn this off.")
     private boolean useSSL = true;
 
-    @Setting(value = "Server_Port", comment = "Your MySQL/MariaDB server port")
+    @Setting(value = "Server_Port", comment = "Your MySQL/MariaDB server port" +
+            "\nThe default port is typically 3306 for MySQL, but every server configuration is different!")
     private int serverPort = 3306;
 
-    @Setting(value = "Server_Address", comment = "The address for your MySQL/MariaDB server")
+    @Setting(value = "Server_Address", comment = "The address for your MySQL/MariaDB server" +
+            "If the MySQL server is hosted on the same machine, you can use the localhost alias")
     private String serverAddress = "localhost";
 
-    @Setting(value = "Max_Connections", comment = "This setting is the max simultaneous MySQL/MariaDB connections allowed at a time, this needs to be high enough to support multiple player logins in quick succession")
-    private UserConfigSectionMaxConnections userConfigSectionMaxConnections;
+    @Setting(value = "Max_Connections", comment = "This setting is the max simultaneous MySQL/MariaDB connections allowed at a time." +
+            "\nThis needs to be high enough to support multiple player logins in quick succession, it is recommended that you do not lower these values")
+    private UserConfigSectionMaxConnections userConfigSectionMaxConnections = new UserConfigSectionMaxConnections();
 
     @Setting(value = "Max_Pool_Size", comment = "This setting is the max size of the pool of cached connections that we hold at any given time.")
-    private UserConfigSectionMaxPoolSize userConfigSectionMaxPoolSize;
+    private UserConfigSectionMaxPoolSize userConfigSectionMaxPoolSize = new UserConfigSectionMaxPoolSize();
 
     /*
      * GETTER BOILERPLATE

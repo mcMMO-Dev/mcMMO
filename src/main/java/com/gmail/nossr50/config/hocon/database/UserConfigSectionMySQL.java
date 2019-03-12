@@ -11,13 +11,13 @@ public class UserConfigSectionMySQL {
     private boolean enabled = true;
 
     @Setting(value = "User", comment = "Your MySQL User Settings")
-    private UserConfigSectionUser userConfigSectionUser;
+    private UserConfigSectionUser userConfigSectionUser = new UserConfigSectionUser();
 
     @Setting(value = "Database", comment = "Database settings for MySQL/MariaDB")
-    private UserConfigSectionDatabase userConfigSectionDatabase;
+    private UserConfigSectionDatabase userConfigSectionDatabase = new UserConfigSectionDatabase();
 
     @Setting(value = "Server", comment = "Your MySQL/MariaDB server settings.")
-    private UserConfigSectionServer userConfigSectionServer;
+    private UserConfigSectionServer userConfigSectionServer = new UserConfigSectionServer();
 
     /*
      * GETTER BOILERPLATE
@@ -59,11 +59,11 @@ public class UserConfigSectionMySQL {
         switch (poolIdentifier)
         {
             case LOAD:
-                return userConfigSectionServer.getUserConfigSectionMaxPoolSize().getLoad();
+                return userConfigSectionServer.getUserConfigSectionMaxConnections().getLoad();
             case SAVE:
-                return userConfigSectionServer.getUserConfigSectionMaxPoolSize().getSave();
+                return userConfigSectionServer.getUserConfigSectionMaxConnections().getSave();
             case MISC:
-                return userConfigSectionServer.getUserConfigSectionMaxPoolSize().getMisc();
+                return userConfigSectionServer.getUserConfigSectionMaxConnections().getMisc();
             default:
                 return 20;
         }

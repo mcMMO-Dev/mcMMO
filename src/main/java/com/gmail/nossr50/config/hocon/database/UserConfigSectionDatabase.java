@@ -1,6 +1,5 @@
 package com.gmail.nossr50.config.hocon.database;
 
-import com.gmail.nossr50.config.hocon.ConfigSection;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -12,8 +11,6 @@ public class UserConfigSectionDatabase {
 
     @Setting(value = "Table_Prefix", comment = "The Prefix that will be used for tables in your DB")
     private String tablePrefix = "mcmmo_";
-
-
 
     /*
      * GETTER BOILERPLATE
