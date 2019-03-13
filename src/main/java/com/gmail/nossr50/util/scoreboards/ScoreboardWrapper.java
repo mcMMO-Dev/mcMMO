@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.scoreboards;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;

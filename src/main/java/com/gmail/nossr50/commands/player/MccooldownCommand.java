@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.player;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.locale.LocaleLoader;
