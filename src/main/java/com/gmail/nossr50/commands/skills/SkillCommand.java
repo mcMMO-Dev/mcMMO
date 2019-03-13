@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
@@ -106,7 +107,9 @@ public abstract class SkillCommand implements TabExecutor {
                 }
 
 
-                if (mcMMO.getScoreboardSettings().getScoreboardsEnabled() && MainConfig.getInstance().getSkillUseBoard()) {
+                if (mcMMO.getScoreboardSettings().getScoreboardsEnabled()
+                        && mcMMO.getScoreboardSettings().getConfigSectionScoreboardTypes()
+                            .getConfigSectionSkillBoard().isUseThisBoard()) {
                     ScoreboardManager.enablePlayerSkillScoreboard(player, skill);
                 }
 

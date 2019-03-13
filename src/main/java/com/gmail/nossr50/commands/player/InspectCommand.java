@@ -40,10 +40,11 @@ public class InspectCommand implements TabExecutor {
                         return true;
                     }
 
-                    if (mcMMO.getScoreboardSettings().getScoreboardsEnabled() && sender instanceof Player && MainConfig.getInstance().getInspectUseBoard()) {
+                    if (mcMMO.getScoreboardSettings().getScoreboardsEnabled() && sender instanceof Player
+                            && mcMMO.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionInspectBoard().isUseThisBoard()) {
                         ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, profile);
 
-                        if (!MainConfig.getInstance().getInspectUseChat()) {
+                        if (!mcMMO.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionInspectBoard().isPrintToChat()) {
                             return true;
                         }
                     }
@@ -79,10 +80,10 @@ public class InspectCommand implements TabExecutor {
                         return true;
                     }
 
-                    if (mcMMO.getScoreboardSettings().getScoreboardsEnabled() && sender instanceof Player && MainConfig.getInstance().getInspectUseBoard()) {
+                    if (mcMMO.getScoreboardSettings().getScoreboardsEnabled() && sender instanceof Player && mcMMO.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionInspectBoard().isUseThisBoard()) {
                         ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, mcMMOPlayer.getProfile());
 
-                        if (!MainConfig.getInstance().getInspectUseChat()) {
+                        if (!mcMMO.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionInspectBoard().isPrintToChat()) {
                             return true;
                         }
                     }

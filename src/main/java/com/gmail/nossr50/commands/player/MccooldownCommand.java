@@ -31,10 +31,10 @@ public class MccooldownCommand implements TabExecutor {
             case 0:
                 Player player = (Player) sender;
 
-                if (mcMMO.getScoreboardSettings().getScoreboardsEnabled() && MainConfig.getInstance().getCooldownUseBoard()) {
+                if (mcMMO.getScoreboardSettings().getScoreboardsEnabled() && mcMMO.getScoreboardSettings().isScoreboardEnabled(ScoreboardManager.SidebarType.COOLDOWNS_BOARD)) {
                     ScoreboardManager.enablePlayerCooldownScoreboard(player);
 
-                    if (!MainConfig.getInstance().getCooldownUseChat()) {
+                    if (!mcMMO.getScoreboardSettings().isScoreboardPrinting(ScoreboardManager.SidebarType.COOLDOWNS_BOARD)) {
                         return true;
                     }
                 }

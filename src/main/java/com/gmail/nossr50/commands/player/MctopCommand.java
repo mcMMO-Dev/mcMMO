@@ -10,6 +10,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -113,8 +114,8 @@ public class MctopCommand implements TabExecutor {
     }
 
     private void display(int page, PrimarySkillType skill, CommandSender sender) {
-        boolean useBoard = (sender instanceof Player) && (MainConfig.getInstance().getTopUseBoard());
-        boolean useChat = !useBoard || MainConfig.getInstance().getTopUseChat();
+        boolean useBoard = (sender instanceof Player) && (mcMMO.getScoreboardSettings().isScoreboardEnabled(ScoreboardManager.SidebarType.TOP_BOARD));
+        boolean useChat = !useBoard || mcMMO.getScoreboardSettings().isScoreboardPrinting(ScoreboardManager.SidebarType.TOP_BOARD);
 
         new MctopCommandAsyncTask(page, skill, sender, useBoard, useChat).runTaskAsynchronously(mcMMO.p);
     }

@@ -222,7 +222,7 @@ public class ScoreboardManager {
             dirtyPowerLevels.add(playerName);
         }
 
-        if (MainConfig.getInstance().getSkillLevelUpBoard()) {
+        if (mcMMO.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionSkillBoard().isUseThisBoard()) {
             enablePlayerSkillLevelUpScoreboard(player, skill);
         }
     }
@@ -255,7 +255,7 @@ public class ScoreboardManager {
         wrapper.setOldScoreboard();
         wrapper.setTypeSkill(skill);
 
-        changeScoreboard(wrapper, MainConfig.getInstance().getSkillScoreboardTime());
+        changeScoreboard(wrapper, mcMMO.getScoreboardSettings().getScoreboardDisplayTime(SidebarType.SKILL_BOARD));
     }
 
     public static void enablePlayerSkillLevelUpScoreboard(Player player, PrimarySkillType skill) {
@@ -269,7 +269,7 @@ public class ScoreboardManager {
         wrapper.setOldScoreboard();
         wrapper.setTypeSkill(skill);
 
-        changeScoreboard(wrapper, MainConfig.getInstance().getSkillLevelUpTime());
+        changeScoreboard(wrapper, mcMMO.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionSkillBoard().getShowBoardOnPlayerLevelUpTime());
     }
 
     public static void enablePlayerStatsScoreboard(Player player) {
@@ -278,7 +278,7 @@ public class ScoreboardManager {
         wrapper.setOldScoreboard();
         wrapper.setTypeSelfStats();
 
-        changeScoreboard(wrapper, MainConfig.getInstance().getStatsScoreboardTime());
+        changeScoreboard(wrapper, mcMMO.getScoreboardSettings().getScoreboardDisplayTime(SidebarType.STATS_BOARD));
     }
 
     public static void enablePlayerInspectScoreboard(Player player, PlayerProfile targetProfile) {
@@ -287,7 +287,7 @@ public class ScoreboardManager {
         wrapper.setOldScoreboard();
         wrapper.setTypeInspectStats(targetProfile);
 
-        changeScoreboard(wrapper, MainConfig.getInstance().getInspectScoreboardTime());
+        changeScoreboard(wrapper, mcMMO.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionInspectBoard().getDisplayTimeInSeconds());
     }
 
     public static void enablePlayerCooldownScoreboard(Player player) {
@@ -296,7 +296,7 @@ public class ScoreboardManager {
         wrapper.setOldScoreboard();
         wrapper.setTypeCooldowns();
 
-        changeScoreboard(wrapper, MainConfig.getInstance().getCooldownScoreboardTime());
+        changeScoreboard(wrapper, mcMMO.getScoreboardSettings().getScoreboardDisplayTime(SidebarType.COOLDOWNS_BOARD));
     }
 
     public static void showPlayerRankScoreboard(Player player, Map<PrimarySkillType, Integer> rank) {
@@ -306,7 +306,7 @@ public class ScoreboardManager {
         wrapper.setTypeSelfRank();
         wrapper.acceptRankData(rank);
 
-        changeScoreboard(wrapper, MainConfig.getInstance().getRankScoreboardTime());
+        changeScoreboard(wrapper, mcMMO.getScoreboardSettings().getScoreboardDisplayTime(SidebarType.RANK_BOARD));
     }
 
     public static void showPlayerRankScoreboardOthers(Player player, String targetName, Map<PrimarySkillType, Integer> rank) {
@@ -316,7 +316,7 @@ public class ScoreboardManager {
         wrapper.setTypeInspectRank(targetName);
         wrapper.acceptRankData(rank);
 
-        changeScoreboard(wrapper, MainConfig.getInstance().getRankScoreboardTime());
+        changeScoreboard(wrapper, mcMMO.getScoreboardSettings().getScoreboardDisplayTime(SidebarType.RANK_BOARD));
     }
 
     public static void showTopScoreboard(Player player, PrimarySkillType skill, int pageNumber, List<PlayerStat> stats) {
@@ -326,7 +326,7 @@ public class ScoreboardManager {
         wrapper.setTypeTop(skill, pageNumber);
         wrapper.acceptLeaderboardData(stats);
 
-        changeScoreboard(wrapper, MainConfig.getInstance().getTopScoreboardTime());
+        changeScoreboard(wrapper, mcMMO.getScoreboardSettings().getScoreboardDisplayTime(SidebarType.TOP_BOARD));
     }
 
     public static void showTopPowerScoreboard(Player player, int pageNumber, List<PlayerStat> stats) {
@@ -336,7 +336,7 @@ public class ScoreboardManager {
         wrapper.setTypeTopPower(pageNumber);
         wrapper.acceptLeaderboardData(stats);
 
-        changeScoreboard(wrapper, MainConfig.getInstance().getTopScoreboardTime());
+        changeScoreboard(wrapper, mcMMO.getScoreboardSettings().getScoreboardDisplayTime(SidebarType.TOP_BOARD));
     }
 
     // **** Helper methods **** //

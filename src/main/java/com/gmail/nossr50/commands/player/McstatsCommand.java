@@ -2,6 +2,7 @@ package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
@@ -28,10 +29,10 @@ public class McstatsCommand implements TabExecutor {
             case 0:
                 Player player = (Player) sender;
 
-                if (MainConfig.getInstance().getStatsUseBoard() && mcMMO.getScoreboardSettings().getScoreboardsEnabled()) {
+                if (mcMMO.getScoreboardSettings().isScoreboardEnabled(ScoreboardManager.SidebarType.STATS_BOARD) && mcMMO.getScoreboardSettings().getScoreboardsEnabled()) {
                     ScoreboardManager.enablePlayerStatsScoreboard(player);
 
-                    if (!MainConfig.getInstance().getStatsUseChat()) {
+                    if (!mcMMO.getScoreboardSettings().isScoreboardPrinting(ScoreboardManager.SidebarType.STATS_BOARD)) {
                         return true;
                     }
                 }

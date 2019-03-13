@@ -99,7 +99,7 @@ public class ConfigScoreboard {
      * HELPER METHODS
      */
 
-    public boolean getScoreboardTypeEnabled(ScoreboardManager.SidebarType sidebarType)
+    public boolean isScoreboardEnabled(ScoreboardManager.SidebarType sidebarType)
     {
         switch(sidebarType)
         {
@@ -118,7 +118,7 @@ public class ConfigScoreboard {
         }
     }
 
-    public boolean getScoreboardTypePrintToChatEnabled(ScoreboardManager.SidebarType sidebarType)
+    public boolean isScoreboardPrinting(ScoreboardManager.SidebarType sidebarType)
     {
         switch(sidebarType)
         {
@@ -136,7 +136,7 @@ public class ConfigScoreboard {
         }
     }
 
-    public int getScoreboardTypeDisplayTime(ScoreboardManager.SidebarType sidebarType)
+    public int getScoreboardDisplayTime(ScoreboardManager.SidebarType sidebarType)
     {
         switch(sidebarType)
         {
