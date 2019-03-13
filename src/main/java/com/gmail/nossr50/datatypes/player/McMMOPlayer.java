@@ -549,7 +549,8 @@ public class McMMOPlayer {
         float xpRemoved = 0;
 
         while (getSkillXpLevelRaw(primarySkillType) >= getXpToLevel(primarySkillType)) {
-            if (hasReachedLevelCap(primarySkillType)) {
+            if (mcMMO.getPlayerLevelingSettings().isLevelCapEnabled(primarySkillType)
+                    && hasReachedLevelCap(primarySkillType)) {
                 setSkillXpLevel(primarySkillType, 0);
                 break;
             }
@@ -749,7 +750,10 @@ public class McMMOPlayer {
      * @return Modified experience
      */
     private float modifyXpGain(PrimarySkillType primarySkillType, float xp) {
-        if (player.getGameMode() == GameMode.CREATIVE || (primarySkillType.getMaxLevel() <= getSkillLevel(primarySkillType)) || (MainConfig.getInstance().getPowerLevelCap() <= getPowerLevel())) {
+        if (player.getGameMode() == GameMode.CREATIVE
+                || ((primarySkillType.getMaxLevel() <= getSkillLevel(primarySkillType))
+                    && mcMMO.getPlayerLevelingSettings().isLevelCapEnabled(primarySkillType))
+                || (mcMMO.getPlayerLevelingSettings().getConfigSectionLevelCaps().getPowerLevel().getLevelCap() <= getPowerLevel())) {
             return 0;
         }
 
@@ -926,7 +930,8 @@ public class McMMOPlayer {
     }
 
     private boolean hasReachedLevelCap(PrimarySkillType skill) {
-        return (skill.getMaxLevel() < getSkillLevel(skill) + 1) || (MainConfig.getInstance().getPowerLevelCap() < getPowerLevel() + 1);
+        return (skill.getMaxLevel() < getSkillLevel(skill) + 1)
+                || (mcMMO.getPlayerLevelingSettings().getConfigSectionLevelCaps().getPowerLevel().getLevelCap() < getPowerLevel() + 1);
     }
 
     /*

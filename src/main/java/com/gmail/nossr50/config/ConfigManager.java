@@ -3,7 +3,7 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.config.collectionconfigs.RepairConfig;
 import com.gmail.nossr50.config.collectionconfigs.SalvageConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.config.hocon.ConfigLeveling;
+import com.gmail.nossr50.config.hocon.playerleveling.ConfigLeveling;
 import com.gmail.nossr50.config.hocon.SerializedConfigLoader;
 import com.gmail.nossr50.config.hocon.database.ConfigDatabase;
 import com.gmail.nossr50.config.hocon.scoreboard.ConfigScoreboard;

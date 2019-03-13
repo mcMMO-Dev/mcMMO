@@ -989,21 +989,6 @@ public class MainConfig extends ConfigValidated {
         return getBooleanValue(SKILLS, HERBALISM, PREVENT_AFK + LEVELING);
     }
 
-    /* Level Caps */
-    public int getPowerLevelCap() {
-        int cap = getIntValue(GENERAL, POWER + LEVEL_CAP);
-        return (cap <= 0) ? Integer.MAX_VALUE : cap;
-    }
-
-    public int getLevelCap(PrimarySkillType skill) {
-        int cap = getIntValue(SKILLS, StringUtils.getCapitalized(skill.toString()), LEVEL_CAP);
-        return (cap <= 0) ? Integer.MAX_VALUE : cap;
-    }
-
-    public boolean getTruncateSkills() {
-        return getBooleanValue(GENERAL, TRUNCATE + SKILLS);
-    }
-
     /* PVP & PVE Settings */
     public boolean getPVPEnabled(PrimarySkillType skill) {
         return getBooleanValue(SKILLS, StringUtils.getCapitalized(skill.toString()), ENABLED + FOR_PVP);

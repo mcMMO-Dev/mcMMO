@@ -80,9 +80,21 @@ public class FormulaManager {
     public int[] calculateNewLevel(PrimarySkillType primarySkillType, int experience, FormulaType formulaType) {
         int newLevel = 0;
         int remainder = 0;
-        int maxLevel = MainConfig.getInstance().getLevelCap(primarySkillType);
+        int maxLevel = mcMMO.getPlayerLevelingSettings().getLevelCap(primarySkillType);
 
-        while (experience > 0 && newLevel < maxLevel) {
+        while (experience > 0 && newLevel < Integer.MAX_VALUE) {
+            //Level Cap
+            if(mcMMO.getPlayerLevelingSettings().isLevelCapEnabled(primarySkillType))
+            {
+                //Break the loop if we're at the cap
+                if(newLevel+1 > mcMMO.getPlayerLevelingSettings().getLevelCap(primarySkillType))
+                    break;
+
+                //If the maximum level is at or below our starting level, then the player can't level up anymore
+                if(maxLevel <= mcMMO.getPlayerLevelingSettings().getStartingLevel())
+                    return new int[]{ newLevel, remainder };
+            }
+
             int experienceToNextLevel = getCachedXpToLevel(newLevel, formulaType);
 
             if (experience - experienceToNextLevel < 0) {

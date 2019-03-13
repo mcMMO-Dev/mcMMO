@@ -44,9 +44,9 @@ public class McstatsCommand implements TabExecutor {
                 CommandUtils.printCombatSkills(player);
                 CommandUtils.printMiscSkills(player);
 
-                int powerLevelCap = MainConfig.getInstance().getPowerLevelCap();
+                int powerLevelCap = mcMMO.getPlayerLevelingSettings().getConfigSectionLevelCaps().getPowerLevel().getLevelCap();
 
-                if (powerLevelCap != Integer.MAX_VALUE) {
+                if (mcMMO.getPlayerLevelingSettings().getConfigSectionLevelCaps().getPowerLevel().isLevelCapEnabled()) {
                     player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped", UserManager.getPlayer(player).getPowerLevel(), powerLevelCap));
                 }
                 else {

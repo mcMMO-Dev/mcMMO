@@ -1,6 +1,5 @@
 package com.gmail.nossr50.database;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
@@ -912,14 +911,17 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 checkDatabaseStructure(connection, updateType);
             }
 
-            if (MainConfig.getInstance().getTruncateSkills()) {
+            //Level Cap Stuff
+            if (mcMMO.getPlayerLevelingSettings().getConfigSectionLevelCaps().getReducePlayerSkillsAboveCap()) {
                 for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
-                    int cap = MainConfig.getInstance().getLevelCap(skill);
-                    if (cap != Integer.MAX_VALUE) {
+                    if(!mcMMO.getPlayerLevelingSettings().isLevelCapEnabled(skill))
+                        continue;
+
+                    //Shrink skills above the cap
+                    int cap = mcMMO.getPlayerLevelingSettings().getLevelCap(skill);
                         statement = connection.prepareStatement("UPDATE `" + tablePrefix + "skills` SET `" + skill.name().toLowerCase() + "` = " + cap + " WHERE `" + skill.name().toLowerCase() + "` > " + cap);
                         statement.executeUpdate();
                         tryClose(statement);
-                    }
                 }
             }
 

@@ -753,7 +753,31 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      */
     public static int getLevelCap(String skillType) {
-        return MainConfig.getInstance().getLevelCap(getSkillType(skillType));
+        return mcMMO.getPlayerLevelingSettings().getLevelCap(getSkillType(skillType));
+    }
+
+    /**
+     * Get the level cap of a specific skill.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param skillType The skill to get the level cap for
+     * @return the level cap of a given skill
+     *
+     * @throws InvalidSkillException if the given skill is not valid
+     */
+    public static int getLevelCap(PrimarySkillType skillType) {
+        return mcMMO.getPlayerLevelingSettings().getLevelCap(skillType);
+    }
+
+    /**
+     * Checks whether or not a specific skill is level capped
+     * @param skillType target skill
+     * @return true if the skill has a level cap
+     */
+    public static boolean isSkillLevelCapped(PrimarySkillType skillType)
+    {
+        return mcMMO.getPlayerLevelingSettings().isLevelCapEnabled(skillType);
     }
 
     /**
@@ -764,7 +788,7 @@ public final class ExperienceAPI {
      * @return the overall power level cap
      */
     public static int getPowerLevelCap() {
-        return MainConfig.getInstance().getPowerLevelCap();
+        return mcMMO.getPlayerLevelingSettings().getConfigSectionLevelCaps().getPowerLevel().getLevelCap();
     }
 
     /**

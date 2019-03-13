@@ -1,6 +1,5 @@
 package com.gmail.nossr50.database;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
@@ -894,17 +893,21 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             updated = true;
                         }
 
-                        if (MainConfig.getInstance().getTruncateSkills()) {
+                        if (mcMMO.getPlayerLevelingSettings().getConfigSectionLevelCaps().getReducePlayerSkillsAboveCap()) {
                             for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
                                 int index = getSkillIndex(skill);
                                 if (index >= character.length) {
                                     continue;
                                 }
-                                int cap = MainConfig.getInstance().getLevelCap(skill);
-                                if (Integer.valueOf(character[index]) > cap) {
-                                    mcMMO.p.getLogger().warning("Truncating " + skill.getName() + " to configured max level for player " + character[USERNAME]);
-                                    character[index] = cap + "";
-                                    updated = true;
+                                //Level Cap
+                                if(mcMMO.getPlayerLevelingSettings().isLevelCapEnabled(skill))
+                                {
+                                    int cap = mcMMO.getPlayerLevelingSettings().getLevelCap(skill);
+                                    if (Integer.valueOf(character[index]) > cap) {
+                                        mcMMO.p.getLogger().warning("Truncating " + skill.getName() + " to configured max level for player " + character[USERNAME]);
+                                        character[index] = cap + "";
+                                        updated = true;
+                                    }
                                 }
                             }
                         }
@@ -1034,10 +1037,10 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         updated |= corrupted;
                         updated |= oldVersion != null;
 
-                        if (MainConfig.getInstance().getTruncateSkills()) {
+                        if (mcMMO.getPlayerLevelingSettings().getConfigSectionLevelCaps().getReducePlayerSkillsAboveCap()) {
                             Map<PrimarySkillType, Integer> skills = getSkillMapFromLine(character);
                             for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
-                                int cap = MainConfig.getInstance().getLevelCap(skill);
+                                int cap = Integer.MAX_VALUE;
                                 if (skills.get(skill) > cap) {
                                     updated = true;
                                 }

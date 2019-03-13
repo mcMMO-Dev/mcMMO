@@ -137,7 +137,7 @@ public enum PrimarySkillType {
      * @return the max level of this skill
      */
     public int getMaxLevel() {
-        return MainConfig.getInstance().getLevelCap(this);
+        return mcMMO.getPlayerLevelingSettings().getLevelCap(this);
     }
 
     public boolean isSuperAbilityUnlocked(Player player) { return RankUtils.getRank(player, getAbility().getSubSkillTypeDefinition()) >= 1; }

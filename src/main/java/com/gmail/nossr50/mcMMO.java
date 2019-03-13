@@ -5,7 +5,7 @@ import com.gmail.nossr50.config.CoreSkillsConfig;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.config.hocon.ConfigLeveling;
+import com.gmail.nossr50.config.hocon.playerleveling.ConfigLeveling;
 import com.gmail.nossr50.config.hocon.database.ConfigSectionCleaning;
 import com.gmail.nossr50.config.hocon.database.ConfigSectionMySQL;
 import com.gmail.nossr50.config.hocon.scoreboard.ConfigScoreboard;
@@ -332,6 +332,10 @@ public class mcMMO extends JavaPlugin {
         return configManager.getConfigDatabase().getConfigSectionMySQL();
     }
 
+    /**
+     * Returns settings for Player Leveling from the users config
+     * @return settings for Player Leveling from the users config
+     */
     public static ConfigLeveling getPlayerLevelingSettings()
     {
         return configManager.getConfigLeveling();
