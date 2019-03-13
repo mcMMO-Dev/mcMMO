@@ -5,7 +5,7 @@ import com.gmail.nossr50.config.CoreSkillsConfig;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.config.hocon.database.UserConfigSectionMySQL;
+import com.gmail.nossr50.config.hocon.database.ConfigSectionMySQL;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -327,9 +327,9 @@ public class mcMMO extends JavaPlugin {
      * Returns settings for MySQL from the users config
      * @return returns settings for MySQL from the users config
      */
-    public static UserConfigSectionMySQL getMySQLConfigSettings()
+    public static ConfigSectionMySQL getMySQLConfigSettings()
     {
-        return configManager.getConfigDatabase().getUserConfigSectionMySQL();
+        return configManager.getConfigDatabase().getConfigSectionMySQL();
     }
 
     /*public static ModManager getModManager() {

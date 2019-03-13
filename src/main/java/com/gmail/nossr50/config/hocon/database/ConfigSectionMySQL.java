@@ -5,16 +5,16 @@ import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 @ConfigSerializable
-public class UserConfigSectionMySQL {
+public class ConfigSectionMySQL {
 
     @Setting(value = "Enabled", comment = "If set to true, mcMMO will use MySQL/MariaDB instead of FlatFile storage")
     private boolean enabled = true;
 
     @Setting(value = "User", comment = "Your MySQL User Settings")
-    private UserConfigSectionUser userConfigSectionUser = new UserConfigSectionUser();
+    private ConfigSectionUser configSectionUser = new ConfigSectionUser();
 
     @Setting(value = "Database", comment = "Database settings for MySQL/MariaDB")
-    private UserConfigSectionDatabase userConfigSectionDatabase = new UserConfigSectionDatabase();
+    private ConfigSectionDatabase configSectionDatabase = new ConfigSectionDatabase();
 
     @Setting(value = "Server", comment = "Your MySQL/MariaDB server settings.")
     private UserConfigSectionServer userConfigSectionServer = new UserConfigSectionServer();
@@ -27,12 +27,12 @@ public class UserConfigSectionMySQL {
         return enabled;
     }
 
-    public UserConfigSectionUser getUserConfigSectionUser() {
-        return userConfigSectionUser;
+    public ConfigSectionUser getConfigSectionUser() {
+        return configSectionUser;
     }
 
-    public UserConfigSectionDatabase getUserConfigSectionDatabase() {
-        return userConfigSectionDatabase;
+    public ConfigSectionDatabase getConfigSectionDatabase() {
+        return configSectionDatabase;
     }
 
     public UserConfigSectionServer getUserConfigSectionServer() {
@@ -44,11 +44,11 @@ public class UserConfigSectionMySQL {
         switch (poolIdentifier)
         {
             case LOAD:
-                return userConfigSectionServer.getUserConfigSectionMaxPoolSize().getLoad();
+                return userConfigSectionServer.getConfigSectionMaxPoolSize().getLoad();
             case SAVE:
-                return userConfigSectionServer.getUserConfigSectionMaxPoolSize().getSave();
+                return userConfigSectionServer.getConfigSectionMaxPoolSize().getSave();
             case MISC:
-                return userConfigSectionServer.getUserConfigSectionMaxPoolSize().getMisc();
+                return userConfigSectionServer.getConfigSectionMaxPoolSize().getMisc();
             default:
                 return 20;
         }
@@ -59,11 +59,11 @@ public class UserConfigSectionMySQL {
         switch (poolIdentifier)
         {
             case LOAD:
-                return userConfigSectionServer.getUserConfigSectionMaxConnections().getLoad();
+                return userConfigSectionServer.getConfigSectionMaxConnections().getLoad();
             case SAVE:
-                return userConfigSectionServer.getUserConfigSectionMaxConnections().getSave();
+                return userConfigSectionServer.getConfigSectionMaxConnections().getSave();
             case MISC:
-                return userConfigSectionServer.getUserConfigSectionMaxConnections().getMisc();
+                return userConfigSectionServer.getConfigSectionMaxConnections().getMisc();
             default:
                 return 20;
         }

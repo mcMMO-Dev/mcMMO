@@ -11,13 +11,16 @@ public class ConfigDatabase {
      */
 
     @Setting(value = "MySQL", comment = "Settings for using MySQL or MariaDB database")
-    private UserConfigSectionMySQL userConfigSectionMySQL = new UserConfigSectionMySQL();
+    private ConfigSectionMySQL configSectionMySQL = new ConfigSectionMySQL();
+
+    @Setting(value = "Enabled", comment = "If set to true, mcMMO will use MySQL/MariaDB instead of FlatFile storage")
+    private boolean enabled = true;
 
     /*
      * GETTER BOILERPLATE
      */
 
-    public UserConfigSectionMySQL getUserConfigSectionMySQL() {
-        return userConfigSectionMySQL;
+    public ConfigSectionMySQL getConfigSectionMySQL() {
+        return configSectionMySQL;
     }
 }

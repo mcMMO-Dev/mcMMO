@@ -21,10 +21,10 @@ public class UserConfigSectionServer {
 
     @Setting(value = "Max_Connections", comment = "This setting is the max simultaneous MySQL/MariaDB connections allowed at a time." +
             "\nThis needs to be high enough to support multiple player logins in quick succession, it is recommended that you do not lower these values")
-    private UserConfigSectionMaxConnections userConfigSectionMaxConnections = new UserConfigSectionMaxConnections();
+    private ConfigSectionMaxConnections configSectionMaxConnections = new ConfigSectionMaxConnections();
 
     @Setting(value = "Max_Pool_Size", comment = "This setting is the max size of the pool of cached connections that we hold at any given time.")
-    private UserConfigSectionMaxPoolSize userConfigSectionMaxPoolSize = new UserConfigSectionMaxPoolSize();
+    private ConfigSectionMaxPoolSize configSectionMaxPoolSize = new ConfigSectionMaxPoolSize();
 
     /*
      * GETTER BOILERPLATE
@@ -42,12 +42,12 @@ public class UserConfigSectionServer {
         return serverAddress;
     }
 
-    public UserConfigSectionMaxConnections getUserConfigSectionMaxConnections() {
-        return userConfigSectionMaxConnections;
+    public ConfigSectionMaxConnections getConfigSectionMaxConnections() {
+        return configSectionMaxConnections;
     }
 
-    public UserConfigSectionMaxPoolSize getUserConfigSectionMaxPoolSize() {
-        return userConfigSectionMaxPoolSize;
+    public ConfigSectionMaxPoolSize getConfigSectionMaxPoolSize() {
+        return configSectionMaxPoolSize;
     }
 
 
