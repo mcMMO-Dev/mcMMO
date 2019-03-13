@@ -75,9 +75,6 @@ public class mcMMO extends JavaPlugin {
     /* Plugin Checks */
     private static boolean healthBarPluginEnabled;
 
-    // Config Validation Check
-    public boolean noErrorsInConfigFiles = true;
-
     // XP Event Check
     private boolean xpEventEnabled;
 

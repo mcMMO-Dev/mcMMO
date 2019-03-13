@@ -10,19 +10,19 @@ public class ConfigSectionScoreboardTypes {
      * CONFIG NODES
      */
 
-    @Setting(value = "Rank_Scoreboard", comment = "Settings for /mcrank")
+    @Setting(value = "Rank_Scoreboard", comment = "Settings for /mcrank Scoreboard")
     private ConfigSectionRankBoard configSectionRankBoard = new ConfigSectionRankBoard();
 
-    @Setting(value = "Top_Scoreboard", comment = "Settings for /mctop")
+    @Setting(value = "Top_Scoreboard", comment = "Settings for /mctop Scoreboard")
     private ConfigSectionTopBoard configSectionTopBoard = new ConfigSectionTopBoard();
 
-    @Setting(value = "Stats_Scoreboard", comment = "Settings for /mcstats")
+    @Setting(value = "Stats_Scoreboard", comment = "Settings for /mcstats Scoreboard")
     private ConfigSectionStatsBoard configSectionStatsBoard = new ConfigSectionStatsBoard();
 
-    @Setting(value = "Inspect_Scoreboard", comment = "Settings for /inspect")
+    @Setting(value = "Inspect_Scoreboard", comment = "Settings for /inspect Scoreboard")
     private ConfigSectionInspectBoard configSectionInspectBoard = new ConfigSectionInspectBoard();
 
-    @Setting(value = "Cooldown_Scoreboard", comment = "Settings for /mccooldown")
+    @Setting(value = "Cooldown_Scoreboard", comment = "Settings for /mccooldown Scoreboard")
     private ConfigSectionCooldownBoard configSectionCooldownBoard = new ConfigSectionCooldownBoard();
 
     @Setting(value = "Skill_Scoreboard_Settings",
