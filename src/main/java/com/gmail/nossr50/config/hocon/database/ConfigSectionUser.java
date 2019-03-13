@@ -6,7 +6,12 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 @ConfigSerializable
 public class ConfigSectionUser {
 
-    @Setting(value = "User_Name", comment = "The authorized user for your MySQL/MariaDB DB")
+    /*
+     * CONFIG NODES
+     */
+
+    @Setting(value = "User_Name", comment = "The authorized user for your MySQL/MariaDB DB" +
+            "\nThis needs to be an existing user")
     private String username = "example_user_name";
 
     @Setting(value = "User_Password", comment = "The password for your authorized user")
@@ -23,6 +28,5 @@ public class ConfigSectionUser {
     public String getPassword() {
         return password;
     }
-
 
 }

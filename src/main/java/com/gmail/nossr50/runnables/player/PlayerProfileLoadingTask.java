@@ -77,10 +77,10 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
             UserManager.track(mcMMOPlayer);
             mcMMOPlayer.actualizeRespawnATS();
 
-            if (MainConfig.getInstance().getScoreboardsEnabled()) {
+            if (mcMMO.getScoreboardSettings().getScoreboardsEnabled()) {
                 ScoreboardManager.setupPlayer(player);
 
-                if (MainConfig.getInstance().getShowStatsAfterLogin()) {
+                if (mcMMO.getScoreboardSettings().getShowStatsAfterLogin()) {
                     ScoreboardManager.enablePlayerStatsScoreboard(player);
                     new McScoreboardKeepTask(player).runTaskLater(mcMMO.p, 1 * Misc.TICK_CONVERSION_FACTOR);
                 }

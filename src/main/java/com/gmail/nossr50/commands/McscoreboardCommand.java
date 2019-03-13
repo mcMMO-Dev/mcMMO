@@ -31,7 +31,7 @@ public class McscoreboardCommand implements TabExecutor {
                 }
 
                 if (args[0].equalsIgnoreCase("keep")) {
-                    if (!MainConfig.getInstance().getAllowKeepBoard() || !MainConfig.getInstance().getScoreboardsEnabled()) {
+                    if (!mcMMO.getScoreboardSettings().getScoreboardsEnabled()) {
                         sender.sendMessage(LocaleLoader.getString("Commands.Disabled"));
                         return true;
                     }

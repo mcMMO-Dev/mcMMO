@@ -11,7 +11,7 @@ import org.bukkit.scoreboard.Scoreboard;
  */
 abstract public class McMMOScoreboardEvent extends Event {
 
-    protected Scoreboard targetBoard; //Scoreboard involved in this event
+    protected Scoreboard targetBoard; //ConfigScoreboard involved in this event
     final Scoreboard currentBoard; //Can be null
     protected Player targetPlayer;
 

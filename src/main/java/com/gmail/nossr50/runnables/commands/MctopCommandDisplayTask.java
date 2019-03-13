@@ -34,7 +34,7 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (useBoard && MainConfig.getInstance().getScoreboardsEnabled()) {
+        if (useBoard && mcMMO.getScoreboardSettings().getScoreboardsEnabled()) {
             displayBoard();
         }
 

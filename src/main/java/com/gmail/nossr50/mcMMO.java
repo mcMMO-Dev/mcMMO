@@ -6,6 +6,7 @@ import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.hocon.database.ConfigSectionMySQL;
+import com.gmail.nossr50.config.hocon.scoreboard.ConfigScoreboard;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -224,7 +225,7 @@ public class mcMMO extends JavaPlugin {
             PartyManager.saveParties(); // Save our parties
 
             //TODO: Needed?
-            if(MainConfig.getInstance().getScoreboardsEnabled())
+            if(mcMMO.getScoreboardSettings().getScoreboardsEnabled())
                 ScoreboardManager.teardownAll();
 
             formulaManager.saveFormula();
@@ -325,11 +326,20 @@ public class mcMMO extends JavaPlugin {
 
     /**
      * Returns settings for MySQL from the users config
-     * @return returns settings for MySQL from the users config
+     * @return settings for MySQL from the users config
      */
     public static ConfigSectionMySQL getMySQLConfigSettings()
     {
         return configManager.getConfigDatabase().getConfigSectionMySQL();
+    }
+
+    /**
+     * Returns settings for Scoreboards from the users config
+     * @return settings for Scoreboards from the users config
+     */
+    public static ConfigScoreboard getScoreboardSettings()
+    {
+        return configManager.getConfigScoreboard();
     }
 
     /*public static ModManager getModManager() {

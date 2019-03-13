@@ -429,7 +429,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 out.append(startingLevel); // Alchemy
                 out.append("0:"); // AlchemyXp
                 out.append(uuid != null ? uuid.toString() : "NULL").append(":"); // UUID
-                out.append("0:"); // Scoreboard tips shown
+                out.append("0:"); // ConfigScoreboard tips shown
                 // Add more in the same format as the line above
 
                 out.newLine();

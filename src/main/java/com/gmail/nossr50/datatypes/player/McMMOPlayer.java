@@ -998,7 +998,7 @@ public class McMMOPlayer {
 
         UserManager.remove(thisPlayer);
 
-        if(MainConfig.getInstance().getScoreboardsEnabled())
+        if(mcMMO.getScoreboardSettings().getScoreboardsEnabled())
             ScoreboardManager.teardownPlayer(thisPlayer);
 
         if (inParty()) {

@@ -7,8 +7,18 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 @ConfigSerializable
 public class ConfigSectionMySQL {
 
-    @Setting(value = "Enabled", comment = "If set to true, mcMMO will use MySQL/MariaDB instead of FlatFile storage")
-    private boolean enabled = true;
+    /* DEFAULT VALUES */
+    private static final boolean USE_MYSQL_DEFAULT = false;
+
+    /*
+     * CONFIG NODES
+     */
+
+    @Setting(value = "Use_MySQL", comment = "If set to true, mcMMO will use MySQL/MariaDB instead of FlatFile storage" +
+            "\nIt is highly recommended to use a MySQL/MariaDB server over FlatFile," +
+            " especially if the number of players on your Minecraft server is fairly high." +
+            "\nDefault value: "+USE_MYSQL_DEFAULT)
+    private boolean useMySQL = USE_MYSQL_DEFAULT;
 
     @Setting(value = "User", comment = "Your MySQL User Settings")
     private ConfigSectionUser configSectionUser = new ConfigSectionUser();
@@ -24,7 +34,7 @@ public class ConfigSectionMySQL {
      */
 
     public boolean isMySQLEnabled() {
-        return enabled;
+        return useMySQL;
     }
 
     public ConfigSectionUser getConfigSectionUser() {
@@ -38,6 +48,10 @@ public class ConfigSectionMySQL {
     public UserConfigSectionServer getUserConfigSectionServer() {
         return userConfigSectionServer;
     }
+
+    /*
+     * HELPER METHODS
+     */
 
     public int getMaxPoolSize(SQLDatabaseManager.PoolIdentifier poolIdentifier)
     {

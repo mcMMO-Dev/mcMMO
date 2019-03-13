@@ -54,7 +54,7 @@ public class ScoreboardWrapper {
         sidebarObjective = this.scoreboard.registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "dummy");
         powerObjective = this.scoreboard.registerNewObjective(ScoreboardManager.POWER_OBJECTIVE, "dummy");
 
-        if (MainConfig.getInstance().getPowerLevelTagsEnabled()) {
+        if (mcMMO.getScoreboardSettings().getPowerLevelTagsEnabled()) {
             powerObjective.setDisplayName(ScoreboardManager.TAG_POWER_LEVEL);
             powerObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
 
@@ -203,11 +203,11 @@ public class ScoreboardWrapper {
         revertTask = new ScoreboardChangeTask().runTaskLater(mcMMO.p, ticks);
 
         // TODO is there any way to do the time that looks acceptable?
-        // player.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Timer", StringUtils.capitalize(sidebarType.toString().toLowerCase()), ticks / 20F));
+        // player.sendMessage(LocaleLoader.getString("Commands.ConfigScoreboard.Timer", StringUtils.capitalize(sidebarType.toString().toLowerCase()), ticks / 20F));
 
         PlayerProfile profile = UserManager.getPlayer(player).getProfile();
 
-        if (profile.getScoreboardTipsShown() >= MainConfig.getInstance().getTipsAmount()) {
+        if (profile.getScoreboardTipsShown() >= mcMMO.getScoreboardSettings().getTipsAmount()) {
             return;
         }
 

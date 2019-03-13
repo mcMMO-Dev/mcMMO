@@ -10,11 +10,12 @@ public class ConfigDatabase {
      * CONFIG NODES
      */
 
-    @Setting(value = "MySQL", comment = "Settings for using MySQL or MariaDB database")
+    @Setting(value = "MySQL", comment = "Settings for using MySQL or MariaDB database" +
+            "\nI recommend using MariaDB, its completely compatible with MySQL and runs a lot better" +
+            "\nI also recommend having the MySQL/MariaDB server in the same datacenter or LAN as your Minecraft server" +
+            "\nmcMMO uses ASYNC threaded requests for SQL, so the latency is not really a big deal," +
+            " but ideally you want low latency to your SQL server anyways!")
     private ConfigSectionMySQL configSectionMySQL = new ConfigSectionMySQL();
-
-    @Setting(value = "Enabled", comment = "If set to true, mcMMO will use MySQL/MariaDB instead of FlatFile storage")
-    private boolean enabled = true;
 
     /*
      * GETTER BOILERPLATE

@@ -115,9 +115,28 @@ Version 2.1.16
     Breaking Kelp should now count the whole plant for XP
     Spawned Mobs that are not supposed to award XP will no longer reward XP once transformed (ie: drowned)
     mcMMO's config system has been rewritten
-    MySQL Settings can now be found in the new Database config file
-    MySQL Settings now have more comments
+    Many config files are now generated on demand instead of being copied from within the JAR
+    All config nodes that used to be styled with CamelCase now use underscores (_) as spaces for readability and consistency
+    All config nodes will now use Capital letters at the start of each nodes name and after each underscore (_)
+    All config nodes now include a comment with the default value of the node to use as reference
+
+    Scoreboard settings can now be found in "scoreboard.conf"
+    Scoreboard's "Allow_Keep" setting was removed because it was doing something permissions should be doing instead, and I don't see why such a thing even needs a permission!
+    Scoreboard's "Power_Level_Tags" renamed -> "Display_Power_Levels_Below_Player_Names"
+    Scoreboard's "Show_Stats_After_Login" renamed -> "Show_Stats_Scoreboard_On_Player_Login"
+    Scoreboard's "Rainbow" renamed -> "Use_Rainbow_Styling_For_Skill_Names"
+    Scoreboard's "Ability_Names" renamed -> "Use_Super_Ability_Name_Instead_Of_Generic_Name"
+    Scoreboard's "Print" renamed -> "Show_Command_Output_In_Chat"
+    Scoreboard's "Board" renamed -> "Show_Scoreboard"
+    Scoreboard's "Display_Time" renamed -> "Display_Time_In_Seconds"
+    Scoreboard.Misc.Ability locale entry renamed from "Ability" to "Super Ability", this is used only if scoreboards are enabled and super ability names are disabled in scoreboard.conf
+
+    MySQL Settings can now be found in "database_settings.conf"
     MySQL User settings are now in the User Category instead of being in the Database category
+    MySQL's "Enabled" renamed -> "Use_MySQL"
+    MySQL's "Name" renamed -> "Database_Name"
+    MySQL Pool and MaxConnection settings for Save/Load/Misc pools have had their names updated to include setting information
+
     Repair and Salvage configs are now confined to a single file
     mcMMO will no longer shutdown if it finds invalid config entries
     mcMMO will nag admins about invalid config entries when they join the server

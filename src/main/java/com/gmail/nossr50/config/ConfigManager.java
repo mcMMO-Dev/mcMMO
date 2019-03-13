@@ -5,6 +5,7 @@ import com.gmail.nossr50.config.collectionconfigs.SalvageConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.hocon.SerializedConfigLoader;
 import com.gmail.nossr50.config.hocon.database.ConfigDatabase;
+import com.gmail.nossr50.config.hocon.scoreboard.ConfigScoreboard;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.config.treasure.ExcavationTreasureConfig;
@@ -61,6 +62,7 @@ public final class ConfigManager {
     /* CONFIG INSTANCES */
 
     private SerializedConfigLoader<ConfigDatabase> configDatabase;
+    private SerializedConfigLoader<ConfigScoreboard> configScoreboard;
     private MainConfig mainConfig;
     private FishingTreasureConfig fishingTreasureConfig;
     private ExcavationTreasureConfig excavationTreasureConfig;
@@ -91,7 +93,10 @@ public final class ConfigManager {
         // I'm pretty these are supposed to be done in a specific order, so don't rearrange them willy nilly
 
         //TODO: Not sure about the order of MainConfig
+        //Serialized Configs
         configDatabase = new SerializedConfigLoader<>(ConfigDatabase.class, "database_settings.conf", null);
+        configScoreboard = new SerializedConfigLoader<>(ConfigScoreboard.class, "scoreboard.conf", null);
+
         mainConfig = new MainConfig();
 
         fishingTreasureConfig = new FishingTreasureConfig();
@@ -306,4 +311,6 @@ public final class ConfigManager {
     }
 
     public ConfigDatabase getConfigDatabase() { return configDatabase.getConfig(); }
+
+    public ConfigScoreboard getConfigScoreboard() { return configScoreboard.getConfig(); }
 }

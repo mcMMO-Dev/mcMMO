@@ -106,7 +106,7 @@ public abstract class SkillCommand implements TabExecutor {
                 }
 
 
-                if (MainConfig.getInstance().getScoreboardsEnabled() && MainConfig.getInstance().getSkillUseBoard()) {
+                if (mcMMO.getScoreboardSettings().getScoreboardsEnabled() && MainConfig.getInstance().getSkillUseBoard()) {
                     ScoreboardManager.enablePlayerSkillScoreboard(player, skill);
                 }
 

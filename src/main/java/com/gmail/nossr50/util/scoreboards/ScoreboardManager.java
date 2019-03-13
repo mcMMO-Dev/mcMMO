@@ -53,7 +53,7 @@ public class ScoreboardManager {
      */
     static {
         /*
-         * We need immutable objects for our Scoreboard's labels
+         * We need immutable objects for our ConfigScoreboard's labels
          */
         ImmutableMap.Builder<PrimarySkillType, String> skillLabelBuilder = ImmutableMap.builder();
         ImmutableMap.Builder<SuperAbilityType, String> abilityLabelBuilder = ImmutableMap.builder();
@@ -64,7 +64,7 @@ public class ScoreboardManager {
          * Stylizes the targetBoard in a Rainbow Pattern
          * This is off by default
          */
-        if (MainConfig.getInstance().getScoreboardRainbows()) {
+        if (mcMMO.getScoreboardSettings().getUseRainbowSkillStyling()) {
             // Everything but black, gray, gold
             List<ChatColor> colors = Lists.newArrayList(
                     ChatColor.WHITE,
@@ -145,7 +145,7 @@ public class ScoreboardManager {
     }
 
     private static String formatAbility(ChatColor color, String abilityName) {
-        if (MainConfig.getInstance().getShowAbilityNames()) {
+        if (mcMMO.getScoreboardSettings().getUseAbilityNamesOverGenerics()) {
             return getShortenedName(color + abilityName);
         }
         else {
@@ -218,7 +218,7 @@ public class ScoreboardManager {
             }
         }
 
-        if (MainConfig.getInstance().getPowerLevelTagsEnabled() && !dirtyPowerLevels.contains(playerName)) {
+        if (mcMMO.getScoreboardSettings().getPowerLevelTagsEnabled() && !dirtyPowerLevels.contains(playerName)) {
             dirtyPowerLevels.add(playerName);
         }
 
@@ -381,7 +381,7 @@ public class ScoreboardManager {
      * @return the main targetBoard objective, or null if disabled
      */
     public static Objective getPowerLevelObjective() {
-        if (!MainConfig.getInstance().getPowerLevelTagsEnabled()) {
+        if (!mcMMO.getScoreboardSettings().getPowerLevelTagsEnabled()) {
             Objective objective = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard().getObjective(POWER_OBJECTIVE);
 
             if (objective != null) {

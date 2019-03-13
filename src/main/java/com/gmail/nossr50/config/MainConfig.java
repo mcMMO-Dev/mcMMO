@@ -56,7 +56,7 @@ public class MainConfig extends ConfigValidated {
     public static final String DISPLAY_TYPE = "Display_Type";
     public static final String HEARTS = "HEARTS";
     public static final String DISPLAY_TIME = "Display_Time";
-    public static final String SCOREBOARD = "Scoreboard";
+    public static final String SCOREBOARD = "ConfigScoreboard";
     public static final String USE_SCOREBOARDS = "UseScoreboards";
     public static final String POWER = "Power_";
     public static final String POWER_LEVEL_TAGS = POWER + "Level_Tags";
@@ -263,43 +263,43 @@ public class MainConfig extends ConfigValidated {
 
         /* Scoreboards */
         /*if (getRankScoreboardTime() != -1 && getRankScoreboardTime() <= 0) {
-            reason.add("Scoreboard.Types.Rank.Display_Time should be greater than 0, or -1!");
+            reason.add("ConfigScoreboard.Types.Rank.Display_Time should be greater than 0, or -1!");
         }
 
         if (getStatsScoreboardTime() != -1 && getStatsScoreboardTime() <= 0) {
-            reason.add("Scoreboard.Types.Stats.Display_Time should be greater than 0, or -1!");
+            reason.add("ConfigScoreboard.Types.Stats.Display_Time should be greater than 0, or -1!");
         }
 
         if (getTopScoreboardTime() != -1 && getTopScoreboardTime() <= 0) {
-            reason.add("Scoreboard.Types.Top.Display_Time should be greater than 0, or -1!");
+            reason.add("ConfigScoreboard.Types.Top.Display_Time should be greater than 0, or -1!");
         }
 
         if (getInspectScoreboardTime() != -1 && getInspectScoreboardTime() <= 0) {
-            reason.add("Scoreboard.Types.Inspect.Display_Time should be greater than 0, or -1!");
+            reason.add("ConfigScoreboard.Types.Inspect.Display_Time should be greater than 0, or -1!");
         }
 
         if (getSkillScoreboardTime() != -1 && getSkillScoreboardTime() <= 0) {
-            reason.add("Scoreboard.Types.Skill.Display_Time should be greater than 0, or -1!");
+            reason.add("ConfigScoreboard.Types.Skill.Display_Time should be greater than 0, or -1!");
         }
 
         if (getSkillLevelUpTime() != -1 && getSkillScoreboardTime() <= 0) {
-            reason.add("Scoreboard.Types.Skill.Display_Time should be greater than 0, or -1!");
+            reason.add("ConfigScoreboard.Types.Skill.Display_Time should be greater than 0, or -1!");
         }
 
         if (!(getRankUseChat() || getRankUseBoard())) {
-            reason.add("Either Board or Print in Scoreboard.Types.Rank must be true!");
+            reason.add("Either Board or Print in ConfigScoreboard.Types.Rank must be true!");
         }
 
         if (!(getTopUseChat() || getTopUseBoard())) {
-            reason.add("Either Board or Print in Scoreboard.Types.Top must be true!");
+            reason.add("Either Board or Print in ConfigScoreboard.Types.Top must be true!");
         }
 
         if (!(getStatsUseChat() || getStatsUseBoard())) {
-            reason.add("Either Board or Print in Scoreboard.Types.Stats must be true!");
+            reason.add("Either Board or Print in ConfigScoreboard.Types.Stats must be true!");
         }
 
         if (!(getInspectUseChat() || getInspectUseBoard())) {
-            reason.add("Either Board or Print in Scoreboard.Types.Inspect must be true!");
+            reason.add("Either Board or Print in ConfigScoreboard.Types.Inspect must be true!");
         }*/
 
         /* Database Purging */
@@ -538,30 +538,6 @@ public class MainConfig extends ConfigValidated {
     /* Scoreboards */
     public boolean getScoreboardsEnabled() {
         return getBooleanValue(SCOREBOARD, USE_SCOREBOARDS);
-    }
-
-    public boolean getPowerLevelTagsEnabled() {
-        return getBooleanValue(SCOREBOARD, POWER_LEVEL_TAGS);
-    }
-
-    public boolean getAllowKeepBoard() {
-        return getBooleanValue(SCOREBOARD, ALLOW_KEEP);
-    }
-
-    public int getTipsAmount() {
-        return getIntValue(SCOREBOARD, TIPS_AMOUNT);
-    }
-
-    public boolean getShowStatsAfterLogin() {
-        return getBooleanValue(SCOREBOARD, SHOW_STATS_AFTER_LOGIN);
-    }
-
-    public boolean getScoreboardRainbows() {
-        return getBooleanValue(SCOREBOARD, RAINBOWS);
-    }
-
-    public boolean getShowAbilityNames() {
-        return getBooleanValue(SCOREBOARD, ABILITY_NAMES);
     }
 
     public boolean getRankUseChat() {

@@ -8,6 +8,7 @@ import com.gmail.nossr50.runnables.commands.McrankCommandAsyncTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -105,8 +106,8 @@ public class McrankCommand implements TabExecutor {
             mcMMOPlayer.actualizeDatabaseATS();
         }
 
-        boolean useBoard = MainConfig.getInstance().getScoreboardsEnabled() && (sender instanceof Player) && (MainConfig.getInstance().getRankUseBoard());
-        boolean useChat = !useBoard || MainConfig.getInstance().getRankUseChat();
+        boolean useBoard = mcMMO.getScoreboardSettings().getScoreboardsEnabled() && (sender instanceof Player) && (MainConfig.getInstance().getRankUseBoard());
+        boolean useChat = !useBoard || mcMMO.getScoreboardSettings().getScoreboardTypePrintToChatEnabled(ScoreboardManager.SidebarType.RANK_BOARD);
 
         new McrankCommandAsyncTask(playerName, sender, useBoard, useChat).runTaskAsynchronously(mcMMO.p);
     }

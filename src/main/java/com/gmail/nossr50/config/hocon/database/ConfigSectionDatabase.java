@@ -6,6 +6,10 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 @ConfigSerializable
 public class ConfigSectionDatabase {
 
+    /*
+     * CONFIG NODES
+     */
+
     @Setting(value = "Database_Name", comment = "The database name for your DB, this DB must already exist on the SQL server.")
     private String databaseName = "example_database_name";
 

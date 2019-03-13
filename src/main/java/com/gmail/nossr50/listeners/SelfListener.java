@@ -40,7 +40,7 @@ public class SelfListener implements Listener {
             UserManager.getPlayer(player).processUnlockNotifications(plugin, event.getSkill(), previousLevelGained);
         }
 
-        if(MainConfig.getInstance().getScoreboardsEnabled())
+        if(mcMMO.getScoreboardSettings().getScoreboardsEnabled())
             ScoreboardManager.handleLevelUp(player, skill);
 
         if (!MainConfig.getInstance().getLevelUpEffectsEnabled()) {
@@ -54,13 +54,13 @@ public class SelfListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerXp(McMMOPlayerXpGainEvent event) {
-        if(MainConfig.getInstance().getScoreboardsEnabled())
+        if(mcMMO.getScoreboardSettings().getScoreboardsEnabled())
             ScoreboardManager.handleXp(event.getPlayer(), event.getSkill());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onAbility(McMMOPlayerAbilityActivateEvent event) {
-        if(MainConfig.getInstance().getScoreboardsEnabled())
+        if(mcMMO.getScoreboardSettings().getScoreboardsEnabled())
             ScoreboardManager.cooldownUpdate(event.getPlayer(), event.getSkill());
     }
 
