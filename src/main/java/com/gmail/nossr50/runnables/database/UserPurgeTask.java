@@ -11,9 +11,10 @@ public class UserPurgeTask extends BukkitRunnable {
     @Override
     public void run() {
         lock.lock();
-        mcMMO.getDatabaseManager().purgePowerlessUsers();
+        if(mcMMO.getDatabaseCleaningSettings().isPurgePowerlessUsers())
+            mcMMO.getDatabaseManager().purgePowerlessUsers();
 
-        if (MainConfig.getInstance().getOldUsersCutoff() != -1) {
+        if (mcMMO.getDatabaseCleaningSettings().isPurgeOldUsers()) {
             mcMMO.getDatabaseManager().purgeOldUsers();
         }
         lock.unlock();

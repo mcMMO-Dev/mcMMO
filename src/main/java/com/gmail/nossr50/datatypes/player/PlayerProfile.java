@@ -57,7 +57,7 @@ public class PlayerProfile {
         }
 
         for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
-            skills.put(primarySkillType, AdvancedConfig.getInstance().getStartingLevel());
+            skills.put(primarySkillType, mcMMO.getPlayerLevelingSettings().getStartingLevel());
             skillsXp.put(primarySkillType, 0F);
         }
 

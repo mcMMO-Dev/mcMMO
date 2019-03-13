@@ -58,7 +58,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                     boolean powerless = true;
                     for (int skill : skills.values()) {
-                        if (skill != 0) {
+                        if (skill > mcMMO.getPlayerLevelingSettings().getStartingLevel()) {
                             powerless = false;
                             break;
                         }
@@ -384,7 +384,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 // Open the file to write the player
                 out = new BufferedWriter(new FileWriter(mcMMO.getUsersFilePath(), true));
 
-                String startingLevel = AdvancedConfig.getInstance().getStartingLevel() + ":";
+                String startingLevel = mcMMO.getPlayerLevelingSettings().getStartingLevel() + ":";
 
                 // Add the player to the end
                 out.append(playerName).append(":");

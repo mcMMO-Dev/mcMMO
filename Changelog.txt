@@ -119,6 +119,12 @@ Version 2.1.16
     All config nodes that used to be styled with CamelCase now use underscores (_) as spaces for readability and consistency
     All config nodes will now use Capital letters at the start of each nodes name and after each underscore (_)
     All config nodes now include a comment with the default value of the node to use as reference
+    Expanded settings relating to purging users who have not leveled or users who had not logged in for many months
+
+    Fixed a bug where players who started at level 1 would not be purged from the DB for being "powerless"
+
+    Settings related to Player Leveling are now found in "player_leveling.conf"
+    Player Leveling's "StartingLevel" renamed -> "Player_Starting_Level"
 
     Scoreboard settings can now be found in "scoreboard.conf"
     Scoreboard's "Allow_Keep" setting was removed because it was doing something permissions should be doing instead, and I don't see why such a thing even needs a permission!
@@ -131,7 +137,10 @@ Version 2.1.16
     Scoreboard's "Display_Time" renamed -> "Display_Time_In_Seconds"
     Scoreboard.Misc.Ability locale entry renamed from "Ability" to "Super Ability", this is used only if scoreboards are enabled and super ability names are disabled in scoreboard.conf
 
-    MySQL Settings can now be found in "database_settings.conf"
+    MySQL and FlatFile Settings can now be found in "database_settings.conf"
+    Added new config toggle for purging power-less users
+    Added new config toggle for purging inactive users
+    Added setting for only purging users on plugin start up
     MySQL User settings are now in the User Category instead of being in the Database category
     MySQL's "Enabled" renamed -> "Use_MySQL"
     MySQL's "Name" renamed -> "Database_Name"

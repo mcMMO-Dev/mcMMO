@@ -5,6 +5,8 @@ import com.gmail.nossr50.config.CoreSkillsConfig;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.config.hocon.ConfigLeveling;
+import com.gmail.nossr50.config.hocon.database.ConfigSectionCleaning;
 import com.gmail.nossr50.config.hocon.database.ConfigSectionMySQL;
 import com.gmail.nossr50.config.hocon.scoreboard.ConfigScoreboard;
 import com.gmail.nossr50.database.DatabaseManager;
@@ -330,6 +332,20 @@ public class mcMMO extends JavaPlugin {
         return configManager.getConfigDatabase().getConfigSectionMySQL();
     }
 
+    public static ConfigLeveling getPlayerLevelingSettings()
+    {
+        return configManager.getConfigLeveling();
+    }
+
+    /**
+     * Returns settings for Database cleaning from the users config
+     * @return settings for Database cleaning from the users config
+     */
+    public static ConfigSectionCleaning getDatabaseCleaningSettings()
+    {
+        return configManager.getConfigDatabase().getConfigSectionCleaning();
+    }
+
     /**
      * Returns settings for Scoreboards from the users config
      * @return settings for Scoreboards from the users config
@@ -474,9 +490,9 @@ public class mcMMO extends JavaPlugin {
         new BleedTimerTask().runTaskTimer(this, 1 * Misc.TICK_CONVERSION_FACTOR, 1 * (Misc.TICK_CONVERSION_FACTOR / 2));
 
         // Old & Powerless User remover
-        long purgeIntervalTicks = MainConfig.getInstance().getPurgeInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
+        long purgeIntervalTicks = getConfigManager().getConfigDatabase().getConfigSectionCleaning().getPurgeInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
 
-        if (purgeIntervalTicks == 0) {
+        if (mcMMO.getDatabaseCleaningSettings().isOnlyPurgeAtStartup()) {
             new UserPurgeTask().runTaskLaterAsynchronously(this, 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
         }
         else if (purgeIntervalTicks > 0) {

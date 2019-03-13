@@ -10,6 +10,10 @@ public class ConfigDatabase {
      * CONFIG NODES
      */
 
+    @Setting(value = "Database_Cleaning",
+            comment = "Settings to automatically purge old users to keep database sizes small.")
+    private ConfigSectionCleaning configSectionCleaning = new ConfigSectionCleaning();
+
     @Setting(value = "MySQL", comment = "Settings for using MySQL or MariaDB database" +
             "\nI recommend using MariaDB, its completely compatible with MySQL and runs a lot better" +
             "\nI also recommend having the MySQL/MariaDB server in the same datacenter or LAN as your Minecraft server" +
@@ -23,5 +27,9 @@ public class ConfigDatabase {
 
     public ConfigSectionMySQL getConfigSectionMySQL() {
         return configSectionMySQL;
+    }
+
+    public ConfigSectionCleaning getConfigSectionCleaning() {
+        return configSectionCleaning;
     }
 }

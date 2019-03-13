@@ -17,7 +17,7 @@ public class McpurgeCommand implements TabExecutor {
             case 0:
                 mcMMO.getDatabaseManager().purgePowerlessUsers();
 
-                if (MainConfig.getInstance().getOldUsersCutoff() != -1) {
+                if (mcMMO.getDatabaseCleaningSettings().getOldUserCutoffMonths() != -1) {
                     mcMMO.getDatabaseManager().purgeOldUsers();
                 }
 

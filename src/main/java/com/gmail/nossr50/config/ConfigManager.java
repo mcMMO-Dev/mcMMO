@@ -3,6 +3,7 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.config.collectionconfigs.RepairConfig;
 import com.gmail.nossr50.config.collectionconfigs.SalvageConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.config.hocon.ConfigLeveling;
 import com.gmail.nossr50.config.hocon.SerializedConfigLoader;
 import com.gmail.nossr50.config.hocon.database.ConfigDatabase;
 import com.gmail.nossr50.config.hocon.scoreboard.ConfigScoreboard;
@@ -63,6 +64,7 @@ public final class ConfigManager {
 
     private SerializedConfigLoader<ConfigDatabase> configDatabase;
     private SerializedConfigLoader<ConfigScoreboard> configScoreboard;
+    private SerializedConfigLoader<ConfigLeveling> configLeveling;
     private MainConfig mainConfig;
     private FishingTreasureConfig fishingTreasureConfig;
     private ExcavationTreasureConfig excavationTreasureConfig;
@@ -96,6 +98,7 @@ public final class ConfigManager {
         //Serialized Configs
         configDatabase = new SerializedConfigLoader<>(ConfigDatabase.class, "database_settings.conf", null);
         configScoreboard = new SerializedConfigLoader<>(ConfigScoreboard.class, "scoreboard.conf", null);
+        configLeveling = new SerializedConfigLoader<>(ConfigLeveling.class, "player_leveling.conf", null);
 
         mainConfig = new MainConfig();
 
@@ -313,4 +316,8 @@ public final class ConfigManager {
     public ConfigDatabase getConfigDatabase() { return configDatabase.getConfig(); }
 
     public ConfigScoreboard getConfigScoreboard() { return configScoreboard.getConfig(); }
+
+    public ConfigLeveling getConfigLeveling() {
+        return configLeveling.getConfig();
+    }
 }

@@ -119,11 +119,22 @@ public final class SQLDatabaseManager implements DatabaseManager {
             connection = getConnection(PoolIdentifier.MISC);
             statement = connection.createStatement();
 
+            String startingLevel = String.valueOf(mcMMO.getPlayerLevelingSettings().getStartingLevel());
+
+            //Purge users who have not leveled from the default level
             purged = statement.executeUpdate("DELETE FROM " + tablePrefix + "skills WHERE "
+                    + "taming = " + startingLevel + " AND mining = " + startingLevel + " AND woodcutting = " + startingLevel + " AND repair = " + startingLevel + " "
+                    + "AND unarmed = " + startingLevel + " AND herbalism = " + startingLevel + " AND excavation = " + startingLevel + " AND "
+                    + "archery = " + startingLevel + " AND swords = " + startingLevel + " AND axes = " + startingLevel + " AND acrobatics = " + startingLevel + " "
+                    + "AND fishing = " + startingLevel + " AND alchemy = " + startingLevel + ";");
+
+            //Purge users who have 0 for all levels
+            purged += statement.executeUpdate("DELETE FROM " + tablePrefix + "skills WHERE "
                     + "taming = 0 AND mining = 0 AND woodcutting = 0 AND repair = 0 "
                     + "AND unarmed = 0 AND herbalism = 0 AND excavation = 0 AND "
                     + "archery = 0 AND swords = 0 AND axes = 0 AND acrobatics = 0 "
                     + "AND fishing = 0 AND alchemy = 0;");
+
 
             statement.executeUpdate("DELETE FROM `" + tablePrefix + "experience` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "skills` `s` WHERE `" + tablePrefix + "experience`.`user_id` = `s`.`user_id`)");
             statement.executeUpdate("DELETE FROM `" + tablePrefix + "huds` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "skills` `s` WHERE `" + tablePrefix + "huds`.`user_id` = `s`.`user_id`)");
@@ -845,8 +856,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setString(2, tablePrefix + "skills");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
-                String startingLevel = "'" + AdvancedConfig.getInstance().getStartingLevel() + "'";
-                String totalLevel = "'" + (AdvancedConfig.getInstance().getStartingLevel() * (PrimarySkillType.values().length - PrimarySkillType.CHILD_SKILLS.size())) + "'";
+                String startingLevel = "'" + mcMMO.getPlayerLevelingSettings().getStartingLevel() + "'";
+                String totalLevel = "'" + (mcMMO.getPlayerLevelingSettings().getStartingLevel() * (PrimarySkillType.values().length - PrimarySkillType.CHILD_SKILLS.size())) + "'";
                 createStatement = connection.createStatement();
                 createStatement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "skills` ("
                         + "`user_id` int(10) unsigned NOT NULL,"

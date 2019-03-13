@@ -302,15 +302,6 @@ public class MainConfig extends ConfigValidated {
             reason.add("Either Board or Print in ConfigScoreboard.Types.Inspect must be true!");
         }*/
 
-        /* Database Purging */
-        if (getPurgeInterval() < -1) {
-            reason.add(DATABASE + PURGING + "." + PURGE_INTERVAL + " should be greater than, or equal to -1!");
-        }
-
-        if (getOldUsersCutoff() != -1 && getOldUsersCutoff() <= 0) {
-            reason.add(DATABASE + PURGING + "." + OLD_USER_CUTOFF + " should be greater than 0 or -1!");
-        }
-
         /* Hardcore Mode */
         if (getHardcoreDeathStatPenaltyPercentage() < 0.01 || getHardcoreDeathStatPenaltyPercentage() > 100) {
             reason.add(HARDCORE + "." + DEATH_STAT_LOSS + "." + PENALTY_PERCENTAGE + " only accepts values from 0.01 to 100!");
@@ -533,15 +524,6 @@ public class MainConfig extends ConfigValidated {
 
     public int getMobHealthbarTime() {
         return getIntValue(MOB_HEALTHBAR, DISPLAY_TIME);
-    }
-
-    /* Database Purging */
-    public int getPurgeInterval() {
-        return getIntValue(DATABASE + PURGING, PURGE_INTERVAL);
-    }
-
-    public int getOldUsersCutoff() {
-        return getIntValue(DATABASE + PURGING, OLD_USER_CUTOFF);
     }
 
     /* Backups */
