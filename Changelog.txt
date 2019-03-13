@@ -7,6 +7,57 @@ Key:
   ! Change
   - Removal
 
+Version 2.2.0
+    mcMMO's config system has been rewritten
+    Many config files are now generated on demand instead of being copied from within the JAR
+    All config nodes that used to be styled with CamelCase now use underscores (_) as spaces for readability and consistency
+    All config nodes will now use Capital letters at the start of each nodes name and after each underscore (_)
+    All config nodes now include a comment with the default value of the node to use as reference
+    Expanded settings relating to purging users who have not leveled or users who had not logged in for many months
+
+    Fixed a bug where players who started at level 1 would not be purged from the DB for being "powerless"
+
+    Settings related to Player Leveling are now found in "player_leveling.conf"
+    Player Leveling's "StartingLevel" renamed -> "Player_Starting_Level"
+
+    Scoreboard settings can now be found in "scoreboard.conf"
+    Scoreboard's "Allow_Keep" setting was removed because it was doing something permissions should be doing instead, and I don't see why such a thing even needs a permission!
+    Scoreboard's "Power_Level_Tags" renamed -> "Display_Power_Levels_Below_Player_Names"
+    Scoreboard's "Show_Stats_After_Login" renamed -> "Show_Stats_Scoreboard_On_Player_Login"
+    Scoreboard's "Rainbow" renamed -> "Use_Rainbow_Styling_For_Skill_Names"
+    Scoreboard's "Ability_Names" renamed -> "Use_Super_Ability_Name_Instead_Of_Generic_Name"
+    Scoreboard's "Print" renamed -> "Show_Command_Output_In_Chat"
+    Scoreboard's "Board" renamed -> "Show_Scoreboard"
+    Scoreboard's "Display_Time" renamed -> "Display_Time_In_Seconds"
+    Scoreboard.Misc.Ability locale entry renamed from "Ability" to "Super Ability", this is used only if scoreboards are enabled and super ability names are disabled in scoreboard.conf
+
+    MySQL and FlatFile Settings can now be found in "database_settings.conf"
+    Added new config toggle for purging power-less users
+    Added new config toggle for purging inactive users
+    Added setting for only purging users on plugin start up
+    MySQL User settings are now in the User Category instead of being in the Database category
+    MySQL's "Enabled" renamed -> "Use_MySQL"
+    MySQL's "Name" renamed -> "Database_Name"
+    MySQL Pool and MaxConnection settings for Save/Load/Misc pools have had their names updated to include setting information
+
+    Repair and Salvage configs are now confined to a single file
+    mcMMO will no longer shutdown if it finds invalid config entries
+    mcMMO will nag admins about invalid config entries when they join the server
+    mcMMO's mod config system has been temporarily disabled as modded bukkit servers don't exist anymore (Forge Bukkit hybrid servers)
+    Mycellium removed from woodcutting XP (whoops)
+    Optimized XP lookups for block breaking
+    Super Breaker will now break "Mining" blocks even if they have no XP entries
+    Tree Feller will now break "Woodcutting" blocks even if they have no XP entries
+    Giga Drill Breaker will now break "diggable" blocks even if they have no configured treasures
+    mcMMO's mod config system has been temporarily disabled as no modded bukkit servers even exist
+    Mycellium removed from woodcutting XP (whoops)
+    Optimized XP lookups for block breaking
+    Super Breaker will now break "Mining" blocks even if they have no XP entries
+    Tree Feller will now break "Woodcutting" blocks even if they have no XP entries
+    Giga Drill Breaker will now break "diggable" blocks even if they have no configured treasures
+    removed child.yml, child skills now have hard coded parents
+    removed the hardcore and vampirism commands, these are dangerous settings and should not be toggle-able (turn them on in your configs if you want to use them)
+
 Version 2.1.28
     Fixed a bug where Archery could not gain XP
 
@@ -82,11 +133,11 @@ Version 2.1.21
         NOTE: Rolls still happen in the cooldown period, you just won't gain XP.
 
 Version 2.1.20
-Added Hungarian localization (Locale code: hu_HU) (thanks andris155)
-Players can now fish in the same spot about 3 times before mcMMO will mark the area as being over-fished (over-fishing is to prevent abuse)
-Added a toggle to turn off the fishing exploit detection to experience.yml "ExploitFix.Fishing"
-    Note: The new config update is coming soon and will use a different setting, putting this out as a band-aid fix for people that don't like the new fishing exploit prevention stuff
-Added a message to warn players that their next fishing attempt will result in over-fishing (Locale: Fishing.LowResources)
+    Added Hungarian localization (Locale code: hu_HU) (thanks andris155)
+    Players can now fish in the same spot about 3 times before mcMMO will mark the area as being over-fished (over-fishing is to prevent abuse)
+    Added a toggle to turn off the fishing exploit detection to experience.yml "ExploitFix.Fishing"
+        Note: The new config update is coming soon and will use a different setting, putting this out as a band-aid fix for people that don't like the new fishing exploit prevention stuff
+    Added a message to warn players that their next fishing attempt will result in over-fishing (Locale: Fishing.LowResources)
 
 Version 2.1.19
     Greatly Improved Fishing AFK/Exploit Detection
@@ -114,55 +165,6 @@ Version 2.1.17
 Version 2.1.16
     Breaking Kelp should now count the whole plant for XP
     Spawned Mobs that are not supposed to award XP will no longer reward XP once transformed (ie: drowned)
-    mcMMO's config system has been rewritten
-    Many config files are now generated on demand instead of being copied from within the JAR
-    All config nodes that used to be styled with CamelCase now use underscores (_) as spaces for readability and consistency
-    All config nodes will now use Capital letters at the start of each nodes name and after each underscore (_)
-    All config nodes now include a comment with the default value of the node to use as reference
-    Expanded settings relating to purging users who have not leveled or users who had not logged in for many months
-
-    Fixed a bug where players who started at level 1 would not be purged from the DB for being "powerless"
-
-    Settings related to Player Leveling are now found in "player_leveling.conf"
-    Player Leveling's "StartingLevel" renamed -> "Player_Starting_Level"
-
-    Scoreboard settings can now be found in "scoreboard.conf"
-    Scoreboard's "Allow_Keep" setting was removed because it was doing something permissions should be doing instead, and I don't see why such a thing even needs a permission!
-    Scoreboard's "Power_Level_Tags" renamed -> "Display_Power_Levels_Below_Player_Names"
-    Scoreboard's "Show_Stats_After_Login" renamed -> "Show_Stats_Scoreboard_On_Player_Login"
-    Scoreboard's "Rainbow" renamed -> "Use_Rainbow_Styling_For_Skill_Names"
-    Scoreboard's "Ability_Names" renamed -> "Use_Super_Ability_Name_Instead_Of_Generic_Name"
-    Scoreboard's "Print" renamed -> "Show_Command_Output_In_Chat"
-    Scoreboard's "Board" renamed -> "Show_Scoreboard"
-    Scoreboard's "Display_Time" renamed -> "Display_Time_In_Seconds"
-    Scoreboard.Misc.Ability locale entry renamed from "Ability" to "Super Ability", this is used only if scoreboards are enabled and super ability names are disabled in scoreboard.conf
-
-    MySQL and FlatFile Settings can now be found in "database_settings.conf"
-    Added new config toggle for purging power-less users
-    Added new config toggle for purging inactive users
-    Added setting for only purging users on plugin start up
-    MySQL User settings are now in the User Category instead of being in the Database category
-    MySQL's "Enabled" renamed -> "Use_MySQL"
-    MySQL's "Name" renamed -> "Database_Name"
-    MySQL Pool and MaxConnection settings for Save/Load/Misc pools have had their names updated to include setting information
-
-    Repair and Salvage configs are now confined to a single file
-    mcMMO will no longer shutdown if it finds invalid config entries
-    mcMMO will nag admins about invalid config entries when they join the server
-    mcMMO's mod config system has been temporarily disabled as modded bukkit servers don't exist anymore (Forge Bukkit hybrid servers)
-    Mycellium removed from woodcutting XP (whoops)
-    Optimized XP lookups for block breaking
-    Super Breaker will now break "Mining" blocks even if they have no XP entries
-    Tree Feller will now break "Woodcutting" blocks even if they have no XP entries
-    Giga Drill Breaker will now break "diggable" blocks even if they have no configured treasures
-    mcMMO's mod config system has been temporarily disabled as no modded bukkit servers even exist
-    Mycellium removed from woodcutting XP (whoops)
-    Optimized XP lookups for block breaking
-    Super Breaker will now break "Mining" blocks even if they have no XP entries
-    Tree Feller will now break "Woodcutting" blocks even if they have no XP entries
-    Giga Drill Breaker will now break "diggable" blocks even if they have no configured treasures
-    removed child.yml, child skills now have hard coded parents
-    removed the hardcore and vampirism commands, these are dangerous settings and should not be toggle-able (turn them on in your configs if you want to use them)
 
 Version 2.1.15
     Fixed a bug where a max rank of Fuel Efficiency would cause its benefits to be lost
