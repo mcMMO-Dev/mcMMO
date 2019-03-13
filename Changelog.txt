@@ -7,6 +7,10 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.16
+    Breaking Kelp should now count the whole plant for XP
+    Spawned Mobs that are not supposed to award XP will no longer reward XP once transformed (ie: drowned)
+
 Version 2.1.15
     Fixed a bug where a max rank of Fuel Efficiency would cause its benefits to be lost
 

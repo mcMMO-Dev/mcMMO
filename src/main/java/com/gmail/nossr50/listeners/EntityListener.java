@@ -54,6 +54,19 @@ public class EntityListener implements Listener {
         this.plugin = plugin;
     }
 
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onEntityTransform(EntityTransformEvent event)
+    {
+        //Transfer metadata keys from mob-spawned mobs to new mobs
+        if(event.getEntity().getMetadata(mcMMO.entityMetadataKey) == null || event.getEntity().getMetadata(mcMMO.entityMetadataKey).size() <= 0)
+        {
+            for(Entity entity : event.getTransformedEntities())
+            {
+                entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+            }
+        }
+    }
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityTargetEntity(EntityTargetLivingEntityEvent event)
     {
