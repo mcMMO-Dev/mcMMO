@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.player;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;

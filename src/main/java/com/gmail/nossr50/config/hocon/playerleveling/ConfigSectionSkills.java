@@ -6,6 +6,10 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 @ConfigSerializable
 public class ConfigSectionSkills {
 
+    /*
+     * CONFIG NODES
+     */
+
     @Setting(value = "Acrobatics")
     private ConfigSectionSkillLevelCap acrobatics = new ConfigSectionSkillLevelCap();
 
@@ -50,6 +54,10 @@ public class ConfigSectionSkills {
 
     @Setting(value = "Salvage")
     private ConfigSectionSkillLevelCap salvage = new ConfigSectionSkillLevelCap();
+
+    /*
+     * GETTER BOILERPLATE
+     */
 
     public ConfigSectionSkillLevelCap getAcrobatics() {
         return acrobatics;

@@ -1,6 +1,5 @@
 package com.gmail.nossr50.config.hocon.database;
 
-import com.gmail.nossr50.config.ConfigConstants;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 

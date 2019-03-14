@@ -1,6 +1,5 @@
 package com.gmail.nossr50.config.hocon.scoreboard;
 
-import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;

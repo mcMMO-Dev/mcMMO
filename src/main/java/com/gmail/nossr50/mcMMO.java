@@ -5,9 +5,9 @@ import com.gmail.nossr50.config.CoreSkillsConfig;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.config.hocon.playerleveling.ConfigLeveling;
 import com.gmail.nossr50.config.hocon.database.ConfigSectionCleaning;
 import com.gmail.nossr50.config.hocon.database.ConfigSectionMySQL;
+import com.gmail.nossr50.config.hocon.playerleveling.ConfigLeveling;
 import com.gmail.nossr50.config.hocon.scoreboard.ConfigScoreboard;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
@@ -36,7 +36,6 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
-import com.google.common.base.Charsets;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.entity.Player;
@@ -47,8 +46,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 public class mcMMO extends JavaPlugin {
     /* Managers */
@@ -79,8 +76,6 @@ public class mcMMO extends JavaPlugin {
 
     // XP Event Check
     private boolean xpEventEnabled;
-
-    private static boolean isRetroModeEnabled;
 
     /* Metadata Values */
     public static final String FISH_HOOK_REF_METAKEY = "mcMMO: Fish Hook Tracker";
@@ -129,17 +124,6 @@ public class mcMMO extends JavaPlugin {
 
             loadConfigFiles();
 
-            /*if (!noErrorsInConfigFiles) {
-                return;
-            }*/
-
-            //Store this value so other plugins can check it
-            isRetroModeEnabled = MainConfig.getInstance().getIsRetroMode();
-
-            /*if (getServer().getName().equals("Cauldron") || getServer().getName().equals("MCPC+")) {
-                checkModConfigs();
-            }*/
-
             if (healthBarPluginEnabled) {
                 getLogger().info("HealthBar plugin found, mcMMO's healthbars are automatically disabled.");
             }
@@ -186,7 +170,7 @@ public class mcMMO extends JavaPlugin {
                 metrics = new Metrics(this);
                 metrics.addCustomChart(new Metrics.SimplePie("version", () -> getDescription().getVersion()));
 
-                if(MainConfig.getInstance().getIsRetroMode())
+                if(!configManager.getConfigLeveling().getConfigSectionLevelingGeneral().getConfigSectionLevelScaling().isRetroModeEnabled())
                     metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Standard"));
                 else
                     metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Retro"));
@@ -548,11 +532,6 @@ public class mcMMO extends JavaPlugin {
         }
     }*/
 
-    public InputStreamReader getResourceAsReader(String fileName) {
-        InputStream in = getResource(fileName);
-        return in == null ? null : new InputStreamReader(in, Charsets.UTF_8);
-    }
-
     /**
      * Checks if this plugin is using retro mode
      * Retro mode is a 0-1000 skill system
@@ -560,7 +539,7 @@ public class mcMMO extends JavaPlugin {
      * @return true if retro mode is enabled
      */
     public static boolean isRetroModeEnabled() {
-        return isRetroModeEnabled;
+        return getPlayerLevelingSettings().getConfigSectionLevelingGeneral().getConfigSectionLevelScaling().isRetroModeEnabled();
     }
 
     public static WorldBlacklist getWorldBlacklist() {

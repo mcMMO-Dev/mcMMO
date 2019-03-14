@@ -1,6 +1,5 @@
 package com.gmail.nossr50.database;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;

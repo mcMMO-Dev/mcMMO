@@ -118,7 +118,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             connection = getConnection(PoolIdentifier.MISC);
             statement = connection.createStatement();
 
-            String startingLevel = String.valueOf(mcMMO.getPlayerLevelingSettings().getStartingLevel());
+            String startingLevel = String.valueOf(mcMMO.getPlayerLevelingSettings().getConfigSectionLevelingGeneral().getStartingLevel());
 
             //Purge users who have not leveled from the default level
             purged = statement.executeUpdate("DELETE FROM " + tablePrefix + "skills WHERE "
@@ -855,8 +855,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setString(2, tablePrefix + "skills");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
-                String startingLevel = "'" + mcMMO.getPlayerLevelingSettings().getStartingLevel() + "'";
-                String totalLevel = "'" + (mcMMO.getPlayerLevelingSettings().getStartingLevel() * (PrimarySkillType.values().length - PrimarySkillType.CHILD_SKILLS.size())) + "'";
+                String startingLevel = "'" + mcMMO.getPlayerLevelingSettings().getConfigSectionLevelingGeneral().getStartingLevel() + "'";
+                String totalLevel = "'" + (mcMMO.getPlayerLevelingSettings().getConfigSectionLevelingGeneral().getStartingLevel() * (PrimarySkillType.values().length - PrimarySkillType.CHILD_SKILLS.size())) + "'";
                 createStatement = connection.createStatement();
                 createStatement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "skills` ("
                         + "`user_id` int(10) unsigned NOT NULL,"

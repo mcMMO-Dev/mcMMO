@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.experience;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -25,7 +24,7 @@ public class FormulaManager {
 
     public FormulaManager() {
         /* Setting for Classic Mode (Scales a lot of stuff up by * 10) */
-        retroModeEnabled = MainConfig.getInstance().getIsRetroMode();
+        retroModeEnabled = mcMMO.isRetroModeEnabled();
         loadFormula();
     }
 
@@ -91,7 +90,7 @@ public class FormulaManager {
                     break;
 
                 //If the maximum level is at or below our starting level, then the player can't level up anymore
-                if(maxLevel <= mcMMO.getPlayerLevelingSettings().getStartingLevel())
+                if(maxLevel <= mcMMO.getPlayerLevelingSettings().getConfigSectionLevelingGeneral().getStartingLevel())
                     return new int[]{ newLevel, remainder };
             }
 

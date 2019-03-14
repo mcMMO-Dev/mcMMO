@@ -1,6 +1,5 @@
 package com.gmail.nossr50.runnables.database;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.scheduler.BukkitRunnable;
 

@@ -7,34 +7,28 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 @ConfigSerializable
 public class ConfigLeveling {
 
-    /* DEFAULT VALUES */
-    private static final int STARTING_LEVEL_DEFAULT = 1;
-
     /*
      * CONFIG NODES
      */
-
-    @Setting(value = "Player-Starting-Level",
-            comment = "\nPlayers will start at this level in all skills if they aren't already saved in the database." +
-                    "\nHistorically this number has been 0, but this was changed in 2.1.X to 1 as I felt it was better to start from 1 than 0." +
-                    "\nDefault value: "+STARTING_LEVEL_DEFAULT)
-    private int startingLevel = STARTING_LEVEL_DEFAULT;
 
     @Setting(value = "Player-Level-Caps",
             comment = "Restrict players from going above certain skill levels" +
                     "\nPlayers that have skills above the limit will have their skill levels truncated down to the limit.")
     private ConfigSectionLevelCaps configSectionLevelCaps = new ConfigSectionLevelCaps();
 
+    @Setting(value = "General", comment = "Settings for player leveling that don't fall into other categories")
+    private ConfigSectionLevelingGeneral configSectionLevelingGeneral = new ConfigSectionLevelingGeneral();
+
     /*
      * GETTER BOILERPLATE
      */
 
-    public int getStartingLevel() {
-        return startingLevel;
-    }
-
     public ConfigSectionLevelCaps getConfigSectionLevelCaps() {
         return configSectionLevelCaps;
+    }
+
+    public ConfigSectionLevelingGeneral getConfigSectionLevelingGeneral() {
+        return configSectionLevelingGeneral;
     }
 
     /*
