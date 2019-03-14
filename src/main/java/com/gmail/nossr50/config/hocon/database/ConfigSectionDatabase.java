@@ -10,10 +10,10 @@ public class ConfigSectionDatabase {
      * CONFIG NODES
      */
 
-    @Setting(value = "Database_Name", comment = "The database name for your DB, this DB must already exist on the SQL server.")
+    @Setting(value = "Database-Name", comment = "The database name for your DB, this DB must already exist on the SQL server.")
     private String databaseName = "example_database_name";
 
-    @Setting(value = "Table_Prefix", comment = "The Prefix that will be used for tables in your DB")
+    @Setting(value = "Table-Prefix", comment = "The Prefix that will be used for tables in your DB")
     private String tablePrefix = "mcmmo_";
 
     /*

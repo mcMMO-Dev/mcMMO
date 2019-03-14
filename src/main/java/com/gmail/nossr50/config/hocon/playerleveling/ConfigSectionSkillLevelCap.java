@@ -12,7 +12,7 @@ public class ConfigSectionSkillLevelCap {
     @Setting(value = "Enable")
     private boolean useLevelCap = USE_LEVEL_CAP_DEFAULT;
 
-    @Setting(value = "Level_Cap", comment = "Players will be unable to level past this value")
+    @Setting(value = "Level-Cap", comment = "Players will be unable to level past this value")
     private int levelCap = LEVEL_CAP_DEFAULT;
 
     public boolean isLevelCapEnabled() {

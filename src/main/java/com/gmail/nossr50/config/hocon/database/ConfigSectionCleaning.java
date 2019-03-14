@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config.hocon.database;
 
+import com.gmail.nossr50.config.ConfigConstants;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -17,27 +18,27 @@ public class ConfigSectionCleaning {
      * CONFIG NODES
      */
 
-    @Setting(value = "Purge_Old_Users",
+    @Setting(value = "Purge-Old-Users",
             comment = "Turn this on to enable automatic database pruning of old users." +
                     "\nDefault value: "+PURGE_OLD_USERS)
     private boolean purgeOldUsers = PURGE_OLD_USERS;
 
-    @Setting(value = "Purge_Powerless_Users", comment = "Powerless users are players who have not" +
+    @Setting(value = "Purge-Powerless-Users", comment = "Powerless users are players who have not" +
             " leveled up in a single skill." +
             "\nDefault value: "+PURGE_POWERLESS_USERS)
     private boolean purgePowerlessUsers = PURGE_POWERLESS_USERS;
 
-    @Setting(value = "Only_Purge_At_Plugin_Startup",
+    @Setting(value = "Only-Purge-At-Plugin-Startup",
             comment = "If set to true, then purging will only happen when the plugin first loads." +
                     "\nKeep in mind, this will trigger on reload as well." +
                     "\nThis purge is on a 2 second delay from plugin start-up and runs in an ASYNC thread." +
                     "\nDefault value: "+ONLY_PURGE_AT_STARTUP)
     private boolean onlyPurgeAtStartup = ONLY_PURGE_AT_STARTUP;
 
-    @Setting(value = "Purge_Interval_In_Hours", comment = "How many hours between automatic purging?")
+    @Setting(value = "Purge-Interval-In-Hours", comment = "How many hours between automatic purging?")
     private int purgeInterval = PURGE_INTERVAL_DEFAULT;
 
-    @Setting(value = "Old_User_Cutoff_In_Months", comment = "Users who haven't connected in this many months will be purged" +
+    @Setting(value = "Old-User-Cutoff-In-Months", comment = "Users who haven't connected in this many months will be purged" +
             "\nDefault value: "+OLD_USER_CUTOFF_IN_MONTHS)
     private int oldUserCutoffMonths = OLD_USER_CUTOFF_IN_MONTHS;
 

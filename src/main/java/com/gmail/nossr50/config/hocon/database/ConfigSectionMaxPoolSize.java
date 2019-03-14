@@ -15,13 +15,13 @@ public class ConfigSectionMaxPoolSize {
      * CONFIG NODES
      */
 
-    @Setting(value = "Misc_Pool", comment = "Default value: "+MISC_DEFAULT)
+    @Setting(value = "Misc-Pool", comment = "Default value: "+MISC_DEFAULT)
     private int misc = 10;
 
-    @Setting(value = "Load_Pool", comment = "Default value: "+LOAD_DEFAULT)
+    @Setting(value = "Load-Pool", comment = "Default value: "+LOAD_DEFAULT)
     private int load = 20;
 
-    @Setting(value = "Save_Pool", comment = "Default value: "+SAVE_DEFAULT)
+    @Setting(value = "Save-Pool", comment = "Default value: "+SAVE_DEFAULT)
     private int save = 20;
 
     /*

@@ -8,6 +8,9 @@ import java.io.File;
  * Constants relating to config folders and paths
  */
 public class ConfigConstants {
+    /* HOCON ESCAPE CHARACTER FOR UNDERSCORES */
+    public static final String HOCON_FRIENDLY_UNDERSCORE = "\\_";
+
     /* FOLDER NAMES */
     public static final String FOLDER_NAME_CONFIG       = "config";
     public static final String FOLDER_NAME_SKILLS       = "skills";

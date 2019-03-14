@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config.hocon.scoreboard;
 
+import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
@@ -11,10 +12,10 @@ public class ConfigScoreboard {
      * CONFIG NODES
      */
 
-    @Setting(value = "General Settings", comment = "Settings that apply to all scoreboards or don't fall into other categories")
+    @Setting(value = "General-Settings", comment = "Settings that apply to all scoreboards or don't fall into other categories")
     private ConfigSectionGeneral configSectionGeneral = new ConfigSectionGeneral();
 
-    @Setting(value = "Scoreboard_Specific_Settings", comment = "Settings for individual scoreboard displays")
+    @Setting(value = "Scoreboard-Specific-Settings", comment = "Settings for individual scoreboard displays")
     private ConfigSectionScoreboardTypes configSectionScoreboardTypes = new ConfigSectionScoreboardTypes();
 
     /*

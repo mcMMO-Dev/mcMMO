@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config.hocon.scoreboard;
 
+import com.gmail.nossr50.config.ConfigConstants;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -10,22 +11,22 @@ public class ConfigSectionScoreboardTypes {
      * CONFIG NODES
      */
 
-    @Setting(value = "Rank_Scoreboard", comment = "Settings for /mcrank Scoreboard")
+    @Setting(value = "Rank-Scoreboard", comment = "Settings for /mcrank Scoreboard")
     private ConfigSectionRankBoard configSectionRankBoard = new ConfigSectionRankBoard();
 
-    @Setting(value = "Top_Scoreboard", comment = "Settings for /mctop Scoreboard")
+    @Setting(value = "Top-Scoreboard", comment = "Settings for /mctop Scoreboard")
     private ConfigSectionTopBoard configSectionTopBoard = new ConfigSectionTopBoard();
 
-    @Setting(value = "Stats_Scoreboard", comment = "Settings for /mcstats Scoreboard")
+    @Setting(value = "Stats-Scoreboard", comment = "Settings for /mcstats Scoreboard")
     private ConfigSectionStatsBoard configSectionStatsBoard = new ConfigSectionStatsBoard();
 
-    @Setting(value = "Inspect_Scoreboard", comment = "Settings for /inspect Scoreboard")
+    @Setting(value = "Inspect-Scoreboard", comment = "Settings for /inspect Scoreboard")
     private ConfigSectionInspectBoard configSectionInspectBoard = new ConfigSectionInspectBoard();
 
-    @Setting(value = "Cooldown_Scoreboard", comment = "Settings for /mccooldown Scoreboard")
+    @Setting(value = "Cooldown-Scoreboard", comment = "Settings for /mccooldown Scoreboard")
     private ConfigSectionCooldownBoard configSectionCooldownBoard = new ConfigSectionCooldownBoard();
 
-    @Setting(value = "Skill_Scoreboard_Settings",
+    @Setting(value = "Skill-Scoreboard-Settings",
             comment = "Settings for /<skillname> (e.g. /mining, /unarmed)" +
                     "\nNo \"print\" option is given here; the information will always be displayed in chat." +
                     "\nThe functionality of this scoreboard overlaps heavily with the new XP bars," +

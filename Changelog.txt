@@ -10,8 +10,8 @@ Key:
 Version 2.2.0
     mcMMO's config system has been rewritten
     Many config files are now generated on demand instead of being copied from within the JAR
-    All config nodes that used to be styled with CamelCase now use underscores (_) as spaces for readability and consistency
-    All config nodes will now use Capital letters at the start of each nodes name and after each underscore (_)
+    All config nodes that used to be styled with CamelCase now use hyphens (-) as spaces for readability and consistency
+    All config nodes will now use Capital letters at the start of each nodes name and after each hyphen (-)
     All config nodes now include a comment with the default value of the node to use as reference
     Expanded settings relating to purging users who have not leveled or users who had not logged in for many months
 

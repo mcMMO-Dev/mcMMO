@@ -15,21 +15,21 @@ public class ConfigSectionStatsBoard {
      * CONFIG NODES
      */
 
-    @Setting(value = "Show_Command_Output_In_Chat",
+    @Setting(value = "Show-Command-Output-In-Chat",
             comment = "Should the commands normal chat output be shown in chat?" +
                     "\nIf you feel that the scoreboard does a good enough job at conveying the information, you can set this to false." +
                     "\nIf you'd like to show the chat anyways, turn this to true, the scoreboard will still be shown if its enabled." +
                     "\nDefault value: "+PRINT_TO_CHAT_DEFAULT)
     private boolean printToChat = PRINT_TO_CHAT_DEFAULT;
 
-    @Setting(value = "Show_Scoreboard",
+    @Setting(value = "Show-Scoreboard",
             comment = "Whether or not you wish to enable the display of this scoreboard." +
                     "\nScoreboards are shown when the associated command is executed from the player." +
                     "\nThis setting will only work if \"Use_Scoreboards\" is set to true, which is found elsewhere in this configuration file." +
                     "\nDefault value: "+USE_THIS_SCOREBOARD_DEFAULT)
     private boolean useThisBoard = USE_THIS_SCOREBOARD_DEFAULT;
 
-    @Setting(value = "Display_Time_In_Seconds",
+    @Setting(value = "Display-Time-In-Seconds",
             comment = "How long to keep the scoreboard on a players screen after it is first shown." +
                     "\nThis setting is not related to the command that keeps scoreboards on screen." +
                     "\nDefault value: "+DISPLAY_TIME_SECONDS_DEFAULT)

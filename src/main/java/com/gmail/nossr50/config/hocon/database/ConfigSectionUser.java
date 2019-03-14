@@ -10,11 +10,11 @@ public class ConfigSectionUser {
      * CONFIG NODES
      */
 
-    @Setting(value = "User_Name", comment = "The authorized user for your MySQL/MariaDB DB" +
+    @Setting(value = "User-Name", comment = "The authorized user for your MySQL/MariaDB DB" +
             "\nThis needs to be an existing user")
     private String username = "example_user_name";
 
-    @Setting(value = "User_Password", comment = "The password for your authorized user")
+    @Setting(value = "User-Password", comment = "The password for your authorized user")
     private String password = "example_user_password";
 
     /*

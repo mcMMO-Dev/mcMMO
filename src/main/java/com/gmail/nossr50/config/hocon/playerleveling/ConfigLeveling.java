@@ -14,13 +14,13 @@ public class ConfigLeveling {
      * CONFIG NODES
      */
 
-    @Setting(value = "Player_Starting_Level",
+    @Setting(value = "Player-Starting-Level",
             comment = "\nPlayers will start at this level in all skills if they aren't already saved in the database." +
                     "\nHistorically this number has been 0, but this was changed in 2.1.X to 1 as I felt it was better to start from 1 than 0." +
                     "\nDefault value: "+STARTING_LEVEL_DEFAULT)
     private int startingLevel = STARTING_LEVEL_DEFAULT;
 
-    @Setting(value = "Player_Level_Caps",
+    @Setting(value = "Player-Level-Caps",
             comment = "Restrict players from going above certain skill levels" +
                     "\nPlayers that have skills above the limit will have their skill levels truncated down to the limit.")
     private ConfigSectionLevelCaps configSectionLevelCaps = new ConfigSectionLevelCaps();

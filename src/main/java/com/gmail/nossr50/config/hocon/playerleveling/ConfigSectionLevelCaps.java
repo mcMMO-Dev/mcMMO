@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config.hocon.playerleveling;
 
+import com.gmail.nossr50.config.ConfigConstants;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -12,12 +13,12 @@ public class ConfigSectionLevelCaps {
      * CONFIG NODES
      */
 
-    @Setting(value = "Reduce_Player_Skills_Above_Cap",
+    @Setting(value = "Reduce-Player-Skills-Above-Cap",
             comment = "Players with skills above the cap will have those skills reduced to the cap" +
                     "\nDefault value: "+TRUNCATE_SKILLS_ABOVE_CAP_DEFAULT)
     private boolean truncateSkillsAboveCap = TRUNCATE_SKILLS_ABOVE_CAP_DEFAULT;
 
-    @Setting(value = "Power_Level",
+    @Setting(value = "Power-Level",
             comment = "Power Level is the sum of all of a players skills." +
                     "\nEnable this cap if you want to force players into specializing into specific skills")
     private ConfigSectionSkillLevelCap powerLevel = new ConfigSectionSkillLevelCap();
@@ -28,10 +29,6 @@ public class ConfigSectionLevelCaps {
     /*
      * GETTER BOILERPLATE
      */
-
-    public boolean isTruncateSkillsAboveCap() {
-        return truncateSkillsAboveCap;
-    }
 
     public ConfigSectionSkillLevelCap getPowerLevel() {
         return powerLevel;

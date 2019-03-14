@@ -14,7 +14,7 @@ public class ConfigSectionMySQL {
      * CONFIG NODES
      */
 
-    @Setting(value = "Use_MySQL", comment = "If set to true, mcMMO will use MySQL/MariaDB instead of FlatFile storage" +
+    @Setting(value = "Use-MySQL", comment = "If set to true, mcMMO will use MySQL/MariaDB instead of FlatFile storage" +
             "\nIt is highly recommended to use a MySQL/MariaDB server over FlatFile," +
             " especially if the number of players on your Minecraft server is fairly high." +
             "\nDefault value: "+USE_MYSQL_DEFAULT)
