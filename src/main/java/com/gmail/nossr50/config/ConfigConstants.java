@@ -3,13 +3,22 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.mcMMO;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Constants relating to config folders and paths
  */
 public class ConfigConstants {
-    /* HOCON ESCAPE CHARACTER FOR UNDERSCORES */
-    public static final String HOCON_FRIENDLY_UNDERSCORE = "\\_";
+    private final static String[] EXAMPLE_BLACKLIST_WORLDS = {"Example_15434453", "Example_2324423", "Example_323423465"};
+    public final static ArrayList<String> EXAMPLE_BLACKLIST_WORLDS_LIST_DEFAULT;
+
+    //Add the worlds to the list
+    static {
+        EXAMPLE_BLACKLIST_WORLDS_LIST_DEFAULT = new ArrayList<>();
+        EXAMPLE_BLACKLIST_WORLDS_LIST_DEFAULT.add(EXAMPLE_BLACKLIST_WORLDS[0]);
+        EXAMPLE_BLACKLIST_WORLDS_LIST_DEFAULT.add(EXAMPLE_BLACKLIST_WORLDS[1]);
+        EXAMPLE_BLACKLIST_WORLDS_LIST_DEFAULT.add(EXAMPLE_BLACKLIST_WORLDS[2]);
+    }
 
     /* FOLDER NAMES */
     public static final String FOLDER_NAME_CONFIG       = "config";

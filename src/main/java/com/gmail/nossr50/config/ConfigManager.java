@@ -7,6 +7,7 @@ import com.gmail.nossr50.config.hocon.SerializedConfigLoader;
 import com.gmail.nossr50.config.hocon.database.ConfigDatabase;
 import com.gmail.nossr50.config.hocon.playerleveling.ConfigLeveling;
 import com.gmail.nossr50.config.hocon.scoreboard.ConfigScoreboard;
+import com.gmail.nossr50.config.hocon.worldblacklist.ConfigWorldBlacklist;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.config.treasure.ExcavationTreasureConfig;
@@ -65,6 +66,7 @@ public final class ConfigManager {
     private SerializedConfigLoader<ConfigDatabase> configDatabase;
     private SerializedConfigLoader<ConfigScoreboard> configScoreboard;
     private SerializedConfigLoader<ConfigLeveling> configLeveling;
+    private SerializedConfigLoader<ConfigWorldBlacklist> configWorldBlacklist;
     private MainConfig mainConfig;
     private FishingTreasureConfig fishingTreasureConfig;
     private ExcavationTreasureConfig excavationTreasureConfig;
@@ -99,6 +101,7 @@ public final class ConfigManager {
         configDatabase = new SerializedConfigLoader<>(ConfigDatabase.class, "database_settings.conf", null);
         configScoreboard = new SerializedConfigLoader<>(ConfigScoreboard.class, "scoreboard.conf", null);
         configLeveling = new SerializedConfigLoader<>(ConfigLeveling.class, "player_leveling.conf", null);
+        configWorldBlacklist = new SerializedConfigLoader<>(ConfigWorldBlacklist.class, "world_blacklist.conf", null);
 
         mainConfig = new MainConfig();
 
@@ -319,5 +322,9 @@ public final class ConfigManager {
 
     public ConfigLeveling getConfigLeveling() {
         return configLeveling.getConfig();
+    }
+
+    public ConfigWorldBlacklist getConfigWorldBlacklist() {
+        return configWorldBlacklist.getConfig();
     }
 }
