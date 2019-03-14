@@ -15,12 +15,18 @@ Version 2.2.0
     All config nodes now include a comment with the default value of the node to use as reference
     Expanded settings relating to purging users who have not leveled or users who had not logged in for many months
 
+    NOTE: Not every config key that was renamed will be listed here
+
     Fixed a bug where players who started at level 1 would not be purged from the DB for being "powerless"
 
     Settings related to Player Leveling are now found in "player_leveling.conf"
     Player Leveling's "TruncateSkills" renamed -> "Reduce-Player-Skills-Above-Cap"
     Player Leveling's "StartingLevel" renamed -> "Player-Starting-Level"
+    Retro mode setting's "Enable" renamed -> "Use-Retro-Mode"
     Added new toggles for enabling level caps (previously this was done by setting the value above 0)
+
+    World Blacklist settings can now be found in "world_blacklist.conf"
+    World Blacklist now includes examples
 
     Scoreboard settings can now be found in "scoreboard.conf"
     Scoreboard's "Allow_Keep" setting was removed because it was doing something permissions should be doing instead, and I don't see why such a thing even needs a permission!
