@@ -18,30 +18,30 @@ Version 2.2.0
     Fixed a bug where players who started at level 1 would not be purged from the DB for being "powerless"
 
     Settings related to Player Leveling are now found in "player_leveling.conf"
-    Player Leveling's "TruncateSkills" renamed -> "Reduce_Player_Skills_Above_Cap"
-    Player Leveling's "StartingLevel" renamed -> "Player_Starting_Level"
+    Player Leveling's "TruncateSkills" renamed -> "Reduce-Player-Skills-Above-Cap"
+    Player Leveling's "StartingLevel" renamed -> "Player-Starting-Level"
     Added new toggles for enabling level caps (previously this was done by setting the value above 0)
 
     Scoreboard settings can now be found in "scoreboard.conf"
     Scoreboard's "Allow_Keep" setting was removed because it was doing something permissions should be doing instead, and I don't see why such a thing even needs a permission!
-    Scoreboard's "Power_Level_Tags" renamed -> "Display_Power_Levels_Below_Player_Names"
-    Scoreboard's "Show_Stats_After_Login" renamed -> "Show_Stats_Scoreboard_On_Player_Login"
-    Scoreboard's "Rainbow" renamed -> "Use_Rainbow_Styling_For_Skill_Names"
-    Scoreboard's "Ability_Names" renamed -> "Use_Super_Ability_Name_Instead_Of_Generic_Name"
-    Scoreboard's "Print" renamed -> "Show_Command_Output_In_Chat"
-    Scoreboard's "Board" renamed -> "Show_Scoreboard"
-    Scoreboard's "Display_Time" renamed -> "Display_Time_In_Seconds"
+    Scoreboard's "Power_Level_Tags" renamed -> "Display-Power-Levels-Below-Player-Names"
+    Scoreboard's "Show_Stats_After_Login" renamed -> "Show-Stats-Scoreboard-On-Player-Login"
+    Scoreboard's "Rainbow" renamed -> "Use-Rainbow-Styling-For-Skill-Names"
+    Scoreboard's "Ability_Names" renamed -> "Use-Super-Ability-Name-Instead-Of-Generic-Name"
+    Scoreboard's "Print" renamed -> "Show-Command-Output-In-Chat"
+    Scoreboard's "Board" renamed -> "Show-Scoreboard"
+    Scoreboard's "Display_Time" renamed -> "Display-Time-In-Seconds"
     Scoreboard.Misc.Ability locale entry renamed from "Ability" to "Super Ability", this is used only if scoreboards are enabled and super ability names are disabled in scoreboard.conf
 
     MySQL and FlatFile Settings can now be found in "database_settings.conf"
     Added new config toggle for purging power-less users
     Added new config toggle for purging inactive users
-    Database Purging's "Purge_Interval" renamed -> "Purge_Interval_In_Hours"
-    Database Purging's "Old_User_Cutoff" renamed -> "Old_User_Cutoff_In_Months"
+    Database Purging's "Purge_Interval" renamed -> "Purge-Interval-In-Hours"
+    Database Purging's "Old_User_Cutoff" renamed -> "Old-User-Cutoff-In-Months"
     Added setting for only purging users on plugin start up
     MySQL User settings are now in the User Category instead of being in the Database category
-    MySQL's "Enabled" renamed -> "Use_MySQL"
-    MySQL's "Name" renamed -> "Database_Name"
+    MySQL's "Enabled" renamed -> "Use-MySQL"
+    MySQL's "Name" renamed -> "Database-Name"
     MySQL Pool and MaxConnection settings for Save/Load/Misc pools have had their names updated to include setting information
 
     Repair and Salvage configs are now confined to a single file
