@@ -7,6 +7,10 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.17
+    Fixed a logic error that resulted in Drowned giving no XP
+    Fixed a bug that resulted in mob spawner entities to not be marked for no xp after being transforming into Drowned
+
 Version 2.1.16
     Breaking Kelp should now count the whole plant for XP
     Spawned Mobs that are not supposed to award XP will no longer reward XP once transformed (ie: drowned)

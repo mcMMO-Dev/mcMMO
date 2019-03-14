@@ -58,7 +58,7 @@ public class EntityListener implements Listener {
     public void onEntityTransform(EntityTransformEvent event)
     {
         //Transfer metadata keys from mob-spawned mobs to new mobs
-        if(event.getEntity().getMetadata(mcMMO.entityMetadataKey) == null || event.getEntity().getMetadata(mcMMO.entityMetadataKey).size() <= 0)
+        if(event.getEntity().getMetadata(mcMMO.entityMetadataKey) != null || event.getEntity().getMetadata(mcMMO.entityMetadataKey).size() >= 1)
         {
             for(Entity entity : event.getTransformedEntities())
             {
