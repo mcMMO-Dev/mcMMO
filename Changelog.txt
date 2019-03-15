@@ -49,6 +49,8 @@ Version 2.2.0
     Party's "AutoKick_Interval" renamed -> "Hours-Between-Cleanup-Operations"
     Party's "Old_Party_Member_Cutoff" renamed -> "Offline-Day-Limit"
     Added toggle to limit max party size, previously this was done by setting party maximum size above -1
+    Leveling your Party-Level now requires being near another party member by default
+    Party members are now informed about your skill ups by default
 
     Notification config options will now be found in "chat_and_hud_notifications.conf"
 

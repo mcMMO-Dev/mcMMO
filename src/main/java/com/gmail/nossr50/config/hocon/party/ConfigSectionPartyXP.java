@@ -19,4 +19,8 @@ public class ConfigSectionPartyXP {
             "\n\nKeep in mind, if you gain XP in say Acrobatics and then that XP is shared with your party members, " +
             "that doesn't mean that you will get extra XP from the XP sharing.")
     private ConfigSectionPartyExperienceSharing partyExperienceSharing = new ConfigSectionPartyExperienceSharing();
+
+    @Setting(value = "Party-Level", comment = "Parties in mcMMO gain levels just like skills" +
+            "\nSettings related to that can be found here!.")
+    private ConfigSectionPartyLevel partyLevel = new ConfigSectionPartyLevel();
 }
