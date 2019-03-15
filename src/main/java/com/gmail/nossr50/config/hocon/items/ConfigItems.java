@@ -1,7 +1,8 @@
-package com.gmail.nossr50.config.hocon;
+package com.gmail.nossr50.config.hocon.items;
 
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 @ConfigSerializable
-public class Party {
+public class ConfigItems {
+
 }
