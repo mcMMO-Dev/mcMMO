@@ -3,7 +3,6 @@ package com.gmail.nossr50.listeners;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.meta.OldName;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -71,7 +70,7 @@ public class EntityListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityTargetEntity(EntityTargetLivingEntityEvent event)
     {
-        if(!ExperienceConfig.getInstance().isEndermanEndermiteFarmingPrevented())
+        if(!mcMMO.getConfigManager().getConfigExploitPrevention().getEndermenEndermiteFix())
             return;
 
         //Prevent entities from giving XP if they target endermite
@@ -645,12 +644,15 @@ public class EntityListener implements Listener {
             case NETHER_PORTAL:
             case SPAWNER:
             case SPAWNER_EGG:
-                entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+                if(mcMMO.getConfigManager().getConfigExploitPrevention().doSpawnedEntitiesGiveModifiedXP())
+                {
+                    entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
 
-                Entity passenger = entity.getPassenger();
+                    Entity passenger = entity.getPassenger();
 
-                if (passenger != null) {
-                    passenger.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+                    if (passenger != null) {
+                        passenger.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+                    }
                 }
                 return;
 
@@ -894,8 +896,15 @@ public class EntityListener implements Listener {
             return;
         }
 
-        entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
-        UserManager.getPlayer(player).getTamingManager().awardTamingXP(entity);
+
+        if(!event.isCancelled())
+        {
+            if(mcMMO.getConfigManager().getConfigExploitPrevention().doTamedEntitiesGiveXP())
+                entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+
+            UserManager.getPlayer(player).getTamingManager().awardTamingXP(entity);
+        }
+
     }
 
     /**

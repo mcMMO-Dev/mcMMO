@@ -14,10 +14,15 @@ Version 2.2.0
     All config nodes will now use Capital letters at the start of each nodes name and after each hyphen (-)
     All config nodes now include a comment with the default value of the node to use as reference
     Expanded settings relating to purging users who have not leveled or users who had not logged in for many months
-
     NOTE: Not every config key that was renamed will be listed here
-
     Fixed a bug where players who started at level 1 would not be purged from the DB for being "powerless"
+    Fixed a potential bug where players could be awarded XP for cancelled tame events
+
+    Exploit related config options will now be found in "exploit-prevention"
+    Exploit Prevention's "EndermanEndermiteFarms" renamed -> "Endermen-Endermite-Fix"
+    Added toggle for pistons marking natural blocks as unnatural after being moved to prevent afk stone farms
+    Added toggle for marking spawned mobs for giving modified XP
+    Added toggle for tamed mobs to give combat XP when struck
 
     Settings related to Player Leveling are now found in "player_leveling.conf"
     Player Leveling's "TruncateSkills" renamed -> "Reduce-Player-Skills-Above-Cap"
