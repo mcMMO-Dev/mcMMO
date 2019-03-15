@@ -436,15 +436,6 @@ public class MainConfig extends ConfigValidated {
      */
 
     /* General Settings */
-    public boolean getIsMetricsEnabled() {
-        return getBooleanValue(METRICS, BSTATS);
-    }
-
-    //Retro mode will default the value to true if the config file doesn't contain the entry (server is from a previous mcMMO install)
-    public boolean getIsRetroMode() {
-        return getBooleanValue(GENERAL, RETRO_MODE, ENABLED);
-    }
-
     public String getLocale() {
         if(hasNode(GENERAL, LOCALE))
             return getStringValue(GENERAL, LOCALE);

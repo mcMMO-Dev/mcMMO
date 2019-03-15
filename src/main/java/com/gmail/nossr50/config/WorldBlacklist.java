@@ -13,7 +13,6 @@ import java.util.ArrayList;
 public class WorldBlacklist {
 
     public static boolean isWorldBlacklisted(World world) {
-
         for (String s : mcMMO.getConfigManager().getConfigWorldBlacklist().getBlackListedWorlds()) {
             if (world.getName().equalsIgnoreCase(s))
                 return true;

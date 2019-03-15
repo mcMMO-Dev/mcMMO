@@ -57,9 +57,6 @@ public class mcMMO extends JavaPlugin {
     private static HolidayManager     holidayManager;
     //private static UpgradeManager     upgradeManager;
 
-    /* Blacklist */
-    private static WorldBlacklist worldBlacklist;
-
     /* File Paths */
     private static String mainDirectory;
     private static String flatFileDirectory;
@@ -163,10 +160,9 @@ public class mcMMO extends JavaPlugin {
             RankUtils.populateRanks();
 
             //If anonymous statistics are enabled then use them
+            if(getConfigManager().getConfigMetrics().isAllowAnonymousUsageStatistics()) {
+                Metrics metrics;
 
-            Metrics metrics;
-
-            if(MainConfig.getInstance().getIsMetricsEnabled()) {
                 metrics = new Metrics(this);
                 metrics.addCustomChart(new Metrics.SimplePie("version", () -> getDescription().getVersion()));
 
@@ -184,9 +180,6 @@ public class mcMMO extends JavaPlugin {
 
             getServer().getPluginManager().disablePlugin(this);
         }
-
-        //Init the blacklist
-        worldBlacklist = new WorldBlacklist();
     }
 
     @Override
@@ -540,10 +533,6 @@ public class mcMMO extends JavaPlugin {
      */
     public static boolean isRetroModeEnabled() {
         return getPlayerLevelingSettings().getConfigSectionLevelingGeneral().getConfigSectionLevelScaling().isRetroModeEnabled();
-    }
-
-    public static WorldBlacklist getWorldBlacklist() {
-        return worldBlacklist;
     }
 
     public static ConfigManager getConfigManager() {
