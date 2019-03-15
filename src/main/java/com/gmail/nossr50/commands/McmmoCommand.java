@@ -24,14 +24,12 @@ public class McmmoCommand implements CommandExecutor {
                 String[] mcSplit = description.split(",");
                 sender.sendMessage(mcSplit);
 
-                if (MainConfig.getInstance().getDonateMessageEnabled()) {
+                if (mcMMO.getConfigManager().getConfigAds().isShowDonationInfo()) {
                     sender.sendMessage(LocaleLoader.getString("MOTD.Donate"));
                     sender.sendMessage(ChatColor.GOLD + " - " + ChatColor.GREEN + "nossr50@gmail.com" + ChatColor.GOLD + " Paypal");
                 }
 
-                if (Permissions.showversion(sender)) {
-                    sender.sendMessage(LocaleLoader.getString("MOTD.Version", mcMMO.p.getDescription().getVersion()));
-                }
+                sender.sendMessage(LocaleLoader.getString("MOTD.Version", mcMMO.p.getDescription().getVersion()));
 
                 mcMMO.getHolidayManager().anniversaryCheck(sender);
                 return true;

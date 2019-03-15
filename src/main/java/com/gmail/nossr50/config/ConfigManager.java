@@ -6,6 +6,9 @@ import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.hocon.SerializedConfigLoader;
 import com.gmail.nossr50.config.hocon.antiexploit.ConfigExploitPrevention;
 import com.gmail.nossr50.config.hocon.database.ConfigDatabase;
+import com.gmail.nossr50.config.hocon.donation.ConfigAuthorAdvertisements;
+import com.gmail.nossr50.config.hocon.hardcore.ConfigHardcore;
+import com.gmail.nossr50.config.hocon.metrics.ConfigMetrics;
 import com.gmail.nossr50.config.hocon.motd.ConfigMOTD;
 import com.gmail.nossr50.config.hocon.playerleveling.ConfigLeveling;
 import com.gmail.nossr50.config.hocon.scoreboard.ConfigScoreboard;
@@ -70,7 +73,10 @@ public final class ConfigManager {
     private SerializedConfigLoader<ConfigLeveling> configLeveling;
     private SerializedConfigLoader<ConfigWorldBlacklist> configWorldBlacklist;
     private SerializedConfigLoader<ConfigExploitPrevention> configExploitPrevention;
+    private SerializedConfigLoader<ConfigHardcore> configHardcore;
+    private SerializedConfigLoader<ConfigMetrics> configMetrics;
     private SerializedConfigLoader<ConfigMOTD> configMOTD;
+    private SerializedConfigLoader<ConfigAuthorAdvertisements> configAuthorAdvertisements;
     private MainConfig mainConfig;
     private FishingTreasureConfig fishingTreasureConfig;
     private ExcavationTreasureConfig excavationTreasureConfig;
@@ -108,6 +114,9 @@ public final class ConfigManager {
         configWorldBlacklist = new SerializedConfigLoader<>(ConfigWorldBlacklist.class, "world_blacklist.conf", null);
         configExploitPrevention = new SerializedConfigLoader<>(ConfigExploitPrevention.class, "exploit_prevention.conf", null);
         configMOTD = new SerializedConfigLoader<>(ConfigMOTD.class, "message_of_the_day.conf", null);
+        configHardcore = new SerializedConfigLoader<>(ConfigHardcore.class, "hardcore_mode.conf", null);
+        configMetrics = new SerializedConfigLoader<>(ConfigMetrics.class, "analytics_reporting.conf", null);
+        configAuthorAdvertisements = new SerializedConfigLoader<>(ConfigAuthorAdvertisements.class, "author_support_advertisements.conf", null);
 
         mainConfig = new MainConfig();
 
@@ -133,26 +142,6 @@ public final class ConfigManager {
         repairConfig = new RepairConfig();
 
         salvageConfig = new SalvageConfig();
-
-
-        /*if (MainConfig.getInstance().getToolModsEnabled()) {
-            new ToolConfigManager();
-        }
-
-        if (MainConfig.getInstance().getArmorModsEnabled()) {
-            new ArmorConfigManager();
-        }
-
-        if (MainConfig.getInstance().getBlockModsEnabled()) {
-            new BlockConfigManager();
-        }
-
-        if (MainConfig.getInstance().getEntityModsEnabled()) {
-            new EntityConfigManager();
-        }*/
-
-        // Multi Config Containers
-        //initMultiConfigContainers();
 
         /*
          * Managers
@@ -340,5 +329,17 @@ public final class ConfigManager {
 
     public ConfigMOTD getConfigMOTD() {
         return configMOTD.getConfig();
+    }
+
+    public ConfigHardcore getConfigHardcore() {
+        return configHardcore.getConfig();
+    }
+
+    public ConfigMetrics getConfigMetrics() {
+        return configMetrics.getConfig();
+    }
+
+    public ConfigAuthorAdvertisements getConfigAds() {
+        return configAuthorAdvertisements.getConfig();
     }
 }

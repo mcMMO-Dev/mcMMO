@@ -100,7 +100,7 @@ public abstract class SkillCommand implements TabExecutor {
 
 
                 //Link Header
-                if(MainConfig.getInstance().getUrlLinksEnabled())
+                if(mcMMO.getConfigManager().getConfigAds().isShowWebsiteLinks())
                 {
                     player.sendMessage(LocaleLoader.getString("Overhaul.mcMMO.Header"));
                     TextComponentFactory.sendPlayerUrlHeader(player);

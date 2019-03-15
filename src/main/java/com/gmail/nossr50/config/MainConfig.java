@@ -453,10 +453,6 @@ public class MainConfig extends ConfigValidated {
             return "en_US";
     }
 
-    public boolean getMOTDEnabled() {
-        return getBooleanValue(GENERAL, MOTD + ENABLED);
-    }
-
     public boolean getShowProfileLoadedMessage() {
         return getBooleanValue(GENERAL, SHOW_PROFILE_LOADED);
     }
@@ -799,10 +795,6 @@ public class MainConfig extends ConfigValidated {
      */
 
     /* General Settings */
-    public boolean getUrlLinksEnabled() {
-        return getBooleanValue(COMMANDS, SKILLS, URL_LINKS);
-    }
-
     public boolean getAbilityMessagesEnabled() {
         return getBooleanValue(ABILITIES, MESSAGES);
     }

@@ -728,8 +728,6 @@ permissions:
         description: Allows participation in admin chat
     mcmmo.chat.partychat:
         description: Allows participation in party chat
-    mcmmo.motd:
-        description: Allows access to the motd
     mcmmo.commands.*:
         default: false
         description: Implies all mcmmo.commands permissions.
@@ -1241,7 +1239,6 @@ permissions:
         children:
             mcmmo.chat.partychat: true
             mcmmo.commands.defaults: true
-            mcmmo.motd: true 
             mcmmo.skills.all: true
     mcmmo.defaultsop:
         default: op
@@ -2009,9 +2006,6 @@ permissions:
         children:
             mcmmo.ability.woodcutting.all: true
             mcmmo.commands.woodcutting: true
-    mcmmo.showversion:
-        default: true
-        description: Show mcMMO version number in /mcmmo and motd
     mcmmo.tools.*:
         default: false
         description: Implies all mcmmo.tools permissions.

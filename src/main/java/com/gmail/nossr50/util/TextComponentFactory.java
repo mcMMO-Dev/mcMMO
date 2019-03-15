@@ -10,6 +10,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
@@ -57,7 +58,7 @@ public class TextComponentFactory {
 
     public static void sendPlayerSubSkillWikiLink(Player player, String subskillformatted)
     {
-        if(!MainConfig.getInstance().getUrlLinksEnabled())
+        if(!mcMMO.getConfigManager().getConfigAds().isShowWebsiteLinks())
             return;
 
         Player.Spigot spigotPlayer = player.spigot();
@@ -86,21 +87,38 @@ public class TextComponentFactory {
 
         TextComponent emptySpace = new TextComponent(" ");
 
-        BaseComponent[] baseComponents = {new TextComponent(prefix),
-                getWebLinkTextComponent(McMMOWebLinks.WEBSITE),
-                emptySpace,
-                getWebLinkTextComponent(McMMOWebLinks.DISCORD),
-                emptySpace,
-                getWebLinkTextComponent(McMMOWebLinks.PATREON),
-                emptySpace,
-                getWebLinkTextComponent(McMMOWebLinks.WIKI),
-                emptySpace,
-                getWebLinkTextComponent(McMMOWebLinks.SPIGOT),
-                emptySpace,
-                getWebLinkTextComponent(McMMOWebLinks.HELP_TRANSLATE),
-                new TextComponent(suffix)};
+        if(mcMMO.getConfigManager().getConfigAds().isShowPatreonInfo())
+        {
+            BaseComponent[] baseComponents = {new TextComponent(prefix),
+                    getWebLinkTextComponent(McMMOWebLinks.WEBSITE),
+                    emptySpace,
+                    getWebLinkTextComponent(McMMOWebLinks.DISCORD),
+                    emptySpace,
+                    getWebLinkTextComponent(McMMOWebLinks.PATREON),
+                    emptySpace,
+                    getWebLinkTextComponent(McMMOWebLinks.WIKI),
+                    emptySpace,
+                    getWebLinkTextComponent(McMMOWebLinks.SPIGOT),
+                    emptySpace,
+                    getWebLinkTextComponent(McMMOWebLinks.HELP_TRANSLATE),
+                    new TextComponent(suffix)};
 
-        spigotPlayer.sendMessage(baseComponents);
+            spigotPlayer.sendMessage(baseComponents);
+        } else {
+            BaseComponent[] baseComponents = {new TextComponent(prefix),
+                    getWebLinkTextComponent(McMMOWebLinks.WEBSITE),
+                    emptySpace,
+                    getWebLinkTextComponent(McMMOWebLinks.DISCORD),
+                    emptySpace,
+                    getWebLinkTextComponent(McMMOWebLinks.WIKI),
+                    emptySpace,
+                    getWebLinkTextComponent(McMMOWebLinks.SPIGOT),
+                    emptySpace,
+                    getWebLinkTextComponent(McMMOWebLinks.HELP_TRANSLATE),
+                    new TextComponent(suffix)};
+
+            spigotPlayer.sendMessage(baseComponents);
+        }
     }
 
     public static void sendPlayerSubSkillList(Player player, List<TextComponent> textComponents)

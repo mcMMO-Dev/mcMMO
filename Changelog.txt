@@ -20,10 +20,23 @@ Version 2.2.0
     Fixed a bug where players who started at level 1 would not be purged from the DB for being "powerless"
     Fixed a potential bug where players could be awarded XP for cancelled tame events
 
+    Permission Node Changes
+    Removed "mcmmo.motd" because it makes no sense to have this as a player permission when its a config option
+    Removed "mcmmo.showversion" because this one also makes no sense
+
     Config Changes
+
+    All author ad-type (donations, urls, etc) message config options will now be found in "author_support_advertisements.conf"
+    Config option "URL_Links" renamed -> "Show-Website-Links"
+    Added config option for showing author paypal info in /mcmmo (previously this was tied to the motd setting)
+    Added config option for showing author patreon links in various commands
 
     MOTD (Message of the day) config options will now be found in "motd.conf"
     MOTD's "MOTD_Enabled" renamed -> "Show-MOTD-On-Player-Join"
+
+    Anonymous statistic config options will now be found in "analytics_reporting.conf"
+
+    Hardcore config options will now be found in "hardcore.conf"
 
     Exploit related config options will now be found in "exploit-prevention"
     Exploit Prevention's "EndermanEndermiteFarms" renamed -> "Endermen-Endermite-Fix"
