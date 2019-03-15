@@ -32,6 +32,7 @@ Version 2.2.0
     Added toggle for tamed mobs to give combat XP when struck
     Added toggle for acrobatics exploit prevention
     Added customizable limit for the number of locations acrobatics tracks for exploit prevention
+    Added toggle for fishing exploit prevention
 
     Settings related to Player Leveling are now found in "player_leveling.conf"
     Player Leveling's "TruncateSkills" renamed -> "Reduce-Player-Skills-Above-Cap"
