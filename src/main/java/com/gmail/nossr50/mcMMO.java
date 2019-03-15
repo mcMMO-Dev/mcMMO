@@ -3,7 +3,6 @@ package com.gmail.nossr50;
 import com.gmail.nossr50.config.ConfigManager;
 import com.gmail.nossr50.config.CoreSkillsConfig;
 import com.gmail.nossr50.config.MainConfig;
-import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.hocon.database.ConfigSectionCleaning;
 import com.gmail.nossr50.config.hocon.database.ConfigSectionMySQL;

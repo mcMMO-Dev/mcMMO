@@ -4,9 +4,6 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.World;
 
-import java.io.*;
-import java.util.ArrayList;
-
 /**
  * Blacklist certain features in certain worlds
  */

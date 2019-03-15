@@ -218,10 +218,10 @@ public class Party {
         float xpRemoved = 0;
 
         while (getXp() >= getXpToLevel()) {
-            if (hasReachedLevelCap()) {
+            /*if (hasReachedLevelCap()) {
                 setXp(0);
                 return;
-            }
+            }*/
 
             xpRemoved += levelUp();
             levelsGained++;
@@ -245,10 +245,6 @@ public class Party {
         }
 
         PartyManager.informPartyMembersLevelUp(this, levelsGained, getLevel());
-    }
-
-    public boolean hasReachedLevelCap() {
-        return MainConfig.getInstance().getPartyLevelCap() < getLevel() + 1;
     }
 
     public void setXpShareMode(ShareMode xpShareMode) {

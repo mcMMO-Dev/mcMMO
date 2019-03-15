@@ -1,6 +1,6 @@
 package com.gmail.nossr50.datatypes.treasure;
 
-import com.gmail.nossr50.config.MainConfig;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class Treasure {
@@ -42,7 +42,7 @@ public abstract class Treasure {
 
     public int getDropLevel() {
         //If they are in retro mode all requirements are scaled up by 10
-        if(MainConfig.getInstance().getIsRetroMode())
+        if(mcMMO.isRetroModeEnabled())
             return dropLevel * 10;
 
         return dropLevel;

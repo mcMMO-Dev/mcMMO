@@ -9,6 +9,7 @@ Key:
 
 Version 2.2.0
     mcMMO's config system has been rewritten
+    Parties no longer have a cap, you can level them forever for bragging rights
     Many config files are now generated on demand instead of being copied from within the JAR
     All config nodes that used to be styled with CamelCase or otherwise now use hyphens (-) as spaces for readability and consistency
     All config nodes will now use Capital letters at the start of each nodes name and after each hyphen (-)
@@ -19,6 +20,7 @@ Version 2.2.0
     Bug Fixes
     Fixed a bug where players who started at level 1 would not be purged from the DB for being "powerless"
     Fixed a potential bug where players could be awarded XP for cancelled tame events
+    Fixed a bug where party size limits were only counting online players
 
     Permission Node Changes
     Removed "mcmmo.motd" because it makes no sense to have this as a player permission when its a config option
@@ -34,6 +36,7 @@ Version 2.2.0
     Automated backup config options will now be found in "automated_backups.conf"
 
     Command config options will now be found in "commands.conf"
+    Settings related to party chat have been moved to the party config file
 
     Custom item (Chimaera Wing) config options will now be found in "custom_items.conf"
 
@@ -42,6 +45,10 @@ Version 2.2.0
     Particle settings will now be found in "particle_spawning.conf"
 
     Party config options will now be found in "party.conf"
+    Party's "MaxSize" renamed -> "Party-Max-Size"
+    Party's "AutoKick_Interval" renamed -> "Hours-Between-Cleanup-Operations"
+    Party's "Old_Party_Member_Cutoff" renamed -> "Offline-Day-Limit"
+    Added toggle to limit max party size, previously this was done by setting party maximum size above -1
 
     Notification config options will now be found in "chat_and_hud_notifications.conf"
 
@@ -114,6 +121,7 @@ Version 2.2.0
     Update_Check, Prefer_Beta
 
     API Changes
+    Added API method to check if player parties are size capped
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
 

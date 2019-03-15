@@ -3,6 +3,7 @@ package com.gmail.nossr50.commands.party;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
@@ -54,11 +55,12 @@ public class PartyJoinCommand implements CommandExecutor {
                     return true;
                 }
 
-                if(PartyManager.isPartyFull(player, targetParty))
-                {
-                    player.sendMessage(LocaleLoader.getString("Commands.Party.PartyFull", targetParty.toString()));
-                    return true;
-                }
+                if(mcMMO.getConfigManager().getConfigParty().getPartyGeneral().isPartySizeCapped())
+                    if(PartyManager.isPartyFull(player, targetParty))
+                    {
+                        player.sendMessage(LocaleLoader.getString("Commands.Party.PartyFull", targetParty.toString()));
+                        return true;
+                    }
 
                 player.sendMessage(LocaleLoader.getString("Commands.Party.Join", partyName));
                 PartyManager.addToParty(mcMMOPlayer, targetParty);

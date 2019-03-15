@@ -45,9 +45,9 @@ public class PartyInfoCommand implements CommandExecutor {
         StringBuilder status = new StringBuilder();
         status.append(LocaleLoader.getString("Commands.Party.Status", party.getName(), LocaleLoader.getString("Party.Status." + (party.isLocked() ? "Locked" : "Unlocked")), party.getLevel()));
 
-        if (!party.hasReachedLevelCap()) {
+        /*if (!party.hasReachedLevelCap()) {
             status.append(" (").append(party.getXpToLevelPercentage()).append(")");
-        }
+        }*/
 
         player.sendMessage(status.toString());
     }

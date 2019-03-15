@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
@@ -46,11 +47,12 @@ public class PartyInviteCommand implements CommandExecutor {
 
                 Party playerParty = mcMMOPlayer.getParty();
 
-                if(PartyManager.isPartyFull(target, playerParty))
-                {
-                    player.sendMessage(LocaleLoader.getString("Commands.Party.PartyFull.Invite", target.getName(), playerParty.toString(), MainConfig.getInstance().getPartyMaxSize()));
-                    return true;
-                }
+                if(mcMMO.getConfigManager().getConfigParty().getPartyGeneral().isPartySizeCapped())
+                    if(PartyManager.isPartyFull(target, playerParty))
+                    {
+                        player.sendMessage(LocaleLoader.getString("Commands.Party.PartyFull.Invite", target.getName(), playerParty.toString(), MainConfig.getInstance().getPartyMaxSize()));
+                        return true;
+                    }
 
                 mcMMOTarget.setPartyInvite(playerParty);
 

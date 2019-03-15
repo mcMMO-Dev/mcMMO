@@ -1,6 +1,5 @@
 package com.gmail.nossr50.api;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyLeader;
@@ -83,7 +82,7 @@ public final class PartyAPI {
 
         if (party == null) {
             party = new Party(new PartyLeader(player.getUniqueId(), player.getName()), partyName);
-        } else {
+        } else if(mcMMO.getConfigManager().getConfigParty().getPartyGeneral().isPartySizeCapped()) {
             if(PartyManager.isPartyFull(player, party))
             {
                 NotificationManager.sendPlayerInformation(player, NotificationType.PARTY_MESSAGE, "Commands.Party.PartyFull", party.toString());
@@ -96,12 +95,20 @@ public final class PartyAPI {
 
     /**
      * The max party size of the server
-     * 0 or less for no size limit
+     * Limits are only enforced if the enforcement setting is on
      * @return the max party size on this server
      */
     public static int getMaxPartySize()
     {
-        return MainConfig.getInstance().getPartyMaxSize();
+        return mcMMO.getConfigManager().getConfigParty().getPartySizeLimit();
+    }
+
+    /**
+     * Checks if parties are currently size capped which is determined by the user config
+     * @return true if parties are size capped
+     */
+    public static boolean isPartySizeCapped() {
+        return mcMMO.getConfigManager().getConfigParty().isPartySizeCapped();
     }
 
     /**

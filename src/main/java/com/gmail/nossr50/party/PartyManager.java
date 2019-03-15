@@ -61,7 +61,8 @@ public final class PartyManager {
      */
     public static boolean isPartyFull(Player player, Party targetParty)
     {
-        return !Permissions.partySizeBypass(player) && MainConfig.getInstance().getPartyMaxSize() >= 1 && targetParty.getOnlineMembers().size() >= MainConfig.getInstance().getPartyMaxSize();
+        return !Permissions.partySizeBypass(player)
+                && targetParty.getMembers().size() >= mcMMO.getConfigManager().getConfigParty().getPartySizeLimit();
     }
 
     /**
