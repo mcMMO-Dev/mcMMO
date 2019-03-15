@@ -5,13 +5,21 @@ import com.gmail.nossr50.config.collectionconfigs.SalvageConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.hocon.SerializedConfigLoader;
 import com.gmail.nossr50.config.hocon.antiexploit.ConfigExploitPrevention;
+import com.gmail.nossr50.config.hocon.backup.ConfigAutomatedBackups;
+import com.gmail.nossr50.config.hocon.commands.ConfigCommands;
 import com.gmail.nossr50.config.hocon.database.ConfigDatabase;
 import com.gmail.nossr50.config.hocon.donation.ConfigAuthorAdvertisements;
 import com.gmail.nossr50.config.hocon.hardcore.ConfigHardcore;
+import com.gmail.nossr50.config.hocon.items.ConfigItems;
+import com.gmail.nossr50.config.hocon.language.ConfigLanguage;
 import com.gmail.nossr50.config.hocon.metrics.ConfigMetrics;
 import com.gmail.nossr50.config.hocon.motd.ConfigMOTD;
+import com.gmail.nossr50.config.hocon.notifications.ConfigNotifications;
+import com.gmail.nossr50.config.hocon.particles.ConfigParticles;
+import com.gmail.nossr50.config.hocon.party.ConfigParty;
 import com.gmail.nossr50.config.hocon.playerleveling.ConfigLeveling;
 import com.gmail.nossr50.config.hocon.scoreboard.ConfigScoreboard;
+import com.gmail.nossr50.config.hocon.superabilities.ConfigSuperAbilities;
 import com.gmail.nossr50.config.hocon.worldblacklist.ConfigWorldBlacklist;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
@@ -77,6 +85,15 @@ public final class ConfigManager {
     private SerializedConfigLoader<ConfigMetrics> configMetrics;
     private SerializedConfigLoader<ConfigMOTD> configMOTD;
     private SerializedConfigLoader<ConfigAuthorAdvertisements> configAuthorAdvertisements;
+    private SerializedConfigLoader<ConfigAutomatedBackups> configAutomatedBackups;
+    private SerializedConfigLoader<ConfigCommands> configCommands;
+    private SerializedConfigLoader<ConfigItems> configItems;
+    private SerializedConfigLoader<ConfigLanguage> configLanguage;
+    private SerializedConfigLoader<ConfigParticles> configParticles;
+    private SerializedConfigLoader<ConfigParty> configParty;
+    private SerializedConfigLoader<ConfigNotifications> configNotifications;
+    private SerializedConfigLoader<ConfigSuperAbilities> configSuperAbilities;
+
     private MainConfig mainConfig;
     private FishingTreasureConfig fishingTreasureConfig;
     private ExcavationTreasureConfig excavationTreasureConfig;
@@ -117,6 +134,14 @@ public final class ConfigManager {
         configHardcore = new SerializedConfigLoader<>(ConfigHardcore.class, "hardcore_mode.conf", null);
         configMetrics = new SerializedConfigLoader<>(ConfigMetrics.class, "analytics_reporting.conf", null);
         configAuthorAdvertisements = new SerializedConfigLoader<>(ConfigAuthorAdvertisements.class, "author_support_advertisements.conf", null);
+        configAutomatedBackups = new SerializedConfigLoader<>(ConfigAutomatedBackups.class, "automated_backups.conf", null);
+        configCommands = new SerializedConfigLoader<>(ConfigCommands.class, "commands.conf", null);
+        configItems = new SerializedConfigLoader<>(ConfigItems.class, "custom_items.conf", null);
+        configLanguage = new SerializedConfigLoader<>(ConfigLanguage.class, "language.conf", null);
+        configParticles = new SerializedConfigLoader<>(ConfigParticles.class, "particle_spawning.conf", null);
+        configParty = new SerializedConfigLoader<>(ConfigParty.class, "party.conf", null);
+        configNotifications = new SerializedConfigLoader<>(ConfigNotifications.class, "chat_and_hud_notifications.conf", null);
+        configSuperAbilities = new SerializedConfigLoader<>(ConfigSuperAbilities.class, "skill_super_abilities.conf", null);
 
         mainConfig = new MainConfig();
 
@@ -341,5 +366,37 @@ public final class ConfigManager {
 
     public ConfigAuthorAdvertisements getConfigAds() {
         return configAuthorAdvertisements.getConfig();
+    }
+
+    public ConfigAutomatedBackups getConfigAutomatedBackups() {
+        return configAutomatedBackups.getConfig();
+    }
+
+    public ConfigCommands getConfigCommands() {
+        return configCommands.getConfig();
+    }
+
+    public ConfigItems getConfigItems() {
+        return configItems.getConfig();
+    }
+
+    public ConfigLanguage getConfigLanguage() {
+        return configLanguage.getConfig();
+    }
+
+    public ConfigParticles getConfigParticles() {
+        return configParticles.getConfig();
+    }
+
+    public ConfigParty getConfigParty() {
+        return configParty.getConfig();
+    }
+
+    public ConfigNotifications getConfigNotifications() {
+        return configNotifications.getConfig();
+    }
+
+    public ConfigSuperAbilities getConfigSuperAbilities() {
+        return configSuperAbilities.getConfig();
     }
 }

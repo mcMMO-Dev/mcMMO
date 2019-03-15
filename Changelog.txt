@@ -31,6 +31,20 @@ Version 2.2.0
     Added config option for showing author paypal info in /mcmmo (previously this was tied to the motd setting)
     Added config option for showing author patreon links in various commands
 
+    Automated backup config options will now be found in "automated_backups.conf"
+
+    Command config options will now be found in "commands.conf"
+
+    Custom item (Chimaera Wing) config options will now be found in "custom_items.conf"
+
+    Language config options will now be found in "language.conf"
+
+    Particle settings will now be found in "particle_spawning.conf"
+
+    Party config options will now be found in "party.conf"
+
+    Notification config options will now be found in "chat_and_hud_notifications.conf"
+
     MOTD (Message of the day) config options will now be found in "motd.conf"
     MOTD's "MOTD_Enabled" renamed -> "Show-MOTD-On-Player-Join"
 
