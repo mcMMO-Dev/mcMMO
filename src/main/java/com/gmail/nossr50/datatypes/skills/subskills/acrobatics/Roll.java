@@ -41,7 +41,8 @@ public class Roll extends AcrobaticsSubSkill {
 
     public Roll() {
         super("Roll", EventPriority.HIGHEST, SubSkillType.ACROBATICS_ROLL);
-        fallLocationMap = new HashMap<>();
+        if(mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
+            fallLocationMap = new HashMap<>();
     }
 
     /**
@@ -207,21 +208,20 @@ public class Roll extends AcrobaticsSubSkill {
                 && RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ACROBATICS_ROLL, player)) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Roll.Text");
             SoundManager.sendCategorizedSound(player, player.getLocation(), SoundType.ROLL_ACTIVATED, SoundCategory.PLAYERS);
-            //player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Text"));
 
-            //if (!SkillUtils.cooldownExpired((long) mcMMOPlayer.getTeleportATS(), Config.getInstance().getXPAfterTeleportCooldown())) {
-            if(!isExploiting(player) && mcMMOPlayer.getAcrobaticsManager().canGainRollXP())
+            if(!mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
                 SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, damage, true), XPGainReason.PVE);
-            //}
+            else if(!isExploiting(player) && mcMMOPlayer.getAcrobaticsManager().canGainRollXP())
+                SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, damage, true), XPGainReason.PVE);
 
             addFallLocation(player);
             return modifiedDamage;
         }
         else if (!isFatal(player, damage)) {
-            //if (!SkillUtils.cooldownExpired((long) mcMMOPlayer.getTeleportATS(), Config.getInstance().getXPAfterTeleportCooldown())) {
-            if(!isExploiting(player) && mcMMOPlayer.getAcrobaticsManager().canGainRollXP())
+            if(!mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
+                SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, damage, true), XPGainReason.PVE);
+            else if(!isExploiting(player) && mcMMOPlayer.getAcrobaticsManager().canGainRollXP())
                 SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, damage, false), XPGainReason.PVE);
-            //}
         }
 
         addFallLocation(player);
@@ -249,14 +249,19 @@ public class Roll extends AcrobaticsSubSkill {
         {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Ability.Proc");
             SoundManager.sendCategorizedSound(player, player.getLocation(), SoundType.ROLL_ACTIVATED, SoundCategory.PLAYERS,0.5F);
-            if(!isExploiting(player) && mcMMOPlayer.getAcrobaticsManager().canGainRollXP())
+
+            if(!mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
+                SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, damage, true), XPGainReason.PVE);
+            else if(!isExploiting(player) && mcMMOPlayer.getAcrobaticsManager().canGainRollXP())
                 SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, damage, true), XPGainReason.PVE);
 
             addFallLocation(player);
             return modifiedDamage;
         }
         else if (!isFatal(player, damage)) {
-            if(!isExploiting(player) && mcMMOPlayer.getAcrobaticsManager().canGainRollXP())
+            if(!mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
+                SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, damage, true), XPGainReason.PVE);
+            else if(!isExploiting(player) && mcMMOPlayer.getAcrobaticsManager().canGainRollXP())
                 SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, damage, false), XPGainReason.PVE);
             
             addFallLocation(player);
@@ -281,24 +286,14 @@ public class Roll extends AcrobaticsSubSkill {
         }
 
         if(fallLocationMap.get(player) == null)
-            fallLocationMap.put(player, new LimitedSizeList(50));
+            fallLocationMap.put(player, new LimitedSizeList(mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().getAcrobaticLocationLimit()));
 
         LimitedSizeList fallLocations = fallLocationMap.get(player);
         
         if(fallLocations.contains(getBlockLocation(player)))
             return true;
 
-        return false; //NOT EXPLOITING
-/*
-        Location fallLocation = player.getLocation();
-        int maxTries = MainConfig.getInstance().getAcrobaticsAFKMaxTries();
-
-        boolean sameLocation = (lastFallLocation != null && Misc.isNear(lastFallLocation, fallLocation, 2));
-
-        fallTries = sameLocation ? Math.min(fallTries + 1, maxTries) : Math.max(fallTries - 1, 0);
-        lastFallLocation = fallLocation;
-
-        return fallTries + 1 > maxTries;*/
+        return false;
     }
 
     private float calculateRollXP(Player player, double damage, boolean isRoll) {
@@ -426,8 +421,11 @@ public class Roll extends AcrobaticsSubSkill {
 
     public void addFallLocation(Player player)
     {
+        if(!mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
+            return;
+
         if(fallLocationMap.get(player) == null)
-            fallLocationMap.put(player, new LimitedSizeList(50));
+            fallLocationMap.put(player, new LimitedSizeList(mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().getAcrobaticLocationLimit()));
 
         LimitedSizeList fallLocations = fallLocationMap.get(player);
 

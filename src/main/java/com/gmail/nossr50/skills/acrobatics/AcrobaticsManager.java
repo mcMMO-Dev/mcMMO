@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -75,7 +76,9 @@ public class AcrobaticsManager extends SkillManager {
             }
 
             //Check respawn to prevent abuse
-            if (SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
+            if(!mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
+                applyXpGain((float) (damage * Acrobatics.dodgeXpModifier), XPGainReason.PVP);
+            else if (SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
                 applyXpGain((float) (damage * Acrobatics.dodgeXpModifier), XPGainReason.PVP);
             }
 
