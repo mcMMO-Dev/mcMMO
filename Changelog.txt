@@ -10,13 +10,20 @@ Key:
 Version 2.2.0
     mcMMO's config system has been rewritten
     Many config files are now generated on demand instead of being copied from within the JAR
-    All config nodes that used to be styled with CamelCase now use hyphens (-) as spaces for readability and consistency
+    All config nodes that used to be styled with CamelCase or otherwise now use hyphens (-) as spaces for readability and consistency
     All config nodes will now use Capital letters at the start of each nodes name and after each hyphen (-)
     All config nodes now include a comment with the default value of the node to use as reference
     Expanded settings relating to purging users who have not leveled or users who had not logged in for many months
     NOTE: Not every config key that was renamed will be listed here
+
+    Bug Fixes
     Fixed a bug where players who started at level 1 would not be purged from the DB for being "powerless"
     Fixed a potential bug where players could be awarded XP for cancelled tame events
+
+    Config Changes
+
+    MOTD (Message of the day) config options will now be found in "motd.conf"
+    MOTD's "MOTD_Enabled" renamed -> "Show-MOTD-On-Player-Join"
 
     Exploit related config options will now be found in "exploit-prevention"
     Exploit Prevention's "EndermanEndermiteFarms" renamed -> "Endermen-Endermite-Fix"
@@ -72,6 +79,11 @@ Version 2.2.0
     Giga Drill Breaker will now break "diggable" blocks even if they have no configured treasures
     removed child.yml, child skills now have hard coded parents
     removed the hardcore and vampirism commands, these are dangerous settings and should not be toggle-able (turn them on in your configs if you want to use them)
+
+    Removed the following config settings from various configs for literally doing nothing
+    Update_Check, Prefer_Beta
+
+    API Changes
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
 
