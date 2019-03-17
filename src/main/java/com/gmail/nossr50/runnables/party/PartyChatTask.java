@@ -1,8 +1,8 @@
 package com.gmail.nossr50.runnables.party;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -30,7 +30,8 @@ public class PartyChatTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (MainConfig.getInstance().getPartyChatColorLeaderName() && senderName.equalsIgnoreCase(party.getLeader().getPlayerName())) {
+        if (mcMMO.getConfigManager().getConfigParty().isPartyLeaderColoredGold()
+                && senderName.equalsIgnoreCase(party.getLeader().getPlayerName())) {
             message = message.replaceFirst(Pattern.quote(displayName), ChatColor.GOLD + Matcher.quoteReplacement(displayName) + ChatColor.RESET);
         }
 
@@ -40,7 +41,7 @@ public class PartyChatTask extends BukkitRunnable {
 
         if (party.getAlly() != null) {
             for (Player member : party.getAlly().getOnlineMembers()) {
-                String allyPrefix = LocaleLoader.formatString(MainConfig.getInstance().getPartyChatPrefixAlly());
+                String allyPrefix = LocaleLoader.formatString(mcMMO.getConfigManager().getConfigParty().getPartyChatPrefixAlly());
                 member.sendMessage(allyPrefix + message);
             }
         }

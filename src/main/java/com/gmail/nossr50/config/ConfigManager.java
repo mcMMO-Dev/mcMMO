@@ -23,7 +23,6 @@ import com.gmail.nossr50.config.hocon.playerleveling.ConfigLeveling;
 import com.gmail.nossr50.config.hocon.scoreboard.ConfigScoreboard;
 import com.gmail.nossr50.config.hocon.superabilities.ConfigSuperAbilities;
 import com.gmail.nossr50.config.hocon.worldblacklist.ConfigWorldBlacklist;
-import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.config.treasure.ExcavationTreasureConfig;
 import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
@@ -114,7 +113,6 @@ public final class ConfigManager {
     private CoreSkillsConfig coreSkillsConfig;
     private SoundConfig soundConfig;
     private RankConfig rankConfig;
-    private ItemWeightConfig itemWeightConfig;
     private RepairConfig repairConfig;
     private SalvageConfig salvageConfig;
 
@@ -189,8 +187,6 @@ public final class ConfigManager {
         soundConfig = new SoundConfig();
 
         rankConfig = new RankConfig();
-
-        itemWeightConfig = new ItemWeightConfig();
 
         repairConfig = new RepairConfig();
 
@@ -354,10 +350,6 @@ public final class ConfigManager {
 
     public ExperienceConfig getExperienceConfig() {
         return experienceConfig;
-    }
-
-    public ItemWeightConfig getItemWeightConfig() {
-        return itemWeightConfig;
     }
 
     public ExperienceMapManager getExperienceMapManager() {

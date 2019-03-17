@@ -1,6 +1,5 @@
 package com.gmail.nossr50.party;
 
-import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.party.ItemShareType;
@@ -11,6 +10,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
+import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -100,7 +100,7 @@ public final class ShareHandler {
 
         switch (shareMode) {
             case EQUAL:
-                int itemWeight = ItemWeightConfig.getInstance().getItemWeight(itemStack.getType());
+                int itemWeight = getItemWeight(itemStack.getType());
 
                 for (int i = 0; i < itemStack.getAmount(); i++) {
                     int highestRoll = 0;
@@ -143,6 +143,13 @@ public final class ShareHandler {
             default:
                 return false;
         }
+    }
+
+    public static int getItemWeight(Material material) {
+        if(mcMMO.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(material) == null)
+            return 5;
+        else
+            return mcMMO.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(material);
     }
 
     public static XPGainReason getSharedXpGainReason(XPGainReason xpGainReason) {

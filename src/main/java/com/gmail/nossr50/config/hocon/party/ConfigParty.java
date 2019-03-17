@@ -39,6 +39,10 @@ public class ConfigParty {
         return partyGeneral.isPartySizeCapped();
     }
 
+    public ConfigSectionPartyTeleportCommand getPTP() {
+        return partyCommands.getPartyTeleportCommand();
+    }
+
     public ConfigSectionPartyCleanup getPartyCleanup() {
         return partyCleanup;
     }
@@ -61,6 +65,10 @@ public class ConfigParty {
 
     public ConfigSectionPartyItemShare getPartyItemShare() {
         return partyItemShare;
+    }
+
+    public ConfigSectionPartyCommands getPartyCommands() {
+        return partyCommands;
     }
 
     public String getPartyChatPrefixFormat() {

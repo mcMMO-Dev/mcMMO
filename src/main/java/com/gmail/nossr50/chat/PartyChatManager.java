@@ -1,8 +1,8 @@
 package com.gmail.nossr50.chat;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.party.PartyChatTask;
 import org.bukkit.plugin.Plugin;
 
@@ -10,7 +10,8 @@ public class PartyChatManager extends ChatManager {
     private Party party;
 
     protected PartyChatManager(Plugin plugin) {
-        super(plugin, MainConfig.getInstance().getPartyDisplayNames(), MainConfig.getInstance().getPartyChatPrefix());
+        super(plugin, mcMMO.getConfigManager().getConfigParty().isPartyDisplayNamesEnabled(),
+                mcMMO.getConfigManager().getConfigParty().getPartyChat().getPartyChatPrefixFormat());
     }
 
     public void setParty(Party party) {

@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.party.teleport;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
@@ -84,7 +83,7 @@ public class PtpCommand implements TabExecutor {
                 }
 
                 long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
-                int hurtCooldown = MainConfig.getInstance().getPTPCommandRecentlyHurtCooldown();
+                int hurtCooldown = mcMMO.getConfigManager().getConfigParty().getPTP().getPtpRecentlyHurtCooldown();
 
                 if (hurtCooldown > 0) {
                     int timeRemaining = SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, hurtCooldown, player);
@@ -104,7 +103,7 @@ public class PtpCommand implements TabExecutor {
                     return true;
                 }
 
-                int ptpCooldown = MainConfig.getInstance().getPTPCommandCooldown();
+                int ptpCooldown = mcMMO.getConfigManager().getConfigParty().getPTP().getPtpCooldown();
                 long ptpLastUse = mcMMOPlayer.getPartyTeleportRecord().getLastUse();
 
                 if (ptpCooldown > 0) {
@@ -169,7 +168,7 @@ public class PtpCommand implements TabExecutor {
         player.sendMessage(LocaleLoader.getString("Commands.Invite.Success"));
 
         target.sendMessage(LocaleLoader.getString("Commands.ptp.Request1", player.getName()));
-        target.sendMessage(LocaleLoader.getString("Commands.ptp.Request2", MainConfig.getInstance().getPTPCommandTimeout()));
+        target.sendMessage(LocaleLoader.getString("Commands.ptp.Request2", mcMMO.getConfigManager().getConfigParty().getPTP().getPtpRequestTimeout()));
     }
 
     protected static boolean canTeleport(CommandSender sender, Player player, String targetName) {
@@ -208,7 +207,7 @@ public class PtpCommand implements TabExecutor {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(teleportingPlayer);
         McMMOPlayer mcMMOTarget = UserManager.getPlayer(targetPlayer);
 
-        long warmup = MainConfig.getInstance().getPTPCommandWarmup();
+        long warmup = mcMMO.getConfigManager().getConfigParty().getPTP().getPtpWarmup();
 
         mcMMOPlayer.actualizeTeleportCommenceLocation(teleportingPlayer);
 

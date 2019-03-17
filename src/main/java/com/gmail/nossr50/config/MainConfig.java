@@ -446,28 +446,8 @@ public class MainConfig extends ConfigValidated {
         return getBooleanValue(GENERAL, SHOW_PROFILE_LOADED);
     }
 
-    public boolean getDonateMessageEnabled() {
-        return getBooleanValue(COMMANDS, MCMMO, DONATE_MESSAGE);
-    }
-
     public int getSaveInterval() {
         return getIntValue(GENERAL, SAVE_INTERVAL);
-    }
-
-    public String getPartyChatPrefix() {
-        return getStringValue(COMMANDS, PARTYCHAT, CHAT_PREFIX_FORMAT);
-    }
-
-    public boolean getPartyChatColorLeaderName() {
-        return getBooleanValue(COMMANDS, PARTYCHAT, GOLD_LEADER_NAME);
-    }
-
-    public boolean getPartyDisplayNames() {
-        return getBooleanValue(COMMANDS, PARTYCHAT, USE_DISPLAY_NAMES);
-    }
-
-    public String getPartyChatPrefixAlly() {
-        return getStringValue(COMMANDS, PARTYCHAT, CHAT_PREFIX_FORMAT + ALLY);
     }
 
     public String getAdminChatPrefix() {
@@ -692,33 +672,6 @@ public class MainConfig extends ConfigValidated {
 
     public boolean getLargeFireworks() {
         return getBooleanValue(PARTICLES, LARGE_FIREWORKS);
-    }
-
-    /* PARTY SETTINGS */
-
-    /* Party Teleport Settings */
-    public int getPTPCommandCooldown() {
-        return getIntValue(COMMANDS, PTP, COOLDOWN);
-    }
-
-    public int getPTPCommandWarmup() {
-        return getIntValue(COMMANDS, PTP, WARMUP);
-    }
-
-    public int getPTPCommandRecentlyHurtCooldown() {
-        return getIntValue(COMMANDS, PTP, RECENTLY_HURT + COOLDOWN);
-    }
-
-    public int getPTPCommandTimeout() {
-        return getIntValue(COMMANDS, PTP, REQUEST_TIMEOUT);
-    }
-
-    public boolean getPTPCommandConfirmRequired() {
-        return getBooleanValue(COMMANDS, PTP, ACCEPT_REQUIRED);
-    }
-
-    public boolean getPTPCommandWorldPermissions() {
-        return getBooleanValue(COMMANDS, PTP, WORLD_BASED_PERMISSIONS);
     }
 
     /* Inspect command distance */

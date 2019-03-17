@@ -1,8 +1,8 @@
 package com.gmail.nossr50.commands.party.teleport;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -28,7 +28,7 @@ public class PtpAcceptCommand implements CommandExecutor {
             return true;
         }
 
-        if (SkillUtils.cooldownExpired(ptpRecord.getTimeout(), MainConfig.getInstance().getPTPCommandTimeout())) {
+        if (SkillUtils.cooldownExpired(ptpRecord.getTimeout(), mcMMO.getConfigManager().getConfigParty().getPTP().getPtpRequestTimeout())) {
             ptpRecord.removeRequest();
             player.sendMessage(LocaleLoader.getString("Commands.ptp.RequestExpired"));
             return true;
@@ -41,7 +41,7 @@ public class PtpAcceptCommand implements CommandExecutor {
             return true;
         }
 
-        if (MainConfig.getInstance().getPTPCommandWorldPermissions()) {
+        if (mcMMO.getConfigManager().getConfigParty().getPTP().isPtpWorldBasedPermissions()) {
             World targetWorld = target.getWorld();
             World playerWorld = player.getWorld();
 
