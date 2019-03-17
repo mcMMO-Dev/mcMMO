@@ -1,7 +1,7 @@
 package com.gmail.nossr50.config.hocon.party;
 
+import com.gmail.nossr50.config.hocon.HOCONUtil;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
-import com.google.common.collect.Maps;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -11,7 +11,7 @@ import java.util.Map;
 @ConfigSerializable
 public class ConfigSectionPartyLevel {
 
-    private static final HashMap<PartyFeature, Integer> PARTY_FEATURE_MAP_DEFAULT;
+    private static final HashMap<String, Integer> PARTY_FEATURE_MAP_DEFAULT;
     public static final boolean INFORM_PARTY_ON_LEVELUP_DEFAULT = true;
 
     public static final boolean PARTY_LEVELING_NEEDS_NERBY_MEMBERS_DEFAULT = true;
@@ -28,11 +28,11 @@ public class ConfigSectionPartyLevel {
 
     static {
         PARTY_FEATURE_MAP_DEFAULT = new HashMap<>();
-        PARTY_FEATURE_MAP_DEFAULT.put(PartyFeature.TELEPORT, TELEPORT_DEFAULT);
-        PARTY_FEATURE_MAP_DEFAULT.put(PartyFeature.ALLIANCE, ALLIANCE_DEFAULT);
-        PARTY_FEATURE_MAP_DEFAULT.put(PartyFeature.ITEM_SHARE, ITEM_SHARE_DEFAULT);
-        PARTY_FEATURE_MAP_DEFAULT.put(PartyFeature.XP_SHARE, XP_SHARE_DEFAULT);
-        PARTY_FEATURE_MAP_DEFAULT.put(PartyFeature.CHAT, PARTY_CHAT_DEFAULT);
+        PARTY_FEATURE_MAP_DEFAULT.put(HOCONUtil.serializeENUMName(PartyFeature.TELEPORT.toString()), TELEPORT_DEFAULT);
+        PARTY_FEATURE_MAP_DEFAULT.put(HOCONUtil.serializeENUMName(PartyFeature.ALLIANCE.toString()), ALLIANCE_DEFAULT);
+        PARTY_FEATURE_MAP_DEFAULT.put(HOCONUtil.serializeENUMName(PartyFeature.ITEM_SHARE.toString()), ITEM_SHARE_DEFAULT);
+        PARTY_FEATURE_MAP_DEFAULT.put(HOCONUtil.serializeENUMName(PartyFeature.XP_SHARE.toString()), XP_SHARE_DEFAULT);
+        PARTY_FEATURE_MAP_DEFAULT.put(HOCONUtil.serializeENUMName(PartyFeature.CHAT.toString()), PARTY_CHAT_DEFAULT);
     }
 
     /*
@@ -73,7 +73,9 @@ public class ConfigSectionPartyLevel {
             "\nALIANCE: "+ALLIANCE_DEFAULT +
             "\nITEM SHARE: "+ITEM_SHARE_DEFAULT +
             "\nXP SHARE: "+XP_SHARE_DEFAULT)
-    private Map<PartyFeature, Integer> partyFeatureUnlockMap = PARTY_FEATURE_MAP_DEFAULT;
+    private Map<String, Integer> partyFeatureUnlockMap = PARTY_FEATURE_MAP_DEFAULT;
+
+
 
     public int getPartyXpCurveMultiplier() {
         return partyXPFormula.getPartyXpCurveMultiplier();
@@ -87,7 +89,5 @@ public class ConfigSectionPartyLevel {
         return informPartyMembersOnLevelup;
     }
 
-    public HashMap<PartyFeature, Integer> getPartyFeatureUnlockMap() {
-        return Maps.newHashMap(partyFeatureUnlockMap);
-    }
+    public Map<String, Integer> getPartyFeatureUnlockMap() { return partyFeatureUnlockMap; }
 }

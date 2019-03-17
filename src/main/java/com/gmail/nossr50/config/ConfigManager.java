@@ -3,7 +3,9 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.config.collectionconfigs.RepairConfig;
 import com.gmail.nossr50.config.collectionconfigs.SalvageConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.config.hocon.CustomEnumValueSerializer;
 import com.gmail.nossr50.config.hocon.SerializedConfigLoader;
+import com.gmail.nossr50.config.hocon.admin.ConfigAdmin;
 import com.gmail.nossr50.config.hocon.antiexploit.ConfigExploitPrevention;
 import com.gmail.nossr50.config.hocon.backup.ConfigAutomatedBackups;
 import com.gmail.nossr50.config.hocon.commands.ConfigCommands;
@@ -26,14 +28,21 @@ import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.config.treasure.ExcavationTreasureConfig;
 import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
 import com.gmail.nossr50.config.treasure.HerbalismTreasureConfig;
+import com.gmail.nossr50.datatypes.party.PartyFeature;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.SimpleRepairableManager;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.skills.salvage.salvageables.SimpleSalvageableManager;
 import com.gmail.nossr50.util.experience.ExperienceMapManager;
+import com.google.common.collect.Maps;
+import com.google.common.reflect.TypeToken;
+import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
+import org.bukkit.Material;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -93,6 +102,7 @@ public final class ConfigManager {
     private SerializedConfigLoader<ConfigParty> configParty;
     private SerializedConfigLoader<ConfigNotifications> configNotifications;
     private SerializedConfigLoader<ConfigSuperAbilities> configSuperAbilities;
+    private SerializedConfigLoader<ConfigAdmin> configAdmin;
 
     private MainConfig mainConfig;
     private FishingTreasureConfig fishingTreasureConfig;
@@ -107,6 +117,9 @@ public final class ConfigManager {
     private ItemWeightConfig itemWeightConfig;
     private RepairConfig repairConfig;
     private SalvageConfig salvageConfig;
+
+    private HashMap<String, Integer> partyItemWeights;
+    private HashMap<String, Integer> partyFeatureUnlocks;
 
     /* CONFIG ERRORS */
 
@@ -123,6 +136,12 @@ public final class ConfigManager {
         // Load Config Files
         // I'm pretty these are supposed to be done in a specific order, so don't rearrange them willy nilly
 
+        //Register Custom Serializers
+        mcMMO.p.getLogger().info("Registering custom type serializers with Configurate...");
+        TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Material.class), new CustomEnumValueSerializer());
+        TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(PartyFeature.class), new CustomEnumValueSerializer());
+
+        mcMMO.p.getLogger().info("Deserializing configs...");
         //TODO: Not sure about the order of MainConfig
         //Serialized Configs
         configDatabase = new SerializedConfigLoader<>(ConfigDatabase.class, "database_settings.conf", null);
@@ -142,7 +161,16 @@ public final class ConfigManager {
         configParty = new SerializedConfigLoader<>(ConfigParty.class, "party.conf", null);
         configNotifications = new SerializedConfigLoader<>(ConfigNotifications.class, "chat_and_hud_notifications.conf", null);
         configSuperAbilities = new SerializedConfigLoader<>(ConfigSuperAbilities.class, "skill_super_abilities.conf", null);
+        configAdmin = new SerializedConfigLoader<>(ConfigAdmin.class, "admin.conf", null);
 
+        mcMMO.p.getLogger().info("Value of Default from item map: " + configParty.getConfig().getPartyItemShare().getItemShareMap().get("DEFAULT"));
+        mcMMO.p.getLogger().info("Value of Default keyset from item map: " + configParty.getConfig().getPartyItemShare().getItemShareMap().keySet().size());
+
+        //Assign Maps
+        partyItemWeights = Maps.newHashMap(configParty.getConfig().getPartyItemShare().getItemShareMap()); //Item Share Weights
+        partyFeatureUnlocks = Maps.newHashMap(configParty.getConfig().getPartyXP().getPartyLevel().getPartyFeatureUnlockMap()); //Party Progression
+
+        //YAML Configs
         mainConfig = new MainConfig();
 
         fishingTreasureConfig = new FishingTreasureConfig();

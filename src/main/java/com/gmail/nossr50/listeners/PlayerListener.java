@@ -425,6 +425,8 @@ public class PlayerListener implements Listener {
                 return;
             }
 
+
+
             if (!drop.hasMetadata(mcMMO.droppedItemKey) && mcMMOPlayer.inParty() && ItemUtils.isSharable(dropStack)) {
                 event.setCancelled(ShareHandler.handleItemShare(drop, mcMMOPlayer));
 

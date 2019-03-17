@@ -28,6 +28,9 @@ public class ConfigParty {
     @Setting(value = "Party-Commands", comment = "Settings related to various party commands.")
     private ConfigSectionPartyCommands partyCommands = new ConfigSectionPartyCommands();
 
+    @Setting(value = "Party-Item-Share", comment = "Settings related to sharing items dropped from monsters in a party.")
+    private ConfigSectionPartyItemShare partyItemShare = new ConfigSectionPartyItemShare();
+
     public int getPartySizeLimit() {
         return partyGeneral.getPartySizeLimit();
     }
@@ -54,6 +57,10 @@ public class ConfigParty {
 
     public ConfigSectionPartyXP getPartyXP() {
         return partyXP;
+    }
+
+    public ConfigSectionPartyItemShare getPartyItemShare() {
+        return partyItemShare;
     }
 
     public String getPartyChatPrefixFormat() {

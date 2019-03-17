@@ -19,7 +19,10 @@ public enum PartyFeature {
     }
 
     public String getFeatureLockedLocaleString() {
-        return LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Party.Feature.Locked." + StringUtils.getPrettyPartyFeatureString(this).replace(" ", ""), PartyManager.getPartyFeatureUnlockLevel(this)));
+        return LocaleLoader.getString("Ability.Generic.Template.Lock",
+                LocaleLoader.getString("Party.Feature.Locked."
+                        + StringUtils.getPrettyPartyFeatureString(this).replace(" ", ""),
+                        PartyManager.getPartyFeatureUnlockLevel(this)));
     }
 
     public boolean hasPermission(Player player) {
