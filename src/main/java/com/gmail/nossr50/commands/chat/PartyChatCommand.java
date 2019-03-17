@@ -1,7 +1,6 @@
 package com.gmail.nossr50.commands.chat;
 
 import com.gmail.nossr50.chat.PartyChatManager;
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;

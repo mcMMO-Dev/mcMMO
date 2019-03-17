@@ -1,10 +1,10 @@
 package com.gmail.nossr50.commands.party;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;

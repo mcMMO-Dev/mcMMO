@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.party.alliance;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;

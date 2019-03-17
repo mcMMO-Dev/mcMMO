@@ -1,8 +1,8 @@
 package com.gmail.nossr50.datatypes.party;
 
 import com.gmail.nossr50.commands.party.PartySubcommandType;
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.entity.Player;
