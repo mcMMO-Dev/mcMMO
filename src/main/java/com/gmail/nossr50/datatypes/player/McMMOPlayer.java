@@ -500,7 +500,7 @@ public class McMMOPlayer {
             return;
         }
 
-        if (!MainConfig.getInstance().getPartyXpNearMembersNeeded() || !PartyManager.getNearMembers(this).isEmpty()) {
+        if (!mcMMO.getConfigManager().getConfigParty().getPartyXP().getPartyLevel().isPartyLevelingNeedsNearbyMembers() || !PartyManager.getNearMembers(this).isEmpty()) {
             party.applyXpGain(modifyXpGain(skill, xp));
         }
     }

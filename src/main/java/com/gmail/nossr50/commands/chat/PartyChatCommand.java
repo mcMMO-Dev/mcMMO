@@ -29,7 +29,7 @@ public class PartyChatCommand extends ChatCommand {
                 return;
             }
 
-            if (party.getLevel() < MainConfig.getInstance().getPartyFeatureUnlockLevel(PartyFeature.CHAT)) {
+            if (party.getLevel() < PartyManager.getPartyFeatureUnlockLevel(PartyFeature.CHAT)) {
                 sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.1"));
                 return;
             }

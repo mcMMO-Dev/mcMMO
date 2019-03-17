@@ -8,6 +8,7 @@ import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
@@ -119,7 +120,7 @@ public abstract class ChatCommand implements TabExecutor {
             return;
         }
 
-        if (chatMode == ChatMode.PARTY && (mcMMOPlayer.getParty().getLevel() < MainConfig.getInstance().getPartyFeatureUnlockLevel(PartyFeature.CHAT))) {
+        if (chatMode == ChatMode.PARTY && (mcMMOPlayer.getParty().getLevel() < PartyManager.getPartyFeatureUnlockLevel(PartyFeature.CHAT))) {
             sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.1"));
             return;
         }

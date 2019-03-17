@@ -192,7 +192,7 @@ public class Party {
 
     public int getXpToLevel() {
         FormulaType formulaType = ExperienceConfig.getInstance().getFormulaType();
-        return (mcMMO.getFormulaManager().getCachedXpToLevel(level, formulaType)) * (getOnlineMembers().size() + MainConfig.getInstance().getPartyXpCurveMultiplier());
+        return mcMMO.getFormulaManager().getPartyCachedXpToLevel(level);
     }
 
     public String getXpToLevelPercentage() {
@@ -231,7 +231,7 @@ public class Party {
             return;
         }
 
-        if (!MainConfig.getInstance().getPartyInformAllMembers()) {
+        if (!mcMMO.getConfigManager().getConfigParty().getPartyXP().getPartyLevel().isInformPartyMembersOnLevelup()) {
             Player leader = mcMMO.p.getServer().getPlayer(this.leader.getUniqueId());
 
             if (leader != null) {

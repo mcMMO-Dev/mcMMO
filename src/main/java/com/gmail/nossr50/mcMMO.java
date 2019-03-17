@@ -7,10 +7,13 @@ import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.hocon.database.ConfigSectionCleaning;
 import com.gmail.nossr50.config.hocon.database.ConfigSectionMySQL;
 import com.gmail.nossr50.config.hocon.party.ConfigSectionPartyExperienceSharing;
+import com.gmail.nossr50.config.hocon.party.ConfigSectionPartyLevel;
+import com.gmail.nossr50.config.hocon.party.ConfigSectionPartyLimit;
 import com.gmail.nossr50.config.hocon.playerleveling.ConfigLeveling;
 import com.gmail.nossr50.config.hocon.scoreboard.ConfigScoreboard;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
+import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.acrobatics.Roll;
 import com.gmail.nossr50.listeners.*;
@@ -137,6 +140,7 @@ public class mcMMO extends JavaPlugin {
             registerCustomRecipes();
 
             PartyManager.loadParties();
+            PartyManager.reloadPartyFeatureHashMap();
 
             formulaManager = new FormulaManager();
             holidayManager = new HolidayManager();
@@ -334,6 +338,15 @@ public class mcMMO extends JavaPlugin {
     public static ConfigSectionPartyExperienceSharing getPartyXPShareSettings()
     {
         return configManager.getConfigParty().getPartyXP().getPartyExperienceSharing();
+    }
+
+    /**
+     * Returns settings for Party Leveling from the users config
+     * @return settings for the Party Leveling from the users config
+     */
+    public static ConfigSectionPartyLevel getPartyLevelSettings()
+    {
+        return configManager.getConfigParty().getPartyXP().getPartyLevel();
     }
 
     /**

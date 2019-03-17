@@ -157,6 +157,36 @@ public class FormulaManager {
     }
 
     /**
+     * Get the cached amount of experience needed to reach the next party level,
+     * if cache doesn't contain the given value it is calculated and added
+     * to the cached data.
+     *
+     * Parties use the exponential leveling formula
+     *
+     * @param level level to check
+     * @return amount of experience needed to reach next level
+     */
+    public int getPartyCachedXpToLevel(int level) {
+        int experience;
+
+        /**
+         * Retro mode XP requirements are the default requirements
+         * Standard mode XP requirements are multiplied by a factor of 10
+         */
+        int base = ExperienceConfig.getInstance().getBase(FormulaType.EXPONENTIAL);
+        double multiplier = ExperienceConfig.getInstance().getMultiplier(FormulaType.EXPONENTIAL);
+        double exponent = ExperienceConfig.getInstance().getExponent(FormulaType.EXPONENTIAL);
+
+        if (!experienceNeededExponential.containsKey(level)) {
+            experience = (int) Math.floor((multiplier * Math.pow(level, exponent) + base));
+            experience *= mcMMO.getConfigManager().getConfigParty().getPartyXP().getPartyLevel().getPartyXpCurveMultiplier();
+            experienceNeededExponential.put(level, experience);
+        }
+
+        return experienceNeededExponential.get(level);
+    }
+
+    /**
      * Load formula file.
      */
     public void loadFormula() {

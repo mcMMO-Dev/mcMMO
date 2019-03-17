@@ -19,7 +19,7 @@ public class PartyItemShareCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Party party = UserManager.getPlayer((Player) sender).getParty();
 
-        if (party.getLevel() < MainConfig.getInstance().getPartyFeatureUnlockLevel(PartyFeature.ITEM_SHARE)) {
+        if (party.getLevel() < PartyManager.getPartyFeatureUnlockLevel(PartyFeature.ITEM_SHARE)) {
             sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.4"));
             return true;
         }

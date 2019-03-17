@@ -18,7 +18,7 @@ public class PartyXpShareCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Party party = UserManager.getPlayer((Player) sender).getParty();
 
-        if (party.getLevel() < MainConfig.getInstance().getPartyFeatureUnlockLevel(PartyFeature.XP_SHARE)) {
+        if (party.getLevel() < PartyManager.getPartyFeatureUnlockLevel(PartyFeature.XP_SHARE)) {
             sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.5"));
             return true;
         }

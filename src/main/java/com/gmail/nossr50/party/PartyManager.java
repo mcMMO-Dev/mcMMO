@@ -3,10 +3,7 @@ package com.gmail.nossr50.party;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.party.ItemShareType;
-import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.party.PartyLeader;
-import com.gmail.nossr50.datatypes.party.ShareMode;
+import com.gmail.nossr50.datatypes.party.*;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.events.party.McMMOPartyAllianceChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
@@ -24,18 +21,34 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.UUID;
 
 public final class PartyManager {
     private static String partiesFilePath = mcMMO.getFlatFileDirectory() + "parties.yml";
     private static List<Party> parties = new ArrayList<Party>();
     private static File partyFile = new File(partiesFilePath);
+    private static HashMap<PartyFeature, Integer> partyFeatureUnlockMap;
 
     private PartyManager() {}
+
+    /**
+     * Sets the unlock feature map for parties to the currently loaded hash map representation from the User's Config File
+     */
+    public static void reloadPartyFeatureHashMap()
+    {
+        partyFeatureUnlockMap = mcMMO.getPartyLevelSettings().getPartyFeatureUnlockMap();
+    }
+
+    /**
+     * Grab the appropriate unlock level for a party feature
+     * @param partyFeature target party feature
+     * @return the unlock level for the feature
+     */
+    public static int getPartyFeatureUnlockLevel(PartyFeature partyFeature)
+    {
+        return partyFeatureUnlockMap.get(partyFeature);
+    }
 
     /**
      * Check if a party with a given name already exists.

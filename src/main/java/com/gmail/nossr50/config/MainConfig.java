@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.StringUtils;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import org.bukkit.Material;
@@ -329,7 +330,7 @@ public class MainConfig extends ConfigValidated {
         }
 
         /* PARTY SETTINGS */
-        if (getAutoPartyKickInterval() < -1) {
+        /*if (getAutoPartyKickInterval() < -1) {
             reason.add(PARTY + "." + AUTO_KICK_INTERVAL + " should be at least -1!");
         }
 
@@ -351,17 +352,17 @@ public class MainConfig extends ConfigValidated {
 
         if (getPartyShareRange() <= 0) {
             reason.add(PARTY + "." + SHARING + "." + RANGE + " should be greater than 0!");
-        }
+        }*/
 
-        if (getPartyXpCurveMultiplier() < 1) {
+        /*if (getPartyXpCurveMultiplier() < 1) {
             reason.add(PARTY + "." + LEVELING + "." + XP_CURVE_MODIFIER + " should be at least 1!");
         }
 
         for (PartyFeature partyFeature : PartyFeature.values()) {
-            if (getPartyFeatureUnlockLevel(partyFeature) < 0) {
+            if (PartyManager. < 0) {
                 reason.add(PARTY + "." + LEVELING + "." + StringUtils.getPrettyPartyFeatureString(partyFeature).replace(" ", "") + "_UnlockLevel should be at least 0!");
             }
-        }
+        }*/
 
         /* Inspect command distance */
         if (getInspectDistance() <= 0) {
@@ -696,23 +697,6 @@ public class MainConfig extends ConfigValidated {
     }
 
     /* PARTY SETTINGS */
-
-    //TODO: Move this to Experience Config
-    public int getPartyXpCurveMultiplier() {
-        return getIntValue(PARTY, LEVELING, XP_CURVE_MODIFIER);
-    }
-
-    public boolean getPartyXpNearMembersNeeded() {
-        return getBooleanValue(PARTY, LEVELING, NEAR_MEMBERS_NEEDED);
-    }
-
-    public boolean getPartyInformAllMembers() {
-        return getBooleanValue(PARTY, LEVELING, INFORM_ALL_PARTY_MEMBERS_ON_LEVEL_UP);
-    }
-
-    public int getPartyFeatureUnlockLevel(PartyFeature partyFeature) {
-        return getIntValue(PARTY, LEVELING, StringUtils.getPrettyPartyFeatureString(partyFeature).replace(" ", "") + UNLOCK_LEVEL);
-    }
 
     /* Party Teleport Settings */
     public int getPTPCommandCooldown() {

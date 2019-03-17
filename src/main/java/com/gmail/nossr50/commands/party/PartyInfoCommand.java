@@ -79,7 +79,7 @@ public class PartyInfoCommand implements CommandExecutor {
     }
 
     private boolean isUnlockedFeature(Party party, PartyFeature partyFeature) {
-        return party.getLevel() >= MainConfig.getInstance().getPartyFeatureUnlockLevel(partyFeature);
+        return party.getLevel() >= PartyManager.getPartyFeatureUnlockLevel(partyFeature);
     }
 
     private void displayShareModeInfo(Player player, Party party) {

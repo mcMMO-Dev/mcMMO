@@ -44,7 +44,7 @@ public class PartyAllianceCommand implements TabExecutor {
 
         switch (args.length) {
             case 1:
-                if (playerParty.getLevel() < MainConfig.getInstance().getPartyFeatureUnlockLevel(PartyFeature.ALLIANCE)) {
+                if (playerParty.getLevel() < PartyManager.getPartyFeatureUnlockLevel(PartyFeature.ALLIANCE)) {
                     sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.3"));
                     return true;
                 }
@@ -62,7 +62,7 @@ public class PartyAllianceCommand implements TabExecutor {
 
             case 2:
             case 3:
-                if (playerParty.getLevel() < MainConfig.getInstance().getPartyFeatureUnlockLevel(PartyFeature.ALLIANCE)) {
+                if (playerParty.getLevel() < PartyManager.getPartyFeatureUnlockLevel(PartyFeature.ALLIANCE)) {
                     sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.3"));
                     return true;
                 }

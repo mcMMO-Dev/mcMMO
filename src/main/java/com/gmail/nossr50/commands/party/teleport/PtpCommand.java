@@ -68,7 +68,7 @@ public class PtpCommand implements TabExecutor {
 
         Party party = mcMMOPlayer.getParty();
 
-        if (party.getLevel() < MainConfig.getInstance().getPartyFeatureUnlockLevel(PartyFeature.TELEPORT)) {
+        if (party.getLevel() < PartyManager.getPartyFeatureUnlockLevel(PartyFeature.TELEPORT)) {
             sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.2"));
             return true;
         }
