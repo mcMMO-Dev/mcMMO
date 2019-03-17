@@ -17,8 +17,8 @@ public class ConfigSectionPartyLevel {
         PARTY_FEATURE_MAP_DEFAULT.put(PartyFeature.TELEPORT, 2);
         PARTY_FEATURE_MAP_DEFAULT.put(PartyFeature.ALLIANCE, 5);
         PARTY_FEATURE_MAP_DEFAULT.put(PartyFeature.ITEM_SHARE, 8);
-        PARTY_FEATURE_MAP_DEFAULT.put(PartyFeature.XP_SHARE, 0);
-        PARTY_FEATURE_MAP_DEFAULT.put(PartyFeature.CHAT, 0);
+        PARTY_FEATURE_MAP_DEFAULT.put(PartyFeature.XP_SHARE, 10);
+        PARTY_FEATURE_MAP_DEFAULT.put(PartyFeature.CHAT, 1);
     }
 
     @Setting(value = "Party-XP-Rate-Multiplier")
