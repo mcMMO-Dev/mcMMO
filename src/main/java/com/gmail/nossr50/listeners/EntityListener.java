@@ -303,7 +303,7 @@ public class EntityListener implements Listener {
                 Player attackingPlayer = (Player) attacker;
                 if (event.getDamage(DamageModifier.ABSORPTION) > 0) {
                     //If friendly fire is off don't allow players to hurt one another
-                    if(!MainConfig.getInstance().getPartyFriendlyFire())
+                    if(!mcMMO.getConfigManager().getConfigParty().isPartyFriendlyFireEnabled())
                         if ((PartyManager.inSameParty(defendingPlayer, attackingPlayer) || PartyManager.areAllies(defendingPlayer, attackingPlayer)) && !(Permissions.friendlyFire(attackingPlayer) && Permissions.friendlyFire(defendingPlayer))) {
                             event.setCancelled(true);
                             return;
@@ -372,11 +372,12 @@ public class EntityListener implements Listener {
             }
 
             //Party Friendly Fire
-            if(!MainConfig.getInstance().getPartyFriendlyFire())
-                if ((PartyManager.inSameParty(defendingPlayer, attackingPlayer) || PartyManager.areAllies(defendingPlayer, attackingPlayer)) && !(Permissions.friendlyFire(attackingPlayer) && Permissions.friendlyFire(defendingPlayer))) {
+            if(!mcMMO.getConfigManager().getConfigParty().isPartyFriendlyFireEnabled())
+                if ((PartyManager.inSameParty(defendingPlayer, attackingPlayer)
+                        || PartyManager.areAllies(defendingPlayer, attackingPlayer)) && !(Permissions.friendlyFire(attackingPlayer) && Permissions.friendlyFire(defendingPlayer))) {
                     event.setCancelled(true);
                     return;
-                }
+            }
         }
 
         CombatUtils.processCombatAttack(event, attacker, target);

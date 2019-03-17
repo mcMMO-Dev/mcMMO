@@ -9,6 +9,7 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.Item;
@@ -44,7 +45,9 @@ public final class ShareHandler {
         nearMembers.add(mcMMOPlayer.getPlayer());
 
         int partySize = nearMembers.size();
-        double shareBonus = Math.min(MainConfig.getInstance().getPartyShareBonusBase() + (partySize * MainConfig.getInstance().getPartyShareBonusIncrease()), MainConfig.getInstance().getPartyShareBonusCap());
+        double shareBonus = Math.min(mcMMO.getPartyXPShareSettings().getPartyShareXPBonusBase()
+                + (partySize * mcMMO.getPartyXPShareSettings().getPartyShareBonusIncrease()),
+                    mcMMO.getPartyXPShareSettings().getPartyShareBonusCap());
         float splitXp = (float) (xp / partySize * shareBonus);
 
         for (Player member : nearMembers) {

@@ -14,7 +14,7 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 public class PartyAutoKickTask extends BukkitRunnable {
-    private final static long KICK_TIME = 24L * 60L * 60L * 1000L * MainConfig.getInstance().getAutoPartyKickTime();
+    private final static long KICK_TIME = 24L * 60L * 60L * 1000L * mcMMO.getConfigManager().getConfigParty().getPartyCleanup().getPartyAutoKickHoursInterval();
 
     @Override
     public void run() {

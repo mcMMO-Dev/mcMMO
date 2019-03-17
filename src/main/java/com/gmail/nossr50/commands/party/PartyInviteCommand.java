@@ -50,7 +50,9 @@ public class PartyInviteCommand implements CommandExecutor {
                 if(mcMMO.getConfigManager().getConfigParty().getPartyGeneral().isPartySizeCapped())
                     if(PartyManager.isPartyFull(target, playerParty))
                     {
-                        player.sendMessage(LocaleLoader.getString("Commands.Party.PartyFull.Invite", target.getName(), playerParty.toString(), MainConfig.getInstance().getPartyMaxSize()));
+                        player.sendMessage(LocaleLoader.getString("Commands.Party.PartyFull.Invite",
+                                target.getName(), playerParty.toString(),
+                                    mcMMO.getConfigManager().getConfigParty().getPartySizeLimit()));
                         return true;
                     }
 

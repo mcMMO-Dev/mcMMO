@@ -130,7 +130,7 @@ public final class PartyManager {
 
         if (party != null) {
             Player player = mcMMOPlayer.getPlayer();
-            double range = MainConfig.getInstance().getPartyShareRange();
+            double range = mcMMO.getPartyXPShareSettings().getPartyShareRange();
 
             for (Player member : party.getOnlineMembers()) {
                 if (!player.equals(member) && member.isValid() && Misc.isNear(player.getLocation(), member.getLocation(), range)) {
@@ -148,7 +148,7 @@ public final class PartyManager {
 
         if (party != null) {
             Player player = mcMMOPlayer.getPlayer();
-            double range = MainConfig.getInstance().getPartyShareRange();
+            double range = mcMMO.getPartyXPShareSettings().getPartyShareRange();
 
             for (Player member : party.getVisibleMembers(player)) {
                 if (!player.equals(member)
@@ -403,9 +403,11 @@ public final class PartyManager {
         /*
          * Don't let players join a full party
          */
-        if(MainConfig.getInstance().getPartyMaxSize() > 0 && invite.getMembers().size() >= MainConfig.getInstance().getPartyMaxSize())
+        if(mcMMO.getConfigManager().getConfigParty().isPartySizeCapped() && invite.getMembers().size() >= mcMMO.getConfigManager().getConfigParty().getPartySizeLimit())
         {
-            NotificationManager.sendPlayerInformation(mcMMOPlayer.getPlayer(), NotificationType.PARTY_MESSAGE, "Commands.Party.PartyFull.InviteAccept", invite.getName(), String.valueOf(MainConfig.getInstance().getPartyMaxSize()));
+            NotificationManager.sendPlayerInformation(mcMMOPlayer.getPlayer(),
+                    NotificationType.PARTY_MESSAGE, "Commands.Party.PartyFull.InviteAccept",
+                        invite.getName(), String.valueOf(mcMMO.getConfigManager().getConfigParty().getPartySizeLimit()));
             return;
         }
 

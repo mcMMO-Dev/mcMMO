@@ -49,6 +49,10 @@ public class ConfigParty {
         return partyGeneral;
     }
 
+    public ConfigSectionPartyXP getPartyXP() {
+        return partyXP;
+    }
+
     public String getPartyChatPrefixFormat() {
         return partyChat.getPartyChatPrefixFormat();
     }

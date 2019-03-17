@@ -696,42 +696,6 @@ public class MainConfig extends ConfigValidated {
     }
 
     /* PARTY SETTINGS */
-    public boolean getPartyFriendlyFire() {
-        return getBooleanValue(PARTY, FRIENDLY_FIRE);
-    }
-
-    public int getPartyMaxSize() {
-        return getIntValue(PARTY, MAX_SIZE);
-    }
-
-    public int getAutoPartyKickInterval() {
-        return getIntValue(PARTY, AUTO_KICK_INTERVAL);
-    }
-
-    public int getAutoPartyKickTime() {
-        return getIntValue(PARTY, OLD_PARTY_MEMBER_CUTOFF);
-    }
-
-    public double getPartyShareBonusBase() {
-        return getDoubleValue(PARTY, SHARING, EXP_SHARE_BONUS_BASE);
-    }
-
-    public double getPartyShareBonusIncrease() {
-        return getDoubleValue(PARTY, SHARING, EXP_SHARE_BONUS_INCREASE);
-    }
-
-    public double getPartyShareBonusCap() {
-        return getDoubleValue(PARTY, SHARING, EXP_SHARE_BONUS_CAP);
-    }
-
-    public double getPartyShareRange() {
-        return getDoubleValue(PARTY, SHARING, RANGE);
-    }
-
-    public int getPartyLevelCap() {
-        int cap = getIntValue(PARTY, LEVELING, LEVEL_CAP);
-        return (cap <= 0) ? Integer.MAX_VALUE : cap;
-    }
 
     //TODO: Move this to Experience Config
     public int getPartyXpCurveMultiplier() {

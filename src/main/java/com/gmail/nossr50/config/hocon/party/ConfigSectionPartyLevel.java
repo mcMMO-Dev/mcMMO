@@ -33,4 +33,23 @@ public class ConfigSectionPartyLevel {
     @Setting(value = "Party-Feature-Unlock-Level-Requirements")
     private Map<PartyFeature, Integer> partyFeatureUnlockMap = PARTY_FEATURE_MAP_DEFAULT;
 
+    public static HashMap<PartyFeature, Integer> getPartyFeatureMapDefault() {
+        return PARTY_FEATURE_MAP_DEFAULT;
+    }
+
+    public int getPartyXpCurveMultiplier() {
+        return partyXpCurveMultiplier;
+    }
+
+    public boolean isPartyLevelingNeedsNearbyMembers() {
+        return partyLevelingNeedsNearbyMembers;
+    }
+
+    public boolean isInformPartyMembersOnLevelup() {
+        return informPartyMembersOnLevelup;
+    }
+
+    public Map<PartyFeature, Integer> getPartyFeatureUnlockMap() {
+        return partyFeatureUnlockMap;
+    }
 }

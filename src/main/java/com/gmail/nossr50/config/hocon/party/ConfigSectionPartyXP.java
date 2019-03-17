@@ -23,4 +23,12 @@ public class ConfigSectionPartyXP {
     @Setting(value = "Party-Level", comment = "Parties in mcMMO gain levels just like skills" +
             "\nSettings related to that can be found here!.")
     private ConfigSectionPartyLevel partyLevel = new ConfigSectionPartyLevel();
+
+    public ConfigSectionPartyExperienceSharing getPartyExperienceSharing() {
+        return partyExperienceSharing;
+    }
+
+    public ConfigSectionPartyLevel getPartyLevel() {
+        return partyLevel;
+    }
 }

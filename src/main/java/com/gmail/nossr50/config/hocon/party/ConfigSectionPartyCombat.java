@@ -8,7 +8,9 @@ public class ConfigSectionPartyCombat {
 
     public static final boolean PARTY_FRIENDLY_FIRE_DEFAULT = false;
 
-    @Setting(value = "Friendly-Fire", comment = "When friendly fire is enabled, players in the same party can injure each other.")
+    @Setting(value = "Friendly-Fire", comment = "When friendly fire is enabled, players in the same party can injure each other." +
+            "\nThis also allows Party alliances to hurt each other." +
+            "\nDefault value: "+PARTY_FRIENDLY_FIRE_DEFAULT)
     private boolean partyFriendlyFire = PARTY_FRIENDLY_FIRE_DEFAULT;
 
     public boolean isPartyFriendlyFire() {

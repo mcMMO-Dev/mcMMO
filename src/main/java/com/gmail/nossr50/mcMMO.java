@@ -6,6 +6,7 @@ import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.hocon.database.ConfigSectionCleaning;
 import com.gmail.nossr50.config.hocon.database.ConfigSectionMySQL;
+import com.gmail.nossr50.config.hocon.party.ConfigSectionPartyExperienceSharing;
 import com.gmail.nossr50.config.hocon.playerleveling.ConfigLeveling;
 import com.gmail.nossr50.config.hocon.scoreboard.ConfigScoreboard;
 import com.gmail.nossr50.database.DatabaseManager;
@@ -327,6 +328,15 @@ public class mcMMO extends JavaPlugin {
     }
 
     /**
+     * Returns settings for Party XP sharing from the users config
+     * @return settings for the Party XP sharing from the users config
+     */
+    public static ConfigSectionPartyExperienceSharing getPartyXPShareSettings()
+    {
+        return configManager.getConfigParty().getPartyXP().getPartyExperienceSharing();
+    }
+
+    /**
      * Returns settings for Scoreboards from the users config
      * @return settings for Scoreboards from the users config
      */
@@ -480,7 +490,7 @@ public class mcMMO extends JavaPlugin {
         }
 
         // Automatically remove old members from parties
-        long kickIntervalTicks = MainConfig.getInstance().getAutoPartyKickInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
+        long kickIntervalTicks = getConfigManager().getConfigParty().getPartyCleanup().getPartyAutoKickHoursInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
 
         if (kickIntervalTicks == 0) {
             new PartyAutoKickTask().runTaskLater(this, 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
