@@ -17,7 +17,6 @@ public class ConfigSectionPartyItemWeights {
     static {
         ITEM_WEIGHT_MAP_DEFAULT = new HashMap<>();
 
-        ITEM_WEIGHT_MAP_DEFAULT.put("Default", 5);
         ITEM_WEIGHT_MAP_DEFAULT.put(getHOCONFriendly(QUARTZ), 200);
         ITEM_WEIGHT_MAP_DEFAULT.put(getHOCONFriendly(NETHER_QUARTZ_ORE), 200);
         ITEM_WEIGHT_MAP_DEFAULT.put(getHOCONFriendly(EMERALD_ORE), 150);

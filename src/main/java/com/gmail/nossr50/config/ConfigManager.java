@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.collectionconfigs.RepairConfig;
 import com.gmail.nossr50.config.collectionconfigs.SalvageConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.hocon.CustomEnumValueSerializer;
+import com.gmail.nossr50.config.hocon.HOCONUtil;
 import com.gmail.nossr50.config.hocon.SerializedConfigLoader;
 import com.gmail.nossr50.config.hocon.admin.ConfigAdmin;
 import com.gmail.nossr50.config.hocon.antiexploit.ConfigExploitPrevention;
@@ -160,9 +161,6 @@ public final class ConfigManager {
         configNotifications = new SerializedConfigLoader<>(ConfigNotifications.class, "chat_and_hud_notifications.conf", null);
         configSuperAbilities = new SerializedConfigLoader<>(ConfigSuperAbilities.class, "skill_super_abilities.conf", null);
         configAdmin = new SerializedConfigLoader<>(ConfigAdmin.class, "admin.conf", null);
-
-        mcMMO.p.getLogger().info("Value of Default from item map: " + configParty.getConfig().getPartyItemShare().getItemShareMap().get("DEFAULT"));
-        mcMMO.p.getLogger().info("Value of Default keyset from item map: " + configParty.getConfig().getPartyItemShare().getItemShareMap().keySet().size());
 
         //Assign Maps
         partyItemWeights = Maps.newHashMap(configParty.getConfig().getPartyItemShare().getItemShareMap()); //Item Share Weights
@@ -418,5 +416,13 @@ public final class ConfigManager {
 
     public ConfigSuperAbilities getConfigSuperAbilities() {
         return configSuperAbilities.getConfig();
+    }
+
+    public HashMap<String, Integer> getPartyItemWeights() {
+        return partyItemWeights;
+    }
+
+    public HashMap<String, Integer> getPartyFeatureUnlocks() {
+        return partyFeatureUnlocks;
     }
 }

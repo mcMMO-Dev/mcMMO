@@ -138,7 +138,6 @@ public class mcMMO extends JavaPlugin {
             registerCustomRecipes();
 
             PartyManager.loadParties();
-            PartyManager.reloadPartyFeatureHashMap();
 
             formulaManager = new FormulaManager();
             holidayManager = new HolidayManager();

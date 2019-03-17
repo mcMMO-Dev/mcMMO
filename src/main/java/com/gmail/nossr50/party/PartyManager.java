@@ -1,6 +1,7 @@
 package com.gmail.nossr50.party;
 
 import com.gmail.nossr50.config.MainConfig;
+import com.gmail.nossr50.config.hocon.HOCONUtil;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.party.*;
@@ -28,17 +29,8 @@ public final class PartyManager {
     private static String partiesFilePath = mcMMO.getFlatFileDirectory() + "parties.yml";
     private static List<Party> parties = new ArrayList<Party>();
     private static File partyFile = new File(partiesFilePath);
-    private static HashMap<PartyFeature, Integer> partyFeatureUnlockMap;
 
     private PartyManager() {}
-
-    /**
-     * Sets the unlock feature map for parties to the currently loaded hash map representation from the User's Config File
-     */
-    public static void reloadPartyFeatureHashMap()
-    {
-        partyFeatureUnlockMap = mcMMO.getPartyLevelSettings().getPartyFeatureUnlockMap();
-    }
 
     /**
      * Grab the appropriate unlock level for a party feature
@@ -47,7 +39,10 @@ public final class PartyManager {
      */
     public static int getPartyFeatureUnlockLevel(PartyFeature partyFeature)
     {
-        return partyFeatureUnlockMap.get(partyFeature);
+        if(mcMMO.getConfigManager().getPartyFeatureUnlocks().get(HOCONUtil.serializeENUMName(partyFeature.toString())) == null)
+            return 0;
+        else
+            return mcMMO.getConfigManager().getPartyFeatureUnlocks().get(HOCONUtil.serializeENUMName(partyFeature.toString()));
     }
 
     /**

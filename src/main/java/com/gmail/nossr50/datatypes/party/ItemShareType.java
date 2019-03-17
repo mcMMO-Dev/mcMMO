@@ -1,6 +1,8 @@
 package com.gmail.nossr50.datatypes.party;
 
+import com.gmail.nossr50.config.hocon.HOCONUtil;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.inventory.ItemStack;
@@ -25,7 +27,7 @@ public enum ItemShareType {
         else if (ItemUtils.isWoodcuttingDrop(itemStack)) {
             return WOODCUTTING;
         }
-        else if (ItemUtils.isMiscDrop(itemStack)) {
+        else if (mcMMO.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(HOCONUtil.serializeENUMName(itemStack.getType().toString())) != null) {
             return MISC;
         }
 

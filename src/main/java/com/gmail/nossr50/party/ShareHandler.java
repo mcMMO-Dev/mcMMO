@@ -1,5 +1,6 @@
 package com.gmail.nossr50.party;
 
+import com.gmail.nossr50.config.hocon.HOCONUtil;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.party.ItemShareType;
@@ -146,10 +147,10 @@ public final class ShareHandler {
     }
 
     public static int getItemWeight(Material material) {
-        if(mcMMO.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(material) == null)
+        if(mcMMO.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(HOCONUtil.serializeENUMName(material.toString())) == null)
             return 5;
         else
-            return mcMMO.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(material);
+            return mcMMO.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(HOCONUtil.serializeENUMName(material.toString()));
     }
 
     public static XPGainReason getSharedXpGainReason(XPGainReason xpGainReason) {
