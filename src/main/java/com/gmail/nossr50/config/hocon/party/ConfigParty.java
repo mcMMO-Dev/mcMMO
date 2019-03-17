@@ -25,6 +25,9 @@ public class ConfigParty {
     @Setting(value = "Party-XP", comment = "Settings related to leveling parties.")
     private ConfigSectionPartyXP partyXP = new ConfigSectionPartyXP();
 
+    @Setting(value = "Party-Commands", comment = "Settings related to various party commands.")
+    private ConfigSectionPartyCommands partyCommands = new ConfigSectionPartyCommands();
+
     public int getPartySizeLimit() {
         return partyGeneral.getPartySizeLimit();
     }
