@@ -52,6 +52,7 @@ Version 2.2.0
     Leveling your Party-Level now requires being near another party member by default
     Leveling your Party now is no longer tied to player xp formula variables and instead uses its own parameters
     Party members are now informed about your skill ups by default
+    Party member item sharing is now disabled by default
 
     Notification config options will now be found in "chat_and_hud_notifications.conf"
 
@@ -112,11 +113,6 @@ Version 2.2.0
     Tree Feller will now break "Woodcutting" blocks even if they have no XP entries
     Giga Drill Breaker will now break "diggable" blocks even if they have no configured treasures
     mcMMO's mod config system has been temporarily disabled as no modded bukkit servers even exist
-    Mycellium removed from woodcutting XP (whoops)
-    Optimized XP lookups for block breaking
-    Super Breaker will now break "Mining" blocks even if they have no XP entries
-    Tree Feller will now break "Woodcutting" blocks even if they have no XP entries
-    Giga Drill Breaker will now break "diggable" blocks even if they have no configured treasures
     removed child.yml, child skills now have hard coded parents
     removed the hardcore and vampirism commands, these are dangerous settings and should not be toggle-able (turn them on in your configs if you want to use them)
 
