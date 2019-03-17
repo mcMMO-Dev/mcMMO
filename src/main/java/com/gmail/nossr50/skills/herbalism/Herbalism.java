@@ -91,7 +91,7 @@ public class Herbalism {
             }
         } else {
             // Handle the two blocks above it - cacti & sugar cane can only grow 3 high naturally
-            for (int y = 1; y < 3; y++) {
+            for (int y = 1; y < 256; y++) {
                 Block relativeBlock = block.getRelative(BlockFace.UP, y);
 
                 if (relativeBlock.getType() != blockType) {
@@ -107,6 +107,51 @@ public class Herbalism {
         }
 
         return dropAmount;
+    }
+
+    /**
+     * Calculate the drop amounts for kelp plants based on the blocks
+     * relative to them.
+     *
+     * @param blockState
+     *            The {@link BlockState} of the bottom block of the plant
+     * @return the number of bonus drops to award from the blocks in this plant
+     */
+    protected static int calculateKelpPlantDrops(BlockState blockState) {
+        Block block = blockState.getBlock();
+
+        int dropAmount = mcMMO.getPlaceStore().isTrue(block) ? 0 : 1;
+
+        int kelpMaxHeight = 256;
+
+        // Handle the two blocks above it - cacti & sugar cane can only grow 3 high naturally
+        for (int y = 1; y < kelpMaxHeight; y++) {
+            Block relativeUpBlock = block.getRelative(BlockFace.UP, y);
+
+            if(!isKelp(relativeUpBlock))
+                break;
+
+            dropAmount = addKelpDrops(dropAmount, relativeUpBlock);
+        }
+
+        return dropAmount;
+    }
+
+    private static int addKelpDrops(int dropAmount, Block relativeBlock) {
+        if (isKelp(relativeBlock) && !mcMMO.getPlaceStore().isTrue(relativeBlock)) {
+            dropAmount++;
+        } else {
+            mcMMO.getPlaceStore().setFalse(relativeBlock);
+        }
+
+        return dropAmount;
+    }
+
+    private static boolean isKelp(Block relativeBlock) {
+        Material kelptype_1 = Material.KELP_PLANT;
+        Material kelptype_2 = Material.KELP;
+
+        return relativeBlock.getType() == kelptype_1 || relativeBlock.getType() == kelptype_2;
     }
 
     /**

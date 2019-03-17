@@ -7,6 +7,13 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.18
+    You will need to add Kelp to your experience.yml file for this fix to be fully functional
+    Breaking Kelp will now properly count its XP
+    Added "Kelp" to experience.yml (Kelp is actually made up of two blocks mixed together)
+    It is recommended that Kelp and Kelp_Plant have the same XP value in experience.yml
+    mcMMO will now calculate XP for plants that are taller than naturally allowed (Cactus above 3 block height, etc)
+
 Version 2.1.17
     Fixed a logic error that resulted in Drowned giving no XP
     Fixed a bug that resulted in mob spawner entities to not be marked for no xp after being transforming into Drowned

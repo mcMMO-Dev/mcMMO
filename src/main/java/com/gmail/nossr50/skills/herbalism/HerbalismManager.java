@@ -126,7 +126,8 @@ public class HerbalismManager extends SkillManager {
     public void herbalismBlockCheck(BlockState blockState) {
         Player player = getPlayer();
         Material material = blockState.getType();
-        boolean oneBlockPlant = !(material == Material.CACTUS || material == Material.CHORUS_PLANT || material == Material.SUGAR_CANE || material == Material.KELP_PLANT);
+        boolean oneBlockPlant = !(material == Material.CACTUS || material == Material.CHORUS_PLANT
+                || material == Material.SUGAR_CANE || material == Material.KELP_PLANT || material == Material.KELP);
 
         // Prevents placing and immediately breaking blocks for exp
         if (oneBlockPlant && mcMMO.getPlaceStore().isTrue(blockState)) {
@@ -158,7 +159,13 @@ public class HerbalismManager extends SkillManager {
             }
 
             if (!oneBlockPlant) {
-                amount = Herbalism.calculateMultiBlockPlantDrops(blockState);
+                //Kelp is actually two blocks mixed together
+                if(material == Material.KELP_PLANT || material == Material.KELP) {
+                    amount = Herbalism.calculateKelpPlantDrops(blockState);
+                } else {
+                    amount = Herbalism.calculateMultiBlockPlantDrops(blockState);
+                }
+
                 xp *= amount;
             }
             
