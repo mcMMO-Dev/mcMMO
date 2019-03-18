@@ -65,6 +65,10 @@ Version 2.2.0
 
     Hardcore config options will now be found in "hardcore.conf"
 
+    Super Ability conifg options will now be found in "skill_super_abilities.conf"
+    Super Abilities now have a default max length cap of one minute
+    Blast Mining default cooldown increased from 60 seconds to 120 seconds
+
     Exploit related config options will now be found in "exploit-prevention"
     Exploit Prevention's "EndermanEndermiteFarms" renamed -> "Endermen-Endermite-Fix"
     Added toggle for pistons marking natural blocks as unnatural after being moved to prevent afk stone farms

@@ -13,8 +13,6 @@
 #  Settings for the Skills
 ###
 # Enables anonymous statistics
-Metrics:
-    bstats: true
 Feedback:
     SkillCommand:
         BlankLinesAboveHeader: true
@@ -75,7 +73,6 @@ Feedback:
             SendCopyOfMessageToChat: true
 Skills:
     General:
-        StartingLevel: 1
         Ability:
             Length:
                 Standard:
