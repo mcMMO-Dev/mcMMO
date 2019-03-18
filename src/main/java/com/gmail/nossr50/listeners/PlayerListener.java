@@ -326,11 +326,18 @@ public class PlayerListener implements Listener {
         FishingManager fishingManager = UserManager.getPlayer(player).getFishingManager();
 
         //Track the hook
-        if(ExperienceConfig.getInstance().isFishingExploitingPrevented())
+        if(mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().isPreventFishingExploits())
         {
             if(event.getHook().getMetadata(mcMMO.FISH_HOOK_REF_METAKEY).size() == 0)
             {
                 fishingManager.setFishHookReference(event.getHook());
+            }
+
+            //Spam Fishing
+            if(event.getState() == PlayerFishEvent.State.CAUGHT_FISH && fishingManager.isFishingTooOften())
+            {
+                event.setExpToDrop(0);
+            fishingManager.setFishHookReference(event.getHook());
             }
 
             //Spam Fishing
@@ -348,6 +355,7 @@ public class PlayerListener implements Listener {
             }
         }
 
+
         switch (event.getState()) {
             case FISHING:
                 if (fishingManager.canMasterAngler()) {
@@ -356,7 +364,7 @@ public class PlayerListener implements Listener {
                 }
                 return;
             case CAUGHT_FISH:
-                if(ExperienceConfig.getInstance().isFishingExploitingPrevented())
+                if(mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().isPreventFishingExploits())
                 {
                     if(fishingManager.isExploitingFishing(event.getHook().getLocation().toVector()))
                     {
@@ -655,9 +663,9 @@ public class PlayerListener implements Listener {
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         //Spam Fishing Detection
-        if(event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)
+        if(mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().isPreventFishingExploits())
         {
-            if(heldItem.getType() == Material.FISHING_ROD || player.getInventory().getItemInOffHand().getType() == Material.FISHING_ROD)
+            if(event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)
             {
                 if(player.isInsideVehicle() && (player.getVehicle() instanceof Minecart || player.getVehicle() instanceof PoweredMinecart))
                 {
@@ -668,6 +676,7 @@ public class PlayerListener implements Listener {
                 mcMMOPlayer.getFishingManager().setFishingRodCastTimestamp();
             }
         }
+
 
         switch (event.getAction()) {
             case RIGHT_CLICK_BLOCK:
