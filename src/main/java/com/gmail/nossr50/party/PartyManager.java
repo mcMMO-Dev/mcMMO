@@ -108,6 +108,11 @@ public final class PartyManager {
      * @return true if they are in the same party, false otherwise
      */
     public static boolean inSameParty(Player firstPlayer, Player secondPlayer) {
+        //If the party system is disabled, return false
+        if(!mcMMO.getConfigManager().getConfigParty().isPartySystemEnabled())
+            return false;
+
+
         Party firstParty = UserManager.getPlayer(firstPlayer).getParty();
         Party secondParty = UserManager.getPlayer(secondPlayer).getParty();
 
@@ -119,6 +124,11 @@ public final class PartyManager {
     }
 
     public static boolean areAllies(Player firstPlayer, Player secondPlayer) {
+        //If the party system is disabled, return false
+        if(!mcMMO.getConfigManager().getConfigParty().isPartySystemEnabled())
+            return false;
+
+
         Party firstParty = UserManager.getPlayer(firstPlayer).getParty();
         Party secondParty = UserManager.getPlayer(secondPlayer).getParty();
 
@@ -217,6 +227,10 @@ public final class PartyManager {
      * @return the existing party, null otherwise
      */
     public static Party getParty(String partyName) {
+        //If the party system is disabled, return null
+        if(!mcMMO.getConfigManager().getConfigParty().isPartySystemEnabled())
+            return null;
+
         for (Party party : parties) {
             if (party.getName().equalsIgnoreCase(partyName)) {
                 return party;
@@ -234,6 +248,10 @@ public final class PartyManager {
      */
     @Deprecated
     public static Party getPlayerParty(String playerName) {
+        //If the party system is disabled, return null
+        if(!mcMMO.getConfigManager().getConfigParty().isPartySystemEnabled())
+            return null;
+
         for (Party party : parties) {
             if (party.getMembers().keySet().contains(playerName)) {
                 return party;
@@ -250,6 +268,10 @@ public final class PartyManager {
      * @return the existing party, null otherwise
      */
     public static Party getPlayerParty(String playerName, UUID uuid) {
+        //If the party system is disabled, return null
+        if(!mcMMO.getConfigManager().getConfigParty().isPartySystemEnabled())
+            return null;
+
         for (Party party : parties) {
             LinkedHashMap<UUID, String> members = party.getMembers();
             if (members.keySet().contains(uuid) || members.values().contains(playerName)) {

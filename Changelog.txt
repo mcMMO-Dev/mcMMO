@@ -10,6 +10,7 @@ Key:
 Version 2.2.0
     mcMMO's config system has been rewritten
     Parties no longer have a cap, you can level them forever for bragging rights
+    You can now disable the party system completely
     Many config files are now generated on demand instead of being copied from within the JAR
     All config nodes that used to be styled with CamelCase or otherwise now use hyphens (-) as spaces for readability and consistency
     All config nodes will now use Capital letters at the start of each nodes name and after each hyphen (-)
@@ -45,6 +46,7 @@ Version 2.2.0
     Particle settings will now be found in "particle_spawning.conf"
 
     Party config options will now be found in "party.conf"
+    Added toggle to completely disable parties
     Party's "MaxSize" renamed -> "Party-Max-Size"
     Party's "AutoKick_Interval" renamed -> "Hours-Between-Cleanup-Operations"
     Party's "Old_Party_Member_Cutoff" renamed -> "Offline-Day-Limit"

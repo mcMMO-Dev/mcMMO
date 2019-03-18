@@ -137,7 +137,8 @@ public class mcMMO extends JavaPlugin {
             registerCoreSkills();
             registerCustomRecipes();
 
-            PartyManager.loadParties();
+            if(getConfigManager().getConfigParty().isPartySystemEnabled())
+                PartyManager.loadParties();
 
             formulaManager = new FormulaManager();
             holidayManager = new HolidayManager();
@@ -499,15 +500,20 @@ public class mcMMO extends JavaPlugin {
             new UserPurgeTask().runTaskTimerAsynchronously(this, purgeIntervalTicks, purgeIntervalTicks);
         }
 
-        // Automatically remove old members from parties
-        long kickIntervalTicks = getConfigManager().getConfigParty().getPartyCleanup().getPartyAutoKickHoursInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
+        //Party System Stuff
+        if(mcMMO.configManager.getConfigParty().isPartySystemEnabled())
+        {
+            // Automatically remove old members from parties
+            long kickIntervalTicks = getConfigManager().getConfigParty().getPartyCleanup().getPartyAutoKickHoursInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
 
-        if (kickIntervalTicks == 0) {
-            new PartyAutoKickTask().runTaskLater(this, 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
+            if (kickIntervalTicks == 0) {
+                new PartyAutoKickTask().runTaskLater(this, 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
+            }
+            else if (kickIntervalTicks > 0) {
+                new PartyAutoKickTask().runTaskTimer(this, kickIntervalTicks, kickIntervalTicks);
+            }
         }
-        else if (kickIntervalTicks > 0) {
-            new PartyAutoKickTask().runTaskTimer(this, kickIntervalTicks, kickIntervalTicks);
-        }
+
 
         // Update power level tag scoreboards
         new PowerLevelUpdatingTask().runTaskTimer(this, 2 * Misc.TICK_CONVERSION_FACTOR, 2 * Misc.TICK_CONVERSION_FACTOR);

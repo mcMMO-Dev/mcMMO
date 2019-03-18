@@ -6,6 +6,7 @@ import com.gmail.nossr50.commands.party.teleport.PtpCommand;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
@@ -59,6 +60,10 @@ public class PartyCommand implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        //If the party system is disabled, don't fire this command
+        if(!mcMMO.getConfigManager().getConfigParty().isPartySystemEnabled())
+            return true;
+
         if (CommandUtils.noConsoleUsage(sender)) {
             return true;
         }

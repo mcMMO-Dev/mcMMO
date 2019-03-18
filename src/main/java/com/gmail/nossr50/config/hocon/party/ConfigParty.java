@@ -91,6 +91,8 @@ public class ConfigParty {
         return partyCombat.isPartyFriendlyFire();
     }
 
+    public boolean isPartySystemEnabled() { return partyGeneral.isEnablePartySystem(); }
+
     /*
 
 
