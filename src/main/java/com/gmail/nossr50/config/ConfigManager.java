@@ -4,7 +4,6 @@ import com.gmail.nossr50.config.collectionconfigs.RepairConfig;
 import com.gmail.nossr50.config.collectionconfigs.SalvageConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.hocon.CustomEnumValueSerializer;
-import com.gmail.nossr50.config.hocon.HOCONUtil;
 import com.gmail.nossr50.config.hocon.SerializedConfigLoader;
 import com.gmail.nossr50.config.hocon.admin.ConfigAdmin;
 import com.gmail.nossr50.config.hocon.antiexploit.ConfigExploitPrevention;
