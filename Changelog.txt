@@ -7,6 +7,10 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.19
+    Improved Fishing AFK detection
+    Fixed a bug where Fishing AFK detection did not work on a new exploit
+
 Version 2.1.18
     You will need to add Kelp to your experience.yml file for this fix to be fully functional
     Breaking Kelp will now properly count its XP

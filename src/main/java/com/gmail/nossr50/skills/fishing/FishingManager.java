@@ -23,6 +23,7 @@ import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -34,6 +35,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.BoundingBox;
+import org.bukkit.util.Vector;
 
 import java.util.*;
 
@@ -57,13 +59,16 @@ public class FishingManager extends SkillManager {
         return getSkillLevel() >= RankUtils.getUnlockLevel(SubSkillType.FISHING_MASTER_ANGLER) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_MASTER_ANGLER);
     }
 
-    public boolean exploitPrevention(BoundingBox boundingBox) {
+    public boolean exploitPrevention(Vector centerOfCastVector) {
 
-        Block targetBlock = getPlayer().getTargetBlock(BlockUtils.getTransparentBlocks(), 100);
+        /*Block targetBlock = getPlayer().getTargetBlock(BlockUtils.getTransparentBlocks(), 100);
 
         if (!targetBlock.isLiquid()) {
             return false;
-        }
+        }*/
+
+        if(lastFishingBoundingBox == null)
+            lastFishingBoundingBox = makeBoundingBox(centerOfCastVector);
 
         long currentTime = System.currentTimeMillis();
         boolean hasFished = (currentTime < fishingTimestamp + (FISHING_COOLDOWN_SECONDS * 10));
@@ -71,11 +76,19 @@ public class FishingManager extends SkillManager {
         if(hasFished)
             fishingTimestamp = currentTime;
 
-        boolean sameTarget = (lastFishingBoundingBox != null && lastFishingBoundingBox.overlaps(boundingBox));
+        BoundingBox newCastBoundingBox = makeBoundingBox(centerOfCastVector);
 
-        lastFishingBoundingBox = boundingBox;
+        boolean sameTarget = lastFishingBoundingBox.overlaps(newCastBoundingBox);
+
+        //If the new bounding box does not intersect with the old one, then update our bounding box reference
+        if(!sameTarget)
+            lastFishingBoundingBox = newCastBoundingBox;
 
         return hasFished || sameTarget;
+    }
+
+    public static BoundingBox makeBoundingBox(Vector centerOfCastVector) {
+        return BoundingBox.of(centerOfCastVector, 2, 2, 2);
     }
 
     public void setFishingTarget() {

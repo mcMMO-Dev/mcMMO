@@ -29,6 +29,7 @@ import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -331,21 +332,18 @@ public class PlayerListener implements Listener {
                     fishingManager.setFishingTarget();
                 }
                 return;
-
             case CAUGHT_FISH:
-                if(fishingManager.exploitPrevention(event.getHook().getBoundingBox()))
+                if(fishingManager.exploitPrevention(event.getHook().getLocation().toVector()))
                     return;
                 fishingManager.handleFishing((Item) caught);
                 fishingManager.setFishingTarget();
                 return;
-
             case CAUGHT_ENTITY:
                 if (fishingManager.canShake(caught)) {
                     fishingManager.shakeCheck((LivingEntity) caught);
                     fishingManager.setFishingTarget();
                 }
                 return;
-
             default:
                 return;
         }
