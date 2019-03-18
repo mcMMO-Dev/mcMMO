@@ -15,6 +15,7 @@ import com.gmail.nossr50.datatypes.treasure.Rarity;
 import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerShakeEvent;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -59,7 +60,21 @@ public class FishingManager extends SkillManager {
         return getSkillLevel() >= RankUtils.getUnlockLevel(SubSkillType.FISHING_MASTER_ANGLER) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_MASTER_ANGLER);
     }
 
-    public boolean exploitPrevention(Vector centerOfCastVector) {
+    public boolean isFishingTooOften()
+    {
+        long currentTime = System.currentTimeMillis();
+        boolean hasFished = (currentTime < fishingTimestamp + (FISHING_COOLDOWN_SECONDS * 10));
+
+        if(hasFished)
+        {
+            getPlayer().sendMessage(LocaleLoader.getString("Fishing.Scared"));
+            fishingTimestamp = currentTime;
+        }
+
+        return hasFished;
+    }
+
+    public boolean isExploitingFishing(Vector centerOfCastVector) {
 
         /*Block targetBlock = getPlayer().getTargetBlock(BlockUtils.getTransparentBlocks(), 100);
 
@@ -70,12 +85,6 @@ public class FishingManager extends SkillManager {
         if(lastFishingBoundingBox == null)
             lastFishingBoundingBox = makeBoundingBox(centerOfCastVector);
 
-        long currentTime = System.currentTimeMillis();
-        boolean hasFished = (currentTime < fishingTimestamp + (FISHING_COOLDOWN_SECONDS * 10));
-
-        if(hasFished)
-            fishingTimestamp = currentTime;
-
         BoundingBox newCastBoundingBox = makeBoundingBox(centerOfCastVector);
 
         boolean sameTarget = lastFishingBoundingBox.overlaps(newCastBoundingBox);
@@ -83,8 +92,12 @@ public class FishingManager extends SkillManager {
         //If the new bounding box does not intersect with the old one, then update our bounding box reference
         if(!sameTarget)
             lastFishingBoundingBox = newCastBoundingBox;
+        else
+        {
+            getPlayer().sendMessage(LocaleLoader.getString("Fishing.Scarcity"));
+        }
 
-        return hasFished || sameTarget;
+        return sameTarget;
     }
 
     public static BoundingBox makeBoundingBox(Vector centerOfCastVector) {

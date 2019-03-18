@@ -10,6 +10,9 @@ Key:
 Version 2.1.19
     Improved Fishing AFK detection
     Fixed a bug where Fishing AFK detection did not work on a new exploit
+    Fishing now drops several hints to players if they are triggering the exploit detection
+    Added messages to warn players about fishing in the same spot
+    Added messages to warn players about casting too often
 
 Version 2.1.18
     You will need to add Kelp to your experience.yml file for this fix to be fully functional

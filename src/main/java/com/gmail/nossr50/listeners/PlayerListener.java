@@ -29,7 +29,6 @@ import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -320,10 +319,23 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        Entity caught = event.getCaught();
         FishingManager fishingManager = UserManager.getPlayer(player).getFishingManager();
 
-        Entity caught = event.getCaught();
-        //event.setExpToDrop(event.getExpToDrop()); //Redundant?
+        //Fishing Too Often
+        if(event.getState() != PlayerFishEvent.State.CAUGHT_ENTITY && fishingManager.isFishingTooOften())
+        {
+            event.setExpToDrop(0);
+            event.setCancelled(true);
+
+            if(caught instanceof Item)
+            {
+                Item caughtItem = (Item) caught;
+                caughtItem.remove();
+            }
+
+            return;
+        }
 
         switch (event.getState()) {
             case FISHING:
@@ -333,8 +345,15 @@ public class PlayerListener implements Listener {
                 }
                 return;
             case CAUGHT_FISH:
-                if(fishingManager.exploitPrevention(event.getHook().getLocation().toVector()))
+                if(fishingManager.isExploitingFishing(event.getHook().getLocation().toVector()))
+                {
+                    event.setExpToDrop(0);
+                    event.setCancelled(true);
+                    Item caughtItem = (Item) caught;
+                    caughtItem.remove();
                     return;
+                }
+
                 fishingManager.handleFishing((Item) caught);
                 fishingManager.setFishingTarget();
                 return;
