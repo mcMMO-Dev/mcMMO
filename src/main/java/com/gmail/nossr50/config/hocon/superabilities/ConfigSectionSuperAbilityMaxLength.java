@@ -1,7 +1,9 @@
 package com.gmail.nossr50.config.hocon.superabilities;
 
 import ninja.leaping.configurate.objectmapping.Setting;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
+@ConfigSerializable
 public class ConfigSectionSuperAbilityMaxLength {
     @Setting(value = "Berserk")
     private int berserk = 60;
