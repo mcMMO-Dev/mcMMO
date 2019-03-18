@@ -10,7 +10,10 @@ Key:
 Version 2.1.19
     Improved Fishing AFK detection
     Fixed a bug where Fishing AFK detection did not work on a new exploit
+    Players who get detected by Fishing's anti-exploit measures will no longer get vanilla rewards from Minecraft
+        **Note: Previously if mcMMO detected you abusing Fishing it just switched you over to vanilla Minecraft fishing rewards, this change is to help server admins who don't want players to get any kind of reward from AFK fishing
     Fishing now drops several hints to players if they are triggering the exploit detection
+        **Note: Not all types of exploit detection will warn players, this is just to prevent legitimate fishers from being confused by the aggressive exploit detection.
     Added messages to warn players about fishing in the same spot
     Added messages to warn players about casting too often
 

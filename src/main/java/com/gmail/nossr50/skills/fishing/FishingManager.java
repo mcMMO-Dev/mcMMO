@@ -44,6 +44,7 @@ public class FishingManager extends SkillManager {
     private final long FISHING_COOLDOWN_SECONDS = 1000L;
 
     private long fishingTimestamp = 0L;
+    private long lastWarned = 0L;
     private BoundingBox lastFishingBoundingBox;
     private Item fishingCatch;
     private Location hookLocation;
@@ -65,11 +66,13 @@ public class FishingManager extends SkillManager {
         long currentTime = System.currentTimeMillis();
         boolean hasFished = (currentTime < fishingTimestamp + (FISHING_COOLDOWN_SECONDS * 10));
 
-        if(hasFished)
+        if(hasFished && lastWarned + (1000 * 5) < System.currentTimeMillis())
         {
             getPlayer().sendMessage(LocaleLoader.getString("Fishing.Scared"));
-            fishingTimestamp = currentTime;
+            lastWarned = System.currentTimeMillis();
         }
+
+        fishingTimestamp = currentTime;
 
         return hasFished;
     }
@@ -101,7 +104,7 @@ public class FishingManager extends SkillManager {
     }
 
     public static BoundingBox makeBoundingBox(Vector centerOfCastVector) {
-        return BoundingBox.of(centerOfCastVector, 2, 2, 2);
+        return BoundingBox.of(centerOfCastVector, 1, 1, 1);
     }
 
     public void setFishingTarget() {
