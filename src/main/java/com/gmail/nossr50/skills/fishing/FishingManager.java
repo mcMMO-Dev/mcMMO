@@ -25,6 +25,8 @@ import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import com.gmail.nossr50.util.sounds.SoundManager;
+import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -42,11 +44,13 @@ import org.bukkit.util.Vector;
 import java.util.*;
 
 public class FishingManager extends SkillManager {
+    public static final int FISHING_ROD_CAST_CD_MILLISECONDS = 200;
     private final long FISHING_COOLDOWN_SECONDS = 1000L;
 
     private long fishingRodCastTimestamp = 0L;
     private long fishHookSpawnTimestamp = 0L;
     private long lastWarned = 0L;
+    private long lastWarnedExhaust = 0L;
     private FishHook fishHookReference;
     private BoundingBox lastFishingBoundingBox;
     private Item fishingCatch;
@@ -66,17 +70,23 @@ public class FishingManager extends SkillManager {
 
     public void setFishingRodCastTimestamp()
     {
+        long currentTime = System.currentTimeMillis();
         //Only track spam casting if the fishing hook is fresh
-        if(System.currentTimeMillis() > fishHookSpawnTimestamp + 500)
+        if(currentTime > fishHookSpawnTimestamp + 500)
             return;
 
-        if(System.currentTimeMillis() < fishingRodCastTimestamp + 300)
+        if(currentTime < fishingRodCastTimestamp + FISHING_ROD_CAST_CD_MILLISECONDS)
         {
-            getPlayer().setFoodLevel(Math.min(getPlayer().getFoodLevel() - 1, 0));
+            getPlayer().setFoodLevel(Math.max(getPlayer().getFoodLevel() - 1, 0));
             getPlayer().getInventory().getItemInMainHand().setDurability((short) (getPlayer().getInventory().getItemInMainHand().getDurability() + 5));
             getPlayer().updateInventory();
-            getPlayer().sendMessage(LocaleLoader.getString("Fishing.Exhausting"));
 
+            if(lastWarnedExhaust + (1000 * 1) < currentTime)
+            {
+                getPlayer().sendMessage(LocaleLoader.getString("Fishing.Exhausting"));
+                lastWarnedExhaust = currentTime;
+                SoundManager.sendSound(getPlayer(), getPlayer().getLocation(), SoundType.TIRED);
+            }
         }
 
         fishingRodCastTimestamp = System.currentTimeMillis();

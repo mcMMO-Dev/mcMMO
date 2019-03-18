@@ -8,14 +8,16 @@ Key:
   - Removal
 
 Version 2.1.19
-    Improved Fishing AFK detection
+    Greatly Improved Fishing AFK/Exploit Detection
     Fixed a bug where Fishing AFK detection did not work on a new exploit
+    Certain exploits for Fishing now result in players losing small amounts of hunger and durability
     Players who get detected by Fishing's anti-exploit measures will no longer get vanilla rewards from Minecraft
         **Note: Previously if mcMMO detected you abusing Fishing it just switched you over to vanilla Minecraft fishing rewards, this change is to help server admins who don't want players to get any kind of reward from AFK fishing
     Fishing now drops several hints to players if they are triggering the exploit detection
         **Note: Not all types of exploit detection will warn players, this is just to prevent legitimate fishers from being confused by the aggressive exploit detection.
-    Added messages to warn players about fishing in the same spot
-    Added messages to warn players about casting too often
+    Added messages to warn players about fishing in the same spot (Locale: Fishing.Scarcity)
+    Added messages to warn players who exploit in order to catch fish unusually fast (Locale: Fishing.Scared)
+    Added messages to warn players about casting the fishing rod too often (Locale: Fishing.Exhausting)
 
 Version 2.1.18
     You will need to add Kelp to your experience.yml file for this fix to be fully functional
