@@ -19,6 +19,7 @@ import com.gmail.nossr50.config.hocon.motd.ConfigMOTD;
 import com.gmail.nossr50.config.hocon.notifications.ConfigNotifications;
 import com.gmail.nossr50.config.hocon.particles.ConfigParticles;
 import com.gmail.nossr50.config.hocon.party.ConfigParty;
+import com.gmail.nossr50.config.hocon.party.data.ConfigPartyData;
 import com.gmail.nossr50.config.hocon.playerleveling.ConfigLeveling;
 import com.gmail.nossr50.config.hocon.scoreboard.ConfigScoreboard;
 import com.gmail.nossr50.config.hocon.superabilities.ConfigSuperAbilities;
@@ -103,6 +104,9 @@ public final class ConfigManager {
     private SerializedConfigLoader<ConfigSuperAbilities> configSuperAbilities;
     private SerializedConfigLoader<ConfigAdmin> configAdmin;
 
+    //Data
+    private SerializedConfigLoader<ConfigPartyData> partyData;
+
     private MainConfig mainConfig;
     private FishingTreasureConfig fishingTreasureConfig;
     private ExcavationTreasureConfig excavationTreasureConfig;
@@ -160,6 +164,9 @@ public final class ConfigManager {
         configNotifications = new SerializedConfigLoader<>(ConfigNotifications.class, "chat_and_hud_notifications.conf", null);
         configSuperAbilities = new SerializedConfigLoader<>(ConfigSuperAbilities.class, "skill_super_abilities.conf", null);
         configAdmin = new SerializedConfigLoader<>(ConfigAdmin.class, "admin.conf", null);
+
+        //Serialized Data
+        partyData = new SerializedConfigLoader<>(ConfigPartyData.class, "partydata.conf", null);
 
         //Assign Maps
         partyItemWeights = Maps.newHashMap(configParty.getConfig().getPartyItemShare().getItemShareMap()); //Item Share Weights
