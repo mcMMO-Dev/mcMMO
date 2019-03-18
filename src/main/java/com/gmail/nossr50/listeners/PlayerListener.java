@@ -37,6 +37,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
@@ -322,11 +323,16 @@ public class PlayerListener implements Listener {
         Entity caught = event.getCaught();
         FishingManager fishingManager = UserManager.getPlayer(player).getFishingManager();
 
-        //Fishing Too Often
-        if(event.getState() != PlayerFishEvent.State.CAUGHT_ENTITY && fishingManager.isFishingTooOften())
+        //Track the hook
+        if(event.getHook().getMetadata(mcMMO.FISH_HOOK_REF_METAKEY).size() == 0)
+        {
+            fishingManager.setFishHookReference(event.getHook());
+        }
+
+        //Spam Fishing
+        if(event.getState() == PlayerFishEvent.State.CAUGHT_FISH && fishingManager.isFishingTooOften())
         {
             event.setExpToDrop(0);
-            event.setCancelled(true);
 
             if(caught instanceof Item)
             {
@@ -348,7 +354,6 @@ public class PlayerListener implements Listener {
                 if(fishingManager.isExploitingFishing(event.getHook().getLocation().toVector()))
                 {
                     event.setExpToDrop(0);
-                    event.setCancelled(true);
                     Item caughtItem = (Item) caught;
                     caughtItem.remove();
                     return;
@@ -356,6 +361,7 @@ public class PlayerListener implements Listener {
 
                 fishingManager.handleFishing((Item) caught);
                 fishingManager.setFishingTarget();
+                //fishingManager.setFishHookReference(null);
                 return;
             case CAUGHT_ENTITY:
                 if (fishingManager.canShake(caught)) {
@@ -630,6 +636,15 @@ public class PlayerListener implements Listener {
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         ItemStack heldItem = player.getInventory().getItemInMainHand();
+
+        //Spam Fishing Detection
+        if(event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)
+        {
+            if(heldItem.getType() == Material.FISHING_ROD || player.getInventory().getItemInOffHand().getType() == Material.FISHING_ROD)
+            {
+                mcMMOPlayer.getFishingManager().setFishingRodCastTimestamp();
+            }
+        }
 
         switch (event.getAction()) {
             case RIGHT_CLICK_BLOCK:

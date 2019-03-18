@@ -16,6 +16,7 @@ import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerShakeEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -43,8 +44,10 @@ import java.util.*;
 public class FishingManager extends SkillManager {
     private final long FISHING_COOLDOWN_SECONDS = 1000L;
 
-    private long fishingTimestamp = 0L;
+    private long fishingRodCastTimestamp = 0L;
+    private long fishHookSpawnTimestamp = 0L;
     private long lastWarned = 0L;
+    private FishHook fishHookReference;
     private BoundingBox lastFishingBoundingBox;
     private Item fishingCatch;
     private Location hookLocation;
@@ -61,18 +64,47 @@ public class FishingManager extends SkillManager {
         return getSkillLevel() >= RankUtils.getUnlockLevel(SubSkillType.FISHING_MASTER_ANGLER) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_MASTER_ANGLER);
     }
 
+    public void setFishingRodCastTimestamp()
+    {
+        //Only track spam casting if the fishing hook is fresh
+        if(System.currentTimeMillis() > fishHookSpawnTimestamp + 500)
+            return;
+
+        if(System.currentTimeMillis() < fishingRodCastTimestamp + 300)
+        {
+            getPlayer().setFoodLevel(Math.min(getPlayer().getFoodLevel() - 1, 0));
+            getPlayer().getInventory().getItemInMainHand().setDurability((short) (getPlayer().getInventory().getItemInMainHand().getDurability() + 5));
+            getPlayer().updateInventory();
+            getPlayer().sendMessage(LocaleLoader.getString("Fishing.Exhausting"));
+
+        }
+
+        fishingRodCastTimestamp = System.currentTimeMillis();
+    }
+
+    public void setFishHookReference(FishHook fishHook)
+    {
+        if(fishHook.getMetadata(mcMMO.FISH_HOOK_REF_METAKEY).size() > 0)
+            return;
+
+        fishHook.setMetadata(mcMMO.FISH_HOOK_REF_METAKEY, mcMMO.metadataValue);
+        this.fishHookReference = fishHook;
+        fishHookSpawnTimestamp = System.currentTimeMillis();
+        fishingRodCastTimestamp = System.currentTimeMillis();
+
+    }
+
     public boolean isFishingTooOften()
     {
         long currentTime = System.currentTimeMillis();
-        boolean hasFished = (currentTime < fishingTimestamp + (FISHING_COOLDOWN_SECONDS * 10));
+        long fishHookSpawnCD = fishHookSpawnTimestamp + 1000;
+        boolean hasFished = (currentTime < fishHookSpawnCD);
 
-        if(hasFished && lastWarned + (1000 * 5) < System.currentTimeMillis())
+        if(hasFished && (lastWarned + (1000 * 1) < currentTime))
         {
             getPlayer().sendMessage(LocaleLoader.getString("Fishing.Scared"));
             lastWarned = System.currentTimeMillis();
         }
-
-        fishingTimestamp = currentTime;
 
         return hasFished;
     }
@@ -85,12 +117,9 @@ public class FishingManager extends SkillManager {
             return false;
         }*/
 
-        if(lastFishingBoundingBox == null)
-            lastFishingBoundingBox = makeBoundingBox(centerOfCastVector);
-
         BoundingBox newCastBoundingBox = makeBoundingBox(centerOfCastVector);
 
-        boolean sameTarget = lastFishingBoundingBox.overlaps(newCastBoundingBox);
+        boolean sameTarget = lastFishingBoundingBox != null && lastFishingBoundingBox.overlaps(newCastBoundingBox);
 
         //If the new bounding box does not intersect with the old one, then update our bounding box reference
         if(!sameTarget)

@@ -96,6 +96,7 @@ public class mcMMO extends JavaPlugin {
     private static boolean isRetroModeEnabled;
 
     /* Metadata Values */
+    public static final String FISH_HOOK_REF_METAKEY = "mcMMO: Fish Hook Tracker";
     public final static String entityMetadataKey   = "mcMMO: Spawned Entity";
     public final static String blockMetadataKey    = "mcMMO: Piston Tracking";
     public final static String furnaceMetadataKey  = "mcMMO: Tracked Furnace";
