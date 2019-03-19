@@ -1,6 +1,5 @@
 package com.gmail.nossr50.database;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
@@ -322,7 +321,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
 
             statement = connection.prepareStatement("UPDATE " + tablePrefix + "huds SET mobhealthbar = ?, scoreboardtips = ? WHERE user_id = ?");
-            statement.setString(1, profile.getMobHealthbarType() == null ? MainConfig.getInstance().getMobHealthbarDefault().name() : profile.getMobHealthbarType().name());
+            statement.setString(1, profile.getMobHealthbarType() == null ? mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType().name() : profile.getMobHealthbarType().name());
             statement.setInt(2, profile.getScoreboardTipsShown());
             statement.setInt(3, id);
             success = (statement.executeUpdate() != 0);
@@ -817,7 +816,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 createStatement = connection.createStatement();
                 createStatement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "huds` ("
                         + "`user_id` int(10) unsigned NOT NULL,"
-                        + "`mobhealthbar` varchar(50) NOT NULL DEFAULT '" + MainConfig.getInstance().getMobHealthbarDefault() + "',"
+                        + "`mobhealthbar` varchar(50) NOT NULL DEFAULT '" + mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType() + "',"
                         + "`scoreboardtips` int(10) NOT NULL DEFAULT '0',"
                         + "PRIMARY KEY (`user_id`)) "
                         + "DEFAULT CHARSET=latin1;");
@@ -1063,7 +1062,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             statement = connection.prepareStatement("INSERT IGNORE INTO " + tablePrefix + "huds (user_id, mobhealthbar, scoreboardtips) VALUES (?, ?, ?)");
             statement.setInt(1, id);
-            statement.setString(2, MainConfig.getInstance().getMobHealthbarDefault().name());
+            statement.setString(2, mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType().name());
             statement.setInt(3, 0);
             statement.execute();
             statement.close();
@@ -1138,7 +1137,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             mobHealthbarType = MobHealthbarType.valueOf(result.getString(OFFSET_OTHER + 1));
         }
         catch (Exception e) {
-            mobHealthbarType = MainConfig.getInstance().getMobHealthbarDefault();
+            mobHealthbarType = mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType();
         }
 
         try {
@@ -1240,7 +1239,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
         catch (SQLException ex) {
             mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for mob healthbars...");
-            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "huds` ADD `mobhealthbar` varchar(50) NOT NULL DEFAULT '" + MainConfig.getInstance().getMobHealthbarDefault() + "'");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "huds` ADD `mobhealthbar` varchar(50) NOT NULL DEFAULT '" + mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType() + "'");
         }
     }
 
@@ -1537,7 +1536,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         try {
             connection = getConnection(PoolIdentifier.MISC);
             statement = connection.prepareStatement("UPDATE " + tablePrefix + "huds SET mobhealthbar = ?");
-            statement.setString(1, MainConfig.getInstance().getMobHealthbarDefault().toString());
+            statement.setString(1, mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType().toString());
             statement.executeUpdate();
         }
         catch (SQLException ex) {

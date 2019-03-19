@@ -1,6 +1,5 @@
 package com.gmail.nossr50.database;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
@@ -345,7 +344,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         writer.append((int) profile.getAbilityDATS(SuperAbilityType.BLAST_MINING)).append(":");
         writer.append(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR).append(":");
         MobHealthbarType mobHealthbarType = profile.getMobHealthbarType();
-        writer.append(mobHealthbarType == null ? MainConfig.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()).append(":");
+        writer.append(mobHealthbarType == null ? mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType().toString() : mobHealthbarType.toString()).append(":");
         writer.append(profile.getSkillLevel(PrimarySkillType.ALCHEMY)).append(":");
         writer.append(profile.getSkillXpLevel(PrimarySkillType.ALCHEMY)).append(":");
         writer.append(uuid != null ? uuid.toString() : "NULL").append(":");
@@ -424,7 +423,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 out.append("0:"); // FishingXp
                 out.append("0:"); // Blast Mining
                 out.append(String.valueOf(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)).append(":"); // LastLogin
-                out.append(MainConfig.getInstance().getMobHealthbarDefault().toString()).append(":"); // Mob Healthbar HUD
+                out.append(mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType().toString()).append(":"); // Mob Healthbar HUD
                 out.append(startingLevel); // Alchemy
                 out.append("0:"); // AlchemyXp
                 out.append(uuid != null ? uuid.toString() : "NULL").append(":"); // UUID
@@ -964,7 +963,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             // Version 1.4.06
                             // commit da29185b7dc7e0d992754bba555576d48fa08aa6
                             character = Arrays.copyOf(character, character.length + 1);
-                            character[character.length - 1] = MainConfig.getInstance().getMobHealthbarDefault().toString();
+                            character[character.length - 1] = mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType().toString();
                             if (oldVersion == null) {
                                 oldVersion = "1.4.06";
                             }
@@ -1008,7 +1007,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                                     character[i] = String.valueOf(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
                                 }
                                 else if (i == 38) {
-                                    character[i] = MainConfig.getInstance().getMobHealthbarDefault().toString();
+                                    character[i] = mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType().toString();
                                 }
                                 else {
                                     character[i] = "0";
@@ -1017,7 +1016,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                             if (StringUtils.isInt(character[i]) && i == 38) {
                                 corrupted = true;
-                                character[i] = MainConfig.getInstance().getMobHealthbarDefault().toString();
+                                character[i] = mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType().toString();
                             }
 
                             if (!StringUtils.isInt(character[i]) && !(i == 0 || i == 2 || i == 3 || i == 23 || i == 33 || i == 38 || i == 41)) {
@@ -1173,7 +1172,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
             mobHealthbarType = MobHealthbarType.valueOf(character[HEALTHBAR]);
         }
         catch (Exception e) {
-            mobHealthbarType = MainConfig.getInstance().getMobHealthbarDefault();
+            mobHealthbarType = mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType();
         }
 
         UUID uuid;
@@ -1321,7 +1320,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     }
                     String[] character = line.split(":");
                     
-                    character[HEALTHBAR] = MainConfig.getInstance().getMobHealthbarDefault().toString();
+                    character[HEALTHBAR] = mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType().toString();
                     
                     line = new StringBuilder(org.apache.commons.lang.StringUtils.join(character, ":")).append(":").toString();
 

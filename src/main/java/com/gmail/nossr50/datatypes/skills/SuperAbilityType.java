@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes.skills;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Permissions;

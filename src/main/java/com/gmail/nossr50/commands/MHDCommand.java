@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.database.FlatfileDatabaseManager;
 import com.gmail.nossr50.database.SQLDatabaseManager;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -21,7 +20,7 @@ public class MHDCommand implements TabExecutor {
             SQLDatabaseManager m = (SQLDatabaseManager) mcMMO.getDatabaseManager();
             m.resetMobHealthSettings();
             for (McMMOPlayer player : UserManager.getPlayers()) {
-                player.getProfile().setMobHealthbarType(MainConfig.getInstance().getMobHealthbarDefault());
+                player.getProfile().setMobHealthbarType(mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType());
             }
             sender.sendMessage("Mob health reset");
             return true;
@@ -30,7 +29,7 @@ public class MHDCommand implements TabExecutor {
             FlatfileDatabaseManager m = (FlatfileDatabaseManager) mcMMO.getDatabaseManager();
             m.resetMobHealthSettings();
             for (McMMOPlayer player : UserManager.getPlayers()) {
-                player.getProfile().setMobHealthbarType(MainConfig.getInstance().getMobHealthbarDefault());
+                player.getProfile().setMobHealthbarType(mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType());
             }
             sender.sendMessage("Mob health reset");
             return true;

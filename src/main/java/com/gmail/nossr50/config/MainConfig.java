@@ -1,8 +1,6 @@
 package com.gmail.nossr50.config;
 
-import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
@@ -255,7 +253,7 @@ public class MainConfig extends ConfigValidated {
         }*/
 
         /* Mob Healthbar */
-        if (getMobHealthbarTime() == 0) {
+        if (mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayTimeSeconds() == 0) {
             reason.add(MOB_HEALTHBAR + "." + DISPLAY_TIME + " cannot be 0! Set to -1 to disable or set a valid value.");
         }
 
@@ -460,23 +458,6 @@ public class MainConfig extends ConfigValidated {
 
     public boolean getRefreshChunksEnabled() {
         return getBooleanValue(GENERAL, REFRESH_CHUNKS);
-    }
-
-    public boolean getMobHealthbarEnabled() {
-        return getBooleanValue(MOB_HEALTHBAR, ENABLED);
-    }
-
-    /* Mob Healthbar */
-    public MobHealthbarType getMobHealthbarDefault() {
-        try {
-            return MobHealthbarType.valueOf(getStringValue(MOB_HEALTHBAR, DISPLAY_TYPE, HEARTS).toUpperCase().trim());
-        } catch (IllegalArgumentException ex) {
-            return MobHealthbarType.HEARTS;
-        }
-    }
-
-    public int getMobHealthbarTime() {
-        return getIntValue(MOB_HEALTHBAR, DISPLAY_TIME);
     }
 
     /* Hardcore Mode */

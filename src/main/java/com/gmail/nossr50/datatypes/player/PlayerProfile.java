@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes.player;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
@@ -48,7 +47,7 @@ public class PlayerProfile {
         this.uuid = uuid;
         this.playerName = playerName;
 
-        mobHealthbarType = MainConfig.getInstance().getMobHealthbarDefault();
+        mobHealthbarType = mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType();
         scoreboardTipsShown = 0;
 
         for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {

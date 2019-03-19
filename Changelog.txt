@@ -46,6 +46,8 @@ Version 2.2.0
 
     Language config options will now be found in "language.conf"
 
+    Creature config settings will now be found in "creatures.conf"
+
     Particle settings will now be found in "particle_spawning.conf"
 
     Party config options will now be found in "party.conf"
@@ -125,8 +127,11 @@ Version 2.2.0
     removed child.yml, child skills now have hard coded parents
     removed the hardcore and vampirism commands, these are dangerous settings and should not be toggle-able (turn them on in your configs if you want to use them)
 
-    Removed the following config settings from various configs for literally doing nothing
+    Removed the following config settings from various configs for doing nothing
     Update_Check, Prefer_Beta
+
+    Removed the following config settings for being unwanted
+    Config_Update_Overwrite
 
     API Changes
     Added API method to check if player parties are size capped
