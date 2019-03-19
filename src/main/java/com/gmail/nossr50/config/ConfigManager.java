@@ -15,6 +15,7 @@ import com.gmail.nossr50.config.hocon.hardcore.ConfigHardcore;
 import com.gmail.nossr50.config.hocon.items.ConfigItems;
 import com.gmail.nossr50.config.hocon.language.ConfigLanguage;
 import com.gmail.nossr50.config.hocon.metrics.ConfigMetrics;
+import com.gmail.nossr50.config.hocon.mobs.ConfigMobs;
 import com.gmail.nossr50.config.hocon.motd.ConfigMOTD;
 import com.gmail.nossr50.config.hocon.notifications.ConfigNotifications;
 import com.gmail.nossr50.config.hocon.particles.ConfigParticles;
@@ -103,6 +104,7 @@ public final class ConfigManager {
     private SerializedConfigLoader<ConfigNotifications> configNotifications;
     private SerializedConfigLoader<ConfigSuperAbilities> configSuperAbilities;
     private SerializedConfigLoader<ConfigAdmin> configAdmin;
+    private SerializedConfigLoader<ConfigMobs> configMobs;
 
     //Data
     private SerializedConfigLoader<ConfigPartyData> partyData;
@@ -164,6 +166,7 @@ public final class ConfigManager {
         configNotifications = new SerializedConfigLoader<>(ConfigNotifications.class, "chat_and_hud_notifications.conf", null);
         configSuperAbilities = new SerializedConfigLoader<>(ConfigSuperAbilities.class, "skill_super_abilities.conf", null);
         configAdmin = new SerializedConfigLoader<>(ConfigAdmin.class, "admin.conf", null);
+        configMobs = new SerializedConfigLoader<>(ConfigMobs.class, "creatures.conf", null);
 
         //Serialized Data
         partyData = new SerializedConfigLoader<>(ConfigPartyData.class, "partydata.conf", null);
@@ -430,5 +433,13 @@ public final class ConfigManager {
 
     public HashMap<String, Integer> getPartyFeatureUnlocks() {
         return partyFeatureUnlocks;
+    }
+
+    public ConfigAdmin getConfigAdmin() {
+        return configAdmin.getConfig();
+    }
+
+    public ConfigMobs getConfigMobs() {
+        return configMobs.getConfig();
     }
 }
