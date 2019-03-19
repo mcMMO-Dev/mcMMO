@@ -35,6 +35,9 @@ Version 2.2.0
     Added config option for showing author patreon links in various commands
 
     Automated backup config options will now be found in "automated_backups.conf"
+    "Last_24_Hours", "Daily_Last_Week", "Weekly_Past_Months" have been replaced with "Old-File-Age-Limit-In-Days" which does the same thing
+    mcMMO will not remove old backups unless at least 10 files are present in the backup folder, this doesn't guarantee that mcMMO won't remove old files, just prevents unnecessary operations
+    Added some failsafes to prevent mcMMO from saving too often
 
     Command config options will now be found in "commands.conf"
     Settings related to party chat have been moved to the party config file

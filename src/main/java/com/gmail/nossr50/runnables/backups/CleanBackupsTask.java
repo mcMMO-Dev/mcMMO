@@ -21,10 +21,16 @@ public class CleanBackupsTask extends BukkitRunnable {
         List<File> toDelete = new ArrayList<File>();
         int amountTotal = 0;
         int amountDeleted = 0;
+        int oldFileAgeLimit = mcMMO.getConfigManager().getConfigAutomatedBackups().getBackupDayLimit();
 
         if (BACKUP_DIR.listFiles() == null) {
             return;
         }
+
+        //if(BACKUP_DIR.listFiles().length < mcMMO.getConfigManager().getConfigAutomatedBackups().getMinimumBackupCount())
+        //Don't remove files unless there is at least 10 of them
+        if(BACKUP_DIR.listFiles().length < 10)
+            return;
 
         // Check files in backup folder from oldest to newest
         for (File file : BACKUP_DIR.listFiles()) {
@@ -42,33 +48,13 @@ public class CleanBackupsTask extends BukkitRunnable {
                 continue;
             }
 
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(date);
-            int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-            int weekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
-            int year = cal.get(Calendar.YEAR);
+            long fileSaveTimeStamp = date.getTime();
+            long currentTime = System.currentTimeMillis();
 
-            if (isPast24Hours(date) && MainConfig.getInstance().getKeepLast24Hours()) {
-                // Keep all files from the last 24 hours
+            //File is not old enough so don't delete it
+            if((fileSaveTimeStamp + (oldFileAgeLimit * TimeUnit.MILLISECONDS.convert(24, TimeUnit.HOURS)))  >= currentTime)
+            {
                 continue;
-            }
-            else if (isLastWeek(date) && !savedDays.contains(dayOfWeek) && MainConfig.getInstance().getKeepDailyLastWeek()) {
-                // Keep daily backups of the past week
-                savedDays.add(dayOfWeek);
-                continue;
-            }
-            else {
-                List<Integer> savedWeeks = savedYearsWeeks.get(year);
-                if (savedWeeks == null) {
-                    savedWeeks = new ArrayList<Integer>();
-                    savedYearsWeeks.put(year, savedWeeks);
-                }
-
-                if (!savedWeeks.contains(weekOfYear) && MainConfig.getInstance().getKeepWeeklyPastMonth()) {
-                    // Keep one backup of each week
-                    savedWeeks.add(weekOfYear);
-                    continue;
-                }
             }
 
             amountDeleted++;

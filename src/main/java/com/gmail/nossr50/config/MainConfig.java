@@ -240,9 +240,9 @@ public class MainConfig extends ConfigValidated {
         List<String> reason = new ArrayList<String>();
 
         /* General Settings */
-        if (getSaveInterval() <= 0) {
+        /*if (getSaveInterval() <= 0) {
             reason.add(GENERAL + SAVE_INTERVAL + " should be greater than 0!");
-        }
+        }*/
 
         /* MySQL Settings */
         /*for (SQLDatabaseManager.PoolIdentifier identifier : SQLDatabaseManager.PoolIdentifier.values()) {
@@ -434,20 +434,8 @@ public class MainConfig extends ConfigValidated {
      * GENERAL SETTINGS
      */
 
-    /* General Settings */
-    public String getLocale() {
-        if(hasNode(GENERAL, LOCALE))
-            return getStringValue(GENERAL, LOCALE);
-        else
-            return "en_US";
-    }
-
     public boolean getShowProfileLoadedMessage() {
         return getBooleanValue(GENERAL, SHOW_PROFILE_LOADED);
-    }
-
-    public int getSaveInterval() {
-        return getIntValue(GENERAL, SAVE_INTERVAL);
     }
 
     public String getAdminChatPrefix() {
@@ -490,78 +478,6 @@ public class MainConfig extends ConfigValidated {
     public int getMobHealthbarTime() {
         return getIntValue(MOB_HEALTHBAR, DISPLAY_TIME);
     }
-
-    /* Backups */
-    public boolean getBackupsEnabled() {
-        return getBooleanValue(BACKUPS, ENABLED);
-    }
-
-    public boolean getKeepLast24Hours() {
-        return getBooleanValue(BACKUPS, KEEP_LAST_24_HOURS);
-    }
-
-    public boolean getKeepDailyLastWeek() {
-        return getBooleanValue(BACKUPS, KEEP, DAILY_LAST_WEEK);
-    }
-
-    public boolean getKeepWeeklyPastMonth() {
-        return getBooleanValue(BACKUPS, KEEP, WEEKLY_PAST_MONTHS);
-    }
-
-    /* mySQL */
-    /*public boolean getUseMySQL() {
-        return getBooleanValue(MY_SQL, ENABLED);
-    }
-
-    public String getMySQLTablePrefix() {
-        return getStringValue(MY_SQL, DATABASE, TABLE_PREFIX, DATABASE_PREFIX);
-    }
-
-    public String getMySQLDatabaseName() {
-        return getStringValue(MY_SQL, DATABASE, NAME);
-    }
-
-    public String getMySQLUserName() {
-        return getStringValue(MY_SQL, DATABASE, USER_NAME);
-    }
-
-    public int getMySQLServerPort() {
-        return getIntValue(MY_SQL, SERVER, PORT);
-    }
-
-    public String getMySQLServerName() {
-        return getStringValue(MY_SQL, SERVER, ADDRESS, LOCALHOST);
-    }
-
-    public String getMySQLUserPassword() {
-        return getStringValue(MY_SQL, DATABASE, USER_PASSWORD);
-    }
-
-    public int getMySQLMaxConnections(SQLDatabaseManager.PoolIdentifier identifier) {
-        return getIntValue(MY_SQL, DATABASE, MAX_CONNECTIONS, StringUtils.getCapitalized(identifier.toString()));
-    }
-
-    public int getMySQLMaxPoolSize(SQLDatabaseManager.PoolIdentifier identifier) {
-        return getIntValue(MY_SQL, DATABASE, MAX_POOL_SIZE, StringUtils.getCapitalized(identifier.toString()));
-    }
-
-    public boolean getMySQLSSL() {
-        return getBooleanValue(MY_SQL, SERVER, SSL);
-    }*/
-
-    //TODO: Legit cannot tell what the point of this method was
-    /*ssadprivate String getStringIncludingInts(String[] key) {
-        String str = getStringValue(key);
-
-        if (str == null) {
-            str = String.valueOf(getIntValue(key));
-        }
-
-        if (str.equals("0")) {
-            str = "No value set for '" + key + "'";
-        }
-        return str;
-    }*/
 
     /* Hardcore Mode */
     public boolean getHardcoreStatLossEnabled(PrimarySkillType primarySkillType) {

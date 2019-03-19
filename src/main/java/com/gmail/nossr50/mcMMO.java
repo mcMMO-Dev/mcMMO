@@ -218,7 +218,7 @@ public class mcMMO extends JavaPlugin {
         debug("Unregister all events...");
         HandlerList.unregisterAll(this); // Cancel event registrations
 
-        if (MainConfig.getInstance().getBackupsEnabled()) {
+        if (mcMMO.getConfigManager().getConfigAutomatedBackups().isZipBackupsEnabled()) {
             // Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
             try {
                 ZipLibrary.mcMMOBackup();
@@ -481,7 +481,7 @@ public class mcMMO extends JavaPlugin {
 
     private void scheduleTasks() {
         // Periodic save timer (Saves every 10 minutes by default)
-        long saveIntervalTicks = MainConfig.getInstance().getSaveInterval() * 1200;
+        long saveIntervalTicks = Math.max(1200, (getConfigManager().getConfigAutomatedBackups().getSaveIntervalMinutes() * 1200));
         new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
 
         // Cleanup the backups folder
