@@ -17,9 +17,6 @@ import java.util.List;
 import java.util.Set;
 
 public final class Woodcutting {
-    public static int treeFellerThreshold = MainConfig.getInstance().getTreeFellerThreshold();
-
-
     protected static boolean treeFellerReachedThreshold = false;
 
     protected enum ExperienceGainMethod {
@@ -152,7 +149,7 @@ public final class Woodcutting {
 
         for (BlockState blockState : treeFellerBlocks) {
             if (BlockUtils.isLog(blockState)) {
-                durabilityLoss += MainConfig.getInstance().getAbilityToolDamage();
+                durabilityLoss += mcMMO.getConfigManager().getConfigSuperAbilities().getSuperAbilityLimits().getToolDurabilityDamage();
             }
         }
 
@@ -178,7 +175,7 @@ public final class Woodcutting {
         }
 
         // Without this check Tree Feller propagates through leaves until the threshold is hit
-        if (treeFellerBlocks.size() > treeFellerThreshold) {
+        if (treeFellerBlocks.size() > mcMMO.getConfigManager().getConfigSuperAbilities().getSuperAbilityLimits().getTreeFeller().getTreeFellerLimit()) {
             treeFellerReachedThreshold = true;
         }
 

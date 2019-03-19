@@ -870,7 +870,7 @@ public class McMMOPlayer {
     }
 
     public void processAbilityActivation(PrimarySkillType skill) {
-        if (MainConfig.getInstance().getAbilitiesOnlyActivateWhenSneaking() && !player.isSneaking()) {
+        if (mcMMO.getConfigManager().getConfigSuperAbilities().isMustSneakToActivate() && !player.isSneaking()) {
             return;
         }
 
@@ -907,7 +907,7 @@ public class McMMOPlayer {
                 }
             }
 
-            if (MainConfig.getInstance().getAbilityMessagesEnabled()) {
+            if (mcMMO.getConfigManager().getConfigNotifications().isSuperAbilityToolMessage()) {
                 NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, tool.getRaiseTool());
                 SoundManager.sendSound(player, player.getLocation(), SoundType.TOOL_READY);
             }

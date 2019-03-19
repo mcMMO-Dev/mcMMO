@@ -367,9 +367,9 @@ public class MainConfig extends ConfigValidated {
             reason.add(COMMANDS + "." + INSPECT1 + "." + MAX_DISTANCE + " should be greater than 0!");
         }
 
-        if (getTreeFellerThreshold() <= 0) {
+        /*if (getTreeFellerThreshold() <= 0) {
             reason.add(ABILITIES + "." + LIMITS + "." + TREE_FELLER_THRESHOLD + " should be greater than 0!");
-        }
+        }*/
 
         if (getFishingLureModifier() < 0) {
             reason.add(ABILITIES + "." + FISHING + "." + LURE_MODIFIER + " should be at least 0!");
@@ -673,41 +673,6 @@ public class MainConfig extends ConfigValidated {
     /* Inspect command distance */
     public double getInspectDistance() {
         return getDoubleValue(COMMANDS, INSPECT1, MAX_DISTANCE);
-    }
-
-    /*
-     * ABILITY SETTINGS
-     */
-
-    /* General Settings */
-    public boolean getAbilityMessagesEnabled() {
-        return getBooleanValue(ABILITIES, MESSAGES);
-    }
-
-    public boolean getAbilitiesEnabled() {
-        return getBooleanValue(ABILITIES, ENABLED);
-    }
-
-    public boolean getAbilitiesOnlyActivateWhenSneaking() {
-        return getBooleanValue(ABILITIES, ACTIVATION, ONLY_ACTIVATE_WHEN_SNEAKING);
-    }
-
-    public int getCooldown(SuperAbilityType ability) {
-        return getIntValue(ABILITIES, COOLDOWNS + ability.toString());
-    }
-
-    public int getMaxLength(SuperAbilityType ability) {
-        return getIntValue(ABILITIES, MAX_SECONDS, ability.toString());
-    }
-
-    /* Durability Settings */
-    public int getAbilityToolDamage() {
-        return getIntValue(ABILITIES, TOOLS, DURABILITY_LOSS);
-    }
-
-    /* Thresholds */
-    public int getTreeFellerThreshold() {
-        return getIntValue(ABILITIES, LIMITS, TREE_FELLER_THRESHOLD);
     }
 
     /*

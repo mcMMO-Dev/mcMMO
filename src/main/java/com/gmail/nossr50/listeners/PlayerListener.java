@@ -565,7 +565,7 @@ public class PlayerListener implements Listener {
             case RIGHT_CLICK_BLOCK:
                 Material type = block.getType();
 
-                if (!MainConfig.getInstance().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
+                if (!mcMMO.getConfigManager().getConfigSuperAbilities().isMustSneakToActivate() || player.isSneaking()) {
                     /* REPAIR CHECKS */
                     if (type == Repair.anvilMaterial && PrimarySkillType.REPAIR.getPermissions(player) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
                         RepairManager repairManager = mcMMOPlayer.getRepairManager();
@@ -605,7 +605,7 @@ public class PlayerListener implements Listener {
             case LEFT_CLICK_BLOCK:
                 type = block.getType();
 
-                if (!MainConfig.getInstance().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
+                if (!mcMMO.getConfigManager().getConfigSuperAbilities().isMustSneakToActivate() || player.isSneaking()) {
                     /* REPAIR CHECKS */
                     if (type == Repair.anvilMaterial && PrimarySkillType.REPAIR.getPermissions(player) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
                         RepairManager repairManager = mcMMOPlayer.getRepairManager();
@@ -689,7 +689,7 @@ public class PlayerListener implements Listener {
 
                 /* ACTIVATION & ITEM CHECKS */
                 if (BlockUtils.canActivateTools(blockState)) {
-                    if (MainConfig.getInstance().getAbilitiesEnabled()) {
+                    if (mcMMO.getConfigManager().getConfigSuperAbilities().isSuperAbilitiesEnabled()) {
                         if (BlockUtils.canActivateHerbalism(blockState)) {
                             mcMMOPlayer.processAbilityActivation(PrimarySkillType.HERBALISM);
                         }
@@ -743,7 +743,7 @@ public class PlayerListener implements Listener {
                 }
                 
                 /* ACTIVATION CHECKS */
-                if (MainConfig.getInstance().getAbilitiesEnabled()) {
+                if (mcMMO.getConfigManager().getConfigSuperAbilities().isSuperAbilitiesEnabled()) {
                     mcMMOPlayer.processAbilityActivation(PrimarySkillType.AXES);
                     mcMMOPlayer.processAbilityActivation(PrimarySkillType.EXCAVATION);
                     mcMMOPlayer.processAbilityActivation(PrimarySkillType.HERBALISM);

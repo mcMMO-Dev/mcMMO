@@ -1,5 +1,7 @@
 package com.gmail.nossr50.config.hocon.superabilities;
 
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.mcMMO;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -30,4 +32,74 @@ public class ConfigSuperAbilities {
 
     @Setting(value = "Super-Ability-Settings", comment = "Change specific parameters for super abilities.")
     private ConfigSectionSuperAbilityLimits superAbilityLimits = new ConfigSectionSuperAbilityLimits();
+
+    public boolean isSuperAbilitiesEnabled() {
+        return superAbilitiesEnabled;
+    }
+
+    public boolean isMustSneakToActivate() {
+        return mustSneakToActivate;
+    }
+
+    public ConfigSectionSuperAbilityCooldowns getSuperAbilityCooldowns() {
+        return superAbilityCooldowns;
+    }
+
+    public ConfigSectionSuperAbilityMaxLength getSuperAbilityMaxLength() {
+        return superAbilityMaxLength;
+    }
+
+    public ConfigSectionSuperAbilityLimits getSuperAbilityLimits() {
+        return superAbilityLimits;
+    }
+
+    public int getCooldownForSuper(SuperAbilityType superAbilityType)
+    {
+        switch(superAbilityType)
+        {
+            case BERSERK:
+                return superAbilityCooldowns.getBerserk();
+            case GREEN_TERRA:
+                return superAbilityCooldowns.getGreenTerra();
+            case TREE_FELLER:
+                return superAbilityCooldowns.getTreeFeller();
+            case BLAST_MINING:
+                return superAbilityCooldowns.getBlastMining();
+            case SUPER_BREAKER:
+                return superAbilityCooldowns.getSuperBreaker();
+            case SKULL_SPLITTER:
+                return superAbilityCooldowns.getSkullSplitter();
+            case SERRATED_STRIKES:
+                return superAbilityCooldowns.getSerratedStrikes();
+            case GIGA_DRILL_BREAKER:
+                return superAbilityCooldowns.getGigaDrillBreaker();
+            default:
+                mcMMO.p.getLogger().severe("Cooldown Parameter not found for "+superAbilityType.toString());
+                return 240;
+        }
+    }
+
+    public int getMaxLengthForSuper(SuperAbilityType superAbilityType)
+    {
+        switch(superAbilityType)
+        {
+            case BERSERK:
+                return superAbilityMaxLength.getBerserk();
+            case GREEN_TERRA:
+                return superAbilityMaxLength.getGreenTerra();
+            case TREE_FELLER:
+                return superAbilityMaxLength.getTreeFeller();
+            case SUPER_BREAKER:
+                return superAbilityMaxLength.getSuperBreaker();
+            case SKULL_SPLITTER:
+                return superAbilityMaxLength.getSkullSplitter();
+            case SERRATED_STRIKES:
+                return superAbilityMaxLength.getSerratedStrikes();
+            case GIGA_DRILL_BREAKER:
+                return superAbilityMaxLength.getGigaDrillBreaker();
+            default:
+                mcMMO.p.getLogger().severe("Max Length Parameter not found for "+superAbilityType.toString());
+                return 60;
+        }
+    }
 }

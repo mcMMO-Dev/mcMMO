@@ -12,4 +12,8 @@ public class ConfigSectionTreeFeller {
             "\nLower this number to improve performance." +
             "\nDefault value: "+TREE_FELLER_LIMIT_DEFAULT)
     private int treeFellerLimit = TREE_FELLER_LIMIT_DEFAULT;
+
+    public int getTreeFellerLimit() {
+        return treeFellerLimit;
+    }
 }

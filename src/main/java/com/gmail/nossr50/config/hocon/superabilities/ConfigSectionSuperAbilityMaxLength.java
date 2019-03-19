@@ -53,4 +53,5 @@ public class ConfigSectionSuperAbilityMaxLength {
     public int getTreeFeller() {
         return treeFeller;
     }
+
 }

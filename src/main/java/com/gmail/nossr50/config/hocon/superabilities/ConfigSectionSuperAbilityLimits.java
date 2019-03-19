@@ -13,4 +13,11 @@ public class ConfigSectionSuperAbilityLimits {
             "\nDefault value: "+TOOL_DURABILITY_DAMAGE_DEFAULT)
     private int toolDurabilityDamage = TOOL_DURABILITY_DAMAGE_DEFAULT;
 
+    public ConfigSectionTreeFeller getTreeFeller() {
+        return treeFeller;
+    }
+
+    public int getToolDurabilityDamage() {
+        return toolDurabilityDamage;
+    }
 }
