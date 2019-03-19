@@ -183,7 +183,7 @@ public enum PrimarySkillType {
     }
 
     public static PrimarySkillType getSkill(String skillName) {
-        if (!MainConfig.getInstance().getLocale().equalsIgnoreCase("en_US")) {
+        if (!mcMMO.getConfigManager().getConfigLanguage().getTargetLanguage().equalsIgnoreCase("en_US")) {
             for (PrimarySkillType type : values()) {
                 if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(type.name()) + ".SkillName"))) {
                     return type;
