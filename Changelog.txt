@@ -131,7 +131,7 @@ Version 2.2.0
     removed the hardcore and vampirism commands, these are dangerous settings and should not be toggle-able (turn them on in your configs if you want to use them)
 
     Removed the following config settings from various configs for doing nothing
-    Update_Check, Prefer_Beta
+    Update_Check, Prefer_Beta, Ability_Activation_Level_Gate, Max_Tries_At_Same_Location, Prevent_AFK_Leveling, Items_Pickup_Disabled_Full_Inventory
 
     Removed the following config settings for being unwanted
     Config_Update_Overwrite, Tool_Mods_Enabled, Armor_Mods_Enabled, Block_Mods_Enabled, Entity_Mods_Enabled

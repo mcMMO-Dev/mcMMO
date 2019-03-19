@@ -584,10 +584,6 @@ public class MainConfig extends ConfigValidated {
         return getBooleanValue(SKILLS, ACROBATICS, PREVENT + DODGE + LIGHTNING);
     }
 
-    public int getXPAfterTeleportCooldown() {
-        return getIntValue(SKILLS, ACROBATICS, XP_AFTER_TELEPORT + COOLDOWN);
-    }
-
     /* Alchemy */
     public boolean getEnabledForHoppers() {
         return getBooleanValue(SKILLS, ALCHEMY, ENABLED + FOR_HOPPERS);
@@ -673,10 +669,6 @@ public class MainConfig extends ConfigValidated {
         return getBooleanValue(SKILLS, UNARMED, BLOCK_CRACKER, SMOOTH_BRICK_TO_CRACKED_BRICK);
     }
 
-    public boolean getUnarmedItemPickupDisabled() {
-        return getBooleanValue(SKILLS, UNARMED, ITEM + PICKUP_DISABLED_FULL_INVENTORY);
-    }
-
     public boolean getUnarmedItemsAsUnarmed() {
         return getBooleanValue(SKILLS, UNARMED, ITEMS + AS + UNARMED);
     }
@@ -716,14 +708,6 @@ public class MainConfig extends ConfigValidated {
     }
 
     /* AFK Leveling */
-    public boolean getAcrobaticsPreventAFK() {
-        return getBooleanValue(SKILLS, ACROBATICS, PREVENT_AFK + LEVELING);
-    }
-
-    public int getAcrobaticsAFKMaxTries() {
-        return getIntValue(SKILLS, ACROBATICS, MAX_TRIES_AT_SAME_LOCATION);
-    }
-
     public boolean getHerbalismPreventAFK() {
         return getBooleanValue(SKILLS, HERBALISM, PREVENT_AFK + LEVELING);
     }
