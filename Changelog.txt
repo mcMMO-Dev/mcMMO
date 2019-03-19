@@ -10,6 +10,9 @@ Key:
 Version 2.2.0
     mcMMO's config system has been rewritten
     Parties no longer have a cap, you can level them forever for bragging rights
+    Optimizations were made for many anti-exploit behaviours
+    Acrobatic's Dodge will no longer reward XP for a few seconds after a TP
+    Roll will not give XP for a few seconds after a TP
     You can now disable the party system completely
     Many config files are now generated on demand instead of being copied from within the JAR
     All config nodes that used to be styled with CamelCase or otherwise now use hyphens (-) as spaces for readability and consistency
@@ -131,7 +134,7 @@ Version 2.2.0
     Update_Check, Prefer_Beta
 
     Removed the following config settings for being unwanted
-    Config_Update_Overwrite
+    Config_Update_Overwrite, Tool_Mods_Enabled, Armor_Mods_Enabled, Block_Mods_Enabled, Entity_Mods_Enabled
 
     API Changes
     Added API method to check if player parties are size capped

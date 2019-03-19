@@ -77,11 +77,12 @@ public class PlayerListener implements Listener {
                 return;
         }
 
-        if (!UserManager.hasPlayerDataKey(player) || MainConfig.getInstance().getXPAfterTeleportCooldown() <= 0 || event.getFrom().equals(event.getTo())) {
+        if (!UserManager.hasPlayerDataKey(player) || event.getFrom().equals(event.getTo())) {
             return;
         }
 
-        UserManager.getPlayer(player).actualizeTeleportATS();
+        if(mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
+            UserManager.getPlayer(player).actualizeTeleportATS();
     }
 
     /**

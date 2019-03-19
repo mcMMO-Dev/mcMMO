@@ -285,6 +285,10 @@ public class Roll extends AcrobaticsSubSkill {
             return true;
         }
 
+        //Teleport CD
+        if(System.currentTimeMillis() < UserManager.getPlayer(player).getTeleportATS())
+            return true;
+
         if(fallLocationMap.get(player) == null)
             fallLocationMap.put(player, new LimitedSizeList(mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().getAcrobaticLocationLimit()));
 

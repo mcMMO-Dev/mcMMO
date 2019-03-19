@@ -92,7 +92,7 @@ public class McMMOPlayer {
 
     private int recentlyHurt;
     private int respawnATS;
-    private int teleportATS;
+    private long teleportATS;
     private long databaseATS;
     //private int chimeraWingLastUse;
     private Location teleportCommence;
@@ -388,12 +388,12 @@ public class McMMOPlayer {
         respawnATS = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
     }
 
-    public int getTeleportATS() {
+    public long getTeleportATS() {
         return teleportATS;
     }
 
     public void actualizeTeleportATS() {
-        teleportATS = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+        teleportATS = System.currentTimeMillis() + (mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().getTeleportCooldownSeconds() * 1000);
     }
 
     public long getDatabaseATS() {

@@ -26,7 +26,7 @@ public class ConfigSuperAbilities {
     private ConfigSectionSuperAbilityCooldowns superAbilityCooldowns = new ConfigSectionSuperAbilityCooldowns();
 
     @Setting(value = "Super-Ability-Max-Length",
-            comment = "The maximum amount of time a player can use a super ability." +
+            comment = "The maximum amount of time in seconds that a super ability can last." +
             "\nMost super abilities get longer as a player grows in skill.")
     private ConfigSectionSuperAbilityMaxLength superAbilityMaxLength = new ConfigSectionSuperAbilityMaxLength();
 

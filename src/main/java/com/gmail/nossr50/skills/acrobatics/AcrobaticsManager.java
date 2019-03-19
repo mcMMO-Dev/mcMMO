@@ -78,7 +78,8 @@ public class AcrobaticsManager extends SkillManager {
             //Check respawn to prevent abuse
             if(!mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
                 applyXpGain((float) (damage * Acrobatics.dodgeXpModifier), XPGainReason.PVP);
-            else if (SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
+            else if (SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)
+                    && mcMMOPlayer.getTeleportATS() < System.currentTimeMillis()) {
                 applyXpGain((float) (damage * Acrobatics.dodgeXpModifier), XPGainReason.PVP);
             }
 
