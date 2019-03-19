@@ -629,10 +629,6 @@ public class MainConfig extends ConfigValidated {
         return getBooleanValue(ITEMS, CHIMAERA_WING, SOUND + "_" + ENABLED);
     }
 
-    public boolean getFluxPickaxeSoundEnabled() {
-        return getBooleanValue(ITEMS, FLUX + PICKAXE, SOUND + "_" + ENABLED);
-    }
-
     /* Particles */
     public boolean getAbilityActivationEffectEnabled() {
         return getBooleanValue(PARTICLES, ABILITY_ACTIVATION);
