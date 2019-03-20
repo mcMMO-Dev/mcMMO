@@ -20,6 +20,8 @@ Version 2.2.0
     All config nodes now include a comment with the default value of the node to use as reference
     Expanded settings relating to purging users who have not leveled or users who had not logged in for many months
     NOTE: Not every config key that was renamed will be listed here
+    Admins will now be notified if a player trips over-fishing exploit detection 3+ times in a row (Locale: "Fishing.OverFishingDetected")
+        Note: Admins are players who are op or have adminchat permission.
 
     Bug Fixes
     Fixed a bug where players who started at level 1 would not be purged from the DB for being "powerless"
@@ -85,6 +87,9 @@ Version 2.2.0
     Added toggle for acrobatics exploit prevention
     Added customizable limit for the number of locations acrobatics tracks for exploit prevention
     Added toggle for fishing exploit prevention
+    Added settings for how many fish can be caught at a location before it is over-fished
+    Added settings for how large of an area can be over-fished
+    Added settings for how often a fishing rod has to be spammed to trigger abuse detection
 
     Settings related to Player Leveling are now found in "player_leveling.conf"
     Player Leveling's "TruncateSkills" renamed -> "Reduce-Player-Skills-Above-Cap"

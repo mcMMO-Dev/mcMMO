@@ -27,6 +27,7 @@ import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -56,6 +57,7 @@ public class FishingManager extends SkillManager {
     private Location hookLocation;
     private int fishCaughtCounter = 1;
     private final float boundingBoxSize;
+    private int overFishCount = 0;
 
     public FishingManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.FISHING);
@@ -146,6 +148,23 @@ public class FishingManager extends SkillManager {
         //If the new bounding box does not intersect with the old one, then update our bounding box reference
         if(!sameTarget)
             lastFishingBoundingBox = newCastBoundingBox;
+
+        if(sameTarget && fishCaughtCounter >= OVERFISH_LIMIT)
+        {
+            overFishCount++;
+        } else
+            overFishCount=0;
+
+        if(overFishCount == 2)
+        {
+            for(Player player : Bukkit.getOnlinePlayers())
+            {
+                if(player.isOp() || Permissions.adminChat(player))
+                {
+                    player.sendMessage(LocaleLoader.getString("Fishing.OverFishingDetected", getPlayer().getDisplayName()));
+                }
+            }
+        }
 
         return sameTarget && fishCaughtCounter >= OVERFISH_LIMIT;
     }

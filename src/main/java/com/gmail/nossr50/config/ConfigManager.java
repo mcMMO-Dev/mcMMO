@@ -38,16 +38,12 @@ import com.gmail.nossr50.skills.salvage.salvageables.SimpleSalvageableManager;
 import com.gmail.nossr50.util.experience.ExperienceMapManager;
 import com.google.common.collect.Maps;
 import com.google.common.reflect.TypeToken;
-import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
-import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import org.bukkit.Material;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
 
 /**
  *
