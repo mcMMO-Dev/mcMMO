@@ -3,13 +3,17 @@ package com.gmail.nossr50.config.hocon;
 import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.mcMMO;
 import ninja.leaping.configurate.ConfigurationOptions;
+import ninja.leaping.configurate.SimpleConfigurationNode;
 import ninja.leaping.configurate.ValueType;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.commented.SimpleCommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
+import ninja.leaping.configurate.objectmapping.DefaultObjectMapperFactory;
 import ninja.leaping.configurate.objectmapping.ObjectMapper;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
+import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import ninja.leaping.configurate.util.ConfigurationNodeWalker;
+import ninja.leaping.configurate.util.MapFactories;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,7 +67,6 @@ public class SerializedConfigLoader<T> {
             "\nhttps://mcmmo.org/wiki - Keep in mind the wiki is a WIP and may not have information about everything in mcMMO!";
 
     private static final ConfigurationOptions LOADER_OPTIONS = ConfigurationOptions.defaults().setHeader(CONFIG_HEADER);
-    
     private static final String ROOT_NODE_ADDRESS = "mcMMO";
 
     private final Path path;

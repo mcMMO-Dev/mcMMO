@@ -43,22 +43,25 @@ import org.bukkit.util.Vector;
 import java.util.*;
 
 public class FishingManager extends SkillManager {
-    public static final int FISHING_ROD_CAST_CD_MILLISECONDS = 100;
-    public static final int OVERFISH_LIMIT = 4;
-    private final long FISHING_COOLDOWN_SECONDS = 1000L;
+
+    public final long FISHING_ROD_CAST_CD_MILLISECONDS;
+    public final int OVERFISH_LIMIT;
 
     private long fishingRodCastTimestamp = 0L;
     private long fishHookSpawnTimestamp = 0L;
     private long lastWarned = 0L;
     private long lastWarnedExhaust = 0L;
-    private FishHook fishHookReference;
     private BoundingBox lastFishingBoundingBox;
     private Item fishingCatch;
     private Location hookLocation;
     private int fishCaughtCounter = 1;
+    private final float boundingBoxSize;
 
     public FishingManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.FISHING);
+        OVERFISH_LIMIT = mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().getOverfishingLimit() + 1;
+        FISHING_ROD_CAST_CD_MILLISECONDS = mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().getFishingRodSpamMilliseconds();
+        boundingBoxSize = mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().getOverFishingAreaSize();
     }
 
     public boolean canShake(Entity target) {
@@ -99,10 +102,8 @@ public class FishingManager extends SkillManager {
             return;
 
         fishHook.setMetadata(mcMMO.FISH_HOOK_REF_METAKEY, mcMMO.metadataValue);
-        this.fishHookReference = fishHook;
         fishHookSpawnTimestamp = System.currentTimeMillis();
         fishingRodCastTimestamp = System.currentTimeMillis();
-
     }
 
     public boolean isFishingTooOften()
@@ -149,8 +150,8 @@ public class FishingManager extends SkillManager {
         return sameTarget && fishCaughtCounter >= OVERFISH_LIMIT;
     }
 
-    public static BoundingBox makeBoundingBox(Vector centerOfCastVector) {
-        return BoundingBox.of(centerOfCastVector, 1, 1, 1);
+    public BoundingBox makeBoundingBox(Vector centerOfCastVector) {
+        return BoundingBox.of(centerOfCastVector, boundingBoxSize, boundingBoxSize, boundingBoxSize);
     }
 
     public void setFishingTarget() {

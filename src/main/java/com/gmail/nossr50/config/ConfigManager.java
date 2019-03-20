@@ -38,12 +38,16 @@ import com.gmail.nossr50.skills.salvage.salvageables.SimpleSalvageableManager;
 import com.gmail.nossr50.util.experience.ExperienceMapManager;
 import com.google.common.collect.Maps;
 import com.google.common.reflect.TypeToken;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
+import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import org.bukkit.Material;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 /**
  *
@@ -53,6 +57,8 @@ import java.util.HashMap;
  * Config Manager also holds all of our MultiConfigContainers
  */
 public final class ConfigManager {
+
+
 
     /* UNLOAD REGISTER */
 
@@ -163,8 +169,24 @@ public final class ConfigManager {
 
          */
 
+        /*
+            List of default serializers for reference
+            DEFAULT_SERIALIZERS.registerType(TypeToken.of(URI.class), new URISerializer());
+            DEFAULT_SERIALIZERS.registerType(TypeToken.of(URL.class), new URLSerializer());
+            DEFAULT_SERIALIZERS.registerType(TypeToken.of(UUID.class), new UUIDSerializer());
+            DEFAULT_SERIALIZERS.registerPredicate(input -> input.getRawType().isAnnotationPresent(ConfigSerializable.class), new AnnotatedObjectSerializer());
+            DEFAULT_SERIALIZERS.registerPredicate(NumberSerializer.getPredicate(), new NumberSerializer());
+            DEFAULT_SERIALIZERS.registerType(TypeToken.of(String.class), new StringSerializer());
+            DEFAULT_SERIALIZERS.registerType(TypeToken.of(Boolean.class), new BooleanSerializer());
+            DEFAULT_SERIALIZERS.registerType(new TypeToken<Map<?, ?>>() {}, new MapSerializer());
+            DEFAULT_SERIALIZERS.registerType(new TypeToken<List<?>>() {}, new ListSerializer());
+            DEFAULT_SERIALIZERS.registerType(new TypeToken<Enum<?>>() {}, new EnumValueSerializer());
+            DEFAULT_SERIALIZERS.registerType(TypeToken.of(Pattern.class), new PatternSerializer());
+         */
+
         TypeSerializers.getDefaultSerializers().registerType(new TypeToken<Material>() {}, new CustomEnumValueSerializer());
         TypeSerializers.getDefaultSerializers().registerType(new TypeToken<PartyFeature>() {}, new CustomEnumValueSerializer());
+
 
         mcMMO.p.getLogger().info("Deserializing configs...");
         //TODO: Not sure about the order of MainConfig
