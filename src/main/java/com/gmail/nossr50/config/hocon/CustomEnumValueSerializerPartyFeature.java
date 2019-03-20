@@ -10,7 +10,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Optional;
 
-public class CustomEnumValueSerializer implements TypeSerializer<Enum> {
+public class CustomEnumValueSerializerPartyFeature implements TypeSerializer<Enum> {
 
     @Override
     @SuppressWarnings("unchecked") // i continue to hate generics

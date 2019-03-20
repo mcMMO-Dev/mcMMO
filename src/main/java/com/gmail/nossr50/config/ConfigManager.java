@@ -122,8 +122,8 @@ public final class ConfigManager {
     private RepairConfig repairConfig;
     private SalvageConfig salvageConfig;
 
-    private HashMap<String, Integer> partyItemWeights;
-    private HashMap<String, Integer> partyFeatureUnlocks;
+    private HashMap<Material, Integer> partyItemWeights;
+    private HashMap<PartyFeature, Integer> partyFeatureUnlocks;
 
     /* CONFIG ERRORS */
 
@@ -142,8 +142,29 @@ public final class ConfigManager {
 
         //Register Custom Serializers
         mcMMO.p.getLogger().info("Registering custom type serializers with Configurate...");
-        TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Material.class), new CustomEnumValueSerializer());
-        TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(PartyFeature.class), new CustomEnumValueSerializer());
+
+
+
+        /*
+         TypeTokens are obtained in two ways
+
+            For Raw basic classes:
+
+                TypeToken<String> stringTok = TypeToken.of(String.class);
+                TypeToken<Integer> intTok = TypeToken.of(Integer.class);
+
+            For Generics:
+
+                TypeToken<List<String>> stringListTok = new TypeToken<List<String>>() {};
+
+            Wildcard example:
+
+                TypeToken<Map<?, ?>> wildMapTok = new TypeToken<Map<?, ?>>() {};
+
+         */
+
+        TypeSerializers.getDefaultSerializers().registerType(new TypeToken<Material>() {}, new CustomEnumValueSerializer());
+        TypeSerializers.getDefaultSerializers().registerType(new TypeToken<PartyFeature>() {}, new CustomEnumValueSerializer());
 
         mcMMO.p.getLogger().info("Deserializing configs...");
         //TODO: Not sure about the order of MainConfig
@@ -427,11 +448,11 @@ public final class ConfigManager {
         return configSuperAbilities.getConfig();
     }
 
-    public HashMap<String, Integer> getPartyItemWeights() {
+    public HashMap<Material, Integer> getPartyItemWeights() {
         return partyItemWeights;
     }
 
-    public HashMap<String, Integer> getPartyFeatureUnlocks() {
+    public HashMap<PartyFeature, Integer> getPartyFeatureUnlocks() {
         return partyFeatureUnlocks;
     }
 

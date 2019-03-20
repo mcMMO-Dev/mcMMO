@@ -1,7 +1,6 @@
 package com.gmail.nossr50.party;
 
 import com.gmail.nossr50.config.MainConfig;
-import com.gmail.nossr50.config.hocon.HOCONUtil;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.party.*;
@@ -42,10 +41,10 @@ public final class PartyManager {
      */
     public static int getPartyFeatureUnlockLevel(PartyFeature partyFeature)
     {
-        if(mcMMO.getConfigManager().getPartyFeatureUnlocks().get(HOCONUtil.serializeENUMName(partyFeature.toString())) == null)
+        if(mcMMO.getConfigManager().getPartyFeatureUnlocks().get(partyFeature) == null)
             return 0;
         else
-            return mcMMO.getConfigManager().getPartyFeatureUnlocks().get(HOCONUtil.serializeENUMName(partyFeature.toString()));
+            return mcMMO.getConfigManager().getPartyFeatureUnlocks().get(partyFeature);
     }
 
     /**

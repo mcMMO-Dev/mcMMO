@@ -2,6 +2,7 @@ package com.gmail.nossr50.config.hocon.party;
 
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
+import org.bukkit.Material;
 
 import java.util.HashMap;
 
@@ -15,7 +16,7 @@ public class ConfigSectionPartyItemShare {
     @Setting(value = "Party-Item-Share-Settings")
     ConfigSectionPartyItemShareSettings partyItemShareSettings = new ConfigSectionPartyItemShareSettings();
 
-    public HashMap<String, Integer> getItemShareMap() {
+    public HashMap<Material, Integer> getItemShareMap() {
         return partyItemWeights.getItemShareMap();
     }
 

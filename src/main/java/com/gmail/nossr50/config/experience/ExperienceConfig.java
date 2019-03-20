@@ -226,8 +226,6 @@ public class ExperienceConfig extends ConfigValidated {
         return getBooleanValue(EXPLOIT_FIX, ENDERMAN_ENDERMITE_FARMS);
     }
 
-    public boolean isFishingExploitingPrevented() { return config.getBoolean("ExploitFix.Fishing", true); }
-
     /* Curve settings */
     public FormulaType getFormulaType() {
         return FormulaType.getFormulaType(getStringValue(EXPERIENCE_FORMULA, CURVE));
