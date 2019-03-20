@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 2.1.20
+    Added Hungarian localization (Locale code: hu_HU) (thanks andris155)
     Players can now fish in the same spot about 3 times before mcMMO will mark the area as being over-fished (over-fishing is to prevent abuse)
     Added a toggle to turn off the fishing exploit detection to experience.yml "ExploitFix.Fishing"
         Note: The new config update is coming soon and will use a different setting, putting this out as a band-aid fix for people that don't like the new fishing exploit prevention stuff
