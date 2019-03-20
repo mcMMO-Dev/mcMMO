@@ -39,6 +39,7 @@ import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -172,6 +173,16 @@ public class mcMMO extends JavaPlugin {
                     metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Standard"));
                 else
                     metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Retro"));
+
+                //Simplified Server Software Tracking
+                if(Bukkit.getServer().getBukkitVersion().contains("paper"))
+                    metrics.addCustomChart(new Metrics.SimplePie("Server_software", () -> "Paper"));
+                else if(Bukkit.getServer().getBukkitVersion().contains("spigot"))
+                    metrics.addCustomChart(new Metrics.SimplePie("Server_software", () -> "Spigot"));
+                else if(Bukkit.getServer().getBukkitVersion().contains("bukkit"))
+                    metrics.addCustomChart(new Metrics.SimplePie("Server_software", () -> "CraftBukkit"));
+                else
+                    metrics.addCustomChart(new Metrics.SimplePie("Server_software", () -> "Unknown"));
             }
         }
         catch (Throwable t) {

@@ -23,6 +23,21 @@ import com.gmail.nossr50.config.hocon.party.ConfigParty;
 import com.gmail.nossr50.config.hocon.party.data.ConfigPartyData;
 import com.gmail.nossr50.config.hocon.playerleveling.ConfigLeveling;
 import com.gmail.nossr50.config.hocon.scoreboard.ConfigScoreboard;
+import com.gmail.nossr50.config.hocon.skills.acrobatics.ConfigAcrobatics;
+import com.gmail.nossr50.config.hocon.skills.alchemy.ConfigAlchemy;
+import com.gmail.nossr50.config.hocon.skills.archery.ConfigArchery;
+import com.gmail.nossr50.config.hocon.skills.axes.ConfigAxes;
+import com.gmail.nossr50.config.hocon.skills.excavation.ConfigExcavation;
+import com.gmail.nossr50.config.hocon.skills.fishing.ConfigFishing;
+import com.gmail.nossr50.config.hocon.skills.herbalism.ConfigHerbalism;
+import com.gmail.nossr50.config.hocon.skills.mining.ConfigMining;
+import com.gmail.nossr50.config.hocon.skills.repair.ConfigRepair;
+import com.gmail.nossr50.config.hocon.skills.salvage.ConfigSalvage;
+import com.gmail.nossr50.config.hocon.skills.smelting.ConfigSmelting;
+import com.gmail.nossr50.config.hocon.skills.swords.ConfigSwords;
+import com.gmail.nossr50.config.hocon.skills.taming.ConfigTaming;
+import com.gmail.nossr50.config.hocon.skills.unarmed.ConfigUnarmed;
+import com.gmail.nossr50.config.hocon.skills.woodcutting.ConfigWoodcutting;
 import com.gmail.nossr50.config.hocon.superabilities.ConfigSuperAbilities;
 import com.gmail.nossr50.config.hocon.worldblacklist.ConfigWorldBlacklist;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
@@ -108,6 +123,22 @@ public final class ConfigManager {
     private SerializedConfigLoader<ConfigAdmin> configAdmin;
     private SerializedConfigLoader<ConfigMobs> configMobs;
 
+    private SerializedConfigLoader<ConfigAcrobatics> configAcrobatics;
+    private SerializedConfigLoader<ConfigAlchemy> configAlchemy;
+    private SerializedConfigLoader<ConfigArchery> configArchery;
+    private SerializedConfigLoader<ConfigAxes> configAxes;
+    private SerializedConfigLoader<ConfigExcavation> configExcavation;
+    private SerializedConfigLoader<ConfigFishing> configFishing;
+    private SerializedConfigLoader<ConfigHerbalism> configHerbalism;
+    private SerializedConfigLoader<ConfigMining> configMining;
+    private SerializedConfigLoader<ConfigRepair> configRepair;
+    private SerializedConfigLoader<ConfigSwords> configSwords;
+    private SerializedConfigLoader<ConfigTaming> configTaming;
+    private SerializedConfigLoader<ConfigUnarmed> configUnarmed;
+    private SerializedConfigLoader<ConfigWoodcutting> configWoodcutting;
+    private SerializedConfigLoader<ConfigSmelting> configSmelting;
+    private SerializedConfigLoader<ConfigSalvage> configSalvage;
+
     //Data
     private SerializedConfigLoader<ConfigPartyData> partyData;
 
@@ -144,8 +175,6 @@ public final class ConfigManager {
 
         //Register Custom Serializers
         mcMMO.p.getLogger().info("Registering custom type serializers with Configurate...");
-
-
 
         /*
          TypeTokens are obtained in two ways
@@ -206,6 +235,21 @@ public final class ConfigManager {
         configSuperAbilities = new SerializedConfigLoader<>(ConfigSuperAbilities.class, "skill_super_abilities.conf", null);
         configAdmin = new SerializedConfigLoader<>(ConfigAdmin.class, "admin.conf", null);
         configMobs = new SerializedConfigLoader<>(ConfigMobs.class, "creatures.conf", null);
+
+        configAcrobatics = new SerializedConfigLoader<>(ConfigAcrobatics.class, "acrobatics.conf", null);
+        configSalvage = new SerializedConfigLoader<>(ConfigSalvage.class, "salvage.conf", null);
+        configArchery = new SerializedConfigLoader<>(ConfigArchery.class, "archery.conf", null);
+        configAxes = new SerializedConfigLoader<>(ConfigAxes.class, "axes.conf", null);
+        configExcavation = new SerializedConfigLoader<>(ConfigExcavation.class, "excavation.conf", null);
+        configFishing = new SerializedConfigLoader<>(ConfigFishing.class, "fishing.conf", null);
+        configHerbalism = new SerializedConfigLoader<>(ConfigHerbalism.class, "herbalism.conf", null);
+        configMining = new SerializedConfigLoader<>(ConfigMining.class, "mining.conf", null);
+        configRepair = new SerializedConfigLoader<>(ConfigRepair.class, "repair.conf", null);
+        configSwords = new SerializedConfigLoader<>(ConfigSwords.class, "swords.conf", null);
+        configTaming = new SerializedConfigLoader<>(ConfigTaming.class, "taming.conf", null);
+        configUnarmed = new SerializedConfigLoader<>(ConfigUnarmed.class, "unarmed.conf", null);
+        configWoodcutting = new SerializedConfigLoader<>(ConfigWoodcutting.class, "woodcutting.conf", null);
+        configSmelting = new SerializedConfigLoader<>(ConfigSmelting.class, "smelting.conf", null);
 
         //Serialized Data
         partyData = new SerializedConfigLoader<>(ConfigPartyData.class, "partydata.conf", null);
@@ -480,5 +524,65 @@ public final class ConfigManager {
 
     public ConfigMobs getConfigMobs() {
         return configMobs.getConfig();
+    }
+
+    public ConfigAcrobatics getConfigAcrobatics() {
+        return configAcrobatics.getConfig();
+    }
+
+    public ConfigAlchemy getConfigAlchemy() {
+        return configAlchemy.getConfig();
+    }
+
+    public ConfigArchery getConfigArchery() {
+        return configArchery.getConfig();
+    }
+
+    public ConfigAxes getConfigAxes() {
+        return configAxes.getConfig();
+    }
+
+    public ConfigExcavation getConfigExcavation() {
+        return configExcavation.getConfig();
+    }
+
+    public ConfigFishing getConfigFishing() {
+        return configFishing.getConfig();
+    }
+
+    public ConfigHerbalism getConfigHerbalism() {
+        return configHerbalism.getConfig();
+    }
+
+    public ConfigMining getConfigMining() {
+        return configMining.getConfig();
+    }
+
+    public ConfigRepair getConfigRepair() {
+        return configRepair.getConfig();
+    }
+
+    public ConfigSwords getConfigSwords() {
+        return configSwords.getConfig();
+    }
+
+    public ConfigTaming getConfigTaming() {
+        return configTaming.getConfig();
+    }
+
+    public ConfigUnarmed getConfigUnarmed() {
+        return configUnarmed.getConfig();
+    }
+
+    public ConfigWoodcutting getConfigWoodcutting() {
+        return configWoodcutting.getConfig();
+    }
+
+    public ConfigSmelting getConfigSmelting() {
+        return configSmelting.getConfig();
+    }
+
+    public ConfigSalvage getConfigSalvage() {
+        return configSalvage.getConfig();
     }
 }
