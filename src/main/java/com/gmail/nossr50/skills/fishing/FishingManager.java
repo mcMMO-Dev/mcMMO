@@ -45,6 +45,7 @@ import java.util.*;
 
 public class FishingManager extends SkillManager {
     public static final int FISHING_ROD_CAST_CD_MILLISECONDS = 200;
+    public static final int OVERFISH_LIMIT = 4;
     private final long FISHING_COOLDOWN_SECONDS = 1000L;
 
     private long fishingRodCastTimestamp = 0L;
@@ -55,6 +56,7 @@ public class FishingManager extends SkillManager {
     private BoundingBox lastFishingBoundingBox;
     private Item fishingCatch;
     private Location hookLocation;
+    private int fishCaughtCounter = 1;
 
     public FishingManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.FISHING);
@@ -131,15 +133,21 @@ public class FishingManager extends SkillManager {
 
         boolean sameTarget = lastFishingBoundingBox != null && lastFishingBoundingBox.overlaps(newCastBoundingBox);
 
+        if(sameTarget)
+            fishCaughtCounter++;
+        else
+            fishCaughtCounter = 1;
+
+        if(fishCaughtCounter + 1 == OVERFISH_LIMIT)
+        {
+            getPlayer().sendMessage(LocaleLoader.getString("Fishing.LowResources"));
+        }
+
         //If the new bounding box does not intersect with the old one, then update our bounding box reference
         if(!sameTarget)
             lastFishingBoundingBox = newCastBoundingBox;
-        else
-        {
-            getPlayer().sendMessage(LocaleLoader.getString("Fishing.Scarcity"));
-        }
 
-        return sameTarget;
+        return sameTarget && fishCaughtCounter >= OVERFISH_LIMIT;
     }
 
     public static BoundingBox makeBoundingBox(Vector centerOfCastVector) {

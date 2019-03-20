@@ -324,23 +324,26 @@ public class PlayerListener implements Listener {
         FishingManager fishingManager = UserManager.getPlayer(player).getFishingManager();
 
         //Track the hook
-        if(event.getHook().getMetadata(mcMMO.FISH_HOOK_REF_METAKEY).size() == 0)
+        if(ExperienceConfig.getInstance().isFishingExploitingPrevented())
         {
-            fishingManager.setFishHookReference(event.getHook());
-        }
-
-        //Spam Fishing
-        if(event.getState() == PlayerFishEvent.State.CAUGHT_FISH && fishingManager.isFishingTooOften())
-        {
-            event.setExpToDrop(0);
-
-            if(caught instanceof Item)
+            if(event.getHook().getMetadata(mcMMO.FISH_HOOK_REF_METAKEY).size() == 0)
             {
-                Item caughtItem = (Item) caught;
-                caughtItem.remove();
+                fishingManager.setFishHookReference(event.getHook());
             }
 
-            return;
+            //Spam Fishing
+            if(event.getState() == PlayerFishEvent.State.CAUGHT_FISH && fishingManager.isFishingTooOften())
+            {
+                event.setExpToDrop(0);
+
+                if(caught instanceof Item)
+                {
+                    Item caughtItem = (Item) caught;
+                    caughtItem.remove();
+                }
+
+                return;
+            }
         }
 
         switch (event.getState()) {
@@ -351,12 +354,16 @@ public class PlayerListener implements Listener {
                 }
                 return;
             case CAUGHT_FISH:
-                if(fishingManager.isExploitingFishing(event.getHook().getLocation().toVector()))
+                if(ExperienceConfig.getInstance().isFishingExploitingPrevented())
                 {
-                    event.setExpToDrop(0);
-                    Item caughtItem = (Item) caught;
-                    caughtItem.remove();
-                    return;
+                    if(fishingManager.isExploitingFishing(event.getHook().getLocation().toVector()))
+                    {
+                        player.sendMessage(LocaleLoader.getString("Fishing.Scarcity"));
+                        event.setExpToDrop(0);
+                        Item caughtItem = (Item) caught;
+                        caughtItem.remove();
+                        return;
+                    }
                 }
 
                 fishingManager.handleFishing((Item) caught);
