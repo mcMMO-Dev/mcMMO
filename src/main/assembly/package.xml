@@ -6,9 +6,9 @@
 	</formats>
 	<files>
 		<file>
-			<source>${project.build.directory}/${artifactId}.jar</source>
+			<source>${project.build.directory}/${artifactId}-${BUILD_NUMBER}.jar</source>
 			<outputDirectory>/</outputDirectory>
-			<destName>mcMMO.jar</destName>
+			<!--<destName>mcMMO.jar</destName>-->
 		</file>
 	</files>
 </assembly>
