@@ -17,7 +17,7 @@
     </issueManagement>
     <packaging>jar</packaging>
     <build>
-        <finalName>${project.artifactId}</finalName>
+        <finalName>${project.artifactId}-${project.version}-b${BUILD_NUMBER}.jar</finalName>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
         <resources>
             <resource>
