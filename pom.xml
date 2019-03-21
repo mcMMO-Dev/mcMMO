@@ -17,7 +17,7 @@
     </issueManagement>
     <packaging>jar</packaging>
     <build>
-        <finalName>${project.artifactId}-${project.version}-b${BUILD_NUMBER}.jar</finalName>
+        <finalName>mcMMO.jar</finalName>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
         <resources>
             <resource>
@@ -77,6 +77,9 @@
                     <descriptors>
                         <descriptor>src/main/assembly/package.xml</descriptor>
                     </descriptors>
+                    <descriptorRefs>
+                        b${BUILD_NUMBER}
+                    </descriptorRefs>
                 </configuration>
                 <executions>
                     <execution>

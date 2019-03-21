@@ -6,9 +6,9 @@
 	</formats>
 	<files>
 		<file>
-			<source>${project.build.directory}/${project.artifactId}-${project.version}-b${BUILD_NUMBER}.jar</source>
+			<source>${project.build.directory}/${project.artifactId}.jar</source>
 			<outputDirectory>/</outputDirectory>
-			<destName>${project.artifactId}-${project.version}-b${BUILD_NUMBER}.jar</destName>
+			<!--<destName>${project.artifactId}-${project.version}-b${BUILD_NUMBER}.jar</destName>-->
 		</file>
 	</files>
 </assembly>
