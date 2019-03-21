@@ -50,6 +50,10 @@ import java.io.File;
 import java.io.IOException;
 
 public class mcMMO extends JavaPlugin {
+    public static final String COMPATIBLE_SERVER_SOFTWARE = "Spigot, Paper";
+    public static final String INCOMPATIBLE_SERVER_SOFTWARE = "CraftBukkit";
+    public static final String COMPATIBLE_MINECRAFT_VERSIONS = "1.13.2";
+
     /* Managers */
     private static ChunkManager       placeStore;
     private static ConfigManager      configManager;
@@ -110,6 +114,11 @@ public class mcMMO extends JavaPlugin {
         try {
             p = this;
             getLogger().setFilter(new LogFilter(this));
+
+            //DEBUG
+            /*getLogger().info(Bukkit.getBukkitVersion());
+            getLogger().info(Bukkit.getVersion());*/
+
             metadataValue = new FixedMetadataValue(this, true);
 
             PluginManager pluginManager = getServer().getPluginManager();
@@ -175,11 +184,11 @@ public class mcMMO extends JavaPlugin {
                     metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Retro"));
 
                 //Simplified Server Software Tracking
-                if(Bukkit.getServer().getBukkitVersion().contains("paper"))
+                if(Bukkit.getServer().getVersion().contains("paper"))
                     metrics.addCustomChart(new Metrics.SimplePie("Server_software", () -> "Paper"));
-                else if(Bukkit.getServer().getBukkitVersion().contains("spigot"))
+                else if(Bukkit.getServer().getVersion().contains("spigot") && !Bukkit.getServer().getVersion().contains("paper"))
                     metrics.addCustomChart(new Metrics.SimplePie("Server_software", () -> "Spigot"));
-                else if(Bukkit.getServer().getBukkitVersion().contains("bukkit"))
+                else if(Bukkit.getServer().getVersion().contains("bukkit"))
                     metrics.addCustomChart(new Metrics.SimplePie("Server_software", () -> "CraftBukkit"));
                 else
                     metrics.addCustomChart(new Metrics.SimplePie("Server_software", () -> "Unknown"));
@@ -191,8 +200,52 @@ public class mcMMO extends JavaPlugin {
             getLogger().severe("End of error report for mcMMO");
             getLogger().info("Please do not replace the mcMMO jar while the server is running.");
 
-            getServer().getPluginManager().disablePlugin(this);
+            //getServer().getPluginManager().disablePlugin(this);
         }
+
+        if(isIncompatibleVersion(Bukkit.getVersion(), Bukkit.getBukkitVersion()))
+        {
+            getLogger().severe("mcMMO is not supported for your current server software and or Minecraft version");
+
+            if(isServerSoftwareIncompatible(Bukkit.getVersion()))
+            {
+                getLogger().severe("mcMMO does not recognize your server software as being compatible!");
+                getLogger().severe("Compatible Server Software: "+ COMPATIBLE_SERVER_SOFTWARE);
+                getLogger().severe("Incompatible Server Software: "+ INCOMPATIBLE_SERVER_SOFTWARE);
+            }
+
+            if(isServerMinecraftVersionIncompatible(Bukkit.getBukkitVersion()))
+            {
+                getLogger().severe("mcMMO does not recognize your Minecraft Version as being compatible!");
+                getLogger().severe("Compatible Minecraft Versions: "+ COMPATIBLE_MINECRAFT_VERSIONS);
+                getLogger().info("TIP: Paper and Spigot are extensions of CraftBukkit and are completely safe to upgrade to from CraftBukkit, please consider upgrading.");
+            }
+        }
+    }
+
+    private boolean isIncompatibleVersion(String serverSoftwareString, String serverVersionString)
+    {
+        if (isServerSoftwareIncompatible(serverSoftwareString))
+            return true;
+
+        if (isServerMinecraftVersionIncompatible(serverVersionString))
+            return true;
+
+        return false;
+    }
+
+    private boolean isServerMinecraftVersionIncompatible(String serverVersionString) {
+        if(!serverVersionString.contains("1.13.2"))
+            return true;
+
+        return false;
+    }
+
+    private boolean isServerSoftwareIncompatible(String serverSoftwareString) {
+        if(!serverSoftwareString.contains("paper") && !serverSoftwareString.contains("spigot"))
+            return true;
+
+        return false;
     }
 
     @Override

@@ -9,6 +9,7 @@ Key:
 
 Version 2.2.0
     mcMMO's config system has been rewritten
+    mcMMO will now warn you in the console if it thinks you are running incompatible server software
     Parties no longer have a cap, you can level them forever for bragging rights
     Optimizations were made for many anti-exploit behaviours
     Acrobatic's Dodge will no longer reward XP for a few seconds after a TP
