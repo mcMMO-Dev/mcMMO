@@ -23,10 +23,11 @@ public class AcrobaticsManager extends SkillManager {
 
     public AcrobaticsManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.ACROBATICS);
+        rollXPInterval = (1000 * mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().getRollXPGainCooldownSeconds());
     }
 
     private long rollXPCooldown = 0;
-    private long rollXPInterval = (1000 * 60); //1 Minute
+    private long rollXPInterval; //1 Minute
     private long rollXPIntervalLengthen = (1000 * 10); //10 Seconds
 
     public boolean canGainRollXP()
