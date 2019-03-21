@@ -17,7 +17,7 @@
     </issueManagement>
     <packaging>jar</packaging>
     <build>
-        <finalName>${project.artifactId}</finalName>
+        <finalName>${project.artifactId}-${BUILD_NUMBER}</finalName>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
         <resources>
             <resource>
@@ -242,6 +242,7 @@
         </dependency>
     </dependencies>
     <properties>
+        <BUILD_NUMBER>UNDEFINED</BUILD_NUMBER>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 </project>
