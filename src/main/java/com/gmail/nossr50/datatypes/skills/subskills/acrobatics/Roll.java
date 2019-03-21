@@ -210,7 +210,7 @@ public class Roll extends AcrobaticsSubSkill {
             //player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Text"));
 
             //if (!SkillUtils.cooldownExpired((long) mcMMOPlayer.getTeleportATS(), Config.getInstance().getXPAfterTeleportCooldown())) {
-            if(!isExploiting(player))
+            if(!isExploiting(player) && mcMMOPlayer.getAcrobaticsManager().canGainRollXP())
                 SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, damage, true), XPGainReason.PVE);
             //}
 
@@ -219,7 +219,7 @@ public class Roll extends AcrobaticsSubSkill {
         }
         else if (!isFatal(player, damage)) {
             //if (!SkillUtils.cooldownExpired((long) mcMMOPlayer.getTeleportATS(), Config.getInstance().getXPAfterTeleportCooldown())) {
-            if(!isExploiting(player))
+            if(!isExploiting(player) && mcMMOPlayer.getAcrobaticsManager().canGainRollXP())
                 SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, damage, false), XPGainReason.PVE);
             //}
         }
@@ -249,14 +249,14 @@ public class Roll extends AcrobaticsSubSkill {
         {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Ability.Proc");
             SoundManager.sendCategorizedSound(player, player.getLocation(), SoundType.ROLL_ACTIVATED, SoundCategory.PLAYERS,0.5F);
-            if(!isExploiting(player))
+            if(!isExploiting(player) && mcMMOPlayer.getAcrobaticsManager().canGainRollXP())
                 SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, damage, true), XPGainReason.PVE);
 
             addFallLocation(player);
             return modifiedDamage;
         }
         else if (!isFatal(player, damage)) {
-            if(!isExploiting(player))
+            if(!isExploiting(player) && mcMMOPlayer.getAcrobaticsManager().canGainRollXP())
                 SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, damage, false), XPGainReason.PVE);
             
             addFallLocation(player);

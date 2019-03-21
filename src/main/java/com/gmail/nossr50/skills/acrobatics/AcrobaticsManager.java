@@ -24,6 +24,24 @@ public class AcrobaticsManager extends SkillManager {
         super(mcMMOPlayer, PrimarySkillType.ACROBATICS);
     }
 
+    private long rollXPCooldown = 0;
+    private long rollXPInterval = (1000 * 60); //1 Minute
+    private long rollXPIntervalLengthen = (1000 * 10); //10 Seconds
+
+    public boolean canGainRollXP()
+    {
+        if(System.currentTimeMillis() >= rollXPCooldown)
+        {
+            rollXPCooldown = System.currentTimeMillis() + rollXPInterval;
+            rollXPIntervalLengthen = (1000 * 10); //5 Seconds
+            return true;
+        } else {
+            rollXPCooldown += rollXPIntervalLengthen;
+            rollXPIntervalLengthen += 1000; //Add another second to the next penalty
+            return false;
+        }
+    }
+
     public boolean canDodge(Entity damager) {
         if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.ACROBATICS_DODGE))
             return false;
