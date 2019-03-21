@@ -77,9 +77,9 @@
                     <descriptors>
                         <descriptor>src/main/assembly/package.xml</descriptor>
                     </descriptors>
-                    <descriptorRefs>
+                    <!--<descriptorRefs>
                         b${BUILD_NUMBER}
-                    </descriptorRefs>
+                    </descriptorRefs>-->
                 </configuration>
                 <executions>
                     <execution>
