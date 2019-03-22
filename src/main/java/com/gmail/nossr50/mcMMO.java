@@ -26,7 +26,7 @@ import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.runnables.player.PowerLevelUpdatingTask;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
-import com.gmail.nossr50.skills.repair.repairables.RepairableManager;
+import com.gmail.nossr50.skills.repair.repairables.SimpleRepairableManager;
 import com.gmail.nossr50.skills.salvage.salvageables.SalvageableManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
@@ -354,7 +354,7 @@ public class mcMMO extends JavaPlugin {
         return placeStore;
     }
 
-    public static RepairableManager getRepairableManager() {
+    public static SimpleRepairableManager getRepairableManager() {
         return configManager.getSimpleRepairableManager();
     }
 
