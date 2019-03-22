@@ -8,6 +8,9 @@ import java.util.HashMap;
 @ConfigSerializable
 public class ConfigRepairArcaneForging {
 
+    public static final boolean LOSE_ENCHANTS_DEFAULT = true;
+    public static final boolean DOWNGRADES_ENABLED_DEFAULT = true;
+
     public static final HashMap<Integer, Double> KEEP_ENCHANT_MAP;
     public static final HashMap<Integer, Double> DOWNGRADE_MAP_DEFAULT;
 
@@ -32,9 +35,6 @@ public class ConfigRepairArcaneForging {
         DOWNGRADE_MAP_DEFAULT.put(7, 15.0D);
         DOWNGRADE_MAP_DEFAULT.put(8, 10.0D);
     }
-
-    public static final boolean LOSE_ENCHANTS_DEFAULT = true;
-    public static final boolean DOWNGRADES_ENABLED_DEFAULT = true;
 
     @Setting(value = "May-Lose-Enchants", comment = "With this on, players have a chance to have enchantments stripped from" +
             "\n    their item when repairing." +

@@ -1,3 +1,4 @@
+/*
 package com.gmail.nossr50.config.collectionconfigs;
 
 import com.gmail.nossr50.config.ConfigCollection;
@@ -17,9 +18,11 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
+*/
 /**
  * This config
- */
+ *//*
+
 @ConfigSerializable
 public class RepairConfig extends ConfigCollection {
 
@@ -40,11 +43,13 @@ public class RepairConfig extends ConfigCollection {
         register();
     }
 
-    /**
+    */
+/**
      * The version of this config
      *
      * @return
-     */
+     *//*
+
     @Override
     public double getConfigVersion() {
         return 1;
@@ -65,9 +70,11 @@ public class RepairConfig extends ConfigCollection {
             // Validate all the things!
             List<String> errorMessages = new ArrayList<String>();
 
-            /*
+            */
+/*
              * Match the name of the key to a Material constant definition
-             */
+             *//*
+
             String repairChildNodeName = repairNode.getString();
             Material itemMaterial = Material.matchMaterial(repairChildNodeName);
 
@@ -76,9 +83,11 @@ public class RepairConfig extends ConfigCollection {
                 continue;
             }
 
-            /*
+            */
+/*
              * Determine Repair Material Type
-             */
+             *//*
+
             MaterialType repairMaterialType = MaterialType.OTHER;
             String repairMaterialTypeString = getRepairMaterialTypeString(repairChildNodeName);
 
@@ -178,9 +187,6 @@ public class RepairConfig extends ConfigCollection {
             if(hasNode(REPAIRABLES, repairChildNodeName, XP_MULTIPLIER))
                 xpMultiplier = getDoubleValue(REPAIRABLES, repairChildNodeName, XP_MULTIPLIER);
 
-
-
-
             // Minimum Quantity
             int minimumQuantity = SkillUtils.getRepairAndSalvageQuantities(new ItemStack(itemMaterial), repairMaterial, repairMetadata);
 
@@ -188,10 +194,12 @@ public class RepairConfig extends ConfigCollection {
                 minimumQuantity = getIntValue(REPAIRABLES, repairChildNodeName, MINIMUM_QUANTITY);
             }
 
-            /*
+            */
+/*
              * VALIDATE
              * Just make sure the values we may have just grabbed from the config aren't below 0
-             */
+             *//*
+
 
             //Validate min level
             if(minimumLevel < 0)
@@ -225,12 +233,15 @@ public class RepairConfig extends ConfigCollection {
         return getShortValue(REPAIRABLES, key, MAXIMUM_DURABILITY);
     }
 
-    /**
+    */
+/**
      * Gets the Repair Material String Name defined in the config
      * @param key the key name of the repairable child node under the Repairables parent node
      * @return the Repair Material String Name defined in the config
-     */
+     *//*
+
     private String getRepairMaterialStringName(String key) {
         return getStringValue(REPAIRABLES, key, REPAIR_MATERIAL);
     }
 }
+*/

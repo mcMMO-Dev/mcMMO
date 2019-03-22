@@ -11,22 +11,6 @@ public class ConfigRepairGeneral {
     public static final boolean ANVIL_PLACED_SOUNDS_DEFAULT = true;
     public static final boolean ENCHANTED_ITEMS_REQUIRE_CONFIRM = true;
 
-    /*
-        public Material getRepairAnvilMaterial() {
-        //Iron block
-            return Material.matchMaterial(getStringValue(SKILLS, REPAIR, ANVIL_MATERIAL));
-        }
-
-        public boolean getRepairConfirmRequired() {
-        return getBooleanValue(SKILLS, REPAIR, CONFIRM_REQUIRED);
-        }
-
-        public boolean getRepairAnvilMessagesEnabled() {
-            return getBooleanValue(SKILLS, REPAIR, ANVIL + MESSAGES);
-        }
-     */
-
-
     @Setting(value = "Anvil-Block-Material", comment = "The block used for mcMMO repairs." +
             "Default value: "+"IRON_BLOCK")
     private Material repairAnvilMaterial = Material.IRON_BLOCK;

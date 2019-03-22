@@ -1,3 +1,4 @@
+/*
 package com.gmail.nossr50.skills.repair.repairables;
 
 import com.gmail.nossr50.datatypes.skills.ItemType;
@@ -19,3 +20,4 @@ public class RepairableFactory {
         return new SimpleRepairable(itemMaterial, repairMaterial, repairMetadata, repairMaterialPrettyName, minimumLevel, minimumQuantity, maximumDurability, repairItemType, repairMaterialType, xpMultiplier);
     }
 }
+*/

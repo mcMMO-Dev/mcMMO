@@ -377,7 +377,7 @@ public class MainConfig extends ConfigValidated {
             reason.add(SKILLS + "." + MINING + "." + DETONATOR + "Item is invalid!");
         }
 
-        if (getRepairAnvilMaterial() == null) {
+        /*if (getRepairAnvilMaterial() == null) {
             reason.add(SKILLS + "." + REPAIR + "." + ANVIL + "Type is invalid!!");
         }
 
@@ -387,7 +387,7 @@ public class MainConfig extends ConfigValidated {
 
         if (getRepairAnvilMaterial() == getSalvageAnvilMaterial()) {
             reason.add("Cannot use the same item for " + REPAIR + " and " + SALVAGE + " anvils!");
-        }
+        }*/
 
         if (getTamingCOTWMaterial(EntityType.WOLF) == null) {
             reason.add(SKILLS + "." + TAMING + "." + CALL_OF_THE_WILD1 + ".Wolf." + ITEM + "Material is invalid!!");
@@ -618,50 +618,6 @@ public class MainConfig extends ConfigValidated {
     public Material getDetonatorItem() {
         //Flint and steel
         return Material.matchMaterial(getStringValue(SKILLS, MINING, DETONATOR + NAME));
-    }
-
-    /* Repair */
-    public boolean getRepairAnvilMessagesEnabled() {
-        return getBooleanValue(SKILLS, REPAIR, ANVIL + MESSAGES);
-    }
-
-    public boolean getRepairAnvilPlaceSoundsEnabled() {
-        return getBooleanValue(SKILLS, REPAIR, ANVIL_PLACED + SOUNDS);
-    }
-
-    public boolean getRepairAnvilUseSoundsEnabled() {
-        return getBooleanValue(SKILLS, REPAIR, ANVIL_USE + SOUNDS);
-    }
-
-    public Material getRepairAnvilMaterial() {
-        //Iron block
-        return Material.matchMaterial(getStringValue(SKILLS, REPAIR, ANVIL_MATERIAL));
-    }
-
-    public boolean getRepairConfirmRequired() {
-        return getBooleanValue(SKILLS, REPAIR, CONFIRM_REQUIRED);
-    }
-
-    /* Salvage */
-    public boolean getSalvageAnvilMessagesEnabled() {
-        return getBooleanValue(SKILLS, SALVAGE, ANVIL + MESSAGES);
-    }
-
-    public boolean getSalvageAnvilPlaceSoundsEnabled() {
-        return getBooleanValue(SKILLS, SALVAGE, ANVIL_PLACED + SOUNDS);
-    }
-
-    public boolean getSalvageAnvilUseSoundsEnabled() {
-        return getBooleanValue(SKILLS, SALVAGE, ANVIL_USE + SOUNDS);
-    }
-
-    public Material getSalvageAnvilMaterial() {
-        //Gold Block
-        return Material.matchMaterial(getStringValue(SKILLS, SALVAGE, ANVIL_MATERIAL));
-    }
-
-    public boolean getSalvageConfirmRequired() {
-        return getBooleanValue(SKILLS, SALVAGE, CONFIRM_REQUIRED);
     }
 
     /* Unarmed */

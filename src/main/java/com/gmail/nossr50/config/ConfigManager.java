@@ -48,6 +48,7 @@ import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
+import com.gmail.nossr50.skills.repair.repairables.SimpleRepairable;
 import com.gmail.nossr50.skills.repair.repairables.SimpleRepairableManager;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.skills.salvage.salvageables.SimpleSalvageableManager;
@@ -155,7 +156,7 @@ public final class ConfigManager {
     private CoreSkillsConfig coreSkillsConfig;
     private SoundConfig soundConfig;
     private RankConfig rankConfig;
-    private RepairConfig repairConfig;
+//    private RepairConfig repairConfig;
     private SalvageConfig salvageConfig;
 
     private HashMap<Material, Integer> partyItemWeights;
@@ -283,7 +284,7 @@ public final class ConfigManager {
 
         rankConfig = new RankConfig();
 
-        repairConfig = new RepairConfig();
+//        repairConfig = new RepairConfig();
 
         salvageConfig = new SalvageConfig();
 
@@ -336,9 +337,9 @@ public final class ConfigManager {
      * Get all loaded repairables (loaded from all repairable configs)
      * @return the currently loaded repairables
      */
-    public ArrayList<Repairable> getRepairables()
+    public ArrayList<SimpleRepairable> getRepairables()
     {
-        return (ArrayList<Repairable>) repairConfig.genericCollection;
+        return getConfigRepair().getConfigRepairablesList();
     }
 
     /**

@@ -21,20 +21,6 @@ public interface Repairable {
     public Material getRepairMaterial();
 
     /**
-     * Gets the metadata byte value of the material used to repair this item
-     *
-     * @return the byte metadata of the repair material
-     */
-    public byte getRepairMaterialMetadata();
-
-    /**
-     * Gets the pretty name of the material used to repair this item
-     *
-     * @return the pretty name of the repair material
-     */
-    public String getRepairMaterialPrettyName();
-
-    /**
      * Gets the RepairItemType value for this repairable item
      *
      * @return the RepairItemType for this repairable

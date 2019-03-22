@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.repair;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -51,11 +50,11 @@ public class RepairManager extends SkillManager {
             return;
         }
 
-        if (MainConfig.getInstance().getRepairAnvilMessagesEnabled()) {
+        if (mcMMO.getConfigManager().getConfigRepair().getRepairGeneral().isAnvilMessages()) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Repair.Listener.Anvil");
         }
 
-        if (MainConfig.getInstance().getRepairAnvilPlaceSoundsEnabled()) {
+        if (mcMMO.getConfigManager().getConfigRepair().getRepairGeneral().isAnvilPlacedSounds()) {
             SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
         }
 
@@ -94,7 +93,7 @@ public class RepairManager extends SkillManager {
         PlayerInventory inventory = player.getInventory();
 
         Material repairMaterial = repairable.getRepairMaterial();
-        byte repairMaterialMetadata = repairable.getRepairMaterialMetadata();
+        //byte repairMaterialMetadata = repairable.getRepairMaterialMetadata();
         ItemStack toRemove = new ItemStack(repairMaterial);
 
         short startDurability = item.getDurability();
@@ -106,7 +105,7 @@ public class RepairManager extends SkillManager {
         }
 
         // Check if they have the proper material to repair with
-        if (!inventory.contains(repairMaterial)) {
+        /*if (!inventory.contains(repairMaterial)) {
             String prettyName = repairable.getRepairMaterialPrettyName() == null ? StringUtils.getPrettyItemString(repairMaterial) : repairable.getRepairMaterialPrettyName();
 
             String materialsNeeded = "";
@@ -117,7 +116,7 @@ public class RepairManager extends SkillManager {
 
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Skills.NeedMore.Extra", prettyName, materialsNeeded);
             return;
-        }
+        }*/
 
         // Do not repair stacked items
         if (item.getAmount() != 1) {
@@ -144,10 +143,10 @@ public class RepairManager extends SkillManager {
         }
 
         // Remove the item
-        if (repairMaterialMetadata == -1) {
+        /*if (repairMaterialMetadata == -1) {
             toRemove = inventory.getItem(inventory.first(repairMaterial)).clone();
             toRemove.setAmount(1);
-        }
+        }*/
 
         inventory.removeItem(toRemove);
 
@@ -155,7 +154,7 @@ public class RepairManager extends SkillManager {
         applyXpGain((float) ((getPercentageRepaired(startDurability, newDurability, repairable.getMaximumDurability()) * repairable.getXpMultiplier()) * ExperienceConfig.getInstance().getRepairXPBase() * ExperienceConfig.getInstance().getRepairXP(repairable.getRepairMaterialType())), XPGainReason.PVE);
 
         // BWONG BWONG BWONG
-        if (MainConfig.getInstance().getRepairAnvilUseSoundsEnabled()) {
+        if (mcMMO.getConfigManager().getConfigRepair().getRepairGeneral().isAnvilUseSounds()) {
             SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
             SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_BREAK);
         }
@@ -177,7 +176,7 @@ public class RepairManager extends SkillManager {
         Player player = getPlayer();
         long lastUse = getLastAnvilUse();
 
-        if (!SkillUtils.cooldownExpired(lastUse, 3) || !MainConfig.getInstance().getRepairConfirmRequired()) {
+        if (!SkillUtils.cooldownExpired(lastUse, 3) || !mcMMO.getConfigManager().getConfigRepair().getRepairGeneral().isEnchantedItemsRequireConfirm()) {
             return true;
         }
 
