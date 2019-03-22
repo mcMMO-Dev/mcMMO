@@ -10,7 +10,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.repair.repairables.Repairable;
+import com.gmail.nossr50.skills.repair.repairables.SimpleRepairable;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -61,9 +61,11 @@ public class RepairManager extends SkillManager {
         togglePlacedAnvil();
     }
 
+
+
     public void handleRepair(ItemStack item) {
         Player player = getPlayer();
-        Repairable repairable = mcMMO.getRepairableManager().getRepairable(item.getType());
+        SimpleRepairable repairable = mcMMO.getRepairableManager().getRepairable(item.getType());
 
         if (item.getItemMeta().isUnbreakable()) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Anvil.Unbreakable");
@@ -91,8 +93,15 @@ public class RepairManager extends SkillManager {
         }
 
         PlayerInventory inventory = player.getInventory();
+        Material repairMaterial = null;
 
-        Material repairMaterial = repairable.getRepairMaterial();
+        //Find the first compatible repair material
+        for(Material repairMaterialCandidate : repairable.getRepairMaterials())
+        {
+            if(player.getInventory().contains(new ItemStack(repairMaterialCandidate)))
+                repairMaterial = repairMaterialCandidate;
+        }
+
         //byte repairMaterialMetadata = repairable.getRepairMaterialMetadata();
         ItemStack toRemove = new ItemStack(repairMaterial);
 

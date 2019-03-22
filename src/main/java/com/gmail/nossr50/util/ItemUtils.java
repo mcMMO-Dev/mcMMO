@@ -10,8 +10,35 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public final class ItemUtils {
     private ItemUtils() {}
+
+    public static ArrayList<String> getRepairItemMaterials(List<Material> repairItemList)
+    {
+        ArrayList<String> repairMaterialList = new ArrayList<>();
+
+        for(Material m : repairItemList)
+        {
+            repairMaterialList.add(m.getKey().toString());
+        }
+
+        return repairMaterialList;
+    }
+
+    public static ArrayList<Material> matchMaterials(List<String> ItemBlockRegistryKeyList)
+    {
+        ArrayList<Material> matchedMaterials = new ArrayList<>();
+
+        for(String s : ItemBlockRegistryKeyList)
+        {
+            matchedMaterials.add(Material.matchMaterial(s));
+        }
+
+        return matchedMaterials;
+    }
 
     /**
      * Checks if the item is a bow.

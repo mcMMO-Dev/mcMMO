@@ -5,8 +5,10 @@ import com.gmail.nossr50.config.hocon.skills.repair.repairmastery.ConfigRepairMa
 import com.gmail.nossr50.skills.repair.repairables.SimpleRepairable;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
+import org.bukkit.Material;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.bukkit.Material.*;
 
@@ -14,14 +16,15 @@ import static org.bukkit.Material.*;
 public class ConfigRepair {
 
      public static final ArrayList<SimpleRepairable> CONFIG_REPAIRABLES_DEFAULTS;
+     public static final Material[] PLANKS = new Material[] { OAK_PLANKS, BIRCH_PLANKS, DARK_OAK_PLANKS, ACACIA_PLANKS, JUNGLE_PLANKS, SPRUCE_PLANKS};
 
     static {
         CONFIG_REPAIRABLES_DEFAULTS = new ArrayList<>();
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(WOODEN_SWORD, OAK_PLANKS, 1, 0, .25D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(WOODEN_SHOVEL, OAK_PLANKS, 1, 0, .15D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(WOODEN_PICKAXE, OAK_PLANKS, 1, 0, .5D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(WOODEN_AXE, OAK_PLANKS, 1, 0, .5D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(WOODEN_HOE, OAK_PLANKS, 1, 0, .25D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(WOODEN_SWORD, Arrays.asList(PLANKS), 1, 0, .25D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(WOODEN_SHOVEL, Arrays.asList(PLANKS), 1, 0, .15D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(WOODEN_PICKAXE, Arrays.asList(PLANKS), 1, 0, .5D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(WOODEN_AXE, Arrays.asList(PLANKS), 1, 0, .5D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(WOODEN_HOE, Arrays.asList(PLANKS), 1, 0, .25D));
 
         /*
         Repairables:

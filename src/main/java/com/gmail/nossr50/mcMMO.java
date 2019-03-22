@@ -203,7 +203,7 @@ public class mcMMO extends JavaPlugin {
             //getServer().getPluginManager().disablePlugin(this);
         }
 
-        if(isIncompatibleVersion(Bukkit.getVersion(), Bukkit.getBukkitVersion()))
+        /*if(isIncompatibleVersion(Bukkit.getVersion(), Bukkit.getBukkitVersion()))
         {
             getLogger().severe("mcMMO is not supported for your current server software and or Minecraft version");
 
@@ -220,7 +220,7 @@ public class mcMMO extends JavaPlugin {
                 getLogger().severe("Compatible Minecraft Versions: "+ COMPATIBLE_MINECRAFT_VERSIONS);
                 getLogger().info("TIP: Paper and Spigot are extensions of CraftBukkit and are completely safe to upgrade to from CraftBukkit, please consider upgrading.");
             }
-        }
+        }*/
     }
 
     private boolean isIncompatibleVersion(String serverSoftwareString, String serverVersionString)

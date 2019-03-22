@@ -6,41 +6,39 @@ import com.gmail.nossr50.util.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
+import java.util.List;
 
-public class SimpleRepairable implements Repairable {
-    private final Material itemMaterial, repairMaterial;
+
+public class SimpleRepairable {
+    private final Material itemMaterial;
+    private final List<Material> repairMaterials;
     private final int minimumQuantity, minimumLevel;
     private final short maximumDurability, baseRepairDurability;
-    /*private String repairMaterialPrettyName;*/
     private final ItemType repairItemType;
     private final MaterialType repairMaterialType;
     private final double xpMultiplier;
 
-/*    protected SimpleRepairable(Material type, Material repairMaterial, String repairMaterialPrettyName, int minimumLevel, int minimumQuantity, short maximumDurability, ItemType repairItemType, MaterialType repairMaterialType, double xpMultiplier) {
-        this.itemMaterial = type;
-        this.repairMaterial = repairMaterial;
-        this.repairMaterialPrettyName = repairMaterialPrettyName;
-        this.repairItemType = repairItemType;
-        this.repairMaterialType = repairMaterialType;
-        this.minimumLevel = minimumLevel;
-        this.minimumQuantity = minimumQuantity;
-        this.maximumDurability = maximumDurability;
-        this.baseRepairDurability = (short) (maximumDurability / minimumQuantity);
-        this.xpMultiplier = xpMultiplier;
-    }*/
-
     public SimpleRepairable(Material itemMaterial, Material repairMaterial, int minimumQuantity, int minimumLevel, double xpMultiplier) {
-        this.itemMaterial = itemMaterial;
-        this.repairMaterial = repairMaterial;
+        this(itemMaterial.getKey().getKey(), ItemUtils.getRepairItemMaterials(Arrays.asList(repairMaterial)), minimumQuantity, minimumLevel, xpMultiplier);
+    }
+
+    public SimpleRepairable(Material itemMaterial, List<Material> repairMaterials, int minimumQuantity, int minimumLevel, double xpMultiplier) {
+        this(itemMaterial.getKey().getKey(), ItemUtils.getRepairItemMaterials(repairMaterials), minimumQuantity, minimumLevel, xpMultiplier);
+    }
+
+    public SimpleRepairable(String itemMaterial, List<String> repairMaterials, int minimumQuantity, int minimumLevel, double xpMultiplier) {
+        this.itemMaterial = Material.matchMaterial(itemMaterial);
+        this.repairMaterials = ItemUtils.matchMaterials(repairMaterials);
         this.minimumQuantity = minimumQuantity;
         this.minimumLevel = minimumLevel;
         this.xpMultiplier = xpMultiplier;
 
-        this.maximumDurability = itemMaterial.getMaxDurability();
+        this.maximumDurability = this.itemMaterial.getMaxDurability();
         this.baseRepairDurability = (short) (maximumDurability / minimumQuantity);
 
-        this.repairItemType = determineItemType(itemMaterial);
-        this.repairMaterialType = determineMaterialType(repairMaterial);
+        this.repairItemType = determineItemType(this.itemMaterial);
+        this.repairMaterialType = determineMaterialType(this.repairMaterials.get(0));
     }
 
     public MaterialType determineMaterialType(Material material) {
@@ -88,47 +86,43 @@ public class SimpleRepairable implements Repairable {
         }
     }
 
-    @Override
     public Material getItemMaterial() {
         return itemMaterial;
     }
 
-    @Override
-    public Material getRepairMaterial() {
-        return repairMaterial;
+    public List<Material> getRepairMaterials() {
+        return repairMaterials;
     }
 
-    @Override
+    public List<String> getRepairMaterialsRegistryKeys() {
+        return ItemUtils.getRepairItemMaterials(repairMaterials);
+    }
+
+
     public ItemType getRepairItemType() {
         return repairItemType;
     }
 
-    @Override
     public MaterialType getRepairMaterialType() {
         return repairMaterialType;
     }
 
-    @Override
     public int getMinimumQuantity() {
         return minimumQuantity;
     }
 
-    @Override
     public short getMaximumDurability() {
         return maximumDurability;
     }
 
-    @Override
     public short getBaseRepairDurability() {
         return baseRepairDurability;
     }
 
-    @Override
     public int getMinimumLevel() {
         return minimumLevel;
     }
 
-    @Override
     public double getXpMultiplier() {
         return xpMultiplier;
     }

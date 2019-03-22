@@ -39,7 +39,7 @@ public class SimpleRepairableManager implements Unload {
         return isRepairable(itemStack.getType());
     }
 
-    public Repairable getRepairable(Material type) {
+    public SimpleRepairable getRepairable(Material type) {
         return repairables.get(type);
     }
 }
