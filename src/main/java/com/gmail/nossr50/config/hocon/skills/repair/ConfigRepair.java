@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config.hocon.skills.repair;
 
+import com.gmail.nossr50.config.hocon.skills.repair.general.ConfigRepairGeneral;
 import com.gmail.nossr50.config.hocon.skills.repair.repairmastery.ConfigRepairMastery;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
@@ -15,6 +16,13 @@ public class ConfigRepair {
 
     @Setting(value = "Arcane-Forging", comment = "Settings related to the arcane forging subskill")
     private ConfigRepairArcaneForging arcaneForging = new ConfigRepairArcaneForging();
+
+    @Setting(value = "General")
+    private ConfigRepairGeneral repairGeneral = new ConfigRepairGeneral();
+
+    public ConfigRepairGeneral getRepairGeneral() {
+        return repairGeneral;
+    }
 
     public ConfigRepairMastery getRepairMastery() {
         return repairMastery;
