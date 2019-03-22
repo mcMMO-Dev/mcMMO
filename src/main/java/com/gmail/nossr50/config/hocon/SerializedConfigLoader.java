@@ -63,7 +63,8 @@ public class SerializedConfigLoader<T> {
             "\nhttps://mcmmo.org/wiki - Keep in mind the wiki is a WIP and may not have information about everything in mcMMO!";
 
     private static final ConfigurationOptions LOADER_OPTIONS = ConfigurationOptions.defaults().setHeader(CONFIG_HEADER);
-    private static final String ROOT_NODE_ADDRESS = "mcMMO";
+
+    private final String ROOT_NODE_ADDRESS;
 
     private final Path path;
 
@@ -92,7 +93,8 @@ public class SerializedConfigLoader<T> {
      */
     private ObjectMapper<T>.BoundInstance configMapper;
 
-    public SerializedConfigLoader(Class<T> clazz, String fileName, SerializedConfigLoader parent) {
+    public SerializedConfigLoader(Class<T> clazz, String fileName, String rootNodeName, SerializedConfigLoader parent) {
+        ROOT_NODE_ADDRESS = rootNodeName;
         this.parent = parent;
         this.path = getPathFromFileName(fileName);
 

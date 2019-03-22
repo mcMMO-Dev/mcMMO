@@ -216,43 +216,43 @@ public final class ConfigManager {
         mcMMO.p.getLogger().info("Deserializing configs...");
         //TODO: Not sure about the order of MainConfig
         //Serialized Configs
-        configDatabase = new SerializedConfigLoader<>(ConfigDatabase.class, "database_settings.conf", null);
-        configScoreboard = new SerializedConfigLoader<>(ConfigScoreboard.class, "scoreboard.conf", null);
-        configLeveling = new SerializedConfigLoader<>(ConfigLeveling.class, "player_leveling.conf", null);
-        configWorldBlacklist = new SerializedConfigLoader<>(ConfigWorldBlacklist.class, "world_blacklist.conf", null);
-        configExploitPrevention = new SerializedConfigLoader<>(ConfigExploitPrevention.class, "exploit_prevention.conf", null);
-        configMOTD = new SerializedConfigLoader<>(ConfigMOTD.class, "message_of_the_day.conf", null);
-        configHardcore = new SerializedConfigLoader<>(ConfigHardcore.class, "hardcore_mode.conf", null);
-        configMetrics = new SerializedConfigLoader<>(ConfigMetrics.class, "analytics_reporting.conf", null);
-        configAuthorAdvertisements = new SerializedConfigLoader<>(ConfigAuthorAdvertisements.class, "author_support_advertisements.conf", null);
-        configAutomatedBackups = new SerializedConfigLoader<>(ConfigAutomatedBackups.class, "automated_backups.conf", null);
-        configCommands = new SerializedConfigLoader<>(ConfigCommands.class, "commands.conf", null);
-        configItems = new SerializedConfigLoader<>(ConfigItems.class, "custom_items.conf", null);
-        configLanguage = new SerializedConfigLoader<>(ConfigLanguage.class, "language.conf", null);
-        configParticles = new SerializedConfigLoader<>(ConfigParticles.class, "particle_spawning.conf", null);
-        configParty = new SerializedConfigLoader<>(ConfigParty.class, "party.conf", null);
-        configNotifications = new SerializedConfigLoader<>(ConfigNotifications.class, "chat_and_hud_notifications.conf", null);
-        configSuperAbilities = new SerializedConfigLoader<>(ConfigSuperAbilities.class, "skill_super_abilities.conf", null);
-        configAdmin = new SerializedConfigLoader<>(ConfigAdmin.class, "admin.conf", null);
-        configMobs = new SerializedConfigLoader<>(ConfigMobs.class, "creatures.conf", null);
+        configDatabase = new SerializedConfigLoader<>(ConfigDatabase.class, "database_settings.conf", "Database", null);
+        configScoreboard = new SerializedConfigLoader<>(ConfigScoreboard.class, "scoreboard.conf", "Scoreboard", null);
+        configLeveling = new SerializedConfigLoader<>(ConfigLeveling.class, "player_leveling.conf", "Player-Leveling", null);
+        configWorldBlacklist = new SerializedConfigLoader<>(ConfigWorldBlacklist.class, "world_blacklist.conf", "World-Blacklist", null);
+        configExploitPrevention = new SerializedConfigLoader<>(ConfigExploitPrevention.class, "anti_exploit.conf", "Anti-Exploit", null);
+        configMOTD = new SerializedConfigLoader<>(ConfigMOTD.class, "message_of_the_day.conf", "MOTD", null);
+        configHardcore = new SerializedConfigLoader<>(ConfigHardcore.class, "hardcore_mode.conf", "Hardcore-Mode", null);
+        configMetrics = new SerializedConfigLoader<>(ConfigMetrics.class, "analytics_reporting.conf", "Analytic-Reporting", null);
+        configAuthorAdvertisements = new SerializedConfigLoader<>(ConfigAuthorAdvertisements.class, "author_support_advertisements.conf", "mcMMO", null);
+        configAutomatedBackups = new SerializedConfigLoader<>(ConfigAutomatedBackups.class, "automated_backups.conf", "Automated-Backups", null);
+        configCommands = new SerializedConfigLoader<>(ConfigCommands.class, "commands.conf", "Commands", null);
+        configItems = new SerializedConfigLoader<>(ConfigItems.class, "custom_items.conf", "Items", null);
+        configLanguage = new SerializedConfigLoader<>(ConfigLanguage.class, "language.conf", "Language", null);
+        configParticles = new SerializedConfigLoader<>(ConfigParticles.class, "particle_spawning.conf", "Particles", null);
+        configParty = new SerializedConfigLoader<>(ConfigParty.class, "party.conf", "Party", null);
+        configNotifications = new SerializedConfigLoader<>(ConfigNotifications.class, "alerts_and_notifications.conf", "Notifications", null);
+        configSuperAbilities = new SerializedConfigLoader<>(ConfigSuperAbilities.class, "skill_super_abilities.conf", "Super-Abilities", null);
+        configAdmin = new SerializedConfigLoader<>(ConfigAdmin.class, "admin.conf", "Admin", null);
+        configMobs = new SerializedConfigLoader<>(ConfigMobs.class, "creatures.conf", "Creatures", null);
 
-        configAcrobatics = new SerializedConfigLoader<>(ConfigAcrobatics.class, "acrobatics.conf", null);
-        configSalvage = new SerializedConfigLoader<>(ConfigSalvage.class, "salvage.conf", null);
-        configArchery = new SerializedConfigLoader<>(ConfigArchery.class, "archery.conf", null);
-        configAxes = new SerializedConfigLoader<>(ConfigAxes.class, "axes.conf", null);
-        configExcavation = new SerializedConfigLoader<>(ConfigExcavation.class, "excavation.conf", null);
-        configFishing = new SerializedConfigLoader<>(ConfigFishing.class, "fishing.conf", null);
-        configHerbalism = new SerializedConfigLoader<>(ConfigHerbalism.class, "herbalism.conf", null);
-        configMining = new SerializedConfigLoader<>(ConfigMining.class, "mining.conf", null);
-        configRepair = new SerializedConfigLoader<>(ConfigRepair.class, "repair.conf", null);
-        configSwords = new SerializedConfigLoader<>(ConfigSwords.class, "swords.conf", null);
-        configTaming = new SerializedConfigLoader<>(ConfigTaming.class, "taming.conf", null);
-        configUnarmed = new SerializedConfigLoader<>(ConfigUnarmed.class, "unarmed.conf", null);
-        configWoodcutting = new SerializedConfigLoader<>(ConfigWoodcutting.class, "woodcutting.conf", null);
-        configSmelting = new SerializedConfigLoader<>(ConfigSmelting.class, "smelting.conf", null);
+        configAcrobatics = new SerializedConfigLoader<>(ConfigAcrobatics.class, "acrobatics.conf", "Acrobatics", null);
+        configSalvage = new SerializedConfigLoader<>(ConfigSalvage.class, "salvage.conf", "Salvage", null);
+        configArchery = new SerializedConfigLoader<>(ConfigArchery.class, "archery.conf", "Archery", null);
+        configAxes = new SerializedConfigLoader<>(ConfigAxes.class, "axes.conf", "Axes", null);
+        configExcavation = new SerializedConfigLoader<>(ConfigExcavation.class, "excavation.conf", "Excavation", null);
+        configFishing = new SerializedConfigLoader<>(ConfigFishing.class, "fishing.conf", "Fishing", null);
+        configHerbalism = new SerializedConfigLoader<>(ConfigHerbalism.class, "herbalism.conf", "Herbalism", null);
+        configMining = new SerializedConfigLoader<>(ConfigMining.class, "mining.conf", "Mining", null);
+        configRepair = new SerializedConfigLoader<>(ConfigRepair.class, "repair.conf", "Repair", null);
+        configSwords = new SerializedConfigLoader<>(ConfigSwords.class, "swords.conf", "Swords", null);
+        configTaming = new SerializedConfigLoader<>(ConfigTaming.class, "taming.conf", "Taming", null);
+        configUnarmed = new SerializedConfigLoader<>(ConfigUnarmed.class, "unarmed.conf", "Unarmed", null);
+        configWoodcutting = new SerializedConfigLoader<>(ConfigWoodcutting.class, "woodcutting.conf", "Woodcutting", null);
+        configSmelting = new SerializedConfigLoader<>(ConfigSmelting.class, "smelting.conf", "Smelting", null);
 
         //Serialized Data
-        partyData = new SerializedConfigLoader<>(ConfigPartyData.class, "partydata.conf", null);
+        partyData = new SerializedConfigLoader<>(ConfigPartyData.class, "partydata.conf", "PartyData", null);
 
         //Assign Maps
         partyItemWeights = Maps.newHashMap(configParty.getConfig().getPartyItemShare().getItemShareMap()); //Item Share Weights
