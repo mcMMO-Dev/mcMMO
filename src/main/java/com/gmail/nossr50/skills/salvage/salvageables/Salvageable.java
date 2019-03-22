@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills.salvage.salvageables;
 
+import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
 import com.gmail.nossr50.datatypes.skills.ItemType;
-import com.gmail.nossr50.datatypes.skills.MaterialType;
 import org.bukkit.Material;
 
 public interface Salvageable {
@@ -34,11 +34,11 @@ public interface Salvageable {
     public ItemType getSalvageItemType();
 
     /**
-     * Gets the MaterialType value for this salvageable item
+     * Gets the ItemMaterialCategory value for this salvageable item
      *
-     * @return the MaterialType for this salvageable
+     * @return the ItemMaterialCategory for this salvageable
      */
-    public MaterialType getSalvageMaterialType();
+    public ItemMaterialCategory getSalvageItemMaterialCategory();
 
     /**
      * Gets the maximum quantity of salvage materials ignoring all other salvage bonuses

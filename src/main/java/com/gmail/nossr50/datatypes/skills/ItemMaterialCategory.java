@@ -2,7 +2,7 @@ package com.gmail.nossr50.datatypes.skills;
 
 import org.bukkit.Material;
 
-public enum MaterialType {
+public enum ItemMaterialCategory {
     STRING,
     LEATHER,
     WOOD,

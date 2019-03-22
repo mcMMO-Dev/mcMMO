@@ -1,7 +1,7 @@
 package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.datatypes.skills.MaterialType;
+import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -17,7 +17,6 @@ import com.gmail.nossr50.util.skills.SkillActivationType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.meta.Repairable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,13 +79,13 @@ public class RepairCommand extends SkillCommand {
         canSuperRepair = canUseSubskill(player, SubSkillType.REPAIR_SUPER_REPAIR);
         canMasterRepair = canUseSubskill(player, SubSkillType.REPAIR_REPAIR_MASTERY);
         canArcaneForge = canUseSubskill(player, SubSkillType.REPAIR_ARCANE_FORGING);
-        canRepairDiamond = Permissions.repairMaterialType(player, MaterialType.DIAMOND);
-        canRepairGold = Permissions.repairMaterialType(player, MaterialType.GOLD);
-        canRepairIron = Permissions.repairMaterialType(player, MaterialType.IRON);
-        canRepairStone = Permissions.repairMaterialType(player, MaterialType.STONE);
-        canRepairString = Permissions.repairMaterialType(player, MaterialType.STRING);
-        canRepairLeather = Permissions.repairMaterialType(player, MaterialType.LEATHER);
-        canRepairWood = Permissions.repairMaterialType(player, MaterialType.WOOD);
+        canRepairDiamond = Permissions.repairMaterialType(player, ItemMaterialCategory.DIAMOND);
+        canRepairGold = Permissions.repairMaterialType(player, ItemMaterialCategory.GOLD);
+        canRepairIron = Permissions.repairMaterialType(player, ItemMaterialCategory.IRON);
+        canRepairStone = Permissions.repairMaterialType(player, ItemMaterialCategory.STONE);
+        canRepairString = Permissions.repairMaterialType(player, ItemMaterialCategory.STRING);
+        canRepairLeather = Permissions.repairMaterialType(player, ItemMaterialCategory.LEATHER);
+        canRepairWood = Permissions.repairMaterialType(player, ItemMaterialCategory.WOOD);
         arcaneBypass = Permissions.arcaneBypass(player);
     }
 

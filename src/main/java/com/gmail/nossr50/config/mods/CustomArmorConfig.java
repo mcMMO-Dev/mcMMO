@@ -1,7 +1,7 @@
 //package com.gmail.nossr50.config.mods;
 //
 //import com.gmail.nossr50.config.ConfigCollection;
-//import com.gmail.nossr50.datatypes.skills.MaterialType;
+//import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
 //import com.gmail.nossr50.mcMMO;
 //import com.gmail.nossr50.skills.repair.repairables.Repairable;
 //import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
@@ -102,7 +102,7 @@
 //                    durability = (short) getIntValue(armorType + "." + armorName + ".Durability", 70);
 //                }
 //
-//                repairables.add(RepairableFactory.getRepairable(armorMaterial, repairMaterial, repairData, repairItemName, repairMinimumLevel, repairQuantity, durability, ConfigItemCategory.ARMOR, MaterialType.OTHER, repairXpMultiplier));
+//                repairables.add(RepairableFactory.getRepairable(armorMaterial, repairMaterial, repairData, repairItemName, repairMinimumLevel, repairQuantity, durability, ConfigItemCategory.ARMOR, ItemMaterialCategory.OTHER, repairXpMultiplier));
 //            }
 //
 //            materialList.add(armorMaterial);

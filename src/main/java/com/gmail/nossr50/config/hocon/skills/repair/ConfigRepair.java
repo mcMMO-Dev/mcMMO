@@ -26,178 +26,48 @@ public class ConfigRepair {
         CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(WOODEN_AXE, Arrays.asList(PLANKS), 1, 0, .5D));
         CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(WOODEN_HOE, Arrays.asList(PLANKS), 1, 0, .25D));
 
-        /*
-        Repairables:
-            #
-            # Wooden repairables
-            ###
-            # Tools
-            WOODEN_SWORD:
-                MinimumLevel: 0
-                XpMultiplier: .25
-            WOODEN_SHOVEL:
-                MinimumLevel: 0
-                XpMultiplier: .16
-            WOODEN_PICKAXE:
-                MinimumLevel: 0
-                XpMultiplier: .5
-            WOODEN_AXE:
-                MinimumLevel: 0
-                XpMultiplier: .5
-            WOODEN_HOE:
-                MinimumLevel: 0
-                XpMultiplier: .25
-            #
-            # Stone repairables
-            ###
-            # Tools
-            STONE_SWORD:
-                MinimumLevel: 0
-                XpMultiplier: .25
-            STONE_SHOVEL:
-                MinimumLevel: 0
-                XpMultiplier: .16
-            STONE_PICKAXE:
-                MinimumLevel: 0
-                XpMultiplier: .5
-            STONE_AXE:
-                MinimumLevel: 0
-                XpMultiplier: .5
-            STONE_HOE:
-                MinimumLevel: 0
-                XpMultiplier: .25
-            #
-            # Iron repairables
-            ###
-            # Tools
-            IRON_SWORD:
-                MinimumLevel: 0
-                XpMultiplier: .5
-            IRON_SHOVEL:
-                MinimumLevel: 0
-                XpMultiplier: .3
-            IRON_PICKAXE:
-                MinimumLevel: 0
-                XpMultiplier: 1
-            IRON_AXE:
-                MinimumLevel: 0
-                XpMultiplier: 1
-            IRON_HOE:
-                MinimumLevel: 0
-                XpMultiplier: .5
-            SHEARS:
-                MinimumLevel: 0
-                XpMultiplier: .5
-            FLINT_AND_STEEL:
-                MinimumLevel: 0
-                XpMultiplier: .3
-            # Armor
-            IRON_HELMET:
-                MinimumLevel: 0
-                XpMultiplier: 2
-            IRON_CHESTPLATE:
-                MinimumLevel: 0
-                XpMultiplier: 2
-            IRON_LEGGINGS:
-                MinimumLevel: 0
-                XpMultiplier: 2
-            IRON_BOOTS:
-                MinimumLevel: 0
-                XpMultiplier: 2
-            #
-            # Gold repairables
-            ###
-            # Tools
-            GOLDEN_SWORD:
-                MinimumLevel: 0
-                XpMultiplier: 4
-            GOLDEN_SHOVEL:
-                MinimumLevel: 0
-                XpMultiplier: 2.6
-            GOLDEN_PICKAXE:
-                MinimumLevel: 0
-                XpMultiplier: 8
-            GOLDEN_AXE:
-                MinimumLevel: 0
-                XpMultiplier: 8
-            GOLDEN_HOE:
-                MinimumLevel: 0
-                XpMultiplier: 4
-            # Armor
-            GOLDEN_HELMET:
-                MinimumLevel: 0
-                XpMultiplier: 4
-            GOLDEN_CHESTPLATE:
-                MinimumLevel: 0
-                XpMultiplier: 4
-            GOLDEN_LEGGINGS:
-                MinimumLevel: 0
-                XpMultiplier: 4
-            GOLDEN_BOOTS:
-                MinimumLevel: 0
-                XpMultiplier: 4
-            #
-            # Diamond repairables
-            ###
-            # Tools
-            DIAMOND_SWORD:
-                MinimumLevel: 50
-                XpMultiplier: .5
-            DIAMOND_SHOVEL:
-                MinimumLevel: 50
-                XpMultiplier: .3
-            DIAMOND_PICKAXE:
-                MinimumLevel: 50
-                XpMultiplier: 1
-            DIAMOND_AXE:
-                MinimumLevel: 50
-                XpMultiplier: 1
-            DIAMOND_HOE:
-                MinimumLevel: 50
-                XpMultiplier: .5
-            # Armor
-            DIAMOND_HELMET:
-                MinimumLevel: 50
-                XpMultiplier: 6
-            DIAMOND_CHESTPLATE:
-                MinimumLevel: 50
-                XpMultiplier: 6
-            DIAMOND_LEGGINGS:
-                MinimumLevel: 50
-                XpMultiplier: 6
-            DIAMOND_BOOTS:
-                MinimumLevel: 50
-                XpMultiplier: 6
-            #
-            # Leather repairables
-            ###
-            # Armor
-            LEATHER_HELMET:
-                MinimumLevel: 0
-                XpMultiplier: 1
-            LEATHER_CHESTPLATE:
-                MinimumLevel: 0
-                XpMultiplier: 1
-            LEATHER_LEGGINGS:
-                MinimumLevel: 0
-                XpMultiplier: 1
-            LEATHER_BOOTS:
-                MinimumLevel: 0
-                XpMultiplier: 1
-            #
-            # String repairables
-            ###
-            # Tools
-            FISHING_ROD:
-                MinimumLevel: 0
-                XpMultiplier: .5
-            BOW:
-                MinimumLevel: 0
-                XpMultiplier: .5
-            CARROT_ON_A_STICK:
-                MinimumLevel: 0
-                XpMultiplier: .5
-         */
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(STONE_SWORD, COBBLESTONE, 1, 0, .25D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(STONE_SHOVEL, COBBLESTONE, 1, 0, .15D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(STONE_PICKAXE, COBBLESTONE, 1, 0, .5D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(STONE_AXE, COBBLESTONE, 1, 0, .5D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(STONE_HOE, COBBLESTONE, 1, 0, .25D));
+
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(IRON_SWORD, IRON_INGOT, 1, 0, .5D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(IRON_SHOVEL, IRON_INGOT, 1, 0, .3D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(IRON_PICKAXE, IRON_INGOT, 1, 0, 1D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(IRON_AXE, IRON_INGOT, 1, 0, 1D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(IRON_HOE, IRON_INGOT, 1, 0, .5D));
+
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(IRON_HELMET, IRON_INGOT, 1, 0, 2D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(IRON_CHESTPLATE, IRON_INGOT, 1, 0, 2D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(IRON_LEGGINGS, IRON_INGOT, 1, 0, 2D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(IRON_BOOTS, IRON_INGOT, 1, 0, 2D));
+
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(SHEARS, IRON_INGOT, 1, 0, .5D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(FLINT_AND_STEEL, IRON_INGOT, 1, 0, .3D));
+
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(GOLDEN_SWORD, GOLD_INGOT, 1, 0, 4D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(GOLDEN_SHOVEL, GOLD_INGOT, 1, 0, 2.6D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(GOLDEN_PICKAXE, GOLD_INGOT, 1, 0, 8D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(GOLDEN_AXE, GOLD_INGOT, 1, 0, 8D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(GOLDEN_HOE, GOLD_INGOT, 1, 0, 4D));
+
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(GOLDEN_HELMET, GOLD_INGOT, 1, 0, 4D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(GOLDEN_CHESTPLATE, GOLD_INGOT, 1, 0, 4D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(GOLDEN_LEGGINGS, GOLD_INGOT, 1, 0, 4D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(GOLDEN_BOOTS, GOLD_INGOT, 1, 0, 4D));
+
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(DIAMOND_SWORD, DIAMOND, 1, 0, .5D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(DIAMOND_SHOVEL, DIAMOND, 1, 0, .3D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(DIAMOND_PICKAXE, DIAMOND, 1, 0, 1D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(DIAMOND_AXE, DIAMOND, 1, 0, 1D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(DIAMOND_HOE, DIAMOND, 1, 0, .5D));
+
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(DIAMOND_HELMET, DIAMOND, 1, 0, 2D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(DIAMOND_CHESTPLATE, DIAMOND, 1, 0, 2D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(DIAMOND_LEGGINGS, DIAMOND, 1, 0, 2D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(DIAMOND_BOOTS, DIAMOND, 1, 0, 2D));
+
     }
 
 

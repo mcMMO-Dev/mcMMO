@@ -2,8 +2,8 @@ package com.gmail.nossr50.config.collectionconfigs;
 
 import com.gmail.nossr50.config.ConfigCollection;
 import com.gmail.nossr50.config.ConfigConstants;
+import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
 import com.gmail.nossr50.datatypes.skills.ItemType;
-import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.skills.salvage.salvageables.SalvageableFactory;
@@ -21,7 +21,7 @@ import java.util.List;
 public class SalvageConfig extends ConfigCollection {
 
     public static final String SALVAGEABLES = "Salvageables";
-    public static final String MATERIAL_TYPE = "MaterialType";
+    public static final String MATERIAL_TYPE = "ItemMaterialCategory";
     public static final String SALVAGE_MATERIAL = "SalvageMaterial";
     public static final String MAXIMUM_DURABILITY = "MaximumDurability";
     public static final String ITEM_TYPE = "ItemType";
@@ -65,7 +65,7 @@ public class SalvageConfig extends ConfigCollection {
             }
 
             // Salvage Material Type
-            MaterialType salvageMaterialType = MaterialType.OTHER;
+            ItemMaterialCategory salvageItemMaterialCategory = ItemMaterialCategory.OTHER;
 
             String salvageMaterialTypeString;
 
@@ -78,31 +78,31 @@ public class SalvageConfig extends ConfigCollection {
                 ItemStack salvageItem = new ItemStack(itemMaterial);
 
                 if (ItemUtils.isWoodTool(salvageItem)) {
-                    salvageMaterialType = MaterialType.WOOD;
+                    salvageItemMaterialCategory = ItemMaterialCategory.WOOD;
                 } else if (ItemUtils.isStoneTool(salvageItem)) {
-                    salvageMaterialType = MaterialType.STONE;
+                    salvageItemMaterialCategory = ItemMaterialCategory.STONE;
                 } else if (ItemUtils.isStringTool(salvageItem)) {
-                    salvageMaterialType = MaterialType.STRING;
+                    salvageItemMaterialCategory = ItemMaterialCategory.STRING;
                 } else if (ItemUtils.isLeatherArmor(salvageItem)) {
-                    salvageMaterialType = MaterialType.LEATHER;
+                    salvageItemMaterialCategory = ItemMaterialCategory.LEATHER;
                 } else if (ItemUtils.isIronArmor(salvageItem) || ItemUtils.isIronTool(salvageItem)) {
-                    salvageMaterialType = MaterialType.IRON;
+                    salvageItemMaterialCategory = ItemMaterialCategory.IRON;
                 } else if (ItemUtils.isGoldArmor(salvageItem) || ItemUtils.isGoldTool(salvageItem)) {
-                    salvageMaterialType = MaterialType.GOLD;
+                    salvageItemMaterialCategory = ItemMaterialCategory.GOLD;
                 } else if (ItemUtils.isDiamondArmor(salvageItem) || ItemUtils.isDiamondTool(salvageItem)) {
-                    salvageMaterialType = MaterialType.DIAMOND;
+                    salvageItemMaterialCategory = ItemMaterialCategory.DIAMOND;
                 }
             } else {
                 try {
-                    salvageMaterialType = MaterialType.valueOf(salvageMaterialTypeString.replace(" ", "_").toUpperCase());
+                    salvageItemMaterialCategory = ItemMaterialCategory.valueOf(salvageMaterialTypeString.replace(" ", "_").toUpperCase());
                 } catch (IllegalArgumentException ex) {
-                    errorMessages.add("Salvage Config: " + salvageChildNodeName + " has an invalid MaterialType of " + salvageMaterialTypeString);
+                    errorMessages.add("Salvage Config: " + salvageChildNodeName + " has an invalid ItemMaterialCategory of " + salvageMaterialTypeString);
                 }
             }
 
             // Salvage Material
             String salvageMaterialName = getStringValue(SALVAGEABLES, salvageChildNodeName, SALVAGE_MATERIAL);
-            Material salvageMaterial = (salvageMaterialName == null ? salvageMaterialType.getDefaultMaterial() : Material.matchMaterial(salvageMaterialName));
+            Material salvageMaterial = (salvageMaterialName == null ? salvageItemMaterialCategory.getDefaultMaterial() : Material.matchMaterial(salvageMaterialName));
 
             if (salvageMaterial == null) {
                 errorMessages.add(salvageChildNodeName + " has an invalid salvage material: " + salvageMaterialName);
@@ -169,7 +169,7 @@ public class SalvageConfig extends ConfigCollection {
             if(xpMultiplier < 0)
                 xpMultiplier = 0;
 
-            Salvageable salvageable = SalvageableFactory.getSalvageable(itemMaterial, salvageMaterial, salvageMetadata, minimumLevel, maximumQuantity, maximumDurability, salvageItemType, salvageMaterialType, xpMultiplier);
+            Salvageable salvageable = SalvageableFactory.getSalvageable(itemMaterial, salvageMaterial, salvageMetadata, minimumLevel, maximumQuantity, maximumDurability, salvageItemType, salvageItemMaterialCategory, xpMultiplier);
             genericCollection.add(salvageable);
 
             for (String issue : errorMessages) {

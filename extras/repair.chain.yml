@@ -11,7 +11,7 @@
 ## Valid values are ARMOR, TOOL, and OTHER.
 ## This defaults to OTHER.
 #
-# MaterialType: This is the type of the material of the item to be repaired, this is only important for permissions.
+# ItemMaterialCategory: This is the type of the material of the item to be repaired, this is only important for permissions.
 ## Valid values are STRING, LEATHER, WOOD, STONE, IRON, GOLD, DIAMOND, and OTHER
 ## This defaults to OTHER.
 #

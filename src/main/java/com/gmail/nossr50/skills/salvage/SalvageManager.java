@@ -75,7 +75,7 @@ public class SalvageManager extends SkillManager {
             return;
         }
 
-        if (!Permissions.salvageMaterialType(player, salvageable.getSalvageMaterialType())) {
+        if (!Permissions.salvageMaterialType(player, salvageable.getSalvageItemMaterialCategory())) {
             NotificationManager.sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
             return;
         }

@@ -4,7 +4,7 @@ package com.gmail.nossr50.config.collectionconfigs;
 import com.gmail.nossr50.config.ConfigCollection;
 import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.datatypes.skills.ItemType;
-import com.gmail.nossr50.datatypes.skills.MaterialType;
+import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
@@ -28,7 +28,7 @@ public class RepairConfig extends ConfigCollection {
 
     public static final String REPAIRABLES = "Repairables";
     public static final String ITEM_ID = "ItemId";
-    public static final String MATERIAL_TYPE = "MaterialType";
+    public static final String MATERIAL_TYPE = "ItemMaterialCategory";
     public static final String REPAIR_MATERIAL = "RepairMaterial";
     public static final String MAXIMUM_DURABILITY = "MaximumDurability";
     public static final String ITEM_TYPE = "ItemType";
@@ -88,38 +88,38 @@ public class RepairConfig extends ConfigCollection {
              * Determine Repair Material Type
              *//*
 
-            MaterialType repairMaterialType = MaterialType.OTHER;
+            ItemMaterialCategory repairMaterialType = ItemMaterialCategory.OTHER;
             String repairMaterialTypeString = getRepairMaterialTypeString(repairChildNodeName);
 
             if (hasNode(REPAIRABLES, repairChildNodeName, MATERIAL_TYPE)) {
                 ItemStack repairItem = new ItemStack(itemMaterial);
 
                 if (ItemUtils.isWoodTool(repairItem)) {
-                    repairMaterialType = MaterialType.WOOD;
+                    repairMaterialType = ItemMaterialCategory.WOOD;
                 }
                 else if (ItemUtils.isStoneTool(repairItem)) {
-                    repairMaterialType = MaterialType.STONE;
+                    repairMaterialType = ItemMaterialCategory.STONE;
                 }
                 else if (ItemUtils.isStringTool(repairItem)) {
-                    repairMaterialType = MaterialType.STRING;
+                    repairMaterialType = ItemMaterialCategory.STRING;
                 }
                 else if (ItemUtils.isLeatherArmor(repairItem)) {
-                    repairMaterialType = MaterialType.LEATHER;
+                    repairMaterialType = ItemMaterialCategory.LEATHER;
                 }
                 else if (ItemUtils.isIronArmor(repairItem) || ItemUtils.isIronTool(repairItem)) {
-                    repairMaterialType = MaterialType.IRON;
+                    repairMaterialType = ItemMaterialCategory.IRON;
                 }
                 else if (ItemUtils.isGoldArmor(repairItem) || ItemUtils.isGoldTool(repairItem)) {
-                    repairMaterialType = MaterialType.GOLD;
+                    repairMaterialType = ItemMaterialCategory.GOLD;
                 }
                 else if (ItemUtils.isDiamondArmor(repairItem) || ItemUtils.isDiamondTool(repairItem)) {
-                    repairMaterialType = MaterialType.DIAMOND;
+                    repairMaterialType = ItemMaterialCategory.DIAMOND;
                 }
             }
             else {
                 //If a material cannot be matched, try matching the material to its repair material type string from the config
                 try {
-                    repairMaterialType = MaterialType.valueOf(repairMaterialTypeString.toUpperCase());
+                    repairMaterialType = ItemMaterialCategory.valueOf(repairMaterialTypeString.toUpperCase());
                 }
                 catch (IllegalArgumentException ex) {
                     errorMessages.add("Repair Config: " + repairChildNodeName + " has an invalid " + MATERIAL_TYPE + " of " + repairMaterialTypeString);

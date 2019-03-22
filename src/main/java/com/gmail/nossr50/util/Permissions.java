@@ -1,8 +1,8 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.commands.party.PartySubcommandType;
+import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
 import com.gmail.nossr50.datatypes.skills.ItemType;
-import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
@@ -169,14 +169,14 @@ public final class Permissions {
 
     /* REPAIR */
     public static boolean repairItemType(Permissible permissible, ItemType repairItemType) { return permissible.hasPermission("mcmmo.ability.repair." + repairItemType.toString().toLowerCase() + "repair"); }
-    public static boolean repairMaterialType(Permissible permissible, MaterialType repairMaterialType) { return permissible.hasPermission("mcmmo.ability.repair." + repairMaterialType.toString().toLowerCase() + "repair"); }
+    public static boolean repairMaterialType(Permissible permissible, ItemMaterialCategory repairItemMaterialCategory) { return permissible.hasPermission("mcmmo.ability.repair." + repairItemMaterialCategory.toString().toLowerCase() + "repair"); }
 
     /* SALVAGE */
     public static boolean advancedSalvage(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.salvage.advancedsalvage"); }
     public static boolean arcaneSalvage(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.salvage.arcanesalvage"); }
 
     public static boolean salvageItemType(Permissible permissible, ItemType salvageItemType) { return permissible.hasPermission("mcmmo.ability.salvage." + salvageItemType.toString().toLowerCase() + "salvage"); }
-    public static boolean salvageMaterialType(Permissible permissible, MaterialType salvageMaterialType) { return permissible.hasPermission("mcmmo.ability.salvage." + salvageMaterialType.toString().toLowerCase() + "salvage"); }
+    public static boolean salvageMaterialType(Permissible permissible, ItemMaterialCategory salvageItemMaterialCategory) { return permissible.hasPermission("mcmmo.ability.salvage." + salvageItemMaterialCategory.toString().toLowerCase() + "salvage"); }
 
     /* SMELTING */
     public static boolean fluxMining(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.smelting.fluxmining"); }

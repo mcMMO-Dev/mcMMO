@@ -86,7 +86,7 @@ public class CustomToolConfig extends Config {
                     durability = (short) getIntValue(toolType + "." + toolName + ".Durability", 60);
                 }
 
-                repairables.add(RepairableFactory.getRepairable(toolMaterial, repairMaterial, repairData, repairItemName, repairMinimumLevel, repairQuantity, durability, ItemType.TOOL, MaterialType.OTHER, repairXpMultiplier));
+                repairables.add(RepairableFactory.getRepairable(toolMaterial, repairMaterial, repairData, repairItemName, repairMinimumLevel, repairQuantity, durability, ItemType.TOOL, ItemMaterialCategory.OTHER, repairXpMultiplier));
             }
 
             double multiplier = getDoubleValue(toolType + "." + toolName + ".XP_Modifier", 1.0);

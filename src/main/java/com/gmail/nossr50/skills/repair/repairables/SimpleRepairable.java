@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills.repair.repairables;
 
+import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
 import com.gmail.nossr50.datatypes.skills.ItemType;
-import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.util.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -16,7 +16,7 @@ public class SimpleRepairable {
     private final int minimumQuantity, minimumLevel;
     private final short maximumDurability, baseRepairDurability;
     private final ItemType repairItemType;
-    private final MaterialType repairMaterialType;
+    private final ItemMaterialCategory repairItemMaterialCategory;
     private final double xpMultiplier;
 
     public SimpleRepairable(Material itemMaterial, Material repairMaterial, int minimumQuantity, int minimumLevel, double xpMultiplier) {
@@ -38,16 +38,16 @@ public class SimpleRepairable {
         this.baseRepairDurability = (short) (maximumDurability / minimumQuantity);
 
         this.repairItemType = determineItemType(this.itemMaterial);
-        this.repairMaterialType = determineMaterialType(this.repairMaterials.get(0));
+        this.repairItemMaterialCategory = determineMaterialType(this.repairMaterials.get(0));
     }
 
-    public MaterialType determineMaterialType(Material material) {
+    public ItemMaterialCategory determineMaterialType(Material material) {
         switch (material) {
             case STRING:
-                return MaterialType.STRING;
+                return ItemMaterialCategory.STRING;
 
             case LEATHER:
-                return MaterialType.LEATHER;
+                return ItemMaterialCategory.LEATHER;
 
             case ACACIA_PLANKS:
             case BIRCH_PLANKS:
@@ -55,22 +55,22 @@ public class SimpleRepairable {
             case JUNGLE_PLANKS:
             case OAK_PLANKS:
             case SPRUCE_PLANKS:
-                return MaterialType.WOOD;
+                return ItemMaterialCategory.WOOD;
 
             case STONE:
-                return MaterialType.STONE;
+                return ItemMaterialCategory.STONE;
 
             case IRON_INGOT:
-                return MaterialType.IRON;
+                return ItemMaterialCategory.IRON;
 
             case GOLD_INGOT:
-                return MaterialType.GOLD;
+                return ItemMaterialCategory.GOLD;
 
             case DIAMOND:
-                return MaterialType.DIAMOND;
+                return ItemMaterialCategory.DIAMOND;
 
             default:
-                return MaterialType.OTHER;
+                return ItemMaterialCategory.OTHER;
         }
     }
 
@@ -103,8 +103,8 @@ public class SimpleRepairable {
         return repairItemType;
     }
 
-    public MaterialType getRepairMaterialType() {
-        return repairMaterialType;
+    public ItemMaterialCategory getRepairItemMaterialCategory() {
+        return repairItemMaterialCategory;
     }
 
     public int getMinimumQuantity() {

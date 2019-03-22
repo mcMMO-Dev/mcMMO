@@ -3,7 +3,7 @@ package com.gmail.nossr50.config.experience;
 import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.config.ConfigValidated;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
-import com.gmail.nossr50.datatypes.skills.MaterialType;
+import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
 import com.gmail.nossr50.mcMMO;
@@ -438,8 +438,8 @@ public class ExperienceConfig extends ConfigValidated {
         return getDoubleValue(EXPERIENCE, REPAIR, BASE1);
     }
 
-    public double getRepairXP(MaterialType repairMaterialType) {
-        return getDoubleValue(EXPERIENCE, REPAIR, StringUtils.getCapitalized(repairMaterialType.toString()));
+    public double getRepairXP(ItemMaterialCategory repairItemMaterialCategory) {
+        return getDoubleValue(EXPERIENCE, REPAIR, StringUtils.getCapitalized(repairItemMaterialCategory.toString()));
     }
 
     /* Taming */
