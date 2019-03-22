@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config.hocon.skills.repair;
 
-import com.gmail.nossr50.config.hocon.skills.ConfigScalingSubSkill;
+import com.gmail.nossr50.config.hocon.skills.ConfigSubSkillScalingRNG;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -8,9 +8,9 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 public class ConfigRepairSuperRepair {
 
     @Setting(value = "Settings")
-    private ConfigScalingSubSkill superRepair = new ConfigScalingSubSkill();
+    private ConfigSubSkillScalingRNG superRepair = new ConfigSubSkillScalingRNG();
 
-    public ConfigScalingSubSkill getSuperRepair() {
+    public ConfigSubSkillScalingRNG getSuperRepair() {
         return superRepair;
     }
 }

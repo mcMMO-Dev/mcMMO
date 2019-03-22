@@ -4,7 +4,7 @@ import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 @ConfigSerializable
-public class ConfigScalingSubSkill {
+public class ConfigSubSkillScalingRNG {
 
     @Setting(value = "Standard-Mode-Scaling-Settings", comment = "Standard mode is the new default level scaling for mcMMO" +
             "\nMost skills in standard mode scale from 1-100, maxing out at 100." +

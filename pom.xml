@@ -17,7 +17,7 @@
     </issueManagement>
     <packaging>jar</packaging>
     <build>
-        <finalName>mcMMO.jar</finalName>
+        <finalName>${project.artifactId}</finalName>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
         <resources>
             <resource>
@@ -77,9 +77,6 @@
                     <descriptors>
                         <descriptor>src/main/assembly/package.xml</descriptor>
                     </descriptors>
-                    <!--<descriptorRefs>
-                        b${BUILD_NUMBER}
-                    </descriptorRefs>-->
                 </configuration>
                 <executions>
                     <execution>
@@ -245,7 +242,6 @@
         </dependency>
     </dependencies>
     <properties>
-        <BUILD_NUMBER>UNDEFINED</BUILD_NUMBER>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 </project>
