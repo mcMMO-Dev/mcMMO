@@ -19,7 +19,7 @@ public class ConfigDodge {
     @Setting(value = "RNG-Settings", comment = "Settings related to random chance elements for this Sub-Skill.")
     private ConfigSubSkillScalingRNG rng = new ConfigSubSkillScalingRNG();
 
-    public ConfigSubSkillScalingRNG getRng() {
+    public ConfigSubSkillScalingRNG getRNGSettings() {
         return rng;
     }
 

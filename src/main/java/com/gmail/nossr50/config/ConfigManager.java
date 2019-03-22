@@ -45,6 +45,7 @@ import com.gmail.nossr50.config.treasure.ExcavationTreasureConfig;
 import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
 import com.gmail.nossr50.config.treasure.HerbalismTreasureConfig;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.SimpleRepairableManager;
@@ -91,6 +92,8 @@ public final class ConfigManager {
     //TODO: Add these back when modded servers become a thing again
 
     /* MISC MANAGERS */
+
+    SkillPropertiesManager skillPropertiesManager;
 
     private ExperienceMapManager experienceMapManager;
 
@@ -212,7 +215,6 @@ public final class ConfigManager {
         TypeSerializers.getDefaultSerializers().registerType(new TypeToken<Material>() {}, new CustomEnumValueSerializer());
         TypeSerializers.getDefaultSerializers().registerType(new TypeToken<PartyFeature>() {}, new CustomEnumValueSerializer());
 
-
         mcMMO.p.getLogger().info("Deserializing configs...");
         //TODO: Not sure about the order of MainConfig
         //Serialized Configs
@@ -253,6 +255,9 @@ public final class ConfigManager {
 
         //Serialized Data
         partyData = new SerializedConfigLoader<>(ConfigPartyData.class, "partydata.conf", "PartyData", null);
+
+        skillPropertiesManager = new SkillPropertiesManager();
+        skillPropertiesManager.fillRegisters();
 
         //Assign Maps
         partyItemWeights = Maps.newHashMap(configParty.getConfig().getPartyItemShare().getItemShareMap()); //Item Share Weights
@@ -584,5 +589,15 @@ public final class ConfigManager {
 
     public ConfigSalvage getConfigSalvage() {
         return configSalvage.getConfig();
+    }
+
+    public double getSkillMaxBonusLevel(SubSkillType subSkillType)
+    {
+        return skillPropertiesManager.getMaxBonusLevel(subSkillType);
+    }
+
+    public double getSkillMaxChance(SubSkillType subSkillType)
+    {
+        return skillPropertiesManager.getMaxChance(subSkillType);
     }
 }

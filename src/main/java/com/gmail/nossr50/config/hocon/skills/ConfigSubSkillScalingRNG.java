@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config.hocon.skills;
 
+import com.gmail.nossr50.mcMMO;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -29,5 +30,23 @@ public class ConfigSubSkillScalingRNG {
 
     public ConfigScalingSubSkillRetro getRetroSettings() {
         return retroSettings;
+    }
+
+    /**
+     * The max chance for the RNG component of a subskill from the user config
+     * @return the max chance for the RNG component of a subskill
+     */
+    public double getMaxChance() {
+        if(mcMMO.getConfigManager().getConfigLeveling().getConfigSectionLevelingGeneral().getConfigSectionLevelScaling().isRetroModeEnabled())
+            return getRetroSettings().getChanceAtMaxSkill();
+        else
+            return getStandardSettings().getChanceAtMaxSkill();
+    }
+
+    public double getMaxBonusLevel() {
+        if(mcMMO.getConfigManager().getConfigLeveling().getConfigSectionLevelingGeneral().getConfigSectionLevelScaling().isRetroModeEnabled())
+            return getRetroSettings().getMaxBonusLevel();
+        else
+            return getStandardSettings().getMaxBonusLevel();
     }
 }
