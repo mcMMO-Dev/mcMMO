@@ -2,6 +2,7 @@ package com.gmail.nossr50.config.hocon.skills.repair;
 
 import com.gmail.nossr50.config.hocon.skills.repair.general.ConfigRepairGeneral;
 import com.gmail.nossr50.config.hocon.skills.repair.repairmastery.ConfigRepairMastery;
+import com.gmail.nossr50.config.hocon.skills.repair.subskills.ConfigRepairSubSkills;
 import com.gmail.nossr50.skills.repair.repairables.SimpleRepairable;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
@@ -70,37 +71,42 @@ public class ConfigRepair {
 
     }
 
-
-
-    @Setting(value = "Repair-Mastery", comment = "Settings related to the repair mastery subskill")
-    private ConfigRepairMastery repairMastery = new ConfigRepairMastery();
-
-    @Setting(value = "Super-Repair", comment = "Settings related to the super repair subskill")
-    private ConfigRepairSuperRepair superRepair = new ConfigRepairSuperRepair();
-
-    @Setting(value = "Arcane-Forging", comment = "Settings related to the arcane forging subskill")
-    private ConfigRepairArcaneForging arcaneForging = new ConfigRepairArcaneForging();
-
     @Setting(value = "General")
     private ConfigRepairGeneral repairGeneral = new ConfigRepairGeneral();
 
-    @Setting(value = "Repairables")
+    @Setting(value = "SubSkills", comment = "Settings for subskills stemming from Repair")
+    private ConfigRepairSubSkills repairSubSkills = new ConfigRepairSubSkills();
+
+    @Setting(value = "Z-Repairables", comment = "This is the list of what can be repaired in mcMMO by Anvils and their properties." +
+            "\nThe \"Z\" in this config keys name is literally just to place this at the bottom of the config since the serializer uses alphabetical sorting." +
+            "\n\n -- Explanation for Parameters --" +
+            "\nItem: The name of the item, this has to be equivalent to the internal registry key (Name ID) Minecraft uses for this item" +
+            "\nItems-Used-To-Repair: The name of the item consumed as part of repairing, this has to be equivalent to the internal registry key (Name ID) Minecraft uses for this item" +
+            "\nMinimum-Quantity-Used-To-Repair: The amount of this item that is required to repair this item at a minimum." +
+            "\nOverride-Level-Requirement: If you would like to specify a specific skill level required to repair an item, do it here. It should be noted that a lot of items will be given automatic level requirements if you leave this at zero." +
+            "\nXP-Multiplier: When calculating how much XP to give the player for the repair, the end result will be multiplied by this value." +
+            "\n\nName ID List: https://minecraft.gamepedia.com/Java_Edition_data_values" +
+            "\nTIP: You can omit \"minecraft:\" from the Name ID if you want to, for example you can write \"red_wool\" instead of \"minecraft:red_wool\"")
     private ArrayList<SimpleRepairable> configRepairablesList = CONFIG_REPAIRABLES_DEFAULTS;
 
     public ConfigRepairGeneral getRepairGeneral() {
         return repairGeneral;
     }
 
+    public ConfigRepairSubSkills getRepairSubSkills() {
+        return repairSubSkills;
+    }
+
     public ConfigRepairMastery getRepairMastery() {
-        return repairMastery;
+        return repairSubSkills.getRepairMastery();
     }
 
     public ConfigRepairSuperRepair getSuperRepair() {
-        return superRepair;
+        return repairSubSkills.getSuperRepair();
     }
 
     public ConfigRepairArcaneForging getArcaneForging() {
-        return arcaneForging;
+        return repairSubSkills.getArcaneForging();
     }
 
     public ArrayList<SimpleRepairable> getConfigRepairablesList() {

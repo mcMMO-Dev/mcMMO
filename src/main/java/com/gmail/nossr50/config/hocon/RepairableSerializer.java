@@ -51,7 +51,7 @@ public class RepairableSerializer implements TypeSerializer<SimpleRepairable> {
         Material repairItem = (Material) getEnum(repairConstant, TypeToken.of(Material.class));*/
 
         int minimumQuantity = value.getNode("Minimum-Quantity-Used-To-Repair").getValue(TypeToken.of(Integer.class));
-        int minimumLevel = value.getNode("Skill-Level-Required-To-Repair").getValue(TypeToken.of(Integer.class));
+        int minimumLevel = value.getNode("Override-Level-Requirement").getValue(TypeToken.of(Integer.class));
         double xpMultiplier = value.getNode("XP-Multiplier").getValue(TypeToken.of(Double.class));
 
         return new SimpleRepairable(item, repairItems, minimumQuantity, minimumLevel, xpMultiplier);
