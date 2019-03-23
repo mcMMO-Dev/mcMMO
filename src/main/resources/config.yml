@@ -428,22 +428,34 @@ Skills:
 ###
 Double_Drops:
     Herbalism:
-        Beetroots_Ripe: true
+        Beetroots: true
         Brown_Mushroom: true
         Cactus: true
-        Carrots_Ripe: true
-        Cocoa_Ripe: true
-        Wheat_Ripe: true
+        Carrots: true
+        Cocoa: true
+        Wheat: true
         Melon: true
-        Nether_Wart_Ripe: true
-        Potatoes_Ripe: true
+        Nether_Wart: true
+        Potatoes: true
         Pumpkin: true
         Red_Mushroom: true
-        Red_Tulip: true
         Sugar_Cane: true
         Vine: true
         Lily_Pad: true
+        Red_Tulip: true
+        White_Tulip: true
+        Pink_Tulip: true
+        Orange_Tulip: true
         Dandelion: true
+        Poppy: true
+        Blue_Orchid: true
+        Allium: true
+        Azure_Bluet: true
+        Oxeye_Daisy: true
+        Sunflower: true
+        Lilac: true
+        Rose_Bush: true
+        Peony: true
     Mining:
         Coal_Ore: true
         Diamond_Ore: true

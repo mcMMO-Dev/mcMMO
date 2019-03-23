@@ -7,6 +7,13 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.22
+    Less aggressive spam click protection on Fishing
+    Added all missing flowers to Double Drop tables for Herbalism
+    Fixed Double Drop entries for all farming crops for Herbalism
+    NOTE: You'll need to add these entries to your config.yml manually, or wait for the upcoming config update where this will be fixed for you automatically.
+    NOTE: Here's what your Double_Drop entries in Config.yml for Herbalism should look like: https://paste.gg/p/anonymous/8d8db4ac69bd495fa48a7f5190484c5e
+
 Version 2.1.21
     Improved anti-farm/anti-grinding mechanics for Rolling
     When you gain XP from Rolling there is a cooldown period (60~ seconds) for gaining XP again
