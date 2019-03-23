@@ -11,8 +11,8 @@ public class ConfigSalvageGeneral {
     public static final boolean ENCHANTED_ITEMS_REQUIRE_CONFIRM = true;
 
     @Setting(value = "Anvil-Block-Material", comment = "The block used for mcMMO repairs." +
-            "Default value: "+"IRON_BLOCK")
-    private Material salvageAnvilMaterial = Material.GOLD_BLOCK;
+            "Default value: "+"gold_block")
+    private String salvageAnvilMaterial = Material.GOLD_BLOCK.getKey().toString();
 
     @Setting(value = "Anvil-Use-Sounds", comment = "If true, mcMMO will play a sound when a player uses an anvil." +
             "\nDefault value: "+ANVIL_USE_SOUNDS_DEFAULT)
@@ -32,7 +32,7 @@ public class ConfigSalvageGeneral {
     private boolean enchantedItemsRequireConfirm = ENCHANTED_ITEMS_REQUIRE_CONFIRM;
 
     public Material getSalvageAnvilMaterial() {
-        return salvageAnvilMaterial;
+        return Material.matchMaterial(salvageAnvilMaterial);
     }
 
     public boolean isAnvilUseSounds() {

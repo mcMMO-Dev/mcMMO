@@ -13,7 +13,7 @@ public class ConfigConstants {
     public final static ArrayList<String> EXAMPLE_BLACKLIST_WORLDS_LIST_DEFAULT;
 
     public final static String SKILL_SCALING_BENEFIT_EXPLANATION = "\nSub-Skills dynamically adjust their rewards to match the max bonus level, you can think of it as a curve that calculates what bonuses " +
-            "\n   a player should have based on how far they are from the max bonus level value, and the other parameters used for the scaling of that sub-skill.";
+            "\n a player should have based on how far they are from the max bonus level value, and the other parameters used for the scaling of that sub-skill.";
 
     //Add the worlds to the list
     static {

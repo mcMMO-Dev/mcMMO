@@ -17,7 +17,7 @@ public class ConfigSubSkillScalingRNG {
     @Setting(value = "Retro-Mode-Scaling-Settings", comment = "Retro mode is the optional level scaling for mcMMO, which was replaced by Standard scaling." +
             "\nMost skills in retro mode scale from 1-1000, maxing out at 1000." +
             "\nRetro scaling was the main method of scaling in mcMMO for almost 8 years," +
-            "\n  and it was replaced in 2.1 with the new 1-100 scaling method which is known as Standard mode scaling." +
+            "\n and it was replaced in 2.1 with the new 1-100 scaling method which is known as Standard mode scaling." +
             "\nYou can still use Retro Mode scaling, it will never be removed from mcMMO so do not worry about using it!" +
             "\n\nYou are either using Standard or Retro mode on your server, which one you are using is setup in the leveling config file." +
             "\nSettings from here are only applied when using Retro mode scaling.")
