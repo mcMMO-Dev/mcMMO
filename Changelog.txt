@@ -10,6 +10,7 @@ Key:
 Version 2.1.22
     Less aggressive spam click protection on Fishing
     Added all missing flowers to Double Drop tables for Herbalism
+    Fixed bug where Repair Mastery was calculating player skill level incorrectly when determining bonuses
     Fixed Double Drop entries for all farming crops for Herbalism
     It no longer requires seeds to replant crops if you are harvesting crops with a hoe (will still consume seeds if you aren't)
     NOTE: You'll need to add these entries to your config.yml manually, or wait for the upcoming config update where this will be fixed for you automatically.
