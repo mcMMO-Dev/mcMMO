@@ -9,6 +9,7 @@ Key:
 
 Version 2.1.22
     Less aggressive spam click protection on Fishing
+    Updated Hungarian file for missing entries related to Fishing messages (credit: andris155)
     Added all missing flowers to Double Drop tables for Herbalism
     Fixed bug where Repair Mastery was calculating player skill level incorrectly when determining bonuses
     Fixed Double Drop entries for all farming crops for Herbalism
