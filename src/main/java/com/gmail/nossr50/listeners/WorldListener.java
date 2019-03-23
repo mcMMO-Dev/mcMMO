@@ -2,7 +2,6 @@ package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.blockmeta.conversion.BlockStoreConversionMain;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;

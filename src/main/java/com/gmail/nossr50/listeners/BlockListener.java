@@ -35,6 +35,7 @@ import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.*;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -52,6 +53,22 @@ public class BlockListener implements Listener {
 
     public BlockListener(final mcMMO plugin) {
         this.plugin = plugin;
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockDropItemEvent(BlockDropItemEvent event)
+    {
+        for(Item item : event.getItems())
+        {
+            ItemStack is = new ItemStack(item.getItemStack());
+            if(event.getBlock().getState().getMetadata(mcMMO.doubleDropKey).size() > 0)
+                event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+            else if(event.getBlock().getState().getMetadata(mcMMO.tripleDropKey).size() > 0)
+            {
+                event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+            }
+        }
     }
 
     /**

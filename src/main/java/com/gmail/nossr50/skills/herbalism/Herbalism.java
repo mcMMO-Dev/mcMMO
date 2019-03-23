@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.herbalism;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -42,11 +43,11 @@ public class Herbalism {
         }
     }
 
-    private static int calculateChorusPlantDrops(Block target) {
-        return calculateChorusPlantDropsRecursive(target, new HashSet<>());
+    private static int calculateChorusPlantDrops(Block target, boolean triple, HerbalismManager herbalismManager) {
+        return calculateChorusPlantDropsRecursive(target, new HashSet<>(), triple, herbalismManager);
     }
 
-    private static int calculateChorusPlantDropsRecursive(Block target, HashSet<Block> traversed) {
+    private static int calculateChorusPlantDropsRecursive(Block target, HashSet<Block> traversed, boolean triple, HerbalismManager herbalismManager) {
         if (target.getType() != Material.CHORUS_PLANT)
             return 0;
 
@@ -62,10 +63,15 @@ public class Herbalism {
         if (mcMMO.getPlaceStore().isTrue(target))
             mcMMO.getPlaceStore().setFalse(target);
         else
+        {
             dropAmount++;
 
+            if(herbalismManager.checkDoubleDrop(target.getState()))
+                BlockUtils.markBlocksForBonusDrops(target.getState(), triple);
+        }
+
         for (BlockFace blockFace : new BlockFace[] { BlockFace.UP, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST ,BlockFace.WEST})
-            dropAmount += calculateChorusPlantDropsRecursive(target.getRelative(blockFace, 1), traversed);
+            dropAmount += calculateChorusPlantDropsRecursive(target.getRelative(blockFace, 1), traversed, triple, herbalismManager);
 
         return dropAmount;
     }
@@ -78,7 +84,7 @@ public class Herbalism {
      *            The {@link BlockState} of the bottom block of the plant
      * @return the number of bonus drops to award from the blocks in this plant
      */
-    protected static int calculateMultiBlockPlantDrops(BlockState blockState) {
+    protected static int countAndMarkDoubleDropsMultiBlockPlant(BlockState blockState, boolean triple, HerbalismManager herbalismManager) {
         Block block = blockState.getBlock();
         Material blockType = blockState.getType();
         int dropAmount = mcMMO.getPlaceStore().isTrue(block) ? 0 : 1;
@@ -87,11 +93,11 @@ public class Herbalism {
             dropAmount = 1;
 
             if (block.getRelative(BlockFace.DOWN, 1).getType() == Material.END_STONE) {
-                dropAmount = calculateChorusPlantDrops(block);
+                dropAmount = calculateChorusPlantDrops(block, triple, herbalismManager);
             }
         } else {
             // Handle the two blocks above it - cacti & sugar cane can only grow 3 high naturally
-            for (int y = 1; y < 256; y++) {
+            for (int y = 1; y < 255; y++) {
                 Block relativeBlock = block.getRelative(BlockFace.UP, y);
 
                 if (relativeBlock.getType() != blockType) {
@@ -102,6 +108,9 @@ public class Herbalism {
                     mcMMO.getPlaceStore().setFalse(relativeBlock);
                 } else {
                     dropAmount++;
+
+                    if(herbalismManager.checkDoubleDrop(relativeBlock.getState()))
+                        BlockUtils.markBlocksForBonusDrops(relativeBlock.getState(), triple);
                 }
             }
         }
@@ -117,12 +126,11 @@ public class Herbalism {
      *            The {@link BlockState} of the bottom block of the plant
      * @return the number of bonus drops to award from the blocks in this plant
      */
-    protected static int calculateKelpPlantDrops(BlockState blockState) {
+    protected static int countAndMarkDoubleDropsKelp(BlockState blockState, boolean triple, HerbalismManager herbalismManager) {
         Block block = blockState.getBlock();
 
-        int dropAmount = mcMMO.getPlaceStore().isTrue(block) ? 0 : 1;
-
-        int kelpMaxHeight = 256;
+        int kelpMaxHeight = 255;
+        int amount = 1;
 
         // Handle the two blocks above it - cacti & sugar cane can only grow 3 high naturally
         for (int y = 1; y < kelpMaxHeight; y++) {
@@ -131,10 +139,14 @@ public class Herbalism {
             if(!isKelp(relativeUpBlock))
                 break;
 
-            dropAmount = addKelpDrops(dropAmount, relativeUpBlock);
+            amount += 1;
+
+            if(herbalismManager.checkDoubleDrop(relativeUpBlock.getState()))
+                BlockUtils.markBlocksForBonusDrops(relativeUpBlock.getState(), triple);
+
         }
 
-        return dropAmount;
+        return amount;
     }
 
     private static int addKelpDrops(int dropAmount, Block relativeBlock) {
