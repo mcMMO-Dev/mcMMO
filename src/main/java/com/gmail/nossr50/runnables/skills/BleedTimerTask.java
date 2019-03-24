@@ -9,8 +9,11 @@ import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -28,13 +31,24 @@ public class BleedTimerTask extends BukkitRunnable {
         while (bleedIterator.hasNext()) {
             Entry<LivingEntity, BleedContainer> containerEntry = bleedIterator.next();
             LivingEntity target = containerEntry.getKey();
+            int toolTier = containerEntry.getValue().toolTier;
 
-            int bleedTicks = containerEntry.getValue().bleedTicks;
+//            String debugMessage = "";
+//            debugMessage += ChatColor.GOLD + "Target ["+target.getName()+"]: " + ChatColor.RESET;
+
+//            debugMessage+="RemainingTicks=["+containerEntry.getValue().bleedTicks+"], ";
 
             if (containerEntry.getValue().bleedTicks <= 0 || !target.isValid()) {
+                if(target instanceof Player)
+                {
+                    NotificationManager.sendPlayerInformation((Player) target, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Stopped");
+                }
+
                 bleedIterator.remove();
                 continue;
             }
+
+            int armorCount = 0;
 
             double damage;
 
@@ -42,7 +56,7 @@ public class BleedTimerTask extends BukkitRunnable {
                 damage = AdvancedConfig.getInstance().getRuptureDamagePlayer();
 
                 //Above Bleed Rank 3 deals 50% more damage
-                if (containerEntry.getValue().bleedRank >= 3)
+                if (containerEntry.getValue().toolTier >= 4 && containerEntry.getValue().bleedRank >= 3)
                     damage = damage * 1.5;
 
                 Player player = (Player) target;
@@ -51,28 +65,77 @@ public class BleedTimerTask extends BukkitRunnable {
                     continue;
                 }
 
-                NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Stopped");
+                //Count Armor
+                for(ItemStack armorPiece : ((Player) target).getInventory().getArmorContents())
+                {
+                    if(armorPiece != null)
+                        armorCount++;
+                }
+
             } else {
                 damage = AdvancedConfig.getInstance().getRuptureDamageMobs();
 
+//                debugMessage+="BaseDMG=["+damage+"], ";
+
                 //Above Bleed Rank 3 deals 50% more damage
                 if (containerEntry.getValue().bleedRank >= 3)
+                {
                     damage = damage * 1.5;
+                }
+
+//                debugMessage+="Rank4Bonus=["+String.valueOf(containerEntry.getValue().bleedRank >= 3)+"], ";
 
 
                 MobHealthbarUtils.handleMobHealthbars(target, damage, mcMMO.p); //Update health bars
             }
 
-            CombatUtils.dealNoInvulnerabilityTickDamage(target, damage, containerEntry.getValue().damageSource);
-            //Play Bleed Sound
-            SoundManager.worldSendSound(target.getWorld(), target.getLocation(), SoundType.BLEED);
+//            debugMessage+="FullArmor=["+String.valueOf(armorCount > 3)+"], ";
 
-            ParticleEffectUtils.playBleedEffect(target);
+            if(armorCount > 3)
+            {
+                damage = damage * .75;
+            }
+
+//            debugMessage+="AfterRankAndArmorChecks["+damage+"], ";
+
+            //Weapons below Diamond get damage cut in half
+            if(toolTier < 4)
+                damage = damage / 2;
+
+//            debugMessage+="AfterDiamondCheck=["+String.valueOf(damage)+"], ";
+
+            //Wood weapons get damage cut in half again
+            if(toolTier < 2)
+                damage = damage / 2;
+
+//            debugMessage+="AfterWoodenCheck=["+String.valueOf(damage)+"], ";
+
+            double victimHealth = target.getHealth();
+
+//            debugMessage+="TargetHealthBeforeDMG=["+String.valueOf(target.getHealth())+"], ";
+
+            CombatUtils.dealNoInvulnerabilityTickDamageRupture(target, damage, containerEntry.getValue().damageSource, toolTier);
+
+            double victimHealthAftermath = target.getHealth();
+
+//            debugMessage+="TargetHealthAfterDMG=["+String.valueOf(target.getHealth())+"], ";
+
+            if(victimHealthAftermath <= 0 || victimHealth != victimHealthAftermath)
+            {
+                //Play Bleed Sound
+                SoundManager.worldSendSound(target.getWorld(), target.getLocation(), SoundType.BLEED);
+
+                ParticleEffectUtils.playBleedEffect(target);
+            }
 
             //Lower Bleed Ticks
             BleedContainer loweredBleedContainer = copyContainer(containerEntry.getValue());
             loweredBleedContainer.bleedTicks -= 1;
+
+//            debugMessage+="RemainingTicks=["+loweredBleedContainer.bleedTicks+"]";
             containerEntry.setValue(loweredBleedContainer);
+
+//            Bukkit.broadcastMessage(debugMessage);
         }
     }
 
@@ -82,8 +145,9 @@ public class BleedTimerTask extends BukkitRunnable {
         LivingEntity source = container.damageSource;
         int bleedTicks = container.bleedTicks;
         int bleedRank = container.bleedRank;
+        int toolTier = container.toolTier;
 
-        BleedContainer newContainer = new BleedContainer(target, bleedTicks, bleedRank, source);
+        BleedContainer newContainer = new BleedContainer(target, bleedTicks, bleedRank, toolTier, source);
         return newContainer;
     }
 
@@ -108,8 +172,11 @@ public class BleedTimerTask extends BukkitRunnable {
      * @param entity LivingEntity to add
      * @param ticks Number of bleeding ticks
      */
-    public static void add(LivingEntity entity, LivingEntity attacker, int ticks, int bleedRank) {
-        BleedContainer newBleedContainer = new BleedContainer(entity, ticks, bleedRank, attacker);
+    public static void add(LivingEntity entity, LivingEntity attacker, int ticks, int bleedRank, int toolTier) {
+        if(toolTier < 4)
+            ticks = Math.max(1, (ticks / 3));
+
+        BleedContainer newBleedContainer = new BleedContainer(entity, ticks, bleedRank, toolTier, attacker);
         bleedList.put(entity, newBleedContainer);
     }
 

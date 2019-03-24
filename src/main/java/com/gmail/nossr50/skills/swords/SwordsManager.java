@@ -8,6 +8,7 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.SkillManager;
+import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
@@ -19,6 +20,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
 
@@ -60,18 +62,34 @@ public class SwordsManager extends SkillManager {
             if (target instanceof Player) {
                 Player defender = (Player) target;
 
+                //Don't start or add to a bleed if they are blocking
+                if(defender.isBlocking())
+                    return;
+
                 if (UserManager.getPlayer(defender).useChatNotifications()) {
                     if(!BleedTimerTask.isBleeding(defender))
                         NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Started");
                 }
             }
 
-            BleedTimerTask.add(target, getPlayer(), getRuptureBleedTicks(), RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE));
+            BleedTimerTask.add(target, getPlayer(), getRuptureBleedTicks(), RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE), getToolTier(getPlayer().getInventory().getItemInMainHand()));
 
             if (mcMMOPlayer.useChatNotifications()) {
                 NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding");
             }
         }
+    }
+
+    public int getToolTier(ItemStack itemStack)
+    {
+        if(ItemUtils.isDiamondTool(itemStack))
+            return 4;
+        else if(ItemUtils.isIronTool(itemStack) || ItemUtils.isGoldTool(itemStack))
+            return 3;
+        else if(ItemUtils.isStoneTool(itemStack))
+            return 2;
+        else
+            return 1;
     }
 
     public int getRuptureBleedTicks()
@@ -110,6 +128,5 @@ public class SwordsManager extends SkillManager {
      */
     public void serratedStrikes(LivingEntity target, double damage, Map<DamageModifier, Double> modifiers) {
         CombatUtils.applyAbilityAoE(getPlayer(), target, damage / Swords.serratedStrikesModifier, modifiers, skill);
-        BleedTimerTask.add(target, getPlayer(), getRuptureBleedTicks(), RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE));
     }
 }

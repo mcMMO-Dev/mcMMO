@@ -32,6 +32,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
+import org.bukkit.util.Vector;
 
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -394,7 +395,45 @@ public final class CombatUtils {
         double incDmg = callFakeDamageEvent(attacker, target, DamageCause.CUSTOM, damage);
 
         double newHealth = Math.max(0, target.getHealth() - incDmg);
-        target.setHealth(newHealth);
+
+        if(newHealth == 0)
+        {
+            target.damage(9999, attacker);
+        }
+        else
+            target.setHealth(newHealth);
+    }
+
+    public static void dealNoInvulnerabilityTickDamageRupture(LivingEntity target, double damage, Entity attacker, int toolTier) {
+        if (target.isDead()) {
+            return;
+        }
+
+        int noDamageTicks = target.getNoDamageTicks();
+
+        double incDmg = callFakeDamageEvent(attacker, target, DamageCause.CUSTOM, damage);
+
+        double newHealth = Math.max(0, target.getHealth() - incDmg);
+
+        //Don't kill things with a stone or wooden weapon
+        if(toolTier < 3 && newHealth == 0)
+            return;
+
+        target.setMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.metadataValue);
+
+        if(newHealth == 0)
+        {
+            target.damage(99999, attacker);
+        }
+        else
+        {
+            Vector beforeRuptureVec = new Vector(target.getVelocity().getX(), target.getVelocity().getY(), target.getVelocity().getZ()); ;
+            target.damage(damage, attacker);
+
+            target.setNoDamageTicks(noDamageTicks);
+            target.setVelocity(beforeRuptureVec);
+        }
+
     }
 
     /**
@@ -427,7 +466,7 @@ public final class CombatUtils {
                         NotificationManager.sendPlayerInformation((Player)entity, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.SS.Struck");
                     }
 
-                    BleedTimerTask.add(livingEntity, attacker, UserManager.getPlayer(attacker).getSwordsManager().getRuptureBleedTicks(), RankUtils.getRank(attacker, SubSkillType.SWORDS_RUPTURE));
+                    UserManager.getPlayer(attacker).getSwordsManager().ruptureCheck(target);
                     break;
 
                 case AXES:

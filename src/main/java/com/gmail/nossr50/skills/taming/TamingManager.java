@@ -124,7 +124,7 @@ public class TamingManager extends SkillManager {
             return 0;
         }
 
-        BleedTimerTask.add(target, getPlayer(), Taming.goreBleedTicks, 1);
+        BleedTimerTask.add(target, getPlayer(), Taming.goreBleedTicks, 1, 2);
 
         if (target instanceof Player) {
             NotificationManager.sendPlayerInformation((Player)target, NotificationType.SUBSKILL_MESSAGE, "Combat.StruckByGore");

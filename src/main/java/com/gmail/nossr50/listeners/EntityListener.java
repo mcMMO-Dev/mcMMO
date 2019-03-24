@@ -25,6 +25,8 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
@@ -193,6 +195,16 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        double damage = event.getFinalDamage();
+        Entity defender = event.getEntity();
+        Entity attacker = event.getDamager();
+
+        if(defender.getMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY).size() > 0)
+        {
+            defender.removeMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, plugin);
+            return;
+        }
+
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
@@ -210,10 +222,6 @@ public class EntityListener implements Listener {
             event.setCancelled(true);
             return;
         }
-
-        double damage = event.getFinalDamage();
-        Entity defender = event.getEntity();
-        Entity attacker = event.getDamager();
 
         if(attacker instanceof Player)
         {
@@ -262,8 +270,6 @@ public class EntityListener implements Listener {
         if (CombatUtils.isInvincible(target, damage)) {
             return;
         }
-
-
 
         if (Misc.isNPCEntity(attacker)) {
             return;
