@@ -34,6 +34,9 @@ public class Mining {
         Material blockType = blockState.getType();
 
         switch (blockType) {
+            case ANDESITE:
+            case DIORITE:
+            case GRANITE:
             case END_STONE:
             case TERRACOTTA:
             case CLAY:

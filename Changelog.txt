@@ -7,6 +7,15 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.23
+    Fixed a bug with Double Drops for Mining
+    Note: You'll need to add these entries to your config.yml manually, or wait for the upcoming config update where this will be fixed for you automatically.
+    NOTE: Here's what your Double_Drop entries in Config.yml for Mining should look like
+        https://paste.gg/p/anonymous/dcd06f1215844311b4f2225f200090d1
+    IMPORTANT: Version 2.1.22 which came before this had a similar fix for Herbalism, instructions on how to fix your Herbalism Double Drops can be found here
+        https://www.spigotmc.org/resources/official-mcmmo.64348/update?update=269868
+    NOTE: Due to the nature of these fixes, Fortune enchants now work with Double/Triple drops
+
 Version 2.1.22
     Less aggressive spam click protection on Fishing
     Updated Hungarian file for missing entries related to Fishing messages (credit: andris155)

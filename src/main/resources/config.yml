@@ -457,6 +457,9 @@ Double_Drops:
         Rose_Bush: true
         Peony: true
     Mining:
+        Andesite: true
+        Diorite: true
+        Granite: true
         Coal_Ore: true
         Diamond_Ore: true
         Emerald_Ore: true
