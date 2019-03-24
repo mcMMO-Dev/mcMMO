@@ -5,13 +5,11 @@ import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.skills.AwardCombatXpTask;
-import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
@@ -32,7 +30,6 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
-import org.bukkit.util.Vector;
 
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -368,7 +365,7 @@ public final class CombatUtils {
         }
 
         // Aren't we applying the damage twice????
-        target.damage(callFakeDamageEvent(attacker, target, damage, modifiers));
+        target.damage(getFakeDamageFinalResult(attacker, target, damage, modifiers));
     }
 
     /**
@@ -384,7 +381,8 @@ public final class CombatUtils {
             return;
         }
 
-        target.damage(callFakeDamageEvent(attacker, target, cause, damage));
+        if(canDamage(attacker, target, cause, damage))
+            target.damage(damage);
     }
 
     public static void dealNoInvulnerabilityTickDamage(LivingEntity target, double damage, Entity attacker) {
@@ -392,7 +390,7 @@ public final class CombatUtils {
             return;
         }
 
-        double incDmg = callFakeDamageEvent(attacker, target, DamageCause.CUSTOM, damage);
+        double incDmg = getFakeDamageFinalResult(attacker, target, DamageCause.CUSTOM, damage);
 
         double newHealth = Math.max(0, target.getHealth() - incDmg);
 
@@ -409,9 +407,10 @@ public final class CombatUtils {
             return;
         }
 
-        int noDamageTicks = target.getNoDamageTicks();
+        //IFrame storage
+//        int noDamageTicks = target.getNoDamageTicks();
 
-        double incDmg = callFakeDamageEvent(attacker, target, DamageCause.CUSTOM, damage);
+        double incDmg = getFakeDamageFinalResult(attacker, target, DamageCause.CUSTOM, damage);
 
         double newHealth = Math.max(0, target.getHealth() - incDmg);
 
@@ -421,19 +420,17 @@ public final class CombatUtils {
 
         target.setMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.metadataValue);
 
-        if(newHealth == 0)
+        if(newHealth == 0 && !(target instanceof Player))
         {
             target.damage(99999, attacker);
         }
         else
         {
-            Vector beforeRuptureVec = new Vector(target.getVelocity().getX(), target.getVelocity().getY(), target.getVelocity().getZ()); ;
-            target.damage(damage, attacker);
-
-            target.setNoDamageTicks(noDamageTicks);
-            target.setVelocity(beforeRuptureVec);
+//            Vector beforeRuptureVec = new Vector(target.getVelocity().getX(), target.getVelocity().getY(), target.getVelocity().getZ()); ;
+            target.setHealth(newHealth);
+//            target.setNoDamageTicks(noDamageTicks); //Do not add additional IFrames
+//            target.setVelocity(beforeRuptureVec);
         }
-
     }
 
     /**
@@ -597,7 +594,7 @@ public final class CombatUtils {
             }
 
             // It may seem a bit redundant but we need a check here to prevent bleed from being applied in applyAbilityAoE()
-            if (callFakeDamageEvent(player, entity, 1.0) == 0) {
+            if (getFakeDamageFinalResult(player, entity, 1.0) == 0) {
                 return false;
             }
         }
@@ -652,14 +649,13 @@ public final class CombatUtils {
     }
 
     @Deprecated
-    public static double callFakeDamageEvent(Entity attacker, Entity target, double damage) {
-        return callFakeDamageEvent(attacker, target, DamageCause.ENTITY_ATTACK, new EnumMap<DamageModifier, Double>(ImmutableMap.of(DamageModifier.BASE, damage)));
+    public static double getFakeDamageFinalResult(Entity attacker, Entity target, double damage) {
+        return getFakeDamageFinalResult(attacker, target, DamageCause.ENTITY_ATTACK, new EnumMap<DamageModifier, Double>(ImmutableMap.of(DamageModifier.BASE, damage)));
     }
 
     @Deprecated
-    public static double callFakeDamageEvent(Entity attacker, Entity target, DamageCause damageCause, double damage) {
-        EntityDamageEvent damageEvent = attacker == null ? new FakeEntityDamageEvent(target, damageCause, damage) : new FakeEntityDamageByEntityEvent(attacker, target, damageCause, damage);
-        mcMMO.p.getServer().getPluginManager().callEvent(damageEvent);
+    public static double getFakeDamageFinalResult(Entity attacker, Entity target, DamageCause damageCause, double damage) {
+        EntityDamageEvent damageEvent = sendEntityDamageEvent(attacker, target, damageCause, damage);
 
         if (damageEvent.isCancelled()) {
             return 0;
@@ -668,15 +664,31 @@ public final class CombatUtils {
         return damageEvent.getFinalDamage();
     }
 
-    public static double callFakeDamageEvent(Entity attacker, Entity target, Map<DamageModifier, Double> modifiers) {
-        return callFakeDamageEvent(attacker, target, DamageCause.ENTITY_ATTACK, modifiers);
+    public static boolean canDamage(Entity attacker, Entity target, DamageCause damageCause, double damage) {
+        EntityDamageEvent damageEvent = sendEntityDamageEvent(attacker, target, damageCause, damage);
+
+        if (damageEvent.isCancelled()) {
+            return false;
+        }
+
+        return true;
     }
 
-    public static double callFakeDamageEvent(Entity attacker, Entity target, double damage, Map<DamageModifier, Double> modifiers) {
-        return callFakeDamageEvent(attacker, target, DamageCause.ENTITY_ATTACK, getScaledModifiers(damage, modifiers));
+    public static EntityDamageEvent sendEntityDamageEvent(Entity attacker, Entity target, DamageCause damageCause, double damage) {
+        EntityDamageEvent damageEvent = attacker == null ? new FakeEntityDamageEvent(target, damageCause, damage) : new FakeEntityDamageByEntityEvent(attacker, target, damageCause, damage);
+        mcMMO.p.getServer().getPluginManager().callEvent(damageEvent);
+        return damageEvent;
     }
 
-    public static double callFakeDamageEvent(Entity attacker, Entity target, DamageCause cause, Map<DamageModifier, Double> modifiers) {
+    public static double getFakeDamageFinalResult(Entity attacker, Entity target, Map<DamageModifier, Double> modifiers) {
+        return getFakeDamageFinalResult(attacker, target, DamageCause.ENTITY_ATTACK, modifiers);
+    }
+
+    public static double getFakeDamageFinalResult(Entity attacker, Entity target, double damage, Map<DamageModifier, Double> modifiers) {
+        return getFakeDamageFinalResult(attacker, target, DamageCause.ENTITY_ATTACK, getScaledModifiers(damage, modifiers));
+    }
+
+    public static double getFakeDamageFinalResult(Entity attacker, Entity target, DamageCause cause, Map<DamageModifier, Double> modifiers) {
         EntityDamageEvent damageEvent = attacker == null ? new FakeEntityDamageEvent(target, cause, modifiers) : new FakeEntityDamageByEntityEvent(attacker, target, cause, modifiers);
         mcMMO.p.getServer().getPluginManager().callEvent(damageEvent);
 

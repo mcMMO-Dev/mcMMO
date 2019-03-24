@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 2.1.23
+    Fixed a 7 year old bug where damage in mcMMO from Skills was getting reduced by damage reduction TWICE
     Fixed a bug with Double Drops for Mining
     Fixed a bug where killing entities with Rupture would not properly credit you as the killer
     Fixed a bug where Serrated Strikes was applying Rupture twice
