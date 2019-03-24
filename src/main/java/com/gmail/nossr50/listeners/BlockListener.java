@@ -61,6 +61,10 @@ public class BlockListener implements Listener {
         for(Item item : event.getItems())
         {
             ItemStack is = new ItemStack(item.getItemStack());
+
+            if(is.getAmount() <= 0)
+                continue;
+
             if(event.getBlock().getState().getMetadata(mcMMO.doubleDropKey).size() > 0)
                 event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
             else if(event.getBlock().getState().getMetadata(mcMMO.tripleDropKey).size() > 0)
