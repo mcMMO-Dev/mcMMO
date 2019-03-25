@@ -8,18 +8,18 @@ Key:
   - Removal
 
 Version 2.1.23
-    Fixed a 7 year old bug where damage in mcMMO from Skills was getting reduced by damage reduction TWICE
-    Fixed a bug with Double Drops for Mining
+    Fixed a bug with Double Drops for Mining (Update your configs instructions below)
+    Fixed a 7 year old bug where damage in mcMMO from Skills was potentially getting reduced by damage reduction TWICE
     Fixed a bug where killing entities with Rupture would not properly credit you as the killer
     Fixed a bug where Serrated Strikes was applying Rupture twice
     Players will now be ejected from Minecarts if they cast their fishing rod (anti-afk)
+    Many nerfs to Rupture, its now much more reasonable and not very useful against Protection IV opponents
     Rupture's strength is now related to your equipped Sword
     Rupture will no longer be applied if the target is blocking, this doesn't prevent existing bleed damage from occurring though.
     Wolf's Rupture has strength equivalent to a Stone Sword
     Only Diamond swords will have bonus rupture damage at Rank 4
     Rupture damage is cut in half for weapons below Diamond in quality, if the weapon is wooden, the damage is cut in half again.
     Swords below Diamond quality will have their tick duration drastically reduced
-    Rupture is not lethal if the sword is Stone or Wooden
     Rupture damage is reduced by 25% on players if they are wearing Full Armor (can be any type)
     Note: You'll need to add these entries to your config.yml manually, or wait for the upcoming config update where this will be fixed for you automatically.
     NOTE: Here's what your Double_Drop entries in Config.yml for Mining should look like

@@ -187,6 +187,53 @@ public class EntityListener implements Listener {
         }
     }
 
+/*    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onEntityDamageDebugLowest(EntityDamageEvent event)
+    {
+        if(event instanceof FakeEntityDamageByEntityEvent)
+            return;
+
+        if(event instanceof FakeEntityDamageEvent)
+            return;
+
+        Bukkit.broadcastMessage(ChatColor.GOLD+"DMG Before Events: "+ChatColor.RESET+event.getDamage());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onEntityDamageDebugMonitor(EntityDamageEvent event)
+    {
+        if(event instanceof FakeEntityDamageByEntityEvent)
+            return;
+
+        if(event instanceof FakeEntityDamageEvent)
+            return;
+
+        double rawDamage = event.getDamage();
+        double dmgAfterReduction = event.getFinalDamage();
+        Bukkit.broadcastMessage(ChatColor.GOLD+"DEBUG: " + event.getEntity().getName()+ChatColor.RESET+"RawDMG["+rawDamage+"], "+"FinalDMG=["+dmgAfterReduction+"]");
+        Bukkit.broadcastMessage("");
+    }*/
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onEntityDamageLowest(EntityDamageByEntityEvent event)
+    {
+        Entity defender = event.getEntity();
+
+        if(defender.getMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY).size() > 0)
+        {
+            defender.removeMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, plugin);
+            LivingEntity defLive = (LivingEntity) defender;
+
+            if(defender instanceof Player)
+            {
+                defLive.setHealth(defLive.getHealth() - event.getFinalDamage());
+                event.setCancelled(true);
+            }
+
+            return;
+        }
+    }
+
     /**
      * Handle EntityDamageByEntity events that involve modifying the event.
      *
@@ -198,12 +245,6 @@ public class EntityListener implements Listener {
         double damage = event.getFinalDamage();
         Entity defender = event.getEntity();
         Entity attacker = event.getDamager();
-
-        if(defender.getMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY).size() > 0)
-        {
-            defender.removeMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, plugin);
-            return;
-        }
 
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))

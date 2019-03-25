@@ -21,6 +21,7 @@ import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableMap;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
@@ -390,7 +391,7 @@ public final class CombatUtils {
             return;
         }
 
-        double incDmg = getFakeDamageFinalResult(attacker, target, DamageCause.CUSTOM, damage);
+        double incDmg = getFakeDamageFinalResult(attacker, target, DamageCause.ENTITY_ATTACK, damage);
 
         double newHealth = Math.max(0, target.getHealth() - incDmg);
 
@@ -407,30 +408,37 @@ public final class CombatUtils {
             return;
         }
 
-        //IFrame storage
-//        int noDamageTicks = target.getNoDamageTicks();
-
-        double incDmg = getFakeDamageFinalResult(attacker, target, DamageCause.CUSTOM, damage);
-
-        double newHealth = Math.max(0, target.getHealth() - incDmg);
-
-        //Don't kill things with a stone or wooden weapon
-        if(toolTier < 3 && newHealth == 0)
-            return;
-
         target.setMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.metadataValue);
+        target.damage(damage, attacker);
 
-        if(newHealth == 0 && !(target instanceof Player))
-        {
-            target.damage(99999, attacker);
-        }
-        else
-        {
-//            Vector beforeRuptureVec = new Vector(target.getVelocity().getX(), target.getVelocity().getY(), target.getVelocity().getZ()); ;
-            target.setHealth(newHealth);
-//            target.setNoDamageTicks(noDamageTicks); //Do not add additional IFrames
-//            target.setVelocity(beforeRuptureVec);
-        }
+//        //IFrame storage
+////        int noDamageTicks = target.getNoDamageTicks();
+//
+////        String debug = "BLEED DMG RESULT: INC DMG:"+damage+", HP-Before:"+target.getHealth()+", HP-After:";
+//
+////        double incDmg = getFakeDamageFinalResult(attacker, target, DamageCause.ENTITY_ATTACK, damage);
+//
+////        double newHealth = Math.max(0, target.getHealth() - incDmg);
+//
+//        //Don't kill things with a stone or wooden weapon
+////        if(toolTier < 3 && newHealth == 0)
+////            return;
+//
+//        target.setMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.metadataValue);
+//
+//        if(newHealth == 0 && !(target instanceof Player))
+//        {
+//            target.damage(99999, attacker);
+//        }
+//        else
+//        {
+////            Vector beforeRuptureVec = new Vector(target.getVelocity().getX(), target.getVelocity().getY(), target.getVelocity().getZ()); ;
+//            target.damage(damage, attacker);
+////            debug+=target.getHealth();
+//            Bukkit.broadcastMessage(debug);
+////            target.setNoDamageTicks(noDamageTicks); //Do not add additional IFrames
+////            target.setVelocity(beforeRuptureVec);
+//        }
     }
 
     /**
