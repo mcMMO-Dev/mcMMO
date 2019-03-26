@@ -8,12 +8,12 @@
 Alchemy:
     Catalysis:
         Standard:
-            Rank_1: 10
+            Rank_1: 0
         RetroMode:
-            Rank_1: 100
+            Rank_1: 0
     Concoctions:
         Standard:
-            Rank_1: 10
+            Rank_1: 0
             Rank_2: 25
             Rank_3: 35
             Rank_4: 50
@@ -22,7 +22,7 @@ Alchemy:
             Rank_7: 85
             Rank_8: 100
         RetroMode:
-            Rank_1: 100
+            Rank_1: 0
             Rank_2: 250
             Rank_3: 350
             Rank_4: 500

@@ -65,18 +65,20 @@ public class BlockListener implements Listener {
             if(is.getAmount() <= 0)
                 continue;
 
-            //Extra Protection
-            if(event.getBlock().getState() instanceof Container)
-                return;
-
             if(event.getBlock().getState().getMetadata(mcMMO.doubleDropKey).size() > 0)
             {
+                //Extra Protection
+                if(event.getBlock().getState() instanceof Container)
+                    return;
                 event.getBlock().getState().removeMetadata(mcMMO.doubleDropKey, plugin);
                 event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
             }
 
             else if(event.getBlock().getState().getMetadata(mcMMO.tripleDropKey).size() > 0)
             {
+                //Extra Protection
+                if(event.getBlock().getState() instanceof Container)
+                    return;
                 event.getBlock().getState().removeMetadata(mcMMO.tripleDropKey, plugin);
                 event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
                 event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);

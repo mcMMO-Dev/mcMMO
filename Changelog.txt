@@ -7,6 +7,10 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.25
+    Shake now has an upper limit of damage (10) - Will be configurable in 2.2 which is coming in the near future
+    Rank 1 of Catalysis & Concoctions are now available at level 0 by default (update skillranks.yml or delete it to regen a new one)
+
 Version 2.1.24
     Fixed an exploit where you could clone inventories
 
