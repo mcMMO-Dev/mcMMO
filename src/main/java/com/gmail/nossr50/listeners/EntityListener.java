@@ -187,7 +187,7 @@ public class EntityListener implements Listener {
         }
     }
 
-/*    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    /*@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntityDamageDebugLowest(EntityDamageEvent event)
     {
         if(event instanceof FakeEntityDamageByEntityEvent)
@@ -196,7 +196,8 @@ public class EntityListener implements Listener {
         if(event instanceof FakeEntityDamageEvent)
             return;
 
-        Bukkit.broadcastMessage(ChatColor.GOLD+"DMG Before Events: "+ChatColor.RESET+event.getDamage());
+        Bukkit.broadcastMessage(ChatColor.DARK_AQUA+"DMG Before Events: "
+                +ChatColor.RESET+event.getDamage());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -208,9 +209,30 @@ public class EntityListener implements Listener {
         if(event instanceof FakeEntityDamageEvent)
             return;
 
+        if(!(event.getEntity() instanceof LivingEntity))
+            return;
+
+        LivingEntity entity = (LivingEntity) event.getEntity();
+
         double rawDamage = event.getDamage();
         double dmgAfterReduction = event.getFinalDamage();
-        Bukkit.broadcastMessage(ChatColor.GOLD+"DEBUG: " + event.getEntity().getName()+ChatColor.RESET+"RawDMG["+rawDamage+"], "+"FinalDMG=["+dmgAfterReduction+"]");
+
+        Bukkit.broadcastMessage(ChatColor.GOLD+"DMG After Events: "
+                + event.getEntity().getName()+ChatColor.RESET
+                +"RawDMG["+rawDamage+"], "
+                +"FinalDMG=["+dmgAfterReduction+"]");
+
+        Bukkit.broadcastMessage(
+                event.getEntity().getName()
+                +ChatColor.GREEN
+                +" HP "
+                +ChatColor.RESET
+                +entity.getHealth()
+                +ChatColor.YELLOW
+                +" -> "
+                +ChatColor.RESET
+                +(entity.getHealth()-event.getFinalDamage()));
+
         Bukkit.broadcastMessage("");
     }*/
 
@@ -381,6 +403,8 @@ public class EntityListener implements Listener {
                 }
             }
         }
+
+
     }
 
     /**

@@ -8,12 +8,25 @@ Key:
   - Removal
 
 Version 2.1.26
+    Added new scaling damage buffs to all existing Combat Skills
+    Fixed a bug where Berserk was not adding 50% damage to attacks
+
     Changed how Iron Arm damage is calculated (Rank 1 now effectively gives twice the damage bonus it used to, with a net result of 3 extra RAW damage before reductions)
+    XP is not granted for attacks while attacking with vanilla attack speed cooldown
     Added a new subskill named Stab to Swords to help with lategame PVP combat
-    New permission node 'mcmmo.ability.swords.stab'
+    New permission node ''
     NOTE: Combat skills will be completely configurable in the upcoming 2.2 update, be patient <3
 
+    New Permissions
+            - mcmmo.ability.unarmed.unarmedlimitbreak
+            - mcmmo.ability.axes.axeslimitbreak
+            - mcmmo.ability.archery.archerylimitbreak
+            - mcmmo.ability.swords.swordslimitbreak
+            - mcmmo.ability.swords.stab
+
     Notes:
+    The new Limit Break subskills are intended to make Prot IV players less tanky and for you to feel more powerful for having high skill level.
+
     I collected several sets of data before making these changes, including damage to player with and without prot 4 diamond armor, damage to those players with and without enchanted weapons, damage with and without leveling your skills, and combinations of the previously mentioned things.
     These changes are meant to be minor tweaks for endgame PVP, a dedicated PVP update where I do a lot more research and testing will happen after 2.3
 

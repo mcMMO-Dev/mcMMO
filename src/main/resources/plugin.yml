@@ -248,6 +248,9 @@ permissions:
             mcmmo.ability.archery.skillshot: true
             mcmmo.ability.archery.daze: true
             mcmmo.ability.archery.arrowretrieval: true
+            mcmmo.ability.archery.archerylimitbreak: true
+    mcmmo.ability.archery.archerylimitbreak:
+        description: Adds damage to bows and crossbows
     mcmmo.ability.archery.skillshot:
         description: Allows bonus damage from the Archery SkillShot ability
     mcmmo.ability.archery.daze:
@@ -267,6 +270,9 @@ permissions:
             mcmmo.ability.axes.greaterimpact: true
             mcmmo.ability.axes.armorimpact: true
             mcmmo.ability.axes.skullsplitter: true
+            mcmmo.ability.axes.axeslimitbreak: true
+    mcmmo.ability.axes.axeslimitbreak:
+        description: Adds damage to axes
     mcmmo.ability.axes.axemastery:
         description: Allows bonus damage from Axes
     mcmmo.ability.axes.criticalhit:
@@ -564,6 +570,11 @@ permissions:
             mcmmo.ability.swords.stab: true
             mcmmo.ability.swords.counterattack: true
             mcmmo.ability.swords.serratedstrikes: true
+            mcmmo.ability.swords.swordslimitbreak: true
+    mcmmo.ability.swords.stab:
+        description: Adds damage to swords
+    mcmmo.ability.swords.swordslimitbreak:
+        description: Adds damagee to swords
     mcmmo.ability.swords.rupture:
         description: Allows access to the Bleed ability
     mcmmo.ability.swords.counterattack:
@@ -640,6 +651,9 @@ permissions:
             mcmmo.ability.unarmed.arrowdeflect: true
             mcmmo.ability.unarmed.disarm: true
             mcmmo.ability.unarmed.irongrip: true
+            mcmmo.ability.unarmed.unarmedlimitbreak: true
+    mcmmo.ability.unarmed.unarmedlimitbreak:
+        description: Adds damage to unarmed attacks
     mcmmo.ability.unarmed.berserk:
         description: Allows access to the Berserker ability
     mcmmo.ability.unarmed.blockcracker:

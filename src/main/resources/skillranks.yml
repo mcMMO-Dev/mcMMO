@@ -31,6 +31,29 @@ Alchemy:
             Rank_7: 850
             Rank_8: 1000
 Archery:
+    ArcheryLimitBreak:
+        Standard:
+            Rank_1: 10
+            Rank_2: 20
+            Rank_3: 30
+            Rank_4: 40
+            Rank_5: 50
+            Rank_6: 60
+            Rank_7: 70
+            Rank_8: 80
+            Rank_9: 90
+            Rank_10: 100
+        RetroMode:
+            Rank_1: 100
+            Rank_2: 200
+            Rank_3: 300
+            Rank_4: 400
+            Rank_5: 500
+            Rank_6: 600
+            Rank_7: 700
+            Rank_8: 800
+            Rank_9: 900
+            Rank_10: 1000
     ArrowRetrieval:
         Standard:
             Rank_1: 2
@@ -86,6 +109,29 @@ Acrobatics:
         RetroMode:
             Rank_1: 20
 Axes:
+    AxesLimitBreak:
+        Standard:
+            Rank_1: 10
+            Rank_2: 20
+            Rank_3: 30
+            Rank_4: 40
+            Rank_5: 50
+            Rank_6: 60
+            Rank_7: 70
+            Rank_8: 80
+            Rank_9: 90
+            Rank_10: 100
+        RetroMode:
+            Rank_1: 100
+            Rank_2: 200
+            Rank_3: 300
+            Rank_4: 400
+            Rank_5: 500
+            Rank_6: 600
+            Rank_7: 700
+            Rank_8: 800
+            Rank_9: 900
+            Rank_10: 1000
     SkullSplitter:
         Standard:
             Rank_1: 5
@@ -381,6 +427,29 @@ Fishing:
             Rank_7: 850
             Rank_8: 1000
 Swords:
+    SwordsLimitBreak:
+        Standard:
+            Rank_1: 10
+            Rank_2: 20
+            Rank_3: 30
+            Rank_4: 40
+            Rank_5: 50
+            Rank_6: 60
+            Rank_7: 70
+            Rank_8: 80
+            Rank_9: 90
+            Rank_10: 100
+        RetroMode:
+            Rank_1: 100
+            Rank_2: 200
+            Rank_3: 300
+            Rank_4: 400
+            Rank_5: 500
+            Rank_6: 600
+            Rank_7: 700
+            Rank_8: 800
+            Rank_9: 900
+            Rank_10: 1000
     Stab:
         Standard:
             Rank_1: 75
@@ -410,6 +479,29 @@ Swords:
         RetroMode:
             Rank_1: 100
 Unarmed:
+    UnarmedLimitBreak:
+        Standard:
+            Rank_1: 10
+            Rank_2: 20
+            Rank_3: 30
+            Rank_4: 40
+            Rank_5: 50
+            Rank_6: 60
+            Rank_7: 70
+            Rank_8: 80
+            Rank_9: 90
+            Rank_10: 100
+        RetroMode:
+            Rank_1: 100
+            Rank_2: 200
+            Rank_3: 300
+            Rank_4: 400
+            Rank_5: 500
+            Rank_6: 600
+            Rank_7: 700
+            Rank_8: 800
+            Rank_9: 900
+            Rank_10: 1000
     Berserk:
         Standard:
             Rank_1: 10

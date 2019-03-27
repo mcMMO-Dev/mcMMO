@@ -7,6 +7,7 @@ import com.gmail.nossr50.skills.axes.Axes;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -93,6 +94,11 @@ public class AxesCommand extends SkillCommand {
         if (canSkullSplitter) {
             messages.add(getStatMessage(SubSkillType.AXES_SKULL_SPLITTER, skullSplitterLength)
                     + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", skullSplitterLengthEndurance) : ""));
+        }
+
+        if(canUseSubskill(player, SubSkillType.AXES_AXES_LIMIT_BREAK)) {
+            messages.add(getStatMessage(SubSkillType.AXES_AXES_LIMIT_BREAK,
+                    String.valueOf(CombatUtils.getLimitBreakDamage(player, SubSkillType.AXES_AXES_LIMIT_BREAK))));
         }
 
         return messages;
