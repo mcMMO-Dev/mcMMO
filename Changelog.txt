@@ -9,12 +9,10 @@ Key:
 
 Version 2.1.26
     Added new scaling damage buffs to all existing Combat Skills
+    Added a new subskill named Stab to Swords
     Fixed a bug where Berserk was not adding 50% damage to attacks
+    Changed how Iron Arm damage is calculated (Rank 1 now effectively gives twice the damage bonus it used to, higher ranks have more damage)
 
-    Changed how Iron Arm damage is calculated (Rank 1 now effectively gives twice the damage bonus it used to, with a net result of 3 extra RAW damage before reductions)
-    XP is not granted for attacks while attacking with vanilla attack speed cooldown
-    Added a new subskill named Stab to Swords to help with lategame PVP combat
-    New permission node ''
     NOTE: Combat skills will be completely configurable in the upcoming 2.2 update, be patient <3
 
     New Permissions
@@ -26,15 +24,10 @@ Version 2.1.26
 
     Notes:
     The new Limit Break subskills are intended to make Prot IV players less tanky and for you to feel more powerful for having high skill level.
-
+    Limit Break has 10 ranks, each rank gives 1 extra RAW damage, this is damage before reductions from armor and enchantments. The net result is you deal about 50% more damage with an end game skill compared to before.
+    With these new changes, most skills can 2 shot normal diamond armor, and it takes about 5 hits to kill someone in Prot IV Diamond Armor.
+    I'm not sure everyone will like these changes, the net result is players are a lot easier to kill now, whereas before you could take quite a beating before getting killed.
     I collected several sets of data before making these changes, including damage to player with and without prot 4 diamond armor, damage to those players with and without enchanted weapons, damage with and without leveling your skills, and combinations of the previously mentioned things.
-    These changes are meant to be minor tweaks for endgame PVP, a dedicated PVP update where I do a lot more research and testing will happen after 2.3
-
-    Stab is unlocked at level 75/750, and ranks up again at level 100/1000
-    Stab permanently adds small amounts of extra damage when attacking with a sword.
-    Stab is meant to make up for Swords lackluster damage against fully geared opponents.
-
-    Iron Arm got buffed because Unarmed was dealing lackluster damage compared to other skills.
 
 Version 2.1.25
     Shake now has an upper limit of damage (10) - Will be configurable in 2.2 which is coming in the near future
