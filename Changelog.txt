@@ -7,6 +7,21 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.26
+    Changed how Iron Arm damage is calculated (Rank 1 now effectively gives twice the damage bonus it used to, with a net result of 3 extra RAW damage before reductions)
+    Added a new subskill named Stab to Swords to help with lategame PVP combat
+    New permission node 'mcmmo.ability.swords.stab'
+    NOTE: Combat skills will be completely configurable in the upcoming 2.2 update, be patient <3
+
+    Notes:
+    These changes are meant to be minor tweaks to PVP, a dedicated PVP update where I do a lot more research and testing will happen after 2.3
+
+    Stab is unlocked at level 75/750, and ranks up again at level 100/1000
+    Stab permanently adds small amounts of extra damage when attacking players with a sword.
+    Stab is meant to make up for Swords lackluster damage against fully geared opponents.
+
+    Iron Arm got buffed because Unarmed was dealing lackluster damage compared to other skills.
+
 Version 2.1.25
     Shake now has an upper limit of damage (10) - Will be configurable in 2.2 which is coming in the near future
     Rank 1 of Catalysis & Concoctions are now available at level 0 by default (update skillranks.yml or delete it to regen a new one)
@@ -17,7 +32,7 @@ Version 2.1.24
 
 Version 2.1.23
     Fixed a bug with Double Drops for Mining (Update your configs instructions below)
-    Fixed a 7 year old bug where damage in mcMMO from Skills was potentially getting reduced by damage reduction TWICE
+    Fixed a 7 year old bug where damage in mcMMO from SkillBs was potentially getting reduced by damage reduction TWICE
     Fixed a bug where killing entities with Rupture would not properly credit you as the killer
     Fixed a bug where Serrated Strikes was applying Rupture twice
     Players will now be ejected from Minecarts if they cast their fishing rod (anti-afk)

@@ -33,6 +33,10 @@ public class SwordsManager extends SkillManager {
         return mcMMOPlayer.getToolPreparationMode(ToolType.SWORD) && Permissions.serratedStrikes(getPlayer());
     }
 
+    public boolean canUseStab() {
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_STAB) && RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_STAB);
+    }
+
     public boolean canUseRupture() {
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_RUPTURE) && RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_RUPTURE);
     }
@@ -78,6 +82,22 @@ public class SwordsManager extends SkillManager {
                 NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding");
             }
         }
+    }
+
+    public double stabCheck(LivingEntity target)
+    {
+        if(!(target instanceof Player))
+            return 0;
+
+        int rank = RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_STAB);
+
+        if(rank > 0)
+        {
+            double stabDamage = 1.0D + (rank * 1.5);
+            return stabDamage;
+        }
+
+        return 0;
     }
 
     public int getToolTier(ItemStack itemStack)

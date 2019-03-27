@@ -71,6 +71,7 @@ public enum SubSkillType {
     SWORDS_COUNTER_ATTACK(1),
     SWORDS_RUPTURE(4),
     SWORDS_SERRATED_STRIKES(1),
+    SWORDS_STAB(2),
 
     /* Taming */
     TAMING_BEAST_LORE(1),

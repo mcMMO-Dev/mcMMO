@@ -381,6 +381,13 @@ Fishing:
             Rank_7: 850
             Rank_8: 1000
 Swords:
+    Stab:
+        Standard:
+            Rank_1: 75
+            Rank_2: 100
+        RetroMode:
+            Rank_1: 750
+            Rank_2: 1000
     CounterAttack:
         Standard:
             Rank_1: 20

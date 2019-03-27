@@ -61,6 +61,12 @@ public final class CombatUtils {
             }
         }
 
+        //Add Stab Damage
+        if(swordsManager.canUseStab())
+        {
+            event.setDamage(swordsManager.stabCheck(target) + initialDamage);
+        }
+
         if (swordsManager.canUseSerratedStrike()) {
             swordsManager.serratedStrikes(target, initialDamage, modifiers);
         }

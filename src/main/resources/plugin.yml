@@ -561,6 +561,7 @@ permissions:
         description: Allows access to all Swords abilities
         children:
             mcmmo.ability.swords.rupture: true
+            mcmmo.ability.swords.stab: true
             mcmmo.ability.swords.counterattack: true
             mcmmo.ability.swords.serratedstrikes: true
     mcmmo.ability.swords.rupture:
