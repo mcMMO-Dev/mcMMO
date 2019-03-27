@@ -14,10 +14,11 @@ Version 2.1.26
     NOTE: Combat skills will be completely configurable in the upcoming 2.2 update, be patient <3
 
     Notes:
-    These changes are meant to be minor tweaks to PVP, a dedicated PVP update where I do a lot more research and testing will happen after 2.3
+    I collected several sets of data before making these changes, including damage to player with and without prot 4 diamond armor, damage to those players with and without enchanted weapons, damage with and without leveling your skills, and combinations of the previously mentioned things.
+    These changes are meant to be minor tweaks for endgame PVP, a dedicated PVP update where I do a lot more research and testing will happen after 2.3
 
     Stab is unlocked at level 75/750, and ranks up again at level 100/1000
-    Stab permanently adds small amounts of extra damage when attacking players with a sword.
+    Stab permanently adds small amounts of extra damage when attacking with a sword.
     Stab is meant to make up for Swords lackluster damage against fully geared opponents.
 
     Iron Arm got buffed because Unarmed was dealing lackluster damage compared to other skills.

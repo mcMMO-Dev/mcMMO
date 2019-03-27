@@ -84,11 +84,8 @@ public class SwordsManager extends SkillManager {
         }
     }
 
-    public double stabCheck(LivingEntity target)
+    public double getStabDamage()
     {
-        if(!(target instanceof Player))
-            return 0;
-
         int rank = RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_STAB);
 
         if(rank > 0)
