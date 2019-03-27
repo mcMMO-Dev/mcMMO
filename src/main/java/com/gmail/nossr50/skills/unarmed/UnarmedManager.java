@@ -151,7 +151,14 @@ public class UnarmedManager extends SkillManager {
     }
 
     public double getIronArmDamage() {
-        return RankUtils.getRank(getPlayer(), SubSkillType.UNARMED_IRON_ARM_STYLE) * 2;
+        int rank = RankUtils.getRank(getPlayer(), SubSkillType.UNARMED_IRON_ARM_STYLE);
+
+        if(rank == 1)
+        {
+            return 4;
+        } else {
+            return 3 + (rank * 2);
+        }
     }
 
     /**
