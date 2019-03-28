@@ -7,6 +7,9 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.28
+    Fixed a bug where Archery could not gain XP
+
 Version 2.1.27
     Fixed an exploit that allowed players to duplicate torches, and rails
 
