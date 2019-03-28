@@ -7,12 +7,42 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.27
+    Fixed an exploit that allowed players to duplicate torches, and rails
+
+Version 2.1.26
+    Added new scaling damage buffs to all existing Combat Skills
+    Added a new subskill named Stab to Swords
+    Fixed a bug where Berserk was not adding 50% damage to attacks
+    Changed how Iron Arm damage is calculated (Rank 1 now effectively gives twice the damage bonus it used to, higher ranks have more damage)
+
+    NOTE: Combat skills will be completely configurable in the upcoming 2.2 update, be patient <3
+
+    New Permissions
+            - mcmmo.ability.unarmed.unarmedlimitbreak
+            - mcmmo.ability.axes.axeslimitbreak
+            - mcmmo.ability.archery.archerylimitbreak
+            - mcmmo.ability.swords.swordslimitbreak
+            - mcmmo.ability.swords.stab
+
+    Notes:
+    The new Limit Break subskills are intended to make Prot IV players less tanky and for you to feel more powerful for having high skill level.
+    Limit Break has 10 ranks, each rank gives 1 extra RAW damage, this is damage before reductions from armor and enchantments. The net result is you deal about 50% more damage with an end game skill compared to before.
+    With these new changes, most skills can 2 shot normal diamond armor, and it takes about 5 hits to kill someone in Prot IV Diamond Armor.
+    I'm not sure everyone will like these changes, the net result is players are a lot easier to kill now, whereas before you could take quite a beating before getting killed.
+    I collected several sets of data before making these changes, including damage to player with and without prot 4 diamond armor, damage to those players with and without enchanted weapons, damage with and without leveling your skills, and combinations of the previously mentioned things.
+
+Version 2.1.25
+    Shake now has an upper limit of damage (10) - Will be configurable in 2.2 which is coming in the near future
+    Rank 1 of Catalysis & Concoctions are now available at level 0 by default (update skillranks.yml or delete it to regen a new one)
+    NOTE: The change to shake was to make mcMMO more compatible with plugins that spawn entities with large amounts of HP
+
 Version 2.1.24
     Fixed an exploit where you could clone inventories
 
 Version 2.1.23
     Fixed a bug with Double Drops for Mining (Update your configs instructions below)
-    Fixed a 7 year old bug where damage in mcMMO from Skills was potentially getting reduced by damage reduction TWICE
+    Fixed a 7 year old bug where damage in mcMMO from SkillBs was potentially getting reduced by damage reduction TWICE
     Fixed a bug where killing entities with Rupture would not properly credit you as the killer
     Fixed a bug where Serrated Strikes was applying Rupture twice
     Players will now be ejected from Minecarts if they cast their fishing rod (anti-afk)

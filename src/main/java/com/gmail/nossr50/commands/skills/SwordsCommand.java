@@ -7,6 +7,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -92,6 +93,17 @@ public class SwordsCommand extends SkillCommand {
         if (canSerratedStrike) {
             messages.add(getStatMessage(SubSkillType.SWORDS_SERRATED_STRIKES, serratedStrikesLength)
                     + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", serratedStrikesLengthEndurance) : ""));
+        }
+
+        if(canUseSubskill(player, SubSkillType.SWORDS_STAB))
+        {
+            messages.add(getStatMessage(SubSkillType.SWORDS_STAB,
+                    String.valueOf(UserManager.getPlayer(player).getSwordsManager().getStabDamage())));
+        }
+
+        if(canUseSubskill(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK)) {
+            messages.add(getStatMessage(SubSkillType.SWORDS_SWORDS_LIMIT_BREAK,
+                    String.valueOf(CombatUtils.getLimitBreakDamage(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK))));
         }
 
         return messages;
