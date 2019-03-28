@@ -7,6 +7,9 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.27
+    Fixed an exploit that allowed players to duplicate torches, and rails
+
 Version 2.1.26
     Added new scaling damage buffs to all existing Combat Skills
     Added a new subskill named Stab to Swords

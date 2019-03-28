@@ -62,6 +62,9 @@ public class BlockListener implements Listener {
         {
             ItemStack is = new ItemStack(item.getItemStack());
 
+            if(!event.getBlock().getDrops().contains(is))
+                continue;
+
             if(is.getAmount() <= 0)
                 continue;
 
@@ -70,6 +73,7 @@ public class BlockListener implements Listener {
                 //Extra Protection
                 if(event.getBlock().getState() instanceof Container)
                     return;
+
                 event.getBlock().getState().removeMetadata(mcMMO.doubleDropKey, plugin);
                 event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
             }
