@@ -15,4 +15,8 @@ public class ConfigNotifications {
     public boolean isSuperAbilityToolMessage() {
         return superAbilityToolMessage;
     }
+
+    @Setting(value = "Action-Bar-Notifications", comment = "Settings related to action bar messages." +
+            "\nThe action bar is the area above your health and armor.")
+    public ConfigActionBarNotifications actionBarNotifications = new ConfigActionBarNotifications();
 }
