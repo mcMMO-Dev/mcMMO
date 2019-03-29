@@ -9,11 +9,13 @@ import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashSet;
 
@@ -26,12 +28,15 @@ public final class BlockUtils {
      * @param blockState target blockstate
      * @param triple marks the block to give triple drops
      */
-    public static void markBlocksForBonusDrops(BlockState blockState, boolean triple)
+    public static void spawnBonusDrops(BlockState blockState, boolean triple)
     {
-        if(triple)
-            blockState.setMetadata(mcMMO.tripleDropKey, mcMMO.metadataValue);
-        else
-            blockState.setMetadata(mcMMO.doubleDropKey, mcMMO.metadataValue);
+        for(ItemStack spawnItem : blockState.getBlock().getDrops())
+        {
+            if(triple)
+                blockState.getWorld().dropItemNaturally(blockState.getLocation(), spawnItem);
+
+            blockState.getWorld().dropItemNaturally(blockState.getLocation(), spawnItem);
+        }
     }
 
     /**

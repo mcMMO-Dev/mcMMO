@@ -91,7 +91,7 @@ public class MiningManager extends SkillManager {
 
         //TODO: Make this readable
         if (RandomChanceUtil.checkRandomChanceExecutionSuccess(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS, true)) {
-            BlockUtils.markBlocksForBonusDrops(blockState, mcMMOPlayer.getAbilityMode(skill.getAbility()));
+            BlockUtils.spawnBonusDrops(blockState, mcMMOPlayer.getAbilityMode(skill.getAbility()));
         }
     }
 

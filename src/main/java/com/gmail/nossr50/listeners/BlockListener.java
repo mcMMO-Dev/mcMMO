@@ -29,10 +29,7 @@ import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Tag;
+import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -55,9 +52,13 @@ public class BlockListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+/*    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockDropItemEvent(BlockDropItemEvent event)
     {
+
+        Bukkit.broadcastMessage("Debug: Drop Item Event");
+
+
         for(Item item : event.getItems())
         {
             ItemStack is = new ItemStack(item.getItemStack());
@@ -88,7 +89,7 @@ public class BlockListener implements Listener {
                 event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
             }
         }
-    }
+    }*/
 
     /**
      * Monitor BlockPistonExtend events.

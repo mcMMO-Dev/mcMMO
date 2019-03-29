@@ -7,6 +7,9 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.29
+    Fixed a bug where double drops and triple drops were not activating
+
 Version 2.1.28
     Fixed a bug where Archery could not gain XP
 

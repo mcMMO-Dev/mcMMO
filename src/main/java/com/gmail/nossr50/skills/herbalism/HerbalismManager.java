@@ -147,7 +147,7 @@ public class HerbalismManager extends SkillManager {
 
             if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_DOUBLE_DROPS) && customBlock.isDoubleDropEnabled()) {
                 if(checkDoubleDrop(blockState))
-                    BlockUtils.markBlocksForBonusDrops(blockState, greenTerra);
+                    BlockUtils.spawnBonusDrops(blockState, greenTerra);
             }
         }
         else {
@@ -165,7 +165,7 @@ public class HerbalismManager extends SkillManager {
             } else {
                 /* MARK SINGLE BLOCK CROP FOR DOUBLE DROP */
                 if(checkDoubleDrop(blockState))
-                    BlockUtils.markBlocksForBonusDrops(blockState, greenTerra);
+                    BlockUtils.spawnBonusDrops(blockState, greenTerra);
             }
 
             if (Permissions.greenThumbPlant(player, material)) {

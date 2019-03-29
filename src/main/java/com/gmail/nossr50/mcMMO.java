@@ -114,8 +114,6 @@ public class mcMMO extends JavaPlugin {
     public final static String disarmedItemKey     = "mcMMO: Disarmed Item";
     public final static String playerDataKey       = "mcMMO: Player Data";
     public final static String greenThumbDataKey   = "mcMMO: Green Thumb";
-    public final static String doubleDropKey       = "mcMMO: Double Drop";
-    public final static String tripleDropKey       = "mcMMO: Triple Drop";
     public final static String databaseCommandKey  = "mcMMO: Processing Database Command";
     public final static String bredMetadataKey     = "mcMMO: Bred Animal";
 
