@@ -422,14 +422,19 @@ Skills:
 Double_Drops:
     Herbalism:
         Beetroots: true
+        Beetroot: true
         Brown_Mushroom: true
         Cactus: true
         Carrots: true
+        Carrot: true
         Cocoa: true
+        Cocoa_Beans: true
         Wheat: true
         Melon: true
+        Melon_Slice: true
         Nether_Wart: true
         Potatoes: true
+        Potatoe: true
         Pumpkin: true
         Red_Mushroom: true
         Sugar_Cane: true

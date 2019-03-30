@@ -70,11 +70,15 @@ public class BlockListener implements Listener {
                 continue;
 
             if(event.getBlock().getState().getMetadata(mcMMO.doubleDrops).size() > 0)
+            {
                 event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                event.getBlock().getState().removeMetadata(mcMMO.doubleDrops, plugin);
+            }
             else if(event.getBlock().getState().getMetadata(mcMMO.tripleDrops).size() > 0)
             {
                 event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
                 event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                event.getBlock().getState().removeMetadata(mcMMO.tripleDrops, plugin);
             }
         }
     }
