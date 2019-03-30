@@ -463,18 +463,18 @@ public class Config extends AutoUpdateConfigLoader {
     /*
      * SKILL SETTINGS
      */
-    public boolean getDoubleDropsEnabled(PrimarySkillType skill, Material material) { return config.getBoolean("Double_Drops." + StringUtils.getCapitalized(skill.toString()) + "." + StringUtils.getPrettyItemString(material).replace(" ", "_")); }
+    public boolean getDoubleDropsEnabled(PrimarySkillType skill, Material material) { return config.getBoolean("Bonus_Drops." + StringUtils.getCapitalized(skill.toString()) + "." + StringUtils.getPrettyItemString(material).replace(" ", "_")); }
 
     public boolean getDoubleDropsDisabled(PrimarySkillType skill) {
         String skillName = StringUtils.getCapitalized(skill.toString());
-        ConfigurationSection section = config.getConfigurationSection("Double_Drops." + skillName);
+        ConfigurationSection section = config.getConfigurationSection("Bonus_Drops." + skillName);
         if (section == null)
             return false;
         Set<String> keys = section.getKeys(false);
         boolean disabled = true;
 
         for (String key : keys) {
-            if (config.getBoolean("Double_Drops." + skillName + "." + key)) {
+            if (config.getBoolean("Bonus_Drops." + skillName + "." + key)) {
                 disabled = false;
                 break;
             }
@@ -540,7 +540,7 @@ public class Config extends AutoUpdateConfigLoader {
     public double getTamingCOTWRange() { return config.getDouble("Skills.Taming.Call_Of_The_Wild.Range", 40.0D); }
 
     /* Woodcutting */
-    public boolean getWoodcuttingDoubleDropsEnabled(BlockData material) { return config.getBoolean("Double_Drops.Woodcutting." + StringUtils.getFriendlyConfigBlockDataString(material)); }
+    public boolean getWoodcuttingDoubleDropsEnabled(BlockData material) { return config.getBoolean("Bonus_Drops.Woodcutting." + StringUtils.getFriendlyConfigBlockDataString(material)); }
     public boolean getTreeFellerSoundsEnabled() { return config.getBoolean("Skills.Woodcutting.Tree_Feller_Sounds", true); }
     public int getWoodcuttingGate() { return config.getInt("Skills.Woodcutting.Ability_Activation_Level_Gate", 10); }
 
