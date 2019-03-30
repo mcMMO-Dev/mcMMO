@@ -8,9 +8,10 @@ Key:
   - Removal
 
 Version 2.1.30
-    Fixed yet another bug involving double drops
+    Fixed double drops behaving oddly
     DoubleDrop config tables now must contain all things that can possibly be doubled, such as the Ore block, the ore itself, etc.
     Added the following items to the DoubleDrop tables for Mining: Coal, Diamond, Emerald, Glowstone_Dust, Iron_Ingot, Lapis_Lazuli, Nether_Quartz, Redstone, Cobblestone
+    Added the following items to the DoubleDrop tables for Herbalism: Beetroot, Carrot, Cocoa_Beans, Melon_Slice, Potatoe
 
     NOTE: I'm gonna have to blame Bukkit on this one, several API methods I used are actually unfinished and kind of janky. So I hacked something together to make them work.
 
