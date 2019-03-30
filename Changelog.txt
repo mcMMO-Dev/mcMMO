@@ -7,6 +7,10 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.31
+    Fixed a bug where certain SubSkills did not properly send unlock or rank up notifications
+    Fixed a bug where unlock notifications would send simultaneously for a specific skill (still happens if mmoedit changes all skill levels on a player at once)
+
 Version 2.1.30
     Fixed double drops behaving oddly
     Double_Drop config table has been renamed to Bonus_Drops, this is to jankily auto-update everyones config

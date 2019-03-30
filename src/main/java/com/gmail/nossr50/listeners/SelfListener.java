@@ -11,6 +11,7 @@ import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
+import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.entity.Player;
@@ -39,6 +40,9 @@ public class SelfListener implements Listener {
             //Send player skill unlock notifications
             UserManager.getPlayer(player).processUnlockNotifications(plugin, event.getSkill(), previousLevelGained);
         }
+
+        //Reset the delay timer
+        RankUtils.resetUnlockDelayTimer();
 
         if(Config.getInstance().getScoreboardsEnabled())
             ScoreboardManager.handleLevelUp(player, skill);
