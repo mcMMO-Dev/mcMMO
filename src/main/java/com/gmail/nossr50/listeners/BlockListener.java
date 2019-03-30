@@ -35,6 +35,7 @@ import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.*;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -54,41 +55,65 @@ public class BlockListener implements Listener {
         this.plugin = plugin;
     }
 
-/*    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockDropItemEvent(BlockDropItemEvent event)
     {
-
-        Bukkit.broadcastMessage("Debug: Drop Item Event");
-
-
         for(Item item : event.getItems())
         {
             ItemStack is = new ItemStack(item.getItemStack());
 
-            if(!event.getBlock().getDrops().contains(is))
-                continue;
-
             if(is.getAmount() <= 0)
                 continue;
 
-            if(event.getBlock().getState().getMetadata(mcMMO.doubleDropKey).size() > 0)
-            {
-                //Extra Protection
-                if(event.getBlock().getState() instanceof Container)
-                    return;
+            if(!Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.MINING, is.getType())
+                    && !Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.HERBALISM, is.getType())
+                        && !Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, is.getType()))
+                continue;
 
-                event.getBlock().getState().removeMetadata(mcMMO.doubleDropKey, plugin);
+            if(event.getBlock().getState().getMetadata(mcMMO.doubleDrops).size() > 0)
+                event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+            else if(event.getBlock().getState().getMetadata(mcMMO.tripleDrops).size() > 0)
+            {
+                event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
                 event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
             }
+        }
+    }
 
-            else if(event.getBlock().getState().getMetadata(mcMMO.tripleDropKey).size() > 0)
+    /*@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockDropItemEvent(BlockDropItemEvent event)
+    {
+        for(Item item : event.getItems())
+        {
+            ItemStack is = new ItemStack(item.getItemStack());
+
+            if(event.getBlock().getMetadata(mcMMO.doubleDrops).size() > 0)
             {
-                //Extra Protection
-                if(event.getBlock().getState() instanceof Container)
-                    return;
-                event.getBlock().getState().removeMetadata(mcMMO.tripleDropKey, plugin);
-                event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                List<MetadataValue> metadataValue = event.getBlock().getMetadata(mcMMO.doubleDrops);
+
+                BonusDrops bonusDrops = (BonusDrops) metadataValue.get(0);
+                Collection<ItemStack> potentialDrops = (Collection<ItemStack>) bonusDrops.value();
+
+                if(potentialDrops.contains(is))
+                {
+                    event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                }
+
+                event.getBlock().removeMetadata(mcMMO.doubleDrops, plugin);
+            } else {
+                if(event.getBlock().getMetadata(mcMMO.tripleDrops).size() > 0) {
+                    List<MetadataValue> metadataValue = event.getBlock().getMetadata(mcMMO.tripleDrops);
+
+                    BonusDrops bonusDrops = (BonusDrops) metadataValue.get(0);
+                    Collection<ItemStack> potentialDrops = (Collection<ItemStack>) bonusDrops.value();
+
+                    if (potentialDrops.contains(is)) {
+                        event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                        event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                    }
+
+                    event.getBlock().removeMetadata(mcMMO.tripleDrops, plugin);
+                }
             }
         }
     }*/
