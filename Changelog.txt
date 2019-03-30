@@ -153,10 +153,13 @@ Version 2.2.0
 
 Version 2.1.30
     Fixed double drops behaving oddly
+    Double_Drop config table has been renamed to Bonus_Drops, this is to jankily auto-update everyones config
     DoubleDrop config tables now must contain all things that can possibly be doubled, such as the Ore block, the ore itself, etc.
-    Added the following items to the DoubleDrop tables for Mining: Coal, Diamond, Emerald, Glowstone_Dust, Iron_Ingot, Lapis_Lazuli, Nether_Quartz, Redstone, Cobblestone
-    Added the following items to the DoubleDrop tables for Herbalism: Beetroot, Carrot, Cocoa_Beans, Melon_Slice, Potatoe
+    Added the following items to the Bonus_Drops tables for Mining: Coal, Diamond, Emerald, Glowstone_Dust, Iron_Ingot, Lapis_Lazuli, Nether_Quartz, Redstone, Cobblestone
+    Added the following items to the Bonus_Drops tables for Herbalism: Beetroot, Carrot, Cocoa_Beans, Melon_Slice, Potatoe
+    Added the following items to the Bonus_Drops tables for Woodcutting: Birch_Wood, Spruce_Wood, Jungle_Wood, Dark_Oak_Wood, Oak_Wood, Acacia_Wood
 
+    NOTE: You don't need to update your configs for this one unless you had custom entries in the Double_Drop tables, the renaming of the key will auto-insert default values and give everyone correct defaults
     NOTE: I'm gonna have to blame Bukkit on this one, several API methods I used are actually unfinished and kind of janky. So I hacked something together to make them work.
 
 Version 2.1.29

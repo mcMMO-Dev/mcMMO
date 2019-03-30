@@ -419,7 +419,7 @@ Skills:
 #
 #  Settings for Double Drops
 ###
-Double_Drops:
+Bonus_Drops:
     Herbalism:
         Beetroots: true
         Beetroot: true
@@ -483,11 +483,17 @@ Double_Drops:
         Stone: true
         Cobblestone: true
     Woodcutting:
+        Acacia_Wood: true
         Acacia_Log: true
+        Birch_Wood: true
         Birch_Log: true
+        Dark_Oak_Wood: true
         Dark_Oak_Log: true
+        Oak_Wood: true
         Oak_Log: true
+        Jungle_Wood: true
         Jungle_Log: true
+        Spruce_Wood: true
         Spruce_Log: true
 
 #
