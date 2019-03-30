@@ -454,20 +454,29 @@ Double_Drops:
         Diorite: true
         Granite: true
         Coal_Ore: true
+        Coal: true
         Diamond_Ore: true
+        Diamond: true
         Emerald_Ore: true
+        Emerald: true
         End_Stone: true
         Glowstone: true
+        Glowstone_Dust: true
         Gold_Ore: true
         Iron_Ore: true
+        Iron_Ingot: true
         Lapis_Ore: true
+        Lapis_Lazuli: true
         Mossy_Cobblestone: true
         Netherrack: true
         Obsidian: true
         Nether_Quartz_Ore: true
+        Nether_Quartz: true
         Redstone_Ore: true
+        Redstone: true
         Sandstone: true
         Stone: true
+        Cobblestone: true
     Woodcutting:
         Acacia_Log: true
         Birch_Log: true
