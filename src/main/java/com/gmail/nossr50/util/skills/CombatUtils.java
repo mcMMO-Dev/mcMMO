@@ -240,7 +240,37 @@ public final class CombatUtils {
      * @param event The event to run the combat checks on.
      */
     public static void processCombatAttack(EntityDamageByEntityEvent event, Entity attacker, LivingEntity target) {
-        EntityType entityType = attacker.getType();
+        Entity damager = event.getDamager();
+        EntityType entityType = damager.getType();
+
+        if (target instanceof Player) {
+            if (Misc.isNPCEntity(target)) {
+                return;
+            }
+
+            Player player = (Player) target;
+            if (!UserManager.hasPlayerDataKey(player)) {
+                return;
+            }
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+            AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
+
+            if (acrobaticsManager.canDodge(target)) {
+                event.setDamage(acrobaticsManager.dodgeCheck(event.getDamage()));
+            }
+
+            if (ItemUtils.isSword(player.getInventory().getItemInMainHand())) {
+                if (!PrimarySkillType.SWORDS.shouldProcess(target)) {
+                    return;
+                }
+
+                SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
+
+                if (swordsManager.canUseCounterAttack(damager)) {
+                    swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
+                }
+            }
+        }
 
         if (attacker instanceof Player && entityType == EntityType.PLAYER) {
             Player player = (Player) attacker;
@@ -297,7 +327,7 @@ public final class CombatUtils {
         }
 
         else if (entityType == EntityType.WOLF) {
-            Wolf wolf = (Wolf) attacker;
+            Wolf wolf = (Wolf) damager;
             AnimalTamer tamer = wolf.getOwner();
 
             if (tamer != null && tamer instanceof Player && PrimarySkillType.TAMING.shouldProcess(target)) {
@@ -309,7 +339,7 @@ public final class CombatUtils {
             }
         }
         else if (entityType == EntityType.ARROW) {
-            Arrow arrow = (Arrow) attacker;
+            Arrow arrow = (Arrow) damager;
             ProjectileSource projectileSource = arrow.getShooter();
 
             if (projectileSource != null && projectileSource instanceof Player && PrimarySkillType.ARCHERY.shouldProcess(target)) {
@@ -323,35 +353,6 @@ public final class CombatUtils {
                     McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
                     TamingManager tamingManager = mcMMOPlayer.getTamingManager();
                     tamingManager.attackTarget(target);
-                }
-            }
-        }
-
-        if (target instanceof Player) {
-            if (Misc.isNPCEntity(target)) {
-                return;
-            }
-
-            Player player = (Player) target;
-            if (!UserManager.hasPlayerDataKey(player)) {
-                return;
-            }
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-            AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
-
-            if (acrobaticsManager.canDodge(target)) {
-                event.setDamage(acrobaticsManager.dodgeCheck(event.getDamage()));
-            }
-
-            if (ItemUtils.isSword(player.getInventory().getItemInMainHand())) {
-                if (!PrimarySkillType.SWORDS.shouldProcess(target)) {
-                    return;
-                }
-
-                SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
-
-                if (swordsManager.canUseCounterAttack(attacker)) {
-                    swordsManager.counterAttackChecks((LivingEntity) attacker, event.getDamage());
                 }
             }
         }

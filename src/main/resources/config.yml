@@ -426,17 +426,22 @@ Skills:
 #
 #  Settings for Double Drops
 ###
-Double_Drops:
+Bonus_Drops:
     Herbalism:
         Beetroots: true
+        Beetroot: true
         Brown_Mushroom: true
         Cactus: true
         Carrots: true
+        Carrot: true
         Cocoa: true
+        Cocoa_Beans: true
         Wheat: true
         Melon: true
+        Melon_Slice: true
         Nether_Wart: true
         Potatoes: true
+        Potatoe: true
         Pumpkin: true
         Red_Mushroom: true
         Sugar_Cane: true
@@ -461,26 +466,41 @@ Double_Drops:
         Diorite: true
         Granite: true
         Coal_Ore: true
+        Coal: true
         Diamond_Ore: true
+        Diamond: true
         Emerald_Ore: true
+        Emerald: true
         End_Stone: true
         Glowstone: true
+        Glowstone_Dust: true
         Gold_Ore: true
         Iron_Ore: true
+        Iron_Ingot: true
         Lapis_Ore: true
+        Lapis_Lazuli: true
         Mossy_Cobblestone: true
         Netherrack: true
         Obsidian: true
         Nether_Quartz_Ore: true
+        Nether_Quartz: true
         Redstone_Ore: true
+        Redstone: true
         Sandstone: true
         Stone: true
+        Cobblestone: true
     Woodcutting:
+        Acacia_Wood: true
         Acacia_Log: true
+        Birch_Wood: true
         Birch_Log: true
+        Dark_Oak_Wood: true
         Dark_Oak_Log: true
+        Oak_Wood: true
         Oak_Log: true
+        Jungle_Wood: true
         Jungle_Log: true
+        Spruce_Wood: true
         Spruce_Log: true
 
 #
