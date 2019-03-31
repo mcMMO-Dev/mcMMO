@@ -153,6 +153,7 @@ Version 2.2.0
 Version 2.1.31
     Fixed a bug where certain SubSkills did not properly send unlock or rank up notifications
     Fixed a bug where unlock notifications would send simultaneously for a specific skill (still happens if mmoedit changes all skill levels on a player at once)
+    Fixed a bug where mmoedit triggered notifications for skills already gained
     Fixed NPE with grabbing offline player skill ranks through certain API methods (thanks Ineusia)
     Updated German language locale (thanks OverCrave)
 
