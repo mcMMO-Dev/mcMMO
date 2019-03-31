@@ -198,6 +198,22 @@ public class EventUtils {
         return !isCancelled;
     }
 
+    public static boolean handleLevelChangeEventEdit(Player player, PrimarySkillType skill, int levelsChanged, float xpRemoved, boolean isLevelUp, XPGainReason xpGainReason, int oldLevel) {
+        McMMOPlayerLevelChangeEvent event = isLevelUp ? new McMMOPlayerLevelUpEvent(player, skill, levelsChanged - oldLevel, xpGainReason) : new McMMOPlayerLevelDownEvent(player, skill, levelsChanged, xpGainReason);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        boolean isCancelled = event.isCancelled();
+
+        if (isCancelled) {
+            PlayerProfile profile = UserManager.getPlayer(player).getProfile();
+
+            profile.modifySkill(skill, profile.getSkillLevel(skill) - (isLevelUp ? levelsChanged : -levelsChanged));
+            profile.addXp(skill, xpRemoved);
+        }
+
+        return !isCancelled;
+    }
+
     /**
      * Simulate a block break event.
      *
