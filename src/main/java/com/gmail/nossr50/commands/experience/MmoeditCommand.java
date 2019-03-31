@@ -36,7 +36,7 @@ public class MmoeditCommand extends ExperienceCommand {
             return;
         }
 
-        EventUtils.handleLevelChangeEvent(player, skill, value, xpRemoved, value > skillLevel, XPGainReason.COMMAND);
+        EventUtils.handleLevelChangeEventEdit(player, skill, value, xpRemoved, value > skillLevel, XPGainReason.COMMAND, skillLevel);
     }
 
     @Override
