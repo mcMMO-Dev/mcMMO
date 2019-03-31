@@ -783,7 +783,7 @@ public final class ExperienceAPI {
      */
     @Deprecated
     public static int getPlayerRankSkill(String playerName, String skillType) {
-        return mcMMO.getDatabaseManager().readRank(getOfflineProfile(playerName).getPlayerName()).get(getNonChildSkillType(skillType));
+        return mcMMO.getDatabaseManager().readRank(mcMMO.p.getServer().getOfflinePlayer(playerName).getName()).get(getNonChildSkillType(skillType));
     }
 
     /**
@@ -801,7 +801,7 @@ public final class ExperienceAPI {
      * @return the position on the leaderboard
      */
     public static int getPlayerRankSkill(UUID uuid, String skillType) {
-        return mcMMO.getDatabaseManager().readRank(getOfflineProfile(uuid).getPlayerName()).get(getNonChildSkillType(skillType));
+        return mcMMO.getDatabaseManager().readRank(mcMMO.p.getServer().getOfflinePlayer(uuid).getName()).get(getNonChildSkillType(skillType));
     }
 
     /**
@@ -817,7 +817,7 @@ public final class ExperienceAPI {
      */
     @Deprecated
     public static int getPlayerRankOverall(String playerName) {
-        return mcMMO.getDatabaseManager().readRank(getOfflineProfile(playerName).getPlayerName()).get(null);
+        return mcMMO.getDatabaseManager().readRank(mcMMO.p.getServer().getOfflinePlayer(playerName).getName()).get(null);
     }
 
     /**
@@ -832,7 +832,7 @@ public final class ExperienceAPI {
      * @return the position on the power level leaderboard
      */
     public static int getPlayerRankOverall(UUID uuid) {
-        return mcMMO.getDatabaseManager().readRank(getOfflineProfile(uuid).getPlayerName()).get(null);
+        return mcMMO.getDatabaseManager().readRank(mcMMO.p.getServer().getOfflinePlayer(uuid).getName()).get(null);
     }
 
     /**
