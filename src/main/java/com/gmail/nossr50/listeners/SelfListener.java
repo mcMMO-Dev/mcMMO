@@ -51,9 +51,9 @@ public class SelfListener implements Listener {
             return;
         }
 
-        if ((event.getSkillLevel() % Config.getInstance().getLevelUpEffectsTier()) == 0) {
+        /*if ((event.getSkillLevel() % Config.getInstance().getLevelUpEffectsTier()) == 0) {
             skill.celebrateLevelUp(player);
-        }
+        }*/
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

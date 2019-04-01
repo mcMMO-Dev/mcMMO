@@ -25,7 +25,7 @@ public class AprilTask extends BukkitRunnable {
             if (betterRandom == 0) {
                 SoundManager.sendSound(player, player.getLocation(), SoundType.LEVEL_UP);
                 player.sendMessage(unknown("superskill") + " skill increased by 1. Total (" + unknown("12") + ")");
-                fireworksShow(player);
+//                fireworksShow(player);
             }
 
             for (Statistic statistic : mcMMO.getHolidayManager().movementStatistics) {
@@ -37,7 +37,7 @@ public class AprilTask extends BukkitRunnable {
         }
     }
 
-    private void fireworksShow(final Player player) {
+    /*private void fireworksShow(final Player player) {
         final int firework_amount = 10;
         for (int i = 0; i < firework_amount; i++) {
             int delay = (int) (Misc.getRandom().nextDouble() * 3 * Misc.TICK_CONVERSION_FACTOR) + 4;
@@ -48,7 +48,7 @@ public class AprilTask extends BukkitRunnable {
                 }
             }, delay);
         }
-    }
+    }*/
 
     private String unknown(String string) {
         return ChatColor.MAGIC + string + ChatColor.RESET + ChatColor.YELLOW;

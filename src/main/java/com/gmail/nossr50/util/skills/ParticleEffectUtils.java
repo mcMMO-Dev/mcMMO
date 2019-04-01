@@ -1,17 +1,14 @@
 package com.gmail.nossr50.util.skills;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.mcMMO;
-import org.bukkit.*;
-import org.bukkit.FireworkEffect.Type;
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Firework;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.metadata.FixedMetadataValue;
 
 public final class ParticleEffectUtils {
 
@@ -80,9 +77,9 @@ public final class ParticleEffectUtils {
             return;
         }
 
-        if (hasHeadRoom(player)) {
+       /* if (hasHeadRoom(player)) {
             fireworkParticleShower(player, Color.GREEN);
-        }
+        }*/
     }
 
     public static void playAbilityDisabledEffect(Player player) {
@@ -90,12 +87,12 @@ public final class ParticleEffectUtils {
             return;
         }
 
-        if (hasHeadRoom(player)) {
+        /*if (hasHeadRoom(player)) {
             fireworkParticleShower(player, Color.RED);
-        }
+        }*/
     }
 
-    public static void fireworkParticleShower(Player player, Color color) {
+/*    public static void fireworkParticleShower(Player player, Color color) {
         Location location = player.getLocation();
         location.setY(location.getY() + (player.isInsideVehicle() ? 1.0 : -1.0));
         location.setPitch(-90);
@@ -108,7 +105,7 @@ public final class ParticleEffectUtils {
         fireworkMeta.addEffect(effect);
         fireworkMeta.setPower(0);
         firework.setFireworkMeta(fireworkMeta);
-    }
+    }*/
 
     private static boolean hasHeadRoom(Player player) {
         boolean hasHeadRoom = true;

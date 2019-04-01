@@ -22,7 +22,6 @@ import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.Color;
@@ -243,9 +242,9 @@ public enum PrimarySkillType {
         return Permissions.skillEnabled(player, this);
     }
 
-    public void celebrateLevelUp(Player player) {
+/*    public void celebrateLevelUp(Player player) {
         ParticleEffectUtils.fireworkParticleShower(player, runescapeColor);
-    }
+    }*/
 
     public boolean shouldProcess(Entity target) {
         return (target instanceof Player || (target instanceof Tameable && ((Tameable) target).isTamed())) ? getPVPEnabled() : getPVEEnabled();

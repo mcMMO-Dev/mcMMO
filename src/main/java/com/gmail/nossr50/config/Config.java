@@ -405,7 +405,7 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getCallOfTheWildEffectEnabled() { return config.getBoolean("Particles.Call_of_the_Wild", true); }
     public boolean getLevelUpEffectsEnabled() { return config.getBoolean("Particles.LevelUp_Enabled", true); }
     public int getLevelUpEffectsTier() { return config.getInt("Particles.LevelUp_Tier", 100); }
-    public boolean getLargeFireworks() { return config.getBoolean("Particles.LargeFireworks", true); }
+//    public boolean getLargeFireworks() { return config.getBoolean("Particles.LargeFireworks", true); }
 
     /* PARTY SETTINGS */
     public boolean getPartyFriendlyFire() { return config.getBoolean("Party.FriendlyFire", false);}
