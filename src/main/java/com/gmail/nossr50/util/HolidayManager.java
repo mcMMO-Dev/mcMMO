@@ -7,19 +7,16 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.google.common.collect.ImmutableList;
-import org.bukkit.*;
-import org.bukkit.FireworkEffect.Type;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.Statistic;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerStatisticIncrementEvent;
-import org.bukkit.inventory.meta.FireworkMeta;
 
 import java.io.*;
 import java.util.*;
@@ -110,9 +107,9 @@ public final class HolidayManager {
             }
         }
 
-        for (DyeColor color : DyeColor.values()) {
-            colors.add(color.getFireworkColor());
-        }
+//        for (DyeColor color : DyeColor.values()) {
+//            colors.add(color.getFireworkColor());
+//        }
 
         Collections.shuffle(chatColors, Misc.getRandom());
         Collections.shuffle(colors, Misc.getRandom());
@@ -224,7 +221,7 @@ public final class HolidayManager {
         }
 
         sender.sendMessage(LocaleLoader.getString("Holiday.Anniversary", (currentYear - START_YEAR)));
-        if (sender instanceof Player) {
+        /*if (sender instanceof Player) {
             final int firework_amount = 10;
             for (int i = 0; i < firework_amount; i++) {
                 int delay = (int) (Misc.getRandom().nextDouble() * 3 * Misc.TICK_CONVERSION_FACTOR) + 4;
@@ -235,8 +232,8 @@ public final class HolidayManager {
                     }
                 }, delay);
             }
-        }
-        else {
+        }*/
+//        else {
                 /*
                  * Credit: http://www.geocities.com/spunk1111/
                  *  (good luck finding that in 3 years heh)
@@ -273,7 +270,7 @@ public final class HolidayManager {
             sender.sendMessage(String.format("     %2$s*            %6$s*..*         %9$s:           %11$s*", colorParams));
             sender.sendMessage(String.format("      %2$s*                        %9$s*          %11$s*", colorParams));
             sender.sendMessage(String.format("      %2$s*                        %9$s*          %11$s*", colorParams));
-        }
+//        }
 
         hasCelebrated.add(sender.getName());
     }
@@ -282,19 +279,19 @@ public final class HolidayManager {
         return !(date.before(start) || date.after(end));
     }
 
-    public void spawnFireworks(Player player) {
-        int power = Misc.getRandom().nextInt(3) + 1;
-        Type fireworkType = Type.values()[Misc.getRandom().nextInt(Type.values().length)];
-        double varX = Misc.getRandom().nextGaussian() * 3;
-        double varZ = Misc.getRandom().nextGaussian() * 3;
-
-        Firework fireworks = (Firework) player.getWorld().spawnEntity(player.getLocation().add(varX, 0, varZ), EntityType.FIREWORK);
-        FireworkMeta fireworkmeta = fireworks.getFireworkMeta();
-        FireworkEffect effect = FireworkEffect.builder().flicker(Misc.getRandom().nextBoolean()).withColor(colorChoose()).withFade(colorChoose()).with(fireworkType).trail(Misc.getRandom().nextBoolean()).build();
-        fireworkmeta.addEffect(effect);
-        fireworkmeta.setPower(power);
-        fireworks.setFireworkMeta(fireworkmeta);
-    }
+//    public void spawnFireworks(Player player) {
+//        int power = Misc.getRandom().nextInt(3) + 1;
+//        Type fireworkType = Type.values()[Misc.getRandom().nextInt(Type.values().length)];
+//        double varX = Misc.getRandom().nextGaussian() * 3;
+//        double varZ = Misc.getRandom().nextGaussian() * 3;
+//
+//        Firework fireworks = (Firework) player.getWorld().spawnEntity(player.getLocation().add(varX, 0, varZ), EntityType.FIREWORK);
+//        FireworkMeta fireworkmeta = fireworks.getFireworkMeta();
+//        FireworkEffect effect = FireworkEffect.builder().flicker(Misc.getRandom().nextBoolean()).withColor(colorChoose()).withFade(colorChoose()).with(fireworkType).trail(Misc.getRandom().nextBoolean()).build();
+//        fireworkmeta.addEffect(effect);
+//        fireworkmeta.setPower(power);
+//        fireworks.setFireworkMeta(fireworkmeta);
+//    }
 
     private static List<Color> colorChoose() {
         return ALL_COLORS.subList(0, Math.max(Misc.getRandom().nextInt(ALL_COLORS.size() + 1), 1));
@@ -363,7 +360,7 @@ public final class HolidayManager {
         int levelTotal = Misc.getRandom().nextInt(1 + UserManager.getPlayer(player).getSkillLevel(PrimarySkillType.MINING)) + 1;
         SoundManager.sendSound(player, player.getLocation(), SoundType.LEVEL_UP);
         NotificationManager.sendPlayerInformation(player, NotificationType.HOLIDAY, "Holiday.AprilFools.Levelup", StringUtils.getCapitalized(fakeSkillType.toString()), String.valueOf(levelTotal));
-        ParticleEffectUtils.fireworkParticleShower(player, ALL_COLORS.get(Misc.getRandom().nextInt(ALL_COLORS.size())));
+//        ParticleEffectUtils.fireworkParticleShower(player, ALL_COLORS.get(Misc.getRandom().nextInt(ALL_COLORS.size())));
     }
 
     public void registerAprilCommand() {
