@@ -150,6 +150,11 @@ Version 2.2.0
     Added API method to check if player parties are size capped
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
+Version 2.1.32
+    Completely removed Fireworks from mcMMO because they lag
+    Added 'General.AprilFoolsEvent' setting to config.yml to turn off April Fools
+    NOTE: April Fools event has been in mcMMO for a long time, I did not write it so I didn't know it spawned fireworks like crazy.
+
 Version 2.1.31
     Fixed a bug where certain SubSkills did not properly send unlock or rank up notifications
     Fixed a bug where unlock notifications would send simultaneously for a specific skill (still happens if mmoedit changes all skill levels on a player at once)

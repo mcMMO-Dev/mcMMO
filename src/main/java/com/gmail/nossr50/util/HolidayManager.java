@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.commands.skills.AprilCommand;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -310,6 +311,9 @@ public final class HolidayManager {
     }
 
     public boolean isAprilFirst() {
+        if(!Config.getInstance().isAprilFoolsAllowed())
+            return false;
+
         GregorianCalendar aprilFirst = new GregorianCalendar(currentYear, Calendar.APRIL, 1);
         GregorianCalendar aprilSecond = new GregorianCalendar(currentYear, Calendar.APRIL, 2);
         GregorianCalendar day = new GregorianCalendar();
@@ -317,6 +321,9 @@ public final class HolidayManager {
     }
 
     public boolean nearingAprilFirst() {
+        if(!Config.getInstance().isAprilFoolsAllowed())
+            return false;
+
         GregorianCalendar start = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.MARCH, 28);
         GregorianCalendar end = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.APRIL, 2);
         GregorianCalendar day = new GregorianCalendar();
@@ -357,6 +364,9 @@ public final class HolidayManager {
     }
 
     public void levelUpApril(Player player, FakeSkillType fakeSkillType) {
+        if(!Config.getInstance().isAprilFoolsAllowed())
+            return;
+
         int levelTotal = Misc.getRandom().nextInt(1 + UserManager.getPlayer(player).getSkillLevel(PrimarySkillType.MINING)) + 1;
         SoundManager.sendSound(player, player.getLocation(), SoundType.LEVEL_UP);
         NotificationManager.sendPlayerInformation(player, NotificationType.HOLIDAY, "Holiday.AprilFools.Levelup", StringUtils.getCapitalized(fakeSkillType.toString()), String.valueOf(levelTotal));
@@ -364,6 +374,9 @@ public final class HolidayManager {
     }
 
     public void registerAprilCommand() {
+        if(!Config.getInstance().isAprilFoolsAllowed())
+            return;
+
         PluginCommand command = mcMMO.p.getCommand("mcfools");
         command.setExecutor(new AprilCommand());
     }
