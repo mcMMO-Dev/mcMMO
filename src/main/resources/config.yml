@@ -14,6 +14,7 @@ General:
     RetroMode:
         Enabled: false
     Locale: en_US
+    AprilFoolsEvent: true
     MOTD_Enabled: true
     # Send a message to the player when his profile was successfully loaded
     Show_Profile_Loaded: false
