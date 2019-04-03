@@ -7,7 +7,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import java.io.File;
 
 public class BlockStoreConversionXDirectory implements Runnable {
-    private int taskID, i;
+    private int taskID;
     private org.bukkit.World world;
     BukkitScheduler scheduler;
     File dataDir;
@@ -53,12 +53,12 @@ public class BlockStoreConversionXDirectory implements Runnable {
 
         this.zDirs = this.dataDir.listFiles();
 
-        for (this.i = 0; (this.i < ChunkConversionOptions.getConversionRate()) && (this.i < this.zDirs.length); this.i++) {
-            if (this.converters[this.i] == null) {
-                this.converters[this.i] = new BlockStoreConversionZDirectory();
+        for (int i = 0; (i < ChunkConversionOptions.getConversionRate()) && (i < this.zDirs.length); i++) {
+            if (this.converters[i] == null) {
+                this.converters[i] = new BlockStoreConversionZDirectory();
             }
 
-            this.converters[this.i].start(this.world, this.dataDir, this.zDirs[this.i]);
+            this.converters[i].start(this.world, this.dataDir, this.zDirs[i]);
         }
 
         stop();

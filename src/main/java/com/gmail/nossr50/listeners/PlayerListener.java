@@ -3,7 +3,6 @@ package com.gmail.nossr50.listeners;
 import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.chat.ChatManagerFactory;
 import com.gmail.nossr50.chat.PartyChatManager;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;

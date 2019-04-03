@@ -16,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public class AlchemyManager extends SkillManager {
-    private final double LUCKY_MODIFIER = 4.0 / 3.0;
 
     public AlchemyManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.ALCHEMY);
@@ -49,6 +48,7 @@ public class AlchemyManager extends SkillManager {
             return Alchemy.catalysisMinSpeed;
         }
 
+        double LUCKY_MODIFIER = 4.0 / 3.0;
         return Math.min(Alchemy.catalysisMaxSpeed, Alchemy.catalysisMinSpeed + (Alchemy.catalysisMaxSpeed - Alchemy.catalysisMinSpeed) * (skillLevel - Alchemy.catalysisUnlockLevel) / (Alchemy.catalysisMaxBonusLevel - Alchemy.catalysisUnlockLevel)) * (isLucky ? LUCKY_MODIFIER : 1.0);
     }
 

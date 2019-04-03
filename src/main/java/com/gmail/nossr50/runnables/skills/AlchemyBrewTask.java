@@ -18,8 +18,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class AlchemyBrewTask extends BukkitRunnable {
-    private static double DEFAULT_BREW_SPEED = 1.0;
-    private static int    DEFAULT_BREW_TICKS = 400;
 
     private BlockState brewingStand;
     private Location location;
@@ -34,8 +32,8 @@ public class AlchemyBrewTask extends BukkitRunnable {
         this.location = brewingStand.getLocation();
         this.player = player;
 
-        brewSpeed = DEFAULT_BREW_SPEED;
-        brewTimer = DEFAULT_BREW_TICKS;
+        brewSpeed = 1.0;
+        brewTimer = 400;
 
         if (player != null && !Misc.isNPCEntity(player) && Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CATALYSIS)) {
             double catalysis = UserManager.getPlayer(player).getAlchemyManager().calculateBrewSpeed(Permissions.lucky(player, PrimarySkillType.ALCHEMY));

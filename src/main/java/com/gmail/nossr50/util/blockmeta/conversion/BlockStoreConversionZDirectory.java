@@ -23,7 +23,6 @@ public class BlockStoreConversionZDirectory implements Runnable {
     private PrimitiveChunkletStore primitiveChunklet = null;
     private PrimitiveExChunkletStore primitiveExChunklet = null;
     private PrimitiveChunkStore currentChunk;
-    private boolean[] oldArray, newArray;
 
     public BlockStoreConversionZDirectory() {
         this.taskID = -1;
@@ -130,27 +129,25 @@ public class BlockStoreConversionZDirectory implements Runnable {
 
             for (this.x = 0; this.x < 16; this.x++) {
                 for (this.z = 0; this.z < 16; this.z++) {
-                    if (this.primitiveChunklet != null) {
-                        this.oldArray = this.primitiveChunklet.store[x][z];
-                    }
+                    boolean[] oldArray;
 
                     if (this.primitiveExChunklet != null) {
-                        this.oldArray = this.primitiveExChunklet.store[x][z];
+                        oldArray = this.primitiveExChunklet.store[x][z];
                     }
                     else {
                         return;
                     }
 
-                    this.newArray = this.currentChunk.store[x][z];
+                    boolean[] newArray = this.currentChunk.store[x][z];
 
-                    if (this.oldArray.length < 64) {
+                    if (oldArray.length < 64) {
                         return;
                     }
-                    else if (this.newArray.length < ((this.y * 64) + 64)) {
+                    else if (newArray.length < ((this.y * 64) + 64)) {
                         return;
                     }
 
-                    System.arraycopy(this.oldArray, 0, this.newArray, (this.y * 64), 64);
+                    System.arraycopy(oldArray, 0, newArray, (this.y * 64), 64);
                 }
             }
         }
