@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.acrobatics;
 
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -14,6 +15,7 @@ import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import com.sun.deploy.config.Config;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Player;
@@ -30,6 +32,9 @@ public class AcrobaticsManager extends SkillManager {
 
     public boolean canGainRollXP()
     {
+        if(!ExperienceConfig.getInstance().isAcrobaticsExploitingPrevented())
+            return true;
+
         if(System.currentTimeMillis() >= rollXPCooldown)
         {
             rollXPCooldown = System.currentTimeMillis() + rollXPInterval;

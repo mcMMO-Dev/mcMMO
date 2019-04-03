@@ -547,8 +547,6 @@ public class Config extends AutoUpdateConfigLoader {
     public int getWoodcuttingGate() { return config.getInt("Skills.Woodcutting.Ability_Activation_Level_Gate", 10); }
 
     /* AFK Leveling */
-    public boolean getAcrobaticsPreventAFK() { return config.getBoolean("Skills.Acrobatics.Prevent_AFK_Leveling", true); }
-    public int getAcrobaticsAFKMaxTries() { return config.getInt("Skills.Acrobatics.Max_Tries_At_Same_Location", 3); }
     public boolean getHerbalismPreventAFK() { return config.getBoolean("Skills.Herbalism.Prevent_AFK_Leveling", true); }
 
     /* Level Caps */

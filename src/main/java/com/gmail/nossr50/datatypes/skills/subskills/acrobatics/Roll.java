@@ -272,7 +272,7 @@ public class Roll extends AcrobaticsSubSkill {
      * @return true if exploits are detected, false otherwise
      */
     private boolean isExploiting(Player player) {
-        if (!Config.getInstance().getAcrobaticsPreventAFK()) {
+        if (!ExperienceConfig.getInstance().isAcrobaticsExploitingPrevented()) {
             return false;
         }
 
