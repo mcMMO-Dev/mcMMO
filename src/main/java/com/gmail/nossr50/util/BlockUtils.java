@@ -1,7 +1,5 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.Repair;
@@ -38,9 +36,9 @@ public final class BlockUtils {
      * @param blockState the blockstate
      * @return true if the player succeeded in the check
      */
-    public static boolean checkDoubleDrops(Player player, BlockState blockState, PrimarySkillType skillType, SubSkillType subSkillType)
+    public static boolean checkDoubleDrops(Player player, BlockState blockState, SubSkillType subSkillType)
     {
-        if(Config.getInstance().getDoubleDropsEnabled(skillType, blockState.getType()) && Permissions.isSubSkillEnabled(player, subSkillType))
+        if(mcMMO.getConfigManager().isBonusDropsEnabled(blockState.getType()) && Permissions.isSubSkillEnabled(player, subSkillType))
         {
             return RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkill(player, subSkillType, true));
         }

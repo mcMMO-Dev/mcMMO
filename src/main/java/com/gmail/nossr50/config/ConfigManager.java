@@ -78,6 +78,7 @@ public final class ConfigManager {
 
     private RepairableManager repairableManager;
     private SalvageableManager salvageableManager;
+    private BonusDropManager bonusDropManager;
 
     /* MOD MANAGERS */
 
@@ -88,13 +89,6 @@ public final class ConfigManager {
     SkillPropertiesManager skillPropertiesManager;
 
     private ExperienceMapManager experienceMapManager;
-
-    //private ModManager modManager;
-
-    /*private ToolConfigManager toolConfigManager;
-    private ArmorConfigManager armorConfigManager;
-    private BlockConfigManager blockConfigManager;
-    private EntityConfigManager entityConfigManager;*/
 
     /* CONFIG INSTANCES */
 
@@ -147,13 +141,9 @@ public final class ConfigManager {
     private CoreSkillsConfig coreSkillsConfig;
     private SoundConfig soundConfig;
     private RankConfig rankConfig;
-//    private RepairConfig repairConfig;
-//    private SalvageConfig salvageConfig;
 
     private HashMap<Material, Integer> partyItemWeights;
     private HashMap<PartyFeature, Integer> partyFeatureUnlocks;
-
-
 
     /* CONFIG ERRORS */
 
@@ -258,6 +248,9 @@ public final class ConfigManager {
         partyItemWeights = Maps.newHashMap(configParty.getConfig().getPartyItemShare().getItemShareMap()); //Item Share Weights
         partyFeatureUnlocks = Maps.newHashMap(configParty.getConfig().getPartyXP().getPartyLevel().getPartyFeatureUnlockMap()); //Party Progression
 
+        //Register Bonus Drops
+        registerBonusDrops();
+
         //YAML Configs
         mainConfig = new MainConfig();
 
@@ -277,10 +270,6 @@ public final class ConfigManager {
         soundConfig = new SoundConfig();
 
         rankConfig = new RankConfig();
-
-//        repairConfig = new RepairConfig();
-
-//        salvageConfig = new SalvageConfig();
 
         /*
          * Managers
@@ -325,6 +314,10 @@ public final class ConfigManager {
         // Handles registration of salvageables
         salvageableManager = new SalvageableManager(getSalvageables());
         unloadables.add(salvageableManager);
+
+        // Handles registration of bonus drops
+        bonusDropManager = new BonusDropManager();
+        unloadables.add(bonusDropManager);
     }
 
     /**
@@ -379,6 +372,16 @@ public final class ConfigManager {
     {
         if(!userFiles.contains(userFile))
             userFiles.add(userFile);
+    }
+
+    /**
+     * Registers bonus drops from several skill configs
+     */
+    public void registerBonusDrops()
+    {
+        bonusDropManager.addToWhitelist(configMining.getBonusDrops());
+        bonusDropManager.addToWhitelist(configHerbalism.getBonusDrops());
+        bonusDropManager.addToWhitelist(configWoodcutting.getBonusDrops());
     }
 
     /*
@@ -584,6 +587,15 @@ public final class ConfigManager {
 
     public ConfigSalvage getConfigSalvage() {
         return configSalvage.getConfig();
+    }
+
+    public BonusDropManager getBonusDropManager() {
+        return bonusDropManager;
+    }
+
+    public boolean isBonusDropsEnabled(Material material)
+    {
+        return getBonusDropManager().isBonusDropWhitelisted(material);
     }
 
     public double getSkillMaxBonusLevel(SubSkillType subSkillType)

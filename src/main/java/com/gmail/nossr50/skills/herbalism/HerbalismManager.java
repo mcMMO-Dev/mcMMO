@@ -181,7 +181,7 @@ public class HerbalismManager extends SkillManager {
      */
     public boolean checkDoubleDrop(BlockState blockState)
     {
-        return BlockUtils.checkDoubleDrops(getPlayer(), blockState, skill, SubSkillType.HERBALISM_DOUBLE_DROPS);
+        return BlockUtils.checkDoubleDrops(getPlayer(), blockState, SubSkillType.HERBALISM_DOUBLE_DROPS);
     }
 
     /**
