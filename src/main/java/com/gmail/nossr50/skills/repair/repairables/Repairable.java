@@ -1,95 +1,129 @@
-/*
 package com.gmail.nossr50.skills.repair.repairables;
 
-import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
+import com.gmail.nossr50.datatypes.skills.ItemType;
+import com.gmail.nossr50.util.ItemUtils;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Arrays;
+import java.util.List;
 
 
-public interface Repairable {
-    */
-/**
-     * Gets the type of this repairable item
-     *
-     * @return the type of this repairable
-     *//*
+public class Repairable {
+    private final Material itemMaterial;
+    private final List<Material> repairMaterials;
+    private final int minimumQuantity, minimumLevel;
+    private final short maximumDurability, baseRepairDurability;
+    private final ItemType repairItemType;
+    private final ItemMaterialCategory repairItemMaterialCategory;
+    private final double xpMultiplier;
 
-    public Material getItemMaterial();
+    public Repairable(Material itemMaterial, Material repairMaterial, int minimumQuantity, int minimumLevel, double xpMultiplier) {
+        this(itemMaterial.getKey().getKey(), ItemUtils.getRepairItemMaterials(Arrays.asList(repairMaterial)), minimumQuantity, minimumLevel, xpMultiplier);
+    }
 
-    */
-/**
-     * Gets the id of the material used to repair this item
-     *
-     * @return the id of the repair material
-     *//*
+    public Repairable(Material itemMaterial, List<Material> repairMaterials, int minimumQuantity, int minimumLevel, double xpMultiplier) {
+        this(itemMaterial.getKey().getKey(), ItemUtils.getRepairItemMaterials(repairMaterials), minimumQuantity, minimumLevel, xpMultiplier);
+    }
 
-    public Material getRepairMaterials();
+    public Repairable(String itemMaterial, List<String> repairMaterials, int minimumQuantity, int minimumLevel, double xpMultiplier) {
+        this.itemMaterial = Material.matchMaterial(itemMaterial);
+        this.repairMaterials = ItemUtils.matchMaterials(repairMaterials);
+        this.minimumQuantity = minimumQuantity;
+        this.minimumLevel = minimumLevel;
+        this.xpMultiplier = xpMultiplier;
 
-    */
-/**
-     * Gets the RepairItemType value for this repairable item
-     *
-     * @return the RepairItemType for this repairable
-     *//*
+        this.maximumDurability = this.itemMaterial.getMaxDurability();
+        this.baseRepairDurability = (short) (maximumDurability / minimumQuantity);
 
-    public ItemType getRepairItemType();
+        this.repairItemType = determineItemType(this.itemMaterial);
+        this.repairItemMaterialCategory = determineMaterialType(this.repairMaterials.get(0));
+    }
 
-    */
-/**
-     * Gets the RepairMaterialType value for this repairable item
-     *
-     * @return the RepairMaterialType for this repairable
-     *//*
+    public ItemMaterialCategory determineMaterialType(Material material) {
+        switch (material) {
+            case STRING:
+                return ItemMaterialCategory.STRING;
 
-    public ItemMaterialCategory getRepairItemMaterialCategory();
+            case LEATHER:
+                return ItemMaterialCategory.LEATHER;
 
-    */
-/**
-     * Gets the minimum quantity of repair materials ignoring all other repair bonuses
-     *
-     * This is typically set to the number of items needed to create that item, for example 5 for helmets or 2 for swords
-     *
-     * @return the minimum number of items
-     *//*
+            case ACACIA_PLANKS:
+            case BIRCH_PLANKS:
+            case DARK_OAK_PLANKS:
+            case JUNGLE_PLANKS:
+            case OAK_PLANKS:
+            case SPRUCE_PLANKS:
+                return ItemMaterialCategory.WOOD;
 
-    public int getMinimumQuantity();
+            case STONE:
+                return ItemMaterialCategory.STONE;
 
-    */
-/**
-     * Gets the maximum durability of this item before it breaks
-     *
-     * @return the maximum durability
-     *//*
+            case IRON_INGOT:
+                return ItemMaterialCategory.IRON;
 
-    public short getMaximumDurability();
+            case GOLD_INGOT:
+                return ItemMaterialCategory.GOLD;
 
-    */
-/**
-     * Gets the base repair durability on which to calculate bonuses.
-     *
-     * This is actually the maximum durability divided by the minimum quantity
-     *
-     * @return the base repair durability
-     *//*
+            case DIAMOND:
+                return ItemMaterialCategory.DIAMOND;
 
-    public short getBaseRepairDurability();
+            default:
+                return ItemMaterialCategory.OTHER;
+        }
+    }
 
-    */
-/**
-     * Gets the minimum repair level needed to repair this item
-     *
-     * @return the minimum level to repair this item, or 0 for no minimum
-     *//*
+    private ItemType determineItemType(Material material)
+    {
+        if (ItemUtils.isMinecraftTool(new ItemStack(material))) {
+            return ItemType.TOOL;
+        }
+        else if (ItemUtils.isArmor(new ItemStack((material)))) {
+            return ItemType.ARMOR;
+        } else {
+            return ItemType.OTHER;
+        }
+    }
 
-    public int getMinimumLevel();
+    public Material getItemMaterial() {
+        return itemMaterial;
+    }
 
-    */
-/**
-     * Gets the xpMultiplier for this repairable
-     *
-     * @return the xpMultiplier of this repairable
-     *//*
+    public List<Material> getRepairMaterials() {
+        return repairMaterials;
+    }
 
-    public double getXpMultiplier();
+    public List<String> getRepairMaterialsRegistryKeys() {
+        return ItemUtils.getRepairItemMaterials(repairMaterials);
+    }
+
+
+    public ItemType getRepairItemType() {
+        return repairItemType;
+    }
+
+    public ItemMaterialCategory getRepairItemMaterialCategory() {
+        return repairItemMaterialCategory;
+    }
+
+    public int getMinimumQuantity() {
+        return minimumQuantity;
+    }
+
+    public short getMaximumDurability() {
+        return maximumDurability;
+    }
+
+    public short getBaseRepairDurability() {
+        return baseRepairDurability;
+    }
+
+    public int getMinimumLevel() {
+        return minimumLevel;
+    }
+
+    public double getXpMultiplier() {
+        return xpMultiplier;
+    }
 }
-*/

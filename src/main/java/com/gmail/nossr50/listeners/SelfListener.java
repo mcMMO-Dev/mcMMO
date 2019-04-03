@@ -18,7 +18,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.scoreboard.Scoreboard;
 
 public class SelfListener implements Listener {
     //Used in task scheduling and other things

@@ -46,10 +46,10 @@ import com.gmail.nossr50.config.treasure.HerbalismTreasureConfig;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.repair.repairables.SimpleRepairable;
-import com.gmail.nossr50.skills.repair.repairables.SimpleRepairableManager;
+import com.gmail.nossr50.skills.repair.repairables.Repairable;
+import com.gmail.nossr50.skills.repair.repairables.RepairableManager;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
-import com.gmail.nossr50.skills.salvage.salvageables.SimpleSalvageableManager;
+import com.gmail.nossr50.skills.salvage.salvageables.SalvageableManager;
 import com.gmail.nossr50.util.experience.ExperienceMapManager;
 import com.google.common.collect.Maps;
 import com.google.common.reflect.TypeToken;
@@ -83,8 +83,8 @@ public final class ConfigManager {
 
     /* COLLECTION MANAGERS */
 
-    private SimpleRepairableManager simpleRepairableManager;
-    private SimpleSalvageableManager simpleSalvageableManager;
+    private RepairableManager repairableManager;
+    private SalvageableManager salvageableManager;
 
     /* MOD MANAGERS */
 
@@ -155,7 +155,7 @@ public final class ConfigManager {
     private SoundConfig soundConfig;
     private RankConfig rankConfig;
 //    private RepairConfig repairConfig;
-    private SalvageConfig salvageConfig;
+//    private SalvageConfig salvageConfig;
 
     private HashMap<Material, Integer> partyItemWeights;
     private HashMap<PartyFeature, Integer> partyFeatureUnlocks;
@@ -215,7 +215,7 @@ public final class ConfigManager {
 
         TypeSerializers.getDefaultSerializers().registerType(new TypeToken<Material>() {}, new CustomEnumValueSerializer());
         TypeSerializers.getDefaultSerializers().registerType(new TypeToken<PartyFeature>() {}, new CustomEnumValueSerializer());
-        TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(SimpleRepairable.class), new RepairableSerializer());
+        TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Repairable.class), new RepairableSerializer());
 
         mcMMO.p.getLogger().info("Deserializing configs...");
         //TODO: Not sure about the order of MainConfig
@@ -287,7 +287,7 @@ public final class ConfigManager {
 
 //        repairConfig = new RepairConfig();
 
-        salvageConfig = new SalvageConfig();
+//        salvageConfig = new SalvageConfig();
 
         /*
          * Managers
@@ -326,19 +326,19 @@ public final class ConfigManager {
     private void initCollectionManagers()
     {
         // Handles registration of repairables
-        simpleRepairableManager = new SimpleRepairableManager(getRepairables());
-        unloadables.add(simpleRepairableManager);
+        repairableManager = new RepairableManager(getRepairables());
+        unloadables.add(repairableManager);
 
         // Handles registration of salvageables
-        simpleSalvageableManager = new SimpleSalvageableManager(getSalvageables());
-        unloadables.add(simpleSalvageableManager);
+        salvageableManager = new SalvageableManager(getSalvageables());
+        unloadables.add(salvageableManager);
     }
 
     /**
      * Get all loaded repairables (loaded from all repairable configs)
      * @return the currently loaded repairables
      */
-    public ArrayList<SimpleRepairable> getRepairables()
+    public ArrayList<Repairable> getRepairables()
     {
         return getConfigRepair().getConfigRepairablesList();
     }
@@ -349,7 +349,7 @@ public final class ConfigManager {
      */
     public ArrayList<Salvageable> getSalvageables()
     {
-        return (ArrayList<Salvageable>) salvageConfig.genericCollection;
+        return getConfigSalvage().getConfigSalvageablesList();
     }
 
     /**
@@ -401,12 +401,12 @@ public final class ConfigManager {
         return userFiles;
     }
 
-    public SimpleRepairableManager getSimpleRepairableManager() {
-        return simpleRepairableManager;
+    public RepairableManager getRepairableManager() {
+        return repairableManager;
     }
 
-    public SimpleSalvageableManager getSimpleSalvageableManager() {
-        return simpleSalvageableManager;
+    public SalvageableManager getSalvageableManager() {
+        return salvageableManager;
     }
 
     public MainConfig getMainConfig() {

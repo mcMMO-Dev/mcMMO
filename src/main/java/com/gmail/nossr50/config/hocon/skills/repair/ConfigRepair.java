@@ -3,7 +3,7 @@ package com.gmail.nossr50.config.hocon.skills.repair;
 import com.gmail.nossr50.config.hocon.skills.repair.general.ConfigRepairGeneral;
 import com.gmail.nossr50.config.hocon.skills.repair.repairmastery.ConfigRepairMastery;
 import com.gmail.nossr50.config.hocon.skills.repair.subskills.ConfigRepairSubSkills;
-import com.gmail.nossr50.skills.repair.repairables.SimpleRepairable;
+import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import org.bukkit.Material;
@@ -16,58 +16,58 @@ import static org.bukkit.Material.*;
 @ConfigSerializable
 public class ConfigRepair {
 
-     public static final ArrayList<SimpleRepairable> CONFIG_REPAIRABLES_DEFAULTS;
+     public static final ArrayList<Repairable> CONFIG_REPAIRABLES_DEFAULTS;
      public static final Material[] PLANKS = new Material[] { OAK_PLANKS, BIRCH_PLANKS, DARK_OAK_PLANKS, ACACIA_PLANKS, JUNGLE_PLANKS, SPRUCE_PLANKS};
 
     static {
         CONFIG_REPAIRABLES_DEFAULTS = new ArrayList<>();
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(WOODEN_SWORD, Arrays.asList(PLANKS), 1, 0, .25D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(WOODEN_SHOVEL, Arrays.asList(PLANKS), 1, 0, .15D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(WOODEN_PICKAXE, Arrays.asList(PLANKS), 1, 0, .5D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(WOODEN_AXE, Arrays.asList(PLANKS), 1, 0, .5D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(WOODEN_HOE, Arrays.asList(PLANKS), 1, 0, .25D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(WOODEN_SWORD, Arrays.asList(PLANKS), 1, 0, .25D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(WOODEN_SHOVEL, Arrays.asList(PLANKS), 1, 0, .15D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(WOODEN_PICKAXE, Arrays.asList(PLANKS), 1, 0, .5D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(WOODEN_AXE, Arrays.asList(PLANKS), 1, 0, .5D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(WOODEN_HOE, Arrays.asList(PLANKS), 1, 0, .25D));
 
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(STONE_SWORD, COBBLESTONE, 1, 0, .25D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(STONE_SHOVEL, COBBLESTONE, 1, 0, .15D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(STONE_PICKAXE, COBBLESTONE, 1, 0, .5D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(STONE_AXE, COBBLESTONE, 1, 0, .5D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(STONE_HOE, COBBLESTONE, 1, 0, .25D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(STONE_SWORD, COBBLESTONE, 1, 0, .25D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(STONE_SHOVEL, COBBLESTONE, 1, 0, .15D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(STONE_PICKAXE, COBBLESTONE, 1, 0, .5D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(STONE_AXE, COBBLESTONE, 1, 0, .5D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(STONE_HOE, COBBLESTONE, 1, 0, .25D));
 
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(IRON_SWORD, IRON_INGOT, 1, 0, .5D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(IRON_SHOVEL, IRON_INGOT, 1, 0, .3D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(IRON_PICKAXE, IRON_INGOT, 1, 0, 1D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(IRON_AXE, IRON_INGOT, 1, 0, 1D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(IRON_HOE, IRON_INGOT, 1, 0, .5D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(IRON_SWORD, IRON_INGOT, 1, 0, .5D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(IRON_SHOVEL, IRON_INGOT, 1, 0, .3D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(IRON_PICKAXE, IRON_INGOT, 1, 0, 1D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(IRON_AXE, IRON_INGOT, 1, 0, 1D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(IRON_HOE, IRON_INGOT, 1, 0, .5D));
 
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(IRON_HELMET, IRON_INGOT, 1, 0, 2D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(IRON_CHESTPLATE, IRON_INGOT, 1, 0, 2D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(IRON_LEGGINGS, IRON_INGOT, 1, 0, 2D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(IRON_BOOTS, IRON_INGOT, 1, 0, 2D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(IRON_HELMET, IRON_INGOT, 1, 0, 2D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(IRON_CHESTPLATE, IRON_INGOT, 1, 0, 2D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(IRON_LEGGINGS, IRON_INGOT, 1, 0, 2D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(IRON_BOOTS, IRON_INGOT, 1, 0, 2D));
 
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(SHEARS, IRON_INGOT, 1, 0, .5D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(FLINT_AND_STEEL, IRON_INGOT, 1, 0, .3D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(SHEARS, IRON_INGOT, 1, 0, .5D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(FLINT_AND_STEEL, IRON_INGOT, 1, 0, .3D));
 
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(GOLDEN_SWORD, GOLD_INGOT, 1, 0, 4D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(GOLDEN_SHOVEL, GOLD_INGOT, 1, 0, 2.6D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(GOLDEN_PICKAXE, GOLD_INGOT, 1, 0, 8D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(GOLDEN_AXE, GOLD_INGOT, 1, 0, 8D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(GOLDEN_HOE, GOLD_INGOT, 1, 0, 4D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(GOLDEN_SWORD, GOLD_INGOT, 1, 0, 4D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(GOLDEN_SHOVEL, GOLD_INGOT, 1, 0, 2.6D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(GOLDEN_PICKAXE, GOLD_INGOT, 1, 0, 8D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(GOLDEN_AXE, GOLD_INGOT, 1, 0, 8D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(GOLDEN_HOE, GOLD_INGOT, 1, 0, 4D));
 
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(GOLDEN_HELMET, GOLD_INGOT, 1, 0, 4D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(GOLDEN_CHESTPLATE, GOLD_INGOT, 1, 0, 4D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(GOLDEN_LEGGINGS, GOLD_INGOT, 1, 0, 4D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(GOLDEN_BOOTS, GOLD_INGOT, 1, 0, 4D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(GOLDEN_HELMET, GOLD_INGOT, 1, 0, 4D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(GOLDEN_CHESTPLATE, GOLD_INGOT, 1, 0, 4D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(GOLDEN_LEGGINGS, GOLD_INGOT, 1, 0, 4D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(GOLDEN_BOOTS, GOLD_INGOT, 1, 0, 4D));
 
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(DIAMOND_SWORD, DIAMOND, 1, 0, .5D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(DIAMOND_SHOVEL, DIAMOND, 1, 0, .3D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(DIAMOND_PICKAXE, DIAMOND, 1, 0, 1D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(DIAMOND_AXE, DIAMOND, 1, 0, 1D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(DIAMOND_HOE, DIAMOND, 1, 0, .5D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(DIAMOND_SWORD, DIAMOND, 1, 0, .5D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(DIAMOND_SHOVEL, DIAMOND, 1, 0, .3D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(DIAMOND_PICKAXE, DIAMOND, 1, 0, 1D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(DIAMOND_AXE, DIAMOND, 1, 0, 1D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(DIAMOND_HOE, DIAMOND, 1, 0, .5D));
 
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(DIAMOND_HELMET, DIAMOND, 1, 0, 2D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(DIAMOND_CHESTPLATE, DIAMOND, 1, 0, 2D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(DIAMOND_LEGGINGS, DIAMOND, 1, 0, 2D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(DIAMOND_BOOTS, DIAMOND, 1, 0, 2D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(DIAMOND_HELMET, DIAMOND, 1, 0, 2D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(DIAMOND_CHESTPLATE, DIAMOND, 1, 0, 2D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(DIAMOND_LEGGINGS, DIAMOND, 1, 0, 2D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(DIAMOND_BOOTS, DIAMOND, 1, 0, 2D));
 
     }
 
@@ -87,7 +87,7 @@ public class ConfigRepair {
             "\nXP-Multiplier: When calculating how much XP to give the player for the repair, the end result will be multiplied by this value." +
             "\n\nName ID List: https://minecraft.gamepedia.com/Java_Edition_data_values" +
             "\nTIP: You can omit \"minecraft:\" from the Name ID if you want to, for example you can write \"red_wool\" instead of \"minecraft:red_wool\"")
-    private ArrayList<SimpleRepairable> configRepairablesList = CONFIG_REPAIRABLES_DEFAULTS;
+    private ArrayList<Repairable> configRepairablesList = CONFIG_REPAIRABLES_DEFAULTS;
 
     public ConfigRepairGeneral getRepairGeneral() {
         return repairGeneral;
@@ -109,7 +109,7 @@ public class ConfigRepair {
         return repairSubSkills.getArcaneForging();
     }
 
-    public ArrayList<SimpleRepairable> getConfigRepairablesList() {
+    public ArrayList<Repairable> getConfigRepairablesList() {
         return configRepairablesList;
     }
 }

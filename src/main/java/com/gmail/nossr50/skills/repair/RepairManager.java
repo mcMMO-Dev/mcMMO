@@ -10,7 +10,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.repair.repairables.SimpleRepairable;
+import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -65,7 +65,7 @@ public class RepairManager extends SkillManager {
 
     public void handleRepair(ItemStack item) {
         Player player = getPlayer();
-        SimpleRepairable repairable = mcMMO.getRepairableManager().getRepairable(item.getType());
+        Repairable repairable = mcMMO.getRepairableManager().getRepairable(item.getType());
 
         if (item.getItemMeta().isUnbreakable()) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Anvil.Unbreakable");

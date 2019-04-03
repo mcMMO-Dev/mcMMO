@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config.hocon;
 
-import com.gmail.nossr50.skills.repair.repairables.SimpleRepairable;
+import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
@@ -10,7 +10,7 @@ import ninja.leaping.configurate.util.EnumLookup;
 import java.util.List;
 import java.util.Optional;
 
-public class RepairableSerializer implements TypeSerializer<SimpleRepairable> {
+public class RepairableSerializer implements TypeSerializer<Repairable> {
 
     /*
          TypeTokens are obtained in two ways
@@ -32,13 +32,13 @@ public class RepairableSerializer implements TypeSerializer<SimpleRepairable> {
 
 
     @Override
-    public SimpleRepairable deserialize(TypeToken<?> type, ConfigurationNode value) throws ObjectMappingException {
+    public Repairable deserialize(TypeToken<?> type, ConfigurationNode value) throws ObjectMappingException {
 
         /*
-        CONFIG_REPAIRABLES_DEFAULTS.add(new SimpleRepairable(WOODEN_SWORD, OAK_PLANKS, 1, 0, .25D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(WOODEN_SWORD, OAK_PLANKS, 1, 0, .25D));
          */
 
-        /* SimpleRepairable(Material itemMaterial, Material repairMaterial, int minimumQuantity, int minimumLevel, double xpMultiplier) */
+        /* Repairable(Material itemMaterial, Material repairMaterial, int minimumQuantity, int minimumLevel, double xpMultiplier) */
 
         String item = value.getNode("Item").getValue(TypeToken.of(String.class));
         List<String> repairItems = value.getNode("Items-Used-To-Repair").getValue(new TypeToken<List<String>>() {});
@@ -54,11 +54,11 @@ public class RepairableSerializer implements TypeSerializer<SimpleRepairable> {
         int minimumLevel = value.getNode("Override-Level-Requirement").getValue(TypeToken.of(Integer.class));
         double xpMultiplier = value.getNode("XP-Multiplier").getValue(TypeToken.of(Double.class));
 
-        return new SimpleRepairable(item, repairItems, minimumQuantity, minimumLevel, xpMultiplier);
+        return new Repairable(item, repairItems, minimumQuantity, minimumLevel, xpMultiplier);
     }
 
     @Override
-    public void serialize(TypeToken<?> type, SimpleRepairable obj, ConfigurationNode value) throws ObjectMappingException {
+    public void serialize(TypeToken<?> type, Repairable obj, ConfigurationNode value) throws ObjectMappingException {
 
         /*value.getNode("Item").setValue(HOCONUtil.serializeENUMName(obj.getItemMaterial().getKey().getKey()));
         value.getNode("Item-Used-To-Repair").setValue(HOCONUtil.serializeENUMName(obj.getRepairMaterials().getKey().getKey()));*/

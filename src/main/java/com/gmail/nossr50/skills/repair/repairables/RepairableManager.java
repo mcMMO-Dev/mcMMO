@@ -1,31 +1,32 @@
 package com.gmail.nossr50.skills.repair.repairables;
 
+import com.gmail.nossr50.config.Unload;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class SimpleRepairableManager implements Unload {
-    private HashMap<Material, SimpleRepairable> repairables;
+public class RepairableManager implements Unload {
+    private HashMap<Material, Repairable> repairables;
 
     @Override
     public void unload() {
         repairables.clear();
     }
 
-    public SimpleRepairableManager(List<SimpleRepairable> repairablesCollection) {
-        this.repairables = new HashMap<Material, SimpleRepairable>(repairablesCollection.size());
+    public RepairableManager(List<Repairable> repairablesCollection) {
+        this.repairables = new HashMap<Material, Repairable>(repairablesCollection.size());
         registerRepairables(repairablesCollection);
     }
 
-    public void registerRepairable(SimpleRepairable repairable) {
+    public void registerRepairable(Repairable repairable) {
         Material item = repairable.getItemMaterial();
         repairables.put(item, repairable);
     }
 
-    public void registerRepairables(List<SimpleRepairable> repairables) {
-        for (SimpleRepairable repairable : repairables) {
+    public void registerRepairables(List<Repairable> repairables) {
+        for (Repairable repairable : repairables) {
             registerRepairable(repairable);
         }
     }
@@ -38,7 +39,7 @@ public class SimpleRepairableManager implements Unload {
         return isRepairable(itemStack.getType());
     }
 
-    public SimpleRepairable getRepairable(Material type) {
+    public Repairable getRepairable(Material type) {
         return repairables.get(type);
     }
 }

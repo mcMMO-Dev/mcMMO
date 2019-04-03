@@ -1,62 +1,50 @@
-/*
 package com.gmail.nossr50.skills.salvage.salvageables;
 
 import com.gmail.nossr50.config.Unload;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.List;
 
-public interface SalvageableManager extends Unload {
-    */
-/**
-     * Register a salvageable with the SalvageManager
-     *
-     * @param salvageable Salvageable to register
-     *//*
 
-    public void registerSalvageable(Salvageable salvageable);
+public class SalvageableManager implements Unload {
+    private HashMap<Material, Salvageable> salvageables;
 
-    */
-/**
-     * Register a list of salvageables with the SalvageManager
-     *
-     * @param salvageables List<Salvageable> to register
-     *//*
+    /*public SalvageableManager() {
+        this(55);
+    }*/
 
-    public void registerSalvageables(List<Salvageable> salvageables);
+    @Override
+    public void unload() {
+        salvageables.clear();
+    }
 
-    */
-/**
-     * Checks if an item is salvageable
-     *
-     * @param type Material to check if salvageable
-     *
-     * @return true if salvageable, false if not
-     *//*
+    public SalvageableManager(List<Salvageable> salvageablesCollection) {
+        this.salvageables = new HashMap<Material, Salvageable>(salvageablesCollection.size());
+        registerSalvageables(salvageablesCollection);
+    }
 
-    public boolean isSalvageable(Material type);
+    public void registerSalvageable(Salvageable salvageable) {
+        Material item = salvageable.getItemMaterial();
+        salvageables.put(item, salvageable);
+    }
 
-    */
-/**
-     * Checks if an item is salvageable
-     *
-     * @param itemStack Item to check if salvageable
-     *
-     * @return true if salvageable, false if not
-     *//*
+    public void registerSalvageables(List<Salvageable> salvageables) {
+        for (Salvageable salvageable : salvageables) {
+            registerSalvageable(salvageable);
+        }
+    }
 
-    public boolean isSalvageable(ItemStack itemStack);
+    public boolean isSalvageable(Material type) {
+        return salvageables.containsKey(type);
+    }
 
-    */
-/**
-     * Gets the salvageable with this type
-     *
-     * @param type Material of the salvageable to look for
-     *
-     * @return the salvageable, can be null
-     *//*
+    public boolean isSalvageable(ItemStack itemStack) {
+        return isSalvageable(itemStack.getType());
+    }
 
-    public Salvageable getSalvageable(Material type);
+    public Salvageable getSalvageable(Material type) {
+        return salvageables.get(type);
+    }
 }
-*/

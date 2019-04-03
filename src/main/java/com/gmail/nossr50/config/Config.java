@@ -1,15 +1,12 @@
 package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.woodcutting.Woodcutting;
-import com.gmail.nossr50.util.StringUtils;
 import com.google.common.io.Files;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
-import org.bukkit.Material;
 
 import java.io.File;
 import java.io.IOException;

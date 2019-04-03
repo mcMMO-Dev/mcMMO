@@ -147,6 +147,7 @@ Version 2.2.0
     Config_Update_Overwrite, Tool_Mods_Enabled, Armor_Mods_Enabled, Block_Mods_Enabled, Entity_Mods_Enabled
 
     API Changes
+    SimpleRepairable/SimpleSalvageable renamed to just Repairable/Salvageable, and their unnecessary interface classes were removed
     Added API method to check if player parties are size capped
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped

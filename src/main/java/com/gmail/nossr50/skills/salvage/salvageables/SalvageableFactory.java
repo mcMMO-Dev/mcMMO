@@ -11,6 +11,6 @@ public class SalvageableFactory {
 
     public static Salvageable getSalvageable(Material itemMaterial, Material repairMaterial, byte repairMetadata, int minimumLevel, int maximumQuantity, short maximumDurability, ItemType repairItemType, ItemMaterialCategory repairItemMaterialCategory, double xpMultiplier) {
         // TODO: Add in loading from config what type of repairable we want.
-        return new SimpleSalvageable(itemMaterial, repairMaterial, repairMetadata, minimumLevel, maximumQuantity, maximumDurability, repairItemType, repairItemMaterialCategory, xpMultiplier);
+        return new Salvageable(itemMaterial, repairMaterial, repairMetadata, minimumLevel, maximumQuantity, maximumDurability, repairItemType, repairItemMaterialCategory, xpMultiplier);
     }
 }
