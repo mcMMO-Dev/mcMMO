@@ -2,30 +2,21 @@ package com.gmail.nossr50.skills.salvage.salvageables;
 
 import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
 import com.gmail.nossr50.datatypes.skills.ItemType;
+import com.gmail.nossr50.util.ItemUtils;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
-
+/**
+ * Represents a 'Salvageable' item
+ * Includes all the data needed for determining rewards from Salvage
+ */
 public class Salvageable {
     private final Material itemMaterial, salvagedItemMaterial;
     private final int maximumQuantity, minimumLevel;
     private final short maximumDurability, baseSalvageDurability;
-    private final byte salvageMetadata;
     private final ItemType salvageItemType;
     private final ItemMaterialCategory salvageItemMaterialCategory;
     private final double xpMultiplier;
-
-    /*protected Salvageable(Material type, Material salvagedItemMaterial, byte salvageMetadata, int minimumLevel, int maximumQuantity, short maximumDurability, ItemType salvageItemType, ItemMaterialCategory salvageItemMaterialCategory, double xpMultiplier) {
-        this.itemMaterial = type;
-        this.salvagedItemMaterial = salvagedItemMaterial;
-        this.salvageMetadata = salvageMetadata;
-        this.salvageItemType = salvageItemType;
-        this.salvageItemMaterialCategory = salvageItemMaterialCategory;
-        this.minimumLevel = minimumLevel;
-        this.maximumQuantity = maximumQuantity;
-        this.maximumDurability = maximumDurability;
-        this.baseSalvageDurability = (short) (maximumDurability / maximumQuantity);
-        this.xpMultiplier = xpMultiplier;
-    }*/
 
     public Salvageable(String itemRegisterKey, String salvagedMaterialRegisterKey, int minimumLevel, int maximumQuantity)
     {
@@ -34,17 +25,15 @@ public class Salvageable {
 
     public Salvageable(Material itemMaterial, Material salvagedItemMaterial, int minimumLevel, int maximumQuantity)
     {
-
         this.itemMaterial = itemMaterial;
         this.salvagedItemMaterial = salvagedItemMaterial;
-//        this.salvageMetadata = salvageMetadata;
-        this.salvageItemType = salvageItemType;
-        this.salvageItemMaterialCategory = salvageItemMaterialCategory;
+        this.salvageItemType = ItemUtils.determineItemType(itemMaterial);
+        this.salvageItemMaterialCategory = ItemUtils.determineMaterialType(salvagedItemMaterial);
         this.minimumLevel = minimumLevel;
         this.maximumQuantity = maximumQuantity;
-        this.maximumDurability = maximumDurability;
+        this.maximumDurability = itemMaterial.getMaxDurability();
         this.baseSalvageDurability = (short) (maximumDurability / maximumQuantity);
-        this.xpMultiplier = xpMultiplier;
+        this.xpMultiplier = 1.0D;
     }
 
     public Material getItemMaterial() {
@@ -54,10 +43,6 @@ public class Salvageable {
     public Material getSalvagedItemMaterial() {
         return salvagedItemMaterial;
     }
-
-    /*public byte getSalvageMaterialMetadata() {
-        return salvageMetadata;
-    }*/
 
     public ItemType getSalvageItemType() {
         return salvageItemType;

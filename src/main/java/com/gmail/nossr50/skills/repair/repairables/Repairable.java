@@ -37,53 +37,8 @@ public class Repairable {
         this.maximumDurability = this.itemMaterial.getMaxDurability();
         this.baseRepairDurability = (short) (maximumDurability / minimumQuantity);
 
-        this.repairItemType = determineItemType(this.itemMaterial);
-        this.repairItemMaterialCategory = determineMaterialType(this.repairMaterials.get(0));
-    }
-
-    public ItemMaterialCategory determineMaterialType(Material material) {
-        switch (material) {
-            case STRING:
-                return ItemMaterialCategory.STRING;
-
-            case LEATHER:
-                return ItemMaterialCategory.LEATHER;
-
-            case ACACIA_PLANKS:
-            case BIRCH_PLANKS:
-            case DARK_OAK_PLANKS:
-            case JUNGLE_PLANKS:
-            case OAK_PLANKS:
-            case SPRUCE_PLANKS:
-                return ItemMaterialCategory.WOOD;
-
-            case STONE:
-                return ItemMaterialCategory.STONE;
-
-            case IRON_INGOT:
-                return ItemMaterialCategory.IRON;
-
-            case GOLD_INGOT:
-                return ItemMaterialCategory.GOLD;
-
-            case DIAMOND:
-                return ItemMaterialCategory.DIAMOND;
-
-            default:
-                return ItemMaterialCategory.OTHER;
-        }
-    }
-
-    private ItemType determineItemType(Material material)
-    {
-        if (ItemUtils.isMinecraftTool(new ItemStack(material))) {
-            return ItemType.TOOL;
-        }
-        else if (ItemUtils.isArmor(new ItemStack((material)))) {
-            return ItemType.ARMOR;
-        } else {
-            return ItemType.OTHER;
-        }
+        this.repairItemType = ItemUtils.determineItemType(this.itemMaterial);
+        this.repairItemMaterialCategory = ItemUtils.determineMaterialType(this.repairMaterials.get(0));
     }
 
     public Material getItemMaterial() {

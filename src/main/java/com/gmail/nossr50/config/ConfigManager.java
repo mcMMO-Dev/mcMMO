@@ -69,17 +69,10 @@ import java.util.HashMap;
  */
 public final class ConfigManager {
 
-
-
     /* UNLOAD REGISTER */
 
     private ArrayList<Unload> unloadables;
     private ArrayList<File> userFiles;
-
-    /* MULTI CONFIG INSTANCES */
-
-    //private MultiConfigContainer<Repairable> repairableMultiConfigContainer;
-    //private MultiConfigContainer<Salvageable> salvageableMultiConfigContainer;
 
     /* COLLECTION MANAGERS */
 

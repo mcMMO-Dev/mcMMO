@@ -104,7 +104,6 @@ public class SalvageManager extends SkillManager {
 
         salvageableAmount = Math.min(salvageableAmount, getSalvageableAmount()); // Always get at least something back, if you're capable of salvaging it.
 
-
         player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
         location.add(0.5, 1, 0.5);
 
@@ -115,7 +114,7 @@ public class SalvageManager extends SkillManager {
             enchantBook = arcaneSalvageCheck(enchants);
         }
 
-        ItemStack salvageResults = new ItemStack(salvageable.getSalvageMaterial(), salvageableAmount);
+        ItemStack salvageResults = new ItemStack(salvageable.getSalvagedItemMaterial(), salvageableAmount);
 
         //Call event
         if (EventUtils.callSalvageCheckEvent(player, item, salvageResults, enchantBook).isCancelled()) {

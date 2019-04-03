@@ -11,7 +11,7 @@ import java.util.List;
 @ConfigSerializable
 public class ConfigSalvage {
 
-    private final static List<Salvageable> DEFAULT_SALVAGEABLES_LIST;
+    private final static ArrayList<Salvageable> DEFAULT_SALVAGEABLES_LIST;
 
     static {
         DEFAULT_SALVAGEABLES_LIST = new ArrayList<>();
@@ -233,8 +233,8 @@ public class ConfigSalvage {
          */
     }
 
-    @Setting()
-    List<Salvageable> configSalvageablesList;
+    @Setting(value = "Z-Salvageables", comment = "Salvage rewards and misc parameters")
+    ArrayList<Salvageable> configSalvageablesList = DEFAULT_SALVAGEABLES_LIST;
 
 
     @Setting(value = "Arcane-Salvage", comment = "Settings related to the Arcane Salvage Sub-Skill")

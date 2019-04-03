@@ -1,6 +1,8 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.config.MainConfig;
+import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
+import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.ChatColor;
@@ -38,6 +40,61 @@ public final class ItemUtils {
         }
 
         return matchedMaterials;
+    }
+
+    /**
+     * Determines the item type, currently used for repairables/salvageables
+     * @param material target material
+     * @return the matching ItemType returns OTHER if no match
+     */
+    public static ItemType determineItemType(Material material)
+    {
+        if (ItemUtils.isMinecraftTool(new ItemStack(material))) {
+            return ItemType.TOOL;
+        }
+        else if (ItemUtils.isArmor(new ItemStack((material)))) {
+            return ItemType.ARMOR;
+        } else {
+            return ItemType.OTHER;
+        }
+    }
+
+    /**
+     * Determines the material category, currently used for repairables/salvageables
+     * @param material target material
+     * @return the matching ItemMaterialCategory, return OTHER if no match
+     */
+    public static ItemMaterialCategory determineMaterialType(Material material) {
+        switch (material) {
+            case STRING:
+                return ItemMaterialCategory.STRING;
+
+            case LEATHER:
+                return ItemMaterialCategory.LEATHER;
+
+            case ACACIA_PLANKS:
+            case BIRCH_PLANKS:
+            case DARK_OAK_PLANKS:
+            case JUNGLE_PLANKS:
+            case OAK_PLANKS:
+            case SPRUCE_PLANKS:
+                return ItemMaterialCategory.WOOD;
+
+            case STONE:
+                return ItemMaterialCategory.STONE;
+
+            case IRON_INGOT:
+                return ItemMaterialCategory.IRON;
+
+            case GOLD_INGOT:
+                return ItemMaterialCategory.GOLD;
+
+            case DIAMOND:
+                return ItemMaterialCategory.DIAMOND;
+
+            default:
+                return ItemMaterialCategory.OTHER;
+        }
     }
 
     /**
