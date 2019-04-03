@@ -379,9 +379,14 @@ public final class ConfigManager {
      */
     public void registerBonusDrops()
     {
-        bonusDropManager.addToWhitelist(configMining.getBonusDrops());
-        bonusDropManager.addToWhitelist(configHerbalism.getBonusDrops());
-        bonusDropManager.addToWhitelist(configWoodcutting.getBonusDrops());
+        bonusDropManager.addToWhitelistByNameID(getConfigMining().getBonusDrops());
+        bonusDropManager.addToWhitelistByNameID(configHerbalism.getBonusDrops());
+        bonusDropManager.addToWhitelistByNameID(configWoodcutting.getBonusDrops());
+    }
+
+    public void validateConfigs()
+    {
+
     }
 
     /*

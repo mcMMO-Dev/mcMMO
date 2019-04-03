@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.util.ItemUtils;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 
 /**
  * Represents a 'Salvageable' item

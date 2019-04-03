@@ -6,7 +6,6 @@ import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @ConfigSerializable
 public class ConfigSalvage {

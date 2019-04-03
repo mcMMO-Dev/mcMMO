@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config;
 
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
 
 import java.util.HashMap;
@@ -32,11 +33,30 @@ public class BonusDropManager implements Unload {
      * Adds materials to the bonus drop whitelist
      * @param materials target material list
      */
-    public void addToWhitelist(List<Material> materials)
+    public void addToWhitelistByMaterial(List<Material> materials)
     {
         for(Material material : materials)
         {
             registerMaterial(material, true);
+        }
+    }
+
+    /**
+     * Adds materials to the bonus drop whitelist
+     * @param materials target material list
+     */
+    public void addToWhitelistByNameID(List<String> materials)
+    {
+        for(String material : materials)
+        {
+            Material m = Material.matchMaterial(material);
+            if(m == null)
+            {
+                mcMMO.p.getLogger().severe("Error registering Bonus Drop -- Invalid Minecraft Name ID: "+material);
+                continue;
+            }
+
+            registerMaterial(m, true);
         }
     }
 
