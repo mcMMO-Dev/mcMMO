@@ -1,5 +1,7 @@
 package com.gmail.nossr50.skills.archery;
 
+import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.RankUtils;
@@ -13,13 +15,24 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Archery {
-    private static List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
+    private static List<TrackedEntity> trackedEntities;
 
-    public static double skillShotMaxBonusDamage     = AdvancedConfig.getInstance().getSkillShotDamageMax();
+    public static double skillShotMaxBonusDamage;
 
-    public static double dazeBonusDamage = AdvancedConfig.getInstance().getDazeBonusDamage();
+    public static double dazeBonusDamage;
 
-    public static final double DISTANCE_XP_MULTIPLIER = ExperienceConfig.getInstance().getArcheryDistanceMultiplier();
+    public static double DISTANCE_XP_MULTIPLIER;
+
+    public Archery()
+    {
+        List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
+
+        skillShotMaxBonusDamage     = AdvancedConfig.getInstance().getSkillShotDamageMax();
+
+        dazeBonusDamage = AdvancedConfig.getInstance().getDazeBonusDamage();
+
+        DISTANCE_XP_MULTIPLIER = ExperienceConfig.getInstance().getArcheryDistanceMultiplier();
+    }
 
     protected static void incrementTrackerValue(LivingEntity livingEntity) {
         for (TrackedEntity trackedEntity : trackedEntities) {

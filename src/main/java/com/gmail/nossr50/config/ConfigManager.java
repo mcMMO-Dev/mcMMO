@@ -380,8 +380,8 @@ public final class ConfigManager {
     public void registerBonusDrops()
     {
         bonusDropManager.addToWhitelistByNameID(getConfigMining().getBonusDrops());
-        bonusDropManager.addToWhitelistByNameID(configHerbalism.getBonusDrops());
-        bonusDropManager.addToWhitelistByNameID(configWoodcutting.getBonusDrops());
+//        bonusDropManager.addToWhitelistByNameID(configHerbalism.getBonusDrops());
+//        bonusDropManager.addToWhitelistByNameID(configWoodcutting.getBonusDrops());
     }
 
     public void validateConfigs()
@@ -596,6 +596,17 @@ public final class ConfigManager {
 
     public BonusDropManager getBonusDropManager() {
         return bonusDropManager;
+    }
+
+    /**
+     * Checks if this plugin is using retro mode
+     * Retro mode is a 0-1000 skill system
+     * Standard mode is scaled for 1-100
+     * @return true if retro mode is enabled
+     */
+    public boolean isRetroMode()
+    {
+        return getConfigLeveling().getConfigSectionLevelingGeneral().getConfigSectionLevelScaling().isRetroModeEnabled();
     }
 
     public boolean isBonusDropsEnabled(Material material)

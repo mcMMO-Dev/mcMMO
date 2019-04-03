@@ -64,9 +64,9 @@ public class BlockListener implements Listener {
             if(is.getAmount() <= 0)
                 continue;
 
-            if(!Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.MINING, is.getType())
-                    && !Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.HERBALISM, is.getType())
-                        && !Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, is.getType()))
+            if(!MainConfig.getInstance().getDoubleDropsEnabled(PrimarySkillType.MINING, is.getType())
+                    && !MainConfig.getInstance().getDoubleDropsEnabled(PrimarySkillType.HERBALISM, is.getType())
+                        && !MainConfig.getInstance().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, is.getType()))
                 continue;
 
             if(event.getBlock().getState().getMetadata(mcMMO.doubleDrops).size() > 0)
@@ -245,7 +245,7 @@ public class BlockListener implements Listener {
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if (blockState.getType() == Repair.anvilMaterial && PrimarySkillType.REPAIR.getPermissions(player)) {
+        if (blockState.getType() == Repair.getInstance().getAnvilMaterial() && PrimarySkillType.REPAIR.getPermissions(player)) {
             mcMMOPlayer.getRepairManager().placedAnvilCheck();
         }
         else if (blockState.getType() == Salvage.anvilMaterial && PrimarySkillType.SALVAGE.getPermissions(player)) {

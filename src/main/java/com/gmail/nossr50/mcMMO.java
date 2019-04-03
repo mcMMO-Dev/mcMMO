@@ -16,7 +16,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.acrobatics.Roll;
 import com.gmail.nossr50.listeners.*;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.runnables.CheckDateTask;
 import com.gmail.nossr50.runnables.SaveTimerTask;
 import com.gmail.nossr50.runnables.backups.CleanBackupsTask;
 import com.gmail.nossr50.runnables.database.UserPurgeTask;
@@ -28,7 +27,10 @@ import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.repair.repairables.RepairableManager;
 import com.gmail.nossr50.skills.salvage.salvageables.SalvageableManager;
-import com.gmail.nossr50.util.*;
+import com.gmail.nossr50.util.ChimaeraWing;
+import com.gmail.nossr50.util.LogFilter;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
 import com.gmail.nossr50.util.commands.CommandRegistrationManager;
@@ -60,7 +62,7 @@ public class mcMMO extends JavaPlugin {
     //private static ModManager         modManager;
     private static DatabaseManager    databaseManager;
     private static FormulaManager     formulaManager;
-    private static HolidayManager     holidayManager;
+    /*private static HolidayManager     holidayManager;*/
     //private static UpgradeManager     upgradeManager;
 
     /* File Paths */
@@ -153,7 +155,7 @@ public class mcMMO extends JavaPlugin {
                 PartyManager.loadParties();
 
             formulaManager = new FormulaManager();
-            holidayManager = new HolidayManager();
+            /*holidayManager = new HolidayManager();*/
 
             for (Player player : getServer().getOnlinePlayers()) {
                 new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
@@ -273,7 +275,7 @@ public class mcMMO extends JavaPlugin {
                 ScoreboardManager.teardownAll();
 
             formulaManager.saveFormula();
-            holidayManager.saveAnniversaryFiles();
+            /*holidayManager.saveAnniversaryFiles();*/
             placeStore.saveAll();       // Save our metadata
             placeStore.cleanUp();       // Cleanup empty metadata stores
         }
@@ -348,9 +350,9 @@ public class mcMMO extends JavaPlugin {
         return formulaManager;
     }
 
-    public static HolidayManager getHolidayManager() {
+    /*public static HolidayManager getHolidayManager() {
         return holidayManager;
-    }
+    }*/
 
     public static ChunkManager getPlaceStore() {
         return placeStore;
@@ -584,9 +586,9 @@ public class mcMMO extends JavaPlugin {
         // Update power level tag scoreboards
         new PowerLevelUpdatingTask().runTaskTimer(this, 2 * Misc.TICK_CONVERSION_FACTOR, 2 * Misc.TICK_CONVERSION_FACTOR);
 
-        if (getHolidayManager().nearingAprilFirst()) {
+        /*if (getHolidayManager().nearingAprilFirst()) {
             new CheckDateTask().runTaskTimer(this, 10L * Misc.TICK_CONVERSION_FACTOR, 1L * 60L * 60L * Misc.TICK_CONVERSION_FACTOR);
-        }
+        }*/
 
         // Clear the registered XP data so players can earn XP again
         if (ExperienceConfig.getInstance().getDiminishedReturnsEnabled()) {
@@ -623,7 +625,7 @@ public class mcMMO extends JavaPlugin {
      * @return true if retro mode is enabled
      */
     public static boolean isRetroModeEnabled() {
-        return getPlayerLevelingSettings().getConfigSectionLevelingGeneral().getConfigSectionLevelScaling().isRetroModeEnabled();
+        return configManager.isRetroMode();
     }
 
     public static ConfigManager getConfigManager() {

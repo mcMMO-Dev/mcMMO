@@ -895,13 +895,10 @@ public class EntityListener implements Listener {
         }
 
 
-        if(!event.isCancelled())
-        {
-            if(mcMMO.getConfigManager().getConfigExploitPrevention().doTamedEntitiesGiveXP())
-                entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+        if(mcMMO.getConfigManager().getConfigExploitPrevention().doTamedEntitiesGiveXP())
+            entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
 
-            UserManager.getPlayer(player).getTamingManager().awardTamingXP(entity);
-        }
+        UserManager.getPlayer(player).getTamingManager().awardTamingXP(entity);
 
     }
 

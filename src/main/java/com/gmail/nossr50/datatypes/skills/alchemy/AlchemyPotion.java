@@ -122,7 +122,7 @@ public class AlchemyPotion {
         if (!children.isEmpty()) {
             for (Entry<ItemStack, String> child : children.entrySet()) {
                 if (ingredient.isSimilar(child.getKey())) {
-                    return PotionMainConfig.getInstance().getPotion(child.getValue());
+                    return PotionConfig.getInstance().getPotion(child.getValue());
                 }
             }
         }

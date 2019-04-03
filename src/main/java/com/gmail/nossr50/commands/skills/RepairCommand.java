@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.repair.ArcaneForging;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.util.Permissions;
@@ -101,7 +100,7 @@ public class RepairCommand extends SkillCommand {
                     String.valueOf(RankUtils.getRank(player, SubSkillType.REPAIR_ARCANE_FORGING)),
                     RankUtils.getHighestRankStr(SubSkillType.REPAIR_ARCANE_FORGING)));
 
-            if (ArcaneForging.arcaneForgingEnchantLoss || ArcaneForging.arcaneForgingDowngrades) {
+            if (mcMMO.getConfigManager().getConfigRepair().getArcaneForging().isDowngradesEnabled() || mcMMO.getConfigManager().getConfigRepair().getArcaneForging().isMayLoseEnchants()) {
                 messages.add(getStatMessage(true, true, SubSkillType.REPAIR_ARCANE_FORGING,
                         String.valueOf(arcaneBypass ? 100 : repairManager.getKeepEnchantChance()),
                         String.valueOf(arcaneBypass ? 0 : repairManager.getDowngradeEnchantChance()))); //Jesus those parentheses

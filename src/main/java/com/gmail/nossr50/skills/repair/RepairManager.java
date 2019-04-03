@@ -147,7 +147,8 @@ public class RepairManager extends SkillManager {
         }
 
         // Handle the enchants
-        if (ArcaneForging.arcaneForgingEnchantLoss) {
+//        if (ArcaneForging.arcaneForgingEnchantLoss) {
+        if (mcMMO.getConfigManager().getConfigRepair().getArcaneForging().isMayLoseEnchants()) {
             addEnchants(item);
         }
 
@@ -273,8 +274,8 @@ public class RepairManager extends SkillManager {
         if (Permissions.isSubSkillEnabled(player, SubSkillType.REPAIR_REPAIR_MASTERY)
                 && RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.REPAIR_REPAIR_MASTERY)) {
 
-            double maxBonusCalc = Repair.repairMasteryMaxBonus / 100.0D;
-            double skillLevelBonusCalc = (Repair.repairMasteryMaxBonus / Repair.repairMasteryMaxBonusLevel) * (getSkillLevel() / 100.0D);
+            double maxBonusCalc = Repair.getInstance().getRepairMasteryMaxBonus() / 100.0D;
+            double skillLevelBonusCalc = (Repair.getInstance().getRepairMasteryMaxBonus() / Repair.getInstance().getRepairMasteryMaxBonusLevel()) * (getSkillLevel() / 100.0D);
             double bonus = repairAmount * Math.min(skillLevelBonusCalc, maxBonusCalc);
 
             repairAmount += bonus;
@@ -344,7 +345,7 @@ public class RepairManager extends SkillManager {
             if (RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getKeepEnchantChance(), getPlayer(), SubSkillType.REPAIR_ARCANE_FORGING))) {
                 int enchantLevel = enchant.getValue();
 
-                if (ArcaneForging.arcaneForgingDowngrades && enchantLevel > 1
+                if (mcMMO.getConfigManager().getConfigRepair().getArcaneForging().isDowngradesEnabled() && enchantLevel > 1
                         && (!RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(100 - getDowngradeEnchantChance(), getPlayer(), SubSkillType.REPAIR_ARCANE_FORGING)))) {
                     item.addUnsafeEnchantment(enchantment, enchantLevel - 1);
                     downgraded = true;
