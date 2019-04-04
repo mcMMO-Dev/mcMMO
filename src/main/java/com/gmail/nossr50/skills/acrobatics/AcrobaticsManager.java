@@ -33,7 +33,7 @@ public class AcrobaticsManager extends SkillManager {
 
     public boolean canGainRollXP()
     {
-        if(!ExperienceConfig.getInstance().isAcrobaticsExploitingPrevented())
+        if(!mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
             return true;
 
         if(System.currentTimeMillis() >= rollXPCooldown)

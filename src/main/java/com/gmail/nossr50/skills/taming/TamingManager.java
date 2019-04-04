@@ -124,7 +124,7 @@ public class TamingManager extends SkillManager {
             return 0;
         }
 
-        BleedTimerTask.add(target, getPlayer(), Taming.goreBleedTicks, 1, 2);
+        BleedTimerTask.add(target, getPlayer(), Taming.getInstance().getGoreBleedTicks(), 1, 2);
 
         if (target instanceof Player) {
             NotificationManager.sendPlayerInformation((Player)target, NotificationType.SUBSKILL_MESSAGE, "Combat.StruckByGore");
@@ -132,12 +132,12 @@ public class TamingManager extends SkillManager {
 
         NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.Gore");
 
-        damage = (damage * Taming.goreModifier) - damage;
+        damage = (damage * Taming.getInstance().getGoreModifier()) - damage;
         return damage;
     }
 
-    public double sharpenedClaws() {
-        return Taming.sharpenedClawsBonusDamage;
+    public double getSharpenedClawsDamage() {
+        return Taming.getInstance().getSharpenedClawsBonusDamage();
     }
 
     /**
@@ -352,7 +352,7 @@ public class TamingManager extends SkillManager {
 
         for (Entity entity : player.getNearbyEntities(range, range, range)) {
             if (entity.getType() == type) {
-                NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, Taming.getCallOfTheWildFailureMessage(type));
+                NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, Taming.getInstance().getCallOfTheWildFailureMessage(type));
                 return false;
             }
         }

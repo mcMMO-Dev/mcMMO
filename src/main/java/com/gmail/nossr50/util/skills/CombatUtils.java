@@ -180,7 +180,7 @@ public final class CombatUtils {
         tamingManager.pummel(target, wolf);
 
         if (tamingManager.canUseSharpenedClaws()) {
-            finalDamage+=tamingManager.sharpenedClaws();
+            finalDamage+=tamingManager.getSharpenedClawsDamage();
         }
 
         if (tamingManager.canUseGore()) {

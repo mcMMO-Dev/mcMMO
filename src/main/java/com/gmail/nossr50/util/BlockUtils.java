@@ -564,7 +564,7 @@ public final class BlockUtils {
     public static boolean isMcMMOAnvil(BlockState blockState) {
         Material type = blockState.getType();
 
-        return type == Repair.anvilMaterial || type == Salvage.anvilMaterial;
+        return type == Repair.getInstance().getAnvilMaterial() || type == Salvage.anvilMaterial;
     }
 
     public static boolean isPistonPiece(BlockState blockState) {

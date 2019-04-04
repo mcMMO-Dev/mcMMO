@@ -503,7 +503,7 @@ public class EntityListener implements Listener {
                 }
             }
 
-            if (Taming.canPreventDamage(pet, owner)) {
+            if (Taming.getInstance().canPreventDamage(pet, owner)) {
                 Player player = (Player) owner;
                 Wolf wolf = (Wolf) pet;
 
@@ -527,7 +527,7 @@ public class EntityListener implements Listener {
                     case ENTITY_ATTACK:
                     case PROJECTILE:
                         if (tamingManager.canUseThickFur()) {
-                            event.setDamage(Taming.processThickFur(wolf, event.getDamage()));
+                            event.setDamage(Taming.getInstance().processThickFur(wolf, event.getDamage()));
 
                             if (event.getFinalDamage() == 0) {
                                 event.setCancelled(true);
@@ -537,7 +537,7 @@ public class EntityListener implements Listener {
 
                     case FIRE_TICK:
                         if (tamingManager.canUseThickFur()) {
-                            Taming.processThickFurFire(wolf);
+                            Taming.getInstance().processThickFurFire(wolf);
                         }
                         return;
 
@@ -545,7 +545,7 @@ public class EntityListener implements Listener {
                     case POISON:
                     case WITHER:
                         if (tamingManager.canUseHolyHound()) {
-                            Taming.processHolyHound(wolf, event.getDamage());
+                            Taming.getInstance().processHolyHound(wolf, event.getDamage());
                         }
                         return;
 
@@ -553,7 +553,7 @@ public class EntityListener implements Listener {
                     case ENTITY_EXPLOSION:
                     case LIGHTNING:
                         if (tamingManager.canUseShockProof()) {
-                            event.setDamage(Taming.processShockProof(wolf, event.getDamage()));
+                            event.setDamage(Taming.getInstance().processShockProof(wolf, event.getDamage()));
 
                             if (event.getFinalDamage() == 0) {
                                 event.setCancelled(true);

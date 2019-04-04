@@ -1,47 +1,91 @@
 package com.gmail.nossr50.skills.taming;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import org.bukkit.EntityEffect;
 import org.bukkit.entity.*;
 
 public class Taming {
-    public static double fastFoodServiceActivationChance = AdvancedConfig.getInstance().getFastFoodChance();
 
-    public static int    goreBleedTicks    = 2; //Equivalent to rank 1 in Rupture
-    public static double goreModifier      = AdvancedConfig.getInstance().getGoreModifier();
+    private static Taming instance;
+    private double fastFoodServiceActivationChance;
+    private int goreBleedTicks;
+    private double goreModifier;
+    private double sharpenedClawsBonusDamage;
+    private double shockProofModifier;
+    private double thickFurModifier;
 
-    public static double sharpenedClawsBonusDamage = AdvancedConfig.getInstance().getSharpenedClawsBonus();
+    public Taming() {
+        fastFoodServiceActivationChance = AdvancedConfig.getInstance().getFastFoodChance();
 
-    public static double shockProofModifier    = AdvancedConfig.getInstance().getShockProofModifier();
+        //Equivalent to rank 1 in Rupture
+        goreBleedTicks = 2;
+        goreModifier = AdvancedConfig.getInstance().getGoreModifier();
 
-    public static double thickFurModifier    = AdvancedConfig.getInstance().getThickFurModifier();
+        sharpenedClawsBonusDamage = AdvancedConfig.getInstance().getSharpenedClawsBonus();
 
-    public static boolean canPreventDamage(Tameable pet, AnimalTamer owner) {
+        shockProofModifier = AdvancedConfig.getInstance().getShockProofModifier();
+
+        thickFurModifier = AdvancedConfig.getInstance().getThickFurModifier();
+    }
+
+    public static Taming getInstance() {
+        if (instance == null)
+            instance = new Taming();
+
+        return instance;
+    }
+
+    public double getFastFoodServiceActivationChance() {
+        return fastFoodServiceActivationChance;
+    }
+
+    public int getGoreBleedTicks() {
+        return goreBleedTicks;
+    }
+
+    public double getGoreModifier() {
+        return goreModifier;
+    }
+
+    public double getSharpenedClawsBonusDamage() {
+        return sharpenedClawsBonusDamage;
+    }
+
+    public double getShockProofModifier() {
+        return shockProofModifier;
+    }
+
+    public double getThickFurModifier() {
+        return thickFurModifier;
+    }
+
+    public boolean canPreventDamage(Tameable pet, AnimalTamer owner) {
         return pet.isTamed() && owner instanceof Player && pet instanceof Wolf;
     }
 
-    public static double processThickFur(Wolf wolf, double damage) {
+    public double processThickFur(Wolf wolf, double damage) {
         wolf.playEffect(EntityEffect.WOLF_SHAKE);
         return damage / thickFurModifier;
     }
 
-    public static void processThickFurFire(Wolf wolf) {
+    public void processThickFurFire(Wolf wolf) {
         wolf.playEffect(EntityEffect.WOLF_SMOKE);
         wolf.setFireTicks(0);
     }
 
-    public static double processShockProof(Wolf wolf, double damage) {
+    public double processShockProof(Wolf wolf, double damage) {
         wolf.playEffect(EntityEffect.WOLF_SHAKE);
         return damage / shockProofModifier;
     }
 
-    public static void processHolyHound(Wolf wolf, double damage) {
+    public void processHolyHound(Wolf wolf, double damage) {
         double modifiedHealth = Math.min(wolf.getHealth() + damage, wolf.getMaxHealth());
 
         wolf.setHealth(modifiedHealth);
         wolf.playEffect(EntityEffect.WOLF_HEARTS);
     }
 
-    protected static String getCallOfTheWildFailureMessage(EntityType type) {
+    public String getCallOfTheWildFailureMessage(EntityType type) {
         switch (type) {
             case OCELOT:
                 return "Taming.Summon.Fail.Ocelot";
