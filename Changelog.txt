@@ -12,6 +12,7 @@ Version 2.1.34
     Added Parrot to taming XP tables
     Pickaxes are now used to activate Blast Mining instead of Flint
     The detonator for Blast Mining is no longer configurable
+    Fixed a bug where Blast Mining did not show cooldown length correctly
 
     NOTE: You'll have to add these entries in yourself, this is what it should look like: https://paste.gg/p/anonymous/aadbcfde3eb3470fb13caebde4065a03
     Alternatively you can delete the experience config file to generate a new one
