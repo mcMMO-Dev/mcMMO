@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config.hocon.database;
 
-import com.gmail.nossr50.database.SQLDatabaseManager;
+import com.gmail.nossr50.datatypes.database.PoolIdentifier;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -53,7 +53,7 @@ public class ConfigSectionMySQL {
      * HELPER METHODS
      */
 
-    public int getMaxPoolSize(SQLDatabaseManager.PoolIdentifier poolIdentifier)
+    public int getMaxPoolSize(PoolIdentifier poolIdentifier)
     {
         switch (poolIdentifier)
         {
@@ -68,7 +68,7 @@ public class ConfigSectionMySQL {
         }
     }
 
-    public int getMaxConnections(SQLDatabaseManager.PoolIdentifier poolIdentifier)
+    public int getMaxConnections(PoolIdentifier poolIdentifier)
     {
         switch (poolIdentifier)
         {

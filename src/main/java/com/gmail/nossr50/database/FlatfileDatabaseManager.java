@@ -19,12 +19,12 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     private final HashMap<PrimarySkillType, List<PlayerStat>> playerStatHash = new HashMap<PrimarySkillType, List<PlayerStat>>();
     private final List<PlayerStat> powerLevels = new ArrayList<PlayerStat>();
     private long lastUpdate = 0;
-
-    private final long UPDATE_WAIT_TIME = 600000L; // 10 minutes
+    private long updateWaitTime;
     private final File usersFile;
     private static final Object fileWritingLock = new Object();
 
     protected FlatfileDatabaseManager() {
+        updateWaitTime = mcMMO.getConfigManager().getConfigDatabase().getConfigDatabaseFlatFile().getLeaderboardUpdateIntervalMinutes() * (1000 * 60);
         usersFile = new File(mcMMO.getUsersFilePath());
         checkStructure();
         updateLeaderboards();
@@ -727,7 +727,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
      */
     private void updateLeaderboards() {
         // Only update FFS leaderboards every 10 minutes.. this puts a lot of strain on the server (depending on the size of the database) and should not be done frequently
-        if (System.currentTimeMillis() < lastUpdate + UPDATE_WAIT_TIME) {
+        if (System.currentTimeMillis() < lastUpdate + updateWaitTime) {
             return;
         }
 

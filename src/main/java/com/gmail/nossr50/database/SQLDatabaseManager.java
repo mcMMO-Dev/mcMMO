@@ -3,6 +3,7 @@ package com.gmail.nossr50.database;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
+import com.gmail.nossr50.datatypes.database.PoolIdentifier;
 import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.player.UniqueDataType;
@@ -1521,12 +1522,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
         miscPool.close();
         loadPool.close();
         savePool.close();
-    }
-
-    public enum PoolIdentifier {
-        MISC,
-        LOAD,
-        SAVE
     }
 
     public void resetMobHealthSettings() {
