@@ -99,7 +99,7 @@ public final class Woodcutting {
      * before taking measurements).
      */
     protected static void processTree(BlockState blockState, Set<BlockState> treeFellerBlocks) {
-        List<BlockState> futureCenterBlocks = new ArrayList<BlockState>();
+        List<BlockState> futureCenterBlocks = new ArrayList<>();
 
         // Check the block up and take different behavior (smaller search) if it's a log
         if (handleBlock(blockState.getBlock().getRelative(BlockFace.UP).getState(), futureCenterBlocks, treeFellerBlocks)) {

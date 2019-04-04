@@ -127,7 +127,7 @@ public class PtpCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         switch (args.length) {
             case 1:
-                List<String> matches = StringUtil.copyPartialMatches(args[0], TELEPORT_SUBCOMMANDS, new ArrayList<String>(TELEPORT_SUBCOMMANDS.size()));
+                List<String> matches = StringUtil.copyPartialMatches(args[0], TELEPORT_SUBCOMMANDS, new ArrayList<>(TELEPORT_SUBCOMMANDS.size()));
 
                 if (matches.size() == 0) {
                     Player player = (Player) sender;
@@ -138,7 +138,7 @@ public class PtpCommand implements TabExecutor {
                     }
 
                     List<String> playerNames = mcMMOPlayer.getParty().getOnlinePlayerNames(player);
-                    return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<String>(playerNames.size()));
+                    return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<>(playerNames.size()));
                 }
 
                 return matches;

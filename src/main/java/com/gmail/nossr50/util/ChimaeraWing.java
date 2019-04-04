@@ -150,7 +150,7 @@ public final class ChimaeraWing {
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.GOLD + LocaleLoader.getString("Item.ChimaeraWing.Name"));
 
-        List<String> itemLore = new ArrayList<String>();
+        List<String> itemLore = new ArrayList<>();
         itemLore.add("mcMMO Item");
         itemLore.add(LocaleLoader.getString("Item.ChimaeraWing.Lore"));
         itemMeta.setLore(itemLore);

@@ -70,7 +70,7 @@ public class MctopCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         switch (args.length) {
             case 1:
-                return StringUtil.copyPartialMatches(args[0], PrimarySkillType.SKILL_NAMES, new ArrayList<String>(PrimarySkillType.SKILL_NAMES.size()));
+                return StringUtil.copyPartialMatches(args[0], PrimarySkillType.SKILL_NAMES, new ArrayList<>(PrimarySkillType.SKILL_NAMES.size()));
             default:
                 return ImmutableList.of();
         }

@@ -162,28 +162,26 @@ public abstract class SkillCommand implements TabExecutor {
             ArrayList<PrimarySkillType> parentList = new ArrayList<>();
 
             //TODO: Add JSON here
-            for (PrimarySkillType parent : parents) {
-                parentList.add(parent);
-                /*player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level.Overhaul", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)))*/;
-            }
+            /*player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level.Overhaul", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)))*/
+            parentList.addAll(parents);
 
-            String parentMessage = "";
+            StringBuilder parentMessage = new StringBuilder();
 
             for(int i = 0; i < parentList.size(); i++)
             {
                 if(i+1 < parentList.size())
                 {
-                    parentMessage += LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i)));
-                    parentMessage += ChatColor.GRAY+", ";
+                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
+                    parentMessage.append(ChatColor.GRAY + ", ");
                 } else {
-                    parentMessage += LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i)));
+                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
                 }
             }
 
             //XP GAIN METHOD
             player.sendMessage(LocaleLoader.getString("Commands.XPGain.Overhaul", LocaleLoader.getString("Commands.XPGain.Child")));
 
-            player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, parentMessage));
+            player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, parentMessage.toString()));
             //LEVEL
             //player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, skillValue));
 

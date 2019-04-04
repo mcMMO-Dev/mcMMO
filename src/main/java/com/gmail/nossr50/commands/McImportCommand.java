@@ -33,7 +33,7 @@ public class McImportCommand implements CommandExecutor {
         mcMMO.p.getLogger().info("Starting import of mod materials...");
         fileAmount = 0;
 
-        HashMap<ModConfigType, ArrayList<String>> materialNames = new HashMap<ModConfigType, ArrayList<String>>();
+        HashMap<ModConfigType, ArrayList<String>> materialNames = new HashMap<>();
 
         BufferedReader in = null;
 
@@ -65,7 +65,7 @@ public class McImportCommand implements CommandExecutor {
                 ModConfigType type = ModConfigType.getModConfigType(materialName);
 
                 if (!materialNames.containsKey(type)) {
-                    materialNames.put(type, new ArrayList<String>());
+                    materialNames.put(type, new ArrayList<>());
                 }
 
                 materialNames.get(type).add(materialName);
@@ -93,13 +93,13 @@ public class McImportCommand implements CommandExecutor {
 
     private void createOutput(HashMap<ModConfigType, ArrayList<String>> materialNames) {
         for (ModConfigType modConfigType : materialNames.keySet()) {
-            HashMap<String, ArrayList<String>> materialNamesType = new HashMap<String, ArrayList<String>>();
+            HashMap<String, ArrayList<String>> materialNamesType = new HashMap<>();
 
             for (String materialName : materialNames.get(modConfigType)) {
                 String modName = Misc.getModName(materialName);
 
                 if (!materialNamesType.containsKey(modName)) {
-                    materialNamesType.put(modName, new ArrayList<String>());
+                    materialNamesType.put(modName, new ArrayList<>());
                 }
 
                 materialNamesType.get(modName).add(materialName);
@@ -169,16 +169,10 @@ public class McImportCommand implements CommandExecutor {
 
                 out = new FileWriter(outputFile);
                 out.write(writer.toString());
-            }
-            catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 return;
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-                return;
-            }
-            finally {
+            } finally {
                 tryClose(out);
                 fileAmount++;
             }
@@ -201,7 +195,7 @@ public class McImportCommand implements CommandExecutor {
     }
 
     private HashMap<String, ArrayList<String>> getConfigSectionsBlocks(String modName, HashMap<String, ArrayList<String>> materialNames) {
-        HashMap<String, ArrayList<String>> configSections = new HashMap<String, ArrayList<String>>();
+        HashMap<String, ArrayList<String>> configSections = new HashMap<>();
 
         // Go through all the materials and categorise them under a skill
         for (String materialName : materialNames.get(modName)) {
@@ -220,7 +214,7 @@ public class McImportCommand implements CommandExecutor {
             }
 
             if (!configSections.containsKey(skillName)) {
-                configSections.put(skillName, new ArrayList<String>());
+                configSections.put(skillName, new ArrayList<>());
             }
 
             ArrayList<String> skillContents = configSections.get(skillName);
@@ -240,7 +234,7 @@ public class McImportCommand implements CommandExecutor {
     }
 
     private HashMap<String, ArrayList<String>> getConfigSectionsTools(String modName, HashMap<String, ArrayList<String>> materialNames) {
-        HashMap<String, ArrayList<String>> configSections = new HashMap<String, ArrayList<String>>();
+        HashMap<String, ArrayList<String>> configSections = new HashMap<>();
 
         // Go through all the materials and categorise them under a tool type
         for (String materialName : materialNames.get(modName)) {
@@ -265,7 +259,7 @@ public class McImportCommand implements CommandExecutor {
             }
 
             if (!configSections.containsKey(toolType)) {
-                configSections.put(toolType, new ArrayList<String>());
+                configSections.put(toolType, new ArrayList<>());
             }
 
             ArrayList<String> skillContents = configSections.get(toolType);
@@ -280,7 +274,7 @@ public class McImportCommand implements CommandExecutor {
     }
 
     private HashMap<String, ArrayList<String>> getConfigSectionsArmor(String modName, HashMap<String, ArrayList<String>> materialNames) {
-        HashMap<String, ArrayList<String>> configSections = new HashMap<String, ArrayList<String>>();
+        HashMap<String, ArrayList<String>> configSections = new HashMap<>();
 
         // Go through all the materials and categorise them under an armor type
         for (String materialName : materialNames.get(modName)) {
@@ -299,7 +293,7 @@ public class McImportCommand implements CommandExecutor {
             }
 
             if (!configSections.containsKey(toolType)) {
-                configSections.put(toolType, new ArrayList<String>());
+                configSections.put(toolType, new ArrayList<>());
             }
 
             ArrayList<String> skillContents = configSections.get(toolType);
@@ -325,14 +319,14 @@ public class McImportCommand implements CommandExecutor {
     }
 
     private HashMap<String, ArrayList<String>> getConfigSectionsUnknown(String modName, HashMap<String, ArrayList<String>> materialNames) {
-        HashMap<String, ArrayList<String>> configSections = new HashMap<String, ArrayList<String>>();
+        HashMap<String, ArrayList<String>> configSections = new HashMap<>();
 
         // Go through all the materials and print them
         for (String materialName : materialNames.get(modName)) {
             String configKey = "UNIDENTIFIED";
 
             if (!configSections.containsKey(configKey)) {
-                configSections.put(configKey, new ArrayList<String>());
+                configSections.put(configKey, new ArrayList<>());
             }
 
             ArrayList<String> skillContents = configSections.get(configKey);

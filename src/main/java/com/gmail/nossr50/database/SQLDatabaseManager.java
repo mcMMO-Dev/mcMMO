@@ -23,7 +23,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     public static final String COM_MYSQL_JDBC_DRIVER = "com.mysql.jdbc.Driver";
     private String tablePrefix = mcMMO.getMySQLConfigSettings().getConfigSectionDatabase().getTablePrefix();
 
-    private final Map<UUID, Integer> cachedUserIDs = new HashMap<UUID, Integer>();
+    private final Map<UUID, Integer> cachedUserIDs = new HashMap<>();
 
     private DataSource miscPool;
     private DataSource loadPool;
@@ -344,7 +344,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public List<PlayerStat> readLeaderboard(PrimarySkillType skill, int pageNumber, int statsPerPage) {
-        List<PlayerStat> stats = new ArrayList<PlayerStat>();
+        List<PlayerStat> stats = new ArrayList<>();
 
         String query = skill == null ? ALL_QUERY_VERSION : skill.name().toLowerCase();
         ResultSet resultSet = null;
@@ -359,7 +359,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                ArrayList<String> column = new ArrayList<String>();
+                ArrayList<String> column = new ArrayList<>();
 
                 for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
                     column.add(resultSet.getString(i));
@@ -381,7 +381,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public Map<PrimarySkillType, Integer> readRank(String playerName) {
-        Map<PrimarySkillType, Integer> skills = new HashMap<PrimarySkillType, Integer>();
+        Map<PrimarySkillType, Integer> skills = new HashMap<>();
 
         ResultSet resultSet = null;
         PreparedStatement statement = null;
@@ -751,7 +751,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public List<String> getStoredUsers() {
-        ArrayList<String> users = new ArrayList<String>();
+        ArrayList<String> users = new ArrayList<>();
 
         Statement statement = null;
         Connection connection = null;
@@ -1077,10 +1077,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private PlayerProfile loadFromResult(String playerName, ResultSet result) throws SQLException {
-        Map<PrimarySkillType, Integer> skills = new EnumMap<PrimarySkillType, Integer>(PrimarySkillType.class); // Skill & Level
-        Map<PrimarySkillType, Float> skillsXp = new EnumMap<PrimarySkillType, Float>(PrimarySkillType.class); // Skill & XP
-        Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<SuperAbilityType, Integer>(SuperAbilityType.class); // Ability & Cooldown
-        Map<UniqueDataType, Integer> uniqueData = new EnumMap<UniqueDataType, Integer>(UniqueDataType.class); //Chimaera wing cooldown and other misc info
+        Map<PrimarySkillType, Integer> skills = new EnumMap<>(PrimarySkillType.class); // Skill & Level
+        Map<PrimarySkillType, Float> skillsXp = new EnumMap<>(PrimarySkillType.class); // Skill & XP
+        Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<>(SuperAbilityType.class); // Ability & Cooldown
+        Map<UniqueDataType, Integer> uniqueData = new EnumMap<>(UniqueDataType.class); //Chimaera wing cooldown and other misc info
         MobHealthbarType mobHealthbarType;
         UUID uuid;
         int scoreboardTipsShown;

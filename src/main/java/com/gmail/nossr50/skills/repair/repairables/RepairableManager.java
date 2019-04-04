@@ -16,7 +16,7 @@ public class RepairableManager implements Unload {
     }
 
     public RepairableManager(List<Repairable> repairablesCollection) {
-        this.repairables = new HashMap<Material, Repairable>(repairablesCollection.size());
+        this.repairables = new HashMap<>(repairablesCollection.size());
         registerRepairables(repairablesCollection);
     }
 

@@ -143,7 +143,7 @@ public class SalvageManager extends SkillManager {
     }*/
 
     public int getSalvageableAmount() {
-        return (RankUtils.getRank(getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE) * 1);
+        return (RankUtils.getRank(getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE));
     }
 
     /**

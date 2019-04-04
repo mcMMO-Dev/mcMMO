@@ -40,9 +40,9 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
     public static final String RARITY = "Rarity";
     public static final String DROPS_FROM = "Drops_From";
 
-    public HashMap<EntityType, List<ShakeTreasure>> shakeMap = new HashMap<EntityType, List<ShakeTreasure>>();
-    public HashMap<Rarity, List<FishingTreasure>> fishingRewards = new HashMap<Rarity, List<FishingTreasure>>();
-    public HashMap<Rarity, List<EnchantmentTreasure>> fishingEnchantments = new HashMap<Rarity, List<EnchantmentTreasure>>();
+    public HashMap<EntityType, List<ShakeTreasure>> shakeMap = new HashMap<>();
+    public HashMap<Rarity, List<FishingTreasure>> fishingRewards = new HashMap<>();
+    public HashMap<Rarity, List<EnchantmentTreasure>> fishingEnchantments = new HashMap<>();
 
     /**
      * This grabs an instance of this config class from the Config Manager
@@ -81,7 +81,7 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
         // Initialize fishing HashMap
         for (Rarity rarity : Rarity.values()) {
             if (!fishingRewards.containsKey(rarity)) {
-                fishingRewards.put(rarity, (new ArrayList<FishingTreasure>()));
+                fishingRewards.put(rarity, (new ArrayList<>()));
             }
         }
 
@@ -276,8 +276,7 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
                     /*
                      * Add to map
                      */
-                    if(shakeMap.get(entityType) == null)
-                        shakeMap.put(entityType, new ArrayList<>());
+                    shakeMap.computeIfAbsent(entityType, k -> new ArrayList<>());
 
                     shakeMap.get(entityType).add(shakeTreasure);
 
@@ -297,7 +296,7 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
             }
 
             if (!fishingEnchantments.containsKey(rarity)) {
-                fishingEnchantments.put(rarity, (new ArrayList<EnchantmentTreasure>()));
+                fishingEnchantments.put(rarity, (new ArrayList<>()));
             }
 
             ConfigurationNode enchantmentSection = getUserRootNode().getNode(ENCHANTMENTS_RARITY, rarity.toString());
@@ -334,7 +333,7 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
     @Override
     public List<String> validateKeys() {
         // Validate all the settings!
-        List<String> errorMessages = new ArrayList<String>();
+        List<String> errorMessages = new ArrayList<>();
         try {
             for (String tier : getUserRootNode().getNode(ENCHANTMENT_DROP_RATES).getList(TypeToken.of(String.class))) {
                 /*double totalEnchantDropRate = 0;

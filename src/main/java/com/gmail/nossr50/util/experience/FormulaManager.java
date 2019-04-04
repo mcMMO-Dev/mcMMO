@@ -14,8 +14,8 @@ public class FormulaManager {
     private static File formulaFile = new File(mcMMO.getFlatFileDirectory() + "formula.yml");
 
     // Experience needed to reach a level, cached values to improve conversion speed
-    private final Map<Integer, Integer> experienceNeededLinear = new HashMap<Integer, Integer>();
-    private final Map<Integer, Integer> experienceNeededExponential = new HashMap<Integer, Integer>();
+    private final Map<Integer, Integer> experienceNeededLinear = new HashMap<>();
+    private final Map<Integer, Integer> experienceNeededExponential = new HashMap<>();
 
     private FormulaType previousFormula;
 

@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class BleedTimerTask extends BukkitRunnable {
-    private static Map<LivingEntity, BleedContainer> bleedList = new HashMap<LivingEntity, BleedContainer>();
+    private static Map<LivingEntity, BleedContainer> bleedList = new HashMap<>();
 
     @Override
     public void run() {

@@ -8,13 +8,13 @@ import org.bukkit.entity.Entity;
 import java.io.IOException;
 
 public interface ChunkManager {
-    public void closeAll();
+    void closeAll();
 
-    public ChunkStore readChunkStore(World world, int x, int z) throws IOException;
+    ChunkStore readChunkStore(World world, int x, int z) throws IOException;
 
-    public void writeChunkStore(World world, int x, int z, ChunkStore data);
+    void writeChunkStore(World world, int x, int z, ChunkStore data);
 
-    public void closeChunkStore(World world, int x, int z);
+    void closeChunkStore(World world, int x, int z);
 
     /**
      * Loads a specific chunklet
@@ -24,7 +24,7 @@ public interface ChunkManager {
      * @param cz Chunklet Z coordinate that needs to be loaded
      * @param world World that the chunklet needs to be loaded in
      */
-    public void loadChunklet(int cx, int cy, int cz, World world);
+    void loadChunklet(int cx, int cy, int cz, World world);
 
     /**
      * Unload a specific chunklet
@@ -34,7 +34,7 @@ public interface ChunkManager {
      * @param cz Chunklet Z coordinate that needs to be unloaded
      * @param world World that the chunklet needs to be unloaded from
      */
-    public void unloadChunklet(int cx, int cy, int cz, World world);
+    void unloadChunklet(int cx, int cy, int cz, World world);
 
     /**
      * Load a given Chunk's Chunklet data
@@ -43,7 +43,7 @@ public interface ChunkManager {
      * @param cz Chunk Z coordinate that is to be loaded
      * @param world World that the Chunk is in
      */
-    public void loadChunk(int cx, int cz, World world, Entity[] entities);
+    void loadChunk(int cx, int cz, World world, Entity[] entities);
 
     /**
      * Unload a given Chunk's Chunklet data
@@ -52,7 +52,7 @@ public interface ChunkManager {
      * @param cz Chunk Z coordinate that is to be unloaded
      * @param world World that the Chunk is in
      */
-    public void unloadChunk(int cx, int cz, World world);
+    void unloadChunk(int cx, int cz, World world);
 
     /**
      * Saves a given Chunk's Chunklet data
@@ -61,9 +61,9 @@ public interface ChunkManager {
      * @param cz Chunk Z coordinate that is to be saved
      * @param world World that the Chunk is in
      */
-    public void saveChunk(int cx, int cz, World world);
+    void saveChunk(int cx, int cz, World world);
 
-    public boolean isChunkLoaded(int cx, int cz, World world);
+    boolean isChunkLoaded(int cx, int cz, World world);
 
     /**
      * Informs the ChunkletManager a chunk is loaded
@@ -72,7 +72,7 @@ public interface ChunkManager {
      * @param cz Chunk Z coordinate that is loaded
      * @param world World that the chunk was loaded in
      */
-    public void chunkLoaded(int cx, int cz, World world);
+    void chunkLoaded(int cx, int cz, World world);
 
     /**
      * Informs the ChunkletManager a chunk is unloaded
@@ -81,38 +81,38 @@ public interface ChunkManager {
      * @param cz Chunk Z coordinate that is unloaded
      * @param world World that the chunk was unloaded in
      */
-    public void chunkUnloaded(int cx, int cz, World world);
+    void chunkUnloaded(int cx, int cz, World world);
 
     /**
      * Save all ChunkletStores related to the given world
      *
      * @param world World to save
      */
-    public void saveWorld(World world);
+    void saveWorld(World world);
 
     /**
      * Unload all ChunkletStores from memory related to the given world after saving them
      *
      * @param world World to unload
      */
-    public void unloadWorld(World world);
+    void unloadWorld(World world);
 
     /**
      * Load all ChunkletStores from all loaded chunks from this world into memory
      *
      * @param world World to load
      */
-    public void loadWorld(World world);
+    void loadWorld(World world);
 
     /**
      * Save all ChunkletStores
      */
-    public void saveAll();
+    void saveAll();
 
     /**
      * Unload all ChunkletStores after saving them
      */
-    public void unloadAll();
+    void unloadAll();
 
     /**
      * Check to see if a given location is set to true
@@ -123,7 +123,7 @@ public interface ChunkManager {
      * @param world World to check in
      * @return true if the given location is set to true, false if otherwise
      */
-    public boolean isTrue(int x, int y, int z, World world);
+    boolean isTrue(int x, int y, int z, World world);
 
     /**
      * Check to see if a given block location is set to true
@@ -131,7 +131,7 @@ public interface ChunkManager {
      * @param block Block location to check
      * @return true if the given block location is set to true, false if otherwise
      */
-    public boolean isTrue(Block block);
+    boolean isTrue(Block block);
 
     /**
      * Check to see if a given BlockState location is set to true
@@ -139,7 +139,7 @@ public interface ChunkManager {
      * @param blockState BlockState to check
      * @return true if the given BlockState location is set to true, false if otherwise
      */
-    public boolean isTrue(BlockState blockState);
+    boolean isTrue(BlockState blockState);
 
     /**
      * Set a given location to true, should create stores as necessary if the location does not exist
@@ -149,21 +149,21 @@ public interface ChunkManager {
      * @param z Z coordinate to set
      * @param world World to set in
      */
-    public void setTrue(int x, int y, int z, World world);
+    void setTrue(int x, int y, int z, World world);
 
     /**
      * Set a given block location to true, should create stores as necessary if the location does not exist
      *
      * @param block Block location to set
      */
-    public void setTrue(Block block);
+    void setTrue(Block block);
 
     /**
      * Set a given BlockState location to true, should create stores as necessary if the location does not exist
      *
      * @param blockState BlockState location to set
      */
-    public void setTrue(BlockState blockState);
+    void setTrue(BlockState blockState);
 
     /**
      * Set a given location to false, should not create stores if one does not exist for the given location
@@ -173,24 +173,24 @@ public interface ChunkManager {
      * @param z Z coordinate to set
      * @param world World to set in
      */
-    public void setFalse(int x, int y, int z, World world);
+    void setFalse(int x, int y, int z, World world);
 
     /**
      * Set a given block location to false, should not create stores if one does not exist for the given location
      *
      * @param block Block location to set
      */
-    public void setFalse(Block block);
+    void setFalse(Block block);
 
     /**
      * Set a given BlockState location to false, should not create stores if one does not exist for the given location
      *
      * @param blockState BlockState location to set
      */
-    public void setFalse(BlockState blockState);
+    void setFalse(BlockState blockState);
 
     /**
      * Delete any ChunkletStores that are empty
      */
-    public void cleanUp();
+    void cleanUp();
 }

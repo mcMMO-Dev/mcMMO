@@ -104,11 +104,11 @@ public class PartyAllianceCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender commandSender, Command command, String label, String[] args) {
         switch (args.length) {
             case 1:
-                List<String> matches = StringUtil.copyPartialMatches(args[0], ALLIANCE_SUBCOMMANDS, new ArrayList<String>(ALLIANCE_SUBCOMMANDS.size()));
+                List<String> matches = StringUtil.copyPartialMatches(args[0], ALLIANCE_SUBCOMMANDS, new ArrayList<>(ALLIANCE_SUBCOMMANDS.size()));
 
                 if (matches.size() == 0) {
                     List<String> playerNames = CommandUtils.getOnlinePlayerNames(commandSender);
-                    return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<String>(playerNames.size()));
+                    return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<>(playerNames.size()));
                 }
 
                 return matches;

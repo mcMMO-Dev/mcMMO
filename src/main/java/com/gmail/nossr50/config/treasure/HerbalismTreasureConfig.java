@@ -26,7 +26,7 @@ public class HerbalismTreasureConfig extends Config implements UnsafeValueValida
     public static final String CUSTOM_NAME = "Custom_Name";
     public static final String LORE = "Lore";
 
-    public HashMap<String, List<HylianTreasure>> hylianMap = new HashMap<String, List<HylianTreasure>>();
+    public HashMap<String, List<HylianTreasure>> hylianMap = new HashMap<>();
 
     public HerbalismTreasureConfig() {
         super("hylian_luck_drops", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, false, true, false);
@@ -206,7 +206,7 @@ public class HerbalismTreasureConfig extends Config implements UnsafeValueValida
 
     private void addHylianTreasure(String dropper, HylianTreasure treasure) {
         if (!hylianMap.containsKey(dropper))
-            hylianMap.put(dropper, new ArrayList<HylianTreasure>());
+            hylianMap.put(dropper, new ArrayList<>());
 
         hylianMap.get(dropper).add(treasure);
     }

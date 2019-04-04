@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 
 public final class ParticleEffectUtils {
 
-    private ParticleEffectUtils() {};
+    private ParticleEffectUtils() {}
 
     public static void playBleedEffect(LivingEntity livingEntity) {
         if (!MainConfig.getInstance().getBleedEffectEnabled()) {

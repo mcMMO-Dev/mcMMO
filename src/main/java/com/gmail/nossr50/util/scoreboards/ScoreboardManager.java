@@ -23,7 +23,7 @@ import java.util.*;
  * Manages the Scoreboards used to display a variety of mcMMO related information to the player
  */
 public class ScoreboardManager {
-    static final Map<String, ScoreboardWrapper> PLAYER_SCOREBOARDS = new HashMap<String, ScoreboardWrapper>();
+    static final Map<String, ScoreboardWrapper> PLAYER_SCOREBOARDS = new HashMap<>();
 
     // do not localize; these are internal identifiers
     static final String SIDEBAR_OBJECTIVE = "mcmmo_sidebar";
@@ -128,7 +128,7 @@ public class ScoreboardManager {
         abilityLabelsSkill = abilityLabelSkillBuilder.build();
     }
 
-    private static List<String> dirtyPowerLevels = new ArrayList<String>();
+    private static List<String> dirtyPowerLevels = new ArrayList<>();
 
     public enum SidebarType {
         NONE,
@@ -136,7 +136,7 @@ public class ScoreboardManager {
         STATS_BOARD,
         COOLDOWNS_BOARD,
         RANK_BOARD,
-        TOP_BOARD;
+        TOP_BOARD
     }
 
     private static String formatAbility(String abilityName) {

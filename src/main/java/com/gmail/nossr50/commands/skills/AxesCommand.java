@@ -72,7 +72,7 @@ public class AxesCommand extends SkillCommand {
 
     @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
-        List<String> messages = new ArrayList<String>();
+        List<String> messages = new ArrayList<>();
 
         if (canImpact) {
             messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Axes.Ability.Bonus.2"), LocaleLoader.getString("Axes.Ability.Bonus.3", impactDamage)));

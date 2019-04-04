@@ -72,7 +72,7 @@ public class McscoreboardCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         switch (args.length) {
             case 1:
-                return StringUtil.copyPartialMatches(args[0], FIRST_ARGS, new ArrayList<String>(FIRST_ARGS.size()));
+                return StringUtil.copyPartialMatches(args[0], FIRST_ARGS, new ArrayList<>(FIRST_ARGS.size()));
             default:
                 return ImmutableList.of();
         }

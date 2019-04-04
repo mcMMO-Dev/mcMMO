@@ -7,32 +7,32 @@ public final class HOCONUtil {
     public static String serializeENUMName(String hyphenedString)
     {
         String[] split = hyphenedString.split("_");
-        String formattedString = "";
+        StringBuilder formattedString = new StringBuilder();
 
         for(int x = 0; x < split.length; x++)
         {
             if(x + 1 >= split.length)
-                formattedString += StringUtils.getCapitalized(split[x]);
+                formattedString.append(StringUtils.getCapitalized(split[x]));
             else
-                formattedString+= (StringUtils.getCapitalized(split[x]) + '-');
+                formattedString.append(StringUtils.getCapitalized(split[x])).append('-');
         }
 
-        return formattedString;
+        return formattedString.toString();
     }
 
     public static String deserializeENUMName(String serializedName)
     {
         String[] split = serializedName.split("-");
-        String formattedString = "";
+        StringBuilder formattedString = new StringBuilder();
 
         for(int x = 0; x < split.length; x++)
         {
             if(x + 1 >= split.length)
-                formattedString += split[x].toUpperCase();
+                formattedString.append(split[x].toUpperCase());
             else
-                formattedString+= (split[x] + '_');
+                formattedString.append(split[x]).append('_');
         }
 
-        return formattedString;
+        return formattedString.toString();
     }
 }

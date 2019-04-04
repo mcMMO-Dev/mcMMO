@@ -67,7 +67,7 @@ public class AlchemyCommand extends SkillCommand {
 
     @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
-        List<String> messages = new ArrayList<String>();
+        List<String> messages = new ArrayList<>();
 
         if (canCatalysis) {
             messages.add(getStatMessage(SubSkillType.ALCHEMY_CATALYSIS, brewSpeed)

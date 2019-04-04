@@ -16,8 +16,8 @@ import java.io.*;
 import java.util.*;
 
 public final class FlatfileDatabaseManager implements DatabaseManager {
-    private final HashMap<PrimarySkillType, List<PlayerStat>> playerStatHash = new HashMap<PrimarySkillType, List<PlayerStat>>();
-    private final List<PlayerStat> powerLevels = new ArrayList<PlayerStat>();
+    private final HashMap<PrimarySkillType, List<PlayerStat>> playerStatHash = new HashMap<>();
+    private final List<PlayerStat> powerLevels = new ArrayList<>();
     private long lastUpdate = 0;
     private long updateWaitTime;
     private final File usersFile;
@@ -364,7 +364,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     public Map<PrimarySkillType, Integer> readRank(String playerName) {
         updateLeaderboards();
 
-        Map<PrimarySkillType, Integer> skills = new HashMap<PrimarySkillType, Integer>();
+        Map<PrimarySkillType, Integer> skills = new HashMap<>();
 
         for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
             skills.put(skill, getPlayerRank(playerName, playerStatHash.get(skill)));
@@ -652,7 +652,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         }
 
                         character[UUID_INDEX] = fetchedUUIDs.remove(character[USERNAME]).toString();
-                        line = new StringBuilder(org.apache.commons.lang.StringUtils.join(character, ":")).append(":").toString();
+                        line = org.apache.commons.lang.StringUtils.join(character, ":") + ":";
                     }
 
                     i++;
@@ -690,7 +690,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     }
 
     public List<String> getStoredUsers() {
-        ArrayList<String> users = new ArrayList<String>();
+        ArrayList<String> users = new ArrayList<>();
         BufferedReader in = null;
         String usersFilePath = mcMMO.getUsersFilePath();
 
@@ -736,19 +736,19 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         powerLevels.clear(); // Clear old values from the power levels
 
         // Initialize lists
-        List<PlayerStat> mining = new ArrayList<PlayerStat>();
-        List<PlayerStat> woodcutting = new ArrayList<PlayerStat>();
-        List<PlayerStat> herbalism = new ArrayList<PlayerStat>();
-        List<PlayerStat> excavation = new ArrayList<PlayerStat>();
-        List<PlayerStat> acrobatics = new ArrayList<PlayerStat>();
-        List<PlayerStat> repair = new ArrayList<PlayerStat>();
-        List<PlayerStat> swords = new ArrayList<PlayerStat>();
-        List<PlayerStat> axes = new ArrayList<PlayerStat>();
-        List<PlayerStat> archery = new ArrayList<PlayerStat>();
-        List<PlayerStat> unarmed = new ArrayList<PlayerStat>();
-        List<PlayerStat> taming = new ArrayList<PlayerStat>();
-        List<PlayerStat> fishing = new ArrayList<PlayerStat>();
-        List<PlayerStat> alchemy = new ArrayList<PlayerStat>();
+        List<PlayerStat> mining = new ArrayList<>();
+        List<PlayerStat> woodcutting = new ArrayList<>();
+        List<PlayerStat> herbalism = new ArrayList<>();
+        List<PlayerStat> excavation = new ArrayList<>();
+        List<PlayerStat> acrobatics = new ArrayList<>();
+        List<PlayerStat> repair = new ArrayList<>();
+        List<PlayerStat> swords = new ArrayList<>();
+        List<PlayerStat> axes = new ArrayList<>();
+        List<PlayerStat> archery = new ArrayList<>();
+        List<PlayerStat> unarmed = new ArrayList<>();
+        List<PlayerStat> taming = new ArrayList<>();
+        List<PlayerStat> fishing = new ArrayList<>();
+        List<PlayerStat> alchemy = new ArrayList<>();
 
         BufferedReader in = null;
         String playerName = null;
@@ -843,8 +843,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     in = new BufferedReader(new FileReader(usersFilePath));
                     StringBuilder writer = new StringBuilder();
                     String line;
-                    HashSet<String> usernames = new HashSet<String>();
-                    HashSet<String> players = new HashSet<String>();
+                    HashSet<String> usernames = new HashSet<>();
+                    HashSet<String> players = new HashSet<>();
 
                     while ((line = in.readLine()) != null) {
                         // Remove empty lines from the file
@@ -1047,7 +1047,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         }
 
                         if (updated) {
-                            line = new StringBuilder(org.apache.commons.lang.StringUtils.join(character, ":")).append(":").toString();
+                            line = org.apache.commons.lang.StringUtils.join(character, ":") + ":";
                         }
 
                         writer.append(line).append("\r\n");
@@ -1133,9 +1133,9 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
     private PlayerProfile loadFromLine(String[] character) {
         Map<PrimarySkillType, Integer>   skills     = getSkillMapFromLine(character);      // Skill levels
-        Map<PrimarySkillType, Float>     skillsXp   = new EnumMap<PrimarySkillType, Float>(PrimarySkillType.class);     // Skill & XP
-        Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<SuperAbilityType, Integer>(SuperAbilityType.class); // Ability & Cooldown
-        Map<UniqueDataType, Integer> uniquePlayerDataMap = new EnumMap<UniqueDataType, Integer>(UniqueDataType.class);
+        Map<PrimarySkillType, Float>     skillsXp   = new EnumMap<>(PrimarySkillType.class);     // Skill & XP
+        Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<>(SuperAbilityType.class); // Ability & Cooldown
+        Map<UniqueDataType, Integer> uniquePlayerDataMap = new EnumMap<>(UniqueDataType.class);
         MobHealthbarType mobHealthbarType;
         int scoreboardTipsShown;
 
@@ -1201,7 +1201,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     }
 
     private Map<PrimarySkillType, Integer> getSkillMapFromLine(String[] character) {
-        Map<PrimarySkillType, Integer> skills = new EnumMap<PrimarySkillType, Integer>(PrimarySkillType.class);   // Skill & Level
+        Map<PrimarySkillType, Integer> skills = new EnumMap<>(PrimarySkillType.class);   // Skill & Level
 
         skills.put(PrimarySkillType.TAMING, Integer.valueOf(character[SKILLS_TAMING]));
         skills.put(PrimarySkillType.MINING, Integer.valueOf(character[SKILLS_MINING]));
@@ -1322,7 +1322,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     
                     character[HEALTHBAR] = mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType().toString();
                     
-                    line = new StringBuilder(org.apache.commons.lang.StringUtils.join(character, ":")).append(":").toString();
+                    line = org.apache.commons.lang.StringUtils.join(character, ":") + ":";
 
                     writer.append(line).append("\r\n");
                 }

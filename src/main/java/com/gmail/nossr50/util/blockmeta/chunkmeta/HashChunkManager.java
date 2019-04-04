@@ -11,10 +11,10 @@ import java.io.*;
 import java.util.*;
 
 public class HashChunkManager implements ChunkManager {
-    private HashMap<UUID, HashMap<Long, McMMOSimpleRegionFile>> regionFiles = new HashMap<UUID, HashMap<Long, McMMOSimpleRegionFile>>();
-    public HashMap<String, ChunkStore> store = new HashMap<String, ChunkStore>();
-    public ArrayList<BlockStoreConversionZDirectory> converters = new ArrayList<BlockStoreConversionZDirectory>();
-    private HashMap<UUID, Boolean> oldData = new HashMap<UUID, Boolean>();
+    private HashMap<UUID, HashMap<Long, McMMOSimpleRegionFile>> regionFiles = new HashMap<>();
+    public HashMap<String, ChunkStore> store = new HashMap<>();
+    public ArrayList<BlockStoreConversionZDirectory> converters = new ArrayList<>();
+    private HashMap<UUID, Boolean> oldData = new HashMap<>();
 
     @Override
     public synchronized void closeAll() {
@@ -38,30 +38,18 @@ public class HashChunkManager implements ChunkManager {
         if (in == null) {
             return null;
         }
-        ObjectInputStream objectStream = new ObjectInputStream(in);
-        try {
+        try (ObjectInputStream objectStream = new ObjectInputStream(in)) {
             Object o = objectStream.readObject();
             if (o instanceof ChunkStore) {
                 return (ChunkStore) o;
             }
 
             throw new RuntimeException("Wrong class type read for chunk meta data for " + x + ", " + z);
-        }
-        catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             // Assume the format changed
             return null;
             //throw new RuntimeException("Unable to process chunk meta data for " + x + ", " + z, e);
-        }
-        catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            // Assume the format changed
-            //System.out.println("[SpoutPlugin] is Unable to find serialized class for " + x + ", " + z + ", " + e.getMessage());
-            return null;
-            //throw new RuntimeException("Unable to find serialized class for " + x + ", " + z, e);
-        }
-        finally {
-            objectStream.close();
         }
     }
 
@@ -101,7 +89,7 @@ public class HashChunkManager implements ChunkManager {
         HashMap<Long, McMMOSimpleRegionFile> worldRegions = regionFiles.get(key);
 
         if (worldRegions == null) {
-            worldRegions = new HashMap<Long, McMMOSimpleRegionFile>();
+            worldRegions = new HashMap<>();
             regionFiles.put(key, worldRegions);
         }
 
@@ -222,7 +210,7 @@ public class HashChunkManager implements ChunkManager {
         closeAll();
         String worldName = world.getName();
 
-        List<String> keys = new ArrayList<String>(store.keySet());
+        List<String> keys = new ArrayList<>(store.keySet());
         for (String key : keys) {
             String[] info = key.split(",");
             if (worldName.equals(info[0])) {
@@ -245,7 +233,7 @@ public class HashChunkManager implements ChunkManager {
         closeAll();
         String worldName = world.getName();
 
-        List<String> keys = new ArrayList<String>(store.keySet());
+        List<String> keys = new ArrayList<>(store.keySet());
         for (String key : keys) {
             String[] info = key.split(",");
             if (worldName.equals(info[0])) {

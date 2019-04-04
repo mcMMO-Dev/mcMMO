@@ -37,7 +37,7 @@ public class TamingManager extends SkillManager {
         super(mcMMOPlayer, PrimarySkillType.TAMING);
     }
 
-    private static HashMap<EntityType, List<TrackedTamingEntity>> summonedEntities = new HashMap<EntityType, List<TrackedTamingEntity>>();
+    private static HashMap<EntityType, List<TrackedTamingEntity>> summonedEntities = new HashMap<>();
 
     public boolean canUseThickFur() {
         return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_THICK_FUR)
@@ -384,7 +384,7 @@ public class TamingManager extends SkillManager {
         TrackedTamingEntity trackedEntity = new TrackedTamingEntity(livingEntity);
 
         if (!summonedEntities.containsKey(livingEntity.getType())) {
-            summonedEntities.put(livingEntity.getType(), new ArrayList<TrackedTamingEntity>());
+            summonedEntities.put(livingEntity.getType(), new ArrayList<>());
         }
 
         summonedEntities.get(livingEntity.getType()).add(trackedEntity);

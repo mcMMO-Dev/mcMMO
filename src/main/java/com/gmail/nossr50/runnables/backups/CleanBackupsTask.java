@@ -18,9 +18,9 @@ public class CleanBackupsTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        List<Integer> savedDays = new ArrayList<Integer>();
-        HashMap<Integer, List<Integer>> savedYearsWeeks = new HashMap<Integer, List<Integer>>();
-        List<File> toDelete = new ArrayList<File>();
+        List<Integer> savedDays = new ArrayList<>();
+        HashMap<Integer, List<Integer>> savedYearsWeeks = new HashMap<>();
+        List<File> toDelete = new ArrayList<>();
         int amountTotal = 0;
         int amountDeleted = 0;
         int oldFileAgeLimit = mcMMO.getConfigManager().getConfigAutomatedBackups().getBackupDayLimit();

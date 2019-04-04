@@ -107,9 +107,9 @@ public class SkillresetCommand implements TabExecutor {
         switch (args.length) {
             case 1:
                 List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
-                return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<String>(playerNames.size()));
+                return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<>(playerNames.size()));
             case 2:
-                return StringUtil.copyPartialMatches(args[1], PrimarySkillType.SKILL_NAMES, new ArrayList<String>(PrimarySkillType.SKILL_NAMES.size()));
+                return StringUtil.copyPartialMatches(args[1], PrimarySkillType.SKILL_NAMES, new ArrayList<>(PrimarySkillType.SKILL_NAMES.size()));
             default:
                 return ImmutableList.of();
         }

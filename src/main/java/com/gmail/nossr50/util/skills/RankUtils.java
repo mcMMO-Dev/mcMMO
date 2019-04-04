@@ -265,8 +265,7 @@ public class RankUtils {
         if (subSkillRanks == null)
             subSkillRanks = new HashMap<>();
 
-        if (subSkillRanks.get(s) == null)
-            subSkillRanks.put(s, new HashMap<>());
+        subSkillRanks.computeIfAbsent(s, k -> new HashMap<>());
     }
 
 /*    public static int getSubSkillUnlockRequirement(SubSkillType subSkillType)

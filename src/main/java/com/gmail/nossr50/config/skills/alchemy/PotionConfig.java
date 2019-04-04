@@ -63,7 +63,7 @@ public class PotionConfig extends ConfigCollection {
     private List<ItemStack> concoctionsIngredientsTierSeven;
     private List<ItemStack> concoctionsIngredientsTierEight;
 
-    private Map<String, AlchemyPotion> potionMap = new HashMap<String, AlchemyPotion>();
+    private Map<String, AlchemyPotion> potionMap = new HashMap<>();
 
     public PotionConfig() {
         super("skillranks", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, true, true, true);
@@ -211,14 +211,14 @@ public class PotionConfig extends ConfigCollection {
                 material = Material.valueOf(materialTypeString);
             }
 
-            List<String> lore = new ArrayList<String>();
+            List<String> lore = new ArrayList<>();
             if (potion_section.getNode(LORE) != null) {
                 for (String line : potion_section.getNode(LORE).getList(TypeToken.of(String.class))) {
                     lore.add(ChatColor.translateAlternateColorCodes('&', line));
                 }
             }
 
-            List<PotionEffect> effects = new ArrayList<PotionEffect>();
+            List<PotionEffect> effects = new ArrayList<>();
             if (potion_section.getNode(EFFECTS) != null) {
                 for (String effect : potion_section.getNode(EFFECTS).getList(TypeToken.of(String.class))) {
                     String[] parts = effect.split(" ");
@@ -235,14 +235,14 @@ public class PotionConfig extends ConfigCollection {
                 }
             }
 
-            Color color = null;
+            Color color;
             if (potion_section.getNode(COLOR) != null) {
                 color = Color.fromRGB(potion_section.getNode(COLOR).getInt());
             } else {
                 color = this.generateColor(effects);
             }
 
-            Map<ItemStack, String> children = new HashMap<ItemStack, String>();
+            Map<ItemStack, String> children = new HashMap<>();
             if (potion_section.getNode(CHILDREN) != null) {
                 for (String child : potion_section.getNode(CHILDREN).getList(TypeToken.of(String.class))) {
                     ItemStack ingredient = loadIngredient(child);
@@ -324,7 +324,7 @@ public class PotionConfig extends ConfigCollection {
 
     public Color generateColor(List<PotionEffect> effects) {
         if (effects != null && !effects.isEmpty()) {
-            List<Color> colors = new ArrayList<Color>();
+            List<Color> colors = new ArrayList<>();
             for (PotionEffect effect : effects) {
                 if (effect.getType().getColor() != null) {
                     colors.add(effect.getType().getColor());

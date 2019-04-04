@@ -41,21 +41,21 @@ public class PartyInfoCommand implements CommandExecutor {
     private void displayPartyHeader(Player player, Party party) {
         player.sendMessage(LocaleLoader.getString("Commands.Party.Header"));
 
-        StringBuilder status = new StringBuilder();
-        status.append(LocaleLoader.getString("Commands.Party.Status", party.getName(), LocaleLoader.getString("Party.Status." + (party.isLocked() ? "Locked" : "Unlocked")), party.getLevel()));
-
         /*if (!party.hasReachedLevelCap()) {
             status.append(" (").append(party.getXpToLevelPercentage()).append(")");
         }*/
 
-        player.sendMessage(status.toString());
+        player.sendMessage(LocaleLoader.getString("Commands.Party.Status", party.getName(), LocaleLoader.getString("Party.Status." + (party.isLocked() ? "Locked" : "Unlocked")), party.getLevel())
+ /*if (!party.hasReachedLevelCap()) {
+     status.append(" (").append(party.getXpToLevelPercentage()).append(")");
+ }*/);
     }
 
     private void displayPartyFeatures(Player player, Party party) {
         player.sendMessage(LocaleLoader.getString("Commands.Party.Features.Header"));
 
-        List<String> unlockedPartyFeatures = new ArrayList<String>();
-        List<String> lockedPartyFeatures = new ArrayList<String>();
+        List<String> unlockedPartyFeatures = new ArrayList<>();
+        List<String> lockedPartyFeatures = new ArrayList<>();
 
         for (PartyFeature partyFeature : PartyFeature.values()) {
             if (!partyFeature.hasPermission(player)) {

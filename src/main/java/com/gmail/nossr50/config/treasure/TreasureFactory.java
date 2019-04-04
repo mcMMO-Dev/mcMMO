@@ -81,7 +81,7 @@ public class TreasureFactory {
         if(customLore != null && !customLore.getString().equalsIgnoreCase(CHANGE_ME))
         {
             ItemMeta itemMeta = treasure.getItemMeta();
-            List<String> lore = new ArrayList<String>();
+            List<String> lore = new ArrayList<>();
 
             try {
                 //TODO: Not sure how this will be handled by Configurate

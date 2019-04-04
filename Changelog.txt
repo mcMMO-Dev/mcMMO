@@ -29,6 +29,7 @@ Version 2.2.0
         Note: Admins are players who are op or have adminchat permission.
 
     Bug Fixes
+    Fixed a bug where Blast Minings cooldown was not being displayed correctly
     Fixed a bug where players who started at level 1 would not be purged from the DB for being "powerless"
     Fixed a potential bug where players could be awarded XP for cancelled tame events
     Fixed a bug where party size limits were only counting online players
@@ -117,6 +118,7 @@ Version 2.2.0
     Scoreboard.Misc.Ability locale entry renamed from "Ability" to "Super Ability", this is used only if scoreboards are enabled and super ability names are disabled in scoreboard.conf
 
     MySQL and FlatFile Settings can now be found in "database_settings.conf"
+    Added new config setting for the update interval of FlatFile scoreboards
     Added new config toggle for purging power-less users
     Added new config toggle for purging inactive users
     Database Purging's "Purge_Interval" renamed -> "Purge-Interval-In-Hours"

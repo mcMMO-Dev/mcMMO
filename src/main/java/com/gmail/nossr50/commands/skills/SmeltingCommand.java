@@ -62,7 +62,7 @@ public class SmeltingCommand extends SkillCommand {
 
     @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
-        List<String> messages = new ArrayList<String>();
+        List<String> messages = new ArrayList<>();
 
         /*if (canFluxMine) {
             messages.add(getStatMessage(SubSkillType.SMELTING_FLUX_MINING, str_fluxMiningChance)

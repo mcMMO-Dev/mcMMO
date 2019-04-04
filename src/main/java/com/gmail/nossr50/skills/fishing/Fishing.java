@@ -16,7 +16,7 @@ import java.util.Set;
 
 public final class Fishing {
 
-    protected static final HashMap<Material, List<Enchantment>> ENCHANTABLE_CACHE = new HashMap<Material, List<Enchantment>>();
+    protected static final HashMap<Material, List<Enchantment>> ENCHANTABLE_CACHE = new HashMap<>();
 
     /*public static int fishermansDietRankLevel1 = AdvancedConfig.getInstance().getFishermanDietRankChange();
     public static int fishermansDietRankLevel2 = fishermansDietRankLevel1 * 2;

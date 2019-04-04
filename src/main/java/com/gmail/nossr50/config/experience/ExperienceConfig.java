@@ -77,7 +77,6 @@ public class ExperienceConfig extends ConfigValidated {
     public static final String OCELOT = "Ocelot";
     public static final String WOLF = "Wolf";
     public static final String FEATHER_FALL_MULTIPLIER = "FeatherFall_Multiplier";
-    private static ExperienceConfig instance;
 
     //TODO: Should merge be false? Seems okay to leave it as true..
     public ExperienceConfig() {
@@ -109,12 +108,12 @@ public class ExperienceConfig extends ConfigValidated {
 
     @Override
     public void unload() {
-        instance = null; //TODO: this might be a bit problematic
+
     }
 
     @Override
     public List<String> validateKeys() {
-        List<String> reason = new ArrayList<String>();
+        List<String> reason = new ArrayList<>();
 
         /*
          * FORMULA SETTINGS

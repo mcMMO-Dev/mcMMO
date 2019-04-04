@@ -6,8 +6,8 @@ import org.bukkit.plugin.Plugin;
 import java.util.HashMap;
 
 public class ChatManagerFactory {
-    private static final HashMap<Plugin, AdminChatManager> adminChatManagers = new HashMap<Plugin, AdminChatManager>();
-    private static final HashMap<Plugin, PartyChatManager> partyChatManagers = new HashMap<Plugin, PartyChatManager>();
+    private static final HashMap<Plugin, AdminChatManager> adminChatManagers = new HashMap<>();
+    private static final HashMap<Plugin, PartyChatManager> partyChatManagers = new HashMap<>();
 
     public static ChatManager getChatManager(Plugin plugin, ChatMode mode) {
         switch (mode) {

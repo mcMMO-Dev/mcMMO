@@ -17,8 +17,8 @@ public class PartyAutoKickTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        HashMap<OfflinePlayer, Party> toRemove = new HashMap<OfflinePlayer, Party>();
-        List<UUID> processedPlayers = new ArrayList<UUID>();
+        HashMap<OfflinePlayer, Party> toRemove = new HashMap<>();
+        List<UUID> processedPlayers = new ArrayList<>();
 
         long currentTime = System.currentTimeMillis();
 

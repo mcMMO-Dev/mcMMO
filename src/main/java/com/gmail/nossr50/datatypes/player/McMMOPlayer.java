@@ -67,7 +67,7 @@ public class McMMOPlayer {
     private Player        player;
     private PlayerProfile profile;
 
-    private final Map<PrimarySkillType, SkillManager> skillManagers = new HashMap<PrimarySkillType, SkillManager>();
+    private final Map<PrimarySkillType, SkillManager> skillManagers = new HashMap<>();
     private ExperienceBarManager experienceBarManager;
 
     private Party   party;
@@ -85,10 +85,10 @@ public class McMMOPlayer {
     private boolean godMode;
     private boolean chatSpy = false; //Off by default
 
-    private final Map<SuperAbilityType, Boolean> abilityMode     = new HashMap<SuperAbilityType, Boolean>();
-    private final Map<SuperAbilityType, Boolean> abilityInformed = new HashMap<SuperAbilityType, Boolean>();
+    private final Map<SuperAbilityType, Boolean> abilityMode     = new HashMap<>();
+    private final Map<SuperAbilityType, Boolean> abilityInformed = new HashMap<>();
 
-    private final Map<ToolType, Boolean> toolMode = new HashMap<ToolType, Boolean>();
+    private final Map<ToolType, Boolean> toolMode = new HashMap<>();
 
     private int recentlyHurt;
     private int respawnATS;

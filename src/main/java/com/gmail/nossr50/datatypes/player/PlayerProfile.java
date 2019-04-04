@@ -29,14 +29,14 @@ public class PlayerProfile {
     private int scoreboardTipsShown;
 
     /* Skill Data */
-    private final Map<PrimarySkillType, Integer>   skills     = new HashMap<PrimarySkillType, Integer>();   // Skill & Level
-    private final Map<PrimarySkillType, Float>     skillsXp   = new HashMap<PrimarySkillType, Float>();     // Skill & XP
-    private final Map<SuperAbilityType, Integer> abilityDATS = new HashMap<SuperAbilityType, Integer>(); // Ability & Cooldown
+    private final Map<PrimarySkillType, Integer>   skills     = new HashMap<>();   // Skill & Level
+    private final Map<PrimarySkillType, Float>     skillsXp   = new HashMap<>();     // Skill & XP
+    private final Map<SuperAbilityType, Integer> abilityDATS = new HashMap<>(); // Ability & Cooldown
     private final Map<UniqueDataType, Integer> uniquePlayerData = new HashMap<>(); //Misc data that doesn't fit into other categories (chimaera wing, etc..)
 
     // Store previous XP gains for deminished returns
-    private DelayQueue<SkillXpGain> gainedSkillsXp = new DelayQueue<SkillXpGain>();
-    private HashMap<PrimarySkillType, Float> rollingSkillsXp = new HashMap<PrimarySkillType, Float>();
+    private DelayQueue<SkillXpGain> gainedSkillsXp = new DelayQueue<>();
+    private HashMap<PrimarySkillType, Float> rollingSkillsXp = new HashMap<>();
 
     @Deprecated
     public PlayerProfile(String playerName) {

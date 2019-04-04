@@ -68,7 +68,7 @@ public class SwordsCommand extends SkillCommand {
 
     @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
-        List<String> messages = new ArrayList<String>();
+        List<String> messages = new ArrayList<>();
 
         int ruptureTicks = UserManager.getPlayer(player).getSwordsManager().getRuptureBleedTicks();
         double ruptureDamagePlayers =  RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? AdvancedConfig.getInstance().getRuptureDamagePlayer() * 1.5D : AdvancedConfig.getInstance().getRuptureDamagePlayer();

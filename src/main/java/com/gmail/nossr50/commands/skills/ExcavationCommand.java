@@ -27,7 +27,7 @@ public class ExcavationCommand extends SkillCommand {
     protected void dataCalculations(Player player, float skillValue) {
         // GIGA DRILL BREAKER
         if (canGigaDrill) {
-            String gigaDrillStrings[] = calculateLengthDisplayValues(player, skillValue);
+            String[] gigaDrillStrings = calculateLengthDisplayValues(player, skillValue);
             gigaDrillBreakerLength = gigaDrillStrings[0];
             gigaDrillBreakerLengthEndurance = gigaDrillStrings[1];
         }
@@ -41,7 +41,7 @@ public class ExcavationCommand extends SkillCommand {
 
     @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
-        List<String> messages = new ArrayList<String>();
+        List<String> messages = new ArrayList<>();
 
         if (canGigaDrill) {
             messages.add(getStatMessage(SubSkillType.EXCAVATION_GIGA_DRILL_BREAKER, gigaDrillBreakerLength)

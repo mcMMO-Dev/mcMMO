@@ -225,7 +225,7 @@ public final class CommandUtils {
     private static void printGroupedSkillData(Player inspect, CommandSender display, String header, List<PrimarySkillType> skillGroup) {
         PlayerProfile profile = UserManager.getPlayer(inspect).getProfile();
 
-        List<String> displayData = new ArrayList<String>();
+        List<String> displayData = new ArrayList<>();
         displayData.add(header);
 
         for (PrimarySkillType skill : skillGroup) {
@@ -243,7 +243,7 @@ public final class CommandUtils {
 
     public static List<String> getOnlinePlayerNames(CommandSender sender) {
         Player player = sender instanceof Player ? (Player) sender : null;
-        List<String> onlinePlayerNames = new ArrayList<String>();
+        List<String> onlinePlayerNames = new ArrayList<>();
 
         for (Player onlinePlayer : mcMMO.p.getServer().getOnlinePlayers()) {
             if (player != null && player.canSee(onlinePlayer)) {
@@ -290,7 +290,7 @@ public final class CommandUtils {
      * @return List of all possible names
      */
     private static List<String> matchPlayer(String partialName) {
-        List<String> matchedPlayers = new ArrayList<String>();
+        List<String> matchedPlayers = new ArrayList<>();
 
         for (OfflinePlayer offlinePlayer : mcMMO.p.getServer().getOfflinePlayers()) {
             String playerName = offlinePlayer.getName();

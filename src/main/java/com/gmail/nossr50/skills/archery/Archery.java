@@ -25,7 +25,7 @@ public class Archery {
 
     public Archery()
     {
-        List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
+        List<TrackedEntity> trackedEntities = new ArrayList<>();
 
         skillShotMaxBonusDamage     = AdvancedConfig.getInstance().getSkillShotDamageMax();
 

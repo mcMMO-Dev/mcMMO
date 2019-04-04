@@ -9,7 +9,7 @@ public final class PerksUtils {
     private static final int LUCKY_SKILL_ACTIVATION_CHANCE = 75;
     private static final int NORMAL_SKILL_ACTIVATION_CHANCE = 100;
 
-    private PerksUtils() {};
+    private PerksUtils() {}
 
     public static int handleCooldownPerks(Player player, int cooldown) {
         if (Permissions.halvedCooldowns(player)) {

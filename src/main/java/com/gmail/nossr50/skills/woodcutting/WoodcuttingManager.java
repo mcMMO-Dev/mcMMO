@@ -75,7 +75,7 @@ public class WoodcuttingManager extends SkillManager {
      */
     public void processTreeFeller(BlockState blockState) {
         Player player = getPlayer();
-        Set<BlockState> treeFellerBlocks = new HashSet<BlockState>();
+        Set<BlockState> treeFellerBlocks = new HashSet<>();
 
         Woodcutting.treeFellerReachedThreshold = false;
 

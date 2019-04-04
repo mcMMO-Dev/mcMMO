@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class Party {
-    private final LinkedHashMap<UUID, String> members = new LinkedHashMap<UUID, String>();
-    private final List<Player> onlineMembers = new ArrayList<Player>();
+    private final LinkedHashMap<UUID, String> members = new LinkedHashMap<>();
+    private final List<Player> onlineMembers = new ArrayList<>();
 
     private PartyLeader leader;
     private String name;
@@ -90,7 +90,7 @@ public class Party {
 
     public List<String> getOnlinePlayerNames(CommandSender sender) {
         Player player = sender instanceof Player ? (Player) sender : null;
-        List<String> onlinePlayerNames = new ArrayList<String>();
+        List<String> onlinePlayerNames = new ArrayList<>();
 
         for (Player onlinePlayer : getOnlineMembers()) {
             if (player != null && player.canSee(onlinePlayer)) {
@@ -130,7 +130,7 @@ public class Party {
     }
 
     public List<String> getItemShareCategories() {
-        List<String> shareCategories = new ArrayList<String>();
+        List<String> shareCategories = new ArrayList<>();
 
         for (ItemShareType shareType : ItemShareType.values()) {
             if (sharingDrops(shareType)) {

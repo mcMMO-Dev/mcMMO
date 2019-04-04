@@ -20,8 +20,8 @@ public final class HardcoreManager {
         PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
         int totalLevelsLost = 0;
 
-        HashMap<String, Integer> levelChanged = new HashMap<String, Integer>();
-        HashMap<String, Float> experienceChanged = new HashMap<String, Float>();
+        HashMap<String, Integer> levelChanged = new HashMap<>();
+        HashMap<String, Float> experienceChanged = new HashMap<>();
 
         for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
             if (!primarySkillType.getHardcoreStatLossEnabled()) {
@@ -63,8 +63,8 @@ public final class HardcoreManager {
         PlayerProfile victimProfile = UserManager.getPlayer(victim).getProfile();
         int totalLevelsStolen = 0;
 
-        HashMap<String, Integer> levelChanged = new HashMap<String, Integer>();
-        HashMap<String, Float> experienceChanged = new HashMap<String, Float>();
+        HashMap<String, Integer> levelChanged = new HashMap<>();
+        HashMap<String, Float> experienceChanged = new HashMap<>();
 
         for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
             if (!primarySkillType.getHardcoreVampirismEnabled()) {

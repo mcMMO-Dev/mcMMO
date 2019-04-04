@@ -106,7 +106,7 @@ public class InspectCommand implements TabExecutor {
         switch (args.length) {
             case 1:
                 List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
-                return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<String>(playerNames.size()));
+                return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<>(playerNames.size()));
             default:
                 return ImmutableList.of();
         }

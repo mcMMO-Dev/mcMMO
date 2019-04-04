@@ -113,9 +113,9 @@ public class XprateCommand implements TabExecutor {
                     return ImmutableList.of();
                 }
 
-                return StringUtil.copyPartialMatches(args[0], CommandUtils.RESET_OPTIONS, new ArrayList<String>(CommandUtils.RESET_OPTIONS.size()));
+                return StringUtil.copyPartialMatches(args[0], CommandUtils.RESET_OPTIONS, new ArrayList<>(CommandUtils.RESET_OPTIONS.size()));
             case 2:
-                return StringUtil.copyPartialMatches(args[1], CommandUtils.TRUE_FALSE_OPTIONS, new ArrayList<String>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
+                return StringUtil.copyPartialMatches(args[1], CommandUtils.TRUE_FALSE_OPTIONS, new ArrayList<>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
             default:
                 return ImmutableList.of();
         }

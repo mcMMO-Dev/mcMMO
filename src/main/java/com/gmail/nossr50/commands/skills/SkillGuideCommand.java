@@ -67,7 +67,7 @@ public class SkillGuideCommand implements CommandExecutor {
 
     private ArrayList<String> grabPageContents(int page) {
         int pageIndexStart = 8 * (page - 1); // Determine what string to start at
-        ArrayList<String> allStrings = new ArrayList<String>();
+        ArrayList<String> allStrings = new ArrayList<>();
 
         allStrings.add(header);
 
@@ -86,7 +86,7 @@ public class SkillGuideCommand implements CommandExecutor {
     }
 
     private ArrayList<String> getGuide(PrimarySkillType skill) {
-        ArrayList<String> guide = new ArrayList<String>();
+        ArrayList<String> guide = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
             String[] section = LocaleLoader.getString("Guides." + StringUtils.getCapitalized(skill.toString()) + ".Section." + i).split("\n");

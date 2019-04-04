@@ -21,7 +21,7 @@ public class SalvageableManager implements Unload {
     }
 
     public SalvageableManager(List<Salvageable> salvageablesCollection) {
-        this.salvageables = new HashMap<Material, Salvageable>(salvageablesCollection.size());
+        this.salvageables = new HashMap<>(salvageablesCollection.size());
         registerSalvageables(salvageablesCollection);
     }
 

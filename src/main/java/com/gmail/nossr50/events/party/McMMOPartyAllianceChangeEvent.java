@@ -62,7 +62,7 @@ public class McMMOPartyAllianceChangeEvent extends PlayerEvent implements Cancel
         /**
          * Any reason that doesn't fit elsewhere.
          */
-        CUSTOM;
+        CUSTOM
     }
 
     /** Following are required for Cancellable **/

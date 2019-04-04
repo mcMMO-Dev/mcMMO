@@ -40,7 +40,7 @@ public class UnarmedCommand extends SkillCommand {
     protected void dataCalculations(Player player, float skillValue) {
         // UNARMED_ARROW_DEFLECT
         if (canDeflect) {
-            String[] deflectStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.UNARMED_ARROW_DEFLECT);;
+            String[] deflectStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.UNARMED_ARROW_DEFLECT);
             deflectChance = deflectStrings[0];
             deflectChanceLucky = deflectStrings[1];
         }
@@ -54,7 +54,7 @@ public class UnarmedCommand extends SkillCommand {
 
         // UNARMED_DISARM
         if (canDisarm) {
-            String[] disarmStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.UNARMED_DISARM);;
+            String[] disarmStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.UNARMED_DISARM);
             disarmChance = disarmStrings[0];
             disarmChanceLucky = disarmStrings[1];
         }
@@ -84,7 +84,7 @@ public class UnarmedCommand extends SkillCommand {
 
     @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
-        List<String> messages = new ArrayList<String>();
+        List<String> messages = new ArrayList<>();
 
         if (canDeflect) {
             messages.add(getStatMessage(SubSkillType.UNARMED_ARROW_DEFLECT, deflectChance)

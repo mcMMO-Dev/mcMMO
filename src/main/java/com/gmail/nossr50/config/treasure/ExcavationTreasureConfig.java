@@ -23,7 +23,7 @@ public class ExcavationTreasureConfig extends Config implements UnsafeValueValid
     public static final String DROP_LEVEL = "Drop_Level";
     public static final String CUSTOM_NAME = "Custom_Name";
     public static final String LORE = "Lore";
-    public HashMap<String, List<ExcavationTreasure>> excavationMap = new HashMap<String, List<ExcavationTreasure>>();
+    public HashMap<String, List<ExcavationTreasure>> excavationMap = new HashMap<>();
 
     public ExcavationTreasureConfig() {
         super("excavation_drops", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, false, true, false);
@@ -141,8 +141,7 @@ public class ExcavationTreasureConfig extends Config implements UnsafeValueValid
                      */
                     for(String dropBlock : dropsFrom)
                     {
-                        if(excavationMap.get(dropBlock) == null)
-                            excavationMap.put(dropBlock, new ArrayList<>());
+                        excavationMap.computeIfAbsent(dropBlock, k -> new ArrayList<>());
 
                         excavationMap.get(dropBlock).add(excavationTreasure);
                     }

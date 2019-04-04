@@ -15,7 +15,7 @@ public enum ToolType {
     private String lowerTool;
     private String raiseTool;
 
-    private ToolType(String lowerTool, String raiseTool) {
+    ToolType(String lowerTool, String raiseTool) {
         this.lowerTool = lowerTool;
         this.raiseTool = raiseTool;
     }

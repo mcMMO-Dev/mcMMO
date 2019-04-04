@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class CommandRegistrationManager {
-    private CommandRegistrationManager() {};
+    private CommandRegistrationManager() {}
 
     private static String permissionsMessage = LocaleLoader.getString("mcMMO.NoPermission");
 
@@ -183,7 +183,7 @@ public final class CommandRegistrationManager {
     }
 
     private static void registerXprateCommand() {
-        List<String> aliasList = new ArrayList<String>();
+        List<String> aliasList = new ArrayList<>();
         aliasList.add("mcxprate");
 
         PluginCommand command = mcMMO.p.getCommand("xprate");

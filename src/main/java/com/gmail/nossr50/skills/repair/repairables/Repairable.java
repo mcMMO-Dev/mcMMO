@@ -6,6 +6,7 @@ import com.gmail.nossr50.util.ItemUtils;
 import org.bukkit.Material;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -19,7 +20,7 @@ public class Repairable {
     private final double xpMultiplier;
 
     public Repairable(Material itemMaterial, Material repairMaterial, int minimumQuantity, int minimumLevel, double xpMultiplier) {
-        this(itemMaterial.getKey().getKey(), ItemUtils.getRepairItemMaterials(Arrays.asList(repairMaterial)), minimumQuantity, minimumLevel, xpMultiplier);
+        this(itemMaterial.getKey().getKey(), ItemUtils.getRepairItemMaterials(Collections.singletonList(repairMaterial)), minimumQuantity, minimumLevel, xpMultiplier);
     }
 
     public Repairable(Material itemMaterial, List<Material> repairMaterials, int minimumQuantity, int minimumLevel, double xpMultiplier) {

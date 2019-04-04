@@ -554,7 +554,7 @@ public class mcMMO extends JavaPlugin {
         new CleanBackupsTask().runTaskAsynchronously(mcMMO.p);
 
         // Bleed timer (Runs every 0.5 seconds)
-        new BleedTimerTask().runTaskTimer(this, 1 * Misc.TICK_CONVERSION_FACTOR, 1 * (Misc.TICK_CONVERSION_FACTOR / 2));
+        new BleedTimerTask().runTaskTimer(this, Misc.TICK_CONVERSION_FACTOR, (Misc.TICK_CONVERSION_FACTOR / 2));
 
         // Old & Powerless User remover
         long purgeIntervalTicks = getConfigManager().getConfigDatabase().getConfigSectionCleaning().getPurgeInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;

@@ -282,7 +282,7 @@ public class HerbalismManager extends SkillManager {
 
         Player player = getPlayer();
         PlayerInventory playerInventory = player.getInventory();
-        Material seed = null;
+        Material seed;
 
         switch (blockState.getType()) {
             case CARROTS:

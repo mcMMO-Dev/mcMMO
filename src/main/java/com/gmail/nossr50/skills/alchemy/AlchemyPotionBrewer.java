@@ -108,7 +108,7 @@ public final class AlchemyPotionBrewer {
             return;
         }
 
-        List<AlchemyPotion> inputList = new ArrayList<AlchemyPotion>();
+        List<AlchemyPotion> inputList = new ArrayList<>();
 
         for (int i = 0; i < 3; i++) {
             ItemStack item = inventory.getItem(i);

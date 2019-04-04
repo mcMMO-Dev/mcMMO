@@ -130,8 +130,8 @@ public class MiningManager extends SkillManager {
      * @param blockList The list of blocks to drop
      */
     public void blastMiningDropProcessing(float yield, List<Block> blockList) {
-        List<BlockState> ores = new ArrayList<BlockState>();
-        List<BlockState> debris = new ArrayList<BlockState>();
+        List<BlockState> ores = new ArrayList<>();
+        List<BlockState> debris = new ArrayList<>();
         int xp = 0;
 
         float oreBonus = (float) (getOreBonus() / 100);
@@ -263,7 +263,7 @@ public class MiningManager extends SkillManager {
 
         if (timeRemaining > 0) {
             //getPlayer().sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));
-            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf("timeRemaining"));
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf(timeRemaining));
             return false;
         }
 

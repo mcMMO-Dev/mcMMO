@@ -82,9 +82,9 @@ public enum PrimarySkillType {
     public static final List<PrimarySkillType> MISC_SKILLS = ImmutableList.of(ACROBATICS, ALCHEMY, REPAIR, SALVAGE, SMELTING);
 
     static {
-        List<PrimarySkillType> childSkills = new ArrayList<PrimarySkillType>();
-        List<PrimarySkillType> nonChildSkills = new ArrayList<PrimarySkillType>();
-        ArrayList<String> names = new ArrayList<String>();
+        List<PrimarySkillType> childSkills = new ArrayList<>();
+        List<PrimarySkillType> nonChildSkills = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
         ArrayList<String> subSkillNames = new ArrayList<>();
 
         for (PrimarySkillType skill : values()) {
@@ -110,11 +110,11 @@ public enum PrimarySkillType {
         NON_CHILD_SKILLS = ImmutableList.copyOf(nonChildSkills);
     }
 
-    private PrimarySkillType(Class<? extends SkillManager> managerClass, Color runescapeColor, List<SubSkillType> subSkillTypes) {
+    PrimarySkillType(Class<? extends SkillManager> managerClass, Color runescapeColor, List<SubSkillType> subSkillTypes) {
         this(managerClass, runescapeColor, null, null, subSkillTypes);
     }
 
-    private PrimarySkillType(Class<? extends SkillManager> managerClass, Color runescapeColor, SuperAbilityType ability, ToolType tool, List<SubSkillType> subSkillTypes) {
+    PrimarySkillType(Class<? extends SkillManager> managerClass, Color runescapeColor, SuperAbilityType ability, ToolType tool, List<SubSkillType> subSkillTypes) {
         this.managerClass = managerClass;
         this.runescapeColor = runescapeColor;
         this.ability = ability;

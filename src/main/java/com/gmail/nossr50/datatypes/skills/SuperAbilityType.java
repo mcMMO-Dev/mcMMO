@@ -91,7 +91,7 @@ public enum SuperAbilityType {
     private String abilityPlayerOff;
     private SubSkillType subSkillTypeDefinition;
 
-    private SuperAbilityType(String abilityOn, String abilityOff, String abilityPlayer, String abilityRefresh, String abilityPlayerOff) {
+    SuperAbilityType(String abilityOn, String abilityOff, String abilityPlayer, String abilityRefresh, String abilityPlayerOff) {
         this.abilityOn = abilityOn;
         this.abilityOff = abilityOff;
         this.abilityPlayer = abilityPlayer;
