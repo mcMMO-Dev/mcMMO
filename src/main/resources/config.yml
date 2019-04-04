@@ -346,6 +346,7 @@ Skills:
     Mining:
         Level_Cap: 0
         Detonator_Name: FLINT_AND_STEEL
+        Ability_Activation_Level_Gate: 10
     Repair:
         Level_Cap: 0
         Anvil_Messages: true

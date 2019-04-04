@@ -210,8 +210,6 @@ public abstract class Config implements VersionedConfig, Unload {
         return getDefaultConfigFile();
     }
 
-
-
     /**
      * Attemps to load the config file if it exists, if it doesn't it copies a new one from within the JAR
      * @return user config File

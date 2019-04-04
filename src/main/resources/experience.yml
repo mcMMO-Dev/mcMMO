@@ -380,6 +380,7 @@ Experience:
         Redstone_Ore: 15
     Taming:
         Animal_Taming:
+            Llama: 1200
             Wolf: 250
             Ocelot: 500
             Horse: 1000
@@ -387,6 +388,7 @@ Experience:
             Mule: 1000
             Skeleton_Horse: 1000
             Zombie_Horse: 1000
+            Parrot: 1100
     Combat:
         Multiplier:
             Animals: 1.0
