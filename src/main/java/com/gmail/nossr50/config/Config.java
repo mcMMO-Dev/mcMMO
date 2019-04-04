@@ -186,10 +186,6 @@ public class Config extends AutoUpdateConfigLoader {
             reason.add("Abilities.Fishing.Lure_Modifier should be at least 0!");
         }
 
-        if (getDetonatorItem() == null) {
-            reason.add("Skills.Mining.Detonator_Item is invalid!");
-        }
-
         if (getRepairAnvilMaterial() == null) {
             reason.add("Skills.Repair.Anvil_Type is invalid!!");
         }
@@ -505,7 +501,6 @@ public class Config extends AutoUpdateConfigLoader {
 
     /* Mining */
     public Material getDetonatorItem() { return Material.matchMaterial(config.getString("Skills.Mining.Detonator_Name", "FLINT_AND_STEEL")); }
-    public int getMiningGate() { return config.getInt("Skills.Mining.Ability_Activation_Level_Gate", 10); }
 
     /* Excavation */
     public int getExcavationGate() { return config.getInt("Skills.Excavation.Ability_Activation_Level_Gate", 10); }
