@@ -308,12 +308,10 @@ public final class BlockUtils {
             case COBBLESTONE :
             case DIRT :
             case GRASS_PATH :
-                return true;
-
-            case STONE_BRICKS:
-                return true;
 
             case COBBLESTONE_WALL:
+
+            case STONE_BRICKS:
                 return true;
 
             default :

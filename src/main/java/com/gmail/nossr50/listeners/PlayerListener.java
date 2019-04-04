@@ -286,7 +286,6 @@ public class PlayerListener implements Listener {
                 return;
 
             default:
-                return;
         }
     }
 
@@ -388,7 +387,6 @@ public class PlayerListener implements Listener {
                 }
                 return;
             default:
-                return;
         }
     }
 

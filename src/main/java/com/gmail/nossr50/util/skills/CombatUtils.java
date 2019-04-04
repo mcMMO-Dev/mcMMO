@@ -330,7 +330,7 @@ public final class CombatUtils {
             Wolf wolf = (Wolf) damager;
             AnimalTamer tamer = wolf.getOwner();
 
-            if (tamer != null && tamer instanceof Player && PrimarySkillType.TAMING.shouldProcess(target)) {
+            if (tamer instanceof Player && PrimarySkillType.TAMING.shouldProcess(target)) {
                 Player master = (Player) tamer;
 
                 if (!Misc.isNPCEntity(master) && PrimarySkillType.TAMING.getPermissions(master)) {
@@ -342,7 +342,7 @@ public final class CombatUtils {
             Arrow arrow = (Arrow) damager;
             ProjectileSource projectileSource = arrow.getShooter();
 
-            if (projectileSource != null && projectileSource instanceof Player && PrimarySkillType.ARCHERY.shouldProcess(target)) {
+            if (projectileSource instanceof Player && PrimarySkillType.ARCHERY.shouldProcess(target)) {
                 Player player = (Player) projectileSource;
 
                 if (!Misc.isNPCEntity(player) && PrimarySkillType.ARCHERY.getPermissions(player)) {
@@ -774,10 +774,10 @@ public final class CombatUtils {
         return scaledModifiers;
     }
 
-    public static EntityDamageByEntityEvent applyScaledModifiers(double initialDamage, double finalDamage, EntityDamageByEntityEvent event) {
+    public static void applyScaledModifiers(double initialDamage, double finalDamage, EntityDamageByEntityEvent event) {
         // No additional damage
         if (initialDamage == finalDamage) {
-            return event;
+            return;
         }
 
         for (DamageModifier modifier : DamageModifier.values()) {
@@ -793,7 +793,6 @@ public final class CombatUtils {
             event.setDamage(modifier, finalDamage / initialDamage * event.getDamage(modifier));
         }
 
-        return event;
     }
 
     /**

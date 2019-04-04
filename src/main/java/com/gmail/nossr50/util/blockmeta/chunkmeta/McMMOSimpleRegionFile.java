@@ -147,15 +147,15 @@ public class McMMOSimpleRegionFile {
         return file;
     }
 
-    public synchronized boolean testCloseTimeout() {
-        /*
+/*    public synchronized boolean testCloseTimeout() {
+        *//*
         if (System.currentTimeMillis() - TIMEOUT_TIME > lastAccessTime) {
             close();
             return true;
         }
-         */
+         *//*
         return false;
-    }
+    }*/
 
     public synchronized DataOutputStream getOutputStream(int x, int z) {
         int index = getChunkIndex(x, z);

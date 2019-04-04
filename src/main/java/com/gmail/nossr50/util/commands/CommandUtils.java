@@ -115,7 +115,7 @@ public final class CommandUtils {
     }
 
     public static boolean hasPlayerDataKey(CommandSender sender) {
-        if (sender == null || !(sender instanceof Player)) {
+        if (!(sender instanceof Player)) {
             return false;
         }
 

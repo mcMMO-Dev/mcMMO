@@ -174,7 +174,6 @@ public class EntityListener implements Listener {
                 mcMMO.getPlaceStore().setTrue(block);
             }
         } else if ((block.getType() == Material.REDSTONE_ORE)) {
-            return;
         }
         else {
             if (mcMMO.getPlaceStore().isTrue(block)) {
@@ -248,7 +247,6 @@ public class EntityListener implements Listener {
                 event.setCancelled(true);
             }
 
-            return;
         }
     }
 
@@ -564,7 +562,6 @@ public class EntityListener implements Listener {
                         return;
 
                     default:
-                        return;
                 }
             }
         }
@@ -659,7 +656,6 @@ public class EntityListener implements Listener {
                 return;
 
             default:
-                return;
         }
     }
 
@@ -832,10 +828,6 @@ public class EntityListener implements Listener {
                                * RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @
                                * 1000
                                */
-                if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
-                    event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(newFoodLevel));
-                }
-                return;
 
             case COOKIE: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
             case MELON_SLICE: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
@@ -859,7 +851,6 @@ public class EntityListener implements Listener {
                 return;
 
             default:
-                return;
         }
     }
 

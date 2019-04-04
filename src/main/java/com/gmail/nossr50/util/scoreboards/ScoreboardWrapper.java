@@ -435,8 +435,6 @@ public class ScoreboardWrapper {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         switch (sidebarType) {
-            case NONE:
-                break;
 
             case SKILL_BOARD:
                 Validate.notNull(targetSkill);

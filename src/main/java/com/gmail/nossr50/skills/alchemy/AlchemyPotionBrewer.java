@@ -59,16 +59,13 @@ public final class AlchemyPotionBrewer {
         ItemStack ingredient = inventory.getIngredient() == null ? null : inventory.getIngredient().clone();
 
         if (isEmpty(ingredient) || !isValidIngredient(player, ingredient)) {
-            return;
         }
         else if (ingredient.getAmount() <= 1) {
             inventory.setIngredient(null);
-            return;
         }
         else {
             ingredient.setAmount(ingredient.getAmount() - 1);
             inventory.setIngredient(ingredient);
-            return;
         }
     }
 

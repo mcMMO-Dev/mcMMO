@@ -82,13 +82,11 @@ public class SoundManager {
             case SKILL_UNLOCKED:
                 return Sound.UI_TOAST_CHALLENGE_COMPLETE;
             case ABILITY_ACTIVATED_BERSERK:
+            case TIRED:
                 return Sound.BLOCK_CONDUIT_AMBIENT;
             case ABILITY_ACTIVATED_GENERIC:
                 return Sound.ITEM_TRIDENT_RIPTIDE_3;
             case DEFLECT_ARROWS:
-                return Sound.ENTITY_ENDER_EYE_DEATH;
-            case TIRED:
-                return Sound.BLOCK_CONDUIT_AMBIENT;
             case BLEED:
                 return Sound.ENTITY_ENDER_EYE_DEATH;
             default:

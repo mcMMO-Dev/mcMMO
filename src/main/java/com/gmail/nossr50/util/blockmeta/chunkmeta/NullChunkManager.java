@@ -13,7 +13,7 @@ public class NullChunkManager implements ChunkManager {
     public void closeAll() {}
 
     @Override
-    public ChunkStore readChunkStore(World world, int x, int z) throws IOException {
+    public ChunkStore readChunkStore(World world, int x, int z) {
         return null;
     }
 

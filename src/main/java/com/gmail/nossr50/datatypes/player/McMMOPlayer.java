@@ -699,7 +699,6 @@ public class McMMOPlayer {
                 return;
 
             default:
-                return;
         }
     }
 
@@ -716,7 +715,6 @@ public class McMMOPlayer {
                 return;
 
             default:
-                return;
         }
 
     }
@@ -734,7 +732,6 @@ public class McMMOPlayer {
                 return;
 
             default:
-                return;
         }
     }
 

@@ -29,7 +29,6 @@ public class BlockStoreConversionXDirectory implements Runnable {
         }
 
         this.taskID = this.scheduler.runTaskLater(mcMMO.p, this, 1).getTaskId();
-        return;
     }
 
     @Override

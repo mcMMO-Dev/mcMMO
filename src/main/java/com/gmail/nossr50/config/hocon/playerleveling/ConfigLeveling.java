@@ -66,7 +66,7 @@ public class ConfigLeveling {
             case WOODCUTTING:
                 return configSectionLevelCaps.getConfigSectionSkills().getWoodcutting().getLevelCap();
             case SMELTING:
-                return configSectionLevelCaps.getConfigSectionSkills().getWoodcutting().getLevelCap();
+                return configSectionLevelCaps.getConfigSectionSkills().getSmelting().getLevelCap();
             case SALVAGE:
                 return configSectionLevelCaps.getConfigSectionSkills().getSalvage().getLevelCap();
             default:
@@ -105,7 +105,7 @@ public class ConfigLeveling {
             case WOODCUTTING:
                 return configSectionLevelCaps.getConfigSectionSkills().getWoodcutting().isLevelCapEnabled();
             case SMELTING:
-                return configSectionLevelCaps.getConfigSectionSkills().getWoodcutting().isLevelCapEnabled();
+                return configSectionLevelCaps.getConfigSectionSkills().getSmelting().isLevelCapEnabled();
             case SALVAGE:
                 return configSectionLevelCaps.getConfigSectionSkills().getSalvage().isLevelCapEnabled();
             default:

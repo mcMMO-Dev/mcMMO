@@ -101,12 +101,12 @@ public class Party {
         return onlinePlayerNames;
     }
 
-    public boolean addOnlineMember(Player player) {
-        return onlineMembers.add(player);
+    public void addOnlineMember(Player player) {
+        onlineMembers.add(player);
     }
 
-    public boolean removeOnlineMember(Player player) {
-        return onlineMembers.remove(player);
+    public void removeOnlineMember(Player player) {
+        onlineMembers.remove(player);
     }
 
     public String getName() {
@@ -308,7 +308,6 @@ public class Party {
                 break;
 
             default:
-                return;
         }
     }
 

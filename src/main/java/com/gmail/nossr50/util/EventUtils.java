@@ -175,11 +175,10 @@ public class EventUtils {
         return event;
     }
 
-    public static FakePlayerAnimationEvent callFakeArmSwingEvent(Player player) {
+    public static void callFakeArmSwingEvent(Player player) {
         FakePlayerAnimationEvent event = new FakePlayerAnimationEvent(player);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
-        return event;
     }
 
     public static boolean handleLevelChangeEvent(Player player, PrimarySkillType skill, int levelsChanged, float xpRemoved, boolean isLevelUp, XPGainReason xpGainReason) {
@@ -198,7 +197,7 @@ public class EventUtils {
         return !isCancelled;
     }
 
-    public static boolean handleLevelChangeEventEdit(Player player, PrimarySkillType skill, int levelsChanged, float xpRemoved, boolean isLevelUp, XPGainReason xpGainReason, int oldLevel) {
+    public static void handleLevelChangeEventEdit(Player player, PrimarySkillType skill, int levelsChanged, float xpRemoved, boolean isLevelUp, XPGainReason xpGainReason, int oldLevel) {
         McMMOPlayerLevelChangeEvent event = isLevelUp ? new McMMOPlayerLevelUpEvent(player, skill, levelsChanged - oldLevel, xpGainReason) : new McMMOPlayerLevelDownEvent(player, skill, levelsChanged, xpGainReason);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
@@ -211,7 +210,6 @@ public class EventUtils {
             profile.addXp(skill, xpRemoved);
         }
 
-        return !isCancelled;
     }
 
     /**
@@ -371,11 +369,10 @@ public class EventUtils {
         return !isCancelled;
     }
 
-    public static McMMOPlayerAbilityDeactivateEvent callAbilityDeactivateEvent(Player player, SuperAbilityType ability) {
+    public static void callAbilityDeactivateEvent(Player player, SuperAbilityType ability) {
         McMMOPlayerAbilityDeactivateEvent event = new McMMOPlayerAbilityDeactivateEvent(player, PrimarySkillType.byAbility(ability));
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
-        return event;
     }
 
     public static McMMOPlayerFishingTreasureEvent callFishingTreasureEvent(Player player, ItemStack treasureDrop, int treasureXp, Map<Enchantment, Integer> enchants) {
@@ -385,11 +382,10 @@ public class EventUtils {
         return event;
     }
 
-    public static FakePlayerFishEvent callFakeFishEvent(Player player, FishHook hook) {
+    public static void callFakeFishEvent(Player player, FishHook hook) {
         FakePlayerFishEvent event = new FakePlayerFishEvent(player, null, hook, PlayerFishEvent.State.FISHING);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
-        return event;
     }
 
     public static McMMOPlayerRepairCheckEvent callRepairCheckEvent(Player player, short durability, ItemStack repairMaterial, ItemStack repairedObject) {

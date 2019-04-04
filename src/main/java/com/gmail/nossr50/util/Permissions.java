@@ -217,13 +217,13 @@ public final class Permissions {
         PluginManager pluginManager = server.getPluginManager();
 
         for (World world : server.getWorlds()) {
-            addDynamicPermission("mcmmo.commands.ptp.world." + world.getName(), PermissionDefault.OP, pluginManager);
+            addDynamicPermission("mcmmo.commands.ptp.world." + world.getName(), pluginManager);
         }
     }
 
-    private static void addDynamicPermission(String permissionName, PermissionDefault permissionDefault, PluginManager pluginManager) {
+    private static void addDynamicPermission(String permissionName, PluginManager pluginManager) {
         Permission permission = new Permission(permissionName);
-        permission.setDefault(permissionDefault);
+        permission.setDefault(PermissionDefault.OP);
         pluginManager.addPermission(permission);
     }
 }

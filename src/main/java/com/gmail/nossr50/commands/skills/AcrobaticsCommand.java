@@ -8,7 +8,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
-import com.gmail.nossr50.util.skills.SkillActivationType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -30,7 +29,7 @@ public class AcrobaticsCommand extends SkillCommand {
     protected void dataCalculations(Player player, float skillValue) {
         // ACROBATICS_DODGE
         if (canDodge) {
-            String[] dodgeStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.ACROBATICS_DODGE);
+            String[] dodgeStrings = getAbilityDisplayValues(player, SubSkillType.ACROBATICS_DODGE);
             dodgeChance = dodgeStrings[0];
             dodgeChanceLucky = dodgeStrings[1];
         }
@@ -71,7 +70,7 @@ public class AcrobaticsCommand extends SkillCommand {
                 graceChance      = RandomChanceUtil.getRandomChanceExecutionChance(grace_rcs);
                 //damageThreshold  = AdvancedConfig.getInstance().getRollDamageThreshold();
 
-                String[] rollStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.ACROBATICS_ROLL);
+                String[] rollStrings = getAbilityDisplayValues(player, SubSkillType.ACROBATICS_ROLL);
 
                 //Format
                 double rollChanceLucky  = rollChance * 1.333D;

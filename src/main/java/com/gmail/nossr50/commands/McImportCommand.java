@@ -27,7 +27,7 @@ public class McImportCommand implements CommandExecutor {
         }
     }
 
-    public boolean importModConfig() {
+    public void importModConfig() {
         String importFilePath = mcMMO.getModDirectory() + File.separator + "import";
         File importFile = new File(importFilePath, "import.log");
         mcMMO.p.getLogger().info("Starting import of mod materials...");
@@ -69,17 +69,16 @@ public class McImportCommand implements CommandExecutor {
                 }
 
                 materialNames.get(type).add(materialName);
-                continue;
             }
         }
         catch (FileNotFoundException e) {
             mcMMO.p.getLogger().warning("Could not find " + importFile.getAbsolutePath() + " ! (No such file or directory)");
             mcMMO.p.getLogger().warning("Copy and paste latest.log to " + importFile.getParentFile().getAbsolutePath() + " and rename it to import.log");
-            return false;
+            return;
         }
         catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return;
         }
         finally {
             tryClose(in);
@@ -88,7 +87,6 @@ public class McImportCommand implements CommandExecutor {
         createOutput(materialNames);
 
         mcMMO.p.getLogger().info("Import finished! Created " + fileAmount + " files!");
-        return true;
     }
 
     private void createOutput(HashMap<ModConfigType, ArrayList<String>> materialNames) {

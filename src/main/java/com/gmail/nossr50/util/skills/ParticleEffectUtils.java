@@ -74,7 +74,6 @@ public final class ParticleEffectUtils {
 
     public static void playAbilityEnabledEffect(Player player) {
         if (!MainConfig.getInstance().getAbilityActivationEffectEnabled()) {
-            return;
         }
 
        /* if (hasHeadRoom(player)) {
@@ -84,7 +83,6 @@ public final class ParticleEffectUtils {
 
     public static void playAbilityDisabledEffect(Player player) {
         if (!MainConfig.getInstance().getAbilityDeactivationEffectEnabled()) {
-            return;
         }
 
         /*if (hasHeadRoom(player)) {

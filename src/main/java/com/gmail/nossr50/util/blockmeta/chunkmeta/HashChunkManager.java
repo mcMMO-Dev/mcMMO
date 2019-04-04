@@ -154,11 +154,8 @@ public class HashChunkManager implements ChunkManager {
     public synchronized void unloadChunk(int cx, int cz, World world) {
         saveChunk(cx, cz, world);
 
-        if (store.containsKey(world.getName() + "," + cx + "," + cz)) {
-            store.remove(world.getName() + "," + cx + "," + cz);
-
-            //closeChunkStore(world, cx, cz);
-        }
+        //closeChunkStore(world, cx, cz);
+        store.remove(world.getName() + "," + cx + "," + cz);
     }
 
     @Override

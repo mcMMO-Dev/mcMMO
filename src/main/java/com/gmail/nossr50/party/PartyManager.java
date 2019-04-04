@@ -486,13 +486,12 @@ public final class PartyManager {
         }
     }
 
-    public static boolean disbandAlliance(Player player, Party firstParty, Party secondParty){
+    public static void disbandAlliance(Player player, Party firstParty, Party secondParty){
         if (!handlePartyChangeAllianceEvent(player, firstParty.getName(), secondParty.getName(), McMMOPartyAllianceChangeEvent.EventReason.DISBAND_ALLIANCE)) {
-            return false;
+            return;
         }
 
         PartyManager.disbandAlliance(firstParty, secondParty);
-        return true;
     }
 
     private static void disbandAlliance(Party firstParty, Party secondParty) {

@@ -94,10 +94,9 @@ public class PartyAllianceCommand implements TabExecutor {
         }
     }
 
-    private boolean printUsage() {
+    private void printUsage() {
         player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Help.0"));
         player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Help.1"));
-        return true;
     }
 
     @Override

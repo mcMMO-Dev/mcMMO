@@ -20,6 +20,7 @@ public class CustomEnumValueSerializer implements TypeSerializer<Enum> {
             throw new ObjectMappingException("No value present in node " + value);
         }
 
+        //noinspection RedundantCast
         Optional<Enum> ret = (Optional) EnumLookup.lookupEnum(type.getRawType().asSubclass(Enum.class),
                 enumConstant); // XXX: intellij says this cast is optional but it isnt
         if (!ret.isPresent()) {
@@ -30,7 +31,7 @@ public class CustomEnumValueSerializer implements TypeSerializer<Enum> {
     }
 
     @Override
-    public void serialize(@NonNull TypeToken<?> type, @Nullable Enum obj, @NonNull ConfigurationNode value) throws ObjectMappingException {
+    public void serialize(@NonNull TypeToken<?> type, @Nullable Enum obj, @NonNull ConfigurationNode value) {
         value.setValue(HOCONUtil.serializeENUMName(obj.name()));
     }
 }

@@ -96,7 +96,6 @@ public class Mining {
                 /*if (mcMMO.getModManager().isCustomMiningBlock(blockState)) {
                     Misc.dropItem(Misc.getBlockCenter(blockState), new ItemStack(blockState.getType()));
                 }*/
-                return;
         }
     }
 
@@ -163,7 +162,6 @@ public class Mining {
                 /*if (mcMMO.getModManager().isCustomMiningBlock(blockState)) {
                     Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
                 }*/
-                return;
         }
     }
 }
