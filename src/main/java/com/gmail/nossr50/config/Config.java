@@ -500,7 +500,7 @@ public class Config extends AutoUpdateConfigLoader {
     public double getFishingLureModifier() { return config.getDouble("Skills.Fishing.Lure_Modifier", 4.0D); }
 
     /* Mining */
-    public int getMiningGate() { return config.getInt("Skills.Mining.Ability_Activation_Level_Gate", 10); }
+    public Material getDetonatorItem() { return Material.matchMaterial(config.getString("Skills.Mining.Detonator_Name", "FLINT_AND_STEEL")); }
 
     /* Excavation */
     public int getExcavationGate() { return config.getInt("Skills.Excavation.Ability_Activation_Level_Gate", 10); }
