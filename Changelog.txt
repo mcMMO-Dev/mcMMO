@@ -151,6 +151,11 @@ Version 2.2.0
     Added API method to check if player parties are size capped
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
+Version 2.1.33
+    Renamed "Skills.Acrobatics.Prevent_AFK_Leveling" to "ExploitFix.Acrobatics"
+    ExploitFix.Acrobatics when set to false allows gaining XP in Acrobatics freely with no anti-grind measures
+    NOTE: The anti-grinding/exploit stuff is fully configurable in update 2.2 coming soon, this hotfix is to hold you over until that update comes out.
+
 Version 2.1.32
     Completely removed Fireworks from mcMMO because they lag
     Added 'General.AprilFoolsEvent' setting to config.yml to turn off April Fools

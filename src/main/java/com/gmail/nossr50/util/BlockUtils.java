@@ -23,12 +23,12 @@ public final class BlockUtils {
      * @param blockState target blockstate
      * @param triple marks the block to give triple drops
      */
-    public static void markBlocksForBonusDrops(BlockState blockState, boolean triple)
+    public static void markDropsAsBonus(BlockState blockState, boolean triple)
     {
         if(triple)
-            blockState.setMetadata(mcMMO.tripleDropKey, mcMMO.metadataValue);
+            blockState.setMetadata(mcMMO.tripleDrops, mcMMO.metadataValue);
         else
-            blockState.setMetadata(mcMMO.doubleDropKey, mcMMO.metadataValue);
+            blockState.setMetadata(mcMMO.doubleDrops, mcMMO.metadataValue);
     }
 
     /**

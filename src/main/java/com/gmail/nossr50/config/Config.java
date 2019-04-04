@@ -424,7 +424,6 @@ public abstract class Config implements VersionedConfig, Unload {
     {
         return userRootNode.getNode(path).getInt();
     }
-
     /**
      * Grabs a double from the specified node
      * @param path

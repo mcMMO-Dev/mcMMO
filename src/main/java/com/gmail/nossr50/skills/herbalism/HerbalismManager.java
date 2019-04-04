@@ -163,7 +163,7 @@ public class HerbalismManager extends SkillManager {
             } else {
                 /* MARK SINGLE BLOCK CROP FOR DOUBLE DROP */
                 if(checkDoubleDrop(blockState))
-                    BlockUtils.markBlocksForBonusDrops(blockState, greenTerra);
+                    BlockUtils.markDropsAsBonus(blockState, greenTerra);
             }
 
             if (Permissions.greenThumbPlant(player, material)) {

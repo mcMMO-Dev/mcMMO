@@ -276,6 +276,10 @@ public class Roll extends AcrobaticsSubSkill {
      * @return true if exploits are detected, false otherwise
      */
     private boolean isExploiting(Player player) {
+        if (!mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse()) {
+            return false;
+        }
+
         if (player.getInventory().getItemInMainHand().getType() == Material.ENDER_PEARL || player.isInsideVehicle()) {
             return true;
         }

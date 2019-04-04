@@ -121,6 +121,44 @@ public class BlockListener implements Listener {
         }
     }
 
+    /*@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockDropItemEvent(BlockDropItemEvent event)
+    {
+        for(Item item : event.getItems())
+        {
+            ItemStack is = new ItemStack(item.getItemStack());
+
+            if(event.getBlock().getMetadata(mcMMO.doubleDrops).size() > 0)
+            {
+                List<MetadataValue> metadataValue = event.getBlock().getMetadata(mcMMO.doubleDrops);
+
+                BonusDrops bonusDrops = (BonusDrops) metadataValue.get(0);
+                Collection<ItemStack> potentialDrops = (Collection<ItemStack>) bonusDrops.value();
+
+                if(potentialDrops.contains(is))
+                {
+                    event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                }
+
+                event.getBlock().removeMetadata(mcMMO.doubleDrops, plugin);
+            } else {
+                if(event.getBlock().getMetadata(mcMMO.tripleDrops).size() > 0) {
+                    List<MetadataValue> metadataValue = event.getBlock().getMetadata(mcMMO.tripleDrops);
+
+                    BonusDrops bonusDrops = (BonusDrops) metadataValue.get(0);
+                    Collection<ItemStack> potentialDrops = (Collection<ItemStack>) bonusDrops.value();
+
+                    if (potentialDrops.contains(is)) {
+                        event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                        event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                    }
+
+                    event.getBlock().removeMetadata(mcMMO.tripleDrops, plugin);
+                }
+            }
+        }
+    }*/
+
     /**
      * Monitor BlockPistonExtend events.
      *

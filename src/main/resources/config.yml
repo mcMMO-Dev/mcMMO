@@ -311,8 +311,6 @@ Skills:
     Acrobatics:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
-        Prevent_AFK_Leveling: true
-        Max_Tries_At_Same_Location: 3
         Prevent_Dodge_Lightning: false
         # Prevent earning Acrobatics XP a few seconds after teleporting
         XP_After_Teleport_Cooldown: 5
