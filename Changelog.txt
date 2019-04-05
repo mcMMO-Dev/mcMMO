@@ -9,6 +9,7 @@ Key:
 
 Version 2.1.36
     Updated German locale (Thanks OverCrave)
+    Fixed a bug preventing Villagers from giving combat XP
     The /mcnotify command will now squelch almost all chat messages or action bar notifications sent to the player from mcMMO
     mcMMO will now remind players on an hourly basis that they are are not receiving notifications from mcMMO if they have run the mcnotify command and toggled squelch mode
     Added a new setting to advanced.yml "Feedback.PlayerTips", when set to true this will allow mcMMO to send periodic helpful messages to players, currently this only affects mcnotify reminders.
