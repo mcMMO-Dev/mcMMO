@@ -153,6 +153,20 @@ Version 2.2.0
     Added API method to check if player parties are size capped
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
+
+Version 2.1.36
+    Updated German locale (Thanks OverCrave)
+    Fixed a bug preventing Villagers from giving combat XP
+    The /mcnotify command will now squelch almost all chat messages or action bar notifications sent to the player from mcMMO
+    mcMMO will now remind players on an hourly basis that they are are not receiving notifications from mcMMO if they have run the mcnotify command and toggled squelch mode
+    Added a new setting to advanced.yml "Feedback.PlayerTips", when set to true this will allow mcMMO to send periodic helpful messages to players, currently this only affects mcnotify reminders.
+
+Version 2.1.35
+    Readded the detonator config option
+
+    NOTE: I decided to make the detonator configurable again because 2.2 is some ways off. Sorry for the inconvenience.
+    NOTE: Pickaxes are now usable for blast mining, this is in addition to the detonator that you can specify in the config. This will be more configurable in the upcoming 2.2 update.
+
 Version 2.1.34
     Added Llama to taming XP tables
     Added Parrot to taming XP tables

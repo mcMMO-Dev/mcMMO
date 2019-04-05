@@ -497,6 +497,10 @@ public class AdvancedConfig extends ConfigValidated {
     /* GENERAL */
     public int getStartingLevel() { return getIntValue(SKILLS, GENERAL, STARTING_LEVEL); }
 
+    public boolean allowPlayerTips() {
+        return config.getBoolean("Feedback.PlayerTips", true);
+    }
+
     /**
      * This returns the maximum level at which superabilities will stop lengthening from scaling alongside skill level.
      * It returns a different value depending on whether or not the server is in retro mode

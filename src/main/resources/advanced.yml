@@ -14,6 +14,7 @@
 ###
 # Enables anonymous statistics
 Feedback:
+    PlayerTips: true
     SkillCommand:
         BlankLinesAboveHeader: true
     # If sendtitles is true messages will be sent using the title api (BIG TEXT ON SCREEN)

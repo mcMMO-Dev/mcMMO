@@ -28,6 +28,9 @@ public class NotificationManager {
      */
     public static void sendPlayerInformation(Player player, NotificationType notificationType, String key)
     {
+        if(!UserManager.getPlayer(player).useChatNotifications())
+            return;
+
         ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
 
         TextComponent message = TextComponentFactory.getNotificationTextComponentFromLocale(key, notificationType);
@@ -57,8 +60,10 @@ public class NotificationManager {
 
     public static void sendPlayerInformation(Player player, NotificationType notificationType, String key, String... values)
     {
-        ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
+        if(!UserManager.getPlayer(player).useChatNotifications())
+            return;
 
+        ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
 
         TextComponent message = TextComponentFactory.getNotificationMultipleValues(key, notificationType, values);
         McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(player, notificationType, destination, message);
@@ -103,6 +108,9 @@ public class NotificationManager {
      */
     public static void sendPlayerLevelUpNotification(McMMOPlayer mcMMOPlayer, PrimarySkillType skillName, int levelsGained, int newLevel)
     {
+        if(!UserManager.getPlayer(mcMMOPlayer.getPlayer()).useChatNotifications())
+            return;
+
         ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(NotificationType.LEVEL_UP_MESSAGE) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
 
         TextComponent levelUpTextComponent = TextComponentFactory.getNotificationLevelUpTextComponent(skillName, levelsGained, newLevel);
@@ -121,6 +129,9 @@ public class NotificationManager {
 
     public static void sendPlayerUnlockNotification(McMMOPlayer mcMMOPlayer, SubSkillType subSkillType)
     {
+        if(!UserManager.getPlayer(mcMMOPlayer.getPlayer()).useChatNotifications())
+            return;
+
         //CHAT MESSAGE
         mcMMOPlayer.getPlayer().spigot().sendMessage(TextComponentFactory.getSubSkillUnlockedNotificationComponents(mcMMOPlayer.getPlayer(), subSkillType));
 
