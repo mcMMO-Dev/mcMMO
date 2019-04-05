@@ -594,7 +594,7 @@ public class mcMMO extends JavaPlugin {
             new ClearRegisteredXPGainTask().runTaskTimer(this, 60, 60);
         }
 
-        if(AdvancedConfig.getInstance().allowPlayerTips())
+        if(configManager.getConfigNotifications().getConfigNotificationGeneral().isPlayerTips())
         {
             new NotifySquelchReminderTask().runTaskTimer(this, 60, ((20 * 60) * 60));
         }
