@@ -113,8 +113,6 @@ public final class ConfigManager {
     private SerializedConfigLoader<ConfigAdmin> configAdmin;
     private SerializedConfigLoader<ConfigMobs> configMobs;
 
-    private HashMap<PrimarySkillType, SerializedConfigLoader> skillConfigLoaders;
-
     private SerializedConfigLoader<ConfigAcrobatics> configAcrobatics;
     private SerializedConfigLoader<ConfigAlchemy> configAlchemy;
     private SerializedConfigLoader<ConfigArchery> configArchery;
@@ -131,8 +129,13 @@ public final class ConfigManager {
     private SerializedConfigLoader<ConfigSmelting> configSmelting;
     private SerializedConfigLoader<ConfigSalvage> configSalvage;
 
+    private HashMap<PrimarySkillType, SerializedConfigLoader> skillConfigLoaders;
+
     //Data
     private SerializedConfigLoader<ConfigPartyData> partyData;
+
+    //YAML CONFIGS
+    private PotionConfig potionConfig;
 
     private MainConfig mainConfig;
     private FishingTreasureConfig fishingTreasureConfig;
@@ -140,7 +143,6 @@ public final class ConfigManager {
     private HerbalismTreasureConfig herbalismTreasureConfig;
     private ExperienceConfig experienceConfig;
     private AdvancedConfig advancedConfig;
-    private PotionConfig potionConfig;
     private CoreSkillsConfig coreSkillsConfig;
     private SoundConfig soundConfig;
     private RankConfig rankConfig;
@@ -160,52 +162,47 @@ public final class ConfigManager {
 
     public void loadConfigs()
     {
-        // Load Config Files
-        // I'm pretty these are supposed to be done in a specific order, so don't rearrange them willy nilly
-
         //Register Custom Serializers
-        mcMMO.p.getLogger().info("Registering custom type serializers with Configurate...");
+        registerCustomTypeSerializers();
 
-        /*
-         TypeTokens are obtained in two ways
-
-            For Raw basic classes:
-
-                TypeToken<String> stringTok = TypeToken.of(String.class);
-                TypeToken<Integer> intTok = TypeToken.of(Integer.class);
-
-            For Generics:
-
-                TypeToken<List<String>> stringListTok = new TypeToken<List<String>>() {};
-
-            Wildcard example:
-
-                TypeToken<Map<?, ?>> wildMapTok = new TypeToken<Map<?, ?>>() {};
-
-         */
-
-        /*
-            List of default serializers for reference
-            DEFAULT_SERIALIZERS.registerType(TypeToken.of(URI.class), new URISerializer());
-            DEFAULT_SERIALIZERS.registerType(TypeToken.of(URL.class), new URLSerializer());
-            DEFAULT_SERIALIZERS.registerType(TypeToken.of(UUID.class), new UUIDSerializer());
-            DEFAULT_SERIALIZERS.registerPredicate(input -> input.getRawType().isAnnotationPresent(ConfigSerializable.class), new AnnotatedObjectSerializer());
-            DEFAULT_SERIALIZERS.registerPredicate(NumberSerializer.getPredicate(), new NumberSerializer());
-            DEFAULT_SERIALIZERS.registerType(TypeToken.of(String.class), new StringSerializer());
-            DEFAULT_SERIALIZERS.registerType(TypeToken.of(Boolean.class), new BooleanSerializer());
-            DEFAULT_SERIALIZERS.registerType(new TypeToken<Map<?, ?>>() {}, new MapSerializer());
-            DEFAULT_SERIALIZERS.registerType(new TypeToken<List<?>>() {}, new ListSerializer());
-            DEFAULT_SERIALIZERS.registerType(new TypeToken<Enum<?>>() {}, new EnumValueSerializer());
-            DEFAULT_SERIALIZERS.registerType(TypeToken.of(Pattern.class), new PatternSerializer());
-         */
-
-        TypeSerializers.getDefaultSerializers().registerType(new TypeToken<Material>() {}, new CustomEnumValueSerializer());
-        TypeSerializers.getDefaultSerializers().registerType(new TypeToken<PartyFeature>() {}, new CustomEnumValueSerializer());
-        TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Repairable.class), new RepairableSerializer());
-
-        mcMMO.p.getLogger().info("Deserializing configs...");
-        //TODO: Not sure about the order of MainConfig
         //Serialized Configs
+        initSerializedConfigs();
+
+        //Serialized Data
+        initSerializedDataFiles();
+
+        //Skill Property Registers
+        skillPropertiesManager = new SkillPropertiesManager();
+        skillPropertiesManager.fillRegisters();
+
+        //Assign Maps
+        partyItemWeights = Maps.newHashMap(configParty.getConfig().getPartyItemShare().getItemShareMap()); //Item Share Weights
+        partyFeatureUnlocks = Maps.newHashMap(configParty.getConfig().getPartyXP().getPartyLevel().getPartyFeatureUnlockMap()); //Party Progression
+
+        //Register Bonus Drops
+        registerBonusDrops();
+
+        //YAML Configs
+        initYAMLConfigs();
+
+        /*
+         * Managers
+         */
+
+        // Register Managers
+        initMiscManagers();
+        initCollectionManagers();
+    }
+
+    private void initYAMLConfigs() {
+        potionConfig = new PotionConfig();
+    }
+
+    private void initSerializedDataFiles() {
+        partyData = new SerializedConfigLoader<>(ConfigPartyData.class, "partydata.conf", "PartyData", null);
+    }
+
+    private void initSerializedConfigs() {
         configDatabase = new SerializedConfigLoader<>(ConfigDatabase.class, "database_settings.conf", "Database", null);
         configScoreboard = new SerializedConfigLoader<>(ConfigScoreboard.class, "scoreboard.conf", "Scoreboard", null);
         configLeveling = new SerializedConfigLoader<>(ConfigLeveling.class, "player_leveling.conf", "Player-Leveling", null);
@@ -226,7 +223,17 @@ public final class ConfigManager {
         configAdmin = new SerializedConfigLoader<>(ConfigAdmin.class, "admin.conf", "Admin", null);
         configMobs = new SerializedConfigLoader<>(ConfigMobs.class, "creatures.conf", "Creatures", null);
 
+        initSerializedSkillConfigs();
+    }
+
+    @SuppressWarnings(value = "unchecked")
+    private void initSerializedSkillConfigs() {
+        //Init HashMap
+        skillConfigLoaders = new HashMap<>();
+
+        //Init and register serialized skill configs
         registerSkillConfig(PrimarySkillType.ACROBATICS, ConfigAcrobatics.class);
+        registerSkillConfig(PrimarySkillType.ALCHEMY, ConfigAlchemy.class);
         registerSkillConfig(PrimarySkillType.SALVAGE, ConfigSalvage.class);
         registerSkillConfig(PrimarySkillType.ARCHERY, ConfigArchery.class);
         registerSkillConfig(PrimarySkillType.AXES, ConfigAxes.class);
@@ -241,46 +248,62 @@ public final class ConfigManager {
         registerSkillConfig(PrimarySkillType.WOODCUTTING, ConfigWoodcutting.class);
         registerSkillConfig(PrimarySkillType.SMELTING, ConfigSmelting.class);
 
-        //Serialized Data
-        partyData = new SerializedConfigLoader<>(ConfigPartyData.class, "partydata.conf", "PartyData", null);
+        //Setup Typed refs
+        configAcrobatics = (SerializedConfigLoader<ConfigAcrobatics>) skillConfigLoaders.get(PrimarySkillType.ACROBATICS).getConfig();
+        configAlchemy = (SerializedConfigLoader<ConfigAlchemy>) skillConfigLoaders.get(PrimarySkillType.ALCHEMY).getConfig();
+        configSalvage = (SerializedConfigLoader<ConfigSalvage>) skillConfigLoaders.get(PrimarySkillType.SALVAGE).getConfig();
+        configArchery = (SerializedConfigLoader<ConfigArchery>) skillConfigLoaders.get(PrimarySkillType.ARCHERY).getConfig();
+        configAxes = (SerializedConfigLoader<ConfigAxes>) skillConfigLoaders.get(PrimarySkillType.AXES).getConfig();
+        configExcavation = (SerializedConfigLoader<ConfigExcavation>) skillConfigLoaders.get(PrimarySkillType.EXCAVATION).getConfig();
+        configFishing = (SerializedConfigLoader<ConfigFishing>) skillConfigLoaders.get(PrimarySkillType.FISHING).getConfig();
+        configHerbalism = (SerializedConfigLoader<ConfigHerbalism>) skillConfigLoaders.get(PrimarySkillType.HERBALISM).getConfig();
+        configMining = (SerializedConfigLoader<ConfigMining>) skillConfigLoaders.get(PrimarySkillType.MINING).getConfig();
+        configRepair = (SerializedConfigLoader<ConfigRepair>) skillConfigLoaders.get(PrimarySkillType.REPAIR).getConfig();
+        configSwords = (SerializedConfigLoader<ConfigSwords>) skillConfigLoaders.get(PrimarySkillType.SWORDS).getConfig();
+        configTaming = (SerializedConfigLoader<ConfigTaming>) skillConfigLoaders.get(PrimarySkillType.TAMING).getConfig();
+        configUnarmed = (SerializedConfigLoader<ConfigUnarmed>) skillConfigLoaders.get(PrimarySkillType.UNARMED).getConfig();
+        configWoodcutting = (SerializedConfigLoader<ConfigWoodcutting>) skillConfigLoaders.get(PrimarySkillType.WOODCUTTING).getConfig();
+        configSmelting = (SerializedConfigLoader<ConfigSmelting>) skillConfigLoaders.get(PrimarySkillType.SMELTING).getConfig();
+    }
 
-        skillPropertiesManager = new SkillPropertiesManager();
-        skillPropertiesManager.fillRegisters();
+    private void registerCustomTypeSerializers() {
+    /*
+     TypeTokens are obtained in two ways
 
-        //Assign Maps
-        partyItemWeights = Maps.newHashMap(configParty.getConfig().getPartyItemShare().getItemShareMap()); //Item Share Weights
-        partyFeatureUnlocks = Maps.newHashMap(configParty.getConfig().getPartyXP().getPartyLevel().getPartyFeatureUnlockMap()); //Party Progression
+        For Raw basic classes:
 
-        //Register Bonus Drops
-        registerBonusDrops();
+            TypeToken<String> stringTok = TypeToken.of(String.class);
+            TypeToken<Integer> intTok = TypeToken.of(Integer.class);
 
-        //YAML Configs
-        mainConfig = new MainConfig();
+        For Generics:
 
-        fishingTreasureConfig = new FishingTreasureConfig();
-        excavationTreasureConfig = new ExcavationTreasureConfig();
-        herbalismTreasureConfig = new HerbalismTreasureConfig();
+            TypeToken<List<String>> stringListTok = new TypeToken<List<String>>() {};
 
-        advancedConfig = new AdvancedConfig();
+        Wildcard example:
 
-        //TODO: Not sure about the order of experience config
-        experienceConfig = new ExperienceConfig();
+            TypeToken<Map<?, ?>> wildMapTok = new TypeToken<Map<?, ?>>() {};
 
-        potionConfig = new PotionConfig();
-
-        coreSkillsConfig = new CoreSkillsConfig();
-
-        soundConfig = new SoundConfig();
-
-        rankConfig = new RankConfig();
+     */
 
         /*
-         * Managers
+            List of default serializers for reference
+            DEFAULT_SERIALIZERS.registerType(TypeToken.of(URI.class), new URISerializer());
+            DEFAULT_SERIALIZERS.registerType(TypeToken.of(URL.class), new URLSerializer());
+            DEFAULT_SERIALIZERS.registerType(TypeToken.of(UUID.class), new UUIDSerializer());
+            DEFAULT_SERIALIZERS.registerPredicate(input -> input.getRawType().isAnnotationPresent(ConfigSerializable.class), new AnnotatedObjectSerializer());
+            DEFAULT_SERIALIZERS.registerPredicate(NumberSerializer.getPredicate(), new NumberSerializer());
+            DEFAULT_SERIALIZERS.registerType(TypeToken.of(String.class), new StringSerializer());
+            DEFAULT_SERIALIZERS.registerType(TypeToken.of(Boolean.class), new BooleanSerializer());
+            DEFAULT_SERIALIZERS.registerType(new TypeToken<Map<?, ?>>() {}, new MapSerializer());
+            DEFAULT_SERIALIZERS.registerType(new TypeToken<List<?>>() {}, new ListSerializer());
+            DEFAULT_SERIALIZERS.registerType(new TypeToken<Enum<?>>() {}, new EnumValueSerializer());
+            DEFAULT_SERIALIZERS.registerType(TypeToken.of(Pattern.class), new PatternSerializer());
          */
 
-        // Register Managers
-        initMiscManagers();
-        initCollectionManagers();
+        mcMMO.p.getLogger().info("Registering custom type serializers for Configurate...");
+        TypeSerializers.getDefaultSerializers().registerType(new TypeToken<Material>() {}, new CustomEnumValueSerializer());
+        TypeSerializers.getDefaultSerializers().registerType(new TypeToken<PartyFeature>() {}, new CustomEnumValueSerializer());
+        TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Repairable.class), new RepairableSerializer());
     }
 
     private void registerSkillConfig(PrimarySkillType primarySkillType, Class clazz)
