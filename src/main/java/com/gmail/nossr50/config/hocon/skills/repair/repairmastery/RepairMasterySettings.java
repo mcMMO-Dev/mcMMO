@@ -1,5 +1,7 @@
 package com.gmail.nossr50.config.hocon.skills.repair.repairmastery;
 
+import com.gmail.nossr50.annotation.SkillProperty;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 

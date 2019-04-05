@@ -44,6 +44,7 @@ import com.gmail.nossr50.config.treasure.ExcavationTreasureConfig;
 import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
 import com.gmail.nossr50.config.treasure.HerbalismTreasureConfig;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
@@ -111,6 +112,8 @@ public final class ConfigManager {
     private SerializedConfigLoader<ConfigSuperAbilities> configSuperAbilities;
     private SerializedConfigLoader<ConfigAdmin> configAdmin;
     private SerializedConfigLoader<ConfigMobs> configMobs;
+
+    private HashMap<PrimarySkillType, SerializedConfigLoader> skillConfigLoaders;
 
     private SerializedConfigLoader<ConfigAcrobatics> configAcrobatics;
     private SerializedConfigLoader<ConfigAlchemy> configAlchemy;
@@ -223,20 +226,20 @@ public final class ConfigManager {
         configAdmin = new SerializedConfigLoader<>(ConfigAdmin.class, "admin.conf", "Admin", null);
         configMobs = new SerializedConfigLoader<>(ConfigMobs.class, "creatures.conf", "Creatures", null);
 
-        configAcrobatics = new SerializedConfigLoader<>(ConfigAcrobatics.class, "acrobatics.conf", "Acrobatics", null);
-        configSalvage = new SerializedConfigLoader<>(ConfigSalvage.class, "salvage.conf", "Salvage", null);
-        configArchery = new SerializedConfigLoader<>(ConfigArchery.class, "archery.conf", "Archery", null);
-        configAxes = new SerializedConfigLoader<>(ConfigAxes.class, "axes.conf", "Axes", null);
-        configExcavation = new SerializedConfigLoader<>(ConfigExcavation.class, "excavation.conf", "Excavation", null);
-        configFishing = new SerializedConfigLoader<>(ConfigFishing.class, "fishing.conf", "Fishing", null);
-        configHerbalism = new SerializedConfigLoader<>(ConfigHerbalism.class, "herbalism.conf", "Herbalism", null);
-        configMining = new SerializedConfigLoader<>(ConfigMining.class, "mining.conf", "Mining", null);
-        configRepair = new SerializedConfigLoader<>(ConfigRepair.class, "repair.conf", "Repair", null);
-        configSwords = new SerializedConfigLoader<>(ConfigSwords.class, "swords.conf", "Swords", null);
-        configTaming = new SerializedConfigLoader<>(ConfigTaming.class, "taming.conf", "Taming", null);
-        configUnarmed = new SerializedConfigLoader<>(ConfigUnarmed.class, "unarmed.conf", "Unarmed", null);
-        configWoodcutting = new SerializedConfigLoader<>(ConfigWoodcutting.class, "woodcutting.conf", "Woodcutting", null);
-        configSmelting = new SerializedConfigLoader<>(ConfigSmelting.class, "smelting.conf", "Smelting", null);
+        registerSkillConfig(PrimarySkillType.ACROBATICS, ConfigAcrobatics.class);
+        registerSkillConfig(PrimarySkillType.SALVAGE, ConfigSalvage.class);
+        registerSkillConfig(PrimarySkillType.ARCHERY, ConfigArchery.class);
+        registerSkillConfig(PrimarySkillType.AXES, ConfigAxes.class);
+        registerSkillConfig(PrimarySkillType.EXCAVATION, ConfigExcavation.class);
+        registerSkillConfig(PrimarySkillType.FISHING, ConfigFishing.class);
+        registerSkillConfig(PrimarySkillType.HERBALISM, ConfigHerbalism.class);
+        registerSkillConfig(PrimarySkillType.MINING, ConfigMining.class);
+        registerSkillConfig(PrimarySkillType.REPAIR, ConfigRepair.class);
+        registerSkillConfig(PrimarySkillType.SWORDS, ConfigSwords.class);
+        registerSkillConfig(PrimarySkillType.TAMING, ConfigTaming.class);
+        registerSkillConfig(PrimarySkillType.UNARMED, ConfigUnarmed.class);
+        registerSkillConfig(PrimarySkillType.WOODCUTTING, ConfigWoodcutting.class);
+        registerSkillConfig(PrimarySkillType.SMELTING, ConfigSmelting.class);
 
         //Serialized Data
         partyData = new SerializedConfigLoader<>(ConfigPartyData.class, "partydata.conf", "PartyData", null);
@@ -278,6 +281,11 @@ public final class ConfigManager {
         // Register Managers
         initMiscManagers();
         initCollectionManagers();
+    }
+
+    private void registerSkillConfig(PrimarySkillType primarySkillType, Class clazz)
+    {
+        skillConfigLoaders.put(primarySkillType, SkillConfigFactory.initSkillConfig(primarySkillType, clazz));
     }
 
     /**
