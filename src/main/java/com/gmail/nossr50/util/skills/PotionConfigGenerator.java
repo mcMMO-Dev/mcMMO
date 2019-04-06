@@ -1,4 +1,4 @@
-package com.gmail.nossr50;
+package com.gmail.nossr50.util.skills;
 
 import org.bukkit.Material;
 import org.bukkit.potion.PotionData;
