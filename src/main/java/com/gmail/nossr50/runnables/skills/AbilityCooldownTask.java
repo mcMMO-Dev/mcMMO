@@ -17,7 +17,7 @@ public class AbilityCooldownTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (mcMMOPlayer.getAbilityInformed(ability)) {
+        if (!mcMMOPlayer.getPlayer().isOnline() || mcMMOPlayer.getAbilityInformed(ability)) {
             return;
         }
 

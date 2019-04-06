@@ -154,6 +154,10 @@ Version 2.2.0
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
 
+Version 2.1.37
+    Fixed a potential IndexOutOfBoundsException when informing a disconnected player that their Blast Mining was off CD
+    Updated hu_HU locale (thanks andris)
+    
 Version 2.1.36
     Updated German locale (Thanks OverCrave)
     Fixed a bug preventing Villagers from giving combat XP
