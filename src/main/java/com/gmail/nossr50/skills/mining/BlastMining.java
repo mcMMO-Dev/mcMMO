@@ -41,8 +41,6 @@ public class BlastMining {
 
     }*/
 
-    public static Material detonator = MainConfig.getInstance().getDetonatorItem();
-
     public final static int MAXIMUM_REMOTE_DETONATION_DISTANCE = 100;
 
     public static double getBlastRadiusModifier(int rank) {

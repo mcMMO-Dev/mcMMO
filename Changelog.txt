@@ -84,6 +84,7 @@ Version 2.2.0
     Super Ability conifg options will now be found in "skill_super_abilities.conf"
     Super Abilities now have a default max length cap of one minute
     Blast Mining default cooldown increased from 60 seconds to 120 seconds
+    You can now configure multiple items as detonators for Blast Mining
 
     Exploit related config options will now be found in "exploit-prevention"
     Exploit Prevention's "EndermanEndermiteFarms" renamed -> "Endermen-Endermite-Fix"

@@ -48,7 +48,24 @@ public class ConfigMining {
             "\nUse Minecraft friendly names for entries, not Bukkit material names.")
     private ArrayList<String> bonusDrops = DEFAULT_BONUS_DROPS;
 
+    @Setting(value = "Sub-Skills")
+    private ConfigMiningSubskills miningSubskills = new ConfigMiningSubskills();
+
+    public ConfigMiningSubskills getMiningSubskills() {
+        return miningSubskills;
+    }
+
+    public ConfigMiningBlastMining getBlastMining() {
+        return miningSubskills.getBlastMining();
+    }
+
+    public ArrayList<String> getDetonators() {
+        return getBlastMining().getDetonators();
+    }
+
     public ArrayList<String> getBonusDrops() {
         return bonusDrops;
     }
+
+
 }

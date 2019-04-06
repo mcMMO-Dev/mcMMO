@@ -43,7 +43,7 @@ public class MiningManager extends SkillManager {
         Player player = getPlayer();
 
         return canUseBlastMining() && player.isSneaking()
-                && (ItemUtils.isPickaxe(getPlayer().getInventory().getItemInMainHand()) || player.getInventory().getItemInMainHand().getType() == Config.getInstance().getDetonatorItem())
+                && Mining.getInstance().isDetonator(player.getInventory().getItemInMainHand())
                 && Permissions.remoteDetonation(player);
     }
 

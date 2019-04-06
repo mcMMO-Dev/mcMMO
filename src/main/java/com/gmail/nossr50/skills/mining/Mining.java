@@ -2,12 +2,50 @@ package com.gmail.nossr50.skills.mining;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
+import net.royawesome.jlibnoise.module.combiner.Min;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
+
 public class Mining {
+
+    private List<Material> detonators;
+    private static Mining instance;
+
+    public static Mining getInstance() {
+        if(instance == null)
+            instance = new Mining();
+
+        return instance;
+    }
+
+    public Mining() {
+        //Init detonators
+        this.detonators = ItemUtils.matchMaterials(mcMMO.getConfigManager().getConfigMining().getDetonators());
+    }
+
+    /**
+     * Retrieve a list of Blast Mining detonator types
+     * @return blast mining detonator materials
+     */
+    public List<Material> getDetonators() {
+        return detonators;
+    }
+
+    /**
+     * Check if an itemStack is a valid blast mining detonator
+     * @param itemStack target itemstack
+     * @return true if valid blast mining detonator
+     */
+    public Boolean isDetonator(ItemStack itemStack)
+    {
+        return getDetonators().contains(itemStack.getType());
+    }
 
     /**
      * Calculate XP gain for Mining.
