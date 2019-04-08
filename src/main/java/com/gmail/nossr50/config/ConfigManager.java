@@ -3,6 +3,7 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.hocon.CustomEnumValueSerializer;
 import com.gmail.nossr50.config.hocon.RepairableSerializer;
+import com.gmail.nossr50.config.hocon.SalvageableSerializer;
 import com.gmail.nossr50.config.hocon.SerializedConfigLoader;
 import com.gmail.nossr50.config.hocon.admin.ConfigAdmin;
 import com.gmail.nossr50.config.hocon.antiexploit.ConfigExploitPrevention;
@@ -304,6 +305,7 @@ public final class ConfigManager {
         TypeSerializers.getDefaultSerializers().registerType(new TypeToken<Material>() {}, new CustomEnumValueSerializer());
         TypeSerializers.getDefaultSerializers().registerType(new TypeToken<PartyFeature>() {}, new CustomEnumValueSerializer());
         TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Repairable.class), new RepairableSerializer());
+        TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Salvageable.class), new SalvageableSerializer());
     }
 
     private void registerSkillConfig(PrimarySkillType primarySkillType, Class clazz)
