@@ -17,6 +17,11 @@ public class Salvageable {
     private final ItemMaterialCategory salvageItemMaterialCategory;
     private final double xpMultiplier;
 
+    public Salvageable(String itemRegisterKey, String salvagedMaterialRegisterKey)
+    {
+        this(Material.matchMaterial(itemRegisterKey), Material.matchMaterial(salvagedMaterialRegisterKey), 0, 1);
+    }
+
     public Salvageable(String itemRegisterKey, String salvagedMaterialRegisterKey, int minimumLevel, int maximumQuantity)
     {
         this(Material.matchMaterial(itemRegisterKey), Material.matchMaterial(salvagedMaterialRegisterKey), minimumLevel, maximumQuantity);
