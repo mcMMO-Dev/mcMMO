@@ -47,4 +47,4 @@ Required Libraries:
 * Bukkit
 * JUnit
 
-https://spigot.mcmmo.org for more up to date information.
+http://spigot.mcmmo.org for more up to date information.
