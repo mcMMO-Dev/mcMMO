@@ -1,6 +1,7 @@
 package com.gmail.nossr50.config.hocon;
 
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
+import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
@@ -10,12 +11,11 @@ import ninja.leaping.configurate.util.EnumLookup;
 import java.util.List;
 import java.util.Optional;
 
-public class RepairableSerializer implements TypeSerializer<Repairable> {
-    public static final String ITEM = "Item";
-    public static final String ITEMS_USED_TO_REPAIR = "Items-Used-To-Repair";
-    public static final String MINIMUM_QUANTITY_USED_TO_REPAIR = "Minimum-Quantity-Used-To-Repair";
+public class SalvageableSerializer implements TypeSerializer<Salvageable> {
+    public static final String ITEM_NODE_NAME = "Item";
+    public static final String ITEM_RETURNED_BY_SALVAGE = "Item-Returned-By-Salvage";
+    public static final String MAXIMUM_QUANTITY_RETURNED = "Maximum-Quantity-Returned";
     public static final String OVERRIDE_LEVEL_REQUIREMENT = "Override-Level-Requirement";
-    public static final String XP_MULTIPLIER = "XP-Multiplier";
 
     /*
          TypeTokens are obtained in two ways
@@ -37,7 +37,7 @@ public class RepairableSerializer implements TypeSerializer<Repairable> {
 
 
     @Override
-    public Repairable deserialize(TypeToken<?> type, ConfigurationNode value) throws ObjectMappingException {
+    public Salvageable deserialize(TypeToken<?> type, ConfigurationNode value) throws ObjectMappingException {
 
         /*
         CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(WOODEN_SWORD, OAK_PLANKS, 1, 0, .25D));
@@ -45,33 +45,21 @@ public class RepairableSerializer implements TypeSerializer<Repairable> {
 
         /* Repairable(Material itemMaterial, Material repairMaterial, int minimumQuantity, int minimumLevel, double xpMultiplier) */
 
-        String item = value.getNode(ITEM).getValue(TypeToken.of(String.class));
-        List<String> repairItems = value.getNode(ITEMS_USED_TO_REPAIR).getValue(new TypeToken<List<String>>() {});
-
-
-        /*String itemConstant = HOCONUtil.deserializeENUMName(value.getNode("Item").getString());
-        String repairConstant = HOCONUtil.deserializeENUMName(value.getNode("Item-Used-To-Repair").getString());
-
-        Material item = (Material) getEnum(itemConstant, TypeToken.of(Material.class));
-        Material repairItem = (Material) getEnum(repairConstant, TypeToken.of(Material.class));*/
-
-        int minimumQuantity = value.getNode(MINIMUM_QUANTITY_USED_TO_REPAIR).getValue(TypeToken.of(Integer.class));
+        String item = value.getNode(ITEM_NODE_NAME).getValue(TypeToken.of(String.class));
+        String itemReturnedBySalvage = value.getNode(ITEM_RETURNED_BY_SALVAGE).getValue(new TypeToken<String>() {});
+        int maximumQuantityReturned = value.getNode(MAXIMUM_QUANTITY_RETURNED).getValue(TypeToken.of(Integer.class));
         int minimumLevel = value.getNode(OVERRIDE_LEVEL_REQUIREMENT).getValue(TypeToken.of(Integer.class));
-        double xpMultiplier = value.getNode(XP_MULTIPLIER).getValue(TypeToken.of(Double.class));
 
-        return new Repairable(item, repairItems, minimumQuantity, minimumLevel, xpMultiplier);
+        return new Salvageable(item, itemReturnedBySalvage, maximumQuantityReturned, minimumLevel);
     }
 
     @Override
-    public void serialize(TypeToken<?> type, Repairable obj, ConfigurationNode value) {
+    public void serialize(TypeToken<?> type, Salvageable obj, ConfigurationNode value) {
 
-        /*value.getNode("Item").setValue(HOCONUtil.serializeENUMName(obj.getItemMaterial().getKey().getKey()));
-        value.getNode("Item-Used-To-Repair").setValue(HOCONUtil.serializeENUMName(obj.getRepairMaterials().getKey().getKey()));*/
-        value.getNode(ITEM).setValue(obj.getItemMaterial().getKey().toString());
-        value.getNode(ITEMS_USED_TO_REPAIR).setValue(obj.getRepairMaterialsRegistryKeys());
-        value.getNode(MINIMUM_QUANTITY_USED_TO_REPAIR).setValue(obj.getMinimumQuantity());
+        value.getNode(ITEM_NODE_NAME).setValue(obj.getItemMaterial().getKey().toString());
+        value.getNode(ITEM_RETURNED_BY_SALVAGE).setValue(obj.getSalvagedItemMaterial());
+        value.getNode(MAXIMUM_QUANTITY_RETURNED).setValue(obj.getMaximumQuantity());
         value.getNode(OVERRIDE_LEVEL_REQUIREMENT).setValue(obj.getMinimumLevel());
-        value.getNode(XP_MULTIPLIER).setValue(obj.getXpMultiplier());
     }
 
     private Enum getEnum(String enumConstant, TypeToken<?> type) throws ObjectMappingException
