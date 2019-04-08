@@ -12,6 +12,7 @@ public class Repair {
     public Repair() {
         anvilMaterial = mcMMO.getConfigManager().getConfigRepair().getRepairGeneral().getRepairAnvilMaterial();
 
+        //TODO: Replace this horrid shit
         if(mcMMO.isRetroModeEnabled())
         {
             repairMasteryMaxBonus = mcMMO.getConfigManager().getConfigRepair().getRepairSubSkills().getRepairMastery().getSettings().getRetro().getMaxBonusPercentage();
