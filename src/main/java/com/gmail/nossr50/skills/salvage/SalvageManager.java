@@ -131,7 +131,7 @@ public class SalvageManager extends SkillManager {
 
         // BWONG BWONG BWONG - CLUNK!
         if (Config.getInstance().getSalvageAnvilUseSoundsEnabled()) {
-            SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
+//            SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
             SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_BREAK);
 
             //player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);

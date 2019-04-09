@@ -7,6 +7,12 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.39
+    Salvaging an item should now only play the item break sound (was playing the anvil sound simultaneously before)
+    Fixed bug where Tall_Grass was not giving full XP
+    Added Tall_Seagrass and Seagrass to experience.yml under Herbalism (update your configs)
+
+    NOTE: This is what your herbalism section in experience.yml should look like - https://paste.gg/p/anonymous/d5b03bd56e8442f2836f8a954d2974de
 Version 2.1.38
     Roll XP cooldown down from 60 seconds to 10
     Updated pt_BR localization (thanks FabioZumbi12)
