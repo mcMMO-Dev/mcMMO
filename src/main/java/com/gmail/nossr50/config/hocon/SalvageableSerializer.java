@@ -1,6 +1,5 @@
 package com.gmail.nossr50.config.hocon;
 
-import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -8,7 +7,6 @@ import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
 import ninja.leaping.configurate.util.EnumLookup;
 
-import java.util.List;
 import java.util.Optional;
 
 public class SalvageableSerializer implements TypeSerializer<Salvageable> {

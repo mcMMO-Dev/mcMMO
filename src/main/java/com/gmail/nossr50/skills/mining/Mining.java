@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
-import net.royawesome.jlibnoise.module.combiner.Min;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.inventory.ItemStack;

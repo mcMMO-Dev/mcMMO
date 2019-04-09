@@ -5,8 +5,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 
-import java.io.IOException;
-
 public class NullChunkManager implements ChunkManager {
 
     @Override

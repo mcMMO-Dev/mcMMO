@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.util.ItemUtils;
 import org.bukkit.Material;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

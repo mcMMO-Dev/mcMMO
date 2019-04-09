@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.acrobatics;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -28,7 +27,7 @@ public class AcrobaticsManager extends SkillManager {
     }
 
     private long rollXPCooldown = 0;
-    private long rollXPInterval; //1 Minute
+    private long rollXPInterval;
     private long rollXPIntervalLengthen = (1000 * 10); //10 Seconds
 
     public boolean canGainRollXP()

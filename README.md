@@ -10,7 +10,7 @@ I plan to post links to our new wiki (its still under development), downloads, a
 
 
 ### Builds
-Currently, you can obtain our builds via the Spigot resource page: https://spigot.mcmmo.org
+Currently, you can obtain our builds via the Spigot resource page: http://spigot.mcmmo.org
 
 ### Brief Description
 The goal of mcMMO is to take core Minecraft game mechanics and expand them into add an extensive and quality RPG experience. Everything in mcMMO has been carefully thought out and is constantly being improved upon. Currently, mcMMO adds fourteen unique skills to train and level in. Each of these skills is highly customizable through our configuration files, allowing server admins to tweak mcMMO to best suit the needs of his or her server. Know that the mcMMO team is dedicated to providing an ever-evolving experience, and that we carefully read all feedback and bug reports in order to evaluate and balance the mechanics of mcMMO in every update.
@@ -47,4 +47,4 @@ Required Libraries:
 * Bukkit
 * JUnit
 
-https://spigot.mcmmo.org for more up to date information.
+http://spigot.mcmmo.org for more up to date information.
