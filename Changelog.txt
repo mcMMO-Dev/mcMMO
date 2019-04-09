@@ -7,6 +7,11 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.38
+    Roll XP cooldown down from 60 seconds to 10
+    Updated pt_BR localization (thanks FabioZumbi12)
+    NOTE: The XP Cooldown will be configurable in 2.2 which is nearing the finish line
+
 Version 2.1.37
     Fixed a potential IndexOutOfBoundsException when informing a disconnected player that their Blast Mining was off CD
     Updated hu_HU locale (thanks andris)

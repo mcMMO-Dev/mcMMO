@@ -26,7 +26,7 @@ public class AcrobaticsManager extends SkillManager {
     }
 
     private long rollXPCooldown = 0;
-    private long rollXPInterval = (1000 * 60); //1 Minute
+    private long rollXPInterval = (1000 * 10); //1 Minute
     private long rollXPIntervalLengthen = (1000 * 10); //10 Seconds
 
     public boolean canGainRollXP()
