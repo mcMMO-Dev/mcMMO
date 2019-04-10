@@ -1,4 +1,4 @@
-package com.gmail.nossr50.util.skills;
+package com.gmail.nossr50.skills.alchemy;
 
 import org.bukkit.Material;
 import org.bukkit.potion.PotionData;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class PotionConfigGenerator {
+public class PotionGenerator {
 
     public static class Ingredient {
 

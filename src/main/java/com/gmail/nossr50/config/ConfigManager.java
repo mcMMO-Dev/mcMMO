@@ -1,16 +1,14 @@
 package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.config.hocon.CustomEnumValueSerializer;
-import com.gmail.nossr50.config.hocon.RepairableSerializer;
-import com.gmail.nossr50.config.hocon.SalvageableSerializer;
-import com.gmail.nossr50.config.hocon.SerializedConfigLoader;
+import com.gmail.nossr50.config.hocon.*;
 import com.gmail.nossr50.config.hocon.admin.ConfigAdmin;
 import com.gmail.nossr50.config.hocon.antiexploit.ConfigExploitPrevention;
 import com.gmail.nossr50.config.hocon.backup.ConfigAutomatedBackups;
 import com.gmail.nossr50.config.hocon.commands.ConfigCommands;
 import com.gmail.nossr50.config.hocon.database.ConfigDatabase;
 import com.gmail.nossr50.config.hocon.donation.ConfigAuthorAdvertisements;
+import com.gmail.nossr50.config.hocon.experience.ConfigExperience;
 import com.gmail.nossr50.config.hocon.hardcore.ConfigHardcore;
 import com.gmail.nossr50.config.hocon.items.ConfigItems;
 import com.gmail.nossr50.config.hocon.language.ConfigLanguage;
@@ -27,6 +25,7 @@ import com.gmail.nossr50.config.hocon.skills.acrobatics.ConfigAcrobatics;
 import com.gmail.nossr50.config.hocon.skills.alchemy.ConfigAlchemy;
 import com.gmail.nossr50.config.hocon.skills.archery.ConfigArchery;
 import com.gmail.nossr50.config.hocon.skills.axes.ConfigAxes;
+import com.gmail.nossr50.config.hocon.skills.exampleconfigs.MinecraftMaterialWrapper;
 import com.gmail.nossr50.config.hocon.skills.excavation.ConfigExcavation;
 import com.gmail.nossr50.config.hocon.skills.fishing.ConfigFishing;
 import com.gmail.nossr50.config.hocon.skills.herbalism.ConfigHerbalism;
@@ -113,6 +112,7 @@ public final class ConfigManager {
     private SerializedConfigLoader<ConfigSuperAbilities> configSuperAbilities;
     private SerializedConfigLoader<ConfigAdmin> configAdmin;
     private SerializedConfigLoader<ConfigMobs> configMobs;
+    private SerializedConfigLoader<ConfigExperience> configExperience;
 
     private SerializedConfigLoader<ConfigAcrobatics> configAcrobatics;
     private SerializedConfigLoader<ConfigAlchemy> configAlchemy;
@@ -223,6 +223,7 @@ public final class ConfigManager {
         configSuperAbilities = new SerializedConfigLoader<>(ConfigSuperAbilities.class, "skill_super_abilities.conf", "Super-Abilities", null);
         configAdmin = new SerializedConfigLoader<>(ConfigAdmin.class, "admin.conf", "Admin", null);
         configMobs = new SerializedConfigLoader<>(ConfigMobs.class, "creatures.conf", "Creatures", null);
+        configExperience = new SerializedConfigLoader<>(ConfigExperience.class, "experience.conf", "Experience", null);
 
         initSerializedSkillConfigs();
     }
@@ -306,6 +307,7 @@ public final class ConfigManager {
         TypeSerializers.getDefaultSerializers().registerType(new TypeToken<PartyFeature>() {}, new CustomEnumValueSerializer());
         TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Repairable.class), new RepairableSerializer());
         TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Salvageable.class), new SalvageableSerializer());
+        TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(MinecraftMaterialWrapper.class), new MinecraftMaterialWrapperSerializer());
     }
 
     private void registerSkillConfig(PrimarySkillType primarySkillType, Class clazz)
@@ -655,5 +657,9 @@ public final class ConfigManager {
     public double getSkillMaxChance(SubSkillType subSkillType)
     {
         return skillPropertiesManager.getMaxChance(subSkillType);
+    }
+
+    public ConfigExperience getConfigExperience() {
+        return configExperience.getConfig();
     }
 }

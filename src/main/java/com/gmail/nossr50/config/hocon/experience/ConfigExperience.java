@@ -7,40 +7,40 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 public class ConfigExperience {
 
     @Setting(value = "Acrobatics", comment = "XP Settings for Acrobatics")
-    ConfigExperienceAcrobatics experienceAcrobatics = new ConfigExperienceAcrobatics();
+    private ConfigExperienceAcrobatics experienceAcrobatics = new ConfigExperienceAcrobatics();
 
     @Setting(value = "Alchemy", comment = "XP Settings for Alchemy")
-    ConfigExperienceAlchemy experienceAlchemy = new ConfigExperienceAlchemy();
+    private ConfigExperienceAlchemy experienceAlchemy = new ConfigExperienceAlchemy();
 
     @Setting(value = "Archery", comment = "XP Settings for Archery")
-    ConfigExperienceArchery experienceArchery = new ConfigExperienceArchery();
+    private ConfigExperienceArchery experienceArchery = new ConfigExperienceArchery();
 
     @Setting(value = "Fishing", comment = "XP Settings for Fishing")
-    ConfigExperienceFishing experienceFishing = new ConfigExperienceFishing();
+    private ConfigExperienceFishing experienceFishing = new ConfigExperienceFishing();
 
     @Setting(value = "Excavation", comment = "XP Settings for Excavation")
-    ConfigExperienceExcavation experienceExcavation = new ConfigExperienceExcavation();
+    private ConfigExperienceExcavation experienceExcavation = new ConfigExperienceExcavation();
 
     @Setting(value = "Woodcutting", comment = "XP Settings for Woodcutting")
-    ConfigExperienceWoodcutting experienceWoodcutting = new ConfigExperienceWoodcutting();
+    private ConfigExperienceWoodcutting experienceWoodcutting = new ConfigExperienceWoodcutting();
 
     @Setting(value = "Herbalism", comment = "XP Settings for Herbalism")
-    ConfigExperienceHerbalism experienceHerbalism = new ConfigExperienceHerbalism();
+    private ConfigExperienceHerbalism experienceHerbalism = new ConfigExperienceHerbalism();
 
     @Setting(value = "Mining", comment = "XP Settings for Mining")
-    ConfigExperienceMining experienceMining = new ConfigExperienceMining();
+    private ConfigExperienceMining experienceMining = new ConfigExperienceMining();
 
     @Setting(value = "Repair", comment = "XP Settings for Repair")
-    ConfigExperienceRepair experienceRepair = new ConfigExperienceRepair();
+    private ConfigExperienceRepair experienceRepair = new ConfigExperienceRepair();
 
     @Setting(value = "Smelting", comment = "XP Settings for Smelting")
-    ConfigExperienceSmelting experienceSmelting = new ConfigExperienceSmelting();
+    private ConfigExperienceSmelting experienceSmelting = new ConfigExperienceSmelting();
 
     @Setting(value = "Taming", comment = "XP Settings for Taming")
-    ConfigExperienceTaming experienceTaming = new ConfigExperienceTaming();
+    private ConfigExperienceTaming experienceTaming = new ConfigExperienceTaming();
 
     @Setting(value = "Z-Combat", comment = "XP Settings for Combat")
-    ConfigExperienceCombat experienceCombat = new ConfigExperienceCombat();
+    private ConfigExperienceCombat experienceCombat = new ConfigExperienceCombat();
 
     public ConfigExperienceAcrobatics getExperienceAcrobatics() {
         return experienceAcrobatics;

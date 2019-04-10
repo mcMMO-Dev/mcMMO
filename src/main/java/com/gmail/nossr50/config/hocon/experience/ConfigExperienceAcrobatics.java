@@ -9,13 +9,24 @@ import java.util.HashMap;
 public class ConfigExperienceAcrobatics {
 
     private final static HashMap<String, Integer> ACROBATICS_DEFAULT_XP_MAP;
+    public static final double FEATHER_FALL_MULTIPLIER_DEFAULT = 2.0D;
 
     static {
         ACROBATICS_DEFAULT_XP_MAP = new HashMap<>();
-
+        ACROBATICS_DEFAULT_XP_MAP.put("Dodge", 480);
+        ACROBATICS_DEFAULT_XP_MAP.put("Roll", 80);
+        ACROBATICS_DEFAULT_XP_MAP.put("Fall", 120);
     }
 
     @Setting(value = "Acrobatics-Experience-Values", comment = "Experience values for Acrobatics.")
-    HashMap<String, Integer> acrobaticsXPMap;
+    HashMap<String, Integer> acrobaticsXPMap = ACROBATICS_DEFAULT_XP_MAP;
 
+    @Setting(value = "Feather-Fall-XP-Multiplier", comment = "Feather Fall grants bonus XP to fall related XP gains." +
+            "\nThis value is multiplied against your XP to give the bonus." +
+            "\nDefault value: "+FEATHER_FALL_MULTIPLIER_DEFAULT)
+    private Double featherFallMultiplier = FEATHER_FALL_MULTIPLIER_DEFAULT;
+
+    public HashMap<String, Integer> getAcrobaticsXPMap() {
+        return acrobaticsXPMap;
+    }
 }
