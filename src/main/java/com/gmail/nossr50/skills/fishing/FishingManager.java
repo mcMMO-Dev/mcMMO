@@ -211,7 +211,7 @@ public class FishingManager extends SkillManager {
     }
 
     protected int getVanillaXPBoostModifier() {
-        return AdvancedConfig.getInstance().getFishingVanillaXPModifier(getLootTier());
+        return mcMMO.getConfigManager().getConfigFishing().getVanillaXPMultInnerPeace(RankUtils.getRank(getPlayer(), SubSkillType.FISHING_INNER_PEACE));
     }
 
     /**
@@ -283,12 +283,13 @@ public class FishingManager extends SkillManager {
      * @param fishingCatch The {@link Item} initially caught
      */
     public void handleFishing(Item fishingCatch) {
-        int fishXp = ExperienceConfig.getInstance().getXp(PrimarySkillType.FISHING, fishingCatch.getItemStack().getType());
+        int fishXp = Fishing.getInstance().getFishXPValue(fishingCatch.getItemStack().getType());
         int treasureXp = 0;
         Player player = getPlayer();
         FishingTreasure treasure = null;
 
-        if (MainConfig.getInstance().getFishingDropsEnabled() && Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_TREASURE_HUNTER)) {
+        if (mcMMO.getConfigManager().getConfigFishing().isAllowCustomDrops()
+                && Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_TREASURE_HUNTER)) {
             treasure = getFishingTreasure();
         }
 
@@ -326,7 +327,8 @@ public class FishingManager extends SkillManager {
                 }
 
                 if (mcMMO.getConfigManager().getConfigFishing().isAlwaysCatchFish()) {
-                    Misc.dropItem(player.getEyeLocation(), fishingCatch.getItemStack());
+                    /*Misc.dropItem(player.getEyeLocation(), fishingCatch.getItemStack());*/
+                    Misc.dropItem(fishingCatch.getLocation(), fishingCatch.getItemStack()).setVelocity(fishingCatch.getVelocity());
                 }
 
                 fishingCatch.setItemStack(treasureDrop);

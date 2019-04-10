@@ -9,6 +9,7 @@ Key:
 
 Version 2.2.0
     mcMMO's config system has been rewritten
+    Added new subskill to Fishing named 'Inner Peace'
     mcMMO will now warn you in the console if it thinks you are running incompatible server software
     Parties no longer have a cap, you can level them forever for bragging rights
     You can now specify multiple repair-items for an item (such as specifying that a wooden sword can be repaired by all types of planks)

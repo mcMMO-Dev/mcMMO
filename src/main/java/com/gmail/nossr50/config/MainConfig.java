@@ -369,14 +369,6 @@ public class MainConfig extends ConfigValidated {
             reason.add(ABILITIES + "." + LIMITS + "." + TREE_FELLER_THRESHOLD + " should be greater than 0!");
         }*/
 
-        if (getFishingLureModifier() < 0) {
-            reason.add(ABILITIES + "." + FISHING + "." + LURE_MODIFIER + " should be at least 0!");
-        }
-
-        if (getDetonatorItem() == null) {
-            reason.add(SKILLS + "." + MINING + "." + DETONATOR + "Item is invalid!");
-        }
-
         /*if (getRepairAnvilMaterial() == null) {
             reason.add(SKILLS + "." + REPAIR + "." + ANVIL + "Type is invalid!!");
         }
@@ -597,24 +589,6 @@ public class MainConfig extends ConfigValidated {
         return getBooleanValue(SKILLS, ALCHEMY, PREVENT_HOPPER_TRANSFER_BOTTLES);
     }
 
-    /* Fishing */
-    public boolean getFishingDropsEnabled() {
-        return getBooleanValue(SKILLS, FISHING, DROPS + ENABLED);
-    }
-
-    public boolean getFishingOverrideTreasures() {
-        return getBooleanValue(SKILLS, FISHING, OVERRIDE_VANILLA_TREASURES);
-    }
-
-    public double getFishingLureModifier() {
-        return getDoubleValue(SKILLS, FISHING, LURE_MODIFIER);
-    }
-
-    /* Mining */
-    public Material getDetonatorItem() {
-        //Flint and steel
-        return Material.matchMaterial(getStringValue(SKILLS, MINING, DETONATOR + NAME));
-    }
 
     /* Unarmed */
     public boolean getUnarmedBlockCrackerSmoothbrickToCracked() {

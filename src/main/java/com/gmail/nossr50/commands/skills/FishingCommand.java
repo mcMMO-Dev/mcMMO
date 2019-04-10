@@ -102,7 +102,7 @@ public class FishingCommand extends SkillCommand {
                 location = player.getLocation();
             }
 
-            if (Fishing.masterAnglerBiomes.contains(location.getBlock().getBiome())) {
+            if (Fishing.getInstance().getMasterAnglerBiomes().contains(location.getBlock().getBiome())) {
                 rawBiteChance = rawBiteChance * AdvancedConfig.getInstance().getMasterAnglerBiomeModifier();
             }
 
@@ -161,6 +161,11 @@ public class FishingCommand extends SkillCommand {
                     String.valueOf(epicTreasure),
                     String.valueOf(legendaryTreasure),
                     String.valueOf(recordTreasure)));
+        }
+
+        if(canInnerPeace)
+        {
+            m
         }
 
         return messages;

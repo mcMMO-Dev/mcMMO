@@ -9,6 +9,7 @@ public class ConfigFishingGeneral {
     private static final boolean ALWAYS_CATCH_FISH_DEFAULT = true;
     private static final boolean OVERRIDE_VANILLA_TREASURES = true;
     public static final double LURE_MODIFIER_DEFAULT = 4.0D;
+    private static final boolean ALLOW_MCMMO_FISHING_REWARDS = true;
 
     @Setting(value = "Always-Catch-Fish", comment = "Enables fish to be caught alongside treasure." +
             "\nDefault value: "+ALWAYS_CATCH_FISH_DEFAULT)
@@ -23,6 +24,14 @@ public class ConfigFishingGeneral {
             " increase drop chance by for fishing rods with the Luck enchantment." +
             "\nDefault value: "+LURE_MODIFIER_DEFAULT)
     private double lureLuckModifier = LURE_MODIFIER_DEFAULT;
+
+    @Setting(value = "Allow-Custom-Fishing-Drops", comment = "If set to true, allows mcMMO fishing treasures to be found while fishing." +
+            "\nDefault value: "+ALLOW_MCMMO_FISHING_REWARDS)
+    private boolean allowCustomDrops = ALLOW_MCMMO_FISHING_REWARDS;
+
+    public boolean isAllowCustomDrops() {
+        return allowCustomDrops;
+    }
 
     public double getLureLuckModifier() {
         return lureLuckModifier;

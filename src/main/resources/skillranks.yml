@@ -426,6 +426,15 @@ Fishing:
             Rank_6: 750
             Rank_7: 850
             Rank_8: 1000
+    InnerPeace:
+        Standard:
+            Rank_1: 33
+            Rank_2: 66
+            Rank_3: 100
+        RetroMode:
+            Rank_1: 333
+            Rank_2: 666
+            Rank_3: 1000
 Swords:
     SwordsLimitBreak:
         Standard:

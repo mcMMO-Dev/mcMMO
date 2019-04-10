@@ -644,7 +644,6 @@ public class AdvancedConfig extends ConfigValidated {
 
     /* FISHING */
     public double getShakeChance(int rank) { return getDoubleValue(SKILLS, FISHING, SHAKE, CHANCE, RANK, String.valueOf(rank)); }
-    public int getFishingVanillaXPModifier(int rank) { return getIntValue(SKILLS, FISHING, VANILLA_XPMULTIPLIER, RANK, String.valueOf(rank)); }
     public double getMasterAnglerBoatModifier() {return getDoubleValue(SKILLS, FISHING, MASTER_ANGLER, BOAT_MODIFIER); }
     public double getMasterAnglerBiomeModifier() {return getDoubleValue(SKILLS, FISHING, MASTER_ANGLER, BIOME_MODIFIER); }
 

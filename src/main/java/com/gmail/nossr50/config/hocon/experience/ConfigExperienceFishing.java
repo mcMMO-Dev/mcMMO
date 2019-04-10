@@ -33,4 +33,6 @@ public class ConfigExperienceFishing {
     public int getShakeXP() {
         return shakeXP;
     }
+
+
 }

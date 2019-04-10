@@ -38,6 +38,7 @@ public enum SubSkillType {
     FISHING_MAGIC_HUNTER(1),
     FISHING_MASTER_ANGLER(1),
     FISHING_TREASURE_HUNTER(8),
+    FISHING_INNER_PEACE(3),
     FISHING_SHAKE(1),
 
     /* Herbalism */
