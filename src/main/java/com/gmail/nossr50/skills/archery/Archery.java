@@ -1,8 +1,8 @@
 package com.gmail.nossr50.skills.archery;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Material;
@@ -17,21 +17,30 @@ import java.util.List;
 public class Archery {
     private static List<TrackedEntity> trackedEntities;
 
-    public static double skillShotMaxBonusDamage;
+    private static double skillShotDamageCap;
 
-    public static double dazeBonusDamage;
+    private static double dazeBonusDamage;
 
-    public static double DISTANCE_XP_MULTIPLIER;
+    private static double distanceXpMultiplier;
+
+    private static Archery archery;
+
+    public static Archery getInstance() {
+        if(archery == null)
+            archery = new Archery();
+
+        return archery;
+    }
 
     public Archery()
     {
         List<TrackedEntity> trackedEntities = new ArrayList<>();
 
-        skillShotMaxBonusDamage     = AdvancedConfig.getInstance().getSkillShotDamageMax();
+        skillShotDamageCap = AdvancedConfig.getInstance().getSkillShotDamageMax();
 
         dazeBonusDamage = AdvancedConfig.getInstance().getDazeBonusDamage();
 
-        DISTANCE_XP_MULTIPLIER = ExperienceConfig.getInstance().getArcheryDistanceMultiplier();
+        distanceXpMultiplier = mcMMO.getConfigManager().getConfigExperience().getDistanceMultiplier();
     }
 
     protected static void incrementTrackerValue(LivingEntity livingEntity) {
@@ -77,10 +86,26 @@ public class Archery {
     {
         double damageBonusPercent = getDamageBonusPercent(player);
         double newDamage = oldDamage + (oldDamage * damageBonusPercent);
-        return Math.min(newDamage, Archery.skillShotMaxBonusDamage);
+        return Math.min(newDamage, Archery.skillShotDamageCap);
     }
 
     public static double getDamageBonusPercent(Player player) {
         return ((RankUtils.getRank(player, SubSkillType.ARCHERY_SKILL_SHOT)) * AdvancedConfig.getInstance().getSkillShotRankDamageMultiplier()) / 100.0D;
+    }
+
+    public List<TrackedEntity> getTrackedEntities() {
+        return trackedEntities;
+    }
+
+    public double getSkillShotDamageCap() {
+        return skillShotDamageCap;
+    }
+
+    public double getDazeBonusDamage() {
+        return dazeBonusDamage;
+    }
+
+    public double getDistanceXpMultiplier() {
+        return distanceXpMultiplier;
     }
 }

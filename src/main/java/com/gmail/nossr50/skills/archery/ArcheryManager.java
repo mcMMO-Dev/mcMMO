@@ -60,7 +60,7 @@ public class ArcheryManager extends SkillManager {
             return 1;
         }
 
-        return 1 + Math.min(firedLocation.distance(targetLocation), 50) * Archery.DISTANCE_XP_MULTIPLIER;
+        return 1 + Math.min(firedLocation.distance(targetLocation), 50) * Archery.getInstance().getDistanceXpMultiplier();
     }
 
     /**
@@ -98,7 +98,7 @@ public class ArcheryManager extends SkillManager {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.TargetDazed");
         }
 
-        return Archery.dazeBonusDamage;
+        return Archery.getInstance().getDazeBonusDamage();
     }
 
     /**

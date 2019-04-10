@@ -160,11 +160,6 @@ public class ExperienceConfig extends ConfigValidated {
         /*
          * XP SETTINGS
          */
-        /* Archery */
-        if (getArcheryDistanceMultiplier() < 0) {
-            reason.add(EXPERIENCE + "." + ARCHERY + "." + DISTANCE + MULTIPLIER + " should be at least 0!");
-        }
-
         /* Combat XP Multipliers */
         if (getAnimalsXP() < 0) {
             reason.add(EXPERIENCE + "." + COMBAT + "." + MULTIPLIER + "." + ANIMALS + " should be at least 0!");
@@ -377,11 +372,6 @@ public class ExperienceConfig extends ConfigValidated {
 
         //In case the value is invalid
         return BarStyle.SOLID;
-    }
-
-    /* Archery */
-    public double getArcheryDistanceMultiplier() {
-        return getDoubleValue(EXPERIENCE, ARCHERY, DISTANCE + MULTIPLIER);
     }
 
     public int getFishingShakeXP() {

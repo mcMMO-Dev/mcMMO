@@ -143,4 +143,16 @@ public class ConfigExperience {
     public boolean isPvpXPEnabled() {
         return experienceCombat.isPvpXPEnabled();
     }
+
+    public double getDistanceMultiplier() {
+        return experienceArchery.getDistanceMultiplier();
+    }
+
+    public HashMap<String, Integer> getFishingXPMap() {
+        return experienceFishing.getFishingXPMap();
+    }
+
+    public int getShakeXP() {
+        return experienceFishing.getShakeXP();
+    }
 }
