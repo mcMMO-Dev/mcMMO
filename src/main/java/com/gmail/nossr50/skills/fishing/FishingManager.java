@@ -210,7 +210,7 @@ public class FishingManager extends SkillManager {
         return AdvancedConfig.getInstance().getShakeChance(getLootTier());
     }
 
-    protected int getVanillaXPBoostModifier() {
+    public int getInnerPeaceMultiplier() {
         return mcMMO.getConfigManager().getConfigFishing().getVanillaXPMultInnerPeace(RankUtils.getRank(getPlayer(), SubSkillType.FISHING_INNER_PEACE));
     }
 
@@ -345,8 +345,8 @@ public class FishingManager extends SkillManager {
      *
      * @return the modified event damage
      */
-    public int handleVanillaXpBoost(int experience) {
-        return experience * getVanillaXpMultiplier();
+    public int addInnerPeaceVanillaXPBoost(int experience) {
+        return experience * getInnerPeaceMultiplier();
     }
 
     public Location getHookLocation() {
@@ -593,14 +593,5 @@ public class FishingManager extends SkillManager {
 
         Fishing.getInstance().getEnchantableCache().put(dropType, possibleEnchantments);
         return possibleEnchantments;
-    }
-
-    /**
-     * Gets the vanilla XP multiplier
-     *
-     * @return the vanilla XP multiplier
-     */
-    private int getVanillaXpMultiplier() {
-        return getVanillaXPBoostModifier();
     }
 }

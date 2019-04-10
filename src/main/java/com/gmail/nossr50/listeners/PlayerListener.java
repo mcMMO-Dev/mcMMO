@@ -10,6 +10,7 @@ import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.ShareHandler;
@@ -259,18 +260,21 @@ public class PlayerListener implements Listener {
                 //TODO Update to new API once available! Waiting for case CAUGHT_TREASURE:
                 Item fishingCatch = (Item) event.getCaught();
 
-                if (MainConfig.getInstance().getFishingOverrideTreasures() &&
-                        fishingCatch.getItemStack().getType() != Material.SALMON &&
-                        fishingCatch.getItemStack().getType() != Material.COD &&
-                        fishingCatch.getItemStack().getType() != Material.TROPICAL_FISH &&
-                        fishingCatch.getItemStack().getType() != Material.PUFFERFISH) {
-                    fishingCatch.setItemStack(new ItemStack(Material.SALMON, 1));
+                if (mcMMO.getConfigManager().getConfigFishing().isOverrideVanillaTreasures())
+                {
+                    if(fishingCatch.getItemStack().getType() != Material.SALMON &&
+                            fishingCatch.getItemStack().getType() != Material.COD &&
+                            fishingCatch.getItemStack().getType() != Material.TROPICAL_FISH &&
+                            fishingCatch.getItemStack().getType() != Material.PUFFERFISH)
+                    {
+                        fishingCatch.setItemStack(new ItemStack(Material.SALMON, 1));
+                    }
                 }
 
-                if (Permissions.vanillaXpBoost(player, PrimarySkillType.FISHING)) {
+                if (Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_INNER_PEACE)) {
                     //Don't modify XP below vanilla values
-                    if(fishingManager.handleVanillaXpBoost(event.getExpToDrop()) > 1)
-                        event.setExpToDrop(fishingManager.handleVanillaXpBoost(event.getExpToDrop()));
+                    if(fishingManager.addInnerPeaceVanillaXPBoost(event.getExpToDrop()) > 1)
+                        event.setExpToDrop(fishingManager.addInnerPeaceVanillaXPBoost(event.getExpToDrop()));
                 }
                 return;
 

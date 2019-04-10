@@ -27,8 +27,8 @@ public class FishingCommand extends SkillCommand {
     private String shakeChanceLucky;
     private int fishermansDietRank;
     private String biteChance;
+    private String innerPeaceMult;
 
-    private String trapTreasure;
     private String commonTreasure;
     private String uncommonTreasure;
     private String rareTreasure;
@@ -44,6 +44,7 @@ public class FishingCommand extends SkillCommand {
     private boolean canFishermansDiet;
     private boolean canMasterAngler;
     private boolean canIceFish;
+    private boolean canInnerPeace;
 
     public FishingCommand() {
         super(PrimarySkillType.FISHING);
@@ -114,6 +115,11 @@ public class FishingCommand extends SkillCommand {
 
             biteChance = percent.format((rawBiteChance * 100.0D) * luckyModifier);
         }
+
+        if(canInnerPeace)
+        {
+            innerPeaceMult = String.valueOf(fishingManager.getInnerPeaceMultiplier());
+        }
     }
 
     @Override
@@ -124,6 +130,7 @@ public class FishingCommand extends SkillCommand {
         canFishermansDiet = canUseSubskill(player, SubSkillType.FISHING_FISHERMANS_DIET);
         canMasterAngler = canUseSubskill(player, SubSkillType.FISHING_MASTER_ANGLER);
         canIceFish = canUseSubskill(player, SubSkillType.FISHING_ICE_FISHING);
+        canInnerPeace = canUseSubskill(player, SubSkillType.FISHING_INNER_PEACE);
     }
 
     @Override
@@ -165,7 +172,7 @@ public class FishingCommand extends SkillCommand {
 
         if(canInnerPeace)
         {
-            m
+            messages.add(getStatMessage(SubSkillType.FISHING_INNER_PEACE, innerPeaceMult));
         }
 
         return messages;
