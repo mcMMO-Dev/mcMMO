@@ -303,7 +303,7 @@ permissions:
             mcmmo.ability.fishing.masterangler: true
             mcmmo.ability.fishing.shake: true
             mcmmo.ability.fishing.treasurehunter: true
-            mcmmo.ability.fishing.vanillaxpboost: true
+            mcmmo.ability.fishing.innerpeace: true
     mcmmo.ability.fishing.fishermansdiet:
         description: Allows access to the Fishermans's Diet ability
     mcmmo.ability.fishing.icefishing:
@@ -316,8 +316,8 @@ permissions:
         description: Allows access to the Shake Mob ability
     mcmmo.ability.fishing.treasurehunter:
         description: Allows treasure drops from Fishing
-    mcmmo.ability.fishing.vanillaxpboost:
-        description: Allows vanilla XP boost from Fishing
+    mcmmo.ability.fishing.innerpeace:
+        description: Allows vanilla XP orb boost from Fishing
     mcmmo.ability.herbalism.*:
         default: false
         description: Allows access to all Herbalism abilities
