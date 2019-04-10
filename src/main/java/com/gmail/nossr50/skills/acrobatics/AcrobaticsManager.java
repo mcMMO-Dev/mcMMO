@@ -52,9 +52,9 @@ public class AcrobaticsManager extends SkillManager {
             return false;
 
         if (Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.ACROBATICS_DODGE)) {
-            if (damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled) {
+            /*if (damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled) {
                 return false;
-            }
+            }*/
 
             return skill.shouldProcess(damager);
         }

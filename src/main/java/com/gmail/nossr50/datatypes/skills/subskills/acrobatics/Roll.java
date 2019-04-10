@@ -301,10 +301,10 @@ public class Roll extends AcrobaticsSubSkill {
 
     private float calculateRollXP(Player player, double damage, boolean isRoll) {
         ItemStack boots = player.getInventory().getBoots();
-        float xp = (float) (damage * (isRoll ? ExperienceConfig.getInstance().getRollXPModifier() : ExperienceConfig.getInstance().getFallXPModifier()));
+        float xp = (float) (damage * (isRoll ? mcMMO.getConfigManager().getConfigExperience().getRollXP() : mcMMO.getConfigManager().getConfigExperience().getFallXP()));
 
         if (boots != null && boots.containsEnchantment(Enchantment.PROTECTION_FALL)) {
-            xp *= ExperienceConfig.getInstance().getFeatherFallXPModifier();
+            xp *= mcMMO.getConfigManager().getConfigExperience().getFeatherFallMultiplier();
         }
 
         return xp;

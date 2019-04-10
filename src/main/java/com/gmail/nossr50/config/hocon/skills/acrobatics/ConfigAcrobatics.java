@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config.hocon.skills.acrobatics;
 
+import com.gmail.nossr50.config.hocon.skills.ConfigSubSkillScalingRNG;
 import com.gmail.nossr50.config.hocon.skills.acrobatics.dodge.ConfigDodge;
 import com.gmail.nossr50.config.hocon.skills.acrobatics.roll.ConfigRoll;
 import ninja.leaping.configurate.objectmapping.Setting;
@@ -24,4 +25,11 @@ public class ConfigAcrobatics {
         return dodge;
     }
 
+    public ConfigSubSkillScalingRNG getRNGSettings() {
+        return dodge.getRNGSettings();
+    }
+
+    public double getDamageReductionDivisor() {
+        return dodge.getDamageReductionDivisor();
+    }
 }

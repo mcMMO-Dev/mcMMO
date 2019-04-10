@@ -148,7 +148,7 @@ Version 2.2.0
     Update_Check, Prefer_Beta, Ability_Activation_Level_Gate, Max_Tries_At_Same_Location, Prevent_AFK_Leveling, Items_Pickup_Disabled_Full_Inventory
 
     Removed the following config settings for being unwanted
-    Config_Update_Overwrite, Tool_Mods_Enabled, Armor_Mods_Enabled, Block_Mods_Enabled, Entity_Mods_Enabled
+    Config_Update_Overwrite, Tool_Mods_Enabled, Armor_Mods_Enabled, Block_Mods_Enabled, Entity_Mods_Enabled,
 
     API Changes
     SimpleRepairable/SimpleSalvageable renamed to just Repairable/Salvageable, and their unnecessary interface classes were removed

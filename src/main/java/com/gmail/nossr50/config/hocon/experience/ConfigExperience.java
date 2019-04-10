@@ -119,4 +119,28 @@ public class ConfigExperience {
     public int getFallXP() {
         return experienceAcrobatics.getFallXP();
     }
+
+    public int getStageOnePotionXP() {
+        return experienceAlchemy.getStageOnePotionXP();
+    }
+
+    public int getStageTwoPotionXP() {
+        return experienceAlchemy.getStageTwoPotionXP();
+    }
+
+    public int getStageThreePotionXP() {
+        return experienceAlchemy.getStageThreePotionXP();
+    }
+
+    public int getStageFourPotionXP() {
+        return experienceAlchemy.getStageFourPotionXP();
+    }
+
+    public int getStageFivePotionXP() {
+        return experienceAlchemy.getStageFivePotionXP();
+    }
+
+    public boolean isPvpXPEnabled() {
+        return experienceCombat.isPvpXPEnabled();
+    }
 }

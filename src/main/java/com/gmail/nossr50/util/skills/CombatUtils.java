@@ -551,7 +551,7 @@ public final class CombatUtils {
         XPGainReason xpGainReason;
 
         if (target instanceof Player) {
-            if (!ExperienceConfig.getInstance().getExperienceGainsPlayerVersusPlayerEnabled() || PartyManager.inSameParty(mcMMOPlayer.getPlayer(), (Player) target)) {
+            if (!mcMMO.getConfigManager().getConfigExperience().isPvpXPEnabled() || PartyManager.inSameParty(mcMMOPlayer.getPlayer(), (Player) target)) {
                 return;
             }
 

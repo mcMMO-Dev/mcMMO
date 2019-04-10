@@ -178,18 +178,6 @@ public class ExperienceConfig extends ConfigValidated {
             reason.add(EXPERIENCE + "." + COMBAT + "." + MULTIPLIER + "." + ANIMALS + " should be at least 0!");
         }
 
-        if (getDodgeXPModifier() < 0) {
-            reason.add("Skills." + ACROBATICS + "." + DODGE + "_XP_" + MODIFIER + " should be at least 0!");
-        }
-
-        if (getRollXPModifier() < 0) {
-            reason.add("Skills." + ACROBATICS + "." + ROLL + "_XP_" + MODIFIER + " should be at least 0!");
-        }
-
-        if (getFallXPModifier() < 0) {
-            reason.add("Skills." + ACROBATICS + "." + FALL + "_XP_" + MODIFIER + " should be at least 0!");
-        }
-
         /* Fishing */
         // TODO: Add validation for each fish type once enum is available.
 
@@ -315,11 +303,6 @@ public class ExperienceConfig extends ConfigValidated {
      * XP SETTINGS
      */
 
-    /* General Settings */
-    public boolean getExperienceGainsPlayerVersusPlayerEnabled() {
-        return getBooleanValue(EXPERIENCE, PVP, REWARDS);
-    }
-
     /* Combat XP Multipliers */
     public double getCombatXP(EntityType entity) {
         return getDoubleValue(EXPERIENCE, COMBAT, MULTIPLIER, StringUtils.getEntityConfigName(entity));
@@ -402,23 +385,6 @@ public class ExperienceConfig extends ConfigValidated {
 
         //In case the value is invalid
         return BarStyle.SOLID;
-    }
-
-    /* Acrobatics */
-    public int getDodgeXPModifier() {
-        return getIntValue(EXPERIENCE, ACROBATICS, DODGE);
-    }
-
-    public int getRollXPModifier() {
-        return getIntValue(EXPERIENCE, ACROBATICS, ROLL);
-    }
-
-    public int getFallXPModifier() {
-        return getIntValue(EXPERIENCE, ACROBATICS, FALL);
-    }
-
-    public double getFeatherFallXPModifier() {
-        return getDoubleValue(EXPERIENCE, ACROBATICS, FEATHER_FALL_MULTIPLIER);
     }
 
     /* Alchemy */

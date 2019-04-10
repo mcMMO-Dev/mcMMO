@@ -5,4 +5,6 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 @ConfigSerializable
 public class ConfigExperienceArchery {
 
+
+
 }
