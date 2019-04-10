@@ -1,7 +1,6 @@
 package com.gmail.nossr50.datatypes.skills.subskills.acrobatics;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.LimitedSizeList;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;

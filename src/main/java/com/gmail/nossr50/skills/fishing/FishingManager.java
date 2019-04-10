@@ -48,21 +48,22 @@ public class FishingManager extends SkillManager {
     public final long FISHING_ROD_CAST_CD_MILLISECONDS;
     public final int OVERFISH_LIMIT;
 
-    private long fishingRodCastTimestamp = 0L;
-    private long fishHookSpawnTimestamp = 0L;
-    private long lastWarned = 0L;
-    private long lastWarnedExhaust = 0L;
+    private long fishingRodCastTimestamp;
+    private long fishHookSpawnTimestamp;
+    private long lastWarned;
+    private long lastWarnedExhaust;
     private BoundingBox lastFishingBoundingBox;
     private Location hookLocation;
-    private int fishCaughtCounter = 1;
+    private int fishCaughtCounter;
     private final float boundingBoxSize;
-    private int overFishCount = 0;
+    private int overFishCount;
 
     public FishingManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.FISHING);
         OVERFISH_LIMIT = mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().getOverfishingLimit() + 1;
         FISHING_ROD_CAST_CD_MILLISECONDS = mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().getFishingRodSpamMilliseconds();
         boundingBoxSize = mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().getOverFishingAreaSize();
+        fishCaughtCounter = 1;
     }
 
     public boolean canShake(Entity target) {
@@ -186,7 +187,7 @@ public class FishingManager extends SkillManager {
         }
 
         // Make sure this is a body of water, not just a block of ice.
-        if (!Fishing.iceFishingBiomes.contains(block.getBiome()) && (block.getRelative(BlockFace.DOWN, 3).getType() != Material.WATER)) {
+        if (!Fishing.getInstance().getIceFishingBiomes().contains(block.getBiome()) && (block.getRelative(BlockFace.DOWN, 3).getType() != Material.WATER)) {
             return false;
         }
 
@@ -261,7 +262,7 @@ public class FishingManager extends SkillManager {
 
         hookLocation = location;
 
-        if (Fishing.masterAnglerBiomes.contains(location.getBlock().getBiome())) {
+        if (Fishing.getInstance().getMasterAnglerBiomes().contains(location.getBlock().getBiome())) {
             biteChance = biteChance * AdvancedConfig.getInstance().getMasterAnglerBiomeModifier();
         }
 
@@ -329,6 +330,8 @@ public class FishingManager extends SkillManager {
 
                 if (mcMMO.getConfigManager().getConfigFishing().isAlwaysCatchFish()) {
                     Misc.dropItem(player.getEyeLocation(), fishingCatch.getItemStack());
+                    //Add XP from Fish
+                    fishXp+=Fishing.getInstance().getFishXPValue(fishingCatch.getItemStack().getType());
                 }
 
                 fishingCatch.setItemStack(treasureDrop);
@@ -360,13 +363,13 @@ public class FishingManager extends SkillManager {
      */
     public void shakeCheck(LivingEntity target) {
         if (RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getShakeChance(), getPlayer(), SubSkillType.FISHING_SHAKE))) {
-            List<ShakeTreasure> possibleDrops = Fishing.findPossibleDrops(target);
+            List<ShakeTreasure> possibleDrops = Fishing.getInstance().findPossibleDrops(target);
 
             if (possibleDrops == null || possibleDrops.isEmpty()) {
                 return;
             }
 
-            ItemStack drop = Fishing.chooseDrop(possibleDrops);
+            ItemStack drop = Fishing.getInstance().chooseDrop(possibleDrops);
 
             // It's possible that chooseDrop returns null if the sum of probability in possibleDrops is inferior than 100
             if (drop == null) {
@@ -579,8 +582,8 @@ public class FishingManager extends SkillManager {
     private List<Enchantment> getPossibleEnchantments(ItemStack treasureDrop) {
         Material dropType = treasureDrop.getType();
 
-        if (Fishing.ENCHANTABLE_CACHE.containsKey(dropType)) {
-            return Fishing.ENCHANTABLE_CACHE.get(dropType);
+        if (Fishing.getInstance().getEnchantableCache().containsKey(dropType)) {
+            return Fishing.getInstance().getEnchantableCache().get(dropType);
         }
 
         List<Enchantment> possibleEnchantments = new ArrayList<>();
@@ -591,7 +594,7 @@ public class FishingManager extends SkillManager {
             }
         }
 
-        Fishing.ENCHANTABLE_CACHE.put(dropType, possibleEnchantments);
+        Fishing.getInstance().getEnchantableCache().put(dropType, possibleEnchantments);
         return possibleEnchantments;
     }
 

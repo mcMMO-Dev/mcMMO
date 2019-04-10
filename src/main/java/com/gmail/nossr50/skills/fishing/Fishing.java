@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills.fishing;
 
 import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
 import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.adapter.BiomeAdapter;
 import org.bukkit.Material;
@@ -16,16 +17,45 @@ import java.util.Set;
 
 public final class Fishing {
 
-    protected static final HashMap<Material, List<Enchantment>> ENCHANTABLE_CACHE = new HashMap<>();
+    private static HashMap<Material, List<Enchantment>> ENCHANTABLE_CACHE = new HashMap<>();
+    private HashMap<Material, Integer> fishingXpRewardMap;
+    private static Set<Biome> masterAnglerBiomes = BiomeAdapter.WATER_BIOMES;
+    private static Set<Biome> iceFishingBiomes   = BiomeAdapter.ICE_BIOMES;
 
-    /*public static int fishermansDietRankLevel1 = AdvancedConfig.getInstance().getFishermanDietRankChange();
-    public static int fishermansDietRankLevel2 = fishermansDietRankLevel1 * 2;
-    public static int fishermansDietMaxLevel   = fishermansDietRankLevel1 * 5;*/
+    public static Fishing instance;
 
-    public static Set<Biome> masterAnglerBiomes = BiomeAdapter.WATER_BIOMES;
-    public static Set<Biome> iceFishingBiomes   = BiomeAdapter.ICE_BIOMES;
+    public static Fishing getInstance() {
+        if(instance == null)
+            instance = new Fishing();
 
-    private Fishing() {}
+        return instance;
+    }
+
+    public Fishing() {
+        initFishingXPRewardMap();
+    }
+
+    /**
+     * Inits the Fishing Catch -> XP Reward map
+     */
+    private void initFishingXPRewardMap()
+    {
+        fishingXpRewardMap = new HashMap<>();
+        HashMap<String, Integer> nameRegisterMap = mcMMO.getConfigManager().getConfigExperience().getFishingXPMap();
+
+        for(String qualifiedName : nameRegisterMap.keySet())
+        {
+            Material material = Material.matchMaterial(qualifiedName);
+
+            if(material == null)
+            {
+                mcMMO.p.getLogger().info("Unable to match qualified name to item for fishing xp map: "+qualifiedName);
+                continue;
+            }
+
+            fishingXpRewardMap.putIfAbsent(material, nameRegisterMap.get(qualifiedName));
+        }
+    }
 
     /**
      * Finds the possible drops of an entity
@@ -34,7 +64,7 @@ public final class Fishing {
      *            Targeted entity
      * @return possibleDrops List of ItemStack that can be dropped
      */
-    protected static List<ShakeTreasure> findPossibleDrops(LivingEntity target) {
+    public List<ShakeTreasure> findPossibleDrops(LivingEntity target) {
         if (FishingTreasureConfig.getInstance().shakeMap.containsKey(target.getType()))
             return FishingTreasureConfig.getInstance().shakeMap.get(target.getType());
 
@@ -48,7 +78,7 @@ public final class Fishing {
      *            List of ItemStack that can be dropped
      * @return Chosen ItemStack
      */
-    protected static ItemStack chooseDrop(List<ShakeTreasure> possibleDrops) {
+    public ItemStack chooseDrop(List<ShakeTreasure> possibleDrops) {
         int dropProbability = Misc.getRandom().nextInt(100);
         double cumulatedProbability = 0;
 
@@ -61,5 +91,27 @@ public final class Fishing {
         }
 
         return null;
+    }
+
+    public HashMap<Material, List<Enchantment>> getEnchantableCache() {
+        return ENCHANTABLE_CACHE;
+    }
+
+    public HashMap<Material, Integer> getFishingXpRewardMap() {
+        return fishingXpRewardMap;
+    }
+
+    public Set<Biome> getMasterAnglerBiomes() {
+        return masterAnglerBiomes;
+    }
+
+    public Set<Biome> getIceFishingBiomes() {
+        return iceFishingBiomes;
+    }
+
+
+    public int getFishXPValue(Material material)
+    {
+        return fishingXpRewardMap.get(material);
     }
 }

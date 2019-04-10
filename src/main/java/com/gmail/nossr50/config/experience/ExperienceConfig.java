@@ -5,7 +5,6 @@ import com.gmail.nossr50.config.ConfigValidated;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
