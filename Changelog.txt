@@ -25,6 +25,7 @@ Version 2.2.0
     All config nodes now include a comment with the default value of the node to use as reference
     Expanded settings relating to purging users who have not leveled or users who had not logged in for many months
     Acrobatic's Dodge XP increased from 120 -> 480
+    Fishing's always catch fish setting now defaults to true instead of false
     NOTE: Not every config key that was renamed will be listed here
     Admins will now be notified if a player trips over-fishing exploit detection 3+ times in a row (Locale: "Fishing.OverFishingDetected")
         Note: Admins are players who are op or have adminchat permission.

@@ -128,13 +128,7 @@ public class SalvageManager extends SkillManager {
         Misc.dropItems(location, salvageResults, 1);
 
         // BWONG BWONG BWONG - CLUNK!
-<<<<<<< HEAD
         if (mcMMO.getConfigManager().getConfigSalvage().getGeneral().isAnvilUseSounds()) {
-            SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
-=======
-        if (Config.getInstance().getSalvageAnvilUseSoundsEnabled()) {
-//            SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
->>>>>>> f1204f8a2aa8b402dc84a4b76c46665e02edb767
             SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_BREAK);
 
             //player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);

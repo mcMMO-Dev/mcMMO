@@ -606,10 +606,6 @@ public class MainConfig extends ConfigValidated {
         return getBooleanValue(SKILLS, FISHING, OVERRIDE_VANILLA_TREASURES);
     }
 
-    public boolean getFishingExtraFish() {
-        return getBooleanValue(SKILLS, FISHING, EXTRA_FISH);
-    }
-
     public double getFishingLureModifier() {
         return getDoubleValue(SKILLS, FISHING, LURE_MODIFIER);
     }

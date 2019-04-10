@@ -327,7 +327,7 @@ public class FishingManager extends SkillManager {
                     NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Fishing.Ability.TH.MagicFound");
                 }
 
-                if (MainConfig.getInstance().getFishingExtraFish()) {
+                if (mcMMO.getConfigManager().getConfigFishing().isAlwaysCatchFish()) {
                     Misc.dropItem(player.getEyeLocation(), fishingCatch.getItemStack());
                 }
 
@@ -438,7 +438,7 @@ public class FishingManager extends SkillManager {
 
             Misc.dropItem(target.getLocation(), drop);
             CombatUtils.dealDamage(target, Math.min(Math.max(target.getMaxHealth() / 4, 1), 10), EntityDamageEvent.DamageCause.CUSTOM, getPlayer()); // Make it so you can shake a mob no more than 4 times.
-            applyXpGain(ExperienceConfig.getInstance().getFishingShakeXP(), XPGainReason.PVE);
+            applyXpGain(mcMMO.getConfigManager().getConfigExperience().getShakeXP(), XPGainReason.PVE);
         }
     }
 

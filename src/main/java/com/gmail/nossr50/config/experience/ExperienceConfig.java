@@ -165,13 +165,6 @@ public class ExperienceConfig extends ConfigValidated {
             reason.add(EXPERIENCE + "." + COMBAT + "." + MULTIPLIER + "." + ANIMALS + " should be at least 0!");
         }
 
-        /* Fishing */
-        // TODO: Add validation for each fish type once enum is available.
-
-        if (getFishingShakeXP() <= 0) {
-            reason.add(EXPERIENCE + "." + FISHING + "." + SHAKE + " should be greater than 0!");
-        }
-
         /* Repair */
         if (getRepairXPBase() <= 0) {
             reason.add(EXPERIENCE + "." + REPAIR + "." + BASE1 + " should be greater than 0!");
@@ -374,9 +367,6 @@ public class ExperienceConfig extends ConfigValidated {
         return BarStyle.SOLID;
     }
 
-    public int getFishingShakeXP() {
-        return getIntValue(EXPERIENCE, FISHING, SHAKE);
-    }
 
     /* Repair */
     public double getRepairXPBase() {
