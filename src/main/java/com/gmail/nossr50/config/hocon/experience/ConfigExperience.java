@@ -3,6 +3,8 @@ package com.gmail.nossr50.config.hocon.experience;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
+import java.util.HashMap;
+
 @ConfigSerializable
 public class ConfigExperience {
 
@@ -41,6 +43,10 @@ public class ConfigExperience {
 
     @Setting(value = "Z-Combat", comment = "XP Settings for Combat")
     private ConfigExperienceCombat experienceCombat = new ConfigExperienceCombat();
+
+    /*
+     * BOILER PLATE GETTERS
+     */
 
     public ConfigExperienceAcrobatics getExperienceAcrobatics() {
         return experienceAcrobatics;
@@ -88,5 +94,17 @@ public class ConfigExperience {
 
     public ConfigExperienceCombat getExperienceCombat() {
         return experienceCombat;
+    }
+
+    public HashMap<String, Integer> getAcrobaticsXPMap() {
+        return experienceAcrobatics.getAcrobaticsXPMap();
+    }
+
+    public Double getFeatherFallMultiplier() {
+        return experienceAcrobatics.getFeatherFallMultiplier();
+    }
+
+    public HashMap<String, Integer> getAlchemyXPMap() {
+        return experienceAlchemy.getAlchemyXPMap();
     }
 }
