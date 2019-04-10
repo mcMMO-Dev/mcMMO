@@ -136,8 +136,8 @@ public class ConfigExperience {
         return experienceAlchemy.getStageFourPotionXP();
     }
 
-    public int getStageFivePotionXP() {
-        return experienceAlchemy.getStageFivePotionXP();
+    public int getPotionXPByStage(int potionStage) {
+        return experienceAlchemy.getPotionXPByStage(potionStage);
     }
 
     public boolean isPvpXPEnabled() {

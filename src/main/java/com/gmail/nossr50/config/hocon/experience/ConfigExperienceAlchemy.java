@@ -46,10 +46,27 @@ public class ConfigExperienceAlchemy {
         return alchemyXPMap.get("Stage-Four-Potion");
     }
 
-    public int getStageFivePotionXP()
+    /*public int getStageFivePotionXP()
     {
         //This is purposely zero to prevent an exploit
         return 0;
+    }*/
+
+    public int getPotionXPByStage(int potionStage)
+    {
+        switch(potionStage)
+        {
+            case 1:
+                return getStageOnePotionXP();
+            case 2:
+                return getStageTwoPotionXP();
+            case 3:
+                return getStageThreePotionXP();
+            case 4:
+                return getStageFourPotionXP();
+            default:
+                return 0; //Zero XP is intentional to prevent some infinite loop XP exploit
+        }
     }
 
 }

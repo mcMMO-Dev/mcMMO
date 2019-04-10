@@ -160,14 +160,6 @@ public class ExperienceConfig extends ConfigValidated {
         /*
          * XP SETTINGS
          */
-
-        /* Alchemy */
-        for (PotionStage potionStage : PotionStage.values()) {
-            if (getPotionXP(potionStage) < 0) {
-                reason.add(EXPERIENCE + "." + ALCHEMY + "." + POTION_STAGE + potionStage.toNumerical() + " should be at least 0!");
-            }
-        }
-
         /* Archery */
         if (getArcheryDistanceMultiplier() < 0) {
             reason.add(EXPERIENCE + "." + ARCHERY + "." + DISTANCE + MULTIPLIER + " should be at least 0!");
@@ -385,11 +377,6 @@ public class ExperienceConfig extends ConfigValidated {
 
         //In case the value is invalid
         return BarStyle.SOLID;
-    }
-
-    /* Alchemy */
-    public double getPotionXP(PotionStage stage) {
-        return getDoubleValue(EXPERIENCE, ALCHEMY, POTION_STAGE + stage.toNumerical());
     }
 
     /* Archery */

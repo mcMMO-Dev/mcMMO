@@ -8,6 +8,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
@@ -53,6 +54,7 @@ public class AlchemyManager extends SkillManager {
     }
 
     public void handlePotionBrewSuccesses(PotionStage potionStage, int amount) {
-        applyXpGain((float) (ExperienceConfig.getInstance().getPotionXP(potionStage) * amount), XPGainReason.PVE, XPGainSource.PASSIVE);
+        //TODO: This code disturbs me
+        applyXpGain((float) (mcMMO.getConfigManager().getConfigExperience().getExperienceAlchemy().getPotionXPByStage(potionStage.toNumerical()) * amount), XPGainReason.PVE, XPGainSource.PASSIVE);
     }
 }
