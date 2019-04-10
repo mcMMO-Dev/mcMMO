@@ -13,6 +13,7 @@ import com.gmail.nossr50.runnables.player.PlayerProfileSaveTask;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableMap;
+import org.bukkit.Bukkit;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +30,7 @@ public class PlayerProfile {
     /* HUDs */
     private MobHealthbarType mobHealthbarType;
     private int scoreboardTipsShown;
+    private int saveAttempts = 0;
 
     /* Skill Data */
     private final Map<PrimarySkillType, Integer>   skills     = new HashMap<PrimarySkillType, Integer>();   // Skill & Level
@@ -36,7 +38,7 @@ public class PlayerProfile {
     private final Map<SuperAbilityType, Integer> abilityDATS = new HashMap<SuperAbilityType, Integer>(); // Ability & Cooldown
     private final Map<UniqueDataType, Integer> uniquePlayerData = new HashMap<>(); //Misc data that doesn't fit into other categories (chimaera wing, etc..)
 
-    // Store previous XP gains for deminished returns
+    // Store previous XP gains for diminished returns
     private DelayQueue<SkillXpGain> gainedSkillsXp = new DelayQueue<SkillXpGain>();
     private HashMap<PrimarySkillType, Float> rollingSkillsXp = new HashMap<PrimarySkillType, Float>();
 
@@ -94,8 +96,13 @@ public class PlayerProfile {
         new PlayerProfileSaveTask(this).runTaskAsynchronously(mcMMO.p);
     }
 
+    public void scheduleAsyncSaveDelay() {
+        new PlayerProfileSaveTask(this).runTaskLaterAsynchronously(mcMMO.p, 20);
+    }
+
     public void save() {
         if (!changed || !loaded) {
+            saveAttempts = 0;
             return;
         }
 
@@ -104,8 +111,29 @@ public class PlayerProfile {
         changed = !mcMMO.getDatabaseManager().saveUser(profileCopy);
 
         if (changed) {
-            mcMMO.p.getLogger().warning("PlayerProfile saving failed for player: " + playerName + " " + uuid);
+            mcMMO.p.getLogger().severe("PlayerProfile saving failed for player: " + playerName + " " + uuid);
+
+            if(saveAttempts > 0)
+            {
+                mcMMO.p.getLogger().severe("Attempted to save profile for player "+getPlayerName()
+                        + " resulted in failure. "+saveAttempts+" have been made so far.");
+            }
+
+            if(saveAttempts < 10)
+            {
+                saveAttempts++;
+                scheduleAsyncSaveDelay();
+                return;
+            } else {
+                mcMMO.p.getLogger().severe("mcMMO has failed to save the profile for "
+                        +getPlayerName()+" numerous times." +
+                        " mcMMO will now stop attempting to save this profile." +
+                        " Check your console for errors and inspect your DB for issues.");
+            }
+
         }
+
+        saveAttempts = 0;
     }
 
     public String getPlayerName() {

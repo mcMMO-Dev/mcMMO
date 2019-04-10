@@ -7,6 +7,15 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.40
+    Added new locale string "Profile.Loading.FailureNotice"
+    Added new locale string "Profile.Loading.FailurePlayer"
+    mcMMO no longer gives up forever if a player profile fails to load and the player is still online
+    mcMMO will attempt to save a profile up to 10 times now, previously it would only try one time.
+    Player data for mcMMO is now loaded 3 seconds after a player connects in order to give any ongoing save tasks from other servers a small grace period to finish. This will mostly be useful to Bungee servers.
+
+NOTES: I received reports from some users saying that saving and loading was failing could fail and not recover, I have implemented some fail safes to greatly reduce the the odds of that happening.
+
 Version 2.1.39
     Salvaging an item should now only play the item break sound (was playing the anvil sound simultaneously before)
     Fixed bug where Tall_Grass was not giving full XP
