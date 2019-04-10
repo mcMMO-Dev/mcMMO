@@ -45,9 +45,6 @@ import java.util.*;
 
 public class FishingManager extends SkillManager {
 
-    public final long FISHING_ROD_CAST_CD_MILLISECONDS;
-    public final int OVERFISH_LIMIT;
-
     private long fishingRodCastTimestamp;
     private long fishHookSpawnTimestamp;
     private long lastWarned;
@@ -55,14 +52,11 @@ public class FishingManager extends SkillManager {
     private BoundingBox lastFishingBoundingBox;
     private Location hookLocation;
     private int fishCaughtCounter;
-    private final float boundingBoxSize;
     private int overFishCount;
 
     public FishingManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.FISHING);
-        OVERFISH_LIMIT = mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().getOverfishingLimit() + 1;
-        FISHING_ROD_CAST_CD_MILLISECONDS = mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().getFishingRodSpamMilliseconds();
-        boundingBoxSize = mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().getOverFishingAreaSize();
+
         fishCaughtCounter = 1;
     }
 
@@ -81,7 +75,7 @@ public class FishingManager extends SkillManager {
         if(currentTime > fishHookSpawnTimestamp + 1000)
             return;
 
-        if(currentTime < fishingRodCastTimestamp + FISHING_ROD_CAST_CD_MILLISECONDS)
+        if(currentTime < fishingRodCastTimestamp + Fishing.getInstance().getFishingRodCastCdMilliseconds())
         {
             getPlayer().setFoodLevel(Math.max(getPlayer().getFoodLevel() - 1, 0));
             getPlayer().getInventory().getItemInMainHand().setDurability((short) (getPlayer().getInventory().getItemInMainHand().getDurability() + 5));
@@ -131,6 +125,8 @@ public class FishingManager extends SkillManager {
             return false;
         }*/
 
+        int overfishLimit = Fishing.getInstance().getOverfishLimit();
+
         BoundingBox newCastBoundingBox = makeBoundingBox(centerOfCastVector);
 
         boolean sameTarget = lastFishingBoundingBox != null && lastFishingBoundingBox.overlaps(newCastBoundingBox);
@@ -140,7 +136,7 @@ public class FishingManager extends SkillManager {
         else
             fishCaughtCounter = 1;
 
-        if(fishCaughtCounter + 1 == OVERFISH_LIMIT)
+        if(fishCaughtCounter + 1 == overfishLimit)
         {
             getPlayer().sendMessage(LocaleLoader.getString("Fishing.LowResources"));
         }
@@ -149,7 +145,7 @@ public class FishingManager extends SkillManager {
         if(!sameTarget)
             lastFishingBoundingBox = newCastBoundingBox;
 
-        if(sameTarget && fishCaughtCounter >= OVERFISH_LIMIT)
+        if(sameTarget && fishCaughtCounter >= overfishLimit)
         {
             overFishCount++;
         } else
@@ -166,10 +162,11 @@ public class FishingManager extends SkillManager {
             }
         }
 
-        return sameTarget && fishCaughtCounter >= OVERFISH_LIMIT;
+        return sameTarget && fishCaughtCounter >= overfishLimit;
     }
 
     public BoundingBox makeBoundingBox(Vector centerOfCastVector) {
+        double boundingBoxSize = Fishing.getInstance().getBoundingBoxSize();
         return BoundingBox.of(centerOfCastVector, boundingBoxSize, boundingBoxSize, boundingBoxSize);
     }
 
@@ -330,8 +327,6 @@ public class FishingManager extends SkillManager {
 
                 if (mcMMO.getConfigManager().getConfigFishing().isAlwaysCatchFish()) {
                     Misc.dropItem(player.getEyeLocation(), fishingCatch.getItemStack());
-                    //Add XP from Fish
-                    fishXp+=Fishing.getInstance().getFishXPValue(fishingCatch.getItemStack().getType());
                 }
 
                 fishingCatch.setItemStack(treasureDrop);
@@ -463,7 +458,7 @@ public class FishingManager extends SkillManager {
         }
 
         // Rather than subtracting luck (and causing a minimum 3% chance for every drop), scale by luck.
-        diceRoll *= (1.0 - luck * MainConfig.getInstance().getFishingLureModifier() / 100);
+        diceRoll *= (1.0 - luck * mcMMO.getConfigManager().getConfigFishing().getLureLuckModifier() / 100);
 
         FishingTreasure treasure = null;
 

@@ -17,10 +17,13 @@ import java.util.Set;
 
 public final class Fishing {
 
-    private static HashMap<Material, List<Enchantment>> ENCHANTABLE_CACHE = new HashMap<>();
+    private HashMap<Material, List<Enchantment>> enchantableCache = new HashMap<>();
     private HashMap<Material, Integer> fishingXpRewardMap;
-    private static Set<Biome> masterAnglerBiomes = BiomeAdapter.WATER_BIOMES;
-    private static Set<Biome> iceFishingBiomes   = BiomeAdapter.ICE_BIOMES;
+    private Set<Biome> masterAnglerBiomes = BiomeAdapter.WATER_BIOMES;
+    private Set<Biome> iceFishingBiomes   = BiomeAdapter.ICE_BIOMES;
+    private final long fishingRodCastCdMilliseconds;
+    private final int overfishLimit;
+    private final float boundingBoxSize;
 
     public static Fishing instance;
 
@@ -32,6 +35,9 @@ public final class Fishing {
     }
 
     public Fishing() {
+        overfishLimit = mcMMO.getConfigManager().getConfigExploitPrevention().getOverfishingLimit() + 1;
+        fishingRodCastCdMilliseconds = mcMMO.getConfigManager().getConfigExploitPrevention().getFishingRodSpamMilliseconds();
+        boundingBoxSize = mcMMO.getConfigManager().getConfigExploitPrevention().getOverFishingAreaSize();
         initFishingXPRewardMap();
     }
 
@@ -94,7 +100,7 @@ public final class Fishing {
     }
 
     public HashMap<Material, List<Enchantment>> getEnchantableCache() {
-        return ENCHANTABLE_CACHE;
+        return enchantableCache;
     }
 
     public HashMap<Material, Integer> getFishingXpRewardMap() {
@@ -109,9 +115,20 @@ public final class Fishing {
         return iceFishingBiomes;
     }
 
-
     public int getFishXPValue(Material material)
     {
         return fishingXpRewardMap.get(material);
+    }
+
+    public long getFishingRodCastCdMilliseconds() {
+        return fishingRodCastCdMilliseconds;
+    }
+
+    public int getOverfishLimit() {
+        return overfishLimit;
+    }
+
+    public float getBoundingBoxSize() {
+        return boundingBoxSize;
     }
 }

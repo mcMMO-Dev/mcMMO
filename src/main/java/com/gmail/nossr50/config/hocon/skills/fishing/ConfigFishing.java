@@ -16,4 +16,12 @@ public class ConfigFishing {
     public boolean isAlwaysCatchFish() {
         return fishingGeneral.isAlwaysCatchFish();
     }
+
+    public double getLureLuckModifier() {
+        return fishingGeneral.getLureLuckModifier();
+    }
+
+    public boolean isOverrideVanillaTreasures() {
+        return fishingGeneral.isOverrideVanillaTreasures();
+    }
 }
