@@ -33,4 +33,17 @@ public class ConfigExperienceAcrobatics {
     public Double getFeatherFallMultiplier() {
         return featherFallMultiplier;
     }
+
+    public int getDodgeXP(){
+        return acrobaticsXPMap.get("Dodge");
+    }
+
+    public int getRollXP(){
+        return acrobaticsXPMap.get("Roll");
+    }
+
+    public int getFallXP(){
+        return acrobaticsXPMap.get("Fall");
+    }
+
 }

@@ -26,4 +26,30 @@ public class ConfigExperienceAlchemy {
         return alchemyXPMap;
     }
 
+    public int getStageOnePotionXP()
+    {
+        return alchemyXPMap.get("Stage-One-Potion");
+    }
+
+    public int getStageTwoPotionXP()
+    {
+        return alchemyXPMap.get("Stage-Two-Potion");
+    }
+
+    public int getStageThreePotionXP()
+    {
+        return alchemyXPMap.get("Stage-Three-Potion");
+    }
+
+    public int getStageFourPotionXP()
+    {
+        return alchemyXPMap.get("Stage-Four-Potion");
+    }
+
+    public int getStageFivePotionXP()
+    {
+        //This is purposely zero to prevent an exploit
+        return 0;
+    }
+
 }

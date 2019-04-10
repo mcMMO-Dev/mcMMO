@@ -107,4 +107,16 @@ public class ConfigExperience {
     public HashMap<String, Integer> getAlchemyXPMap() {
         return experienceAlchemy.getAlchemyXPMap();
     }
+
+    public int getDodgeXP() {
+        return experienceAcrobatics.getDodgeXP();
+    }
+
+    public int getRollXP() {
+        return experienceAcrobatics.getRollXP();
+    }
+
+    public int getFallXP() {
+        return experienceAcrobatics.getFallXP();
+    }
 }
