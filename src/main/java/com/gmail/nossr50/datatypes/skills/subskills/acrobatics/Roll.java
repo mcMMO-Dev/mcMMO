@@ -1,7 +1,6 @@
 package com.gmail.nossr50.datatypes.skills.subskills.acrobatics;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.datatypes.LimitedSizeList;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -32,15 +31,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-
 public class Roll extends AcrobaticsSubSkill {
-    protected HashMap<Player, LimitedSizeList> fallLocationMap;
+
 
     public Roll() {
         super("Roll", EventPriority.HIGHEST, SubSkillType.ACROBATICS_ROLL);
-        if(mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
-            fallLocationMap = new HashMap<>();
     }
 
     /**
@@ -287,12 +282,7 @@ public class Roll extends AcrobaticsSubSkill {
         if(System.currentTimeMillis() < UserManager.getPlayer(player).getTeleportATS())
             return true;
 
-        if(fallLocationMap.get(player) == null)
-            fallLocationMap.put(player, new LimitedSizeList(mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().getAcrobaticLocationLimit()));
-
-        LimitedSizeList fallLocations = fallLocationMap.get(player);
-        
-        if(fallLocations.contains(getBlockLocation(player)))
+        if(UserManager.getPlayer(player).getAcrobaticsManager().hasFallenInLocationBefore(getBlockLocation(player)))
             return true;
 
         return false;
@@ -423,16 +413,7 @@ public class Roll extends AcrobaticsSubSkill {
 
     public void addFallLocation(Player player)
     {
-        if(!mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
-            return;
-
-        if(fallLocationMap.get(player) == null)
-            fallLocationMap.put(player, new LimitedSizeList(mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().getAcrobaticLocationLimit()));
-
-        LimitedSizeList fallLocations = fallLocationMap.get(player);
-
-        Location loc = getBlockLocation(player);
-        fallLocations.add(loc);
+        UserManager.getPlayer(player).getAcrobaticsManager().addLocationToFallMap(getBlockLocation(player));
     }
 
     public Location getBlockLocation(Player player)

@@ -158,6 +158,17 @@ Version 2.2.0
     Added API method to check if player parties are size capped
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
+Version 2.1.40
+    (API) mcMMO will now return null in all cases for UserManager.getPlayerProfile() if they have not been loaded yet
+    (API) Roll stores exploit data in AcrobaticsManager now
+    Added new locale string "Profile.Loading.FailureNotice"
+    Added new locale string "Profile.Loading.FailurePlayer"
+    mcMMO no longer gives up forever if a player profile fails to load and the player is still online
+    mcMMO will attempt to save a profile up to 10 times now, previously it would only try one time.
+    Fixed an ArrayIndexOutOfBounds error with Party Chat
+    Player data for mcMMO is now loaded 3 seconds after a player connects in order to give any ongoing save tasks from other servers a small grace period to finish. This will mostly be useful to Bungee servers.
+
+NOTES: I received reports from some users saying that saving and loading was failing could fail and not recover, I have implemented some fail safes to greatly reduce the the odds of that happening.
 
 Version 2.1.39
     Salvaging an item should now only play the item break sound (was playing the anvil sound simultaneously before)
