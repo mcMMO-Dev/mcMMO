@@ -55,6 +55,10 @@ Version 2.2.0
     Added some failsafes to prevent mcMMO from saving too often
 
     Command config options will now be found in "commands.conf"
+    Added new toggle to allow players to inspect offline users
+    Added new toggle to turn off the inspection distance limitation
+    Players can now inspect players regardless of distance by default
+    Players can now inspect offline players by default
     Settings related to party chat have been moved to the party config file
 
     Custom item (Chimaera Wing) config options will now be found in "custom_items.conf"

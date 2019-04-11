@@ -360,10 +360,6 @@ public class MainConfig extends ConfigValidated {
             }
         }*/
 
-        /* Inspect command distance */
-        if (getInspectDistance() <= 0) {
-            reason.add(COMMANDS + "." + INSPECT1 + "." + MAX_DISTANCE + " should be greater than 0!");
-        }
 
         /*if (getTreeFellerThreshold() <= 0) {
             reason.add(ABILITIES + "." + LIMITS + "." + TREE_FELLER_THRESHOLD + " should be greater than 0!");
@@ -545,15 +541,6 @@ public class MainConfig extends ConfigValidated {
 
     public int getLevelUpEffectsTier() {
         return getIntValue(PARTICLES, LEVEL_UP + TIER);
-    }
-
-    public boolean getLargeFireworks() {
-        return getBooleanValue(PARTICLES, LARGE_FIREWORKS);
-    }
-
-    /* Inspect command distance */
-    public double getInspectDistance() {
-        return getDoubleValue(COMMANDS, INSPECT1, MAX_DISTANCE);
     }
 
     /*
