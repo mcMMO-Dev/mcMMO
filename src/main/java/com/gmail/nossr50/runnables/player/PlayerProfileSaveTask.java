@@ -12,11 +12,6 @@ public class PlayerProfileSaveTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        boolean saveSuccess = playerProfile.save();
-
-        if(!saveSuccess)
-        {
-            playerProfile.scheduleAsyncSaveDelay();
-        }
+        playerProfile.save();
     }
 }
