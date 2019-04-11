@@ -9,6 +9,9 @@ public class ConfigCommands {
     @Setting(value = "Admin-Chat", comment = "Settings related to the admin chat command and chatting modes.")
     private ConfigCommandsAdminChat adminChat = new ConfigCommandsAdminChat();
 
+    @Setting(value = "Inspect", comment = "Settings related to the inspect command.")
+    private ConfigCommandsInspect inspect = new ConfigCommandsInspect();
+
     public ConfigCommandsAdminChat getAdminChat() {
         return adminChat;
     }
@@ -19,5 +22,21 @@ public class ConfigCommands {
 
     public boolean isUseDisplayNames() {
         return getAdminChat().isUseDisplayNames();
+    }
+
+    public ConfigCommandsInspect getInspect() {
+        return inspect;
+    }
+
+    public double getInspectCommandMaxDistance() {
+        return getInspect().getInspectCommandMaxDistance();
+    }
+
+    public boolean isLimitInspectRange() {
+        return getInspect().isLimitInspectRange();
+    }
+
+    public boolean isAllowInspectOnOfflinePlayers() {
+        return getInspect().isAllowInspectOnOfflinePlayers();
     }
 }
