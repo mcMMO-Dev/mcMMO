@@ -1,6 +1,8 @@
 package com.gmail.nossr50.chat;
 
 import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.events.chat.McMMOChatEvent;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -46,12 +48,14 @@ public abstract class ChatManager {
             McMMOPartyChatEvent partyChatEvent = (McMMOPartyChatEvent) event;
 
             //Find the people with permissions
-            for(Player player : event.getPlugin().getServer().getOnlinePlayers())
+            for(McMMOPlayer mcMMOPlayer : UserManager.getPlayers())
             {
+                Player player = mcMMOPlayer.getPlayer();
+
                 //Check for toggled players
-                if(UserManager.getPlayer(player).isPartyChatSpying())
+                if(mcMMOPlayer.isPartyChatSpying())
                 {
-                    Party adminParty = UserManager.getPlayer(player).getParty();
+                    Party adminParty = mcMMOPlayer.getParty();
 
                     //Only message admins not part of this party
                     if(adminParty != null)

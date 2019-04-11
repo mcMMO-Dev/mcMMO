@@ -96,7 +96,11 @@ public final class UserManager {
     }
 
     public static McMMOPlayer getPlayer(Player player) {
-        return (McMMOPlayer) player.getMetadata(mcMMO.playerDataKey).get(0).value();
+        //Avoid Array Index out of bounds
+        if(player.hasMetadata(mcMMO.playerDataKey))
+            return (McMMOPlayer) player.getMetadata(mcMMO.playerDataKey).get(0).value();
+        else
+            return null;
     }
 
     private static McMMOPlayer retrieveMcMMOPlayer(String playerName, boolean offlineValid) {
