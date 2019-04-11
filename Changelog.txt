@@ -9,6 +9,7 @@ Key:
 
 Version 2.1.40
     (API) mcMMO will now return null in all cases for UserManager.getPlayerProfile() if they have not been loaded yet
+    (API) Roll stores exploit data in AcrobaticsManager now
     Added new locale string "Profile.Loading.FailureNotice"
     Added new locale string "Profile.Loading.FailurePlayer"
     mcMMO no longer gives up forever if a player profile fails to load and the player is still online

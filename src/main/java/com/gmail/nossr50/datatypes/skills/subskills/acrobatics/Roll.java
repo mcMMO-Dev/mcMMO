@@ -1,9 +1,7 @@
 package com.gmail.nossr50.datatypes.skills.subskills.acrobatics;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.LimitedSizeList;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -34,14 +32,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-
 public class Roll extends AcrobaticsSubSkill {
-    protected HashMap<Player, LimitedSizeList> fallLocationMap;
+
 
     public Roll() {
         super("Roll", EventPriority.HIGHEST, SubSkillType.ACROBATICS_ROLL);
-        fallLocationMap = new HashMap<>();
     }
 
     /**
@@ -280,25 +275,11 @@ public class Roll extends AcrobaticsSubSkill {
             return true;
         }
 
-        if(fallLocationMap.get(player) == null)
-            fallLocationMap.put(player, new LimitedSizeList(50));
 
-        LimitedSizeList fallLocations = fallLocationMap.get(player);
-        
-        if(fallLocations.contains(getBlockLocation(player)))
+        if(UserManager.getPlayer(player).getAcrobaticsManager().hasFallenInLocationBefore(getBlockLocation(player)))
             return true;
 
         return false; //NOT EXPLOITING
-/*
-        Location fallLocation = player.getLocation();
-        int maxTries = Config.getInstance().getAcrobaticsAFKMaxTries();
-
-        boolean sameLocation = (lastFallLocation != null && Misc.isNear(lastFallLocation, fallLocation, 2));
-
-        fallTries = sameLocation ? Math.min(fallTries + 1, maxTries) : Math.max(fallTries - 1, 0);
-        lastFallLocation = fallLocation;
-
-        return fallTries + 1 > maxTries;*/
     }
 
     private float calculateRollXP(Player player, double damage, boolean isRoll) {
@@ -426,13 +407,7 @@ public class Roll extends AcrobaticsSubSkill {
 
     public void addFallLocation(Player player)
     {
-        if(fallLocationMap.get(player) == null)
-            fallLocationMap.put(player, new LimitedSizeList(50));
-
-        LimitedSizeList fallLocations = fallLocationMap.get(player);
-
-        Location loc = getBlockLocation(player);
-        fallLocations.add(loc);
+        UserManager.getPlayer(player).getAcrobaticsManager().addLocationToFallMap(getBlockLocation(player));
     }
 
     public Location getBlockLocation(Player player)

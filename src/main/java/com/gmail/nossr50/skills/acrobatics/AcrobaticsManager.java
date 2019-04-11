@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.acrobatics;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.LimitedSizeList;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -15,6 +16,7 @@ import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Player;
@@ -23,11 +25,23 @@ public class AcrobaticsManager extends SkillManager {
 
     public AcrobaticsManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.ACROBATICS);
+        fallLocationMap = new LimitedSizeList(50);
     }
 
     private long rollXPCooldown = 0;
     private long rollXPInterval = (1000 * 10); //1 Minute
     private long rollXPIntervalLengthen = (1000 * 10); //10 Seconds
+    private LimitedSizeList fallLocationMap;
+
+    public boolean hasFallenInLocationBefore(Location location)
+    {
+        return fallLocationMap.contains(location);
+    }
+
+    public void addLocationToFallMap(Location location)
+    {
+        fallLocationMap.add(location);
+    }
 
     public boolean canGainRollXP()
     {
