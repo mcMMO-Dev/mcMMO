@@ -428,14 +428,6 @@ public class MainConfig extends ConfigValidated {
         return getBooleanValue(GENERAL, SHOW_PROFILE_LOADED);
     }
 
-    public String getAdminChatPrefix() {
-        return getStringValue(COMMANDS, ADMINCHAT, CHAT_PREFIX_FORMAT);
-    }
-
-    public boolean getAdminDisplayNames() {
-        return getBooleanValue(COMMANDS, ADMINCHAT, USE_DISPLAY_NAMES);
-    }
-
     public boolean getMatchOfflinePlayers() {
         return getBooleanValue(COMMANDS, GENERIC, MATCH_OFFLINE_PLAYERS);
     }
