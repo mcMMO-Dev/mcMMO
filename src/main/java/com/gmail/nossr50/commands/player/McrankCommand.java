@@ -95,10 +95,10 @@ public class McrankCommand implements TabExecutor {
                 return;
             }
 
-            long cooldownMillis = Math.max(Config.getInstance().getDatabasePlayerCooldown(), 1750);
+            long cooldownMillis = Math.min(Config.getInstance().getDatabasePlayerCooldown(), 1750);
 
             if (mcMMOPlayer.getDatabaseATS() + cooldownMillis > System.currentTimeMillis()) {
-                sender.sendMessage(LocaleLoader.getString("Commands.Database.Cooldown", getCDSeconds(mcMMOPlayer, cooldownMillis)));
+                sender.sendMessage(LocaleLoader.getString("Commands.Database.CooldownMS", getCDSeconds(mcMMOPlayer, cooldownMillis)));
                 return;
             }
 
@@ -119,6 +119,6 @@ public class McrankCommand implements TabExecutor {
     }
 
     private long getCDSeconds(McMMOPlayer mcMMOPlayer, long cooldownMillis) {
-        return (System.currentTimeMillis() - (mcMMOPlayer.getDatabaseATS() + cooldownMillis)) / 1000;
+        return (System.currentTimeMillis() - (mcMMOPlayer.getDatabaseATS() + cooldownMillis));
     }
 }

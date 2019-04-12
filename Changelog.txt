@@ -10,6 +10,7 @@ Key:
 Version 2.1.41
     Fixed NullPointerException errors when trying to grab PlayerProfiles for players who have not loaded
     Added new locale string Profile.PendingLoad
+    Added new locale string Commands.Database.CooldownMS
     Fixed a display error preventing the remaining time on /mcrank from being shown if it was on cooldown
 
 Version 2.1.40
