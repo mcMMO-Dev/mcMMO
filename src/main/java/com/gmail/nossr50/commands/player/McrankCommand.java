@@ -98,7 +98,7 @@ public class McrankCommand implements TabExecutor {
             long cooldownMillis = Math.max(Config.getInstance().getDatabasePlayerCooldown(), 1750);
 
             if (mcMMOPlayer.getDatabaseATS() + cooldownMillis > System.currentTimeMillis()) {
-                sender.sendMessage(LocaleLoader.getString("Commands.Database.Cooldown", getCDSeconds(mcMMOPlayer, cooldownMillis));
+                sender.sendMessage(LocaleLoader.getString("Commands.Database.Cooldown", getCDSeconds(mcMMOPlayer, cooldownMillis)));
                 return;
             }
 
