@@ -119,6 +119,6 @@ public class McrankCommand implements TabExecutor {
     }
 
     private long getCDSeconds(McMMOPlayer mcMMOPlayer, long cooldownMillis) {
-        return (System.currentTimeMillis() - (mcMMOPlayer.getDatabaseATS() + cooldownMillis));
+        return ((mcMMOPlayer.getDatabaseATS() + cooldownMillis) - System.currentTimeMillis());
     }
 }
