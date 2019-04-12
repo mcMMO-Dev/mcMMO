@@ -542,7 +542,7 @@ public class McMMOPlayer {
      */
     private void checkXp(PrimarySkillType primarySkillType, XPGainReason xpGainReason, XPGainSource xpGainSource) {
         if (getSkillXpLevelRaw(primarySkillType) < getXpToLevel(primarySkillType)) {
-            UserManager.getPlayer(player).processPostXpEvent(xpGainReason, primarySkillType, mcMMO.p, xpGainSource);
+            processPostXpEvent(xpGainReason, primarySkillType, mcMMO.p, xpGainSource);
             return;
         }
 
@@ -560,7 +560,7 @@ public class McMMOPlayer {
         }
 
         if (!EventUtils.handleLevelChangeEvent(player, primarySkillType, levelsGained, xpRemoved, true, xpGainReason)) {
-            UserManager.getPlayer(player).processPostXpEvent(xpGainReason, primarySkillType, mcMMO.p, xpGainSource);
+            processPostXpEvent(xpGainReason, primarySkillType, mcMMO.p, xpGainSource);
             return;
         }
 
@@ -572,10 +572,10 @@ public class McMMOPlayer {
          * Check to see if the player unlocked any new skills
          */
 
-        NotificationManager.sendPlayerLevelUpNotification(UserManager.getPlayer(player), primarySkillType, levelsGained, profile.getSkillLevel(primarySkillType));
+        NotificationManager.sendPlayerLevelUpNotification(this, primarySkillType, levelsGained, profile.getSkillLevel(primarySkillType));
 
         //UPDATE XP BARS
-        UserManager.getPlayer(player).processPostXpEvent(xpGainReason, primarySkillType, mcMMO.p, xpGainSource);
+        processPostXpEvent(xpGainReason, primarySkillType, mcMMO.p, xpGainSource);
     }
 
     /*

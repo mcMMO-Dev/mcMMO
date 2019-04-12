@@ -223,6 +223,9 @@ public final class CommandUtils {
     }
 
     private static void printGroupedSkillData(Player inspect, CommandSender display, String header, List<PrimarySkillType> skillGroup) {
+        if(UserManager.getPlayer(inspect) == null)
+            return;
+
         PlayerProfile profile = UserManager.getPlayer(inspect).getProfile();
 
         List<String> displayData = new ArrayList<String>();

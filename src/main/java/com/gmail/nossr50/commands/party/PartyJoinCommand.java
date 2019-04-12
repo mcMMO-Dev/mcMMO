@@ -32,6 +32,13 @@ public class PartyJoinCommand implements CommandExecutor {
                 }
 
                 Player player = (Player) sender;
+
+                if(UserManager.getPlayer((Player) sender) == null)
+                {
+                    sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                    return true;
+                }
+
                 McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
                 Party targetParty = mcMMOTarget.getParty();
 

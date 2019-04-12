@@ -22,6 +22,10 @@ public class PartyChatCommand extends ChatCommand {
         String message;
 
         if (sender instanceof Player) {
+            //Check if player profile is loaded
+            if(UserManager.getPlayer((Player) sender) == null)
+                return;
+
             party = UserManager.getPlayer((Player) sender).getParty();
 
             if (party == null) {

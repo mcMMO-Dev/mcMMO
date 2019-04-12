@@ -70,7 +70,7 @@ public class SwordsManager extends SkillManager {
                 if(defender.isBlocking())
                     return;
 
-                if (UserManager.getPlayer(defender).useChatNotifications()) {
+                if (NotificationManager.doesPlayerUseNotifications(defender)) {
                     if(!BleedTimerTask.isBleeding(defender))
                         NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Started");
                 }

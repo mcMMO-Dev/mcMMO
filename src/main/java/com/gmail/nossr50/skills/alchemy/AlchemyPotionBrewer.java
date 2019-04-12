@@ -93,6 +93,11 @@ public final class AlchemyPotionBrewer {
     }
 
     private static List<ItemStack> getValidIngredients(Player player) {
+        if(UserManager.getPlayer(player) != null)
+        {
+            return PotionConfig.getInstance().getIngredients(1);
+        }
+
         return PotionConfig.getInstance().getIngredients((player == null || !Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CONCOCTIONS)) ? 1 : UserManager.getPlayer(player).getAlchemyManager().getTier());
     }
 
@@ -142,6 +147,7 @@ public final class AlchemyPotionBrewer {
             if (output != null && player != null) {
                 PotionStage potionStage = PotionStage.getPotionStage(input, output);
 
+                //TODO: hmm
                 if (UserManager.hasPlayerDataKey(player)) {
                     UserManager.getPlayer(player).getAlchemyManager().handlePotionBrewSuccesses(potionStage, 1);
                 }

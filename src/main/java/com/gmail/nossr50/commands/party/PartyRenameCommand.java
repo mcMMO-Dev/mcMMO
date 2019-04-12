@@ -16,6 +16,12 @@ public class PartyRenameCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 2:
+                if(UserManager.getPlayer((Player) sender) == null)
+                {
+                    sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                    return true;
+                }
+
                 McMMOPlayer mcMMOPlayer = UserManager.getPlayer((Player) sender);
                 Party playerParty = mcMMOPlayer.getParty();
 

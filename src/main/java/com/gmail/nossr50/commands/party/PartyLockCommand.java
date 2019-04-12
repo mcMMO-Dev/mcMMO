@@ -54,6 +54,12 @@ public class PartyLockCommand implements CommandExecutor {
     }
 
     private void togglePartyLock(CommandSender sender, boolean lock) {
+        if(UserManager.getPlayer((Player) sender) == null)
+        {
+            sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+            return;
+        }
+
         Party party = UserManager.getPlayer((Player) sender).getParty();
 
         if (!Permissions.partySubcommand(sender, lock ? PartySubcommandType.LOCK : PartySubcommandType.UNLOCK)) {

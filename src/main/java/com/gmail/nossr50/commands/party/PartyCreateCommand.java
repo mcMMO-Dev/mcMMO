@@ -18,6 +18,12 @@ public class PartyCreateCommand implements CommandExecutor {
                 Player player = (Player) sender;
                 McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
+                if(UserManager.getPlayer(player) == null)
+                {
+                    player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                    return true;
+                }
+
                 // Check to see if the party exists, and if it does cancel creating a new party
                 if (PartyManager.checkPartyExistence(player, args[1])) {
                     return true;

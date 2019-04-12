@@ -26,6 +26,12 @@ public class McstatsCommand implements TabExecutor {
 
         switch (args.length) {
             case 0:
+                if(UserManager.getPlayer((Player) sender) == null)
+                {
+                    sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                    return true;
+                }
+
                 Player player = (Player) sender;
 
                 if (Config.getInstance().getStatsUseBoard() && Config.getInstance().getScoreboardsEnabled()) {

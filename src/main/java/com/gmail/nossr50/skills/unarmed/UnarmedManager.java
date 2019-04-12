@@ -101,6 +101,9 @@ public class UnarmedManager extends SkillManager {
                 return;
             }
 
+            if(UserManager.getPlayer(defender) == null)
+                return;
+
             Item item = Misc.dropItem(defender.getLocation(), defender.getInventory().getItemInMainHand());
 
             if (item != null && AdvancedConfig.getInstance().getDisarmProtected()) {

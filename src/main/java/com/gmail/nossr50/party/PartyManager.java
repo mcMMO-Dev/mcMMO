@@ -98,6 +98,18 @@ public final class PartyManager {
      * @return true if they are in the same party, false otherwise
      */
     public static boolean inSameParty(Player firstPlayer, Player secondPlayer) {
+        //Profile not loaded
+        if(UserManager.getPlayer(firstPlayer) == null)
+        {
+            return false;
+        }
+
+        //Profile not loaded
+        if(UserManager.getPlayer(secondPlayer) == null)
+        {
+            return false;
+        }
+
         Party firstParty = UserManager.getPlayer(firstPlayer).getParty();
         Party secondParty = UserManager.getPlayer(secondPlayer).getParty();
 
@@ -109,6 +121,18 @@ public final class PartyManager {
     }
 
     public static boolean areAllies(Player firstPlayer, Player secondPlayer) {
+        //Profile not loaded
+        if(UserManager.getPlayer(firstPlayer) == null)
+        {
+            return false;
+        }
+
+        //Profile not loaded
+        if(UserManager.getPlayer(secondPlayer) == null)
+        {
+            return false;
+        }
+
         Party firstParty = UserManager.getPlayer(firstPlayer).getParty();
         Party secondParty = UserManager.getPlayer(secondPlayer).getParty();
 
@@ -263,6 +287,12 @@ public final class PartyManager {
      * @return the existing party, null otherwise
      */
     public static Party getParty(Player player) {
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
+            return null;
+        }
+
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         return mcMMOPlayer.getParty();
@@ -322,7 +352,14 @@ public final class PartyManager {
      * @param party The party to remove
      */
     public static void disbandParty(Party party) {
+        //TODO: Potential issues with unloaded profile?
         for (Player member : party.getOnlineMembers()) {
+            //Profile not loaded
+            if(UserManager.getPlayer(member) == null)
+            {
+                continue;
+            }
+
             processPartyLeaving(UserManager.getPlayer(member));
         }
 

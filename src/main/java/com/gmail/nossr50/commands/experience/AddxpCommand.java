@@ -24,6 +24,10 @@ public class AddxpCommand extends ExperienceCommand {
     @Override
     protected void handleCommand(Player player, PlayerProfile profile, PrimarySkillType skill, int value) {
         if (player != null) {
+            //Check if player profile is loaded
+            if(UserManager.getPlayer(player) == null)
+                return;
+
             UserManager.getPlayer(player).applyXpGain(skill, value, XPGainReason.COMMAND, XPGainSource.COMMAND);
         }
         else {

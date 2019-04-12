@@ -41,6 +41,9 @@ public final class PartyAPI {
      * @return true if the player is in a party, false otherwise
      */
     public static boolean inParty(Player player) {
+        if(UserManager.getPlayer(player) == null)
+            return false;
+
         return UserManager.getPlayer(player).inParty();
     }
 
@@ -79,6 +82,10 @@ public final class PartyAPI {
      */
     @Deprecated
     public static void addToParty(Player player, String partyName) {
+        //Check if player profile is loaded
+        if(UserManager.getPlayer(player) == null)
+            return;
+
         Party party = PartyManager.getParty(partyName);
 
         if (party == null) {
@@ -113,7 +120,12 @@ public final class PartyAPI {
      * @param partyName The party to add the player to
      * @param bypassLimit if true bypasses party size limits
      */
+    //TODO: bypasslimit not used?
     public static void addToParty(Player player, String partyName, boolean bypassLimit) {
+        //Check if player profile is loaded
+        if(UserManager.getPlayer(player) == null)
+            return;
+
         Party party = PartyManager.getParty(partyName);
 
         if (party == null) {
@@ -131,6 +143,10 @@ public final class PartyAPI {
      * @param player The player to remove
      */
     public static void removeFromParty(Player player) {
+        //Check if player profile is loaded
+        if(UserManager.getPlayer(player) == null)
+            return;
+
         PartyManager.removeFromParty(UserManager.getPlayer(player));
     }
 

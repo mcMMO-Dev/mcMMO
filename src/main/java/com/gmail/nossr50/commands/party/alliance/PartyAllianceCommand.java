@@ -37,6 +37,12 @@ public class PartyAllianceCommand implements TabExecutor {
             return true;
         }
 
+        if(UserManager.getPlayer((Player) sender) == null)
+        {
+            sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+            return true;
+        }
+
         player = (Player) sender;
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 

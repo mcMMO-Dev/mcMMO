@@ -21,6 +21,7 @@ import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
+import com.google.common.collect.ImmutableList;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -67,6 +68,9 @@ public class Roll extends AcrobaticsSubSkill {
 
                 //Grab the player
                 McMMOPlayer mcMMOPlayer = EventUtils.getMcMMOPlayer(entityDamageEvent.getEntity());
+
+                if(mcMMOPlayer == null)
+                    break;
 
                 /*
                  * Check for success
@@ -274,7 +278,6 @@ public class Roll extends AcrobaticsSubSkill {
         if (player.getInventory().getItemInMainHand().getType() == Material.ENDER_PEARL || player.isInsideVehicle()) {
             return true;
         }
-
 
         if(UserManager.getPlayer(player).getAcrobaticsManager().hasFallenInLocationBefore(getBlockLocation(player)))
             return true;

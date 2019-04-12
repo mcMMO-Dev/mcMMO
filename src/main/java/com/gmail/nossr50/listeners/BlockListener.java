@@ -10,6 +10,7 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
@@ -29,6 +30,7 @@ import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
+import com.google.common.collect.ImmutableList;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -244,6 +246,9 @@ public class BlockListener implements Listener {
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
+        if(mcMMOPlayer == null)
+            return;
+
         if (blockState.getType() == Repair.anvilMaterial && PrimarySkillType.REPAIR.getPermissions(player)) {
             mcMMOPlayer.getRepairManager().placedAnvilCheck();
         }
@@ -337,6 +342,11 @@ public class BlockListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        //Check if profile is loaded
+        if(mcMMOPlayer == null)
+            return;
+
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         /* HERBALISM */
@@ -416,6 +426,12 @@ public class BlockListener implements Listener {
             return;
         }
 
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
+            return;
+        }
+
         BlockState blockState = event.getBlock().getState();
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
@@ -480,6 +496,12 @@ public class BlockListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        //Profile not loaded
+        if(mcMMOPlayer == null)
+        {
+            return;
+        }
 
         /*
          * ABILITY PREPARATION CHECKS
@@ -555,6 +577,13 @@ public class BlockListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
+            return;
+        }
+
         ItemStack heldItem = player.getInventory().getItemInMainHand();
         Block block = event.getBlock();
         BlockState blockState = block.getState();
@@ -590,6 +619,14 @@ public class BlockListener implements Listener {
     public void onBlockDamageCleanup(BlockDamageEvent event) {
         Player player = event.getPlayer();
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
+            return;
+        }
+
+
         BlockState blockState = event.getBlock().getState();
 
         ItemStack heldItem = player.getInventory().getItemInMainHand();
@@ -600,6 +637,12 @@ public class BlockListener implements Listener {
     }
 
     public void debugStickDump(Player player, BlockState blockState) {
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
+            return;
+        }
+
         if(player.getInventory().getItemInMainHand().getType() == Material.DEBUG_STICK)
         {
             if(mcMMO.getPlaceStore().isTrue(blockState))

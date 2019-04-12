@@ -95,7 +95,7 @@ public class AxesManager extends SkillManager {
         if (target instanceof Player) {
             Player defender = (Player) target;
 
-            if (UserManager.getPlayer(defender).useChatNotifications()) {
+            if (NotificationManager.doesPlayerUseNotifications(defender)) {
                 NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.CritStruck");
             }
 
@@ -152,7 +152,7 @@ public class AxesManager extends SkillManager {
         if (target instanceof Player) {
             Player defender = (Player) target;
 
-            if (UserManager.getPlayer(defender).useChatNotifications()) {
+            if (NotificationManager.doesPlayerUseNotifications(defender)) {
                 NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.GI.Struck");
             }
         }

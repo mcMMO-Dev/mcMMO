@@ -1158,6 +1158,13 @@ public final class ExperienceAPI {
         return formulaType;
     }
 
+    /**
+     * @deprecated Use UserManager::getPlayer(Player player) instead
+     * @param player target player
+     * @return McMMOPlayer for that player if the profile is loaded, otherwise null
+     * @throws McMMOPlayerNotFoundException
+     */
+    @Deprecated
     private static McMMOPlayer getPlayer(Player player) throws McMMOPlayerNotFoundException {
         if (!UserManager.hasPlayerDataKey(player)) {
             throw new McMMOPlayerNotFoundException(player);

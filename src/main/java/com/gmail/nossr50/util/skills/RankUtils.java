@@ -172,6 +172,9 @@ public class RankUtils {
         //Get our rank map
         HashMap<Integer, Integer> rankMap = subSkillRanks.get(skillName);
 
+        if(UserManager.getPlayer(player) == null)
+            return 0;
+
         //Skill level of parent skill
         int currentSkillLevel = UserManager.getPlayer(player).getSkillLevel(subSkillType.getParentSkill());
 
@@ -215,6 +218,9 @@ public class RankUtils {
 
         //Get our rank map
         HashMap<Integer, Integer> rankMap = subSkillRanks.get(skillName);
+
+        if(UserManager.getPlayer(player) == null)
+            return 0;
 
         //Skill level of parent skill
         int currentSkillLevel = UserManager.getPlayer(player).getSkillLevel(abstractSubSkill.getPrimarySkill());

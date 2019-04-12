@@ -479,6 +479,10 @@ public class EntityListener implements Listener {
 
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
+            //Profile not loaded
+            if(mcMMOPlayer == null)
+                return;
+
             /* Check for invincibility */
             if (mcMMOPlayer.getGodMode()) {
                 event.setCancelled(true);
@@ -509,6 +513,12 @@ public class EntityListener implements Listener {
             if (Taming.canPreventDamage(pet, owner)) {
                 Player player = (Player) owner;
                 Wolf wolf = (Wolf) pet;
+
+                //Profile not loaded
+                if(UserManager.getPlayer(player) == null)
+                {
+                    return;
+                }
 
                 TamingManager tamingManager = UserManager.getPlayer(player).getTamingManager();
 
@@ -687,6 +697,12 @@ public class EntityListener implements Listener {
             return;
         }
 
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
+            return;
+        }
+
         /* WORLD GUARD MAIN FLAG CHECK */
         if(WorldGuardUtils.isWorldGuardLoaded())
         {
@@ -732,6 +748,12 @@ public class EntityListener implements Listener {
         {
             if(!WorldGuardManager.getInstance().hasMainFlag(player))
                 return;
+        }
+
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
+            return;
         }
 
         MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
@@ -782,6 +804,12 @@ public class EntityListener implements Listener {
         }
 
         Player player = (Player) entity;
+
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
+            return;
+        }
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if(WorldGuardUtils.isWorldGuardLoaded())
@@ -894,6 +922,13 @@ public class EntityListener implements Listener {
         }
 
         entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
+            return;
+        }
+
         UserManager.getPlayer(player).getTamingManager().awardTamingXP(entity);
     }
 
