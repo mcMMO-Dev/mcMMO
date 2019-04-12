@@ -98,7 +98,7 @@ public class McrankCommand implements TabExecutor {
             long cooldownMillis = Math.max(Config.getInstance().getDatabasePlayerCooldown(), 1750);
 
             if (mcMMOPlayer.getDatabaseATS() + cooldownMillis > System.currentTimeMillis()) {
-                sender.sendMessage(LocaleLoader.getString("Commands.Database.Cooldown"));
+                sender.sendMessage(LocaleLoader.getString("Commands.Database.Cooldown", getCDSeconds(mcMMOPlayer, cooldownMillis));
                 return;
             }
 
@@ -116,5 +116,9 @@ public class McrankCommand implements TabExecutor {
         boolean useChat = !useBoard || Config.getInstance().getRankUseChat();
 
         new McrankCommandAsyncTask(playerName, sender, useBoard, useChat).runTaskAsynchronously(mcMMO.p);
+    }
+
+    private long getCDSeconds(McMMOPlayer mcMMOPlayer, long cooldownMillis) {
+        return (System.currentTimeMillis() - (mcMMOPlayer.getDatabaseATS() + cooldownMillis)) / 1000;
     }
 }
