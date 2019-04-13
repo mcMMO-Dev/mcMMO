@@ -86,7 +86,7 @@ public class RepairCommand extends SkillCommand {
         canRepairString = Permissions.repairMaterialType(player, MaterialType.STRING);
         canRepairLeather = Permissions.repairMaterialType(player, MaterialType.LEATHER);
         canRepairWood = Permissions.repairMaterialType(player, MaterialType.WOOD);
-        arcaneBypass = Permissions.arcaneBypass(player);
+        arcaneBypass = (Permissions.arcaneBypass(player) || Permissions.hasRepairEnchantBypassPerk(player));
     }
 
     @Override

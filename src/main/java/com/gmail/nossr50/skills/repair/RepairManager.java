@@ -139,7 +139,7 @@ public class RepairManager extends SkillManager {
         }
 
         // Handle the enchants
-        if (ArcaneForging.arcaneForgingEnchantLoss) {
+        if (ArcaneForging.arcaneForgingEnchantLoss && !Permissions.hasRepairEnchantBypassPerk(player)) {
             addEnchants(item);
         }
 

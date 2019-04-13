@@ -182,6 +182,9 @@ public class SalvageManager extends SkillManager {
     }*/
 
     public double getExtractFullEnchantChance() {
+        if(Permissions.hasSalvageEnchantBypassPerk(getPlayer()))
+            return 100.0D;
+
         return AdvancedConfig.getInstance().getArcaneSalvageExtractFullEnchantsChance(getArcaneSalvageRank());
     }
 
@@ -205,6 +208,7 @@ public class SalvageManager extends SkillManager {
 
         for (Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
             if (!Salvage.arcaneSalvageEnchantLoss
+                    || Permissions.hasSalvageEnchantBypassPerk(player)
                     || RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractFullEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchant.getValue(), true);
             }

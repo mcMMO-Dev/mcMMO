@@ -106,6 +106,11 @@ public final class Permissions {
      * PERKS
      */
 
+    /* BYPASS PERKS */
+
+    public static boolean hasRepairEnchantBypassPerk(Permissible permissible) { return permissible.hasPermission("mcmmo.perks.bypass.repairenchant"); }
+    public static boolean hasSalvageEnchantBypassPerk(Permissible permissible) { return permissible.hasPermission("mcmmo.perks.bypass.salvageenchant"); }
+
     public static boolean lucky(Permissible permissible, PrimarySkillType skill) { return permissible.hasPermission("mcmmo.perks.lucky." + skill.toString().toLowerCase()); }
 
     /* XP PERKS */

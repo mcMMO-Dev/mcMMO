@@ -1328,6 +1328,8 @@ permissions:
         default: false
         description: implies access to all mcmmo perks
         children:
+            mcmmo.perks.bypass.salvageenchant: true
+            mcmmo.perks.bypass.repairenchant: true
             mcmmo.perks.activationtime.all: true
             mcmmo.perks.cooldowns.all: true
             mcmmo.perks.lucky.all: true
@@ -1344,6 +1346,23 @@ permissions:
             mcmmo.perks.activationtime.eightseconds: true
             mcmmo.perks.activationtime.fourseconds: true
             mcmmo.perks.activationtime.twelveseconds: true
+    mcmmo.perks.bypass.*:
+        default: false
+        description: Perks that bypass certain RNG elements and guarantee success
+        children:
+            mcmmo.perks.bypass.all: true
+    mcmmo.perks.bypass.all:
+        default: false
+        description: Perks that bypass certain RNG elements and guarantee success
+        children:
+            mcmmo.perks.bypass.repairenchant: true
+            mcmmo.perks.bypass.salvageenchant: true
+    mcmmo.perks.bypass.repairenchant:
+        default: false
+        description: Guarantees repairing without enchantment degradation
+    mcmmo.perks.bypass.salvageenchant:
+        default: false
+        description: Guarantees salvage will return the best legal enchantment book
     mcmmo.perks.activationtime.eightseconds:
         default: false
         description: Increases activation time by 8 seconds
