@@ -29,7 +29,7 @@ Other mcMMO Projects
 ### Classic Maintainer
 [![t00thpick1](http://www.gravatar.com/avatar/ee23c7794a0c40120c3474287c7bce06.png)](https://github.com/t00thpick1)
 
-##Former Team Members
+## Former Team Members
 
 ### Former Lead & Awesome guy
 [![gmcferrin](http://www.gravatar.com/avatar/b64c52daf25d206b27650788b5813b7b.png)](https://github.com/gmcferrin)
