@@ -7,6 +7,12 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.42
+    Fixed McMMOPlayerNotFoundException being thrown instead of null
+    (API) UserManager.getPlayer() returns null again (oopsie)
+
+    NOTE: Sorry about that, when trying to improve Bungee Cord compatibility I made a big oopsie!
+
 Version 2.1.41
     Fixed NullPointerException errors when trying to grab PlayerProfiles for players who have not loaded
     Added new locale string Profile.PendingLoad

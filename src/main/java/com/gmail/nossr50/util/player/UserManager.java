@@ -101,12 +101,12 @@ public final class UserManager {
      * @param player target player
      * @return McMMOPlayer object for this player, null if Player has not been loaded
      */
-    public static McMMOPlayer getPlayer(Player player) throws McMMOPlayerNotFoundException {
+    public static McMMOPlayer getPlayer(Player player) {
         //Avoid Array Index out of bounds
         if(player.hasMetadata(mcMMO.playerDataKey))
             return (McMMOPlayer) player.getMetadata(mcMMO.playerDataKey).get(0).value();
         else
-            throw new McMMOPlayerNotFoundException(player);
+            return null;
     }
 
     private static McMMOPlayer retrieveMcMMOPlayer(String playerName, boolean offlineValid) {
