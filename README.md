@@ -41,7 +41,7 @@ Other mcMMO Projects
 [![shatteredbeam](http://www.gravatar.com/avatar/cad3b5d7d39cf5387afb87f494389610.png)](https://github.com/shatteredbeam)
 [![TfT_02](http://www.gravatar.com/avatar/b8914f9970e1f6ffd5281ce4770e20a7.png)](https://github.com/TfT-02)
 [![riking](https://1.gravatar.com/avatar/aca9f37e569ac3a63929920035a91ba4.png)](https://github.com/riking)
-[![TheYeti](https://avatars3.githubusercontent.com/u/594050?s=460&v=4)](https://github.com/TheYeti)
+[![TheYeti](https://i.imgur.com/tzFrxdo.png)](https://github.com/TheYeti)
 
 ## Compiling
 
