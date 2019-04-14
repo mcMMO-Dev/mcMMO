@@ -93,12 +93,12 @@ public final class AlchemyPotionBrewer {
     }
 
     private static List<ItemStack> getValidIngredients(Player player) {
-        if(UserManager.getPlayer(player) == null)
+        if(player == null || UserManager.getPlayer(player) == null)
         {
             return PotionConfig.getInstance().getIngredients(1);
         }
 
-        return PotionConfig.getInstance().getIngredients((player == null || !Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CONCOCTIONS)) ? 1 : UserManager.getPlayer(player).getAlchemyManager().getTier());
+        return PotionConfig.getInstance().getIngredients(!Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CONCOCTIONS) ? 1 : UserManager.getPlayer(player).getAlchemyManager().getTier());
     }
 
     public static void finishBrewing(BlockState brewingStand, Player player, boolean forced) {
