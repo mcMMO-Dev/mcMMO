@@ -7,6 +7,9 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.43
+    Fixed a bug that would result in players being told they they failed to salvage enchantments when in reality they succeeded.
+
 Version 2.1.42
     Fixed McMMOPlayerNotFoundException being thrown instead of null
     (API) UserManager.getPlayer() returns null again (oopsie)
