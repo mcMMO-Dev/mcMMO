@@ -93,7 +93,7 @@ public final class AlchemyPotionBrewer {
     }
 
     private static List<ItemStack> getValidIngredients(Player player) {
-        if(UserManager.getPlayer(player) != null)
+        if(UserManager.getPlayer(player) == null)
         {
             return PotionConfig.getInstance().getIngredients(1);
         }
