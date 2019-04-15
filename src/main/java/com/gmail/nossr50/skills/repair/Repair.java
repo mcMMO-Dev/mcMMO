@@ -18,8 +18,8 @@ public class Repair {
             repairMasteryMaxBonus = mcMMO.getConfigManager().getConfigRepair().getRepairSubSkills().getRepairMastery().getSettings().getRetro().getMaxBonusPercentage();
             repairMasteryMaxBonusLevel = mcMMO.getConfigManager().getConfigRepair().getRepairSubSkills().getRepairMastery().getSettings().getRetro().getMaxBonusLevel();
         } else {
-            repairMasteryMaxBonus = mcMMO.getConfigManager().getConfigRepair().getRepairSubSkills().getRepairMastery().getSettings().getStandard().getMaxBonusPercentage();
-            repairMasteryMaxBonusLevel = mcMMO.getConfigManager().getConfigRepair().getRepairSubSkills().getRepairMastery().getSettings().getStandard().getMaxBonusLevel();
+            repairMasteryMaxBonus = mcMMO.getConfigManager().getConfigRepair().getRepairSubSkills().getRepairMastery().getSettings().getStandard().maxBonusPercentage;
+            repairMasteryMaxBonusLevel = mcMMO.getConfigManager().getConfigRepair().getRepairSubSkills().getRepairMastery().getSettings().getStandard().maxBonusLevel;
         }
     }
 
