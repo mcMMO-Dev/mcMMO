@@ -28,7 +28,7 @@ public class ConfigExperienceExcavation {
     }
 
     @Setting(value = "Excavation-Experience")
-    private HashMap<String, Integer> excavationExperienceMap;
+    private HashMap<String, Integer> excavationExperienceMap = EXCAVATION_EXPERIENCE_DEFAULT;
 
     public HashMap<String, Integer> getExcavationExperienceMap() {
         return excavationExperienceMap;

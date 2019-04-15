@@ -48,7 +48,7 @@ public class ConfigExperienceWoodcutting {
     }
 
     @Setting(value = "Woodcutting-Experience")
-    private HashMap<String, Integer> woodcuttingExperienceMap;
+    private HashMap<String, Integer> woodcuttingExperienceMap = WOODCUTTING_EXPERIENCE_DEFAULT;
 
     public HashMap<String, Integer> getWoodcuttingExperienceMap() {
         return woodcuttingExperienceMap;

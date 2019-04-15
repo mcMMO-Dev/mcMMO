@@ -19,7 +19,8 @@ Version 2.2.0
     Optimizations were made for many anti-exploit behaviours
     Acrobatic's Dodge will no longer reward XP for a few seconds after a TP
     Roll will not give XP for a few seconds after a TP
-    Added missing STRIPPED_WOOD blocks to Woodcutting's experience tables
+    Added missing X_STRIPPED_WOOD blocks to Woodcutting's experience tables
+    Added missing X_WALL_FAN and X_DEAD_WALL_FAN blocks to Herbalism's experience tables
     You can now disable the party system completely
     Many config files are now generated on demand instead of being copied from within the JAR
     All config nodes that used to be styled with CamelCase or otherwise now use hyphens (-) as spaces for readability and consistency
