@@ -103,8 +103,4 @@ public class SoundManager {
     public static float getPopPitch() {
         return ((Misc.getRandom().nextFloat() - Misc.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F;
     }
-
-    public static float getKrakenPitch() {
-        return (Misc.getRandom().nextFloat() - Misc.getRandom().nextFloat()) * 0.2F + 1.0F;
-    }
 }

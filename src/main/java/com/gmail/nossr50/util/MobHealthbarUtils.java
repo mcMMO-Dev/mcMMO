@@ -56,9 +56,6 @@ public final class MobHealthbarUtils {
         if (oldName == null) {
             oldName = "";
         }
-        else if (oldName.equalsIgnoreCase(AdvancedConfig.getInstance().getKrakenName())) {
-            return;
-        }
 
         boolean oldNameVisible = target.isCustomNameVisible();
         String newName = createHealthDisplay(Config.getInstance().getMobHealthbarDefault(), target, damage);

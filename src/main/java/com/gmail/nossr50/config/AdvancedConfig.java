@@ -620,23 +620,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Woodcutting.HarvestLumber.MaxBonusLevel should be at least 1!");
         }
 
-        /* KRAKEN */
-        if (getKrakenTriesBeforeRelease() < 1) {
-            reason.add("Kraken.Tries_Before_Release should be at least 1!");
-        }
-
-        if (getKrakenHealth() < 1) {
-            reason.add("Kraken.Health should be at least 1!");
-        }
-
-        if (getKrakenAttackInterval() < 1) {
-            reason.add("Kraken.Attack_Interval_Seconds should be at least 1!");
-        }
-
-        if (getKrakenAttackDamage() < 1) {
-            reason.add("Kraken.Attack_Damage should be at least 1!");
-        }
-
         return noErrorsInConfig(reason);
     }
 
@@ -996,18 +979,4 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     /* WOODCUTTING */
     /*public int getLeafBlowUnlockLevel() { return config.getInt("Skills.Woodcutting.LeafBlower.UnlockLevel", 100); }*/
-
-    /* KRAKEN STUFF */
-    public boolean getKrakenEnabled() { return config.getBoolean("Kraken.Enabled", true); }
-    public int getKrakenTriesBeforeRelease() { return config.getInt("Kraken.Tries_Before_Release", 50); }
-    public double getKrakenHealth() { return config.getDouble("Kraken.Health", 50.0D); }
-    public String getKrakenName() { return config.getString("Kraken.Name", "The Kraken"); }
-    public int getKrakenAttackInterval() { return config.getInt("Kraken.Attack_Interval_Seconds", 1); }
-    public double getKrakenAttackDamage() { return config.getDouble("Kraken.Attack_Damage", 1.0D); }
-    public boolean getKrakenGlobalEffectsEnabled() { return config.getBoolean("Kraken.Global_Effects", false); }
-    public boolean getKrakenEscapeAllowed() { return config.getBoolean("Kraken.Allow_Escaping", false); }
-    public String getServerUnleashMessage() { return config.getString("Kraken.Unleashed_Message.Server", ""); }
-    public String getPlayerUnleashMessage() { return config.getString("Kraken.Unleashed_Message.Player", ""); }
-    public String getPlayerDefeatMessage() { return config.getString("Kraken.Defeated_Message.Killed", ""); }
-    public String getPlayerEscapeMessage() { return config.getString("Kraken.Defeated_Message.Escape", ""); }
 }
