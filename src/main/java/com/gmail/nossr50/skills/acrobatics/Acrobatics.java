@@ -9,7 +9,7 @@ public final class Acrobatics {
 
     private Acrobatics() {
         dodgeDamageModifier = mcMMO.getConfigManager().getConfigAcrobatics().getDamageReductionDivisor();
-        dodgeXpModifier = mcMMO.getConfigManager().getExperienceConfig().getDodgeXPModifier();
+        dodgeXpModifier = mcMMO.getConfigManager().getConfigExperience().getDodgeXP();
 //        dodgeLightningDisabled = MainConfig.getInstance().getDodgeLightningDisabled();
     }
 
