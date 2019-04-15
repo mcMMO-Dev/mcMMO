@@ -12,7 +12,6 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
@@ -71,7 +70,7 @@ public class SwordsManager extends SkillManager {
                 if(defender.isBlocking())
                     return;
 
-                if (UserManager.getPlayer(defender).useChatNotifications()) {
+                if (NotificationManager.doesPlayerUseNotifications(defender)) {
                     if(!BleedTimerTask.isBleeding(defender))
                         NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Started");
                 }

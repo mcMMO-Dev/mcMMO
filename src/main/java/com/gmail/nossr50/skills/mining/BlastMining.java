@@ -103,6 +103,11 @@ public class BlastMining {
             return false;
         }
 
+        if(UserManager.getPlayer(defender) == null)
+        {
+            return false;
+        }
+
         MiningManager miningManager =  UserManager.getPlayer(defender).getMiningManager();
 
         if (!miningManager.canUseDemolitionsExpertise()) {

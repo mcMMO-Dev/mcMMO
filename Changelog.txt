@@ -162,6 +162,30 @@ Version 2.2.0
     Added API method to check if player parties are size capped
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
+
+Version 2.1.44
+    Fixed a NPE with Alchemy brewing
+
+Version 2.1.43
+    Fixed a bug that would result in players being told they they failed to salvage enchantments when in reality they succeeded.
+
+Version 2.1.42
+    Fixed McMMOPlayerNotFoundException being thrown instead of null
+    (API) UserManager.getPlayer() returns null again (oopsie)
+    Added new perk permission node `mcmmo.perks.bypass.salvageenchant` - guarantees full enchantment return for Salvage
+    Added alternative permission node `mcmmo.perks.bypass.repairenchant` - guarantees full enchantment return for Repair
+    Added new wildcard perk `mcmmo.perks.bypass.*` and `mcmmo.perks.bypass.all` (either of these will grant all new mcmmo.perks.bypass perk permissions)
+
+    NOTE: Sorry about that, when trying to improve Bungee Cord compatibility I made a big oopsie!
+    NOTE: Repair's new perk permission works in the exact same way as mcmmo.bypass.arcanebypass, bypass perk permissions will all eventually be moved to `mcmmo.perks.bypass`
+    NOTE: Expect perk permissions to all be moved to `mcmmo.perks.X` in the near future
+
+Version 2.1.41
+    Fixed NullPointerException errors when trying to grab PlayerProfiles for players who have not loaded
+    Added new locale string Profile.PendingLoad
+    Added new locale string Commands.Database.CooldownMS
+    Fixed a display error preventing the remaining time on /mcrank from being shown if it was on cooldown
+
 Version 2.1.40
     (API) mcMMO will now return null in all cases for UserManager.getPlayerProfile() if they have not been loaded yet
     (API) Roll stores exploit data in AcrobaticsManager now

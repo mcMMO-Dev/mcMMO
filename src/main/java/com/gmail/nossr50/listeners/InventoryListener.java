@@ -57,6 +57,12 @@ public class InventoryListener implements Listener {
             return;
         }
 
+        //Profile not loaded
+        if(UserManager.getPlayer((Player) player) == null)
+        {
+            return;
+        }
+
         if(!furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey) && furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey).size() == 0)
             furnaceBlock.setMetadata(mcMMO.furnaceMetadataKey, UserManager.getPlayer((Player) player).getPlayerMetadata());
     }
@@ -109,6 +115,12 @@ public class InventoryListener implements Listener {
             return;
         }
 
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
+            return;
+        }
+
         event.setBurnTime(UserManager.getPlayer(player).getSmeltingManager().fuelEfficiency(event.getBurnTime()));
     }
 
@@ -135,6 +147,12 @@ public class InventoryListener implements Listener {
         }
 
         if (!UserManager.hasPlayerDataKey(player) || !PrimarySkillType.SMELTING.getPermissions(player)) {
+            return;
+        }
+
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
             return;
         }
 
@@ -166,6 +184,12 @@ public class InventoryListener implements Listener {
             return;
         }
 
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
+            return;
+        }
+
         int exp = UserManager.getPlayer(player).getSmeltingManager().vanillaXPBoost(event.getExpToDrop());
         event.setExpToDrop(exp);
     }
@@ -187,6 +211,12 @@ public class InventoryListener implements Listener {
             {
                 if (furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey).size() > 0)
                     furnaceBlock.removeMetadata(mcMMO.furnaceMetadataKey, mcMMO.p);
+
+                //Profile not loaded
+                if(UserManager.getPlayer(player) == null)
+                {
+                    return;
+                }
 
                 furnaceBlock.setMetadata(mcMMO.furnaceMetadataKey, UserManager.getPlayer(player).getPlayerMetadata());
             }

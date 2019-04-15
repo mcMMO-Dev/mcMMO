@@ -58,6 +58,12 @@ public class PtpCommand implements TabExecutor {
             return true;
         }
 
+        if(UserManager.getPlayer((Player) sender) == null)
+        {
+            sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+            return true;
+        }
+
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         if (!mcMMOPlayer.inParty()) {
@@ -130,6 +136,12 @@ public class PtpCommand implements TabExecutor {
                 List<String> matches = StringUtil.copyPartialMatches(args[0], TELEPORT_SUBCOMMANDS, new ArrayList<>(TELEPORT_SUBCOMMANDS.size()));
 
                 if (matches.size() == 0) {
+                    if(UserManager.getPlayer((Player) sender) == null)
+                    {
+                        sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                        return ImmutableList.of();
+                    }
+
                     Player player = (Player) sender;
                     McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
@@ -204,6 +216,18 @@ public class PtpCommand implements TabExecutor {
     }
 
     protected static void handleTeleportWarmup(Player teleportingPlayer, Player targetPlayer) {
+        if(UserManager.getPlayer(targetPlayer) == null)
+        {
+            targetPlayer.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+            return;
+        }
+
+        if(UserManager.getPlayer(teleportingPlayer) == null)
+        {
+            teleportingPlayer.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+            return;
+        }
+
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(teleportingPlayer);
         McMMOPlayer mcMMOTarget = UserManager.getPlayer(targetPlayer);
 

@@ -120,10 +120,15 @@ public class EventUtils {
             Player player = (Player) entity;
 
             if (!UserManager.hasPlayerDataKey(player)) {
-                return false;
+                return true;
             }
 
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+            if(mcMMOPlayer == null)
+            {
+                return true;
+            }
 
             /* Check for invincibility */
             if (mcMMOPlayer.getGodMode()) {
@@ -240,6 +245,9 @@ public class EventUtils {
     public static void handlePartyTeleportEvent(Player teleportingPlayer, Player targetPlayer) {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(teleportingPlayer);
 
+        if(mcMMOPlayer == null)
+            return;
+
         McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(teleportingPlayer, targetPlayer, mcMMOPlayer.getParty().getName());
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
@@ -298,6 +306,9 @@ public class EventUtils {
     }
 
     public static boolean handleStatsLossEvent(Player player, HashMap<String, Integer> levelChanged, HashMap<String, Float> experienceChanged) {
+        if(UserManager.getPlayer(player) == null)
+            return true;
+
         McMMOPlayerStatLossEvent event = new McMMOPlayerStatLossEvent(player, levelChanged, experienceChanged);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
@@ -344,6 +355,15 @@ public class EventUtils {
             HashMap<String, Float> experienceChangedVictim = eventVictim.getExperienceChanged();
 
             McMMOPlayer killerPlayer = UserManager.getPlayer(killer);
+
+            //Not loaded
+            if(killerPlayer == null)
+                return true;
+
+            //Not loaded
+            if(UserManager.getPlayer(victim) == null)
+                return true;
+
             PlayerProfile victimProfile = UserManager.getPlayer(victim).getProfile();
 
             for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {

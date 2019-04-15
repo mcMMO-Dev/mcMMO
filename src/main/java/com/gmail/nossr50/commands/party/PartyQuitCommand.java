@@ -17,6 +17,13 @@ public class PartyQuitCommand implements CommandExecutor {
         switch (args.length) {
             case 1:
                 Player player = (Player) sender;
+
+                if(UserManager.getPlayer((Player) sender) == null)
+                {
+                    sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                    return true;
+                }
+
                 McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
                 Party playerParty = mcMMOPlayer.getParty();
 

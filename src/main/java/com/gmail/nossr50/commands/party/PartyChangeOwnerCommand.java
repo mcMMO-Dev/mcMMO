@@ -17,6 +17,13 @@ public class PartyChangeOwnerCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 2:
+                //Check if player profile is loaded
+                if(UserManager.getPlayer((Player) sender) == null)
+                {
+                    sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                    return true;
+                }
+
                 Party playerParty = UserManager.getPlayer((Player) sender).getParty();
                 String targetName = CommandUtils.getMatchedPlayerName(args[1]);
                 OfflinePlayer target = mcMMO.p.getServer().getOfflinePlayer(targetName);

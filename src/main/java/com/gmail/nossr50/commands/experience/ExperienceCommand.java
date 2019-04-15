@@ -51,6 +51,14 @@ public abstract class ExperienceCommand implements TabExecutor {
                     return true;
                 }
 
+                //Profile not loaded
+                if(UserManager.getPlayer(sender.getName()) == null)
+                {
+                    sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                    return true;
+                }
+
+
                 editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), skill, Integer.parseInt(args[1]));
                 return true;
 

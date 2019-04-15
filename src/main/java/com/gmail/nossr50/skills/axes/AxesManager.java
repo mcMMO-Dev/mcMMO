@@ -10,7 +10,6 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.*;
 import org.bukkit.entity.LivingEntity;
@@ -95,7 +94,7 @@ public class AxesManager extends SkillManager {
         if (target instanceof Player) {
             Player defender = (Player) target;
 
-            if (UserManager.getPlayer(defender).useChatNotifications()) {
+            if (NotificationManager.doesPlayerUseNotifications(defender)) {
                 NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.CritStruck");
             }
 
@@ -152,7 +151,7 @@ public class AxesManager extends SkillManager {
         if (target instanceof Player) {
             Player defender = (Player) target;
 
-            if (UserManager.getPlayer(defender).useChatNotifications()) {
+            if (NotificationManager.doesPlayerUseNotifications(defender)) {
                 NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.GI.Struck");
             }
         }

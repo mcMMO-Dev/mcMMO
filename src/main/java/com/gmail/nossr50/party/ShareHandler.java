@@ -50,6 +50,12 @@ public final class ShareHandler {
         float splitXp = (float) (xp / partySize * shareBonus);
 
         for (Player member : nearMembers) {
+            //Profile not loaded
+            if(UserManager.getPlayer(member) == null)
+            {
+                continue;
+            }
+
             UserManager.getPlayer(member).beginUnsharedXpGain(primarySkillType, splitXp, xpGainReason, XPGainSource.PARTY_MEMBERS);
         }
 
@@ -107,6 +113,13 @@ public final class ShareHandler {
 
                     for (Player member : nearMembers) {
                         McMMOPlayer mcMMOMember = UserManager.getPlayer(member);
+
+                        //Profile not loaded
+                        if(UserManager.getPlayer(member) == null)
+                        {
+                            continue;
+                        }
+
                         int itemShareModifier = mcMMOMember.getItemShareModifier();
                         int diceRoll = Misc.getRandom().nextInt(itemShareModifier);
 

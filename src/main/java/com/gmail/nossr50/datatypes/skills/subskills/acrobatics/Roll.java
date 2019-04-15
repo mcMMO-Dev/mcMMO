@@ -67,6 +67,9 @@ public class Roll extends AcrobaticsSubSkill {
                 //Grab the player
                 McMMOPlayer mcMMOPlayer = EventUtils.getMcMMOPlayer(entityDamageEvent.getEntity());
 
+                if(mcMMOPlayer == null)
+                    break;
+
                 /*
                  * Check for success
                  */

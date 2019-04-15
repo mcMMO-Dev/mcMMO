@@ -179,6 +179,9 @@ public class SalvageManager extends SkillManager {
     }*/
 
     public double getExtractFullEnchantChance() {
+        if(Permissions.hasSalvageEnchantBypassPerk(getPlayer()))
+            return 100.0D;
+
         return AdvancedConfig.getInstance().getArcaneSalvageExtractFullEnchantsChance(getArcaneSalvageRank());
     }
 
@@ -198,10 +201,11 @@ public class SalvageManager extends SkillManager {
         EnchantmentStorageMeta enchantMeta = (EnchantmentStorageMeta) book.getItemMeta();
 
         boolean downgraded = false;
-        boolean arcaneFailure = false;
+        int arcaneFailureCount = 0;
 
         for (Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
             if (!Salvage.arcaneSalvageEnchantLoss
+                    || Permissions.hasSalvageEnchantBypassPerk(player)
                     || RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractFullEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchant.getValue(), true);
             }
@@ -210,34 +214,26 @@ public class SalvageManager extends SkillManager {
                     && RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractPartialEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchant.getValue() - 1, true);
                 downgraded = true;
-            }
-            else {
-                arcaneFailure = true;
-                downgraded = true;
+            } else {
+                arcaneFailureCount++;
             }
         }
 
-        if(!arcaneFailure)
+        if(failedAllEnchants(arcaneFailureCount, enchants.entrySet().size()))
         {
-            Map<Enchantment, Integer> newEnchants = enchantMeta.getStoredEnchants();
-
-            if (downgraded || newEnchants.size() < enchants.size()) {
-                NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.ArcanePartial");
-            }
-            else {
-                NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.ArcanePartial");
-            }
-
-            book.setItemMeta(enchantMeta);
-        } else {
-            if(enchantMeta.getStoredEnchants().size() > 0)
-            {
-                NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.ArcaneFailed");
-            }
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.ArcaneFailed");
             return null;
+        } else if(downgraded)
+        {
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.ArcanePartial");
         }
 
+        book.setItemMeta(enchantMeta);
         return book;
+    }
+
+    private boolean failedAllEnchants(int arcaneFailureCount, int size) {
+        return arcaneFailureCount == size;
     }
 
     /**

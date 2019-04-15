@@ -629,6 +629,10 @@ public final class CombatUtils {
         if (entity instanceof Player) {
             Player defender = (Player) entity;
 
+            //TODO: NPC Interaction?
+            if(UserManager.getPlayer(defender) == null)
+                return true;
+
             if (!defender.getWorld().getPVP() || defender == player || UserManager.getPlayer(defender).getGodMode()) {
                 return false;
             }

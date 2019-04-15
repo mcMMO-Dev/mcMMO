@@ -147,8 +147,7 @@ public class RepairManager extends SkillManager {
         }
 
         // Handle the enchants
-//        if (ArcaneForging.arcaneForgingEnchantLoss) {
-        if (mcMMO.getConfigManager().getConfigRepair().getArcaneForging().isMayLoseEnchants()) {
+        if (mcMMO.getConfigManager().getConfigRepair().getArcaneForging().isMayLoseEnchants() && !Permissions.hasRepairEnchantBypassPerk(player)) {
             addEnchants(item);
         }
 

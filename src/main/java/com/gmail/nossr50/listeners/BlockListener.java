@@ -64,11 +64,10 @@ public class BlockListener implements Listener {
             if(is.getAmount() <= 0)
                 continue;
 
-            if(!MainConfig.getInstance().getDoubleDropsEnabled(PrimarySkillType.MINING, is.getType())
-                    && !MainConfig.getInstance().getDoubleDropsEnabled(PrimarySkillType.HERBALISM, is.getType())
-                        && !MainConfig.getInstance().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, is.getType()))
+            if(!mcMMO.getConfigManager().getBonusDropManager().isBonusDropWhitelisted(is.getType()))
                 continue;
 
+            //TODO: Should just store the amount of drops in the metadata itself and use a loop
             if(event.getBlock().getState().getMetadata(mcMMO.doubleDrops).size() > 0)
             {
                 event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
@@ -283,11 +282,18 @@ public class BlockListener implements Listener {
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if (blockState.getType() == Repair.getInstance().getAnvilMaterial() && PrimarySkillType.REPAIR.getPermissions(player)) {
-            mcMMOPlayer.getRepairManager().placedAnvilCheck();
-        }
-        else if (blockState.getType() == Salvage.anvilMaterial && PrimarySkillType.SALVAGE.getPermissions(player)) {
-            mcMMOPlayer.getSalvageManager().placedAnvilCheck();
+        if (blockState.getType() == Repair.getInstance().getAnvilMaterial()
+                && PrimarySkillType.REPAIR.getPermissions(player)) {
+            if (mcMMOPlayer == null)
+                return;
+
+            if (blockState.getType() == Repair.getInstance().getAnvilMaterial()
+                    && PrimarySkillType.REPAIR.getPermissions(player)) {
+                mcMMOPlayer.getRepairManager().placedAnvilCheck();
+            } else if (blockState.getType() == Salvage.anvilMaterial
+                    && PrimarySkillType.SALVAGE.getPermissions(player)) {
+                mcMMOPlayer.getSalvageManager().placedAnvilCheck();
+            }
         }
     }
 
@@ -376,6 +382,11 @@ public class BlockListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        //Check if profile is loaded
+        if(mcMMOPlayer == null)
+            return;
+
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         /* HERBALISM */
@@ -455,6 +466,12 @@ public class BlockListener implements Listener {
             return;
         }
 
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
+            return;
+        }
+
         BlockState blockState = event.getBlock().getState();
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
@@ -519,6 +536,12 @@ public class BlockListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        //Profile not loaded
+        if(mcMMOPlayer == null)
+        {
+            return;
+        }
 
         /*
          * ABILITY PREPARATION CHECKS
@@ -594,6 +617,13 @@ public class BlockListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
+            return;
+        }
+
         ItemStack heldItem = player.getInventory().getItemInMainHand();
         Block block = event.getBlock();
         BlockState blockState = block.getState();
@@ -629,6 +659,14 @@ public class BlockListener implements Listener {
     public void onBlockDamageCleanup(BlockDamageEvent event) {
         Player player = event.getPlayer();
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
+            return;
+        }
+
+
         BlockState blockState = event.getBlock().getState();
 
         ItemStack heldItem = player.getInventory().getItemInMainHand();
@@ -639,6 +677,12 @@ public class BlockListener implements Listener {
     }
 
     public void debugStickDump(Player player, BlockState blockState) {
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
+            return;
+        }
+
         if(player.getInventory().getItemInMainHand().getType() == Material.DEBUG_STICK)
         {
             if(mcMMO.getPlaceStore().isTrue(blockState))

@@ -90,7 +90,12 @@ public final class AlchemyPotionBrewer {
     }
 
     private static List<ItemStack> getValidIngredients(Player player) {
-        return PotionConfig.getInstance().getIngredients((player == null || !Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CONCOCTIONS)) ? 1 : UserManager.getPlayer(player).getAlchemyManager().getTier());
+        if(player == null || UserManager.getPlayer(player) == null)
+        {
+            return PotionConfig.getInstance().getIngredients(1);
+        }
+
+        return PotionConfig.getInstance().getIngredients(!Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CONCOCTIONS) ? 1 : UserManager.getPlayer(player).getAlchemyManager().getTier());
     }
 
     public static void finishBrewing(BlockState brewingStand, Player player, boolean forced) {
@@ -139,6 +144,7 @@ public final class AlchemyPotionBrewer {
             if (output != null && player != null) {
                 PotionStage potionStage = PotionStage.getPotionStage(input, output);
 
+                //TODO: hmm
                 if (UserManager.hasPlayerDataKey(player)) {
                     UserManager.getPlayer(player).getAlchemyManager().handlePotionBrewSuccesses(potionStage, 1);
                 }

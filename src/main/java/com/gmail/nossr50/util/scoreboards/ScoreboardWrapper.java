@@ -204,6 +204,9 @@ public class ScoreboardWrapper {
         // TODO is there any way to do the time that looks acceptable?
         // player.sendMessage(LocaleLoader.getString("Commands.ConfigScoreboard.Timer", StringUtils.capitalize(sidebarType.toString().toLowerCase()), ticks / 20F));
 
+        if(UserManager.getPlayer(playerName) == null)
+            return;
+
         PlayerProfile profile = UserManager.getPlayer(player).getProfile();
 
         if (profile.getScoreboardTipsShown() >= mcMMO.getScoreboardSettings().getTipsAmount()) {
@@ -433,6 +436,9 @@ public class ScoreboardWrapper {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        if(mcMMOPlayer == null)
+            return;
 
         switch (sidebarType) {
 

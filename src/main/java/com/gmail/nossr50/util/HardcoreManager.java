@@ -17,6 +17,9 @@ public final class HardcoreManager {
         double statLossPercentage = MainConfig.getInstance().getHardcoreDeathStatPenaltyPercentage();
         int levelThreshold = MainConfig.getInstance().getHardcoreDeathStatPenaltyLevelThreshold();
 
+        if(UserManager.getPlayer(player) == null)
+            return;
+
         PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
         int totalLevelsLost = 0;
 
@@ -58,6 +61,9 @@ public final class HardcoreManager {
     public static void invokeVampirism(Player killer, Player victim) {
         double vampirismStatLeechPercentage = MainConfig.getInstance().getHardcoreVampirismStatLeechPercentage();
         int levelThreshold = MainConfig.getInstance().getHardcoreVampirismLevelThreshold();
+
+        if(UserManager.getPlayer(killer) == null || UserManager.getPlayer(victim) == null)
+            return;
 
         PlayerProfile killerProfile = UserManager.getPlayer(killer).getProfile();
         PlayerProfile victimProfile = UserManager.getPlayer(victim).getProfile();

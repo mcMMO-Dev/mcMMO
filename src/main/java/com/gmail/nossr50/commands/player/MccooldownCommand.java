@@ -38,6 +38,12 @@ public class MccooldownCommand implements TabExecutor {
                     }
                 }
 
+                if(UserManager.getPlayer(player) == null)
+                {
+                    player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                    return true;
+                }
+
                 McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
                 player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Header"));

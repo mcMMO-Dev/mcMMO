@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util.player;
 
+import com.gmail.nossr50.api.exceptions.McMMOPlayerNotFoundException;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
@@ -95,9 +96,14 @@ public final class UserManager {
         return retrieveMcMMOPlayer(playerName, true);
     }
 
+    /**
+     * Gets the McMMOPlayer object for a player, this can be null if the player has not yet been loaded.
+     * @param player target player
+     * @return McMMOPlayer object for this player, null if Player has not been loaded
+     */
     public static McMMOPlayer getPlayer(Player player) {
         //Avoid Array Index out of bounds
-        if(player.hasMetadata(mcMMO.playerDataKey))
+        if(player != null && player.hasMetadata(mcMMO.playerDataKey))
             return (McMMOPlayer) player.getMetadata(mcMMO.playerDataKey).get(0).value();
         else
             return null;

@@ -82,8 +82,17 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
+            return;
+        }
+
         if(mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
             UserManager.getPlayer(player).actualizeTeleportATS();
+
+
+        UserManager.getPlayer(player).actualizeTeleportATS();
     }
 
     /**
@@ -188,6 +197,12 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
+            return;
+        }
+
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         mcMMOPlayer.checkGodMode();
@@ -250,6 +265,12 @@ public class PlayerListener implements Listener {
         }
 
         if (!UserManager.hasPlayerDataKey(player) || !PrimarySkillType.FISHING.getPermissions(player)) {
+            return;
+        }
+
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
             return;
         }
 
@@ -323,6 +344,12 @@ public class PlayerListener implements Listener {
         }
 
         if (!UserManager.hasPlayerDataKey(player) || !PrimarySkillType.FISHING.getPermissions(player)) {
+            return;
+        }
+
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
             return;
         }
 
@@ -423,6 +450,12 @@ public class PlayerListener implements Listener {
                 return;
             }
 
+            //Profile not loaded
+            if(UserManager.getPlayer(player) == null)
+            {
+                return;
+            }
+
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
             Item drop = event.getItem();
@@ -471,6 +504,12 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
 
         if (!UserManager.hasPlayerDataKey(player)) {
+            return;
+        }
+
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
             return;
         }
 
@@ -530,6 +569,12 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
+            return;
+        }
+
         UserManager.getPlayer(player).actualizeRespawnATS();
     }
 
@@ -554,6 +599,12 @@ public class PlayerListener implements Listener {
         }
 
         if (event.getHand() != EquipmentSlot.HAND || !UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
+            return;
+        }
+
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
             return;
         }
 
@@ -657,6 +708,12 @@ public class PlayerListener implements Listener {
         }
 
         if (event.getHand() != EquipmentSlot.HAND || !UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
+            return;
+        }
+
+        //Profile not loaded
+        if(UserManager.getPlayer(player) == null)
+        {
             return;
         }
 

@@ -56,6 +56,12 @@ public abstract class SkillCommand implements TabExecutor {
             return true;
         }
 
+        if(UserManager.getPlayer((Player) sender) == null)
+        {
+            sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+            return true;
+        }
+
         switch (args.length) {
             case 0:
                 Player player = (Player) sender;
