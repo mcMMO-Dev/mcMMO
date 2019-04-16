@@ -32,9 +32,9 @@ public class ConfigExperienceRepair {
 
     @Setting(value = "Repair-XP-Base", comment = "The base amount of XP for repairing an item." +
             "\nThe repair XP formula is a simple multiplication of these 4 values in this order" +
-            "\nThe amount repair (0.0 to 1.0)" +
-            "\nThe item XP multiplier defined in the Repair config" +
-            "\nThe Base Repair XP defined here (default 1000.0D)" +
+            "\nThe % amount repaired (0.0 to 1.0)" +
+            "\nThe Item XP multiplier defined in the Repair config (not this config)" +
+            "\nThe Base Repair XP defined here (default 1000.0)" +
             "\nAnd finally, the XP multiplier of the item material category defined in this config." +
             "\nDefault value: "+REPAIR_XP_BASE_DEFAULT)
     private double repairXPBase = REPAIR_XP_BASE_DEFAULT;

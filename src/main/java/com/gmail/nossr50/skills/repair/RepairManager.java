@@ -94,13 +94,33 @@ public class RepairManager extends SkillManager {
 
         PlayerInventory inventory = player.getInventory();
         Material repairMaterial = null;
+        boolean foundNonBasicMaterial = false;
 
         //Find the first compatible repair material
         for(Material repairMaterialCandidate : repairable.getRepairMaterials())
         {
-            if(player.getInventory().contains(new ItemStack(repairMaterialCandidate)))
-                repairMaterial = repairMaterialCandidate;
+            for(ItemStack is : player.getInventory().getContents())
+            {
+                if(is.getType() == repairMaterialCandidate)
+                {
+                    if(is.getItemMeta().getLore().isEmpty())
+                    {
+                        repairMaterial = repairMaterialCandidate;
+                        break;
+                    } else {
+                        foundNonBasicMaterial = true;
+                    }
+                }
+            }
         }
+
+        /* Abort the repair if no compatible basic repairing item found */
+        if(repairMaterial == null && foundNonBasicMaterial == true)
+        {
+            player.sendMessage(LocaleLoader.getString("Repair.NoBasicRepairMatsFound"));
+            return;
+        }
+
 
         //byte repairMaterialMetadata = repairable.getRepairMaterialMetadata();
         ItemStack toRemove = new ItemStack(repairMaterial);

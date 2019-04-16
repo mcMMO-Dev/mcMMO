@@ -13,6 +13,8 @@ Version 2.2.0
     mcMMO will now warn you in the console if it thinks you are running incompatible server software
     Parties no longer have a cap, you can level them forever for bragging rights
     You can now specify multiple repair-items for an item (such as specifying that a wooden sword can be repaired by all types of planks)
+    Repair no longer consumes materials with item lore, players are informed that they cannot repair with that material if its the only matching repair material in their inventory
+    Added new locale string - Repair.NoBasicRepairMatsFound
     Simplified the config entries for Repairables in the Repair config
     Repairables in the repair config now use their internal registry key names instead of Bukkit material names
     Diamond Armor XP multiplier vanilla config setting reduced from 6x -> 2x
