@@ -21,6 +21,8 @@ Version 2.2.0
     Roll will not give XP for a few seconds after a TP
     Added missing X_STRIPPED_WOOD blocks to Woodcutting's experience tables
     Added missing X_WALL_FAN and X_DEAD_WALL_FAN blocks to Herbalism's experience tables
+    Added missing SANDSTONE variants to Mining's experience tables
+    Added missing PURPUR variants to Mining's experience tables
     You can now disable the party system completely
     Many config files are now generated on demand instead of being copied from within the JAR
     All config nodes that used to be styled with CamelCase or otherwise now use hyphens (-) as spaces for readability and consistency
