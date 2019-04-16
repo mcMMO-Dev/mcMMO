@@ -100,6 +100,6 @@ public class ConfigExperienceMining {
     }
 
     @Setting(value = "Mining-Experience")
-    private HashMap<String, Integer> miningExperienceMap;
+    private HashMap<String, Integer> miningExperienceMap = MINING_EXPERIENCE_DEFAULT;
 
 }
