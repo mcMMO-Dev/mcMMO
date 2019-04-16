@@ -25,6 +25,9 @@ public class ConfigExperienceRepair {
         ITEM_MATERIAL_XP_MULTIPLIER_DEFAULT.put(ItemMaterialCategory.OTHER.toString(), 1.5D);
     }
 
+    @Setting(value = "Item-Material-Category-XP-Multiplier", comment = "The material of your item is determined by mcMMO and used to influence XP, " +
+            "if your Item doesn't fit into a known category it will use OTHER." +
+            "\nFor the most part, items belong to categories of materials that they are made out of.")
     private HashMap<String, Double> itemMaterialXPMultiplier = ITEM_MATERIAL_XP_MULTIPLIER_DEFAULT;
 
     @Setting(value = "Repair-XP-Base", comment = "The base amount of XP for repairing an item." +
@@ -40,7 +43,7 @@ public class ConfigExperienceRepair {
         return itemMaterialXPMultiplier;
     }
 
-    public static double getRepairXpBaseDefault() {
-        return REPAIR_XP_BASE_DEFAULT;
+    public double getRepairXPBase() {
+        return repairXPBase;
     }
 }
