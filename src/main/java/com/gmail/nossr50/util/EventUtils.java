@@ -43,6 +43,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -85,7 +86,7 @@ public class EventUtils {
      *
      * 1) The player is real and not an NPC
      * 2) The player is not in god mode
-     * 3) The damage dealt is above 0
+     * 3) The damage dealt is above 0 (if a player has Absorption, check if damage and final damage are above 0)
      * 4) The player is loaded into our mcMMO user profiles
      *
      * @param entityDamageEvent
@@ -94,11 +95,26 @@ public class EventUtils {
     public static boolean isRealPlayerDamaged(EntityDamageEvent entityDamageEvent)
     {
         //Make sure the damage is above 0
-        double damage = entityDamageEvent.getFinalDamage();
+        double damage = entityDamageEvent.getDamage();
+        double finalDamage = entityDamageEvent.getFinalDamage();
 
-        if (damage <= 0) {
-            return false;
+        if (entityDamageEvent.getEntity() instanceof Player) {
+            Player player = (Player) entityDamageEvent.getEntity();
+
+            //If a player has Absorption, check both damage and final damage
+            if (player.hasPotionEffect(PotionEffectType.ABSORPTION)) {
+                if (damage <= 0 && finalDamage <= 0) {
+                    return false;
+                }
+            }
+            //Otherwise, do original check - only check final damage
+            else {
+                if (finalDamage <= 0) {
+                    return false;
+                }
+            }
         }
+
 
         Entity entity = entityDamageEvent.getEntity();
 
