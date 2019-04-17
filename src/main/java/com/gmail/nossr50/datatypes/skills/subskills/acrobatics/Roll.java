@@ -78,7 +78,9 @@ public class Roll extends AcrobaticsSubSkill {
                 if (canRoll(player)) {
                     entityDamageEvent.setDamage(rollCheck(player, mcMMOPlayer, entityDamageEvent.getDamage()));
 
-                    if (entityDamageEvent.getFinalDamage() == 0) {
+                    //Check getDamage() instead of getFinalDamage()
+                    //Prevent unintended invincibility if Absorption covers all of the damage
+                    if (entityDamageEvent.getDamage() == 0) {
                         entityDamageEvent.setCancelled(true);
                         return true;
                     }
