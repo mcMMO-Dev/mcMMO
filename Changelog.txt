@@ -7,6 +7,9 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.45
+    mcMMO will now check to see if the server version is incompatible and inform server admins on how to fix the problem.
+
 Version 2.1.44
     Fixed a NPE with Alchemy brewing
 

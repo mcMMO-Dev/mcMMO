@@ -47,6 +47,7 @@ import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.google.common.base.Charsets;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -57,6 +58,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,6 +89,9 @@ public class mcMMO extends JavaPlugin {
 
     /* Plugin Checks */
     private static boolean healthBarPluginEnabled;
+
+    // API checks
+    private static boolean serverAPIOutdated = false;
 
     // Config Validation Check
     public boolean noErrorsInConfigFiles = true;
@@ -165,35 +170,54 @@ public class mcMMO extends JavaPlugin {
 
             databaseManager = DatabaseManagerFactory.getDatabaseManager();
 
-            registerEvents();
-            registerCoreSkills();
-            registerCustomRecipes();
+            //Check for the newer API and tell them what to do if its missing
+            checkForOutdatedAPI();
 
-            PartyManager.loadParties();
+            if(serverAPIOutdated)
+            {
+                Bukkit
+                        .getScheduler()
+                        .scheduleSyncRepeatingTask(this,
+                                () -> getLogger().severe("You are running an outdated version of "+getServerSoftware()+", mcMMO will not work unless you update to a newer version!"),
+                        20, 20*60*30);
 
-            formulaManager = new FormulaManager();
-            holidayManager = new HolidayManager();
+                if(getServerSoftware() == ServerSoftwareType.CRAFTBUKKIT)
+                {
+                    Bukkit.getScheduler()
+                            .scheduleSyncRepeatingTask(this,
+                                    () -> getLogger().severe("We have detected you are using incompatible server software, our best guess is that you are using CraftBukkit. mcMMO requires Spigot or Paper, if you are not using CraftBukkit, you will still need to update your custom server software before mcMMO will work."),
+                    20, 20*60*30);
+                }
+            } else {
+                registerEvents();
+                registerCoreSkills();
+                registerCustomRecipes();
 
-            for (Player player : getServer().getOnlinePlayers()) {
-                new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
+                PartyManager.loadParties();
+
+                formulaManager = new FormulaManager();
+                holidayManager = new HolidayManager();
+
+                for (Player player : getServer().getOnlinePlayers()) {
+                    new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
+                }
+
+                debug("Version " + getDescription().getVersion() + " is enabled!");
+
+                scheduleTasks();
+                CommandRegistrationManager.registerCommands();
+
+                placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
+
+                if (Config.getInstance().getPTPCommandWorldPermissions()) {
+                    Permissions.generateWorldTeleportPermissions();
+                }
+
+                //Populate Ranked Skill Maps (DO THIS LAST)
+                RankUtils.populateRanks();
             }
-
-            debug("Version " + getDescription().getVersion() + " is enabled!");
-
-            scheduleTasks();
-            CommandRegistrationManager.registerCommands();
-
-            placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
-
-            if (Config.getInstance().getPTPCommandWorldPermissions()) {
-                Permissions.generateWorldTeleportPermissions();
-            }
-
-            //Populate Ranked Skill Maps (DO THIS LAST)
-            RankUtils.populateRanks();
 
             //If anonymous statistics are enabled then use them
-
             Metrics metrics;
 
             if(Config.getInstance().getIsMetricsEnabled()) {
@@ -221,6 +245,47 @@ public class mcMMO extends JavaPlugin {
 
         //Init the blacklist
         worldBlacklist = new WorldBlacklist(this);
+    }
+
+    private void checkForOutdatedAPI() {
+        try {
+            Class<?> checkForClass = Class.forName("org.bukkit.event.block.BlockDropItemEvent");
+            Method newerAPIMethod =  checkForClass.getMethod("getItems");
+            Class<?> checkForClassBaseComponent = Class.forName("net.md_5.bungee.api.chat.BaseComponent");
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
+            serverAPIOutdated = true;
+            String software = getServerSoftwareStr();
+            getLogger().severe("You are running an older version of " + software + " that is not compatible with mcMMO, update your server software!");
+        }
+    }
+
+    private enum ServerSoftwareType {
+        PAPER,
+        SPIGOT,
+        CRAFTBUKKIT
+    }
+
+    private ServerSoftwareType getServerSoftware()
+    {
+        if(Bukkit.getVersion().toLowerCase().contains("paper"))
+            return ServerSoftwareType.PAPER;
+        else if(Bukkit.getVersion().toLowerCase().contains("spigot"))
+            return ServerSoftwareType.SPIGOT;
+        else
+            return ServerSoftwareType.CRAFTBUKKIT;
+    }
+
+    private String getServerSoftwareStr()
+    {
+        switch(getServerSoftware())
+        {
+            case PAPER:
+                return "Paper";
+            case SPIGOT:
+                return "Spigot";
+            default:
+                return "CraftBukkit";
+        }
     }
 
     @Override
