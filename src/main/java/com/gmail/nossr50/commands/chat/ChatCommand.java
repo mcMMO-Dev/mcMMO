@@ -55,11 +55,10 @@ public abstract class ChatCommand implements TabExecutor {
                 return true;
 
             case 1:
-                if (!CommandUtils.hasPlayerDataKey(sender)) {
-                    return true;
-                }
-
                 if (CommandUtils.shouldEnableToggle(args[0])) {
+                    if (!CommandUtils.hasPlayerDataKey(sender)) {
+                        return true;
+                    }
                     if (CommandUtils.noConsoleUsage(sender)) {
                         return true;
                     }
@@ -69,6 +68,9 @@ public abstract class ChatCommand implements TabExecutor {
                 }
 
                 if (CommandUtils.shouldDisableToggle(args[0])) {
+                    if (!CommandUtils.hasPlayerDataKey(sender)) {
+                        return true;
+                    }
                     if (CommandUtils.noConsoleUsage(sender)) {
                         return true;
                     }
