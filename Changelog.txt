@@ -7,6 +7,10 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.46
+    Fixed a bug where admin chat from console would fail to send (thanks OverCrave)
+    Updated hu_HU locale (thanks andris155)
+    
 Version 2.1.45
     mcMMO will now check to see if the server version is incompatible and inform server admins on how to fix the problem.
 
