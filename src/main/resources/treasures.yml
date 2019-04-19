@@ -695,8 +695,7 @@ Shake:
             Drop_Chance: 49.0
             Drop_Level: 0
     CREEPER:
-        SKELETON_SKULL:
-            Data: 4
+        CREEPER_HEAD:
             Amount: 1
             XP: 0
             Drop_Chance: 1.0
@@ -828,7 +827,6 @@ Shake:
             Drop_Level: 0
     SKELETON:
         SKELETON_SKULL:
-            Data: 0
             Amount: 1
             XP: 0
             Drop_Chance: 2.0
@@ -936,7 +934,6 @@ Shake:
             Drop_Level: 0
     WITHER_SKELETON:
         WITHER_SKELETON_SKULL:
-            Data: 0
             Amount: 1
             XP: 0
             Drop_Chance: 2.0
@@ -952,8 +949,7 @@ Shake:
             Drop_Chance: 49.0
             Drop_Level: 0
     ZOMBIE:
-        SKELETON_SKULL:
-            Data: 2
+        ZOMBIE_HEAD:
             Amount: 1
             XP: 0
             Drop_Chance: 2.0
