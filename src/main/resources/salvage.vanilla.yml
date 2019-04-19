@@ -61,7 +61,7 @@ Salvageables:
     WOODEN_AXE:
         MinimumLevel: 0
         XpMultiplier: .5
-        MaximumQuantity: 2
+        MaximumQuantity: 3
     WOODEN_HOE:
         MinimumLevel: 0
         XpMultiplier: .25
@@ -85,7 +85,7 @@ Salvageables:
     STONE_AXE:
         MinimumLevel: 0
         XpMultiplier: .5
-        MaximumQuantity: 2
+        MaximumQuantity: 3
     STONE_HOE:
         MinimumLevel: 0
         XpMultiplier: .25
@@ -109,7 +109,7 @@ Salvageables:
     IRON_AXE:
         MinimumLevel: 0
         XpMultiplier: 1
-        MaximumQuantity: 2
+        MaximumQuantity: 3
     IRON_HOE:
         MinimumLevel: 0
         XpMultiplier: .5
@@ -156,7 +156,7 @@ Salvageables:
     GOLDEN_AXE:
         MinimumLevel: 0
         XpMultiplier: 8
-        MaximumQuantity: 2
+        MaximumQuantity: 3
     GOLDEN_HOE:
         MinimumLevel: 0
         XpMultiplier: 4
@@ -197,7 +197,7 @@ Salvageables:
     DIAMOND_AXE:
         MinimumLevel: 50
         XpMultiplier: 1
-        MaximumQuantity: 2
+        MaximumQuantity: 3
     DIAMOND_HOE:
         MinimumLevel: 50
         XpMultiplier: .5
