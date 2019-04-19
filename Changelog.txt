@@ -8,8 +8,20 @@ Key:
   - Removal
 
 Version 2.1.46
+    Fixed an error where bleed was setting health outside minimum values
+    [See NOTE] Fixed a bug where Creepers and Zombies were not dropping the correct heads from Shake (thanks Zed-I)
+    [See NOTE] Fixed a bug where salvage was not returning the correct amount of materials for AXE items (thanks Zed-I)
+    [See NOTE] Added missing STRIPPED_WOOD entries to experience.yml for Woodcutting
+    [See NOTE] Added about 15-20 missing entries to experience.yml for coral to Herbalism
     Fixed a bug where admin chat from console would fail to send (thanks OverCrave)
+    Reduced default XP values for DEAD_* coral plants from 30 -> 10
     Updated hu_HU locale (thanks andris155)
+
+    NOTE: These bugfixes were related to default config values, to receive these changes you can either delete experience.yml, treasures.yml and salvage.vanilla.yml to generate new ones or make the necessary edits.
+    This is what the files should look like after being edited.
+    Experience Correct Default Config - https://paste.gg/p/anonymous/ff695df1417e4232957a3d176fd14ed4
+    Salvage Correct Default Config - https://paste.gg/p/anonymous/c4eb2f4e66ed444e872021051760f3be
+    Treasures Correct Default Config - https://paste.gg/p/anonymous/b0120210f8c149958ca0303c68c19ebd
 
 Version 2.1.45
     mcMMO will now check to see if the server version is incompatible and inform server admins on how to fix the problem.
