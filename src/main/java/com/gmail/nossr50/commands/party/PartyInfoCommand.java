@@ -130,5 +130,7 @@ public class PartyInfoCommand implements CommandExecutor {
         player.sendMessage(LocaleLoader.getString("Commands.Party.Members.Header"));
         player.sendMessage(LocaleLoader.getString("Commands.Party.MembersNear", nearMembers.size()+1, membersOnline));
         player.sendMessage(party.createMembersList(player));
+
+
     }
 }

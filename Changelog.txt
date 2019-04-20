@@ -8,6 +8,8 @@ Key:
   - Removal
 
 Version 2.1.46
+    Party member lists now show the whole party, including offline players again.
+    Party lists now have special markers for players who are in shared XP range
     Fixed an error where bleed was setting health outside minimum values
     [See NOTE] Fixed a bug where Creepers and Zombies were not dropping the correct heads from Shake (thanks Zed-I)
     [See NOTE] Fixed a bug where salvage was not returning the correct amount of materials for AXE items (thanks Zed-I)
