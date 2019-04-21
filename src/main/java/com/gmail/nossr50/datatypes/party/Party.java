@@ -373,6 +373,9 @@ public class Party {
             }
         }
 
+        if(offlineMembers.contains(leader.getUniqueId()))
+            isPartyLeaderOfflineOrHidden = true;
+
         //Add all the actually offline members
         offlineOrHiddenPartyList.addAll(offlineMembers);
 
@@ -407,10 +410,10 @@ public class Party {
                 applyOnlineAndRangeFormatting(memberList, true, nearbyPlayerList.contains(Bukkit.getPlayer(leader.getUniqueId())));
 
             if(useDisplayNames) {
-                memberList.append(Bukkit.getPlayer(leader.getUniqueId()).getDisplayName());
+                memberList.append(leader.getPlayerName());
             } else {
                 memberList.append(ChatColor.GOLD)
-                          .append(Bukkit.getPlayer(leader.getUniqueId()).getName());
+                          .append(Bukkit.getOfflinePlayer(leader.getUniqueId()));
             }
         }
 

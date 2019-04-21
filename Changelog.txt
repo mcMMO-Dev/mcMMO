@@ -7,6 +7,9 @@ Key:
   ! Change
   - Removal
 
+Version 2.1.47
+    Fix NPE when party leader is offline and players grab a party list
+
 Version 2.1.46
     Party member lists now show the whole party, including offline players again.
     Party lists now have special markers for players who are in shared XP range
