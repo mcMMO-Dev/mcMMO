@@ -8,8 +8,9 @@ Version 2.1.48
     Dodge now gives 800 XP
     Roll now gives 600 XP
     Fall now gives 600 XP
-    The first 10/100 levels of Combat skills now gives a small amount of bonus XP (this amount is not multiplied by any modifiers other than XP rate)
-        Note: First 10 in Standard, first 100 in Retro
+
+    The first 5/50 levels of skills now give large amounts of XP so players get key early skills much faster
+        Note: First 50 in Standard, first 50 in Retro
 
     Dev Notes:
     I will be making a write up soon explaining near future plans for mcMMO and what is going on with the config update, abstraction update, etc...
