@@ -910,7 +910,7 @@ public class McMMOPlayer {
             }
 
             setToolPreparationMode(tool, true);
-            new ToolLowerTask(this, tool).runTaskLaterAsynchronously(mcMMO.p, 4 * Misc.TICK_CONVERSION_FACTOR);
+            new ToolLowerTask(this, tool).runTaskLater(mcMMO.p, 4 * Misc.TICK_CONVERSION_FACTOR);
         }
     }
 
