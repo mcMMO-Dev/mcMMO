@@ -552,6 +552,7 @@ public final class ItemUtils {
      * @return true if the item is a mining drop, false otherwise
      */
     public static boolean isMiningDrop(ItemStack item) {
+        //TODO: 1.14 This needs to be updated
         switch (item.getType()) {
             case COAL:
             case COAL_ORE:
@@ -582,6 +583,7 @@ public final class ItemUtils {
      * @return true if the item is a herbalism drop, false otherwise
      */
     public static boolean isHerbalismDrop(ItemStack item) {
+        //TODO: 1.14 This needs to be updated
         switch (item.getType()) {
             case WHEAT:
             case WHEAT_SEEDS:
@@ -594,8 +596,8 @@ public final class ItemUtils {
             case NETHER_WART:
             case BROWN_MUSHROOM:
             case RED_MUSHROOM:
-            case ROSE_RED:
-            case DANDELION_YELLOW:
+            case ROSE_BUSH:
+            case DANDELION:
             case CACTUS:
             case SUGAR_CANE:
             case MELON:
@@ -620,6 +622,7 @@ public final class ItemUtils {
      * @return true if the item is a mob drop, false otherwise
      */
     public static boolean isMobDrop(ItemStack item) {
+        //TODO: 1.14 This needs to be updated
         switch (item.getType()) {
             case STRING:
             case FEATHER:
@@ -661,7 +664,7 @@ public final class ItemUtils {
             case ROTTEN_FLESH:
             case GOLD_NUGGET:
             case EGG:
-            case ROSE_RED:
+            case ROSE_BUSH:
             case COAL:
                 return true;
 

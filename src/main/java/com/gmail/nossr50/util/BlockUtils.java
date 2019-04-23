@@ -116,7 +116,18 @@ public final class BlockUtils {
             case JUNGLE_TRAPDOOR:
             case OAK_TRAPDOOR:
             case SPRUCE_TRAPDOOR:
-            case WALL_SIGN :
+            case ACACIA_SIGN:
+            case ACACIA_WALL_SIGN:
+            case BIRCH_SIGN:
+            case BIRCH_WALL_SIGN:
+            case DARK_OAK_SIGN:
+            case DARK_OAK_WALL_SIGN:
+            case JUNGLE_SIGN:
+            case JUNGLE_WALL_SIGN:
+            case SPRUCE_SIGN:
+            case SPRUCE_WALL_SIGN:
+            case OAK_SIGN:
+            case OAK_WALL_SIGN:
             case CRAFTING_TABLE:
             case BEACON :
             case ANVIL :
@@ -218,7 +229,6 @@ public final class BlockUtils {
             case JUNGLE_TRAPDOOR:
             case OAK_TRAPDOOR:
             case SPRUCE_TRAPDOOR:
-            case WALL_SIGN :
             case CRAFTING_TABLE:
             case BEACON :
             case ANVIL :
