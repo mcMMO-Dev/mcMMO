@@ -72,6 +72,7 @@ public class mcMMO extends JavaPlugin {
     private static FormulaManager     formulaManager;
     private static HolidayManager     holidayManager;
     private static UpgradeManager     upgradeManager;
+    private static MaterialMapStore materialMapStore;
 
     /* Blacklist */
     private static WorldBlacklist worldBlacklist;
@@ -243,8 +244,15 @@ public class mcMMO extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
         }
 
+        //Init Material Maps
+        materialMapStore = new MaterialMapStore();
+
         //Init the blacklist
         worldBlacklist = new WorldBlacklist(this);
+    }
+
+    public static MaterialMapStore getMaterialMapStore() {
+        return materialMapStore;
     }
 
     private void checkForOutdatedAPI() {

@@ -16,7 +16,7 @@ website: https://www.mcmmo.org
 main: com.gmail.nossr50.mcMMO
 softdepend: [WorldGuard, CombatTag, HealthBar]
 load: STARTUP
-api-version: 1.14
+api-version: 1.13
 
 commands:
     mmoinfo:

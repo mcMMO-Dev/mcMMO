@@ -196,7 +196,7 @@ Conversion:
 #
 #  Settings for XP distribution
 ###
-Experience_114:
+Experience_Values:
     PVP:
         Rewards: true
     Acrobatics:
