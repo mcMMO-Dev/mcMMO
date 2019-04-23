@@ -9,6 +9,7 @@ Key:
 
 Version 2.1.48
     1.14 Support
+    (API) Player notification events are now marked async
 
 Version 2.1.47
     Fix NPE when party leader is offline and players grab a party list
