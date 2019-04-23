@@ -609,6 +609,15 @@ public final class CombatUtils {
 
         baseXP *= multiplier;
 
+        int earlyLevelBonusXPCap = mcMMO.isRetroModeEnabled() ? 100 : 10;
+
+        //Give some bonus XP for low levels
+        if(baseXP != 0 && mcMMOPlayer.getSkillLevel(primarySkillType) < earlyLevelBonusXPCap)
+        {
+            baseXP += 50;
+        }
+        
+
         if (baseXP != 0) {
             new AwardCombatXpTask(mcMMOPlayer, primarySkillType, baseXP, target, xpGainReason).runTaskLater(mcMMO.p, 0);
         }
