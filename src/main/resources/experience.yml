@@ -196,13 +196,13 @@ Conversion:
 #
 #  Settings for XP distribution
 ###
-Experience:
+Experience_114:
     PVP:
         Rewards: true
     Acrobatics:
-        Dodge: 120
-        Roll: 80
-        Fall: 120
+        Dodge: 800
+        Roll: 600
+        Fall: 600
 
         # FeatherFall_Multiplier: Multiply Acrobatics XP by this value when wearing boots with the Feather Fall enchant
         FeatherFall_Multiplier: 2.0
@@ -418,6 +418,9 @@ Experience:
             Skeleton_Horse: 1000
             Zombie_Horse: 1000
             Parrot: 1100
+            Cat: 500
+            Fox: 1000
+            Panda: 1000
     Combat:
         Multiplier:
             Animals: 1.0
@@ -472,3 +475,10 @@ Experience:
             Drowned: 1.0
             Dolphin: 1.3
             Phantom: 4.0
+            Cat: 1.0
+            Fox: 1.0
+            Panda: 1.0
+            Pillager: 2.0
+            Ravager: 4.0
+            Trader_Llama: 1.0
+

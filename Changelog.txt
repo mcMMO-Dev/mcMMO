@@ -1,14 +1,22 @@
-Changelog:
-Versions without changelogs probably had very small misc fixes, like tweaks to the source code
-
-Key:
-  + Addition
-  = Fix
-  ! Change
-  - Removal
-
 Version 2.1.48
-    1.14 Support
+    (1.14 Only)
+        1.14 Support
+        Added Cats, Foxes, and Pandas to Taming XP rewards
+        Added Cats, Foxes, Pandas, Trader Llamas, Pillagers, and Ravagers to Combat XP rewards
+        "Experience" section of experience.yml has been renamed to "Experience_114"
+
+    Dodge now gives 800 XP
+    Roll now gives 600 XP
+    Fall now gives 600 XP
+
+    Dev Notes:
+    I will be making a write up soon explaining near future plans for mcMMO and what is going on with the config update, abstraction update, etc...
+    Due to some changes in 1.14, you will not be able to play the 1.14 version of mcMMO on a 1.13 server
+    I plan to support 1.13 for the time being, in the abstraction update I will expand compatible versions of mcMMO to include: 1.14 / 1.13.2 / 1.12.2 / 1.8.8 / Sponge 1.14
+    It is not necessary to update your configs if you are upgrading from 1.13 -> 1.14, however if you had custom XP values in your experience.yml you will want to update your config.
+    Acrobatics XP was buffed since many AFK counter-measures were put into place to prevent repetitive grinding.
+    Experience node in experience.yml was renamed to "automatically" update configs for 1.14
+    There are 4 updates planned for mcMMO, including a patreon rewards update, a large content update, a config update, and backwards compatibility for 1.13/1.12/1.8.8 and support for Sponge
 
 Version 2.1.47
     Fix NPE when party leader is offline and players grab a party list
