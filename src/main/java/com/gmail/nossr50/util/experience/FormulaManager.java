@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.experience;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
@@ -130,9 +129,9 @@ public class FormulaManager {
             formulaType = FormulaType.LINEAR;
         }
 
-        int base = ExperienceConfig.getInstance().getBase(formulaType);
-        double multiplier = ExperienceConfig.getInstance().getMultiplier(formulaType);
-        double exponent = ExperienceConfig.getInstance().getExponent(formulaType);
+        int base = mcMMO.getConfigManager().getConfigLeveling().getBase(formulaType);
+        double multiplier = mcMMO.getConfigManager().getConfigLeveling().getMultiplier(formulaType);
+        double exponent = mcMMO.getConfigManager().getConfigLeveling().getExponentialExponent();
 
         switch (formulaType) {
             case LINEAR:
@@ -173,9 +172,9 @@ public class FormulaManager {
          * Retro mode XP requirements are the default requirements
          * Standard mode XP requirements are multiplied by a factor of 10
          */
-        int base = ExperienceConfig.getInstance().getBase(FormulaType.EXPONENTIAL);
-        double multiplier = ExperienceConfig.getInstance().getMultiplier(FormulaType.EXPONENTIAL);
-        double exponent = ExperienceConfig.getInstance().getExponent(FormulaType.EXPONENTIAL);
+        int base = mcMMO.getConfigManager().getConfigLeveling().getBase(FormulaType.EXPONENTIAL);
+        double multiplier = mcMMO.getConfigManager().getConfigLeveling().getMultiplier(FormulaType.EXPONENTIAL);
+        double exponent = mcMMO.getConfigManager().getConfigLeveling().getExponentialExponent();
 
         if (!experienceNeededExponential.containsKey(level)) {
             experience = (int) Math.floor((multiplier * Math.pow(level, exponent) + base));

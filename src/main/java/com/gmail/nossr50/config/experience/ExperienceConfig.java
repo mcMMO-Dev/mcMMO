@@ -2,7 +2,6 @@ package com.gmail.nossr50.config.experience;
 
 import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.config.ConfigValidated;
-import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
@@ -119,19 +118,6 @@ public class ExperienceConfig extends ConfigValidated {
          * FORMULA SETTINGS
          */
 
-        /* Curve values */
-        if (getMultiplier(FormulaType.EXPONENTIAL) <= 0) {
-            reason.add(EXPERIENCE_FORMULA + ".Exponential" + VALUES + "." + MULTIPLIER + " should be greater than 0!");
-        }
-
-        if (getMultiplier(FormulaType.LINEAR) <= 0) {
-            reason.add(EXPERIENCE_FORMULA + ".Linear" + VALUES + "." + MULTIPLIER + " should be greater than 0!");
-        }
-
-        if (getExponent(FormulaType.EXPONENTIAL) <= 0) {
-            reason.add(EXPERIENCE_FORMULA + ".Exponential" + VALUES + "." + EXPONENT + " should be greater than 0!");
-        }
-
         /* Global modifier */
         if (getExperienceGainsGlobalMultiplier() <= 0) {
             reason.add(EXPERIENCE_FORMULA + "." + MULTIPLIER + "." + GLOBAL + " should be greater than 0!");
@@ -192,19 +178,6 @@ public class ExperienceConfig extends ConfigValidated {
     /* Curve settings */
     public boolean getCumulativeCurveEnabled() {
         return getBooleanValue(EXPERIENCE_FORMULA, CUMULATIVE + CURVE);
-    }
-
-    /* Curve values */
-    public double getMultiplier(FormulaType type) {
-        return getDoubleValue(EXPERIENCE_FORMULA, StringUtils.getCapitalized(type.toString()) + VALUES, MULTIPLIER);
-    }
-
-    public int getBase(FormulaType type) {
-        return getIntValue(EXPERIENCE_FORMULA, StringUtils.getCapitalized(type.toString()) + VALUES, BASE);
-    }
-
-    public double getExponent(FormulaType type) {
-        return getDoubleValue(EXPERIENCE_FORMULA, StringUtils.getCapitalized(type.toString()) + VALUES, EXPONENT);
     }
 
     /* Global modifier */

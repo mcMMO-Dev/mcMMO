@@ -43,6 +43,10 @@ public class ConfigLeveling {
         return configSectionLevelingGeneral.getConfigSectionLevelScaling();
     }
 
+    public ConfigExperienceFormula getConfigExperienceFormula() {
+        return configExperienceFormula;
+    }
+
     public FormulaType getFormulaType() {
         return configExperienceFormula.getFormulaType();
     }
@@ -57,6 +61,14 @@ public class ConfigLeveling {
 
     public ConfigExperienceFormulaExponential getConfigExperienceFormulaExponential() {
         return configExperienceFormula.getConfigExperienceFormulaExponential();
+    }
+
+    public int getBase(FormulaType formulaType) {
+        return configExperienceFormula.getBase(formulaType);
+    }
+
+    public double getMultiplier(FormulaType formulaType) {
+        return configExperienceFormula.getMultiplier(formulaType);
     }
 
     public int getExponentialBaseModifier() {

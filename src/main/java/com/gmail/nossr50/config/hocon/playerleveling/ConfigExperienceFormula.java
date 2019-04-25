@@ -31,6 +31,32 @@ public class ConfigExperienceFormula {
         return configExperienceFormulaExponential;
     }
 
+    public double getMultiplier(FormulaType formulaType)
+    {
+        switch(formulaType)
+        {
+            case LINEAR:
+                return getLinearMultiplier();
+            case EXPONENTIAL:
+                return getExponentialMultiplier();
+            default:
+                throw new IncorrectFormulaException(formulaType);
+        }
+    }
+
+    public int getBase(FormulaType formulaType)
+    {
+        switch(formulaType)
+        {
+            case LINEAR:
+                return getLinearBaseModifier();
+            case EXPONENTIAL:
+                return getExponentialBaseModifier();
+            default:
+                throw new IncorrectFormulaException(formulaType);
+        }
+    }
+
     public int getExponentialBaseModifier() {
         return configExperienceFormulaExponential.getExponentialBaseModifier();
     }

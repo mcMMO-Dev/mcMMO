@@ -1,6 +1,5 @@
 package com.gmail.nossr50.config.hocon.playerleveling;
 
-import com.gmail.nossr50.datatypes.experience.FormulaType;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
