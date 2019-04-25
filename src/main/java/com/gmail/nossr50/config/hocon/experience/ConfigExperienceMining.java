@@ -102,4 +102,7 @@ public class ConfigExperienceMining {
     @Setting(value = "Mining-Experience")
     private HashMap<String, Integer> miningExperienceMap = MINING_EXPERIENCE_DEFAULT;
 
+    public HashMap<String, Integer> getMiningExperienceMap() {
+        return miningExperienceMap;
+    }
 }
