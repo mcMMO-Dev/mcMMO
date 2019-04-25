@@ -76,6 +76,7 @@ public class ExperienceConfig extends ConfigValidated {
     public static final String OCELOT = "Ocelot";
     public static final String WOLF = "Wolf";
     public static final String FEATHER_FALL_MULTIPLIER = "FeatherFall_Multiplier";
+    private static final String PISTONS = "Pistons";
 
     //TODO: Should merge be false? Seems okay to leave it as true..
     public ExperienceConfig() {
@@ -191,6 +192,8 @@ public class ExperienceConfig extends ConfigValidated {
     public boolean isEndermanEndermiteFarmingPrevented() {
         return getBooleanValue(EXPLOIT_FIX, ENDERMAN_ENDERMITE_FARMS);
     }
+
+    public boolean isPistonExploitPrevented() { return getBooleanValue(EXPLOIT_FIX, PISTONS); }
 
 /*    public boolean isFishingExploitingPrevented() { return config.getBoolean("ExploitFix.Fishing", true); }
     public boolean isAcrobaticsExploitingPrevented() { return config.getBoolean("ExploitFix.Acrobatics", true); }*/
@@ -365,7 +368,6 @@ public class ExperienceConfig extends ConfigValidated {
         //In case the value is invalid
         return BarStyle.SOLID;
     }
-
 
     /* Repair */
     public double getRepairXPBase() {

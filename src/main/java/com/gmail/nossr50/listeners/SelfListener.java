@@ -101,8 +101,8 @@ public class SelfListener implements Listener {
             return;
         }
 
-        final float rawXp = event.getRawXpGained();
-        if (rawXp < 0) {
+
+        if (event.getRawXpGained() <= 0) {
             // Don't calculate for XP subtraction
             return;
         }
@@ -110,6 +110,19 @@ public class SelfListener implements Listener {
         if (primarySkillType.isChildSkill()) {
             return;
         }
+
+        int earlyLevelBonusXPCap = mcMMO.isRetroModeEnabled() ? 50 : 5;
+
+        int earlyGameBonusXP = 0;
+
+        //Give some bonus XP for low levels
+        if(mcMMOPlayer.getSkillLevel(primarySkillType) < earlyLevelBonusXPCap)
+        {
+            earlyGameBonusXP += (mcMMOPlayer.getXpToLevel(primarySkillType) * 0.05);
+            event.setRawXpGained(event.getRawXpGained() + earlyGameBonusXP);
+        }
+
+        final float rawXp = event.getRawXpGained();
 
         float guaranteedMinimum = ExperienceConfig.getInstance().getDiminishedReturnsCap() * rawXp;
 

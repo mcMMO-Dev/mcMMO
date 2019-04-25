@@ -243,7 +243,7 @@ public class EntityListener implements Listener {
             if(defender instanceof Player)
             {
                 LivingEntity defLive = (LivingEntity) defender;
-                defLive.setHealth(defLive.getHealth() - event.getFinalDamage());
+                defLive.setHealth(Math.max(0, (defLive.getHealth() - event.getFinalDamage())));
                 event.setCancelled(true);
             }
 

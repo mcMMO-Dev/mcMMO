@@ -28,10 +28,7 @@ import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.repair.repairables.RepairableManager;
 import com.gmail.nossr50.skills.salvage.salvageables.SalvageableManager;
-import com.gmail.nossr50.util.ChimaeraWing;
-import com.gmail.nossr50.util.LogFilter;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
 import com.gmail.nossr50.util.commands.CommandRegistrationManager;
@@ -48,9 +45,13 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 public class mcMMO extends JavaPlugin {
     public static final String COMPATIBLE_SERVER_SOFTWARE = "Spigot, Paper";
@@ -63,8 +64,7 @@ public class mcMMO extends JavaPlugin {
     //private static ModManager         modManager;
     private static DatabaseManager    databaseManager;
     private static FormulaManager     formulaManager;
-    /*private static HolidayManager     holidayManager;*/
-    //private static UpgradeManager     upgradeManager;
+    private static MaterialMapStore materialMapStore;
 
     /* File Paths */
     private static String mainDirectory;
@@ -79,6 +79,9 @@ public class mcMMO extends JavaPlugin {
 
     /* Plugin Checks */
     private static boolean healthBarPluginEnabled;
+
+    // API checks
+    private static boolean serverAPIOutdated = false;
 
     // XP Event Check
     private boolean xpEventEnabled;
@@ -146,38 +149,56 @@ public class mcMMO extends JavaPlugin {
 
             databaseManager = DatabaseManagerFactory.getDatabaseManager();
 
-            registerEvents();
-            registerCoreSkills();
-            registerCustomRecipes();
+            //Check for the newer API and tell them what to do if its missing
+            checkForOutdatedAPI();
+
+            if(serverAPIOutdated)
+            {
+                Bukkit
+                        .getScheduler()
+                        .scheduleSyncRepeatingTask(this,
+                                () -> getLogger().severe("You are running an outdated version of "+getServerSoftware()+", mcMMO will not work unless you update to a newer version!"),
+                        20, 20*60*30);
+
+                if(getServerSoftware() == ServerSoftwareType.CRAFTBUKKIT)
+                {
+                    Bukkit.getScheduler()
+                            .scheduleSyncRepeatingTask(this,
+                                    () -> getLogger().severe("We have detected you are using incompatible server software, our best guess is that you are using CraftBukkit. mcMMO requires Spigot or Paper, if you are not using CraftBukkit, you will still need to update your custom server software before mcMMO will work."),
+                    20, 20*60*30);
+                }
+            } else {
+                registerEvents();
+                registerCoreSkills();
+                registerCustomRecipes();
 
             if(getConfigManager().getConfigParty().isPartySystemEnabled())
                 PartyManager.loadParties();
 
             formulaManager = new FormulaManager();
-            /*holidayManager = new HolidayManager();*/
 
-            for (Player player : getServer().getOnlinePlayers()) {
-                new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
-            }
+                for (Player player : getServer().getOnlinePlayers()) {
+                    new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
+                }
 
-            debug("Version " + getDescription().getVersion() + " is enabled!");
+                debug("Version " + getDescription().getVersion() + " is enabled!");
 
-            scheduleTasks();
-            CommandRegistrationManager.registerCommands();
+                scheduleTasks();
+                CommandRegistrationManager.registerCommands();
 
-            placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
+                placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
 
             if (mcMMO.getConfigManager().getConfigParty().getPTP().isPtpWorldBasedPermissions()) {
                 Permissions.generateWorldTeleportPermissions();
             }
 
-            //Populate Ranked Skill Maps (DO THIS LAST)
-            RankUtils.populateRanks();
+                //Populate Ranked Skill Maps (DO THIS LAST)
+                RankUtils.populateRanks();
+            }
 
             //If anonymous statistics are enabled then use them
             if(getConfigManager().getConfigMetrics().isAllowAnonymousUsageStatistics()) {
                 Metrics metrics;
-
                 metrics = new Metrics(this);
                 metrics.addCustomChart(new Metrics.SimplePie("version", () -> getDescription().getVersion()));
 
@@ -206,49 +227,53 @@ public class mcMMO extends JavaPlugin {
             //getServer().getPluginManager().disablePlugin(this);
         }
 
-        /*if(isIncompatibleVersion(Bukkit.getVersion(), Bukkit.getBukkitVersion()))
-        {
-            getLogger().severe("mcMMO is not supported for your current server software and or Minecraft version");
-
-            if(isServerSoftwareIncompatible(Bukkit.getVersion()))
-            {
-                getLogger().severe("mcMMO does not recognize your server software as being compatible!");
-                getLogger().severe("Compatible Server Software: "+ COMPATIBLE_SERVER_SOFTWARE);
-                getLogger().severe("Incompatible Server Software: "+ INCOMPATIBLE_SERVER_SOFTWARE);
-            }
-
-            if(isServerMinecraftVersionIncompatible(Bukkit.getBukkitVersion()))
-            {
-                getLogger().severe("mcMMO does not recognize your Minecraft Version as being compatible!");
-                getLogger().severe("Compatible Minecraft Versions: "+ COMPATIBLE_MINECRAFT_VERSIONS);
-                getLogger().info("TIP: Paper and Spigot are extensions of CraftBukkit and are completely safe to upgrade to from CraftBukkit, please consider upgrading.");
-            }
-        }*/
+        //Init Material Maps
+        materialMapStore = new MaterialMapStore();
     }
 
-    private boolean isIncompatibleVersion(String serverSoftwareString, String serverVersionString)
+    public static MaterialMapStore getMaterialMapStore() {
+        return materialMapStore;
+    }
+
+    private void checkForOutdatedAPI() {
+        try {
+            Class<?> checkForClass = Class.forName("org.bukkit.event.block.BlockDropItemEvent");
+            Method newerAPIMethod =  checkForClass.getMethod("getItems");
+            Class<?> checkForClassBaseComponent = Class.forName("net.md_5.bungee.api.chat.BaseComponent");
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
+            serverAPIOutdated = true;
+            String software = getServerSoftwareStr();
+            getLogger().severe("You are running an older version of " + software + " that is not compatible with mcMMO, update your server software!");
+        }
+    }
+
+    private enum ServerSoftwareType {
+        PAPER,
+        SPIGOT,
+        CRAFTBUKKIT
+    }
+
+    private ServerSoftwareType getServerSoftware()
     {
-        if (isServerSoftwareIncompatible(serverSoftwareString))
-            return true;
-
-        if (isServerMinecraftVersionIncompatible(serverVersionString))
-            return true;
-
-        return false;
+        if(Bukkit.getVersion().toLowerCase().contains("paper"))
+            return ServerSoftwareType.PAPER;
+        else if(Bukkit.getVersion().toLowerCase().contains("spigot"))
+            return ServerSoftwareType.SPIGOT;
+        else
+            return ServerSoftwareType.CRAFTBUKKIT;
     }
 
-    private boolean isServerMinecraftVersionIncompatible(String serverVersionString) {
-        if(!serverVersionString.contains("1.13.2"))
-            return true;
-
-        return false;
-    }
-
-    private boolean isServerSoftwareIncompatible(String serverSoftwareString) {
-        if(!serverSoftwareString.contains("paper") && !serverSoftwareString.contains("spigot"))
-            return true;
-
-        return false;
+    private String getServerSoftwareStr()
+    {
+        switch(getServerSoftware())
+        {
+            case PAPER:
+                return "Paper";
+            case SPIGOT:
+                return "Spigot";
+            default:
+                return "CraftBukkit";
+        }
     }
 
     @Override
