@@ -44,6 +44,7 @@ import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.config.treasure.ExcavationTreasureConfig;
 import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
 import com.gmail.nossr50.config.treasure.HerbalismTreasureConfig;
+import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -55,6 +56,7 @@ import com.gmail.nossr50.skills.salvage.salvageables.SalvageableManager;
 import com.gmail.nossr50.util.experience.ExperienceMapManager;
 import com.google.common.collect.Maps;
 import com.google.common.reflect.TypeToken;
+import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import org.bukkit.Material;
 
@@ -81,6 +83,10 @@ public final class ConfigManager {
     private RepairableManager repairableManager;
     private SalvageableManager salvageableManager;
     private BonusDropManager bonusDropManager;
+
+    /* CUSTOM SERIALIZERS */
+
+    private TypeSerializerCollection customSerializers;
 
     /* MOD MANAGERS */
 
@@ -305,12 +311,24 @@ public final class ConfigManager {
             DEFAULT_SERIALIZERS.registerType(TypeToken.of(Pattern.class), new PatternSerializer());
          */
 
+        customSerializers = TypeSerializers.newCollection();
+
         mcMMO.p.getLogger().info("Registering custom type serializers for Configurate...");
-        TypeSerializers.getDefaultSerializers().registerType(new TypeToken<Material>() {}, new CustomEnumValueSerializer());
-        TypeSerializers.getDefaultSerializers().registerType(new TypeToken<PartyFeature>() {}, new CustomEnumValueSerializer());
-        TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Repairable.class), new RepairableSerializer());
-        TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Salvageable.class), new SalvageableSerializer());
-        TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(MinecraftMaterialWrapper.class), new MinecraftMaterialWrapperSerializer());
+        customSerializers.registerType(new TypeToken<Material>() {}, new CustomEnumValueSerializer());
+        customSerializers.registerType(new TypeToken<PartyFeature>() {}, new CustomEnumValueSerializer());
+        customSerializers.registerType(new TypeToken<FormulaType>() {}, new CustomEnumValueSerializer());
+        customSerializers.registerType(TypeToken.of(Repairable.class), new RepairableSerializer());
+        customSerializers.registerType(TypeToken.of(Salvageable.class), new SalvageableSerializer());
+        customSerializers.registerType(TypeToken.of(MinecraftMaterialWrapper.class), new MinecraftMaterialWrapperSerializer());
+    }
+
+    /**
+     * Gets the serializers registered and used by mcMMO
+     * This includes all default serializers
+     * @return our custom serializers
+     */
+    public TypeSerializerCollection getCustomSerializers() {
+        return customSerializers;
     }
 
     private void registerSkillConfig(PrimarySkillType primarySkillType, Class clazz)

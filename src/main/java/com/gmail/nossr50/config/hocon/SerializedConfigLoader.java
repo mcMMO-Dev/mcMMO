@@ -62,7 +62,9 @@ public class SerializedConfigLoader<T> {
             "\nYou can also consult the new official wiki" +
             "\nhttps://mcmmo.org/wiki - Keep in mind the wiki is a WIP and may not have information about everything in mcMMO!";
 
-    private static final ConfigurationOptions LOADER_OPTIONS = ConfigurationOptions.defaults().setHeader(CONFIG_HEADER);
+    private ConfigurationOptions configurationOptions;
+    private CommentedConfigurationNode data;
+    private CommentedConfigurationNode fileData;
 
     private final String ROOT_NODE_ADDRESS;
 
@@ -77,16 +79,6 @@ public class SerializedConfigLoader<T> {
      * The loader (mapped to a file) used to read/write the config to disk
      */
     private HoconConfigurationLoader loader;
-
-    /**
-     * A node representation of "whats actually in the file".
-     */
-    private CommentedConfigurationNode fileData = SimpleCommentedConfigurationNode.root(LOADER_OPTIONS);
-
-    /**
-     * A node representation of {@link #fileData}, merged with the data of {@link #parent}.
-     */
-    private CommentedConfigurationNode data = SimpleCommentedConfigurationNode.root(LOADER_OPTIONS);
 
     /**
      * The mapper instance used to populate the config instance
@@ -104,7 +96,15 @@ public class SerializedConfigLoader<T> {
                 Files.createFile(path);
             }
 
-            this.loader = HoconConfigurationLoader.builder().setPath(path).build();
+            configurationOptions = ConfigurationOptions.defaults().setSerializers(mcMMO.getConfigManager().getCustomSerializers()).setHeader(CONFIG_HEADER);
+            data = SimpleCommentedConfigurationNode.root(configurationOptions);
+            fileData = SimpleCommentedConfigurationNode.root(configurationOptions);
+
+            this.loader = HoconConfigurationLoader.builder()
+                    .setPath(path)
+                    .setDefaultOptions(configurationOptions)
+                    .build();
+
             this.configMapper = ObjectMapper.forClass(clazz).bindToNew();
 
             reload();
@@ -128,7 +128,7 @@ public class SerializedConfigLoader<T> {
     public boolean save() {
         try {
             // save from the mapped object --> node
-            CommentedConfigurationNode saveNode = SimpleCommentedConfigurationNode.root(LOADER_OPTIONS);
+            CommentedConfigurationNode saveNode = SimpleCommentedConfigurationNode.root(configurationOptions);
             this.configMapper.serialize(saveNode.getNode(ROOT_NODE_ADDRESS));
 
             // before saving this config, remove any values already declared with the same value on the parent
