@@ -13,13 +13,13 @@ public class ConfigAcrobatics {
             "\nSettings related to preventing abuse of this skill can be found in the anti_exploit config file.")
     private ConfigRoll roll = new ConfigRoll();
 
-    public ConfigRoll getRoll() {
-        return roll;
-    }
-
     @Setting(value = "Dodge", comment = "Settings related to the Dodge Sub-Skill." +
             "\nSettings related to preventing abuse of this skill can be found in the anti_exploit config file.")
     private ConfigDodge dodge = new ConfigDodge();
+
+    public ConfigRoll getRoll() {
+        return roll;
+    }
 
     public ConfigDodge getDodge() {
         return dodge;

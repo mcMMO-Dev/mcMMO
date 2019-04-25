@@ -1,8 +1,10 @@
 package com.gmail.nossr50.config.hocon.skills.salvage.general;
 
 import ninja.leaping.configurate.objectmapping.Setting;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import org.bukkit.Material;
 
+@ConfigSerializable
 public class ConfigSalvageGeneral {
 
     public static final boolean ANVIL_USE_SOUNDS_DEFAULT = true;

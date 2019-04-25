@@ -56,7 +56,7 @@ public class SalvageableSerializer implements TypeSerializer<Salvageable> {
     public void serialize(TypeToken<?> type, Salvageable obj, ConfigurationNode value) {
 
         value.getNode(ITEM_NODE_NAME).setValue(obj.getItemMaterial().getKey().toString());
-        value.getNode(ITEM_RETURNED_BY_SALVAGE).setValue(obj.getSalvagedItemMaterial());
+        value.getNode(ITEM_RETURNED_BY_SALVAGE).setValue(obj.getSalvagedItemMaterial().getKey().toString());
         value.getNode(MAXIMUM_QUANTITY_RETURNED).setValue(obj.getMaximumQuantity());
         value.getNode(OVERRIDE_LEVEL_REQUIREMENT).setValue(obj.getMinimumLevel());
     }

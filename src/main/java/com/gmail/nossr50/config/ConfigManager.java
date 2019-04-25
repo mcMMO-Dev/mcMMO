@@ -311,7 +311,7 @@ public final class ConfigManager {
             DEFAULT_SERIALIZERS.registerType(TypeToken.of(Pattern.class), new PatternSerializer());
          */
 
-        customSerializers = TypeSerializers.newCollection();
+        customSerializers = TypeSerializers.getDefaultSerializers().newChild();
 
         mcMMO.p.getLogger().info("Registering custom type serializers for Configurate...");
         customSerializers.registerType(new TypeToken<Material>() {}, new CustomEnumValueSerializer());
