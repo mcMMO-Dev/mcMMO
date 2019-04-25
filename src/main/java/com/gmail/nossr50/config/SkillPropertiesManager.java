@@ -14,37 +14,31 @@ public class SkillPropertiesManager {
     private HashMap<SubSkillType, Double> maxBonusLevelMap;
     private HashMap<SubSkillType, Double> maxBonusPercentage;
 
-    public SkillPropertiesManager()
-    {
+    public SkillPropertiesManager() {
         maxChanceMap = new HashMap<>();
         maxBonusLevelMap = new HashMap<>();
         maxBonusPercentage = new HashMap<>();
     }
 
-    public void registerRNG(SubSkillType subSkillType, ConfigSubSkillScalingRNG config)
-    {
+    public void registerRNG(SubSkillType subSkillType, ConfigSubSkillScalingRNG config) {
         maxChanceMap.put(subSkillType, config.getMaxChance());
         maxBonusLevelMap.put(subSkillType, config.getMaxBonusLevel());
     }
 
-    public double getMaxChance(SubSkillType subSkillType)
-    {
+    public double getMaxChance(SubSkillType subSkillType) {
         return maxChanceMap.get(subSkillType);
     }
 
-    public double getMaxBonusLevel(SubSkillType subSkillType)
-    {
+    public double getMaxBonusLevel(SubSkillType subSkillType) {
         return maxBonusLevelMap.get(subSkillType);
     }
 
-    public void fillRegisters()
-    {
+    public void fillRegisters() {
 
         fillRNGRegisters();
     }
 
-    private void fillRNGRegisters()
-    {
+    private void fillRNGRegisters() {
         //Acrobatics
         registerRNG(SubSkillType.ACROBATICS_DODGE, mcMMO.getConfigManager().getConfigAcrobatics().getDodge().getRNGSettings());
         registerRNG(SubSkillType.ACROBATICS_DODGE, mcMMO.getConfigManager().getConfigAcrobatics().getRoll().getRNGSettings());

@@ -22,7 +22,7 @@ public class PartyChatCommand extends ChatCommand {
 
         if (sender instanceof Player) {
             //Check if player profile is loaded
-            if(UserManager.getPlayer((Player) sender) == null)
+            if (UserManager.getPlayer((Player) sender) == null)
                 return;
 
             party = UserManager.getPlayer((Player) sender).getParty();
@@ -38,8 +38,7 @@ public class PartyChatCommand extends ChatCommand {
             }
 
             message = buildChatMessage(args, 0);
-        }
-        else {
+        } else {
             if (args.length < 2) {
                 sender.sendMessage(LocaleLoader.getString("Party.Specify"));
                 return;

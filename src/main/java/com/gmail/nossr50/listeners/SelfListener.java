@@ -23,8 +23,7 @@ public class SelfListener implements Listener {
     //Used in task scheduling and other things
     private final mcMMO plugin;
 
-    public SelfListener(mcMMO plugin)
-    {
+    public SelfListener(mcMMO plugin) {
         this.plugin = plugin;
     }
 
@@ -34,8 +33,7 @@ public class SelfListener implements Listener {
         PrimarySkillType skill = event.getSkill();
 
         //Players can gain multiple levels especially during xprate events
-        for(int i = 0; i < event.getLevelsGained(); i++)
-        {
+        for (int i = 0; i < event.getLevelsGained(); i++) {
             int previousLevelGained = event.getSkillLevel() - i;
             //Send player skill unlock notifications
             UserManager.getPlayer(player).processUnlockNotifications(plugin, event.getSkill(), previousLevelGained);
@@ -44,7 +42,7 @@ public class SelfListener implements Listener {
         //Reset the delay timer
         RankUtils.resetUnlockDelayTimer();
 
-        if(mcMMO.getScoreboardSettings().getScoreboardsEnabled())
+        if (mcMMO.getScoreboardSettings().getScoreboardsEnabled())
             ScoreboardManager.handleLevelUp(player, skill);
 
         if (!MainConfig.getInstance().getLevelUpEffectsEnabled()) {
@@ -57,13 +55,13 @@ public class SelfListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerXp(McMMOPlayerXpGainEvent event) {
-        if(mcMMO.getScoreboardSettings().getScoreboardsEnabled())
+        if (mcMMO.getScoreboardSettings().getScoreboardsEnabled())
             ScoreboardManager.handleXp(event.getPlayer(), event.getSkill());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onAbility(McMMOPlayerAbilityActivateEvent event) {
-        if(mcMMO.getScoreboardSettings().getScoreboardsEnabled())
+        if (mcMMO.getScoreboardSettings().getScoreboardsEnabled())
             ScoreboardManager.cooldownUpdate(event.getPlayer(), event.getSkill());
     }
 
@@ -74,23 +72,19 @@ public class SelfListener implements Listener {
         PrimarySkillType primarySkillType = event.getSkill();
 
         //WorldGuard XP Check
-        if(event.getXpGainReason() == XPGainReason.PVE ||
+        if (event.getXpGainReason() == XPGainReason.PVE ||
                 event.getXpGainReason() == XPGainReason.PVP ||
                 event.getXpGainReason() == XPGainReason.SHARED_PVE ||
-                event.getXpGainReason() == XPGainReason.SHARED_PVP)
-        {
-            if(WorldGuardUtils.isWorldGuardLoaded())
-            {
-                if(!WorldGuardManager.getInstance().hasXPFlag(player))
-                {
+                event.getXpGainReason() == XPGainReason.SHARED_PVP) {
+            if (WorldGuardUtils.isWorldGuardLoaded()) {
+                if (!WorldGuardManager.getInstance().hasXPFlag(player)) {
                     event.setRawXpGained(0);
                     event.setCancelled(true);
                 }
             }
         }
 
-        if (event.getXpGainReason() == XPGainReason.COMMAND)
-        {
+        if (event.getXpGainReason() == XPGainReason.COMMAND) {
             return;
         }
 
@@ -116,8 +110,7 @@ public class SelfListener implements Listener {
         int earlyGameBonusXP = 0;
 
         //Give some bonus XP for low levels
-        if(mcMMOPlayer.getSkillLevel(primarySkillType) < earlyLevelBonusXPCap)
-        {
+        if (mcMMOPlayer.getSkillLevel(primarySkillType) < earlyLevelBonusXPCap) {
             earlyGameBonusXP += (mcMMOPlayer.getXpToLevel(primarySkillType) * 0.05);
             event.setRawXpGained(event.getRawXpGained() + earlyGameBonusXP);
         }
@@ -140,12 +133,10 @@ public class SelfListener implements Listener {
              * Make sure players get a guaranteed minimum of XP
              */
             //If there is no guaranteed minimum proceed, otherwise only proceed if newValue would be higher than our guaranteed minimum
-            if(guaranteedMinimum <= 0 || newValue > guaranteedMinimum)
-            {
+            if (guaranteedMinimum <= 0 || newValue > guaranteedMinimum) {
                 if (newValue > 0) {
                     event.setRawXpGained(newValue);
-                }
-                else {
+                } else {
                     event.setCancelled(true);
                 }
             } else {

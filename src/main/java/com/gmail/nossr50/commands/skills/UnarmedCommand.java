@@ -43,7 +43,7 @@ public class UnarmedCommand extends SkillCommand {
             deflectChance = deflectStrings[0];
             deflectChanceLucky = deflectStrings[1];
         }
-        
+
         // BERSERK
         if (canBerserk) {
             String[] berserkStrings = calculateLengthDisplayValues(player, skillValue);
@@ -90,19 +90,19 @@ public class UnarmedCommand extends SkillCommand {
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", deflectChanceLucky) : ""));
             //messages.add(LocaleLoader.getString("Unarmed.Ability.Chance.ArrowDeflect", deflectChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", deflectChanceLucky) : ""));
         }
-        
+
         if (canBerserk) {
             messages.add(getStatMessage(SubSkillType.UNARMED_BERSERK, berserkLength)
                     + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", berserkLengthEndurance) : ""));
             //messages.add(LocaleLoader.getString("Unarmed.Ability.Berserk.Length", berserkLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", berserkLengthEndurance) : ""));
         }
-        
+
         if (canDisarm) {
             messages.add(getStatMessage(SubSkillType.UNARMED_DISARM, disarmChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", disarmChanceLucky) : ""));
             //messages.add(LocaleLoader.getString("Unarmed.Ability.Chance.Disarm", disarmChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", disarmChanceLucky) : ""));
         }
-        
+
         if (canIronArm) {
             messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Unarmed.Ability.Bonus.0"), LocaleLoader.getString("Unarmed.Ability.Bonus.1", ironArmBonus)));
         }
@@ -113,7 +113,7 @@ public class UnarmedCommand extends SkillCommand {
             //messages.add(LocaleLoader.getString("Unarmed.Ability.Chance.IronGrip", ironGripChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", ironGripChanceLucky) : ""));
         }
 
-        if(canUseSubskill(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK)) {
+        if (canUseSubskill(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.UNARMED_UNARMED_LIMIT_BREAK,
                     String.valueOf(CombatUtils.getLimitBreakDamage(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK))));
         }

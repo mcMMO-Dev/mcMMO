@@ -13,7 +13,8 @@ import org.bukkit.entity.Player;
 import java.util.*;
 
 public final class PartyAPI {
-    private PartyAPI() {}
+    private PartyAPI() {
+    }
 
     /**
      * Get the name of the party a player is in.
@@ -40,7 +41,7 @@ public final class PartyAPI {
      * @return true if the player is in a party, false otherwise
      */
     public static boolean inParty(Player player) {
-        if(UserManager.getPlayer(player) == null)
+        if (UserManager.getPlayer(player) == null)
             return false;
 
         return UserManager.getPlayer(player).inParty();
@@ -75,23 +76,22 @@ public final class PartyAPI {
      * </br>
      * This function is designed for API usage.
      *
-     * @param player The player to add to the party
+     * @param player    The player to add to the party
      * @param partyName The party to add the player to
      * @deprecated parties can have limits, use the other method
      */
     @Deprecated
     public static void addToParty(Player player, String partyName) {
         //Check if player profile is loaded
-        if(UserManager.getPlayer(player) == null)
+        if (UserManager.getPlayer(player) == null)
             return;
 
         Party party = PartyManager.getParty(partyName);
 
         if (party == null) {
             party = new Party(new PartyLeader(player.getUniqueId(), player.getName()), partyName);
-        } else if(mcMMO.getConfigManager().getConfigParty().getPartyGeneral().isPartySizeCapped()) {
-            if(PartyManager.isPartyFull(player, party))
-            {
+        } else if (mcMMO.getConfigManager().getConfigParty().getPartyGeneral().isPartySizeCapped()) {
+            if (PartyManager.isPartyFull(player, party)) {
                 NotificationManager.sendPlayerInformation(player, NotificationType.PARTY_MESSAGE, "Commands.Party.PartyFull", party.toString());
                 return;
             }
@@ -103,15 +103,16 @@ public final class PartyAPI {
     /**
      * The max party size of the server
      * Limits are only enforced if the enforcement setting is on
+     *
      * @return the max party size on this server
      */
-    public static int getMaxPartySize()
-    {
+    public static int getMaxPartySize() {
         return mcMMO.getConfigManager().getConfigParty().getPartySizeLimit();
     }
 
     /**
      * Checks if parties are currently size capped which is determined by the user config
+     *
      * @return true if parties are size capped
      */
     public static boolean isPartySizeCapped() {
@@ -123,14 +124,14 @@ public final class PartyAPI {
      * </br>
      * This function is designed for API usage.
      *
-     * @param player The player to add to the party
-     * @param partyName The party to add the player to
+     * @param player      The player to add to the party
+     * @param partyName   The party to add the player to
      * @param bypassLimit if true bypasses party size limits
      */
     //TODO: bypasslimit not used?
     public static void addToParty(Player player, String partyName, boolean bypassLimit) {
         //Check if player profile is loaded
-        if(UserManager.getPlayer(player) == null)
+        if (UserManager.getPlayer(player) == null)
             return;
 
         Party party = PartyManager.getParty(partyName);
@@ -151,7 +152,7 @@ public final class PartyAPI {
      */
     public static void removeFromParty(Player player) {
         //Check if player profile is loaded
-        if(UserManager.getPlayer(player) == null)
+        if (UserManager.getPlayer(player) == null)
             return;
 
         PartyManager.removeFromParty(UserManager.getPlayer(player));
@@ -174,7 +175,7 @@ public final class PartyAPI {
      * </br>
      * This function is designed for API usage.
      *
-     * @param partyName The name of the party to set the leader of
+     * @param partyName  The name of the party to set the leader of
      * @param playerName The playerName to set as leader
      */
     @Deprecated

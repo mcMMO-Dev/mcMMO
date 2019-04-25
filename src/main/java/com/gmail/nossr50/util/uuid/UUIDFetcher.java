@@ -28,37 +28,6 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
         this(names, true);
     }
 
-    public Map<String, UUID> call() throws Exception {
-        Map<String, UUID> uuidMap = new HashMap<>();
-        int requests = (int) Math.ceil(names.size() / PROFILES_PER_REQUEST);
-        for (int i = 0; i < requests; i++) {
-            HttpURLConnection connection = createConnection();
-
-            List<String> nameSubList = names.subList(i * PROFILES_PER_REQUEST, Math.min((i + 1) * PROFILES_PER_REQUEST, names.size()));
-            JsonArray array = new JsonArray();
-
-            for(String name : nameSubList)
-            {
-                JsonPrimitive element = new JsonPrimitive(name);
-                array.add(element);
-            }
-
-            String body = array.getAsString();
-            writeBody(connection, body);
-            for (Object profile : array) {
-                JsonObject jsonProfile = (JsonObject) profile;
-                String id = jsonProfile.get("id").getAsString();
-                String name = jsonProfile.get("name").getAsString();
-                UUID uuid = UUIDFetcher.getUUID(id);
-                uuidMap.put(name, uuid);
-            }
-            if (rateLimiting && i != requests - 1) {
-                Thread.sleep(RATE_LIMIT);
-            }
-        }
-        return uuidMap;
-    }
-
     private static void writeBody(HttpURLConnection connection, String body) throws Exception {
         OutputStream stream = connection.getOutputStream();
         stream.write(body.getBytes());
@@ -100,5 +69,35 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
 
     public static UUID getUUIDOf(String name) throws Exception {
         return new UUIDFetcher(Collections.singletonList(name)).call().get(name);
+    }
+
+    public Map<String, UUID> call() throws Exception {
+        Map<String, UUID> uuidMap = new HashMap<>();
+        int requests = (int) Math.ceil(names.size() / PROFILES_PER_REQUEST);
+        for (int i = 0; i < requests; i++) {
+            HttpURLConnection connection = createConnection();
+
+            List<String> nameSubList = names.subList(i * PROFILES_PER_REQUEST, Math.min((i + 1) * PROFILES_PER_REQUEST, names.size()));
+            JsonArray array = new JsonArray();
+
+            for (String name : nameSubList) {
+                JsonPrimitive element = new JsonPrimitive(name);
+                array.add(element);
+            }
+
+            String body = array.getAsString();
+            writeBody(connection, body);
+            for (Object profile : array) {
+                JsonObject jsonProfile = (JsonObject) profile;
+                String id = jsonProfile.get("id").getAsString();
+                String name = jsonProfile.get("name").getAsString();
+                UUID uuid = UUIDFetcher.getUUID(id);
+                uuidMap.put(name, uuid);
+            }
+            if (rateLimiting && i != requests - 1) {
+                Thread.sleep(RATE_LIMIT);
+            }
+        }
+        return uuidMap;
     }
 }

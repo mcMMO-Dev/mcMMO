@@ -16,7 +16,7 @@ public class RepairMasteryStandard {
             "\nSkills dynamically adjust their rewards to match the max bonus level, you can think of it as a curve that calculates what bonuses " +
             "\n a player should have based on how far they are from the max bonus level value, and the other parameters used for the scaling of the sub-skill." +
             "\n-- NOTE: This setting is only valid for standard level scaling. --" +
-            "\nDefault value: "+MAX_BONUS_LEVEL_DEFAULT)
+            "\nDefault value: " + MAX_BONUS_LEVEL_DEFAULT)
     public int maxBonusLevel = MAX_BONUS_LEVEL_DEFAULT;
 
     @Setting(value = "Max-Bonus-Percentage", comment = "This is the maximum benefit for additional repair amount from this skill when the player reaches \"Max-Bonus-Level\"." +
@@ -24,6 +24,6 @@ public class RepairMasteryStandard {
             "\nAs an example, imagine \"Standard-Mode-Max-Bonus-Percentage\" was set to " + MAX_BONUS_PERCENTAGE + " and the \"Max-Bonus-Level\" was " + MAX_BONUS_LEVEL_EXAMPLE + "," +
             "\n and the player was level " + PLAYER_LEVEL_FIFTY_PERCENT_EXAMPLE + " for this skill, that would give the player " + BONUS_PERCENTAGE_EXAMPLE + "% added to the repair amount on the item before other bonuses." +
             "\n-- NOTE: This setting is only valid for standard level scaling. --" +
-            "\nDefault value: "+MAX_BONUS_PERCENTAGE)
+            "\nDefault value: " + MAX_BONUS_PERCENTAGE)
     public double maxBonusPercentage = MAX_BONUS_PERCENTAGE;
 }

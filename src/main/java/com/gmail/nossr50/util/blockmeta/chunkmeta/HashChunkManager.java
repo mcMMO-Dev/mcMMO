@@ -11,9 +11,9 @@ import java.io.*;
 import java.util.*;
 
 public class HashChunkManager implements ChunkManager {
-    private HashMap<UUID, HashMap<Long, McMMOSimpleRegionFile>> regionFiles = new HashMap<>();
     public HashMap<String, ChunkStore> store = new HashMap<>();
     public ArrayList<BlockStoreConversionZDirectory> converters = new ArrayList<>();
+    private HashMap<UUID, HashMap<Long, McMMOSimpleRegionFile>> regionFiles = new HashMap<>();
     private HashMap<UUID, Boolean> oldData = new HashMap<>();
 
     @Override
@@ -65,8 +65,7 @@ public class HashChunkManager implements ChunkManager {
             objectStream.flush();
             objectStream.close();
             data.setDirty(false);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException("Unable to write chunk meta data for " + x + ", " + z, e);
         }
     }
@@ -129,8 +128,7 @@ public class HashChunkManager implements ChunkManager {
 
         if (!oldData.containsKey(key)) {
             oldData.put(key, (new File(world.getWorldFolder(), "mcmmo_data")).exists());
-        }
-        else if (oldData.get(key)) {
+        } else if (oldData.get(key)) {
             if (convertChunk(new File(world.getWorldFolder(), "mcmmo_data"), cx, cz, world, true)) {
                 return;
             }
@@ -140,8 +138,9 @@ public class HashChunkManager implements ChunkManager {
 
         try {
             chunkStore = readChunkStore(world, cx, cz);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        catch (Exception e) { e.printStackTrace(); }
 
         if (chunkStore == null) {
             return;
@@ -187,7 +186,8 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized void chunkLoaded(int cx, int cz, World world) {}
+    public synchronized void chunkLoaded(int cx, int cz, World world) {
+    }
 
     @Override
     public synchronized void chunkUnloaded(int cx, int cz, World world) {
@@ -213,8 +213,7 @@ public class HashChunkManager implements ChunkManager {
             if (worldName.equals(info[0])) {
                 try {
                     saveChunk(Integer.parseInt(info[1]), Integer.parseInt(info[2]), world);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     // Ignore
                 }
             }
@@ -236,8 +235,7 @@ public class HashChunkManager implements ChunkManager {
             if (worldName.equals(info[0])) {
                 try {
                     unloadChunk(Integer.parseInt(info[1]), Integer.parseInt(info[2]), world);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     // Ignore
                 }
             }
@@ -245,7 +243,8 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized void loadWorld(World world) {}
+    public synchronized void loadWorld(World world) {
+    }
 
     @Override
     public synchronized void saveAll() {
@@ -401,7 +400,8 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized void cleanUp() {}
+    public synchronized void cleanUp() {
+    }
 
     public synchronized void convertChunk(File dataDir, int cx, int cz, World world) {
         convertChunk(dataDir, cx, cz, world, false);

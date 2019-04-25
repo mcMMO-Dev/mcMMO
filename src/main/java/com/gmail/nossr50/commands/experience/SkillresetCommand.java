@@ -27,6 +27,14 @@ import java.util.UUID;
  * value/quantity argument is removed.
  */
 public class SkillresetCommand implements TabExecutor {
+    protected static void handleSenderMessage(CommandSender sender, String playerName, PrimarySkillType skill) {
+        if (skill == null) {
+            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
+        } else {
+            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", skill.getName(), playerName));
+        }
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         PrimarySkillType skill;
@@ -47,8 +55,7 @@ public class SkillresetCommand implements TabExecutor {
 
                 if (args[0].equalsIgnoreCase("all")) {
                     skill = null;
-                }
-                else {
+                } else {
                     skill = PrimarySkillType.getSkill(args[1]);
                 }
 
@@ -67,8 +74,7 @@ public class SkillresetCommand implements TabExecutor {
 
                 if (args[1].equalsIgnoreCase("all")) {
                     skill = null;
-                }
-                else {
+                } else {
                     skill = PrimarySkillType.getSkill(args[1]);
                 }
 
@@ -89,8 +95,7 @@ public class SkillresetCommand implements TabExecutor {
                     }
 
                     editValues(null, profile, skill);
-                }
-                else {
+                } else {
                     editValues(mcMMOPlayer.getPlayer(), mcMMOPlayer.getProfile(), skill);
                 }
 
@@ -149,15 +154,6 @@ public class SkillresetCommand implements TabExecutor {
         return skillName.equalsIgnoreCase("all") || !CommandUtils.isInvalidSkill(sender, skillName);
     }
 
-    protected static void handleSenderMessage(CommandSender sender, String playerName, PrimarySkillType skill) {
-        if (skill == null) {
-            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
-        }
-        else {
-            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", skill.getName(), playerName));
-        }
-    }
-
     protected void editValues(Player player, PlayerProfile profile, PrimarySkillType skill) {
         if (skill == null) {
             for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
@@ -167,8 +163,7 @@ public class SkillresetCommand implements TabExecutor {
             if (player != null) {
                 handlePlayerMessageAll(player);
             }
-        }
-        else {
+        } else {
             handleCommand(player, profile, skill);
 
             if (player != null) {

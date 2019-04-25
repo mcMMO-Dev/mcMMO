@@ -6,6 +6,10 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class McMMOPartyXpGainEvent extends Event implements Cancellable {
+    /**
+     * Rest of file is required boilerplate for custom events
+     **/
+    private static final HandlerList handlers = new HandlerList();
     private Party party;
     private float xpGained;
     private boolean cancelled;
@@ -14,6 +18,10 @@ public class McMMOPartyXpGainEvent extends Event implements Cancellable {
         this.party = party;
         this.xpGained = xpGained;
         this.cancelled = false;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 
     public Party getParty() {
@@ -28,18 +36,18 @@ public class McMMOPartyXpGainEvent extends Event implements Cancellable {
     }
 
     /**
+     * @param xpGained set amount of experience gained in this event
+     */
+    public void setRawXpGained(float xpGained) {
+        this.xpGained = xpGained;
+    }
+
+    /**
      * @return int amount of experience gained in this event
      */
     @Deprecated
     public int getXpGained() {
         return (int) xpGained;
-    }
-
-    /**
-     * @param xpGained set amount of experience gained in this event
-     */
-    public void setRawXpGained(float xpGained) {
-        this.xpGained = xpGained;
     }
 
     /**
@@ -50,7 +58,9 @@ public class McMMOPartyXpGainEvent extends Event implements Cancellable {
         this.xpGained = xpGained;
     }
 
-    /** Following are required for Cancellable **/
+    /**
+     * Following are required for Cancellable
+     **/
     @Override
     public boolean isCancelled() {
         return cancelled;
@@ -61,15 +71,8 @@ public class McMMOPartyXpGainEvent extends Event implements Cancellable {
         this.cancelled = cancelled;
     }
 
-    /** Rest of file is required boilerplate for custom events **/
-    private static final HandlerList handlers = new HandlerList();
-
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 }

@@ -16,13 +16,52 @@ import java.io.*;
 import java.util.*;
 
 public final class FlatfileDatabaseManager implements DatabaseManager {
+    private static final Object fileWritingLock = new Object();
+    public static int USERNAME = 0;
+    public static int SKILLS_MINING = 1;
+    public static int EXP_MINING = 4;
+    public static int SKILLS_WOODCUTTING = 5;
+    public static int EXP_WOODCUTTING = 6;
+    public static int SKILLS_REPAIR = 7;
+    public static int SKILLS_UNARMED = 8;
+    public static int SKILLS_HERBALISM = 9;
+    public static int SKILLS_EXCAVATION = 10;
+    public static int SKILLS_ARCHERY = 11;
+    public static int SKILLS_SWORDS = 12;
+    public static int SKILLS_AXES = 13;
+    public static int SKILLS_ACROBATICS = 14;
+    public static int EXP_REPAIR = 15;
+    public static int EXP_UNARMED = 16;
+    public static int EXP_HERBALISM = 17;
+    public static int EXP_EXCAVATION = 18;
+    public static int EXP_ARCHERY = 19;
+    public static int EXP_SWORDS = 20;
+    public static int EXP_AXES = 21;
+    public static int EXP_ACROBATICS = 22;
+    public static int SKILLS_TAMING = 24;
+    public static int EXP_TAMING = 25;
+    public static int COOLDOWN_BERSERK = 26;
+    public static int COOLDOWN_GIGA_DRILL_BREAKER = 27;
+    public static int COOLDOWN_TREE_FELLER = 28;
+    public static int COOLDOWN_GREEN_TERRA = 29;
+    public static int COOLDOWN_SERRATED_STRIKES = 30;
+    public static int COOLDOWN_SKULL_SPLITTER = 31;
+    public static int COOLDOWN_SUPER_BREAKER = 32;
+    public static int SKILLS_FISHING = 34;
+    public static int EXP_FISHING = 35;
+    public static int COOLDOWN_BLAST_MINING = 36;
+    public static int LAST_LOGIN = 37;
+    public static int HEALTHBAR = 38;
+    public static int SKILLS_ALCHEMY = 39;
+    public static int EXP_ALCHEMY = 40;
+    public static int UUID_INDEX = 41;
+    public static int SCOREBOARD_TIPS = 42;
+    public static int COOLDOWN_CHIMAERA_WING = 43;
     private final HashMap<PrimarySkillType, List<PlayerStat>> playerStatHash = new HashMap<>();
     private final List<PlayerStat> powerLevels = new ArrayList<>();
+    private final File usersFile;
     private long lastUpdate = 0;
     private long updateWaitTime;
-    private final File usersFile;
-    private static final Object fileWritingLock = new Object();
-
     protected FlatfileDatabaseManager() {
         updateWaitTime = mcMMO.getConfigManager().getConfigDatabase().getConfigDatabaseFlatFile().getLeaderboardUpdateIntervalMinutes() * (1000 * 60);
         usersFile = new File(mcMMO.getUsersFilePath());
@@ -65,8 +104,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     // If they're still around, rewrite them to the file.
                     if (!powerless) {
                         writer.append(line).append("\r\n");
-                    }
-                    else {
+                    } else {
                         purgedUsers++;
                     }
                 }
@@ -74,24 +112,20 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 // Write the new file
                 out = new FileWriter(usersFilePath);
                 out.write(writer.toString());
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
-            }
-            finally {
+            } finally {
                 if (in != null) {
                     try {
                         in.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         // Ignore
                     }
                 }
                 if (out != null) {
                     try {
                         out.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         // Ignore
                     }
                 }
@@ -125,8 +159,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     boolean rewrite = false;
                     try {
                         lastPlayed = Long.parseLong(character[37]) * Misc.TIME_CONVERSION_FACTOR;
-                    }
-                    catch (NumberFormatException e) {
+                    } catch (NumberFormatException e) {
                         e.printStackTrace();
                     }
                     if (lastPlayed == 0) {
@@ -137,15 +170,13 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                     if (currentTime - lastPlayed > PURGE_TIME) {
                         removedPlayers++;
-                    }
-                    else {
+                    } else {
                         if (rewrite) {
                             // Rewrite their data with a valid time
                             character[37] = Long.toString(lastPlayed);
                             String newLine = org.apache.commons.lang.StringUtils.join(character, ":");
                             writer.append(newLine).append("\r\n");
-                        }
-                        else {
+                        } else {
                             writer.append(line).append("\r\n");
                         }
                     }
@@ -154,24 +185,20 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 // Write the new file
                 out = new FileWriter(usersFilePath);
                 out.write(writer.toString());
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
-            }
-            finally {
+            } finally {
                 if (in != null) {
                     try {
                         in.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         // Ignore
                     }
                 }
                 if (out != null) {
                     try {
                         out.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         // Ignore
                     }
                 }
@@ -207,24 +234,20 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                 out = new FileWriter(usersFilePath); // Write out the new file
                 out.write(writer.toString());
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
-            }
-            finally {
+            } finally {
                 if (in != null) {
                     try {
                         in.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         // Ignore
                     }
                 }
                 if (out != null) {
                     try {
                         out.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         // Ignore
                     }
                 }
@@ -258,8 +281,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     String[] character = line.split(":");
                     if (!(uuid != null && character[UUID_INDEX].equalsIgnoreCase(uuid.toString())) && !character[USERNAME].equalsIgnoreCase(playerName)) {
                         writer.append(line).append("\r\n");
-                    }
-                    else {
+                    } else {
                         // Otherwise write the new player information
                         writeUserToLine(profile, playerName, uuid, writer);
                         wroteUser = true;
@@ -269,8 +291,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 /*
                  * If we couldn't find the user in the DB we need to add him
                  */
-                if(!wroteUser)
-                {
+                if (!wroteUser) {
                     writeUserToLine(profile, playerName, uuid, writer);
                 }
 
@@ -278,25 +299,21 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 out = new FileWriter(usersFilePath);
                 out.write(writer.toString());
                 return true;
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 return false;
-            }
-            finally {
+            } finally {
                 if (in != null) {
                     try {
                         in.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         // Ignore
                     }
                 }
                 if (out != null) {
                     try {
                         out.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         // Ignore
                     }
                 }
@@ -431,16 +448,13 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 // Add more in the same format as the line above
 
                 out.newLine();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-            }
-            finally {
+            } finally {
                 if (out != null) {
                     try {
                         out.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         // Ignore
                     }
                 }
@@ -502,18 +516,15 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     newUser(playerName, uuid);
                     return new PlayerProfile(playerName, uuid, true);
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-            }
-            finally {
+            } finally {
                 // I have no idea why it's necessary to inline tryClose() here, but it removes
                 // a resource leak warning, and I'm trusting the compiler on this one.
                 if (in != null) {
                     try {
                         in.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         // Ignore
                     }
                 }
@@ -545,23 +556,19 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                     try {
                         destination.saveUser(loadFromLine(character));
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     convertedUsers++;
                     Misc.printProgress(convertedUsers, progressInterval, startMillis);
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-            }
-            finally {
+            } finally {
                 if (in != null) {
                     try {
                         in.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         // Ignore
                     }
                 }
@@ -602,25 +609,21 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                 out = new FileWriter(usersFilePath); // Write out the new file
                 out.write(writer.toString());
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
-            }
-            finally {
+            } finally {
                 mcMMO.p.getLogger().info(i + " entries written while saving UUID for " + userName);
                 if (in != null) {
                     try {
                         in.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         // Ignore
                     }
                 }
                 if (out != null) {
                     try {
                         out.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         // Ignore
                     }
                 }
@@ -661,25 +664,21 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                 out = new FileWriter(usersFilePath); // Write out the new file
                 out.write(writer.toString());
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
-            }
-            finally {
+            } finally {
                 mcMMO.p.getLogger().info(i + " entries written while saving UUID batch");
                 if (in != null) {
                     try {
                         in.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         // Ignore
                     }
                 }
                 if (out != null) {
                     try {
                         out.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         // Ignore
                     }
                 }
@@ -704,16 +703,13 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     String[] character = line.split(":");
                     users.add(character[USERNAME]);
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-            }
-            finally {
+            } finally {
                 if (in != null) {
                     try {
                         in.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         // Ignore
                     }
                 }
@@ -781,16 +777,13 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                     putStat(powerLevels, playerName, powerLevel);
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " during user " + playerName + " (Are you sure you formatted it correctly?) " + e.toString());
-            }
-            finally {
+            } finally {
                 if (in != null) {
                     try {
                         in.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         // Ignore
                     }
                 }
@@ -899,8 +892,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                                     continue;
                                 }
                                 //Level Cap
-                                if(mcMMO.getPlayerLevelingSettings().isLevelCapEnabled(skill))
-                                {
+                                if (mcMMO.getPlayerLevelingSettings().isLevelCapEnabled(skill)) {
                                     int cap = mcMMO.getPlayerLevelingSettings().getLevelCap(skill);
                                     if (Integer.valueOf(character[index]) > cap) {
                                         mcMMO.p.getLogger().warning("Truncating " + skill.getName() + " to configured max level for player " + character[USERNAME]);
@@ -1005,11 +997,9 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                                 corrupted = true;
                                 if (i == 37) {
                                     character[i] = String.valueOf(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
-                                }
-                                else if (i == 38) {
+                                } else if (i == 38) {
                                     character[i] = mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType().toString();
-                                }
-                                else {
+                                } else {
                                     character[i] = "0";
                                 }
                             }
@@ -1056,24 +1046,20 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     // Write the new file
                     out = new FileWriter(usersFilePath);
                     out.write(writer.toString());
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
-                }
-                finally {
+                } finally {
                     if (in != null) {
                         try {
                             in.close();
-                        }
-                        catch (IOException e) {
+                        } catch (IOException e) {
                             // Ignore
                         }
                     }
                     if (out != null) {
                         try {
                             out.close();
-                        }
-                        catch (IOException e) {
+                        } catch (IOException e) {
                             // Ignore
                         }
                     }
@@ -1095,8 +1081,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         try {
             mcMMO.p.debug("Creating mcmmo.users file...");
             new File(mcMMO.getUsersFilePath()).createNewFile();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -1124,16 +1109,9 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         return statValue;
     }
 
-    private class SkillComparator implements Comparator<PlayerStat> {
-        @Override
-        public int compare(PlayerStat o1, PlayerStat o2) {
-            return (o2.statVal - o1.statVal);
-        }
-    }
-
     private PlayerProfile loadFromLine(String[] character) {
-        Map<PrimarySkillType, Integer>   skills     = getSkillMapFromLine(character);      // Skill levels
-        Map<PrimarySkillType, Float>     skillsXp   = new EnumMap<>(PrimarySkillType.class);     // Skill & XP
+        Map<PrimarySkillType, Integer> skills = getSkillMapFromLine(character);      // Skill levels
+        Map<PrimarySkillType, Float> skillsXp = new EnumMap<>(PrimarySkillType.class);     // Skill & XP
         Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<>(SuperAbilityType.class); // Ability & Cooldown
         Map<UniqueDataType, Integer> uniquePlayerDataMap = new EnumMap<>(UniqueDataType.class);
         MobHealthbarType mobHealthbarType;
@@ -1170,30 +1148,26 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
         try {
             mobHealthbarType = MobHealthbarType.valueOf(character[HEALTHBAR]);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             mobHealthbarType = mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType();
         }
 
         UUID uuid;
         try {
             uuid = UUID.fromString(character[UUID_INDEX]);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             uuid = null;
         }
 
         try {
             scoreboardTipsShown = Integer.valueOf(character[SCOREBOARD_TIPS]);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             scoreboardTipsShown = 0;
         }
 
         try {
             uniquePlayerDataMap.put(UniqueDataType.CHIMAERA_WING_DATS, Integer.valueOf(character[COOLDOWN_CHIMAERA_WING]));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             uniquePlayerDataMap.put(UniqueDataType.CHIMAERA_WING_DATS, 0);
         }
 
@@ -1225,7 +1199,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void onDisable() { }
+    public void onDisable() {
+    }
 
     private int getSkillIndex(PrimarySkillType skill) {
         switch (skill) {
@@ -1257,50 +1232,9 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 return SKILLS_WOODCUTTING;
             default:
                 throw new RuntimeException("Primary Skills only");
-            
+
         }
     }
-    
-    public static int USERNAME = 0;
-    public static int SKILLS_MINING = 1;
-    public static int EXP_MINING = 4;
-    public static int SKILLS_WOODCUTTING = 5;
-    public static int EXP_WOODCUTTING = 6;
-    public static int SKILLS_REPAIR = 7;
-    public static int SKILLS_UNARMED = 8;
-    public static int SKILLS_HERBALISM = 9;
-    public static int SKILLS_EXCAVATION = 10;
-    public static int SKILLS_ARCHERY = 11;
-    public static int SKILLS_SWORDS = 12;
-    public static int SKILLS_AXES = 13;
-    public static int SKILLS_ACROBATICS = 14;
-    public static int EXP_REPAIR = 15;
-    public static int EXP_UNARMED = 16;
-    public static int EXP_HERBALISM = 17;
-    public static int EXP_EXCAVATION = 18;
-    public static int EXP_ARCHERY = 19;
-    public static int EXP_SWORDS = 20;
-    public static int EXP_AXES = 21;
-    public static int EXP_ACROBATICS = 22;
-    public static int SKILLS_TAMING = 24;
-    public static int EXP_TAMING = 25;
-    public static int COOLDOWN_BERSERK = 26;
-    public static int COOLDOWN_GIGA_DRILL_BREAKER = 27;
-    public static int COOLDOWN_TREE_FELLER = 28;
-    public static int COOLDOWN_GREEN_TERRA = 29;
-    public static int COOLDOWN_SERRATED_STRIKES = 30;
-    public static int COOLDOWN_SKULL_SPLITTER = 31;
-    public static int COOLDOWN_SUPER_BREAKER = 32;
-    public static int SKILLS_FISHING = 34;
-    public static int EXP_FISHING = 35;
-    public static int COOLDOWN_BLAST_MINING = 36;
-    public static int LAST_LOGIN = 37;
-    public static int HEALTHBAR = 38;
-    public static int SKILLS_ALCHEMY = 39;
-    public static int EXP_ALCHEMY = 40;
-    public static int UUID_INDEX = 41;
-    public static int SCOREBOARD_TIPS = 42;
-    public static int COOLDOWN_CHIMAERA_WING = 43;
 
     public void resetMobHealthSettings() {
         BufferedReader in = null;
@@ -1319,9 +1253,9 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         continue;
                     }
                     String[] character = line.split(":");
-                    
+
                     character[HEALTHBAR] = mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType().toString();
-                    
+
                     line = org.apache.commons.lang.StringUtils.join(character, ":") + ":";
 
                     writer.append(line).append("\r\n");
@@ -1330,28 +1264,31 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 // Write the new file
                 out = new FileWriter(usersFilePath);
                 out.write(writer.toString());
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
-            }
-            finally {
+            } finally {
                 if (in != null) {
                     try {
                         in.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         // Ignore
                     }
                 }
                 if (out != null) {
                     try {
                         out.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         // Ignore
                     }
                 }
             }
+        }
+    }
+
+    private class SkillComparator implements Comparator<PlayerStat> {
+        @Override
+        public int compare(PlayerStat o1, PlayerStat o2) {
+            return (o2.statVal - o1.statVal);
         }
     }
 }

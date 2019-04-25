@@ -26,8 +26,7 @@ public class McremoveCommand implements TabExecutor {
 
                 if (mcMMO.getDatabaseManager().removeUser(playerName)) {
                     sender.sendMessage(LocaleLoader.getString("Commands.mcremove.Success", playerName));
-                }
-                else {
+                } else {
                     sender.sendMessage(playerName + " could not be removed from the database."); // Pretty sure this should NEVER happen.
                 }
 

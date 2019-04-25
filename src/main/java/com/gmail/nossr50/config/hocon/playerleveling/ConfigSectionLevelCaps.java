@@ -14,7 +14,7 @@ public class ConfigSectionLevelCaps {
 
     @Setting(value = "Reduce-Player-Skills-Above-Cap",
             comment = "Players with skills above the cap will have those skills reduced to the cap" +
-                    "\nDefault value: "+TRUNCATE_SKILLS_ABOVE_CAP_DEFAULT)
+                    "\nDefault value: " + TRUNCATE_SKILLS_ABOVE_CAP_DEFAULT)
     private boolean truncateSkillsAboveCap = TRUNCATE_SKILLS_ABOVE_CAP_DEFAULT;
 
     @Setting(value = "Power-Level",

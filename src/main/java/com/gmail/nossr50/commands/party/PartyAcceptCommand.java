@@ -17,8 +17,7 @@ public class PartyAcceptCommand implements CommandExecutor {
                 Player player = (Player) sender;
 
                 //Check if player profile is loaded
-                if(UserManager.getPlayer(player) == null)
-                {
+                if (UserManager.getPlayer(player) == null) {
                     sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                     return true;
                 }

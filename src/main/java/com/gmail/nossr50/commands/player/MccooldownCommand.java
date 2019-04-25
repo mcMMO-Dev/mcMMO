@@ -38,8 +38,7 @@ public class MccooldownCommand implements TabExecutor {
                     }
                 }
 
-                if(UserManager.getPlayer(player) == null)
-                {
+                if (UserManager.getPlayer(player) == null) {
                     player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                     return true;
                 }
@@ -58,8 +57,7 @@ public class MccooldownCommand implements TabExecutor {
 
                     if (seconds <= 0) {
                         player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.Y", ability.getName()));
-                    }
-                    else {
+                    } else {
                         player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.N", ability.getName(), seconds));
                     }
                 }

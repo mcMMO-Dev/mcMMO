@@ -35,8 +35,20 @@ public class MiningManager extends SkillManager {
         super(mcMMOPlayer, PrimarySkillType.MINING);
     }
 
+    public static double getOreBonus(int rank) {
+        return AdvancedConfig.getInstance().getOreBonus(rank);
+    }
+
+    public static double getDebrisReduction(int rank) {
+        return AdvancedConfig.getInstance().getDebrisReduction(rank);
+    }
+
+    public static int getDropMultiplier(int rank) {
+        return AdvancedConfig.getInstance().getDropMultiplier(rank);
+    }
+
     public boolean canUseDemolitionsExpertise() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_DEMOLITIONS_EXPERTISE))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_DEMOLITIONS_EXPERTISE))
             return false;
 
         return getSkillLevel() >= BlastMining.getDemolitionExpertUnlockLevel() && Permissions.demolitionsExpertise(getPlayer());
@@ -56,7 +68,7 @@ public class MiningManager extends SkillManager {
     }
 
     public boolean canUseBiggerBombs() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_BIGGER_BOMBS))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_BIGGER_BOMBS))
             return false;
 
         return getSkillLevel() >= BlastMining.getBiggerBombsUnlockLevel() && Permissions.biggerBombs(getPlayer());
@@ -83,13 +95,13 @@ public class MiningManager extends SkillManager {
         }
 
         //if ((mcMMO.getModManager().isCustomMiningBlock(blockState) && !mcMMO.getModManager().getBlock(blockState).isDoubleDropEnabled()) || !MainConfig.getInstance().getDoubleDropsEnabled(skill, material)) {
-        if(!MainConfig.getInstance().getDoubleDropsEnabled(skill, material)) {
+        if (!MainConfig.getInstance().getDoubleDropsEnabled(skill, material)) {
             return;
         }
 
         boolean silkTouch = player.getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH);
 
-        if(silkTouch && !AdvancedConfig.getInstance().getDoubleDropSilkTouchEnabled())
+        if (silkTouch && !AdvancedConfig.getInstance().getDoubleDropSilkTouchEnabled())
             return;
 
         //TODO: Make this readable
@@ -128,7 +140,7 @@ public class MiningManager extends SkillManager {
     /**
      * Handler for explosion drops and XP gain.
      *
-     * @param yield The % of blocks to drop
+     * @param yield     The % of blocks to drop
      * @param blockList The list of blocks to drop
      */
     public void blastMiningDropProcessing(float yield, List<Block> blockList) {
@@ -147,8 +159,7 @@ public class MiningManager extends SkillManager {
 
             if (BlockUtils.isOre(blockState)) {
                 ores.add(blockState);
-            }
-            else {
+            } else {
                 debris.add(blockState);
             }
         }
@@ -212,14 +223,6 @@ public class MiningManager extends SkillManager {
         return getOreBonus(getBlastMiningTier());
     }
 
-    public static double getOreBonus(int rank) {
-        return AdvancedConfig.getInstance().getOreBonus(rank);
-    }
-
-    public static double getDebrisReduction(int rank) {
-        return AdvancedConfig.getInstance().getDebrisReduction(rank);
-    }
-
     /**
      * Gets the Blast Mining tier
      *
@@ -227,10 +230,6 @@ public class MiningManager extends SkillManager {
      */
     public double getDebrisReduction() {
         return getDebrisReduction(getBlastMiningTier());
-    }
-
-    public static int getDropMultiplier(int rank) {
-        return AdvancedConfig.getInstance().getDropMultiplier(rank);
     }
 
     /**

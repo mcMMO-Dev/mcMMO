@@ -16,13 +16,11 @@ import java.util.Random;
 import java.util.Set;
 
 public final class Misc {
-    private static Random random = new Random();
-
     public static final int TIME_CONVERSION_FACTOR = 1000;
     public static final int TICK_CONVERSION_FACTOR = 20;
-
     public static final int PLAYER_RESPAWN_COOLDOWN_SECONDS = 5;
     public static final double SKILL_MESSAGE_MAX_SENDING_DISTANCE = 10.0;
+    public static final Set<String> modNames = ImmutableSet.of("LOTR", "BUILDCRAFT", "ENDERIO", "ENHANCEDBIOMES", "IC2", "METALLURGY", "FORESTRY", "GALACTICRAFT", "RAILCRAFT", "TWILIGHTFOREST", "THAUMCRAFT", "GRAVESTONEMOD", "GROWTHCRAFT", "ARCTICMOBS", "DEMONMOBS", "INFERNOMOBS", "SWAMPMOBS", "MARICULTURE", "MINESTRAPPOLATION");
 
     // Sound Pitches & Volumes from CB
 /*    public static final float ANVIL_USE_PITCH  = 0.3F;  // Not in CB directly, I went off the place sound values
@@ -34,10 +32,10 @@ public final class Misc {
     public static final float GHAST_VOLUME     = 1.0F * MainConfig.getInstance().getMasterVolume();
     public static final float LEVELUP_PITCH    = 0.5F;  // Reduced to differentiate between vanilla level-up
     public static final float LEVELUP_VOLUME   = 0.75F * MainConfig.getInstance().getMasterVolume(); // Use max volume always*/
+    private static Random random = new Random();
 
-    public static final Set<String> modNames = ImmutableSet.of("LOTR", "BUILDCRAFT", "ENDERIO", "ENHANCEDBIOMES", "IC2", "METALLURGY", "FORESTRY", "GALACTICRAFT", "RAILCRAFT", "TWILIGHTFOREST", "THAUMCRAFT", "GRAVESTONEMOD", "GROWTHCRAFT", "ARCTICMOBS", "DEMONMOBS", "INFERNOMOBS", "SWAMPMOBS", "MARICULTURE", "MINESTRAPPOLATION");
-
-    private Misc() {}
+    private Misc() {
+    }
 
     public static boolean isNPCEntity(Entity entity) {
         return (entity == null
@@ -49,8 +47,8 @@ public final class Misc {
     /**
      * Determine if two locations are near each other.
      *
-     * @param first The first location
-     * @param second The second location
+     * @param first       The first location
+     * @param second      The second location
      * @param maxDistance The max distance apart
      * @return true if the distance between {@code first} and {@code second} is less than {@code maxDistance}, false otherwise
      */
@@ -60,7 +58,7 @@ public final class Misc {
 
     /**
      * Get the center of the given block.
-     * 
+     *
      * @param blockState The {@link BlockState} of the block
      * @return A {@link Location} lying at the center of the block
      */
@@ -78,7 +76,7 @@ public final class Misc {
      * Drop items at a given location.
      *
      * @param location The location to drop the items at
-     * @param is The items to drop
+     * @param is       The items to drop
      * @param quantity The amount of items to drop
      */
     public static void dropItems(Location location, ItemStack is, int quantity) {
@@ -90,7 +88,7 @@ public final class Misc {
     /**
      * Drop an item at a given location.
      *
-     * @param location The location to drop the item at
+     * @param location  The location to drop the item at
      * @param itemStack The item to drop
      * @return Dropped Item entity or null if invalid or cancelled
      */

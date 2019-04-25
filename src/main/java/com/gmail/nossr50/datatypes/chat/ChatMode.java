@@ -10,7 +10,7 @@ public enum ChatMode {
     private String disabledMessage;
 
     ChatMode(String enabledMessage, String disabledMessage) {
-        this.enabledMessage  = enabledMessage;
+        this.enabledMessage = enabledMessage;
         this.disabledMessage = disabledMessage;
     }
 

@@ -41,26 +41,22 @@ public abstract class ChatManager {
          * Party Chat Spying
          * Party messages will be copied to people with the mcmmo.admin.chatspy permission node
          */
-        if(event instanceof McMMOPartyChatEvent)
-        {
+        if (event instanceof McMMOPartyChatEvent) {
             //We need to grab the party chat name
             McMMOPartyChatEvent partyChatEvent = (McMMOPartyChatEvent) event;
 
             //Find the people with permissions
-            for(McMMOPlayer mcMMOPlayer : UserManager.getPlayers())
-            {
+            for (McMMOPlayer mcMMOPlayer : UserManager.getPlayers()) {
                 Player player = mcMMOPlayer.getPlayer();
 
                 //Check for toggled players
-                if(mcMMOPlayer.isPartyChatSpying())
-                {
+                if (mcMMOPlayer.isPartyChatSpying()) {
                     Party adminParty = mcMMOPlayer.getParty();
 
                     //Only message admins not part of this party
-                    if(adminParty != null)
-                    {
+                    if (adminParty != null) {
                         //TODO: Incorporate JSON
-                        if(!adminParty.getName().equalsIgnoreCase(partyChatEvent.getParty()))
+                        if (!adminParty.getName().equalsIgnoreCase(partyChatEvent.getParty()))
                             player.sendMessage(LocaleLoader.getString("Commands.AdminChatSpy.Chat", partyChatEvent.getParty(), message));
                     } else {
                         player.sendMessage(LocaleLoader.getString("Commands.AdminChatSpy.Chat", partyChatEvent.getParty(), message));

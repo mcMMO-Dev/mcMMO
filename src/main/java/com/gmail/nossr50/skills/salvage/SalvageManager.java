@@ -32,7 +32,7 @@ import java.util.Map.Entry;
 
 public class SalvageManager extends SkillManager {
     private boolean placedAnvil;
-    private int     lastClick;
+    private int lastClick;
 
     public SalvageManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.SALVAGE);
@@ -179,7 +179,7 @@ public class SalvageManager extends SkillManager {
     }*/
 
     public double getExtractFullEnchantChance() {
-        if(Permissions.hasSalvageEnchantBypassPerk(getPlayer()))
+        if (Permissions.hasSalvageEnchantBypassPerk(getPlayer()))
             return 100.0D;
 
         return AdvancedConfig.getInstance().getArcaneSalvageExtractFullEnchantsChance(getArcaneSalvageRank());
@@ -208,8 +208,7 @@ public class SalvageManager extends SkillManager {
                     || Permissions.hasSalvageEnchantBypassPerk(player)
                     || RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractFullEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchant.getValue(), true);
-            }
-            else if (enchant.getValue() > 1
+            } else if (enchant.getValue() > 1
                     && Salvage.arcaneSalvageDowngrades
                     && RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractPartialEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchant.getValue() - 1, true);
@@ -219,12 +218,10 @@ public class SalvageManager extends SkillManager {
             }
         }
 
-        if(failedAllEnchants(arcaneFailureCount, enchants.entrySet().size()))
-        {
+        if (failedAllEnchants(arcaneFailureCount, enchants.entrySet().size())) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.ArcaneFailed");
             return null;
-        } else if(downgraded)
-        {
+        } else if (downgraded) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.ArcanePartial");
         }
 
@@ -238,8 +235,8 @@ public class SalvageManager extends SkillManager {
 
     /**
      * Check if the player has tried to use an Anvil before.
-     * @param actualize
      *
+     * @param actualize
      * @return true if the player has confirmed using an Anvil
      */
     public boolean checkConfirmation(boolean actualize) {

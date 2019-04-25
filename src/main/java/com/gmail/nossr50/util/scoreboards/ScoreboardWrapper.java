@@ -30,20 +30,21 @@ public class ScoreboardWrapper {
     public final String playerName;
     public final Player player;
     private final Scoreboard scoreboard;
+    public String targetPlayer = null;
+    public PrimarySkillType targetSkill = null;
+    public int leaderboardPage = -1;
+    public BukkitTask updateTask = null;
+    public BukkitTask revertTask = null;
+    public BukkitTask cooldownTask = null;
     private boolean tippedKeep = false;
     private boolean tippedClear = false;
-
     // Internal usage variables (should exist)
     private SidebarType sidebarType;
     private Objective sidebarObjective;
     private Objective powerObjective;
-
     // Parameter variables (May be null / invalid)
     private Scoreboard oldBoard = null;
-    public String targetPlayer = null;
-    public PrimarySkillType targetSkill = null;
     private PlayerProfile targetProfile = null;
-    public int leaderboardPage = -1;
 
     private ScoreboardWrapper(Player player, Scoreboard scoreboard) {
         this.player = player;
@@ -71,42 +72,6 @@ public class ScoreboardWrapper {
         return new ScoreboardWrapper(event.getTargetPlayer(), event.getTargetBoard());
     }
 
-    public BukkitTask updateTask = null;
-
-    private class ScoreboardQuickUpdate extends BukkitRunnable {
-        @Override
-        public void run() {
-            updateSidebar();
-            updateTask = null;
-        }
-    }
-
-    public BukkitTask revertTask = null;
-
-    private class ScoreboardChangeTask extends BukkitRunnable {
-        @Override
-        public void run() {
-            tryRevertBoard();
-            revertTask = null;
-        }
-    }
-
-    public BukkitTask cooldownTask = null;
-
-    private class ScoreboardCooldownTask extends BukkitRunnable {
-        @Override
-        public void run() {
-            // Stop updating if it's no longer something displaying cooldowns
-            if (isBoardShown() && (isSkillScoreboard() || isCooldownScoreboard())) {
-                doSidebarUpdateSoon();
-            }
-            else {
-                stopCooldownUpdating();
-            }
-        }
-    }
-
-
     public void doSidebarUpdateSoon() {
         if (updateTask == null) {
             // To avoid spamming the scheduler, store the instance and run 2 ticks later
@@ -126,8 +91,7 @@ public class ScoreboardWrapper {
         if (cooldownTask != null) {
             try {
                 cooldownTask.cancel();
-            }
-            catch (Throwable ignored) {
+            } catch (Throwable ignored) {
             }
 
             cooldownTask = null;
@@ -164,8 +128,7 @@ public class ScoreboardWrapper {
                 // (Shouldn't happen) Use failsafe value - we're already displaying our board, but we don't have the one we should revert to
                 this.oldBoard = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard();
             }
-        }
-        else {
+        } else {
             this.oldBoard = oldBoard;
         }
     }
@@ -204,7 +167,7 @@ public class ScoreboardWrapper {
         // TODO is there any way to do the time that looks acceptable?
         // player.sendMessage(LocaleLoader.getString("Commands.ConfigScoreboard.Timer", StringUtils.capitalize(sidebarType.toString().toLowerCase()), ticks / 20F));
 
-        if(UserManager.getPlayer(playerName) == null)
+        if (UserManager.getPlayer(playerName) == null)
             return;
 
         PlayerProfile profile = UserManager.getPlayer(player).getProfile();
@@ -216,8 +179,7 @@ public class ScoreboardWrapper {
         if (!tippedKeep) {
             tippedKeep = true;
             player.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Tip.Keep"));
-        }
-        else if (!tippedClear) {
+        } else if (!tippedClear) {
             tippedClear = true;
             player.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Tip.Clear"));
             profile.increaseTipsShown();
@@ -242,8 +204,7 @@ public class ScoreboardWrapper {
                 //Modify the player based on the event
                 event.getTargetPlayer().setScoreboard(event.getTargetBoard());
                 oldBoard = null;
-            }
-            else {
+            } else {
                 mcMMO.p.debug("Not reverting targetBoard for " + playerName + " - targetBoard was changed by another plugin (Consider disabling the mcMMO scoreboards if you don't want them!)");
             }
         }
@@ -277,8 +238,6 @@ public class ScoreboardWrapper {
         revertTask = null;
     }
 
-    // Board Type Changing 'API' methods
-
     public void setTypeNone() {
         this.sidebarType = SidebarType.NONE;
 
@@ -311,6 +270,8 @@ public class ScoreboardWrapper {
 
         loadObjective(ScoreboardManager.HEADER_STATS);
     }
+
+    // Board Type Changing 'API' methods
 
     public void setTypeInspectStats(PlayerProfile profile) {
         this.sidebarType = SidebarType.STATS_BOARD;
@@ -386,13 +347,13 @@ public class ScoreboardWrapper {
     protected void loadObjective(String displayName) {
         //Unregister objective
         McMMOScoreboardObjectiveEvent unregisterEvent = callObjectiveEvent(ScoreboardObjectiveEventReason.UNREGISTER_THIS_OBJECTIVE);
-        if(!unregisterEvent.isCancelled()) {
+        if (!unregisterEvent.isCancelled()) {
             sidebarObjective.unregister();
         }
 
         //Register objective
         McMMOScoreboardObjectiveEvent registerEvent = callObjectiveEvent(ScoreboardObjectiveEventReason.REGISTER_NEW_OBJECTIVE);
-        if(!registerEvent.isCancelled())
+        if (!registerEvent.isCancelled())
             sidebarObjective = registerEvent.getTargetBoard().registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "dummy");
 
         if (displayName.length() > 32) {
@@ -418,8 +379,7 @@ public class ScoreboardWrapper {
     private void updateSidebar() {
         try {
             updateTask.cancel();
-        }
-        catch (Throwable ignored) {
+        } catch (Throwable ignored) {
         } // catch NullPointerException and IllegalStateException and any Error; don't care
 
         updateTask = null;
@@ -437,7 +397,7 @@ public class ScoreboardWrapper {
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if(mcMMOPlayer == null)
+        if (mcMMOPlayer == null)
             return;
 
         switch (sidebarType) {
@@ -450,8 +410,7 @@ public class ScoreboardWrapper {
 
                     sidebarObjective.getScore(ScoreboardManager.LABEL_CURRENT_XP).setScore(currentXP);
                     sidebarObjective.getScore(ScoreboardManager.LABEL_REMAINING_XP).setScore(mcMMOPlayer.getXpToLevel(targetSkill) - currentXP);
-                }
-                else {
+                } else {
                     for (PrimarySkillType parentSkill : FamilyTree.getParents(targetSkill)) {
                         sidebarObjective.getScore(ScoreboardManager.skillLabels.get(parentSkill)).setScore(mcMMOPlayer.getSkillLevel(parentSkill));
                     }
@@ -473,8 +432,7 @@ public class ScoreboardWrapper {
                         cooldownBM.setScore(secondsBM);
 
                         stopUpdating = (secondsSB == 0 && secondsBM == 0);
-                    }
-                    else {
+                    } else {
                         SuperAbilityType ability = targetSkill.getAbility();
                         Score cooldown = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(ability));
                         int seconds = Math.max(mcMMOPlayer.calculateTimeRemaining(ability), 0);
@@ -486,8 +444,7 @@ public class ScoreboardWrapper {
 
                     if (stopUpdating) {
                         stopCooldownUpdating();
-                    }
-                    else {
+                    } else {
                         startCooldownUpdating();
                     }
                 }
@@ -508,8 +465,7 @@ public class ScoreboardWrapper {
 
                 if (anyCooldownsActive) {
                     startCooldownUpdating();
-                }
-                else {
+                } else {
                     stopCooldownUpdating();
                 }
                 break;
@@ -520,11 +476,9 @@ public class ScoreboardWrapper {
 
                 if (targetProfile != null) {
                     newProfile = targetProfile; // offline
-                }
-                else if (targetPlayer == null) {
+                } else if (targetPlayer == null) {
                     newProfile = mcMMOPlayer.getProfile(); // self
-                }
-                else {
+                } else {
                     newProfile = UserManager.getPlayer(targetPlayer).getProfile(); // online
                 }
 
@@ -548,10 +502,10 @@ public class ScoreboardWrapper {
 
             case RANK_BOARD:
             case TOP_BOARD:
-            /*
-             * @see #acceptRankData(Map<PrimarySkillType, Integer> rank)
-             * @see #acceptLeaderboardData(List<PlayerStat> stats)
-             */
+                /*
+                 * @see #acceptRankData(Map<PrimarySkillType, Integer> rank)
+                 * @see #acceptLeaderboardData(List<PlayerStat> stats)
+                 */
                 break;
 
             default:
@@ -596,5 +550,33 @@ public class ScoreboardWrapper {
 
     public void updatePowerLevel(Player player, int newPowerLevel) {
         powerObjective.getScore(player.getName()).setScore(newPowerLevel);
+    }
+
+    private class ScoreboardQuickUpdate extends BukkitRunnable {
+        @Override
+        public void run() {
+            updateSidebar();
+            updateTask = null;
+        }
+    }
+
+    private class ScoreboardChangeTask extends BukkitRunnable {
+        @Override
+        public void run() {
+            tryRevertBoard();
+            revertTask = null;
+        }
+    }
+
+    private class ScoreboardCooldownTask extends BukkitRunnable {
+        @Override
+        public void run() {
+            // Stop updating if it's no longer something displaying cooldowns
+            if (isBoardShown() && (isSkillScoreboard() || isCooldownScoreboard())) {
+                doSidebarUpdateSoon();
+            } else {
+                stopCooldownUpdating();
+            }
+        }
     }
 }

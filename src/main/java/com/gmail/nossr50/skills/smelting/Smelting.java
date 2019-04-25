@@ -9,8 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class Smelting {
 
-    public static int getRank(Player player)
-    {
+    public static int getRank(Player player) {
         return RankUtils.getRank(player, SubSkillType.SMELTING_UNDERSTANDING_THE_ART);
     }
 

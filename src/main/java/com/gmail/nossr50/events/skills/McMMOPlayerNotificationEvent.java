@@ -12,6 +12,10 @@ import org.bukkit.event.HandlerList;
  * This event is sent for when mcMMO informs a player about various important information
  */
 public class McMMOPlayerNotificationEvent extends Event implements Cancellable {
+    private static final HandlerList handlers = new HandlerList();
+    protected final NotificationType notificationType;
+    protected ChatMessageType chatMessageType;
+    protected TextComponent notificationTextComponent;
     private boolean isCancelled;
     /*
      * Messages can be sent to both places, as configured in advanced.yml
@@ -19,12 +23,6 @@ public class McMMOPlayerNotificationEvent extends Event implements Cancellable {
      * isMessageAlsoBeingSentToChat just indicates a copy of that message will be sent to chat
      */
     private boolean isMessageAlsoBeingSentToChat;
-
-    private static final HandlerList handlers = new HandlerList();
-    protected ChatMessageType chatMessageType;
-
-    protected TextComponent notificationTextComponent;
-    protected final NotificationType notificationType;
 
     public McMMOPlayerNotificationEvent(Player who, NotificationType notificationType, TextComponent notificationTextComponent, ChatMessageType chatMessageType, boolean isMessageAlsoBeingSentToChat) {
         super(false);
@@ -38,6 +36,10 @@ public class McMMOPlayerNotificationEvent extends Event implements Cancellable {
     /*
      * Getters & Setters
      */
+
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 
     public boolean isMessageAlsoBeingSentToChat() {
         return isMessageAlsoBeingSentToChat;
@@ -63,24 +65,21 @@ public class McMMOPlayerNotificationEvent extends Event implements Cancellable {
         this.chatMessageType = chatMessageType;
     }
 
+    /*
+     * Custom Event Boilerplate
+     */
+
     /**
      * The notification type for this event
+     *
      * @return this event's notification type
      */
     public NotificationType getEventNotificationType() {
         return notificationType;
     }
 
-    /*
-     * Custom Event Boilerplate
-     */
-
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 

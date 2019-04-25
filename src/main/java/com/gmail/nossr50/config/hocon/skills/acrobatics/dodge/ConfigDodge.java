@@ -13,7 +13,7 @@ public class ConfigDodge {
             "\nPlayers can dodge almost all types of damage from other entities, such as player damage, monster damage, etc." +
             "\nAs an example, a value of 2.0 for this setting would result in the player taking half damage." +
             "\nHigher values would further decrease the amount of damage the player takes after a successful dodge." +
-            "\nDefault value: "+DAMAGE_REDUCTION_DIVISOR_DEFAULT)
+            "\nDefault value: " + DAMAGE_REDUCTION_DIVISOR_DEFAULT)
     private double damageReductionDivisor = DAMAGE_REDUCTION_DIVISOR_DEFAULT;
 
     @Setting(value = "RNG-Settings", comment = "Settings related to random chance elements for this Sub-Skill.")

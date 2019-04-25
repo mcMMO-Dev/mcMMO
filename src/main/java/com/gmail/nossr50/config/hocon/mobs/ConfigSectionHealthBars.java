@@ -13,16 +13,16 @@ public class ConfigSectionHealthBars {
     public static final String displayTypesList = "\nYou can use the following MobHealthBarType values: HEARTS, BAR";
 
     @Setting(value = "Enable-Health-Bars", comment = "Turn this off to disable health bars appearing above mobs when damaged." +
-            "\nDefault value: "+MOB_HEALTH_BARS_DEFAULT)
+            "\nDefault value: " + MOB_HEALTH_BARS_DEFAULT)
     private boolean enableHealthBars = MOB_HEALTH_BARS_DEFAULT;
 
     @Setting(value = "Display-Bar-Type", comment = "The type of display to use for the mobs health bar." +
             displayTypesList +
-            "\nDefault value: "+HEARTS)
+            "\nDefault value: " + HEARTS)
     private MobHealthbarType displayBarType = MobHealthbarType.HEARTS;
 
     @Setting(value = "Display-Time-In-Seconds", comment = "How many seconds mob health bars should be displayed before being hidden." +
-            "\nDefault value: "+DISPLAY_TIME_SECONDS_DEFAULT)
+            "\nDefault value: " + DISPLAY_TIME_SECONDS_DEFAULT)
     private int displayTimeSeconds = DISPLAY_TIME_SECONDS_DEFAULT;
 
     public boolean isEnableHealthBars() {

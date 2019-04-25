@@ -16,17 +16,13 @@ public enum ItemShareType {
     public static ItemShareType getShareType(ItemStack itemStack) {
         if (ItemUtils.isMobDrop(itemStack)) {
             return LOOT;
-        }
-        else if (ItemUtils.isMiningDrop(itemStack)) {
+        } else if (ItemUtils.isMiningDrop(itemStack)) {
             return MINING;
-        }
-        else if (ItemUtils.isHerbalismDrop(itemStack)) {
+        } else if (ItemUtils.isHerbalismDrop(itemStack)) {
             return HERBALISM;
-        }
-        else if (ItemUtils.isWoodcuttingDrop(itemStack)) {
+        } else if (ItemUtils.isWoodcuttingDrop(itemStack)) {
             return WOODCUTTING;
-        }
-        else if (mcMMO.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(itemStack.getType()) != null) {
+        } else if (mcMMO.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(itemStack.getType()) != null) {
             return MISC;
         }
 

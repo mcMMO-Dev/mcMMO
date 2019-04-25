@@ -11,7 +11,7 @@ public class ConfigRoll {
 
     @Setting(value = "Damage-Threshold", comment = "Rolling will reduce up to this much damage." +
             "\nGraceful Rolls will reduce twice this value." +
-            "\nDefault value: "+ROLL_DAMAGE_THRESHOLD_DEFAULT)
+            "\nDefault value: " + ROLL_DAMAGE_THRESHOLD_DEFAULT)
     private double damageTheshold = ROLL_DAMAGE_THRESHOLD_DEFAULT;
 
     @Setting(value = "RNG-Settings", comment = "Settings related to random chance elements for this Sub-Skill.")

@@ -17,22 +17,22 @@ public class InteractionManager {
 
     /**
      * Registers subskills with the Interaction registration
+     *
      * @param abstractSubSkill the target subskill to register
      */
-    public static void registerSubSkill(AbstractSubSkill abstractSubSkill)
-    {
+    public static void registerSubSkill(AbstractSubSkill abstractSubSkill) {
         /* INIT MAPS */
-        if(interactRegister == null)
+        if (interactRegister == null)
             interactRegister = new HashMap<>();
 
-        if(subSkillList == null)
+        if (subSkillList == null)
             subSkillList = new ArrayList<>();
 
-        if(subSkillNameMap == null)
+        if (subSkillNameMap == null)
             subSkillNameMap = new HashMap<>();
 
         //Store a unique copy of each subskill
-        if(!subSkillList.contains(abstractSubSkill))
+        if (!subSkillList.contains(abstractSubSkill))
             subSkillList.add(abstractSubSkill);
 
         //Init ArrayList
@@ -49,30 +49,29 @@ public class InteractionManager {
         //Register in name map
         subSkillNameMap.putIfAbsent(lowerCaseName, abstractSubSkill);
 
-        System.out.println("[mcMMO] registered subskill: "+ abstractSubSkill.getConfigKeyName());
+        System.out.println("[mcMMO] registered subskill: " + abstractSubSkill.getConfigKeyName());
     }
 
     /**
      * Grabs the registered abstract skill by its name
      * Is not case sensitive
+     *
      * @param name name of subskill, not case sensitive
      * @return null if the subskill is not registered
      */
-    public static AbstractSubSkill getAbstractByName(String name)
-    {
+    public static AbstractSubSkill getAbstractByName(String name) {
         return subSkillNameMap.get(name.toLowerCase());
     }
 
     /**
      * Processes the associated Interactions for this event
-     * @param event target event
-     * @param plugin instance of mcMMO plugin
+     *
+     * @param event           target event
+     * @param plugin          instance of mcMMO plugin
      * @param curInteractType the associated interaction type
      */
-    public static void processEvent(Event event, mcMMO plugin, InteractType curInteractType)
-    {
-        for(Interaction interaction : interactRegister.get(curInteractType))
-        {
+    public static void processEvent(Event event, mcMMO plugin, InteractType curInteractType) {
+        for (Interaction interaction : interactRegister.get(curInteractType)) {
             interaction.doInteraction(event, plugin);
         }
     }
@@ -80,25 +79,24 @@ public class InteractionManager {
     /**
      * Returns the list that contains all unique instances of registered Interaction classes
      * Interactions are extensions of abstract classes that represent modifying behaviours in Minecraft through events
+     *
      * @return the unique collection of all registered Interaction classes
      */
-    public static ArrayList<AbstractSubSkill> getSubSkillList()
-    {
+    public static ArrayList<AbstractSubSkill> getSubSkillList() {
         return subSkillList;
     }
 
-    public static boolean hasSubSkill(String name)
-    {
+    public static boolean hasSubSkill(String name) {
         return getAbstractByName(name) != null;
     }
 
-    public static boolean hasSubSkill(SubSkillType subSkillType)
-    {
+    public static boolean hasSubSkill(SubSkillType subSkillType) {
         return hasSubSkill(subSkillType.getNiceNameNoSpaces(subSkillType));
     }
 
     /**
      * Returns the associative map which contains all registered interactions
+     *
      * @return the interact register
      */
     public static HashMap<InteractType, ArrayList<Interaction>> getInteractRegister() {

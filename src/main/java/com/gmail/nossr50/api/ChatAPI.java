@@ -10,18 +10,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public final class ChatAPI {
-    private ChatAPI() {}
+    private ChatAPI() {
+    }
 
     /**
      * Send a message to all members of a party
      * </br>
      * This function is designed for API usage.
      *
-     * @param plugin The plugin sending the message
-     * @param sender The name of the sender
+     * @param plugin      The plugin sending the message
+     * @param sender      The name of the sender
      * @param displayName The display name of the sender
-     * @param party The name of the party to send to
-     * @param message The message to send
+     * @param party       The name of the party to send to
+     * @param message     The message to send
      */
     public static void sendPartyChat(Plugin plugin, String sender, String displayName, String party, String message) {
         getPartyChatManager(plugin, party).handleChat(sender, displayName, message);
@@ -32,9 +33,9 @@ public final class ChatAPI {
      * </br>
      * This function is designed for API usage.
      *
-     * @param plugin The plugin sending the message
-     * @param sender The name of the sender to display in the chat
-     * @param party The name of the party to send to
+     * @param plugin  The plugin sending the message
+     * @param sender  The name of the sender to display in the chat
+     * @param party   The name of the party to send to
      * @param message The message to send
      */
     public static void sendPartyChat(Plugin plugin, String sender, String party, String message) {
@@ -46,10 +47,10 @@ public final class ChatAPI {
      * </br>
      * This function is designed for API usage.
      *
-     * @param plugin The plugin sending the message
-     * @param sender The name of the sender
+     * @param plugin      The plugin sending the message
+     * @param sender      The name of the sender
      * @param displayName The display name of the sender
-     * @param message The message to send
+     * @param message     The message to send
      */
     public static void sendAdminChat(Plugin plugin, String sender, String displayName, String message) {
         ChatManagerFactory.getChatManager(plugin, ChatMode.ADMIN).handleChat(sender, displayName, message);
@@ -60,8 +61,8 @@ public final class ChatAPI {
      * </br>
      * This function is designed for API usage.
      *
-     * @param plugin The plugin sending the message
-     * @param sender The name of the sender to display in the chat
+     * @param plugin  The plugin sending the message
+     * @param sender  The name of the sender to display in the chat
      * @param message The message to send
      */
     public static void sendAdminChat(Plugin plugin, String sender, String message) {

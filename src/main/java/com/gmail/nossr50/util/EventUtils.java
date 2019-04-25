@@ -55,6 +55,7 @@ public class EventUtils {
     /*
      * Quality of Life methods
      */
+
     /**
      * Checks to see if damage is from natural sources
      * This cannot be used to determine if damage is from vanilla MC, it just checks to see if the damage is from a complex behaviour in mcMMO such as bleed.
@@ -71,19 +72,19 @@ public class EventUtils {
 
     /**
      * This little method is just to make the code more readable
+     *
      * @param entity target entity
      * @return the associated McMMOPlayer for this entity
      */
-    public static McMMOPlayer getMcMMOPlayer(Entity entity)
-    {
-        return UserManager.getPlayer((Player)entity);
+    public static McMMOPlayer getMcMMOPlayer(Entity entity) {
+        return UserManager.getPlayer((Player) entity);
     }
 
     /**
      * Checks to see if a Player was damaged in this EntityDamageEvent
-     *
+     * <p>
      * This method checks for the following things and if they are all true it returns true
-     *
+     * <p>
      * 1) The player is real and not an NPC
      * 2) The player is not in god mode
      * 3) The damage dealt is above 0 (if a player has Absorption, check if damage and final damage are above 0)
@@ -92,8 +93,7 @@ public class EventUtils {
      * @param entityDamageEvent
      * @return
      */
-    public static boolean isRealPlayerDamaged(EntityDamageEvent entityDamageEvent)
-    {
+    public static boolean isRealPlayerDamaged(EntityDamageEvent entityDamageEvent) {
         //Make sure the damage is above 0
         double damage = entityDamageEvent.getDamage();
         double finalDamage = entityDamageEvent.getFinalDamage();
@@ -119,7 +119,7 @@ public class EventUtils {
         Entity entity = entityDamageEvent.getEntity();
 
         //Check to make sure the entity is not an NPC
-        if(Misc.isNPCEntity(entity))
+        if (Misc.isNPCEntity(entity))
             return false;
 
         if (!entity.isValid() || !(entity instanceof LivingEntity)) {
@@ -141,8 +141,7 @@ public class EventUtils {
 
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-            if(mcMMOPlayer == null)
-            {
+            if (mcMMOPlayer == null) {
                 return true;
             }
 
@@ -171,7 +170,8 @@ public class EventUtils {
 
     /**
      * Calls a new SubSkillEvent for this SubSkill and then returns it
-     * @param player target player
+     *
+     * @param player       target player
      * @param subSkillType target subskill
      * @return the event after it has been fired
      */
@@ -185,7 +185,8 @@ public class EventUtils {
 
     /**
      * Calls a new SubSkillEvent for this SubSkill and then returns it
-     * @param player target player
+     *
+     * @param player           target player
      * @param abstractSubSkill target subskill
      * @return the event after it has been fired
      */
@@ -236,8 +237,8 @@ public class EventUtils {
     /**
      * Simulate a block break event.
      *
-     * @param block The block to break
-     * @param player The player breaking the block
+     * @param block          The block to break
+     * @param player         The player breaking the block
      * @param shouldArmSwing true if an armswing event should be fired, false otherwise
      * @return true if the event wasn't cancelled, false otherwise
      */
@@ -261,7 +262,7 @@ public class EventUtils {
     public static void handlePartyTeleportEvent(Player teleportingPlayer, Player targetPlayer) {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(teleportingPlayer);
 
-        if(mcMMOPlayer == null)
+        if (mcMMOPlayer == null)
             return;
 
         McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(teleportingPlayer, targetPlayer, mcMMOPlayer.getParty().getName());
@@ -322,7 +323,7 @@ public class EventUtils {
     }
 
     public static boolean handleStatsLossEvent(Player player, HashMap<String, Integer> levelChanged, HashMap<String, Float> experienceChanged) {
-        if(UserManager.getPlayer(player) == null)
+        if (UserManager.getPlayer(player) == null)
             return true;
 
         McMMOPlayerStatLossEvent event = new McMMOPlayerStatLossEvent(player, levelChanged, experienceChanged);
@@ -373,11 +374,11 @@ public class EventUtils {
             McMMOPlayer killerPlayer = UserManager.getPlayer(killer);
 
             //Not loaded
-            if(killerPlayer == null)
+            if (killerPlayer == null)
                 return true;
 
             //Not loaded
-            if(UserManager.getPlayer(victim) == null)
+            if (UserManager.getPlayer(victim) == null)
                 return true;
 
             PlayerProfile victimProfile = UserManager.getPlayer(victim).getProfile();

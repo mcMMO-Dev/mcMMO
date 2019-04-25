@@ -24,7 +24,7 @@ public class ConfigSectionGeneral {
             "\nMost of their functionality has been replaced by the new XP bars (Boss Bars)" +
             "\nIf you still wish to use scoreboards, you still can, just turn this setting on." +
             "\nScoreboards can be used alongside XP bars, so don't worry about that!" +
-            "\nDefault value: "+ USE_SCOREBOARDS_DEFAULT)
+            "\nDefault value: " + USE_SCOREBOARDS_DEFAULT)
     private boolean useScoreboards = USE_SCOREBOARDS_DEFAULT;
 
     @Setting(value = "Display-Power-Levels-Below-Player-Names",
@@ -34,23 +34,23 @@ public class ConfigSectionGeneral {
                     " through the use of scoreboards." +
                     "\nThis is off by default because a lot of Plugins for Minecraft make use of editing" +
                     " a players \"nameplate\" and that can cause compatibility issues" +
-                    "\nDefault value: "+ POWER_LEVEL_DISPLAY_DEFAULT)
+                    "\nDefault value: " + POWER_LEVEL_DISPLAY_DEFAULT)
     private boolean powerLevelTags = POWER_LEVEL_DISPLAY_DEFAULT;
 
     @Setting(value = "Show-Stats-Scoreboard-On-Player-Login", comment = "Shows the player the /mcstats scoreboard" +
             " display after they login." +
-            "\nDefault value: "+ SHOW_PLAYER_STATS_SCOREBOARD_AFTER_LOGIN_DEFAULT)
+            "\nDefault value: " + SHOW_PLAYER_STATS_SCOREBOARD_AFTER_LOGIN_DEFAULT)
     private boolean showStatsAfterLogin = SHOW_PLAYER_STATS_SCOREBOARD_AFTER_LOGIN_DEFAULT;
 
     @Setting(value = "Show-Scoreboard-Tips-Only-This-Many-Times", comment = "This determines how many times players are" +
             " given tips about how to use the scoreboard system before they are never tipped again." +
             "\nPlayers are given tips once per login session." +
-            "\nDefault value: "+ SHOW_TIPS_LIMIT_DEFAULT)
+            "\nDefault value: " + SHOW_TIPS_LIMIT_DEFAULT)
     private int tipsAmount = SHOW_TIPS_LIMIT_DEFAULT;
 
-    @Setting(value ="Use-Rainbow-Styling-For-Skill-Names", comment = "If true, skills names will use rainbow style" +
+    @Setting(value = "Use-Rainbow-Styling-For-Skill-Names", comment = "If true, skills names will use rainbow style" +
             " colorings instead of having the same color" +
-            "\nDefault value: "+ USE_RAINBOW_SKILL_COLORING_DEFAULT)
+            "\nDefault value: " + USE_RAINBOW_SKILL_COLORING_DEFAULT)
     private boolean useRainbows = USE_RAINBOW_SKILL_COLORING_DEFAULT;
 
     @Setting(value = "Use-Super-Ability-Name-Instead-Of-Generic-Name",
@@ -58,7 +58,7 @@ public class ConfigSectionGeneral {
                     "instead of using a generic word from the locale, which by default in the locale is defined as " +
                     "\"Ability\". The locale key for this entry is - Scoreboard.Misc.Ability " +
                     "\nExample: If true Tree Feller will be shown instead of Super Ability with default en_us locale entries" +
-                    "\nDefault value: "+ USE_SUPER_ABILITY_NAME_INSTEAD_OF_GENERIC)
+                    "\nDefault value: " + USE_SUPER_ABILITY_NAME_INSTEAD_OF_GENERIC)
     private boolean useAbilityNameInsteadOfGeneric = USE_SUPER_ABILITY_NAME_INSTEAD_OF_GENERIC;
 
     public boolean isUseScoreboards() {

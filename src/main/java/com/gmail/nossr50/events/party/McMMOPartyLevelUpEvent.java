@@ -6,6 +6,10 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class McMMOPartyLevelUpEvent extends Event implements Cancellable {
+    /**
+     * Rest of file is required boilerplate for custom events
+     **/
+    private static final HandlerList handlers = new HandlerList();
     private Party party;
     private int levelsChanged;
     private boolean cancelled;
@@ -14,6 +18,10 @@ public class McMMOPartyLevelUpEvent extends Event implements Cancellable {
         this.party = party;
         this.levelsChanged = levelsChanged;
         this.cancelled = false;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 
     public Party getParty() {
@@ -28,7 +36,9 @@ public class McMMOPartyLevelUpEvent extends Event implements Cancellable {
         this.levelsChanged = levelsChanged;
     }
 
-    /** Following are required for Cancellable **/
+    /**
+     * Following are required for Cancellable
+     **/
     @Override
     public boolean isCancelled() {
         return cancelled;
@@ -39,15 +49,8 @@ public class McMMOPartyLevelUpEvent extends Event implements Cancellable {
         this.cancelled = cancelled;
     }
 
-    /** Rest of file is required boilerplate for custom events **/
-    private static final HandlerList handlers = new HandlerList();
-
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 }

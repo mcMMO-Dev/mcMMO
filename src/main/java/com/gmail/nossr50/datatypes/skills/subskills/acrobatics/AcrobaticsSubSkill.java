@@ -28,7 +28,7 @@ public abstract class AcrobaticsSubSkill extends AbstractSubSkill {
      */
     @Override
     public String getNiceName() {
-        return LocaleLoader.getString(getPrimaryKeyName()+".SubSkill."+getConfigKeyName()+".Name");
+        return LocaleLoader.getString(getPrimaryKeyName() + ".SubSkill." + getConfigKeyName() + ".Name");
     }
 
     /**
@@ -48,7 +48,7 @@ public abstract class AcrobaticsSubSkill extends AbstractSubSkill {
      */
     @Override
     public String getTips() {
-        return LocaleLoader.getString("JSON."+StringUtils.getCapitalized(getPrimarySkill().toString())+".SubSkill."+getConfigKeyName()+".Details.Tips");
+        return LocaleLoader.getString("JSON." + StringUtils.getCapitalized(getPrimarySkill().toString()) + ".SubSkill." + getConfigKeyName() + ".Details.Tips");
     }
 
     /**

@@ -15,14 +15,14 @@ public class SalvageableManager implements Unload {
         this(55);
     }*/
 
-    @Override
-    public void unload() {
-        salvageables.clear();
-    }
-
     public SalvageableManager(List<Salvageable> salvageablesCollection) {
         this.salvageables = new HashMap<>(salvageablesCollection.size());
         registerSalvageables(salvageablesCollection);
+    }
+
+    @Override
+    public void unload() {
+        salvageables.clear();
     }
 
     public void registerSalvageable(Salvageable salvageable) {

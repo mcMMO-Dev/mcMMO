@@ -86,8 +86,7 @@ public class AlchemyBrewTask extends BukkitRunnable {
         if (brewTimer < Math.max(brewSpeed, 2)) {
             this.cancel();
             finish();
-        }
-        else {
+        } else {
             ((BrewingStand) brewingStand).setBrewingTime((int) brewTimer);
         }
     }

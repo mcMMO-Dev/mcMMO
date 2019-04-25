@@ -71,13 +71,25 @@ public class PotionConfig extends ConfigCollection {
         register();
     }
 
+    /**
+     * This grabs an instance of this config class from the Config Manager
+     * This method is deprecated and will be removed in the future
+     *
+     * @return the instance of this config
+     * @see mcMMO#getConfigManager()
+     * @deprecated Please use mcMMO.getConfigManager() to grab a specific config instead
+     */
+    @Deprecated
+    public static PotionConfig getInstance() {
+        return mcMMO.getConfigManager().getPotionConfig();
+    }
+
     @Override
     public void unload() {
         potionMap.clear();
     }
 
-    private void initIngredientLists()
-    {
+    private void initIngredientLists() {
         concoctionsIngredientsTierOne = new ArrayList<>();
         concoctionsIngredientsTierTwo = new ArrayList<>();
         concoctionsIngredientsTierThree = new ArrayList<>();
@@ -86,18 +98,6 @@ public class PotionConfig extends ConfigCollection {
         concoctionsIngredientsTierSix = new ArrayList<>();
         concoctionsIngredientsTierSeven = new ArrayList<>();
         concoctionsIngredientsTierEight = new ArrayList<>();
-    }
-
-    /**
-     * This grabs an instance of this config class from the Config Manager
-     * This method is deprecated and will be removed in the future
-     * @see mcMMO#getConfigManager()
-     * @return the instance of this config
-     * @deprecated Please use mcMMO.getConfigManager() to grab a specific config instead
-     */
-    @Deprecated
-    public static PotionConfig getInstance() {
-        return mcMMO.getConfigManager().getPotionConfig();
     }
 
     /**

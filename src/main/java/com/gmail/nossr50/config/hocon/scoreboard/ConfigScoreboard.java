@@ -57,10 +57,8 @@ public class ConfigScoreboard {
         return configSectionGeneral.isUseAbilityNameInsteadOfGeneric();
     }
 
-    public boolean isScoreboardEnabled(ScoreboardManager.SidebarType sidebarType)
-    {
-        switch(sidebarType)
-        {
+    public boolean isScoreboardEnabled(ScoreboardManager.SidebarType sidebarType) {
+        switch (sidebarType) {
             case TOP_BOARD:
                 return getConfigSectionScoreboardTypes().getConfigSectionTopBoard().isUseThisBoard();
             case RANK_BOARD:
@@ -76,10 +74,8 @@ public class ConfigScoreboard {
         }
     }
 
-    public boolean isScoreboardPrinting(ScoreboardManager.SidebarType sidebarType)
-    {
-        switch(sidebarType)
-        {
+    public boolean isScoreboardPrinting(ScoreboardManager.SidebarType sidebarType) {
+        switch (sidebarType) {
             case TOP_BOARD:
                 return getConfigSectionScoreboardTypes().getConfigSectionTopBoard().isPrintToChat();
             case RANK_BOARD:
@@ -94,10 +90,8 @@ public class ConfigScoreboard {
         }
     }
 
-    public int getScoreboardDisplayTime(ScoreboardManager.SidebarType sidebarType)
-    {
-        switch(sidebarType)
-        {
+    public int getScoreboardDisplayTime(ScoreboardManager.SidebarType sidebarType) {
+        switch (sidebarType) {
             case TOP_BOARD:
                 return getConfigSectionScoreboardTypes().getConfigSectionTopBoard().getDisplayTimeInSeconds();
             case RANK_BOARD:

@@ -18,13 +18,14 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public final class ShareHandler {
-    private ShareHandler() {}
+    private ShareHandler() {
+    }
 
     /**
      * Distribute Xp amongst party members.
      *
-     * @param xp Xp without party sharing
-     * @param mcMMOPlayer Player initiating the Xp gain
+     * @param xp               Xp without party sharing
+     * @param mcMMOPlayer      Player initiating the Xp gain
      * @param primarySkillType Skill being used
      * @return True is the xp has been shared
      */
@@ -45,14 +46,13 @@ public final class ShareHandler {
 
         int partySize = nearMembers.size();
         double shareBonus = Math.min(mcMMO.getPartyXPShareSettings().getPartyShareXPBonusBase()
-                + (partySize * mcMMO.getPartyXPShareSettings().getPartyShareBonusIncrease()),
-                    mcMMO.getPartyXPShareSettings().getPartyShareBonusCap());
+                        + (partySize * mcMMO.getPartyXPShareSettings().getPartyShareBonusIncrease()),
+                mcMMO.getPartyXPShareSettings().getPartyShareBonusCap());
         float splitXp = (float) (xp / partySize * shareBonus);
 
         for (Player member : nearMembers) {
             //Profile not loaded
-            if(UserManager.getPlayer(member) == null)
-            {
+            if (UserManager.getPlayer(member) == null) {
                 continue;
             }
 
@@ -65,7 +65,7 @@ public final class ShareHandler {
     /**
      * Distribute Items amongst party members.
      *
-     * @param drop Item that will get shared
+     * @param drop        Item that will get shared
      * @param mcMMOPlayer Player who picked up the item
      * @return True if the item has been shared
      */
@@ -115,8 +115,7 @@ public final class ShareHandler {
                         McMMOPlayer mcMMOMember = UserManager.getPlayer(member);
 
                         //Profile not loaded
-                        if(UserManager.getPlayer(member) == null)
-                        {
+                        if (UserManager.getPlayer(member) == null) {
                             continue;
                         }
 
@@ -159,7 +158,7 @@ public final class ShareHandler {
     }
 
     public static int getItemWeight(Material material) {
-        if(mcMMO.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(material) == null)
+        if (mcMMO.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(material) == null)
             return 5;
         else
             return mcMMO.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(material);
@@ -168,11 +167,9 @@ public final class ShareHandler {
     public static XPGainReason getSharedXpGainReason(XPGainReason xpGainReason) {
         if (xpGainReason == XPGainReason.PVE) {
             return XPGainReason.SHARED_PVE;
-        }
-        else if (xpGainReason == XPGainReason.PVP) {
+        } else if (xpGainReason == XPGainReason.PVP) {
             return XPGainReason.SHARED_PVP;
-        }
-        else {
+        } else {
             return xpGainReason;
         }
     }

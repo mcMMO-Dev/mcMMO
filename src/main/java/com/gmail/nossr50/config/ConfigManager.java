@@ -65,37 +65,32 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- *
  * The Config Manager handles initializing, loading, and unloading registers for all configs that mcMMO uses
  * This makes sure that mcMMO properly loads and unloads its values on reload
- *
+ * <p>
  * Config Manager also holds all of our MultiConfigContainers
  */
 public final class ConfigManager {
 
     /* UNLOAD REGISTER */
 
+    SkillPropertiesManager skillPropertiesManager;
     private ArrayList<Unload> unloadables;
-    private ArrayList<File> userFiles;
 
     /* COLLECTION MANAGERS */
-
+    private ArrayList<File> userFiles;
     private RepairableManager repairableManager;
     private SalvageableManager salvageableManager;
-    private BonusDropManager bonusDropManager;
 
     /* CUSTOM SERIALIZERS */
-
-    private TypeSerializerCollection customSerializers;
+    private BonusDropManager bonusDropManager;
 
     /* MOD MANAGERS */
 
     //TODO: Add these back when modded servers become a thing again
 
     /* MISC MANAGERS */
-
-    SkillPropertiesManager skillPropertiesManager;
-
+    private TypeSerializerCollection customSerializers;
     private ExperienceMapManager experienceMapManager;
 
     /* CONFIG INSTANCES */
@@ -163,14 +158,12 @@ public final class ConfigManager {
 
     private ArrayList<String> configErrors; //Collect errors to whine about to server admins
 
-    public ConfigManager()
-    {
+    public ConfigManager() {
         unloadables = new ArrayList<>();
         userFiles = new ArrayList<>();
     }
 
-    public void loadConfigs()
-    {
+    public void loadConfigs() {
         //Register Custom Serializers
         registerCustomTypeSerializers();
 
@@ -314,9 +307,12 @@ public final class ConfigManager {
         customSerializers = TypeSerializers.getDefaultSerializers().newChild();
 
         mcMMO.p.getLogger().info("Registering custom type serializers for Configurate...");
-        customSerializers.registerType(new TypeToken<Material>() {}, new CustomEnumValueSerializer());
-        customSerializers.registerType(new TypeToken<PartyFeature>() {}, new CustomEnumValueSerializer());
-        customSerializers.registerType(new TypeToken<FormulaType>() {}, new CustomEnumValueSerializer());
+        customSerializers.registerType(new TypeToken<Material>() {
+        }, new CustomEnumValueSerializer());
+        customSerializers.registerType(new TypeToken<PartyFeature>() {
+        }, new CustomEnumValueSerializer());
+        customSerializers.registerType(new TypeToken<FormulaType>() {
+        }, new CustomEnumValueSerializer());
         customSerializers.registerType(TypeToken.of(Repairable.class), new RepairableSerializer());
         customSerializers.registerType(TypeToken.of(Salvageable.class), new SalvageableSerializer());
         customSerializers.registerType(TypeToken.of(MinecraftMaterialWrapper.class), new MinecraftMaterialWrapperSerializer());
@@ -325,22 +321,21 @@ public final class ConfigManager {
     /**
      * Gets the serializers registered and used by mcMMO
      * This includes all default serializers
+     *
      * @return our custom serializers
      */
     public TypeSerializerCollection getCustomSerializers() {
         return customSerializers;
     }
 
-    private void registerSkillConfig(PrimarySkillType primarySkillType, Class clazz)
-    {
+    private void registerSkillConfig(PrimarySkillType primarySkillType, Class clazz) {
         skillConfigLoaders.put(primarySkillType, SkillConfigFactory.initSkillConfig(primarySkillType, clazz));
     }
 
     /**
      * Misc managers
      */
-    private void initMiscManagers()
-    {
+    private void initMiscManagers() {
         experienceMapManager = new ExperienceMapManager();
     }
 
@@ -361,8 +356,7 @@ public final class ConfigManager {
     /**
      * Initializes any managers related to config collections
      */
-    private void initCollectionManagers()
-    {
+    private void initCollectionManagers() {
         // Handles registration of repairables
         repairableManager = new RepairableManager(getRepairables());
         unloadables.add(repairableManager);
@@ -378,30 +372,28 @@ public final class ConfigManager {
 
     /**
      * Get all loaded repairables (loaded from all repairable configs)
+     *
      * @return the currently loaded repairables
      */
-    public ArrayList<Repairable> getRepairables()
-    {
+    public ArrayList<Repairable> getRepairables() {
         return getConfigRepair().getConfigRepairablesList();
     }
 
     /**
      * Get all loaded salvageables (loaded from all salvageable configs)
+     *
      * @return the currently loaded salvageables
      */
-    public ArrayList<Salvageable> getSalvageables()
-    {
+    public ArrayList<Salvageable> getSalvageables() {
         return getConfigSalvage().getConfigSalvageablesList();
     }
 
     /**
      * Unloads all config options (prepares for reload)
      */
-    public void unloadAllConfigsAndRegisters()
-    {
+    public void unloadAllConfigsAndRegisters() {
         //Unload
-        for(Unload unloadable : unloadables)
-        {
+        for (Unload unloadable : unloadables) {
             unloadable.unload();
         }
 
@@ -414,9 +406,8 @@ public final class ConfigManager {
      * Registers an unloadable
      * Unloadables call unload() on plugin disable to cleanup registries
      */
-    public void registerUnloadable(Unload unload)
-    {
-        if(!unloadables.contains(unload))
+    public void registerUnloadable(Unload unload) {
+        if (!unloadables.contains(unload))
             unloadables.add(unload);
     }
 
@@ -424,24 +415,21 @@ public final class ConfigManager {
      * Registers an unloadable
      * Unloadables call unload() on plugin disable to cleanup registries
      */
-    public void registerUserFile(File userFile)
-    {
-        if(!userFiles.contains(userFile))
+    public void registerUserFile(File userFile) {
+        if (!userFiles.contains(userFile))
             userFiles.add(userFile);
     }
 
     /**
      * Registers bonus drops from several skill configs
      */
-    public void registerBonusDrops()
-    {
+    public void registerBonusDrops() {
         bonusDropManager.addToWhitelistByNameID(getConfigMining().getBonusDrops());
 //        bonusDropManager.addToWhitelistByNameID(configHerbalism.getBonusDrops());
 //        bonusDropManager.addToWhitelistByNameID(configWoodcutting.getBonusDrops());
     }
 
-    public void validateConfigs()
-    {
+    public void validateConfigs() {
 
     }
 
@@ -451,10 +439,10 @@ public final class ConfigManager {
 
     /**
      * Used to back up our zip files real easily
+     *
      * @return
      */
-    public ArrayList<File> getConfigFiles()
-    {
+    public ArrayList<File> getConfigFiles() {
         return userFiles;
     }
 
@@ -510,9 +498,13 @@ public final class ConfigManager {
         return experienceMapManager;
     }
 
-    public ConfigDatabase getConfigDatabase() { return configDatabase.getConfig(); }
+    public ConfigDatabase getConfigDatabase() {
+        return configDatabase.getConfig();
+    }
 
-    public ConfigScoreboard getConfigScoreboard() { return configScoreboard.getConfig(); }
+    public ConfigScoreboard getConfigScoreboard() {
+        return configScoreboard.getConfig();
+    }
 
     public ConfigLeveling getConfigLeveling() {
         return configLeveling.getConfig();
@@ -658,25 +650,22 @@ public final class ConfigManager {
      * Checks if this plugin is using retro mode
      * Retro mode is a 0-1000 skill system
      * Standard mode is scaled for 1-100
+     *
      * @return true if retro mode is enabled
      */
-    public boolean isRetroMode()
-    {
+    public boolean isRetroMode() {
         return getConfigLeveling().getConfigSectionLevelingGeneral().getConfigSectionLevelScaling().isRetroModeEnabled();
     }
 
-    public boolean isBonusDropsEnabled(Material material)
-    {
+    public boolean isBonusDropsEnabled(Material material) {
         return getBonusDropManager().isBonusDropWhitelisted(material);
     }
 
-    public double getSkillMaxBonusLevel(SubSkillType subSkillType)
-    {
+    public double getSkillMaxBonusLevel(SubSkillType subSkillType) {
         return skillPropertiesManager.getMaxBonusLevel(subSkillType);
     }
 
-    public double getSkillMaxChance(SubSkillType subSkillType)
-    {
+    public double getSkillMaxChance(SubSkillType subSkillType) {
         return skillPropertiesManager.getMaxChance(subSkillType);
     }
 

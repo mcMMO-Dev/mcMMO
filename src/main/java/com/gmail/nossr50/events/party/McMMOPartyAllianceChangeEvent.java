@@ -6,6 +6,10 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
 public class McMMOPartyAllianceChangeEvent extends PlayerEvent implements Cancellable {
+    /**
+     * Rest of file is required boilerplate for custom events
+     **/
+    private static final HandlerList handlers = new HandlerList();
     private String oldAlly;
     private String newAlly;
     private EventReason reason;
@@ -22,6 +26,10 @@ public class McMMOPartyAllianceChangeEvent extends PlayerEvent implements Cancel
         this.newAlly = newAlly;
         this.reason = reason;
         this.cancelled = false;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 
     /**
@@ -46,6 +54,24 @@ public class McMMOPartyAllianceChangeEvent extends PlayerEvent implements Cancel
     }
 
     /**
+     * Following are required for Cancellable
+     **/
+    @Override
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    @Override
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
+    }
+
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
+
+    /**
      * A list of reasons why the event may have been fired
      */
     public enum EventReason {
@@ -63,28 +89,5 @@ public class McMMOPartyAllianceChangeEvent extends PlayerEvent implements Cancel
          * Any reason that doesn't fit elsewhere.
          */
         CUSTOM
-    }
-
-    /** Following are required for Cancellable **/
-    @Override
-    public boolean isCancelled() {
-        return cancelled;
-    }
-
-    @Override
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
-    }
-
-    /** Rest of file is required boilerplate for custom events **/
-    private static final HandlerList handlers = new HandlerList();
-
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
     }
 }

@@ -22,37 +22,32 @@ import org.bukkit.entity.Player;
 
 public class AcrobaticsManager extends SkillManager {
 
+    private long rollXPCooldown = 0;
+    private long rollXPInterval;
+    private long rollXPIntervalLengthen = (1000 * 10); //10 Seconds
+    private LimitedSizeList fallLocationMap;
     public AcrobaticsManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.ACROBATICS);
         rollXPInterval = (1000 * mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().getRollXPGainCooldownSeconds());
 
         //Save some memory if exploit prevention is off
-        if(mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
+        if (mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
             fallLocationMap = new LimitedSizeList(mcMMO.getConfigManager().getConfigExploitPrevention().getAcrobaticLocationLimit());
     }
 
-    private long rollXPCooldown = 0;
-    private long rollXPInterval;
-    private long rollXPIntervalLengthen = (1000 * 10); //10 Seconds
-    private LimitedSizeList fallLocationMap;
-
-    public boolean hasFallenInLocationBefore(Location location)
-    {
+    public boolean hasFallenInLocationBefore(Location location) {
         return fallLocationMap.contains(location);
     }
 
-    public void addLocationToFallMap(Location location)
-    {
+    public void addLocationToFallMap(Location location) {
         fallLocationMap.add(location);
     }
 
-    public boolean canGainRollXP()
-    {
-        if(!mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
+    public boolean canGainRollXP() {
+        if (!mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
             return true;
 
-        if(System.currentTimeMillis() >= rollXPCooldown)
-        {
+        if (System.currentTimeMillis() >= rollXPCooldown) {
             rollXPCooldown = System.currentTimeMillis() + rollXPInterval;
             rollXPIntervalLengthen = (1000 * 10); //5 Seconds
             return true;
@@ -64,7 +59,7 @@ public class AcrobaticsManager extends SkillManager {
     }
 
     public boolean canDodge(Entity damager) {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.ACROBATICS_DODGE))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.ACROBATICS_DODGE))
             return false;
 
         if (Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.ACROBATICS_DODGE)) {
@@ -96,7 +91,7 @@ public class AcrobaticsManager extends SkillManager {
             }
 
             //Check respawn to prevent abuse
-            if(!mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
+            if (!mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
                 applyXpGain((float) (damage * Acrobatics.dodgeXpModifier), XPGainReason.PVP);
             else if (SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)
                     && mcMMOPlayer.getTeleportATS() < System.currentTimeMillis()) {

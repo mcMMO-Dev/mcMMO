@@ -17,19 +17,26 @@ import java.util.List;
 import java.util.Set;
 
 public final class Woodcutting {
+    /**
+     * The x/y differences to the blocks in a flat cylinder around the center
+     * block, which is excluded.
+     */
+    private static final int[][] directions = {
+            new int[]{-2, -1}, new int[]{-2, 0}, new int[]{-2, 1},
+            new int[]{-1, -2}, new int[]{-1, -1}, new int[]{-1, 0}, new int[]{-1, 1}, new int[]{-1, 2},
+            new int[]{0, -2}, new int[]{0, -1}, new int[]{0, 1}, new int[]{0, 2},
+            new int[]{1, -2}, new int[]{1, -1}, new int[]{1, 0}, new int[]{1, 1}, new int[]{1, 2},
+            new int[]{2, -1}, new int[]{2, 0}, new int[]{2, 1},
+    };
     protected static boolean treeFellerReachedThreshold = false;
 
-    protected enum ExperienceGainMethod {
-        DEFAULT,
-        TREE_FELLER,
+    private Woodcutting() {
     }
-
-    private Woodcutting() {}
 
     /**
      * Retrieves the experience reward from a log
      *
-     * @param blockState Log being broken
+     * @param blockState           Log being broken
      * @param experienceGainMethod How the log is being broken
      * @return Amount of experience
      */
@@ -51,28 +58,16 @@ public final class Woodcutting {
             Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
         }
         else {*/
-            if (MainConfig.getInstance().getWoodcuttingDoubleDropsEnabled(blockState.getBlockData())) {
-                Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
-            }
+        if (MainConfig.getInstance().getWoodcuttingDoubleDropsEnabled(blockState.getBlockData())) {
+            Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
+        }
         //}
     }
 
     /**
-     * The x/y differences to the blocks in a flat cylinder around the center
-     * block, which is excluded.
-     */
-    private static final int[][] directions = {
-                            new int[] {-2, -1}, new int[] {-2, 0}, new int[] {-2, 1},
-        new int[] {-1, -2}, new int[] {-1, -1}, new int[] {-1, 0}, new int[] {-1, 1}, new int[] {-1, 2},
-        new int[] { 0, -2}, new int[] { 0, -1},                    new int[] { 0, 1}, new int[] { 0, 2},
-        new int[] { 1, -2}, new int[] { 1, -1}, new int[] { 1, 0}, new int[] { 1, 1}, new int[] { 1, 2},
-                            new int[] { 2, -1}, new int[] { 2, 0}, new int[] { 2, 1},
-    };
-
-    /**
      * Processes Tree Feller in a recursive manner
      *
-     * @param blockState Block being checked
+     * @param blockState       Block being checked
      * @param treeFellerBlocks List of blocks to be removed
      */
     /*
@@ -110,8 +105,7 @@ public final class Woodcutting {
                     return;
                 }
             }
-        }
-        else {
+        } else {
             // Cover DOWN
             handleBlock(blockState.getBlock().getRelative(BlockFace.DOWN).getState(), futureCenterBlocks, treeFellerBlocks);
             // Search in a cube
@@ -140,7 +134,7 @@ public final class Woodcutting {
      * Handles the durability loss
      *
      * @param treeFellerBlocks List of blocks to be removed
-     * @param inHand tool being used
+     * @param inHand           tool being used
      * @return True if the tool can sustain the durability loss
      */
     protected static boolean handleDurabilityLoss(Set<BlockState> treeFellerBlocks, ItemStack inHand) {
@@ -162,12 +156,12 @@ public final class Woodcutting {
      * list of blocks used for future recursive calls of
      * 'processTree()'
      *
-     * @param blockState Block to be added
+     * @param blockState         Block to be added
      * @param futureCenterBlocks List of blocks that will be used to call
-     *     'processTree()'
-     * @param treeFellerBlocks List of blocks to be removed
+     *                           'processTree()'
+     * @param treeFellerBlocks   List of blocks to be removed
      * @return true if and only if the given blockState was a Log not already
-     *     in treeFellerBlocks.
+     * in treeFellerBlocks.
      */
     private static boolean handleBlock(BlockState blockState, List<BlockState> futureCenterBlocks, Set<BlockState> treeFellerBlocks) {
         if (treeFellerBlocks.contains(blockState) || mcMMO.getPlaceStore().isTrue(blockState)) {
@@ -183,11 +177,15 @@ public final class Woodcutting {
             treeFellerBlocks.add(blockState);
             futureCenterBlocks.add(blockState);
             return true;
-        }
-        else if (BlockUtils.isLeaves(blockState)) {
+        } else if (BlockUtils.isLeaves(blockState)) {
             treeFellerBlocks.add(blockState);
             return false;
         }
         return false;
+    }
+
+    protected enum ExperienceGainMethod {
+        DEFAULT,
+        TREE_FELLER,
     }
 }

@@ -13,18 +13,15 @@ public interface UnsafeValueValidation {
     /**
      * Prints all errors found when validating the config
      */
-    default void validateEntries()
-    {
+    default void validateEntries() {
         /*
          * Print Errors about Keys
          */
 
         List<String> validKeyErrors = validateKeys(); // Validate Keys
 
-        if(validKeyErrors != null && validKeyErrors.size() > 0)
-        {
-            for(String error : validKeyErrors)
-            {
+        if (validKeyErrors != null && validKeyErrors.size() > 0) {
+            for (String error : validKeyErrors) {
                 mcMMO.p.getLogger().severe(error);
             }
         }

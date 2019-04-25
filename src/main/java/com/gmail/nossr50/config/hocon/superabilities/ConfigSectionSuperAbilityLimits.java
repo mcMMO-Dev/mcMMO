@@ -10,7 +10,7 @@ public class ConfigSectionSuperAbilityLimits {
     private ConfigSectionTreeFeller treeFeller = new ConfigSectionTreeFeller();
 
     @Setting(value = "Tool-Durability-Damage", comment = "Increase this number to cause more durability loss for tools when using super abilities." +
-            "\nDefault value: "+TOOL_DURABILITY_DAMAGE_DEFAULT)
+            "\nDefault value: " + TOOL_DURABILITY_DAMAGE_DEFAULT)
     private int toolDurabilityDamage = TOOL_DURABILITY_DAMAGE_DEFAULT;
 
     public ConfigSectionTreeFeller getTreeFeller() {

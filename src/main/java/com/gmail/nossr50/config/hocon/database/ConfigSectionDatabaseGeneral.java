@@ -12,7 +12,7 @@ public class ConfigSectionDatabaseGeneral {
             "\nSaving the database is an expensive operation although it is done in an ASYNC thread." +
             "\nI wouldn't recommend setting this value lower than 10 minutes" +
             "\nKeep in mind if you properly shut down your server with a stop command mcMMO saves before your server shuts down." +
-            "\nDefault value: "+SAVE_INTERVAL_MINUTES_DEFAULT)
+            "\nDefault value: " + SAVE_INTERVAL_MINUTES_DEFAULT)
     private int saveIntervalMinutes = SAVE_INTERVAL_MINUTES_DEFAULT;
 
     public int getSaveIntervalMinutes() {

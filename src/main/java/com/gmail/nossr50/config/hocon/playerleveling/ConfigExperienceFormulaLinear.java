@@ -9,10 +9,10 @@ public class ConfigExperienceFormulaLinear {
     private static final int BASE_DEFAULT = 1020;
     private static final double MULTIPLIER_DEFAULT = 20.0D;
 
-    @Setting(value = "Base-Amount", comment = "Default value: "+BASE_DEFAULT)
+    @Setting(value = "Base-Amount", comment = "Default value: " + BASE_DEFAULT)
     private int baseModifier = BASE_DEFAULT;
 
-    @Setting(value = "Multiplier", comment = "Default value: "+MULTIPLIER_DEFAULT)
+    @Setting(value = "Multiplier", comment = "Default value: " + MULTIPLIER_DEFAULT)
     private double multiplier = MULTIPLIER_DEFAULT;
 
     public int getLinearBaseModifier() {

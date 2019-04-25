@@ -36,7 +36,7 @@ public class ConfigExperienceRepair {
             "\nThe Item XP multiplier defined in the Repair config (not this config)" +
             "\nThe Base Repair XP defined here (default 1000.0)" +
             "\nAnd finally, the XP multiplier of the item material category defined in this config." +
-            "\nDefault value: "+REPAIR_XP_BASE_DEFAULT)
+            "\nDefault value: " + REPAIR_XP_BASE_DEFAULT)
     private double repairXPBase = REPAIR_XP_BASE_DEFAULT;
 
     public HashMap<String, Double> getItemMaterialXPMultiplier() {

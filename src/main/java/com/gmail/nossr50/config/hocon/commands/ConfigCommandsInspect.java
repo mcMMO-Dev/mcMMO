@@ -13,17 +13,17 @@ public class ConfigCommandsInspect {
 
     @Setting(value = "Inspect-Max-Distance", comment = "The maximum range at which players can inspect one another." +
             "\nIs only used if limit inspect range is turned on." +
-            "\nDefault value: "+INSPECT_MAX_DISTANCE_DEFAULT)
+            "\nDefault value: " + INSPECT_MAX_DISTANCE_DEFAULT)
     private double inspectCommandMaxDistance = INSPECT_MAX_DISTANCE_DEFAULT;
 
     @Setting(value = "Limit-Inspect-Range", comment = "Inspection is limited by the distance between players instead of always being usable." +
             "Permission to bypass this limit - " + BYPASS_PERMISSION
-            +"\nDefault value: "+LIMIT_INSPECT_RANGE_DEFAULT)
+            + "\nDefault value: " + LIMIT_INSPECT_RANGE_DEFAULT)
     private boolean limitInspectRange = LIMIT_INSPECT_RANGE_DEFAULT;
 
     @Setting(value = "Allow-Offline-Inspection", comment = "If set to true players will be able to look at the profiles of anyone on the server whether they are connected or not." +
             "\nAdmins and the console can always check the profiles of offline players." +
-            "\nDefault value: "+ALLOW_OFFLINE_INSPECTION_DEFAULT)
+            "\nDefault value: " + ALLOW_OFFLINE_INSPECTION_DEFAULT)
     private boolean allowInspectOnOfflinePlayers = ALLOW_OFFLINE_INSPECTION_DEFAULT;
 
     public double getInspectCommandMaxDistance() {

@@ -59,11 +59,9 @@ public final class AlchemyPotionBrewer {
         ItemStack ingredient = inventory.getIngredient() == null ? null : inventory.getIngredient().clone();
 
         if (isEmpty(ingredient) || !isValidIngredient(player, ingredient)) {
-        }
-        else if (ingredient.getAmount() <= 1) {
+        } else if (ingredient.getAmount() <= 1) {
             inventory.setIngredient(null);
-        }
-        else {
+        } else {
             ingredient.setAmount(ingredient.getAmount() - 1);
             inventory.setIngredient(ingredient);
         }
@@ -90,8 +88,7 @@ public final class AlchemyPotionBrewer {
     }
 
     private static List<ItemStack> getValidIngredients(Player player) {
-        if(player == null || UserManager.getPlayer(player) == null)
-        {
+        if (player == null || UserManager.getPlayer(player) == null) {
             return PotionConfig.getInstance().getIngredients(1);
         }
 
@@ -161,8 +158,7 @@ public final class AlchemyPotionBrewer {
 
         if (click.isLeftClick()) {
             success = transferItems(view, fromSlot);
-        }
-        else if (click.isRightClick()) {
+        } else if (click.isRightClick()) {
             success = transferOneItem(view, fromSlot);
         }
 
@@ -182,13 +178,11 @@ public final class AlchemyPotionBrewer {
 
         if (!emptyTo && fromAmount >= from.getType().getMaxStackSize()) {
             return false;
-        }
-        else if (emptyTo || from.isSimilar(to)) {
+        } else if (emptyTo || from.isSimilar(to)) {
             if (emptyTo) {
                 to = from.clone();
                 to.setAmount(1);
-            }
-            else {
+            } else {
                 to.setAmount(to.getAmount() + 1);
             }
 
@@ -211,14 +205,12 @@ public final class AlchemyPotionBrewer {
 
         if (isEmpty(from)) {
             return false;
-        }
-        else if (isEmpty(to)) {
+        } else if (isEmpty(to)) {
             view.setItem(Alchemy.INGREDIENT_SLOT, from);
             view.setItem(fromSlot, null);
 
             return true;
-        }
-        else if (from.isSimilar(to)) {
+        } else if (from.isSimilar(to)) {
             int fromAmount = from.getAmount();
             int toAmount = to.getAmount();
             int maxSize = to.getType().getMaxStackSize();

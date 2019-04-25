@@ -44,14 +44,14 @@ public class AxesCommand extends SkillCommand {
         if (canAxeMastery) {
             axeMasteryDamage = Axes.getAxeMasteryBonusDamage(player);
         }
-        
+
         // CRITICAL HIT
         if (canCritical) {
             String[] criticalHitStrings = getAbilityDisplayValues(player, SubSkillType.AXES_CRITICAL_STRIKES);
             critChance = criticalHitStrings[0];
             critChanceLucky = criticalHitStrings[1];
         }
-        
+
         // SKULL SPLITTER
         if (canSkullSplitter) {
             String[] skullSplitterStrings = calculateLengthDisplayValues(player, skillValue);
@@ -76,7 +76,7 @@ public class AxesCommand extends SkillCommand {
         if (canImpact) {
             messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Axes.Ability.Bonus.2"), LocaleLoader.getString("Axes.Ability.Bonus.3", impactDamage)));
         }
-        
+
         if (canAxeMastery) {
             messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Axes.Ability.Bonus.0"), LocaleLoader.getString("Axes.Ability.Bonus.1", axeMasteryDamage)));
         }
@@ -85,7 +85,7 @@ public class AxesCommand extends SkillCommand {
             messages.add(getStatMessage(SubSkillType.AXES_CRITICAL_STRIKES, critChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", critChanceLucky) : ""));
         }
-        
+
         if (canGreaterImpact) {
             messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Axes.Ability.Bonus.4"), LocaleLoader.getString("Axes.Ability.Bonus.5", Axes.greaterImpactBonusDamage)));
         }
@@ -95,7 +95,7 @@ public class AxesCommand extends SkillCommand {
                     + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", skullSplitterLengthEndurance) : ""));
         }
 
-        if(canUseSubskill(player, SubSkillType.AXES_AXES_LIMIT_BREAK)) {
+        if (canUseSubskill(player, SubSkillType.AXES_AXES_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.AXES_AXES_LIMIT_BREAK,
                     String.valueOf(CombatUtils.getLimitBreakDamage(player, SubSkillType.AXES_AXES_LIMIT_BREAK))));
         }

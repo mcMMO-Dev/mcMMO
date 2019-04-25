@@ -49,31 +49,30 @@ public class AcrobaticsCommand extends SkillCommand {
             messages.add(getStatMessage(SubSkillType.ACROBATICS_DODGE, dodgeChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", dodgeChanceLucky) : ""));
         }
-        
+
         if (canRoll) {
 
             AbstractSubSkill abstractSubSkill = InteractionManager.getAbstractByName("Roll");
 
-            if(abstractSubSkill != null)
-            {
+            if (abstractSubSkill != null) {
                 double rollChance, graceChance;
 
                 //Chance to roll at half
-                RandomChanceSkill roll_rcs  = new RandomChanceSkill(player, SubSkillType.ACROBATICS_ROLL);
+                RandomChanceSkill roll_rcs = new RandomChanceSkill(player, SubSkillType.ACROBATICS_ROLL);
 
                 //Chance to graceful roll
                 RandomChanceSkill grace_rcs = new RandomChanceSkill(player, SubSkillType.ACROBATICS_ROLL);
                 grace_rcs.setSkillLevel(grace_rcs.getSkillLevel() * 2); //Double Odds
 
                 //Chance Stat Calculations
-                rollChance       = RandomChanceUtil.getRandomChanceExecutionChance(roll_rcs);
-                graceChance      = RandomChanceUtil.getRandomChanceExecutionChance(grace_rcs);
+                rollChance = RandomChanceUtil.getRandomChanceExecutionChance(roll_rcs);
+                graceChance = RandomChanceUtil.getRandomChanceExecutionChance(grace_rcs);
                 //damageThreshold  = AdvancedConfig.getInstance().getRollDamageThreshold();
 
                 String[] rollStrings = getAbilityDisplayValues(player, SubSkillType.ACROBATICS_ROLL);
 
                 //Format
-                double rollChanceLucky  = rollChance * 1.333D;
+                double rollChanceLucky = rollChance * 1.333D;
                 double graceChanceLucky = graceChance * 1.333D;
 
                 messages.add(getStatMessage(SubSkillType.ACROBATICS_ROLL, rollStrings[0])

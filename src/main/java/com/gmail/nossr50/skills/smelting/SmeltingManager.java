@@ -93,10 +93,8 @@ public class SmeltingManager extends SkillManager {
         return burnTime * getFuelEfficiencyMultiplier();
     }
 
-    public int getFuelEfficiencyMultiplier()
-    {
-        switch(RankUtils.getRank(getPlayer(), SubSkillType.SMELTING_FUEL_EFFICIENCY))
-        {
+    public int getFuelEfficiencyMultiplier() {
+        switch (RankUtils.getRank(getPlayer(), SubSkillType.SMELTING_FUEL_EFFICIENCY)) {
             case 1:
                 return 2;
             case 2:

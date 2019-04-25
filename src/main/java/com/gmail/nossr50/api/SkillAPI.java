@@ -7,7 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public final class SkillAPI {
-    private SkillAPI() {}
+    private SkillAPI() {
+    }
 
     /**
      * Returns a list of strings with mcMMO's skills

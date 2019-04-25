@@ -41,8 +41,7 @@ public class ConvertDatabaseCommand implements CommandExecutor {
                         }
 
                         oldDatabase = DatabaseManagerFactory.createCustomDatabaseManager((Class<? extends DatabaseManager>) clazz);
-                    }
-                    catch (Throwable e) {
+                    } catch (Throwable e) {
                         e.printStackTrace();
                         sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Database.InvalidType", args[1]));
                         return true;

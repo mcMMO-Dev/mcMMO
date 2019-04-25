@@ -65,8 +65,7 @@ public class InspectCommand implements TabExecutor {
                         sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                     }
 
-                }
-                else {
+                } else {
                     Player target = mcMMOPlayer.getPlayer();
 
                     if (CommandUtils.hidden(sender, target, Permissions.inspectHidden(sender))) {
@@ -74,8 +73,7 @@ public class InspectCommand implements TabExecutor {
                             sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
                             return true;
                         }
-                    }
-                    else if (CommandUtils.tooFar(sender, target, Permissions.inspectFar(sender))) {
+                    } else if (CommandUtils.tooFar(sender, target, Permissions.inspectFar(sender))) {
                         return true;
                     }
 

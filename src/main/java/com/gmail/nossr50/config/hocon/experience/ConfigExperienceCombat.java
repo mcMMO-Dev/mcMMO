@@ -9,6 +9,7 @@ import java.util.HashMap;
 public class ConfigExperienceCombat {
 
     private static final HashMap<String, Double> COMBAT_EXPERIENCE_DEFAULT;
+    private static final boolean PVP_XP_ENABLED_DEFAULT = false;
 
     static {
         COMBAT_EXPERIENCE_DEFAULT = new HashMap<>();
@@ -73,14 +74,12 @@ public class ConfigExperienceCombat {
         COMBAT_EXPERIENCE_DEFAULT.put("phantom", 4.0D);
     }
 
-    private static final boolean PVP_XP_ENABLED_DEFAULT = false;
-
     @Setting(value = "Combat-XP-Multipliers")
     private HashMap<String, Double> combatExperienceMap = COMBAT_EXPERIENCE_DEFAULT;
 
     @Setting(value = "PVP-XP", comment = "If true, players will gain XP from PVP interactions." +
             "\nBe careful turning this on as this can potentially allow for unwanted behaviour from players." +
-            "\nDefault value: "+PVP_XP_ENABLED_DEFAULT)
+            "\nDefault value: " + PVP_XP_ENABLED_DEFAULT)
     private boolean pvpXPEnabled = PVP_XP_ENABLED_DEFAULT;
 
     public boolean isPvpXPEnabled() {

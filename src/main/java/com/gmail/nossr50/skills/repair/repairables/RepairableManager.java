@@ -10,14 +10,14 @@ import java.util.List;
 public class RepairableManager implements Unload {
     private HashMap<Material, Repairable> repairables;
 
-    @Override
-    public void unload() {
-        repairables.clear();
-    }
-
     public RepairableManager(List<Repairable> repairablesCollection) {
         this.repairables = new HashMap<>(repairablesCollection.size());
         registerRepairables(repairablesCollection);
+    }
+
+    @Override
+    public void unload() {
+        repairables.clear();
     }
 
     public void registerRepairable(Repairable repairable) {

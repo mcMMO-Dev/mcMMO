@@ -7,8 +7,7 @@ public class MinecraftMaterialWrapper {
     private String fullyQualifiedName;
     private String bukkitMaterialName;
 
-    public MinecraftMaterialWrapper(Material material)
-    {
+    public MinecraftMaterialWrapper(Material material) {
         this.name = material.getKey().getKey();
         this.fullyQualifiedName = material.getKey().toString();
         this.bukkitMaterialName = material.toString();

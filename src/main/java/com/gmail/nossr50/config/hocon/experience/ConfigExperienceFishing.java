@@ -8,8 +8,8 @@ import java.util.HashMap;
 
 @ConfigSerializable
 public class ConfigExperienceFishing {
-    private final static HashMap<String, Integer> FISHING_DEFAULT_XP_MAP;
     public static final int SHAKE_XP_DEFAULT = 50;
+    private final static HashMap<String, Integer> FISHING_DEFAULT_XP_MAP;
 
     static {
         FISHING_DEFAULT_XP_MAP = new HashMap<>();

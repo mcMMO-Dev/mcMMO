@@ -17,22 +17,14 @@ import java.util.Set;
 
 public final class Fishing {
 
-    private HashMap<Material, List<Enchantment>> enchantableCache = new HashMap<>();
-    private HashMap<Material, Integer> fishingXpRewardMap;
-    private Set<Biome> masterAnglerBiomes = BiomeAdapter.WATER_BIOMES;
-    private Set<Biome> iceFishingBiomes   = BiomeAdapter.ICE_BIOMES;
+    public static Fishing instance;
     private final long fishingRodCastCdMilliseconds;
     private final int overfishLimit;
     private final float boundingBoxSize;
-
-    public static Fishing instance;
-
-    public static Fishing getInstance() {
-        if(instance == null)
-            instance = new Fishing();
-
-        return instance;
-    }
+    private HashMap<Material, List<Enchantment>> enchantableCache = new HashMap<>();
+    private HashMap<Material, Integer> fishingXpRewardMap;
+    private Set<Biome> masterAnglerBiomes = BiomeAdapter.WATER_BIOMES;
+    private Set<Biome> iceFishingBiomes = BiomeAdapter.ICE_BIOMES;
 
     public Fishing() {
         overfishLimit = mcMMO.getConfigManager().getConfigExploitPrevention().getOverfishingLimit() + 1;
@@ -41,21 +33,25 @@ public final class Fishing {
         initFishingXPRewardMap();
     }
 
+    public static Fishing getInstance() {
+        if (instance == null)
+            instance = new Fishing();
+
+        return instance;
+    }
+
     /**
      * Inits the Fishing Catch -> XP Reward map
      */
-    private void initFishingXPRewardMap()
-    {
+    private void initFishingXPRewardMap() {
         fishingXpRewardMap = new HashMap<>();
         HashMap<String, Integer> nameRegisterMap = mcMMO.getConfigManager().getConfigExperience().getFishingXPMap();
 
-        for(String qualifiedName : nameRegisterMap.keySet())
-        {
+        for (String qualifiedName : nameRegisterMap.keySet()) {
             Material material = Material.matchMaterial(qualifiedName);
 
-            if(material == null)
-            {
-                mcMMO.p.getLogger().info("Unable to match qualified name to item for fishing xp map: "+qualifiedName);
+            if (material == null) {
+                mcMMO.p.getLogger().info("Unable to match qualified name to item for fishing xp map: " + qualifiedName);
                 continue;
             }
 
@@ -66,8 +62,7 @@ public final class Fishing {
     /**
      * Finds the possible drops of an entity
      *
-     * @param target
-     *            Targeted entity
+     * @param target Targeted entity
      * @return possibleDrops List of ItemStack that can be dropped
      */
     public List<ShakeTreasure> findPossibleDrops(LivingEntity target) {
@@ -80,8 +75,7 @@ public final class Fishing {
     /**
      * Randomly chooses a drop among the list
      *
-     * @param possibleDrops
-     *            List of ItemStack that can be dropped
+     * @param possibleDrops List of ItemStack that can be dropped
      * @return Chosen ItemStack
      */
     public ItemStack chooseDrop(List<ShakeTreasure> possibleDrops) {
@@ -115,8 +109,7 @@ public final class Fishing {
         return iceFishingBiomes;
     }
 
-    public int getFishXPValue(Material material)
-    {
+    public int getFishXPValue(Material material) {
         return fishingXpRewardMap.get(material);
     }
 

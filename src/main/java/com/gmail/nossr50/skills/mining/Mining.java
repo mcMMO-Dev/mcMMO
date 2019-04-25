@@ -13,37 +13,19 @@ import java.util.List;
 
 public class Mining {
 
-    private List<Material> detonators;
     private static Mining instance;
-
-    public static Mining getInstance() {
-        if(instance == null)
-            instance = new Mining();
-
-        return instance;
-    }
+    private List<Material> detonators;
 
     public Mining() {
         //Init detonators
         this.detonators = ItemUtils.matchMaterials(mcMMO.getConfigManager().getConfigMining().getDetonators());
     }
 
-    /**
-     * Retrieve a list of Blast Mining detonator types
-     * @return blast mining detonator materials
-     */
-    public List<Material> getDetonators() {
-        return detonators;
-    }
+    public static Mining getInstance() {
+        if (instance == null)
+            instance = new Mining();
 
-    /**
-     * Check if an itemStack is a valid blast mining detonator
-     * @param itemStack target itemstack
-     * @return true if valid blast mining detonator
-     */
-    public Boolean isDetonator(ItemStack itemStack)
-    {
-        return getDetonators().contains(itemStack.getType());
+        return instance;
     }
 
     /**
@@ -200,5 +182,24 @@ public class Mining {
                     Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
                 }*/
         }
+    }
+
+    /**
+     * Retrieve a list of Blast Mining detonator types
+     *
+     * @return blast mining detonator materials
+     */
+    public List<Material> getDetonators() {
+        return detonators;
+    }
+
+    /**
+     * Check if an itemStack is a valid blast mining detonator
+     *
+     * @param itemStack target itemstack
+     * @return true if valid blast mining detonator
+     */
+    public Boolean isDetonator(ItemStack itemStack) {
+        return getDetonators().contains(itemStack.getType());
     }
 }

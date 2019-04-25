@@ -20,21 +20,18 @@ import java.util.concurrent.DelayQueue;
 
 public class PlayerProfile {
     private final String playerName;
+    /* Skill Data */
+    private final Map<PrimarySkillType, Integer> skills = new HashMap<>();   // Skill & Level
+    private final Map<PrimarySkillType, Float> skillsXp = new HashMap<>();     // Skill & XP
+    private final Map<SuperAbilityType, Integer> abilityDATS = new HashMap<>(); // Ability & Cooldown
+    private final Map<UniqueDataType, Integer> uniquePlayerData = new HashMap<>(); //Misc data that doesn't fit into other categories (chimaera wing, etc..)
     private UUID uuid;
     private boolean loaded;
     private volatile boolean changed;
-
     /* HUDs */
     private MobHealthbarType mobHealthbarType;
     private int scoreboardTipsShown;
     private int saveAttempts = 0;
-
-    /* Skill Data */
-    private final Map<PrimarySkillType, Integer>   skills     = new HashMap<>();   // Skill & Level
-    private final Map<PrimarySkillType, Float>     skillsXp   = new HashMap<>();     // Skill & XP
-    private final Map<SuperAbilityType, Integer> abilityDATS = new HashMap<>(); // Ability & Cooldown
-    private final Map<UniqueDataType, Integer> uniquePlayerData = new HashMap<>(); //Misc data that doesn't fit into other categories (chimaera wing, etc..)
-
     // Store previous XP gains for diminished returns
     private DelayQueue<SkillXpGain> gainedSkillsXp = new DelayQueue<SkillXpGain>();
     private HashMap<PrimarySkillType, Float> rollingSkillsXp = new HashMap<PrimarySkillType, Float>();
@@ -110,20 +107,18 @@ public class PlayerProfile {
         if (changed) {
             mcMMO.p.getLogger().severe("PlayerProfile saving failed for player: " + playerName + " " + uuid);
 
-            if(saveAttempts > 0)
-            {
-                mcMMO.p.getLogger().severe("Attempted to save profile for player "+getPlayerName()
-                        + " resulted in failure. "+saveAttempts+" have been made so far.");
+            if (saveAttempts > 0) {
+                mcMMO.p.getLogger().severe("Attempted to save profile for player " + getPlayerName()
+                        + " resulted in failure. " + saveAttempts + " have been made so far.");
             }
 
-            if(saveAttempts < 10)
-            {
+            if (saveAttempts < 10) {
                 saveAttempts++;
                 scheduleAsyncSaveDelay();
                 return;
             } else {
                 mcMMO.p.getLogger().severe("mcMMO has failed to save the profile for "
-                        +getPlayerName()+" numerous times." +
+                        + getPlayerName() + " numerous times." +
                         " mcMMO will now stop attempting to save this profile." +
                         " Check your console for errors and inspect your DB for issues.");
             }
@@ -183,7 +178,9 @@ public class PlayerProfile {
      * Cooldowns
      */
 
-    public int getChimaerWingDATS() { return uniquePlayerData.get(UniqueDataType.CHIMAERA_WING_DATS);}
+    public int getChimaerWingDATS() {
+        return uniquePlayerData.get(UniqueDataType.CHIMAERA_WING_DATS);
+    }
 
     protected void setChimaeraWingDATS(int DATS) {
         changed = true;
@@ -195,7 +192,9 @@ public class PlayerProfile {
         uniquePlayerData.put(uniqueDataType, newData);
     }
 
-    public long getUniqueData(UniqueDataType uniqueDataType) { return uniquePlayerData.get(uniqueDataType); }
+    public long getUniqueData(UniqueDataType uniqueDataType) {
+        return uniquePlayerData.get(uniqueDataType);
+    }
 
     /**
      * Get the current deactivation timestamp of an ability.
@@ -211,7 +210,7 @@ public class PlayerProfile {
      * Set the current deactivation timestamp of an ability.
      *
      * @param ability The {@link SuperAbilityType} to set the DATS for
-     * @param DATS the DATS of the ability
+     * @param DATS    the DATS of the ability
      */
     protected void setAbilityDATS(SuperAbilityType ability, long DATS) {
         changed = true;
@@ -271,7 +270,7 @@ public class PlayerProfile {
      * Remove Xp from a skill.
      *
      * @param skill Type of skill to modify
-     * @param xp Amount of xp to remove
+     * @param xp    Amount of xp to remove
      */
     public void removeXp(PrimarySkillType skill, int xp) {
         if (skill.isChildSkill()) {
@@ -307,7 +306,7 @@ public class PlayerProfile {
         changed = true;
 
         //Don't allow levels to be negative
-        if(level < 0)
+        if (level < 0)
             level = 0;
 
         skills.put(skill, level);
@@ -317,7 +316,7 @@ public class PlayerProfile {
     /**
      * Add levels to a skill.
      *
-     * @param skill Type of skill to add levels to
+     * @param skill  Type of skill to add levels to
      * @param levels Number of levels to add
      */
     public void addLevels(PrimarySkillType skill, int levels) {
@@ -328,7 +327,7 @@ public class PlayerProfile {
      * Add Experience to a skill.
      *
      * @param skill Type of skill to add experience to
-     * @param xp Number of experience to add
+     * @param xp    Number of experience to add
      */
     public void addXp(PrimarySkillType skill, float xp) {
         changed = true;
@@ -340,8 +339,7 @@ public class PlayerProfile {
             for (PrimarySkillType parentSkill : parentSkills) {
                 skillsXp.put(parentSkill, skillsXp.get(parentSkill) + dividedXP);
             }
-        }
-        else {
+        } else {
             skillsXp.put(skill, skillsXp.get(skill) + xp);
         }
     }
@@ -367,7 +365,7 @@ public class PlayerProfile {
      * This is used for diminished XP returns
      *
      * @param primarySkillType Skill being used
-     * @param xp Experience amount to add
+     * @param xp               Experience amount to add
      */
     public void registerXpGain(PrimarySkillType primarySkillType, float xp) {
         gainedSkillsXp.add(new SkillXpGain(primarySkillType, xp));
@@ -403,7 +401,7 @@ public class PlayerProfile {
         int sum = 0;
 
         for (PrimarySkillType parent : parents) {
-            if(mcMMO.getPlayerLevelingSettings().isLevelCapEnabled(parent))
+            if (mcMMO.getPlayerLevelingSettings().isLevelCapEnabled(parent))
                 sum += Math.min(getSkillLevel(parent), parent.getMaxLevel());
             else
                 sum += getSkillLevel(parent);

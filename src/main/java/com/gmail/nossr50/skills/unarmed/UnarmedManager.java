@@ -36,7 +36,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canUseIronArm() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_IRON_ARM_STYLE))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_IRON_ARM_STYLE))
             return false;
 
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_IRON_ARM_STYLE);
@@ -47,14 +47,14 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canDisarm(LivingEntity target) {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_DISARM))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_DISARM))
             return false;
 
         return target instanceof Player && ((Player) target).getInventory().getItemInMainHand().getType() != Material.AIR && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_DISARM);
     }
 
     public boolean canDeflect() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_ARROW_DEFLECT))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_ARROW_DEFLECT))
             return false;
 
         Player player = getPlayer();
@@ -63,7 +63,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canUseBlockCracker() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_BLOCK_CRACKER))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_BLOCK_CRACKER))
             return false;
 
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_BLOCK_CRACKER);
@@ -101,7 +101,7 @@ public class UnarmedManager extends SkillManager {
                 return;
             }
 
-            if(UserManager.getPlayer(defender) == null)
+            if (UserManager.getPlayer(defender) == null)
                 return;
 
             Item item = Misc.dropItem(defender.getLocation(), defender.getInventory().getItemInMainHand());
@@ -156,8 +156,7 @@ public class UnarmedManager extends SkillManager {
     public double getIronArmDamage() {
         int rank = RankUtils.getRank(getPlayer(), SubSkillType.UNARMED_IRON_ARM_STYLE);
 
-        if(rank == 1)
-        {
+        if (rank == 1) {
             return 4;
         } else {
             return 3 + (rank * 2);

@@ -38,10 +38,8 @@ public final class BlockUtils {
      * @param blockState the blockstate
      * @return true if the player succeeded in the check
      */
-    public static boolean checkDoubleDrops(Player player, BlockState blockState, SubSkillType subSkillType)
-    {
-        if(mcMMO.getConfigManager().isBonusDropsEnabled(blockState.getType()) && Permissions.isSubSkillEnabled(player, subSkillType))
-        {
+    public static boolean checkDoubleDrops(Player player, BlockState blockState, SubSkillType subSkillType) {
+        if (mcMMO.getConfigManager().isBonusDropsEnabled(blockState.getType()) && Permissions.isSubSkillEnabled(player, subSkillType)) {
             return RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkill(player, subSkillType, true));
         }
 
@@ -125,10 +123,8 @@ public final class BlockUtils {
         return isMineable(blockState);
     }
 
-    public static boolean isMineable(BlockState blockState)
-    {
-        switch (blockState.getType())
-        {
+    public static boolean isMineable(BlockState blockState) {
+        switch (blockState.getType()) {
             case COAL_ORE:
             case DIAMOND_ORE:
             case EMERALD_ORE:
@@ -163,7 +159,7 @@ public final class BlockUtils {
      * otherwise
      */
     public static boolean affectedByGigaDrillBreaker(BlockState blockState) {
-        if(mcMMO.getConfigManager().getExperienceMapManager().hasExcavationXp(blockState.getType()))
+        if (mcMMO.getConfigManager().getExperienceMapManager().hasExcavationXp(blockState.getType()))
             return true;
 
         return isDiggable(blockState);
@@ -171,13 +167,12 @@ public final class BlockUtils {
 
     /**
      * Returns true if a shovel is used for digging this block
+     *
      * @param blockState target blockstate
      * @return true if a shovel is typically used for digging this block
      */
-    public static boolean isDiggable(BlockState blockState)
-    {
-        switch(blockState.getType())
-        {
+    public static boolean isDiggable(BlockState blockState) {
+        switch (blockState.getType()) {
             case CLAY:
             case FARMLAND:
             case GRASS_BLOCK:
@@ -205,7 +200,7 @@ public final class BlockUtils {
      * @return true if the block is a log, false otherwise
      */
     public static boolean isLog(BlockState blockState) {
-        if(mcMMO.getConfigManager().getExperienceMapManager().hasWoodcuttingXp(blockState.getType()))
+        if (mcMMO.getConfigManager().getExperienceMapManager().hasWoodcuttingXp(blockState.getType()))
             return true;
 
         return isLoggingRelated(blockState);
@@ -214,13 +209,12 @@ public final class BlockUtils {
 
     /**
      * Determines if this particular block is typically gathered using an Axe
+     *
      * @param blockState target blockstate
      * @return true if the block is gathered via axe
      */
-    public static boolean isLoggingRelated(BlockState blockState)
-    {
-        switch(blockState.getType())
-        {
+    public static boolean isLoggingRelated(BlockState blockState) {
+        switch (blockState.getType()) {
             case ACACIA_LOG:
             case BIRCH_LOG:
             case DARK_OAK_LOG:
@@ -275,7 +269,7 @@ public final class BlockUtils {
 
             default:
                 return false;
-                //return mcMMO.getModManager().isCustomLeaf(blockState);
+            //return mcMMO.getModManager().isCustomLeaf(blockState);
         }
     }
 

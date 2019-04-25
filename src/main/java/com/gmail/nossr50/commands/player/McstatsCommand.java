@@ -26,8 +26,7 @@ public class McstatsCommand implements TabExecutor {
 
         switch (args.length) {
             case 0:
-                if(UserManager.getPlayer((Player) sender) == null)
-                {
+                if (UserManager.getPlayer((Player) sender) == null) {
                     sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                     return true;
                 }
@@ -53,8 +52,7 @@ public class McstatsCommand implements TabExecutor {
 
                 if (mcMMO.getPlayerLevelingSettings().getConfigSectionLevelCaps().getPowerLevel().isLevelCapEnabled()) {
                     player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped", UserManager.getPlayer(player).getPowerLevel(), powerLevelCap));
-                }
-                else {
+                } else {
                     player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", UserManager.getPlayer(player).getPowerLevel()));
                 }
 

@@ -18,8 +18,7 @@ public class PartyChangeOwnerCommand implements CommandExecutor {
         switch (args.length) {
             case 2:
                 //Check if player profile is loaded
-                if(UserManager.getPlayer((Player) sender) == null)
-                {
+                if (UserManager.getPlayer((Player) sender) == null) {
                     sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                     return true;
                 }

@@ -49,7 +49,7 @@ public class SwordsCommand extends SkillCommand {
             bleedChance = bleedStrings[0];
             bleedChanceLucky = bleedStrings[1];
         }
-        
+
         // SERRATED STRIKES
         if (canSerratedStrike) {
             String[] serratedStrikesStrings = calculateLengthDisplayValues(player, skillValue);
@@ -70,8 +70,8 @@ public class SwordsCommand extends SkillCommand {
         List<String> messages = new ArrayList<>();
 
         int ruptureTicks = UserManager.getPlayer(player).getSwordsManager().getRuptureBleedTicks();
-        double ruptureDamagePlayers =  RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? AdvancedConfig.getInstance().getRuptureDamagePlayer() * 1.5D : AdvancedConfig.getInstance().getRuptureDamagePlayer();
-        double ruptureDamageMobs =  RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? AdvancedConfig.getInstance().getRuptureDamageMobs() * 1.5D : AdvancedConfig.getInstance().getRuptureDamageMobs();
+        double ruptureDamagePlayers = RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? AdvancedConfig.getInstance().getRuptureDamagePlayer() * 1.5D : AdvancedConfig.getInstance().getRuptureDamagePlayer();
+        double ruptureDamageMobs = RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? AdvancedConfig.getInstance().getRuptureDamageMobs() * 1.5D : AdvancedConfig.getInstance().getRuptureDamageMobs();
 
         if (canCounter) {
             messages.add(getStatMessage(SubSkillType.SWORDS_COUNTER_ATTACK, counterChance)
@@ -94,13 +94,12 @@ public class SwordsCommand extends SkillCommand {
                     + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", serratedStrikesLengthEndurance) : ""));
         }
 
-        if(canUseSubskill(player, SubSkillType.SWORDS_STAB))
-        {
+        if (canUseSubskill(player, SubSkillType.SWORDS_STAB)) {
             messages.add(getStatMessage(SubSkillType.SWORDS_STAB,
                     String.valueOf(UserManager.getPlayer(player).getSwordsManager().getStabDamage())));
         }
 
-        if(canUseSubskill(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK)) {
+        if (canUseSubskill(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.SWORDS_SWORDS_LIMIT_BREAK,
                     String.valueOf(CombatUtils.getLimitBreakDamage(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK))));
         }

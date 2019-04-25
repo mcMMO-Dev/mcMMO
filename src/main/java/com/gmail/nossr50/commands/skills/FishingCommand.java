@@ -75,7 +75,7 @@ public class FishingCommand extends SkillCommand {
                 }
             }
 
-            if(totalEnchantChance >= 1)
+            if (totalEnchantChance >= 1)
                 magicChance = percent.format(totalEnchantChance / 100.0);
             else
                 magicChance = percent.format(0);
@@ -116,8 +116,7 @@ public class FishingCommand extends SkillCommand {
             biteChance = percent.format((rawBiteChance * 100.0D) * luckyModifier);
         }
 
-        if(canInnerPeace)
-        {
+        if (canInnerPeace) {
             innerPeaceMult = String.valueOf(fishingManager.getInnerPeaceMultiplier());
         }
     }
@@ -136,15 +135,15 @@ public class FishingCommand extends SkillCommand {
     @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
-        
+
         if (canFishermansDiet) {
             messages.add(getStatMessage(false, true, SubSkillType.FISHING_FISHERMANS_DIET, String.valueOf(fishermansDietRank)));
         }
-        
+
         if (canIceFish) {
             messages.add(getStatMessage(SubSkillType.FISHING_ICE_FISHING, SubSkillType.FISHING_ICE_FISHING.getLocaleStatDescription()));
         }
-        
+
         if (canMagicHunt) {
             messages.add(getStatMessage(SubSkillType.FISHING_MAGIC_HUNTER, magicChance));
         }
@@ -153,12 +152,12 @@ public class FishingCommand extends SkillCommand {
             //TODO: Update this with more details
             messages.add(getStatMessage(false, true, SubSkillType.FISHING_MASTER_ANGLER, biteChance));
         }
-        
+
         if (canShake) {
             messages.add(getStatMessage(SubSkillType.FISHING_SHAKE, shakeChance)
-            + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", shakeChanceLucky) : ""));
+                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", shakeChanceLucky) : ""));
         }
-        
+
         if (canTreasureHunt) {
             messages.add(getStatMessage(false, true, SubSkillType.FISHING_TREASURE_HUNTER, String.valueOf(lootTier), String.valueOf(RankUtils.getHighestRank(SubSkillType.FISHING_TREASURE_HUNTER))));
             messages.add(getStatMessage(true, true, SubSkillType.FISHING_TREASURE_HUNTER,
@@ -170,8 +169,7 @@ public class FishingCommand extends SkillCommand {
                     String.valueOf(recordTreasure)));
         }
 
-        if(canInnerPeace)
-        {
+        if (canInnerPeace) {
             messages.add(getStatMessage(SubSkillType.FISHING_INNER_PEACE, innerPeaceMult));
         }
 

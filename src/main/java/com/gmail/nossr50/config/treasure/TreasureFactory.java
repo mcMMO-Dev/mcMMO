@@ -24,6 +24,7 @@ public class TreasureFactory {
 
     /**
      * Make a new ExcavationTreasure
+     *
      * @param material
      * @param dropAmount
      * @param xpReward
@@ -33,29 +34,25 @@ public class TreasureFactory {
      * @param customLore
      * @return
      */
-    public static ExcavationTreasure makeExcavationTreasure(Material material, int dropAmount, int xpReward, double dropChance, int dropLevel, String customName, ConfigurationNode customLore)
-    {
+    public static ExcavationTreasure makeExcavationTreasure(Material material, int dropAmount, int xpReward, double dropChance, int dropLevel, String customName, ConfigurationNode customLore) {
         ItemStack treasure = makeItemStack(material, dropAmount, customName, customLore);
 
         return new ExcavationTreasure(treasure, xpReward, dropChance, dropLevel);
     }
 
-    public static ShakeTreasure makeShakeTreasure(Material material, int dropAmount, int xpReward, double dropChance, int dropLevel, String customName, ConfigurationNode customLore)
-    {
+    public static ShakeTreasure makeShakeTreasure(Material material, int dropAmount, int xpReward, double dropChance, int dropLevel, String customName, ConfigurationNode customLore) {
         ItemStack treasure = makeItemStack(material, dropAmount, customName, customLore);
 
         return new ShakeTreasure(treasure, xpReward, dropChance, dropLevel);
     }
 
-    public static FishingTreasure makeFishingTreasure(Material material, int dropAmount, int xpReward, String customName, ConfigurationNode customLore)
-    {
+    public static FishingTreasure makeFishingTreasure(Material material, int dropAmount, int xpReward, String customName, ConfigurationNode customLore) {
         ItemStack treasure = makeItemStack(material, dropAmount, customName, customLore);
 
         return new FishingTreasure(treasure, xpReward);
     }
 
-    public static HylianTreasure makeHylianTreasure(Material material, int dropAmount, int xpReward, double dropChance, int dropLevel, String customName, ConfigurationNode customLore)
-    {
+    public static HylianTreasure makeHylianTreasure(Material material, int dropAmount, int xpReward, double dropChance, int dropLevel, String customName, ConfigurationNode customLore) {
         ItemStack treasure = makeItemStack(material, dropAmount, customName, customLore);
 
         return new HylianTreasure(treasure, xpReward, dropChance, dropLevel);
@@ -70,16 +67,14 @@ public class TreasureFactory {
             treasure = makePotionItemStack(material, dropAmount, customName, customLore);*/
 
         /* ADD CUSTOM NAME */
-        if(customName != null)
-        {
+        if (customName != null) {
             ItemMeta itemMeta = treasure.getItemMeta();
             itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', customName));
             treasure.setItemMeta(itemMeta);
         }
 
         /* ADD CUSTOM LORE */
-        if(customLore != null && !customLore.getString().equalsIgnoreCase(CHANGE_ME))
-        {
+        if (customLore != null && !customLore.getString().equalsIgnoreCase(CHANGE_ME)) {
             ItemMeta itemMeta = treasure.getItemMeta();
             List<String> lore = new ArrayList<>();
 
@@ -97,16 +92,13 @@ public class TreasureFactory {
         }
 
 
-
         //TODO: Do this later
 
         return treasure;
     }
 
-    private static boolean isPotion(Material material)
-    {
-        switch(material)
-        {
+    private static boolean isPotion(Material material) {
+        switch (material) {
             case POTION:
             case SPLASH_POTION:
             case LINGERING_POTION:

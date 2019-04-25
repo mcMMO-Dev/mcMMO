@@ -23,12 +23,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class Party {
-    private final LinkedHashMap<UUID, String> members = new LinkedHashMap<>();
-    private final List<Player> onlineMembers = new ArrayList<>();
-
     private static final String ONLINE_PLAYER_PREFIX = "⬤";
     private static final String OFFLINE_PLAYER_PREFIX = "○";
-
+    private final LinkedHashMap<UUID, String> members = new LinkedHashMap<>();
+    private final List<Player> onlineMembers = new ArrayList<>();
     private PartyLeader leader;
     private String name;
     private String password;
@@ -37,14 +35,14 @@ public class Party {
     private int level;
     private float xp;
 
-    private ShareMode xpShareMode   = ShareMode.NONE;
+    private ShareMode xpShareMode = ShareMode.NONE;
     private ShareMode itemShareMode = ShareMode.NONE;
 
-    private boolean shareLootDrops        = true;
-    private boolean shareMiningDrops      = true;
-    private boolean shareHerbalismDrops   = true;
+    private boolean shareLootDrops = true;
+    private boolean shareMiningDrops = true;
+    private boolean shareHerbalismDrops = true;
     private boolean shareWoodcuttingDrops = true;
-    private boolean shareMiscDrops        = true;
+    private boolean shareMiscDrops = true;
 
     public Party(String name) {
         this.name = name;
@@ -81,13 +79,11 @@ public class Party {
         return onlineMembers;
     }
 
-    public List<Player> getVisibleMembers(Player player)
-    {
+    public List<Player> getVisibleMembers(Player player) {
         ArrayList<Player> visibleMembers = new ArrayList<>();
 
-        for(Player p : onlineMembers)
-        {
-            if(player.canSee(p))
+        for (Player p : onlineMembers) {
+            if (player.canSee(p))
                 visibleMembers.add(p);
         }
 
@@ -119,20 +115,40 @@ public class Party {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public PartyLeader getLeader() {
         return leader;
+    }
+
+    public void setLeader(PartyLeader leader) {
+        this.leader = leader;
     }
 
     public String getPassword() {
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public boolean isLocked() {
         return locked;
     }
 
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
     public Party getAlly() {
         return ally;
+    }
+
+    public void setAlly(Party ally) {
+        this.ally = ally;
     }
 
     public List<String> getItemShareCategories() {
@@ -145,26 +161,6 @@ public class Party {
         }
 
         return shareCategories;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setLeader(PartyLeader leader) {
-        this.leader = leader;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setLocked(boolean locked) {
-        this.locked = locked;
-    }
-
-    public void setAlly(Party ally) {
-        this.ally = ally;
     }
 
     public int getLevel() {
@@ -252,20 +248,20 @@ public class Party {
         PartyManager.informPartyMembersLevelUp(this, levelsGained, getLevel());
     }
 
-    public void setXpShareMode(ShareMode xpShareMode) {
-        this.xpShareMode = xpShareMode;
-    }
-
     public ShareMode getXpShareMode() {
         return xpShareMode;
     }
 
-    public void setItemShareMode(ShareMode itemShareMode) {
-        this.itemShareMode = itemShareMode;
+    public void setXpShareMode(ShareMode xpShareMode) {
+        this.xpShareMode = xpShareMode;
     }
 
     public ShareMode getItemShareMode() {
         return itemShareMode;
+    }
+
+    public void setItemShareMode(ShareMode itemShareMode) {
+        this.itemShareMode = itemShareMode;
     }
 
     public boolean sharingDrops(ItemShareType shareType) {
@@ -328,6 +324,7 @@ public class Party {
      * Makes a formatted list of party members based on the perspective of a target player
      * Players that are hidden will be shown as offline (formatted in the same way)
      * Party leader will be formatted a specific way as well
+     *
      * @param player target player to use as POV
      * @return formatted list of party members from the POV of a player
      */
@@ -346,23 +343,21 @@ public class Party {
         boolean isPartyLeaderOfflineOrHidden = false;
         ArrayList<UUID> offlineOrHiddenPartyList = new ArrayList<>();
 
-        for(UUID onlineMember : onlineMembers)
-        {
+        for (UUID onlineMember : onlineMembers) {
             Player onlinePlayer = Bukkit.getPlayer(onlineMember);
 
-            if(!isNotSamePerson(player.getUniqueId(), onlineMember) || player.canSee(onlinePlayer))
-            {
+            if (!isNotSamePerson(player.getUniqueId(), onlineMember) || player.canSee(onlinePlayer)) {
                 visiblePartyList.add(onlineMember);
             } else {
                 //Party leader and cannot be seen by this player
-                if(isNotSamePerson(leader.getUniqueId(), player.getUniqueId()) && onlineMember == leader.getUniqueId())
+                if (isNotSamePerson(leader.getUniqueId(), player.getUniqueId()) && onlineMember == leader.getUniqueId())
                     isPartyLeaderOfflineOrHidden = true;
 
                 offlineOrHiddenPartyList.add(onlineMember);
             }
         }
 
-        if(offlineMembers.contains(leader.getUniqueId()))
+        if (offlineMembers.contains(leader.getUniqueId()))
             isPartyLeaderOfflineOrHidden = true;
 
         //Add all the actually offline members
@@ -386,23 +381,21 @@ public class Party {
 
         boolean useDisplayNames = mcMMO.getConfigManager().getConfigParty().isPartyDisplayNamesEnabled();
 
-        if(isPartyLeaderOfflineOrHidden)
-        {
-            if(isNotSamePerson(player.getUniqueId(), leader.getUniqueId()))
+        if (isPartyLeaderOfflineOrHidden) {
+            if (isNotSamePerson(player.getUniqueId(), leader.getUniqueId()))
                 applyOnlineAndRangeFormatting(memberList, false, false);
 
             memberList.append(ChatColor.GRAY)
-                      .append(leader.getPlayerName());
-        }
-        else {
-            if(isNotSamePerson(leader.getUniqueId(), player.getUniqueId()))
+                    .append(leader.getPlayerName());
+        } else {
+            if (isNotSamePerson(leader.getUniqueId(), player.getUniqueId()))
                 applyOnlineAndRangeFormatting(memberList, true, nearbyPlayerList.contains(Bukkit.getPlayer(leader.getUniqueId())));
 
-            if(useDisplayNames) {
+            if (useDisplayNames) {
                 memberList.append(leader.getPlayerName());
             } else {
                 memberList.append(ChatColor.GOLD)
-                          .append(Bukkit.getOfflinePlayer(leader.getUniqueId()));
+                        .append(Bukkit.getOfflinePlayer(leader.getUniqueId()));
             }
         }
 
@@ -410,20 +403,16 @@ public class Party {
         memberList.append(" ");
 
         //Now do online members
-        for(UUID onlinePlayerUUID : visiblePartyList)
-        {
-            if(onlinePlayerUUID == leader.getUniqueId())
+        for (UUID onlinePlayerUUID : visiblePartyList) {
+            if (onlinePlayerUUID == leader.getUniqueId())
                 continue;
 
-            if(isNotSamePerson(onlinePlayerUUID, player.getUniqueId()))
+            if (isNotSamePerson(onlinePlayerUUID, player.getUniqueId()))
                 applyOnlineAndRangeFormatting(memberList, true, nearbyPlayerList.contains(Bukkit.getPlayer(onlinePlayerUUID)));
 
-            if(useDisplayNames)
-            {
+            if (useDisplayNames) {
                 memberList.append(Bukkit.getPlayer(onlinePlayerUUID).getDisplayName());
-            }
-            else
-            {
+            } else {
                 //Color allies green, players dark aqua
                 memberList.append(ChatColor.GREEN)
                         .append(Bukkit.getPlayer(onlinePlayerUUID).getName());
@@ -432,16 +421,15 @@ public class Party {
             memberList.append(" ").append(ChatColor.RESET);
         }
 
-        for(UUID offlineOrHiddenPlayer : offlineOrHiddenPartyList)
-        {
-            if(offlineOrHiddenPlayer == leader.getUniqueId())
+        for (UUID offlineOrHiddenPlayer : offlineOrHiddenPartyList) {
+            if (offlineOrHiddenPlayer == leader.getUniqueId())
                 continue;
 
             applyOnlineAndRangeFormatting(memberList, false, false);
 
             memberList.append(ChatColor.GRAY)
-                      .append(Bukkit.getOfflinePlayer(offlineOrHiddenPlayer).getName())
-                      .append(" ").append(ChatColor.RESET);
+                    .append(Bukkit.getOfflinePlayer(offlineOrHiddenPlayer).getName())
+                    .append(" ").append(ChatColor.RESET);
         }
 
 
@@ -476,12 +464,9 @@ public class Party {
         return onlinePlayerUUID != uniqueId;
     }
 
-    private void applyOnlineAndRangeFormatting(StringBuilder stringBuilder, boolean isVisibleOrOnline, boolean isNear)
-    {
-        if(isVisibleOrOnline)
-        {
-            if(isNear)
-            {
+    private void applyOnlineAndRangeFormatting(StringBuilder stringBuilder, boolean isVisibleOrOnline, boolean isNear) {
+        if (isVisibleOrOnline) {
+            if (isNear) {
                 stringBuilder.append(ChatColor.GREEN);
             } else {
                 stringBuilder.append(ChatColor.GRAY);

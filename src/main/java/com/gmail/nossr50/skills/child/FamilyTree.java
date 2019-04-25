@@ -25,7 +25,7 @@ public class FamilyTree {
     }
 
     public static Set<PrimarySkillType> getParents(PrimarySkillType childSkill) {
-        if(childSkill == PrimarySkillType.SALVAGE)
+        if (childSkill == PrimarySkillType.SALVAGE)
             return salvageTree;
         else
             return smeltingTree;

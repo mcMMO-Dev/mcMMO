@@ -25,8 +25,7 @@ public class PartyAllianceInviteCommand implements CommandExecutor {
 
                 Player target = mcMMOTarget.getPlayer();
 
-                if(UserManager.getPlayer((Player) sender) == null)
-                {
+                if (UserManager.getPlayer((Player) sender) == null) {
                     sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                     return true;
                 }

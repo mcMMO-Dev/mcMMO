@@ -18,20 +18,18 @@ import java.util.List;
  */
 public class ExperienceBarWrapper {
 
-    private final PrimarySkillType primarySkillType; //Primary Skill
-    private BossBar bossBar;
-    private final Server server;
     protected final McMMOPlayer mcMMOPlayer;
-    private int lastLevelUpdated;
-
+    private final PrimarySkillType primarySkillType; //Primary Skill
+    private final Server server;
     /*
      * This is stored to help optimize updating the title
      */
     protected String niceSkillName;
     protected String title;
+    private BossBar bossBar;
+    private int lastLevelUpdated;
 
-    public ExperienceBarWrapper(PrimarySkillType primarySkillType, McMMOPlayer mcMMOPlayer)
-    {
+    public ExperienceBarWrapper(PrimarySkillType primarySkillType, McMMOPlayer mcMMOPlayer) {
         this.mcMMOPlayer = mcMMOPlayer;
         this.server = mcMMOPlayer.getPlayer().getServer(); //Might not be good for bungee to do this
         this.primarySkillType = primarySkillType;
@@ -45,8 +43,7 @@ public class ExperienceBarWrapper {
         initBar();
     }
 
-    private void initBar()
-    {
+    private void initBar() {
         title = getTitleTemplate();
         createBossBar();
     }
@@ -58,19 +55,31 @@ public class ExperienceBarWrapper {
 
     private String getTitleTemplate() {
         //If they are using extra details
-        if(ExperienceConfig.getInstance().getAddExtraDetails())
-            return LocaleLoader.getString("XPBar.Complex.Template", LocaleLoader.getString("XPBar."+niceSkillName, getLevel()), getCurrentXP(), getMaxXP(), getPowerLevel(), getPercentageOfLevel());
+        if (ExperienceConfig.getInstance().getAddExtraDetails())
+            return LocaleLoader.getString("XPBar.Complex.Template", LocaleLoader.getString("XPBar." + niceSkillName, getLevel()), getCurrentXP(), getMaxXP(), getPowerLevel(), getPercentageOfLevel());
 
-        return LocaleLoader.getString("XPBar."+niceSkillName, getLevel(), getCurrentXP(), getMaxXP(), getPowerLevel(), getPercentageOfLevel());
+        return LocaleLoader.getString("XPBar." + niceSkillName, getLevel(), getCurrentXP(), getMaxXP(), getPowerLevel(), getPercentageOfLevel());
     }
 
     private int getLevel() {
         return mcMMOPlayer.getSkillLevel(primarySkillType);
     }
-    private int getCurrentXP() { return mcMMOPlayer.getSkillXpLevel(primarySkillType); }
-    private int getMaxXP() { return mcMMOPlayer.getXpToLevel(primarySkillType); }
-    private int getPowerLevel() { return mcMMOPlayer.getPowerLevel(); }
-    private int getPercentageOfLevel() { return (int) (mcMMOPlayer.getProgressInCurrentSkillLevel(primarySkillType) * 100); }
+
+    private int getCurrentXP() {
+        return mcMMOPlayer.getSkillXpLevel(primarySkillType);
+    }
+
+    private int getMaxXP() {
+        return mcMMOPlayer.getXpToLevel(primarySkillType);
+    }
+
+    private int getPowerLevel() {
+        return mcMMOPlayer.getPowerLevel();
+    }
+
+    private int getPercentageOfLevel() {
+        return (int) (mcMMOPlayer.getProgressInCurrentSkillLevel(primarySkillType) * 100);
+    }
 
     public String getTitle() {
         return bossBar.getTitle();
@@ -96,26 +105,25 @@ public class ExperienceBarWrapper {
         bossBar.setStyle(barStyle);
     }
 
+    public double getProgress() {
+        return bossBar.getProgress();
+    }
+
     public void setProgress(double v) {
         //Clamp Values
-        if(v < 0)
+        if (v < 0)
             bossBar.setProgress(0.0D);
 
-        else if(v > 1)
+        else if (v > 1)
             bossBar.setProgress(1.0D);
         else
             bossBar.setProgress(v);
 
         //Every time progress updates we need to check for a title update
-        if(getLevel() != lastLevelUpdated || ExperienceConfig.getInstance().getDoExperienceBarsAlwaysUpdateTitle())
-        {
+        if (getLevel() != lastLevelUpdated || ExperienceConfig.getInstance().getDoExperienceBarsAlwaysUpdateTitle()) {
             updateTitle();
             lastLevelUpdated = getLevel();
         }
-    }
-
-    public double getProgress() {
-        return bossBar.getProgress();
     }
 
     public List<Player> getPlayers() {
@@ -126,13 +134,11 @@ public class ExperienceBarWrapper {
         return bossBar.isVisible();
     }
 
-    public void hideExperienceBar()
-    {
+    public void hideExperienceBar() {
         bossBar.setVisible(false);
     }
 
-    public void showExperienceBar()
-    {
+    public void showExperienceBar() {
         bossBar.setVisible(true);
     }
 
@@ -141,8 +147,7 @@ public class ExperienceBarWrapper {
         return bossBar
     }*/
 
-    private void createBossBar()
-    {
+    private void createBossBar() {
         bossBar = mcMMOPlayer.getPlayer().getServer().createBossBar(title, ExperienceConfig.getInstance().getExperienceBarColor(primarySkillType), ExperienceConfig.getInstance().getExperienceBarStyle(primarySkillType));
         bossBar.addPlayer(mcMMOPlayer.getPlayer());
     }

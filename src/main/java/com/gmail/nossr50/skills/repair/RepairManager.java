@@ -34,7 +34,7 @@ import java.util.Map.Entry;
 
 public class RepairManager extends SkillManager {
     private boolean placedAnvil;
-    private int     lastClick;
+    private int lastClick;
 
     public RepairManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.REPAIR);
@@ -60,7 +60,6 @@ public class RepairManager extends SkillManager {
 
         togglePlacedAnvil();
     }
-
 
 
     public void handleRepair(ItemStack item) {
@@ -97,14 +96,10 @@ public class RepairManager extends SkillManager {
         boolean foundNonBasicMaterial = false;
 
         //Find the first compatible repair material
-        for(Material repairMaterialCandidate : repairable.getRepairMaterials())
-        {
-            for(ItemStack is : player.getInventory().getContents())
-            {
-                if(is.getType() == repairMaterialCandidate)
-                {
-                    if(is.getItemMeta().getLore().isEmpty())
-                    {
+        for (Material repairMaterialCandidate : repairable.getRepairMaterials()) {
+            for (ItemStack is : player.getInventory().getContents()) {
+                if (is.getType() == repairMaterialCandidate) {
+                    if (is.getItemMeta().getLore().isEmpty()) {
                         repairMaterial = repairMaterialCandidate;
                         break;
                     } else {
@@ -115,8 +110,7 @@ public class RepairManager extends SkillManager {
         }
 
         /* Abort the repair if no compatible basic repairing item found */
-        if(repairMaterial == null && foundNonBasicMaterial == true)
-        {
+        if (repairMaterial == null && foundNonBasicMaterial == true) {
             player.sendMessage(LocaleLoader.getString("Repair.NoBasicRepairMatsFound"));
             return;
         }
@@ -286,7 +280,7 @@ public class RepairManager extends SkillManager {
     /**
      * Computes repair bonuses.
      *
-     * @param durability The durability of the item being repaired
+     * @param durability   The durability of the item being repaired
      * @param repairAmount The base amount of durability repaired to the item
      * @return The final amount of durability repaired to the item
      */
@@ -320,7 +314,7 @@ public class RepairManager extends SkillManager {
      * @return true if bonus granted, false otherwise
      */
     private boolean checkPlayerProcRepair() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.REPAIR_SUPER_REPAIR))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.REPAIR_SUPER_REPAIR))
             return false;
 
         if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.REPAIR_SUPER_REPAIR, getPlayer())) {
@@ -372,8 +366,7 @@ public class RepairManager extends SkillManager {
                     item.addUnsafeEnchantment(enchantment, enchantLevel - 1);
                     downgraded = true;
                 }
-            }
-            else {
+            } else {
                 item.removeEnchantment(enchantment);
             }
         }
@@ -382,11 +375,9 @@ public class RepairManager extends SkillManager {
 
         if (newEnchants.isEmpty()) {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Arcane.Fail");
-        }
-        else if (downgraded || newEnchants.size() < enchants.size()) {
+        } else if (downgraded || newEnchants.size() < enchants.size()) {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Arcane.Downgrade");
-        }
-        else {
+        } else {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Repair.Arcane.Perfect");
         }
     }

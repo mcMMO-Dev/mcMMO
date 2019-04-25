@@ -12,7 +12,7 @@ public class ConfigSectionPartyGeneral {
     private ConfigSectionPartyLimit configSectionPartyLimit = new ConfigSectionPartyLimit();
 
     @Setting(value = "Enable-Party-System", comment = "Turn this off to completely disable the mcMMO party system." +
-            "\nDefault value: "+PARTY_SYSTEM_DEFAULT)
+            "\nDefault value: " + PARTY_SYSTEM_DEFAULT)
     private boolean enablePartySystem = PARTY_SYSTEM_DEFAULT;
 
     public int getPartySizeLimit() {

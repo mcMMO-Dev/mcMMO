@@ -95,10 +95,8 @@ public class ConfigLeveling {
      * HELPER METHODS
      */
 
-    public int getLevelCap(PrimarySkillType primarySkillType)
-    {
-        switch(primarySkillType)
-        {
+    public int getLevelCap(PrimarySkillType primarySkillType) {
+        switch (primarySkillType) {
             case ACROBATICS:
                 return configSectionLevelCaps.getConfigSectionSkills().getAcrobatics().getLevelCap();
             case ALCHEMY:
@@ -134,10 +132,8 @@ public class ConfigLeveling {
         }
     }
 
-    public boolean isLevelCapEnabled(PrimarySkillType primarySkillType)
-    {
-        switch(primarySkillType)
-        {
+    public boolean isLevelCapEnabled(PrimarySkillType primarySkillType) {
+        switch (primarySkillType) {
             case ACROBATICS:
                 return configSectionLevelCaps.getConfigSectionSkills().getAcrobatics().isLevelCapEnabled();
             case ALCHEMY:

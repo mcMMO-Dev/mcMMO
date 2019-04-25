@@ -17,7 +17,7 @@ public class ConfigSectionMySQL {
     @Setting(value = "Use-MySQL", comment = "If set to true, mcMMO will use MySQL/MariaDB instead of FlatFile storage" +
             "\nIt is highly recommended to use a MySQL/MariaDB server over FlatFile," +
             " especially if the number of players on your Minecraft server is fairly high." +
-            "\nDefault value: "+USE_MYSQL_DEFAULT)
+            "\nDefault value: " + USE_MYSQL_DEFAULT)
     private boolean useMySQL = USE_MYSQL_DEFAULT;
 
     @Setting(value = "User", comment = "Your MySQL User Settings")
@@ -53,10 +53,8 @@ public class ConfigSectionMySQL {
      * HELPER METHODS
      */
 
-    public int getMaxPoolSize(PoolIdentifier poolIdentifier)
-    {
-        switch (poolIdentifier)
-        {
+    public int getMaxPoolSize(PoolIdentifier poolIdentifier) {
+        switch (poolIdentifier) {
             case LOAD:
                 return userConfigSectionServer.getConfigSectionMaxPoolSize().getLoad();
             case SAVE:
@@ -68,10 +66,8 @@ public class ConfigSectionMySQL {
         }
     }
 
-    public int getMaxConnections(PoolIdentifier poolIdentifier)
-    {
-        switch (poolIdentifier)
-        {
+    public int getMaxConnections(PoolIdentifier poolIdentifier) {
+        switch (poolIdentifier) {
             case LOAD:
                 return userConfigSectionServer.getConfigSectionMaxConnections().getLoad();
             case SAVE:

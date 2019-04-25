@@ -6,11 +6,10 @@ import com.gmail.nossr50.util.StringUtils;
 
 public class SkillConfigFactory {
 
-    protected static SerializedConfigLoader initSkillConfig(PrimarySkillType primarySkillType, Class<?> clazz)
-    {
+    protected static SerializedConfigLoader initSkillConfig(PrimarySkillType primarySkillType, Class<?> clazz) {
         return new SerializedConfigLoader(clazz,
-                        primarySkillType.toString().toLowerCase() + ".conf",
-                        StringUtils.getCapitalized(primarySkillType.toString()),
-                        null);
+                primarySkillType.toString().toLowerCase() + ".conf",
+                StringUtils.getCapitalized(primarySkillType.toString()),
+                null);
     }
 }

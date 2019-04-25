@@ -61,8 +61,7 @@ public class SalvageableSerializer implements TypeSerializer<Salvageable> {
         value.getNode(OVERRIDE_LEVEL_REQUIREMENT).setValue(obj.getMinimumLevel());
     }
 
-    private Enum getEnum(String enumConstant, TypeToken<?> type) throws ObjectMappingException
-    {
+    private Enum getEnum(String enumConstant, TypeToken<?> type) throws ObjectMappingException {
         //noinspection RedundantCast
         Optional<Enum> ret = (Optional) EnumLookup.lookupEnum(type.getRawType().asSubclass(Enum.class),
                 enumConstant); // XXX: intellij says this cast is optional but it isnt

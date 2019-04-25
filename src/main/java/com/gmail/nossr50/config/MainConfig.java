@@ -208,8 +208,9 @@ public class MainConfig extends ConfigValidated {
     /**
      * This grabs an instance of this config class from the Config Manager
      * This method is deprecated and will be removed in the future
-     * @see mcMMO#getConfigManager()
+     *
      * @return the instance of this config
+     * @see mcMMO#getConfigManager()
      * @deprecated Please use mcMMO.getConfigManager() to grab a specific config instead
      */
     @Deprecated

@@ -34,8 +34,7 @@ public class PartyJoinCommand implements CommandExecutor {
 
                 Player player = (Player) sender;
 
-                if(UserManager.getPlayer((Player) sender) == null)
-                {
+                if (UserManager.getPlayer((Player) sender) == null) {
                     sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                     return true;
                 }
@@ -62,9 +61,8 @@ public class PartyJoinCommand implements CommandExecutor {
                     return true;
                 }
 
-                if(mcMMO.getConfigManager().getConfigParty().getPartyGeneral().isPartySizeCapped())
-                    if(PartyManager.isPartyFull(player, targetParty))
-                    {
+                if (mcMMO.getConfigManager().getConfigParty().getPartyGeneral().isPartySizeCapped())
+                    if (PartyManager.isPartyFull(player, targetParty)) {
                         player.sendMessage(LocaleLoader.getString("Commands.Party.PartyFull", targetParty.toString()));
                         return true;
                     }

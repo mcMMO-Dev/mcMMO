@@ -16,8 +16,7 @@ import org.bukkit.entity.Player;
 public class PartyXpShareCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(UserManager.getPlayer((Player) sender) == null)
-        {
+        if (UserManager.getPlayer((Player) sender) == null) {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
@@ -33,11 +32,9 @@ public class PartyXpShareCommand implements CommandExecutor {
             case 2:
                 if (args[1].equalsIgnoreCase("none") || CommandUtils.shouldDisableToggle(args[1])) {
                     handleChangingShareMode(party, ShareMode.NONE);
-                }
-                else if (args[1].equalsIgnoreCase("equal") || args[1].equalsIgnoreCase("even") || CommandUtils.shouldEnableToggle(args[1])) {
+                } else if (args[1].equalsIgnoreCase("equal") || args[1].equalsIgnoreCase("even") || CommandUtils.shouldEnableToggle(args[1])) {
                     handleChangingShareMode(party, ShareMode.EQUAL);
-                }
-                else {
+                } else {
                     sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "xpshare", "<NONE | EQUAL>"));
                 }
 

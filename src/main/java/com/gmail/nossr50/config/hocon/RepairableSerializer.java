@@ -46,7 +46,8 @@ public class RepairableSerializer implements TypeSerializer<Repairable> {
         /* Repairable(Material itemMaterial, Material repairMaterial, int minimumQuantity, int minimumLevel, double xpMultiplier) */
 
         String item = value.getNode(ITEM).getValue(TypeToken.of(String.class));
-        List<String> repairItems = value.getNode(ITEMS_USED_TO_REPAIR).getValue(new TypeToken<List<String>>() {});
+        List<String> repairItems = value.getNode(ITEMS_USED_TO_REPAIR).getValue(new TypeToken<List<String>>() {
+        });
 
 
         /*String itemConstant = HOCONUtil.deserializeENUMName(value.getNode("Item").getString());
@@ -74,8 +75,7 @@ public class RepairableSerializer implements TypeSerializer<Repairable> {
         value.getNode(XP_MULTIPLIER).setValue(obj.getXpMultiplier());
     }
 
-    private Enum getEnum(String enumConstant, TypeToken<?> type) throws ObjectMappingException
-    {
+    private Enum getEnum(String enumConstant, TypeToken<?> type) throws ObjectMappingException {
         //noinspection RedundantCast
         Optional<Enum> ret = (Optional) EnumLookup.lookupEnum(type.getRawType().asSubclass(Enum.class),
                 enumConstant); // XXX: intellij says this cast is optional but it isnt

@@ -66,21 +66,18 @@ public class FishingManager extends SkillManager {
         return getSkillLevel() >= RankUtils.getUnlockLevel(SubSkillType.FISHING_MASTER_ANGLER) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_MASTER_ANGLER);
     }
 
-    public void setFishingRodCastTimestamp()
-    {
+    public void setFishingRodCastTimestamp() {
         long currentTime = System.currentTimeMillis();
         //Only track spam casting if the fishing hook is fresh
-        if(currentTime > fishHookSpawnTimestamp + 1000)
+        if (currentTime > fishHookSpawnTimestamp + 1000)
             return;
 
-        if(currentTime < fishingRodCastTimestamp + Fishing.getInstance().getFishingRodCastCdMilliseconds())
-        {
+        if (currentTime < fishingRodCastTimestamp + Fishing.getInstance().getFishingRodCastCdMilliseconds()) {
             getPlayer().setFoodLevel(Math.max(getPlayer().getFoodLevel() - 1, 0));
             getPlayer().getInventory().getItemInMainHand().setDurability((short) (getPlayer().getInventory().getItemInMainHand().getDurability() + 5));
             getPlayer().updateInventory();
 
-            if(lastWarnedExhaust + (1000) < currentTime)
-            {
+            if (lastWarnedExhaust + (1000) < currentTime) {
                 getPlayer().sendMessage(LocaleLoader.getString("Fishing.Exhausting"));
                 lastWarnedExhaust = currentTime;
                 SoundManager.sendSound(getPlayer(), getPlayer().getLocation(), SoundType.TIRED);
@@ -90,9 +87,8 @@ public class FishingManager extends SkillManager {
         fishingRodCastTimestamp = System.currentTimeMillis();
     }
 
-    public void setFishHookReference(FishHook fishHook)
-    {
-        if(fishHook.getMetadata(mcMMO.FISH_HOOK_REF_METAKEY).size() > 0)
+    public void setFishHookReference(FishHook fishHook) {
+        if (fishHook.getMetadata(mcMMO.FISH_HOOK_REF_METAKEY).size() > 0)
             return;
 
         fishHook.setMetadata(mcMMO.FISH_HOOK_REF_METAKEY, mcMMO.metadataValue);
@@ -100,14 +96,12 @@ public class FishingManager extends SkillManager {
         fishingRodCastTimestamp = System.currentTimeMillis();
     }
 
-    public boolean isFishingTooOften()
-    {
+    public boolean isFishingTooOften() {
         long currentTime = System.currentTimeMillis();
         long fishHookSpawnCD = fishHookSpawnTimestamp + 1000;
         boolean hasFished = (currentTime < fishHookSpawnCD);
 
-        if(hasFished && (lastWarned + (1000) < currentTime))
-        {
+        if (hasFished && (lastWarned + (1000) < currentTime)) {
             getPlayer().sendMessage(LocaleLoader.getString("Fishing.Scared"));
             lastWarned = System.currentTimeMillis();
         }
@@ -129,32 +123,27 @@ public class FishingManager extends SkillManager {
 
         boolean sameTarget = lastFishingBoundingBox != null && lastFishingBoundingBox.overlaps(newCastBoundingBox);
 
-        if(sameTarget)
+        if (sameTarget)
             fishCaughtCounter++;
         else
             fishCaughtCounter = 1;
 
-        if(fishCaughtCounter + 1 == overfishLimit)
-        {
+        if (fishCaughtCounter + 1 == overfishLimit) {
             getPlayer().sendMessage(LocaleLoader.getString("Fishing.LowResources"));
         }
 
         //If the new bounding box does not intersect with the old one, then update our bounding box reference
-        if(!sameTarget)
+        if (!sameTarget)
             lastFishingBoundingBox = newCastBoundingBox;
 
-        if(sameTarget && fishCaughtCounter >= overfishLimit)
-        {
+        if (sameTarget && fishCaughtCounter >= overfishLimit) {
             overFishCount++;
         } else
-            overFishCount=0;
+            overFishCount = 0;
 
-        if(overFishCount == 2)
-        {
-            for(Player player : Bukkit.getOnlinePlayers())
-            {
-                if(player.isOp() || Permissions.adminChat(player))
-                {
+        if (overFishCount == 2) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                if (player.isOp() || Permissions.adminChat(player)) {
                     player.sendMessage(LocaleLoader.getString("Fishing.OverFishingDetected", getPlayer().getDisplayName()));
                 }
             }
@@ -225,7 +214,6 @@ public class FishingManager extends SkillManager {
      * Handle the Fisherman's Diet ability
      *
      * @param eventFoodLevel The initial change in hunger from the event
-     *
      * @return the modified change in hunger for the event
      */
     public int handleFishermanDiet(int eventFoodLevel) {
@@ -268,8 +256,7 @@ public class FishingManager extends SkillManager {
         hook.setBiteChance(Math.min(biteChance, 1.0));
     }
 
-    public boolean isMagicHunterEnabled()
-    {
+    public boolean isMagicHunterEnabled() {
         return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.FISHING_MAGIC_HUNTER)
                 && RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.FISHING_TREASURE_HUNTER)
                 && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_TREASURE_HUNTER);
@@ -305,8 +292,7 @@ public class FishingManager extends SkillManager {
             if (!event.isCancelled()) {
                 treasureDrop = event.getTreasure();
                 treasureXp = event.getXp();
-            }
-            else {
+            } else {
                 treasureDrop = null;
                 treasureXp = 0;
             }
@@ -340,7 +326,6 @@ public class FishingManager extends SkillManager {
      * Handle the vanilla XP boost for Fishing
      *
      * @param experience The amount of experience initially awarded by the event
-     *
      * @return the modified event damage
      */
     public int addInnerPeaceVanillaXPBoost(int experience) {
@@ -397,8 +382,7 @@ public class FishingManager extends SkillManager {
 
                                 if (FishingTreasureConfig.getInstance().getInventoryStealStacks()) {
                                     inventory.setItem(slot, null);
-                                }
-                                else {
+                                } else {
                                     inventory.setItem(slot, (drop.getAmount() > 1) ? new ItemStack(drop.getType(), drop.getAmount() - 1) : null);
                                     drop.setAmount(1);
                                 }
@@ -451,8 +435,7 @@ public class FishingManager extends SkillManager {
 
         if (getPlayer().getInventory().getItemInMainHand().getType() == Material.FISHING_ROD) {
             luck = getPlayer().getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.LUCK);
-        }
-        else {
+        } else {
             // We know something was caught, so if the rod wasn't in the main hand it must be in the offhand
             luck = getPlayer().getInventory().getItemInOffHand().getEnchantmentLevel(Enchantment.LUCK);
         }
@@ -508,7 +491,6 @@ public class FishingManager extends SkillManager {
      * Process the Magic Hunter ability
      *
      * @param treasureDrop The {@link ItemStack} to enchant
-     *
      * @return true if the item has been enchanted
      */
     private Map<Enchantment, Integer> handleMagicHunter(ItemStack treasureDrop) {

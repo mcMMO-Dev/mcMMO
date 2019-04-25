@@ -44,21 +44,22 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
     public HashMap<Rarity, List<FishingTreasure>> fishingRewards = new HashMap<>();
     public HashMap<Rarity, List<EnchantmentTreasure>> fishingEnchantments = new HashMap<>();
 
+    public FishingTreasureConfig() {
+        super("fishing_drops", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, false, true, false);
+        register();
+    }
+
     /**
      * This grabs an instance of this config class from the Config Manager
      * This method is deprecated and will be removed in the future
-     * @see mcMMO#getConfigManager()
+     *
      * @return the instance of this config
+     * @see mcMMO#getConfigManager()
      * @deprecated Please use mcMMO.getConfigManager() to grab a specific config instead
      */
     @Deprecated
     public static FishingTreasureConfig getInstance() {
         return mcMMO.getConfigManager().getFishingTreasureConfig();
-    }
-
-    public FishingTreasureConfig() {
-        super("fishing_drops", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, false, true, false);
-        register();
     }
 
     /**
@@ -70,12 +71,10 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
 
         ConfigurationNode fishingTreasureNode = getUserRootNode().getNode(FISHING);
 
-        if(fishingTreasureNode == null)
-        {
+        if (fishingTreasureNode == null) {
             mcMMO.p.getLogger().info("Fishing treasures in treasures config not defined");
             return;
         }
-
 
 
         // Initialize fishing HashMap
@@ -92,8 +91,7 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
                 //Treasure Material Definition
                 Material treasureMaterial = Material.matchMaterial(treasureName.toUpperCase());
 
-                if(treasureMaterial != null)
-                {
+                if (treasureMaterial != null) {
                     ConfigurationNode currentTreasure = fishingTreasureNode.getNode(treasureName);
 
                     //TODO: Rewrite the entire treasure system because it sucks
@@ -112,25 +110,22 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
                     ArrayList<String> dropsFrom = new ArrayList(currentTreasure.getNode(DROPS_FROM).getList(TypeToken.of(String.class)));
 
                     //VALIDATE AMOUNT
-                    if(amount <= 0)
-                    {
-                        mcMMO.p.getLogger().severe("Excavation Treasure named "+treasureName+" in the config has an amount of 0 or below, is this intentional?");
-                        mcMMO.p.getLogger().severe("Skipping "+treasureName+" for being invalid");
+                    if (amount <= 0) {
+                        mcMMO.p.getLogger().severe("Excavation Treasure named " + treasureName + " in the config has an amount of 0 or below, is this intentional?");
+                        mcMMO.p.getLogger().severe("Skipping " + treasureName + " for being invalid");
                         continue;
                     }
 
                     //VALIDATE XP
-                    if(xp <= 0)
-                    {
-                        mcMMO.p.getLogger().info("Excavation Treasure named "+treasureName+" in the config has xp set to 0 or below, is this intentional?");
+                    if (xp <= 0) {
+                        mcMMO.p.getLogger().info("Excavation Treasure named " + treasureName + " in the config has xp set to 0 or below, is this intentional?");
                         xp = 0;
                     }
 
                     //VALIDATE DROP SOURCES
-                    if(dropsFrom == null || dropsFrom.isEmpty())
-                    {
-                        mcMMO.p.getLogger().severe("Excavation Treasure named "+treasureName+" in the config has no drop targets, which would make it impossible to obtain, is this intentional?");
-                        mcMMO.p.getLogger().severe("Skipping "+treasureName+" for being invalid");
+                    if (dropsFrom == null || dropsFrom.isEmpty()) {
+                        mcMMO.p.getLogger().severe("Excavation Treasure named " + treasureName + " in the config has no drop targets, which would make it impossible to obtain, is this intentional?");
+                        mcMMO.p.getLogger().severe("Skipping " + treasureName + " for being invalid");
                         continue;
                     }
 
@@ -138,8 +133,7 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
 
                     //Custom Name
 
-                    if(currentTreasure.getNode(CUSTOM_NAME) != null && !currentTreasure.getNode(CUSTOM_NAME).getString().equalsIgnoreCase("ChangeMe"))
-                    {
+                    if (currentTreasure.getNode(CUSTOM_NAME) != null && !currentTreasure.getNode(CUSTOM_NAME).getString().equalsIgnoreCase("ChangeMe")) {
                         customName = currentTreasure.getNode(CUSTOM_NAME).getString();
                     }
 
@@ -155,10 +149,8 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
 
                     String configRarity = currentTreasure.getNode(RARITY).getString();
 
-                    for(Rarity rarity : Rarity.values())
-                    {
-                        if(rarity.toString().equalsIgnoreCase(configRarity))
-                        {
+                    for (Rarity rarity : Rarity.values()) {
+                        if (rarity.toString().equalsIgnoreCase(configRarity)) {
                             /*if(fishingRewards.get(rarity) == null)
                                 fishingRewards.put(rarity, new ArrayList<>());*/
 
@@ -167,7 +159,7 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
                     }
 
                 } else {
-                    mcMMO.p.getLogger().severe("Excavation Treasure Config - Material named "+treasureName+" does not match any known material.");
+                    mcMMO.p.getLogger().severe("Excavation Treasure Config - Material named " + treasureName + " does not match any known material.");
                 }
             }
         } catch (ObjectMappingException e) {
@@ -185,11 +177,10 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
         loadEnchantments();
     }
 
-    private void loadShake(EntityType entityType)
-    {
+    private void loadShake(EntityType entityType) {
         ConfigurationNode shakeTreasureNode = getUserRootNode().getNode(SHAKE, entityType.toString());
 
-        if(shakeTreasureNode != null)
+        if (shakeTreasureNode != null)
             return;
 
         try {
@@ -199,8 +190,7 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
                 //Treasure Material Definition
                 Material treasureMaterial = Material.matchMaterial(treasureName.toUpperCase());
 
-                if(treasureMaterial != null)
-                {
+                if (treasureMaterial != null) {
                     ConfigurationNode currentTreasure = shakeTreasureNode.getNode(treasureName);
 
                     //TODO: Rewrite the entire treasure system because it sucks
@@ -221,40 +211,35 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
                     ArrayList<String> dropsFrom = new ArrayList(currentTreasure.getNode(DROPS_FROM).getList(TypeToken.of(String.class)));
 
                     //VALIDATE AMOUNT
-                    if(amount <= 0)
-                    {
-                        mcMMO.p.getLogger().severe("Excavation Treasure named "+treasureName+" in the config has an amount of 0 or below, is this intentional?");
-                        mcMMO.p.getLogger().severe("Skipping "+treasureName+" for being invalid");
+                    if (amount <= 0) {
+                        mcMMO.p.getLogger().severe("Excavation Treasure named " + treasureName + " in the config has an amount of 0 or below, is this intentional?");
+                        mcMMO.p.getLogger().severe("Skipping " + treasureName + " for being invalid");
                         continue;
                     }
 
                     //VALIDATE XP
-                    if(xp <= 0)
-                    {
-                        mcMMO.p.getLogger().info("Excavation Treasure named "+treasureName+" in the config has xp set to 0 or below, is this intentional?");
+                    if (xp <= 0) {
+                        mcMMO.p.getLogger().info("Excavation Treasure named " + treasureName + " in the config has xp set to 0 or below, is this intentional?");
                         xp = 0;
                     }
 
                     //VALIDATE DROP CHANCE
-                    if(dropChance <= 0)
-                    {
-                        mcMMO.p.getLogger().severe("Excavation Treasure named "+treasureName+" in the config has a drop chance of 0 or below, is this intentional?");
-                        mcMMO.p.getLogger().severe("Skipping "+treasureName+" for being invalid");
+                    if (dropChance <= 0) {
+                        mcMMO.p.getLogger().severe("Excavation Treasure named " + treasureName + " in the config has a drop chance of 0 or below, is this intentional?");
+                        mcMMO.p.getLogger().severe("Skipping " + treasureName + " for being invalid");
                         continue;
                     }
 
                     //VALIDATE DROP LEVEL
-                    if(dropLevel < 0)
-                    {
-                        mcMMO.p.getLogger().info("Excavation Treasure named "+treasureName+" in the config has a drop level below 0, is this intentional?");
+                    if (dropLevel < 0) {
+                        mcMMO.p.getLogger().info("Excavation Treasure named " + treasureName + " in the config has a drop level below 0, is this intentional?");
                         dropLevel = 0;
                     }
 
                     //VALIDATE DROP SOURCES
-                    if(dropsFrom == null || dropsFrom.isEmpty())
-                    {
-                        mcMMO.p.getLogger().severe("Excavation Treasure named "+treasureName+" in the config has no drop targets, which would make it impossible to obtain, is this intentional?");
-                        mcMMO.p.getLogger().severe("Skipping "+treasureName+" for being invalid");
+                    if (dropsFrom == null || dropsFrom.isEmpty()) {
+                        mcMMO.p.getLogger().severe("Excavation Treasure named " + treasureName + " in the config has no drop targets, which would make it impossible to obtain, is this intentional?");
+                        mcMMO.p.getLogger().severe("Skipping " + treasureName + " for being invalid");
                         continue;
                     }
 
@@ -262,8 +247,7 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
 
                     //Custom Name
 
-                    if(currentTreasure.getNode(CUSTOM_NAME) != null && !currentTreasure.getNode(CUSTOM_NAME).getString().equalsIgnoreCase("ChangeMe"))
-                    {
+                    if (currentTreasure.getNode(CUSTOM_NAME) != null && !currentTreasure.getNode(CUSTOM_NAME).getString().equalsIgnoreCase("ChangeMe")) {
                         customName = currentTreasure.getNode(CUSTOM_NAME).getString();
                     }
 
@@ -281,7 +265,7 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
                     shakeMap.get(entityType).add(shakeTreasure);
 
                 } else {
-                    mcMMO.p.getLogger().severe("Excavation Treasure Config - Material named "+treasureName+" does not match any known material.");
+                    mcMMO.p.getLogger().severe("Excavation Treasure Config - Material named " + treasureName + " does not match any known material.");
                 }
             }
         } catch (ObjectMappingException e) {

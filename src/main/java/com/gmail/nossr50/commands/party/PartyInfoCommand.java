@@ -22,8 +22,7 @@ public class PartyInfoCommand implements CommandExecutor {
         switch (args.length) {
             case 0:
             case 1:
-                if(UserManager.getPlayer((Player) sender) == null)
-                {
+                if (UserManager.getPlayer((Player) sender) == null) {
                     sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                     return true;
                 }
@@ -69,8 +68,7 @@ public class PartyInfoCommand implements CommandExecutor {
 
             if (isUnlockedFeature(party, partyFeature)) {
                 unlockedPartyFeatures.add(partyFeature.getLocaleString());
-            }
-            else {
+            } else {
                 lockedPartyFeatures.add(partyFeature.getFeatureLockedLocaleString());
             }
         }
@@ -127,7 +125,7 @@ public class PartyInfoCommand implements CommandExecutor {
         int membersOnline = party.getVisibleMembers(player).size();
 
         player.sendMessage(LocaleLoader.getString("Commands.Party.Members.Header"));
-        player.sendMessage(LocaleLoader.getString("Commands.Party.MembersNear", nearMembers.size()+1, membersOnline));
+        player.sendMessage(LocaleLoader.getString("Commands.Party.MembersNear", nearMembers.size() + 1, membersOnline));
         player.sendMessage(party.createMembersList(player));
     }
 }

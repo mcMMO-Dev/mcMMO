@@ -39,12 +39,12 @@ public class ConfigRepairArcaneForging {
     @Setting(value = "May-Lose-Enchants", comment = "With this on, players have a chance to have enchantments stripped from" +
             "\n their item when repairing." +
             "\nThe odds to lose your enchants decrease with higher levels of skill." +
-            "\nDefault value: "+LOSE_ENCHANTS_DEFAULT)
+            "\nDefault value: " + LOSE_ENCHANTS_DEFAULT)
     private boolean mayLoseEnchants = LOSE_ENCHANTS_DEFAULT;
 
     @Setting(value = "Chance-To-Downgrade-Enchants", comment = "With this on, players have a chance to have enchants downgraded when repairing." +
             "\nThe chance to downgrade decreases with higher levels of skill." +
-            "\nDefault value: "+DOWNGRADES_ENABLED_DEFAULT)
+            "\nDefault value: " + DOWNGRADES_ENABLED_DEFAULT)
     private boolean downgradesEnabled = DOWNGRADES_ENABLED_DEFAULT;
 
     @Setting(value = "Downgrade-Chance-Per-Rank", comment = "Chance to downgrade enchants per rank in this Sub-Skill.")

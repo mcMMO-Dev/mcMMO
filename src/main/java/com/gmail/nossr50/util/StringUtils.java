@@ -12,8 +12,7 @@ public class StringUtils {
     /**
      * Gets a capitalized version of the target string.
      *
-     * @param target
-     *            String to capitalize
+     * @param target String to capitalize
      * @return the capitalized string
      */
     public static String getCapitalized(String target) {
@@ -22,11 +21,11 @@ public class StringUtils {
 
     /**
      * Gets the name of the entity that the config file is expecting
+     *
      * @param entityType target entity type
      * @return the config friendly entity type string
      */
-    public static String getEntityConfigName(EntityType entityType)
-    {
+    public static String getEntityConfigName(EntityType entityType) {
         return getCapitalized(entityType.toString());
     }
 
@@ -41,7 +40,7 @@ public class StringUtils {
     public static String getPrettyAbilityString(SuperAbilityType ability) {
         return createPrettyString(ability.toString());
     }
-    
+
     public static String getWildcardConfigBlockDataString(BlockData data) {
         return getWildcardConfigMaterialString(data.getMaterial());
     }
@@ -51,7 +50,7 @@ public class StringUtils {
     }
 
     public static String getFriendlyConfigBlockDataString(BlockData data) {
-        switch(data.getMaterial()){
+        switch (data.getMaterial()) {
             case CHORUS_FLOWER:
             case COCOA:
             case WHEAT:
@@ -108,8 +107,7 @@ public class StringUtils {
     /**
      * Determine if a string represents an Integer
      *
-     * @param string
-     *            String to check
+     * @param string String to check
      * @return true if the string is an Integer, false otherwise
      */
     public static boolean isInt(String string) {
@@ -124,8 +122,7 @@ public class StringUtils {
     /**
      * Determine if a string represents a Double
      *
-     * @param string
-     *            String to check
+     * @param string String to check
      * @return true if the string is a Double, false otherwise
      */
     public static boolean isDouble(String string) {

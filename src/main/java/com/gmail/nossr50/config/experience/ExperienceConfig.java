@@ -86,8 +86,9 @@ public class ExperienceConfig extends ConfigValidated {
     /**
      * This grabs an instance of this config class from the Config Manager
      * This method is deprecated and will be removed in the future
-     * @see mcMMO#getConfigManager()
+     *
      * @return the instance of this config
+     * @see mcMMO#getConfigManager()
      * @deprecated Please use mcMMO.getConfigManager() to grab a specific config instead
      */
     @Deprecated
@@ -168,9 +169,6 @@ public class ExperienceConfig extends ConfigValidated {
         return reason;
     }
 
-
-
-
     /*
      * FORMULA SETTINGS
      */
@@ -185,8 +183,7 @@ public class ExperienceConfig extends ConfigValidated {
         return getDoubleValue(EXPERIENCE_FORMULA, MULTIPLIER, GLOBAL);
     }
 
-    public void setGlobalXPMultiplier(double newXpMultiplier)
-    {
+    public void setGlobalXPMultiplier(double newXpMultiplier) {
         getUserRootNode().getNode(EXPERIENCE_FORMULA, MULTIPLIER, GLOBAL).setValue(newXpMultiplier);
     }
 
@@ -266,14 +263,15 @@ public class ExperienceConfig extends ConfigValidated {
 
     /**
      * Gets the raw XP given for breaking this block, this does not include modifiers
-     * @param skill The skill to give XP for
+     *
+     * @param skill     The skill to give XP for
      * @param blockType the type of block
      * @return the raw amount of XP for this block before modifiers
      */
     //public int getXp(PrimarySkillType skill, BlockType blockType) {
     public int getXp(PrimarySkillType skill, Material blockType) {
         //TODO: This is going to need to be changed, this code here is only placeholder
-        String[] path = new String[]{ EXPERIENCE, StringUtils.getCapitalized(skill.toString()), blockType.toString()};
+        String[] path = new String[]{EXPERIENCE, StringUtils.getCapitalized(skill.toString()), blockType.toString()};
         return getIntValue(path);
     }
 

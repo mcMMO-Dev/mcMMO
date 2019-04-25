@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ChatCommand implements TabExecutor {
-    private ChatMode chatMode;
     protected ChatManager chatManager;
+    private ChatMode chatMode;
 
     public ChatCommand(ChatMode chatMode) {
         this.chatMode = chatMode;
@@ -47,8 +47,7 @@ public abstract class ChatCommand implements TabExecutor {
 
                 if (mcMMOPlayer.isChatEnabled(chatMode)) {
                     disableChatMode(mcMMOPlayer, sender);
-                }
-                else {
+                } else {
                     enableChatMode(mcMMOPlayer, sender);
                 }
 

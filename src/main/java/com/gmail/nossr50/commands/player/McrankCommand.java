@@ -62,8 +62,7 @@ public class McrankCommand implements TabExecutor {
                     if (CommandUtils.tooFar(sender, player, Permissions.mcrankFar(sender))) {
                         return true;
                     }
-                }
-                else if (CommandUtils.inspectOffline(sender, mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false), Permissions.mcrankOffline(sender))) {
+                } else if (CommandUtils.inspectOffline(sender, mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false), Permissions.mcrankOffline(sender))) {
                     return true;
                 }
 
@@ -91,8 +90,7 @@ public class McrankCommand implements TabExecutor {
 
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
 
-            if(mcMMOPlayer == null)
-            {
+            if (mcMMOPlayer == null) {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return;
             }

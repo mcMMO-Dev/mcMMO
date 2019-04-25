@@ -46,12 +46,12 @@ public class ConfigArcaneSalvage {
 
     @Setting(value = "May-Lose-Enchants", comment = "With this on, players have a chance to not receive the enchantments from the item they are salvaging." +
             "\nThe odds to lose your enchants decrease with higher levels of skill." +
-            "\nDefault value: "+LOSE_ENCHANTS_DEFAULT)
+            "\nDefault value: " + LOSE_ENCHANTS_DEFAULT)
     private boolean mayLoseEnchants = LOSE_ENCHANTS_DEFAULT;
 
     @Setting(value = "Chance-To-Downgrade-Enchants", comment = "With this on, players have a chance to have salvaged enchantments downgrade when salvaging." +
             "\nThe chance to downgrade decreases with higher levels of skill." +
-            "\nDefault value: "+DOWNGRADES_ENABLED_DEFAULT)
+            "\nDefault value: " + DOWNGRADES_ENABLED_DEFAULT)
     private boolean downgradesEnabled = DOWNGRADES_ENABLED_DEFAULT;
 
     public boolean isMayLoseEnchants() {

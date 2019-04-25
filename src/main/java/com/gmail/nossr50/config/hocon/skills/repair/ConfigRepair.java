@@ -16,8 +16,8 @@ import static org.bukkit.Material.*;
 @ConfigSerializable
 public class ConfigRepair {
 
-     public static final ArrayList<Repairable> CONFIG_REPAIRABLES_DEFAULTS;
-     public static final Material[] PLANKS = new Material[] { OAK_PLANKS, BIRCH_PLANKS, DARK_OAK_PLANKS, ACACIA_PLANKS, JUNGLE_PLANKS, SPRUCE_PLANKS};
+    public static final ArrayList<Repairable> CONFIG_REPAIRABLES_DEFAULTS;
+    public static final Material[] PLANKS = new Material[]{OAK_PLANKS, BIRCH_PLANKS, DARK_OAK_PLANKS, ACACIA_PLANKS, JUNGLE_PLANKS, SPRUCE_PLANKS};
 
     static {
         CONFIG_REPAIRABLES_DEFAULTS = new ArrayList<>();

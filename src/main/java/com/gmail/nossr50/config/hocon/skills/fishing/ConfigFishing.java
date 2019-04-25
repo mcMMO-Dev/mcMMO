@@ -8,11 +8,10 @@ import java.util.HashMap;
 @ConfigSerializable
 public class ConfigFishing {
 
-    @Setting(value = "General")
-    private ConfigFishingGeneral fishingGeneral = new ConfigFishingGeneral();
-
     @Setting(value = "Sub-Skills")
     public ConfigFishingSubskills fishingSubskills = new ConfigFishingSubskills();
+    @Setting(value = "General")
+    private ConfigFishingGeneral fishingGeneral = new ConfigFishingGeneral();
 
     /*
      * GETTERS BOILERPLATE
@@ -50,8 +49,7 @@ public class ConfigFishing {
         return getInnerPeace().getInnerPeaceVanillaXPMultiplier();
     }
 
-    public int getVanillaXPMultInnerPeace(int rank)
-    {
+    public int getVanillaXPMultInnerPeace(int rank) {
         return getInnerPeaceVanillaXPMultiplier().get(rank);
     }
 }

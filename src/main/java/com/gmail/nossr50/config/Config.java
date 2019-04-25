@@ -21,22 +21,20 @@ import java.util.List;
 public abstract class Config implements VersionedConfig, Unload {
 
     public static final String HOCON_FILE_EXTENSION = ".conf";
+    public final File DIRECTORY_DATA_FOLDER; //Directory that the file is in
+    public final String FILE_RELATIVE_PATH; //Relative Path to the file
+    protected final String DIRECTORY_DEFAULTS = "defaults";
     /* SETTINGS */
     //private static final String FILE_EXTENSION = ".conf"; //HOCON
     private boolean mergeNewKeys; //Whether or not to merge keys found in the default config
     private boolean removeOldKeys; //Whether or not to remove unused keys form the config
+
+    /* PATH VARS */
     private boolean copyDefaults; //Whether or not to copy the default config when first creating the file
     private boolean generateDefaults; //Whether or not we use Configurate to generate a default file, if this is false we copy the file from the JAR
     private String fileName; //The file name of the config
 
-    /* PATH VARS */
-
-    public final File DIRECTORY_DATA_FOLDER; //Directory that the file is in
-    public final String FILE_RELATIVE_PATH; //Relative Path to the file
-    protected final String DIRECTORY_DEFAULTS = "defaults";
-
     /* LOADERS */
-
     private HoconConfigurationLoader defaultCopyLoader;
     private HoconConfigurationLoader userCopyLoader;
 
@@ -78,8 +76,7 @@ public abstract class Config implements VersionedConfig, Unload {
         FILE_RELATIVE_PATH = relativePath + fileName + HOCON_FILE_EXTENSION; //Relative path to config from a parent folder
     }
 
-    public void initFullConfig()
-    {
+    public void initFullConfig() {
         //Attempt IO Operations
         try {
             //Makes sure we have valid Files corresponding to this config
@@ -106,8 +103,7 @@ public abstract class Config implements VersionedConfig, Unload {
      * Registers with the config managers unloader
      * The unloader runs when the plugin gets disabled which cleans up registries to make reloading safe
      */
-    private void registerUnload()
-    {
+    private void registerUnload() {
         mcMMO.getConfigManager().registerUnloadable(this);
     }
 
@@ -115,13 +111,13 @@ public abstract class Config implements VersionedConfig, Unload {
      * Registers with the config managers file list
      * Used for backing up configs with our zip library
      */
-    private void registerFileBackup()
-    {
+    private void registerFileBackup() {
         mcMMO.getConfigManager().registerUserFile(getUserConfigFile());
     }
 
     /**
      * Initializes the default copy File and the user config File
+     *
      * @throws IOException
      */
     private void initConfigFiles() throws IOException {
@@ -135,8 +131,7 @@ public abstract class Config implements VersionedConfig, Unload {
     /**
      * Loads the root node for the default config File and user config File
      */
-    private void loadConfig()
-    {
+    private void loadConfig() {
         try {
             final CommentedConfigurationNode defaultConfig = this.defaultCopyLoader.load();
             defaultRootNode = defaultConfig;
@@ -152,20 +147,19 @@ public abstract class Config implements VersionedConfig, Unload {
     /**
      * Initializes the Configuration Loaders for this config
      */
-    private void initConfigLoaders()
-    {
+    private void initConfigLoaders() {
         this.defaultCopyLoader = HoconConfigurationLoader.builder().setPath(resourceConfigCopy.toPath()).build();
         this.userCopyLoader = HoconConfigurationLoader.builder().setPath(resourceUserCopy.toPath()).build();
     }
 
     /**
      * Copies a new file from the JAR to the defaults directory and uses that new file to initialize our resourceConfigCopy
-     * @see Config#resourceConfigCopy
+     *
      * @throws IOException
+     * @see Config#resourceConfigCopy
      */
     private File initDefaultConfig() throws IOException {
-        if(generateDefaults)
-        {
+        if (generateDefaults) {
             return generateDefaultFile();
         } else
             return copyDefaultFromJar(getDefaultConfigCopyRelativePath(), true);
@@ -174,11 +168,11 @@ public abstract class Config implements VersionedConfig, Unload {
     /**
      * Generates a default config file using the Configurate library, makes use of @Setting and @ConfigSerializable annotations in the config file
      * Assigns the default root node to the newly loaded default config if successful
+     *
      * @return the File for the newly created config
      */
-    private File generateDefaultFile()
-    {
-        mcMMO.p.getLogger().info("Attempting to create a default config for "+fileName);
+    private File generateDefaultFile() {
+        mcMMO.p.getLogger().info("Attempting to create a default config for " + fileName);
 
         //Not sure if this will work properly...
         Path potentialFile = Paths.get(getDefaultConfigCopyRelativePath());
@@ -186,9 +180,9 @@ public abstract class Config implements VersionedConfig, Unload {
                 = HoconConfigurationLoader.builder().setPath(potentialFile).build();
 
         try {
-            mcMMO.p.getLogger().info("Config File Full Path: "+getDefaultConfigFile().getAbsolutePath());
+            mcMMO.p.getLogger().info("Config File Full Path: " + getDefaultConfigFile().getAbsolutePath());
             //Delete any existing default config
-            if(getDefaultConfigFile().exists())
+            if (getDefaultConfigFile().exists())
                 getDefaultConfigFile().delete();
 
             //Make new file
@@ -200,8 +194,8 @@ public abstract class Config implements VersionedConfig, Unload {
             //Save to a new file
             generation_loader.save(defaultRootNode);
 
-            mcMMO.p.getLogger().info("Generated a default file for "+fileName);
-        } catch(IOException e) {
+            mcMMO.p.getLogger().info("Generated a default file for " + fileName);
+        } catch (IOException e) {
             mcMMO.p.getLogger().severe("Error when trying to generate a default configuration file for " + getDefaultConfigCopyRelativePath());
             e.printStackTrace();
         }
@@ -212,26 +206,23 @@ public abstract class Config implements VersionedConfig, Unload {
 
     /**
      * Attemps to load the config file if it exists, if it doesn't it copies a new one from within the JAR
+     *
      * @return user config File
-     * @see Config#resourceUserCopy
      * @throws IOException
+     * @see Config#resourceUserCopy
      */
     private File initUserConfig() throws IOException {
         File userCopy = new File(DIRECTORY_DATA_FOLDER, FILE_RELATIVE_PATH); //Load the user file;
 
-        if(userCopy.exists())
-        {
+        if (userCopy.exists()) {
             // Yay
             return userCopy;
-        }
-        else
-        {
+        } else {
             //If it's gone we copy default files
             //Note that we don't copy the values from the default copy put in /defaults/ that file exists only as a reference to admins and is unreliable
-            if(copyDefaults)
+            if (copyDefaults)
                 return copyDefaultFromJar(FILE_RELATIVE_PATH, false);
-            else
-            {
+            else {
                 //Make a new empty file
                 userCopy.createNewFile();
                 return userCopy;
@@ -241,6 +232,7 @@ public abstract class Config implements VersionedConfig, Unload {
 
     /**
      * Gets the File representation of the this users config
+     *
      * @return the users config File
      */
     public File getUserConfigFile() {
@@ -249,17 +241,17 @@ public abstract class Config implements VersionedConfig, Unload {
 
     /**
      * Used to make a new config file at a specified relative output path inside the data directory by copying the matching file found in that same relative path within the JAR
+     *
      * @param relativeOutputPath the path to the output file
-     * @param deleteOld whether or not to delete the existing output file on disk
+     * @param deleteOld          whether or not to delete the existing output file on disk
      * @return a copy of the default config within the JAR
      * @throws IOException
      */
-    private File copyDefaultFromJar(String relativeOutputPath, boolean deleteOld) throws IOException
-    {
+    private File copyDefaultFromJar(String relativeOutputPath, boolean deleteOld) throws IOException {
         /*
          * Gen a Default config from inside the JAR
          */
-        mcMMO.p.getLogger().info("Preparing to copy internal resource file (in JAR) - "+FILE_RELATIVE_PATH);
+        mcMMO.p.getLogger().info("Preparing to copy internal resource file (in JAR) - " + FILE_RELATIVE_PATH);
         //InputStream inputStream = McmmoCore.getResource(FILE_RELATIVE_PATH);
         InputStream inputStream = mcMMO.p.getResource(FILE_RELATIVE_PATH);
 
@@ -270,14 +262,12 @@ public abstract class Config implements VersionedConfig, Unload {
         File targetFile = new File(DIRECTORY_DATA_FOLDER, relativeOutputPath);
 
         //Wipe old default file on disk
-        if (targetFile.exists() && deleteOld)
-        {
+        if (targetFile.exists() && deleteOld) {
             mcMMO.p.getLogger().info("Updating file " + relativeOutputPath);
             targetFile.delete(); //Necessary?
         }
 
-        if(!targetFile.exists())
-        {
+        if (!targetFile.exists()) {
             targetFile.getParentFile().mkdirs();
             targetFile.createNewFile(); //New File Boys
         }
@@ -292,6 +282,7 @@ public abstract class Config implements VersionedConfig, Unload {
 
     /**
      * The path to the defaults directory
+     *
      * @return the path to the defaults directory
      */
     private String getDefaultConfigCopyRelativePath() {
@@ -301,6 +292,7 @@ public abstract class Config implements VersionedConfig, Unload {
     /**
      * Grabs the File representation of the default config, which is stored on disk in a defaults folder
      * this file will be overwritten every time mcMMO starts to keep it up to date.
+     *
      * @return the copy of the default config file, stored in the defaults directory
      */
     private File getDefaultConfigFile() {
@@ -316,11 +308,11 @@ public abstract class Config implements VersionedConfig, Unload {
 
     /**
      * Configs are versioned based on when they had significant changes to keys
+     *
      * @return current MainConfig Version String
      */
-    public String getVersion()
-    {
-         return String.valueOf(getConfigVersion());
+    public String getVersion() {
+        return String.valueOf(getConfigVersion());
     }
 
     /**
@@ -342,13 +334,12 @@ public abstract class Config implements VersionedConfig, Unload {
     /**
      * Compares the users config file to the default and adds any missing nodes and applies any necessary updates
      */
-    private void updateConfig()
-    {
-        mcMMO.p.getLogger().info(defaultRootNode.getChildrenMap().size() +" items in default children map");
-        mcMMO.p.getLogger().info(userRootNode.getChildrenMap().size() +" items in default root map");
+    private void updateConfig() {
+        mcMMO.p.getLogger().info(defaultRootNode.getChildrenMap().size() + " items in default children map");
+        mcMMO.p.getLogger().info(userRootNode.getChildrenMap().size() + " items in default root map");
 
         // Merge Values from default
-        if(mergeNewKeys)
+        if (mergeNewKeys)
             userRootNode = userRootNode.mergeValuesFrom(defaultRootNode);
 
         removeOldKeys();
@@ -368,23 +359,21 @@ public abstract class Config implements VersionedConfig, Unload {
      * Finds any keys in the users config that are not present in the default config and removes them
      */
     //TODO: Finish this
-    private void removeOldKeys()
-    {
-        if(!removeOldKeys)
+    private void removeOldKeys() {
+        if (!removeOldKeys)
             return;
 
-        for(CommentedConfigurationNode CommentedConfigurationNode : defaultRootNode.getChildrenList())
-        {
+        for (CommentedConfigurationNode CommentedConfigurationNode : defaultRootNode.getChildrenList()) {
 
         }
     }
 
     /**
      * Saves the current state information of the config to the users copy (which they may edit)
+     *
      * @throws IOException
      */
-    private void saveUserCopy() throws IOException
-    {
+    private void saveUserCopy() throws IOException {
         mcMMO.p.getLogger().info("Saving new node");
         userCopyLoader.save(userRootNode);
     }
@@ -395,11 +384,12 @@ public abstract class Config implements VersionedConfig, Unload {
     private void updateConfigVersion() {
         // Set a version for our config
         this.userRootNode.getNode("ConfigVersion").setValue(getConfigVersion());
-        mcMMO.p.getLogger().info("Updated config to ["+getConfigVersion()+"] - " + FILE_RELATIVE_PATH);
+        mcMMO.p.getLogger().info("Updated config to [" + getConfigVersion() + "] - " + FILE_RELATIVE_PATH);
     }
 
     /**
      * Returns the root node of this config
+     *
      * @return the root node of this config
      */
     protected CommentedConfigurationNode getUserRootNode() {
@@ -408,62 +398,67 @@ public abstract class Config implements VersionedConfig, Unload {
 
     /**
      * Gets an int from the config and casts it to short before returning
+     *
      * @param path the path to the int
      * @return the value of the int after being cast to short at the node, null references will zero initialize
      */
-    public short getShortValue(String... path) { return (short) userRootNode.getNode(path).getInt();}
+    public short getShortValue(String... path) {
+        return (short) userRootNode.getNode(path).getInt();
+    }
 
     /**
      * Grabs an int from the specified node
+     *
      * @param path
      * @return the int from the node, null references will zero initialize
      */
-    public int getIntValue(String... path)
-    {
+    public int getIntValue(String... path) {
         return userRootNode.getNode(path).getInt();
     }
+
     /**
      * Grabs a double from the specified node
+     *
      * @param path
      * @return the double from the node, null references will zero initialize
      */
-    public double getDoubleValue(String... path)
-    {
+    public double getDoubleValue(String... path) {
         return userRootNode.getNode(path).getDouble();
     }
 
     /**
      * Grabs a long from the specified node
+     *
      * @param path
      * @return the long from the node, null references will zero initialize
      */
-    public long getLongValue(String... path)
-    {
+    public long getLongValue(String... path) {
         return userRootNode.getNode(path).getLong();
     }
 
     /**
      * Grabs a boolean from the specified node
+     *
      * @param path
      * @return the boolean from the node, null references will zero initialize
      */
-    public boolean getBooleanValue(String... path)
-    {
+    public boolean getBooleanValue(String... path) {
         return userRootNode.getNode(path).getBoolean();
     }
 
     /**
      * Grabs a string from the specified node
+     *
      * @param path
      * @return the string from the node, null references will zero initialize
      */
-    public String getStringValue(String... path)
-    {
+    public String getStringValue(String... path) {
         return userRootNode.getNode(path).getString();
     }
 
     /**
      * Checks to see if a node exists in the user's config file
+     *
      * @param path path to the node
      * @return true if the node exists
      */
@@ -473,6 +468,7 @@ public abstract class Config implements VersionedConfig, Unload {
 
     /**
      * Returns the children of a specific node
+     *
      * @param path the path to the parent node
      * @return the list of children for the target parent node
      */
@@ -480,8 +476,7 @@ public abstract class Config implements VersionedConfig, Unload {
         return userRootNode.getNode(path).getChildrenList();
     }
 
-    public List<String> getListFromNode(String... path) throws ObjectMappingException
-    {
+    public List<String> getListFromNode(String... path) throws ObjectMappingException {
         return userRootNode.getNode(path).getList(TypeToken.of(String.class));
     }
 }

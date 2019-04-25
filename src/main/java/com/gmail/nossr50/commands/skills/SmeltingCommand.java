@@ -42,7 +42,7 @@ public class SmeltingCommand extends SkillCommand {
             str_fluxMiningChance = fluxMiningStrings[0];
             str_fluxMiningChanceLucky = fluxMiningStrings[1];
         }*/
-        
+
         // SECOND SMELT
         if (canSecondSmelt) {
             String[] secondSmeltStrings = getAbilityDisplayValues(player, SubSkillType.SMELTING_SECOND_SMELT);
@@ -68,7 +68,7 @@ public class SmeltingCommand extends SkillCommand {
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", str_fluxMiningChanceLucky) : ""));
             //messages.add(LocaleLoader.getString("Smelting.Ability.FluxMining", str_fluxMiningChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", str_fluxMiningChanceLucky) : ""));
         }*/
-        
+
         if (canFuelEfficiency) {
             messages.add(getStatMessage(false, true, SubSkillType.SMELTING_FUEL_EFFICIENCY, burnTimeModifier));
         }

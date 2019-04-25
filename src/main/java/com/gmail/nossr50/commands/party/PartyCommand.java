@@ -39,29 +39,29 @@ public class PartyCommand implements TabExecutor {
         PARTY_SUBCOMMANDS = ImmutableList.copyOf(subcommands);
     }
 
-    private CommandExecutor partyJoinCommand           = new PartyJoinCommand();
-    private CommandExecutor partyAcceptCommand         = new PartyAcceptCommand();
-    private CommandExecutor partyCreateCommand         = new PartyCreateCommand();
-    private CommandExecutor partyQuitCommand           = new PartyQuitCommand();
-    private CommandExecutor partyXpShareCommand        = new PartyXpShareCommand();
-    private CommandExecutor partyItemShareCommand      = new PartyItemShareCommand();
-    private CommandExecutor partyInviteCommand         = new PartyInviteCommand();
-    private CommandExecutor partyKickCommand           = new PartyKickCommand();
-    private CommandExecutor partyDisbandCommand        = new PartyDisbandCommand();
-    private CommandExecutor partyChangeOwnerCommand    = new PartyChangeOwnerCommand();
-    private CommandExecutor partyLockCommand           = new PartyLockCommand();
+    private CommandExecutor partyJoinCommand = new PartyJoinCommand();
+    private CommandExecutor partyAcceptCommand = new PartyAcceptCommand();
+    private CommandExecutor partyCreateCommand = new PartyCreateCommand();
+    private CommandExecutor partyQuitCommand = new PartyQuitCommand();
+    private CommandExecutor partyXpShareCommand = new PartyXpShareCommand();
+    private CommandExecutor partyItemShareCommand = new PartyItemShareCommand();
+    private CommandExecutor partyInviteCommand = new PartyInviteCommand();
+    private CommandExecutor partyKickCommand = new PartyKickCommand();
+    private CommandExecutor partyDisbandCommand = new PartyDisbandCommand();
+    private CommandExecutor partyChangeOwnerCommand = new PartyChangeOwnerCommand();
+    private CommandExecutor partyLockCommand = new PartyLockCommand();
     private CommandExecutor partyChangePasswordCommand = new PartyChangePasswordCommand();
-    private CommandExecutor partyRenameCommand         = new PartyRenameCommand();
-    private CommandExecutor partyInfoCommand           = new PartyInfoCommand();
-    private CommandExecutor partyHelpCommand           = new PartyHelpCommand();
-    private CommandExecutor partyTeleportCommand       = new PtpCommand();
-    private CommandExecutor partyChatCommand           = new PartyChatCommand();
-    private CommandExecutor partyAllianceCommand       = new PartyAllianceCommand();
+    private CommandExecutor partyRenameCommand = new PartyRenameCommand();
+    private CommandExecutor partyInfoCommand = new PartyInfoCommand();
+    private CommandExecutor partyHelpCommand = new PartyHelpCommand();
+    private CommandExecutor partyTeleportCommand = new PtpCommand();
+    private CommandExecutor partyChatCommand = new PartyChatCommand();
+    private CommandExecutor partyAllianceCommand = new PartyAllianceCommand();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         //If the party system is disabled, don't fire this command
-        if(!mcMMO.getConfigManager().getConfigParty().isPartySystemEnabled())
+        if (!mcMMO.getConfigManager().getConfigParty().isPartySystemEnabled())
             return true;
 
         if (CommandUtils.noConsoleUsage(sender)) {
@@ -79,8 +79,7 @@ public class PartyCommand implements TabExecutor {
             return true;
         }
 
-        if(UserManager.getPlayer(player) == null)
-        {
+        if (UserManager.getPlayer(player) == null) {
             player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
@@ -210,8 +209,7 @@ public class PartyCommand implements TabExecutor {
                             Player player = (Player) sender;
 
                             //Not Loaded
-                            if(UserManager.getPlayer(player) == null)
-                            {
+                            if (UserManager.getPlayer(player) == null) {
                                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                                 return ImmutableList.of();
                             }

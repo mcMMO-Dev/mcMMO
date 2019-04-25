@@ -34,17 +34,18 @@ public class ConfigSubSkillScalingRNG {
 
     /**
      * The max chance for the RNG component of a subskill from the user config
+     *
      * @return the max chance for the RNG component of a subskill
      */
     public double getMaxChance() {
-        if(mcMMO.getConfigManager().getConfigLeveling().getConfigSectionLevelingGeneral().getConfigSectionLevelScaling().isRetroModeEnabled())
+        if (mcMMO.getConfigManager().getConfigLeveling().getConfigSectionLevelingGeneral().getConfigSectionLevelScaling().isRetroModeEnabled())
             return getRetroSettings().getChanceAtMaxSkill();
         else
             return getStandardSettings().getChanceAtMaxSkill();
     }
 
     public double getMaxBonusLevel() {
-        if(mcMMO.getConfigManager().getConfigLeveling().getConfigSectionLevelingGeneral().getConfigSectionLevelScaling().isRetroModeEnabled())
+        if (mcMMO.getConfigManager().getConfigLeveling().getConfigSectionLevelingGeneral().getConfigSectionLevelScaling().isRetroModeEnabled())
             return getRetroSettings().getMaxBonusLevel();
         else
             return getStandardSettings().getMaxBonusLevel();

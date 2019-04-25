@@ -3,7 +3,9 @@ package com.gmail.nossr50.util.blockmeta;
 public class PrimitiveChunkletStore implements ChunkletStore {
     private static final long serialVersionUID = -3453078050608607478L;
 
-    /** X, Z, Y */
+    /**
+     * X, Z, Y
+     */
     public boolean[][][] store = new boolean[16][16][64];
 
     @Override

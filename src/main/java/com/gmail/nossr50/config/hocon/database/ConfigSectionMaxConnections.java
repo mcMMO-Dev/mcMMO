@@ -15,13 +15,13 @@ public class ConfigSectionMaxConnections {
      * CONFIG NODES
      */
 
-    @Setting(value = "Misc-Connection-Limit", comment = "Default value: "+MISC_DEFAULT)
+    @Setting(value = "Misc-Connection-Limit", comment = "Default value: " + MISC_DEFAULT)
     private int misc = 30;
 
-    @Setting(value = "Load-Connection-Limit", comment = "Default value: "+LOAD_DEFAULT)
+    @Setting(value = "Load-Connection-Limit", comment = "Default value: " + LOAD_DEFAULT)
     private int load = 30;
 
-    @Setting(value = "Save-Connection-Limit", comment = "Default value: "+SAVE_DEFAULT)
+    @Setting(value = "Save-Connection-Limit", comment = "Default value: " + SAVE_DEFAULT)
     private int save = 30;
 
     /*

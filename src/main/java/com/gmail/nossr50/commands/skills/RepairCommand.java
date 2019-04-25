@@ -105,7 +105,7 @@ public class RepairCommand extends SkillCommand {
                         String.valueOf(arcaneBypass ? 0 : repairManager.getDowngradeEnchantChance()))); //Jesus those parentheses
             }
         }
-        
+
         if (canMasterRepair) {
             messages.add(getStatMessage(false, true, SubSkillType.REPAIR_REPAIR_MASTERY, repairMasteryBonus));
         }

@@ -13,6 +13,6 @@ public class ConfigSectionPartyItemShareSettings {
             "\nEQUAL: Party members have weighted dice rolls based on the quality of the loot they have recently received." +
             "\nRANDOM: Party members do a fair dice roll for every item dropped." +
             "\nNONE: Do not use item sharing" +
-            "\nDefault Value: "+"NONE")
+            "\nDefault Value: " + "NONE")
     private ShareMode shareMode = SHARE_MODE_DEFAULT;
 }

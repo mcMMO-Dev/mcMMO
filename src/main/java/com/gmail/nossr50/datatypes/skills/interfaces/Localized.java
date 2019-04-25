@@ -7,12 +7,14 @@ package com.gmail.nossr50.datatypes.skills.interfaces;
 public interface Localized {
     /**
      * The translated name for this locale
+     *
      * @return the translated name for this locale
      */
     String getLocaleName();
 
     /**
      * The translated name for this subskill description
+     *
      * @return
      */
     String getLocaleDescription();

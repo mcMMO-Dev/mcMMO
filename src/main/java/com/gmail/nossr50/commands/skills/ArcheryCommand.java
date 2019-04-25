@@ -35,14 +35,14 @@ public class ArcheryCommand extends SkillCommand {
             retrieveChance = retrieveStrings[0];
             retrieveChanceLucky = retrieveStrings[1];
         }
-        
+
         // ARCHERY_DAZE
         if (canDaze) {
             String[] dazeStrings = getAbilityDisplayValues(player, SubSkillType.ARCHERY_DAZE);
             dazeChance = dazeStrings[0];
             dazeChanceLucky = dazeStrings[1];
         }
-        
+
         // SKILL SHOT
         if (canSkillShot) {
             skillShotBonus = percent.format(Archery.getDamageBonusPercent(player));
@@ -64,17 +64,17 @@ public class ArcheryCommand extends SkillCommand {
             messages.add(getStatMessage(SubSkillType.ARCHERY_ARROW_RETRIEVAL, retrieveChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", retrieveChanceLucky) : ""));
         }
-        
+
         if (canDaze) {
             messages.add(getStatMessage(SubSkillType.ARCHERY_DAZE, dazeChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", dazeChanceLucky) : ""));
         }
-        
+
         if (canSkillShot) {
             messages.add(getStatMessage(SubSkillType.ARCHERY_SKILL_SHOT, skillShotBonus));
         }
 
-        if(canUseSubskill(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK)) {
+        if (canUseSubskill(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK,
                     String.valueOf(CombatUtils.getLimitBreakDamage(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK))));
         }

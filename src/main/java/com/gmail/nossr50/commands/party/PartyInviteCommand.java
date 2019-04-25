@@ -26,8 +26,7 @@ public class PartyInviteCommand implements CommandExecutor {
 
                 Player target = mcMMOTarget.getPlayer();
 
-                if(UserManager.getPlayer((Player) sender) == null)
-                {
+                if (UserManager.getPlayer((Player) sender) == null) {
                     sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                     return true;
                 }
@@ -53,12 +52,11 @@ public class PartyInviteCommand implements CommandExecutor {
 
                 Party playerParty = mcMMOPlayer.getParty();
 
-                if(mcMMO.getConfigManager().getConfigParty().getPartyGeneral().isPartySizeCapped())
-                    if(PartyManager.isPartyFull(target, playerParty))
-                    {
+                if (mcMMO.getConfigManager().getConfigParty().getPartyGeneral().isPartySizeCapped())
+                    if (PartyManager.isPartyFull(target, playerParty)) {
                         player.sendMessage(LocaleLoader.getString("Commands.Party.PartyFull.Invite",
                                 target.getName(), playerParty.toString(),
-                                    mcMMO.getConfigManager().getConfigParty().getPartySizeLimit()));
+                                mcMMO.getConfigManager().getConfigParty().getPartySizeLimit()));
                         return true;
                     }
 

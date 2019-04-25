@@ -5,7 +5,7 @@ import org.bukkit.block.Block;
 
 /**
  * A ChunkletManager implementation that does nothing and returns false for all checks.
- *
+ * <p>
  * Useful for turning off Chunklets without actually doing much work
  */
 public class NullChunkletManager implements ChunkletManager {

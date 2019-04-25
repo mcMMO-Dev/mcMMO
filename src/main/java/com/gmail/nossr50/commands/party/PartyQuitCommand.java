@@ -18,8 +18,7 @@ public class PartyQuitCommand implements CommandExecutor {
             case 1:
                 Player player = (Player) sender;
 
-                if(UserManager.getPlayer((Player) sender) == null)
-                {
+                if (UserManager.getPlayer((Player) sender) == null) {
                     sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                     return true;
                 }

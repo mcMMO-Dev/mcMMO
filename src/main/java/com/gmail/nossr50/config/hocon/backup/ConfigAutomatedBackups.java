@@ -14,12 +14,12 @@ public class ConfigAutomatedBackups {
             "\nYou can find the backups in the following directory inside your mcMMO folder - \\mcMMO\\backup" +
             "\nAutomated backups are deleted regularly once they reach a certain age, see the other options in this config to change this." +
             "\nBackups are made whenever you start your server for the first time and on each reload of the mcMMO plugin" +
-            "\nDefault value: "+ZIP_BACKUPS_ENABLED_DEFAULT)
+            "\nDefault value: " + ZIP_BACKUPS_ENABLED_DEFAULT)
     private boolean zipBackupsEnabled = ZIP_BACKUPS_ENABLED_DEFAULT;
 
     @Setting(value = "Old-File-Age-Limit-In-Days", comment = "How many days should backups be kept in days?" +
             "\nBackups older than this are removed if the number of file backups is greater than \"Minimum-Backups\"." +
-            "\nDefault value: "+ BACKUP_DAY_LIMIT_DEFAULT)
+            "\nDefault value: " + BACKUP_DAY_LIMIT_DEFAULT)
     private int backupDayLimit = BACKUP_DAY_LIMIT_DEFAULT;
 
     public boolean isZipBackupsEnabled() {

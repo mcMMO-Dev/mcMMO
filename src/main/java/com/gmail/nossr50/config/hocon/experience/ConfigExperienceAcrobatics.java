@@ -23,7 +23,7 @@ public class ConfigExperienceAcrobatics {
 
     @Setting(value = "Feather-Fall-XP-Multiplier", comment = "Feather Fall grants bonus XP to fall related XP gains." +
             "\nThis value is multiplied against your XP to give the bonus." +
-            "\nDefault value: "+FEATHER_FALL_MULTIPLIER_DEFAULT)
+            "\nDefault value: " + FEATHER_FALL_MULTIPLIER_DEFAULT)
     private Double featherFallMultiplier = FEATHER_FALL_MULTIPLIER_DEFAULT;
 
     public HashMap<String, Integer> getAcrobaticsXPMap() {
@@ -34,15 +34,15 @@ public class ConfigExperienceAcrobatics {
         return featherFallMultiplier;
     }
 
-    public int getDodgeXP(){
+    public int getDodgeXP() {
         return acrobaticsXPMap.get("Dodge");
     }
 
-    public int getRollXP(){
+    public int getRollXP() {
         return acrobaticsXPMap.get("Roll");
     }
 
-    public int getFallXP(){
+    public int getFallXP() {
         return acrobaticsXPMap.get("Fall");
     }
 

@@ -18,8 +18,8 @@ public class AlchemyCommand extends SkillCommand {
     private String brewSpeed;
     private String brewSpeedLucky;
 
-    private int    tier;
-    private int    ingredientCount;
+    private int tier;
+    private int ingredientCount;
     private String ingredientList;
 
     private boolean canCatalysis;
@@ -31,10 +31,9 @@ public class AlchemyCommand extends SkillCommand {
 
     protected String[] calculateAbilityDisplayValues(Player player) {
         //TODO: Needed?
-        if(UserManager.getPlayer(player) == null)
-        {
+        if (UserManager.getPlayer(player) == null) {
             player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
-            return new String[] {"DATA NOT LOADED", "DATA NOT LOADED"};
+            return new String[]{"DATA NOT LOADED", "DATA NOT LOADED"};
         }
 
         AlchemyManager alchemyManager = UserManager.getPlayer(player).getAlchemyManager();

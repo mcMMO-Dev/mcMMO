@@ -33,17 +33,24 @@ import java.util.Set;
 
 public abstract class SkillCommand implements TabExecutor {
     protected PrimarySkillType skill;
-    private String skillName;
-
     protected DecimalFormat percent = new DecimalFormat("##0.00%");
     protected DecimalFormat decimal = new DecimalFormat("##0.00");
-
+    private String skillName;
     private CommandExecutor skillGuideCommand;
 
     public SkillCommand(PrimarySkillType skill) {
         this.skill = skill;
         skillName = skill.getName();
         skillGuideCommand = new SkillGuideCommand(skill);
+    }
+
+    public static String[] addItemToFirstPositionOfArray(String itemToAdd, String... existingArray) {
+        String[] newArray = new String[existingArray.length + 1];
+        newArray[0] = itemToAdd;
+
+        System.arraycopy(existingArray, 0, newArray, 1, existingArray.length);
+
+        return newArray;
     }
 
     @Override
@@ -56,8 +63,7 @@ public abstract class SkillCommand implements TabExecutor {
             return true;
         }
 
-        if(UserManager.getPlayer((Player) sender) == null)
-        {
+        if (UserManager.getPlayer((Player) sender) == null) {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
@@ -72,9 +78,8 @@ public abstract class SkillCommand implements TabExecutor {
                 float skillValue = mcMMOPlayer.getSkillLevel(skill);
 
                 //Send the players a few blank lines to make finding the top of the skill command easier
-                if(AdvancedConfig.getInstance().doesSkillCommandSendBlankLines())
-                    for(int i = 0; i < 2; i++)
-                    {
+                if (AdvancedConfig.getInstance().doesSkillCommandSendBlankLines())
+                    for (int i = 0; i < 2; i++) {
                         player.sendMessage("");
                     }
 
@@ -105,8 +110,7 @@ public abstract class SkillCommand implements TabExecutor {
 
 
                 //Link Header
-                if(mcMMO.getConfigManager().getConfigAds().isShowWebsiteLinks())
-                {
+                if (mcMMO.getConfigManager().getConfigAds().isShowWebsiteLinks()) {
                     player.sendMessage(LocaleLoader.getString("Overhaul.mcMMO.Header"));
                     TextComponentFactory.sendPlayerUrlHeader(player);
                 }
@@ -114,7 +118,7 @@ public abstract class SkillCommand implements TabExecutor {
 
                 if (mcMMO.getScoreboardSettings().getScoreboardsEnabled()
                         && mcMMO.getScoreboardSettings().getConfigSectionScoreboardTypes()
-                            .getConfigSectionSkillBoard().isUseThisBoard()) {
+                        .getConfigSectionSkillBoard().isUseThisBoard()) {
                     ScoreboardManager.enablePlayerSkillScoreboard(player, skill);
                 }
 
@@ -146,8 +150,7 @@ public abstract class SkillCommand implements TabExecutor {
 
         player.sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", skillName));
 
-        if(!skill.isChildSkill())
-        {
+        if (!skill.isChildSkill()) {
             /*
              * NON-CHILD SKILLS
              */
@@ -173,10 +176,8 @@ public abstract class SkillCommand implements TabExecutor {
 
             StringBuilder parentMessage = new StringBuilder();
 
-            for(int i = 0; i < parentList.size(); i++)
-            {
-                if(i+1 < parentList.size())
-                {
+            for (int i = 0; i < parentList.size(); i++) {
+                if (i + 1 < parentList.size()) {
                     parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
                     parentMessage.append(ChatColor.GRAY + ", ");
                 } else {
@@ -237,11 +238,9 @@ public abstract class SkillCommand implements TabExecutor {
 
         int length;
 
-        if(abilityLengthCap <= 0)
-        {
+        if (abilityLengthCap <= 0) {
             length = 2 + (int) (skillValue / abilityLengthVar);
-        }
-        else {
+        } else {
             length = 2 + (int) (Math.min(abilityLengthCap, skillValue) / abilityLengthVar);
         }
 
@@ -251,36 +250,23 @@ public abstract class SkillCommand implements TabExecutor {
             length = Math.min(length, maxLength);
         }
 
-        return new String[] { String.valueOf(length), String.valueOf(enduranceLength) };
+        return new String[]{String.valueOf(length), String.valueOf(enduranceLength)};
     }
 
-    protected String getStatMessage(SubSkillType subSkillType, String... vars)
-    {
+    protected String getStatMessage(SubSkillType subSkillType, String... vars) {
         return getStatMessage(false, false, subSkillType, vars);
     }
 
-    protected String getStatMessage(boolean isExtra, boolean isCustom, SubSkillType subSkillType, String... vars)
-    {
+    protected String getStatMessage(boolean isExtra, boolean isCustom, SubSkillType subSkillType, String... vars) {
         String templateKey = isCustom ? "Ability.Generic.Template.Custom" : "Ability.Generic.Template";
         String statDescriptionKey = !isExtra ? subSkillType.getLocaleKeyStatDescription() : subSkillType.getLocaleKeyStatExtraDescription();
 
-        if(isCustom)
+        if (isCustom)
             return LocaleLoader.getString(templateKey, LocaleLoader.getString(statDescriptionKey, vars));
-        else
-        {
+        else {
             String[] mergedList = addItemToFirstPositionOfArray(LocaleLoader.getString(statDescriptionKey), vars);
             return LocaleLoader.getString(templateKey, mergedList);
         }
-    }
-
-
-    public static String[] addItemToFirstPositionOfArray(String itemToAdd, String... existingArray) {
-        String[] newArray = new String[existingArray.length + 1];
-        newArray[0] = itemToAdd;
-
-        System.arraycopy(existingArray, 0, newArray, 1, existingArray.length);
-
-        return newArray;
     }
 
     protected abstract void dataCalculations(Player player, float skillValue);
@@ -295,12 +281,12 @@ public abstract class SkillCommand implements TabExecutor {
 
     /**
      * Checks if a player can use a skill
-     * @param player target player
+     *
+     * @param player       target player
      * @param subSkillType target subskill
      * @return true if the player has permission and has the skill unlocked
      */
-    protected boolean canUseSubskill(Player player, SubSkillType subSkillType)
-    {
+    protected boolean canUseSubskill(Player player, SubSkillType subSkillType) {
         return Permissions.isSubSkillEnabled(player, subSkillType) && RankUtils.hasUnlockedSubskill(player, subSkillType);
     }
 }

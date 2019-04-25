@@ -8,7 +8,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public final class AbilityAPI {
-    private AbilityAPI() {}
+    private AbilityAPI() {
+    }
 
     public static boolean berserkEnabled(Player player) {
         return UserManager.getPlayer(player).getAbilityMode(SuperAbilityType.BERSERK);

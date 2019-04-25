@@ -20,12 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PartyAllianceCommand implements TabExecutor {
+    public static final List<String> ALLIANCE_SUBCOMMANDS = ImmutableList.of("invite", "accept", "disband");
     private Player player;
     private Party playerParty;
     private Party targetParty;
-
-    public static final List<String> ALLIANCE_SUBCOMMANDS = ImmutableList.of("invite", "accept", "disband");
-
     private CommandExecutor partyAllianceInviteCommand = new PartyAllianceInviteCommand();
     private CommandExecutor partyAllianceAcceptCommand = new PartyAllianceAcceptCommand();
     private CommandExecutor partyAllianceDisbandCommand = new PartyAllianceDisbandCommand();
@@ -36,8 +34,7 @@ public class PartyAllianceCommand implements TabExecutor {
             return true;
         }
 
-        if(UserManager.getPlayer((Player) sender) == null)
-        {
+        if (UserManager.getPlayer((Player) sender) == null) {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }

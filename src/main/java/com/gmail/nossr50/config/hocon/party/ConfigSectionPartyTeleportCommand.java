@@ -14,24 +14,24 @@ public class ConfigSectionPartyTeleportCommand {
     public static final boolean PTP_WORLD_BASED_PERMISSIONS_DEFAULT = false;
 
     @Setting(value = "PTP-Cooldown", comment = "How many seconds a player must wait between usages of PTP." +
-            "\nDefault value: "+PTP_COOLDOWN_DEFAULT)
+            "\nDefault value: " + PTP_COOLDOWN_DEFAULT)
     private int ptpCooldown = PTP_COOLDOWN_DEFAULT;
 
     @Setting(value = "PTP-Warmup", comment = "How many seconds a player must stand still for a PTP to be successful." +
-            "\nDefault value: "+PTP_WARMUP_DEFAULT)
+            "\nDefault value: " + PTP_WARMUP_DEFAULT)
     private int ptpWarmup = PTP_WARMUP_DEFAULT;
 
     @Setting(value = "PTP-Hurt-Cooldown", comment = "How many seconds a player must wait from last taking damage in order to use PTP." +
-            "\nDefault value: "+PTP_RECENTLY_HURT_COOLDOWN_DEFAULT)
+            "\nDefault value: " + PTP_RECENTLY_HURT_COOLDOWN_DEFAULT)
     private int ptpRecentlyHurtCooldown = PTP_RECENTLY_HURT_COOLDOWN_DEFAULT;
 
     @Setting(value = "PTP-Requires-Accept", comment = "If a player tries to use PTP to another party member," +
             " that party member must then accept his request or the PTP will not execute." +
-            "\nDefault value: "+PTP_ACCEPT_REQUIRED_DEFAULT)
+            "\nDefault value: " + PTP_ACCEPT_REQUIRED_DEFAULT)
     private boolean ptpAcceptRequired = PTP_ACCEPT_REQUIRED_DEFAULT;
 
     @Setting(value = "PTP-Request-Timeout", comment = "How many seconds before a PTP request will become invalid." +
-            "\nDefault value: "+PTP_REQUEST_TIMEOUT)
+            "\nDefault value: " + PTP_REQUEST_TIMEOUT)
     private int ptpRequestTimeout = PTP_REQUEST_TIMEOUT;
 
     @Setting(value = "PTP-Require-World-Based-Permissions", comment = "If true, players need to use a special permission node in order to use PTP on that world or to that world." +

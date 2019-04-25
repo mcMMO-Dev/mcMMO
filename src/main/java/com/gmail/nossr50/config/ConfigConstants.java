@@ -9,11 +9,19 @@ import java.util.ArrayList;
  * Constants relating to config folders and paths
  */
 public class ConfigConstants {
-    private final static String[] EXAMPLE_BLACKLIST_WORLDS = {"Example_15434453", "Example_2324423", "Example_323423465"};
     public final static ArrayList<String> EXAMPLE_BLACKLIST_WORLDS_LIST_DEFAULT;
-
     public final static String SKILL_SCALING_BENEFIT_EXPLANATION = "\nSub-Skills dynamically adjust their rewards to match the max bonus level, you can think of it as a curve that calculates what bonuses " +
             "\n a player should have based on how far they are from the max bonus level value, and the other parameters used for the scaling of that sub-skill.";
+    /* FOLDER NAMES */
+    public static final String FOLDER_NAME_CONFIG = "config";
+    public static final String FOLDER_NAME_SKILLS = "skills";
+    public static final String FOLDER_NAME_EXPERIENCE = "Experience Settings";
+    public static final String FOLDER_NAME_DEFAULTS = "defaults";
+    /* RELATIVE PATHS */
+    public final static String RELATIVE_PATH_CONFIG_DIR = File.separator + FOLDER_NAME_CONFIG + File.separator;
+    public final static String RELATIVE_PATH_SKILLS_DIR = RELATIVE_PATH_CONFIG_DIR + FOLDER_NAME_SKILLS + File.separator;
+    public final static String RELATIVE_PATH_XP_DIR = RELATIVE_PATH_CONFIG_DIR + FOLDER_NAME_EXPERIENCE + File.separator;
+    private final static String[] EXAMPLE_BLACKLIST_WORLDS = {"Example_15434453", "Example_2324423", "Example_323423465"};
 
     //Add the worlds to the list
     static {
@@ -23,23 +31,12 @@ public class ConfigConstants {
         EXAMPLE_BLACKLIST_WORLDS_LIST_DEFAULT.add(EXAMPLE_BLACKLIST_WORLDS[2]);
     }
 
-    /* FOLDER NAMES */
-    public static final String FOLDER_NAME_CONFIG       = "config";
-    public static final String FOLDER_NAME_SKILLS       = "skills";
-    public static final String FOLDER_NAME_EXPERIENCE   = "Experience Settings";
-    public static final String FOLDER_NAME_DEFAULTS     = "defaults";
-
-    /* RELATIVE PATHS */
-    public final static String RELATIVE_PATH_CONFIG_DIR = File.separator + FOLDER_NAME_CONFIG + File.separator;
-    public final static String RELATIVE_PATH_SKILLS_DIR = RELATIVE_PATH_CONFIG_DIR + FOLDER_NAME_SKILLS + File.separator;
-    public final static String RELATIVE_PATH_XP_DIR     = RELATIVE_PATH_CONFIG_DIR + FOLDER_NAME_EXPERIENCE + File.separator;
-
     /**
      * Return the data folder for mcMMO
+     *
      * @return the File for the data folder used by mcMMO
      */
-    public static File getDataFolder()
-    {
+    public static File getDataFolder() {
         return mcMMO.p.getDataFolder();
     }
 
@@ -74,33 +71,32 @@ public class ConfigConstants {
     /**
      * Creates all directories used by mcMMO config files
      */
-    public static void makeAllConfigDirectories()
-    {
+    public static void makeAllConfigDirectories() {
         /* CONFIG DIRECTORY */
 
-        if(!getConfigFolder().exists())
+        if (!getConfigFolder().exists())
             getConfigFolder().mkdirs();
 
         /* DEFAULT DIRECTORIES */
 
-        if(!getDefaultsFolder().exists())
+        if (!getDefaultsFolder().exists())
             getDefaultsFolder().mkdirs();
 
-        if(!getDefaultsConfigFolder().exists())
+        if (!getDefaultsConfigFolder().exists())
             getDefaultsConfigFolder().mkdirs();
 
-        if(!getDefaultsSkillFolder().exists())
+        if (!getDefaultsSkillFolder().exists())
             getDefaultsSkillFolder().mkdirs();
 
-        if(!getDefaultsXPFolder().exists())
+        if (!getDefaultsXPFolder().exists())
             getDefaultsXPFolder().mkdirs();
 
         /* CONFIG SUBDIRECTORIES */
 
-        if(!getConfigSkillFolder().exists())
+        if (!getConfigSkillFolder().exists())
             getConfigSkillFolder().mkdirs();
 
-        if(!getConfigXPFolder().exists())
+        if (!getConfigXPFolder().exists())
             getConfigXPFolder().mkdirs();
     }
 }

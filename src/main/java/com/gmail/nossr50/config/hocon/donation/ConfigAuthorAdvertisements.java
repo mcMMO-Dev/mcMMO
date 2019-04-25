@@ -14,13 +14,13 @@ public class ConfigAuthorAdvertisements {
             comment = "Shows donation info in various mcMMO commands." +
                     "\nSuch as a paypal link for the author on the /mcmmo command" +
                     "\nSupport through donations helps keep mcMMO development going." +
-                    "\nDefault value: "+ SHOW_DONATION_DEFAULT)
+                    "\nDefault value: " + SHOW_DONATION_DEFAULT)
     private boolean showDonationInfo = SHOW_DONATION_DEFAULT;
 
     @Setting(value = "Show-Patreon-Links",
             comment = "Shows patreon links for the mcMMO author in various mcMMO commands." +
                     "\nSupport through Patreon helps keep mcMMO development going" +
-                    "\nDefault value: "+SHOW_PATREON_DEFAULT)
+                    "\nDefault value: " + SHOW_PATREON_DEFAULT)
     private boolean showPatreonInfo = SHOW_PATREON_DEFAULT;
 
     @Setting(value = "Show-Website-Links", comment = "Allows links to various affiliated websites for mcMMO." +
@@ -31,7 +31,7 @@ public class ConfigAuthorAdvertisements {
             "\nThe mcMMO authors Patreon" +
             "\nThe Official mcMMO Spigot Listing" +
             "\nThe Official translation website for mcMMO" +
-            "\nDefault value: "+SHOW_WEBSITE_LINKS_DEFAULT)
+            "\nDefault value: " + SHOW_WEBSITE_LINKS_DEFAULT)
     private boolean showWebsiteLinks = SHOW_WEBSITE_LINKS_DEFAULT;
 
     public boolean isShowDonationInfo() {

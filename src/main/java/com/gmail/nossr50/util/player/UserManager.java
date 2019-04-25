@@ -13,7 +13,8 @@ import java.util.Collection;
 
 public final class UserManager {
 
-    private UserManager() {}
+    private UserManager() {
+    }
 
     /**
      * Track a new user.
@@ -50,12 +51,9 @@ public final class UserManager {
         mcMMO.p.debug("Saving mcMMOPlayers... (" + onlinePlayers.size() + ")");
 
         for (Player player : onlinePlayers) {
-            try
-            {
+            try {
                 getPlayer(player).getProfile().save();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 mcMMO.p.getLogger().warning("Could not save mcMMO player data for player: " + player.getName());
             }
         }
@@ -97,12 +95,13 @@ public final class UserManager {
 
     /**
      * Gets the McMMOPlayer object for a player, this can be null if the player has not yet been loaded.
+     *
      * @param player target player
      * @return McMMOPlayer object for this player, null if Player has not been loaded
      */
     public static McMMOPlayer getPlayer(Player player) {
         //Avoid Array Index out of bounds
-        if(player != null && player.hasMetadata(mcMMO.playerDataKey))
+        if (player != null && player.hasMetadata(mcMMO.playerDataKey))
             return (McMMOPlayer) player.getMetadata(mcMMO.playerDataKey).get(0).value();
         else
             return null;

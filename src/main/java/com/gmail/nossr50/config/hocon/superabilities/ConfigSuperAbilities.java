@@ -13,12 +13,12 @@ public class ConfigSuperAbilities {
 
     @Setting(value = "Enable-Super-Abilities",
             comment = "Turn this off to disable all super abilities." +
-                    "\nDefault value: "+SUPER_ABILITY_DEFAULT)
+                    "\nDefault value: " + SUPER_ABILITY_DEFAULT)
     private boolean superAbilitiesEnabled = SUPER_ABILITY_DEFAULT;
 
     @Setting(value = "Require-Sneaking",
             comment = "Players must be sneaking in order to activate super abilities." +
-                    "\nDefault value: "+MUST_SNEAK_TO_ACTIVATE_DEFAULT)
+                    "\nDefault value: " + MUST_SNEAK_TO_ACTIVATE_DEFAULT)
     private boolean mustSneakToActivate = MUST_SNEAK_TO_ACTIVATE_DEFAULT;
 
     @Setting(value = "Super-Ability-Cooldowns",
@@ -27,7 +27,7 @@ public class ConfigSuperAbilities {
 
     @Setting(value = "Super-Ability-Max-Length",
             comment = "The maximum amount of time in seconds that a super ability can last." +
-            "\nMost super abilities get longer as a player grows in skill.")
+                    "\nMost super abilities get longer as a player grows in skill.")
     private ConfigSectionSuperAbilityMaxLength superAbilityMaxLength = new ConfigSectionSuperAbilityMaxLength();
 
     @Setting(value = "Super-Ability-Settings", comment = "Change specific parameters for super abilities.")
@@ -53,10 +53,8 @@ public class ConfigSuperAbilities {
         return superAbilityLimits;
     }
 
-    public int getCooldownForSuper(SuperAbilityType superAbilityType)
-    {
-        switch(superAbilityType)
-        {
+    public int getCooldownForSuper(SuperAbilityType superAbilityType) {
+        switch (superAbilityType) {
             case BERSERK:
                 return superAbilityCooldowns.getBerserk();
             case GREEN_TERRA:
@@ -74,15 +72,13 @@ public class ConfigSuperAbilities {
             case GIGA_DRILL_BREAKER:
                 return superAbilityCooldowns.getGigaDrillBreaker();
             default:
-                mcMMO.p.getLogger().severe("Cooldown Parameter not found for "+superAbilityType.toString());
+                mcMMO.p.getLogger().severe("Cooldown Parameter not found for " + superAbilityType.toString());
                 return 240;
         }
     }
 
-    public int getMaxLengthForSuper(SuperAbilityType superAbilityType)
-    {
-        switch(superAbilityType)
-        {
+    public int getMaxLengthForSuper(SuperAbilityType superAbilityType) {
+        switch (superAbilityType) {
             case BERSERK:
                 return superAbilityMaxLength.getBerserk();
             case GREEN_TERRA:
@@ -98,7 +94,7 @@ public class ConfigSuperAbilities {
             case GIGA_DRILL_BREAKER:
                 return superAbilityMaxLength.getGigaDrillBreaker();
             default:
-                mcMMO.p.getLogger().severe("Max Length Parameter not found for "+superAbilityType.toString());
+                mcMMO.p.getLogger().severe("Max Length Parameter not found for " + superAbilityType.toString());
                 return 60;
         }
     }

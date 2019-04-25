@@ -12,8 +12,7 @@ public class SubSkillRandomCheckEvent extends SubSkillEvent {
         this.chance = chance;
     }
 
-    public SubSkillRandomCheckEvent(Player player, AbstractSubSkill abstractSubSkill, double chance)
-    {
+    public SubSkillRandomCheckEvent(Player player, AbstractSubSkill abstractSubSkill, double chance) {
         super(player, abstractSubSkill);
         this.chance = chance;
     }

@@ -14,7 +14,8 @@ public final class Motd {
     public static final String PERK_PREFIX = LocaleLoader.getString("MOTD.PerksPrefix") + " ";
     private static final PluginDescriptionFile pluginDescription = mcMMO.p.getDescription();
 
-    private Motd() {}
+    private Motd() {
+    }
 
     public static void displayAll(Player player) {
         displayVersion(player, pluginDescription.getVersion());

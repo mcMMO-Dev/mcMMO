@@ -10,7 +10,7 @@ public class ConfigSectionPartyXPFormula {
 
     @Setting(value = "Party-XP-Formula-Multiplier",
             comment = "Crank this up to make it harder to level parties" +
-                    "\nDefault value: "+PARTY_XP_CURVE_MULTIPLIER_DEFAULT)
+                    "\nDefault value: " + PARTY_XP_CURVE_MULTIPLIER_DEFAULT)
     private int partyXpCurveMultiplier = PARTY_XP_CURVE_MULTIPLIER_DEFAULT;
 
     public int getPartyXpCurveMultiplier() {

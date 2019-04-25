@@ -19,7 +19,7 @@ public class McnotifyCommand implements TabExecutor {
                 McMMOPlayer mcMMOPlayer = UserManager.getPlayer((Player) sender);
 
                 //Not Loaded yet
-                if(mcMMOPlayer == null)
+                if (mcMMOPlayer == null)
                     sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
 
                 sender.sendMessage(LocaleLoader.getString("Commands.Notifications." + (mcMMOPlayer.useChatNotifications() ? "Off" : "On")));

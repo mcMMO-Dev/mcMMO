@@ -6,6 +6,7 @@ package com.gmail.nossr50.config;
 public interface VersionedConfig {
     /**
      * The version of this config
+     *
      * @return
      */
     double getConfigVersion();

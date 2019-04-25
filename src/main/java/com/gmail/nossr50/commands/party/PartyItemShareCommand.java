@@ -17,8 +17,7 @@ import org.bukkit.entity.Player;
 public class PartyItemShareCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(UserManager.getPlayer((Player) sender) == null)
-        {
+        if (UserManager.getPlayer((Player) sender) == null) {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
@@ -47,19 +46,16 @@ public class PartyItemShareCommand implements CommandExecutor {
 
                 if (CommandUtils.shouldEnableToggle(args[2])) {
                     toggle = true;
-                }
-                else if (CommandUtils.shouldDisableToggle(args[2])) {
+                } else if (CommandUtils.shouldDisableToggle(args[2])) {
                     toggle = false;
-                }
-                else {
+                } else {
                     sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<loot | mining | herbalism | woodcutting | misc> <true | false>"));
                     return true;
                 }
 
                 try {
                     handleToggleItemShareCategory(party, ItemShareType.valueOf(args[1].toUpperCase()), toggle);
-                }
-                catch (IllegalArgumentException ex) {
+                } catch (IllegalArgumentException ex) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<loot | mining | herbalism | woodcutting | misc> <true | false>"));
                 }
 

@@ -35,7 +35,7 @@ public class WoodcuttingCommand extends SkillCommand {
         if (canDoubleDrop) {
             setDoubleDropClassicChanceStrings(player);
         }
-        
+
         // TREE FELLER
         if (canTreeFell) {
             String[] treeFellerStrings = calculateLengthDisplayValues(player, skillValue);
@@ -68,7 +68,7 @@ public class WoodcuttingCommand extends SkillCommand {
             messages.add(getStatMessage(SubSkillType.WOODCUTTING_HARVEST_LUMBER, doubleDropChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
         }
-        
+
         if (canLeafBlow) {
             messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Woodcutting.Ability.0"), LocaleLoader.getString("Woodcutting.Ability.1")));
         }

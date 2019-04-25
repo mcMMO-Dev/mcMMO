@@ -42,7 +42,7 @@ public class InventoryListener implements Listener {
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onInventoryOpen(InventoryOpenEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
             return;
 
         Block furnaceBlock = processInventoryOpenOrCloseEvent(event.getInventory());
@@ -58,19 +58,18 @@ public class InventoryListener implements Listener {
         }
 
         //Profile not loaded
-        if(UserManager.getPlayer((Player) player) == null)
-        {
+        if (UserManager.getPlayer((Player) player) == null) {
             return;
         }
 
-        if(!furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey) && furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey).size() == 0)
+        if (!furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey) && furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey).size() == 0)
             furnaceBlock.setMetadata(mcMMO.furnaceMetadataKey, UserManager.getPlayer((Player) player).getPlayerMetadata());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
             return;
 
         Block furnaceBlock = processInventoryOpenOrCloseEvent(event.getInventory());
@@ -91,7 +90,7 @@ public class InventoryListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceBurnEvent(FurnaceBurnEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
 
         Block furnaceBlock = event.getBlock();
@@ -105,9 +104,8 @@ public class InventoryListener implements Listener {
         Player player = getPlayerFromFurnace(furnaceBlock);
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if(WorldGuardUtils.isWorldGuardLoaded())
-        {
-            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+        if (WorldGuardUtils.isWorldGuardLoaded()) {
+            if (!WorldGuardManager.getInstance().hasMainFlag(player))
                 return;
         }
 
@@ -116,8 +114,7 @@ public class InventoryListener implements Listener {
         }
 
         //Profile not loaded
-        if(UserManager.getPlayer(player) == null)
-        {
+        if (UserManager.getPlayer(player) == null) {
             return;
         }
 
@@ -127,7 +124,7 @@ public class InventoryListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceSmeltEvent(FurnaceSmeltEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
 
         Block furnaceBlock = event.getBlock();
@@ -140,9 +137,8 @@ public class InventoryListener implements Listener {
         Player player = getPlayerFromFurnace(furnaceBlock);
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if(WorldGuardUtils.isWorldGuardLoaded())
-        {
-            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+        if (WorldGuardUtils.isWorldGuardLoaded()) {
+            if (!WorldGuardManager.getInstance().hasMainFlag(player))
                 return;
         }
 
@@ -151,8 +147,7 @@ public class InventoryListener implements Listener {
         }
 
         //Profile not loaded
-        if(UserManager.getPlayer(player) == null)
-        {
+        if (UserManager.getPlayer(player) == null) {
             return;
         }
 
@@ -162,7 +157,7 @@ public class InventoryListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceExtractEvent(FurnaceExtractEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
             return;
 
         Block furnaceBlock = event.getBlock();
@@ -174,9 +169,8 @@ public class InventoryListener implements Listener {
         Player player = getPlayerFromFurnace(furnaceBlock);
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if(WorldGuardUtils.isWorldGuardLoaded())
-        {
-            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+        if (WorldGuardUtils.isWorldGuardLoaded()) {
+            if (!WorldGuardManager.getInstance().hasMainFlag(player))
                 return;
         }
 
@@ -185,8 +179,7 @@ public class InventoryListener implements Listener {
         }
 
         //Profile not loaded
-        if(UserManager.getPlayer(player) == null)
-        {
+        if (UserManager.getPlayer(player) == null) {
             return;
         }
 
@@ -197,24 +190,21 @@ public class InventoryListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onInventoryClickEventNormal(InventoryClickEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getWhoClicked().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getWhoClicked().getWorld()))
             return;
 
         Inventory inventory = event.getInventory();
 
-        if(event.getWhoClicked() instanceof Player)
-        {
+        if (event.getWhoClicked() instanceof Player) {
             Player player = ((Player) event.getWhoClicked()).getPlayer();
             Block furnaceBlock = processInventoryOpenOrCloseEvent(event.getInventory());
 
-            if (furnaceBlock != null)
-            {
+            if (furnaceBlock != null) {
                 if (furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey).size() > 0)
                     furnaceBlock.removeMetadata(mcMMO.furnaceMetadataKey, mcMMO.p);
 
                 //Profile not loaded
-                if(UserManager.getPlayer(player) == null)
-                {
+                if (UserManager.getPlayer(player) == null) {
                     return;
                 }
 
@@ -241,9 +231,8 @@ public class InventoryListener implements Listener {
         Player player = (Player) whoClicked;
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if(WorldGuardUtils.isWorldGuardLoaded())
-        {
-            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+        if (WorldGuardUtils.isWorldGuardLoaded()) {
+            if (!WorldGuardManager.getInstance().hasMainFlag(player))
                 return;
         }
 
@@ -280,8 +269,7 @@ public class InventoryListener implements Listener {
                     return;
                 default:
             }
-        }
-        else if (slot == InventoryType.SlotType.FUEL) {
+        } else if (slot == InventoryType.SlotType.FUEL) {
             boolean emptyClicked = AlchemyPotionBrewer.isEmpty(clicked);
 
             if (AlchemyPotionBrewer.isEmpty(cursor)) {
@@ -291,8 +279,7 @@ public class InventoryListener implements Listener {
                 }
 
                 AlchemyPotionBrewer.scheduleCheck(player, stand);
-            }
-            else if (emptyClicked) {
+            } else if (emptyClicked) {
                 if (AlchemyPotionBrewer.isValidIngredient(player, cursor)) {
                     int amount = cursor.getAmount();
 
@@ -303,8 +290,7 @@ public class InventoryListener implements Listener {
 
                         AlchemyPotionBrewer.scheduleUpdate(inventory);
                         AlchemyPotionBrewer.scheduleCheck(player, stand);
-                    }
-                    else if (click == ClickType.RIGHT) {
+                    } else if (click == ClickType.RIGHT) {
                         event.setCancelled(true);
 
                         ItemStack one = cursor.clone();
@@ -327,7 +313,7 @@ public class InventoryListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onInventoryDragEvent(InventoryDragEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getWhoClicked().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getWhoClicked().getWorld()))
             return;
 
         Inventory inventory = event.getInventory();
@@ -359,9 +345,8 @@ public class InventoryListener implements Listener {
             Player player = (Player) whoClicked;
 
             /* WORLD GUARD MAIN FLAG CHECK */
-            if(WorldGuardUtils.isWorldGuardLoaded())
-            {
-                if(!WorldGuardManager.getInstance().hasMainFlag(player))
+            if (WorldGuardUtils.isWorldGuardLoaded()) {
+                if (!WorldGuardManager.getInstance().hasMainFlag(player))
                     return;
             }
 
@@ -378,10 +363,9 @@ public class InventoryListener implements Listener {
 
     // Apparently sometimes vanilla brewing beats our task listener to the actual brew. We handle this by cancelling the vanilla event and finishing our brew ourselves.
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onBrew(BrewEvent event)
-    {
+    public void onBrew(BrewEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
 
         if (event instanceof FakeBrewEvent)
@@ -396,7 +380,7 @@ public class InventoryListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onInventoryMoveItemEvent(InventoryMoveItemEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getSource().getLocation().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getSource().getLocation().getWorld()))
             return;
 
         Inventory inventory = event.getDestination();
@@ -444,7 +428,7 @@ public class InventoryListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCraftItem(CraftItemEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getWhoClicked().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getWhoClicked().getWorld()))
             return;
 
         final HumanEntity whoClicked = event.getWhoClicked();
@@ -462,9 +446,8 @@ public class InventoryListener implements Listener {
         Player player = (Player) whoClicked;
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if(WorldGuardUtils.isWorldGuardLoaded())
-        {
-            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+        if (WorldGuardUtils.isWorldGuardLoaded()) {
+            if (!WorldGuardManager.getInstance().hasMainFlag(player))
                 return;
         }
 

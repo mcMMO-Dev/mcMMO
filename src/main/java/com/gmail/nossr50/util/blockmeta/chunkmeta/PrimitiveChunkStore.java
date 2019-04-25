@@ -11,11 +11,13 @@ import java.util.UUID;
 
 public class PrimitiveChunkStore implements ChunkStore {
     private static final long serialVersionUID = -1L;
-    transient private boolean dirty = false;
-    /** X, Z, Y */
-    public boolean[][][] store;
     private static final int CURRENT_VERSION = 7;
     private static final int MAGIC_NUMBER = 0xEA5EDEBB;
+    /**
+     * X, Z, Y
+     */
+    public boolean[][][] store;
+    transient private boolean dirty = false;
     private int cx;
     private int cz;
     private UUID worldUid;
@@ -138,8 +140,9 @@ public class PrimitiveChunkStore implements ChunkStore {
                 for (int y = 0; y < store[0][0].length; y++) {
                     try {
                         store[x][z][y] = temp[x][y][z];
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    catch (Exception e) { e.printStackTrace(); }
                 }
             }
         }

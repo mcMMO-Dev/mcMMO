@@ -19,8 +19,9 @@ public class CoreSkillsConfig extends Config {
     /**
      * This grabs an instance of the class from the Config Manager
      * This method is deprecated and will be removed in the future
-     * @see mcMMO#getConfigManager()
+     *
      * @return the instance of this config
+     * @see mcMMO#getConfigManager()
      * @deprecated Please use mcMMO.getConfigManager() to grab a specific config instead
      */
     @Deprecated
@@ -55,7 +56,7 @@ public class CoreSkillsConfig extends Config {
      * @return true if subskill is enabled
      */
     public boolean isSkillEnabled(AbstractSubSkill abstractSubSkill) {
-        return getBooleanValue(StringUtils.getCapitalized(abstractSubSkill.getPrimarySkill().toString()),  abstractSubSkill.getConfigKeyName(),  ENABLED);
+        return getBooleanValue(StringUtils.getCapitalized(abstractSubSkill.getPrimarySkill().toString()), abstractSubSkill.getConfigKeyName(), ENABLED);
     }
 
     /**
@@ -65,6 +66,6 @@ public class CoreSkillsConfig extends Config {
      * @return true if enabled
      */
     public boolean isPrimarySkillEnabled(PrimarySkillType primarySkillType) {
-        return getBooleanValue(StringUtils.getCapitalized(primarySkillType.toString()),  ENABLED);
+        return getBooleanValue(StringUtils.getCapitalized(primarySkillType.toString()), ENABLED);
     }
 }

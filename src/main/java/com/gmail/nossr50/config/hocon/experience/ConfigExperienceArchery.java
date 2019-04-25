@@ -13,7 +13,7 @@ public class ConfigExperienceArchery {
             "\nThe maximum distance bonus is 50, so expect this multiplier to peak at being multiplied against 50." +
             "\nDistance is in blocks traveled." +
             "\nThis value is added on to normal XP gains from damage for Archery." +
-            "\nDefault value: "+DISTANCE_MULTIPLIER_DEFAULT)
+            "\nDefault value: " + DISTANCE_MULTIPLIER_DEFAULT)
     private double distanceMultiplier = DISTANCE_MULTIPLIER_DEFAULT;
 
     public double getDistanceMultiplier() {

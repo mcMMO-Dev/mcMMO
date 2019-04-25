@@ -25,21 +25,21 @@ import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
 public class McMMOSimpleRegionFile {
-    private RandomAccessFile file;
+    @SuppressWarnings("unused")
+    private static long TIMEOUT_TIME = 300000; // 5 min
     private final int[] dataStart = new int[1024];
     private final int[] dataActualLength = new int[1024];
     private final int[] dataLength = new int[1024];
     private final ArrayList<Boolean> inuse = new ArrayList<>();
-    private int segmentSize;
-    private int segmentMask;
     private final int rx;
     private final int rz;
     private final int defaultSegmentSize;
     private final File parent;
+    private RandomAccessFile file;
+    private int segmentSize;
+    private int segmentMask;
     @SuppressWarnings("unused")
     private long lastAccessTime = System.currentTimeMillis();
-    @SuppressWarnings("unused")
-    private static long TIMEOUT_TIME = 300000; // 5 min
 
     public McMMOSimpleRegionFile(File f, int rx, int rz) {
         this(f, rx, rz, 10);
@@ -91,8 +91,7 @@ public class McMMOSimpleRegionFile {
                 }
 
                 extendFile();
-            }
-            catch (IOException fnfe) {
+            } catch (IOException fnfe) {
                 throw new RuntimeException(fnfe);
             }
         }
@@ -139,16 +138,15 @@ public class McMMOSimpleRegionFile {
                 }
 
                 extendFile();
-            }
-            catch (IOException fnfe) {
+            } catch (IOException fnfe) {
                 throw new RuntimeException(fnfe);
             }
         }
         return file;
     }
 
-/*    public synchronized boolean testCloseTimeout() {
-        *//*
+    /*    public synchronized boolean testCloseTimeout() {
+     *//*
         if (System.currentTimeMillis() - TIMEOUT_TIME > lastAccessTime) {
             close();
             return true;
@@ -197,8 +195,7 @@ public class McMMOSimpleRegionFile {
             }
 
             file = null;
-        }
-        catch (IOException ioe) {
+        } catch (IOException ioe) {
             throw new RuntimeException("Unable to close file", ioe);
         }
     }
@@ -261,8 +258,7 @@ public class McMMOSimpleRegionFile {
             if (inuse.get(end)) {
                 end++;
                 start = end;
-            }
-            else {
+            } else {
                 end++;
             }
 

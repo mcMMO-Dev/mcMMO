@@ -13,13 +13,11 @@ public class BonusDropManager implements Unload {
 
     private HashMap<Material, Boolean> bonusDropWhitelist;
 
-    public BonusDropManager()
-    {
+    public BonusDropManager() {
         bonusDropWhitelist = new HashMap<>();
 
         //Start by setting all Materials to false to avoid null checks
-        for(Material material : Material.values())
-        {
+        for (Material material : Material.values()) {
             registerMaterial(material, false);
         }
     }
@@ -31,28 +29,25 @@ public class BonusDropManager implements Unload {
 
     /**
      * Adds materials to the bonus drop whitelist
+     *
      * @param materials target material list
      */
-    public void addToWhitelistByMaterial(List<Material> materials)
-    {
-        for(Material material : materials)
-        {
+    public void addToWhitelistByMaterial(List<Material> materials) {
+        for (Material material : materials) {
             registerMaterial(material, true);
         }
     }
 
     /**
      * Adds materials to the bonus drop whitelist
+     *
      * @param materials target material list
      */
-    public void addToWhitelistByNameID(List<String> materials)
-    {
-        for(String material : materials)
-        {
+    public void addToWhitelistByNameID(List<String> materials) {
+        for (String material : materials) {
             Material m = Material.matchMaterial(material);
-            if(m == null)
-            {
-                mcMMO.p.getLogger().severe("Error registering Bonus Drop -- Invalid Minecraft Name ID: "+material);
+            if (m == null) {
+                mcMMO.p.getLogger().severe("Error registering Bonus Drop -- Invalid Minecraft Name ID: " + material);
                 continue;
             }
 
@@ -62,6 +57,7 @@ public class BonusDropManager implements Unload {
 
     /**
      * Adds a material to the bonus drop whitelist
+     *
      * @param material target material
      */
     private void registerMaterial(Material material, boolean isWhitelisted) {
@@ -70,11 +66,11 @@ public class BonusDropManager implements Unload {
 
     /**
      * Check if a material can provide bonus drops
+     *
      * @param material target material
      * @return true if the material can provide bonus drops
      */
-    public boolean isBonusDropWhitelisted(Material material)
-    {
+    public boolean isBonusDropWhitelisted(Material material) {
         return bonusDropWhitelist.get(material);
     }
 }

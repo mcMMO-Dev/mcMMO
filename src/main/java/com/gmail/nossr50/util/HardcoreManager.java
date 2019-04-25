@@ -11,13 +11,14 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 
 public final class HardcoreManager {
-    private HardcoreManager() {}
+    private HardcoreManager() {
+    }
 
     public static void invokeStatPenalty(Player player) {
         double statLossPercentage = MainConfig.getInstance().getHardcoreDeathStatPenaltyPercentage();
         int levelThreshold = MainConfig.getInstance().getHardcoreDeathStatPenaltyLevelThreshold();
 
-        if(UserManager.getPlayer(player) == null)
+        if (UserManager.getPlayer(player) == null)
             return;
 
         PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
@@ -62,7 +63,7 @@ public final class HardcoreManager {
         double vampirismStatLeechPercentage = MainConfig.getInstance().getHardcoreVampirismStatLeechPercentage();
         int levelThreshold = MainConfig.getInstance().getHardcoreVampirismLevelThreshold();
 
-        if(UserManager.getPlayer(killer) == null || UserManager.getPlayer(victim) == null)
+        if (UserManager.getPlayer(killer) == null || UserManager.getPlayer(victim) == null)
             return;
 
         PlayerProfile killerProfile = UserManager.getPlayer(killer).getProfile();
@@ -106,8 +107,7 @@ public final class HardcoreManager {
         if (totalLevelsStolen > 0) {
             NotificationManager.sendPlayerInformation(killer, NotificationType.HARDCORE_MODE, "Hardcore.Vampirism.Killer.Success", String.valueOf(totalLevelsStolen), victim.getName());
             NotificationManager.sendPlayerInformation(victim, NotificationType.HARDCORE_MODE, "Hardcore.Vampirism.Victim.Success", killer.getName(), String.valueOf(totalLevelsStolen));
-        }
-        else {
+        } else {
             NotificationManager.sendPlayerInformation(killer, NotificationType.HARDCORE_MODE, "Hardcore.Vampirism.Killer.Failure", victim.getName());
             NotificationManager.sendPlayerInformation(victim, NotificationType.HARDCORE_MODE, "Hardcore.Vampirism.Victim.Failure", killer.getName());
         }

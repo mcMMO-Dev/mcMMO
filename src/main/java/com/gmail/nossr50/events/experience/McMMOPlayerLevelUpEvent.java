@@ -9,6 +9,7 @@ import org.bukkit.event.HandlerList;
  * Called when a user levels up in a skill
  */
 public class McMMOPlayerLevelUpEvent extends McMMOPlayerLevelChangeEvent {
+    private static final HandlerList handlers = new HandlerList();
     private int levelsGained;
 
     @Deprecated
@@ -33,11 +34,8 @@ public class McMMOPlayerLevelUpEvent extends McMMOPlayerLevelChangeEvent {
         this.levelsGained = levelsGained;
     }
 
-    /**
-     * @param levelsGained Set the number of levels gained in this event
-     */
-    public void setLevelsGained(int levelsGained) {
-        this.levelsGained = levelsGained;
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 
     /**
@@ -47,14 +45,15 @@ public class McMMOPlayerLevelUpEvent extends McMMOPlayerLevelChangeEvent {
         return levelsGained;
     }
 
-    private static final HandlerList handlers = new HandlerList();
+    /**
+     * @param levelsGained Set the number of levels gained in this event
+     */
+    public void setLevelsGained(int levelsGained) {
+        this.levelsGained = levelsGained;
+    }
 
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 }

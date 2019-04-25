@@ -36,8 +36,9 @@ public class HerbalismTreasureConfig extends Config implements UnsafeValueValida
     /**
      * This grabs an instance of this config class from the Config Manager
      * This method is deprecated and will be removed in the future
-     * @see mcMMO#getConfigManager()
+     *
      * @return the instance of this config
+     * @see mcMMO#getConfigManager()
      * @deprecated Please use mcMMO.getConfigManager() to grab a specific config instead
      */
     @Deprecated
@@ -52,8 +53,7 @@ public class HerbalismTreasureConfig extends Config implements UnsafeValueValida
     public void register() {
         ConfigurationNode herbalismTreasureNode = getUserRootNode().getNode(HYLIAN_LUCK);
 
-        if(herbalismTreasureNode == null)
-        {
+        if (herbalismTreasureNode == null) {
             mcMMO.p.getLogger().info("Excavation treasures in treasures config not defined");
             return;
         }
@@ -65,8 +65,7 @@ public class HerbalismTreasureConfig extends Config implements UnsafeValueValida
                 //Treasure Material Definition
                 Material treasureMaterial = Material.matchMaterial(treasureName.toUpperCase());
 
-                if(treasureMaterial != null)
-                {
+                if (treasureMaterial != null) {
                     ConfigurationNode currentTreasure = herbalismTreasureNode.getNode(treasureName);
 
                     //TODO: Rewrite the entire treasure system because it sucks
@@ -87,40 +86,35 @@ public class HerbalismTreasureConfig extends Config implements UnsafeValueValida
                     ArrayList<String> dropsFrom = new ArrayList(currentTreasure.getNode("Drops_From").getList(TypeToken.of(String.class)));
 
                     //VALIDATE AMOUNT
-                    if(amount <= 0)
-                    {
-                        mcMMO.p.getLogger().severe("Herbalism Hylian Luck Treasure named "+treasureName+" in the config has an amount of 0 or below, is this intentional?");
-                        mcMMO.p.getLogger().severe("Skipping "+treasureName+" for being invalid");
+                    if (amount <= 0) {
+                        mcMMO.p.getLogger().severe("Herbalism Hylian Luck Treasure named " + treasureName + " in the config has an amount of 0 or below, is this intentional?");
+                        mcMMO.p.getLogger().severe("Skipping " + treasureName + " for being invalid");
                         continue;
                     }
 
                     //VALIDATE XP
-                    if(xp <= 0)
-                    {
-                        mcMMO.p.getLogger().info("Herbalism Hylian Luck Treasure named "+treasureName+" in the config has xp set to 0 or below, is this intentional?");
+                    if (xp <= 0) {
+                        mcMMO.p.getLogger().info("Herbalism Hylian Luck Treasure named " + treasureName + " in the config has xp set to 0 or below, is this intentional?");
                         xp = 0;
                     }
 
                     //VALIDATE DROP CHANCE
-                    if(dropChance <= 0)
-                    {
-                        mcMMO.p.getLogger().severe("Herbalism Hylian Luck Treasure named "+treasureName+" in the config has a drop chance of 0 or below, is this intentional?");
-                        mcMMO.p.getLogger().severe("Skipping "+treasureName+" for being invalid");
+                    if (dropChance <= 0) {
+                        mcMMO.p.getLogger().severe("Herbalism Hylian Luck Treasure named " + treasureName + " in the config has a drop chance of 0 or below, is this intentional?");
+                        mcMMO.p.getLogger().severe("Skipping " + treasureName + " for being invalid");
                         continue;
                     }
 
                     //VALIDATE DROP LEVEL
-                    if(dropLevel < 0)
-                    {
-                        mcMMO.p.getLogger().info("Herbalism Hylian Luck Treasure named "+treasureName+" in the config has a drop level below 0, is this intentional?");
+                    if (dropLevel < 0) {
+                        mcMMO.p.getLogger().info("Herbalism Hylian Luck Treasure named " + treasureName + " in the config has a drop level below 0, is this intentional?");
                         dropLevel = 0;
                     }
 
                     //VALIDATE DROP SOURCES
-                    if(dropsFrom == null || dropsFrom.isEmpty())
-                    {
-                        mcMMO.p.getLogger().severe("Herbalism Hylian Luck Treasure named "+treasureName+" in the config has no drop targets, which would make it impossible to obtain, is this intentional?");
-                        mcMMO.p.getLogger().severe("Skipping "+treasureName+" for being invalid");
+                    if (dropsFrom == null || dropsFrom.isEmpty()) {
+                        mcMMO.p.getLogger().severe("Herbalism Hylian Luck Treasure named " + treasureName + " in the config has no drop targets, which would make it impossible to obtain, is this intentional?");
+                        mcMMO.p.getLogger().severe("Skipping " + treasureName + " for being invalid");
                         continue;
                     }
 
@@ -128,8 +122,7 @@ public class HerbalismTreasureConfig extends Config implements UnsafeValueValida
 
                     //Custom Name
 
-                    if(currentTreasure.getNode(CUSTOM_NAME) != null && !currentTreasure.getNode(CUSTOM_NAME).getString().equalsIgnoreCase("ChangeMe"))
-                    {
+                    if (currentTreasure.getNode(CUSTOM_NAME) != null && !currentTreasure.getNode(CUSTOM_NAME).getString().equalsIgnoreCase("ChangeMe")) {
                         customName = currentTreasure.getNode(CUSTOM_NAME).getString();
                     }
 
@@ -142,8 +135,7 @@ public class HerbalismTreasureConfig extends Config implements UnsafeValueValida
                     /*
                      * Add to map
                      */
-                    for(String dropBlock : dropsFrom)
-                    {
+                    for (String dropBlock : dropsFrom) {
                         if (dropBlock.equals("Bushes")) {
                             addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.FERN), hylianTreasure);
                             addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.TALL_GRASS), hylianTreasure);
@@ -176,7 +168,7 @@ public class HerbalismTreasureConfig extends Config implements UnsafeValueValida
                     }
 
                 } else {
-                    mcMMO.p.getLogger().severe("Excavation Treasure Config - Material named "+treasureName+" does not match any known material.");
+                    mcMMO.p.getLogger().severe("Excavation Treasure Config - Material named " + treasureName + " does not match any known material.");
                 }
             }
         } catch (ObjectMappingException e) {

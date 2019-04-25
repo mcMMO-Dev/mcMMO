@@ -11,10 +11,10 @@ public class MaxBonusLevel extends AbstractScalingProperty {
 
     */
 /**
-     * Returns the appropriate value for this scaling property whether it is Standard or Retro
-     *
-     * @return the value used in scaling calculations for this ScalingProperty
-     *//*
+ * Returns the appropriate value for this scaling property whether it is Standard or Retro
+ *
+ * @return the value used in scaling calculations for this ScalingProperty
+ *//*
 
     @Override
     public double getValue() {

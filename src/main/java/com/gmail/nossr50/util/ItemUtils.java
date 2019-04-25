@@ -16,26 +16,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class ItemUtils {
-    private ItemUtils() {}
+    private ItemUtils() {
+    }
 
-    public static ArrayList<String> getRepairItemMaterials(List<Material> repairItemList)
-    {
+    public static ArrayList<String> getRepairItemMaterials(List<Material> repairItemList) {
         ArrayList<String> repairMaterialList = new ArrayList<>();
 
-        for(Material m : repairItemList)
-        {
+        for (Material m : repairItemList) {
             repairMaterialList.add(m.getKey().toString());
         }
 
         return repairMaterialList;
     }
 
-    public static ArrayList<Material> matchMaterials(List<String> ItemBlockRegistryKeyList)
-    {
+    public static ArrayList<Material> matchMaterials(List<String> ItemBlockRegistryKeyList) {
         ArrayList<Material> matchedMaterials = new ArrayList<>();
 
-        for(String s : ItemBlockRegistryKeyList)
-        {
+        for (String s : ItemBlockRegistryKeyList) {
             matchedMaterials.add(Material.matchMaterial(s));
         }
 
@@ -44,15 +41,14 @@ public final class ItemUtils {
 
     /**
      * Determines the item type, currently used for repairables/salvageables
+     *
      * @param material target material
      * @return the matching ItemType returns OTHER if no match
      */
-    public static ItemType determineItemType(Material material)
-    {
+    public static ItemType determineItemType(Material material) {
         if (ItemUtils.isMinecraftTool(new ItemStack(material))) {
             return ItemType.TOOL;
-        }
-        else if (ItemUtils.isArmor(new ItemStack((material)))) {
+        } else if (ItemUtils.isArmor(new ItemStack((material)))) {
             return ItemType.ARMOR;
         } else {
             return ItemType.OTHER;
@@ -61,6 +57,7 @@ public final class ItemUtils {
 
     /**
      * Determines the material category, currently used for repairables/salvageables
+     *
      * @param material target material
      * @return the matching ItemMaterialCategory, return OTHER if no match
      */
@@ -112,7 +109,7 @@ public final class ItemUtils {
 
             default:
                 return false;
-                //return mcMMO.getModManager().isCustomBow(type);
+            //return mcMMO.getModManager().isCustomBow(type);
         }
     }
 
@@ -135,7 +132,7 @@ public final class ItemUtils {
 
             default:
                 return false;
-                //return mcMMO.getModManager().isCustomSword(type);
+            //return mcMMO.getModManager().isCustomSword(type);
         }
     }
 
@@ -158,7 +155,7 @@ public final class ItemUtils {
 
             default:
                 return false;
-                //return mcMMO.getModManager().isCustomHoe(type);
+            //return mcMMO.getModManager().isCustomHoe(type);
         }
     }
 
@@ -181,7 +178,7 @@ public final class ItemUtils {
 
             default:
                 return false;
-                //return mcMMO.getModManager().isCustomShovel(type);
+            //return mcMMO.getModManager().isCustomShovel(type);
         }
     }
 
@@ -204,7 +201,7 @@ public final class ItemUtils {
 
             default:
                 return false;
-                //return mcMMO.getModManager().isCustomAxe(type);
+            //return mcMMO.getModManager().isCustomAxe(type);
         }
     }
 
@@ -227,7 +224,7 @@ public final class ItemUtils {
 
             default:
                 return false;
-                //return mcMMO.getModManager().isCustomPickaxe(type);
+            //return mcMMO.getModManager().isCustomPickaxe(type);
         }
     }
 
@@ -264,7 +261,7 @@ public final class ItemUtils {
 
             default:
                 return false;
-                //return mcMMO.getModManager().isCustomHelmet(type);
+            //return mcMMO.getModManager().isCustomHelmet(type);
         }
     }
 
@@ -287,7 +284,7 @@ public final class ItemUtils {
 
             default:
                 return false;
-                //return mcMMO.getModManager().isCustomChestplate(type);
+            //return mcMMO.getModManager().isCustomChestplate(type);
         }
     }
 
@@ -310,7 +307,7 @@ public final class ItemUtils {
 
             default:
                 return false;
-                //return mcMMO.getModManager().isCustomLeggings(type);
+            //return mcMMO.getModManager().isCustomLeggings(type);
         }
     }
 
@@ -333,7 +330,7 @@ public final class ItemUtils {
 
             default:
                 return false;
-                //return mcMMO.getModManager().isCustomBoots(type);
+            //return mcMMO.getModManager().isCustomBoots(type);
         }
     }
 

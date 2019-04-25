@@ -50,7 +50,7 @@ public class FormulaManager {
      * the amount of levels and experience, using the previously
      * used formula type.
      *
-     * @param skillLevel Amount of levels
+     * @param skillLevel   Amount of levels
      * @param skillXPLevel Amount of experience
      * @return The total amount of experience
      */
@@ -71,8 +71,8 @@ public class FormulaManager {
      * the new formula type.
      *
      * @param primarySkillType skill where new levels and experience are calculated for
-     * @param experience total amount of experience
-     * @param formulaType The new {@link FormulaType}
+     * @param experience       total amount of experience
+     * @param formulaType      The new {@link FormulaType}
      * @return the amount of levels and experience
      */
     public int[] calculateNewLevel(PrimarySkillType primarySkillType, int experience, FormulaType formulaType) {
@@ -82,15 +82,14 @@ public class FormulaManager {
 
         while (experience > 0 && newLevel < Integer.MAX_VALUE) {
             //Level Cap
-            if(mcMMO.getPlayerLevelingSettings().isLevelCapEnabled(primarySkillType))
-            {
+            if (mcMMO.getPlayerLevelingSettings().isLevelCapEnabled(primarySkillType)) {
                 //Break the loop if we're at the cap
-                if(newLevel+1 > mcMMO.getPlayerLevelingSettings().getLevelCap(primarySkillType))
+                if (newLevel + 1 > mcMMO.getPlayerLevelingSettings().getLevelCap(primarySkillType))
                     break;
 
                 //If the maximum level is at or below our starting level, then the player can't level up anymore
-                if(maxLevel <= mcMMO.getPlayerLevelingSettings().getConfigSectionLevelingGeneral().getStartingLevel())
-                    return new int[]{ newLevel, remainder };
+                if (maxLevel <= mcMMO.getPlayerLevelingSettings().getConfigSectionLevelingGeneral().getStartingLevel())
+                    return new int[]{newLevel, remainder};
             }
 
             int experienceToNextLevel = getCachedXpToLevel(newLevel, formulaType);
@@ -104,7 +103,7 @@ public class FormulaManager {
             experience -= experienceToNextLevel;
         }
 
-        return new int[]{ newLevel, remainder };
+        return new int[]{newLevel, remainder};
     }
 
     /**
@@ -112,7 +111,7 @@ public class FormulaManager {
      * if cache doesn't contain the given value it is calculated and added
      * to the cached data.
      *
-     * @param level level to check
+     * @param level       level to check
      * @param formulaType The {@link FormulaType} used
      * @return amount of experience needed to reach next level
      */
@@ -136,7 +135,7 @@ public class FormulaManager {
         switch (formulaType) {
             case LINEAR:
                 if (!experienceNeededLinear.containsKey(level)) {
-                    experience = (int) Math.floor( xpNeededMultiplier * (base + level * multiplier));
+                    experience = (int) Math.floor(xpNeededMultiplier * (base + level * multiplier));
                     experienceNeededLinear.put(level, experience);
                 }
 
@@ -144,7 +143,7 @@ public class FormulaManager {
 
             case EXPONENTIAL:
                 if (!experienceNeededExponential.containsKey(level)) {
-                    experience = (int) Math.floor( xpNeededMultiplier * (multiplier * Math.pow(level, exponent) + base));
+                    experience = (int) Math.floor(xpNeededMultiplier * (multiplier * Math.pow(level, exponent) + base));
                     experienceNeededExponential.put(level, experience);
                 }
 
@@ -159,7 +158,7 @@ public class FormulaManager {
      * Get the cached amount of experience needed to reach the next party level,
      * if cache doesn't contain the given value it is calculated and added
      * to the cached data.
-     *
+     * <p>
      * Parties use the exponential leveling formula
      *
      * @param level level to check
@@ -207,8 +206,7 @@ public class FormulaManager {
 
         try {
             formulasFile.save(formulaFile);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

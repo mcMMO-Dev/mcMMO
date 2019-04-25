@@ -12,13 +12,14 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
 public final class MobHealthbarUtils {
-    private MobHealthbarUtils() {}
+    private MobHealthbarUtils() {
+    }
 
     /**
      * Fix issues with death messages caused by the mob healthbars.
      *
      * @param deathMessage The original death message
-     * @param player The player who died
+     * @param player       The player who died
      * @return the fixed death message
      */
     public static String fixDeathMessage(String deathMessage, Player player) {
@@ -30,7 +31,8 @@ public final class MobHealthbarUtils {
 
     /**
      * Handle the creation of mob healthbars.
-     *  @param target the targetted entity
+     *
+     * @param target the targetted entity
      * @param damage damage done by the attack triggering this
      */
     public static void handleMobHealthbars(LivingEntity target, double damage, mcMMO plugin) {
@@ -48,7 +50,7 @@ public final class MobHealthbarUtils {
         /*
          * Store the name in metadata
          */
-        if(target.getMetadata("mcMMO_oldName").size() <= 0 && originalName != null)
+        if (target.getMetadata("mcMMO_oldName").size() <= 0 && originalName != null)
             target.setMetadata("mcMMO_oldName", new OldName(originalName, plugin));
 
         if (oldName == null) {
@@ -69,8 +71,7 @@ public final class MobHealthbarUtils {
             if (updateName) {
                 target.setMetadata(mcMMO.customNameKey, new FixedMetadataValue(mcMMO.p, oldName));
                 target.setMetadata(mcMMO.customVisibleKey, new FixedMetadataValue(mcMMO.p, oldNameVisible));
-            }
-            else if (!target.hasMetadata(mcMMO.customNameKey)) {
+            } else if (!target.hasMetadata(mcMMO.customNameKey)) {
                 target.setMetadata(mcMMO.customNameKey, new FixedMetadataValue(mcMMO.p, ""));
                 target.setMetadata(mcMMO.customVisibleKey, new FixedMetadataValue(mcMMO.p, false));
             }
@@ -100,20 +101,15 @@ public final class MobHealthbarUtils {
 
                 if (healthPercentage >= 85) {
                     color = ChatColor.DARK_GREEN;
-                }
-                else if (healthPercentage >= 70) {
+                } else if (healthPercentage >= 70) {
                     color = ChatColor.GREEN;
-                }
-                else if (healthPercentage >= 55) {
+                } else if (healthPercentage >= 55) {
                     color = ChatColor.GOLD;
-                }
-                else if (healthPercentage >= 40) {
+                } else if (healthPercentage >= 40) {
                     color = ChatColor.YELLOW;
-                }
-                else if (healthPercentage >= 25) {
+                } else if (healthPercentage >= 25) {
                     color = ChatColor.RED;
-                }
-                else if (healthPercentage >= 0) {
+                } else if (healthPercentage >= 0) {
                     color = ChatColor.DARK_RED;
                 }
 

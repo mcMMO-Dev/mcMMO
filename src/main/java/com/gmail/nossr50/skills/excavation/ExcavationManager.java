@@ -50,18 +50,17 @@ public class ExcavationManager extends SkillManager {
         applyXpGain(xp, XPGainReason.PVE);
     }
 
-    public void printExcavationDebug(Player player, BlockState blockState)
-    {
+    public void printExcavationDebug(Player player, BlockState blockState) {
         if (Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
             List<ExcavationTreasure> treasures = Excavation.getTreasures(blockState);
 
             if (!treasures.isEmpty()) {
                 for (ExcavationTreasure treasure : treasures) {
                     player.sendMessage("|||||||||||||||||||||||||||||||||");
-                    player.sendMessage("[mcMMO DEBUG] Treasure found: ("+treasure.getDrop().getType().toString()+")");
-                    player.sendMessage("[mcMMO DEBUG] Drop Chance for Treasure: "+treasure.getDropChance());
-                    player.sendMessage("[mcMMO DEBUG] Skill Level Required: "+treasure.getDropLevel());
-                    player.sendMessage("[mcMMO DEBUG] XP for Treasure: "+treasure.getXp());
+                    player.sendMessage("[mcMMO DEBUG] Treasure found: (" + treasure.getDrop().getType().toString() + ")");
+                    player.sendMessage("[mcMMO DEBUG] Drop Chance for Treasure: " + treasure.getDropChance());
+                    player.sendMessage("[mcMMO DEBUG] Skill Level Required: " + treasure.getDropLevel());
+                    player.sendMessage("[mcMMO DEBUG] XP for Treasure: " + treasure.getXp());
                 }
             } else {
                 player.sendMessage("[mcMMO DEBUG] No treasures found for this block.");

@@ -10,7 +10,7 @@ public class ConfigSectionTreeFeller {
 
     @Setting(value = "Tree-Size-Limit", comment = "Trees over this many blocks in size will not activate" +
             "\nLower this number to improve performance." +
-            "\nDefault value: "+TREE_FELLER_LIMIT_DEFAULT)
+            "\nDefault value: " + TREE_FELLER_LIMIT_DEFAULT)
     private int treeFellerLimit = TREE_FELLER_LIMIT_DEFAULT;
 
     public int getTreeFellerLimit() {

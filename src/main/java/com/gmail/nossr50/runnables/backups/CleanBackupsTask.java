@@ -31,7 +31,7 @@ public class CleanBackupsTask extends BukkitRunnable {
 
         //if(BACKUP_DIR.listFiles().length < mcMMO.getConfigManager().getConfigAutomatedBackups().getMinimumBackupCount())
         //Don't remove files unless there is at least 10 of them
-        if(BACKUP_DIR.listFiles().length < 10)
+        if (BACKUP_DIR.listFiles().length < 10)
             return;
 
         // Check files in backup folder from oldest to newest
@@ -54,8 +54,7 @@ public class CleanBackupsTask extends BukkitRunnable {
             long currentTime = System.currentTimeMillis();
 
             //File is not old enough so don't delete it
-            if((fileSaveTimeStamp + (oldFileAgeLimit * TimeUnit.MILLISECONDS.convert(24, TimeUnit.HOURS)))  >= currentTime)
-            {
+            if ((fileSaveTimeStamp + (oldFileAgeLimit * TimeUnit.MILLISECONDS.convert(24, TimeUnit.HOURS))) >= currentTime) {
                 continue;
             }
 
@@ -80,7 +79,6 @@ public class CleanBackupsTask extends BukkitRunnable {
      * Check if date is within last 24 hours
      *
      * @param date date to check
-     *
      * @return true is date is within last 24 hours, false if otherwise
      */
     private boolean isPast24Hours(Date date) {
@@ -92,7 +90,6 @@ public class CleanBackupsTask extends BukkitRunnable {
      * Check if date is within the last week
      *
      * @param date date to check
-     *
      * @return true is date is within the last week, false if otherwise
      */
     private boolean isLastWeek(Date date) {
@@ -106,8 +103,7 @@ public class CleanBackupsTask extends BukkitRunnable {
 
         try {
             date = dateFormat.parse(fileName);
-        }
-        catch (ParseException e) {
+        } catch (ParseException e) {
             return null;
         }
 

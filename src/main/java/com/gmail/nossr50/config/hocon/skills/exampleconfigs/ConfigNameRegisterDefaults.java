@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 /**
  * This class is used to generate a table that can be referenced to compare Bukkit Material names
- *      to full qualified names used in internal registers for Minecraft
+ * to full qualified names used in internal registers for Minecraft
  */
 @ConfigSerializable
 public class ConfigNameRegisterDefaults {
@@ -17,8 +17,7 @@ public class ConfigNameRegisterDefaults {
 
     static {
         BUKKIT_MATERIAL_NAME_LOOKUP_EXAMPLE = new ArrayList<>();
-        for(Material m : Material.values())
-        {
+        for (Material m : Material.values()) {
             BUKKIT_MATERIAL_NAME_LOOKUP_EXAMPLE.add(new MinecraftMaterialWrapper((m)));
         }
     }

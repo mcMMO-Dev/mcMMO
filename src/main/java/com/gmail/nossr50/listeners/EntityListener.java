@@ -52,28 +52,23 @@ public class EntityListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onEntityTransform(EntityTransformEvent event)
-    {
+    public void onEntityTransform(EntityTransformEvent event) {
         //Transfer metadata keys from mob-spawned mobs to new mobs
-        if(event.getEntity().getMetadata(mcMMO.entityMetadataKey) != null || event.getEntity().getMetadata(mcMMO.entityMetadataKey).size() >= 1)
-        {
-            for(Entity entity : event.getTransformedEntities())
-            {
+        if (event.getEntity().getMetadata(mcMMO.entityMetadataKey) != null || event.getEntity().getMetadata(mcMMO.entityMetadataKey).size() >= 1) {
+            for (Entity entity : event.getTransformedEntities()) {
                 entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
             }
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onEntityTargetEntity(EntityTargetLivingEntityEvent event)
-    {
-        if(!mcMMO.getConfigManager().getConfigExploitPrevention().getEndermenEndermiteFix())
+    public void onEntityTargetEntity(EntityTargetLivingEntityEvent event) {
+        if (!mcMMO.getConfigManager().getConfigExploitPrevention().getEndermenEndermiteFix())
             return;
 
         //Prevent entities from giving XP if they target endermite
-        if(event.getTarget() instanceof Endermite)
-        {
-            if(event.getEntity().getMetadata(mcMMO.entityMetadataKey) == null || event.getEntity().getMetadata(mcMMO.entityMetadataKey).size() <= 0)
+        if (event.getTarget() instanceof Endermite) {
+            if (event.getEntity().getMetadata(mcMMO.entityMetadataKey) == null || event.getEntity().getMetadata(mcMMO.entityMetadataKey).size() <= 0)
                 event.getEntity().setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
         }
     }
@@ -81,17 +76,15 @@ public class EntityListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityShootBow(EntityShootBowEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
-        if(event.getEntity() instanceof Player)
-        {
+        if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
 
             /* WORLD GUARD MAIN FLAG CHECK */
-            if(WorldGuardUtils.isWorldGuardLoaded())
-            {
-                if(!WorldGuardManager.getInstance().hasMainFlag(player))
+            if (WorldGuardUtils.isWorldGuardLoaded()) {
+                if (!WorldGuardManager.getInstance().hasMainFlag(player))
                     return;
             }
         }
@@ -115,17 +108,15 @@ public class EntityListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onProjectileLaunch(ProjectileLaunchEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
-        if(event.getEntity() instanceof Player)
-        {
+        if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
 
             /* WORLD GUARD MAIN FLAG CHECK */
-            if(WorldGuardUtils.isWorldGuardLoaded())
-            {
-                if(!WorldGuardManager.getInstance().hasMainFlag(player))
+            if (WorldGuardUtils.isWorldGuardLoaded()) {
+                if (!WorldGuardManager.getInstance().hasMainFlag(player))
                     return;
             }
         }
@@ -143,13 +134,12 @@ public class EntityListener implements Listener {
     /**
      * Monitor EntityChangeBlock events.
      *
-     * @param event
-     *            The event to watch
+     * @param event The event to watch
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityChangeBlock(EntityChangeBlockEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
         Block block = event.getBlock();
@@ -169,13 +159,11 @@ public class EntityListener implements Listener {
             if (mcMMO.getPlaceStore().isTrue(block) && !isTracked) {
                 mcMMO.getPlaceStore().setFalse(block);
                 entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
-            }
-            else if (isTracked) {
+            } else if (isTracked) {
                 mcMMO.getPlaceStore().setTrue(block);
             }
         } else if ((block.getType() == Material.REDSTONE_ORE)) {
-        }
-        else {
+        } else {
             if (mcMMO.getPlaceStore().isTrue(block)) {
                 mcMMO.getPlaceStore().setFalse(block);
             }
@@ -232,16 +220,13 @@ public class EntityListener implements Listener {
     }*/
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onEntityDamageLowest(EntityDamageByEntityEvent event)
-    {
+    public void onEntityDamageLowest(EntityDamageByEntityEvent event) {
         Entity defender = event.getEntity();
 
-        if(defender.getMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY).size() > 0)
-        {
+        if (defender.getMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY).size() > 0) {
             defender.removeMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, plugin);
 
-            if(defender instanceof Player)
-            {
+            if (defender instanceof Player) {
                 LivingEntity defLive = (LivingEntity) defender;
                 defLive.setHealth(Math.max(0, (defLive.getHealth() - event.getFinalDamage())));
                 event.setCancelled(true);
@@ -253,8 +238,7 @@ public class EntityListener implements Listener {
     /**
      * Handle EntityDamageByEntity events that involve modifying the event.
      *
-     * @param event
-     *            The event to watch
+     * @param event The event to watch
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
@@ -263,7 +247,7 @@ public class EntityListener implements Listener {
         Entity attacker = event.getDamager();
 
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
         if (event instanceof FakeEntityDamageByEntityEvent) {
@@ -273,21 +257,18 @@ public class EntityListener implements Listener {
         if (event.getEntity() instanceof ArmorStand) {
             return;
         }
-        
-        if (event.getDamager().hasMetadata(mcMMO.funfettiMetadataKey))
-        {
+
+        if (event.getDamager().hasMetadata(mcMMO.funfettiMetadataKey)) {
             event.setCancelled(true);
             return;
         }
 
-        if(attacker instanceof Player)
-        {
+        if (attacker instanceof Player) {
             Player player = (Player) attacker;
 
             /* WORLD GUARD MAIN FLAG CHECK */
-            if(WorldGuardUtils.isWorldGuardLoaded())
-            {
-                if(!WorldGuardManager.getInstance().hasMainFlag(player))
+            if (WorldGuardUtils.isWorldGuardLoaded()) {
+                if (!WorldGuardManager.getInstance().hasMainFlag(player))
                     return;
             }
         }
@@ -298,7 +279,7 @@ public class EntityListener implements Listener {
                 Player attackingPlayer = (Player) attacker;
                 if (event.getDamage(DamageModifier.ABSORPTION) > 0) {
                     //If friendly fire is off don't allow players to hurt one another
-                    if(!mcMMO.getConfigManager().getConfigParty().isPartyFriendlyFireEnabled())
+                    if (!mcMMO.getConfigManager().getConfigParty().isPartyFriendlyFireEnabled())
                         if ((PartyManager.inSameParty(defendingPlayer, attackingPlayer) || PartyManager.areAllies(defendingPlayer, attackingPlayer)) && !(Permissions.friendlyFire(attackingPlayer) && Permissions.friendlyFire(defendingPlayer))) {
                             event.setCancelled(true);
                             return;
@@ -338,15 +319,13 @@ public class EntityListener implements Listener {
             if (projectileSource instanceof LivingEntity) {
                 attacker = (LivingEntity) projectileSource;
             }
-        }
-        else if (attacker instanceof Tameable) {
+        } else if (attacker instanceof Tameable) {
             AnimalTamer animalTamer = ((Tameable) attacker).getOwner();
 
             if (animalTamer != null && ((OfflinePlayer) animalTamer).isOnline()) {
                 attacker = (Entity) animalTamer;
             }
-        }
-        else if (attacker instanceof TNTPrimed && defender instanceof Player) {
+        } else if (attacker instanceof TNTPrimed && defender instanceof Player) {
             if (BlastMining.processBlastMiningExplosion(event, (TNTPrimed) attacker, (Player) defender)) {
                 return;
             }
@@ -367,12 +346,12 @@ public class EntityListener implements Listener {
             }
 
             //Party Friendly Fire
-            if(!mcMMO.getConfigManager().getConfigParty().isPartyFriendlyFireEnabled())
+            if (!mcMMO.getConfigManager().getConfigParty().isPartyFriendlyFireEnabled())
                 if ((PartyManager.inSameParty(defendingPlayer, attackingPlayer)
                         || PartyManager.areAllies(defendingPlayer, attackingPlayer)) && !(Permissions.friendlyFire(attackingPlayer) && Permissions.friendlyFire(defendingPlayer))) {
                     event.setCancelled(true);
                     return;
-            }
+                }
         }
 
         CombatUtils.processCombatAttack(event, attacker, target);
@@ -381,17 +360,14 @@ public class EntityListener implements Listener {
         /**
          * This sets entity names back to whatever they are supposed to be
          */
-        if(!(attacker instanceof Player) && defender instanceof Player)
-        {
-            if(event.getFinalDamage() >= ((LivingEntity) defender).getHealth())
-            {
+        if (!(attacker instanceof Player) && defender instanceof Player) {
+            if (event.getFinalDamage() >= ((LivingEntity) defender).getHealth()) {
                 List<MetadataValue> metadataValue = attacker.getMetadata("mcMMO_oldName");
 
-                if(metadataValue.size() <= 0)
+                if (metadataValue.size() <= 0)
                     return;
 
-                if(metadataValue != null)
-                {
+                if (metadataValue != null) {
                     OldName oldName = (OldName) metadataValue.get(0);
                     attacker.setCustomName(oldName.asString());
                     attacker.setCustomNameVisible(false);
@@ -405,22 +381,19 @@ public class EntityListener implements Listener {
     /**
      * Handle EntityDamage events that involve modifying the event.
      *
-     * @param event
-     *            The event to modify
+     * @param event The event to modify
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
-        if(event.getEntity() instanceof Player)
-        {
+        if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             /* WORLD GUARD MAIN FLAG CHECK */
-            if(WorldGuardUtils.isWorldGuardLoaded())
-            {
-                if(!WorldGuardManager.getInstance().hasMainFlag(player))
+            if (WorldGuardUtils.isWorldGuardLoaded()) {
+                if (!WorldGuardManager.getInstance().hasMainFlag(player))
                     return;
             }
         }
@@ -477,7 +450,7 @@ public class EntityListener implements Listener {
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
             //Profile not loaded
-            if(mcMMOPlayer == null)
+            if (mcMMOPlayer == null)
                 return;
 
             /* Check for invincibility */
@@ -490,19 +463,15 @@ public class EntityListener implements Listener {
                 mcMMOPlayer.actualizeRecentlyHurt();
             }
 
-        }
-
-        else if (livingEntity instanceof Tameable) {
+        } else if (livingEntity instanceof Tameable) {
             Tameable pet = (Tameable) livingEntity;
             AnimalTamer owner = pet.getOwner();
 
-            if(owner instanceof Player)
-            {
+            if (owner instanceof Player) {
                 Player player = (Player) owner;
                 /* WORLD GUARD MAIN FLAG CHECK */
-                if(WorldGuardUtils.isWorldGuardLoaded())
-                {
-                    if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                if (WorldGuardUtils.isWorldGuardLoaded()) {
+                    if (!WorldGuardManager.getInstance().hasMainFlag(player))
                         return;
                 }
             }
@@ -512,8 +481,7 @@ public class EntityListener implements Listener {
                 Wolf wolf = (Wolf) pet;
 
                 //Profile not loaded
-                if(UserManager.getPlayer(player) == null)
-                {
+                if (UserManager.getPlayer(player) == null) {
                     return;
                 }
 
@@ -580,13 +548,12 @@ public class EntityListener implements Listener {
     /**
      * Monitor EntityDeath events.
      *
-     * @param event
-     *            The event to watch
+     * @param event The event to watch
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityDeathLowest(EntityDeathEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
         LivingEntity entity = event.getEntity();
@@ -613,13 +580,12 @@ public class EntityListener implements Listener {
     /**
      * Monitor EntityDeath events.
      *
-     * @param event
-     *            The event to watch
+     * @param event The event to watch
      */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDeath(EntityDeathEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
         LivingEntity entity = event.getEntity();
@@ -634,13 +600,12 @@ public class EntityListener implements Listener {
     /**
      * Monitor CreatureSpawn events.
      *
-     * @param event
-     *            The event to watch
+     * @param event The event to watch
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
         LivingEntity entity = event.getEntity();
@@ -649,8 +614,7 @@ public class EntityListener implements Listener {
             case NETHER_PORTAL:
             case SPAWNER:
             case SPAWNER_EGG:
-                if(mcMMO.getConfigManager().getConfigExploitPrevention().doSpawnedEntitiesGiveModifiedXP())
-                {
+                if (mcMMO.getConfigManager().getConfigExploitPrevention().doSpawnedEntitiesGiveModifiedXP()) {
                     entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
 
                     Entity passenger = entity.getPassenger();
@@ -672,13 +636,12 @@ public class EntityListener implements Listener {
     /**
      * Handle ExplosionPrime events that involve modifying the event.
      *
-     * @param event
-     *            The event to modify
+     * @param event The event to modify
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onExplosionPrime(ExplosionPrimeEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
         Entity entity = event.getEntity();
@@ -696,15 +659,13 @@ public class EntityListener implements Listener {
         }
 
         //Profile not loaded
-        if(UserManager.getPlayer(player) == null)
-        {
+        if (UserManager.getPlayer(player) == null) {
             return;
         }
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if(WorldGuardUtils.isWorldGuardLoaded())
-        {
-            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+        if (WorldGuardUtils.isWorldGuardLoaded()) {
+            if (!WorldGuardManager.getInstance().hasMainFlag(player))
                 return;
         }
 
@@ -718,13 +679,12 @@ public class EntityListener implements Listener {
     /**
      * Handle EntityExplode events that involve modifying the event.
      *
-     * @param event
-     *            The event to modify
+     * @param event The event to modify
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEnitityExplode(EntityExplodeEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
         Entity entity = event.getEntity();
@@ -742,15 +702,13 @@ public class EntityListener implements Listener {
         }
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if(WorldGuardUtils.isWorldGuardLoaded())
-        {
-            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+        if (WorldGuardUtils.isWorldGuardLoaded()) {
+            if (!WorldGuardManager.getInstance().hasMainFlag(player))
                 return;
         }
 
         //Profile not loaded
-        if(UserManager.getPlayer(player) == null)
-        {
+        if (UserManager.getPlayer(player) == null) {
             return;
         }
 
@@ -765,13 +723,12 @@ public class EntityListener implements Listener {
     /**
      * Handle EntityExplode events that involve modifying the event.
      *
-     * @param event
-     *            The event to modify
+     * @param event The event to modify
      */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntityExplodeMonitor(EntityExplodeEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
         Entity entity = event.getEntity();
@@ -786,13 +743,12 @@ public class EntityListener implements Listener {
     /**
      * Handle FoodLevelChange events that involve modifying the event.
      *
-     * @param event
-     *            The event to modify
+     * @param event The event to modify
      */
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
         Entity entity = event.getEntity();
@@ -804,15 +760,13 @@ public class EntityListener implements Listener {
         Player player = (Player) entity;
 
         //Profile not loaded
-        if(UserManager.getPlayer(player) == null)
-        {
+        if (UserManager.getPlayer(player) == null) {
             return;
         }
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if(WorldGuardUtils.isWorldGuardLoaded())
-        {
-            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+        if (WorldGuardUtils.isWorldGuardLoaded()) {
+            if (!WorldGuardManager.getInstance().hasMainFlag(player))
                 return;
         }
 
@@ -835,34 +789,34 @@ public class EntityListener implements Listener {
          */
         switch (player.getInventory().getItemInMainHand().getType()) {
             case BAKED_POTATO: /*
-                                * RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @
-                                * 1000
-                                */
+             * RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @
+             * 1000
+             */
             case BEETROOT:
             case BREAD: /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
             case CARROT: /*
-                               * RESTORES 2 HUNGER - RESTORES 4 1/2 HUNGER @
-                               * 1000
-                               */
+             * RESTORES 2 HUNGER - RESTORES 4 1/2 HUNGER @
+             * 1000
+             */
             case GOLDEN_CARROT: /*
-                                 * RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @
-                                 * 1000
-                                 */
+             * RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @
+             * 1000
+             */
             case MUSHROOM_STEW: /*
-                                 * RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @
-                                 * 1000
-                                 */
+             * RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @
+             * 1000
+             */
             case PUMPKIN_PIE: /*
-                               * RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @
-                               * 1000
-                               */
+             * RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @
+             * 1000
+             */
 
             case COOKIE: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
             case MELON_SLICE: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
             case POISONOUS_POTATO: /*
-                                    * RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER
-                                    * @ 1000
-                                    */
+             * RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER
+             * @ 1000
+             */
             case POTATO: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
                 if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
                     event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(newFoodLevel));
@@ -885,13 +839,12 @@ public class EntityListener implements Listener {
     /**
      * Monitor EntityTame events.
      *
-     * @param event
-     *            The event to watch
+     * @param event The event to watch
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityTame(EntityTameEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
         if (event instanceof FakeEntityTameEvent) {
@@ -901,9 +854,8 @@ public class EntityListener implements Listener {
         Player player = (Player) event.getOwner();
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if(WorldGuardUtils.isWorldGuardLoaded())
-        {
-            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+        if (WorldGuardUtils.isWorldGuardLoaded()) {
+            if (!WorldGuardManager.getInstance().hasMainFlag(player))
                 return;
         }
 
@@ -913,7 +865,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if(mcMMO.getConfigManager().getConfigExploitPrevention().doTamedEntitiesGiveXP())
+        if (mcMMO.getConfigManager().getConfigExploitPrevention().doTamedEntitiesGiveXP())
             entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
 
         //Profile not loaded
@@ -930,13 +882,12 @@ public class EntityListener implements Listener {
     /**
      * Handle EntityTarget events.
      *
-     * @param event
-     *            The event to process
+     * @param event The event to process
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityTarget(EntityTargetEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
         Entity entity = event.getEntity();
@@ -949,9 +900,8 @@ public class EntityListener implements Listener {
         Player player = (Player) target;
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if(WorldGuardUtils.isWorldGuardLoaded())
-        {
-            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+        if (WorldGuardUtils.isWorldGuardLoaded()) {
+            if (!WorldGuardManager.getInstance().hasMainFlag(player))
                 return;
         }
 
@@ -973,13 +923,12 @@ public class EntityListener implements Listener {
      * Handle PotionSplash events in order to fix broken Splash Potion of
      * Saturation.
      *
-     * @param event
-     *            The event to process
+     * @param event The event to process
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPotionSplash(PotionSplashEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
         for (PotionEffect effect : ((PotionMeta) event.getPotion().getItem().getItemMeta()).getCustomEffects()) {
@@ -993,11 +942,11 @@ public class EntityListener implements Listener {
             }
         }
     }
-    
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPigZapEvent(PigZapEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
         if (event.getEntity().hasMetadata(mcMMO.entityMetadataKey)) {

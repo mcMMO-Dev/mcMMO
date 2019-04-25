@@ -42,7 +42,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canGreenThumbBlock(BlockState blockState) {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_GREEN_THUMB))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_GREEN_THUMB))
             return false;
 
         Player player = getPlayer();
@@ -52,7 +52,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canUseShroomThumb(BlockState blockState) {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_SHROOM_THUMB))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_SHROOM_THUMB))
             return false;
 
         Player player = getPlayer();
@@ -63,7 +63,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canUseHylianLuck() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_HYLIAN_LUCK))
+        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_HYLIAN_LUCK))
             return false;
 
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.HERBALISM_HYLIAN_LUCK);
@@ -148,26 +148,26 @@ public class HerbalismManager extends SkillManager {
 //            }
 //        }
 //        else {
-            xp = ExperienceConfig.getInstance().getXp(skill, blockState.getType());
+        xp = ExperienceConfig.getInstance().getXp(skill, blockState.getType());
 
-            if (!oneBlockPlant) {
-                //Kelp is actually two blocks mixed together
-                if(material == Material.KELP_PLANT || material == Material.KELP) {
-                    amount = Herbalism.countAndMarkDoubleDropsKelp(blockState, greenTerra,this);
-                } else {
-                    amount = Herbalism.countAndMarkDoubleDropsMultiBlockPlant(blockState, greenTerra, this);
-                }
-
-                xp *= amount;
+        if (!oneBlockPlant) {
+            //Kelp is actually two blocks mixed together
+            if (material == Material.KELP_PLANT || material == Material.KELP) {
+                amount = Herbalism.countAndMarkDoubleDropsKelp(blockState, greenTerra, this);
             } else {
-                /* MARK SINGLE BLOCK CROP FOR DOUBLE DROP */
-                if(checkDoubleDrop(blockState))
-                    BlockUtils.markDropsAsBonus(blockState, greenTerra);
+                amount = Herbalism.countAndMarkDoubleDropsMultiBlockPlant(blockState, greenTerra, this);
             }
 
-            if (Permissions.greenThumbPlant(player, material)) {
-                processGreenThumbPlants(blockState, greenTerra);
-            }
+            xp *= amount;
+        } else {
+            /* MARK SINGLE BLOCK CROP FOR DOUBLE DROP */
+            if (checkDoubleDrop(blockState))
+                BlockUtils.markDropsAsBonus(blockState, greenTerra);
+        }
+
+        if (Permissions.greenThumbPlant(player, material)) {
+            processGreenThumbPlants(blockState, greenTerra);
+        }
         //} mod config close
 
         applyXpGain(xp, XPGainReason.PVE);
@@ -181,11 +181,11 @@ public class HerbalismManager extends SkillManager {
 
     /**
      * Check for success on herbalism double drops
+     *
      * @param blockState target block state
      * @return true if double drop succeeds
      */
-    public boolean checkDoubleDrop(BlockState blockState)
-    {
+    public boolean checkDoubleDrop(BlockState blockState) {
         return BlockUtils.checkDoubleDrops(getPlayer(), blockState, SubSkillType.HERBALISM_DOUBLE_DROPS);
     }
 
@@ -252,7 +252,7 @@ public class HerbalismManager extends SkillManager {
     public boolean processShroomThumb(BlockState blockState) {
         Player player = getPlayer();
         PlayerInventory playerInventory = player.getInventory();
-        
+
         if (!playerInventory.contains(Material.BROWN_MUSHROOM, 1)) {
             NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyItemString(Material.BROWN_MUSHROOM));
             return false;
@@ -328,8 +328,7 @@ public class HerbalismManager extends SkillManager {
             return;
         }
 
-        if(!ItemUtils.isHoe(getPlayer().getInventory().getItemInMainHand()))
-        {
+        if (!ItemUtils.isHoe(getPlayer().getInventory().getItemInMainHand())) {
             if (!playerInventory.containsAtLeast(seedStack, 1)) {
                 return;
             }
@@ -355,8 +354,7 @@ public class HerbalismManager extends SkillManager {
 
                 if (greenTerra) {
                     crops.setAge(3);
-                }
-                else {
+                } else {
                     crops.setAge(greenThumbStage);
                 }
                 break;
@@ -366,21 +364,18 @@ public class HerbalismManager extends SkillManager {
 
                 if (greenTerra || greenThumbStage > 2) {
                     crops.setAge(2);
-                }
-                else if (greenThumbStage == 2) {
+                } else if (greenThumbStage == 2) {
                     crops.setAge(1);
-                }
-                else {
+                } else {
                     crops.setAge(0);
                 }
-               break;
+                break;
 
             case COCOA:
 
                 if (greenTerra || getGreenThumbStage() > 1) {
                     crops.setAge(1);
-                }
-                else {
+                } else {
                     crops.setAge(0);
                 }
                 break;

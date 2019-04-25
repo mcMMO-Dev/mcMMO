@@ -8,9 +8,12 @@ import org.bukkit.event.player.PlayerEvent;
 import java.util.HashMap;
 
 public class McMMOPlayerDeathPenaltyEvent extends PlayerEvent implements Cancellable {
+    /**
+     * Rest of file is required boilerplate for custom events
+     **/
+    private static final HandlerList handlers = new HandlerList();
     private HashMap<String, Integer> levelChanged;
     private HashMap<String, Float> experienceChanged;
-
     private boolean cancelled;
 
     public McMMOPlayerDeathPenaltyEvent(Player player, HashMap<String, Integer> levelChanged, HashMap<String, Float> experienceChanged) {
@@ -24,6 +27,10 @@ public class McMMOPlayerDeathPenaltyEvent extends PlayerEvent implements Cancell
     public McMMOPlayerDeathPenaltyEvent(Player player) {
         super(player);
         this.cancelled = false;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 
     public HashMap<String, Integer> getLevelChanged() {
@@ -42,7 +49,9 @@ public class McMMOPlayerDeathPenaltyEvent extends PlayerEvent implements Cancell
         this.experienceChanged = experienceChanged;
     }
 
-    /** Following are required for Cancellable **/
+    /**
+     * Following are required for Cancellable
+     **/
     @Override
     public boolean isCancelled() {
         return cancelled;
@@ -53,15 +62,8 @@ public class McMMOPlayerDeathPenaltyEvent extends PlayerEvent implements Cancell
         this.cancelled = cancelled;
     }
 
-    /** Rest of file is required boilerplate for custom events **/
-    private static final HandlerList handlers = new HandlerList();
-
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 }

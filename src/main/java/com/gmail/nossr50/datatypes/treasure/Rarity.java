@@ -11,8 +11,7 @@ public enum Rarity {
     public static Rarity getRarity(String string) {
         try {
             return valueOf(string);
-        }
-        catch (IllegalArgumentException ex) {
+        } catch (IllegalArgumentException ex) {
             return COMMON;
         }
     }

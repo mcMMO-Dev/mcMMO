@@ -12,10 +12,11 @@ import org.bukkit.event.player.PlayerEvent;
  * Generic event for mcMMO experience events.
  */
 public abstract class McMMOPlayerExperienceEvent extends PlayerEvent implements Cancellable {
-    private boolean cancelled;
+    private static final HandlerList handlers = new HandlerList();
     protected PrimarySkillType skill;
     protected int skillLevel;
     protected XPGainReason xpGainReason;
+    private boolean cancelled;
 
     @Deprecated
     protected McMMOPlayerExperienceEvent(Player player, PrimarySkillType skill) {
@@ -30,6 +31,10 @@ public abstract class McMMOPlayerExperienceEvent extends PlayerEvent implements 
         this.skill = skill;
         this.skillLevel = UserManager.getPlayer(player).getSkillLevel(skill);
         this.xpGainReason = xpGainReason;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 
     /**
@@ -53,7 +58,9 @@ public abstract class McMMOPlayerExperienceEvent extends PlayerEvent implements 
         return xpGainReason;
     }
 
-    /** Following are required for Cancellable **/
+    /**
+     * Following are required for Cancellable
+     **/
     @Override
     public boolean isCancelled() {
         return cancelled;
@@ -63,15 +70,9 @@ public abstract class McMMOPlayerExperienceEvent extends PlayerEvent implements 
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
-    
-    private static final HandlerList handlers = new HandlerList();
 
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 }

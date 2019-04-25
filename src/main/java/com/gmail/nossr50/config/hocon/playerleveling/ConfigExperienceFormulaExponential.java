@@ -10,13 +10,13 @@ public class ConfigExperienceFormulaExponential {
     private static final double MULTIPLIER_DEFAULT = 0.1;
     private static final double EXPONENT_DEFAULT = 1.80;
 
-    @Setting(value = "Base-Amount", comment = "Default value: "+BASE_DEFAULT)
+    @Setting(value = "Base-Amount", comment = "Default value: " + BASE_DEFAULT)
     private int baseModifier = BASE_DEFAULT;
 
-    @Setting(value = "Multiplier", comment = "Default value: "+MULTIPLIER_DEFAULT)
+    @Setting(value = "Multiplier", comment = "Default value: " + MULTIPLIER_DEFAULT)
     private double multiplier = MULTIPLIER_DEFAULT;
 
-    @Setting(value = "Exponent", comment = "Default value: "+EXPONENT_DEFAULT)
+    @Setting(value = "Exponent", comment = "Default value: " + EXPONENT_DEFAULT)
     private double exponent = EXPONENT_DEFAULT;
 
     public int getExponentialBaseModifier() {

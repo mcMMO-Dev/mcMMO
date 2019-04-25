@@ -29,7 +29,8 @@ public final class ChimaeraWing {
     private static McMMOPlayer mcMMOPlayer;
     private static Location location;
 
-    private ChimaeraWing() {}
+    private ChimaeraWing() {
+    }
 
     /**
      * Check for item usage.
@@ -55,7 +56,7 @@ public final class ChimaeraWing {
         mcMMOPlayer = UserManager.getPlayer(player);
 
         //Not loaded
-        if(mcMMOPlayer == null)
+        if (mcMMOPlayer == null)
             return;
 
         if (mcMMOPlayer.getTeleportCommenceLocation() != null) {
@@ -65,7 +66,7 @@ public final class ChimaeraWing {
         int amount = inHand.getAmount();
 
         if (amount < MainConfig.getInstance().getChimaeraUseCost()) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Item.ChimaeraWing.NotEnough",String.valueOf(MainConfig.getInstance().getChimaeraUseCost() - amount), "Item.ChimaeraWing.Name");
+            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Item.ChimaeraWing.NotEnough", String.valueOf(MainConfig.getInstance().getChimaeraUseCost() - amount), "Item.ChimaeraWing.Name");
             return;
         }
 
@@ -114,8 +115,7 @@ public final class ChimaeraWing {
         if (warmup > 0) {
             NotificationManager.sendPlayerInformation(player, NotificationType.ITEM_MESSAGE, "Teleport.Commencing", String.valueOf(warmup));
             new ChimaeraWingWarmup(mcMMOPlayer).runTaskLater(mcMMO.p, 20 * warmup);
-        }
-        else {
+        } else {
             chimaeraExecuteTeleport();
         }
     }
@@ -125,13 +125,11 @@ public final class ChimaeraWing {
 
         if (MainConfig.getInstance().getChimaeraUseBedSpawn() && player.getBedSpawnLocation() != null) {
             player.teleport(player.getBedSpawnLocation());
-        }
-        else {
+        } else {
             Location spawnLocation = player.getWorld().getSpawnLocation();
             if (spawnLocation.getBlock().getType() == Material.AIR) {
                 player.teleport(spawnLocation);
-            }
-            else {
+            } else {
                 player.teleport(player.getWorld().getHighestBlockAt(spawnLocation).getLocation());
             }
         }

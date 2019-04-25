@@ -49,6 +49,7 @@ import java.util.Objects;
 
 /**
  * Handles loading serialized configs with configurate
+ *
  * @param <T> the class type of the config
  */
 public class SerializedConfigLoader<T> {
@@ -61,20 +62,15 @@ public class SerializedConfigLoader<T> {
             "\nOfficial mcMMO Discord - https://discord.gg/bJ7pFS9\n" +
             "\nYou can also consult the new official wiki" +
             "\nhttps://mcmmo.org/wiki - Keep in mind the wiki is a WIP and may not have information about everything in mcMMO!";
-
-    private ConfigurationOptions configurationOptions;
-    private CommentedConfigurationNode data;
-    private CommentedConfigurationNode fileData;
-
     private final String ROOT_NODE_ADDRESS;
-
     private final Path path;
-
     /**
      * The parent configuration - values are inherited from this
      */
     private final SerializedConfigLoader parent;
-
+    private ConfigurationOptions configurationOptions;
+    private CommentedConfigurationNode data;
+    private CommentedConfigurationNode fileData;
     /**
      * The loader (mapped to a file) used to read/write the config to disk
      */
@@ -110,13 +106,12 @@ public class SerializedConfigLoader<T> {
             reload();
             save();
         } catch (Exception e) {
-            mcMMO.p.getLogger().severe("Failed to initialize config - "+path.toString());
+            mcMMO.p.getLogger().severe("Failed to initialize config - " + path.toString());
             e.printStackTrace();
         }
     }
 
-    private Path getPathFromFileName(String fileName)
-    {
+    private Path getPathFromFileName(String fileName) {
         File configFile = new File(ConfigConstants.getConfigFolder(), fileName);
         return configFile.toPath();
     }
@@ -143,7 +138,7 @@ public class SerializedConfigLoader<T> {
             this.loader.save(saveNode);
             return true;
         } catch (IOException | ObjectMappingException e) {
-            mcMMO.p.getLogger().severe("Failed to save configuration - "+path.toString());
+            mcMMO.p.getLogger().severe("Failed to save configuration - " + path.toString());
             e.printStackTrace();
             return false;
         }
@@ -169,7 +164,7 @@ public class SerializedConfigLoader<T> {
             // populate the config object
             populateInstance();
         } catch (Exception e) {
-            mcMMO.p.getLogger().severe("Failed to load configuration - "+path.toString());
+            mcMMO.p.getLogger().severe("Failed to load configuration - " + path.toString());
             e.printStackTrace();
         }
     }

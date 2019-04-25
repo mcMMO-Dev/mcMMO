@@ -10,6 +10,10 @@ import org.bukkit.inventory.ItemStack;
  * Called when mcMMO is preparing to drop an item.
  */
 public class McMMOItemSpawnEvent extends Event implements Cancellable {
+    /**
+     * Rest of file is required boilerplate for custom events
+     **/
+    private static final HandlerList handlers = new HandlerList();
     private Location location;
     private ItemStack itemStack;
     private boolean cancelled;
@@ -18,6 +22,10 @@ public class McMMOItemSpawnEvent extends Event implements Cancellable {
         this.location = location;
         this.itemStack = itemStack;
         this.cancelled = false;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 
     /**
@@ -48,7 +56,9 @@ public class McMMOItemSpawnEvent extends Event implements Cancellable {
         this.itemStack = itemStack;
     }
 
-    /** Following are required for Cancellable **/
+    /**
+     * Following are required for Cancellable
+     **/
     @Override
     public boolean isCancelled() {
         return cancelled;
@@ -59,15 +69,8 @@ public class McMMOItemSpawnEvent extends Event implements Cancellable {
         this.cancelled = cancelled;
     }
 
-    /** Rest of file is required boilerplate for custom events **/
-    private static final HandlerList handlers = new HandlerList();
-
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 }

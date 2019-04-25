@@ -30,7 +30,7 @@ public class ConfigSectionLevelingGeneral {
     @Setting(value = "Player-Starting-Level",
             comment = "\nPlayers will start at this level in all skills if they aren't already saved in the database." +
                     "\nHistorically this number has been 0, but this was changed in 2.1.X to 1 as I felt it was better to start from 1 than 0." +
-                    "\nDefault value: "+STARTING_LEVEL_DEFAULT)
+                    "\nDefault value: " + STARTING_LEVEL_DEFAULT)
     private int startingLevel = STARTING_LEVEL_DEFAULT;
 
     /*

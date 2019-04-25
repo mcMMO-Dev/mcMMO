@@ -130,21 +130,22 @@ public class AdvancedConfig extends ConfigValidated {
         super("advanced", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, true, true, true);
     }
 
-    @Override
-    public void unload() {
-        //do nothing
-    }
-
     /**
      * This grabs an instance of this config class from the Config Manager
      * This method is deprecated and will be removed in the future
-     * @see mcMMO#getConfigManager()
+     *
      * @return the instance of this config
+     * @see mcMMO#getConfigManager()
      * @deprecated Please use mcMMO.getConfigManager() to grab a specific config instead
      */
     @Deprecated
     public static AdvancedConfig getInstance() {
         return mcMMO.getConfigManager().getAdvancedConfig();
+    }
+
+    @Override
+    public void unload() {
+        //do nothing
     }
 
     /**
@@ -239,8 +240,7 @@ public class AdvancedConfig extends ConfigValidated {
         }
 
         /* AXES */
-        if(getAxeMasteryRankDamageMultiplier() < 0)
-        {
+        if (getAxeMasteryRankDamageMultiplier() < 0) {
             reason.add(SKILLS + "." + AXES + "." + AXE_MASTERY + "." + RANK_DAMAGE_MULTIPLIER + " should be at least 0!");
         }
 
@@ -499,10 +499,11 @@ public class AdvancedConfig extends ConfigValidated {
     /**
      * This returns the maximum level at which superabilities will stop lengthening from scaling alongside skill level.
      * It returns a different value depending on whether or not the server is in retro mode
+     *
      * @return the level at which abilities stop increasing in length
      */
     public int getAbilityLengthCap() {
-        if(!mcMMO.isRetroModeEnabled())
+        if (!mcMMO.isRetroModeEnabled())
             return getIntValue(SKILLS, GENERAL, ABILITY, LENGTH, STANDARD, CAP_LEVEL);
         else
             return getIntValue(SKILLS, GENERAL, ABILITY, LENGTH, RETRO_MODE, CAP_LEVEL);
@@ -511,28 +512,32 @@ public class AdvancedConfig extends ConfigValidated {
     /**
      * This returns the frequency at which abilities will increase in length
      * It returns a different value depending on whether or not the server is in retro mode
+     *
      * @return the number of levels required per ability length increase
      */
     public int getAbilityLength() {
-        if(!mcMMO.isRetroModeEnabled())
+        if (!mcMMO.isRetroModeEnabled())
             return getIntValue(SKILLS, GENERAL, ABILITY, LENGTH, STANDARD, INCREASE_LEVEL);
         else
             return getIntValue(SKILLS, GENERAL, ABILITY, LENGTH, RETRO_MODE, INCREASE_LEVEL);
     }
 
-    public int getEnchantBuff() { return getIntValue(SKILLS, GENERAL, ABILITY, ENCHANT_BUFF); }
+    public int getEnchantBuff() {
+        return getIntValue(SKILLS, GENERAL, ABILITY, ENCHANT_BUFF);
+    }
 
     /**
      * Grabs the max bonus level for a skill used in RNG calculations
      * All max level values in the config are multiplied by 10 if the server is in retro mode as the values in the config are based around the new 1-100 skill system scaling
      * A value of 10 in the file will be returned as 100 for retro mode servers to accommodate the change in scaling
+     *
      * @param subSkillType target subskill
      * @return the level at which this skills max benefits will be reached on the curve
      */
     public int getMaxBonusLevel(SubSkillType subSkillType) {
         String[] category = subSkillType.getAdvConfigAddress();
-        
-        if(!mcMMO.isRetroModeEnabled())
+
+        if (!mcMMO.isRetroModeEnabled())
             return getIntValue(category[0], category[1], category[2], MAX_BONUS_LEVEL, STANDARD);
         else
             return getIntValue(category[0], category[1], category[2], MAX_BONUS_LEVEL, RETRO_MODE);
@@ -544,37 +549,32 @@ public class AdvancedConfig extends ConfigValidated {
 
     public double getMaximumProbability(SubSkillType subSkillType) {
         String[] category = subSkillType.getAdvConfigAddress();
-        
+
         double maximumProbability = getDoubleValue(category[0], category[1], category[2], CHANCE_MAX);
 
         return maximumProbability;
     }
 
-    public double getMaximumProbability(AbstractSubSkill abstractSubSkill)
-    {
+    public double getMaximumProbability(AbstractSubSkill abstractSubSkill) {
         return getMaximumProbability(abstractSubSkill.getSubSkillType());
     }
 
     /* Notification Settings */
 
-    public boolean doesSkillCommandSendBlankLines()
-    {
-        return getBooleanValue(FEEDBACK,  SKILL_COMMAND,  BLANK_LINES_ABOVE_HEADER);
+    public boolean doesSkillCommandSendBlankLines() {
+        return getBooleanValue(FEEDBACK, SKILL_COMMAND, BLANK_LINES_ABOVE_HEADER);
     }
 
-    public boolean doesNotificationUseActionBar(NotificationType notificationType)
-    {
-        return getBooleanValue(FEEDBACK,  ACTION_BAR_NOTIFICATIONS, notificationType.toString(),  ENABLED);
+    public boolean doesNotificationUseActionBar(NotificationType notificationType) {
+        return getBooleanValue(FEEDBACK, ACTION_BAR_NOTIFICATIONS, notificationType.toString(), ENABLED);
     }
 
-    public boolean doesNotificationSendCopyToChat(NotificationType notificationType)
-    {
-        return getBooleanValue(FEEDBACK,  ACTION_BAR_NOTIFICATIONS, notificationType.toString(),  SEND_COPY_OF_MESSAGE_TO_CHAT);
+    public boolean doesNotificationSendCopyToChat(NotificationType notificationType) {
+        return getBooleanValue(FEEDBACK, ACTION_BAR_NOTIFICATIONS, notificationType.toString(), SEND_COPY_OF_MESSAGE_TO_CHAT);
     }
 
-    public boolean useTitlesForXPEvent()
-    {
-        return getBooleanValue(FEEDBACK,  EVENTS,  XP,  SEND_TITLES);
+    public boolean useTitlesForXPEvent() {
+        return getBooleanValue(FEEDBACK, EVENTS, XP, SEND_TITLES);
     }
 
     private ChatColor getChatColorFromKey(String keyLocation) {
@@ -595,57 +595,109 @@ public class AdvancedConfig extends ConfigValidated {
     }
 
     /* ACROBATICS */
-    public double getDodgeDamageModifier() { return getDoubleValue(SKILLS, ACROBATICS, DODGE, DAMAGE_MODIFIER); }
+    public double getDodgeDamageModifier() {
+        return getDoubleValue(SKILLS, ACROBATICS, DODGE, DAMAGE_MODIFIER);
+    }
 
-    public double getRollDamageThreshold() { return getDoubleValue(SKILLS, ACROBATICS, ROLL, DAMAGE_THRESHOLD); }
+    public double getRollDamageThreshold() {
+        return getDoubleValue(SKILLS, ACROBATICS, ROLL, DAMAGE_THRESHOLD);
+    }
 
-    public double getGracefulRollDamageThreshold() { return getDoubleValue(SKILLS, ACROBATICS, GRACEFUL_ROLL, DAMAGE_THRESHOLD); }
+    public double getGracefulRollDamageThreshold() {
+        return getDoubleValue(SKILLS, ACROBATICS, GRACEFUL_ROLL, DAMAGE_THRESHOLD);
+    }
 
     /* ALCHEMY */
-    public int getCatalysisMaxBonusLevel() { return getIntValue(SKILLS, ALCHEMY, CATALYSIS, MAX_BONUS_LEVEL); }
+    public int getCatalysisMaxBonusLevel() {
+        return getIntValue(SKILLS, ALCHEMY, CATALYSIS, MAX_BONUS_LEVEL);
+    }
 
-    public double getCatalysisMinSpeed() { return getDoubleValue(SKILLS, ALCHEMY, CATALYSIS, MIN_SPEED); }
-    public double getCatalysisMaxSpeed() { return getDoubleValue(SKILLS, ALCHEMY, CATALYSIS, MAX_SPEED); }
+    public double getCatalysisMinSpeed() {
+        return getDoubleValue(SKILLS, ALCHEMY, CATALYSIS, MIN_SPEED);
+    }
+
+    public double getCatalysisMaxSpeed() {
+        return getDoubleValue(SKILLS, ALCHEMY, CATALYSIS, MAX_SPEED);
+    }
 
     /* ARCHERY */
-    public double getSkillShotRankDamageMultiplier() { return getDoubleValue(SKILLS, ARCHERY, SKILL_SHOT, RANK_DAMAGE_MULTIPLIER); }
-    public double getSkillShotDamageMax() { return getDoubleValue(SKILLS, ARCHERY, SKILL_SHOT, MAX_DAMAGE); }
+    public double getSkillShotRankDamageMultiplier() {
+        return getDoubleValue(SKILLS, ARCHERY, SKILL_SHOT, RANK_DAMAGE_MULTIPLIER);
+    }
 
-    public double getDazeBonusDamage() { return getDoubleValue(SKILLS, ARCHERY, DAZE, BONUS_DAMAGE); }
+    public double getSkillShotDamageMax() {
+        return getDoubleValue(SKILLS, ARCHERY, SKILL_SHOT, MAX_DAMAGE);
+    }
 
-    public double getForceMultiplier() { return getDoubleValue(SKILLS, ARCHERY, FORCE_MULTIPLIER); }
+    public double getDazeBonusDamage() {
+        return getDoubleValue(SKILLS, ARCHERY, DAZE, BONUS_DAMAGE);
+    }
+
+    public double getForceMultiplier() {
+        return getDoubleValue(SKILLS, ARCHERY, FORCE_MULTIPLIER);
+    }
 
     /* AXES */
-    public double getAxeMasteryRankDamageMultiplier() { return getDoubleValue(SKILLS, AXES, AXE_MASTERY, RANK_DAMAGE_MULTIPLIER); }
+    public double getAxeMasteryRankDamageMultiplier() {
+        return getDoubleValue(SKILLS, AXES, AXE_MASTERY, RANK_DAMAGE_MULTIPLIER);
+    }
 
-    public double getCriticalStrikesPVPModifier() { return getDoubleValue(SKILLS, AXES, CRITICAL_STRIKES, PVP_MODIFIER); }
-    public double getCriticalStrikesPVEModifier() { return getDoubleValue(SKILLS, AXES, CRITICAL_STRIKES, PVE_MODIFIER); }
+    public double getCriticalStrikesPVPModifier() {
+        return getDoubleValue(SKILLS, AXES, CRITICAL_STRIKES, PVP_MODIFIER);
+    }
 
-    public double getGreaterImpactChance() { return getDoubleValue(SKILLS, AXES, GREATER_IMPACT, CHANCE); }
-    public double getGreaterImpactModifier() { return getDoubleValue(SKILLS, AXES, GREATER_IMPACT, KNOCKBACK_MODIFIER); }
-    public double getGreaterImpactBonusDamage() { return getDoubleValue(SKILLS, AXES, GREATER_IMPACT, BONUS_DAMAGE); }
+    public double getCriticalStrikesPVEModifier() {
+        return getDoubleValue(SKILLS, AXES, CRITICAL_STRIKES, PVE_MODIFIER);
+    }
+
+    public double getGreaterImpactChance() {
+        return getDoubleValue(SKILLS, AXES, GREATER_IMPACT, CHANCE);
+    }
+
+    public double getGreaterImpactModifier() {
+        return getDoubleValue(SKILLS, AXES, GREATER_IMPACT, KNOCKBACK_MODIFIER);
+    }
+
+    public double getGreaterImpactBonusDamage() {
+        return getDoubleValue(SKILLS, AXES, GREATER_IMPACT, BONUS_DAMAGE);
+    }
 
     public int getArmorImpactIncreaseLevel() {
         int increaseLevel = getIntValue(SKILLS, AXES, ARMOR_IMPACT, INCREASE_LEVEL);
 
-        if(mcMMO.isRetroModeEnabled())
+        if (mcMMO.isRetroModeEnabled())
             return increaseLevel * 10;
 
         return increaseLevel;
     }
 
-    public double getImpactChance() { return getDoubleValue(SKILLS, AXES, ARMOR_IMPACT, CHANCE); }
-    public double getArmorImpactMaxDurabilityDamage() { return getDoubleValue(SKILLS, AXES, ARMOR_IMPACT, MAX_PERCENTAGE_DURABILITY_DAMAGE); }
+    public double getImpactChance() {
+        return getDoubleValue(SKILLS, AXES, ARMOR_IMPACT, CHANCE);
+    }
 
-    public double getSkullSplitterModifier() { return getDoubleValue(SKILLS, AXES, SKULL_SPLITTER, DAMAGE_MODIFIER); }
+    public double getArmorImpactMaxDurabilityDamage() {
+        return getDoubleValue(SKILLS, AXES, ARMOR_IMPACT, MAX_PERCENTAGE_DURABILITY_DAMAGE);
+    }
+
+    public double getSkullSplitterModifier() {
+        return getDoubleValue(SKILLS, AXES, SKULL_SPLITTER, DAMAGE_MODIFIER);
+    }
 
     /* EXCAVATION */
     //Nothing to configure, everything is already configurable in config.yml
 
     /* FISHING */
-    public double getShakeChance(int rank) { return getDoubleValue(SKILLS, FISHING, SHAKE, CHANCE, RANK, String.valueOf(rank)); }
-    public double getMasterAnglerBoatModifier() {return getDoubleValue(SKILLS, FISHING, MASTER_ANGLER, BOAT_MODIFIER); }
-    public double getMasterAnglerBiomeModifier() {return getDoubleValue(SKILLS, FISHING, MASTER_ANGLER, BIOME_MODIFIER); }
+    public double getShakeChance(int rank) {
+        return getDoubleValue(SKILLS, FISHING, SHAKE, CHANCE, RANK, String.valueOf(rank));
+    }
+
+    public double getMasterAnglerBoatModifier() {
+        return getDoubleValue(SKILLS, FISHING, MASTER_ANGLER, BOAT_MODIFIER);
+    }
+
+    public double getMasterAnglerBiomeModifier() {
+        return getDoubleValue(SKILLS, FISHING, MASTER_ANGLER, BIOME_MODIFIER);
+    }
 
     /* HERBALISM */
     //public int getFarmerDietRankChange() { return getIntValue(SKILLS, ".Herbalism.FarmersDiet.RankChange"); }
@@ -653,67 +705,152 @@ public class AdvancedConfig extends ConfigValidated {
     //public int getGreenThumbStageChange() { return getIntValue(SKILLS, ".Herbalism.GreenThumb.StageChange"); }
 
     /* MINING */
-    public boolean getDoubleDropSilkTouchEnabled() { return getBooleanValue(SKILLS, MINING, "DoubleDrops", "SilkTouch"); }
-    public int getBlastMiningRankLevel(int rank) { return getIntValue(SKILLS, MINING, BLAST_MINING, RANK, LEVELS, RANK, String.valueOf(rank)); }
-    public double getBlastDamageDecrease(int rank) { return getDoubleValue(SKILLS, MINING, BLAST_MINING, BLAST_DAMAGE_DECREASE, RANK, String.valueOf(rank)); }
-    public double getOreBonus(int rank) { return getDoubleValue(SKILLS, MINING, BLAST_MINING, ORE_BONUS, RANK, String.valueOf(rank)); }
-    public double getDebrisReduction(int rank) { return getDoubleValue(SKILLS, MINING, BLAST_MINING, DEBRIS_REDUCTION, RANK, String.valueOf(rank)); }
-    public int getDropMultiplier(int rank) { return getIntValue(SKILLS, MINING, BLAST_MINING, DROP_MULTIPLIER, RANK, String.valueOf(rank)); }
-    public double getBlastRadiusModifier(int rank) { return getDoubleValue(SKILLS, MINING, BLAST_MINING, BLAST_RADIUS, MODIFIER, RANK, String.valueOf(rank)); }
+    public boolean getDoubleDropSilkTouchEnabled() {
+        return getBooleanValue(SKILLS, MINING, "DoubleDrops", "SilkTouch");
+    }
+
+    public int getBlastMiningRankLevel(int rank) {
+        return getIntValue(SKILLS, MINING, BLAST_MINING, RANK, LEVELS, RANK, String.valueOf(rank));
+    }
+
+    public double getBlastDamageDecrease(int rank) {
+        return getDoubleValue(SKILLS, MINING, BLAST_MINING, BLAST_DAMAGE_DECREASE, RANK, String.valueOf(rank));
+    }
+
+    public double getOreBonus(int rank) {
+        return getDoubleValue(SKILLS, MINING, BLAST_MINING, ORE_BONUS, RANK, String.valueOf(rank));
+    }
+
+    public double getDebrisReduction(int rank) {
+        return getDoubleValue(SKILLS, MINING, BLAST_MINING, DEBRIS_REDUCTION, RANK, String.valueOf(rank));
+    }
+
+    public int getDropMultiplier(int rank) {
+        return getIntValue(SKILLS, MINING, BLAST_MINING, DROP_MULTIPLIER, RANK, String.valueOf(rank));
+    }
+
+    public double getBlastRadiusModifier(int rank) {
+        return getDoubleValue(SKILLS, MINING, BLAST_MINING, BLAST_RADIUS, MODIFIER, RANK, String.valueOf(rank));
+    }
 
     /* REPAIR */
-    public double getRepairMasteryMaxBonus() { return getDoubleValue(SKILLS, REPAIR, REPAIR_MASTERY, MAX_BONUS_PERCENTAGE); }
+    public double getRepairMasteryMaxBonus() {
+        return getDoubleValue(SKILLS, REPAIR, REPAIR_MASTERY, MAX_BONUS_PERCENTAGE);
+    }
     //public int getRepairMasteryMaxLevel() { return getIntValue(SKILLS, REPAIR, REPAIR_MASTERY, MAX_BONUS_LEVEL); }
 
     /* Arcane Forging */
-    public boolean getArcaneForgingEnchantLossEnabled() { return getBooleanValue(SKILLS, REPAIR, ARCANE_FORGING, MAY_LOSE_ENCHANTS); }
-    public double getArcaneForgingKeepEnchantsChance(int rank) { return getDoubleValue(SKILLS, REPAIR, ARCANE_FORGING, KEEP_ENCHANTS, CHANCE, RANK, String.valueOf(rank)); }
+    public boolean getArcaneForgingEnchantLossEnabled() {
+        return getBooleanValue(SKILLS, REPAIR, ARCANE_FORGING, MAY_LOSE_ENCHANTS);
+    }
 
-    public boolean getArcaneForgingDowngradeEnabled() { return getBooleanValue(SKILLS, REPAIR, ARCANE_FORGING, DOWNGRADES_ENABLED); }
-    public double getArcaneForgingDowngradeChance(int rank) { return getDoubleValue(SKILLS, REPAIR, ARCANE_FORGING, DOWNGRADES, CHANCE, RANK, String.valueOf(rank)); }
+    public double getArcaneForgingKeepEnchantsChance(int rank) {
+        return getDoubleValue(SKILLS, REPAIR, ARCANE_FORGING, KEEP_ENCHANTS, CHANCE, RANK, String.valueOf(rank));
+    }
+
+    public boolean getArcaneForgingDowngradeEnabled() {
+        return getBooleanValue(SKILLS, REPAIR, ARCANE_FORGING, DOWNGRADES_ENABLED);
+    }
+
+    public double getArcaneForgingDowngradeChance(int rank) {
+        return getDoubleValue(SKILLS, REPAIR, ARCANE_FORGING, DOWNGRADES, CHANCE, RANK, String.valueOf(rank));
+    }
 
     /* SALVAGE */
 
-    public boolean getArcaneSalvageEnchantDowngradeEnabled() { return getBooleanValue(SKILLS, SALVAGE, ARCANE_SALVAGE, ENCHANT_DOWNGRADE_ENABLED); }
-    public boolean getArcaneSalvageEnchantLossEnabled() { return getBooleanValue(SKILLS, SALVAGE, ARCANE_SALVAGE, ENCHANT_LOSS_ENABLED); }
+    public boolean getArcaneSalvageEnchantDowngradeEnabled() {
+        return getBooleanValue(SKILLS, SALVAGE, ARCANE_SALVAGE, ENCHANT_DOWNGRADE_ENABLED);
+    }
 
-    public double getArcaneSalvageExtractFullEnchantsChance(int rank) { return getDoubleValue(SKILLS, SALVAGE, ARCANE_SALVAGE, EXTRACT_FULL_ENCHANT, RANK, String.valueOf(rank)); }
-    public double getArcaneSalvageExtractPartialEnchantsChance(int rank) { return getDoubleValue(SKILLS, SALVAGE, ARCANE_SALVAGE, EXTRACT_PARTIAL_ENCHANT, RANK, String.valueOf(rank)); }
+    public boolean getArcaneSalvageEnchantLossEnabled() {
+        return getBooleanValue(SKILLS, SALVAGE, ARCANE_SALVAGE, ENCHANT_LOSS_ENABLED);
+    }
+
+    public double getArcaneSalvageExtractFullEnchantsChance(int rank) {
+        return getDoubleValue(SKILLS, SALVAGE, ARCANE_SALVAGE, EXTRACT_FULL_ENCHANT, RANK, String.valueOf(rank));
+    }
+
+    public double getArcaneSalvageExtractPartialEnchantsChance(int rank) {
+        return getDoubleValue(SKILLS, SALVAGE, ARCANE_SALVAGE, EXTRACT_PARTIAL_ENCHANT, RANK, String.valueOf(rank));
+    }
 
     /* SMELTING */
     //public int getBurnModifierMaxLevel() { return getIntValue(SKILLS, SMELTING, FUEL_EFFICIENCY, MAX_BONUS_LEVEL); }
-    public double getBurnTimeMultiplier() { return getDoubleValue(SKILLS, SMELTING, FUEL_EFFICIENCY, MULTIPLIER); }
+    public double getBurnTimeMultiplier() {
+        return getDoubleValue(SKILLS, SMELTING, FUEL_EFFICIENCY, MULTIPLIER);
+    }
 
-    public int getSmeltingRankLevel(int rank) { return getIntValue(SKILLS, SMELTING, RANK, LEVELS, RANK, String.valueOf(rank)); }
+    public int getSmeltingRankLevel(int rank) {
+        return getIntValue(SKILLS, SMELTING, RANK, LEVELS, RANK, String.valueOf(rank));
+    }
 
-    public int getSmeltingVanillaXPBoostMultiplier(int rank) { return getIntValue(SKILLS, SMELTING, VANILLA_XPMULTIPLIER, RANK, String.valueOf(rank)); }
+    public int getSmeltingVanillaXPBoostMultiplier(int rank) {
+        return getIntValue(SKILLS, SMELTING, VANILLA_XPMULTIPLIER, RANK, String.valueOf(rank));
+    }
 
     /* SWORDS */
-    public double getRuptureDamagePlayer() { return getDoubleValue(SKILLS, SWORDS, RUPTURE, DAMAGE_PLAYER); }
-    public double getRuptureDamageMobs() { return getDoubleValue(SKILLS, SWORDS, RUPTURE, DAMAGE_MOBS); }
+    public double getRuptureDamagePlayer() {
+        return getDoubleValue(SKILLS, SWORDS, RUPTURE, DAMAGE_PLAYER);
+    }
 
-    public int getRuptureMaxTicks() { return getIntValue(SKILLS, SWORDS, RUPTURE, MAX_TICKS); }
-    public int getRuptureBaseTicks() { return getIntValue(SKILLS, SWORDS, RUPTURE, BASE_TICKS); }
+    public double getRuptureDamageMobs() {
+        return getDoubleValue(SKILLS, SWORDS, RUPTURE, DAMAGE_MOBS);
+    }
 
-    public double getCounterAttackModifier() { return getDoubleValue(SKILLS, SWORDS, COUNTER_ATTACK, DAMAGE_MODIFIER); }
+    public int getRuptureMaxTicks() {
+        return getIntValue(SKILLS, SWORDS, RUPTURE, MAX_TICKS);
+    }
 
-    public double getSerratedStrikesModifier() { return getDoubleValue(SKILLS, SWORDS, SERRATED_STRIKES, DAMAGE_MODIFIER); }
+    public int getRuptureBaseTicks() {
+        return getIntValue(SKILLS, SWORDS, RUPTURE, BASE_TICKS);
+    }
+
+    public double getCounterAttackModifier() {
+        return getDoubleValue(SKILLS, SWORDS, COUNTER_ATTACK, DAMAGE_MODIFIER);
+    }
+
+    public double getSerratedStrikesModifier() {
+        return getDoubleValue(SKILLS, SWORDS, SERRATED_STRIKES, DAMAGE_MODIFIER);
+    }
     //public int getSerratedStrikesTicks() { return getIntValue(SKILLS, SWORDS, SERRATED_STRIKES, RUPTURE, TICKS); }
 
     /* TAMING */
-    public double getGoreModifier() { return getDoubleValue(SKILLS, TAMING, GORE, MODIFIER); }
-    public double getFastFoodChance() { return getDoubleValue(SKILLS, TAMING, FAST_FOOD_SERVICE, CHANCE); }
-    public double getPummelChance() { return getDoubleValue(SKILLS, TAMING, PUMMEL, CHANCE); }
-    public double getThickFurModifier() { return getDoubleValue(SKILLS, TAMING, THICK_FUR, MODIFIER); }
-    public double getShockProofModifier() { return getDoubleValue(SKILLS, TAMING, SHOCK_PROOF, MODIFIER); }
+    public double getGoreModifier() {
+        return getDoubleValue(SKILLS, TAMING, GORE, MODIFIER);
+    }
 
-    public double getSharpenedClawsBonus() { return getDoubleValue(SKILLS, TAMING, SHARPENED_CLAWS, BONUS); }
+    public double getFastFoodChance() {
+        return getDoubleValue(SKILLS, TAMING, FAST_FOOD_SERVICE, CHANCE);
+    }
 
-    public double getMinHorseJumpStrength() { return getDoubleValue(SKILLS, TAMING, CALL_OF_THE_WILD, MIN_HORSE_JUMP_STRENGTH); }
-    public double getMaxHorseJumpStrength() { return getDoubleValue(SKILLS, TAMING, CALL_OF_THE_WILD, MAX_HORSE_JUMP_STRENGTH); }
+    public double getPummelChance() {
+        return getDoubleValue(SKILLS, TAMING, PUMMEL, CHANCE);
+    }
+
+    public double getThickFurModifier() {
+        return getDoubleValue(SKILLS, TAMING, THICK_FUR, MODIFIER);
+    }
+
+    public double getShockProofModifier() {
+        return getDoubleValue(SKILLS, TAMING, SHOCK_PROOF, MODIFIER);
+    }
+
+    public double getSharpenedClawsBonus() {
+        return getDoubleValue(SKILLS, TAMING, SHARPENED_CLAWS, BONUS);
+    }
+
+    public double getMinHorseJumpStrength() {
+        return getDoubleValue(SKILLS, TAMING, CALL_OF_THE_WILD, MIN_HORSE_JUMP_STRENGTH);
+    }
+
+    public double getMaxHorseJumpStrength() {
+        return getDoubleValue(SKILLS, TAMING, CALL_OF_THE_WILD, MAX_HORSE_JUMP_STRENGTH);
+    }
 
     /* UNARMED */
-    public boolean getDisarmProtected() { return getBooleanValue(SKILLS, UNARMED, DISARM, ANTI_THEFT); }
+    public boolean getDisarmProtected() {
+        return getBooleanValue(SKILLS, UNARMED, DISARM, ANTI_THEFT);
+    }
 
     /* WOODCUTTING */
 }

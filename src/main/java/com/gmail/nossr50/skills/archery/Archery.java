@@ -25,15 +25,7 @@ public class Archery {
 
     private static Archery archery;
 
-    public static Archery getInstance() {
-        if(archery == null)
-            archery = new Archery();
-
-        return archery;
-    }
-
-    public Archery()
-    {
+    public Archery() {
         List<TrackedEntity> trackedEntities = new ArrayList<>();
 
         skillShotDamageCap = AdvancedConfig.getInstance().getSkillShotDamageMax();
@@ -41,6 +33,13 @@ public class Archery {
         dazeBonusDamage = AdvancedConfig.getInstance().getDazeBonusDamage();
 
         distanceXpMultiplier = mcMMO.getConfigManager().getConfigExperience().getDistanceMultiplier();
+    }
+
+    public static Archery getInstance() {
+        if (archery == null)
+            archery = new Archery();
+
+        return archery;
     }
 
     protected static void incrementTrackerValue(LivingEntity livingEntity) {
@@ -71,7 +70,7 @@ public class Archery {
      * @param livingEntity The entity hit by the arrows
      */
     public static void arrowRetrievalCheck(LivingEntity livingEntity) {
-        for (Iterator<TrackedEntity> entityIterator = trackedEntities.iterator(); entityIterator.hasNext();) {
+        for (Iterator<TrackedEntity> entityIterator = trackedEntities.iterator(); entityIterator.hasNext(); ) {
             TrackedEntity trackedEntity = entityIterator.next();
 
             if (trackedEntity.getID() == livingEntity.getUniqueId()) {
@@ -82,8 +81,7 @@ public class Archery {
         }
     }
 
-    public static double getSkillShotBonusDamage(Player player, double oldDamage)
-    {
+    public static double getSkillShotBonusDamage(Player player, double oldDamage) {
         double damageBonusPercent = getDamageBonusPercent(player);
         double newDamage = oldDamage + (oldDamage * damageBonusPercent);
         return Math.min(newDamage, Archery.skillShotDamageCap);

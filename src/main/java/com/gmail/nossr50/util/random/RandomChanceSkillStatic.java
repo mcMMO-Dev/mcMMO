@@ -6,8 +6,7 @@ import org.bukkit.entity.Player;
 public class RandomChanceSkillStatic extends RandomChanceSkill {
     private final double xPos;
 
-    public RandomChanceSkillStatic(double xPos, Player player, SubSkillType subSkillType)
-    {
+    public RandomChanceSkillStatic(double xPos, Player player, SubSkillType subSkillType) {
         super(player, subSkillType);
 
         this.xPos = xPos;
