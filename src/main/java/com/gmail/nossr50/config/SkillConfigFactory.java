@@ -8,7 +8,7 @@ public class SkillConfigFactory {
 
     protected static SerializedConfigLoader initSkillConfig(PrimarySkillType primarySkillType, Class<?> clazz)
     {
-        return new SerializedConfigLoader<>(clazz,
+        return new SerializedConfigLoader(clazz,
                         primarySkillType.toString().toLowerCase() + ".conf",
                         StringUtils.getCapitalized(primarySkillType.toString()),
                         null);

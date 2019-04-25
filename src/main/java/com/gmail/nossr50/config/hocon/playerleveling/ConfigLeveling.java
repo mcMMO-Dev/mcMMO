@@ -20,6 +20,9 @@ public class ConfigLeveling {
     @Setting(value = "General", comment = "Settings for player leveling that don't fall into other categories")
     private ConfigSectionLevelingGeneral configSectionLevelingGeneral = new ConfigSectionLevelingGeneral();
 
+    @Setting(value = "Experience-Formula")
+    private ConfigExperienceFormula configExperienceFormula = new ConfigExperienceFormula();
+
     /*
      * GETTER BOILERPLATE
      */
@@ -41,11 +44,39 @@ public class ConfigLeveling {
     }
 
     public FormulaType getFormulaType() {
-        return configSectionLevelingGeneral.getFormulaType();
+        return configExperienceFormula.getFormulaType();
     }
 
     public boolean isRetroModeEnabled() {
         return getConfigSectionLevelScaling().isRetroModeEnabled();
+    }
+
+    public ConfigExperienceFormulaLinear getConfigExperienceFormulaLinear() {
+        return configExperienceFormula.getConfigExperienceFormulaLinear();
+    }
+
+    public ConfigExperienceFormulaExponential getConfigExperienceFormulaExponential() {
+        return configExperienceFormula.getConfigExperienceFormulaExponential();
+    }
+
+    public int getExponentialBaseModifier() {
+        return configExperienceFormula.getExponentialBaseModifier();
+    }
+
+    public double getExponentialMultiplier() {
+        return configExperienceFormula.getExponentialMultiplier();
+    }
+
+    public double getExponentialExponent() {
+        return configExperienceFormula.getExponentialExponent();
+    }
+
+    public int getLinearBaseModifier() {
+        return configExperienceFormula.getLinearBaseModifier();
+    }
+
+    public double getLinearMultiplier() {
+        return configExperienceFormula.getLinearMultiplier();
     }
 
     /*
