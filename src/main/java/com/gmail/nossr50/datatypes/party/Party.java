@@ -386,7 +386,7 @@ public class Party {
 
         List<Player> nearbyPlayerList = getNearMembers(UserManager.getPlayer(player));
 
-        boolean useDisplayNames = Config.getInstance().getPartyDisplayNames();
+        boolean useDisplayNames = mcMMO.getConfigManager().getConfigParty().isPartyDisplayNamesEnabled();
 
         if(isPartyLeaderOfflineOrHidden)
         {
@@ -511,7 +511,7 @@ public class Party {
 
         if (party != null) {
             Player player = mcMMOPlayer.getPlayer();
-            double range = Config.getInstance().getPartyShareRange();
+            double range = mcMMO.getConfigManager().getConfigParty().getPartyXP().getPartyExperienceSharing().getPartyShareRange();
 
             for (Player member : party.getOnlineMembers()) {
                 if (!player.equals(member) && member.isValid() && Misc.isNear(player.getLocation(), member.getLocation(), range)) {

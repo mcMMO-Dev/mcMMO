@@ -44,7 +44,8 @@ public class SalvageableSerializer implements TypeSerializer<Salvageable> {
         /* Repairable(Material itemMaterial, Material repairMaterial, int minimumQuantity, int minimumLevel, double xpMultiplier) */
 
         String item = value.getNode(ITEM_NODE_NAME).getValue(TypeToken.of(String.class));
-        String itemReturnedBySalvage = value.getNode(ITEM_RETURNED_BY_SALVAGE).getValue(new TypeToken<String>() {});
+//        String itemReturnedBySalvage = value.getNode(ITEM_RETURNED_BY_SALVAGE).getValue(new TypeToken<String>() {});
+        String itemReturnedBySalvage = value.getNode(ITEM_RETURNED_BY_SALVAGE).getValue(TypeToken.of(String.class));
         int maximumQuantityReturned = value.getNode(MAXIMUM_QUANTITY_RETURNED).getValue(TypeToken.of(Integer.class));
         int minimumLevel = value.getNode(OVERRIDE_LEVEL_REQUIREMENT).getValue(TypeToken.of(Integer.class));
 

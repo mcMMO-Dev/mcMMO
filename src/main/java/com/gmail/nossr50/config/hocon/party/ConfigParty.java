@@ -93,32 +93,4 @@ public class ConfigParty {
 
     public boolean isPartySystemEnabled() { return partyGeneral.isEnablePartySystem(); }
 
-    /*
-
-
-    public int getPTPCommandCooldown() {
-        return getIntValue(COMMANDS, PTP, COOLDOWN);
-    }
-
-    public int getPTPCommandWarmup() {
-        return getIntValue(COMMANDS, PTP, WARMUP);
-    }
-
-    public int getPTPCommandRecentlyHurtCooldown() {
-        return getIntValue(COMMANDS, PTP, RECENTLY_HURT + COOLDOWN);
-    }
-
-    public int getPTPCommandTimeout() {
-        return getIntValue(COMMANDS, PTP, REQUEST_TIMEOUT);
-    }
-
-    public boolean getPTPCommandConfirmRequired() {
-        return getBooleanValue(COMMANDS, PTP, ACCEPT_REQUIRED);
-    }
-
-    public boolean getPTPCommandWorldPermissions() {
-        return getBooleanValue(COMMANDS, PTP, WORLD_BASED_PERMISSIONS);
-    }
-
-     */
 }

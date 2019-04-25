@@ -9,10 +9,12 @@ import org.bukkit.Material;
 
 public class MinecraftMaterialWrapperSerializer implements TypeSerializer<MinecraftMaterialWrapper> {
 
+    private static final String FULLY_QUALIFIED_NAME = "Fully-Qualified-Name";
+    private static final String BUKKIT_MATERIAL_NAME = "Bukkit-Material-Name";
+
     @Override
     public MinecraftMaterialWrapper deserialize(TypeToken<?> type, ConfigurationNode value) throws ObjectMappingException {
-        Material material = Material.matchMaterial(value.getValue(new TypeToken<String>() {}));
-
+        Material material = Material.matchMaterial(value.getNode(FULLY_QUALIFIED_NAME).getValue(TypeToken.of(String.class)));
         return new MinecraftMaterialWrapper(material);
     }
 
@@ -20,7 +22,7 @@ public class MinecraftMaterialWrapperSerializer implements TypeSerializer<Minecr
     public void serialize(TypeToken<?> type, MinecraftMaterialWrapper obj, ConfigurationNode value) {
 
         value.setValue(obj.getName()); //Name
-        value.getNode("Fully-Qualified-Name").setValue(obj.getFullyQualifiedName());
-        value.getNode("Bukkit-Material-Name").setValue(obj.getBukkitMaterialName());
+        value.getNode(FULLY_QUALIFIED_NAME).setValue(obj.getFullyQualifiedName());
+        value.getNode(BUKKIT_MATERIAL_NAME).setValue(obj.getBukkitMaterialName());
     }
 }

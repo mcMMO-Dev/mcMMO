@@ -25,6 +25,7 @@ import com.gmail.nossr50.config.hocon.skills.acrobatics.ConfigAcrobatics;
 import com.gmail.nossr50.config.hocon.skills.alchemy.ConfigAlchemy;
 import com.gmail.nossr50.config.hocon.skills.archery.ConfigArchery;
 import com.gmail.nossr50.config.hocon.skills.axes.ConfigAxes;
+import com.gmail.nossr50.config.hocon.skills.exampleconfigs.ConfigNameRegisterDefaults;
 import com.gmail.nossr50.config.hocon.skills.exampleconfigs.MinecraftMaterialWrapper;
 import com.gmail.nossr50.config.hocon.skills.excavation.ConfigExcavation;
 import com.gmail.nossr50.config.hocon.skills.fishing.ConfigFishing;
@@ -129,6 +130,7 @@ public final class ConfigManager {
     private SerializedConfigLoader<ConfigWoodcutting> configWoodcutting;
     private SerializedConfigLoader<ConfigSmelting> configSmelting;
     private SerializedConfigLoader<ConfigSalvage> configSalvage;
+    private SerializedConfigLoader<ConfigNameRegisterDefaults> configDefaultExamples;
 
     private HashMap<PrimarySkillType, SerializedConfigLoader> skillConfigLoaders;
 
@@ -225,6 +227,7 @@ public final class ConfigManager {
         configMobs = new SerializedConfigLoader<>(ConfigMobs.class, "creatures.conf", "Creatures", null);
         configExperience = new SerializedConfigLoader<>(ConfigExperience.class, "experience.conf", "Experience", null);
 
+        configDefaultExamples = new SerializedConfigLoader<>(ConfigNameRegisterDefaults.class, "minecraft_item_block_name_examples.conf", "Minecraft", null);
         initSerializedSkillConfigs();
     }
 
