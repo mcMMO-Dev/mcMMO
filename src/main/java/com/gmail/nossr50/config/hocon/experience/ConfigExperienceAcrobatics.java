@@ -13,9 +13,9 @@ public class ConfigExperienceAcrobatics {
 
     static {
         ACROBATICS_DEFAULT_XP_MAP = new HashMap<>();
-        ACROBATICS_DEFAULT_XP_MAP.put("Dodge", 480);
-        ACROBATICS_DEFAULT_XP_MAP.put("Roll", 80);
-        ACROBATICS_DEFAULT_XP_MAP.put("Fall", 120);
+        ACROBATICS_DEFAULT_XP_MAP.put("Dodge", 800);
+        ACROBATICS_DEFAULT_XP_MAP.put("Roll", 600);
+        ACROBATICS_DEFAULT_XP_MAP.put("Fall", 600);
     }
 
     @Setting(value = "Acrobatics-Experience-Values", comment = "Experience values for Acrobatics.")

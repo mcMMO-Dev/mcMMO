@@ -22,7 +22,6 @@ public class ConfigExperienceSmelting {
         SMELTING_EXPERIENCE_MAP_DEFAULT.put("minecraft:redstone_ore", 15);
     }
 
-
     @Setting(value = "Smelting-XP-Values")
     private HashMap<String, Integer> smeltingExperienceMap = SMELTING_EXPERIENCE_MAP_DEFAULT;
 
