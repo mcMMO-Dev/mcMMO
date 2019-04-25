@@ -96,6 +96,26 @@ public class ConfigExperience {
         return experienceCombat;
     }
 
+    public HashMap<String, Integer> getTamingExperienceMap() {
+        return experienceTaming.getTamingExperienceMap();
+    }
+
+    public HashMap<String, Integer> getMiningExperienceMap() {
+        return experienceMining.getMiningExperienceMap();
+    }
+
+    public HashMap<String, Integer> getSmeltingExperienceMap() {
+        return experienceSmelting.getSmeltingExperienceMap();
+    }
+
+    public HashMap<String, Double> getItemMaterialXPMultiplier() {
+        return experienceRepair.getItemMaterialXPMultiplier();
+    }
+
+    public double getRepairXPBase() {
+        return experienceRepair.getRepairXPBase();
+    }
+
     public HashMap<String, Integer> getAcrobaticsXPMap() {
         return experienceAcrobatics.getAcrobaticsXPMap();
     }
@@ -144,8 +164,24 @@ public class ConfigExperience {
         return experienceCombat.isPvpXPEnabled();
     }
 
+    public HashMap<String, Double> getCombatExperienceMap() {
+        return experienceCombat.getCombatExperienceMap();
+    }
+
     public double getDistanceMultiplier() {
         return experienceArchery.getDistanceMultiplier();
+    }
+
+    public HashMap<String, Integer> getHerbalismXPMap() {
+        return experienceHerbalism.getHerbalismXPMap();
+    }
+
+    public HashMap<String, Integer> getWoodcuttingExperienceMap() {
+        return experienceWoodcutting.getWoodcuttingExperienceMap();
+    }
+
+    public HashMap<String, Integer> getExcavationExperienceMap() {
+        return experienceExcavation.getExcavationExperienceMap();
     }
 
     public HashMap<String, Integer> getFishingXPMap() {
