@@ -1018,7 +1018,7 @@ public final class ExperienceAPI {
      * @throws InvalidFormulaTypeException if the given formulaType is not valid
      */
     public static int getXpNeededToLevel(int level) {
-        return mcMMO.getFormulaManager().getCachedXpToLevel(level, ExperienceConfig.getInstance().getFormulaType());
+        return mcMMO.getFormulaManager().getCachedXpToLevel(level, mcMMO.getConfigManager().getConfigLeveling().getFormulaType());
     }
 
     /**

@@ -189,20 +189,7 @@ public class ExperienceConfig extends ConfigValidated {
      * FORMULA SETTINGS
      */
 
-    public boolean isEndermanEndermiteFarmingPrevented() {
-        return getBooleanValue(EXPLOIT_FIX, ENDERMAN_ENDERMITE_FARMS);
-    }
-
-    public boolean isPistonExploitPrevented() { return getBooleanValue(EXPLOIT_FIX, PISTONS); }
-
-/*    public boolean isFishingExploitingPrevented() { return config.getBoolean("ExploitFix.Fishing", true); }
-    public boolean isAcrobaticsExploitingPrevented() { return config.getBoolean("ExploitFix.Acrobatics", true); }*/
-
     /* Curve settings */
-    public FormulaType getFormulaType() {
-        return FormulaType.getFormulaType(getStringValue(EXPERIENCE_FORMULA, CURVE));
-    }
-
     public boolean getCumulativeCurveEnabled() {
         return getBooleanValue(EXPERIENCE_FORMULA, CUMULATIVE + CURVE);
     }

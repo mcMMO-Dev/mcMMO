@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config.hocon.playerleveling;
 
+import com.gmail.nossr50.datatypes.experience.FormulaType;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -33,6 +34,10 @@ public class ConfigSectionLevelingGeneral {
                     "\nDefault value: "+STARTING_LEVEL_DEFAULT)
     private int startingLevel = STARTING_LEVEL_DEFAULT;
 
+    @Setting(value = "Player-XP-Formula", comment = "Determines which formula is used to determine XP needed to level" +
+            "\nDefault value: LINEAR")
+    private FormulaType formulaType = FormulaType.LINEAR;
+
     /*
      * GETTER BOILERPLATE
      */
@@ -43,5 +48,9 @@ public class ConfigSectionLevelingGeneral {
 
     public ConfigSectionLevelScaling getConfigSectionLevelScaling() {
         return configSectionLevelScaling;
+    }
+
+    public FormulaType getFormulaType() {
+        return formulaType;
     }
 }

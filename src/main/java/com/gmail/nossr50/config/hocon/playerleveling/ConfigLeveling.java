@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config.hocon.playerleveling;
 
+import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
@@ -29,6 +30,22 @@ public class ConfigLeveling {
 
     public ConfigSectionLevelingGeneral getConfigSectionLevelingGeneral() {
         return configSectionLevelingGeneral;
+    }
+
+    public int getStartingLevel() {
+        return configSectionLevelingGeneral.getStartingLevel();
+    }
+
+    public ConfigSectionLevelScaling getConfigSectionLevelScaling() {
+        return configSectionLevelingGeneral.getConfigSectionLevelScaling();
+    }
+
+    public FormulaType getFormulaType() {
+        return configSectionLevelingGeneral.getFormulaType();
+    }
+
+    public boolean isRetroModeEnabled() {
+        return getConfigSectionLevelScaling().isRetroModeEnabled();
     }
 
     /*
