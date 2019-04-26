@@ -338,6 +338,10 @@ Experience_Values:
         Lily_Pad: 100
         White_Tulip: 150
         Dandelion: 100
+        Bamboo: 10
+        Cornflower: 150
+        Lily_of_the_valley: 150
+        Wither_rose: 500
     Mining:
         Tube_Coral_Block: 75
         Brain_Coral_Block: 80
@@ -383,8 +387,15 @@ Experience_Values:
         Granite: 30
         Andesite: 30
         Diorite: 30
+        Stone_Bricks: 50
+        Cracked_Stone_Bricks: 50
+        Mossy_Stone_Bricks: 50
+        Chiseled_Stone_Bricks: 50
         Red_Sandstone: 100
         Prismarine: 70
+        Prismarine_Bricks: 70
+        Dark_Prismarine: 70
+        Sea_Lantern: 70
         Purpur_Block: 200
         Purpur_Pillar: 250
         Purpur_Slab: 150
@@ -482,4 +493,5 @@ Experience_Values:
             Pillager: 2.0
             Ravager: 4.0
             Trader_Llama: 1.0
+            Wandering_trader: 1.0
 
