@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.player;
 
-import com.gmail.nossr50.api.exceptions.McMMOPlayerNotFoundException;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;

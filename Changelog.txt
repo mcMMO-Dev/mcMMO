@@ -1,3 +1,6 @@
+Version 2.1.49
+    Fixed a bug where falling blocks were not marked as unnatural in water
+
 Version 2.1.48
     1.14 Support
     Added Cats, Foxes, and Pandas to Taming XP rewards

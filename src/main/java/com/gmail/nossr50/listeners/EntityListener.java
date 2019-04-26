@@ -159,7 +159,9 @@ public class EntityListener implements Listener {
         // When the event is fired for the falling block that changes back to a
         // normal block
         // event.getBlock().getType() returns AIR
-        if (!BlockUtils.shouldBeWatched(block.getState()) && block.getType() != Material.AIR) {
+        if (!BlockUtils.shouldBeWatched(block.getState())
+                && block.getState().getType() != Material.WATER
+                && block.getType() != Material.AIR) {
             return;
         }
 

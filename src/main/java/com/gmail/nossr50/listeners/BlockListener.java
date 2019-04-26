@@ -34,16 +34,13 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.*;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
-import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 
 import java.util.List;
@@ -184,37 +181,6 @@ public class BlockListener implements Listener {
         if(BlockUtils.shouldBeWatched(event.getBlock().getState()))
         {
             mcMMO.getPlaceStore().setTrue(event.getBlock());
-        }
-    }
-
-    /**
-     * Monitor falling blocks.
-     *
-     * @param event The event to watch
-     */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onFallingBlock(EntityChangeBlockEvent event) {
-        /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
-            return;
-
-        if (BlockUtils.shouldBeWatched(event.getBlock().getState()) && event.getEntityType().equals(EntityType.FALLING_BLOCK)) {
-            if (event.getTo().equals(Material.AIR) && mcMMO.getPlaceStore().isTrue(event.getBlock())) {
-                event.getEntity().setMetadata("mcMMOBlockFall", new FixedMetadataValue( plugin, event.getBlock().getLocation()));
-            } else {
-                List<MetadataValue> values = event.getEntity().getMetadata( "mcMMOBlockFall" );
-
-                if (!values.isEmpty()) {
-
-                    if (values.get(0).value() == null) return;
-                    Block spawn = ((org.bukkit.Location) values.get(0).value()).getBlock();
-
-
-                    mcMMO.getPlaceStore().setTrue( event.getBlock() );
-                    mcMMO.getPlaceStore().setFalse( spawn );
-
-                }
-            }
         }
     }
 
