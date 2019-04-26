@@ -1,7 +1,12 @@
 Version 2.1.49
+    Added sweet berry bush to Herbalism XP (Update your experience.yml config or delete it to gen a new one)
     Fixed a bug where falling blocks were not marked as unnatural in water
-    Fixed a bug where Ability cooldowns were being called async when they are sync only
+    Fixed a bug where tool lower notifications were being called async when they are sync only
     Fixed NPE when checking inventory location
+    Improved herbalism compatibility with anti-cheat (thanks LogGits)
+
+    NOTE: This is what the default herbalism XP table looks like
+    https://paste.gg/p/anonymous/1022088f20cf44298870930e9bc58e8a
 
 Version 2.1.48
     1.14 Support
