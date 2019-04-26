@@ -397,8 +397,10 @@ public class InventoryListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onInventoryMoveItemEvent(InventoryMoveItemEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getSource().getLocation().getWorld()))
-            return;
+
+        if(event.getSource().getLocation() != null)
+            if(WorldBlacklist.isWorldBlacklisted(event.getSource().getLocation().getWorld()))
+                return;
 
         Inventory inventory = event.getDestination();
 
