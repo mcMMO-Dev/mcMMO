@@ -1,5 +1,6 @@
 Version 2.1.49
     Fixed a bug where falling blocks were not marked as unnatural in water
+    Fixed a bug where Ability cooldowns were being called async when they are sync only
 
 Version 2.1.48
     1.14 Support
