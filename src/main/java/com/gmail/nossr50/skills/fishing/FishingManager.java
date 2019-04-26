@@ -55,7 +55,7 @@ public class FishingManager extends SkillManager {
     private BoundingBox lastFishingBoundingBox;
     private Item fishingCatch;
     private Location hookLocation;
-    private int fishCaughtCounter = 1;
+    private int fishCaughtCounter = 0;
 
     public FishingManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.FISHING);
