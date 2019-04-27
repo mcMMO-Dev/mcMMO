@@ -95,23 +95,6 @@ public class SelfListener implements Listener {
             return;
         }
 
-        int threshold = ExperienceConfig.getInstance().getDiminishedReturnsThreshold(primarySkillType);
-
-        if (threshold <= 0 || !ExperienceConfig.getInstance().getDiminishedReturnsEnabled()) {
-            // Diminished returns is turned off
-            return;
-        }
-
-
-        if (event.getRawXpGained() <= 0) {
-            // Don't calculate for XP subtraction
-            return;
-        }
-
-        if (primarySkillType.isChildSkill()) {
-            return;
-        }
-
         int earlyLevelBonusXPCap = mcMMO.isRetroModeEnabled() ? 50 : 5;
 
         int earlyGameBonusXP = 0;
@@ -121,6 +104,22 @@ public class SelfListener implements Listener {
         {
             earlyGameBonusXP += (mcMMOPlayer.getXpToLevel(primarySkillType) * 0.05);
             event.setRawXpGained(event.getRawXpGained() + earlyGameBonusXP);
+        }
+
+        int threshold = ExperienceConfig.getInstance().getDiminishedReturnsThreshold(primarySkillType);
+
+        if (threshold <= 0 || !ExperienceConfig.getInstance().getDiminishedReturnsEnabled()) {
+            // Diminished returns is turned off
+            return;
+        }
+
+        if (event.getRawXpGained() <= 0) {
+            // Don't calculate for XP subtraction
+            return;
+        }
+
+        if (primarySkillType.isChildSkill()) {
+            return;
         }
 
         final float rawXp = event.getRawXpGained();
