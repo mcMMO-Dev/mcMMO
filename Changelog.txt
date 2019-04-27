@@ -1,3 +1,9 @@
+Version 2.1.50
+    Updated German locale (thanks OverCrave)
+    Added missing Herbalism XP values for: Bamboo, Cornflower, Lily of the valley, Wither rose (thanks Zed-I)
+    Added missing Mining XP values for: Stone Bricks, Cracked Stone Bricks, Mossy Stone Bricks, Chiseled Stone Bricks, Prismarine Bricks, Dark Prismarine, Sea Lantern (thanks Zed-I)
+    Added missing Combat XP multiplier for: Wandering Trader (thanks Zed-I)
+
 Version 2.1.49
     Added sweet berry bush to Herbalism XP (Update your experience.yml config or delete it to gen a new one)
     Fixed a bug where falling blocks were not marked as unnatural in water
