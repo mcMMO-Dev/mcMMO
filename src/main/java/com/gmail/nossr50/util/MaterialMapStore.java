@@ -20,6 +20,7 @@ public class MaterialMapStore {
     private HashSet<String> herbalismAbilityBlackList;
     private HashSet<String> blockCrackerWhiteList;
     private HashSet<String> canMakeShroomyWhiteList;
+    private HashSet<String> multiBlockEntities;
 
     public MaterialMapStore()
     {
@@ -30,8 +31,14 @@ public class MaterialMapStore {
         herbalismAbilityBlackList = new HashSet<>();
         blockCrackerWhiteList = new HashSet<>();
         canMakeShroomyWhiteList = new HashSet<>();
+        multiBlockEntities = new HashSet<>();
 
         fillHardcodedHashSets();
+    }
+
+    public boolean isMultiBlock(Material material)
+    {
+        return multiBlockEntities.contains(material.getKey().getKey());
     }
 
     public boolean isAbilityActivationBlackListed(Material material)
@@ -78,6 +85,19 @@ public class MaterialMapStore {
         fillHerbalismAbilityBlackList();
         fillBlockCrackerWhiteList();
         fillShroomyWhiteList();
+        fillMultiBlockEntitiesList();
+    }
+
+    private void fillMultiBlockEntitiesList()
+    {
+        multiBlockEntities.add("cactus");
+        multiBlockEntities.add("chorus_plant");
+        multiBlockEntities.add("sugar_cane");
+        multiBlockEntities.add("kelp_plant");
+        multiBlockEntities.add("kelp");
+        multiBlockEntities.add("tall_seagrass");
+        multiBlockEntities.add("tall_grass");
+        multiBlockEntities.add("bamboo");
     }
 
     private void fillShroomyWhiteList()

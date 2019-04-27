@@ -176,9 +176,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean isOneBlockPlant(Material material) {
-        return !(material == Material.CACTUS || material == Material.CHORUS_PLANT
-                || material == Material.SUGAR_CANE || material == Material.KELP_PLANT || material == Material.KELP
-                || material == Material.TALL_SEAGRASS || material == Material.TALL_GRASS || material == Material.BAMBOO);
+        return !mcMMO.getMaterialMapStore().isMultiBlock(material);
     }
 
     /**
