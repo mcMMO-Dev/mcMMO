@@ -1,73 +1,3 @@
-Version 2.1.50
-    Fixed a bug where early game XP boost (level 1-5) didn't function in certain circumstances
-    Updated German locale (thanks OverCrave)
-    Added missing Herbalism XP values for: Bamboo, Cornflower, Lily of the valley, Wither rose (thanks Zed-I)
-    Added missing Mining XP values for: Stone Bricks, Cracked Stone Bricks, Mossy Stone Bricks, Chiseled Stone Bricks, Prismarine Bricks, Dark Prismarine, Sea Lantern (thanks Zed-I)
-    Added missing Combat XP multiplier for: Wandering Trader (thanks Zed-I)
-
-    Notes:
-    If you haven't upgraded mcMMO since version 2.1.47 or before you will not need to do these steps as the experience file will update once automatically.
-    You can either delete experience.yml to generate a new one or edit it manually
-    This is what the default experience.yml looks like
-    https://paste.gg/p/anonymous/946f62ce7dff4ab7a87cae70c0266313
-
-
-Version 2.1.49
-    Added sweet berry bush to Herbalism XP (Update your experience.yml config or delete it to gen a new one)
-    Fixed a bug where falling blocks were not marked as unnatural in water
-    Fixed a bug where tool lower notifications were being called async when they are sync only
-    Fixed NPE when checking inventory location
-    Improved herbalism compatibility with anti-cheat (thanks LogGits)
-
-    NOTE: This is what the default herbalism XP table looks like
-    https://paste.gg/p/anonymous/1022088f20cf44298870930e9bc58e8a
-
-Version 2.1.48
-    1.14 Support
-    Added Cats, Foxes, and Pandas to Taming XP rewards
-    Added Cats, Foxes, Pandas, Trader Llamas, Pillagers, and Ravagers to Combat XP rewards
-    "Experience" section of experience.yml has been renamed to "Experience_Values"
-    Dodge now gives 800 XP
-    Roll now gives 600 XP
-    Fall now gives 600 XP
-
-    The first 5/50 levels of skills now give large amounts of XP so players get key early skills much faster
-        Note: First 5 in Standard, first 50 in Retro
-
-    Dev Notes:
-    I will be making a write up soon explaining near future plans for mcMMO and what is going on with the config update, abstraction update, etc...
-    Currently this version of mcMMO will work on both 1.13 and 1.14, in the abstraction update I will expand compatible versions of mcMMO to include: 1.14 / 1.13.2 / 1.12.2 / 1.8.8 / Sponge 1.14
-    It is not necessary to update your configs if you are upgrading from 1.13 -> 1.14, however if you had custom XP values in your experience.yml you will want to update your config.
-    Acrobatics XP was buffed since many AFK counter-measures were put into place to prevent repetitive grinding.
-    Experience node in experience.yml was renamed to "automatically" update configs for the new stuff 1.14
-    There are 4 updates planned for mcMMO, including a patreon rewards update, a large content update, a config update, and backwards compatibility for 1.13/1.12/1.8.8 and support for Sponge
-
-Version 2.1.47
-    Fix NPE when party leader is offline and players grab a party list
-
-Version 2.1.46
-    Party member lists now show the whole party, including offline players again.
-    Party lists now have special markers for players who are in shared XP range
-    Party lists now have special markers for players who are offline
-    Party lists now have special markers for the party leader
-    Fixed an error where bleed was setting health outside minimum values
-    [See NOTE] Fixed a bug where Creepers and Zombies were not dropping the correct heads from Shake (thanks Zed-I)
-    [See NOTE] Fixed a bug where salvage was not returning the correct amount of materials for AXE items (thanks Zed-I)
-    [See NOTE] Added missing STRIPPED_WOOD entries to experience.yml for Woodcutting
-    [See NOTE] Added about 15-20 missing entries to experience.yml for coral to Herbalism
-    Fixed a bug where admin chat from console would fail to send (thanks OverCrave)
-    Reduced default XP values for DEAD_* coral plants from 30 -> 10
-    Updated hu_HU locale (thanks andris155)
-
-    NOTE: These bugfixes were related to default config values, to receive these changes you can either delete experience.yml, treasures.yml and salvage.vanilla.yml to generate new ones or make the necessary edits.
-    This is what the files should look like after being edited.
-    Experience Correct Default Config - https://paste.gg/p/anonymous/ff695df1417e4232957a3d176fd14ed4
-    Salvage Correct Default Config - https://paste.gg/p/anonymous/c4eb2f4e66ed444e872021051760f3be
-    Treasures Correct Default Config - https://paste.gg/p/anonymous/b0120210f8c149958ca0303c68c19ebd
-
-Version 2.1.45
-    mcMMO will now check to see if the server version is incompatible and inform server admins on how to fix the problem.
-
 Version 2.2.0
     mcMMO's config system has been rewritten
     Added new subskill to Fishing named 'Inner Peace'
@@ -229,6 +159,76 @@ Version 2.2.0
     Added API method to check if player parties are size capped
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
+
+Version 2.1.50
+    Fixed a bug where early game XP boost (level 1-5) didn't function in certain circumstances
+    Updated German locale (thanks OverCrave)
+    Added missing Herbalism XP values for: Bamboo, Cornflower, Lily of the valley, Wither rose (thanks Zed-I)
+    Added missing Mining XP values for: Stone Bricks, Cracked Stone Bricks, Mossy Stone Bricks, Chiseled Stone Bricks, Prismarine Bricks, Dark Prismarine, Sea Lantern (thanks Zed-I)
+    Added missing Combat XP multiplier for: Wandering Trader (thanks Zed-I)
+
+    Notes:
+    If you haven't upgraded mcMMO since version 2.1.47 or before you will not need to do these steps as the experience file will update once automatically.
+    You can either delete experience.yml to generate a new one or edit it manually
+    This is what the default experience.yml looks like
+    https://paste.gg/p/anonymous/946f62ce7dff4ab7a87cae70c0266313
+
+
+Version 2.1.49
+    Added sweet berry bush to Herbalism XP (Update your experience.yml config or delete it to gen a new one)
+    Fixed a bug where falling blocks were not marked as unnatural in water
+    Fixed a bug where tool lower notifications were being called async when they are sync only
+    Fixed NPE when checking inventory location
+    Improved herbalism compatibility with anti-cheat (thanks LogGits)
+
+    NOTE: This is what the default herbalism XP table looks like
+    https://paste.gg/p/anonymous/1022088f20cf44298870930e9bc58e8a
+
+Version 2.1.48
+    1.14 Support
+    Added Cats, Foxes, and Pandas to Taming XP rewards
+    Added Cats, Foxes, Pandas, Trader Llamas, Pillagers, and Ravagers to Combat XP rewards
+    "Experience" section of experience.yml has been renamed to "Experience_Values"
+    Dodge now gives 800 XP
+    Roll now gives 600 XP
+    Fall now gives 600 XP
+
+    The first 5/50 levels of skills now give large amounts of XP so players get key early skills much faster
+        Note: First 5 in Standard, first 50 in Retro
+
+    Dev Notes:
+    I will be making a write up soon explaining near future plans for mcMMO and what is going on with the config update, abstraction update, etc...
+    Currently this version of mcMMO will work on both 1.13 and 1.14, in the abstraction update I will expand compatible versions of mcMMO to include: 1.14 / 1.13.2 / 1.12.2 / 1.8.8 / Sponge 1.14
+    It is not necessary to update your configs if you are upgrading from 1.13 -> 1.14, however if you had custom XP values in your experience.yml you will want to update your config.
+    Acrobatics XP was buffed since many AFK counter-measures were put into place to prevent repetitive grinding.
+    Experience node in experience.yml was renamed to "automatically" update configs for the new stuff 1.14
+    There are 4 updates planned for mcMMO, including a patreon rewards update, a large content update, a config update, and backwards compatibility for 1.13/1.12/1.8.8 and support for Sponge
+
+Version 2.1.47
+    Fix NPE when party leader is offline and players grab a party list
+
+Version 2.1.46
+    Party member lists now show the whole party, including offline players again.
+    Party lists now have special markers for players who are in shared XP range
+    Party lists now have special markers for players who are offline
+    Party lists now have special markers for the party leader
+    Fixed an error where bleed was setting health outside minimum values
+    [See NOTE] Fixed a bug where Creepers and Zombies were not dropping the correct heads from Shake (thanks Zed-I)
+    [See NOTE] Fixed a bug where salvage was not returning the correct amount of materials for AXE items (thanks Zed-I)
+    [See NOTE] Added missing STRIPPED_WOOD entries to experience.yml for Woodcutting
+    [See NOTE] Added about 15-20 missing entries to experience.yml for coral to Herbalism
+    Fixed a bug where admin chat from console would fail to send (thanks OverCrave)
+    Reduced default XP values for DEAD_* coral plants from 30 -> 10
+    Updated hu_HU locale (thanks andris155)
+
+    NOTE: These bugfixes were related to default config values, to receive these changes you can either delete experience.yml, treasures.yml and salvage.vanilla.yml to generate new ones or make the necessary edits.
+    This is what the files should look like after being edited.
+    Experience Correct Default Config - https://paste.gg/p/anonymous/ff695df1417e4232957a3d176fd14ed4
+    Salvage Correct Default Config - https://paste.gg/p/anonymous/c4eb2f4e66ed444e872021051760f3be
+    Treasures Correct Default Config - https://paste.gg/p/anonymous/b0120210f8c149958ca0303c68c19ebd
+
+Version 2.1.45
+    mcMMO will now check to see if the server version is incompatible and inform server admins on how to fix the problem.
 
 Version 2.1.44
     Fixed a NPE with Alchemy brewing
