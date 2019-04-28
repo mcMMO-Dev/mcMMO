@@ -1,3 +1,27 @@
+Version 2.1.50
+    Fixed a bug where early game XP boost (level 1-5) didn't function in certain circumstances
+    Updated German locale (thanks OverCrave)
+    Added missing Herbalism XP values for: Bamboo, Cornflower, Lily of the valley, Wither rose (thanks Zed-I)
+    Added missing Mining XP values for: Stone Bricks, Cracked Stone Bricks, Mossy Stone Bricks, Chiseled Stone Bricks, Prismarine Bricks, Dark Prismarine, Sea Lantern (thanks Zed-I)
+    Added missing Combat XP multiplier for: Wandering Trader (thanks Zed-I)
+
+    Notes:
+    If you haven't upgraded mcMMO since version 2.1.47 or before you will not need to do these steps as the experience file will update once automatically.
+    You can either delete experience.yml to generate a new one or edit it manually
+    This is what the default experience.yml looks like
+    https://paste.gg/p/anonymous/946f62ce7dff4ab7a87cae70c0266313
+
+
+Version 2.1.49
+    Added sweet berry bush to Herbalism XP (Update your experience.yml config or delete it to gen a new one)
+    Fixed a bug where falling blocks were not marked as unnatural in water
+    Fixed a bug where tool lower notifications were being called async when they are sync only
+    Fixed NPE when checking inventory location
+    Improved herbalism compatibility with anti-cheat (thanks LogGits)
+
+    NOTE: This is what the default herbalism XP table looks like
+    https://paste.gg/p/anonymous/1022088f20cf44298870930e9bc58e8a
+
 Version 2.1.48
     1.14 Support
     Added Cats, Foxes, and Pandas to Taming XP rewards
