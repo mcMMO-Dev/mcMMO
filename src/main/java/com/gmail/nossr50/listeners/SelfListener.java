@@ -71,11 +71,11 @@ public class SelfListener implements Listener {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         PrimarySkillType primarySkillType = event.getSkill();
 
+        //WorldGuard XP Check
         if (event.getXpGainReason() == XPGainReason.PVE ||
                 event.getXpGainReason() == XPGainReason.PVP ||
                 event.getXpGainReason() == XPGainReason.SHARED_PVE ||
                 event.getXpGainReason() == XPGainReason.SHARED_PVP) {
-            //WorldGuard XP Check
             if (WorldGuardUtils.isWorldGuardLoaded()) {
                 if (!WorldGuardManager.getInstance().hasXPFlag(player)) {
                     event.setRawXpGained(0);

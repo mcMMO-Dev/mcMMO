@@ -7,8 +7,9 @@ import java.util.HashSet;
 /**
  * Stores hash tables for item and block names
  * This allows for better support across multiple versions of Minecraft
- * <p>
+ *
  * This is a temporary class, mcMMO is spaghetti and I'l clean it up later
+ *
  */
 public class MaterialMapStore {
 
@@ -21,7 +22,8 @@ public class MaterialMapStore {
     private HashSet<String> canMakeShroomyWhiteList;
     private HashSet<String> multiBlockEntities;
 
-    public MaterialMapStore() {
+    public MaterialMapStore()
+    {
         abilityBlackList = new HashSet<>();
         toolBlackList = new HashSet<>();
         mossyWhiteList = new HashSet<>();
@@ -34,39 +36,48 @@ public class MaterialMapStore {
         fillHardcodedHashSets();
     }
 
-    public boolean isMultiBlock(Material material) {
+    public boolean isMultiBlock(Material material)
+    {
         return multiBlockEntities.contains(material.getKey().getKey());
     }
 
-    public boolean isAbilityActivationBlackListed(Material material) {
+    public boolean isAbilityActivationBlackListed(Material material)
+    {
         return abilityBlackList.contains(material.getKey().getKey());
     }
 
-    public boolean isToolActivationBlackListed(Material material) {
+    public boolean isToolActivationBlackListed(Material material)
+    {
         return toolBlackList.contains(material.getKey().getKey());
     }
 
-    public boolean isMossyWhiteListed(Material material) {
+    public boolean isMossyWhiteListed(Material material)
+    {
         return mossyWhiteList.contains(material.getKey().getKey());
     }
 
-    public boolean isLeavesWhiteListed(Material material) {
+    public boolean isLeavesWhiteListed(Material material)
+    {
         return leavesWhiteList.contains(material.getKey().getKey());
     }
 
-    public boolean isHerbalismAbilityWhiteListed(Material material) {
+    public boolean isHerbalismAbilityWhiteListed(Material material)
+    {
         return herbalismAbilityBlackList.contains(material.getKey().getKey());
     }
 
-    public boolean isBlockCrackerWhiteListed(Material material) {
+    public boolean isBlockCrackerWhiteListed(Material material)
+    {
         return blockCrackerWhiteList.contains(material.getKey().getKey());
     }
 
-    public boolean isShroomyWhiteListed(Material material) {
+    public boolean isShroomyWhiteListed(Material material)
+    {
         return canMakeShroomyWhiteList.contains(material.getKey().getKey());
     }
 
-    private void fillHardcodedHashSets() {
+    private void fillHardcodedHashSets()
+    {
         fillAbilityBlackList();
         filltoolBlackList();
         fillMossyWhiteList();
@@ -77,7 +88,8 @@ public class MaterialMapStore {
         fillMultiBlockEntitiesList();
     }
 
-    private void fillMultiBlockEntitiesList() {
+    private void fillMultiBlockEntitiesList()
+    {
         multiBlockEntities.add("cactus");
         multiBlockEntities.add("chorus_plant");
         multiBlockEntities.add("sugar_cane");
@@ -88,24 +100,28 @@ public class MaterialMapStore {
         multiBlockEntities.add("bamboo");
     }
 
-    private void fillShroomyWhiteList() {
+    private void fillShroomyWhiteList()
+    {
         canMakeShroomyWhiteList.add("dirt");
         canMakeShroomyWhiteList.add("grass");
         canMakeShroomyWhiteList.add("grass_path");
     }
 
-    private void fillBlockCrackerWhiteList() {
+    private void fillBlockCrackerWhiteList()
+    {
         blockCrackerWhiteList.add("stone_bricks");
     }
 
-    private void fillHerbalismAbilityBlackList() {
+    private void fillHerbalismAbilityBlackList()
+    {
         herbalismAbilityBlackList.add("dirt");
         herbalismAbilityBlackList.add("grass");
         herbalismAbilityBlackList.add("grass_path");
         herbalismAbilityBlackList.add("farmland");
     }
 
-    private void fillLeavesWhiteList() {
+    private void fillLeavesWhiteList()
+    {
         leavesWhiteList.add("oak_leaves");
         leavesWhiteList.add("acacia_leaves");
         leavesWhiteList.add("birch_leaves");
@@ -114,7 +130,8 @@ public class MaterialMapStore {
         leavesWhiteList.add("spruce_leaves");
     }
 
-    private void fillMossyWhiteList() {
+    private void fillMossyWhiteList()
+    {
         mossyWhiteList.add("cobblestone");
         mossyWhiteList.add("dirt");
         mossyWhiteList.add("grass_path");
@@ -122,7 +139,8 @@ public class MaterialMapStore {
         mossyWhiteList.add("cobblestone_wall");
     }
 
-    private void fillAbilityBlackList() {
+    private void fillAbilityBlackList()
+    {
         abilityBlackList.add("black_bed");
         abilityBlackList.add("blue_bed");
         abilityBlackList.add("brown_bed");
@@ -221,8 +239,9 @@ public class MaterialMapStore {
         abilityBlackList.add("wall_sign"); //1.13 and lower?
         abilityBlackList.add("sign"); //1.13 and lower?
     }
-
-    private void filltoolBlackList() {
+    
+    private void filltoolBlackList()
+    {
         //TODO: Add anvils / missing logs
         toolBlackList.add("black_bed");
         toolBlackList.add("blue_bed");
@@ -345,7 +364,8 @@ public class MaterialMapStore {
         toolBlackList.add("spruce_wood");
     }
 
-    private void addToHashSet(String string, HashSet<String> stringHashSet) {
+    private void addToHashSet(String string, HashSet<String> stringHashSet)
+    {
         stringHashSet.add(string.toLowerCase());
     }
 }

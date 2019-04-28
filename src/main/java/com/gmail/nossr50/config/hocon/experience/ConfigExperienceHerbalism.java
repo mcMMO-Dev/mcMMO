@@ -67,14 +67,12 @@ public class ConfigExperienceHerbalism {
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.OXEYE_DAISY.getKey().toString(), 150);
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.PEONY.getKey().toString(), 50);
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.PINK_TULIP.getKey().toString(), 150);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.LILY_OF_THE_VALLEY.getKey().toString(), 150);
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.WHITE_TULIP.getKey().toString(), 150);
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.POPPY.getKey().toString(), 100);
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.DANDELION.getKey().toString(), 100);
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.RED_TULIP.getKey().toString(), 150);
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.ROSE_BUSH.getKey().toString(), 50);
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.SUNFLOWER.getKey().toString(), 50);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.CORNFLOWER.getKey().toString(), 50);
 
         /* WEEDS */
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.FERN.getKey().toString(), 10);
@@ -101,13 +99,11 @@ public class ConfigExperienceHerbalism {
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.MELON.getKey().toString(), 20);
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.WHEAT.getKey().toString(), 50);
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.SUGAR_CANE.getKey().toString(), 30);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.BAMBOO.getKey().toString(), 20);
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.NETHER_WART.getKey().toString(), 30);
 
         /* END PLANTS */
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.CHORUS_PLANT.getKey().toString(), 1);
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.CHORUS_FLOWER.getKey().toString(), 25);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.WITHER_ROSE.getKey().toString(), 500);
     }
 
     @Setting(value = "Herbalism-Experience")

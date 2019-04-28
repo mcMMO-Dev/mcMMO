@@ -20,7 +20,6 @@ public class ConfigExperienceMining {
         MINING_EXPERIENCE_DEFAULT.put(Material.BUBBLE_CORAL_BLOCK.getKey().toString(), 70);
         MINING_EXPERIENCE_DEFAULT.put(Material.FIRE_CORAL_BLOCK.getKey().toString(), 90);
         MINING_EXPERIENCE_DEFAULT.put(Material.HORN_CORAL_BLOCK.getKey().toString(), 125);
-        MINING_EXPERIENCE_DEFAULT.put(Material.SEA_LANTERN.getKey().toString(), 70);
         MINING_EXPERIENCE_DEFAULT.put(Material.PRISMARINE.getKey().toString(), 30);
         MINING_EXPERIENCE_DEFAULT.put(Material.PRISMARINE_BRICK_SLAB.getKey().toString(), 30);
         MINING_EXPERIENCE_DEFAULT.put(Material.PRISMARINE_BRICK_STAIRS.getKey().toString(), 30);

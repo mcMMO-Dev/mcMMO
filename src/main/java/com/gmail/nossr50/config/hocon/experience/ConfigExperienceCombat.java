@@ -22,7 +22,6 @@ public class ConfigExperienceCombat {
         COMBAT_EXPERIENCE_DEFAULT.put("pillager", 2.0D);
         COMBAT_EXPERIENCE_DEFAULT.put("ravager", 4.0D);
         COMBAT_EXPERIENCE_DEFAULT.put("trader_llama", 1.0D);
-        COMBAT_EXPERIENCE_DEFAULT.put("wandering_trader", 1.0D);
         COMBAT_EXPERIENCE_DEFAULT.put("skeleton", 3.0D);
         COMBAT_EXPERIENCE_DEFAULT.put("spider", 2.0D);
         COMBAT_EXPERIENCE_DEFAULT.put("giant", 4.0D);
