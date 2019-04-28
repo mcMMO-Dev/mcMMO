@@ -1,3 +1,6 @@
+# bash stuff
+*.sh
+
 # Eclipse stuff
 /.classpath
 /.project
