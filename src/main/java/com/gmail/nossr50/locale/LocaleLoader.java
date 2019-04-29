@@ -19,6 +19,7 @@ import java.util.logging.Level;
 public final class LocaleLoader {
     private static final String BUNDLE_ROOT = "com.gmail.nossr50.locale.locale";
     private static ResourceBundle bundle = null;
+    private static ResourceBundle filesystemBundle = null;
     private static ResourceBundle enBundle = null;
 
     private LocaleLoader() {};
@@ -37,6 +38,13 @@ public final class LocaleLoader {
     public static String getString(String key, Object... messageArguments) {
         if (bundle == null) {
             initialize();
+        }
+
+        if (filesystemBundle != null) {
+            try {
+                return getString(key, filesystemBundle, messageArguments);
+            }
+            catch (MissingResourceException ignored) {}
         }
 
         try {
@@ -99,14 +107,12 @@ public final class LocaleLoader {
             Path localePath = Paths.get(mcMMO.getMainDirectory() + "locale_" + locale.toString() + ".properties");
             if (Files.exists(localePath) && Files.isRegularFile(localePath)) {
                 try (Reader localeReader = Files.newBufferedReader(localePath)) {
-                    bundle = new PropertyResourceBundle(localeReader);
+                    filesystemBundle = new PropertyResourceBundle(localeReader);
                 } catch (IOException e) {
                     mcMMO.p.getLogger().log(Level.WARNING, "Failed to load locale from " + localePath, e);
-                    bundle = ResourceBundle.getBundle(BUNDLE_ROOT, locale);
                 }
-            } else {
-                bundle = ResourceBundle.getBundle(BUNDLE_ROOT, locale);
             }
+            bundle = ResourceBundle.getBundle(BUNDLE_ROOT, locale);
             enBundle = ResourceBundle.getBundle(BUNDLE_ROOT, Locale.US);
         }
     }
