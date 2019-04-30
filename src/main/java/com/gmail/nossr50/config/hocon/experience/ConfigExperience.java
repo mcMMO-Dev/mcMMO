@@ -8,199 +8,181 @@ import java.util.HashMap;
 @ConfigSerializable
 public class ConfigExperience {
 
-    @Setting(value = "Acrobatics", comment = "XP Settings for Acrobatics")
-    private ConfigExperienceAcrobatics experienceAcrobatics = new ConfigExperienceAcrobatics();
+    private static final double GLOBAL_XP_MULT_DEFAULT = 1.0D;
 
-    @Setting(value = "Alchemy", comment = "XP Settings for Alchemy")
-    private ConfigExperienceAlchemy experienceAlchemy = new ConfigExperienceAlchemy();
+    @Setting(value = "Global-XP-Multiplier", comment = "This multiplier is applied at the very end of every XP gain, you can use it as a shortcut to increase or decrease xp gains across the entire plugin" +
+            "\nThis value is temporarily overridden by xprate events." +
+            "\nDefault value: " + GLOBAL_XP_MULT_DEFAULT)
+    private double globalXPMultiplier = GLOBAL_XP_MULT_DEFAULT;
 
-    @Setting(value = "Archery", comment = "XP Settings for Archery")
-    private ConfigExperienceArchery experienceArchery = new ConfigExperienceArchery();
-
-    @Setting(value = "Fishing", comment = "XP Settings for Fishing")
-    private ConfigExperienceFishing experienceFishing = new ConfigExperienceFishing();
-
-    @Setting(value = "Excavation", comment = "XP Settings for Excavation")
-    private ConfigExperienceExcavation experienceExcavation = new ConfigExperienceExcavation();
-
-    @Setting(value = "Woodcutting", comment = "XP Settings for Woodcutting")
-    private ConfigExperienceWoodcutting experienceWoodcutting = new ConfigExperienceWoodcutting();
-
-    @Setting(value = "Herbalism", comment = "XP Settings for Herbalism")
-    private ConfigExperienceHerbalism experienceHerbalism = new ConfigExperienceHerbalism();
-
-    @Setting(value = "Mining", comment = "XP Settings for Mining")
-    private ConfigExperienceMining experienceMining = new ConfigExperienceMining();
-
-    @Setting(value = "Repair", comment = "XP Settings for Repair")
-    private ConfigExperienceRepair experienceRepair = new ConfigExperienceRepair();
-
-    @Setting(value = "Smelting", comment = "XP Settings for Smelting")
-    private ConfigExperienceSmelting experienceSmelting = new ConfigExperienceSmelting();
-
-    @Setting(value = "Taming", comment = "XP Settings for Taming")
-    private ConfigExperienceTaming experienceTaming = new ConfigExperienceTaming();
-
-    @Setting(value = "Z-Combat", comment = "XP Settings for Combat")
-    private ConfigExperienceCombat experienceCombat = new ConfigExperienceCombat();
+    @Setting(value = "Skill-XP-Settings", comment = "XP values and multipliers for each skill")
+    private ConfigExperienceSkills configExperienceSkills = new ConfigExperienceSkills();
 
     /*
      * BOILER PLATE GETTERS
      */
 
     public ConfigExperienceAcrobatics getExperienceAcrobatics() {
-        return experienceAcrobatics;
+        return getConfigExperienceSkills().getExperienceAcrobatics();
     }
 
     public ConfigExperienceAlchemy getExperienceAlchemy() {
-        return experienceAlchemy;
+        return getConfigExperienceSkills().getExperienceAlchemy();
     }
 
     public ConfigExperienceArchery getExperienceArchery() {
-        return experienceArchery;
+        return getConfigExperienceSkills().getExperienceArchery();
     }
 
     public ConfigExperienceFishing getExperienceFishing() {
-        return experienceFishing;
+        return getConfigExperienceSkills().getExperienceFishing();
     }
 
     public ConfigExperienceExcavation getExperienceExcavation() {
-        return experienceExcavation;
+        return getConfigExperienceSkills().getExperienceExcavation();
     }
 
     public ConfigExperienceWoodcutting getExperienceWoodcutting() {
-        return experienceWoodcutting;
+        return getConfigExperienceSkills().getExperienceWoodcutting();
     }
 
     public ConfigExperienceHerbalism getExperienceHerbalism() {
-        return experienceHerbalism;
+        return getConfigExperienceSkills().getExperienceHerbalism();
     }
 
     public ConfigExperienceMining getExperienceMining() {
-        return experienceMining;
+        return getConfigExperienceSkills().getExperienceMining();
     }
 
     public ConfigExperienceRepair getExperienceRepair() {
-        return experienceRepair;
+        return getConfigExperienceSkills().getExperienceRepair();
     }
 
     public ConfigExperienceSmelting getExperienceSmelting() {
-        return experienceSmelting;
+        return getConfigExperienceSkills().getExperienceSmelting();
     }
 
     public ConfigExperienceTaming getExperienceTaming() {
-        return experienceTaming;
+        return getConfigExperienceSkills().getExperienceTaming();
     }
 
     public ConfigExperienceCombat getExperienceCombat() {
-        return experienceCombat;
+        return getConfigExperienceSkills().getExperienceCombat();
     }
 
     public HashMap<String, Integer> getTamingExperienceMap() {
-        return experienceTaming.getTamingExperienceMap();
+        return getConfigExperienceSkills().getTamingExperienceMap();
     }
 
     public HashMap<String, Integer> getMiningExperienceMap() {
-        return experienceMining.getMiningExperienceMap();
+        return getConfigExperienceSkills().getMiningExperienceMap();
     }
 
     public HashMap<String, Integer> getSmeltingExperienceMap() {
-        return experienceSmelting.getSmeltingExperienceMap();
+        return getConfigExperienceSkills().getSmeltingExperienceMap();
     }
 
     public HashMap<String, Double> getItemMaterialXPMultiplier() {
-        return experienceRepair.getItemMaterialXPMultiplier();
+        return getConfigExperienceSkills().getItemMaterialXPMultiplier();
     }
 
     public double getRepairXPBase() {
-        return experienceRepair.getRepairXPBase();
+        return getConfigExperienceSkills().getRepairXPBase();
     }
 
     public HashMap<String, Integer> getAcrobaticsXPMap() {
-        return experienceAcrobatics.getAcrobaticsXPMap();
+        return getConfigExperienceSkills().getAcrobaticsXPMap();
     }
 
     public Double getFeatherFallMultiplier() {
-        return experienceAcrobatics.getFeatherFallMultiplier();
+        return getConfigExperienceSkills().getFeatherFallMultiplier();
     }
 
     public HashMap<String, Integer> getAlchemyXPMap() {
-        return experienceAlchemy.getAlchemyXPMap();
+        return getConfigExperienceSkills().getAlchemyXPMap();
     }
 
     public int getDodgeXP() {
-        return experienceAcrobatics.getDodgeXP();
+        return getConfigExperienceSkills().getDodgeXP();
     }
 
     public int getRollXP() {
-        return experienceAcrobatics.getRollXP();
+        return getConfigExperienceSkills().getRollXP();
     }
 
     public int getFallXP() {
-        return experienceAcrobatics.getFallXP();
+        return getConfigExperienceSkills().getFallXP();
     }
 
     public int getStageOnePotionXP() {
-        return experienceAlchemy.getStageOnePotionXP();
+        return getConfigExperienceSkills().getStageOnePotionXP();
     }
 
     public int getStageTwoPotionXP() {
-        return experienceAlchemy.getStageTwoPotionXP();
+        return getConfigExperienceSkills().getStageTwoPotionXP();
     }
 
     public int getStageThreePotionXP() {
-        return experienceAlchemy.getStageThreePotionXP();
+        return getConfigExperienceSkills().getStageThreePotionXP();
     }
 
     public int getStageFourPotionXP() {
-        return experienceAlchemy.getStageFourPotionXP();
+        return getConfigExperienceSkills().getStageFourPotionXP();
     }
 
     public int getPotionXPByStage(int potionStage) {
-        return experienceAlchemy.getPotionXPByStage(potionStage);
+        return getConfigExperienceSkills().getPotionXPByStage(potionStage);
     }
 
     public boolean isPvpXPEnabled() {
-        return experienceCombat.isPvpXPEnabled();
+        return getConfigExperienceSkills().isPvpXPEnabled();
     }
 
     public HashMap<String, Double> getCombatExperienceMap() {
-        return experienceCombat.getCombatExperienceMap();
+        return getConfigExperienceSkills().getCombatExperienceMap();
     }
 
     public double getDistanceMultiplier() {
-        return experienceArchery.getDistanceMultiplier();
+        return getConfigExperienceSkills().getDistanceMultiplier();
     }
 
     public HashMap<String, Integer> getHerbalismXPMap() {
-        return experienceHerbalism.getHerbalismXPMap();
+        return getConfigExperienceSkills().getHerbalismXPMap();
     }
 
     public HashMap<String, Integer> getWoodcuttingExperienceMap() {
-        return experienceWoodcutting.getWoodcuttingExperienceMap();
+        return getConfigExperienceSkills().getWoodcuttingExperienceMap();
     }
 
     public HashMap<String, Integer> getExcavationExperienceMap() {
-        return experienceExcavation.getExcavationExperienceMap();
+        return getConfigExperienceSkills().getExcavationExperienceMap();
     }
 
     public HashMap<String, Integer> getFishingXPMap() {
-        return experienceFishing.getFishingXPMap();
+        return getConfigExperienceSkills().getFishingXPMap();
     }
 
     public int getShakeXP() {
-        return experienceFishing.getShakeXP();
+        return getConfigExperienceSkills().getShakeXP();
     }
 
-    public double getMobSpawnerXPMult() {
-        return experienceCombat.getMobSpawnerXPMult();
+    public double getSpawnedMobXPMult() {
+        return getConfigExperienceSkills().getSpawnedMobXPMult();
     }
 
     public double getPVPXPMult() {
-        return experienceCombat.getPVPXPMult();
+        return getConfigExperienceSkills().getPVPXPMult();
     }
 
     public double getAnimalsXPMult() {
-        return experienceCombat.getAnimalsXPMult();
+        return getConfigExperienceSkills().getAnimalsXPMult();
+    }
+
+    public ConfigExperienceSkills getConfigExperienceSkills() {
+        return configExperienceSkills;
+    }
+
+    public double getGlobalXPMultiplier() {
+        return globalXPMultiplier;
     }
 }

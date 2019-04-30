@@ -10,10 +10,11 @@ import java.util.HashMap;
  * This class handles the XP for block break related XP
  */
 public class ExperienceMapManager implements Unload {
-    public HashMap<Material, Integer> miningXpMap;
-    public HashMap<Material, Integer> herbalismXpMap;
-    public HashMap<Material, Integer> woodcuttingXpMap;
-    public HashMap<Material, Integer> excavationXpMap;
+    private HashMap<Material, Integer> miningXpMap;
+    private HashMap<Material, Integer> herbalismXpMap;
+    private HashMap<Material, Integer> woodcuttingXpMap;
+    private HashMap<Material, Integer> excavationXpMap;
+    private double globalXpMult;
 
     public ExperienceMapManager() {
         miningXpMap = new HashMap<>();
@@ -23,6 +24,33 @@ public class ExperienceMapManager implements Unload {
 
         //Register with unloader
         mcMMO.getConfigManager().registerUnloadable(this);
+    }
+
+    /**
+     * Change the gloabl xp multiplier, this is temporary and will not be serialiized
+     * @param newValue new global xp multiplier value
+     */
+    public void setGlobalXpMult(double newValue) {
+        globalXpMult = newValue;
+    }
+
+    /**
+     * Gets the current global xp multiplier value
+     * This value can be changed by the xprate command
+     * @return
+     */
+    public double getGlobalXpMult() {
+        return globalXpMult;
+    }
+
+    /**
+     * Gets the original value of the global XP multiplier
+     * This is defined by the users config
+     * This value can be different from the current working value (due to xprate etc)
+     * @return the original global xp multiplier value from the user config file
+     */
+    public double getOriginalGlobalXpMult() {
+        return mcMMO.getConfigManager().getConfigExperience().getGlobalXPMultiplier();
     }
 
     /**

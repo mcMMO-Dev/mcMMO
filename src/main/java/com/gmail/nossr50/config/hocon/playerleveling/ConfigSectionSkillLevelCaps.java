@@ -4,7 +4,7 @@ import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 @ConfigSerializable
-public class ConfigSectionSkills {
+public class ConfigSectionSkillLevelCaps {
 
     /*
      * CONFIG NODES

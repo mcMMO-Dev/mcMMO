@@ -77,8 +77,9 @@ public class ConfigExperienceCombat {
         //SPECIAL
         SPECIAL_COMBAT_EXPERIENCE_DEFAULT = new HashMap<>();
         SPECIAL_COMBAT_EXPERIENCE_DEFAULT.put("animals", 1.0D); //TODO: this seems like a dumb config option
-        SPECIAL_COMBAT_EXPERIENCE_DEFAULT.put("mobspawners", 0.0D);
+        SPECIAL_COMBAT_EXPERIENCE_DEFAULT.put("spawned", 0.0D);
         SPECIAL_COMBAT_EXPERIENCE_DEFAULT.put("pvp", 1.0D);
+        SPECIAL_COMBAT_EXPERIENCE_DEFAULT.put("player-bred-mobs", 1.0D);
     }
 
     @Setting(value = "Combat-XP-Multipliers")
@@ -100,7 +101,7 @@ public class ConfigExperienceCombat {
         return combatExperienceMap;
     }
 
-    public double getMobSpawnerXPMult() {
+    public double getSpawnedMobXPMult() {
         return specialCombatExperienceMap.get("mobspawners");
     }
 

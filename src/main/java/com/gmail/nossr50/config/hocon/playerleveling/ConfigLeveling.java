@@ -98,35 +98,35 @@ public class ConfigLeveling {
     public int getLevelCap(PrimarySkillType primarySkillType) {
         switch (primarySkillType) {
             case ACROBATICS:
-                return configSectionLevelCaps.getConfigSectionSkills().getAcrobatics().getLevelCap();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getAcrobatics().getLevelCap();
             case ALCHEMY:
-                return configSectionLevelCaps.getConfigSectionSkills().getAlchemy().getLevelCap();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getAlchemy().getLevelCap();
             case ARCHERY:
-                return configSectionLevelCaps.getConfigSectionSkills().getArchery().getLevelCap();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getArchery().getLevelCap();
             case AXES:
-                return configSectionLevelCaps.getConfigSectionSkills().getAxes().getLevelCap();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getAxes().getLevelCap();
             case EXCAVATION:
-                return configSectionLevelCaps.getConfigSectionSkills().getExcavation().getLevelCap();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getExcavation().getLevelCap();
             case FISHING:
-                return configSectionLevelCaps.getConfigSectionSkills().getFishing().getLevelCap();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getFishing().getLevelCap();
             case HERBALISM:
-                return configSectionLevelCaps.getConfigSectionSkills().getHerbalism().getLevelCap();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getHerbalism().getLevelCap();
             case MINING:
-                return configSectionLevelCaps.getConfigSectionSkills().getMining().getLevelCap();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getMining().getLevelCap();
             case REPAIR:
-                return configSectionLevelCaps.getConfigSectionSkills().getRepair().getLevelCap();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getRepair().getLevelCap();
             case SWORDS:
-                return configSectionLevelCaps.getConfigSectionSkills().getSwords().getLevelCap();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getSwords().getLevelCap();
             case TAMING:
-                return configSectionLevelCaps.getConfigSectionSkills().getTaming().getLevelCap();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getTaming().getLevelCap();
             case UNARMED:
-                return configSectionLevelCaps.getConfigSectionSkills().getUnarmed().getLevelCap();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getUnarmed().getLevelCap();
             case WOODCUTTING:
-                return configSectionLevelCaps.getConfigSectionSkills().getWoodcutting().getLevelCap();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getWoodcutting().getLevelCap();
             case SMELTING:
-                return configSectionLevelCaps.getConfigSectionSkills().getSmelting().getLevelCap();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getSmelting().getLevelCap();
             case SALVAGE:
-                return configSectionLevelCaps.getConfigSectionSkills().getSalvage().getLevelCap();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getSalvage().getLevelCap();
             default:
                 return Integer.MAX_VALUE;
         }
@@ -135,35 +135,35 @@ public class ConfigLeveling {
     public boolean isLevelCapEnabled(PrimarySkillType primarySkillType) {
         switch (primarySkillType) {
             case ACROBATICS:
-                return configSectionLevelCaps.getConfigSectionSkills().getAcrobatics().isLevelCapEnabled();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getAcrobatics().isLevelCapEnabled();
             case ALCHEMY:
-                return configSectionLevelCaps.getConfigSectionSkills().getAlchemy().isLevelCapEnabled();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getAlchemy().isLevelCapEnabled();
             case ARCHERY:
-                return configSectionLevelCaps.getConfigSectionSkills().getArchery().isLevelCapEnabled();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getArchery().isLevelCapEnabled();
             case AXES:
-                return configSectionLevelCaps.getConfigSectionSkills().getAxes().isLevelCapEnabled();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getAxes().isLevelCapEnabled();
             case EXCAVATION:
-                return configSectionLevelCaps.getConfigSectionSkills().getExcavation().isLevelCapEnabled();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getExcavation().isLevelCapEnabled();
             case FISHING:
-                return configSectionLevelCaps.getConfigSectionSkills().getFishing().isLevelCapEnabled();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getFishing().isLevelCapEnabled();
             case HERBALISM:
-                return configSectionLevelCaps.getConfigSectionSkills().getHerbalism().isLevelCapEnabled();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getHerbalism().isLevelCapEnabled();
             case MINING:
-                return configSectionLevelCaps.getConfigSectionSkills().getMining().isLevelCapEnabled();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getMining().isLevelCapEnabled();
             case REPAIR:
-                return configSectionLevelCaps.getConfigSectionSkills().getRepair().isLevelCapEnabled();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getRepair().isLevelCapEnabled();
             case SWORDS:
-                return configSectionLevelCaps.getConfigSectionSkills().getSwords().isLevelCapEnabled();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getSwords().isLevelCapEnabled();
             case TAMING:
-                return configSectionLevelCaps.getConfigSectionSkills().getTaming().isLevelCapEnabled();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getTaming().isLevelCapEnabled();
             case UNARMED:
-                return configSectionLevelCaps.getConfigSectionSkills().getUnarmed().isLevelCapEnabled();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getUnarmed().isLevelCapEnabled();
             case WOODCUTTING:
-                return configSectionLevelCaps.getConfigSectionSkills().getWoodcutting().isLevelCapEnabled();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getWoodcutting().isLevelCapEnabled();
             case SMELTING:
-                return configSectionLevelCaps.getConfigSectionSkills().getSmelting().isLevelCapEnabled();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getSmelting().isLevelCapEnabled();
             case SALVAGE:
-                return configSectionLevelCaps.getConfigSectionSkills().getSalvage().isLevelCapEnabled();
+                return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getSalvage().isLevelCapEnabled();
             default:
                 return false;
         }

@@ -21,7 +21,9 @@ public class ConfigExperienceFormula {
             "\nEXPONENTIAL Formula: multiplier * level ^ exponent + base")
     private ConfigExperienceFormulaExponential configExperienceFormulaExponential = new ConfigExperienceFormulaExponential();
 
-    @Setting(value = "Use-Cumulative-XP-Curve", comment = "")
+    @Setting(value = "Use-Cumulative-XP-Curve", comment = "Replaces the value for level used in the XP formulas with a players power level." +
+            "\nEffectively this makes it much harder to level, especially on exponential curve." +
+            "\nDefault value: " + CUMULATIVE_CURVE_DEFAULT)
     private boolean cumulativeCurveEnabled = CUMULATIVE_CURVE_DEFAULT;
 
     public FormulaType getFormulaType() {

@@ -74,7 +74,7 @@ public final class ConfigManager {
 
     /* UNLOAD REGISTER */
 
-    SkillPropertiesManager skillPropertiesManager;
+    private SkillPropertiesManager skillPropertiesManager;
     private ArrayList<Unload> unloadables;
 
     /* COLLECTION MANAGERS */

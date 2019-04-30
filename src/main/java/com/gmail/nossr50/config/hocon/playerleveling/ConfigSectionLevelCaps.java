@@ -23,7 +23,7 @@ public class ConfigSectionLevelCaps {
     private ConfigSectionSkillLevelCap powerLevel = new ConfigSectionSkillLevelCap();
 
     @Setting(value = "Skills", comment = "Per Skill cap settings")
-    private ConfigSectionSkills configSectionSkills = new ConfigSectionSkills();
+    private ConfigSectionSkillLevelCaps configSectionSkillLevelCaps = new ConfigSectionSkillLevelCaps();
 
     /*
      * GETTER BOILERPLATE
@@ -37,7 +37,7 @@ public class ConfigSectionLevelCaps {
         return truncateSkillsAboveCap;
     }
 
-    public ConfigSectionSkills getConfigSectionSkills() {
-        return configSectionSkills;
+    public ConfigSectionSkillLevelCaps getConfigSectionSkillLevelCaps() {
+        return configSectionSkillLevelCaps;
     }
 }
