@@ -47,6 +47,10 @@ public class ConfigExperienceSkills {
      * BOILER PLATE GETTERS
      */
 
+    public double getPlayerBredMobsXPMult() {
+        return experienceCombat.getPlayerBredMobsXPMult();
+    }
+
     public ConfigExperienceAcrobatics getExperienceAcrobatics() {
         return experienceAcrobatics;
     }

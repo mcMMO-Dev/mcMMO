@@ -543,7 +543,7 @@ public final class CombatUtils {
             Player defender = (Player) target;
 
             if (defender.isOnline() && SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
-                baseXP = 20 * ExperienceConfig.getInstance().getPlayerVersusPlayerXP();
+                baseXP = 20 * mcMMO.getConfigManager().getConfigExperience().getPVPXPMult();
             }
         } else {
             /*if (mcMMO.getModManager().isCustomEntity(target)) {
@@ -552,7 +552,7 @@ public final class CombatUtils {
             //else if (target instanceof Animals) {
             if (target instanceof Animals) {
                 EntityType type = target.getType();
-                baseXP = ExperienceConfig.getInstance().getAnimalsXP(type);
+                baseXP = mcMMO.getConfigManager().getConfigExperience().getAnimalsXPMult();
             } else if (target instanceof Monster) {
                 EntityType type = target.getType();
                 baseXP = ExperienceConfig.getInstance().getCombatXP(type);
@@ -574,11 +574,11 @@ public final class CombatUtils {
             }
 
             if (target.hasMetadata(mcMMO.entityMetadataKey)) {
-                baseXP *= ExperienceConfig.getInstance().getSpawnedMobXpMultiplier();
+                baseXP *= mcMMO.getConfigManager().getConfigExperience().getSpawnedMobXPMult();
             }
 
             if (target.hasMetadata(mcMMO.bredMetadataKey)) {
-                baseXP *= ExperienceConfig.getInstance().getBredMobXpMultiplier();
+                baseXP *= mcMMO.getConfigManager().getConfigExperience().getPlayerBredMobsXPMult();
             }
 
             xpGainReason = XPGainReason.PVE;

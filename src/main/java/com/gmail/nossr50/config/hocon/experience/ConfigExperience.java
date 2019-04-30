@@ -177,6 +177,10 @@ public class ConfigExperience {
         return getConfigExperienceSkills().getSpawnedMobXPMult();
     }
 
+    public double getPlayerBredMobsXPMult() {
+        return getExperienceCombat().getPlayerBredMobsXPMult();
+    }
+
     public double getPVPXPMult() {
         return getConfigExperienceSkills().getPVPXPMult();
     }

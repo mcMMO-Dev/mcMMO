@@ -112,4 +112,8 @@ public class ConfigExperienceCombat {
     public double getAnimalsXPMult() {
         return specialCombatExperienceMap.get("animals");
     }
+
+    public double getPlayerBredMobsXPMult() {
+        return specialCombatExperienceMap.get("player-bred-mobs");
+    }
 }

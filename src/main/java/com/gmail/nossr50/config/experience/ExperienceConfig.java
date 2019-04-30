@@ -128,18 +128,6 @@ public class ExperienceConfig extends ConfigValidated {
     }*/
 
     /* PVP modifier */
-    public double getPlayerVersusPlayerXP() {
-        return getDoubleValue(EXPERIENCE_FORMULA, MULTIPLIER, PVP);
-    }
-
-    /* Spawned Mob modifier */
-    public double getSpawnedMobXpMultiplier() {
-        return getDoubleValue(EXPERIENCE_FORMULA, MOBSPAWNERS, MULTIPLIER);
-    }
-
-    public double getBredMobXpMultiplier() {
-        return getDoubleValue(EXPERIENCE_FORMULA, BREEDING, MULTIPLIER);
-    }
 
     /* Skill modifiers */
     public double getFormulaSkillModifier(PrimarySkillType skill) {
@@ -184,10 +172,6 @@ public class ExperienceConfig extends ConfigValidated {
 
     public double getAnimalsXP(EntityType entity) {
         return getDoubleValue(EXPERIENCE, COMBAT, MULTIPLIER, StringUtils.getEntityConfigName(entity));
-    }
-
-    public double getAnimalsXP() {
-        return getDoubleValue(EXPERIENCE, COMBAT, MULTIPLIER, ANIMALS);
     }
 
     public boolean hasCombatXP(EntityType entity) {
