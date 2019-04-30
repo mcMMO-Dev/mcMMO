@@ -10,7 +10,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
@@ -18,6 +20,7 @@ import java.util.logging.Level;
 
 public final class LocaleLoader {
     private static final String BUNDLE_ROOT = "com.gmail.nossr50.locale.locale";
+    private static Map<String, String> bundleCache = new HashMap<>();
     private static ResourceBundle bundle = null;
     private static ResourceBundle filesystemBundle = null;
     private static ResourceBundle enBundle = null;
@@ -40,32 +43,33 @@ public final class LocaleLoader {
             initialize();
         }
 
+        String rawMessage = bundleCache.computeIfAbsent(key, LocaleLoader::getRawString);
+        return formatString(rawMessage, messageArguments);
+    }
+
+    private static String getRawString(String key) {
         if (filesystemBundle != null) {
             try {
-                return getString(key, filesystemBundle, messageArguments);
+                return filesystemBundle.getString(key);
             }
             catch (MissingResourceException ignored) {}
         }
 
         try {
-            return getString(key, bundle, messageArguments);
+            return bundle.getString(key);
         }
-        catch (MissingResourceException ex) {
-            try {
-                return getString(key, enBundle, messageArguments);
-            }
-            catch (MissingResourceException ex2) {
-                if (!key.contains("Guides")) {
-                    mcMMO.p.getLogger().warning("Could not find locale string: " + key);
-                }
+        catch (MissingResourceException ignored) {}
 
-                return '!' + key + '!';
-            }
+        try {
+            return enBundle.getString(key);
         }
-    }
+        catch (MissingResourceException ignored) {
+            if (!key.contains("Guides")) {
+                mcMMO.p.getLogger().warning("Could not find locale string: " + key);
+            }
 
-    private static String getString(String key, ResourceBundle bundle, Object... messageArguments) throws MissingResourceException {
-        return formatString(bundle.getString(key), messageArguments);
+            return '!' + key + '!';
+        }
     }
 
     public static String formatString(String string, Object... messageArguments) {
