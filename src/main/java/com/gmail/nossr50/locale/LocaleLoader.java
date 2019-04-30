@@ -104,7 +104,7 @@ public final class LocaleLoader {
                 throw new IllegalStateException("Failed to parse locale string '" + Config.getInstance().getLocale() + "'");
             }
 
-            Path localePath = Paths.get(mcMMO.getMainDirectory() + "locale_" + locale.toString() + ".properties");
+            Path localePath = Paths.get(mcMMO.getLocalesDirectory() + "locale_" + locale.toString() + ".properties");
             if (Files.exists(localePath) && Files.isRegularFile(localePath)) {
                 try (Reader localeReader = Files.newBufferedReader(localePath)) {
                     filesystemBundle = new PropertyResourceBundle(localeReader);
