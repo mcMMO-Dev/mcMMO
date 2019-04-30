@@ -15,12 +15,19 @@ public class ConfigExperience {
             "\nDefault value: " + GLOBAL_XP_MULT_DEFAULT)
     private double globalXPMultiplier = GLOBAL_XP_MULT_DEFAULT;
 
+    @Setting(value = "Global-Skill-XP-Multipliers", comment = "This multiplier is applied at the very end of an XP calculation specific to its corresponding skill, this value is applied before the global multiplier is applied.")
+    private ConfigExperienceSkillMultiplier configExperienceSkillMultiplier = new ConfigExperienceSkillMultiplier();
+
     @Setting(value = "Skill-XP-Settings", comment = "XP values and multipliers for each skill")
     private ConfigExperienceSkills configExperienceSkills = new ConfigExperienceSkills();
 
     /*
      * BOILER PLATE GETTERS
      */
+
+    public ConfigExperienceSkillMultiplier getConfigExperienceSkillMultiplier() {
+        return configExperienceSkillMultiplier;
+    }
 
     public ConfigExperienceAcrobatics getExperienceAcrobatics() {
         return getConfigExperienceSkills().getExperienceAcrobatics();

@@ -307,12 +307,10 @@ public final class ConfigManager {
         customSerializers = TypeSerializers.getDefaultSerializers().newChild();
 
         mcMMO.p.getLogger().info("Registering custom type serializers for Configurate...");
-        customSerializers.registerType(new TypeToken<Material>() {
-        }, new CustomEnumValueSerializer());
-        customSerializers.registerType(new TypeToken<PartyFeature>() {
-        }, new CustomEnumValueSerializer());
-        customSerializers.registerType(new TypeToken<FormulaType>() {
-        }, new CustomEnumValueSerializer());
+        customSerializers.registerType(new TypeToken<PrimarySkillType>() {}, new CustomEnumValueSerializer());
+        customSerializers.registerType(new TypeToken<Material>() {}, new CustomEnumValueSerializer());
+        customSerializers.registerType(new TypeToken<PartyFeature>() {}, new CustomEnumValueSerializer());
+        customSerializers.registerType(new TypeToken<FormulaType>() {}, new CustomEnumValueSerializer());
         customSerializers.registerType(TypeToken.of(Repairable.class), new RepairableSerializer());
         customSerializers.registerType(TypeToken.of(Salvageable.class), new SalvageableSerializer());
         customSerializers.registerType(TypeToken.of(MinecraftMaterialWrapper.class), new MinecraftMaterialWrapperSerializer());
