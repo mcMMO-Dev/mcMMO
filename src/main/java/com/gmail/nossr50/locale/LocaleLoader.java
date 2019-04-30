@@ -47,6 +47,17 @@ public final class LocaleLoader {
         return formatString(rawMessage, messageArguments);
     }
 
+    /**
+     * Reloads locale
+     */
+    public static void reloadLocale() {
+        bundle = null;
+        filesystemBundle = null;
+        enBundle = null;
+        bundleCache = new HashMap<>(); // Cheaper to replace than clear()
+        initialize();
+    }
+
     private static String getRawString(String key) {
         if (filesystemBundle != null) {
             try {

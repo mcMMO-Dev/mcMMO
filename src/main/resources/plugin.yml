@@ -168,6 +168,10 @@ commands:
         aliases: [macho, jumping, throwing, wrecking, crafting, walking, swimming, falling, climbing, flying, diving, piggy]
         description: Deploy jokes
         permission: mcmmo.commands.mcfools
+    mcmmoreloadlocale:
+        aliases: [mcreloadlocale]
+        description: Reloads locale
+        permission: mcmmo.commands.reloadlocale
 permissions:
     mcmmo.*:
         default: false
@@ -807,6 +811,7 @@ permissions:
             mcmmo.commands.mmoedit.others: true
             mcmmo.commands.mmoshowdb: true
             mcmmo.commands.ptp.world.all: true
+            mcmmo.commands.reloadlocale: true
             mcmmo.commands.skillreset.all: true
             mcmmo.commands.vampirism.all: true
             mcmmo.commands.xprate.all: true
