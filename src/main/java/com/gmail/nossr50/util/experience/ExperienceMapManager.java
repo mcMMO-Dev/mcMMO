@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.Unload;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 
 import java.util.HashMap;
 
@@ -16,6 +17,7 @@ public class ExperienceMapManager implements Unload {
     private HashMap<String, Integer> herbalismFullyQualifiedBlockXpMap;
     private HashMap<String, Integer> woodcuttingFullyQualifiedBlockXpMap;
     private HashMap<String, Integer> excavationFullyQualifiedBlockXpMap;
+    private HashMap<EntityType, Integer> tamingExperienceMap;
 
     private double globalXpMult;
 
@@ -24,6 +26,7 @@ public class ExperienceMapManager implements Unload {
         herbalismFullyQualifiedBlockXpMap = new HashMap<>();
         woodcuttingFullyQualifiedBlockXpMap = new HashMap<>();
         excavationFullyQualifiedBlockXpMap = new HashMap<>();
+        tamingExperienceMap = new HashMap<>();
 
         //Register with unloader
         mcMMO.getConfigManager().registerUnloadable(this);
@@ -43,6 +46,34 @@ public class ExperienceMapManager implements Unload {
         buildHerbalismBlockXPMap();
         buildWoodcuttingBlockXPMap();
         buildExcavationBlockXPMap();
+        buildTamingXPMap();
+    }
+
+    /**
+     * Taming entries in the config are case insensitive, but for faster lookups we convert them to ENUMs
+     */
+    private void buildTamingXPMap()
+    {
+        mcMMO.p.getLogger().info("Building Taming XP list...");
+        HashMap<String, Integer> userTamingConfigMap = mcMMO.getConfigManager().getConfigExperience().getTamingExperienceMap();
+
+        for(String s : userTamingConfigMap.keySet())
+        {
+            boolean matchFound = false;
+            for(EntityType entityType : EntityType.values())
+            {
+                if(entityType.toString().equalsIgnoreCase(s))
+                {
+                    //Match!
+                    matchFound = true;
+                    tamingExperienceMap.put(entityType, userTamingConfigMap.get(s));
+                }
+            }
+            if(!matchFound)
+            {
+                mcMMO.p.getLogger().info("Unable to find entity with matching name - "+s);
+            }
+        }
     }
 
     private void fillBlockXPMap(HashMap<String, Integer> userConfigMap, HashMap<String, Integer> fullyQualifiedBlockXPMap)
