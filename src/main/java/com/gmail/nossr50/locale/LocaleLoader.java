@@ -111,6 +111,7 @@ public final class LocaleLoader {
             Path localePath = Paths.get(mcMMO.getLocalesDirectory() + "locale_" + locale.toString() + ".properties");
             if (Files.exists(localePath) && Files.isRegularFile(localePath)) {
                 try (Reader localeReader = Files.newBufferedReader(localePath)) {
+                    mcMMO.p.getLogger().log(Level.INFO, "Loading locale from {0}", localePath);
                     filesystemBundle = new PropertyResourceBundle(localeReader);
                 } catch (IOException e) {
                     mcMMO.p.getLogger().log(Level.WARNING, "Failed to load locale from " + localePath, e);
