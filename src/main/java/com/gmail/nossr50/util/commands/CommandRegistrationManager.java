@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util.commands;
 
 import com.gmail.nossr50.commands.*;
+import com.gmail.nossr50.commands.admin.McmmoReloadLocaleCommand;
 import com.gmail.nossr50.commands.chat.AdminChatCommand;
 import com.gmail.nossr50.commands.chat.McChatSpy;
 import com.gmail.nossr50.commands.chat.PartyChatCommand;
@@ -400,6 +401,15 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McImportCommand());
     }
 
+    private static void registerReloadLocaleCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mcmmoreloadlocale");
+        command.setDescription("Reloads locale"); // TODO: Localize
+        command.setPermission("mcmmo.commands.reloadlocale");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.formatString("Commands.Usage.0", "mcmmoreloadlocale"));
+        command.setExecutor(new McmmoReloadLocaleCommand());
+    }
+
     public static void registerCommands() {
         // Generic Commands
         registerMmoInfoCommand();
@@ -447,5 +457,8 @@ public final class CommandRegistrationManager {
 
         // Skill Commands
         registerSkillCommands();
+
+        // Admin commands
+        registerReloadLocaleCommand();
     }
 }
