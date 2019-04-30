@@ -17,7 +17,7 @@ public class ExperienceMapManager implements Unload {
     private HashMap<String, Integer> herbalismFullyQualifiedBlockXpMap;
     private HashMap<String, Integer> woodcuttingFullyQualifiedBlockXpMap;
     private HashMap<String, Integer> excavationFullyQualifiedBlockXpMap;
-    private HashMap<EntityType, Integer> tamingExperienceMap;
+    private HashMap<EntityType, Float> tamingExperienceMap;
 
     private double globalXpMult;
 
@@ -66,7 +66,7 @@ public class ExperienceMapManager implements Unload {
                 {
                     //Match!
                     matchFound = true;
-                    tamingExperienceMap.put(entityType, userTamingConfigMap.get(s));
+                    tamingExperienceMap.put(entityType, (float) userTamingConfigMap.get(s));
                 }
             }
             if(!matchFound)
@@ -156,6 +156,16 @@ public class ExperienceMapManager implements Unload {
     }
 
     /**
+     * Gets the taming XP for this entity
+     * @param entityType target entity
+     * @return value of XP for this entity
+     */
+    public float getTamingXp(EntityType entityType)
+    {
+        return tamingExperienceMap.get(entityType);
+    }
+
+    /**
      * Gets the original value of the global XP multiplier
      * This is defined by the users config
      * This value can be different from the current working value (due to xprate etc)
@@ -172,7 +182,7 @@ public class ExperienceMapManager implements Unload {
      * @return true if the block has valid xp registers
      */
     public boolean hasMiningXp(Material material) {
-        return miningFullyQualifiedBlockXpMap.get(material.getKey().getKey()) != null;
+        return miningFullyQualifiedBlockXpMap.get(material.getKey()) != null;
     }
 
     /**
@@ -182,7 +192,7 @@ public class ExperienceMapManager implements Unload {
      * @return true if the block has valid xp registers
      */
     public boolean hasHerbalismXp(Material material) {
-        return herbalismFullyQualifiedBlockXpMap.get(material) != null;
+        return herbalismFullyQualifiedBlockXpMap.get(material.getKey()) != null;
     }
 
     /**
@@ -192,7 +202,7 @@ public class ExperienceMapManager implements Unload {
      * @return true if the block has valid xp registers
      */
     public boolean hasWoodcuttingXp(Material material) {
-        return woodcuttingFullyQualifiedBlockXpMap.get(material) != null;
+        return woodcuttingFullyQualifiedBlockXpMap.get(material.getKey()) != null;
     }
 
     /**
@@ -202,7 +212,7 @@ public class ExperienceMapManager implements Unload {
      * @return true if the block has valid xp registers
      */
     public boolean hasExcavationXp(Material material) {
-        return excavationFullyQualifiedBlockXpMap.get(material) != null;
+        return excavationFullyQualifiedBlockXpMap.get(material.getKey()) != null;
     }
 
     /**
@@ -212,7 +222,7 @@ public class ExperienceMapManager implements Unload {
      * @return the raw XP value before any modifiers are applied
      */
     public int getMiningXp(Material material) {
-        return miningFullyQualifiedBlockXpMap.get(material);
+        return miningFullyQualifiedBlockXpMap.get(material.getKey());
     }
 
     /**
@@ -222,7 +232,7 @@ public class ExperienceMapManager implements Unload {
      * @return the raw XP value before any modifiers are applied
      */
     public int getHerbalismXp(Material material) {
-        return herbalismFullyQualifiedBlockXpMap.get(material);
+        return herbalismFullyQualifiedBlockXpMap.get(material.getKey());
     }
 
     /**
@@ -232,7 +242,7 @@ public class ExperienceMapManager implements Unload {
      * @return the raw XP value before any modifiers are applied
      */
     public int getWoodcuttingXp(Material material) {
-        return woodcuttingFullyQualifiedBlockXpMap.get(material);
+        return woodcuttingFullyQualifiedBlockXpMap.get(material.getKey());
     }
 
     /**
@@ -242,7 +252,7 @@ public class ExperienceMapManager implements Unload {
      * @return the raw XP value before any modifiers are applied
      */
     public int getExcavationXp(Material material) {
-        return excavationFullyQualifiedBlockXpMap.get(material);
+        return excavationFullyQualifiedBlockXpMap.get(material.getKey());
     }
 
     @Override

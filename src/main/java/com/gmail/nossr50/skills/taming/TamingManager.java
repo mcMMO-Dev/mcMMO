@@ -106,7 +106,7 @@ public class TamingManager extends SkillManager {
      * @param entity The LivingEntity to award XP for
      */
     public void awardTamingXP(LivingEntity entity) {
-        applyXpGain(ExperienceConfig.getInstance().getTamingXP(entity.getType()), XPGainReason.PVE);
+        applyXpGain(mcMMO.getConfigManager().getExperienceMapManager().getTamingXp(entity.getType()), XPGainReason.PVE);
     }
 
     /**

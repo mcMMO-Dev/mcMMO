@@ -254,9 +254,4 @@ public class ExperienceConfig extends ConfigValidated {
     public double getRepairXP(ItemMaterialCategory repairItemMaterialCategory) {
         return getDoubleValue(EXPERIENCE, REPAIR, StringUtils.getCapitalized(repairItemMaterialCategory.toString()));
     }
-
-    /* Taming */
-    public int getTamingXP(EntityType type) {
-        return getIntValue(EXPERIENCE, TAMING, ANIMAL_TAMING, StringUtils.getEntityConfigName(type));
-    }
 }
