@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.treasure.ExcavationTreasureConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.block.BlockState;
 
@@ -25,11 +26,7 @@ public class Excavation {
     }
 
     protected static int getBlockXP(BlockState blockState) {
-        int xp = ExperienceConfig.getInstance().getXp(PrimarySkillType.EXCAVATION, blockState.getType());
-
-        /*if (xp == 0 && mcMMO.getModManager().isCustomExcavationBlock(blockState)) {
-            xp = mcMMO.getModManager().getBlock(blockState).getXpGain();
-        }*/
+        int xp = mcMMO.getConfigManager().getExperienceMapManager().getExcavationXp(blockState.getType());
 
         return xp;
     }

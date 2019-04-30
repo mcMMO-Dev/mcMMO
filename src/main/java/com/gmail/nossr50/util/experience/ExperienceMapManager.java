@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util.experience;
 
+import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.config.Unload;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
@@ -156,12 +157,36 @@ public class ExperienceMapManager implements Unload {
     }
 
     /**
+     * Gets the block break XP value for a specific skill
+     * @param primarySkillType target skill
+     * @param material target material
+     * @return XP value for breaking this block for said skill
+     * @throws InvalidSkillException for skills that don't give block break experience
+     * @deprecated its faster to use direct calls to get XP, for example getMiningXP(Material material) instead of using this method
+     */
+    @Deprecated
+    public float getBlockBreakXpValue(PrimarySkillType primarySkillType, Material material) throws InvalidSkillException {
+        switch(primarySkillType)
+        {
+            case MINING:
+                return getMiningXp(material);
+            case HERBALISM:
+                return getHerbalismXp(material);
+            case EXCAVATION:
+                return getExcavationXp(material);
+            case WOODCUTTING:
+                return getWoodcuttingXp(material);
+            default:
+                throw new InvalidSkillException();
+        }
+    }
+
+    /**
      * Gets the taming XP for this entity
      * @param entityType target entity
      * @return value of XP for this entity
      */
-    public float getTamingXp(EntityType entityType)
-    {
+    public float getTamingXp(EntityType entityType) {
         return tamingExperienceMap.get(entityType);
     }
 
