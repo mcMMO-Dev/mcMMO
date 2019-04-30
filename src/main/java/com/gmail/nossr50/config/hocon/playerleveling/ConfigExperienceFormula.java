@@ -7,6 +7,8 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 @ConfigSerializable
 public class ConfigExperienceFormula {
 
+    public static final boolean CUMULATIVE_CURVE_DEFAULT = false;
+
     @Setting(value = "Player-XP-Formula-Type", comment = "Determines which formula is used to determine XP needed to level" +
             "\nDefault value: LINEAR")
     private FormulaType formulaType = FormulaType.LINEAR;
@@ -19,12 +21,19 @@ public class ConfigExperienceFormula {
             "\nEXPONENTIAL Formula: multiplier * level ^ exponent + base")
     private ConfigExperienceFormulaExponential configExperienceFormulaExponential = new ConfigExperienceFormulaExponential();
 
+    @Setting(value = "Use-Cumulative-XP-Curve", comment = "")
+    private boolean cumulativeCurveEnabled = CUMULATIVE_CURVE_DEFAULT;
+
     public FormulaType getFormulaType() {
         return formulaType;
     }
 
     public ConfigExperienceFormulaLinear getConfigExperienceFormulaLinear() {
         return configExperienceFormulaLinear;
+    }
+
+    public boolean isCumulativeCurveEnabled() {
+        return cumulativeCurveEnabled;
     }
 
     public ConfigExperienceFormulaExponential getConfigExperienceFormulaExponential() {

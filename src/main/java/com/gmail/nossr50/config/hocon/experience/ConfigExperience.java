@@ -191,4 +191,16 @@ public class ConfigExperience {
     public int getShakeXP() {
         return experienceFishing.getShakeXP();
     }
+
+    public double getMobSpawnerXPMult() {
+        return experienceCombat.getMobSpawnerXPMult();
+    }
+
+    public double getPVPXPMult() {
+        return experienceCombat.getPVPXPMult();
+    }
+
+    public double getAnimalsXPMult() {
+        return experienceCombat.getAnimalsXPMult();
+    }
 }

@@ -9,12 +9,13 @@ import java.util.HashMap;
 public class ConfigExperienceCombat {
 
     private static final HashMap<String, Double> COMBAT_EXPERIENCE_DEFAULT;
+    private static final HashMap<String, Double> SPECIAL_COMBAT_EXPERIENCE_DEFAULT;
     private static final boolean PVP_XP_ENABLED_DEFAULT = false;
 
     static {
         COMBAT_EXPERIENCE_DEFAULT = new HashMap<>();
 
-        COMBAT_EXPERIENCE_DEFAULT.put("animals", 1.0D); //TODO: this seems like a dumb config option
+
         COMBAT_EXPERIENCE_DEFAULT.put("creeper", 4.0D);
         COMBAT_EXPERIENCE_DEFAULT.put("cat", 1.0D);
         COMBAT_EXPERIENCE_DEFAULT.put("fox", 1.0D);
@@ -72,10 +73,19 @@ public class ConfigExperienceCombat {
         COMBAT_EXPERIENCE_DEFAULT.put("drowned", 1.0D);
         COMBAT_EXPERIENCE_DEFAULT.put("dolphin", 1.0D);
         COMBAT_EXPERIENCE_DEFAULT.put("phantom", 4.0D);
+
+        //SPECIAL
+        SPECIAL_COMBAT_EXPERIENCE_DEFAULT = new HashMap<>();
+        SPECIAL_COMBAT_EXPERIENCE_DEFAULT.put("animals", 1.0D); //TODO: this seems like a dumb config option
+        SPECIAL_COMBAT_EXPERIENCE_DEFAULT.put("mobspawners", 0.0D);
+        SPECIAL_COMBAT_EXPERIENCE_DEFAULT.put("pvp", 1.0D);
     }
 
     @Setting(value = "Combat-XP-Multipliers")
     private HashMap<String, Double> combatExperienceMap = COMBAT_EXPERIENCE_DEFAULT;
+
+    @Setting(value = "Special-Combat-XP-Multipliers")
+    private HashMap<String, Double> specialCombatExperienceMap = COMBAT_EXPERIENCE_DEFAULT;
 
     @Setting(value = "PVP-XP", comment = "If true, players will gain XP from PVP interactions." +
             "\nBe careful turning this on as this can potentially allow for unwanted behaviour from players." +
@@ -88,5 +98,17 @@ public class ConfigExperienceCombat {
 
     public HashMap<String, Double> getCombatExperienceMap() {
         return combatExperienceMap;
+    }
+
+    public double getMobSpawnerXPMult() {
+        return specialCombatExperienceMap.get("mobspawners");
+    }
+
+    public double getPVPXPMult() {
+        return specialCombatExperienceMap.get("pvp");
+    }
+
+    public double getAnimalsXPMult() {
+        return specialCombatExperienceMap.get("animals");
     }
 }

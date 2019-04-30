@@ -115,68 +115,12 @@ public class ExperienceConfig extends ConfigValidated {
     public List<String> validateKeys() {
         List<String> reason = new ArrayList<>();
 
-        /*
-         * FORMULA SETTINGS
-         */
-
-        /* Global modifier */
-        if (getExperienceGainsGlobalMultiplier() <= 0) {
-            reason.add(EXPERIENCE_FORMULA + "." + MULTIPLIER + "." + GLOBAL + " should be greater than 0!");
-        }
-
-        /* PVP modifier */
-        if (getPlayerVersusPlayerXP() < 0) {
-            reason.add(EXPERIENCE_FORMULA + "." + MULTIPLIER + "." + PVP + " should be at least 0!");
-        }
-
-        /* Spawned Mob modifier */
-        if (getSpawnedMobXpMultiplier() < 0) {
-            reason.add(EXPERIENCE_FORMULA + "." + MOBSPAWNERS + "." + MULTIPLIER + " should be at least 0!");
-        }
-
-        /* Bred Mob modifier */
-        if (getBredMobXpMultiplier() < 0) {
-            reason.add(EXPERIENCE_FORMULA + "." + BREEDING + "." + MULTIPLIER + " should be at least 0!");
-        }
-
-        /* Conversion */
-        if (getExpModifier() <= 0) {
-            reason.add(CONVERSION + "." + EXP + MODIFIER + " should be greater than 0!");
-        }
-
-        /*
-         * XP SETTINGS
-         */
-        /* Combat XP Multipliers */
-        if (getAnimalsXP() < 0) {
-            reason.add(EXPERIENCE + "." + COMBAT + "." + MULTIPLIER + "." + ANIMALS + " should be at least 0!");
-        }
-
-        /* Repair */
-        if (getRepairXPBase() <= 0) {
-            reason.add(EXPERIENCE + "." + REPAIR + "." + BASE1 + " should be greater than 0!");
-        }
-
-        /* Taming */
-        if (getTamingXP(EntityType.WOLF) <= 0) {
-            reason.add(EXPERIENCE + "." + TAMING + "." + ANIMAL_TAMING + "." + WOLF + " should be greater than 0!");
-        }
-
-        if (getTamingXP(EntityType.OCELOT) <= 0) {
-            reason.add(EXPERIENCE + "." + TAMING + "." + ANIMAL_TAMING + "." + OCELOT + " should be greater than 0!");
-        }
-
         return reason;
     }
 
     /*
      * FORMULA SETTINGS
      */
-
-    /* Curve settings */
-    public boolean getCumulativeCurveEnabled() {
-        return getBooleanValue(EXPERIENCE_FORMULA, CUMULATIVE + CURVE);
-    }
 
     /* Global modifier */
     public double getExperienceGainsGlobalMultiplier() {
