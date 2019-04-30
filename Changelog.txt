@@ -25,7 +25,7 @@ Version 2.2.0
     Acrobatic's Dodge XP increased from 120 -> 480
     Fishing's always catch fish setting now defaults to true instead of false
     Optimized code related to Fishing
-    Added a new command "mcmmoreload" to reload config values
+    Added a new command 'mcmmoreload' to reload config values
     Added new locale string 'Commands.Reload.Start'
     Added new locale string 'Commands.Reload.Finished'
     Added new permission 'mcmmo.commands.reload'

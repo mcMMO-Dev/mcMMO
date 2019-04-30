@@ -337,7 +337,7 @@ public final class ConfigManager {
         experienceMapManager = new ExperienceMapManager();
         //Set the global XP val
         experienceMapManager.setGlobalXpMult(getConfigExperience().getGlobalXPMultiplier());
-        experienceMapManager.setExcavationXpMap(getConfigExperience().getExcavationExperienceMap());
+        experienceMapManager.buildBlockXPMaps(); //Block XP value maps
     }
 
     /**

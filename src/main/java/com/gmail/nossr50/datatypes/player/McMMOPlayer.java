@@ -744,7 +744,7 @@ public class McMMOPlayer {
             return 0;
         }
 
-        xp = (float) (xp / primarySkillType.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
+        xp = (float) (xp / primarySkillType.getXpModifier() * mcMMO.getConfigManager().getExperienceMapManager().getGlobalXpMult());
 
         /*if (MainConfig.getInstance().getToolModsEnabled()) {
             CustomTool tool = mcMMO.getModManager().getTool(player.getInventory().getItemInMainHand());

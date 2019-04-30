@@ -122,15 +122,6 @@ public class ExperienceConfig extends ConfigValidated {
      * FORMULA SETTINGS
      */
 
-    /* Global modifier */
-    public double getExperienceGainsGlobalMultiplier() {
-        return getDoubleValue(EXPERIENCE_FORMULA, MULTIPLIER, GLOBAL);
-    }
-
-    public void setGlobalXPMultiplier(double newXpMultiplier) {
-        getUserRootNode().getNode(EXPERIENCE_FORMULA, MULTIPLIER, GLOBAL).setValue(newXpMultiplier);
-    }
-
     //TODO: Rewrite this
     /*public void setExperienceGainsGlobalMultiplier(double value) {
         config.set(EXPERIENCE_FORMULA, MULTIPLIER, GLOBAL, value);

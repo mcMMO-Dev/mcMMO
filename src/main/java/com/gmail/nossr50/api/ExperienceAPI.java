@@ -183,7 +183,7 @@ public final class ExperienceAPI {
      * @throws InvalidXPGainReasonException if the given xpGainReason is not valid
      */
     public static void addMultipliedXP(Player player, String skillType, int XP, String xpGainReason) {
-        getPlayer(player).applyXpGain(getSkillType(skillType), (int) (XP * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()), getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
+        getPlayer(player).applyXpGain(getSkillType(skillType), (int) (XP * mcMMO.getConfigManager().getExperienceMapManager().getGlobalXpMult()), getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
     }
 
     /**
@@ -199,7 +199,7 @@ public final class ExperienceAPI {
      */
     @Deprecated
     public static void addMultipliedXPOffline(String playerName, String skillType, int XP) {
-        addOfflineXP(playerName, getSkillType(skillType), (int) (XP * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()));
+        addOfflineXP(playerName, getSkillType(skillType), (int) (XP * mcMMO.getConfigManager().getExperienceMapManager().getGlobalXpMult()));
     }
 
     /**
@@ -250,11 +250,11 @@ public final class ExperienceAPI {
         PrimarySkillType skill = getSkillType(skillType);
 
         if (isUnshared) {
-            getPlayer(player).beginUnsharedXpGain(skill, (int) (XP / skill.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()), getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
+            getPlayer(player).beginUnsharedXpGain(skill, (int) (XP / skill.getXpModifier() * mcMMO.getConfigManager().getExperienceMapManager().getGlobalXpMult()), getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
             return;
         }
 
-        getPlayer(player).applyXpGain(skill, (int) (XP / skill.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()), getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
+        getPlayer(player).applyXpGain(skill, (int) (XP / skill.getXpModifier() * mcMMO.getConfigManager().getExperienceMapManager().getGlobalXpMult()), getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
     }
 
     /**
@@ -272,7 +272,7 @@ public final class ExperienceAPI {
     public static void addModifiedXPOffline(String playerName, String skillType, int XP) {
         PrimarySkillType skill = getSkillType(skillType);
 
-        addOfflineXP(playerName, skill, (int) (XP / skill.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()));
+        addOfflineXP(playerName, skill, (int) (XP / skill.getXpModifier() * mcMMO.getConfigManager().getExperienceMapManager().getGlobalXpMult()));
     }
 
     /**

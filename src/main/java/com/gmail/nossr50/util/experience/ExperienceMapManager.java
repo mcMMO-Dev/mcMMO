@@ -12,26 +12,73 @@ import java.util.HashMap;
  */
 public class ExperienceMapManager implements Unload {
     private HashMap<PrimarySkillType, HashMap<Material, String>> skillMaterialXPMap;
-    private HashMap<String, Integer> miningXpMap;
-    private HashMap<String, Integer> herbalismXpMap;
-    private HashMap<String, Integer> woodcuttingXpMap;
-    private HashMap<String, Integer> excavationXpMap;
+    private HashMap<String, Integer> miningFullyQualifiedBlockXpMap;
+    private HashMap<String, Integer> herbalismFullyQualifiedBlockXpMap;
+    private HashMap<String, Integer> woodcuttingFullyQualifiedBlockXpMap;
+    private HashMap<String, Integer> excavationFullyQualifiedBlockXpMap;
 
     private double globalXpMult;
 
     public ExperienceMapManager() {
-        miningXpMap = new HashMap<>();
-        herbalismXpMap = new HashMap<>();
-        woodcuttingXpMap = new HashMap<>();
-        excavationXpMap = new HashMap<>();
+        miningFullyQualifiedBlockXpMap = new HashMap<>();
+        herbalismFullyQualifiedBlockXpMap = new HashMap<>();
+        woodcuttingFullyQualifiedBlockXpMap = new HashMap<>();
+        excavationFullyQualifiedBlockXpMap = new HashMap<>();
 
         //Register with unloader
         mcMMO.getConfigManager().registerUnloadable(this);
     }
 
-    public void buildMaterialXPMap(HashMap<String, Integer> xpMap, PrimarySkillType primarySkillType)
-    {
+    /**
+     * Builds fully qualified name to xp value maps of blocks for XP lookups
+     * This method servers two purposes
+     * 1) It adds user config values to a hash table
+     * 2) It converts user config values into their fully qualified names
+     *
+     * This is done to avoid namespace conflicts, which don't happen in Bukkit but could easily happen in Sponge
+     *
+     */
+    public void buildBlockXPMaps() {
+        buildMiningBlockXPMap();
+        buildHerbalismBlockXPMap();
+        buildWoodcuttingBlockXPMap();
+        buildExcavationBlockXPMap();
+    }
 
+    private void fillBlockXPMap(HashMap<String, Integer> userConfigMap, HashMap<String, Integer> fullyQualifiedBlockXPMap)
+    {
+        for(String string : userConfigMap.keySet()) {
+            //matchMaterial can match fully qualified names and names without domain
+            Material matchingMaterial = Material.matchMaterial(string);
+
+            if (matchingMaterial != null) {
+                //Map the fully qualified name
+                fullyQualifiedBlockXPMap.put(matchingMaterial.getKey().getKey(), userConfigMap.get(string));
+            } else {
+                mcMMO.p.getLogger().info("Could not find a match for the block named '"+string+"' among vanilla block registers");
+            }
+        }
+    }
+
+    private void buildMiningBlockXPMap() {
+        mcMMO.p.getLogger().info("Mapping block break XP values for Mining...");
+        fillBlockXPMap(mcMMO.getConfigManager().getConfigExperience().getMiningExperienceMap(), miningFullyQualifiedBlockXpMap);
+    }
+
+
+    private void buildHerbalismBlockXPMap() {
+        mcMMO.p.getLogger().info("Mapping block break XP values for Herbalism...");
+        fillBlockXPMap(mcMMO.getConfigManager().getConfigExperience().getHerbalismXPMap(), herbalismFullyQualifiedBlockXpMap);
+    }
+
+    private void buildWoodcuttingBlockXPMap() {
+        mcMMO.p.getLogger().info("Mapping block break XP values for Woodcutting...");
+        fillBlockXPMap(mcMMO.getConfigManager().getConfigExperience().getWoodcuttingExperienceMap(), woodcuttingFullyQualifiedBlockXpMap);
+    }
+
+    private void buildExcavationBlockXPMap() {
+        mcMMO.p.getLogger().info("Mapping block break XP values for Excavation...");
+        fillBlockXPMap(mcMMO.getConfigManager().getConfigExperience().getExcavationExperienceMap(), excavationFullyQualifiedBlockXpMap);
     }
 
     /**
@@ -43,24 +90,29 @@ public class ExperienceMapManager implements Unload {
         globalXpMult = newGlobalXpMult;
     }
 
-    public void setMiningXpMap(HashMap<String, Integer> miningXpMap) {
+    public void resetGlobalXpMult() {
+        mcMMO.p.getLogger().info("Resetting the global XP multiplier "+globalXpMult+" -> "+getOriginalGlobalXpMult());
+        globalXpMult = getOriginalGlobalXpMult();
+    }
+
+    public void setMiningFullyQualifiedBlockXpMap(HashMap<String, Integer> miningFullyQualifiedBlockXpMap) {
         mcMMO.p.getLogger().info("Registering Mining XP Values...");
-        this.miningXpMap = miningXpMap;
+        this.miningFullyQualifiedBlockXpMap = miningFullyQualifiedBlockXpMap;
     }
 
-    public void setHerbalismXpMap(HashMap<String, Integer> herbalismXpMap) {
+    public void setHerbalismFullyQualifiedBlockXpMap(HashMap<String, Integer> herbalismFullyQualifiedBlockXpMap) {
         mcMMO.p.getLogger().info("Registering Herbalism XP Values...");
-        this.herbalismXpMap = herbalismXpMap;
+        this.herbalismFullyQualifiedBlockXpMap = herbalismFullyQualifiedBlockXpMap;
     }
 
-    public void setWoodcuttingXpMap(HashMap<String, Integer> woodcuttingXpMap) {
+    public void setWoodcuttingFullyQualifiedBlockXpMap(HashMap<String, Integer> woodcuttingFullyQualifiedBlockXpMap) {
         mcMMO.p.getLogger().info("Registering Woodcutting XP Values...");
-        this.woodcuttingXpMap = woodcuttingXpMap;
+        this.woodcuttingFullyQualifiedBlockXpMap = woodcuttingFullyQualifiedBlockXpMap;
     }
 
-    public void setExcavationXpMap(HashMap<String, Integer> excavationXpMap) {
+    public void setExcavationFullyQualifiedBlockXpMap(HashMap<String, Integer> excavationFullyQualifiedBlockXpMap) {
         mcMMO.p.getLogger().info("Registering Excavation XP Values...");
-        this.excavationXpMap = excavationXpMap;
+        this.excavationFullyQualifiedBlockXpMap = excavationFullyQualifiedBlockXpMap;
     }
 
     /**
@@ -89,7 +141,7 @@ public class ExperienceMapManager implements Unload {
      * @return true if the block has valid xp registers
      */
     public boolean hasMiningXp(Material material) {
-        return miningXpMap.get(material.getKey().getKey()) != null;
+        return miningFullyQualifiedBlockXpMap.get(material.getKey().getKey()) != null;
     }
 
     /**
@@ -99,7 +151,7 @@ public class ExperienceMapManager implements Unload {
      * @return true if the block has valid xp registers
      */
     public boolean hasHerbalismXp(Material material) {
-        return herbalismXpMap.get(material) != null;
+        return herbalismFullyQualifiedBlockXpMap.get(material) != null;
     }
 
     /**
@@ -109,7 +161,7 @@ public class ExperienceMapManager implements Unload {
      * @return true if the block has valid xp registers
      */
     public boolean hasWoodcuttingXp(Material material) {
-        return woodcuttingXpMap.get(material) != null;
+        return woodcuttingFullyQualifiedBlockXpMap.get(material) != null;
     }
 
     /**
@@ -119,7 +171,7 @@ public class ExperienceMapManager implements Unload {
      * @return true if the block has valid xp registers
      */
     public boolean hasExcavationXp(Material material) {
-        return excavationXpMap.get(material) != null;
+        return excavationFullyQualifiedBlockXpMap.get(material) != null;
     }
 
     /**
@@ -129,7 +181,7 @@ public class ExperienceMapManager implements Unload {
      * @return the raw XP value before any modifiers are applied
      */
     public int getMiningXp(Material material) {
-        return miningXpMap.get(material);
+        return miningFullyQualifiedBlockXpMap.get(material);
     }
 
     /**
@@ -139,7 +191,7 @@ public class ExperienceMapManager implements Unload {
      * @return the raw XP value before any modifiers are applied
      */
     public int getHerbalismXp(Material material) {
-        return herbalismXpMap.get(material);
+        return herbalismFullyQualifiedBlockXpMap.get(material);
     }
 
     /**
@@ -149,7 +201,7 @@ public class ExperienceMapManager implements Unload {
      * @return the raw XP value before any modifiers are applied
      */
     public int getWoodcuttingXp(Material material) {
-        return woodcuttingXpMap.get(material);
+        return woodcuttingFullyQualifiedBlockXpMap.get(material);
     }
 
     /**
@@ -159,14 +211,14 @@ public class ExperienceMapManager implements Unload {
      * @return the raw XP value before any modifiers are applied
      */
     public int getExcavationXp(Material material) {
-        return excavationXpMap.get(material);
+        return excavationFullyQualifiedBlockXpMap.get(material);
     }
 
     @Override
     public void unload() {
-        miningXpMap.clear();
-        woodcuttingXpMap.clear();
-        herbalismXpMap.clear();
-        excavationXpMap.clear();
+        miningFullyQualifiedBlockXpMap.clear();
+        woodcuttingFullyQualifiedBlockXpMap.clear();
+        herbalismFullyQualifiedBlockXpMap.clear();
+        excavationFullyQualifiedBlockXpMap.clear();
     }
 }
