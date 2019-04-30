@@ -425,7 +425,6 @@ public class mcMMO extends JavaPlugin {
         //Unload configs last
         configManager.unloadAllConfigsAndRegisters();
 
-
         debug("Was disabled."); // How informative!
     }
 

@@ -14,6 +14,7 @@ import com.gmail.nossr50.commands.experience.SkillresetCommand;
 import com.gmail.nossr50.commands.party.PartyCommand;
 import com.gmail.nossr50.commands.party.teleport.PtpCommand;
 import com.gmail.nossr50.commands.player.*;
+import com.gmail.nossr50.commands.server.ReloadCommand;
 import com.gmail.nossr50.commands.skills.*;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -172,6 +173,15 @@ public final class CommandRegistrationManager {
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.3", "mmoedit", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.Level") + ">"));
         command.setExecutor(new MmoeditCommand());
+    }
+
+    private static void registerMcmmoReloadCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mcmmoreload");
+        command.setDescription(LocaleLoader.getString("Commands.Description.mcmmoreload"));
+        command.setPermission("mcmmo.commands.reload");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcmmoreload"));
+        command.setExecutor(new ReloadCommand());
     }
 
     private static void registerSkillresetCommand() {
@@ -445,5 +455,8 @@ public final class CommandRegistrationManager {
 
         // Skill Commands
         registerSkillCommands();
+
+        //Config Commands
+        registerMcmmoReloadCommand();
     }
 }

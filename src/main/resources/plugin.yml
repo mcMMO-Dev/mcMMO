@@ -71,6 +71,9 @@ commands:
     mmoedit:
         description: Edit the mcMMO skill values for a user
         permission: mcmmo.commands.mmoedit
+    mcmmoreload:
+        description: Reloads mcMMO's config files
+        permission: mcmmo.commands.reload
     ptp:
         description: Teleport to a party member
         permission: mcmmo.commands.ptp
@@ -792,6 +795,7 @@ permissions:
             mcmmo.commands.mcrefresh: true
             mcmmo.commands.mcrefresh.others: true
             mcmmo.commands.mcremove: true
+            mcmmo.commands.mcmmoreload: true
             mcmmo.commands.mmoedit: true
             mcmmo.commands.mmoedit.others: true
             mcmmo.commands.mmoshowdb: true
@@ -978,6 +982,8 @@ permissions:
         description: Allows access to the mining command
     mcmmo.commands.mmoedit:
         description: Allows access to the mmoedit command
+    mcmmo.commands.reload:
+        description: Allows acces to the mcmmoreload command
     mcmmo.commands.mmoedit.others:
         description: Allows access to the mmoedit command for other players
     mcmmo.commands.mmoshowdb:

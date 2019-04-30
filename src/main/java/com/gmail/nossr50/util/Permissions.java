@@ -177,6 +177,10 @@ public final class Permissions {
         return permissible.hasPermission("mcmmo.commands.mmoedit");
     }
 
+    public static boolean reload(Permissible permissible) {
+        return permissible.hasPermission("mcmmo.commands.reload");
+    }
+
     public static boolean mmoeditOthers(Permissible permissible) {
         return permissible.hasPermission("mcmmo.commands.mmoedit.others");
     }
