@@ -4,14 +4,25 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.ChatColor;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 
 public final class LocaleLoader {
     private static final String BUNDLE_ROOT = "com.gmail.nossr50.locale.locale";
+    private static Map<String, String> bundleCache = new HashMap<>();
     private static ResourceBundle bundle = null;
+    private static ResourceBundle filesystemBundle = null;
     private static ResourceBundle enBundle = null;
 
     private LocaleLoader() {};
@@ -32,25 +43,33 @@ public final class LocaleLoader {
             initialize();
         }
 
-        try {
-            return getString(key, bundle, messageArguments);
-        }
-        catch (MissingResourceException ex) {
-            try {
-                return getString(key, enBundle, messageArguments);
-            }
-            catch (MissingResourceException ex2) {
-                if (!key.contains("Guides")) {
-                    mcMMO.p.getLogger().warning("Could not find locale string: " + key);
-                }
-
-                return '!' + key + '!';
-            }
-        }
+        String rawMessage = bundleCache.computeIfAbsent(key, LocaleLoader::getRawString);
+        return formatString(rawMessage, messageArguments);
     }
 
-    private static String getString(String key, ResourceBundle bundle, Object... messageArguments) throws MissingResourceException {
-        return formatString(bundle.getString(key), messageArguments);
+    private static String getRawString(String key) {
+        if (filesystemBundle != null) {
+            try {
+                return filesystemBundle.getString(key);
+            }
+            catch (MissingResourceException ignored) {}
+        }
+
+        try {
+            return bundle.getString(key);
+        }
+        catch (MissingResourceException ignored) {}
+
+        try {
+            return enBundle.getString(key);
+        }
+        catch (MissingResourceException ignored) {
+            if (!key.contains("Guides")) {
+                mcMMO.p.getLogger().warning("Could not find locale string: " + key);
+            }
+
+            return '!' + key + '!';
+        }
     }
 
     public static String formatString(String string, Object... messageArguments) {
@@ -85,6 +104,19 @@ public final class LocaleLoader {
                 locale = new Locale(myLocale[0], myLocale[1]);
             }
 
+            if (locale == null) {
+                throw new IllegalStateException("Failed to parse locale string '" + Config.getInstance().getLocale() + "'");
+            }
+
+            Path localePath = Paths.get(mcMMO.getLocalesDirectory() + "locale_" + locale.toString() + ".properties");
+            if (Files.exists(localePath) && Files.isRegularFile(localePath)) {
+                try (Reader localeReader = Files.newBufferedReader(localePath)) {
+                    mcMMO.p.getLogger().log(Level.INFO, "Loading locale from {0}", localePath);
+                    filesystemBundle = new PropertyResourceBundle(localeReader);
+                } catch (IOException e) {
+                    mcMMO.p.getLogger().log(Level.WARNING, "Failed to load locale from " + localePath, e);
+                }
+            }
             bundle = ResourceBundle.getBundle(BUNDLE_ROOT, locale);
             enBundle = ResourceBundle.getBundle(BUNDLE_ROOT, Locale.US);
         }
