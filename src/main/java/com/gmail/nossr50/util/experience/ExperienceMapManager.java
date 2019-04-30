@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util.experience;
 
 import com.gmail.nossr50.config.Unload;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
 
@@ -10,10 +11,12 @@ import java.util.HashMap;
  * This class handles the XP for block break related XP
  */
 public class ExperienceMapManager implements Unload {
-    private HashMap<Material, Integer> miningXpMap;
-    private HashMap<Material, Integer> herbalismXpMap;
-    private HashMap<Material, Integer> woodcuttingXpMap;
-    private HashMap<Material, Integer> excavationXpMap;
+    private HashMap<PrimarySkillType, HashMap<Material, String>> skillMaterialXPMap;
+    private HashMap<String, Integer> miningXpMap;
+    private HashMap<String, Integer> herbalismXpMap;
+    private HashMap<String, Integer> woodcuttingXpMap;
+    private HashMap<String, Integer> excavationXpMap;
+
     private double globalXpMult;
 
     public ExperienceMapManager() {
@@ -26,12 +29,38 @@ public class ExperienceMapManager implements Unload {
         mcMMO.getConfigManager().registerUnloadable(this);
     }
 
+    public void buildMaterialXPMap(HashMap<String, Integer> xpMap, PrimarySkillType primarySkillType)
+    {
+
+    }
+
     /**
      * Change the gloabl xp multiplier, this is temporary and will not be serialiized
-     * @param newValue new global xp multiplier value
+     * @param newGlobalXpMult new global xp multiplier value
      */
-    public void setGlobalXpMult(double newValue) {
-        globalXpMult = newValue;
+    public void setGlobalXpMult(double newGlobalXpMult) {
+        mcMMO.p.getLogger().info("Setting the global XP multiplier -> " + newGlobalXpMult);
+        globalXpMult = newGlobalXpMult;
+    }
+
+    public void setMiningXpMap(HashMap<String, Integer> miningXpMap) {
+        mcMMO.p.getLogger().info("Registering Mining XP Values...");
+        this.miningXpMap = miningXpMap;
+    }
+
+    public void setHerbalismXpMap(HashMap<String, Integer> herbalismXpMap) {
+        mcMMO.p.getLogger().info("Registering Herbalism XP Values...");
+        this.herbalismXpMap = herbalismXpMap;
+    }
+
+    public void setWoodcuttingXpMap(HashMap<String, Integer> woodcuttingXpMap) {
+        mcMMO.p.getLogger().info("Registering Woodcutting XP Values...");
+        this.woodcuttingXpMap = woodcuttingXpMap;
+    }
+
+    public void setExcavationXpMap(HashMap<String, Integer> excavationXpMap) {
+        mcMMO.p.getLogger().info("Registering Excavation XP Values...");
+        this.excavationXpMap = excavationXpMap;
     }
 
     /**
@@ -60,7 +89,7 @@ public class ExperienceMapManager implements Unload {
      * @return true if the block has valid xp registers
      */
     public boolean hasMiningXp(Material material) {
-        return miningXpMap.get(material) != null;
+        return miningXpMap.get(material.getKey().getKey()) != null;
     }
 
     /**

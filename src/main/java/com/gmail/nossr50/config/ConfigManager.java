@@ -335,21 +335,10 @@ public final class ConfigManager {
      */
     private void initMiscManagers() {
         experienceMapManager = new ExperienceMapManager();
+        //Set the global XP val
+        experienceMapManager.setGlobalXpMult(getConfigExperience().getGlobalXPMultiplier());
+        experienceMapManager.setExcavationXpMap(getConfigExperience().getExcavationExperienceMap());
     }
-
-    /**
-     * Initializes all of our Multi Config Containers
-     */
-    /*private void initMultiConfigContainers()
-    {
-        //Repair
-        repairableMultiConfigContainer = new MultiConfigContainer<>("repair", CollectionClassType.REPAIR);
-        unloadables.add(repairableMultiConfigContainer);
-
-        //Salvage
-        salvageableMultiConfigContainer = new MultiConfigContainer<>("salvage", CollectionClassType.SALVAGE);
-        unloadables.add(salvageableMultiConfigContainer);
-    }*/
 
     /**
      * Initializes any managers related to config collections
@@ -429,6 +418,12 @@ public final class ConfigManager {
 
     public void validateConfigs() {
 
+    }
+
+    public void reloadConfigs() {
+        mcMMO.p.getLogger().info("Reloading config values...");
+        unloadAllConfigsAndRegisters(); //Unload Everything
+        loadConfigs(); //Load everything again
     }
 
     /*
@@ -669,5 +664,9 @@ public final class ConfigManager {
 
     public ConfigExperience getConfigExperience() {
         return configExperience.getConfig();
+    }
+
+    public SkillPropertiesManager getSkillPropertiesManager() {
+        return skillPropertiesManager;
     }
 }
