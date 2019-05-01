@@ -15,7 +15,6 @@ public class ConfigExperienceCombat {
     static {
         COMBAT_EXPERIENCE_DEFAULT = new HashMap<>();
 
-
         COMBAT_EXPERIENCE_DEFAULT.put("creeper", 4.0D);
         COMBAT_EXPERIENCE_DEFAULT.put("cat", 1.0D);
         COMBAT_EXPERIENCE_DEFAULT.put("fox", 1.0D);
@@ -86,7 +85,7 @@ public class ConfigExperienceCombat {
     private HashMap<String, Double> combatExperienceMap = COMBAT_EXPERIENCE_DEFAULT;
 
     @Setting(value = "Special-Combat-XP-Multipliers")
-    private HashMap<String, Double> specialCombatExperienceMap = COMBAT_EXPERIENCE_DEFAULT;
+    private HashMap<String, Double> specialCombatExperienceMap = SPECIAL_COMBAT_EXPERIENCE_DEFAULT;
 
     @Setting(value = "PVP-XP", comment = "If true, players will gain XP from PVP interactions." +
             "\nBe careful turning this on as this can potentially allow for unwanted behaviour from players." +
