@@ -90,6 +90,7 @@ public class mcMMO extends JavaPlugin {
     private static MaterialMapStore materialMapStore;
     /* File Paths */
     private static String mainDirectory;
+    private static String localesDirectory;
     private static String flatFileDirectory;
     private static String usersFile;
     private static String modDirectory;
@@ -421,11 +422,14 @@ public class mcMMO extends JavaPlugin {
         }
 
         databaseManager.onDisable();
-
         //Unload configs last
         configManager.unloadAllConfigsAndRegisters();
 
         debug("Was disabled."); // How informative!
+    }
+
+    public static String getLocalesDirectory() {
+        return localesDirectory;
     }
 
     public boolean isXPEventEnabled() {
@@ -458,6 +462,7 @@ public class mcMMO extends JavaPlugin {
     private void setupFilePaths() {
         mcmmo = getFile();
         mainDirectory = getDataFolder().getPath() + File.separator;
+        localesDirectory = mainDirectory + "locales" + File.separator;
         flatFileDirectory = mainDirectory + "flatfile" + File.separator;
         usersFile = flatFileDirectory + "mcmmo.users";
         modDirectory = mainDirectory + "mods" + File.separator;
@@ -511,6 +516,8 @@ public class mcMMO extends JavaPlugin {
 
         File currentFlatfilePath = new File(flatFileDirectory);
         currentFlatfilePath.mkdirs();
+        File localesDirectoryPath = new File(localesDirectory);
+        localesDirectoryPath.mkdirs();
     }
 
     private void loadConfigFiles() {
