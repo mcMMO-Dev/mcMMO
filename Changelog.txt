@@ -4,6 +4,8 @@ Version 2.1.51
     Locales can now be overriden by placing a file with an appropriate name inside /plugins/mcMMO/locales/ (Thanks mikroskeem)
 
     NOTES
+    You can find the up to date current en_US locale entries here: https://github.com/mcMMO-Dev/mcMMO/blob/master/src/main/resources/locale/locale_en_US.properties
+    You do NOT have to replace the whole locale, you can replace only the strings you want to!
     Locales only support ASCII and UTF16 characters at the moment, so you'll need to run special characters through a UTF16 converter (google it) to get them to work, I'll be fixing this in the future!
     The locale name must match the internal file you are overriding (ie: locale_en_US.properties)
     Locale will first check for a users locale file, if it doesn't exist it will use internal resources (files inside the JAR)
