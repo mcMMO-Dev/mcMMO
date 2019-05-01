@@ -1,3 +1,15 @@
+Version 2.1.51
+    You can now customize a locale outside of the JAR! (Thanks mikroskeem)
+    Added a new locale reload command 'mmolocalereload' (Thanks mikroskeem)
+    Locales can now be overriden by placing a file with an appropriate name inside /plugins/mcMMO/locales/ (Thanks mikroskeem)
+
+    NOTES
+    Locales only support ASCII and UTF16 characters at the moment, so you'll need to run special characters through a UTF16 converter (google it) to get them to work, I'll be fixing this in the future!
+    The locale name must match the internal file you are overriding (ie: locale_en_US.properties)
+    Locale will first check for a users locale file, if it doesn't exist it will use internal resources (files inside the JAR)
+    If a locale is found, it will use locale entries from that file, if any entries are missing, it will use entries from en_US inside the JAR
+    The locale file names are structured like this 'locale_XX_XX.properties', replace XX with your country codes, if you are not overriding en_US you will have to change the targetted locale inside config.yml
+
 Version 2.1.50
     Fixed a bug where early game XP boost (level 1-5) didn't function in certain circumstances
     Updated German locale (thanks OverCrave)
