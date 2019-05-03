@@ -22,6 +22,10 @@
 #   Splits the boss bar into 6 segments
 #SOLID
 #   The bar is one solid piece
+EarlyGameBoost:
+    Enabled: true
+    #Used to determine the cap of the max boot, with default level cap it will be 5 on standard, and 50 on retro
+    MaxLevelMultiplier: 0.05
 ExploitFix:
     # Prevent many exploits related to fishing
     Fishing: true

@@ -1,3 +1,8 @@
+Version 2.1.52
+    Updated Japanese locale (thanks snake0053)
+    Added a toggle for the early game XP boost to experience.yml 'EarlyGameBoost.Enabled'
+    Added a max level multiplier for determining early game boosts cutoff to experience.yml 'EarlyGameBoost.MaxLevelMultiplier'
+
 Version 2.1.51
     You can now customize a locale outside of the JAR! (Thanks mikroskeem)
     Added a new locale reload command 'mmolocalereload' (Thanks mikroskeem)
