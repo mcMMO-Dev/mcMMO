@@ -118,6 +118,9 @@ public class ExperienceConfig extends ConfigValidated {
         return reason;
     }
 
+    public boolean isEarlyGameBoostEnabled() { return config.getBoolean("EarlyGameBoost.Enabled", true); }
+    public double getEarlyGameBoostMultiplier() { return config.getDouble("EarlyGameBoost.MaxLevelMultiplier", 0.05D); }
+
     /*
      * FORMULA SETTINGS
      */
