@@ -39,6 +39,7 @@ import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
 import com.gmail.nossr50.util.commands.CommandRegistrationManager;
 import com.gmail.nossr50.util.experience.FormulaManager;
+import com.gmail.nossr50.util.player.PlayerLevelUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
@@ -73,6 +74,7 @@ public class mcMMO extends JavaPlugin {
     private static HolidayManager     holidayManager;
     private static UpgradeManager     upgradeManager;
     private static MaterialMapStore materialMapStore;
+    private static PlayerLevelUtils playerLevelUtils;
 
     /* Blacklist */
     private static WorldBlacklist worldBlacklist;
@@ -248,8 +250,15 @@ public class mcMMO extends JavaPlugin {
         //Init Material Maps
         materialMapStore = new MaterialMapStore();
 
+        //Init player level values
+        playerLevelUtils = new PlayerLevelUtils();
+
         //Init the blacklist
         worldBlacklist = new WorldBlacklist(this);
+    }
+
+    public static PlayerLevelUtils getPlayerLevelUtils() {
+        return playerLevelUtils;
     }
 
     public static MaterialMapStore getMaterialMapStore() {
