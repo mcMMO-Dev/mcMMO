@@ -164,6 +164,9 @@ Version 2.2.0
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
 
+Version 2.1.53
+    Fixed a critical bug where players earned too much XP
+
 Version 2.1.52
     Updated Japanese locale (thanks snake0053)
     Added a toggle for the early game XP boost to experience.yml 'EarlyGameBoost.Enabled'
