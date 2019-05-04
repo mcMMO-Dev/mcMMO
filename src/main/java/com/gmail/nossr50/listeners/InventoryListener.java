@@ -62,8 +62,8 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        if (!furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey) && furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey).size() == 0)
-            furnaceBlock.setMetadata(mcMMO.furnaceMetadataKey, UserManager.getPlayer((Player) player).getPlayerMetadata());
+        if (!furnaceBlock.hasMetadata(mcMMO.FURNACE_TRACKING_METAKEY) && furnaceBlock.getMetadata(mcMMO.FURNACE_TRACKING_METAKEY).size() == 0)
+            furnaceBlock.setMetadata(mcMMO.FURNACE_TRACKING_METAKEY, UserManager.getPlayer((Player) player).getPlayerMetadata());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -74,7 +74,7 @@ public class InventoryListener implements Listener {
 
         Block furnaceBlock = processInventoryOpenOrCloseEvent(event.getInventory());
 
-        if (furnaceBlock == null || furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey)) {
+        if (furnaceBlock == null || furnaceBlock.hasMetadata(mcMMO.FURNACE_TRACKING_METAKEY)) {
             return;
         }
 
@@ -84,7 +84,7 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        furnaceBlock.removeMetadata(mcMMO.furnaceMetadataKey, plugin);
+        furnaceBlock.removeMetadata(mcMMO.FURNACE_TRACKING_METAKEY, plugin);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -200,15 +200,15 @@ public class InventoryListener implements Listener {
             Block furnaceBlock = processInventoryOpenOrCloseEvent(event.getInventory());
 
             if (furnaceBlock != null) {
-                if (furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey).size() > 0)
-                    furnaceBlock.removeMetadata(mcMMO.furnaceMetadataKey, mcMMO.p);
+                if (furnaceBlock.getMetadata(mcMMO.FURNACE_TRACKING_METAKEY).size() > 0)
+                    furnaceBlock.removeMetadata(mcMMO.FURNACE_TRACKING_METAKEY, mcMMO.p);
 
                 //Profile not loaded
                 if (UserManager.getPlayer(player) == null) {
                     return;
                 }
 
-                furnaceBlock.setMetadata(mcMMO.furnaceMetadataKey, UserManager.getPlayer(player).getPlayerMetadata());
+                furnaceBlock.setMetadata(mcMMO.FURNACE_TRACKING_METAKEY, UserManager.getPlayer(player).getPlayerMetadata());
             }
         }
 
@@ -436,7 +436,7 @@ public class InventoryListener implements Listener {
 
         final HumanEntity whoClicked = event.getWhoClicked();
 
-        if (!whoClicked.hasMetadata(mcMMO.playerDataKey)) {
+        if (!whoClicked.hasMetadata(mcMMO.PLAYER_DATA_METAKEY)) {
             return;
         }
 
@@ -472,7 +472,7 @@ public class InventoryListener implements Listener {
     }
 
     private Player getPlayerFromFurnace(Block furnaceBlock) {
-        List<MetadataValue> metadata = furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey);
+        List<MetadataValue> metadata = furnaceBlock.getMetadata(mcMMO.FURNACE_TRACKING_METAKEY);
 
         if (metadata.isEmpty()) {
             return null;

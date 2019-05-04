@@ -69,11 +69,11 @@ public final class MobHealthbarUtils {
             boolean updateName = !ChatColor.stripColor(oldName).equalsIgnoreCase(ChatColor.stripColor(newName));
 
             if (updateName) {
-                target.setMetadata(mcMMO.customNameKey, new FixedMetadataValue(mcMMO.p, oldName));
-                target.setMetadata(mcMMO.customVisibleKey, new FixedMetadataValue(mcMMO.p, oldNameVisible));
-            } else if (!target.hasMetadata(mcMMO.customNameKey)) {
-                target.setMetadata(mcMMO.customNameKey, new FixedMetadataValue(mcMMO.p, ""));
-                target.setMetadata(mcMMO.customVisibleKey, new FixedMetadataValue(mcMMO.p, false));
+                target.setMetadata(mcMMO.CUSTOM_NAME_METAKEY, new FixedMetadataValue(mcMMO.p, oldName));
+                target.setMetadata(mcMMO.NAME_VISIBILITY_METAKEY, new FixedMetadataValue(mcMMO.p, oldNameVisible));
+            } else if (!target.hasMetadata(mcMMO.CUSTOM_NAME_METAKEY)) {
+                target.setMetadata(mcMMO.CUSTOM_NAME_METAKEY, new FixedMetadataValue(mcMMO.p, ""));
+                target.setMetadata(mcMMO.NAME_VISIBILITY_METAKEY, new FixedMetadataValue(mcMMO.p, false));
             }
 
             new MobHealthDisplayUpdaterTask(target).runTaskLater(mcMMO.p, displayTime * Misc.TICK_CONVERSION_FACTOR); // Clear health display after 3 seconds

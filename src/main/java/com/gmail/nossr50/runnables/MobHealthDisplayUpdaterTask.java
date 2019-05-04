@@ -12,8 +12,8 @@ public class MobHealthDisplayUpdaterTask extends BukkitRunnable {
     public MobHealthDisplayUpdaterTask(LivingEntity target) {
         if (target.isValid()) {
             this.target = target;
-            this.oldName = target.getMetadata(mcMMO.customNameKey).get(0).asString();
-            this.oldNameVisible = target.getMetadata(mcMMO.customVisibleKey).get(0).asBoolean();
+            this.oldName = target.getMetadata(mcMMO.CUSTOM_NAME_METAKEY).get(0).asString();
+            this.oldNameVisible = target.getMetadata(mcMMO.NAME_VISIBILITY_METAKEY).get(0).asBoolean();
         }
     }
 
@@ -22,8 +22,8 @@ public class MobHealthDisplayUpdaterTask extends BukkitRunnable {
         if (target != null && target.isValid()) {
             target.setCustomNameVisible(oldNameVisible);
             target.setCustomName(oldName);
-            target.removeMetadata(mcMMO.customNameKey, mcMMO.p);
-            target.removeMetadata(mcMMO.customVisibleKey, mcMMO.p);
+            target.removeMetadata(mcMMO.CUSTOM_NAME_METAKEY, mcMMO.p);
+            target.removeMetadata(mcMMO.NAME_VISIBILITY_METAKEY, mcMMO.p);
         }
     }
 }

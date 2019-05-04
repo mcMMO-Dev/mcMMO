@@ -63,9 +63,9 @@ public class BlockListener implements Listener {
                 continue;
 
             //TODO: Should just store the amount of drops in the metadata itself and use a loop
-            if (event.getBlock().getState().getMetadata(mcMMO.doubleDrops).size() > 0) {
+            if (event.getBlock().getState().getMetadata(mcMMO.BONUS_DROPS_METAKEY).size() > 0) {
                 event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                event.getBlock().getState().removeMetadata(mcMMO.doubleDrops, plugin);
+                event.getBlock().getState().removeMetadata(mcMMO.BONUS_DROPS_METAKEY, plugin);
             } else if (event.getBlock().getState().getMetadata(mcMMO.tripleDrops).size() > 0) {
                 event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
                 event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
@@ -81,9 +81,9 @@ public class BlockListener implements Listener {
         {
             ItemStack is = new ItemStack(item.getItemStack());
 
-            if(event.getBlock().getMetadata(mcMMO.doubleDrops).size() > 0)
+            if(event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).size() > 0)
             {
-                List<MetadataValue> metadataValue = event.getBlock().getMetadata(mcMMO.doubleDrops);
+                List<MetadataValue> metadataValue = event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY);
 
                 BonusDrops bonusDrops = (BonusDrops) metadataValue.get(0);
                 Collection<ItemStack> potentialDrops = (Collection<ItemStack>) bonusDrops.value();
@@ -93,7 +93,7 @@ public class BlockListener implements Listener {
                     event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
                 }
 
-                event.getBlock().removeMetadata(mcMMO.doubleDrops, plugin);
+                event.getBlock().removeMetadata(mcMMO.BONUS_DROPS_METAKEY, plugin);
             } else {
                 if(event.getBlock().getMetadata(mcMMO.tripleDrops).size() > 0) {
                     List<MetadataValue> metadataValue = event.getBlock().getMetadata(mcMMO.tripleDrops);
@@ -119,9 +119,9 @@ public class BlockListener implements Listener {
         {
             ItemStack is = new ItemStack(item.getItemStack());
 
-            if(event.getBlock().getMetadata(mcMMO.doubleDrops).size() > 0)
+            if(event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).size() > 0)
             {
-                List<MetadataValue> metadataValue = event.getBlock().getMetadata(mcMMO.doubleDrops);
+                List<MetadataValue> metadataValue = event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY);
 
                 BonusDrops bonusDrops = (BonusDrops) metadataValue.get(0);
                 Collection<ItemStack> potentialDrops = (Collection<ItemStack>) bonusDrops.value();
@@ -131,7 +131,7 @@ public class BlockListener implements Listener {
                     event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
                 }
 
-                event.getBlock().removeMetadata(mcMMO.doubleDrops, plugin);
+                event.getBlock().removeMetadata(mcMMO.BONUS_DROPS_METAKEY, plugin);
             } else {
                 if(event.getBlock().getMetadata(mcMMO.tripleDrops).size() > 0) {
                     List<MetadataValue> metadataValue = event.getBlock().getMetadata(mcMMO.tripleDrops);
@@ -525,7 +525,7 @@ public class BlockListener implements Listener {
     }
 
     private Player getPlayerFromFurnace(Block furnaceBlock) {
-        List<MetadataValue> metadata = furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey);
+        List<MetadataValue> metadata = furnaceBlock.getMetadata(mcMMO.FURNACE_TRACKING_METAKEY);
 
         if (metadata.isEmpty()) {
             return null;
@@ -644,7 +644,7 @@ public class BlockListener implements Listener {
 
             if (blockState instanceof Furnace) {
                 Furnace furnace = (Furnace) blockState;
-                if (furnace.hasMetadata(mcMMO.furnaceMetadataKey)) {
+                if (furnace.hasMetadata(mcMMO.FURNACE_TRACKING_METAKEY)) {
                     player.sendMessage("[mcMMO DEBUG] This furnace has a registered owner");
                     Player furnacePlayer = getPlayerFromFurnace(furnace.getBlock());
                     if (furnacePlayer != null) {

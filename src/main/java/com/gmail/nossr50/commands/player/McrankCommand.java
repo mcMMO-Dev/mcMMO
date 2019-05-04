@@ -102,11 +102,11 @@ public class McrankCommand implements TabExecutor {
                 return;
             }
 
-            if (((Player) sender).hasMetadata(mcMMO.databaseCommandKey)) {
+            if (((Player) sender).hasMetadata(mcMMO.DATABASE_PROCESSING_COMMAND_METAKEY)) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Database.Processing"));
                 return;
             } else {
-                ((Player) sender).setMetadata(mcMMO.databaseCommandKey, new FixedMetadataValue(mcMMO.p, null));
+                ((Player) sender).setMetadata(mcMMO.DATABASE_PROCESSING_COMMAND_METAKEY, new FixedMetadataValue(mcMMO.p, null));
             }
 
             mcMMOPlayer.actualizeDatabaseATS();

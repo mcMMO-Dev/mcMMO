@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.herbalism;
 
 import com.gmail.nossr50.config.MainConfig;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.treasure.HerbalismTreasureConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -341,7 +340,7 @@ public class HerbalismManager extends SkillManager {
     private boolean handleBlockState(BlockState blockState, boolean greenTerra) {
         int greenThumbStage = getGreenThumbStage();
 
-        blockState.setMetadata(mcMMO.greenThumbDataKey, new FixedMetadataValue(mcMMO.p, (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)));
+        blockState.setMetadata(mcMMO.GREEN_THUMB_METAKEY, new FixedMetadataValue(mcMMO.p, (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)));
         Ageable crops = (Ageable) blockState.getBlockData();
 
         switch (blockState.getType()) {

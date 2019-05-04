@@ -52,32 +52,29 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 
 public class mcMMO extends JavaPlugin {
-    public static final String COMPATIBLE_SERVER_SOFTWARE = "Spigot, Paper";
-    public static final String INCOMPATIBLE_SERVER_SOFTWARE = "CraftBukkit";
-    public static final String COMPATIBLE_MINECRAFT_VERSIONS = "1.13.2";
     /* Metadata Values */
     public static final String FISH_HOOK_REF_METAKEY = "mcMMO: Fish Hook Tracker";
     public static final String CUSTOM_DAMAGE_METAKEY = "mcMMO: Custom Damage";
-    public final static String entityMetadataKey = "mcMMO: Spawned Entity";
-    public final static String blockMetadataKey = "mcMMO: Piston Tracking";
-    public final static String furnaceMetadataKey = "mcMMO: Tracked Furnace";
-    public final static String tntMetadataKey = "mcMMO: Tracked TNT";
-    public final static String funfettiMetadataKey = "mcMMO: Funfetti";
-    public final static String tntsafeMetadataKey = "mcMMO: Safe TNT";
-    public final static String customNameKey = "mcMMO: Custom Name";
-    public final static String customVisibleKey = "mcMMO: Name Visibility";
-    public final static String droppedItemKey = "mcMMO: Tracked Item";
-    public final static String infiniteArrowKey = "mcMMO: Infinite Arrow";
-    public final static String bowForceKey = "mcMMO: Bow Force";
-    public final static String arrowDistanceKey = "mcMMO: Arrow Distance";
-    public final static String doubleDrops = "mcMMO: Double Drops";
-    public final static String tripleDrops = "mcMMO: Triple Drops";
+    public final static String UNNATURAL_MOB_METAKEY = "mcMMO: Spawned Entity";
+    public final static String PISTON_TRACKING_METAKEY = "mcMMO: Piston Tracking";
+    public final static String FURNACE_TRACKING_METAKEY = "mcMMO: Tracked Furnace";
+    public final static String TNT_TRACKING_METAKEY = "mcMMO: Tracked TNT";
+    public final static String SPAWNED_FIREWORKS_METAKEY = "mcMMO: Funfetti";
+    public final static String SAFE_TNT_METAKEY = "mcMMO: Safe TNT";
+    public final static String CUSTOM_NAME_METAKEY = "mcMMO: Custom Name";
+    public final static String NAME_VISIBILITY_METAKEY = "mcMMO: Name Visibility";
+    public final static String DROPPED_ITEM_TRACKING_METAKEY = "mcMMO: Tracked Item";
+    public final static String INFINITE_ARROW_METAKEY = "mcMMO: Infinite Arrow";
+    public final static String BOW_FORCE_METAKEY = "mcMMO: Bow Force";
+    public final static String ARROW_DISTANCE_METAKEY = "mcMMO: Arrow Distance";
+    public final static String BONUS_DROPS_METAKEY = "mcMMO: Bonus Drops";
     //public final static String customDamageKey     = "mcMMO: Custom Damage";
-    public final static String disarmedItemKey = "mcMMO: Disarmed Item";
-    public final static String playerDataKey = "mcMMO: Player Data";
-    public final static String greenThumbDataKey = "mcMMO: Green Thumb";
-    public final static String databaseCommandKey = "mcMMO: Processing Database Command";
-    public final static String bredMetadataKey = "mcMMO: Bred Animal";
+    public final static String DISARMED_ITEM_METAKEY = "mcMMO: Disarmed Item";
+    public final static String PLAYER_DATA_METAKEY = "mcMMO: Player Data";
+    public final static String GREEN_THUMB_METAKEY = "mcMMO: Green Thumb";
+    public final static String DATABASE_PROCESSING_COMMAND_METAKEY = "mcMMO: Processing Database Command";
+    public final static String BRED_ANIMAL_TRACKING_METAKEY = "mcMMO: Bred Animal";
+
     public static mcMMO p;
     // Jar Stuff
     public static File mcmmo;
@@ -85,7 +82,6 @@ public class mcMMO extends JavaPlugin {
     /* Managers */
     private static ChunkManager placeStore;
     private static ConfigManager configManager;
-    //private static ModManager         modManager;
     private static DatabaseManager databaseManager;
     private static FormulaManager formulaManager;
     private static MaterialMapStore materialMapStore;
@@ -349,6 +345,9 @@ public class mcMMO extends JavaPlugin {
         return playerLevelUtils;
     }
 
+    /**
+     * Uses reflection to check for incompatible server software
+     */
     private void checkForOutdatedAPI() {
         try {
             Class<?> checkForClass = Class.forName("org.bukkit.event.block.BlockDropItemEvent");
@@ -361,6 +360,11 @@ public class mcMMO extends JavaPlugin {
         }
     }
 
+    /**
+     * Returns a ServerSoftwareType based on version strings
+     * Custom software is returned as CRAFTBUKKIT
+     * @return the ServerSoftwareType which likely matches the server
+     */
     private ServerSoftwareType getServerSoftware() {
         if (Bukkit.getVersion().toLowerCase().contains("paper"))
             return ServerSoftwareType.PAPER;
@@ -370,6 +374,10 @@ public class mcMMO extends JavaPlugin {
             return ServerSoftwareType.CRAFTBUKKIT;
     }
 
+    /**
+     * Gets a string version of ServerSoftwareType
+     * @return Formatted String of ServerSoftwareType
+     */
     private String getServerSoftwareStr() {
         switch (getServerSoftware()) {
             case PAPER:
@@ -438,10 +446,18 @@ public class mcMMO extends JavaPlugin {
         debug("Was disabled."); // How informative!
     }
 
+    /**
+     * The directory in which override locales are kept
+     * @return the override locale directory
+     */
     public static String getLocalesDirectory() {
         return localesDirectory;
     }
 
+    /**
+     * If an XP rate event is currently in place
+     * @return
+     */
     public boolean isXPEventEnabled() {
         return xpEventEnabled;
     }
@@ -454,14 +470,26 @@ public class mcMMO extends JavaPlugin {
         return upgradeManager;
     }*/
 
+    /**
+     * Sets the xpEventEnabled boolean
+     * @param enabled the new boolean state
+     */
     public void setXPEventEnabled(boolean enabled) {
         this.xpEventEnabled = enabled;
     }
 
+    /**
+     * Flips the XP events boolean
+     */
     public void toggleXpEventEnabled() {
         xpEventEnabled = !xpEventEnabled;
     }
 
+    /**
+     * Debug helper method
+     * Prefixes log entries with [Debug]
+     * @param message the message to log with a Debug prefix
+     */
     public void debug(String message) {
         getLogger().info("[Debug] " + message);
     }

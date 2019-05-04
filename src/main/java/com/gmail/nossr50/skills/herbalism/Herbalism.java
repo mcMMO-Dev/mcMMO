@@ -188,6 +188,6 @@ public class Herbalism {
      * @return true if the block is recently regrown, false otherwise
      */
     public static boolean isRecentlyRegrown(BlockState blockState) {
-        return blockState.hasMetadata(mcMMO.greenThumbDataKey) && !SkillUtils.cooldownExpired(blockState.getMetadata(mcMMO.greenThumbDataKey).get(0).asInt(), 1);
+        return blockState.hasMetadata(mcMMO.GREEN_THUMB_METAKEY) && !SkillUtils.cooldownExpired(blockState.getMetadata(mcMMO.GREEN_THUMB_METAKEY).get(0).asInt(), 1);
     }
 }

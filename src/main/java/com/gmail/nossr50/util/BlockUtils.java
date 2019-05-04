@@ -29,7 +29,7 @@ public final class BlockUtils {
         if (triple)
             blockState.setMetadata(mcMMO.tripleDrops, mcMMO.metadataValue);
         else
-            blockState.setMetadata(mcMMO.doubleDrops, mcMMO.metadataValue);
+            blockState.setMetadata(mcMMO.BONUS_DROPS_METAKEY, mcMMO.metadataValue);
     }
 
     /**

@@ -88,12 +88,12 @@ public class BlastMining {
     }
 
     public static boolean processBlastMiningExplosion(EntityDamageByEntityEvent event, TNTPrimed tnt, Player defender) {
-        if (!tnt.hasMetadata(mcMMO.tntMetadataKey) || !UserManager.hasPlayerDataKey(defender)) {
+        if (!tnt.hasMetadata(mcMMO.TNT_TRACKING_METAKEY) || !UserManager.hasPlayerDataKey(defender)) {
             return false;
         }
 
         // We can make this assumption because we (should) be the only ones using this exact metadata
-        Player player = mcMMO.p.getServer().getPlayerExact(tnt.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
+        Player player = mcMMO.p.getServer().getPlayerExact(tnt.getMetadata(mcMMO.TNT_TRACKING_METAKEY).get(0).asString());
 
         if (!player.equals(defender)) {
             return false;

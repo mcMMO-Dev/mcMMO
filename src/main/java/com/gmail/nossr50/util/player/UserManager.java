@@ -22,7 +22,7 @@ public final class UserManager {
      * @param mcMMOPlayer the player profile to start tracking
      */
     public static void track(McMMOPlayer mcMMOPlayer) {
-        mcMMOPlayer.getPlayer().setMetadata(mcMMO.playerDataKey, new FixedMetadataValue(mcMMO.p, mcMMOPlayer));
+        mcMMOPlayer.getPlayer().setMetadata(mcMMO.PLAYER_DATA_METAKEY, new FixedMetadataValue(mcMMO.p, mcMMOPlayer));
     }
 
     /**
@@ -31,7 +31,7 @@ public final class UserManager {
      * @param player The Player object
      */
     public static void remove(Player player) {
-        player.removeMetadata(mcMMO.playerDataKey, mcMMO.p);
+        player.removeMetadata(mcMMO.PLAYER_DATA_METAKEY, mcMMO.p);
     }
 
     /**
@@ -101,8 +101,8 @@ public final class UserManager {
      */
     public static McMMOPlayer getPlayer(Player player) {
         //Avoid Array Index out of bounds
-        if (player != null && player.hasMetadata(mcMMO.playerDataKey))
-            return (McMMOPlayer) player.getMetadata(mcMMO.playerDataKey).get(0).value();
+        if (player != null && player.hasMetadata(mcMMO.PLAYER_DATA_METAKEY))
+            return (McMMOPlayer) player.getMetadata(mcMMO.PLAYER_DATA_METAKEY).get(0).value();
         else
             return null;
     }
@@ -122,6 +122,6 @@ public final class UserManager {
     }
 
     public static boolean hasPlayerDataKey(Entity entity) {
-        return entity != null && entity.hasMetadata(mcMMO.playerDataKey);
+        return entity != null && entity.hasMetadata(mcMMO.PLAYER_DATA_METAKEY);
     }
 }

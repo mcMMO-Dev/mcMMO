@@ -213,7 +213,7 @@ public final class CombatUtils {
             finalDamage += archeryManager.daze((Player) target);
         }
 
-        if (!arrow.hasMetadata(mcMMO.infiniteArrowKey) && archeryManager.canRetrieveArrows()) {
+        if (!arrow.hasMetadata(mcMMO.INFINITE_ARROW_METAKEY) && archeryManager.canRetrieveArrows()) {
             archeryManager.retrieveArrows(target);
         }
 
@@ -224,7 +224,7 @@ public final class CombatUtils {
         double distanceMultiplier = archeryManager.distanceXpBonusMultiplier(target, arrow);
 
         applyScaledModifiers(initialDamage, finalDamage, event);
-        startGainXp(mcMMOPlayer, target, PrimarySkillType.ARCHERY, arrow.getMetadata(mcMMO.bowForceKey).get(0).asDouble() * distanceMultiplier);
+        startGainXp(mcMMOPlayer, target, PrimarySkillType.ARCHERY, arrow.getMetadata(mcMMO.BOW_FORCE_METAKEY).get(0).asDouble() * distanceMultiplier);
     }
 
     /**
@@ -573,11 +573,11 @@ public final class CombatUtils {
                 }
             }
 
-            if (target.hasMetadata(mcMMO.entityMetadataKey)) {
+            if (target.hasMetadata(mcMMO.UNNATURAL_MOB_METAKEY)) {
                 baseXP *= mcMMO.getConfigManager().getConfigExperience().getSpawnedMobXPMult();
             }
 
-            if (target.hasMetadata(mcMMO.bredMetadataKey)) {
+            if (target.hasMetadata(mcMMO.BRED_ANIMAL_TRACKING_METAKEY)) {
                 baseXP *= mcMMO.getConfigManager().getConfigExperience().getPlayerBredMobsXPMult();
             }
 
@@ -814,7 +814,7 @@ public final class CombatUtils {
             return;
         }
 
-        if (!player.hasMetadata(mcMMO.playerDataKey)) {
+        if (!player.hasMetadata(mcMMO.PLAYER_DATA_METAKEY)) {
             return;
         }
 

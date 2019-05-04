@@ -97,7 +97,7 @@ public final class ParticleEffectUtils {
         location.setPitch(-90);
 
         Firework firework = (Firework) player.getWorld().spawnEntity(location, EntityType.FIREWORK);
-        firework.setMetadata(mcMMO.funfettiMetadataKey, new FixedMetadataValue(mcMMO.p, null));
+        firework.setMetadata(mcMMO.SPAWNED_FIREWORKS_METAKEY, new FixedMetadataValue(mcMMO.p, null));
         FireworkMeta fireworkMeta = firework.getFireworkMeta();
         FireworkEffect effect = FireworkEffect.builder().flicker(false).withColor(color).with((MainConfig.getInstance().getLargeFireworks() ? Type.BALL_LARGE : Type.BALL)).trail(true).build();
         fireworkMeta.addEffect(effect);

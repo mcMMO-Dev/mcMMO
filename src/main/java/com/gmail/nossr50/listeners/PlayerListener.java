@@ -5,7 +5,6 @@ import com.gmail.nossr50.chat.ChatManagerFactory;
 import com.gmail.nossr50.chat.PartyChatManager;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -151,7 +150,7 @@ public class PlayerListener implements Listener {
 
         Player killedPlayer = event.getEntity();
 
-        if (!killedPlayer.hasMetadata(mcMMO.playerDataKey) || Permissions.hardcoreBypass(killedPlayer)) {
+        if (!killedPlayer.hasMetadata(mcMMO.PLAYER_DATA_METAKEY) || Permissions.hardcoreBypass(killedPlayer)) {
             return;
         }
 
@@ -231,7 +230,7 @@ public class PlayerListener implements Listener {
         ItemStack dropStack = drop.getItemStack();
 
         if (ItemUtils.isSharable(dropStack)) {
-            drop.setMetadata(mcMMO.droppedItemKey, mcMMO.metadataValue);
+            drop.setMetadata(mcMMO.DROPPED_ITEM_TRACKING_METAKEY, mcMMO.metadataValue);
         }
 
         SkillUtils.removeAbilityBuff(dropStack);
@@ -441,8 +440,8 @@ public class PlayerListener implements Listener {
             Item drop = event.getItem();
             ItemStack dropStack = drop.getItemStack();
 
-            if (drop.hasMetadata(mcMMO.disarmedItemKey)) {
-                if (!player.getName().equals(drop.getMetadata(mcMMO.disarmedItemKey).get(0).asString())) {
+            if (drop.hasMetadata(mcMMO.DISARMED_ITEM_METAKEY)) {
+                if (!player.getName().equals(drop.getMetadata(mcMMO.DISARMED_ITEM_METAKEY).get(0).asString())) {
                     event.setCancelled(true);
                 }
 
@@ -450,7 +449,7 @@ public class PlayerListener implements Listener {
             }
 
 
-            if (!drop.hasMetadata(mcMMO.droppedItemKey) && mcMMOPlayer.inParty() && ItemUtils.isSharable(dropStack)) {
+            if (!drop.hasMetadata(mcMMO.DROPPED_ITEM_TRACKING_METAKEY) && mcMMOPlayer.inParty() && ItemUtils.isSharable(dropStack)) {
                 event.setCancelled(ShareHandler.handleItemShare(drop, mcMMOPlayer));
 
                 SoundManager.sendSound(player, player.getLocation(), SoundType.POP);

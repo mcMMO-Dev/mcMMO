@@ -36,7 +36,7 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
         if (useChat) {
             displayChat();
         }
-        ((Player) sender).removeMetadata(mcMMO.databaseCommandKey, mcMMO.p);
+        ((Player) sender).removeMetadata(mcMMO.DATABASE_PROCESSING_COMMAND_METAKEY, mcMMO.p);
     }
 
     private void displayChat() {

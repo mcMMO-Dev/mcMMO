@@ -124,7 +124,7 @@ public final class CommandUtils {
             return false;
         }
 
-        boolean hasPlayerDataKey = ((Player) sender).hasMetadata(mcMMO.playerDataKey);
+        boolean hasPlayerDataKey = ((Player) sender).hasMetadata(mcMMO.PLAYER_DATA_METAKEY);
 
         if (!hasPlayerDataKey) {
             sender.sendMessage(LocaleLoader.getString("Commands.NotLoaded"));

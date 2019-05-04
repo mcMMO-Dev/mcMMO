@@ -42,7 +42,7 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
         }
 
         if (sender instanceof Player) {
-            ((Player) sender).removeMetadata(mcMMO.databaseCommandKey, mcMMO.p);
+            ((Player) sender).removeMetadata(mcMMO.DATABASE_PROCESSING_COMMAND_METAKEY, mcMMO.p);
         }
         if (sender instanceof Player)
             sender.sendMessage(LocaleLoader.getString("Commands.mctop.Tip"));
