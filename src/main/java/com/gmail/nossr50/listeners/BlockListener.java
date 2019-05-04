@@ -3,6 +3,7 @@ package com.gmail.nossr50.listeners;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.meta.BonusDropMeta;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -40,6 +41,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 
 import java.util.List;
@@ -63,92 +65,19 @@ public class BlockListener implements Listener {
                 continue;
 
             //TODO: Should just store the amount of drops in the metadata itself and use a loop
-            if (event.getBlock().getState().getMetadata(mcMMO.BONUS_DROPS_METAKEY).size() > 0) {
-                event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                event.getBlock().getState().removeMetadata(mcMMO.BONUS_DROPS_METAKEY, plugin);
-            } else if (event.getBlock().getState().getMetadata(mcMMO.tripleDrops).size() > 0) {
-                event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                event.getBlock().getState().removeMetadata(mcMMO.tripleDrops, plugin);
-            }
-        }
-    }
+            if (event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).size() > 0) {
+                BonusDropMeta bonusDropMeta = (BonusDropMeta) event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).get(0);
+                int bonusCount = bonusDropMeta.asInt();
 
-    /*@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockDropItemEvent(BlockDropItemEvent event)
-    {
-        for(Item item : event.getItems())
-        {
-            ItemStack is = new ItemStack(item.getItemStack());
-
-            if(event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).size() > 0)
-            {
-                List<MetadataValue> metadataValue = event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY);
-
-                BonusDrops bonusDrops = (BonusDrops) metadataValue.get(0);
-                Collection<ItemStack> potentialDrops = (Collection<ItemStack>) bonusDrops.value();
-
-                if(potentialDrops.contains(is))
+                for (int i = 0; i < bonusCount; i++)
                 {
-                    event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                    event.getBlock().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
                 }
 
                 event.getBlock().removeMetadata(mcMMO.BONUS_DROPS_METAKEY, plugin);
-            } else {
-                if(event.getBlock().getMetadata(mcMMO.tripleDrops).size() > 0) {
-                    List<MetadataValue> metadataValue = event.getBlock().getMetadata(mcMMO.tripleDrops);
-
-                    BonusDrops bonusDrops = (BonusDrops) metadataValue.get(0);
-                    Collection<ItemStack> potentialDrops = (Collection<ItemStack>) bonusDrops.value();
-
-                    if (potentialDrops.contains(is)) {
-                        event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                        event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                    }
-
-                    event.getBlock().removeMetadata(mcMMO.tripleDrops, plugin);
-                }
             }
         }
     }
-
-    /*@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockDropItemEvent(BlockDropItemEvent event)
-    {
-        for(Item item : event.getItems())
-        {
-            ItemStack is = new ItemStack(item.getItemStack());
-
-            if(event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).size() > 0)
-            {
-                List<MetadataValue> metadataValue = event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY);
-
-                BonusDrops bonusDrops = (BonusDrops) metadataValue.get(0);
-                Collection<ItemStack> potentialDrops = (Collection<ItemStack>) bonusDrops.value();
-
-                if(potentialDrops.contains(is))
-                {
-                    event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                }
-
-                event.getBlock().removeMetadata(mcMMO.BONUS_DROPS_METAKEY, plugin);
-            } else {
-                if(event.getBlock().getMetadata(mcMMO.tripleDrops).size() > 0) {
-                    List<MetadataValue> metadataValue = event.getBlock().getMetadata(mcMMO.tripleDrops);
-
-                    BonusDrops bonusDrops = (BonusDrops) metadataValue.get(0);
-                    Collection<ItemStack> potentialDrops = (Collection<ItemStack>) bonusDrops.value();
-
-                    if (potentialDrops.contains(is)) {
-                        event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                        event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                    }
-
-                    event.getBlock().removeMetadata(mcMMO.tripleDrops, plugin);
-                }
-            }
-        }
-    }*/
 
     /**
      * Monitor BlockPistonExtend events.
@@ -208,7 +137,7 @@ public class BlockListener implements Listener {
         if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
 
-        if (BlockUtils.shouldBeWatched(event.getBlock().getState())) {
+        if (BlockUtils.shouldBeWatched(event.getBlock())) {
             mcMMO.getPlaceStore().setTrue(event.getBlock());
         }
     }
@@ -230,7 +159,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        BlockState blockState = event.getBlock().getState();
+        BlockState blockState = event.getBlock();
 
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
         if (BlockUtils.shouldBeWatched(blockState)) {
@@ -289,7 +218,7 @@ public class BlockListener implements Listener {
         if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
 
-        BlockState blockState = event.getBlock().getState();
+        BlockState blockState = event.getBlock();
 
         if (!BlockUtils.shouldBeWatched(blockState)) {
             return;
@@ -319,7 +248,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        BlockState blockState = event.getBlock().getState();
+        BlockState blockState = event.getBlock();
         Location location = blockState.getLocation();
 
         if (!BlockUtils.shouldBeWatched(blockState)) {
@@ -425,7 +354,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        BlockState blockState = event.getBlock().getState();
+        BlockState blockState = event.getBlock();
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         if (Herbalism.isRecentlyRegrown(blockState)) {
@@ -467,7 +396,7 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockDamage(BlockDamageEvent event) {
         Player player = event.getPlayer();
-        BlockState blockState = event.getBlock().getState();
+        BlockState blockState = event.getBlock();
 
         /* WORLD BLACKLIST CHECK */
         if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
@@ -607,7 +536,7 @@ public class BlockListener implements Listener {
         }
 
 
-        BlockState blockState = event.getBlock().getState();
+        BlockState blockState = event.getBlock();
 
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 

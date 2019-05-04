@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util;
 
+import com.gmail.nossr50.datatypes.meta.BonusDropMeta;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.Repair;
@@ -7,6 +8,7 @@ import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
@@ -27,9 +29,9 @@ public final class BlockUtils {
      */
     public static void markDropsAsBonus(BlockState blockState, boolean triple) {
         if (triple)
-            blockState.setMetadata(mcMMO.tripleDrops, mcMMO.metadataValue);
+            blockState.setMetadata(mcMMO.BONUS_DROPS_METAKEY, new BonusDropMeta(2, mcMMO.p));
         else
-            blockState.setMetadata(mcMMO.BONUS_DROPS_METAKEY, mcMMO.metadataValue);
+            blockState.setMetadata(mcMMO.BONUS_DROPS_METAKEY, new BonusDropMeta(1, mcMMO.p));
     }
 
     /**
@@ -49,11 +51,31 @@ public final class BlockUtils {
     /**
      * Checks to see if a given block awards XP.
      *
+     * @param block The {@link Block} of the block to check
+     * @return true if the block awards XP, false otherwise
+     */
+    public static boolean shouldBeWatched(Block block) {
+        return affectedByGigaDrillBreaker(block.getType()) || affectedByGreenTerra(block.getType()) || affectedBySuperBreaker(block.getType()) || isLog(block.getType());
+    }
+
+    /**
+     * Checks to see if a given block awards XP.
+     *
      * @param blockState The {@link BlockState} of the block to check
      * @return true if the block awards XP, false otherwise
      */
     public static boolean shouldBeWatched(BlockState blockState) {
         return affectedByGigaDrillBreaker(blockState) || affectedByGreenTerra(blockState) || affectedBySuperBreaker(blockState) || isLog(blockState);
+    }
+
+    /**
+     * Checks to see if a given block awards XP.
+     *
+     * @param material The {@link Material} of the block to check
+     * @return true if the block awards XP, false otherwise
+     */
+    public static boolean shouldBeWatched(Material material) {
+        return affectedByGigaDrillBreaker(material) || affectedByGreenTerra(material) || affectedBySuperBreaker(material) || isLog(material);
     }
 
     /**
@@ -110,6 +132,16 @@ public final class BlockUtils {
     }
 
     /**
+     * Determine if a given block should be affected by Green Terra
+     *
+     * @param material The {@link Material} of the block to check
+     * @return true if the block should affected by Green Terra, false otherwise
+     */
+    public static boolean affectedByGreenTerra(Material material) {
+        return mcMMO.getConfigManager().getExperienceMapManager().hasHerbalismXp(material);
+    }
+
+    /**
      * Determine if a given block should be affected by Super Breaker
      *
      * @param blockState The {@link BlockState} of the block to check
@@ -123,8 +155,27 @@ public final class BlockUtils {
         return isMineable(blockState);
     }
 
-    public static boolean isMineable(BlockState blockState) {
-        switch (blockState.getType()) {
+    /**
+     * Determine if a given block should be affected by Super Breaker
+     *
+     * @param material The {@link Material} of the block to check
+     * @return true if the block should affected by Super Breaker, false
+     * otherwise
+     */
+    public static Boolean affectedBySuperBreaker(Material material) {
+        if (mcMMO.getConfigManager().getExperienceMapManager().hasMiningXp(material))
+            return true;
+
+        return isMineable(material);
+    }
+
+    /**
+     * Whether or not a block is gathered via Pickaxes
+     * @param material target blocks material
+     * @return
+     */
+    public static boolean isMineable(Material material) {
+        switch (material) {
             case COAL_ORE:
             case DIAMOND_ORE:
             case EMERALD_ORE:
@@ -150,6 +201,23 @@ public final class BlockUtils {
         }
     }
 
+    public static boolean isMineable(BlockState blockState) {
+        return isMineable(blockState.getType());
+    }
+
+    /**
+     * Determine if a given block should be affected by Giga Drill Breaker
+     *
+     * @param material The {@link Material} of the block to check
+     * @return true if the block should affected by Giga Drill Breaker, false
+     * otherwise
+     */
+    public static boolean affectedByGigaDrillBreaker(Material material) {
+        if (mcMMO.getConfigManager().getExperienceMapManager().hasExcavationXp(material))
+            return true;
+
+        return isDiggable(material);
+    }
 
     /**
      * Determine if a given block should be affected by Giga Drill Breaker
@@ -171,8 +239,19 @@ public final class BlockUtils {
      * @param blockState target blockstate
      * @return true if a shovel is typically used for digging this block
      */
+    @Deprecated
     public static boolean isDiggable(BlockState blockState) {
-        switch (blockState.getType()) {
+        return isDiggable(blockState.getType());
+    }
+
+    /**
+     * Returns true if a shovel is used for digging this block
+     *
+     * @param material target blocks material
+     * @return true if a shovel is typically used for digging this block
+     */
+    public static boolean isDiggable(Material material) {
+        switch (material) {
             case CLAY:
             case FARMLAND:
             case GRASS_BLOCK:
@@ -208,13 +287,27 @@ public final class BlockUtils {
     }
 
     /**
+     * Check if a given block is a log
+     *
+     * @param material The {@link Material} of the block to check
+     * @return true if the block is a log, false otherwise
+     */
+    public static boolean isLog(Material material) {
+        if (mcMMO.getConfigManager().getExperienceMapManager().hasWoodcuttingXp(material))
+            return true;
+
+        return isLoggingRelated(material);
+        //return mcMMO.getModManager().isCustomLog(blockState);
+    }
+
+    /**
      * Determines if this particular block is typically gathered using an Axe
      *
-     * @param blockState target blockstate
+     * @param material target material
      * @return true if the block is gathered via axe
      */
-    public static boolean isLoggingRelated(BlockState blockState) {
-        switch (blockState.getType()) {
+    public static boolean isLoggingRelated(Material material) {
+        switch (material) {
             case ACACIA_LOG:
             case BIRCH_LOG:
             case DARK_OAK_LOG:
@@ -243,6 +336,16 @@ public final class BlockUtils {
             default:
                 return false;
         }
+    }
+
+    /**
+     * Determines if this particular block is typically gathered using an Axe
+     *
+     * @param blockState target blockstate
+     * @return true if the block is gathered via axe
+     */
+    public static boolean isLoggingRelated(BlockState blockState) {
+        return isLoggingRelated(blockState.getType());
     }
 
     /**
