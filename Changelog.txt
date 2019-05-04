@@ -164,6 +164,10 @@ Version 2.2.0
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
 
+Version 2.1.54
+    Fixed a bug where the Skill 'Understanding the Art' was preventing vanilla experience orbs from furnaces
+    Fixed 'Understanding the Art' not correctly boosting vanilla XP from furnaces
+
 Version 2.1.53
     Fixed a critical bug where players earned too much XP
 

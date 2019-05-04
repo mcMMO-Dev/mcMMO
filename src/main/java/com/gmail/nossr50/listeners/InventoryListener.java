@@ -183,7 +183,8 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        int exp = UserManager.getPlayer(player).getSmeltingManager().vanillaXPBoost(event.getExpToDrop());
+        int xpToDrop = event.getExpToDrop();
+        int exp = UserManager.getPlayer(player).getSmeltingManager().vanillaXPBoost(xpToDrop);
         event.setExpToDrop(exp);
     }
 
