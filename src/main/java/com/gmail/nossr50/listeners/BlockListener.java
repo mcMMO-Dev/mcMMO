@@ -41,7 +41,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 
 import java.util.List;
@@ -137,7 +136,7 @@ public class BlockListener implements Listener {
         if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
 
-        if (BlockUtils.shouldBeWatched(event.getBlock())) {
+        if (BlockUtils.shouldBeWatched(event.getBlock().getState())) {
             mcMMO.getPlaceStore().setTrue(event.getBlock());
         }
     }
@@ -159,7 +158,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        BlockState blockState = event.getBlock();
+        BlockState blockState = event.getBlock().getState();
 
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
         if (BlockUtils.shouldBeWatched(blockState)) {
@@ -218,7 +217,7 @@ public class BlockListener implements Listener {
         if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
 
-        BlockState blockState = event.getBlock();
+        BlockState blockState = event.getBlock().getState();
 
         if (!BlockUtils.shouldBeWatched(blockState)) {
             return;
@@ -248,7 +247,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        BlockState blockState = event.getBlock();
+        BlockState blockState = event.getBlock().getState();
         Location location = blockState.getLocation();
 
         if (!BlockUtils.shouldBeWatched(blockState)) {
@@ -354,7 +353,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        BlockState blockState = event.getBlock();
+        BlockState blockState = event.getBlock().getState();
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         if (Herbalism.isRecentlyRegrown(blockState)) {
@@ -396,7 +395,7 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockDamage(BlockDamageEvent event) {
         Player player = event.getPlayer();
-        BlockState blockState = event.getBlock();
+        BlockState blockState = event.getBlock().getState();
 
         /* WORLD BLACKLIST CHECK */
         if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
@@ -536,7 +535,7 @@ public class BlockListener implements Listener {
         }
 
 
-        BlockState blockState = event.getBlock();
+        BlockState blockState = event.getBlock().getState();
 
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
