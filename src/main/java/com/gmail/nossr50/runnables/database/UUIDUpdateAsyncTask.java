@@ -68,15 +68,18 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
             }
             catch (Exception e) {
                 // Handle 429
-                if (e.getMessage().contains("429")) {
-                    size += userNamesSection.size();
-                    try {
-                        Thread.sleep(LIMIT_PERIOD);
-                    } catch (InterruptedException ex) {
-                        e.printStackTrace();
-                        return;
+                if(e.getMessage() != null)
+                {
+                    if (e.getMessage().contains("429")) {
+                        size += userNamesSection.size();
+                        try {
+                            Thread.sleep(LIMIT_PERIOD);
+                        } catch (InterruptedException ex) {
+                            e.printStackTrace();
+                            return;
+                        }
+                        continue;
                     }
-                    continue;
                 }
 
                 plugin.getLogger().log(Level.SEVERE, "Unable to fetch UUIDs!", e);

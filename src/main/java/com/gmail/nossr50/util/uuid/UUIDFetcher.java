@@ -1,10 +1,12 @@
 package com.gmail.nossr50.util.uuid;
 
 import com.google.common.collect.ImmutableList;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -43,10 +45,13 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
                 array.add(element);
             }
 
-            String body = array.getAsString();
+            Gson gson = new Gson();
+            String body = array.toString();
+
             writeBody(connection, body);
-            for (Object profile : array) {
-                JsonObject jsonProfile = (JsonObject) profile;
+            JsonObject[] jsonStreamArray = gson.fromJson(new InputStreamReader(connection.getInputStream()), JsonObject[].class);
+
+            for (JsonObject jsonProfile : jsonStreamArray) {
                 String id = jsonProfile.get("id").getAsString();
                 String name = jsonProfile.get("name").getAsString();
                 UUID uuid = UUIDFetcher.getUUID(id);
