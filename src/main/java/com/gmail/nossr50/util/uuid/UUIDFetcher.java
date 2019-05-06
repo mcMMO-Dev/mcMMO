@@ -1,10 +1,12 @@
 package com.gmail.nossr50.util.uuid;
 
 import com.google.common.collect.ImmutableList;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -26,6 +28,40 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
 
     public UUIDFetcher(List<String> names) {
         this(names, true);
+    }
+
+    public Map<String, UUID> call() throws Exception {
+        Map<String, UUID> uuidMap = new HashMap<String, UUID>();
+        int requests = (int) Math.ceil(names.size() / PROFILES_PER_REQUEST);
+        for (int i = 0; i < requests; i++) {
+            HttpURLConnection connection = createConnection();
+
+            List<String> nameSubList = names.subList(i * PROFILES_PER_REQUEST, Math.min((i + 1) * PROFILES_PER_REQUEST, names.size()));
+            JsonArray array = new JsonArray();
+
+            for(String name : nameSubList)
+            {
+                JsonPrimitive element = new JsonPrimitive(name);
+                array.add(element);
+            }
+
+            Gson gson = new Gson();
+            String body = array.toString();
+
+            writeBody(connection, body);
+            JsonObject[] jsonStreamArray = gson.fromJson(new InputStreamReader(connection.getInputStream()), JsonObject[].class);
+
+            for (JsonObject jsonProfile : jsonStreamArray) {
+                String id = jsonProfile.get("id").getAsString();
+                String name = jsonProfile.get("name").getAsString();
+                UUID uuid = UUIDFetcher.getUUID(id);
+                uuidMap.put(name, uuid);
+            }
+            if (rateLimiting && i != requests - 1) {
+                Thread.sleep(RATE_LIMIT);
+            }
+        }
+        return uuidMap;
     }
 
     private static void writeBody(HttpURLConnection connection, String body) throws Exception {
@@ -69,35 +105,5 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
 
     public static UUID getUUIDOf(String name) throws Exception {
         return new UUIDFetcher(Collections.singletonList(name)).call().get(name);
-    }
-
-    public Map<String, UUID> call() throws Exception {
-        Map<String, UUID> uuidMap = new HashMap<>();
-        int requests = (int) Math.ceil(names.size() / PROFILES_PER_REQUEST);
-        for (int i = 0; i < requests; i++) {
-            HttpURLConnection connection = createConnection();
-
-            List<String> nameSubList = names.subList(i * PROFILES_PER_REQUEST, Math.min((i + 1) * PROFILES_PER_REQUEST, names.size()));
-            JsonArray array = new JsonArray();
-
-            for (String name : nameSubList) {
-                JsonPrimitive element = new JsonPrimitive(name);
-                array.add(element);
-            }
-
-            String body = array.getAsString();
-            writeBody(connection, body);
-            for (Object profile : array) {
-                JsonObject jsonProfile = (JsonObject) profile;
-                String id = jsonProfile.get("id").getAsString();
-                String name = jsonProfile.get("name").getAsString();
-                UUID uuid = UUIDFetcher.getUUID(id);
-                uuidMap.put(name, uuid);
-            }
-            if (rateLimiting && i != requests - 1) {
-                Thread.sleep(RATE_LIMIT);
-            }
-        }
-        return uuidMap;
     }
 }
