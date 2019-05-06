@@ -1,7 +1,6 @@
-/*
 package com.gmail.nossr50.runnables.database;
 
-import com.gmail.nossr50.config.ChunkConversionOptions;
+import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.mcMMO;
@@ -17,9 +16,9 @@ import java.util.logging.Level;
 
 public class UUIDUpdateAsyncTask extends BukkitRunnable {
     private mcMMO plugin;
-    private static final int MAX_LOOKUP = Math.max(ChunkConversionOptions.getUUIDConvertAmount(), 100);
-    private static final int RATE_LIMIT = ChunkConversionOptions.getMojangRateLimit();
-    private static final long LIMIT_PERIOD = ChunkConversionOptions.getMojangLimitPeriod();
+    private static final int MAX_LOOKUP = 100;
+    private static final int RATE_LIMIT = 300;
+    private static final long LIMIT_PERIOD = 6000;
     private static final int BATCH_SIZE = MAX_LOOKUP * 3;
 
     private List<String> userNames;
@@ -104,4 +103,3 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
         }
     }
 }
-*/
