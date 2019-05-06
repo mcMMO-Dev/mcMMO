@@ -1,3 +1,6 @@
+Version 2.1.56
+    Very large update to the zh_CN Chinese language file (thanks Dream_m)
+
 Version 2.1.55
     Fixed a bug that could occur when adding UUIDs to old outdated DBs
 
