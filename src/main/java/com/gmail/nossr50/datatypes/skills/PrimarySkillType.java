@@ -217,7 +217,7 @@ public enum PrimarySkillType {
     }
 
     public double getXpModifier() {
-        return ExperienceConfig.getInstance().getFormulaSkillModifier(this);
+        return mcMMO.getConfigManager().getConfigLeveling().getSkillXpFormulaModifier(this);
     }
 
     // TODO: This is a little "hacky", we probably need to add something to distinguish child skills in the enum, or to use another enum for them

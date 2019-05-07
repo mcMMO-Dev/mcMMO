@@ -127,13 +127,6 @@ public class ExperienceConfig extends ConfigValidated {
         config.set(EXPERIENCE_FORMULA, MULTIPLIER, GLOBAL, value);
     }*/
 
-    /* PVP modifier */
-
-    /* Skill modifiers */
-    public double getFormulaSkillModifier(PrimarySkillType skill) {
-        return getDoubleValue(EXPERIENCE_FORMULA, MODIFIER, StringUtils.getCapitalized(skill.toString()));
-    }
-
     /* Custom XP perk */
     public double getCustomXpPerkBoost() {
         return getDoubleValue(EXPERIENCE_FORMULA, CUSTOM_XP_PERK, BOOST);

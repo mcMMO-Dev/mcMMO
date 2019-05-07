@@ -31,6 +31,14 @@ public class ConfigLeveling {
      * GETTER BOILERPLATE
      */
 
+    public double getSkillXpFormulaModifier(PrimarySkillType primarySkillType) {
+        return getConfigExperienceFormula().getSkillXpFormulaModifier(primarySkillType);
+    }
+
+    public boolean isCumulativeCurveEnabled() {
+        return getConfigExperienceFormula().isCumulativeCurveEnabled();
+    }
+
     public double getEarlyGameBoostMultiplier() {
         return earlyGameBoost.getEarlyGameBoostMultiplier();
     }
