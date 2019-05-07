@@ -314,24 +314,12 @@ public class mcMMO extends JavaPlugin {
                     metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Standard"));
                 else
                     metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Retro"));
-
-                //Simplified Server Software Tracking
-                if (Bukkit.getServer().getVersion().contains("paper"))
-                    metrics.addCustomChart(new Metrics.SimplePie("Server_software", () -> "Paper"));
-                else if (Bukkit.getServer().getVersion().contains("spigot") && !Bukkit.getServer().getVersion().contains("paper"))
-                    metrics.addCustomChart(new Metrics.SimplePie("Server_software", () -> "Spigot"));
-                else if (Bukkit.getServer().getVersion().contains("bukkit"))
-                    metrics.addCustomChart(new Metrics.SimplePie("Server_software", () -> "CraftBukkit"));
-                else
-                    metrics.addCustomChart(new Metrics.SimplePie("Server_software", () -> "Unknown"));
             }
         } catch (Throwable t) {
             getLogger().severe("There was an error while enabling mcMMO!");
             t.printStackTrace();
             getLogger().severe("End of error report for mcMMO");
             getLogger().info("Please do not replace the mcMMO jar while the server is running.");
-
-            //getServer().getPluginManager().disablePlugin(this);
         }
 
         //Init Material Maps

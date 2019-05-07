@@ -163,6 +163,9 @@ Version 2.2.0
     Added API method to check if player parties are size capped
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
+Version 2.1.56
+    Very large update to the zh_CN Chinese language file (thanks Dream_m)
+
 Version 2.1.55
     Fixed a bug that could occur when adding UUIDs to old outdated DBs
 
