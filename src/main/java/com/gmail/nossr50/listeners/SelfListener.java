@@ -88,7 +88,7 @@ public class SelfListener implements Listener {
             return;
         }
 
-        if(ExperienceConfig.getInstance().isEarlyGameBoostEnabled())
+        if(mcMMO.getConfigManager().getConfigLeveling().isEnableEarlyGameBoost())
         {
 
             int earlyGameBonusXP = 0;

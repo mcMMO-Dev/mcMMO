@@ -20,12 +20,28 @@ public class ConfigLeveling {
     @Setting(value = "General", comment = "Settings for player leveling that don't fall into other categories")
     private ConfigSectionLevelingGeneral configSectionLevelingGeneral = new ConfigSectionLevelingGeneral();
 
+    @Setting(value = "Early-Game-Boost", comment = "mcMMO incorporates an early game XP boost to get players to the first abilities in each skill faster." +
+            "\nUsing default settings, players will reach level 5 (or 50 in RetroMode) much faster than they normally would.")
+    private ConfigLevelEarlyGameBoost earlyGameBoost = new ConfigLevelEarlyGameBoost();
+
     @Setting(value = "Experience-Formula")
     private ConfigExperienceFormula configExperienceFormula = new ConfigExperienceFormula();
 
     /*
      * GETTER BOILERPLATE
      */
+
+    public double getEarlyGameBoostMultiplier() {
+        return earlyGameBoost.getEarlyGameBoostMultiplier();
+    }
+
+    public boolean isEnableEarlyGameBoost() {
+        return earlyGameBoost.isEnableEarlyGameBoost();
+    }
+
+    public ConfigLevelEarlyGameBoost getEarlyGameBoost() {
+        return earlyGameBoost;
+    }
 
     public ConfigSectionLevelCaps getConfigSectionLevelCaps() {
         return configSectionLevelCaps;

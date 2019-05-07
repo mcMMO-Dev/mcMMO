@@ -1,8 +1,6 @@
 package com.gmail.nossr50.skills.woodcutting;
 
 import com.gmail.nossr50.config.MainConfig;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
