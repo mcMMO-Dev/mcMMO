@@ -86,10 +86,10 @@ public final class Motd {
      */
     public static void displayXpPerks(Player player) {
         for (PrimarySkillType skill : PrimarySkillType.values()) {
-            if (PerksUtils.handleXpPerks(player, 1, skill) > 1) {
-                player.sendMessage(PERK_PREFIX + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.XP.Name"), LocaleLoader.getString("Perks.XP.Desc")));
-                return;
-            }
+//            if (PerksUtils.handleXpPerks(player, 1, skill) > 1) {
+//                player.sendMessage(PERK_PREFIX + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.XP.Name"), LocaleLoader.getString("Perks.XP.Desc")));
+//                return;
+//            }
         }
     }
 

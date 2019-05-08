@@ -777,15 +777,8 @@ public class McMMOPlayer {
 
         xp = (float) (xp / primarySkillType.getXpModifier() * mcMMO.getConfigManager().getExperienceMapManager().getGlobalXpMult());
 
-        /*if (MainConfig.getInstance().getToolModsEnabled()) {
-            CustomTool tool = mcMMO.getModManager().getTool(player.getInventory().getItemInMainHand());
-
-            if (tool != null) {
-                xp *= tool.getXpMultiplier();
-            }
-        }*/
-
-        return xp * mcMMO.getPlayerLevelUtils().getPlayersPersonalXPRate(this, primarySkillType);
+        //Multiply by the players personal XP rate
+        return xp * personalXPModifiers.get(primarySkillType);
     }
 
     public void checkGodMode() {

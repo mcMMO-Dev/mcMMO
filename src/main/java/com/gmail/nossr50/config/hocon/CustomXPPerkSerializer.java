@@ -4,6 +4,7 @@ import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.datatypes.experience.CustomXPPerk;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.StringUtils;
 import com.google.common.reflect.TypeResolver;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -25,6 +26,9 @@ public class CustomXPPerkSerializer implements TypeSerializer<CustomXPPerk> {
         {
             try {
                 PrimarySkillType primarySkillType = matchIgnoreCase(configurationNode.getValue(TypeToken.of(String.class)));
+                if(primarySkillType.isChildSkill())
+                    continue; //Child skills gross
+
                 float boostValue = configurationNode.getNode("XP-Multiplier").getValue(TypeToken.of(Float.class));
                 customXPPerk.setCustomXPValue(primarySkillType, boostValue);
             } catch (InvalidSkillException e) {
@@ -40,7 +44,21 @@ public class CustomXPPerkSerializer implements TypeSerializer<CustomXPPerk> {
 
     @Override
     public void serialize(@NonNull TypeToken<?> type, @Nullable CustomXPPerk obj, @NonNull ConfigurationNode value) throws ObjectMappingException {
+        String name = obj.getPerkName();
 
+        value.getNode("name").setValue(name);
+
+        for(PrimarySkillType primarySkillType : PrimarySkillType.values())
+        {
+            float xpMultValue = obj.getXPMultiplierValue(primarySkillType);
+
+            //Ignore default values
+            if(xpMultValue == 1.0F)
+                continue;
+
+            //Set value
+            value.getNode("name").getNode(StringUtils.getCapitalized(primarySkillType.toString())).setValue(xpMultValue);
+        }
     }
 
     private PrimarySkillType matchIgnoreCase(String string) throws InvalidSkillException
