@@ -44,6 +44,7 @@ import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.config.treasure.ExcavationTreasureConfig;
 import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
 import com.gmail.nossr50.config.treasure.HerbalismTreasureConfig;
+import com.gmail.nossr50.datatypes.experience.CustomXPPerk;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -318,6 +319,7 @@ public final class ConfigManager {
         customSerializers.registerType(TypeToken.of(Repairable.class), new RepairableSerializer());
         customSerializers.registerType(TypeToken.of(Salvageable.class), new SalvageableSerializer());
         customSerializers.registerType(TypeToken.of(MinecraftMaterialWrapper.class), new MinecraftMaterialWrapperSerializer());
+        customSerializers.registerType(TypeToken.of(CustomXPPerk.class), new CustomXPPerkSerializer());
     }
 
     /**
