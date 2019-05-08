@@ -26,6 +26,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.inventory.ItemStack;
+import sun.security.krb5.Config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,16 +89,13 @@ public class MiningManager extends SkillManager {
             return;
         }
 
-        Material material = blockState.getType();
-
         if (mcMMOPlayer.getAbilityMode(skill.getAbility())) {
             SkillUtils.handleDurabilityChange(getPlayer().getInventory().getItemInMainHand(), mcMMO.getConfigManager().getConfigSuperAbilities().getSuperAbilityLimits().getToolDurabilityDamage());
         }
 
         //if ((mcMMO.getModManager().isCustomMiningBlock(blockState) && !mcMMO.getModManager().getBlock(blockState).isDoubleDropEnabled()) || !MainConfig.getInstance().getDoubleDropsEnabled(skill, material)) {
-        if (!MainConfig.getInstance().getDoubleDropsEnabled(skill, material)) {
+        if (!MainConfig.getInstance().getDoubleDropsEnabled(skill, blockState.getType()))
             return;
-        }
 
         boolean silkTouch = player.getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH);
 
