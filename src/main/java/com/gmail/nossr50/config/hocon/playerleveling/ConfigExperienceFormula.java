@@ -15,9 +15,8 @@ public class ConfigExperienceFormula {
 
     static {
         SKILL_FORMULA_MODIFIER_DEFAULT = new HashMap<>();
-        for(PrimarySkillType primarySkillType : PrimarySkillType.values())
-        {
-            if(primarySkillType.isChildSkill())
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            if (primarySkillType.isChildSkill())
                 continue;
 
             SKILL_FORMULA_MODIFIER_DEFAULT.put(primarySkillType, 1.0D);

@@ -1,9 +1,11 @@
 package com.gmail.nossr50.config.hocon.experience;
 
+import com.gmail.nossr50.datatypes.experience.CustomXPPerk;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 @ConfigSerializable
 public class ConfigExperience {
@@ -21,9 +23,20 @@ public class ConfigExperience {
     @Setting(value = "Skill-XP-Settings", comment = "XP values and multipliers for each skill")
     private ConfigExperienceSkills configExperienceSkills = new ConfigExperienceSkills();
 
+    @Setting(value = "Skill-XP-Perks", comment = "Define a set of custom XP boosts given to players with matching permission nodes.")
+    private ConfigExperienceCustomBoosts configExperienceCustomBoosts = new ConfigExperienceCustomBoosts();
+
     /*
      * BOILER PLATE GETTERS
      */
+
+    public HashSet<CustomXPPerk> getCustomXPBoosts() {
+        return configExperienceCustomBoosts.getCustomXPBoosts();
+    }
+
+    public ConfigExperienceCustomBoosts getConfigExperienceCustomBoosts() {
+        return configExperienceCustomBoosts;
+    }
 
     public ConfigExperienceSkillMultiplier getConfigExperienceSkillMultiplier() {
         return configExperienceSkillMultiplier;

@@ -88,14 +88,12 @@ public class SelfListener implements Listener {
             return;
         }
 
-        if(mcMMO.getConfigManager().getConfigLeveling().isEnableEarlyGameBoost())
-        {
+        if (mcMMO.getConfigManager().getConfigLeveling().isEnableEarlyGameBoost()) {
 
             int earlyGameBonusXP = 0;
 
             //Give some bonus XP for low levels
-            if(mcMMOPlayer.getSkillLevel(primarySkillType) <= mcMMO.getPlayerLevelUtils().getEarlyGameCutoff(primarySkillType))
-            {
+            if (mcMMOPlayer.getSkillLevel(primarySkillType) <= mcMMO.getPlayerLevelUtils().getEarlyGameCutoff(primarySkillType)) {
                 earlyGameBonusXP += (mcMMOPlayer.getXpToLevel(primarySkillType) * 0.05);
                 event.setRawXpGained(event.getRawXpGained() + earlyGameBonusXP);
             }

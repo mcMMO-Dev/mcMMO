@@ -62,6 +62,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     private final File usersFile;
     private long lastUpdate = 0;
     private long updateWaitTime;
+
     protected FlatfileDatabaseManager() {
         updateWaitTime = mcMMO.getConfigManager().getConfigDatabase().getConfigDatabaseFlatFile().getLeaderboardUpdateIntervalMinutes() * (1000 * 60);
         usersFile = new File(mcMMO.getUsersFilePath());

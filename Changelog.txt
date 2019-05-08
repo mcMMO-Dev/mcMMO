@@ -1,5 +1,6 @@
 Version 2.2.0
     mcMMO's config system has been rewritten
+    You can now add an unlimited number of custom XP perks with custom defined XP boosts
     Added new subskill to Fishing named 'Inner Peace'
     mcMMO will now warn you in the console if it thinks you are running incompatible server software
     Parties no longer have a cap, you can level them forever for bragging rights
@@ -42,6 +43,7 @@ Version 2.2.0
     Permission Node Changes
     Removed "mcmmo.motd" because it makes no sense to have this as a player permission when its a config option
     Removed "mcmmo.showversion" because this one also makes no sense
+    Removed "mcmmo.perks.xp.all" and "mcmmo.perks.xp.*" because they make no sense
 
     Config Changes
 
@@ -159,6 +161,9 @@ Version 2.2.0
     Config_Update_Overwrite, Tool_Mods_Enabled, Armor_Mods_Enabled, Block_Mods_Enabled, Entity_Mods_Enabled,
 
     API Changes
+    mcMMO now uses floats instead of doubles when appropriate (mostly XP value calculations)
+    mcMMO now tracks and exposes a players specific XP boosts in each skill, which are normally only altered through XP perks
+    Added 'getPlayersPersonalXPRate' to Experience API - Grabs the players current XP rate, defaults to 1.0F but is overwritten by any xp perks permissions
     SimpleRepairable/SimpleSalvageable renamed to just Repairable/Salvageable, and their unnecessary interface classes were removed
     Added API method to check if player parties are size capped
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition

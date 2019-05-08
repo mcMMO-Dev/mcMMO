@@ -171,6 +171,7 @@ public final class BlockUtils {
 
     /**
      * Whether or not a block is gathered via Pickaxes
+     *
      * @param material target blocks material
      * @return
      */

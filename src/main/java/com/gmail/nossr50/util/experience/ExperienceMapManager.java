@@ -38,9 +38,8 @@ public class ExperienceMapManager implements Unload {
      * This method servers two purposes
      * 1) It adds user config values to a hash table
      * 2) It converts user config values into their fully qualified names
-     *
+     * <p>
      * This is done to avoid namespace conflicts, which don't happen in Bukkit but could easily happen in Sponge
-     *
      */
     public void buildBlockXPMaps() {
         buildMiningBlockXPMap();
@@ -53,33 +52,27 @@ public class ExperienceMapManager implements Unload {
     /**
      * Taming entries in the config are case insensitive, but for faster lookups we convert them to ENUMs
      */
-    private void buildTamingXPMap()
-    {
+    private void buildTamingXPMap() {
         mcMMO.p.getLogger().info("Building Taming XP list...");
         HashMap<String, Integer> userTamingConfigMap = mcMMO.getConfigManager().getConfigExperience().getTamingExperienceMap();
 
-        for(String s : userTamingConfigMap.keySet())
-        {
+        for (String s : userTamingConfigMap.keySet()) {
             boolean matchFound = false;
-            for(EntityType entityType : EntityType.values())
-            {
-                if(entityType.toString().equalsIgnoreCase(s))
-                {
+            for (EntityType entityType : EntityType.values()) {
+                if (entityType.toString().equalsIgnoreCase(s)) {
                     //Match!
                     matchFound = true;
                     tamingExperienceMap.put(entityType, (float) userTamingConfigMap.get(s));
                 }
             }
-            if(!matchFound)
-            {
-                mcMMO.p.getLogger().info("Unable to find entity with matching name - "+s);
+            if (!matchFound) {
+                mcMMO.p.getLogger().info("Unable to find entity with matching name - " + s);
             }
         }
     }
 
-    private void fillBlockXPMap(HashMap<String, Integer> userConfigMap, HashMap<String, Integer> fullyQualifiedBlockXPMap)
-    {
-        for(String string : userConfigMap.keySet()) {
+    private void fillBlockXPMap(HashMap<String, Integer> userConfigMap, HashMap<String, Integer> fullyQualifiedBlockXPMap) {
+        for (String string : userConfigMap.keySet()) {
             //matchMaterial can match fully qualified names and names without domain
             Material matchingMaterial = Material.matchMaterial(string);
 
@@ -87,7 +80,7 @@ public class ExperienceMapManager implements Unload {
                 //Map the fully qualified name
                 fullyQualifiedBlockXPMap.put(matchingMaterial.getKey().getKey(), userConfigMap.get(string));
             } else {
-                mcMMO.p.getLogger().info("Could not find a match for the block named '"+string+"' among vanilla block registers");
+                mcMMO.p.getLogger().info("Could not find a match for the block named '" + string + "' among vanilla block registers");
             }
         }
     }
@@ -115,6 +108,7 @@ public class ExperienceMapManager implements Unload {
 
     /**
      * Change the gloabl xp multiplier, this is temporary and will not be serialiized
+     *
      * @param newGlobalXpMult new global xp multiplier value
      */
     public void setGlobalXpMult(double newGlobalXpMult) {
@@ -123,7 +117,7 @@ public class ExperienceMapManager implements Unload {
     }
 
     public void resetGlobalXpMult() {
-        mcMMO.p.getLogger().info("Resetting the global XP multiplier "+globalXpMult+" -> "+getOriginalGlobalXpMult());
+        mcMMO.p.getLogger().info("Resetting the global XP multiplier " + globalXpMult + " -> " + getOriginalGlobalXpMult());
         globalXpMult = getOriginalGlobalXpMult();
     }
 
@@ -150,6 +144,7 @@ public class ExperienceMapManager implements Unload {
     /**
      * Gets the current global xp multiplier value
      * This value can be changed by the xprate command
+     *
      * @return
      */
     public double getGlobalXpMult() {
@@ -158,16 +153,16 @@ public class ExperienceMapManager implements Unload {
 
     /**
      * Gets the block break XP value for a specific skill
+     *
      * @param primarySkillType target skill
-     * @param material target material
+     * @param material         target material
      * @return XP value for breaking this block for said skill
      * @throws InvalidSkillException for skills that don't give block break experience
      * @deprecated its faster to use direct calls to get XP, for example getMiningXP(Material material) instead of using this method
      */
     @Deprecated
     public float getBlockBreakXpValue(PrimarySkillType primarySkillType, Material material) throws InvalidSkillException {
-        switch(primarySkillType)
-        {
+        switch (primarySkillType) {
             case MINING:
                 return getMiningXp(material);
             case HERBALISM:
@@ -183,6 +178,7 @@ public class ExperienceMapManager implements Unload {
 
     /**
      * Gets the taming XP for this entity
+     *
      * @param entityType target entity
      * @return value of XP for this entity
      */
@@ -194,6 +190,7 @@ public class ExperienceMapManager implements Unload {
      * Gets the original value of the global XP multiplier
      * This is defined by the users config
      * This value can be different from the current working value (due to xprate etc)
+     *
      * @return the original global xp multiplier value from the user config file
      */
     public double getOriginalGlobalXpMult() {

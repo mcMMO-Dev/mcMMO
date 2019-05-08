@@ -26,6 +26,7 @@ public class AcrobaticsManager extends SkillManager {
     private long rollXPInterval;
     private long rollXPIntervalLengthen = (1000 * 10); //10 Seconds
     private LimitedSizeList fallLocationMap;
+
     public AcrobaticsManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.ACROBATICS);
         rollXPInterval = (1000 * mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().getRollXPGainCooldownSeconds());

@@ -1,14 +1,14 @@
 name: mcMMO
 version: ${project.version}
 description: >
-  The goal of mcMMO is to take core Minecraft game mechanics and expand them into
-  add an extensive and quality RPG experience. Everything in mcMMO has been carefully
-  thought out and is constantly being improved upon. Currently, mcMMO adds thirteen
-  unique skills to train and level in. Each of these skills is highly customizable
-  through our configuration files, allowing server admins to tweak mcMMO to best suit
-  the needs of his or her server. Know that the mcMMO team is dedicated to providing
-  an ever-evolving experience, and that we carefully read all feedback and bug reports
-  in order to evaluate and balance the mechanics of mcMMO in every update.
+    The goal of mcMMO is to take core Minecraft game mechanics and expand them into
+    add an extensive and quality RPG experience. Everything in mcMMO has been carefully
+    thought out and is constantly being improved upon. Currently, mcMMO adds thirteen
+    unique skills to train and level in. Each of these skills is highly customizable
+    through our configuration files, allowing server admins to tweak mcMMO to best suit
+    the needs of his or her server. Know that the mcMMO team is dedicated to providing
+    an ever-evolving experience, and that we carefully read all feedback and bug reports
+    in order to evaluate and balance the mechanics of mcMMO in every update.
 
 author: nossr50
 authors: [GJ, NuclearW, bm01, Glitchfinder, TfT_02, t00thpick1, Riking]
@@ -729,8 +729,8 @@ permissions:
     mcmmo.chat.all:
         description: Implies all mcmmo.chat permissions. (Warning, contains adminchat)
         children:
-            mcmmo.chat.adminchat: true 
-            mcmmo.chat.partychat: true 
+            mcmmo.chat.adminchat: true
+            mcmmo.chat.partychat: true
     mcmmo.chat.adminchat:
         description: Allows participation in admin chat
     mcmmo.chat.partychat:
@@ -1287,7 +1287,7 @@ permissions:
         default: false
         description: implies access to all mcmmo perks
         children:
-            mcmmo.perks.all: true 
+            mcmmo.perks.all: true
     mcmmo.perks.all:
         default: false
         description: implies access to all mcmmo perks
@@ -1426,22 +1426,6 @@ permissions:
     mcmmo.perks.lucky.woodcutting:
         default: false
         description: Gives Woodcutting abilities & skills a 33.3% better chance to activate.
-    mcmmo.perks.xp.*:
-        default: false
-        description: XP Perks typically given to donors or VIPs
-        children:
-            mcmmo.perks.xp.all: true
-    mcmmo.perks.xp.all:
-        default: false
-        description: XP Perks typically given to donors or VIPs
-        children:
-            mcmmo.perks.xp.150percentboost.all: true
-            mcmmo.perks.xp.50percentboost.all: true
-            mcmmo.perks.xp.10percentboost.all: true
-            mcmmo.perks.xp.customboost.all: true
-            mcmmo.perks.xp.double.all: true
-            mcmmo.perks.xp.quadruple.all: true
-            mcmmo.perks.xp.triple.all: true
     mcmmo.perks.xp.150percentboost.*:
         default: false
         description: Multiplies incoming XP by 2.5
@@ -2040,7 +2024,7 @@ permissions:
         default: false
         description: Implies all mcmmo.tools permissions.
         children:
-            mcmmo.tools.all: true 
+            mcmmo.tools.all: true
     mcmmo.tools.all:
         default: false
         description: Implies all mcmmo.tools permissions.

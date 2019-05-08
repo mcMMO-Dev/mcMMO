@@ -68,8 +68,7 @@ public class BlockListener implements Listener {
                 BonusDropMeta bonusDropMeta = (BonusDropMeta) event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).get(0);
                 int bonusCount = bonusDropMeta.asInt();
 
-                for (int i = 0; i < bonusCount; i++)
-                {
+                for (int i = 0; i < bonusCount; i++) {
                     event.getBlock().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
                 }
 

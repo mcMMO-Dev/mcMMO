@@ -13,12 +13,11 @@ public class ConfigExperienceSkillMultiplier {
 
     static {
         SKILL_GLOBAL_MULT_DEFAULT = new HashMap<>();
-        for(PrimarySkillType primarySkillType : PrimarySkillType.values())
-        {
-            if(primarySkillType.isChildSkill())
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            if (primarySkillType.isChildSkill())
                 continue;
 
-            SKILL_GLOBAL_MULT_DEFAULT.put(primarySkillType,1.0D);
+            SKILL_GLOBAL_MULT_DEFAULT.put(primarySkillType, 1.0D);
         }
     }
 

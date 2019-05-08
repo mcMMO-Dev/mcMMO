@@ -383,8 +383,8 @@ public class InventoryListener implements Listener {
         /* WORLD BLACKLIST CHECK */
 
         //Location can be null here
-        if(event.getSource().getLocation() != null)
-            if(WorldBlacklist.isWorldBlacklisted(event.getSource().getLocation().getWorld()))
+        if (event.getSource().getLocation() != null)
+            if (WorldBlacklist.isWorldBlacklisted(event.getSource().getLocation().getWorld()))
                 return;
 
         Inventory inventory = event.getDestination();

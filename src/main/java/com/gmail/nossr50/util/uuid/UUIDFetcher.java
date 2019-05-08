@@ -39,8 +39,7 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
             List<String> nameSubList = names.subList(i * PROFILES_PER_REQUEST, Math.min((i + 1) * PROFILES_PER_REQUEST, names.size()));
             JsonArray array = new JsonArray();
 
-            for(String name : nameSubList)
-            {
+            for (String name : nameSubList) {
                 JsonPrimitive element = new JsonPrimitive(name);
                 array.add(element);
             }

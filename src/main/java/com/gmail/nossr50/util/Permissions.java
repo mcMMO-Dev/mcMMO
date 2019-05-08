@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.commands.party.PartySubcommandType;
+import com.gmail.nossr50.datatypes.experience.CustomXPPerk;
 import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -233,7 +234,9 @@ public final class Permissions {
         return permissible.hasPermission("mcmmo.commands.mmoupdate");
     }
 
-    public static boolean reloadlocale(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.reloadlocale"); }
+    public static boolean reloadlocale(Permissible permissible) {
+        return permissible.hasPermission("mcmmo.commands.reloadlocale");
+    }
 
     /*
      * PERKS
@@ -278,8 +281,8 @@ public final class Permissions {
         return permissible.hasPermission("mcmmo.perks.xp.10percentboost." + skill.toString().toLowerCase());
     }
 
-    public static boolean customXpBoost(Permissible permissible, PrimarySkillType skill) {
-        return permissible.hasPermission("mcmmo.perks.xp.customboost." + skill.toString().toLowerCase());
+    public static boolean hasCustomXPPerk(Permissible permissible, CustomXPPerk customXPPerk) {
+        return permissible.hasPermission(customXPPerk.getPerkPermissionAddress());
     }
 
     /* ACTIVATION PERKS */
@@ -513,6 +516,22 @@ public final class Permissions {
         for (World world : server.getWorlds()) {
             addDynamicPermission("mcmmo.commands.ptp.world." + world.getName(), pluginManager);
         }
+    }
+
+    /**
+     * XP Perks are defined by user config files and are not known until runtime
+     * This method registers Permissions with the server software as needed
+     */
+    public static void addCustomXPPerks() {
+        mcMMO.p.getLogger().info("Registering custom XP perks with server software...");
+        PluginManager pluginManager = mcMMO.p.getServer().getPluginManager();
+
+        for (CustomXPPerk customXPPerk : mcMMO.getConfigManager().getConfigExperience().getCustomXPBoosts()) {
+            Permission permission = new Permission(customXPPerk.getPerkPermissionAddress());
+            permission.setDefault(PermissionDefault.FALSE);
+            pluginManager.addPermission(permission);
+        }
+
     }
 
     private static void addDynamicPermission(String permissionName, PluginManager pluginManager) {

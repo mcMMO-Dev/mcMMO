@@ -20,7 +20,9 @@ abstract public class McMMOScoreboardEvent extends Event {
     protected Scoreboard targetBoard; //ConfigScoreboard involved in this event
     protected Player targetPlayer;
 
-    /** GETTER & SETTER BOILERPLATE **/
+    /**
+     * GETTER & SETTER BOILERPLATE
+     **/
 
     public McMMOScoreboardEvent(Scoreboard targetBoard, Scoreboard currentBoard, Player targetPlayer, ScoreboardEventReason scoreboardEventReason) {
         this.scoreboardEventReason = scoreboardEventReason;

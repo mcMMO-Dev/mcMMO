@@ -55,19 +55,16 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
             if (size > MAX_LOOKUP) {
                 userNamesSection = userNames.subList(size - MAX_LOOKUP, size);
                 size -= MAX_LOOKUP;
-            }
-            else {
+            } else {
                 userNamesSection = userNames.subList(0, size);
                 size = 0;
             }
 
             try {
                 fetchedUUIDs.putAll(new UUIDFetcher(userNamesSection).call());
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 // Handle 429
-                if(e.getMessage() != null)
-                {
+                if (e.getMessage() != null) {
                     if (e.getMessage().contains("429")) {
                         size += userNamesSection.size();
                         try {

@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.skills;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.util.Permissions;
 import org.bukkit.entity.Player;
@@ -38,26 +37,6 @@ public final class PerksUtils {
         }
 
         return ticks;
-    }
-
-    public static float handleXpPerks(Player player, float xp, PrimarySkillType skill) {
-        if (Permissions.customXpBoost(player, skill)) {
-            xp *= ExperienceConfig.getInstance().getCustomXpPerkBoost();
-        } else if (Permissions.quadrupleXp(player, skill)) {
-            xp *= 4;
-        } else if (Permissions.tripleXp(player, skill)) {
-            xp *= 3;
-        } else if (Permissions.doubleAndOneHalfXp(player, skill)) {
-            xp *= 2.5;
-        } else if (Permissions.doubleXp(player, skill)) {
-            xp *= 2;
-        } else if (Permissions.oneAndOneHalfXp(player, skill)) {
-            xp *= 1.5;
-        } else if (Permissions.oneAndOneTenthXp(player, skill)) {
-            xp *= 1.1;
-        }
-
-        return xp;
     }
 
     /**

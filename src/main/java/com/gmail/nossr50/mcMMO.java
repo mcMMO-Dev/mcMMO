@@ -351,6 +351,7 @@ public class mcMMO extends JavaPlugin {
     /**
      * Returns a ServerSoftwareType based on version strings
      * Custom software is returned as CRAFTBUKKIT
+     *
      * @return the ServerSoftwareType which likely matches the server
      */
     private ServerSoftwareType getServerSoftware() {
@@ -364,6 +365,7 @@ public class mcMMO extends JavaPlugin {
 
     /**
      * Gets a string version of ServerSoftwareType
+     *
      * @return Formatted String of ServerSoftwareType
      */
     private String getServerSoftwareStr() {
@@ -436,6 +438,7 @@ public class mcMMO extends JavaPlugin {
 
     /**
      * The directory in which override locales are kept
+     *
      * @return the override locale directory
      */
     public static String getLocalesDirectory() {
@@ -444,6 +447,7 @@ public class mcMMO extends JavaPlugin {
 
     /**
      * If an XP rate event is currently in place
+     *
      * @return
      */
     public boolean isXPEventEnabled() {
@@ -460,6 +464,7 @@ public class mcMMO extends JavaPlugin {
 
     /**
      * Sets the xpEventEnabled boolean
+     *
      * @param enabled the new boolean state
      */
     public void setXPEventEnabled(boolean enabled) {
@@ -476,6 +481,7 @@ public class mcMMO extends JavaPlugin {
     /**
      * Debug helper method
      * Prefixes log entries with [Debug]
+     *
      * @param message the message to log with a Debug prefix
      */
     public void debug(String message) {
@@ -647,10 +653,6 @@ public class mcMMO extends JavaPlugin {
 
         // Update power level tag scoreboards
         new PowerLevelUpdatingTask().runTaskTimer(this, 2 * Misc.TICK_CONVERSION_FACTOR, 2 * Misc.TICK_CONVERSION_FACTOR);
-
-        /*if (getHolidayManager().nearingAprilFirst()) {
-            new CheckDateTask().runTaskTimer(this, 10L * Misc.TICK_CONVERSION_FACTOR, 1L * 60L * 60L * Misc.TICK_CONVERSION_FACTOR);
-        }*/
 
         // Clear the registered XP data so players can earn XP again
         if (ExperienceConfig.getInstance().getDiminishedReturnsEnabled()) {

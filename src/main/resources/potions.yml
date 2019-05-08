@@ -3,40 +3,40 @@
 ###
 Concoctions:
     Tier_One_Ingredients:
-        - BLAZE_POWDER
-        - FERMENTED_SPIDER_EYE
-        - GHAST_TEAR
-        - GLOWSTONE_DUST
-        - GOLDEN_CARROT
-        - MAGMA_CREAM
-        - NETHER_WART
-        - REDSTONE
-        - GLISTERING_MELON_SLICE
-        - SPIDER_EYE
-        - SUGAR
-        - GUNPOWDER
-        - WATER_LILY
-        - PUFFERFISH
-        - DRAGON_BREATH
+    - BLAZE_POWDER
+    - FERMENTED_SPIDER_EYE
+    - GHAST_TEAR
+    - GLOWSTONE_DUST
+    - GOLDEN_CARROT
+    - MAGMA_CREAM
+    - NETHER_WART
+    - REDSTONE
+    - GLISTERING_MELON_SLICE
+    - SPIDER_EYE
+    - SUGAR
+    - GUNPOWDER
+    - WATER_LILY
+    - PUFFERFISH
+    - DRAGON_BREATH
     Tier_Two_Ingredients:
-        - CARROT
-        - SLIME_BALL
-        - PHANTOM_MEMBRANE
+    - CARROT
+    - SLIME_BALL
+    - PHANTOM_MEMBRANE
     Tier_Three_Ingredients:
-        - QUARTZ
-        - RED_MUSHROOM
+    - QUARTZ
+    - RED_MUSHROOM
     Tier_Four_Ingredients:
-        - APPLE
-        - ROTTEN_FLESH
+    - APPLE
+    - ROTTEN_FLESH
     Tier_Five_Ingredients:
-        - BROWN_MUSHROOM
-        - INK_SAC
+    - BROWN_MUSHROOM
+    - INK_SAC
     Tier_Six_Ingredients:
-        - FERN
+    - FERN
     Tier_Seven_Ingredients:
-        - POISONOUS_POTATO
+    - POISONOUS_POTATO
     Tier_Eight_Ingredients:
-        - GOLDEN_APPLE
+    - GOLDEN_APPLE
 
 #
 # Settings for Potions

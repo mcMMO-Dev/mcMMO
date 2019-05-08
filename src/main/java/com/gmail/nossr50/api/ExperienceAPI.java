@@ -35,6 +35,19 @@ public final class ExperienceAPI {
     }
 
     /**
+     * Grabs the XP multiplier for a player for this specific skill
+     * The multiplier will default to 1.0 and will be over written by any XP perks
+     *
+     * @param player           target player
+     * @param primarySkillType target skill
+     * @return this players personal XP rate for target PrimarySkillType
+     */
+    public float getPlayersPersonalXPRate(McMMOPlayer player, PrimarySkillType primarySkillType) {
+        //First check if the player has ANY of the custom perks
+        return player.getPlayerSpecificXPMult(primarySkillType);
+    }
+
+    /**
      * Returns whether the given skill type string is both valid and not a
      * child skill. (Child skills have no XP of their own, and their level is
      * derived from the parent(s).)

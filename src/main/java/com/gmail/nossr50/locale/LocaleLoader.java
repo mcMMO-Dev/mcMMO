@@ -57,19 +57,18 @@ public final class LocaleLoader {
         if (filesystemBundle != null) {
             try {
                 return filesystemBundle.getString(key);
+            } catch (MissingResourceException ignored) {
             }
-            catch (MissingResourceException ignored) {}
         }
 
         try {
             return bundle.getString(key);
+        } catch (MissingResourceException ignored) {
         }
-        catch (MissingResourceException ignored) {}
 
         try {
             return enBundle.getString(key);
-        }
-        catch (MissingResourceException ignored) {
+        } catch (MissingResourceException ignored) {
             if (!key.contains("Guides")) {
                 mcMMO.p.getLogger().warning("Could not find locale string: " + key);
             }

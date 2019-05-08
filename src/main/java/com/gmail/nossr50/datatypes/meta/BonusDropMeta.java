@@ -4,7 +4,7 @@ import com.gmail.nossr50.mcMMO;
 import org.bukkit.metadata.FixedMetadataValue;
 
 /**
- *  Stores how many bonus drops a block should give
+ * Stores how many bonus drops a block should give
  */
 public class BonusDropMeta extends FixedMetadataValue {
 

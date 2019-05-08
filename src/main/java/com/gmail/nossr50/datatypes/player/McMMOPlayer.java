@@ -90,6 +90,7 @@ public class McMMOPlayer {
     //private int chimeraWingLastUse;
     private Location teleportCommence;
     private boolean isUsingUnarmed;
+    private HashMap<PrimarySkillType, Float> personalXPModifiers;
 
     public McMMOPlayer(Player player, PlayerProfile profile) {
         String playerName = player.getName();
@@ -127,6 +128,36 @@ public class McMMOPlayer {
         }
 
         experienceBarManager = new ExperienceBarManager(this);
+        fillPersonalXPModifiers(); //Cache players XP rates
+    }
+
+    /**
+     * Grabs custom XP values for a player if they exist, if they don't defaults them to 1.0
+     * Values are stored in a hash map for constant speed lookups
+     */
+    private void fillPersonalXPModifiers() {
+        personalXPModifiers = new HashMap<>();
+
+        //Check each skill for custom XP perks
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            //Skip over child skills
+            if (primarySkillType.isChildSkill())
+                continue;
+
+            //Set the players custom XP modifier, defaults to 1.0D on missing entries
+            personalXPModifiers.put(primarySkillType, mcMMO.getPlayerLevelUtils().determineXpPerkValue(player, primarySkillType));
+        }
+    }
+
+    /**
+     * Gets a players current active XP rate for a specific skill
+     * This will default to 1.0D unless over written by custom XP perks
+     *
+     * @param primarySkillType target primary skill
+     * @return this players personal XP multiplier for target PrimarySkillType
+     */
+    public float getPlayerSpecificXPMult(PrimarySkillType primarySkillType) {
+        return personalXPModifiers.get(primarySkillType);
     }
 
     /*public void hideXpBar(PrimarySkillType primarySkillType)
@@ -754,7 +785,7 @@ public class McMMOPlayer {
             }
         }*/
 
-        return PerksUtils.handleXpPerks(player, xp, primarySkillType);
+        return xp * mcMMO.getPlayerLevelUtils().getPlayersPersonalXPRate(this, primarySkillType);
     }
 
     public void checkGodMode() {
