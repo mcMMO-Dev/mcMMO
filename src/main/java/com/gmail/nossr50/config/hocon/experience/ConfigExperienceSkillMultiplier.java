@@ -3,9 +3,10 @@ package com.gmail.nossr50.config.hocon.experience;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
-import static com.gmail.nossr50.datatypes.skills.PrimarySkillType.*;
 
 import java.util.HashMap;
+
+import static com.gmail.nossr50.datatypes.skills.PrimarySkillType.*;
 
 @ConfigSerializable
 public class ConfigExperienceSkillMultiplier {

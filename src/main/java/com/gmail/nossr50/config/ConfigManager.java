@@ -116,25 +116,26 @@ public final class ConfigManager {
     private SerializedConfigLoader<ConfigAdmin> configAdmin;
     private SerializedConfigLoader<ConfigMobs> configMobs;
     private SerializedConfigLoader<ConfigExperience> configExperience;
-
-    private SerializedConfigLoader<ConfigAcrobatics> configAcrobatics;
-    private SerializedConfigLoader<ConfigAlchemy> configAlchemy;
-    private SerializedConfigLoader<ConfigArchery> configArchery;
-    private SerializedConfigLoader<ConfigAxes> configAxes;
-    private SerializedConfigLoader<ConfigExcavation> configExcavation;
-    private SerializedConfigLoader<ConfigFishing> configFishing;
-    private SerializedConfigLoader<ConfigHerbalism> configHerbalism;
-    private SerializedConfigLoader<ConfigMining> configMining;
-    private SerializedConfigLoader<ConfigRepair> configRepair;
-    private SerializedConfigLoader<ConfigSwords> configSwords;
-    private SerializedConfigLoader<ConfigTaming> configTaming;
-    private SerializedConfigLoader<ConfigUnarmed> configUnarmed;
-    private SerializedConfigLoader<ConfigWoodcutting> configWoodcutting;
-    private SerializedConfigLoader<ConfigSmelting> configSmelting;
-    private SerializedConfigLoader<ConfigSalvage> configSalvage;
     private SerializedConfigLoader<ConfigNameRegisterDefaults> configDefaultExamples;
 
-    private HashMap<PrimarySkillType, SerializedConfigLoader> skillConfigLoaders;
+    private ConfigAcrobatics configAcrobatics;
+    private ConfigAlchemy configAlchemy;
+    private ConfigArchery configArchery;
+    private ConfigAxes configAxes;
+    private ConfigExcavation configExcavation;
+    private ConfigFishing configFishing;
+    private ConfigHerbalism configHerbalism;
+    private ConfigMining configMining;
+    private ConfigRepair configRepair;
+    private ConfigSwords configSwords;
+    private ConfigTaming configTaming;
+    private ConfigUnarmed configUnarmed;
+    private ConfigWoodcutting configWoodcutting;
+    private ConfigSmelting configSmelting;
+    private ConfigSalvage configSalvage;
+
+
+    private HashMap<PrimarySkillType, SerializedConfigLoader<?>> skillConfigLoaders;
 
     //Data
     private SerializedConfigLoader<ConfigPartyData> partyData;
@@ -260,21 +261,21 @@ public final class ConfigManager {
         registerSkillConfig(PrimarySkillType.SMELTING, ConfigSmelting.class);
 
         //Setup Typed refs
-        configAcrobatics = (SerializedConfigLoader<ConfigAcrobatics>) skillConfigLoaders.get(PrimarySkillType.ACROBATICS).getConfig();
-        configAlchemy = (SerializedConfigLoader<ConfigAlchemy>) skillConfigLoaders.get(PrimarySkillType.ALCHEMY).getConfig();
-        configSalvage = (SerializedConfigLoader<ConfigSalvage>) skillConfigLoaders.get(PrimarySkillType.SALVAGE).getConfig();
-        configArchery = (SerializedConfigLoader<ConfigArchery>) skillConfigLoaders.get(PrimarySkillType.ARCHERY).getConfig();
-        configAxes = (SerializedConfigLoader<ConfigAxes>) skillConfigLoaders.get(PrimarySkillType.AXES).getConfig();
-        configExcavation = (SerializedConfigLoader<ConfigExcavation>) skillConfigLoaders.get(PrimarySkillType.EXCAVATION).getConfig();
-        configFishing = (SerializedConfigLoader<ConfigFishing>) skillConfigLoaders.get(PrimarySkillType.FISHING).getConfig();
-        configHerbalism = (SerializedConfigLoader<ConfigHerbalism>) skillConfigLoaders.get(PrimarySkillType.HERBALISM).getConfig();
-        configMining = (SerializedConfigLoader<ConfigMining>) skillConfigLoaders.get(PrimarySkillType.MINING).getConfig();
-        configRepair = (SerializedConfigLoader<ConfigRepair>) skillConfigLoaders.get(PrimarySkillType.REPAIR).getConfig();
-        configSwords = (SerializedConfigLoader<ConfigSwords>) skillConfigLoaders.get(PrimarySkillType.SWORDS).getConfig();
-        configTaming = (SerializedConfigLoader<ConfigTaming>) skillConfigLoaders.get(PrimarySkillType.TAMING).getConfig();
-        configUnarmed = (SerializedConfigLoader<ConfigUnarmed>) skillConfigLoaders.get(PrimarySkillType.UNARMED).getConfig();
-        configWoodcutting = (SerializedConfigLoader<ConfigWoodcutting>) skillConfigLoaders.get(PrimarySkillType.WOODCUTTING).getConfig();
-        configSmelting = (SerializedConfigLoader<ConfigSmelting>) skillConfigLoaders.get(PrimarySkillType.SMELTING).getConfig();
+        configAcrobatics = (ConfigAcrobatics) skillConfigLoaders.get(PrimarySkillType.ACROBATICS).getConfig();
+        configAlchemy = (ConfigAlchemy) skillConfigLoaders.get(PrimarySkillType.ALCHEMY).getConfig();
+        configSalvage = (ConfigSalvage) skillConfigLoaders.get(PrimarySkillType.SALVAGE).getConfig();
+        configArchery = (ConfigArchery) skillConfigLoaders.get(PrimarySkillType.ARCHERY).getConfig();
+        configAxes = (ConfigAxes) skillConfigLoaders.get(PrimarySkillType.AXES).getConfig();
+        configExcavation = (ConfigExcavation) skillConfigLoaders.get(PrimarySkillType.EXCAVATION).getConfig();
+        configFishing = (ConfigFishing) skillConfigLoaders.get(PrimarySkillType.FISHING).getConfig();
+        configHerbalism = (ConfigHerbalism) skillConfigLoaders.get(PrimarySkillType.HERBALISM).getConfig();
+        configMining = (ConfigMining) skillConfigLoaders.get(PrimarySkillType.MINING).getConfig();
+        configRepair = (ConfigRepair) skillConfigLoaders.get(PrimarySkillType.REPAIR).getConfig();
+        configSwords = (ConfigSwords) skillConfigLoaders.get(PrimarySkillType.SWORDS).getConfig();
+        configTaming = (ConfigTaming) skillConfigLoaders.get(PrimarySkillType.TAMING).getConfig();
+        configUnarmed = (ConfigUnarmed) skillConfigLoaders.get(PrimarySkillType.UNARMED).getConfig();
+        configWoodcutting = (ConfigWoodcutting) skillConfigLoaders.get(PrimarySkillType.WOODCUTTING).getConfig();
+        configSmelting = (ConfigSmelting) skillConfigLoaders.get(PrimarySkillType.SMELTING).getConfig();
     }
 
     private void registerCustomTypeSerializers() {
@@ -588,63 +589,63 @@ public final class ConfigManager {
     }
 
     public ConfigAcrobatics getConfigAcrobatics() {
-        return configAcrobatics.getConfig();
+        return configAcrobatics;
     }
 
     public ConfigAlchemy getConfigAlchemy() {
-        return configAlchemy.getConfig();
+        return configAlchemy;
     }
 
     public ConfigArchery getConfigArchery() {
-        return configArchery.getConfig();
+        return configArchery;
     }
 
     public ConfigAxes getConfigAxes() {
-        return configAxes.getConfig();
+        return configAxes;
     }
 
     public ConfigExcavation getConfigExcavation() {
-        return configExcavation.getConfig();
+        return configExcavation;
     }
 
     public ConfigFishing getConfigFishing() {
-        return configFishing.getConfig();
+        return configFishing;
     }
 
     public ConfigHerbalism getConfigHerbalism() {
-        return configHerbalism.getConfig();
+        return configHerbalism;
     }
 
     public ConfigMining getConfigMining() {
-        return configMining.getConfig();
+        return configMining;
     }
 
     public ConfigRepair getConfigRepair() {
-        return configRepair.getConfig();
+        return configRepair;
     }
 
     public ConfigSwords getConfigSwords() {
-        return configSwords.getConfig();
+        return configSwords;
     }
 
     public ConfigTaming getConfigTaming() {
-        return configTaming.getConfig();
+        return configTaming;
     }
 
     public ConfigUnarmed getConfigUnarmed() {
-        return configUnarmed.getConfig();
+        return configUnarmed;
     }
 
     public ConfigWoodcutting getConfigWoodcutting() {
-        return configWoodcutting.getConfig();
+        return configWoodcutting;
     }
 
     public ConfigSmelting getConfigSmelting() {
-        return configSmelting.getConfig();
+        return configSmelting;
     }
 
     public ConfigSalvage getConfigSalvage() {
-        return configSalvage.getConfig();
+        return configSalvage;
     }
 
     public BonusDropManager getBonusDropManager() {

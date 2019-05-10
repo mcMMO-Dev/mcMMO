@@ -6,7 +6,6 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 @ConfigSerializable
 public class ConfigExperience {

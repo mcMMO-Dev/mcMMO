@@ -1,9 +1,0 @@
-# Config wrote by M1cr0man
-# Possibly incomplete. Only covers ores
-# Up to date as of Applied Energistics rv14-finale3
-Mining:
-    # Certus Quartz Ore
-    X4076|0:
-        XP_Gain: 250
-        Double_Drops_Enabled: true
-        Is_Ore: true

@@ -21,11 +21,10 @@ public class CustomXPPerkSerializer implements TypeSerializer<CustomXPPerk> {
         CustomXPPerk customXPPerk = new CustomXPPerk(perkName);
 
         //See if any children nodes match skills by name
-        for(ConfigurationNode configurationNode : value.getChildrenList())
-        {
+        for (ConfigurationNode configurationNode : value.getChildrenList()) {
             try {
                 PrimarySkillType primarySkillType = matchIgnoreCase(configurationNode.getValue(TypeToken.of(String.class)));
-                if(primarySkillType.isChildSkill())
+                if (primarySkillType.isChildSkill())
                     continue; //Child skills gross
 
                 float boostValue = configurationNode.getNode("XP-Multiplier").getValue(TypeToken.of(Float.class));
@@ -47,12 +46,11 @@ public class CustomXPPerkSerializer implements TypeSerializer<CustomXPPerk> {
 
         value.getNode("name").setValue(name);
 
-        for(PrimarySkillType primarySkillType : PrimarySkillType.values())
-        {
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
             float xpMultValue = obj.getXPMultiplierValue(primarySkillType);
 
             //Ignore default values
-            if(xpMultValue == 1.0F)
+            if (xpMultValue == 1.0F)
                 continue;
 
             //Set value
@@ -60,11 +58,9 @@ public class CustomXPPerkSerializer implements TypeSerializer<CustomXPPerk> {
         }
     }
 
-    private PrimarySkillType matchIgnoreCase(String string) throws InvalidSkillException
-    {
-        for(PrimarySkillType primarySkillType : PrimarySkillType.values())
-        {
-            if(string.equalsIgnoreCase(primarySkillType.toString()))
+    private PrimarySkillType matchIgnoreCase(String string) throws InvalidSkillException {
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            if (string.equalsIgnoreCase(primarySkillType.toString()))
                 return primarySkillType;
         }
 

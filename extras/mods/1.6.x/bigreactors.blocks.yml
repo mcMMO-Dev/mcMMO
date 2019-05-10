@@ -1,9 +1,0 @@
-# Config wrote by M1cr0man
-# Possibly incomplete. Only covers ores
-# Up to date as of Big Reactors 0.3.4A2
-Mining:
-    # Yellorite
-    X1750|0:
-        XP_Gain: 300
-        Double_Drops_Enabled: true
-        Is_Ore: true
