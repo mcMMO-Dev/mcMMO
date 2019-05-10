@@ -49,7 +49,7 @@ public class SalvageableSerializer implements TypeSerializer<Salvageable> {
         int maximumQuantityReturned = value.getNode(MAXIMUM_QUANTITY_RETURNED).getValue(TypeToken.of(Integer.class));
         int minimumLevel = value.getNode(OVERRIDE_LEVEL_REQUIREMENT).getValue(TypeToken.of(Integer.class));
 
-        return new Salvageable(item, itemReturnedBySalvage, maximumQuantityReturned, minimumLevel);
+        return new Salvageable(item, itemReturnedBySalvage, minimumLevel, maximumQuantityReturned);
     }
 
     @Override
