@@ -30,11 +30,11 @@ public class Salvageable {
         this.salvagedItemMaterial = salvagedItemMaterial;
         this.salvageItemType = ItemUtils.determineItemType(itemMaterial);
         this.salvageItemMaterialCategory = ItemUtils.determineMaterialType(salvagedItemMaterial);
-        this.minimumLevel = minimumLevel;
-        this.maximumQuantity = maximumQuantity;
+        this.minimumLevel = Math.max(0, minimumLevel);
+        this.maximumQuantity = Math.max(1, maximumQuantity);
         this.maximumDurability = itemMaterial.getMaxDurability();
         this.baseSalvageDurability = (short) (maximumDurability / maximumQuantity);
-        this.xpMultiplier = 1.0D;
+        this.xpMultiplier = Math.max(0, 1.0D);
     }
 
     public Material getItemMaterial() {
