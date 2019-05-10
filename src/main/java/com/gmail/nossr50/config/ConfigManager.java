@@ -206,6 +206,13 @@ public final class ConfigManager {
     }
 
     private void initSerializedConfigs() {
+        //There's some race conditions here because mcMMO is goddamn spaghetti mess, language has to load first
+        configLanguage = new SerializedConfigLoader<>(ConfigLanguage.class, "language.conf", "Language", null);
+
+        /*
+         * No more race conditions
+         */
+
         configDatabase = new SerializedConfigLoader<>(ConfigDatabase.class, "database_settings.conf", "Database", null);
         configScoreboard = new SerializedConfigLoader<>(ConfigScoreboard.class, "scoreboard.conf", "Scoreboard", null);
         configLeveling = new SerializedConfigLoader<>(ConfigLeveling.class, "player_leveling.conf", "Player-Leveling", null);
@@ -218,7 +225,6 @@ public final class ConfigManager {
         configAutomatedBackups = new SerializedConfigLoader<>(ConfigAutomatedBackups.class, "automated_backups.conf", "Automated-Backups", null);
         configCommands = new SerializedConfigLoader<>(ConfigCommands.class, "commands.conf", "Commands", null);
         configItems = new SerializedConfigLoader<>(ConfigItems.class, "custom_items.conf", "Items", null);
-        configLanguage = new SerializedConfigLoader<>(ConfigLanguage.class, "language.conf", "Language", null);
         configParticles = new SerializedConfigLoader<>(ConfigParticles.class, "particle_spawning.conf", "Particles", null);
         configParty = new SerializedConfigLoader<>(ConfigParty.class, "party.conf", "Party", null);
         configNotifications = new SerializedConfigLoader<>(ConfigNotifications.class, "alerts_and_notifications.conf", "Notifications", null);

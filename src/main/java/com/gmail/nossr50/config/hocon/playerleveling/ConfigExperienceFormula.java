@@ -11,16 +11,24 @@ import java.util.HashMap;
 public class ConfigExperienceFormula {
 
     public static final boolean CUMULATIVE_CURVE_DEFAULT = false;
-    private static final HashMap<PrimarySkillType, Double> SKILL_FORMULA_MODIFIER_DEFAULT;
+    private static final HashMap<PrimarySkillType, Float> SKILL_FORMULA_MODIFIER_DEFAULT;
 
     static {
         SKILL_FORMULA_MODIFIER_DEFAULT = new HashMap<>();
-        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            if (primarySkillType.isChildSkill())
-                continue;
-
-            SKILL_FORMULA_MODIFIER_DEFAULT.put(primarySkillType, 1.0D);
-        }
+        //TODO: This code is causing compiler issues
+        SKILL_FORMULA_MODIFIER_DEFAULT.put(PrimarySkillType.ACROBATICS, 1.0f);
+        SKILL_FORMULA_MODIFIER_DEFAULT.put(PrimarySkillType.ALCHEMY, 1.0f);
+        SKILL_FORMULA_MODIFIER_DEFAULT.put(PrimarySkillType.AXES, 1.0f);
+        SKILL_FORMULA_MODIFIER_DEFAULT.put(PrimarySkillType.ARCHERY, 1.0f);
+        SKILL_FORMULA_MODIFIER_DEFAULT.put(PrimarySkillType.EXCAVATION, 1.0f);
+        SKILL_FORMULA_MODIFIER_DEFAULT.put(PrimarySkillType.FISHING, 1.0f);
+        SKILL_FORMULA_MODIFIER_DEFAULT.put(PrimarySkillType.HERBALISM, 1.0f);
+        SKILL_FORMULA_MODIFIER_DEFAULT.put(PrimarySkillType.MINING, 1.0f);
+        SKILL_FORMULA_MODIFIER_DEFAULT.put(PrimarySkillType.REPAIR, 1.0f);
+        SKILL_FORMULA_MODIFIER_DEFAULT.put(PrimarySkillType.SWORDS, 1.0f);
+        SKILL_FORMULA_MODIFIER_DEFAULT.put(PrimarySkillType.TAMING, 1.0f);
+        SKILL_FORMULA_MODIFIER_DEFAULT.put(PrimarySkillType.UNARMED, 1.0f);
+        SKILL_FORMULA_MODIFIER_DEFAULT.put(PrimarySkillType.WOODCUTTING, 1.0f);
     }
 
     @Setting(value = "Player-XP-Formula-Type", comment = "Determines which formula is used to determine XP needed to level" +
@@ -42,13 +50,13 @@ public class ConfigExperienceFormula {
 
     @Setting(value = "Skill-Formula-Multipliers", comment = "The end result of how much XP is needed to level is determined by multiplying against this value" +
             "\nHigher values will make skills take longer to level, lower values will decrease time to level instead.")
-    private HashMap<PrimarySkillType, Double> skillXpModifier = SKILL_FORMULA_MODIFIER_DEFAULT;
+    private HashMap<PrimarySkillType, Float> skillXpModifier = SKILL_FORMULA_MODIFIER_DEFAULT;
 
     public FormulaType getFormulaType() {
         return formulaType;
     }
 
-    public double getSkillXpFormulaModifier(PrimarySkillType primarySkillType) {
+    public float getSkillXpFormulaModifier(PrimarySkillType primarySkillType) {
         return skillXpModifier.get(primarySkillType);
     }
 
@@ -64,7 +72,7 @@ public class ConfigExperienceFormula {
         return configExperienceFormulaExponential;
     }
 
-    public double getMultiplier(FormulaType formulaType) {
+    public float getMultiplier(FormulaType formulaType) {
         switch (formulaType) {
             case LINEAR:
                 return getLinearMultiplier();
@@ -90,11 +98,11 @@ public class ConfigExperienceFormula {
         return configExperienceFormulaExponential.getExponentialBaseModifier();
     }
 
-    public double getExponentialMultiplier() {
+    public float getExponentialMultiplier() {
         return configExperienceFormulaExponential.getExponentialMultiplier();
     }
 
-    public double getExponentialExponent() {
+    public float getExponentialExponent() {
         return configExperienceFormulaExponential.getExponentialExponent();
     }
 
@@ -102,7 +110,7 @@ public class ConfigExperienceFormula {
         return configExperienceFormulaLinear.getLinearBaseModifier();
     }
 
-    public double getLinearMultiplier() {
+    public float getLinearMultiplier() {
         return configExperienceFormulaLinear.getLinearMultiplier();
     }
 }

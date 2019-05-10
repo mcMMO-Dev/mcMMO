@@ -7,19 +7,19 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 public class ConfigExperienceFormulaLinear {
 
     private static final int BASE_DEFAULT = 1020;
-    private static final double MULTIPLIER_DEFAULT = 20.0D;
+    private static final float MULTIPLIER_DEFAULT = 20.0F;
 
     @Setting(value = "Base-Amount", comment = "Default value: " + BASE_DEFAULT)
     private int baseModifier = BASE_DEFAULT;
 
     @Setting(value = "Multiplier", comment = "Default value: " + MULTIPLIER_DEFAULT)
-    private double multiplier = MULTIPLIER_DEFAULT;
+    private float multiplier = MULTIPLIER_DEFAULT;
 
     public int getLinearBaseModifier() {
         return baseModifier;
     }
 
-    public double getLinearMultiplier() {
+    public float getLinearMultiplier() {
         return multiplier;
     }
 

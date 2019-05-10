@@ -4,6 +4,7 @@ import com.gmail.nossr50.datatypes.experience.CustomXPPerk;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -30,7 +31,7 @@ public class ConfigExperience {
      * BOILER PLATE GETTERS
      */
 
-    public HashSet<CustomXPPerk> getCustomXPBoosts() {
+    public ArrayList<CustomXPPerk> getCustomXPBoosts() {
         return configExperienceCustomBoosts.getCustomXPBoosts();
     }
 

@@ -101,7 +101,15 @@ public class SerializedConfigLoader<T> {
                     .setDefaultOptions(configurationOptions)
                     .build();
 
-            this.configMapper = ObjectMapper.forClass(clazz).bindToNew();
+            //Catch errors
+            try {
+                this.configMapper = ObjectMapper.forClass(clazz).bindToNew();
+            } catch (ObjectMappingException e) {
+                if(e.getMessage() != null)
+                    System.out.println(e.getMessage());
+
+                e.printStackTrace();
+            }
 
             reload();
             save();
