@@ -29,9 +29,9 @@ public class Repairable {
     public Repairable(String itemMaterial, List<String> repairMaterials, int minimumQuantity, int minimumLevel, double xpMultiplier) {
         this.itemMaterial = Material.matchMaterial(itemMaterial);
         this.repairMaterials = ItemUtils.matchMaterials(repairMaterials);
-        this.minimumQuantity = minimumQuantity;
-        this.minimumLevel = minimumLevel;
-        this.xpMultiplier = xpMultiplier;
+        this.minimumQuantity = Math.max(1, minimumQuantity);
+        this.minimumLevel = Math.max(0, minimumLevel);
+        this.xpMultiplier = Math.max(0, xpMultiplier);
 
         this.maximumDurability = this.itemMaterial.getMaxDurability();
         this.baseRepairDurability = (short) (maximumDurability / minimumQuantity);
