@@ -183,9 +183,6 @@ public final class ConfigManager {
         partyItemWeights = Maps.newHashMap(configParty.getConfig().getPartyItemShare().getItemShareMap()); //Item Share Weights
         partyFeatureUnlocks = Maps.newHashMap(configParty.getConfig().getPartyXP().getPartyLevel().getPartyFeatureUnlockMap()); //Party Progression
 
-        //Register Bonus Drops
-        registerBonusDrops();
-
         //YAML Configs
         initYAMLConfigs();
 
@@ -296,22 +293,6 @@ public final class ConfigManager {
             TypeToken<Map<?, ?>> wildMapTok = new TypeToken<Map<?, ?>>() {};
 
      */
-
-        /*
-            List of default serializers for reference
-            DEFAULT_SERIALIZERS.registerType(TypeToken.of(URI.class), new URISerializer());
-            DEFAULT_SERIALIZERS.registerType(TypeToken.of(URL.class), new URLSerializer());
-            DEFAULT_SERIALIZERS.registerType(TypeToken.of(UUID.class), new UUIDSerializer());
-            DEFAULT_SERIALIZERS.registerPredicate(input -> input.getRawType().isAnnotationPresent(ConfigSerializable.class), new AnnotatedObjectSerializer());
-            DEFAULT_SERIALIZERS.registerPredicate(NumberSerializer.getPredicate(), new NumberSerializer());
-            DEFAULT_SERIALIZERS.registerType(TypeToken.of(String.class), new StringSerializer());
-            DEFAULT_SERIALIZERS.registerType(TypeToken.of(Boolean.class), new BooleanSerializer());
-            DEFAULT_SERIALIZERS.registerType(new TypeToken<Map<?, ?>>() {}, new MapSerializer());
-            DEFAULT_SERIALIZERS.registerType(new TypeToken<List<?>>() {}, new ListSerializer());
-            DEFAULT_SERIALIZERS.registerType(new TypeToken<Enum<?>>() {}, new EnumValueSerializer());
-            DEFAULT_SERIALIZERS.registerType(TypeToken.of(Pattern.class), new PatternSerializer());
-         */
-
         customSerializers = TypeSerializers.getDefaultSerializers().newChild();
 
         mcMMO.p.getLogger().info("Registering custom type serializers for Configurate...");
@@ -368,6 +349,9 @@ public final class ConfigManager {
         // Handles registration of bonus drops
         bonusDropManager = new BonusDropManager();
         unloadables.add(bonusDropManager);
+
+        //Register Bonus Drops
+        registerBonusDrops();
     }
 
     /**
@@ -433,6 +417,10 @@ public final class ConfigManager {
 
     }
 
+    /**
+     * Reload the configs
+     * Technically this reloads a lot of stuff, not just configs
+     */
     public void reloadConfigs() {
         mcMMO.p.getLogger().info("Reloading config values...");
         unloadAllConfigsAndRegisters(); //Unload Everything
