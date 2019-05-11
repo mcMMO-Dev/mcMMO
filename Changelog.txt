@@ -31,6 +31,7 @@ Version 2.2.0
     Added new locale string 'Commands.Reload.Finished'
     Added new permission 'mcmmo.commands.reload'
     NOTE: Not every config key that was renamed will be listed here
+    Lily pads were removed from the Alchemy Ingredient list as they are unused
     Admins will now be notified if a player trips over-fishing exploit detection 3+ times in a row (Locale: "Fishing.OverFishingDetected")
         Note: Admins are players who are op or have adminchat permission.
 

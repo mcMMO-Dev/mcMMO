@@ -40,7 +40,7 @@ import com.gmail.nossr50.config.hocon.skills.unarmed.ConfigUnarmed;
 import com.gmail.nossr50.config.hocon.skills.woodcutting.ConfigWoodcutting;
 import com.gmail.nossr50.config.hocon.superabilities.ConfigSuperAbilities;
 import com.gmail.nossr50.config.hocon.worldblacklist.ConfigWorldBlacklist;
-import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
+import com.gmail.nossr50.config.skills.alchemy.PotionManager;
 import com.gmail.nossr50.config.treasure.ExcavationTreasureConfig;
 import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
 import com.gmail.nossr50.config.treasure.HerbalismTreasureConfig;
@@ -93,6 +93,7 @@ public final class ConfigManager {
     /* MISC MANAGERS */
     private TypeSerializerCollection customSerializers;
     private ExperienceMapManager experienceMapManager;
+    private PotionManager potionManager;
 
     /* CONFIG INSTANCES */
 
@@ -141,7 +142,7 @@ public final class ConfigManager {
     private SerializedConfigLoader<ConfigPartyData> partyData;
 
     //YAML CONFIGS
-    private PotionConfig potionConfig;
+
 
     private MainConfig mainConfig;
     private FishingTreasureConfig fishingTreasureConfig;
@@ -196,7 +197,7 @@ public final class ConfigManager {
     }
 
     private void initYAMLConfigs() {
-        potionConfig = new PotionConfig();
+
     }
 
     private void initSerializedDataFiles() {
@@ -332,6 +333,7 @@ public final class ConfigManager {
         //Set the global XP val
         experienceMapManager.setGlobalXpMult(getConfigExperience().getGlobalXPMultiplier());
         experienceMapManager.buildBlockXPMaps(); //Block XP value maps
+        potionManager = new PotionManager();
     }
 
     /**
@@ -468,8 +470,8 @@ public final class ConfigManager {
         return advancedConfig;
     }
 
-    public PotionConfig getPotionConfig() {
-        return potionConfig;
+    public PotionManager getPotionManager() {
+        return potionManager;
     }
 
     public CoreSkillsConfig getCoreSkillsConfig() {

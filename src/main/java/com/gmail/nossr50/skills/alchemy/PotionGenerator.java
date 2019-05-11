@@ -1,6 +1,12 @@
 package com.gmail.nossr50.skills.alchemy;
 
+import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
+import com.gmail.nossr50.mcMMO;
+import com.google.common.reflect.TypeToken;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -13,8 +19,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class PotionGenerator {
+    private HashMap<String, AlchemyPotion> potionHashMap;
 
-    public static void main(String[] args) {
+    public PotionGenerator() {
+        potionHashMap = new HashMap<>();
+        init();
+    }
+
+    private void init() {
         Map<WriteablePotion, Map<Ingredient, WriteablePotion>> vanillaPotions = new HashMap<>();
         populateVanillaPotions(vanillaPotions);
         Map<WriteablePotion, Map<Ingredient, WriteablePotion>> mcMMOPotions = new HashMap<>();
@@ -22,6 +34,7 @@ public class PotionGenerator {
         List<WriteablePotion> sorted = new ArrayList<>();
         sorted.addAll(vanillaPotions.keySet());
         sorted.addAll(mcMMOPotions.keySet());
+
         sorted.sort((a, b) -> {
             // All normal potions first
             if (a.mat == Material.POTION && b.mat != Material.POTION) {
@@ -84,35 +97,118 @@ public class PotionGenerator {
                 return a.baseName.split("_")[0].compareTo(b.baseName.split("_")[0]);
             }
         });
-        for (WriteablePotion potion : sorted) {
-            System.out.println("    " + potion.name + ":");
-            Map<Ingredient, WriteablePotion> children;
-            if (vanillaPotions.containsKey(potion)) {
-                children = vanillaPotions.get(potion);
-            } else {
-                System.out.println("        Name: " + prettify(potion.name));
-                children = mcMMOPotions.get(potion);
+
+        /* Hacky solution, this entire class disgusts me */
+        HashMap<String, AlchemyPotion> potionHashMap = new HashMap<>();
+
+        for(WriteablePotion potion : sorted)
+        {
+            AlchemyPotion alchemyPotion = convertWriteableToAlchemyPotion(potion);
+            potionHashMap.put(alchemyPotion.getName(), alchemyPotion);
+        }
+
+
+
+
+//        for (WriteablePotion potion : sorted) {
+//            System.out.println("    " + potion.name + ":");
+//            Map<Ingredient, WriteablePotion> children;
+//            if (vanillaPotions.containsKey(potion)) {
+//                children = vanillaPotions.get(potion);
+//            } else {
+//                System.out.println("        Name: " + prettify(potion.name));
+//                children = mcMMOPotions.get(potion);
+//            }
+//            System.out.println("        Material: " + potion.mat.name());
+//            System.out.println("        PotionData:");
+//            System.out.println("            PotionType: " + potion.data.getType().name());
+//            if (potion.data.isExtended()) {
+//                System.out.println("            Extended: true");
+//            }
+//            if (potion.data.isUpgraded()) {
+//                System.out.println("            Upgraded: true");
+//            }
+//            if (potion.effect != null) {
+//                System.out.println("        Effects: [\"" + getName(potion.effect.getType()) + " " + potion.effect.getAmplifier() + " " + potion.effect.getDuration() + "\"]");
+//            }
+//            if (children == null || children.isEmpty()) {
+//                continue;
+//            }
+//            System.out.println("        Children:");
+//            for (Entry<Ingredient, WriteablePotion> child : children.entrySet()) {
+//                System.out.println("            " + child.getKey().name + ": " + child.getValue().name);
+//            }
+//        }
+    }
+
+    /**
+     * I just want anyone who reads this to know
+     * This entire class is an abomination
+     * What you see below is a hacky solution to keep Alchemy functioning with the new config system
+     * Alchemy will be rewritten, until then, this disgusting class exists.
+     * @param writeablePotion target WriteablePotion
+     * @return converted WriteablePotion
+     */
+    private AlchemyPotion convertWriteableToAlchemyPotion(WriteablePotion writeablePotion) {
+        try {
+
+            String name = writeablePotion.name;
+
+            if (name != null) {
+                name = prettify(ChatColor.translateAlternateColorCodes('&', name));
             }
-            System.out.println("        Material: " + potion.mat.name());
-            System.out.println("        PotionData:");
-            System.out.println("            PotionType: " + potion.data.getType().name());
-            if (potion.data.isExtended()) {
-                System.out.println("            Extended: true");
+
+            PotionData data = writeablePotion.data;
+            Material material = Material.POTION;
+
+            if(writeablePotion.mat != null)
+                material = writeablePotion.mat;
+
+            //Lore is unused as far as I can tell
+            List<String> lore = new ArrayList<>();
+
+            List<PotionEffect> effects = new ArrayList<>();
+            effects.add(writeablePotion.effect);
+
+            Color color = this.generateColor(effects);
+
+
+            return new AlchemyPotion(material, data, name, lore, effects, color, getChildren(writeablePotion));
+        } catch (Exception e) {
+            mcMMO.p.getLogger().warning("Failed to load Alchemy potion: " + potion_section.getString());
+            return null;
+        }
+    }
+
+    public Color generateColor(List<PotionEffect> effects) {
+        if (effects != null && !effects.isEmpty()) {
+            List<Color> colors = new ArrayList<>();
+            for (PotionEffect effect : effects) {
+                if (effect.getType().getColor() != null) {
+                    colors.add(effect.getType().getColor());
+                }
             }
-            if (potion.data.isUpgraded()) {
-                System.out.println("            Upgraded: true");
-            }
-            if (potion.effect != null) {
-                System.out.println("        Effects: [\"" + getName(potion.effect.getType()) + " " + potion.effect.getAmplifier() + " " + potion.effect.getDuration() + "\"]");
-            }
-            if (children == null || children.isEmpty()) {
-                continue;
-            }
-            System.out.println("        Children:");
-            for (Entry<Ingredient, WriteablePotion> child : children.entrySet()) {
-                System.out.println("            " + child.getKey().name + ": " + child.getValue().name);
+            if (!colors.isEmpty()) {
+                if (colors.size() > 1) {
+                    return calculateAverageColor(colors);
+                }
+                return colors.get(0);
             }
         }
+        return null;
+    }
+
+    public Color calculateAverageColor(List<Color> colors) {
+        int red = 0;
+        int green = 0;
+        int blue = 0;
+        for (Color color : colors) {
+            red += color.getRed();
+            green += color.getGreen();
+            blue += color.getBlue();
+        }
+        Color color = Color.fromRGB(red / colors.size(), green / colors.size(), blue / colors.size());
+        return color;
     }
 
     private static String prettify(String name) {
@@ -207,24 +303,19 @@ public class PotionGenerator {
         }
     }
 
-    private static void populateVanillaPotions(Map<WriteablePotion, Map<Ingredient, WriteablePotion>> vanillaPotions) {
+    private void populateVanillaPotions(Map<WriteablePotion, Map<Ingredient, WriteablePotion>> vanillaPotions) {
         for (PotionType type : PotionType.values()) {
             for (Material material : new Material[]{Material.POTION, Material.SPLASH_POTION, Material.LINGERING_POTION}) {
-                WriteablePotion data = new WriteablePotion(material, type);
-                HashMap<Ingredient, WriteablePotion> children = new HashMap<>();
-                getChildren(data, children);
-                vanillaPotions.put(data, children);
+                WriteablePotion writeablePotion = new WriteablePotion(material, type);
+                getChildren(writeablePotion);
+                vanillaPotions.put(writeablePotion, getChildren(writeablePotion));
                 if (type.isExtendable()) {
-                    data = new WriteablePotion(material, new PotionData(type, true, false));
-                    children = new HashMap<>();
-                    getChildren(data, children);
-                    vanillaPotions.put(data, children);
+                    writeablePotion = new WriteablePotion(material, new PotionData(type, true, false));
+                    vanillaPotions.put(writeablePotion, getChildren(writeablePotion));
                 }
                 if (type.isUpgradeable()) {
-                    data = new WriteablePotion(material, new PotionData(type, false, true));
-                    children = new HashMap<>();
-                    getChildren(data, children);
-                    vanillaPotions.put(data, children);
+                    writeablePotion = new WriteablePotion(material, new PotionData(type, false, true));
+                    vanillaPotions.put(writeablePotion, getChildren(writeablePotion));
                 }
             }
         }
@@ -236,175 +327,178 @@ public class PotionGenerator {
                 entry.getValue().put(new Ingredient(Material.DRAGON_BREATH), new WriteablePotion(Material.LINGERING_POTION, entry.getKey().data));
             }
         }
+
+        //Store children
     }
 
-    private static void getChildren(WriteablePotion current, HashMap<Ingredient, WriteablePotion> children) {
-        switch (current.data.getType()) {
+    private HashMap<Ingredient, WriteablePotion> getChildren(WriteablePotion writeablePotion) {
+        HashMap<Ingredient, WriteablePotion> children = new HashMap<>();
+
+        switch (writeablePotion.data.getType()) {
             case WATER:
-                assert (!current.data.isExtended());
-                assert (!current.data.isUpgraded());
-                children.put(new Ingredient(Material.NETHER_WART), new WriteablePotion(current.mat, PotionType.AWKWARD));
-                children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(current.mat, PotionType.WEAKNESS));
-                children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(current.mat, PotionType.MUNDANE));
-                children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(current.mat, PotionType.THICK));
-                children.put(new Ingredient(Material.BLAZE_POWDER), new WriteablePotion(current.mat, PotionType.MUNDANE));
-                children.put(new Ingredient(Material.SUGAR), new WriteablePotion(current.mat, PotionType.MUNDANE));
-                children.put(new Ingredient(Material.RABBIT_FOOT), new WriteablePotion(current.mat, PotionType.MUNDANE));
-                children.put(new Ingredient(Material.SPIDER_EYE), new WriteablePotion(current.mat, PotionType.MUNDANE));
-                children.put(new Ingredient(Material.MAGMA_CREAM), new WriteablePotion(current.mat, PotionType.MUNDANE));
-                children.put(new Ingredient(Material.GLISTERING_MELON_SLICE), new WriteablePotion(current.mat, PotionType.MUNDANE));
-                children.put(new Ingredient(Material.GHAST_TEAR), new WriteablePotion(current.mat, PotionType.MUNDANE));
-                return;
+                assert (!writeablePotion.data.isExtended());
+                assert (!writeablePotion.data.isUpgraded());
+                children.put(new Ingredient(Material.NETHER_WART), new WriteablePotion(writeablePotion.mat, PotionType.AWKWARD));
+                children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(writeablePotion.mat, PotionType.WEAKNESS));
+                children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(writeablePotion.mat, PotionType.MUNDANE));
+                children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(writeablePotion.mat, PotionType.THICK));
+                children.put(new Ingredient(Material.BLAZE_POWDER), new WriteablePotion(writeablePotion.mat, PotionType.MUNDANE));
+                children.put(new Ingredient(Material.SUGAR), new WriteablePotion(writeablePotion.mat, PotionType.MUNDANE));
+                children.put(new Ingredient(Material.RABBIT_FOOT), new WriteablePotion(writeablePotion.mat, PotionType.MUNDANE));
+                children.put(new Ingredient(Material.SPIDER_EYE), new WriteablePotion(writeablePotion.mat, PotionType.MUNDANE));
+                children.put(new Ingredient(Material.MAGMA_CREAM), new WriteablePotion(writeablePotion.mat, PotionType.MUNDANE));
+                children.put(new Ingredient(Material.GLISTERING_MELON_SLICE), new WriteablePotion(writeablePotion.mat, PotionType.MUNDANE));
+                children.put(new Ingredient(Material.GHAST_TEAR), new WriteablePotion(writeablePotion.mat, PotionType.MUNDANE));
+                return children;
             case AWKWARD:
-                assert (!current.data.isExtended());
-                assert (!current.data.isUpgraded());
-                children.put(new Ingredient(Material.GOLDEN_CARROT), new WriteablePotion(current.mat, PotionType.NIGHT_VISION));
-                children.put(new Ingredient(Material.RABBIT_FOOT), new WriteablePotion(current.mat, PotionType.JUMP));
-                children.put(new Ingredient(Material.MAGMA_CREAM), new WriteablePotion(current.mat, PotionType.FIRE_RESISTANCE));
-                children.put(new Ingredient(Material.SUGAR), new WriteablePotion(current.mat, PotionType.SPEED));
-                children.put(new Ingredient(Material.PUFFERFISH), new WriteablePotion(current.mat, PotionType.WATER_BREATHING));
-                children.put(new Ingredient(Material.GLISTERING_MELON_SLICE), new WriteablePotion(current.mat, PotionType.INSTANT_HEAL));
-                children.put(new Ingredient(Material.SPIDER_EYE), new WriteablePotion(current.mat, PotionType.POISON));
-                children.put(new Ingredient(Material.GHAST_TEAR), new WriteablePotion(current.mat, PotionType.REGEN));
-                children.put(new Ingredient(Material.BLAZE_POWDER), new WriteablePotion(current.mat, PotionType.STRENGTH));
-                children.put(new Ingredient(Material.TURTLE_HELMET), new WriteablePotion(current.mat, PotionType.TURTLE_MASTER));
-                children.put(new Ingredient(Material.PHANTOM_MEMBRANE), new WriteablePotion(current.mat, PotionType.SLOW_FALLING));
+                assert (!writeablePotion.data.isExtended());
+                assert (!writeablePotion.data.isUpgraded());
+                children.put(new Ingredient(Material.GOLDEN_CARROT), new WriteablePotion(writeablePotion.mat, PotionType.NIGHT_VISION));
+                children.put(new Ingredient(Material.RABBIT_FOOT), new WriteablePotion(writeablePotion.mat, PotionType.JUMP));
+                children.put(new Ingredient(Material.MAGMA_CREAM), new WriteablePotion(writeablePotion.mat, PotionType.FIRE_RESISTANCE));
+                children.put(new Ingredient(Material.SUGAR), new WriteablePotion(writeablePotion.mat, PotionType.SPEED));
+                children.put(new Ingredient(Material.PUFFERFISH), new WriteablePotion(writeablePotion.mat, PotionType.WATER_BREATHING));
+                children.put(new Ingredient(Material.GLISTERING_MELON_SLICE), new WriteablePotion(writeablePotion.mat, PotionType.INSTANT_HEAL));
+                children.put(new Ingredient(Material.SPIDER_EYE), new WriteablePotion(writeablePotion.mat, PotionType.POISON));
+                children.put(new Ingredient(Material.GHAST_TEAR), new WriteablePotion(writeablePotion.mat, PotionType.REGEN));
+                children.put(new Ingredient(Material.BLAZE_POWDER), new WriteablePotion(writeablePotion.mat, PotionType.STRENGTH));
+                children.put(new Ingredient(Material.TURTLE_HELMET), new WriteablePotion(writeablePotion.mat, PotionType.TURTLE_MASTER));
+                children.put(new Ingredient(Material.PHANTOM_MEMBRANE), new WriteablePotion(writeablePotion.mat, PotionType.SLOW_FALLING));
                 // mcMMO custom potions
                 double mod = 1;
-                if (current.mat == Material.SPLASH_POTION) {
+                if (writeablePotion.mat == Material.SPLASH_POTION) {
                     mod = 0.75;
                 }
-                if (current.mat == Material.LINGERING_POTION) {
+                if (writeablePotion.mat == Material.LINGERING_POTION) {
                     mod = 0.25;
                 }
-                children.put(new Ingredient(Material.BROWN_MUSHROOM), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.CONFUSION, (int) (450 * mod), 0), "NAUSEA"));
-                children.put(new Ingredient(Material.CARROT), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.FAST_DIGGING, (int) (3600 * mod), 0), "HASTE"));
-                children.put(new Ingredient(Material.SLIME_BALL), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.SLOW_DIGGING, (int) (3600 * mod), 0), "DULLNESS"));
-                children.put(new Ingredient(Material.GOLDEN_APPLE), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, (int) (450 * mod), 0), "RESISTANCE"));
-                children.put(new Ingredient(Material.INK_SAC), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.BLINDNESS, (int) (225 * mod), 0), "BLINDNESS"));
-                children.put(new Ingredient(Material.ROTTEN_FLESH), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.HUNGER, (int) (900 * mod), 0), "HUNGER"));
-                children.put(new Ingredient(Material.POISONOUS_POTATO), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.WITHER, (int) (450 * mod), 0), "DECAY"));
-                children.put(new Ingredient(Material.QUARTZ), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.ABSORPTION, (int) (1800 * mod), 0), "ABSORPTION"));
-                children.put(new Ingredient(Material.FERN), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.SATURATION, (int) (8 * mod), 0), "SATURATION"));
-                children.put(new Ingredient(Material.APPLE), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.HEALTH_BOOST, (int) (1800 * mod), 0), "HEALTH_BOOST"));
-                return;
+                children.put(new Ingredient(Material.BROWN_MUSHROOM), new WriteablePotion(writeablePotion.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.CONFUSION, (int) (450 * mod), 0), "NAUSEA"));
+                children.put(new Ingredient(Material.CARROT), new WriteablePotion(writeablePotion.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.FAST_DIGGING, (int) (3600 * mod), 0), "HASTE"));
+                children.put(new Ingredient(Material.SLIME_BALL), new WriteablePotion(writeablePotion.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.SLOW_DIGGING, (int) (3600 * mod), 0), "DULLNESS"));
+                children.put(new Ingredient(Material.GOLDEN_APPLE), new WriteablePotion(writeablePotion.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, (int) (450 * mod), 0), "RESISTANCE"));
+                children.put(new Ingredient(Material.INK_SAC), new WriteablePotion(writeablePotion.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.BLINDNESS, (int) (225 * mod), 0), "BLINDNESS"));
+                children.put(new Ingredient(Material.ROTTEN_FLESH), new WriteablePotion(writeablePotion.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.HUNGER, (int) (900 * mod), 0), "HUNGER"));
+                children.put(new Ingredient(Material.POISONOUS_POTATO), new WriteablePotion(writeablePotion.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.WITHER, (int) (450 * mod), 0), "DECAY"));
+                children.put(new Ingredient(Material.QUARTZ), new WriteablePotion(writeablePotion.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.ABSORPTION, (int) (1800 * mod), 0), "ABSORPTION"));
+                children.put(new Ingredient(Material.FERN), new WriteablePotion(writeablePotion.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.SATURATION, (int) (8 * mod), 0), "SATURATION"));
+                children.put(new Ingredient(Material.APPLE), new WriteablePotion(writeablePotion.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.HEALTH_BOOST, (int) (1800 * mod), 0), "HEALTH_BOOST"));
+                return children;
             case FIRE_RESISTANCE:
-                assert (!current.data.isUpgraded());
-                if (current.data.isExtended()) {
-                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(current.mat, new PotionData(PotionType.SLOWNESS, true, false)));
+                assert (!writeablePotion.data.isUpgraded());
+                if (writeablePotion.data.isExtended()) {
+                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(writeablePotion.mat, new PotionData(PotionType.SLOWNESS, true, false)));
                 } else {
-                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(current.mat, PotionType.SLOWNESS));
-                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(current.mat, new PotionData(current.data.getType(), true, false)));
+                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(writeablePotion.mat, PotionType.SLOWNESS));
+                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(writeablePotion.mat, new PotionData(writeablePotion.data.getType(), true, false)));
                 }
-                return;
+                return children;
             case INSTANT_DAMAGE:
-                assert (!current.data.isExtended());
-                if (!current.data.isUpgraded()) {
-                    children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(current.mat, new PotionData(current.data.getType(), false, true)));
+                assert (!writeablePotion.data.isExtended());
+                if (!writeablePotion.data.isUpgraded()) {
+                    children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(writeablePotion.mat, new PotionData(writeablePotion.data.getType(), false, true)));
                 }
-                return;
+                return children;
             case INSTANT_HEAL:
-                assert (!current.data.isExtended());
-                if (!current.data.isUpgraded()) {
-                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(current.mat, PotionType.INSTANT_DAMAGE));
-                    children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(current.mat, new PotionData(current.data.getType(), false, true)));
+                assert (!writeablePotion.data.isExtended());
+                if (!writeablePotion.data.isUpgraded()) {
+                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(writeablePotion.mat, PotionType.INSTANT_DAMAGE));
+                    children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(writeablePotion.mat, new PotionData(writeablePotion.data.getType(), false, true)));
                 } else {
-                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(current.mat, new PotionData(PotionType.INSTANT_DAMAGE, false, true)));
+                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(writeablePotion.mat, new PotionData(PotionType.INSTANT_DAMAGE, false, true)));
                 }
-                return;
+                return children;
             case INVISIBILITY:
-                assert (!current.data.isUpgraded());
-                if (!current.data.isExtended()) {
-                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(current.mat, new PotionData(current.data.getType(), true, false)));
+                assert (!writeablePotion.data.isUpgraded());
+                if (!writeablePotion.data.isExtended()) {
+                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(writeablePotion.mat, new PotionData(writeablePotion.data.getType(), true, false)));
                 }
-                return;
+                return children;
             case JUMP:
-                if (!current.data.isUpgraded() && !current.data.isExtended()) {
-                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(current.mat, PotionType.SLOWNESS));
-                    children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(current.mat, new PotionData(current.data.getType(), false, true)));
-                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(current.mat, new PotionData(current.data.getType(), true, false)));
+                if (!writeablePotion.data.isUpgraded() && !writeablePotion.data.isExtended()) {
+                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(writeablePotion.mat, PotionType.SLOWNESS));
+                    children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(writeablePotion.mat, new PotionData(writeablePotion.data.getType(), false, true)));
+                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(writeablePotion.mat, new PotionData(writeablePotion.data.getType(), true, false)));
                 }
-                return;
+                return children;
             case NIGHT_VISION:
-                assert (!current.data.isUpgraded());
-                if (!current.data.isExtended()) {
-                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(current.mat, PotionType.INVISIBILITY));
-                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(current.mat, new PotionData(current.data.getType(), true, false)));
+                assert (!writeablePotion.data.isUpgraded());
+                if (!writeablePotion.data.isExtended()) {
+                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(writeablePotion.mat, PotionType.INVISIBILITY));
+                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(writeablePotion.mat, new PotionData(writeablePotion.data.getType(), true, false)));
                 } else {
-                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(current.mat, new PotionData(PotionType.INVISIBILITY, true, false)));
+                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(writeablePotion.mat, new PotionData(PotionType.INVISIBILITY, true, false)));
                 }
-                return;
+                return children;
             case POISON:
-                if (!current.data.isUpgraded() && !current.data.isExtended()) {
-                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(current.mat, PotionType.INSTANT_DAMAGE));
-                    children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(current.mat, new PotionData(current.data.getType(), false, true)));
-                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(current.mat, new PotionData(current.data.getType(), true, false)));
+                if (!writeablePotion.data.isUpgraded() && !writeablePotion.data.isExtended()) {
+                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(writeablePotion.mat, PotionType.INSTANT_DAMAGE));
+                    children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(writeablePotion.mat, new PotionData(writeablePotion.data.getType(), false, true)));
+                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(writeablePotion.mat, new PotionData(writeablePotion.data.getType(), true, false)));
                 } else {
-                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(current.mat, new PotionData(PotionType.INSTANT_DAMAGE, false, true)));
+                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(writeablePotion.mat, new PotionData(PotionType.INSTANT_DAMAGE, false, true)));
                 }
-                return;
+                return children;
             case REGEN:
-                if (!current.data.isUpgraded() && !current.data.isExtended()) {
-                    children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(current.mat, new PotionData(current.data.getType(), false, true)));
-                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(current.mat, new PotionData(current.data.getType(), true, false)));
+                if (!writeablePotion.data.isUpgraded() && !writeablePotion.data.isExtended()) {
+                    children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(writeablePotion.mat, new PotionData(writeablePotion.data.getType(), false, true)));
+                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(writeablePotion.mat, new PotionData(writeablePotion.data.getType(), true, false)));
                 }
-                return;
+                return children;
             case SLOWNESS:
-                assert (!current.data.isUpgraded());
-                if (!current.data.isExtended()) {
-                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(current.mat, new PotionData(current.data.getType(), true, false)));
+                assert (!writeablePotion.data.isUpgraded());
+                if (!writeablePotion.data.isExtended()) {
+                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(writeablePotion.mat, new PotionData(writeablePotion.data.getType(), true, false)));
                 }
-                return;
+                return children;
             case SLOW_FALLING:
-                assert (!current.data.isUpgraded());
-                if (!current.data.isExtended()) {
-                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(current.mat, new PotionData(current.data.getType(), true, false)));
+                assert (!writeablePotion.data.isUpgraded());
+                if (!writeablePotion.data.isExtended()) {
+                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(writeablePotion.mat, new PotionData(writeablePotion.data.getType(), true, false)));
                 }
-                return;
+                return children;
             case SPEED:
-                if (!current.data.isUpgraded() && !current.data.isExtended()) {
-                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(current.mat, PotionType.SLOWNESS));
-                    children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(current.mat, new PotionData(current.data.getType(), false, true)));
-                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(current.mat, new PotionData(current.data.getType(), true, false)));
+                if (!writeablePotion.data.isUpgraded() && !writeablePotion.data.isExtended()) {
+                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(writeablePotion.mat, PotionType.SLOWNESS));
+                    children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(writeablePotion.mat, new PotionData(writeablePotion.data.getType(), false, true)));
+                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(writeablePotion.mat, new PotionData(writeablePotion.data.getType(), true, false)));
                 } else {
-                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(current.mat, new PotionData(PotionType.SLOWNESS, true, false)));
+                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(writeablePotion.mat, new PotionData(PotionType.SLOWNESS, true, false)));
                 }
-                return;
+                return children;
             case STRENGTH:
-                if (!current.data.isUpgraded() && !current.data.isExtended()) {
-                    children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(current.mat, new PotionData(current.data.getType(), false, true)));
-                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(current.mat, new PotionData(current.data.getType(), true, false)));
+                if (!writeablePotion.data.isUpgraded() && !writeablePotion.data.isExtended()) {
+                    children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(writeablePotion.mat, new PotionData(writeablePotion.data.getType(), false, true)));
+                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(writeablePotion.mat, new PotionData(writeablePotion.data.getType(), true, false)));
                 }
-                return;
+                return children;
             case TURTLE_MASTER:
-                if (!current.data.isUpgraded() && !current.data.isExtended()) {
-                    children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(current.mat, new PotionData(current.data.getType(), false, true)));
-                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(current.mat, new PotionData(current.data.getType(), true, false)));
+                if (!writeablePotion.data.isUpgraded() && !writeablePotion.data.isExtended()) {
+                    children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(writeablePotion.mat, new PotionData(writeablePotion.data.getType(), false, true)));
+                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(writeablePotion.mat, new PotionData(writeablePotion.data.getType(), true, false)));
                 }
-                return;
+                return children;
             case WATER_BREATHING:
-                assert (!current.data.isUpgraded());
-                if (!current.data.isExtended()) {
-                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(current.mat, PotionType.INSTANT_DAMAGE));
-                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(current.mat, new PotionData(current.data.getType(), true, false)));
+                assert (!writeablePotion.data.isUpgraded());
+                if (!writeablePotion.data.isExtended()) {
+                    children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(writeablePotion.mat, PotionType.INSTANT_DAMAGE));
+                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(writeablePotion.mat, new PotionData(writeablePotion.data.getType(), true, false)));
                 }
-                return;
+                return children;
             case WEAKNESS:
-                assert (!current.data.isUpgraded());
-                if (!current.data.isExtended()) {
-                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(current.mat, new PotionData(current.data.getType(), true, false)));
+                assert (!writeablePotion.data.isUpgraded());
+                if (!writeablePotion.data.isExtended()) {
+                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(writeablePotion.mat, new PotionData(writeablePotion.data.getType(), true, false)));
                 }
-                return;
+                return children;
             case LUCK:
             case MUNDANE:
             case THICK:
             case UNCRAFTABLE:
-                assert (!current.data.isExtended());
-                assert (!current.data.isUpgraded());
-                return;
+                assert (!writeablePotion.data.isExtended());
+                assert (!writeablePotion.data.isUpgraded());
+                return children;
             default:
-                assert (false);
-                break;
+                return children;
         }
     }
 

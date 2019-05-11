@@ -1,6 +1,6 @@
 package com.gmail.nossr50.skills.alchemy;
 
-import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
+import com.gmail.nossr50.config.skills.alchemy.PotionManager;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
@@ -35,7 +35,7 @@ public final class AlchemyPotionBrewer {
                 continue;
             }
 
-            if (getChildPotion(PotionConfig.getInstance().getPotion(contents[i]), contents[Alchemy.INGREDIENT_SLOT]) != null) {
+            if (getChildPotion(PotionManager.getInstance().getPotion(contents[i]), contents[Alchemy.INGREDIENT_SLOT]) != null) {
                 return true;
             }
         }
@@ -89,10 +89,10 @@ public final class AlchemyPotionBrewer {
 
     private static List<ItemStack> getValidIngredients(Player player) {
         if (player == null || UserManager.getPlayer(player) == null) {
-            return PotionConfig.getInstance().getIngredients(1);
+            return PotionManager.getInstance().getIngredients(1);
         }
 
-        return PotionConfig.getInstance().getIngredients(!Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CONCOCTIONS) ? 1 : UserManager.getPlayer(player).getAlchemyManager().getTier());
+        return PotionManager.getInstance().getIngredients(!Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CONCOCTIONS) ? 1 : UserManager.getPlayer(player).getAlchemyManager().getTier());
     }
 
     public static void finishBrewing(BlockState brewingStand, Player player, boolean forced) {
@@ -112,11 +112,11 @@ public final class AlchemyPotionBrewer {
         for (int i = 0; i < 3; i++) {
             ItemStack item = inventory.getItem(i);
 
-            if (isEmpty(item) || item.getType() == Material.GLASS_BOTTLE || !PotionConfig.getInstance().isValidPotion(item)) {
+            if (isEmpty(item) || item.getType() == Material.GLASS_BOTTLE || !PotionManager.getInstance().isValidPotion(item)) {
                 continue;
             }
 
-            AlchemyPotion input = PotionConfig.getInstance().getPotion(item);
+            AlchemyPotion input = PotionManager.getInstance().getPotion(item);
             AlchemyPotion output = input.getChild(ingredient);
 
             inputList.add(input);
