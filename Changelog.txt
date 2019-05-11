@@ -1,3 +1,6 @@
+Version 2.1.58
+    Fixed the wrong locale string being used for Mining Double Drops
+
 Version 2.1.57
     Fixed an incredibly rare dupe bug that only happened with VERY specific config options that was extremely difficult to pull off
 
