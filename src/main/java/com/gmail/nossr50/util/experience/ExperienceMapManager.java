@@ -19,18 +19,56 @@ public class ExperienceMapManager implements Unload {
     private HashMap<String, Integer> woodcuttingFullyQualifiedBlockXpMap;
     private HashMap<String, Integer> excavationFullyQualifiedBlockXpMap;
     private HashMap<EntityType, Float> tamingExperienceMap;
+    private HashMap<EntityType, Float> combatXPMultiplierMap;
+    private HashMap<EntityType, Float> specialCombatXPMultiplierMap; //Applies to "groups" of things for convenience
 
     private double globalXpMult;
 
     public ExperienceMapManager() {
+        initExperienceMaps();
+
+        //Register with unloader
+        mcMMO.getConfigManager().registerUnloadable(this);
+    }
+
+    private void initExperienceMaps() {
         miningFullyQualifiedBlockXpMap = new HashMap<>();
         herbalismFullyQualifiedBlockXpMap = new HashMap<>();
         woodcuttingFullyQualifiedBlockXpMap = new HashMap<>();
         excavationFullyQualifiedBlockXpMap = new HashMap<>();
+        combatXPMultiplierMap = new HashMap<>();
+        specialCombatXPMultiplierMap = new HashMap<>();
         tamingExperienceMap = new HashMap<>();
+    }
 
-        //Register with unloader
-        mcMMO.getConfigManager().registerUnloadable(this);
+    /**
+     * Fills the combat XP multiplier map with values from a platform generic map
+     * Platform safe map, is just a map which uses strings to define target entities/etc
+     * Platform safe maps are converted to ENUMs for the platform for convenience
+     * @param platformSafeMap the platform safe map
+     */
+    public void fillCombatXPMultiplierMap(HashMap<String, Float> platformSafeMap) {
+        for(String entityString : platformSafeMap.keySet())
+        {
+            //Iterate over all EntityType(s)
+            for(EntityType type : EntityType.values())
+            {
+                //Match ignoring case
+                if(entityString.equalsIgnoreCase(entityString))
+                {
+                    //Check for duplicates and warn the admin
+                    if(combatXPMultiplierMap.containsKey(entityString))
+                    {
+                        mcMMO.p.getLogger().severe("Entity named "+entityString+" has multiple values in the combat experience config!");
+                    }
+                    //Match found
+                    combatXPMultiplierMap.put(type, platformSafeMap.get(entityString));
+                } else {
+                    //Log an error so the admin can deal with figuring it out
+                    mcMMO.p.getLogger().severe("No entity could be matched for the combat experience config value named - "+entityString);
+                }
+            }
+        }
     }
 
     /**

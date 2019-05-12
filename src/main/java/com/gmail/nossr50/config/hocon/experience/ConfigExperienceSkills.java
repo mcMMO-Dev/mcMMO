@@ -47,7 +47,7 @@ public class ConfigExperienceSkills {
      * BOILER PLATE GETTERS
      */
 
-    public double getPlayerBredMobsXPMult() {
+    public Float getPlayerBredMobsXPMult() {
         return experienceCombat.getPlayerBredMobsXPMult();
     }
 
@@ -111,11 +111,11 @@ public class ConfigExperienceSkills {
         return experienceSmelting.getSmeltingExperienceMap();
     }
 
-    public HashMap<String, Double> getItemMaterialXPMultiplier() {
+    public HashMap<String, Float> getItemMaterialXPMultiplier() {
         return experienceRepair.getItemMaterialXPMultiplier();
     }
 
-    public double getRepairXPBase() {
+    public Float getRepairXPBase() {
         return experienceRepair.getRepairXPBase();
     }
 
@@ -123,7 +123,7 @@ public class ConfigExperienceSkills {
         return experienceAcrobatics.getAcrobaticsXPMap();
     }
 
-    public Double getFeatherFallMultiplier() {
+    public Float getFeatherFallMultiplier() {
         return experienceAcrobatics.getFeatherFallMultiplier();
     }
 
@@ -167,11 +167,15 @@ public class ConfigExperienceSkills {
         return experienceCombat.isPvpXPEnabled();
     }
 
-    public HashMap<String, Double> getCombatExperienceMap() {
+    public HashMap<String, Float> getCombatExperienceMap() {
         return experienceCombat.getCombatExperienceMap();
     }
 
-    public double getDistanceMultiplier() {
+    public HashMap<String, Float> getSpecialCombatExperienceMap() {
+        return experienceCombat.getSpecialCombatExperienceMap();
+    }
+
+    public Float getDistanceMultiplier() {
         return experienceArchery.getDistanceMultiplier();
     }
 
@@ -195,15 +199,15 @@ public class ConfigExperienceSkills {
         return experienceFishing.getShakeXP();
     }
 
-    public double getSpawnedMobXPMult() {
+    public Float getSpawnedMobXPMult() {
         return experienceCombat.getSpawnedMobXPMult();
     }
 
-    public double getPVPXPMult() {
+    public Float getPVPXPMult() {
         return experienceCombat.getPVPXPMult();
     }
 
-    public double getAnimalsXPMult() {
+    public Float getAnimalsXPMult() {
         return experienceCombat.getAnimalsXPMult();
     }
 }

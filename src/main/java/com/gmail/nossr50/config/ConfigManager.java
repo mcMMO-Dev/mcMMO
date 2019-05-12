@@ -142,7 +142,6 @@ public final class ConfigManager {
 
     //YAML CONFIGS
 
-
     private MainConfig mainConfig;
     private FishingTreasureConfig fishingTreasureConfig;
     private ExcavationTreasureConfig excavationTreasureConfig;
@@ -332,6 +331,7 @@ public final class ConfigManager {
         //Set the global XP val
         experienceMapManager.setGlobalXpMult(getConfigExperience().getGlobalXPMultiplier());
         experienceMapManager.buildBlockXPMaps(); //Block XP value maps
+        experienceMapManager.fillCombatXPMultiplierMap(getConfigExperience().getCombatExperienceMap());
 //        potionManager = new PotionManager();
     }
 

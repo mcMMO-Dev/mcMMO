@@ -10,12 +10,12 @@ import java.util.HashMap;
 @ConfigSerializable
 public class ConfigExperience {
 
-    private static final double GLOBAL_XP_MULT_DEFAULT = 1.0D;
+    private static final float GLOBAL_XP_MULT_DEFAULT = 1.0F;
 
     @Setting(value = "Global-XP-Multiplier", comment = "This multiplier is applied at the very end of every XP gain, you can use it as a shortcut to increase or decrease xp gains across the entire plugin" +
             "\nThis value is temporarily overridden by xprate events." +
             "\nDefault value: " + GLOBAL_XP_MULT_DEFAULT)
-    private double globalXPMultiplier = GLOBAL_XP_MULT_DEFAULT;
+    private float globalXPMultiplier = GLOBAL_XP_MULT_DEFAULT;
 
     @Setting(value = "Global-Skill-XP-Multipliers", comment = "This multiplier is applied at the very end of an XP calculation specific to its corresponding skill, this value is applied before the global multiplier is applied.")
     private ConfigExperienceSkillMultiplier configExperienceSkillMultiplier = new ConfigExperienceSkillMultiplier();
@@ -102,11 +102,11 @@ public class ConfigExperience {
         return getConfigExperienceSkills().getSmeltingExperienceMap();
     }
 
-    public HashMap<String, Double> getItemMaterialXPMultiplier() {
+    public HashMap<String, Float> getItemMaterialXPMultiplier() {
         return getConfigExperienceSkills().getItemMaterialXPMultiplier();
     }
 
-    public double getRepairXPBase() {
+    public Float getRepairXPBase() {
         return getConfigExperienceSkills().getRepairXPBase();
     }
 
@@ -114,7 +114,7 @@ public class ConfigExperience {
         return getConfigExperienceSkills().getAcrobaticsXPMap();
     }
 
-    public Double getFeatherFallMultiplier() {
+    public Float getFeatherFallMultiplier() {
         return getConfigExperienceSkills().getFeatherFallMultiplier();
     }
 
@@ -158,11 +158,15 @@ public class ConfigExperience {
         return getConfigExperienceSkills().isPvpXPEnabled();
     }
 
-    public HashMap<String, Double> getCombatExperienceMap() {
+    public HashMap<String, Float> getCombatExperienceMap() {
         return getConfigExperienceSkills().getCombatExperienceMap();
     }
 
-    public double getDistanceMultiplier() {
+    public HashMap<String, Float> getSpecialCombatExperienceMap() {
+        return configExperienceSkills.getSpecialCombatExperienceMap();
+    }
+
+    public Float getDistanceMultiplier() {
         return getConfigExperienceSkills().getDistanceMultiplier();
     }
 
@@ -186,19 +190,19 @@ public class ConfigExperience {
         return getConfigExperienceSkills().getShakeXP();
     }
 
-    public double getSpawnedMobXPMult() {
+    public Float getSpawnedMobXPMult() {
         return getConfigExperienceSkills().getSpawnedMobXPMult();
     }
 
-    public double getPlayerBredMobsXPMult() {
+    public Float getPlayerBredMobsXPMult() {
         return getExperienceCombat().getPlayerBredMobsXPMult();
     }
 
-    public double getPVPXPMult() {
+    public Float getPVPXPMult() {
         return getConfigExperienceSkills().getPVPXPMult();
     }
 
-    public double getAnimalsXPMult() {
+    public Float getAnimalsXPMult() {
         return getConfigExperienceSkills().getAnimalsXPMult();
     }
 
@@ -206,7 +210,7 @@ public class ConfigExperience {
         return configExperienceSkills;
     }
 
-    public double getGlobalXPMultiplier() {
+    public Float getGlobalXPMultiplier() {
         return globalXPMultiplier;
     }
 }
