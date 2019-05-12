@@ -170,6 +170,9 @@ Version 2.2.0
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
 
+Version 2.1.58
+    Fixed the wrong locale string being used for Mining Double Drops
+
 Version 2.1.57
     Fixed an incredibly rare dupe bug that only happened with VERY specific config options that was extremely difficult to pull off
 
