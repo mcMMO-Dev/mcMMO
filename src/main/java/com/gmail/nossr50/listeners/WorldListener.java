@@ -91,6 +91,7 @@ public class WorldListener implements Listener {
 
         Chunk chunk = event.getChunk();
 
-        mcMMO.getPlaceStore().chunkUnloaded(chunk.getX(), chunk.getZ(), event.getWorld());
+        if(chunk != null)
+            mcMMO.getPlaceStore().chunkUnloaded(chunk.getX(), chunk.getZ(), event.getWorld());
     }
 }

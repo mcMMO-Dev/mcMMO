@@ -4,18 +4,14 @@ import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.events.fake.FakeBrewEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
-import com.gmail.nossr50.skills.alchemy.Alchemy;
-import com.gmail.nossr50.skills.alchemy.AlchemyPotionBrewer;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -237,78 +233,78 @@ public class InventoryListener implements Listener {
                 return;
         }
 
-        BrewingStand stand = (BrewingStand) holder;
-        ItemStack clicked = event.getCurrentItem();
-        ItemStack cursor = event.getCursor();
+//        BrewingStand stand = (BrewingStand) holder;
+//        ItemStack clicked = event.getCurrentItem();
+//        ItemStack cursor = event.getCursor();
 
-        if ((clicked != null && (clicked.getType() == Material.POTION || clicked.getType() == Material.SPLASH_POTION || clicked.getType() == Material.LINGERING_POTION)) || (cursor != null && (cursor.getType() == Material.POTION || cursor.getType() == Material.SPLASH_POTION || cursor.getType() == Material.LINGERING_POTION))) {
-            AlchemyPotionBrewer.scheduleCheck(player, stand);
-            return;
-        }
+//        if ((clicked != null && (clicked.getType() == Material.POTION || clicked.getType() == Material.SPLASH_POTION || clicked.getType() == Material.LINGERING_POTION)) || (cursor != null && (cursor.getType() == Material.POTION || cursor.getType() == Material.SPLASH_POTION || cursor.getType() == Material.LINGERING_POTION))) {
+//            AlchemyPotionBrewer.scheduleCheck(player, stand);
+//            return;
+//        }
+//
+//        ClickType click = event.getClick();
+//        InventoryType.SlotType slot = event.getSlotType();
 
-        ClickType click = event.getClick();
-        InventoryType.SlotType slot = event.getSlotType();
-
-        if (click.isShiftClick()) {
-            switch (slot) {
-                case FUEL:
-                    AlchemyPotionBrewer.scheduleCheck(player, stand);
-                    return;
-                case CONTAINER:
-                case QUICKBAR:
-                    if (!AlchemyPotionBrewer.isValidIngredient(player, clicked)) {
-                        return;
-                    }
-
-                    if (!AlchemyPotionBrewer.transferItems(event.getView(), event.getRawSlot(), click)) {
-                        return;
-                    }
-
-                    event.setCancelled(true);
-                    AlchemyPotionBrewer.scheduleUpdate(inventory);
-                    AlchemyPotionBrewer.scheduleCheck(player, stand);
-                    return;
-                default:
-            }
-        } else if (slot == InventoryType.SlotType.FUEL) {
-            boolean emptyClicked = AlchemyPotionBrewer.isEmpty(clicked);
-
-            if (AlchemyPotionBrewer.isEmpty(cursor)) {
-                if (emptyClicked && click == ClickType.NUMBER_KEY) {
-                    AlchemyPotionBrewer.scheduleCheck(player, stand);
-                    return;
-                }
-
-                AlchemyPotionBrewer.scheduleCheck(player, stand);
-            } else if (emptyClicked) {
-                if (AlchemyPotionBrewer.isValidIngredient(player, cursor)) {
-                    int amount = cursor.getAmount();
-
-                    if (click == ClickType.LEFT || (click == ClickType.RIGHT && amount == 1)) {
-                        event.setCancelled(true);
-                        event.setCurrentItem(cursor.clone());
-                        event.setCursor(null);
-
-                        AlchemyPotionBrewer.scheduleUpdate(inventory);
-                        AlchemyPotionBrewer.scheduleCheck(player, stand);
-                    } else if (click == ClickType.RIGHT) {
-                        event.setCancelled(true);
-
-                        ItemStack one = cursor.clone();
-                        one.setAmount(1);
-
-                        ItemStack rest = cursor.clone();
-                        rest.setAmount(amount - 1);
-
-                        event.setCurrentItem(one);
-                        event.setCursor(rest);
-
-                        AlchemyPotionBrewer.scheduleUpdate(inventory);
-                        AlchemyPotionBrewer.scheduleCheck(player, stand);
-                    }
-                }
-            }
-        }
+//        if (click.isShiftClick()) {
+//            switch (slot) {
+//                case FUEL:
+//                    AlchemyPotionBrewer.scheduleCheck(player, stand);
+//                    return;
+//                case CONTAINER:
+//                case QUICKBAR:
+//                    if (!AlchemyPotionBrewer.isValidIngredient(player, clicked)) {
+//                        return;
+//                    }
+//
+//                    if (!AlchemyPotionBrewer.transferItems(event.getView(), event.getRawSlot(), click)) {
+//                        return;
+//                    }
+//
+//                    event.setCancelled(true);
+//                    AlchemyPotionBrewer.scheduleUpdate(inventory);
+//                    AlchemyPotionBrewer.scheduleCheck(player, stand);
+//                    return;
+//                default:
+//            }
+//        } else if (slot == InventoryType.SlotType.FUEL) {
+//            boolean emptyClicked = AlchemyPotionBrewer.isEmpty(clicked);
+//
+//            if (AlchemyPotionBrewer.isEmpty(cursor)) {
+//                if (emptyClicked && click == ClickType.NUMBER_KEY) {
+//                    AlchemyPotionBrewer.scheduleCheck(player, stand);
+//                    return;
+//                }
+//
+//                AlchemyPotionBrewer.scheduleCheck(player, stand);
+//            } else if (emptyClicked) {
+//                if (AlchemyPotionBrewer.isValidIngredient(player, cursor)) {
+//                    int amount = cursor.getAmount();
+//
+//                    if (click == ClickType.LEFT || (click == ClickType.RIGHT && amount == 1)) {
+//                        event.setCancelled(true);
+//                        event.setCurrentItem(cursor.clone());
+//                        event.setCursor(null);
+//
+//                        AlchemyPotionBrewer.scheduleUpdate(inventory);
+//                        AlchemyPotionBrewer.scheduleCheck(player, stand);
+//                    } else if (click == ClickType.RIGHT) {
+//                        event.setCancelled(true);
+//
+//                        ItemStack one = cursor.clone();
+//                        one.setAmount(1);
+//
+//                        ItemStack rest = cursor.clone();
+//                        rest.setAmount(amount - 1);
+//
+//                        event.setCurrentItem(one);
+//                        event.setCursor(rest);
+//
+//                        AlchemyPotionBrewer.scheduleUpdate(inventory);
+//                        AlchemyPotionBrewer.scheduleCheck(player, stand);
+//                    }
+//                }
+//            }
+//        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -335,48 +331,48 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        if (!event.getInventorySlots().contains(Alchemy.INGREDIENT_SLOT)) {
-            return;
-        }
-
-        ItemStack cursor = event.getCursor();
-        ItemStack ingredient = ((BrewerInventory) inventory).getIngredient();
-
-        if (AlchemyPotionBrewer.isEmpty(ingredient) || ingredient.isSimilar(cursor)) {
-            Player player = (Player) whoClicked;
-
-            /* WORLD GUARD MAIN FLAG CHECK */
-            if (WorldGuardUtils.isWorldGuardLoaded()) {
-                if (!WorldGuardManager.getInstance().hasMainFlag(player))
-                    return;
-            }
-
-            if (AlchemyPotionBrewer.isValidIngredient(player, cursor)) {
-                // Not handled: dragging custom ingredients over ingredient slot (does not trigger any event)
-                AlchemyPotionBrewer.scheduleCheck(player, (BrewingStand) holder);
-                return;
-            }
-
-            event.setCancelled(true);
-            AlchemyPotionBrewer.scheduleUpdate(inventory);
-        }
+//        if (!event.getInventorySlots().contains(Alchemy.INGREDIENT_SLOT)) {
+//            return;
+//        }
+//
+//        ItemStack cursor = event.getCursor();
+//        ItemStack ingredient = ((BrewerInventory) inventory).getIngredient();
+//
+//        if (AlchemyPotionBrewer.isEmpty(ingredient) || ingredient.isSimilar(cursor)) {
+//            Player player = (Player) whoClicked;
+//
+//            /* WORLD GUARD MAIN FLAG CHECK */
+//            if (WorldGuardUtils.isWorldGuardLoaded()) {
+//                if (!WorldGuardManager.getInstance().hasMainFlag(player))
+//                    return;
+//            }
+//
+//            if (AlchemyPotionBrewer.isValidIngredient(player, cursor)) {
+//                // Not handled: dragging custom ingredients over ingredient slot (does not trigger any event)
+//                AlchemyPotionBrewer.scheduleCheck(player, (BrewingStand) holder);
+//                return;
+//            }
+//
+//            event.setCancelled(true);
+//            AlchemyPotionBrewer.scheduleUpdate(inventory);
+//        }
     }
 
     // Apparently sometimes vanilla brewing beats our task listener to the actual brew. We handle this by cancelling the vanilla event and finishing our brew ourselves.
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onBrew(BrewEvent event) {
-        /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
-            return;
-
-        if (event instanceof FakeBrewEvent)
-            return;
-        Location location = event.getBlock().getLocation();
-        if (Alchemy.brewingStandMap.containsKey(location)) {
-            Alchemy.brewingStandMap.get(location).finishImmediately();
-            event.setCancelled(true);
-        }
-    }
+//    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+//    public void onBrew(BrewEvent event) {
+//        /* WORLD BLACKLIST CHECK */
+//        if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+//            return;
+//
+//        if (event instanceof FakeBrewEvent)
+//            return;
+//        Location location = event.getBlock().getLocation();
+//        if (Alchemy.brewingStandMap.containsKey(location)) {
+//            Alchemy.brewingStandMap.get(location).finishImmediately();
+//            event.setCancelled(true);
+//        }
+//    }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onInventoryMoveItemEvent(InventoryMoveItemEvent event) {
@@ -411,9 +407,9 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        if (MainConfig.getInstance().getEnabledForHoppers() && AlchemyPotionBrewer.isValidIngredient(null, item)) {
-            AlchemyPotionBrewer.scheduleCheck(null, (BrewingStand) holder);
-        }
+//        if (MainConfig.getInstance().getEnabledForHoppers() && AlchemyPotionBrewer.isValidIngredient(null, item)) {
+//            AlchemyPotionBrewer.scheduleCheck(null, (BrewingStand) holder);
+//        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

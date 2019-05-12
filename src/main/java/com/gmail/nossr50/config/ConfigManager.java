@@ -40,7 +40,6 @@ import com.gmail.nossr50.config.hocon.skills.unarmed.ConfigUnarmed;
 import com.gmail.nossr50.config.hocon.skills.woodcutting.ConfigWoodcutting;
 import com.gmail.nossr50.config.hocon.superabilities.ConfigSuperAbilities;
 import com.gmail.nossr50.config.hocon.worldblacklist.ConfigWorldBlacklist;
-import com.gmail.nossr50.config.skills.alchemy.PotionManager;
 import com.gmail.nossr50.config.treasure.ExcavationTreasureConfig;
 import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
 import com.gmail.nossr50.config.treasure.HerbalismTreasureConfig;
@@ -93,7 +92,7 @@ public final class ConfigManager {
     /* MISC MANAGERS */
     private TypeSerializerCollection customSerializers;
     private ExperienceMapManager experienceMapManager;
-    private PotionManager potionManager;
+//    private PotionManager potionManager;
 
     /* CONFIG INSTANCES */
 
@@ -333,7 +332,7 @@ public final class ConfigManager {
         //Set the global XP val
         experienceMapManager.setGlobalXpMult(getConfigExperience().getGlobalXPMultiplier());
         experienceMapManager.buildBlockXPMaps(); //Block XP value maps
-        potionManager = new PotionManager();
+//        potionManager = new PotionManager();
     }
 
     /**
@@ -470,9 +469,9 @@ public final class ConfigManager {
         return advancedConfig;
     }
 
-    public PotionManager getPotionManager() {
-        return potionManager;
-    }
+//    public PotionManager getPotionManager() {
+//        return potionManager;
+//    }
 
     public CoreSkillsConfig getCoreSkillsConfig() {
         return coreSkillsConfig;

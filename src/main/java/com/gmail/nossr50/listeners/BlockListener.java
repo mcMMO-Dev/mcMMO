@@ -11,7 +11,6 @@ import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
@@ -33,7 +32,10 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Tag;
-import org.bukkit.block.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Furnace;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -254,9 +256,9 @@ public class BlockListener implements Listener {
         }
 
         /* ALCHEMY - Cancel any brew in progress for that BrewingStand */
-        if (blockState instanceof BrewingStand && Alchemy.brewingStandMap.containsKey(location)) {
-            Alchemy.brewingStandMap.get(location).cancelBrew();
-        }
+//        if (blockState instanceof BrewingStand && Alchemy.brewingStandMap.containsKey(location)) {
+//            Alchemy.brewingStandMap.get(location).cancelBrew();
+//        }
 
         Player player = event.getPlayer();
 

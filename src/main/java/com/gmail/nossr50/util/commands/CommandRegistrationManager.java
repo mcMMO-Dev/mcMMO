@@ -52,7 +52,7 @@ public final class CommandRegistrationManager {
                     break;
 
                 case ALCHEMY:
-                    command.setExecutor(new AlchemyCommand());
+//                    command.setExecutor(new AlchemyCommand());
                     break;
 
                 case ARCHERY:
