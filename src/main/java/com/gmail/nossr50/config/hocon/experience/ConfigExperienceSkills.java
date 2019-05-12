@@ -47,7 +47,7 @@ public class ConfigExperienceSkills {
      * BOILER PLATE GETTERS
      */
 
-    public Float getPlayerBredMobsXPMult() {
+    public float getPlayerBredMobsXPMult() {
         return experienceCombat.getPlayerBredMobsXPMult();
     }
 
@@ -115,7 +115,7 @@ public class ConfigExperienceSkills {
         return experienceRepair.getItemMaterialXPMultiplier();
     }
 
-    public Float getRepairXPBase() {
+    public float getRepairXPBase() {
         return experienceRepair.getRepairXPBase();
     }
 
@@ -123,7 +123,7 @@ public class ConfigExperienceSkills {
         return experienceAcrobatics.getAcrobaticsXPMap();
     }
 
-    public Float getFeatherFallMultiplier() {
+    public float getFeatherFallMultiplier() {
         return experienceAcrobatics.getFeatherFallMultiplier();
     }
 
@@ -175,7 +175,7 @@ public class ConfigExperienceSkills {
         return experienceCombat.getSpecialCombatExperienceMap();
     }
 
-    public Float getDistanceMultiplier() {
+    public float getDistanceMultiplier() {
         return experienceArchery.getDistanceMultiplier();
     }
 
@@ -199,15 +199,15 @@ public class ConfigExperienceSkills {
         return experienceFishing.getShakeXP();
     }
 
-    public Float getSpawnedMobXPMult() {
+    public float getSpawnedMobXPMult() {
         return experienceCombat.getSpawnedMobXPMult();
     }
 
-    public Float getPVPXPMult() {
+    public float getPVPXPMult() {
         return experienceCombat.getPVPXPMult();
     }
 
-    public Float getAnimalsXPMult() {
+    public float getAnimalsXPMult() {
         return experienceCombat.getAnimalsXPMult();
     }
 }
