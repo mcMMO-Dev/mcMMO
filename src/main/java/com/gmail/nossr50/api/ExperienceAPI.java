@@ -195,7 +195,7 @@ public final class ExperienceAPI {
      * @throws InvalidXPGainReasonException if the given xpGainReason is not valid
      */
     public static void addMultipliedXP(Player player, String skillType, int XP, String xpGainReason) {
-        getPlayer(player).applyXpGain(getSkillType(skillType), (int) (XP * mcMMO.getDynamicSettingsManager().getExperienceMapManager().getGlobalXpMult()), getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
+        getPlayer(player).applyXpGain(getSkillType(skillType), (int) (XP * mcMMO.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult()), getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
     }
 
     /**
@@ -211,7 +211,7 @@ public final class ExperienceAPI {
      */
     @Deprecated
     public static void addMultipliedXPOffline(String playerName, String skillType, int XP) {
-        addOfflineXP(playerName, getSkillType(skillType), (int) (XP * mcMMO.getDynamicSettingsManager().getExperienceMapManager().getGlobalXpMult()));
+        addOfflineXP(playerName, getSkillType(skillType), (int) (XP * mcMMO.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult()));
     }
 
     /**
@@ -262,11 +262,11 @@ public final class ExperienceAPI {
         PrimarySkillType skill = getSkillType(skillType);
 
         if (isUnshared) {
-            getPlayer(player).beginUnsharedXpGain(skill, (int) (XP / skill.getXpModifier() * mcMMO.getDynamicSettingsManager().getExperienceMapManager().getGlobalXpMult()), getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
+            getPlayer(player).beginUnsharedXpGain(skill, (int) (XP / skill.getXpModifier() * mcMMO.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult()), getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
             return;
         }
 
-        getPlayer(player).applyXpGain(skill, (int) (XP / skill.getXpModifier() * mcMMO.getDynamicSettingsManager().getExperienceMapManager().getGlobalXpMult()), getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
+        getPlayer(player).applyXpGain(skill, (int) (XP / skill.getXpModifier() * mcMMO.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult()), getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
     }
 
     /**
@@ -284,7 +284,7 @@ public final class ExperienceAPI {
     public static void addModifiedXPOffline(String playerName, String skillType, int XP) {
         PrimarySkillType skill = getSkillType(skillType);
 
-        addOfflineXP(playerName, skill, (int) (XP / skill.getXpModifier() * mcMMO.getDynamicSettingsManager().getExperienceMapManager().getGlobalXpMult()));
+        addOfflineXP(playerName, skill, (int) (XP / skill.getXpModifier() * mcMMO.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult()));
     }
 
     /**
@@ -1000,8 +1000,8 @@ public final class ExperienceAPI {
     public static void addXpFromBlocks(ArrayList<BlockState> blockStates, McMMOPlayer mcMMOPlayer) {
         for (BlockState bs : blockStates) {
             for (PrimarySkillType skillType : PrimarySkillType.values()) {
-                if (mcMMO.getDynamicSettingsManager().getExperienceMapManager().getBlockBreakXpValue(skillType, bs.getType()) > 0) {
-                    mcMMOPlayer.applyXpGain(skillType, mcMMO.getDynamicSettingsManager().getExperienceMapManager().getBlockBreakXpValue(skillType, bs.getType()), XPGainReason.PVE, XPGainSource.SELF);
+                if (mcMMO.getDynamicSettingsManager().getExperienceManager().getBlockBreakXpValue(skillType, bs.getType()) > 0) {
+                    mcMMOPlayer.applyXpGain(skillType, mcMMO.getDynamicSettingsManager().getExperienceManager().getBlockBreakXpValue(skillType, bs.getType()), XPGainReason.PVE, XPGainSource.SELF);
                 }
             }
         }
@@ -1016,8 +1016,8 @@ public final class ExperienceAPI {
      */
     public static void addXpFromBlocksBySkill(ArrayList<BlockState> blockStates, McMMOPlayer mcMMOPlayer, PrimarySkillType skillType) {
         for (BlockState bs : blockStates) {
-            if (mcMMO.getDynamicSettingsManager().getExperienceMapManager().getBlockBreakXpValue(skillType, bs.getType()) > 0) {
-                mcMMOPlayer.applyXpGain(skillType, mcMMO.getDynamicSettingsManager().getExperienceMapManager().getBlockBreakXpValue(skillType, bs.getType()), XPGainReason.PVE, XPGainSource.SELF);
+            if (mcMMO.getDynamicSettingsManager().getExperienceManager().getBlockBreakXpValue(skillType, bs.getType()) > 0) {
+                mcMMOPlayer.applyXpGain(skillType, mcMMO.getDynamicSettingsManager().getExperienceManager().getBlockBreakXpValue(skillType, bs.getType()), XPGainReason.PVE, XPGainSource.SELF);
             }
         }
     }
@@ -1030,8 +1030,8 @@ public final class ExperienceAPI {
      */
     public static void addXpFromBlock(BlockState blockState, McMMOPlayer mcMMOPlayer) {
         for (PrimarySkillType skillType : PrimarySkillType.values()) {
-            if (mcMMO.getDynamicSettingsManager().getExperienceMapManager().getBlockBreakXpValue(skillType, blockState.getType()) > 0) {
-                mcMMOPlayer.applyXpGain(skillType, mcMMO.getDynamicSettingsManager().getExperienceMapManager().getBlockBreakXpValue(skillType, blockState.getType()), XPGainReason.PVE, XPGainSource.SELF);
+            if (mcMMO.getDynamicSettingsManager().getExperienceManager().getBlockBreakXpValue(skillType, blockState.getType()) > 0) {
+                mcMMOPlayer.applyXpGain(skillType, mcMMO.getDynamicSettingsManager().getExperienceManager().getBlockBreakXpValue(skillType, blockState.getType()), XPGainReason.PVE, XPGainSource.SELF);
             }
         }
     }
@@ -1044,8 +1044,8 @@ public final class ExperienceAPI {
      * @param skillType   target primary skill
      */
     public static void addXpFromBlockBySkill(BlockState blockState, McMMOPlayer mcMMOPlayer, PrimarySkillType skillType) {
-        if (mcMMO.getDynamicSettingsManager().getExperienceMapManager().getBlockBreakXpValue(skillType, blockState.getType()) > 0) {
-            mcMMOPlayer.applyXpGain(skillType, mcMMO.getDynamicSettingsManager().getExperienceMapManager().getBlockBreakXpValue(skillType, blockState.getType()), XPGainReason.PVE, XPGainSource.SELF);
+        if (mcMMO.getDynamicSettingsManager().getExperienceManager().getBlockBreakXpValue(skillType, blockState.getType()) > 0) {
+            mcMMOPlayer.applyXpGain(skillType, mcMMO.getDynamicSettingsManager().getExperienceManager().getBlockBreakXpValue(skillType, blockState.getType()), XPGainReason.PVE, XPGainSource.SELF);
         }
     }
 

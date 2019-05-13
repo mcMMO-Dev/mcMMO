@@ -775,7 +775,7 @@ public class McMMOPlayer {
             return 0;
         }
 
-        xp = (float) (xp / primarySkillType.getXpModifier() * mcMMO.getDynamicSettingsManager().getExperienceMapManager().getGlobalXpMult());
+        xp = (float) (xp / primarySkillType.getXpModifier() * mcMMO.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult());
 
         //Multiply by the players personal XP rate
         return xp * personalXPModifiers.get(primarySkillType);

@@ -7,7 +7,7 @@ import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableManager;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.skills.salvage.salvageables.SalvageableManager;
-import com.gmail.nossr50.util.experience.ExperienceMapManager;
+import com.gmail.nossr50.util.experience.ExperienceManager;
 import com.google.common.collect.Maps;
 import org.bukkit.Material;
 
@@ -33,7 +33,7 @@ public class DynamicSettingsManager {
 
     /* Platform Ready Managers */
     private BonusDropManager bonusDropManager;
-    private ExperienceMapManager experienceMapManager;
+    private ExperienceManager experienceManager;
 
     /* Party Settings */
     private HashMap<Material, Integer> partyItemWeights;
@@ -67,11 +67,11 @@ public class DynamicSettingsManager {
      * Misc managers
      */
     private void initMiscManagers() {
-        experienceMapManager = new ExperienceMapManager();
+        experienceManager = new ExperienceManager();
         //Set the global XP val
-        experienceMapManager.setGlobalXpMult(mcMMO.getConfigManager().getConfigExperience().getGlobalXPMultiplier());
-        experienceMapManager.buildBlockXPMaps(); //Block XP value maps
-        experienceMapManager.fillCombatXPMultiplierMap(mcMMO.getConfigManager().getConfigExperience().getCombatExperienceMap());
+        experienceManager.setGlobalXpMult(mcMMO.getConfigManager().getConfigExperience().getGlobalXPMultiplier());
+        experienceManager.buildBlockXPMaps(); //Block XP value maps
+        experienceManager.fillCombatXPMultiplierMap(mcMMO.getConfigManager().getConfigExperience().getCombatExperienceMap());
 //        potionManager = new PotionManager();
     }
 
@@ -127,8 +127,8 @@ public class DynamicSettingsManager {
         return salvageableManager;
     }
 
-    public ExperienceMapManager getExperienceMapManager() {
-        return experienceMapManager;
+    public ExperienceManager getExperienceManager() {
+        return experienceManager;
     }
 
     public BonusDropManager getBonusDropManager() {

@@ -520,7 +520,7 @@ public class PlayerListener implements Listener {
         }
 
         if (plugin.isXPEventEnabled()) {
-            player.sendMessage(LocaleLoader.getString("XPRate.Event", mcMMO.getDynamicSettingsManager().getExperienceMapManager().getGlobalXpMult()));
+            player.sendMessage(LocaleLoader.getString("XPRate.Event", mcMMO.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult()));
         }
 
         //TODO: Remove this warning

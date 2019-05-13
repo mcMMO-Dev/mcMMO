@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.skills;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.experience.SpecialXPKey;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
@@ -553,21 +552,21 @@ public final class CombatUtils {
             }*/
             //else if (target instanceof Animals) {
             if (target instanceof Animals) {
-                baseXPMultiplier = mcMMO.getDynamicSettingsManager().getExperienceMapManager().getSpecialCombatXP(SpecialXPKey.ANIMALS);
+                baseXPMultiplier = mcMMO.getDynamicSettingsManager().getExperienceManager().getSpecialCombatXP(SpecialXPKey.ANIMALS);
             } else if (target instanceof Monster) {
                 EntityType type = target.getType();
-                baseXPMultiplier = mcMMO.getDynamicSettingsManager().getExperienceMapManager().getCombatXPMultiplier(type);
+                baseXPMultiplier = mcMMO.getDynamicSettingsManager().getExperienceManager().getCombatXPMultiplier(type);
             } else {
                 EntityType type = target.getType();
 
-                if (mcMMO.getDynamicSettingsManager().getExperienceMapManager().hasCombatXP(type)) {
+                if (mcMMO.getDynamicSettingsManager().getExperienceManager().hasCombatXP(type)) {
                     //Exploit stuff
                     if (type == EntityType.IRON_GOLEM) {
                         if (!((IronGolem) target).isPlayerCreated()) {
-                            baseXPMultiplier = mcMMO.getDynamicSettingsManager().getExperienceMapManager().getCombatXPMultiplier(type);
+                            baseXPMultiplier = mcMMO.getDynamicSettingsManager().getExperienceManager().getCombatXPMultiplier(type);
                         }
                     } else {
-                        baseXPMultiplier = mcMMO.getDynamicSettingsManager().getExperienceMapManager().getCombatXPMultiplier(type);
+                        baseXPMultiplier = mcMMO.getDynamicSettingsManager().getExperienceManager().getCombatXPMultiplier(type);
                     }
                 } else {
                     baseXPMultiplier = 1.0f;

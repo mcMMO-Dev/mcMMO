@@ -1,7 +1,6 @@
 package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.config.MainConfig;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -119,7 +118,7 @@ public class SelfListener implements Listener {
 
         float guaranteedMinimum = mcMMO.getConfigManager().getConfigLeveling().getGuaranteedMinimums() * rawXp;
 
-        float modifiedThreshold = (float) (threshold / primarySkillType.getXpModifier() * mcMMO.getDynamicSettingsManager().getExperienceMapManager().getGlobalXpMult());
+        float modifiedThreshold = (float) (threshold / primarySkillType.getXpModifier() * mcMMO.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult());
         float difference = (mcMMOPlayer.getProfile().getRegisteredXpGain(primarySkillType) - modifiedThreshold) / modifiedThreshold;
 
         if (difference > 0) {

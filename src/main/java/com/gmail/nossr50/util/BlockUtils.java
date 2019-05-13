@@ -129,7 +129,7 @@ public final class BlockUtils {
      * @return true if the block should affected by Green Terra, false otherwise
      */
     public static boolean affectedByGreenTerra(BlockState blockState) {
-        return mcMMO.getDynamicSettingsManager().getExperienceMapManager().hasHerbalismXp(blockState.getType());
+        return mcMMO.getDynamicSettingsManager().getExperienceManager().hasHerbalismXp(blockState.getType());
     }
 
     /**
@@ -139,7 +139,7 @@ public final class BlockUtils {
      * @return true if the block should affected by Green Terra, false otherwise
      */
     public static boolean affectedByGreenTerra(Material material) {
-        return mcMMO.getDynamicSettingsManager().getExperienceMapManager().hasHerbalismXp(material);
+        return mcMMO.getDynamicSettingsManager().getExperienceManager().hasHerbalismXp(material);
     }
 
     /**
@@ -150,7 +150,7 @@ public final class BlockUtils {
      * otherwise
      */
     public static Boolean affectedBySuperBreaker(BlockState blockState) {
-        if (mcMMO.getDynamicSettingsManager().getExperienceMapManager().hasMiningXp(blockState.getType()))
+        if (mcMMO.getDynamicSettingsManager().getExperienceManager().hasMiningXp(blockState.getType()))
             return true;
 
         return isMineable(blockState);
@@ -164,7 +164,7 @@ public final class BlockUtils {
      * otherwise
      */
     public static Boolean affectedBySuperBreaker(Material material) {
-        if (mcMMO.getDynamicSettingsManager().getExperienceMapManager().hasMiningXp(material))
+        if (mcMMO.getDynamicSettingsManager().getExperienceManager().hasMiningXp(material))
             return true;
 
         return isMineable(material);
@@ -215,7 +215,7 @@ public final class BlockUtils {
      * otherwise
      */
     public static boolean affectedByGigaDrillBreaker(Material material) {
-        if (mcMMO.getDynamicSettingsManager().getExperienceMapManager().hasExcavationXp(material))
+        if (mcMMO.getDynamicSettingsManager().getExperienceManager().hasExcavationXp(material))
             return true;
 
         return isDiggable(material);
@@ -229,7 +229,7 @@ public final class BlockUtils {
      * otherwise
      */
     public static boolean affectedByGigaDrillBreaker(BlockState blockState) {
-        if (mcMMO.getDynamicSettingsManager().getExperienceMapManager().hasExcavationXp(blockState.getType()))
+        if (mcMMO.getDynamicSettingsManager().getExperienceManager().hasExcavationXp(blockState.getType()))
             return true;
 
         return isDiggable(blockState);
@@ -281,7 +281,7 @@ public final class BlockUtils {
      * @return true if the block is a log, false otherwise
      */
     public static boolean isLog(BlockState blockState) {
-        if (mcMMO.getDynamicSettingsManager().getExperienceMapManager().hasWoodcuttingXp(blockState.getType()))
+        if (mcMMO.getDynamicSettingsManager().getExperienceManager().hasWoodcuttingXp(blockState.getType()))
             return true;
 
         return isLoggingRelated(blockState);
@@ -295,7 +295,7 @@ public final class BlockUtils {
      * @return true if the block is a log, false otherwise
      */
     public static boolean isLog(Material material) {
-        if (mcMMO.getDynamicSettingsManager().getExperienceMapManager().hasWoodcuttingXp(material))
+        if (mcMMO.getDynamicSettingsManager().getExperienceManager().hasWoodcuttingXp(material))
             return true;
 
         return isLoggingRelated(material);

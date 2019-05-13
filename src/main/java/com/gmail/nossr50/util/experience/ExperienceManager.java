@@ -10,9 +10,9 @@ import org.bukkit.entity.EntityType;
 import java.util.HashMap;
 
 /**
- * This class handles the XP for block break related XP
+ * This class handles the XP maps for various skills
  */
-public class ExperienceMapManager {
+public class ExperienceManager {
     private HashMap<PrimarySkillType, HashMap<Material, String>> skillMaterialXPMap;
     private HashMap<String, Integer> miningFullyQualifiedBlockXpMap;
     private HashMap<String, Integer> herbalismFullyQualifiedBlockXpMap;
@@ -24,7 +24,7 @@ public class ExperienceMapManager {
 
     private double globalXpMult;
 
-    public ExperienceMapManager() {
+    public ExperienceManager() {
         initExperienceMaps();
         registerDefaultValues();
 
@@ -167,28 +167,47 @@ public class ExperienceMapManager {
         globalXpMult = newGlobalXpMult;
     }
 
+    /**
+     * Reset the Global XP multiplier to its original value
+     */
     public void resetGlobalXpMult() {
         mcMMO.p.getLogger().info("Resetting the global XP multiplier " + globalXpMult + " -> " + getOriginalGlobalXpMult());
         globalXpMult = getOriginalGlobalXpMult();
     }
 
+    /**
+     * Set the mining block XP map to the provided one
+     * @param miningFullyQualifiedBlockXpMap the XP map to change to
+     */
     public void setMiningFullyQualifiedBlockXpMap(HashMap<String, Integer> miningFullyQualifiedBlockXpMap) {
-        mcMMO.p.getLogger().info("Registering Mining XP Values...");
+        mcMMO.p.getLogger().info("Changing Mining XP Values...");
         this.miningFullyQualifiedBlockXpMap = miningFullyQualifiedBlockXpMap;
     }
 
+    /**
+     * Set the mining block XP map to the provided one
+     * @param herbalismFullyQualifiedBlockXpMap the XP map to change to
+     */
     public void setHerbalismFullyQualifiedBlockXpMap(HashMap<String, Integer> herbalismFullyQualifiedBlockXpMap) {
-        mcMMO.p.getLogger().info("Registering Herbalism XP Values...");
+        mcMMO.p.getLogger().info("Changing Herbalism XP Values...");
         this.herbalismFullyQualifiedBlockXpMap = herbalismFullyQualifiedBlockXpMap;
     }
 
+    /**
+     * Set the mining block XP map to the provided one
+     * @param woodcuttingFullyQualifiedBlockXpMap the XP map to change to
+     */
     public void setWoodcuttingFullyQualifiedBlockXpMap(HashMap<String, Integer> woodcuttingFullyQualifiedBlockXpMap) {
-        mcMMO.p.getLogger().info("Registering Woodcutting XP Values...");
+        mcMMO.p.getLogger().info("Changin Woodcutting XP Values...");
         this.woodcuttingFullyQualifiedBlockXpMap = woodcuttingFullyQualifiedBlockXpMap;
     }
 
+    /**
+     * Set the mining block XP map to the provided one
+     * @param excavationFullyQualifiedBlockXpMap the XP map to change to
+     */
     public void setExcavationFullyQualifiedBlockXpMap(HashMap<String, Integer> excavationFullyQualifiedBlockXpMap) {
-        mcMMO.p.getLogger().info("Registering Excavation XP Values...");
+        mcMMO.p.getLogger().info("Changing Excavation XP Values...");
         this.excavationFullyQualifiedBlockXpMap = excavationFullyQualifiedBlockXpMap;
     }
 

@@ -148,7 +148,7 @@ public class HerbalismManager extends SkillManager {
 //            }
 //        }
 //        else {
-        xp = mcMMO.getDynamicSettingsManager().getExperienceMapManager().getHerbalismXp(blockState.getType());
+        xp = mcMMO.getDynamicSettingsManager().getExperienceManager().getHerbalismXp(blockState.getType());
 
         if (!oneBlockPlant) {
             //Kelp is actually two blocks mixed together
