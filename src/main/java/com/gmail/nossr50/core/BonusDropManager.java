@@ -1,5 +1,6 @@
-package com.gmail.nossr50.config;
+package com.gmail.nossr50.core;
 
+import com.gmail.nossr50.config.Unload;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
 

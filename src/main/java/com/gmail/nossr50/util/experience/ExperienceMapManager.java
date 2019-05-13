@@ -1,7 +1,6 @@
 package com.gmail.nossr50.util.experience;
 
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
-import com.gmail.nossr50.config.Unload;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
@@ -12,7 +11,7 @@ import java.util.HashMap;
 /**
  * This class handles the XP for block break related XP
  */
-public class ExperienceMapManager implements Unload {
+public class ExperienceMapManager {
     private HashMap<PrimarySkillType, HashMap<Material, String>> skillMaterialXPMap;
     private HashMap<String, Integer> miningFullyQualifiedBlockXpMap;
     private HashMap<String, Integer> herbalismFullyQualifiedBlockXpMap;
@@ -28,7 +27,6 @@ public class ExperienceMapManager implements Unload {
         initExperienceMaps();
 
         //Register with unloader
-        mcMMO.getConfigManager().registerUnloadable(this);
     }
 
     private void initExperienceMaps() {
@@ -313,13 +311,5 @@ public class ExperienceMapManager implements Unload {
      */
     public int getExcavationXp(Material material) {
         return excavationFullyQualifiedBlockXpMap.get(material.getKey());
-    }
-
-    @Override
-    public void unload() {
-        miningFullyQualifiedBlockXpMap.clear();
-        woodcuttingFullyQualifiedBlockXpMap.clear();
-        herbalismFullyQualifiedBlockXpMap.clear();
-        excavationFullyQualifiedBlockXpMap.clear();
     }
 }

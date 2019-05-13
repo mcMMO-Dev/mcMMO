@@ -47,13 +47,9 @@ import com.gmail.nossr50.datatypes.experience.CustomXPPerk;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
-import com.gmail.nossr50.skills.repair.repairables.RepairableManager;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
-import com.gmail.nossr50.skills.salvage.salvageables.SalvageableManager;
-import com.gmail.nossr50.util.experience.ExperienceMapManager;
 import com.google.common.collect.Maps;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
@@ -67,32 +63,15 @@ import java.util.HashMap;
 /**
  * The Config Manager handles initializing, loading, and unloading registers for all configs that mcMMO uses
  * This makes sure that mcMMO properly loads and unloads its values on reload
- * <p>
- * Config Manager also holds all of our MultiConfigContainers
+ * Settings in configs are sometimes not platform-ready, you can find platform ready implementations in the {@link com.gmail.nossr50.core.DynamicSettingsManager DynamicSettingsManager}
  */
 public final class ConfigManager {
 
-    /* UNLOAD REGISTER */
-
-    private SkillPropertiesManager skillPropertiesManager;
-    private ArrayList<Unload> unloadables;
-
-    /* COLLECTION MANAGERS */
+    /* File array - Used for backups */
     private ArrayList<File> userFiles;
-    private RepairableManager repairableManager;
-    private SalvageableManager salvageableManager;
 
-    /* CUSTOM SERIALIZERS */
-    private BonusDropManager bonusDropManager;
-
-    /* MOD MANAGERS */
-
-    //TODO: Add these back when modded servers become a thing again
-
-    /* MISC MANAGERS */
+    /* Custom Serialization */
     private TypeSerializerCollection customSerializers;
-    private ExperienceMapManager experienceMapManager;
-//    private PotionManager potionManager;
 
     /* CONFIG INSTANCES */
 
@@ -134,7 +113,6 @@ public final class ConfigManager {
     private ConfigSmelting configSmelting;
     private ConfigSalvage configSalvage;
 
-
     private HashMap<PrimarySkillType, SerializedConfigLoader<?>> skillConfigLoaders;
 
     //Data
@@ -160,7 +138,6 @@ public final class ConfigManager {
     private ArrayList<String> configErrors; //Collect errors to whine about to server admins
 
     public ConfigManager() {
-        unloadables = new ArrayList<>();
         userFiles = new ArrayList<>();
     }
 
@@ -174,24 +151,12 @@ public final class ConfigManager {
         //Serialized Data
         initSerializedDataFiles();
 
-        //Skill Property Registers
-        skillPropertiesManager = new SkillPropertiesManager();
-        skillPropertiesManager.fillRegisters();
-
         //Assign Maps
         partyItemWeights = Maps.newHashMap(configParty.getConfig().getPartyItemShare().getItemShareMap()); //Item Share Weights
         partyFeatureUnlocks = Maps.newHashMap(configParty.getConfig().getPartyXP().getPartyLevel().getPartyFeatureUnlockMap()); //Party Progression
 
         //YAML Configs
         initYAMLConfigs();
-
-        /*
-         * Managers
-         */
-
-        // Register Managers
-        initMiscManagers();
-        initCollectionManagers();
     }
 
     private void initYAMLConfigs() {
@@ -324,94 +289,12 @@ public final class ConfigManager {
     }
 
     /**
-     * Misc managers
-     */
-    private void initMiscManagers() {
-        experienceMapManager = new ExperienceMapManager();
-        //Set the global XP val
-        experienceMapManager.setGlobalXpMult(getConfigExperience().getGlobalXPMultiplier());
-        experienceMapManager.buildBlockXPMaps(); //Block XP value maps
-        experienceMapManager.fillCombatXPMultiplierMap(getConfigExperience().getCombatExperienceMap());
-//        potionManager = new PotionManager();
-    }
-
-    /**
-     * Initializes any managers related to config collections
-     */
-    private void initCollectionManagers() {
-        // Handles registration of repairables
-        repairableManager = new RepairableManager(getRepairables());
-        unloadables.add(repairableManager);
-
-        // Handles registration of salvageables
-        salvageableManager = new SalvageableManager(getSalvageables());
-        unloadables.add(salvageableManager);
-
-        // Handles registration of bonus drops
-        bonusDropManager = new BonusDropManager();
-        unloadables.add(bonusDropManager);
-
-        //Register Bonus Drops
-        registerBonusDrops();
-    }
-
-    /**
-     * Get all loaded repairables (loaded from all repairable configs)
-     *
-     * @return the currently loaded repairables
-     */
-    public ArrayList<Repairable> getRepairables() {
-        return getConfigRepair().getConfigRepairablesList();
-    }
-
-    /**
-     * Get all loaded salvageables (loaded from all salvageable configs)
-     *
-     * @return the currently loaded salvageables
-     */
-    public ArrayList<Salvageable> getSalvageables() {
-        return getConfigSalvage().getConfigSalvageablesList();
-    }
-
-    /**
-     * Unloads all config options (prepares for reload)
-     */
-    public void unloadAllConfigsAndRegisters() {
-        //Unload
-        for (Unload unloadable : unloadables) {
-            unloadable.unload();
-        }
-
-        //Clear
-        unloadables.clear();
-        userFiles.clear();
-    }
-
-    /**
-     * Registers an unloadable
-     * Unloadables call unload() on plugin disable to cleanup registries
-     */
-    public void registerUnloadable(Unload unload) {
-        if (!unloadables.contains(unload))
-            unloadables.add(unload);
-    }
-
-    /**
      * Registers an unloadable
      * Unloadables call unload() on plugin disable to cleanup registries
      */
     public void registerUserFile(File userFile) {
         if (!userFiles.contains(userFile))
             userFiles.add(userFile);
-    }
-
-    /**
-     * Registers bonus drops from several skill configs
-     */
-    public void registerBonusDrops() {
-        bonusDropManager.addToWhitelistByNameID(getConfigMining().getBonusDrops());
-//        bonusDropManager.addToWhitelistByNameID(configHerbalism.getBonusDrops());
-//        bonusDropManager.addToWhitelistByNameID(configWoodcutting.getBonusDrops());
     }
 
     public void validateConfigs() {
@@ -424,7 +307,6 @@ public final class ConfigManager {
      */
     public void reloadConfigs() {
         mcMMO.p.getLogger().info("Reloading config values...");
-        unloadAllConfigsAndRegisters(); //Unload Everything
         loadConfigs(); //Load everything again
     }
 
@@ -439,14 +321,6 @@ public final class ConfigManager {
      */
     public ArrayList<File> getConfigFiles() {
         return userFiles;
-    }
-
-    public RepairableManager getRepairableManager() {
-        return repairableManager;
-    }
-
-    public SalvageableManager getSalvageableManager() {
-        return salvageableManager;
     }
 
     public MainConfig getMainConfig() {
@@ -487,10 +361,6 @@ public final class ConfigManager {
 
     public ExperienceConfig getExperienceConfig() {
         return experienceConfig;
-    }
-
-    public ExperienceMapManager getExperienceMapManager() {
-        return experienceMapManager;
     }
 
     public ConfigDatabase getConfigDatabase() {
@@ -637,10 +507,6 @@ public final class ConfigManager {
         return configSalvage;
     }
 
-    public BonusDropManager getBonusDropManager() {
-        return bonusDropManager;
-    }
-
     /**
      * Checks if this plugin is using retro mode
      * Retro mode is a 0-1000 skill system
@@ -652,23 +518,7 @@ public final class ConfigManager {
         return getConfigLeveling().getConfigSectionLevelingGeneral().getConfigSectionLevelScaling().isRetroModeEnabled();
     }
 
-    public boolean isBonusDropsEnabled(Material material) {
-        return getBonusDropManager().isBonusDropWhitelisted(material);
-    }
-
-    public double getSkillMaxBonusLevel(SubSkillType subSkillType) {
-        return skillPropertiesManager.getMaxBonusLevel(subSkillType);
-    }
-
-    public double getSkillMaxChance(SubSkillType subSkillType) {
-        return skillPropertiesManager.getMaxChance(subSkillType);
-    }
-
     public ConfigExperience getConfigExperience() {
         return configExperience.getConfig();
-    }
-
-    public SkillPropertiesManager getSkillPropertiesManager() {
-        return skillPropertiesManager;
     }
 }

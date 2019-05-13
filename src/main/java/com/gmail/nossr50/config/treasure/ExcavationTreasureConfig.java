@@ -2,7 +2,6 @@ package com.gmail.nossr50.config.treasure;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.ConfigConstants;
-import com.gmail.nossr50.config.Registers;
 import com.gmail.nossr50.config.UnsafeValueValidation;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.mcMMO;

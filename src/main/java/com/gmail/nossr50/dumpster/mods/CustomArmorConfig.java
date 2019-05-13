@@ -1,4 +1,4 @@
-//package com.gmail.nossr50.config.mods;
+//package com.gmail.nossr50.dumpster.mods;
 //
 //import com.gmail.nossr50.config.ConfigCollection;
 //import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;

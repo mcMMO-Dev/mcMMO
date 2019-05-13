@@ -1,4 +1,4 @@
-package com.gmail.nossr50.config;
+package com.gmail.nossr50.core;
 
 /**
  * This class is used to define settings for upgrading EXTREMELY OLD versions of mcMMO to newer versions

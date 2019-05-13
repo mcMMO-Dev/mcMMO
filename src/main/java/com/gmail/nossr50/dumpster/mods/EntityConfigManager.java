@@ -1,5 +1,5 @@
 /*
-package com.gmail.nossr50.config.mods;
+package com.gmail.nossr50.dumpster.mods;
 
 
 public class EntityConfigManager {

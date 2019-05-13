@@ -1,17 +1,17 @@
-//package com.gmail.nossr50.config.mods;
+//package com.gmail.nossr50.dumpster.mods;
 //
-//public class BlockConfigManager {
+//public class ArmorConfigManager {
 //    //TODO: Commented out until modded servers appear again
-//    /*public BlockConfigManager() {
-//        Pattern middlePattern = Pattern.compile("blocks\\.(?:.+)\\.yml");
-//        Pattern startPattern = Pattern.compile("(?:.+)\\.blocks\\.yml");
+//    /*public ArmorConfigManager() {
+//        Pattern middlePattern = Pattern.compile("armor\\.(?:.+)\\.yml");
+//        Pattern startPattern = Pattern.compile("(?:.+)\\.armor\\.yml");
 //        //File dataFolder = new File(McmmoCore.getModDataFolderPath());
-//        File dataFolder = new File(mcMMO.getModDirectory());
-//        File vanilla = new File(dataFolder, "blocks.default.yml");
+//        File dataFolder = new File(mcMMO.p.getModDirectory());
+//        File vanilla = new File(dataFolder, "armor.default.yml");
 //        ModManager modManager = mcMMO.getModManager();
 //
 //        if (!vanilla.exists()) {
-//            mcMMO.p.saveResource(vanilla.getParentFile().getName() + File.separator + "blocks.default.yml", false);
+//            mcMMO.p.saveResource(vanilla.getParentFile().getName() + File.separator + "armor.default.yml", false);
 //        }
 //
 //        for (String fileName : dataFolder.list()) {
@@ -25,7 +25,7 @@
 //                continue;
 //            }
 //
-//            modManager.registerCustomBlocks(new CustomBlockConfig(fileName));
+//            modManager.registerCustomArmor(new CustomArmorConfig(fileName));
 //        }
 //    }*/
 //}

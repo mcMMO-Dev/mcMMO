@@ -10,6 +10,7 @@ import com.gmail.nossr50.config.hocon.party.ConfigSectionPartyExperienceSharing;
 import com.gmail.nossr50.config.hocon.party.ConfigSectionPartyLevel;
 import com.gmail.nossr50.config.hocon.playerleveling.ConfigLeveling;
 import com.gmail.nossr50.config.hocon.scoreboard.ConfigScoreboard;
+import com.gmail.nossr50.core.DynamicSettingsManager;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -81,6 +82,7 @@ public class mcMMO extends JavaPlugin {
     /* Managers */
     private static ChunkManager placeStore;
     private static ConfigManager configManager;
+    private static DynamicSettingsManager dynamicSettingsManager;
     private static DatabaseManager databaseManager;
     private static FormulaManager formulaManager;
     private static MaterialMapStore materialMapStore;
@@ -128,11 +130,11 @@ public class mcMMO extends JavaPlugin {
     }
 
     public static RepairableManager getRepairableManager() {
-        return configManager.getRepairableManager();
+        return dynamicSettingsManager.getRepairableManager();
     }
 
     public static SalvageableManager getSalvageableManager() {
-        return configManager.getSalvageableManager();
+        return dynamicSettingsManager.getSalvageableManager();
     }
 
     public static DatabaseManager getDatabaseManager() {
@@ -246,6 +248,7 @@ public class mcMMO extends JavaPlugin {
             //modManager = new ModManager();
 
             loadConfigFiles();
+            registerDynamicSettings(); //Do this after configs are loaded
 
             if (healthBarPluginEnabled) {
                 getLogger().info("HealthBar plugin found, mcMMO's healthbars are automatically disabled.");
@@ -429,8 +432,6 @@ public class mcMMO extends JavaPlugin {
         }
 
         databaseManager.onDisable();
-        //Unload configs last
-        configManager.unloadAllConfigsAndRegisters();
 
         debug("Was disabled."); // How informative!
     }
@@ -551,6 +552,10 @@ public class mcMMO extends JavaPlugin {
         localesDirectoryPath.mkdirs();
     }
 
+    private void registerDynamicSettings() {
+        dynamicSettingsManager = new DynamicSettingsManager();
+    }
+
     private void loadConfigFiles() {
         configManager = new ConfigManager();
         configManager.loadConfigs();
@@ -594,28 +599,6 @@ public class mcMMO extends JavaPlugin {
             }
         }, 40);
     }
-
-    /*private void checkModConfigs() {
-        if (!MainConfig.getInstance().getToolModsEnabled()) {
-            getLogger().warning("Cauldron implementation found, but the custom tool config for mcMMO is disabled!");
-            getLogger().info("To enable, set Mods.Tool_Mods_Enabled to TRUE in config.yml.");
-        }
-
-        if (!MainConfig.getInstance().getArmorModsEnabled()) {
-            getLogger().warning("Cauldron implementation found, but the custom armor config for mcMMO is disabled!");
-            getLogger().info("To enable, set Mods.Armor_Mods_Enabled to TRUE in config.yml.");
-        }
-
-        if (!MainConfig.getInstance().getBlockModsEnabled()) {
-            getLogger().warning("Cauldron implementation found, but the custom block config for mcMMO is disabled!");
-            getLogger().info("To enable, set Mods.Block_Mods_Enabled to TRUE in config.yml.");
-        }
-
-        if (!MainConfig.getInstance().getEntityModsEnabled()) {
-            getLogger().warning("Cauldron implementation found, but the custom entity config for mcMMO is disabled!");
-            getLogger().info("To enable, set Mods.Entity_Mods_Enabled to TRUE in config.yml.");
-        }
-    }*/
 
     private void scheduleTasks() {
         // Periodic save timer (Saves every 10 minutes by default)
@@ -661,6 +644,10 @@ public class mcMMO extends JavaPlugin {
         if (configManager.getConfigNotifications().getConfigNotificationGeneral().isPlayerTips()) {
             new NotifySquelchReminderTask().runTaskTimer(this, 60, ((20 * 60) * 60));
         }
+    }
+
+    public static DynamicSettingsManager getDynamicSettingsManager() {
+        return dynamicSettingsManager;
     }
 
     private enum ServerSoftwareType {

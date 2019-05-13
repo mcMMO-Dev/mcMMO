@@ -1,10 +1,10 @@
 //package com.gmail.nossr50.util;
 //
 //import com.gmail.nossr50.config.MainConfig;
-//import com.gmail.nossr50.config.mods.CustomArmorConfig;
-//import com.gmail.nossr50.config.mods.CustomBlockConfig;
-//import com.gmail.nossr50.config.mods.CustomEntityConfig;
-//import com.gmail.nossr50.config.mods.CustomToolConfig;
+//import com.gmail.nossr50.dumpster.mods.CustomArmorConfig;
+//import com.gmail.nossr50.dumpster.mods.CustomBlockConfig;
+//import com.gmail.nossr50.dumpster.mods.CustomEntityConfig;
+//import com.gmail.nossr50.dumpster.mods.CustomToolConfig;
 //import com.gmail.nossr50.datatypes.mods.CustomBlock;
 //import com.gmail.nossr50.datatypes.mods.CustomEntity;
 //import com.gmail.nossr50.datatypes.mods.CustomTool;

@@ -1,6 +1,6 @@
 package com.gmail.nossr50.util.blockmeta.conversion;
 
-import com.gmail.nossr50.config.ChunkConversionOptions;
+import com.gmail.nossr50.core.ChunkConversionOptions;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.scheduler.BukkitScheduler;
 

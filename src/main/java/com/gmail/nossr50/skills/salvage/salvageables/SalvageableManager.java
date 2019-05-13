@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.salvage.salvageables;
 
-import com.gmail.nossr50.config.Unload;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -8,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class SalvageableManager implements Unload {
+public class SalvageableManager {
     private HashMap<Material, Salvageable> salvageables;
 
     /*public SalvageableManager() {
@@ -18,11 +17,6 @@ public class SalvageableManager implements Unload {
     public SalvageableManager(List<Salvageable> salvageablesCollection) {
         this.salvageables = new HashMap<>(salvageablesCollection.size());
         registerSalvageables(salvageablesCollection);
-    }
-
-    @Override
-    public void unload() {
-        salvageables.clear();
     }
 
     public void registerSalvageable(Salvageable salvageable) {
