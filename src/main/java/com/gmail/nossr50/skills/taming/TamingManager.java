@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills.taming;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.MainConfig;
+import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -307,7 +308,7 @@ public class TamingManager extends SkillManager {
                 continue;
             }
 
-            entity.setMetadata(mcMMO.UNNATURAL_MOB_METAKEY, mcMMO.metadataValue);
+            entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, mcMMO.metadataValue);
             ((Tameable) entity).setOwner(player);
             entity.setRemoveWhenFarAway(false);
 

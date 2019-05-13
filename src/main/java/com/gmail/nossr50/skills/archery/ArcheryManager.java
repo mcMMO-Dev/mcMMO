@@ -1,10 +1,10 @@
 package com.gmail.nossr50.skills.archery;
 
+import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -52,7 +52,7 @@ public class ArcheryManager extends SkillManager {
      * @param damager The {@link Entity} who shot the arrow
      */
     public double distanceXpBonusMultiplier(LivingEntity target, Entity damager) {
-        Location firedLocation = (Location) damager.getMetadata(mcMMO.ARROW_DISTANCE_METAKEY).get(0).value();
+        Location firedLocation = (Location) damager.getMetadata(MetadataConstants.ARROW_DISTANCE_METAKEY).get(0).value();
         Location targetLocation = target.getLocation();
 
         if (firedLocation.getWorld() != targetLocation.getWorld()) {

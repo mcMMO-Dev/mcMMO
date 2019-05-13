@@ -1,5 +1,6 @@
 package com.gmail.nossr50.runnables;
 
+import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
 import org.bukkit.block.Block;
@@ -33,9 +34,9 @@ public class PistonTrackerTask extends BukkitRunnable {
         for (Block b : blocks) {
             Block nextBlock = b.getRelative(direction);
 
-            if (nextBlock.hasMetadata(mcMMO.PISTON_TRACKING_METAKEY)) {
+            if (nextBlock.hasMetadata(MetadataConstants.PISTON_TRACKING_METAKEY)) {
                 mcMMO.getPlaceStore().setTrue(nextBlock);
-                nextBlock.removeMetadata(mcMMO.PISTON_TRACKING_METAKEY, mcMMO.p);
+                nextBlock.removeMetadata(MetadataConstants.PISTON_TRACKING_METAKEY, mcMMO.p);
             } else if (mcMMO.getPlaceStore().isTrue(nextBlock)) {
                 // Block doesn't have metadatakey but isTrue - set it to false
                 mcMMO.getPlaceStore().setFalse(nextBlock);

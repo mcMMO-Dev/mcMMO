@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util.commands;
 
 import com.gmail.nossr50.config.MainConfig;
+import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -124,7 +125,7 @@ public final class CommandUtils {
             return false;
         }
 
-        boolean hasPlayerDataKey = ((Player) sender).hasMetadata(mcMMO.PLAYER_DATA_METAKEY);
+        boolean hasPlayerDataKey = ((Player) sender).hasMetadata(MetadataConstants.PLAYER_DATA_METAKEY);
 
         if (!hasPlayerDataKey) {
             sender.sendMessage(LocaleLoader.getString("Commands.NotLoaded"));

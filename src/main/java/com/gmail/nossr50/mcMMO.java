@@ -52,32 +52,9 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 
 public class mcMMO extends JavaPlugin {
-    /* Metadata Values */
-    public static final String FISH_HOOK_REF_METAKEY = "mcMMO: Fish Hook Tracker";
-    public static final String CUSTOM_DAMAGE_METAKEY = "mcMMO: Custom Damage";
-    public final static String UNNATURAL_MOB_METAKEY = "mcMMO: Spawned Entity";
-    public final static String PISTON_TRACKING_METAKEY = "mcMMO: Piston Tracking";
-    public final static String FURNACE_TRACKING_METAKEY = "mcMMO: Tracked Furnace";
-    public final static String TNT_TRACKING_METAKEY = "mcMMO: Tracked TNT";
-    public final static String SPAWNED_FIREWORKS_METAKEY = "mcMMO: Funfetti";
-    public final static String SAFE_TNT_METAKEY = "mcMMO: Safe TNT";
-    public final static String CUSTOM_NAME_METAKEY = "mcMMO: Custom Name";
-    public final static String NAME_VISIBILITY_METAKEY = "mcMMO: Name Visibility";
-    public final static String DROPPED_ITEM_TRACKING_METAKEY = "mcMMO: Tracked Item";
-    public final static String INFINITE_ARROW_METAKEY = "mcMMO: Infinite Arrow";
-    public final static String BOW_FORCE_METAKEY = "mcMMO: Bow Force";
-    public final static String ARROW_DISTANCE_METAKEY = "mcMMO: Arrow Distance";
-    public final static String BONUS_DROPS_METAKEY = "mcMMO: Bonus Drops";
-    //public final static String customDamageKey     = "mcMMO: Custom Damage";
-    public final static String DISARMED_ITEM_METAKEY = "mcMMO: Disarmed Item";
-    public final static String PLAYER_DATA_METAKEY = "mcMMO: Player Data";
-    public final static String GREEN_THUMB_METAKEY = "mcMMO: Green Thumb";
-    public final static String DATABASE_PROCESSING_COMMAND_METAKEY = "mcMMO: Processing Database Command";
-    public final static String BRED_ANIMAL_TRACKING_METAKEY = "mcMMO: Bred Animal";
-
     public static mcMMO p;
     // Jar Stuff
-    public static File mcmmo;
+    public static File mcMMOFile;
     public static FixedMetadataValue metadataValue;
     /* Managers */
     private static ChunkManager placeStore;
@@ -94,12 +71,226 @@ public class mcMMO extends JavaPlugin {
     private static String flatFileDirectory;
     private static String usersFile;
     private static String modDirectory;
+
     /* Plugin Checks */
     private static boolean healthBarPluginEnabled;
     // API checks
     private static boolean serverAPIOutdated = false;
     // XP Event Check
     private boolean xpEventEnabled;
+
+    /**
+     * Things to be run when the plugin is enabled.
+     */
+    @Override
+    public void onEnable() {
+        try {
+            p = this;
+            getLogger().setFilter(new LogFilter(this));
+
+            //DEBUG
+            /*getLogger().info(Bukkit.getBukkitVersion());
+            getLogger().info(Bukkit.getVersion());*/
+
+            metadataValue = new FixedMetadataValue(this, true);
+
+            PluginManager pluginManager = getServer().getPluginManager();
+            healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;
+
+            //upgradeManager = new UpgradeManager();
+
+            setupFilePaths();
+
+            //modManager = new ModManager();
+
+            loadConfigFiles();
+            registerDynamicSettings(); //Do this after configs are loaded
+
+            if (healthBarPluginEnabled) {
+                getLogger().info("HealthBar plugin found, mcMMO's healthbars are automatically disabled.");
+            }
+
+            if (pluginManager.getPlugin("NoCheatPlus") != null && pluginManager.getPlugin("CompatNoCheatPlus") == null) {
+                getLogger().warning("NoCheatPlus plugin found, but CompatNoCheatPlus was not found!");
+                getLogger().warning("mcMMO will not work properly alongside NoCheatPlus without CompatNoCheatPlus");
+            }
+
+            databaseManager = DatabaseManagerFactory.getDatabaseManager();
+
+            //Check for the newer API and tell them what to do if its missing
+            checkForOutdatedAPI();
+
+            if (serverAPIOutdated) {
+                Bukkit
+                        .getScheduler()
+                        .scheduleSyncRepeatingTask(this,
+                                () -> getLogger().severe("You are running an outdated version of " + getServerSoftware() + ", mcMMO will not work unless you update to a newer version!"),
+                                20, 20 * 60 * 30);
+
+                if (getServerSoftware() == ServerSoftwareType.CRAFTBUKKIT) {
+                    Bukkit.getScheduler()
+                            .scheduleSyncRepeatingTask(this,
+                                    () -> getLogger().severe("We have detected you are using incompatible server software, our best guess is that you are using CraftBukkit. mcMMO requires Spigot or Paper, if you are not using CraftBukkit, you will still need to update your custom server software before mcMMO will work."),
+                                    20, 20 * 60 * 30);
+                }
+            } else {
+                registerEvents();
+                registerCoreSkills();
+                registerCustomRecipes();
+
+                if (getConfigManager().getConfigParty().isPartySystemEnabled())
+                    PartyManager.loadParties();
+
+                formulaManager = new FormulaManager();
+
+                for (Player player : getServer().getOnlinePlayers()) {
+                    new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
+                }
+
+                debug("Version " + getDescription().getVersion() + " is enabled!");
+
+                scheduleTasks();
+                CommandRegistrationManager.registerCommands();
+
+                placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
+
+                if (mcMMO.getConfigManager().getConfigParty().getPTP().isPtpWorldBasedPermissions()) {
+                    Permissions.generateWorldTeleportPermissions();
+                }
+
+                //Populate Ranked Skill Maps (DO THIS LAST)
+                RankUtils.populateRanks();
+            }
+
+            //If anonymous statistics are enabled then use them
+            if (getConfigManager().getConfigMetrics().isAllowAnonymousUsageStatistics()) {
+                Metrics metrics;
+                metrics = new Metrics(this);
+                metrics.addCustomChart(new Metrics.SimplePie("version", () -> getDescription().getVersion()));
+
+                if (!configManager.getConfigLeveling().getConfigSectionLevelingGeneral().getConfigSectionLevelScaling().isRetroModeEnabled())
+                    metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Standard"));
+                else
+                    metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Retro"));
+            }
+        } catch (Throwable t) {
+            getLogger().severe("There was an error while enabling mcMMO!");
+            t.printStackTrace();
+            getLogger().severe("End of error report for mcMMO");
+            getLogger().info("Please do not replace the mcMMO jar while the server is running.");
+        }
+
+        //Init Material Maps
+        materialMapStore = new MaterialMapStore();
+
+        //Init player level values
+        playerLevelUtils = new PlayerLevelUtils();
+    }
+
+    @Override
+    public void onLoad() {
+        if (getServer().getPluginManager().getPlugin("WorldGuard") != null)
+            WorldGuardManager.getInstance().registerFlags();
+    }
+
+    /**
+     * Things to be run when the plugin is disabled.
+     */
+    @Override
+    public void onDisable() {
+        try {
+//            Alchemy.finishAllBrews();   // Finish all partially complete AlchemyBrewTasks to prevent vanilla brewing continuation on restart
+            UserManager.saveAll();      // Make sure to save player information if the server shuts down
+            UserManager.clearAll();
+            PartyManager.saveParties(); // Save our parties
+
+            //TODO: Needed?
+            if (mcMMO.getScoreboardSettings().getScoreboardsEnabled())
+                ScoreboardManager.teardownAll();
+
+            formulaManager.saveFormula();
+            /*holidayManager.saveAnniversaryFiles();*/
+            placeStore.saveAll();       // Save our metadata
+            placeStore.cleanUp();       // Cleanup empty metadata stores
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        debug("Canceling all tasks...");
+        getServer().getScheduler().cancelTasks(this); // This removes our tasks
+        debug("Unregister all events...");
+        HandlerList.unregisterAll(this); // Cancel event registrations
+
+        if (mcMMO.getConfigManager().getConfigAutomatedBackups().isZipBackupsEnabled()) {
+            // Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
+            try {
+                ZipLibrary.mcMMOBackup();
+            } catch (IOException e) {
+                getLogger().severe(e.toString());
+            } catch (Throwable e) {
+                if (e instanceof NoClassDefFoundError) {
+                    getLogger().severe("Backup class not found!");
+                    getLogger().info("Please do not replace the mcMMO jar while the server is running.");
+                } else {
+                    getLogger().severe(e.toString());
+                }
+            }
+        }
+
+        databaseManager.onDisable();
+
+        debug("Was disabled."); // How informative!
+    }
+
+    public static PlayerLevelUtils getPlayerLevelUtils() {
+        return playerLevelUtils;
+    }
+
+    /**
+     * Uses reflection to check for incompatible server software
+     */
+    private void checkForOutdatedAPI() {
+        try {
+            Class<?> checkForClass = Class.forName("org.bukkit.event.block.BlockDropItemEvent");
+            Method newerAPIMethod = checkForClass.getMethod("getItems");
+            Class<?> checkForClassBaseComponent = Class.forName("net.md_5.bungee.api.chat.BaseComponent");
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
+            serverAPIOutdated = true;
+            String software = getServerSoftwareStr();
+            getLogger().severe("You are running an older version of " + software + " that is not compatible with mcMMO, update your server software!");
+        }
+    }
+
+    /**
+     * Returns a ServerSoftwareType based on version strings
+     * Custom software is returned as CRAFTBUKKIT
+     *
+     * @return the ServerSoftwareType which likely matches the server
+     */
+    private ServerSoftwareType getServerSoftware() {
+        if (Bukkit.getVersion().toLowerCase().contains("paper"))
+            return ServerSoftwareType.PAPER;
+        else if (Bukkit.getVersion().toLowerCase().contains("spigot"))
+            return ServerSoftwareType.SPIGOT;
+        else
+            return ServerSoftwareType.CRAFTBUKKIT;
+    }
+
+    /**
+     * Gets a string version of ServerSoftwareType
+     *
+     * @return Formatted String of ServerSoftwareType
+     */
+    private String getServerSoftwareStr() {
+        switch (getServerSoftware()) {
+            case PAPER:
+                return "Paper";
+            case SPIGOT:
+                return "Spigot";
+            default:
+                return "CraftBukkit";
+        }
+    }
 
     public static MaterialMapStore getMaterialMapStore() {
         return materialMapStore;
@@ -224,219 +415,6 @@ public class mcMMO extends JavaPlugin {
     }
 
     /**
-     * Things to be run when the plugin is enabled.
-     */
-    @Override
-    public void onEnable() {
-        try {
-            p = this;
-            getLogger().setFilter(new LogFilter(this));
-
-            //DEBUG
-            /*getLogger().info(Bukkit.getBukkitVersion());
-            getLogger().info(Bukkit.getVersion());*/
-
-            metadataValue = new FixedMetadataValue(this, true);
-
-            PluginManager pluginManager = getServer().getPluginManager();
-            healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;
-
-            //upgradeManager = new UpgradeManager();
-
-            setupFilePaths();
-
-            //modManager = new ModManager();
-
-            loadConfigFiles();
-            registerDynamicSettings(); //Do this after configs are loaded
-
-            if (healthBarPluginEnabled) {
-                getLogger().info("HealthBar plugin found, mcMMO's healthbars are automatically disabled.");
-            }
-
-            if (pluginManager.getPlugin("NoCheatPlus") != null && pluginManager.getPlugin("CompatNoCheatPlus") == null) {
-                getLogger().warning("NoCheatPlus plugin found, but CompatNoCheatPlus was not found!");
-                getLogger().warning("mcMMO will not work properly alongside NoCheatPlus without CompatNoCheatPlus");
-            }
-
-            databaseManager = DatabaseManagerFactory.getDatabaseManager();
-
-            //Check for the newer API and tell them what to do if its missing
-            checkForOutdatedAPI();
-
-            if (serverAPIOutdated) {
-                Bukkit
-                        .getScheduler()
-                        .scheduleSyncRepeatingTask(this,
-                                () -> getLogger().severe("You are running an outdated version of " + getServerSoftware() + ", mcMMO will not work unless you update to a newer version!"),
-                                20, 20 * 60 * 30);
-
-                if (getServerSoftware() == ServerSoftwareType.CRAFTBUKKIT) {
-                    Bukkit.getScheduler()
-                            .scheduleSyncRepeatingTask(this,
-                                    () -> getLogger().severe("We have detected you are using incompatible server software, our best guess is that you are using CraftBukkit. mcMMO requires Spigot or Paper, if you are not using CraftBukkit, you will still need to update your custom server software before mcMMO will work."),
-                                    20, 20 * 60 * 30);
-                }
-            } else {
-                registerEvents();
-                registerCoreSkills();
-                registerCustomRecipes();
-
-                if (getConfigManager().getConfigParty().isPartySystemEnabled())
-                    PartyManager.loadParties();
-
-                formulaManager = new FormulaManager();
-
-                for (Player player : getServer().getOnlinePlayers()) {
-                    new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
-                }
-
-                debug("Version " + getDescription().getVersion() + " is enabled!");
-
-                scheduleTasks();
-                CommandRegistrationManager.registerCommands();
-
-                placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
-
-                if (mcMMO.getConfigManager().getConfigParty().getPTP().isPtpWorldBasedPermissions()) {
-                    Permissions.generateWorldTeleportPermissions();
-                }
-
-                //Populate Ranked Skill Maps (DO THIS LAST)
-                RankUtils.populateRanks();
-            }
-
-            //If anonymous statistics are enabled then use them
-            if (getConfigManager().getConfigMetrics().isAllowAnonymousUsageStatistics()) {
-                Metrics metrics;
-                metrics = new Metrics(this);
-                metrics.addCustomChart(new Metrics.SimplePie("version", () -> getDescription().getVersion()));
-
-                if (!configManager.getConfigLeveling().getConfigSectionLevelingGeneral().getConfigSectionLevelScaling().isRetroModeEnabled())
-                    metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Standard"));
-                else
-                    metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Retro"));
-            }
-        } catch (Throwable t) {
-            getLogger().severe("There was an error while enabling mcMMO!");
-            t.printStackTrace();
-            getLogger().severe("End of error report for mcMMO");
-            getLogger().info("Please do not replace the mcMMO jar while the server is running.");
-        }
-
-        //Init Material Maps
-        materialMapStore = new MaterialMapStore();
-
-        //Init player level values
-        playerLevelUtils = new PlayerLevelUtils();
-    }
-
-    public static PlayerLevelUtils getPlayerLevelUtils() {
-        return playerLevelUtils;
-    }
-
-    /**
-     * Uses reflection to check for incompatible server software
-     */
-    private void checkForOutdatedAPI() {
-        try {
-            Class<?> checkForClass = Class.forName("org.bukkit.event.block.BlockDropItemEvent");
-            Method newerAPIMethod = checkForClass.getMethod("getItems");
-            Class<?> checkForClassBaseComponent = Class.forName("net.md_5.bungee.api.chat.BaseComponent");
-        } catch (ClassNotFoundException | NoSuchMethodException e) {
-            serverAPIOutdated = true;
-            String software = getServerSoftwareStr();
-            getLogger().severe("You are running an older version of " + software + " that is not compatible with mcMMO, update your server software!");
-        }
-    }
-
-    /**
-     * Returns a ServerSoftwareType based on version strings
-     * Custom software is returned as CRAFTBUKKIT
-     *
-     * @return the ServerSoftwareType which likely matches the server
-     */
-    private ServerSoftwareType getServerSoftware() {
-        if (Bukkit.getVersion().toLowerCase().contains("paper"))
-            return ServerSoftwareType.PAPER;
-        else if (Bukkit.getVersion().toLowerCase().contains("spigot"))
-            return ServerSoftwareType.SPIGOT;
-        else
-            return ServerSoftwareType.CRAFTBUKKIT;
-    }
-
-    /**
-     * Gets a string version of ServerSoftwareType
-     *
-     * @return Formatted String of ServerSoftwareType
-     */
-    private String getServerSoftwareStr() {
-        switch (getServerSoftware()) {
-            case PAPER:
-                return "Paper";
-            case SPIGOT:
-                return "Spigot";
-            default:
-                return "CraftBukkit";
-        }
-    }
-
-    @Override
-    public void onLoad() {
-        if (getServer().getPluginManager().getPlugin("WorldGuard") != null)
-            WorldGuardManager.getInstance().registerFlags();
-    }
-
-    /**
-     * Things to be run when the plugin is disabled.
-     */
-    @Override
-    public void onDisable() {
-        try {
-//            Alchemy.finishAllBrews();   // Finish all partially complete AlchemyBrewTasks to prevent vanilla brewing continuation on restart
-            UserManager.saveAll();      // Make sure to save player information if the server shuts down
-            UserManager.clearAll();
-            PartyManager.saveParties(); // Save our parties
-
-            //TODO: Needed?
-            if (mcMMO.getScoreboardSettings().getScoreboardsEnabled())
-                ScoreboardManager.teardownAll();
-
-            formulaManager.saveFormula();
-            /*holidayManager.saveAnniversaryFiles();*/
-            placeStore.saveAll();       // Save our metadata
-            placeStore.cleanUp();       // Cleanup empty metadata stores
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-
-        debug("Canceling all tasks...");
-        getServer().getScheduler().cancelTasks(this); // This removes our tasks
-        debug("Unregister all events...");
-        HandlerList.unregisterAll(this); // Cancel event registrations
-
-        if (mcMMO.getConfigManager().getConfigAutomatedBackups().isZipBackupsEnabled()) {
-            // Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
-            try {
-                ZipLibrary.mcMMOBackup();
-            } catch (IOException e) {
-                getLogger().severe(e.toString());
-            } catch (Throwable e) {
-                if (e instanceof NoClassDefFoundError) {
-                    getLogger().severe("Backup class not found!");
-                    getLogger().info("Please do not replace the mcMMO jar while the server is running.");
-                } else {
-                    getLogger().severe(e.toString());
-                }
-            }
-        }
-
-        databaseManager.onDisable();
-
-        debug("Was disabled."); // How informative!
-    }
-
-    /**
      * The directory in which override locales are kept
      *
      * @return the override locale directory
@@ -492,7 +470,7 @@ public class mcMMO extends JavaPlugin {
      * Setup the various storage file paths
      */
     private void setupFilePaths() {
-        mcmmo = getFile();
+        mcMMOFile = getFile();
         mainDirectory = getDataFolder().getPath() + File.separator;
         localesDirectory = mainDirectory + "locales" + File.separator;
         flatFileDirectory = mainDirectory + "flatfile" + File.separator;
@@ -503,46 +481,10 @@ public class mcMMO extends JavaPlugin {
 
     private void fixFilePaths() {
         File oldFlatfilePath = new File(mainDirectory + "FlatFileStuff" + File.separator);
-        File oldModPath = new File(mainDirectory + "ModConfigs" + File.separator);
 
         if (oldFlatfilePath.exists()) {
             if (!oldFlatfilePath.renameTo(new File(flatFileDirectory))) {
                 getLogger().warning("Failed to rename FlatFileStuff to flatfile!");
-            }
-        }
-
-        if (oldModPath.exists()) {
-            if (!oldModPath.renameTo(new File(modDirectory))) {
-                getLogger().warning("Failed to rename ModConfigs to mods!");
-            }
-        }
-
-        File oldArmorFile = new File(modDirectory + "armor.yml");
-        File oldBlocksFile = new File(modDirectory + "blocks.yml");
-        File oldEntitiesFile = new File(modDirectory + "entities.yml");
-        File oldToolsFile = new File(modDirectory + "tools.yml");
-
-        if (oldArmorFile.exists()) {
-            if (!oldArmorFile.renameTo(new File(modDirectory + "armor.default.yml"))) {
-                getLogger().warning("Failed to rename armor.yml to armor.default.yml!");
-            }
-        }
-
-        if (oldBlocksFile.exists()) {
-            if (!oldBlocksFile.renameTo(new File(modDirectory + "blocks.default.yml"))) {
-                getLogger().warning("Failed to rename blocks.yml to blocks.default.yml!");
-            }
-        }
-
-        if (oldEntitiesFile.exists()) {
-            if (!oldEntitiesFile.renameTo(new File(modDirectory + "entities.default.yml"))) {
-                getLogger().warning("Failed to rename entities.yml to entities.default.yml!");
-            }
-        }
-
-        if (oldToolsFile.exists()) {
-            if (!oldToolsFile.renameTo(new File(modDirectory + "tools.default.yml"))) {
-                getLogger().warning("Failed to rename tools.yml to tools.default.yml!");
             }
         }
 

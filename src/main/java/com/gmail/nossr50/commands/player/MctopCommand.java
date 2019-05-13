@@ -1,6 +1,7 @@
 package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.config.MainConfig;
+import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -100,11 +101,11 @@ public class MctopCommand implements TabExecutor {
                 return;
             }
 
-            if (((Player) sender).hasMetadata(mcMMO.DATABASE_PROCESSING_COMMAND_METAKEY)) {
+            if (((Player) sender).hasMetadata(MetadataConstants.DATABASE_PROCESSING_COMMAND_METAKEY)) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Database.Processing"));
                 return;
             } else {
-                ((Player) sender).setMetadata(mcMMO.DATABASE_PROCESSING_COMMAND_METAKEY, new FixedMetadataValue(mcMMO.p, null));
+                ((Player) sender).setMetadata(MetadataConstants.DATABASE_PROCESSING_COMMAND_METAKEY, new FixedMetadataValue(mcMMO.p, null));
             }
 
             mcMMOPlayer.actualizeDatabaseATS();

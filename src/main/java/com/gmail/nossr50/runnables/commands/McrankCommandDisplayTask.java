@@ -1,5 +1,6 @@
 package com.gmail.nossr50.runnables.commands;
 
+import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -36,7 +37,7 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
         if (useChat) {
             displayChat();
         }
-        ((Player) sender).removeMetadata(mcMMO.DATABASE_PROCESSING_COMMAND_METAKEY, mcMMO.p);
+        ((Player) sender).removeMetadata(MetadataConstants.DATABASE_PROCESSING_COMMAND_METAKEY, mcMMO.p);
     }
 
     private void displayChat() {

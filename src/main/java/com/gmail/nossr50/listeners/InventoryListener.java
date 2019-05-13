@@ -2,6 +2,7 @@ package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
+import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
@@ -58,8 +59,8 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        if (!furnaceBlock.hasMetadata(mcMMO.FURNACE_TRACKING_METAKEY) && furnaceBlock.getMetadata(mcMMO.FURNACE_TRACKING_METAKEY).size() == 0)
-            furnaceBlock.setMetadata(mcMMO.FURNACE_TRACKING_METAKEY, UserManager.getPlayer((Player) player).getPlayerMetadata());
+        if (!furnaceBlock.hasMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY) && furnaceBlock.getMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY).size() == 0)
+            furnaceBlock.setMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY, UserManager.getPlayer((Player) player).getPlayerMetadata());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -70,7 +71,7 @@ public class InventoryListener implements Listener {
 
         Block furnaceBlock = processInventoryOpenOrCloseEvent(event.getInventory());
 
-        if (furnaceBlock == null || furnaceBlock.hasMetadata(mcMMO.FURNACE_TRACKING_METAKEY)) {
+        if (furnaceBlock == null || furnaceBlock.hasMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY)) {
             return;
         }
 
@@ -80,7 +81,7 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        furnaceBlock.removeMetadata(mcMMO.FURNACE_TRACKING_METAKEY, plugin);
+        furnaceBlock.removeMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY, plugin);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -197,15 +198,15 @@ public class InventoryListener implements Listener {
             Block furnaceBlock = processInventoryOpenOrCloseEvent(event.getInventory());
 
             if (furnaceBlock != null) {
-                if (furnaceBlock.getMetadata(mcMMO.FURNACE_TRACKING_METAKEY).size() > 0)
-                    furnaceBlock.removeMetadata(mcMMO.FURNACE_TRACKING_METAKEY, mcMMO.p);
+                if (furnaceBlock.getMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY).size() > 0)
+                    furnaceBlock.removeMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY, mcMMO.p);
 
                 //Profile not loaded
                 if (UserManager.getPlayer(player) == null) {
                     return;
                 }
 
-                furnaceBlock.setMetadata(mcMMO.FURNACE_TRACKING_METAKEY, UserManager.getPlayer(player).getPlayerMetadata());
+                furnaceBlock.setMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY, UserManager.getPlayer(player).getPlayerMetadata());
             }
         }
 
@@ -433,7 +434,7 @@ public class InventoryListener implements Listener {
 
         final HumanEntity whoClicked = event.getWhoClicked();
 
-        if (!whoClicked.hasMetadata(mcMMO.PLAYER_DATA_METAKEY)) {
+        if (!whoClicked.hasMetadata(MetadataConstants.PLAYER_DATA_METAKEY)) {
             return;
         }
 
@@ -469,7 +470,7 @@ public class InventoryListener implements Listener {
     }
 
     private Player getPlayerFromFurnace(Block furnaceBlock) {
-        List<MetadataValue> metadata = furnaceBlock.getMetadata(mcMMO.FURNACE_TRACKING_METAKEY);
+        List<MetadataValue> metadata = furnaceBlock.getMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY);
 
         if (metadata.isEmpty()) {
             return null;

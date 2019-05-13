@@ -1,5 +1,6 @@
 package com.gmail.nossr50.runnables.commands;
 
+import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -42,7 +43,7 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
         }
 
         if (sender instanceof Player) {
-            ((Player) sender).removeMetadata(mcMMO.DATABASE_PROCESSING_COMMAND_METAKEY, mcMMO.p);
+            ((Player) sender).removeMetadata(MetadataConstants.DATABASE_PROCESSING_COMMAND_METAKEY, mcMMO.p);
         }
         if (sender instanceof Player)
             sender.sendMessage(LocaleLoader.getString("Commands.mctop.Tip"));

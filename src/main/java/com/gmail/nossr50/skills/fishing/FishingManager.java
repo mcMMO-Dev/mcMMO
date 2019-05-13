@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills.fishing;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
+import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -88,10 +89,10 @@ public class FishingManager extends SkillManager {
     }
 
     public void setFishHookReference(FishHook fishHook) {
-        if (fishHook.getMetadata(mcMMO.FISH_HOOK_REF_METAKEY).size() > 0)
+        if (fishHook.getMetadata(MetadataConstants.FISH_HOOK_REF_METAKEY).size() > 0)
             return;
 
-        fishHook.setMetadata(mcMMO.FISH_HOOK_REF_METAKEY, mcMMO.metadataValue);
+        fishHook.setMetadata(MetadataConstants.FISH_HOOK_REF_METAKEY, mcMMO.metadataValue);
         fishHookSpawnTimestamp = System.currentTimeMillis();
         fishingRodCastTimestamp = System.currentTimeMillis();
     }

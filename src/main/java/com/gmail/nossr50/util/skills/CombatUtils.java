@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util.skills;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -213,7 +214,7 @@ public final class CombatUtils {
             finalDamage += archeryManager.daze((Player) target);
         }
 
-        if (!arrow.hasMetadata(mcMMO.INFINITE_ARROW_METAKEY) && archeryManager.canRetrieveArrows()) {
+        if (!arrow.hasMetadata(MetadataConstants.INFINITE_ARROW_METAKEY) && archeryManager.canRetrieveArrows()) {
             archeryManager.retrieveArrows(target);
         }
 
@@ -224,7 +225,7 @@ public final class CombatUtils {
         double distanceMultiplier = archeryManager.distanceXpBonusMultiplier(target, arrow);
 
         applyScaledModifiers(initialDamage, finalDamage, event);
-        startGainXp(mcMMOPlayer, target, PrimarySkillType.ARCHERY, arrow.getMetadata(mcMMO.BOW_FORCE_METAKEY).get(0).asDouble() * distanceMultiplier);
+        startGainXp(mcMMOPlayer, target, PrimarySkillType.ARCHERY, arrow.getMetadata(MetadataConstants.BOW_FORCE_METAKEY).get(0).asDouble() * distanceMultiplier);
     }
 
     /**
@@ -437,7 +438,7 @@ public final class CombatUtils {
             return;
         }
 
-        target.setMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.metadataValue);
+        target.setMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY, mcMMO.metadataValue);
         target.damage(damage, attacker);
 
 //        //IFrame storage
@@ -573,11 +574,11 @@ public final class CombatUtils {
                 }
             }
 
-            if (target.hasMetadata(mcMMO.UNNATURAL_MOB_METAKEY)) {
+            if (target.hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY)) {
                 baseXP *= mcMMO.getConfigManager().getConfigExperience().getSpawnedMobXPMult();
             }
 
-            if (target.hasMetadata(mcMMO.BRED_ANIMAL_TRACKING_METAKEY)) {
+            if (target.hasMetadata(MetadataConstants.BRED_ANIMAL_TRACKING_METAKEY)) {
                 baseXP *= mcMMO.getConfigManager().getConfigExperience().getPlayerBredMobsXPMult();
             }
 
@@ -814,7 +815,7 @@ public final class CombatUtils {
             return;
         }
 
-        if (!player.hasMetadata(mcMMO.PLAYER_DATA_METAKEY)) {
+        if (!player.hasMetadata(MetadataConstants.PLAYER_DATA_METAKEY)) {
             return;
         }
 

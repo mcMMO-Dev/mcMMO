@@ -3,6 +3,7 @@ package com.gmail.nossr50.listeners;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.meta.BonusDropMeta;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -66,15 +67,15 @@ public class BlockListener implements Listener {
                 continue;
 
             //TODO: Should just store the amount of drops in the metadata itself and use a loop
-            if (event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).size() > 0) {
-                BonusDropMeta bonusDropMeta = (BonusDropMeta) event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).get(0);
+            if (event.getBlock().getMetadata(MetadataConstants.BONUS_DROPS_METAKEY).size() > 0) {
+                BonusDropMeta bonusDropMeta = (BonusDropMeta) event.getBlock().getMetadata(MetadataConstants.BONUS_DROPS_METAKEY).get(0);
                 int bonusCount = bonusDropMeta.asInt();
 
                 for (int i = 0; i < bonusCount; i++) {
                     event.getBlock().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
                 }
 
-                event.getBlock().removeMetadata(mcMMO.BONUS_DROPS_METAKEY, plugin);
+                event.getBlock().removeMetadata(MetadataConstants.BONUS_DROPS_METAKEY, plugin);
             }
         }
     }
@@ -454,7 +455,7 @@ public class BlockListener implements Listener {
     }
 
     private Player getPlayerFromFurnace(Block furnaceBlock) {
-        List<MetadataValue> metadata = furnaceBlock.getMetadata(mcMMO.FURNACE_TRACKING_METAKEY);
+        List<MetadataValue> metadata = furnaceBlock.getMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY);
 
         if (metadata.isEmpty()) {
             return null;
@@ -573,7 +574,7 @@ public class BlockListener implements Listener {
 
             if (blockState instanceof Furnace) {
                 Furnace furnace = (Furnace) blockState;
-                if (furnace.hasMetadata(mcMMO.FURNACE_TRACKING_METAKEY)) {
+                if (furnace.hasMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY)) {
                     player.sendMessage("[mcMMO DEBUG] This furnace has a registered owner");
                     Player furnacePlayer = getPlayerFromFurnace(furnace.getBlock());
                     if (furnacePlayer != null) {

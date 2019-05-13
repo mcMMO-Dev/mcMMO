@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.herbalism;
 
+import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -188,6 +189,6 @@ public class Herbalism {
      * @return true if the block is recently regrown, false otherwise
      */
     public static boolean isRecentlyRegrown(BlockState blockState) {
-        return blockState.hasMetadata(mcMMO.GREEN_THUMB_METAKEY) && !SkillUtils.cooldownExpired(blockState.getMetadata(mcMMO.GREEN_THUMB_METAKEY).get(0).asInt(), 1);
+        return blockState.hasMetadata(MetadataConstants.GREEN_THUMB_METAKEY) && !SkillUtils.cooldownExpired(blockState.getMetadata(MetadataConstants.GREEN_THUMB_METAKEY).get(0).asInt(), 1);
     }
 }

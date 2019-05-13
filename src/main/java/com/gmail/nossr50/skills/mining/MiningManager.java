@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills.mining;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.MainConfig;
+import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -125,7 +126,7 @@ public class MiningManager extends SkillManager {
         NotificationManager.sendPlayerInformation(player, NotificationType.SUPER_ABILITY, "Mining.Blast.Boom");
         //player.sendMessage(LocaleLoader.getString("Mining.Blast.Boom"));
 
-        tnt.setMetadata(mcMMO.TNT_TRACKING_METAKEY, mcMMOPlayer.getPlayerMetadata());
+        tnt.setMetadata(MetadataConstants.TNT_TRACKING_METAKEY, mcMMOPlayer.getPlayerMetadata());
         tnt.setFuseTicks(0);
         targetBlock.setType(Material.AIR);
 

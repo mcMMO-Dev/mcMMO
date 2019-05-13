@@ -5,6 +5,7 @@ import com.gmail.nossr50.chat.ChatManagerFactory;
 import com.gmail.nossr50.chat.PartyChatManager;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
+import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -150,7 +151,7 @@ public class PlayerListener implements Listener {
 
         Player killedPlayer = event.getEntity();
 
-        if (!killedPlayer.hasMetadata(mcMMO.PLAYER_DATA_METAKEY) || Permissions.hardcoreBypass(killedPlayer)) {
+        if (!killedPlayer.hasMetadata(MetadataConstants.PLAYER_DATA_METAKEY) || Permissions.hardcoreBypass(killedPlayer)) {
             return;
         }
 
@@ -230,7 +231,7 @@ public class PlayerListener implements Listener {
         ItemStack dropStack = drop.getItemStack();
 
         if (ItemUtils.isSharable(dropStack)) {
-            drop.setMetadata(mcMMO.DROPPED_ITEM_TRACKING_METAKEY, mcMMO.metadataValue);
+            drop.setMetadata(MetadataConstants.DROPPED_ITEM_TRACKING_METAKEY, mcMMO.metadataValue);
         }
 
         SkillUtils.removeAbilityBuff(dropStack);
@@ -347,7 +348,7 @@ public class PlayerListener implements Listener {
 
         //Track the hook
         if (mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().isPreventFishingExploits()) {
-            if (event.getHook().getMetadata(mcMMO.FISH_HOOK_REF_METAKEY).size() == 0) {
+            if (event.getHook().getMetadata(MetadataConstants.FISH_HOOK_REF_METAKEY).size() == 0) {
                 fishingManager.setFishHookReference(event.getHook());
             }
 
@@ -440,8 +441,8 @@ public class PlayerListener implements Listener {
             Item drop = event.getItem();
             ItemStack dropStack = drop.getItemStack();
 
-            if (drop.hasMetadata(mcMMO.DISARMED_ITEM_METAKEY)) {
-                if (!player.getName().equals(drop.getMetadata(mcMMO.DISARMED_ITEM_METAKEY).get(0).asString())) {
+            if (drop.hasMetadata(MetadataConstants.DISARMED_ITEM_METAKEY)) {
+                if (!player.getName().equals(drop.getMetadata(MetadataConstants.DISARMED_ITEM_METAKEY).get(0).asString())) {
                     event.setCancelled(true);
                 }
 
@@ -449,7 +450,7 @@ public class PlayerListener implements Listener {
             }
 
 
-            if (!drop.hasMetadata(mcMMO.DROPPED_ITEM_TRACKING_METAKEY) && mcMMOPlayer.inParty() && ItemUtils.isSharable(dropStack)) {
+            if (!drop.hasMetadata(MetadataConstants.DROPPED_ITEM_TRACKING_METAKEY) && mcMMOPlayer.inParty() && ItemUtils.isSharable(dropStack)) {
                 event.setCancelled(ShareHandler.handleItemShare(drop, mcMMOPlayer));
 
                 SoundManager.sendSound(player, player.getLocation(), SoundType.POP);

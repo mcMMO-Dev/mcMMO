@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util;
 
+import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.meta.OldName;
 import com.gmail.nossr50.mcMMO;
@@ -69,11 +70,11 @@ public final class MobHealthbarUtils {
             boolean updateName = !ChatColor.stripColor(oldName).equalsIgnoreCase(ChatColor.stripColor(newName));
 
             if (updateName) {
-                target.setMetadata(mcMMO.CUSTOM_NAME_METAKEY, new FixedMetadataValue(mcMMO.p, oldName));
-                target.setMetadata(mcMMO.NAME_VISIBILITY_METAKEY, new FixedMetadataValue(mcMMO.p, oldNameVisible));
-            } else if (!target.hasMetadata(mcMMO.CUSTOM_NAME_METAKEY)) {
-                target.setMetadata(mcMMO.CUSTOM_NAME_METAKEY, new FixedMetadataValue(mcMMO.p, ""));
-                target.setMetadata(mcMMO.NAME_VISIBILITY_METAKEY, new FixedMetadataValue(mcMMO.p, false));
+                target.setMetadata(MetadataConstants.CUSTOM_NAME_METAKEY, new FixedMetadataValue(mcMMO.p, oldName));
+                target.setMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY, new FixedMetadataValue(mcMMO.p, oldNameVisible));
+            } else if (!target.hasMetadata(MetadataConstants.CUSTOM_NAME_METAKEY)) {
+                target.setMetadata(MetadataConstants.CUSTOM_NAME_METAKEY, new FixedMetadataValue(mcMMO.p, ""));
+                target.setMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY, new FixedMetadataValue(mcMMO.p, false));
             }
 
             new MobHealthDisplayUpdaterTask(target).runTaskLater(mcMMO.p, displayTime * Misc.TICK_CONVERSION_FACTOR); // Clear health display after 3 seconds

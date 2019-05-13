@@ -1,13 +1,13 @@
 package com.gmail.nossr50.skills.unarmed;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.ItemUtils;
@@ -107,7 +107,7 @@ public class UnarmedManager extends SkillManager {
             Item item = Misc.dropItem(defender.getLocation(), defender.getInventory().getItemInMainHand());
 
             if (item != null && AdvancedConfig.getInstance().getDisarmProtected()) {
-                item.setMetadata(mcMMO.DISARMED_ITEM_METAKEY, UserManager.getPlayer(defender).getPlayerMetadata());
+                item.setMetadata(MetadataConstants.DISARMED_ITEM_METAKEY, UserManager.getPlayer(defender).getPlayerMetadata());
             }
 
             defender.getInventory().setItemInMainHand(new ItemStack(Material.AIR));

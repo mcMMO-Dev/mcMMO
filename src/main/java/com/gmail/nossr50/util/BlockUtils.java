@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util;
 
+import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.meta.BonusDropMeta;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
@@ -29,9 +30,9 @@ public final class BlockUtils {
      */
     public static void markDropsAsBonus(BlockState blockState, boolean triple) {
         if (triple)
-            blockState.setMetadata(mcMMO.BONUS_DROPS_METAKEY, new BonusDropMeta(2, mcMMO.p));
+            blockState.setMetadata(MetadataConstants.BONUS_DROPS_METAKEY, new BonusDropMeta(2, mcMMO.p));
         else
-            blockState.setMetadata(mcMMO.BONUS_DROPS_METAKEY, new BonusDropMeta(1, mcMMO.p));
+            blockState.setMetadata(MetadataConstants.BONUS_DROPS_METAKEY, new BonusDropMeta(1, mcMMO.p));
     }
 
     /**
