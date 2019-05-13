@@ -1,3 +1,10 @@
+Version 2.1.59
+    Raised the overfishing limit from 3 to 10
+    Improved the overfishing messages to be more clear about its mechanics
+    Overfishing locale keys renamed "Fishing.ScarcityTip" and "Fishing.LowResourcesTip"
+
+    NOTES: This and other exploit prevention measures are much more customizable in 2.2, which shouldn't be too far off.
+
 Version 2.1.58
     Fixed the wrong locale string being used for Mining Double Drops
 
