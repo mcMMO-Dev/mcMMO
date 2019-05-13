@@ -1,6 +1,5 @@
 package com.gmail.nossr50.config;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.hocon.*;
 import com.gmail.nossr50.config.hocon.admin.ConfigAdmin;
 import com.gmail.nossr50.config.hocon.antiexploit.ConfigExploitPrevention;
@@ -123,7 +122,6 @@ public final class ConfigManager {
     private FishingTreasureConfig fishingTreasureConfig;
     private ExcavationTreasureConfig excavationTreasureConfig;
     private HerbalismTreasureConfig herbalismTreasureConfig;
-    private ExperienceConfig experienceConfig;
     private AdvancedConfig advancedConfig;
     private CoreSkillsConfig coreSkillsConfig;
     private SoundConfig soundConfig;
@@ -338,10 +336,6 @@ public final class ConfigManager {
 
     public RankConfig getRankConfig() {
         return rankConfig;
-    }
-
-    public ExperienceConfig getExperienceConfig() {
-        return experienceConfig;
     }
 
     public ConfigDatabase getConfigDatabase() {

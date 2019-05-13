@@ -2,7 +2,6 @@ package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.meta.BonusDropMeta;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
