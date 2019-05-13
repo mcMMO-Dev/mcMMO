@@ -213,7 +213,7 @@ public class mcMMO extends JavaPlugin {
             /*holidayManager.saveAnniversaryFiles();*/
             placeStore.saveAll();       // Save our metadata
             placeStore.cleanUp();       // Cleanup empty metadata stores
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
