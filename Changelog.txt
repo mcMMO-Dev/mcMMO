@@ -1,5 +1,6 @@
 Version 2.2.0
     mcMMO's config system has been rewritten
+    Nearly every config setting has been renamed and most have brand new comments
     You can now add an unlimited number of custom XP perks with custom defined XP boosts
     Added new subskill to Fishing named 'Inner Peace'
     mcMMO will now warn you in the console if it thinks you are running incompatible server software
@@ -30,7 +31,6 @@ Version 2.2.0
     Added new locale string 'Commands.Reload.Start'
     Added new locale string 'Commands.Reload.Finished'
     Added new permission 'mcmmo.commands.reload'
-    NOTE: Not every config key that was renamed will be listed here
     Lily pads were removed from the Alchemy Ingredient list as they are unused
     Admins will now be notified if a player trips over-fishing exploit detection 3+ times in a row (Locale: "Fishing.OverFishingDetected")
         Note: Admins are players who are op or have adminchat permission.
@@ -49,7 +49,6 @@ Version 2.2.0
     Config Changes
 
     All author ad-type (donations, urls, etc) message config options will now be found in "author_support_advertisements.conf"
-    Config option "URL_Links" renamed -> "Show-Website-Links"
     Added config option for showing author paypal info in /mcmmo (previously this was tied to the motd setting)
     Added config option for showing author patreon links in various commands
 
@@ -75,9 +74,6 @@ Version 2.2.0
 
     Party config options will now be found in "party.conf"
     Added toggle to completely disable parties
-    Party's "MaxSize" renamed -> "Party-Max-Size"
-    Party's "AutoKick_Interval" renamed -> "Hours-Between-Cleanup-Operations"
-    Party's "Old_Party_Member_Cutoff" renamed -> "Offline-Day-Limit"
     Added toggle to limit max party size, previously this was done by setting party maximum size above -1
     Leveling your Party-Level now requires being near another party member by default
     Leveling your Party now is no longer tied to player xp formula variables and instead uses its own parameters
@@ -87,7 +83,6 @@ Version 2.2.0
     Notification config options will now be found in "chat_and_hud_notifications.conf"
 
     MOTD (Message of the day) config options will now be found in "motd.conf"
-    MOTD's "MOTD_Enabled" renamed -> "Show-MOTD-On-Player-Join"
 
     Anonymous statistic config options will now be found in "analytics_reporting.conf"
 
@@ -99,7 +94,6 @@ Version 2.2.0
     You can now configure multiple items as detonators for Blast Mining
 
     Exploit related config options will now be found in "exploit-prevention"
-    Exploit Prevention's "EndermanEndermiteFarms" renamed -> "Endermen-Endermite-Fix"
     Added toggle for pistons marking natural blocks as unnatural after being moved to prevent afk stone farms
     Added toggle for marking spawned mobs for giving modified XP
     Added toggle for tamed mobs to give combat XP when struck
@@ -111,9 +105,6 @@ Version 2.2.0
     Added settings for how often a fishing rod has to be spammed to trigger abuse detection
 
     Settings related to Player Leveling are now found in "player_leveling.conf"
-    Player Leveling's "TruncateSkills" renamed -> "Reduce-Player-Skills-Above-Cap"
-    Player Leveling's "StartingLevel" renamed -> "Player-Starting-Level"
-    Retro mode setting's "Enable" renamed -> "Use-Retro-Mode"
     Added new toggles for enabling level caps (previously this was done by setting the value above 0)
 
     World Blacklist settings can now be found in "world_blacklist.conf"
@@ -121,25 +112,13 @@ Version 2.2.0
 
     Scoreboard settings can now be found in "scoreboard.conf"
     Scoreboard's "Allow_Keep" setting was removed because it was doing something permissions should be doing instead, and I don't see why such a thing even needs a permission!
-    Scoreboard's "Power_Level_Tags" renamed -> "Display-Power-Levels-Below-Player-Names"
-    Scoreboard's "Show_Stats_After_Login" renamed -> "Show-Stats-Scoreboard-On-Player-Login"
-    Scoreboard's "Rainbow" renamed -> "Use-Rainbow-Styling-For-Skill-Names"
-    Scoreboard's "Ability_Names" renamed -> "Use-Super-Ability-Name-Instead-Of-Generic-Name"
-    Scoreboard's "Print" renamed -> "Show-Command-Output-In-Chat"
-    Scoreboard's "Board" renamed -> "Show-Scoreboard"
-    Scoreboard's "Display_Time" renamed -> "Display-Time-In-Seconds"
-    Scoreboard.Misc.Ability locale entry renamed from "Ability" to "Super Ability", this is used only if scoreboards are enabled and super ability names are disabled in scoreboard.conf
 
     MySQL and FlatFile Settings can now be found in "database_settings.conf"
     Added new config setting for the update interval of FlatFile scoreboards
     Added new config toggle for purging power-less users
     Added new config toggle for purging inactive users
-    Database Purging's "Purge_Interval" renamed -> "Purge-Interval-In-Hours"
-    Database Purging's "Old_User_Cutoff" renamed -> "Old-User-Cutoff-In-Months"
     Added setting for only purging users on plugin start up
     MySQL User settings are now in the User Category instead of being in the Database category
-    MySQL's "Enabled" renamed -> "Use-MySQL"
-    MySQL's "Name" renamed -> "Database-Name"
     MySQL Pool and MaxConnection settings for Save/Load/Misc pools have had their names updated to include setting information
 
     Repair and Salvage configs are now confined to a single file
@@ -165,7 +144,6 @@ Version 2.2.0
     mcMMO now uses floats instead of doubles when appropriate (mostly XP value calculations)
     mcMMO now tracks and exposes a players specific XP boosts in each skill, which are normally only altered through XP perks
     Added 'getPlayersPersonalXPRate' to Experience API - Grabs the players current XP rate, defaults to 1.0F but is overwritten by any xp perks permissions
-    SimpleRepairable/SimpleSalvageable renamed to just Repairable/Salvageable, and their unnecessary interface classes were removed
     Added API method to check if player parties are size capped
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped

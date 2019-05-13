@@ -11,6 +11,7 @@ import com.gmail.nossr50.config.hocon.party.ConfigSectionPartyLevel;
 import com.gmail.nossr50.config.hocon.playerleveling.ConfigLeveling;
 import com.gmail.nossr50.config.hocon.scoreboard.ConfigScoreboard;
 import com.gmail.nossr50.core.DynamicSettingsManager;
+import com.gmail.nossr50.core.MaterialMapStore;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;

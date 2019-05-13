@@ -1,4 +1,4 @@
-package com.gmail.nossr50.util;
+package com.gmail.nossr50.core;
 
 import org.bukkit.Material;
 
