@@ -5,6 +5,8 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
 
 import java.util.HashMap;
 
@@ -33,9 +35,44 @@ public class ConfigLeveling {
     @Setting(value = "Diminished-Returns", comment = "Penalize players for gaining XP too quickly in a given time period.")
     private ConfigLevelingDiminishedReturns configLevelingDiminishedReturns = new ConfigLevelingDiminishedReturns();
 
+    @Setting(value = "Experience-Bars", comment = "Settings related to experience bars")
+    private ConfigExperienceBars configExperienceBars = new ConfigExperienceBars();
+
     /*
      * GETTER BOILERPLATE
      */
+
+    public boolean isPartyExperienceTriggerXpBarDisplay() {
+        return configExperienceBars.isPartyExperienceTriggerXpBarDisplay();
+    }
+
+    public boolean isPassiveGainXPBars() {
+        return configExperienceBars.isPassiveGainXPBars();
+    }
+
+    public boolean isMoreDetailedXPBars() {
+        return configExperienceBars.isMoreDetailedXPBars();
+    }
+
+    public boolean isEnableXPBars() {
+        return configExperienceBars.isEnableXPBars();
+    }
+
+    public HashMap<PrimarySkillType, Boolean> getXpBarSpecificToggles() {
+        return configExperienceBars.getXpBarSpecificToggles();
+    }
+
+    public HashMap<PrimarySkillType, BarColor> getXpBarColorMap() {
+        return configExperienceBars.getXpBarColorMap();
+    }
+
+    public HashMap<PrimarySkillType, BarStyle> getXpBarStyleMap() {
+        return configExperienceBars.getXpBarStyleMap();
+    }
+
+    public ConfigExperienceBars getConfigExperienceBars() {
+        return configExperienceBars;
+    }
 
     public float getGuaranteedMinimums() {
         return configLevelingDiminishedReturns.getGuaranteedMinimums();
