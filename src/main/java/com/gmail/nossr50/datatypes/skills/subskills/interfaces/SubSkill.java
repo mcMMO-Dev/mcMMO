@@ -73,13 +73,6 @@ public interface SubSkill extends Skill {
     void addStats(ComponentBuilder componentBuilder, Player player);
 
     /**
-     * Whether or not this subskill is enabled
-     *
-     * @return true if enabled
-     */
-    boolean isEnabled();
-
-    /**
      * Prints detailed info about this subskill to the player
      *
      * @param player the target player

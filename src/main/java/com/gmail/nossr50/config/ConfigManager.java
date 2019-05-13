@@ -24,6 +24,7 @@ import com.gmail.nossr50.config.hocon.skills.acrobatics.ConfigAcrobatics;
 import com.gmail.nossr50.config.hocon.skills.alchemy.ConfigAlchemy;
 import com.gmail.nossr50.config.hocon.skills.archery.ConfigArchery;
 import com.gmail.nossr50.config.hocon.skills.axes.ConfigAxes;
+import com.gmail.nossr50.config.hocon.skills.coreskills.ConfigCoreSkills;
 import com.gmail.nossr50.config.hocon.skills.exampleconfigs.ConfigNameRegisterDefaults;
 import com.gmail.nossr50.config.hocon.skills.exampleconfigs.MinecraftMaterialWrapper;
 import com.gmail.nossr50.config.hocon.skills.excavation.ConfigExcavation;
@@ -93,6 +94,7 @@ public final class ConfigManager {
     private SerializedConfigLoader<ConfigAdmin> configAdmin;
     private SerializedConfigLoader<ConfigMobs> configMobs;
     private SerializedConfigLoader<ConfigExperience> configExperience;
+    private SerializedConfigLoader<ConfigCoreSkills> configCoreSkills;
     private SerializedConfigLoader<ConfigNameRegisterDefaults> configDefaultExamples;
 
     private ConfigAcrobatics configAcrobatics;
@@ -123,7 +125,6 @@ public final class ConfigManager {
     private ExcavationTreasureConfig excavationTreasureConfig;
     private HerbalismTreasureConfig herbalismTreasureConfig;
     private AdvancedConfig advancedConfig;
-    private CoreSkillsConfig coreSkillsConfig;
     private SoundConfig soundConfig;
     private RankConfig rankConfig;
 
@@ -177,6 +178,7 @@ public final class ConfigManager {
         configAdmin = new SerializedConfigLoader<>(ConfigAdmin.class, "admin.conf", "Admin", null);
         configMobs = new SerializedConfigLoader<>(ConfigMobs.class, "creatures.conf", "Creatures", null);
         configExperience = new SerializedConfigLoader<>(ConfigExperience.class, "experience.conf", "Experience", null);
+        configCoreSkills = new SerializedConfigLoader<>(ConfigCoreSkills.class, "core_skills.conf", "Core-Skills", null);
 
         configDefaultExamples = new SerializedConfigLoader<>(ConfigNameRegisterDefaults.class, "minecraft_item_block_name_examples.conf", "Minecraft", null);
         initSerializedSkillConfigs();
@@ -326,8 +328,8 @@ public final class ConfigManager {
         return advancedConfig;
     }
 
-    public CoreSkillsConfig getCoreSkillsConfig() {
-        return coreSkillsConfig;
+    public ConfigCoreSkills getConfigCoreSkills() {
+        return configCoreSkills.getConfig();
     }
 
     public SoundConfig getSoundConfig() {

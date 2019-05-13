@@ -1,7 +1,6 @@
 package com.gmail.nossr50;
 
 import com.gmail.nossr50.config.ConfigManager;
-import com.gmail.nossr50.config.CoreSkillsConfig;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.hocon.database.ConfigSectionCleaning;
 import com.gmail.nossr50.config.hocon.database.ConfigSectionMySQL;
@@ -14,7 +13,6 @@ import com.gmail.nossr50.core.MaterialMapStore;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.acrobatics.Roll;
 import com.gmail.nossr50.listeners.*;
 import com.gmail.nossr50.party.PartyManager;
@@ -508,13 +506,14 @@ public class mcMMO extends JavaPlugin {
          * Acrobatics skills
          */
 
-        if (CoreSkillsConfig.getInstance().isPrimarySkillEnabled(PrimarySkillType.ACROBATICS)) {
+        if (mcMMO.getConfigManager().getConfigCoreSkills().isAcrobaticsEnabled()) {
             System.out.println("[mcMMO]" + " enabling Acrobatics Skills");
 
             //TODO: Should do this differently
-            Roll roll = new Roll();
-            CoreSkillsConfig.getInstance().isSkillEnabled(roll);
-            InteractionManager.registerSubSkill(new Roll());
+            if(mcMMO.getConfigManager().getConfigCoreSkills().isRollEnabled())
+            {
+                InteractionManager.registerSubSkill(new Roll());
+            }
         }
     }
 

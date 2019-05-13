@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes.skills.subskills;
 
-import com.gmail.nossr50.config.CoreSkillsConfig;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.Interaction;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.Rank;
@@ -31,18 +30,6 @@ public abstract class AbstractSubSkill implements SubSkill, Interaction, Rank, S
     @Override
     public String getDescription() {
         return LocaleLoader.getString(getPrimaryKeyName() + ".SubSkill." + getConfigKeyName() + ".Description");
-    }
-
-    /**
-     * Whether or not this subskill is enabled
-     *
-     * @return true if enabled
-     */
-    @Override
-    @Deprecated
-    public boolean isEnabled() {
-        //TODO: This might be troublesome...
-        return CoreSkillsConfig.getInstance().isSkillEnabled(this);
     }
 
     /**

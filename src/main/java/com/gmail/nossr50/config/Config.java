@@ -95,8 +95,17 @@ public abstract class Config implements VersionedConfig {
         }
 
         //Cleanup and backup registers
+//        registerUnload();
         registerFileBackup();
     }
+
+//    /**
+//     * Registers with the config managers unloader
+//     * The unloader runs when the plugin gets disabled which cleans up registries to make reloading safe
+//     */
+//    private void registerUnload() {
+//        mcMMO.getConfigManager().registerUnloadable(this);
+//    }
 
     /**
      * Registers with the config managers file list
@@ -276,9 +285,9 @@ public abstract class Config implements VersionedConfig {
      *
      * @return the path to the defaults directory
      */
-//    private String getDefaultConfigCopyRelativePath() {
-//        return getDefaultConfigFile().getPath();
-//    }
+    private String getDefaultConfigCopyRelativePath() {
+        return getDefaultConfigFile().getPath();
+    }
 
     /**
      * Grabs the File representation of the default config, which is stored on disk in a defaults folder
@@ -286,9 +295,9 @@ public abstract class Config implements VersionedConfig {
      *
      * @return the copy of the default config file, stored in the defaults directory
      */
-//    private File getDefaultConfigFile() {
-//        return new File(ConfigConstants.getDefaultsFolder(), FILE_RELATIVE_PATH);
-//    }
+    private File getDefaultConfigFile() {
+        return new File(ConfigConstants.getDefaultsFolder(), FILE_RELATIVE_PATH);
+    }
 
     /**
      * Creates the defaults directory
