@@ -63,7 +63,7 @@ public class BlockListener implements Listener {
             if (is.getAmount() <= 0)
                 continue;
 
-            if (!mcMMO.getConfigManager().getBonusDropManager().isBonusDropWhitelisted(is.getType()))
+            if (!mcMMO.getDynamicSettingsManager().getBonusDropManager().isBonusDropWhitelisted(is.getType()))
                 continue;
 
             //TODO: Should just store the amount of drops in the metadata itself and use a loop

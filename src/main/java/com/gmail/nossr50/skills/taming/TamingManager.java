@@ -106,7 +106,7 @@ public class TamingManager extends SkillManager {
      * @param entity The LivingEntity to award XP for
      */
     public void awardTamingXP(LivingEntity entity) {
-        applyXpGain(mcMMO.getConfigManager().getExperienceMapManager().getTamingXp(entity.getType()), XPGainReason.PVE);
+        applyXpGain(mcMMO.getDynamicSettingsManager().getExperienceMapManager().getTamingXp(entity.getType()), XPGainReason.PVE);
     }
 
     /**
@@ -308,7 +308,7 @@ public class TamingManager extends SkillManager {
                 continue;
             }
 
-            entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, mcMMO.metadataValue);
+            entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
             ((Tameable) entity).setOwner(player);
             entity.setRemoveWhenFarAway(false);
 

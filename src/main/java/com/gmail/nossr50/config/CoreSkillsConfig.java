@@ -39,11 +39,6 @@ public class CoreSkillsConfig extends Config {
         return 1;
     }
 
-    @Override
-    public void unload() {
-        //Nothing to do
-    }
-
     /*
      * Skill Settings
      */

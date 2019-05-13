@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Handles loading and cacheing configuration settings from a configurable compatible config file
  */
-public abstract class Config implements VersionedConfig, Unload {
+public abstract class Config implements VersionedConfig {
 
     public static final String HOCON_FILE_EXTENSION = ".conf";
     public final File DIRECTORY_DATA_FOLDER; //Directory that the file is in
@@ -95,16 +95,7 @@ public abstract class Config implements VersionedConfig, Unload {
         }
 
         //Cleanup and backup registers
-        registerUnload();
         registerFileBackup();
-    }
-
-    /**
-     * Registers with the config managers unloader
-     * The unloader runs when the plugin gets disabled which cleans up registries to make reloading safe
-     */
-    private void registerUnload() {
-        mcMMO.getConfigManager().registerUnloadable(this);
     }
 
     /**

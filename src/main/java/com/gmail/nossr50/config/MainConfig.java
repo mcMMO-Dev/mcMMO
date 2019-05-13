@@ -218,11 +218,6 @@ public class MainConfig extends ConfigValidated {
         return mcMMO.getConfigManager().getMainConfig();
     }
 
-    @Override
-    public void unload() {
-        //do nothing
-    }
-
     /**
      * The version of this config
      *

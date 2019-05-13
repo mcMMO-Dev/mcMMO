@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class XprateCommand implements TabExecutor {
-    private final double ORIGINAL_XP_RATE = mcMMO.getConfigManager().getExperienceMapManager().getGlobalXpMult();
+    private final double ORIGINAL_XP_RATE = mcMMO.getDynamicSettingsManager().getExperienceMapManager().getGlobalXpMult();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -48,7 +48,7 @@ public class XprateCommand implements TabExecutor {
                     mcMMO.p.toggleXpEventEnabled();
                 }
 
-                mcMMO.getConfigManager().getExperienceMapManager().resetGlobalXpMult();
+                mcMMO.getDynamicSettingsManager().getExperienceMapManager().resetGlobalXpMult();
                 return true;
 
             case 2:
@@ -76,7 +76,7 @@ public class XprateCommand implements TabExecutor {
                     return true;
                 }
 
-                mcMMO.getConfigManager().getExperienceMapManager().setGlobalXpMult(newXpRate);
+                mcMMO.getDynamicSettingsManager().getExperienceMapManager().setGlobalXpMult(newXpRate);
 
                 if (mcMMO.p.isXPEventEnabled()) {
                     if (AdvancedConfig.getInstance().useTitlesForXPEvent()) {

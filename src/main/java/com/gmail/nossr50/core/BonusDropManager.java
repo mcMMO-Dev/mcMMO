@@ -1,6 +1,5 @@
 package com.gmail.nossr50.core;
 
-import com.gmail.nossr50.config.Unload;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
 
@@ -10,7 +9,7 @@ import java.util.List;
 /**
  * Manages a collection of whitelisted materials for Double Drops
  */
-public class BonusDropManager implements Unload {
+public class BonusDropManager {
 
     private HashMap<Material, Boolean> bonusDropWhitelist;
 
@@ -23,7 +22,6 @@ public class BonusDropManager implements Unload {
         }
     }
 
-    @Override
     public void unload() {
         bonusDropWhitelist.clear();
     }

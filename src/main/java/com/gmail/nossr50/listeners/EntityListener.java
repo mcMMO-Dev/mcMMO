@@ -57,7 +57,7 @@ public class EntityListener implements Listener {
         //Transfer metadata keys from mob-spawned mobs to new mobs
         if (event.getEntity().getMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY) != null || event.getEntity().getMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY).size() >= 1) {
             for (Entity entity : event.getTransformedEntities()) {
-                entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, mcMMO.metadataValue);
+                entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
             }
         }
     }
@@ -70,7 +70,7 @@ public class EntityListener implements Listener {
         //Prevent entities from giving XP if they target endermite
         if (event.getTarget() instanceof Endermite) {
             if (event.getEntity().getMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY) == null || event.getEntity().getMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY).size() <= 0)
-                event.getEntity().setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, mcMMO.metadataValue);
+                event.getEntity().setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
         }
     }
 
@@ -99,7 +99,7 @@ public class EntityListener implements Listener {
         ItemStack bow = event.getBow();
 
         if (bow != null && bow.containsEnchantment(Enchantment.ARROW_INFINITE)) {
-            projectile.setMetadata(MetadataConstants.INFINITE_ARROW_METAKEY, mcMMO.metadataValue);
+            projectile.setMetadata(MetadataConstants.INFINITE_ARROW_METAKEY, MetadataConstants.metadataValue);
         }
 
         projectile.setMetadata(MetadataConstants.BOW_FORCE_METAKEY, new FixedMetadataValue(plugin, Math.min(event.getForce() * AdvancedConfig.getInstance().getForceMultiplier(), 1.0)));
@@ -161,7 +161,7 @@ public class EntityListener implements Listener {
 
             if (mcMMO.getPlaceStore().isTrue(block) && !isTracked) {
                 mcMMO.getPlaceStore().setFalse(block);
-                entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, mcMMO.metadataValue);
+                entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
             } else if (isTracked) {
                 mcMMO.getPlaceStore().setTrue(block);
             }
@@ -618,18 +618,18 @@ public class EntityListener implements Listener {
             case SPAWNER:
             case SPAWNER_EGG:
                 if (mcMMO.getConfigManager().getConfigExploitPrevention().doSpawnedEntitiesGiveModifiedXP()) {
-                    entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, mcMMO.metadataValue);
+                    entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
 
                     Entity passenger = entity.getPassenger();
 
                     if (passenger != null) {
-                        passenger.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, mcMMO.metadataValue);
+                        passenger.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
                     }
                 }
                 return;
 
             case BREEDING:
-                entity.setMetadata(MetadataConstants.BRED_ANIMAL_TRACKING_METAKEY, mcMMO.metadataValue);
+                entity.setMetadata(MetadataConstants.BRED_ANIMAL_TRACKING_METAKEY, MetadataConstants.metadataValue);
                 return;
 
             default:
@@ -869,7 +869,7 @@ public class EntityListener implements Listener {
         }
 
         if (mcMMO.getConfigManager().getConfigExploitPrevention().doTamedEntitiesGiveXP())
-            entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, mcMMO.metadataValue);
+            entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
 
         //Profile not loaded
         //TODO: Redundant
@@ -953,7 +953,7 @@ public class EntityListener implements Listener {
             return;
 
         if (event.getEntity().hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY)) {
-            event.getPigZombie().setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, mcMMO.metadataValue);
+            event.getPigZombie().setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
         }
     }
 }

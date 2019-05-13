@@ -34,11 +34,6 @@ public class SoundConfig extends ConfigValidated {
         return mcMMO.getConfigManager().getSoundConfig();
     }
 
-    @Override
-    public void unload() {
-
-    }
-
     /**
      * The version of this config
      *

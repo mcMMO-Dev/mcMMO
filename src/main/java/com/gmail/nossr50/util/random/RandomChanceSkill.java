@@ -33,7 +33,7 @@ public class RandomChanceSkill implements RandomChanceExecution {
 
     public RandomChanceSkill(Player player, SubSkillType subSkillType, boolean hasCap) {
         if (hasCap)
-            this.probabilityCap = mcMMO.getConfigManager().getSkillMaxChance(subSkillType);
+            this.probabilityCap = mcMMO.getDynamicSettingsManager().getSkillMaxChance(subSkillType);
         else
             this.probabilityCap = RandomChanceUtil.LINEAR_CURVE_VAR;
 
@@ -86,7 +86,7 @@ public class RandomChanceSkill implements RandomChanceExecution {
      * @return the maximum bonus from skill level for this skill
      */
     public double getMaximumBonusLevelCap() {
-        return mcMMO.getConfigManager().getSkillMaxBonusLevel(subSkillType);
+        return mcMMO.getDynamicSettingsManager().getSkillMaxBonusLevel(subSkillType);
     }
 
     /**

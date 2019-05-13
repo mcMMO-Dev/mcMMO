@@ -32,7 +32,7 @@ public class Mining {
      * @param blockState The {@link BlockState} to check ability activation for
      */
     public static int getBlockXp(BlockState blockState) {
-        int xp = mcMMO.getConfigManager().getExperienceMapManager().getMiningXp(blockState.getType());
+        int xp = mcMMO.getDynamicSettingsManager().getExperienceMapManager().getMiningXp(blockState.getType());
 
         return xp;
     }

@@ -42,7 +42,7 @@ public final class BlockUtils {
      * @return true if the player succeeded in the check
      */
     public static boolean checkDoubleDrops(Player player, BlockState blockState, SubSkillType subSkillType) {
-        if (mcMMO.getConfigManager().isBonusDropsEnabled(blockState.getType()) && Permissions.isSubSkillEnabled(player, subSkillType)) {
+        if (mcMMO.getDynamicSettingsManager().isBonusDropsEnabled(blockState.getType()) && Permissions.isSubSkillEnabled(player, subSkillType)) {
             return RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkill(player, subSkillType, true));
         }
 
@@ -129,7 +129,7 @@ public final class BlockUtils {
      * @return true if the block should affected by Green Terra, false otherwise
      */
     public static boolean affectedByGreenTerra(BlockState blockState) {
-        return mcMMO.getConfigManager().getExperienceMapManager().hasHerbalismXp(blockState.getType());
+        return mcMMO.getDynamicSettingsManager().getExperienceMapManager().hasHerbalismXp(blockState.getType());
     }
 
     /**
@@ -139,7 +139,7 @@ public final class BlockUtils {
      * @return true if the block should affected by Green Terra, false otherwise
      */
     public static boolean affectedByGreenTerra(Material material) {
-        return mcMMO.getConfigManager().getExperienceMapManager().hasHerbalismXp(material);
+        return mcMMO.getDynamicSettingsManager().getExperienceMapManager().hasHerbalismXp(material);
     }
 
     /**
@@ -150,7 +150,7 @@ public final class BlockUtils {
      * otherwise
      */
     public static Boolean affectedBySuperBreaker(BlockState blockState) {
-        if (mcMMO.getConfigManager().getExperienceMapManager().hasMiningXp(blockState.getType()))
+        if (mcMMO.getDynamicSettingsManager().getExperienceMapManager().hasMiningXp(blockState.getType()))
             return true;
 
         return isMineable(blockState);
@@ -164,7 +164,7 @@ public final class BlockUtils {
      * otherwise
      */
     public static Boolean affectedBySuperBreaker(Material material) {
-        if (mcMMO.getConfigManager().getExperienceMapManager().hasMiningXp(material))
+        if (mcMMO.getDynamicSettingsManager().getExperienceMapManager().hasMiningXp(material))
             return true;
 
         return isMineable(material);
@@ -215,7 +215,7 @@ public final class BlockUtils {
      * otherwise
      */
     public static boolean affectedByGigaDrillBreaker(Material material) {
-        if (mcMMO.getConfigManager().getExperienceMapManager().hasExcavationXp(material))
+        if (mcMMO.getDynamicSettingsManager().getExperienceMapManager().hasExcavationXp(material))
             return true;
 
         return isDiggable(material);
@@ -229,7 +229,7 @@ public final class BlockUtils {
      * otherwise
      */
     public static boolean affectedByGigaDrillBreaker(BlockState blockState) {
-        if (mcMMO.getConfigManager().getExperienceMapManager().hasExcavationXp(blockState.getType()))
+        if (mcMMO.getDynamicSettingsManager().getExperienceMapManager().hasExcavationXp(blockState.getType()))
             return true;
 
         return isDiggable(blockState);
@@ -281,7 +281,7 @@ public final class BlockUtils {
      * @return true if the block is a log, false otherwise
      */
     public static boolean isLog(BlockState blockState) {
-        if (mcMMO.getConfigManager().getExperienceMapManager().hasWoodcuttingXp(blockState.getType()))
+        if (mcMMO.getDynamicSettingsManager().getExperienceMapManager().hasWoodcuttingXp(blockState.getType()))
             return true;
 
         return isLoggingRelated(blockState);
@@ -295,7 +295,7 @@ public final class BlockUtils {
      * @return true if the block is a log, false otherwise
      */
     public static boolean isLog(Material material) {
-        if (mcMMO.getConfigManager().getExperienceMapManager().hasWoodcuttingXp(material))
+        if (mcMMO.getDynamicSettingsManager().getExperienceMapManager().hasWoodcuttingXp(material))
             return true;
 
         return isLoggingRelated(material);

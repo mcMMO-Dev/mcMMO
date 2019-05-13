@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class FishingTreasureConfig extends Config implements UnsafeValueValidation, Registers {
+public class FishingTreasureConfig extends Config implements UnsafeValueValidation {
     public static final String PLAYER = "PLAYER";
     public static final String INVENTORY = "INVENTORY";
     public static final String WHOLE_STACKS = "Whole_Stacks";
@@ -45,7 +45,6 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
 
     public FishingTreasureConfig() {
         super("fishing_drops", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, false, true, false);
-        register();
     }
 
     /**
@@ -59,121 +58,6 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
     @Deprecated
     public static FishingTreasureConfig getInstance() {
         return mcMMO.getConfigManager().getFishingTreasureConfig();
-    }
-
-    /**
-     * Register stuff
-     */
-    @Override
-    public void register() {
-        /* FISHING TREASURES */
-
-        ConfigurationNode fishingTreasureNode = getUserRootNode().getNode(FISHING);
-
-        if (fishingTreasureNode == null) {
-            mcMMO.p.getLogger().info("Fishing treasures in treasures config not defined");
-            return;
-        }
-
-
-        // Initialize fishing HashMap
-        for (Rarity rarity : Rarity.values()) {
-            if (!fishingRewards.containsKey(rarity)) {
-                fishingRewards.put(rarity, (new ArrayList<>()));
-            }
-        }
-
-        try {
-            for (ConfigurationNode treasureNode : fishingTreasureNode.getChildrenList()) {
-
-                String treasureName = treasureNode.getString();
-                //Treasure Material Definition
-                Material treasureMaterial = Material.matchMaterial(treasureName.toUpperCase());
-
-                if (treasureMaterial != null) {
-                    ConfigurationNode currentTreasure = fishingTreasureNode.getNode(treasureName);
-
-                    //TODO: Rewrite the entire treasure system because it sucks
-
-                    /*
-                     * TREASURE PARAMETERS
-                     */
-                    int amount = currentTreasure.getNode(AMOUNT).getInt();
-                    int xp = currentTreasure.getNode(XP).getInt();
-                    String customName = null;
-
-                    /*
-                     * PARAMETER INIT
-                     */
-
-                    ArrayList<String> dropsFrom = new ArrayList(currentTreasure.getNode(DROPS_FROM).getList(TypeToken.of(String.class)));
-
-                    //VALIDATE AMOUNT
-                    if (amount <= 0) {
-                        mcMMO.p.getLogger().severe("Excavation Treasure named " + treasureName + " in the config has an amount of 0 or below, is this intentional?");
-                        mcMMO.p.getLogger().severe("Skipping " + treasureName + " for being invalid");
-                        continue;
-                    }
-
-                    //VALIDATE XP
-                    if (xp <= 0) {
-                        mcMMO.p.getLogger().info("Excavation Treasure named " + treasureName + " in the config has xp set to 0 or below, is this intentional?");
-                        xp = 0;
-                    }
-
-                    //VALIDATE DROP SOURCES
-                    if (dropsFrom == null || dropsFrom.isEmpty()) {
-                        mcMMO.p.getLogger().severe("Excavation Treasure named " + treasureName + " in the config has no drop targets, which would make it impossible to obtain, is this intentional?");
-                        mcMMO.p.getLogger().severe("Skipping " + treasureName + " for being invalid");
-                        continue;
-                    }
-
-                    /* OPTIONAL PARAMETERS */
-
-                    //Custom Name
-
-                    if (currentTreasure.getNode(CUSTOM_NAME) != null && !currentTreasure.getNode(CUSTOM_NAME).getString().equalsIgnoreCase("ChangeMe")) {
-                        customName = currentTreasure.getNode(CUSTOM_NAME).getString();
-                    }
-
-                    /*
-                     * REGISTER TREASURE
-                     */
-
-                    FishingTreasure fishingTreasure = TreasureFactory.makeFishingTreasure(treasureMaterial, amount, xp, customName, currentTreasure.getNode(LORE));
-
-                    /*
-                     * Add to map
-                     */
-
-                    String configRarity = currentTreasure.getNode(RARITY).getString();
-
-                    for (Rarity rarity : Rarity.values()) {
-                        if (rarity.toString().equalsIgnoreCase(configRarity)) {
-                            /*if(fishingRewards.get(rarity) == null)
-                                fishingRewards.put(rarity, new ArrayList<>());*/
-
-                            fishingRewards.get(rarity).add(fishingTreasure);
-                        }
-                    }
-
-                } else {
-                    mcMMO.p.getLogger().severe("Excavation Treasure Config - Material named " + treasureName + " does not match any known material.");
-                }
-            }
-        } catch (ObjectMappingException e) {
-            e.printStackTrace();
-        }
-
-        //Shake
-        for (EntityType entity : EntityType.values()) {
-            if (entity.isAlive()) {
-                loadShake(entity);
-            }
-        }
-
-        //Enchantments
-        loadEnchantments();
     }
 
     private void loadShake(EntityType entityType) {
@@ -304,13 +188,6 @@ public class FishingTreasureConfig extends Config implements UnsafeValueValidati
             }
 
         }
-    }
-
-    @Override
-    public void unload() {
-        shakeMap.clear();
-        fishingRewards.clear();
-        fishingEnchantments.clear();
     }
 
     @Override

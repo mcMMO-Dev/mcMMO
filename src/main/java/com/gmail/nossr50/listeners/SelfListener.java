@@ -119,7 +119,7 @@ public class SelfListener implements Listener {
 
         float guaranteedMinimum = ExperienceConfig.getInstance().getDiminishedReturnsCap() * rawXp;
 
-        float modifiedThreshold = (float) (threshold / primarySkillType.getXpModifier() * mcMMO.getConfigManager().getExperienceMapManager().getGlobalXpMult());
+        float modifiedThreshold = (float) (threshold / primarySkillType.getXpModifier() * mcMMO.getDynamicSettingsManager().getExperienceMapManager().getGlobalXpMult());
         float difference = (mcMMOPlayer.getProfile().getRegisteredXpGain(primarySkillType) - modifiedThreshold) / modifiedThreshold;
 
         if (difference > 0) {

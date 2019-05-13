@@ -24,7 +24,7 @@ public class Excavation {
     }
 
     protected static int getBlockXP(BlockState blockState) {
-        int xp = mcMMO.getConfigManager().getExperienceMapManager().getExcavationXp(blockState.getType());
+        int xp = mcMMO.getDynamicSettingsManager().getExperienceMapManager().getExcavationXp(blockState.getType());
 
         return xp;
     }

@@ -11,6 +11,7 @@ import com.gmail.nossr50.config.hocon.party.ConfigSectionPartyLevel;
 import com.gmail.nossr50.config.hocon.playerleveling.ConfigLeveling;
 import com.gmail.nossr50.config.hocon.scoreboard.ConfigScoreboard;
 import com.gmail.nossr50.core.DynamicSettingsManager;
+import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -55,7 +56,6 @@ public class mcMMO extends JavaPlugin {
     public static mcMMO p;
     // Jar Stuff
     public static File mcMMOFile;
-    public static FixedMetadataValue metadataValue;
     /* Managers */
     private static ChunkManager placeStore;
     private static ConfigManager configManager;
@@ -92,7 +92,7 @@ public class mcMMO extends JavaPlugin {
             /*getLogger().info(Bukkit.getBukkitVersion());
             getLogger().info(Bukkit.getVersion());*/
 
-            metadataValue = new FixedMetadataValue(this, true);
+            MetadataConstants.metadataValue = new FixedMetadataValue(this, true);
 
             PluginManager pluginManager = getServer().getPluginManager();
             healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;

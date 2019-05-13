@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class HerbalismTreasureConfig extends Config implements UnsafeValueValidation, Registers {
+public class HerbalismTreasureConfig extends Config implements UnsafeValueValidation {
     public static final String HYLIAN_LUCK = "Hylian_Luck";
     public static final String AMOUNT = "Amount";
     public static final String XP = "XP";
@@ -29,7 +29,6 @@ public class HerbalismTreasureConfig extends Config implements UnsafeValueValida
 
     public HerbalismTreasureConfig() {
         super("hylian_luck_drops", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, false, true, false);
-        register();
     }
 
     /**
@@ -43,141 +42,6 @@ public class HerbalismTreasureConfig extends Config implements UnsafeValueValida
     @Deprecated
     public static HerbalismTreasureConfig getInstance() {
         return mcMMO.getConfigManager().getHerbalismTreasureConfig();
-    }
-
-    /**
-     * Register stuff
-     */
-    @Override
-    public void register() {
-        ConfigurationNode herbalismTreasureNode = getUserRootNode().getNode(HYLIAN_LUCK);
-
-        if (herbalismTreasureNode == null) {
-            mcMMO.p.getLogger().info("Excavation treasures in treasures config not defined");
-            return;
-        }
-
-        try {
-            for (ConfigurationNode treasureNode : herbalismTreasureNode.getChildrenList()) {
-
-                String treasureName = treasureNode.getString();
-                //Treasure Material Definition
-                Material treasureMaterial = Material.matchMaterial(treasureName.toUpperCase());
-
-                if (treasureMaterial != null) {
-                    ConfigurationNode currentTreasure = herbalismTreasureNode.getNode(treasureName);
-
-                    //TODO: Rewrite the entire treasure system because it sucks
-
-                    /*
-                     * TREASURE PARAMETERS
-                     */
-                    int amount = currentTreasure.getNode(AMOUNT).getInt();
-                    int xp = currentTreasure.getNode(XP).getInt();
-                    double dropChance = currentTreasure.getNode(DROP_CHANCE).getDouble();
-                    int dropLevel = currentTreasure.getNode(DROP_LEVEL).getInt();
-                    String customName = null;
-
-                    /*
-                     * PARAMETER INIT
-                     */
-
-                    ArrayList<String> dropsFrom = new ArrayList(currentTreasure.getNode("Drops_From").getList(TypeToken.of(String.class)));
-
-                    //VALIDATE AMOUNT
-                    if (amount <= 0) {
-                        mcMMO.p.getLogger().severe("Herbalism Hylian Luck Treasure named " + treasureName + " in the config has an amount of 0 or below, is this intentional?");
-                        mcMMO.p.getLogger().severe("Skipping " + treasureName + " for being invalid");
-                        continue;
-                    }
-
-                    //VALIDATE XP
-                    if (xp <= 0) {
-                        mcMMO.p.getLogger().info("Herbalism Hylian Luck Treasure named " + treasureName + " in the config has xp set to 0 or below, is this intentional?");
-                        xp = 0;
-                    }
-
-                    //VALIDATE DROP CHANCE
-                    if (dropChance <= 0) {
-                        mcMMO.p.getLogger().severe("Herbalism Hylian Luck Treasure named " + treasureName + " in the config has a drop chance of 0 or below, is this intentional?");
-                        mcMMO.p.getLogger().severe("Skipping " + treasureName + " for being invalid");
-                        continue;
-                    }
-
-                    //VALIDATE DROP LEVEL
-                    if (dropLevel < 0) {
-                        mcMMO.p.getLogger().info("Herbalism Hylian Luck Treasure named " + treasureName + " in the config has a drop level below 0, is this intentional?");
-                        dropLevel = 0;
-                    }
-
-                    //VALIDATE DROP SOURCES
-                    if (dropsFrom == null || dropsFrom.isEmpty()) {
-                        mcMMO.p.getLogger().severe("Herbalism Hylian Luck Treasure named " + treasureName + " in the config has no drop targets, which would make it impossible to obtain, is this intentional?");
-                        mcMMO.p.getLogger().severe("Skipping " + treasureName + " for being invalid");
-                        continue;
-                    }
-
-                    /* OPTIONAL PARAMETERS */
-
-                    //Custom Name
-
-                    if (currentTreasure.getNode(CUSTOM_NAME) != null && !currentTreasure.getNode(CUSTOM_NAME).getString().equalsIgnoreCase("ChangeMe")) {
-                        customName = currentTreasure.getNode(CUSTOM_NAME).getString();
-                    }
-
-                    /*
-                     * REGISTER TREASURE
-                     */
-
-                    HylianTreasure hylianTreasure = TreasureFactory.makeHylianTreasure(treasureMaterial, amount, xp, dropChance, dropLevel, customName, currentTreasure.getNode(LORE));
-
-                    /*
-                     * Add to map
-                     */
-                    for (String dropBlock : dropsFrom) {
-                        if (dropBlock.equals("Bushes")) {
-                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.FERN), hylianTreasure);
-                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.TALL_GRASS), hylianTreasure);
-                            for (Material species : Tag.SAPLINGS.getValues())
-                                addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(species), hylianTreasure);
-
-                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.DEAD_BUSH), hylianTreasure);
-                            continue;
-                        }
-                        if (dropBlock.equals("Flowers")) {
-                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POPPY), hylianTreasure);
-                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.DANDELION), hylianTreasure);
-                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.BLUE_ORCHID), hylianTreasure);
-                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.ALLIUM), hylianTreasure);
-                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.AZURE_BLUET), hylianTreasure);
-                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.ORANGE_TULIP), hylianTreasure);
-                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.PINK_TULIP), hylianTreasure);
-                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.RED_TULIP), hylianTreasure);
-                            addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.WHITE_TULIP), hylianTreasure);
-                            continue;
-                        }
-                        if (dropBlock.equals("Pots")) {
-                            for (Material species : Tag.FLOWER_POTS.getValues())
-                                addHylianTreasure(StringUtils.getFriendlyConfigMaterialString(species), hylianTreasure);
-                            continue;
-                        }
-
-
-                        addHylianTreasure(dropBlock, hylianTreasure);
-                    }
-
-                } else {
-                    mcMMO.p.getLogger().severe("Excavation Treasure Config - Material named " + treasureName + " does not match any known material.");
-                }
-            }
-        } catch (ObjectMappingException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void unload() {
-        hylianMap.clear();
     }
 
     @Override

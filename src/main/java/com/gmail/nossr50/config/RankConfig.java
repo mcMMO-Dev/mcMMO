@@ -33,11 +33,6 @@ public class RankConfig extends ConfigValidated {
         return mcMMO.getConfigManager().getRankConfig();
     }
 
-    @Override
-    public void unload() {
-        //Do nothing
-    }
-
     /**
      * The version of this config
      *

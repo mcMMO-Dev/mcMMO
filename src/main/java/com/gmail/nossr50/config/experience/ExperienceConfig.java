@@ -107,11 +107,6 @@ public class ExperienceConfig extends ConfigValidated {
     }
 
     @Override
-    public void unload() {
-
-    }
-
-    @Override
     public List<String> validateKeys() {
         List<String> reason = new ArrayList<>();
 

@@ -143,11 +143,6 @@ public class AdvancedConfig extends ConfigValidated {
         return mcMMO.getConfigManager().getAdvancedConfig();
     }
 
-    @Override
-    public void unload() {
-        //do nothing
-    }
-
     /**
      * The version of this config
      *

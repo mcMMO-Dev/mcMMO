@@ -231,7 +231,7 @@ public class PlayerListener implements Listener {
         ItemStack dropStack = drop.getItemStack();
 
         if (ItemUtils.isSharable(dropStack)) {
-            drop.setMetadata(MetadataConstants.DROPPED_ITEM_TRACKING_METAKEY, mcMMO.metadataValue);
+            drop.setMetadata(MetadataConstants.DROPPED_ITEM_TRACKING_METAKEY, MetadataConstants.metadataValue);
         }
 
         SkillUtils.removeAbilityBuff(dropStack);
@@ -520,7 +520,7 @@ public class PlayerListener implements Listener {
         }
 
         if (plugin.isXPEventEnabled()) {
-            player.sendMessage(LocaleLoader.getString("XPRate.Event", mcMMO.getConfigManager().getExperienceMapManager().getGlobalXpMult()));
+            player.sendMessage(LocaleLoader.getString("XPRate.Event", mcMMO.getDynamicSettingsManager().getExperienceMapManager().getGlobalXpMult()));
         }
 
         //TODO: Remove this warning

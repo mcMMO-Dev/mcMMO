@@ -438,7 +438,7 @@ public final class CombatUtils {
             return;
         }
 
-        target.setMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY, mcMMO.metadataValue);
+        target.setMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY, MetadataConstants.metadataValue);
         target.damage(damage, attacker);
 
 //        //IFrame storage

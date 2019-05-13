@@ -1,5 +1,7 @@
 package com.gmail.nossr50.core;
 
+import org.bukkit.metadata.FixedMetadataValue;
+
 /**
  * This is a convenience class which stores the string representations of our metadata keys
  */
@@ -26,4 +28,7 @@ public class MetadataConstants {
     public final static String GREEN_THUMB_METAKEY = "mcMMO: Green Thumb";
     public final static String DATABASE_PROCESSING_COMMAND_METAKEY = "mcMMO: Processing Database Command";
     public final static String BRED_ANIMAL_TRACKING_METAKEY = "mcMMO: Bred Animal";
+
+    public static FixedMetadataValue metadataValue; //Gains value in onEnable
+
 }
