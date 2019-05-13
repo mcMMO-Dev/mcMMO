@@ -42,10 +42,10 @@ public final class PartyManager {
      * @return the unlock level for the feature
      */
     public static int getPartyFeatureUnlockLevel(PartyFeature partyFeature) {
-        if (mcMMO.getConfigManager().getPartyFeatureUnlocks().get(partyFeature) == null)
+        if (mcMMO.getDynamicSettingsManager().getPartyFeatureUnlocks().get(partyFeature) == null)
             return 0;
         else
-            return mcMMO.getConfigManager().getPartyFeatureUnlocks().get(partyFeature);
+            return mcMMO.getDynamicSettingsManager().getPartyFeatureUnlocks().get(partyFeature);
     }
 
     /**

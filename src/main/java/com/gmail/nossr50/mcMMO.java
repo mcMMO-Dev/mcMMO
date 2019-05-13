@@ -560,7 +560,6 @@ public class mcMMO extends JavaPlugin {
             }
         }
 
-
         // Update power level tag scoreboards
         new PowerLevelUpdatingTask().runTaskTimer(this, 2 * Misc.TICK_CONVERSION_FACTOR, 2 * Misc.TICK_CONVERSION_FACTOR);
 

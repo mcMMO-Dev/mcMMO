@@ -130,9 +130,6 @@ public final class ConfigManager {
     private SoundConfig soundConfig;
     private RankConfig rankConfig;
 
-    private HashMap<Material, Integer> partyItemWeights;
-    private HashMap<PartyFeature, Integer> partyFeatureUnlocks;
-
     /* CONFIG ERRORS */
 
     private ArrayList<String> configErrors; //Collect errors to whine about to server admins
@@ -150,17 +147,6 @@ public final class ConfigManager {
 
         //Serialized Data
         initSerializedDataFiles();
-
-        //Assign Maps
-        partyItemWeights = Maps.newHashMap(configParty.getConfig().getPartyItemShare().getItemShareMap()); //Item Share Weights
-        partyFeatureUnlocks = Maps.newHashMap(configParty.getConfig().getPartyXP().getPartyLevel().getPartyFeatureUnlockMap()); //Party Progression
-
-        //YAML Configs
-        initYAMLConfigs();
-    }
-
-    private void initYAMLConfigs() {
-
     }
 
     private void initSerializedDataFiles() {
@@ -343,10 +329,6 @@ public final class ConfigManager {
         return advancedConfig;
     }
 
-//    public PotionManager getPotionManager() {
-//        return potionManager;
-//    }
-
     public CoreSkillsConfig getCoreSkillsConfig() {
         return coreSkillsConfig;
     }
@@ -429,14 +411,6 @@ public final class ConfigManager {
 
     public ConfigSuperAbilities getConfigSuperAbilities() {
         return configSuperAbilities.getConfig();
-    }
-
-    public HashMap<Material, Integer> getPartyItemWeights() {
-        return partyItemWeights;
-    }
-
-    public HashMap<PartyFeature, Integer> getPartyFeatureUnlocks() {
-        return partyFeatureUnlocks;
     }
 
     public ConfigAdmin getConfigAdmin() {

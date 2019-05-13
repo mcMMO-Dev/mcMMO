@@ -1,5 +1,6 @@
 package com.gmail.nossr50.core;
 
+import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
@@ -7,9 +8,11 @@ import com.gmail.nossr50.skills.repair.repairables.RepairableManager;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.skills.salvage.salvageables.SalvageableManager;
 import com.gmail.nossr50.util.experience.ExperienceMapManager;
+import com.google.common.collect.Maps;
 import org.bukkit.Material;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * The DSM (Dynamic Settings Manager) is responsible for
@@ -32,16 +35,27 @@ public class DynamicSettingsManager {
     private BonusDropManager bonusDropManager;
     private ExperienceMapManager experienceMapManager;
 
+    /* Party Settings */
+    private HashMap<Material, Integer> partyItemWeights;
+    private HashMap<PartyFeature, Integer> partyFeatureUnlocks;
 
     public DynamicSettingsManager() {
         /*
          * Managers
          */
 
+        //Assign Maps
+        initPartySettings();
+
         // Register Managers
         initSkillPropertiesManager();
         initMiscManagers();
         initCollectionManagers();
+    }
+
+    private void initPartySettings() {
+        partyItemWeights = Maps.newHashMap(mcMMO.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap()); //Item Share Weights
+        partyFeatureUnlocks = Maps.newHashMap(mcMMO.getConfigManager().getConfigParty().getPartyXP().getPartyLevel().getPartyFeatureUnlockMap()); //Party Progression
     }
 
     private void initSkillPropertiesManager() {
@@ -119,6 +133,14 @@ public class DynamicSettingsManager {
 
     public BonusDropManager getBonusDropManager() {
         return bonusDropManager;
+    }
+
+    public HashMap<Material, Integer> getPartyItemWeights() {
+        return partyItemWeights;
+    }
+
+    public HashMap<PartyFeature, Integer> getPartyFeatureUnlocks() {
+        return partyFeatureUnlocks;
     }
 
     public boolean isBonusDropsEnabled(Material material) {
