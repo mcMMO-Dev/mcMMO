@@ -27,7 +27,7 @@ public class MetadataConstants {
     public final static String PLAYER_DATA_METAKEY = "mcMMO: Player Data";
     public final static String GREEN_THUMB_METAKEY = "mcMMO: Green Thumb";
     public final static String DATABASE_PROCESSING_COMMAND_METAKEY = "mcMMO: Processing Database Command";
-    public final static String BRED_ANIMAL_TRACKING_METAKEY = "mcMMO: Bred Animal";
+    public final static String PETS_ANIMAL_TRACKING_METAKEY = "mcMMO: Pet Animal";
 
     public static FixedMetadataValue metadataValue; //Gains value in onEnable
 

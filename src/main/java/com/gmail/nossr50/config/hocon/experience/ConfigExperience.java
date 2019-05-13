@@ -1,6 +1,7 @@
 package com.gmail.nossr50.config.hocon.experience;
 
 import com.gmail.nossr50.datatypes.experience.CustomXPPerk;
+import com.gmail.nossr50.datatypes.experience.SpecialXPKey;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -162,7 +163,7 @@ public class ConfigExperience {
         return getConfigExperienceSkills().getCombatExperienceMap();
     }
 
-    public HashMap<String, Float> getSpecialCombatExperienceMap() {
+    public HashMap<SpecialXPKey, Float> getSpecialCombatExperienceMap() {
         return configExperienceSkills.getSpecialCombatExperienceMap();
     }
 
@@ -188,22 +189,6 @@ public class ConfigExperience {
 
     public int getShakeXP() {
         return getConfigExperienceSkills().getShakeXP();
-    }
-
-    public Float getSpawnedMobXPMult() {
-        return getConfigExperienceSkills().getSpawnedMobXPMult();
-    }
-
-    public Float getPlayerBredMobsXPMult() {
-        return getExperienceCombat().getPlayerBredMobsXPMult();
-    }
-
-    public Float getPVPXPMult() {
-        return getConfigExperienceSkills().getPVPXPMult();
-    }
-
-    public Float getAnimalsXPMult() {
-        return getConfigExperienceSkills().getAnimalsXPMult();
     }
 
     public ConfigExperienceSkills getConfigExperienceSkills() {

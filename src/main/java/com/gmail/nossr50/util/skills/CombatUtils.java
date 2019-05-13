@@ -544,7 +544,7 @@ public final class CombatUtils {
             Player defender = (Player) target;
 
             if (defender.isOnline() && SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
-                baseXPMultiplier = 20 * mcMMO.getConfigManager().getConfigExperience().getPVPXPMult();
+                baseXPMultiplier = 20 * mcMMO.getDynamicSettingsManager().getExperienceManager().getSpecialCombatXP(SpecialXPKey.PVP);
             }
         } else {
             /*if (mcMMO.getModManager().isCustomEntity(target)) {
@@ -574,11 +574,11 @@ public final class CombatUtils {
             }
 
             if (target.hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY)) {
-                baseXPMultiplier *= mcMMO.getConfigManager().getConfigExperience().getSpawnedMobXPMult();
+                baseXPMultiplier *= mcMMO.getDynamicSettingsManager().getExperienceManager().getSpecialCombatXP(SpecialXPKey.SPAWNED);
             }
 
-            if (target.hasMetadata(MetadataConstants.BRED_ANIMAL_TRACKING_METAKEY)) {
-                baseXPMultiplier *= mcMMO.getConfigManager().getConfigExperience().getPlayerBredMobsXPMult();
+            if (target.hasMetadata(MetadataConstants.PETS_ANIMAL_TRACKING_METAKEY)) {
+                baseXPMultiplier *= mcMMO.getDynamicSettingsManager().getExperienceManager().getSpecialCombatXP(SpecialXPKey.PETS);
             }
 
             xpGainReason = XPGainReason.PVE;

@@ -629,7 +629,7 @@ public class EntityListener implements Listener {
                 return;
 
             case BREEDING:
-                entity.setMetadata(MetadataConstants.BRED_ANIMAL_TRACKING_METAKEY, MetadataConstants.metadataValue);
+                entity.setMetadata(MetadataConstants.PETS_ANIMAL_TRACKING_METAKEY, MetadataConstants.metadataValue);
                 return;
 
             default:

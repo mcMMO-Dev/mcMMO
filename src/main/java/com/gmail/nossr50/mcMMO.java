@@ -144,7 +144,7 @@ public class mcMMO extends JavaPlugin {
                 formulaManager = new FormulaManager();
 
                 for (Player player : getServer().getOnlinePlayers()) {
-                    new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
+                    new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(this, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
                 }
 
                 debug("Version " + getDescription().getVersion() + " is enabled!");
@@ -154,7 +154,7 @@ public class mcMMO extends JavaPlugin {
 
                 placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
 
-                if (mcMMO.getConfigManager().getConfigParty().getPTP().isPtpWorldBasedPermissions()) {
+                if (getConfigManager().getConfigParty().getPTP().isPtpWorldBasedPermissions()) {
                     Permissions.generateWorldTeleportPermissions();
                 }
 
@@ -205,7 +205,7 @@ public class mcMMO extends JavaPlugin {
             PartyManager.saveParties(); // Save our parties
 
             //TODO: Needed?
-            if (mcMMO.getScoreboardSettings().getScoreboardsEnabled())
+            if (getScoreboardSettings().getScoreboardsEnabled())
                 ScoreboardManager.teardownAll();
 
             formulaManager.saveFormula();
@@ -221,7 +221,7 @@ public class mcMMO extends JavaPlugin {
         debug("Unregister all events...");
         HandlerList.unregisterAll(this); // Cancel event registrations
 
-        if (mcMMO.getConfigManager().getConfigAutomatedBackups().isZipBackupsEnabled()) {
+        if (getConfigManager().getConfigAutomatedBackups().isZipBackupsEnabled()) {
             // Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
             try {
                 ZipLibrary.mcMMOBackup();
@@ -318,8 +318,8 @@ public class mcMMO extends JavaPlugin {
     }
 
     @Deprecated
-    public static void setDatabaseManager(DatabaseManager databaseManager) {
-        mcMMO.databaseManager = databaseManager;
+    public static void setDatabaseManager(DatabaseManager newDatabaseManager) {
+        databaseManager = newDatabaseManager;
     }
 
     /**
@@ -533,7 +533,7 @@ public class mcMMO extends JavaPlugin {
         new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
 
         // Cleanup the backups folder
-        new CleanBackupsTask().runTaskAsynchronously(mcMMO.p);
+        new CleanBackupsTask().runTaskAsynchronously(this);
 
         // Bleed timer (Runs every 0.5 seconds)
         new BleedTimerTask().runTaskTimer(this, Misc.TICK_CONVERSION_FACTOR, (Misc.TICK_CONVERSION_FACTOR / 2));
@@ -541,14 +541,14 @@ public class mcMMO extends JavaPlugin {
         // Old & Powerless User remover
         long purgeIntervalTicks = getConfigManager().getConfigDatabase().getConfigSectionCleaning().getPurgeInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
 
-        if (mcMMO.getDatabaseCleaningSettings().isOnlyPurgeAtStartup()) {
+        if (getDatabaseCleaningSettings().isOnlyPurgeAtStartup()) {
             new UserPurgeTask().runTaskLaterAsynchronously(this, 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
         } else if (purgeIntervalTicks > 0) {
             new UserPurgeTask().runTaskTimerAsynchronously(this, purgeIntervalTicks, purgeIntervalTicks);
         }
 
         //Party System Stuff
-        if (mcMMO.configManager.getConfigParty().isPartySystemEnabled()) {
+        if (configManager.getConfigParty().isPartySystemEnabled()) {
             // Automatically remove old members from parties
             long kickIntervalTicks = getConfigManager().getConfigParty().getPartyCleanup().getPartyAutoKickHoursInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
 
@@ -563,7 +563,7 @@ public class mcMMO extends JavaPlugin {
         new PowerLevelUpdatingTask().runTaskTimer(this, 2 * Misc.TICK_CONVERSION_FACTOR, 2 * Misc.TICK_CONVERSION_FACTOR);
 
         // Clear the registered XP data so players can earn XP again
-        if (mcMMO.getConfigManager().getConfigExperience().get) {
+        if (getConfigManager().getConfigLeveling().getConfigLevelingDiminishedReturns().isDiminishedReturnsEnabled()) {
             new ClearRegisteredXPGainTask().runTaskTimer(this, 60, 60);
         }
 
