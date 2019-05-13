@@ -119,7 +119,7 @@ public class mcMMO extends JavaPlugin {
             databaseManager = DatabaseManagerFactory.getDatabaseManager();
 
             //Check for the newer API and tell them what to do if its missing
-            checkForOutdatedAPI();
+            CompatibilityCheck.checkForOutdatedAPI(serverAPIOutdated, getServerSoftwareStr());
 
             if (serverAPIOutdated) {
                 Bukkit
@@ -245,21 +245,6 @@ public class mcMMO extends JavaPlugin {
 
     public static PlayerLevelUtils getPlayerLevelUtils() {
         return playerLevelUtils;
-    }
-
-    /**
-     * Uses reflection to check for incompatible server software
-     */
-    private void checkForOutdatedAPI() {
-        try {
-            Class<?> checkForClass = Class.forName("org.bukkit.event.block.BlockDropItemEvent");
-            Method newerAPIMethod = checkForClass.getMethod("getItems");
-            Class<?> checkForClassBaseComponent = Class.forName("net.md_5.bungee.api.chat.BaseComponent");
-        } catch (ClassNotFoundException | NoSuchMethodException e) {
-            serverAPIOutdated = true;
-            String software = getServerSoftwareStr();
-            getLogger().severe("You are running an older version of " + software + " that is not compatible with mcMMO, update your server software!");
-        }
     }
 
     /**
