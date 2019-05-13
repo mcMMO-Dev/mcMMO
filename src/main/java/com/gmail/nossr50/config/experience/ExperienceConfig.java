@@ -10,7 +10,6 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import org.bukkit.Material;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
-import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;

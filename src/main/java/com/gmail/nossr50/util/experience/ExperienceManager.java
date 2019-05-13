@@ -18,6 +18,7 @@ public class ExperienceManager {
     private HashMap<String, Integer> herbalismFullyQualifiedBlockXpMap;
     private HashMap<String, Integer> woodcuttingFullyQualifiedBlockXpMap;
     private HashMap<String, Integer> excavationFullyQualifiedBlockXpMap;
+    private HashMap<String, Integer> furnaceFullyQualifiedItemXpMap;
     private HashMap<EntityType, Float> tamingExperienceMap;
     private HashMap<EntityType, Float> combatXPMultiplierMap;
     private HashMap<SpecialXPKey, Float> specialCombatXPMultiplierMap; //Applies to "groups" of things for convenience
@@ -36,6 +37,7 @@ public class ExperienceManager {
         herbalismFullyQualifiedBlockXpMap = new HashMap<>();
         woodcuttingFullyQualifiedBlockXpMap = new HashMap<>();
         excavationFullyQualifiedBlockXpMap = new HashMap<>();
+        furnaceFullyQualifiedItemXpMap = new HashMap<>();
         combatXPMultiplierMap = new HashMap<>();
         specialCombatXPMultiplierMap = new HashMap<>();
         tamingExperienceMap = new HashMap<>();
@@ -44,7 +46,9 @@ public class ExperienceManager {
     private void registerDefaultValues()
     {
         fillCombatXPMultiplierMap(mcMMO.getConfigManager().getConfigExperience().getCombatExperienceMap());
+        registerSpecialCombatXPMultiplierMap(mcMMO.getConfigManager().getConfigExperience().getSpecialCombatExperienceMap());
         buildBlockXPMaps();
+        buildFurnaceXPMap();
     }
 
     /**
@@ -78,10 +82,19 @@ public class ExperienceManager {
         }
     }
 
-    public void copySpecialCombatXPMultiplierMap(HashMap<SpecialXPKey, Float> map)
+    /**
+     * Registers the map values for special combat XP to the specified map
+     * @param map target map
+     */
+    public void registerSpecialCombatXPMultiplierMap(HashMap<SpecialXPKey, Float> map)
     {
         mcMMO.p.getLogger().info("Registering special combat XP values...");
         specialCombatXPMultiplierMap = map;
+    }
+
+    private void buildFurnaceXPMap() {
+        mcMMO.p.getLogger().info("Mapping xp values for furnaces...");
+        fillBlockXPMap(mcMMO.getConfigManager().getConfigExperience().getSmeltingExperienceMap(), furnaceFullyQualifiedItemXpMap);
     }
 
     /**
@@ -345,6 +358,16 @@ public class ExperienceManager {
      */
     public int getExcavationXp(Material material) {
         return excavationFullyQualifiedBlockXpMap.get(material.getKey());
+    }
+
+    /**
+     * Gets the XP value for converting an item in the furnace
+     *
+     * @param material the target item material value
+     * @return the raw XP value before any modifiers are applied
+     */
+    public int getFurnaceItemXP(Material material) {
+        return furnaceFullyQualifiedItemXpMap.get(material.getKey());
     }
 
     /**
