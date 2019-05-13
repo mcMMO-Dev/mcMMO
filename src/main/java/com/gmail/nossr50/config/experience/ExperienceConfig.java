@@ -113,33 +113,6 @@ public class ExperienceConfig extends ConfigValidated {
     }
 
     /*
-     * FORMULA SETTINGS
-     */
-
-    //TODO: Rewrite this
-    /*public void setExperienceGainsGlobalMultiplier(double value) {
-        config.set(EXPERIENCE_FORMULA, MULTIPLIER, GLOBAL, value);
-    }*/
-
-    /*
-     * XP SETTINGS
-     */
-
-    /**
-     * Gets the raw XP given for breaking this block, this does not include modifiers
-     *
-     * @param skill     The skill to give XP for
-     * @param blockType the type of block
-     * @return the raw amount of XP for this block before modifiers
-     */
-    //public int getXp(PrimarySkillType skill, BlockType blockType) {
-    public int getXp(PrimarySkillType skill, Material blockType) {
-        //TODO: This is going to need to be changed, this code here is only placeholder
-        String[] path = new String[]{EXPERIENCE, StringUtils.getCapitalized(skill.toString()), blockType.toString()};
-        return getIntValue(path);
-    }
-
-    /*
      * Experience Bar Stuff
      */
 
