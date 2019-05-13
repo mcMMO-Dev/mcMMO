@@ -1,6 +1,6 @@
 package com.gmail.nossr50.util.experience;
 
-import com.gmail.nossr50.api.exceptions.InvalidSkillException;
+import com.gmail.nossr50.api.exceptions.UndefinedSkillBehaviour;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
@@ -193,11 +193,11 @@ public class ExperienceMapManager {
      * @param primarySkillType target skill
      * @param material         target material
      * @return XP value for breaking this block for said skill
-     * @throws InvalidSkillException for skills that don't give block break experience
+     * @throws UndefinedSkillBehaviour for skills that don't give block break experience
      * @deprecated its faster to use direct calls to get XP, for example getMiningXP(Material material) instead of using this method
      */
     @Deprecated
-    public float getBlockBreakXpValue(PrimarySkillType primarySkillType, Material material) throws InvalidSkillException {
+    public float getBlockBreakXpValue(PrimarySkillType primarySkillType, Material material) throws UndefinedSkillBehaviour {
         switch (primarySkillType) {
             case MINING:
                 return getMiningXp(material);
@@ -208,7 +208,7 @@ public class ExperienceMapManager {
             case WOODCUTTING:
                 return getWoodcuttingXp(material);
             default:
-                throw new InvalidSkillException();
+                throw new UndefinedSkillBehaviour(primarySkillType);
         }
     }
 

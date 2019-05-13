@@ -64,7 +64,7 @@ public class CustomXPPerkSerializer implements TypeSerializer<CustomXPPerk> {
                 return primarySkillType;
         }
 
-        throw new InvalidSkillException();
+        throw new InvalidSkillException(string);
     }
 
     /*

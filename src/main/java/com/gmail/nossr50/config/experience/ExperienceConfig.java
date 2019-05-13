@@ -122,33 +122,6 @@ public class ExperienceConfig extends ConfigValidated {
         config.set(EXPERIENCE_FORMULA, MULTIPLIER, GLOBAL, value);
     }*/
 
-    /* Custom XP perk */
-    public double getCustomXpPerkBoost() {
-        return getDoubleValue(EXPERIENCE_FORMULA, CUSTOM_XP_PERK, BOOST);
-    }
-
-    /* Diminished Returns */
-    public float getDiminishedReturnsCap() {
-        return (float) getDoubleValue(DIMISHED_RETURNS, GUARANTEED_MINIMUM_PERCENTAGE);
-    }
-
-    public boolean getDiminishedReturnsEnabled() {
-        return getBooleanValue(DIMINISHED_RETURNS, ENABLED);
-    }
-
-    public int getDiminishedReturnsThreshold(PrimarySkillType skill) {
-        return getIntValue(DIMINISHED_RETURNS, THRESHOLD, StringUtils.getCapitalized(skill.toString()));
-    }
-
-    public int getDiminishedReturnsTimeInterval() {
-        return getIntValue(DIMINISHED_RETURNS, TIME_INTERVAL);
-    }
-
-    /* Conversion */
-    public double getExpModifier() {
-        return getDoubleValue(CONVERSION, EXP + MODIFIER);
-    }
-
     /*
      * XP SETTINGS
      */

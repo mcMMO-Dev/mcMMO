@@ -138,7 +138,7 @@ Version 2.2.0
     Update_Check, Prefer_Beta, Ability_Activation_Level_Gate, Max_Tries_At_Same_Location, Prevent_AFK_Leveling, Items_Pickup_Disabled_Full_Inventory
 
     Removed the following config settings for being unwanted
-    Config_Update_Overwrite, Tool_Mods_Enabled, Armor_Mods_Enabled, Block_Mods_Enabled, Entity_Mods_Enabled,
+    Config_Update_Overwrite, Tool_Mods_Enabled, Armor_Mods_Enabled, Block_Mods_Enabled, Entity_Mods_Enabled, ExperienceConversionMultiplier
 
     API Changes
     Config settings can now be found in the ConfigManager (getter for it in mcMMO.java)
@@ -150,6 +150,7 @@ Version 2.2.0
     Added API method to check if player parties are size capped
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
+    Added 'UndefinedSkillBehaviour' for trying to use a method that has no behaviour defined for the provided skill
 
 Version 2.1.58
     Fixed the wrong locale string being used for Mining Double Drops

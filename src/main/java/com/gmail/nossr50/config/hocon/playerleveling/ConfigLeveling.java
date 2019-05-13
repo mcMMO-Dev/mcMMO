@@ -1,9 +1,13 @@
 package com.gmail.nossr50.config.hocon.playerleveling;
 
+import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
+
+import java.util.HashMap;
 
 @ConfigSerializable
 public class ConfigLeveling {
@@ -27,9 +31,36 @@ public class ConfigLeveling {
     @Setting(value = "Experience-Formula")
     private ConfigExperienceFormula configExperienceFormula = new ConfigExperienceFormula();
 
+    @Setting(value = "Diminished-Returns", comment = "Penalize players for gaining XP too quickly in a given time period.")
+    private ConfigLevelingDiminishedReturns configLevelingDiminishedReturns = new ConfigLevelingDiminishedReturns();
+
     /*
      * GETTER BOILERPLATE
      */
+
+    public float getGuaranteedMinimums() {
+        return configLevelingDiminishedReturns.getGuaranteedMinimums();
+    }
+
+    public boolean isDiminishedReturnsEnabled() {
+        return configLevelingDiminishedReturns.isDiminishedReturnsEnabled();
+    }
+
+    public int getDimishedReturnTimeInterval() {
+        return configLevelingDiminishedReturns.getDimishedReturnTimeInterval();
+    }
+
+    public HashMap<PrimarySkillType, Integer> getSkillThresholds() {
+        return configLevelingDiminishedReturns.getSkillThresholds();
+    }
+
+    public int getSkillThreshold(PrimarySkillType primarySkillType) {
+        return configLevelingDiminishedReturns.getSkillThreshold(primarySkillType);
+    }
+
+    public ConfigLevelingDiminishedReturns getConfigLevelingDiminishedReturns() {
+        return configLevelingDiminishedReturns;
+    }
 
     public double getSkillXpFormulaModifier(PrimarySkillType primarySkillType) {
         return getConfigExperienceFormula().getSkillXpFormulaModifier(primarySkillType);
@@ -152,6 +183,7 @@ public class ConfigLeveling {
             case SALVAGE:
                 return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getSalvage().getLevelCap();
             default:
+                mcMMO.p.getLogger().severe("No defined level cap for "+primarySkillType.toString()+" - Contact the mcMMO dev team!");
                 return Integer.MAX_VALUE;
         }
     }
@@ -189,6 +221,7 @@ public class ConfigLeveling {
             case SALVAGE:
                 return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getSalvage().isLevelCapEnabled();
             default:
+                mcMMO.p.getLogger().severe("No defined level cap for "+primarySkillType.toString()+" - Contact the mcMMO dev team!");
                 return false;
         }
     }

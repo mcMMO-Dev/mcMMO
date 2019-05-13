@@ -99,9 +99,9 @@ public class SelfListener implements Listener {
             }
         }
 
-        int threshold = ExperienceConfig.getInstance().getDiminishedReturnsThreshold(primarySkillType);
+        int threshold = mcMMO.getConfigManager().getConfigLeveling().getSkillThreshold(primarySkillType);
 
-        if (threshold <= 0 || !ExperienceConfig.getInstance().getDiminishedReturnsEnabled()) {
+        if (threshold <= 0 || !mcMMO.getConfigManager().getConfigLeveling().getConfigLevelingDiminishedReturns().isDiminishedReturnsEnabled()) {
             // Diminished returns is turned off
             return;
         }
@@ -117,7 +117,7 @@ public class SelfListener implements Listener {
 
         final float rawXp = event.getRawXpGained();
 
-        float guaranteedMinimum = ExperienceConfig.getInstance().getDiminishedReturnsCap() * rawXp;
+        float guaranteedMinimum = mcMMO.getConfigManager().getConfigLeveling().getGuaranteedMinimums() * rawXp;
 
         float modifiedThreshold = (float) (threshold / primarySkillType.getXpModifier() * mcMMO.getDynamicSettingsManager().getExperienceMapManager().getGlobalXpMult());
         float difference = (mcMMOPlayer.getProfile().getRegisteredXpGain(primarySkillType) - modifiedThreshold) / modifiedThreshold;

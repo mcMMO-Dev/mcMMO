@@ -1092,7 +1092,7 @@ public final class ExperienceAPI {
         PrimarySkillType skill = PrimarySkillType.getSkill(skillType);
 
         if (skill == null) {
-            throw new InvalidSkillException();
+            throw new InvalidSkillException(skillType);
         }
 
         return skill;

@@ -51,7 +51,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
 
 public class mcMMO extends JavaPlugin {
     public static mcMMO p;
@@ -564,7 +563,7 @@ public class mcMMO extends JavaPlugin {
         new PowerLevelUpdatingTask().runTaskTimer(this, 2 * Misc.TICK_CONVERSION_FACTOR, 2 * Misc.TICK_CONVERSION_FACTOR);
 
         // Clear the registered XP data so players can earn XP again
-        if (ExperienceConfig.getInstance().getDiminishedReturnsEnabled()) {
+        if (mcMMO.getConfigManager().getConfigExperience().get) {
             new ClearRegisteredXPGainTask().runTaskTimer(this, 60, 60);
         }
 

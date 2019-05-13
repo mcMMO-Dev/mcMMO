@@ -46,6 +46,7 @@ public class BonusDropManager {
         for (String material : materials) {
             Material m = Material.matchMaterial(material);
             if (m == null) {
+                //TODO: reduce to info level?
                 mcMMO.p.getLogger().severe("Error registering Bonus Drop -- Invalid Minecraft Name ID: " + material);
                 continue;
             }

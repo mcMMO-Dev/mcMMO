@@ -5,12 +5,6 @@ import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.config.UnsafeValueValidation;
 import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.StringUtils;
-import com.google.common.reflect.TypeToken;
-import ninja.leaping.configurate.ConfigurationNode;
-import ninja.leaping.configurate.objectmapping.ObjectMappingException;
-import org.bukkit.Material;
-import org.bukkit.Tag;
 
 import java.util.ArrayList;
 import java.util.HashMap;
