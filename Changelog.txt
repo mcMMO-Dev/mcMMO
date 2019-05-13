@@ -33,7 +33,7 @@ Version 2.2.0
     Added new permission 'mcmmo.commands.reload'
     Lily pads were removed from the Alchemy Ingredient list as they are unused
     Admins will now be notified if a player trips over-fishing exploit detection 3+ times in a row (Locale: "Fishing.OverFishingDetected")
-        Note: Admins are players who are op or have adminchat permission.
+        Note: Admins are players who are an operator or have adminchat permission.
 
     Bug Fixes
     Fixed a bug where Blast Minings cooldown was not being displayed correctly
@@ -141,9 +141,12 @@ Version 2.2.0
     Config_Update_Overwrite, Tool_Mods_Enabled, Armor_Mods_Enabled, Block_Mods_Enabled, Entity_Mods_Enabled,
 
     API Changes
+    Config settings can now be found in the ConfigManager (getter for it in mcMMO.java)
+    Collection values from the config get converted into a runtime appropriate dataset, those can be found in DynamicSettingsManager (getter for it in mcMMO.java)
+    mcMMO metadata keys have been moved into a convenience class (MetadataConstants)
     mcMMO now uses floats instead of doubles when appropriate (mostly XP value calculations)
     mcMMO now tracks and exposes a players specific XP boosts in each skill, which are normally only altered through XP perks
-    Added 'getPlayersPersonalXPRate' to Experience API - Grabs the players current XP rate, defaults to 1.0F but is overwritten by any xp perks permissions
+    Added 'getPlayersPersonalXPRate' to Experience API - Grabs the players current XP rate, defaults to 1.0 but is overwritten by any xp perks permissions
     Added API method to check if player parties are size capped
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
