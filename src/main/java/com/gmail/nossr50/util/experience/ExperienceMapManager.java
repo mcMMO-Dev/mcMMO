@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util.experience;
 
 import com.gmail.nossr50.api.exceptions.UndefinedSkillBehaviour;
+import com.gmail.nossr50.datatypes.experience.SpecialXPKey;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
@@ -19,12 +20,13 @@ public class ExperienceMapManager {
     private HashMap<String, Integer> excavationFullyQualifiedBlockXpMap;
     private HashMap<EntityType, Float> tamingExperienceMap;
     private HashMap<EntityType, Float> combatXPMultiplierMap;
-    private HashMap<EntityType, Float> specialCombatXPMultiplierMap; //Applies to "groups" of things for convenience
+    private HashMap<SpecialXPKey, Float> specialCombatXPMultiplierMap; //Applies to "groups" of things for convenience
 
     private double globalXpMult;
 
     public ExperienceMapManager() {
         initExperienceMaps();
+        registerDefaultValues();
 
         //Register with unloader
     }
@@ -39,6 +41,12 @@ public class ExperienceMapManager {
         tamingExperienceMap = new HashMap<>();
     }
 
+    private void registerDefaultValues()
+    {
+        fillCombatXPMultiplierMap(mcMMO.getConfigManager().getConfigExperience().getCombatExperienceMap());
+        buildBlockXPMaps();
+    }
+
     /**
      * Fills the combat XP multiplier map with values from a platform generic map
      * Platform safe map, is just a map which uses strings to define target entities/etc
@@ -46,6 +54,7 @@ public class ExperienceMapManager {
      * @param platformSafeMap the platform safe map
      */
     public void fillCombatXPMultiplierMap(HashMap<String, Float> platformSafeMap) {
+        mcMMO.p.getLogger().info("Registering combat XP values...");
         for(String entityString : platformSafeMap.keySet())
         {
             //Iterate over all EntityType(s)
@@ -67,6 +76,12 @@ public class ExperienceMapManager {
                 }
             }
         }
+    }
+
+    public void copySpecialCombatXPMultiplierMap(HashMap<SpecialXPKey, Float> map)
+    {
+        mcMMO.p.getLogger().info("Registering special combat XP values...");
+        specialCombatXPMultiplierMap = map;
     }
 
     /**
@@ -311,5 +326,35 @@ public class ExperienceMapManager {
      */
     public int getExcavationXp(Material material) {
         return excavationFullyQualifiedBlockXpMap.get(material.getKey());
+    }
+
+    /**
+     * Get the XP multiplier value for a special XP group
+     * @param specialXPKey target special XP group
+     * @return XP multiplier for target special XP group
+     */
+    public float getSpecialCombatXP(SpecialXPKey specialXPKey)
+    {
+        return specialCombatXPMultiplierMap.get(specialXPKey);
+    }
+
+    /**
+     * Gets the combat XP multiplier for this entity type
+     * @param entityType target entity type
+     * @return the combat XP multiplier for this entity
+     */
+    public float getCombatXPMultiplier(EntityType entityType)
+    {
+        return combatXPMultiplierMap.get(entityType);
+    }
+
+    /**
+     * Returns true/false if a EntityType has a defined XP multiplier (from the config typically)
+     * @param entityType target entity type
+     * @return true if entity type has XP
+     */
+    public boolean hasCombatXP(EntityType entityType)
+    {
+        return combatXPMultiplierMap.get(entityType) != null;
     }
 }

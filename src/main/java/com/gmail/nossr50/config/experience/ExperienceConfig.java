@@ -126,21 +126,6 @@ public class ExperienceConfig extends ConfigValidated {
      * XP SETTINGS
      */
 
-    /* Combat XP Multipliers */
-    public double getCombatXP(EntityType entity) {
-        return getDoubleValue(EXPERIENCE, COMBAT, MULTIPLIER, StringUtils.getEntityConfigName(entity));
-    }
-
-    public double getAnimalsXP(EntityType entity) {
-        return getDoubleValue(EXPERIENCE, COMBAT, MULTIPLIER, StringUtils.getEntityConfigName(entity));
-    }
-
-    public boolean hasCombatXP(EntityType entity) {
-        return hasNode(EXPERIENCE, COMBAT, MULTIPLIER, StringUtils.getEntityConfigName(entity));
-    }
-
-    /* Materials  */
-
     /**
      * Gets the raw XP given for breaking this block, this does not include modifiers
      *

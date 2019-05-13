@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config.hocon.experience;
 
+import com.gmail.nossr50.datatypes.experience.SpecialXPKey;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -9,7 +10,7 @@ import java.util.HashMap;
 public class ConfigExperienceCombat {
 
     private static final HashMap<String, Float> COMBAT_EXPERIENCE_DEFAULT;
-    private static final HashMap<String, Float> SPECIAL_COMBAT_EXPERIENCE_DEFAULT;
+    private static final HashMap<SpecialXPKey, Float> SPECIAL_COMBAT_EXPERIENCE_DEFAULT;
     private static final boolean PVP_XP_ENABLED_DEFAULT = false;
 
     static {
@@ -75,17 +76,23 @@ public class ConfigExperienceCombat {
 
         //SPECIAL
         SPECIAL_COMBAT_EXPERIENCE_DEFAULT = new HashMap<>();
-        SPECIAL_COMBAT_EXPERIENCE_DEFAULT.put("animals", 1.0F); //TODO: this seems like a dumb config option
-        SPECIAL_COMBAT_EXPERIENCE_DEFAULT.put("spawned", 0.0F);
-        SPECIAL_COMBAT_EXPERIENCE_DEFAULT.put("pvp", 1.0F);
-        SPECIAL_COMBAT_EXPERIENCE_DEFAULT.put("player-bred-mobs", 1.0F);
+        SPECIAL_COMBAT_EXPERIENCE_DEFAULT.put(SpecialXPKey.ANIMALS, 1.0F); //TODO: this seems like a dumb config option
+        SPECIAL_COMBAT_EXPERIENCE_DEFAULT.put(SpecialXPKey.SPAWNED, 0.0F);
+        SPECIAL_COMBAT_EXPERIENCE_DEFAULT.put(SpecialXPKey.PVP, 1.0F);
+        SPECIAL_COMBAT_EXPERIENCE_DEFAULT.put(SpecialXPKey.PETS, 1.0F);
     }
 
     @Setting(value = "Combat-XP-Multipliers")
     private HashMap<String, Float> combatExperienceMap = COMBAT_EXPERIENCE_DEFAULT;
 
-    @Setting(value = "Special-Combat-XP-Multipliers")
-    private HashMap<String, Float> specialCombatExperienceMap = SPECIAL_COMBAT_EXPERIENCE_DEFAULT;
+    @Setting(value = "Special-Combat-XP-Multipliers", comment = "Special XP settings which apply to a mobs matching certain criteria" +
+            "\nAnimals - Non-hostile mobs, anything not considered a Monster" +
+            "\nSpawned - Unnatural mobs, can be from mob spawners, eggs, or otherwise" +
+            "\nPVP - XP gains relating to hitting other players" +
+            "\nPets - Either tamed or from breeding" +
+            "\nThese all default to 1.0 except for spawned, which defaults to 0.0" +
+            "\nIf you want spawned mobs to give XP simply turn the value for spawned above 0.0")
+    private HashMap<SpecialXPKey, Float> specialCombatExperienceMap = SPECIAL_COMBAT_EXPERIENCE_DEFAULT;
 
     @Setting(value = "PVP-XP", comment = "If true, players will gain XP from PVP interactions." +
             "\nBe careful turning this on as this can potentially allow for unwanted behaviour from players." +
@@ -100,23 +107,7 @@ public class ConfigExperienceCombat {
         return combatExperienceMap;
     }
 
-    public float getSpawnedMobXPMult() {
-        return specialCombatExperienceMap.get("mobspawners");
-    }
-
-    public float getPVPXPMult() {
-        return specialCombatExperienceMap.get("pvp");
-    }
-
-    public float getAnimalsXPMult() {
-        return specialCombatExperienceMap.get("animals");
-    }
-
-    public float getPlayerBredMobsXPMult() {
-        return specialCombatExperienceMap.get("player-bred-mobs");
-    }
-
-    public HashMap<String, Float> getSpecialCombatExperienceMap() {
+    public HashMap<SpecialXPKey, Float> getSpecialCombatExperienceMap() {
         return specialCombatExperienceMap;
     }
 }

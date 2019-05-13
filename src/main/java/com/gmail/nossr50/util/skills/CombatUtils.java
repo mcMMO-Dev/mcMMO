@@ -2,6 +2,7 @@ package com.gmail.nossr50.util.skills;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.MetadataConstants;
+import com.gmail.nossr50.datatypes.experience.SpecialXPKey;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -532,7 +533,7 @@ public final class CombatUtils {
      * @param primarySkillType The skill being used
      */
     private static void startGainXp(McMMOPlayer mcMMOPlayer, LivingEntity target, PrimarySkillType primarySkillType, double multiplier) {
-        double baseXP = 0;
+        float baseXPMultiplier = 0;
         XPGainReason xpGainReason;
 
         if (target instanceof Player) {
@@ -544,7 +545,7 @@ public final class CombatUtils {
             Player defender = (Player) target;
 
             if (defender.isOnline() && SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
-                baseXP = 20 * mcMMO.getConfigManager().getConfigExperience().getPVPXPMult();
+                baseXPMultiplier = 20 * mcMMO.getConfigManager().getConfigExperience().getPVPXPMult();
             }
         } else {
             /*if (mcMMO.getModManager().isCustomEntity(target)) {
@@ -552,45 +553,44 @@ public final class CombatUtils {
             }*/
             //else if (target instanceof Animals) {
             if (target instanceof Animals) {
-                EntityType type = target.getType();
-                baseXP = mcMMO.getConfigManager().getConfigExperience().getAnimalsXPMult();
+                baseXPMultiplier = mcMMO.getDynamicSettingsManager().getExperienceMapManager().getSpecialCombatXP(SpecialXPKey.ANIMALS);
             } else if (target instanceof Monster) {
                 EntityType type = target.getType();
-                baseXP = ExperienceConfig.getInstance().getCombatXP(type);
+                baseXPMultiplier = mcMMO.getDynamicSettingsManager().getExperienceMapManager().getCombatXPMultiplier(type);
             } else {
                 EntityType type = target.getType();
 
-                if (ExperienceConfig.getInstance().hasCombatXP(type)) {
+                if (mcMMO.getDynamicSettingsManager().getExperienceMapManager().hasCombatXP(type)) {
+                    //Exploit stuff
                     if (type == EntityType.IRON_GOLEM) {
                         if (!((IronGolem) target).isPlayerCreated()) {
-                            baseXP = ExperienceConfig.getInstance().getCombatXP(type);
+                            baseXPMultiplier = mcMMO.getDynamicSettingsManager().getExperienceMapManager().getCombatXPMultiplier(type);
                         }
                     } else {
-                        baseXP = ExperienceConfig.getInstance().getCombatXP(type);
+                        baseXPMultiplier = mcMMO.getDynamicSettingsManager().getExperienceMapManager().getCombatXPMultiplier(type);
                     }
                 } else {
-                    baseXP = 1.0;
-                    //mcMMO.getModManager().addCustomEntity(target);
+                    baseXPMultiplier = 1.0f;
                 }
             }
 
             if (target.hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY)) {
-                baseXP *= mcMMO.getConfigManager().getConfigExperience().getSpawnedMobXPMult();
+                baseXPMultiplier *= mcMMO.getConfigManager().getConfigExperience().getSpawnedMobXPMult();
             }
 
             if (target.hasMetadata(MetadataConstants.BRED_ANIMAL_TRACKING_METAKEY)) {
-                baseXP *= mcMMO.getConfigManager().getConfigExperience().getPlayerBredMobsXPMult();
+                baseXPMultiplier *= mcMMO.getConfigManager().getConfigExperience().getPlayerBredMobsXPMult();
             }
 
             xpGainReason = XPGainReason.PVE;
 
-            baseXP *= 10;
+            baseXPMultiplier *= 10;
         }
 
-        baseXP *= multiplier;
+        baseXPMultiplier *= multiplier;
 
-        if (baseXP != 0) {
-            new AwardCombatXpTask(mcMMOPlayer, primarySkillType, baseXP, target, xpGainReason).runTaskLater(mcMMO.p, 0);
+        if (baseXPMultiplier != 0) {
+            new AwardCombatXpTask(mcMMOPlayer, primarySkillType, baseXPMultiplier, target, xpGainReason).runTaskLater(mcMMO.p, 0);
         }
     }
 

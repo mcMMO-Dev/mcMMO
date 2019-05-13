@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config.hocon.experience;
 
+import com.gmail.nossr50.datatypes.experience.SpecialXPKey;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -46,10 +47,6 @@ public class ConfigExperienceSkills {
     /*
      * BOILER PLATE GETTERS
      */
-
-    public float getPlayerBredMobsXPMult() {
-        return experienceCombat.getPlayerBredMobsXPMult();
-    }
 
     public ConfigExperienceAcrobatics getExperienceAcrobatics() {
         return experienceAcrobatics;
@@ -171,7 +168,7 @@ public class ConfigExperienceSkills {
         return experienceCombat.getCombatExperienceMap();
     }
 
-    public HashMap<String, Float> getSpecialCombatExperienceMap() {
+    public HashMap<SpecialXPKey, Float> getSpecialCombatExperienceMap() {
         return experienceCombat.getSpecialCombatExperienceMap();
     }
 
@@ -197,17 +194,5 @@ public class ConfigExperienceSkills {
 
     public int getShakeXP() {
         return experienceFishing.getShakeXP();
-    }
-
-    public float getSpawnedMobXPMult() {
-        return experienceCombat.getSpawnedMobXPMult();
-    }
-
-    public float getPVPXPMult() {
-        return experienceCombat.getPVPXPMult();
-    }
-
-    public float getAnimalsXPMult() {
-        return experienceCombat.getAnimalsXPMult();
     }
 }
