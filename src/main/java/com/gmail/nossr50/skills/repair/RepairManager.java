@@ -176,8 +176,8 @@ public class RepairManager extends SkillManager {
         // Give out XP like candy
         applyXpGain((float) ((getPercentageRepaired(startDurability, newDurability, repairable.getMaximumDurability())
                 * repairable.getXpMultiplier())
-                * ExperienceConfig.getInstance().getRepairXPBase()
-                * ExperienceConfig.getInstance().getRepairXP(repairable.getRepairItemMaterialCategory())), XPGainReason.PVE);
+                * mcMMO.getConfigManager().getConfigExperience().getRepairXPBase())
+                * mcMMO.getConfigManager().getConfigExperience().getExperienceRepair().getItemMaterialXPMultiplier(repairable.getRepairItemMaterialCategory()), XPGainReason.PVE);
 
         // BWONG BWONG BWONG
         if (mcMMO.getConfigManager().getConfigRepair().getRepairGeneral().isAnvilUseSounds()) {

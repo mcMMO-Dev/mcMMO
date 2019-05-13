@@ -1,6 +1,7 @@
 package com.gmail.nossr50.config.hocon.experience;
 
 import com.gmail.nossr50.datatypes.experience.SpecialXPKey;
+import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -108,8 +109,8 @@ public class ConfigExperienceSkills {
         return experienceSmelting.getSmeltingExperienceMap();
     }
 
-    public HashMap<String, Float> getItemMaterialXPMultiplier() {
-        return experienceRepair.getItemMaterialXPMultiplier();
+    public float getItemMaterialXPMultiplier(ItemMaterialCategory itemMaterialCategory) {
+        return experienceRepair.getItemMaterialXPMultiplier(itemMaterialCategory);
     }
 
     public float getRepairXPBase() {
