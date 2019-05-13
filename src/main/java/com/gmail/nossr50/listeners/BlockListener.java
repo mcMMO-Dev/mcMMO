@@ -584,7 +584,7 @@ public class BlockListener implements Listener {
                     player.sendMessage("[mcMMO DEBUG] This furnace does not have a registered owner");
             }
 
-            if (ExperienceConfig.getInstance().isExperienceBarsEnabled())
+            if (mcMMO.getConfigManager().getConfigLeveling().isEnableXPBars())
                 player.sendMessage("[mcMMO DEBUG] XP bars are enabled, however you should check per-skill settings to make sure those are enabled.");
         }
     }

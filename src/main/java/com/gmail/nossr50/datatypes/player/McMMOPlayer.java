@@ -167,11 +167,11 @@ public class McMMOPlayer {
 
     public void processPostXpEvent(XPGainReason xpGainReason, PrimarySkillType primarySkillType, Plugin plugin, XPGainSource xpGainSource) {
         //Updates from Party sources
-        if (xpGainSource == XPGainSource.PARTY_MEMBERS && !ExperienceConfig.getInstance().isPartyExperienceBarsEnabled())
+        if (xpGainSource == XPGainSource.PARTY_MEMBERS && !mcMMO.getConfigManager().getConfigLeveling().isPartyExperienceTriggerXpBarDisplay())
             return;
 
         //Updates from passive sources (Alchemy, Smelting, etc...)
-        if (xpGainSource == XPGainSource.PASSIVE && !ExperienceConfig.getInstance().isPassiveGainsExperienceBarsEnabled())
+        if (xpGainSource == XPGainSource.PASSIVE && !mcMMO.getConfigManager().getConfigLeveling().isPassiveGainXPBars())
             return;
 
         updateXPBar(primarySkillType, plugin);

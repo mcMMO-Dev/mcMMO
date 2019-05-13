@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.experience;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.ExperienceBarHideTask;
 import org.bukkit.plugin.Plugin;
 
@@ -26,7 +27,7 @@ public class ExperienceBarManager {
     }
 
     public void updateExperienceBar(PrimarySkillType primarySkillType, Plugin plugin) {
-        if (!ExperienceConfig.getInstance().isExperienceBarsEnabled() || !ExperienceConfig.getInstance().isExperienceBarEnabled(primarySkillType))
+        if (!mcMMO.getConfigManager().getConfigLeveling().isEnableXPBars() || !mcMMO.getConfigManager().getConfigLeveling().getXPBarToggle(primarySkillType))
             return;
 
         //Init Bar

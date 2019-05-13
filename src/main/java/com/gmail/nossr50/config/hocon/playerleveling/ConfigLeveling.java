@@ -42,6 +42,14 @@ public class ConfigLeveling {
      * GETTER BOILERPLATE
      */
 
+    public BarColor getXPBarColor(PrimarySkillType primarySkillType) {
+        return configExperienceBars.getXPBarColor(primarySkillType);
+    }
+
+    public BarStyle getXPBarStyle(PrimarySkillType primarySkillType) {
+        return configExperienceBars.getXPBarStyle(primarySkillType);
+    }
+
     public boolean isPartyExperienceTriggerXpBarDisplay() {
         return configExperienceBars.isPartyExperienceTriggerXpBarDisplay();
     }
@@ -68,6 +76,10 @@ public class ConfigLeveling {
 
     public HashMap<PrimarySkillType, BarStyle> getXpBarStyleMap() {
         return configExperienceBars.getXpBarStyleMap();
+    }
+
+    public boolean getXPBarToggle(PrimarySkillType primarySkillType) {
+        return configExperienceBars.getXPBarToggle(primarySkillType);
     }
 
     public ConfigExperienceBars getConfigExperienceBars() {

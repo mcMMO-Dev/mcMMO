@@ -111,58 +111,6 @@ public class ExperienceConfig extends ConfigValidated {
         return reason;
     }
 
-    /*
-     * Experience Bar Stuff
-     */
-
-    public boolean isPartyExperienceBarsEnabled() {
-        return getBooleanValue(EXPERIENCE + BARS, UPDATE, PARTY);
-    }
-
-    public boolean isPassiveGainsExperienceBarsEnabled() {
-        return getBooleanValue(EXPERIENCE + BARS, UPDATE, PASSIVE);
-    }
-
-    public boolean getDoExperienceBarsAlwaysUpdateTitle() {
-        return getBooleanValue(EXPERIENCE + BARS, THIS_MAY_CAUSE_LAG, ALWAYS + UPDATE + TITLES_WHEN_XPIS_GAINED, ENABLE) || getAddExtraDetails();
-    }
-
-    public boolean getAddExtraDetails() {
-        return getBooleanValue(EXPERIENCE + BARS, THIS_MAY_CAUSE_LAG, ALWAYS + UPDATE + TITLES_WHEN_XPIS_GAINED, EXTRA_DETAILS);
-    }
-
-    public boolean isExperienceBarsEnabled() {
-        return getBooleanValue(EXPERIENCE + BARS, ENABLE);
-    }
-
-    public boolean isExperienceBarEnabled(PrimarySkillType primarySkillType) {
-        return getBooleanValue(EXPERIENCE + BARS, StringUtils.getCapitalized(primarySkillType.toString()), ENABLE);
-    }
-
-    public BarColor getExperienceBarColor(PrimarySkillType primarySkillType) {
-        String colorValueFromConfig = getStringValue(EXPERIENCE + BARS, StringUtils.getCapitalized(primarySkillType.toString()), COLOR);
-
-        for (BarColor barColor : BarColor.values()) {
-            if (barColor.toString().equalsIgnoreCase(colorValueFromConfig))
-                return barColor;
-        }
-
-        //In case the value is invalid
-        return BarColor.WHITE;
-    }
-
-    public BarStyle getExperienceBarStyle(PrimarySkillType primarySkillType) {
-        String colorValueFromConfig = getStringValue(EXPERIENCE + BARS, StringUtils.getCapitalized(primarySkillType.toString()), BAR_STYLE);
-
-        for (BarStyle barStyle : BarStyle.values()) {
-            if (barStyle.toString().equalsIgnoreCase(colorValueFromConfig))
-                return barStyle;
-        }
-
-        //In case the value is invalid
-        return BarStyle.SOLID;
-    }
-
     /* Repair */
     public double getRepairXPBase() {
         return getDoubleValue(EXPERIENCE, REPAIR, BASE1);

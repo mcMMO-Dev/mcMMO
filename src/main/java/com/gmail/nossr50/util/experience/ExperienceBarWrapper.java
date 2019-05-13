@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.Server;
 import org.bukkit.boss.BarColor;
@@ -55,7 +56,7 @@ public class ExperienceBarWrapper {
 
     private String getTitleTemplate() {
         //If they are using extra details
-        if (ExperienceConfig.getInstance().getAddExtraDetails())
+        if (mcMMO.getConfigManager().getConfigLeveling().isMoreDetailedXPBars())
             return LocaleLoader.getString("XPBar.Complex.Template", LocaleLoader.getString("XPBar." + niceSkillName, getLevel()), getCurrentXP(), getMaxXP(), getPowerLevel(), getPercentageOfLevel());
 
         return LocaleLoader.getString("XPBar." + niceSkillName, getLevel(), getCurrentXP(), getMaxXP(), getPowerLevel(), getPercentageOfLevel());
@@ -120,7 +121,7 @@ public class ExperienceBarWrapper {
             bossBar.setProgress(v);
 
         //Every time progress updates we need to check for a title update
-        if (getLevel() != lastLevelUpdated || ExperienceConfig.getInstance().getDoExperienceBarsAlwaysUpdateTitle()) {
+        if (getLevel() != lastLevelUpdated || mcMMO.getConfigManager().getConfigLeveling().isMoreDetailedXPBars()) {
             updateTitle();
             lastLevelUpdated = getLevel();
         }
@@ -148,7 +149,9 @@ public class ExperienceBarWrapper {
     }*/
 
     private void createBossBar() {
-        bossBar = mcMMOPlayer.getPlayer().getServer().createBossBar(title, ExperienceConfig.getInstance().getExperienceBarColor(primarySkillType), ExperienceConfig.getInstance().getExperienceBarStyle(primarySkillType));
+        bossBar = mcMMOPlayer.getPlayer().getServer().createBossBar(title,
+                mcMMO.getConfigManager().getConfigLeveling().getXPBarColor(primarySkillType),
+                mcMMO.getConfigManager().getConfigLeveling().getXPBarStyle(primarySkillType));
         bossBar.addPlayer(mcMMOPlayer.getPlayer());
     }
 }

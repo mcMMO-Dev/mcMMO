@@ -125,6 +125,27 @@ public class ConfigExperienceBars {
         return enableXPBars;
     }
 
+    public boolean getXPBarToggle(PrimarySkillType primarySkillType) {
+        if(xpBarSpecificToggles.get(primarySkillType) == null)
+            return true;
+
+        return xpBarSpecificToggles.get(primarySkillType);
+    }
+
+    public BarColor getXPBarColor(PrimarySkillType primarySkillType) {
+        if(xpBarColorMap.get(primarySkillType) == null)
+            return BarColor.WHITE;
+
+        return xpBarColorMap.get(primarySkillType);
+    }
+
+    public BarStyle getXPBarStyle(PrimarySkillType primarySkillType) {
+        if(xpBarStyleMap.get(primarySkillType) == null)
+            return BarStyle.SEGMENTED_6;
+
+        return xpBarStyleMap.get(primarySkillType);
+    }
+
     public HashMap<PrimarySkillType, Boolean> getXpBarSpecificToggles() {
         return xpBarSpecificToggles;
     }
