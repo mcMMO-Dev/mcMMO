@@ -363,10 +363,9 @@ public final class CombatUtils {
 
     /**
      * This cleans up names from displaying in chat as hearts
-     * @param event target event
      * @param entity target entity
      */
-    public static void fixNames(EntityDamageByEntityEvent event, LivingEntity entity)
+    public static void fixNames(LivingEntity entity)
     {
         List<MetadataValue> metadataValue = entity.getMetadata("mcMMO_oldName");
 

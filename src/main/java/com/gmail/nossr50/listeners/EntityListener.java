@@ -397,10 +397,10 @@ public class EntityListener implements Listener {
         {
             if(attacker instanceof LivingEntity)
             {
-                CombatUtils.fixNames(event, (LivingEntity) attacker);
+                CombatUtils.fixNames((LivingEntity) attacker);
             }
 
-            CombatUtils.fixNames(event, target);
+            CombatUtils.fixNames(target);
         }
 
     }
