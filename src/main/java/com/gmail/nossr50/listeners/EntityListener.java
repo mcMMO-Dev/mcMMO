@@ -25,6 +25,7 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
@@ -71,6 +72,12 @@ public class EntityListener implements Listener {
     {
         if(!ExperienceConfig.getInstance().isEndermanEndermiteFarmingPrevented())
             return;
+
+        //It's rare but targets can be null sometimes
+        if(event.getTarget() == null)
+        {
+            return;
+        }
 
         //Prevent entities from giving XP if they target endermite
         if(event.getTarget() instanceof Endermite)
@@ -386,24 +393,15 @@ public class EntityListener implements Listener {
         /**
          * This sets entity names back to whatever they are supposed to be
          */
-        if(!(attacker instanceof Player) && defender instanceof Player)
+        if(event.getFinalDamage() >= target.getHealth())
         {
-            if(event.getFinalDamage() >= ((LivingEntity) defender).getHealth())
+            if(attacker instanceof LivingEntity)
             {
-                List<MetadataValue> metadataValue = attacker.getMetadata("mcMMO_oldName");
-
-                if(metadataValue.size() <= 0)
-                    return;
-
-                if(metadataValue != null)
-                {
-                    OldName oldName = (OldName) metadataValue.get(0);
-                    attacker.setCustomName(oldName.asString());
-                    attacker.setCustomNameVisible(false);
-                }
+                CombatUtils.fixNames(event, (LivingEntity) attacker);
             }
-        }
 
+            CombatUtils.fixNames(event, target);
+        }
 
     }
 

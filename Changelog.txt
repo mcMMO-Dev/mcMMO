@@ -1,3 +1,9 @@
+Version 2.1.60
+    Fixed a NPE error if a LivingEntity's target was set to null
+    Fixed a bug where tamed mobs could kill themselves if their owner shot them once
+    Corrected a typo when naming entities summoned by COTW (Locale string - Taming.Summon.Name.Format)
+    Fixed a bug where tamed mobs could have hearts instead of their name in their own death messages
+
 Version 2.1.59
     Raised the overfishing limit from 3 to 10
     Improved the overfishing messages to be more clear about its mechanics

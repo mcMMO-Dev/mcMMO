@@ -66,16 +66,16 @@ public class BlockListener implements Listener {
                 continue;
 
             //TODO: Should just store the amount of drops in the metadata itself and use a loop
-            if(event.getBlock().getState().getMetadata(mcMMO.doubleDrops).size() > 0)
+            if(event.getBlock().getMetadata(mcMMO.doubleDrops).size() > 0)
             {
-                event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                event.getBlock().getState().removeMetadata(mcMMO.doubleDrops, plugin);
+                event.getBlock().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                event.getBlock().removeMetadata(mcMMO.doubleDrops, plugin);
             }
-            else if(event.getBlock().getState().getMetadata(mcMMO.tripleDrops).size() > 0)
+            else if(event.getBlock().getMetadata(mcMMO.tripleDrops).size() > 0)
             {
-                event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                event.getBlock().getState().removeMetadata(mcMMO.tripleDrops, plugin);
+                event.getBlock().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                event.getBlock().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                event.getBlock().removeMetadata(mcMMO.tripleDrops, plugin);
             }
         }
     }

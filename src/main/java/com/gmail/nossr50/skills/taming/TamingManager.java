@@ -231,6 +231,14 @@ public class TamingManager extends SkillManager {
     }
 
     public void attackTarget(LivingEntity target) {
+        if(target instanceof Tameable)
+        {
+            Tameable tameable = (Tameable) target;
+            if(tameable.getOwner() == getPlayer())
+            {
+                return;
+            }
+        }
         double range = 5;
         Player player = getPlayer();
 
@@ -281,36 +289,36 @@ public class TamingManager extends SkillManager {
             }
 
             location = Misc.getLocationOffset(location, 1);
-            LivingEntity entity = (LivingEntity) player.getWorld().spawnEntity(location, type);
+            LivingEntity callOfWildEntity = (LivingEntity) player.getWorld().spawnEntity(location, type);
 
-            FakeEntityTameEvent event = new FakeEntityTameEvent(entity, player);
+            FakeEntityTameEvent event = new FakeEntityTameEvent(callOfWildEntity, player);
             mcMMO.p.getServer().getPluginManager().callEvent(event);
 
             if (event.isCancelled()) {
                 continue;
             }
 
-            entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
-            ((Tameable) entity).setOwner(player);
-            entity.setRemoveWhenFarAway(false);
+            callOfWildEntity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+            ((Tameable) callOfWildEntity).setOwner(player);
+            callOfWildEntity.setRemoveWhenFarAway(false);
 
-            addToTracker(entity);
+            addToTracker(callOfWildEntity);
 
             switch (type) {
                 case OCELOT:
-                    ((Ocelot) entity).setCatType(Ocelot.Type.values()[1 + Misc.getRandom().nextInt(3)]);
+                    ((Ocelot) callOfWildEntity).setCatType(Ocelot.Type.values()[1 + Misc.getRandom().nextInt(3)]);
                     break;
 
                 case WOLF:
-                    entity.setMaxHealth(20.0);
-                    entity.setHealth(entity.getMaxHealth());
+                    callOfWildEntity.setMaxHealth(20.0);
+                    callOfWildEntity.setHealth(callOfWildEntity.getMaxHealth());
                     break;
 
                 case HORSE:
-                    Horse horse = (Horse) entity;
+                    Horse horse = (Horse) callOfWildEntity;
 
-                    entity.setMaxHealth(15.0 + (Misc.getRandom().nextDouble() * 15));
-                    entity.setHealth(entity.getMaxHealth());
+                    callOfWildEntity.setMaxHealth(15.0 + (Misc.getRandom().nextDouble() * 15));
+                    callOfWildEntity.setHealth(callOfWildEntity.getMaxHealth());
                     horse.setColor(Horse.Color.values()[Misc.getRandom().nextInt(Horse.Color.values().length)]);
                     horse.setStyle(Horse.Style.values()[Misc.getRandom().nextInt(Horse.Style.values().length)]);
                     horse.setJumpStrength(Math.max(AdvancedConfig.getInstance().getMinHorseJumpStrength(), Math.min(Math.min(Misc.getRandom().nextDouble(), Misc.getRandom().nextDouble()) * 2, AdvancedConfig.getInstance().getMaxHorseJumpStrength())));
@@ -322,10 +330,10 @@ public class TamingManager extends SkillManager {
             }
 
             if (Permissions.renamePets(player)) {
-                entity.setCustomName(LocaleLoader.getString("Taming.Summon.Name.Format", player.getName(), StringUtils.getPrettyEntityTypeString(type)));
+                callOfWildEntity.setCustomName(LocaleLoader.getString("Taming.Summon.Name.Format", player.getName(), StringUtils.getPrettyEntityTypeString(type)));
             }
 
-            ParticleEffectUtils.playCallOfTheWildEffect(entity);
+            ParticleEffectUtils.playCallOfTheWildEffect(callOfWildEntity);
         }
 
         ItemStack leftovers = new ItemStack(heldItem);
