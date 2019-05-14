@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.meta.BonusDropMeta;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -65,17 +66,15 @@ public class BlockListener implements Listener {
                         && !Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, is.getType()))
                 continue;
 
-            //TODO: Should just store the amount of drops in the metadata itself and use a loop
-            if(event.getBlock().getMetadata(mcMMO.doubleDrops).size() > 0)
-            {
-                event.getBlock().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                event.getBlock().removeMetadata(mcMMO.doubleDrops, plugin);
-            }
-            else if(event.getBlock().getMetadata(mcMMO.tripleDrops).size() > 0)
-            {
-                event.getBlock().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                event.getBlock().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                event.getBlock().removeMetadata(mcMMO.tripleDrops, plugin);
+            if (event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).size() > 0) {
+                BonusDropMeta bonusDropMeta = (BonusDropMeta) event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).get(0);
+                int bonusCount = bonusDropMeta.asInt();
+
+                for (int i = 0; i < bonusCount; i++) {
+                    event.getBlock().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                }
+
+                event.getBlock().removeMetadata(mcMMO.BONUS_DROPS_METAKEY, plugin);
             }
         }
     }
