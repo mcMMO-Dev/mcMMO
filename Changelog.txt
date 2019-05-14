@@ -4,6 +4,7 @@ Version 2.1.60
     Corrected a typo when naming entities summoned by COTW (Locale string - Taming.Summon.Name.Format)
     Fixed a bug where tamed mobs could have hearts instead of their name in their own death messages
     Fixed a bug where multi-block crops would fail to double/triple drop (Sugar Cane, Cactus, etc)
+    Optimized the bonus drop code to reduce overhead
 
 Version 2.1.59
     Raised the overfishing limit from 3 to 10
