@@ -4,6 +4,7 @@ import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.experience.SpecialXPKey;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.datatypes.meta.OldName;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -31,10 +32,12 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class CombatUtils {
@@ -344,6 +347,25 @@ public final class CombatUtils {
                     tamingManager.attackTarget(target);
                 }
             }
+        }
+    }
+
+    /**
+     * This cleans up names from displaying in chat as hearts
+     * @param entity target entity
+     */
+    public static void fixNames(LivingEntity entity)
+    {
+        List<MetadataValue> metadataValue = entity.getMetadata("mcMMO_oldName");
+
+        if(metadataValue.size() <= 0)
+            return;
+
+        if(metadataValue != null)
+        {
+            OldName oldName = (OldName) metadataValue.get(0);
+            entity.setCustomName(oldName.asString());
+            entity.setCustomNameVisible(false);
         }
     }
 

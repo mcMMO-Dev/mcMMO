@@ -151,6 +151,20 @@ Version 2.2.0
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
     Added 'UndefinedSkillBehaviour' for trying to use a method that has no behaviour defined for the provided skill
+Version 2.1.60
+    Fixed a NPE error if a LivingEntity's target was set to null
+    Fixed a bug where tamed mobs could kill themselves if their owner shot them once
+    Corrected a typo when naming entities summoned by COTW (Locale string - Taming.Summon.Name.Format)
+    Fixed a bug where tamed mobs could have hearts instead of their name in their own death messages
+    Fixed a bug where multi-block crops would fail to double/triple drop (Sugar Cane, Cactus, etc)
+    Optimized the bonus drop code to reduce overhead
+
+Version 2.1.59
+    Raised the overfishing limit from 3 to 10
+    Improved the overfishing messages to be more clear about its mechanics
+    Overfishing locale keys renamed "Fishing.ScarcityTip" and "Fishing.LowResourcesTip"
+
+    NOTES: This and other exploit prevention measures are much more customizable in 2.2, which shouldn't be too far off.
 
 Version 2.1.58
     Fixed the wrong locale string being used for Mining Double Drops

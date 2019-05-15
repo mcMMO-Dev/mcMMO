@@ -3,7 +3,6 @@ package com.gmail.nossr50.listeners;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.core.MetadataConstants;
-import com.gmail.nossr50.datatypes.meta.OldName;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.InteractType;
@@ -38,12 +37,9 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
-
-import java.util.List;
 
 public class EntityListener implements Listener {
     private final mcMMO plugin;
@@ -66,6 +62,12 @@ public class EntityListener implements Listener {
     public void onEntityTargetEntity(EntityTargetLivingEntityEvent event) {
         if (!mcMMO.getConfigManager().getConfigExploitPrevention().getEndermenEndermiteFix())
             return;
+
+        //It's rare but targets can be null sometimes
+        if(event.getTarget() == null)
+        {
+            return;
+        }
 
         //Prevent entities from giving XP if they target endermite
         if (event.getTarget() instanceof Endermite) {
@@ -363,21 +365,15 @@ public class EntityListener implements Listener {
         /**
          * This sets entity names back to whatever they are supposed to be
          */
-        if (!(attacker instanceof Player) && defender instanceof Player) {
-            if (event.getFinalDamage() >= ((LivingEntity) defender).getHealth()) {
-                List<MetadataValue> metadataValue = attacker.getMetadata("mcMMO_oldName");
-
-                if (metadataValue.size() <= 0)
-                    return;
-
-                if (metadataValue != null) {
-                    OldName oldName = (OldName) metadataValue.get(0);
-                    attacker.setCustomName(oldName.asString());
-                    attacker.setCustomNameVisible(false);
-                }
+        if(event.getFinalDamage() >= target.getHealth())
+        {
+            if(attacker instanceof LivingEntity)
+            {
+                CombatUtils.fixNames((LivingEntity) attacker);
             }
-        }
 
+            CombatUtils.fixNames(target);
+        }
 
     }
 

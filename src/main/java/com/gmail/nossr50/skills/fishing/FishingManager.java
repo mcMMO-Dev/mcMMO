@@ -48,6 +48,10 @@ public class FishingManager extends SkillManager {
     private long fishHookSpawnTimestamp;
     private long lastWarned;
     private long lastWarnedExhaust;
+    public static final int FISHING_ROD_CAST_CD_MILLISECONDS = 100;
+    private final long FISHING_COOLDOWN_SECONDS = 1000L;
+
+    private FishHook fishHookReference;
     private BoundingBox lastFishingBoundingBox;
     private Location hookLocation;
     private int fishCaughtCounter;
@@ -130,7 +134,7 @@ public class FishingManager extends SkillManager {
             fishCaughtCounter = 1;
 
         if (fishCaughtCounter + 1 == overfishLimit) {
-            getPlayer().sendMessage(LocaleLoader.getString("Fishing.LowResources"));
+            getPlayer().sendMessage(LocaleLoader.getString("Fishing.LowResourcesTip", mcMMO.getConfigManager().getConfigExploitPrevention().getOverFishingAreaSize() * 2));
         }
 
         //If the new bounding box does not intersect with the old one, then update our bounding box reference

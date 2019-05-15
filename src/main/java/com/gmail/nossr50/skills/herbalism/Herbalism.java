@@ -85,7 +85,9 @@ public class Herbalism {
     protected static int countAndMarkDoubleDropsMultiBlockPlant(BlockState blockState, boolean triple, HerbalismManager herbalismManager) {
         Block block = blockState.getBlock();
         Material blockType = blockState.getType();
-        int dropAmount = mcMMO.getPlaceStore().isTrue(block) ? 0 : 1;
+        int dropAmount = 0;
+        int bonusDropAmount = 0;
+        int bonusAdd = triple ? 2 : 1;
 
         if (blockType == Material.CHORUS_PLANT) {
             dropAmount = 1;
@@ -94,6 +96,17 @@ public class Herbalism {
                 dropAmount = calculateChorusPlantDrops(block, triple, herbalismManager);
             }
         } else {
+            //Check the block itself first
+            if(!mcMMO.getPlaceStore().isTrue(block))
+            {
+                dropAmount++;
+
+                if(herbalismManager.checkDoubleDrop(blockState))
+                    bonusDropAmount+=bonusAdd;
+            } else {
+                mcMMO.getPlaceStore().setFalse(blockState);
+            }
+
             // Handle the two blocks above it - cacti & sugar cane can only grow 3 high naturally
             for (int y = 1; y < 255; y++) {
                 Block relativeBlock = block.getRelative(BlockFace.UP, y);
@@ -107,11 +120,14 @@ public class Herbalism {
                 } else {
                     dropAmount++;
 
-                    if (herbalismManager.checkDoubleDrop(relativeBlock.getState()))
-                        BlockUtils.markDropsAsBonus(relativeBlock.getState(), triple);
+                    if(herbalismManager.checkDoubleDrop(relativeBlock.getState()))
+                        bonusDropAmount+=bonusAdd;
                 }
             }
         }
+
+        //Mark the original block for bonus drops
+        BlockUtils.markDropsAsBonus(blockState, bonusDropAmount);
 
         return dropAmount;
     }

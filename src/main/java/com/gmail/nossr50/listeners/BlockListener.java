@@ -65,10 +65,33 @@ public class BlockListener implements Listener {
             if (!mcMMO.getDynamicSettingsManager().getBonusDropManager().isBonusDropWhitelisted(is.getType()))
                 continue;
 
-            //TODO: Should just store the amount of drops in the metadata itself and use a loop
             if (event.getBlock().getMetadata(MetadataConstants.BONUS_DROPS_METAKEY).size() > 0) {
                 BonusDropMeta bonusDropMeta = (BonusDropMeta) event.getBlock().getMetadata(MetadataConstants.BONUS_DROPS_METAKEY).get(0);
                 int bonusCount = bonusDropMeta.asInt();
+
+                for (int i = 0; i < bonusCount; i++) {
+                    event.getBlock().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                }
+
+                event.getBlock().removeMetadata(MetadataConstants.BONUS_DROPS_METAKEY, plugin);
+            }
+        }
+    }
+
+    /*@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockDropItemEvent(BlockDropItemEvent event)
+    {
+        for(Item item : event.getItems())
+        {
+            ItemStack is = new ItemStack(item.getItemStack());
+
+            if(event.getBlock().getMetadata(mcMMO.doubleDrops).size() > 0)
+            {
+                List<MetadataValue> metadataValue = event.getBlock().getMetadata(mcMMO.doubleDrops);
+
+                BonusDrops bonusDrops = (BonusDrops) metadataValue.get(0);
+                Collection<ItemStack> potentialDrops = (Collection<ItemStack>) bonusDrops.value();
+>>>>>>> 2746bac86ac8b201960ac47bc19eac4b84d790a0
 
                 for (int i = 0; i < bonusCount; i++) {
                     event.getBlock().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);

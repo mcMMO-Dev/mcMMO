@@ -382,7 +382,7 @@ public class PlayerListener implements Listener {
             case CAUGHT_FISH:
                 if (mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().isPreventFishingExploits()) {
                     if (fishingManager.isExploitingFishing(event.getHook().getLocation().toVector())) {
-                        player.sendMessage(LocaleLoader.getString("Fishing.Scarcity"));
+                        player.sendMessage(LocaleLoader.getString("Fishing.ScarcityTip", mcMMO.getConfigManager().getConfigExploitPrevention().getOverFishingAreaSize() * 2));
                         event.setExpToDrop(0);
                         Item caughtItem = (Item) caught;
                         caughtItem.remove();
