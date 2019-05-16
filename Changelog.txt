@@ -1,5 +1,7 @@
 Version 2.1.61
     Fixed the locale string formatting of 'Mining.SubSkill.DoubleDrops.Stat'
+    Updated the Japanese locale (thanks snake0053)
+
 
 Version 2.1.60
     Fixed a NPE error if a LivingEntity's target was set to null
