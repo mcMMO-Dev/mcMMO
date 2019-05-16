@@ -2,6 +2,7 @@ Version 2.1.61
     Fixed the locale string formatting of 'Mining.SubSkill.DoubleDrops.Stat'
     Updated the Japanese locale (thanks snake0053)
     Added toggle to turn off event message broadcasts (XP rate) to config.yml - 'General.EventBroadcasts'
+    Added toggle to not inform players of events when they join (XP rate, etc) to config.yml 'General.EventInfoOnPlayerJoin'
 
     NOTE: The toggle for event message broadcasts is separate from the titles being shown, that's another config option (titles are the BIG TEXT in the middle of the screen)
 

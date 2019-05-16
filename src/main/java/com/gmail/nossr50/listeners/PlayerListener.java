@@ -529,7 +529,7 @@ public class PlayerListener implements Listener {
             Motd.displayAll(player);
         }
 
-        if (plugin.isXPEventEnabled()) {
+        if (plugin.isXPEventEnabled() && Config.getInstance().playerJoinEventInfo()) {
             player.sendMessage(LocaleLoader.getString("XPRate.Event", ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()));
         }
     }
