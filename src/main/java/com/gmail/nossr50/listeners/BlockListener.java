@@ -180,6 +180,22 @@ public class BlockListener implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onBlockFormEvent(BlockFormEvent event)
+    {
+        /* WORLD BLACKLIST CHECK */
+        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+            return;
+
+        if(ExperienceConfig.getInstance().preventStoneLavaFarming())
+        {
+            if(event.getNewState().getType() != Material.OBSIDIAN && BlockUtils.shouldBeWatched(event.getNewState()))
+            {
+                mcMMO.getPlaceStore().setTrue(event.getNewState());
+            }
+        }
+    }
+
     /**
      * Monitor BlockPlace events.
      *

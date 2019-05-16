@@ -3,8 +3,10 @@ Version 2.1.61
     Updated the Japanese locale (thanks snake0053)
     Added toggle to turn off event message broadcasts (XP rate) to config.yml - 'General.EventBroadcasts'
     Added toggle to not inform players of events when they join (XP rate, etc) to config.yml 'General.EventInfoOnPlayerJoin'
+    Added anti-exploit protection for cobble/stone farms which can be automated, to turn this off you can toggle the new config options 'ExploitFix.LavaStoneAndCobbleFarming' in experience.yml
 
     NOTE: The toggle for event message broadcasts is separate from the titles being shown, that's another config option (titles are the BIG TEXT in the middle of the screen)
+    NOTE: The new anti-stone/cobble automation will not prevent XP gains from obsidian, since Obsidian requires some effort to farm
 
 Version 2.1.60
     Fixed a NPE error if a LivingEntity's target was set to null

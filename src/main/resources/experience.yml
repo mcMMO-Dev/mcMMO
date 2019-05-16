@@ -31,6 +31,7 @@ ExploitFix:
     Fishing: true
     EndermanEndermiteFarms: true
     Acrobatics: true
+    LavaStoneAndCobbleFarming: true
 Experience_Bars:
     # Turn this to false if you wanna disable XP bars
     Enable: true

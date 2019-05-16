@@ -332,4 +332,6 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     {
         return config.getInt("Experience_Values.Taming.Animal_Taming." + StringUtils.getPrettyEntityTypeString(type));
     }
+
+    public boolean preventStoneLavaFarming() { return config.getBoolean("ExploitFix.LavaStoneAndCobbleFarming", true);}
 }
