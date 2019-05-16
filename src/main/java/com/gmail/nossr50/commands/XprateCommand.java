@@ -1,6 +1,7 @@
 package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -44,8 +45,12 @@ public class XprateCommand implements TabExecutor {
                                 10, 10*20, 20);
                     }
 
-                    mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop"));
-                    mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop.Subtitle"));
+                    if(Config.getInstance().broadcastEventMessages())
+                    {
+                        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop"));
+                        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop.Subtitle"));
+                    }
+
 
                     mcMMO.p.toggleXpEventEnabled();
                 }
@@ -91,8 +96,13 @@ public class XprateCommand implements TabExecutor {
                                 LocaleLoader.getString("Commands.Event.XP", newXpRate),
                                 10, 10*20, 20);
                     }
-                    mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Start"));
-                    mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.XP", newXpRate));
+
+                    if(Config.getInstance().broadcastEventMessages())
+                    {
+                        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Start"));
+                        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.XP", newXpRate));
+                    }
+
                 }
                 else {
                     sender.sendMessage(LocaleLoader.getString("Commands.xprate.modified", newXpRate));

@@ -567,4 +567,6 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getPVEEnabled(PrimarySkillType skill) { return config.getBoolean("Skills." + StringUtils.getCapitalized(skill.toString()) + ".Enabled_For_PVE", true); }
     
     //public float getMasterVolume() { return (float) config.getDouble("Sounds.MasterVolume", 1.0); }
+
+    public boolean broadcastEventMessages() { return config.getBoolean("General.EventBroadcasts", true);}
 }
