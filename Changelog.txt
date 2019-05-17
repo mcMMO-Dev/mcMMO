@@ -1,11 +1,14 @@
 Version 2.1.62
     OPs and players with the admin chat permission will now see details about XP rate event commands regardless of whether or not the XP rate event messages are enabled
-
+    Updated hu_HU locale (thanks andris155)
+    Added XP for mining Magma_Block (default 30 XP - Update your config, see notes)
     New locale string - 'XPRate.Modified' sent to the user who modifies the XP rate regardless of whether or not messages for the event are enabled
     New locale string - 'XPRate.End' sent to the user who ended the XP rate event regardless of whether or not messages for the event are enabled
     New locale string - 'XPRate.AdminDetails.End' details of who ended an XP rate event are sent to players who have Operator status or admin chat permission when the command to end the event has been issued
     New locale string - 'XPRate.AdminDetails.Start' details of who started an XP rate event are sent to players who have Operator status or admin chat permission when the command to start or modify XP of an event has been issued
     New locale string - 'Server.ConsoleName' the name of the server console, this will be used in place of player names when sending admin notifications out if the command was used from console
+
+    NOTES: Add an entry of 'Magma_Block: 30' under Mining in experience.yml (or you can delete the file to generate a new one with default values, 2.2 is coming soon which will have brand new configs so you could just wait for that
 
 Version 2.1.61
     Fixed the locale string formatting of 'Mining.SubSkill.DoubleDrops.Stat'

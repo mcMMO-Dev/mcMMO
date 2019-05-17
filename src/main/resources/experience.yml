@@ -348,6 +348,7 @@ Experience_Values:
         Lily_of_the_valley: 150
         Wither_rose: 500
     Mining:
+        Magma_Block: 30
         Tube_Coral_Block: 75
         Brain_Coral_Block: 80
         Bubble_Coral_Block: 70
