@@ -10,12 +10,15 @@ import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.google.common.collect.ImmutableList;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
+import java.security.Permission;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +53,23 @@ public class XprateCommand implements TabExecutor {
                         mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop"));
                         mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop.Subtitle"));
                     }
+
+                    for(Player player : Bukkit.getServer().getOnlinePlayers())
+                    {
+                        if(player.isOp() || Permissions.adminChat(player))
+                        {
+                            String senderName = LocaleLoader.getString("Server.ConsoleName");
+
+                            if(sender instanceof Player)
+                            {
+                                senderName = ((Player) sender).getDisplayName();
+                            }
+
+                            sender.sendMessage(LocaleLoader.getString("XPRate.AdminDetails.End", senderName));
+                        }
+                    }
+
+                    sender.sendMessage(LocaleLoader.getString("XPRate.End"));
 
 
                     mcMMO.p.toggleXpEventEnabled();
@@ -88,25 +108,37 @@ public class XprateCommand implements TabExecutor {
 
                 ExperienceConfig.getInstance().setExperienceGainsGlobalMultiplier(newXpRate);
 
-                if (mcMMO.p.isXPEventEnabled()) {
-                    if(AdvancedConfig.getInstance().useTitlesForXPEvent())
-                    {
-                        NotificationManager.broadcastTitle(mcMMO.p.getServer(),
-                                LocaleLoader.getString("Commands.Event.Start"),
-                                LocaleLoader.getString("Commands.Event.XP", newXpRate),
-                                10, 10*20, 20);
-                    }
-
-                    if(Config.getInstance().broadcastEventMessages())
-                    {
-                        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Start"));
-                        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.XP", newXpRate));
-                    }
-
+                if(AdvancedConfig.getInstance().useTitlesForXPEvent())
+                {
+                    NotificationManager.broadcastTitle(mcMMO.p.getServer(),
+                            LocaleLoader.getString("Commands.Event.Start"),
+                            LocaleLoader.getString("Commands.Event.XP", newXpRate),
+                            10, 10*20, 20);
                 }
-                else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.xprate.modified", newXpRate));
+
+                if(Config.getInstance().broadcastEventMessages())
+                {
+                    mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Start"));
+                    mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.XP", newXpRate));
                 }
+
+                for(Player player : Bukkit.getServer().getOnlinePlayers())
+                {
+                    if(player.isOp() || Permissions.adminChat(player))
+                    {
+                        String senderName = LocaleLoader.getString("Server.ConsoleName");
+
+                        if(sender instanceof Player)
+                        {
+                            senderName = ((Player) sender).getDisplayName();
+                        }
+
+                        sender.sendMessage(LocaleLoader.getString("XPRate.AdminDetails.Start", senderName, newXpRate));
+                    }
+                }
+
+                sender.sendMessage(LocaleLoader.getString("XPRate.Modified", newXpRate));
+
 
                 return true;
 

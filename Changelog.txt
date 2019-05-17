@@ -1,3 +1,12 @@
+Version 2.1.62
+    OPs and players with the admin chat permission will now see details about XP rate event commands regardless of whether or not the XP rate event messages are enabled
+
+    New locale string - 'XPRate.Modified' sent to the user who modifies the XP rate regardless of whether or not messages for the event are enabled
+    New locale string - 'XPRate.End' sent to the user who ended the XP rate event regardless of whether or not messages for the event are enabled
+    New locale string - 'XPRate.AdminDetails.End' details of who ended an XP rate event are sent to players who have Operator status or admin chat permission when the command to end the event has been issued
+    New locale string - 'XPRate.AdminDetails.Start' details of who started an XP rate event are sent to players who have Operator status or admin chat permission when the command to start or modify XP of an event has been issued
+    New locale string - 'Server.ConsoleName' the name of the server console, this will be used in place of player names when sending admin notifications out if the command was used from console
+
 Version 2.1.61
     Fixed the locale string formatting of 'Mining.SubSkill.DoubleDrops.Stat'
     Updated the Japanese locale (thanks snake0053)
