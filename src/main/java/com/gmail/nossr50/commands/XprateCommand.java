@@ -65,7 +65,7 @@ public class XprateCommand implements TabExecutor {
                                 senderName = ((Player) sender).getDisplayName();
                             }
 
-                            sender.sendMessage(LocaleLoader.getString("XPRate.AdminDetails.End", senderName));
+                            player.sendMessage(LocaleLoader.getString("XPRate.AdminDetails.End", senderName));
                         }
                     }
 
@@ -133,7 +133,7 @@ public class XprateCommand implements TabExecutor {
                             senderName = ((Player) sender).getDisplayName();
                         }
 
-                        sender.sendMessage(LocaleLoader.getString("XPRate.AdminDetails.Start", senderName, newXpRate));
+                        player.sendMessage(LocaleLoader.getString("XPRate.AdminDetails.Start", senderName, newXpRate));
                     }
                 }
 
