@@ -104,6 +104,9 @@ public class ConfigExperienceHerbalism {
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.SUGAR_CANE.getKey().toString(), 30);
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.NETHER_WART.getKey().toString(), 30);
 
+        /* JUNGLE */
+        HERBALISM_EXPERIENCE_DEFAULT.put(Material.BAMBOO.getKey().toString(), 10);
+
         /* END PLANTS */
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.CHORUS_PLANT.getKey().toString(), 1);
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.CHORUS_FLOWER.getKey().toString(), 25);
