@@ -158,7 +158,7 @@ public class NotificationManager {
      */
     private static void sendAdminNotification(String msg) {
         //If its not enabled exit
-        if(!Config.getInstance().adminNotifications())
+        if(!mcMMO.getConfigManager().getConfigAdmin().isSendAdminNotifications())
             return;
 
         for(Player player : Bukkit.getServer().getOnlinePlayers())
