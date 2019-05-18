@@ -79,8 +79,6 @@ public class ConfigExperienceMining {
         MINING_EXPERIENCE_DEFAULT.put(Material.MOSSY_STONE_BRICK_SLAB.getKey().toString(), 30);
         MINING_EXPERIENCE_DEFAULT.put(Material.MOSSY_STONE_BRICK_WALL.getKey().toString(), 30);
         MINING_EXPERIENCE_DEFAULT.put(Material.MOSSY_STONE_BRICK_STAIRS.getKey().toString(), 30);
-
-        /* MISC */
         MINING_EXPERIENCE_DEFAULT.put(Material.OBSIDIAN.getKey().toString(), 150);
         MINING_EXPERIENCE_DEFAULT.put(Material.STONE_BRICKS.getKey().toString(), 30);
         MINING_EXPERIENCE_DEFAULT.put(Material.STONE_BRICK_SLAB.getKey().toString(), 30);
@@ -88,6 +86,11 @@ public class ConfigExperienceMining {
         MINING_EXPERIENCE_DEFAULT.put(Material.STONE_BRICK_STAIRS.getKey().toString(), 30);
         MINING_EXPERIENCE_DEFAULT.put(Material.CRACKED_STONE_BRICKS.getKey().toString(), 30);
         MINING_EXPERIENCE_DEFAULT.put(Material.INFESTED_CRACKED_STONE_BRICKS.getKey().toString(), 30);
+        MINING_EXPERIENCE_DEFAULT.put(Material.CHISELED_QUARTZ_BLOCK.getKey().toString(), 30);
+        MINING_EXPERIENCE_DEFAULT.put(Material.CHISELED_RED_SANDSTONE.getKey().toString(), 30);
+        MINING_EXPERIENCE_DEFAULT.put(Material.CHISELED_SANDSTONE.getKey().toString(), 30);
+        MINING_EXPERIENCE_DEFAULT.put(Material.CHISELED_STONE_BRICKS.getKey().toString(), 30);
+        MINING_EXPERIENCE_DEFAULT.put(Material.INFESTED_CHISELED_STONE_BRICKS.getKey().toString(), 30);
 
         /* SNOWY BIOME */
         MINING_EXPERIENCE_DEFAULT.put(Material.BLUE_ICE.getKey().toString(), 50);
