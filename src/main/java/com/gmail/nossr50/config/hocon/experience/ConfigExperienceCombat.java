@@ -73,6 +73,7 @@ public class ConfigExperienceCombat {
         COMBAT_EXPERIENCE_DEFAULT.put("drowned", 1.0F);
         COMBAT_EXPERIENCE_DEFAULT.put("dolphin", 1.0F);
         COMBAT_EXPERIENCE_DEFAULT.put("phantom", 4.0F);
+        COMBAT_EXPERIENCE_DEFAULT.put("wandering_trader", 1.0F);
 
         //SPECIAL
         SPECIAL_COMBAT_EXPERIENCE_DEFAULT = new HashMap<>();
