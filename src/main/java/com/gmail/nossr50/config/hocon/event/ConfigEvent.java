@@ -13,6 +13,10 @@ public class ConfigEvent {
         return xpRate;
     }
 
+    public boolean isSendTitleMessages() {
+        return xpRate.isSendTitleMessages();
+    }
+
     public boolean isShowXPRateInfoOnPlayerJoin() {
         return xpRate.isShowXPRateInfoOnPlayerJoin();
     }

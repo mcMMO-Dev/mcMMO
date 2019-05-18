@@ -525,12 +525,12 @@ public class PlayerListener implements Listener {
             player.sendMessage(LocaleLoader.getString("XPRate.Event", mcMMO.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult()));
         }
 
-        //TODO: Remove this warning
+        //TODO: Remove this warning after 2.2 is done
         if (mcMMO.p.getDescription().getVersion().contains("SNAPSHOT")) {
             event.getPlayer().sendMessage(ChatColor.RED + "WARNING: " + ChatColor.WHITE + "This dev build version of mcMMO is in the MIDDLE of completely rewriting the configs, there may be game breaking bugs. It is not recommended to play on this version of mcMMO, please grab the latest stable release from https://www.mcmmo.org and use that instead!");
         }
 
-        if (plugin.isXPEventEnabled() && Config.getInstance().playerJoinEventInfo()) {
+        if (plugin.isXPEventEnabled() && mcMMO.getConfigManager().getConfigEvent().isShowXPRateInfoOnPlayerJoin()) {
             player.sendMessage(LocaleLoader.getString("XPRate.Event", ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()));
         }
     }

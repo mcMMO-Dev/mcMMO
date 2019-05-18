@@ -1,7 +1,5 @@
 package com.gmail.nossr50.commands;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.notifications.SensitiveCommandType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -37,14 +35,14 @@ public class XprateCommand implements TabExecutor {
 
                 if (mcMMO.p.isXPEventEnabled()) {
 
-                    if (AdvancedConfig.getInstance().useTitlesForXPEvent()) {
+                    if (mcMMO.getConfigManager().getConfigEvent().isSendTitleMessages()) {
                         NotificationManager.broadcastTitle(mcMMO.p.getServer(),
                                 LocaleLoader.getString("Commands.Event.Stop"),
                                 LocaleLoader.getString("Commands.Event.Stop.Subtitle"),
                                 10, 10 * 20, 20);
                     }
 
-                    if(Config.getInstance().broadcastEventMessages())
+                    if(mcMMO.getConfigManager().getConfigEvent().isBroadcastXPRateEventMessages())
                     {
                         mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop"));
                         mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop.Subtitle"));
@@ -86,7 +84,7 @@ public class XprateCommand implements TabExecutor {
 
                 mcMMO.getDynamicSettingsManager().getExperienceManager().setGlobalXpMult(newXpRate);
 
-                if(AdvancedConfig.getInstance().useTitlesForXPEvent())
+                if(mcMMO.getConfigManager().getConfigEvent().isSendTitleMessages())
                 {
                     NotificationManager.broadcastTitle(mcMMO.p.getServer(),
                             LocaleLoader.getString("Commands.Event.Start"),
@@ -94,7 +92,7 @@ public class XprateCommand implements TabExecutor {
                             10, 10*20, 20);
                 }
 
-                if(Config.getInstance().broadcastEventMessages())
+                if(mcMMO.getConfigManager().getConfigEvent().isBroadcastXPRateEventMessages())
                 {
                     mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Start"));
                     mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.XP", newXpRate));
