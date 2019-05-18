@@ -74,6 +74,7 @@ public class ConfigExperienceHerbalism {
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.ROSE_BUSH.getKey().toString(), 50);
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.SUNFLOWER.getKey().toString(), 50);
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.CORNFLOWER.getKey().toString(), 150);
+        HERBALISM_EXPERIENCE_DEFAULT.put(Material.LILY_OF_THE_VALLEY.getKey().toString(), 150);
 
         /* WEEDS */
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.FERN.getKey().toString(), 10);
