@@ -19,6 +19,9 @@ Version 2.1.62
     Add an entry of 'Magma_Block: 30' under Mining in experience.yml section titled "Experience_Values" (or you can delete the file to generate a new one with default values, 2.2 is coming soon which will have brand new configs so you could just wait for that
     2.2 is the config rewrite, in this rewrite Repair and Salvage configs have been partially rewritten, it is not intended for Diamond Repair to take until level 50 in Standard level scaling to be available, since it'd be redundant to fix this in 2.1.X when 2.2 fixes it and its about to come out, the minimum level has temporarily been changed to 0. You can either update your repair.vanilla.yml config manually or delete it to generate a new one.
 
+    Admin notifications are a step in the right direction for finding naughty admins in mcMMO, I will be changing which permission node is used for players to be considered an admin in the future as not everyone wants or uses admin chat.
+    I expect to add logging of admin commands which will be viewable in game via command, so you won't have to have access to the servers log files to view who has been executing what.
+
 Version 2.1.61
     Fixed the locale string formatting of 'Mining.SubSkill.DoubleDrops.Stat'
     Updated the Japanese locale (thanks snake0053)
