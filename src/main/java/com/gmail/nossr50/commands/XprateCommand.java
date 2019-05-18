@@ -10,7 +10,6 @@ import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.google.common.collect.ImmutableList;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -18,7 +17,6 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
-import java.security.Permission;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,16 +59,8 @@ public class XprateCommand implements TabExecutor {
                         senderName = ((Player) sender).getDisplayName();
                     }
 
-                    for(Player player : Bukkit.getServer().getOnlinePlayers())
-                    {
-                        if(player.isOp() || Permissions.adminChat(player))
-                        {
-                            player.sendMessage(LocaleLoader.getString("XPRate.AdminDetails.End", senderName));
-                        }
-                    }
-
+                    NotificationManager.sendAdminNotification(LocaleLoader.getString("XPRate.AdminDetails.End", senderName));
                     sender.sendMessage(LocaleLoader.getString("XPRate.End"));
-
 
                     mcMMO.p.toggleXpEventEnabled();
                 }
@@ -122,7 +112,6 @@ public class XprateCommand implements TabExecutor {
                     mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.XP", newXpRate));
                 }
 
-
                 String senderName = LocaleLoader.getString("Server.ConsoleName");
 
                 if(sender instanceof Player)
@@ -130,16 +119,9 @@ public class XprateCommand implements TabExecutor {
                     senderName = ((Player) sender).getDisplayName();
                 }
 
-                for(Player player : Bukkit.getServer().getOnlinePlayers())
-                {
-                    if(player.isOp() || Permissions.adminChat(player))
-                    {
-                        player.sendMessage(LocaleLoader.getString("XPRate.AdminDetails.Start", senderName, newXpRate));
-                    }
-                }
-
+                //Admin notification
+                NotificationManager.sendAdminNotification(LocaleLoader.getString("XPRate.AdminDetails.Start", senderName, newXpRate));
                 sender.sendMessage(LocaleLoader.getString("XPRate.Modified", newXpRate));
-
 
                 return true;
 

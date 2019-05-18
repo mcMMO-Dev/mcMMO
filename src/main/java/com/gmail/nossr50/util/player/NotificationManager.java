@@ -6,7 +6,10 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -153,5 +156,23 @@ public class NotificationManager {
                     subSkillType.getLocaleName(),
                     String.valueOf(RankUtils.getRank(mcMMOPlayer.getPlayer(),
                             subSkillType)))));*/
+    }
+
+    /**
+     * Sends a message to all admins with the admin notification formatting from the locale
+     * Admins are currently players with either Operator status or Admin Chat permission
+     * @param msg message contents
+     */
+    public static void sendAdminNotification(String msg) {
+        for(Player player : Bukkit.getServer().getOnlinePlayers())
+        {
+            if(player.isOp() || Permissions.adminChat(player))
+            {
+                player.sendMessage(LocaleLoader.getString("Notifications.Admin", msg));
+            }
+        }
+
+        //Copy it out to Console too
+        mcMMO.p.getLogger().info(LocaleLoader.getString("Notifications.Admin", msg));
     }
 }
