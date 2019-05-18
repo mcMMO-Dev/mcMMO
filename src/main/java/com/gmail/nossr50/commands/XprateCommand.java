@@ -1,6 +1,8 @@
 package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.notifications.SensitiveCommandType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
@@ -42,8 +44,14 @@ public class XprateCommand implements TabExecutor {
                                 10, 10 * 20, 20);
                     }
 
-                    mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop"));
-                    mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop.Subtitle"));
+                    if(Config.getInstance().broadcastEventMessages())
+                    {
+                        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop"));
+                        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop.Subtitle"));
+                    }
+
+                    //Admin notification
+                    NotificationManager.processSensitiveCommandNotification(sender, SensitiveCommandType.XPRATE_END);
 
                     mcMMO.p.toggleXpEventEnabled();
                 }
@@ -78,18 +86,22 @@ public class XprateCommand implements TabExecutor {
 
                 mcMMO.getDynamicSettingsManager().getExperienceManager().setGlobalXpMult(newXpRate);
 
-                if (mcMMO.p.isXPEventEnabled()) {
-                    if (AdvancedConfig.getInstance().useTitlesForXPEvent()) {
-                        NotificationManager.broadcastTitle(mcMMO.p.getServer(),
-                                LocaleLoader.getString("Commands.Event.Start"),
-                                LocaleLoader.getString("Commands.Event.XP", newXpRate),
-                                10, 10 * 20, 20);
-                    }
+                if(AdvancedConfig.getInstance().useTitlesForXPEvent())
+                {
+                    NotificationManager.broadcastTitle(mcMMO.p.getServer(),
+                            LocaleLoader.getString("Commands.Event.Start"),
+                            LocaleLoader.getString("Commands.Event.XP", newXpRate),
+                            10, 10*20, 20);
+                }
+
+                if(Config.getInstance().broadcastEventMessages())
+                {
                     mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Start"));
                     mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.XP", newXpRate));
-                } else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.xprate.modified", newXpRate));
                 }
+
+                //Admin notification
+                NotificationManager.processSensitiveCommandNotification(sender, SensitiveCommandType.XPRATE_MODIFY, String.valueOf(newXpRate));
 
                 return true;
 

@@ -5,6 +5,7 @@ import com.gmail.nossr50.chat.ChatManagerFactory;
 import com.gmail.nossr50.chat.PartyChatManager;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.Party;
@@ -48,6 +49,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import sun.security.krb5.Config;
 
 public class PlayerListener implements Listener {
     private final mcMMO plugin;
@@ -526,6 +528,10 @@ public class PlayerListener implements Listener {
         //TODO: Remove this warning
         if (mcMMO.p.getDescription().getVersion().contains("SNAPSHOT")) {
             event.getPlayer().sendMessage(ChatColor.RED + "WARNING: " + ChatColor.WHITE + "This dev build version of mcMMO is in the MIDDLE of completely rewriting the configs, there may be game breaking bugs. It is not recommended to play on this version of mcMMO, please grab the latest stable release from https://www.mcmmo.org and use that instead!");
+        }
+
+        if (plugin.isXPEventEnabled() && Config.getInstance().playerJoinEventInfo()) {
+            player.sendMessage(LocaleLoader.getString("XPRate.Event", ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()));
         }
     }
 

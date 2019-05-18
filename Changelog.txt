@@ -151,6 +151,41 @@ Version 2.2.0
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
     Added 'UndefinedSkillBehaviour' for trying to use a method that has no behaviour defined for the provided skill
+
+Version 2.1.62
+    Added a new admin notification system, sensitive commands will print chat messages to "admins" (players with either Operator status or admin chat permission)
+    Added a setting to disable the new admin notifications to config.yml 'General.AdminNotifications' (this will be more configurable in 2.2)
+    OPs and players with the admin chat permission will now see details about XP rate event commands regardless of whether or not the XP rate event messages are enabled
+    Updated hu_HU locale (thanks andris155)
+    Added XP for mining Magma_Block (default 30 XP - Update your config, see notes)
+    Diamond tools & armor in the repair config now have a minimum level of 0 (Update your config, temporary hotfix, 2.2 addresses this issue, see notes)
+    Guardian default combat XP multiplier reduced from 3.0 to 1.0 (update config if you want this change)
+    New locale string - 'Server.ConsoleName' the name of the server console, this will be used in place of player names when sending admin notifications out if the command was used from console
+    New locale string - 'Notifications.Admin.Format.Others' style formatting + prefix for admin notifications used in the other new strings below
+    New locale string - 'Notifications.Admin.Format.Self' style formatting + prefix for admin command confirmations sent to the user who executed the command
+    New locale string - 'Notifications.Admin.XPRate.Start.Self' sent to the user who modifies the XP rate regardless of whether or not messages for the event are enabled
+    New locale string - 'Notifications.Admin.XPRate.Start.Others' details of who started an XP rate event are sent to players who have Operator status or admin chat permission when the command to start or modify XP of an event has been issued
+    New locale string - 'Notifications.Admin.XPRate.End.Self' sent to the user who ended the XP rate event regardless of whether or not messages for the event are enabled
+    New locale string - 'Notifications.Admin.XPRate.End.Others' details of who ended an XP rate event are sent to players who have Operator status or admin chat permission when the command to end the event has been issued
+
+    NOTES:
+    Admin notifications currently only reports use of the XP rate command, it will be expanded to support other commands in upcoming patches
+    Add an entry of 'Magma_Block: 30' under Mining in experience.yml section titled "Experience_Values" (or you can delete the file to generate a new one with default values, 2.2 is coming soon which will have brand new configs so you could just wait for that
+    2.2 is the config rewrite, in this rewrite Repair and Salvage configs have been partially rewritten, it is not intended for Diamond Repair to take until level 50 in Standard level scaling to be available, since it'd be redundant to fix this in 2.1.X when 2.2 fixes it and its about to come out, the minimum level has temporarily been changed to 0. You can either update your repair.vanilla.yml config manually or delete it to generate a new one.
+
+    Admin notifications are a step in the right direction for finding naughty admins in mcMMO, I will be changing which permission node is used for players to be considered an admin in the future as not everyone wants or uses admin chat.
+    I expect to add logging of admin commands which will be viewable in game via command, so you won't have to have access to the servers log files to view who has been executing what.
+
+Version 2.1.61
+    Fixed the locale string formatting of 'Mining.SubSkill.DoubleDrops.Stat'
+    Updated the Japanese locale (thanks snake0053)
+    Added toggle to turn off event message broadcasts (XP rate) to config.yml - 'General.EventBroadcasts'
+    Added toggle to not inform players of events when they join (XP rate, etc) to config.yml 'General.EventInfoOnPlayerJoin'
+    Added anti-exploit protection for cobble/stone farms which can be automated, to turn this off you can toggle the new config options 'ExploitFix.LavaStoneAndCobbleFarming' in experience.yml
+
+    NOTE: The toggle for event message broadcasts is separate from the titles being shown, that's another config option (titles are the BIG TEXT in the middle of the screen)
+    NOTE: The new anti-stone/cobble automation will not prevent XP gains from obsidian, since Obsidian requires some effort to farm
+
 Version 2.1.60
     Fixed a NPE error if a LivingEntity's target was set to null
     Fixed a bug where tamed mobs could kill themselves if their owner shot them once

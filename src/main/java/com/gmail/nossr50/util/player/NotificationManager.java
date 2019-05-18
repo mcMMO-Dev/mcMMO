@@ -1,21 +1,24 @@
 package com.gmail.nossr50.util.player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.datatypes.notifications.SensitiveCommandType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Server;
-import org.bukkit.SoundCategory;
+import org.bukkit.*;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class NotificationManager {
@@ -147,4 +150,82 @@ public class NotificationManager {
                     String.valueOf(RankUtils.getRank(mcMMOPlayer.getPlayer(),
                             subSkillType)))));*/
     }
+
+    /**
+     * Sends a message to all admins with the admin notification formatting from the locale
+     * Admins are currently players with either Operator status or Admin Chat permission
+     * @param msg message fetched from locale
+     */
+    private static void sendAdminNotification(String msg) {
+        //If its not enabled exit
+        if(!Config.getInstance().adminNotifications())
+            return;
+
+        for(Player player : Bukkit.getServer().getOnlinePlayers())
+        {
+            if(player.isOp() || Permissions.adminChat(player))
+            {
+                player.sendMessage(LocaleLoader.getString("Notifications.Admin.Format.Others", msg));
+            }
+        }
+
+        //Copy it out to Console too
+        mcMMO.p.getLogger().info(LocaleLoader.getString("Notifications.Admin.Format.Others", msg));
+    }
+
+    /**
+     * Sends a confirmation message to the CommandSender who just executed an admin command
+     * @param commandSender target command sender
+     * @param msg message fetched from locale
+     */
+    private static void sendAdminCommandConfirmation(CommandSender commandSender, String msg) {
+        commandSender.sendMessage(LocaleLoader.getString("Notifications.Admin.Format.Self", msg));
+    }
+
+    /**
+     * Convenience method to report info about a command sender using a sensitive command
+     * @param commandSender the command user
+     * @param sensitiveCommandType type of command issued
+     */
+    public static void processSensitiveCommandNotification(CommandSender commandSender, SensitiveCommandType sensitiveCommandType, String... args) {
+        /*
+         * Determine the 'identity' of the one who executed the command to pass as a parameters
+         */
+        String senderName = LocaleLoader.getString("Server.ConsoleName");
+
+        if(commandSender instanceof Player)
+        {
+            senderName = ((Player) commandSender).getDisplayName() + ChatColor.RESET + "-" + ((Player) commandSender).getUniqueId();
+        }
+
+        //Send the notification
+        switch(sensitiveCommandType)
+        {
+            case XPRATE_MODIFY:
+                sendAdminNotification(LocaleLoader.getString("Notifications.Admin.XPRate.Start.Others", addItemToFirstPositionOfArray(senderName, args)));
+                sendAdminCommandConfirmation(commandSender, LocaleLoader.getString("Notifications.Admin.XPRate.Start.Self", args));
+                break;
+            case XPRATE_END:
+                sendAdminNotification(LocaleLoader.getString("Notifications.Admin.XPRate.End.Others", addItemToFirstPositionOfArray(senderName, args)));
+                sendAdminCommandConfirmation(commandSender, LocaleLoader.getString("Notifications.Admin.XPRate.End.Self", args));
+                break;
+        }
+    }
+
+    /**
+     * Takes an array and an object, makes a new array with object in the first position of the new array,
+     * and the following elements in this new array being a copy of the existing array retaining their order
+     * @param itemToAdd the string to put at the beginning of the new array
+     * @param existingArray the existing array to be copied to the new array at position [0]+1 relative to their original index
+     * @return the new array combining itemToAdd at the start and existing array elements following while retaining their order
+     */
+    public static String[] addItemToFirstPositionOfArray(String itemToAdd, String... existingArray) {
+        String[] newArray = new String[existingArray.length + 1];
+        newArray[0] = itemToAdd;
+
+        System.arraycopy(existingArray, 0, newArray, 1, existingArray.length);
+
+        return newArray;
+    }
+
 }
