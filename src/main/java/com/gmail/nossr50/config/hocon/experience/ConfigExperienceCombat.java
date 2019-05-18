@@ -41,7 +41,7 @@ public class ConfigExperienceCombat {
         COMBAT_EXPERIENCE_DEFAULT.put("iron_golem", 2.0F);
         COMBAT_EXPERIENCE_DEFAULT.put("wither_skeleton", 4.0F);
         COMBAT_EXPERIENCE_DEFAULT.put("endermite", 2.0F);
-        COMBAT_EXPERIENCE_DEFAULT.put("guardian", 3.0F);
+        COMBAT_EXPERIENCE_DEFAULT.put("guardian", 1.0F);
         COMBAT_EXPERIENCE_DEFAULT.put("elder_guardian", 4.0F);
         COMBAT_EXPERIENCE_DEFAULT.put("shulker", 2.0F);
         COMBAT_EXPERIENCE_DEFAULT.put("donkey", 1.0F);
