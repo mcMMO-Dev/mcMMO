@@ -173,7 +173,7 @@ public class BlockListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
 
-        if(ExperienceConfig.getInstance().preventStoneLavaFarming())
+        if(mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitSkills().isPreventCobblestoneStoneGeneratorXP())
         {
             if(event.getNewState().getType() != Material.OBSIDIAN && BlockUtils.shouldBeWatched(event.getNewState()))
             {
