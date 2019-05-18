@@ -54,17 +54,17 @@ public class XprateCommand implements TabExecutor {
                         mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop.Subtitle"));
                     }
 
+                    String senderName = LocaleLoader.getString("Server.ConsoleName");
+
+                    if(sender instanceof Player)
+                    {
+                        senderName = ((Player) sender).getDisplayName();
+                    }
+
                     for(Player player : Bukkit.getServer().getOnlinePlayers())
                     {
                         if(player.isOp() || Permissions.adminChat(player))
                         {
-                            String senderName = LocaleLoader.getString("Server.ConsoleName");
-
-                            if(sender instanceof Player)
-                            {
-                                senderName = ((Player) sender).getDisplayName();
-                            }
-
                             player.sendMessage(LocaleLoader.getString("XPRate.AdminDetails.End", senderName));
                         }
                     }
@@ -122,17 +122,18 @@ public class XprateCommand implements TabExecutor {
                     mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.XP", newXpRate));
                 }
 
+
+                String senderName = LocaleLoader.getString("Server.ConsoleName");
+
+                if(sender instanceof Player)
+                {
+                    senderName = ((Player) sender).getDisplayName();
+                }
+
                 for(Player player : Bukkit.getServer().getOnlinePlayers())
                 {
                     if(player.isOp() || Permissions.adminChat(player))
                     {
-                        String senderName = LocaleLoader.getString("Server.ConsoleName");
-
-                        if(sender instanceof Player)
-                        {
-                            senderName = ((Player) sender).getDisplayName();
-                        }
-
                         player.sendMessage(LocaleLoader.getString("XPRate.AdminDetails.Start", senderName, newXpRate));
                     }
                 }
