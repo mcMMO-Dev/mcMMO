@@ -46,6 +46,7 @@ public class ConfigExperienceMining {
         MINING_EXPERIENCE_DEFAULT.put(Material.NETHER_BRICK.getKey().toString(), 50);
         MINING_EXPERIENCE_DEFAULT.put(Material.GLOWSTONE.getKey().toString(), 30);
         MINING_EXPERIENCE_DEFAULT.put(Material.NETHERRACK.getKey().toString(), 30);
+        MINING_EXPERIENCE_DEFAULT.put(Material.MAGMA_BLOCK.getKey().toString(), 30);
 
         /* BADLANDS BIOME */
         MINING_EXPERIENCE_DEFAULT.put(Material.TERRACOTTA.getKey().toString(), 30);
