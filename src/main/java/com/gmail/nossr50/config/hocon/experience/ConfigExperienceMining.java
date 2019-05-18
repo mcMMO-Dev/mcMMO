@@ -75,7 +75,6 @@ public class ConfigExperienceMining {
 
         /* MISC */
         MINING_EXPERIENCE_DEFAULT.put(Material.OBSIDIAN.getKey().toString(), 150);
-        MINING_EXPERIENCE_DEFAULT.put(Material.MOSSY_COBBLESTONE.getKey().toString(), 30);
         MINING_EXPERIENCE_DEFAULT.put(Material.STONE_BRICKS.getKey().toString(), 30);
         MINING_EXPERIENCE_DEFAULT.put(Material.STONE_BRICK_SLAB.getKey().toString(), 30);
         MINING_EXPERIENCE_DEFAULT.put(Material.STONE_BRICK_STAIRS.getKey().toString(), 30);
