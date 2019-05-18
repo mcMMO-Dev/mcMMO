@@ -42,7 +42,6 @@ public class ConfigExperienceMining {
 
         /* HELL RELATED */
 
-        MINING_EXPERIENCE_DEFAULT.put(Material.END_STONE_BRICKS.getKey().toString(), 200);
         MINING_EXPERIENCE_DEFAULT.put(Material.NETHER_BRICK.getKey().toString(), 50);
         MINING_EXPERIENCE_DEFAULT.put(Material.GLOWSTONE.getKey().toString(), 30);
         MINING_EXPERIENCE_DEFAULT.put(Material.NETHERRACK.getKey().toString(), 30);
@@ -77,6 +76,12 @@ public class ConfigExperienceMining {
         /* MISC */
         MINING_EXPERIENCE_DEFAULT.put(Material.OBSIDIAN.getKey().toString(), 150);
         MINING_EXPERIENCE_DEFAULT.put(Material.MOSSY_COBBLESTONE.getKey().toString(), 30);
+        MINING_EXPERIENCE_DEFAULT.put(Material.STONE_BRICKS.getKey().toString(), 30);
+        MINING_EXPERIENCE_DEFAULT.put(Material.STONE_BRICK_SLAB.getKey().toString(), 30);
+        MINING_EXPERIENCE_DEFAULT.put(Material.STONE_BRICK_STAIRS.getKey().toString(), 30);
+        MINING_EXPERIENCE_DEFAULT.put(Material.STONE_BRICK_STAIRS.getKey().toString(), 30);
+        MINING_EXPERIENCE_DEFAULT.put(Material.CRACKED_STONE_BRICKS.getKey().toString(), 30);
+        MINING_EXPERIENCE_DEFAULT.put(Material.INFESTED_CRACKED_STONE_BRICKS.getKey().toString(), 30);
 
         /* SNOWY BIOME */
         MINING_EXPERIENCE_DEFAULT.put(Material.BLUE_ICE.getKey().toString(), 50);
@@ -94,6 +99,7 @@ public class ConfigExperienceMining {
 
         /* END RELATED */
         MINING_EXPERIENCE_DEFAULT.put(Material.END_STONE.getKey().toString(), 30);
+        MINING_EXPERIENCE_DEFAULT.put(Material.END_STONE_BRICKS.getKey().toString(), 200);
         MINING_EXPERIENCE_DEFAULT.put(Material.PURPUR_BLOCK.getKey().toString(), 200);
         MINING_EXPERIENCE_DEFAULT.put(Material.PURPUR_PILLAR.getKey().toString(), 250);
         MINING_EXPERIENCE_DEFAULT.put(Material.PURPUR_SLAB.getKey().toString(), 150);
