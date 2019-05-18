@@ -41,7 +41,7 @@ public class LimitedSizeList {
     public boolean contains(Location targetLoc) {
         for (Location iter : limitedSizeOrderedList) {
             if (iter == null)
-                continue;
+                return false;
 
             if (iter.getX() == targetLoc.getX()
                     && iter.getY() == targetLoc.getY()
