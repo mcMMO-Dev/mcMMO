@@ -84,6 +84,7 @@ public class ConfigExperienceHerbalism {
 
         /* MISC */
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.LILY_PAD.getKey().toString(), 100);
+        HERBALISM_EXPERIENCE_DEFAULT.put(Material.SWEET_BERRY_BUSH.getKey().toString(), 300);
 
         /* MUSHROOMS */
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.RED_MUSHROOM.getKey().toString(), 150);
