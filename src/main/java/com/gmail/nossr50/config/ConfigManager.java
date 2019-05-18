@@ -7,6 +7,7 @@ import com.gmail.nossr50.config.hocon.backup.ConfigAutomatedBackups;
 import com.gmail.nossr50.config.hocon.commands.ConfigCommands;
 import com.gmail.nossr50.config.hocon.database.ConfigDatabase;
 import com.gmail.nossr50.config.hocon.donation.ConfigAuthorAdvertisements;
+import com.gmail.nossr50.config.hocon.event.ConfigEvent;
 import com.gmail.nossr50.config.hocon.experience.ConfigExperience;
 import com.gmail.nossr50.config.hocon.hardcore.ConfigHardcore;
 import com.gmail.nossr50.config.hocon.items.ConfigItems;
@@ -95,6 +96,7 @@ public final class ConfigManager {
     private SerializedConfigLoader<ConfigMobs> configMobs;
     private SerializedConfigLoader<ConfigExperience> configExperience;
     private SerializedConfigLoader<ConfigCoreSkills> configCoreSkills;
+    private SerializedConfigLoader<ConfigEvent> configEvent;
     private SerializedConfigLoader<ConfigNameRegisterDefaults> configDefaultExamples;
 
     private ConfigAcrobatics configAcrobatics;
@@ -179,6 +181,7 @@ public final class ConfigManager {
         configMobs = new SerializedConfigLoader<>(ConfigMobs.class, "creatures.conf", "Creatures", null);
         configExperience = new SerializedConfigLoader<>(ConfigExperience.class, "experience.conf", "Experience", null);
         configCoreSkills = new SerializedConfigLoader<>(ConfigCoreSkills.class, "core_skills.conf", "Core-Skills", null);
+        configEvent = new SerializedConfigLoader<>(ConfigEvent.class, "events.conf", "Events", null);
 
         configDefaultExamples = new SerializedConfigLoader<>(ConfigNameRegisterDefaults.class, "minecraft_item_block_name_examples.conf", "Minecraft", null);
         initSerializedSkillConfigs();
@@ -474,6 +477,10 @@ public final class ConfigManager {
 
     public ConfigSalvage getConfigSalvage() {
         return configSalvage;
+    }
+
+    public ConfigEvent getConfigEvent() {
+        return configEvent.getConfig();
     }
 
     /**
