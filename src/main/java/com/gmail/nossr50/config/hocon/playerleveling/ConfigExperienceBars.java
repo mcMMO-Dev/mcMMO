@@ -68,12 +68,12 @@ public class ConfigExperienceBars {
 
     @Setting(value = "Party-Experience-Triggers-XP-Bars", comment = "Whether or not shared XP gains from parties will trigger XP bar displays" +
             "\nThis can result in a very cluttered UI even in smaller parties, I recommend leaving this off." +
-            "\nDefault value: "+PARTY_XP_DEFAULT)
+            "\nDefault value: " + PARTY_XP_DEFAULT)
     private boolean partyExperienceTriggerXpBarDisplay = PARTY_XP_DEFAULT;
 
     @Setting(value = "Passive-Experience-Trigger-XP-Bars", comment = "Whether or not XP gained from stuff like furnaces or brewing stands will trigger XP bars" +
             "\nThis is on by default, but this can also cause a lot of clutter, turn it off it you'd like a cleaner UI." +
-            "\nDefault value: "+PASSIVE_XP_DEFAULT)
+            "\nDefault value: " + PASSIVE_XP_DEFAULT)
     private boolean passiveGainXPBars = PASSIVE_XP_DEFAULT;
 
     @Setting(value = "Extra-Details", comment = "Adds extra details to the XP bar, these cause a bit more performance overhead and may not look very pretty" +
@@ -81,12 +81,12 @@ public class ConfigExperienceBars {
             "\nLocale key - XPBar.Complex.Template" +
             "\nThe default extra detailed XP bar will include quite a few extra things, you can actually remove each thing you don't want displayed in the locale" +
             "\nFor tips on editing the locale check - https://mcmmo.org/wiki/Locale" +
-            "\nDefault value: "+DETAILED_XP_BARS_DEFAULT)
+            "\nDefault value: " + DETAILED_XP_BARS_DEFAULT)
     private boolean moreDetailedXPBars = DETAILED_XP_BARS_DEFAULT;
 
     @Setting(value = "Enable-XP-Bars", comment = "Whether or not XP bars will be displayed on certain XP gains" +
             "\nBy default, some XP gains do not show as they would create a lot of UI clutter, see the other options to change this" +
-            "\nDefault value: "+XP_BARS_DEFAULT)
+            "\nDefault value: " + XP_BARS_DEFAULT)
     private boolean enableXPBars = XP_BARS_DEFAULT;
 
     @Setting(value = "Skill-XP-Bar-Toggle", comment = "Turn on or off specific XP bars" +
@@ -126,21 +126,21 @@ public class ConfigExperienceBars {
     }
 
     public boolean getXPBarToggle(PrimarySkillType primarySkillType) {
-        if(xpBarSpecificToggles.get(primarySkillType) == null)
+        if (xpBarSpecificToggles.get(primarySkillType) == null)
             return true;
 
         return xpBarSpecificToggles.get(primarySkillType);
     }
 
     public BarColor getXPBarColor(PrimarySkillType primarySkillType) {
-        if(xpBarColorMap.get(primarySkillType) == null)
+        if (xpBarColorMap.get(primarySkillType) == null)
             return BarColor.WHITE;
 
         return xpBarColorMap.get(primarySkillType);
     }
 
     public BarStyle getXPBarStyle(PrimarySkillType primarySkillType) {
-        if(xpBarStyleMap.get(primarySkillType) == null)
+        if (xpBarStyleMap.get(primarySkillType) == null)
             return BarStyle.SEGMENTED_6;
 
         return xpBarStyleMap.get(primarySkillType);

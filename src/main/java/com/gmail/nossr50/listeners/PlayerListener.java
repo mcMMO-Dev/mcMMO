@@ -5,7 +5,6 @@ import com.gmail.nossr50.chat.ChatManagerFactory;
 import com.gmail.nossr50.chat.PartyChatManager;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.Party;
@@ -49,7 +48,6 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import sun.security.krb5.Config;
 
 public class PlayerListener implements Listener {
     private final mcMMO plugin;
@@ -531,7 +529,7 @@ public class PlayerListener implements Listener {
         }
 
         if (plugin.isXPEventEnabled() && mcMMO.getConfigManager().getConfigEvent().isShowXPRateInfoOnPlayerJoin()) {
-            player.sendMessage(LocaleLoader.getString("XPRate.Event", ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()));
+            player.sendMessage(LocaleLoader.getString("XPRate.Event", mcMMO.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult()));
         }
     }
 

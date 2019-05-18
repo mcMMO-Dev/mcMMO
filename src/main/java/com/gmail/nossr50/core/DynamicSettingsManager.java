@@ -18,7 +18,7 @@ import java.util.HashMap;
  * The DSM (Dynamic Settings Manager) is responsible for
  * 1) Inits managers which convert platform generic settings from the configs (specifically pulling from ConfigManager) into usable data for this platform
  * 2) Retrieving or Setting variables for core systems in mcMMO without permanent change (WIP)
- *
+ * <p>
  * This class is a WIP, expect API breakages in the future
  * Currently implementation of this class will only be friendly to Bukkit, this will change in the near future
  */

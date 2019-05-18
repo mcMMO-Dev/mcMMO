@@ -97,12 +97,11 @@ public class Herbalism {
             }
         } else {
             //Check the block itself first
-            if(!mcMMO.getPlaceStore().isTrue(block))
-            {
+            if (!mcMMO.getPlaceStore().isTrue(block)) {
                 dropAmount++;
 
-                if(herbalismManager.checkDoubleDrop(blockState))
-                    bonusDropAmount+=bonusAdd;
+                if (herbalismManager.checkDoubleDrop(blockState))
+                    bonusDropAmount += bonusAdd;
             } else {
                 mcMMO.getPlaceStore().setFalse(blockState);
             }
@@ -120,8 +119,8 @@ public class Herbalism {
                 } else {
                     dropAmount++;
 
-                    if(herbalismManager.checkDoubleDrop(relativeBlock.getState()))
-                        bonusDropAmount+=bonusAdd;
+                    if (herbalismManager.checkDoubleDrop(relativeBlock.getState()))
+                        bonusDropAmount += bonusAdd;
                 }
             }
         }

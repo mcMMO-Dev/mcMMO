@@ -42,8 +42,7 @@ public class XprateCommand implements TabExecutor {
                                 10, 10 * 20, 20);
                     }
 
-                    if(mcMMO.getConfigManager().getConfigEvent().isBroadcastXPRateEventMessages())
-                    {
+                    if (mcMMO.getConfigManager().getConfigEvent().isBroadcastXPRateEventMessages()) {
                         mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop"));
                         mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop.Subtitle"));
                     }
@@ -84,16 +83,14 @@ public class XprateCommand implements TabExecutor {
 
                 mcMMO.getDynamicSettingsManager().getExperienceManager().setGlobalXpMult(newXpRate);
 
-                if(mcMMO.getConfigManager().getConfigEvent().isSendTitleMessages())
-                {
+                if (mcMMO.getConfigManager().getConfigEvent().isSendTitleMessages()) {
                     NotificationManager.broadcastTitle(mcMMO.p.getServer(),
                             LocaleLoader.getString("Commands.Event.Start"),
                             LocaleLoader.getString("Commands.Event.XP", newXpRate),
-                            10, 10*20, 20);
+                            10, 10 * 20, 20);
                 }
 
-                if(mcMMO.getConfigManager().getConfigEvent().isBroadcastXPRateEventMessages())
-                {
+                if (mcMMO.getConfigManager().getConfigEvent().isBroadcastXPRateEventMessages()) {
                     mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Start"));
                     mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.XP", newXpRate));
                 }

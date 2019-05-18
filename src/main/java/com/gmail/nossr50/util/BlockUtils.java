@@ -37,11 +37,12 @@ public final class BlockUtils {
 
     /**
      * Marks a block to drop extra copies of items
+     *
      * @param blockState target blockstate
-     * @param amount amount of extra items to drop
+     * @param amount     amount of extra items to drop
      */
     public static void markDropsAsBonus(BlockState blockState, int amount) {
-            blockState.setMetadata(MetadataConstants.BONUS_DROPS_METAKEY, new BonusDropMeta(amount, mcMMO.p));
+        blockState.setMetadata(MetadataConstants.BONUS_DROPS_METAKEY, new BonusDropMeta(amount, mcMMO.p));
     }
 
     /**

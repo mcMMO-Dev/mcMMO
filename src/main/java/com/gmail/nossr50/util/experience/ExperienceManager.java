@@ -43,8 +43,7 @@ public class ExperienceManager {
         tamingExperienceMap = new HashMap<>();
     }
 
-    private void registerDefaultValues()
-    {
+    private void registerDefaultValues() {
         fillCombatXPMultiplierMap(mcMMO.getConfigManager().getConfigExperience().getCombatExperienceMap());
         registerSpecialCombatXPMultiplierMap(mcMMO.getConfigManager().getConfigExperience().getSpecialCombatExperienceMap());
         buildBlockXPMaps();
@@ -55,28 +54,25 @@ public class ExperienceManager {
      * Fills the combat XP multiplier map with values from a platform generic map
      * Platform safe map, is just a map which uses strings to define target entities/etc
      * Platform safe maps are converted to ENUMs for the platform for convenience
+     *
      * @param platformSafeMap the platform safe map
      */
     public void fillCombatXPMultiplierMap(HashMap<String, Float> platformSafeMap) {
         mcMMO.p.getLogger().info("Registering combat XP values...");
-        for(String entityString : platformSafeMap.keySet())
-        {
+        for (String entityString : platformSafeMap.keySet()) {
             //Iterate over all EntityType(s)
-            for(EntityType type : EntityType.values())
-            {
+            for (EntityType type : EntityType.values()) {
                 //Match ignoring case
-                if(entityString.equalsIgnoreCase(entityString))
-                {
+                if (entityString.equalsIgnoreCase(entityString)) {
                     //Check for duplicates and warn the admin
-                    if(combatXPMultiplierMap.containsKey(entityString))
-                    {
-                        mcMMO.p.getLogger().severe("Entity named "+entityString+" has multiple values in the combat experience config!");
+                    if (combatXPMultiplierMap.containsKey(entityString)) {
+                        mcMMO.p.getLogger().severe("Entity named " + entityString + " has multiple values in the combat experience config!");
                     }
                     //Match found
                     combatXPMultiplierMap.put(type, platformSafeMap.get(entityString));
                 } else {
                     //Log an error so the admin can deal with figuring it out
-                    mcMMO.p.getLogger().severe("No entity could be matched for the combat experience config value named - "+entityString);
+                    mcMMO.p.getLogger().severe("No entity could be matched for the combat experience config value named - " + entityString);
                 }
             }
         }
@@ -84,10 +80,10 @@ public class ExperienceManager {
 
     /**
      * Registers the map values for special combat XP to the specified map
+     *
      * @param map target map
      */
-    public void registerSpecialCombatXPMultiplierMap(HashMap<SpecialXPKey, Float> map)
-    {
+    public void registerSpecialCombatXPMultiplierMap(HashMap<SpecialXPKey, Float> map) {
         mcMMO.p.getLogger().info("Registering special combat XP values...");
         specialCombatXPMultiplierMap = map;
     }
@@ -190,6 +186,7 @@ public class ExperienceManager {
 
     /**
      * Set the mining block XP map to the provided one
+     *
      * @param miningFullyQualifiedBlockXpMap the XP map to change to
      */
     public void setMiningFullyQualifiedBlockXpMap(HashMap<String, Integer> miningFullyQualifiedBlockXpMap) {
@@ -199,6 +196,7 @@ public class ExperienceManager {
 
     /**
      * Set the mining block XP map to the provided one
+     *
      * @param herbalismFullyQualifiedBlockXpMap the XP map to change to
      */
     public void setHerbalismFullyQualifiedBlockXpMap(HashMap<String, Integer> herbalismFullyQualifiedBlockXpMap) {
@@ -208,6 +206,7 @@ public class ExperienceManager {
 
     /**
      * Set the mining block XP map to the provided one
+     *
      * @param woodcuttingFullyQualifiedBlockXpMap the XP map to change to
      */
     public void setWoodcuttingFullyQualifiedBlockXpMap(HashMap<String, Integer> woodcuttingFullyQualifiedBlockXpMap) {
@@ -217,6 +216,7 @@ public class ExperienceManager {
 
     /**
      * Set the mining block XP map to the provided one
+     *
      * @param excavationFullyQualifiedBlockXpMap the XP map to change to
      */
     public void setExcavationFullyQualifiedBlockXpMap(HashMap<String, Integer> excavationFullyQualifiedBlockXpMap) {
@@ -372,31 +372,31 @@ public class ExperienceManager {
 
     /**
      * Get the XP multiplier value for a special XP group
+     *
      * @param specialXPKey target special XP group
      * @return XP multiplier for target special XP group
      */
-    public float getSpecialCombatXP(SpecialXPKey specialXPKey)
-    {
+    public float getSpecialCombatXP(SpecialXPKey specialXPKey) {
         return specialCombatXPMultiplierMap.get(specialXPKey);
     }
 
     /**
      * Gets the combat XP multiplier for this entity type
+     *
      * @param entityType target entity type
      * @return the combat XP multiplier for this entity
      */
-    public float getCombatXPMultiplier(EntityType entityType)
-    {
+    public float getCombatXPMultiplier(EntityType entityType) {
         return combatXPMultiplierMap.get(entityType);
     }
 
     /**
      * Returns true/false if a EntityType has a defined XP multiplier (from the config typically)
+     *
      * @param entityType target entity type
      * @return true if entity type has XP
      */
-    public boolean hasCombatXP(EntityType entityType)
-    {
+    public boolean hasCombatXP(EntityType entityType) {
         return combatXPMultiplierMap.get(entityType) != null;
     }
 }

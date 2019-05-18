@@ -352,17 +352,16 @@ public final class CombatUtils {
 
     /**
      * This cleans up names from displaying in chat as hearts
+     *
      * @param entity target entity
      */
-    public static void fixNames(LivingEntity entity)
-    {
+    public static void fixNames(LivingEntity entity) {
         List<MetadataValue> metadataValue = entity.getMetadata("mcMMO_oldName");
 
-        if(metadataValue.size() <= 0)
+        if (metadataValue.size() <= 0)
             return;
 
-        if(metadataValue != null)
-        {
+        if (metadataValue != null) {
             OldName oldName = (OldName) metadataValue.get(0);
             entity.setCustomName(oldName.asString());
             entity.setCustomNameVisible(false);

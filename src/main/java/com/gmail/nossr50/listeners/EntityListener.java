@@ -64,8 +64,7 @@ public class EntityListener implements Listener {
             return;
 
         //It's rare but targets can be null sometimes
-        if(event.getTarget() == null)
-        {
+        if (event.getTarget() == null) {
             return;
         }
 
@@ -365,10 +364,8 @@ public class EntityListener implements Listener {
         /**
          * This sets entity names back to whatever they are supposed to be
          */
-        if(event.getFinalDamage() >= target.getHealth())
-        {
-            if(attacker instanceof LivingEntity)
-            {
+        if (event.getFinalDamage() >= target.getHealth()) {
+            if (attacker instanceof LivingEntity) {
                 CombatUtils.fixNames((LivingEntity) attacker);
             }
 

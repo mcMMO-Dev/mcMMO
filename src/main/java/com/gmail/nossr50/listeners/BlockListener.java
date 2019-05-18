@@ -2,7 +2,6 @@ package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.meta.BonusDropMeta;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -167,16 +166,13 @@ public class BlockListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onBlockFormEvent(BlockFormEvent event)
-    {
+    public void onBlockFormEvent(BlockFormEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+        if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
 
-        if(mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitSkills().isPreventCobblestoneStoneGeneratorXP())
-        {
-            if(event.getNewState().getType() != Material.OBSIDIAN && BlockUtils.shouldBeWatched(event.getNewState()))
-            {
+        if (mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitSkills().isPreventCobblestoneStoneGeneratorXP()) {
+            if (event.getNewState().getType() != Material.OBSIDIAN && BlockUtils.shouldBeWatched(event.getNewState())) {
                 mcMMO.getPlaceStore().setTrue(event.getNewState());
             }
         }
