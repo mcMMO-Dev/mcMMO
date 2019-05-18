@@ -164,19 +164,28 @@ public class NotificationManager {
     /**
      * Sends a message to all admins with the admin notification formatting from the locale
      * Admins are currently players with either Operator status or Admin Chat permission
-     * @param msg message contents
+     * @param msg message fetched from locale
      */
     private static void sendAdminNotification(String msg) {
         for(Player player : Bukkit.getServer().getOnlinePlayers())
         {
             if(player.isOp() || Permissions.adminChat(player))
             {
-                player.sendMessage(LocaleLoader.getString("Notifications.Admin", msg));
+                player.sendMessage(LocaleLoader.getString("Notifications.Admin.Format.Others", msg));
             }
         }
 
         //Copy it out to Console too
-        mcMMO.p.getLogger().info(LocaleLoader.getString("Notifications.Admin", msg));
+        mcMMO.p.getLogger().info(LocaleLoader.getString("Notifications.Admin.Format.Others", msg));
+    }
+
+    /**
+     * Sends a confirmation message to the CommandSender who just executed an admin command
+     * @param commandSender target command sender
+     * @param msg message fetched from locale
+     */
+    private static void sendAdminCommandConfirmation(CommandSender commandSender, String msg) {
+        commandSender.sendMessage(LocaleLoader.getString("Notifications.Admin.Format.Self", msg));
     }
 
     /**
@@ -203,11 +212,30 @@ public class NotificationManager {
         switch(sensitiveCommandType)
         {
             case XPRATE_MODIFY:
-                sendAdminNotification(LocaleLoader.getString("Notifications.Admin.XPRate.Start.Others", senderName, args));
+                sendAdminNotification(LocaleLoader.getString("Notifications.Admin.XPRate.Start.Others", addItemToFirstPositionOfArray(senderName, args)));
+                sendAdminCommandConfirmation(commandSender, LocaleLoader.getString("Notifications.Admin.XPRate.Start.Self", args));
                 break;
             case XPRATE_END:
-                sendAdminNotification(LocaleLoader.getString("Notifications.Admin.XPRate.End.Others", senderName, args));
+                sendAdminNotification(LocaleLoader.getString("Notifications.Admin.XPRate.End.Others", addItemToFirstPositionOfArray(senderName, args)));
+                sendAdminCommandConfirmation(commandSender, LocaleLoader.getString("Notifications.Admin.XPRate.End.Self", args));
                 break;
         }
     }
+
+    /**
+     * Takes an array and an object, makes a new array with object in the first position of the new array,
+     * and the following elements in this new array being a copy of the existing array retaining their order
+     * @param itemToAdd the string to put at the beginning of the new array
+     * @param existingArray the existing array to be copied to the new array at position [0]+1 relative to their original index
+     * @return the new array combining itemToAdd at the start and existing array elements following while retaining their order
+     */
+    public static String[] addItemToFirstPositionOfArray(String itemToAdd, String... existingArray) {
+        String[] newArray = new String[existingArray.length + 1];
+        newArray[0] = itemToAdd;
+
+        System.arraycopy(existingArray, 0, newArray, 1, existingArray.length);
+
+        return newArray;
+    }
+
 }

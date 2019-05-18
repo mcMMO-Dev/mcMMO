@@ -11,6 +11,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.commands.CommandUtils;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
@@ -268,19 +269,9 @@ public abstract class SkillCommand implements TabExecutor {
             return LocaleLoader.getString(templateKey, LocaleLoader.getString(statDescriptionKey, vars));
         else
         {
-            String[] mergedList = addItemToFirstPositionOfArray(LocaleLoader.getString(statDescriptionKey), vars);
+            String[] mergedList = NotificationManager.addItemToFirstPositionOfArray(LocaleLoader.getString(statDescriptionKey), vars);
             return LocaleLoader.getString(templateKey, mergedList);
         }
-    }
-
-
-    public static String[] addItemToFirstPositionOfArray(String itemToAdd, String... existingArray) {
-        String[] newArray = new String[existingArray.length + 1];
-        newArray[0] = itemToAdd;
-
-        System.arraycopy(existingArray, 0, newArray, 1, existingArray.length);
-
-        return newArray;
     }
 
     protected abstract void dataCalculations(Player player, float skillValue);

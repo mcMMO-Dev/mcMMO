@@ -54,7 +54,6 @@ public class XprateCommand implements TabExecutor {
                     }
 
                     NotificationManager.processSensitiveCommandNotification(sender, SensitiveCommandType.XPRATE_END);
-                    sender.sendMessage(LocaleLoader.getString("Notifications.Admin.XPRate.End.Self"));
 
                     mcMMO.p.toggleXpEventEnabled();
                 }
@@ -108,7 +107,6 @@ public class XprateCommand implements TabExecutor {
 
                 //Admin notification
                 NotificationManager.processSensitiveCommandNotification(sender, SensitiveCommandType.XPRATE_MODIFY, String.valueOf(newXpRate));
-                sender.sendMessage(LocaleLoader.getString("Notifications.Admin.XPRate.Start.Self", newXpRate));
 
                 return true;
 

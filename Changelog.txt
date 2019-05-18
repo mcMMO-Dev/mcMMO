@@ -7,7 +7,8 @@ Version 2.1.62
     Diamond tools & armor in the repair config now have a minimum level of 0 (Update your config, temporary hotfix, 2.2 addresses this issue, see notes)
     Guardian default combat XP multiplier reduced from 3.0 to 1.0 (update config if you want this change)
     New locale string - 'Server.ConsoleName' the name of the server console, this will be used in place of player names when sending admin notifications out if the command was used from console
-    New locale string - 'Notifications.Admin.Format' style formatting + prefix for admin notifications used in the other new strings below
+    New locale string - 'Notifications.Admin.Format.Others' style formatting + prefix for admin notifications used in the other new strings below
+    New locale string - 'Notifications.Admin.Format.Self' style formatting + prefix for admin command confirmations send to the user who executed the command
     New locale string - 'Notifications.Admin.XPRate.Start.Self' sent to the user who modifies the XP rate regardless of whether or not messages for the event are enabled
     New locale string - 'Notifications.Admin.XPRate.Start.Others' details of who started an XP rate event are sent to players who have Operator status or admin chat permission when the command to start or modify XP of an event has been issued
     New locale string - 'Notifications.Admin.XPRate.End.Self' sent to the user who ended the XP rate event regardless of whether or not messages for the event are enabled
