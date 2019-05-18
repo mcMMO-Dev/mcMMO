@@ -72,6 +72,13 @@ public class ConfigExperienceMining {
         MINING_EXPERIENCE_DEFAULT.put(Material.GRANITE.getKey().toString(), 30);
         MINING_EXPERIENCE_DEFAULT.put(Material.STONE.getKey().toString(), 30);
         MINING_EXPERIENCE_DEFAULT.put(Material.MOSSY_COBBLESTONE.getKey().toString(), 30);
+        MINING_EXPERIENCE_DEFAULT.put(Material.MOSSY_COBBLESTONE_SLAB.getKey().toString(), 30);
+        MINING_EXPERIENCE_DEFAULT.put(Material.MOSSY_COBBLESTONE_STAIRS.getKey().toString(), 30);
+        MINING_EXPERIENCE_DEFAULT.put(Material.MOSSY_COBBLESTONE_WALL.getKey().toString(), 30);
+        MINING_EXPERIENCE_DEFAULT.put(Material.MOSSY_STONE_BRICKS.getKey().toString(), 30);
+        MINING_EXPERIENCE_DEFAULT.put(Material.MOSSY_STONE_BRICK_SLAB.getKey().toString(), 30);
+        MINING_EXPERIENCE_DEFAULT.put(Material.MOSSY_STONE_BRICK_WALL.getKey().toString(), 30);
+        MINING_EXPERIENCE_DEFAULT.put(Material.MOSSY_STONE_BRICK_STAIRS.getKey().toString(), 30);
 
         /* MISC */
         MINING_EXPERIENCE_DEFAULT.put(Material.OBSIDIAN.getKey().toString(), 150);
