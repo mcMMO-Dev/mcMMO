@@ -167,6 +167,10 @@ public class NotificationManager {
      * @param msg message fetched from locale
      */
     private static void sendAdminNotification(String msg) {
+        //If its not enabled exit
+        if(!Config.getInstance().adminNotifications())
+            return;
+
         for(Player player : Bukkit.getServer().getOnlinePlayers())
         {
             if(player.isOp() || Permissions.adminChat(player))
@@ -194,10 +198,6 @@ public class NotificationManager {
      * @param sensitiveCommandType type of command issued
      */
     public static void processSensitiveCommandNotification(CommandSender commandSender, SensitiveCommandType sensitiveCommandType, String... args) {
-        //If its not enabled exit
-        if(!Config.getInstance().adminNotifications())
-            return;
-
         /*
          * Determine the 'identity' of the one who executed the command to pass as a parameters
          */

@@ -53,6 +53,7 @@ public class XprateCommand implements TabExecutor {
                         mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop.Subtitle"));
                     }
 
+                    //Admin notification
                     NotificationManager.processSensitiveCommandNotification(sender, SensitiveCommandType.XPRATE_END);
 
                     mcMMO.p.toggleXpEventEnabled();
