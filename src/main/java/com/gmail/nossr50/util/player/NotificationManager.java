@@ -1,7 +1,9 @@
 package com.gmail.nossr50.util.player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.datatypes.notifications.SensitiveCommandType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -19,6 +21,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.SoundCategory;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class NotificationManager {
@@ -163,7 +166,7 @@ public class NotificationManager {
      * Admins are currently players with either Operator status or Admin Chat permission
      * @param msg message contents
      */
-    public static void sendAdminNotification(String msg) {
+    private static void sendAdminNotification(String msg) {
         for(Player player : Bukkit.getServer().getOnlinePlayers())
         {
             if(player.isOp() || Permissions.adminChat(player))
@@ -174,5 +177,37 @@ public class NotificationManager {
 
         //Copy it out to Console too
         mcMMO.p.getLogger().info(LocaleLoader.getString("Notifications.Admin", msg));
+    }
+
+    /**
+     * Convenience method to report info about a command sender using a sensitive command
+     * @param commandSender the command user
+     * @param sensitiveCommandType type of command issued
+     */
+    public static void processSensitiveCommandNotification(CommandSender commandSender, SensitiveCommandType sensitiveCommandType, String... args) {
+        //If its not enabled exit
+        if(!Config.getInstance().adminNotifications())
+            return;
+
+        /*
+         * Determine the 'identity' of the one who executed the command to pass as a parameters
+         */
+        String senderName = LocaleLoader.getString("Server.ConsoleName");
+
+        if(commandSender instanceof Player)
+        {
+            senderName = ((Player) commandSender).getDisplayName();
+        }
+
+        //Send the notification
+        switch(sensitiveCommandType)
+        {
+            case XPRATE_MODIFY:
+                sendAdminNotification(LocaleLoader.getString("Notifications.Admin.XPRate.Start.Others", senderName, args));
+                break;
+            case XPRATE_END:
+                sendAdminNotification(LocaleLoader.getString("Notifications.Admin.XPRate.End.Others", senderName, args));
+                break;
+        }
     }
 }

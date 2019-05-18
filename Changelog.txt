@@ -1,16 +1,20 @@
 Version 2.1.62
+    Added a new admin notification system, sensitive commands will print chat messages to "admins" (players with either Operator status or admin chat permission)
+    Added a setting to disable the new admin notifications to config.yml 'General.AdminNotifications' (this will be more configurable in 2.2)
     OPs and players with the admin chat permission will now see details about XP rate event commands regardless of whether or not the XP rate event messages are enabled
     Updated hu_HU locale (thanks andris155)
     Added XP for mining Magma_Block (default 30 XP - Update your config, see notes)
     Diamond tools & armor in the repair config now have a minimum level of 0 (Update your config, temporary hotfix, 2.2 addresses this issue, see notes)
     Guardian default combat XP multiplier reduced from 3.0 to 1.0 (update config if you want this change)
-    New locale string - 'XPRate.Modified' sent to the user who modifies the XP rate regardless of whether or not messages for the event are enabled
-    New locale string - 'XPRate.End' sent to the user who ended the XP rate event regardless of whether or not messages for the event are enabled
-    New locale string - 'XPRate.AdminDetails.End' details of who ended an XP rate event are sent to players who have Operator status or admin chat permission when the command to end the event has been issued
-    New locale string - 'XPRate.AdminDetails.Start' details of who started an XP rate event are sent to players who have Operator status or admin chat permission when the command to start or modify XP of an event has been issued
     New locale string - 'Server.ConsoleName' the name of the server console, this will be used in place of player names when sending admin notifications out if the command was used from console
+    New locale string - 'Notifications.Admin.Format' style formatting + prefix for admin notifications used in the other new strings below
+    New locale string - 'Notifications.Admin.XPRate.Start.Self' sent to the user who modifies the XP rate regardless of whether or not messages for the event are enabled
+    New locale string - 'Notifications.Admin.XPRate.Start.Others' details of who started an XP rate event are sent to players who have Operator status or admin chat permission when the command to start or modify XP of an event has been issued
+    New locale string - 'Notifications.Admin.XPRate.End.Self' sent to the user who ended the XP rate event regardless of whether or not messages for the event are enabled
+    New locale string - 'Notifications.Admin.XPRate.End.Others' details of who ended an XP rate event are sent to players who have Operator status or admin chat permission when the command to end the event has been issued
 
     NOTES:
+    Admin notifications currently only reports use of the XP rate command, it will be expanded to support other commands in upcoming patches
     Add an entry of 'Magma_Block: 30' under Mining in experience.yml section titled "Experience_Values" (or you can delete the file to generate a new one with default values, 2.2 is coming soon which will have brand new configs so you could just wait for that
     2.2 is the config rewrite, in this rewrite Repair and Salvage configs have been partially rewritten, it is not intended for Diamond Repair to take until level 50 in Standard level scaling to be available, since it'd be redundant to fix this in 2.1.X when 2.2 fixes it and its about to come out, the minimum level has temporarily been changed to 0. You can either update your repair.vanilla.yml config manually or delete it to generate a new one.
 

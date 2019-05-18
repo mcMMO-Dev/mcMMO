@@ -18,6 +18,7 @@ General:
     MOTD_Enabled: true
     EventBroadcasts: true
     EventInfoOnPlayerJoin: true
+    AdminNotifications: true
     # Send a message to the player when his profile was successfully loaded
     Show_Profile_Loaded: false
     # Amount of time (in minutes) to wait between saves of player information

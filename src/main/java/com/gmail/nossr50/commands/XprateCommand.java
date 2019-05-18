@@ -3,6 +3,7 @@ package com.gmail.nossr50.commands;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.notifications.SensitiveCommandType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
@@ -52,15 +53,8 @@ public class XprateCommand implements TabExecutor {
                         mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop.Subtitle"));
                     }
 
-                    String senderName = LocaleLoader.getString("Server.ConsoleName");
-
-                    if(sender instanceof Player)
-                    {
-                        senderName = ((Player) sender).getDisplayName();
-                    }
-
-                    NotificationManager.sendAdminNotification(LocaleLoader.getString("XPRate.AdminDetails.End", senderName));
-                    sender.sendMessage(LocaleLoader.getString("XPRate.End"));
+                    NotificationManager.processSensitiveCommandNotification(sender, SensitiveCommandType.XPRATE_END);
+                    sender.sendMessage(LocaleLoader.getString("Notifications.Admin.XPRate.End.Self"));
 
                     mcMMO.p.toggleXpEventEnabled();
                 }
@@ -112,16 +106,9 @@ public class XprateCommand implements TabExecutor {
                     mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.XP", newXpRate));
                 }
 
-                String senderName = LocaleLoader.getString("Server.ConsoleName");
-
-                if(sender instanceof Player)
-                {
-                    senderName = ((Player) sender).getDisplayName();
-                }
-
                 //Admin notification
-                NotificationManager.sendAdminNotification(LocaleLoader.getString("XPRate.AdminDetails.Start", senderName, newXpRate));
-                sender.sendMessage(LocaleLoader.getString("XPRate.Modified", newXpRate));
+                NotificationManager.processSensitiveCommandNotification(sender, SensitiveCommandType.XPRATE_MODIFY, String.valueOf(newXpRate));
+                sender.sendMessage(LocaleLoader.getString("Notifications.Admin.XPRate.Start.Self", newXpRate));
 
                 return true;
 

@@ -570,4 +570,6 @@ public class Config extends AutoUpdateConfigLoader {
 
     public boolean broadcastEventMessages() { return config.getBoolean("General.EventBroadcasts", true);}
     public boolean playerJoinEventInfo() { return config.getBoolean("General.EventInfoOnPlayerJoin", true);}
+    public boolean adminNotifications() { return config.getBoolean("General.AdminNotifications", true);}
+
 }
