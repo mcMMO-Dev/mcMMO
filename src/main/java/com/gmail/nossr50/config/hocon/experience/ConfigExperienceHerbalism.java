@@ -107,6 +107,7 @@ public class ConfigExperienceHerbalism {
         /* END PLANTS */
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.CHORUS_PLANT.getKey().toString(), 1);
         HERBALISM_EXPERIENCE_DEFAULT.put(Material.CHORUS_FLOWER.getKey().toString(), 25);
+        HERBALISM_EXPERIENCE_DEFAULT.put(Material.WITHER_ROSE.getKey().toString(), 500);
     }
 
     @Setting(value = "Herbalism-Experience")
