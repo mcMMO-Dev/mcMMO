@@ -155,32 +155,32 @@ Repairables:
     ###
     # Tools
     DIAMOND_SWORD:
-        MinimumLevel: 50
+        MinimumLevel: 0
         XpMultiplier: .5
     DIAMOND_SHOVEL:
-        MinimumLevel: 50
+        MinimumLevel: 0
         XpMultiplier: .3
     DIAMOND_PICKAXE:
-        MinimumLevel: 50
+        MinimumLevel: 0
         XpMultiplier: 1
     DIAMOND_AXE:
-        MinimumLevel: 50
+        MinimumLevel: 0
         XpMultiplier: 1
     DIAMOND_HOE:
-        MinimumLevel: 50
+        MinimumLevel: 0
         XpMultiplier: .5
     # Armor
     DIAMOND_HELMET:
-        MinimumLevel: 50
+        MinimumLevel: 0
         XpMultiplier: 6
     DIAMOND_CHESTPLATE:
-        MinimumLevel: 50
+        MinimumLevel: 0
         XpMultiplier: 6
     DIAMOND_LEGGINGS:
-        MinimumLevel: 50
+        MinimumLevel: 0
         XpMultiplier: 6
     DIAMOND_BOOTS:
-        MinimumLevel: 50
+        MinimumLevel: 0
         XpMultiplier: 6
     #
     # Leather repairables
