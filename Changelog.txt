@@ -48,6 +48,8 @@ Version 2.2.0
 
     Config Changes
 
+    All event related settings will now be in the event config
+
     All author ad-type (donations, urls, etc) message config options will now be found in "author_support_advertisements.conf"
     Added config option for showing author paypal info in /mcmmo (previously this was tied to the motd setting)
     Added config option for showing author patreon links in various commands
