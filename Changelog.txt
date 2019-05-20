@@ -1,3 +1,6 @@
+Version 2.1.63
+    Fixed a bug that caused creative mode players to gain XP when qualifying for early game XP boosts
+
 Version 2.1.62
     Added a new admin notification system, sensitive commands will print chat messages to "admins" (players with either Operator status or admin chat permission)
     Added a setting to disable the new admin notifications to config.yml 'General.AdminNotifications' (this will be more configurable in 2.2)

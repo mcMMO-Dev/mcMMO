@@ -495,6 +495,9 @@ public class McMMOPlayer {
      * @param xp Experience amount to process
      */
     public void beginUnsharedXpGain(PrimarySkillType skill, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
+        if(player.getGameMode() == GameMode.CREATIVE)
+            return;
+
         applyXpGain(skill, modifyXpGain(skill, xp), xpGainReason, xpGainSource);
 
         if (party == null) {
@@ -750,7 +753,7 @@ public class McMMOPlayer {
      * @return Modified experience
      */
     private float modifyXpGain(PrimarySkillType primarySkillType, float xp) {
-        if (player.getGameMode() == GameMode.CREATIVE || (primarySkillType.getMaxLevel() <= getSkillLevel(primarySkillType)) || (Config.getInstance().getPowerLevelCap() <= getPowerLevel())) {
+        if ((primarySkillType.getMaxLevel() <= getSkillLevel(primarySkillType)) || (Config.getInstance().getPowerLevelCap() <= getPowerLevel())) {
             return 0;
         }
 
