@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.axes;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -113,19 +114,19 @@ public class AxesManager extends SkillManager {
      * @param target The {@link LivingEntity} being affected by Impact
      */
     public void impactCheck(LivingEntity target) {
-        int durabilityDamage = getImpactDurabilityDamage();
+        double durabilityDamage = getImpactDurabilityDamage();
 
         for (ItemStack armor : target.getEquipment().getArmorContents()) {
             if (armor != null && ItemUtils.isArmor(armor)) {
                 if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_STATIC_CHANCE, SubSkillType.AXES_ARMOR_IMPACT, getPlayer())) {
-                    SkillUtils.handleDurabilityChange(armor, durabilityDamage, Axes.impactMaxDurabilityModifier);
+                    SkillUtils.handleDurabilityChange(armor, durabilityDamage, 1);
                 }
             }
         }
     }
 
-    public int getImpactDurabilityDamage() {
-        return 1 + (getSkillLevel() / Axes.impactIncreaseLevel);
+    public double getImpactDurabilityDamage() {
+        return AdvancedConfig.getInstance().getImpactDurabilityDamageMultiplier() * RankUtils.getRank(getPlayer(), SubSkillType.AXES_ARMOR_IMPACT);
     }
 
     /**

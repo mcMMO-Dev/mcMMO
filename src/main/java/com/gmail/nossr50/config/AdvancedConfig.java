@@ -164,16 +164,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Axes.GreaterImpact.BonusDamage should be at least 1!");
         }
 
-        if (getArmorImpactIncreaseLevel() < 1) {
-            reason.add("Skills.Axes.ArmorImpact.IncreaseLevel should be at least 1!");
-        }
-
         if (getImpactChance() < 1) {
             reason.add("Skills.Axes.ArmorImpact.Chance should be at least 1!");
-        }
-
-        if (getArmorImpactMaxDurabilityDamage() < 1) {
-            reason.add("Skills.Axes.ArmorImpact.MaxPercentageDurabilityDamage should be at least 1!");
         }
 
         if (getSkullSplitterModifier() < 1) {
@@ -871,17 +863,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getGreaterImpactModifier() { return config.getDouble("Skills.Axes.GreaterImpact.KnockbackModifier", 1.5D); }
     public double getGreaterImpactBonusDamage() { return config.getDouble("Skills.Axes.GreaterImpact.BonusDamage", 2.0D); }
 
-    public int getArmorImpactIncreaseLevel() {
-        int increaseLevel = config.getInt("Skills.Axes.ArmorImpact.IncreaseLevel", 5);
-
-        if(mcMMO.isRetroModeEnabled())
-            return increaseLevel * 10;
-
-        return increaseLevel;
-    }
-
     public double getImpactChance() { return config.getDouble("Skills.Axes.ArmorImpact.Chance", 25.0D); }
-    public double getArmorImpactMaxDurabilityDamage() { return config.getDouble("Skills.Axes.ArmorImpact.MaxPercentageDurabilityDamage", 20.0D); }
+    public double getImpactDurabilityDamageMultiplier() { return config.getDouble("Skills.Axes.ArmorImpact.DamagePerRank", 6.5D); }
 
     public double getSkullSplitterModifier() { return config.getDouble("Skills.Axes.SkullSplitter.DamageModifier", 2.0D); }
 

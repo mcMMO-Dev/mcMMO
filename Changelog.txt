@@ -1,5 +1,14 @@
 Version 2.1.63
+    Fixed Armor Impact not scaling by skill rank
+    Significantly Buffed the amount of durability damage incurred by a successful Armor Impact
+    Added new setting to advanced.yml 'Skills.Axes.ArmorImpact.DamagePerRank' which is multiplied against Armor Impact's skill level to determine damage done to armor
     Fixed a bug that caused creative mode players to gain XP when qualifying for early game XP boosts
+    Removed the damage cap setting for Armor Impact, it is inherently capped now based on its max rank and damage setting
+
+    NOTES:
+    Armor Impact only has a 25% chance to go off, and for it to only incur 20 durability damage seemed incredibly underwhelming, I've buffed it quite a bit.
+    You can change it back to its underwhelming self by setting DamagePerRank to 1.0
+    Based on feedback I may tweak the number again or other properties of this skill
 
 Version 2.1.62
     Added a new admin notification system, sensitive commands will print chat messages to "admins" (players with either Operator status or admin chat permission)
