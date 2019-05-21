@@ -5,6 +5,7 @@ Version 2.1.63
     Fixed a bug that caused creative mode players to gain XP when qualifying for early game XP boosts
     Removed the damage cap setting for Armor Impact, it is inherently capped now based on its max rank and damage setting
     Updated hu_HU locale (thanks andris155)
+    Updated ja_JP locale (thanks snake)
 
     NOTES:
     Armor Impact only has a 25% chance to go off, and for it to only incur 20 durability damage seemed incredibly underwhelming, I've buffed it quite a bit.
