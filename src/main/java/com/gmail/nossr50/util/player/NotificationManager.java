@@ -55,19 +55,14 @@ public class NotificationManager {
      * Sends players notifications from mcMMO
      * This does this by sending out an event so other plugins can cancel it
      * This event in particular is provided with a source player, and players near the source player are sent the information
-     * @param source the source player for this event
+     * @param targetPlayer the recipient player for this message
      * @param notificationType type of notification
      * @param key Locale Key for the string to use with this event
      * @param values values to be injected into the locale string
      */
-    public static void sendNearbyPlayersInformation(Player source, NotificationType notificationType, String key, String... values)
+    public static void sendNearbyPlayersInformation(Player targetPlayer, NotificationType notificationType, String key, String... values)
     {
-        Location location = source.getLocation();
-        for (Player otherPlayer : source.getWorld().getPlayers()) {
-            if (otherPlayer != source && Misc.isNear(location, otherPlayer.getLocation(), Misc.SKILL_MESSAGE_MAX_SENDING_DISTANCE)) {
-                sendPlayerInformation(otherPlayer, notificationType, key, values);
-            }
-        }
+        sendPlayerInformation(targetPlayer, notificationType, key, values);
     }
 
     public static void sendPlayerInformation(Player player, NotificationType notificationType, String key, String... values)
