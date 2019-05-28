@@ -1,3 +1,6 @@
+Version 2.1.65
+    Corrected a bug that would cause RetroMode to use Linear formula regardless of setting
+
 Version 2.1.64
     Corrected how Standard mode (1-100 scaling) XP to next level was calculated, it is now a true 1:10 ratio with Retro (1-1000) scale, which is how it was intended to be to begin with
     Fixed a bug that caused skill messages to spam nearby players

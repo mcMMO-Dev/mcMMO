@@ -22,12 +22,8 @@ public class FormulaManager {
 
     private FormulaType previousFormula;
 
-    //Used for XP formula scaling
-    private boolean retroModeEnabled;
-
     public FormulaManager() {
         /* Setting for Classic Mode (Scales a lot of stuff up by * 10) */
-        retroModeEnabled = Config.getInstance().getIsRetroMode();
         initExperienceNeededMaps();
         loadFormula();
     }
@@ -182,7 +178,7 @@ public class FormulaManager {
         Map<Integer, Integer> experienceMapRef = formulaType == FormulaType.LINEAR ? experienceNeededRetroLinear : experienceNeededRetroExponential;
 
         if (!experienceMapRef.containsKey(level)) {
-            int experience = calculateXPNeeded(level, FormulaType.LINEAR);
+            int experience = calculateXPNeeded(level, formulaType);
             experienceMapRef.put(level, experience);
         }
 
