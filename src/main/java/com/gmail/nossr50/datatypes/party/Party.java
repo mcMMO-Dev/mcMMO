@@ -203,7 +203,7 @@ public class Party {
 
     public int getXpToLevel() {
         FormulaType formulaType = ExperienceConfig.getInstance().getFormulaType();
-        return (mcMMO.getFormulaManager().getCachedXpToLevel(level, formulaType)) * (getOnlineMembers().size() + Config.getInstance().getPartyXpCurveMultiplier());
+        return (mcMMO.getFormulaManager().getXPtoNextLevel(level, formulaType)) * (getOnlineMembers().size() + Config.getInstance().getPartyXpCurveMultiplier());
     }
 
     public String getXpToLevelPercentage() {

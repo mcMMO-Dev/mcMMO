@@ -1,3 +1,11 @@
+Version 2.1.64
+    (API) method to get XP in FormulaManager has been renamed to getXPtoNextLevel(...), this shouldn't break anything as plugins should be using our Experience API methods instead of this
+    (API) Added method getLevel(Player player, PrimarySkillType primarySkillType) to ExperienceAPI.java
+    Corrected how Standard mode (1-100 scaling) XP to next level was calculated, it is now a true 1:10 ratio with Retro (1-1000) scale, which is how it was intended to be to begin with
+
+    NOTE: The net result of this change is it will take a bit longer to level with Standard, but it should not be a drastic change. You might not even notice it.
+    Standard is meant to take the same amount of time to level from levels 1-100 as it takes Retro to do 1-1000, this change corrects from errors in the code that made Standard actually take less XP than Retro despite intending for it to be a cosmetic difference in progression.
+
 Version 2.1.63
     Fixed Armor Impact not scaling by skill rank
     Significantly Buffed the amount of durability damage incurred by a successful Armor Impact
