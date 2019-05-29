@@ -209,7 +209,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         mcMMO.p.getLogger().info("Purged " + removedPlayers + " users from the database.");
     }
 
-    public boolean removeUser(String playerName) {
+    public boolean removeUser(String playerName, UUID uuid) {
+        //NOTE: UUID is unused for FlatFile for this interface implementation
         boolean worked = false;
 
         BufferedReader in = null;
@@ -258,6 +259,11 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         Misc.profileCleanup(playerName);
 
         return worked;
+    }
+
+    @Override
+    public void cleanupUser(UUID uuid) {
+        //Not used in FlatFile
     }
 
     public boolean saveUser(PlayerProfile profile) {

@@ -629,9 +629,26 @@ public final class ExperienceAPI {
      * @param skillType The skill to get the level for
      * @return the level of a given skill
      * @throws InvalidSkillException if the given skill is not valid
+     * @deprecated Use getLevel(Player player, PrimarySkillType skillType) instead
      */
+    @Deprecated
     public static int getLevel(Player player, String skillType) {
         return getPlayer(player).getSkillLevel(getSkillType(skillType));
+    }
+
+    /**
+     * Get the level a player has in a specific skill.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player The player to get the level for
+     * @param skillType The skill to get the level for
+     * @return the level of a given skill
+     *
+     * @throws InvalidSkillException if the given skill is not valid
+     */
+    public static int getLevel(Player player, PrimarySkillType skillType) {
+        return getPlayer(player).getSkillLevel(skillType);
     }
 
     /**
@@ -975,7 +992,7 @@ public final class ExperienceAPI {
      * @throws InvalidFormulaTypeException if the given formulaType is not valid
      */
     public static int getXpNeededToLevel(int level) {
-        return mcMMO.getFormulaManager().getCachedXpToLevel(level, mcMMO.getConfigManager().getConfigLeveling().getFormulaType());
+        return mcMMO.getFormulaManager().getXPtoNextLevel(level, mcMMO.getConfigManager().getConfigLeveling().getFormulaType());
     }
 
     /**
@@ -988,7 +1005,7 @@ public final class ExperienceAPI {
      * @throws InvalidFormulaTypeException if the given formulaType is not valid
      */
     public static int getXpNeededToLevel(int level, String formulaType) {
-        return mcMMO.getFormulaManager().getCachedXpToLevel(level, getFormulaType(formulaType));
+        return mcMMO.getFormulaManager().getXPtoNextLevel(level, getFormulaType(formulaType));
     }
 
     /**

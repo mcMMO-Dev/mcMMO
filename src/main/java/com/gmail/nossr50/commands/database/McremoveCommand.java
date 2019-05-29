@@ -5,6 +5,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -12,6 +13,7 @@ import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class McremoveCommand implements TabExecutor {
     @Override
@@ -24,7 +26,13 @@ public class McremoveCommand implements TabExecutor {
                     return true;
                 }
 
-                if (mcMMO.getDatabaseManager().removeUser(playerName)) {
+                UUID uuid = null;
+
+                if(Bukkit.getPlayer(playerName) != null) {
+                    uuid = Bukkit.getPlayer(playerName).getUniqueId();
+                }
+
+                if (mcMMO.getDatabaseManager().removeUser(playerName, uuid)) {
                     sender.sendMessage(LocaleLoader.getString("Commands.mcremove.Success", playerName));
                 } else {
                     sender.sendMessage(playerName + " could not be removed from the database."); // Pretty sure this should NEVER happen.

@@ -56,6 +56,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
+import sun.security.krb5.Config;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -514,6 +515,9 @@ public class McMMOPlayer {
      * @param xp    Experience amount to process
      */
     public void beginUnsharedXpGain(PrimarySkillType skill, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
+        if(player.getGameMode() == GameMode.CREATIVE)
+            return;
+
         applyXpGain(skill, modifyXpGain(skill, xp), xpGainReason, xpGainSource);
 
         if (party == null) {
@@ -767,8 +771,7 @@ public class McMMOPlayer {
      * @return Modified experience
      */
     private float modifyXpGain(PrimarySkillType primarySkillType, float xp) {
-        if (player.getGameMode() == GameMode.CREATIVE
-                || ((primarySkillType.getMaxLevel() <= getSkillLevel(primarySkillType))
+        if (((primarySkillType.getMaxLevel() <= getSkillLevel(primarySkillType))
                 && mcMMO.getPlayerLevelingSettings().isLevelCapEnabled(primarySkillType))
                 || (mcMMO.getPlayerLevelingSettings().getConfigSectionLevelCaps().getPowerLevel().getLevelCap() <= getPowerLevel())) {
             return 0;
@@ -1016,5 +1019,8 @@ public class McMMOPlayer {
         if (inParty()) {
             party.removeOnlineMember(thisPlayer);
         }
+
+        //Remove user from cache
+        mcMMO.getDatabaseManager().cleanupUser(thisPlayer.getUniqueId());
     }
 }

@@ -116,7 +116,7 @@ public class SkillUtils {
 
         for (Player otherPlayer : player.getWorld().getPlayers()) {
             if (otherPlayer != player && Misc.isNear(location, otherPlayer.getLocation(), Misc.SKILL_MESSAGE_MAX_SENDING_DISTANCE)) {
-                NotificationManager.sendNearbyPlayersInformation(player, notificationType, key, player.getName());
+                NotificationManager.sendNearbyPlayersInformation(otherPlayer, notificationType, key, player.getName());
             }
         }
     }
@@ -225,7 +225,7 @@ public class SkillUtils {
      * @param durabilityModifier the amount to modify the durability by
      * @param maxDamageModifier  the amount to adjust the max damage by
      */
-    public static void handleDurabilityChange(ItemStack itemStack, int durabilityModifier, double maxDamageModifier) {
+    public static void handleDurabilityChange(ItemStack itemStack, double durabilityModifier, double maxDamageModifier) {
         if (itemStack.hasItemMeta() && itemStack.getItemMeta().isUnbreakable()) {
             return;
         }

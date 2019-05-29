@@ -14,9 +14,7 @@ public class Axes {
     public static double criticalHitPVPModifier = AdvancedConfig.getInstance().getCriticalStrikesPVPModifier();
     public static double criticalHitPVEModifier = AdvancedConfig.getInstance().getCriticalStrikesPVEModifier();
 
-    public static int impactIncreaseLevel = AdvancedConfig.getInstance().getArmorImpactIncreaseLevel();
-    //public static double impactChance                = AdvancedConfig.getInstance().getImpactChance();
-    public static double impactMaxDurabilityModifier = AdvancedConfig.getInstance().getArmorImpactMaxDurabilityDamage() / 100D;
+    public static double impactChance                = AdvancedConfig.getInstance().getImpactChance();
 
     public static double greaterImpactBonusDamage = AdvancedConfig.getInstance().getGreaterImpactBonusDamage();
     //public static double greaterImpactChance              = AdvancedConfig.getInstance().getGreaterImpactChance();

@@ -20,7 +20,8 @@ public class ConfigSectionSkillLevelCap {
     @Setting(value = "Level-Cap",
             comment = "Players will be unable to level past this value" +
                     "\nThe cap is the same for both Retro and Standard, " +
-                    "so a cap of 50 will be the same value in either mode.")
+                    "so a cap of 50 will be the same value in either mode." +
+                    "\nA level cap of 0 or below will result in no level cap.")
     private int levelCap = LEVEL_CAP_DEFAULT;
 
     /*
@@ -32,6 +33,9 @@ public class ConfigSectionSkillLevelCap {
     }
 
     public int getLevelCap() {
+        if(levelCap <= 0)
+            return Integer.MAX_VALUE;
+
         return levelCap;
     }
 }

@@ -267,22 +267,6 @@ public class AdvancedConfig extends ConfigValidated {
             reason.add(SKILLS + "." + AXES + "." + GREATER_IMPACT + "." + BONUS_DAMAGE + " should be at least 1!");
         }
 
-        if (getArmorImpactIncreaseLevel() < 1) {
-            reason.add(SKILLS + "." + AXES + "." + ARMOR_IMPACT + "." + INCREASE_LEVEL + " should be at least 1!");
-        }
-
-        if (getImpactChance() < 1) {
-            reason.add(SKILLS + "." + AXES + "." + ARMOR_IMPACT + "." + CHANCE + " should be at least 1!");
-        }
-
-        if (getArmorImpactMaxDurabilityDamage() < 1) {
-            reason.add(SKILLS + "." + AXES + "." + ARMOR_IMPACT + "." + MAX_PERCENTAGE_DURABILITY_DAMAGE + " should be at least 1!");
-        }
-
-        if (getSkullSplitterModifier() < 1) {
-            reason.add(SKILLS + "." + AXES + "." + SKULL_SPLITTER + DAMAGE_MODIFIER + " should be at least 1!");
-        }
-
         /*if (getFishermanDietRankChange() < 1) {
             reason.add(SKILLS + "." + FISHING + ".FishermansDiet.RankChange should be at least 1!");
         }*/
@@ -657,18 +641,8 @@ public class AdvancedConfig extends ConfigValidated {
         return getDoubleValue(SKILLS, AXES, GREATER_IMPACT, BONUS_DAMAGE);
     }
 
-    public int getArmorImpactIncreaseLevel() {
-        int increaseLevel = getIntValue(SKILLS, AXES, ARMOR_IMPACT, INCREASE_LEVEL);
-
-        if (mcMMO.isRetroModeEnabled())
-            return increaseLevel * 10;
-
-        return increaseLevel;
-    }
-
-    public double getImpactChance() {
-        return getDoubleValue(SKILLS, AXES, ARMOR_IMPACT, CHANCE);
-    }
+    public double getImpactChance() { return config.getDouble("Skills.Axes.ArmorImpact.Chance", 25.0D); }
+    public double getImpactDurabilityDamageMultiplier() { return config.getDouble("Skills.Axes.ArmorImpact.DamagePerRank", 6.5D); }
 
     public double getArmorImpactMaxDurabilityDamage() {
         return getDoubleValue(SKILLS, AXES, ARMOR_IMPACT, MAX_PERCENTAGE_DURABILITY_DAMAGE);

@@ -64,6 +64,12 @@ public enum PrimarySkillType {
     WOODCUTTING(WoodcuttingManager.class, Color.OLIVE, SuperAbilityType.TREE_FELLER, ToolType.AXE,
             ImmutableList.of(SubSkillType.WOODCUTTING_LEAF_BLOWER, SubSkillType.WOODCUTTING_TREE_FELLER, SubSkillType.WOODCUTTING_HARVEST_LUMBER));
 
+    private Class<? extends SkillManager> managerClass;
+    private Color skillColor;
+    private SuperAbilityType ability;
+    private ToolType tool;
+    private List<SubSkillType> subSkillTypes;
+
     public static final List<String> SKILL_NAMES;
     public static final List<String> SUBSKILL_NAMES;
     public static final List<PrimarySkillType> CHILD_SKILLS;
@@ -99,19 +105,13 @@ public enum PrimarySkillType {
         NON_CHILD_SKILLS = ImmutableList.copyOf(nonChildSkills);
     }
 
-    private Class<? extends SkillManager> managerClass;
-    private Color runescapeColor;
-    private SuperAbilityType ability;
-    private ToolType tool;
-    private List<SubSkillType> subSkillTypes;
-
-    PrimarySkillType(Class<? extends SkillManager> managerClass, Color runescapeColor, List<SubSkillType> subSkillTypes) {
-        this(managerClass, runescapeColor, null, null, subSkillTypes);
+    private PrimarySkillType(Class<? extends SkillManager> managerClass, Color skillColor, List<SubSkillType> subSkillTypes) {
+        this(managerClass, skillColor, null, null, subSkillTypes);
     }
 
-    PrimarySkillType(Class<? extends SkillManager> managerClass, Color runescapeColor, SuperAbilityType ability, ToolType tool, List<SubSkillType> subSkillTypes) {
+    private PrimarySkillType(Class<? extends SkillManager> managerClass, Color skillColor, SuperAbilityType ability, ToolType tool, List<SubSkillType> subSkillTypes) {
         this.managerClass = managerClass;
-        this.runescapeColor = runescapeColor;
+        this.skillColor = skillColor;
         this.ability = ability;
         this.tool = tool;
         this.subSkillTypes = subSkillTypes;
@@ -241,7 +241,7 @@ public enum PrimarySkillType {
     }
 
 /*    public void celebrateLevelUp(Player player) {
-        ParticleEffectUtils.fireworkParticleShower(player, runescapeColor);
+        ParticleEffectUtils.fireworkParticleShower(player, skillColor);
     }*/
 
     public boolean shouldProcess(Entity target) {

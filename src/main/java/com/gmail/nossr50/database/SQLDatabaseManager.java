@@ -176,7 +176,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         mcMMO.p.getLogger().info("Purged " + purged + " users from the database.");
     }
 
-    public boolean removeUser(String playerName) {
+    public boolean removeUser(String playerName, UUID uuid) {
         boolean success = false;
         Connection connection = null;
         PreparedStatement statement = null;
@@ -202,10 +202,18 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
 
         if (success) {
+            if(uuid != null)
+                cleanupUser(uuid);
+
             Misc.profileCleanup(playerName);
         }
 
         return success;
+    }
+
+    public void cleanupUser(UUID uuid) {
+        if(cachedUserIDs.containsKey(uuid))
+            cachedUserIDs.remove(uuid);
     }
 
     public boolean saveUser(PlayerProfile profile) {
