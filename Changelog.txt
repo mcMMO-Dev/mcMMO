@@ -1,3 +1,7 @@
+Version 2.1.66
+    Fixed a bug that could happen if a player was removed from the DB when using MySQL/MariaDB when the user was offline
+    Fixed a minor memory leak for MySQL
+
 Version 2.1.65
     Corrected a bug that would cause RetroMode to use Linear formula regardless of setting
 

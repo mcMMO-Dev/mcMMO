@@ -30,9 +30,17 @@ public interface DatabaseManager {
      * Remove a user from the database.
      *
      * @param playerName The name of the user to remove
+     * @param uuid player UUID, can be null
      * @return true if the user was successfully removed, false otherwise
      */
-    public boolean removeUser(String playerName);
+    public boolean removeUser(String playerName, UUID uuid);
+
+    /**
+     * Removes any cache used for faster lookups
+     * Currently only used for SQL
+     * @param uuid target UUID to cleanup
+     */
+    public void cleanupUser(UUID uuid);
 
     /**
      * Save a user to the database.

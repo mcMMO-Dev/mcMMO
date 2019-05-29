@@ -1008,5 +1008,8 @@ public class McMMOPlayer {
         if (inParty()) {
             party.removeOnlineMember(thisPlayer);
         }
+
+        //Remove user from cache
+        mcMMO.getDatabaseManager().cleanupUser(thisPlayer.getUniqueId());
     }
 }

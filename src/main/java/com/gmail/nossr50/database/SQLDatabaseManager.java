@@ -15,6 +15,7 @@ import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.*;
@@ -172,7 +173,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         mcMMO.p.getLogger().info("Purged " + purged + " users from the database.");
     }
 
-    public boolean removeUser(String playerName) {
+    public boolean removeUser(String playerName, UUID uuid) {
         boolean success = false;
         Connection connection = null;
         PreparedStatement statement = null;
@@ -200,10 +201,18 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
 
         if (success) {
+            if(uuid != null)
+                cleanupUser(uuid);
+
             Misc.profileCleanup(playerName);
         }
 
         return success;
+    }
+
+    public void cleanupUser(UUID uuid) {
+        if(cachedUserIDs.containsKey(uuid))
+            cachedUserIDs.remove(uuid);
     }
 
     public boolean saveUser(PlayerProfile profile) {
