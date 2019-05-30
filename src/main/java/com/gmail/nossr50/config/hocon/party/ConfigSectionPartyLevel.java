@@ -28,18 +28,6 @@ public class ConfigSectionPartyLevel {
         PARTY_FEATURE_MAP_DEFAULT.put(PartyFeature.CHAT, PARTY_CHAT_DEFAULT);
     }
 
-    /*
-        int base = ExperienceConfig.getInstance().getBase(FormulaType.EXPONENTIAL);
-        double multiplier = ExperienceConfig.getInstance().getMultiplier(FormulaType.EXPONENTIAL);
-        double exponent = ExperienceConfig.getInstance().getExponent(FormulaType.EXPONENTIAL);
-
-        if (!experienceNeededExponential.containsKey(level)) {
-            experience = (int) Math.floor((multiplier * Math.pow(level, exponent) + base));
-            experience *= mcMMO.getConfigManager().getConfigParty().getPartyXP().getPartyLevel().getPartyXpCurveMultiplier();
-            experienceNeededExponential.put(level, experience);
-        }
-     */
-
     @Setting(value = "Party-Leveling-Requires-Nearby-Party-Members",
             comment = "If leveling your Party requires being near another party member." +
                     "\nDefault value: " + PARTY_LEVELING_NEEDS_NERBY_MEMBERS_DEFAULT)

@@ -59,16 +59,15 @@ public class FormulaManager {
      *
      * @param primarySkillType skill where new levels and experience are calculated for
      * @param experience total amount of experience
-     * @param formulaType The new {@link FormulaType}
      * @return the amount of levels and experience
      */
-    public int[] calculateNewLevel(PrimarySkillType primarySkillType, int experience, FormulaType formulaType) {
+    public int[] calculateNewLevel(PrimarySkillType primarySkillType, int experience) {
         int newLevel = 0;
         int remainder = 0;
         int maxLevel = mcMMO.getConfigManager().getConfigLeveling().getLevelCap(primarySkillType);
 
         while (experience > 0 && newLevel < maxLevel) {
-            int experienceToNextLevel = getXPtoNextLevel(newLevel, formulaType);
+            int experienceToNextLevel = getXPtoNextLevel(newLevel, currentFormula);
 
             if (experience - experienceToNextLevel < 0) {
                 remainder = experience;
@@ -197,5 +196,9 @@ public class FormulaManager {
                 mcMMO.p.getLogger().severe("Invalid formula specified for calculation, defaulting to Linear");
                 return calculateXPNeeded(level, FormulaType.LINEAR);
         }
+    }
+
+    public void setCurrentFormula(FormulaType currentFormula) {
+        this.currentFormula = currentFormula;
     }
 }

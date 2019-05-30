@@ -49,7 +49,7 @@ public class FormulaConversionTask extends BukkitRunnable {
             Misc.printProgress(convertedUsers, DatabaseManager.progressInterval, startMillis);
         }
 
-        sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Experience.Finish", previousFormula.toString()));
+        sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Experience.Finish", mcMMO.getConfigManager().getConfigLeveling().getConfigExperienceFormula().toString()));
     }
 
     private void editValues(PlayerProfile profile) {
@@ -64,7 +64,7 @@ public class FormulaConversionTask extends BukkitRunnable {
                 continue;
             }
 
-            int[] newExperienceValues = mcMMO.getFormulaManager().calculateNewLevel(primarySkillType, (int) Math.floor(totalOldXP / 1.0), previousFormula);
+            int[] newExperienceValues = mcMMO.getFormulaManager().calculateNewLevel(primarySkillType, (int) Math.floor(totalOldXP / 1.0));
             int newLevel = newExperienceValues[0];
             int newXPlevel = newExperienceValues[1];
 

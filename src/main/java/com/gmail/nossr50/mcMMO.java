@@ -205,8 +205,6 @@ public class mcMMO extends JavaPlugin {
             if (getScoreboardSettings().getScoreboardsEnabled())
                 ScoreboardManager.teardownAll();
 
-            formulaManager.saveFormula();
-            /*holidayManager.saveAnniversaryFiles();*/
             placeStore.saveAll();       // Save our metadata
             placeStore.cleanUp();       // Cleanup empty metadata stores
         } catch (Exception e) {
