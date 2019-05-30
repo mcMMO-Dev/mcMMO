@@ -40,14 +40,6 @@ public class ConfigSectionPartyLevel {
         }
      */
 
-    @Setting(value = "Party-XP-Formula-Parameters",
-            comment = "The Party XP Formula is borrowed from the Player XP formula to help determine the amount of XP needed to level the party." +
-                    "\nThe Party XP Formula used to be based on your settings for player XP formula but I have separated it from those settings." +
-                    "\nThe Party XP Curve Multiplier takes the final result of calculating one level of XP and multiplies it by this value to get the amount of XP needed to level the party." +
-                    "\nParty Leveling used to have a level cap, I have removed this level cap as part of a feature request. It seems fun to level up parties indefinitely." +
-                    "\nParty Leveling is now using exponential level scaling by default.")
-    private ConfigSectionPartyXPFormula partyXPFormula = new ConfigSectionPartyXPFormula();
-
     @Setting(value = "Party-Leveling-Requires-Nearby-Party-Members",
             comment = "If leveling your Party requires being near another party member." +
                     "\nDefault value: " + PARTY_LEVELING_NEEDS_NERBY_MEMBERS_DEFAULT)
@@ -67,11 +59,6 @@ public class ConfigSectionPartyLevel {
             "\nITEM SHARE: " + ITEM_SHARE_DEFAULT +
             "\nXP SHARE: " + XP_SHARE_DEFAULT)
     private Map<PartyFeature, Integer> partyFeatureUnlockMap = PARTY_FEATURE_MAP_DEFAULT;
-
-
-    public int getPartyXpCurveMultiplier() {
-        return partyXPFormula.getPartyXpCurveMultiplier();
-    }
 
     public boolean isPartyLevelingNeedsNearbyMembers() {
         return partyLevelingNeedsNearbyMembers;

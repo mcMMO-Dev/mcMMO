@@ -80,7 +80,7 @@ Version 2.2.0
     Added toggle to completely disable parties
     Added toggle to limit max party size, previously this was done by setting party maximum size above -1
     Leveling your Party-Level now requires being near another party member by default
-    Leveling your Party now is no longer tied to player xp formula variables and instead uses its own parameters
+    Party XP required to level now uses the same formula as player levels
     Party members are now informed about your skill ups by default
     Party member item sharing is now disabled by default
 
