@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.experience;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
+import com.sk89q.worldedit.internal.expression.runtime.For;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -12,18 +13,17 @@ import java.util.Map;
 public class FormulaManager {
     private static File formulaFile = new File(mcMMO.getFlatFileDirectory() + "formula.yml");
 
-    // Experience needed to reach a level, cached values to improve conversion speed
+    // Experience needed to reach a level, cached values for speed
     private Map<Integer, Integer> experienceNeededRetroLinear;
     private Map<Integer, Integer> experienceNeededStandardLinear;
     private Map<Integer, Integer> experienceNeededRetroExponential;
     private Map<Integer, Integer> experienceNeededStandardExponential;
 
-    private FormulaType previousFormula;
+    private FormulaType currentFormula;
 
     public FormulaManager() {
-        /* Setting for Classic Mode (Scales a lot of stuff up by * 10) */
+        currentFormula = mcMMO.getConfigManager().getConfigLeveling().getFormulaType();
         initExperienceNeededMaps();
-        loadFormula();
     }
 
     /**
@@ -37,37 +37,20 @@ public class FormulaManager {
     }
 
     /**
-     * Get the formula type that was used before converting
-     *
-     * @return previously used formula type
-     */
-    public FormulaType getPreviousFormulaType() {
-        return previousFormula;
-    }
-
-    /**
-     * Set the formula type that was used before converting
-     *
-     * @param previousFormulaType The {@link FormulaType} previously used
-     */
-    public void setPreviousFormulaType(FormulaType previousFormulaType) {
-        this.previousFormula = previousFormulaType;
-    }
-
-    /**
      * Calculate the total amount of experience earned based on
      * the amount of levels and experience, using the previously
      * used formula type.
      *
      * @param skillLevel Amount of levels
      * @param skillXPLevel Amount of experience
+     * @param formulaType Formula to calculate XP for
      * @return The total amount of experience
      */
-    public int calculateTotalExperience(int skillLevel, int skillXPLevel) {
+    public int calculateTotalExperience(int skillLevel, int skillXPLevel, FormulaType formulaType) {
         int totalXP = 0;
 
         for (int level = 0; level < skillLevel; level++) {
-            totalXP += getXPtoNextLevel(level, previousFormula);
+            totalXP += getXPtoNextLevel(level, formulaType);
         }
 
         totalXP += skillXPLevel;
@@ -119,12 +102,26 @@ public class FormulaManager {
          * Standard mode XP requirements are multiplied by a factor of 10
          */
 
-        //TODO: When the heck is Unknown used?
-        if (formulaType == FormulaType.UNKNOWN) {
-            formulaType = FormulaType.LINEAR;
-        }
-
         return processXPToNextLevel(level, formulaType);
+    }
+
+    /**
+     * Get the cached amount of experience needed to reach the next level,
+     * if cache doesn't contain the given value it is calculated and added
+     * to the cached data.
+     *
+     * Uses the formula specified in the user configuration file
+     *
+     * @param level level to check
+     * @return amount of experience needed to reach next level
+     */
+    public int getXPtoNextLevel(int level) {
+        /**
+         * Retro mode XP requirements are the default requirements
+         * Standard mode XP requirements are multiplied by a factor of 10
+         */
+
+        return processXPToNextLevel(level, currentFormula);
     }
 
     /**
@@ -204,34 +201,6 @@ public class FormulaManager {
                 //TODO: Should never be called
                 mcMMO.p.getLogger().severe("Invalid formula specified for calculation, defaulting to Linear");
                 return calculateXPNeeded(level, FormulaType.LINEAR);
-        }
-    }
-
-    /**
-     * Load formula file.
-     */
-    public void loadFormula() {
-        if (!formulaFile.exists()) {
-            previousFormula = FormulaType.UNKNOWN;
-            return;
-        }
-
-        previousFormula = FormulaType.getFormulaType(YamlConfiguration.loadConfiguration(formulaFile).getString("Previous_Formula", "UNKNOWN"));
-    }
-
-    /**
-     * Save formula file.
-     */
-    public void saveFormula() {
-        mcMMO.p.debug("Saving previous XP formula type...");
-        YamlConfiguration formulasFile = new YamlConfiguration();
-        formulasFile.set("Previous_Formula", previousFormula.toString());
-
-        try {
-            formulasFile.save(formulaFile);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

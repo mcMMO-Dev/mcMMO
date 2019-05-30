@@ -14,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import sun.security.krb5.Config;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -193,12 +194,7 @@ public class Party {
     }
 
     public int getXpToLevel() {
-<<<<<<< HEAD
-        return mcMMO.getFormulaManager().getPartyCachedXpToLevel(level);
-=======
-        FormulaType formulaType = ExperienceConfig.getInstance().getFormulaType();
-        return (mcMMO.getFormulaManager().getXPtoNextLevel(level, formulaType)) * (getOnlineMembers().size() + Config.getInstance().getPartyXpCurveMultiplier());
->>>>>>> ff1bb0deed61cda7daa75a374da3942de9e2e172
+        return mcMMO.getFormulaManager().getXPtoNextLevel(level);
     }
 
     public String getXpToLevelPercentage() {
