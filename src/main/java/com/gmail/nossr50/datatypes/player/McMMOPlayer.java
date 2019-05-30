@@ -56,7 +56,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
-import sun.security.krb5.Config;
 
 import java.util.HashMap;
 import java.util.Map;

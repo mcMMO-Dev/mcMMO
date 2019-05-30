@@ -74,11 +74,11 @@ public class McconvertCommand implements TabExecutor {
             case 1:
                 return StringUtil.copyPartialMatches(args[0], SUBCOMMANDS, new ArrayList<>(SUBCOMMANDS.size()));
             case 2:
-                if (args[0].equalsIgnoreCase("database") || args[0].equalsIgnoreCase("db")) {
+                if (args[1].equalsIgnoreCase("database") || args[1].equalsIgnoreCase("db")) {
                     return StringUtil.copyPartialMatches(args[0], DATABASE_TYPES, new ArrayList<>(DATABASE_TYPES.size()));
                 }
 
-                if (args[0].equalsIgnoreCase("experience") || args[0].equalsIgnoreCase("xp") || args[0].equalsIgnoreCase("exp")) {
+                if (args[1].equalsIgnoreCase("experience") || args[1].equalsIgnoreCase("xp") || args[1].equalsIgnoreCase("exp")) {
                     return StringUtil.copyPartialMatches(args[0], FORMULA_TYPES, new ArrayList<>(FORMULA_TYPES.size()));
                 }
 

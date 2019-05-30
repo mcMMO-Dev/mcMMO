@@ -32,6 +32,8 @@ Version 2.2.0
     Added new locale string 'Commands.Reload.Finished'
     Added new permission 'mcmmo.commands.reload'
     Lily pads were removed from the Alchemy Ingredient list as they are unused
+    Experience formula conversion command no longer relies on a file to determine what formula you were using previously, instead it determines this from command parameters
+    Fixed some tab completion bugs for /mcconvert command
     Admins will now be notified if a player trips over-fishing exploit detection 3+ times in a row (Locale: "Fishing.OverFishingDetected")
         Note: Admins are players who are an operator or have adminchat permission.
 

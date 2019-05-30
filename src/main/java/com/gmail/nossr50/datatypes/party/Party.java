@@ -14,7 +14,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import sun.security.krb5.Config;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

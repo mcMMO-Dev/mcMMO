@@ -3,16 +3,11 @@ package com.gmail.nossr50.util.experience;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
-import com.sk89q.worldedit.internal.expression.runtime.For;
-import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 public class FormulaManager {
-    private static File formulaFile = new File(mcMMO.getFlatFileDirectory() + "formula.yml");
-
     // Experience needed to reach a level, cached values for speed
     private Map<Integer, Integer> experienceNeededRetroLinear;
     private Map<Integer, Integer> experienceNeededStandardLinear;

@@ -14,11 +14,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class FormulaConversionTask extends BukkitRunnable {
     private CommandSender sender;
-    private FormulaType formulaType;
+    private FormulaType previousFormula;
 
-    public FormulaConversionTask(CommandSender sender, FormulaType formulaType) {
+    public FormulaConversionTask(CommandSender sender, FormulaType previousFormula) {
         this.sender = sender;
-        this.formulaType = formulaType;
+        this.previousFormula = previousFormula;
     }
 
     @Override
@@ -48,9 +48,8 @@ public class FormulaConversionTask extends BukkitRunnable {
             convertedUsers++;
             Misc.printProgress(convertedUsers, DatabaseManager.progressInterval, startMillis);
         }
-        mcMMO.getFormulaManager().setPreviousFormulaType(formulaType);
 
-        sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Experience.Finish", formulaType.toString()));
+        sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Experience.Finish", previousFormula.toString()));
     }
 
     private void editValues(PlayerProfile profile) {
@@ -59,13 +58,13 @@ public class FormulaConversionTask extends BukkitRunnable {
         for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
             int oldLevel = profile.getSkillLevel(primarySkillType);
             int oldXPLevel = profile.getSkillXpLevel(primarySkillType);
-            int totalOldXP = mcMMO.getFormulaManager().calculateTotalExperience(oldLevel, oldXPLevel);
+            int totalOldXP = mcMMO.getFormulaManager().calculateTotalExperience(oldLevel, oldXPLevel, previousFormula);
 
             if (totalOldXP == 0) {
                 continue;
             }
 
-            int[] newExperienceValues = mcMMO.getFormulaManager().calculateNewLevel(primarySkillType, (int) Math.floor(totalOldXP / 1.0), formulaType);
+            int[] newExperienceValues = mcMMO.getFormulaManager().calculateNewLevel(primarySkillType, (int) Math.floor(totalOldXP / 1.0), previousFormula);
             int newLevel = newExperienceValues[0];
             int newXPlevel = newExperienceValues[1];
 
