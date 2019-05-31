@@ -1,0 +1,32 @@
+package com.gmail.nossr50.config.hocon.skills.axes;
+
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.properties.AbstractMaximumProgressionLevel;
+import ninja.leaping.configurate.objectmapping.Setting;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
+
+@ConfigSerializable
+public class ConfigAxesCriticalStrikes {
+
+    private static final double MAX_ACTIVATION_CHANCE_DEFAULT = 37.50D;
+    /*
+                    CriticalStrikes:
+                    # ChanceMax: Maximum chance of causing a critical hit when on <MaxBonusLevel> or higher
+                    # MaxBonusLevel: Level where <ChanceMax> of causing critical hits is reached
+                    ChanceMax: 37.50
+                    MaxBonusLevel:
+                        Standard: 100
+                        RetroMode: 1000
+                    # Damage modifier of critical hits for PVP / PVE, when causing a critical hit the damage gets multiplied by the modifier
+                    PVP_Modifier: 1.5
+                    PVE_Modifier: 2.0
+             */
+
+    @Setting(value = "Max-Activation-Chance", comment = "This is max percentage chance that is used to determine whether or not the ability is successful." +
+            "\nA value of 50.0 would mean at most the ability can only have a 50% chance to work at max skill level.")
+    double maxActivationChance = MAX_ACTIVATION_CHANCE_DEFAULT;
+
+    @Setting(value = "Maximum-Level", comment = "This is the level at which full benefits for this skill will be reached." +
+            "\nProperties of this skill may or may not scale with level, but those that do will gradually increase until max level is achieved.")
+    AbstractMaximumProgressionLevel maximumProgressionLevel = new AbstractMaximumProgressionLevel(SubSkillType.AXES_CRITICAL_STRIKES, 100, 1000);
+}

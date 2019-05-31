@@ -641,8 +641,6 @@ public class AdvancedConfig extends ConfigValidated {
         return getDoubleValue(SKILLS, AXES, GREATER_IMPACT, BONUS_DAMAGE);
     }
 
-    public double getImpactChance() { return config.getDouble("Skills.Axes.ArmorImpact.Chance", 25.0D); }
-    public double getImpactDurabilityDamageMultiplier() { return config.getDouble("Skills.Axes.ArmorImpact.DamagePerRank", 6.5D); }
 
     public double getArmorImpactMaxDurabilityDamage() {
         return getDoubleValue(SKILLS, AXES, ARMOR_IMPACT, MAX_PERCENTAGE_DURABILITY_DAMAGE);
