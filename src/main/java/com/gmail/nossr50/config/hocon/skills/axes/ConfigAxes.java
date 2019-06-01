@@ -1,5 +1,7 @@
 package com.gmail.nossr50.config.hocon.skills.axes;
 
+import com.gmail.nossr50.datatypes.skills.properties.AbstractMaximumProgressionLevel;
+import com.gmail.nossr50.datatypes.skills.properties.DamageProperty;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -61,6 +63,18 @@ public class ConfigAxes {
 
     @Setting(value = "Skull-Splitter")
     private ConfigAxesSkullSplitter configAxesSkullSplitter = new ConfigAxesSkullSplitter();
+
+    public double getMaxActivationChance() {
+        return configAxesCriticalStrikes.getMaxActivationChance();
+    }
+
+    public AbstractMaximumProgressionLevel getMaximumProgressionLevel() {
+        return configAxesCriticalStrikes.getMaximumProgressionLevel();
+    }
+
+    public DamageProperty getDamageProperty() {
+        return configAxesCriticalStrikes.getDamageProperty();
+    }
 
     public double getSkullSplitterDamageDivisor() {
         return configAxesSkullSplitter.getSkullSplitterDamageDivisor();
