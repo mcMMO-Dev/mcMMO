@@ -6,8 +6,8 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 @ConfigSerializable
 public class ConfigAxesImpact {
 
-    public static final double IMPACT_CHANCE_DEFAULT = 25.0D;
-    public static final double IMPACT_DURABILITY_MULTIPLIER_DEFAULT = 6.5D;
+    private static final double IMPACT_CHANCE_DEFAULT = 25.0D;
+    private static final double IMPACT_DURABILITY_MULTIPLIER_DEFAULT = 6.5D;
 
     @Setting(value = "Impact-Activation-Chance", comment = "Chance to activate the Impact skill, this is a static chance and does not change per rank of the skill." +
             "\nDefault value: "+IMPACT_CHANCE_DEFAULT)

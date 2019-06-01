@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillEvent;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillRandomCheckEvent;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -227,9 +228,9 @@ public class RandomChanceUtil {
     public static double getStaticRandomChance(SubSkillType subSkillType) throws InvalidStaticChance {
         switch (subSkillType) {
             case AXES_ARMOR_IMPACT:
-                return AdvancedConfig.getInstance().getImpactChance();
+                return mcMMO.getConfigManager().getConfigAxes().getImpactChance();
             case AXES_GREATER_IMPACT:
-                return AdvancedConfig.getInstance().getGreaterImpactChance();
+                return mcMMO.getConfigManager().getConfigAxes().getGreaterImpactActivationChance();
             case TAMING_FAST_FOOD_SERVICE:
                 return AdvancedConfig.getInstance().getFastFoodChance();
             default:
