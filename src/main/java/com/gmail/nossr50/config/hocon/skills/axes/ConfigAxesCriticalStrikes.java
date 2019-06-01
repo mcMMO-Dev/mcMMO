@@ -14,9 +14,6 @@ public class ConfigAxesCriticalStrikes {
                     # ChanceMax: Maximum chance of causing a critical hit when on <MaxBonusLevel> or higher
                     # MaxBonusLevel: Level where <ChanceMax> of causing critical hits is reached
                     ChanceMax: 37.50
-                    MaxBonusLevel:
-                        Standard: 100
-                        RetroMode: 1000
                     # Damage modifier of critical hits for PVP / PVE, when causing a critical hit the damage gets multiplied by the modifier
                     PVP_Modifier: 1.5
                     PVE_Modifier: 2.0
@@ -29,4 +26,6 @@ public class ConfigAxesCriticalStrikes {
     @Setting(value = "Maximum-Level", comment = "This is the level at which full benefits for this skill will be reached." +
             "\nProperties of this skill may or may not scale with level, but those that do will gradually increase until max level is achieved.")
     AbstractMaximumProgressionLevel maximumProgressionLevel = new AbstractMaximumProgressionLevel(SubSkillType.AXES_CRITICAL_STRIKES, 100, 1000);
+
+
 }
