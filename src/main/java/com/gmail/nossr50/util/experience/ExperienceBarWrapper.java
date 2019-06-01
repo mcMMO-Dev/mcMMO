@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.player.PlayerLevelUtils;
 import org.bukkit.Server;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -20,7 +21,14 @@ public class ExperienceBarWrapper {
 
     protected final McMMOPlayer mcMMOPlayer;
     private final PrimarySkillType primarySkillType; //Primary Skill
+<<<<<<< HEAD
     private final Server server;
+=======
+    private BossBar bossBar;
+    protected final McMMOPlayer mcMMOPlayer;
+    private int lastLevelUpdated;
+
+>>>>>>> 9111590dc2a9bb6a1c12fefc13167a1d88470cd4
     /*
      * This is stored to help optimize updating the title
      */
@@ -31,7 +39,6 @@ public class ExperienceBarWrapper {
 
     public ExperienceBarWrapper(PrimarySkillType primarySkillType, McMMOPlayer mcMMOPlayer) {
         this.mcMMOPlayer = mcMMOPlayer;
-        this.server = mcMMOPlayer.getPlayer().getServer(); //Might not be good for bungee to do this
         this.primarySkillType = primarySkillType;
         title = "";
         lastLevelUpdated = 0;
@@ -55,8 +62,10 @@ public class ExperienceBarWrapper {
 
     private String getTitleTemplate() {
         //If they are using extra details
-        if (mcMMO.getConfigManager().getConfigLeveling().isMoreDetailedXPBars())
-            return LocaleLoader.getString("XPBar.Complex.Template", LocaleLoader.getString("XPBar." + niceSkillName, getLevel()), getCurrentXP(), getMaxXP(), getPowerLevel(), getPercentageOfLevel());
+        if(mcMMO.getConfigManager().getConfigLeveling().getEarlyGameBoost().isEnableEarlyGameBoost() && PlayerLevelUtils.qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType)) {
+                return LocaleLoader.getString("XPBar.Template.EarlyGameBoost");
+        } else if(mcMMO.getConfigManager().getConfigLeveling().getConfigExperienceBars().isMoreDetailedXPBars())
+            return LocaleLoader.getString("XPBar.Complex.Template", LocaleLoader.getString("XPBar."+niceSkillName, getLevel()), getCurrentXP(), getMaxXP(), getPowerLevel(), getPercentageOfLevel());
 
         return LocaleLoader.getString("XPBar." + niceSkillName, getLevel(), getCurrentXP(), getMaxXP(), getPowerLevel(), getPercentageOfLevel());
     }
@@ -118,6 +127,13 @@ public class ExperienceBarWrapper {
             bossBar.setProgress(1.0D);
         else
             bossBar.setProgress(v);
+
+        //Check player level
+        if(ExperienceConfig.getInstance().isEarlyGameBoostEnabled() && PlayerLevelUtils.qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType)) {
+           setColor(BarColor.YELLOW);
+        } else {
+            setColor(ExperienceConfig.getInstance().getExperienceBarColor(primarySkillType));
+        }
 
         //Every time progress updates we need to check for a title update
         if (getLevel() != lastLevelUpdated || mcMMO.getConfigManager().getConfigLeveling().isMoreDetailedXPBars()) {
