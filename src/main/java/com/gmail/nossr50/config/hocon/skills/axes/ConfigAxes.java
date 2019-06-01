@@ -32,14 +32,6 @@ public class ConfigAxes {
         return greaterImpactKnockbackMultiplier;
     }
 
-
-        GreaterImpact:
-            # Chance: Chance of hitting with GreaterImpact, mobs are knocked backwards when successful
-            # KnockbackModifier: Velocity modifier of GreaterImpact hits, this determines how great the knockback is
-            # BonusDamage: Extra damage for GreaterImpact hits
-            Chance: 25.0
-            KnockbackModifier: 1.5
-            BonusDamage: 2.0
         ArmorImpact:
             # Multiplied against the skill rank to determine how much damage to do
             DamagePerRank: 6.5
@@ -64,15 +56,27 @@ public class ConfigAxes {
     @Setting(value = "Skull-Splitter")
     private ConfigAxesSkullSplitter configAxesSkullSplitter = new ConfigAxesSkullSplitter();
 
-    public double getMaxActivationChance() {
+    public double getCriticalStrikesMaxActivationChance() {
         return configAxesCriticalStrikes.getMaxActivationChance();
     }
 
-    public AbstractMaximumProgressionLevel getMaximumProgressionLevel() {
+    public AbstractMaximumProgressionLevel getCriticalStrikesMaximumProgressionLevel() {
         return configAxesCriticalStrikes.getMaximumProgressionLevel();
     }
 
-    public DamageProperty getDamageProperty() {
+    public double getGreaterImpactActivationChance() {
+        return configAxesGreaterImpact.getActivationChance();
+    }
+
+    public double getGreaterImpactKnockBackModifier() {
+        return configAxesGreaterImpact.getKnockBackModifier();
+    }
+
+    public double getGreaterImpactBonusDamage() {
+        return configAxesGreaterImpact.getBonusDamage();
+    }
+
+    public DamageProperty getCriticalStrikesDamageProperty() {
         return configAxesCriticalStrikes.getDamageProperty();
     }
 
