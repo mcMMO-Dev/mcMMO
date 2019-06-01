@@ -9,6 +9,7 @@ import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.player.PlayerLevelUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
@@ -101,7 +102,7 @@ public class SelfListener implements Listener {
             int earlyGameBonusXP = 0;
 
             //Give some bonus XP for low levels
-            if(mcMMOPlayer.getSkillLevel(primarySkillType) <= mcMMO.getPlayerLevelUtils().getEarlyGameCutoff(primarySkillType))
+            if(PlayerLevelUtils.qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType))
             {
                 earlyGameBonusXP += (mcMMOPlayer.getXpToLevel(primarySkillType) * 0.05);
                 event.setRawXpGained(event.getRawXpGained() + earlyGameBonusXP);
@@ -156,4 +157,6 @@ public class SelfListener implements Listener {
 
         }
     }
+
+
 }

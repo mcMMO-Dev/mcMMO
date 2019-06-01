@@ -1,3 +1,18 @@
+Version 2.1.67
+    The XP bar now reflects whether or not the player is receiving the early game boost
+    Players who are receiving an early game boost will be shown "Learning a skill..." as the title of the XP bar while gaining XP
+    New locale string 'XPBar.Template.EarlyGameBoost'
+
+    NOTES:
+    You can turn off this system in experience.yml 'EarlyGameBoost.Enabled'
+    The Early Game Boost is a system in which players receive drastically increased XP gains for the first few levels (until the first set of skills are unlocked)
+    With default settings, this means players will be receiving boosted XP for the first 5 levels (50 for Retro)
+    The Early Game Boost ends when players get the first skill in each ability under default settings
+    The main purpose of this system is to alleviate progression issues with a few skills where the first set of unlocked abilities drastically increase how fun it is to level the skill
+    The secondary purpose of this system is to alleviate any psychological issues when grinding towards the first set of unlocks by making the first set of unlocks happen quickly
+    This system has been in place for a few versions now, but without an in game indicator of what was going on.
+    If you have XP bars off there is still no indicator that this system is in place, I'll address that at some point.
+
 Version 2.1.66
     Fixed a bug that could happen if a player was removed from the DB when using MySQL/MariaDB when the user was offline
     Fixed a minor memory leak for MySQL
