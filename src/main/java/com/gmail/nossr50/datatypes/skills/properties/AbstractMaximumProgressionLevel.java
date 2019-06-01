@@ -4,10 +4,10 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 
 public class AbstractMaximumProgressionLevel implements MaximumProgressionLevel {
 
-    SubSkillType subSkillType;
+    private SubSkillType subSkillType;
 
-    int standardMaxLevel;
-    int retroMaxLevel;
+    private int standardMaxLevel;
+    private int retroMaxLevel;
 
     public AbstractMaximumProgressionLevel(SubSkillType subSkillType, int standardMaxLevel, int retroMaxLevel) {
         this.subSkillType = subSkillType;
