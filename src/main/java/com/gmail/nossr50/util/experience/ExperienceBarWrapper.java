@@ -21,21 +21,14 @@ public class ExperienceBarWrapper {
 
     protected final McMMOPlayer mcMMOPlayer;
     private final PrimarySkillType primarySkillType; //Primary Skill
-<<<<<<< HEAD
-    private final Server server;
-=======
     private BossBar bossBar;
-    protected final McMMOPlayer mcMMOPlayer;
     private int lastLevelUpdated;
 
->>>>>>> 9111590dc2a9bb6a1c12fefc13167a1d88470cd4
     /*
      * This is stored to help optimize updating the title
      */
     protected String niceSkillName;
     protected String title;
-    private BossBar bossBar;
-    private int lastLevelUpdated;
 
     public ExperienceBarWrapper(PrimarySkillType primarySkillType, McMMOPlayer mcMMOPlayer) {
         this.mcMMOPlayer = mcMMOPlayer;
@@ -129,10 +122,10 @@ public class ExperienceBarWrapper {
             bossBar.setProgress(v);
 
         //Check player level
-        if(ExperienceConfig.getInstance().isEarlyGameBoostEnabled() && PlayerLevelUtils.qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType)) {
+        if(mcMMO.getConfigManager().getConfigLeveling().getEarlyGameBoost().isEnableEarlyGameBoost() && PlayerLevelUtils.qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType)) {
            setColor(BarColor.YELLOW);
         } else {
-            setColor(ExperienceConfig.getInstance().getExperienceBarColor(primarySkillType));
+            setColor(mcMMO.getConfigManager().getConfigLeveling().getConfigExperienceBars().getXPBarColor(primarySkillType));
         }
 
         //Every time progress updates we need to check for a title update
