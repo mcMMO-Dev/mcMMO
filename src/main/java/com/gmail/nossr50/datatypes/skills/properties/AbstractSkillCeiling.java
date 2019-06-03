@@ -1,11 +1,11 @@
 package com.gmail.nossr50.datatypes.skills.properties;
 
-public class AbstractMaximumProgressionLevel implements MaximumProgressionLevel {
+public class AbstractSkillCeiling implements SkillCeiling {
 
     private int standardMaxLevel;
     private int retroMaxLevel;
 
-    public AbstractMaximumProgressionLevel(int standardMaxLevel, int retroMaxLevel) {
+    public AbstractSkillCeiling(int standardMaxLevel, int retroMaxLevel) {
         this.standardMaxLevel = standardMaxLevel;
         this.retroMaxLevel = retroMaxLevel;
     }

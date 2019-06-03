@@ -27,7 +27,7 @@ public class CustomXPPerkSerializer implements TypeSerializer<CustomXPPerk> {
                 if (primarySkillType.isChildSkill())
                     continue; //Child skills gross
 
-                float boostValue = configurationNode.getNode("XP-Multiplier").getValue(TypeToken.of(Float.class));
+                Float boostValue = configurationNode.getNode("XP-Multiplier").getValue(TypeToken.of(Float.class));
                 customXPPerk.setCustomXPValue(primarySkillType, boostValue);
             } catch (InvalidSkillException e) {
                 mcMMO.p.getLogger().info("Custom XP perk has a skill defined that was not found, did you misspell it?");

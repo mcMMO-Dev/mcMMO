@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config.hocon.skills.axes;
 
-import com.gmail.nossr50.datatypes.skills.properties.AbstractMaximumProgressionLevel;
+import com.gmail.nossr50.datatypes.skills.properties.AbstractSkillCeiling;
 import com.gmail.nossr50.datatypes.skills.properties.DamageProperty;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
@@ -28,7 +28,7 @@ public class ConfigAxes {
         return configAxesCriticalStrikes.getMaxActivationChance();
     }
 
-    public AbstractMaximumProgressionLevel getCriticalStrikesMaximumProgressionLevel() {
+    public AbstractSkillCeiling getCriticalStrikesMaximumProgressionLevel() {
         return configAxesCriticalStrikes.getMaximumProgressionLevel();
     }
 
