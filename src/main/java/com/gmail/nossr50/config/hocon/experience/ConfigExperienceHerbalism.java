@@ -2,7 +2,6 @@ package com.gmail.nossr50.config.hocon.experience;
 
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
-import org.bukkit.Material;
 
 import java.util.HashMap;
 
@@ -15,102 +14,102 @@ public class ConfigExperienceHerbalism {
         HERBALISM_EXPERIENCE_DEFAULT = new HashMap<>();
 
         /* UNDER THE SEA */
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.SEAGRASS.getKey().toString(), 10);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.TALL_SEAGRASS.getKey().toString(), 10);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.KELP.getKey().toString(), 3);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.KELP_PLANT.getKey().toString(), 3);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:seagrass", 10);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:tall_seagrass", 10);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:kelp", 3);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:kelp_plant", 3);
 
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.TUBE_CORAL.getKey().toString(), 80);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.BRAIN_CORAL.getKey().toString(), 90);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.BUBBLE_CORAL.getKey().toString(), 75);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.FIRE_CORAL.getKey().toString(), 120);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.HORN_CORAL.getKey().toString(), 175);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:tube_coral", 80);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:brain_coral", 90);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:bubble_coral", 75);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:fire_coral", 120);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:horn_coral", 175);
 
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.TUBE_CORAL_FAN.getKey().toString(), 80);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.BRAIN_CORAL_FAN.getKey().toString(), 90);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.BUBBLE_CORAL_FAN.getKey().toString(), 75);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.FIRE_CORAL_FAN.getKey().toString(), 120);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.HORN_CORAL_FAN.getKey().toString(), 175);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:tube_coral_fan", 80);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:brain_coral_fan", 90);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:bubble_coral_fan", 75);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:fire_coral_fan", 120);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:horn_coral_fan", 175);
 
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.TUBE_CORAL_WALL_FAN.getKey().toString(), 80);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.BRAIN_CORAL_WALL_FAN.getKey().toString(), 90);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.BUBBLE_CORAL_WALL_FAN.getKey().toString(), 75);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.FIRE_CORAL_WALL_FAN.getKey().toString(), 120);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.HORN_CORAL_WALL_FAN.getKey().toString(), 175);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:tube_coral_wall_fan", 80);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:brain_coral_wall_fan", 90);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:bubble_coral_wall_fan", 75);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:fire_coral_wall_fan", 120);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:horn_coral_wall_fan", 175);
 
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.DEAD_TUBE_CORAL.getKey().toString(), 30);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.DEAD_BRAIN_CORAL.getKey().toString(), 30);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.DEAD_BUBBLE_CORAL.getKey().toString(), 30);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.DEAD_FIRE_CORAL.getKey().toString(), 30);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.DEAD_HORN_CORAL.getKey().toString(), 30);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:dead_tube_coral", 30);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:dead_brain_coral", 30);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:dead_bubble_coral", 30);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:dead_fire_coral", 30);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:dead_horn_coral", 30);
 
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.DEAD_TUBE_CORAL_FAN.getKey().toString(), 30);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.DEAD_BRAIN_CORAL_FAN.getKey().toString(), 30);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.DEAD_BUBBLE_CORAL_FAN.getKey().toString(), 30);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.DEAD_FIRE_CORAL_FAN.getKey().toString(), 30);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.DEAD_HORN_CORAL_FAN.getKey().toString(), 30);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:dead_tube_coral_fan", 30);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:dead_brain_coral_fan", 30);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:dead_bubble_coral_fan", 30);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:dead_fire_coral_fan", 30);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:dead_horn_coral_fan", 30);
 
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.DEAD_TUBE_CORAL_WALL_FAN.getKey().toString(), 30);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.DEAD_BRAIN_CORAL_WALL_FAN.getKey().toString(), 30);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.DEAD_BUBBLE_CORAL_WALL_FAN.getKey().toString(), 30);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.DEAD_FIRE_CORAL_WALL_FAN.getKey().toString(), 30);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.DEAD_HORN_CORAL_WALL_FAN.getKey().toString(), 30);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:dead_tube_coral_wall_fan", 30);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:dead_brain_coral_wall_fan", 30);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:dead_bubble_coral_wall_fan", 30);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:dead_fire_coral_wall_fan", 30);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:dead_horn_coral_wall_fan", 30);
 
         /* BACK TO DRY LAND */
 
         /* FLOWERS */
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.ALLIUM.getKey().toString(), 300);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.AZURE_BLUET.getKey().toString(), 150);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.BLUE_ORCHID.getKey().toString(), 150);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.LILAC.getKey().toString(), 50);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.ORANGE_TULIP.getKey().toString(), 150);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.OXEYE_DAISY.getKey().toString(), 150);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.PEONY.getKey().toString(), 50);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.PINK_TULIP.getKey().toString(), 150);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.WHITE_TULIP.getKey().toString(), 150);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.POPPY.getKey().toString(), 100);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.DANDELION.getKey().toString(), 100);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.RED_TULIP.getKey().toString(), 150);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.ROSE_BUSH.getKey().toString(), 50);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.SUNFLOWER.getKey().toString(), 50);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.CORNFLOWER.getKey().toString(), 150);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.LILY_OF_THE_VALLEY.getKey().toString(), 150);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:allium", 300);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:azure_bluet", 150);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:blue_orchid", 150);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:lilac", 50);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:orange_tulip", 150);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:oxeye_daisy", 150);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:peony", 50);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:pink_tulip", 150);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:white_tulip", 150);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:poppy", 100);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:dandelion", 100);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:red_tulip", 150);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:rose_bush", 50);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:sunflower", 50);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:cornflower", 150);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:lily_of_the_valley", 150);
 
         /* WEEDS */
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.FERN.getKey().toString(), 10);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.LARGE_FERN.getKey().toString(), 10);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.GRASS.getKey().toString(), 10);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.TALL_GRASS.getKey().toString(), 10);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.VINE.getKey().toString(), 10);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.DEAD_BUSH.getKey().toString(), 30);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:fern", 10);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:large_fern", 10);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:grass", 10);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:tall_grass", 10);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:vine", 10);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:dead_bush", 30);
 
         /* MISC */
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.LILY_PAD.getKey().toString(), 100);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.SWEET_BERRY_BUSH.getKey().toString(), 300);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:lily_pad", 100);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:sweet_berry_bush", 300);
 
         /* MUSHROOMS */
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.RED_MUSHROOM.getKey().toString(), 150);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.BROWN_MUSHROOM.getKey().toString(), 150);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:red_mushroom", 150);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:brown_mushroom", 150);
 
         /* CROPS */
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.BEETROOTS.getKey().toString(), 50);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.CARROTS.getKey().toString(), 50);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.CACTUS.getKey().toString(), 30);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.COCOA.getKey().toString(), 30);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.POTATOES.getKey().toString(), 50);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.PUMPKIN.getKey().toString(), 20);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.MELON.getKey().toString(), 20);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.WHEAT.getKey().toString(), 50);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.SUGAR_CANE.getKey().toString(), 30);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.NETHER_WART.getKey().toString(), 30);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:beetroots", 50);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:carrots", 50);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:cactus", 30);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:cocoa", 30);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:potatoes", 50);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:pumpkin", 20);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:melon", 20);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:wheat", 50);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:sugar_cane", 30);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:nether_wart", 30);
 
         /* JUNGLE */
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.BAMBOO.getKey().toString(), 10);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:bamboo", 10);
 
         /* END PLANTS */
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.CHORUS_PLANT.getKey().toString(), 1);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.CHORUS_FLOWER.getKey().toString(), 25);
-        HERBALISM_EXPERIENCE_DEFAULT.put(Material.WITHER_ROSE.getKey().toString(), 500);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:chorus_plant", 1);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:chorus_flower", 25);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:wither_rose", 500);
     }
 
     @Setting(value = "Herbalism-Experience")
