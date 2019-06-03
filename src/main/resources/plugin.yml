@@ -1260,7 +1260,7 @@ permissions:
             mcmmo.item.all: true
             mcmmo.tools.all: true
     mcmmo.item.*:
-        default: false
+        default: true
         description: Implies all mcmmo.item permissions
         children:
             mcmmo.item.all: true

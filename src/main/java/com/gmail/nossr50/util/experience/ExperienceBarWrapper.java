@@ -6,7 +6,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.player.PlayerLevelUtils;
-import org.bukkit.Server;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
