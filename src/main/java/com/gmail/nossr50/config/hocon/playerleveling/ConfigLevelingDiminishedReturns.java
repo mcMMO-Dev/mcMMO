@@ -11,17 +11,8 @@ import static com.gmail.nossr50.datatypes.skills.PrimarySkillType.*;
 @ConfigSerializable
 public class ConfigLevelingDiminishedReturns {
 
-    /*
-    Diminished_Returns:
-    #This is the minimum amount of XP a player will earn after reaching the timed threshold (this is to prevent punishing a player too hard for earning XP)
-    ## A value of 1 would mean that a player gets FULL XP, which defeats the purpose of diminished returns, the default value is 0.05 (5% minimum XP)
-    ### Set this value to 0 to turn it off
-    Guaranteed_Minimum_Percentage: 0.05
-    Enabled: false
-     */
-
     private static final HashMap<PrimarySkillType, Integer> SKILL_THRESHOLDS_DEFAULT;
-    public static final float GURANTEED_MIN_DEFAULT = 0.05f;
+    private static final float GUARANTEED_MIN_DEFAULT = 0.05f;
 
     static {
         SKILL_THRESHOLDS_DEFAULT = new HashMap<>();
@@ -59,7 +50,7 @@ public class ConfigLevelingDiminishedReturns {
     @Setting(value = "Guaranteed-Minimum", comment = "The multiplier applied to an XP gain when a player has reached diminishing returns to guarantee that some XP is still gained." +
             "\nPlayers will gain (raw XP * guaranteedMinimum) if they are under sever enough diminishing return penalty (ie their XP would normally fall below this value)" +
             "\nDefault value: ")
-    private float guaranteedMinimums = GURANTEED_MIN_DEFAULT;
+    private float guaranteedMinimums = GUARANTEED_MIN_DEFAULT;
 
     public int getSkillThreshold(PrimarySkillType primarySkillType) {
         if (skillThresholds.get(primarySkillType) == null)

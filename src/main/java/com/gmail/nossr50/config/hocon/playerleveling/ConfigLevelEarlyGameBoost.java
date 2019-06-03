@@ -6,8 +6,8 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 @ConfigSerializable
 public class ConfigLevelEarlyGameBoost {
 
-    public static final boolean EARLY_GAME_BOOST_DEFAULT = true;
-    public static final double BOOST_MULTIPLIER_DEFAULT = 0.05D;
+    private static final boolean EARLY_GAME_BOOST_DEFAULT = true;
+    private static final double BOOST_MULTIPLIER_DEFAULT = 0.05D;
 
     @Setting(value = "Enabled", comment = "If set to true, the early game XP boost will be applied." +
             "\nDefault value: " + EARLY_GAME_BOOST_DEFAULT)

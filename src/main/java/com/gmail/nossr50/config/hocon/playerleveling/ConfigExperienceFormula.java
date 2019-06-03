@@ -10,7 +10,7 @@ import java.util.HashMap;
 @ConfigSerializable
 public class ConfigExperienceFormula {
 
-    public static final boolean CUMULATIVE_CURVE_DEFAULT = false;
+    private static final boolean CUMULATIVE_CURVE_DEFAULT = false;
     private static final HashMap<PrimarySkillType, Float> SKILL_FORMULA_MODIFIER_DEFAULT;
 
     static {

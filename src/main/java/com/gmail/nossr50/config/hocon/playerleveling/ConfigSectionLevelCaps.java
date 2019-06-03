@@ -6,7 +6,7 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 @ConfigSerializable
 public class ConfigSectionLevelCaps {
     /* DEFAULT VALUES */
-    public static final boolean TRUNCATE_SKILLS_ABOVE_CAP_DEFAULT = true;
+    private static final boolean TRUNCATE_SKILLS_ABOVE_CAP_DEFAULT = true;
 
     /*
      * CONFIG NODES
