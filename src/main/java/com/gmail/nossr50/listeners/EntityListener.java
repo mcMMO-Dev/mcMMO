@@ -18,6 +18,7 @@ import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.BlockUtils;
+import com.gmail.nossr50.util.MaterialMapStore;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
@@ -825,12 +826,24 @@ public class EntityListener implements Listener {
             return;
         }
 
+        //Determine which hand is eating food
+        //The main hand is used over the off hand if they both have food, so check the main hand first
+        Material foodInHand;
+
+        if(mcMMO.getMaterialMapStore().isFood(player.getInventory().getItemInMainHand().getType())) {
+            foodInHand = player.getInventory().getItemInMainHand().getType();
+        } else if(mcMMO.getMaterialMapStore().isFood(player.getInventory().getItemInOffHand().getType())) {
+            foodInHand = player.getInventory().getItemInOffHand().getType();
+        } else {
+            return; //Not Food
+        }
+
         /*
          * Some foods have 3 ranks Some foods have 5 ranks The number of ranks
          * is based on how 'common' the item is We can adjust this quite easily
          * if we find something is giving too much of a bonus
          */
-        switch (player.getInventory().getItemInMainHand().getType()) {
+        switch (foodInHand) {
             case BAKED_POTATO: /*
                                 * RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @
                                 * 1000

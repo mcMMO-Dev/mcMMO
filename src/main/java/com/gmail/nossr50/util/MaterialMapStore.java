@@ -21,6 +21,7 @@ public class MaterialMapStore {
     private HashSet<String> blockCrackerWhiteList;
     private HashSet<String> canMakeShroomyWhiteList;
     private HashSet<String> multiBlockEntities;
+    private HashSet<String> foodItemWhiteList;
 
     public MaterialMapStore()
     {
@@ -32,6 +33,7 @@ public class MaterialMapStore {
         blockCrackerWhiteList = new HashSet<>();
         canMakeShroomyWhiteList = new HashSet<>();
         multiBlockEntities = new HashSet<>();
+        foodItemWhiteList = new HashSet<>();
 
         fillHardcodedHashSets();
     }
@@ -86,6 +88,50 @@ public class MaterialMapStore {
         fillBlockCrackerWhiteList();
         fillShroomyWhiteList();
         fillMultiBlockEntitiesList();
+        fillFoodWhiteList();
+    }
+
+    private void fillFoodWhiteList() {
+        foodItemWhiteList.add("apple");
+        foodItemWhiteList.add("baked_potato");
+        foodItemWhiteList.add("beetroot");
+        foodItemWhiteList.add("beetroot_soup");
+        foodItemWhiteList.add("bread");
+        foodItemWhiteList.add("cake");
+        foodItemWhiteList.add("carrot");
+        foodItemWhiteList.add("chorus_fruit");
+        foodItemWhiteList.add("cooked_chicken");
+        foodItemWhiteList.add("cooked_cod");
+        foodItemWhiteList.add("cooked_mutton");
+        foodItemWhiteList.add("cooked_porkchop");
+        foodItemWhiteList.add("cooked_rabbit");
+        foodItemWhiteList.add("cooked_salmon");
+        foodItemWhiteList.add("cookie");
+        foodItemWhiteList.add("dried_kelp");
+        foodItemWhiteList.add("golden_apple");
+        foodItemWhiteList.add("enchanted_golden_apple");
+        foodItemWhiteList.add("golden_carrot");
+        foodItemWhiteList.add("melon_slice");
+        foodItemWhiteList.add("mushroom_stew");
+        foodItemWhiteList.add("poisonous_potato");
+        foodItemWhiteList.add("potato");
+        foodItemWhiteList.add("pumpkin_pie");
+        foodItemWhiteList.add("rabbit_stew");
+        foodItemWhiteList.add("raw_beef");
+        foodItemWhiteList.add("raw_chicken");
+        foodItemWhiteList.add("raw_cod");
+        foodItemWhiteList.add("raw_mutton");
+        foodItemWhiteList.add("raw_porkchop");
+        foodItemWhiteList.add("raw_rabbit");
+        foodItemWhiteList.add("raw_salmon");
+        foodItemWhiteList.add("rotten_flesh");
+        foodItemWhiteList.add("suspicious_stew");
+        foodItemWhiteList.add("sweet_berries");
+        foodItemWhiteList.add("tropical_fish");
+    }
+
+    public boolean isFood(Material material) {
+        return foodItemWhiteList.contains(material.getKey().getKey());
     }
 
     private void fillMultiBlockEntitiesList()

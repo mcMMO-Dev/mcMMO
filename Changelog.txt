@@ -1,6 +1,6 @@
 Version 2.1.68
     Updated Japanese locale (thanks Snake)
-
+    Fixed a bug where consuming food in the off hand did not trigger the Diet abilities
 
 Version 2.1.67
     The XP bar now reflects whether or not the player is receiving the early game boost
