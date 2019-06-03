@@ -2,7 +2,6 @@ package com.gmail.nossr50.config.hocon.experience;
 
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
-import org.bukkit.Material;
 
 import java.util.HashMap;
 
