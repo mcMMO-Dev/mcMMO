@@ -14,37 +14,37 @@ public class ConfigExperienceWoodcutting {
     static {
         WOODCUTTING_EXPERIENCE_DEFAULT = new HashMap<>();
 
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.OAK_LOG.getKey().toString(), 70);
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.SPRUCE_LOG.getKey().toString(), 80);
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.BIRCH_LOG.getKey().toString(), 90);
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.JUNGLE_LOG.getKey().toString(), 100);
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.ACACIA_LOG.getKey().toString(), 90);
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.DARK_OAK_LOG.getKey().toString(), 90);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:oak_log", 70);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:spruce_log", 80);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:birch_log", 90);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:jungle_log", 100);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:acacia_log", 90);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:dark_oak_log", 90);
 
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.STRIPPED_OAK_LOG.getKey().toString(), 70);
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.STRIPPED_SPRUCE_LOG.getKey().toString(), 80);
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.STRIPPED_BIRCH_LOG.getKey().toString(), 90);
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.STRIPPED_JUNGLE_LOG.getKey().toString(), 100);
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.STRIPPED_ACACIA_LOG.getKey().toString(), 90);
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.STRIPPED_DARK_OAK_LOG.getKey().toString(), 90);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:stripped_oak_log", 70);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:stripped_spruce_log", 80);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:stripped_birch_log", 90);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:stripped_jungle_log", 100);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:stripped_acacia_log", 90);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:stripped_dark_oak_log", 90);
 
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.OAK_WOOD.getKey().toString(), 70);
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.SPRUCE_WOOD.getKey().toString(), 80);
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.BIRCH_WOOD.getKey().toString(), 90);
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.JUNGLE_WOOD.getKey().toString(), 100);
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.ACACIA_WOOD.getKey().toString(), 90);
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.DARK_OAK_WOOD.getKey().toString(), 90);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:oak_wood", 70);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:spruce_wood", 80);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:birch_wood", 90);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:jungle_wood", 100);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:acacia_wood", 90);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:dark_oak_wood", 90);
 
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.STRIPPED_OAK_WOOD.getKey().toString(), 70);
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.STRIPPED_SPRUCE_WOOD.getKey().toString(), 80);
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.STRIPPED_BIRCH_WOOD.getKey().toString(), 90);
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.STRIPPED_JUNGLE_WOOD.getKey().toString(), 100);
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.STRIPPED_ACACIA_WOOD.getKey().toString(), 90);
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.STRIPPED_DARK_OAK_WOOD.getKey().toString(), 90);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:stripped_oak_wood", 70);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:stripped_spruce_wood", 80);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:stripped_birch_wood", 90);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:stripped_jungle_wood", 100);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:stripped_acacia_wood", 90);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:stripped_dark_oak_wood", 90);
 
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.RED_MUSHROOM_BLOCK.getKey().toString(), 70);
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.BROWN_MUSHROOM_BLOCK.getKey().toString(), 70);
-        WOODCUTTING_EXPERIENCE_DEFAULT.put(Material.MUSHROOM_STEM.getKey().toString(), 80);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:red_mushroom_block", 70);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:brown_mushroom_block", 70);
+        WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:mushroom_stem", 80);
     }
 
     @Setting(value = "Woodcutting-Experience")
