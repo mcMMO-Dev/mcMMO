@@ -32,6 +32,7 @@ import com.gmail.nossr50.config.hocon.skills.excavation.ConfigExcavation;
 import com.gmail.nossr50.config.hocon.skills.fishing.ConfigFishing;
 import com.gmail.nossr50.config.hocon.skills.herbalism.ConfigHerbalism;
 import com.gmail.nossr50.config.hocon.skills.mining.ConfigMining;
+import com.gmail.nossr50.config.hocon.skills.ranks.ConfigRanks;
 import com.gmail.nossr50.config.hocon.skills.repair.ConfigRepair;
 import com.gmail.nossr50.config.hocon.skills.salvage.ConfigSalvage;
 import com.gmail.nossr50.config.hocon.skills.smelting.ConfigSmelting;
@@ -99,6 +100,7 @@ public final class ConfigManager {
     private SerializedConfigLoader<ConfigExperience> configExperience;
     private SerializedConfigLoader<ConfigCoreSkills> configCoreSkills;
     private SerializedConfigLoader<ConfigEvent> configEvent;
+    private SerializedConfigLoader<ConfigRanks> configRanks;
     private SerializedConfigLoader<ConfigNameRegisterDefaults> configDefaultExamples;
 
     private ConfigAcrobatics configAcrobatics;
@@ -184,6 +186,7 @@ public final class ConfigManager {
         configExperience = new SerializedConfigLoader<>(ConfigExperience.class, "experience.conf", "Experience", null);
         configCoreSkills = new SerializedConfigLoader<>(ConfigCoreSkills.class, "core_skills.conf", "Core-Skills", null);
         configEvent = new SerializedConfigLoader<>(ConfigEvent.class, "events.conf", "Events", null);
+        configRanks = new SerializedConfigLoader<>(ConfigRanks.class, "ranks.conf", "Skill-Ranks", null);
 
         configDefaultExamples = new SerializedConfigLoader<>(ConfigNameRegisterDefaults.class, "minecraft_item_block_name_examples.conf", "Minecraft", null);
         initSerializedSkillConfigs();
@@ -485,6 +488,10 @@ public final class ConfigManager {
 
     public ConfigEvent getConfigEvent() {
         return configEvent.getConfig();
+    }
+
+    public ConfigRanks getConfigRanks() {
+        return configRanks.getConfig();
     }
 
     /**
