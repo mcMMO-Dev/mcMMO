@@ -18,7 +18,6 @@ import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.BlockUtils;
-import com.gmail.nossr50.util.MaterialMapStore;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
