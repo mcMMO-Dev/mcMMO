@@ -1,3 +1,7 @@
+Version 2.1.68
+    Updated Japanese locale (thanks Snake)
+
+
 Version 2.1.67
     The XP bar now reflects whether or not the player is receiving the early game boost
     Players who are receiving an early game boost will be shown "Learning a skill..." as the title of the XP bar while gaining XP
