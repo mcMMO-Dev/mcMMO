@@ -3,7 +3,7 @@ Version 2.2.0
     !!!!!!!!!!!!!!!!!!!!!!!!
     This changelog is not complete, I'll be going over it and cleaning it up once 2.2 is close to release
     !!!!!!!!!!!!!!!!!!!!!!!!
-    !!!!!!!!!!!!!!!!!!!!!!!!
+    !!!!!!!!!!!!!!!!!!!!!!!!mvn clea
     mcMMO's config system has been rewritten
     Nearly every config setting has been renamed and most have brand new comments
     You can now add an unlimited number of custom XP perks with custom defined XP boosts

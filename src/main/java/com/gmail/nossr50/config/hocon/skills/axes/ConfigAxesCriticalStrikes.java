@@ -1,6 +1,5 @@
 package com.gmail.nossr50.config.hocon.skills.axes;
 
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.properties.AbstractDamageProperty;
 import com.gmail.nossr50.datatypes.skills.properties.AbstractMaximumProgressionLevel;
 import com.gmail.nossr50.datatypes.skills.properties.DamageProperty;
