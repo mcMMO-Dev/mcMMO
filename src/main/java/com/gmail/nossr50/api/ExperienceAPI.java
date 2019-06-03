@@ -1003,9 +1003,10 @@ public final class ExperienceAPI {
      * @param level       The level to get the amount of XP for
      * @param formulaType The formula type to get the amount of XP for
      * @throws InvalidFormulaTypeException if the given formulaType is not valid
+     * @deprecated Discouraged - Most the time you do not want to provide the formula type yourself, use the other method
      */
-    public static int getXpNeededToLevel(int level, String formulaType) {
-        return mcMMO.getFormulaManager().getXPtoNextLevel(level, getFormulaType(formulaType));
+    public static int getXpNeededToLevel(int level, FormulaType formulaType) {
+        return mcMMO.getFormulaManager().getXPtoNextLevel(level, formulaType);
     }
 
     /**
@@ -1133,16 +1134,6 @@ public final class ExperienceAPI {
         }
 
         return xpGainReason;
-    }
-
-    private static FormulaType getFormulaType(String formula) throws InvalidFormulaTypeException {
-        FormulaType formulaType = FormulaType.getFormulaType(formula);
-
-        if (formulaType == null) {
-            throw new InvalidFormulaTypeException();
-        }
-
-        return formulaType;
     }
 
     /**

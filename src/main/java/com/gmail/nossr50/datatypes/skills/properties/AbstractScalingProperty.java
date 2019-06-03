@@ -11,11 +11,6 @@ public abstract class AbstractScalingProperty implements ScalingProperty {
     }
 
     @Override
-    public SubSkillType getSubSkillType() {
-        return subSkillType;
-    }
-
-    @Override
     public String toString() {
         return "AbstractScalingProperty{" +
                 "subSkillType=" + subSkillType +
