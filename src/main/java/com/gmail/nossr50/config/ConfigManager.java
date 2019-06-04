@@ -133,7 +133,6 @@ public final class ConfigManager {
     private HerbalismTreasureConfig herbalismTreasureConfig;
     private AdvancedConfig advancedConfig;
     private SoundConfig soundConfig;
-    private RankConfig rankConfig;
 
     /* CONFIG ERRORS */
 
@@ -345,10 +344,6 @@ public final class ConfigManager {
 
     public SoundConfig getSoundConfig() {
         return soundConfig;
-    }
-
-    public RankConfig getRankConfig() {
-        return rankConfig;
     }
 
     public ConfigDatabase getConfigDatabase() {
