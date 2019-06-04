@@ -1,8 +1,10 @@
 package com.gmail.nossr50.config;
 
+import com.gmail.nossr50.config.hocon.skills.ranks.SkillRankProperty;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.mcMMO;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 import java.util.ArrayList;
@@ -10,8 +12,7 @@ import java.util.List;
 
 @ConfigSerializable
 public class RankConfig extends ConfigValidated {
-    public static final String RETRO_MODE = "RetroMode";
-    public static final String STANDARD = "Standard";
+
     //private static RankConfig instance;
 
     public RankConfig() {
@@ -55,43 +56,7 @@ public class RankConfig extends ConfigValidated {
         return reason;
     }
 
-    /**
-     * Returns the unlock level for a subskill depending on the gamemode
-     *
-     * @param subSkillType target subskill
-     * @param rank         the rank we are checking
-     * @return the level requirement for a subskill at this particular rank
-     */
-    public int getSubSkillUnlockLevel(SubSkillType subSkillType, int rank) {
-        return findRankByRootAddress(rank, subSkillType.getRankConfigAddress());
-    }
 
-    /**
-     * Returns the unlock level for a subskill depending on the gamemode
-     *
-     * @param abstractSubSkill target subskill
-     * @param rank             the rank we are checking
-     * @return the level requirement for a subskill at this particular rank
-     */
-    public int getSubSkillUnlockLevel(AbstractSubSkill abstractSubSkill, int rank) {
-        return findRankByRootAddress(rank, abstractSubSkill.getSubSkillType().getRankConfigAddress());
-    }
-
-    /**
-     * Returns the unlock level for a subskill depending on the gamemode
-     *
-     * @param key  root address of the subskill in the rankskills.yml file
-     * @param rank the rank we are checking
-     * @return the level requirement for a subskill at this particular rank
-     */
-    private int findRankByRootAddress(int rank, String[] key) {
-        String scalingKey = mcMMO.isRetroModeEnabled() ? RETRO_MODE : STANDARD;
-
-        String targetRank = "Rank_" + rank;
-
-        //key[0] = parent skill config node, key[1] subskill child node, scalingkey = retro/standard, targetrank = rank node
-        return getIntValue(key[0], key[1], scalingKey, targetRank);
-    }
 
     /**
      * Checks for valid keys for subskill ranks

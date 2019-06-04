@@ -1,14 +1,20 @@
 package com.gmail.nossr50.util.skills;
 
+import com.gmail.nossr50.api.exceptions.MissingSkillPropertyDefinition;
 import com.gmail.nossr50.config.RankConfig;
+import com.gmail.nossr50.config.hocon.skills.ranks.SkillRankProperty;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.SkillUnlockNotificationTask;
 import com.gmail.nossr50.util.player.UserManager;
+import com.google.common.reflect.TypeToken;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -285,11 +291,11 @@ public class RankUtils {
      */
     @Deprecated
     public static int getRankUnlockLevel(SubSkillType subSkillType, int rank) {
-        return RankConfig.getInstance().getSubSkillUnlockLevel(subSkillType, rank);
+        return getSubSkillUnlockLevel(subSkillType, rank);
     }
 
     public static int getRankUnlockLevel(AbstractSubSkill abstractSubSkill, int rank) {
-        return RankConfig.getInstance().getSubSkillUnlockLevel(abstractSubSkill, rank);
+        return getSubSkillUnlockLevel(abstractSubSkill, rank);
     }
 
     /**
@@ -299,7 +305,7 @@ public class RankUtils {
      * @return The unlock requirements for rank 1 in this skill
      */
     public static int getUnlockLevel(SubSkillType subSkillType) {
-        return RankConfig.getInstance().getSubSkillUnlockLevel(subSkillType, 1);
+        return getSubSkillUnlockLevel(subSkillType, 1);
     }
 
     /**
@@ -309,7 +315,7 @@ public class RankUtils {
      * @return The unlock requirements for rank 1 in this skill
      */
     public static int getUnlockLevel(AbstractSubSkill abstractSubSkill) {
-        return RankConfig.getInstance().getSubSkillUnlockLevel(abstractSubSkill, 1);
+        return getSubSkillUnlockLevel(abstractSubSkill, 1);
     }
 
     /**
@@ -339,4 +345,55 @@ public class RankUtils {
     public static int getSuperAbilityUnlockRequirement(SuperAbilityType superAbilityType) {
         return getRankUnlockLevel(superAbilityType.getSubSkillTypeDefinition(), 1);
     }
+
+    /**
+     * Returns the unlock level for a subskill depending on the gamemode
+     *
+     * @param subSkillType target subskill
+     * @param rank         the rank we are checking
+     * @return the level requirement for a subskill at this particular rank
+     */
+    public static int getSubSkillUnlockLevel(SubSkillType subSkillType, int rank) {
+        return findRankByRootAddress(rank, subSkillType);
+    }
+
+    /**
+     * Returns the unlock level for a subskill depending on the level scaling
+     *
+     * @param abstractSubSkill target subskill
+     * @param rank             the rank we are checking
+     * @return the level requirement for a subskill at this particular rank
+     */
+    public static int getSubSkillUnlockLevel(AbstractSubSkill abstractSubSkill, int rank) {
+        return findRankByRootAddress(rank, abstractSubSkill.getSubSkillType());
+    }
+
+    /**
+     * Returns the unlock level for a subskill depending on the level scaling
+     *
+     * @param subSkillType target sub-skill
+     * @param rank the rank we are checking
+     * @return the level requirement for a subskill at this particular rank
+     */
+    private static int findRankByRootAddress(int rank, SubSkillType subSkillType) {
+
+        CommentedConfigurationNode rankConfigRoot = mcMMO.getConfigManager().getConfigRanksRootNode();
+
+        try {
+            SkillRankProperty skillRankProperty
+                    = rankConfigRoot.getNode(subSkillType.getParentSkill())
+                    .getNode(subSkillType.getHoconFriendlyConfigName())
+                    .getValue(TypeToken.of(SkillRankProperty.class));
+
+            return skillRankProperty.getUnlockLevel(mcMMO.isRetroModeEnabled(), rank);
+        } catch (ObjectMappingException | MissingSkillPropertyDefinition e) {
+            mcMMO.p.getLogger().severe("Error traversing nodes to SkillRankProperty for "+subSkillType.toString());
+            mcMMO.p.getLogger().severe("This indicates a problem with your rank config file, edit the file and correct the issue or delete it to generate a new default one with correct values.");
+            e.printStackTrace();
+        }
+
+        //Default to the max level for the skill if any errors were encountered incorrect
+        return mcMMO.getConfigManager().getConfigLeveling().getLevelCap(subSkillType.getParentSkill());
+    }
+
 }

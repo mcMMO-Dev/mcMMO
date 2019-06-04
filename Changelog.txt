@@ -150,6 +150,7 @@ Version 2.2.0
     Config_Update_Overwrite, Tool_Mods_Enabled, Armor_Mods_Enabled, Block_Mods_Enabled, Entity_Mods_Enabled, ExperienceConversionMultiplier
 
     API Changes
+    Added PrimarySkillType::getCapitalizedName
     Config settings can now be found in the ConfigManager (getter for it in mcMMO.java)
     Collection values from the config get converted into a runtime appropriate dataset, those can be found in DynamicSettingsManager (getter for it in mcMMO.java)
     mcMMO metadata keys have been moved into a convenience class (MetadataConstants)

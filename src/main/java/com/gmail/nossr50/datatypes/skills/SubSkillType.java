@@ -1,5 +1,6 @@
 package com.gmail.nossr50.datatypes.skills;
 
+import com.gmail.nossr50.config.hocon.HOCONUtil;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.StringUtils;
 
@@ -169,6 +170,35 @@ public enum SubSkillType {
     }
 
     /**
+     * Returns the name of the sub-skill as it is used in our HOCON configs
+     *
+     * @return the yaml identifier for this skill
+     */
+    public String getHoconFriendlyConfigName() {
+        /*
+         * Our ENUM constants name is something like PREFIX_SUB_SKILL_NAME
+         * We need to remove the prefix and then format the subskill to follow the naming conventions of our yaml configs
+         *
+         * So this method uses this kind of formatting
+         * "PARENTSKILL_COOL_SUBSKILL_ULTRA" -> "Cool Subskill Ultra" - > "Cool-Subskill-Ultra"
+         *
+         */
+
+        /*
+         * Find where to begin our substring (after the prefix)
+         */
+        int subStringIndex = getSubStringIndex(toString());
+
+        /*
+         * Split the string up so we can capitalize each part
+         */
+        String withoutPrefix = toString().substring(subStringIndex);
+
+        //Grab the HOCON friendly version of the string and return it
+        return HOCONUtil.serializeENUMName(withoutPrefix);
+    }
+
+    /**
      * Returns the name of the skill as it is used in advanced.yml and other config files
      *
      * @return the yaml identifier for this skill
@@ -193,15 +223,15 @@ public enum SubSkillType {
         /*
          * Split the string up so we can capitalize each part
          */
-        String subskillNameWithoutPrefix = subSkillName.substring(subStringIndex);
-        if (subskillNameWithoutPrefix.contains("_")) {
-            String[] splitStrings = subskillNameWithoutPrefix.split("_");
+        String withoutPrefix = subSkillName.substring(subStringIndex);
+        if (withoutPrefix.contains("_")) {
+            String[] splitStrings = withoutPrefix.split("_");
 
             for (String string : splitStrings) {
                 endResult.append(StringUtils.getCapitalized(string));
             }
         } else {
-            endResult.append(StringUtils.getCapitalized(subskillNameWithoutPrefix));
+            endResult.append(StringUtils.getCapitalized(withoutPrefix));
         }
 
         return endResult.toString();

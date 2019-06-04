@@ -51,5 +51,4 @@ public class ConfigRanks {
     @Setting(value = "Repair", comment = "Configure when sub-skills unlock for Repair here.")
     private ConfigRanksRepair repair = new ConfigRanksRepair();
 
-
 }

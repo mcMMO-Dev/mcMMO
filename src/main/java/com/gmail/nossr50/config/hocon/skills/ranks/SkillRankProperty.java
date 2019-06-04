@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config.hocon.skills.ranks;
 
+import com.gmail.nossr50.api.exceptions.MissingSkillPropertyDefinition;
 import com.gmail.nossr50.datatypes.skills.properties.SkillProperty;
 
 import java.util.HashMap;
@@ -42,6 +43,26 @@ public class SkillRankProperty implements SkillProperty {
     private void initRankMaps() {
         standardRanks = new HashMap<>();
         retroRanks = new HashMap<>();
+    }
+
+    /**
+     * Gets the unlock level for this skill as defined by this SkillRankProperty
+     * @param retroMode whether or not mcMMO is using RetroMode, true for if it is
+     * @param targetRank the rank to get the unlock level for
+     * @return the unlock level for target rank
+     */
+    public int getUnlockLevel(boolean retroMode, int targetRank) throws MissingSkillPropertyDefinition {
+        if(retroMode) {
+            if(retroRanks.get(targetRank) == null) {
+                throw new MissingSkillPropertyDefinition("No definition found for rank:"+targetRank+" using Retro scaling");
+            }
+            return retroRanks.get(targetRank);
+        } else {
+            if(standardRanks.get(targetRank) == null) {
+                throw new MissingSkillPropertyDefinition("No definition found for rank:"+targetRank+" using Standard scaling");
+            }
+            return standardRanks.get(targetRank);
+        }
     }
 
     public void setStandardRanks(HashMap<Integer, Integer> standardRanks) {

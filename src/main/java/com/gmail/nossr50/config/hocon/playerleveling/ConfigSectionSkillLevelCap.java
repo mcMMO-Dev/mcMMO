@@ -32,6 +32,10 @@ public class ConfigSectionSkillLevelCap {
         return useLevelCap;
     }
 
+    /**
+     * Get the level cap for a skill, will return Integer.MAX_VALUE for values equal to or below 0
+     * @return a levels max value
+     */
     public int getLevelCap() {
         if(levelCap <= 0)
             return Integer.MAX_VALUE;
