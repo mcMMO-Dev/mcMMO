@@ -72,4 +72,12 @@ public class SkillRankProperty implements SkillProperty {
     public void setRetroRanks(HashMap<Integer, Integer> retroRanks) {
         this.retroRanks = retroRanks;
     }
+
+    public HashMap<Integer, Integer> getStandardRanks() {
+        return standardRanks;
+    }
+
+    public HashMap<Integer, Integer> getRetroRanks() {
+        return retroRanks;
+    }
 }

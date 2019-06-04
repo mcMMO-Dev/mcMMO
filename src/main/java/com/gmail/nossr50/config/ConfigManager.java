@@ -33,6 +33,7 @@ import com.gmail.nossr50.config.hocon.skills.fishing.ConfigFishing;
 import com.gmail.nossr50.config.hocon.skills.herbalism.ConfigHerbalism;
 import com.gmail.nossr50.config.hocon.skills.mining.ConfigMining;
 import com.gmail.nossr50.config.hocon.skills.ranks.ConfigRanks;
+import com.gmail.nossr50.config.hocon.skills.ranks.SkillRankProperty;
 import com.gmail.nossr50.config.hocon.skills.repair.ConfigRepair;
 import com.gmail.nossr50.config.hocon.skills.salvage.ConfigSalvage;
 import com.gmail.nossr50.config.hocon.skills.smelting.ConfigSmelting;
@@ -267,6 +268,7 @@ public final class ConfigManager {
         customSerializers.registerType(TypeToken.of(CustomXPPerk.class), new CustomXPPerkSerializer());
         customSerializers.registerType(TypeToken.of(DamageProperty.class), new DamagePropertySerializer());
         customSerializers.registerType(TypeToken.of(SkillCeiling.class), new SkillCeilingSerializer());
+        customSerializers.registerType(TypeToken.of(SkillRankProperty.class), new SkillRankPropertySerializer());
     }
 
     /**

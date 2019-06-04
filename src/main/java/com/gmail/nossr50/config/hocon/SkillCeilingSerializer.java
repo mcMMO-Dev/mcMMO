@@ -11,8 +11,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class SkillCeilingSerializer implements TypeSerializer<SkillCeiling> {
 
-    public static final String STANDARD_MAX_LEVEL = "Standard-Max-Level";
-    public static final String RETRO_MAX_LEVEL = "Retro-Max-Level";
+    private static final String STANDARD_MAX_LEVEL = "Standard-Max-Level";
+    private static final String RETRO_MAX_LEVEL = "Retro-Max-Level";
 
     @Nullable
     @Override

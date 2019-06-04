@@ -26,7 +26,7 @@ public class RankUtils {
     /**
      * @param plugin           plugin instance ref
      * @param mcMMOPlayer      target player
-     * @param primarySkillType
+     * @param primarySkillType target primary skill
      * @param newLevel         the new level of this skill
      */
     public static void executeSkillUnlockNotifications(Plugin plugin, McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, int newLevel) {

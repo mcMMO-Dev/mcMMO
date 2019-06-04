@@ -5,8 +5,7 @@ import org.bukkit.Location;
 
 public class LimitedSizeList {
     private final int size;
-    public Location[] limitedSizeOrderedList;
-
+    private Location[] limitedSizeOrderedList;
 
     public LimitedSizeList(int size) {
         this.size = size;

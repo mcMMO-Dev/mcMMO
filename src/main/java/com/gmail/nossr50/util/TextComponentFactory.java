@@ -427,14 +427,14 @@ public class TextComponentFactory {
 
     private static void addLocked(SubSkillType subSkillType, ChatColor ccLocked, ChatColor ccLevelRequirement, ChatColor ccLevelRequired, ComponentBuilder componentBuilder) {
         addLocked(ccLocked, ccLevelRequirement, componentBuilder);
-        componentBuilder.append(String.valueOf(RankConfig.getInstance().getSubSkillUnlockLevel(subSkillType, 1))).color(ccLevelRequired);
+        componentBuilder.append(String.valueOf(RankUtils.getSubSkillUnlockLevel(subSkillType, 1))).color(ccLevelRequired);
         //componentBuilder.append("\n");
     }
 
     private static void addLocked(AbstractSubSkill abstractSubSkill, ChatColor ccLocked, ChatColor ccLevelRequirement, ChatColor ccLevelRequired, ComponentBuilder componentBuilder) {
         addLocked(ccLocked, ccLevelRequirement, componentBuilder);
-        componentBuilder.append(String.valueOf(RankConfig.getInstance().getSubSkillUnlockLevel(abstractSubSkill, 1))).color(ccLevelRequired);
-        //componentBuilder.append("\n");
+        componentBuilder.append(String.valueOf(RankUtils.getSubSkillUnlockLevel(abstractSubSkill, 1))).color(ccLevelRequired);
+        //componentBuilder.append("\n");m
     }
 
     private static void addLocked(ChatColor ccLocked, ChatColor ccLevelRequirement, ComponentBuilder componentBuilder) {
