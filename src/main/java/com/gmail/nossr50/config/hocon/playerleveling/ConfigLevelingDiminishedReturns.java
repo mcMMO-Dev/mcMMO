@@ -12,7 +12,7 @@ import static com.gmail.nossr50.datatypes.skills.PrimarySkillType.*;
 public class ConfigLevelingDiminishedReturns {
 
     private static final HashMap<PrimarySkillType, Integer> SKILL_THRESHOLDS_DEFAULT;
-    private static final float GUARANTEED_MIN_DEFAULT = 0.05f;
+    private static final double GUARANTEED_MIN_DEFAULT = 0.05;
 
     static {
         SKILL_THRESHOLDS_DEFAULT = new HashMap<>();
@@ -49,8 +49,8 @@ public class ConfigLevelingDiminishedReturns {
 
     @Setting(value = "Guaranteed-Minimum", comment = "The multiplier applied to an XP gain when a player has reached diminishing returns to guarantee that some XP is still gained." +
             "\nPlayers will gain (raw XP * guaranteedMinimum) if they are under sever enough diminishing return penalty (ie their XP would normally fall below this value)" +
-            "\nDefault value: ")
-    private float guaranteedMinimums = GUARANTEED_MIN_DEFAULT;
+            "\nDefault value: "+GUARANTEED_MIN_DEFAULT)
+    private double guaranteedMinimums = GUARANTEED_MIN_DEFAULT;
 
     public int getSkillThreshold(PrimarySkillType primarySkillType) {
         if (skillThresholds.get(primarySkillType) == null)
@@ -59,7 +59,7 @@ public class ConfigLevelingDiminishedReturns {
         return skillThresholds.get(primarySkillType);
     }
 
-    public float getGuaranteedMinimums() {
+    public double getGuaranteedMinimums() {
         return guaranteedMinimums;
     }
 

@@ -7,8 +7,8 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 public class ConfigExperienceFormulaExponential {
 
     private static final int BASE_DEFAULT = 2000;
-    private static final double MULTIPLIER_DEFAULT = 0.1f;
-    private static final double EXPONENT_DEFAULT = 1.80f;
+    private static final double MULTIPLIER_DEFAULT = 0.1;
+    private static final double EXPONENT_DEFAULT = 1.80;
 
     @Setting(value = "Base-Amount", comment = "Default value: " + BASE_DEFAULT)
     private int baseModifier = BASE_DEFAULT;

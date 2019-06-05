@@ -6,7 +6,7 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 @ConfigSerializable
 public class ConfigExperienceArchery {
 
-    public static final double DISTANCE_MULTIPLIER_DEFAULT = 0.025F;
+    public static final double DISTANCE_MULTIPLIER_DEFAULT = 0.025;
 
     @Setting(value = "Distance-Multiplier", comment = "The distance multiplier is multiplied against the distance an " +
             "arrow travels before hitting its target to determine final XP values awarded." +

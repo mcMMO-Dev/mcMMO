@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class ConfigExperienceAcrobatics {
 
     private final static HashMap<String, Integer> ACROBATICS_DEFAULT_XP_MAP;
-    private static final double FEATHER_FALL_MULTIPLIER_DEFAULT = 2.0F;
+    private static final double FEATHER_FALL_MULTIPLIER_DEFAULT = 2.0;
 
     static {
         ACROBATICS_DEFAULT_XP_MAP = new HashMap<>();

@@ -12,7 +12,7 @@ import java.util.HashMap;
 @ConfigSerializable
 public class ConfigExperience {
 
-    private static final double GLOBAL_XP_MULT_DEFAULT = 1.0F;
+    private static final double GLOBAL_XP_MULT_DEFAULT = 1.0;
 
     @Setting(value = "Global-XP-Multiplier", comment = "This multiplier is applied at the very end of every XP gain, you can use it as a shortcut to increase or decrease xp gains across the entire plugin" +
             "\nThis value is temporarily overridden by xprate events." +

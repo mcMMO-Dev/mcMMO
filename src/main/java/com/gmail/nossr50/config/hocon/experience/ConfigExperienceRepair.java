@@ -9,7 +9,7 @@ import java.util.HashMap;
 @ConfigSerializable
 public class ConfigExperienceRepair {
 
-    private static final double REPAIR_XP_BASE_DEFAULT = 1000.0F;
+    private static final double REPAIR_XP_BASE_DEFAULT = 1000.0;
 
     private static final HashMap<ItemMaterialCategory, Double> ITEM_MATERIAL_XP_MULTIPLIER_DEFAULT;
 
