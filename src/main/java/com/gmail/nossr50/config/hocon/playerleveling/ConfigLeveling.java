@@ -86,7 +86,7 @@ public class ConfigLeveling {
         return configExperienceBars;
     }
 
-    public float getGuaranteedMinimums() {
+    public double getGuaranteedMinimums() {
         return configLevelingDiminishedReturns.getGuaranteedMinimums();
     }
 

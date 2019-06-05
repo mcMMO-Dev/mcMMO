@@ -13,10 +13,10 @@ public class McMMOPlayerDeathPenaltyEvent extends PlayerEvent implements Cancell
      **/
     private static final HandlerList handlers = new HandlerList();
     private HashMap<String, Integer> levelChanged;
-    private HashMap<String, Float> experienceChanged;
+    private HashMap<String, Double> experienceChanged;
     private boolean cancelled;
 
-    public McMMOPlayerDeathPenaltyEvent(Player player, HashMap<String, Integer> levelChanged, HashMap<String, Float> experienceChanged) {
+    public McMMOPlayerDeathPenaltyEvent(Player player, HashMap<String, Integer> levelChanged, HashMap<String, Double> experienceChanged) {
         super(player);
         this.levelChanged = levelChanged;
         this.experienceChanged = experienceChanged;
@@ -41,11 +41,11 @@ public class McMMOPlayerDeathPenaltyEvent extends PlayerEvent implements Cancell
         this.levelChanged = levelChanged;
     }
 
-    public HashMap<String, Float> getExperienceChanged() {
+    public HashMap<String, Double> getExperienceChanged() {
         return experienceChanged;
     }
 
-    public void setExperienceChanged(HashMap<String, Float> experienceChanged) {
+    public void setExperienceChanged(HashMap<String, Double> experienceChanged) {
         this.experienceChanged = experienceChanged;
     }
 

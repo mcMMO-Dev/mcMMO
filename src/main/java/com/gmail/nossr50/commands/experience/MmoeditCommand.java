@@ -23,7 +23,7 @@ public class MmoeditCommand extends ExperienceCommand {
     @Override
     protected void handleCommand(Player player, PlayerProfile profile, PrimarySkillType skill, int value) {
         int skillLevel = profile.getSkillLevel(skill);
-        float xpRemoved = profile.getSkillXpLevelRaw(skill);
+        double xpRemoved = profile.getSkillXpLevelRaw(skill);
 
         profile.modifySkill(skill, value);
 

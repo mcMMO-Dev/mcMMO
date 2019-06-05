@@ -1049,7 +1049,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     private PlayerProfile loadFromResult(String playerName, ResultSet result) throws SQLException {
         Map<PrimarySkillType, Integer> skills = new EnumMap<>(PrimarySkillType.class); // Skill & Level
-        Map<PrimarySkillType, Float> skillsXp = new EnumMap<>(PrimarySkillType.class); // Skill & XP
+        Map<PrimarySkillType, Double> skillsXp = new EnumMap<>(PrimarySkillType.class); // Skill & XP
         Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<>(SuperAbilityType.class); // Ability & Cooldown
         Map<UniqueDataType, Integer> uniqueData = new EnumMap<>(UniqueDataType.class); //Chimaera wing cooldown and other misc info
         MobHealthbarType mobHealthbarType;
@@ -1076,19 +1076,19 @@ public final class SQLDatabaseManager implements DatabaseManager {
         skills.put(PrimarySkillType.FISHING, result.getInt(OFFSET_SKILLS + 12));
         skills.put(PrimarySkillType.ALCHEMY, result.getInt(OFFSET_SKILLS + 13));
 
-        skillsXp.put(PrimarySkillType.TAMING, result.getFloat(OFFSET_XP + 1));
-        skillsXp.put(PrimarySkillType.MINING, result.getFloat(OFFSET_XP + 2));
-        skillsXp.put(PrimarySkillType.REPAIR, result.getFloat(OFFSET_XP + 3));
-        skillsXp.put(PrimarySkillType.WOODCUTTING, result.getFloat(OFFSET_XP + 4));
-        skillsXp.put(PrimarySkillType.UNARMED, result.getFloat(OFFSET_XP + 5));
-        skillsXp.put(PrimarySkillType.HERBALISM, result.getFloat(OFFSET_XP + 6));
-        skillsXp.put(PrimarySkillType.EXCAVATION, result.getFloat(OFFSET_XP + 7));
-        skillsXp.put(PrimarySkillType.ARCHERY, result.getFloat(OFFSET_XP + 8));
-        skillsXp.put(PrimarySkillType.SWORDS, result.getFloat(OFFSET_XP + 9));
-        skillsXp.put(PrimarySkillType.AXES, result.getFloat(OFFSET_XP + 10));
-        skillsXp.put(PrimarySkillType.ACROBATICS, result.getFloat(OFFSET_XP + 11));
-        skillsXp.put(PrimarySkillType.FISHING, result.getFloat(OFFSET_XP + 12));
-        skillsXp.put(PrimarySkillType.ALCHEMY, result.getFloat(OFFSET_XP + 13));
+        skillsXp.put(PrimarySkillType.TAMING, result.getDouble(OFFSET_XP + 1));
+        skillsXp.put(PrimarySkillType.MINING, result.getDouble(OFFSET_XP + 2));
+        skillsXp.put(PrimarySkillType.REPAIR, result.getDouble(OFFSET_XP + 3));
+        skillsXp.put(PrimarySkillType.WOODCUTTING, result.getDouble(OFFSET_XP + 4));
+        skillsXp.put(PrimarySkillType.UNARMED, result.getDouble(OFFSET_XP + 5));
+        skillsXp.put(PrimarySkillType.HERBALISM, result.getDouble(OFFSET_XP + 6));
+        skillsXp.put(PrimarySkillType.EXCAVATION, result.getDouble(OFFSET_XP + 7));
+        skillsXp.put(PrimarySkillType.ARCHERY, result.getDouble(OFFSET_XP + 8));
+        skillsXp.put(PrimarySkillType.SWORDS, result.getDouble(OFFSET_XP + 9));
+        skillsXp.put(PrimarySkillType.AXES, result.getDouble(OFFSET_XP + 10));
+        skillsXp.put(PrimarySkillType.ACROBATICS, result.getDouble(OFFSET_XP + 11));
+        skillsXp.put(PrimarySkillType.FISHING, result.getDouble(OFFSET_XP + 12));
+        skillsXp.put(PrimarySkillType.ALCHEMY, result.getDouble(OFFSET_XP + 13));
 
         // Taming - Unused - result.getInt(OFFSET_DATS + 1)
         skillsDATS.put(SuperAbilityType.SUPER_BREAKER, result.getInt(OFFSET_DATS + 2));

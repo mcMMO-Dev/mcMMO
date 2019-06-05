@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class CustomXPPerk {
 
     private String perkName;
-    private HashMap<PrimarySkillType, Float> customXPMultiplierMap;
+    private HashMap<PrimarySkillType, Double> customXPMultiplierMap;
 
     public CustomXPPerk(String perkName) {
         this.perkName = perkName;
@@ -20,7 +20,7 @@ public class CustomXPPerk {
      * @param primarySkillType target skill
      * @param xpMult           xp multiplier
      */
-    public void setCustomXPValue(PrimarySkillType primarySkillType, float xpMult) {
+    public void setCustomXPValue(PrimarySkillType primarySkillType, Double xpMult) {
         customXPMultiplierMap.put(primarySkillType, xpMult);
     }
 
@@ -31,7 +31,7 @@ public class CustomXPPerk {
      * @param primarySkillType target skill
      * @return this custom perks XP multiplier for target skill, defaults to 1.0D if it doesn't exist
      */
-    public float getXPMultiplierValue(PrimarySkillType primarySkillType) {
+    public double getXPMultiplierValue(PrimarySkillType primarySkillType) {
         if (customXPMultiplierMap.get(primarySkillType) == null)
             return 1.0F;
 
@@ -51,7 +51,7 @@ public class CustomXPPerk {
      * Set the custom XP multiplier map for this perk (this will override all values currently held)
      * @param customXPMultiplierMap new custom xp multiplier map
      */
-    public void setCustomXPMultiplierMap(HashMap<PrimarySkillType, Float> customXPMultiplierMap) {
+    public void setCustomXPMultiplierMap(HashMap<PrimarySkillType, Double> customXPMultiplierMap) {
         this.customXPMultiplierMap = customXPMultiplierMap;
     }
 

@@ -203,7 +203,7 @@ public class EventUtils {
 
     }
 
-    public static boolean handleLevelChangeEvent(Player player, PrimarySkillType skill, int levelsChanged, float xpRemoved, boolean isLevelUp, XPGainReason xpGainReason) {
+    public static boolean handleLevelChangeEvent(Player player, PrimarySkillType skill, int levelsChanged, double xpRemoved, boolean isLevelUp, XPGainReason xpGainReason) {
         McMMOPlayerLevelChangeEvent event = isLevelUp ? new McMMOPlayerLevelUpEvent(player, skill, levelsChanged, xpGainReason) : new McMMOPlayerLevelDownEvent(player, skill, levelsChanged, xpGainReason);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
@@ -219,7 +219,7 @@ public class EventUtils {
         return !isCancelled;
     }
 
-    public static void handleLevelChangeEventEdit(Player player, PrimarySkillType skill, int levelsChanged, float xpRemoved, boolean isLevelUp, XPGainReason xpGainReason, int oldLevel) {
+    public static void handleLevelChangeEventEdit(Player player, PrimarySkillType skill, int levelsChanged, double xpRemoved, boolean isLevelUp, XPGainReason xpGainReason, int oldLevel) {
         McMMOPlayerLevelChangeEvent event = isLevelUp ? new McMMOPlayerLevelUpEvent(player, skill, levelsChanged - oldLevel, xpGainReason) : new McMMOPlayerLevelDownEvent(player, skill, levelsChanged, xpGainReason);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
@@ -280,7 +280,7 @@ public class EventUtils {
         mcMMOPlayer.getPartyTeleportRecord().actualizeLastUse();
     }
 
-    public static boolean handlePartyXpGainEvent(Party party, float xpGained) {
+    public static boolean handlePartyXpGainEvent(Party party, double xpGained) {
         McMMOPartyXpGainEvent event = new McMMOPartyXpGainEvent(party, xpGained);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
@@ -293,7 +293,7 @@ public class EventUtils {
         return !isCancelled;
     }
 
-    public static boolean handlePartyLevelChangeEvent(Party party, int levelsChanged, float xpRemoved) {
+    public static boolean handlePartyLevelChangeEvent(Party party, int levelsChanged, double xpRemoved) {
         McMMOPartyLevelUpEvent event = new McMMOPartyLevelUpEvent(party, levelsChanged);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
@@ -308,7 +308,7 @@ public class EventUtils {
         return !isCancelled;
     }
 
-    public static boolean handleXpGainEvent(Player player, PrimarySkillType skill, float xpGained, XPGainReason xpGainReason) {
+    public static boolean handleXpGainEvent(Player player, PrimarySkillType skill, double xpGained, XPGainReason xpGainReason) {
         McMMOPlayerXpGainEvent event = new McMMOPlayerXpGainEvent(player, skill, xpGained, xpGainReason);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
@@ -322,7 +322,7 @@ public class EventUtils {
         return !isCancelled;
     }
 
-    public static boolean handleStatsLossEvent(Player player, HashMap<String, Integer> levelChanged, HashMap<String, Float> experienceChanged) {
+    public static boolean handleStatsLossEvent(Player player, HashMap<String, Integer> levelChanged, HashMap<String, Double> experienceChanged) {
         if (UserManager.getPlayer(player) == null)
             return true;
 
@@ -356,7 +356,7 @@ public class EventUtils {
         return !isCancelled;
     }
 
-    public static boolean handleVampirismEvent(Player killer, Player victim, HashMap<String, Integer> levelChanged, HashMap<String, Float> experienceChanged) {
+    public static boolean handleVampirismEvent(Player killer, Player victim, HashMap<String, Integer> levelChanged, HashMap<String, Double> experienceChanged) {
         McMMOPlayerVampirismEvent eventKiller = new McMMOPlayerVampirismEvent(killer, false, levelChanged, experienceChanged);
         McMMOPlayerVampirismEvent eventVictim = new McMMOPlayerVampirismEvent(victim, true, levelChanged, experienceChanged);
         mcMMO.p.getServer().getPluginManager().callEvent(eventKiller);
@@ -366,10 +366,10 @@ public class EventUtils {
 
         if (!isCancelled) {
             HashMap<String, Integer> levelChangedKiller = eventKiller.getLevelChanged();
-            HashMap<String, Float> experienceChangedKiller = eventKiller.getExperienceChanged();
+            HashMap<String, Double> experienceChangedKiller = eventKiller.getExperienceChanged();
 
             HashMap<String, Integer> levelChangedVictim = eventVictim.getLevelChanged();
-            HashMap<String, Float> experienceChangedVictim = eventVictim.getExperienceChanged();
+            HashMap<String, Double> experienceChangedVictim = eventVictim.getExperienceChanged();
 
             McMMOPlayer killerPlayer = UserManager.getPlayer(killer);
 

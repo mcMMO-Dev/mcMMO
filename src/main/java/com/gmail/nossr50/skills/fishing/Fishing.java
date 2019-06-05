@@ -20,7 +20,7 @@ public final class Fishing {
     public static Fishing instance;
     private final long fishingRodCastCdMilliseconds;
     private final int overfishLimit;
-    private final float boundingBoxSize;
+    private final double boundingBoxSize;
     private HashMap<Material, List<Enchantment>> enchantableCache = new HashMap<>();
     private HashMap<Material, Integer> fishingXpRewardMap;
     private Set<Biome> masterAnglerBiomes = BiomeAdapter.WATER_BIOMES;
@@ -121,7 +121,7 @@ public final class Fishing {
         return overfishLimit;
     }
 
-    public float getBoundingBoxSize() {
+    public double getBoundingBoxSize() {
         return boundingBoxSize;
     }
 }

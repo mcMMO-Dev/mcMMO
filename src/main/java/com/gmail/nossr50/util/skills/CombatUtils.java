@@ -553,7 +553,7 @@ public final class CombatUtils {
      * @param primarySkillType The skill being used
      */
     private static void startGainXp(McMMOPlayer mcMMOPlayer, LivingEntity target, PrimarySkillType primarySkillType, double multiplier) {
-        float baseXPMultiplier = 0;
+        double baseXPMultiplier = 0;
         XPGainReason xpGainReason;
 
         if (target instanceof Player) {

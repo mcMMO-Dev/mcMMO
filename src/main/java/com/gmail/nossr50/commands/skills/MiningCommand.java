@@ -38,7 +38,7 @@ public class MiningCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(Player player, float skillValue) {
+    protected void dataCalculations(Player player, double skillValue) {
         // BLAST MINING
         if (canBlast || canDemoExpert || canBiggerBombs) {
             MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
@@ -76,7 +76,7 @@ public class MiningCommand extends SkillCommand {
     }
 
     @Override
-    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected List<String> statsDisplay(Player player, double skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         if (canBiggerBombs) {

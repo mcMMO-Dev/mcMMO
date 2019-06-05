@@ -122,7 +122,7 @@ public class SkillresetCommand implements TabExecutor {
 
     protected void handleCommand(Player player, PlayerProfile profile, PrimarySkillType skill) {
         int levelsRemoved = profile.getSkillLevel(skill);
-        float xpRemoved = profile.getSkillXpLevelRaw(skill);
+        double xpRemoved = profile.getSkillXpLevelRaw(skill);
 
         profile.modifySkill(skill, 0);
 

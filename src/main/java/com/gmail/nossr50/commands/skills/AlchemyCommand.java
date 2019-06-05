@@ -42,7 +42,7 @@
 ////    }
 //
 //    @Override
-//    protected void dataCalculations(Player player, float skillValue) {
+//    protected void dataCalculations(Player player, double skillValue) {
 //        // ALCHEMY_CATALYSIS
 ////        if (canCatalysis) {
 ////            String[] catalysisStrings = calculateAbilityDisplayValues(player);
@@ -66,7 +66,7 @@
 //    }
 //
 //    @Override
-//    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+//    protected List<String> statsDisplay(Player player, double skillValue, boolean hasEndurance, boolean isLucky) {
 //        List<String> messages = new ArrayList<>();
 //
 ////        if (canCatalysis) {

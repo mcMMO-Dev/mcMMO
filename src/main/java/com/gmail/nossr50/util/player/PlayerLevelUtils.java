@@ -92,11 +92,11 @@ public class PlayerLevelUtils {
      * @param skill  target skill
      * @return the highest XP boost that this player qualifies for through perks or otherwise for target skill
      */
-    public float determineXpPerkValue(Player player, PrimarySkillType skill) {
+    public Double determineXpPerkValue(Player player, PrimarySkillType skill) {
         HashSet<CustomXPPerk> enabledCustomXPPerks = findCustomXPPerks(player);
 
         //A player can have multiple overlapping perks at a time, we need to compile a list and then sort it for the highest value
-        HashSet<Float> xpPerkValues = new HashSet<>();
+        HashSet<Double> xpPerkValues = new HashSet<>();
 
         if (enabledCustomXPPerks.size() >= 1) {
             //Player has custom XP perks
@@ -110,17 +110,17 @@ public class PlayerLevelUtils {
 
         //Disgusting legacy support start
         if (Permissions.quadrupleXp(player, skill)) {
-            xpPerkValues.add(4f);
+            xpPerkValues.add(4.0);
         } else if (Permissions.tripleXp(player, skill)) {
-            xpPerkValues.add(3f);
+            xpPerkValues.add(3.0);
         } else if (Permissions.doubleAndOneHalfXp(player, skill)) {
-            xpPerkValues.add(2.5f);
+            xpPerkValues.add(2.5);
         } else if (Permissions.doubleXp(player, skill)) {
-            xpPerkValues.add(2.0f);
+            xpPerkValues.add(2.0);
         } else if (Permissions.oneAndOneHalfXp(player, skill)) {
-            xpPerkValues.add(1.5f);
+            xpPerkValues.add(1.5);
         } else if (Permissions.oneAndOneTenthXp(player, skill)) {
-            xpPerkValues.add(1.1f);
+            xpPerkValues.add(1.1);
         }
         //Disgusting legacy support end
 
@@ -128,7 +128,7 @@ public class PlayerLevelUtils {
         if (xpPerkValues.size() >= 1)
             return Collections.max(xpPerkValues);
         else
-            return 1.0F;
+            return 1.0;
     }
 
 

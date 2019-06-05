@@ -116,19 +116,19 @@ public class SelfListener implements Listener {
             return;
         }
 
-        final float rawXp = event.getRawXpGained();
+        final double rawXp = event.getRawXpGained();
 
-        float guaranteedMinimum = mcMMO.getConfigManager().getConfigLeveling().getGuaranteedMinimums() * rawXp;
+        double guaranteedMinimum = mcMMO.getConfigManager().getConfigLeveling().getGuaranteedMinimums() * rawXp;
 
-        float modifiedThreshold = (float) (threshold / primarySkillType.getXpModifier() * mcMMO.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult());
-        float difference = (mcMMOPlayer.getProfile().getRegisteredXpGain(primarySkillType) - modifiedThreshold) / modifiedThreshold;
+        double modifiedThreshold = (double) (threshold / primarySkillType.getXpModifier() * mcMMO.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult());
+        double difference = (mcMMOPlayer.getProfile().getRegisteredXpGain(primarySkillType) - modifiedThreshold) / modifiedThreshold;
 
         if (difference > 0) {
 //            System.out.println("Total XP Earned: " + mcMMOPlayer.getProfile().getRegisteredXpGain(primarySkillType) + " / Threshold value: " + threshold);
 //            System.out.println(difference * 100 + "% over the threshold!");
 //            System.out.println("Previous: " + event.getRawXpGained());
 //            System.out.println("Adjusted XP " + (event.getRawXpGained() - (event.getRawXpGained() * difference)));
-            float newValue = rawXp - (rawXp * difference);
+            double newValue = rawXp - (rawXp * difference);
 
             /*
              * Make sure players get a guaranteed minimum of XP

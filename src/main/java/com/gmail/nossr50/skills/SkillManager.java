@@ -33,6 +33,18 @@ public abstract class SkillManager {
      * @deprecated use applyXpGain(float, XPGainReason, XPGainSource)
      */
     @Deprecated
+    public void applyXpGain(double xp, XPGainReason xpGainReason) {
+        mcMMOPlayer.beginXpGain(skill, xp, xpGainReason, XPGainSource.SELF);
+    }
+
+    /**
+     * Applies XP to a player, provides SELF as an XpGainSource source
+     *
+     * @param xp           amount of XP to apply
+     * @param xpGainReason the reason for the XP gain
+     * @deprecated use applyXpGain(float, XPGainReason, XPGainSource)
+     */
+    @Deprecated
     public void applyXpGain(float xp, XPGainReason xpGainReason) {
         mcMMOPlayer.beginXpGain(skill, xp, xpGainReason, XPGainSource.SELF);
     }
@@ -45,6 +57,17 @@ public abstract class SkillManager {
      * @param xpGainSource the source of the XP
      */
     public void applyXpGain(float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
+        mcMMOPlayer.beginXpGain(skill, xp, xpGainReason, xpGainSource);
+    }
+
+    /**
+     * Applies XP to a player
+     *
+     * @param xp           amount of XP to apply
+     * @param xpGainReason the reason for the XP gain
+     * @param xpGainSource the source of the XP
+     */
+    public void applyXpGain(double xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
         mcMMOPlayer.beginXpGain(skill, xp, xpGainReason, xpGainSource);
     }
 

@@ -25,8 +25,8 @@ public class CustomXPPerkSerializer implements TypeSerializer<CustomXPPerk> {
     public CustomXPPerk deserialize(@NonNull TypeToken<?> type, @NonNull ConfigurationNode value) throws ObjectMappingException {
         String perkName = value.getNode(PERK_NAME).getValue(TypeToken.of(String.class));
 
-        Map<PrimarySkillType, Float> map = value.getNode(XP_BOOST_NODE_ROOT).getValue(new TypeToken<Map<PrimarySkillType, Float>>(){});
-        HashMap<PrimarySkillType, Float> xpBoostHashMap = new HashMap<>(map);
+        Map<PrimarySkillType, Double> map = value.getNode(XP_BOOST_NODE_ROOT).getValue(new TypeToken<Map<PrimarySkillType, Double>>(){});
+        HashMap<PrimarySkillType, Double> xpBoostHashMap = new HashMap<>(map);
 
         CustomXPPerk customXPPerk = new CustomXPPerk(perkName);
         customXPPerk.setCustomXPMultiplierMap(xpBoostHashMap);
@@ -38,15 +38,15 @@ public class CustomXPPerkSerializer implements TypeSerializer<CustomXPPerk> {
     public void serialize(@NonNull TypeToken<?> type, @Nullable CustomXPPerk obj, @NonNull ConfigurationNode value) throws ObjectMappingException {
         String name = obj.getPerkName();
 
-        HashMap<PrimarySkillType, Float> xpBoostMap = new HashMap<>();
+        HashMap<PrimarySkillType, Double> xpBoostMap = new HashMap<>();
 
         value.getNode(PERK_NAME).setValue(name);
 
         for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            float xpMultValue = obj.getXPMultiplierValue(primarySkillType);
+            Double xpMultValue = obj.getXPMultiplierValue(primarySkillType);
 
             //Ignore default values
-            if (xpMultValue == 1.0F)
+            if (xpMultValue == 1.0)
                 continue;
 
             xpBoostMap.put(primarySkillType, obj.getXPMultiplierValue(primarySkillType));

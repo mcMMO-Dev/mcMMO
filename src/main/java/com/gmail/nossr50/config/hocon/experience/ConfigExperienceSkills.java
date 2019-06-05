@@ -109,11 +109,11 @@ public class ConfigExperienceSkills {
         return experienceSmelting.getSmeltingExperienceMap();
     }
 
-    public float getItemMaterialXPMultiplier(ItemMaterialCategory itemMaterialCategory) {
+    public double getItemMaterialXPMultiplier(ItemMaterialCategory itemMaterialCategory) {
         return experienceRepair.getItemMaterialXPMultiplier(itemMaterialCategory);
     }
 
-    public float getRepairXPBase() {
+    public double getRepairXPBase() {
         return experienceRepair.getRepairXPBase();
     }
 
@@ -121,7 +121,7 @@ public class ConfigExperienceSkills {
         return experienceAcrobatics.getAcrobaticsXPMap();
     }
 
-    public float getFeatherFallMultiplier() {
+    public double getFeatherFallMultiplier() {
         return experienceAcrobatics.getFeatherFallMultiplier();
     }
 
@@ -165,15 +165,15 @@ public class ConfigExperienceSkills {
         return experienceCombat.isPvpXPEnabled();
     }
 
-    public HashMap<String, Float> getCombatExperienceMap() {
+    public HashMap<String, Double> getCombatExperienceMap() {
         return experienceCombat.getCombatExperienceMap();
     }
 
-    public HashMap<SpecialXPKey, Float> getSpecialCombatExperienceMap() {
+    public HashMap<SpecialXPKey, Double> getSpecialCombatExperienceMap() {
         return experienceCombat.getSpecialCombatExperienceMap();
     }
 
-    public float getDistanceMultiplier() {
+    public double getDistanceMultiplier() {
         return experienceArchery.getDistanceMultiplier();
     }
 

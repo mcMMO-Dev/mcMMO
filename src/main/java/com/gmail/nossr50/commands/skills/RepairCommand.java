@@ -46,7 +46,7 @@ public class RepairCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(Player player, float skillValue) {
+    protected void dataCalculations(Player player, double skillValue) {
         // We're using pickaxes here, not the best but it works
         Repairable diamondRepairable = mcMMO.getRepairableManager().getRepairable(Material.DIAMOND_PICKAXE);
         Repairable goldRepairable = mcMMO.getRepairableManager().getRepairable(Material.GOLDEN_PICKAXE);
@@ -88,7 +88,7 @@ public class RepairCommand extends SkillCommand {
     }
 
     @Override
-    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected List<String> statsDisplay(Player player, double skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         if (canArcaneForge) {

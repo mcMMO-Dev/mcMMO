@@ -33,7 +33,7 @@ public class SwordsCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(Player player, float skillValue) {
+    protected void dataCalculations(Player player, double skillValue) {
         // SWORDS_COUNTER_ATTACK
         if (canCounter) {
             String[] counterStrings = getAbilityDisplayValues(player, SubSkillType.SWORDS_COUNTER_ATTACK);
@@ -66,7 +66,7 @@ public class SwordsCommand extends SkillCommand {
     }
 
     @Override
-    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected List<String> statsDisplay(Player player, double skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         int ruptureTicks = UserManager.getPlayer(player).getSwordsManager().getRuptureBleedTicks();

@@ -19,9 +19,9 @@ public class ExperienceManager {
     private HashMap<String, Integer> woodcuttingFullyQualifiedBlockXpMap;
     private HashMap<String, Integer> excavationFullyQualifiedBlockXpMap;
     private HashMap<String, Integer> furnaceFullyQualifiedItemXpMap;
-    private HashMap<EntityType, Float> tamingExperienceMap;
-    private HashMap<EntityType, Float> combatXPMultiplierMap;
-    private HashMap<SpecialXPKey, Float> specialCombatXPMultiplierMap; //Applies to "groups" of things for convenience
+    private HashMap<EntityType, Double> tamingExperienceMap;
+    private HashMap<EntityType, Double> combatXPMultiplierMap;
+    private HashMap<SpecialXPKey, Double> specialCombatXPMultiplierMap; //Applies to "groups" of things for convenience
 
     private double globalXpMult;
 
@@ -57,7 +57,7 @@ public class ExperienceManager {
      *
      * @param platformSafeMap the platform safe map
      */
-    public void fillCombatXPMultiplierMap(HashMap<String, Float> platformSafeMap) {
+    public void fillCombatXPMultiplierMap(HashMap<String, Double> platformSafeMap) {
         mcMMO.p.getLogger().info("Registering combat XP values...");
         for (String entityString : platformSafeMap.keySet()) {
             //Iterate over all EntityType(s)
@@ -83,7 +83,7 @@ public class ExperienceManager {
      *
      * @param map target map
      */
-    public void registerSpecialCombatXPMultiplierMap(HashMap<SpecialXPKey, Float> map) {
+    public void registerSpecialCombatXPMultiplierMap(HashMap<SpecialXPKey, Double> map) {
         mcMMO.p.getLogger().info("Registering special combat XP values...");
         specialCombatXPMultiplierMap = map;
     }
@@ -122,7 +122,7 @@ public class ExperienceManager {
                 if (entityType.toString().equalsIgnoreCase(s)) {
                     //Match!
                     matchFound = true;
-                    tamingExperienceMap.put(entityType, (float) userTamingConfigMap.get(s));
+                    tamingExperienceMap.put(entityType, (double) userTamingConfigMap.get(s));
                 }
             }
             if (!matchFound) {
@@ -244,7 +244,7 @@ public class ExperienceManager {
      * @deprecated its faster to use direct calls to get XP, for example getMiningXP(Material material) instead of using this method
      */
     @Deprecated
-    public float getBlockBreakXpValue(PrimarySkillType primarySkillType, Material material) throws UndefinedSkillBehaviour {
+    public double getBlockBreakXpValue(PrimarySkillType primarySkillType, Material material) throws UndefinedSkillBehaviour {
         switch (primarySkillType) {
             case MINING:
                 return getMiningXp(material);
@@ -265,7 +265,7 @@ public class ExperienceManager {
      * @param entityType target entity
      * @return value of XP for this entity
      */
-    public float getTamingXp(EntityType entityType) {
+    public double getTamingXp(EntityType entityType) {
         return tamingExperienceMap.get(entityType);
     }
 
@@ -376,7 +376,7 @@ public class ExperienceManager {
      * @param specialXPKey target special XP group
      * @return XP multiplier for target special XP group
      */
-    public float getSpecialCombatXP(SpecialXPKey specialXPKey) {
+    public double getSpecialCombatXP(SpecialXPKey specialXPKey) {
         return specialCombatXPMultiplierMap.get(specialXPKey);
     }
 
@@ -386,7 +386,7 @@ public class ExperienceManager {
      * @param entityType target entity type
      * @return the combat XP multiplier for this entity
      */
-    public float getCombatXPMultiplier(EntityType entityType) {
+    public double getCombatXPMultiplier(EntityType entityType) {
         return combatXPMultiplierMap.get(entityType);
     }
 

@@ -1118,7 +1118,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
     private PlayerProfile loadFromLine(String[] character) {
         Map<PrimarySkillType, Integer> skills = getSkillMapFromLine(character);      // Skill levels
-        Map<PrimarySkillType, Float> skillsXp = new EnumMap<>(PrimarySkillType.class);     // Skill & XP
+        Map<PrimarySkillType, Double> skillsXp = new EnumMap<>(PrimarySkillType.class);     // Skill & XP
         Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<>(SuperAbilityType.class); // Ability & Cooldown
         Map<UniqueDataType, Integer> uniquePlayerDataMap = new EnumMap<>(UniqueDataType.class);
         MobHealthbarType mobHealthbarType;
@@ -1126,19 +1126,19 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
         // TODO on updates, put new values in a try{} ?
 
-        skillsXp.put(PrimarySkillType.TAMING, (float) Integer.valueOf(character[EXP_TAMING]));
-        skillsXp.put(PrimarySkillType.MINING, (float) Integer.valueOf(character[EXP_MINING]));
-        skillsXp.put(PrimarySkillType.REPAIR, (float) Integer.valueOf(character[EXP_REPAIR]));
-        skillsXp.put(PrimarySkillType.WOODCUTTING, (float) Integer.valueOf(character[EXP_WOODCUTTING]));
-        skillsXp.put(PrimarySkillType.UNARMED, (float) Integer.valueOf(character[EXP_UNARMED]));
-        skillsXp.put(PrimarySkillType.HERBALISM, (float) Integer.valueOf(character[EXP_HERBALISM]));
-        skillsXp.put(PrimarySkillType.EXCAVATION, (float) Integer.valueOf(character[EXP_EXCAVATION]));
-        skillsXp.put(PrimarySkillType.ARCHERY, (float) Integer.valueOf(character[EXP_ARCHERY]));
-        skillsXp.put(PrimarySkillType.SWORDS, (float) Integer.valueOf(character[EXP_SWORDS]));
-        skillsXp.put(PrimarySkillType.AXES, (float) Integer.valueOf(character[EXP_AXES]));
-        skillsXp.put(PrimarySkillType.ACROBATICS, (float) Integer.valueOf(character[EXP_ACROBATICS]));
-        skillsXp.put(PrimarySkillType.FISHING, (float) Integer.valueOf(character[EXP_FISHING]));
-        skillsXp.put(PrimarySkillType.ALCHEMY, (float) Integer.valueOf(character[EXP_ALCHEMY]));
+        skillsXp.put(PrimarySkillType.TAMING, (double) Integer.valueOf(character[EXP_TAMING]));
+        skillsXp.put(PrimarySkillType.MINING, (double) Integer.valueOf(character[EXP_MINING]));
+        skillsXp.put(PrimarySkillType.REPAIR, (double) Integer.valueOf(character[EXP_REPAIR]));
+        skillsXp.put(PrimarySkillType.WOODCUTTING, (double) Integer.valueOf(character[EXP_WOODCUTTING]));
+        skillsXp.put(PrimarySkillType.UNARMED, (double) Integer.valueOf(character[EXP_UNARMED]));
+        skillsXp.put(PrimarySkillType.HERBALISM, (double) Integer.valueOf(character[EXP_HERBALISM]));
+        skillsXp.put(PrimarySkillType.EXCAVATION, (double) Integer.valueOf(character[EXP_EXCAVATION]));
+        skillsXp.put(PrimarySkillType.ARCHERY, (double) Integer.valueOf(character[EXP_ARCHERY]));
+        skillsXp.put(PrimarySkillType.SWORDS, (double) Integer.valueOf(character[EXP_SWORDS]));
+        skillsXp.put(PrimarySkillType.AXES, (double) Integer.valueOf(character[EXP_AXES]));
+        skillsXp.put(PrimarySkillType.ACROBATICS, (double) Integer.valueOf(character[EXP_ACROBATICS]));
+        skillsXp.put(PrimarySkillType.FISHING, (double) Integer.valueOf(character[EXP_FISHING]));
+        skillsXp.put(PrimarySkillType.ALCHEMY, (double) Integer.valueOf(character[EXP_ALCHEMY]));
 
         // Taming - Unused
         skillsDATS.put(SuperAbilityType.SUPER_BREAKER, Integer.valueOf(character[COOLDOWN_SUPER_BREAKER]));

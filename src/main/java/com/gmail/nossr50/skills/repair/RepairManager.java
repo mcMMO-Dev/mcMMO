@@ -173,7 +173,7 @@ public class RepairManager extends SkillManager {
         inventory.removeItem(toRemove);
 
         // Give out XP like candy
-        applyXpGain((float) ((getPercentageRepaired(startDurability, newDurability, repairable.getMaximumDurability())
+        applyXpGain(((getPercentageRepaired(startDurability, newDurability, repairable.getMaximumDurability())
                 * repairable.getXpMultiplier())
                 * mcMMO.getConfigManager().getConfigExperience().getRepairXPBase())
                 * mcMMO.getConfigManager().getConfigExperience().getExperienceRepair().getItemMaterialXPMultiplier(repairable.getRepairItemMaterialCategory()), XPGainReason.PVE);
@@ -188,7 +188,7 @@ public class RepairManager extends SkillManager {
         item.setDurability(newDurability);
     }
 
-    private float getPercentageRepaired(short startDurability, short newDurability, short totalDurability) {
+    private double getPercentageRepaired(short startDurability, short newDurability, short totalDurability) {
         return ((startDurability - newDurability) / (float) totalDurability);
     }
 

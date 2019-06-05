@@ -8,10 +8,10 @@ import java.util.concurrent.TimeUnit;
 
 public class SkillXpGain implements Delayed {
     private final long expiryTime;
-    private final float xp;
+    private final double xp;
     private final PrimarySkillType type;
 
-    public SkillXpGain(PrimarySkillType type, float xp) {
+    public SkillXpGain(PrimarySkillType type, double xp) {
         this.expiryTime = System.currentTimeMillis() + getDuration();
         this.xp = xp;
         this.type = type;
@@ -25,7 +25,7 @@ public class SkillXpGain implements Delayed {
         return type;
     }
 
-    public float getXp() {
+    public double getXp() {
         return xp;
     }
 

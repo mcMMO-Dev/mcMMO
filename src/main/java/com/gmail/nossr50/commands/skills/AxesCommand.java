@@ -35,7 +35,7 @@ public class AxesCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(Player player, float skillValue) {
+    protected void dataCalculations(Player player, double skillValue) {
         // ARMOR IMPACT
         if (canImpact) {
             impactDamage = UserManager.getPlayer(player).getAxesManager().getImpactDurabilityDamage();
@@ -71,7 +71,7 @@ public class AxesCommand extends SkillCommand {
     }
 
     @Override
-    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected List<String> statsDisplay(Player player, double skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         if (canImpact) {

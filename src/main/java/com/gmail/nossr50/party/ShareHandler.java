@@ -29,7 +29,7 @@ public final class ShareHandler {
      * @param primarySkillType Skill being used
      * @return True is the xp has been shared
      */
-    public static boolean handleXpShare(float xp, McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, XPGainReason xpGainReason) {
+    public static boolean handleXpShare(double xp, McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, XPGainReason xpGainReason) {
         Party party = mcMMOPlayer.getParty();
 
         if (party.getXpShareMode() != ShareMode.EQUAL) {
@@ -48,7 +48,7 @@ public final class ShareHandler {
         double shareBonus = Math.min(mcMMO.getPartyXPShareSettings().getPartyShareXPBonusBase()
                         + (partySize * mcMMO.getPartyXPShareSettings().getPartyShareBonusIncrease()),
                 mcMMO.getPartyXPShareSettings().getPartyShareBonusCap());
-        float splitXp = (float) (xp / partySize * shareBonus);
+        double splitXp = (double) (xp / partySize * shareBonus);
 
         for (Player member : nearMembers) {
             //Profile not loaded

@@ -17,8 +17,8 @@ public class DamagePropertySerializer implements TypeSerializer<DamageProperty> 
     @Nullable
     @Override
     public DamageProperty deserialize(@NonNull TypeToken<?> type, @NonNull ConfigurationNode value) throws ObjectMappingException {
-        Float pvp = value.getNode(PVP_NODE).getValue(TypeToken.of(Float.class));
-        Float pve = value.getNode(PVE_NODE).getValue(TypeToken.of(Float.class));
+        Double pvp = value.getNode(PVP_NODE).getValue(TypeToken.of(Double.class));
+        Double pve = value.getNode(PVE_NODE).getValue(TypeToken.of(Double.class));
         DamageProperty damageProperty = new AbstractDamageProperty(pve, pvp);
         return damageProperty;
     }

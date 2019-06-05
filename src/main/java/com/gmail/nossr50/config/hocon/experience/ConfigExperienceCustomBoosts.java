@@ -14,10 +14,18 @@ public class ConfigExperienceCustomBoosts {
 
     static {
         CUSTOM_BOOST_SET_DEFAULT = new ArrayList<>();
-        CustomXPPerk customXPPerk = new CustomXPPerk("examplecustomxpperk");
-        customXPPerk.setCustomXPValue(PrimarySkillType.MINING, 13.37f);
-        customXPPerk.setCustomXPValue(PrimarySkillType.WOODCUTTING, 4.0f);
-        CUSTOM_BOOST_SET_DEFAULT.add(customXPPerk);
+
+        CustomXPPerk exampleA = new CustomXPPerk("example-beneficial-xpperk");
+        exampleA.setCustomXPValue(PrimarySkillType.MINING, 13.37);
+        exampleA.setCustomXPValue(PrimarySkillType.EXCAVATION, 4.20);
+
+        CustomXPPerk exampleB = new CustomXPPerk("example-detrimental-xpperk");
+        exampleB.setCustomXPValue(PrimarySkillType.WOODCUTTING, 0.01);
+        exampleB.setCustomXPValue(PrimarySkillType.UNARMED, 0.02);
+        exampleB.setCustomXPValue(PrimarySkillType.SWORDS, 0.03);
+
+        CUSTOM_BOOST_SET_DEFAULT.add(exampleA);
+        CUSTOM_BOOST_SET_DEFAULT.add(exampleB);
     }
 
     @Setting(value = "Custom-Global-XP-Permissions", comment = "You can give custom global xp perks to players by adding 'mcmmo.customperks.xp.<PERK NAME HERE>' to your players" +

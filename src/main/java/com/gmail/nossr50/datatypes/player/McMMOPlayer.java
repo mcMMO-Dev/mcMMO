@@ -89,7 +89,7 @@ public class McMMOPlayer {
     //private int chimeraWingLastUse;
     private Location teleportCommence;
     private boolean isUsingUnarmed;
-    private HashMap<PrimarySkillType, Float> personalXPModifiers;
+    private HashMap<PrimarySkillType, Double> personalXPModifiers;
 
     public McMMOPlayer(Player player, PlayerProfile profile) {
         String playerName = player.getName();
@@ -155,7 +155,7 @@ public class McMMOPlayer {
      * @param primarySkillType target primary skill
      * @return this players personal XP multiplier for target PrimarySkillType
      */
-    public float getPlayerSpecificXPMult(PrimarySkillType primarySkillType) {
+    public Double getPlayerSpecificXPMult(PrimarySkillType primarySkillType) {
         return personalXPModifiers.get(primarySkillType);
     }
 
@@ -479,7 +479,7 @@ public class McMMOPlayer {
      * @param skill Skill being used
      * @param xp    Experience amount to process
      */
-    public void beginXpGain(PrimarySkillType skill, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
+    public void beginXpGain(PrimarySkillType skill, double xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
         Validate.isTrue(xp >= 0.0, "XP gained should be greater than or equal to zero.");
 
         if (xp <= 0.0) {
@@ -488,7 +488,7 @@ public class McMMOPlayer {
 
         if (skill.isChildSkill()) {
             Set<PrimarySkillType> parentSkills = FamilyTree.getParents(skill);
-            float splitXp = xp / parentSkills.size();
+            double splitXp = xp / parentSkills.size();
 
             for (PrimarySkillType parentSkill : parentSkills) {
                 if (parentSkill.getPermissions(player)) {
@@ -513,7 +513,7 @@ public class McMMOPlayer {
      * @param skill Skill being used
      * @param xp    Experience amount to process
      */
-    public void beginUnsharedXpGain(PrimarySkillType skill, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
+    public void beginUnsharedXpGain(PrimarySkillType skill, double xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
         if(player.getGameMode() == GameMode.CREATIVE)
             return;
 
@@ -534,7 +534,7 @@ public class McMMOPlayer {
      * @param primarySkillType Skill being used
      * @param xp               Experience amount to add
      */
-    public void applyXpGain(PrimarySkillType primarySkillType, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
+    public void applyXpGain(PrimarySkillType primarySkillType, double xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
         if (!primarySkillType.getPermissions(player)) {
             return;
         }
@@ -569,7 +569,7 @@ public class McMMOPlayer {
         }
 
         int levelsGained = 0;
-        float xpRemoved = 0;
+        double xpRemoved = 0;
 
         while (getSkillXpLevelRaw(primarySkillType) >= getXpToLevel(primarySkillType)) {
             if (mcMMO.getPlayerLevelingSettings().isLevelCapEnabled(primarySkillType)
@@ -769,14 +769,14 @@ public class McMMOPlayer {
      * @param xp               Experience amount to process
      * @return Modified experience
      */
-    private float modifyXpGain(PrimarySkillType primarySkillType, float xp) {
+    private double modifyXpGain(PrimarySkillType primarySkillType, double xp) {
         if (((primarySkillType.getMaxLevel() <= getSkillLevel(primarySkillType))
                 && mcMMO.getPlayerLevelingSettings().isLevelCapEnabled(primarySkillType))
                 || (mcMMO.getPlayerLevelingSettings().getConfigSectionLevelCaps().getPowerLevel().getLevelCap() <= getPowerLevel())) {
             return 0;
         }
 
-        xp = (float) (xp / primarySkillType.getXpModifier() * mcMMO.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult());
+        xp = (double) (xp / primarySkillType.getXpModifier() * mcMMO.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult());
 
         //Multiply by the players personal XP rate
         return xp * personalXPModifiers.get(primarySkillType);
@@ -950,7 +950,7 @@ public class McMMOPlayer {
         return profile.getSkillLevel(skill);
     }
 
-    public float getSkillXpLevelRaw(PrimarySkillType skill) {
+    public double getSkillXpLevelRaw(PrimarySkillType skill) {
         return profile.getSkillXpLevelRaw(skill);
     }
 
@@ -958,7 +958,7 @@ public class McMMOPlayer {
         return profile.getSkillXpLevel(skill);
     }
 
-    public void setSkillXpLevel(PrimarySkillType skill, float xpLevel) {
+    public void setSkillXpLevel(PrimarySkillType skill, double xpLevel) {
         profile.setSkillXpLevel(skill, xpLevel);
     }
 
@@ -978,7 +978,7 @@ public class McMMOPlayer {
         profile.addLevels(skill, levels);
     }
 
-    public void addXp(PrimarySkillType skill, float xp) {
+    public void addXp(PrimarySkillType skill, double xp) {
         profile.addXp(skill, xp);
     }
 

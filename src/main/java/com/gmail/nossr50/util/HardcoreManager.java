@@ -25,12 +25,12 @@ public final class HardcoreManager {
         int totalLevelsLost = 0;
 
         HashMap<String, Integer> levelChanged = new HashMap<>();
-        HashMap<String, Float> experienceChanged = new HashMap<>();
+        HashMap<String, Double> experienceChanged = new HashMap<>();
 
         for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
             if (!primarySkillType.getHardcoreStatLossEnabled()) {
                 levelChanged.put(primarySkillType.toString(), 0);
-                experienceChanged.put(primarySkillType.toString(), 0F);
+                experienceChanged.put(primarySkillType.toString(), 0.0);
                 continue;
             }
 
@@ -39,7 +39,7 @@ public final class HardcoreManager {
 
             if (playerSkillLevel <= 0 || playerSkillLevel <= levelThreshold) {
                 levelChanged.put(primarySkillType.toString(), 0);
-                experienceChanged.put(primarySkillType.toString(), 0F);
+                experienceChanged.put(primarySkillType.toString(), 0.0);
                 continue;
             }
 
@@ -47,7 +47,7 @@ public final class HardcoreManager {
             int levelsLost = (int) statsLost;
             int xpLost = (int) Math.floor(playerSkillXpLevel * (statsLost - levelsLost));
             levelChanged.put(primarySkillType.toString(), levelsLost);
-            experienceChanged.put(primarySkillType.toString(), (float) xpLost);
+            experienceChanged.put(primarySkillType.toString(), (double) xpLost);
 
             totalLevelsLost += levelsLost;
         }
@@ -71,12 +71,12 @@ public final class HardcoreManager {
         int totalLevelsStolen = 0;
 
         HashMap<String, Integer> levelChanged = new HashMap<>();
-        HashMap<String, Float> experienceChanged = new HashMap<>();
+        HashMap<String, Double> experienceChanged = new HashMap<>();
 
         for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
             if (!primarySkillType.getHardcoreVampirismEnabled()) {
                 levelChanged.put(primarySkillType.toString(), 0);
-                experienceChanged.put(primarySkillType.toString(), 0F);
+                experienceChanged.put(primarySkillType.toString(), 0.0);
                 continue;
             }
 
@@ -85,7 +85,7 @@ public final class HardcoreManager {
 
             if (victimSkillLevel <= 0 || victimSkillLevel < killerSkillLevel / 2 || victimSkillLevel <= levelThreshold) {
                 levelChanged.put(primarySkillType.toString(), 0);
-                experienceChanged.put(primarySkillType.toString(), 0F);
+                experienceChanged.put(primarySkillType.toString(), 0.0);
                 continue;
             }
 
@@ -95,7 +95,7 @@ public final class HardcoreManager {
             int levelsStolen = (int) statsStolen;
             int xpStolen = (int) Math.floor(victimSkillXpLevel * (statsStolen - levelsStolen));
             levelChanged.put(primarySkillType.toString(), levelsStolen);
-            experienceChanged.put(primarySkillType.toString(), (float) xpStolen);
+            experienceChanged.put(primarySkillType.toString(), (double) xpStolen);
 
             totalLevelsStolen += levelsStolen;
         }

@@ -40,7 +40,7 @@ public class HerbalismCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(Player player, float skillValue) {
+    protected void dataCalculations(Player player, double skillValue) {
 
         // DOUBLE DROPS
         if (canDoubleDrop) {
@@ -97,7 +97,7 @@ public class HerbalismCommand extends SkillCommand {
     }
 
     @Override
-    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected List<String> statsDisplay(Player player, double skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         if (canDoubleDrop) {

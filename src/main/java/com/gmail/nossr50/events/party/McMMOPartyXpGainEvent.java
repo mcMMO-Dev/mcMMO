@@ -11,10 +11,10 @@ public class McMMOPartyXpGainEvent extends Event implements Cancellable {
      **/
     private static final HandlerList handlers = new HandlerList();
     private Party party;
-    private float xpGained;
+    private double xpGained;
     private boolean cancelled;
 
-    public McMMOPartyXpGainEvent(Party party, float xpGained) {
+    public McMMOPartyXpGainEvent(Party party, double xpGained) {
         this.party = party;
         this.xpGained = xpGained;
         this.cancelled = false;
@@ -31,14 +31,14 @@ public class McMMOPartyXpGainEvent extends Event implements Cancellable {
     /**
      * @return The amount of experience gained in this event
      */
-    public float getRawXpGained() {
+    public double getRawXpGained() {
         return xpGained;
     }
 
     /**
      * @param xpGained set amount of experience gained in this event
      */
-    public void setRawXpGained(float xpGained) {
+    public void setRawXpGained(double xpGained) {
         this.xpGained = xpGained;
     }
 

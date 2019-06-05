@@ -42,7 +42,7 @@ public final class ExperienceAPI {
      * @param primarySkillType target skill
      * @return this players personal XP rate for target PrimarySkillType
      */
-    public float getPlayersPersonalXPRate(McMMOPlayer player, PrimarySkillType primarySkillType) {
+    public double getPlayersPersonalXPRate(McMMOPlayer player, PrimarySkillType primarySkillType) {
         //First check if the player has ANY of the custom perks
         return player.getPlayerSpecificXPMult(primarySkillType);
     }
@@ -65,7 +65,7 @@ public final class ExperienceAPI {
 
     @Deprecated
     public static void addRawXP(Player player, String skillType, int XP) {
-        addRawXP(player, skillType, (float) XP);
+        addRawXP(player, skillType, (double) XP);
     }
 
     /**
@@ -79,7 +79,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      */
     @Deprecated
-    public static void addRawXP(Player player, String skillType, float XP) {
+    public static void addRawXP(Player player, String skillType, double XP) {
         addRawXP(player, skillType, XP, "UNKNOWN");
     }
 
@@ -95,7 +95,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException        if the given skill is not valid
      * @throws InvalidXPGainReasonException if the given xpGainReason is not valid
      */
-    public static void addRawXP(Player player, String skillType, float XP, String xpGainReason) {
+    public static void addRawXP(Player player, String skillType, double XP, String xpGainReason) {
         addRawXP(player, skillType, XP, xpGainReason, false);
     }
 
@@ -112,7 +112,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException        if the given skill is not valid
      * @throws InvalidXPGainReasonException if the given xpGainReason is not valid
      */
-    public static void addRawXP(Player player, String skillType, float XP, String xpGainReason, boolean isUnshared) {
+    public static void addRawXP(Player player, String skillType, double XP, String xpGainReason, boolean isUnshared) {
         if (isUnshared) {
             getPlayer(player).beginUnsharedXpGain(getSkillType(skillType), XP, getXPGainReason(xpGainReason), XPGainSource.CUSTOM);
             return;
@@ -126,12 +126,12 @@ public final class ExperienceAPI {
      * </br>
      * This function is designed for API usage.
      *
-     * @deprecated We're using float for our XP values now
-     * replaced by {@link #addRawXPOffline(String playerName, String skillType, float XP)}
+     * @deprecated We're using double for our XP values now
+     * replaced by {@link #addRawXPOffline(String playerName, String skillType, double XP)}
      */
     @Deprecated
     public static void addRawXPOffline(String playerName, String skillType, int XP) {
-        addRawXPOffline(playerName, skillType, (float) XP);
+        addRawXPOffline(playerName, skillType, (double) XP);
     }
 
     /**
@@ -145,10 +145,10 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException  if the given skill is not valid
      * @throws InvalidPlayerException if the given player does not exist in the database
      * @deprecated We're using uuids to get an offline player
-     * replaced by {@link #addRawXPOffline(UUID uuid, String skillType, float XP)}
+     * replaced by {@link #addRawXPOffline(UUID uuid, String skillType, double XP)}
      */
     @Deprecated
-    public static void addRawXPOffline(String playerName, String skillType, float XP) {
+    public static void addRawXPOffline(String playerName, String skillType, double XP) {
         addOfflineXP(playerName, getSkillType(skillType), (int) Math.floor(XP));
     }
 
@@ -163,7 +163,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException  if the given skill is not valid
      * @throws InvalidPlayerException if the given player does not exist in the database
      */
-    public static void addRawXPOffline(UUID uuid, String skillType, float XP) {
+    public static void addRawXPOffline(UUID uuid, String skillType, double XP) {
         addOfflineXP(uuid, getSkillType(skillType), (int) Math.floor(XP));
     }
 
@@ -402,7 +402,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException         if the given skill is not valid
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
-    public static float getXPRaw(Player player, String skillType) {
+    public static double getXPRaw(Player player, String skillType) {
         return getPlayer(player).getSkillXpLevelRaw(getNonChildSkillType(skillType));
     }
 
@@ -419,7 +419,7 @@ public final class ExperienceAPI {
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
     @Deprecated
-    public static float getOfflineXPRaw(String playerName, String skillType) {
+    public static double getOfflineXPRaw(String playerName, String skillType) {
         return getOfflineProfile(playerName).getSkillXpLevelRaw(getNonChildSkillType(skillType));
     }
 
@@ -435,7 +435,7 @@ public final class ExperienceAPI {
      * @throws InvalidPlayerException        if the given player does not exist in the database
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
-    public static float getOfflineXPRaw(UUID uuid, String skillType) {
+    public static double getOfflineXPRaw(UUID uuid, String skillType) {
         return getOfflineProfile(uuid).getSkillXpLevelRaw(getNonChildSkillType(skillType));
     }
 
@@ -538,7 +538,7 @@ public final class ExperienceAPI {
      * @throws InvalidPlayerException        if the given player does not exist in the database
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
-    public static float getOfflineXPRemaining(UUID uuid, String skillType) {
+    public static double getOfflineXPRemaining(UUID uuid, String skillType) {
         PrimarySkillType skill = getNonChildSkillType(skillType);
         PlayerProfile profile = getOfflineProfile(uuid);
 

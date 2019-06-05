@@ -33,7 +33,7 @@ public class Party {
     private boolean locked;
     private Party ally;
     private int level;
-    private float xp;
+    private double xp;
 
     private ShareMode xpShareMode = ShareMode.NONE;
     private ShareMode itemShareMode = ShareMode.NONE;
@@ -171,20 +171,20 @@ public class Party {
         this.level = level;
     }
 
-    public float getXp() {
+    public double getXp() {
         return xp;
     }
 
-    public void setXp(float xp) {
+    public void setXp(double xp) {
         this.xp = xp;
     }
 
-    public void addXp(float xp) {
+    public void addXp(double xp) {
         setXp(getXp() + xp);
     }
 
-    protected float levelUp() {
-        float xpRemoved = getXpToLevel();
+    protected double levelUp() {
+        double xpRemoved = getXpToLevel();
 
         setLevel(getLevel() + 1);
         setXp(getXp() - xpRemoved);
@@ -206,7 +206,7 @@ public class Party {
      *
      * @param xp Experience amount to add
      */
-    public void applyXpGain(float xp) {
+    public void applyXpGain(double xp) {
         if (!EventUtils.handlePartyXpGainEvent(this, xp)) {
             return;
         }
@@ -216,7 +216,7 @@ public class Party {
         }
 
         int levelsGained = 0;
-        float xpRemoved = 0;
+        double xpRemoved = 0;
 
         while (getXp() >= getXpToLevel()) {
             /*if (hasReachedLevelCap()) {

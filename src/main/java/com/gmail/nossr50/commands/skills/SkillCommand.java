@@ -76,7 +76,7 @@ public abstract class SkillCommand implements TabExecutor {
 
                 boolean isLucky = Permissions.lucky(player, skill);
                 boolean hasEndurance = (PerksUtils.handleActivationPerks(player, 0, 0) != 0);
-                float skillValue = mcMMOPlayer.getSkillLevel(skill);
+                double skillValue = mcMMOPlayer.getSkillLevel(skill);
 
                 //Send the players a few blank lines to make finding the top of the skill command easier
                 if (AdvancedConfig.getInstance().doesSkillCommandSendBlankLines())
@@ -129,7 +129,7 @@ public abstract class SkillCommand implements TabExecutor {
         }
     }
 
-    private void getStatMessages(Player player, boolean isLucky, boolean hasEndurance, float skillValue) {
+    private void getStatMessages(Player player, boolean isLucky, boolean hasEndurance, double skillValue) {
         List<String> statsMessages = statsDisplay(player, skillValue, hasEndurance, isLucky);
 
         if (!statsMessages.isEmpty()) {
@@ -224,7 +224,7 @@ public abstract class SkillCommand implements TabExecutor {
         }
     }
 
-    protected int calculateRank(float skillValue, int maxLevel, int rankChangeLevel) {
+    protected int calculateRank(double skillValue, int maxLevel, int rankChangeLevel) {
         return Math.min((int) skillValue, maxLevel) / rankChangeLevel;
     }
 
@@ -232,7 +232,7 @@ public abstract class SkillCommand implements TabExecutor {
         return RandomChanceUtil.calculateAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, subSkill);
     }
 
-    protected String[] calculateLengthDisplayValues(Player player, float skillValue) {
+    protected String[] calculateLengthDisplayValues(Player player, double skillValue) {
         int maxLength = skill.getAbility().getMaxLength();
         int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
         int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
@@ -270,13 +270,13 @@ public abstract class SkillCommand implements TabExecutor {
         }
     }
 
-    protected abstract void dataCalculations(Player player, float skillValue);
+    protected abstract void dataCalculations(Player player, double skillValue);
 
     protected abstract void permissionsCheck(Player player);
 
     //protected abstract List<String> effectsDisplay();
 
-    protected abstract List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky);
+    protected abstract List<String> statsDisplay(Player player, double skillValue, boolean hasEndurance, boolean isLucky);
 
     protected abstract List<TextComponent> getTextComponents(Player player);
 
