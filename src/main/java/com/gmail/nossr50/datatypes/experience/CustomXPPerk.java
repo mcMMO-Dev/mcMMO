@@ -48,6 +48,14 @@ public class CustomXPPerk {
     }
 
     /**
+     * Set the custom XP multiplier map for this perk (this will override all values currently held)
+     * @param customXPMultiplierMap new custom xp multiplier map
+     */
+    public void setCustomXPMultiplierMap(HashMap<PrimarySkillType, Float> customXPMultiplierMap) {
+        this.customXPMultiplierMap = customXPMultiplierMap;
+    }
+
+    /**
      * Get the address of this custom XP perk permission
      * This is the fully qualified name for this permission
      *

@@ -12,30 +12,24 @@ import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CustomXPPerkSerializer implements TypeSerializer<CustomXPPerk> {
+
+    private static final String PERK_NAME = "perk-name";
+    private static final String XP_BOOST_NODE_ROOT = "XP-Boosts";
 
     @Nullable
     @Override
     public CustomXPPerk deserialize(@NonNull TypeToken<?> type, @NonNull ConfigurationNode value) throws ObjectMappingException {
-        String perkName = value.getNode("name").getValue(TypeToken.of(String.class));
+        String perkName = value.getNode(PERK_NAME).getValue(TypeToken.of(String.class));
+
+        Map<PrimarySkillType, Float> map = value.getNode(XP_BOOST_NODE_ROOT).getValue(new TypeToken<Map<PrimarySkillType, Float>>(){});
+        HashMap<PrimarySkillType, Float> xpBoostHashMap = new HashMap<>(map);
+
         CustomXPPerk customXPPerk = new CustomXPPerk(perkName);
-
-        //See if any children nodes match skills by name
-        for (ConfigurationNode configurationNode : value.getChildrenList()) {
-            try {
-                PrimarySkillType primarySkillType = matchIgnoreCase(configurationNode.getValue(TypeToken.of(String.class)));
-                if (primarySkillType.isChildSkill())
-                    continue; //Child skills gross
-
-                Float boostValue = configurationNode.getNode("XP-Multiplier").getValue(TypeToken.of(Float.class));
-                customXPPerk.setCustomXPValue(primarySkillType, boostValue);
-            } catch (InvalidSkillException e) {
-                mcMMO.p.getLogger().info("Custom XP perk has a skill defined that was not found, did you misspell it?");
-                e.printStackTrace();
-            } catch (ObjectMappingException e) {
-                e.printStackTrace();
-            }
-        }
+        customXPPerk.setCustomXPMultiplierMap(xpBoostHashMap);
 
         return customXPPerk;
     }
@@ -44,7 +38,9 @@ public class CustomXPPerkSerializer implements TypeSerializer<CustomXPPerk> {
     public void serialize(@NonNull TypeToken<?> type, @Nullable CustomXPPerk obj, @NonNull ConfigurationNode value) throws ObjectMappingException {
         String name = obj.getPerkName();
 
-        value.getNode("name").setValue(name);
+        HashMap<PrimarySkillType, Float> xpBoostMap = new HashMap<>();
+
+        value.getNode(PERK_NAME).setValue(name);
 
         for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
             float xpMultValue = obj.getXPMultiplierValue(primarySkillType);
@@ -53,9 +49,10 @@ public class CustomXPPerkSerializer implements TypeSerializer<CustomXPPerk> {
             if (xpMultValue == 1.0F)
                 continue;
 
-            //Set value
-            value.getNode("name").getNode(StringUtils.getCapitalized(primarySkillType.toString())).setValue(xpMultValue);
+            xpBoostMap.put(primarySkillType, obj.getXPMultiplierValue(primarySkillType));
         }
+
+        value.getNode(XP_BOOST_NODE_ROOT).setValue(xpBoostMap);
     }
 
     private PrimarySkillType matchIgnoreCase(String string) throws InvalidSkillException {
@@ -66,10 +63,4 @@ public class CustomXPPerkSerializer implements TypeSerializer<CustomXPPerk> {
 
         throw new InvalidSkillException(string);
     }
-
-    /*
-        CustomXPPerk customXPPerk = new CustomXPPerk("examplecustomxpperk");
-        customXPPerk.setCustomXPValue(PrimarySkillType.MINING, 13.37f);
-        customXPPerk.setCustomXPValue(PrimarySkillType.WOODCUTTING, 4.0f);
-     */
 }
