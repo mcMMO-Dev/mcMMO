@@ -1,4 +1,4 @@
-package com.gmail.nossr50.config.hocon;
+package com.gmail.nossr50.config.hocon.serializers;
 
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;

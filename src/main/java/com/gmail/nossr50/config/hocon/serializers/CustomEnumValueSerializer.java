@@ -1,5 +1,6 @@
-package com.gmail.nossr50.config.hocon;
+package com.gmail.nossr50.config.hocon.serializers;
 
+import com.gmail.nossr50.config.hocon.HOCONUtil;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;

@@ -21,6 +21,7 @@ import com.gmail.nossr50.config.hocon.party.ConfigParty;
 import com.gmail.nossr50.config.hocon.party.data.ConfigPartyData;
 import com.gmail.nossr50.config.hocon.playerleveling.ConfigLeveling;
 import com.gmail.nossr50.config.hocon.scoreboard.ConfigScoreboard;
+import com.gmail.nossr50.config.hocon.serializers.*;
 import com.gmail.nossr50.config.hocon.skills.acrobatics.ConfigAcrobatics;
 import com.gmail.nossr50.config.hocon.skills.alchemy.ConfigAlchemy;
 import com.gmail.nossr50.config.hocon.skills.archery.ConfigArchery;

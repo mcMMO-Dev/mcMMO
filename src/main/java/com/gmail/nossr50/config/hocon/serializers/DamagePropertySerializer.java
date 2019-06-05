@@ -1,4 +1,4 @@
-package com.gmail.nossr50.config.hocon;
+package com.gmail.nossr50.config.hocon.serializers;
 
 import com.gmail.nossr50.datatypes.skills.properties.AbstractDamageProperty;
 import com.gmail.nossr50.datatypes.skills.properties.DamageProperty;

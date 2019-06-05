@@ -1,4 +1,4 @@
-package com.gmail.nossr50.config.hocon;
+package com.gmail.nossr50.config.hocon.serializers;
 
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.google.common.reflect.TypeToken;
