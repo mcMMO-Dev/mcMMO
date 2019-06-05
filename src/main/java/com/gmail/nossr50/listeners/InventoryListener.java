@@ -222,9 +222,13 @@ public class InventoryListener implements Listener {
 
         HumanEntity whoClicked = event.getWhoClicked();
 
-        if (!UserManager.hasPlayerDataKey(event.getWhoClicked()) || !Permissions.isSubSkillEnabled(whoClicked, SubSkillType.ALCHEMY_CONCOCTIONS)) {
+        //TODO: This is where Alchemy permissions used to be checked
+        //TODO: This is where Alchemy permissions used to be checked
+        //TODO: This is where Alchemy permissions used to be checked
+        //TODO: This is where Alchemy permissions used to be checked
+        /*if (!UserManager.hasPlayerDataKey(event.getWhoClicked()) || !Permissions.isSubSkillEnabled(whoClicked, SubSkillType.ALCHEMY_CONCOCTIONS)) {
             return;
-        }
+        }*/
 
         Player player = (Player) whoClicked;
 
@@ -328,9 +332,13 @@ public class InventoryListener implements Listener {
 
         HumanEntity whoClicked = event.getWhoClicked();
 
-        if (!UserManager.hasPlayerDataKey(event.getWhoClicked()) || !Permissions.isSubSkillEnabled(whoClicked, SubSkillType.ALCHEMY_CONCOCTIONS)) {
+        //TODO: This is where alchemy permissions used to be checked
+        //TODO: This is where alchemy permissions used to be checked
+        //TODO: This is where alchemy permissions used to be checked
+        //TODO: This is where alchemy permissions used to be checked
+        /*if (!UserManager.hasPlayerDataKey(event.getWhoClicked()) || !Permissions.isSubSkillEnabled(whoClicked, SubSkillType.ALCHEMY_CONCOCTIONS)) {
             return;
-        }
+        }*/
 
 //        if (!event.getInventorySlots().contains(Alchemy.INGREDIENT_SLOT)) {
 //            return;

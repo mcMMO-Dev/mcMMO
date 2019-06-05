@@ -380,12 +380,14 @@ public class RankUtils {
 
         try {
             SkillRankProperty skillRankProperty
-                    = rankConfigRoot.getNode(subSkillType.getParentSkill())
+                    = (SkillRankProperty) rankConfigRoot.getNode(subSkillType.getParentSkill().getCapitalizedName())
                     .getNode(subSkillType.getHoconFriendlyConfigName())
                     .getValue(TypeToken.of(SkillRankProperty.class));
 
-            return skillRankProperty.getUnlockLevel(mcMMO.isRetroModeEnabled(), rank);
-        } catch (ObjectMappingException | MissingSkillPropertyDefinition e) {
+            int unlockLevel = skillRankProperty.getUnlockLevel(mcMMO.isRetroModeEnabled(), rank);
+            return unlockLevel;
+
+        } catch (ObjectMappingException | MissingSkillPropertyDefinition | NullPointerException e) {
             mcMMO.p.getLogger().severe("Error traversing nodes to SkillRankProperty for "+subSkillType.toString());
             mcMMO.p.getLogger().severe("This indicates a problem with your rank config file, edit the file and correct the issue or delete it to generate a new default one with correct values.");
             e.printStackTrace();

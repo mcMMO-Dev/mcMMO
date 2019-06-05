@@ -36,7 +36,7 @@ public enum PrimarySkillType {
     ACROBATICS(AcrobaticsManager.class, Color.WHITE,
             ImmutableList.of(SubSkillType.ACROBATICS_DODGE, SubSkillType.ACROBATICS_ROLL), "Acrobatics"),
     ALCHEMY(AlchemyManager.class, Color.FUCHSIA,
-            ImmutableList.of(SubSkillType.ALCHEMY_CATALYSIS, SubSkillType.ALCHEMY_CONCOCTIONS), "Alchemy"),
+            ImmutableList.of(), "Alchemy"),
     ARCHERY(ArcheryManager.class, Color.MAROON,
             ImmutableList.of(SubSkillType.ARCHERY_DAZE, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK, SubSkillType.ARCHERY_ARROW_RETRIEVAL, SubSkillType.ARCHERY_SKILL_SHOT), "Archery"),
     AXES(AxesManager.class, Color.AQUA, SuperAbilityType.SKULL_SPLITTER, ToolType.AXE,
@@ -44,7 +44,7 @@ public enum PrimarySkillType {
     EXCAVATION(ExcavationManager.class, Color.fromRGB(139, 69, 19), SuperAbilityType.GIGA_DRILL_BREAKER, ToolType.SHOVEL,
             ImmutableList.of(SubSkillType.EXCAVATION_GIGA_DRILL_BREAKER, SubSkillType.EXCAVATION_ARCHAEOLOGY), "Excavation"),
     FISHING(FishingManager.class, Color.NAVY,
-            ImmutableList.of(SubSkillType.FISHING_FISHERMANS_DIET, SubSkillType.FISHING_TREASURE_HUNTER, SubSkillType.FISHING_ICE_FISHING, SubSkillType.FISHING_MAGIC_HUNTER, SubSkillType.FISHING_MASTER_ANGLER, SubSkillType.FISHING_SHAKE), "Fishing"),
+            ImmutableList.of(SubSkillType.FISHING_FISHERMANS_DIET, SubSkillType.FISHING_TREASURE_HUNTER, SubSkillType.FISHING_ICE_FISHING, SubSkillType.FISHING_MAGIC_HUNTER, SubSkillType.FISHING_MASTER_ANGLER, SubSkillType.FISHING_SHAKE, SubSkillType.FISHING_INNER_PEACE), "Fishing"),
     HERBALISM(HerbalismManager.class, Color.GREEN, SuperAbilityType.GREEN_TERRA, ToolType.HOE,
             ImmutableList.of(SubSkillType.HERBALISM_GREEN_TERRA, SubSkillType.HERBALISM_FARMERS_DIET, SubSkillType.HERBALISM_GREEN_THUMB, SubSkillType.HERBALISM_DOUBLE_DROPS, SubSkillType.HERBALISM_HYLIAN_LUCK, SubSkillType.HERBALISM_SHROOM_THUMB), "Herbalism"),
     MINING(MiningManager.class, Color.GRAY, SuperAbilityType.SUPER_BREAKER, ToolType.PICKAXE,
@@ -151,6 +151,8 @@ public enum PrimarySkillType {
                 return type;
             }
         }
+
+        mcMMO.p.getLogger().severe("Unable to locate parent for "+subSkillType.toString());
         return null;
     }
 

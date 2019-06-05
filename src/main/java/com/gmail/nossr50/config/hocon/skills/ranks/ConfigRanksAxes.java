@@ -6,7 +6,7 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 @ConfigSerializable
 public class ConfigRanksAxes {
 
-    @Setting(value = "Limit-Break")
+    @Setting(value = "Axes-Limit-Break")
     private SkillRankProperty limitBreak = new SkillRankProperty(10, 20, 30, 40, 50, 60, 70, 80, 90, 100);
 
     @Setting(value = "Skull-Splitter")

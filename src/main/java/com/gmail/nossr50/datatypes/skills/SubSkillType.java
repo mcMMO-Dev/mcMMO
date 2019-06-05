@@ -12,8 +12,6 @@ public enum SubSkillType {
     ACROBATICS_ROLL,
 
     /* ALCHEMY */
-    ALCHEMY_CATALYSIS(1),
-    ALCHEMY_CONCOCTIONS(8),
 
     /* ARCHERY */
     ARCHERY_ARROW_RETRIEVAL(1),
