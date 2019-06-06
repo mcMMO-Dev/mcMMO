@@ -1073,7 +1073,7 @@ public final class ExperienceAPI {
         PlayerProfile profile = getOfflineProfile(playerUniqueId);
 
         profile.addXp(skill, XP);
-        profile.save();
+        profile.save(true);
     }
 
     @Deprecated

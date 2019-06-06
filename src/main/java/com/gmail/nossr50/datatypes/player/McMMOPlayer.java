@@ -90,9 +90,10 @@ public class McMMOPlayer {
     private Location teleportCommence;
     private boolean isUsingUnarmed;
     private HashMap<PrimarySkillType, Double> personalXPModifiers;
+    private String playerName;
 
     public McMMOPlayer(Player player, PlayerProfile profile) {
-        String playerName = player.getName();
+        this.playerName = player.getName();
         UUID uuid = player.getUniqueId();
 
         this.player = player;
@@ -157,6 +158,10 @@ public class McMMOPlayer {
      */
     public Double getPlayerSpecificXPMult(PrimarySkillType primarySkillType) {
         return personalXPModifiers.get(primarySkillType);
+    }
+
+    public String getPlayerName() {
+        return playerName;
     }
 
     /*public void hideXpBar(PrimarySkillType primarySkillType)
@@ -1005,7 +1010,7 @@ public class McMMOPlayer {
         BleedTimerTask.bleedOut(thisPlayer);
 
         if (syncSave) {
-            getProfile().save();
+            getProfile().save(true);
         } else {
             getProfile().scheduleAsyncSave();
         }

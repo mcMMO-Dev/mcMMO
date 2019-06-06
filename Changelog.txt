@@ -161,6 +161,11 @@ Version 2.2.0
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
     Added 'UndefinedSkillBehaviour' for trying to use a method that has no behaviour defined for the provided skill
+Version 2.1.69
+    Fixed a few places where mcMMO would not save player data immediately which may cause players to lose a few minutes of progress
+
+    A big thanks to Sleepyflea for helping test this patch and report this bug.
+
 Version 2.1.68
     Updated Japanese locale (thanks Snake)
     Fixed a bug where consuming food in the off hand did not trigger the Diet abilities

@@ -5,13 +5,15 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerProfileSaveTask extends BukkitRunnable {
     private PlayerProfile playerProfile;
+    private boolean isSync;
 
-    public PlayerProfileSaveTask(PlayerProfile playerProfile) {
+    public PlayerProfileSaveTask(PlayerProfile playerProfile, boolean isSync) {
         this.playerProfile = playerProfile;
+        this.isSync = isSync;
     }
 
     @Override
     public void run() {
-        playerProfile.save();
+        playerProfile.save(isSync);
     }
 }
