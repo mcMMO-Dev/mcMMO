@@ -92,14 +92,23 @@ public class PlayerProfile {
     }
 
     public void scheduleAsyncSave() {
-        new PlayerProfileSaveTask(this).runTaskAsynchronously(mcMMO.p);
+        new PlayerProfileSaveTask(this, false).runTaskAsynchronously(mcMMO.p);
+    }
+
+    public void scheduleSyncSave() {
+        new PlayerProfileSaveTask(this, true).runTask(mcMMO.p);
     }
 
     public void scheduleAsyncSaveDelay() {
-        new PlayerProfileSaveTask(this).runTaskLaterAsynchronously(mcMMO.p, 20);
+        new PlayerProfileSaveTask(this, false).runTaskLaterAsynchronously(mcMMO.p, 20);
     }
 
-    public void save() {
+    @Deprecated
+    public void scheduleSyncSaveDelay() {
+        new PlayerProfileSaveTask(this, true).runTaskLater(mcMMO.p, 20);
+    }
+
+    public void save(boolean useSync) {
         if (!changed || !loaded) {
             saveAttempts = 0;
             return;
@@ -121,7 +130,12 @@ public class PlayerProfile {
             if(saveAttempts < 10)
             {
                 saveAttempts++;
-                scheduleAsyncSaveDelay();
+
+                if(useSync)
+                    scheduleSyncSave(); //Execute sync saves immediately
+                else
+                    scheduleAsyncSaveDelay();
+
                 return;
             } else {
                 mcMMO.p.getLogger().severe("mcMMO has failed to save the profile for "
@@ -144,7 +158,7 @@ public class PlayerProfile {
     }
 
     public void setUniqueId(UUID uuid) {
-        changed = true;
+        markProfileDirty();
 
         this.uuid = uuid;
     }
@@ -162,9 +176,16 @@ public class PlayerProfile {
     }
 
     public void setMobHealthbarType(MobHealthbarType mobHealthbarType) {
-        changed = true;
+        markProfileDirty();
 
         this.mobHealthbarType = mobHealthbarType;
+    }
+
+    /**
+     * Marks the profile as "dirty" which flags a profile to be saved in the next save operation
+     */
+    public void markProfileDirty() {
+        changed = true;
     }
 
     public int getScoreboardTipsShown() {
@@ -172,7 +193,7 @@ public class PlayerProfile {
     }
 
     public void setScoreboardTipsShown(int scoreboardTipsShown) {
-        changed = true;
+        markProfileDirty();
 
         this.scoreboardTipsShown = scoreboardTipsShown;
     }
@@ -188,12 +209,12 @@ public class PlayerProfile {
     public int getChimaerWingDATS() { return uniquePlayerData.get(UniqueDataType.CHIMAERA_WING_DATS);}
 
     protected void setChimaeraWingDATS(int DATS) {
-        changed = true;
+        markProfileDirty();
         uniquePlayerData.put(UniqueDataType.CHIMAERA_WING_DATS, DATS);
     }
 
     public void setUniqueData(UniqueDataType uniqueDataType, int newData) {
-        changed = true;
+        markProfileDirty();
         uniquePlayerData.put(uniqueDataType, newData);
     }
 
@@ -216,7 +237,7 @@ public class PlayerProfile {
      * @param DATS the DATS of the ability
      */
     protected void setAbilityDATS(SuperAbilityType ability, long DATS) {
-        changed = true;
+        markProfileDirty();
 
         abilityDATS.put(ability, (int) (DATS * .001D));
     }
@@ -225,7 +246,7 @@ public class PlayerProfile {
      * Reset all ability cooldowns.
      */
     protected void resetCooldowns() {
-        changed = true;
+        markProfileDirty();
 
         for (SuperAbilityType ability : abilityDATS.keySet()) {
             abilityDATS.put(ability, 0);
@@ -253,7 +274,7 @@ public class PlayerProfile {
             return;
         }
 
-        changed = true;
+        markProfileDirty();
 
         skillsXp.put(skill, xpLevel);
     }
@@ -261,7 +282,7 @@ public class PlayerProfile {
     protected float levelUp(PrimarySkillType skill) {
         float xpRemoved = getXpToLevel(skill);
 
-        changed = true;
+        markProfileDirty();
 
         skills.put(skill, skills.get(skill) + 1);
         skillsXp.put(skill, skillsXp.get(skill) - xpRemoved);
@@ -280,7 +301,7 @@ public class PlayerProfile {
             return;
         }
 
-        changed = true;
+        markProfileDirty();
 
         skillsXp.put(skill, skillsXp.get(skill) - xp);
     }
@@ -290,7 +311,7 @@ public class PlayerProfile {
             return;
         }
 
-        changed = true;
+        markProfileDirty();
 
         skillsXp.put(skill, skillsXp.get(skill) - xp);
     }
@@ -306,7 +327,7 @@ public class PlayerProfile {
             return;
         }
 
-        changed = true;
+        markProfileDirty();
 
         //Don't allow levels to be negative
         if(level < 0)
@@ -333,7 +354,7 @@ public class PlayerProfile {
      * @param xp Number of experience to add
      */
     public void addXp(PrimarySkillType skill, float xp) {
-        changed = true;
+        markProfileDirty();
 
         if (skill.isChildSkill()) {
             Set<PrimarySkillType> parentSkills = FamilyTree.getParents(skill);

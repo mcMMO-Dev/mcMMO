@@ -100,9 +100,10 @@ public class McMMOPlayer {
 
     private boolean isUsingUnarmed;
     private final FixedMetadataValue playerMetadata;
+    private String playerName;
 
     public McMMOPlayer(Player player, PlayerProfile profile) {
-        String playerName = player.getName();
+        this.playerName = player.getName();
         UUID uuid = player.getUniqueId();
 
         this.player = player;
@@ -138,6 +139,10 @@ public class McMMOPlayer {
         }
 
         experienceBarManager = new ExperienceBarManager(this);
+    }
+
+    public String getPlayerName() {
+        return playerName;
     }
 
     /*public void hideXpBar(PrimarySkillType primarySkillType)
@@ -995,7 +1000,7 @@ public class McMMOPlayer {
         BleedTimerTask.bleedOut(thisPlayer);
 
         if (syncSave) {
-            getProfile().save();
+            getProfile().save(true);
         } else {
             getProfile().scheduleAsyncSave();
         }

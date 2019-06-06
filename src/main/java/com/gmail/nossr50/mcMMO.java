@@ -318,9 +318,9 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onDisable() {
         try {
-            Alchemy.finishAllBrews();   // Finish all partially complete AlchemyBrewTasks to prevent vanilla brewing continuation on restart
             UserManager.saveAll();      // Make sure to save player information if the server shuts down
             UserManager.clearAll();
+            Alchemy.finishAllBrews();   // Finish all partially complete AlchemyBrewTasks to prevent vanilla brewing continuation on restart
             PartyManager.saveParties(); // Save our parties
 
             //TODO: Needed?

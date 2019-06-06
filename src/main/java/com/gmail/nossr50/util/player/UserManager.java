@@ -10,10 +10,15 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 public final class UserManager {
 
-    private UserManager() {}
+    private static HashSet<McMMOPlayer> playerDataSet; //Used to track players for sync saves on shutdown
+
+    private UserManager() {
+        playerDataSet = new HashSet<>();
+    }
 
     /**
      * Track a new user.
@@ -22,6 +27,11 @@ public final class UserManager {
      */
     public static void track(McMMOPlayer mcMMOPlayer) {
         mcMMOPlayer.getPlayer().setMetadata(mcMMO.playerDataKey, new FixedMetadataValue(mcMMO.p, mcMMOPlayer));
+        playerDataSet.add(mcMMOPlayer); //for sync saves on shutdown
+    }
+
+    public static void cleanupPlayer(McMMOPlayer mcMMOPlayer) {
+        playerDataSet.remove(mcMMOPlayer);
     }
 
     /**
@@ -30,7 +40,9 @@ public final class UserManager {
      * @param player The Player object
      */
     public static void remove(Player player) {
+        McMMOPlayer mcMMOPlayer = getPlayer(player);
         player.removeMetadata(mcMMO.playerDataKey, mcMMO.p);
+        playerDataSet.remove(mcMMOPlayer); //Clear sync save tracking
     }
 
     /**
@@ -40,25 +52,31 @@ public final class UserManager {
         for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
             remove(player);
         }
+
+        playerDataSet.clear(); //Clear sync save tracking
     }
 
     /**
      * Save all users ON THIS THREAD.
      */
     public static void saveAll() {
-        ImmutableList<Player> onlinePlayers = ImmutableList.copyOf(mcMMO.p.getServer().getOnlinePlayers());
-        mcMMO.p.debug("Saving mcMMOPlayers... (" + onlinePlayers.size() + ")");
+        ImmutableList<McMMOPlayer> trackedSyncData = ImmutableList.copyOf(playerDataSet);
 
-        for (Player player : onlinePlayers) {
+        mcMMO.p.getLogger().info("Saving mcMMOPlayers... (" + trackedSyncData.size() + ")");
+
+        for (McMMOPlayer playerData : trackedSyncData) {
             try
             {
-                getPlayer(player).getProfile().save();
+                mcMMO.p.getLogger().info("Saving data for player: "+playerData.getPlayerName());
+                playerData.getProfile().save(true);
             }
             catch (Exception e)
             {
-                mcMMO.p.getLogger().warning("Could not save mcMMO player data for player: " + player.getName());
+                mcMMO.p.getLogger().warning("Could not save mcMMO player data for player: " + playerData.getPlayerName());
             }
         }
+
+        mcMMO.p.getLogger().info("Finished save operation for "+trackedSyncData.size()+" players!");
     }
 
     public static Collection<McMMOPlayer> getPlayers() {
