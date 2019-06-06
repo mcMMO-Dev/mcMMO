@@ -144,9 +144,9 @@ public class PlayerProfile {
                         " Check your console for errors and inspect your DB for issues.");
             }
 
+        } else {
+            saveAttempts = 0;
         }
-
-        saveAttempts = 0;
     }
 
     public String getPlayerName() {

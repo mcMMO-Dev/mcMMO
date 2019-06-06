@@ -33,7 +33,8 @@ public final class UserManager {
     }
 
     public static void cleanupPlayer(McMMOPlayer mcMMOPlayer) {
-        playerDataSet.remove(mcMMOPlayer);
+        if(playerDataSet != null && playerDataSet.contains(mcMMOPlayer))
+            playerDataSet.remove(mcMMOPlayer);
     }
 
     /**
