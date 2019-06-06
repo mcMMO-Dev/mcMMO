@@ -16,9 +16,7 @@ public final class UserManager {
 
     private static HashSet<McMMOPlayer> playerDataSet; //Used to track players for sync saves on shutdown
 
-    private UserManager() {
-        playerDataSet = new HashSet<>();
-    }
+    private UserManager() {}
 
     /**
      * Track a new user.
@@ -27,6 +25,10 @@ public final class UserManager {
      */
     public static void track(McMMOPlayer mcMMOPlayer) {
         mcMMOPlayer.getPlayer().setMetadata(mcMMO.playerDataKey, new FixedMetadataValue(mcMMO.p, mcMMOPlayer));
+
+        if(playerDataSet == null)
+            playerDataSet = new HashSet<>();
+
         playerDataSet.add(mcMMOPlayer); //for sync saves on shutdown
     }
 
@@ -42,7 +44,9 @@ public final class UserManager {
     public static void remove(Player player) {
         McMMOPlayer mcMMOPlayer = getPlayer(player);
         player.removeMetadata(mcMMO.playerDataKey, mcMMO.p);
-        playerDataSet.remove(mcMMOPlayer); //Clear sync save tracking
+
+        if(playerDataSet != null && playerDataSet.contains(mcMMOPlayer))
+            playerDataSet.remove(mcMMOPlayer); //Clear sync save tracking
     }
 
     /**
@@ -53,7 +57,8 @@ public final class UserManager {
             remove(player);
         }
 
-        playerDataSet.clear(); //Clear sync save tracking
+        if(playerDataSet != null)
+            playerDataSet.clear(); //Clear sync save tracking
     }
 
     /**
