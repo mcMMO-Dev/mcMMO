@@ -18,7 +18,7 @@ public class ConfigRanksTaming {
     @Setting(value = "Pummel")
     private SkillRankProperty pummel = new SkillRankProperty(20);
 
-    @Setting(value = "FastFoodService")
+    @Setting(value = "Fast-Food-Service")
     private SkillRankProperty fastFoodService = new SkillRankProperty(20);
 
     @Setting(value = "Environmentally-Aware")
