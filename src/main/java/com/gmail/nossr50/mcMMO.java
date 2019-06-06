@@ -1,7 +1,6 @@
 package com.gmail.nossr50;
 
 import com.gmail.nossr50.config.ConfigManager;
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.hocon.database.ConfigSectionCleaning;
 import com.gmail.nossr50.config.hocon.database.ConfigSectionMySQL;
 import com.gmail.nossr50.config.hocon.party.ConfigSectionPartyExperienceSharing;

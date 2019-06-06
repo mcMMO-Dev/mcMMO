@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes.skills;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
@@ -196,7 +195,7 @@ public enum PrimarySkillType {
     }*/
 
     public boolean getPVPEnabled() {
-        return MainConfig.getInstance().getPVPEnabled(this);
+        return mcMMO.getConfigManager().getConfigCoreSkills().isPVPEnabled(this);
     }
 
     /*public void setHardcoreVampirismEnabled(boolean enable) {
@@ -204,7 +203,7 @@ public enum PrimarySkillType {
     }*/
 
     public boolean getPVEEnabled() {
-        return MainConfig.getInstance().getPVEEnabled(this);
+        return mcMMO.getConfigManager().getConfigCoreSkills().isPVEEnabled(this);
     }
 
     public boolean getHardcoreStatLossEnabled() {

@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config;
 
-import com.gmail.nossr50.config.hocon.*;
+import com.gmail.nossr50.config.hocon.SerializedConfigLoader;
 import com.gmail.nossr50.config.hocon.admin.ConfigAdmin;
 import com.gmail.nossr50.config.hocon.antiexploit.ConfigExploitPrevention;
 import com.gmail.nossr50.config.hocon.backup.ConfigAutomatedBackups;
