@@ -284,47 +284,6 @@ public class MainConfig extends ConfigValidated {
         return getIntValue(HARDCORE, VAMPIRISM, LEVEL_THRESHOLD);
     }
 
-    /* Items */
-    public int getChimaeraUseCost() {
-        return getIntValue(ITEMS, CHIMAERA_WING, USE_COST);
-    }
-
-    public int getChimaeraRecipeCost() {
-        return getIntValue(ITEMS, CHIMAERA_WING, RECIPE_COST);
-    }
-
-    public Material getChimaeraItem() {
-        return Material.matchMaterial(getStringValue(ITEMS, CHIMAERA_WING, ITEM + NAME));
-    }
-
-    public boolean getChimaeraEnabled() {
-        return getBooleanValue(ITEMS, CHIMAERA_WING, ENABLED);
-    }
-
-    public boolean getChimaeraPreventUseUnderground() {
-        return getBooleanValue(ITEMS, CHIMAERA_WING, PREVENT_USE_UNDERGROUND);
-    }
-
-    public boolean getChimaeraUseBedSpawn() {
-        return getBooleanValue(ITEMS, CHIMAERA_WING, USE_BED_SPAWN);
-    }
-
-    public int getChimaeraCooldown() {
-        return getIntValue(ITEMS, CHIMAERA_WING, COOLDOWN);
-    }
-
-    public int getChimaeraWarmup() {
-        return getIntValue(ITEMS, CHIMAERA_WING, WARMUP);
-    }
-
-    public int getChimaeraRecentlyHurtCooldown() {
-        return getIntValue(ITEMS, CHIMAERA_WING, RECENTLY_HURT + COOLDOWN);
-    }
-
-    public boolean getChimaeraSoundEnabled() {
-        return getBooleanValue(ITEMS, CHIMAERA_WING, SOUND + "_" + ENABLED);
-    }
-
     /* Particles */
     public boolean getAbilityActivationEffectEnabled() {
         return getBooleanValue(PARTICLES, ABILITY_ACTIVATION);

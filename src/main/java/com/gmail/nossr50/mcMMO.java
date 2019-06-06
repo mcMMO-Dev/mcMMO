@@ -515,7 +515,7 @@ public class mcMMO extends JavaPlugin {
 
     private void registerCustomRecipes() {
         getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
-            if (MainConfig.getInstance().getChimaeraEnabled()) {
+            if (mcMMO.getConfigManager().getConfigItems().isChimaeraWingEnabled()) {
                 getServer().addRecipe(ChimaeraWing.getChimaeraWingRecipe());
             }
         }, 40);

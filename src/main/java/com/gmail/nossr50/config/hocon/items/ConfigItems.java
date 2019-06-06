@@ -17,7 +17,7 @@ public class ConfigItems {
         return consumables.getChimaeraWing();
     }
 
-    public int getUseCost() {
+    public int getChimaeraWingUseCost() {
         return getChimaeraWing().getUseCost();
     }
 
@@ -25,11 +25,11 @@ public class ConfigItems {
         return getChimaeraWing().getRecipeCost();
     }
 
-    public String getRecipeMats() {
+    public String getChimaeraWingRecipeMats() {
         return getChimaeraWing().getRecipeMats();
     }
 
-    public int getWarmup() {
+    public int getChimaeraWingWarmup() {
         return getChimaeraWing().getWarmup();
     }
 
@@ -37,7 +37,7 @@ public class ConfigItems {
         return getChimaeraWing().getCooldown();
     }
 
-    public boolean isEnabled() {
+    public boolean isChimaeraWingEnabled() {
         return getChimaeraWing().isEnabled();
     }
 
@@ -49,11 +49,11 @@ public class ConfigItems {
         return getChimaeraWing().isPreventUndergroundUse();
     }
 
-    public boolean isUseBedSpawn() {
+    public boolean doesChimaeraUseBedSpawn() {
         return getChimaeraWing().isUseBedSpawn();
     }
 
-    public boolean isSoundEnabled() {
+    public boolean isChimaeraWingSoundEnabled() {
         return getChimaeraWing().isSoundEnabled();
     }
 }
