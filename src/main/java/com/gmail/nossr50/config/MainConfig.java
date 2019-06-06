@@ -259,31 +259,6 @@ public class MainConfig extends ConfigValidated {
         return getBooleanValue(GENERAL, REFRESH_CHUNKS);
     }
 
-    /* Hardcore Mode */
-    public boolean getHardcoreStatLossEnabled(PrimarySkillType primarySkillType) {
-        return getBooleanValue(HARDCORE, DEATH_STAT_LOSS, ENABLED, StringUtils.getCapitalized(primarySkillType.toString()));
-    }
-
-    public double getHardcoreDeathStatPenaltyPercentage() {
-        return getDoubleValue(HARDCORE, DEATH_STAT_LOSS, PENALTY_PERCENTAGE);
-    }
-
-    public int getHardcoreDeathStatPenaltyLevelThreshold() {
-        return getIntValue(HARDCORE, DEATH_STAT_LOSS, LEVEL_THRESHOLD);
-    }
-
-    public boolean getHardcoreVampirismEnabled(PrimarySkillType primarySkillType) {
-        return getBooleanValue(HARDCORE, VAMPIRISM, ENABLED, StringUtils.getCapitalized(primarySkillType.toString()));
-    }
-
-    public double getHardcoreVampirismStatLeechPercentage() {
-        return getDoubleValue(HARDCORE, VAMPIRISM, LEECH_PERCENTAGE);
-    }
-
-    public int getHardcoreVampirismLevelThreshold() {
-        return getIntValue(HARDCORE, VAMPIRISM, LEVEL_THRESHOLD);
-    }
-
     /* Particles */
     public boolean getAbilityActivationEffectEnabled() {
         return getBooleanValue(PARTICLES, ABILITY_ACTIVATION);

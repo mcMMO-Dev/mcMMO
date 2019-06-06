@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.Player;
@@ -15,8 +16,8 @@ public final class HardcoreManager {
     }
 
     public static void invokeStatPenalty(Player player) {
-        double statLossPercentage = MainConfig.getInstance().getHardcoreDeathStatPenaltyPercentage();
-        int levelThreshold = MainConfig.getInstance().getHardcoreDeathStatPenaltyLevelThreshold();
+        double statLossPercentage = mcMMO.getConfigManager().getConfigHardcore().getDeathPenalty().getPenaltyPercentage();
+        int levelThreshold = mcMMO.getConfigManager().getConfigHardcore().getDeathPenalty().getLevelThreshold();
 
         if (UserManager.getPlayer(player) == null)
             return;
@@ -60,8 +61,8 @@ public final class HardcoreManager {
     }
 
     public static void invokeVampirism(Player killer, Player victim) {
-        double vampirismStatLeechPercentage = MainConfig.getInstance().getHardcoreVampirismStatLeechPercentage();
-        int levelThreshold = MainConfig.getInstance().getHardcoreVampirismLevelThreshold();
+        double vampirismStatLeechPercentage = mcMMO.getConfigManager().getConfigHardcore().getVampirism().getPenaltyPercentage();
+        int levelThreshold = mcMMO.getConfigManager().getConfigHardcore().getVampirism().getLevelThreshold();
 
         if (UserManager.getPlayer(killer) == null || UserManager.getPlayer(victim) == null)
             return;

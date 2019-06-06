@@ -208,11 +208,11 @@ public enum PrimarySkillType {
     }
 
     public boolean getHardcoreStatLossEnabled() {
-        return MainConfig.getInstance().getHardcoreStatLossEnabled(this);
+        return mcMMO.getConfigManager().getConfigHardcore().getDeathPenalty().getSkillToggleMap().get(this);
     }
 
     public boolean getHardcoreVampirismEnabled() {
-        return MainConfig.getInstance().getHardcoreVampirismEnabled(this);
+        return mcMMO.getConfigManager().getConfigHardcore().getVampirism().getSkillToggleMap().get(this);
     }
 
     public ToolType getTool() {

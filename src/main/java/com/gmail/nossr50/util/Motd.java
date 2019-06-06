@@ -71,11 +71,11 @@ public final class Motd {
         player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Enabled", statLossInfo + seperator + vampirismInfo));
 
         if (deathStatLossEnabled) {
-            player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.DeathStatLoss.Stats", MainConfig.getInstance().getHardcoreDeathStatPenaltyPercentage()));
+            player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.DeathStatLoss.Stats", mcMMO.getConfigManager().getConfigHardcore().getDeathPenalty().getPenaltyPercentage()));
         }
 
         if (vampirismEnabled) {
-            player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Vampirism.Stats", MainConfig.getInstance().getHardcoreVampirismStatLeechPercentage()));
+            player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Vampirism.Stats", mcMMO.getConfigManager().getConfigHardcore().getVampirism().getPenaltyPercentage()));
         }
     }
 
