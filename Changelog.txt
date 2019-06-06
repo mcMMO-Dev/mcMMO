@@ -1,6 +1,8 @@
 Version 2.1.69
     Fixed a few places where mcMMO would not save player data immediately which may cause players to lose a few minutes of progress
 
+    A big thanks to Sleepyflea for helping test this patch and report this bug.
+
 Version 2.1.68
     Updated Japanese locale (thanks Snake)
     Fixed a bug where consuming food in the off hand did not trigger the Diet abilities
