@@ -619,7 +619,7 @@ public class PlayerListener implements Listener {
                         event.setCancelled(true);
 
                         // Make sure the player knows what he's doing when trying to salvage an enchanted item
-                        if (!(heldItem.getEnchantments().size() > 0) || salvageManager.checkConfirmation(true)) {
+                        if (salvageManager.checkConfirmation(true)) {
                             SkillUtils.handleAbilitySpeedDecrease(player);
                             salvageManager.handleSalvage(block.getLocation(), heldItem);
                             player.updateInventory();

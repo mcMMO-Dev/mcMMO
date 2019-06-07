@@ -1,3 +1,6 @@
+Version 2.1.71
+    Salvage will now always ask for confirmation before breaking your items (instead of only asking for enchanted items)
+
 Version 2.1.70
     Added new DatabaseAPI to the API package, has features relating to database operations
     Fixed a bug where shulker boxes (without colors) would activate tool ready messages
