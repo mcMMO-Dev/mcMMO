@@ -32,6 +32,7 @@ Version 2.2.0
     Acrobatic's Dodge XP increased from 120 -> 480
     Fishing's always catch fish setting now defaults to true instead of false
     Optimized code related to Fishing
+    Tracking arrows for Arrow Retrieval with Archery has been rewritten to a much more efficient system
     Added a new command 'mcmmoreload' to reload config values
     Added new locale string 'Commands.Reload.Start'
     Added new locale string 'Commands.Reload.Finished'

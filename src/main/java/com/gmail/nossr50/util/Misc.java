@@ -105,7 +105,7 @@ public final class Misc {
             return null;
         }
 
-        return location.getWorld().dropItem(location, itemStack);
+        return location.getWorld().dropItemNaturally(location, itemStack);
     }
 
     public static void profileCleanup(String playerName) {

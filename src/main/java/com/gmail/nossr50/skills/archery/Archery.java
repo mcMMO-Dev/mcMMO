@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.archery;
 
-import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.core.MetadataConstants;
+import com.gmail.nossr50.datatypes.meta.TrackedArrowMeta;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
@@ -9,101 +10,48 @@ import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import org.bukkit.metadata.FixedMetadataValue;
 
 public class Archery {
-    private static List<TrackedEntity> trackedEntities;
-
-    private static double skillShotDamageCap;
-
-    private static double dazeBonusDamage;
-
-    private static double distanceXpMultiplier;
-
-    private static Archery archery;
-
-    public Archery() {
-        List<TrackedEntity> trackedEntities = new ArrayList<>();
-
-        skillShotDamageCap = AdvancedConfig.getInstance().getSkillShotDamageMax();
-
-        dazeBonusDamage = AdvancedConfig.getInstance().getDazeBonusDamage();
-
-        distanceXpMultiplier = mcMMO.getConfigManager().getConfigExperience().getDistanceMultiplier();
-    }
-
-    public static Archery getInstance() {
-        if (archery == null)
-            archery = new Archery();
-
-        return archery;
-    }
-
-    protected static void incrementTrackerValue(LivingEntity livingEntity) {
-        for (TrackedEntity trackedEntity : trackedEntities) {
-            if (trackedEntity.getLivingEntity().getEntityId() == livingEntity.getEntityId()) {
-                trackedEntity.incrementArrowCount();
-                return;
-            }
-        }
-
-        addToTracker(livingEntity); // If the entity isn't tracked yet
-    }
-
-    protected static void addToTracker(LivingEntity livingEntity) {
-        TrackedEntity trackedEntity = new TrackedEntity(livingEntity);
-
-        trackedEntity.incrementArrowCount();
-        trackedEntities.add(trackedEntity);
-    }
-
-    protected static void removeFromTracker(TrackedEntity trackedEntity) {
-        trackedEntities.remove(trackedEntity);
-    }
-
     /**
      * Check for arrow retrieval.
      *
      * @param livingEntity The entity hit by the arrows
      */
     public static void arrowRetrievalCheck(LivingEntity livingEntity) {
-        for (Iterator<TrackedEntity> entityIterator = trackedEntities.iterator(); entityIterator.hasNext(); ) {
-            TrackedEntity trackedEntity = entityIterator.next();
+        if(livingEntity.hasMetadata(MetadataConstants.ARROW_TRACKER_METAKEY)) {
+            Misc.dropItems(livingEntity.getLocation(), new ItemStack(Material.ARROW), livingEntity.getMetadata(MetadataConstants.ARROW_TRACKER_METAKEY).get(0).asInt());
+        }
+    }
 
-            if (trackedEntity.getID() == livingEntity.getUniqueId()) {
-                Misc.dropItems(livingEntity.getLocation(), new ItemStack(Material.ARROW), trackedEntity.getArrowCount());
-                entityIterator.remove();
-                return;
-            }
+    public static void incrementArrowCount(LivingEntity livingEntity) {
+        if(livingEntity.hasMetadata(MetadataConstants.ARROW_TRACKER_METAKEY)) {
+            int arrowCount = livingEntity.getMetadata(MetadataConstants.ARROW_TRACKER_METAKEY).get(0).asInt();
+            livingEntity.getMetadata(MetadataConstants.ARROW_TRACKER_METAKEY).set(0, new FixedMetadataValue(mcMMO.p, arrowCount + 1));
+        } else {
+            livingEntity.setMetadata(MetadataConstants.ARROW_TRACKER_METAKEY, new TrackedArrowMeta(mcMMO.p, 1));
         }
     }
 
     public static double getSkillShotBonusDamage(Player player, double oldDamage) {
         double damageBonusPercent = getDamageBonusPercent(player);
         double newDamage = oldDamage + (oldDamage * damageBonusPercent);
-        return Math.min(newDamage, Archery.skillShotDamageCap);
+        return Math.min(newDamage, getSkillShotDamageCap());
     }
 
     public static double getDamageBonusPercent(Player player) {
-        return ((RankUtils.getRank(player, SubSkillType.ARCHERY_SKILL_SHOT)) * AdvancedConfig.getInstance().getSkillShotRankDamageMultiplier()) / 100.0D;
+        return ((RankUtils.getRank(player, SubSkillType.ARCHERY_SKILL_SHOT)) * mcMMO.getConfigManager().getConfigArchery().getSkillShotDamageMultiplier()) / 100.0D;
     }
 
-    public List<TrackedEntity> getTrackedEntities() {
-        return trackedEntities;
+    public static double getSkillShotDamageCap() {
+        return mcMMO.getConfigManager().getConfigArchery().getSkillShotDamageCeiling();
     }
 
-    public double getSkillShotDamageCap() {
-        return skillShotDamageCap;
+    public static double getDazeBonusDamage() {
+        return mcMMO.getConfigManager().getConfigArchery().getDaze().getDazeBonusDamage();
     }
 
-    public double getDazeBonusDamage() {
-        return dazeBonusDamage;
-    }
-
-    public double getDistanceXpMultiplier() {
-        return distanceXpMultiplier;
+    public static double getDistanceXpMultiplier() {
+        return mcMMO.getConfigManager().getConfigExperience().getExperienceArchery().getDistanceMultiplier();
     }
 }

@@ -1,6 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -103,7 +102,10 @@ public class EntityListener implements Listener {
             projectile.setMetadata(MetadataConstants.INFINITE_ARROW_METAKEY, MetadataConstants.metadataValue);
         }
 
-        projectile.setMetadata(MetadataConstants.BOW_FORCE_METAKEY, new FixedMetadataValue(plugin, Math.min(event.getForce() * AdvancedConfig.getInstance().getForceMultiplier(), 1.0)));
+        projectile.setMetadata(MetadataConstants.BOW_FORCE_METAKEY,
+                new FixedMetadataValue(plugin,
+                        Math.min(event.getForce()
+                                * mcMMO.getConfigManager().getConfigExperience().getExperienceArchery().getForceMultiplier(), 1.0)));
         projectile.setMetadata(MetadataConstants.ARROW_DISTANCE_METAKEY, new FixedMetadataValue(plugin, projectile.getLocation()));
     }
 

@@ -30,7 +30,7 @@ public class ConfigArcheryDaze {
         return maxBonusLevel;
     }
 
-    public double getBonusDamage() {
+    public double getDazeBonusDamage() {
         return bonusDamage;
     }
 }

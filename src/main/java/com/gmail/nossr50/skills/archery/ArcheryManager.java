@@ -59,7 +59,7 @@ public class ArcheryManager extends SkillManager {
             return 1;
         }
 
-        return 1 + Math.min(firedLocation.distance(targetLocation), 50) * Archery.getInstance().getDistanceXpMultiplier();
+        return 1 + Math.min(firedLocation.distance(targetLocation), 50) * Archery.getDistanceXpMultiplier();
     }
 
     /**
@@ -67,9 +67,9 @@ public class ArcheryManager extends SkillManager {
      *
      * @param target The {@link LivingEntity} damaged by the arrow
      */
-    public void retrieveArrows(LivingEntity target) {
+    public void processArrowRetrievalActivation(LivingEntity target) {
         if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ARCHERY_ARROW_RETRIEVAL, getPlayer())) {
-            Archery.incrementTrackerValue(target);
+            Archery.incrementArrowCount(target);
         }
     }
 
@@ -98,7 +98,7 @@ public class ArcheryManager extends SkillManager {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.TargetDazed");
         }
 
-        return Archery.getInstance().getDazeBonusDamage();
+        return Archery.getDazeBonusDamage();
     }
 
     /**

@@ -218,7 +218,7 @@ public final class CombatUtils {
         }
 
         if (!arrow.hasMetadata(MetadataConstants.INFINITE_ARROW_METAKEY) && archeryManager.canRetrieveArrows()) {
-            archeryManager.retrieveArrows(target);
+            archeryManager.processArrowRetrievalActivation(target);
         }
 
         if (canUseLimitBreak(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK)) {

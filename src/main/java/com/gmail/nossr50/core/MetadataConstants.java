@@ -22,6 +22,7 @@ public class MetadataConstants {
     public final static String INFINITE_ARROW_METAKEY = "mcMMO: Infinite Arrow";
     public final static String BOW_FORCE_METAKEY = "mcMMO: Bow Force";
     public final static String ARROW_DISTANCE_METAKEY = "mcMMO: Arrow Distance";
+    public final static String ARROW_TRACKER_METAKEY = "mcMMO: Arrow Tracker";
     public final static String BONUS_DROPS_METAKEY = "mcMMO: Bonus Drops";
     public final static String DISARMED_ITEM_METAKEY = "mcMMO: Disarmed Item";
     public final static String PLAYER_DATA_METAKEY = "mcMMO: Player Data";

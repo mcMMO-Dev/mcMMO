@@ -7,17 +7,6 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 @ConfigSerializable
 public class ConfigArchery {
 
-    /* ARCHERY */
-
-//
-//    public double getDazeBonusDamage() {
-//        return getDoubleValue(SKILLS, ARCHERY, DAZE, BONUS_DAMAGE);
-//    }
-//
-//    public double getForceMultiplier() {
-//        return getDoubleValue(SKILLS, ARCHERY, FORCE_MULTIPLIER);
-//    }
-
     @Setting(value = "Daze")
     private ConfigArcheryDaze daze = new ConfigArcheryDaze();
 
@@ -49,6 +38,6 @@ public class ConfigArchery {
     }
 
     public double getBonusDamage() {
-        return daze.getBonusDamage();
+        return daze.getDazeBonusDamage();
     }
 }
