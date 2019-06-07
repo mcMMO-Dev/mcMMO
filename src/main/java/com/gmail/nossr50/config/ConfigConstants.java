@@ -17,11 +17,16 @@ public class ConfigConstants {
     public static final String FOLDER_NAME_SKILLS = "skills";
     public static final String FOLDER_NAME_EXPERIENCE = "Experience Settings";
     public static final String FOLDER_NAME_DEFAULTS = "defaults";
+
     /* RELATIVE PATHS */
     public final static String RELATIVE_PATH_CONFIG_DIR = File.separator + FOLDER_NAME_CONFIG + File.separator;
     public final static String RELATIVE_PATH_SKILLS_DIR = RELATIVE_PATH_CONFIG_DIR + FOLDER_NAME_SKILLS + File.separator;
     public final static String RELATIVE_PATH_XP_DIR = RELATIVE_PATH_CONFIG_DIR + FOLDER_NAME_EXPERIENCE + File.separator;
     private final static String[] EXAMPLE_BLACKLIST_WORLDS = {"Example_15434453", "Example_2324423", "Example_323423465"};
+
+    /* Field Names & Comments */
+    public final static String MAX_CHANCE_FIELD_NAME = "Max-Chance";
+    public final static String MAX_CHANCE_FIELD_DESCRIPTION = "The maximum probability for this skill to succeed.";
 
     //Add the worlds to the list
     static {

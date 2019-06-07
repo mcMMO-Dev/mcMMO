@@ -1,29 +1,17 @@
-/*
 package com.gmail.nossr50.datatypes.skills.properties;
 
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.mcMMO;
+public interface MaxBonusLevel {
 
-public class MaxBonusLevel extends AbstractScalingProperty {
-    public MaxBonusLevel(SubSkillType subSkillType) {
-        super(subSkillType);
-    }
+    /**
+     * Get the max level for this skill for Retro scaling
+     * @return Retro Mode max bonus level
+     */
+    int getRetroScaleValue();
 
-    */
-/**
- * Returns the appropriate value for this scaling property whether it is Standard or Retro
- *
- * @return the value used in scaling calculations for this ScalingProperty
- *//*
+    /**
+     * Get the max level for this skill for Standard scaling
+     * @return Standard Mode max bonus level
+     */
+    int getStandardScaleValue();
 
-    @Override
-    public double getValue() {
-        if(mcMMO.getConfigManager().isRetroMode())
-        {
-
-        } else {
-
-        }
-    }
 }
-*/

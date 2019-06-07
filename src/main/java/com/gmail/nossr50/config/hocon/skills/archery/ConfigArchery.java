@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config.hocon.skills.archery;
 
+import com.gmail.nossr50.datatypes.skills.properties.MaxBonusLevel;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -17,27 +18,6 @@ public class ConfigArchery {
 //        return getDoubleValue(SKILLS, ARCHERY, FORCE_MULTIPLIER);
 //    }
 
-    /*
-        Archery:
-        SkillShot:
-            # RankDamageMultiplier: The current rank of this subskill is multiplied by this value to determine the bonus damage, rank 20 would result in 200% damage increase with a value of 10.0 for RankDamageMultiplier
-            # RankDamageMultiplier is a percentage
-            RankDamageMultiplier: 10.0
-            # MaxDamage: After adding bonus damage, the total damage dealt by the player will not exceed this number
-            # You should be careful to not set this too low
-            MaxDamage: 9.0
-        Daze:
-            # ChanceMax: Maximum chance of causing daze to opponents when on <MaxBonusLevel> or higher
-            # MaxBonusLevel: Maximum bonus level of Daze, when a player reaches this level his chance of causing a daze will be <ChanceMax>
-            # Modifier: Extra damage for arrows that cause a daze (2 damage = 1 heart)
-            ChanceMax: 50.0
-            MaxBonusLevel:
-                Standard: 100
-                RetroMode: 1000
-            BonusDamage: 4.0
-     */
-
-
     @Setting(value = "Daze")
     private ConfigArcheryDaze daze = new ConfigArcheryDaze();
 
@@ -50,5 +30,25 @@ public class ConfigArchery {
 
     public ConfigArcherySkillShot getSkillShot() {
         return skillShot;
+    }
+
+    public double getSkillShotDamageMultiplier() {
+        return skillShot.getSkillShotDamageMultiplier();
+    }
+
+    public double getSkillShotDamageCeiling() {
+        return skillShot.getSkillShotDamageCeiling();
+    }
+
+    public double getMaxChance() {
+        return daze.getMaxChance();
+    }
+
+    public MaxBonusLevel getMaxBonusLevel() {
+        return daze.getMaxBonusLevel();
+    }
+
+    public double getBonusDamage() {
+        return daze.getBonusDamage();
     }
 }
