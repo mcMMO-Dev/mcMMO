@@ -1,5 +1,5 @@
 Version 2.1.70
-
+    Added new DatabaseAPI to the API package, has features relating to database operations
 
 Version 2.1.69
     Fixed a few places where mcMMO would not save player data immediately which may cause players to lose a few minutes of progress
