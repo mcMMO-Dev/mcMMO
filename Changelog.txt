@@ -1,3 +1,6 @@
+Version 2.1.70
+
+
 Version 2.1.69
     Fixed a few places where mcMMO would not save player data immediately which may cause players to lose a few minutes of progress
 
