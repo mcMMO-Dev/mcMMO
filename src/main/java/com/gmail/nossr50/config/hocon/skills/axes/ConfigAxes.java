@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config.hocon.skills.axes;
 
-import com.gmail.nossr50.datatypes.skills.properties.AbstractSkillCeiling;
+import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.datatypes.skills.properties.DamageProperty;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
@@ -8,79 +8,54 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 @ConfigSerializable
 public class ConfigAxes {
 
+    @Setting(value = ConfigConstants.SUB_SKILL_NODE, comment = "Settings for Axes Sub-Skills.")
+    private ConfigAxesSubSkills subSkills = new ConfigAxesSubSkills();
 
-    @Setting(value = "Axe-Mastery")
-    private ConfigAxesAxeMastery configAxesAxeMastery = new ConfigAxesAxeMastery();
-
-    @Setting(value = "Critical-Strikes")
-    private ConfigAxesCriticalStrikes configAxesCriticalStrikes = new ConfigAxesCriticalStrikes();
-
-    @Setting(value = "Greater-Impact")
-    private ConfigAxesGreaterImpact configAxesGreaterImpact = new ConfigAxesGreaterImpact();
-
-    @Setting(value = "Impact")
-    private ConfigAxesImpact configAxesImpact = new ConfigAxesImpact();
-
-    @Setting(value = "Skull-Splitter")
-    private ConfigAxesSkullSplitter configAxesSkullSplitter = new ConfigAxesSkullSplitter();
-
-    public double getCriticalStrikesMaxActivationChance() {
-        return configAxesCriticalStrikes.getMaxActivationChance();
-    }
-
-    public AbstractSkillCeiling getCriticalStrikesMaximumProgressionLevel() {
-        return configAxesCriticalStrikes.getMaximumProgressionLevel();
-    }
-
-    public double getGreaterImpactActivationChance() {
-        return configAxesGreaterImpact.getActivationChance();
-    }
-
-    public double getGreaterImpactKnockBackModifier() {
-        return configAxesGreaterImpact.getKnockBackModifier();
-    }
-
-    public double getGreaterImpactBonusDamage() {
-        return configAxesGreaterImpact.getBonusDamage();
-    }
-
-    public DamageProperty getCriticalStrikesDamageProperty() {
-        return configAxesCriticalStrikes.getDamageProperty();
-    }
-
-    public double getSkullSplitterDamageDivisor() {
-        return configAxesSkullSplitter.getSkullSplitterDamageDivisor();
+    public ConfigAxesSubSkills getSubSkills() {
+        return subSkills;
     }
 
     public ConfigAxesAxeMastery getConfigAxesAxeMastery() {
-        return configAxesAxeMastery;
+        return subSkills.getConfigAxesAxeMastery();
+    }
+
+    public double getGreaterImpactKnockBackModifier() {
+        return subSkills.getGreaterImpactKnockBackModifier();
+    }
+
+    public double getGreaterImpactBonusDamage() {
+        return subSkills.getGreaterImpactBonusDamage();
+    }
+
+    public DamageProperty getCriticalStrikesDamageProperty() {
+        return subSkills.getCriticalStrikesDamageProperty();
+    }
+
+    public double getSkullSplitterDamageDivisor() {
+        return subSkills.getSkullSplitterDamageDivisor();
     }
 
     public ConfigAxesCriticalStrikes getConfigAxesCriticalStrikes() {
-        return configAxesCriticalStrikes;
+        return subSkills.getConfigAxesCriticalStrikes();
     }
 
     public ConfigAxesGreaterImpact getConfigAxesGreaterImpact() {
-        return configAxesGreaterImpact;
+        return subSkills.getConfigAxesGreaterImpact();
     }
 
     public ConfigAxesImpact getConfigAxesImpact() {
-        return configAxesImpact;
+        return subSkills.getConfigAxesImpact();
     }
 
     public ConfigAxesSkullSplitter getConfigAxesSkullSplitter() {
-        return configAxesSkullSplitter;
-    }
-
-    public double getImpactChance() {
-        return configAxesImpact.getImpactChance();
+        return subSkills.getConfigAxesSkullSplitter();
     }
 
     public double getImpactDurabilityDamageModifier() {
-        return configAxesImpact.getImpactDurabilityDamageModifier();
+        return subSkills.getImpactDurabilityDamageModifier();
     }
 
     public double getAxeMasteryMultiplier() {
-        return configAxesAxeMastery.getAxeMasteryMultiplier();
+        return subSkills.getAxeMasteryMultiplier();
     }
 }

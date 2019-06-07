@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.random;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
@@ -226,16 +225,7 @@ public class RandomChanceUtil {
      * @throws InvalidStaticChance if the skill has no defined static chance this exception will be thrown and you should know you're a naughty boy
      */
     public static double getStaticRandomChance(SubSkillType subSkillType) throws InvalidStaticChance {
-        switch (subSkillType) {
-            case AXES_ARMOR_IMPACT:
-                return mcMMO.getConfigManager().getConfigAxes().getImpactChance();
-            case AXES_GREATER_IMPACT:
-                return mcMMO.getConfigManager().getConfigAxes().getGreaterImpactActivationChance();
-            case TAMING_FAST_FOOD_SERVICE:
-                return AdvancedConfig.getInstance().getFastFoodChance();
-            default:
-                throw new InvalidStaticChance();
-        }
+        return mcMMO.getDynamicSettingsManager().getSkillPropertiesManager().getStaticChanceProperty(subSkillType);
     }
 
     public static boolean sendSkillEvent(Player player, SubSkillType subSkillType, double activationChance) {

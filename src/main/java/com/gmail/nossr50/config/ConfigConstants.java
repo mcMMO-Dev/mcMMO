@@ -25,7 +25,11 @@ public class ConfigConstants {
     private final static String[] EXAMPLE_BLACKLIST_WORLDS = {"Example_15434453", "Example_2324423", "Example_323423465"};
 
     /* Field Names & Comments */
+    public static final String SUB_SKILL_NODE = "Sub-Skill";
     public final static String MAX_CHANCE_FIELD_NAME = "Max-Chance";
+    public final static String STATIC_ACTIVATION_FIELD_NAME = "Activation-Chance";
+    public final static String MAX_BONUS_LEVEL_FIELD_NAME = "Max-Bonus-Level";
+    public final static String MAX_BONUS_PERCENTAGE_FIELD_NAME = "Max-Bonus-Percentage";
     public final static String MAX_CHANCE_FIELD_DESCRIPTION = "The maximum probability for this skill to succeed.";
 
     //Add the worlds to the list

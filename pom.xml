@@ -199,6 +199,11 @@
             <version>3.7-SNAPSHOT</version>
         </dependency>
         <dependency>
+            <groupId>org.spongepowered</groupId>
+            <artifactId>configurate-core</artifactId>
+            <version>3.7-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.maven.scm</groupId>
             <artifactId>maven-scm-provider-gitexe</artifactId>
             <version>1.8.1</version>

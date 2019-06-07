@@ -517,4 +517,8 @@ public final class ConfigManager {
     public ConfigExperience getConfigExperience() {
         return configExperience.getConfig();
     }
+
+    public SerializedConfigLoader<?> getSkillConfigLoader(PrimarySkillType primarySkillType) {
+        return skillConfigLoaders.get(primarySkillType);
+    }
 }

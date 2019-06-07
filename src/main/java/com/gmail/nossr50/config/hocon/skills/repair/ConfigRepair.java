@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config.hocon.skills.repair;
 
+import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.config.hocon.skills.repair.general.ConfigRepairGeneral;
 import com.gmail.nossr50.config.hocon.skills.repair.repairmastery.ConfigRepairMastery;
 import com.gmail.nossr50.config.hocon.skills.repair.subskills.ConfigRepairSubSkills;
@@ -74,7 +75,7 @@ public class ConfigRepair {
     @Setting(value = "General")
     private ConfigRepairGeneral repairGeneral = new ConfigRepairGeneral();
 
-    @Setting(value = "SubSkills", comment = "Settings for subskills stemming from Repair")
+    @Setting(value = ConfigConstants.SUB_SKILL_NODE, comment = "Settings for subskills stemming from Repair")
     private ConfigRepairSubSkills repairSubSkills = new ConfigRepairSubSkills();
 
     @Setting(value = "Z-Repairables", comment = "This is the list of what can be repaired in mcMMO by Anvils and their properties." +

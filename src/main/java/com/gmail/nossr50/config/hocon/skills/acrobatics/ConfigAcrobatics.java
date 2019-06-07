@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config.hocon.skills.acrobatics;
 
-import com.gmail.nossr50.config.hocon.skills.ConfigSubSkillScalingRNG;
+import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.config.hocon.skills.acrobatics.dodge.ConfigDodge;
 import com.gmail.nossr50.config.hocon.skills.acrobatics.roll.ConfigRoll;
 import ninja.leaping.configurate.objectmapping.Setting;
@@ -9,27 +9,26 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 @ConfigSerializable
 public class ConfigAcrobatics {
 
-    @Setting(value = "Roll", comment = "Settings related to the Roll Sub-Skill." +
-            "\nSettings related to preventing abuse of this skill can be found in the anti_exploit config file.")
-    private ConfigRoll roll = new ConfigRoll();
+    @Setting(value = ConfigConstants.SUB_SKILL_NODE, comment = "Sub-Skill settings for Acrobatics")
+    private ConfigAcrobaticsSubSkills subSkills = new ConfigAcrobaticsSubSkills();
 
-    @Setting(value = "Dodge", comment = "Settings related to the Dodge Sub-Skill." +
-            "\nSettings related to preventing abuse of this skill can be found in the anti_exploit config file.")
-    private ConfigDodge dodge = new ConfigDodge();
+    public ConfigAcrobaticsSubSkills getSubSkills() {
+        return subSkills;
+    }
 
     public ConfigRoll getRoll() {
-        return roll;
+        return subSkills.getRoll();
     }
 
     public ConfigDodge getDodge() {
-        return dodge;
+        return subSkills.getDodge();
     }
 
-    public ConfigSubSkillScalingRNG getRNGSettings() {
-        return dodge.getRNGSettings();
+    public double getDamageTheshold() {
+        return getRoll().getDamageTheshold();
     }
 
     public double getDamageReductionDivisor() {
-        return dodge.getDamageReductionDivisor();
+        return getDodge().getDamageReductionDivisor();
     }
 }
