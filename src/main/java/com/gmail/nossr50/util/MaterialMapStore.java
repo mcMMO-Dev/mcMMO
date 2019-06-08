@@ -410,6 +410,8 @@ public class MaterialMapStore {
         toolBlackList.add("oak_wood");
         toolBlackList.add("spruce_log");
         toolBlackList.add("spruce_wood");
+        toolBlackList.add("iron_block");
+        toolBlackList.add("gold_block");
     }
 
     private void addToHashSet(String string, HashSet<String> stringHashSet)
