@@ -216,8 +216,6 @@ public class mcMMO extends JavaPlugin {
                     Permissions.generateWorldTeleportPermissions();
                 }
 
-                InteractionManager.initMaps(); //Init maps before populating ranks
-
                 //Populate Ranked Skill Maps (DO THIS LAST)
                 RankUtils.populateRanks();
             }
@@ -577,6 +575,7 @@ public class mcMMO extends JavaPlugin {
             //TODO: Should do this differently
             Roll roll = new Roll();
             CoreSkillsConfig.getInstance().isSkillEnabled(roll);
+            InteractionManager.initMaps();
             InteractionManager.registerSubSkill(new Roll());
         }
     }
