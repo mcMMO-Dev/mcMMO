@@ -1,3 +1,6 @@
+Version 2.1.73
+    Fixed a NPE that could occur if an entire skill was disabled in coreskills.yml
+
 Version 2.1.72
     Fixed a NPE if a server shutdown with no player data needing to be saved (the error is harmless but spammy)
     Fixed a NPE that could occur if Roll was disabled in coreskills.yml

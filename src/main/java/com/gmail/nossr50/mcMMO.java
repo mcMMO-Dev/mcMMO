@@ -568,6 +568,8 @@ public class mcMMO extends JavaPlugin {
          * Acrobatics skills
          */
 
+        InteractionManager.initMaps(); //Init maps
+
         if(CoreSkillsConfig.getInstance().isPrimarySkillEnabled(PrimarySkillType.ACROBATICS))
         {
             System.out.println("[mcMMO]" + " enabling Acrobatics Skills");
@@ -575,7 +577,6 @@ public class mcMMO extends JavaPlugin {
             //TODO: Should do this differently
             Roll roll = new Roll();
             CoreSkillsConfig.getInstance().isSkillEnabled(roll);
-            InteractionManager.initMaps();
             InteractionManager.registerSubSkill(new Roll());
         }
     }
