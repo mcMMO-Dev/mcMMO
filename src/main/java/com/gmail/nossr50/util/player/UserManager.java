@@ -66,6 +66,9 @@ public final class UserManager {
      * Save all users ON THIS THREAD.
      */
     public static void saveAll() {
+        if(playerDataSet == null)
+            return;
+
         ImmutableList<McMMOPlayer> trackedSyncData = ImmutableList.copyOf(playerDataSet);
 
         mcMMO.p.getLogger().info("Saving mcMMOPlayers... (" + trackedSyncData.size() + ")");
