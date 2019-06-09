@@ -75,6 +75,9 @@ public class InteractionManager {
      */
     public static void processEvent(Event event, mcMMO plugin, InteractType curInteractType)
     {
+        if(interactRegister.get(curInteractType) == null)
+            return;
+
         for(Interaction interaction : interactRegister.get(curInteractType))
         {
             interaction.doInteraction(event, plugin);

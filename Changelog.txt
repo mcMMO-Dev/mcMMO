@@ -1,3 +1,6 @@
+Version 2.1.74
+    Fixed a NPE that could occur during certain events if a skill was disabled in coreskills.yml (Sorry!)
+
 Version 2.1.73
     Fixed a NPE that could occur if an entire skill was disabled in coreskills.yml
 
