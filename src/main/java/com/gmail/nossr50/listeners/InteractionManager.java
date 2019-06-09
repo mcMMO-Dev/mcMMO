@@ -15,12 +15,7 @@ public class InteractionManager {
     private static HashMap<String, AbstractSubSkill> subSkillNameMap; //Used for mmoinfo optimization
     private static ArrayList<AbstractSubSkill> subSkillList;
 
-    /**
-     * Registers subskills with the Interaction registration
-     * @param abstractSubSkill the target subskill to register
-     */
-    public static void registerSubSkill(AbstractSubSkill abstractSubSkill)
-    {
+    public static void initMaps() {
         /* INIT MAPS */
         if(interactRegister == null)
             interactRegister = new HashMap<>();
@@ -30,7 +25,14 @@ public class InteractionManager {
 
         if(subSkillNameMap == null)
             subSkillNameMap = new HashMap<>();
+    }
 
+    /**
+     * Registers subskills with the Interaction registration
+     * @param abstractSubSkill the target subskill to register
+     */
+    public static void registerSubSkill(AbstractSubSkill abstractSubSkill)
+    {
         //Store a unique copy of each subskill
         if(!subSkillList.contains(abstractSubSkill))
             subSkillList.add(abstractSubSkill);

@@ -216,6 +216,8 @@ public class mcMMO extends JavaPlugin {
                     Permissions.generateWorldTeleportPermissions();
                 }
 
+                InteractionManager.initMaps(); //Init maps before populating ranks
+
                 //Populate Ranked Skill Maps (DO THIS LAST)
                 RankUtils.populateRanks();
             }

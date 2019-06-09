@@ -1,5 +1,6 @@
 Version 2.1.72
     Fixed a NPE if a server shutdown with no player data needing to be saved (the error is harmless but spammy)
+    Fixed a NPE that could occur if Roll was disabled in coreskills.yml
 
 Version 2.1.71
     Salvage will now always ask for confirmation before breaking your items (instead of only asking for enchanted items)
