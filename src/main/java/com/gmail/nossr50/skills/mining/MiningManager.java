@@ -73,8 +73,6 @@ public class MiningManager extends SkillManager {
             return;
         }
 
-        Material material = blockState.getType();
-
         if (mcMMOPlayer.getAbilityMode(skill.getAbility())) {
             SkillUtils.handleDurabilityChange(getPlayer().getInventory().getItemInMainHand(), Config.getInstance().getAbilityToolDamage());
         }

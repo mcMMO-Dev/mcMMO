@@ -1,3 +1,6 @@
+Version 2.1.75
+    Fixed a bug that prevented Fortune from working correctly if a Double Drop was triggered
+
 Version 2.1.74
     Fixed a NPE that could occur during certain events if a skill was disabled in coreskills.yml (Sorry!)
 
