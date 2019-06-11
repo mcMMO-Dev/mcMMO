@@ -42,8 +42,8 @@ public class SalvageCommand extends SkillCommand {
         if (canScrapCollector) {
             messages.add(getStatMessage(false, true,
                     SubSkillType.SALVAGE_SCRAP_COLLECTOR,
-                    String.valueOf(RankUtils.getRank(player, SubSkillType.REPAIR_ARCANE_FORGING)),
-                    RankUtils.getHighestRankStr(SubSkillType.REPAIR_ARCANE_FORGING)));
+                    String.valueOf(RankUtils.getRank(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR)),
+                    RankUtils.getHighestRankStr(SubSkillType.SALVAGE_SCRAP_COLLECTOR)));
         }
 
         if (canArcaneSalvage) {

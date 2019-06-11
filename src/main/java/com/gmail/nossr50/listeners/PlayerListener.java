@@ -10,6 +10,7 @@ import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -25,6 +26,7 @@ import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -619,17 +621,18 @@ public class PlayerListener implements Listener {
                     /* SALVAGE CHECKS */
                     else if (type == Salvage.anvilMaterial
                             && PrimarySkillType.SALVAGE.getPermissions(player)
+                            && RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR)
                             && mcMMO.getSalvageableManager().isSalvageable(heldItem)
                             && heldItem.getAmount() <= 1) {
-                        SalvageManager salvageManager = UserManager.getPlayer(player).getSalvageManager();
-                        event.setCancelled(true);
+                                SalvageManager salvageManager = UserManager.getPlayer(player).getSalvageManager();
+                                event.setCancelled(true);
 
-                        // Make sure the player knows what he's doing when trying to salvage an enchanted item
-                        if (salvageManager.checkConfirmation(true)) {
-                            SkillUtils.handleAbilitySpeedDecrease(player);
-                            salvageManager.handleSalvage(block.getLocation(), heldItem);
-                            player.updateInventory();
-                        }
+                                // Make sure the player knows what he's doing when trying to salvage an enchanted item
+                                if (salvageManager.checkConfirmation(true)) {
+                                    SkillUtils.handleAbilitySpeedDecrease(player);
+                                    salvageManager.handleSalvage(block.getLocation(), heldItem);
+                                    player.updateInventory();
+                                }
                     }
                 }
                 /* BLAST MINING CHECK */

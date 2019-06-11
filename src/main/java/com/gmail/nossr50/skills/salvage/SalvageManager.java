@@ -87,18 +87,12 @@ public class SalvageManager extends SkillManager {
             return;
         }
 
-        if (item.getDurability() != 0 && (!RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR) || !Permissions.advancedSalvage(player))) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.Adept.Damaged");
-            return;
-        }
-
         int maxAmountSalvageable = Salvage.calculateSalvageableAmount(item.getDurability(), salvageable.getMaximumDurability(), salvageable.getMaximumQuantity());
 
         int salvageableAmount = maxAmountSalvageable;
 
         if (salvageableAmount == 0) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.TooDamaged");
-            player.sendMessage(LocaleLoader.getString("Salvage.Skills.TooDamaged"));
             return;
         }
 
