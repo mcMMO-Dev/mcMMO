@@ -1,6 +1,5 @@
 #
 #  Repair configuration
-#  Last updated on ${project.version}-b${BUILD_NUMBER}
 #
 # Any file named repair.*.yml in the mcmmmo folder will be loaded as a repair config
 # All repair configs have a main section titled "Repairables"
@@ -11,7 +10,7 @@
 ## Valid values are ARMOR, TOOL, and OTHER.
 ## This defaults to OTHER.
 #
-# MaterialType: This is the type of the material of the item to be repaired, this is only important for permissions.
+# ItemMaterialCategory: This is the type of the material of the item to be repaired, this is only important for permissions.
 ## Valid values are STRING, LEATHER, WOOD, STONE, IRON, GOLD, DIAMOND, and OTHER
 ## This defaults to OTHER.
 #
@@ -28,6 +27,10 @@
 # MinimumLevel: This is the minimum repair level needed to repair this item.
 ## Valid values are => 0
 ## This defaults to 0
+#
+# MinimumQuantity: This is the minimum number of items needed to repair this item ignoring all other repair bonuses.
+## This is typically the number of the repair material needed to create a new item, for example for a sword it is 2, for an axe it is 3
+## If this isn't set, mcMMO will try to look up the minimum quantity for the item via recipes. It is not necessary to define this field.
 #
 # XpMultiplier: This is the amount to multiply the xp bonus by.
 ## This defaults to 1
