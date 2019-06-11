@@ -1,3 +1,10 @@
+Version 2.1.77
+    Added minimum quantity back to Repair config
+
+    NOTES: I removed this last patch because I did not consider that server admins might be allowing users to repair items without crafting recipes (as of last patch mcMMO determines minimum quantity via counting ingredients in a recipe)
+    If you do not define minimum quantity in the repair config, mcMMO will grab the minimum quantity automatically as I programmed it to do as of last patch, otherwise if it is defined, mcMMO will respect that and use that for calculations.
+    The minimum quanitty should be set to the number of ingredients used to craft the recipe, for example 8 for diamond chestplate etc, you do not need to define this unless you are allowing players to repair custom items.
+
 Version 2.1.76
     Advanced Salvage has been renamed to Scrap Collector
     Scrap Collector has 8 ranks, the first rank is unlocked at level 2 (Level 20 in RetroMode)

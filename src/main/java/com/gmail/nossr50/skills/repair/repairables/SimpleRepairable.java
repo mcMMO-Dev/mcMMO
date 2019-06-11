@@ -15,6 +15,7 @@ public class SimpleRepairable implements Repairable {
     private final ItemType repairItemType;
     private final MaterialType repairMaterialType;
     private final double xpMultiplier;
+    private int minQuantity = -1;
 
     protected SimpleRepairable(Material type, Material repairMaterial, String repairMaterialPrettyName, int minimumLevel, short maximumDurability, ItemType repairItemType, MaterialType repairMaterialType, double xpMultiplier) {
         this.itemMaterial = type;
@@ -25,6 +26,18 @@ public class SimpleRepairable implements Repairable {
         this.minimumLevel = minimumLevel;
         this.maximumDurability = maximumDurability;
         this.xpMultiplier = xpMultiplier;
+    }
+
+    protected SimpleRepairable(Material type, Material repairMaterial, String repairMaterialPrettyName, int minimumLevel, short maximumDurability, ItemType repairItemType, MaterialType repairMaterialType, double xpMultiplier, int minQuantity) {
+        this.itemMaterial = type;
+        this.repairMaterial = repairMaterial;
+        this.repairMaterialPrettyName = repairMaterialPrettyName;
+        this.repairItemType = repairItemType;
+        this.repairMaterialType = repairMaterialType;
+        this.minimumLevel = minimumLevel;
+        this.maximumDurability = maximumDurability;
+        this.xpMultiplier = xpMultiplier;
+        this.minQuantity = minQuantity;
     }
 
     @Override
@@ -54,7 +67,10 @@ public class SimpleRepairable implements Repairable {
 
     @Override
     public int getMinimumQuantity() {
-        return Math.max(SkillUtils.getRepairAndSalvageQuantities(itemMaterial, repairMaterial), 2);
+        if(minQuantity != -1)
+            return Math.max(SkillUtils.getRepairAndSalvageQuantities(itemMaterial, repairMaterial), 2);
+        else
+            return minQuantity;
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
 import com.gmail.nossr50.util.ItemUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -132,8 +133,15 @@ public class RepairConfig extends ConfigLoader {
                 reason.add(key + " has an invalid MinimumLevel of " + minimumLevel);
             }
 
+            // Minimum Quantity
+            int minimumQuantity = config.getInt("Repairables." + key + ".MinimumQuantity");
+
+            if(minimumQuantity == 0) {
+                minimumQuantity = -1;
+            }
+
             if (noErrorsInRepairable(reason)) {
-                Repairable repairable = RepairableFactory.getRepairable(itemMaterial, repairMaterial, minimumLevel, maximumDurability, repairItemType, repairMaterialType, xpMultiplier);
+                Repairable repairable = RepairableFactory.getRepairable(itemMaterial, repairMaterial, null, minimumLevel, maximumDurability, repairItemType, repairMaterialType, xpMultiplier, minimumQuantity);
                 repairables.add(repairable);
             }
         }
