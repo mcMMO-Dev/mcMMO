@@ -38,7 +38,7 @@ public class NotificationManager {
 
         ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
 
-        TextComponent message = TextComponentFactory.getNotificationTextComponentFromLocale(key, notificationType);
+        TextComponent message = TextComponentFactory.getNotificationTextComponentFromLocale(key);
         McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(player, notificationType, destination, message);
 
         sendNotification(player, customEvent);
@@ -67,6 +67,15 @@ public class NotificationManager {
         sendPlayerInformation(targetPlayer, notificationType, key, values);
     }
 
+    public static void sendPlayerInformationChatOnly(Player player, String key, String... values)
+    {
+        if(UserManager.getPlayer(player) == null || !UserManager.getPlayer(player).useChatNotifications())
+            return;
+
+        String preColoredString = LocaleLoader.getString(key, (Object[]) values);
+        player.sendMessage(preColoredString);
+    }
+
     public static void sendPlayerInformation(Player player, NotificationType notificationType, String key, String... values)
     {
         if(UserManager.getPlayer(player) == null || !UserManager.getPlayer(player).useChatNotifications())
@@ -74,7 +83,7 @@ public class NotificationManager {
 
         ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
 
-        TextComponent message = TextComponentFactory.getNotificationMultipleValues(key, notificationType, values);
+        TextComponent message = TextComponentFactory.getNotificationMultipleValues(key, values);
         McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(player, notificationType, destination, message);
 
         sendNotification(player, customEvent);

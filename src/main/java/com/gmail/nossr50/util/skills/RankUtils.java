@@ -358,4 +358,11 @@ public class RankUtils {
     {
         return getRankUnlockLevel(superAbilityType.getSubSkillTypeDefinition(), 1);
     }
+
+    public static boolean isPlayerMaxRankInSubSkill(Player player, SubSkillType subSkillType) {
+        int playerRank = getRank(player, subSkillType);
+        int highestRank = getHighestRank(subSkillType);
+
+        return playerRank == highestRank;
+    }
 }

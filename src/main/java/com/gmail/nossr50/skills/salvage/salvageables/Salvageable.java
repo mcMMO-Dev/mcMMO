@@ -20,13 +20,6 @@ public interface Salvageable {
     public Material getSalvageMaterial();
 
     /**
-     * Gets the metadata byte value of the items dropped when salvaging this item
-     *
-     * @return the byte metadata of the salvage drop
-     */
-    public byte getSalvageMaterialMetadata();
-
-    /**
      * Gets the ItemType value for this salvageable item
      *
      * @return the ItemType for this salvageable

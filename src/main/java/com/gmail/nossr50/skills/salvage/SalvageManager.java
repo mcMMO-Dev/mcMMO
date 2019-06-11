@@ -10,10 +10,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
-import com.gmail.nossr50.util.EventUtils;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
@@ -90,12 +87,14 @@ public class SalvageManager extends SkillManager {
             return;
         }
 
-        if (item.getDurability() != 0 && (!RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_ADVANCED_SALVAGE) || !Permissions.advancedSalvage(player))) {
+        if (item.getDurability() != 0 && (!RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR) || !Permissions.advancedSalvage(player))) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.Adept.Damaged");
             return;
         }
 
-        int salvageableAmount = Salvage.calculateSalvageableAmount(item.getDurability(), salvageable.getMaximumDurability(), salvageable.getMaximumQuantity());
+        int maxAmountSalvageable = Salvage.calculateSalvageableAmount(item.getDurability(), salvageable.getMaximumDurability(), salvageable.getMaximumQuantity());
+
+        int salvageableAmount = maxAmountSalvageable;
 
         if (salvageableAmount == 0) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.TooDamaged");
@@ -104,7 +103,6 @@ public class SalvageManager extends SkillManager {
         }
 
         salvageableAmount = Math.min(salvageableAmount, getSalvageableAmount()); // Always get at least something back, if you're capable of salvaging it.
-
 
         player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
         location.add(0.5, 1, 0.5);
@@ -116,7 +114,30 @@ public class SalvageManager extends SkillManager {
             enchantBook = arcaneSalvageCheck(enchants);
         }
 
-        ItemStack salvageResults = new ItemStack(salvageable.getSalvageMaterial(), salvageableAmount);
+        //Lottery on Salvageable Amount
+
+        int lotteryResults = 1;
+        int chanceOfSuccess = 80;
+
+        for(int x = 1; x < salvageableAmount-1; x++) {
+
+            if(RandomChanceUtil.rollDice(chanceOfSuccess, 100)) {
+                chanceOfSuccess-=20;
+                Math.max(chanceOfSuccess, 33);
+
+                lotteryResults+=1;
+            }
+        }
+
+        if(lotteryResults == salvageableAmount) {
+            NotificationManager.sendPlayerInformationChatOnly(player, "Salvage.Skills.Lottery.Perfect", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
+        } else if(RankUtils.isPlayerMaxRankInSubSkill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE)) {
+            NotificationManager.sendPlayerInformationChatOnly(player,  "Salvage.Skills.Lottery.Normal", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
+        } else {
+            NotificationManager.sendPlayerInformationChatOnly(player,  "Salvage.Skills.Lottery.Untrained", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
+        }
+
+        ItemStack salvageResults = new ItemStack(salvageable.getSalvageMaterial(), lotteryResults);
 
         //Call event
         if (EventUtils.callSalvageCheckEvent(player, item, salvageResults, enchantBook).isCancelled()) {

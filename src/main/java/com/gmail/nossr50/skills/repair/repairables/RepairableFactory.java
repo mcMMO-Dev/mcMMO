@@ -6,16 +6,16 @@ import org.bukkit.Material;
 
 
 public class RepairableFactory {
-    public static Repairable getRepairable(Material itemMaterial, Material repairMaterial, byte repairMetadata, int minimumQuantity, short maximumDurability) {
-        return getRepairable(itemMaterial, repairMaterial, repairMetadata, null, 0, minimumQuantity, maximumDurability, ItemType.OTHER, MaterialType.OTHER, 1);
+    public static Repairable getRepairable(Material itemMaterial, Material repairMaterial, short maximumDurability) {
+        return getRepairable(itemMaterial, repairMaterial, null, 0, maximumDurability, ItemType.OTHER, MaterialType.OTHER, 1);
     }
 
-    public static Repairable getRepairable(Material itemMaterial, Material repairMaterial, byte repairMetadata, int minimumLevel, int minimumQuantity, short maximumDurability, ItemType repairItemType, MaterialType repairMaterialType, double xpMultiplier) {
-        return getRepairable(itemMaterial, repairMaterial, repairMetadata, null, minimumLevel, minimumQuantity, maximumDurability, repairItemType, repairMaterialType, xpMultiplier);
+    public static Repairable getRepairable(Material itemMaterial, Material repairMaterial, int minimumLevel, short maximumDurability, ItemType repairItemType, MaterialType repairMaterialType, double xpMultiplier) {
+        return getRepairable(itemMaterial, repairMaterial, null, minimumLevel, maximumDurability, repairItemType, repairMaterialType, xpMultiplier);
     }
 
-    public static Repairable getRepairable(Material itemMaterial, Material repairMaterial, byte repairMetadata, String repairMaterialPrettyName, int minimumLevel, int minimumQuantity, short maximumDurability, ItemType repairItemType, MaterialType repairMaterialType, double xpMultiplier) {
+    public static Repairable getRepairable(Material itemMaterial, Material repairMaterial, String repairMaterialPrettyName, int minimumLevel, short maximumDurability, ItemType repairItemType, MaterialType repairMaterialType, double xpMultiplier) {
         // TODO: Add in loading from config what type of repairable we want.
-        return new SimpleRepairable(itemMaterial, repairMaterial, repairMetadata, repairMaterialPrettyName, minimumLevel, minimumQuantity, maximumDurability, repairItemType, repairMaterialType, xpMultiplier);
+        return new SimpleRepairable(itemMaterial, repairMaterial, repairMaterialPrettyName, minimumLevel, maximumDurability, repairItemType, repairMaterialType, xpMultiplier);
     }
 }

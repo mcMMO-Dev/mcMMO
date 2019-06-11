@@ -53,7 +53,7 @@ public enum PrimarySkillType {
     REPAIR(RepairManager.class, Color.SILVER,
             ImmutableList.of(SubSkillType.REPAIR_ARCANE_FORGING, SubSkillType.REPAIR_REPAIR_MASTERY, SubSkillType.REPAIR_SUPER_REPAIR)),
     SALVAGE(SalvageManager.class, Color.ORANGE,
-            ImmutableList.of(SubSkillType.SALVAGE_ADVANCED_SALVAGE, SubSkillType.SALVAGE_ARCANE_SALVAGE)),
+            ImmutableList.of(SubSkillType.SALVAGE_SCRAP_COLLECTOR, SubSkillType.SALVAGE_ARCANE_SALVAGE)),
     SMELTING(SmeltingManager.class, Color.YELLOW,
             ImmutableList.of(SubSkillType.SMELTING_UNDERSTANDING_THE_ART, /*SubSkillType.SMELTING_FLUX_MINING,*/ SubSkillType.SMELTING_FUEL_EFFICIENCY, SubSkillType.SMELTING_SECOND_SMELT)),
     SWORDS(SwordsManager.class, Color.fromRGB(178, 34, 34), SuperAbilityType.SERRATED_STRIKES, ToolType.SWORD,

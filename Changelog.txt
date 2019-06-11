@@ -1,3 +1,28 @@
+Version 2.1.76
+    Fixed a bug where Repair was repairing too much
+    Fixed a bug where Arcane Salvage was used to determine how many materials a player could salvage from an item
+    Removed the minimum quantity field from the repair config
+    Removed the item data (metadata) field from repair config as its not used anymore
+    Salvage will no longer return the max amount of materials possible, instead you are guaranteed one item and then some luck is involved on how many items are returned.
+    Advanced Salvage has been renamed to Scrap Collector
+    Updated Chinese locale (thanks to the user named 89009332 from github)
+
+    New locale strings
+        Salvage.Skills.Lottery.Normal
+        Salvage.Skills.Lottery.Perfect
+        Salvage.Skills.Lottery.Untrained
+        Salvage.SubSkill.ScrapCollector.Name
+        Salvage.SubSkill.ScrapCollector.Description
+        Salvage.SubSkill.ScrapCollector.Stat
+
+    (API) SALVAGE_ARCANE_SALVAGE in SubSkillTypes has been renamed to SALVAGE_SCRAP_COLLECTOR
+
+    NOTES:
+    You do not need to update your configs for this update.
+    How Salvage works
+    If you have enough skill to gain up to 5 items from salvaging something, and that item has enough durability to yield up to 5 materials, salvage will play out like this
+    First off, you will be guaranteed 1 material, after this you have 80% chance to get the next material, if successful, another dice roll is conducted but lowers your odds by 20%, you chance to succeed will never fall below 33%
+
 Version 2.1.75
     Fixed a bug that prevented Fortune from working correctly if a Double Drop was triggered
 

@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.repair.repairables;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 
 public interface Repairable {
@@ -19,13 +20,6 @@ public interface Repairable {
      * @return the id of the repair material
      */
     public Material getRepairMaterial();
-
-    /**
-     * Gets the metadata byte value of the material used to repair this item
-     *
-     * @return the byte metadata of the repair material
-     */
-    public byte getRepairMaterialMetadata();
 
     /**
      * Gets the pretty name of the material used to repair this item
@@ -71,7 +65,7 @@ public interface Repairable {
      *
      * @return the base repair durability
      */
-    public short getBaseRepairDurability();
+    public short getBaseRepairDurability(ItemStack itemStack);
 
     /**
      * Gets the minimum repair level needed to repair this item

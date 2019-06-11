@@ -94,7 +94,6 @@ public class RepairManager extends SkillManager {
         PlayerInventory inventory = player.getInventory();
 
         Material repairMaterial = repairable.getRepairMaterial();
-        byte repairMaterialMetadata = repairable.getRepairMaterialMetadata();
         ItemStack toRemove = new ItemStack(repairMaterial);
 
         short startDurability = item.getDurability();
@@ -111,10 +110,6 @@ public class RepairManager extends SkillManager {
 
             String materialsNeeded = "";
 
-            if (repairMaterialMetadata != (byte) -1 && !inventory.containsAtLeast(toRemove, 1)) {
-                materialsNeeded += ":" + repairMaterialMetadata;
-            }
-
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Skills.NeedMore.Extra", prettyName, materialsNeeded);
             return;
         }
@@ -130,7 +125,7 @@ public class RepairManager extends SkillManager {
 
         // Lets get down to business,
         // To defeat, the huns.
-        int baseRepairAmount = repairable.getBaseRepairDurability(); // Did they send me daughters?
+        int baseRepairAmount = repairable.getBaseRepairDurability(item); // Did they send me daughters?
         short newDurability = repairCalculate(startDurability, baseRepairAmount); // When I asked for sons?
 
         // Call event
@@ -144,15 +139,16 @@ public class RepairManager extends SkillManager {
         }
 
         // Remove the item
-        if (repairMaterialMetadata == -1) {
-            toRemove = inventory.getItem(inventory.first(repairMaterial)).clone();
-            toRemove.setAmount(1);
-        }
+        toRemove = inventory.getItem(inventory.first(repairMaterial)).clone();
+        toRemove.setAmount(1);
 
         inventory.removeItem(toRemove);
 
         // Give out XP like candy
-        applyXpGain((float) ((getPercentageRepaired(startDurability, newDurability, repairable.getMaximumDurability()) * repairable.getXpMultiplier()) * ExperienceConfig.getInstance().getRepairXPBase() * ExperienceConfig.getInstance().getRepairXP(repairable.getRepairMaterialType())), XPGainReason.PVE);
+        applyXpGain((float) ((getPercentageRepaired(startDurability, newDurability, repairable.getMaximumDurability())
+                * repairable.getXpMultiplier())
+                * ExperienceConfig.getInstance().getRepairXPBase()
+                * ExperienceConfig.getInstance().getRepairXP(repairable.getRepairMaterialType())), XPGainReason.PVE);
 
         // BWONG BWONG BWONG
         if (Config.getInstance().getRepairAnvilUseSoundsEnabled()) {

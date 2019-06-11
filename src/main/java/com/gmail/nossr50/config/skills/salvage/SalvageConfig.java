@@ -113,7 +113,6 @@ public class SalvageConfig extends ConfigLoader {
                 }
             }
 
-            byte salvageMetadata = (byte) config.getInt("Salvageables." + key + ".SalvageMaterialMetadata", -1);
             int minimumLevel = config.getInt("Salvageables." + key + ".MinimumLevel");
             double xpMultiplier = config.getDouble("Salvageables." + key + ".XpMultiplier", 1);
 
@@ -122,7 +121,7 @@ public class SalvageConfig extends ConfigLoader {
             }
 
             // Maximum Quantity
-            int maximumQuantity = (itemMaterial != null ? SkillUtils.getRepairAndSalvageQuantities(new ItemStack(itemMaterial), salvageMaterial, salvageMetadata) : config.getInt("Salvageables." + key + ".MaximumQuantity", 2));
+            int maximumQuantity = (itemMaterial != null ? SkillUtils.getRepairAndSalvageQuantities(itemMaterial, salvageMaterial) : config.getInt("Salvageables." + key + ".MaximumQuantity", 2));
 
             if (maximumQuantity <= 0 && itemMaterial != null) {
                 maximumQuantity = config.getInt("Salvageables." + key + ".MaximumQuantity", 1);
@@ -139,7 +138,7 @@ public class SalvageConfig extends ConfigLoader {
             }
 
             if (noErrorsInSalvageable(reason)) {
-                Salvageable salvageable = SalvageableFactory.getSalvageable(itemMaterial, salvageMaterial, salvageMetadata, minimumLevel, maximumQuantity, maximumDurability, salvageItemType, salvageMaterialType, xpMultiplier);
+                Salvageable salvageable = SalvageableFactory.getSalvageable(itemMaterial, salvageMaterial, minimumLevel, maximumQuantity, maximumDurability, salvageItemType, salvageMaterialType, xpMultiplier);
                 salvageables.add(salvageable);
             }
         }

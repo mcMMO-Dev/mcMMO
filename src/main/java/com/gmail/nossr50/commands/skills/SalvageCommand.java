@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SalvageCommand extends SkillCommand {
-    private boolean canAdvancedSalvage;
+    private boolean canScrapCollector;
     private boolean canArcaneSalvage;
 
     public SalvageCommand() {
@@ -30,7 +30,7 @@ public class SalvageCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canAdvancedSalvage = canUseSubskill(player, SubSkillType.SALVAGE_ADVANCED_SALVAGE);
+        canScrapCollector = canUseSubskill(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR);
         canArcaneSalvage = canUseSubskill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE);
     }
 
@@ -39,9 +39,11 @@ public class SalvageCommand extends SkillCommand {
         List<String> messages = new ArrayList<String>();
         SalvageManager salvageManager = UserManager.getPlayer(player).getSalvageManager();
 
-        if (canAdvancedSalvage) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Salvage.Ability.Bonus.0"),
-                    LocaleLoader.getString("Salvage.Ability.Bonus.1", salvageManager.getSalvageableAmount())));
+        if (canScrapCollector) {
+            messages.add(getStatMessage(false, true,
+                    SubSkillType.SALVAGE_SCRAP_COLLECTOR,
+                    String.valueOf(RankUtils.getRank(player, SubSkillType.REPAIR_ARCANE_FORGING)),
+                    RankUtils.getHighestRankStr(SubSkillType.REPAIR_ARCANE_FORGING)));
         }
 
         if (canArcaneSalvage) {

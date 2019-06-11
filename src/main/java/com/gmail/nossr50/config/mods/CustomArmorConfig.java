@@ -5,10 +5,8 @@ import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,13 +75,6 @@ public class CustomArmorConfig extends ConfigLoader {
             }
 
             if (repairable) {
-                byte repairData = (byte) config.getInt(armorType + "." + armorName + ".Repair_Material_Data_Value", -1);
-                int repairQuantity = SkillUtils.getRepairAndSalvageQuantities(new ItemStack(armorMaterial), repairMaterial, repairData);
-
-                if (repairQuantity == 0) {
-                    repairQuantity = config.getInt(armorType + "." + armorName + ".Repair_Material_Quantity", 2);
-                }
-
                 String repairItemName = config.getString(armorType + "." + armorName + ".Repair_Material_Pretty_Name");
                 int repairMinimumLevel = config.getInt(armorType + "." + armorName + ".Repair_MinimumLevel", 0);
                 double repairXpMultiplier = config.getDouble(armorType + "." + armorName + ".Repair_XpMultiplier", 1);
@@ -94,7 +85,7 @@ public class CustomArmorConfig extends ConfigLoader {
                     durability = (short) config.getInt(armorType + "." + armorName + ".Durability", 70);
                 }
 
-                repairables.add(RepairableFactory.getRepairable(armorMaterial, repairMaterial, repairData, repairItemName, repairMinimumLevel, repairQuantity, durability, ItemType.ARMOR, MaterialType.OTHER, repairXpMultiplier));
+                repairables.add(RepairableFactory.getRepairable(armorMaterial, repairMaterial, repairItemName, repairMinimumLevel, durability, ItemType.ARMOR, MaterialType.OTHER, repairXpMultiplier));
             }
 
             materialList.add(armorMaterial);

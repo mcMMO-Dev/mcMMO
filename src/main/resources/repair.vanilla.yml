@@ -29,10 +29,6 @@
 ## Valid values are => 0
 ## This defaults to 0
 #
-# MinimumQuantity: This is the minimum number of items needed to repair this item ignoring all other repair bonuses.
-## This is typically the number of the repair material needed to create a new item, for example for a sword it is 2, for an axe it is 3
-## This defaults to 2
-#
 # XpMultiplier: This is the amount to multiply the xp bonus by.
 ## This defaults to 1
 #
