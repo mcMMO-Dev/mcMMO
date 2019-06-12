@@ -12,7 +12,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.player.NotificationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -118,7 +117,7 @@ public class SkillUtils {
 
         for (Player otherPlayer : player.getWorld().getPlayers()) {
             if (otherPlayer != player && Misc.isNear(location, otherPlayer.getLocation(), Misc.SKILL_MESSAGE_MAX_SENDING_DISTANCE)) {
-                NotificationManager.sendNearbyPlayersInformation(otherPlayer, notificationType, key, player.getName());
+                mcMMO.getNotificationManager().sendNearbyPlayersInformation(otherPlayer, notificationType, key, player.getName());
             }
         }
     }

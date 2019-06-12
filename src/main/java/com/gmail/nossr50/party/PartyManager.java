@@ -12,7 +12,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -456,7 +455,7 @@ public final class PartyManager {
 
         // Check if the party still exists, it might have been disbanded
         if (!parties.contains(invite)) {
-            NotificationManager.sendPlayerInformation(mcMMOPlayer.getPlayer(), NotificationType.PARTY_MESSAGE, "Party.Disband");
+            mcMMO.getNotificationManager().sendPlayerInformation(mcMMOPlayer.getPlayer(), NotificationType.PARTY_MESSAGE, "Party.Disband");
             return;
         }
 
@@ -464,13 +463,13 @@ public final class PartyManager {
          * Don't let players join a full party
          */
         if (mcMMO.getConfigManager().getConfigParty().isPartySizeCapped() && invite.getMembers().size() >= mcMMO.getConfigManager().getConfigParty().getPartySizeLimit()) {
-            NotificationManager.sendPlayerInformation(mcMMOPlayer.getPlayer(),
+            mcMMO.getNotificationManager().sendPlayerInformation(mcMMOPlayer.getPlayer(),
                     NotificationType.PARTY_MESSAGE, "Commands.Party.PartyFull.InviteAccept",
                     invite.getName(), String.valueOf(mcMMO.getConfigManager().getConfigParty().getPartySizeLimit()));
             return;
         }
 
-        NotificationManager.sendPlayerInformation(mcMMOPlayer.getPlayer(), NotificationType.PARTY_MESSAGE, "Commands.Party.Invite.Accepted", invite.getName());
+        mcMMO.getNotificationManager().sendPlayerInformation(mcMMOPlayer.getPlayer(), NotificationType.PARTY_MESSAGE, "Commands.Party.Invite.Accepted", invite.getName());
         mcMMOPlayer.removePartyInvite();
         addToParty(mcMMOPlayer, invite);
     }

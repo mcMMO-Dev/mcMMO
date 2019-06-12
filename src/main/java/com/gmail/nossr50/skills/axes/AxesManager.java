@@ -10,7 +10,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.*;
 import org.bukkit.entity.LivingEntity;
@@ -89,14 +88,14 @@ public class AxesManager extends SkillManager {
         Player player = getPlayer();
 
         if (mcMMOPlayer.useChatNotifications()) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.CriticalHit");
+            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.CriticalHit");
         }
 
         if (target instanceof Player) {
             Player defender = (Player) target;
 
-            if (NotificationManager.doesPlayerUseNotifications(defender)) {
-                NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.CritStruck");
+            if (mcMMO.getNotificationManager().doesPlayerUseNotifications(defender)) {
+                mcMMO.getNotificationManager().sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.CritStruck");
             }
 
             damage = (damage * mcMMO.getConfigManager().getConfigAxes().getConfigAxesCriticalStrikes().getDamageProperty().getPVPModifier()) - damage;
@@ -145,14 +144,14 @@ public class AxesManager extends SkillManager {
         target.setVelocity(player.getLocation().getDirection().normalize().multiply(mcMMO.getConfigManager().getConfigAxes().getGreaterImpactKnockBackModifier()));
 
         if (mcMMOPlayer.useChatNotifications()) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.GI.Proc");
+            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.GI.Proc");
         }
 
         if (target instanceof Player) {
             Player defender = (Player) target;
 
-            if (NotificationManager.doesPlayerUseNotifications(defender)) {
-                NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.GI.Struck");
+            if (mcMMO.getNotificationManager().doesPlayerUseNotifications(defender)) {
+                mcMMO.getNotificationManager().sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.GI.Struck");
             }
         }
 

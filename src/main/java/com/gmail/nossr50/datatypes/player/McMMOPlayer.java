@@ -40,7 +40,6 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.experience.ExperienceBarManager;
-import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
@@ -600,7 +599,7 @@ public class McMMOPlayer {
          * Check to see if the player unlocked any new skills
          */
 
-        NotificationManager.sendPlayerLevelUpNotification(this, primarySkillType, levelsGained, profile.getSkillLevel(primarySkillType));
+        mcMMO.getNotificationManager().sendPlayerLevelUpNotification(this, primarySkillType, levelsGained, profile.getSkillLevel(primarySkillType));
 
         //UPDATE XP BARS
         processPostXpEvent(xpGainReason, primarySkillType, mcMMO.p, xpGainSource);
@@ -822,7 +821,7 @@ public class McMMOPlayer {
             int diff = RankUtils.getSuperAbilityUnlockRequirement(skill.getAbility()) - getSkillLevel(skill);
 
             //Inform the player they are not yet skilled enough
-            NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.AbilityGateRequirementFail", String.valueOf(diff), skill.getName());
+            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.AbilityGateRequirementFail", String.valueOf(diff), skill.getName());
             return;
         }
 
@@ -834,7 +833,7 @@ public class McMMOPlayer {
              * We show them the too tired message when they take action.
              */
             if (skill == PrimarySkillType.WOODCUTTING || skill == PrimarySkillType.AXES) {
-                NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf(timeRemaining));
+                mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf(timeRemaining));
                 //SoundManager.sendSound(player, player.getLocation(), SoundType.TIRED);
             }
 
@@ -862,7 +861,7 @@ public class McMMOPlayer {
         ParticleEffectUtils.playAbilityEnabledEffect(player);
 
         if (useChatNotifications()) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUPER_ABILITY, ability.getAbilityOn());
+            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUPER_ABILITY, ability.getAbilityOn());
             //player.sendMessage(ability.getAbilityOn());
         }
 
@@ -917,13 +916,13 @@ public class McMMOPlayer {
                 int timeRemaining = calculateTimeRemaining(ability);
 
                 if (!getAbilityMode(ability) && timeRemaining > 0) {
-                    NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf(timeRemaining));
+                    mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf(timeRemaining));
                     return;
                 }
             }
 
             if (mcMMO.getConfigManager().getConfigNotifications().isSuperAbilityToolMessage()) {
-                NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, tool.getRaiseTool());
+                mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.TOOL, tool.getRaiseTool());
                 SoundManager.sendSound(player, player.getLocation(), SoundType.TOOL_READY);
             }
 

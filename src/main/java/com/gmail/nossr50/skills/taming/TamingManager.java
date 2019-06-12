@@ -16,7 +16,6 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
@@ -144,10 +143,10 @@ public class TamingManager extends SkillManager {
         BleedTimerTask.add(target, getPlayer(), Taming.getInstance().getGoreBleedTicks(), 1, 2);
 
         if (target instanceof Player) {
-            NotificationManager.sendPlayerInformation((Player) target, NotificationType.SUBSKILL_MESSAGE, "Combat.StruckByGore");
+            mcMMO.getNotificationManager().sendPlayerInformation((Player) target, NotificationType.SUBSKILL_MESSAGE, "Combat.StruckByGore");
         }
 
-        NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.Gore");
+        mcMMO.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.Gore");
 
         damage = (damage * Taming.getInstance().getGoreModifier()) - damage;
         return damage;
@@ -226,7 +225,7 @@ public class TamingManager extends SkillManager {
         Player owner = getPlayer();
 
         wolf.teleport(owner);
-        NotificationManager.sendPlayerInformation(owner, NotificationType.SUBSKILL_MESSAGE, "Taming.Listener.Wolf");
+        mcMMO.getNotificationManager().sendPlayerInformation(owner, NotificationType.SUBSKILL_MESSAGE, "Taming.Listener.Wolf");
     }
 
     public void pummel(LivingEntity target, Wolf wolf) {
@@ -242,8 +241,8 @@ public class TamingManager extends SkillManager {
         if (target instanceof Player) {
             Player defender = (Player) target;
 
-            if (NotificationManager.doesPlayerUseNotifications(defender)) {
-                NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Taming.SubSkill.Pummel.TargetMessage");
+            if (mcMMO.getNotificationManager().doesPlayerUseNotifications(defender)) {
+                mcMMO.getNotificationManager().sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Taming.SubSkill.Pummel.TargetMessage");
             }
         }
     }
@@ -288,7 +287,7 @@ public class TamingManager extends SkillManager {
 
         if (heldItemAmount < summonAmount) {
             int moreAmount = summonAmount - heldItemAmount;
-            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Item.NotEnough", String.valueOf(moreAmount), StringUtils.getPrettyItemString(heldItem.getType()));
+            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Item.NotEnough", String.valueOf(moreAmount), StringUtils.getPrettyItemString(heldItem.getType()));
             return;
         }
 
@@ -361,7 +360,7 @@ public class TamingManager extends SkillManager {
             lifeSpan = LocaleLoader.getString("Taming.Summon.Lifespan", tamingCOTWLength);
         }
 
-        NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Taming.Summon.Complete", lifeSpan);
+        mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Taming.Summon.Complete", lifeSpan);
         player.playSound(location, Sound.ENTITY_FIREWORK_ROCKET_BLAST_FAR, 1F, 0.5F);
     }
 
@@ -375,7 +374,7 @@ public class TamingManager extends SkillManager {
 
         for (Entity entity : player.getNearbyEntities(range, range, range)) {
             if (entity.getType() == type) {
-                NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, Taming.getInstance().getCallOfTheWildFailureMessage(type));
+                mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, Taming.getInstance().getCallOfTheWildFailureMessage(type));
                 return false;
             }
         }
@@ -396,7 +395,7 @@ public class TamingManager extends SkillManager {
         int summonAmount = trackedEntities == null ? 0 : trackedEntities.size();
 
         if (summonAmount >= maxAmountSummons) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Taming.Summon.Fail.TooMany", String.valueOf(maxAmountSummons));
+            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Taming.Summon.Fail.TooMany", String.valueOf(maxAmountSummons));
             return false;
         }
 

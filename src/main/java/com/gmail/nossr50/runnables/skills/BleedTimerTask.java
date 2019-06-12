@@ -4,7 +4,6 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.MobHealthbarUtils;
-import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -82,7 +81,7 @@ public class BleedTimerTask extends BukkitRunnable {
 
             if (containerEntry.getValue().bleedTicks <= 0 || !target.isValid()) {
                 if (target instanceof Player) {
-                    NotificationManager.sendPlayerInformation((Player) target, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Stopped");
+                    mcMMO.getNotificationManager().sendPlayerInformation((Player) target, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Stopped");
                 }
 
                 bleedIterator.remove();

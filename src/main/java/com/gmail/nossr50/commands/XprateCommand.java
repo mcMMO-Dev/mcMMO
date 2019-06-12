@@ -6,7 +6,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.NotificationManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -36,7 +35,7 @@ public class XprateCommand implements TabExecutor {
                 if (mcMMO.p.isXPEventEnabled()) {
 
                     if (mcMMO.getConfigManager().getConfigEvent().isSendTitleMessages()) {
-                        NotificationManager.broadcastTitle(mcMMO.p.getServer(),
+                        mcMMO.getNotificationManager().broadcastTitle(mcMMO.p.getServer(),
                                 LocaleLoader.getString("Commands.Event.Stop"),
                                 LocaleLoader.getString("Commands.Event.Stop.Subtitle"),
                                 10, 10 * 20, 20);
@@ -48,7 +47,7 @@ public class XprateCommand implements TabExecutor {
                     }
 
                     //Admin notification
-                    NotificationManager.processSensitiveCommandNotification(sender, SensitiveCommandType.XPRATE_END);
+                    mcMMO.getNotificationManager().processSensitiveCommandNotification(sender, SensitiveCommandType.XPRATE_END);
 
                     mcMMO.p.toggleXpEventEnabled();
                 }
@@ -84,7 +83,7 @@ public class XprateCommand implements TabExecutor {
                 mcMMO.getDynamicSettingsManager().getExperienceManager().setGlobalXpMult(newXpRate);
 
                 if (mcMMO.getConfigManager().getConfigEvent().isSendTitleMessages()) {
-                    NotificationManager.broadcastTitle(mcMMO.p.getServer(),
+                    mcMMO.getNotificationManager().broadcastTitle(mcMMO.p.getServer(),
                             LocaleLoader.getString("Commands.Event.Start"),
                             LocaleLoader.getString("Commands.Event.XP", newXpRate),
                             10, 10 * 20, 20);
@@ -96,7 +95,7 @@ public class XprateCommand implements TabExecutor {
                 }
 
                 //Admin notification
-                NotificationManager.processSensitiveCommandNotification(sender, SensitiveCommandType.XPRATE_MODIFY, String.valueOf(newXpRate));
+                mcMMO.getNotificationManager().processSensitiveCommandNotification(sender, SensitiveCommandType.XPRATE_MODIFY, String.valueOf(newXpRate));
 
                 return true;
 

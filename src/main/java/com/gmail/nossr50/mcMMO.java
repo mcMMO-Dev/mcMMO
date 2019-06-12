@@ -31,6 +31,7 @@ import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
 import com.gmail.nossr50.util.commands.CommandRegistrationManager;
 import com.gmail.nossr50.util.experience.FormulaManager;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.PlayerLevelUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
@@ -60,6 +61,7 @@ public class mcMMO extends JavaPlugin {
     private static FormulaManager formulaManager;
     private static MaterialMapStore materialMapStore;
     private static PlayerLevelUtils playerLevelUtils;
+    private static NotificationManager notificationManager;
 
     /* File Paths */
     private static String mainDirectory;
@@ -181,6 +183,9 @@ public class mcMMO extends JavaPlugin {
 
         //Init player level values
         playerLevelUtils = new PlayerLevelUtils();
+
+        //Init Notification Manager
+        notificationManager = new NotificationManager();
     }
 
     @Override
@@ -575,5 +580,9 @@ public class mcMMO extends JavaPlugin {
         PAPER,
         SPIGOT,
         CRAFTBUKKIT
+    }
+
+    public static NotificationManager getNotificationManager() {
+        return notificationManager;
     }
 }

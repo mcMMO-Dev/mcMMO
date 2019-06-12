@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyLeader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -92,7 +91,7 @@ public final class PartyAPI {
             party = new Party(new PartyLeader(player.getUniqueId(), player.getName()), partyName);
         } else if (mcMMO.getConfigManager().getConfigParty().getPartyGeneral().isPartySizeCapped()) {
             if (PartyManager.isPartyFull(player, party)) {
-                NotificationManager.sendPlayerInformation(player, NotificationType.PARTY_MESSAGE, "Commands.Party.PartyFull", party.toString());
+                mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.PARTY_MESSAGE, "Commands.Party.PartyFull", party.toString());
                 return;
             }
         }

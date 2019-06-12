@@ -7,7 +7,6 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -58,7 +57,7 @@ public class AbilityDisableTask extends BukkitRunnable {
 
         if (mcMMOPlayer.useChatNotifications()) {
             //player.sendMessage(ability.getAbilityOff());
-            NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_OFF, ability.getAbilityOff());
+            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_OFF, ability.getAbilityOff());
         }
 
 
