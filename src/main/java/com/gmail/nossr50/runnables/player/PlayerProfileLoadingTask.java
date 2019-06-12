@@ -91,7 +91,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
                 }
             }
 
-            if (MainConfig.getInstance().getShowProfileLoadedMessage()) {
+            if (mcMMO.getConfigManager().getConfigNotifications().isShowProfileLoadedMessage()) {
                 player.sendMessage(LocaleLoader.getString("Profile.Loading.Success"));
             }
 
