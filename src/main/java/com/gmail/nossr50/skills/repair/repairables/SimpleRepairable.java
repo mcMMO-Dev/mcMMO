@@ -68,7 +68,7 @@ public class SimpleRepairable implements Repairable {
     @Override
     public int getMinimumQuantity() {
         if(minQuantity == -1)
-            return Math.max(SkillUtils.getRepairAndSalvageQuantities(itemMaterial, repairMaterial), 2);
+            return Math.max(SkillUtils.getRepairAndSalvageQuantities(itemMaterial, repairMaterial), 1);
         else
             return minQuantity;
     }
