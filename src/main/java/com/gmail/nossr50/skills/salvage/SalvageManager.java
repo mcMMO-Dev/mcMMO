@@ -89,16 +89,12 @@ public class SalvageManager extends SkillManager {
             return;
         }
 
-        if (item.getDurability() != 0 && (!RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_ADVANCED_SALVAGE) || !Permissions.advancedSalvage(player))) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.Adept.Damaged");
-            return;
-        }
+        int maxAmountSalvageable = Salvage.calculateSalvageableAmount(item.getDurability(), salvageable.getMaximumDurability(), salvageable.getMaximumQuantity());
 
-        int salvageableAmount = Salvage.calculateSalvageableAmount(item.getDurability(), salvageable.getMaximumDurability(), salvageable.getMaximumQuantity());
+        int salvageableAmount = maxAmountSalvageable;
 
         if (salvageableAmount == 0) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.TooDamaged");
-            player.sendMessage(LocaleLoader.getString("Salvage.Skills.TooDamaged"));
             return;
         }
 
@@ -114,7 +110,30 @@ public class SalvageManager extends SkillManager {
             enchantBook = arcaneSalvageCheck(enchants);
         }
 
-        ItemStack salvageResults = new ItemStack(salvageable.getSalvagedItemMaterial(), salvageableAmount);
+        //Lottery on Salvageable Amount
+
+        int lotteryResults = 1;
+        int chanceOfSuccess = 80;
+
+        for(int x = 1; x < salvageableAmount-1; x++) {
+
+            if(RandomChanceUtil.rollDice(chanceOfSuccess, 100)) {
+                chanceOfSuccess-=20;
+                Math.max(chanceOfSuccess, 33);
+
+                lotteryResults+=1;
+            }
+        }
+
+        if(lotteryResults == salvageableAmount) {
+            NotificationManager.sendPlayerInformationChatOnly(player, "Salvage.Skills.Lottery.Perfect", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
+        } else if(RankUtils.isPlayerMaxRankInSubSkill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE)) {
+            NotificationManager.sendPlayerInformationChatOnly(player,  "Salvage.Skills.Lottery.Normal", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
+        } else {
+            NotificationManager.sendPlayerInformationChatOnly(player,  "Salvage.Skills.Lottery.Untrained", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
+        }
+
+        ItemStack salvageResults = new ItemStack(salvageable.getSalvagedItemMaterial(), lotteryResults);
 
         //Call event
         if (EventUtils.callSalvageCheckEvent(player, item, salvageResults, enchantBook).isCancelled()) {

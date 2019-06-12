@@ -20,6 +20,7 @@ public enum NotificationType {
     SUPER_ABILITY("SuperAbilityInteraction"),
     SUPER_ABILITY_ALERT_OTHERS("SuperAbilityAlertOthers"),
     ITEM_MESSAGE("ItemMessage"),
+    CHAT_ONLY("ChatOnly"),
     PARTY_MESSAGE("PartyMessage");
 
     final String niceName;

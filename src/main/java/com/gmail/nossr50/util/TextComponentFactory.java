@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.json.McMMOUrl;
 import com.gmail.nossr50.datatypes.json.McMMOWebLinks;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -26,18 +25,19 @@ public class TextComponentFactory {
     /**
      * Makes a text component using strings from a locale and supports passing an undefined number of variables to the LocaleLoader
      *
-     * @param localeKey        target locale string address
-     * @param notificationType type of notification
-     * @param values           vars to be passed to the locale loader
+     * @param localeKey target locale string address
+     * @param values vars to be passed to the locale loader
      * @return
      */
-    public static TextComponent getNotificationMultipleValues(String localeKey, NotificationType notificationType, String... values) {
+    public static TextComponent getNotificationMultipleValues(String localeKey, String... values)
+    {
         String preColoredString = LocaleLoader.getString(localeKey, (Object[]) values);
         TextComponent msg = new TextComponent(preColoredString);
         return new TextComponent(msg);
     }
 
-    public static TextComponent getNotificationTextComponentFromLocale(String localeKey, NotificationType notificationType) {
+    public static TextComponent getNotificationTextComponentFromLocale(String localeKey)
+    {
         return getNotificationTextComponent(LocaleLoader.getString(localeKey));
     }
 

@@ -397,4 +397,10 @@ public class RankUtils {
         return mcMMO.getConfigManager().getConfigLeveling().getLevelCap(subSkillType.getParentSkill());
     }
 
+    public static boolean isPlayerMaxRankInSubSkill(Player player, SubSkillType subSkillType) {
+        int playerRank = getRank(player, subSkillType);
+        int highestRank = getHighestRank(subSkillType);
+
+        return playerRank == highestRank;
+    }
 }

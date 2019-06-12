@@ -61,7 +61,7 @@ public enum SubSkillType {
     REPAIR_SUPER_REPAIR(1),
 
     /* Salvage */
-    SALVAGE_ADVANCED_SALVAGE(1),
+    SALVAGE_SCRAP_COLLECTOR(8),
     SALVAGE_ARCANE_SALVAGE(8),
 
     /* Smelting */

@@ -163,6 +163,68 @@ Version 2.2.0
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
     Added 'UndefinedSkillBehaviour' for trying to use a method that has no behaviour defined for the provided skill
+Version 2.1.77
+    Added minimum quantity back to Repair config
+
+    NOTES: I removed this last patch because I did not consider that server admins might be allowing users to repair items without crafting recipes (as of last patch mcMMO determines minimum quantity via counting ingredients in a recipe)
+    If you do not define minimum quantity in the repair config, mcMMO will grab the minimum quantity automatically as I programmed it to do as of last patch, otherwise if it is defined, mcMMO will respect that and use that for calculations.
+    The minimum quanitty should be set to the number of ingredients used to craft the recipe, for example 8 for diamond chestplate etc, you do not need to define this unless you are allowing players to repair custom items.
+
+Version 2.1.76
+    Advanced Salvage has been renamed to Scrap Collector
+    Scrap Collector has 8 ranks, the first rank is unlocked at level 2 (Level 20 in RetroMode)
+    You can not salvage without at least 1 rank in Scrap Collector now (formerly Advanced Salvage)
+    Fixed a bug where Repair was repairing too much
+    Fixed a bug where Arcane Salvage was used to determine how many materials a player could salvage from an item instead of Scrap Collector (formerly Advanced Salvage)
+    Fixed a bug where messages about an item being too damage to salvage were being sent twice
+    Removed the minimum quantity field from the repair config
+    Removed the item data (metadata) field from repair config as its not used anymore
+    Salvage will no longer return the max amount of materials possible, instead you are guaranteed one item and then some luck is involved on how many items are returned.
+    Updated Chinese locale (thanks to the user named 89009332 from github)
+
+    New locale strings
+        Salvage.Skills.Lottery.Normal
+        Salvage.Skills.Lottery.Perfect
+        Salvage.Skills.Lottery.Untrained
+        Salvage.SubSkill.ScrapCollector.Name
+        Salvage.SubSkill.ScrapCollector.Description
+        Salvage.SubSkill.ScrapCollector.Stat
+
+    (API) SALVAGE_ARCANE_SALVAGE in SubSkillType has been renamed to SALVAGE_SCRAP_COLLECTOR
+
+    NOTES:
+    You do not need to update your configs for this update.
+
+    How Salvage works
+    As an example, say you had enough skill to gain up to 5 items from salvaging something, and that item has enough durability to yield up to 5 materials, salvage will play out like this...
+    First off, you will be guaranteed 1 material, after this you have 80% chance to get the next material, if successful, another dice roll is conducted but lowers your odds by 20%, you chance to succeed will never fall below 33%
+    If you fail a dice roll, it will still conduct dice rolls for the remaining maximum amount of materials returned but your odds of success are only lowered upon a successful dice roll, the sum of the successful dice rolls is used to calculate how many items you are given back, the first item is guaranteed and has no dice rolls, which means for example the Diamond Shovel will always succeed.
+
+Version 2.1.75
+    Fixed a bug that prevented Fortune from working correctly if a Double Drop was triggered
+
+Version 2.1.74
+    Fixed a NPE that could occur during certain events if a skill was disabled in coreskills.yml (Sorry!)
+
+Version 2.1.73
+    Fixed a NPE that could occur if an entire skill was disabled in coreskills.yml
+
+Version 2.1.72
+    Fixed a NPE if a server shutdown with no player data needing to be saved (the error is harmless but spammy)
+    Fixed a NPE that could occur if Roll was disabled in coreskills.yml
+
+Version 2.1.71
+    Salvage will now always ask for confirmation before breaking your items (instead of only asking for enchanted items)
+    Repair will now always ask for confirmation before repairing items (instead of only asking for enchanted items)
+    Gold & Iron Blocks will no longer trigger tool ready messages
+    Salvage & Repair anvils will no longer work on multi-item stacks
+
+    NOTES: You can still turn the confirmation off in config.yml
+
+Version 2.1.70
+    Added new DatabaseAPI to the API package, has features relating to database operations
+    Fixed a bug where shulker boxes (without colors) would activate tool ready messages
+
 Version 2.1.69
     Fixed a few places where mcMMO would not save player data immediately which may cause players to lose a few minutes of progress
 

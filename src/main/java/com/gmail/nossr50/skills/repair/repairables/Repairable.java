@@ -8,7 +8,6 @@ import org.bukkit.Material;
 import java.util.Collections;
 import java.util.List;
 
-
 public class Repairable {
     private final Material itemMaterial;
     private final List<Material> repairMaterials;

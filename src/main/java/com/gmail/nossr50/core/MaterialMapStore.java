@@ -264,6 +264,7 @@ public class MaterialMapStore {
         abilityBlackList.add("light_gray_shulker_box");
         abilityBlackList.add("white_shulker_box");
         abilityBlackList.add("yellow_shulker_box");
+        abilityBlackList.add("shulker_box");
         abilityBlackList.add("wall_sign"); //1.13 and lower?
         abilityBlackList.add("sign"); //1.13 and lower?
     }
@@ -353,6 +354,7 @@ public class MaterialMapStore {
         toolBlackList.add("light_gray_shulker_box");
         toolBlackList.add("white_shulker_box");
         toolBlackList.add("yellow_shulker_box");
+        toolBlackList.add("shulker_box");
         toolBlackList.add("acacia_sign");
         toolBlackList.add("acacia_wall_sign");
         toolBlackList.add("birch_sign");
@@ -389,6 +391,8 @@ public class MaterialMapStore {
         toolBlackList.add("oak_wood");
         toolBlackList.add("spruce_log");
         toolBlackList.add("spruce_wood");
+        toolBlackList.add("iron_block");
+        toolBlackList.add("gold_block");
     }
 
     private void addToHashSet(String string, HashSet<String> stringHashSet) {

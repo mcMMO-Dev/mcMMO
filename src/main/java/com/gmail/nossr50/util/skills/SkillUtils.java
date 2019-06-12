@@ -13,6 +13,7 @@ import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.player.NotificationManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -24,6 +25,7 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class SkillUtils {
@@ -268,33 +270,33 @@ public class SkillUtils {
     }
 
     public static int getRepairAndSalvageQuantities(ItemStack item) {
-        return getRepairAndSalvageQuantities(item, getRepairAndSalvageItem(item), (byte) -1);
+        return getRepairAndSalvageQuantities(item.getType(), getRepairAndSalvageItem(item));
     }
 
-    public static int getRepairAndSalvageQuantities(ItemStack item, Material repairMaterial, byte repairMetadata) {
-        // Workaround for Bukkit bug where damaged items would not return any recipes
-        item = item.clone();
-        item.setDurability((short) 0);
-
+    public static int getRepairAndSalvageQuantities(Material itemMaterial, Material recipeMaterial) {
         int quantity = 0;
-        List<Recipe> recipes = mcMMO.p.getServer().getRecipesFor(item);
 
-        if (recipes.isEmpty()) {
-            return quantity;
-        }
+        for(Iterator<? extends Recipe> recipeIterator = Bukkit.getServer().recipeIterator(); recipeIterator.hasNext();) {
+            Recipe bukkitRecipe = recipeIterator.next();
 
-        Recipe recipe = recipes.get(0);
+            if(bukkitRecipe.getResult().getType() != itemMaterial)
+                continue;
 
-        if (recipe instanceof ShapelessRecipe) {
-            for (ItemStack ingredient : ((ShapelessRecipe) recipe).getIngredientList()) {
-                if (ingredient != null && (repairMaterial == null || ingredient.getType() == repairMaterial) && (repairMetadata == -1 || ingredient.getType().equals(repairMaterial))) {
-                    quantity += ingredient.getAmount();
+            if(bukkitRecipe instanceof ShapelessRecipe) {
+                for (ItemStack ingredient : ((ShapelessRecipe) bukkitRecipe).getIngredientList()) {
+                    if (ingredient != null
+                            && (recipeMaterial == null || ingredient.getType() == recipeMaterial)
+                            && (ingredient.getType() == recipeMaterial)) {
+                        quantity += ingredient.getAmount();
+                    }
                 }
-            }
-        } else if (recipe instanceof ShapedRecipe) {
-            for (ItemStack ingredient : ((ShapedRecipe) recipe).getIngredientMap().values()) {
-                if (ingredient != null && (repairMaterial == null || ingredient.getType() == repairMaterial) && (repairMetadata == -1 || ingredient.getType().equals(repairMaterial))) {
-                    quantity += ingredient.getAmount();
+            } else if(bukkitRecipe instanceof ShapedRecipe) {
+                for (ItemStack ingredient : ((ShapedRecipe) bukkitRecipe).getIngredientMap().values()) {
+                    if (ingredient != null
+                            && (recipeMaterial == null || ingredient.getType() == recipeMaterial)
+                            && (ingredient.getType() == recipeMaterial)) {
+                        quantity += ingredient.getAmount();
+                    }
                 }
             }
         }

@@ -503,6 +503,8 @@ public class mcMMO extends JavaPlugin {
          */
 
         if (mcMMO.getConfigManager().getConfigCoreSkills().isAcrobaticsEnabled()) {
+            InteractionManager.initMaps(); //Init maps
+
             System.out.println("[mcMMO]" + " enabling Acrobatics Skills");
 
             //TODO: Should do this differently

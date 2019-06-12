@@ -114,35 +114,14 @@ public class RepairManager extends SkillManager {
             return;
         }
 
-
-        //byte repairMaterialMetadata = repairable.getRepairMaterialMetadata();
         ItemStack toRemove = new ItemStack(repairMaterial);
+        toRemove.setAmount(1);
 
         short startDurability = item.getDurability();
 
         // Do not repair if at full durability
         if (startDurability <= 0) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Skills.FullDurability");
-            return;
-        }
-
-        // Check if they have the proper material to repair with
-        /*if (!inventory.contains(repairMaterial)) {
-            String prettyName = repairable.getRepairMaterialPrettyName() == null ? StringUtils.getPrettyItemString(repairMaterial) : repairable.getRepairMaterialPrettyName();
-
-            String materialsNeeded = "";
-
-            if (repairMaterialMetadata != (byte) -1 && !inventory.containsAtLeast(toRemove, 1)) {
-                materialsNeeded += ":" + repairMaterialMetadata;
-            }
-
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Skills.NeedMore.Extra", prettyName, materialsNeeded);
-            return;
-        }*/
-
-        // Do not repair stacked items
-        if (item.getAmount() != 1) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Skills.StackedItems");
             return;
         }
 
@@ -165,11 +144,6 @@ public class RepairManager extends SkillManager {
         }
 
         // Remove the item
-        /*if (repairMaterialMetadata == -1) {
-            toRemove = inventory.getItem(inventory.first(repairMaterial)).clone();
-            toRemove.setAmount(1);
-        }*/
-
         inventory.removeItem(toRemove);
 
         // Give out XP like candy

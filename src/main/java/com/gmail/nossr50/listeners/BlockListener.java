@@ -72,10 +72,11 @@ public class BlockListener implements Listener {
                 for (int i = 0; i < bonusCount; i++) {
                     event.getBlock().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
                 }
-
-                event.getBlock().removeMetadata(MetadataConstants.BONUS_DROPS_METAKEY, plugin);
             }
         }
+
+        if(event.getBlock().hasMetadata(MetadataConstants.BONUS_DROPS_METAKEY))
+            event.getBlock().removeMetadata(MetadataConstants.BONUS_DROPS_METAKEY, plugin);
     }
 
     /*@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

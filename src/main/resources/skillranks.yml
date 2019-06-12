@@ -282,11 +282,25 @@ Smelting:
             Rank_7: 850
             Rank_8: 1000
 Salvage:
-    AdvancedSalvage:
+    ScrapCollector:
         Standard:
-            Rank_1: 35
+            Rank_1: 2
+            Rank_2: 10
+            Rank_3: 15
+            Rank_4: 20
+            Rank_5: 25
+            Rank_6: 30
+            Rank_7: 35
+            Rank_8: 40
         RetroMode:
-            Rank_1: 350
+            Rank_1: 20
+            Rank_2: 100
+            Rank_3: 150
+            Rank_4: 200
+            Rank_5: 250
+            Rank_6: 300
+            Rank_7: 350
+            Rank_8: 400
     ArcaneSalvage:
         Standard:
             Rank_1: 10

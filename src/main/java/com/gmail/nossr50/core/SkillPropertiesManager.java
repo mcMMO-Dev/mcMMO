@@ -1,7 +1,6 @@
 package com.gmail.nossr50.core;
 
 import com.gmail.nossr50.config.ConfigConstants;
-import com.gmail.nossr50.config.hocon.HOCONUtil;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.properties.MaxBonusLevel;
@@ -84,19 +83,24 @@ public class SkillPropertiesManager {
 
                             CommentedConfigurationNode childNode = it.next();
 
-                            Object lastObjectInPath = childNode.getPath()[childNode.getPath().length + 1];
-
+                            Object lastObjectInPath = childNode.getPath()[childNode.getPath().length - 1];
                             String nodeName = lastObjectInPath.toString();
 
-                            if(nodeName.equalsIgnoreCase(ConfigConstants.MAX_BONUS_LEVEL_FIELD_NAME)) {
-                                attemptRegisterMaxBonusLevel(subSkillType, childNode);
-                            } else if(nodeName.equalsIgnoreCase(ConfigConstants.MAX_CHANCE_FIELD_NAME)) {
-                                attemptRegisterMaxChance(subSkillType, childNode);
-                            } else if(nodeName.equalsIgnoreCase(ConfigConstants.STATIC_ACTIVATION_FIELD_NAME)) {
-                                attemptRegisterStaticChance(subSkillType, childNode);
-                            } else if(nodeName.equalsIgnoreCase(ConfigConstants.MAX_BONUS_PERCENTAGE_FIELD_NAME)) {
-                                attemptRegisterMaxBonusPercentage(subSkillType, childNode);
+                            switch(nodeName) {
+                                case ConfigConstants.MAX_BONUS_LEVEL_FIELD_NAME:
+                                    attemptRegisterMaxBonusLevel(subSkillType, childNode);
+                                    break;
+                                case ConfigConstants.MAX_CHANCE_FIELD_NAME:
+                                    attemptRegisterMaxChance(subSkillType, childNode);
+                                    break;
+                                case ConfigConstants.STATIC_ACTIVATION_FIELD_NAME:
+                                    attemptRegisterStaticChance(subSkillType, childNode);
+                                    break;
+                                case ConfigConstants.MAX_BONUS_PERCENTAGE_FIELD_NAME:
+                                    attemptRegisterMaxBonusPercentage(subSkillType, childNode);
+                                    break;
                             }
+
                         }
                     }
                 }
