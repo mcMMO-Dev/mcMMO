@@ -1,3 +1,6 @@
+Version 2.1.80
+    (Fix) mcMMO now respects the NBT "Unbreakable" tag and does not deal durability damage to items with that tag
+
 Version 2.1.79
     Updated Japanese locale (Thanks snake0053)
     Fixed a NPE that could happen when using Tree Feller with an unenchanted Axe
