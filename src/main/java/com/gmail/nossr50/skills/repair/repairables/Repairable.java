@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.repair.repairables;
 import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.util.ItemUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
 
 import java.util.Collections;
@@ -61,7 +62,10 @@ public class Repairable {
     }
 
     public int getMinimumQuantity() {
-        return minimumQuantity;
+        if(minimumQuantity == -1)
+            return Math.max(SkillUtils.getRepairAndSalvageQuantities(itemMaterial, repairMaterials), 1);
+        else
+            return minimumQuantity;
     }
 
     public short getMaximumDurability() {

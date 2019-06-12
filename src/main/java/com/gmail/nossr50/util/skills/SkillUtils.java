@@ -228,7 +228,7 @@ public class SkillUtils {
      * @param maxDamageModifier  the amount to adjust the max damage by
      */
     public static void handleDurabilityChange(ItemStack itemStack, double durabilityModifier, double maxDamageModifier) {
-        if (itemStack.hasItemMeta() && itemStack.getItemMeta().isUnbreakable()) {
+        if (itemStack.getEnchantments().get(Enchantment.DURABILITY) != null && itemStack.getEnchantments().get(Enchantment.DURABILITY) >= 1) {
             return;
         }
 
@@ -296,6 +296,46 @@ public class SkillUtils {
                             && (recipeMaterial == null || ingredient.getType() == recipeMaterial)
                             && (ingredient.getType() == recipeMaterial)) {
                         quantity += ingredient.getAmount();
+                    }
+                }
+            }
+        }
+
+        return quantity;
+    }
+
+    public static int getRepairAndSalvageQuantities(Material itemMaterial, List<Material> recipeMaterials) {
+        int quantity = 0;
+
+        for(Iterator<? extends Recipe> recipeIterator = Bukkit.getServer().recipeIterator(); recipeIterator.hasNext();) {
+            Recipe bukkitRecipe = recipeIterator.next();
+
+            if(bukkitRecipe.getResult().getType() != itemMaterial)
+                continue;
+
+            boolean matchedIngredient = false;
+
+            for(Material recipeMaterial : recipeMaterials) {
+                if(matchedIngredient)
+                    break;
+
+                if(bukkitRecipe instanceof ShapelessRecipe) {
+                    for (ItemStack ingredient : ((ShapelessRecipe) bukkitRecipe).getIngredientList()) {
+                        if (ingredient != null
+                                && (recipeMaterial == null || ingredient.getType() == recipeMaterial)
+                                && (ingredient.getType() == recipeMaterial)) {
+                            quantity += ingredient.getAmount();
+                            matchedIngredient = true;
+                        }
+                    }
+                } else if(bukkitRecipe instanceof ShapedRecipe) {
+                    for (ItemStack ingredient : ((ShapedRecipe) bukkitRecipe).getIngredientMap().values()) {
+                        if (ingredient != null
+                                && (recipeMaterial == null || ingredient.getType() == recipeMaterial)
+                                && (ingredient.getType() == recipeMaterial)) {
+                            quantity += ingredient.getAmount();
+                            matchedIngredient = true;
+                        }
                     }
                 }
             }

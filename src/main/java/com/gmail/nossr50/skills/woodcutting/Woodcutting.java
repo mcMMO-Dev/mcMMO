@@ -8,6 +8,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -136,6 +137,11 @@ public final class Woodcutting {
      * @return True if the tool can sustain the durability loss
      */
     protected static boolean handleDurabilityLoss(Set<BlockState> treeFellerBlocks, ItemStack inHand) {
+
+        if(inHand.getItemMeta().getEnchants().get(Enchantment.DURABILITY) >= 1) {
+            return true;
+        }
+
         short durabilityLoss = 0;
         Material type = inHand.getType();
 
