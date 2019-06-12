@@ -7,7 +7,8 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 public class ConfigNotificationGeneral {
 
     private static final boolean PLAYER_TIPS_DEFAULT = true;
-    public static final boolean PROFILE_LOADED_DEFAULT = false;
+    private static final boolean PROFILE_LOADED_DEFAULT = false;
+
     @Setting(value = "Player-Tips", comment = "Allows mcMMO to send players automated helpful tips." +
             "\n Default value: " + PLAYER_TIPS_DEFAULT)
     private boolean playerTips = PLAYER_TIPS_DEFAULT;

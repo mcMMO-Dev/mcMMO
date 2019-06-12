@@ -4,33 +4,20 @@ package com.gmail.nossr50.datatypes.interactions;
  * This class helps define the types of information interactions we will have with players
  */
 public enum NotificationType {
-    XP_GAIN("ExperienceGain"),
-    HARDCORE_MODE("HardcoreMode"),
-    NO_PERMISSION("NoPermission"),
-    SUBSKILL_UNLOCKED("SubSkillUnlocked"),
-    LEVEL_UP_MESSAGE("LevelUps"),
-    HOLIDAY("Holiday"),
-    SUBSKILL_MESSAGE("SubSkillInteraction"),
-    SUBSKILL_MESSAGE_FAILED("SubSkillFailed"),
-    TOOL("ToolReady"),
-    REQUIREMENTS_NOT_MET("RequirementsNotMet"),
-    ABILITY_OFF("AbilityOff"),
-    ABILITY_COOLDOWN("AbilityCoolDown"),
-    ABILITY_REFRESHED("AbilityRefreshed"),
-    SUPER_ABILITY("SuperAbilityInteraction"),
-    SUPER_ABILITY_ALERT_OTHERS("SuperAbilityAlertOthers"),
-    ITEM_MESSAGE("ItemMessage"),
-    CHAT_ONLY("ChatOnly"),
-    PARTY_MESSAGE("PartyMessage");
-
-    final String niceName;
-
-    NotificationType(String niceName) {
-        this.niceName = niceName;
-    }
-
-    @Override
-    public String toString() {
-        return niceName;
-    }
+    HARDCORE_MODE(),
+    NO_PERMISSION(),
+    SUBSKILL_UNLOCKED(),
+    LEVEL_UP_MESSAGE(),
+    HOLIDAY(),
+    SUBSKILL_MESSAGE(),
+    SUBSKILL_MESSAGE_FAILED(),
+    TOOL(),
+    REQUIREMENTS_NOT_MET(),
+    ABILITY_OFF(),
+    ABILITY_COOLDOWN(),
+    ABILITY_REFRESHED(),
+    SUPER_ABILITY(),
+    SUPER_ABILITY_ALERT_OTHERS(),
+    ITEM_MESSAGE(),
+    PARTY_MESSAGE()
 }

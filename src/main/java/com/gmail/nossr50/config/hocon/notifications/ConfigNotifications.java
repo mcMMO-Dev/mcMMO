@@ -1,16 +1,20 @@
 package com.gmail.nossr50.config.hocon.notifications;
 
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
+
+import java.util.HashMap;
 
 @ConfigSerializable
 public class ConfigNotifications {
 
     private static final boolean SUPER_ABILITY_TOOL_NOTIFICATION_DEFAULT = true;
 
-    @Setting(value = "Action-Bar-Notifications", comment = "Settings related to action bar messages." +
-            "\nThe action bar is the area above your health and armor.")
-    private ConfigActionBarNotifications actionBarNotifications = new ConfigActionBarNotifications();
+    @Setting(value = "Player-Notifications", comment = "Settings for player notifications" +
+            "\nPlayer notifications are often sent to the action bar (The action bar is the location above player health/armor/hunger displays)" +
+            "\nYou can configure where these notifications are sent and whether or not they are sent at all.")
+    private ConfigPlayerNotifications playerNotifications = new ConfigPlayerNotifications();
 
 
     @Setting(value = "General", comment = "General settings for Notifications")
@@ -37,11 +41,19 @@ public class ConfigNotifications {
         return superAbilityToolMessage;
     }
 
-    public ConfigActionBarNotifications getActionBarNotifications() {
-        return actionBarNotifications;
+    public ConfigPlayerNotifications getPlayerNotificationsConfig() {
+        return playerNotifications;
     }
 
     public ConfigNotificationGeneral getConfigNotificationGeneral() {
         return configNotificationGeneral;
+    }
+
+    public HashMap<NotificationType, PlayerNotification> getNotificationSettingHashMap() {
+        return playerNotifications.getNotificationSettingHashMap();
+    }
+
+    public PlayerNotification getPlayerNotification(NotificationType notificationType) {
+        return playerNotifications.getPlayerNotification(notificationType);
     }
 }
