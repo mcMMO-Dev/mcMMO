@@ -138,7 +138,8 @@ public final class Woodcutting {
      */
     protected static boolean handleDurabilityLoss(Set<BlockState> treeFellerBlocks, ItemStack inHand) {
 
-        if(inHand.getItemMeta().getEnchants().get(Enchantment.DURABILITY) >= 1) {
+        if(inHand.getItemMeta().getEnchants().get(Enchantment.DURABILITY) != null
+                && inHand.getItemMeta().getEnchants().get(Enchantment.DURABILITY) >= 1) {
             return true;
         }
 
