@@ -1,3 +1,7 @@
+Version 2.1.79
+    Updated Japanese locale (Thanks snake0053)
+    Fixed a NPE that could happen when using Tree Feller with an unenchanted Axe
+
 Version 2.1.78
     Shovels no longer take more than 1 diamond to repair
     Tools with the unbreaking enchantment no longer take extra damage from ability usage, they are still subject to the normal durability damage from breaking blocks though.
