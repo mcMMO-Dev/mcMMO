@@ -20,7 +20,6 @@ public class MinecraftMaterialWrapperSerializer implements TypeSerializer<Minecr
 
     @Override
     public void serialize(TypeToken<?> type, MinecraftMaterialWrapper obj, ConfigurationNode value) {
-
         value.setValue(obj.getName()); //Name
         value.getNode(FULLY_QUALIFIED_NAME).setValue(obj.getFullyQualifiedName());
         value.getNode(BUKKIT_MATERIAL_NAME).setValue(obj.getBukkitMaterialName());

@@ -16,6 +16,7 @@ import com.gmail.nossr50.config.hocon.metrics.ConfigMetrics;
 import com.gmail.nossr50.config.hocon.mobs.ConfigMobs;
 import com.gmail.nossr50.config.hocon.motd.ConfigMOTD;
 import com.gmail.nossr50.config.hocon.notifications.ConfigNotifications;
+import com.gmail.nossr50.config.hocon.notifications.PlayerNotification;
 import com.gmail.nossr50.config.hocon.particles.ConfigParticles;
 import com.gmail.nossr50.config.hocon.party.ConfigParty;
 import com.gmail.nossr50.config.hocon.party.data.ConfigPartyData;
@@ -272,6 +273,7 @@ public final class ConfigManager {
         customSerializers.registerType(TypeToken.of(SkillCeiling.class), new SkillCeilingSerializer());
         customSerializers.registerType(TypeToken.of(SkillRankProperty.class), new SkillRankPropertySerializer());
         customSerializers.registerType(TypeToken.of(MaxBonusLevel.class), new MaxBonusLevelSerializer());
+        customSerializers.registerType(TypeToken.of(PlayerNotification.class), new PlayerNotificationSerializer());
     }
 
     /**
