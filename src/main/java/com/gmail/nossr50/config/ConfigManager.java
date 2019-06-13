@@ -43,6 +43,7 @@ import com.gmail.nossr50.config.hocon.skills.swords.ConfigSwords;
 import com.gmail.nossr50.config.hocon.skills.taming.ConfigTaming;
 import com.gmail.nossr50.config.hocon.skills.unarmed.ConfigUnarmed;
 import com.gmail.nossr50.config.hocon.skills.woodcutting.ConfigWoodcutting;
+import com.gmail.nossr50.config.hocon.sound.ConfigSound;
 import com.gmail.nossr50.config.hocon.superabilities.ConfigSuperAbilities;
 import com.gmail.nossr50.config.hocon.worldblacklist.ConfigWorldBlacklist;
 import com.gmail.nossr50.config.treasure.ExcavationTreasureConfig;
@@ -106,6 +107,7 @@ public final class ConfigManager {
     private SerializedConfigLoader<ConfigCoreSkills> configCoreSkills;
     private SerializedConfigLoader<ConfigEvent> configEvent;
     private SerializedConfigLoader<ConfigRanks> configRanks;
+    private SerializedConfigLoader<ConfigSound> configSound;
     private SerializedConfigLoader<ConfigNameRegisterDefaults> configDefaultExamples;
 
     private ConfigAcrobatics configAcrobatics;
@@ -191,6 +193,7 @@ public final class ConfigManager {
         configCoreSkills = new SerializedConfigLoader<>(ConfigCoreSkills.class, "core_skills.conf", "Core-Skills", null);
         configEvent = new SerializedConfigLoader<>(ConfigEvent.class, "events.conf", "Events", null);
         configRanks = new SerializedConfigLoader<>(ConfigRanks.class, "ranks.conf", "Skill-Ranks", null);
+        configSound = new SerializedConfigLoader<>(ConfigSound.class, "sounds.conf", "Sounds", null);
 
         configDefaultExamples = new SerializedConfigLoader<>(ConfigNameRegisterDefaults.class, "minecraft_item_block_name_examples.conf", "Minecraft", null);
         initSerializedSkillConfigs();
@@ -495,6 +498,10 @@ public final class ConfigManager {
 
     public ConfigRanks getConfigRanks() {
         return configRanks.getConfig();
+    }
+
+    public ConfigSound getConfigSound() {
+        return configSound.getConfig();
     }
 
     /**
