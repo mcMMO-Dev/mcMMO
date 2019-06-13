@@ -61,6 +61,8 @@ public class ExperienceManager {
         mcMMO.p.getLogger().info("Registering combat XP values...");
         for (String entityString : platformSafeMap.keySet()) {
             //Iterate over all EntityType(s)
+            boolean foundMatch = false;
+
             for (EntityType type : EntityType.values()) {
                 //Match ignoring case
                 if (entityString.equalsIgnoreCase(type.name())) {
@@ -70,10 +72,12 @@ public class ExperienceManager {
                     }
                     //Match found
                     combatXPMultiplierMap.put(type, platformSafeMap.get(entityString));
-                } else {
-                    //Log an error so the admin can deal with figuring it out
-                    mcMMO.p.getLogger().severe("No entity could be matched for the combat experience config value named - " + entityString);
+                    foundMatch = true;
                 }
+            }
+
+            if(!foundMatch) {
+                mcMMO.p.getLogger().severe("No entity could be matched for the combat experience config value named - " + entityString);
             }
         }
     }
