@@ -63,7 +63,7 @@ public class ExperienceManager {
             //Iterate over all EntityType(s)
             for (EntityType type : EntityType.values()) {
                 //Match ignoring case
-                if (entityString.equalsIgnoreCase(entityString)) {
+                if (entityString.equalsIgnoreCase(type.name())) {
                     //Check for duplicates and warn the admin
                     if (combatXPMultiplierMap.containsKey(entityString)) {
                         mcMMO.p.getLogger().severe("Entity named " + entityString + " has multiple values in the combat experience config!");
@@ -138,7 +138,7 @@ public class ExperienceManager {
 
             if (matchingMaterial != null) {
                 //Map the fully qualified name
-                fullyQualifiedBlockXPMap.put(matchingMaterial.getKey(), userConfigMap.get(string));
+                fullyQualifiedBlockXPMap.put(matchingMaterial.getKey().toString(), userConfigMap.get(string));
             } else {
                 mcMMO.p.getLogger().info("Could not find a match for the block named '" + string + "' among vanilla block registers");
             }
@@ -287,7 +287,7 @@ public class ExperienceManager {
      * @return true if the block has valid xp registers
      */
     public boolean hasMiningXp(Material material) {
-        return miningFullyQualifiedBlockXpMap.get(material.getKey()) != null;
+        return miningFullyQualifiedBlockXpMap.get(material.getKey().toString()) != null;
     }
 
     /**
@@ -297,7 +297,7 @@ public class ExperienceManager {
      * @return true if the block has valid xp registers
      */
     public boolean hasHerbalismXp(Material material) {
-        return herbalismFullyQualifiedBlockXpMap.get(material.getKey()) != null;
+        return herbalismFullyQualifiedBlockXpMap.get(material.getKey().toString()) != null;
     }
 
     /**
@@ -307,7 +307,7 @@ public class ExperienceManager {
      * @return true if the block has valid xp registers
      */
     public boolean hasWoodcuttingXp(Material material) {
-        return woodcuttingFullyQualifiedBlockXpMap.get(material.getKey()) != null;
+        return woodcuttingFullyQualifiedBlockXpMap.get(material.getKey().toString()) != null;
     }
 
     /**
@@ -317,7 +317,7 @@ public class ExperienceManager {
      * @return true if the block has valid xp registers
      */
     public boolean hasExcavationXp(Material material) {
-        return excavationFullyQualifiedBlockXpMap.get(material.getKey()) != null;
+        return excavationFullyQualifiedBlockXpMap.get(material.getKey().toString()) != null;
     }
 
     /**
@@ -327,7 +327,7 @@ public class ExperienceManager {
      * @return the raw XP value before any modifiers are applied
      */
     public int getMiningXp(Material material) {
-        return miningFullyQualifiedBlockXpMap.get(material.getKey());
+        return miningFullyQualifiedBlockXpMap.get(material.getKey().toString());
     }
 
     /**
@@ -337,7 +337,7 @@ public class ExperienceManager {
      * @return the raw XP value before any modifiers are applied
      */
     public int getHerbalismXp(Material material) {
-        return herbalismFullyQualifiedBlockXpMap.get(material.getKey());
+        return herbalismFullyQualifiedBlockXpMap.get(material.getKey().toString());
     }
 
     /**
@@ -347,7 +347,7 @@ public class ExperienceManager {
      * @return the raw XP value before any modifiers are applied
      */
     public int getWoodcuttingXp(Material material) {
-        return woodcuttingFullyQualifiedBlockXpMap.get(material.getKey());
+        return woodcuttingFullyQualifiedBlockXpMap.get(material.getKey().toString());
     }
 
     /**
@@ -357,7 +357,7 @@ public class ExperienceManager {
      * @return the raw XP value before any modifiers are applied
      */
     public int getExcavationXp(Material material) {
-        return excavationFullyQualifiedBlockXpMap.get(material.getKey());
+        return excavationFullyQualifiedBlockXpMap.get(material.getKey().toString());
     }
 
     /**
@@ -367,7 +367,7 @@ public class ExperienceManager {
      * @return the raw XP value before any modifiers are applied
      */
     public int getFurnaceItemXP(Material material) {
-        return furnaceFullyQualifiedItemXpMap.get(material.getKey());
+        return furnaceFullyQualifiedItemXpMap.get(material.getKey().toString());
     }
 
     /**
