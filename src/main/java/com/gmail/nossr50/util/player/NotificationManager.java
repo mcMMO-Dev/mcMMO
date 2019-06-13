@@ -1,7 +1,6 @@
 package com.gmail.nossr50.util.player;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.hocon.notifications.PlayerNotification;
+import com.gmail.nossr50.config.hocon.notifications.PlayerNotificationSettings;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.notifications.SensitiveCommandType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -10,6 +9,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -25,9 +25,12 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
+/**
+ * Handles all messages sent to the player from mcMMO
+ */
 public class NotificationManager {
 
-    private HashMap<NotificationType, PlayerNotification> playerNotificationHashMap;
+    private HashMap<NotificationType, PlayerNotificationSettings> playerNotificationHashMap;
 
     public NotificationManager() {
         playerNotificationHashMap = new HashMap<>();
@@ -38,6 +41,20 @@ public class NotificationManager {
     private void initMaps() {
         //Copy the map
         playerNotificationHashMap = new HashMap<>(mcMMO.getConfigManager().getConfigNotifications().getNotificationSettingHashMap());
+    }
+
+
+    public void setPlayerNotificationSettings(NotificationType notificationType, PlayerNotificationSettings playerNotificationSettings) {
+        playerNotificationHashMap.put(notificationType, playerNotificationSettings);
+    }
+
+    /**
+     * Grab the settings for a NotificationType
+     * @param notificationType target notification type
+     * @return the notification settings for this type
+     */
+    public PlayerNotificationSettings getPlayerNotificationSettings(NotificationType notificationType) {
+        return playerNotificationHashMap.get(notificationType);
     }
 
     /**
@@ -52,20 +69,29 @@ public class NotificationManager {
         if (UserManager.getPlayer(player) == null || !UserManager.getPlayer(player).useChatNotifications())
             return;
 
-        ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
+        TextComponent textComponent = TextComponentFactory.getNotificationTextComponentFromLocale(key);
+        McMMOPlayerNotificationEvent customEvent = EventUtils.createAndCallNotificationEvent(player, notificationType, textComponent);
 
-        TextComponent message = TextComponentFactory.getNotificationTextComponentFromLocale(key);
-        McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(player, notificationType, destination, message);
-
-        sendNotification(player, customEvent);
+        sendNotification(customEvent);
     }
 
+    /**
+     * Builds a text component with one or more parameters
+     * @param key locale key
+     * @param values parameters
+     * @return TextComponent for this message
+     */
+    public TextComponent buildTextComponent(String key, String... values) {
+        return TextComponentFactory.getNotificationMultipleValues(key, values);
+    }
 
-    public boolean doesPlayerUseNotifications(Player player) {
-        if (UserManager.getPlayer(player) == null)
-            return false;
-        else
-            return UserManager.getPlayer(player).useChatNotifications();
+    /**
+     * Builds a text component without any parameters
+     * @param key locale key
+     * @return TextComponent for this message
+     */
+    public TextComponent buildTextComponent(String key) {
+        return TextComponentFactory.getNotificationTextComponentFromLocale(key);
     }
 
     /**
@@ -96,39 +122,10 @@ public class NotificationManager {
         if(UserManager.getPlayer(player) == null || !UserManager.getPlayer(player).useChatNotifications())
             return;
 
-        ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
+        TextComponent textComponent = buildTextComponent(key, values);
+        McMMOPlayerNotificationEvent customEvent = EventUtils.createAndCallNotificationEvent(player, notificationType, textComponent);
 
-        TextComponent message = TextComponentFactory.getNotificationMultipleValues(key, values);
-        McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(player, notificationType, destination, message);
-
-        sendNotification(player, customEvent);
-    }
-
-    private void sendNotification(Player player, McMMOPlayerNotificationEvent customEvent) {
-        if (customEvent.isCancelled())
-            return;
-
-        //If the message is being sent to the action bar we need to check if the copy if a copy is sent to the chat system
-        if (customEvent.getChatMessageType() == ChatMessageType.ACTION_BAR) {
-            player.spigot().sendMessage(customEvent.getChatMessageType(), customEvent.getNotificationTextComponent());
-
-            if (customEvent.isMessageAlsoBeingSentToChat()) {
-                //Send copy to chat system
-                player.spigot().sendMessage(ChatMessageType.SYSTEM, customEvent.getNotificationTextComponent());
-            }
-        } else {
-            player.spigot().sendMessage(customEvent.getChatMessageType(), customEvent.getNotificationTextComponent());
-        }
-    }
-
-    private McMMOPlayerNotificationEvent checkNotificationEvent(Player player, NotificationType notificationType, ChatMessageType destination, TextComponent message) {
-        //Init event
-        McMMOPlayerNotificationEvent customEvent = new McMMOPlayerNotificationEvent(player,
-                notificationType, message, destination, AdvancedConfig.getInstance().doesNotificationSendCopyToChat(notificationType));
-
-        //Call event
-        Bukkit.getServer().getPluginManager().callEvent(customEvent);
-        return customEvent;
+        sendNotification(customEvent);
     }
 
     /**
@@ -142,12 +139,37 @@ public class NotificationManager {
         if (!mcMMOPlayer.useChatNotifications())
             return;
 
-        ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(NotificationType.LEVEL_UP_MESSAGE) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
-
         TextComponent levelUpTextComponent = TextComponentFactory.getNotificationLevelUpTextComponent(skillName, levelsGained, newLevel);
-        McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(mcMMOPlayer.getPlayer(), NotificationType.LEVEL_UP_MESSAGE, destination, levelUpTextComponent);
+        McMMOPlayerNotificationEvent customEvent = EventUtils.createAndCallNotificationEvent(mcMMOPlayer.getPlayer(), NotificationType.LEVEL_UP_MESSAGE, levelUpTextComponent);
 
-        sendNotification(mcMMOPlayer.getPlayer(), customEvent);
+        sendNotification(customEvent);
+    }
+
+    private void sendNotification(McMMOPlayerNotificationEvent customEvent) {
+        if (customEvent.isCancelled())
+            return;
+
+        Player player = customEvent.getRecipient();
+        PlayerNotificationSettings playerNotificationSettings = customEvent.getPlayerNotificationSettings();
+
+        //Text Component found
+        if(customEvent.hasTextComponent()) {
+            if(playerNotificationSettings.isSendToActionBar()) {
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, customEvent.getNotificationTextComponent());
+            }
+
+            //Chat (System)
+            if(playerNotificationSettings.isSendToChat()) {
+                if(customEvent.hasTextComponent()) {
+                    player.spigot().sendMessage(ChatMessageType.SYSTEM, customEvent.getNotificationTextComponent());
+                }
+            }
+        } else {
+            //Chat but without a text component
+            if(playerNotificationSettings.isSendToChat()) {
+                player.sendMessage(customEvent.getNotificationText());
+            }
+        }
     }
 
     public void broadcastTitle(Server server, String title, String subtitle, int i1, int i2, int i3) {
@@ -165,13 +187,35 @@ public class NotificationManager {
 
         //Unlock Sound Effect
         SoundManager.sendCategorizedSound(mcMMOPlayer.getPlayer(), mcMMOPlayer.getPlayer().getLocation(), SoundType.SKILL_UNLOCKED, SoundCategory.MASTER);
+    }
 
-        //ACTION BAR MESSAGE
-        /*if(AdvancedConfig.getInstance().doesNotificationUseActionBar(NotificationType.SUBSKILL_UNLOCKED))
-            mcMMOPlayer.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(LocaleLoader.getString("JSON.SkillUnlockMessage",
-                    subSkillType.getLocaleName(),
-                    String.valueOf(RankUtils.getRank(mcMMOPlayer.getPlayer(),
-                            subSkillType)))));*/
+    /**
+     * Convenience method to report info about a command sender using a sensitive command
+     *
+     * @param commandSender        the command user
+     * @param sensitiveCommandType type of command issued
+     */
+    public void processSensitiveCommandNotification(CommandSender commandSender, SensitiveCommandType sensitiveCommandType, String... args) {
+        /*
+         * Determine the 'identity' of the one who executed the command to pass as a parameters
+         */
+        String senderName = LocaleLoader.getString("Server.ConsoleName");
+
+        if (commandSender instanceof Player) {
+            senderName = ((Player) commandSender).getDisplayName() + ChatColor.RESET + "-" + ((Player) commandSender).getUniqueId();
+        }
+
+        //Send the notification
+        switch (sensitiveCommandType) {
+            case XPRATE_MODIFY:
+                sendAdminNotification(LocaleLoader.getString("Notifications.Admin.XPRate.Start.Others", addItemToFirstPositionOfArray(senderName, args)));
+                sendAdminCommandConfirmation(commandSender, LocaleLoader.getString("Notifications.Admin.XPRate.Start.Self", args));
+                break;
+            case XPRATE_END:
+                sendAdminNotification(LocaleLoader.getString("Notifications.Admin.XPRate.End.Others", addItemToFirstPositionOfArray(senderName, args)));
+                sendAdminCommandConfirmation(commandSender, LocaleLoader.getString("Notifications.Admin.XPRate.End.Self", args));
+                break;
+        }
     }
 
     /**
@@ -206,35 +250,6 @@ public class NotificationManager {
     }
 
     /**
-     * Convenience method to report info about a command sender using a sensitive command
-     *
-     * @param commandSender        the command user
-     * @param sensitiveCommandType type of command issued
-     */
-    public void processSensitiveCommandNotification(CommandSender commandSender, SensitiveCommandType sensitiveCommandType, String... args) {
-        /*
-         * Determine the 'identity' of the one who executed the command to pass as a parameters
-         */
-        String senderName = LocaleLoader.getString("Server.ConsoleName");
-
-        if (commandSender instanceof Player) {
-            senderName = ((Player) commandSender).getDisplayName() + ChatColor.RESET + "-" + ((Player) commandSender).getUniqueId();
-        }
-
-        //Send the notification
-        switch (sensitiveCommandType) {
-            case XPRATE_MODIFY:
-                sendAdminNotification(LocaleLoader.getString("Notifications.Admin.XPRate.Start.Others", addItemToFirstPositionOfArray(senderName, args)));
-                sendAdminCommandConfirmation(commandSender, LocaleLoader.getString("Notifications.Admin.XPRate.Start.Self", args));
-                break;
-            case XPRATE_END:
-                sendAdminNotification(LocaleLoader.getString("Notifications.Admin.XPRate.End.Others", addItemToFirstPositionOfArray(senderName, args)));
-                sendAdminCommandConfirmation(commandSender, LocaleLoader.getString("Notifications.Admin.XPRate.End.Self", args));
-                break;
-        }
-    }
-
-    /**
      * Takes an array and an object, makes a new array with object in the first position of the new array,
      * and the following elements in this new array being a copy of the existing array retaining their order
      *
@@ -251,4 +266,10 @@ public class NotificationManager {
         return newArray;
     }
 
+    public boolean doesPlayerUseNotifications(Player player) {
+        if (UserManager.getPlayer(player) == null)
+            return false;
+        else
+            return UserManager.getPlayer(player).useChatNotifications();
+    }
 }

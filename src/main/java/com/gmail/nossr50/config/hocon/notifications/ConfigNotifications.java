@@ -49,11 +49,11 @@ public class ConfigNotifications {
         return configNotificationGeneral;
     }
 
-    public HashMap<NotificationType, PlayerNotification> getNotificationSettingHashMap() {
+    public HashMap<NotificationType, PlayerNotificationSettings> getNotificationSettingHashMap() {
         return playerNotifications.getNotificationSettingHashMap();
     }
 
-    public PlayerNotification getPlayerNotification(NotificationType notificationType) {
+    public PlayerNotificationSettings getPlayerNotification(NotificationType notificationType) {
         return playerNotifications.getPlayerNotification(notificationType);
     }
 }

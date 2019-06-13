@@ -2,6 +2,7 @@ package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -20,6 +21,7 @@ import com.gmail.nossr50.events.hardcore.McMMOPlayerVampirismEvent;
 import com.gmail.nossr50.events.party.McMMOPartyLevelUpEvent;
 import com.gmail.nossr50.events.party.McMMOPartyTeleportEvent;
 import com.gmail.nossr50.events.party.McMMOPartyXpGainEvent;
+import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityDeactivateEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
@@ -32,6 +34,8 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -453,5 +457,36 @@ public class EventUtils {
         return event;
     }
 
+    /**
+     * Creates and calls a McMMOPlayerNotificationEvent
+     * @param player target player
+     * @param notificationType notification category
+     * @param textComponent text component used for the message
+     * @return the McMMOPlayerNotificationEvent after its been fired
+     */
+    public static McMMOPlayerNotificationEvent createAndCallNotificationEvent(Player player, NotificationType notificationType, TextComponent textComponent) {
+        //Init event
+        McMMOPlayerNotificationEvent customEvent = new McMMOPlayerNotificationEvent(notificationType, player, mcMMO.getNotificationManager().getPlayerNotificationSettings(notificationType), textComponent);
+
+        //Call event
+        Bukkit.getServer().getPluginManager().callEvent(customEvent);
+        return customEvent;
+    }
+
+    /**
+     * Creates and calls a McMMOPlayerNotificationEvent
+     * @param player target player
+     * @param notificationType notification category
+     * @param message string used for the message
+     * @return the McMMOPlayerNotificationEvent after its been fired
+     */
+    public static McMMOPlayerNotificationEvent createAndCallNotificationEvent(Player player, NotificationType notificationType, String message) {
+        //Init event
+        McMMOPlayerNotificationEvent customEvent = new McMMOPlayerNotificationEvent(notificationType, player, mcMMO.getNotificationManager().getPlayerNotificationSettings(notificationType), message);
+
+        //Call event
+        Bukkit.getServer().getPluginManager().callEvent(customEvent);
+        return customEvent;
+    }
 
 }

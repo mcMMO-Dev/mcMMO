@@ -1,10 +1,8 @@
 package com.gmail.nossr50.events.skills;
 
-import com.gmail.nossr50.config.hocon.notifications.PlayerNotification;
+import com.gmail.nossr50.config.hocon.notifications.PlayerNotificationSettings;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -16,25 +14,55 @@ import org.bukkit.event.HandlerList;
  * TextComponent is not guaranteed to exist, but often it does
  */
 public class McMMOPlayerNotificationEvent extends Event implements Cancellable {
+
     private static final HandlerList handlers = new HandlerList();
-    private PlayerNotification playerNotification;
+    private PlayerNotificationSettings playerNotificationSettings;
     private Player recipient;
     private boolean isCancelled;
     private NotificationType notificationType;
     private TextComponent textComponent;
+    private String notificationText;
 
-    public McMMOPlayerNotificationEvent(NotificationType notificationType, Player recipient, PlayerNotification playerNotification, TextComponent textComponent) {
+    public McMMOPlayerNotificationEvent(NotificationType notificationType, Player recipient, PlayerNotificationSettings playerNotificationSettings, String notificationText) {
         super(false);
         this.notificationType = notificationType;
         this.recipient = recipient;
-        this.playerNotification = playerNotification;
+        this.playerNotificationSettings = playerNotificationSettings;
+        this.textComponent = null;
+        this.notificationText = notificationText;
+        isCancelled = false;
+    }
+
+    public McMMOPlayerNotificationEvent(NotificationType notificationType, Player recipient, PlayerNotificationSettings playerNotificationSettings, TextComponent textComponent) {
+        super(false);
+        this.notificationType = notificationType;
+        this.recipient = recipient;
+        this.playerNotificationSettings = playerNotificationSettings;
         this.textComponent = textComponent;
+        this.notificationText = textComponent.getText();
         isCancelled = false;
     }
 
     /*
      * Getters & Setters
      */
+
+    public PlayerNotificationSettings getPlayerNotificationSettings() {
+        return playerNotificationSettings;
+    }
+
+    /**
+     * Notification text
+     * Note that most messages sent by mcMMO use Text Components instead, in which case this will be the text version of the text component
+     * @return the notification text of this event
+     */
+    public String getNotificationText() {
+        return notificationText;
+    }
+
+    public void setNotificationText(String notificationText) {
+        this.notificationText = notificationText;
+    }
 
     /**
      * Whether or not this notification event uses a text component
@@ -61,7 +89,7 @@ public class McMMOPlayerNotificationEvent extends Event implements Cancellable {
      * @return true if being sent to chat
      */
     public boolean isBeingSentToChat() {
-        return playerNotification.isSendToChat();
+        return playerNotificationSettings.isSendToChat();
     }
 
     /**
@@ -69,7 +97,7 @@ public class McMMOPlayerNotificationEvent extends Event implements Cancellable {
      * @return true if being sent to action bar
      */
     public boolean isBeingSentToActionBar() {
-        return playerNotification.isSendToActionBar();
+        return playerNotificationSettings.isSendToActionBar();
     }
 
     /**
@@ -77,7 +105,7 @@ public class McMMOPlayerNotificationEvent extends Event implements Cancellable {
      * @param sendToChat new value
      */
     public void setSendToChat(boolean sendToChat) {
-        playerNotification.setSendToChat(sendToChat);
+        playerNotificationSettings.setSendToChat(sendToChat);
     }
 
     /**
@@ -85,7 +113,7 @@ public class McMMOPlayerNotificationEvent extends Event implements Cancellable {
      * @param sendToActionBar new value
      */
     public void setSendToActionBar(boolean sendToActionBar) {
-        playerNotification.setSendToActionBar(sendToActionBar);
+        playerNotificationSettings.setSendToActionBar(sendToActionBar);
     }
 
     public static HandlerList getHandlerList() {
@@ -109,7 +137,6 @@ public class McMMOPlayerNotificationEvent extends Event implements Cancellable {
     public void setNotificationTextComponent(TextComponent textComponent) {
         this.textComponent = textComponent;
     }
-
 
     /*
      * Custom Event Boilerplate

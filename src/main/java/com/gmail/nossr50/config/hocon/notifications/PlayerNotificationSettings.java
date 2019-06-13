@@ -1,12 +1,12 @@
 package com.gmail.nossr50.config.hocon.notifications;
 
-public class PlayerNotification {
+public class PlayerNotificationSettings {
 
     private boolean enabled;
     private boolean sendToChat;
     private boolean sendToActionBar;
 
-    public PlayerNotification(boolean enabled, boolean sendToChat, boolean sendToActionBar) {
+    public PlayerNotificationSettings(boolean enabled, boolean sendToChat, boolean sendToActionBar) {
         this.enabled = enabled;
         this.sendToChat = sendToChat;
         this.sendToActionBar = sendToActionBar;
