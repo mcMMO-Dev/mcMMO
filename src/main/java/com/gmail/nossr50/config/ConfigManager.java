@@ -44,6 +44,7 @@ import com.gmail.nossr50.config.hocon.skills.taming.ConfigTaming;
 import com.gmail.nossr50.config.hocon.skills.unarmed.ConfigUnarmed;
 import com.gmail.nossr50.config.hocon.skills.woodcutting.ConfigWoodcutting;
 import com.gmail.nossr50.config.hocon.sound.ConfigSound;
+import com.gmail.nossr50.config.hocon.sound.SoundSetting;
 import com.gmail.nossr50.config.hocon.superabilities.ConfigSuperAbilities;
 import com.gmail.nossr50.config.hocon.worldblacklist.ConfigWorldBlacklist;
 import com.gmail.nossr50.config.treasure.ExcavationTreasureConfig;
@@ -277,6 +278,7 @@ public final class ConfigManager {
         customSerializers.registerType(TypeToken.of(SkillRankProperty.class), new SkillRankPropertySerializer());
         customSerializers.registerType(TypeToken.of(MaxBonusLevel.class), new MaxBonusLevelSerializer());
         customSerializers.registerType(TypeToken.of(PlayerNotificationSettings.class), new PlayerNotificationSerializer());
+        customSerializers.registerType(TypeToken.of(SoundSetting.class), new SoundSettingSerializer());
     }
 
     /**
