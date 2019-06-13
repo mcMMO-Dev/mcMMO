@@ -7,6 +7,7 @@ import com.gmail.nossr50.datatypes.skills.properties.MaxBonusLevel;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.random.InvalidStaticChance;
 import com.google.common.reflect.TypeToken;
+import ninja.leaping.configurate.ValueType;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 
@@ -78,30 +79,26 @@ public class SkillPropertiesManager {
                     //Check if the Sub-Skill node has a child matching this subskill name
                     if (subSkillNode != null) {
 
-                        //Check for all the various mcMMO skill properties
-                        for(Iterator<? extends CommentedConfigurationNode> it = subSkillNode.getChildrenList().iterator(); it.hasNext();) {
-
-                            CommentedConfigurationNode childNode = it.next();
-
-                            Object lastObjectInPath = childNode.getPath()[childNode.getPath().length - 1];
-                            String nodeName = lastObjectInPath.toString();
-
-                            switch(nodeName) {
-                                case ConfigConstants.MAX_BONUS_LEVEL_FIELD_NAME:
-                                    attemptRegisterMaxBonusLevel(subSkillType, childNode);
-                                    break;
-                                case ConfigConstants.MAX_CHANCE_FIELD_NAME:
-                                    attemptRegisterMaxChance(subSkillType, childNode);
-                                    break;
-                                case ConfigConstants.STATIC_ACTIVATION_FIELD_NAME:
-                                    attemptRegisterStaticChance(subSkillType, childNode);
-                                    break;
-                                case ConfigConstants.MAX_BONUS_PERCENTAGE_FIELD_NAME:
-                                    attemptRegisterMaxBonusPercentage(subSkillType, childNode);
-                                    break;
-                            }
-
+                        //Register Max Bonus if it exists
+                        if(getNodeIfReal(subSkillNode, ConfigConstants.MAX_BONUS_LEVEL_FIELD_NAME) != null) {
+                            attemptRegisterMaxBonusLevel(subSkillType, subSkillNode.getNode(ConfigConstants.MAX_BONUS_LEVEL_FIELD_NAME));
                         }
+
+                        //Register Max Chance if it exists
+                        if(getNodeIfReal(subSkillNode, ConfigConstants.MAX_CHANCE_FIELD_NAME) != null) {
+                            attemptRegisterMaxChance(subSkillType, getNodeIfReal(subSkillNode, ConfigConstants.MAX_CHANCE_FIELD_NAME));
+                        }
+
+                        //Register Static Activation Chance if it exists
+                        if(getNodeIfReal(subSkillNode, ConfigConstants.STATIC_ACTIVATION_FIELD_NAME) != null) {
+                            attemptRegisterStaticChance(subSkillType, getNodeIfReal(subSkillNode, ConfigConstants.STATIC_ACTIVATION_FIELD_NAME));
+                        }
+
+                        //Register Max Bonus Percentage if it exists
+                        if(getNodeIfReal(subSkillNode, ConfigConstants.MAX_BONUS_PERCENTAGE_FIELD_NAME) != null) {
+                            attemptRegisterMaxBonusPercentage(subSkillType, getNodeIfReal(subSkillNode, ConfigConstants.MAX_BONUS_PERCENTAGE_FIELD_NAME));
+                        }
+
                     }
                 }
             }
