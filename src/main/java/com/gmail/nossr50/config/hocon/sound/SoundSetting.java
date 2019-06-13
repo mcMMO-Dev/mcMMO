@@ -2,8 +2,8 @@ package com.gmail.nossr50.config.hocon.sound;
 
 public class SoundSetting {
     private boolean enabled;
-    private double volume;
-    private double pitch;
+    private float volume;
+    private float pitch;
 
     public SoundSetting(boolean enabled) {
         this.enabled = enabled;
@@ -14,22 +14,22 @@ public class SoundSetting {
     public SoundSetting(boolean enabled, double pitch) {
         this.enabled = enabled;
         this.volume = 1.0f;
-        this.pitch = pitch;
+        this.pitch = (float) pitch;
     }
 
     public SoundSetting(boolean enabled, double volume, double pitch) {
         this.enabled = enabled;
-        this.volume = volume;
-        this.pitch = pitch;
+        this.volume = (float) volume;
+        this.pitch = (float) pitch;
     }
 
     public SoundSetting(double volume, double pitch) {
-        this.volume = volume;
-        this.pitch = pitch;
+        this.volume = (float) volume;
+        this.pitch = (float) pitch;
     }
 
     public SoundSetting(double volume) {
-        this.volume = volume;
+        this.volume = (float) volume;
         this.pitch = 1.0F;
     }
 
@@ -41,19 +41,19 @@ public class SoundSetting {
         this.enabled = enabled;
     }
 
-    public double getVolume() {
+    public float getVolume() {
         return volume;
     }
 
     public void setVolume(double volume) {
-        this.volume = volume;
+        this.volume = (float) volume;
     }
 
-    public double getPitch() {
+    public float getPitch() {
         return pitch;
     }
 
     public void setPitch(double pitch) {
-        this.pitch = pitch;
+        this.pitch = (float) pitch;
     }
 }

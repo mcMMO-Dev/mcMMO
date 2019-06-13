@@ -40,6 +40,10 @@ public class ConfigSound {
             "\nDefault Value: "+MASTER_VOLUME_DEFAULT)
     private double masterVolume = MASTER_VOLUME_DEFAULT;
 
+    public boolean isSoundEnabled(SoundType soundType) {
+        return soundSettingsHashMap.get(soundType).isEnabled();
+    }
+
     public double getMasterVolume() {
         return masterVolume;
     }
