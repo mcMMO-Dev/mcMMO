@@ -153,6 +153,7 @@ Version 2.2.0
     Config_Update_Overwrite, Tool_Mods_Enabled, Armor_Mods_Enabled, Block_Mods_Enabled, Entity_Mods_Enabled, ExperienceConversionMultiplier
 
     API Changes
+    Added a class to handle experience related operations "ExperienceManager"
     NotificationManager is now provided via an instance in mcMMOs main class
     Restructured McMMOPlayerNotificationEvent to accommodate for new changes in NotificationManager
         Now Notification events are no longer assumed to be sending to the action bar with an option to have a copy sent to chat

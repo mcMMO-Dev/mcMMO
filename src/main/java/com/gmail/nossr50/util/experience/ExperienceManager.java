@@ -138,7 +138,7 @@ public class ExperienceManager {
 
             if (matchingMaterial != null) {
                 //Map the fully qualified name
-                fullyQualifiedBlockXPMap.put(matchingMaterial.getKey().getKey(), userConfigMap.get(string));
+                fullyQualifiedBlockXPMap.put(matchingMaterial.getKey(), userConfigMap.get(string));
             } else {
                 mcMMO.p.getLogger().info("Could not find a match for the block named '" + string + "' among vanilla block registers");
             }
