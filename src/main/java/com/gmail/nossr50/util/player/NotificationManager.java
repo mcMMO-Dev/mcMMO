@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util.player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.hocon.notifications.PlayerNotification;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.notifications.SensitiveCommandType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -22,7 +23,23 @@ import org.bukkit.SoundCategory;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+
 public class NotificationManager {
+
+    private HashMap<NotificationType, PlayerNotification> playerNotificationHashMap;
+
+    public NotificationManager() {
+        playerNotificationHashMap = new HashMap<>();
+
+        initMaps();
+    }
+
+    private void initMaps() {
+        //Copy the map
+        playerNotificationHashMap = new HashMap<>(mcMMO.getConfigManager().getConfigNotifications().getNotificationSettingHashMap());
+    }
+
     /**
      * Sends players notifications from mcMMO
      * This does this by sending out an event so other plugins can cancel it
