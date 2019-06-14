@@ -24,7 +24,7 @@ public class ConfigAcrobatics {
         return subSkills.getDodge();
     }
 
-    public double getDamageTheshold() {
+    public double getRollDamageTheshold() {
         return getRoll().getDamageTheshold();
     }
 

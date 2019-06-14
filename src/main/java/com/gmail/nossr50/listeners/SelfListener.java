@@ -45,9 +45,6 @@ public class SelfListener implements Listener {
         if (mcMMO.getScoreboardSettings().getScoreboardsEnabled())
             ScoreboardManager.handleLevelUp(player, skill);
 
-        if (!MainConfig.getInstance().getLevelUpEffectsEnabled()) {
-        }
-
         /*if ((event.getSkillLevel() % Config.getInstance().getLevelUpEffectsTier()) == 0) {
             skill.celebrateLevelUp(player);
         }*/

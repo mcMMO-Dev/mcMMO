@@ -202,7 +202,7 @@ public class Roll extends AcrobaticsSubSkill {
             return gracefulRollCheck(player, mcMMOPlayer, damage, skillLevel);
         }
 
-        double modifiedDamage = calculateModifiedRollDamage(damage, AdvancedConfig.getInstance().getRollDamageThreshold());
+        double modifiedDamage = calculateModifiedRollDamage(damage, mcMMO.getConfigManager().getConfigAcrobatics().getRollDamageTheshold());
 
         if (!isFatal(player, modifiedDamage)
                 && RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ACROBATICS_ROLL, player)) {
