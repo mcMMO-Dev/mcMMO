@@ -7,12 +7,10 @@ import com.gmail.nossr50.datatypes.skills.properties.MaxBonusLevel;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.random.InvalidStaticChance;
 import com.google.common.reflect.TypeToken;
-import ninja.leaping.configurate.ValueType;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * Hacky way to do this until I rewrite the skill system fully

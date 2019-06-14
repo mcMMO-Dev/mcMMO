@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.herbalism;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.treasure.HerbalismTreasureConfig;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
@@ -37,7 +36,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canBlockCheck() {
-        return !(MainConfig.getInstance().getHerbalismPreventAFK() && getPlayer().isInsideVehicle());
+        return !(mcMMO.getConfigManager().getConfigExploitPrevention().isPreventVehicleAutoFarming() && getPlayer().isInsideVehicle());
     }
 
     public boolean canGreenThumbBlock(BlockState blockState) {
