@@ -485,9 +485,7 @@ public class BlockListener implements Listener {
          *
          * We don't need to check permissions here because they've already been checked for the ability to even activate.
          */
-        if (mcMMOPlayer.getAbilityMode(SuperAbilityType.TREE_FELLER) && BlockUtils.isLog(blockState) && MainConfig.getInstance().getTreeFellerSoundsEnabled()) {
-            SoundManager.sendSound(player, blockState.getLocation(), SoundType.FIZZ);
-        }
+        SoundManager.sendSound(player, blockState.getLocation(), SoundType.FIZZ);
     }
 
     private Player getPlayerFromFurnace(Block furnaceBlock) {

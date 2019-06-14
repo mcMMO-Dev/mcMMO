@@ -3,6 +3,7 @@ package com.gmail.nossr50.core;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class BonusDropManager {
      *
      * @param materials target material list
      */
-    public void addToWhitelistByNameID(List<String> materials) {
+    public void addToWhitelistByNameID(Collection<String> materials) {
         for (String material : materials) {
             Material m = Material.matchMaterial(material);
             if (m == null) {

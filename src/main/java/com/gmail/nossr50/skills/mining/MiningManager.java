@@ -93,7 +93,7 @@ public class MiningManager extends SkillManager {
         }
 
         //if ((mcMMO.getModManager().isCustomMiningBlock(blockState) && !mcMMO.getModManager().getBlock(blockState).isDoubleDropEnabled()) || !MainConfig.getInstance().getDoubleDropsEnabled(skill, material)) {
-        if (!MainConfig.getInstance().getDoubleDropsEnabled(skill, blockState.getType()))
+        if (!mcMMO.getDynamicSettingsManager().getBonusDropManager().isBonusDropWhitelisted(blockState.getType()))
             return;
 
         boolean silkTouch = player.getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH);

@@ -1,7 +1,9 @@
 package com.gmail.nossr50.config.hocon.skills.unarmed;
 
 import ninja.leaping.configurate.objectmapping.Setting;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
+@ConfigSerializable
 public class ConfigUnarmedDisarm {
 
     private static final boolean PREVENT_ITEM_THEFT = false;

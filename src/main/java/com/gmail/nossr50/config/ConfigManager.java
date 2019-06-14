@@ -69,6 +69,7 @@ import org.bukkit.Material;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * The Config Manager handles initializing, loading, and unloading registers for all configs that mcMMO uses
@@ -261,14 +262,12 @@ public final class ConfigManager {
         customSerializers = TypeSerializers.getDefaultSerializers().newChild();
 
         mcMMO.p.getLogger().info("Registering custom type serializers for Configurate...");
-        customSerializers.registerType(new TypeToken<PrimarySkillType>() {
-        }, new CustomEnumValueSerializer());
-        customSerializers.registerType(new TypeToken<Material>() {
-        }, new CustomEnumValueSerializer());
-        customSerializers.registerType(new TypeToken<PartyFeature>() {
-        }, new CustomEnumValueSerializer());
-        customSerializers.registerType(new TypeToken<FormulaType>() {
-        }, new CustomEnumValueSerializer());
+        customSerializers.registerType(new TypeToken<PrimarySkillType>() {}, new CustomEnumValueSerializer());
+        customSerializers.registerType(new TypeToken<Material>() {}, new CustomEnumValueSerializer());
+        customSerializers.registerType(new TypeToken<PartyFeature>() {}, new CustomEnumValueSerializer());
+        customSerializers.registerType(new TypeToken<FormulaType>() {}, new CustomEnumValueSerializer());
+        customSerializers.registerType(new TypeToken<Set<?>>() {}, new SetSerializer());
+
         customSerializers.registerType(TypeToken.of(Repairable.class), new RepairableSerializer());
         customSerializers.registerType(TypeToken.of(Salvageable.class), new SalvageableSerializer());
         customSerializers.registerType(TypeToken.of(MinecraftMaterialWrapper.class), new MinecraftMaterialWrapperSerializer());

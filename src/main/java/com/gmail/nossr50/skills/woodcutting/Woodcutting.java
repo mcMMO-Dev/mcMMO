@@ -57,7 +57,7 @@ public final class Woodcutting {
             Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
         }
         else {*/
-        if (MainConfig.getInstance().getWoodcuttingDoubleDropsEnabled(blockState.getBlockData())) {
+        if (mcMMO.getDynamicSettingsManager().getBonusDropManager().isBonusDropWhitelisted(blockState.getType())) {
             Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
         }
         //}

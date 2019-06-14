@@ -303,26 +303,12 @@ public class MainConfig extends ConfigValidated {
         return getBooleanValue(DOUBLE_DROPS, StringUtils.getCapitalized(skill.toString()), StringUtils.getPrettyItemString(material).replace(" ", "_"));
     }
 
-    /* Acrobatics */
-    public boolean getDodgeLightningDisabled() {
-        return getBooleanValue(SKILLS, ACROBATICS, PREVENT + DODGE + LIGHTNING);
-    }
-
-    /* Alchemy */
-    public boolean getEnabledForHoppers() {
-        return getBooleanValue(SKILLS, ALCHEMY, ENABLED + FOR_HOPPERS);
-    }
-
     public boolean getPreventHopperTransferIngredients() {
         return getBooleanValue(SKILLS, ALCHEMY, PREVENT_HOPPER_TRANSFER_INGREDIENTS);
     }
 
     public boolean getPreventHopperTransferBottles() {
         return getBooleanValue(SKILLS, ALCHEMY, PREVENT_HOPPER_TRANSFER_BOTTLES);
-    }
-
-    public boolean getUnarmedItemsAsUnarmed() {
-        return getBooleanValue(SKILLS, UNARMED, ITEMS + AS + UNARMED);
     }
 
     /* Taming */
@@ -350,26 +336,4 @@ public class MainConfig extends ConfigValidated {
         return getDoubleValue(SKILLS, TAMING, CALL_OF_THE_WILD1, RANGE);
     }
 
-    /* Woodcutting */
-    public boolean getWoodcuttingDoubleDropsEnabled(BlockData material) {
-        return getBooleanValue(DOUBLE_DROPS, WOODCUTTING, StringUtils.getFriendlyConfigBlockDataString(material));
-    }
-
-    public boolean getTreeFellerSoundsEnabled() {
-        return getBooleanValue(SKILLS, WOODCUTTING, TREE_FELLER + SOUNDS);
-    }
-
-    /* AFK Leveling */
-    public boolean getHerbalismPreventAFK() {
-        return getBooleanValue(SKILLS, HERBALISM, PREVENT_AFK + LEVELING);
-    }
-
-    /* PVP & PVE Settings */
-    public boolean getPVPEnabled(PrimarySkillType skill) {
-        return getBooleanValue(SKILLS, StringUtils.getCapitalized(skill.toString()), ENABLED + FOR_PVP);
-    }
-
-    public boolean getPVEEnabled(PrimarySkillType skill) {
-        return getBooleanValue(SKILLS, StringUtils.getCapitalized(skill.toString()), ENABLED + FOR_PVE);
-    }
 }

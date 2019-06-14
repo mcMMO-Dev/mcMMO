@@ -115,7 +115,7 @@ public class DynamicSettingsManager {
      */
     public void registerBonusDrops() {
         bonusDropManager.addToWhitelistByNameID(mcMMO.getConfigManager().getConfigMining().getBonusDrops());
-//        bonusDropManager.addToWhitelistByNameID(mcMMO.getConfigManager().getConfigHerbalism().getBonusDrops());
+        bonusDropManager.addToWhitelistByNameID(mcMMO.getConfigManager().getConfigHerbalism().getBonusDrops());
 //        bonusDropManager.addToWhitelistByNameID(mcMMO.getConfigManager().getConfigWoodcutting().getBonusDrops());
     }
 

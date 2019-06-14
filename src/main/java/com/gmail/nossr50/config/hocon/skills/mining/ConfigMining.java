@@ -4,16 +4,17 @@ import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import static org.bukkit.Material.*;
 
 @ConfigSerializable
 public class ConfigMining {
 
-    private static final ArrayList<String> DEFAULT_BONUS_DROPS;
+    private static final HashSet<String> DEFAULT_BONUS_DROPS;
 
     static {
-        DEFAULT_BONUS_DROPS = new ArrayList<>();
+        DEFAULT_BONUS_DROPS = new HashSet<>();
 
         DEFAULT_BONUS_DROPS.add(ANDESITE.getKey().toString());
         DEFAULT_BONUS_DROPS.add(DIORITE.getKey().toString());
@@ -46,7 +47,7 @@ public class ConfigMining {
 
     @Setting(value = "Z-Bonus-Drops", comment = "Bonus drops will be allowed for these blocks." +
             "\nUse Minecraft friendly names for entries, not Bukkit material names.")
-    private ArrayList<String> bonusDrops = DEFAULT_BONUS_DROPS;
+    private HashSet<String> bonusDrops = DEFAULT_BONUS_DROPS;
 
     @Setting(value = "Sub-Skills")
     private ConfigMiningSubskills miningSubskills = new ConfigMiningSubskills();
@@ -63,7 +64,7 @@ public class ConfigMining {
         return getBlastMining().getDetonators();
     }
 
-    public ArrayList<String> getBonusDrops() {
+    public HashSet<String> getBonusDrops() {
         return bonusDrops;
     }
 
