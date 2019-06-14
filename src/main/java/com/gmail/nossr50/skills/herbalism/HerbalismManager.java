@@ -31,6 +31,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import java.util.List;
 
 public class HerbalismManager extends SkillManager {
+
     public HerbalismManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.HERBALISM);
     }
