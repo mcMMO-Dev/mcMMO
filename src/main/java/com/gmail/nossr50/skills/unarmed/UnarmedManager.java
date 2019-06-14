@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.unarmed;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -78,9 +77,9 @@ public class UnarmedManager extends SkillManager {
 
         switch (blockState.getType()) {
             case STONE_BRICKS:
-                if (!Unarmed.blockCrackerSmoothBrick) {
+                /*if (!Unarmed.blockCrackerSmoothBrick) {
                     return false;
-                }
+                }*/
 
                 blockState.setType(Material.CRACKED_STONE_BRICKS);
                 return true;
@@ -106,7 +105,7 @@ public class UnarmedManager extends SkillManager {
 
             Item item = Misc.dropItem(defender.getLocation(), defender.getInventory().getItemInMainHand());
 
-            if (item != null && AdvancedConfig.getInstance().getDisarmProtected()) {
+            if (item != null && mcMMO.getConfigManager().getConfigUnarmed().doesDisarmPreventTheft()) {
                 item.setMetadata(MetadataConstants.DISARMED_ITEM_METAKEY, UserManager.getPlayer(defender).getPlayerMetadata());
             }
 

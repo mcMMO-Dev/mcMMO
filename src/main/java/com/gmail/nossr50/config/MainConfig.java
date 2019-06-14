@@ -321,12 +321,6 @@ public class MainConfig extends ConfigValidated {
         return getBooleanValue(SKILLS, ALCHEMY, PREVENT_HOPPER_TRANSFER_BOTTLES);
     }
 
-
-    /* Unarmed */
-    public boolean getUnarmedBlockCrackerSmoothbrickToCracked() {
-        return getBooleanValue(SKILLS, UNARMED, BLOCK_CRACKER, SMOOTH_BRICK_TO_CRACKED_BRICK);
-    }
-
     public boolean getUnarmedItemsAsUnarmed() {
         return getBooleanValue(SKILLS, UNARMED, ITEMS + AS + UNARMED);
     }

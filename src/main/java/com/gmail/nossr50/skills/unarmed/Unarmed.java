@@ -8,7 +8,7 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class Unarmed {
-    public static boolean blockCrackerSmoothBrick = MainConfig.getInstance().getUnarmedBlockCrackerSmoothbrickToCracked();
+//    public static boolean blockCrackerSmoothBrick = MainConfig.getInstance().getUnarmedBlockCrackerSmoothbrickToCracked();
     public static double berserkDamageModifier = 1.5;
     public static long lastAttacked = 0;
     public static long attackInterval = 750;
