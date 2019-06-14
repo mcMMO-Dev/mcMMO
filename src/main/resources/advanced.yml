@@ -488,7 +488,7 @@ Skills:
                 Standard: 100
                 RetroMode: 1000
             AntiTheft: false
-        ArrowDeflect:
+        ArrowDeflect:32
             # ChanceMax: Maximum chance of deflecting arrows
             # MaxBonusLevel: Level when the maximum chance to deflect is reached
             ChanceMax: 50.0

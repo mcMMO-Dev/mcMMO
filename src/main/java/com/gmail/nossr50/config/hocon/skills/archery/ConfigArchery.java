@@ -13,6 +13,9 @@ public class ConfigArchery {
     @Setting(value = "Skill-Shot")
     private ConfigArcherySkillShot skillShot = new ConfigArcherySkillShot();
 
+    @Setting("Arrow-Retrieval")
+    private ConfigArcheryArrowRetrieval arrowRetrieval = new ConfigArcheryArrowRetrieval();
+
     public ConfigArcheryDaze getDaze() {
         return daze;
     }
