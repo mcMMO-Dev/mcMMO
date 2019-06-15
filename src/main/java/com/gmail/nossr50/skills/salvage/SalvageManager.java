@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills.salvage;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -214,7 +215,7 @@ public class SalvageManager extends SkillManager {
         Player player = getPlayer();
 
         if (!RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE) || !Permissions.arcaneSalvage(player)) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.ArcaneFailed");
+            NotificationManager.sendPlayerInformationChatOnly(player, "Salvage.Skills.ArcaneFailed");
             return null;
         }
 
@@ -225,15 +226,24 @@ public class SalvageManager extends SkillManager {
         int arcaneFailureCount = 0;
 
         for (Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
+
+            int enchantLevel = enchant.getValue();
+
+            if(!ExperienceConfig.getInstance().allowUnsafeEnchantments()) {
+                if(enchantLevel > enchant.getKey().getMaxLevel()) {
+                    enchantLevel = enchant.getKey().getMaxLevel();
+                }
+            }
+
             if (!Salvage.arcaneSalvageEnchantLoss
                     || Permissions.hasSalvageEnchantBypassPerk(player)
                     || RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractFullEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
-                enchantMeta.addStoredEnchant(enchant.getKey(), enchant.getValue(), true);
+                enchantMeta.addStoredEnchant(enchant.getKey(), enchantLevel, true);
             }
-            else if (enchant.getValue() > 1
+            else if (enchantLevel > 1
                     && Salvage.arcaneSalvageDowngrades
                     && RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractPartialEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
-                enchantMeta.addStoredEnchant(enchant.getKey(), enchant.getValue() - 1, true);
+                enchantMeta.addStoredEnchant(enchant.getKey(), enchantLevel - 1, true);
                 downgraded = true;
             } else {
                 arcaneFailureCount++;
@@ -242,11 +252,11 @@ public class SalvageManager extends SkillManager {
 
         if(failedAllEnchants(arcaneFailureCount, enchants.entrySet().size()))
         {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.ArcaneFailed");
+            NotificationManager.sendPlayerInformationChatOnly(player,  "Salvage.Skills.ArcaneFailed");
             return null;
         } else if(downgraded)
         {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.ArcanePartial");
+            NotificationManager.sendPlayerInformationChatOnly(player,  "Salvage.Skills.ArcanePartial");
         }
 
         book.setItemMeta(enchantMeta);

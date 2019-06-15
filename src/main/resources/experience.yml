@@ -27,6 +27,7 @@ EarlyGameBoost:
     #Used to determine the cap of the max boot, with default level cap it will be 5 on standard, and 50 on retro
     MaxLevelMultiplier: 0.05
 ExploitFix:
+    UnsafeEnchantments: false
     # Prevent many exploits related to fishing
     Fishing: true
     EndermanEndermiteFarms: true

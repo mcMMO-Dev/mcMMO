@@ -17,6 +17,7 @@ import com.gmail.nossr50.skills.mining.BlastMining;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.skills.taming.TamingManager;
+import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -345,6 +346,18 @@ public class EntityListener implements Listener {
 
             if (projectileSource instanceof LivingEntity) {
                 attacker = (LivingEntity) projectileSource;
+            }
+
+            if(defender instanceof Player) {
+                Player playerDefender = (Player) defender;
+                UnarmedManager unarmedManager = UserManager.getPlayer(playerDefender).getUnarmedManager();
+
+                if (unarmedManager.canDeflect()) {
+                    if(unarmedManager.deflectCheck()) {
+                        event.setCancelled(true);
+                        return;
+                    }
+                }
             }
         }
         else if (attacker instanceof Tameable) {

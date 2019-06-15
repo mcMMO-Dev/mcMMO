@@ -1,4 +1,13 @@
 Version 2.1.81
+    Fixed a bug where Arrow Deflect would never trigger outside of PVP
+    Fixed a bug where failing to salvage enchantments incorrectly colored the text
+    mcMMO no longer allows players to keep enchantments exceeding normal limitations by default when salvaging or repairing (you can turn this off in the config, see below)
+    Added new setting 'ExploitFix.UnsafeEnchantments' to experience.yml, turn this on to allow players to salvage/repair enchantments higher than normal game restrictions
+
+    NOTES:
+    If a player tries to salvage/repair an item with an illegal enchant (for example Sharpness X) it will downgrade that item to the highest legal version when calculating rewards
+    If you don't like this change you can turn it off in experience.yml under 'ExploitFix.UnsafeEnchantments'
+
 
 Version 2.1.80
     (Fix) mcMMO now respects the NBT "Unbreakable" tag and does not deal durability damage to items with that tag
