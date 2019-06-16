@@ -200,11 +200,11 @@ public class SalvageManager extends SkillManager {
         if (Permissions.hasSalvageEnchantBypassPerk(getPlayer()))
             return 100.0D;
 
-        return AdvancedConfig.getInstance().getArcaneSalvageExtractFullEnchantsChance(getArcaneSalvageRank());
+        return mcMMO.getConfigManager().getConfigSalvage().getConfigArcaneSalvage().getExtractFullEnchantChance().get(getArcaneSalvageRank());
     }
 
     public double getExtractPartialEnchantChance() {
-        return AdvancedConfig.getInstance().getArcaneSalvageExtractPartialEnchantsChance(getArcaneSalvageRank());
+        return mcMMO.getConfigManager().getConfigSalvage().getConfigArcaneSalvage().getExtractPartialEnchantChance().get(getArcaneSalvageRank());
     }
 
     private ItemStack arcaneSalvageCheck(Map<Enchantment, Integer> enchants) {

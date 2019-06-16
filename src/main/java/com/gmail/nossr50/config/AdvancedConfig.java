@@ -173,15 +173,6 @@ public class AdvancedConfig extends ConfigValidated {
         return getDoubleValue(SKILLS, FISHING, MASTER_ANGLER, BIOME_MODIFIER);
     }
 
-    /* MINING */
-    public double getArcaneSalvageExtractFullEnchantsChance(int rank) {
-        return getDoubleValue(SKILLS, SALVAGE, ARCANE_SALVAGE, EXTRACT_FULL_ENCHANT, RANK, String.valueOf(rank));
-    }
-
-    public double getArcaneSalvageExtractPartialEnchantsChance(int rank) {
-        return getDoubleValue(SKILLS, SALVAGE, ARCANE_SALVAGE, EXTRACT_PARTIAL_ENCHANT, RANK, String.valueOf(rank));
-    }
-
     /* SWORDS */
     public double getRuptureDamagePlayer() {
         return getDoubleValue(SKILLS, SWORDS, RUPTURE, DAMAGE_PLAYER);
