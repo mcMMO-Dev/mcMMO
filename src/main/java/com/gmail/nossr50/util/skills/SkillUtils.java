@@ -168,6 +168,7 @@ public class SkillUtils {
 
         itemMeta.setLore(itemLore);
         heldItem.setItemMeta(itemMeta);
+        player.updateInventory();
 
         /*else {
             int duration = 0;

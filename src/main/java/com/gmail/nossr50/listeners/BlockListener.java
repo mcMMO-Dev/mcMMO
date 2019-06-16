@@ -569,62 +569,46 @@ public class BlockListener implements Listener {
             return;
         }
 
-
-        BlockState blockState = event.getBlock().getState();
-
-        ItemStack heldItem = player.getInventory().getItemInMainHand();
-
-        cleanupAbilityTools(player, mcMMOPlayer, blockState, heldItem);
-
-        debugStickDump(player, blockState);
+        if (player.getInventory().getItemInMainHand().getType() == Material.DEBUG_STICK) {
+            debugStickDump(player, event.getBlock().getState());
+        }
     }
 
     public void debugStickDump(Player player, BlockState blockState) {
-        //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
-            return;
+
+        if (mcMMO.getPlaceStore().isTrue(blockState))
+            player.sendMessage("[mcMMO DEBUG] This block is not natural and does not reward treasures/XP");
+        else {
+            player.sendMessage("[mcMMO DEBUG] This block is considered natural by mcMMO");
+            UserManager.getPlayer(player).getExcavationManager().printExcavationDebug(player, blockState);
         }
 
-        if (player.getInventory().getItemInMainHand().getType() == Material.DEBUG_STICK) {
-            if (mcMMO.getPlaceStore().isTrue(blockState))
-                player.sendMessage("[mcMMO DEBUG] This block is not natural and does not reward treasures/XP");
-            else {
-                player.sendMessage("[mcMMO DEBUG] This block is considered natural by mcMMO");
-                UserManager.getPlayer(player).getExcavationManager().printExcavationDebug(player, blockState);
-            }
+        if (WorldGuardUtils.isWorldGuardLoaded()) {
+            if (WorldGuardManager.getInstance().hasMainFlag(player))
+                player.sendMessage("[mcMMO DEBUG] World Guard main flag is permitted for this player in this region");
+            else
+                player.sendMessage("[mcMMO DEBUG] World Guard main flag is DENIED for this player in this region");
 
-            if (WorldGuardUtils.isWorldGuardLoaded()) {
-                if (WorldGuardManager.getInstance().hasMainFlag(player))
-                    player.sendMessage("[mcMMO DEBUG] World Guard main flag is permitted for this player in this region");
-                else
-                    player.sendMessage("[mcMMO DEBUG] World Guard main flag is DENIED for this player in this region");
-
-                if (WorldGuardManager.getInstance().hasXPFlag(player))
-                    player.sendMessage("[mcMMO DEBUG] World Guard xp flag is permitted for this player in this region");
-                else
-                    player.sendMessage("[mcMMO DEBUG] World Guard xp flag is not permitted for this player in this region");
-            }
-
-            if (blockState instanceof Furnace) {
-                Furnace furnace = (Furnace) blockState;
-                if (furnace.hasMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY)) {
-                    player.sendMessage("[mcMMO DEBUG] This furnace has a registered owner");
-                    Player furnacePlayer = getPlayerFromFurnace(furnace.getBlock());
-                    if (furnacePlayer != null) {
-                        player.sendMessage("[mcMMO DEBUG] This furnace is owned by player " + furnacePlayer.getName());
-                    }
-                } else
-                    player.sendMessage("[mcMMO DEBUG] This furnace does not have a registered owner");
-            }
-
-            if (mcMMO.getConfigManager().getConfigLeveling().isEnableXPBars())
-                player.sendMessage("[mcMMO DEBUG] XP bars are enabled, however you should check per-skill settings to make sure those are enabled.");
+            if (WorldGuardManager.getInstance().hasXPFlag(player))
+                player.sendMessage("[mcMMO DEBUG] World Guard xp flag is permitted for this player in this region");
+            else
+                player.sendMessage("[mcMMO DEBUG] World Guard xp flag is not permitted for this player in this region");
         }
-    }
 
-    public void cleanupAbilityTools(Player player, McMMOPlayer mcMMOPlayer, BlockState blockState, ItemStack heldItem) {
-        SkillUtils.removeAbilityBuff(heldItem);
-        SkillUtils.handleAbilitySpeedDecrease(player);
+        if (blockState instanceof Furnace) {
+            Furnace furnace = (Furnace) blockState;
+            if (furnace.hasMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY)) {
+                player.sendMessage("[mcMMO DEBUG] This furnace has a registered owner");
+                Player furnacePlayer = getPlayerFromFurnace(furnace.getBlock());
+                if (furnacePlayer != null) {
+                    player.sendMessage("[mcMMO DEBUG] This furnace is owned by player " + furnacePlayer.getName());
+                }
+            } else
+                player.sendMessage("[mcMMO DEBUG] This furnace does not have a registered owner");
+        }
+
+        if (mcMMO.getConfigManager().getConfigLeveling().isEnableXPBars())
+            player.sendMessage("[mcMMO DEBUG] XP bars are enabled, however you should check per-skill settings to make sure those are enabled.");
     }
 
 }
