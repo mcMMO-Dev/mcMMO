@@ -238,9 +238,7 @@ public class Party {
             if (leader != null) {
                 leader.sendMessage(LocaleLoader.getString("Party.LevelUp", levelsGained, getLevel()));
 
-                if (MainConfig.getInstance().getLevelUpSoundsEnabled()) {
-                    SoundManager.sendSound(leader, leader.getLocation(), SoundType.LEVEL_UP);
-                }
+                SoundManager.sendSound(leader, leader.getLocation(), SoundType.LEVEL_UP);
             }
             return;
         }

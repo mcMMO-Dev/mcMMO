@@ -821,13 +821,10 @@ public final class PartyManager {
      * @param level        The current party level
      */
     public static void informPartyMembersLevelUp(Party party, int levelsGained, int level) {
-        boolean levelUpSoundsEnabled = MainConfig.getInstance().getLevelUpSoundsEnabled();
         for (Player member : party.getOnlineMembers()) {
             member.sendMessage(LocaleLoader.getString("Party.LevelUp", levelsGained, level));
 
-            if (levelUpSoundsEnabled) {
-                SoundManager.sendSound(member, member.getLocation(), SoundType.LEVEL_UP);
-            }
+            SoundManager.sendSound(member, member.getLocation(), SoundType.LEVEL_UP);
         }
     }
 

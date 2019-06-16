@@ -16,25 +16,25 @@ public final class ParticleEffectUtils {
     }
 
     public static void playBleedEffect(LivingEntity livingEntity) {
-        if (!MainConfig.getInstance().getBleedEffectEnabled()) {
+        /*if (!MainConfig.getInstance().getBleedEffectEnabled()) {
             return;
-        }
+        }*/
 
         livingEntity.getWorld().playEffect(livingEntity.getEyeLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
     }
 
     public static void playDodgeEffect(Player player) {
-        if (!MainConfig.getInstance().getDodgeEffectEnabled()) {
+        /*if (!MainConfig.getInstance().getDodgeEffectEnabled()) {
             return;
-        }
+        }*/
 
         playSmokeEffect(player);
     }
 
     public static void playFluxEffect(Location location) {
-        if (!MainConfig.getInstance().getFluxEffectEnabled()) {
+        /*if (!MainConfig.getInstance().getFluxEffectEnabled()) {
             return;
-        }
+        }*/
 
         location.getWorld().playEffect(location, Effect.MOBSPAWNER_FLAMES, 1);
     }
@@ -56,9 +56,9 @@ public final class ParticleEffectUtils {
     }
 
     public static void playGreaterImpactEffect(LivingEntity livingEntity) {
-        if (!MainConfig.getInstance().getGreaterImpactEffectEnabled()) {
+        /*if (!MainConfig.getInstance().getGreaterImpactEffectEnabled()) {
             return;
-        }
+        }*/
 
         Location location = livingEntity.getEyeLocation();
 
@@ -66,9 +66,9 @@ public final class ParticleEffectUtils {
     }
 
     public static void playCallOfTheWildEffect(LivingEntity livingEntity) {
-        if (!MainConfig.getInstance().getCallOfTheWildEffectEnabled()) {
+        /*if (!MainConfig.getInstance().getCallOfTheWildEffectEnabled()) {
             return;
-        }
+        }*/
 
         livingEntity.getWorld().playEffect(livingEntity.getEyeLocation(), Effect.MOBSPAWNER_FLAMES, 1);
     }

@@ -158,36 +158,6 @@ public class AdvancedConfig extends ConfigValidated {
 
     /* GENERAL */
 
-    /**
-     * This returns the maximum level at which superabilities will stop lengthening from scaling alongside skill level.
-     * It returns a different value depending on whether or not the server is in retro mode
-     *
-     * @return the level at which abilities stop increasing in length
-     */
-    public int getAbilityLengthCap() {
-        if (!mcMMO.isRetroModeEnabled())
-            return getIntValue(SKILLS, GENERAL, ABILITY, LENGTH, STANDARD, CAP_LEVEL);
-        else
-            return getIntValue(SKILLS, GENERAL, ABILITY, LENGTH, RETRO_MODE, CAP_LEVEL);
-    }
-
-    /**
-     * This returns the frequency at which abilities will increase in length
-     * It returns a different value depending on whether or not the server is in retro mode
-     *
-     * @return the number of levels required per ability length increase
-     */
-    public int getAbilityLength() {
-        if (!mcMMO.isRetroModeEnabled())
-            return getIntValue(SKILLS, GENERAL, ABILITY, LENGTH, STANDARD, INCREASE_LEVEL);
-        else
-            return getIntValue(SKILLS, GENERAL, ABILITY, LENGTH, RETRO_MODE, INCREASE_LEVEL);
-    }
-
-    public int getEnchantBuff() {
-        return getIntValue(SKILLS, GENERAL, ABILITY, ENCHANT_BUFF);
-    }
-
     /* Notification Settings */
 
     /* FISHING */
@@ -204,30 +174,6 @@ public class AdvancedConfig extends ConfigValidated {
     }
 
     /* MINING */
-    public boolean getDoubleDropSilkTouchEnabled() {
-        return getBooleanValue(SKILLS, MINING, "DoubleDrops", "SilkTouch");
-    }
-
-    public double getBlastDamageDecrease(int rank) {
-        return getDoubleValue(SKILLS, MINING, BLAST_MINING, BLAST_DAMAGE_DECREASE, RANK, String.valueOf(rank));
-    }
-
-    public double getOreBonus(int rank) {
-        return getDoubleValue(SKILLS, MINING, BLAST_MINING, ORE_BONUS, RANK, String.valueOf(rank));
-    }
-
-    public double getDebrisReduction(int rank) {
-        return getDoubleValue(SKILLS, MINING, BLAST_MINING, DEBRIS_REDUCTION, RANK, String.valueOf(rank));
-    }
-
-    public int getDropMultiplier(int rank) {
-        return getIntValue(SKILLS, MINING, BLAST_MINING, DROP_MULTIPLIER, RANK, String.valueOf(rank));
-    }
-
-    public double getBlastRadiusModifier(int rank) {
-        return getDoubleValue(SKILLS, MINING, BLAST_MINING, BLAST_RADIUS, MODIFIER, RANK, String.valueOf(rank));
-    }
-
     public double getArcaneSalvageExtractFullEnchantsChance(int rank) {
         return getDoubleValue(SKILLS, SALVAGE, ARCANE_SALVAGE, EXTRACT_FULL_ENCHANT, RANK, String.valueOf(rank));
     }
@@ -289,4 +235,5 @@ public class AdvancedConfig extends ConfigValidated {
     public double getMaxHorseJumpStrength() {
         return getDoubleValue(SKILLS, TAMING, CALL_OF_THE_WILD, MAX_HORSE_JUMP_STRENGTH);
     }
+
 }

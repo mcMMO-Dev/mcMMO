@@ -41,7 +41,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.experience.ExperienceBarManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
-import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -590,9 +589,7 @@ public class McMMOPlayer {
             return;
         }
 
-        if (MainConfig.getInstance().getLevelUpSoundsEnabled()) {
-            SoundManager.sendSound(player, player.getLocation(), SoundType.LEVEL_UP);
-        }
+        SoundManager.sendSound(player, player.getLocation(), SoundType.LEVEL_UP);
 
         /*
          * Check to see if the player unlocked any new skills

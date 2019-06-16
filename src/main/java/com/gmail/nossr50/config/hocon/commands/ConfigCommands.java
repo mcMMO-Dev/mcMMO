@@ -15,6 +15,13 @@ public class ConfigCommands {
     @Setting(value = "Skills", comment = "Settings related to skill commands like /mining or /herbalism")
     private ConfigCommandsSkills skills = new ConfigCommandsSkills();
 
+    @Setting(value = "Misc", comment = "Various settings for commands that don't fit into other categories.")
+    private ConfigCommandsMisc misc = new ConfigCommandsMisc();
+
+    public ConfigCommandsMisc getMisc() {
+        return misc;
+    }
+
     public ConfigCommandsAdminChat getAdminChat() {
         return adminChat;
     }

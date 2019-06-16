@@ -22,7 +22,6 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
@@ -562,7 +561,6 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockDamageCleanup(BlockDamageEvent event) {
         Player player = event.getPlayer();
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         //Profile not loaded
         if (UserManager.getPlayer(player) == null) {

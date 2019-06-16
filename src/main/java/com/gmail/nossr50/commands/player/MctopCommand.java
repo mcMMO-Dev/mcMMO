@@ -89,7 +89,7 @@ public class MctopCommand implements TabExecutor {
             }
 
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
-            long cooldownMillis = Math.max(MainConfig.getInstance().getDatabasePlayerCooldown(), 1750);
+            long cooldownMillis = 5000;
 
             if (mcMMOPlayer.getDatabaseATS() + cooldownMillis > System.currentTimeMillis()) {
                 double seconds = ((mcMMOPlayer.getDatabaseATS() + cooldownMillis) - System.currentTimeMillis()) / 1000;

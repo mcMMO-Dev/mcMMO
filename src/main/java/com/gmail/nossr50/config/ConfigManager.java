@@ -139,7 +139,6 @@ public final class ConfigManager {
     private ExcavationTreasureConfig excavationTreasureConfig;
     private HerbalismTreasureConfig herbalismTreasureConfig;
     private AdvancedConfig advancedConfig;
-    private SoundConfig soundConfig;
 
     /* CONFIG ERRORS */
 
@@ -349,10 +348,6 @@ public final class ConfigManager {
 
     public ConfigCoreSkills getConfigCoreSkills() {
         return configCoreSkills.getConfig();
-    }
-
-    public SoundConfig getSoundConfig() {
-        return soundConfig;
     }
 
     public ConfigDatabase getConfigDatabase() {

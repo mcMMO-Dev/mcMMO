@@ -1,6 +1,5 @@
 package com.gmail.nossr50.config.hocon.skills.smelting;
 
-import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.datatypes.skills.properties.MaxBonusLevel;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
@@ -8,29 +7,24 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import java.util.HashMap;
 
 @ConfigSerializable
-public class ConfigSmelting {
+public class ConfigSmeltingSubSkills {
 
-    @Setting(value = ConfigConstants.SUB_SKILL_NODE)
-    private ConfigSmeltingSubSkills subskills = new ConfigSmeltingSubSkills();
-
-    public ConfigSmeltingSubSkills getSubskills() {
-        return subskills;
-    }
+    @Setting(value = "Second-Smelt")
+    private ConfigSmeltingSecondSmelt smeltingSecondSmelt = new ConfigSmeltingSecondSmelt();
 
     public ConfigSmeltingSecondSmelt getSmeltingSecondSmelt() {
-        return subskills.getSmeltingSecondSmelt();
+        return smeltingSecondSmelt;
     }
 
-
     public double getMaxChance() {
-        return subskills.getMaxChance();
+        return smeltingSecondSmelt.getMaxChance();
     }
 
     public MaxBonusLevel getMaxBonusLevel() {
-        return subskills.getMaxBonusLevel();
+        return smeltingSecondSmelt.getMaxBonusLevel();
     }
 
     public HashMap<Integer, Integer> getXpMultiplierTable() {
-        return subskills.getXpMultiplierTable();
+        return smeltingSecondSmelt.getXpMultiplierTable();
     }
 }

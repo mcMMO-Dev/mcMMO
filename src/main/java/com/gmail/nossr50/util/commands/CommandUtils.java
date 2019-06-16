@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.commands;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -270,7 +269,7 @@ public final class CommandUtils {
      * @return Matched name or {@code partialName} if no match was found
      */
     public static String getMatchedPlayerName(String partialName) {
-        if (MainConfig.getInstance().getMatchOfflinePlayers()) {
+        if (mcMMO.getConfigManager().getConfigCommands().getMisc().isMatchOfflinePlayers()) {
             List<String> matches = matchPlayer(partialName);
 
             if (matches.size() == 1) {
