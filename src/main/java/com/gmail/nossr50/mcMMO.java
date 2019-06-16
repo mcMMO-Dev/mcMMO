@@ -36,12 +36,14 @@ import com.gmail.nossr50.util.player.PlayerLevelUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -62,6 +64,7 @@ public class mcMMO extends JavaPlugin {
     private static MaterialMapStore materialMapStore;
     private static PlayerLevelUtils playerLevelUtils;
     private static NotificationManager notificationManager;
+    private static CommandRegistrationManager commandRegistrationManager;
 
     /* File Paths */
     private static String mainDirectory;
@@ -148,7 +151,8 @@ public class mcMMO extends JavaPlugin {
                 debug("Version " + getDescription().getVersion() + " is enabled!");
 
                 scheduleTasks();
-                CommandRegistrationManager.registerCommands();
+                commandRegistrationManager = new CommandRegistrationManager(this);
+                commandRegistrationManager.registerCommands();
 
                 placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
 
@@ -477,6 +481,17 @@ public class mcMMO extends JavaPlugin {
         localesDirectoryPath.mkdirs();
     }
 
+    public void reload() {
+//        loadConfigFiles();
+//        registerDynamicSettings(); //Do this after config
+//
+//        databaseManager = DatabaseManagerFactory.getDatabaseManager();
+
+        onDisable();
+        onLoad();
+        onEnable();
+    }
+
     private void registerDynamicSettings() {
         dynamicSettingsManager = new DynamicSettingsManager();
     }
@@ -522,7 +537,10 @@ public class mcMMO extends JavaPlugin {
     private void registerCustomRecipes() {
         getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
             if (mcMMO.getConfigManager().getConfigItems().isChimaeraWingEnabled()) {
-                getServer().addRecipe(ChimaeraWing.getChimaeraWingRecipe());
+                Recipe recipe = ChimaeraWing.getChimaeraWingRecipe();
+
+                if(!SkillUtils.hasRecipeBeenRegistered(recipe))
+                    getServer().addRecipe(ChimaeraWing.getChimaeraWingRecipe());
             }
         }, 40);
     }

@@ -367,4 +367,23 @@ public class SkillUtils {
 
         return quantity;
     }
+
+    /**
+     * Determine if a recipe has already been registered
+     * @param recipe target recipe
+     * @return true if the recipe has already been registered
+     */
+    public static boolean hasRecipeBeenRegistered(Recipe recipe) {
+        for(Iterator<? extends Recipe> recipeIterator = Bukkit.getServer().recipeIterator(); recipeIterator.hasNext();) {
+            Recipe bukkitRecipe = recipeIterator.next();
+
+            if(bukkitRecipe.getResult().isSimilar(recipe.getResult())) {
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+
 }

@@ -16,6 +16,7 @@ import org.bukkit.permissions.Permissible;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.SimplePluginManager;
 
 public final class Permissions {
     private Permissions() {
@@ -529,9 +530,14 @@ public final class Permissions {
         for (CustomXPPerk customXPPerk : mcMMO.getConfigManager().getConfigExperience().getCustomXPBoosts()) {
             Permission permission = new Permission(customXPPerk.getPerkPermissionAddress());
             permission.setDefault(PermissionDefault.FALSE);
-            pluginManager.addPermission(permission);
-        }
 
+            try {
+                ((SimplePluginManager) pluginManager).addPermission(permission);
+            } catch (IllegalArgumentException e) {
+                pluginManager.removePermission(customXPPerk.getPerkPermissionAddress());
+                pluginManager.addPermission(permission);
+            }
+        }
     }
 
     private static void addDynamicPermission(String permissionName, PluginManager pluginManager) {

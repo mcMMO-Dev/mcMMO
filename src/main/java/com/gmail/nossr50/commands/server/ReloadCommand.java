@@ -11,6 +11,13 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class ReloadCommand implements CommandExecutor {
+
+    private mcMMO plugin;
+
+    public ReloadCommand(mcMMO plugin) {
+        this.plugin = plugin;
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
@@ -19,8 +26,9 @@ public class ReloadCommand implements CommandExecutor {
         }
 
         Bukkit.broadcastMessage(LocaleLoader.getString("Commands.Reload.Start"));
-        mcMMO.getConfigManager().reloadConfigs();
+        plugin.reload();
         Bukkit.broadcastMessage(LocaleLoader.getString("Commands.Reload.Finished"));
         return true;
     }
+
 }

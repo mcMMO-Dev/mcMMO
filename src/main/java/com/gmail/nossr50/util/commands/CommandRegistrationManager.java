@@ -27,12 +27,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class CommandRegistrationManager {
+    private mcMMO pluginRef;
     private static String permissionsMessage = LocaleLoader.getString("mcMMO.NoPermission");
 
-    private CommandRegistrationManager() {
+    public CommandRegistrationManager(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
     }
 
-    private static void registerSkillCommands() {
+    private void registerSkillCommands() {
         for (PrimarySkillType skill : PrimarySkillType.values()) {
             String commandName = skill.toString().toLowerCase();
             String localizedName = skill.getName().toLowerCase();
@@ -113,7 +115,7 @@ public final class CommandRegistrationManager {
         }
     }
 
-    private static void registerAddlevelsCommand() {
+    private void registerAddlevelsCommand() {
         PluginCommand command = mcMMO.p.getCommand("addlevels");
         command.setDescription(LocaleLoader.getString("Commands.Description.addlevels"));
         command.setPermission("mcmmo.commands.addlevels;mcmmo.commands.addlevels.others");
@@ -122,7 +124,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new AddlevelsCommand());
     }
 
-    private static void registerAddxpCommand() {
+    private void registerAddxpCommand() {
         PluginCommand command = mcMMO.p.getCommand("addxp");
         command.setDescription(LocaleLoader.getString("Commands.Description.addxp"));
         command.setPermission("mcmmo.commands.addxp;mcmmo.commands.addxp.others");
@@ -131,7 +133,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new AddxpCommand());
     }
 
-    private static void registerMcgodCommand() {
+    private void registerMcgodCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcgod");
         command.setDescription(LocaleLoader.getString("Commands.Description.mcgod"));
         command.setPermission("mcmmo.commands.mcgod;mcmmo.commands.mcgod.others");
@@ -140,7 +142,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McgodCommand());
     }
 
-    private static void registerMmoInfoCommand() {
+    private void registerMmoInfoCommand() {
         PluginCommand command = mcMMO.p.getCommand("mmoinfo");
         command.setDescription(LocaleLoader.getString("Commands.Description.mmoinfo"));
         command.setPermission("mcmmo.commands.mmoinfo");
@@ -149,7 +151,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new MmoInfoCommand());
     }
 
-    private static void registerMcChatSpyCommand() {
+    private void registerMcChatSpyCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcchatspy");
         command.setDescription(LocaleLoader.getString("Commands.Description.mcchatspy"));
         command.setPermission("mcmmo.commands.mcchatspy;mcmmo.commands.mcchatspy.others");
@@ -158,7 +160,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McChatSpy());
     }
 
-    private static void registerMcrefreshCommand() {
+    private void registerMcrefreshCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcrefresh");
         command.setDescription(LocaleLoader.getString("Commands.Description.mcrefresh"));
         command.setPermission("mcmmo.commands.mcrefresh;mcmmo.commands.mcrefresh.others");
@@ -167,7 +169,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McrefreshCommand());
     }
 
-    private static void registerMmoeditCommand() {
+    private void registerMmoeditCommand() {
         PluginCommand command = mcMMO.p.getCommand("mmoedit");
         command.setDescription(LocaleLoader.getString("Commands.Description.mmoedit"));
         command.setPermission("mcmmo.commands.mmoedit;mcmmo.commands.mmoedit.others");
@@ -176,16 +178,16 @@ public final class CommandRegistrationManager {
         command.setExecutor(new MmoeditCommand());
     }
 
-    private static void registerMcmmoReloadCommand() {
+    private void registerMcmmoReloadCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcmmoreload");
         command.setDescription(LocaleLoader.getString("Commands.Description.mcmmoreload"));
         command.setPermission("mcmmo.commands.reload");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcmmoreload"));
-        command.setExecutor(new ReloadCommand());
+        command.setExecutor(new ReloadCommand(pluginRef));
     }
 
-    private static void registerSkillresetCommand() {
+    private void registerSkillresetCommand() {
         PluginCommand command = mcMMO.p.getCommand("skillreset");
         command.setDescription(LocaleLoader.getString("Commands.Description.skillreset"));
         command.setPermission("mcmmo.commands.skillreset;mcmmo.commands.skillreset.others"); // Only need the main ones, not the individual skill ones
@@ -194,7 +196,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new SkillresetCommand());
     }
 
-    private static void registerXprateCommand() {
+    private void registerXprateCommand() {
         List<String> aliasList = new ArrayList<>();
         aliasList.add("mcxprate");
 
@@ -208,7 +210,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new XprateCommand());
     }
 
-    private static void registerInspectCommand() {
+    private void registerInspectCommand() {
         PluginCommand command = mcMMO.p.getCommand("inspect");
         command.setDescription(LocaleLoader.getString("Commands.Description.inspect"));
         command.setPermission("mcmmo.commands.inspect;mcmmo.commands.inspect.far;mcmmo.commands.inspect.offline");
@@ -217,7 +219,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new InspectCommand());
     }
 
-    private static void registerMccooldownCommand() {
+    private void registerMccooldownCommand() {
         PluginCommand command = mcMMO.p.getCommand("mccooldown");
         command.setDescription(LocaleLoader.getString("Commands.Description.mccooldown"));
         command.setPermission("mcmmo.commands.mccooldown");
@@ -226,7 +228,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new MccooldownCommand());
     }
 
-    private static void registerMcabilityCommand() {
+    private void registerMcabilityCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcability");
         command.setDescription(LocaleLoader.getString("Commands.Description.mcability"));
         command.setPermission("mcmmo.commands.mcability;mcmmo.commands.mcability.others");
@@ -235,7 +237,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McabilityCommand());
     }
 
-    private static void registerMcmmoCommand() {
+    private void registerMcmmoCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcmmo");
         command.setDescription(LocaleLoader.getString("Commands.Description.mcmmo"));
         command.setPermission("mcmmo.commands.mcmmo.description;mcmmo.commands.mcmmo.help");
@@ -245,7 +247,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McmmoCommand());
     }
 
-    private static void registerMcrankCommand() {
+    private void registerMcrankCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcrank");
         command.setDescription(LocaleLoader.getString("Commands.Description.mcrank"));
         command.setPermission("mcmmo.commands.mcrank;mcmmo.commands.mcrank.others;mcmmo.commands.mcrank.others.far;mcmmo.commands.mcrank.others.offline");
@@ -254,7 +256,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McrankCommand());
     }
 
-    private static void registerMcstatsCommand() {
+    private void registerMcstatsCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcstats");
         command.setDescription(LocaleLoader.getString("Commands.Description.mcstats"));
         command.setPermission("mcmmo.commands.mcstats");
@@ -263,7 +265,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McstatsCommand());
     }
 
-    private static void registerMctopCommand() {
+    private void registerMctopCommand() {
         PluginCommand command = mcMMO.p.getCommand("mctop");
         command.setDescription(LocaleLoader.getString("Commands.Description.mctop"));
         command.setPermission("mcmmo.commands.mctop"); // Only need the main one, not the individual skill ones
@@ -272,7 +274,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new MctopCommand());
     }
 
-    private static void registerMcpurgeCommand() {
+    private void registerMcpurgeCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcpurge");
         command.setDescription(LocaleLoader.getString("Commands.Description.mcpurge", mcMMO.getDatabaseCleaningSettings().getOldUserCutoffMonths()));
         command.setPermission("mcmmo.commands.mcpurge");
@@ -281,7 +283,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McpurgeCommand());
     }
 
-    private static void registerMcremoveCommand() {
+    private void registerMcremoveCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcremove");
         command.setDescription(LocaleLoader.getString("Commands.Description.mcremove"));
         command.setPermission("mcmmo.commands.mcremove");
@@ -290,7 +292,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McremoveCommand());
     }
 
-    private static void registerMmoshowdbCommand() {
+    private void registerMmoshowdbCommand() {
         PluginCommand command = mcMMO.p.getCommand("mmoshowdb");
         command.setDescription(LocaleLoader.getString("Commands.Description.mmoshowdb"));
         command.setPermission("mcmmo.commands.mmoshowdb");
@@ -299,7 +301,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new MmoshowdbCommand());
     }
 
-    private static void registerMcconvertCommand() {
+    private void registerMcconvertCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcconvert");
         command.setDescription(LocaleLoader.getString("Commands.Description.mcconvert"));
         command.setPermission("mcmmo.commands.mcconvert;mcmmo.commands.mcconvert.experience;mcmmo.commands.mcconvert.database");
@@ -309,7 +311,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McconvertCommand());
     }
 
-    private static void registerAdminChatCommand() {
+    private void registerAdminChatCommand() {
         PluginCommand command = mcMMO.p.getCommand("adminchat");
         command.setDescription(LocaleLoader.getString("Commands.Description.adminchat"));
         command.setPermission("mcmmo.chat.adminchat");
@@ -320,7 +322,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new AdminChatCommand());
     }
 
-    private static void registerPartyChatCommand() {
+    private void registerPartyChatCommand() {
         PluginCommand command = mcMMO.p.getCommand("partychat");
         command.setDescription(LocaleLoader.getString("Commands.Description.partychat"));
         command.setPermission("mcmmo.chat.partychat;mcmmo.commands.party");
@@ -331,7 +333,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new PartyChatCommand());
     }
 
-    private static void registerPartyCommand() {
+    private void registerPartyCommand() {
         PluginCommand command = mcMMO.p.getCommand("party");
         command.setDescription(LocaleLoader.getString("Commands.Description.party"));
         command.setPermission("mcmmo.commands.party;mcmmo.commands.party.accept;mcmmo.commands.party.create;mcmmo.commands.party.disband;" +
@@ -342,7 +344,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new PartyCommand());
     }
 
-    private static void registerPtpCommand() {
+    private void registerPtpCommand() {
         PluginCommand command = mcMMO.p.getCommand("ptp");
         command.setDescription(LocaleLoader.getString("Commands.Description.ptp"));
         command.setPermission("mcmmo.commands.ptp"); // Only need the main one, not the individual ones for toggle/accept/acceptall
@@ -352,7 +354,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new PtpCommand());
     }
 
-    /*private static void registerHardcoreCommand() {
+    /*private void registerHardcoreCommand() {
         PluginCommand command = mcMMO.p.getCommand("hardcore");
         command.setDescription(LocaleLoader.getString("Commands.Description.hardcore"));
         command.setPermission("mcmmo.commands.hardcore;mcmmo.commands.hardcore.toggle;mcmmo.commands.hardcore.modify");
@@ -362,7 +364,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new HardcoreCommand());
     }
 
-    private static void registerVampirismCommand() {
+    private void registerVampirismCommand() {
         PluginCommand command = mcMMO.p.getCommand("vampirism");
         command.setDescription(LocaleLoader.getString("Commands.Description.vampirism"));
         command.setPermission("mcmmo.commands.vampirism;mcmmo.commands.vampirism.toggle;mcmmo.commands.vampirism.modify");
@@ -372,7 +374,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new VampirismCommand());
     }*/
 
-    private static void registerMcnotifyCommand() {
+    private void registerMcnotifyCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcnotify");
         command.setDescription(LocaleLoader.getString("Commands.Description.mcnotify"));
         command.setPermission("mcmmo.commands.mcnotify");
@@ -381,7 +383,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McnotifyCommand());
     }
 
-    private static void registerMHDCommand() {
+    private void registerMHDCommand() {
         PluginCommand command = mcMMO.p.getCommand("mhd");
         command.setDescription("Resets all mob health bar settings for all players to the default"); //TODO: Localize
         command.setPermission("mcmmo.commands.mhd");
@@ -390,7 +392,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new MHDCommand());
     }
 
-    private static void registerMcscoreboardCommand() {
+    private void registerMcscoreboardCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcscoreboard");
         command.setDescription("Change the current mcMMO scoreboard being displayed"); //TODO: Localize
         command.setPermission("mcmmo.commands.mcscoreboard");
@@ -400,7 +402,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McscoreboardCommand());
     }
 
-    private static void registerMcImportCommand() {
+    private void registerMcImportCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcimport");
         command.setDescription("Import mod config files"); //TODO: Localize
         command.setPermission("mcmmo.commands.mcimport");
@@ -409,7 +411,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McImportCommand());
     }
 
-    private static void registerReloadLocaleCommand() {
+    private void registerReloadLocaleCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcmmoreloadlocale");
         command.setDescription("Reloads locale"); // TODO: Localize
         command.setPermission("mcmmo.commands.reloadlocale");
@@ -418,7 +420,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McmmoReloadLocaleCommand());
     }
 
-    public static void registerCommands() {
+    public void registerCommands() {
         // Generic Commands
         registerMmoInfoCommand();
         registerMcImportCommand();
