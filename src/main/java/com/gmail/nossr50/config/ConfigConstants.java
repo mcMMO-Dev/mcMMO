@@ -29,6 +29,8 @@ public class ConfigConstants {
     public final static String MAX_CHANCE_FIELD_NAME = "Max-Chance";
     public final static String STATIC_ACTIVATION_FIELD_NAME = "Activation-Chance";
     public final static String MAX_BONUS_LEVEL_FIELD_NAME = "Max-Bonus-Level";
+    public final static String MAX_BONUS_LEVEL_DESCRIPTION = "This is the level at which full benefits for this skill will be reached." +
+            "\nProperties of this skill may or may not scale with level, but those that do will gradually increase until max level is achieved.";
     public final static String MAX_BONUS_PERCENTAGE_FIELD_NAME = "Max-Bonus-Percentage";
     public final static String MAX_CHANCE_FIELD_DESCRIPTION = "The maximum probability for this skill to succeed.";
 

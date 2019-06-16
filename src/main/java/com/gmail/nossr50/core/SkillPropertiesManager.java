@@ -116,9 +116,9 @@ public class SkillPropertiesManager {
 
     private void attemptRegisterMaxBonusLevel(SubSkillType subSkillType, CommentedConfigurationNode childNode) {
         try {
+            mcMMO.p.getLogger().info("Registering MaxBonusLevel for "+subSkillType.toString());
             MaxBonusLevel maxBonusLevel = childNode.getValue(TypeToken.of(MaxBonusLevel.class));
             registerMaxBonusLevel(subSkillType, maxBonusLevel);
-            mcMMO.p.getLogger().info("Registered MaxBonusLevel for "+subSkillType.toString());
         } catch (ObjectMappingException e) {
             //This time a silent exception is fine
         }
@@ -126,9 +126,9 @@ public class SkillPropertiesManager {
 
     private void attemptRegisterMaxChance(SubSkillType subSkillType, CommentedConfigurationNode childNode) {
         try {
+            mcMMO.p.getLogger().info("Registering MaxChance for "+subSkillType.toString());
             Double maxChance = childNode.getValue(TypeToken.of(Double.class));
             registerMaxChance(subSkillType, maxChance);
-            mcMMO.p.getLogger().info("Registered MaxChance for "+subSkillType.toString());
         } catch (ObjectMappingException e) {
             //This time a silent exception is fine
         }

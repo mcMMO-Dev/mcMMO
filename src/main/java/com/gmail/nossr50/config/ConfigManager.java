@@ -56,7 +56,6 @@ import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.properties.DamageProperty;
 import com.gmail.nossr50.datatypes.skills.properties.MaxBonusLevel;
-import com.gmail.nossr50.datatypes.skills.properties.SkillCeiling;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
@@ -273,7 +272,6 @@ public final class ConfigManager {
         customSerializers.registerType(TypeToken.of(MinecraftMaterialWrapper.class), new MinecraftMaterialWrapperSerializer());
         customSerializers.registerType(TypeToken.of(CustomXPPerk.class), new CustomXPPerkSerializer());
         customSerializers.registerType(TypeToken.of(DamageProperty.class), new DamagePropertySerializer());
-        customSerializers.registerType(TypeToken.of(SkillCeiling.class), new SkillCeilingSerializer());
         customSerializers.registerType(TypeToken.of(SkillRankProperty.class), new SkillRankPropertySerializer());
         customSerializers.registerType(TypeToken.of(MaxBonusLevel.class), new MaxBonusLevelSerializer());
         customSerializers.registerType(TypeToken.of(PlayerNotificationSettings.class), new PlayerNotificationSerializer());

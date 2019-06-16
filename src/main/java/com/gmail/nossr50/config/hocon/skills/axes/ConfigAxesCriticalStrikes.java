@@ -1,9 +1,7 @@
 package com.gmail.nossr50.config.hocon.skills.axes;
 
 import com.gmail.nossr50.config.ConfigConstants;
-import com.gmail.nossr50.datatypes.skills.properties.AbstractDamageProperty;
-import com.gmail.nossr50.datatypes.skills.properties.AbstractSkillCeiling;
-import com.gmail.nossr50.datatypes.skills.properties.DamageProperty;
+import com.gmail.nossr50.datatypes.skills.properties.*;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -16,19 +14,14 @@ public class ConfigAxesCriticalStrikes {
             "\nA value of 50.0 would mean at most the ability can only have a 50% chance to work at max skill level.")
     private double maxActivationChance = MAX_ACTIVATION_CHANCE_DEFAULT;
 
-    @Setting(value = ConfigConstants.MAX_BONUS_LEVEL_FIELD_NAME, comment = "This is the level at which full benefits for this skill will be reached." +
-            "\nProperties of this skill may or may not scale with level, but those that do will gradually increase until max level is achieved.")
-    private AbstractSkillCeiling maximumProgressionLevel = new AbstractSkillCeiling(100, 1000);
+    @Setting(value = ConfigConstants.MAX_BONUS_LEVEL_FIELD_NAME, comment = ConfigConstants.MAX_BONUS_LEVEL_DESCRIPTION)
+    private AbstractMaxBonusLevel maximumProgressionLevel = new AbstractMaxBonusLevel(100);
 
     @Setting(value = "Damage-Modifiers", comment = "Damage dealt is multiplied by these values when this skill is successfully activated.")
     private DamageProperty damageProperty = new AbstractDamageProperty(1.5, 2.0);
 
     public double getMaxActivationChance() {
         return maxActivationChance;
-    }
-
-    public AbstractSkillCeiling getMaximumProgressionLevel() {
-        return maximumProgressionLevel;
     }
 
     public DamageProperty getDamageProperty() {
