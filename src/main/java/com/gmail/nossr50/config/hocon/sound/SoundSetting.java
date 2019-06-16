@@ -24,11 +24,13 @@ public class SoundSetting {
     }
 
     public SoundSetting(double volume, double pitch) {
+        this.enabled = true;
         this.volume = (float) volume;
         this.pitch = (float) pitch;
     }
 
     public SoundSetting(double volume) {
+        this.enabled = true;
         this.volume = (float) volume;
         this.pitch = 1.0F;
     }

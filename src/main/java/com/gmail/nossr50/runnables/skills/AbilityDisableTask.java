@@ -39,9 +39,7 @@ public class AbilityDisableTask extends BukkitRunnable {
                 // Fallthrough
 
             case BERSERK:
-                if (MainConfig.getInstance().getRefreshChunksEnabled()) {
-                    resendChunkRadiusAt(player);
-                }
+                resendChunkRadiusAt(player);
                 // Fallthrough
 
             default:
@@ -52,8 +50,6 @@ public class AbilityDisableTask extends BukkitRunnable {
 
         mcMMOPlayer.setAbilityMode(ability, false);
         mcMMOPlayer.setAbilityInformed(ability, false);
-
-        ParticleEffectUtils.playAbilityDisabledEffect(player);
 
         if (mcMMOPlayer.useChatNotifications()) {
             //player.sendMessage(ability.getAbilityOff());

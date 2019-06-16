@@ -31,6 +31,8 @@ import java.util.List;
 
 public class SkillUtils {
 
+    public static final int ENCHANT_SPEED_VAR = 5;
+
     public static void applyXpGain(McMMOPlayer mcMMOPlayer, PrimarySkillType skill, float xp, XPGainReason xpGainReason) {
         mcMMOPlayer.beginXpGain(skill, xp, xpGainReason, XPGainSource.SELF);
     }
@@ -162,7 +164,7 @@ public class SkillUtils {
         }
 
         itemLore.add("mcMMO Ability Tool");
-        itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel + AdvancedConfig.getInstance().getEnchantBuff(), true);
+        itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel + ENCHANT_SPEED_VAR, true);
 
         itemMeta.setLore(itemLore);
         heldItem.setItemMeta(itemMeta);
@@ -227,10 +229,10 @@ public class SkillUtils {
             if (itemLore.remove("mcMMO Ability Tool")) {
                 int efficiencyLevel = item.getEnchantmentLevel(Enchantment.DIG_SPEED);
 
-                if (efficiencyLevel <= AdvancedConfig.getInstance().getEnchantBuff()) {
+                if (efficiencyLevel <= ENCHANT_SPEED_VAR) {
                     itemMeta.removeEnchant(Enchantment.DIG_SPEED);
                 } else {
-                    itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel - AdvancedConfig.getInstance().getEnchantBuff(), true);
+                    itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel - ENCHANT_SPEED_VAR, true);
                 }
 
                 itemMeta.setLore(itemLore);

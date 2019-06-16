@@ -15,6 +15,7 @@ public class ConfigPlayerNotifications {
         NOTIFICATION_MAP_DEFAULT = new HashMap<>();
 
         NOTIFICATION_MAP_DEFAULT.put(NotificationType.ABILITY_OFF, new PlayerNotificationSettings(true, false, true));
+        NOTIFICATION_MAP_DEFAULT.put(NotificationType.ABILITY_REFRESHED, new PlayerNotificationSettings(true, false, true));
         NOTIFICATION_MAP_DEFAULT.put(NotificationType.HARDCORE_MODE, new PlayerNotificationSettings(true, true, true));
         NOTIFICATION_MAP_DEFAULT.put(NotificationType.REQUIREMENTS_NOT_MET, new PlayerNotificationSettings(true, false, true));
         NOTIFICATION_MAP_DEFAULT.put(NotificationType.ABILITY_COOLDOWN, new PlayerNotificationSettings(true, false, true));

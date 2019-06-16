@@ -73,24 +73,6 @@ public final class ParticleEffectUtils {
         livingEntity.getWorld().playEffect(livingEntity.getEyeLocation(), Effect.MOBSPAWNER_FLAMES, 1);
     }
 
-    public static void playAbilityEnabledEffect(Player player) {
-        if (!MainConfig.getInstance().getAbilityActivationEffectEnabled()) {
-        }
-
-       /* if (hasHeadRoom(player)) {
-            fireworkParticleShower(player, Color.GREEN);
-        }*/
-    }
-
-    public static void playAbilityDisabledEffect(Player player) {
-        if (!MainConfig.getInstance().getAbilityDeactivationEffectEnabled()) {
-        }
-
-        /*if (hasHeadRoom(player)) {
-            fireworkParticleShower(player, Color.RED);
-        }*/
-    }
-
 /*    public static void fireworkParticleShower(Player player, Color color) {
         Location location = player.getLocation();
         location.setY(location.getY() + (player.isInsideVehicle() ? 1.0 : -1.0));

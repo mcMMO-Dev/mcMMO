@@ -842,9 +842,6 @@ public class McMMOPlayer {
             return;
         }
 
-        // Notify people that ability has been activated
-        ParticleEffectUtils.playAbilityEnabledEffect(player);
-
         if (useChatNotifications()) {
             mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUPER_ABILITY, ability.getAbilityOn());
             //player.sendMessage(ability.getAbilityOn());
