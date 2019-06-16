@@ -57,7 +57,7 @@ public class SkillPropertiesManager {
         return maxBonusMap.get(subSkillType);
     }
 
-    public double getMaxBonusLevel(SubSkillType subSkillType) {
+    public int getMaxBonusLevel(SubSkillType subSkillType) {
         return maxBonusLevelMap.get(subSkillType);
     }
 

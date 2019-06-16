@@ -12,6 +12,9 @@ public class ConfigCommands {
     @Setting(value = "Inspect", comment = "Settings related to the inspect command.")
     private ConfigCommandsInspect inspect = new ConfigCommandsInspect();
 
+    @Setting(value = "Skills", comment = "Settings related to skill commands like /mining or /herbalism")
+    private ConfigCommandsSkills skills = new ConfigCommandsSkills();
+
     public ConfigCommandsAdminChat getAdminChat() {
         return adminChat;
     }
@@ -38,5 +41,13 @@ public class ConfigCommands {
 
     public boolean isAllowInspectOnOfflinePlayers() {
         return getInspect().isAllowInspectOnOfflinePlayers();
+    }
+
+    public ConfigCommandsSkills getSkills() {
+        return skills;
+    }
+
+    public boolean isSendBlankLines() {
+        return skills.isSendBlankLines();
     }
 }

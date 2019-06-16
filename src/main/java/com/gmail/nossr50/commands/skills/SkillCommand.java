@@ -78,7 +78,7 @@ public abstract class SkillCommand implements TabExecutor {
                 double skillValue = mcMMOPlayer.getSkillLevel(skill);
 
                 //Send the players a few blank lines to make finding the top of the skill command easier
-                if (AdvancedConfig.getInstance().doesSkillCommandSendBlankLines())
+                if (mcMMO.getConfigManager().getConfigCommands().isSendBlankLines())
                     for (int i = 0; i < 2; i++) {
                         player.sendMessage("");
                     }

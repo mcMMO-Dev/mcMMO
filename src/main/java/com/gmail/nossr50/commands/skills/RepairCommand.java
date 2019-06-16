@@ -1,7 +1,5 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -27,19 +25,19 @@ public class RepairCommand extends SkillCommand {
     private boolean canSuperRepair;
     private boolean canMasterRepair;
     private boolean canArcaneForge;
-    private boolean canRepairStone;
-    private boolean canRepairIron;
-    private boolean canRepairGold;
-    private boolean canRepairDiamond;
-    private boolean canRepairString;
-    private boolean canRepairLeather;
-    private boolean canRepairWood;
+//    private boolean canRepairStone;
+//    private boolean canRepairIron;
+//    private boolean canRepairGold;
+//    private boolean canRepairDiamond;
+//    private boolean canRepairString;
+//    private boolean canRepairLeather;
+//    private boolean canRepairWood;
     private boolean arcaneBypass;
 
-    private int diamondLevel;
-    private int goldLevel;
-    private int ironLevel;
-    private int stoneLevel;
+//    private int diamondLevel;
+//    private int goldLevel;
+//    private int ironLevel;
+//    private int stoneLevel;
 
     public RepairCommand() {
         super(PrimarySkillType.REPAIR);
@@ -54,14 +52,17 @@ public class RepairCommand extends SkillCommand {
         Repairable stoneRepairable = mcMMO.getRepairableManager().getRepairable(Material.STONE_PICKAXE);
 
         // TODO: This isn't really accurate - if they don't have pickaxes loaded it doesn't always mean the repair level is 0
-        diamondLevel = (diamondRepairable == null) ? 0 : diamondRepairable.getMinimumLevel();
-        goldLevel = (goldRepairable == null) ? 0 : goldRepairable.getMinimumLevel();
-        ironLevel = (ironRepairable == null) ? 0 : ironRepairable.getMinimumLevel();
-        stoneLevel = (stoneRepairable == null) ? 0 : stoneRepairable.getMinimumLevel();
+//        diamondLevel = (diamondRepairable == null) ? 0 : diamondRepairable.getMinimumLevel();
+//        goldLevel = (goldRepairable == null) ? 0 : goldRepairable.getMinimumLevel();
+//        ironLevel = (ironRepairable == null) ? 0 : ironRepairable.getMinimumLevel();
+//        stoneLevel = (stoneRepairable == null) ? 0 : stoneRepairable.getMinimumLevel();
 
         // REPAIR MASTERY
         if (canMasterRepair) {
-            repairMasteryBonus = percent.format(Math.min(((AdvancedConfig.getInstance().getRepairMasteryMaxBonus() / AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.REPAIR_REPAIR_MASTERY)) * skillValue), AdvancedConfig.getInstance().getRepairMasteryMaxBonus()) / 100D);
+            double maxBonus = mcMMO.getDynamicSettingsManager().getSkillPropertiesManager().getMaxBonus(SubSkillType.REPAIR_REPAIR_MASTERY);
+            int maxBonusLevel = mcMMO.getDynamicSettingsManager().getSkillPropertiesManager().getMaxBonusLevel(SubSkillType.REPAIR_REPAIR_MASTERY);
+
+            repairMasteryBonus = percent.format(Math.min(((maxBonus / maxBonusLevel) * skillValue), maxBonus) / 100D);
         }
 
         // SUPER REPAIR
@@ -77,13 +78,13 @@ public class RepairCommand extends SkillCommand {
         canSuperRepair = canUseSubskill(player, SubSkillType.REPAIR_SUPER_REPAIR);
         canMasterRepair = canUseSubskill(player, SubSkillType.REPAIR_REPAIR_MASTERY);
         canArcaneForge = canUseSubskill(player, SubSkillType.REPAIR_ARCANE_FORGING);
-        canRepairDiamond = Permissions.repairMaterialType(player, ItemMaterialCategory.DIAMOND);
-        canRepairGold = Permissions.repairMaterialType(player, ItemMaterialCategory.GOLD);
-        canRepairIron = Permissions.repairMaterialType(player, ItemMaterialCategory.IRON);
-        canRepairStone = Permissions.repairMaterialType(player, ItemMaterialCategory.STONE);
-        canRepairString = Permissions.repairMaterialType(player, ItemMaterialCategory.STRING);
-        canRepairLeather = Permissions.repairMaterialType(player, ItemMaterialCategory.LEATHER);
-        canRepairWood = Permissions.repairMaterialType(player, ItemMaterialCategory.WOOD);
+//        canRepairDiamond = Permissions.repairMaterialType(player, ItemMaterialCategory.DIAMOND);
+//        canRepairGold = Permissions.repairMaterialType(player, ItemMaterialCategory.GOLD);
+//        canRepairIron = Permissions.repairMaterialType(player, ItemMaterialCategory.IRON);
+//        canRepairStone = Permissions.repairMaterialType(player, ItemMaterialCategory.STONE);
+//        canRepairString = Permissions.repairMaterialType(player, ItemMaterialCategory.STRING);
+//        canRepairLeather = Permissions.repairMaterialType(player, ItemMaterialCategory.LEATHER);
+//        canRepairWood = Permissions.repairMaterialType(player, ItemMaterialCategory.WOOD);
         arcaneBypass = (Permissions.arcaneBypass(player) || Permissions.hasRepairEnchantBypassPerk(player));
     }
 
