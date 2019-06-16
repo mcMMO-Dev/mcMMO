@@ -25,9 +25,9 @@ public class RandomChanceUtil {
      * non-RNG skills just fire the cancellable event and succeed if they go uncancelled
      *
      * @param skillActivationType this value represents what kind of activation procedures this sub-skill uses
-     * @param subSkillType        The identifier for this specific sub-skill
-     * @param player              The owner of this sub-skill
-     * @return returns true if all conditions are met and they event is not cancelled
+     * @param subSkillType The identifier for this specific sub-skill
+     * @param player The owner of this sub-skill
+     * @return returns true if all conditions are met and the event is not cancelled
      */
     public static boolean isActivationSuccessful(SkillActivationType skillActivationType, SubSkillType subSkillType, Player player) {
         switch (skillActivationType) {

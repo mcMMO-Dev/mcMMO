@@ -5,7 +5,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import org.bukkit.Material;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;

@@ -211,7 +211,7 @@ public class SalvageManager extends SkillManager {
         Player player = getPlayer();
 
         if (!RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE) || !Permissions.arcaneSalvage(player)) {
-            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.ArcaneFailed");
+            mcMMO.getNotificationManager().sendPlayerInformationChatOnly(player, "Salvage.Skills.ArcaneFailed");
             return null;
         }
 
@@ -222,25 +222,38 @@ public class SalvageManager extends SkillManager {
         int arcaneFailureCount = 0;
 
         for (Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
+
+            int enchantLevel = enchant.getValue();
+
+            if(!mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitSkills().getConfigSectionExploitSalvage().isAllowUnsafeEnchants()) {
+                if(enchantLevel > enchant.getKey().getMaxLevel()) {
+                    enchantLevel = enchant.getKey().getMaxLevel();
+                }
+            }
+
             if (!Salvage.arcaneSalvageEnchantLoss
                     || Permissions.hasSalvageEnchantBypassPerk(player)
                     || RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractFullEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
-                enchantMeta.addStoredEnchant(enchant.getKey(), enchant.getValue(), true);
-            } else if (enchant.getValue() > 1
+
+                enchantMeta.addStoredEnchant(enchant.getKey(), enchantLevel, true);
+            }
+            else if (enchantLevel > 1
                     && Salvage.arcaneSalvageDowngrades
                     && RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractPartialEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
-                enchantMeta.addStoredEnchant(enchant.getKey(), enchant.getValue() - 1, true);
+                enchantMeta.addStoredEnchant(enchant.getKey(), enchantLevel - 1, true);
                 downgraded = true;
             } else {
                 arcaneFailureCount++;
             }
         }
 
-        if (failedAllEnchants(arcaneFailureCount, enchants.entrySet().size())) {
-            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.ArcaneFailed");
+        if(failedAllEnchants(arcaneFailureCount, enchants.entrySet().size()))
+        {
+            mcMMO.getNotificationManager().sendPlayerInformationChatOnly(player,  "Salvage.Skills.ArcaneFailed");
             return null;
-        } else if (downgraded) {
-            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.ArcanePartial");
+        } else if(downgraded)
+        {
+            mcMMO.getNotificationManager().sendPlayerInformationChatOnly(player,  "Salvage.Skills.ArcanePartial");
         }
 
         book.setItemMeta(enchantMeta);

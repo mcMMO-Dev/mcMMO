@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.unarmed;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.entity.Player;

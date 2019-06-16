@@ -328,10 +328,19 @@ public class RepairManager extends SkillManager {
         boolean downgraded = false;
 
         for (Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
+            int enchantLevel = enchant.getValue();
+
+            if(!mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitRepair().isAllowUnsafeEnchants()) {
+                if(enchantLevel > enchant.getKey().getMaxLevel()) {
+                    enchantLevel = enchant.getKey().getMaxLevel();
+
+                    item.addEnchantment(enchant.getKey(), enchantLevel);
+                }
+            }
+
             Enchantment enchantment = enchant.getKey();
 
             if (RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getKeepEnchantChance(), getPlayer(), SubSkillType.REPAIR_ARCANE_FORGING))) {
-                int enchantLevel = enchant.getValue();
 
                 if (mcMMO.getConfigManager().getConfigRepair().getArcaneForging().isDowngradesEnabled() && enchantLevel > 1
                         && (!RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(100 - getDowngradeEnchantChance(), getPlayer(), SubSkillType.REPAIR_ARCANE_FORGING)))) {
@@ -346,11 +355,13 @@ public class RepairManager extends SkillManager {
         Map<Enchantment, Integer> newEnchants = item.getEnchantments();
 
         if (newEnchants.isEmpty()) {
-            mcMMO.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Arcane.Fail");
-        } else if (downgraded || newEnchants.size() < enchants.size()) {
-            mcMMO.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Arcane.Downgrade");
-        } else {
-            mcMMO.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Repair.Arcane.Perfect");
+            mcMMO.getNotificationManager().sendPlayerInformationChatOnly(getPlayer(),  "Repair.Arcane.Fail");
+        }
+        else if (downgraded || newEnchants.size() < enchants.size()) {
+            mcMMO.getNotificationManager().sendPlayerInformationChatOnly(getPlayer(),  "Repair.Arcane.Downgrade");
+        }
+        else {
+            mcMMO.getNotificationManager().sendPlayerInformationChatOnly(getPlayer(),  "Repair.Arcane.Perfect");
         }
     }
 

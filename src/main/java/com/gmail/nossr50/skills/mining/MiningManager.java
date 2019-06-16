@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.mining;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;

@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.woodcutting;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
@@ -138,8 +137,8 @@ public final class Woodcutting {
      */
     protected static boolean handleDurabilityLoss(Set<BlockState> treeFellerBlocks, ItemStack inHand) {
 
-        if(inHand.getItemMeta().getEnchants().get(Enchantment.DURABILITY) != null
-                && inHand.getItemMeta().getEnchants().get(Enchantment.DURABILITY) >= 1) {
+        if((inHand.getItemMeta().getEnchants().get(Enchantment.DURABILITY) != null && inHand.getItemMeta().getEnchants().get(Enchantment.DURABILITY) >= 1)
+                || (inHand.getItemMeta() != null && inHand.getItemMeta().isUnbreakable())) {
             return true;
         }
 
