@@ -9,8 +9,7 @@ import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import org.bukkit.Material;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 import static org.bukkit.Material.*;
 
@@ -18,6 +17,7 @@ import static org.bukkit.Material.*;
 public class ConfigRepair {
 
     public static final ArrayList<Repairable> CONFIG_REPAIRABLES_DEFAULTS;
+    public static final HashSet<RepairWildcard> REPAIR_WILDCARDS_DEFAULTS;
     public static final Material[] PLANKS = new Material[]{OAK_PLANKS, BIRCH_PLANKS, DARK_OAK_PLANKS, ACACIA_PLANKS, JUNGLE_PLANKS, SPRUCE_PLANKS};
 
     static {
@@ -70,6 +70,13 @@ public class ConfigRepair {
         CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(DIAMOND_LEGGINGS, DIAMOND, 1, 0, 2D));
         CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(DIAMOND_BOOTS, DIAMOND, 1, 0, 2D));
 
+        REPAIR_WILDCARDS_DEFAULTS = new HashSet<>();
+
+        RepairWildcard repairWildcardPlanks = new RepairWildcard("Planks");
+        List<String> planksList = Arrays.asList(new String[]{OAK_PLANKS.getKey().toString(),
+                BIRCH_PLANKS.getKey().toString(), DARK_OAK_PLANKS.getKey().toString(), ACACIA_PLANKS.getKey().toString(), JUNGLE_PLANKS.getKey().toString(), SPRUCE_PLANKS.getKey().toString()});
+        repairWildcardPlanks.addMatchCandidates(planksList);
+        REPAIR_WILDCARDS_DEFAULTS.add(repairWildcardPlanks);
     }
 
     @Setting(value = "General")
@@ -89,6 +96,9 @@ public class ConfigRepair {
             "\n\nName ID List: https://minecraft.gamepedia.com/Java_Edition_data_values" +
             "\nTIP: You can omit \"minecraft:\" from the Name ID if you want to, for example you can write \"red_wool\" instead of \"minecraft:red_wool\"")
     private ArrayList<Repairable> configRepairablesList = CONFIG_REPAIRABLES_DEFAULTS;
+
+    @Setting(value = "Z-Repairables-Wildcards", comment = "Used to define an alias that can be matched to several materials.")
+    private HashSet<RepairWildcard> repairWildcards = new HashSet<>();
 
     public ConfigRepairGeneral getRepairGeneral() {
         return repairGeneral;
@@ -112,5 +122,9 @@ public class ConfigRepair {
 
     public ArrayList<Repairable> getConfigRepairablesList() {
         return configRepairablesList;
+    }
+
+    public HashSet<RepairWildcard> getRepairWildcards() {
+        return repairWildcards;
     }
 }
