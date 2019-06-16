@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config.hocon.skills.herbalism;
 
+import com.gmail.nossr50.config.ConfigConstants;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -53,8 +54,30 @@ public class ConfigHerbalism {
             "\nHerbalism and other gathering skills offer a chance to get extra drops when harvesting the block.")
     private HashSet<String> herbalismDoubleDropWhiteList = DEFAULT_BONUS_DROPS;
 
+    @Setting(value = ConfigConstants.SUB_SKILL_NODE)
+    private ConfigHerbalismSubSkills configHerbalismSubSkills = new ConfigHerbalismSubSkills();
+
     public HashSet<String> getBonusDrops() {
         return herbalismDoubleDropWhiteList;
     }
 
+    public ConfigHerbalismSubSkills getConfigHerbalismSubSkills() {
+        return configHerbalismSubSkills;
+    }
+
+    public ConfigHerbalismDoubleDrops getDoubleDrops() {
+        return configHerbalismSubSkills.getDoubleDrops();
+    }
+
+    public ConfigHerbalismGreenThumb getGreenThumb() {
+        return configHerbalismSubSkills.getGreenThumb();
+    }
+
+    public ConfigHerbalismHylianLuck getHylianLuck() {
+        return configHerbalismSubSkills.getHylianLuck();
+    }
+
+    public ConfigHerbalismShroomThumb getShroomThumb() {
+        return configHerbalismSubSkills.getShroomThumb();
+    }
 }

@@ -169,6 +169,7 @@ Version 2.2.0
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
     Added 'UndefinedSkillBehaviour' for trying to use a method that has no behaviour defined for the provided skill
+
 Version 2.1.81
     Fixed a bug where Arrow Deflect would never trigger outside of PVP
     Fixed a bug where failing to salvage enchantments incorrectly colored the text
