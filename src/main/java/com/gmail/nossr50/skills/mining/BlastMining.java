@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.mining;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
@@ -12,55 +11,20 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 
 public class BlastMining {
-    // The order of the values is extremely important, a few methods depend on it to work properly
-   /* public enum Tier {
-        EIGHT(8),
-        SEVEN(7),
-        SIX(6),
-        FIVE(5),
-        FOUR(4),
-        THREE(3),
-        TWO(2),
-        ONE(1);
-
-        int numerical;
-
-        private Tier(int numerical) {
-            this.numerical = numerical;
-        }
-
-        public int toNumerical() {
-            return numerical;
-        }
-
-        protected int getLevel() {
-            return AdvancedConfig.getInstance().getBlastMiningRankLevel(this);
-        }
-
-
-    }*/
 
     public final static int MAXIMUM_REMOTE_DETONATION_DISTANCE = 100;
 
     public static double getBlastRadiusModifier(int rank) {
-        return AdvancedConfig.getInstance().getBlastRadiusModifier(rank);
+        return mcMMO.getConfigManager().getConfigMining().getBlastMining().getRadius(rank);
     }
 
 
     public static double getBlastDamageDecrease(int rank) {
-        return AdvancedConfig.getInstance().getBlastDamageDecrease(rank);
+        return mcMMO.getConfigManager().getConfigMining().getBlastMining().getDamageDecrease(rank);
     }
 
 
     public static int getDemolitionExpertUnlockLevel() {
-        /*List<Tier> tierList = Arrays.asList(Tier.values());
-        for (Tier tier : tierList) {
-            if (tier.getBlastDamageDecrease() > 0) {
-                continue;
-            }
-
-            return tier == Tier.EIGHT ? tier.getLevel() : tierList.get(tierList.indexOf(tier) - 1).getLevel();
-        }*/
 
         for (int i = 0; i < SubSkillType.MINING_BLAST_MINING.getNumRanks() - 1; i++) {
             if (getBlastDamageDecrease(i + 1) > 0)
@@ -71,14 +35,6 @@ public class BlastMining {
     }
 
     public static int getBiggerBombsUnlockLevel() {
-        /*List<Tier> tierList = Arrays.asList(Tier.values());
-        for (Tier tier : tierList) {
-            if (tier.getBlastRadiusModifier() > 1.0) {
-                continue;
-            }
-
-            return tier == Tier.EIGHT ? tier.getLevel() : tierList.get(tierList.indexOf(tier) - 1).getLevel();
-        }*/
 
         for (int i = 0; i < SubSkillType.MINING_BLAST_MINING.getNumRanks() - 1; i++) {
             if (getBlastRadiusModifier(i + 1) > 0)

@@ -42,6 +42,7 @@ Version 2.2.0
     Fixed some tab completion bugs for /mcconvert command
     Nearby players using super abilities is now sent to your chat instead of the action bar by default
     Increased the default recipe cost for Chimaera Wing from 5 to 40
+    Blast Mining Damage Decrease now scales more smoothly from ranks 1-8
     Admins will now be notified if a player trips over-fishing exploit detection 3+ times in a row (Locale: "Fishing.OverFishingDetected")
         Note: Admins are players who are an operator or have adminchat permission.
 

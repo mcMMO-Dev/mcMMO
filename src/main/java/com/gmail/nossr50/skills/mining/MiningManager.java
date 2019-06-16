@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.mining;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -35,15 +34,15 @@ public class MiningManager extends SkillManager {
     }
 
     public static double getOreBonus(int rank) {
-        return AdvancedConfig.getInstance().getOreBonus(rank);
+        return mcMMO.getConfigManager().getConfigMining().getBlastMining().getOreBonus(rank);
     }
 
     public static double getDebrisReduction(int rank) {
-        return AdvancedConfig.getInstance().getDebrisReduction(rank);
+        return mcMMO.getConfigManager().getConfigMining().getBlastMining().getDebrisReduction(rank);
     }
 
     public static int getDropMultiplier(int rank) {
-        return AdvancedConfig.getInstance().getDropMultiplier(rank);
+        return mcMMO.getConfigManager().getConfigMining().getBlastMining().getDropMultiplier(rank);
     }
 
     public boolean canUseDemolitionsExpertise() {
@@ -97,7 +96,7 @@ public class MiningManager extends SkillManager {
 
         boolean silkTouch = player.getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH);
 
-        if (silkTouch && !AdvancedConfig.getInstance().getDoubleDropSilkTouchEnabled())
+        if (silkTouch && !mcMMO.getConfigManager().getConfigMining().getMiningSubskills().getDoubleDrops().isAllowSilkTouchDoubleDrops())
             return;
 
         //TODO: Make this readable

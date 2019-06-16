@@ -13,4 +13,11 @@ public class ConfigMiningDoubleDrops {
 
     @Setting(value = ConfigConstants.MAX_BONUS_LEVEL_FIELD_NAME)
     private MaxBonusLevel maxBonusLevel = new AbstractMaxBonusLevel(100);
+
+    @Setting(value = "Silk-Touch-Double-Drops", comment = "Allow silk touch to benefit from double drops.")
+    private boolean allowSilkTouchDoubleDrops = true;
+
+    public boolean isAllowSilkTouchDoubleDrops() {
+        return allowSilkTouchDoubleDrops;
+    }
 }
