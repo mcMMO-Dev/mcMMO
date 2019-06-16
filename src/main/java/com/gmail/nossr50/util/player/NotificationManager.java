@@ -26,7 +26,7 @@ import org.bukkit.entity.Player;
 public class NotificationManager {
     /**
      * Sends players notifications from mcMMO
-     * This does this by sending out an event so other plugins can cancel it
+     * Does so by sending out an event so other plugins can cancel it
      * @param player target player
      * @param notificationType notifications defined type
      * @param key the locale key for the notifications defined message
