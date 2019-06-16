@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.repair;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -64,7 +63,7 @@ public class RepairManager extends SkillManager {
         Player player = getPlayer();
         Repairable repairable = mcMMO.getRepairableManager().getRepairable(item.getType());
 
-        if (item.getItemMeta().isUnbreakable()) {
+        if(item.getItemMeta() != null && item.getItemMeta().isUnbreakable()) {
             mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Anvil.Unbreakable");
             return;
         }
@@ -96,12 +95,31 @@ public class RepairManager extends SkillManager {
         //Find the first compatible repair material
         for (Material repairMaterialCandidate : repairable.getRepairMaterials()) {
             for (ItemStack is : player.getInventory().getContents()) {
+                if(is == null)
+                    continue; //Ignore IntelliJ this can be null
+
+                //Match to repair material
                 if (is.getType() == repairMaterialCandidate) {
-                    if (is.getItemMeta().getLore().isEmpty()) {
+                    //Check for item meta
+                    if(is.getItemMeta() != null) {
+                        //Check for lore
+                        if(is.getItemMeta().getLore() != null) {
+                            if(is.getItemMeta().getLore().isEmpty()) {
+                                //Lore is empty so this item is fine
+                                repairMaterial = repairMaterialCandidate;
+                                break;
+                            } else {
+                                foundNonBasicMaterial = true;
+                            }
+                        } else {
+                            //No lore so this item is fine
+                            repairMaterial = repairMaterialCandidate;
+                            break;
+                        }
+                    } else {
+                        //No Item Meta so this item is fine
                         repairMaterial = repairMaterialCandidate;
                         break;
-                    } else {
-                        foundNonBasicMaterial = true;
                     }
                 }
             }
@@ -203,7 +221,7 @@ public class RepairManager extends SkillManager {
      * @return The chance of keeping the enchantment
      */
     public double getKeepEnchantChance() {
-        return AdvancedConfig.getInstance().getArcaneForgingKeepEnchantsChance(getArcaneForgingRank());
+        return mcMMO.getConfigManager().getConfigRepair().getArcaneForging().getKeepEnchantChanceMap().get(getArcaneForgingRank());
     }
 
     /**
@@ -212,42 +230,8 @@ public class RepairManager extends SkillManager {
      * @return The chance of the enchantment being downgraded
      */
     public double getDowngradeEnchantChance() {
-        return AdvancedConfig.getInstance().getArcaneForgingDowngradeChance(getArcaneForgingRank());
+        return mcMMO.getConfigManager().getConfigRepair().getArcaneForging().getDowngradeChanceMap().get(getArcaneForgingRank());
     }
-
-    /**
-     * Gets chance of keeping enchantment during repair.
-     *
-     * @return The chance of keeping the enchantment
-     */
-    /*public double getKeepEnchantChance() {
-        int skillLevel = getSkillLevel();
-
-        for (Tier tier : Tier.values()) {
-            if (skillLevel >= tier.getLevel()) {
-                return tier.getKeepEnchantChance();
-            }
-        }
-
-        return 0;
-    }*/
-
-    /**
-     * Gets chance of enchantment being downgraded during repair.
-     *
-     * @return The chance of the enchantment being downgraded
-     */
-    /*public double getDowngradeEnchantChance() {
-        int skillLevel = getSkillLevel();
-
-        for (Tier tier : Tier.values()) {
-            if (skillLevel >= tier.getLevel()) {
-                return tier.getDowngradeEnchantChance();
-            }
-        }
-
-        return 100;
-    }*/
 
     /**
      * Computes repair bonuses.
@@ -262,8 +246,8 @@ public class RepairManager extends SkillManager {
         if (Permissions.isSubSkillEnabled(player, SubSkillType.REPAIR_REPAIR_MASTERY)
                 && RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.REPAIR_REPAIR_MASTERY)) {
 
-            double maxBonusCalc = Repair.getInstance().getRepairMasteryMaxBonus() / 100.0D;
-            double skillLevelBonusCalc = (Repair.getInstance().getRepairMasteryMaxBonus() / Repair.getInstance().getRepairMasteryMaxBonusLevel()) * (getSkillLevel() / 100.0D);
+            double maxBonusCalc = mcMMO.getDynamicSettingsManager().getSkillPropertiesManager().getMaxBonus(SubSkillType.REPAIR_REPAIR_MASTERY) / 100.0D;
+            double skillLevelBonusCalc = (maxBonusCalc / mcMMO.getDynamicSettingsManager().getSkillPropertiesManager().getMaxBonusLevel(SubSkillType.REPAIR_REPAIR_MASTERY)) * (getSkillLevel() / 100.0D);
             double bonus = repairAmount * Math.min(skillLevelBonusCalc, maxBonusCalc);
 
             repairAmount += bonus;

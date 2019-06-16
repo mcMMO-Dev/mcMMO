@@ -1,7 +1,9 @@
 package com.gmail.nossr50.config.hocon.skills.axes;
 
 import com.gmail.nossr50.config.ConfigConstants;
-import com.gmail.nossr50.datatypes.skills.properties.*;
+import com.gmail.nossr50.datatypes.skills.properties.AbstractDamageProperty;
+import com.gmail.nossr50.datatypes.skills.properties.AbstractMaxBonusLevel;
+import com.gmail.nossr50.datatypes.skills.properties.DamageProperty;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 

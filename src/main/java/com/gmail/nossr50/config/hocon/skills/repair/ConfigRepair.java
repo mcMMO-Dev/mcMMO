@@ -2,7 +2,7 @@ package com.gmail.nossr50.config.hocon.skills.repair;
 
 import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.config.hocon.skills.repair.general.ConfigRepairGeneral;
-import com.gmail.nossr50.config.hocon.skills.repair.repairmastery.ConfigRepairMastery;
+import com.gmail.nossr50.config.hocon.skills.repair.repairmastery.ConfigRepairRepairMastery;
 import com.gmail.nossr50.config.hocon.skills.repair.subskills.ConfigRepairSubSkills;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import ninja.leaping.configurate.objectmapping.Setting;
@@ -98,7 +98,7 @@ public class ConfigRepair {
         return repairSubSkills;
     }
 
-    public ConfigRepairMastery getRepairMastery() {
+    public ConfigRepairRepairMastery getRepairMastery() {
         return repairSubSkills.getRepairMastery();
     }
 

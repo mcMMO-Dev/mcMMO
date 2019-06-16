@@ -7,9 +7,16 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 public class ConfigMiningSubskills {
 
     @Setting(value = "Blast-Mining", comment = "Settings for Blast Mining")
-    public ConfigMiningBlastMining blastMining = new ConfigMiningBlastMining();
+    private ConfigMiningBlastMining blastMining = new ConfigMiningBlastMining();
+
+    @Setting(value = "Double-Drops")
+    private ConfigMiningDoubleDrops doubleDrops = new ConfigMiningDoubleDrops();
 
     public ConfigMiningBlastMining getBlastMining() {
         return blastMining;
+    }
+
+    public ConfigMiningDoubleDrops getDoubleDrops() {
+        return doubleDrops;
     }
 }

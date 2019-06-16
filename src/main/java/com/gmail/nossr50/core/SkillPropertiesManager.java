@@ -20,12 +20,12 @@ public class SkillPropertiesManager {
     private HashMap<SubSkillType, Double> maxChanceMap;
     private HashMap<SubSkillType, Double> staticActivationChanceMap;
     private HashMap<SubSkillType, Integer> maxBonusLevelMap;
-    private HashMap<SubSkillType, Double> maxBonusPercentage;
+    private HashMap<SubSkillType, Double> maxBonusMap;
 
     public SkillPropertiesManager() {
         maxChanceMap = new HashMap<>();
         maxBonusLevelMap = new HashMap<>();
-        maxBonusPercentage = new HashMap<>();
+        maxBonusMap = new HashMap<>();
         staticActivationChanceMap = new HashMap<>();
     }
 
@@ -33,12 +33,28 @@ public class SkillPropertiesManager {
         maxBonusLevelMap.put(subSkillType, mcMMO.isRetroModeEnabled() ? maxBonusLevel.getRetroScaleValue() : maxBonusLevel.getStandardScaleValue());
     }
 
+    public void registerMaxBonus(SubSkillType subSkillType, double maxBonus) {
+        this.maxBonusMap.put(subSkillType, maxBonus);
+    }
+
     public void registerMaxChance(SubSkillType subSkillType, double maxChance) {
         maxChanceMap.put(subSkillType, maxChance);
     }
 
+    public void registerStaticChance(SubSkillType subSkillType, double staticChance) {
+        maxChanceMap.put(subSkillType, staticChance);
+    }
+
     public double getMaxChance(SubSkillType subSkillType) {
         return maxChanceMap.get(subSkillType);
+    }
+
+    public double getStaticChance(SubSkillType subSkillType) {
+        return staticActivationChanceMap.get(subSkillType);
+    }
+
+    public double getMaxBonus(SubSkillType subSkillType) {
+        return maxBonusMap.get(subSkillType);
     }
 
     public double getMaxBonusLevel(SubSkillType subSkillType) {
@@ -135,11 +151,23 @@ public class SkillPropertiesManager {
     }
 
     private void attemptRegisterStaticChance(SubSkillType subSkillType, CommentedConfigurationNode childNode) {
+        try {
+            mcMMO.p.getLogger().info("Registering Static Chance for "+subSkillType.toString());
+            Double staticChance = childNode.getValue(TypeToken.of(Double.class));
+            registerStaticChance(subSkillType, staticChance);
+        } catch (ObjectMappingException e) {
 
+        }
     }
 
     private void attemptRegisterMaxBonusPercentage(SubSkillType subSkillType, CommentedConfigurationNode childNode) {
+        try {
+            mcMMO.p.getLogger().info("Registering MaxBonus for "+subSkillType.toString());
+            Double maxChance = childNode.getValue(TypeToken.of(Double.class));
+            registerMaxBonus(subSkillType, maxChance);
+        } catch (ObjectMappingException e) {
 
+        }
     }
 
     public double getStaticChanceProperty(SubSkillType subSkillType) throws InvalidStaticChance {
