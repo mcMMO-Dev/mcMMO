@@ -1,11 +1,7 @@
 package com.gmail.nossr50.config;
 
-import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.mcMMO;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
-import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -192,119 +188,7 @@ public class AdvancedConfig extends ConfigValidated {
         return getIntValue(SKILLS, GENERAL, ABILITY, ENCHANT_BUFF);
     }
 
-    /**
-     * Grabs the max bonus level for a skill used in RNG calculations
-     * All max level values in the config are multiplied by 10 if the server is in retro mode as the values in the config are based around the new 1-100 skill system scaling
-     * A value of 10 in the file will be returned as 100 for retro mode servers to accommodate the change in scaling
-     *
-     * @param subSkillType target subskill
-     * @return the level at which this skills max benefits will be reached on the curve
-     */
-    public int getMaxBonusLevel(SubSkillType subSkillType) {
-        String[] category = subSkillType.getAdvConfigAddress();
-
-        if (!mcMMO.isRetroModeEnabled())
-            return getIntValue(category[0], category[1], category[2], MAX_BONUS_LEVEL, STANDARD);
-        else
-            return getIntValue(category[0], category[1], category[2], MAX_BONUS_LEVEL, RETRO_MODE);
-    }
-
-    public int getMaxBonusLevel(AbstractSubSkill abstractSubSkill) {
-        return getMaxBonusLevel(abstractSubSkill.getSubSkillType());
-    }
-
-    public double getMaximumProbability(SubSkillType subSkillType) {
-        String[] category = subSkillType.getAdvConfigAddress();
-
-        double maximumProbability = getDoubleValue(category[0], category[1], category[2], CHANCE_MAX);
-
-        return maximumProbability;
-    }
-
-    public double getMaximumProbability(AbstractSubSkill abstractSubSkill) {
-        return getMaximumProbability(abstractSubSkill.getSubSkillType());
-    }
-
     /* Notification Settings */
-
-    public boolean doesSkillCommandSendBlankLines() {
-        return getBooleanValue(FEEDBACK, SKILL_COMMAND, BLANK_LINES_ABOVE_HEADER);
-    }
-
-    public boolean doesNotificationUseActionBar(NotificationType notificationType) {
-        return getBooleanValue(FEEDBACK, ACTION_BAR_NOTIFICATIONS, notificationType.toString(), ENABLED);
-    }
-
-    public boolean doesNotificationSendCopyToChat(NotificationType notificationType) {
-        return getBooleanValue(FEEDBACK, ACTION_BAR_NOTIFICATIONS, notificationType.toString(), SEND_COPY_OF_MESSAGE_TO_CHAT);
-    }
-
-    public boolean useTitlesForXPEvent() {
-        return getBooleanValue(FEEDBACK, EVENTS, XP, SEND_TITLES);
-    }
-
-    private ChatColor getChatColorFromKey(String keyLocation) {
-        String colorName = getStringValue(keyLocation);
-
-        return getChatColor(colorName);
-    }
-
-    private ChatColor getChatColor(String configColor) {
-        for (ChatColor chatColor : ChatColor.values()) {
-            if (configColor.equalsIgnoreCase(chatColor.toString()))
-                return chatColor;
-        }
-
-        //Invalid Color
-        System.out.println("[mcMMO] " + configColor + " is an invalid color value");
-        return ChatColor.WHITE;
-    }
-
-    /* ACROBATICS */
-    public double getDodgeDamageModifier() {
-        return getDoubleValue(SKILLS, ACROBATICS, DODGE, DAMAGE_MODIFIER);
-    }
-
-    public double getRollDamageThreshold() {
-        return getDoubleValue(SKILLS, ACROBATICS, ROLL, DAMAGE_THRESHOLD);
-    }
-
-    public double getGracefulRollDamageThreshold() {
-        return getDoubleValue(SKILLS, ACROBATICS, GRACEFUL_ROLL, DAMAGE_THRESHOLD);
-    }
-
-    /* ALCHEMY */
-    public int getCatalysisMaxBonusLevel() {
-        return getIntValue(SKILLS, ALCHEMY, CATALYSIS, MAX_BONUS_LEVEL);
-    }
-
-    public double getCatalysisMinSpeed() {
-        return getDoubleValue(SKILLS, ALCHEMY, CATALYSIS, MIN_SPEED);
-    }
-
-    public double getCatalysisMaxSpeed() {
-        return getDoubleValue(SKILLS, ALCHEMY, CATALYSIS, MAX_SPEED);
-    }
-
-    /* ARCHERY */
-    public double getSkillShotRankDamageMultiplier() {
-        return getDoubleValue(SKILLS, ARCHERY, SKILL_SHOT, RANK_DAMAGE_MULTIPLIER);
-    }
-
-    public double getSkillShotDamageMax() {
-        return getDoubleValue(SKILLS, ARCHERY, SKILL_SHOT, MAX_DAMAGE);
-    }
-
-    public double getDazeBonusDamage() {
-        return getDoubleValue(SKILLS, ARCHERY, DAZE, BONUS_DAMAGE);
-    }
-
-    public double getForceMultiplier() {
-        return getDoubleValue(SKILLS, ARCHERY, FORCE_MULTIPLIER);
-    }
-
-    /* EXCAVATION */
-    //Nothing to configure, everything is already configurable in config.yml
 
     /* FISHING */
     public double getShakeChance(int rank) {
@@ -319,18 +203,9 @@ public class AdvancedConfig extends ConfigValidated {
         return getDoubleValue(SKILLS, FISHING, MASTER_ANGLER, BIOME_MODIFIER);
     }
 
-    /* HERBALISM */
-    //public int getFarmerDietRankChange() { return getIntValue(SKILLS, ".Herbalism.FarmersDiet.RankChange"); }
-
-    //public int getGreenThumbStageChange() { return getIntValue(SKILLS, ".Herbalism.GreenThumb.StageChange"); }
-
     /* MINING */
     public boolean getDoubleDropSilkTouchEnabled() {
         return getBooleanValue(SKILLS, MINING, "DoubleDrops", "SilkTouch");
-    }
-
-    public int getBlastMiningRankLevel(int rank) {
-        return getIntValue(SKILLS, MINING, BLAST_MINING, RANK, LEVELS, RANK, String.valueOf(rank));
     }
 
     public double getBlastDamageDecrease(int rank) {
@@ -353,59 +228,12 @@ public class AdvancedConfig extends ConfigValidated {
         return getDoubleValue(SKILLS, MINING, BLAST_MINING, BLAST_RADIUS, MODIFIER, RANK, String.valueOf(rank));
     }
 
-    /* REPAIR */
-    public double getRepairMasteryMaxBonus() {
-        return getDoubleValue(SKILLS, REPAIR, REPAIR_MASTERY, MAX_BONUS_PERCENTAGE);
-    }
-    //public int getRepairMasteryMaxLevel() { return getIntValue(SKILLS, REPAIR, REPAIR_MASTERY, MAX_BONUS_LEVEL); }
-
-    /* Arcane Forging */
-    public boolean getArcaneForgingEnchantLossEnabled() {
-        return getBooleanValue(SKILLS, REPAIR, ARCANE_FORGING, MAY_LOSE_ENCHANTS);
-    }
-
-    public double getArcaneForgingKeepEnchantsChance(int rank) {
-        return getDoubleValue(SKILLS, REPAIR, ARCANE_FORGING, KEEP_ENCHANTS, CHANCE, RANK, String.valueOf(rank));
-    }
-
-    public boolean getArcaneForgingDowngradeEnabled() {
-        return getBooleanValue(SKILLS, REPAIR, ARCANE_FORGING, DOWNGRADES_ENABLED);
-    }
-
-    public double getArcaneForgingDowngradeChance(int rank) {
-        return getDoubleValue(SKILLS, REPAIR, ARCANE_FORGING, DOWNGRADES, CHANCE, RANK, String.valueOf(rank));
-    }
-
-    /* SALVAGE */
-
-    public boolean getArcaneSalvageEnchantDowngradeEnabled() {
-        return getBooleanValue(SKILLS, SALVAGE, ARCANE_SALVAGE, ENCHANT_DOWNGRADE_ENABLED);
-    }
-
-    public boolean getArcaneSalvageEnchantLossEnabled() {
-        return getBooleanValue(SKILLS, SALVAGE, ARCANE_SALVAGE, ENCHANT_LOSS_ENABLED);
-    }
-
     public double getArcaneSalvageExtractFullEnchantsChance(int rank) {
         return getDoubleValue(SKILLS, SALVAGE, ARCANE_SALVAGE, EXTRACT_FULL_ENCHANT, RANK, String.valueOf(rank));
     }
 
     public double getArcaneSalvageExtractPartialEnchantsChance(int rank) {
         return getDoubleValue(SKILLS, SALVAGE, ARCANE_SALVAGE, EXTRACT_PARTIAL_ENCHANT, RANK, String.valueOf(rank));
-    }
-
-    /* SMELTING */
-    //public int getBurnModifierMaxLevel() { return getIntValue(SKILLS, SMELTING, FUEL_EFFICIENCY, MAX_BONUS_LEVEL); }
-    public double getBurnTimeMultiplier() {
-        return getDoubleValue(SKILLS, SMELTING, FUEL_EFFICIENCY, MULTIPLIER);
-    }
-
-    public int getSmeltingRankLevel(int rank) {
-        return getIntValue(SKILLS, SMELTING, RANK, LEVELS, RANK, String.valueOf(rank));
-    }
-
-    public int getSmeltingVanillaXPBoostMultiplier(int rank) {
-        return getIntValue(SKILLS, SMELTING, VANILLA_XPMULTIPLIER, RANK, String.valueOf(rank));
     }
 
     /* SWORDS */
@@ -421,10 +249,6 @@ public class AdvancedConfig extends ConfigValidated {
         return getIntValue(SKILLS, SWORDS, RUPTURE, MAX_TICKS);
     }
 
-    public int getRuptureBaseTicks() {
-        return getIntValue(SKILLS, SWORDS, RUPTURE, BASE_TICKS);
-    }
-
     public double getCounterAttackModifier() {
         return getDoubleValue(SKILLS, SWORDS, COUNTER_ATTACK, DAMAGE_MODIFIER);
     }
@@ -432,7 +256,6 @@ public class AdvancedConfig extends ConfigValidated {
     public double getSerratedStrikesModifier() {
         return getDoubleValue(SKILLS, SWORDS, SERRATED_STRIKES, DAMAGE_MODIFIER);
     }
-    //public int getSerratedStrikesTicks() { return getIntValue(SKILLS, SWORDS, SERRATED_STRIKES, RUPTURE, TICKS); }
 
     /* TAMING */
     public double getGoreModifier() {
@@ -466,11 +289,4 @@ public class AdvancedConfig extends ConfigValidated {
     public double getMaxHorseJumpStrength() {
         return getDoubleValue(SKILLS, TAMING, CALL_OF_THE_WILD, MAX_HORSE_JUMP_STRENGTH);
     }
-
-    /* UNARMED */
-    public boolean getDisarmProtected() {
-        return getBooleanValue(SKILLS, UNARMED, DISARM, ANTI_THEFT);
-    }
-
-    /* WOODCUTTING */
 }

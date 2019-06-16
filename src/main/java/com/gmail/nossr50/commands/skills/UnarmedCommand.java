@@ -46,7 +46,7 @@ public class UnarmedCommand extends SkillCommand {
 
         // BERSERK
         if (canBerserk) {
-            String[] berserkStrings = calculateLengthDisplayValues(player, skillValue);
+            String[] berserkStrings = formatLengthDisplayValues(player, skillValue);
             berserkLength = berserkStrings[0];
             berserkLengthEndurance = berserkStrings[1];
         }

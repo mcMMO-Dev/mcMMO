@@ -52,7 +52,7 @@ public class SwordsCommand extends SkillCommand {
 
         // SERRATED STRIKES
         if (canSerratedStrike) {
-            String[] serratedStrikesStrings = calculateLengthDisplayValues(player, skillValue);
+            String[] serratedStrikesStrings = formatLengthDisplayValues(player, skillValue);
             serratedStrikesLength = serratedStrikesStrings[0];
             serratedStrikesLengthEndurance = serratedStrikesStrings[1];
         }

@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes.skills.subskills.acrobatics;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -238,7 +237,7 @@ public class Roll extends AcrobaticsSubSkill {
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
     private double gracefulRollCheck(Player player, McMMOPlayer mcMMOPlayer, double damage, int skillLevel) {
-        double modifiedDamage = calculateModifiedRollDamage(damage, AdvancedConfig.getInstance().getRollDamageThreshold() * 2);
+        double modifiedDamage = calculateModifiedRollDamage(damage, mcMMO.getConfigManager().getConfigAcrobatics().getRollDamageTheshold() * 2);
 
         RandomChanceSkill rcs = new RandomChanceSkill(player, subSkillType);
         rcs.setSkillLevel(rcs.getSkillLevel() * 2); //Double the effective odds
@@ -378,11 +377,11 @@ public class Roll extends AcrobaticsSubSkill {
         //Chance Stat Calculations
         rollChanceHalfMax = RandomChanceUtil.getRandomChanceExecutionChance(rollHalfMaxSkill);
         graceChanceHalfMax = RandomChanceUtil.getRandomChanceExecutionChance(rollGraceHalfMaxSkill);
-        damageThreshold = AdvancedConfig.getInstance().getRollDamageThreshold();
+        damageThreshold = mcMMO.getConfigManager().getConfigAcrobatics().getRollDamageTheshold();
 
         chancePerLevel = RandomChanceUtil.getRandomChanceExecutionChance(rollOneSkillLevel);
 
-        double maxLevel = AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL);
+        double maxLevel = mcMMO.getDynamicSettingsManager().getSkillMaxBonusLevel(SubSkillType.ACROBATICS_ROLL);
 
         return LocaleLoader.getString("Acrobatics.SubSkill.Roll.Mechanics", rollChanceHalfMax, graceChanceHalfMax, maxLevel, chancePerLevel, damageThreshold, damageThreshold * 2);
     }

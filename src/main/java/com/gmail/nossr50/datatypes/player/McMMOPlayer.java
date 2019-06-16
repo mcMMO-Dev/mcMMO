@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes.player;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
@@ -808,17 +807,16 @@ public class McMMOPlayer {
      */
     public void checkAbilityActivation(PrimarySkillType skill) {
         ToolType tool = skill.getTool();
-        SuperAbilityType ability = skill.getAbility();
+        SuperAbilityType ability = skill.getSuperAbility();
 
         if (getAbilityMode(ability) || !ability.getPermissions(player)) {
             return;
         }
 
-
         //TODO: This is hacky and temporary solution until skills are move to the new system
         //Potential problems with this include skills with two super abilities (ie mining)
         if (!skill.isSuperAbilityUnlocked(getPlayer())) {
-            int diff = RankUtils.getSuperAbilityUnlockRequirement(skill.getAbility()) - getSkillLevel(skill);
+            int diff = RankUtils.getSuperAbilityUnlockRequirement(skill.getSuperAbility()) - getSkillLevel(skill);
 
             //Inform the player they are not yet skilled enough
             mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.AbilityGateRequirementFail", String.valueOf(diff), skill.getName());
@@ -844,19 +842,6 @@ public class McMMOPlayer {
             return;
         }
 
-        //These values change depending on whether or not the server is in retro mode
-        int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
-        int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
-
-        int ticks;
-
-        //Ability cap of 0 or below means no cap
-        if (abilityLengthCap > 0) {
-            ticks = PerksUtils.handleActivationPerks(player, 2 + (Math.min(abilityLengthCap, getSkillLevel(skill)) / abilityLengthVar), ability.getMaxLength());
-        } else {
-            ticks = PerksUtils.handleActivationPerks(player, 2 + (getSkillLevel(skill) / abilityLengthVar), ability.getMaxLength());
-        }
-
         // Notify people that ability has been activated
         ParticleEffectUtils.playAbilityEnabledEffect(player);
 
@@ -870,9 +855,10 @@ public class McMMOPlayer {
         //Sounds
         SoundManager.worldSendSound(player.getWorld(), player.getLocation(), SoundType.ABILITY_ACTIVATED_GENERIC);
 
+        int abilityLength = SkillUtils.calculateAbilityLengthPerks(this, skill, ability);
 
         // Enable the ability
-        profile.setAbilityDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));
+        profile.setAbilityDATS(ability, System.currentTimeMillis() + (abilityLength * Misc.TIME_CONVERSION_FACTOR));
         setAbilityMode(ability, true);
 
         if (ability == SuperAbilityType.SUPER_BREAKER || ability == SuperAbilityType.GIGA_DRILL_BREAKER) {
@@ -880,7 +866,7 @@ public class McMMOPlayer {
         }
 
         setToolPreparationMode(tool, false);
-        new AbilityDisableTask(this, ability).runTaskLater(mcMMO.p, ticks * Misc.TICK_CONVERSION_FACTOR);
+        new AbilityDisableTask(this, ability).runTaskLater(mcMMO.p, abilityLength * Misc.TICK_CONVERSION_FACTOR);
     }
 
     public void processAbilityActivation(PrimarySkillType skill) {
@@ -904,7 +890,7 @@ public class McMMOPlayer {
             }
         }
 
-        SuperAbilityType ability = skill.getAbility();
+        SuperAbilityType ability = skill.getSuperAbility();
         ToolType tool = skill.getTool();
 
         /*

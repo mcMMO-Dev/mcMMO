@@ -7,10 +7,12 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -37,35 +39,57 @@ public class SkillUtils {
         mcMMOPlayer.beginXpGain(skill, xp, xpGainReason, xpGainSource);
     }
 
-    /*
-     * Skill Stat Calculations
+    /**
+     * Calculates how long a given ability should last in seconds
+     * Does not factor in perks
+     * @param mcMMOPlayer target mcMMO Player
+     * @param skill target skill
+     * @param superAbilityType target Super Ability
+     * @return how long an ability should last in seconds
      */
+    public static int calculateAbilityLength(McMMOPlayer mcMMOPlayer, PrimarySkillType skill, SuperAbilityType superAbilityType) {
+        //These values change depending on whether or not the server is in retro mode
+        int abilityLengthVar = mcMMO.getConfigManager().getConfigSuperAbilities().getSuperAbilityStartingSeconds();
 
-    public static String[] calculateLengthDisplayValues(Player player, float skillValue, PrimarySkillType skill) {
-        int maxLength = skill.getAbility().getMaxLength();
-        int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
-        int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
+        int maxLength = mcMMO.getConfigManager().getConfigSuperAbilities().getMaxLengthForSuper(superAbilityType);
 
-        int length;
+        int skillLevel = mcMMOPlayer.getSkillLevel(skill);
 
-        if (abilityLengthCap > 0) {
-            length = (int) Math.min(abilityLengthCap, 2 + (skillValue / abilityLengthVar));
+        int ticks;
+
+        //Ability cap of 0 or below means no cap
+        if (maxLength > 0) {
+            ticks = Math.min(2 + (Math.min(maxLength, skillLevel) / abilityLengthVar), maxLength);
         } else {
-            length = 2 + (int) (skillValue / abilityLengthVar);
+            ticks = Math.min(2 + (Math.min(maxLength, skillLevel) / abilityLengthVar), maxLength);
         }
 
-        int enduranceLength = PerksUtils.handleActivationPerks(player, length, maxLength);
-
-        if (maxLength != 0) {
-            length = Math.min(length, maxLength);
-        }
-
-        return new String[]{String.valueOf(length), String.valueOf(enduranceLength)};
+        return ticks;
     }
 
-    /*
-     * Others
+    /**
+     * Calculates how long a given ability should last in seconds
+     * Adds in perks if the player has any
+     * @param mcMMOPlayer target mcMMO Player
+     * @param skill target skill
+     * @param superAbilityType target Super Ability
+     * @return how long an ability should last in seconds
      */
+    public static int calculateAbilityLengthPerks(McMMOPlayer mcMMOPlayer, PrimarySkillType skill, SuperAbilityType superAbilityType) {
+        return getEnduranceLength(mcMMOPlayer.getPlayer()) + calculateAbilityLength(mcMMOPlayer, skill, superAbilityType);
+    }
+
+    public static int getEnduranceLength(Player player) {
+        if (Permissions.twelveSecondActivationBoost(player)) {
+            return 12;
+        } else if (Permissions.eightSecondActivationBoost(player)) {
+            return  8;
+        } else if (Permissions.fourSecondActivationBoost(player)) {
+            return  4;
+        } else {
+            return 0;
+        }
+    }
 
     public static int handleFoodSkills(Player player, int eventFoodLevel, SubSkillType subSkillType) {
         int curRank = RankUtils.getRank(player, subSkillType);
@@ -172,11 +196,11 @@ public class SkillUtils {
 
             if(abilityLengthCap > 0)
             {
-                ticks = PerksUtils.handleActivationPerks(player,  Math.min(abilityLengthCap, 2 + (mcMMOPlayer.getSkillLevel(skill) / abilityLengthVar)),
-                        skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
+                ticks = PerksUtils.calculateAbilityLength(player,  Math.min(abilityLengthCap, 2 + (mcMMOPlayer.getSkillLevel(skill) / abilityLengthVar)),
+                        skill.getSuperAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
             } else {
-                ticks = PerksUtils.handleActivationPerks(player, 2 + ((mcMMOPlayer.getSkillLevel(skill)) / abilityLengthVar),
-                        skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
+                ticks = PerksUtils.calculateAbilityLength(player, 2 + ((mcMMOPlayer.getSkillLevel(skill)) / abilityLengthVar),
+                        skill.getSuperAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
             }
 
             PotionEffect abilityBuff = new PotionEffect(PotionEffectType.FAST_DIGGING, duration + ticks, amplifier + 10);

@@ -60,7 +60,7 @@ public class MiningCommand extends SkillCommand {
 
         // SUPER BREAKER
         if (canSuperBreaker) {
-            String[] superBreakerStrings = calculateLengthDisplayValues(player, skillValue);
+            String[] superBreakerStrings = formatLengthDisplayValues(player, skillValue);
             superBreakerLength = superBreakerStrings[0];
             superBreakerLengthEndurance = superBreakerStrings[1];
         }

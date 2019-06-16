@@ -11,6 +11,12 @@ public class ConfigSuperAbilities {
     public static final boolean SUPER_ABILITY_DEFAULT = true;
     public static final boolean MUST_SNEAK_TO_ACTIVATE_DEFAULT = false;
 
+    @Setting(value = "Base-Time-In-Seconds", comment = "The minimum duration of time based super abilities in seconds.")
+    private int superAbilityStartingSeconds = 4;
+
+    @Setting(value = "Super-Ability-Length-Increment", comment = "How many seconds to add to a super ability as it reaches now scaling milestones")
+    private int superAbilityLengthIncrease = 1;
+
     @Setting(value = "Enable-Super-Abilities",
             comment = "Turn this off to disable all super abilities." +
                     "\nDefault value: " + SUPER_ABILITY_DEFAULT)
@@ -97,5 +103,13 @@ public class ConfigSuperAbilities {
                 mcMMO.p.getLogger().severe("Max Length Parameter not found for " + superAbilityType.toString());
                 return 60;
         }
+    }
+
+    public int getSuperAbilityStartingSeconds() {
+        return superAbilityStartingSeconds;
+    }
+
+    public int getSuperAbilityLengthIncrease() {
+        return superAbilityLengthIncrease;
     }
 }

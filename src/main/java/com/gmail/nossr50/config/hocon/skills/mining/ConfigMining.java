@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config.hocon.skills.mining;
 
+import com.gmail.nossr50.config.ConfigConstants;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -49,7 +50,7 @@ public class ConfigMining {
             "\nUse Minecraft friendly names for entries, not Bukkit material names.")
     private HashSet<String> bonusDrops = DEFAULT_BONUS_DROPS;
 
-    @Setting(value = "Sub-Skills")
+    @Setting(value = ConfigConstants.SUB_SKILL_NODE)
     private ConfigMiningSubskills miningSubskills = new ConfigMiningSubskills();
 
     public ConfigMiningSubskills getMiningSubskills() {

@@ -136,7 +136,7 @@ public class HerbalismManager extends SkillManager {
 
         int amount;
         int xp;
-        boolean greenTerra = mcMMOPlayer.getAbilityMode(skill.getAbility());
+        boolean greenTerra = mcMMOPlayer.getAbilityMode(skill.getSuperAbility());
 
 //        if (mcMMO.getModManager().isCustomHerbalismBlock(blockState)) {
 //            CustomBlock customBlock = mcMMO.getModManager().getBlock(blockState);
@@ -317,7 +317,7 @@ public class HerbalismManager extends SkillManager {
 
         ItemStack seedStack = new ItemStack(seed);
 
-        if (!greenTerra && !RandomChanceUtil.checkRandomChanceExecutionSuccess(player, SubSkillType.HERBALISM_GREEN_THUMB, true)) {
+        if (!greenTerra && !RandomChanceUtil.checkRandomChanceExecutionSuccess(player, SubSkillType.HERBALISM_GREEN_THUMB)) {
             return;
         }
 

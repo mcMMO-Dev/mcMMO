@@ -56,7 +56,7 @@ public class HerbalismCommand extends SkillCommand {
 
         // GREEN TERRA
         if (canGreenTerra) {
-            String[] greenTerraStrings = calculateLengthDisplayValues(player, skillValue);
+            String[] greenTerraStrings = formatLengthDisplayValues(player, skillValue);
             greenTerraLength = greenTerraStrings[0];
             greenTerraLengthEndurance = greenTerraStrings[1];
         }

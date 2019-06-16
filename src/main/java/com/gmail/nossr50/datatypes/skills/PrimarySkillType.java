@@ -157,7 +157,7 @@ public enum PrimarySkillType {
 
     public static PrimarySkillType byAbility(SuperAbilityType ability) {
         for (PrimarySkillType type : values()) {
-            if (type.getAbility() == ability) {
+            if (type.getSuperAbility() == ability) {
                 return type;
             }
         }
@@ -169,7 +169,7 @@ public enum PrimarySkillType {
         return managerClass;
     }
 
-    public SuperAbilityType getAbility() {
+    public SuperAbilityType getSuperAbility() {
         return ability;
     }
 
@@ -187,7 +187,7 @@ public enum PrimarySkillType {
     }*/
 
     public boolean isSuperAbilityUnlocked(Player player) {
-        return RankUtils.getRank(player, getAbility().getSubSkillTypeDefinition()) >= 1;
+        return RankUtils.getRank(player, getSuperAbility().getSubSkillTypeDefinition()) >= 1;
     }
 
     /*public void setHardcoreStatLossEnabled(boolean enable) {

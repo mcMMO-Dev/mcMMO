@@ -23,22 +23,6 @@ public final class PerksUtils {
         return cooldown;
     }
 
-    public static int handleActivationPerks(Player player, int ticks, int maxTicks) {
-        if (maxTicks != 0) {
-            ticks = Math.min(ticks, maxTicks);
-        }
-
-        if (Permissions.twelveSecondActivationBoost(player)) {
-            ticks += 12;
-        } else if (Permissions.eightSecondActivationBoost(player)) {
-            ticks += 8;
-        } else if (Permissions.fourSecondActivationBoost(player)) {
-            ticks += 4;
-        }
-
-        return ticks;
-    }
-
     /**
      * Calculate activation chance for a skill.
      *

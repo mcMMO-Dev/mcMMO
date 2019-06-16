@@ -38,7 +38,7 @@ public class WoodcuttingCommand extends SkillCommand {
 
         // TREE FELLER
         if (canTreeFell) {
-            String[] treeFellerStrings = calculateLengthDisplayValues(player, skillValue);
+            String[] treeFellerStrings = formatLengthDisplayValues(player, skillValue);
             treeFellerLength = treeFellerStrings[0];
             treeFellerLengthEndurance = treeFellerStrings[1];
         }

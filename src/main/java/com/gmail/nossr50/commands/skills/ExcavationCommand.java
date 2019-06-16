@@ -27,7 +27,7 @@ public class ExcavationCommand extends SkillCommand {
     protected void dataCalculations(Player player, double skillValue) {
         // GIGA DRILL BREAKER
         if (canGigaDrill) {
-            String[] gigaDrillStrings = calculateLengthDisplayValues(player, skillValue);
+            String[] gigaDrillStrings = formatLengthDisplayValues(player, skillValue);
             gigaDrillBreakerLength = gigaDrillStrings[0];
             gigaDrillBreakerLengthEndurance = gigaDrillStrings[1];
         }

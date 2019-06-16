@@ -55,7 +55,7 @@ public class AxesCommand extends SkillCommand {
 
         // SKULL SPLITTER
         if (canSkullSplitter) {
-            String[] skullSplitterStrings = calculateLengthDisplayValues(player, skillValue);
+            String[] skullSplitterStrings = formatLengthDisplayValues(player, skillValue);
             skullSplitterLength = skullSplitterStrings[0];
             skullSplitterLengthEndurance = skullSplitterStrings[1];
         }

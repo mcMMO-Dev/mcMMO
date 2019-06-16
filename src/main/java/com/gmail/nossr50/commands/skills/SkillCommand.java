@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -14,9 +13,9 @@ import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
-import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import com.google.common.collect.ImmutableList;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -74,7 +73,7 @@ public abstract class SkillCommand implements TabExecutor {
                 McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
                 boolean isLucky = Permissions.lucky(player, skill);
-                boolean hasEndurance = (PerksUtils.handleActivationPerks(player, 0, 0) != 0);
+                boolean hasEndurance = SkillUtils.getEnduranceLength(player) > 0;
                 double skillValue = mcMMOPlayer.getSkillLevel(skill);
 
                 //Send the players a few blank lines to make finding the top of the skill command easier
@@ -193,24 +192,6 @@ public abstract class SkillCommand implements TabExecutor {
             //player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, skillValue));
 
         }
-        /*
-        if (!skill.isChildSkill()) {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", skillName));
-            player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
-            player.sendMessage(LocaleLoader.getString("Effects.Level", skillValue, mcMMOPlayer.getSkillXpLevel(skill), mcMMOPlayer.getXpToLevel(skill)));
-        } else {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", skillName + " " + LocaleLoader.getString("Skills.Child")));
-            player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain.Child")));
-            player.sendMessage(LocaleLoader.getString("Effects.Child", skillValue));
-
-            player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Skills.Parents")));
-            Set<PrimarySkillType> parents = FamilyTree.getParents(skill);
-
-            for (PrimarySkillType parent : parents) {
-                player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)));
-            }
-        }
-        */
     }
 
     @Override
@@ -231,24 +212,11 @@ public abstract class SkillCommand implements TabExecutor {
         return RandomChanceUtil.calculateAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, subSkill);
     }
 
-    protected String[] calculateLengthDisplayValues(Player player, double skillValue) {
-        int maxLength = skill.getAbility().getMaxLength();
-        int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
-        int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
+    protected String[] formatLengthDisplayValues(Player player, double skillValue) {
 
-        int length;
+        int length = SkillUtils.calculateAbilityLength(UserManager.getPlayer(player), skill, skill.getSuperAbility());
 
-        if (abilityLengthCap <= 0) {
-            length = 2 + (int) (skillValue / abilityLengthVar);
-        } else {
-            length = 2 + (int) (Math.min(abilityLengthCap, skillValue) / abilityLengthVar);
-        }
-
-        int enduranceLength = PerksUtils.handleActivationPerks(player, length, maxLength);
-
-        if (maxLength != 0) {
-            length = Math.min(length, maxLength);
-        }
+        int enduranceLength = SkillUtils.calculateAbilityLengthPerks(UserManager.getPlayer(player), skill, skill.getSuperAbility());
 
         return new String[]{String.valueOf(length), String.valueOf(enduranceLength)};
     }

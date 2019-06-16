@@ -32,7 +32,7 @@ public class RandomChanceUtil {
     public static boolean isActivationSuccessful(SkillActivationType skillActivationType, SubSkillType subSkillType, Player player) {
         switch (skillActivationType) {
             case RANDOM_LINEAR_100_SCALE_WITH_CAP:
-                return checkRandomChanceExecutionSuccess(player, subSkillType, true);
+                return checkRandomChanceExecutionSuccess(player, subSkillType);
             case RANDOM_STATIC_CHANCE:
                 return checkRandomStaticChanceExecutionSuccess(player, subSkillType);
             case ALWAYS_FIRES:
@@ -97,8 +97,6 @@ public class RandomChanceUtil {
     public static boolean checkRandomChanceExecutionSuccess(RandomChanceSkill randomChance) {
         double chanceOfSuccess = calculateChanceOfSuccess(randomChance);
 
-        Random random = new Random();
-
         //Check the odds
         return rollDice(chanceOfSuccess, 100);
     }
@@ -135,10 +133,10 @@ public class RandomChanceUtil {
         return chanceOfSuccess;
     }*/
 
-    private static double calculateChanceOfSuccess(RandomChanceSkill randomChance) {
-        double skillLevel = randomChance.getSkillLevel();
-        double maximumProbability = randomChance.getProbabilityCap();
-        double maximumBonusLevel = randomChance.getMaximumBonusLevelCap();
+    private static double calculateChanceOfSuccess(RandomChanceSkill randomChanceSkill) {
+        double skillLevel = randomChanceSkill.getSkillLevel();
+        double maximumProbability = randomChanceSkill.getProbabilityCap();
+        double maximumBonusLevel = randomChanceSkill.getMaximumBonusLevelCap();
 
         double chanceOfSuccess;
 
@@ -147,11 +145,11 @@ public class RandomChanceUtil {
             chanceOfSuccess = maximumProbability;
         } else {
             //Get chance of success
-            chanceOfSuccess = getChanceOfSuccess(randomChance.getXPos(), maximumProbability, maximumBonusLevel);
+            chanceOfSuccess = getChanceOfSuccess(randomChanceSkill.getXPos(), maximumProbability, maximumBonusLevel);
         }
 
         //Add Luck
-        chanceOfSuccess = addLuck(randomChance.isLucky(), chanceOfSuccess);
+        chanceOfSuccess = addLuck(randomChanceSkill.isLucky(), chanceOfSuccess);
 
         return chanceOfSuccess;
     }
@@ -196,10 +194,6 @@ public class RandomChanceUtil {
         }
 
         return 0.1337; //Puts on shades
-    }
-
-    public static boolean checkRandomChanceExecutionSuccess(Player player, SubSkillType subSkillType, boolean hasCap) {
-        return checkRandomChanceExecutionSuccess(new RandomChanceSkill(player, subSkillType, hasCap));
     }
 
     public static boolean checkRandomChanceExecutionSuccess(Player player, SubSkillType subSkillType) {

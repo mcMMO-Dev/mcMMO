@@ -88,8 +88,8 @@ public class ScoreboardManager {
                 // Include child skills
                 skillLabelBuilder.put(type, getShortenedName(colors.get(i) + type.getName(), false));
 
-                if (type.getAbility() != null) {
-                    abilityLabelBuilder.put(type.getAbility(), getShortenedName(colors.get(i) + type.getAbility().getName()));
+                if (type.getSuperAbility() != null) {
+                    abilityLabelBuilder.put(type.getSuperAbility(), getShortenedName(colors.get(i) + type.getSuperAbility().getName()));
 
                     if (type == PrimarySkillType.MINING) {
                         abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, getShortenedName(colors.get(i) + SuperAbilityType.BLAST_MINING.getName()));
@@ -110,8 +110,8 @@ public class ScoreboardManager {
                 // Include child skills
                 skillLabelBuilder.put(type, getShortenedName(ChatColor.GREEN + type.getName()));
 
-                if (type.getAbility() != null) {
-                    abilityLabelBuilder.put(type.getAbility(), formatAbility(type.getAbility().getName()));
+                if (type.getSuperAbility() != null) {
+                    abilityLabelBuilder.put(type.getSuperAbility(), formatAbility(type.getSuperAbility().getName()));
 
                     if (type == PrimarySkillType.MINING) {
                         abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, formatAbility(SuperAbilityType.BLAST_MINING.getName()));
