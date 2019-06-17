@@ -1,4 +1,5 @@
 Version 2.1.82
+    Added new WG flag 'mcmmo-hardcore' if set to negative players will not be penalized by hardcore mode (if hardcore mode is enabled) it defaults to true
     Added proper error handling when loading parties file
     Fixed an error that could occur when using mcrank on an offline player
     You can now use mcrank on offline players by default

@@ -64,6 +64,23 @@ public class WorldGuardManager {
         return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(player), WorldGuardFlags.MCMMO_XP_WG_FLAG);
     }
 
+    public boolean hasHardcoreFlag(Player player)
+    {
+        if(player == null)
+            return false;
+
+        BukkitPlayer localPlayer = BukkitAdapter.adapt(player);
+        com.sk89q.worldedit.util.Location loc = localPlayer.getLocation();
+
+        //WorldGuardPlugin worldGuard = getWorldGuard();
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionQuery query = container.createQuery();
+
+        //ApplicableRegionSet set = query.getApplicableRegions(loc);
+
+        return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(player), WorldGuardFlags.MCMMO_HARDCORE_WG_FLAG);
+    }
+
     private WorldGuardPlugin getWorldGuard() {
         Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
 
@@ -88,6 +105,7 @@ public class WorldGuardManager {
             registry.register(WorldGuardFlags.MCMMO_XP_WG_FLAG);*/
             registry.register(WorldGuardFlags.MCMMO_ENABLE_WG_FLAG);
             registry.register(WorldGuardFlags.MCMMO_XP_WG_FLAG);
+            registry.register(WorldGuardFlags.MCMMO_HARDCORE_WG_FLAG);
             System.out.println("mcMMO has registered WG flags successfully!");
         } catch (FlagConflictException e) {
             e.printStackTrace();

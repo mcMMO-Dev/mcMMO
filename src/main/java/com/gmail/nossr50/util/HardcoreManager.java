@@ -6,6 +6,8 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.worldguard.WorldGuardManager;
+import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -14,6 +16,12 @@ public final class HardcoreManager {
     private HardcoreManager() {}
 
     public static void invokeStatPenalty(Player player) {
+
+        if(WorldGuardUtils.isWorldGuardLoaded()) {
+            if(!WorldGuardManager.getInstance().hasHardcoreFlag(player))
+                return;
+        }
+
         double statLossPercentage = Config.getInstance().getHardcoreDeathStatPenaltyPercentage();
         int levelThreshold = Config.getInstance().getHardcoreDeathStatPenaltyLevelThreshold();
 
@@ -59,6 +67,12 @@ public final class HardcoreManager {
     }
 
     public static void invokeVampirism(Player killer, Player victim) {
+
+        if(WorldGuardUtils.isWorldGuardLoaded()) {
+            if(!WorldGuardManager.getInstance().hasHardcoreFlag(killer) || !WorldGuardManager.getInstance().hasHardcoreFlag(victim))
+                return;
+        }
+
         double vampirismStatLeechPercentage = Config.getInstance().getHardcoreVampirismStatLeechPercentage();
         int levelThreshold = Config.getInstance().getHardcoreVampirismLevelThreshold();
 
