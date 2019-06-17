@@ -8,6 +8,7 @@ import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
@@ -18,12 +19,21 @@ public class ConfigRepair {
 
     public static final ArrayList<Repairable> CONFIG_REPAIRABLES_DEFAULTS;
     public static final HashSet<RepairWildcard> REPAIR_WILDCARDS_DEFAULTS;
-    public static final Material[] PLANKS = new Material[]{OAK_PLANKS, BIRCH_PLANKS, DARK_OAK_PLANKS, ACACIA_PLANKS, JUNGLE_PLANKS, SPRUCE_PLANKS};
+//    public static final Material[] PLANKS = new Material[]{OAK_PLANKS, BIRCH_PLANKS, DARK_OAK_PLANKS, ACACIA_PLANKS, JUNGLE_PLANKS, SPRUCE_PLANKS};
 
     static {
+        REPAIR_WILDCARDS_DEFAULTS = new HashSet<>();
+
+        List<ItemStack> planksList = Arrays.asList(new ItemStack[]{new ItemStack(OAK_PLANKS, 1),
+                new ItemStack(BIRCH_PLANKS, 1), new ItemStack(DARK_OAK_PLANKS, 1),
+                new ItemStack(ACACIA_PLANKS, 1), new ItemStack(JUNGLE_PLANKS, 1),
+                new ItemStack(SPRUCE_PLANKS, 1)});
+        RepairWildcard planksWildCard = new RepairWildcard("Planks", new HashSet<>(planksList));
+        REPAIR_WILDCARDS_DEFAULTS.add(planksWildCard);
+
         CONFIG_REPAIRABLES_DEFAULTS = new ArrayList<>();
-        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(WOODEN_SWORD, Arrays.asList(PLANKS), 1, 0, .25D));
-        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(WOODEN_SHOVEL, Arrays.asList(PLANKS), 1, 0, .15D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(WOODEN_SWORD, planksWildCard, 1, 0, .25D));
+        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(WOODEN_SHOVEL, planksWildCard, 1, 0, .15D));
         CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(WOODEN_PICKAXE, Arrays.asList(PLANKS), 1, 0, .5D));
         CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(WOODEN_AXE, Arrays.asList(PLANKS), 1, 0, .5D));
         CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(WOODEN_HOE, Arrays.asList(PLANKS), 1, 0, .25D));
@@ -70,13 +80,7 @@ public class ConfigRepair {
         CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(DIAMOND_LEGGINGS, DIAMOND, 1, 0, 2D));
         CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(DIAMOND_BOOTS, DIAMOND, 1, 0, 2D));
 
-        REPAIR_WILDCARDS_DEFAULTS = new HashSet<>();
 
-        RepairWildcard repairWildcardPlanks = new RepairWildcard("Planks");
-        List<String> planksList = Arrays.asList(new String[]{OAK_PLANKS.getKey().toString(),
-                BIRCH_PLANKS.getKey().toString(), DARK_OAK_PLANKS.getKey().toString(), ACACIA_PLANKS.getKey().toString(), JUNGLE_PLANKS.getKey().toString(), SPRUCE_PLANKS.getKey().toString()});
-        repairWildcardPlanks.addMatchCandidates(planksList);
-        REPAIR_WILDCARDS_DEFAULTS.add(repairWildcardPlanks);
     }
 
     @Setting(value = "General")

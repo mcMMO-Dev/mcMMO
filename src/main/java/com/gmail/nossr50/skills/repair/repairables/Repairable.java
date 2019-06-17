@@ -1,71 +1,63 @@
 package com.gmail.nossr50.skills.repair.repairables;
 
-import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
-import com.gmail.nossr50.datatypes.skills.ItemType;
-import com.gmail.nossr50.util.ItemUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
+import com.gmail.nossr50.util.nbt.RawNBT;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
 
 public class Repairable {
     private final Material itemMaterial;
-    private final List<Material> repairMaterials;
-    private final int minimumQuantity, minimumLevel;
-    private final short maximumDurability, baseRepairDurability;
-    private final ItemType repairItemType;
-    private final ItemMaterialCategory repairItemMaterialCategory;
-    private final double xpMultiplier;
+    private final int minimumLevel;
+    private final short maximumDurability;
+    private HashSet<ItemStack> repairTransaction;
+    private boolean strictMatching;
+    private int baseXP;
+    private RawNBT rawNBT;
+    private int repairCount;
 
-    public Repairable(Material itemMaterial, Material repairMaterial, int minimumQuantity, int minimumLevel, double xpMultiplier) {
-        this(itemMaterial.getKey().getKey(), ItemUtils.getRepairItemMaterials(Collections.singletonList(repairMaterial)), minimumQuantity, minimumLevel, xpMultiplier);
+    public Repairable(Material itemMaterial, HashSet<ItemStack> repairTransaction, int minimumLevel, int repairCount, int baseXP, RawNBT rawNBT) {
+        this(itemMaterial.getKey().getKey(), repairTransaction, minimumLevel, repairCount, baseXP, false, rawNBT);
     }
 
-    public Repairable(Material itemMaterial, List<Material> repairMaterials, int minimumQuantity, int minimumLevel, double xpMultiplier) {
-        this(itemMaterial.getKey().getKey(), ItemUtils.getRepairItemMaterials(repairMaterials), minimumQuantity, minimumLevel, xpMultiplier);
+    public Repairable(Material itemMaterial, HashSet<ItemStack> repairTransaction, int minimumLevel, int repairCount, int baseXP) {
+        this(itemMaterial.getKey().getKey(), repairTransaction, minimumLevel, repairCount, baseXP, false, null);
     }
 
-    public Repairable(String itemMaterial, List<String> repairMaterials, int minimumQuantity, int minimumLevel, double xpMultiplier) {
+    public Repairable(String itemMaterial, HashSet<ItemStack> repairTransaction, int minimumLevel, int repairCount, int baseXP, boolean strictMatching, RawNBT rawNBT) {
         this.itemMaterial = Material.matchMaterial(itemMaterial);
-        this.repairMaterials = ItemUtils.matchMaterials(repairMaterials);
-        this.minimumQuantity = Math.max(1, minimumQuantity);
         this.minimumLevel = Math.max(0, minimumLevel);
-        this.xpMultiplier = Math.max(0, xpMultiplier);
 
         this.maximumDurability = this.itemMaterial.getMaxDurability();
-        this.baseRepairDurability = (short) (maximumDurability / minimumQuantity);
+        this.repairCount = repairCount;
+        this.repairTransaction = repairTransaction;
+        this.strictMatching = strictMatching;
+        this.baseXP = baseXP;
+        this.rawNBT = rawNBT;
+    }
 
-        this.repairItemType = ItemUtils.determineItemType(this.itemMaterial);
-        this.repairItemMaterialCategory = ItemUtils.determineMaterialType(this.repairMaterials.get(0));
+    public RawNBT getRawNBT() {
+        return rawNBT;
+    }
+
+    public int getRepairCount() {
+        return repairCount;
     }
 
     public Material getItemMaterial() {
         return itemMaterial;
     }
 
-    public List<Material> getRepairMaterials() {
-        return repairMaterials;
+    public HashSet<ItemStack> getRepairTransaction() {
+        return repairTransaction;
     }
 
-    public List<String> getRepairMaterialsRegistryKeys() {
-        return ItemUtils.getRepairItemMaterials(repairMaterials);
+    public boolean useStrictMatching() {
+        return strictMatching;
     }
 
-
-    public ItemType getRepairItemType() {
-        return repairItemType;
-    }
-
-    public ItemMaterialCategory getRepairItemMaterialCategory() {
-        return repairItemMaterialCategory;
-    }
-
-    public int getMinimumQuantity() {
-        if(minimumQuantity == -1)
-            return Math.max(SkillUtils.getRepairAndSalvageQuantities(itemMaterial, repairMaterials), 1);
-        else
-            return minimumQuantity;
+    public int getBaseXP() {
+        return baseXP;
     }
 
     public short getMaximumDurability() {
@@ -73,14 +65,10 @@ public class Repairable {
     }
 
     public short getBaseRepairDurability() {
-        return baseRepairDurability;
+        return (short)  (maximumDurability / repairCount);
     }
 
     public int getMinimumLevel() {
         return minimumLevel;
-    }
-
-    public double getXpMultiplier() {
-        return xpMultiplier;
     }
 }

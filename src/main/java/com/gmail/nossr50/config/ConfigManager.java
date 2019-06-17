@@ -37,6 +37,7 @@ import com.gmail.nossr50.config.hocon.skills.mining.ConfigMining;
 import com.gmail.nossr50.config.hocon.skills.ranks.ConfigRanks;
 import com.gmail.nossr50.config.hocon.skills.ranks.SkillRankProperty;
 import com.gmail.nossr50.config.hocon.skills.repair.ConfigRepair;
+import com.gmail.nossr50.config.hocon.skills.repair.RepairWildcard;
 import com.gmail.nossr50.config.hocon.skills.salvage.ConfigSalvage;
 import com.gmail.nossr50.config.hocon.skills.smelting.ConfigSmelting;
 import com.gmail.nossr50.config.hocon.skills.swords.ConfigSwords;
@@ -64,6 +65,7 @@ import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -275,6 +277,8 @@ public final class ConfigManager {
         customSerializers.registerType(TypeToken.of(MaxBonusLevel.class), new MaxBonusLevelSerializer());
         customSerializers.registerType(TypeToken.of(PlayerNotificationSettings.class), new PlayerNotificationSerializer());
         customSerializers.registerType(TypeToken.of(SoundSetting.class), new SoundSettingSerializer());
+        customSerializers.registerType(TypeToken.of(ItemStack.class), new ItemStackSerializer());
+        customSerializers.registerType(TypeToken.of(RepairWildcard.class), new RepairWildcardSerializer());
     }
 
     /**
