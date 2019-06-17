@@ -327,7 +327,7 @@ public class EntityListener implements Listener {
         }
         */
 
-        if (Misc.isNPCEntity(defender) || !defender.isValid() || !(defender instanceof LivingEntity)) {
+        if (Misc.isNPCEntityExcludingVillagers(defender) || !defender.isValid() || !(defender instanceof LivingEntity)) {
             return;
         }
 
@@ -337,7 +337,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if (Misc.isNPCEntity(attacker)) {
+        if (Misc.isNPCEntityExcludingVillagers(attacker)) {
             return;
         }
 
@@ -466,7 +466,7 @@ public class EntityListener implements Listener {
         }
         */
 
-        if (Misc.isNPCEntity(entity) || !entity.isValid() || !(entity instanceof LivingEntity)) {
+        if (Misc.isNPCEntityExcludingVillagers(entity) || !entity.isValid() || !(entity instanceof LivingEntity)) {
             return;
         }
 
@@ -603,7 +603,7 @@ public class EntityListener implements Listener {
 
         LivingEntity entity = event.getEntity();
 
-        if (Misc.isNPCEntity(entity)) {
+        if (Misc.isNPCEntityExcludingVillagers(entity)) {
             return;
         }
 
@@ -636,7 +636,7 @@ public class EntityListener implements Listener {
 
         LivingEntity entity = event.getEntity();
 
-        if (Misc.isNPCEntity(entity)) {
+        if (Misc.isNPCEntityExcludingVillagers(entity)) {
             return;
         }
 
@@ -937,7 +937,7 @@ public class EntityListener implements Listener {
 
         LivingEntity entity = event.getEntity();
 
-        if (!UserManager.hasPlayerDataKey(player) || Misc.isNPCEntity(entity) || entity.hasMetadata(mcMMO.entityMetadataKey)) {
+        if (!UserManager.hasPlayerDataKey(player) || Misc.isNPCEntityExcludingVillagers(entity) || entity.hasMetadata(mcMMO.entityMetadataKey)) {
             return;
         }
 

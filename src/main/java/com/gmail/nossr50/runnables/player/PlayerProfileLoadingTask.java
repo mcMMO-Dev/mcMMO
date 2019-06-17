@@ -30,6 +30,11 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
     // DO NOT MODIFY THE McMMOPLAYER FROM THIS CODE
     @Override
     public void run() {
+
+        if (Misc.isNPCIncludingVillagers(player)) {
+            return;
+        }
+
         // Quit if they logged out
         if (!player.isOnline()) {
             mcMMO.p.getLogger().info("Aborting profile loading recovery for " + player.getName() + " - player logged out");

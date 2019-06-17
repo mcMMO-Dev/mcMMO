@@ -38,7 +38,7 @@ public class AlchemyBrewTask extends BukkitRunnable {
         brewTimer = DEFAULT_BREW_TICKS;
 
         if (player != null
-                && !Misc.isNPCEntity(player)
+                && !Misc.isNPCEntityExcludingVillagers(player)
                 && Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CATALYSIS)
                 && UserManager.getPlayer(player) != null) {
 
