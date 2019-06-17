@@ -1,6 +1,5 @@
 package com.gmail.nossr50.runnables.skills;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.MobHealthbarUtils;
@@ -93,7 +92,7 @@ public class BleedTimerTask extends BukkitRunnable {
             double damage;
 
             if (target instanceof Player) {
-                damage = AdvancedConfig.getInstance().getRuptureDamagePlayer();
+                damage = mcMMO.getConfigManager().getConfigSwords().getRuptureDamagePlayer();
 
                 //Above Bleed Rank 3 deals 50% more damage
                 if (containerEntry.getValue().toolTier >= 4 && containerEntry.getValue().bleedRank >= 3)
@@ -112,7 +111,7 @@ public class BleedTimerTask extends BukkitRunnable {
                 }
 
             } else {
-                damage = AdvancedConfig.getInstance().getRuptureDamageMobs();
+                damage = mcMMO.getConfigManager().getConfigSwords().getRuptureDamageMobs();
 
 //                debugMessage+="BaseDMG=["+damage+"], ";
 

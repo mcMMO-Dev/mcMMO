@@ -173,27 +173,6 @@ public class AdvancedConfig extends ConfigValidated {
         return getDoubleValue(SKILLS, FISHING, MASTER_ANGLER, BIOME_MODIFIER);
     }
 
-    /* SWORDS */
-    public double getRuptureDamagePlayer() {
-        return getDoubleValue(SKILLS, SWORDS, RUPTURE, DAMAGE_PLAYER);
-    }
-
-    public double getRuptureDamageMobs() {
-        return getDoubleValue(SKILLS, SWORDS, RUPTURE, DAMAGE_MOBS);
-    }
-
-    public int getRuptureMaxTicks() {
-        return getIntValue(SKILLS, SWORDS, RUPTURE, MAX_TICKS);
-    }
-
-    public double getCounterAttackModifier() {
-        return getDoubleValue(SKILLS, SWORDS, COUNTER_ATTACK, DAMAGE_MODIFIER);
-    }
-
-    public double getSerratedStrikesModifier() {
-        return getDoubleValue(SKILLS, SWORDS, SERRATED_STRIKES, DAMAGE_MODIFIER);
-    }
-
     /* TAMING */
     public double getGoreModifier() {
         return getDoubleValue(SKILLS, TAMING, GORE, MODIFIER);

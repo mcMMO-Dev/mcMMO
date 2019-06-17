@@ -1,9 +1,9 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.player.UserManager;
@@ -70,8 +70,11 @@ public class SwordsCommand extends SkillCommand {
         List<String> messages = new ArrayList<>();
 
         int ruptureTicks = UserManager.getPlayer(player).getSwordsManager().getRuptureBleedTicks();
-        double ruptureDamagePlayers = RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? AdvancedConfig.getInstance().getRuptureDamagePlayer() * 1.5D : AdvancedConfig.getInstance().getRuptureDamagePlayer();
-        double ruptureDamageMobs = RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? AdvancedConfig.getInstance().getRuptureDamageMobs() * 1.5D : AdvancedConfig.getInstance().getRuptureDamageMobs();
+        double ruptureDamagePlayer = mcMMO.getConfigManager().getConfigSwords().getRuptureDamagePlayer();
+        double pveRupture = mcMMO.getConfigManager().getConfigSwords().getRuptureDamageMobs();
+
+        double pvpDamageRupture = RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? ruptureDamagePlayer * 1.5D : ruptureDamagePlayer;
+        double ruptureDamageMobs = RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? pveRupture * 1.5D : pveRupture;
 
         if (canCounter) {
             messages.add(getStatMessage(SubSkillType.SWORDS_COUNTER_ATTACK, counterChance)
@@ -83,7 +86,7 @@ public class SwordsCommand extends SkillCommand {
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", bleedChanceLucky) : ""));
             messages.add(getStatMessage(true, true, SubSkillType.SWORDS_RUPTURE,
                     String.valueOf(ruptureTicks),
-                    String.valueOf(ruptureDamagePlayers),
+                    String.valueOf(pvpDamageRupture),
                     String.valueOf(ruptureDamageMobs)));
 
             messages.add(LocaleLoader.getString("Swords.Combat.Rupture.Note"));
