@@ -36,10 +36,6 @@ public class InspectCommand implements TabExecutor {
                         return true;
                     }
 
-                    if (CommandUtils.inspectOffline(sender, profile, Permissions.inspectOffline(sender))) {
-                        return true;
-                    }
-
                     if (Config.getInstance().getScoreboardsEnabled() && sender instanceof Player && Config.getInstance().getInspectUseBoard()) {
                         ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, profile);
 

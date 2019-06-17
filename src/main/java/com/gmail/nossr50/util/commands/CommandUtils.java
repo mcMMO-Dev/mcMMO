@@ -33,19 +33,6 @@ public final class CommandUtils {
         return true;
     }
 
-    public static boolean inspectOffline(CommandSender sender, PlayerProfile profile, boolean hasPermission) {
-        if (unloadedProfile(sender, profile)) {
-            return true;
-        }
-
-        if (!hasPermission) {
-            sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
-            return true;
-        }
-
-        return false;
-    }
-
     public static boolean tooFar(CommandSender sender, Player target, boolean hasPermission) {
         if (sender instanceof Player && !Misc.isNear(((Player) sender).getLocation(), target.getLocation(), Config.getInstance().getInspectDistance()) && !hasPermission) {
             sender.sendMessage(LocaleLoader.getString("Inspect.TooFar"));

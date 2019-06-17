@@ -41,16 +41,16 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
     }
 
     private void displayChat() {
-        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
+//        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
         Integer rank;
 
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Heading"));
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Player", playerName));
 
         for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
-            if (!skill.getPermissions(player)) {
-                continue;
-            }
+//            if (!skill.getPermissions(player)) {
+//                continue;
+//            }
 
             rank = skills.get(skill);
             sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", skill.getName(), (rank == null ? LocaleLoader.getString("Commands.mcrank.Unranked") : rank)));

@@ -1,7 +1,14 @@
 Version 2.1.82
     Added proper error handling when loading parties file
+    Fixed an error that could occur when using mcrank on an offline player
+    You can now use mcrank on offline players by default
+    You can now use inspect on offline players by default
+    Removed the offline inspect/mcrank permissions
     Updated Chinese locale (thanks to the user named 89009332 from github)
     Added some redundancy checks when loading profiles (NPC checks to be specific)
+
+    NOTES:
+    There were reasons to prevent inspecting offline players in the past, I don't see any reason for them anymore so I've removed the restriction.
 
 Version 2.1.81
     Fixed a bug where Arrow Deflect would never trigger outside of PVP
