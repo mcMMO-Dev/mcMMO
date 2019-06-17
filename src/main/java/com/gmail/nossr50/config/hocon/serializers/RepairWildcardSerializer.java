@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config.hocon.serializers;
 
-import com.gmail.nossr50.config.hocon.skills.repair.RepairWildcard;
+import com.gmail.nossr50.skills.repair.RepairWildcard;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.ValueType;
@@ -10,7 +10,6 @@ import org.bukkit.inventory.ItemStack;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 public class RepairWildcardSerializer implements TypeSerializer<RepairWildcard> {

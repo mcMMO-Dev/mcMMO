@@ -4,10 +4,10 @@ import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.config.hocon.skills.repair.general.ConfigRepairGeneral;
 import com.gmail.nossr50.config.hocon.skills.repair.repairmastery.ConfigRepairRepairMastery;
 import com.gmail.nossr50.config.hocon.skills.repair.subskills.ConfigRepairSubSkills;
+import com.gmail.nossr50.skills.repair.RepairWildcard;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;

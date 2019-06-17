@@ -1,30 +1,28 @@
 package com.gmail.nossr50.skills.repair.repairables;
 
+import com.gmail.nossr50.skills.repair.RepairTransaction;
 import com.gmail.nossr50.util.nbt.RawNBT;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.HashSet;
 
 public class Repairable {
     private final Material itemMaterial;
     private final int minimumLevel;
     private final short maximumDurability;
-    private HashSet<ItemStack> repairTransaction;
+    private RepairTransaction repairTransaction;
     private boolean strictMatching;
     private int baseXP;
     private RawNBT rawNBT;
     private int repairCount;
 
-    public Repairable(Material itemMaterial, HashSet<ItemStack> repairTransaction, int minimumLevel, int repairCount, int baseXP, RawNBT rawNBT) {
+    public Repairable(Material itemMaterial, RepairTransaction repairTransaction, int minimumLevel, int repairCount, int baseXP, RawNBT rawNBT) {
         this(itemMaterial.getKey().getKey(), repairTransaction, minimumLevel, repairCount, baseXP, false, rawNBT);
     }
 
-    public Repairable(Material itemMaterial, HashSet<ItemStack> repairTransaction, int minimumLevel, int repairCount, int baseXP) {
+    public Repairable(Material itemMaterial, RepairTransaction repairTransaction, int minimumLevel, int repairCount, int baseXP) {
         this(itemMaterial.getKey().getKey(), repairTransaction, minimumLevel, repairCount, baseXP, false, null);
     }
 
-    public Repairable(String itemMaterial, HashSet<ItemStack> repairTransaction, int minimumLevel, int repairCount, int baseXP, boolean strictMatching, RawNBT rawNBT) {
+    public Repairable(String itemMaterial, RepairTransaction repairTransaction, int minimumLevel, int repairCount, int baseXP, boolean strictMatching, RawNBT rawNBT) {
         this.itemMaterial = Material.matchMaterial(itemMaterial);
         this.minimumLevel = Math.max(0, minimumLevel);
 
@@ -48,7 +46,7 @@ public class Repairable {
         return itemMaterial;
     }
 
-    public HashSet<ItemStack> getRepairTransaction() {
+    public RepairTransaction getRepairTransaction() {
         return repairTransaction;
     }
 

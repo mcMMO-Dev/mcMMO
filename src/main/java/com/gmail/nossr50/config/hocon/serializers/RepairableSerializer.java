@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config.hocon.serializers;
 
+import com.gmail.nossr50.skills.repair.RepairTransaction;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.util.nbt.RawNBT;
 import com.google.common.reflect.TypeToken;
@@ -15,7 +16,7 @@ import java.util.Set;
 
 public class RepairableSerializer implements TypeSerializer<Repairable> {
     private static final String ITEM = "Item";
-    private static final String ITEMS_USED_TO_REPAIR = "Items-Used-To-Repair";
+    private static final String ITEMS_USED_TO_REPAIR = "Repair-Transaction-Cost";
     private static final String OVERRIDE_LEVEL_REQUIREMENT = "Level-Requirement";
     private static final String BASE_XP = "XP-Per-Repair";
     private static final String FULL_REPAIR_TRANSACTIONS = "Repair-Count";
@@ -25,14 +26,14 @@ public class RepairableSerializer implements TypeSerializer<Repairable> {
     @Override
     public Repairable deserialize(TypeToken<?> type, ConfigurationNode value) throws ObjectMappingException {
         String itemMaterial = value.getNode(ITEM).getValue(TypeToken.of(String.class));
-        HashSet<ItemStack> repairItems = new HashSet(value.getNode(ITEMS_USED_TO_REPAIR).getValue(new TypeToken<Set<ItemStack>>() {}));
+        RepairTransaction repairTransaction = value.getNode(ITEMS_USED_TO_REPAIR).getValue(TypeToken.of(RepairTransaction.class));
         Integer minimumLevel = value.getNode(OVERRIDE_LEVEL_REQUIREMENT).getValue(TypeToken.of(Integer.class));
         Integer baseXP = value.getNode(BASE_XP).getValue(TypeToken.of(Integer.class));
         Integer minRepairs = value.getNode(FULL_REPAIR_TRANSACTIONS).getValue(TypeToken.of(Integer.class));
         Boolean strictMatching = value.getNode(STRICT_MATCHING).getValue(TypeToken.of(Boolean.class));
         String rawNBT = value.getNode(RAW_NBT).getValue(TypeToken.of(String.class));
 
-        return new Repairable(itemMaterial, repairItems, minimumLevel, minRepairs, baseXP, strictMatching, new RawNBT(rawNBT));
+        return new Repairable(itemMaterial, repairTransaction, minimumLevel, minRepairs, baseXP, strictMatching, new RawNBT(rawNBT));
     }
 
     @Override

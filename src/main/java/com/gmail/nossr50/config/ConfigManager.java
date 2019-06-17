@@ -37,7 +37,7 @@ import com.gmail.nossr50.config.hocon.skills.mining.ConfigMining;
 import com.gmail.nossr50.config.hocon.skills.ranks.ConfigRanks;
 import com.gmail.nossr50.config.hocon.skills.ranks.SkillRankProperty;
 import com.gmail.nossr50.config.hocon.skills.repair.ConfigRepair;
-import com.gmail.nossr50.config.hocon.skills.repair.RepairWildcard;
+import com.gmail.nossr50.skills.repair.RepairWildcard;
 import com.gmail.nossr50.config.hocon.skills.salvage.ConfigSalvage;
 import com.gmail.nossr50.config.hocon.skills.smelting.ConfigSmelting;
 import com.gmail.nossr50.config.hocon.skills.swords.ConfigSwords;
