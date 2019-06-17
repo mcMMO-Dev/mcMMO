@@ -1,3 +1,8 @@
+Version 2.1.82
+    Added proper error handling when loading parties file
+    Updated Chinese locale (thanks to the user named 89009332 from github)
+    Added some redundancy checks when loading profiles (NPC checks to be specific)
+
 Version 2.1.81
     Fixed a bug where Arrow Deflect would never trigger outside of PVP
     Fixed a bug where failing to salvage enchantments incorrectly colored the text

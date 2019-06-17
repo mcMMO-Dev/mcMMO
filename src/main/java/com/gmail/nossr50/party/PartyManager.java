@@ -591,45 +591,53 @@ public final class PartyManager {
             return;
         }
 
-        YamlConfiguration partiesFile = YamlConfiguration.loadConfiguration(partyFile);
+        try {
+            YamlConfiguration partiesFile;
+            partiesFile = YamlConfiguration.loadConfiguration(partyFile);
 
-        ArrayList<Party> hasAlly = new ArrayList<Party>();
+            ArrayList<Party> hasAlly = new ArrayList<Party>();
 
-        for (String partyName : partiesFile.getConfigurationSection("").getKeys(false)) {
-            Party party = new Party(partyName);
+            for (String partyName : partiesFile.getConfigurationSection("").getKeys(false)) {
+                Party party = new Party(partyName);
 
-            String[] leaderSplit = partiesFile.getString(partyName + ".Leader").split("[|]");
-            party.setLeader(new PartyLeader(UUID.fromString(leaderSplit[0]), leaderSplit[1]));
-            party.setPassword(partiesFile.getString(partyName + ".Password"));
-            party.setLocked(partiesFile.getBoolean(partyName + ".Locked"));
-            party.setLevel(partiesFile.getInt(partyName + ".Level"));
-            party.setXp(partiesFile.getInt(partyName + ".Xp"));
+                String[] leaderSplit = partiesFile.getString(partyName + ".Leader").split("[|]");
+                party.setLeader(new PartyLeader(UUID.fromString(leaderSplit[0]), leaderSplit[1]));
+                party.setPassword(partiesFile.getString(partyName + ".Password"));
+                party.setLocked(partiesFile.getBoolean(partyName + ".Locked"));
+                party.setLevel(partiesFile.getInt(partyName + ".Level"));
+                party.setXp(partiesFile.getInt(partyName + ".Xp"));
 
-            if (partiesFile.getString(partyName + ".Ally") != null) {
-                hasAlly.add(party);
+                if (partiesFile.getString(partyName + ".Ally") != null) {
+                    hasAlly.add(party);
+                }
+
+                party.setXpShareMode(ShareMode.getShareMode(partiesFile.getString(partyName + ".ExpShareMode", "NONE")));
+                party.setItemShareMode(ShareMode.getShareMode(partiesFile.getString(partyName + ".ItemShareMode", "NONE")));
+
+                for (ItemShareType itemShareType : ItemShareType.values()) {
+                    party.setSharingDrops(itemShareType, partiesFile.getBoolean(partyName + ".ItemShareType." + itemShareType.toString(), true));
+                }
+
+                LinkedHashMap<UUID, String> members = party.getMembers();
+
+                for (String memberEntry : partiesFile.getStringList(partyName + ".Members")) {
+                    String[] memberSplit = memberEntry.split("[|]");
+                    members.put(UUID.fromString(memberSplit[0]), memberSplit[1]);
+                }
+
+                parties.add(party);
             }
 
-            party.setXpShareMode(ShareMode.getShareMode(partiesFile.getString(partyName + ".ExpShareMode", "NONE")));
-            party.setItemShareMode(ShareMode.getShareMode(partiesFile.getString(partyName + ".ItemShareMode", "NONE")));
+            mcMMO.p.debug("Loaded (" + parties.size() + ") Parties...");
 
-            for (ItemShareType itemShareType : ItemShareType.values()) {
-                party.setSharingDrops(itemShareType, partiesFile.getBoolean(partyName + ".ItemShareType." + itemShareType.toString(), true));
+            for (Party party : hasAlly) {
+                party.setAlly(PartyManager.getParty(partiesFile.getString(party.getName() + ".Ally")));
             }
 
-            LinkedHashMap<UUID, String> members = party.getMembers();
-
-            for (String memberEntry : partiesFile.getStringList(partyName + ".Members")) {
-                String[] memberSplit = memberEntry.split("[|]");
-                members.put(UUID.fromString(memberSplit[0]), memberSplit[1]);
-            }
-
-            parties.add(party);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        mcMMO.p.debug("Loaded (" + parties.size() + ") Parties...");
 
-        for (Party party : hasAlly) {
-            party.setAlly(PartyManager.getParty(partiesFile.getString(party.getName() + ".Ally")));
-        }
     }
 
     /**
