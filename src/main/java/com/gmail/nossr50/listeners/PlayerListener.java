@@ -511,10 +511,6 @@ public class PlayerListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntity(player)) {
-            return;
-        }
-
         //Delay loading for 3 seconds in case the player has a save task running, its hacky but it should do the trick
         new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 60);
 
@@ -840,7 +836,7 @@ public class PlayerListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntity(player) || !UserManager.hasPlayerDataKey(player)) {
+        if (Misc.isNPCEntityExcludingVillagers(player) || !UserManager.hasPlayerDataKey(player)) {
             return;
         }
 

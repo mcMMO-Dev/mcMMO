@@ -37,10 +37,17 @@ public final class Misc {
     private Misc() {
     }
 
-    public static boolean isNPCEntity(Entity entity) {
+    public static boolean isNPCEntityExcludingVillagers(Entity entity) {
         return (entity == null
                 || (entity.hasMetadata("NPC") && !(entity instanceof Villager))
                 || (entity instanceof NPC && !(entity instanceof Villager))
+                || entity.getClass().getName().equalsIgnoreCase("cofh.entity.PlayerFake"));
+    }
+
+    public static boolean isNPCIncludingVillagers(Player entity) {
+        return (entity == null
+                || (entity.hasMetadata("NPC"))
+                || (entity instanceof NPC)
                 || entity.getClass().getName().equalsIgnoreCase("cofh.entity.PlayerFake"));
     }
 

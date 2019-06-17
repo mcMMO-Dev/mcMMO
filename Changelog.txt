@@ -170,6 +170,18 @@ Version 2.2.0
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
     Added 'UndefinedSkillBehaviour' for trying to use a method that has no behaviour defined for the provided skill
+Version 2.1.82
+    Added new WG flag 'mcmmo-hardcore' if set to negative players will not be penalized by hardcore mode (if hardcore mode is enabled) it defaults to true
+    Added proper error handling when loading parties file
+    Fixed an error that could occur when using mcrank on an offline player
+    You can now use mcrank on offline players by default
+    You can now use inspect on offline players by default
+    Removed the offline inspect/mcrank permissions
+    Updated Chinese locale (thanks to the user named 89009332 from github)
+    Added some redundancy checks when loading profiles (NPC checks to be specific)
+
+    NOTES:
+    There were reasons to prevent inspecting offline players in the past, I don't see any reason for them anymore so I've removed the restriction.
 
 Version 2.1.81
     Fixed a bug where Arrow Deflect would never trigger outside of PVP

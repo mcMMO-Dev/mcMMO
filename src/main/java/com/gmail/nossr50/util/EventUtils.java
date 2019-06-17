@@ -123,7 +123,7 @@ public class EventUtils {
         Entity entity = entityDamageEvent.getEntity();
 
         //Check to make sure the entity is not an NPC
-        if (Misc.isNPCEntity(entity))
+        if(Misc.isNPCEntityExcludingVillagers(entity))
             return false;
 
         if (!entity.isValid() || !(entity instanceof LivingEntity)) {

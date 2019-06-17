@@ -707,7 +707,6 @@ permissions:
             mcmmo.bypass.hardcoremode: true
             mcmmo.commands.inspect.far: true
             mcmmo.commands.inspect.hidden: true
-            mcmmo.commands.inspect.offline: true
     mcmmo.bypass.partylimit:
         default: false
         description: Allows user to bypass party size limitations if present on the server
@@ -782,7 +781,6 @@ permissions:
             mcmmo.commands.defaults: true
             mcmmo.commands.inspect.far: true
             mcmmo.commands.inspect.hidden: true
-            mcmmo.commands.inspect.offline: true
             mcmmo.commands.mcability.others: true
             mcmmo.commands.mcconvert.all: true
             mcmmo.commands.mcchatspy: true
@@ -837,15 +835,12 @@ permissions:
             mcmmo.commands.inspect: true
             mcmmo.commands.inspect.far: true
             mcmmo.commands.inspect.hidden: true
-            mcmmo.commands.inspect.offline: true
     mcmmo.commands.inspect:
         description: Allows access to the inspect command
     mcmmo.commands.inspect.far:
         description: Allows access to the inspect command for far players
     mcmmo.commands.inspect.hidden:
         description: Allows access to the inspect command for hidden players
-    mcmmo.commands.inspect.offline:
-        description: Allows access to the inspect command for offline players
     mcmmo.commands.mcability:
         description: Allows access to the mcability command
     mcmmo.commands.mcability.others:
@@ -906,13 +901,10 @@ permissions:
         children:
             mcmmo.commands.mcrank.others: true
             mcmmo.commands.mcrank.others.far: true
-            mcmmo.commands.mcrank.others.offline: true
     mcmmo.commands.mcrank.others:
         description: Allows access to the mcrank command for other players
     mcmmo.commands.mcrank.others.far:
         description: Allows access to the mcrank command for far players
-    mcmmo.commands.mcrank.others.offline:
-        description: Allows access to the mcrank command for offline players
     mcmmo.commands.mcrefresh:
         description: Allows access to the mcrefresh command
     mcmmo.commands.mcrefresh.others:

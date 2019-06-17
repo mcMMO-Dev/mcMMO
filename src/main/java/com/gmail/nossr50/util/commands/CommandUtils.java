@@ -34,19 +34,6 @@ public final class CommandUtils {
         return true;
     }
 
-    public static boolean inspectOffline(CommandSender sender, PlayerProfile profile, boolean hasPermission) {
-        if (unloadedProfile(sender, profile)) {
-            return true;
-        }
-
-        if (!hasPermission && !mcMMO.getConfigManager().getConfigCommands().isAllowInspectOnOfflinePlayers()) {
-            sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
-            return true;
-        }
-
-        return false;
-    }
-
     public static boolean tooFar(CommandSender sender, Player target, boolean hasPermission) {
         if (sender instanceof Player
                 && mcMMO.getConfigManager().getConfigCommands().isLimitInspectRange()

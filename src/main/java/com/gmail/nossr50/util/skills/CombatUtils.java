@@ -240,7 +240,7 @@ public final class CombatUtils {
         EntityType entityType = damager.getType();
 
         if (target instanceof Player) {
-            if (Misc.isNPCEntity(target)) {
+            if (Misc.isNPCEntityExcludingVillagers(target)) {
                 return;
             }
 
@@ -325,7 +325,7 @@ public final class CombatUtils {
             if (tamer instanceof Player && PrimarySkillType.TAMING.shouldProcess(target)) {
                 Player master = (Player) tamer;
 
-                if (!Misc.isNPCEntity(master) && PrimarySkillType.TAMING.getPermissions(master)) {
+                if (!Misc.isNPCEntityExcludingVillagers(master) && PrimarySkillType.TAMING.getPermissions(master)) {
                     processTamingCombat(target, master, wolf, event);
                 }
             }
@@ -336,11 +336,11 @@ public final class CombatUtils {
             if (projectileSource instanceof Player && PrimarySkillType.ARCHERY.shouldProcess(target)) {
                 Player player = (Player) projectileSource;
 
-                if (!Misc.isNPCEntity(player) && PrimarySkillType.ARCHERY.getPermissions(player)) {
+                if (!Misc.isNPCEntityExcludingVillagers(player) && PrimarySkillType.ARCHERY.getPermissions(player)) {
                     processArcheryCombat(target, player, event, arrow);
                 }
 
-                if (target.getType() != EntityType.CREEPER && !Misc.isNPCEntity(player) && PrimarySkillType.TAMING.getPermissions(player)) {
+                if (target.getType() != EntityType.CREEPER && !Misc.isNPCEntityExcludingVillagers(player) && PrimarySkillType.TAMING.getPermissions(player)) {
                     McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
                     TamingManager tamingManager = mcMMOPlayer.getTamingManager();
                     tamingManager.attackTarget(target);
@@ -508,7 +508,7 @@ public final class CombatUtils {
                 break;
             }
 
-            if (Misc.isNPCEntity(entity) || !(entity instanceof LivingEntity) || !shouldBeAffected(attacker, entity)) {
+            if (Misc.isNPCEntityExcludingVillagers(entity) || !(entity instanceof LivingEntity) || !shouldBeAffected(attacker, entity)) {
                 continue;
             }
 
@@ -830,7 +830,7 @@ public final class CombatUtils {
 
         Player player = (Player) attacker;
 
-        if (Misc.isNPCEntity(player) || Misc.isNPCEntity(target)) {
+        if (Misc.isNPCEntityExcludingVillagers(player) || Misc.isNPCEntityExcludingVillagers(target)) {
             return;
         }
 

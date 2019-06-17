@@ -35,9 +35,6 @@ public class InspectCommand implements TabExecutor {
                         return true;
                     }
 
-                    if (CommandUtils.inspectOffline(sender, profile, Permissions.inspectOffline(sender))) {
-                        return true;
-                    }
 
                     if (mcMMO.getScoreboardSettings().getScoreboardsEnabled() && sender instanceof Player
                             && mcMMO.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionInspectBoard().isUseThisBoard()) {
