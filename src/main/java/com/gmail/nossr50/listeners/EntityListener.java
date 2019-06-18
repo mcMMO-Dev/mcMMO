@@ -325,7 +325,6 @@ public class EntityListener implements Listener {
             }
         }
 
-
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
@@ -694,7 +693,7 @@ public class EntityListener implements Listener {
      * @param event
      *            The event to watch
      */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))

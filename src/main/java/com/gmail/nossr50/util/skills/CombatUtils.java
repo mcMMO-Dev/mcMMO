@@ -616,7 +616,9 @@ public final class CombatUtils {
                 }
             }
 
-            if (target.hasMetadata(mcMMO.entityMetadataKey)) {
+            if (target.hasMetadata(mcMMO.entityMetadataKey)
+                    //Epic Spawners compatibility
+                    || target.hasMetadata("ES")) {
                 baseXP *= ExperienceConfig.getInstance().getSpawnedMobXpMultiplier();
             }
 
