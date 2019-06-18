@@ -32,9 +32,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
+import org.bukkit.event.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
@@ -275,6 +273,27 @@ public class EntityListener implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onEntityCombustByEntityEvent(EntityCombustByEntityEvent event) {
+        //Prevent players from setting fire to each other if they are in the same party
+        if(event.getEntity() instanceof Player) {
+            Player defender = (Player) event.getEntity();
+
+            if(event.getCombuster() instanceof Projectile) {
+                Projectile projectile = (Projectile) event.getCombuster();
+                if(projectile.getShooter() instanceof Player) {
+                    Player attacker = (Player) projectile.getShooter();
+                    if(checkParties(event, defender, attacker))
+                        return;
+                }
+            } else if(event.getCombuster() instanceof Player) {
+                Player attacker = (Player) event.getCombuster();
+                if(checkParties(event, defender, attacker))
+                    return;
+            }
+        }
+    }
+
     /**
      * Handle EntityDamageByEntity events that involve modifying the event.
      *
@@ -286,6 +305,26 @@ public class EntityListener implements Listener {
         double damage = event.getFinalDamage();
         Entity defender = event.getEntity();
         Entity attacker = event.getDamager();
+
+        if(WorldGuardUtils.isWorldGuardLoaded())
+        {
+            if(attacker instanceof Player) {
+
+                if(!WorldGuardManager.getInstance().hasMainFlag((Player) attacker))
+                    return;
+
+            } else if(attacker instanceof Projectile) {
+
+                Projectile projectile = (Projectile) attacker;
+
+                if(projectile.getShooter() instanceof Player) {
+                    if(!WorldGuardManager.getInstance().hasMainFlag((Player) projectile.getShooter()))
+                        return;
+                }
+
+            }
+        }
+
 
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
@@ -305,44 +344,6 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if(attacker instanceof Player)
-        {
-            Player player = (Player) attacker;
-
-            /* WORLD GUARD MAIN FLAG CHECK */
-            if(WorldGuardUtils.isWorldGuardLoaded())
-            {
-                if(!WorldGuardManager.getInstance().hasMainFlag(player))
-                    return;
-            }
-        }
-
-        if (damage <= 0) {
-            if (defender instanceof Player && attacker instanceof Player) {
-                Player defendingPlayer = (Player) defender;
-                Player attackingPlayer = (Player) attacker;
-                if (event.getDamage(DamageModifier.ABSORPTION) > 0) {
-                    //If friendly fire is off don't allow players to hurt one another
-                    if(!Config.getInstance().getPartyFriendlyFire())
-                        if ((PartyManager.inSameParty(defendingPlayer, attackingPlayer) || PartyManager.areAllies(defendingPlayer, attackingPlayer)) && !(Permissions.friendlyFire(attackingPlayer) && Permissions.friendlyFire(defendingPlayer))) {
-                            event.setCancelled(true);
-                            return;
-                        }
-                }
-            }
-            return;
-        }
-
-
-        /*
-        As far as I can tell at one point we registered meta-data about custom damage and we no longer do that.
-
-        if (defender.hasMetadata(mcMMO.customDamageKey)) {
-            defender.removeMetadata(mcMMO.customDamageKey, plugin);
-            return;
-        }
-        */
-
         if (Misc.isNPCEntityExcludingVillagers(defender) || !defender.isValid() || !(defender instanceof LivingEntity)) {
             return;
         }
@@ -357,26 +358,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if (attacker instanceof Projectile) {
-            ProjectileSource projectileSource = ((Projectile) attacker).getShooter();
-
-            if (projectileSource instanceof LivingEntity) {
-                attacker = (LivingEntity) projectileSource;
-            }
-
-            if(defender instanceof Player) {
-                Player playerDefender = (Player) defender;
-                UnarmedManager unarmedManager = UserManager.getPlayer(playerDefender).getUnarmedManager();
-
-                if (unarmedManager.canDeflect()) {
-                    if(unarmedManager.deflectCheck()) {
-                        event.setCancelled(true);
-                        return;
-                    }
-                }
-            }
-        }
-        else if (attacker instanceof Tameable) {
+        if (attacker instanceof Tameable) {
             AnimalTamer animalTamer = ((Tameable) attacker).getOwner();
 
             if (animalTamer != null && ((OfflinePlayer) animalTamer).isOnline()) {
@@ -389,26 +371,50 @@ public class EntityListener implements Listener {
             }
         }
 
-        if (defender instanceof Player && attacker instanceof Player) {
+        //Friendly fire checks
+        if (defender instanceof Player) {
             Player defendingPlayer = (Player) defender;
-            Player attackingPlayer = (Player) attacker;
+            Player attackingPlayer;
 
-            if (!UserManager.hasPlayerDataKey(defendingPlayer) || !UserManager.hasPlayerDataKey(attackingPlayer)) {
-                return;
-            }
+            //If the attacker is a Player or a projectile beloning to a player
+            if(attacker instanceof Projectile || attacker instanceof Player) {
+                if(attacker instanceof Projectile) {
+                    Projectile projectile = (Projectile) attacker;
+                    if(((Projectile) attacker).getShooter() instanceof Player) {
+                        attackingPlayer = (Player) projectile.getShooter();
 
-            // We want to make sure we're not gaining XP or applying abilities
-            // when we hit ourselves
-            if (defendingPlayer.equals(attackingPlayer)) {
-                return;
-            }
+                        //Check for party friendly fire and cancel the event
+                        if (checkParties(event, defendingPlayer, attackingPlayer))
+                        {
+                            return;
+                        }
 
-            //Party Friendly Fire
-            if(!Config.getInstance().getPartyFriendlyFire())
-                if ((PartyManager.inSameParty(defendingPlayer, attackingPlayer) || PartyManager.areAllies(defendingPlayer, attackingPlayer)) && !(Permissions.friendlyFire(attackingPlayer) && Permissions.friendlyFire(defendingPlayer))) {
-                    event.setCancelled(true);
-                    return;
+                    }
+
+                    //Deflect checks
+                    UnarmedManager unarmedManager = UserManager.getPlayer(defendingPlayer).getUnarmedManager();
+
+                    if (unarmedManager.canDeflect()) {
+                        if(unarmedManager.deflectCheck()) {
+                            event.setCancelled(true);
+                            return;
+                        }
+                    }
+                } else {
+                    attackingPlayer = (Player) attacker;
+                    //Check for party friendly fire and cancel the event
+                    if (checkParties(event, defendingPlayer, attackingPlayer))
+                        return;
                 }
+            }
+        }
+
+        //Required setup for processCombatAttack
+        if(attacker instanceof Projectile) {
+            ProjectileSource shooter = ((Projectile) attacker).getShooter();
+            if(shooter instanceof LivingEntity) {
+                attacker = (LivingEntity) shooter;
+            }
         }
 
         CombatUtils.processCombatAttack(event, attacker, target);
@@ -427,6 +433,29 @@ public class EntityListener implements Listener {
             CombatUtils.fixNames(target);
         }
 
+    }
+
+    public boolean checkParties(Cancellable event, Player defendingPlayer, Player attackingPlayer) {
+        if (!UserManager.hasPlayerDataKey(defendingPlayer) || !UserManager.hasPlayerDataKey(attackingPlayer)) {
+            return true;
+        }
+
+        // We want to make sure we're not gaining XP or applying abilities
+        // when we hit ourselves
+        if (defendingPlayer.equals(attackingPlayer)) {
+            return true;
+        }
+
+        //Party Friendly Fire
+        if(!Config.getInstance().getPartyFriendlyFire())
+            if ((PartyManager.inSameParty(defendingPlayer, attackingPlayer)
+                    || PartyManager.areAllies(defendingPlayer, attackingPlayer))
+                    && !(Permissions.friendlyFire(attackingPlayer)
+                    && Permissions.friendlyFire(defendingPlayer))) {
+                event.setCancelled(true);
+                return true;
+            }
+        return false;
     }
 
     /**
