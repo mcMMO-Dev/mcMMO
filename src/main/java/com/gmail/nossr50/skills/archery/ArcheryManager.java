@@ -16,6 +16,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -67,9 +68,10 @@ public class ArcheryManager extends SkillManager {
      *
      * @param target The {@link LivingEntity} damaged by the arrow
      */
-    public void retrieveArrows(LivingEntity target) {
-        if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ARCHERY_ARROW_RETRIEVAL, getPlayer())) {
+    public void retrieveArrows(LivingEntity target, Projectile projectile) {
+        if(projectile.hasMetadata(mcMMO.trackedArrow)) {
             Archery.incrementTrackerValue(target);
+            projectile.removeMetadata(mcMMO.trackedArrow, mcMMO.p); //Only 1 entity per projectile
         }
     }
 

@@ -223,7 +223,7 @@ public final class CombatUtils {
         }
 
         if (!arrow.hasMetadata(mcMMO.infiniteArrowKey) && archeryManager.canRetrieveArrows()) {
-            archeryManager.retrieveArrows(target);
+            archeryManager.retrieveArrows(target, arrow);
         }
 
         if(canUseLimitBreak(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK))

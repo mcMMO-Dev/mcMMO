@@ -1,3 +1,7 @@
+Version 2.1.83
+    Updated hu_HU locale (thanks andris155)
+    (FIX) Arrow Retrieval will no longer work with piercing enchant on crossbows
+
 Version 2.1.82
     Added new WG flag 'mcmmo-hardcore' if set to negative players will not be penalized by hardcore mode (if hardcore mode is enabled) it defaults to true
     Added proper error handling when loading parties file

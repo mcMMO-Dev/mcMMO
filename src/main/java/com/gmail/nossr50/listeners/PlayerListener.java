@@ -279,7 +279,7 @@ public class PlayerListener implements Listener {
                 //TODO Update to new API once available! Waiting for case CAUGHT_TREASURE:
                 Item fishingCatch = (Item) event.getCaught();
 
-                if (Config.getInstance().getFishingOverrideTreasures() &&
+                if (Config.getInstance().   getFishingOverrideTreasures() &&
                         fishingCatch.getItemStack().getType() != Material.SALMON &&
                         fishingCatch.getItemStack().getType() != Material.COD &&
                         fishingCatch.getItemStack().getType() != Material.TROPICAL_FISH &&
@@ -449,6 +449,11 @@ public class PlayerListener implements Listener {
 
             Item drop = event.getItem();
             ItemStack dropStack = drop.getItemStack();
+
+            //Remove tracking
+            if(drop.hasMetadata(mcMMO.trackedArrow)) {
+                drop.removeMetadata(mcMMO.trackedArrow, mcMMO.p);
+            }
 
             if (drop.hasMetadata(mcMMO.disarmedItemKey)) {
                 if (!player.getName().equals(drop.getMetadata(mcMMO.disarmedItemKey).get(0).asString())) {

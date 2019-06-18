@@ -22,7 +22,9 @@ import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
+import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.Material;
@@ -109,7 +111,8 @@ public class EntityListener implements Listener {
 
         ItemStack bow = event.getBow();
 
-        if (bow != null && bow.containsEnchantment(Enchantment.ARROW_INFINITE)) {
+        if (bow != null
+                && bow.containsEnchantment(Enchantment.ARROW_INFINITE)) {
             projectile.setMetadata(mcMMO.infiniteArrowKey, mcMMO.metadataValue);
         }
 
@@ -123,9 +126,10 @@ public class EntityListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
-        if(event.getEntity() instanceof Player)
+        if(event.getEntity().getShooter() instanceof Player)
         {
-            Player player = (Player) event.getEntity();
+
+            Player player = (Player) event.getEntity().getShooter();
 
             /* WORLD GUARD MAIN FLAG CHECK */
             if(WorldGuardUtils.isWorldGuardLoaded())
@@ -133,16 +137,28 @@ public class EntityListener implements Listener {
                 if(!WorldGuardManager.getInstance().hasMainFlag(player))
                     return;
             }
+
+            Projectile projectile = event.getEntity();
+
+            //Hacky stuff for 1.13/1.14 compat
+
+            String itemKey = player.getInventory().getItemInMainHand().getType().getKey().toString();
+
+            if(!itemKey.equalsIgnoreCase("minecraft:bow") && !itemKey.equalsIgnoreCase("minecraft:crossbow"))
+                return;
+
+            projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(plugin, 1.0));
+            projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(plugin, projectile.getLocation()));
+
+            for(Enchantment enchantment : player.getInventory().getItemInMainHand().getEnchantments().keySet()) {
+                if(enchantment.getName().equalsIgnoreCase("piercing"))
+                    return;
+            }
+
+            if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ARCHERY_ARROW_RETRIEVAL, player)) {
+                projectile.setMetadata(mcMMO.trackedArrow, mcMMO.metadataValue);
+            }
         }
-
-        Projectile projectile = event.getEntity();
-
-        if (!(projectile instanceof Arrow) || projectile.hasMetadata(mcMMO.bowForceKey)) {
-            return;
-        }
-
-        projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(plugin, 1.0));
-        projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(plugin, projectile.getLocation()));
     }
 
     /**
