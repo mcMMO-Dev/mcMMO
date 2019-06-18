@@ -440,7 +440,11 @@ public class PlayerListener implements Listener {
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
             Item drop = event.getItem();
+            //Remove tracking
             ItemStack dropStack = drop.getItemStack();
+            if(drop.hasMetadata(MetadataConstants.ARROW_TRACKER_METAKEY)) {
+                drop.removeMetadata(MetadataConstants.ARROW_TRACKER_METAKEY, mcMMO.p);
+            }
 
             if (drop.hasMetadata(MetadataConstants.DISARMED_ITEM_METAKEY)) {
                 if (!player.getName().equals(drop.getMetadata(MetadataConstants.DISARMED_ITEM_METAKEY).get(0).asString())) {

@@ -79,7 +79,6 @@ public class mcMMO extends JavaPlugin {
     private static boolean serverAPIOutdated = false;
     // XP Event Check
     private boolean xpEventEnabled;
-
     /**
      * Things to be run when the plugin is enabled.
      */

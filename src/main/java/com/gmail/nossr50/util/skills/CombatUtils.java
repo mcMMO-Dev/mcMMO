@@ -217,7 +217,7 @@ public final class CombatUtils {
         }
 
         if (!arrow.hasMetadata(MetadataConstants.INFINITE_ARROW_METAKEY) && archeryManager.canRetrieveArrows()) {
-            archeryManager.processArrowRetrievalActivation(target);
+            archeryManager.processArrowRetrievalActivation(target, arrow);
         }
 
         if (canUseLimitBreak(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK)) {
@@ -460,35 +460,6 @@ public final class CombatUtils {
 
         target.setMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY, MetadataConstants.metadataValue);
         target.damage(damage, attacker);
-
-//        //IFrame storage
-////        int noDamageTicks = target.getNoDamageTicks();
-//
-////        String debug = "BLEED DMG RESULT: INC DMG:"+damage+", HP-Before:"+target.getHealth()+", HP-After:";
-//
-////        double incDmg = getFakeDamageFinalResult(attacker, target, DamageCause.ENTITY_ATTACK, damage);
-//
-////        double newHealth = Math.max(0, target.getHealth() - incDmg);
-//
-//        //Don't kill things with a stone or wooden weapon
-////        if(toolTier < 3 && newHealth == 0)
-////            return;
-//
-//        target.setMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.metadataValue);
-//
-//        if(newHealth == 0 && !(target instanceof Player))
-//        {
-//            target.damage(99999, attacker);
-//        }
-//        else
-//        {
-////            Vector beforeRuptureVec = new Vector(target.getVelocity().getX(), target.getVelocity().getY(), target.getVelocity().getZ()); ;
-//            target.damage(damage, attacker);
-////            debug+=target.getHealth();
-//            Bukkit.broadcastMessage(debug);
-////            target.setNoDamageTicks(noDamageTicks); //Do not add additional IFrames
-////            target.setVelocity(beforeRuptureVec);
-//        }
     }
 
     /**
@@ -593,7 +564,7 @@ public final class CombatUtils {
                 }
             }
 
-            if (target.hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY)) {
+            if (target.hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY) || target.hasMetadata("ES")) {
                 baseXPMultiplier *= mcMMO.getDynamicSettingsManager().getExperienceManager().getSpecialCombatXP(SpecialXPKey.SPAWNED);
             }
 
