@@ -15,7 +15,7 @@ public class RepairableManager {
     }
 
     public void registerRepairable(Repairable repairable) {
-        Material item = repairable.getItemMaterial();
+        Material item = repairable.getItem().getType();
         repairables.put(item, repairable);
     }
 

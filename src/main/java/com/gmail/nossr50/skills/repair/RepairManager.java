@@ -60,123 +60,123 @@ public class RepairManager extends SkillManager {
 
 
     public void handleRepair(ItemStack item) {
-        Player player = getPlayer();
-        Repairable repairable = mcMMO.getRepairableManager().getRepairable(item.getType());
-
-        if(item.getItemMeta() != null && item.getItemMeta().isUnbreakable()) {
-            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Anvil.Unbreakable");
-            return;
-        }
-
-        // Permissions checks on material and item types
-//        if (!Permissions.repairMaterialType(player, repairable.getRepairItemMaterialCategory())) {
-//            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
+//        Player player = getPlayer();
+//        Repairable repairable = mcMMO.getRepairableManager().getRepairable(item.getType());
+//
+//        if(item.getItemMeta() != null && item.getItemMeta().isUnbreakable()) {
+//            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Anvil.Unbreakable");
 //            return;
 //        }
 //
-//        if (!Permissions.repairItemType(player, repairable.getRepairItemType())) {
-//            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
+//        // Permissions checks on material and item types
+////        if (!Permissions.repairMaterialType(player, repairable.getRepairItemMaterialCategory())) {
+////            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
+////            return;
+////        }
+////
+////        if (!Permissions.repairItemType(player, repairable.getRepairItemType())) {
+////            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
+////            return;
+////        }
+//
+//        int skillLevel = getSkillLevel();
+//        int minimumRepairableLevel = repairable.getMinimumLevel();
+//
+//        // Level check
+//        if (skillLevel < minimumRepairableLevel) {
+//            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Skills.Adept", String.valueOf(minimumRepairableLevel), StringUtils.getPrettyItemString(item.getType()));
 //            return;
 //        }
-
-        int skillLevel = getSkillLevel();
-        int minimumRepairableLevel = repairable.getMinimumLevel();
-
-        // Level check
-        if (skillLevel < minimumRepairableLevel) {
-            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Skills.Adept", String.valueOf(minimumRepairableLevel), StringUtils.getPrettyItemString(item.getType()));
-            return;
-        }
-
-        PlayerInventory inventory = player.getInventory();
-        Material repairMaterial = null;
-        boolean foundNonBasicMaterial = false;
-
-        //Find the first compatible repair material
-        for (Material repairMaterialCandidate : repairable.getRepairMaterials()) {
-            for (ItemStack is : player.getInventory().getContents()) {
-                if(is == null)
-                    continue; //Ignore IntelliJ this can be null
-
-                //Match to repair material
-                if (is.getType() == repairMaterialCandidate) {
-                    //Check for item meta
-                    if(is.getItemMeta() != null) {
-                        //Check for lore
-                        if(is.getItemMeta().getLore() != null) {
-                            if(is.getItemMeta().getLore().isEmpty()) {
-                                //Lore is empty so this item is fine
-                                repairMaterial = repairMaterialCandidate;
-                                break;
-                            } else {
-                                foundNonBasicMaterial = true;
-                            }
-                        } else {
-                            //No lore so this item is fine
-                            repairMaterial = repairMaterialCandidate;
-                            break;
-                        }
-                    } else {
-                        //No Item Meta so this item is fine
-                        repairMaterial = repairMaterialCandidate;
-                        break;
-                    }
-                }
-            }
-        }
-
-        /* Abort the repair if no compatible basic repairing item found */
-        if (repairMaterial == null && foundNonBasicMaterial == true) {
-            player.sendMessage(LocaleLoader.getString("Repair.NoBasicRepairMatsFound"));
-            return;
-        }
-
-        ItemStack toRemove = new ItemStack(repairMaterial);
-        toRemove.setAmount(1);
-
-        short startDurability = item.getDurability();
-
-        // Do not repair if at full durability
-        if (startDurability <= 0) {
-            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Skills.FullDurability");
-            return;
-        }
-
-        // Clear ability buffs before trying to repair.
-        SkillUtils.removeAbilityBuff(item);
-
-        // Lets get down to business,
-        // To defeat, the huns.
-        int baseRepairAmount = repairable.getBaseRepairDurability(); // Did they send me daughters?
-        short newDurability = repairCalculate(startDurability, baseRepairAmount); // When I asked for sons?
-
-        // Call event
-        if (EventUtils.callRepairCheckEvent(player, (short) (startDurability - newDurability), toRemove, item).isCancelled()) {
-            return;
-        }
-
-        // Handle the enchants
-        if (mcMMO.getConfigManager().getConfigRepair().getArcaneForging().isMayLoseEnchants() && !Permissions.hasRepairEnchantBypassPerk(player)) {
-            addEnchants(item);
-        }
-
-        // Remove the item
-        inventory.removeItem(toRemove);
-
-        // Give out XP like candy
-        applyXpGain(((getPercentageRepaired(startDurability, newDurability, repairable.getMaximumDurability())
-                * repairable.getXpMultiplier())
-                * mcMMO.getConfigManager().getConfigExperience().getRepairXPBase())
-                * mcMMO.getConfigManager().getConfigExperience().getExperienceRepair().getItemMaterialXPMultiplier(repairable.getRepairItemMaterialCategory()), XPGainReason.PVE);
-
-        // BWONG BWONG BWONG
-        if (mcMMO.getConfigManager().getConfigRepair().getRepairGeneral().isAnvilUseSounds()) {
-            SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
-            SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_BREAK);
-        }
-
-        // Repair the item!
-        item.setDurability(newDurability);
+//
+//        PlayerInventory inventory = player.getInventory();
+//        Material repairMaterial = null;
+//        boolean foundNonBasicMaterial = false;
+//
+//        //Find the first compatible repair material
+//        for (Material repairMaterialCandidate : repairable.getRepairMaterials()) {
+//            for (ItemStack is : player.getInventory().getContents()) {
+//                if(is == null)
+//                    continue; //Ignore IntelliJ this can be null
+//
+//                //Match to repair material
+//                if (is.getType() == repairMaterialCandidate) {
+//                    //Check for item meta
+//                    if(is.getItemMeta() != null) {
+//                        //Check for lore
+//                        if(is.getItemMeta().getLore() != null) {
+//                            if(is.getItemMeta().getLore().isEmpty()) {
+//                                //Lore is empty so this item is fine
+//                                repairMaterial = repairMaterialCandidate;
+//                                break;
+//                            } else {
+//                                foundNonBasicMaterial = true;
+//                            }
+//                        } else {
+//                            //No lore so this item is fine
+//                            repairMaterial = repairMaterialCandidate;
+//                            break;
+//                        }
+//                    } else {
+//                        //No Item Meta so this item is fine
+//                        repairMaterial = repairMaterialCandidate;
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//
+//        /* Abort the repair if no compatible basic repairing item found */
+//        if (repairMaterial == null && foundNonBasicMaterial == true) {
+//            player.sendMessage(LocaleLoader.getString("Repair.NoBasicRepairMatsFound"));
+//            return;
+//        }
+//
+//        ItemStack toRemove = new ItemStack(repairMaterial);
+//        toRemove.setAmount(1);
+//
+//        short startDurability = item.getDurability();
+//
+//        // Do not repair if at full durability
+//        if (startDurability <= 0) {
+//            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Skills.FullDurability");
+//            return;
+//        }
+//
+//        // Clear ability buffs before trying to repair.
+//        SkillUtils.removeAbilityBuff(item);
+//
+//        // Lets get down to business,
+//        // To defeat, the huns.
+//        int baseRepairAmount = repairable.getBaseRepairDurability(); // Did they send me daughters?
+//        short newDurability = repairCalculate(startDurability, baseRepairAmount); // When I asked for sons?
+//
+//        // Call event
+//        if (EventUtils.callRepairCheckEvent(player, (short) (startDurability - newDurability), toRemove, item).isCancelled()) {
+//            return;
+//        }
+//
+//        // Handle the enchants
+//        if (mcMMO.getConfigManager().getConfigRepair().getArcaneForging().isMayLoseEnchants() && !Permissions.hasRepairEnchantBypassPerk(player)) {
+//            addEnchants(item);
+//        }
+//
+//        // Remove the item
+//        inventory.removeItem(toRemove);
+//
+//        // Give out XP like candy
+//        applyXpGain(((getPercentageRepaired(startDurability, newDurability, repairable.getMaximumDurability())
+//                * repairable.getXpMultiplier())
+//                * mcMMO.getConfigManager().getConfigExperience().getRepairXPBase())
+//                * mcMMO.getConfigManager().getConfigExperience().getExperienceRepair().getItemMaterialXPMultiplier(repairable.getRepairItemMaterialCategory()), XPGainReason.PVE);
+//
+//        // BWONG BWONG BWONG
+//        if (mcMMO.getConfigManager().getConfigRepair().getRepairGeneral().isAnvilUseSounds()) {
+//            SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
+//            SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_BREAK);
+//        }
+//
+//        // Repair the item!
+//        item.setDurability(newDurability);
     }
 
     private double getPercentageRepaired(short startDurability, short newDurability, short totalDurability) {

@@ -37,6 +37,8 @@ import com.gmail.nossr50.config.hocon.skills.mining.ConfigMining;
 import com.gmail.nossr50.config.hocon.skills.ranks.ConfigRanks;
 import com.gmail.nossr50.config.hocon.skills.ranks.SkillRankProperty;
 import com.gmail.nossr50.config.hocon.skills.repair.ConfigRepair;
+import com.gmail.nossr50.skills.repair.RepairCost;
+import com.gmail.nossr50.skills.repair.RepairTransaction;
 import com.gmail.nossr50.skills.repair.RepairWildcard;
 import com.gmail.nossr50.config.hocon.skills.salvage.ConfigSalvage;
 import com.gmail.nossr50.config.hocon.skills.smelting.ConfigSmelting;
@@ -279,6 +281,8 @@ public final class ConfigManager {
         customSerializers.registerType(TypeToken.of(SoundSetting.class), new SoundSettingSerializer());
         customSerializers.registerType(TypeToken.of(ItemStack.class), new ItemStackSerializer());
         customSerializers.registerType(TypeToken.of(RepairWildcard.class), new RepairWildcardSerializer());
+        customSerializers.registerType(TypeToken.of(RepairCost.class), new RepairCostSerializer());
+        customSerializers.registerType(TypeToken.of(RepairTransaction.class), new RepairTransactionSerializer());
     }
 
     /**
