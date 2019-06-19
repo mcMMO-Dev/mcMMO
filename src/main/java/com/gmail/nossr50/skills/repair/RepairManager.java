@@ -69,15 +69,15 @@ public class RepairManager extends SkillManager {
         }
 
         // Permissions checks on material and item types
-        if (!Permissions.repairMaterialType(player, repairable.getRepairItemMaterialCategory())) {
-            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
-            return;
-        }
-
-        if (!Permissions.repairItemType(player, repairable.getRepairItemType())) {
-            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
-            return;
-        }
+//        if (!Permissions.repairMaterialType(player, repairable.getRepairItemMaterialCategory())) {
+//            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
+//            return;
+//        }
+//
+//        if (!Permissions.repairItemType(player, repairable.getRepairItemType())) {
+//            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
+//            return;
+//        }
 
         int skillLevel = getSkillLevel();
         int minimumRepairableLevel = repairable.getMinimumLevel();

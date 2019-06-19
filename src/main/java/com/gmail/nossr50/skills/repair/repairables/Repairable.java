@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.repair.repairables;
 
+import com.gmail.nossr50.datatypes.permissions.PermissionWrapper;
 import com.gmail.nossr50.skills.repair.RepairTransaction;
 import com.gmail.nossr50.util.nbt.RawNBT;
 import org.bukkit.Material;
@@ -13,6 +14,7 @@ public class Repairable {
     private int baseXP;
     private RawNBT rawNBT;
     private int repairCount;
+    private PermissionWrapper permissionWrapper;
 
     public Repairable(Material itemMaterial, RepairTransaction repairTransaction, int minimumLevel, int repairCount, int baseXP, RawNBT rawNBT) {
         this(itemMaterial.getKey().getKey(), repairTransaction, minimumLevel, repairCount, baseXP, false, rawNBT);
@@ -32,6 +34,14 @@ public class Repairable {
         this.strictMatching = strictMatching;
         this.baseXP = baseXP;
         this.rawNBT = rawNBT;
+    }
+
+    public PermissionWrapper getPermissionWrapper() {
+        return permissionWrapper;
+    }
+
+    public void setPermissionWrapper(PermissionWrapper permissionWrapper) {
+        this.permissionWrapper = permissionWrapper;
     }
 
     public RawNBT getRawNBT() {
