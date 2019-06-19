@@ -16,9 +16,9 @@ import java.util.List;
 
 public class ItemStackSerializer implements TypeSerializer<ItemStack> {
 
-    private static final String ITEM_MINECRAFT_NAME = "Item-Minecraft-Name";
+    private static final String ITEM_MINECRAFT_NAME = "Item-Name";
     private static final String AMOUNT = "Amount";
-    private static final String ITEM_LORE = "Item-Lore";
+    private static final String NBT = "NBT";
 
     @Nullable
     @Override
@@ -47,19 +47,26 @@ public class ItemStackSerializer implements TypeSerializer<ItemStack> {
         //Init default item meta
         itemStack.setItemMeta(Bukkit.getItemFactory().getItemMeta(itemMatch));
 
-        //Set Lore if it exists
-        if(itemNode.getNode(ITEM_LORE).getValueType() != ValueType.NULL) {
-            List<String> lore = itemNode.getNode(ITEM_LORE).getValue(new TypeToken<List<String>>() {});
-            itemStack.getItemMeta().setLore(lore);
+        if(itemNode.getNode(NBT).getValueType() != ValueType.NULL) {
+            //TODO: NBT Stuff
         }
 
+        return itemStack;
 
-        return null;
+        //Set Lore if it exists
+//        if(itemNode.getNode(ITEM_LORE).getValueType() != ValueType.NULL) {
+//            List<String> lore = itemNode.getNode(ITEM_LORE).getValue(new TypeToken<List<String>>() {});
+//            itemStack.getItemMeta().setLore(lore);
+//        }
     }
 
     @Override
     public void serialize(@NonNull TypeToken<?> type, @Nullable ItemStack obj, @NonNull ConfigurationNode value) throws ObjectMappingException {
-
+        ConfigurationNode itemNode = value.getNode(ITEM_MINECRAFT_NAME);
+        value.getNode(ITEM_MINECRAFT_NAME).setValue(obj.getType().getKey().toString());
+        itemNode.getNode(AMOUNT).setValue(obj.getAmount());
+        //TODO: NBT Stuff
+        //itemNode.getNode(NBT).setValue()
     }
 
 }

@@ -4,9 +4,35 @@ import java.util.Objects;
 
 public class PermissionWrapper {
     private String permissionAddress;
+    private boolean playerDefault;
+    private boolean operatorDefault;
 
     public PermissionWrapper(String permissionAddress) {
         this.permissionAddress = permissionAddress;
+        this.playerDefault = true;
+        this.operatorDefault = true;
+    }
+
+    public PermissionWrapper(String permissionAddress, boolean playerDefault, boolean operatorDefault) {
+        this.permissionAddress = permissionAddress;
+        this.playerDefault = playerDefault;
+        this.operatorDefault = operatorDefault;
+    }
+
+    public boolean isPlayerDefault() {
+        return playerDefault;
+    }
+
+    public void setPlayerDefault(boolean playerDefault) {
+        this.playerDefault = playerDefault;
+    }
+
+    public boolean isOperatorDefault() {
+        return operatorDefault;
+    }
+
+    public void setOperatorDefault(boolean operatorDefault) {
+        this.operatorDefault = operatorDefault;
     }
 
     public String getPermissionAddress() {
