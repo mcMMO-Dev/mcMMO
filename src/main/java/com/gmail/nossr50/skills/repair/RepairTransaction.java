@@ -1,8 +1,6 @@
 package com.gmail.nossr50.skills.repair;
 
 
-import com.gmail.nossr50.skills.repair.RepairCost;
-
 import java.util.HashSet;
 
 /**
@@ -15,7 +13,18 @@ public class RepairTransaction {
     private HashSet<RepairCost> repairItems;
 
     public RepairTransaction() {
-
+        repairItems = new HashSet<>();
     }
 
+    public void addRepairCost(RepairCost repairCost) {
+        repairItems.add(repairCost);
+    }
+
+    public HashSet<RepairCost> getRepairItems() {
+        return repairItems;
+    }
+
+    public void setRepairItems(HashSet<RepairCost> repairItems) {
+        this.repairItems = repairItems;
+    }
 }

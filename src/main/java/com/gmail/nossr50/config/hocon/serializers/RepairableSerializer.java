@@ -38,15 +38,13 @@ public class RepairableSerializer implements TypeSerializer<Repairable> {
                 .baseXP(value.getNode(BASE_XP).getValue(TypeToken.of(Integer.class)))
                 .repairCount(value.getNode(REPAIR_COUNT).getValue(TypeToken.of(Integer.class)));
 
-        StringBuilder w;
-
         if(value.getNode(MINIMUM_LEVEL).getValueType() != ValueType.NULL) {
             builder = builder.minLevel(value.getNode(MINIMUM_LEVEL).getValue(TypeToken.of(Integer.class)));
         }
 
-        if(value.getNode(NBT).getValueType() != ValueType.NULL) {
-            builder = builder.rawNBT(value.getNode(NBT).getValue(TypeToken.of(RawNBT.class)));
-        }
+//        if(value.getNode(NBT).getValueType() != ValueType.NULL) {
+//            builder = builder.rawNBT(value.getNode(NBT).getValue(TypeToken.of(RawNBT.class)));
+//        }
 
         if(value.getNode(PERMISSION).getValueType() != ValueType.NULL) {
             builder = builder.permissionWrapper(value.getNode(PERMISSION).getValue(TypeToken.of(PermissionWrapper.class)));
@@ -67,8 +65,8 @@ public class RepairableSerializer implements TypeSerializer<Repairable> {
         if(obj.getMinimumLevel() > 0)
             value.getNode(MINIMUM_LEVEL).setValue(obj.getMinimumLevel());
 
-        if(obj.hasNBT())
-            value.getNode(NBT).setValue(obj.getRawNBT());
+//        if(obj.hasNBT())
+//            value.getNode(NBT).setValue(obj.getRawNBT());
 
         if(obj.hasPermission())
             value.getNode(PERMISSION).setValue(obj.getPermissionWrapper());
