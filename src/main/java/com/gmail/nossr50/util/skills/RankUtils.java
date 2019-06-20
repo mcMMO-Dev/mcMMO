@@ -8,6 +8,7 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.runnables.skills.SkillUnlockNotificationTask;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -35,6 +36,10 @@ public class RankUtils {
 
             //If the skill doesn't have registered ranks gtfo
             if(innerMap == null || innerMap.get(playerRankInSkill) == null)
+                continue;
+
+            //Don't send notifications if the player lacks the permission node
+            if(!Permissions.isSubSkillEnabled(mcMMOPlayer.getPlayer(), subSkillType))
                 continue;
 
             //The players level is the exact level requirement for this skill

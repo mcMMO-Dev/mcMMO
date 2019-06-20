@@ -454,6 +454,7 @@ permissions:
         description: Allows access to all Repair abilities
         children:
             mcmmo.ability.repair.arcaneforging: true
+            mcmmo.ability.repair.superrepair: true
             mcmmo.ability.repair.armorrepair: true
             mcmmo.ability.repair.diamondrepair: true
             mcmmo.ability.repair.goldrepair: true
@@ -503,7 +504,7 @@ permissions:
     mcmmo.ability.salvage.all:
         description: Allows access to all Smelting abilities
         children:
-            mcmmo.ability.salvage.advancedsalvage: true
+            mcmmo.ability.salvage.scrapcollector: true
             mcmmo.ability.salvage.arcanesalvage: true
             mcmmo.ability.salvage.armorsalvage: true
             mcmmo.ability.salvage.diamondsalvage: true
@@ -516,8 +517,8 @@ permissions:
             mcmmo.ability.salvage.stringsalvage: true
             mcmmo.ability.salvage.toolsalvage: true
             mcmmo.ability.salvage.woodsalvage: true
-    mcmmo.ability.salvage.advancedsalvage:
-        description: Allows access to the Advanced Salvage ability
+    mcmmo.ability.salvage.scrapcollector:
+        description: Allows access to the Scrap Collector ability
     mcmmo.ability.salvage.arcanesalvage:
         description: Allows access to the Arcane Salvage ability
     mcmmo.ability.salvage.armorsalvage:
