@@ -194,6 +194,13 @@ Version 2.2.0
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
     Added 'UndefinedSkillBehaviour' for trying to use a method that has no behaviour defined for the provided skill
+Version 2.1.85
+    Fixed a nearly 6 year old bug where Super Repair was not included as a child permission under Repair ability permission nodes (which meant some players would not have access to this skill)
+    Fixed a bug that could prevent salvage from working for certain players
+    Renamed the advanced salvage permission node to 'mcmmo.ability.salvage.scrapcollector'
+    Fixed a bug that would send players skill unlock notifications if they did not have the permission node for that skill
+    Dramatically increased the chance of receiving full materials when salvaging
+
 Version 2.1.84
     Added some code to make mcMMO more compatible with EpicSpawners
 

@@ -112,21 +112,21 @@ public class SalvageManager extends SkillManager {
         //Lottery on Salvageable Amount
 
         int lotteryResults = 1;
-        int chanceOfSuccess = 80;
+        int chanceOfSuccess = 99;
 
-        for(int x = 1; x < salvageableAmount-1; x++) {
+        for(int x = 0; x < salvageableAmount-1; x++) {
 
             if(RandomChanceUtil.rollDice(chanceOfSuccess, 100)) {
-                chanceOfSuccess-=20;
-                Math.max(chanceOfSuccess, 33);
+                chanceOfSuccess-=2;
+                Math.max(chanceOfSuccess, 95);
 
                 lotteryResults+=1;
             }
         }
 
-        if(lotteryResults == salvageableAmount) {
+        if(lotteryResults == salvageableAmount && salvageableAmount != 1) {
             mcMMO.getNotificationManager().sendPlayerInformationChatOnly(player, "Salvage.Skills.Lottery.Perfect", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
-        } else if(RankUtils.isPlayerMaxRankInSubSkill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE)) {
+        } else if(RankUtils.isPlayerMaxRankInSubSkill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE) || salvageableAmount == 1) {
             mcMMO.getNotificationManager().sendPlayerInformationChatOnly(player,  "Salvage.Skills.Lottery.Normal", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
         } else {
             mcMMO.getNotificationManager().sendPlayerInformationChatOnly(player,  "Salvage.Skills.Lottery.Untrained", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
