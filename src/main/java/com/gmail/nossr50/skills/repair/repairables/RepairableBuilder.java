@@ -12,7 +12,7 @@ public class RepairableBuilder {
     private short maximumDurability;
     private RepairTransaction repairTransaction;
     private boolean strictMatchingItem = false;
-    private boolean strictMatchingRepairTransaction = false;
+//    private boolean strictMatchingRepairTransaction = false;
     private int baseXP = 0;
     private RawNBT rawNBT;
     private int repairCount = 1;
@@ -43,10 +43,10 @@ public class RepairableBuilder {
         return this;
     }
 
-    public RepairableBuilder strictMatchingRepairTransaction(Boolean strictMatchingRepairTransaction) {
-        this.strictMatchingRepairTransaction = strictMatchingRepairTransaction;
-        return this;
-    }
+//    public RepairableBuilder strictMatchingRepairTransaction(Boolean strictMatchingRepairTransaction) {
+//        this.strictMatchingRepairTransaction = strictMatchingRepairTransaction;
+//        return this;
+//    }
 
     public RepairableBuilder baseXP(Integer baseXP) {
         this.baseXP = baseXP;
@@ -74,7 +74,7 @@ public class RepairableBuilder {
 
     private Repairable makeRepairable() {
         Repairable repairable = new Repairable(item, minimumLevel, maximumDurability, repairTransaction,
-                strictMatchingItem, strictMatchingRepairTransaction, baseXP, repairCount);
+                strictMatchingItem, baseXP, repairCount);
 
         if(permissionWrapper != null) {
             repairable.setPermissionWrapper(permissionWrapper);

@@ -4,7 +4,7 @@ import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.config.hocon.skills.repair.general.ConfigRepairGeneral;
 import com.gmail.nossr50.config.hocon.skills.repair.repairmastery.ConfigRepairRepairMastery;
 import com.gmail.nossr50.config.hocon.skills.repair.subskills.ConfigRepairSubSkills;
-import com.gmail.nossr50.skills.repair.RepairWildcard;
+import com.gmail.nossr50.datatypes.items.ItemWildcards;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
@@ -18,7 +18,7 @@ import static org.bukkit.Material.*;
 public class ConfigRepair {
 
     public static final ArrayList<Repairable> CONFIG_REPAIRABLES_DEFAULTS;
-    public static final HashSet<RepairWildcard> REPAIR_WILDCARDS_DEFAULTS;
+    public static final HashSet<ItemWildcards> REPAIR_WILDCARDS_DEFAULTS;
 //    public static final Material[] PLANKS = new Material[]{OAK_PLANKS, BIRCH_PLANKS, DARK_OAK_PLANKS, ACACIA_PLANKS, JUNGLE_PLANKS, SPRUCE_PLANKS};
 
     static {
@@ -28,7 +28,7 @@ public class ConfigRepair {
                 new ItemStack(BIRCH_PLANKS, 1), new ItemStack(DARK_OAK_PLANKS, 1),
                 new ItemStack(ACACIA_PLANKS, 1), new ItemStack(JUNGLE_PLANKS, 1),
                 new ItemStack(SPRUCE_PLANKS, 1)});
-        RepairWildcard planksWildCard = new RepairWildcard("Planks", new HashSet<>(planksList));
+        ItemWildcards planksWildCard = new ItemWildcards("Planks", new HashSet<>(planksList));
         REPAIR_WILDCARDS_DEFAULTS.add(planksWildCard);
 
         CONFIG_REPAIRABLES_DEFAULTS = new ArrayList<>();
@@ -102,7 +102,7 @@ public class ConfigRepair {
     private ArrayList<Repairable> configRepairablesList = CONFIG_REPAIRABLES_DEFAULTS;
 
     @Setting(value = "Z-Repairables-Wildcards", comment = "Used to define an alias that can be matched to several materials.")
-    private HashSet<RepairWildcard> repairWildcards = new HashSet<>();
+    private HashSet<ItemWildcards> itemWildcards = new HashSet<>();
 
     public ConfigRepairGeneral getRepairGeneral() {
         return repairGeneral;
@@ -128,7 +128,7 @@ public class ConfigRepair {
         return configRepairablesList;
     }
 
-    public HashSet<RepairWildcard> getRepairWildcards() {
-        return repairWildcards;
+    public HashSet<ItemWildcards> getItemWildcards() {
+        return itemWildcards;
     }
 }

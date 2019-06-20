@@ -24,7 +24,7 @@ public class RepairableSerializer implements TypeSerializer<Repairable> {
     private static final String STRICT_MATCH_ITEM = "Strict-Match-Item";
     private static final String STRICT_MATCHING_REPAIR_TRANSACTION = "Strict-Matching-Repair-Transaction";
     private static final String REPAIR_COUNT = "Repair-Count";
-    private static final String NBT = "NBT";
+//    private static final String NBT = "NBT";
     private static final String PERMISSION = "Permission";
     private static final String MINIMUM_LEVEL = "Minimum-Level";
 
@@ -34,7 +34,7 @@ public class RepairableSerializer implements TypeSerializer<Repairable> {
         RepairableBuilder builder = new RepairableBuilder(itemStack)
                 .repairTransaction(value.getNode(REPAIR_TRANSACTION).getValue(TypeToken.of(RepairTransaction.class)))
                 .strictMatchingItem(value.getNode(STRICT_MATCH_ITEM).getValue(TypeToken.of(Boolean.class)))
-                .strictMatchingRepairTransaction(value.getNode(STRICT_MATCHING_REPAIR_TRANSACTION).getValue(TypeToken.of(Boolean.class)))
+//                .strictMatchingRepairTransaction(value.getNode(STRICT_MATCHING_REPAIR_TRANSACTION).getValue(TypeToken.of(Boolean.class)))
                 .baseXP(value.getNode(BASE_XP).getValue(TypeToken.of(Integer.class)))
                 .repairCount(value.getNode(REPAIR_COUNT).getValue(TypeToken.of(Integer.class)));
 
@@ -58,7 +58,7 @@ public class RepairableSerializer implements TypeSerializer<Repairable> {
         value.getNode(ITEM).setValue(obj.getItem());
         value.getNode(REPAIR_TRANSACTION).setValue(obj.getRepairTransaction());
         value.getNode(STRICT_MATCH_ITEM).setValue(obj.isStrictMatchingItem());
-        value.getNode(STRICT_MATCHING_REPAIR_TRANSACTION).setValue(obj.isStrictMatchingRepairTransaction());
+//        value.getNode(STRICT_MATCHING_REPAIR_TRANSACTION).setValue(obj.isStrictMatchingRepairTransaction());
         value.getNode(BASE_XP).setValue(obj.getBaseXP());
         value.getNode(REPAIR_COUNT).setValue(obj.getRepairCount());
 

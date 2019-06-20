@@ -629,7 +629,6 @@ public final class ExperienceAPI {
      * @param skillType The skill to get the level for
      * @return the level of a given skill
      * @throws InvalidSkillException if the given skill is not valid
-     * @deprecated Use getLevel(Player player, PrimarySkillType skillType) instead
      */
     @Deprecated
     public static int getLevel(Player player, String skillType) {

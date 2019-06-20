@@ -1,8 +1,11 @@
 package com.gmail.nossr50.skills.repair;
 
+import com.gmail.nossr50.datatypes.items.ItemWildcards;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+
+import java.util.HashSet;
 
 /**
  * Represents a piece of a RepairTransaction
@@ -12,25 +15,28 @@ import org.bukkit.inventory.PlayerInventory;
  */
 public class RepairCostWildcard implements RepairCost {
 
-    private RepairWildcard repairWildcard;
+    private HashSet<SimpleRepairCost> simpleRepairCosts;
+    private ItemWildcards itemWildcards;
+
+
+    public RepairCostWildcard(ItemWildcards itemWildcards) {
+        this.itemWildcards = itemWildcards;
+        simpleRepairCosts = new HashSet<>();
+
+        for(ItemStack itemStack : )
+    }
 
     @Override
-    public ItemStack findPayment(PlayerInventory playerInventory, boolean strictMatching) {
+    public ItemStack findPayment(PlayerInventory playerInventory) {
         for(ItemStack itemStack : playerInventory.getContents()) {
             if(itemStack == null || itemStack.getType() == Material.AIR) {
                 continue;
             }
 
-            for(ItemStack wildCardItem : repairWildcard.getMatchingItems()) {
+            for(SimpleRepairCost simpleRepairCost : simpleRepairCosts) {
                 //Attempt to match the item in the inventory to any of the compatible repair items
-                if(strictMatching) {
-                    //TODO: Replace with strict matching code
-                    if(itemStack.isSimilar(wildCardItem))
-                        return itemStack;
-                } else {
-                    if(itemStack.getType() == wildCardItem.getType()) {
-                        return itemStack;
-                    }
+                if(simpleRepairCost.findPayment(playerInventory) != null) {
+                    return simpleRepairCost.findPayment(playerInventory);
                 }
             }
         }
@@ -38,12 +44,12 @@ public class RepairCostWildcard implements RepairCost {
         return null;
     }
 
-    public RepairWildcard getRepairWildcard() {
-        return repairWildcard;
+    public ItemWildcards getItemWildcards() {
+        return itemWildcards;
     }
 
-    public void setRepairWildcard(RepairWildcard repairWildcard) {
-        this.repairWildcard = repairWildcard;
+    public void setItemWildcards(ItemWildcards itemWildcards) {
+        this.itemWildcards = itemWildcards;
     }
 
 }

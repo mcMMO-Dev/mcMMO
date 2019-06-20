@@ -12,7 +12,7 @@ public class Repairable {
     private short maximumDurability;
     private RepairTransaction repairTransaction;
     private boolean strictMatchingItem = false;
-    private boolean strictMatchingRepairTransaction = false;
+//    private boolean strictMatchingRepairTransaction = false;
     private int baseXP = 0;
     private RawNBT rawNBT;
     private int repairCount = 1;
@@ -20,13 +20,13 @@ public class Repairable {
     private boolean hasPermission = false;
     private boolean hasNBT = false;
 
-    public Repairable(ItemStack item, int minimumLevel, short maximumDurability, RepairTransaction repairTransaction, boolean strictMatchingItem, boolean strictMatchingRepairTransaction, int baseXP, int repairCount) {
+    public Repairable(ItemStack item, int minimumLevel, short maximumDurability, RepairTransaction repairTransaction, boolean strictMatchingItem, int baseXP, int repairCount) {
         this.item = item;
         this.minimumLevel = minimumLevel;
         this.maximumDurability = maximumDurability;
         this.repairTransaction = repairTransaction;
         this.strictMatchingItem = strictMatchingItem;
-        this.strictMatchingRepairTransaction = strictMatchingRepairTransaction;
+//        this.strictMatchingRepairTransaction = strictMatchingRepairTransaction;
         this.baseXP = baseXP;
         this.repairCount = repairCount;
     }
@@ -67,13 +67,13 @@ public class Repairable {
         this.strictMatchingItem = strictMatchingItem;
     }
 
-    public boolean isStrictMatchingRepairTransaction() {
-        return strictMatchingRepairTransaction;
-    }
-
-    public void setStrictMatchingRepairTransaction(boolean strictMatchingRepairTransaction) {
-        this.strictMatchingRepairTransaction = strictMatchingRepairTransaction;
-    }
+//    public boolean isStrictMatchingRepairTransaction() {
+//        return strictMatchingRepairTransaction;
+//    }
+//
+//    public void setStrictMatchingRepairTransaction(boolean strictMatchingRepairTransaction) {
+//        this.strictMatchingRepairTransaction = strictMatchingRepairTransaction;
+//    }
 
     public int getBaseXP() {
         return baseXP;

@@ -11,9 +11,15 @@ public interface RepairCost {
     /**
      * Searches a player inventory for a matching ItemStack that can be used to pay for the repair transaction
      * @param playerInventory inventory of player attempting to pay the cost
-     * @param strictMatching whether or not to match repair cost items strictly with items in a players inventory
      * @return any compatible payment items if found
      */
-    ItemStack findPayment(PlayerInventory playerInventory, boolean strictMatching);
+    ItemStack findPayment(PlayerInventory playerInventory);
+
+    /**
+     * Whether or not this repair cost is strictly matched
+     * Strict matching compares Items by using metadata and material type
+     * @return true if the RepairCost uses strict matching
+     */
+    boolean hasStrictMatching();
 
 }
