@@ -9,8 +9,6 @@ import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_13_R2.util.CraftNBTTagConfigSerializer;
 import org.bukkit.inventory.ItemStack;
 
-
-
 public class NBTManager {
 
     private static final String CRAFT_META_ITEM_CLASS_PATH = "org.bukkit.craftbukkit.inventory.CraftMetaItem";
@@ -45,6 +43,11 @@ public class NBTManager {
         for(String key : rootTag.getKeys()) {
             Bukkit.broadcastMessage("NBT Key found: "+key);
         }
+    }
+
+    public boolean hasNBT(NBTTagCompound root, NBTTagCompound nbtData) {
+        //TODO: Implement this
+        return false;
     }
 
 }

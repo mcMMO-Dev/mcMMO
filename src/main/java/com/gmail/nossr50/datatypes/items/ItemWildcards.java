@@ -33,7 +33,7 @@ public class ItemWildcards {
         return itemTargets.size();
     }
 
-    public HashSet<ItemStack> getItemTargets() {
+    public HashSet<CustomItemTarget> getItemTargets() {
         return itemTargets;
     }
 

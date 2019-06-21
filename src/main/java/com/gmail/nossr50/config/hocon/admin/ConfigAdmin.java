@@ -7,7 +7,7 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 public class ConfigAdmin {
 
     @Setting(value = "Admin-Notifications", comment = "Settings related to admin alerts in mcMMO.")
-    public ConfigAdminNotifications configAdminNotifications = new ConfigAdminNotifications();
+    private ConfigAdminNotifications configAdminNotifications = new ConfigAdminNotifications();
 
     public boolean isSendAdminNotifications() {
         return configAdminNotifications.isSendAdminNotifications();

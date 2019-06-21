@@ -1,37 +1,32 @@
 package com.gmail.nossr50.skills.repair.repairables;
 
+import com.gmail.nossr50.datatypes.items.CustomItemTarget;
 import com.gmail.nossr50.datatypes.permissions.PermissionWrapper;
 import com.gmail.nossr50.skills.repair.RepairTransaction;
 import com.gmail.nossr50.util.nbt.RawNBT;
 import org.bukkit.inventory.ItemStack;
 
 public class Repairable {
-    private final ItemStack item;
-    private int minimumLevel = 0;
+    private int minimumLevel;
     private short maximumDurability;
     private RepairTransaction repairTransaction;
-    private boolean strictMatchingItem = false;
-//    private boolean strictMatchingRepairTransaction = false;
-    private int baseXP = 0;
-    private RawNBT rawNBT;
-    private int repairCount = 1;
+    private int baseXP;
+    private CustomItemTarget customItemTarget;
+    private int repairCount;
     private PermissionWrapper permissionWrapper;
     private boolean hasPermission = false;
-    private boolean hasNBT = false;
 
-    public Repairable(ItemStack item, int minimumLevel, short maximumDurability, RepairTransaction repairTransaction, boolean strictMatchingItem, int baseXP, int repairCount) {
-        this.item = item;
+    public Repairable(CustomItemTarget customItemTarget, int minimumLevel, short maximumDurability, RepairTransaction repairTransaction, int baseXP, int repairCount, PermissionWrapper permissionWrapper) {
         this.minimumLevel = minimumLevel;
         this.maximumDurability = maximumDurability;
         this.repairTransaction = repairTransaction;
-        this.strictMatchingItem = strictMatchingItem;
-//        this.strictMatchingRepairTransaction = strictMatchingRepairTransaction;
         this.baseXP = baseXP;
+        this.customItemTarget = customItemTarget;
         this.repairCount = repairCount;
-    }
+        this.permissionWrapper = permissionWrapper;
 
-    public ItemStack getItem() {
-        return item;
+        if(permissionWrapper != null)
+            hasPermission = true;
     }
 
     public int getMinimumLevel() {
@@ -58,22 +53,6 @@ public class Repairable {
         this.repairTransaction = repairTransaction;
     }
 
-    public boolean isStrictMatchingItem() {
-        return strictMatchingItem;
-    }
-
-    public void setStrictMatchingItem(boolean strictMatchingItem) {
-        this.strictMatchingItem = strictMatchingItem;
-    }
-
-//    public boolean isStrictMatchingRepairTransaction() {
-//        return strictMatchingRepairTransaction;
-//    }
-//
-//    public void setStrictMatchingRepairTransaction(boolean strictMatchingRepairTransaction) {
-//        this.strictMatchingRepairTransaction = strictMatchingRepairTransaction;
-//    }
-
     public int getBaseXP() {
         return baseXP;
     }
@@ -82,13 +61,12 @@ public class Repairable {
         this.baseXP = baseXP;
     }
 
-    public RawNBT getRawNBT() {
-        return rawNBT;
+    public CustomItemTarget getCustomItemTarget() {
+        return customItemTarget;
     }
 
-    public void setRawNBT(RawNBT rawNBT) {
-        this.rawNBT = rawNBT;
-        hasNBT = true;
+    public void setCustomItemTarget(CustomItemTarget customItemTarget) {
+        this.customItemTarget = customItemTarget;
     }
 
     public int getRepairCount() {
@@ -105,10 +83,9 @@ public class Repairable {
 
     public void setPermissionWrapper(PermissionWrapper permissionWrapper) {
         this.permissionWrapper = permissionWrapper;
-        hasPermission = true;
     }
 
-    public boolean hasPermission() {
+    public boolean hasPermissionNode() {
         return hasPermission;
     }
 
@@ -116,11 +93,4 @@ public class Repairable {
         this.hasPermission = hasPermission;
     }
 
-    public boolean hasNBT() {
-        return hasNBT;
-    }
-
-    public void setHasNBT(boolean hasNBT) {
-        this.hasNBT = hasNBT;
-    }
 }

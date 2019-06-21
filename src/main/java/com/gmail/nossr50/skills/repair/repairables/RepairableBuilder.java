@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.repair.repairables;
 
+import com.gmail.nossr50.datatypes.items.CustomItemTarget;
 import com.gmail.nossr50.datatypes.permissions.PermissionWrapper;
 import com.gmail.nossr50.skills.repair.RepairTransaction;
 import com.gmail.nossr50.util.nbt.RawNBT;
@@ -7,63 +8,46 @@ import org.bukkit.inventory.ItemStack;
 
 public class RepairableBuilder {
 
-    private final ItemStack item;
-    private int minimumLevel = 0;
+    private int minimumLevel;
     private short maximumDurability;
     private RepairTransaction repairTransaction;
-    private boolean strictMatchingItem = false;
-//    private boolean strictMatchingRepairTransaction = false;
-    private int baseXP = 0;
-    private RawNBT rawNBT;
-    private int repairCount = 1;
+    private int baseXP;
+    private CustomItemTarget customItemTarget;
+    private int repairCount;
     private PermissionWrapper permissionWrapper;
 
-    public RepairableBuilder(ItemStack item) {
-        this.item = item;
-        this.maximumDurability = item.getType().getMaxDurability();
+    public RepairableBuilder(CustomItemTarget customItemTarget, Short maximumDurability, RepairTransaction repairTransaction) {
+        this.customItemTarget = customItemTarget;
+        this.maximumDurability = maximumDurability;
+        this.repairTransaction = repairTransaction;
     }
 
-    public RepairableBuilder minLevel(Integer minimumLevel) {
+    public RepairableBuilder addMinLevel(Integer minimumLevel) {
         this.minimumLevel = minimumLevel;
         return this;
     }
 
-    public RepairableBuilder maximumDurability(Short maximumDurability) {
+    public RepairableBuilder setMaximumDurability(Short maximumDurability) {
         this.maximumDurability = maximumDurability;
         return this;
     }
 
-    public RepairableBuilder repairTransaction(RepairTransaction repairTransaction) {
+    public RepairableBuilder setRepairTransaction(RepairTransaction repairTransaction) {
         this.repairTransaction = repairTransaction;
         return this;
     }
 
-    public RepairableBuilder strictMatchingItem(Boolean strictMatchingItem) {
-        this.strictMatchingItem = strictMatchingItem;
-        return this;
-    }
-
-//    public RepairableBuilder strictMatchingRepairTransaction(Boolean strictMatchingRepairTransaction) {
-//        this.strictMatchingRepairTransaction = strictMatchingRepairTransaction;
-//        return this;
-//    }
-
-    public RepairableBuilder baseXP(Integer baseXP) {
+    public RepairableBuilder setBaseXP(Integer baseXP) {
         this.baseXP = baseXP;
         return this;
     }
 
-    public RepairableBuilder rawNBT(RawNBT rawNBT) {
-        this.rawNBT = rawNBT;
-        return this;
-    }
-
-    public RepairableBuilder repairCount(Integer repairCount) {
+    public RepairableBuilder setRepairCount(Integer repairCount) {
         this.repairCount = repairCount;
         return this;
     }
 
-    public RepairableBuilder permissionWrapper(PermissionWrapper permissionWrapper) {
+    public RepairableBuilder addPermissionWrapper(PermissionWrapper permissionWrapper) {
         this.permissionWrapper = permissionWrapper;
         return this;
     }
@@ -73,16 +57,8 @@ public class RepairableBuilder {
     }
 
     private Repairable makeRepairable() {
-        Repairable repairable = new Repairable(item, minimumLevel, maximumDurability, repairTransaction,
-                strictMatchingItem, baseXP, repairCount);
-
-        if(permissionWrapper != null) {
-            repairable.setPermissionWrapper(permissionWrapper);
-        }
-
-        if(rawNBT != null) {
-            repairable.setRawNBT(rawNBT);
-        }
+        Repairable repairable = new Repairable(customItemTarget, minimumLevel, maximumDurability, repairTransaction,
+                baseXP, repairCount, permissionWrapper);
 
         return repairable;
     }

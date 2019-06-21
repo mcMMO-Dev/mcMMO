@@ -1,6 +1,9 @@
 package com.gmail.nossr50.datatypes.items;
 
+import com.gmail.nossr50.mcMMO;
+
 import java.util.HashSet;
+import java.util.Objects;
 
 /**
  * This type contains data and rules which govern equating equivalency between one item and another in Minecraft.
@@ -56,7 +59,26 @@ public class CustomItemTarget implements CustomItemMatching {
     public boolean isMatch(MMOItem otherItem) {
         //First compare the basic things that need to match between each item
         if(item.equals(otherItem)) {
-
+            for(ItemMatchProperty itemMatchProperty : itemMatchProperties) {
+                if(!mcMMO.getNbtManager().hasNBT(otherItem.getRawNBT().getNbtData(), itemMatchProperty.getNbtData()))
+                    return false;
+            }
+            return true;
         }
+        return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CustomItemTarget)) return false;
+        CustomItemTarget that = (CustomItemTarget) o;
+        return getItem().equals(that.getItem()) &&
+                getItemMatchProperties().equals(that.getItemMatchProperties());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getItem(), getItemMatchProperties());
     }
 }

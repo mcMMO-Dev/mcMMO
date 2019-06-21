@@ -1,5 +1,9 @@
 package com.gmail.nossr50.datatypes.items;
 
+import net.minecraft.server.v1_13_R2.NBTTagCompound;
+
+import java.util.Objects;
+
 /**
  * Represents a property of an item which is used in strict matching
  * Typically this represents and NBT field and its value
@@ -7,20 +11,20 @@ package com.gmail.nossr50.datatypes.items;
  */
 public class ItemMatchProperty {
 
-    final private Object propertyValue;
+    final private NBTTagCompound nbtData;
     final private String nbtID;
 
-    public ItemMatchProperty(Object propertyValue, String nbtID) {
-        this.propertyValue = propertyValue;
+    public ItemMatchProperty(String nbtID, NBTTagCompound nbtData) {
+        this.nbtData = nbtData;
         this.nbtID = nbtID;
     }
 
     /**
-     * The expected value for this NBT entry
+     * The expected value for this NBT
      * @return the expected value for this NBT entry
      */
-    public Object getPropertyValue() {
-        return propertyValue;
+    public NBTTagCompound getNbtData() {
+        return nbtData;
     }
 
     /**
@@ -29,5 +33,19 @@ public class ItemMatchProperty {
      */
     public String getID() {
         return nbtID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ItemMatchProperty)) return false;
+        ItemMatchProperty that = (ItemMatchProperty) o;
+        return getNbtData().equals(that.getNbtData()) &&
+                nbtID.equals(that.nbtID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getNbtData(), nbtID);
     }
 }

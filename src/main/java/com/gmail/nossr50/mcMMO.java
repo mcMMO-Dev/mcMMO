@@ -31,6 +31,7 @@ import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
 import com.gmail.nossr50.util.commands.CommandRegistrationManager;
 import com.gmail.nossr50.util.experience.FormulaManager;
+import com.gmail.nossr50.util.nbt.NBTManager;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.PlayerLevelUtils;
 import com.gmail.nossr50.util.player.UserManager;
@@ -65,6 +66,7 @@ public class mcMMO extends JavaPlugin {
     private static PlayerLevelUtils playerLevelUtils;
     private static NotificationManager notificationManager;
     private static CommandRegistrationManager commandRegistrationManager;
+    private static NBTManager nbtManager;
 
     /* File Paths */
     private static String mainDirectory;
@@ -152,6 +154,8 @@ public class mcMMO extends JavaPlugin {
                 scheduleTasks();
                 commandRegistrationManager = new CommandRegistrationManager(this);
                 commandRegistrationManager.registerCommands();
+
+                nbtManager = new NBTManager();
 
                 placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
 
@@ -316,6 +320,10 @@ public class mcMMO extends JavaPlugin {
 
     public static DatabaseManager getDatabaseManager() {
         return databaseManager;
+    }
+
+    public static NBTManager getNbtManager() {
+        return nbtManager;
     }
 
     @Deprecated

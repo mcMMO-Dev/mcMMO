@@ -1,6 +1,8 @@
 package com.gmail.nossr50.skills.repair;
 
 
+import org.bukkit.inventory.PlayerInventory;
+
 import java.util.HashSet;
 
 /**
@@ -18,21 +20,25 @@ import java.util.HashSet;
  *  to pay that part of the RepairTransaction
  */
 public class RepairTransaction {
-    private HashSet<RepairCost> repairItems;
+    private HashSet<RepairCost> repairCosts;
 
     public RepairTransaction() {
-        repairItems = new HashSet<>();
+        repairCosts = new HashSet<>();
     }
 
     public void addRepairCost(RepairCost repairCost) {
-        repairItems.add(repairCost);
+        repairCosts.add(repairCost);
     }
 
-    public HashSet<RepairCost> getRepairItems() {
-        return repairItems;
+    public HashSet<RepairCost> getRepairCosts() {
+        return repairCosts;
     }
 
-    public void setRepairItems(HashSet<RepairCost> repairItems) {
-        this.repairItems = repairItems;
+    public void setRepairCosts(HashSet<RepairCost> repairItems) {
+        this.repairCosts = repairItems;
+    }
+
+    public boolean canPayRepairCosts(PlayerInventory playerInventory) {
+        return true;
     }
 }
