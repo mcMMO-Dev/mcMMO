@@ -3,7 +3,7 @@ Version 2.2.0
     !!!!!!!!!!!!!!!!!!!!!!!!
     This changelog is not complete, I'll be going over it and cleaning it up once 2.2 is close to release
     !!!!!!!!!!!!!!!!!!!!!!!!
-    !!!!!!!!!!!!!!!!!!!!!!!!mvn clea
+    !!!!!!!!!!!!!!!!!!!!!!!!
     mcMMO's config system has been rewritten
     Nearly every config setting has been renamed and most have brand new comments
     You can now add an unlimited number of custom XP perks with custom defined XP boosts
@@ -11,7 +11,7 @@ Version 2.2.0
     mcMMO will now warn you in the console if it thinks you are running incompatible server software
     Parties no longer have a cap, you can level them forever for bragging rights
     You can now specify multiple repair-items for an item (such as specifying that a wooden sword can be repaired by all types of planks)
-    Repair no longer consumes materials with item lore, players are informed that they cannot repair with that material if its the only matching repair material in their inventory
+    Repair config has been rewritten and expanded to support much more complex settings
     Removed the following Repair/Salvage permissions
         mcmmo.ability.repair.stonerepair
         mcmmo.ability.repair.stringrepair
