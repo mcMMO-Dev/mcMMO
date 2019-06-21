@@ -4,7 +4,7 @@ Version 2.1.86
     (FIX) You cannot view stats of players who are offline if your server limits the range on inspect for you via permissions or settings
     (FIX) Players will no longer be told they lack skill in salvage if they already qualify for the best possible result for the item
     (FIX) Fixed a bug where arcane salvage was being used to calculate salvage results instead of scrap collector
-    Added the missing locale color for 'Commands.Party.Commands'
+    (FIX) Added the missing locale color for 'Commands.Party.Commands'
     Modified colors used in locale strings 'Salvage.Skills.Lottery.Normal', 'Salvage.Skills.Lottery.Perfect', and 'Profile.Loading.FailurePlayer'
     When failing to load a profile mcMMO will increase the amount of time it waits before reattempting to load the profile for each failure
 
