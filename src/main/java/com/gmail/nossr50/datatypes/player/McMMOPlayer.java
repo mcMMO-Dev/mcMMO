@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes.player;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;

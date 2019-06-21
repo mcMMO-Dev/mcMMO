@@ -3,7 +3,6 @@ package com.gmail.nossr50.skills.repair.repairables;
 import com.gmail.nossr50.datatypes.permissions.PermissionWrapper;
 import com.gmail.nossr50.skills.repair.RepairTransaction;
 import com.gmail.nossr50.util.nbt.RawNBT;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class Repairable {

@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.skills;
 
-import com.gmail.nossr50.config.MainConfig;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;

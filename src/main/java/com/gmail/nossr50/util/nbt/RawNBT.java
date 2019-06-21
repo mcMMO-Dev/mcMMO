@@ -16,7 +16,7 @@ public class RawNBT<T> {
 
     public RawNBT(String nbtContents, T nbtTree) {
         this.nbtContents = nbtContents;
-        NBTUtils
+        NBTManager
     }
 
     public String getNbtContents() {

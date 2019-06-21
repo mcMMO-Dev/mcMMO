@@ -4,18 +4,12 @@ import com.gmail.nossr50.datatypes.permissions.PermissionWrapper;
 import com.gmail.nossr50.skills.repair.RepairTransaction;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableBuilder;
-import com.gmail.nossr50.util.nbt.RawNBT;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.ValueType;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
-import ninja.leaping.configurate.util.EnumLookup;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
 
 public class RepairableSerializer implements TypeSerializer<Repairable> {
     private static final String ITEM = "Item";
