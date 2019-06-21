@@ -1,3 +1,17 @@
+Version 2.1.86
+    Players will no longer be told they got a perfect result when salvaging if they are below max skill level
+    Salvage results will now travel towards the player instead of moving in a random direction
+    (FIX) You cannot view stats of players who are offline if your server limits the range on inspect for you via permissions or settings
+    (FIX) Players will no longer be told they lack skill in salvage if they already qualify for the best possible result for the item
+    (FIX) Fixed a bug where arcane salvage was being used to calculate salvage results instead of scrap collector
+    Added the missing locale color for 'Commands.Party.Commands'
+    Modified colors used in locale strings 'Salvage.Skills.Lottery.Normal', 'Salvage.Skills.Lottery.Perfect', and 'Profile.Loading.FailurePlayer'
+    When failing to load a profile mcMMO will increase the amount of time it waits before reattempting to load the profile for each failure
+
+    NOTES:
+    You can (and always have been able) to turn off the inspect range check by setting it to 0 in the config
+    2.2 is around the corner, most things are functional, still a lot of work left to do.
+
 Version 2.1.85
     Fixed a nearly 6 year old bug where Super Repair was not included as a child permission under Repair ability permission nodes (which meant some players would not have access to this skill)
     Fixed a bug that could prevent salvage from working for certain players

@@ -11,10 +11,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
-import com.gmail.nossr50.util.EventUtils;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
@@ -91,16 +88,14 @@ public class SalvageManager extends SkillManager {
             return;
         }
 
-        int maxAmountSalvageable = Salvage.calculateSalvageableAmount(item.getDurability(), salvageable.getMaximumDurability(), salvageable.getMaximumQuantity());
+        int potentialSalvageYield = Salvage.calculateSalvageableAmount(item.getDurability(), salvageable.getMaximumDurability(), salvageable.getMaximumQuantity());
 
-        int salvageableAmount = maxAmountSalvageable;
-
-        if (salvageableAmount == 0) {
+        if (potentialSalvageYield <= 0) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.TooDamaged");
             return;
         }
 
-        salvageableAmount = Math.min(salvageableAmount, getSalvageableAmount()); // Always get at least something back, if you're capable of salvaging it.
+        potentialSalvageYield = Math.min(potentialSalvageYield, getSalvageLimit()); // Always get at least something back, if you're capable of salvaging it.
 
         player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
         location.add(0.5, 1, 0.5);
@@ -117,7 +112,7 @@ public class SalvageManager extends SkillManager {
         int lotteryResults = 1;
         int chanceOfSuccess = 99;
 
-        for(int x = 0; x < salvageableAmount-1; x++) {
+        for(int x = 0; x < potentialSalvageYield-1; x++) {
 
             if(RandomChanceUtil.rollDice(chanceOfSuccess, 100)) {
                 chanceOfSuccess-=2;
@@ -127,9 +122,9 @@ public class SalvageManager extends SkillManager {
             }
         }
 
-        if(lotteryResults == salvageableAmount && salvageableAmount != 1) {
+        if(lotteryResults == potentialSalvageYield && potentialSalvageYield != 1 && RankUtils.isPlayerMaxRankInSubSkill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE)) {
             NotificationManager.sendPlayerInformationChatOnly(player, "Salvage.Skills.Lottery.Perfect", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
-        } else if(RankUtils.isPlayerMaxRankInSubSkill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE) || salvageableAmount == 1) {
+        } else if(salvageable.getMaximumQuantity() == 1 || getSalvageLimit() >= salvageable.getMaximumQuantity()) {
             NotificationManager.sendPlayerInformationChatOnly(player,  "Salvage.Skills.Lottery.Normal", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
         } else {
             NotificationManager.sendPlayerInformationChatOnly(player,  "Salvage.Skills.Lottery.Untrained", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
@@ -146,7 +141,7 @@ public class SalvageManager extends SkillManager {
             Misc.dropItem(location, enchantBook);
         }
 
-        Misc.dropItems(location, salvageResults, 1);
+        Misc.spawnItemTowardsLocation(location, player.getLocation().add(0, 0.25, 0), salvageResults);
 
         // BWONG BWONG BWONG - CLUNK!
         if (Config.getInstance().getSalvageAnvilUseSoundsEnabled()) {
@@ -163,8 +158,8 @@ public class SalvageManager extends SkillManager {
         return Math.min((((Salvage.salvageMaxPercentage / Salvage.salvageMaxPercentageLevel) * getSkillLevel()) / 100.0D), Salvage.salvageMaxPercentage / 100.0D);
     }*/
 
-    public int getSalvageableAmount() {
-        return (RankUtils.getRank(getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE) * 1);
+    public int getSalvageLimit() {
+        return (RankUtils.getRank(getPlayer(), SubSkillType.SALVAGE_SCRAP_COLLECTOR));
     }
 
     /**
