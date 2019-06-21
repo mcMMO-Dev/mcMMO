@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import java.util.Collection;
 import java.util.Random;
@@ -113,6 +114,45 @@ public final class Misc {
         }
 
         return location.getWorld().dropItemNaturally(location, itemStack);
+    }
+
+    /**
+     * Drop items at a given location.
+     *
+     * @param location The location to drop the items at
+     * @param is The items to drop
+     * @param quantity The amount of items to drop
+     */
+    public static void spawnItemsTowardsLocation(Location location, Location targetLocation, ItemStack is, int quantity) {
+        for (int i = 0; i < quantity; i++) {
+            spawnItemTowardsLocation(location, targetLocation, is);
+        }
+    }
+
+    /**
+     * Drop an item at a given location.
+     *
+     * @param spawnLocation The location to drop the item at
+     * @param itemStack The item to drop
+     * @return Dropped Item entity or null if invalid or cancelled
+     */
+    public static Item spawnItemTowardsLocation(Location spawnLocation, Location targetLocation, ItemStack itemStack) {
+        if (itemStack.getType() == Material.AIR) {
+            return null;
+        }
+
+        // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
+        McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(spawnLocation, itemStack);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            return null;
+        }
+
+        Item item = spawnLocation.getWorld().dropItem(spawnLocation, itemStack);
+        Vector vector = targetLocation.toVector().subtract(spawnLocation.toVector()).normalize();
+        item.setVelocity(vector);
+        return item;
     }
 
     public static void profileCleanup(String playerName) {

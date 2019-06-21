@@ -66,11 +66,10 @@ public class InspectCommand implements TabExecutor {
                     Player target = mcMMOPlayer.getPlayer();
 
                     if (CommandUtils.hidden(sender, target, Permissions.inspectHidden(sender))) {
-                        if (!Permissions.inspectOffline(sender)) {
-                            sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
-                            return true;
-                        }
-                    } else if (CommandUtils.tooFar(sender, target, Permissions.inspectFar(sender))) {
+                        sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
+                        return true;
+                    }
+                    else if (CommandUtils.tooFar(sender, target, Permissions.inspectFar(sender))) {
                         return true;
                     }
 

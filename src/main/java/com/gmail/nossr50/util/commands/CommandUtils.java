@@ -35,12 +35,14 @@ public final class CommandUtils {
     }
 
     public static boolean tooFar(CommandSender sender, Player target, boolean hasPermission) {
-        if (sender instanceof Player
-                && mcMMO.getConfigManager().getConfigCommands().isLimitInspectRange()
-                && !hasPermission
-                && !Misc.isNear(((Player) sender).getLocation(),
-                target.getLocation(),
-                mcMMO.getConfigManager().getConfigCommands().getInspectCommandMaxDistance())) {
+        if(!target.isOnline() && !hasPermission) {
+            sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
+            return true;
+        } else if (mcMMO.getConfigManager().getConfigCommands().isLimitInspectRange()
+                        && sender instanceof Player
+                && !Misc.isNear(((Player) sender).getLocation(), target.getLocation(),
+                        mcMMO.getConfigManager().getConfigCommands().getInspectCommandMaxDistance())
+                && !hasPermission) {
             sender.sendMessage(LocaleLoader.getString("Inspect.TooFar"));
             return true;
         }

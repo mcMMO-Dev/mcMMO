@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.salvage;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -88,16 +87,14 @@ public class SalvageManager extends SkillManager {
             return;
         }
 
-        int maxAmountSalvageable = Salvage.calculateSalvageableAmount(item.getDurability(), salvageable.getMaximumDurability(), salvageable.getMaximumQuantity());
+        int potentialSalvageYield = Salvage.calculateSalvageableAmount(item.getDurability(), salvageable.getMaximumDurability(), salvageable.getMaximumQuantity());
 
-        int salvageableAmount = maxAmountSalvageable;
-
-        if (salvageableAmount == 0) {
+        if (potentialSalvageYield <= 0) {
             mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.TooDamaged");
             return;
         }
 
-        salvageableAmount = Math.min(salvageableAmount, getSalvageableAmount()); // Always get at least something back, if you're capable of salvaging it.
+        potentialSalvageYield = Math.min(potentialSalvageYield, getSalvageLimit()); // Always get at least something back, if you're capable of salvaging it.
 
         player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
         location.add(0.5, 1, 0.5);
@@ -114,7 +111,7 @@ public class SalvageManager extends SkillManager {
         int lotteryResults = 1;
         int chanceOfSuccess = 99;
 
-        for(int x = 0; x < salvageableAmount-1; x++) {
+        for(int x = 0; x < potentialSalvageYield-1; x++) {
 
             if(RandomChanceUtil.rollDice(chanceOfSuccess, 100)) {
                 chanceOfSuccess-=2;
@@ -124,9 +121,9 @@ public class SalvageManager extends SkillManager {
             }
         }
 
-        if(lotteryResults == salvageableAmount && salvageableAmount != 1 && RankUtils.isPlayerMaxRankInSubSkill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE)) {
+        if(lotteryResults == potentialSalvageYield && potentialSalvageYield != 1 && RankUtils.isPlayerMaxRankInSubSkill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE)) {
             mcMMO.getNotificationManager().sendPlayerInformationChatOnly(player, "Salvage.Skills.Lottery.Perfect", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
-        } else if(RankUtils.isPlayerMaxRankInSubSkill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE) || salvageableAmount == 1) {
+        } else if(salvageable.getMaximumQuantity() == 1 || getSalvageLimit() >= salvageable.getMaximumQuantity()) {
             mcMMO.getNotificationManager().sendPlayerInformationChatOnly(player,  "Salvage.Skills.Lottery.Normal", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
         } else {
             mcMMO.getNotificationManager().sendPlayerInformationChatOnly(player,  "Salvage.Skills.Lottery.Untrained", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
@@ -143,7 +140,7 @@ public class SalvageManager extends SkillManager {
             Misc.dropItem(location, enchantBook);
         }
 
-        Misc.dropItems(location, salvageResults, 1);
+        Misc.spawnItemTowardsLocation(location, player.getLocation().add(0, 0.25, 0), salvageResults);
 
         // BWONG BWONG BWONG - CLUNK!
         if (mcMMO.getConfigManager().getConfigSalvage().getGeneral().isAnvilUseSounds()) {
@@ -159,8 +156,8 @@ public class SalvageManager extends SkillManager {
         return Math.min((((Salvage.salvageMaxPercentage / Salvage.salvageMaxPercentageLevel) * getSkillLevel()) / 100.0D), Salvage.salvageMaxPercentage / 100.0D);
     }*/
 
-    public int getSalvageableAmount() {
-        return (RankUtils.getRank(getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE));
+    public int getSalvageLimit() {
+        return (RankUtils.getRank(getPlayer(), SubSkillType.SALVAGE_SCRAP_COLLECTOR));
     }
 
     /**
