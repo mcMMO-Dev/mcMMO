@@ -1,3 +1,12 @@
+Version 2.1.87
+    (Level caps are not on by default in mcMMO, this is something you can turn on)
+
+    Players who reach either the power level cap or skill level cap will now be informed that they have done so
+    XP Bars will no longer be sent to players who have reached the power level or skill level cap respectively
+    Level up messages will no longer be sent to players who have reached the power level or skill level cap respectively
+    Fixed a bug where mcMMO would send level up notifications to a player if the custom level up event from mcMMO was cancelled
+    New locale strings 'LevelCap.PowerLevel' & 'LevelCap.Skill'
+
 Version 2.1.86
     Players will no longer be told they got a perfect result when salvaging if they are below max skill level
     Salvage results will now travel towards the player instead of moving in a random direction

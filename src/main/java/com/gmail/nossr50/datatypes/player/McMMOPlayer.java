@@ -41,6 +41,7 @@ import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.experience.ExperienceBarManager;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
@@ -150,8 +151,15 @@ public class McMMOPlayer {
         experienceBarManager.hideExperienceBar(primarySkillType);
     }*/
 
-    public void processPostXpEvent(XPGainReason xpGainReason, PrimarySkillType primarySkillType, Plugin plugin, XPGainSource xpGainSource)
+    public void processPostXpEvent(PrimarySkillType primarySkillType, Plugin plugin, XPGainSource xpGainSource)
     {
+        //Check if they've reached the power level cap just now
+        if(hasReachedPowerLevelCap()) {
+            NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.PowerLevel", String.valueOf(Config.getInstance().getPowerLevelCap()));
+        } else if(hasReachedLevelCap(primarySkillType)) {
+            NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.Skill", String.valueOf(Config.getInstance().getPowerLevelCap()), primarySkillType.getName());
+        }
+
         //Updates from Party sources
         if(xpGainSource == XPGainSource.PARTY_MEMBERS && !ExperienceConfig.getInstance().isPartyExperienceBarsEnabled())
             return;
@@ -460,6 +468,31 @@ public class McMMOPlayer {
     }
 
     /**
+     * Whether or not a player is level capped
+     * If they are at the power level cap, this will return true, otherwise it checks their skill level
+     * @param primarySkillType
+     * @return
+     */
+    public boolean hasReachedLevelCap(PrimarySkillType primarySkillType) {
+        if(hasReachedPowerLevelCap())
+            return true;
+
+        if(getSkillLevel(primarySkillType) >= Config.getInstance().getLevelCap(primarySkillType))
+            return true;
+
+        return false;
+    }
+
+    /**
+     * Whether or not a player is power level capped
+     * Compares their power level total to the current set limit
+     * @return true if they have reached the power level cap
+     */
+    public boolean hasReachedPowerLevelCap() {
+        return this.getPowerLevel() >= Config.getInstance().getPowerLevelCap();
+    }
+
+    /**
      * Begins an experience gain. The amount will be affected by skill modifiers, global rate, perks, and may be shared with the party
      *
      * @param skill Skill being used
@@ -549,8 +582,11 @@ public class McMMOPlayer {
      * @param primarySkillType The skill to check
      */
     private void checkXp(PrimarySkillType primarySkillType, XPGainReason xpGainReason, XPGainSource xpGainSource) {
+        if(hasReachedLevelCap(primarySkillType))
+            return;
+
         if (getSkillXpLevelRaw(primarySkillType) < getXpToLevel(primarySkillType)) {
-            processPostXpEvent(xpGainReason, primarySkillType, mcMMO.p, xpGainSource);
+            processPostXpEvent(primarySkillType, mcMMO.p, xpGainSource);
             return;
         }
 
@@ -567,8 +603,7 @@ public class McMMOPlayer {
             levelsGained++;
         }
 
-        if (!EventUtils.handleLevelChangeEvent(player, primarySkillType, levelsGained, xpRemoved, true, xpGainReason)) {
-            processPostXpEvent(xpGainReason, primarySkillType, mcMMO.p, xpGainSource);
+        if (EventUtils.tryLevelChangeEvent(player, primarySkillType, levelsGained, xpRemoved, true, xpGainReason)) {
             return;
         }
 
@@ -583,7 +618,7 @@ public class McMMOPlayer {
         NotificationManager.sendPlayerLevelUpNotification(this, primarySkillType, levelsGained, profile.getSkillLevel(primarySkillType));
 
         //UPDATE XP BARS
-        processPostXpEvent(xpGainReason, primarySkillType, mcMMO.p, xpGainSource);
+        processPostXpEvent(primarySkillType, mcMMO.p, xpGainSource);
     }
 
     /*
@@ -932,10 +967,6 @@ public class McMMOPlayer {
     public int calculateTimeRemaining(SuperAbilityType ability) {
         long deactivatedTimestamp = profile.getAbilityDATS(ability) * Misc.TIME_CONVERSION_FACTOR;
         return (int) (((deactivatedTimestamp + (PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
-    }
-
-    private boolean hasReachedLevelCap(PrimarySkillType skill) {
-        return (skill.getMaxLevel() < getSkillLevel(skill) + 1) || (Config.getInstance().getPowerLevelCap() < getPowerLevel() + 1);
     }
 
     /*

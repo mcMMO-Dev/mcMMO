@@ -126,7 +126,7 @@ public class SkillresetCommand implements TabExecutor {
             return;
         }
 
-        EventUtils.handleLevelChangeEvent(player, skill, levelsRemoved, xpRemoved, false, XPGainReason.COMMAND);
+        EventUtils.tryLevelChangeEvent(player, skill, levelsRemoved, xpRemoved, false, XPGainReason.COMMAND);
     }
 
     protected boolean permissionsCheckSelf(CommandSender sender) {
