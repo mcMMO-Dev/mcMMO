@@ -57,15 +57,50 @@ public class CustomItemTarget implements CustomItemMatching {
      */
     @Override
     public boolean isMatch(MMOItem otherItem) {
-        //First compare the basic things that need to match between each item
-        if(item.equals(otherItem)) {
-            for(ItemMatchProperty itemMatchProperty : itemMatchProperties) {
-                if(!mcMMO.getNbtManager().hasNBT(otherItem.getRawNBT().getNbtData(), itemMatchProperty.getNbtData()))
-                    return false;
+        if(hasStrictMatching()) {
+            return isStrictMatch(otherItem);
+        } else {
+            return isUnstrictMatch(otherItem);
+        }
+    }
+
+    /**
+     * Compare this item to another while comparing specific nbt tags for matching values, if all values are found and match it is considered a strict match
+     * @param otherItem item to strictly match
+     * @return true if the items are considered a match
+     */
+    private boolean isStrictMatch(MMOItem otherItem) {
+        for(ItemMatchProperty itemMatchProperty : itemMatchProperties) {
+            if(!mcMMO.getNbtManager().hasNBT(otherItem.getRawNBT().getNbtData(), itemMatchProperty.getNbtData())) {
+                return false;
             }
+        }
+
+        //All item match properties were found and matched
+        return true;
+    }
+
+    /**
+     * Compare this item to another only by namespace key
+     * @param otherItem item to compare namespace keys with
+     * @return true if the items share namespace keys
+     */
+    private boolean isUnstrictMatch(MMOItem otherItem) {
+        if(otherItem.getNamespaceKey().equalsIgnoreCase(item.getNamespaceKey())) {
             return true;
         }
+
+        //Namespace didn't match reject item
         return false;
+    }
+
+    /**
+     * If this item has strict matching or loose match
+     * Solely determined by having any item match properties present
+     * @return true if this item target has strict matching
+     */
+    public boolean hasStrictMatching() {
+        return itemMatchProperties.size() > 1;
     }
 
     @Override

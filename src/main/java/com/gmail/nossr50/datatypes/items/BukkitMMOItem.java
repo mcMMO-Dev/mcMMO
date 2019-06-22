@@ -1,17 +1,20 @@
 package com.gmail.nossr50.datatypes.items;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.nbt.RawNBT;
+import net.minecraft.server.v1_13_R2.NBTTagCompound;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class BukkitMMOItem implements MMOItem<ItemStack> {
+import java.util.HashSet;
+
+public class BukkitMMOItem implements MMOItem {
 
     private ItemStack itemImplementation;
-    private RawNBT rawNBT;
 
-    public BukkitMMOItem(String namespaceKey, int amount, RawNBT rawNBT) throws NullPointerException {
+    public BukkitMMOItem(String namespaceKey, int amount) throws NullPointerException {
         ItemStack itemStack;
         Material material = Material.matchMaterial(namespaceKey);
 
@@ -30,12 +33,12 @@ public class BukkitMMOItem implements MMOItem<ItemStack> {
         //Set amount
         itemStack.setAmount(amount);
 
-        //Set item implementation
         this.itemImplementation = itemStack;
+    }
 
-        //Set raw NBT
-        if(rawNBT != null)
-            this.rawNBT = rawNBT;
+    public BukkitMMOItem(ItemStack itemStack) {
+        NBTTagCompound nbtTagCompound = mcMMO.getNbtManager().getNBT(itemStack);
+        this.itemImplementation = itemStack;
     }
 
     @Override
@@ -55,7 +58,8 @@ public class BukkitMMOItem implements MMOItem<ItemStack> {
 
     @Override
     public RawNBT getRawNBT() {
-        return rawNBT;
+        NBTTagCompound nbtTagCompound = mcMMO.getNbtManager().getNBT(itemImplementation);
+        return new RawNBT(nbtTagCompound.toString(), nbtTagCompound);
     }
 
 }

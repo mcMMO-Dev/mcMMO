@@ -36,5 +36,4 @@ public interface MMOItem<T> {
      * @return the raw NBT if it exists, null otherwise
      */
     RawNBT getRawNBT();
-
 }

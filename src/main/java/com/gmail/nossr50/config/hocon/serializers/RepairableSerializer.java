@@ -15,13 +15,13 @@ import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
 import org.bukkit.inventory.ItemStack;
 
 public class RepairableSerializer implements TypeSerializer<Repairable> {
-    public static final String REPAIRABLE_ITEM = "Repairable-Item";
-    public static final String MAXIMUM_DURABILITY = "Maximum-Durability";
-    public static final String ITEMS_REQUIRED_TO_REPAIR = "Items-Required-To-Repair";
-    public static final String SKILL_LEVEL_REQUIRED_TO_REPAIR = "Skill-Level-Required-To-Repair";
-    public static final String BASE_XP_REWARD = "Base-XP-Reward";
-    public static final String BASE_REPAIR_COUNT = "Base-Repair-Count";
-    public static final String REQUIRED_PERMISSION_NODE = "Required-Permission-Node";
+    private static final String REPAIRABLE_ITEM = "Repairable-Item";
+    private static final String MAXIMUM_DURABILITY = "Maximum-Durability";
+    private static final String ITEMS_REQUIRED_TO_REPAIR = "Items-Required-To-Repair";
+    private static final String SKILL_LEVEL_REQUIRED_TO_REPAIR = "Skill-Level-Required-To-Repair";
+    private static final String BASE_XP_REWARD = "Base-XP-Reward";
+    private static final String BASE_REPAIR_COUNT = "Base-Repair-Count";
+    private static final String REQUIRED_PERMISSION_NODE = "Required-Permission-Node";
 
     @Override
     public Repairable deserialize(TypeToken<?> type, ConfigurationNode value) throws ObjectMappingException {

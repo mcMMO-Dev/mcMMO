@@ -39,6 +39,12 @@ public class RepairTransaction {
     }
 
     public boolean canPayRepairCosts(PlayerInventory playerInventory) {
+        for(RepairCost repairCost : repairCosts) {
+            if(!repairCost.hasPayment(playerInventory)) {
+                return false;
+            }
+        }
+
         return true;
     }
 }

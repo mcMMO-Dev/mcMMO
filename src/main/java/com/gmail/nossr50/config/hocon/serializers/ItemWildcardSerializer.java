@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config.hocon.serializers;
 
+import com.gmail.nossr50.datatypes.items.CustomItemTarget;
 import com.gmail.nossr50.datatypes.items.ItemWildcards;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -10,9 +11,10 @@ import org.bukkit.inventory.ItemStack;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.util.HashSet;
 import java.util.Set;
 
-public class RepairWildcardSerializer implements TypeSerializer<ItemWildcards> {
+public class ItemWildcardSerializer implements TypeSerializer<ItemWildcards> {
 
     private static final String WILDCARD_IDENTIFIER_NAME = "Wildcard-Identifier-Name";
     private static final String MATCHING_ITEMS = "Matching-Items";
@@ -24,9 +26,9 @@ public class RepairWildcardSerializer implements TypeSerializer<ItemWildcards> {
         String wildCardName = value.getNode(WILDCARD_IDENTIFIER_NAME).getValue(TypeToken.of(String.class));
 
         if(value.getNode(WILDCARD_IDENTIFIER_NAME).getNode(MATCHING_ITEMS).getValueType() != ValueType.NULL) {
-            Set<ItemStack> matchCandidates = value.getNode(WILDCARD_IDENTIFIER_NAME).getNode(MATCHING_ITEMS).getValue(new TypeToken<Set<ItemStack>>() {});
+            Set<CustomItemTarget> matchCandidates = value.getNode(WILDCARD_IDENTIFIER_NAME).getNode(MATCHING_ITEMS).getValue(new TypeToken<Set<CustomItemTarget>>() {});
 
-            return new ItemWildcards(wildCardName, matchCandidates);
+            return new ItemWildcards(wildCardName, new HashSet<>(matchCandidates));
         }
 
         return null;

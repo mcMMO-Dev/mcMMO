@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util.nbt;
 
-import net.minecraft.server.v1_13_R2.NBTTagCompound;
+import com.gmail.nossr50.mcMMO;
+import net.minecraft.server.v1_13_R2.NBTBase;
 
 /**
  * A simple class that acts as a container for raw NBT data
@@ -14,12 +15,9 @@ import net.minecraft.server.v1_13_R2.NBTTagCompound;
  */
 public class RawNBT {
     private String nbtContents;
-    private NBTTagCompound nbtData; //Will be constructed using server internals to make matching NBT easier
 
-
-    public RawNBT(String nbtContents, NBTTagCompound nbtData) {
+    public RawNBT(String nbtContents) {
         this.nbtContents = nbtContents;
-        this.nbtData = nbtData;
     }
 
     public String getNbtContents() {
@@ -30,7 +28,7 @@ public class RawNBT {
         this.nbtContents = nbtContents;
     }
 
-    public NBTTagCompound getNbtData() {
-        return nbtData;
+    public NBTBase getNbtData() {
+        return mcMMO.getNbtManager().constructNBT(nbtContents);
     }
 }

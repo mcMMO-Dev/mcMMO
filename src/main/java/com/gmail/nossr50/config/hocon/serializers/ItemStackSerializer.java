@@ -1,5 +1,7 @@
 package com.gmail.nossr50.config.hocon.serializers;
 
+import com.gmail.nossr50.datatypes.items.BukkitMMOItem;
+import com.gmail.nossr50.datatypes.items.MMOItem;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -12,17 +14,14 @@ import org.bukkit.inventory.ItemStack;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public class ItemStackSerializer implements TypeSerializer<ItemStack> {
+public class ItemStackSerializer implements TypeSerializer<MMOItem<?>> {
 
     private static final String ITEM_MINECRAFT_NAME = "Item-Name";
     private static final String AMOUNT = "Amount";
-    private static final String NBT = "NBT";
 
     @Nullable
     @Override
-    public ItemStack deserialize(@NonNull TypeToken<?> type, @NonNull ConfigurationNode value) throws ObjectMappingException {
-        ItemStack itemStack;
-
+    public MMOItem<?> deserialize(@NonNull TypeToken<?> type, @NonNull ConfigurationNode value) throws ObjectMappingException {
         String itemIdentifier = value.getNode(ITEM_MINECRAFT_NAME).getValue(TypeToken.of(String.class));
 
         Material itemMatch = Material.matchMaterial(itemIdentifier);
@@ -34,37 +33,22 @@ public class ItemStackSerializer implements TypeSerializer<ItemStack> {
 
         ConfigurationNode itemNode = value.getNode(ITEM_MINECRAFT_NAME);
 
+        Integer amount;
         //Get the amount of items in the stack
         if(itemNode.getNode(AMOUNT).getValueType() != ValueType.NULL) {
-            Integer amount = itemNode.getNode(AMOUNT).getValue(TypeToken.of(Integer.class));
-            itemStack = new ItemStack(itemMatch, amount);
+            amount = itemNode.getNode(AMOUNT).getValue(TypeToken.of(Integer.class));
         } else {
-            itemStack = new ItemStack(itemMatch, 1);
+            amount = 1;
         }
 
-        //Init default item meta
-        itemStack.setItemMeta(Bukkit.getItemFactory().getItemMeta(itemMatch));
-
-        if(itemNode.getNode(NBT).getValueType() != ValueType.NULL) {
-            //TODO: NBT Stuff
-        }
-
-        return itemStack;
-
-        //Set Lore if it exists
-//        if(itemNode.getNode(ITEM_LORE).getValueType() != ValueType.NULL) {
-//            List<String> lore = itemNode.getNode(ITEM_LORE).getValue(new TypeToken<List<String>>() {});
-//            itemStack.getItemMeta().setLore(lore);
-//        }
+        return new BukkitMMOItem(itemIdentifier, amount);
     }
 
     @Override
-    public void serialize(@NonNull TypeToken<?> type, @Nullable ItemStack obj, @NonNull ConfigurationNode value) throws ObjectMappingException {
+    public void serialize(@NonNull TypeToken<?> type, @Nullable MMOItem<?> obj, @NonNull ConfigurationNode value) throws ObjectMappingException {
         ConfigurationNode itemNode = value.getNode(ITEM_MINECRAFT_NAME);
-        value.getNode(ITEM_MINECRAFT_NAME).setValue(obj.getType().getKey().toString());
-        itemNode.getNode(AMOUNT).setValue(obj.getAmount());
-        //TODO: NBT Stuff
-        //itemNode.getNode(NBT).setValue()
+        value.getNode(ITEM_MINECRAFT_NAME).setValue(obj.getNamespaceKey());
+        itemNode.getNode(AMOUNT).setValue(obj.getItemAmount());
     }
 
 }

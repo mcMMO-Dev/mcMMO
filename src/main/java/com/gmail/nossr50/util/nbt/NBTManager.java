@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.nbt;
 
 import com.gmail.nossr50.mcMMO;
 import net.minecraft.server.v1_13_R2.NBTBase;
+import net.minecraft.server.v1_13_R2.NBTList;
 import net.minecraft.server.v1_13_R2.NBTTagCompound;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
@@ -26,9 +27,16 @@ public class NBTManager {
         }
     }
 
-    public RawNBT<?> constructNBT(String nbtString) {
+    public NBTTagCompound getNBT(ItemStack itemStack) {
+        Bukkit.broadcastMessage("Checking NBT for "+itemStack.toString());
+        net.minecraft.server.v1_13_R2.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(itemStack);
+        NBTTagCompound rootTag = nmsItemStack.getTag();
+        return rootTag;
+    }
+
+    public NBTBase constructNBT(String nbtString) {
         try {
-            return new RawNBT<NBTBase>(nbtString, CraftNBTTagConfigSerializer.deserialize(nbtString));
+            return CraftNBTTagConfigSerializer.deserialize(nbtString);
         } catch (Exception e) {
             e.printStackTrace();
             mcMMO.p.getLogger().severe("mcMMO was unable parse the NBT string from your config! Double check that it is proper NBT!");
@@ -37,15 +45,18 @@ public class NBTManager {
     }
 
     public void printNBT(ItemStack itemStack) {
-        Bukkit.broadcastMessage("Checking NBT for "+itemStack.toString());
-        net.minecraft.server.v1_13_R2.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(itemStack);
-        NBTTagCompound rootTag = nmsItemStack.getTag();
-        for(String key : rootTag.getKeys()) {
+        for(String key : getNBT(itemStack).getKeys()) {
             Bukkit.broadcastMessage("NBT Key found: "+key);
         }
     }
 
-    public boolean hasNBT(NBTTagCompound root, NBTTagCompound nbtData) {
+    public boolean hasNBT(NBTBase nbt, NBTTagCompound otherNbt) {
+        if(nbt instanceof NBTList<?>) {
+
+        } else {
+
+        }
+
         //TODO: Implement this
         return false;
     }
