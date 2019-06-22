@@ -1,10 +1,12 @@
 package com.gmail.nossr50.skills.repair;
 
 import com.gmail.nossr50.datatypes.items.BukkitMMOItem;
-import com.gmail.nossr50.datatypes.items.CustomItemTarget;
+import com.gmail.nossr50.datatypes.items.ItemMatch;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+
+import java.util.List;
 
 /**
  * Implementation of RepairCost
@@ -15,12 +17,12 @@ import org.bukkit.inventory.PlayerInventory;
  * This type is strictly for use with RepairTransaction, which represents the full cost of a Repair.
  * @see com.gmail.nossr50.skills.repair.RepairTransaction for more details
  */
-public class SimpleRepairCost implements RepairCost {
+public class SimpleRepairCost<T extends ItemMatch> implements RepairCost {
 
-    private CustomItemTarget desiredItemTarget;
+    private T itemMatch;
 
-    public SimpleRepairCost(CustomItemTarget customItemTarget) {
-        this.desiredItemTarget = customItemTarget;
+    public SimpleRepairCost(T customItemTarget) {
+        this.itemMatch = customItemTarget;
     }
 
     @Override
@@ -31,12 +33,29 @@ public class SimpleRepairCost implements RepairCost {
 
             BukkitMMOItem playerInventoryItem = new BukkitMMOItem(itemStack);
 
+            //TODO:
+            //TODO:
+            //TODO:
+            //TODO:
+            //TODO: Write the code that compares playerInventoryItem with the <T extends itemMatch>
+            //TODO:
+            //TODO:
+            //TODO:
+            //TODO:
+            //TODO:
+            //TODO:
+            //TODO:
+
             //If the item matches return it
-            if(desiredItemTarget.isMatch(playerInventoryItem))
+            if(itemMatch.isMatch(playerInventoryItem))
                 return itemStack;
         }
 
         return null;
+    }
+
+    public ItemMatch getItemMatch() {
+        return itemMatch;
     }
 
     @Override

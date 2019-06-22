@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config.hocon.serializers;
 
-import com.gmail.nossr50.datatypes.items.CustomItemTarget;
+import com.gmail.nossr50.datatypes.items.ItemMatch;
 import com.gmail.nossr50.datatypes.permissions.PermissionWrapper;
 import com.gmail.nossr50.skills.repair.RepairTransaction;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
@@ -8,11 +8,8 @@ import com.gmail.nossr50.skills.repair.repairables.RepairableBuilder;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.ValueType;
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import ninja.leaping.configurate.commented.SimpleCommentedConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
-import org.bukkit.inventory.ItemStack;
 
 public class RepairableSerializer implements TypeSerializer<Repairable> {
     private static final String REPAIRABLE_ITEM = "Repairable-Item";
@@ -26,11 +23,11 @@ public class RepairableSerializer implements TypeSerializer<Repairable> {
     @Override
     public Repairable deserialize(TypeToken<?> type, ConfigurationNode value) throws ObjectMappingException {
         /* Necessary fields */
-        CustomItemTarget customItemTarget = value.getNode(REPAIRABLE_ITEM).getValue(TypeToken.of(CustomItemTarget.class));
+        ItemMatch itemMatch = value.getNode(REPAIRABLE_ITEM).getValue(TypeToken.of(ItemMatch.class));
         Short maximumDurability = value.getNode(MAXIMUM_DURABILITY).getValue(TypeToken.of(Short.class));
         RepairTransaction repairTransaction = value.getNode(ITEMS_REQUIRED_TO_REPAIR).getValue(TypeToken.of(RepairTransaction.class));
 
-        RepairableBuilder repairableBuilder = new RepairableBuilder(customItemTarget, maximumDurability, repairTransaction);
+        RepairableBuilder repairableBuilder = new RepairableBuilder(itemMatch, maximumDurability, repairTransaction);
 
         if(value.getNode(SKILL_LEVEL_REQUIRED_TO_REPAIR).getValueType() != ValueType.NULL) {
             repairableBuilder.addMinLevel(value.getNode(SKILL_LEVEL_REQUIRED_TO_REPAIR).getInt());
@@ -53,7 +50,7 @@ public class RepairableSerializer implements TypeSerializer<Repairable> {
 
     @Override
     public void serialize(TypeToken<?> type, Repairable obj, ConfigurationNode value) {
-        value.getNode(REPAIRABLE_ITEM).setValue(obj.getCustomItemTarget());
+        value.getNode(REPAIRABLE_ITEM).setValue(obj.getItemMatch());
         value.getNode(MAXIMUM_DURABILITY).setValue(obj.getMaximumDurability());
         value.getNode(ITEMS_REQUIRED_TO_REPAIR).setValue(obj.getRepairTransaction());
 

@@ -1,10 +1,8 @@
 package com.gmail.nossr50.skills.repair.repairables;
 
-import com.gmail.nossr50.datatypes.items.CustomItemTarget;
+import com.gmail.nossr50.datatypes.items.ItemMatch;
 import com.gmail.nossr50.datatypes.permissions.PermissionWrapper;
 import com.gmail.nossr50.skills.repair.RepairTransaction;
-import com.gmail.nossr50.util.nbt.RawNBT;
-import org.bukkit.inventory.ItemStack;
 
 public class RepairableBuilder {
 
@@ -12,12 +10,12 @@ public class RepairableBuilder {
     private short maximumDurability;
     private RepairTransaction repairTransaction;
     private int baseXP;
-    private CustomItemTarget customItemTarget;
+    private ItemMatch itemMatch;
     private int repairCount;
     private PermissionWrapper permissionWrapper;
 
-    public RepairableBuilder(CustomItemTarget customItemTarget, Short maximumDurability, RepairTransaction repairTransaction) {
-        this.customItemTarget = customItemTarget;
+    public RepairableBuilder(ItemMatch itemMatch, Short maximumDurability, RepairTransaction repairTransaction) {
+        this.itemMatch = itemMatch;
         this.maximumDurability = maximumDurability;
         this.repairTransaction = repairTransaction;
     }
@@ -57,7 +55,7 @@ public class RepairableBuilder {
     }
 
     private Repairable makeRepairable() {
-        Repairable repairable = new Repairable(customItemTarget, minimumLevel, maximumDurability, repairTransaction,
+        Repairable repairable = new Repairable(itemMatch, minimumLevel, maximumDurability, repairTransaction,
                 baseXP, repairCount, permissionWrapper);
 
         return repairable;

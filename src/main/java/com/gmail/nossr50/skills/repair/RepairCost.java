@@ -8,6 +8,7 @@ import org.bukkit.inventory.PlayerInventory;
  */
 public interface RepairCost {
 
+
     /**
      * Searches a player inventory for a matching ItemStack that can be used to pay for the repair transaction
      * @param playerInventory inventory of player attempting to pay the cost

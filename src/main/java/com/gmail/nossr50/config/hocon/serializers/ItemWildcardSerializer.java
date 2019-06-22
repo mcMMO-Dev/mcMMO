@@ -1,13 +1,12 @@
 package com.gmail.nossr50.config.hocon.serializers;
 
-import com.gmail.nossr50.datatypes.items.CustomItemTarget;
+import com.gmail.nossr50.datatypes.items.ItemMatch;
 import com.gmail.nossr50.datatypes.items.ItemWildcards;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.ValueType;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
-import org.bukkit.inventory.ItemStack;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -26,7 +25,7 @@ public class ItemWildcardSerializer implements TypeSerializer<ItemWildcards> {
         String wildCardName = value.getNode(WILDCARD_IDENTIFIER_NAME).getValue(TypeToken.of(String.class));
 
         if(value.getNode(WILDCARD_IDENTIFIER_NAME).getNode(MATCHING_ITEMS).getValueType() != ValueType.NULL) {
-            Set<CustomItemTarget> matchCandidates = value.getNode(WILDCARD_IDENTIFIER_NAME).getNode(MATCHING_ITEMS).getValue(new TypeToken<Set<CustomItemTarget>>() {});
+            Set<ItemMatch> matchCandidates = value.getNode(WILDCARD_IDENTIFIER_NAME).getNode(MATCHING_ITEMS).getValue(new TypeToken<Set<ItemMatch>>() {});
 
             return new ItemWildcards(wildCardName, new HashSet<>(matchCandidates));
         }

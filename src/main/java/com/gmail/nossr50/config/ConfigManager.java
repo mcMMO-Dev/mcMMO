@@ -52,7 +52,7 @@ import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
 import com.gmail.nossr50.config.treasure.HerbalismTreasureConfig;
 import com.gmail.nossr50.datatypes.experience.CustomXPPerk;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
-import com.gmail.nossr50.datatypes.items.BukkitMMOItem;
+import com.gmail.nossr50.datatypes.items.ItemMatch;
 import com.gmail.nossr50.datatypes.items.ItemWildcards;
 import com.gmail.nossr50.datatypes.items.MMOItem;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
@@ -70,7 +70,6 @@ import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -284,9 +283,10 @@ public final class ConfigManager {
         customSerializers.registerType(TypeToken.of(PlayerNotificationSettings.class), new PlayerNotificationSerializer());
         customSerializers.registerType(TypeToken.of(SoundSetting.class), new SoundSettingSerializer());
         customSerializers.registerType(TypeToken.of(ItemWildcards.class), new ItemWildcardSerializer());
-        customSerializers.registerType(TypeToken.of(RepairCost.class), new RepairCostSerializer());
+        customSerializers.registerType(TypeToken.of(ItemMatch.class), new CustomItemTargetSerializer());
         customSerializers.registerType(TypeToken.of(RepairTransaction.class), new RepairTransactionSerializer());
         customSerializers.registerType(TypeToken.of(RawNBT.class), new RawNBTSerializer());
+        customSerializers.registerType(TypeToken.of(RepairCost.class), new RepairCostSerializer());
     }
 
     /**

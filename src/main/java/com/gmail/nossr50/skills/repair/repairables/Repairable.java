@@ -1,27 +1,25 @@
 package com.gmail.nossr50.skills.repair.repairables;
 
-import com.gmail.nossr50.datatypes.items.CustomItemTarget;
+import com.gmail.nossr50.datatypes.items.ItemMatch;
 import com.gmail.nossr50.datatypes.permissions.PermissionWrapper;
 import com.gmail.nossr50.skills.repair.RepairTransaction;
-import com.gmail.nossr50.util.nbt.RawNBT;
-import org.bukkit.inventory.ItemStack;
 
 public class Repairable {
     private int minimumLevel;
     private short maximumDurability;
     private RepairTransaction repairTransaction;
     private int baseXP;
-    private CustomItemTarget customItemTarget;
+    private ItemMatch itemMatch;
     private int repairCount;
     private PermissionWrapper permissionWrapper;
     private boolean hasPermission = false;
 
-    public Repairable(CustomItemTarget customItemTarget, int minimumLevel, short maximumDurability, RepairTransaction repairTransaction, int baseXP, int repairCount, PermissionWrapper permissionWrapper) {
+    public Repairable(ItemMatch itemMatch, int minimumLevel, short maximumDurability, RepairTransaction repairTransaction, int baseXP, int repairCount, PermissionWrapper permissionWrapper) {
         this.minimumLevel = minimumLevel;
         this.maximumDurability = maximumDurability;
         this.repairTransaction = repairTransaction;
         this.baseXP = baseXP;
-        this.customItemTarget = customItemTarget;
+        this.itemMatch = itemMatch;
         this.repairCount = repairCount;
         this.permissionWrapper = permissionWrapper;
 
@@ -61,12 +59,12 @@ public class Repairable {
         this.baseXP = baseXP;
     }
 
-    public CustomItemTarget getCustomItemTarget() {
-        return customItemTarget;
+    public ItemMatch getItemMatch() {
+        return itemMatch;
     }
 
-    public void setCustomItemTarget(CustomItemTarget customItemTarget) {
-        this.customItemTarget = customItemTarget;
+    public void setItemMatch(ItemMatch itemMatch) {
+        this.itemMatch = itemMatch;
     }
 
     public int getRepairCount() {

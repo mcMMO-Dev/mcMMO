@@ -1,7 +1,5 @@
 package com.gmail.nossr50.datatypes.items;
 
-import org.bukkit.inventory.ItemStack;
-
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -19,12 +17,13 @@ import java.util.Objects;
  *  to solve a problem with Repair. Given its flexible nature it can be used for many purposes.
  *
  */
-public class ItemWildcards {
+public class ItemWildcards<T extends MMOItem<?>> {
 
     private String wildcardName;
-    private HashSet<CustomItemTarget> itemTargets;
+    private HashSet<ItemMatch<T>> itemTargets;
 
-    public ItemWildcards(String wildcardName, HashSet<CustomItemTarget> itemTargets) {
+    public ItemWildcards(String wildcardName, HashSet<ItemMatch<T>> itemTargets) {
+        super();
         this.wildcardName = wildcardName;
         this.itemTargets = itemTargets;
     }
@@ -33,11 +32,11 @@ public class ItemWildcards {
         return itemTargets.size();
     }
 
-    public HashSet<CustomItemTarget> getItemTargets() {
+    public HashSet<ItemMatch<T>> getItemTargets() {
         return itemTargets;
     }
 
-    public void setItemTargets(HashSet<CustomItemTarget> itemTargets) {
+    public void setItemTargets(HashSet<ItemMatch<T>> itemTargets) {
         this.itemTargets = itemTargets;
     }
 

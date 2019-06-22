@@ -26,17 +26,17 @@ import java.util.Objects;
  * 1) Abstract away platform specific implementations of MC Items
  * 2) Contain information about an item and which properties of said item that are considered important and thus will be used to equate equivalency to another item when doing comparisons
  */
-public class CustomItemTarget implements CustomItemMatching {
+public class ItemMatch<T extends MMOItem<?>> implements DefinedMatch<T> {
 
-    private MMOItem item; //Abstract representation of the item
+    private T item; //Abstract representation of the item
     private HashSet<ItemMatchProperty> itemMatchProperties; //Item properties used for matching
 
-    public CustomItemTarget(MMOItem item) {
+    public ItemMatch(T item) {
         this.item = item;
         itemMatchProperties = new HashSet<>();
     }
 
-    public CustomItemTarget(MMOItem item, HashSet<ItemMatchProperty> itemMatchProperties) {
+    public ItemMatch(T item, HashSet<ItemMatchProperty> itemMatchProperties) {
         this.item = item;
         this.itemMatchProperties = itemMatchProperties;
     }
@@ -56,7 +56,7 @@ public class CustomItemTarget implements CustomItemMatching {
      * @return true if this item matches the target item
      */
     @Override
-    public boolean isMatch(MMOItem otherItem) {
+    public boolean isMatch(T otherItem) {
         if(hasStrictMatching()) {
             return isStrictMatch(otherItem);
         } else {
@@ -69,7 +69,7 @@ public class CustomItemTarget implements CustomItemMatching {
      * @param otherItem item to strictly match
      * @return true if the items are considered a match
      */
-    private boolean isStrictMatch(MMOItem otherItem) {
+    private boolean isStrictMatch(T otherItem) {
         for(ItemMatchProperty itemMatchProperty : itemMatchProperties) {
             if(!mcMMO.getNbtManager().hasNBT(otherItem.getRawNBT().getNbtData(), itemMatchProperty.getNbtData())) {
                 return false;
@@ -106,10 +106,10 @@ public class CustomItemTarget implements CustomItemMatching {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CustomItemTarget)) return false;
-        CustomItemTarget that = (CustomItemTarget) o;
-        return getItem().equals(that.getItem()) &&
-                getItemMatchProperties().equals(that.getItemMatchProperties());
+        if (!(o instanceof ItemMatch)) return false;
+        ItemMatch<?> itemMatch = (ItemMatch<?>) o;
+        return getItem().equals(itemMatch.getItem()) &&
+                getItemMatchProperties().equals(itemMatch.getItemMatchProperties());
     }
 
     @Override

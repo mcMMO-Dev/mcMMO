@@ -22,8 +22,8 @@ import java.util.HashSet;
 public class RepairTransaction {
     private HashSet<RepairCost> repairCosts;
 
-    public RepairTransaction() {
-        repairCosts = new HashSet<>();
+    public RepairTransaction(HashSet<RepairCost> repairCosts) {
+        this.repairCosts = repairCosts;
     }
 
     public void addRepairCost(RepairCost repairCost) {
