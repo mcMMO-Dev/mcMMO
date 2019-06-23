@@ -193,7 +193,8 @@ public class BlockListener implements Listener {
 
         if(ExperienceConfig.getInstance().preventStoneLavaFarming())
         {
-            if(event.getNewState().getType() != Material.OBSIDIAN && BlockUtils.shouldBeWatched(event.getNewState()))
+            if(event.getNewState().getType() != Material.OBSIDIAN && BlockUtils.shouldBeWatched(event.getNewState())
+                    && ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.MINING, event.getNewState().getBlockData()))
             {
                 mcMMO.getPlaceStore().setTrue(event.getNewState());
             }

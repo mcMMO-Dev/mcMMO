@@ -1,3 +1,6 @@
+Version 2.1.89
+    Fixed a bug that could result in Tree Feller failing to remove parts of a tree
+
 Version 2.1.88
     mcMMO is now more compatible with a plugin named Project Korra
     mcMMO will no longer process combat triggers for damage at or below 0
