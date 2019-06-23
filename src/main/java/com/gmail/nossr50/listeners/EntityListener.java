@@ -416,6 +416,19 @@ public class EntityListener implements Listener {
             }
         }
 
+        /*
+         * This was put here to solve a plugin conflict with a mod called Project Korra
+         * Project Korra sends out a damage event with exactly 0 damage
+         * mcMMO does some calculations for the damage in an event and it ends up dividing by zero,
+         *  as a result of the modifiers for the event being 0 and the damage set for this event being 0.
+         *
+         * Surprising this kind of thing
+         *
+         */
+        if(damage <= 0) {
+            return;
+        }
+
         CombatUtils.processCombatAttack(event, attacker, target);
         CombatUtils.handleHealthbars(attacker, target, event.getFinalDamage(), plugin);
 

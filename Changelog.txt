@@ -1,3 +1,7 @@
+Version 2.1.88
+    mcMMO is now more compatible with a plugin named Project Korra
+    mcMMO will no longer process combat triggers for damage at or below 0
+
 Version 2.1.87
     (Level caps are not on by default in mcMMO, this is something you can turn on)
 
