@@ -2,6 +2,7 @@ package com.gmail.nossr50.datatypes.items;
 
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Represents a series of items that are all acceptable inputs for a behaviour
@@ -20,10 +21,9 @@ import java.util.Objects;
 public class ItemWildcards<T extends MMOItem<?>> {
 
     private String wildcardName;
-    private HashSet<ItemMatch<T>> itemTargets;
+    private Set<ItemMatch<T>> itemTargets;
 
-    public ItemWildcards(String wildcardName, HashSet<ItemMatch<T>> itemTargets) {
-        super();
+    public ItemWildcards(String wildcardName, Set<ItemMatch<T>> itemTargets) {
         this.wildcardName = wildcardName;
         this.itemTargets = itemTargets;
     }
@@ -32,7 +32,7 @@ public class ItemWildcards<T extends MMOItem<?>> {
         return itemTargets.size();
     }
 
-    public HashSet<ItemMatch<T>> getItemTargets() {
+    public Set<ItemMatch<T>> getItemTargets() {
         return itemTargets;
     }
 

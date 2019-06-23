@@ -4,6 +4,7 @@ import com.gmail.nossr50.mcMMO;
 
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * This type contains data and rules which govern equating equivalency between one item and another in Minecraft.
@@ -26,26 +27,34 @@ import java.util.Objects;
  * 1) Abstract away platform specific implementations of MC Items
  * 2) Contain information about an item and which properties of said item that are considered important and thus will be used to equate equivalency to another item when doing comparisons
  */
-public class ItemMatch<T extends MMOItem<?>> implements DefinedMatch<T> {
+public class ItemMatch<T extends MMOItem<?>> implements DefinedMatch<MMOItem<T>> {
 
     private T item; //Abstract representation of the item
-    private HashSet<ItemMatchProperty> itemMatchProperties; //Item properties used for matching
+    private Set<ItemMatchProperty> itemMatchProperties; //Item properties used for matching
 
     public ItemMatch(T item) {
         this.item = item;
         itemMatchProperties = new HashSet<>();
     }
 
-    public ItemMatch(T item, HashSet<ItemMatchProperty> itemMatchProperties) {
+    public ItemMatch(T item, Set<ItemMatchProperty> itemMatchProperties) {
         this.item = item;
         this.itemMatchProperties = itemMatchProperties;
     }
 
-    public MMOItem getItem() {
+    /**
+     * Gets the item held by this ItemMatch
+     * @return the item used for matching
+     */
+    public T getItem() {
         return item;
     }
 
-    public HashSet<ItemMatchProperty> getItemMatchProperties() {
+    /**
+     * Get the item match properties of this ItemMatch
+     * @return the item match properties
+     */
+    public Set<ItemMatchProperty> getItemMatchProperties() {
         return itemMatchProperties;
     }
 
@@ -56,7 +65,7 @@ public class ItemMatch<T extends MMOItem<?>> implements DefinedMatch<T> {
      * @return true if this item matches the target item
      */
     @Override
-    public boolean isMatch(T otherItem) {
+    public boolean isMatch(MMOItem<T> otherItem) {
         if(hasStrictMatching()) {
             return isStrictMatch(otherItem);
         } else {
@@ -69,7 +78,7 @@ public class ItemMatch<T extends MMOItem<?>> implements DefinedMatch<T> {
      * @param otherItem item to strictly match
      * @return true if the items are considered a match
      */
-    private boolean isStrictMatch(T otherItem) {
+    private boolean isStrictMatch(MMOItem<T> otherItem) {
         for(ItemMatchProperty itemMatchProperty : itemMatchProperties) {
             if(!mcMMO.getNbtManager().hasNBT(otherItem.getRawNBT().getNbtData(), itemMatchProperty.getNbtData())) {
                 return false;
@@ -85,7 +94,7 @@ public class ItemMatch<T extends MMOItem<?>> implements DefinedMatch<T> {
      * @param otherItem item to compare namespace keys with
      * @return true if the items share namespace keys
      */
-    private boolean isUnstrictMatch(MMOItem otherItem) {
+    private boolean isUnstrictMatch(MMOItem<T> otherItem) {
         if(otherItem.getNamespaceKey().equalsIgnoreCase(item.getNamespaceKey())) {
             return true;
         }

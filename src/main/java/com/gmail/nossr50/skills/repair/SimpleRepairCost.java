@@ -1,12 +1,11 @@
 package com.gmail.nossr50.skills.repair;
 
-import com.gmail.nossr50.datatypes.items.BukkitMMOItem;
+import com.gmail.nossr50.bukkit.BukkitFactory;
 import com.gmail.nossr50.datatypes.items.ItemMatch;
+import com.gmail.nossr50.datatypes.items.MMOItem;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-
-import java.util.List;
 
 /**
  * Implementation of RepairCost
@@ -17,7 +16,7 @@ import java.util.List;
  * This type is strictly for use with RepairTransaction, which represents the full cost of a Repair.
  * @see com.gmail.nossr50.skills.repair.RepairTransaction for more details
  */
-public class SimpleRepairCost<T extends ItemMatch> implements RepairCost {
+public class SimpleRepairCost<T extends ItemMatch> implements RepairCost<ItemMatch<?>> {
 
     private T itemMatch;
 
@@ -26,35 +25,24 @@ public class SimpleRepairCost<T extends ItemMatch> implements RepairCost {
     }
 
     @Override
-    public ItemStack findPayment(PlayerInventory playerInventory) {
+    public T findPayment(PlayerInventory playerInventory) {
         for(ItemStack itemStack : playerInventory.getContents()) {
             if(itemStack == null || itemStack.getType() == Material.AIR)
                 continue;
 
-            BukkitMMOItem playerInventoryItem = new BukkitMMOItem(itemStack);
+            MMOItem<T> playerInventoryItem = (MMOItem<T>) BukkitFactory.createItem(itemStack);
 
-            //TODO:
-            //TODO:
-            //TODO:
-            //TODO:
-            //TODO: Write the code that compares playerInventoryItem with the <T extends itemMatch>
-            //TODO:
-            //TODO:
-            //TODO:
-            //TODO:
-            //TODO:
-            //TODO:
-            //TODO:
+            if(itemMatch.isMatch(playerInventoryItem)) {
+                //Item is a match
+                return (T) playerInventoryItem;
+            }
 
-            //If the item matches return it
-            if(itemMatch.isMatch(playerInventoryItem))
-                return itemStack;
         }
 
         return null;
     }
 
-    public ItemMatch getItemMatch() {
+    public T getItemMatch() {
         return itemMatch;
     }
 

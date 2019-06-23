@@ -1,20 +1,19 @@
 package com.gmail.nossr50.skills.repair;
 
-import org.bukkit.inventory.ItemStack;
+import com.gmail.nossr50.datatypes.items.ItemMatch;
 import org.bukkit.inventory.PlayerInventory;
 
 /**
  * Represents one item in a Repair Transaction
  */
-public interface RepairCost {
-
+public interface RepairCost<T extends ItemMatch<?>> {
 
     /**
      * Searches a player inventory for a matching ItemStack that can be used to pay for the repair transaction
      * @param playerInventory inventory of player attempting to pay the cost
      * @return any compatible payment items if found, can be null
      */
-    ItemStack findPayment(PlayerInventory playerInventory);
+    T findPayment(PlayerInventory playerInventory);
 
     /**
      * Whether or not there is an item that can be used for this repair cost in the player's inventory
