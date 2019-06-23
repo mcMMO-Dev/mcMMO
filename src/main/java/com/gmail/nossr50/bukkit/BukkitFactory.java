@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.items.BukkitMMOItem;
 import com.gmail.nossr50.datatypes.items.MMOItem;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.nbt.RawNBT;
-import com.sk89q.jnbt.NBTUtils;
 import org.bukkit.inventory.ItemStack;
 
 /**

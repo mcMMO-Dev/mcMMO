@@ -8,9 +8,7 @@ import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.ValueType;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
