@@ -43,9 +43,9 @@ public class WorldGuardUtils {
         if(detectedIncompatibleWG)
             return false;
 
-        WorldGuardPlugin plugin = getWorldGuard();
+        WorldGuardPlugin worldGuardPlugin = getWorldGuard();
 
-        return plugin == null;
+        return isLoaded;
     }
 
     /**
