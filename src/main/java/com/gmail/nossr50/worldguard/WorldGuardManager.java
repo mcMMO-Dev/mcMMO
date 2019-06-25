@@ -24,11 +24,6 @@ public class WorldGuardManager {
         return instance;
     }
 
-    public WorldGuardManager()
-    {
-
-    }
-
     public boolean hasMainFlag(Player player)
     {
         if(player == null)
@@ -36,7 +31,6 @@ public class WorldGuardManager {
 
         BukkitPlayer localPlayer = BukkitAdapter.adapt(player);
         com.sk89q.worldedit.util.Location loc = localPlayer.getLocation();
-
 
         //WorldGuardPlugin worldGuard = getWorldGuard();
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
@@ -101,8 +95,6 @@ public class WorldGuardManager {
         FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
         try {
             // register our flag with the registry
-            /*registry.register(WorldGuardFlags.MCMMO_ENABLE_WG_FLAG);
-            registry.register(WorldGuardFlags.MCMMO_XP_WG_FLAG);*/
             registry.register(WorldGuardFlags.MCMMO_ENABLE_WG_FLAG);
             registry.register(WorldGuardFlags.MCMMO_XP_WG_FLAG);
             registry.register(WorldGuardFlags.MCMMO_HARDCORE_WG_FLAG);

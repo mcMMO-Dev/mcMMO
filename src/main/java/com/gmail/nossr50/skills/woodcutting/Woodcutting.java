@@ -148,9 +148,8 @@ public final class Woodcutting {
      * @return True if the tool can sustain the durability loss
      */
     protected static boolean handleDurabilityLoss(Set<BlockState> treeFellerBlocks, ItemStack inHand) {
-
-        if((inHand.getItemMeta().getEnchants().get(Enchantment.DURABILITY) != null && inHand.getItemMeta().getEnchants().get(Enchantment.DURABILITY) >= 1)
-                || (inHand.getItemMeta() != null && inHand.getItemMeta().isUnbreakable())) {
+        //Treat the NBT tag for unbreakable and the durability enchant differently
+        if(inHand.getItemMeta() != null && inHand.getItemMeta().isUnbreakable()) {
             return true;
         }
 

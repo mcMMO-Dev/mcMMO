@@ -1,5 +1,15 @@
 Version 2.1.89
+    When using WG with mcMMO, mcMMO now examines WG during runtime to determine if its a compatible version or not, see the notes
     Fixed a bug that could result in Tree Feller failing to remove parts of a tree
+    Updated Japanese locale (thanks snake)
+
+    NOTES:
+    https://mcmmo.org/wiki/World_guard - A list of WG flags
+    It is not necessary to have WG installed, but if you do have WG installed mcMMO hooks into it to provide some additional features.
+
+    Previously mcMMO used to determine if WG was compatible just by checking to see if it was version 7 of WG, however version 7 of WG is not guaranteed to be compatible as necessary classes that mcMMO hooks into were added during its development and some users are still running early dev versions of WG7.
+    In order to decrease the chance of error, mcMMO now uses reflection when checking to see if WG is compatible in addition to checking its version number, if its not compatible mcMMO will print a message and refrain from hooking into WG.
+    WG is an optional dependency for mcMMO, and unfortunately before this change if mcMMO thought you were running a compatible version of WG and it turned out you weren't then mcMMO would not function correctly.
 
 Version 2.1.88
     mcMMO is now more compatible with a plugin named Project Korra

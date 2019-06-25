@@ -4,58 +4,122 @@ import com.gmail.nossr50.mcMMO;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayList;
+
 import static org.bukkit.Bukkit.getServer;
 
 public class WorldGuardUtils {
     private static WorldGuardPlugin worldGuardPluginRef;
     private static boolean isLoaded = false;
-    private static boolean hasWarned = false;
+    private static boolean detectedIncompatibleWG = false;
+    private static final ArrayList<String> WGClassList;
+
+    static {
+        /*
+            These are the classes mcMMO tries to hook into for WG support, if any of them are missing it is safe to consider WG is not compatible
+            com.sk89q.worldedit.bukkit.BukkitAdapter
+            com.sk89q.worldedit.bukkit.BukkitPlayer
+            com.sk89q.worldguard.WorldGuard
+            com.sk89q.worldguard.bukkit.WorldGuardPlugin
+            com.sk89q.worldguard.protection.flags.registry.FlagConflictException
+            com.sk89q.worldguard.protection.flags.registry.FlagRegistry
+            com.sk89q.worldguard.protection.regions.RegionContainer
+            com.sk89q.worldguard.protection.regions.RegionQuery
+         */
+
+        WGClassList = new ArrayList<>();
+        WGClassList.add("com.sk89q.worldedit.bukkit.BukkitAdapter");
+        WGClassList.add("com.sk89q.worldedit.bukkit.BukkitPlayer");
+        WGClassList.add("com.sk89q.worldguard.WorldGuard");
+        WGClassList.add("com.sk89q.worldguard.bukkit.WorldGuardPlugin");
+        WGClassList.add("com.sk89q.worldguard.protection.flags.registry.FlagConflictException");
+        WGClassList.add("com.sk89q.worldguard.protection.flags.registry.FlagRegistry");
+        WGClassList.add("com.sk89q.worldguard.protection.regions.RegionContainer");
+        WGClassList.add("com.sk89q.worldguard.protection.regions.RegionQuery");
+    }
 
     public static boolean isWorldGuardLoaded()
     {
+        if(detectedIncompatibleWG)
+            return false;
+
         WorldGuardPlugin plugin = getWorldGuard();
 
-        try {
-            // WorldGuard may not be loaded
-            if (plugin == null) {
-                return false; // Maybe you want throw an exception instead
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            //Silently Fail
-            //mcMMO.p.getLogger().severe("Failed to detect worldguard.");
-            return false;
-        }
-
-
-        return true;
+        return plugin == null;
     }
 
+    /**
+     * Gets the instance of the WG plugin if its compatible
+     * Results are cached
+     * @return the instance of WG plugin, null if its not compatible or isn't present
+     */
     private static WorldGuardPlugin getWorldGuard()
     {
+        //WG plugin reference is already cached so just return it
         if(isLoaded)
             return worldGuardPluginRef;
 
+        //Grab WG if it exists
         Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
 
-        if(plugin instanceof WorldGuardPlugin)
-        {
-            if(plugin.getDescription().getVersion().startsWith("7"))
+        if(plugin == null) {
+            //WG is not present
+            detectedIncompatibleWG = true;
+            mcMMO.p.getLogger().info("WorldGuard was not detected.");
+        } else {
+            //Check that its actually of class WorldGuardPlugin
+            if(plugin instanceof WorldGuardPlugin)
             {
-                worldGuardPluginRef = (WorldGuardPlugin) plugin;
-
-                if(worldGuardPluginRef != null)
-                    isLoaded = true;
-
-            } else {
-                if(!hasWarned)
+                if(isCompatibleVersion(plugin))
                 {
-                    mcMMO.p.getLogger().severe("mcMMO only supports WorldGuard version 7! Make sure you have WG 7! This warning will not appear again.");
-                    hasWarned = true;
+                    worldGuardPluginRef = (WorldGuardPlugin) plugin;
+                    isLoaded = true;
+                }
+            } else {
+                //Plugin is not of the expected type
+                markWGIncompatible();
+            }
+        }
+
+
+        return worldGuardPluginRef;
+    }
+
+    /**
+     * Checks to make sure the version of WG installed is compatible
+     * Does this by checking for necessary WG classes via Reflection
+     * This does not guarantee compatibility, but it should help reduce the chance that mcMMO tries to hook into WG and its not compatible
+     * @return true if the version of WG appears to be compatible
+     */
+    private static boolean isCompatibleVersion(Plugin plugin) {
+        //Check that the version of WG is at least version 7.xx
+        if(!plugin.getDescription().getVersion().startsWith("7")) {
+            markWGIncompatible();
+        } else {
+            //Use Reflection to check for a class not present in all versions of WG7
+            for(String classString : WGClassList) {
+                try {
+                    Class<?> checkForClass = Class.forName(classString);
+                    detectedIncompatibleWG = false; //In case this was set to true previously
+                } catch (ClassNotFoundException e) {
+                    mcMMO.p.getLogger().severe("Missing WorldGuard class - "+classString);
+                    markWGIncompatible();
+                    break; //Break out of the loop
                 }
             }
         }
 
-        return worldGuardPluginRef;
+        return detectedIncompatibleWG;
+    }
+
+    /**
+     * Mark WG as being incompatible to avoid unnecessary operations
+     */
+    private static void markWGIncompatible() {
+        mcMMO.p.getLogger().severe("You are using a version of WG that is not compatible with mcMMO, " +
+                "WG features for mcMMO will be disabled. mcMMO requires you to be using a new version of WG7 " +
+                "in order for it to use WG features. Not all versions of WG7 are compatible.");
+        mcMMO.p.getLogger().severe("mcMMO will continue to function normally, but if you wish to use WG support you must use a compatible version.");
+        detectedIncompatibleWG = true;
     }
 }
