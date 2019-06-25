@@ -2,6 +2,7 @@ Version 2.1.89
     Many changes were made to this version that affect default values in the config, read the notes carefully if you wish to apply these changes. They are optional.
     mcMMO is compatible with the new 1.14.3, in addition to this it is still compatible with 1.14.2, 1.14.1, 1.14, and 1.13.2. This did not require any changes to be made to mcMMO, but I thought I'd add this to the notes for those wondering.
 
+    RetroMode is the default level scaling mode again
     The default level for players has been changed back to 0 from 1 (you can change it back to 1 by editing 'Skills.General.StartingLevel' in advanced.yml) if you wish to apply this change read the notes
     Super Abilities now scale in length up to level 100/1000 instead of 50/500 by default (you can edit this in advanced.yml under 'Skills.General.Ability.Length.xxx')
     Early Game Boost now only applies when leveling from level 0 to level 1
@@ -11,6 +12,7 @@ Version 2.1.89
     Added locale string 'Excavation.SubSkill.Archaeology.Stat'
     Added locale string 'Excavation.SubSkill.Archaeology.Stat.Extra'
     Tweaked the locale string 'Fishing.SubSkill.MasterAngler.Stat'
+    The interval at which you can gain Acrobatics XP from fall damage has been reduced to 3 seconds from 10 seconds, this will be configurable in 2.2.
 
     When using WorldGuard (WG) with mcMMO, mcMMO now examines WG more carefully to determine if it is a compatible version or not, see the notes. Keep in mind WG is optional and not needed to run mcMMO.
     Fixed a bug that could result in Tree Feller failing to remove parts of a tree in snowy biomes. (This fix won't apply retroactively to old trees, see the notes)
@@ -63,6 +65,11 @@ Version 2.1.89
 
     Tree Feller will now give reduced XP per block destroyed by Tree Feller and will never go below 1 XP per block, you can turn this off with 'ExploitFix.TreeFellerReducedXP' in experience.yml
     There was a bug fixed in this patch that prevents an issue where Tree Feller was not removing all blocks left behind, unfortunately this will only affect new trees made in the world. The only trees that suffered from this bug were ones in snowy areas that had snow form on them.
+
+    RetroMode and Standard mode will be getting renamed in 2.2, probably to something like 1000-scale and 100-scale respectively.
+    Retro Mode was accidental genius is the short reason for the change to make it the default level scaling for mcMMO again.
+    Standard Mode is not going anywhere, it is just opt-in now instead of the default.
+    If you delete config.yml you will need to turn RetroMode off to use Standard mode as mcMMO doesn't keep track of what level scaling you are using outside of that.
 
 Version 2.1.88
     mcMMO is now more compatible with a plugin named Project Korra
