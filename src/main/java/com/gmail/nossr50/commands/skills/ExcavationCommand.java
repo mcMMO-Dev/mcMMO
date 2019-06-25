@@ -3,8 +3,10 @@ package com.gmail.nossr50.commands.skills;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
@@ -43,6 +45,9 @@ public class ExcavationCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 
+
+        ExcavationManager excavationManager = UserManager.getPlayer(player).getExcavationManager();
+
         if (canGigaDrill) {
             messages.add(getStatMessage(SubSkillType.EXCAVATION_GIGA_DRILL_BREAKER, gigaDrillBreakerLength)
                     + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", gigaDrillBreakerLengthEndurance) : ""));
@@ -50,9 +55,8 @@ public class ExcavationCommand extends SkillCommand {
             //messages.add(LocaleLoader.getString("Excavation.Effect.Length", gigaDrillBreakerLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", gigaDrillBreakerLengthEndurance) : ""));
         }
 
-        if(Permissions.isSubSkillEnabled(player, SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
-            String rank = String.valueOf(RankUtils.getRank(player, SubSkillType.EXCAVATION_ARCHAEOLOGY));
-            messages.add(getStatMessage(SubSkillType.EXCAVATION_ARCHAEOLOGY, rank, rank));
+        if(canUseSubskill(player, SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
+            messages.add(getStatMessage(SubSkillType.EXCAVATION_ARCHAEOLOGY, percent.format(excavationManager.getArchaelogyExperienceOrbChance()), String.valueOf(excavationManager.getExperienceOrbsReward())));
         }
 
         return messages;

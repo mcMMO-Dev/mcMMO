@@ -44,12 +44,10 @@ public class ExcavationManager extends SkillManager {
                     if (skillLevel >= treasure.getDropLevel()
                             && RandomChanceUtil.checkRandomChanceExecutionSuccess(getPlayer(), PrimarySkillType.EXCAVATION, treasure.getDropChance())) {
 
-                        int rank = RankUtils.getRank(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY);
-
                         //Spawn Vanilla XP orbs if a dice roll succeeds
-                        if(RandomChanceUtil.rollDice(rank, 100)) {
+                        if(RandomChanceUtil.rollDice(getArchaelogyExperienceOrbChance(), 100)) {
                             ExperienceOrb experienceOrb = (ExperienceOrb) getPlayer().getWorld().spawnEntity(location, EntityType.EXPERIENCE_ORB);
-                            experienceOrb.setExperience(rank);
+                            experienceOrb.setExperience(getExperienceOrbsReward());
                         }
 
                         xp += treasure.getXp();
@@ -60,6 +58,18 @@ public class ExcavationManager extends SkillManager {
         }
 
         applyXpGain(xp, XPGainReason.PVE);
+    }
+
+    public int getExperienceOrbsReward() {
+        return 5 * getArchaeologyRank();
+    }
+
+    public double getArchaelogyExperienceOrbChance() {
+        return getArchaeologyRank() * 2;
+    }
+
+    public int getArchaeologyRank() {
+        return RankUtils.getRank(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY);
     }
 
     public void printExcavationDebug(Player player, BlockState blockState)
