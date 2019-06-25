@@ -50,6 +50,11 @@ public class ExcavationCommand extends SkillCommand {
             //messages.add(LocaleLoader.getString("Excavation.Effect.Length", gigaDrillBreakerLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", gigaDrillBreakerLengthEndurance) : ""));
         }
 
+        if(Permissions.isSubSkillEnabled(player, SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
+            String rank = String.valueOf(RankUtils.getRank(player, SubSkillType.EXCAVATION_ARCHAEOLOGY));
+            messages.add(getStatMessage(SubSkillType.EXCAVATION_ARCHAEOLOGY, rank, rank));
+        }
+
         return messages;
     }
 

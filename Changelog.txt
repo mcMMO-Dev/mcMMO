@@ -7,6 +7,8 @@ Version 2.1.89
     Early Game Boost now only applies when leveling from level 0 to level 1
     Removed the config setting 'MaxLevelMultiplier' from experience.yml as it is no longer used.
     When finding a treasure via Excavation players have a 1-8% chance to have a small amount vanilla experience orbs to be found alongside the treasure, the chance and number of orbs are based on the players Archaeology rank
+    Tweaked the locale string 'Excavation.SubSkill.Archaeology.Description'
+    Added locale string 'Excavation.SubSkill.Archaeology.Stat'
 
     When using WorldGuard (WG) with mcMMO, mcMMO now examines WG more carefully to determine if it is a compatible version or not, see the notes. Keep in mind WG is optional and not needed to run mcMMO.
     Fixed a bug that could result in Tree Feller failing to remove parts of a tree in snowy biomes. (This fix won't apply retroactively to old trees, see the notes)
@@ -51,6 +53,8 @@ Version 2.1.89
     Previously mcMMO used to determine if WG was compatible just by checking to see if it was version 7 of WG, however version 7 of WG is not guaranteed to be compatible as necessary classes that mcMMO hooks into were added during its development and some users are still running early dev versions of WG7.
     In order to decrease the chance of error, mcMMO now uses reflection when checking to see if WG is compatible in addition to checking its version number, if its not compatible mcMMO will print a message and refrain from hooking into WG.
     WG is an optional dependency for mcMMO, and unfortunately before this change if mcMMO thought you were running a compatible version of WG and it turned out you weren't then mcMMO would not function correctly.
+
+    Archaeology does something now, it will be tweaked again in the future. Previously rank 1 of Archaeology was required to find treasures but that was all it did, now each rank of Archaeology also adds a small chance to find experience orbs when a player finds treasure.
 
     In a prior patch I removed damage on tools if they had Unbreaking NBT or Unbreaking Enchantment, at the time I made this change I did not realize they were different things and just shared the same name, this patch fixes this mistake. My intention was to prevent damage on tools with the NBT unbreaking tag which makes an item never suffer from durability loss.
     mcMMO reduces damage to tools from super abilities if they have the "Durability/Unbreaking" enchantment already, this behaviour has been in mcMMO for a long time.
