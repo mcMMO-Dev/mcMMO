@@ -77,14 +77,14 @@ Feedback:
             SendCopyOfMessageToChat: true
 Skills:
     General:
-        StartingLevel: 1
+        StartingLevel: 0
         Ability:
             Length:
                 Standard:
-                    CapLevel: 50
+                    CapLevel: 100
                     IncreaseLevel: 5
                 RetroMode:
-                    CapLevel: 500
+                    CapLevel: 1000
                     IncreaseLevel: 50
             EnchantBuff: 5
             # IncreaseLevel: This setting will determine when the length of every ability gets longer with 1 second

@@ -1,10 +1,50 @@
 Version 2.1.89
+    Many changes were made to this version that affect default values in the config, read the notes carefully if you wish to apply these changes. They are optional.
+    mcMMO is compatible with the new 1.14.3, in addition to this it is still compatible with 1.14.2, 1.14.1, 1.14, and 1.13.2. This did not require any changes to be made to mcMMO, but I thought I'd add this to the notes for those wondering.
+
+    The default level for players has been changed back to 0 from 1 (you can change it back to 1 by editing 'Skills.General.StartingLevel' in advanced.yml) if you wish to apply this change read the notes
+    Super Abilities now scale in length up to level 100/1000 instead of 50/500 by default (you can edit this in advanced.yml under 'Skills.General.Ability.Length.xxx')
+    Early Game Boost now only applies when leveling from level 0 to level 1
+    Removed the config setting 'MaxLevelMultiplier' from experience.yml as it is no longer used.
+
+    Many skills which used to unlock at level 5/50 now unlock at level 1 instead
+    Arrow Retrieval now unlocks at level 1 in both Standard and RetroMode
+    Skill Shot now unlocks at level 1 in both Standard and RetroMode
+    Dodge now unlocks at level 1 in both Standard and RetroMode
+    Critical Strikes now unlocks at level 1 in both Standard and RetroMode
+    Armor Impact now unlocks at level 1 in both Standard and RetroMode
+    Beast Lore now unlocks at level 1 in both Standard and RetroMode
+    Call Of The Wild now unlocks at level 1 in both Standard and RetroMode
+    Scrap Collector now unlocks at level 1 in both Standard and RetroMode
+    Treasure Hunter now unlocks at level 1 in both Standard and RetroMode
+    Rupture now unlocks at level 1 in both Standard and RetroMode
+    Iron Arm Style now unlocks at level 1 in both Standard and RetroMode
+    Harvest Lumber now unlocks at level 1 in both Standard and RetroMode
+    Archaeology now unlocks at level 1 in both Standard and RetroMode
+    Repair Mastery now unlocks at level 1 in both Standard and RetroMode
+    Double Drops (Herbalism and Mining) now have ranks and unlock at level 1 in both Standard and RetroMode
+    Concoctions rank 2 now unlocks at Level 1 for both Standard and RetroMode
+    Serrated Strikes now unlocks at levels 5/50 instead of 10/100
+    Berserk now unlocks at levels 5/50 instead of 10/100
     When using WorldGuard (WG) with mcMMO, mcMMO now examines WG more carefully to determine if it is a compatible version or not, see the notes. Keep in mind WG is optional and not needed to run mcMMO.
     Fixed a bug that could result in Tree Feller failing to remove parts of a tree in snowy biomes. (This fix won't apply retroactively to old trees, see the notes)
     Updated Japanese locale (thanks snake)
     Tree Feller and other Super Abilities will damage tools with the Enchantment named 'Durability/Unbreaking' again, this does not apply to the NBT tag named Unbreaking (Unbreaking NBT tag is safe from damage however, try not to confuse them as they share the same name)
+    Added new setting 'ExploitFix.TreeFellerReducedXP' to experience.yml
+    Tree Feller will no longer give full XP for each block destroyed and instead give diminishing returns on XP for each block removed. You can turn this off by setting 'ExploitFix.TreeFellerReducedXP' in experience.yml to false
 
     NOTES:
+    Editing your config files is not required for this patch (and never will be), however I would highly recommend it. Read the notes below this line carefully.
+    If you want to update to this patch easily and you don't mind default config values, delete skillranks.yml, advanced.yml, and experience.yml before starting your server with 2.1.89 of mcMMO applied.
+    Many skills now unlock at level 1 and the default starting level is back to 0. It is recommended you change this number from 1 to 0 manually by editing 'Skills.General.StartingLevel' in advanced.yml or deleting advanced.yml and generating a new file when 2.1.89 starts.
+    It is recommended you make the manual edits to skillranks.yml to apply this change or delete skillranks.yml and a new one will be generated once you start 2.1.89.
+
+    Early Game Boost was used to help players get to level 5 quickly by boosting their XP until they got there, this caused some confusion as they appeared to be 'learning a skill' for multiple levels, on RetroMode this lasted until level 50.
+    I have changed Early Game Boost to only last from level 0-1 on both RetroMode and Standard, and now important skills are unlocked at level 1.
+    I was going to wait until 2.2 was done to deploy this change, but 2.2 is some time away and the previous system was causing some confusion.
+    Early Game Boost gives players extra XP for skills that are level 0, you can turn this system off by setting 'EarlyGameBoost.Enabled' in experience.yml to false
+    Early Game Boost will show 'Learning a new skill...' if XP bars are enabled
+
     https://mcmmo.org/wiki/World_guard - A list of WG flags supported by mcMMO.
     It is not necessary to have WG installed, but if you do have WG installed mcMMO hooks into it to provide some additional features.
     Previously mcMMO used to determine if WG was compatible just by checking to see if it was version 7 of WG, however version 7 of WG is not guaranteed to be compatible as necessary classes that mcMMO hooks into were added during its development and some users are still running early dev versions of WG7.
@@ -14,6 +54,7 @@ Version 2.1.89
     In a prior patch I removed damage on tools if they had Unbreaking NBT or Unbreaking Enchantment, at the time I made this change I did not realize they were different things and just shared the same name, this patch fixes this mistake. My intention was to prevent damage on tools with the NBT unbreaking tag which makes an item never suffer from durability loss.
     mcMMO reduces damage to tools from super abilities if they have the "Durability/Unbreaking" enchantment already, this behaviour has been in mcMMO for a long time.
 
+    Tree Feller will now give reduced XP per block destroyed by Tree Feller and will never go below 1 XP per block, you can turn this off with 'ExploitFix.TreeFellerReducedXP' in experience.yml
     There was a bug fixed in this patch that prevents an issue where Tree Feller was not removing all blocks left behind, unfortunately this will only affect new trees made in the world. The only trees that suffered from this bug were ones in snowy areas that had snow form on them.
 
 Version 2.1.88

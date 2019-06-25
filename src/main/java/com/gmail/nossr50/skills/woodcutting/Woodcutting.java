@@ -10,7 +10,6 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -19,14 +18,7 @@ import java.util.Set;
 
 public final class Woodcutting {
     public static int treeFellerThreshold = Config.getInstance().getTreeFellerThreshold();
-
-
     protected static boolean treeFellerReachedThreshold = false;
-
-    protected enum ExperienceGainMethod {
-        DEFAULT,
-        TREE_FELLER,
-    }
 
     private Woodcutting() {}
 
@@ -34,16 +26,42 @@ public final class Woodcutting {
      * Retrieves the experience reward from a log
      *
      * @param blockState Log being broken
-     * @param experienceGainMethod How the log is being broken
      * @return Amount of experience
      */
-    protected static int getExperienceFromLog(BlockState blockState, ExperienceGainMethod experienceGainMethod) {
+    protected static int getExperienceFromLog(BlockState blockState) {
         if (mcMMO.getModManager().isCustomLog(blockState)) {
             return mcMMO.getModManager().getBlock(blockState).getXpGain();
         }
 
         return ExperienceConfig.getInstance().getXp(PrimarySkillType.WOODCUTTING, blockState.getType());
     }
+
+    /**
+     * Retrieves the experience reward from logging via Tree Feller
+     * Experience is reduced per log processed so far
+     * Experience is only reduced if the config option to reduce Tree Feller XP is set
+     * Experience per log will not fall below 1 unless the experience for that log is set to 0 in the config
+     *
+     * @param blockState Log being broken
+     * @param woodCount how many logs have given out XP for this tree feller so far
+     * @return Amount of experience
+     */
+    protected static int processTreeFellerXPGains(BlockState blockState, int woodCount) {
+        int rawXP = ExperienceConfig.getInstance().getXp(PrimarySkillType.WOODCUTTING, blockState.getType());
+
+        if(rawXP <= 0)
+            return 0;
+
+        if(ExperienceConfig.getInstance().isTreeFellerXPReduced()) {
+            int reducedXP = 1 + (woodCount * 5);
+            rawXP = Math.max(1, rawXP - reducedXP);
+            return rawXP;
+        } else {
+            return ExperienceConfig.getInstance().getXp(PrimarySkillType.WOODCUTTING, blockState.getType());
+        }
+    }
+
+
 
     /**
      * Checks for double drops

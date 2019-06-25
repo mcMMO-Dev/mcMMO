@@ -138,7 +138,6 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     }
 
     public boolean isEarlyGameBoostEnabled() { return config.getBoolean("EarlyGameBoost.Enabled", true); }
-    public double getEarlyGameBoostMultiplier() { return config.getDouble("EarlyGameBoost.MaxLevelMultiplier", 0.05D); }
 
     /*
      * FORMULA SETTINGS
@@ -151,6 +150,7 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
 
     public boolean isFishingExploitingPrevented() { return config.getBoolean("ExploitFix.Fishing", true); }
     public boolean isAcrobaticsExploitingPrevented() { return config.getBoolean("ExploitFix.Acrobatics", true); }
+    public boolean isTreeFellerXPReduced() { return config.getBoolean("ExploitFix.TreeFellerReducedXP", true); }
 
     /* Curve settings */
     public FormulaType getFormulaType() { return FormulaType.getFormulaType(config.getString("Experience_Formula.Curve")); }

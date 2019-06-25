@@ -14,7 +14,7 @@ Alchemy:
     Concoctions:
         Standard:
             Rank_1: 0
-            Rank_2: 25
+            Rank_2: 1
             Rank_3: 35
             Rank_4: 50
             Rank_5: 65
@@ -23,7 +23,7 @@ Alchemy:
             Rank_8: 100
         RetroMode:
             Rank_1: 0
-            Rank_2: 250
+            Rank_2: 1
             Rank_3: 350
             Rank_4: 500
             Rank_5: 650
@@ -56,12 +56,12 @@ Archery:
             Rank_10: 1000
     ArrowRetrieval:
         Standard:
-            Rank_1: 2
+            Rank_1: 1
         RetroMode:
-            Rank_1: 20
+            Rank_1: 1
     SkillShot:
         Standard:
-            Rank_1: 5
+            Rank_1: 1
             Rank_2: 10
             Rank_3: 15
             Rank_4: 20
@@ -82,7 +82,7 @@ Archery:
             Rank_19: 95
             Rank_20: 100
         RetroMode:
-            Rank_1: 50
+            Rank_1: 1
             Rank_2: 100
             Rank_3: 150
             Rank_4: 200
@@ -105,9 +105,9 @@ Archery:
 Acrobatics:
     Dodge:
         Standard:
-            Rank_1: 2
+            Rank_1: 1
         RetroMode:
-            Rank_1: 20
+            Rank_1: 1
 Axes:
     AxesLimitBreak:
         Standard:
@@ -139,9 +139,9 @@ Axes:
             Rank_1: 50
     CriticalStrikes:
         Standard:
-            Rank_1: 2
+            Rank_1: 1
         RetroMode:
-            Rank_1: 20
+            Rank_1: 1
     GreaterImpact:
         Standard:
             Rank_1: 25
@@ -149,7 +149,7 @@ Axes:
             Rank_1: 250
     ArmorImpact:
         Standard:
-            Rank_1: 5
+            Rank_1: 1
             Rank_2: 10
             Rank_3: 15
             Rank_4: 20
@@ -170,7 +170,7 @@ Axes:
             Rank_19: 95
             Rank_20: 100
         RetroMode:
-            Rank_1: 50
+            Rank_1: 1
             Rank_2: 100
             Rank_3: 150
             Rank_4: 200
@@ -204,9 +204,9 @@ Axes:
 Taming:
     BeastLore:
         Standard:
-            Rank_1: 2
+            Rank_1: 1
         RetroMode:
-            Rank_1: 20
+            Rank_1: 1
     Gore:
         Standard:
             Rank_1: 15
@@ -214,9 +214,9 @@ Taming:
             Rank_1: 150
     CallOfTheWild:
         Standard:
-            Rank_1: 5
+            Rank_1: 1
         RetroMode:
-            Rank_1: 50
+            Rank_1: 1
     Pummel:
         Standard:
             Rank_1: 20
@@ -284,7 +284,7 @@ Smelting:
 Salvage:
     ScrapCollector:
         Standard:
-            Rank_1: 2
+            Rank_1: 1
             Rank_2: 10
             Rank_3: 15
             Rank_4: 20
@@ -293,7 +293,7 @@ Salvage:
             Rank_7: 35
             Rank_8: 40
         RetroMode:
-            Rank_1: 20
+            Rank_1: 1
             Rank_2: 100
             Rank_3: 150
             Rank_4: 200
@@ -321,6 +321,11 @@ Salvage:
             Rank_7: 850
             Rank_8: 1000
 Mining:
+    DoubleDrops:
+        Standard:
+            Rank_1: 1
+        RetroMode:
+            Rank_1: 1
     SuperBreaker:
         Standard:
             Rank_1: 5
@@ -358,6 +363,11 @@ Mining:
             Rank_7: 850
             Rank_8: 1000
 Herbalism:
+    DoubleDrops:
+        Standard:
+            Rank_1: 1
+        RetroMode:
+            Rank_1: 1
     GreenTerra:
         Standard:
             Rank_1: 5
@@ -423,7 +433,7 @@ Fishing:
             Rank_5: 1000
     TreasureHunter:
         Standard:
-            Rank_1: 10
+            Rank_1: 1
             Rank_2: 25
             Rank_3: 35
             Rank_4: 50
@@ -432,7 +442,7 @@ Fishing:
             Rank_7: 85
             Rank_8: 100
         RetroMode:
-            Rank_1: 100
+            Rank_1: 1
             Rank_2: 250
             Rank_3: 350
             Rank_4: 500
@@ -478,20 +488,20 @@ Swords:
             Rank_1: 200
     Rupture:
         Standard:
-            Rank_1: 5
+            Rank_1: 1
             Rank_2: 15
             Rank_3: 75
             Rank_4: 90
         RetroMode:
-            Rank_1: 50
+            Rank_1: 1
             Rank_2: 150
             Rank_3: 750
             Rank_4: 900
     SerratedStrikes:
         Standard:
-            Rank_1: 10
+            Rank_1: 5
         RetroMode:
-            Rank_1: 100
+            Rank_1: 50
 Unarmed:
     UnarmedLimitBreak:
         Standard:
@@ -518,9 +528,9 @@ Unarmed:
             Rank_10: 1000
     Berserk:
         Standard:
-            Rank_1: 10
+            Rank_1: 5
         RetroMode:
-            Rank_1: 100
+            Rank_1: 50
     ArrowDeflect:
         Standard:
             Rank_1: 20
@@ -538,13 +548,13 @@ Unarmed:
             Rank_1: 600
     IronArmStyle:
         Standard:
-            Rank_1: 2
+            Rank_1: 1
             Rank_2: 25
             Rank_3: 50
             Rank_4: 75
             Rank_5: 100
         RetroMode:
-            Rank_1: 20
+            Rank_1: 1
             Rank_2: 250
             Rank_3: 500
             Rank_4: 750
@@ -595,7 +605,7 @@ Woodcutting:
         Standard:
             Rank_1: 1
         RetroMode:
-            Rank_1: 10
+            Rank_1: 1
     LeafBlower:
         Standard:
             Rank_1: 15
@@ -613,7 +623,7 @@ Excavation:
             Rank_1: 50
     Archaeology:
         Standard:
-            Rank_1: 5
+            Rank_1: 1
             Rank_2: 25
             Rank_3: 35
             Rank_4: 50
@@ -622,7 +632,7 @@ Excavation:
             Rank_7: 85
             Rank_8: 100
         RetroMode:
-            Rank_1: 50
+            Rank_1: 1
             Rank_2: 250
             Rank_3: 350
             Rank_4: 500
@@ -633,9 +643,9 @@ Excavation:
 Repair:
     RepairMastery:
         Standard:
-            Rank_1: 20
+            Rank_1: 1
         RetroMode:
-            Rank_1: 200
+            Rank_1: 1
     SuperRepair:
         Standard:
             Rank_1: 40
