@@ -16,6 +16,13 @@ import static org.bukkit.Bukkit.getServer;
 public class WorldGuardManager {
     private static WorldGuardManager instance;
     private WorldGuardPlugin worldGuardPluginRef;
+    private RegionContainer container;
+
+    public WorldGuardManager() {
+        if(WorldGuardUtils.isWorldGuardLoaded()) {
+            container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        }
+    }
 
     public static WorldGuardManager getInstance() {
         if(instance == null)
@@ -33,7 +40,6 @@ public class WorldGuardManager {
         com.sk89q.worldedit.util.Location loc = localPlayer.getLocation();
 
         //WorldGuardPlugin worldGuard = getWorldGuard();
-        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
 
         //ApplicableRegionSet set = query.getApplicableRegions(loc);
@@ -50,7 +56,6 @@ public class WorldGuardManager {
         com.sk89q.worldedit.util.Location loc = localPlayer.getLocation();
 
         //WorldGuardPlugin worldGuard = getWorldGuard();
-        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
 
         //ApplicableRegionSet set = query.getApplicableRegions(loc);
@@ -67,7 +72,6 @@ public class WorldGuardManager {
         com.sk89q.worldedit.util.Location loc = localPlayer.getLocation();
 
         //WorldGuardPlugin worldGuard = getWorldGuard();
-        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
 
         //ApplicableRegionSet set = query.getApplicableRegions(loc);
