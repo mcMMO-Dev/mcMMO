@@ -15,7 +15,7 @@ Version 2.1.89
     When using WorldGuard (WG) with mcMMO, mcMMO now examines WG more carefully to determine if it is a compatible version or not, see the notes. Keep in mind WG is optional and not needed to run mcMMO.
     Fixed a bug that could result in Tree Feller failing to remove parts of a tree in snowy biomes. (This fix won't apply retroactively to old trees, see the notes)
     Updated Japanese locale (thanks snake)
-    Tree Feller and other Super Abilities will damage tools with the Enchantment named 'Durability/Unbreaking' again, this does not apply to the NBT tag named Unbreaking (Unbreaking NBT tag is safe from damage however, try not to confuse them as they share the same name)
+    Tree Feller and other Super Abilities will damage tools with the Enchantment named 'Durability/Unbreaking' again, this does not apply to the NBT tag named Ubreakable (Unbreakable NBT tag is safe from damage however, try not to confuse them as they share similar names)
     Added new setting 'ExploitFix.TreeFellerReducedXP' to experience.yml
     Tree Feller will no longer give full XP for each block destroyed and instead give diminishing returns on XP for each block removed. You can turn this off by setting 'ExploitFix.TreeFellerReducedXP' in experience.yml to false
     Many skills which used to unlock at level 5/50 now unlock at level 1 instead
@@ -58,7 +58,7 @@ Version 2.1.89
 
     Archaeology does something now, it will be tweaked again in the future. Previously rank 1 of Archaeology was required to find treasures but that was all it did, now each rank of Archaeology also adds a small chance to find experience orbs when a player finds treasure.
 
-    In a prior patch I removed damage on tools if they had Unbreaking NBT or Unbreaking Enchantment, at the time I made this change I did not realize they were different things and just shared the same name, this patch fixes this mistake. My intention was to prevent damage on tools with the NBT unbreaking tag which makes an item never suffer from durability loss.
+    In a prior patch I removed damage on tools if they had Unbreakable NBT or Unbreaking Enchantment, at the time I made this change I did not realize they were different things and just shared the same name, this patch fixes this mistake. My intention was to prevent damage on tools with the NBT unbreakable tag which makes an item never suffer from durability loss.
     mcMMO reduces damage to tools from super abilities if they have the "Durability/Unbreaking" enchantment already, this behaviour has been in mcMMO for a long time.
 
     Tree Feller will now give reduced XP per block destroyed by Tree Feller and will never go below 1 XP per block, you can turn this off with 'ExploitFix.TreeFellerReducedXP' in experience.yml

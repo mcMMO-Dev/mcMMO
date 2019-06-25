@@ -43,7 +43,7 @@ public class WorldGuardUtils {
         if(detectedIncompatibleWG)
             return false;
 
-        WorldGuardPlugin worldGuardPlugin = getWorldGuard();
+        worldGuardPluginRef = getWorldGuard();
 
         return isLoaded;
     }
@@ -104,12 +104,12 @@ public class WorldGuardUtils {
                 } catch (ClassNotFoundException e) {
                     mcMMO.p.getLogger().severe("Missing WorldGuard class - "+classString);
                     markWGIncompatible();
-                    break; //Break out of the loop
+                    return false;
                 }
             }
         }
 
-        return detectedIncompatibleWG;
+        return true;
     }
 
     /**

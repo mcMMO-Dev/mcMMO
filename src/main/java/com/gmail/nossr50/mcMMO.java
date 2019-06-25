@@ -45,7 +45,6 @@ import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
-import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import com.google.common.base.Charsets;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bstats.bukkit.Metrics;
@@ -311,10 +310,7 @@ public class mcMMO extends JavaPlugin {
     public void onLoad()
     {
         if(getServer().getPluginManager().getPlugin("WorldGuard") != null) {
-            //Make sure WG is compatible before proceeding
-            if(WorldGuardUtils.isWorldGuardLoaded()) {
-                WorldGuardManager.getInstance().registerFlags();
-            }
+            WorldGuardManager.getInstance().registerFlags();
         }
     }
 
@@ -338,6 +334,7 @@ public class mcMMO extends JavaPlugin {
             placeStore.saveAll();       // Save our metadata
             placeStore.cleanUp();       // Cleanup empty metadata stores
         }
+
         catch (Exception e) { e.printStackTrace(); }
 
         debug("Canceling all tasks...");

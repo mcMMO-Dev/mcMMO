@@ -6,7 +6,6 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
-import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -16,13 +15,6 @@ import static org.bukkit.Bukkit.getServer;
 public class WorldGuardManager {
     private static WorldGuardManager instance;
     private WorldGuardPlugin worldGuardPluginRef;
-    private RegionContainer container;
-
-    public WorldGuardManager() {
-        if(WorldGuardUtils.isWorldGuardLoaded()) {
-            container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-        }
-    }
 
     public static WorldGuardManager getInstance() {
         if(instance == null)
@@ -40,7 +32,7 @@ public class WorldGuardManager {
         com.sk89q.worldedit.util.Location loc = localPlayer.getLocation();
 
         //WorldGuardPlugin worldGuard = getWorldGuard();
-        RegionQuery query = container.createQuery();
+        RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
 
         //ApplicableRegionSet set = query.getApplicableRegions(loc);
 
@@ -56,7 +48,7 @@ public class WorldGuardManager {
         com.sk89q.worldedit.util.Location loc = localPlayer.getLocation();
 
         //WorldGuardPlugin worldGuard = getWorldGuard();
-        RegionQuery query = container.createQuery();
+        RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
 
         //ApplicableRegionSet set = query.getApplicableRegions(loc);
 
@@ -72,7 +64,7 @@ public class WorldGuardManager {
         com.sk89q.worldedit.util.Location loc = localPlayer.getLocation();
 
         //WorldGuardPlugin worldGuard = getWorldGuard();
-        RegionQuery query = container.createQuery();
+        RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
 
         //ApplicableRegionSet set = query.getApplicableRegions(loc);
 
@@ -93,10 +85,8 @@ public class WorldGuardManager {
 
     public void registerFlags()
     {
-        if(getWorldGuard() == null)
-            return;
-
         FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
+
         try {
             // register our flag with the registry
             registry.register(WorldGuardFlags.MCMMO_ENABLE_WG_FLAG);
