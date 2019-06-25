@@ -10,6 +10,7 @@ Version 2.1.89
     Tweaked the locale string 'Excavation.SubSkill.Archaeology.Description'
     Added locale string 'Excavation.SubSkill.Archaeology.Stat'
     Added locale string 'Excavation.SubSkill.Archaeology.Stat.Extra'
+    Tweaked the locale string 'Fishing.SubSkill.MasterAngler.Stat'
 
     When using WorldGuard (WG) with mcMMO, mcMMO now examines WG more carefully to determine if it is a compatible version or not, see the notes. Keep in mind WG is optional and not needed to run mcMMO.
     Fixed a bug that could result in Tree Feller failing to remove parts of a tree in snowy biomes. (This fix won't apply retroactively to old trees, see the notes)

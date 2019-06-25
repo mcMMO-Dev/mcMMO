@@ -61,7 +61,7 @@ public class ExcavationManager extends SkillManager {
     }
 
     public int getExperienceOrbsReward() {
-        return 5 * getArchaeologyRank();
+        return 1 * getArchaeologyRank();
     }
 
     public double getArchaelogyExperienceOrbChance() {

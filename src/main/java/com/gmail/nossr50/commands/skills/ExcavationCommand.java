@@ -55,7 +55,11 @@ public class ExcavationCommand extends SkillCommand {
         }
 
         if(canUseSubskill(player, SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
-            messages.add(getStatMessage(SubSkillType.EXCAVATION_ARCHAEOLOGY, percent.format(excavationManager.getArchaelogyExperienceOrbChance()), String.valueOf(excavationManager.getExperienceOrbsReward())));
+            messages.add(getStatMessage(false, false, SubSkillType.EXCAVATION_ARCHAEOLOGY,
+                    percent.format(excavationManager.getArchaelogyExperienceOrbChance() / 100.0D)));
+            messages.add(getStatMessage(true, false, SubSkillType.EXCAVATION_ARCHAEOLOGY,
+                    String.valueOf(excavationManager.getExperienceOrbsReward())));
+
         }
 
         return messages;
