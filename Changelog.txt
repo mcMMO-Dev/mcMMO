@@ -41,6 +41,8 @@ Version 2.1.89
     Berserk now unlocks at levels 5/50 instead of 10/100
 
     NOTES:
+    I'm looking into adding 1.12.2 support sooner than expected.
+
     Editing your config files is not required for this patch (and never will be), however I would highly recommend it. Read the notes below this line carefully.
     If you want to update to this patch easily and you don't mind default config values, delete skillranks.yml, advanced.yml, and experience.yml before starting your server with 2.1.89 of mcMMO applied.
     Many skills now unlock at level 1 and the default starting level is back to 0. It is recommended you change this number from 1 to 0 manually by editing 'Skills.General.StartingLevel' in advanced.yml or deleting advanced.yml and generating a new file when 2.1.89 starts.
