@@ -45,7 +45,6 @@ public class ExcavationCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 
-
         ExcavationManager excavationManager = UserManager.getPlayer(player).getExcavationManager();
 
         if (canGigaDrill) {
