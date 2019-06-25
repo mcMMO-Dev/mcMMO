@@ -10,9 +10,12 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
+import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -40,6 +43,15 @@ public class ExcavationManager extends SkillManager {
                 for (ExcavationTreasure treasure : treasures) {
                     if (skillLevel >= treasure.getDropLevel()
                             && RandomChanceUtil.checkRandomChanceExecutionSuccess(getPlayer(), PrimarySkillType.EXCAVATION, treasure.getDropChance())) {
+
+                        int rank = RankUtils.getRank(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY);
+
+                        //Spawn Vanilla XP orbs if a dice roll succeeds
+                        if(RandomChanceUtil.rollDice(rank, 100)) {
+                            ExperienceOrb experienceOrb = (ExperienceOrb) getPlayer().getWorld().spawnEntity(location, EntityType.EXPERIENCE_ORB);
+                            experienceOrb.setExperience(rank);
+                        }
+
                         xp += treasure.getXp();
                         Misc.dropItem(location, treasure.getDrop());
                     }

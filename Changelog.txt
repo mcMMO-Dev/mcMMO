@@ -6,7 +6,14 @@ Version 2.1.89
     Super Abilities now scale in length up to level 100/1000 instead of 50/500 by default (you can edit this in advanced.yml under 'Skills.General.Ability.Length.xxx')
     Early Game Boost now only applies when leveling from level 0 to level 1
     Removed the config setting 'MaxLevelMultiplier' from experience.yml as it is no longer used.
+    When finding a treasure via Excavation players have a 1-8% chance to have a small amount vanilla experience orbs to be found alongside the treasure, the chance and number of orbs are based on the players Archaeology rank
 
+    When using WorldGuard (WG) with mcMMO, mcMMO now examines WG more carefully to determine if it is a compatible version or not, see the notes. Keep in mind WG is optional and not needed to run mcMMO.
+    Fixed a bug that could result in Tree Feller failing to remove parts of a tree in snowy biomes. (This fix won't apply retroactively to old trees, see the notes)
+    Updated Japanese locale (thanks snake)
+    Tree Feller and other Super Abilities will damage tools with the Enchantment named 'Durability/Unbreaking' again, this does not apply to the NBT tag named Unbreaking (Unbreaking NBT tag is safe from damage however, try not to confuse them as they share the same name)
+    Added new setting 'ExploitFix.TreeFellerReducedXP' to experience.yml
+    Tree Feller will no longer give full XP for each block destroyed and instead give diminishing returns on XP for each block removed. You can turn this off by setting 'ExploitFix.TreeFellerReducedXP' in experience.yml to false
     Many skills which used to unlock at level 5/50 now unlock at level 1 instead
     Arrow Retrieval now unlocks at level 1 in both Standard and RetroMode
     Skill Shot now unlocks at level 1 in both Standard and RetroMode
@@ -26,12 +33,6 @@ Version 2.1.89
     Concoctions rank 2 now unlocks at Level 1 for both Standard and RetroMode
     Serrated Strikes now unlocks at levels 5/50 instead of 10/100
     Berserk now unlocks at levels 5/50 instead of 10/100
-    When using WorldGuard (WG) with mcMMO, mcMMO now examines WG more carefully to determine if it is a compatible version or not, see the notes. Keep in mind WG is optional and not needed to run mcMMO.
-    Fixed a bug that could result in Tree Feller failing to remove parts of a tree in snowy biomes. (This fix won't apply retroactively to old trees, see the notes)
-    Updated Japanese locale (thanks snake)
-    Tree Feller and other Super Abilities will damage tools with the Enchantment named 'Durability/Unbreaking' again, this does not apply to the NBT tag named Unbreaking (Unbreaking NBT tag is safe from damage however, try not to confuse them as they share the same name)
-    Added new setting 'ExploitFix.TreeFellerReducedXP' to experience.yml
-    Tree Feller will no longer give full XP for each block destroyed and instead give diminishing returns on XP for each block removed. You can turn this off by setting 'ExploitFix.TreeFellerReducedXP' in experience.yml to false
 
     NOTES:
     Editing your config files is not required for this patch (and never will be), however I would highly recommend it. Read the notes below this line carefully.
