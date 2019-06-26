@@ -232,9 +232,13 @@ public final class CombatUtils {
         }
 
         double distanceMultiplier = archeryManager.distanceXpBonusMultiplier(target, arrow);
+        double forceMultiplier = 1.0; //Hacky Fix - some plugins spawn arrows and assign them to players after the ProjectileLaunchEvent fires
+
+        if(arrow.hasMetadata(mcMMO.bowForceKey))
+            forceMultiplier = arrow.getMetadata(mcMMO.bowForceKey).get(0).asDouble();
 
         applyScaledModifiers(initialDamage, finalDamage, event);
-        startGainXp(mcMMOPlayer, target, PrimarySkillType.ARCHERY, arrow.getMetadata(mcMMO.bowForceKey).get(0).asDouble() * distanceMultiplier);
+        startGainXp(mcMMOPlayer, target, PrimarySkillType.ARCHERY, forceMultiplier * distanceMultiplier);
     }
 
     /**

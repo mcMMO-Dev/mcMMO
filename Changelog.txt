@@ -1,3 +1,6 @@
+Version 2.1.91
+    mcMMO is now more compatible with plugins that spawn arrows in unexpected ways, this fixes some NPE in mcMMO when using certain plugins
+
 Version 2.1.90
     Salvaged items now travel much slower towards the player
     Books from salvage will now travel towards the player

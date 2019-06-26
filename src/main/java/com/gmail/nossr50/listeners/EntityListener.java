@@ -128,7 +128,6 @@ public class EntityListener implements Listener {
 
         if(event.getEntity().getShooter() instanceof Player)
         {
-
             Player player = (Player) event.getEntity().getShooter();
 
             /* WORLD GUARD MAIN FLAG CHECK */
