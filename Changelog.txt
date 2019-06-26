@@ -1,13 +1,36 @@
 Version 2.1.90
-    Default values for Packed Ice and Blue Ice reduced to 20 XP (update manually or delete experience.yml to regen your config)
     Salvaged items now travel much slower towards the player
     Books from salvage will now travel towards the player
     Salvaged items travelling towards you will now have their speed adjusted based on distance
 
+    Common Materials found when mining have had their XP gains reduced and rare materials have had their XP gains increased
+    Diamond Ore has had its XP increased from 750 to 2400
+    Gold Ore has had its XP increased from 350 to 1300
+    Iron Ore has had its XP increased from 250 to 900
+    Lapis Ore has had its XP increased from 400 to 800
+    Nether Quartz Ore has had its XP increased from 100 to 300
+    Redstone Ore has had its XP increased from 150 to 600
+    Blue_Ice has had its default XP value reduced to 15
+    Packed_Ice has had its default XP value reduced to 15
+    Netherrack has had its default XP value reduced to 15
+    Coal Ore has had its XP increased from 100 to 400
+    Stone has had its XP decreased from 30 to 15
+    Granite has had its XP decreased from 30 to 15
+    Andesite has had its XP decreased from 30 to 15
+    Diorite has had its XP decreased from 30 to 15
+    End Stone has had its XP decreased from 30 to 15
+    Glow Stone has had its XP decreased from 30 to 15
+    End Bricks has had its XP decreased from 200 to 50
+
+
     NOTES:
+    You can either apply the default XP changes manually to experience.yml or delete it to generate a new file
+
     Sorry about salvaged items traveling too quickly, in testing on my LAN server with ideal conditions they always entered my inventory and never shot past me so the high speed of the items was not an apparent issue.
-    However, conditions are not always ideal so having the item travel at you quickly can lead to problems, and I've gotten reports about the items shooting past players. This was not intentional and something that did not happen during testing, but was a valid bug.
-    I've made it so now items spawned from salvage can only travel very slowly towards you, this solves the original issue where salvaged items were being flung in random directions (how its been in mcMMO for like 6 years) without potential for accidents.
+    I've tested the new changes to how they travel towards you pretty thoroughly, they never go fast enough to go past you and they adjust their speed based on distance to you with some speed limitations.
+    In testing the new tweaks work well whether the salvage anvil is above, below, or at the same height as you.
+
+    I'll be tweaking XP values across all skills more carefully in the upcoming content patch due after 2.2. Some tweaks to XP gains will be applied for 2.2.
 
 Version 2.1.89
     Many changes were made to this version that affect default values in the config, read the notes carefully if you wish to apply these changes. They are optional.
