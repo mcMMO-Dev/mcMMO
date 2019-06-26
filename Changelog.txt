@@ -1,3 +1,14 @@
+Version 2.1.90
+    Default values for Packed Ice and Blue Ice reduced to 20 XP (update manually or delete experience.yml to regen your config)
+    Salvaged items now travel much slower towards the player
+    Books from salvage will now travel towards the player
+    Salvaged items travelling towards you will now have their speed adjusted based on distance
+
+    NOTES:
+    Sorry about salvaged items traveling too quickly, in testing on my LAN server with ideal conditions they always entered my inventory and never shot past me so the high speed of the items was not an apparent issue.
+    However, conditions are not always ideal so having the item travel at you quickly can lead to problems, and I've gotten reports about the items shooting past players. This was not intentional and something that did not happen during testing, but was a valid bug.
+    I've made it so now items spawned from salvage can only travel very slowly towards you, this solves the original issue where salvaged items were being flung in random directions (how its been in mcMMO for like 6 years) without potential for accidents.
+
 Version 2.1.89
     Many changes were made to this version that affect default values in the config, read the notes carefully if you wish to apply these changes. They are optional.
     mcMMO is compatible with the new 1.14.3, in addition to this it is still compatible with 1.14.2, 1.14.1, 1.14, and 1.13.2. This did not require any changes to be made to mcMMO, but I thought I'd add this to the notes for those wondering.

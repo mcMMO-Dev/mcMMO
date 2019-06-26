@@ -121,40 +121,58 @@ public final class Misc {
     /**
      * Drop items at a given location.
      *
-     * @param location The location to drop the items at
+     * @param fromLocation The location to drop the items at
      * @param is The items to drop
+     * @param speed the speed that the item should travel
      * @param quantity The amount of items to drop
      */
-    public static void spawnItemsTowardsLocation(Location location, Location targetLocation, ItemStack is, int quantity) {
+    public static void spawnItemsTowardsLocation(Location fromLocation, Location toLocation, ItemStack is, int quantity, double speed) {
         for (int i = 0; i < quantity; i++) {
-            spawnItemTowardsLocation(location, targetLocation, is);
+            spawnItemTowardsLocation(fromLocation, toLocation, is, speed);
         }
     }
 
     /**
      * Drop an item at a given location.
+     * This method is fairly expensive as it creates clones of everything passed to itself since they are mutable objects
      *
-     * @param spawnLocation The location to drop the item at
-     * @param itemStack The item to drop
+     * @param fromLocation The location to drop the item at
+     * @param toLocation The location the item will travel towards
+     * @param itemToSpawn The item to spawn
+     * @param speed the speed that the item should travel
      * @return Dropped Item entity or null if invalid or cancelled
      */
-    public static Item spawnItemTowardsLocation(Location spawnLocation, Location targetLocation, ItemStack itemStack) {
-        if (itemStack.getType() == Material.AIR) {
+    public static Item spawnItemTowardsLocation(Location fromLocation, Location toLocation, ItemStack itemToSpawn, double speed) {
+        if (itemToSpawn.getType() == Material.AIR) {
             return null;
         }
+
+        //Work with fresh copies of everything
+        ItemStack clonedItem = itemToSpawn.clone();
+        Location spawnLocation = fromLocation.clone();
+        Location targetLocation = toLocation.clone();
 
         // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
-        McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(spawnLocation, itemStack);
+        McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(spawnLocation, clonedItem);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
-        if (event.isCancelled()) {
+        //Something cancelled the event so back out
+        if (event.isCancelled() || event.getItemStack() == null) {
             return null;
         }
 
-        Item item = spawnLocation.getWorld().dropItem(spawnLocation, itemStack);
-        Vector vector = targetLocation.toVector().subtract(spawnLocation.toVector()).normalize();
-        item.setVelocity(vector);
-        return item;
+        //Use the item from the event
+        Item spawnedItem = spawnLocation.getWorld().dropItem(spawnLocation, clonedItem);
+        Vector vecFrom = spawnLocation.clone().toVector().clone();
+        Vector vecTo = targetLocation.clone().toVector().clone();
+
+        //Vector which is pointing towards out target location
+        Vector direction = vecTo.subtract(vecFrom).normalize();
+
+        //Modify the speed of the vector
+        direction = direction.multiply(speed);
+        spawnedItem.setVelocity(direction);
+        return spawnedItem;
     }
 
     public static void profileCleanup(String playerName) {

@@ -140,18 +140,28 @@ public class SalvageManager extends SkillManager {
             return;
         }
 
+        Location anvilLoc = location.clone();
+        Location playerLoc = player.getLocation().clone();
+        double distance = anvilLoc.distance(playerLoc);
+
+        double speedLimit = .6;
+        double minSpeed = .3;
+
+        //Clamp the speed and vary it by distance
+        double vectorSpeed = Math.min(speedLimit, Math.max(minSpeed, distance * .2));
+
+        //Add a very small amount of height
+        anvilLoc.add(0, .1, 0);
+
         if (enchantBook != null) {
-            Misc.dropItem(location, enchantBook);
+            Misc.spawnItemTowardsLocation(anvilLoc.clone(), playerLoc.clone(), enchantBook, vectorSpeed);
         }
 
-        Misc.spawnItemTowardsLocation(location, player.getLocation().add(0, 0.25, 0), salvageResults);
+        Misc.spawnItemTowardsLocation(anvilLoc.clone(), playerLoc.clone(), salvageResults, vectorSpeed);
 
         // BWONG BWONG BWONG - CLUNK!
         if (Config.getInstance().getSalvageAnvilUseSoundsEnabled()) {
-//            SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
             SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_BREAK);
-
-            //player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
         }
 
         NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Salvage.Skills.Success");
