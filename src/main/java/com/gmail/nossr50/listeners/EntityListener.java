@@ -139,11 +139,7 @@ public class EntityListener implements Listener {
 
             Projectile projectile = event.getEntity();
 
-            //Hacky stuff for 1.13/1.14 compat
-
-            String itemKey = player.getInventory().getItemInMainHand().getType().getKey().toString();
-
-            if(!itemKey.equalsIgnoreCase("minecraft:bow") && !itemKey.equalsIgnoreCase("minecraft:crossbow"))
+            if(!(projectile instanceof Arrow))
                 return;
 
             projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(plugin, 1.0));
