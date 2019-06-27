@@ -169,10 +169,15 @@ public class BlockListener implements Listener {
         /* WORLD BLACKLIST CHECK */
         if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
+        
+        Block newBlock = event.getNewState().getBlock();
+        Material material = newBlock.getType();
 
         if (mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitSkills().isPreventCobblestoneStoneGeneratorXP()) {
-            if (event.getNewState().getType() != Material.OBSIDIAN && BlockUtils.shouldBeWatched(event.getNewState())) {
-                mcMMO.getPlaceStore().setTrue(event.getNewState());
+            if (material != Material.OBSIDIAN 
+                    && BlockUtils.shouldBeWatched(material)
+                    && mcMMO.getDynamicSettingsManager().getExperienceManager().hasMiningXp(material)) { //Hacky fix to prevent trees growing from being marked as unnatural
+                mcMMO.getPlaceStore().setTrue(newBlock);
             }
         }
     }
@@ -275,7 +280,7 @@ public class BlockListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(event.getPlayer()))
+            if (!plugin.getWorldGuardManager().hasMainFlag(event.getPlayer()))
                 return;
         }
 
@@ -284,7 +289,6 @@ public class BlockListener implements Listener {
         }
 
         BlockState blockState = event.getBlock().getState();
-        Location location = blockState.getLocation();
 
         if (!BlockUtils.shouldBeWatched(blockState)) {
             return;
@@ -370,7 +374,7 @@ public class BlockListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(event.getPlayer()))
+            if (!plugin.getWorldGuardManager().hasMainFlag(event.getPlayer()))
                 return;
         }
 
@@ -439,7 +443,7 @@ public class BlockListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(event.getPlayer()))
+            if (!plugin.getWorldGuardManager().hasMainFlag(event.getPlayer()))
                 return;
         }
 
@@ -509,7 +513,7 @@ public class BlockListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(event.getPlayer()))
+            if (!plugin.getWorldGuardManager().hasMainFlag(event.getPlayer()))
                 return;
         }
 
@@ -582,12 +586,12 @@ public class BlockListener implements Listener {
         }
 
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (WorldGuardManager.getInstance().hasMainFlag(player))
+            if (plugin.getWorldGuardManager().hasMainFlag(player))
                 player.sendMessage("[mcMMO DEBUG] World Guard main flag is permitted for this player in this region");
             else
                 player.sendMessage("[mcMMO DEBUG] World Guard main flag is DENIED for this player in this region");
 
-            if (WorldGuardManager.getInstance().hasXPFlag(player))
+            if (plugin.getWorldGuardManager().hasXPFlag(player))
                 player.sendMessage("[mcMMO DEBUG] World Guard xp flag is permitted for this player in this region");
             else
                 player.sendMessage("[mcMMO DEBUG] World Guard xp flag is not permitted for this player in this region");

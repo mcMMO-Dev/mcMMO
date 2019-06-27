@@ -9,6 +9,7 @@ import java.util.HashMap;
 public class ConfigExperienceWoodcutting {
 
     private static final HashMap<String, Integer> WOODCUTTING_EXPERIENCE_DEFAULT;
+    public static final boolean REDUCE_TREE_FELLER_XP_DEFAULT = true;
 
     static {
         WOODCUTTING_EXPERIENCE_DEFAULT = new HashMap<>();
@@ -46,10 +47,19 @@ public class ConfigExperienceWoodcutting {
         WOODCUTTING_EXPERIENCE_DEFAULT.put("minecraft:mushroom_stem", 80);
     }
 
+    @Setting(value = "Reduce-Tree-Feller-XP", comment = "If set to true players will receive diminishing returns on XP from tree feller." +
+            "\nIf set to false, players will get the full XP from every block destroyed by tree feller." +
+            "\nDefault value: "+REDUCE_TREE_FELLER_XP_DEFAULT)
+    private boolean reduceTreeFellerXP = REDUCE_TREE_FELLER_XP_DEFAULT;
+
     @Setting(value = "Woodcutting-Experience")
     private HashMap<String, Integer> woodcuttingExperienceMap = WOODCUTTING_EXPERIENCE_DEFAULT;
 
     public HashMap<String, Integer> getWoodcuttingExperienceMap() {
         return woodcuttingExperienceMap;
+    }
+
+    public boolean isReduceTreeFellerXP() {
+        return reduceTreeFellerXP;
     }
 }

@@ -10,9 +10,12 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
+import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -40,6 +43,13 @@ public class ExcavationManager extends SkillManager {
                 for (ExcavationTreasure treasure : treasures) {
                     if (skillLevel >= treasure.getDropLevel()
                             && RandomChanceUtil.checkRandomChanceExecutionSuccess(getPlayer(), PrimarySkillType.EXCAVATION, treasure.getDropChance())) {
+
+                        //Spawn Vanilla XP orbs if a dice roll succeeds
+                        if(RandomChanceUtil.rollDice(getArchaelogyExperienceOrbChance(), 100)) {
+                            ExperienceOrb experienceOrb = (ExperienceOrb) getPlayer().getWorld().spawnEntity(location, EntityType.EXPERIENCE_ORB);
+                            experienceOrb.setExperience(getExperienceOrbsReward());
+                        }
+
                         xp += treasure.getXp();
                         Misc.dropItem(location, treasure.getDrop());
                     }
@@ -50,7 +60,20 @@ public class ExcavationManager extends SkillManager {
         applyXpGain(xp, XPGainReason.PVE);
     }
 
-    public void printExcavationDebug(Player player, BlockState blockState) {
+    public int getExperienceOrbsReward() {
+        return 1 * getArchaeologyRank();
+    }
+
+    public double getArchaelogyExperienceOrbChance() {
+        return getArchaeologyRank() * 2;
+    }
+
+    public int getArchaeologyRank() {
+        return RankUtils.getRank(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY);
+    }
+
+    public void printExcavationDebug(Player player, BlockState blockState)
+    {
         if (Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
             List<ExcavationTreasure> treasures = Excavation.getTreasures(blockState);
 

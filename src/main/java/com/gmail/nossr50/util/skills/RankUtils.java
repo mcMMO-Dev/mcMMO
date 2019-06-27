@@ -399,7 +399,7 @@ public class RankUtils {
         }
 
         //Default to the max level for the skill if any errors were encountered incorrect
-        return mcMMO.getConfigManager().getConfigLeveling().getLevelCap(subSkillType.getParentSkill());
+        return mcMMO.getConfigManager().getConfigLeveling().getSkillLevelCap(subSkillType.getParentSkill());
     }
 
     public static boolean isPlayerMaxRankInSubSkill(Player player, SubSkillType subSkillType) {

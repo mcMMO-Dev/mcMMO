@@ -72,6 +72,10 @@ public class MiningManager extends SkillManager {
         return getSkillLevel() >= BlastMining.getBiggerBombsUnlockLevel() && Permissions.biggerBombs(getPlayer());
     }
 
+    public boolean canDoubleDrop() {
+        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS);
+    }
+
     /**
      * Process double drops & XP gain for Mining.
      *
@@ -82,16 +86,11 @@ public class MiningManager extends SkillManager {
 
         applyXpGain(Mining.getBlockXp(blockState), XPGainReason.PVE);
 
-        if (!Permissions.isSubSkillEnabled(player, SubSkillType.MINING_DOUBLE_DROPS)) {
-            return;
-        }
-
         if (mcMMOPlayer.getAbilityMode(skill.getSuperAbility())) {
             SkillUtils.handleDurabilityChange(getPlayer().getInventory().getItemInMainHand(), mcMMO.getConfigManager().getConfigSuperAbilities().getSuperAbilityLimits().getToolDurabilityDamage());
         }
 
-        //if ((mcMMO.getModManager().isCustomMiningBlock(blockState) && !mcMMO.getModManager().getBlock(blockState).isDoubleDropEnabled()) || !MainConfig.getInstance().getDoubleDropsEnabled(skill, material)) {
-        if (!mcMMO.getDynamicSettingsManager().getBonusDropManager().isBonusDropWhitelisted(blockState.getType()))
+        if (!canDoubleDrop() || !mcMMO.getDynamicSettingsManager().getBonusDropManager().isBonusDropWhitelisted(blockState.getType()))
             return;
 
         boolean silkTouch = player.getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH);

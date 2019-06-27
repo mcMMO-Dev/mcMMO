@@ -3,6 +3,7 @@ package com.gmail.nossr50.config.hocon.experience;
 import com.gmail.nossr50.datatypes.experience.CustomXPPerk;
 import com.gmail.nossr50.datatypes.experience.SpecialXPKey;
 import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -184,6 +185,10 @@ public class ConfigExperience {
         return getConfigExperienceSkills().getExcavationExperienceMap();
     }
 
+    public boolean isReduceTreeFellerXP() {
+        return getExperienceWoodcutting().isReduceTreeFellerXP();
+    }
+
     public HashMap<String, Integer> getFishingXPMap() {
         return getConfigExperienceSkills().getFishingXPMap();
     }
@@ -195,6 +200,12 @@ public class ConfigExperience {
     public ConfigExperienceSkills getConfigExperienceSkills() {
         return configExperienceSkills;
     }
+
+    public double getSkillGlobalMultiplier(PrimarySkillType primarySkillType) {
+        return configExperienceSkillMultiplier.getSkillGlobalMultiplier(primarySkillType);
+    }
+
+
 
     public double getGlobalXPMultiplier() {
         return globalXPMultiplier;

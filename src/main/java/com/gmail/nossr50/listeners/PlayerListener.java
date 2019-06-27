@@ -76,7 +76,7 @@ public class PlayerListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(player))
+            if (!plugin.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -115,7 +115,7 @@ public class PlayerListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(event.getEntity()))
+            if (!plugin.getWorldGuardManager().hasMainFlag(event.getEntity()))
                 return;
         }
 
@@ -160,7 +160,7 @@ public class PlayerListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(killedPlayer))
+            if (!plugin.getWorldGuardManager().hasMainFlag(killedPlayer))
                 return;
         }
 
@@ -224,7 +224,7 @@ public class PlayerListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(event.getPlayer()))
+            if (!plugin.getWorldGuardManager().hasMainFlag(event.getPlayer()))
                 return;
         }
 
@@ -256,7 +256,7 @@ public class PlayerListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(player))
+            if (!plugin.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -331,7 +331,7 @@ public class PlayerListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(player))
+            if (!plugin.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -424,7 +424,7 @@ public class PlayerListener implements Listener {
 
             /* WORLD GUARD MAIN FLAG CHECK */
             if (WorldGuardUtils.isWorldGuardLoaded()) {
-                if (!WorldGuardManager.getInstance().hasMainFlag(player))
+                if (!plugin.getWorldGuardManager().hasMainFlag(player))
                     return;
             }
 
@@ -576,7 +576,7 @@ public class PlayerListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(player))
+            if (!plugin.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -689,7 +689,7 @@ public class PlayerListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(player))
+            if (!plugin.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 

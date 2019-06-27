@@ -102,7 +102,7 @@ public class InventoryListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(player))
+            if (!plugin.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -135,7 +135,7 @@ public class InventoryListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(player))
+            if (!plugin.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -167,7 +167,7 @@ public class InventoryListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(player))
+            if (!plugin.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -234,7 +234,7 @@ public class InventoryListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(player))
+            if (!plugin.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -352,7 +352,7 @@ public class InventoryListener implements Listener {
 //
 //            /* WORLD GUARD MAIN FLAG CHECK */
 //            if (WorldGuardUtils.isWorldGuardLoaded()) {
-//                if (!WorldGuardManager.getInstance().hasMainFlag(player))
+//                if (!plugin.getWorldGuardManager().hasMainFlag(player))
 //                    return;
 //            }
 //
@@ -456,7 +456,7 @@ public class InventoryListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(player))
+            if (!plugin.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 

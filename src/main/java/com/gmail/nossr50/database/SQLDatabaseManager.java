@@ -891,11 +891,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
             //Level Cap Stuff
             if (mcMMO.getPlayerLevelingSettings().getConfigSectionLevelCaps().getReducePlayerSkillsAboveCap()) {
                 for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
-                    if (!mcMMO.getPlayerLevelingSettings().isLevelCapEnabled(skill))
+                    if (!mcMMO.getPlayerLevelingSettings().isSkillLevelCapEnabled(skill))
                         continue;
 
                     //Shrink skills above the cap
-                    int cap = mcMMO.getPlayerLevelingSettings().getLevelCap(skill);
+                    int cap = mcMMO.getPlayerLevelingSettings().getSkillLevelCap(skill);
                     statement = connection.prepareStatement("UPDATE `" + tablePrefix + "skills` SET `" + skill.name().toLowerCase() + "` = " + cap + " WHERE `" + skill.name().toLowerCase() + "` > " + cap);
                     statement.executeUpdate();
                     tryClose(statement);

@@ -6,7 +6,6 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
-import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -14,31 +13,18 @@ import org.bukkit.plugin.Plugin;
 import static org.bukkit.Bukkit.getServer;
 
 public class WorldGuardManager {
-    private static WorldGuardManager instance;
     private WorldGuardPlugin worldGuardPluginRef;
 
-    public WorldGuardManager() {
-
-    }
-
-    public static WorldGuardManager getInstance() {
-        if (instance == null)
-            instance = new WorldGuardManager();
-
-        return instance;
-    }
-
-    public boolean hasMainFlag(Player player) {
-        if (player == null)
+    public boolean hasMainFlag(Player player)
+    {
+        if(player == null)
             return false;
 
         BukkitPlayer localPlayer = BukkitAdapter.adapt(player);
         com.sk89q.worldedit.util.Location loc = localPlayer.getLocation();
 
-
         //WorldGuardPlugin worldGuard = getWorldGuard();
-        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-        RegionQuery query = container.createQuery();
+        RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
 
         //ApplicableRegionSet set = query.getApplicableRegions(loc);
 
@@ -53,8 +39,7 @@ public class WorldGuardManager {
         com.sk89q.worldedit.util.Location loc = localPlayer.getLocation();
 
         //WorldGuardPlugin worldGuard = getWorldGuard();
-        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-        RegionQuery query = container.createQuery();
+        RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
 
         //ApplicableRegionSet set = query.getApplicableRegions(loc);
 
@@ -70,8 +55,7 @@ public class WorldGuardManager {
         com.sk89q.worldedit.util.Location loc = localPlayer.getLocation();
 
         //WorldGuardPlugin worldGuard = getWorldGuard();
-        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-        RegionQuery query = container.createQuery();
+        RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
 
         //ApplicableRegionSet set = query.getApplicableRegions(loc);
 
@@ -90,15 +74,12 @@ public class WorldGuardManager {
         return worldGuardPluginRef;
     }
 
-    public void registerFlags() {
-        if (getWorldGuard() == null)
-            return;
-
+    public void registerFlags()
+    {
         FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
+
         try {
             // register our flag with the registry
-            /*registry.register(WorldGuardFlags.MCMMO_ENABLE_WG_FLAG);
-            registry.register(WorldGuardFlags.MCMMO_XP_WG_FLAG);*/
             registry.register(WorldGuardFlags.MCMMO_ENABLE_WG_FLAG);
             registry.register(WorldGuardFlags.MCMMO_XP_WG_FLAG);
             registry.register(WorldGuardFlags.MCMMO_HARDCORE_WG_FLAG);
@@ -112,6 +93,5 @@ public class WorldGuardManager {
             // to print a message to let the server admin know of the conflict
         }
     }
-
 
 }

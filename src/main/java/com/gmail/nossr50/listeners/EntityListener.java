@@ -88,7 +88,7 @@ public class EntityListener implements Listener {
 
             /* WORLD GUARD MAIN FLAG CHECK */
             if (WorldGuardUtils.isWorldGuardLoaded()) {
-                if (!WorldGuardManager.getInstance().hasMainFlag(player))
+                if (!plugin.getWorldGuardManager().hasMainFlag(player))
                     return;
             }
         }
@@ -121,20 +121,17 @@ public class EntityListener implements Listener {
 
         if(event.getEntity().getShooter() instanceof Player)
         {
-
             Player player = (Player) event.getEntity().getShooter();
 
             /* WORLD GUARD MAIN FLAG CHECK */
             if (WorldGuardUtils.isWorldGuardLoaded()) {
-                if (!WorldGuardManager.getInstance().hasMainFlag(player))
+                if (!plugin.getWorldGuardManager().hasMainFlag(player))
                     return;
             }
 
-            Projectile projectile = event.getEntity();//Hacky stuff for 1.13/1.14 compat
+            Projectile projectile = event.getEntity();
 
-            String itemKey = player.getInventory().getItemInMainHand().getType().getKey().toString();
-
-            if(!itemKey.equalsIgnoreCase("minecraft:bow") && !itemKey.equalsIgnoreCase("minecraft:crossbow"))
+            if(!(projectile instanceof Arrow))
                 return;
 
             projectile.setMetadata(MetadataConstants.BOW_FORCE_METAKEY, new FixedMetadataValue(plugin, 1.0));
@@ -293,7 +290,7 @@ public class EntityListener implements Listener {
         {
             if(attacker instanceof Player) {
 
-                if(!WorldGuardManager.getInstance().hasMainFlag((Player) attacker))
+                if(!plugin.getWorldGuardManager().hasMainFlag((Player) attacker))
                     return;
 
             } else if(attacker instanceof Projectile) {
@@ -301,7 +298,7 @@ public class EntityListener implements Listener {
                 Projectile projectile = (Projectile) attacker;
 
                 if(projectile.getShooter() instanceof Player) {
-                    if(!WorldGuardManager.getInstance().hasMainFlag((Player) projectile.getShooter()))
+                    if(!plugin.getWorldGuardManager().hasMainFlag((Player) projectile.getShooter()))
                         return;
                 }
 
@@ -398,6 +395,19 @@ public class EntityListener implements Listener {
             }
         }
 
+        /*
+         * This was put here to solve a plugin conflict with a mod called Project Korra
+         * Project Korra sends out a damage event with exactly 0 damage
+         * mcMMO does some calculations for the damage in an event and it ends up dividing by zero,
+         *  as a result of the modifiers for the event being 0 and the damage set for this event being 0.
+         *
+         * Surprising this kind of thing
+         *
+         */
+        if(damage <= 0) {
+            return;
+        }
+
         CombatUtils.processCombatAttack(event, attacker, target);
         CombatUtils.handleHealthbars(attacker, target, event.getFinalDamage(), plugin);
 
@@ -452,7 +462,7 @@ public class EntityListener implements Listener {
             Player player = (Player) event.getEntity();
             /* WORLD GUARD MAIN FLAG CHECK */
             if (WorldGuardUtils.isWorldGuardLoaded()) {
-                if (!WorldGuardManager.getInstance().hasMainFlag(player))
+                if (!plugin.getWorldGuardManager().hasMainFlag(player))
                     return;
             }
         }
@@ -530,7 +540,7 @@ public class EntityListener implements Listener {
                 Player player = (Player) owner;
                 /* WORLD GUARD MAIN FLAG CHECK */
                 if (WorldGuardUtils.isWorldGuardLoaded()) {
-                    if (!WorldGuardManager.getInstance().hasMainFlag(player))
+                    if (!plugin.getWorldGuardManager().hasMainFlag(player))
                         return;
                 }
             }
@@ -724,7 +734,7 @@ public class EntityListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(player))
+            if (!plugin.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -762,7 +772,7 @@ public class EntityListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(player))
+            if (!plugin.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -825,7 +835,7 @@ public class EntityListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(player))
+            if (!plugin.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -926,7 +936,7 @@ public class EntityListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(player))
+            if (!plugin.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -972,7 +982,7 @@ public class EntityListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!WorldGuardManager.getInstance().hasMainFlag(player))
+            if (!plugin.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 

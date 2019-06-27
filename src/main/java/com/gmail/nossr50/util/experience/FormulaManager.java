@@ -64,7 +64,7 @@ public class FormulaManager {
     public int[] calculateNewLevel(PrimarySkillType primarySkillType, int experience) {
         int newLevel = 0;
         int remainder = 0;
-        int maxLevel = mcMMO.getConfigManager().getConfigLeveling().getLevelCap(primarySkillType);
+        int maxLevel = mcMMO.getConfigManager().getConfigLeveling().getSkillLevelCap(primarySkillType);
 
         while (experience > 0 && newLevel < maxLevel) {
             int experienceToNextLevel = getXPtoNextLevel(newLevel, currentFormula);

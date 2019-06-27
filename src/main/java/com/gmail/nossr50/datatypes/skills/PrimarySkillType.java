@@ -179,7 +179,7 @@ public enum PrimarySkillType {
      * @return the max level of this skill
      */
     public int getMaxLevel() {
-        return mcMMO.getPlayerLevelingSettings().getLevelCap(this);
+        return mcMMO.getPlayerLevelingSettings().getSkillLevelCap(this);
     }
 
     /*public boolean getDoubleDropsDisabled() {

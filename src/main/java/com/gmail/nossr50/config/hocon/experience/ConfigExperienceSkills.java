@@ -45,6 +45,10 @@ public class ConfigExperienceSkills {
     @Setting(value = "Z-Combat", comment = "XP Settings for Combat")
     private ConfigExperienceCombat experienceCombat = new ConfigExperienceCombat();
 
+    public boolean isReduceTreeFellerXP() {
+        return experienceWoodcutting.isReduceTreeFellerXP();
+    }
+
     /*
      * BOILER PLATE GETTERS
      */

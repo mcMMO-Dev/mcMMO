@@ -899,8 +899,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                                     continue;
                                 }
                                 //Level Cap
-                                if (mcMMO.getPlayerLevelingSettings().isLevelCapEnabled(skill)) {
-                                    int cap = mcMMO.getPlayerLevelingSettings().getLevelCap(skill);
+                                if (mcMMO.getPlayerLevelingSettings().isSkillLevelCapEnabled(skill)) {
+                                    int cap = mcMMO.getPlayerLevelingSettings().getSkillLevelCap(skill);
                                     if (Integer.valueOf(character[index]) > cap) {
                                         mcMMO.p.getLogger().warning("Truncating " + skill.getName() + " to configured max level for player " + character[USERNAME]);
                                         character[index] = cap + "";

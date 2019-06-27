@@ -39,6 +39,7 @@ import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
+import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -67,6 +68,7 @@ public class mcMMO extends JavaPlugin {
     private static NotificationManager notificationManager;
     private static CommandRegistrationManager commandRegistrationManager;
     private static NBTManager nbtManager;
+    private static WorldGuardManager worldGuardManager;
 
     /* File Paths */
     private static String mainDirectory;
@@ -196,9 +198,13 @@ public class mcMMO extends JavaPlugin {
     }
 
     @Override
-    public void onLoad() {
-        if (getServer().getPluginManager().getPlugin("WorldGuard") != null)
-            WorldGuardManager.getInstance().registerFlags();
+    public void onLoad()
+    {
+        worldGuardManager = new WorldGuardManager();
+
+        if(getServer().getPluginManager().getPlugin("WorldGuard") != null) {
+            worldGuardManager.registerFlags();
+        }
     }
 
     /**
@@ -609,5 +615,9 @@ public class mcMMO extends JavaPlugin {
 
     public static NotificationManager getNotificationManager() {
         return notificationManager;
+    }
+
+    public WorldGuardManager getWorldGuardManager() {
+        return worldGuardManager;
     }
 }

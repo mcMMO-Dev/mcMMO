@@ -134,6 +134,18 @@ public class ConfigLeveling {
         return configSectionLevelCaps;
     }
 
+    public ConfigSectionSkillLevelCap getPowerLevelSettings() {
+        return configSectionLevelCaps.getPowerLevelSettings();
+    }
+
+    public boolean getReducePlayerSkillsAboveCap() {
+        return configSectionLevelCaps.getReducePlayerSkillsAboveCap();
+    }
+
+    public ConfigSectionSkillLevelCaps getConfigSectionSkillLevelCaps() {
+        return configSectionLevelCaps.getConfigSectionSkillLevelCaps();
+    }
+
     public ConfigSectionLevelingGeneral getConfigSectionLevelingGeneral() {
         return configSectionLevelingGeneral;
     }
@@ -194,11 +206,19 @@ public class ConfigLeveling {
         return configExperienceFormula.getLinearMultiplier();
     }
 
+    public boolean isPowerLevelCapEnabled() {
+        return configSectionLevelCaps.isPowerLevelCapEnabled();
+    }
+
+    public int getPowerLevelCap() {
+        return configSectionLevelCaps.getPowerLevelCap();
+    }
+
     /*
      * HELPER METHODS
      */
 
-    public int getLevelCap(PrimarySkillType primarySkillType) {
+    public int getSkillLevelCap(PrimarySkillType primarySkillType) {
         switch (primarySkillType) {
             case ACROBATICS:
                 return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getAcrobatics().getLevelCap();
@@ -236,7 +256,7 @@ public class ConfigLeveling {
         }
     }
 
-    public boolean isLevelCapEnabled(PrimarySkillType primarySkillType) {
+    public boolean isSkillLevelCapEnabled(PrimarySkillType primarySkillType) {
         switch (primarySkillType) {
             case ACROBATICS:
                 return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getAcrobatics().isLevelCapEnabled();

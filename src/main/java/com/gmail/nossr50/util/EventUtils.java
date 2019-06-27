@@ -207,7 +207,7 @@ public class EventUtils {
 
     }
 
-    public static boolean handleLevelChangeEvent(Player player, PrimarySkillType skill, int levelsChanged, double xpRemoved, boolean isLevelUp, XPGainReason xpGainReason) {
+    public static boolean tryLevelChangeEvent(Player player, PrimarySkillType skill, int levelsChanged, float xpRemoved, boolean isLevelUp, XPGainReason xpGainReason) {
         McMMOPlayerLevelChangeEvent event = isLevelUp ? new McMMOPlayerLevelUpEvent(player, skill, levelsChanged, xpGainReason) : new McMMOPlayerLevelDownEvent(player, skill, levelsChanged, xpGainReason);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
@@ -220,10 +220,10 @@ public class EventUtils {
             profile.addXp(skill, xpRemoved);
         }
 
-        return !isCancelled;
+        return isCancelled;
     }
 
-    public static void handleLevelChangeEventEdit(Player player, PrimarySkillType skill, int levelsChanged, double xpRemoved, boolean isLevelUp, XPGainReason xpGainReason, int oldLevel) {
+    public static boolean tryLevelEditEvent(Player player, PrimarySkillType skill, int levelsChanged, float xpRemoved, boolean isLevelUp, XPGainReason xpGainReason, int oldLevel) {
         McMMOPlayerLevelChangeEvent event = isLevelUp ? new McMMOPlayerLevelUpEvent(player, skill, levelsChanged - oldLevel, xpGainReason) : new McMMOPlayerLevelDownEvent(player, skill, levelsChanged, xpGainReason);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
@@ -236,6 +236,7 @@ public class EventUtils {
             profile.addXp(skill, xpRemoved);
         }
 
+        return isCancelled;
     }
 
     /**

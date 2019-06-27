@@ -29,8 +29,16 @@ public class ConfigSectionLevelCaps {
      * GETTER BOILERPLATE
      */
 
-    public ConfigSectionSkillLevelCap getPowerLevel() {
+    public ConfigSectionSkillLevelCap getPowerLevelSettings() {
         return powerLevel;
+    }
+
+    public boolean isPowerLevelCapEnabled() {
+        return powerLevel.isLevelCapEnabled();
+    }
+
+    public int getPowerLevelCap() {
+        return powerLevel.getLevelCap();
     }
 
     public boolean getReducePlayerSkillsAboveCap() {

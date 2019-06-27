@@ -7,7 +7,6 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -29,21 +28,42 @@ public final class Woodcutting {
     protected static boolean treeFellerReachedThreshold = false;
 
     private Woodcutting() {
+
     }
 
     /**
      * Retrieves the experience reward from a log
      *
-     * @param blockState           Log being broken
-     * @param experienceGainMethod How the log is being broken
+     * @param blockState Log being broken
      * @return Amount of experience
      */
-    protected static int getExperienceFromLog(BlockState blockState, ExperienceGainMethod experienceGainMethod) {
-        /*if (mcMMO.getModManager().isCustomLog(blockState)) {
-            return mcMMO.getModManager().getBlock(blockState).getXpGain();
-        }*/
-
+    protected static int getExperienceFromLog(BlockState blockState) {
         return mcMMO.getDynamicSettingsManager().getExperienceManager().getWoodcuttingXp(blockState.getType());
+    }
+
+    /**
+     * Retrieves the experience reward from logging via Tree Feller
+     * Experience is reduced per log processed so far
+     * Experience is only reduced if the config option to reduce Tree Feller XP is set
+     * Experience per log will not fall below 1 unless the experience for that log is set to 0 in the config
+     *
+     * @param blockState Log being broken
+     * @param woodCount how many logs have given out XP for this tree feller so far
+     * @return Amount of experience
+     */
+    protected static int processTreeFellerXPGains(BlockState blockState, int woodCount) {
+        int rawXP = mcMMO.getDynamicSettingsManager().getExperienceManager().getWoodcuttingXp(blockState.getType());
+
+        if(rawXP <= 0)
+            return 0;
+
+        if(mcMMO.getConfigManager().getConfigExperience().getExperienceWoodcutting().isReduceTreeFellerXP()) {
+            int reducedXP = 1 + (woodCount * 5);
+            rawXP = Math.max(1, rawXP - reducedXP);
+            return rawXP;
+        } else {
+            return mcMMO.getDynamicSettingsManager().getExperienceManager().getWoodcuttingXp(blockState.getType());
+        }
     }
 
     /**
@@ -136,9 +156,8 @@ public final class Woodcutting {
      * @return True if the tool can sustain the durability loss
      */
     protected static boolean handleDurabilityLoss(Set<BlockState> treeFellerBlocks, ItemStack inHand) {
-
-        if((inHand.getItemMeta().getEnchants().get(Enchantment.DURABILITY) != null && inHand.getItemMeta().getEnchants().get(Enchantment.DURABILITY) >= 1)
-                || (inHand.getItemMeta() != null && inHand.getItemMeta().isUnbreakable())) {
+        //Treat the NBT tag for unbreakable and the durability enchant differently
+        if(inHand.getItemMeta() != null && inHand.getItemMeta().isUnbreakable()) {
             return true;
         }
 

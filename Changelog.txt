@@ -194,6 +194,131 @@ Version 2.2.0
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
     Added 'UndefinedSkillBehaviour' for trying to use a method that has no behaviour defined for the provided skill
+Version 2.1.91
+    mcMMO is now more compatible with plugins that spawn arrows in unexpected ways, this fixes some NPE in mcMMO when using certain plugins
+
+Version 2.1.90
+    Salvaged items now travel much slower towards the player
+    Books from salvage will now travel towards the player
+    Salvaged items travelling towards you will now have their speed adjusted based on distance
+
+    Common Materials found when mining have had their XP gains reduced and rare materials have had their XP gains increased
+    Diamond Ore has had its XP increased from 750 to 2400
+    Gold Ore has had its XP increased from 350 to 1300
+    Iron Ore has had its XP increased from 250 to 900
+    Lapis Ore has had its XP increased from 400 to 800
+    Nether Quartz Ore has had its XP increased from 100 to 300
+    Redstone Ore has had its XP increased from 150 to 600
+    Blue_Ice has had its default XP value reduced to 15
+    Packed_Ice has had its default XP value reduced to 15
+    Netherrack has had its default XP value reduced to 15
+    Coal Ore has had its XP increased from 100 to 400
+    Stone has had its XP decreased from 30 to 15
+    Granite has had its XP decreased from 30 to 15
+    Andesite has had its XP decreased from 30 to 15
+    Diorite has had its XP decreased from 30 to 15
+    End Stone has had its XP decreased from 30 to 15
+    Glow Stone has had its XP decreased from 30 to 15
+    End Bricks has had its XP decreased from 200 to 50
+
+
+    NOTES:
+    You can either apply the default XP changes manually to experience.yml or delete it to generate a new file
+
+    Sorry about salvaged items traveling too quickly, in testing on my LAN server with ideal conditions they always entered my inventory and never shot past me so the high speed of the items was not an apparent issue.
+    I've tested the new changes to how they travel towards you pretty thoroughly, they never go fast enough to go past you and they adjust their speed based on distance to you with some speed limitations.
+    In testing the new tweaks work well whether the salvage anvil is above, below, or at the same height as you.
+
+    I'll be tweaking XP values across all skills more carefully in the upcoming content patch due after 2.2. Some tweaks to XP gains will be applied for 2.2.
+
+Version 2.1.89
+    Many changes were made to this version that affect default values in the config, read the notes carefully if you wish to apply these changes. They are optional.
+    mcMMO is compatible with the new 1.14.3, in addition to this it is still compatible with 1.14.2, 1.14.1, 1.14, and 1.13.2. This did not require any changes to be made to mcMMO, but I thought I'd add this to the notes for those wondering.
+
+    RetroMode is the default level scaling mode again
+    The default level for players has been changed back to 0 from 1 (you can change it back to 1 by editing 'Skills.General.StartingLevel' in advanced.yml) if you wish to apply this change read the notes
+    Super Abilities now scale in length up to level 100/1000 instead of 50/500 by default (you can edit this in advanced.yml under 'Skills.General.Ability.Length.xxx')
+    Early Game Boost now only applies when leveling from level 0 to level 1
+    Removed the config setting 'MaxLevelMultiplier' from experience.yml as it is no longer used.
+    When finding a treasure via Excavation players have a 1-8% chance to have a small amount vanilla experience orbs to be found alongside the treasure, the chance and number of orbs are based on the players Archaeology rank
+    Tweaked the locale string 'Excavation.SubSkill.Archaeology.Description'
+    Added locale string 'Excavation.SubSkill.Archaeology.Stat'
+    Added locale string 'Excavation.SubSkill.Archaeology.Stat.Extra'
+    Tweaked the locale string 'Fishing.SubSkill.MasterAngler.Stat'
+    The interval at which you can gain Acrobatics XP from fall damage has been reduced to 3 seconds from 10 seconds, this will be configurable in 2.2.
+
+    When using WorldGuard (WG) with mcMMO, mcMMO now examines WG more carefully to determine if it is a compatible version or not, see the notes. Keep in mind WG is optional and not needed to run mcMMO.
+    Fixed a bug that could result in Tree Feller failing to remove parts of a tree in snowy biomes. (This fix won't apply retroactively to old trees, see the notes)
+    Updated Japanese locale (thanks snake)
+    Tree Feller and other Super Abilities will damage tools with the Enchantment named 'Durability/Unbreaking' again, this does not apply to the NBT tag named Ubreakable (Unbreakable NBT tag is safe from damage however, try not to confuse them as they share similar names)
+    Added new setting 'ExploitFix.TreeFellerReducedXP' to experience.yml
+    Tree Feller will no longer give full XP for each block destroyed and instead give diminishing returns on XP for each block removed. You can turn this off by setting 'ExploitFix.TreeFellerReducedXP' in experience.yml to false
+    Many skills which used to unlock at level 5/50 now unlock at level 1 instead
+    Arrow Retrieval now unlocks at level 1 in both Standard and RetroMode
+    Skill Shot now unlocks at level 1 in both Standard and RetroMode
+    Dodge now unlocks at level 1 in both Standard and RetroMode
+    Critical Strikes now unlocks at level 1 in both Standard and RetroMode
+    Armor Impact now unlocks at level 1 in both Standard and RetroMode
+    Beast Lore now unlocks at level 1 in both Standard and RetroMode
+    Call Of The Wild now unlocks at level 1 in both Standard and RetroMode
+    Scrap Collector now unlocks at level 1 in both Standard and RetroMode
+    Treasure Hunter now unlocks at level 1 in both Standard and RetroMode
+    Rupture now unlocks at level 1 in both Standard and RetroMode
+    Iron Arm Style now unlocks at level 1 in both Standard and RetroMode
+    Harvest Lumber now unlocks at level 1 in both Standard and RetroMode
+    Archaeology now unlocks at level 1 in both Standard and RetroMode
+    Repair Mastery now unlocks at level 1 in both Standard and RetroMode
+    Double Drops (Herbalism and Mining) now have ranks and unlock at level 1 in both Standard and RetroMode
+    Concoctions rank 2 now unlocks at Level 1 for both Standard and RetroMode
+    Serrated Strikes now unlocks at levels 5/50 instead of 10/100
+    Berserk now unlocks at levels 5/50 instead of 10/100
+
+    NOTES:
+    I'm looking into adding 1.12.2 support sooner than expected.
+
+    Editing your config files is not required for this patch (and never will be), however I would highly recommend it. Read the notes below this line carefully.
+    If you want to update to this patch easily and you don't mind default config values, delete skillranks.yml, advanced.yml, and experience.yml before starting your server with 2.1.89 of mcMMO applied.
+    Many skills now unlock at level 1 and the default starting level is back to 0. It is recommended you change this number from 1 to 0 manually by editing 'Skills.General.StartingLevel' in advanced.yml or deleting advanced.yml and generating a new file when 2.1.89 starts.
+    It is recommended you make the manual edits to skillranks.yml to apply this change or delete skillranks.yml and a new one will be generated once you start 2.1.89.
+
+    Early Game Boost was used to help players get to level 5 quickly by boosting their XP until they got there, this caused some confusion as they appeared to be 'learning a skill' for multiple levels, on RetroMode this lasted until level 50.
+    I have changed Early Game Boost to only last from level 0-1 on both RetroMode and Standard, and now important skills are unlocked at level 1.
+    I was going to wait until 2.2 was done to deploy this change, but 2.2 is some time away and the previous system was causing some confusion.
+    Early Game Boost gives players extra XP for skills that are level 0, you can turn this system off by setting 'EarlyGameBoost.Enabled' in experience.yml to false
+    Early Game Boost will show 'Learning a new skill...' if XP bars are enabled
+
+    https://mcmmo.org/wiki/World_guard - A list of WG flags supported by mcMMO.
+    It is not necessary to have WG installed, but if you do have WG installed mcMMO hooks into it to provide some additional features.
+    Previously mcMMO used to determine if WG was compatible just by checking to see if it was version 7 of WG, however version 7 of WG is not guaranteed to be compatible as necessary classes that mcMMO hooks into were added during its development and some users are still running early dev versions of WG7.
+    In order to decrease the chance of error, mcMMO now uses reflection when checking to see if WG is compatible in addition to checking its version number, if its not compatible mcMMO will print a message and refrain from hooking into WG.
+    WG is an optional dependency for mcMMO, and unfortunately before this change if mcMMO thought you were running a compatible version of WG and it turned out you weren't then mcMMO would not function correctly.
+
+    Archaeology does something now, it will be tweaked again in the future. Previously rank 1 of Archaeology was required to find treasures but that was all it did, now each rank of Archaeology also adds a small chance to find experience orbs when a player finds treasure.
+
+    In a prior patch I removed damage on tools if they had Unbreakable NBT or Unbreaking Enchantment, at the time I made this change I did not realize they were different things and just shared the same name, this patch fixes this mistake. My intention was to prevent damage on tools with the NBT unbreakable tag which makes an item never suffer from durability loss.
+    mcMMO reduces damage to tools from super abilities if they have the "Durability/Unbreaking" enchantment already, this behaviour has been in mcMMO for a long time.
+
+    Tree Feller will now give reduced XP per block destroyed by Tree Feller and will never go below 1 XP per block, you can turn this off with 'ExploitFix.TreeFellerReducedXP' in experience.yml
+    There was a bug fixed in this patch that prevents an issue where Tree Feller was not removing all blocks left behind, unfortunately this will only affect new trees made in the world. The only trees that suffered from this bug were ones in snowy areas that had snow form on them.
+
+    RetroMode and Standard mode will be getting renamed in 2.2, probably to something like 1000-scale and 100-scale respectively.
+    Retro Mode was accidental genius is the short reason for the change to make it the default level scaling for mcMMO again.
+    Standard Mode is not going anywhere, it is just opt-in now instead of the default.
+    If you delete config.yml you will need to turn RetroMode off to use Standard mode as mcMMO doesn't keep track of what level scaling you are using outside of that.
+
+Version 2.1.88
+    mcMMO is now more compatible with a plugin named Project Korra
+    mcMMO will no longer process combat triggers for damage at or below 0
+
+Version 2.1.87
+    (Level caps are not on by default in mcMMO, this is something you can turn on)
+
+    Players who reach either the power level cap or skill level cap will now be informed that they have done so
+    XP Bars will no longer be sent to players who have reached the power level or skill level cap respectively
+    Level up messages will no longer be sent to players who have reached the power level or skill level cap respectively
+    Fixed a bug where mcMMO would send level up notifications to a player if the custom level up event from mcMMO was cancelled
+    New locale strings 'LevelCap.PowerLevel' & 'LevelCap.Skill'
+
 Version 2.1.86
     Players will no longer be told they got a perfect result when salvaging if they are below max skill level
     Salvage results will now travel towards the player instead of moving in a random direction

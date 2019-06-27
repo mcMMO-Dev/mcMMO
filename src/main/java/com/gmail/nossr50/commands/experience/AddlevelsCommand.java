@@ -30,7 +30,7 @@ public class AddlevelsCommand extends ExperienceCommand {
             return;
         }
 
-        EventUtils.handleLevelChangeEvent(player, skill, value, xpRemoved, true, XPGainReason.COMMAND);
+        EventUtils.tryLevelChangeEvent(player, skill, value, xpRemoved, true, XPGainReason.COMMAND);
     }
 
     @Override

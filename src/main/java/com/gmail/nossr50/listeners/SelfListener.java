@@ -73,7 +73,7 @@ public class SelfListener implements Listener {
                 event.getXpGainReason() == XPGainReason.SHARED_PVE ||
                 event.getXpGainReason() == XPGainReason.SHARED_PVP) {
             if (WorldGuardUtils.isWorldGuardLoaded()) {
-                if (!WorldGuardManager.getInstance().hasXPFlag(player)) {
+                if (!plugin.getWorldGuardManager().hasXPFlag(player)) {
                     event.setRawXpGained(0);
                     event.setCancelled(true);
                 }

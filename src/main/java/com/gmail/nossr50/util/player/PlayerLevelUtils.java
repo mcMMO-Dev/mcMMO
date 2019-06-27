@@ -8,17 +8,13 @@ import com.gmail.nossr50.util.Permissions;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 
 public class PlayerLevelUtils {
-    private HashMap<PrimarySkillType, Integer> earlyGameBoostCutoffs;
     private HashSet<CustomXPPerk> customXpPerkNodes;
 
     public PlayerLevelUtils() {
         registerCustomPerkPermissions();
-        earlyGameBoostCutoffs = new HashMap<>();
-        calculateEarlyGameBoostCutoffs();
         applyConfigPerks();
     }
 
@@ -38,29 +34,14 @@ public class PlayerLevelUtils {
     }
 
     /**
-     * Get the the final level at which players will still receive an early game XP boost
-     * Note: This doesn't mean early game boosts are enabled on the server, as that is a config toggle
-     *
+     * Check if a player is currently qualifying for the early game boosted XP
+     * Will return false only if a player is above the boost level cutoff, it does not check config settings to see if the early game boost is on
+     * @param mcMMOPlayer target player
      * @param primarySkillType target skill
-     * @return this skills maximum early game boost level
+     * @return if the player would qualify for the XP boost if its enabled
      */
-    public int getEarlyGameCutoff(PrimarySkillType primarySkillType) {
-        return earlyGameBoostCutoffs.get(primarySkillType);
-    }
-
-    private void calculateEarlyGameBoostCutoffs() {
-        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            int levelCap = mcMMO.getConfigManager().getConfigLeveling().getLevelCap(primarySkillType);
-            int cap;
-
-            if (levelCap == Integer.MAX_VALUE || levelCap <= 0) {
-                cap = mcMMO.isRetroModeEnabled() ? 50 : 5;
-            } else {
-                cap = (int) (levelCap * mcMMO.getConfigManager().getConfigLeveling().getEarlyGameBoostMultiplier());
-            }
-
-            earlyGameBoostCutoffs.put(primarySkillType, cap);
-        }
+    public static boolean qualifiesForEarlyGameBoost(McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType) {
+        return mcMMOPlayer.getSkillLevel(primarySkillType) < 1;
     }
 
     /**
@@ -131,15 +112,4 @@ public class PlayerLevelUtils {
             return 1.0;
     }
 
-
-    /**
-     * Check if a player is currently qualifying for the early game boosted XP
-     * Will return false only if a player is above the boost level cutoff, it does not check config settings to see if the early game boost is on
-     * @param mcMMOPlayer target player
-     * @param primarySkillType target skill
-     * @return if the player would qualify for the XP boost if its enabled
-     */
-    public static boolean qualifiesForEarlyGameBoost(McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType) {
-        return mcMMOPlayer.getSkillLevel(primarySkillType) < mcMMO.getPlayerLevelUtils().getEarlyGameCutoff(primarySkillType);
-    }
 }

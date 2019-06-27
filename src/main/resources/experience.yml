@@ -23,8 +23,6 @@
 #   The bar is one solid piece
 EarlyGameBoost:
     Enabled: true
-    #Used to determine the cap of the max boot, with default level cap it will be 5 on standard, and 50 on retro
-    MaxLevelMultiplier: 0.05
 ExploitFix:
     UnsafeEnchantments: false
     # Prevent many exploits related to fishing
@@ -32,6 +30,7 @@ ExploitFix:
     EndermanEndermiteFarms: true
     Acrobatics: true
     LavaStoneAndCobbleFarming: true
+    TreeFellerReducedXP: true
 Experience_Bars:
     # Turn this to false if you wanna disable XP bars
     Enable: true
@@ -354,24 +353,24 @@ Experience_Values:
         Bubble_Coral_Block: 70
         Fire_Coral_Block: 90
         Horn_Coral_Block: 125
-        Coal_Ore: 100
-        Diamond_Ore: 750
+        Coal_Ore: 400
+        Diamond_Ore: 2400
         Emerald_Ore: 1000
-        End_Bricks: 200
+        End_Bricks: 50
         Nether_Brick: 50
-        End_Stone: 30
-        Glowstone: 30
-        Gold_Ore: 350
+        End_Stone: 15
+        Glowstone: 15
+        Gold_Ore: 1300
         Terracotta: 30
-        Iron_Ore: 250
-        Lapis_Ore: 400
+        Iron_Ore: 900
+        Lapis_Ore: 800
         Mossy_Cobblestone: 30
-        Netherrack: 30
+        Netherrack: 15
         Obsidian: 150
-        Packed_Ice: 50
-        Blue_Ice: 100
-        Nether_Quartz_Ore: 100
-        Redstone_Ore: 150
+        Packed_Ice: 15
+        Blue_Ice: 15
+        Nether_Quartz_Ore: 300
+        Redstone_Ore: 600
         Sandstone: 30
         Black_Terracotta: 50
         Blue_Terracotta: 50
@@ -389,10 +388,10 @@ Experience_Values:
         Red_Terracotta: 50
         White_Terracotta: 50
         Yellow_Terracotta: 50
-        Stone: 30
-        Granite: 30
-        Andesite: 30
-        Diorite: 30
+        Stone: 15
+        Granite: 15
+        Andesite: 15
+        Diorite: 15
         Stone_Bricks: 50
         Cracked_Stone_Bricks: 50
         Mossy_Stone_Bricks: 50

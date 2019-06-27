@@ -8,7 +8,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.woodcutting.Woodcutting.ExperienceGainMethod;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
@@ -52,7 +51,7 @@ public class WoodcuttingManager extends SkillManager {
      * @param blockState Block being broken
      */
     public void woodcuttingBlockCheck(BlockState blockState) {
-        int xp = Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.DEFAULT);
+        int xp = Woodcutting.getExperienceFromLog(blockState);
 
         switch (blockState.getType()) {
             case BROWN_MUSHROOM_BLOCK:
@@ -114,6 +113,7 @@ public class WoodcuttingManager extends SkillManager {
     private void dropBlocks(Set<BlockState> treeFellerBlocks) {
         Player player = getPlayer();
         int xp = 0;
+        int processedLogCount = 0;
 
         for (BlockState blockState : treeFellerBlocks) {
             Block block = blockState.getBlock();
@@ -124,30 +124,16 @@ public class WoodcuttingManager extends SkillManager {
 
             Material material = blockState.getType();
 
+            //TODO: Update this to drop the correct items/blocks via NMS
             if (material == Material.BROWN_MUSHROOM_BLOCK || material == Material.RED_MUSHROOM_BLOCK) {
-                xp += Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.TREE_FELLER);
+                xp += Woodcutting.processTreeFellerXPGains(blockState, processedLogCount);
                 Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
-            }
-            /*else if (mcMMO.getModManager().isCustomLog(blockState)) {
-                if (canGetDoubleDrops()) {
-                    Woodcutting.checkForDoubleDrop(blockState);
-                }
-
-                CustomBlock customBlock = mcMMO.getModManager().getBlock(blockState);
-                xp = customBlock.getXpGain();
-
-                Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
-            }
-            else if (mcMMO.getModManager().isCustomLeaf(blockState)) {
-                Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
-            }*/
-            else {
-
+            } else {
                 if (BlockUtils.isLog(blockState)) {
                     if (canGetDoubleDrops()) {
                         Woodcutting.checkForDoubleDrop(blockState);
                     }
-                    xp += Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.TREE_FELLER);
+                    xp += Woodcutting.processTreeFellerXPGains(blockState, processedLogCount);
                     Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
                 }
                 if (BlockUtils.isLeaves(blockState)) {
@@ -157,6 +143,7 @@ public class WoodcuttingManager extends SkillManager {
 
             blockState.setType(Material.AIR);
             blockState.update(true);
+            processedLogCount+=1;
         }
 
         applyXpGain(xp, XPGainReason.PVE);
