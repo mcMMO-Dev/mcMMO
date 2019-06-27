@@ -30,20 +30,20 @@ public class ConfigExperienceMining {
         MINING_EXPERIENCE_DEFAULT.put("minecraft:dark_prismarine_stairs", 30);
 
         /* ORE */
-        MINING_EXPERIENCE_DEFAULT.put("minecraft:coal_ore", 100);
-        MINING_EXPERIENCE_DEFAULT.put("minecraft:diamond_ore", 750);
+        MINING_EXPERIENCE_DEFAULT.put("minecraft:coal_ore", 400);
+        MINING_EXPERIENCE_DEFAULT.put("minecraft:diamond_ore", 2400);
         MINING_EXPERIENCE_DEFAULT.put("minecraft:emerald_ore", 1000);
-        MINING_EXPERIENCE_DEFAULT.put("minecraft:gold_ore", 350);
-        MINING_EXPERIENCE_DEFAULT.put("minecraft:iron_ore", 250);
-        MINING_EXPERIENCE_DEFAULT.put("minecraft:lapis_ore", 400);
-        MINING_EXPERIENCE_DEFAULT.put("minecraft:nether_quartz_ore", 100);
-        MINING_EXPERIENCE_DEFAULT.put("minecraft:redstone_ore", 150);
+        MINING_EXPERIENCE_DEFAULT.put("minecraft:gold_ore", 1300);
+        MINING_EXPERIENCE_DEFAULT.put("minecraft:iron_ore", 900);
+        MINING_EXPERIENCE_DEFAULT.put("minecraft:lapis_ore", 800);
+        MINING_EXPERIENCE_DEFAULT.put("minecraft:nether_quartz_ore", 300);
+        MINING_EXPERIENCE_DEFAULT.put("minecraft:redstone_ore", 600);
 
         /* HELL RELATED */
 
         MINING_EXPERIENCE_DEFAULT.put("minecraft:nether_brick", 50);
-        MINING_EXPERIENCE_DEFAULT.put("minecraft:glowstone", 30);
-        MINING_EXPERIENCE_DEFAULT.put("minecraft:netherrack", 30);
+        MINING_EXPERIENCE_DEFAULT.put("minecraft:glowstone", 15);
+        MINING_EXPERIENCE_DEFAULT.put("minecraft:netherrack", 15);
         MINING_EXPERIENCE_DEFAULT.put("minecraft:magma_block", 30);
 
         /* BADLANDS BIOME */
@@ -66,10 +66,10 @@ public class ConfigExperienceMining {
         MINING_EXPERIENCE_DEFAULT.put("minecraft:yellow_terracotta", 50);
 
         /* COMMON OR BIOME INDEPENDENT MINERALS */
-        MINING_EXPERIENCE_DEFAULT.put("minecraft:andesite", 30);
-        MINING_EXPERIENCE_DEFAULT.put("minecraft:diorite", 30);
-        MINING_EXPERIENCE_DEFAULT.put("minecraft:granite", 30);
-        MINING_EXPERIENCE_DEFAULT.put("minecraft:stone", 30);
+        MINING_EXPERIENCE_DEFAULT.put("minecraft:andesite", 15);
+        MINING_EXPERIENCE_DEFAULT.put("minecraft:diorite", 15);
+        MINING_EXPERIENCE_DEFAULT.put("minecraft:granite", 15);
+        MINING_EXPERIENCE_DEFAULT.put("minecraft:stone", 15);
         MINING_EXPERIENCE_DEFAULT.put("minecraft:mossy_cobblestone", 30);
         MINING_EXPERIENCE_DEFAULT.put("minecraft:mossy_cobblestone_slab", 30);
         MINING_EXPERIENCE_DEFAULT.put("minecraft:mossy_cobblestone_stairs", 30);
@@ -82,7 +82,6 @@ public class ConfigExperienceMining {
         MINING_EXPERIENCE_DEFAULT.put("minecraft:stone_bricks", 30);
         MINING_EXPERIENCE_DEFAULT.put("minecraft:stone_brick_slab", 30);
         MINING_EXPERIENCE_DEFAULT.put("minecraft:stone_brick_stairs", 30);
-        MINING_EXPERIENCE_DEFAULT.put("minecraft:stone_brick_stairs", 30);
         MINING_EXPERIENCE_DEFAULT.put("minecraft:cracked_stone_bricks", 30);
         MINING_EXPERIENCE_DEFAULT.put("minecraft:infested_cracked_stone_bricks", 30);
         MINING_EXPERIENCE_DEFAULT.put("minecraft:chiseled_quartz_block", 30);
@@ -92,8 +91,8 @@ public class ConfigExperienceMining {
         MINING_EXPERIENCE_DEFAULT.put("minecraft:infested_chiseled_stone_bricks", 30);
 
         /* SNOWY BIOME */
-        MINING_EXPERIENCE_DEFAULT.put("minecraft:blue_ice", 50);
-        MINING_EXPERIENCE_DEFAULT.put("minecraft:packed_ice", 100);
+        MINING_EXPERIENCE_DEFAULT.put("minecraft:blue_ice", 15);
+        MINING_EXPERIENCE_DEFAULT.put("minecraft:packed_ice", 15);
 
         /* DESERT BIOME */
         MINING_EXPERIENCE_DEFAULT.put("minecraft:sandstone", 30);
@@ -106,8 +105,8 @@ public class ConfigExperienceMining {
         MINING_EXPERIENCE_DEFAULT.put("minecraft:smooth_red_sandstone", 30);
 
         /* END RELATED */
-        MINING_EXPERIENCE_DEFAULT.put("minecraft:end_stone", 30);
-        MINING_EXPERIENCE_DEFAULT.put("minecraft:end_stone_bricks", 200);
+        MINING_EXPERIENCE_DEFAULT.put("minecraft:end_stone", 15);
+        MINING_EXPERIENCE_DEFAULT.put("minecraft:end_stone_bricks", 30);
         MINING_EXPERIENCE_DEFAULT.put("minecraft:purpur_block", 200);
         MINING_EXPERIENCE_DEFAULT.put("minecraft:purpur_pillar", 250);
         MINING_EXPERIENCE_DEFAULT.put("minecraft:purpur_slab", 150);
