@@ -15,6 +15,9 @@ public class ConfigRanksMining {
     @Setting(value = "Demolitions-Expertise")
     private SkillRankProperty demolitionsExpertise = new SkillRankProperty(10);
 
+    @Setting(value = "Double-Drops")
+    private SkillRankProperty doubleDrops = new SkillRankProperty(1);
+
     @Setting(value = "Blast-Mining")
     private SkillRankProperty blastMining = new SkillRankProperty(10, 25, 35, 50, 65, 75, 85, 100);
 
@@ -28,6 +31,10 @@ public class ConfigRanksMining {
 
     public SkillRankProperty getDemolitionsExpertise() {
         return demolitionsExpertise;
+    }
+
+    public SkillRankProperty getDoubleDrops() {
+        return doubleDrops;
     }
 
     public SkillRankProperty getBlastMining() {

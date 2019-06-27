@@ -22,7 +22,7 @@ public class ConfigRanksFishing {
     private SkillRankProperty fishermansDiet = new SkillRankProperty(20, 40, 60, 80, 100);
 
     @Setting(value = "Treasure-Hunter")
-    private SkillRankProperty treasureHunter = new SkillRankProperty(10, 25, 35, 50, 65, 75, 85, 100);
+    private SkillRankProperty treasureHunter = new SkillRankProperty(1, 25, 35, 50, 65, 75, 85, 100);
 
     @Setting(value = "Inner-Peace")
     private SkillRankProperty innerPeace = new SkillRankProperty(33, 66, 100);

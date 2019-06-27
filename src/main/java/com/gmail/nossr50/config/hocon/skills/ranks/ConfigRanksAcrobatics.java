@@ -7,7 +7,7 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 public class ConfigRanksAcrobatics {
 
     @Setting(value = "Dodge")
-    private SkillRankProperty dodgeRanks = new SkillRankProperty(2);
+    private SkillRankProperty dodgeRanks = new SkillRankProperty(1);
 
     public SkillRankProperty getDodgeRanks() {
         return dodgeRanks;

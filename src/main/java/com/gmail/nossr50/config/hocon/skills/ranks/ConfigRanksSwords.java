@@ -16,7 +16,7 @@ public class ConfigRanksSwords {
     private SkillRankProperty counterAttack = new SkillRankProperty(20);
 
     @Setting(value = "Rupture")
-    private SkillRankProperty rupture = new SkillRankProperty(5, 15, 75, 90);
+    private SkillRankProperty rupture = new SkillRankProperty(1, 15, 75, 90);
 
     @Setting(value = "Serrated-Strikes")
     private SkillRankProperty serratedStrikes = new SkillRankProperty(5);

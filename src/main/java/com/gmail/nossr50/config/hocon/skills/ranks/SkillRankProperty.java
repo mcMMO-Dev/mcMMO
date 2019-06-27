@@ -16,12 +16,7 @@ public class SkillRankProperty implements SkillProperty {
         for(int x = 0; x < rankDefinitions.length; x++) {
             int curRank = x+1;
 
-            //Avoid negative numbers
-            if(rankDefinitions[x] < 0) {
-                standardRanks.put(curRank, 0);
-            } else {
-                standardRanks.put(curRank, rankDefinitions[x]);
-            }
+            addStandardAndRetroRank(curRank, rankDefinitions[x]);
         }
     }
 
@@ -31,13 +26,38 @@ public class SkillRankProperty implements SkillProperty {
     }
 
     /**
-     * Convenience method to add Standard and Retro at the same time, shouldn't be used for anything other than the default values since admins may only edit Retro values and not touch Standard ones
-     * @param curRank
-     * @param rankUnlockLevel
+     * Convenience method to add Standard and Retro at the same time for default initialization of values
+     * Only requires standard values be passed
+     * @param curRank the rank to fill in the value for
+     * @param standardValue the value of the rank in Standard
      */
-    private void addStandardAndRetroRank(int curRank, int rankUnlockLevel) {
-        standardRanks.put(curRank, rankUnlockLevel);
-        retroRanks.put(curRank, rankUnlockLevel * 10);
+    private void addStandardAndRetroRank(int curRank, int standardValue) {
+        //Retro will be equal to standards rank requirement multiplied by 10 unless that value is 1, in which case it will also be 1
+        int retroValue = standardValue == 1 ? 1 : standardValue * 10;
+
+        //Avoid negative numbers
+        if(standardValue < 0) {
+            standardRanks.put(curRank, 0);
+            retroRanks.put(curRank, 0);
+        } else {
+            standardRanks.put(curRank, standardValue);
+            retroRanks.put(curRank, retroValue);
+        }
+    }
+
+    /**
+     * Convenience method to add Standard and Retro at the same time
+     * @param curRank the rank to fill in the value for
+     * @param standardValue the value of the rank in Standard
+     * @param retroValue the value of the rank in Retro
+     */
+    private void addStandardAndRetroRank(int curRank, int standardValue, int retroValue) {
+        //Avoid negative numbers
+        standardValue = Math.max(0, standardValue);
+        retroValue = Math.max(0, retroValue);
+
+        standardRanks.put(curRank, standardValue);
+        retroRanks.put(curRank, retroValue);
     }
 
     private void initRankMaps() {

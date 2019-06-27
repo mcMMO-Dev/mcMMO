@@ -15,6 +15,9 @@ public class ConfigRanksHerbalism {
     @Setting(value = "Farmers-Diet")
     private SkillRankProperty farmersDiet = new SkillRankProperty(20, 40, 60, 80, 100);
 
+    @Setting(value = "Double-Drops")
+    private SkillRankProperty doubleDrops = new SkillRankProperty(1);
+
     public SkillRankProperty getGreenTerra() {
         return greenTerra;
     }
@@ -25,5 +28,9 @@ public class ConfigRanksHerbalism {
 
     public SkillRankProperty getFarmersDiet() {
         return farmersDiet;
+    }
+
+    public SkillRankProperty getDoubleDrops() {
+        return doubleDrops;
     }
 }

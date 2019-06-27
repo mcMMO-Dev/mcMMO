@@ -7,7 +7,7 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 public class ConfigSectionLevelScaling {
 
     /* DEFAULT VALUES */
-    public static final boolean USE_RETRO_MODE_DEFAULT = false;
+    public static final boolean USE_RETRO_MODE_DEFAULT = true;
 
     /*
      * CONFIG NODES
@@ -17,8 +17,6 @@ public class ConfigSectionLevelScaling {
             comment = "Enables 1-1000 Level Scaling" +
                     "\nIf set to false, Standard Scaling is used instead (1-100 Level Scaling)")
     private boolean useRetroMode = USE_RETRO_MODE_DEFAULT;
-
-
 
     /*
      * GETTER BOILERPLATE

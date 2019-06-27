@@ -7,7 +7,7 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 public class ConfigRanksSalvage {
 
     @Setting(value = "Scrap-Collector")
-    private SkillRankProperty scrapCollector = new SkillRankProperty(2, 10, 15, 20, 25, 30, 35, 40);
+    private SkillRankProperty scrapCollector = new SkillRankProperty(1, 10, 15, 20, 25, 30, 35, 40);
 
     @Setting(value = "Arcane-Salvage")
     private SkillRankProperty arcaneSalvage = new SkillRankProperty(10, 25, 35, 50, 65, 75, 85, 100);

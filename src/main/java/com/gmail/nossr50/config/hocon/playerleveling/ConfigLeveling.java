@@ -118,10 +118,6 @@ public class ConfigLeveling {
         return getConfigExperienceFormula().isCumulativeCurveEnabled();
     }
 
-    public double getEarlyGameBoostMultiplier() {
-        return earlyGameBoost.getEarlyGameBoostMultiplier();
-    }
-
     public boolean isEnableEarlyGameBoost() {
         return earlyGameBoost.isEnableEarlyGameBoost();
     }

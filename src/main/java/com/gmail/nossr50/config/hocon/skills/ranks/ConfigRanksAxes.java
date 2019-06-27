@@ -13,13 +13,13 @@ public class ConfigRanksAxes {
     private SkillRankProperty skullSplitter = new SkillRankProperty(5);
 
     @Setting(value = "Critical-Strikes")
-    private SkillRankProperty criticalStrikes = new SkillRankProperty(2);
+    private SkillRankProperty criticalStrikes = new SkillRankProperty(1);
 
     @Setting(value = "Greater-Impact")
     private SkillRankProperty greaterImpact = new SkillRankProperty(25);
 
     @Setting(value = "Armor-Impact")
-    private SkillRankProperty armorImpact = new SkillRankProperty(5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100);
+    private SkillRankProperty armorImpact = new SkillRankProperty(1, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100);
 
     @Setting(value = "Axe-Mastery")
     private SkillRankProperty axeMastery = new SkillRankProperty(5, 10, 15, 20);

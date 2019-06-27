@@ -22,7 +22,7 @@ public class ConfigRanksUnarmed {
     private SkillRankProperty ironGrip = new SkillRankProperty(60);
 
     @Setting(value = "Iron-Arm-Style")
-    private SkillRankProperty ironArmStyle = new SkillRankProperty(5, 25, 50, 75, 100);
+    private SkillRankProperty ironArmStyle = new SkillRankProperty(1, 25, 50, 75, 100);
 
     public SkillRankProperty getLimitBreak() {
         return limitBreak;

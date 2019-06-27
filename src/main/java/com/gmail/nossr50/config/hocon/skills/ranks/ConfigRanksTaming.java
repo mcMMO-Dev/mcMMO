@@ -7,13 +7,13 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 public class ConfigRanksTaming {
 
     @Setting(value = "Beast-Lore")
-    private SkillRankProperty beastLore = new SkillRankProperty(2);
+    private SkillRankProperty beastLore = new SkillRankProperty(1);
 
     @Setting(value = "Gore")
     private SkillRankProperty gore = new SkillRankProperty(15);
 
     @Setting(value = "Call-Of-The-Wild")
-    private SkillRankProperty callOfTheWild = new SkillRankProperty(5);
+    private SkillRankProperty callOfTheWild = new SkillRankProperty(1);
 
     @Setting(value = "Pummel")
     private SkillRankProperty pummel = new SkillRankProperty(20);

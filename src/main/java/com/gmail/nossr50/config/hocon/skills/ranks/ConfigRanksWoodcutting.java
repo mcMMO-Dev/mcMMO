@@ -10,7 +10,7 @@ public class ConfigRanksWoodcutting {
     private SkillRankProperty treeFeller = new SkillRankProperty(5);
 
     @Setting(value = "Harvest-Lumber")
-    private SkillRankProperty harvestLumber = new SkillRankProperty(5);
+    private SkillRankProperty harvestLumber = new SkillRankProperty(1);
 
     @Setting(value = "Leaf-Blower")
     private SkillRankProperty leafBlower = new SkillRankProperty(30);

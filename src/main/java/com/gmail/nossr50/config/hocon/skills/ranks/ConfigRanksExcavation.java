@@ -10,7 +10,7 @@ public class ConfigRanksExcavation {
     private SkillRankProperty gigaDrillBreaker = new SkillRankProperty(5);
 
     @Setting(value = "Archaeology")
-    private SkillRankProperty archaeology = new SkillRankProperty(5, 25, 35, 50, 65, 75, 85, 100);
+    private SkillRankProperty archaeology = new SkillRankProperty(1, 25, 35, 50, 65, 75, 85, 100);
 
     public SkillRankProperty getGigaDrillBreaker() {
         return gigaDrillBreaker;
