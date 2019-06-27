@@ -28,7 +28,7 @@ import java.util.List;
 
 public final class CommandRegistrationManager {
     private mcMMO pluginRef;
-    private static String permissionsMessage = LocaleLoader.getString("mcMMO.NoPermission");
+    private String permissionsMessage = LocaleLoader.getString("mcMMO.NoPermission");
 
     public CommandRegistrationManager(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

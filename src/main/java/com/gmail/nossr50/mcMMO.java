@@ -39,7 +39,6 @@ import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
-import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -54,33 +53,32 @@ import java.io.File;
 import java.io.IOException;
 
 public class mcMMO extends JavaPlugin {
-    public static mcMMO p;
     // Jar Stuff
-    public static File mcMMOFile;
+    private File mcMMOFile;
     /* Managers */
-    private static ChunkManager placeStore;
-    private static ConfigManager configManager;
-    private static DynamicSettingsManager dynamicSettingsManager;
-    private static DatabaseManager databaseManager;
-    private static FormulaManager formulaManager;
-    private static MaterialMapStore materialMapStore;
-    private static PlayerLevelUtils playerLevelUtils;
-    private static NotificationManager notificationManager;
-    private static CommandRegistrationManager commandRegistrationManager;
-    private static NBTManager nbtManager;
-    private static WorldGuardManager worldGuardManager;
+    private ChunkManager placeStore;
+    private ConfigManager configManager;
+    private DynamicSettingsManager dynamicSettingsManager;
+    private DatabaseManager databaseManager;
+    private FormulaManager formulaManager;
+    private MaterialMapStore materialMapStore;
+    private PlayerLevelUtils playerLevelUtils;
+    private NotificationManager notificationManager;
+    private CommandRegistrationManager commandRegistrationManager;
+    private NBTManager nbtManager;
+    private WorldGuardManager worldGuardManager;
 
     /* File Paths */
-    private static String mainDirectory;
-    private static String localesDirectory;
-    private static String flatFileDirectory;
-    private static String usersFile;
-    private static String modDirectory;
+    private String mainDirectory;
+    private String localesDirectory;
+    private String flatFileDirectory;
+    private String usersFile;
+    private String modDirectory;
 
     /* Plugin Checks */
-    private static boolean healthBarPluginEnabled;
+    private boolean healthBarPluginEnabled;
     // API checks
-    private static boolean serverAPIOutdated = false;
+    private boolean serverAPIOutdated = false;
     // XP Event Check
     private boolean xpEventEnabled;
     /**
@@ -89,12 +87,7 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onEnable() {
         try {
-            p = this;
             getLogger().setFilter(new LogFilter(this));
-
-            //DEBUG
-            /*getLogger().info(Bukkit.getBukkitVersion());
-            getLogger().info(Bukkit.getVersion());*/
 
             MetadataConstants.metadataValue = new FixedMetadataValue(this, true);
 
@@ -253,7 +246,7 @@ public class mcMMO extends JavaPlugin {
         debug("Was disabled."); // How informative!
     }
 
-    public static PlayerLevelUtils getPlayerLevelUtils() {
+    public PlayerLevelUtils getPlayerLevelUtils() {
         return playerLevelUtils;
     }
 
@@ -288,52 +281,52 @@ public class mcMMO extends JavaPlugin {
         }
     }
 
-    public static MaterialMapStore getMaterialMapStore() {
+    public MaterialMapStore getMaterialMapStore() {
         return materialMapStore;
     }
 
-    public static String getMainDirectory() {
+    public String getMainDirectory() {
         return mainDirectory;
     }
 
-    public static String getFlatFileDirectory() {
+    public String getFlatFileDirectory() {
         return flatFileDirectory;
     }
 
-    public static String getUsersFilePath() {
+    public String getUsersFilePath() {
         return usersFile;
     }
 
-    public static String getModDirectory() {
+    public String getModDirectory() {
         return modDirectory;
     }
 
-    public static FormulaManager getFormulaManager() {
+    public FormulaManager getFormulaManager() {
         return formulaManager;
     }
 
-    public static ChunkManager getPlaceStore() {
+    public ChunkManager getPlaceStore() {
         return placeStore;
     }
 
-    public static RepairableManager getRepairableManager() {
+    public RepairableManager getRepairableManager() {
         return dynamicSettingsManager.getRepairableManager();
     }
 
-    public static SalvageableManager getSalvageableManager() {
+    public SalvageableManager getSalvageableManager() {
         return dynamicSettingsManager.getSalvageableManager();
     }
 
-    public static DatabaseManager getDatabaseManager() {
+    public DatabaseManager getDatabaseManager() {
         return databaseManager;
     }
 
-    public static NBTManager getNbtManager() {
+    public NBTManager getNbtManager() {
         return nbtManager;
     }
 
     @Deprecated
-    public static void setDatabaseManager(DatabaseManager newDatabaseManager) {
+    public void setDatabaseManager(DatabaseManager newDatabaseManager) {
         databaseManager = newDatabaseManager;
     }
 
@@ -342,7 +335,7 @@ public class mcMMO extends JavaPlugin {
      *
      * @return settings for MySQL from the users config
      */
-    public static ConfigSectionMySQL getMySQLConfigSettings() {
+    public ConfigSectionMySQL getMySQLConfigSettings() {
         return configManager.getConfigDatabase().getConfigSectionMySQL();
     }
 
@@ -351,7 +344,7 @@ public class mcMMO extends JavaPlugin {
      *
      * @return settings for Player Leveling from the users config
      */
-    public static ConfigLeveling getPlayerLevelingSettings() {
+    public ConfigLeveling getPlayerLevelingSettings() {
         return configManager.getConfigLeveling();
     }
 
@@ -360,7 +353,7 @@ public class mcMMO extends JavaPlugin {
      *
      * @return settings for Database cleaning from the users config
      */
-    public static ConfigSectionCleaning getDatabaseCleaningSettings() {
+    public ConfigSectionCleaning getDatabaseCleaningSettings() {
         return configManager.getConfigDatabase().getConfigSectionCleaning();
     }
 
@@ -369,7 +362,7 @@ public class mcMMO extends JavaPlugin {
      *
      * @return settings for the Party XP sharing from the users config
      */
-    public static ConfigSectionPartyExperienceSharing getPartyXPShareSettings() {
+    public ConfigSectionPartyExperienceSharing getPartyXPShareSettings() {
         return configManager.getConfigParty().getPartyXP().getPartyExperienceSharing();
     }
 
@@ -378,7 +371,7 @@ public class mcMMO extends JavaPlugin {
      *
      * @return settings for the Party Leveling from the users config
      */
-    public static ConfigSectionPartyLevel getPartyLevelSettings() {
+    public ConfigSectionPartyLevel getPartyLevelSettings() {
         return configManager.getConfigParty().getPartyXP().getPartyLevel();
     }
 
@@ -387,15 +380,11 @@ public class mcMMO extends JavaPlugin {
      *
      * @return settings for Scoreboards from the users config
      */
-    public static ConfigScoreboard getScoreboardSettings() {
+    public ConfigScoreboard getScoreboardSettings() {
         return configManager.getConfigScoreboard();
     }
 
-    /*public static HolidayManager getHolidayManager() {
-        return holidayManager;
-    }*/
-
-    public static boolean isHealthBarPluginEnabled() {
+    public boolean isHealthBarPluginEnabled() {
         return healthBarPluginEnabled;
     }
 
@@ -406,11 +395,11 @@ public class mcMMO extends JavaPlugin {
      *
      * @return true if retro mode is enabled
      */
-    public static boolean isRetroModeEnabled() {
+    public boolean isRetroModeEnabled() {
         return configManager.isRetroMode();
     }
 
-    public static ConfigManager getConfigManager() {
+    public ConfigManager getConfigManager() {
         return configManager;
     }
 
@@ -419,7 +408,7 @@ public class mcMMO extends JavaPlugin {
      *
      * @return the override locale directory
      */
-    public static String getLocalesDirectory() {
+    public String getLocalesDirectory() {
         return localesDirectory;
     }
 
@@ -431,14 +420,6 @@ public class mcMMO extends JavaPlugin {
     public boolean isXPEventEnabled() {
         return xpEventEnabled;
     }
-
-    /*public static ModManager getModManager() {
-        return modManager;
-    }*/
-
-    /*public static UpgradeManager getUpgradeManager() {
-        return upgradeManager;
-    }*/
 
     /**
      * Sets the xpEventEnabled boolean
@@ -494,12 +475,11 @@ public class mcMMO extends JavaPlugin {
         localesDirectoryPath.mkdirs();
     }
 
+    /**
+     * Effectively this reloads mcMMO, making it go through the disabled, load, and enable step
+     * Used with the new mcmmo-reload command
+     */
     public void reload() {
-//        loadConfigFiles();
-//        registerDynamicSettings(); //Do this after config
-//
-//        databaseManager = DatabaseManagerFactory.getDatabaseManager();
-
         onDisable();
         onLoad();
         onEnable();
@@ -535,13 +515,13 @@ public class mcMMO extends JavaPlugin {
          * Acrobatics skills
          */
 
-        if (mcMMO.getConfigManager().getConfigCoreSkills().isAcrobaticsEnabled()) {
+        if (configManager.getConfigCoreSkills().isAcrobaticsEnabled()) {
             InteractionManager.initMaps(); //Init maps
 
             System.out.println("[mcMMO]" + " enabling Acrobatics Skills");
 
             //TODO: Should do this differently
-            if (mcMMO.getConfigManager().getConfigCoreSkills().isRollEnabled()) {
+            if (configManager.getConfigCoreSkills().isRollEnabled()) {
                 InteractionManager.registerSubSkill(new Roll());
             }
         }
@@ -549,7 +529,7 @@ public class mcMMO extends JavaPlugin {
 
     private void registerCustomRecipes() {
         getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
-            if (mcMMO.getConfigManager().getConfigItems().isChimaeraWingEnabled()) {
+            if (configManager.getConfigItems().isChimaeraWingEnabled()) {
                 Recipe recipe = ChimaeraWing.getChimaeraWingRecipe();
 
                 if(!SkillUtils.hasRecipeBeenRegistered(recipe))
@@ -603,7 +583,7 @@ public class mcMMO extends JavaPlugin {
         }
     }
 
-    public static DynamicSettingsManager getDynamicSettingsManager() {
+    public DynamicSettingsManager getDynamicSettingsManager() {
         return dynamicSettingsManager;
     }
 
@@ -613,7 +593,7 @@ public class mcMMO extends JavaPlugin {
         CRAFTBUKKIT
     }
 
-    public static NotificationManager getNotificationManager() {
+    public NotificationManager getNotificationManager() {
         return notificationManager;
     }
 
