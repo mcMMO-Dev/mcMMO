@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.database;
 
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -10,17 +9,24 @@ import org.bukkit.command.TabExecutor;
 import java.util.List;
 
 public class McpurgeCommand implements TabExecutor {
+
+    private mcMMO pluginRef;
+
+    public McpurgeCommand(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 0:
-                mcMMO.getDatabaseManager().purgePowerlessUsers();
+                pluginRef.getDatabaseManager().purgePowerlessUsers();
 
-                if (mcMMO.getDatabaseCleaningSettings().getOldUserCutoffMonths() != -1) {
-                    mcMMO.getDatabaseManager().purgeOldUsers();
+                if (pluginRef.getDatabaseCleaningSettings().getOldUserCutoffMonths() != -1) {
+                    pluginRef.getDatabaseManager().purgeOldUsers();
                 }
 
-                sender.sendMessage(LocaleLoader.getString("Commands.mcpurge.Success"));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mcpurge.Success"));
                 return true;
 
             default:

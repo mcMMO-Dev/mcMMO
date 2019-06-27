@@ -1,7 +1,6 @@
 package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.commands.party.PartySubcommandType;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import org.bukkit.ChatColor;
@@ -10,6 +9,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 public class McmmoCommand implements CommandExecutor {
+
+    private mcMMO pluginRef;
+
+    public McmmoCommand(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
@@ -19,16 +25,16 @@ public class McmmoCommand implements CommandExecutor {
                     return true;
                 }
 
-                String description = LocaleLoader.getString("mcMMO.Description");
+                String description = pluginRef.getLocaleManager().getString("mcMMO.Description");
                 String[] mcSplit = description.split(",");
                 sender.sendMessage(mcSplit);
 
-                if (mcMMO.getConfigManager().getConfigAds().isShowDonationInfo()) {
-                    sender.sendMessage(LocaleLoader.getString("MOTD.Donate"));
+                if (pluginRef.getConfigManager().getConfigAds().isShowDonationInfo()) {
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("MOTD.Donate"));
                     sender.sendMessage(ChatColor.GOLD + " - " + ChatColor.GREEN + "nossr50@gmail.com" + ChatColor.GOLD + " Paypal");
                 }
 
-                sender.sendMessage(LocaleLoader.getString("MOTD.Version", mcMMO.p.getDescription().getVersion()));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("MOTD.Version", pluginRef.getDescription().getVersion()));
 
 //                mcMMO.getHolidayManager().anniversaryCheck(sender);
                 return true;
@@ -40,7 +46,7 @@ public class McmmoCommand implements CommandExecutor {
                         return true;
                     }
 
-                    sender.sendMessage(LocaleLoader.getString("Commands.mcc.Header"));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mcc.Header"));
                     displayGeneralCommands(sender);
                     displayOtherCommands(sender);
                     displayPartyCommands(sender);
@@ -53,16 +59,16 @@ public class McmmoCommand implements CommandExecutor {
     }
 
     private void displayGeneralCommands(CommandSender sender) {
-        sender.sendMessage(ChatColor.DARK_AQUA + " /mcstats " + LocaleLoader.getString("Commands.Stats"));
-        sender.sendMessage(ChatColor.DARK_AQUA + " /<skill>" + LocaleLoader.getString("Commands.SkillInfo"));
-        sender.sendMessage(ChatColor.DARK_AQUA + " /mctop " + LocaleLoader.getString("Commands.Leaderboards"));
+        sender.sendMessage(ChatColor.DARK_AQUA + " /mcstats " + pluginRef.getLocaleManager().getString("Commands.Stats"));
+        sender.sendMessage(ChatColor.DARK_AQUA + " /<skill>" + pluginRef.getLocaleManager().getString("Commands.SkillInfo"));
+        sender.sendMessage(ChatColor.DARK_AQUA + " /mctop " + pluginRef.getLocaleManager().getString("Commands.Leaderboards"));
 
         if (Permissions.inspect(sender)) {
-            sender.sendMessage(ChatColor.DARK_AQUA + " /inspect " + LocaleLoader.getString("Commands.Inspect"));
+            sender.sendMessage(ChatColor.DARK_AQUA + " /inspect " + pluginRef.getLocaleManager().getString("Commands.Inspect"));
         }
 
         if (Permissions.mcability(sender)) {
-            sender.sendMessage(ChatColor.DARK_AQUA + " /mcability " + LocaleLoader.getString("Commands.ToggleAbility"));
+            sender.sendMessage(ChatColor.DARK_AQUA + " /mcability " + pluginRef.getLocaleManager().getString("Commands.ToggleAbility"));
         }
     }
 
@@ -71,41 +77,41 @@ public class McmmoCommand implements CommandExecutor {
         if (!Permissions.skillreset(sender) && !Permissions.mmoedit(sender) && !Permissions.adminChat(sender) && !Permissions.mcgod(sender))
             return;
 
-        sender.sendMessage(LocaleLoader.getString("Commands.Other"));
+        sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Other"));
 
         if (Permissions.skillreset(sender)) {
-            sender.sendMessage(ChatColor.DARK_AQUA + " /skillreset <skill|all> " + LocaleLoader.getString("Commands.Reset"));
+            sender.sendMessage(ChatColor.DARK_AQUA + " /skillreset <skill|all> " + pluginRef.getLocaleManager().getString("Commands.Reset"));
         }
 
         if (Permissions.mmoedit(sender)) {
-            sender.sendMessage(ChatColor.DARK_AQUA + " /mmoedit " + LocaleLoader.getString("Commands.mmoedit"));
+            sender.sendMessage(ChatColor.DARK_AQUA + " /mmoedit " + pluginRef.getLocaleManager().getString("Commands.mmoedit"));
         }
 
         if (Permissions.adminChat(sender)) {
-            sender.sendMessage(ChatColor.DARK_AQUA + " /adminchat " + LocaleLoader.getString("Commands.AdminToggle"));
+            sender.sendMessage(ChatColor.DARK_AQUA + " /adminchat " + pluginRef.getLocaleManager().getString("Commands.AdminToggle"));
         }
 
         if (Permissions.mcgod(sender)) {
-            sender.sendMessage(ChatColor.DARK_AQUA + " /mcgod " + LocaleLoader.getString("Commands.mcgod"));
+            sender.sendMessage(ChatColor.DARK_AQUA + " /mcgod " + pluginRef.getLocaleManager().getString("Commands.mcgod"));
         }
     }
 
     private void displayPartyCommands(CommandSender sender) {
         if (Permissions.party(sender)) {
-            sender.sendMessage(LocaleLoader.getString("Commands.Party.Commands"));
-            sender.sendMessage(ChatColor.DARK_AQUA + " /party create <" + LocaleLoader.getString("Commands.Usage.PartyName") + "> " + LocaleLoader.getString("Commands.Party1"));
-            sender.sendMessage(ChatColor.DARK_AQUA + " /party join <" + LocaleLoader.getString("Commands.Usage.Player") + "> " + LocaleLoader.getString("Commands.Party2"));
-            sender.sendMessage(ChatColor.DARK_AQUA + " /party quit " + LocaleLoader.getString("Commands.Party.Quit"));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.Commands"));
+            sender.sendMessage(ChatColor.DARK_AQUA + " /party create <" + pluginRef.getLocaleManager().getString("Commands.Usage.PartyName") + "> " + pluginRef.getLocaleManager().getString("Commands.Party1"));
+            sender.sendMessage(ChatColor.DARK_AQUA + " /party join <" + pluginRef.getLocaleManager().getString("Commands.Usage.Player") + "> " + pluginRef.getLocaleManager().getString("Commands.Party2"));
+            sender.sendMessage(ChatColor.DARK_AQUA + " /party quit " + pluginRef.getLocaleManager().getString("Commands.Party.Quit"));
 
             if (Permissions.partyChat(sender)) {
-                sender.sendMessage(ChatColor.DARK_AQUA + " /party chat " + LocaleLoader.getString("Commands.Party.Toggle"));
+                sender.sendMessage(ChatColor.DARK_AQUA + " /party chat " + pluginRef.getLocaleManager().getString("Commands.Party.Toggle"));
             }
 
-            sender.sendMessage(ChatColor.DARK_AQUA + " /party invite <" + LocaleLoader.getString("Commands.Usage.Player") + "> " + LocaleLoader.getString("Commands.Party.Invite"));
-            sender.sendMessage(ChatColor.DARK_AQUA + " /party accept " + LocaleLoader.getString("Commands.Party.Accept"));
+            sender.sendMessage(ChatColor.DARK_AQUA + " /party invite <" + pluginRef.getLocaleManager().getString("Commands.Usage.Player") + "> " + pluginRef.getLocaleManager().getString("Commands.Party.Invite"));
+            sender.sendMessage(ChatColor.DARK_AQUA + " /party accept " + pluginRef.getLocaleManager().getString("Commands.Party.Accept"));
 
             if (Permissions.partySubcommand(sender, PartySubcommandType.TELEPORT)) {
-                sender.sendMessage(ChatColor.DARK_AQUA + " /party teleport <" + LocaleLoader.getString("Commands.Usage.Player") + "> " + LocaleLoader.getString("Commands.Party.Teleport"));
+                sender.sendMessage(ChatColor.DARK_AQUA + " /party teleport <" + pluginRef.getLocaleManager().getString("Commands.Usage.Player") + "> " + pluginRef.getLocaleManager().getString("Commands.Party.Teleport"));
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.gmail.nossr50.config.hocon.superabilities;
 
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.mcMMO;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -78,7 +77,7 @@ public class ConfigSuperAbilities {
             case GIGA_DRILL_BREAKER:
                 return superAbilityCooldowns.getGigaDrillBreaker();
             default:
-                mcMMO.p.getLogger().severe("Cooldown Parameter not found for " + superAbilityType.toString());
+                pluginRef.getLogger().severe("Cooldown Parameter not found for " + superAbilityType.toString());
                 return 240;
         }
     }
@@ -100,7 +99,7 @@ public class ConfigSuperAbilities {
             case GIGA_DRILL_BREAKER:
                 return superAbilityMaxLength.getGigaDrillBreaker();
             default:
-                mcMMO.p.getLogger().severe("Max Length Parameter not found for " + superAbilityType.toString());
+                pluginRef.getLogger().severe("Max Length Parameter not found for " + superAbilityType.toString());
                 return 60;
         }
     }

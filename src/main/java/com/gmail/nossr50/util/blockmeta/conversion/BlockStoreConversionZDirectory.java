@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.blockmeta.conversion;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.blockmeta.ChunkletStore;
 import com.gmail.nossr50.util.blockmeta.HashChunkletManager;
 import com.gmail.nossr50.util.blockmeta.PrimitiveChunkletStore;
@@ -30,9 +29,9 @@ public class BlockStoreConversionZDirectory implements Runnable {
 
     public void start(org.bukkit.World world, File xDir, File dataDir) {
         this.world = world;
-        this.scheduler = mcMMO.p.getServer().getScheduler();
+        this.scheduler = pluginRef.getServer().getScheduler();
         this.manager = new HashChunkletManager();
-        this.newManager = (HashChunkManager) mcMMO.getPlaceStore();
+        this.newManager = (HashChunkManager) pluginRef.getPlaceStore();
         this.dataDir = dataDir;
         this.xDir = xDir;
 
@@ -40,7 +39,7 @@ public class BlockStoreConversionZDirectory implements Runnable {
             return;
         }
 
-        this.taskID = this.scheduler.runTaskLater(mcMMO.p, this, 1).getTaskId();
+        this.taskID = this.scheduler.runTaskLater(pluginRef, this, 1).getTaskId();
     }
 
     @Override

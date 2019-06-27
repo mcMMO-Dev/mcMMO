@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.herbalism;
 
 import com.gmail.nossr50.core.MetadataConstants;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
@@ -60,8 +59,8 @@ public class Herbalism {
 
         int dropAmount = 0;
 
-        if (mcMMO.getPlaceStore().isTrue(target))
-            mcMMO.getPlaceStore().setFalse(target);
+        if (pluginRef.getPlaceStore().isTrue(target))
+            pluginRef.getPlaceStore().setFalse(target);
         else {
             dropAmount++;
 
@@ -97,13 +96,13 @@ public class Herbalism {
             }
         } else {
             //Check the block itself first
-            if (!mcMMO.getPlaceStore().isTrue(block)) {
+            if (!pluginRef.getPlaceStore().isTrue(block)) {
                 dropAmount++;
 
                 if (herbalismManager.checkDoubleDrop(blockState))
                     bonusDropAmount += bonusAdd;
             } else {
-                mcMMO.getPlaceStore().setFalse(blockState);
+                pluginRef.getPlaceStore().setFalse(blockState);
             }
 
             // Handle the two blocks above it - cacti & sugar cane can only grow 3 high naturally
@@ -114,8 +113,8 @@ public class Herbalism {
                     break;
                 }
 
-                if (mcMMO.getPlaceStore().isTrue(relativeBlock)) {
-                    mcMMO.getPlaceStore().setFalse(relativeBlock);
+                if (pluginRef.getPlaceStore().isTrue(relativeBlock)) {
+                    pluginRef.getPlaceStore().setFalse(relativeBlock);
                 } else {
                     dropAmount++;
 
@@ -162,10 +161,10 @@ public class Herbalism {
     }
 
     private static int addKelpDrops(int dropAmount, Block relativeBlock) {
-        if (isKelp(relativeBlock) && !mcMMO.getPlaceStore().isTrue(relativeBlock)) {
+        if (isKelp(relativeBlock) && !pluginRef.getPlaceStore().isTrue(relativeBlock)) {
             dropAmount++;
         } else {
-            mcMMO.getPlaceStore().setFalse(relativeBlock);
+            pluginRef.getPlaceStore().setFalse(relativeBlock);
         }
 
         return dropAmount;

@@ -7,7 +7,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.ItemUtils;
@@ -105,12 +104,12 @@ public class UnarmedManager extends SkillManager {
 
             Item item = Misc.dropItem(defender.getLocation(), defender.getInventory().getItemInMainHand());
 
-            if (item != null && mcMMO.getConfigManager().getConfigUnarmed().doesDisarmPreventTheft()) {
+            if (item != null && pluginRef.getConfigManager().getConfigUnarmed().doesDisarmPreventTheft()) {
                 item.setMetadata(MetadataConstants.DISARMED_ITEM_METAKEY, UserManager.getPlayer(defender).getPlayerMetadata());
             }
 
             defender.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-            mcMMO.getNotificationManager().sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Skills.Disarmed");
+            pluginRef.getNotificationManager().sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Skills.Disarmed");
         }
     }
 
@@ -119,7 +118,7 @@ public class UnarmedManager extends SkillManager {
      */
     public boolean deflectCheck() {
         if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.UNARMED_ARROW_DEFLECT, getPlayer())) {
-            mcMMO.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.ArrowDeflect");
+            pluginRef.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.ArrowDeflect");
             return true;
         }
 
@@ -171,8 +170,8 @@ public class UnarmedManager extends SkillManager {
     private boolean hasIronGrip(Player defender) {
         if (!Misc.isNPCEntityExcludingVillagers(defender) && Permissions.isSubSkillEnabled(defender, SubSkillType.UNARMED_IRON_GRIP)
                 && RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.UNARMED_IRON_GRIP, getPlayer())) {
-            mcMMO.getNotificationManager().sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Unarmed.Ability.IronGrip.Defender");
-            mcMMO.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Unarmed.Ability.IronGrip.Attacker");
+            pluginRef.getNotificationManager().sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Unarmed.Ability.IronGrip.Defender");
+            pluginRef.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Unarmed.Ability.IronGrip.Attacker");
 
             return true;
         }

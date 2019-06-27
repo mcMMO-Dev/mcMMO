@@ -9,7 +9,6 @@ import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.skills.mining.BlastMining;
 import com.gmail.nossr50.skills.mining.MiningManager;
@@ -23,7 +22,6 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
-import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -62,7 +60,7 @@ public class EntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityTargetEntity(EntityTargetLivingEntityEvent event) {
-        if (!mcMMO.getConfigManager().getConfigExploitPrevention().getEndermenEndermiteFix())
+        if (!pluginRef.getConfigManager().getConfigExploitPrevention().getEndermenEndermiteFix())
             return;
 
         //It's rare but targets can be null sometimes
@@ -109,7 +107,7 @@ public class EntityListener implements Listener {
         projectile.setMetadata(MetadataConstants.BOW_FORCE_METAKEY,
                 new FixedMetadataValue(plugin,
                         Math.min(event.getForce()
-                                * mcMMO.getConfigManager().getConfigExperience().getExperienceArchery().getForceMultiplier(), 1.0)));
+                                * pluginRef.getConfigManager().getConfigExperience().getExperienceArchery().getForceMultiplier(), 1.0)));
         projectile.setMetadata(MetadataConstants.ARROW_DISTANCE_METAKEY, new FixedMetadataValue(plugin, projectile.getLocation()));
     }
 
@@ -175,16 +173,16 @@ public class EntityListener implements Listener {
         if (entity instanceof FallingBlock || entity instanceof Enderman) {
             boolean isTracked = entity.hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY);
 
-            if (mcMMO.getPlaceStore().isTrue(block) && !isTracked) {
-                mcMMO.getPlaceStore().setFalse(block);
+            if (pluginRef.getPlaceStore().isTrue(block) && !isTracked) {
+                pluginRef.getPlaceStore().setFalse(block);
                 entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
             } else if (isTracked) {
-                mcMMO.getPlaceStore().setTrue(block);
+                pluginRef.getPlaceStore().setTrue(block);
             }
         } else if ((block.getType() == Material.REDSTONE_ORE)) {
         } else {
-            if (mcMMO.getPlaceStore().isTrue(block)) {
-                mcMMO.getPlaceStore().setFalse(block);
+            if (pluginRef.getPlaceStore().isTrue(block)) {
+                pluginRef.getPlaceStore().setFalse(block);
             }
         }
     }
@@ -436,9 +434,9 @@ public class EntityListener implements Listener {
         }
 
         //Party Friendly Fire
-        if(!mcMMO.getConfigManager().getConfigParty().isPartyFriendlyFireEnabled())
-            if ((PartyManager.inSameParty(defendingPlayer, attackingPlayer)
-                    || PartyManager.areAllies(defendingPlayer, attackingPlayer))
+        if(!pluginRef.getConfigManager().getConfigParty().isPartyFriendlyFireEnabled())
+            if ((pluginRef.getPartyManager().inSameParty(defendingPlayer, attackingPlayer)
+                    || pluginRef.getPartyManager().areAllies(defendingPlayer, attackingPlayer))
                     && !(Permissions.friendlyFire(attackingPlayer)
                     && Permissions.friendlyFire(defendingPlayer))) {
                 event.setCancelled(true);
@@ -683,7 +681,7 @@ public class EntityListener implements Listener {
             case NETHER_PORTAL:
             case SPAWNER:
             case SPAWNER_EGG:
-                if (mcMMO.getConfigManager().getConfigExploitPrevention().doSpawnedEntitiesGiveModifiedXP()) {
+                if (pluginRef.getConfigManager().getConfigExploitPrevention().doSpawnedEntitiesGiveModifiedXP()) {
                     entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
 
                     Entity passenger = entity.getPassenger();
@@ -855,9 +853,9 @@ public class EntityListener implements Listener {
         //The main hand is used over the off hand if they both have food, so check the main hand first
         Material foodInHand;
 
-        if(mcMMO.getMaterialMapStore().isFood(player.getInventory().getItemInMainHand().getType())) {
+        if(pluginRef.getMaterialMapStore().isFood(player.getInventory().getItemInMainHand().getType())) {
             foodInHand = player.getInventory().getItemInMainHand().getType();
-        } else if(mcMMO.getMaterialMapStore().isFood(player.getInventory().getItemInOffHand().getType())) {
+        } else if(pluginRef.getMaterialMapStore().isFood(player.getInventory().getItemInOffHand().getType())) {
             foodInHand = player.getInventory().getItemInOffHand().getType();
         } else {
             return; //Not Food
@@ -946,7 +944,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if (mcMMO.getConfigManager().getConfigExploitPrevention().doTamedEntitiesGiveXP())
+        if (pluginRef.getConfigManager().getConfigExploitPrevention().doTamedEntitiesGiveXP())
             entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
 
         //Profile not loaded

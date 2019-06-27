@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills.excavation;
 
 import com.gmail.nossr50.config.treasure.ExcavationTreasureConfig;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.block.BlockState;
 
@@ -24,7 +23,7 @@ public class Excavation {
     }
 
     protected static int getBlockXP(BlockState blockState) {
-        int xp = mcMMO.getDynamicSettingsManager().getExperienceManager().getExcavationXp(blockState.getType());
+        int xp = pluginRef.getDynamicSettingsManager().getExperienceManager().getExcavationXp(blockState.getType());
 
         return xp;
     }

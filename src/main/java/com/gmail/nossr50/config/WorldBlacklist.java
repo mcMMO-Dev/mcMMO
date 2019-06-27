@@ -1,7 +1,6 @@
 package com.gmail.nossr50.config;
 
 
-import com.gmail.nossr50.mcMMO;
 import org.bukkit.World;
 
 /**
@@ -10,7 +9,7 @@ import org.bukkit.World;
 public class WorldBlacklist {
 
     public static boolean isWorldBlacklisted(World world) {
-        for (String s : mcMMO.getConfigManager().getConfigWorldBlacklist().getBlackListedWorlds()) {
+        for (String s : pluginRef.getConfigManager().getConfigWorldBlacklist().getBlackListedWorlds()) {
             if (world.getName().equalsIgnoreCase(s))
                 return true;
         }

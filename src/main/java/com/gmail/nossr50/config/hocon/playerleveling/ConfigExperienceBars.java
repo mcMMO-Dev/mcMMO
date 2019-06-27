@@ -78,7 +78,7 @@ public class ConfigExperienceBars {
 
     @Setting(value = "Extra-Details", comment = "Adds extra details to the XP bar, these cause a bit more performance overhead and may not look very pretty" +
             "\nYou can customize the more detailed XP bar in the locale" +
-            "\nLocale key - XPBar.Complex.Template" +
+            "\nLocaleManager key - XPBar.Complex.Template" +
             "\nThe default extra detailed XP bar will include quite a few extra things, you can actually remove each thing you don't want displayed in the locale" +
             "\nFor tips on editing the locale check - https://mcmmo.org/wiki/Locale" +
             "\nDefault value: " + DETAILED_XP_BARS_DEFAULT)

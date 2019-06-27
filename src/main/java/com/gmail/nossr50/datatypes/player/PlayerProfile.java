@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.experience.SkillXpGain;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerProfileSaveTask;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.player.UserManager;
@@ -43,7 +42,7 @@ public class PlayerProfile {
         this.uuid = uuid;
         this.playerName = playerName;
 
-        mobHealthbarType = mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType();
+        mobHealthbarType = pluginRef.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType();
         scoreboardTipsShown = 0;
 
         for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {
@@ -51,7 +50,7 @@ public class PlayerProfile {
         }
 
         for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
-            skills.put(primarySkillType, mcMMO.getPlayerLevelingSettings().getConfigSectionLevelingGeneral().getStartingLevel());
+            skills.put(primarySkillType, pluginRef.getPlayerLevelingSettings().getConfigSectionLevelingGeneral().getStartingLevel());
             skillsXp.put(primarySkillType, 0.0);
         }
 
@@ -85,20 +84,20 @@ public class PlayerProfile {
     }
 
     public void scheduleAsyncSave() {
-        new PlayerProfileSaveTask(this, false).runTaskAsynchronously(mcMMO.p);
+        new PlayerProfileSaveTask(this, false).runTaskAsynchronously(pluginRef);
     }
 
     public void scheduleSyncSave() {
-        new PlayerProfileSaveTask(this, true).runTask(mcMMO.p);
+        new PlayerProfileSaveTask(this, true).runTask(pluginRef);
     }
 
     public void scheduleAsyncSaveDelay() {
-        new PlayerProfileSaveTask(this, false).runTaskLaterAsynchronously(mcMMO.p, 20);
+        new PlayerProfileSaveTask(this, false).runTaskLaterAsynchronously(pluginRef, 20);
     }
 
     @Deprecated
     public void scheduleSyncSaveDelay() {
-        new PlayerProfileSaveTask(this, true).runTaskLater(mcMMO.p, 20);
+        new PlayerProfileSaveTask(this, true).runTaskLater(pluginRef, 20);
     }
 
     public void save(boolean useSync) {
@@ -109,13 +108,13 @@ public class PlayerProfile {
 
         // TODO should this part be synchronized?
         PlayerProfile profileCopy = new PlayerProfile(playerName, uuid, ImmutableMap.copyOf(skills), ImmutableMap.copyOf(skillsXp), ImmutableMap.copyOf(abilityDATS), mobHealthbarType, scoreboardTipsShown, ImmutableMap.copyOf(uniquePlayerData));
-        changed = !mcMMO.getDatabaseManager().saveUser(profileCopy);
+        changed = !pluginRef.getDatabaseManager().saveUser(profileCopy);
 
         if (changed) {
-            mcMMO.p.getLogger().severe("PlayerProfile saving failed for player: " + playerName + " " + uuid);
+            pluginRef.getLogger().severe("PlayerProfile saving failed for player: " + playerName + " " + uuid);
 
             if (saveAttempts > 0) {
-                mcMMO.p.getLogger().severe("Attempted to save profile for player " + getPlayerName()
+                pluginRef.getLogger().severe("Attempted to save profile for player " + getPlayerName()
                         + " resulted in failure. " + saveAttempts + " have been made so far.");
             }
 
@@ -129,7 +128,7 @@ public class PlayerProfile {
 
                 return;
             } else {
-                mcMMO.p.getLogger().severe("mcMMO has failed to save the profile for "
+                pluginRef.getLogger().severe("mcMMO has failed to save the profile for "
                         + getPlayerName() + " numerous times." +
                         " mcMMO will now stop attempting to save this profile." +
                         " Check your console for errors and inspect your DB for issues.");
@@ -409,9 +408,9 @@ public class PlayerProfile {
      * @return the total amount of Xp until next level
      */
     public int getXpToLevel(PrimarySkillType primarySkillType) {
-        int level = (mcMMO.getConfigManager().getConfigLeveling().getConfigExperienceFormula().isCumulativeCurveEnabled()) ? UserManager.getPlayer(playerName).getPowerLevel() : skills.get(primarySkillType);
+        int level = (pluginRef.getConfigManager().getConfigLeveling().getConfigExperienceFormula().isCumulativeCurveEnabled()) ? UserManager.getPlayer(playerName).getPowerLevel() : skills.get(primarySkillType);
 
-        return mcMMO.getFormulaManager().getXPtoNextLevel(level);
+        return pluginRef.getFormulaManager().getXPtoNextLevel(level);
     }
 
     private int getChildSkillLevel(PrimarySkillType primarySkillType) {
@@ -419,7 +418,7 @@ public class PlayerProfile {
         int sum = 0;
 
         for (PrimarySkillType parent : parents) {
-            if (mcMMO.getPlayerLevelingSettings().isSkillLevelCapEnabled(parent))
+            if (pluginRef.getPlayerLevelingSettings().isSkillLevelCapEnabled(parent))
                 sum += Math.min(getSkillLevel(parent), parent.getMaxLevel());
             else
                 sum += getSkillLevel(parent);

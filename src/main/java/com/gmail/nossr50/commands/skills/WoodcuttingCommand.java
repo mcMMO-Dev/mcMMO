@@ -2,7 +2,7 @@ package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.skills.RankUtils;
@@ -25,8 +25,8 @@ public class WoodcuttingCommand extends SkillCommand {
     private boolean canBarkSurgeon;
     private boolean canNaturesBounty;
 
-    public WoodcuttingCommand() {
-        super(PrimarySkillType.WOODCUTTING);
+    public WoodcuttingCommand(mcMMO pluginRef) {
+        super(PrimarySkillType.WOODCUTTING, pluginRef);
     }
 
     @Override
@@ -66,16 +66,16 @@ public class WoodcuttingCommand extends SkillCommand {
 
         if (canDoubleDrop) {
             messages.add(getStatMessage(SubSkillType.WOODCUTTING_HARVEST_LUMBER, doubleDropChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
+                    + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
         }
 
         if (canLeafBlow) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Woodcutting.Ability.0"), LocaleLoader.getString("Woodcutting.Ability.1")));
+            messages.add(pluginRef.getLocaleManager().getString("Ability.Generic.Template", pluginRef.getLocaleManager().getString("Woodcutting.Ability.0"), pluginRef.getLocaleManager().getString("Woodcutting.Ability.1")));
         }
 
         if (canTreeFell) {
             messages.add(getStatMessage(SubSkillType.WOODCUTTING_TREE_FELLER, treeFellerLength)
-                    + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", treeFellerLengthEndurance) : ""));
+                    + (hasEndurance ? pluginRef.getLocaleManager().getString("Perks.ActivationTime.Bonus", treeFellerLengthEndurance) : ""));
         }
 
         return messages;

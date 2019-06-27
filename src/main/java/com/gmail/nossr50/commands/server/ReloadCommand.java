@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.server;
 
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import org.bukkit.Bukkit;
@@ -12,10 +11,10 @@ import org.jetbrains.annotations.NotNull;
 
 public class ReloadCommand implements CommandExecutor {
 
-    private mcMMO plugin;
+    private mcMMO pluginRef;
 
     public ReloadCommand(mcMMO plugin) {
-        this.plugin = plugin;
+        this.pluginRef = plugin;
     }
 
     @Override
@@ -25,9 +24,9 @@ public class ReloadCommand implements CommandExecutor {
                 return false;
         }
 
-        Bukkit.broadcastMessage(LocaleLoader.getString("Commands.Reload.Start"));
-        plugin.reload();
-        Bukkit.broadcastMessage(LocaleLoader.getString("Commands.Reload.Finished"));
+        Bukkit.broadcastMessage(pluginRef.getLocaleManager().getString("Commands.Reload.Start"));
+        pluginRef.reload();
+        Bukkit.broadcastMessage(pluginRef.getLocaleManager().getString("Commands.Reload.Finished"));
         return true;
     }
 

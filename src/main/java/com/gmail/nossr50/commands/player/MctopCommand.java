@@ -3,7 +3,6 @@ package com.gmail.nossr50.commands.player;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.MctopCommandAsyncTask;
 import com.gmail.nossr50.util.Permissions;
@@ -23,6 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MctopCommand implements TabExecutor {
+
+    private mcMMO pluginRef;
+
+    public MctopCommand(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         PrimarySkillType skill = null;
@@ -96,15 +102,15 @@ public class MctopCommand implements TabExecutor {
                     seconds = 1;
                 }
 
-                sender.sendMessage(LocaleLoader.formatString(LocaleLoader.getString("Commands.Database.Cooldown"), seconds));
+                sender.sendMessage(pluginRef.getLocaleManager().formatString(pluginRef.getLocaleManager().getString("Commands.Database.Cooldown"), seconds));
                 return;
             }
 
             if (((Player) sender).hasMetadata(MetadataConstants.DATABASE_PROCESSING_COMMAND_METAKEY)) {
-                sender.sendMessage(LocaleLoader.getString("Commands.Database.Processing"));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Database.Processing"));
                 return;
             } else {
-                ((Player) sender).setMetadata(MetadataConstants.DATABASE_PROCESSING_COMMAND_METAKEY, new FixedMetadataValue(mcMMO.p, null));
+                ((Player) sender).setMetadata(MetadataConstants.DATABASE_PROCESSING_COMMAND_METAKEY, new FixedMetadataValue(pluginRef, null));
             }
 
             mcMMOPlayer.actualizeDatabaseATS();
@@ -114,10 +120,10 @@ public class MctopCommand implements TabExecutor {
     }
 
     private void display(int page, PrimarySkillType skill, CommandSender sender) {
-        boolean useBoard = (sender instanceof Player) && (mcMMO.getScoreboardSettings().isScoreboardEnabled(ScoreboardManager.SidebarType.TOP_BOARD));
-        boolean useChat = !useBoard || mcMMO.getScoreboardSettings().isScoreboardPrinting(ScoreboardManager.SidebarType.TOP_BOARD);
+        boolean useBoard = (sender instanceof Player) && (pluginRef.getScoreboardSettings().isScoreboardEnabled(ScoreboardManager.SidebarType.TOP_BOARD));
+        boolean useChat = !useBoard || pluginRef.getScoreboardSettings().isScoreboardPrinting(ScoreboardManager.SidebarType.TOP_BOARD);
 
-        new MctopCommandAsyncTask(page, skill, sender, useBoard, useChat).runTaskAsynchronously(mcMMO.p);
+        new MctopCommandAsyncTask(page, skill, sender, useBoard, useChat).runTaskAsynchronously(pluginRef);
     }
 
     private PrimarySkillType extractSkill(CommandSender sender, String skillName) {

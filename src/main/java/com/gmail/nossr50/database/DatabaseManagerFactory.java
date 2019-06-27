@@ -1,7 +1,6 @@
 package com.gmail.nossr50.database;
 
 import com.gmail.nossr50.datatypes.database.DatabaseType;
-import com.gmail.nossr50.mcMMO;
 
 public class DatabaseManagerFactory {
     private static Class<? extends DatabaseManager> customManager = null;
@@ -11,16 +10,16 @@ public class DatabaseManagerFactory {
             try {
                 return createDefaultCustomDatabaseManager();
             } catch (Exception e) {
-                mcMMO.p.debug("Could not create custom database manager");
+                pluginRef.debug("Could not create custom database manager");
                 e.printStackTrace();
             } catch (Throwable e) {
-                mcMMO.p.debug("Failed to create custom database manager");
+                pluginRef.debug("Failed to create custom database manager");
                 e.printStackTrace();
             }
-            mcMMO.p.debug("Falling back on " + (mcMMO.getMySQLConfigSettings().isMySQLEnabled() ? "SQL" : "Flatfile") + " database");
+            pluginRef.debug("Falling back on " + (pluginRef.getMySQLConfigSettings().isMySQLEnabled() ? "SQL" : "Flatfile") + " database");
         }
 
-        return mcMMO.getMySQLConfigSettings().isMySQLEnabled() ? new SQLDatabaseManager() : new FlatfileDatabaseManager();
+        return pluginRef.getMySQLConfigSettings().isMySQLEnabled() ? new SQLDatabaseManager() : new FlatfileDatabaseManager();
     }
 
     public static Class<? extends DatabaseManager> getCustomDatabaseManagerClass() {

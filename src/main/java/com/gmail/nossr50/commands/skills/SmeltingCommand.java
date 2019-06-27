@@ -2,7 +2,7 @@ package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.player.UserManager;
@@ -25,8 +25,8 @@ public class SmeltingCommand extends SkillCommand {
     private boolean canFluxMine;
     private boolean canUnderstandTheArt;
 
-    public SmeltingCommand() {
-        super(PrimarySkillType.SMELTING);
+    public SmeltingCommand(mcMMO pluginRef) {
+        super(PrimarySkillType.SMELTING, pluginRef);
     }
 
     @Override
@@ -65,8 +65,8 @@ public class SmeltingCommand extends SkillCommand {
 
         /*if (canFluxMine) {
             messages.add(getStatMessage(SubSkillType.SMELTING_FLUX_MINING, str_fluxMiningChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", str_fluxMiningChanceLucky) : ""));
-            //messages.add(LocaleLoader.getString("Smelting.Ability.FluxMining", str_fluxMiningChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", str_fluxMiningChanceLucky) : ""));
+                    + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", str_fluxMiningChanceLucky) : ""));
+            //messages.add(pluginRef.getLocaleManager().getString("Smelting.Ability.FluxMining", str_fluxMiningChance) + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", str_fluxMiningChanceLucky) : ""));
         }*/
 
         if (canFuelEfficiency) {
@@ -75,7 +75,7 @@ public class SmeltingCommand extends SkillCommand {
 
         if (canSecondSmelt) {
             messages.add(getStatMessage(SubSkillType.SMELTING_SECOND_SMELT, str_secondSmeltChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", str_secondSmeltChanceLucky) : ""));
+                    + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", str_secondSmeltChanceLucky) : ""));
         }
 
         if (canUnderstandTheArt) {

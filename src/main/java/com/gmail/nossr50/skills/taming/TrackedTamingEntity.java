@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.taming;
 
 import com.gmail.nossr50.config.MainConfig;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
@@ -26,7 +25,7 @@ public class TrackedTamingEntity extends BukkitRunnable {
 
         if (tamingCOTWLength > 0) {
             this.length = tamingCOTWLength * Misc.TICK_CONVERSION_FACTOR;
-            this.runTaskLater(mcMMO.p, length);
+            this.runTaskLater(pluginRef, length);
         }
     }
 

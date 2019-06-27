@@ -24,10 +24,8 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
-import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
@@ -60,7 +58,7 @@ public class BlockListener implements Listener {
             if (is.getAmount() <= 0)
                 continue;
 
-            if (!mcMMO.getDynamicSettingsManager().getBonusDropManager().isBonusDropWhitelisted(is.getType()))
+            if (!pluginRef.getDynamicSettingsManager().getBonusDropManager().isBonusDropWhitelisted(is.getType()))
                 continue;
 
             if (event.getBlock().getMetadata(MetadataConstants.BONUS_DROPS_METAKEY).size() > 0) {
@@ -120,8 +118,8 @@ public class BlockListener implements Listener {
             if (BlockUtils.shouldBeWatched(b.getState())) {
                 movedBlock = b.getRelative(direction);
 
-                if (mcMMO.getConfigManager().getConfigExploitPrevention().doPistonsMarkBlocksUnnatural())
-                    mcMMO.getPlaceStore().setTrue(movedBlock);
+                if (pluginRef.getConfigManager().getConfigExploitPrevention().doPistonsMarkBlocksUnnatural())
+                    pluginRef.getPlaceStore().setTrue(movedBlock);
             }
         }
     }
@@ -140,11 +138,11 @@ public class BlockListener implements Listener {
         // Get opposite direction so we get correct block
         BlockFace direction = event.getDirection();
         Block movedBlock = event.getBlock().getRelative(direction);
-        mcMMO.getPlaceStore().setTrue(movedBlock);
+        pluginRef.getPlaceStore().setTrue(movedBlock);
 
         for (Block block : event.getBlocks()) {
             movedBlock = block.getRelative(direction);
-            mcMMO.getPlaceStore().setTrue(movedBlock);
+            pluginRef.getPlaceStore().setTrue(movedBlock);
         }
     }
 
@@ -160,7 +158,7 @@ public class BlockListener implements Listener {
             return;
 
         if (BlockUtils.shouldBeWatched(event.getBlock().getState())) {
-            mcMMO.getPlaceStore().setTrue(event.getBlock());
+            pluginRef.getPlaceStore().setTrue(event.getBlock());
         }
     }
 
@@ -173,11 +171,11 @@ public class BlockListener implements Listener {
         Block newBlock = event.getNewState().getBlock();
         Material material = newBlock.getType();
 
-        if (mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitSkills().isPreventCobblestoneStoneGeneratorXP()) {
+        if (pluginRef.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitSkills().isPreventCobblestoneStoneGeneratorXP()) {
             if (material != Material.OBSIDIAN 
                     && BlockUtils.shouldBeWatched(material)
-                    && mcMMO.getDynamicSettingsManager().getExperienceManager().hasMiningXp(material)) { //Hacky fix to prevent trees growing from being marked as unnatural
-                mcMMO.getPlaceStore().setTrue(newBlock);
+                    && pluginRef.getDynamicSettingsManager().getExperienceManager().hasMiningXp(material)) { //Hacky fix to prevent trees growing from being marked as unnatural
+                pluginRef.getPlaceStore().setTrue(newBlock);
             }
         }
     }
@@ -205,7 +203,7 @@ public class BlockListener implements Listener {
         if (BlockUtils.shouldBeWatched(blockState)) {
             // Don't count de-barking wood
             if (!Tag.LOGS.isTagged(event.getBlockReplacedState().getType()) || !Tag.LOGS.isTagged(event.getBlockPlaced().getType()))
-                mcMMO.getPlaceStore().setTrue(blockState);
+                pluginRef.getPlaceStore().setTrue(blockState);
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
@@ -247,7 +245,7 @@ public class BlockListener implements Listener {
 
             /* Check if the blocks placed should be monitored so they do not give out XP in the future */
             if (BlockUtils.shouldBeWatched(blockState)) {
-                mcMMO.getPlaceStore().setTrue(blockState);
+                pluginRef.getPlaceStore().setTrue(blockState);
             }
         }
     }
@@ -264,7 +262,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        mcMMO.getPlaceStore().setFalse(blockState);
+        pluginRef.getPlaceStore().setFalse(blockState);
     }
 
     /**
@@ -332,13 +330,13 @@ public class BlockListener implements Listener {
         }
 
         /* MINING */
-        else if (BlockUtils.affectedBySuperBreaker(blockState) && ItemUtils.isPickaxe(heldItem) && PrimarySkillType.MINING.getPermissions(player) && !mcMMO.getPlaceStore().isTrue(blockState)) {
+        else if (BlockUtils.affectedBySuperBreaker(blockState) && ItemUtils.isPickaxe(heldItem) && PrimarySkillType.MINING.getPermissions(player) && !pluginRef.getPlaceStore().isTrue(blockState)) {
             MiningManager miningManager = mcMMOPlayer.getMiningManager();
             miningManager.miningBlockCheck(blockState);
         }
 
         /* WOOD CUTTING */
-        else if (BlockUtils.isLog(blockState) && ItemUtils.isAxe(heldItem) && PrimarySkillType.WOODCUTTING.getPermissions(player) && !mcMMO.getPlaceStore().isTrue(blockState)) {
+        else if (BlockUtils.isLog(blockState) && ItemUtils.isAxe(heldItem) && PrimarySkillType.WOODCUTTING.getPermissions(player) && !pluginRef.getPlaceStore().isTrue(blockState)) {
             WoodcuttingManager woodcuttingManager = mcMMOPlayer.getWoodcuttingManager();
             if (woodcuttingManager.canUseTreeFeller(heldItem)) {
                 woodcuttingManager.processTreeFeller(blockState);
@@ -348,7 +346,7 @@ public class BlockListener implements Listener {
         }
 
         /* EXCAVATION */
-        else if (BlockUtils.affectedByGigaDrillBreaker(blockState) && ItemUtils.isShovel(heldItem) && PrimarySkillType.EXCAVATION.getPermissions(player) && !mcMMO.getPlaceStore().isTrue(blockState)) {
+        else if (BlockUtils.affectedByGigaDrillBreaker(blockState) && ItemUtils.isShovel(heldItem) && PrimarySkillType.EXCAVATION.getPermissions(player) && !pluginRef.getPlaceStore().isTrue(blockState)) {
             ExcavationManager excavationManager = mcMMOPlayer.getExcavationManager();
             excavationManager.excavationBlockCheck(blockState);
 
@@ -358,7 +356,7 @@ public class BlockListener implements Listener {
         }
 
         /* Remove metadata from placed watched blocks */
-        mcMMO.getPlaceStore().setFalse(blockState);
+        pluginRef.getPlaceStore().setFalse(blockState);
     }
 
     /**
@@ -578,7 +576,7 @@ public class BlockListener implements Listener {
 
     public void debugStickDump(Player player, BlockState blockState) {
 
-        if (mcMMO.getPlaceStore().isTrue(blockState))
+        if (pluginRef.getPlaceStore().isTrue(blockState))
             player.sendMessage("[mcMMO DEBUG] This block is not natural and does not reward treasures/XP");
         else {
             player.sendMessage("[mcMMO DEBUG] This block is considered natural by mcMMO");
@@ -609,7 +607,7 @@ public class BlockListener implements Listener {
                 player.sendMessage("[mcMMO DEBUG] This furnace does not have a registered owner");
         }
 
-        if (mcMMO.getConfigManager().getConfigLeveling().isEnableXPBars())
+        if (pluginRef.getConfigManager().getConfigLeveling().isEnableXPBars())
             player.sendMessage("[mcMMO DEBUG] XP bars are enabled, however you should check per-skill settings to make sure those are enabled.");
     }
 

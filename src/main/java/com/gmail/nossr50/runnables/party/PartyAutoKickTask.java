@@ -1,8 +1,6 @@
 package com.gmail.nossr50.runnables.party;
 
 import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -13,7 +11,7 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 public class PartyAutoKickTask extends BukkitRunnable {
-    private final static long KICK_TIME = 24L * 60L * 60L * 1000L * mcMMO.getConfigManager().getConfigParty().getPartyCleanup().getPartyAutoKickHoursInterval();
+    private final static long KICK_TIME = 24L * 60L * 60L * 1000L * pluginRef.getConfigManager().getConfigParty().getPartyCleanup().getPartyAutoKickHoursInterval();
 
     @Override
     public void run() {
@@ -22,9 +20,9 @@ public class PartyAutoKickTask extends BukkitRunnable {
 
         long currentTime = System.currentTimeMillis();
 
-        for (Party party : PartyManager.getParties()) {
+        for (Party party : pluginRef.getPartyManager().getParties()) {
             for (UUID memberUniqueId : party.getMembers().keySet()) {
-                OfflinePlayer member = mcMMO.p.getServer().getOfflinePlayer(memberUniqueId);
+                OfflinePlayer member = pluginRef.getServer().getOfflinePlayer(memberUniqueId);
                 boolean isProcessed = processedPlayers.contains(memberUniqueId);
 
                 if ((!member.isOnline() && (currentTime - member.getLastPlayed() > KICK_TIME)) || isProcessed) {
@@ -38,7 +36,7 @@ public class PartyAutoKickTask extends BukkitRunnable {
         }
 
         for (Entry<OfflinePlayer, Party> entry : toRemove.entrySet()) {
-            PartyManager.removeFromParty(entry.getKey(), entry.getValue());
+            pluginRef.getPartyManager().removeFromParty(entry.getKey(), entry.getValue());
         }
     }
 }

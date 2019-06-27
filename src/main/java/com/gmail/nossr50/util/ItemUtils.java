@@ -2,8 +2,6 @@ package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
 import com.gmail.nossr50.datatypes.skills.ItemType;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.FurnaceRecipe;
@@ -234,7 +232,7 @@ public final class ItemUtils {
      * @return true if the item counts as unarmed, false otherwise
      */
     public static boolean isUnarmed(ItemStack item) {
-        if (mcMMO.getConfigManager().getConfigUnarmed().doItemsCountAsUnarmed()) {
+        if (pluginRef.getConfigManager().getConfigUnarmed().doItemsCountAsUnarmed()) {
             return !isMinecraftTool(item);
         }
 
@@ -629,7 +627,7 @@ public final class ItemUtils {
             return false;
         }
 
-        for (Recipe recipe : mcMMO.p.getServer().getRecipesFor(item)) {
+        for (Recipe recipe : pluginRef.getServer().getRecipesFor(item)) {
             if (recipe instanceof FurnaceRecipe
                     && ((FurnaceRecipe) recipe).getInput().getType().isBlock()
                     && MaterialUtils.isOre(((FurnaceRecipe) recipe).getInput().getType())) {
@@ -829,7 +827,7 @@ public final class ItemUtils {
      * @return true if the item is a miscellaneous drop, false otherwise
      */
     public static boolean isMiscDrop(ItemStack item) {
-        return mcMMO.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(item.getType()) != null;
+        return pluginRef.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(item.getType()) != null;
     }
 
     public static boolean isMcMMOItem(ItemStack item) {
@@ -847,6 +845,6 @@ public final class ItemUtils {
         }
 
         ItemMeta itemMeta = item.getItemMeta();
-        return itemMeta.hasDisplayName() && itemMeta.getDisplayName().equals(ChatColor.GOLD + LocaleLoader.getString("Item.ChimaeraWing.Name"));
+        return itemMeta.hasDisplayName() && itemMeta.getDisplayName().equals(ChatColor.GOLD + pluginRef.getLocaleManager().getString("Item.ChimaeraWing.Name"));
     }
 }

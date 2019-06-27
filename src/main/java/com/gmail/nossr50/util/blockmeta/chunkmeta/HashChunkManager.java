@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.blockmeta.chunkmeta;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.blockmeta.conversion.BlockStoreConversionZDirectory;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -250,7 +249,7 @@ public class HashChunkManager implements ChunkManager {
     public synchronized void saveAll() {
         closeAll();
 
-        for (World world : mcMMO.p.getServer().getWorlds()) {
+        for (World world : pluginRef.getServer().getWorlds()) {
             saveWorld(world);
         }
     }
@@ -259,7 +258,7 @@ public class HashChunkManager implements ChunkManager {
     public synchronized void unloadAll() {
         closeAll();
 
-        for (World world : mcMMO.p.getServer().getWorlds()) {
+        for (World world : pluginRef.getServer().getWorlds()) {
             unloadWorld(world);
         }
     }

@@ -13,6 +13,8 @@ import java.util.HashMap;
  * This class handles the XP maps for various skills
  */
 public class ExperienceManager {
+    private mcMMO pluginRef;
+
     private HashMap<PrimarySkillType, HashMap<Material, String>> skillMaterialXPMap;
     private HashMap<String, Integer> miningFullyQualifiedBlockXpMap;
     private HashMap<String, Integer> herbalismFullyQualifiedBlockXpMap;
@@ -25,7 +27,8 @@ public class ExperienceManager {
 
     private double globalXpMult;
 
-    public ExperienceManager() {
+    public ExperienceManager(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
         initExperienceMaps();
         registerDefaultValues();
 
@@ -44,8 +47,8 @@ public class ExperienceManager {
     }
 
     private void registerDefaultValues() {
-        fillCombatXPMultiplierMap(mcMMO.getConfigManager().getConfigExperience().getCombatExperienceMap());
-        registerSpecialCombatXPMultiplierMap(mcMMO.getConfigManager().getConfigExperience().getSpecialCombatExperienceMap());
+        fillCombatXPMultiplierMap(pluginRef.getConfigManager().getConfigExperience().getCombatExperienceMap());
+        registerSpecialCombatXPMultiplierMap(pluginRef.getConfigManager().getConfigExperience().getSpecialCombatExperienceMap());
         buildBlockXPMaps();
         buildFurnaceXPMap();
     }
@@ -58,7 +61,7 @@ public class ExperienceManager {
      * @param platformSafeMap the platform safe map
      */
     public void fillCombatXPMultiplierMap(HashMap<String, Double> platformSafeMap) {
-        mcMMO.p.getLogger().info("Registering combat XP values...");
+        pluginRef.getLogger().info("Registering combat XP values...");
         for (String entityString : platformSafeMap.keySet()) {
             //Iterate over all EntityType(s)
             boolean foundMatch = false;
@@ -68,7 +71,7 @@ public class ExperienceManager {
                 if (entityString.equalsIgnoreCase(type.name())) {
                     //Check for duplicates and warn the admin
                     if (combatXPMultiplierMap.containsKey(entityString)) {
-                        mcMMO.p.getLogger().severe("Entity named " + entityString + " has multiple values in the combat experience config!");
+                        pluginRef.getLogger().severe("Entity named " + entityString + " has multiple values in the combat experience config!");
                     }
                     //Match found
                     combatXPMultiplierMap.put(type, platformSafeMap.get(entityString));
@@ -77,7 +80,7 @@ public class ExperienceManager {
             }
 
             if(!foundMatch) {
-                mcMMO.p.getLogger().severe("No entity could be matched for the combat experience config value named - " + entityString);
+                pluginRef.getLogger().severe("No entity could be matched for the combat experience config value named - " + entityString);
             }
         }
     }
@@ -88,13 +91,13 @@ public class ExperienceManager {
      * @param map target map
      */
     public void registerSpecialCombatXPMultiplierMap(HashMap<SpecialXPKey, Double> map) {
-        mcMMO.p.getLogger().info("Registering special combat XP values...");
+        pluginRef.getLogger().info("Registering special combat XP values...");
         specialCombatXPMultiplierMap = map;
     }
 
     private void buildFurnaceXPMap() {
-        mcMMO.p.getLogger().info("Mapping xp values for furnaces...");
-        fillBlockXPMap(mcMMO.getConfigManager().getConfigExperience().getSmeltingExperienceMap(), furnaceFullyQualifiedItemXpMap);
+        pluginRef.getLogger().info("Mapping xp values for furnaces...");
+        fillBlockXPMap(pluginRef.getConfigManager().getConfigExperience().getSmeltingExperienceMap(), furnaceFullyQualifiedItemXpMap);
     }
 
     /**
@@ -117,8 +120,8 @@ public class ExperienceManager {
      * Taming entries in the config are case insensitive, but for faster lookups we convert them to ENUMs
      */
     private void buildTamingXPMap() {
-        mcMMO.p.getLogger().info("Building Taming XP list...");
-        HashMap<String, Integer> userTamingConfigMap = mcMMO.getConfigManager().getConfigExperience().getTamingExperienceMap();
+        pluginRef.getLogger().info("Building Taming XP list...");
+        HashMap<String, Integer> userTamingConfigMap = pluginRef.getConfigManager().getConfigExperience().getTamingExperienceMap();
 
         for (String s : userTamingConfigMap.keySet()) {
             boolean matchFound = false;
@@ -130,7 +133,7 @@ public class ExperienceManager {
                 }
             }
             if (!matchFound) {
-                mcMMO.p.getLogger().info("Unable to find entity with matching name - " + s);
+                pluginRef.getLogger().info("Unable to find entity with matching name - " + s);
             }
         }
     }
@@ -144,30 +147,30 @@ public class ExperienceManager {
                 //Map the fully qualified name
                 fullyQualifiedBlockXPMap.put(matchingMaterial.getKey().toString(), userConfigMap.get(string));
             } else {
-                mcMMO.p.getLogger().info("Could not find a match for the block named '" + string + "' among vanilla block registers");
+                pluginRef.getLogger().info("Could not find a match for the block named '" + string + "' among vanilla block registers");
             }
         }
     }
 
     private void buildMiningBlockXPMap() {
-        mcMMO.p.getLogger().info("Mapping block break XP values for Mining...");
-        fillBlockXPMap(mcMMO.getConfigManager().getConfigExperience().getMiningExperienceMap(), miningFullyQualifiedBlockXpMap);
+        pluginRef.getLogger().info("Mapping block break XP values for Mining...");
+        fillBlockXPMap(pluginRef.getConfigManager().getConfigExperience().getMiningExperienceMap(), miningFullyQualifiedBlockXpMap);
     }
 
 
     private void buildHerbalismBlockXPMap() {
-        mcMMO.p.getLogger().info("Mapping block break XP values for Herbalism...");
-        fillBlockXPMap(mcMMO.getConfigManager().getConfigExperience().getHerbalismXPMap(), herbalismFullyQualifiedBlockXpMap);
+        pluginRef.getLogger().info("Mapping block break XP values for Herbalism...");
+        fillBlockXPMap(pluginRef.getConfigManager().getConfigExperience().getHerbalismXPMap(), herbalismFullyQualifiedBlockXpMap);
     }
 
     private void buildWoodcuttingBlockXPMap() {
-        mcMMO.p.getLogger().info("Mapping block break XP values for Woodcutting...");
-        fillBlockXPMap(mcMMO.getConfigManager().getConfigExperience().getWoodcuttingExperienceMap(), woodcuttingFullyQualifiedBlockXpMap);
+        pluginRef.getLogger().info("Mapping block break XP values for Woodcutting...");
+        fillBlockXPMap(pluginRef.getConfigManager().getConfigExperience().getWoodcuttingExperienceMap(), woodcuttingFullyQualifiedBlockXpMap);
     }
 
     private void buildExcavationBlockXPMap() {
-        mcMMO.p.getLogger().info("Mapping block break XP values for Excavation...");
-        fillBlockXPMap(mcMMO.getConfigManager().getConfigExperience().getExcavationExperienceMap(), excavationFullyQualifiedBlockXpMap);
+        pluginRef.getLogger().info("Mapping block break XP values for Excavation...");
+        fillBlockXPMap(pluginRef.getConfigManager().getConfigExperience().getExcavationExperienceMap(), excavationFullyQualifiedBlockXpMap);
     }
 
     /**
@@ -176,7 +179,7 @@ public class ExperienceManager {
      * @param newGlobalXpMult new global xp multiplier value
      */
     public void setGlobalXpMult(double newGlobalXpMult) {
-        mcMMO.p.getLogger().info("Setting the global XP multiplier -> " + newGlobalXpMult);
+        pluginRef.getLogger().info("Setting the global XP multiplier -> " + newGlobalXpMult);
         globalXpMult = newGlobalXpMult;
     }
 
@@ -184,7 +187,7 @@ public class ExperienceManager {
      * Reset the Global XP multiplier to its original value
      */
     public void resetGlobalXpMult() {
-        mcMMO.p.getLogger().info("Resetting the global XP multiplier " + globalXpMult + " -> " + getOriginalGlobalXpMult());
+        pluginRef.getLogger().info("Resetting the global XP multiplier " + globalXpMult + " -> " + getOriginalGlobalXpMult());
         globalXpMult = getOriginalGlobalXpMult();
     }
 
@@ -194,7 +197,7 @@ public class ExperienceManager {
      * @param miningFullyQualifiedBlockXpMap the XP map to change to
      */
     public void setMiningFullyQualifiedBlockXpMap(HashMap<String, Integer> miningFullyQualifiedBlockXpMap) {
-        mcMMO.p.getLogger().info("Changing Mining XP Values...");
+        pluginRef.getLogger().info("Changing Mining XP Values...");
         this.miningFullyQualifiedBlockXpMap = miningFullyQualifiedBlockXpMap;
     }
 
@@ -204,7 +207,7 @@ public class ExperienceManager {
      * @param herbalismFullyQualifiedBlockXpMap the XP map to change to
      */
     public void setHerbalismFullyQualifiedBlockXpMap(HashMap<String, Integer> herbalismFullyQualifiedBlockXpMap) {
-        mcMMO.p.getLogger().info("Changing Herbalism XP Values...");
+        pluginRef.getLogger().info("Changing Herbalism XP Values...");
         this.herbalismFullyQualifiedBlockXpMap = herbalismFullyQualifiedBlockXpMap;
     }
 
@@ -214,7 +217,7 @@ public class ExperienceManager {
      * @param woodcuttingFullyQualifiedBlockXpMap the XP map to change to
      */
     public void setWoodcuttingFullyQualifiedBlockXpMap(HashMap<String, Integer> woodcuttingFullyQualifiedBlockXpMap) {
-        mcMMO.p.getLogger().info("Changin Woodcutting XP Values...");
+        pluginRef.getLogger().info("Changin Woodcutting XP Values...");
         this.woodcuttingFullyQualifiedBlockXpMap = woodcuttingFullyQualifiedBlockXpMap;
     }
 
@@ -224,7 +227,7 @@ public class ExperienceManager {
      * @param excavationFullyQualifiedBlockXpMap the XP map to change to
      */
     public void setExcavationFullyQualifiedBlockXpMap(HashMap<String, Integer> excavationFullyQualifiedBlockXpMap) {
-        mcMMO.p.getLogger().info("Changing Excavation XP Values...");
+        pluginRef.getLogger().info("Changing Excavation XP Values...");
         this.excavationFullyQualifiedBlockXpMap = excavationFullyQualifiedBlockXpMap;
     }
 
@@ -281,7 +284,7 @@ public class ExperienceManager {
      * @return the original global xp multiplier value from the user config file
      */
     public double getOriginalGlobalXpMult() {
-        return mcMMO.getConfigManager().getConfigExperience().getGlobalXPMultiplier();
+        return pluginRef.getConfigManager().getConfigExperience().getGlobalXPMultiplier();
     }
 
     /**

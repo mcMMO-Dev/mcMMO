@@ -2,7 +2,7 @@ package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.player.UserManager;
@@ -31,8 +31,8 @@ public class UnarmedCommand extends SkillCommand {
     private boolean canDeflect;
     private boolean canIronGrip;
 
-    public UnarmedCommand() {
-        super(PrimarySkillType.UNARMED);
+    public UnarmedCommand(mcMMO pluginRef) {
+        super(PrimarySkillType.UNARMED, pluginRef);
     }
 
     @Override
@@ -87,30 +87,30 @@ public class UnarmedCommand extends SkillCommand {
 
         if (canDeflect) {
             messages.add(getStatMessage(SubSkillType.UNARMED_ARROW_DEFLECT, deflectChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", deflectChanceLucky) : ""));
-            //messages.add(LocaleLoader.getString("Unarmed.Ability.Chance.ArrowDeflect", deflectChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", deflectChanceLucky) : ""));
+                    + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", deflectChanceLucky) : ""));
+            //messages.add(pluginRef.getLocaleManager().getString("Unarmed.Ability.Chance.ArrowDeflect", deflectChance) + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", deflectChanceLucky) : ""));
         }
 
         if (canBerserk) {
             messages.add(getStatMessage(SubSkillType.UNARMED_BERSERK, berserkLength)
-                    + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", berserkLengthEndurance) : ""));
-            //messages.add(LocaleLoader.getString("Unarmed.Ability.Berserk.Length", berserkLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", berserkLengthEndurance) : ""));
+                    + (hasEndurance ? pluginRef.getLocaleManager().getString("Perks.ActivationTime.Bonus", berserkLengthEndurance) : ""));
+            //messages.add(pluginRef.getLocaleManager().getString("Unarmed.Ability.Berserk.Length", berserkLength) + (hasEndurance ? pluginRef.getLocaleManager().getString("Perks.ActivationTime.Bonus", berserkLengthEndurance) : ""));
         }
 
         if (canDisarm) {
             messages.add(getStatMessage(SubSkillType.UNARMED_DISARM, disarmChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", disarmChanceLucky) : ""));
-            //messages.add(LocaleLoader.getString("Unarmed.Ability.Chance.Disarm", disarmChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", disarmChanceLucky) : ""));
+                    + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", disarmChanceLucky) : ""));
+            //messages.add(pluginRef.getLocaleManager().getString("Unarmed.Ability.Chance.Disarm", disarmChance) + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", disarmChanceLucky) : ""));
         }
 
         if (canIronArm) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Unarmed.Ability.Bonus.0"), LocaleLoader.getString("Unarmed.Ability.Bonus.1", ironArmBonus)));
+            messages.add(pluginRef.getLocaleManager().getString("Ability.Generic.Template", pluginRef.getLocaleManager().getString("Unarmed.Ability.Bonus.0"), pluginRef.getLocaleManager().getString("Unarmed.Ability.Bonus.1", ironArmBonus)));
         }
 
         if (canIronGrip) {
             messages.add(getStatMessage(SubSkillType.UNARMED_IRON_GRIP, ironGripChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", ironGripChanceLucky) : ""));
-            //messages.add(LocaleLoader.getString("Unarmed.Ability.Chance.IronGrip", ironGripChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", ironGripChanceLucky) : ""));
+                    + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", ironGripChanceLucky) : ""));
+            //messages.add(pluginRef.getLocaleManager().getString("Unarmed.Ability.Chance.IronGrip", ironGripChance) + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", ironGripChanceLucky) : ""));
         }
 
         if (canUseSubskill(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK)) {

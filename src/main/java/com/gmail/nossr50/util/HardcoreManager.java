@@ -3,7 +3,6 @@ package com.gmail.nossr50.util;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
@@ -23,8 +22,8 @@ public final class HardcoreManager {
             }
         }
 
-        double statLossPercentage = mcMMO.getConfigManager().getConfigHardcore().getDeathPenalty().getPenaltyPercentage();
-        int levelThreshold = mcMMO.getConfigManager().getConfigHardcore().getDeathPenalty().getLevelThreshold();
+        double statLossPercentage = pluginRef.getConfigManager().getConfigHardcore().getDeathPenalty().getPenaltyPercentage();
+        int levelThreshold = pluginRef.getConfigManager().getConfigHardcore().getDeathPenalty().getLevelThreshold();
 
         if (UserManager.getPlayer(player) == null)
             return;
@@ -64,7 +63,7 @@ public final class HardcoreManager {
             return;
         }
 
-        mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.HARDCORE_MODE, "Hardcore.DeathStatLoss.PlayerDeath", String.valueOf(totalLevelsLost));
+        pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.HARDCORE_MODE, "Hardcore.DeathStatLoss.PlayerDeath", String.valueOf(totalLevelsLost));
     }
 
     public static void invokeVampirism(Player killer, Player victim) {
@@ -75,8 +74,8 @@ public final class HardcoreManager {
             }
         }
 
-        double vampirismStatLeechPercentage = mcMMO.getConfigManager().getConfigHardcore().getVampirism().getPenaltyPercentage();
-        int levelThreshold = mcMMO.getConfigManager().getConfigHardcore().getVampirism().getLevelThreshold();
+        double vampirismStatLeechPercentage = pluginRef.getConfigManager().getConfigHardcore().getVampirism().getPenaltyPercentage();
+        int levelThreshold = pluginRef.getConfigManager().getConfigHardcore().getVampirism().getLevelThreshold();
 
         if (UserManager.getPlayer(killer) == null || UserManager.getPlayer(victim) == null)
             return;
@@ -120,11 +119,11 @@ public final class HardcoreManager {
         }
 
         if (totalLevelsStolen > 0) {
-            mcMMO.getNotificationManager().sendPlayerInformation(killer, NotificationType.HARDCORE_MODE, "Hardcore.Vampirism.Killer.Success", String.valueOf(totalLevelsStolen), victim.getName());
-            mcMMO.getNotificationManager().sendPlayerInformation(victim, NotificationType.HARDCORE_MODE, "Hardcore.Vampirism.Victim.Success", killer.getName(), String.valueOf(totalLevelsStolen));
+            pluginRef.getNotificationManager().sendPlayerInformation(killer, NotificationType.HARDCORE_MODE, "Hardcore.Vampirism.Killer.Success", String.valueOf(totalLevelsStolen), victim.getName());
+            pluginRef.getNotificationManager().sendPlayerInformation(victim, NotificationType.HARDCORE_MODE, "Hardcore.Vampirism.Victim.Success", killer.getName(), String.valueOf(totalLevelsStolen));
         } else {
-            mcMMO.getNotificationManager().sendPlayerInformation(killer, NotificationType.HARDCORE_MODE, "Hardcore.Vampirism.Killer.Failure", victim.getName());
-            mcMMO.getNotificationManager().sendPlayerInformation(victim, NotificationType.HARDCORE_MODE, "Hardcore.Vampirism.Victim.Failure", killer.getName());
+            pluginRef.getNotificationManager().sendPlayerInformation(killer, NotificationType.HARDCORE_MODE, "Hardcore.Vampirism.Killer.Failure", victim.getName());
+            pluginRef.getNotificationManager().sendPlayerInformation(victim, NotificationType.HARDCORE_MODE, "Hardcore.Vampirism.Victim.Failure", killer.getName());
         }
     }
 

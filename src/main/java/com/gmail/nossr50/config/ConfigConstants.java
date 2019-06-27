@@ -1,7 +1,5 @@
 package com.gmail.nossr50.config;
 
-import com.gmail.nossr50.mcMMO;
-
 import java.io.File;
 import java.util.ArrayList;
 
@@ -48,7 +46,7 @@ public class ConfigConstants {
      * @return the File for the data folder used by mcMMO
      */
     public static File getDataFolder() {
-        return mcMMO.p.getDataFolder();
+        return pluginRef.getDataFolder();
     }
 
     public static File getConfigFolder() {

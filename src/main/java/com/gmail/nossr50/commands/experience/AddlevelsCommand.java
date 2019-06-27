@@ -3,13 +3,20 @@ package com.gmail.nossr50.commands.experience;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class AddlevelsCommand extends ExperienceCommand {
+
+    private mcMMO pluginRef;
+
+    public AddlevelsCommand(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
+
     @Override
     protected boolean permissionsCheckSelf(CommandSender sender) {
         return Permissions.addlevels(sender);
@@ -35,11 +42,11 @@ public class AddlevelsCommand extends ExperienceCommand {
 
     @Override
     protected void handlePlayerMessageAll(Player player, int value) {
-        player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.1", value));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardAll.1", value));
     }
 
     @Override
     protected void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill) {
-        player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", value, skill.getName()));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardSkill.1", value, skill.getName()));
     }
 }

@@ -3,7 +3,6 @@ package com.gmail.nossr50.util.player;
 import com.gmail.nossr50.datatypes.experience.CustomXPPerk;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import org.bukkit.entity.Player;
 
@@ -30,7 +29,7 @@ public class PlayerLevelUtils {
      */
     private void applyConfigPerks() {
         //Make a copy
-        customXpPerkNodes = new HashSet<>(mcMMO.getConfigManager().getConfigExperience().getCustomXPBoosts());
+        customXpPerkNodes = new HashSet<>(pluginRef.getConfigManager().getConfigExperience().getCustomXPBoosts());
     }
 
     /**

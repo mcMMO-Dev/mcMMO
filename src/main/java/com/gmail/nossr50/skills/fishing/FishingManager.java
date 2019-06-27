@@ -14,8 +14,6 @@ import com.gmail.nossr50.datatypes.treasure.Rarity;
 import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerShakeEvent;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
@@ -82,7 +80,7 @@ public class FishingManager extends SkillManager {
             getPlayer().updateInventory();
 
             if (lastWarnedExhaust + (1000) < currentTime) {
-                getPlayer().sendMessage(LocaleLoader.getString("Fishing.Exhausting"));
+                getPlayer().sendMessage(pluginRef.getLocaleManager().getString("Fishing.Exhausting"));
                 lastWarnedExhaust = currentTime;
                 SoundManager.sendSound(getPlayer(), getPlayer().getLocation(), SoundType.TIRED);
             }
@@ -106,7 +104,7 @@ public class FishingManager extends SkillManager {
         boolean hasFished = (currentTime < fishHookSpawnCD);
 
         if (hasFished && (lastWarned + (1000) < currentTime)) {
-            getPlayer().sendMessage(LocaleLoader.getString("Fishing.Scared"));
+            getPlayer().sendMessage(pluginRef.getLocaleManager().getString("Fishing.Scared"));
             lastWarned = System.currentTimeMillis();
         }
 
@@ -133,7 +131,7 @@ public class FishingManager extends SkillManager {
             fishCaughtCounter = 1;
 
         if (fishCaughtCounter + 1 == overfishLimit) {
-            getPlayer().sendMessage(LocaleLoader.getString("Fishing.LowResourcesTip", mcMMO.getConfigManager().getConfigExploitPrevention().getOverFishingAreaSize() * 2));
+            getPlayer().sendMessage(pluginRef.getLocaleManager().getString("Fishing.LowResourcesTip", pluginRef.getConfigManager().getConfigExploitPrevention().getOverFishingAreaSize() * 2));
         }
 
         //If the new bounding box does not intersect with the old one, then update our bounding box reference
@@ -148,7 +146,7 @@ public class FishingManager extends SkillManager {
         if (overFishCount == 2) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (player.isOp() || Permissions.adminChat(player)) {
-                    player.sendMessage(LocaleLoader.getString("Fishing.OverFishingDetected", getPlayer().getDisplayName()));
+                    player.sendMessage(pluginRef.getLocaleManager().getString("Fishing.OverFishingDetected", getPlayer().getDisplayName()));
                 }
             }
         }
@@ -202,7 +200,7 @@ public class FishingManager extends SkillManager {
     }
 
     public int getInnerPeaceMultiplier() {
-        return mcMMO.getConfigManager().getConfigFishing().getVanillaXPMultInnerPeace(RankUtils.getRank(getPlayer(), SubSkillType.FISHING_INNER_PEACE));
+        return pluginRef.getConfigManager().getConfigFishing().getVanillaXPMultInnerPeace(RankUtils.getRank(getPlayer(), SubSkillType.FISHING_INNER_PEACE));
     }
 
     /**
@@ -277,7 +275,7 @@ public class FishingManager extends SkillManager {
         Player player = getPlayer();
         FishingTreasure treasure = null;
 
-        if (mcMMO.getConfigManager().getConfigFishing().isAllowCustomDrops()
+        if (pluginRef.getConfigManager().getConfigFishing().isAllowCustomDrops()
                 && Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_TREASURE_HUNTER)) {
             treasure = getFishingTreasure();
         }
@@ -311,10 +309,10 @@ public class FishingManager extends SkillManager {
                 }
 
                 if (enchanted) {
-                    mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Fishing.Ability.TH.MagicFound");
+                    pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Fishing.Ability.TH.MagicFound");
                 }
 
-                if (mcMMO.getConfigManager().getConfigFishing().isAlwaysCatchFish()) {
+                if (pluginRef.getConfigManager().getConfigFishing().isAlwaysCatchFish()) {
                     /*Misc.dropItem(player.getEyeLocation(), fishingCatch.getItemStack());*/
                     Misc.dropItem(fishingCatch.getLocation(), fishingCatch.getItemStack()).setVelocity(fishingCatch.getVelocity());
                 }
@@ -424,7 +422,7 @@ public class FishingManager extends SkillManager {
 
             Misc.dropItem(target.getLocation(), drop);
             CombatUtils.dealDamage(target, Math.min(Math.max(target.getMaxHealth() / 4, 1), 10), EntityDamageEvent.DamageCause.CUSTOM, getPlayer()); // Make it so you can shake a mob no more than 4 times.
-            applyXpGain(mcMMO.getConfigManager().getConfigExperience().getShakeXP(), XPGainReason.PVE);
+            applyXpGain(pluginRef.getConfigManager().getConfigExperience().getShakeXP(), XPGainReason.PVE);
         }
     }
 
@@ -445,7 +443,7 @@ public class FishingManager extends SkillManager {
         }
 
         // Rather than subtracting luck (and causing a minimum 3% chance for every drop), scale by luck.
-        diceRoll *= (1.0 - luck * mcMMO.getConfigManager().getConfigFishing().getLureLuckModifier() / 100);
+        diceRoll *= (1.0 - luck * pluginRef.getConfigManager().getConfigFishing().getLureLuckModifier() / 100);
 
         FishingTreasure treasure = null;
 

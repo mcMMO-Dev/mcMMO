@@ -2,7 +2,6 @@ package com.gmail.nossr50.runnables.commands;
 
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.mcMMO;
 import org.apache.commons.lang.Validate;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -33,8 +32,8 @@ public class MctopCommandAsyncTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        final List<PlayerStat> userStats = mcMMO.getDatabaseManager().readLeaderboard(skill, page, 10);
+        final List<PlayerStat> userStats = pluginRef.getDatabaseManager().readLeaderboard(skill, page, 10);
 
-        new MctopCommandDisplayTask(userStats, page, skill, sender, useBoard, useChat).runTaskLater(mcMMO.p, 1);
+        new MctopCommandDisplayTask(userStats, page, skill, sender, useBoard, useChat).runTaskLater(pluginRef, 1);
     }
 }

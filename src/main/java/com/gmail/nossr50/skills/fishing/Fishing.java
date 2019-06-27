@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills.fishing;
 
 import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
 import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.adapter.BiomeAdapter;
 import org.bukkit.Material;
@@ -27,9 +26,9 @@ public final class Fishing {
     private Set<Biome> iceFishingBiomes = BiomeAdapter.ICE_BIOMES;
 
     public Fishing() {
-        overfishLimit = mcMMO.getConfigManager().getConfigExploitPrevention().getOverfishingLimit() + 1;
-        fishingRodCastCdMilliseconds = mcMMO.getConfigManager().getConfigExploitPrevention().getFishingRodSpamMilliseconds();
-        boundingBoxSize = mcMMO.getConfigManager().getConfigExploitPrevention().getOverFishingAreaSize();
+        overfishLimit = pluginRef.getConfigManager().getConfigExploitPrevention().getOverfishingLimit() + 1;
+        fishingRodCastCdMilliseconds = pluginRef.getConfigManager().getConfigExploitPrevention().getFishingRodSpamMilliseconds();
+        boundingBoxSize = pluginRef.getConfigManager().getConfigExploitPrevention().getOverFishingAreaSize();
         initFishingXPRewardMap();
     }
 
@@ -45,13 +44,13 @@ public final class Fishing {
      */
     private void initFishingXPRewardMap() {
         fishingXpRewardMap = new HashMap<>();
-        HashMap<String, Integer> nameRegisterMap = mcMMO.getConfigManager().getConfigExperience().getFishingXPMap();
+        HashMap<String, Integer> nameRegisterMap = pluginRef.getConfigManager().getConfigExperience().getFishingXPMap();
 
         for (String qualifiedName : nameRegisterMap.keySet()) {
             Material material = Material.matchMaterial(qualifiedName);
 
             if (material == null) {
-                mcMMO.p.getLogger().info("Unable to match qualified name to item for fishing xp map: " + qualifiedName);
+                pluginRef.getLogger().info("Unable to match qualified name to item for fishing xp map: " + qualifiedName);
                 continue;
             }
 

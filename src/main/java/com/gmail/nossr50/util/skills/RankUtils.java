@@ -8,7 +8,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.SkillUnlockNotificationTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
@@ -381,7 +380,7 @@ public class RankUtils {
      */
     private static int findRankByRootAddress(int rank, SubSkillType subSkillType) {
 
-        CommentedConfigurationNode rankConfigRoot = mcMMO.getConfigManager().getConfigRanksRootNode();
+        CommentedConfigurationNode rankConfigRoot = pluginRef.getConfigManager().getConfigRanksRootNode();
 
         try {
             SkillRankProperty skillRankProperty
@@ -389,17 +388,17 @@ public class RankUtils {
                     .getNode(subSkillType.getHoconFriendlyConfigName())
                     .getValue(TypeToken.of(SkillRankProperty.class));
 
-            int unlockLevel = skillRankProperty.getUnlockLevel(mcMMO.isRetroModeEnabled(), rank);
+            int unlockLevel = skillRankProperty.getUnlockLevel(pluginRef.isRetroModeEnabled(), rank);
             return unlockLevel;
 
         } catch (ObjectMappingException | MissingSkillPropertyDefinition | NullPointerException e) {
-            mcMMO.p.getLogger().severe("Error traversing nodes to SkillRankProperty for "+subSkillType.toString());
-            mcMMO.p.getLogger().severe("This indicates a problem with your rank config file, edit the file and correct the issue or delete it to generate a new default one with correct values.");
+            pluginRef.getLogger().severe("Error traversing nodes to SkillRankProperty for "+subSkillType.toString());
+            pluginRef.getLogger().severe("This indicates a problem with your rank config file, edit the file and correct the issue or delete it to generate a new default one with correct values.");
             e.printStackTrace();
         }
 
         //Default to the max level for the skill if any errors were encountered incorrect
-        return mcMMO.getConfigManager().getConfigLeveling().getSkillLevelCap(subSkillType.getParentSkill());
+        return pluginRef.getConfigManager().getConfigLeveling().getSkillLevelCap(subSkillType.getParentSkill());
     }
 
     public static boolean isPlayerMaxRankInSubSkill(Player player, SubSkillType subSkillType) {

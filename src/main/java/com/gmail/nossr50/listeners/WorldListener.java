@@ -33,12 +33,12 @@ public class WorldListener implements Listener {
         if (WorldBlacklist.isWorldBlacklisted(event.getWorld()))
             return;
 
-        if (!mcMMO.getPlaceStore().isTrue(event.getLocation().getBlock())) {
+        if (!pluginRef.getPlaceStore().isTrue(event.getLocation().getBlock())) {
             return;
         }
 
         for (BlockState blockState : event.getBlocks()) {
-            mcMMO.getPlaceStore().setFalse(blockState);
+            pluginRef.getPlaceStore().setFalse(blockState);
         }
     }
 
@@ -75,7 +75,7 @@ public class WorldListener implements Listener {
         if (WorldBlacklist.isWorldBlacklisted(event.getWorld()))
             return;
 
-        mcMMO.getPlaceStore().unloadWorld(event.getWorld());
+        pluginRef.getPlaceStore().unloadWorld(event.getWorld());
     }
 
     /**
@@ -91,6 +91,6 @@ public class WorldListener implements Listener {
 
         Chunk chunk = event.getChunk();
 
-        mcMMO.getPlaceStore().chunkUnloaded(chunk.getX(), chunk.getZ(), event.getWorld());
+        pluginRef.getPlaceStore().chunkUnloaded(chunk.getX(), chunk.getZ(), event.getWorld());
     }
 }

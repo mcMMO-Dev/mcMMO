@@ -1,7 +1,6 @@
 package com.gmail.nossr50.config.hocon;
 
 import com.gmail.nossr50.config.ConfigConstants;
-import com.gmail.nossr50.mcMMO;
 import ninja.leaping.configurate.ConfigurationOptions;
 import ninja.leaping.configurate.ValueType;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
@@ -92,7 +91,7 @@ public class SerializedConfigLoader<T> {
                 Files.createFile(path);
             }
 
-            configurationOptions = ConfigurationOptions.defaults().setSerializers(mcMMO.getConfigManager().getCustomSerializers()).setHeader(CONFIG_HEADER);
+            configurationOptions = ConfigurationOptions.defaults().setSerializers(pluginRef.getConfigManager().getCustomSerializers()).setHeader(CONFIG_HEADER);
             data = SimpleCommentedConfigurationNode.root(configurationOptions);
             fileData = SimpleCommentedConfigurationNode.root(configurationOptions);
 
@@ -114,7 +113,7 @@ public class SerializedConfigLoader<T> {
             reload();
             save();
         } catch (Exception e) {
-            mcMMO.p.getLogger().severe("Failed to initialize config - " + path.toString());
+            pluginRef.getLogger().severe("Failed to initialize config - " + path.toString());
             e.printStackTrace();
         }
     }
@@ -146,7 +145,7 @@ public class SerializedConfigLoader<T> {
             this.loader.save(saveNode);
             return true;
         } catch (IOException | ObjectMappingException e) {
-            mcMMO.p.getLogger().severe("Failed to save configuration - " + path.toString());
+            pluginRef.getLogger().severe("Failed to save configuration - " + path.toString());
             e.printStackTrace();
             return false;
         }
@@ -172,7 +171,7 @@ public class SerializedConfigLoader<T> {
             // populate the config object
             populateInstance();
         } catch (Exception e) {
-            mcMMO.p.getLogger().severe("Failed to load configuration - " + path.toString());
+            pluginRef.getLogger().severe("Failed to load configuration - " + path.toString());
             e.printStackTrace();
         }
     }

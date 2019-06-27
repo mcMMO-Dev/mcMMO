@@ -2,8 +2,6 @@ package com.gmail.nossr50.runnables.player;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.McScoreboardKeepTask;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
@@ -36,34 +34,34 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
 
         // Quit if they logged out
         if (!player.isOnline()) {
-            mcMMO.p.getLogger().info("Aborting profile loading recovery for " + player.getName() + " - player logged out");
+            pluginRef.getLogger().info("Aborting profile loading recovery for " + player.getName() + " - player logged out");
             return;
         }
 
-        PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(player.getName(), player.getUniqueId(), true);
+        PlayerProfile profile = pluginRef.getDatabaseManager().loadPlayerProfile(player.getName(), player.getUniqueId(), true);
         // If successful, schedule the apply
         if (profile.isLoaded()) {
-            new ApplySuccessfulProfile(new McMMOPlayer(player, profile)).runTask(mcMMO.p);
+            new ApplySuccessfulProfile(new McMMOPlayer(player, profile)).runTask(pluginRef);
             return;
         }
 
         // Print errors to console/logs if we're failing at least 2 times in a row to load the profile
         if (attempt >= 3) {
             //Log the error
-            mcMMO.p.getLogger().severe(LocaleLoader.getString("Profile.Loading.FailureNotice",
+            pluginRef.getLogger().severe(pluginRef.getLocaleManager().getString("Profile.Loading.FailureNotice",
                     player.getName(), String.valueOf(attempt)));
 
             //Notify the admins
-            mcMMO.p.getServer().broadcast(LocaleLoader.getString("Profile.Loading.FailureNotice", player.getName()), Server.BROADCAST_CHANNEL_ADMINISTRATIVE);
+            pluginRef.getServer().broadcast(pluginRef.getLocaleManager().getString("Profile.Loading.FailureNotice", player.getName()), Server.BROADCAST_CHANNEL_ADMINISTRATIVE);
 
             //Notify the player
-            player.sendMessage(LocaleLoader.getString("Profile.Loading.FailurePlayer", String.valueOf(attempt)).split("\n"));
+            player.sendMessage(pluginRef.getLocaleManager().getString("Profile.Loading.FailurePlayer", String.valueOf(attempt)).split("\n"));
         }
 
         // Increment attempt counter and try
         attempt++;
 
-        new PlayerProfileLoadingTask(player, attempt).runTaskLaterAsynchronously(mcMMO.p, (100 + (attempt * 100)));
+        new PlayerProfileLoadingTask(player, attempt).runTaskLaterAsynchronously(pluginRef, (100 + (attempt * 100)));
     }
 
     private class ApplySuccessfulProfile extends BukkitRunnable {
@@ -78,7 +76,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
         @Override
         public void run() {
             if (!player.isOnline()) {
-                mcMMO.p.getLogger().info("Aborting profile loading recovery for " + player.getName() + " - player logged out");
+                pluginRef.getLogger().info("Aborting profile loading recovery for " + player.getName() + " - player logged out");
                 return;
             }
 
@@ -86,17 +84,17 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
             UserManager.track(mcMMOPlayer);
             mcMMOPlayer.actualizeRespawnATS();
 
-            if (mcMMO.getScoreboardSettings().getScoreboardsEnabled()) {
+            if (pluginRef.getScoreboardSettings().getScoreboardsEnabled()) {
                 ScoreboardManager.setupPlayer(player);
 
-                if (mcMMO.getScoreboardSettings().getShowStatsAfterLogin()) {
+                if (pluginRef.getScoreboardSettings().getShowStatsAfterLogin()) {
                     ScoreboardManager.enablePlayerStatsScoreboard(player);
-                    new McScoreboardKeepTask(player).runTaskLater(mcMMO.p, Misc.TICK_CONVERSION_FACTOR);
+                    new McScoreboardKeepTask(player).runTaskLater(pluginRef, Misc.TICK_CONVERSION_FACTOR);
                 }
             }
 
-            if (mcMMO.getConfigManager().getConfigNotifications().isShowProfileLoadedMessage()) {
-                player.sendMessage(LocaleLoader.getString("Profile.Loading.Success"));
+            if (pluginRef.getConfigManager().getConfigNotifications().isShowProfileLoadedMessage()) {
+                player.sendMessage(pluginRef.getLocaleManager().getString("Profile.Loading.Success"));
             }
 
         }

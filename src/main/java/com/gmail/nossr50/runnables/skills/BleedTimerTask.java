@@ -1,7 +1,6 @@
 package com.gmail.nossr50.runnables.skills;
 
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.MobHealthbarUtils;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
@@ -80,7 +79,7 @@ public class BleedTimerTask extends BukkitRunnable {
 
             if (containerEntry.getValue().bleedTicks <= 0 || !target.isValid()) {
                 if (target instanceof Player) {
-                    mcMMO.getNotificationManager().sendPlayerInformation((Player) target, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Stopped");
+                    pluginRef.getNotificationManager().sendPlayerInformation((Player) target, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Stopped");
                 }
 
                 bleedIterator.remove();
@@ -92,7 +91,7 @@ public class BleedTimerTask extends BukkitRunnable {
             double damage;
 
             if (target instanceof Player) {
-                damage = mcMMO.getConfigManager().getConfigSwords().getRuptureDamagePlayer();
+                damage = pluginRef.getConfigManager().getConfigSwords().getRuptureDamagePlayer();
 
                 //Above Bleed Rank 3 deals 50% more damage
                 if (containerEntry.getValue().toolTier >= 4 && containerEntry.getValue().bleedRank >= 3)
@@ -111,7 +110,7 @@ public class BleedTimerTask extends BukkitRunnable {
                 }
 
             } else {
-                damage = mcMMO.getConfigManager().getConfigSwords().getRuptureDamageMobs();
+                damage = pluginRef.getConfigManager().getConfigSwords().getRuptureDamageMobs();
 
 //                debugMessage+="BaseDMG=["+damage+"], ";
 
@@ -123,7 +122,7 @@ public class BleedTimerTask extends BukkitRunnable {
 //                debugMessage+="Rank4Bonus=["+String.valueOf(containerEntry.getValue().bleedRank >= 3)+"], ";
 
 
-                MobHealthbarUtils.handleMobHealthbars(target, damage, mcMMO.p); //Update health bars
+                MobHealthbarUtils.handleMobHealthbars(target, damage, pluginRef); //Update health bars
             }
 
 //            debugMessage+="FullArmor=["+String.valueOf(armorCount > 3)+"], ";

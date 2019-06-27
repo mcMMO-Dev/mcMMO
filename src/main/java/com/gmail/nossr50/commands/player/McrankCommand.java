@@ -2,7 +2,6 @@ package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.McrankCommandAsyncTask;
 import com.gmail.nossr50.util.Permissions;
@@ -21,6 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class McrankCommand implements TabExecutor {
+
+    private mcMMO pluginRef;
+
+    public McrankCommand(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
@@ -89,32 +95,32 @@ public class McrankCommand implements TabExecutor {
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
 
             if (mcMMOPlayer == null) {
-                sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
                 return;
             }
 
             long cooldownMillis = 5000;
 
             if (mcMMOPlayer.getDatabaseATS() + cooldownMillis > System.currentTimeMillis()) {
-                sender.sendMessage(LocaleLoader.getString("Commands.Database.CooldownMS", getCDSeconds(mcMMOPlayer, cooldownMillis)));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Database.CooldownMS", getCDSeconds(mcMMOPlayer, cooldownMillis)));
                 return;
             }
 
             if (((Player) sender).hasMetadata(MetadataConstants.DATABASE_PROCESSING_COMMAND_METAKEY)) {
-                sender.sendMessage(LocaleLoader.getString("Commands.Database.Processing"));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Database.Processing"));
                 return;
             } else {
-                ((Player) sender).setMetadata(MetadataConstants.DATABASE_PROCESSING_COMMAND_METAKEY, new FixedMetadataValue(mcMMO.p, null));
+                ((Player) sender).setMetadata(MetadataConstants.DATABASE_PROCESSING_COMMAND_METAKEY, new FixedMetadataValue(pluginRef, null));
             }
 
             mcMMOPlayer.actualizeDatabaseATS();
         }
 
-        boolean useBoard = mcMMO.getScoreboardSettings().getScoreboardsEnabled() && (sender instanceof Player)
-                && (mcMMO.getScoreboardSettings().isScoreboardEnabled(ScoreboardManager.SidebarType.RANK_BOARD));
-        boolean useChat = !useBoard || mcMMO.getScoreboardSettings().isScoreboardPrinting(ScoreboardManager.SidebarType.RANK_BOARD);
+        boolean useBoard = pluginRef.getScoreboardSettings().getScoreboardsEnabled() && (sender instanceof Player)
+                && (pluginRef.getScoreboardSettings().isScoreboardEnabled(ScoreboardManager.SidebarType.RANK_BOARD));
+        boolean useChat = !useBoard || pluginRef.getScoreboardSettings().isScoreboardPrinting(ScoreboardManager.SidebarType.RANK_BOARD);
 
-        new McrankCommandAsyncTask(playerName, sender, useBoard, useChat).runTaskAsynchronously(mcMMO.p);
+        new McrankCommandAsyncTask(playerName, sender, useBoard, useChat).runTaskAsynchronously(pluginRef);
     }
 
     private long getCDSeconds(McMMOPlayer mcMMOPlayer, long cooldownMillis) {

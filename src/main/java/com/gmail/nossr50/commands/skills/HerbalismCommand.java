@@ -2,7 +2,7 @@ package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.skills.RankUtils;
@@ -35,8 +35,8 @@ public class HerbalismCommand extends SkillCommand {
     private boolean canDoubleDrop;
     private boolean canShroomThumb;
 
-    public HerbalismCommand() {
-        super(PrimarySkillType.HERBALISM);
+    public HerbalismCommand(mcMMO pluginRef) {
+        super(PrimarySkillType.HERBALISM, pluginRef);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class HerbalismCommand extends SkillCommand {
 
         if (canDoubleDrop) {
             messages.add(getStatMessage(SubSkillType.HERBALISM_DOUBLE_DROPS, doubleDropChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
+                    + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
         }
 
         if (canFarmersDiet) {
@@ -111,15 +111,15 @@ public class HerbalismCommand extends SkillCommand {
 
         if (canGreenTerra) {
             messages.add(getStatMessage(SubSkillType.HERBALISM_GREEN_TERRA, greenTerraLength)
-                    + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", greenTerraLengthEndurance) : ""));
+                    + (hasEndurance ? pluginRef.getLocaleManager().getString("Perks.ActivationTime.Bonus", greenTerraLengthEndurance) : ""));
 
-            //messages.add(LocaleLoader.getString("Herbalism.Ability.GTe.Length", greenTerraLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", greenTerraLengthEndurance) : ""));
+            //messages.add(pluginRef.getLocaleManager().getString("Herbalism.Ability.GTe.Length", greenTerraLength) + (hasEndurance ? pluginRef.getLocaleManager().getString("Perks.ActivationTime.Bonus", greenTerraLengthEndurance) : ""));
         }
 
         if (canGreenThumbBlocks || canGreenThumbPlants) {
             messages.add(getStatMessage(SubSkillType.HERBALISM_GREEN_THUMB, greenThumbChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", greenThumbChanceLucky) : ""));
-            //messages.add(LocaleLoader.getString("Herbalism.Ability.GTh.Chance", greenThumbChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", greenThumbChanceLucky) : ""));
+                    + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", greenThumbChanceLucky) : ""));
+            //messages.add(pluginRef.getLocaleManager().getString("Herbalism.Ability.GTh.Chance", greenThumbChance) + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", greenThumbChanceLucky) : ""));
         }
 
         if (canGreenThumbPlants) {
@@ -128,12 +128,12 @@ public class HerbalismCommand extends SkillCommand {
 
         if (hasHylianLuck) {
             messages.add(getStatMessage(SubSkillType.HERBALISM_HYLIAN_LUCK, hylianLuckChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", hylianLuckChanceLucky) : ""));
+                    + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", hylianLuckChanceLucky) : ""));
         }
 
         if (canShroomThumb) {
             messages.add(getStatMessage(SubSkillType.HERBALISM_SHROOM_THUMB, shroomThumbChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", shroomThumbChanceLucky) : ""));
+                    + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", shroomThumbChanceLucky) : ""));
         }
 
         return messages;

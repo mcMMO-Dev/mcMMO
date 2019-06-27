@@ -12,40 +12,40 @@ import java.text.MessageFormat;
 import java.util.*;
 import java.util.logging.Level;
 
-public final class LocaleLoader {
-    private static final String BUNDLE_ROOT = "com.gmail.nossr50.locale.locale";
-    private static Map<String, String> bundleCache = new HashMap<>();
-    private static ResourceBundle bundle = null;
-    private static ResourceBundle filesystemBundle = null;
-    private static ResourceBundle enBundle = null;
+public final class LocaleManager {
+    private final String BUNDLE_ROOT = "com.gmail.nossr50.locale.locale";
+    private Map<String, String> bundleCache = new HashMap<>();
+    private ResourceBundle bundle;
+    private ResourceBundle filesystemBundle;
+    private ResourceBundle enBundle;
+    private mcMMO pluginRef;
 
-    private LocaleLoader() {
+    public LocaleManager(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+        initialize();
     }
 
-    public static String getString(String key) {
+    public String getString(String key) {
         return getString(key, (Object[]) null);
     }
 
     /**
-     * Gets the appropriate string from the Locale files.
+     * Gets the appropriate string from the LocaleManager files.
      *
      * @param key              The key to look up the string with
      * @param messageArguments Any arguments to be added to the string
      * @return The properly formatted locale string
      */
-    public static String getString(String key, Object... messageArguments) {
-        if (bundle == null) {
-            initialize();
-        }
+    public String getString(String key, Object... messageArguments) {
 
-        String rawMessage = bundleCache.computeIfAbsent(key, LocaleLoader::getRawString);
+        String rawMessage = bundleCache.computeIfAbsent(key, this::getRawString);
         return formatString(rawMessage, messageArguments);
     }
 
     /**
      * Reloads locale
      */
-    public static void reloadLocale() {
+    public void reloadLocale() {
         bundle = null;
         filesystemBundle = null;
         enBundle = null;
@@ -53,7 +53,7 @@ public final class LocaleLoader {
         initialize();
     }
 
-    private static String getRawString(String key) {
+    private String getRawString(String key) {
         if (filesystemBundle != null) {
             try {
                 return filesystemBundle.getString(key);
@@ -70,14 +70,14 @@ public final class LocaleLoader {
             return enBundle.getString(key);
         } catch (MissingResourceException ignored) {
             if (!key.contains("Guides")) {
-                mcMMO.p.getLogger().warning("Could not find locale string: " + key);
+                pluginRef.getLogger().warning("Could not find locale string: " + key);
             }
 
             return '!' + key + '!';
         }
     }
 
-    public static String formatString(String string, Object... messageArguments) {
+    public String formatString(String string, Object... messageArguments) {
         if (messageArguments != null) {
             MessageFormat formatter = new MessageFormat("");
             formatter.applyPattern(string.replace("'", "''"));
@@ -89,40 +89,37 @@ public final class LocaleLoader {
         return string;
     }
 
-    public static Locale getCurrentLocale() {
-        if (bundle == null) {
-            initialize();
-        }
+    public java.util.Locale getCurrentLocale() {
         return bundle.getLocale();
     }
 
-    private static void initialize() {
+    private void initialize() {
         if (bundle == null) {
-            Locale.setDefault(new Locale("en", "US"));
-            Locale locale = null;
-            String[] myLocale = mcMMO.getConfigManager().getConfigLanguage().getTargetLanguage().split("[-_ ]");
+            java.util.Locale.setDefault(new java.util.Locale("en", "US"));
+            java.util.Locale locale = null;
+            String[] myLocale = pluginRef.getConfigManager().getConfigLanguage().getTargetLanguage().split("[-_ ]");
 
             if (myLocale.length == 1) {
-                locale = new Locale(myLocale[0]);
+                locale = new java.util.Locale(myLocale[0]);
             } else if (myLocale.length >= 2) {
-                locale = new Locale(myLocale[0], myLocale[1]);
+                locale = new java.util.Locale(myLocale[0], myLocale[1]);
             }
 
             if (locale == null) {
-                throw new IllegalStateException("Failed to parse locale string '" + mcMMO.getConfigManager().getConfigLanguage().getTargetLanguage() + "'");
+                throw new IllegalStateException("Failed to parse locale string '" + pluginRef.getConfigManager().getConfigLanguage().getTargetLanguage() + "'");
             }
 
-            Path localePath = Paths.get(mcMMO.getLocalesDirectory() + "locale_" + locale.toString() + ".properties");
+            Path localePath = Paths.get(pluginRef.getLocalesDirectory() + "locale_" + locale.toString() + ".properties");
             if (Files.exists(localePath) && Files.isRegularFile(localePath)) {
                 try (Reader localeReader = Files.newBufferedReader(localePath)) {
-                    mcMMO.p.getLogger().log(Level.INFO, "Loading locale from {0}", localePath);
+                    pluginRef.getLogger().log(Level.INFO, "Loading locale from {0}", localePath);
                     filesystemBundle = new PropertyResourceBundle(localeReader);
                 } catch (IOException e) {
-                    mcMMO.p.getLogger().log(Level.WARNING, "Failed to load locale from " + localePath, e);
+                    pluginRef.getLogger().log(Level.WARNING, "Failed to load locale from " + localePath, e);
                 }
             }
             bundle = ResourceBundle.getBundle(BUNDLE_ROOT, locale);
-            enBundle = ResourceBundle.getBundle(BUNDLE_ROOT, Locale.US);
+            enBundle = ResourceBundle.getBundle(BUNDLE_ROOT, java.util.Locale.US);
         }
     }
 

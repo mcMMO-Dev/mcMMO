@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillEvent;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillRandomCheckEvent;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -219,7 +218,7 @@ public class RandomChanceUtil {
      * @throws InvalidStaticChance if the skill has no defined static chance this exception will be thrown and you should know you're a naughty boy
      */
     public static double getStaticRandomChance(SubSkillType subSkillType) throws InvalidStaticChance {
-        return mcMMO.getDynamicSettingsManager().getSkillPropertiesManager().getStaticChanceProperty(subSkillType);
+        return pluginRef.getDynamicSettingsManager().getSkillPropertiesManager().getStaticChanceProperty(subSkillType);
     }
 
     public static boolean sendSkillEvent(Player player, SubSkillType subSkillType, double activationChance) {

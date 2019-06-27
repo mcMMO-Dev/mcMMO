@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes.skills;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
@@ -100,11 +99,11 @@ public enum SuperAbilityType {
     }
 
     public int getCooldown() {
-        return mcMMO.getConfigManager().getConfigSuperAbilities().getCooldownForSuper(this);
+        return pluginRef.getConfigManager().getConfigSuperAbilities().getCooldownForSuper(this);
     }
 
     public int getMaxLength() {
-        return mcMMO.getConfigManager().getConfigSuperAbilities().getMaxLengthForSuper(this);
+        return pluginRef.getConfigManager().getConfigSuperAbilities().getMaxLengthForSuper(this);
     }
 
     public String getAbilityOn() {

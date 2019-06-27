@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.repair;
 
-import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
 
 public class Repair {
@@ -8,7 +7,7 @@ public class Repair {
     private Material anvilMaterial;
 
     public Repair() {
-        anvilMaterial = mcMMO.getConfigManager().getConfigRepair().getRepairGeneral().getRepairAnvilMaterial();
+        anvilMaterial = pluginRef.getConfigManager().getConfigRepair().getRepairGeneral().getRepairAnvilMaterial();
     }
 
     public static Repair getInstance() {

@@ -16,13 +16,15 @@ import java.util.HashMap;
  * Hacky way to do this until I rewrite the skill system fully
  */
 public class SkillPropertiesManager {
+    private mcMMO pluginRef;
 
     private HashMap<SubSkillType, Double> maxChanceMap;
     private HashMap<SubSkillType, Double> staticActivationChanceMap;
     private HashMap<SubSkillType, Integer> maxBonusLevelMap;
     private HashMap<SubSkillType, Double> maxBonusMap;
 
-    public SkillPropertiesManager() {
+    public SkillPropertiesManager(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
         maxChanceMap = new HashMap<>();
         maxBonusLevelMap = new HashMap<>();
         maxBonusMap = new HashMap<>();
@@ -30,7 +32,7 @@ public class SkillPropertiesManager {
     }
 
     public void registerMaxBonusLevel(SubSkillType subSkillType, MaxBonusLevel maxBonusLevel) {
-        maxBonusLevelMap.put(subSkillType, mcMMO.isRetroModeEnabled() ? maxBonusLevel.getRetroScaleValue() : maxBonusLevel.getStandardScaleValue());
+        maxBonusLevelMap.put(subSkillType, pluginRef.isRetroModeEnabled() ? maxBonusLevel.getRetroScaleValue() : maxBonusLevel.getStandardScaleValue());
     }
 
     public void registerMaxBonus(SubSkillType subSkillType, double maxBonus) {
@@ -73,7 +75,7 @@ public class SkillPropertiesManager {
         //The path to a subskill's properties will always be like this
         //Skill Config Root Node -> Sub-Skill -> Hocon-Friendly-Name (of the subskill) -> PropertyFieldName (camelCase of the interface type)
         for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            CommentedConfigurationNode rootNode = mcMMO.getConfigManager().getSkillConfigLoader(primarySkillType).getRootNode();
+            CommentedConfigurationNode rootNode = pluginRef.getConfigManager().getSkillConfigLoader(primarySkillType).getRootNode();
 
             //Attempt to grab node
             CommentedConfigurationNode subSkillCategoryNode = getNodeIfReal(rootNode, ConfigConstants.SUB_SKILL_NODE);
@@ -132,7 +134,7 @@ public class SkillPropertiesManager {
 
     private void attemptRegisterMaxBonusLevel(SubSkillType subSkillType, CommentedConfigurationNode childNode) {
         try {
-            mcMMO.p.getLogger().info("Registering MaxBonusLevel for "+subSkillType.toString());
+            pluginRef.getLogger().info("Registering MaxBonusLevel for "+subSkillType.toString());
             MaxBonusLevel maxBonusLevel = childNode.getValue(TypeToken.of(MaxBonusLevel.class));
             registerMaxBonusLevel(subSkillType, maxBonusLevel);
         } catch (ObjectMappingException e) {
@@ -142,7 +144,7 @@ public class SkillPropertiesManager {
 
     private void attemptRegisterMaxChance(SubSkillType subSkillType, CommentedConfigurationNode childNode) {
         try {
-            mcMMO.p.getLogger().info("Registering MaxChance for "+subSkillType.toString());
+            pluginRef.getLogger().info("Registering MaxChance for "+subSkillType.toString());
             Double maxChance = childNode.getValue(TypeToken.of(Double.class));
             registerMaxChance(subSkillType, maxChance);
         } catch (ObjectMappingException e) {
@@ -152,7 +154,7 @@ public class SkillPropertiesManager {
 
     private void attemptRegisterStaticChance(SubSkillType subSkillType, CommentedConfigurationNode childNode) {
         try {
-            mcMMO.p.getLogger().info("Registering Static Chance for "+subSkillType.toString());
+            pluginRef.getLogger().info("Registering Static Chance for "+subSkillType.toString());
             Double staticChance = childNode.getValue(TypeToken.of(Double.class));
             registerStaticChance(subSkillType, staticChance);
         } catch (ObjectMappingException e) {
@@ -162,7 +164,7 @@ public class SkillPropertiesManager {
 
     private void attemptRegisterMaxBonusPercentage(SubSkillType subSkillType, CommentedConfigurationNode childNode) {
         try {
-            mcMMO.p.getLogger().info("Registering MaxBonus for "+subSkillType.toString());
+            pluginRef.getLogger().info("Registering MaxBonus for "+subSkillType.toString());
             Double maxChance = childNode.getValue(TypeToken.of(Double.class));
             registerMaxBonus(subSkillType, maxChance);
         } catch (ObjectMappingException e) {

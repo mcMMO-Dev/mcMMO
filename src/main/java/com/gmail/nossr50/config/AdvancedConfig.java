@@ -123,7 +123,7 @@ public class AdvancedConfig extends ConfigValidated {
 
     public AdvancedConfig() {
         //super(mcMMO.getDataFolderPath().getAbsoluteFile(), "advanced.yml", true);
-        super("advanced", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, true, true, true);
+        super("advanced", pluginRef.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, true, true, true);
     }
 
     /**
@@ -136,7 +136,7 @@ public class AdvancedConfig extends ConfigValidated {
      */
     @Deprecated
     public static AdvancedConfig getInstance() {
-        return mcMMO.getConfigManager().getAdvancedConfig();
+        return pluginRef.getConfigManager().getAdvancedConfig();
     }
 
     /**

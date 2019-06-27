@@ -1,7 +1,5 @@
 package com.gmail.nossr50.config;
 
-import com.gmail.nossr50.mcMMO;
-
 import java.util.List;
 
 /**
@@ -22,7 +20,7 @@ public interface UnsafeValueValidation {
 
         if (validKeyErrors != null && validKeyErrors.size() > 0) {
             for (String error : validKeyErrors) {
-                mcMMO.p.getLogger().severe(error);
+                pluginRef.getLogger().severe(error);
             }
         }
     }

@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -28,11 +27,11 @@ public class AcrobaticsManager extends SkillManager {
 
     public AcrobaticsManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.ACROBATICS);
-        rollXPInterval = (1000 * mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().getRollXPGainCooldownSeconds());
+        rollXPInterval = (1000 * pluginRef.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().getRollXPGainCooldownSeconds());
 
         //Save some memory if exploit prevention is off
-        if (mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
-            fallLocationMap = new LimitedSizeList(mcMMO.getConfigManager().getConfigExploitPrevention().getAcrobaticLocationLimit());
+        if (pluginRef.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
+            fallLocationMap = new LimitedSizeList(pluginRef.getConfigManager().getConfigExploitPrevention().getAcrobaticLocationLimit());
     }
 
     public boolean hasFallenInLocationBefore(Location location) {
@@ -44,7 +43,7 @@ public class AcrobaticsManager extends SkillManager {
     }
 
     public boolean canGainRollXP() {
-        if (!mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
+        if (!pluginRef.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
             return true;
 
         if (System.currentTimeMillis() >= rollXPCooldown) {
@@ -87,11 +86,11 @@ public class AcrobaticsManager extends SkillManager {
             ParticleEffectUtils.playDodgeEffect(player);
 
             if (mcMMOPlayer.useChatNotifications()) {
-                mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Combat.Proc");
+                pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Combat.Proc");
             }
 
             //Check respawn to prevent abuse
-            if (!mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
+            if (!pluginRef.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
                 applyXpGain((float) (damage * Acrobatics.dodgeXpModifier), XPGainReason.PVP);
             else if (SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)
                     && mcMMOPlayer.getTeleportATS() < System.currentTimeMillis()) {

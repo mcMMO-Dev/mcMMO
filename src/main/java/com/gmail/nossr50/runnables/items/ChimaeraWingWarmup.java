@@ -1,8 +1,6 @@
 package com.gmail.nossr50.runnables.items;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
@@ -29,26 +27,26 @@ public class ChimaeraWingWarmup extends BukkitRunnable {
         Location previousLocation = mcMMOPlayer.getTeleportCommenceLocation();
 
         if (player.getLocation().distanceSquared(previousLocation) > 1.0 || !player.getInventory().containsAtLeast(ChimaeraWing.getChimaeraWing(0), 1)) {
-            player.sendMessage(LocaleLoader.getString("Teleport.Cancelled"));
+            player.sendMessage(pluginRef.getLocaleManager().getString("Teleport.Cancelled"));
             mcMMOPlayer.setTeleportCommenceLocation(null);
             return;
         }
 
         ItemStack inHand = player.getInventory().getItemInMainHand();
 
-        if (!ItemUtils.isChimaeraWing(inHand) || inHand.getAmount() < mcMMO.getConfigManager().getConfigItems().getChimaeraWingUseCost()) {
-            player.sendMessage(LocaleLoader.getString("Skills.NeedMore", LocaleLoader.getString("Item.ChimaeraWing.Name")));
+        if (!ItemUtils.isChimaeraWing(inHand) || inHand.getAmount() < pluginRef.getConfigManager().getConfigItems().getChimaeraWingUseCost()) {
+            player.sendMessage(pluginRef.getLocaleManager().getString("Skills.NeedMore", pluginRef.getLocaleManager().getString("Item.ChimaeraWing.Name")));
             return;
         }
 
         long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
-        int hurtCooldown = mcMMO.getConfigManager().getConfigItems().getRecentlyHurtCooldown();
+        int hurtCooldown = pluginRef.getConfigManager().getConfigItems().getRecentlyHurtCooldown();
 
         if (hurtCooldown > 0) {
             int timeRemaining = SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, hurtCooldown, player);
 
             if (timeRemaining > 0) {
-                player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", timeRemaining));
+                player.sendMessage(pluginRef.getLocaleManager().getString("Item.Injured.Wait", timeRemaining));
                 return;
             }
         }

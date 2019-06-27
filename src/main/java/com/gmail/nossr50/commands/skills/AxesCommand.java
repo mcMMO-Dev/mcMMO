@@ -2,7 +2,6 @@ package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.axes.Axes;
 import com.gmail.nossr50.util.Permissions;
@@ -30,8 +29,8 @@ public class AxesCommand extends SkillCommand {
     private boolean canImpact;
     private boolean canGreaterImpact;
 
-    public AxesCommand() {
-        super(PrimarySkillType.AXES);
+    public AxesCommand(mcMMO pluginRef) {
+        super(PrimarySkillType.AXES, pluginRef);
     }
 
     @Override
@@ -75,25 +74,25 @@ public class AxesCommand extends SkillCommand {
         List<String> messages = new ArrayList<>();
 
         if (canImpact) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Axes.Ability.Bonus.2"), LocaleLoader.getString("Axes.Ability.Bonus.3", impactDamage)));
+            messages.add(pluginRef.getLocaleManager().getString("Ability.Generic.Template", pluginRef.getLocaleManager().getString("Axes.Ability.Bonus.2"), pluginRef.getLocaleManager().getString("Axes.Ability.Bonus.3", impactDamage)));
         }
 
         if (canAxeMastery) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Axes.Ability.Bonus.0"), LocaleLoader.getString("Axes.Ability.Bonus.1", axeMasteryDamage)));
+            messages.add(pluginRef.getLocaleManager().getString("Ability.Generic.Template", pluginRef.getLocaleManager().getString("Axes.Ability.Bonus.0"), pluginRef.getLocaleManager().getString("Axes.Ability.Bonus.1", axeMasteryDamage)));
         }
 
         if (canCritical) {
             messages.add(getStatMessage(SubSkillType.AXES_CRITICAL_STRIKES, critChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", critChanceLucky) : ""));
+                    + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", critChanceLucky) : ""));
         }
 
         if (canGreaterImpact) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Axes.Ability.Bonus.4"), LocaleLoader.getString("Axes.Ability.Bonus.5", mcMMO.getConfigManager().getConfigAxes().getGreaterImpactBonusDamage())));
+            messages.add(pluginRef.getLocaleManager().getString("Ability.Generic.Template", pluginRef.getLocaleManager().getString("Axes.Ability.Bonus.4"), pluginRef.getLocaleManager().getString("Axes.Ability.Bonus.5", pluginRef.getConfigManager().getConfigAxes().getGreaterImpactBonusDamage())));
         }
 
         if (canSkullSplitter) {
             messages.add(getStatMessage(SubSkillType.AXES_SKULL_SPLITTER, skullSplitterLength)
-                    + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", skullSplitterLengthEndurance) : ""));
+                    + (hasEndurance ? pluginRef.getLocaleManager().getString("Perks.ActivationTime.Bonus", skullSplitterLengthEndurance) : ""));
         }
 
         if (canUseSubskill(player, SubSkillType.AXES_AXES_LIMIT_BREAK)) {

@@ -4,7 +4,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.google.common.collect.ImmutableList;
@@ -22,6 +22,12 @@ import java.util.List;
  */
 public class MmoInfoCommand implements TabExecutor {
 
+    private mcMMO pluginRef;
+
+    public MmoInfoCommand(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
+
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
         /*
@@ -37,10 +43,10 @@ public class MmoInfoCommand implements TabExecutor {
                     return false;
 
                 if (args[0].equalsIgnoreCase("???")) {
-                    player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.Header"));
-                    player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.SubSkillHeader", "???"));
-                    player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.DetailsHeader"));
-                    player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.Mystery"));
+                    player.sendMessage(pluginRef.getLocaleManager().getString("Commands.MmoInfo.Header"));
+                    player.sendMessage(pluginRef.getLocaleManager().getString("Commands.MmoInfo.SubSkillHeader", "???"));
+                    player.sendMessage(pluginRef.getLocaleManager().getString("Commands.MmoInfo.DetailsHeader"));
+                    player.sendMessage(pluginRef.getLocaleManager().getString("Commands.MmoInfo.Mystery"));
                     return true;
                 } else if (InteractionManager.getAbstractByName(args[0]) != null || PrimarySkillType.SUBSKILL_NAMES.contains(args[0])) {
                     displayInfo(player, args[0]);
@@ -48,7 +54,7 @@ public class MmoInfoCommand implements TabExecutor {
                 }
 
                 //Not a real skill
-                player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.NoMatch"));
+                player.sendMessage(pluginRef.getLocaleManager().getString("Commands.MmoInfo.NoMatch"));
                 return true;
             }
         }
@@ -77,10 +83,10 @@ public class MmoInfoCommand implements TabExecutor {
             /*
              * Skill is only in the old system
              */
-            player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.Header"));
-            player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.SubSkillHeader", subSkillName));
-            player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.DetailsHeader"));
-            player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.OldSkill"));
+            player.sendMessage(pluginRef.getLocaleManager().getString("Commands.MmoInfo.Header"));
+            player.sendMessage(pluginRef.getLocaleManager().getString("Commands.MmoInfo.SubSkillHeader", subSkillName));
+            player.sendMessage(pluginRef.getLocaleManager().getString("Commands.MmoInfo.DetailsHeader"));
+            player.sendMessage(pluginRef.getLocaleManager().getString("Commands.MmoInfo.OldSkill"));
         }
 
         for (SubSkillType subSkillType : SubSkillType.values()) {

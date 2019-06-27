@@ -1,7 +1,5 @@
 package com.gmail.nossr50.datatypes.items;
 
-import com.gmail.nossr50.mcMMO;
-
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -80,7 +78,7 @@ public class ItemMatch<T extends MMOItem<?>> implements DefinedMatch<MMOItem<T>>
      */
     private boolean isStrictMatch(MMOItem<T> otherItem) {
         for(ItemMatchProperty itemMatchProperty : itemMatchProperties) {
-            if(!mcMMO.getNbtManager().hasNBT(otherItem.getRawNBT().getNbtData(), itemMatchProperty.getNbtData())) {
+            if(!pluginRef.getNbtManager().hasNBT(otherItem.getRawNBT().getNbtData(), itemMatchProperty.getNbtData())) {
                 return false;
             }
         }

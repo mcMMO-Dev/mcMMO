@@ -2,9 +2,6 @@ package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
@@ -27,7 +24,7 @@ public class PartyInviteCommand implements CommandExecutor {
                 Player target = mcMMOTarget.getPlayer();
 
                 if (UserManager.getPlayer((Player) sender) == null) {
-                    sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
                     return true;
                 }
 
@@ -36,39 +33,39 @@ public class PartyInviteCommand implements CommandExecutor {
                 String playerName = player.getName();
 
                 if (player.equals(target)) {
-                    sender.sendMessage(LocaleLoader.getString("Party.Invite.Self"));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Party.Invite.Self"));
                     return true;
                 }
 
-                if (PartyManager.inSameParty(player, target)) {
-                    sender.sendMessage(LocaleLoader.getString("Party.Player.InSameParty", targetName));
+                if (pluginRef.getPartyManager().inSameParty(player, target)) {
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Party.Player.InSameParty", targetName));
                     return true;
                 }
 
-                if (!PartyManager.canInvite(mcMMOPlayer)) {
-                    player.sendMessage(LocaleLoader.getString("Party.Locked"));
+                if (!pluginRef.getPartyManager().canInvite(mcMMOPlayer)) {
+                    player.sendMessage(pluginRef.getLocaleManager().getString("Party.Locked"));
                     return true;
                 }
 
                 Party playerParty = mcMMOPlayer.getParty();
 
-                if (mcMMO.getConfigManager().getConfigParty().getPartyGeneral().isPartySizeCapped())
-                    if (PartyManager.isPartyFull(target, playerParty)) {
-                        player.sendMessage(LocaleLoader.getString("Commands.Party.PartyFull.Invite",
+                if (pluginRef.getConfigManager().getConfigParty().getPartyGeneral().isPartySizeCapped())
+                    if (pluginRef.getPartyManager().isPartyFull(target, playerParty)) {
+                        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.PartyFull.Invite",
                                 target.getName(), playerParty.toString(),
-                                mcMMO.getConfigManager().getConfigParty().getPartySizeLimit()));
+                                pluginRef.getConfigManager().getConfigParty().getPartySizeLimit()));
                         return true;
                     }
 
                 mcMMOTarget.setPartyInvite(playerParty);
 
-                sender.sendMessage(LocaleLoader.getString("Commands.Invite.Success"));
-                target.sendMessage(LocaleLoader.getString("Commands.Party.Invite.0", playerParty.getName(), playerName));
-                target.sendMessage(LocaleLoader.getString("Commands.Party.Invite.1"));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Invite.Success"));
+                target.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.Invite.0", playerParty.getName(), playerName));
+                target.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.Invite.1"));
                 return true;
 
             default:
-                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "invite", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Usage.2", "party", "invite", "<" + pluginRef.getLocaleManager().getString("Commands.Usage.Player") + ">"));
                 return true;
         }
     }

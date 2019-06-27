@@ -7,8 +7,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
@@ -40,7 +38,7 @@ public class NotificationManager {
 
     private void initMaps() {
         //Copy the map
-        playerNotificationHashMap = new HashMap<>(mcMMO.getConfigManager().getConfigNotifications().getNotificationSettingHashMap());
+        playerNotificationHashMap = new HashMap<>(pluginRef.getConfigManager().getConfigNotifications().getNotificationSettingHashMap());
     }
 
 
@@ -99,7 +97,7 @@ public class NotificationManager {
      * This event in particular is provided with a source player, and players near the source player are sent the information
      * @param targetPlayer the recipient player for this message
      * @param notificationType type of notification
-     * @param key              Locale Key for the string to use with this event
+     * @param key              LocaleManager Key for the string to use with this event
      * @param values           values to be injected into the locale string
      */
     public void sendNearbyPlayersInformation(Player targetPlayer, NotificationType notificationType, String key, String... values)
@@ -112,7 +110,7 @@ public class NotificationManager {
         if(UserManager.getPlayer(player) == null || !UserManager.getPlayer(player).useChatNotifications())
             return;
 
-        String preColoredString = LocaleLoader.getString(key, (Object[]) values);
+        String preColoredString = pluginRef.getLocaleManager().getString(key, (Object[]) values);
         player.sendMessage(preColoredString);
     }
 
@@ -198,7 +196,7 @@ public class NotificationManager {
         /*
          * Determine the 'identity' of the one who executed the command to pass as a parameters
          */
-        String senderName = LocaleLoader.getString("Server.ConsoleName");
+        String senderName = pluginRef.getLocaleManager().getString("Server.ConsoleName");
 
         if (commandSender instanceof Player) {
             senderName = ((Player) commandSender).getDisplayName() + ChatColor.RESET + "-" + ((Player) commandSender).getUniqueId();
@@ -207,12 +205,12 @@ public class NotificationManager {
         //Send the notification
         switch (sensitiveCommandType) {
             case XPRATE_MODIFY:
-                sendAdminNotification(LocaleLoader.getString("Notifications.Admin.XPRate.Start.Others", addItemToFirstPositionOfArray(senderName, args)));
-                sendAdminCommandConfirmation(commandSender, LocaleLoader.getString("Notifications.Admin.XPRate.Start.Self", args));
+                sendAdminNotification(pluginRef.getLocaleManager().getString("Notifications.Admin.XPRate.Start.Others", addItemToFirstPositionOfArray(senderName, args)));
+                sendAdminCommandConfirmation(commandSender, pluginRef.getLocaleManager().getString("Notifications.Admin.XPRate.Start.Self", args));
                 break;
             case XPRATE_END:
-                sendAdminNotification(LocaleLoader.getString("Notifications.Admin.XPRate.End.Others", addItemToFirstPositionOfArray(senderName, args)));
-                sendAdminCommandConfirmation(commandSender, LocaleLoader.getString("Notifications.Admin.XPRate.End.Self", args));
+                sendAdminNotification(pluginRef.getLocaleManager().getString("Notifications.Admin.XPRate.End.Others", addItemToFirstPositionOfArray(senderName, args)));
+                sendAdminCommandConfirmation(commandSender, pluginRef.getLocaleManager().getString("Notifications.Admin.XPRate.End.Self", args));
                 break;
         }
     }
@@ -225,17 +223,17 @@ public class NotificationManager {
      */
     private void sendAdminNotification(String msg) {
         //If its not enabled exit
-        if (!mcMMO.getConfigManager().getConfigAdmin().isSendAdminNotifications())
+        if (!pluginRef.getConfigManager().getConfigAdmin().isSendAdminNotifications())
             return;
 
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             if (player.isOp() || Permissions.adminChat(player)) {
-                player.sendMessage(LocaleLoader.getString("Notifications.Admin.Format.Others", msg));
+                player.sendMessage(pluginRef.getLocaleManager().getString("Notifications.Admin.Format.Others", msg));
             }
         }
 
         //Copy it out to Console too
-        mcMMO.p.getLogger().info(LocaleLoader.getString("Notifications.Admin.Format.Others", msg));
+        pluginRef.getLogger().info(pluginRef.getLocaleManager().getString("Notifications.Admin.Format.Others", msg));
     }
 
     /**
@@ -245,7 +243,7 @@ public class NotificationManager {
      * @param msg           message fetched from locale
      */
     private void sendAdminCommandConfirmation(CommandSender commandSender, String msg) {
-        commandSender.sendMessage(LocaleLoader.getString("Notifications.Admin.Format.Self", msg));
+        commandSender.sendMessage(pluginRef.getLocaleManager().getString("Notifications.Admin.Format.Self", msg));
     }
 
     /**

@@ -2,9 +2,6 @@ package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.OfflinePlayer;
@@ -19,7 +16,7 @@ public class PartyKickCommand implements CommandExecutor {
         switch (args.length) {
             case 2:
                 if (UserManager.getPlayer((Player) sender) == null) {
-                    sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
                     return true;
                 }
 
@@ -27,29 +24,29 @@ public class PartyKickCommand implements CommandExecutor {
                 String targetName = CommandUtils.getMatchedPlayerName(args[1]);
 
                 if (!playerParty.hasMember(targetName)) {
-                    sender.sendMessage(LocaleLoader.getString("Party.NotInYourParty", targetName));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Party.NotInYourParty", targetName));
                     return true;
                 }
 
-                OfflinePlayer target = mcMMO.p.getServer().getOfflinePlayer(targetName);
+                OfflinePlayer target = pluginRef.getServer().getOfflinePlayer(targetName);
 
                 if (target.isOnline()) {
                     Player onlineTarget = target.getPlayer();
                     String partyName = playerParty.getName();
 
-                    if (!PartyManager.handlePartyChangeEvent(onlineTarget, partyName, null, EventReason.KICKED_FROM_PARTY)) {
+                    if (!pluginRef.getPartyManager().handlePartyChangeEvent(onlineTarget, partyName, null, EventReason.KICKED_FROM_PARTY)) {
                         return true;
                     }
 
-                    PartyManager.processPartyLeaving(UserManager.getPlayer(onlineTarget));
-                    onlineTarget.sendMessage(LocaleLoader.getString("Commands.Party.Kick", partyName));
+                    pluginRef.getPartyManager().processPartyLeaving(UserManager.getPlayer(onlineTarget));
+                    onlineTarget.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.Kick", partyName));
                 }
 
-                PartyManager.removeFromParty(target, playerParty);
+                pluginRef.getPartyManager().removeFromParty(target, playerParty);
                 return true;
 
             default:
-                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "kick", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Usage.2", "party", "kick", "<" + pluginRef.getLocaleManager().getString("Commands.Usage.Player") + ">"));
                 return true;
         }
     }

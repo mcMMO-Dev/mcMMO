@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.axes;
 
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.entity.LivingEntity;
@@ -27,6 +26,6 @@ public class Axes {
      * @return The axe mastery bonus damage which will be added to their attack
      */
     public static double getAxeMasteryBonusDamage(Player player) {
-        return RankUtils.getRank(player, SubSkillType.AXES_AXE_MASTERY) * mcMMO.getConfigManager().getConfigAxes().getAxeMasteryMultiplier();
+        return RankUtils.getRank(player, SubSkillType.AXES_AXE_MASTERY) * pluginRef.getConfigManager().getConfigAxes().getAxeMasteryMultiplier();
     }
 }

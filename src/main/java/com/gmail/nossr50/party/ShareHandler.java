@@ -7,7 +7,6 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.Material;
@@ -36,7 +35,7 @@ public final class ShareHandler {
             return false;
         }
 
-        List<Player> nearMembers = PartyManager.getNearVisibleMembers(mcMMOPlayer);
+        List<Player> nearMembers = pluginRef.getPartyManager().getNearVisibleMembers(mcMMOPlayer);
 
         if (nearMembers.isEmpty()) {
             return false;
@@ -45,9 +44,9 @@ public final class ShareHandler {
         nearMembers.add(mcMMOPlayer.getPlayer());
 
         int partySize = nearMembers.size();
-        double shareBonus = Math.min(mcMMO.getPartyXPShareSettings().getPartyShareXPBonusBase()
-                        + (partySize * mcMMO.getPartyXPShareSettings().getPartyShareBonusIncrease()),
-                mcMMO.getPartyXPShareSettings().getPartyShareBonusCap());
+        double shareBonus = Math.min(pluginRef.getPartyXPShareSettings().getPartyShareXPBonusBase()
+                        + (partySize * pluginRef.getPartyXPShareSettings().getPartyShareBonusIncrease()),
+                pluginRef.getPartyXPShareSettings().getPartyShareBonusCap());
         double splitXp = (double) (xp / partySize * shareBonus);
 
         for (Player member : nearMembers) {
@@ -89,7 +88,7 @@ public final class ShareHandler {
             return false;
         }
 
-        List<Player> nearMembers = PartyManager.getNearMembers(mcMMOPlayer);
+        List<Player> nearMembers = pluginRef.getPartyManager().getNearMembers(mcMMOPlayer);
 
         if (nearMembers.isEmpty()) {
             return false;
@@ -158,10 +157,10 @@ public final class ShareHandler {
     }
 
     public static int getItemWeight(Material material) {
-        if (mcMMO.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(material) == null)
+        if (pluginRef.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(material) == null)
             return 5;
         else
-            return mcMMO.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(material);
+            return pluginRef.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(material);
     }
 
     public static XPGainReason getSharedXpGainReason(XPGainReason xpGainReason) {

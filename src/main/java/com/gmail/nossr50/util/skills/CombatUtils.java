@@ -11,7 +11,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.skills.AwardCombatXpTask;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
@@ -493,7 +492,7 @@ public final class CombatUtils {
             switch (type) {
                 case SWORDS:
                     if (entity instanceof Player) {
-                        mcMMO.getNotificationManager().sendPlayerInformation((Player) entity, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.SS.Struck");
+                        pluginRef.getNotificationManager().sendPlayerInformation((Player) entity, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.SS.Struck");
                     }
 
                     UserManager.getPlayer(attacker).getSwordsManager().ruptureCheck(target);
@@ -501,7 +500,7 @@ public final class CombatUtils {
 
                 case AXES:
                     if (entity instanceof Player) {
-                        mcMMO.getNotificationManager().sendPlayerInformation((Player) entity, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.SS.Struck");
+                        pluginRef.getNotificationManager().sendPlayerInformation((Player) entity, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.SS.Struck");
                     }
 
                     break;
@@ -531,7 +530,7 @@ public final class CombatUtils {
         XPGainReason xpGainReason;
 
         if (target instanceof Player) {
-            if (!mcMMO.getConfigManager().getConfigExperience().isPvpXPEnabled() || PartyManager.inSameParty(mcMMOPlayer.getPlayer(), (Player) target)) {
+            if (!pluginRef.getConfigManager().getConfigExperience().isPvpXPEnabled() || pluginRef.getPartyManager().inSameParty(mcMMOPlayer.getPlayer(), (Player) target)) {
                 return;
             }
 
@@ -539,7 +538,7 @@ public final class CombatUtils {
             Player defender = (Player) target;
 
             if (defender.isOnline() && SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
-                baseXPMultiplier = 20 * mcMMO.getDynamicSettingsManager().getExperienceManager().getSpecialCombatXP(SpecialXPKey.PVP);
+                baseXPMultiplier = 20 * pluginRef.getDynamicSettingsManager().getExperienceManager().getSpecialCombatXP(SpecialXPKey.PVP);
             }
         } else {
             /*if (mcMMO.getModManager().isCustomEntity(target)) {
@@ -547,21 +546,21 @@ public final class CombatUtils {
             }*/
             //else if (target instanceof Animals) {
             if (target instanceof Animals) {
-                baseXPMultiplier = mcMMO.getDynamicSettingsManager().getExperienceManager().getSpecialCombatXP(SpecialXPKey.ANIMALS);
+                baseXPMultiplier = pluginRef.getDynamicSettingsManager().getExperienceManager().getSpecialCombatXP(SpecialXPKey.ANIMALS);
             } else if (target instanceof Monster) {
                 EntityType type = target.getType();
-                baseXPMultiplier = mcMMO.getDynamicSettingsManager().getExperienceManager().getCombatXPMultiplier(type);
+                baseXPMultiplier = pluginRef.getDynamicSettingsManager().getExperienceManager().getCombatXPMultiplier(type);
             } else {
                 EntityType type = target.getType();
 
-                if (mcMMO.getDynamicSettingsManager().getExperienceManager().hasCombatXP(type)) {
+                if (pluginRef.getDynamicSettingsManager().getExperienceManager().hasCombatXP(type)) {
                     //Exploit stuff
                     if (type == EntityType.IRON_GOLEM) {
                         if (!((IronGolem) target).isPlayerCreated()) {
-                            baseXPMultiplier = mcMMO.getDynamicSettingsManager().getExperienceManager().getCombatXPMultiplier(type);
+                            baseXPMultiplier = pluginRef.getDynamicSettingsManager().getExperienceManager().getCombatXPMultiplier(type);
                         }
                     } else {
-                        baseXPMultiplier = mcMMO.getDynamicSettingsManager().getExperienceManager().getCombatXPMultiplier(type);
+                        baseXPMultiplier = pluginRef.getDynamicSettingsManager().getExperienceManager().getCombatXPMultiplier(type);
                     }
                 } else {
                     baseXPMultiplier = 1.0f;
@@ -569,11 +568,11 @@ public final class CombatUtils {
             }
 
             if (target.hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY) || target.hasMetadata("ES")) {
-                baseXPMultiplier *= mcMMO.getDynamicSettingsManager().getExperienceManager().getSpecialCombatXP(SpecialXPKey.SPAWNED);
+                baseXPMultiplier *= pluginRef.getDynamicSettingsManager().getExperienceManager().getSpecialCombatXP(SpecialXPKey.SPAWNED);
             }
 
             if (target.hasMetadata(MetadataConstants.PETS_ANIMAL_TRACKING_METAKEY)) {
-                baseXPMultiplier *= mcMMO.getDynamicSettingsManager().getExperienceManager().getSpecialCombatXP(SpecialXPKey.PETS);
+                baseXPMultiplier *= pluginRef.getDynamicSettingsManager().getExperienceManager().getSpecialCombatXP(SpecialXPKey.PETS);
             }
 
             xpGainReason = XPGainReason.PVE;
@@ -584,7 +583,7 @@ public final class CombatUtils {
         baseXPMultiplier *= multiplier;
 
         if (baseXPMultiplier != 0) {
-            new AwardCombatXpTask(mcMMOPlayer, primarySkillType, baseXPMultiplier, target, xpGainReason).runTaskLater(mcMMO.p, 0);
+            new AwardCombatXpTask(mcMMOPlayer, primarySkillType, baseXPMultiplier, target, xpGainReason).runTaskLater(pluginRef, 0);
         }
     }
 
@@ -607,7 +606,7 @@ public final class CombatUtils {
                 return false;
             }
 
-            if ((PartyManager.inSameParty(player, defender) || PartyManager.areAllies(player, defender)) && !(Permissions.friendlyFire(player) && Permissions.friendlyFire(defender))) {
+            if ((pluginRef.getPartyManager().inSameParty(player, defender) || pluginRef.getPartyManager().areAllies(player, defender)) && !(Permissions.friendlyFire(player) && Permissions.friendlyFire(defender))) {
                 return false;
             }
 
@@ -668,7 +667,7 @@ public final class CombatUtils {
             if (tamer instanceof Player) {
                 Player owner = (Player) tamer;
 
-                return (owner == attacker || PartyManager.inSameParty(attacker, owner) || PartyManager.areAllies(attacker, owner));
+                return (owner == attacker || pluginRef.getPartyManager().inSameParty(attacker, owner) || pluginRef.getPartyManager().areAllies(attacker, owner));
             }
         }
 
@@ -703,7 +702,7 @@ public final class CombatUtils {
 
     public static EntityDamageEvent sendEntityDamageEvent(Entity attacker, Entity target, DamageCause damageCause, double damage) {
         EntityDamageEvent damageEvent = attacker == null ? new FakeEntityDamageEvent(target, damageCause, damage) : new FakeEntityDamageByEntityEvent(attacker, target, damageCause, damage);
-        mcMMO.p.getServer().getPluginManager().callEvent(damageEvent);
+        pluginRef.getServer().getPluginManager().callEvent(damageEvent);
         return damageEvent;
     }
 
@@ -717,7 +716,7 @@ public final class CombatUtils {
 
     public static double getFakeDamageFinalResult(Entity attacker, Entity target, DamageCause cause, Map<DamageModifier, Double> modifiers) {
         EntityDamageEvent damageEvent = attacker == null ? new FakeEntityDamageEvent(target, cause, modifiers) : new FakeEntityDamageByEntityEvent(attacker, target, cause, modifiers);
-        mcMMO.p.getServer().getPluginManager().callEvent(damageEvent);
+        pluginRef.getServer().getPluginManager().callEvent(damageEvent);
 
         if (damageEvent.isCancelled()) {
             return 0;

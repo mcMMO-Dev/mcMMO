@@ -5,12 +5,11 @@ import com.gmail.nossr50.datatypes.skills.subskills.interfaces.Interaction;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.Rank;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.SubSkill;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.SubSkillProperties;
-import com.gmail.nossr50.locale.LocaleLoader;
 import org.bukkit.entity.Player;
 
 public abstract class AbstractSubSkill implements SubSkill, Interaction, Rank, SubSkillProperties {
     /*
-     * The name of the subskill is important is used to pull Locale strings and config settings
+     * The name of the subskill is important is used to pull LocaleManager strings and config settings
      */
     protected String configKeySubSkill;
     protected String configKeyPrimary;
@@ -29,7 +28,7 @@ public abstract class AbstractSubSkill implements SubSkill, Interaction, Rank, S
      */
     @Override
     public String getDescription() {
-        return LocaleLoader.getString(getPrimaryKeyName() + ".SubSkill." + getConfigKeyName() + ".Description");
+        return pluginRef.getLocaleManager().getString(getPrimaryKeyName() + ".SubSkill." + getConfigKeyName() + ".Description");
     }
 
     /**
@@ -42,9 +41,9 @@ public abstract class AbstractSubSkill implements SubSkill, Interaction, Rank, S
         /* DEFAULT SETTINGS PRINT THE BARE MINIMUM */
 
         //TextComponentFactory.sendPlayerUrlHeader(player);
-        player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.Header"));
-        player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.SubSkillHeader", getConfigKeyName()));
-        player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.DetailsHeader"));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.MmoInfo.Header"));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.MmoInfo.SubSkillHeader", getConfigKeyName()));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.MmoInfo.DetailsHeader"));
     }
 
     public SubSkillType getSubSkillType() {

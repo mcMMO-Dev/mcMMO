@@ -26,7 +26,7 @@
 ////    protected String[] calculateAbilityDisplayValues(Player player) {
 ////        //TODO: Needed?
 ////        if (UserManager.getPlayer(player) == null) {
-////            player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+////            player.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
 ////            return new String[]{"DATA NOT LOADED", "DATA NOT LOADED"};
 ////        }
 ////
@@ -71,15 +71,15 @@
 //
 ////        if (canCatalysis) {
 ////            messages.add(getStatMessage(SubSkillType.ALCHEMY_CATALYSIS, brewSpeed)
-////                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", brewSpeedLucky) : ""));
+////                    + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", brewSpeedLucky) : ""));
 ////        }
 ////
 ////        if (canConcoctions) {
 ////            messages.add(getStatMessage(false, true, SubSkillType.ALCHEMY_CONCOCTIONS, String.valueOf(tier), String.valueOf(RankUtils.getHighestRank(SubSkillType.ALCHEMY_CONCOCTIONS))));
 ////            messages.add(getStatMessage(true, true, SubSkillType.ALCHEMY_CONCOCTIONS, String.valueOf(ingredientCount), ingredientList));
 ////
-////            //messages.add(LocaleLoader.getString("Alchemy.Concoctions.Rank", tier, RankUtils.getHighestRank(SubSkillType.ALCHEMY_CONCOCTIONS)));
-////            //messages.add(LocaleLoader.getString("Alchemy.Concoctions.Ingredients", ingredientCount, ingredientList));
+////            //messages.add(pluginRef.getLocaleManager().getString("Alchemy.Concoctions.Rank", tier, RankUtils.getHighestRank(SubSkillType.ALCHEMY_CONCOCTIONS)));
+////            //messages.add(pluginRef.getLocaleManager().getString("Alchemy.Concoctions.Ingredients", ingredientCount, ingredientList));
 ////        }
 //
 //        return messages;

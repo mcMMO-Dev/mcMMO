@@ -1,6 +1,5 @@
 package com.gmail.nossr50.config;
 
-import com.gmail.nossr50.mcMMO;
 import com.google.common.io.Files;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
@@ -112,7 +111,7 @@ public abstract class Config implements VersionedConfig {
      * Used for backing up configs with our zip library
      */
     private void registerFileBackup() {
-        mcMMO.getConfigManager().registerUserFile(getUserConfigFile());
+        pluginRef.getConfigManager().registerUserFile(getUserConfigFile());
     }
 
     /**
@@ -172,7 +171,7 @@ public abstract class Config implements VersionedConfig {
      * @return the File for the newly created config
      */
     private File generateDefaultFile() {
-        mcMMO.p.getLogger().info("Attempting to create a default config for " + fileName);
+        pluginRef.getLogger().info("Attempting to create a default config for " + fileName);
 
         //Not sure if this will work properly...
         Path potentialFile = Paths.get(getDefaultConfigCopyRelativePath());
@@ -180,7 +179,7 @@ public abstract class Config implements VersionedConfig {
                 = HoconConfigurationLoader.builder().setPath(potentialFile).build();
 
         try {
-            mcMMO.p.getLogger().info("Config File Full Path: " + getDefaultConfigFile().getAbsolutePath());
+            pluginRef.getLogger().info("Config File Full Path: " + getDefaultConfigFile().getAbsolutePath());
             //Delete any existing default config
             if (getDefaultConfigFile().exists())
                 getDefaultConfigFile().delete();
@@ -194,9 +193,9 @@ public abstract class Config implements VersionedConfig {
             //Save to a new file
             generation_loader.save(defaultRootNode);
 
-            mcMMO.p.getLogger().info("Generated a default file for " + fileName);
+            pluginRef.getLogger().info("Generated a default file for " + fileName);
         } catch (IOException e) {
-            mcMMO.p.getLogger().severe("Error when trying to generate a default configuration file for " + getDefaultConfigCopyRelativePath());
+            pluginRef.getLogger().severe("Error when trying to generate a default configuration file for " + getDefaultConfigCopyRelativePath());
             e.printStackTrace();
         }
 
@@ -251,9 +250,9 @@ public abstract class Config implements VersionedConfig {
         /*
          * Gen a Default config from inside the JAR
          */
-        mcMMO.p.getLogger().info("Preparing to copy internal resource file (in JAR) - " + FILE_RELATIVE_PATH);
+        pluginRef.getLogger().info("Preparing to copy internal resource file (in JAR) - " + FILE_RELATIVE_PATH);
         //InputStream inputStream = McmmoCore.getResource(FILE_RELATIVE_PATH);
-        InputStream inputStream = mcMMO.p.getResource(FILE_RELATIVE_PATH);
+        InputStream inputStream = pluginRef.getResource(FILE_RELATIVE_PATH);
 
         byte[] buffer = new byte[inputStream.available()];
         inputStream.read(buffer);
@@ -263,7 +262,7 @@ public abstract class Config implements VersionedConfig {
 
         //Wipe old default file on disk
         if (targetFile.exists() && deleteOld) {
-            mcMMO.p.getLogger().info("Updating file " + relativeOutputPath);
+            pluginRef.getLogger().info("Updating file " + relativeOutputPath);
             targetFile.delete(); //Necessary?
         }
 
@@ -273,7 +272,7 @@ public abstract class Config implements VersionedConfig {
         }
 
         Files.write(buffer, targetFile);
-        mcMMO.p.getLogger().info("Created config file - " + relativeOutputPath);
+        pluginRef.getLogger().info("Created config file - " + relativeOutputPath);
 
         inputStream.close(); //Close the input stream
 
@@ -322,10 +321,10 @@ public abstract class Config implements VersionedConfig {
      * MainConfig will have any missing nodes inserted with their default value
      */
     public void readConfig() {
-        mcMMO.p.getLogger().info("Attempting to read " + FILE_RELATIVE_PATH + ".");
+        pluginRef.getLogger().info("Attempting to read " + FILE_RELATIVE_PATH + ".");
 
         int version = this.userRootNode.getNode("ConfigVersion").getInt();
-        mcMMO.p.getLogger().info(FILE_RELATIVE_PATH + " version is " + version);
+        pluginRef.getLogger().info(FILE_RELATIVE_PATH + " version is " + version);
 
         //Update our config
         updateConfig();
@@ -335,8 +334,8 @@ public abstract class Config implements VersionedConfig {
      * Compares the users config file to the default and adds any missing nodes and applies any necessary updates
      */
     private void updateConfig() {
-        mcMMO.p.getLogger().info(defaultRootNode.getChildrenMap().size() + " items in default children map");
-        mcMMO.p.getLogger().info(userRootNode.getChildrenMap().size() + " items in default root map");
+        pluginRef.getLogger().info(defaultRootNode.getChildrenMap().size() + " items in default children map");
+        pluginRef.getLogger().info(userRootNode.getChildrenMap().size() + " items in default root map");
 
         // Merge Values from default
         if (mergeNewKeys)
@@ -374,7 +373,7 @@ public abstract class Config implements VersionedConfig {
      * @throws IOException
      */
     private void saveUserCopy() throws IOException {
-        mcMMO.p.getLogger().info("Saving new node");
+        pluginRef.getLogger().info("Saving new node");
         userCopyLoader.save(userRootNode);
     }
 
@@ -384,7 +383,7 @@ public abstract class Config implements VersionedConfig {
     private void updateConfigVersion() {
         // Set a version for our config
         this.userRootNode.getNode("ConfigVersion").setValue(getConfigVersion());
-        mcMMO.p.getLogger().info("Updated config to [" + getConfigVersion() + "] - " + FILE_RELATIVE_PATH);
+        pluginRef.getLogger().info("Updated config to [" + getConfigVersion() + "] - " + FILE_RELATIVE_PATH);
     }
 
     /**

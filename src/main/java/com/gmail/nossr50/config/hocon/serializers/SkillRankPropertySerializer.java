@@ -1,7 +1,6 @@
 package com.gmail.nossr50.config.hocon.serializers;
 
 import com.gmail.nossr50.config.hocon.skills.ranks.SkillRankProperty;
-import com.gmail.nossr50.mcMMO;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
@@ -31,7 +30,7 @@ public class SkillRankPropertySerializer implements TypeSerializer<SkillRankProp
             retroHashMap = new HashMap<>(retroMap);
 
         } catch (ObjectMappingException e) {
-            mcMMO.p.getLogger().severe("Unable to deserialize rank property information from the config, make sure the ranks are correctly set in the config. You can delete the rank config to generate a new one if problems persist.");
+            pluginRef.getLogger().severe("Unable to deserialize rank property information from the config, make sure the ranks are correctly set in the config. You can delete the rank config to generate a new one if problems persist.");
             throw e;
         }
 

@@ -3,8 +3,6 @@ package com.gmail.nossr50.runnables.commands;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -34,7 +32,7 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (useBoard && mcMMO.getScoreboardSettings().getScoreboardsEnabled()) {
+        if (useBoard && pluginRef.getScoreboardSettings().getScoreboardsEnabled()) {
             displayBoard();
         }
 
@@ -43,25 +41,25 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
         }
 
         if (sender instanceof Player) {
-            ((Player) sender).removeMetadata(MetadataConstants.DATABASE_PROCESSING_COMMAND_METAKEY, mcMMO.p);
+            ((Player) sender).removeMetadata(MetadataConstants.DATABASE_PROCESSING_COMMAND_METAKEY, pluginRef);
         }
         if (sender instanceof Player)
-            sender.sendMessage(LocaleLoader.getString("Commands.mctop.Tip"));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mctop.Tip"));
     }
 
     private void displayChat() {
 
         if (skill == null) {
             if (sender instanceof Player) {
-                sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.PowerLevel.Leaderboard"));
             } else {
-                sender.sendMessage(ChatColor.stripColor(LocaleLoader.getString("Commands.PowerLevel.Leaderboard")));
+                sender.sendMessage(ChatColor.stripColor(pluginRef.getLocaleManager().getString("Commands.PowerLevel.Leaderboard")));
             }
         } else {
             if (sender instanceof Player) {
-                sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", skill.getName()));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Skill.Leaderboard", skill.getName()));
             } else {
-                sender.sendMessage(ChatColor.stripColor(LocaleLoader.getString("Commands.Skill.Leaderboard", skill.getName())));
+                sender.sendMessage(ChatColor.stripColor(pluginRef.getLocaleManager().getString("Commands.Skill.Leaderboard", skill.getName())));
             }
         }
 

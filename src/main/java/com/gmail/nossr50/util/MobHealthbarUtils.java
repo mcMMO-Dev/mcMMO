@@ -37,7 +37,7 @@ public final class MobHealthbarUtils {
      * @param damage damage done by the attack triggering this
      */
     public static void handleMobHealthbars(LivingEntity target, double damage, mcMMO plugin) {
-        if (mcMMO.isHealthBarPluginEnabled() || !mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().isEnableHealthBars()) {
+        if (pluginRef.isHealthBarPluginEnabled() || !pluginRef.getConfigManager().getConfigMobs().getCombat().getHealthBars().isEnableHealthBars()) {
             return;
         }
 
@@ -59,25 +59,25 @@ public final class MobHealthbarUtils {
         }
 
         boolean oldNameVisible = target.isCustomNameVisible();
-        String newName = createHealthDisplay(mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType(), target, damage);
+        String newName = createHealthDisplay(pluginRef.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType(), target, damage);
 
         target.setCustomName(newName);
         target.setCustomNameVisible(true);
 
-        int displayTime = Math.max(mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayTimeSeconds(), 1);
+        int displayTime = Math.max(pluginRef.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayTimeSeconds(), 1);
 
         if (displayTime != -1) {
             boolean updateName = !ChatColor.stripColor(oldName).equalsIgnoreCase(ChatColor.stripColor(newName));
 
             if (updateName) {
-                target.setMetadata(MetadataConstants.CUSTOM_NAME_METAKEY, new FixedMetadataValue(mcMMO.p, oldName));
-                target.setMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY, new FixedMetadataValue(mcMMO.p, oldNameVisible));
+                target.setMetadata(MetadataConstants.CUSTOM_NAME_METAKEY, new FixedMetadataValue(pluginRef, oldName));
+                target.setMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY, new FixedMetadataValue(pluginRef, oldNameVisible));
             } else if (!target.hasMetadata(MetadataConstants.CUSTOM_NAME_METAKEY)) {
-                target.setMetadata(MetadataConstants.CUSTOM_NAME_METAKEY, new FixedMetadataValue(mcMMO.p, ""));
-                target.setMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY, new FixedMetadataValue(mcMMO.p, false));
+                target.setMetadata(MetadataConstants.CUSTOM_NAME_METAKEY, new FixedMetadataValue(pluginRef, ""));
+                target.setMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY, new FixedMetadataValue(pluginRef, false));
             }
 
-            new MobHealthDisplayUpdaterTask(target).runTaskLater(mcMMO.p, displayTime * Misc.TICK_CONVERSION_FACTOR); // Clear health display after 3 seconds
+            new MobHealthDisplayUpdaterTask(target).runTaskLater(pluginRef, displayTime * Misc.TICK_CONVERSION_FACTOR); // Clear health display after 3 seconds
         }
     }
 

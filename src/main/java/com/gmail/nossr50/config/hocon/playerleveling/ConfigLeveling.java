@@ -2,7 +2,6 @@ package com.gmail.nossr50.config.hocon.playerleveling;
 
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.mcMMO;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 import org.bukkit.boss.BarColor;
@@ -247,7 +246,7 @@ public class ConfigLeveling {
             case SALVAGE:
                 return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getSalvage().getLevelCap();
             default:
-                mcMMO.p.getLogger().severe("No defined level cap for " + primarySkillType.toString() + " - Contact the mcMMO dev team!");
+                pluginRef.getLogger().severe("No defined level cap for " + primarySkillType.toString() + " - Contact the mcMMO dev team!");
                 return Integer.MAX_VALUE;
         }
     }
@@ -285,7 +284,7 @@ public class ConfigLeveling {
             case SALVAGE:
                 return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getSalvage().isLevelCapEnabled();
             default:
-                mcMMO.p.getLogger().severe("No defined level cap for " + primarySkillType.toString() + " - Contact the mcMMO dev team!");
+                pluginRef.getLogger().severe("No defined level cap for " + primarySkillType.toString() + " - Contact the mcMMO dev team!");
                 return false;
         }
     }

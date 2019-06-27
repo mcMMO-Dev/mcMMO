@@ -24,6 +24,8 @@ import java.util.HashMap;
  */
 public class DynamicSettingsManager {
 
+    private mcMMO pluginRef;
+
     /* UNLOAD REGISTER */
     private SkillPropertiesManager skillPropertiesManager;
 
@@ -39,7 +41,8 @@ public class DynamicSettingsManager {
     private HashMap<Material, Integer> partyItemWeights;
     private HashMap<PartyFeature, Integer> partyFeatureUnlocks;
 
-    public DynamicSettingsManager() {
+    public DynamicSettingsManager(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
         /*
          * Managers
          */
@@ -54,12 +57,12 @@ public class DynamicSettingsManager {
     }
 
     private void initPartySettings() {
-        partyItemWeights = Maps.newHashMap(mcMMO.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap()); //Item Share Weights
-        partyFeatureUnlocks = Maps.newHashMap(mcMMO.getConfigManager().getConfigParty().getPartyXP().getPartyLevel().getPartyFeatureUnlockMap()); //Party Progression
+        partyItemWeights = Maps.newHashMap(pluginRef.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap()); //Item Share Weights
+        partyFeatureUnlocks = Maps.newHashMap(pluginRef.getConfigManager().getConfigParty().getPartyXP().getPartyLevel().getPartyFeatureUnlockMap()); //Party Progression
     }
 
     private void initSkillPropertiesManager() {
-        skillPropertiesManager = new SkillPropertiesManager();
+        skillPropertiesManager = new SkillPropertiesManager(pluginRef);
         skillPropertiesManager.fillRegisters();
     }
 
@@ -67,11 +70,11 @@ public class DynamicSettingsManager {
      * Misc managers
      */
     private void initMiscManagers() {
-        experienceManager = new ExperienceManager();
+        experienceManager = new ExperienceManager(pluginRef);
         //Set the global XP val
-        experienceManager.setGlobalXpMult(mcMMO.getConfigManager().getConfigExperience().getGlobalXPMultiplier());
+        experienceManager.setGlobalXpMult(pluginRef.getConfigManager().getConfigExperience().getGlobalXPMultiplier());
         experienceManager.buildBlockXPMaps(); //Block XP value maps
-        experienceManager.fillCombatXPMultiplierMap(mcMMO.getConfigManager().getConfigExperience().getCombatExperienceMap());
+        experienceManager.fillCombatXPMultiplierMap(pluginRef.getConfigManager().getConfigExperience().getCombatExperienceMap());
 //        potionManager = new PotionManager();
     }
 
@@ -86,7 +89,7 @@ public class DynamicSettingsManager {
         salvageableManager = new SalvageableManager(getSalvageables());
 
         // Handles registration of bonus drops
-        bonusDropManager = new BonusDropManager();
+        bonusDropManager = new BonusDropManager(pluginRef);
 
         //Register Bonus Drops
         registerBonusDrops();
@@ -98,7 +101,7 @@ public class DynamicSettingsManager {
      * @return the currently loaded repairables
      */
     public ArrayList<Repairable> getRepairables() {
-        return mcMMO.getConfigManager().getConfigRepair().getConfigRepairablesList();
+        return pluginRef.getConfigManager().getConfigRepair().getConfigRepairablesList();
     }
 
     /**
@@ -107,15 +110,15 @@ public class DynamicSettingsManager {
      * @return the currently loaded salvageables
      */
     public ArrayList<Salvageable> getSalvageables() {
-        return mcMMO.getConfigManager().getConfigSalvage().getConfigSalvageablesList();
+        return pluginRef.getConfigManager().getConfigSalvage().getConfigSalvageablesList();
     }
 
     /**
      * Registers bonus drops from several skill configs
      */
     public void registerBonusDrops() {
-        bonusDropManager.addToWhitelistByNameID(mcMMO.getConfigManager().getConfigMining().getBonusDrops());
-        bonusDropManager.addToWhitelistByNameID(mcMMO.getConfigManager().getConfigHerbalism().getBonusDrops());
+        bonusDropManager.addToWhitelistByNameID(pluginRef.getConfigManager().getConfigMining().getBonusDrops());
+        bonusDropManager.addToWhitelistByNameID(pluginRef.getConfigManager().getConfigHerbalism().getBonusDrops());
 //        bonusDropManager.addToWhitelistByNameID(mcMMO.getConfigManager().getConfigWoodcutting().getBonusDrops());
     }
 

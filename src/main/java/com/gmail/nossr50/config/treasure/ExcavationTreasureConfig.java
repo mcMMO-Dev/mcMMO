@@ -20,7 +20,7 @@ public class ExcavationTreasureConfig extends Config implements UnsafeValueValid
     public HashMap<String, List<ExcavationTreasure>> excavationMap = new HashMap<>();
 
     public ExcavationTreasureConfig() {
-        super("excavation_drops", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, false, true, false);
+        super("excavation_drops", pluginRef.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, false, true, false);
     }
 
     /**
@@ -33,7 +33,7 @@ public class ExcavationTreasureConfig extends Config implements UnsafeValueValid
      */
     @Deprecated
     public static ExcavationTreasureConfig getInstance() {
-        return mcMMO.getConfigManager().getExcavationTreasureConfig();
+        return pluginRef.getConfigManager().getExcavationTreasureConfig();
     }
 
     @Override

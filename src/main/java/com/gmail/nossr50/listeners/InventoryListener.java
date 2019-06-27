@@ -11,7 +11,6 @@ import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
-import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -199,7 +198,7 @@ public class InventoryListener implements Listener {
 
             if (furnaceBlock != null) {
                 if (furnaceBlock.getMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY).size() > 0)
-                    furnaceBlock.removeMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY, mcMMO.p);
+                    furnaceBlock.removeMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY, pluginRef);
 
                 //Profile not loaded
                 if (UserManager.getPlayer(player) == null) {

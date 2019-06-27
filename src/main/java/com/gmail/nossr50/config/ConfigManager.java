@@ -82,6 +82,8 @@ import java.util.Set;
  * Settings in configs are sometimes not platform-ready, you can find platform ready implementations in the {@link com.gmail.nossr50.core.DynamicSettingsManager DynamicSettingsManager}
  */
 public final class ConfigManager {
+    private mcMMO pluginRef;
+
 
     /* File array - Used for backups */
     private ArrayList<File> userFiles;
@@ -150,7 +152,8 @@ public final class ConfigManager {
 
     private ArrayList<String> configErrors; //Collect errors to whine about to server admins
 
-    public ConfigManager() {
+    public ConfigManager(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
         userFiles = new ArrayList<>();
     }
 
@@ -265,7 +268,7 @@ public final class ConfigManager {
      */
         customSerializers = TypeSerializers.getDefaultSerializers().newChild();
 
-        mcMMO.p.getLogger().info("Registering custom type serializers for Configurate...");
+        pluginRef.getLogger().info("Registering custom type serializers for Configurate...");
         customSerializers.registerType(new TypeToken<PrimarySkillType>() {}, new CustomEnumValueSerializer());
         customSerializers.registerType(new TypeToken<Material>() {}, new CustomEnumValueSerializer());
         customSerializers.registerType(new TypeToken<PartyFeature>() {}, new CustomEnumValueSerializer());
@@ -321,7 +324,7 @@ public final class ConfigManager {
      * Technically this reloads a lot of stuff, not just configs
      */
     public void reloadConfigs() {
-        mcMMO.p.getLogger().info("Reloading config values...");
+        pluginRef.getLogger().info("Reloading config values...");
         loadConfigs(); //Load everything again
     }
 

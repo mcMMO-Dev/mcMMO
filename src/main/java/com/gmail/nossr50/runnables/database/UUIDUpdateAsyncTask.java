@@ -87,12 +87,12 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
 
             Misc.printProgress(checkedUsers, DatabaseManager.progressInterval, startMillis);
             if (fetchedUUIDs.size() >= BATCH_SIZE) {
-                mcMMO.getDatabaseManager().saveUserUUIDs(fetchedUUIDs);
+                pluginRef.getDatabaseManager().saveUserUUIDs(fetchedUUIDs);
                 fetchedUUIDs = new HashMap<String, UUID>();
             }
         }
 
-        if (fetchedUUIDs.size() == 0 || mcMMO.getDatabaseManager().saveUserUUIDs(fetchedUUIDs)) {
+        if (fetchedUUIDs.size() == 0 || pluginRef.getDatabaseManager().saveUserUUIDs(fetchedUUIDs)) {
             //mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_UUIDS);
             plugin.getLogger().info("UUID upgrade completed!");
         }

@@ -4,8 +4,6 @@ import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.player.UserManager;
@@ -36,14 +34,14 @@ public final class CommandUtils {
 
     public static boolean tooFar(CommandSender sender, Player target, boolean hasPermission) {
         if(!target.isOnline() && !hasPermission) {
-            sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Inspect.Offline"));
             return true;
-        } else if (mcMMO.getConfigManager().getConfigCommands().isLimitInspectRange()
+        } else if (pluginRef.getConfigManager().getConfigCommands().isLimitInspectRange()
                         && sender instanceof Player
                 && !Misc.isNear(((Player) sender).getLocation(), target.getLocation(),
-                        mcMMO.getConfigManager().getConfigCommands().getInspectCommandMaxDistance())
+                        pluginRef.getConfigManager().getConfigCommands().getInspectCommandMaxDistance())
                 && !hasPermission) {
-            sender.sendMessage(LocaleLoader.getString("Inspect.TooFar"));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Inspect.TooFar"));
             return true;
         }
 
@@ -59,7 +57,7 @@ public final class CommandUtils {
             return false;
         }
 
-        sender.sendMessage(LocaleLoader.getString("Commands.NoConsole"));
+        sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.NoConsole"));
         return true;
     }
 
@@ -68,7 +66,7 @@ public final class CommandUtils {
             return false;
         }
 
-        sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
+        sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Offline"));
         return true;
     }
 
@@ -83,7 +81,7 @@ public final class CommandUtils {
     public static boolean checkPlayerExistence(CommandSender sender, String playerName, McMMOPlayer mcMMOPlayer) {
         if (mcMMOPlayer != null) {
             if (CommandUtils.hidden(sender, mcMMOPlayer.getPlayer(), false)) {
-                sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Offline"));
                 return false;
             }
             return true;
@@ -95,7 +93,7 @@ public final class CommandUtils {
             return false;
         }
 
-        sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+        sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.DoesNotExist"));
         return false;
     }
 
@@ -104,7 +102,7 @@ public final class CommandUtils {
             return false;
         }
 
-        sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
+        sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Offline"));
         return true;
     }
 
@@ -116,7 +114,7 @@ public final class CommandUtils {
         boolean hasPlayerDataKey = ((Player) sender).hasMetadata(MetadataConstants.PLAYER_DATA_METAKEY);
 
         if (!hasPlayerDataKey) {
-            sender.sendMessage(LocaleLoader.getString("Commands.NotLoaded"));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.NotLoaded"));
         }
 
         return hasPlayerDataKey;
@@ -127,7 +125,7 @@ public final class CommandUtils {
             return true;
         }
 
-        sender.sendMessage(LocaleLoader.getString("Commands.NotLoaded"));
+        sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.NotLoaded"));
         return false;
     }
 
@@ -154,7 +152,7 @@ public final class CommandUtils {
             return false;
         }
 
-        sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
+        sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Skill.Invalid"));
         return true;
     }
 
@@ -173,7 +171,7 @@ public final class CommandUtils {
      * @param display The sender to display stats to
      */
     public static void printGatheringSkills(Player inspect, CommandSender display) {
-        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Gathering"), PrimarySkillType.GATHERING_SKILLS);
+        printGroupedSkillData(inspect, display, pluginRef.getLocaleManager().getString("Stats.Header.Gathering"), PrimarySkillType.GATHERING_SKILLS);
     }
 
     public static void printGatheringSkills(Player player) {
@@ -187,7 +185,7 @@ public final class CommandUtils {
      * @param display The sender to display stats to
      */
     public static void printCombatSkills(Player inspect, CommandSender display) {
-        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Combat"), PrimarySkillType.COMBAT_SKILLS);
+        printGroupedSkillData(inspect, display, pluginRef.getLocaleManager().getString("Stats.Header.Combat"), PrimarySkillType.COMBAT_SKILLS);
     }
 
     public static void printCombatSkills(Player player) {
@@ -201,7 +199,7 @@ public final class CommandUtils {
      * @param display The sender to display stats to
      */
     public static void printMiscSkills(Player inspect, CommandSender display) {
-        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Misc"), PrimarySkillType.MISC_SKILLS);
+        printGroupedSkillData(inspect, display, pluginRef.getLocaleManager().getString("Stats.Header.Misc"), PrimarySkillType.MISC_SKILLS);
     }
 
     public static void printMiscSkills(Player player) {
@@ -210,10 +208,10 @@ public final class CommandUtils {
 
     public static String displaySkill(PlayerProfile profile, PrimarySkillType skill) {
         if (skill.isChildSkill()) {
-            return LocaleLoader.getString("Skills.ChildStats", LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill));
+            return pluginRef.getLocaleManager().getString("Skills.ChildStats", pluginRef.getLocaleManager().getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill));
         }
 
-        return LocaleLoader.getString("Skills.Stats", LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill), profile.getSkillXpLevel(skill), profile.getXpToLevel(skill));
+        return pluginRef.getLocaleManager().getString("Skills.Stats", pluginRef.getLocaleManager().getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill), profile.getSkillXpLevel(skill), profile.getXpToLevel(skill));
     }
 
     private static void printGroupedSkillData(Player inspect, CommandSender display, String header, List<PrimarySkillType> skillGroup) {
@@ -242,7 +240,7 @@ public final class CommandUtils {
         Player player = sender instanceof Player ? (Player) sender : null;
         List<String> onlinePlayerNames = new ArrayList<>();
 
-        for (Player onlinePlayer : mcMMO.p.getServer().getOnlinePlayers()) {
+        for (Player onlinePlayer : pluginRef.getServer().getOnlinePlayers()) {
             if (player != null && player.canSee(onlinePlayer)) {
                 onlinePlayerNames.add(onlinePlayer.getName());
             }
@@ -258,14 +256,14 @@ public final class CommandUtils {
      * @return Matched name or {@code partialName} if no match was found
      */
     public static String getMatchedPlayerName(String partialName) {
-        if (mcMMO.getConfigManager().getConfigCommands().getMisc().isMatchOfflinePlayers()) {
+        if (pluginRef.getConfigManager().getConfigCommands().getMisc().isMatchOfflinePlayers()) {
             List<String> matches = matchPlayer(partialName);
 
             if (matches.size() == 1) {
                 partialName = matches.get(0);
             }
         } else {
-            Player player = mcMMO.p.getServer().getPlayer(partialName);
+            Player player = pluginRef.getServer().getPlayer(partialName);
 
             if (player != null) {
                 partialName = player.getName();
@@ -287,7 +285,7 @@ public final class CommandUtils {
     private static List<String> matchPlayer(String partialName) {
         List<String> matchedPlayers = new ArrayList<>();
 
-        for (OfflinePlayer offlinePlayer : mcMMO.p.getServer().getOfflinePlayers()) {
+        for (OfflinePlayer offlinePlayer : pluginRef.getServer().getOfflinePlayers()) {
             String playerName = offlinePlayer.getName();
 
             if (playerName == null) { //Do null checking here to detect corrupted data before sending it throuogh .equals

@@ -5,7 +5,6 @@ import com.gmail.nossr50.commands.party.alliance.PartyAllianceCommand;
 import com.gmail.nossr50.commands.party.teleport.PtpCommand;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
@@ -24,11 +23,19 @@ import java.util.Collections;
 import java.util.List;
 
 public class PartyCommand implements TabExecutor {
-    private static final List<String> PARTY_SUBCOMMANDS;
-    private static final List<String> XPSHARE_COMPLETIONS = ImmutableList.of("none", "equal");
-    private static final List<String> ITEMSHARE_COMPLETIONS = ImmutableList.of("none", "equal", "random", "loot", "mining", "herbalism", "woodcutting", "misc");
 
-    static {
+    private mcMMO pluginRef;
+
+    public PartyCommand(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+        initSubCommandList();
+    }
+
+    private List<String> PARTY_SUBCOMMANDS;
+    private final List<String> XPSHARE_COMPLETIONS = ImmutableList.of("none", "equal");
+    private final List<String> ITEMSHARE_COMPLETIONS = ImmutableList.of("none", "equal", "random", "loot", "mining", "herbalism", "woodcutting", "misc");
+
+    private void initSubCommandList() {
         ArrayList<String> subcommands = new ArrayList<>();
 
         for (PartySubcommandType subcommand : PartySubcommandType.values()) {
@@ -61,7 +68,7 @@ public class PartyCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         //If the party system is disabled, don't fire this command
-        if (!mcMMO.getConfigManager().getConfigParty().isPartySystemEnabled())
+        if (!pluginRef.getConfigManager().getConfigParty().isPartySystemEnabled())
             return true;
 
         if (CommandUtils.noConsoleUsage(sender)) {
@@ -80,7 +87,7 @@ public class PartyCommand implements TabExecutor {
         }
 
         if (UserManager.getPlayer(player) == null) {
-            player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+            player.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
             return true;
         }
 
@@ -88,7 +95,7 @@ public class PartyCommand implements TabExecutor {
 
         if (args.length < 1) {
             if (!mcMMOPlayer.inParty()) {
-                sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.None"));
                 return printUsage(player);
             }
 
@@ -122,7 +129,7 @@ public class PartyCommand implements TabExecutor {
 
         // Party member commands
         if (!mcMMOPlayer.inParty()) {
-            sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.None"));
             return printUsage(player);
         }
 
@@ -143,7 +150,7 @@ public class PartyCommand implements TabExecutor {
 
         // Party leader commands
         if (!mcMMOPlayer.getParty().getLeader().getUniqueId().equals(player.getUniqueId())) {
-            sender.sendMessage(LocaleLoader.getString("Party.NotOwner"));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Party.NotOwner"));
             return true;
         }
 
@@ -210,7 +217,7 @@ public class PartyCommand implements TabExecutor {
 
                             //Not Loaded
                             if (UserManager.getPlayer(player) == null) {
-                                sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                                sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
                                 return ImmutableList.of();
                             }
 
@@ -236,9 +243,9 @@ public class PartyCommand implements TabExecutor {
     }
 
     private boolean printUsage(Player player) {
-        player.sendMessage(LocaleLoader.getString("Party.Help.0", "/party join"));
-        player.sendMessage(LocaleLoader.getString("Party.Help.1", "/party create"));
-        player.sendMessage(LocaleLoader.getString("Party.Help.2", "/party ?"));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Party.Help.0", "/party join"));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Party.Help.1", "/party create"));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Party.Help.2", "/party ?"));
         return true;
     }
 

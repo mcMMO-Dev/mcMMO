@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.salvage;
 
-import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
 
 public class Salvage {
@@ -10,9 +9,9 @@ public class Salvage {
     public static boolean arcaneSalvageEnchantLoss;
 
     public Salvage() {
-        anvilMaterial = mcMMO.getConfigManager().getConfigSalvage().getGeneral().getSalvageAnvilMaterial();
-        arcaneSalvageDowngrades = mcMMO.getConfigManager().getConfigSalvage().getConfigArcaneSalvage().isDowngradesEnabled();
-        arcaneSalvageEnchantLoss = mcMMO.getConfigManager().getConfigSalvage().getConfigArcaneSalvage().isMayLoseEnchants();
+        anvilMaterial = pluginRef.getConfigManager().getConfigSalvage().getGeneral().getSalvageAnvilMaterial();
+        arcaneSalvageDowngrades = pluginRef.getConfigManager().getConfigSalvage().getConfigArcaneSalvage().isDowngradesEnabled();
+        arcaneSalvageEnchantLoss = pluginRef.getConfigManager().getConfigSalvage().getConfigArcaneSalvage().isMayLoseEnchants();
     }
 
     protected static int calculateSalvageableAmount(short currentDurability, short maxDurability, int baseAmount) {

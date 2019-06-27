@@ -5,7 +5,7 @@ import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.treasure.Rarity;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.util.Permissions;
@@ -46,8 +46,8 @@ public class FishingCommand extends SkillCommand {
     private boolean canIceFish;
     private boolean canInnerPeace;
 
-    public FishingCommand() {
-        super(PrimarySkillType.FISHING);
+    public FishingCommand(mcMMO pluginRef) {
+        super(PrimarySkillType.FISHING, pluginRef);
     }
 
     @Override
@@ -155,7 +155,7 @@ public class FishingCommand extends SkillCommand {
 
         if (canShake) {
             messages.add(getStatMessage(SubSkillType.FISHING_SHAKE, shakeChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", shakeChanceLucky) : ""));
+                    + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", shakeChanceLucky) : ""));
         }
 
         if (canTreasureHunt) {

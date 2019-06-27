@@ -1,7 +1,6 @@
 package com.gmail.nossr50.util.nbt;
 
 
-import com.gmail.nossr50.mcMMO;
 import net.minecraft.server.v1_13_R2.NBTBase;
 import net.minecraft.server.v1_13_R2.NBTList;
 import net.minecraft.server.v1_13_R2.NBTTagCompound;
@@ -39,7 +38,7 @@ public class NBTManager {
             return CraftNBTTagConfigSerializer.deserialize(nbtString);
         } catch (Exception e) {
             e.printStackTrace();
-            mcMMO.p.getLogger().severe("mcMMO was unable parse the NBT string from your config! Double check that it is proper NBT!");
+            pluginRef.getLogger().severe("mcMMO was unable parse the NBT string from your config! Double check that it is proper NBT!");
             return null;
         }
     }

@@ -3,7 +3,6 @@ package com.gmail.nossr50.commands.experience;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
@@ -20,11 +19,18 @@ import java.util.List;
 import java.util.UUID;
 
 public abstract class ExperienceCommand implements TabExecutor {
+
+    private mcMMO pluginRef;
+
+    public ExperienceCommand(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
+
     protected static void handleSenderMessage(CommandSender sender, String playerName, PrimarySkillType skill) {
         if (skill == null) {
-            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardAll.2", playerName));
         } else {
-            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", skill.getName(), playerName));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardSkill.2", skill.getName(), playerName));
         }
     }
 
@@ -54,13 +60,13 @@ public abstract class ExperienceCommand implements TabExecutor {
                 }
 
                 if (skill != null && skill.isChildSkill()) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Skill.ChildSkill"));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Skill.ChildSkill"));
                     return true;
                 }
 
                 //Profile not loaded
                 if (UserManager.getPlayer(sender.getName()) == null) {
-                    sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
                     return true;
                 }
 
@@ -85,7 +91,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                 }
 
                 if (skill != null && skill.isChildSkill()) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Skill.ChildSkill"));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Skill.ChildSkill"));
                     return true;
                 }
 
@@ -97,11 +103,11 @@ public abstract class ExperienceCommand implements TabExecutor {
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {
                     UUID uuid = null;
-                    OfflinePlayer player = mcMMO.p.getServer().getOfflinePlayer(playerName);
+                    OfflinePlayer player = pluginRef.getServer().getOfflinePlayer(playerName);
                     if (player != null) {
                         uuid = player.getUniqueId();
                     }
-                    PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, uuid, false);
+                    PlayerProfile profile = pluginRef.getDatabaseManager().loadPlayerProfile(playerName, uuid, false);
 
                     if (CommandUtils.unloadedProfile(sender, profile)) {
                         return true;

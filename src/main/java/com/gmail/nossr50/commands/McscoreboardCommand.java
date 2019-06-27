@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands;
 
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
@@ -14,6 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class McscoreboardCommand implements TabExecutor {
+
+    private mcMMO pluginRef;
+
+    public McscoreboardCommand(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
+
     private static final List<String> FIRST_ARGS = ImmutableList.of("keep", "time", "clear");
 
     @Override
@@ -26,23 +32,23 @@ public class McscoreboardCommand implements TabExecutor {
             case 1:
                 if (args[0].equalsIgnoreCase("clear") || args[0].equalsIgnoreCase("reset")) {
                     ScoreboardManager.clearBoard(sender.getName());
-                    sender.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Clear"));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Scoreboard.Clear"));
                     return true;
                 }
 
                 if (args[0].equalsIgnoreCase("keep")) {
-                    if (!mcMMO.getScoreboardSettings().getScoreboardsEnabled()) {
-                        sender.sendMessage(LocaleLoader.getString("Commands.Disabled"));
+                    if (!pluginRef.getScoreboardSettings().getScoreboardsEnabled()) {
+                        sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Disabled"));
                         return true;
                     }
 
                     if (!ScoreboardManager.isBoardShown(sender.getName())) {
-                        sender.sendMessage(LocaleLoader.getString("Commands.Scoreboard.NoBoard"));
+                        sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Scoreboard.NoBoard"));
                         return true;
                     }
 
                     ScoreboardManager.keepBoard(sender.getName());
-                    sender.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Keep"));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Scoreboard.Keep"));
                     return true;
                 }
 
@@ -57,7 +63,7 @@ public class McscoreboardCommand implements TabExecutor {
                     int time = Math.abs(Integer.parseInt(args[1]));
 
                     ScoreboardManager.setRevertTimer(sender.getName(), time);
-                    sender.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Timer", time));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Scoreboard.Timer", time));
                     return true;
                 }
 
@@ -79,10 +85,10 @@ public class McscoreboardCommand implements TabExecutor {
     }
 
     private boolean help(CommandSender sender) {
-        sender.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Help.0"));
-        sender.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Help.1"));
-        sender.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Help.2"));
-        sender.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Help.3"));
+        sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Scoreboard.Help.0"));
+        sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Scoreboard.Help.1"));
+        sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Scoreboard.Help.2"));
+        sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Scoreboard.Help.3"));
         return true;
     }
 }

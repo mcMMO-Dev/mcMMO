@@ -1,13 +1,9 @@
 package com.gmail.nossr50.commands.chat;
 
-import com.gmail.nossr50.chat.ChatManager;
-import com.gmail.nossr50.chat.ChatManagerFactory;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
@@ -21,12 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ChatCommand implements TabExecutor {
-    protected ChatManager chatManager;
     private ChatMode chatMode;
+    public mcMMO pluginRef;
 
-    public ChatCommand(ChatMode chatMode) {
+    public ChatCommand(ChatMode chatMode, mcMMO pluginRef) {
         this.chatMode = chatMode;
-        this.chatManager = ChatManagerFactory.getChatManager(mcMMO.p, chatMode);
+        this.pluginRef = pluginRef;
     }
 
     @Override
@@ -109,19 +105,19 @@ public abstract class ChatCommand implements TabExecutor {
     }
 
     protected String getDisplayName(CommandSender sender) {
-        return (sender instanceof Player) ? ((Player) sender).getDisplayName() : LocaleLoader.getString("Commands.Chat.Console");
+        return (sender instanceof Player) ? ((Player) sender).getDisplayName() : pluginRef.getLocaleManager().getString("Commands.Chat.Console");
     }
 
     protected abstract void handleChatSending(CommandSender sender, String[] args);
 
     private void enableChatMode(McMMOPlayer mcMMOPlayer, CommandSender sender) {
         if (chatMode == ChatMode.PARTY && mcMMOPlayer.getParty() == null) {
-            sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.None"));
             return;
         }
 
-        if (chatMode == ChatMode.PARTY && (mcMMOPlayer.getParty().getLevel() < PartyManager.getPartyFeatureUnlockLevel(PartyFeature.CHAT))) {
-            sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.1"));
+        if (chatMode == ChatMode.PARTY && (mcMMOPlayer.getParty().getLevel() < pluginRef.getPartyManager().getPartyFeatureUnlockLevel(PartyFeature.CHAT))) {
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Party.Feature.Disabled.1"));
             return;
         }
 
@@ -131,7 +127,7 @@ public abstract class ChatCommand implements TabExecutor {
 
     private void disableChatMode(McMMOPlayer mcMMOPlayer, CommandSender sender) {
         if (chatMode == ChatMode.PARTY && mcMMOPlayer.getParty() == null) {
-            sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.None"));
             return;
         }
 

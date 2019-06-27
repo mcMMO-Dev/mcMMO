@@ -2,7 +2,6 @@ package com.gmail.nossr50.util.random;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.Player;
@@ -33,7 +32,7 @@ public class RandomChanceSkill implements RandomChanceExecution {
 
     public RandomChanceSkill(Player player, SubSkillType subSkillType, boolean hasCap) {
         if (hasCap)
-            this.probabilityCap = mcMMO.getDynamicSettingsManager().getSkillMaxChance(subSkillType);
+            this.probabilityCap = pluginRef.getDynamicSettingsManager().getSkillMaxChance(subSkillType);
         else
             this.probabilityCap = RandomChanceUtil.LINEAR_CURVE_VAR;
 
@@ -86,7 +85,7 @@ public class RandomChanceSkill implements RandomChanceExecution {
      * @return the maximum bonus from skill level for this skill
      */
     public double getMaximumBonusLevelCap() {
-        return mcMMO.getDynamicSettingsManager().getSkillMaxBonusLevel(subSkillType);
+        return pluginRef.getDynamicSettingsManager().getSkillMaxBonusLevel(subSkillType);
     }
 
     /**

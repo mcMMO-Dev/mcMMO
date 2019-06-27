@@ -56,7 +56,7 @@
 //     * @return true if the two players are in the same party, false otherwise
 //     */
 //    public static boolean inSameParty(Player playera, Player playerb) {
-//        return PartyManager.inSameParty(playera, playerb);
+//        return pluginRef.getPartyManager().inSameParty(playera, playerb);
 //    }
 //
 //    /**
@@ -67,7 +67,7 @@
 //     * @return the list of parties.
 //     */
 //    public static List<Party> getParties() {
-//        return PartyManager.getParties();
+//        return pluginRef.getPartyManager().getParties();
 //    }
 //
 //    /**
@@ -85,18 +85,18 @@
 //        if (UserManager.getPlayer(player) == null)
 //            return;
 //
-//        Party party = PartyManager.getParty(partyName);
+//        Party party = pluginRef.getPartyManager().getParty(partyName);
 //
 //        if (party == null) {
 //            party = new Party(new PartyLeader(player.getUniqueId(), player.getName()), partyName);
 //        } else if (mcMMO.getConfigManager().getConfigParty().getPartyGeneral().isPartySizeCapped()) {
-//            if (PartyManager.isPartyFull(player, party)) {
+//            if (pluginRef.getPartyManager().isPartyFull(player, party)) {
 //                mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.PARTY_MESSAGE, "Commands.Party.PartyFull", party.toString());
 //                return;
 //            }
 //        }
 //
-//        PartyManager.addToParty(UserManager.getPlayer(player), party);
+//        pluginRef.getPartyManager().addToParty(UserManager.getPlayer(player), party);
 //    }
 //
 //    /**
@@ -133,13 +133,13 @@
 //        if (UserManager.getPlayer(player) == null)
 //            return;
 //
-//        Party party = PartyManager.getParty(partyName);
+//        Party party = pluginRef.getPartyManager().getParty(partyName);
 //
 //        if (party == null) {
 //            party = new Party(new PartyLeader(player.getUniqueId(), player.getName()), partyName);
 //        }
 //
-//        PartyManager.addToParty(UserManager.getPlayer(player), party);
+//        pluginRef.getPartyManager().addToParty(UserManager.getPlayer(player), party);
 //    }
 //
 //    /**
@@ -154,7 +154,7 @@
 //        if (UserManager.getPlayer(player) == null)
 //            return;
 //
-//        PartyManager.removeFromParty(UserManager.getPlayer(player));
+//        pluginRef.getPartyManager().removeFromParty(UserManager.getPlayer(player));
 //    }
 //
 //    /**
@@ -166,7 +166,7 @@
 //     * @return the leader of the party
 //     */
 //    public static String getPartyLeader(String partyName) {
-//        return PartyManager.getPartyLeaderName(partyName);
+//        return pluginRef.getPartyManager().getPartyLeaderName(partyName);
 //    }
 //
 //    /**
@@ -179,7 +179,7 @@
 //     */
 //    @Deprecated
 //    public static void setPartyLeader(String partyName, String playerName) {
-//        PartyManager.setPartyLeader(mcMMO.p.getServer().getOfflinePlayer(playerName).getUniqueId(), PartyManager.getParty(partyName));
+//        pluginRef.getPartyManager().setPartyLeader(mcMMO.p.getServer().getOfflinePlayer(playerName).getUniqueId(), pluginRef.getPartyManager().getParty(partyName));
 //    }
 //
 //    /**
@@ -194,7 +194,7 @@
 //    public static List<OfflinePlayer> getOnlineAndOfflineMembers(Player player) {
 //        List<OfflinePlayer> members = new ArrayList<>();
 //
-//        for (UUID memberUniqueId : PartyManager.getAllMembers(player).keySet()) {
+//        for (UUID memberUniqueId : pluginRef.getPartyManager().getAllMembers(player).keySet()) {
 //            OfflinePlayer member = mcMMO.p.getServer().getOfflinePlayer(memberUniqueId);
 //            members.add(member);
 //        }
@@ -211,7 +211,7 @@
 //     */
 //    @Deprecated
 //    public static LinkedHashSet<String> getMembers(Player player) {
-//        return (LinkedHashSet<String>) PartyManager.getAllMembers(player).values();
+//        return (LinkedHashSet<String>) pluginRef.getPartyManager().getAllMembers(player).values();
 //    }
 //
 //    /**
@@ -223,7 +223,7 @@
 //     * @return all the player names and uuids in the player's party
 //     */
 //    public static LinkedHashMap<UUID, String> getMembersMap(Player player) {
-//        return PartyManager.getAllMembers(player);
+//        return pluginRef.getPartyManager().getAllMembers(player);
 //    }
 //
 //    /**
@@ -235,7 +235,7 @@
 //     * @return all online players in this party
 //     */
 //    public static List<Player> getOnlineMembers(String partyName) {
-//        return PartyManager.getOnlineMembers(partyName);
+//        return pluginRef.getPartyManager().getOnlineMembers(partyName);
 //    }
 //
 //    /**
@@ -247,7 +247,7 @@
 //     * @return all online players in the player's party
 //     */
 //    public static List<Player> getOnlineMembers(Player player) {
-//        return PartyManager.getOnlineMembers(player);
+//        return pluginRef.getPartyManager().getOnlineMembers(player);
 //    }
 //
 //    public static boolean hasAlly(String partyName) {
@@ -255,7 +255,7 @@
 //    }
 //
 //    public static String getAllyName(String partyName) {
-//        Party ally = PartyManager.getParty(partyName).getAlly();
+//        Party ally = pluginRef.getPartyManager().getParty(partyName).getAlly();
 //        if (ally != null) {
 //            return ally.getName();
 //        }

@@ -7,8 +7,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -50,9 +48,9 @@ public class SkillUtils {
      */
     public static int calculateAbilityLength(McMMOPlayer mcMMOPlayer, PrimarySkillType skill, SuperAbilityType superAbilityType) {
         //These values change depending on whether or not the server is in retro mode
-        int abilityLengthVar = mcMMO.getConfigManager().getConfigSuperAbilities().getSuperAbilityStartingSeconds();
+        int abilityLengthVar = pluginRef.getConfigManager().getConfigSuperAbilities().getSuperAbilityStartingSeconds();
 
-        int maxLength = mcMMO.getConfigManager().getConfigSuperAbilities().getMaxLengthForSuper(superAbilityType);
+        int maxLength = pluginRef.getConfigManager().getConfigSuperAbilities().getMaxLengthForSuper(superAbilityType);
 
         int skillLevel = mcMMOPlayer.getSkillLevel(skill);
 
@@ -134,7 +132,7 @@ public class SkillUtils {
      * @return true if this is a valid skill, false otherwise
      */
     public static boolean isSkill(String skillName) {
-        return mcMMO.getConfigManager().getConfigLanguage().getTargetLanguage().equalsIgnoreCase("en_US") ? PrimarySkillType.getSkill(skillName) != null : isLocalizedSkill(skillName);
+        return pluginRef.getConfigManager().getConfigLanguage().getTargetLanguage().equalsIgnoreCase("en_US") ? PrimarySkillType.getSkill(skillName) != null : isLocalizedSkill(skillName);
     }
 
     public static void sendSkillMessage(Player player, NotificationType notificationType, String key) {
@@ -142,7 +140,7 @@ public class SkillUtils {
 
         for (Player otherPlayer : player.getWorld().getPlayers()) {
             if (otherPlayer != player && Misc.isNear(location, otherPlayer.getLocation(), Misc.SKILL_MESSAGE_MAX_SENDING_DISTANCE)) {
-                mcMMO.getNotificationManager().sendNearbyPlayersInformation(otherPlayer, notificationType, key, player.getName());
+                pluginRef.getNotificationManager().sendNearbyPlayersInformation(otherPlayer, notificationType, key, player.getName());
             }
         }
     }
@@ -258,7 +256,7 @@ public class SkillUtils {
         }
 
         Material type = itemStack.getType();
-        short maxDurability = mcMMO.getRepairableManager().isRepairable(type) ? mcMMO.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability();
+        short maxDurability = pluginRef.getRepairableManager().isRepairable(type) ? pluginRef.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability();
         durabilityModifier = (int) Math.min(durabilityModifier / (itemStack.getEnchantmentLevel(Enchantment.DURABILITY) + 1), maxDurability * maxDamageModifier);
 
         itemStack.setDurability((short) Math.min(itemStack.getDurability() + durabilityModifier, maxDurability));
@@ -266,7 +264,7 @@ public class SkillUtils {
 
     private static boolean isLocalizedSkill(String skillName) {
         for (PrimarySkillType skill : PrimarySkillType.values()) {
-            if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".SkillName"))) {
+            if (skillName.equalsIgnoreCase(pluginRef.getLocaleManager().getString(StringUtils.getCapitalized(skill.toString()) + ".SkillName"))) {
                 return true;
             }
         }

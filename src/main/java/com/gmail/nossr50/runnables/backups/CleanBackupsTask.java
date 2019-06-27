@@ -1,6 +1,5 @@
 package com.gmail.nossr50.runnables.backups;
 
-import com.gmail.nossr50.mcMMO;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class CleanBackupsTask extends BukkitRunnable {
-    private static final String BACKUP_DIRECTORY = mcMMO.getMainDirectory() + "backup" + File.separator;
+    private static final String BACKUP_DIRECTORY = pluginRef.getMainDirectory() + "backup" + File.separator;
     private static final File BACKUP_DIR = new File(BACKUP_DIRECTORY);
 
     @Override
@@ -23,7 +22,7 @@ public class CleanBackupsTask extends BukkitRunnable {
         List<File> toDelete = new ArrayList<>();
         int amountTotal = 0;
         int amountDeleted = 0;
-        int oldFileAgeLimit = mcMMO.getConfigManager().getConfigAutomatedBackups().getBackupDayLimit();
+        int oldFileAgeLimit = pluginRef.getConfigManager().getConfigAutomatedBackups().getBackupDayLimit();
 
         if (BACKUP_DIR.listFiles() == null) {
             return;
@@ -46,7 +45,7 @@ public class CleanBackupsTask extends BukkitRunnable {
             Date date = getDate(fileName.split("[.]")[0]);
 
             if (!fileName.contains(".zip") || date == null) {
-                mcMMO.p.debug("Could not determine date for file: " + fileName);
+                pluginRef.debug("Could not determine date for file: " + fileName);
                 continue;
             }
 
@@ -66,11 +65,11 @@ public class CleanBackupsTask extends BukkitRunnable {
             return;
         }
 
-        mcMMO.p.getLogger().info("Cleaned backup files. Deleted " + amountDeleted + " of " + amountTotal + " files.");
+        pluginRef.getLogger().info("Cleaned backup files. Deleted " + amountDeleted + " of " + amountTotal + " files.");
 
         for (File file : toDelete) {
             if (file.delete()) {
-                mcMMO.p.debug("Deleted: " + file.getName());
+                pluginRef.debug("Deleted: " + file.getName());
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.gmail.nossr50.util.sounds;
 
 import com.gmail.nossr50.config.hocon.sound.SoundSetting;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -16,24 +15,24 @@ public class SoundManager {
      * @param soundType the type of sound
      */
     public static void sendSound(Player player, Location location, SoundType soundType) {
-        if (mcMMO.getConfigManager().getConfigSound().isSoundEnabled(soundType))
+        if (pluginRef.getConfigManager().getConfigSound().isSoundEnabled(soundType))
             player.playSound(location, getSound(soundType), SoundCategory.MASTER, getVolume(soundType), getPitch(soundType));
     }
 
     public static void sendCategorizedSound(Player player, Location location, SoundType soundType, SoundCategory soundCategory) {
-        if (mcMMO.getConfigManager().getConfigSound().isSoundEnabled(soundType))
+        if (pluginRef.getConfigManager().getConfigSound().isSoundEnabled(soundType))
             player.playSound(location, getSound(soundType), soundCategory, getVolume(soundType), getPitch(soundType));
     }
 
     public static void sendCategorizedSound(Player player, Location location, SoundType soundType, SoundCategory soundCategory, float pitchModifier) {
         float totalPitch = Math.min(2.0F, (getPitch(soundType) + pitchModifier));
 
-        if (mcMMO.getConfigManager().getConfigSound().isSoundEnabled(soundType))
+        if (pluginRef.getConfigManager().getConfigSound().isSoundEnabled(soundType))
             player.playSound(location, getSound(soundType), soundCategory, getVolume(soundType), totalPitch);
     }
 
     public static void worldSendSound(World world, Location location, SoundType soundType) {
-        if (mcMMO.getConfigManager().getConfigSound().isSoundEnabled(soundType))
+        if (pluginRef.getConfigManager().getConfigSound().isSoundEnabled(soundType))
             world.playSound(location, getSound(soundType), getVolume(soundType), getPitch(soundType));
     }
 
@@ -44,8 +43,8 @@ public class SoundManager {
      * @return the volume for this soundtype
      */
     private static float getVolume(SoundType soundType) {
-        SoundSetting soundSetting = mcMMO.getConfigManager().getConfigSound().getSoundSetting(soundType);
-        return soundSetting.getVolume() * (float) mcMMO.getConfigManager().getConfigSound().getMasterVolume();
+        SoundSetting soundSetting = pluginRef.getConfigManager().getConfigSound().getSoundSetting(soundType);
+        return soundSetting.getVolume() * (float) pluginRef.getConfigManager().getConfigSound().getMasterVolume();
     }
 
     private static float getPitch(SoundType soundType) {
@@ -54,7 +53,7 @@ public class SoundManager {
         else if (soundType == SoundType.POP)
             return getPopPitch();
         else {
-            SoundSetting soundSetting = mcMMO.getConfigManager().getConfigSound().getSoundSetting(soundType);
+            SoundSetting soundSetting = pluginRef.getConfigManager().getConfigSound().getSoundSetting(soundType);
             return soundSetting.getPitch();
         }
     }

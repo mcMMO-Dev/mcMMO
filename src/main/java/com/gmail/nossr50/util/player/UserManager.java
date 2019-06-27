@@ -2,7 +2,6 @@ package com.gmail.nossr50.util.player;
 
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
@@ -26,7 +25,7 @@ public final class UserManager {
      * @param mcMMOPlayer the player profile to start tracking
      */
     public static void track(McMMOPlayer mcMMOPlayer) {
-        mcMMOPlayer.getPlayer().setMetadata(MetadataConstants.PLAYER_DATA_METAKEY, new FixedMetadataValue(mcMMO.p, mcMMOPlayer));
+        mcMMOPlayer.getPlayer().setMetadata(MetadataConstants.PLAYER_DATA_METAKEY, new FixedMetadataValue(pluginRef, mcMMOPlayer));
 
         if(playerDataSet == null)
             playerDataSet = new HashSet<>();
@@ -46,7 +45,7 @@ public final class UserManager {
      */
     public static void remove(Player player) {
         McMMOPlayer mcMMOPlayer = getPlayer(player);
-        player.removeMetadata(MetadataConstants.PLAYER_DATA_METAKEY, mcMMO.p);
+        player.removeMetadata(MetadataConstants.PLAYER_DATA_METAKEY, pluginRef);
 
         if(playerDataSet != null && playerDataSet.contains(mcMMOPlayer))
             playerDataSet.remove(mcMMOPlayer); //Clear sync save tracking
@@ -56,7 +55,7 @@ public final class UserManager {
      * Clear all users.
      */
     public static void clearAll() {
-        for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
+        for (Player player : pluginRef.getServer().getOnlinePlayers()) {
             remove(player);
         }
 
@@ -73,27 +72,27 @@ public final class UserManager {
 
         ImmutableList<McMMOPlayer> trackedSyncData = ImmutableList.copyOf(playerDataSet);
 
-        mcMMO.p.getLogger().info("Saving mcMMOPlayers... (" + trackedSyncData.size() + ")");
+        pluginRef.getLogger().info("Saving mcMMOPlayers... (" + trackedSyncData.size() + ")");
 
         for (McMMOPlayer playerData : trackedSyncData) {
             try
             {
-                mcMMO.p.getLogger().info("Saving data for player: "+playerData.getPlayerName());
+                pluginRef.getLogger().info("Saving data for player: "+playerData.getPlayerName());
                 playerData.getProfile().save(true);
             }
             catch (Exception e)
             {
-                mcMMO.p.getLogger().warning("Could not save mcMMO player data for player: " + playerData.getPlayerName());
+                pluginRef.getLogger().warning("Could not save mcMMO player data for player: " + playerData.getPlayerName());
             }
         }
 
-        mcMMO.p.getLogger().info("Finished save operation for "+trackedSyncData.size()+" players!");
+        pluginRef.getLogger().info("Finished save operation for "+trackedSyncData.size()+" players!");
     }
 
     public static Collection<McMMOPlayer> getPlayers() {
         Collection<McMMOPlayer> playerCollection = new ArrayList<>();
 
-        for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
+        for (Player player : pluginRef.getServer().getOnlinePlayers()) {
             if (hasPlayerDataKey(player)) {
                 playerCollection.add(getPlayer(player));
             }
@@ -139,11 +138,11 @@ public final class UserManager {
     }
 
     private static McMMOPlayer retrieveMcMMOPlayer(String playerName, boolean offlineValid) {
-        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
+        Player player = pluginRef.getServer().getPlayerExact(playerName);
 
         if (player == null) {
             if (!offlineValid) {
-                mcMMO.p.getLogger().warning("A valid mcMMOPlayer object could not be found for " + playerName + ".");
+                pluginRef.getLogger().warning("A valid mcMMOPlayer object could not be found for " + playerName + ".");
             }
 
             return null;

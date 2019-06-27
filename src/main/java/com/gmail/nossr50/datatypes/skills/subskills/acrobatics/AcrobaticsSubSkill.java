@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.InteractType;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.event.Event;
@@ -22,13 +21,13 @@ public abstract class AcrobaticsSubSkill extends AbstractSubSkill {
 
     /**
      * The name of this subskill
-     * Core mcMMO skills will pull the name from Locale with this method
+     * Core mcMMO skills will pull the name from LocaleManager with this method
      *
      * @return the subskill name
      */
     @Override
     public String getNiceName() {
-        return LocaleLoader.getString(getPrimaryKeyName() + ".SubSkill." + getConfigKeyName() + ".Name");
+        return pluginRef.getLocaleManager().getString(getPrimaryKeyName() + ".SubSkill." + getConfigKeyName() + ".Name");
     }
 
     /**
@@ -48,7 +47,7 @@ public abstract class AcrobaticsSubSkill extends AbstractSubSkill {
      */
     @Override
     public String getTips() {
-        return LocaleLoader.getString("JSON." + StringUtils.getCapitalized(getPrimarySkill().toString()) + ".SubSkill." + getConfigKeyName() + ".Details.Tips");
+        return pluginRef.getLocaleManager().getString("JSON." + StringUtils.getCapitalized(getPrimarySkill().toString()) + ".SubSkill." + getConfigKeyName() + ".Details.Tips");
     }
 
     /**

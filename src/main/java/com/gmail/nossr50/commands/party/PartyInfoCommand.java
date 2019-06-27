@@ -4,8 +4,6 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -23,7 +21,7 @@ public class PartyInfoCommand implements CommandExecutor {
             case 0:
             case 1:
                 if (UserManager.getPlayer((Player) sender) == null) {
-                    sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
                     return true;
                 }
                 Player player = (Player) sender;
@@ -37,26 +35,26 @@ public class PartyInfoCommand implements CommandExecutor {
                 return true;
 
             default:
-                sender.sendMessage(LocaleLoader.getString("Commands.Usage.1", "party", "info"));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Usage.1", "party", "info"));
                 return true;
         }
     }
 
     private void displayPartyHeader(Player player, Party party) {
-        player.sendMessage(LocaleLoader.getString("Commands.Party.Header"));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.Header"));
 
         /*if (!party.hasReachedLevelCap()) {
             status.append(" (").append(party.getXpToLevelPercentage()).append(")");
         }*/
 
-        player.sendMessage(LocaleLoader.getString("Commands.Party.Status", party.getName(), LocaleLoader.getString("Party.Status." + (party.isLocked() ? "Locked" : "Unlocked")), party.getLevel())
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.Status", party.getName(), pluginRef.getLocaleManager().getString("Party.Status." + (party.isLocked() ? "Locked" : "Unlocked")), party.getLevel())
  /*if (!party.hasReachedLevelCap()) {
      status.append(" (").append(party.getXpToLevelPercentage()).append(")");
  }*/);
     }
 
     private void displayPartyFeatures(Player player, Party party) {
-        player.sendMessage(LocaleLoader.getString("Commands.Party.Features.Header"));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.Features.Header"));
 
         List<String> unlockedPartyFeatures = new ArrayList<>();
         List<String> lockedPartyFeatures = new ArrayList<>();
@@ -73,7 +71,7 @@ public class PartyInfoCommand implements CommandExecutor {
             }
         }
 
-        player.sendMessage(LocaleLoader.getString("Commands.Party.UnlockedFeatures", unlockedPartyFeatures.isEmpty() ? "None" : unlockedPartyFeatures));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.UnlockedFeatures", unlockedPartyFeatures.isEmpty() ? "None" : unlockedPartyFeatures));
 
         for (String message : lockedPartyFeatures) {
             player.sendMessage(message);
@@ -81,7 +79,7 @@ public class PartyInfoCommand implements CommandExecutor {
     }
 
     private boolean isUnlockedFeature(Party party, PartyFeature partyFeature) {
-        return party.getLevel() >= PartyManager.getPartyFeatureUnlockLevel(partyFeature);
+        return party.getLevel() >= pluginRef.getPartyManager().getPartyFeatureUnlockLevel(partyFeature);
     }
 
     private void displayShareModeInfo(Player player, Party party) {
@@ -98,21 +96,21 @@ public class PartyInfoCommand implements CommandExecutor {
         String separator = "";
 
         if (xpShareEnabled) {
-            expShareInfo = LocaleLoader.getString("Commands.Party.ExpShare", party.getXpShareMode().toString());
+            expShareInfo = pluginRef.getLocaleManager().getString("Commands.Party.ExpShare", party.getXpShareMode().toString());
         }
 
         if (itemShareEnabled) {
-            itemShareInfo = LocaleLoader.getString("Commands.Party.ItemShare", party.getItemShareMode().toString());
+            itemShareInfo = pluginRef.getLocaleManager().getString("Commands.Party.ItemShare", party.getItemShareMode().toString());
         }
 
         if (xpShareEnabled && itemShareEnabled) {
             separator = ChatColor.DARK_GRAY + " || ";
         }
 
-        player.sendMessage(LocaleLoader.getString("Commands.Party.ShareMode") + expShareInfo + separator + itemShareInfo);
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.ShareMode") + expShareInfo + separator + itemShareInfo);
 
         if (itemSharingActive) {
-            player.sendMessage(LocaleLoader.getString("Commands.Party.ItemShareCategories", party.getItemShareCategories()));
+            player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.ItemShareCategories", party.getItemShareCategories()));
         }
     }
 
@@ -121,11 +119,11 @@ public class PartyInfoCommand implements CommandExecutor {
          * Only show members of the party that this member can see
          */
 
-        List<Player> nearMembers = PartyManager.getNearVisibleMembers(mcMMOPlayer);
+        List<Player> nearMembers = pluginRef.getPartyManager().getNearVisibleMembers(mcMMOPlayer);
         int membersOnline = party.getVisibleMembers(player).size();
 
-        player.sendMessage(LocaleLoader.getString("Commands.Party.Members.Header"));
-        player.sendMessage(LocaleLoader.getString("Commands.Party.MembersNear", nearMembers.size() + 1, membersOnline));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.Members.Header"));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.MembersNear", nearMembers.size() + 1, membersOnline));
         player.sendMessage(party.createMembersList(player));
     }
 }

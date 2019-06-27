@@ -67,6 +67,7 @@ Version 2.2.0
     Increased the default recipe cost for Chimaera Wing from 5 to 40
     Blast Mining Damage Decrease now scales more smoothly from ranks 1-8
     Fixed a bug where Rupture wasn't using the base ticks setting from config when determining how many ticks of rupture to apply
+    Fixed a bug where admin or party chat could be sent to the whole server
     Admins will now be notified if a player trips over-fishing exploit detection 3+ times in a row (Locale: "Fishing.OverFishingDetected")
         Note: Admins are players who are an operator or have adminchat permission.
 

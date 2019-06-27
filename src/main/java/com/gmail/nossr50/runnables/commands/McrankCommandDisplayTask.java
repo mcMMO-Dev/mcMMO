@@ -2,8 +2,6 @@ package com.gmail.nossr50.runnables.commands;
 
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -30,22 +28,22 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (useBoard && mcMMO.getScoreboardSettings().getScoreboardsEnabled()) {
+        if (useBoard && pluginRef.getScoreboardSettings().getScoreboardsEnabled()) {
             displayBoard();
         }
 
         if (useChat) {
             displayChat();
         }
-        ((Player) sender).removeMetadata(MetadataConstants.DATABASE_PROCESSING_COMMAND_METAKEY, mcMMO.p);
+        ((Player) sender).removeMetadata(MetadataConstants.DATABASE_PROCESSING_COMMAND_METAKEY, pluginRef);
     }
 
     private void displayChat() {
 //        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
         Integer rank;
 
-        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Heading"));
-        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Player", playerName));
+        sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mcrank.Heading"));
+        sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mcrank.Player", playerName));
 
         for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
 //            if (!skill.getPermissions(player)) {
@@ -53,11 +51,11 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
 //            }
 
             rank = skills.get(skill);
-            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", skill.getName(), (rank == null ? LocaleLoader.getString("Commands.mcrank.Unranked") : rank)));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mcrank.Skill", skill.getName(), (rank == null ? pluginRef.getLocaleManager().getString("Commands.mcrank.Unranked") : rank)));
         }
 
         rank = skills.get(null);
-        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall", (rank == null ? LocaleLoader.getString("Commands.mcrank.Unranked") : rank)));
+        sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mcrank.Overall", (rank == null ? pluginRef.getLocaleManager().getString("Commands.mcrank.Unranked") : rank)));
     }
 
     public void displayBoard() {

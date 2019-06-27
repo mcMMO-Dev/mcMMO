@@ -4,7 +4,7 @@
 //import com.gmail.nossr50.config.Config;
 //import com.gmail.nossr50.datatypes.interactions.NotificationType;
 //import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-//import com.gmail.nossr50.locale.LocaleLoader;
+//import com.gmail.nossr50.locale.LocaleManager;
 //import com.gmail.nossr50.mcMMO;
 //import com.gmail.nossr50.util.player.NotificationManager;
 //import com.gmail.nossr50.util.player.UserManager;
@@ -221,7 +221,7 @@
 //            return;
 //        }
 //
-//        sender.sendMessage(LocaleLoader.getString("Holiday.Anniversary", (currentYear - START_YEAR)));
+//        sender.sendMessage(pluginRef.getLocaleManager().getString("Holiday.Anniversary", (currentYear - START_YEAR)));
 //        /*if (sender instanceof Player) {
 //            final int firework_amount = 10;
 //            for (int i = 0; i < firework_amount; i++) {

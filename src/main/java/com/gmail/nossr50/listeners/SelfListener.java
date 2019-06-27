@@ -11,7 +11,6 @@ import com.gmail.nossr50.util.player.PlayerLevelUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -41,7 +40,7 @@ public class SelfListener implements Listener {
         //Reset the delay timer
         RankUtils.resetUnlockDelayTimer();
 
-        if (mcMMO.getScoreboardSettings().getScoreboardsEnabled())
+        if (pluginRef.getScoreboardSettings().getScoreboardsEnabled())
             ScoreboardManager.handleLevelUp(player, skill);
 
         /*if ((event.getSkillLevel() % Config.getInstance().getLevelUpEffectsTier()) == 0) {
@@ -51,13 +50,13 @@ public class SelfListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerXp(McMMOPlayerXpGainEvent event) {
-        if (mcMMO.getScoreboardSettings().getScoreboardsEnabled())
+        if (pluginRef.getScoreboardSettings().getScoreboardsEnabled())
             ScoreboardManager.handleXp(event.getPlayer(), event.getSkill());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onAbility(McMMOPlayerAbilityActivateEvent event) {
-        if (mcMMO.getScoreboardSettings().getScoreboardsEnabled())
+        if (pluginRef.getScoreboardSettings().getScoreboardsEnabled())
             ScoreboardManager.cooldownUpdate(event.getPlayer(), event.getSkill());
     }
 
@@ -84,7 +83,7 @@ public class SelfListener implements Listener {
             return;
         }
 
-        if (mcMMO.getConfigManager().getConfigLeveling().isEnableEarlyGameBoost()) {
+        if (pluginRef.getConfigManager().getConfigLeveling().isEnableEarlyGameBoost()) {
 
             int earlyGameBonusXP = 0;
 
@@ -96,9 +95,9 @@ public class SelfListener implements Listener {
             }
         }
 
-        int threshold = mcMMO.getConfigManager().getConfigLeveling().getSkillThreshold(primarySkillType);
+        int threshold = pluginRef.getConfigManager().getConfigLeveling().getSkillThreshold(primarySkillType);
 
-        if (threshold <= 0 || !mcMMO.getConfigManager().getConfigLeveling().getConfigLevelingDiminishedReturns().isDiminishedReturnsEnabled()) {
+        if (threshold <= 0 || !pluginRef.getConfigManager().getConfigLeveling().getConfigLevelingDiminishedReturns().isDiminishedReturnsEnabled()) {
             // Diminished returns is turned off
             return;
         }
@@ -114,9 +113,9 @@ public class SelfListener implements Listener {
 
         final double rawXp = event.getRawXpGained();
 
-        double guaranteedMinimum = mcMMO.getConfigManager().getConfigLeveling().getGuaranteedMinimums() * rawXp;
+        double guaranteedMinimum = pluginRef.getConfigManager().getConfigLeveling().getGuaranteedMinimums() * rawXp;
 
-        double modifiedThreshold = (double) (threshold / primarySkillType.getXpModifier() * mcMMO.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult());
+        double modifiedThreshold = (double) (threshold / primarySkillType.getXpModifier() * pluginRef.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult());
         double difference = (mcMMOPlayer.getProfile().getRegisteredXpGain(primarySkillType) - modifiedThreshold) / modifiedThreshold;
 
         if (difference > 0) {

@@ -2,7 +2,6 @@ package com.gmail.nossr50.util.experience;
 
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.mcMMO;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +16,7 @@ public class FormulaManager {
     private FormulaType currentFormula;
 
     public FormulaManager() {
-        currentFormula = mcMMO.getConfigManager().getConfigLeveling().getFormulaType();
+        currentFormula = pluginRef.getConfigManager().getConfigLeveling().getFormulaType();
         initExperienceNeededMaps();
     }
 
@@ -64,7 +63,7 @@ public class FormulaManager {
     public int[] calculateNewLevel(PrimarySkillType primarySkillType, int experience) {
         int newLevel = 0;
         int remainder = 0;
-        int maxLevel = mcMMO.getConfigManager().getConfigLeveling().getSkillLevelCap(primarySkillType);
+        int maxLevel = pluginRef.getConfigManager().getConfigLeveling().getSkillLevelCap(primarySkillType);
 
         while (experience > 0 && newLevel < maxLevel) {
             int experienceToNextLevel = getXPtoNextLevel(newLevel, currentFormula);
@@ -124,7 +123,7 @@ public class FormulaManager {
      * @param formulaType target formulaType
      */
     private int processXPToNextLevel(int level, FormulaType formulaType) {
-        if(mcMMO.isRetroModeEnabled())
+        if(pluginRef.isRetroModeEnabled())
         {
             return processXPRetroToNextLevel(level, formulaType);
         } else {
@@ -182,18 +181,18 @@ public class FormulaManager {
      * @return the raw XP needed for the next level based on formula type
      */
     private int calculateXPNeeded(int level, FormulaType formulaType) {
-        int base = mcMMO.getConfigManager().getConfigLeveling().getConfigExperienceFormula().getBase(formulaType);
-        double multiplier = mcMMO.getConfigManager().getConfigLeveling().getConfigExperienceFormula().getMultiplier(formulaType);
+        int base = pluginRef.getConfigManager().getConfigLeveling().getConfigExperienceFormula().getBase(formulaType);
+        double multiplier = pluginRef.getConfigManager().getConfigLeveling().getConfigExperienceFormula().getMultiplier(formulaType);
 
         switch(formulaType) {
             case LINEAR:
                 return (int) Math.floor(base + level * multiplier);
             case EXPONENTIAL:
-                double exponent = mcMMO.getConfigManager().getConfigLeveling().getConfigExperienceFormula().getExponentialExponent();
+                double exponent = pluginRef.getConfigManager().getConfigLeveling().getConfigExperienceFormula().getExponentialExponent();
                 return (int) Math.floor(multiplier * Math.pow(level, exponent) + base);
             default:
                 //TODO: Should never be called
-                mcMMO.p.getLogger().severe("Invalid formula specified for calculation, defaulting to Linear");
+                pluginRef.getLogger().severe("Invalid formula specified for calculation, defaulting to Linear");
                 return calculateXPNeeded(level, FormulaType.LINEAR);
         }
     }

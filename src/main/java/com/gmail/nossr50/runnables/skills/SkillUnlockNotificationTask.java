@@ -2,7 +2,6 @@ package com.gmail.nossr50.runnables.skills;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.mcMMO;
 import org.bukkit.scheduler.BukkitRunnable;
 
 
@@ -38,6 +37,6 @@ public class SkillUnlockNotificationTask extends BukkitRunnable {
     @Override
     public void run() {
         //mcMMOPlayer.getPlayer().sendTitle(subSkillType.getLocaleName(), "Rank "+rank, 7, 20, 7);
-        mcMMO.getNotificationManager().sendPlayerUnlockNotification(mcMMOPlayer, subSkillType);
+        pluginRef.getNotificationManager().sendPlayerUnlockNotification(mcMMOPlayer, subSkillType);
     }
 }

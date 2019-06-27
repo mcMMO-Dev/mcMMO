@@ -1,7 +1,5 @@
 package com.gmail.nossr50.datatypes.party;
 
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.inventory.ItemStack;
@@ -22,7 +20,7 @@ public enum ItemShareType {
             return HERBALISM;
         } else if (ItemUtils.isWoodcuttingDrop(itemStack)) {
             return WOODCUTTING;
-        } else if (mcMMO.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(itemStack.getType()) != null) {
+        } else if (pluginRef.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(itemStack.getType()) != null) {
             return MISC;
         }
 
@@ -30,6 +28,6 @@ public enum ItemShareType {
     }
 
     public String getLocaleString() {
-        return LocaleLoader.getString("Party.ItemShare.Category." + StringUtils.getCapitalized(this.toString()));
+        return pluginRef.getLocaleManager().getString("Party.ItemShare.Category." + StringUtils.getCapitalized(this.toString()));
     }
 }

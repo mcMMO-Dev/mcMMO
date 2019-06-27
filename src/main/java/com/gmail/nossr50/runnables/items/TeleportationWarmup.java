@@ -1,9 +1,6 @@
 package com.gmail.nossr50.runnables.items;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -30,23 +27,23 @@ public class TeleportationWarmup extends BukkitRunnable {
 
         mcMMOPlayer.setTeleportCommenceLocation(null);
 
-        if (!PartyManager.inSameParty(teleportingPlayer, targetPlayer)) {
-            teleportingPlayer.sendMessage(LocaleLoader.getString("Party.NotInYourParty", targetPlayer.getName()));
+        if (!pluginRef.getPartyManager().inSameParty(teleportingPlayer, targetPlayer)) {
+            teleportingPlayer.sendMessage(pluginRef.getLocaleManager().getString("Party.NotInYourParty", targetPlayer.getName()));
             return;
         }
 
         if (newLocation.distanceSquared(previousLocation) > 1.0) {
-            teleportingPlayer.sendMessage(LocaleLoader.getString("Teleport.Cancelled"));
+            teleportingPlayer.sendMessage(pluginRef.getLocaleManager().getString("Teleport.Cancelled"));
             return;
         }
 
-        int hurtCooldown = mcMMO.getConfigManager().getConfigParty().getPTP().getPtpRecentlyHurtCooldown();
+        int hurtCooldown = pluginRef.getConfigManager().getConfigParty().getPTP().getPtpRecentlyHurtCooldown();
 
         if (hurtCooldown > 0) {
             int timeRemaining = SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, hurtCooldown, teleportingPlayer);
 
             if (timeRemaining > 0) {
-                teleportingPlayer.sendMessage(LocaleLoader.getString("Item.Injured.Wait", timeRemaining));
+                teleportingPlayer.sendMessage(pluginRef.getLocaleManager().getString("Item.Injured.Wait", timeRemaining));
                 return;
             }
         }

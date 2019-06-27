@@ -10,7 +10,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.HerbalismBlockUpdaterTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.*;
@@ -37,7 +36,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canBlockCheck() {
-        return !(mcMMO.getConfigManager().getConfigExploitPrevention().isPreventVehicleAutoFarming() && getPlayer().isInsideVehicle());
+        return !(pluginRef.getConfigManager().getConfigExploitPrevention().isPreventVehicleAutoFarming() && getPlayer().isInsideVehicle());
     }
 
     public boolean canGreenThumbBlock(BlockState blockState) {
@@ -107,7 +106,7 @@ public class HerbalismManager extends SkillManager {
         ItemStack seed = new ItemStack(Material.WHEAT_SEEDS);
 
         if (!playerInventory.containsAtLeast(seed, 1)) {
-            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Herbalism.Ability.GTe.NeedMore");
+            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Herbalism.Ability.GTe.NeedMore");
             return false;
         }
 
@@ -126,7 +125,7 @@ public class HerbalismManager extends SkillManager {
         boolean oneBlockPlant = isOneBlockPlant(material);
 
         // Prevents placing and immediately breaking blocks for exp
-        if (oneBlockPlant && mcMMO.getPlaceStore().isTrue(blockState)) {
+        if (oneBlockPlant && pluginRef.getPlaceStore().isTrue(blockState)) {
             return;
         }
 
@@ -147,7 +146,7 @@ public class HerbalismManager extends SkillManager {
 //            }
 //        }
 //        else {
-        xp = mcMMO.getDynamicSettingsManager().getExperienceManager().getHerbalismXp(blockState.getType());
+        xp = pluginRef.getDynamicSettingsManager().getExperienceManager().getHerbalismXp(blockState.getType());
 
         if (!oneBlockPlant) {
             //Kelp is actually two blocks mixed together
@@ -173,7 +172,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean isOneBlockPlant(Material material) {
-        return !mcMMO.getMaterialMapStore().isMultiBlock(material);
+        return !pluginRef.getMaterialMapStore().isMultiBlock(material);
     }
 
     /**
@@ -194,7 +193,7 @@ public class HerbalismManager extends SkillManager {
      */
     public boolean processGreenThumbBlocks(BlockState blockState) {
         if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.HERBALISM_GREEN_THUMB, getPlayer())) {
-            mcMMO.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILED, "Herbalism.Ability.GTh.Fail");
+            pluginRef.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILED, "Herbalism.Ability.GTh.Fail");
             return false;
         }
 
@@ -233,7 +232,7 @@ public class HerbalismManager extends SkillManager {
                 }
                 blockState.setType(Material.AIR);
                 Misc.dropItem(location, treasure.getDrop());
-                mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Herbalism.HylianLuck");
+                pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Herbalism.HylianLuck");
                 return true;
             }
         }
@@ -251,12 +250,12 @@ public class HerbalismManager extends SkillManager {
         PlayerInventory playerInventory = player.getInventory();
 
         if (!playerInventory.contains(Material.BROWN_MUSHROOM, 1)) {
-            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyItemString(Material.BROWN_MUSHROOM));
+            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyItemString(Material.BROWN_MUSHROOM));
             return false;
         }
 
         if (!playerInventory.contains(Material.RED_MUSHROOM, 1)) {
-            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyItemString(Material.RED_MUSHROOM));
+            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Skills.NeedMore", StringUtils.getPrettyItemString(Material.RED_MUSHROOM));
             return false;
         }
 
@@ -265,7 +264,7 @@ public class HerbalismManager extends SkillManager {
         player.updateInventory();
 
         if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.HERBALISM_SHROOM_THUMB, player)) {
-            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Herbalism.Ability.ShroomThumb.Fail");
+            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Herbalism.Ability.ShroomThumb.Fail");
             return false;
         }
 
@@ -334,13 +333,13 @@ public class HerbalismManager extends SkillManager {
             player.updateInventory(); // Needed until replacement available
         }
 
-        new HerbalismBlockUpdaterTask(blockState).runTaskLater(mcMMO.p, 0);
+        new HerbalismBlockUpdaterTask(blockState).runTaskLater(pluginRef, 0);
     }
 
     private boolean handleBlockState(BlockState blockState, boolean greenTerra) {
         int greenThumbStage = getGreenThumbStage();
 
-        blockState.setMetadata(MetadataConstants.GREEN_THUMB_METAKEY, new FixedMetadataValue(mcMMO.p, (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)));
+        blockState.setMetadata(MetadataConstants.GREEN_THUMB_METAKEY, new FixedMetadataValue(pluginRef, (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)));
         Ageable crops = (Ageable) blockState.getBlockData();
 
         switch (blockState.getType()) {

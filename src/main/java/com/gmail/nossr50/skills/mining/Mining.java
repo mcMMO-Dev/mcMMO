@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.mining;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import org.bukkit.Material;
@@ -16,7 +15,7 @@ public class Mining {
 
     public Mining() {
         //Init detonators
-        this.detonators = ItemUtils.matchMaterials(mcMMO.getConfigManager().getConfigMining().getDetonators());
+        this.detonators = ItemUtils.matchMaterials(pluginRef.getConfigManager().getConfigMining().getDetonators());
     }
 
     public static Mining getInstance() {
@@ -32,7 +31,7 @@ public class Mining {
      * @param blockState The {@link BlockState} to check ability activation for
      */
     public static int getBlockXp(BlockState blockState) {
-        int xp = mcMMO.getDynamicSettingsManager().getExperienceManager().getMiningXp(blockState.getType());
+        int xp = pluginRef.getDynamicSettingsManager().getExperienceManager().getMiningXp(blockState.getType());
 
         return xp;
     }

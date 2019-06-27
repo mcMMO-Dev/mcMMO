@@ -13,8 +13,10 @@ import java.util.List;
 public class BonusDropManager {
 
     private HashMap<Material, Boolean> bonusDropWhitelist;
+    private mcMMO pluginRef;
 
-    public BonusDropManager() {
+    public BonusDropManager(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
         bonusDropWhitelist = new HashMap<>();
 
         //Start by setting all Materials to false to avoid null checks
@@ -48,7 +50,7 @@ public class BonusDropManager {
             Material m = Material.matchMaterial(material);
             if (m == null) {
                 //TODO: reduce to info level?
-                mcMMO.p.getLogger().severe("Error registering Bonus Drop -- Invalid Minecraft Name ID: " + material);
+                pluginRef.getLogger().severe("Error registering Bonus Drop -- Invalid Minecraft Name ID: " + material);
                 continue;
             }
 

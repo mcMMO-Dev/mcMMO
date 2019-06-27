@@ -147,7 +147,7 @@
 //
 //    private static ChatManager getPartyChatManager(Plugin plugin, String party) {
 //        ChatManager chatManager = ChatManagerFactory.getChatManager(plugin, ChatMode.PARTY);
-//        ((PartyChatManager) chatManager).setParty(PartyManager.getParty(party));
+//        ((PartyChatManager) chatManager).setParty(pluginRef.getPartyManager().getParty(party));
 //
 //        return chatManager;
 //    }

@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
@@ -69,16 +68,16 @@ public class SwordsManager extends SkillManager {
                 if (defender.isBlocking())
                     return;
 
-                if (mcMMO.getNotificationManager().doesPlayerUseNotifications(defender)) {
+                if (pluginRef.getNotificationManager().doesPlayerUseNotifications(defender)) {
                     if (!BleedTimerTask.isBleeding(defender))
-                        mcMMO.getNotificationManager().sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Started");
+                        pluginRef.getNotificationManager().sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding.Started");
                 }
             }
 
             BleedTimerTask.add(target, getPlayer(), getRuptureBleedTicks(), RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE), getToolTier(getPlayer().getInventory().getItemInMainHand()));
 
             if (mcMMOPlayer.useChatNotifications()) {
-                mcMMO.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding");
+                pluginRef.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding");
             }
         }
     }
@@ -106,7 +105,7 @@ public class SwordsManager extends SkillManager {
     }
 
     public int getRuptureBleedTicks() {
-        int bleedTicks = mcMMO.getConfigManager().getConfigSwords().getRuptureBaseTicks() * RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE);
+        int bleedTicks = pluginRef.getConfigManager().getConfigSwords().getRuptureBaseTicks() * RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE);
 
         /*if (bleedTicks > AdvancedConfig.getInstance().getRuptureMaxTicks())
             bleedTicks = AdvancedConfig.getInstance().getRuptureMaxTicks();*/
@@ -122,12 +121,12 @@ public class SwordsManager extends SkillManager {
      */
     public void counterAttackChecks(LivingEntity attacker, double damage) {
         if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_COUNTER_ATTACK, getPlayer())) {
-            CombatUtils.dealDamage(attacker, damage / mcMMO.getConfigManager().getConfigSwords().getCounterAttackDamageModifier(), getPlayer());
+            CombatUtils.dealDamage(attacker, damage / pluginRef.getConfigManager().getConfigSwords().getCounterAttackDamageModifier(), getPlayer());
 
-            mcMMO.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Countered");
+            pluginRef.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Countered");
 
             if (attacker instanceof Player) {
-                mcMMO.getNotificationManager().sendPlayerInformation((Player) attacker, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Counter.Hit");
+                pluginRef.getNotificationManager().sendPlayerInformation((Player) attacker, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Counter.Hit");
             }
         }
     }
@@ -139,6 +138,6 @@ public class SwordsManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public void serratedStrikes(LivingEntity target, double damage, Map<DamageModifier, Double> modifiers) {
-        CombatUtils.applyAbilityAoE(getPlayer(), target, damage / mcMMO.getConfigManager().getConfigSwords().getSerratedStrikesDamageModifier(), modifiers, skill);
+        CombatUtils.applyAbilityAoE(getPlayer(), target, damage / pluginRef.getConfigManager().getConfigSwords().getSerratedStrikesDamageModifier(), modifiers, skill);
     }
 }

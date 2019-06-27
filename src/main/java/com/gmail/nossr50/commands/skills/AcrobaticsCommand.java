@@ -4,7 +4,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
@@ -21,8 +21,8 @@ public class AcrobaticsCommand extends SkillCommand {
     private boolean canDodge;
     private boolean canRoll;
 
-    public AcrobaticsCommand() {
-        super(PrimarySkillType.ACROBATICS);
+    public AcrobaticsCommand(mcMMO pluginRef) {
+        super(PrimarySkillType.ACROBATICS, pluginRef);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class AcrobaticsCommand extends SkillCommand {
 
         if (canDodge) {
             messages.add(getStatMessage(SubSkillType.ACROBATICS_DODGE, dodgeChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", dodgeChanceLucky) : ""));
+                    + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", dodgeChanceLucky) : ""));
         }
 
         if (canRoll) {
@@ -76,10 +76,10 @@ public class AcrobaticsCommand extends SkillCommand {
                 double graceChanceLucky = graceChance * 1.333D;
 
                 messages.add(getStatMessage(SubSkillType.ACROBATICS_ROLL, rollStrings[0])
-                        + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", rollStrings[1]) : ""));
+                        + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", rollStrings[1]) : ""));
 
                 /*messages.add(getStatMessage(true, false, SubSkillType.ACROBATICS_ROLL, String.valueOf(graceChance))
-                        + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", String.valueOf(graceChanceLucky)) : ""));*/
+                        + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", String.valueOf(graceChanceLucky)) : ""));*/
             }
         }
 

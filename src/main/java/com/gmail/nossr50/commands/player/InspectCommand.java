@@ -3,7 +3,6 @@ package com.gmail.nossr50.commands.player;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
@@ -20,6 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InspectCommand implements TabExecutor {
+
+    private mcMMO pluginRef;
+
+    public InspectCommand(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
@@ -29,35 +35,35 @@ public class InspectCommand implements TabExecutor {
 
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {
-                    PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false); // Temporary Profile
+                    PlayerProfile profile = pluginRef.getDatabaseManager().loadPlayerProfile(playerName, false); // Temporary Profile
 
                     if (!CommandUtils.isLoaded(sender, profile)) {
                         return true;
                     }
 
 
-                    if (mcMMO.getScoreboardSettings().getScoreboardsEnabled() && sender instanceof Player
-                            && mcMMO.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionInspectBoard().isUseThisBoard()) {
+                    if (pluginRef.getScoreboardSettings().getScoreboardsEnabled() && sender instanceof Player
+                            && pluginRef.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionInspectBoard().isUseThisBoard()) {
                         ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, profile);
 
-                        if (!mcMMO.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionInspectBoard().isPrintToChat()) {
+                        if (!pluginRef.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionInspectBoard().isPrintToChat()) {
                             return true;
                         }
                     }
 
-                    sender.sendMessage(LocaleLoader.getString("Inspect.OfflineStats", playerName));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Inspect.OfflineStats", playerName));
 
-                    sender.sendMessage(LocaleLoader.getString("Stats.Header.Gathering"));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Stats.Header.Gathering"));
                     for (PrimarySkillType skill : PrimarySkillType.GATHERING_SKILLS) {
                         sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                     }
 
-                    sender.sendMessage(LocaleLoader.getString("Stats.Header.Combat"));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Stats.Header.Combat"));
                     for (PrimarySkillType skill : PrimarySkillType.COMBAT_SKILLS) {
                         sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                     }
 
-                    sender.sendMessage(LocaleLoader.getString("Stats.Header.Misc"));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Stats.Header.Misc"));
                     for (PrimarySkillType skill : PrimarySkillType.MISC_SKILLS) {
                         sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                     }
@@ -66,26 +72,26 @@ public class InspectCommand implements TabExecutor {
                     Player target = mcMMOPlayer.getPlayer();
 
                     if (CommandUtils.hidden(sender, target, Permissions.inspectHidden(sender))) {
-                        sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
+                        sender.sendMessage(pluginRef.getLocaleManager().getString("Inspect.Offline"));
                         return true;
                     }
                     else if (CommandUtils.tooFar(sender, target, Permissions.inspectFar(sender))) {
                         return true;
                     }
 
-                    if (mcMMO.getScoreboardSettings().getScoreboardsEnabled() && sender instanceof Player && mcMMO.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionInspectBoard().isUseThisBoard()) {
+                    if (pluginRef.getScoreboardSettings().getScoreboardsEnabled() && sender instanceof Player && pluginRef.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionInspectBoard().isUseThisBoard()) {
                         ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, mcMMOPlayer.getProfile());
 
-                        if (!mcMMO.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionInspectBoard().isPrintToChat()) {
+                        if (!pluginRef.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionInspectBoard().isPrintToChat()) {
                             return true;
                         }
                     }
 
-                    sender.sendMessage(LocaleLoader.getString("Inspect.Stats", target.getName()));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Inspect.Stats", target.getName()));
                     CommandUtils.printGatheringSkills(target, sender);
                     CommandUtils.printCombatSkills(target, sender);
                     CommandUtils.printMiscSkills(target, sender);
-                    sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", mcMMOPlayer.getPowerLevel()));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.PowerLevel", mcMMOPlayer.getPowerLevel()));
                 }
 
                 return true;

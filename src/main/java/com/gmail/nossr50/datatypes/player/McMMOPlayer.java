@@ -10,9 +10,7 @@ import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
@@ -93,7 +91,7 @@ public class McMMOPlayer {
         UUID uuid = player.getUniqueId();
 
         this.player = player;
-        playerMetadata = new FixedMetadataValue(mcMMO.p, playerName);
+        playerMetadata = new FixedMetadataValue(pluginRef, playerName);
         this.profile = profile;
 
         if (profile.getUniqueId() == null) {
@@ -111,7 +109,7 @@ public class McMMOPlayer {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
+            pluginRef.getPluginLoader().disablePlugin(pluginRef);
         }
 
         for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {
@@ -141,7 +139,7 @@ public class McMMOPlayer {
                 continue;
 
             //Set the players custom XP modifier, defaults to 1.0D on missing entries
-            personalXPModifiers.put(primarySkillType, mcMMO.getPlayerLevelUtils().determineXpPerkValue(player, primarySkillType));
+            personalXPModifiers.put(primarySkillType, pluginRef.getPlayerLevelUtils().determineXpPerkValue(player, primarySkillType));
         }
     }
 
@@ -169,17 +167,17 @@ public class McMMOPlayer {
     {
         //Check if they've reached the power level cap just now
         if(hasReachedPowerLevelCap()) {
-            mcMMO.getNotificationManager().sendPlayerInformationChatOnly(player, "LevelCap.PowerLevel", String.valueOf(mcMMO.getConfigManager().getConfigLeveling().getPowerLevelCap()));
+            pluginRef.getNotificationManager().sendPlayerInformationChatOnly(player, "LevelCap.PowerLevel", String.valueOf(pluginRef.getConfigManager().getConfigLeveling().getPowerLevelCap()));
         } else if(hasReachedLevelCap(primarySkillType)) {
-            mcMMO.getNotificationManager().sendPlayerInformationChatOnly(player, "LevelCap.Skill", String.valueOf(mcMMO.getConfigManager().getConfigLeveling().getSkillLevelCap(primarySkillType)), primarySkillType.getName());
+            pluginRef.getNotificationManager().sendPlayerInformationChatOnly(player, "LevelCap.Skill", String.valueOf(pluginRef.getConfigManager().getConfigLeveling().getSkillLevelCap(primarySkillType)), primarySkillType.getName());
         }
 
         //Updates from Party sources
-        if (xpGainSource == XPGainSource.PARTY_MEMBERS && !mcMMO.getConfigManager().getConfigLeveling().isPartyExperienceTriggerXpBarDisplay())
+        if (xpGainSource == XPGainSource.PARTY_MEMBERS && !pluginRef.getConfigManager().getConfigLeveling().isPartyExperienceTriggerXpBarDisplay())
             return;
 
         //Updates from passive sources (Alchemy, Smelting, etc...)
-        if (xpGainSource == XPGainSource.PASSIVE && !mcMMO.getConfigManager().getConfigLeveling().isPassiveGainXPBars())
+        if (xpGainSource == XPGainSource.PASSIVE && !pluginRef.getConfigManager().getConfigLeveling().isPassiveGainXPBars())
             return;
 
         updateXPBar(primarySkillType, plugin);
@@ -418,7 +416,7 @@ public class McMMOPlayer {
     }
 
     public void actualizeTeleportATS() {
-        teleportATS = System.currentTimeMillis() + (mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().getTeleportCooldownSeconds() * 1000);
+        teleportATS = System.currentTimeMillis() + (pluginRef.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().getTeleportCooldownSeconds() * 1000);
     }
 
     public long getDatabaseATS() {
@@ -492,7 +490,7 @@ public class McMMOPlayer {
         if(hasReachedPowerLevelCap())
             return true;
 
-        if(getSkillLevel(primarySkillType) >= mcMMO.getConfigManager().getConfigLeveling().getSkillLevelCap(primarySkillType))
+        if(getSkillLevel(primarySkillType) >= pluginRef.getConfigManager().getConfigLeveling().getSkillLevelCap(primarySkillType))
             return true;
 
         return false;
@@ -504,7 +502,7 @@ public class McMMOPlayer {
      * @return true if they have reached the power level cap
      */
     public boolean hasReachedPowerLevelCap() {
-        return this.getPowerLevel() >= mcMMO.getConfigManager().getConfigLeveling().getPowerLevelCap();
+        return this.getPowerLevel() >= pluginRef.getConfigManager().getConfigLeveling().getPowerLevelCap();
     }
 
     /**
@@ -557,7 +555,7 @@ public class McMMOPlayer {
             return;
         }
 
-        if (!mcMMO.getConfigManager().getConfigParty().getPartyXP().getPartyLevel().isPartyLevelingNeedsNearbyMembers() || !PartyManager.getNearMembers(this).isEmpty()) {
+        if (!pluginRef.getConfigManager().getConfigParty().getPartyXP().getPartyLevel().isPartyLevelingNeedsNearbyMembers() || !pluginRef.getPartyManager().getNearMembers(this).isEmpty()) {
             party.applyXpGain(modifyXpGain(skill, xp));
         }
     }
@@ -601,7 +599,7 @@ public class McMMOPlayer {
             return;
 
         if (getSkillXpLevelRaw(primarySkillType) < getXpToLevel(primarySkillType)) {
-            processPostXpEvent(primarySkillType, mcMMO.p, xpGainSource);
+            processPostXpEvent(primarySkillType, pluginRef, xpGainSource);
             return;
         }
 
@@ -609,7 +607,7 @@ public class McMMOPlayer {
         double xpRemoved = 0;
 
         while (getSkillXpLevelRaw(primarySkillType) >= getXpToLevel(primarySkillType)) {
-            if (mcMMO.getPlayerLevelingSettings().isSkillLevelCapEnabled(primarySkillType)
+            if (pluginRef.getPlayerLevelingSettings().isSkillLevelCapEnabled(primarySkillType)
                     && hasReachedLevelCap(primarySkillType)) {
                 setSkillXpLevel(primarySkillType, 0);
                 break;
@@ -629,10 +627,10 @@ public class McMMOPlayer {
          * Check to see if the player unlocked any new skills
          */
 
-        mcMMO.getNotificationManager().sendPlayerLevelUpNotification(this, primarySkillType, levelsGained, profile.getSkillLevel(primarySkillType));
+        pluginRef.getNotificationManager().sendPlayerLevelUpNotification(this, primarySkillType, levelsGained, profile.getSkillLevel(primarySkillType));
 
         //UPDATE XP BARS
-        processPostXpEvent(primarySkillType, mcMMO.p, xpGainSource);
+        processPostXpEvent(primarySkillType, pluginRef, xpGainSource);
     }
 
     /*
@@ -652,7 +650,7 @@ public class McMMOPlayer {
      */
 
     public void setupPartyData() {
-        party = PartyManager.getPlayerParty(player.getName(), player.getUniqueId());
+        party = pluginRef.getPartyManager().getPlayerParty(player.getName(), player.getUniqueId());
         ptpRecord = new PartyTeleportRecord();
 
         if (inParty()) {
@@ -805,12 +803,12 @@ public class McMMOPlayer {
      */
     private double modifyXpGain(PrimarySkillType primarySkillType, double xp) {
         if (((primarySkillType.getMaxLevel() <= getSkillLevel(primarySkillType))
-                && mcMMO.getPlayerLevelingSettings().isSkillLevelCapEnabled(primarySkillType))
-                || (mcMMO.getPlayerLevelingSettings().getConfigSectionLevelCaps().getPowerLevelSettings().getLevelCap() <= getPowerLevel())) {
+                && pluginRef.getPlayerLevelingSettings().isSkillLevelCapEnabled(primarySkillType))
+                || (pluginRef.getPlayerLevelingSettings().getConfigSectionLevelCaps().getPowerLevelSettings().getLevelCap() <= getPowerLevel())) {
             return 0;
         }
 
-        xp = (double) (xp / primarySkillType.getXpModifier() * mcMMO.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult());
+        xp = (double) (xp / primarySkillType.getXpModifier() * pluginRef.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult());
 
         //Multiply by the players personal XP rate
         return xp * personalXPModifiers.get(primarySkillType);
@@ -820,14 +818,14 @@ public class McMMOPlayer {
         if (godMode && !Permissions.mcgod(player)
                 || godMode && WorldBlacklist.isWorldBlacklisted(player.getWorld())) {
             toggleGodMode();
-            player.sendMessage(LocaleLoader.getString("Commands.GodMode.Forbidden"));
+            player.sendMessage(pluginRef.getLocaleManager().getString("Commands.GodMode.Forbidden"));
         }
     }
 
     public void checkParty() {
         if (inParty() && !Permissions.party(player)) {
             removeParty();
-            player.sendMessage(LocaleLoader.getString("Party.Forbidden"));
+            player.sendMessage(pluginRef.getLocaleManager().getString("Party.Forbidden"));
         }
     }
 
@@ -850,7 +848,7 @@ public class McMMOPlayer {
             int diff = RankUtils.getSuperAbilityUnlockRequirement(skill.getSuperAbility()) - getSkillLevel(skill);
 
             //Inform the player they are not yet skilled enough
-            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.AbilityGateRequirementFail", String.valueOf(diff), skill.getName());
+            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.AbilityGateRequirementFail", String.valueOf(diff), skill.getName());
             return;
         }
 
@@ -862,7 +860,7 @@ public class McMMOPlayer {
              * We show them the too tired message when they take action.
              */
             if (skill == PrimarySkillType.WOODCUTTING || skill == PrimarySkillType.AXES) {
-                mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf(timeRemaining));
+                pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf(timeRemaining));
                 //SoundManager.sendSound(player, player.getLocation(), SoundType.TIRED);
             }
 
@@ -874,7 +872,7 @@ public class McMMOPlayer {
         }
 
         if (useChatNotifications()) {
-            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUPER_ABILITY, ability.getAbilityOn());
+            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUPER_ABILITY, ability.getAbilityOn());
             //player.sendMessage(ability.getAbilityOn());
         }
 
@@ -894,11 +892,11 @@ public class McMMOPlayer {
         }
 
         setToolPreparationMode(tool, false);
-        new AbilityDisableTask(this, ability).runTaskLater(mcMMO.p, abilityLength * Misc.TICK_CONVERSION_FACTOR);
+        new AbilityDisableTask(this, ability).runTaskLater(pluginRef, abilityLength * Misc.TICK_CONVERSION_FACTOR);
     }
 
     public void processAbilityActivation(PrimarySkillType skill) {
-        if (mcMMO.getConfigManager().getConfigSuperAbilities().isMustSneakToActivate() && !player.isSneaking()) {
+        if (pluginRef.getConfigManager().getConfigSuperAbilities().isMustSneakToActivate() && !player.isSneaking()) {
             return;
         }
 
@@ -930,18 +928,18 @@ public class McMMOPlayer {
                 int timeRemaining = calculateTimeRemaining(ability);
 
                 if (!getAbilityMode(ability) && timeRemaining > 0) {
-                    mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf(timeRemaining));
+                    pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf(timeRemaining));
                     return;
                 }
             }
 
-            if (mcMMO.getConfigManager().getConfigNotifications().isSuperAbilityToolMessage()) {
-                mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.TOOL, tool.getRaiseTool());
+            if (pluginRef.getConfigManager().getConfigNotifications().isSuperAbilityToolMessage()) {
+                pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.TOOL, tool.getRaiseTool());
                 SoundManager.sendSound(player, player.getLocation(), SoundType.TOOL_READY);
             }
 
             setToolPreparationMode(tool, true);
-            new ToolLowerTask(this, tool).runTaskLater(mcMMO.p, 4 * Misc.TICK_CONVERSION_FACTOR);
+            new ToolLowerTask(this, tool).runTaskLater(pluginRef, 4 * Misc.TICK_CONVERSION_FACTOR);
         }
     }
 
@@ -1025,7 +1023,7 @@ public class McMMOPlayer {
 
         UserManager.remove(thisPlayer);
 
-        if (mcMMO.getScoreboardSettings().getScoreboardsEnabled())
+        if (pluginRef.getScoreboardSettings().getScoreboardsEnabled())
             ScoreboardManager.teardownPlayer(thisPlayer);
 
         if (inParty()) {
@@ -1033,6 +1031,6 @@ public class McMMOPlayer {
         }
 
         //Remove user from cache
-        mcMMO.getDatabaseManager().cleanupUser(thisPlayer.getUniqueId());
+        pluginRef.getDatabaseManager().cleanupUser(thisPlayer.getUniqueId());
     }
 }

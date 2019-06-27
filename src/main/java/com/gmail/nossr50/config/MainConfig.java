@@ -17,7 +17,7 @@ public class MainConfig extends ConfigValidated {
     public static final String GENERAL = "General";
     public static final String RETRO_MODE = "RetroMode";
     public static final String ENABLED = "Enabled";
-    public static final String LOCALE = "Locale";
+    public static final String LOCALE = "LocaleManager";
     public static final String EN_US = "en_us";
     public static final String SHOW_PROFILE_LOADED = "Show_Profile_Loaded";
     public static final String DONATE_MESSAGE = "Donate_Message";
@@ -200,7 +200,7 @@ public class MainConfig extends ConfigValidated {
 
     public MainConfig() {
         //super(McmmoCore.getDataFolderPath().getAbsoluteFile(), "config.yml", true);
-        super("main", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, true, true, true);
+        super("main", pluginRef.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, true, true, true);
     }
 
     /**
@@ -213,7 +213,7 @@ public class MainConfig extends ConfigValidated {
      */
     @Deprecated
     public static MainConfig getInstance() {
-        return mcMMO.getConfigManager().getMainConfig();
+        return pluginRef.getConfigManager().getMainConfig();
     }
 
     /**

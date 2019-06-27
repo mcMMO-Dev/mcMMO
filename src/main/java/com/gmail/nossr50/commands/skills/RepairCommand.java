@@ -2,7 +2,6 @@ package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
@@ -39,17 +38,17 @@ public class RepairCommand extends SkillCommand {
 //    private int ironLevel;
 //    private int stoneLevel;
 
-    public RepairCommand() {
-        super(PrimarySkillType.REPAIR);
+    public RepairCommand(mcMMO pluginRef) {
+        super(PrimarySkillType.REPAIR, pluginRef);
     }
 
     @Override
     protected void dataCalculations(Player player, double skillValue) {
         // We're using pickaxes here, not the best but it works
-        Repairable diamondRepairable = mcMMO.getRepairableManager().getRepairable(Material.DIAMOND_PICKAXE);
-        Repairable goldRepairable = mcMMO.getRepairableManager().getRepairable(Material.GOLDEN_PICKAXE);
-        Repairable ironRepairable = mcMMO.getRepairableManager().getRepairable(Material.IRON_PICKAXE);
-        Repairable stoneRepairable = mcMMO.getRepairableManager().getRepairable(Material.STONE_PICKAXE);
+        Repairable diamondRepairable = pluginRef.getRepairableManager().getRepairable(Material.DIAMOND_PICKAXE);
+        Repairable goldRepairable = pluginRef.getRepairableManager().getRepairable(Material.GOLDEN_PICKAXE);
+        Repairable ironRepairable = pluginRef.getRepairableManager().getRepairable(Material.IRON_PICKAXE);
+        Repairable stoneRepairable = pluginRef.getRepairableManager().getRepairable(Material.STONE_PICKAXE);
 
         // TODO: This isn't really accurate - if they don't have pickaxes loaded it doesn't always mean the repair level is 0
 //        diamondLevel = (diamondRepairable == null) ? 0 : diamondRepairable.getMinimumLevel();
@@ -59,8 +58,8 @@ public class RepairCommand extends SkillCommand {
 
         // REPAIR MASTERY
         if (canMasterRepair) {
-            double maxBonus = mcMMO.getDynamicSettingsManager().getSkillPropertiesManager().getMaxBonus(SubSkillType.REPAIR_REPAIR_MASTERY);
-            int maxBonusLevel = mcMMO.getDynamicSettingsManager().getSkillPropertiesManager().getMaxBonusLevel(SubSkillType.REPAIR_REPAIR_MASTERY);
+            double maxBonus = pluginRef.getDynamicSettingsManager().getSkillPropertiesManager().getMaxBonus(SubSkillType.REPAIR_REPAIR_MASTERY);
+            int maxBonusLevel = pluginRef.getDynamicSettingsManager().getSkillPropertiesManager().getMaxBonusLevel(SubSkillType.REPAIR_REPAIR_MASTERY);
 
             repairMasteryBonus = percent.format(Math.min(((maxBonus / maxBonusLevel) * skillValue), maxBonus) / 100D);
         }
@@ -100,7 +99,7 @@ public class RepairCommand extends SkillCommand {
                     String.valueOf(RankUtils.getRank(player, SubSkillType.REPAIR_ARCANE_FORGING)),
                     RankUtils.getHighestRankStr(SubSkillType.REPAIR_ARCANE_FORGING)));
 
-            if (mcMMO.getConfigManager().getConfigRepair().getArcaneForging().isDowngradesEnabled() || mcMMO.getConfigManager().getConfigRepair().getArcaneForging().isMayLoseEnchants()) {
+            if (pluginRef.getConfigManager().getConfigRepair().getArcaneForging().isDowngradesEnabled() || pluginRef.getConfigManager().getConfigRepair().getArcaneForging().isMayLoseEnchants()) {
                 messages.add(getStatMessage(true, true, SubSkillType.REPAIR_ARCANE_FORGING,
                         String.valueOf(arcaneBypass ? 100 : repairManager.getKeepEnchantChance()),
                         String.valueOf(arcaneBypass ? 0 : repairManager.getDowngradeEnchantChance()))); //Jesus those parentheses
@@ -113,7 +112,7 @@ public class RepairCommand extends SkillCommand {
 
         if (canSuperRepair) {
             messages.add(getStatMessage(SubSkillType.REPAIR_SUPER_REPAIR, superRepairChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", superRepairChanceLucky) : ""));
+                    + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", superRepairChanceLucky) : ""));
         }
 
         return messages;

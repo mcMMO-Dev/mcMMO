@@ -2,7 +2,6 @@ package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
@@ -28,8 +27,8 @@ public class SwordsCommand extends SkillCommand {
     private boolean canSerratedStrike;
     private boolean canBleed;
 
-    public SwordsCommand() {
-        super(PrimarySkillType.SWORDS);
+    public SwordsCommand(mcMMO pluginRef) {
+        super(PrimarySkillType.SWORDS, pluginRef);
     }
 
     @Override
@@ -70,31 +69,31 @@ public class SwordsCommand extends SkillCommand {
         List<String> messages = new ArrayList<>();
 
         int ruptureTicks = UserManager.getPlayer(player).getSwordsManager().getRuptureBleedTicks();
-        double ruptureDamagePlayer = mcMMO.getConfigManager().getConfigSwords().getRuptureDamagePlayer();
-        double pveRupture = mcMMO.getConfigManager().getConfigSwords().getRuptureDamageMobs();
+        double ruptureDamagePlayer = pluginRef.getConfigManager().getConfigSwords().getRuptureDamagePlayer();
+        double pveRupture = pluginRef.getConfigManager().getConfigSwords().getRuptureDamageMobs();
 
         double pvpDamageRupture = RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? ruptureDamagePlayer * 1.5D : ruptureDamagePlayer;
         double ruptureDamageMobs = RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? pveRupture * 1.5D : pveRupture;
 
         if (canCounter) {
             messages.add(getStatMessage(SubSkillType.SWORDS_COUNTER_ATTACK, counterChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", counterChanceLucky) : ""));
+                    + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", counterChanceLucky) : ""));
         }
 
         if (canBleed) {
             messages.add(getStatMessage(SubSkillType.SWORDS_RUPTURE, bleedChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", bleedChanceLucky) : ""));
+                    + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", bleedChanceLucky) : ""));
             messages.add(getStatMessage(true, true, SubSkillType.SWORDS_RUPTURE,
                     String.valueOf(ruptureTicks),
                     String.valueOf(pvpDamageRupture),
                     String.valueOf(ruptureDamageMobs)));
 
-            messages.add(LocaleLoader.getString("Swords.Combat.Rupture.Note"));
+            messages.add(pluginRef.getLocaleManager().getString("Swords.Combat.Rupture.Note"));
         }
 
         if (canSerratedStrike) {
             messages.add(getStatMessage(SubSkillType.SWORDS_SERRATED_STRIKES, serratedStrikesLength)
-                    + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", serratedStrikesLengthEndurance) : ""));
+                    + (hasEndurance ? pluginRef.getLocaleManager().getString("Perks.ActivationTime.Bonus", serratedStrikesLengthEndurance) : ""));
         }
 
         if (canUseSubskill(player, SubSkillType.SWORDS_STAB)) {

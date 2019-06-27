@@ -1,5 +1,6 @@
 package com.gmail.nossr50;
 
+import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.config.ConfigManager;
 import com.gmail.nossr50.config.hocon.database.ConfigSectionCleaning;
 import com.gmail.nossr50.config.hocon.database.ConfigSectionMySQL;
@@ -14,6 +15,7 @@ import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.datatypes.skills.subskills.acrobatics.Roll;
 import com.gmail.nossr50.listeners.*;
+import com.gmail.nossr50.locale.LocaleManager;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.SaveTimerTask;
 import com.gmail.nossr50.runnables.backups.CleanBackupsTask;
@@ -53,8 +55,6 @@ import java.io.File;
 import java.io.IOException;
 
 public class mcMMO extends JavaPlugin {
-    // Jar Stuff
-    private File mcMMOFile;
     /* Managers */
     private ChunkManager placeStore;
     private ConfigManager configManager;
@@ -67,6 +67,9 @@ public class mcMMO extends JavaPlugin {
     private CommandRegistrationManager commandRegistrationManager;
     private NBTManager nbtManager;
     private WorldGuardManager worldGuardManager;
+    private PartyManager partyManager;
+    private LocaleManager localeManager;
+    private ChatManager chatManager;
 
     /* File Paths */
     private String mainDirectory;
@@ -88,11 +91,10 @@ public class mcMMO extends JavaPlugin {
     public void onEnable() {
         try {
             getLogger().setFilter(new LogFilter(this));
-
             MetadataConstants.metadataValue = new FixedMetadataValue(this, true);
-
             PluginManager pluginManager = getServer().getPluginManager();
             healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;
+            localeManager = new LocaleManager(this);
 
             //upgradeManager = new UpgradeManager();
 
@@ -134,9 +136,7 @@ public class mcMMO extends JavaPlugin {
                 registerEvents();
                 registerCoreSkills();
                 registerCustomRecipes();
-
-                if (getConfigManager().getConfigParty().isPartySystemEnabled())
-                    PartyManager.loadParties();
+                initParties();
 
                 formulaManager = new FormulaManager();
 
@@ -188,6 +188,8 @@ public class mcMMO extends JavaPlugin {
 
         //Init Notification Manager
         notificationManager = new NotificationManager();
+
+        chatManager = new ChatManager(this);
     }
 
     @Override
@@ -208,7 +210,7 @@ public class mcMMO extends JavaPlugin {
         try {
             UserManager.saveAll();      // Make sure to save player information if the server shuts down
             UserManager.clearAll();
-            PartyManager.saveParties(); // Save our parties
+            getPartyManager().saveParties(); // Save our parties
 
             //TODO: Needed?
             if (getScoreboardSettings().getScoreboardsEnabled())
@@ -244,6 +246,13 @@ public class mcMMO extends JavaPlugin {
         databaseManager.onDisable();
 
         debug("Was disabled."); // How informative!
+    }
+
+    private void initParties() {
+        partyManager = new PartyManager(this);
+
+        if (getConfigManager().getConfigParty().isPartySystemEnabled())
+            getPartyManager().loadParties();
     }
 
     public PlayerLevelUtils getPlayerLevelUtils() {
@@ -451,7 +460,6 @@ public class mcMMO extends JavaPlugin {
      * Setup the various storage file paths
      */
     private void setupFilePaths() {
-        mcMMOFile = getFile();
         mainDirectory = getDataFolder().getPath() + File.separator;
         localesDirectory = mainDirectory + "locales" + File.separator;
         flatFileDirectory = mainDirectory + "flatfile" + File.separator;
@@ -599,5 +607,17 @@ public class mcMMO extends JavaPlugin {
 
     public WorldGuardManager getWorldGuardManager() {
         return worldGuardManager;
+    }
+
+    public PartyManager getPartyManager() {
+        return partyManager;
+    }
+
+    public LocaleManager getLocaleManager() {
+        return localeManager;
+    }
+
+    public ChatManager getChatManager() {
+        return chatManager;
     }
 }

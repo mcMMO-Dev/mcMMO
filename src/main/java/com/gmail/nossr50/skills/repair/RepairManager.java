@@ -4,8 +4,6 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -41,11 +39,11 @@ public class RepairManager extends SkillManager {
             return;
         }
 
-        if (mcMMO.getConfigManager().getConfigRepair().getRepairGeneral().isAnvilMessages()) {
-            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Repair.Listener.Anvil");
+        if (pluginRef.getConfigManager().getConfigRepair().getRepairGeneral().isAnvilMessages()) {
+            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Repair.Listener.Anvil");
         }
 
-        if (mcMMO.getConfigManager().getConfigRepair().getRepairGeneral().isAnvilPlacedSounds()) {
+        if (pluginRef.getConfigManager().getConfigRepair().getRepairGeneral().isAnvilPlacedSounds()) {
             SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
         }
 
@@ -121,7 +119,7 @@ public class RepairManager extends SkillManager {
 //
 //        /* Abort the repair if no compatible basic repairing item found */
 //        if (repairMaterial == null && foundNonBasicMaterial == true) {
-//            player.sendMessage(LocaleLoader.getString("Repair.NoBasicRepairMatsFound"));
+//            player.sendMessage(pluginRef.getLocaleManager().getString("Repair.NoBasicRepairMatsFound"));
 //            return;
 //        }
 //
@@ -186,7 +184,7 @@ public class RepairManager extends SkillManager {
         Player player = getPlayer();
         long lastUse = getLastAnvilUse();
 
-        if (!SkillUtils.cooldownExpired(lastUse, 3) || !mcMMO.getConfigManager().getConfigRepair().getRepairGeneral().isEnchantedItemsRequireConfirm()) {
+        if (!SkillUtils.cooldownExpired(lastUse, 3) || !pluginRef.getConfigManager().getConfigRepair().getRepairGeneral().isEnchantedItemsRequireConfirm()) {
             return true;
         }
 
@@ -195,7 +193,7 @@ public class RepairManager extends SkillManager {
         }
 
         actualizeLastAnvilUse();
-        mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Skills.ConfirmOrCancel", LocaleLoader.getString("Repair.Pretty.Name"));
+        pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Skills.ConfirmOrCancel", pluginRef.getLocaleManager().getString("Repair.Pretty.Name"));
 
         return false;
     }
@@ -215,7 +213,7 @@ public class RepairManager extends SkillManager {
      * @return The chance of keeping the enchantment
      */
     public double getKeepEnchantChance() {
-        return mcMMO.getConfigManager().getConfigRepair().getArcaneForging().getKeepEnchantChanceMap().get(getArcaneForgingRank());
+        return pluginRef.getConfigManager().getConfigRepair().getArcaneForging().getKeepEnchantChanceMap().get(getArcaneForgingRank());
     }
 
     /**
@@ -224,7 +222,7 @@ public class RepairManager extends SkillManager {
      * @return The chance of the enchantment being downgraded
      */
     public double getDowngradeEnchantChance() {
-        return mcMMO.getConfigManager().getConfigRepair().getArcaneForging().getDowngradeChanceMap().get(getArcaneForgingRank());
+        return pluginRef.getConfigManager().getConfigRepair().getArcaneForging().getDowngradeChanceMap().get(getArcaneForgingRank());
     }
 
     /**
@@ -240,8 +238,8 @@ public class RepairManager extends SkillManager {
         if (Permissions.isSubSkillEnabled(player, SubSkillType.REPAIR_REPAIR_MASTERY)
                 && RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.REPAIR_REPAIR_MASTERY)) {
 
-            double maxBonusCalc = mcMMO.getDynamicSettingsManager().getSkillPropertiesManager().getMaxBonus(SubSkillType.REPAIR_REPAIR_MASTERY) / 100.0D;
-            double skillLevelBonusCalc = (maxBonusCalc / mcMMO.getDynamicSettingsManager().getSkillPropertiesManager().getMaxBonusLevel(SubSkillType.REPAIR_REPAIR_MASTERY)) * (getSkillLevel() / 100.0D);
+            double maxBonusCalc = pluginRef.getDynamicSettingsManager().getSkillPropertiesManager().getMaxBonus(SubSkillType.REPAIR_REPAIR_MASTERY) / 100.0D;
+            double skillLevelBonusCalc = (maxBonusCalc / pluginRef.getDynamicSettingsManager().getSkillPropertiesManager().getMaxBonusLevel(SubSkillType.REPAIR_REPAIR_MASTERY)) * (getSkillLevel() / 100.0D);
             double bonus = repairAmount * Math.min(skillLevelBonusCalc, maxBonusCalc);
 
             repairAmount += bonus;
@@ -268,7 +266,7 @@ public class RepairManager extends SkillManager {
             return false;
 
         if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.REPAIR_SUPER_REPAIR, getPlayer())) {
-            mcMMO.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Repair.Skills.FeltEasy");
+            pluginRef.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Repair.Skills.FeltEasy");
             return true;
         }
 
@@ -290,7 +288,7 @@ public class RepairManager extends SkillManager {
         }
 
         if (Permissions.arcaneBypass(player)) {
-            mcMMO.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Repair.Arcane.Perfect");
+            pluginRef.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Repair.Arcane.Perfect");
             return;
         }
 
@@ -299,7 +297,7 @@ public class RepairManager extends SkillManager {
                 item.removeEnchantment(enchant);
             }
 
-            mcMMO.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Arcane.Lost");
+            pluginRef.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE_FAILED, "Repair.Arcane.Lost");
             return;
         }
 
@@ -308,7 +306,7 @@ public class RepairManager extends SkillManager {
         for (Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
             int enchantLevel = enchant.getValue();
 
-            if(!mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitRepair().isAllowUnsafeEnchants()) {
+            if(!pluginRef.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitRepair().isAllowUnsafeEnchants()) {
                 if(enchantLevel > enchant.getKey().getMaxLevel()) {
                     enchantLevel = enchant.getKey().getMaxLevel();
 
@@ -320,7 +318,7 @@ public class RepairManager extends SkillManager {
 
             if (RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getKeepEnchantChance(), getPlayer(), SubSkillType.REPAIR_ARCANE_FORGING))) {
 
-                if (mcMMO.getConfigManager().getConfigRepair().getArcaneForging().isDowngradesEnabled() && enchantLevel > 1
+                if (pluginRef.getConfigManager().getConfigRepair().getArcaneForging().isDowngradesEnabled() && enchantLevel > 1
                         && (!RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(100 - getDowngradeEnchantChance(), getPlayer(), SubSkillType.REPAIR_ARCANE_FORGING)))) {
                     item.addUnsafeEnchantment(enchantment, enchantLevel - 1);
                     downgraded = true;
@@ -333,13 +331,13 @@ public class RepairManager extends SkillManager {
         Map<Enchantment, Integer> newEnchants = item.getEnchantments();
 
         if (newEnchants.isEmpty()) {
-            mcMMO.getNotificationManager().sendPlayerInformationChatOnly(getPlayer(),  "Repair.Arcane.Fail");
+            pluginRef.getNotificationManager().sendPlayerInformationChatOnly(getPlayer(),  "Repair.Arcane.Fail");
         }
         else if (downgraded || newEnchants.size() < enchants.size()) {
-            mcMMO.getNotificationManager().sendPlayerInformationChatOnly(getPlayer(),  "Repair.Arcane.Downgrade");
+            pluginRef.getNotificationManager().sendPlayerInformationChatOnly(getPlayer(),  "Repair.Arcane.Downgrade");
         }
         else {
-            mcMMO.getNotificationManager().sendPlayerInformationChatOnly(getPlayer(),  "Repair.Arcane.Perfect");
+            pluginRef.getNotificationManager().sendPlayerInformationChatOnly(getPlayer(),  "Repair.Arcane.Perfect");
         }
     }
 

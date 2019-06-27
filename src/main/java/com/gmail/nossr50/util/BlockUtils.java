@@ -3,7 +3,6 @@ package com.gmail.nossr50.util;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.meta.BonusDropMeta;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
@@ -30,9 +29,9 @@ public final class BlockUtils {
      */
     public static void markDropsAsBonus(BlockState blockState, boolean triple) {
         if (triple)
-            blockState.setMetadata(MetadataConstants.BONUS_DROPS_METAKEY, new BonusDropMeta(2, mcMMO.p));
+            blockState.setMetadata(MetadataConstants.BONUS_DROPS_METAKEY, new BonusDropMeta(2, pluginRef));
         else
-            blockState.setMetadata(MetadataConstants.BONUS_DROPS_METAKEY, new BonusDropMeta(1, mcMMO.p));
+            blockState.setMetadata(MetadataConstants.BONUS_DROPS_METAKEY, new BonusDropMeta(1, pluginRef));
     }
 
     /**
@@ -42,7 +41,7 @@ public final class BlockUtils {
      * @param amount     amount of extra items to drop
      */
     public static void markDropsAsBonus(BlockState blockState, int amount) {
-        blockState.setMetadata(MetadataConstants.BONUS_DROPS_METAKEY, new BonusDropMeta(amount, mcMMO.p));
+        blockState.setMetadata(MetadataConstants.BONUS_DROPS_METAKEY, new BonusDropMeta(amount, pluginRef));
     }
 
     /**
@@ -52,7 +51,7 @@ public final class BlockUtils {
      * @return true if the player succeeded in the check
      */
     public static boolean checkDoubleDrops(Player player, BlockState blockState, SubSkillType subSkillType) {
-        if (mcMMO.getDynamicSettingsManager().isBonusDropsEnabled(blockState.getType()) && Permissions.isSubSkillEnabled(player, subSkillType)) {
+        if (pluginRef.getDynamicSettingsManager().isBonusDropsEnabled(blockState.getType()) && Permissions.isSubSkillEnabled(player, subSkillType)) {
             return RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkill(player, subSkillType, true));
         }
 
@@ -97,7 +96,7 @@ public final class BlockUtils {
      * otherwise
      */
     public static boolean canActivateAbilities(BlockState blockState) {
-        return !mcMMO.getMaterialMapStore().isAbilityActivationBlackListed(blockState.getType());
+        return !pluginRef.getMaterialMapStore().isAbilityActivationBlackListed(blockState.getType());
     }
 
     /**
@@ -109,7 +108,7 @@ public final class BlockUtils {
      * otherwise
      */
     public static boolean canActivateTools(BlockState blockState) {
-        return !mcMMO.getMaterialMapStore().isToolActivationBlackListed(blockState.getType());
+        return !pluginRef.getMaterialMapStore().isToolActivationBlackListed(blockState.getType());
     }
 
     /**
@@ -129,7 +128,7 @@ public final class BlockUtils {
      * @return true if the block can be made mossy, false otherwise
      */
     public static boolean canMakeMossy(BlockState blockState) {
-        return mcMMO.getMaterialMapStore().isMossyWhiteListed(blockState.getType());
+        return pluginRef.getMaterialMapStore().isMossyWhiteListed(blockState.getType());
     }
 
     /**
@@ -139,7 +138,7 @@ public final class BlockUtils {
      * @return true if the block should affected by Green Terra, false otherwise
      */
     public static boolean affectedByGreenTerra(BlockState blockState) {
-        return mcMMO.getDynamicSettingsManager().getExperienceManager().hasHerbalismXp(blockState.getType());
+        return pluginRef.getDynamicSettingsManager().getExperienceManager().hasHerbalismXp(blockState.getType());
     }
 
     /**
@@ -149,7 +148,7 @@ public final class BlockUtils {
      * @return true if the block should affected by Green Terra, false otherwise
      */
     public static boolean affectedByGreenTerra(Material material) {
-        return mcMMO.getDynamicSettingsManager().getExperienceManager().hasHerbalismXp(material);
+        return pluginRef.getDynamicSettingsManager().getExperienceManager().hasHerbalismXp(material);
     }
 
     /**
@@ -160,7 +159,7 @@ public final class BlockUtils {
      * otherwise
      */
     public static Boolean affectedBySuperBreaker(BlockState blockState) {
-        if (mcMMO.getDynamicSettingsManager().getExperienceManager().hasMiningXp(blockState.getType()))
+        if (pluginRef.getDynamicSettingsManager().getExperienceManager().hasMiningXp(blockState.getType()))
             return true;
 
         return isMineable(blockState);
@@ -174,7 +173,7 @@ public final class BlockUtils {
      * otherwise
      */
     public static Boolean affectedBySuperBreaker(Material material) {
-        if (mcMMO.getDynamicSettingsManager().getExperienceManager().hasMiningXp(material))
+        if (pluginRef.getDynamicSettingsManager().getExperienceManager().hasMiningXp(material))
             return true;
 
         return isMineable(material);
@@ -225,7 +224,7 @@ public final class BlockUtils {
      * otherwise
      */
     public static boolean affectedByGigaDrillBreaker(Material material) {
-        if (mcMMO.getDynamicSettingsManager().getExperienceManager().hasExcavationXp(material))
+        if (pluginRef.getDynamicSettingsManager().getExperienceManager().hasExcavationXp(material))
             return true;
 
         return isDiggable(material);
@@ -239,7 +238,7 @@ public final class BlockUtils {
      * otherwise
      */
     public static boolean affectedByGigaDrillBreaker(BlockState blockState) {
-        if (mcMMO.getDynamicSettingsManager().getExperienceManager().hasExcavationXp(blockState.getType()))
+        if (pluginRef.getDynamicSettingsManager().getExperienceManager().hasExcavationXp(blockState.getType()))
             return true;
 
         return isDiggable(blockState);
@@ -291,7 +290,7 @@ public final class BlockUtils {
      * @return true if the block is a log, false otherwise
      */
     public static boolean isLog(BlockState blockState) {
-        if (mcMMO.getDynamicSettingsManager().getExperienceManager().hasWoodcuttingXp(blockState.getType()))
+        if (pluginRef.getDynamicSettingsManager().getExperienceManager().hasWoodcuttingXp(blockState.getType()))
             return true;
 
         return isLoggingRelated(blockState);
@@ -305,7 +304,7 @@ public final class BlockUtils {
      * @return true if the block is a log, false otherwise
      */
     public static boolean isLog(Material material) {
-        if (mcMMO.getDynamicSettingsManager().getExperienceManager().hasWoodcuttingXp(material))
+        if (pluginRef.getDynamicSettingsManager().getExperienceManager().hasWoodcuttingXp(material))
             return true;
 
         return isLoggingRelated(material);
@@ -367,7 +366,7 @@ public final class BlockUtils {
      * @return true if the block is a leaf, false otherwise
      */
     public static boolean isLeaves(BlockState blockState) {
-        return mcMMO.getMaterialMapStore().isLeavesWhiteListed(blockState.getType());
+        return pluginRef.getMaterialMapStore().isLeavesWhiteListed(blockState.getType());
     }
 
     /**
@@ -396,7 +395,7 @@ public final class BlockUtils {
      * otherwise
      */
     public static boolean canActivateHerbalism(BlockState blockState) {
-        return mcMMO.getMaterialMapStore().isHerbalismAbilityWhiteListed(blockState.getType());
+        return pluginRef.getMaterialMapStore().isHerbalismAbilityWhiteListed(blockState.getType());
     }
 
     /**
@@ -407,7 +406,7 @@ public final class BlockUtils {
      * otherwise
      */
     public static boolean affectedByBlockCracker(BlockState blockState) {
-        return mcMMO.getMaterialMapStore().isBlockCrackerWhiteListed(blockState.getType());
+        return pluginRef.getMaterialMapStore().isBlockCrackerWhiteListed(blockState.getType());
     }
 
     /**
@@ -417,7 +416,7 @@ public final class BlockUtils {
      * @return true if the block can be made into Mycelium, false otherwise
      */
     public static boolean canMakeShroomy(BlockState blockState) {
-        return mcMMO.getMaterialMapStore().isShroomyWhiteListed(blockState.getType());
+        return pluginRef.getMaterialMapStore().isShroomyWhiteListed(blockState.getType());
     }
 
     /**

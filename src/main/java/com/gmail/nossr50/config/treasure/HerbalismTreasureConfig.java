@@ -22,7 +22,7 @@ public class HerbalismTreasureConfig extends Config implements UnsafeValueValida
     public HashMap<String, List<HylianTreasure>> hylianMap = new HashMap<>();
 
     public HerbalismTreasureConfig() {
-        super("hylian_luck_drops", mcMMO.p.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, false, true, false);
+        super("hylian_luck_drops", pluginRef.getDataFolder().getAbsoluteFile(), ConfigConstants.RELATIVE_PATH_CONFIG_DIR, true, false, true, false);
     }
 
     /**
@@ -35,7 +35,7 @@ public class HerbalismTreasureConfig extends Config implements UnsafeValueValida
      */
     @Deprecated
     public static HerbalismTreasureConfig getInstance() {
-        return mcMMO.getConfigManager().getHerbalismTreasureConfig();
+        return pluginRef.getConfigManager().getHerbalismTreasureConfig();
     }
 
     @Override

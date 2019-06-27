@@ -11,16 +11,22 @@ import org.bukkit.inventory.ItemStack;
  */
 public class BukkitFactory {
 
+    private mcMMO pluginRef;
+
+    public BukkitFactory(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
+
     /**
      * Creates a BukkitMMOItem which contains Bukkit implementations for the type MMOItem
      * @return a new BukkitMMOItem
      */
-    public static MMOItem<?> createItem(String namespaceKey, int amount, RawNBT rawNBT) {
+    public MMOItem<?> createItem(String namespaceKey, int amount, RawNBT rawNBT) {
         return new BukkitMMOItem(namespaceKey, amount, rawNBT);
     }
 
-    public static MMOItem<?> createItem(ItemStack itemStack) {
-        return createItem(itemStack.getType().getKey().toString(), itemStack.getAmount(), new RawNBT(mcMMO.getNbtManager().getNBT(itemStack).toString()));
+    public MMOItem<?> createItem(ItemStack itemStack) {
+        return createItem(itemStack.getType().getKey().toString(), itemStack.getAmount(), new RawNBT(pluginRef.getNbtManager().getNBT(itemStack).toString()));
     }
 
 }

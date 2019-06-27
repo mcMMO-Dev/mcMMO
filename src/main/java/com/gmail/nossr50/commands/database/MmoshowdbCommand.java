@@ -1,7 +1,6 @@
 package com.gmail.nossr50.commands.database;
 
 import com.gmail.nossr50.database.DatabaseManagerFactory;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -11,23 +10,27 @@ import org.bukkit.command.TabExecutor;
 import java.util.List;
 
 public class MmoshowdbCommand implements TabExecutor {
+
+    private mcMMO pluginRef;
+
+    public MmoshowdbCommand(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        switch (args.length) {
-            case 0:
-                Class<?> clazz = DatabaseManagerFactory.getCustomDatabaseManagerClass();
+        if (args.length == 0) {
+            Class<?> clazz = DatabaseManagerFactory.getCustomDatabaseManagerClass();
 
-                if (clazz != null) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.mmoshowdb", clazz.getName()));
-                    return true;
-                }
-
-                sender.sendMessage(LocaleLoader.getString("Commands.mmoshowdb", (mcMMO.getMySQLConfigSettings().isMySQLEnabled() ? "sql" : "flatfile")));
+            if (clazz != null) {
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mmoshowdb", clazz.getName()));
                 return true;
+            }
 
-            default:
-                return false;
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mmoshowdb", (pluginRef.getMySQLConfigSettings().isMySQLEnabled() ? "sql" : "flatfile")));
+            return true;
         }
+        return false;
     }
 
     @Override

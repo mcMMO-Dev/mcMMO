@@ -3,7 +3,6 @@ package com.gmail.nossr50.runnables.skills;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.PerksUtils;
@@ -51,12 +50,12 @@ public class AbilityDisableTask extends BukkitRunnable {
 
         if (mcMMOPlayer.useChatNotifications()) {
             //player.sendMessage(ability.getAbilityOff());
-            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_OFF, ability.getAbilityOff());
+            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_OFF, ability.getAbilityOff());
         }
 
 
         SkillUtils.sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, ability.getAbilityPlayerOff());
-        new AbilityCooldownTask(mcMMOPlayer, ability).runTaskLater(mcMMO.p, PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TICK_CONVERSION_FACTOR);
+        new AbilityCooldownTask(mcMMOPlayer, ability).runTaskLater(pluginRef, PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TICK_CONVERSION_FACTOR);
     }
 
     private void resendChunkRadiusAt(Player player) {

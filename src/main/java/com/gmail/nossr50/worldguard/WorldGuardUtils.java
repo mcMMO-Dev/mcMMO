@@ -1,6 +1,5 @@
 package com.gmail.nossr50.worldguard;
 
-import com.gmail.nossr50.mcMMO;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import org.bukkit.plugin.Plugin;
 
@@ -65,7 +64,7 @@ public class WorldGuardUtils {
         if(plugin == null) {
             //WG is not present
             detectedIncompatibleWG = true;
-            mcMMO.p.getLogger().info("WorldGuard was not detected.");
+            pluginRef.getLogger().info("WorldGuard was not detected.");
         } else {
             //Check that its actually of class WorldGuardPlugin
             if(plugin instanceof WorldGuardPlugin)
@@ -102,7 +101,7 @@ public class WorldGuardUtils {
                     Class<?> checkForClass = Class.forName(classString);
                     detectedIncompatibleWG = false; //In case this was set to true previously
                 } catch (ClassNotFoundException e) {
-                    mcMMO.p.getLogger().severe("Missing WorldGuard class - "+classString);
+                    pluginRef.getLogger().severe("Missing WorldGuard class - "+classString);
                     markWGIncompatible();
                     return false;
                 }
@@ -116,10 +115,10 @@ public class WorldGuardUtils {
      * Mark WG as being incompatible to avoid unnecessary operations
      */
     private static void markWGIncompatible() {
-        mcMMO.p.getLogger().severe("You are using a version of WG that is not compatible with mcMMO, " +
+        pluginRef.getLogger().severe("You are using a version of WG that is not compatible with mcMMO, " +
                 "WG features for mcMMO will be disabled. mcMMO requires you to be using a new version of WG7 " +
                 "in order for it to use WG features. Not all versions of WG7 are compatible.");
-        mcMMO.p.getLogger().severe("mcMMO will continue to function normally, but if you wish to use WG support you must use a compatible version.");
+        pluginRef.getLogger().severe("mcMMO will continue to function normally, but if you wish to use WG support you must use a compatible version.");
         detectedIncompatibleWG = true;
     }
 }

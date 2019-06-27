@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.woodcutting;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -38,7 +37,7 @@ public final class Woodcutting {
      * @return Amount of experience
      */
     protected static int getExperienceFromLog(BlockState blockState) {
-        return mcMMO.getDynamicSettingsManager().getExperienceManager().getWoodcuttingXp(blockState.getType());
+        return pluginRef.getDynamicSettingsManager().getExperienceManager().getWoodcuttingXp(blockState.getType());
     }
 
     /**
@@ -52,17 +51,17 @@ public final class Woodcutting {
      * @return Amount of experience
      */
     protected static int processTreeFellerXPGains(BlockState blockState, int woodCount) {
-        int rawXP = mcMMO.getDynamicSettingsManager().getExperienceManager().getWoodcuttingXp(blockState.getType());
+        int rawXP = pluginRef.getDynamicSettingsManager().getExperienceManager().getWoodcuttingXp(blockState.getType());
 
         if(rawXP <= 0)
             return 0;
 
-        if(mcMMO.getConfigManager().getConfigExperience().getExperienceWoodcutting().isReduceTreeFellerXP()) {
+        if(pluginRef.getConfigManager().getConfigExperience().getExperienceWoodcutting().isReduceTreeFellerXP()) {
             int reducedXP = 1 + (woodCount * 5);
             rawXP = Math.max(1, rawXP - reducedXP);
             return rawXP;
         } else {
-            return mcMMO.getDynamicSettingsManager().getExperienceManager().getWoodcuttingXp(blockState.getType());
+            return pluginRef.getDynamicSettingsManager().getExperienceManager().getWoodcuttingXp(blockState.getType());
         }
     }
 
@@ -76,7 +75,7 @@ public final class Woodcutting {
             Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
         }
         else {*/
-        if (mcMMO.getDynamicSettingsManager().getBonusDropManager().isBonusDropWhitelisted(blockState.getType())) {
+        if (pluginRef.getDynamicSettingsManager().getBonusDropManager().isBonusDropWhitelisted(blockState.getType())) {
             Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
         }
         //}
@@ -166,12 +165,12 @@ public final class Woodcutting {
 
         for (BlockState blockState : treeFellerBlocks) {
             if (BlockUtils.isLog(blockState)) {
-                durabilityLoss += mcMMO.getConfigManager().getConfigSuperAbilities().getSuperAbilityLimits().getToolDurabilityDamage();
+                durabilityLoss += pluginRef.getConfigManager().getConfigSuperAbilities().getSuperAbilityLimits().getToolDurabilityDamage();
             }
         }
 
         SkillUtils.handleDurabilityChange(inHand, durabilityLoss);
-        return (inHand.getDurability() < (mcMMO.getRepairableManager().isRepairable(type) ? mcMMO.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability()));
+        return (inHand.getDurability() < (pluginRef.getRepairableManager().isRepairable(type) ? pluginRef.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability()));
     }
 
     /**
@@ -187,12 +186,12 @@ public final class Woodcutting {
      * in treeFellerBlocks.
      */
     private static boolean handleBlock(BlockState blockState, List<BlockState> futureCenterBlocks, Set<BlockState> treeFellerBlocks) {
-        if (treeFellerBlocks.contains(blockState) || mcMMO.getPlaceStore().isTrue(blockState)) {
+        if (treeFellerBlocks.contains(blockState) || pluginRef.getPlaceStore().isTrue(blockState)) {
             return false;
         }
 
         // Without this check Tree Feller propagates through leaves until the threshold is hit
-        if (treeFellerBlocks.size() > mcMMO.getConfigManager().getConfigSuperAbilities().getSuperAbilityLimits().getTreeFeller().getTreeFellerLimit()) {
+        if (treeFellerBlocks.size() > pluginRef.getConfigManager().getConfigSuperAbilities().getSuperAbilityLimits().getTreeFeller().getTreeFellerLimit()) {
             treeFellerReachedThreshold = true;
         }
 

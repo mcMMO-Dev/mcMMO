@@ -2,8 +2,6 @@ package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,7 +14,7 @@ public class PartyDisbandCommand implements CommandExecutor {
         switch (args.length) {
             case 1:
                 if (UserManager.getPlayer((Player) sender) == null) {
-                    sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
                     return true;
                 }
 
@@ -24,18 +22,18 @@ public class PartyDisbandCommand implements CommandExecutor {
                 String partyName = playerParty.getName();
 
                 for (Player member : playerParty.getOnlineMembers()) {
-                    if (!PartyManager.handlePartyChangeEvent(member, partyName, null, EventReason.KICKED_FROM_PARTY)) {
+                    if (!pluginRef.getPartyManager().handlePartyChangeEvent(member, partyName, null, EventReason.KICKED_FROM_PARTY)) {
                         return true;
                     }
 
-                    member.sendMessage(LocaleLoader.getString("Party.Disband"));
+                    member.sendMessage(pluginRef.getLocaleManager().getString("Party.Disband"));
                 }
 
-                PartyManager.disbandParty(playerParty);
+                pluginRef.getPartyManager().disbandParty(playerParty);
                 return true;
 
             default:
-                sender.sendMessage(LocaleLoader.getString("Commands.Usage.1", "party", "disband"));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Usage.1", "party", "disband"));
                 return true;
         }
     }

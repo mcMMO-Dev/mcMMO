@@ -1,7 +1,6 @@
 package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.datatypes.notifications.SensitiveCommandType;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
@@ -17,7 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class XprateCommand implements TabExecutor {
-    private final double ORIGINAL_XP_RATE = mcMMO.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult();
+
+    private mcMMO pluginRef;
+
+    public XprateCommand(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -32,27 +36,27 @@ public class XprateCommand implements TabExecutor {
                     return true;
                 }
 
-                if (mcMMO.p.isXPEventEnabled()) {
+                if (pluginRef.isXPEventEnabled()) {
 
-                    if (mcMMO.getConfigManager().getConfigEvent().isSendTitleMessages()) {
-                        mcMMO.getNotificationManager().broadcastTitle(mcMMO.p.getServer(),
-                                LocaleLoader.getString("Commands.Event.Stop"),
-                                LocaleLoader.getString("Commands.Event.Stop.Subtitle"),
+                    if (pluginRef.getConfigManager().getConfigEvent().isSendTitleMessages()) {
+                        pluginRef.getNotificationManager().broadcastTitle(pluginRef.getServer(),
+                                pluginRef.getLocaleManager().getString("Commands.Event.Stop"),
+                                pluginRef.getLocaleManager().getString("Commands.Event.Stop.Subtitle"),
                                 10, 10 * 20, 20);
                     }
 
-                    if (mcMMO.getConfigManager().getConfigEvent().isBroadcastXPRateEventMessages()) {
-                        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop"));
-                        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Stop.Subtitle"));
+                    if (pluginRef.getConfigManager().getConfigEvent().isBroadcastXPRateEventMessages()) {
+                        pluginRef.getServer().broadcastMessage(pluginRef.getLocaleManager().getString("Commands.Event.Stop"));
+                        pluginRef.getServer().broadcastMessage(pluginRef.getLocaleManager().getString("Commands.Event.Stop.Subtitle"));
                     }
 
                     //Admin notification
-                    mcMMO.getNotificationManager().processSensitiveCommandNotification(sender, SensitiveCommandType.XPRATE_END);
+                    pluginRef.getNotificationManager().processSensitiveCommandNotification(sender, SensitiveCommandType.XPRATE_END);
 
-                    mcMMO.p.toggleXpEventEnabled();
+                    pluginRef.toggleXpEventEnabled();
                 }
 
-                mcMMO.getDynamicSettingsManager().getExperienceManager().resetGlobalXpMult();
+                pluginRef.getDynamicSettingsManager().getExperienceManager().resetGlobalXpMult();
                 return true;
 
             case 2:
@@ -66,9 +70,9 @@ public class XprateCommand implements TabExecutor {
                 }
 
                 if (CommandUtils.shouldDisableToggle(args[1])) {
-                    mcMMO.p.setXPEventEnabled(false);
+                    pluginRef.setXPEventEnabled(false);
                 } else if (CommandUtils.shouldEnableToggle(args[1])) {
-                    mcMMO.p.setXPEventEnabled(true);
+                    pluginRef.setXPEventEnabled(true);
                 } else {
                     return false;
                 }
@@ -76,26 +80,26 @@ public class XprateCommand implements TabExecutor {
                 int newXpRate = Integer.parseInt(args[0]);
 
                 if (newXpRate < 0) {
-                    sender.sendMessage(ChatColor.RED + LocaleLoader.getString("Commands.NegativeNumberWarn"));
+                    sender.sendMessage(ChatColor.RED + pluginRef.getLocaleManager().getString("Commands.NegativeNumberWarn"));
                     return true;
                 }
 
-                mcMMO.getDynamicSettingsManager().getExperienceManager().setGlobalXpMult(newXpRate);
+                pluginRef.getDynamicSettingsManager().getExperienceManager().setGlobalXpMult(newXpRate);
 
-                if (mcMMO.getConfigManager().getConfigEvent().isSendTitleMessages()) {
-                    mcMMO.getNotificationManager().broadcastTitle(mcMMO.p.getServer(),
-                            LocaleLoader.getString("Commands.Event.Start"),
-                            LocaleLoader.getString("Commands.Event.XP", newXpRate),
+                if (pluginRef.getConfigManager().getConfigEvent().isSendTitleMessages()) {
+                    pluginRef.getNotificationManager().broadcastTitle(pluginRef.getServer(),
+                            pluginRef.getLocaleManager().getString("Commands.Event.Start"),
+                            pluginRef.getLocaleManager().getString("Commands.Event.XP", newXpRate),
                             10, 10 * 20, 20);
                 }
 
-                if (mcMMO.getConfigManager().getConfigEvent().isBroadcastXPRateEventMessages()) {
-                    mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.Start"));
-                    mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.Event.XP", newXpRate));
+                if (pluginRef.getConfigManager().getConfigEvent().isBroadcastXPRateEventMessages()) {
+                    pluginRef.getServer().broadcastMessage(pluginRef.getLocaleManager().getString("Commands.Event.Start"));
+                    pluginRef.getServer().broadcastMessage(pluginRef.getLocaleManager().getString("Commands.Event.XP", newXpRate));
                 }
 
                 //Admin notification
-                mcMMO.getNotificationManager().processSensitiveCommandNotification(sender, SensitiveCommandType.XPRATE_MODIFY, String.valueOf(newXpRate));
+                pluginRef.getNotificationManager().processSensitiveCommandNotification(sender, SensitiveCommandType.XPRATE_MODIFY, String.valueOf(newXpRate));
 
                 return true;
 

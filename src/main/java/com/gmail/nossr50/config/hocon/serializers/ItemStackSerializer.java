@@ -2,7 +2,6 @@ package com.gmail.nossr50.config.hocon.serializers;
 
 import com.gmail.nossr50.datatypes.items.BukkitMMOItem;
 import com.gmail.nossr50.datatypes.items.MMOItem;
-import com.gmail.nossr50.mcMMO;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.ValueType;
@@ -25,7 +24,7 @@ public class ItemStackSerializer implements TypeSerializer<MMOItem<?>> {
         Material itemMatch = Material.matchMaterial(itemIdentifier);
 
         if(itemMatch == null) {
-            mcMMO.p.getLogger().info("Could not find a match for "+itemIdentifier);
+            pluginRef.getLogger().info("Could not find a match for "+itemIdentifier);
             return null;
         }
 

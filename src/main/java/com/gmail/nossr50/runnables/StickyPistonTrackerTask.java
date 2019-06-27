@@ -1,6 +1,5 @@
 package com.gmail.nossr50.runnables;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -19,7 +18,7 @@ public class StickyPistonTrackerTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (!mcMMO.getPlaceStore().isTrue(movedBlock.getRelative(direction))) {
+        if (!pluginRef.getPlaceStore().isTrue(movedBlock.getRelative(direction))) {
             return;
         }
 
@@ -29,7 +28,7 @@ public class StickyPistonTrackerTask extends BukkitRunnable {
         }
 
         // The sticky piston actually pulled the block so move the PlaceStore data
-        mcMMO.getPlaceStore().setFalse(movedBlock.getRelative(direction));
-        mcMMO.getPlaceStore().setTrue(movedBlock);
+        pluginRef.getPlaceStore().setFalse(movedBlock.getRelative(direction));
+        pluginRef.getPlaceStore().setTrue(movedBlock);
     }
 }

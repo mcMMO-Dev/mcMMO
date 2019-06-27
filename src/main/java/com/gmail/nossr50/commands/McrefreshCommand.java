@@ -1,11 +1,18 @@
 package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import org.bukkit.command.CommandSender;
 
 public class McrefreshCommand extends ToggleCommand {
+
+    private mcMMO pluginRef;
+
+    public McrefreshCommand(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
+
     @Override
     protected boolean hasOtherPermission(CommandSender sender) {
         return Permissions.mcrefreshOthers(sender);
@@ -23,11 +30,11 @@ public class McrefreshCommand extends ToggleCommand {
         mcMMOPlayer.resetToolPrepMode();
         mcMMOPlayer.resetAbilityMode();
 
-        mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Ability.Generic.Refresh"));
+        mcMMOPlayer.getPlayer().sendMessage(pluginRef.getLocaleManager().getString("Ability.Generic.Refresh"));
     }
 
     @Override
     protected void sendSuccessMessage(CommandSender sender, String playerName) {
-        sender.sendMessage(LocaleLoader.getString("Commands.mcrefresh.Success", playerName));
+        sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mcrefresh.Success", playerName));
     }
 }

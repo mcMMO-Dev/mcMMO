@@ -1,7 +1,6 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableSet;
@@ -107,7 +106,7 @@ public final class Misc {
 
         // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
         McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack);
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
+        pluginRef.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
             return null;
@@ -152,7 +151,7 @@ public final class Misc {
 
         // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
         McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(spawnLocation, clonedItem);
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
+        pluginRef.getServer().getPluginManager().callEvent(event);
 
         //Something cancelled the event so back out
         if (event.isCancelled() || event.getItemStack() == null) {
@@ -174,17 +173,17 @@ public final class Misc {
     }
 
     public static void profileCleanup(String playerName) {
-        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
+        Player player = pluginRef.getServer().getPlayerExact(playerName);
 
         if (player != null) {
             UserManager.remove(player);
-            new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
+            new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(pluginRef, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
         }
     }
 
     public static void printProgress(int convertedUsers, int progressInterval, long startMillis) {
         if ((convertedUsers % progressInterval) == 0) {
-            mcMMO.p.getLogger().info(String.format("Conversion progress: %d users at %.2f users/second", convertedUsers, convertedUsers / (double) ((System.currentTimeMillis() - startMillis) / TIME_CONVERSION_FACTOR)));
+            pluginRef.getLogger().info(String.format("Conversion progress: %d users at %.2f users/second", convertedUsers, convertedUsers / (double) ((System.currentTimeMillis() - startMillis) / TIME_CONVERSION_FACTOR)));
         }
     }
 

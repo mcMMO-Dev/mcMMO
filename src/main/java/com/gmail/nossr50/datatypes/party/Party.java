@@ -1,9 +1,6 @@
 package com.gmail.nossr50.datatypes.party;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
@@ -192,7 +189,7 @@ public class Party {
     }
 
     public int getXpToLevel() {
-        return mcMMO.getFormulaManager().getXPtoNextLevel(level);
+        return pluginRef.getFormulaManager().getXPtoNextLevel(level);
     }
 
     public String getXpToLevelPercentage() {
@@ -231,18 +228,18 @@ public class Party {
             return;
         }
 
-        if (!mcMMO.getConfigManager().getConfigParty().getPartyXP().getPartyLevel().isInformPartyMembersOnLevelup()) {
-            Player leader = mcMMO.p.getServer().getPlayer(this.leader.getUniqueId());
+        if (!pluginRef.getConfigManager().getConfigParty().getPartyXP().getPartyLevel().isInformPartyMembersOnLevelup()) {
+            Player leader = pluginRef.getServer().getPlayer(this.leader.getUniqueId());
 
             if (leader != null) {
-                leader.sendMessage(LocaleLoader.getString("Party.LevelUp", levelsGained, getLevel()));
+                leader.sendMessage(pluginRef.getLocaleManager().getString("Party.LevelUp", levelsGained, getLevel()));
 
                 SoundManager.sendSound(leader, leader.getLocation(), SoundType.LEVEL_UP);
             }
             return;
         }
 
-        PartyManager.informPartyMembersLevelUp(this, levelsGained, getLevel());
+        pluginRef.getPartyManager().informPartyMembersLevelUp(this, levelsGained, getLevel());
     }
 
     public ShareMode getXpShareMode() {
@@ -376,7 +373,7 @@ public class Party {
 
         List<Player> nearbyPlayerList = getNearMembers(UserManager.getPlayer(player));
 
-        boolean useDisplayNames = mcMMO.getConfigManager().getConfigParty().isPartyDisplayNamesEnabled();
+        boolean useDisplayNames = pluginRef.getConfigManager().getConfigParty().isPartyDisplayNamesEnabled();
 
         if (isPartyLeaderOfflineOrHidden) {
             if (isNotSamePerson(player.getUniqueId(), leader.getUniqueId()))
@@ -491,7 +488,7 @@ public class Party {
 
         if (party != null) {
             Player player = mcMMOPlayer.getPlayer();
-            double range = mcMMO.getConfigManager().getConfigParty().getPartyXP().getPartyExperienceSharing().getPartyShareRange();
+            double range = pluginRef.getConfigManager().getConfigParty().getPartyXP().getPartyExperienceSharing().getPartyShareRange();
 
             for (Player member : party.getOnlineMembers()) {
                 if (!player.equals(member) && member.isValid() && Misc.isNear(player.getLocation(), member.getLocation(), range)) {

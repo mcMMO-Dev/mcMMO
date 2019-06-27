@@ -1,7 +1,6 @@
 package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
@@ -46,29 +45,29 @@ public class PartyLockCommand implements CommandExecutor {
     }
 
     private void sendUsageStrings(CommandSender sender) {
-        sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "lock", "[on|off]"));
-        sender.sendMessage(LocaleLoader.getString("Commands.Usage.1", "party", "unlock"));
+        sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Usage.2", "party", "lock", "[on|off]"));
+        sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Usage.1", "party", "unlock"));
     }
 
     private void togglePartyLock(CommandSender sender, boolean lock) {
         if (UserManager.getPlayer((Player) sender) == null) {
-            sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
             return;
         }
 
         Party party = UserManager.getPlayer((Player) sender).getParty();
 
         if (!Permissions.partySubcommand(sender, lock ? PartySubcommandType.LOCK : PartySubcommandType.UNLOCK)) {
-            sender.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("mcMMO.NoPermission"));
             return;
         }
 
         if (lock ? party.isLocked() : !party.isLocked()) {
-            sender.sendMessage(LocaleLoader.getString("Party." + (lock ? "IsLocked" : "IsntLocked")));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Party." + (lock ? "IsLocked" : "IsntLocked")));
             return;
         }
 
         party.setLocked(lock);
-        sender.sendMessage(LocaleLoader.getString("Party." + (lock ? "Locked" : "Unlocked")));
+        sender.sendMessage(pluginRef.getLocaleManager().getString("Party." + (lock ? "Locked" : "Unlocked")));
     }
 }

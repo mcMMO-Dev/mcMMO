@@ -6,8 +6,6 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.events.scoreboard.*;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
@@ -54,7 +52,7 @@ public class ScoreboardWrapper {
         sidebarObjective = this.scoreboard.registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "dummy");
         powerObjective = this.scoreboard.registerNewObjective(ScoreboardManager.POWER_OBJECTIVE, "dummy");
 
-        if (mcMMO.getScoreboardSettings().getPowerLevelTagsEnabled()) {
+        if (pluginRef.getScoreboardSettings().getPowerLevelTagsEnabled()) {
             powerObjective.setDisplayName(ScoreboardManager.TAG_POWER_LEVEL);
             powerObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
 
@@ -66,7 +64,7 @@ public class ScoreboardWrapper {
 
     public static ScoreboardWrapper create(Player player) {
         //Call our custom event
-        McMMOScoreboardMakeboardEvent event = new McMMOScoreboardMakeboardEvent(mcMMO.p.getServer().getScoreboardManager().getNewScoreboard(), player.getScoreboard(), player, ScoreboardEventReason.CREATING_NEW_SCOREBOARD);
+        McMMOScoreboardMakeboardEvent event = new McMMOScoreboardMakeboardEvent(pluginRef.getServer().getScoreboardManager().getNewScoreboard(), player.getScoreboard(), player, ScoreboardEventReason.CREATING_NEW_SCOREBOARD);
         player.getServer().getPluginManager().callEvent(event);
         //Use the values from the event
         return new ScoreboardWrapper(event.getTargetPlayer(), event.getTargetBoard());
@@ -75,7 +73,7 @@ public class ScoreboardWrapper {
     public void doSidebarUpdateSoon() {
         if (updateTask == null) {
             // To avoid spamming the scheduler, store the instance and run 2 ticks later
-            updateTask = new ScoreboardQuickUpdate().runTaskLater(mcMMO.p, 2L);
+            updateTask = new ScoreboardQuickUpdate().runTaskLater(pluginRef, 2L);
         }
     }
 
@@ -83,7 +81,7 @@ public class ScoreboardWrapper {
         if (cooldownTask == null) {
             // Repeat every 5 seconds.
             // Cancels once all cooldowns are done, using stopCooldownUpdating().
-            cooldownTask = new ScoreboardCooldownTask().runTaskTimer(mcMMO.p, 5 * Misc.TICK_CONVERSION_FACTOR, 5 * Misc.TICK_CONVERSION_FACTOR);
+            cooldownTask = new ScoreboardCooldownTask().runTaskTimer(pluginRef, 5 * Misc.TICK_CONVERSION_FACTOR, 5 * Misc.TICK_CONVERSION_FACTOR);
         }
     }
 
@@ -114,7 +112,7 @@ public class ScoreboardWrapper {
      * Set the old targetBoard, for use in reverting.
      */
     public void setOldScoreboard() {
-        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
+        Player player = pluginRef.getServer().getPlayerExact(playerName);
 
         if (player == null) {
             ScoreboardManager.cleanup(this);
@@ -126,7 +124,7 @@ public class ScoreboardWrapper {
         if (oldBoard == scoreboard) { // Already displaying it
             if (this.oldBoard == null) {
                 // (Shouldn't happen) Use failsafe value - we're already displaying our board, but we don't have the one we should revert to
-                this.oldBoard = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard();
+                this.oldBoard = pluginRef.getServer().getScoreboardManager().getMainScoreboard();
             }
         } else {
             this.oldBoard = oldBoard;
@@ -134,7 +132,7 @@ public class ScoreboardWrapper {
     }
 
     public void showBoardWithNoRevert() {
-        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
+        Player player = pluginRef.getServer().getPlayerExact(playerName);
 
         if (player == null) {
             ScoreboardManager.cleanup(this);
@@ -150,7 +148,7 @@ public class ScoreboardWrapper {
     }
 
     public void showBoardAndScheduleRevert(int ticks) {
-        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
+        Player player = pluginRef.getServer().getPlayerExact(playerName);
 
         if (player == null) {
             ScoreboardManager.cleanup(this);
@@ -162,32 +160,32 @@ public class ScoreboardWrapper {
         }
 
         player.setScoreboard(scoreboard);
-        revertTask = new ScoreboardChangeTask().runTaskLater(mcMMO.p, ticks);
+        revertTask = new ScoreboardChangeTask().runTaskLater(pluginRef, ticks);
 
         // TODO is there any way to do the time that looks acceptable?
-        // player.sendMessage(LocaleLoader.getString("Commands.ConfigScoreboard.Timer", StringUtils.capitalize(sidebarType.toString().toLowerCase()), ticks / 20F));
+        // player.sendMessage(pluginRef.getLocaleManager().getString("Commands.ConfigScoreboard.Timer", StringUtils.capitalize(sidebarType.toString().toLowerCase()), ticks / 20F));
 
         if (UserManager.getPlayer(playerName) == null)
             return;
 
         PlayerProfile profile = UserManager.getPlayer(player).getProfile();
 
-        if (profile.getScoreboardTipsShown() >= mcMMO.getScoreboardSettings().getTipsAmount()) {
+        if (profile.getScoreboardTipsShown() >= pluginRef.getScoreboardSettings().getTipsAmount()) {
             return;
         }
 
         if (!tippedKeep) {
             tippedKeep = true;
-            player.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Tip.Keep"));
+            player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Scoreboard.Tip.Keep"));
         } else if (!tippedClear) {
             tippedClear = true;
-            player.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Tip.Clear"));
+            player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Scoreboard.Tip.Clear"));
             profile.increaseTipsShown();
         }
     }
 
     public void tryRevertBoard() {
-        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
+        Player player = pluginRef.getServer().getPlayerExact(playerName);
 
         if (player == null) {
             ScoreboardManager.cleanup(this);
@@ -205,7 +203,7 @@ public class ScoreboardWrapper {
                 event.getTargetPlayer().setScoreboard(event.getTargetBoard());
                 oldBoard = null;
             } else {
-                mcMMO.p.debug("Not reverting targetBoard for " + playerName + " - targetBoard was changed by another plugin (Consider disabling the mcMMO scoreboards if you don't want them!)");
+                pluginRef.debug("Not reverting targetBoard for " + playerName + " - targetBoard was changed by another plugin (Consider disabling the mcMMO scoreboards if you don't want them!)");
             }
         }
 
@@ -219,7 +217,7 @@ public class ScoreboardWrapper {
     }
 
     public boolean isBoardShown() {
-        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
+        Player player = pluginRef.getServer().getPlayerExact(playerName);
 
         if (player == null) {
             ScoreboardManager.cleanup(this);
@@ -281,7 +279,7 @@ public class ScoreboardWrapper {
         targetSkill = null;
         leaderboardPage = -1;
 
-        loadObjective(LocaleLoader.getString("Scoreboard.Header.PlayerInspect", targetPlayer));
+        loadObjective(pluginRef.getLocaleManager().getString("Scoreboard.Header.PlayerInspect", targetPlayer));
     }
 
     public void setTypeCooldowns() {
@@ -388,7 +386,7 @@ public class ScoreboardWrapper {
             return;
         }
 
-        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
+        Player player = pluginRef.getServer().getPlayerExact(playerName);
 
         if (player == null) {
             ScoreboardManager.cleanup(this);
@@ -515,7 +513,7 @@ public class ScoreboardWrapper {
 
     public void acceptRankData(Map<PrimarySkillType, Integer> rankData) {
         Integer rank;
-        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
+        Player player = pluginRef.getServer().getPlayerExact(playerName);
 
         for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
             if (!skill.getPermissions(player)) {

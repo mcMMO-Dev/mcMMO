@@ -2,7 +2,7 @@ package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.skills.CombatUtils;
@@ -23,8 +23,8 @@ public class ArcheryCommand extends SkillCommand {
     private boolean canDaze;
     private boolean canRetrieve;
 
-    public ArcheryCommand() {
-        super(PrimarySkillType.ARCHERY);
+    public ArcheryCommand(mcMMO pluginRef) {
+        super(PrimarySkillType.ARCHERY, pluginRef);
     }
 
     @Override
@@ -62,12 +62,12 @@ public class ArcheryCommand extends SkillCommand {
 
         if (canRetrieve) {
             messages.add(getStatMessage(SubSkillType.ARCHERY_ARROW_RETRIEVAL, retrieveChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", retrieveChanceLucky) : ""));
+                    + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", retrieveChanceLucky) : ""));
         }
 
         if (canDaze) {
             messages.add(getStatMessage(SubSkillType.ARCHERY_DAZE, dazeChance)
-                    + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", dazeChanceLucky) : ""));
+                    + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", dazeChanceLucky) : ""));
         }
 
         if (canSkillShot) {

@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
@@ -88,19 +87,19 @@ public class AxesManager extends SkillManager {
         Player player = getPlayer();
 
         if (mcMMOPlayer.useChatNotifications()) {
-            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.CriticalHit");
+            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.CriticalHit");
         }
 
         if (target instanceof Player) {
             Player defender = (Player) target;
 
-            if (mcMMO.getNotificationManager().doesPlayerUseNotifications(defender)) {
-                mcMMO.getNotificationManager().sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.CritStruck");
+            if (pluginRef.getNotificationManager().doesPlayerUseNotifications(defender)) {
+                pluginRef.getNotificationManager().sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.CritStruck");
             }
 
-            damage = (damage * mcMMO.getConfigManager().getConfigAxes().getConfigAxesCriticalStrikes().getDamageProperty().getPVPModifier()) - damage;
+            damage = (damage * pluginRef.getConfigManager().getConfigAxes().getConfigAxesCriticalStrikes().getDamageProperty().getPVPModifier()) - damage;
         } else {
-            damage = (damage * mcMMO.getConfigManager().getConfigAxes().getConfigAxesCriticalStrikes().getDamageProperty().getPVEModifier()) - damage;
+            damage = (damage * pluginRef.getConfigManager().getConfigAxes().getConfigAxesCriticalStrikes().getDamageProperty().getPVEModifier()) - damage;
         }
 
         return damage;
@@ -124,7 +123,7 @@ public class AxesManager extends SkillManager {
     }
 
     public double getImpactDurabilityDamage() {
-        return mcMMO.getConfigManager().getConfigAxes().getConfigAxesImpact().getImpactDurabilityDamageModifier() * RankUtils.getRank(getPlayer(), SubSkillType.AXES_ARMOR_IMPACT);
+        return pluginRef.getConfigManager().getConfigAxes().getConfigAxesImpact().getImpactDurabilityDamageModifier() * RankUtils.getRank(getPlayer(), SubSkillType.AXES_ARMOR_IMPACT);
     }
 
     /**
@@ -141,21 +140,21 @@ public class AxesManager extends SkillManager {
         Player player = getPlayer();
 
         ParticleEffectUtils.playGreaterImpactEffect(target);
-        target.setVelocity(player.getLocation().getDirection().normalize().multiply(mcMMO.getConfigManager().getConfigAxes().getGreaterImpactKnockBackModifier()));
+        target.setVelocity(player.getLocation().getDirection().normalize().multiply(pluginRef.getConfigManager().getConfigAxes().getGreaterImpactKnockBackModifier()));
 
         if (mcMMOPlayer.useChatNotifications()) {
-            mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.GI.Proc");
+            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.GI.Proc");
         }
 
         if (target instanceof Player) {
             Player defender = (Player) target;
 
-            if (mcMMO.getNotificationManager().doesPlayerUseNotifications(defender)) {
-                mcMMO.getNotificationManager().sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.GI.Struck");
+            if (pluginRef.getNotificationManager().doesPlayerUseNotifications(defender)) {
+                pluginRef.getNotificationManager().sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Axes.Combat.GI.Struck");
             }
         }
 
-        return mcMMO.getConfigManager().getConfigAxes().getConfigAxesGreaterImpact().getBonusDamage();
+        return pluginRef.getConfigManager().getConfigAxes().getConfigAxesGreaterImpact().getBonusDamage();
     }
 
     /**
@@ -165,6 +164,6 @@ public class AxesManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public void skullSplitterCheck(LivingEntity target, double damage, Map<DamageModifier, Double> modifiers) {
-        CombatUtils.applyAbilityAoE(getPlayer(), target, damage / mcMMO.getConfigManager().getConfigAxes().getConfigAxesSkullSplitter().getSkullSplitterDamageDivisor(), modifiers, skill);
+        CombatUtils.applyAbilityAoE(getPlayer(), target, damage / pluginRef.getConfigManager().getConfigAxes().getConfigAxesSkullSplitter().getSkullSplitterDamageDivisor(), modifiers, skill);
     }
 }

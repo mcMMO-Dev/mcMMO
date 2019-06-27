@@ -1,8 +1,6 @@
 package com.gmail.nossr50.commands.party.alliance;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,27 +13,27 @@ public class PartyAllianceAcceptCommand implements CommandExecutor {
         switch (args.length) {
             case 2:
                 if (UserManager.getPlayer((Player) sender) == null) {
-                    sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
                     return true;
                 }
                 Player player = (Player) sender;
                 McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
                 if (!mcMMOPlayer.hasPartyAllianceInvite()) {
-                    sender.sendMessage(LocaleLoader.getString("mcMMO.NoInvites"));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("mcMMO.NoInvites"));
                     return true;
                 }
 
                 if (mcMMOPlayer.getParty().getAlly() != null) {
-                    player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.AlreadyAllies"));
+                    player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.Alliance.AlreadyAllies"));
                     return true;
                 }
 
-                PartyManager.acceptAllianceInvite(mcMMOPlayer);
+                pluginRef.getPartyManager().acceptAllianceInvite(mcMMOPlayer);
                 return true;
 
             default:
-                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "alliance", "accept"));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Usage.2", "party", "alliance", "accept"));
                 return true;
         }
     }

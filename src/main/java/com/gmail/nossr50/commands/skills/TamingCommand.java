@@ -2,7 +2,7 @@ package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
@@ -27,8 +27,8 @@ public class TamingCommand extends SkillCommand {
     private boolean canFastFood;
     private boolean canHolyHound;
 
-    public TamingCommand() {
-        super(PrimarySkillType.TAMING);
+    public TamingCommand(mcMMO pluginRef) {
+        super(PrimarySkillType.TAMING, pluginRef);
     }
 
     @Override
@@ -58,46 +58,46 @@ public class TamingCommand extends SkillCommand {
         List<String> messages = new ArrayList<>();
 
         if (canEnvironmentallyAware) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.0"), LocaleLoader.getString("Taming.Ability.Bonus.1")));
+            messages.add(pluginRef.getLocaleManager().getString("Ability.Generic.Template", pluginRef.getLocaleManager().getString("Taming.Ability.Bonus.0"), pluginRef.getLocaleManager().getString("Taming.Ability.Bonus.1")));
         }
 
         if (canFastFood) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template",
-                    LocaleLoader.getString("Taming.Ability.Bonus.8"),
-                    LocaleLoader.getString("Taming.Ability.Bonus.9",
+            messages.add(pluginRef.getLocaleManager().getString("Ability.Generic.Template",
+                    pluginRef.getLocaleManager().getString("Taming.Ability.Bonus.8"),
+                    pluginRef.getLocaleManager().getString("Taming.Ability.Bonus.9",
                             percent.format(Taming.getInstance().getFastFoodServiceActivationChance() / 100D))));
         }
 
         if (canGore) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template",
-                    LocaleLoader.getString("Taming.Combat.Chance.Gore"),
-                    goreChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", goreChanceLucky) : ""));
+            messages.add(pluginRef.getLocaleManager().getString("Ability.Generic.Template",
+                    pluginRef.getLocaleManager().getString("Taming.Combat.Chance.Gore"),
+                    goreChance) + (isLucky ? pluginRef.getLocaleManager().getString("Perks.Lucky.Bonus", goreChanceLucky) : ""));
         }
 
         if (canHolyHound) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template",
-                    LocaleLoader.getString("Taming.Ability.Bonus.10"),
-                    LocaleLoader.getString("Taming.Ability.Bonus.11")));
+            messages.add(pluginRef.getLocaleManager().getString("Ability.Generic.Template",
+                    pluginRef.getLocaleManager().getString("Taming.Ability.Bonus.10"),
+                    pluginRef.getLocaleManager().getString("Taming.Ability.Bonus.11")));
         }
 
         if (canSharpenedClaws) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template",
-                    LocaleLoader.getString("Taming.Ability.Bonus.6"),
-                    LocaleLoader.getString("Taming.Ability.Bonus.7",
+            messages.add(pluginRef.getLocaleManager().getString("Ability.Generic.Template",
+                    pluginRef.getLocaleManager().getString("Taming.Ability.Bonus.6"),
+                    pluginRef.getLocaleManager().getString("Taming.Ability.Bonus.7",
                             Taming.getInstance().getSharpenedClawsBonusDamage())));
         }
 
         if (canShockProof) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template",
-                    LocaleLoader.getString("Taming.Ability.Bonus.4"),
-                    LocaleLoader.getString("Taming.Ability.Bonus.5",
+            messages.add(pluginRef.getLocaleManager().getString("Ability.Generic.Template",
+                    pluginRef.getLocaleManager().getString("Taming.Ability.Bonus.4"),
+                    pluginRef.getLocaleManager().getString("Taming.Ability.Bonus.5",
                             Taming.getInstance().getShockProofModifier())));
         }
 
         if (canThickFur) {
-            messages.add(LocaleLoader.getString("Ability.Generic.Template",
-                    LocaleLoader.getString("Taming.Ability.Bonus.2"),
-                    LocaleLoader.getString("Taming.Ability.Bonus.3",
+            messages.add(pluginRef.getLocaleManager().getString("Ability.Generic.Template",
+                    pluginRef.getLocaleManager().getString("Taming.Ability.Bonus.2"),
+                    pluginRef.getLocaleManager().getString("Taming.Ability.Bonus.3",
                             Taming.getInstance().getThickFurModifier())));
         }
 

@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.mcMMO;
 
 import java.util.List;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.UUID;
 
 public interface DatabaseManager {
     // One month in milliseconds
-    long PURGE_TIME = 2630000000L * mcMMO.getDatabaseCleaningSettings().getOldUserCutoffMonths();
+    long PURGE_TIME = 2630000000L * pluginRef.getDatabaseCleaningSettings().getOldUserCutoffMonths();
     // During convertUsers, how often to output a status
     int progressInterval = 200;
 

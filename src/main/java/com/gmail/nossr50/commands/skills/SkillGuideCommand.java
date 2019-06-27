@@ -1,7 +1,7 @@
 package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,12 +13,14 @@ import java.util.Arrays;
 public class SkillGuideCommand implements CommandExecutor {
     private String header;
     private ArrayList<String> guide;
+    private String invalidPage;
+    private mcMMO pluginRef;
 
-    private String invalidPage = LocaleLoader.getString("Guides.Page.Invalid");
-
-    public SkillGuideCommand(PrimarySkillType skill) {
-        header = LocaleLoader.getString("Guides.Header", skill.getName());
+    public SkillGuideCommand(PrimarySkillType skill, mcMMO pluginRef) {
+        header = pluginRef.getLocaleManager().getString("Guides.Header", skill.getName());
         guide = getGuide(skill);
+        invalidPage = pluginRef.getLocaleManager().getString("Guides.Page.Invalid");
+        this.pluginRef = pluginRef;
     }
 
     @Override
@@ -43,7 +45,7 @@ public class SkillGuideCommand implements CommandExecutor {
                 int pageNumber = Integer.parseInt(args[1]);
 
                 if (pageNumber > totalPages || pageNumber <= 0) {
-                    sender.sendMessage(LocaleLoader.getString("Guides.Page.OutOfRange", totalPages));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Guides.Page.OutOfRange", totalPages));
                     return true;
                 }
 
@@ -88,7 +90,7 @@ public class SkillGuideCommand implements CommandExecutor {
         ArrayList<String> guide = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            String[] section = LocaleLoader.getString("Guides." + StringUtils.getCapitalized(skill.toString()) + ".Section." + i).split("\n");
+            String[] section = pluginRef.getLocaleManager().getString("Guides." + StringUtils.getCapitalized(skill.toString()) + ".Section." + i).split("\n");
 
             if (section[0].startsWith("!")) {
                 break;

@@ -2,9 +2,6 @@ package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
@@ -28,14 +25,14 @@ public class PartyJoinCommand implements CommandExecutor {
                 Player target = mcMMOTarget.getPlayer();
 
                 if (!mcMMOTarget.inParty()) {
-                    sender.sendMessage(LocaleLoader.getString("Party.PlayerNotInParty", targetName));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Party.PlayerNotInParty", targetName));
                     return true;
                 }
 
                 Player player = (Player) sender;
 
                 if (UserManager.getPlayer((Player) sender) == null) {
-                    sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
                     return true;
                 }
 
@@ -43,36 +40,36 @@ public class PartyJoinCommand implements CommandExecutor {
                 Party targetParty = mcMMOTarget.getParty();
 
                 if (player.equals(target) || (mcMMOPlayer.inParty() && mcMMOPlayer.getParty().equals(targetParty))) {
-                    sender.sendMessage(LocaleLoader.getString("Party.Join.Self"));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Party.Join.Self"));
                     return true;
                 }
 
                 String password = getPassword(args);
 
                 // Make sure party passwords match
-                if (!PartyManager.checkPartyPassword(player, targetParty, password)) {
+                if (!pluginRef.getPartyManager().checkPartyPassword(player, targetParty, password)) {
                     return true;
                 }
 
                 String partyName = targetParty.getName();
 
                 // Changing parties
-                if (!PartyManager.changeOrJoinParty(mcMMOPlayer, partyName)) {
+                if (!pluginRef.getPartyManager().changeOrJoinParty(mcMMOPlayer, partyName)) {
                     return true;
                 }
 
-                if (mcMMO.getConfigManager().getConfigParty().getPartyGeneral().isPartySizeCapped())
-                    if (PartyManager.isPartyFull(player, targetParty)) {
-                        player.sendMessage(LocaleLoader.getString("Commands.Party.PartyFull", targetParty.toString()));
+                if (pluginRef.getConfigManager().getConfigParty().getPartyGeneral().isPartySizeCapped())
+                    if (pluginRef.getPartyManager().isPartyFull(player, targetParty)) {
+                        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.PartyFull", targetParty.toString()));
                         return true;
                     }
 
-                player.sendMessage(LocaleLoader.getString("Commands.Party.Join", partyName));
-                PartyManager.addToParty(mcMMOPlayer, targetParty);
+                player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.Join", partyName));
+                pluginRef.getPartyManager().addToParty(mcMMOPlayer, targetParty);
                 return true;
 
             default:
-                sender.sendMessage(LocaleLoader.getString("Commands.Usage.3", "party", "join", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">", "[" + LocaleLoader.getString("Commands.Usage.Password") + "]"));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Usage.3", "party", "join", "<" + pluginRef.getLocaleManager().getString("Commands.Usage.Player") + ">", "[" + pluginRef.getLocaleManager().getString("Commands.Usage.Password") + "]"));
                 return true;
         }
     }

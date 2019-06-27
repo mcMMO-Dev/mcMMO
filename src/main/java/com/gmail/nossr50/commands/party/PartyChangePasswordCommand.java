@@ -1,7 +1,6 @@
 package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,7 +11,7 @@ public class PartyChangePasswordCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (UserManager.getPlayer((Player) sender) == null) {
-            sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
             return true;
         }
 
@@ -33,8 +32,8 @@ public class PartyChangePasswordCommand implements CommandExecutor {
                 return true;
 
             default:
-                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "password", "[clear|reset]"));
-                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "password", "<" + LocaleLoader.getString("Commands.Usage.Password") + ">"));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Usage.2", "party", "password", "[clear|reset]"));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Usage.2", "party", "password", "<" + pluginRef.getLocaleManager().getString("Commands.Usage.Password") + ">"));
                 return true;
         }
     }
@@ -42,12 +41,12 @@ public class PartyChangePasswordCommand implements CommandExecutor {
     private void unprotectParty(Party party, CommandSender sender) {
         party.setLocked(true);
         party.setPassword(null);
-        sender.sendMessage(LocaleLoader.getString("Party.Password.Removed"));
+        sender.sendMessage(pluginRef.getLocaleManager().getString("Party.Password.Removed"));
     }
 
     private void protectParty(Party party, CommandSender sender, String password) {
         party.setLocked(true);
         party.setPassword(password);
-        sender.sendMessage(LocaleLoader.getString("Party.Password.Set", password));
+        sender.sendMessage(pluginRef.getLocaleManager().getString("Party.Password.Set", password));
     }
 }

@@ -2,7 +2,7 @@ package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.util.TextComponentFactory;
@@ -18,8 +18,8 @@ public class SalvageCommand extends SkillCommand {
     private boolean canScrapCollector;
     private boolean canArcaneSalvage;
 
-    public SalvageCommand() {
-        super(PrimarySkillType.SALVAGE);
+    public SalvageCommand(mcMMO pluginRef) {
+        super(PrimarySkillType.SALVAGE, pluginRef);
     }
 
     @Override
@@ -52,11 +52,11 @@ public class SalvageCommand extends SkillCommand {
                     String.valueOf(RankUtils.getHighestRank(SubSkillType.SALVAGE_ARCANE_SALVAGE))));
 
             if (Salvage.arcaneSalvageEnchantLoss) {
-                messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Salvage.Arcane.ExtractFull"), percent.format(salvageManager.getExtractFullEnchantChance() / 100)));
+                messages.add(pluginRef.getLocaleManager().getString("Ability.Generic.Template", pluginRef.getLocaleManager().getString("Salvage.Arcane.ExtractFull"), percent.format(salvageManager.getExtractFullEnchantChance() / 100)));
             }
 
             if (Salvage.arcaneSalvageDowngrades) {
-                messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Salvage.Arcane.ExtractPartial"), percent.format(salvageManager.getExtractPartialEnchantChance() / 100)));
+                messages.add(pluginRef.getLocaleManager().getString("Ability.Generic.Template", pluginRef.getLocaleManager().getString("Salvage.Arcane.ExtractPartial"), percent.format(salvageManager.getExtractPartialEnchantChance() / 100)));
             }
         }
 

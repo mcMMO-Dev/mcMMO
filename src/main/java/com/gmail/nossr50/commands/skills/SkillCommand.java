@@ -3,7 +3,6 @@ package com.gmail.nossr50.commands.skills;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.Permissions;
@@ -36,8 +35,10 @@ public abstract class SkillCommand implements TabExecutor {
     protected DecimalFormat decimal = new DecimalFormat("##0.00");
     private String skillName;
     private CommandExecutor skillGuideCommand;
+    protected mcMMO pluginRef;
 
-    public SkillCommand(PrimarySkillType skill) {
+    public SkillCommand(PrimarySkillType skill, mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
         this.skill = skill;
         skillName = skill.getName();
         skillGuideCommand = new SkillGuideCommand(skill);
@@ -63,7 +64,7 @@ public abstract class SkillCommand implements TabExecutor {
         }
 
         if (UserManager.getPlayer((Player) sender) == null) {
-            sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
             return true;
         }
 
@@ -77,7 +78,7 @@ public abstract class SkillCommand implements TabExecutor {
                 double skillValue = mcMMOPlayer.getSkillLevel(skill);
 
                 //Send the players a few blank lines to make finding the top of the skill command easier
-                if (mcMMO.getConfigManager().getConfigCommands().isSendBlankLines())
+                if (pluginRef.getConfigManager().getConfigCommands().isSendBlankLines())
                     for (int i = 0; i < 2; i++) {
                         player.sendMessage("");
                     }
@@ -91,7 +92,7 @@ public abstract class SkillCommand implements TabExecutor {
                 List<TextComponent> subskillTextComponents = getTextComponents(player);
 
                 //Subskills Header
-                player.sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", LocaleLoader.getString("Effects.SubSkills.Overhaul")));
+                player.sendMessage(pluginRef.getLocaleManager().getString("Skills.Overhaul.Header", pluginRef.getLocaleManager().getString("Effects.SubSkills.Overhaul")));
 
                 //Send JSON text components
 
@@ -109,14 +110,14 @@ public abstract class SkillCommand implements TabExecutor {
 
 
                 //Link Header
-                if (mcMMO.getConfigManager().getConfigAds().isShowWebsiteLinks()) {
-                    player.sendMessage(LocaleLoader.getString("Overhaul.mcMMO.Header"));
+                if (pluginRef.getConfigManager().getConfigAds().isShowWebsiteLinks()) {
+                    player.sendMessage(pluginRef.getLocaleManager().getString("Overhaul.mcMMO.Header"));
                     TextComponentFactory.sendPlayerUrlHeader(player);
                 }
 
 
-                if (mcMMO.getScoreboardSettings().getScoreboardsEnabled()
-                        && mcMMO.getScoreboardSettings().getConfigSectionScoreboardTypes()
+                if (pluginRef.getScoreboardSettings().getScoreboardsEnabled()
+                        && pluginRef.getScoreboardSettings().getConfigSectionScoreboardTypes()
                         .getConfigSectionSkillBoard().isUseThisBoard()) {
                     ScoreboardManager.enablePlayerSkillScoreboard(player, skill);
                 }
@@ -131,14 +132,14 @@ public abstract class SkillCommand implements TabExecutor {
         List<String> statsMessages = statsDisplay(player, skillValue, hasEndurance, isLucky);
 
         if (!statsMessages.isEmpty()) {
-            player.sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", LocaleLoader.getString("Commands.Stats.Self.Overhaul")));
+            player.sendMessage(pluginRef.getLocaleManager().getString("Skills.Overhaul.Header", pluginRef.getLocaleManager().getString("Commands.Stats.Self.Overhaul")));
 
             for (String message : statsMessages) {
                 player.sendMessage(message);
             }
         }
 
-        player.sendMessage(LocaleLoader.getString("Guides.Available", skillName, skillName.toLowerCase()));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Guides.Available", skillName, skillName.toLowerCase()));
     }
 
     private void sendSkillCommandHeader(Player player, McMMOPlayer mcMMOPlayer, int skillValue) {
@@ -147,7 +148,7 @@ public abstract class SkillCommand implements TabExecutor {
         ChatColor c2 = ChatColor.RED;
 
 
-        player.sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", skillName));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Skills.Overhaul.Header", skillName));
 
         if (!skill.isChildSkill()) {
             /*
@@ -155,10 +156,10 @@ public abstract class SkillCommand implements TabExecutor {
              */
 
             //XP GAIN METHOD
-            player.sendMessage(LocaleLoader.getString("Commands.XPGain.Overhaul", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
+            player.sendMessage(pluginRef.getLocaleManager().getString("Commands.XPGain.Overhaul", pluginRef.getLocaleManager().getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
 
             //LEVEL
-            player.sendMessage(LocaleLoader.getString("Effects.Level.Overhaul", skillValue, mcMMOPlayer.getSkillXpLevel(skill), mcMMOPlayer.getXpToLevel(skill)));
+            player.sendMessage(pluginRef.getLocaleManager().getString("Effects.Level.Overhaul", skillValue, mcMMOPlayer.getSkillXpLevel(skill), mcMMOPlayer.getXpToLevel(skill)));
 
         } else {
             /*
@@ -170,26 +171,26 @@ public abstract class SkillCommand implements TabExecutor {
             ArrayList<PrimarySkillType> parentList = new ArrayList<>();
 
             //TODO: Add JSON here
-            /*player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level.Overhaul", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)))*/
+            /*player.sendMessage(parent.getName() + " - " + pluginRef.getLocaleManager().getString("Effects.Level.Overhaul", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)))*/
             parentList.addAll(parents);
 
             StringBuilder parentMessage = new StringBuilder();
 
             for (int i = 0; i < parentList.size(); i++) {
                 if (i + 1 < parentList.size()) {
-                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
+                    parentMessage.append(pluginRef.getLocaleManager().getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
                     parentMessage.append(ChatColor.GRAY + ", ");
                 } else {
-                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
+                    parentMessage.append(pluginRef.getLocaleManager().getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
                 }
             }
 
             //XP GAIN METHOD
-            player.sendMessage(LocaleLoader.getString("Commands.XPGain.Overhaul", LocaleLoader.getString("Commands.XPGain.Child")));
+            player.sendMessage(pluginRef.getLocaleManager().getString("Commands.XPGain.Overhaul", pluginRef.getLocaleManager().getString("Commands.XPGain.Child")));
 
-            player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, parentMessage.toString()));
+            player.sendMessage(pluginRef.getLocaleManager().getString("Effects.Child.Overhaul", skillValue, parentMessage.toString()));
             //LEVEL
-            //player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, skillValue));
+            //player.sendMessage(pluginRef.getLocaleManager().getString("Effects.Child.Overhaul", skillValue, skillValue));
 
         }
     }
@@ -230,10 +231,10 @@ public abstract class SkillCommand implements TabExecutor {
         String statDescriptionKey = !isExtra ? subSkillType.getLocaleKeyStatDescription() : subSkillType.getLocaleKeyStatExtraDescription();
 
         if (isCustom)
-            return LocaleLoader.getString(templateKey, LocaleLoader.getString(statDescriptionKey, vars));
+            return pluginRef.getLocaleManager().getString(templateKey, pluginRef.getLocaleManager().getString(statDescriptionKey, vars));
         else {
-            String[] mergedList = mcMMO.getNotificationManager().addItemToFirstPositionOfArray(LocaleLoader.getString(statDescriptionKey), vars);
-            return LocaleLoader.getString(templateKey, mergedList);
+            String[] mergedList = pluginRef.getNotificationManager().addItemToFirstPositionOfArray(pluginRef.getLocaleManager().getString(statDescriptionKey), vars);
+            return pluginRef.getLocaleManager().getString(templateKey, mergedList);
         }
     }
 

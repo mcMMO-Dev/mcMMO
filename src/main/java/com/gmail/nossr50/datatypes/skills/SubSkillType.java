@@ -1,7 +1,6 @@
 package com.gmail.nossr50.datatypes.skills;
 
 import com.gmail.nossr50.config.hocon.HOCONUtil;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.StringUtils;
 
 public enum SubSkillType {
@@ -265,12 +264,12 @@ public enum SubSkillType {
     }
 
     /**
-     * Returns the name of the parent skill from the Locale file
+     * Returns the name of the parent skill from the LocaleManager file
      *
      * @return The parent skill as defined in the locale
      */
     public String getParentNiceNameLocale() {
-        return LocaleLoader.getString(StringUtils.getCapitalized(getParentSkill().toString()) + ".SkillName");
+        return pluginRef.getLocaleManager().getString(StringUtils.getCapitalized(getParentSkill().toString()) + ".SkillName");
     }
 
     /**
@@ -333,17 +332,17 @@ public enum SubSkillType {
     }
 
     public String getLocaleStat(String... vars) {
-        String statMsg = LocaleLoader.getString("Ability.Generic.Template", (Object[]) vars);
+        String statMsg = pluginRef.getLocaleManager().getString("Ability.Generic.Template", (Object[]) vars);
         return statMsg;
     }
 
     public String getCustomLocaleStat(String... vars) {
-        String statMsg = LocaleLoader.getString("Ability.Generic.Template.Custom", (Object[]) vars);
+        String statMsg = pluginRef.getLocaleManager().getString("Ability.Generic.Template.Custom", (Object[]) vars);
         return statMsg;
     }
 
     private String getFromLocaleSubAddress(String s) {
-        return LocaleLoader.getString(getLocaleKeyRoot() + s);
+        return pluginRef.getLocaleManager().getString(getLocaleKeyRoot() + s);
     }
 
     private String getLocaleKeyFromSubAddress(String s) {

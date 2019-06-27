@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -75,7 +74,7 @@ public class ArcheryManager extends SkillManager {
     public void processArrowRetrievalActivation(LivingEntity target, Projectile projectile) {
         if(projectile.hasMetadata(MetadataConstants.ARROW_TRACKER_METAKEY)) {
             Archery.incrementArrowCount(target);
-            projectile.removeMetadata(MetadataConstants.ARROW_TRACKER_METAKEY, mcMMO.p); //Only 1 entity per projectile
+            projectile.removeMetadata(MetadataConstants.ARROW_TRACKER_METAKEY, pluginRef); //Only 1 entity per projectile
         }
     }
 
@@ -96,12 +95,12 @@ public class ArcheryManager extends SkillManager {
         defender.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 10, 10));
 
 
-        if (mcMMO.getNotificationManager().doesPlayerUseNotifications(defender)) {
-            mcMMO.getNotificationManager().sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Combat.TouchedFuzzy");
+        if (pluginRef.getNotificationManager().doesPlayerUseNotifications(defender)) {
+            pluginRef.getNotificationManager().sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Combat.TouchedFuzzy");
         }
 
         if (mcMMOPlayer.useChatNotifications()) {
-            mcMMO.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.TargetDazed");
+            pluginRef.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.TargetDazed");
         }
 
         return Archery.getDazeBonusDamage();

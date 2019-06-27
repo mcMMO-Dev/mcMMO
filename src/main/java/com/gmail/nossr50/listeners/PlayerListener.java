@@ -1,8 +1,6 @@
 package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.chat.ChatManager;
-import com.gmail.nossr50.chat.ChatManagerFactory;
-import com.gmail.nossr50.chat.PartyChatManager;
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.core.MetadataConstants;
@@ -12,7 +10,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
@@ -30,7 +27,6 @@ import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
-import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -51,10 +47,10 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 public class PlayerListener implements Listener {
-    private final mcMMO plugin;
+    private final mcMMO pluginRef;
 
-    public PlayerListener(final mcMMO plugin) {
-        this.plugin = plugin;
+    public PlayerListener(final mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
     }
 
     /**
@@ -76,7 +72,7 @@ public class PlayerListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!plugin.getWorldGuardManager().hasMainFlag(player))
+            if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -89,7 +85,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        if (mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
+        if (pluginRef.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
             UserManager.getPlayer(player).actualizeTeleportATS();
 
 
@@ -115,7 +111,7 @@ public class PlayerListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!plugin.getWorldGuardManager().hasMainFlag(event.getEntity()))
+            if (!pluginRef.getWorldGuardManager().hasMainFlag(event.getEntity()))
                 return;
         }
 
@@ -160,7 +156,7 @@ public class PlayerListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!plugin.getWorldGuardManager().hasMainFlag(killedPlayer))
+            if (!pluginRef.getWorldGuardManager().hasMainFlag(killedPlayer))
                 return;
         }
 
@@ -224,7 +220,7 @@ public class PlayerListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!plugin.getWorldGuardManager().hasMainFlag(event.getPlayer()))
+            if (!pluginRef.getWorldGuardManager().hasMainFlag(event.getPlayer()))
                 return;
         }
 
@@ -256,7 +252,7 @@ public class PlayerListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!plugin.getWorldGuardManager().hasMainFlag(player))
+            if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -276,7 +272,7 @@ public class PlayerListener implements Listener {
                 //TODO Update to new API once available! Waiting for case CAUGHT_TREASURE:
                 Item fishingCatch = (Item) event.getCaught();
 
-                if (mcMMO.getConfigManager().getConfigFishing().isOverrideVanillaTreasures()) {
+                if (pluginRef.getConfigManager().getConfigFishing().isOverrideVanillaTreasures()) {
                     if (fishingCatch.getItemStack().getType() != Material.SALMON &&
                             fishingCatch.getItemStack().getType() != Material.COD &&
                             fishingCatch.getItemStack().getType() != Material.TROPICAL_FISH &&
@@ -331,7 +327,7 @@ public class PlayerListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!plugin.getWorldGuardManager().hasMainFlag(player))
+            if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -348,7 +344,7 @@ public class PlayerListener implements Listener {
         FishingManager fishingManager = UserManager.getPlayer(player).getFishingManager();
 
         //Track the hook
-        if (mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().isPreventFishingExploits()) {
+        if (pluginRef.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().isPreventFishingExploits()) {
             if (event.getHook().getMetadata(MetadataConstants.FISH_HOOK_REF_METAKEY).size() == 0) {
                 fishingManager.setFishHookReference(event.getHook());
             }
@@ -381,9 +377,9 @@ public class PlayerListener implements Listener {
                 }
                 return;
             case CAUGHT_FISH:
-                if (mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().isPreventFishingExploits()) {
+                if (pluginRef.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().isPreventFishingExploits()) {
                     if (fishingManager.isExploitingFishing(event.getHook().getLocation().toVector())) {
-                        player.sendMessage(LocaleLoader.getString("Fishing.ScarcityTip", mcMMO.getConfigManager().getConfigExploitPrevention().getOverFishingAreaSize() * 2));
+                        player.sendMessage(pluginRef.getLocaleManager().getString("Fishing.ScarcityTip", pluginRef.getConfigManager().getConfigExploitPrevention().getOverFishingAreaSize() * 2));
                         event.setExpToDrop(0);
                         Item caughtItem = (Item) caught;
                         caughtItem.remove();
@@ -424,7 +420,7 @@ public class PlayerListener implements Listener {
 
             /* WORLD GUARD MAIN FLAG CHECK */
             if (WorldGuardUtils.isWorldGuardLoaded()) {
-                if (!plugin.getWorldGuardManager().hasMainFlag(player))
+                if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                     return;
             }
 
@@ -443,7 +439,7 @@ public class PlayerListener implements Listener {
             //Remove tracking
             ItemStack dropStack = drop.getItemStack();
             if(drop.hasMetadata(MetadataConstants.ARROW_TRACKER_METAKEY)) {
-                drop.removeMetadata(MetadataConstants.ARROW_TRACKER_METAKEY, mcMMO.p);
+                drop.removeMetadata(MetadataConstants.ARROW_TRACKER_METAKEY, pluginRef);
             }
 
             if (drop.hasMetadata(MetadataConstants.DISARMED_ITEM_METAKEY)) {
@@ -516,23 +512,23 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
 
         //Delay loading for 3 seconds in case the player has a save task running, its hacky but it should do the trick
-        new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 60);
+        new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(pluginRef, 60);
 
-        if (mcMMO.getConfigManager().getConfigMOTD().isEnableMOTD()) {
+        if (pluginRef.getConfigManager().getConfigMOTD().isEnableMOTD()) {
             Motd.displayAll(player);
         }
 
-        if (plugin.isXPEventEnabled()) {
-            player.sendMessage(LocaleLoader.getString("XPRate.Event", mcMMO.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult()));
+        if (pluginRef.isXPEventEnabled()) {
+            player.sendMessage(pluginRef.getLocaleManager().getString("XPRate.Event", pluginRef.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult()));
         }
 
         //TODO: Remove this warning after 2.2 is done
-        if (mcMMO.p.getDescription().getVersion().contains("SNAPSHOT")) {
+        if (pluginRef.getDescription().getVersion().contains("SNAPSHOT")) {
             event.getPlayer().sendMessage(ChatColor.RED + "WARNING: " + ChatColor.WHITE + "This dev build version of mcMMO is in the MIDDLE of completely rewriting the configs, there may be game breaking bugs. It is not recommended to play on this version of mcMMO, please grab the latest stable release from https://www.mcmmo.org and use that instead!");
         }
 
-        if (plugin.isXPEventEnabled() && mcMMO.getConfigManager().getConfigEvent().isShowXPRateInfoOnPlayerJoin()) {
-            player.sendMessage(LocaleLoader.getString("XPRate.Event", mcMMO.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult()));
+        if (pluginRef.isXPEventEnabled() && pluginRef.getConfigManager().getConfigEvent().isShowXPRateInfoOnPlayerJoin()) {
+            player.sendMessage(pluginRef.getLocaleManager().getString("XPRate.Event", pluginRef.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult()));
         }
     }
 
@@ -576,7 +572,7 @@ public class PlayerListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!plugin.getWorldGuardManager().hasMainFlag(player))
+            if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -598,11 +594,11 @@ public class PlayerListener implements Listener {
             case RIGHT_CLICK_BLOCK:
                 Material type = block.getType();
 
-                if (!mcMMO.getConfigManager().getConfigSuperAbilities().isMustSneakToActivate() || player.isSneaking()) {
+                if (!pluginRef.getConfigManager().getConfigSuperAbilities().isMustSneakToActivate() || player.isSneaking()) {
                     /* REPAIR CHECKS */
                     if (type == Repair.getInstance().getAnvilMaterial()
                             && PrimarySkillType.REPAIR.getPermissions(player)
-                            && mcMMO.getRepairableManager().isRepairable(heldItem)
+                            && pluginRef.getRepairableManager().isRepairable(heldItem)
                             && heldItem.getAmount() <= 1) {
                         RepairManager repairManager = mcMMOPlayer.getRepairManager();
                         event.setCancelled(true);
@@ -617,7 +613,7 @@ public class PlayerListener implements Listener {
                     else if (type == Salvage.anvilMaterial
                             && PrimarySkillType.SALVAGE.getPermissions(player)
                             && RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR)
-                            && mcMMO.getSalvageableManager().isSalvageable(heldItem)
+                            && pluginRef.getSalvageableManager().isSalvageable(heldItem)
                             && heldItem.getAmount() <= 1) {
                                 SalvageManager salvageManager = UserManager.getPlayer(player).getSalvageManager();
                                 event.setCancelled(true);
@@ -644,25 +640,25 @@ public class PlayerListener implements Listener {
             case LEFT_CLICK_BLOCK:
                 type = block.getType();
 
-                if (!mcMMO.getConfigManager().getConfigSuperAbilities().isMustSneakToActivate() || player.isSneaking()) {
+                if (!pluginRef.getConfigManager().getConfigSuperAbilities().isMustSneakToActivate() || player.isSneaking()) {
                     /* REPAIR CHECKS */
-                    if (type == Repair.getInstance().getAnvilMaterial() && PrimarySkillType.REPAIR.getPermissions(player) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
+                    if (type == Repair.getInstance().getAnvilMaterial() && PrimarySkillType.REPAIR.getPermissions(player) && pluginRef.getRepairableManager().isRepairable(heldItem)) {
                         RepairManager repairManager = mcMMOPlayer.getRepairManager();
 
                         // Cancel repairing an enchanted item
                         if (repairManager.checkConfirmation(false)) {
                             repairManager.setLastAnvilUse(0);
-                            player.sendMessage(LocaleLoader.getString("Skills.Cancelled", LocaleLoader.getString("Repair.Pretty.Name")));
+                            player.sendMessage(pluginRef.getLocaleManager().getString("Skills.Cancelled", pluginRef.getLocaleManager().getString("Repair.Pretty.Name")));
                         }
                     }
                     /* SALVAGE CHECKS */
-                    else if (type == Salvage.anvilMaterial && PrimarySkillType.SALVAGE.getPermissions(player) && mcMMO.getSalvageableManager().isSalvageable(heldItem)) {
+                    else if (type == Salvage.anvilMaterial && PrimarySkillType.SALVAGE.getPermissions(player) && pluginRef.getSalvageableManager().isSalvageable(heldItem)) {
                         SalvageManager salvageManager = mcMMOPlayer.getSalvageManager();
 
                         // Cancel salvaging an enchanted item
                         if (salvageManager.checkConfirmation(false)) {
                             salvageManager.setLastAnvilUse(0);
-                            player.sendMessage(LocaleLoader.getString("Skills.Cancelled", LocaleLoader.getString("Salvage.Pretty.Name")));
+                            player.sendMessage(pluginRef.getLocaleManager().getString("Skills.Cancelled", pluginRef.getLocaleManager().getString("Salvage.Pretty.Name")));
                         }
                     }
                 }
@@ -689,7 +685,7 @@ public class PlayerListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!plugin.getWorldGuardManager().hasMainFlag(player))
+            if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -706,7 +702,7 @@ public class PlayerListener implements Listener {
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         //Spam Fishing Detection
-        if (mcMMO.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().isPreventFishingExploits()) {
+        if (pluginRef.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().isPreventFishingExploits()) {
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) {
                 if (player.isInsideVehicle() && (player.getVehicle() instanceof Minecart || player.getVehicle() instanceof PoweredMinecart)) {
                     player.getVehicle().eject();
@@ -729,7 +725,7 @@ public class PlayerListener implements Listener {
 
                 /* ACTIVATION & ITEM CHECKS */
                 if (BlockUtils.canActivateTools(blockState)) {
-                    if (mcMMO.getConfigManager().getConfigSuperAbilities().isSuperAbilitiesEnabled()) {
+                    if (pluginRef.getConfigManager().getConfigSuperAbilities().isSuperAbilitiesEnabled()) {
                         if (BlockUtils.canActivateHerbalism(blockState)) {
                             mcMMOPlayer.processAbilityActivation(PrimarySkillType.HERBALISM);
                         }
@@ -756,7 +752,7 @@ public class PlayerListener implements Listener {
                         case WHEAT:
                         case NETHER_WART_BLOCK:
                         case POTATO:
-                            mcMMO.getPlaceStore().setFalse(blockState);
+                            pluginRef.getPlaceStore().setFalse(blockState);
                     }
                 }
 
@@ -784,7 +780,7 @@ public class PlayerListener implements Listener {
                 }
 
                 /* ACTIVATION CHECKS */
-                if (mcMMO.getConfigManager().getConfigSuperAbilities().isSuperAbilitiesEnabled()) {
+                if (pluginRef.getConfigManager().getConfigSuperAbilities().isSuperAbilitiesEnabled()) {
                     mcMMOPlayer.processAbilityActivation(PrimarySkillType.AXES);
                     mcMMOPlayer.processAbilityActivation(PrimarySkillType.EXCAVATION);
                     mcMMOPlayer.processAbilityActivation(PrimarySkillType.HERBALISM);
@@ -847,8 +843,8 @@ public class PlayerListener implements Listener {
         McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(player);
 
         if (mcMMOPlayer == null) {
-            mcMMO.p.debug(player.getName() + "is chatting, but is currently not logged in to the server.");
-            mcMMO.p.debug("Party & Admin chat will not work properly for this player.");
+            pluginRef.debug(player.getName() + "is chatting, but is currently not logged in to the server.");
+            pluginRef.debug("Party & Admin chat will not work properly for this player.");
             return;
         }
 
@@ -859,18 +855,14 @@ public class PlayerListener implements Listener {
 
             if (party == null) {
                 mcMMOPlayer.disableChat(ChatMode.PARTY);
-                player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
+                player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.None"));
                 return;
             }
 
-            chatManager = ChatManagerFactory.getChatManager(plugin, ChatMode.PARTY);
-            ((PartyChatManager) chatManager).setParty(party);
+            pluginRef.getChatManager().processPartyChat(party, player, event.getMessage());
+            event.setCancelled(true);
         } else if (mcMMOPlayer.isChatEnabled(ChatMode.ADMIN)) {
-            chatManager = ChatManagerFactory.getChatManager(plugin, ChatMode.ADMIN);
-        }
-
-        if (chatManager != null) {
-            chatManager.handleChat(player, event.getMessage(), event.isAsynchronous());
+            pluginRef.getChatManager().processAdminChat(player, event.getMessage());
             event.setCancelled(true);
         }
     }
@@ -882,7 +874,7 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-        if (!mcMMO.getConfigManager().getConfigLanguage().getTargetLanguage().equalsIgnoreCase("en_US")) {
+        if (!pluginRef.getConfigManager().getConfigLanguage().getTargetLanguage().equalsIgnoreCase("en_US")) {
             String message = event.getMessage();
             String command = message.substring(1).split(" ")[0];
             String lowerCaseCommand = command.toLowerCase();

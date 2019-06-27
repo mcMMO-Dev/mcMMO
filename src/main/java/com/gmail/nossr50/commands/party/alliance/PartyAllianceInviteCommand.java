@@ -2,8 +2,6 @@ package com.gmail.nossr50.commands.party.alliance;
 
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
@@ -26,7 +24,7 @@ public class PartyAllianceInviteCommand implements CommandExecutor {
                 Player target = mcMMOTarget.getPlayer();
 
                 if (UserManager.getPlayer((Player) sender) == null) {
-                    sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
                     return true;
                 }
 
@@ -35,41 +33,41 @@ public class PartyAllianceInviteCommand implements CommandExecutor {
                 String playerName = player.getName();
 
                 if (player.equals(target)) {
-                    sender.sendMessage(LocaleLoader.getString("Party.Invite.Self"));
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Party.Invite.Self"));
                     return true;
                 }
 
                 if (!mcMMOTarget.inParty()) {
-                    player.sendMessage(LocaleLoader.getString("Party.PlayerNotInParty", targetName));
+                    player.sendMessage(pluginRef.getLocaleManager().getString("Party.PlayerNotInParty", targetName));
                     return true;
                 }
 
-                if (PartyManager.inSameParty(player, target)) {
-                    sender.sendMessage(LocaleLoader.getString("Party.Player.InSameParty", targetName));
+                if (pluginRef.getPartyManager().inSameParty(player, target)) {
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Party.Player.InSameParty", targetName));
                     return true;
                 }
 
                 if (!mcMMOTarget.getParty().getLeader().getUniqueId().equals(target.getUniqueId())) {
-                    player.sendMessage(LocaleLoader.getString("Party.Target.NotOwner", targetName));
+                    player.sendMessage(pluginRef.getLocaleManager().getString("Party.Target.NotOwner", targetName));
                     return true;
                 }
 
                 Party playerParty = mcMMOPlayer.getParty();
 
                 if (playerParty.getAlly() != null) {
-                    player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.AlreadyAllies"));
+                    player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.Alliance.AlreadyAllies"));
                     return true;
                 }
 
                 mcMMOTarget.setPartyAllianceInvite(playerParty);
 
-                sender.sendMessage(LocaleLoader.getString("Commands.Invite.Success"));
-                target.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Invite.0", playerParty.getName(), playerName));
-                target.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Invite.1"));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Invite.Success"));
+                target.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.Alliance.Invite.0", playerParty.getName(), playerName));
+                target.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.Alliance.Invite.1"));
                 return true;
 
             default:
-                sender.sendMessage(LocaleLoader.getString("Commands.Usage.3", "party", "alliance", "invite", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Usage.3", "party", "alliance", "invite", "<" + pluginRef.getLocaleManager().getString("Commands.Usage.Player") + ">"));
                 return true;
         }
     }

@@ -2,7 +2,7 @@ package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
@@ -21,8 +21,8 @@ public class ExcavationCommand extends SkillCommand {
     private boolean canGigaDrill;
     private boolean canTreasureHunt;
 
-    public ExcavationCommand() {
-        super(PrimarySkillType.EXCAVATION);
+    public ExcavationCommand(mcMMO pluginRef) {
+        super(PrimarySkillType.EXCAVATION, pluginRef);
     }
 
     @Override
@@ -49,9 +49,9 @@ public class ExcavationCommand extends SkillCommand {
 
         if (canGigaDrill) {
             messages.add(getStatMessage(SubSkillType.EXCAVATION_GIGA_DRILL_BREAKER, gigaDrillBreakerLength)
-                    + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", gigaDrillBreakerLengthEndurance) : ""));
+                    + (hasEndurance ? pluginRef.getLocaleManager().getString("Perks.ActivationTime.Bonus", gigaDrillBreakerLengthEndurance) : ""));
 
-            //messages.add(LocaleLoader.getString("Excavation.Effect.Length", gigaDrillBreakerLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", gigaDrillBreakerLengthEndurance) : ""));
+            //messages.add(pluginRef.getLocaleManager().getString("Excavation.Effect.Length", gigaDrillBreakerLength) + (hasEndurance ? pluginRef.getLocaleManager().getString("Perks.ActivationTime.Bonus", gigaDrillBreakerLengthEndurance) : ""));
         }
 
         if(canUseSubskill(player, SubSkillType.EXCAVATION_ARCHAEOLOGY)) {

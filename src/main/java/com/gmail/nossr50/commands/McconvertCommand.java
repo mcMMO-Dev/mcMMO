@@ -18,11 +18,22 @@ import java.util.Collections;
 import java.util.List;
 
 public class McconvertCommand implements TabExecutor {
-    private static final List<String> FORMULA_TYPES;
-    private static final List<String> DATABASE_TYPES;
-    private static final List<String> SUBCOMMANDS = ImmutableList.of("database", "experience");
+    private List<String> FORMULA_TYPES;
+    private List<String> DATABASE_TYPES;
+    private final List<String> SUBCOMMANDS = ImmutableList.of("database", "experience");
+    private CommandExecutor databaseConvertCommand;
+    private CommandExecutor experienceConvertCommand;
 
-    static {
+    private mcMMO pluginRef;
+
+    public McconvertCommand(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+        databaseConvertCommand = new ConvertDatabaseCommand(pluginRef);
+        experienceConvertCommand = new ConvertExperienceCommand(pluginRef);
+        initTypes();
+    }
+
+    private void initTypes() {
         ArrayList<String> formulaTypes = new ArrayList<>();
         ArrayList<String> databaseTypes = new ArrayList<>();
 
@@ -37,7 +48,7 @@ public class McconvertCommand implements TabExecutor {
         // Custom stuff
         databaseTypes.remove(DatabaseType.CUSTOM.toString());
 
-        if (mcMMO.getDatabaseManager().getDatabaseType() == DatabaseType.CUSTOM) {
+        if (pluginRef.getDatabaseManager().getDatabaseType() == DatabaseType.CUSTOM) {
             databaseTypes.add(DatabaseManagerFactory.getCustomDatabaseManagerClass().getName());
         }
 
@@ -46,11 +57,7 @@ public class McconvertCommand implements TabExecutor {
 
         FORMULA_TYPES = ImmutableList.copyOf(formulaTypes);
         DATABASE_TYPES = ImmutableList.copyOf(databaseTypes);
-
     }
-
-    private CommandExecutor databaseConvertCommand = new ConvertDatabaseCommand();
-    private CommandExecutor experienceConvertCommand = new ConvertExperienceCommand();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

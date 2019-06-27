@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -100,6 +99,6 @@ public class ExcavationManager extends SkillManager {
         excavationBlockCheck(blockState);
         excavationBlockCheck(blockState);
 
-        SkillUtils.handleDurabilityChange(getPlayer().getInventory().getItemInMainHand(), mcMMO.getConfigManager().getConfigSuperAbilities().getSuperAbilityLimits().getToolDurabilityDamage());
+        SkillUtils.handleDurabilityChange(getPlayer().getInventory().getItemInMainHand(), pluginRef.getConfigManager().getConfigSuperAbilities().getSuperAbilityLimits().getToolDurabilityDamage());
     }
 }

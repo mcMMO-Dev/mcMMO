@@ -14,22 +14,28 @@ import java.util.List;
 
 public class MHDCommand implements TabExecutor {
 
+    private mcMMO pluginRef;
+
+    public MHDCommand(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (mcMMO.getDatabaseManager() instanceof SQLDatabaseManager) {
-            SQLDatabaseManager m = (SQLDatabaseManager) mcMMO.getDatabaseManager();
+        if (pluginRef.getDatabaseManager() instanceof SQLDatabaseManager) {
+            SQLDatabaseManager m = (SQLDatabaseManager) pluginRef.getDatabaseManager();
             m.resetMobHealthSettings();
             for (McMMOPlayer player : UserManager.getPlayers()) {
-                player.getProfile().setMobHealthbarType(mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType());
+                player.getProfile().setMobHealthbarType(pluginRef.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType());
             }
             sender.sendMessage("Mob health reset");
             return true;
         }
-        if (mcMMO.getDatabaseManager() instanceof FlatfileDatabaseManager) {
-            FlatfileDatabaseManager m = (FlatfileDatabaseManager) mcMMO.getDatabaseManager();
+        if (pluginRef.getDatabaseManager() instanceof FlatfileDatabaseManager) {
+            FlatfileDatabaseManager m = (FlatfileDatabaseManager) pluginRef.getDatabaseManager();
             m.resetMobHealthSettings();
             for (McMMOPlayer player : UserManager.getPlayers()) {
-                player.getProfile().setMobHealthbarType(mcMMO.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType());
+                player.getProfile().setMobHealthbarType(pluginRef.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType());
             }
             sender.sendMessage("Mob health reset");
             return true;

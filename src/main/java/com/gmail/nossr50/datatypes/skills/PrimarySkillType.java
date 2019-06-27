@@ -1,7 +1,5 @@
 package com.gmail.nossr50.datatypes.skills;
 
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.alchemy.AlchemyManager;
@@ -123,9 +121,9 @@ public enum PrimarySkillType {
     }
 
     public static PrimarySkillType getSkill(String skillName) {
-        if (!mcMMO.getConfigManager().getConfigLanguage().getTargetLanguage().equalsIgnoreCase("en_US")) {
+        if (!pluginRef.getConfigManager().getConfigLanguage().getTargetLanguage().equalsIgnoreCase("en_US")) {
             for (PrimarySkillType type : values()) {
-                if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(type.name()) + ".SkillName"))) {
+                if (skillName.equalsIgnoreCase(pluginRef.getLocaleManager().getString(StringUtils.getCapitalized(type.name()) + ".SkillName"))) {
                     return type;
                 }
             }
@@ -138,7 +136,7 @@ public enum PrimarySkillType {
         }
 
         if (!skillName.equalsIgnoreCase("all")) {
-            mcMMO.p.getLogger().warning("Invalid mcMMO skill (" + skillName + ")"); //TODO: Localize
+            pluginRef.getLogger().warning("Invalid mcMMO skill (" + skillName + ")"); //TODO: Localize
         }
 
         return null;
@@ -151,7 +149,7 @@ public enum PrimarySkillType {
             }
         }
 
-        mcMMO.p.getLogger().severe("Unable to locate parent for "+subSkillType.toString());
+        pluginRef.getLogger().severe("Unable to locate parent for "+subSkillType.toString());
         return null;
     }
 
@@ -179,7 +177,7 @@ public enum PrimarySkillType {
      * @return the max level of this skill
      */
     public int getMaxLevel() {
-        return mcMMO.getPlayerLevelingSettings().getSkillLevelCap(this);
+        return pluginRef.getPlayerLevelingSettings().getSkillLevelCap(this);
     }
 
     /*public boolean getDoubleDropsDisabled() {
@@ -195,7 +193,7 @@ public enum PrimarySkillType {
     }*/
 
     public boolean getPVPEnabled() {
-        return mcMMO.getConfigManager().getConfigCoreSkills().isPVPEnabled(this);
+        return pluginRef.getConfigManager().getConfigCoreSkills().isPVPEnabled(this);
     }
 
     /*public void setHardcoreVampirismEnabled(boolean enable) {
@@ -203,15 +201,15 @@ public enum PrimarySkillType {
     }*/
 
     public boolean getPVEEnabled() {
-        return mcMMO.getConfigManager().getConfigCoreSkills().isPVEEnabled(this);
+        return pluginRef.getConfigManager().getConfigCoreSkills().isPVEEnabled(this);
     }
 
     public boolean getHardcoreStatLossEnabled() {
-        return mcMMO.getConfigManager().getConfigHardcore().getDeathPenalty().getSkillToggleMap().get(this);
+        return pluginRef.getConfigManager().getConfigHardcore().getDeathPenalty().getSkillToggleMap().get(this);
     }
 
     public boolean getHardcoreVampirismEnabled() {
-        return mcMMO.getConfigManager().getConfigHardcore().getVampirism().getSkillToggleMap().get(this);
+        return pluginRef.getConfigManager().getConfigHardcore().getVampirism().getSkillToggleMap().get(this);
     }
 
     public ToolType getTool() {
@@ -223,7 +221,7 @@ public enum PrimarySkillType {
     }
 
     public double getXpModifier() {
-        return mcMMO.getConfigManager().getConfigLeveling().getSkillXpFormulaModifier(this);
+        return pluginRef.getConfigManager().getConfigLeveling().getSkillXpFormulaModifier(this);
     }
 
     // TODO: This is a little "hacky", we probably need to add something to distinguish child skills in the enum, or to use another enum for them
@@ -239,8 +237,8 @@ public enum PrimarySkillType {
     }
 
     public String getName() {
-        //return MainConfig.getInstance().getLocale().equalsIgnoreCase("en_US") ? StringUtils.getCapitalized(this.toString()) : StringUtils.getCapitalized(LocaleLoader.getString(StringUtils.getCapitalized(this.toString()) + ".SkillName"));
-        return StringUtils.getCapitalized(LocaleLoader.getString(StringUtils.getCapitalized(this.toString()) + ".SkillName"));
+        //return MainConfig.getInstance().getLocale().equalsIgnoreCase("en_US") ? StringUtils.getCapitalized(this.toString()) : StringUtils.getCapitalized(pluginRef.getLocaleManager().getString(StringUtils.getCapitalized(this.toString()) + ".SkillName"));
+        return StringUtils.getCapitalized(pluginRef.getLocaleManager().getString(StringUtils.getCapitalized(this.toString()) + ".SkillName"));
     }
 
     public boolean getPermissions(Player player) {

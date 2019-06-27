@@ -3,8 +3,6 @@ package com.gmail.nossr50.commands.party.alliance;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
@@ -35,7 +33,7 @@ public class PartyAllianceCommand implements TabExecutor {
         }
 
         if (UserManager.getPlayer((Player) sender) == null) {
-            sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
             return true;
         }
 
@@ -46,8 +44,8 @@ public class PartyAllianceCommand implements TabExecutor {
 
         switch (args.length) {
             case 1:
-                if (playerParty.getLevel() < PartyManager.getPartyFeatureUnlockLevel(PartyFeature.ALLIANCE)) {
-                    sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.3"));
+                if (playerParty.getLevel() < pluginRef.getPartyManager().getPartyFeatureUnlockLevel(PartyFeature.ALLIANCE)) {
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Party.Feature.Disabled.3"));
                     return true;
                 }
 
@@ -64,8 +62,8 @@ public class PartyAllianceCommand implements TabExecutor {
 
             case 2:
             case 3:
-                if (playerParty.getLevel() < PartyManager.getPartyFeatureUnlockLevel(PartyFeature.ALLIANCE)) {
-                    sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.3"));
+                if (playerParty.getLevel() < pluginRef.getPartyManager().getPartyFeatureUnlockLevel(PartyFeature.ALLIANCE)) {
+                    sender.sendMessage(pluginRef.getLocaleManager().getString("Party.Feature.Disabled.3"));
                     return true;
                 }
 
@@ -98,8 +96,8 @@ public class PartyAllianceCommand implements TabExecutor {
     }
 
     private void printUsage() {
-        player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Help.0"));
-        player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Help.1"));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.Alliance.Help.0"));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.Alliance.Help.1"));
     }
 
     @Override
@@ -120,12 +118,12 @@ public class PartyAllianceCommand implements TabExecutor {
     }
 
     private void displayPartyHeader() {
-        player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Header"));
-        player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Ally", playerParty.getName(), targetParty.getName()));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.Alliance.Header"));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.Alliance.Ally", playerParty.getName(), targetParty.getName()));
     }
 
     private void displayMemberInfo(McMMOPlayer mcMMOPlayer) {
-        player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Members.Header"));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.Alliance.Members.Header"));
         player.sendMessage(playerParty.createMembersList(player));
         player.sendMessage(ChatColor.DARK_GRAY + "----------------------------");
         player.sendMessage(targetParty.createMembersList(player));

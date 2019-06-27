@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
@@ -27,11 +26,18 @@ import java.util.UUID;
  * value/quantity argument is removed.
  */
 public class SkillresetCommand implements TabExecutor {
+
+    private mcMMO pluginRef;
+
+    public SkillresetCommand(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
+
     protected static void handleSenderMessage(CommandSender sender, String playerName, PrimarySkillType skill) {
         if (skill == null) {
-            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardAll.2", playerName));
         } else {
-            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", skill.getName(), playerName));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardSkill.2", skill.getName(), playerName));
         }
     }
 
@@ -84,11 +90,11 @@ public class SkillresetCommand implements TabExecutor {
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {
                     UUID uuid = null;
-                    OfflinePlayer player = mcMMO.p.getServer().getOfflinePlayer(playerName);
+                    OfflinePlayer player = pluginRef.getServer().getOfflinePlayer(playerName);
                     if (player != null) {
                         uuid = player.getUniqueId();
                     }
-                    PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, uuid, false);
+                    PlayerProfile profile = pluginRef.getDatabaseManager().loadPlayerProfile(playerName, uuid, false);
 
                     if (CommandUtils.unloadedProfile(sender, profile)) {
                         return true;
@@ -143,11 +149,11 @@ public class SkillresetCommand implements TabExecutor {
     }
 
     protected void handlePlayerMessageAll(Player player) {
-        player.sendMessage(LocaleLoader.getString("Commands.Reset.All"));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Reset.All"));
     }
 
     protected void handlePlayerMessageSkill(Player player, PrimarySkillType skill) {
-        player.sendMessage(LocaleLoader.getString("Commands.Reset.Single", skill.getName()));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Reset.Single", skill.getName()));
     }
 
     private boolean validateArguments(CommandSender sender, String skillName) {

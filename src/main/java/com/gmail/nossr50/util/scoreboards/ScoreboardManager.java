@@ -5,8 +5,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
@@ -29,19 +27,19 @@ public class ScoreboardManager {
     static final String SIDEBAR_OBJECTIVE = "mcmmo_sidebar";
     static final String POWER_OBJECTIVE = "mcmmo_pwrlvl";
 
-    static final String HEADER_STATS = LocaleLoader.getString("Scoreboard.Header.PlayerStats");
-    static final String HEADER_COOLDOWNS = LocaleLoader.getString("Scoreboard.Header.PlayerCooldowns");
-    static final String HEADER_RANK = LocaleLoader.getString("Scoreboard.Header.PlayerRank");
-    static final String TAG_POWER_LEVEL = LocaleLoader.getString("Scoreboard.Header.PowerLevel");
+    static final String HEADER_STATS = pluginRef.getLocaleManager().getString("Scoreboard.Header.PlayerStats");
+    static final String HEADER_COOLDOWNS = pluginRef.getLocaleManager().getString("Scoreboard.Header.PlayerCooldowns");
+    static final String HEADER_RANK = pluginRef.getLocaleManager().getString("Scoreboard.Header.PlayerRank");
+    static final String TAG_POWER_LEVEL = pluginRef.getLocaleManager().getString("Scoreboard.Header.PowerLevel");
 
-    static final String POWER_LEVEL = LocaleLoader.getString("Scoreboard.Misc.PowerLevel");
+    static final String POWER_LEVEL = pluginRef.getLocaleManager().getString("Scoreboard.Misc.PowerLevel");
 
     static final String LABEL_POWER_LEVEL = POWER_LEVEL;
-    static final String LABEL_LEVEL = LocaleLoader.getString("Scoreboard.Misc.Level");
-    static final String LABEL_CURRENT_XP = LocaleLoader.getString("Scoreboard.Misc.CurrentXP");
-    static final String LABEL_REMAINING_XP = LocaleLoader.getString("Scoreboard.Misc.RemainingXP");
-    static final String LABEL_ABILITY_COOLDOWN = LocaleLoader.getString("Scoreboard.Misc.Cooldown");
-    static final String LABEL_OVERALL = LocaleLoader.getString("Scoreboard.Misc.Overall");
+    static final String LABEL_LEVEL = pluginRef.getLocaleManager().getString("Scoreboard.Misc.Level");
+    static final String LABEL_CURRENT_XP = pluginRef.getLocaleManager().getString("Scoreboard.Misc.CurrentXP");
+    static final String LABEL_REMAINING_XP = pluginRef.getLocaleManager().getString("Scoreboard.Misc.RemainingXP");
+    static final String LABEL_ABILITY_COOLDOWN = pluginRef.getLocaleManager().getString("Scoreboard.Misc.Cooldown");
+    static final String LABEL_OVERALL = pluginRef.getLocaleManager().getString("Scoreboard.Misc.Overall");
 
     static final Map<PrimarySkillType, String> skillLabels;
     static final Map<SuperAbilityType, String> abilityLabelsColored;
@@ -64,7 +62,7 @@ public class ScoreboardManager {
          * Stylizes the targetBoard in a Rainbow Pattern
          * This is off by default
          */
-        if (mcMMO.getScoreboardSettings().getUseRainbowSkillStyling()) {
+        if (pluginRef.getScoreboardSettings().getUseRainbowSkillStyling()) {
             // Everything but black, gray, gold
             List<ChatColor> colors = Lists.newArrayList(
                     ChatColor.WHITE,
@@ -134,10 +132,10 @@ public class ScoreboardManager {
     }
 
     private static String formatAbility(ChatColor color, String abilityName) {
-        if (mcMMO.getScoreboardSettings().getUseAbilityNamesOverGenerics()) {
+        if (pluginRef.getScoreboardSettings().getUseAbilityNamesOverGenerics()) {
             return getShortenedName(color + abilityName);
         } else {
-            return color + LocaleLoader.getString("Scoreboard.Misc.Ability");
+            return color + pluginRef.getLocaleManager().getString("Scoreboard.Misc.Ability");
         }
     }
 
@@ -172,8 +170,8 @@ public class ScoreboardManager {
 
     // Called in onDisable()
     public static void teardownAll() {
-        ImmutableList<Player> onlinePlayers = ImmutableList.copyOf(mcMMO.p.getServer().getOnlinePlayers());
-        mcMMO.p.debug("Tearing down scoreboards... (" + onlinePlayers.size() + ")");
+        ImmutableList<Player> onlinePlayers = ImmutableList.copyOf(pluginRef.getServer().getOnlinePlayers());
+        pluginRef.debug("Tearing down scoreboards... (" + onlinePlayers.size() + ")");
         for (Player player : onlinePlayers) {
             teardownPlayer(player);
         }
@@ -206,11 +204,11 @@ public class ScoreboardManager {
             }
         }
 
-        if (mcMMO.getScoreboardSettings().getPowerLevelTagsEnabled() && !dirtyPowerLevels.contains(playerName)) {
+        if (pluginRef.getScoreboardSettings().getPowerLevelTagsEnabled() && !dirtyPowerLevels.contains(playerName)) {
             dirtyPowerLevels.add(playerName);
         }
 
-        if (mcMMO.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionSkillBoard().isUseThisBoard()) {
+        if (pluginRef.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionSkillBoard().isUseThisBoard()) {
             enablePlayerSkillLevelUpScoreboard(player, skill);
         }
     }
@@ -241,7 +239,7 @@ public class ScoreboardManager {
         wrapper.setOldScoreboard();
         wrapper.setTypeSkill(skill);
 
-        changeScoreboard(wrapper, mcMMO.getScoreboardSettings().getScoreboardDisplayTime(SidebarType.SKILL_BOARD));
+        changeScoreboard(wrapper, pluginRef.getScoreboardSettings().getScoreboardDisplayTime(SidebarType.SKILL_BOARD));
     }
 
     // **** Setup methods **** //
@@ -257,7 +255,7 @@ public class ScoreboardManager {
         wrapper.setOldScoreboard();
         wrapper.setTypeSkill(skill);
 
-        changeScoreboard(wrapper, mcMMO.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionSkillBoard().getShowBoardOnPlayerLevelUpTime());
+        changeScoreboard(wrapper, pluginRef.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionSkillBoard().getShowBoardOnPlayerLevelUpTime());
     }
 
     public static void enablePlayerStatsScoreboard(Player player) {
@@ -266,7 +264,7 @@ public class ScoreboardManager {
         wrapper.setOldScoreboard();
         wrapper.setTypeSelfStats();
 
-        changeScoreboard(wrapper, mcMMO.getScoreboardSettings().getScoreboardDisplayTime(SidebarType.STATS_BOARD));
+        changeScoreboard(wrapper, pluginRef.getScoreboardSettings().getScoreboardDisplayTime(SidebarType.STATS_BOARD));
     }
 
     public static void enablePlayerInspectScoreboard(Player player, PlayerProfile targetProfile) {
@@ -275,7 +273,7 @@ public class ScoreboardManager {
         wrapper.setOldScoreboard();
         wrapper.setTypeInspectStats(targetProfile);
 
-        changeScoreboard(wrapper, mcMMO.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionInspectBoard().getDisplayTimeInSeconds());
+        changeScoreboard(wrapper, pluginRef.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionInspectBoard().getDisplayTimeInSeconds());
     }
 
     public static void enablePlayerCooldownScoreboard(Player player) {
@@ -284,7 +282,7 @@ public class ScoreboardManager {
         wrapper.setOldScoreboard();
         wrapper.setTypeCooldowns();
 
-        changeScoreboard(wrapper, mcMMO.getScoreboardSettings().getScoreboardDisplayTime(SidebarType.COOLDOWNS_BOARD));
+        changeScoreboard(wrapper, pluginRef.getScoreboardSettings().getScoreboardDisplayTime(SidebarType.COOLDOWNS_BOARD));
     }
 
     public static void showPlayerRankScoreboard(Player player, Map<PrimarySkillType, Integer> rank) {
@@ -294,7 +292,7 @@ public class ScoreboardManager {
         wrapper.setTypeSelfRank();
         wrapper.acceptRankData(rank);
 
-        changeScoreboard(wrapper, mcMMO.getScoreboardSettings().getScoreboardDisplayTime(SidebarType.RANK_BOARD));
+        changeScoreboard(wrapper, pluginRef.getScoreboardSettings().getScoreboardDisplayTime(SidebarType.RANK_BOARD));
     }
 
     public static void showPlayerRankScoreboardOthers(Player player, String targetName, Map<PrimarySkillType, Integer> rank) {
@@ -304,7 +302,7 @@ public class ScoreboardManager {
         wrapper.setTypeInspectRank(targetName);
         wrapper.acceptRankData(rank);
 
-        changeScoreboard(wrapper, mcMMO.getScoreboardSettings().getScoreboardDisplayTime(SidebarType.RANK_BOARD));
+        changeScoreboard(wrapper, pluginRef.getScoreboardSettings().getScoreboardDisplayTime(SidebarType.RANK_BOARD));
     }
 
     public static void showTopScoreboard(Player player, PrimarySkillType skill, int pageNumber, List<PlayerStat> stats) {
@@ -314,7 +312,7 @@ public class ScoreboardManager {
         wrapper.setTypeTop(skill, pageNumber);
         wrapper.acceptLeaderboardData(stats);
 
-        changeScoreboard(wrapper, mcMMO.getScoreboardSettings().getScoreboardDisplayTime(SidebarType.TOP_BOARD));
+        changeScoreboard(wrapper, pluginRef.getScoreboardSettings().getScoreboardDisplayTime(SidebarType.TOP_BOARD));
     }
 
     public static void showTopPowerScoreboard(Player player, int pageNumber, List<PlayerStat> stats) {
@@ -324,7 +322,7 @@ public class ScoreboardManager {
         wrapper.setTypeTopPower(pageNumber);
         wrapper.acceptLeaderboardData(stats);
 
-        changeScoreboard(wrapper, mcMMO.getScoreboardSettings().getScoreboardDisplayTime(SidebarType.TOP_BOARD));
+        changeScoreboard(wrapper, pluginRef.getScoreboardSettings().getScoreboardDisplayTime(SidebarType.TOP_BOARD));
     }
 
     /**
@@ -369,21 +367,21 @@ public class ScoreboardManager {
      * @return the main targetBoard objective, or null if disabled
      */
     public static Objective getPowerLevelObjective() {
-        if (!mcMMO.getScoreboardSettings().getPowerLevelTagsEnabled()) {
-            Objective objective = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard().getObjective(POWER_OBJECTIVE);
+        if (!pluginRef.getScoreboardSettings().getPowerLevelTagsEnabled()) {
+            Objective objective = pluginRef.getServer().getScoreboardManager().getMainScoreboard().getObjective(POWER_OBJECTIVE);
 
             if (objective != null) {
                 objective.unregister();
-                mcMMO.p.debug("Removed leftover targetBoard objects from Power Level Tags.");
+                pluginRef.debug("Removed leftover targetBoard objects from Power Level Tags.");
             }
 
             return null;
         }
 
-        Objective powerObjective = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard().getObjective(POWER_OBJECTIVE);
+        Objective powerObjective = pluginRef.getServer().getScoreboardManager().getMainScoreboard().getObjective(POWER_OBJECTIVE);
 
         if (powerObjective == null) {
-            powerObjective = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard().registerNewObjective(POWER_OBJECTIVE, "dummy");
+            powerObjective = pluginRef.getServer().getScoreboardManager().getMainScoreboard().registerNewObjective(POWER_OBJECTIVE, "dummy");
             powerObjective.setDisplayName(TAG_POWER_LEVEL);
             powerObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
         }
