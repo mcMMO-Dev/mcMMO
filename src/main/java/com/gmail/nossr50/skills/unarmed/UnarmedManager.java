@@ -20,16 +20,28 @@ import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class UnarmedManager extends SkillManager {
+    private long lastAttacked;
+    private long attackInterval;
+
     public UnarmedManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.UNARMED);
+        initUnarmedPerPlayerVars();
     }
+
+    /**
+     * Inits variables used for each player for unarmed
+     */
+    private void initUnarmedPerPlayerVars() {
+        lastAttacked = 0;
+        attackInterval = 750;
+    }
+
 
     public boolean canActivateAbility() {
         return mcMMOPlayer.getToolPreparationMode(ToolType.FISTS) && Permissions.berserk(getPlayer());
@@ -73,8 +85,6 @@ public class UnarmedManager extends SkillManager {
         if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.ALWAYS_FIRES, SubSkillType.UNARMED_BLOCK_CRACKER, getPlayer())) {
             return false;
         }
-
-        BlockData data = blockState.getBlockData();
 
         switch (blockState.getType()) {
             case STONE_BRICKS:
@@ -150,7 +160,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean isPunchingCooldownOver() {
-        return (Unarmed.lastAttacked + Unarmed.attackInterval) <= System.currentTimeMillis();
+        return (lastAttacked + attackInterval) <= System.currentTimeMillis();
     }
 
     public double getIronArmDamage() {
@@ -180,5 +190,21 @@ public class UnarmedManager extends SkillManager {
         }
 
         return false;
+    }
+
+    public long getLastAttacked() {
+        return lastAttacked;
+    }
+
+    public void setLastAttacked(long lastAttacked) {
+        this.lastAttacked = lastAttacked;
+    }
+
+    public long getAttackInterval() {
+        return attackInterval;
+    }
+
+    public void setAttackInterval(long attackInterval) {
+        this.attackInterval = attackInterval;
     }
 }

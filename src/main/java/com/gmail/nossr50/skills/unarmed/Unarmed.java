@@ -10,8 +10,6 @@ import org.bukkit.inventory.ItemStack;
 public class Unarmed {
     public static boolean blockCrackerSmoothBrick = Config.getInstance().getUnarmedBlockCrackerSmoothbrickToCracked();
     public static double berserkDamageModifier = 1.5;
-    public static long lastAttacked = 0;
-    public static long attackInterval = 750;
 
     public static void handleItemPickup(Player player, EntityPickupItemEvent event) {
         ItemStack[] storageContents = player.getInventory().getStorageContents();

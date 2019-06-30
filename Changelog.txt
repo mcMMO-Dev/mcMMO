@@ -1,5 +1,6 @@
 Version 2.1.91
     mcMMO is now more compatible with plugins that spawn arrows in unexpected ways, this fixes some NPE in mcMMO when using certain plugins
+    Fixed a bug where Unarmed was using the same CD timer for every player in the server (thanks slop_me)
 
 Version 2.1.90
     Salvaged items now travel much slower towards the player

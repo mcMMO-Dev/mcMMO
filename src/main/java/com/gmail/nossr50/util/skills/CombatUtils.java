@@ -166,7 +166,7 @@ public final class CombatUtils {
 
         applyScaledModifiers(initialDamage, finalDamage, event);
         startGainXp(mcMMOPlayer, target, PrimarySkillType.UNARMED);
-        Unarmed.lastAttacked = System.currentTimeMillis(); //Track how often the player is punching
+        unarmedManager.setLastAttacked(System.currentTimeMillis()); //Track how often the player is punching
     }
 
     private static void processTamingCombat(LivingEntity target, Player master, Wolf wolf, EntityDamageByEntityEvent event) {
