@@ -20,13 +20,13 @@ import java.util.UUID;
 
 public abstract class ExperienceCommand implements TabExecutor {
 
-    private mcMMO pluginRef;
+    protected mcMMO pluginRef;
 
     public ExperienceCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
     }
 
-    protected static void handleSenderMessage(CommandSender sender, String playerName, PrimarySkillType skill) {
+    protected void handleSenderMessage(CommandSender sender, String playerName, PrimarySkillType skill) {
         if (skill == null) {
             sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardAll.2", playerName));
         } else {

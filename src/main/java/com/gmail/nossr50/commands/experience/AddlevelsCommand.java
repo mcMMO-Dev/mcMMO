@@ -11,10 +11,8 @@ import org.bukkit.entity.Player;
 
 public class AddlevelsCommand extends ExperienceCommand {
 
-    private mcMMO pluginRef;
-
     public AddlevelsCommand(mcMMO pluginRef) {
-        this.pluginRef = pluginRef;
+        super(pluginRef);
     }
 
     @Override
