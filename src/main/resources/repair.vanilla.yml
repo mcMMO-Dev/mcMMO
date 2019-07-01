@@ -207,6 +207,9 @@ Repairables:
     BOW:
         MinimumLevel: 0
         XpMultiplier: .5
+    CROSSBOW:
+        MinimumLevel: 0
+        XpMultiplier: .5
     CARROT_ON_A_STICK:
         MinimumLevel: 0
         XpMultiplier: .5

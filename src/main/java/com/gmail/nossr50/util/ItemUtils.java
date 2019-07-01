@@ -418,6 +418,7 @@ public final class ItemUtils {
     public static boolean isStringTool(ItemStack item) {
         switch (item.getType()) {
             case BOW:
+            case CROSSBOW:
             case CARROT_ON_A_STICK:
             case FISHING_ROD:
                 return true;
