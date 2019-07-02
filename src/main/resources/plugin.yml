@@ -11,7 +11,7 @@ description: >
   in order to evaluate and balance the mechanics of mcMMO in every update.
 
 author: nossr50
-authors: [GJ, NuclearW, bm01, Glitchfinder, TfT_02, t00thpick1, Riking]
+authors: [GJ, NuclearW, bm01, Glitchfinder, TfT_02, t00thpick1, Riking, electronicboy, kashike]
 website: https://www.mcmmo.org
 main: com.gmail.nossr50.mcMMO
 softdepend: [WorldGuard, CombatTag, HealthBar]
