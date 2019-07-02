@@ -72,6 +72,8 @@ public class EntityListener implements Listener {
         if(!ExperienceConfig.getInstance().isEndermanEndermiteFarmingPrevented())
             return;
 
+        if(event.getReason() == EntityTargetEvent.TargetReason.TEMPT)
+
         //It's rare but targets can be null sometimes
         if(event.getTarget() == null)
         {
@@ -683,7 +685,7 @@ public class EntityListener implements Listener {
      * @param event
      *            The event to watch
      */
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
@@ -739,6 +741,11 @@ public class EntityListener implements Listener {
         if(ExperienceConfig.getInstance().isCOTWBreedingPrevented()) {
             if(event.getFather().hasMetadata(mcMMO.COTW_TEMPORARY_SUMMON) || event.getMother().hasMetadata(mcMMO.COTW_TEMPORARY_SUMMON)) {
                 event.setCancelled(true);
+                Animals mom = (Animals) event.getMother();
+                Animals father = (Animals) event.getFather();
+
+                mom.setLoveModeTicks(0);
+                father.setLoveModeTicks(0);
             }
 
             if(event.getBreeder() instanceof Player) {
