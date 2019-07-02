@@ -1,3 +1,6 @@
+Version 2.1.93
+    Fixed a bug where players would be told they could not breed summoned animals when the animals weren't summoned (bug didn't actually do anything besides send you a message)
+
 Version 2.1.92
     Call Of The Wild (COTW) no longer cares if entities of the same type are nearby when attempting to summon a new entity
     Fixed a bug where COTW summon limit was global instead of per player

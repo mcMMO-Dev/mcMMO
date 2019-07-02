@@ -616,14 +616,11 @@ permissions:
         children:
             mcmmo.ability.taming.callofthewild.horse: true
             mcmmo.ability.taming.callofthewild.ocelot: true
-            mcmmo.ability.taming.callofthewild.renamepets: true
             mcmmo.ability.taming.callofthewild.wolf: true
     mcmmo.ability.taming.callofthewild.horse:
         description: Allows players to summon Horses with Call of the Wild
     mcmmo.ability.taming.callofthewild.ocelot:
         description: Allows players to summon Ocelots with Call of the Wild
-    mcmmo.ability.taming.callofthewild.renamepets:
-        description: Allows players to rename pets with Call of the Wild
     mcmmo.ability.taming.callofthewild.wolf:
         description: Allows players to summon Wolves with Call of the Wild
     mcmmo.ability.taming.environmentallyaware:

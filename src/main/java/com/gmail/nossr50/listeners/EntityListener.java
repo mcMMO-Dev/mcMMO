@@ -744,14 +744,17 @@ public class EntityListener implements Listener {
                 Animals mom = (Animals) event.getMother();
                 Animals father = (Animals) event.getFather();
 
+                //Prevent love mode spam
                 mom.setLoveModeTicks(0);
                 father.setLoveModeTicks(0);
+
+                //Inform the player
+                if(event.getBreeder() instanceof Player) {
+                    Player player = (Player) event.getBreeder();
+                    NotificationManager.sendPlayerInformationChatOnly(player, "Taming.Summon.COTW.BreedingDisallowed");
+                }
             }
 
-            if(event.getBreeder() instanceof Player) {
-                Player player = (Player) event.getBreeder();
-                NotificationManager.sendPlayerInformationChatOnly(player, "Taming.Summon.COTW.BreedingDisallowed");
-            }
         }
     }
 
