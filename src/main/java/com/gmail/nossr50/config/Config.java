@@ -9,7 +9,6 @@ import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -4,12 +4,10 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
@@ -45,6 +43,7 @@ public class TrackedTamingEntity extends BukkitRunnable {
             if(tamingManagerRef != null)
                 tamingManagerRef.removeFromTracker(this);
 
+            livingEntity.setHealth(0);
             livingEntity.remove();
         }
 

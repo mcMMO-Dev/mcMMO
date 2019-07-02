@@ -27,7 +27,6 @@ import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 
@@ -86,7 +85,7 @@ public class TamingManager extends SkillManager {
 
             for(CallOfTheWildType callOfTheWildType : CallOfTheWildType.values()) {
                 Material itemSummonMaterial = Config.getInstance().getTamingCOTWMaterial(callOfTheWildType.getConfigEntityTypeEntry());
-                int itemAmountRequired = Config.getInstance().getTamingCOTWAmount(callOfTheWildType.getConfigEntityTypeEntry());
+                int itemAmountRequired = Config.getInstance().getTamingCOTWCost(callOfTheWildType.getConfigEntityTypeEntry());
                 int entitiesSummonedPerCOTW = Config.getInstance().getTamingCOTWAmount(callOfTheWildType.getConfigEntityTypeEntry());
                 int summonLifespanSeconds = Config.getInstance().getTamingCOTWLength(callOfTheWildType.getConfigEntityTypeEntry());
                 int perPlayerMaxAmount = Config.getInstance().getTamingCOTWMaxAmount(callOfTheWildType.getConfigEntityTypeEntry());
@@ -333,6 +332,8 @@ public class TamingManager extends SkillManager {
             CallOfTheWildType callOfTheWildType = summoningItems.get(itemInMainHand.getType());
             TamingSummon tamingSummon = cotwSummonDataProperties.get(callOfTheWildType);
 
+            //Players will pay for the cost if at least one thing was summoned
+            int amountSummoned = 0;
 
             //Check to see if players have the correct amount of the item required to summon
             if(itemInMainHand.getAmount() >= tamingSummon.getItemAmountRequired()) {
@@ -343,29 +344,36 @@ public class TamingManager extends SkillManager {
                 for (int i = 0; i < tamingSummon.getEntitiesSummoned(); i++) {
 
                     if (getAmountCurrentlySummoned(callOfTheWildType) >= tamingSummon.getSummonCap()) {
-                        NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Taming.Summon.COTW.Limit", String.valueOf(tamingSummon.getSummonCap()));
+                        NotificationManager.sendPlayerInformationChatOnly(player, "Taming.Summon.COTW.Limit",
+                                String.valueOf(tamingSummon.getSummonCap()),
+                                StringUtils.getCapitalized(callOfTheWildType.toString()));
                         break;
                     }
 
                     spawnLocation = Misc.getLocationOffset(spawnLocation, 1);
                     spawnCOTWEntity(callOfTheWildType, spawnLocation, tamingSummon.getEntityType());
+
+                    //Inform the player about what they have just done
+                    if (tamingSummon.getSummonLifespan() > 0) {
+                        NotificationManager.sendPlayerInformationChatOnly(player, "Taming.Summon.COTW.Success",
+                                StringUtils.getCapitalized(callOfTheWildType.toString()), String.valueOf(tamingSummon.getSummonLifespan()));
+                    } else {
+                        NotificationManager.sendPlayerInformationChatOnly(player, "Taming.Summon.Complete");
+                    }
+
+                    //Send Sound
+                    SoundManager.sendSound(player, player.getLocation(), SoundType.ABILITY_ACTIVATED_GENERIC);
+
+                    amountSummoned++;
                 }
 
-                //Remove the items used to summon
-                int itemAmountAfterPayingCost = itemInMainHand.getAmount() - tamingSummon.getItemAmountRequired();
-                itemInMainHand.setAmount(itemAmountAfterPayingCost);
-                player.updateInventory();
-
-                //Inform the player about what they have just done
-                if (tamingSummon.getSummonLifespan() > 0) {
-                    NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Taming.Summon.COTW.Success",
-                            StringUtils.getCapitalized(callOfTheWildType.toString()), String.valueOf(tamingSummon.getSummonLifespan()));
-                } else {
-                    NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Taming.Summon.Complete");
+                //Remove items from the player if they had at least one entity summoned successfully
+                if(amountSummoned >= 1) {
+                    //Remove the items used to summon
+                    int itemAmountAfterPayingCost = itemInMainHand.getAmount() - tamingSummon.getItemAmountRequired();
+                    itemInMainHand.setAmount(itemAmountAfterPayingCost);
+                    player.updateInventory();
                 }
-
-                //Send Sound
-                SoundManager.sendSound(player, player.getLocation(), SoundType.ABILITY_ACTIVATED_GENERIC);
 
             } else {
                 //Player did not have enough of the item in their main hand
@@ -449,6 +457,7 @@ public class TamingManager extends SkillManager {
         horse.setColor(Horse.Color.values()[Misc.getRandom().nextInt(Horse.Color.values().length)]);
         horse.setStyle(Horse.Style.values()[Misc.getRandom().nextInt(Horse.Style.values().length)]);
         horse.setJumpStrength(Math.max(AdvancedConfig.getInstance().getMinHorseJumpStrength(), Math.min(Math.min(Misc.getRandom().nextDouble(), Misc.getRandom().nextDouble()) * 2, AdvancedConfig.getInstance().getMaxHorseJumpStrength())));
+
         //TODO: setSpeed, once available
 
         callOfWildEntity.setCustomName(LocaleLoader.getString("Taming.Summon.Name.Format", getPlayer().getName(), StringUtils.getPrettyEntityTypeString(EntityType.HORSE)));
@@ -546,6 +555,7 @@ public class TamingManager extends SkillManager {
 
                 //Remove from existence
                 if(livingEntity != null && livingEntity.isValid()) {
+                    livingEntity.setHealth(0);
                     livingEntity.remove();
                 }
             }
