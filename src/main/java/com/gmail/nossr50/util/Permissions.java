@@ -192,7 +192,6 @@ public final class Permissions {
 
     /* TAMING */
     public static boolean callOfTheWild(Permissible permissible, EntityType type) { return permissible.hasPermission("mcmmo.ability.taming.callofthewild." + type.toString().toLowerCase()); }
-    public static boolean renamePets(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.callofthewild.renamepets"); }
 
     /* UNARMED */
     public static boolean berserk(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.unarmed.berserk"); }

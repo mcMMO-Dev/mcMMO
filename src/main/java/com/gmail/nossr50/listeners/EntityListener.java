@@ -21,6 +21,7 @@ import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
@@ -730,6 +731,20 @@ public class EntityListener implements Listener {
 
             default:
                 return;
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    public void onEntityBreed(EntityBreedEvent event) {
+        if(ExperienceConfig.getInstance().isCOTWBreedingPrevented()) {
+            if(event.getFather().hasMetadata(mcMMO.COTW_TEMPORARY_SUMMON) || event.getMother().hasMetadata(mcMMO.COTW_TEMPORARY_SUMMON)) {
+                event.setCancelled(true);
+            }
+
+            if(event.getBreeder() instanceof Player) {
+                Player player = (Player) event.getBreeder();
+                NotificationManager.sendPlayerInformationChatOnly(player, "Taming.Summon.COTW.BreedingDisallowed");
+            }
         }
     }
 

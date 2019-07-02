@@ -198,41 +198,41 @@ public class Config extends AutoUpdateConfigLoader {
             reason.add("Cannot use the same item for Repair and Salvage anvils!");
         }
 
-        if (getTamingCOTWMaterial(EntityType.WOLF) == null) {
-            reason.add("Skills.Taming.Call_Of_The_Wild.Wolf.Item_Material is invalid!!");
-        }
-
-        if (getTamingCOTWMaterial(EntityType.OCELOT) == null) {
-            reason.add("Skills.Taming.Call_Of_The_Wild.Ocelot.Item_Material is invalid!!");
-        }
-
-        if (getTamingCOTWMaterial(EntityType.HORSE) == null) {
-            reason.add("Skills.Taming.Call_Of_The_Wild.Horse.Item_Material is invalid!!");
-        }
-
-        if (getTamingCOTWCost(EntityType.WOLF) <= 0) {
-            reason.add("Skills.Taming.Call_Of_The_Wild.Wolf.Item_Amount should be greater than 0!");
-        }
-
-        if (getTamingCOTWCost(EntityType.OCELOT) <= 0) {
-            reason.add("Skills.Taming.Call_Of_The_Wild.Ocelot.Item_Amount should be greater than 0!");
-        }
-
-        if (getTamingCOTWCost(EntityType.HORSE) <= 0) {
-            reason.add("Skills.Taming.Call_Of_The_Wild.Horse.Item_Amount should be greater than 0!");
-        }
-
-        if (getTamingCOTWAmount(EntityType.WOLF) <= 0) {
-            reason.add("Skills.Taming.Call_Of_The_Wild.Wolf.Summon_Amount should be greater than 0!");
-        }
-
-        if (getTamingCOTWAmount(EntityType.OCELOT) <= 0) {
-            reason.add("Skills.Taming.Call_Of_The_Wild.Ocelot.Summon_Amount should be greater than 0!");
-        }
-
-        if (getTamingCOTWAmount(EntityType.HORSE) <= 0) {
-            reason.add("Skills.Taming.Call_Of_The_Wild.Horse.Summon_Amount should be greater than 0!");
-        }
+//        if (getTamingCOTWMaterial(EntityType.WOLF) == null) {
+//            reason.add("Skills.Taming.Call_Of_The_Wild.Wolf.Item_Material is invalid!!");
+//        }
+//
+//        if (getTamingCOTWMaterial(EntityType.OCELOT) == null) {
+//            reason.add("Skills.Taming.Call_Of_The_Wild.Ocelot.Item_Material is invalid!!");
+//        }
+//
+//        if (getTamingCOTWMaterial(EntityType.HORSE) == null) {
+//            reason.add("Skills.Taming.Call_Of_The_Wild.Horse.Item_Material is invalid!!");
+//        }
+//
+//        if (getTamingCOTWCost(EntityType.WOLF) <= 0) {
+//            reason.add("Skills.Taming.Call_Of_The_Wild.Wolf.Item_Amount should be greater than 0!");
+//        }
+//
+//        if (getTamingCOTWCost(EntityType.OCELOT) <= 0) {
+//            reason.add("Skills.Taming.Call_Of_The_Wild.Ocelot.Item_Amount should be greater than 0!");
+//        }
+//
+//        if (getTamingCOTWCost(EntityType.HORSE) <= 0) {
+//            reason.add("Skills.Taming.Call_Of_The_Wild.Horse.Item_Amount should be greater than 0!");
+//        }
+//
+//        if (getTamingCOTWAmount(EntityType.WOLF) <= 0) {
+//            reason.add("Skills.Taming.Call_Of_The_Wild.Wolf.Summon_Amount should be greater than 0!");
+//        }
+//
+//        if (getTamingCOTWAmount(EntityType.OCELOT) <= 0) {
+//            reason.add("Skills.Taming.Call_Of_The_Wild.Ocelot.Summon_Amount should be greater than 0!");
+//        }
+//
+//        if (getTamingCOTWAmount(EntityType.HORSE) <= 0) {
+//            reason.add("Skills.Taming.Call_Of_The_Wild.Horse.Summon_Amount should be greater than 0!");
+//        }
 
         return noErrorsInConfig(reason);
     }
@@ -529,12 +529,17 @@ public class Config extends AutoUpdateConfigLoader {
     public int getSwordsGate() { return config.getInt("Skills.Swords.Ability_Activation_Level_Gate", 10); }
 
     /* Taming */
-    public Material getTamingCOTWMaterial(EntityType type) { return Material.matchMaterial(config.getString("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type) + ".Item_Material")); }
-    public int getTamingCOTWCost(EntityType type) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type) + ".Item_Amount"); }
-    public int getTamingCOTWAmount(EntityType type) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type) + ".Summon_Amount"); }
-    public int getTamingCOTWLength(EntityType type) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type)+ ".Summon_Length"); }
-    public int getTamingCOTWMaxAmount(EntityType type) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type)+ ".Summon_Max_Amount"); }
-    public double getTamingCOTWRange() { return config.getDouble("Skills.Taming.Call_Of_The_Wild.Range", 40.0D); }
+//    public Material getTamingCOTWMaterial(EntityType type) { return Material.matchMaterial(config.getString("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type) + ".Item_Material")); }
+//    public int getTamingCOTWCost(EntityType type) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type) + ".Item_Amount"); }
+//    public int getTamingCOTWAmount(EntityType type) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type) + ".Summon_Amount"); }
+//    public int getTamingCOTWLength(EntityType type) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type)+ ".Summon_Length"); }
+//    public int getTamingCOTWMaxAmount(EntityType type) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type)+ ".Summon_Max_Amount"); }
+
+    public Material getTamingCOTWMaterial(String cotwEntity) { return Material.matchMaterial(config.getString("Skills.Taming.Call_Of_The_Wild." + cotwEntity + ".Item_Material")); }
+    public int getTamingCOTWCost(String cotwEntity) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + cotwEntity + ".Item_Amount"); }
+    public int getTamingCOTWAmount(String cotwEntity) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + cotwEntity + ".Summon_Amount"); }
+    public int getTamingCOTWLength(String cotwEntity) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + cotwEntity+ ".Summon_Length"); }
+    public int getTamingCOTWMaxAmount(String cotwEntity) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + cotwEntity+ ".Per_Player_Limit", 1); }
 
     /* Woodcutting */
     public boolean getWoodcuttingDoubleDropsEnabled(BlockData material) { return config.getBoolean("Bonus_Drops.Woodcutting." + StringUtils.getFriendlyConfigBlockDataString(material)); }

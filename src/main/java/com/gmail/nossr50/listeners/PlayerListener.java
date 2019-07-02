@@ -11,6 +11,7 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -827,13 +828,13 @@ public class PlayerListener implements Listener {
                 Material type = heldItem.getType();
                 TamingManager tamingManager = mcMMOPlayer.getTamingManager();
 
-                if (type == Config.getInstance().getTamingCOTWMaterial(EntityType.WOLF)) {
+                if (type == Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.WOLF.getConfigEntityTypeEntry())) {
                     tamingManager.summonWolf();
                 }
-                else if (type == Config.getInstance().getTamingCOTWMaterial(EntityType.OCELOT)) {
+                else if (type == Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.CAT.getConfigEntityTypeEntry())) {
                     tamingManager.summonOcelot();
                 }
-                else if (type == Config.getInstance().getTamingCOTWMaterial(EntityType.HORSE)) {
+                else if (type == Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.HORSE.getConfigEntityTypeEntry())) {
                     tamingManager.summonHorse();
                 }
 

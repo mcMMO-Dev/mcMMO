@@ -8,7 +8,8 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
+import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
+import com.gmail.nossr50.datatypes.skills.subskills.taming.TamingSummon;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
@@ -22,7 +23,10 @@ import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
+import com.gmail.nossr50.util.sounds.SoundManager;
+import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
@@ -32,11 +36,66 @@ import java.util.HashMap;
 import java.util.List;
 
 public class TamingManager extends SkillManager {
+    //TODO: Temporary static cache, will be changed in 2.2
+    private static HashMap<Material, CallOfTheWildType> summoningItems;
+    private static HashMap<CallOfTheWildType, TamingSummon> cotwSummonDataProperties;
+    private long lastSummonTimeStamp;
+
+    private HashMap<CallOfTheWildType, List<TrackedTamingEntity>> playerSummonedEntities;
+
     public TamingManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.TAMING);
+        init();
     }
 
-    private static HashMap<EntityType, List<TrackedTamingEntity>> summonedEntities = new HashMap<EntityType, List<TrackedTamingEntity>>();
+    //TODO: Hacky stuff for 2.1, will be cleaned up in 2.2
+    private void init() {
+        //prevents accidentally summoning too many things when holding down left click
+        lastSummonTimeStamp = 0L;
+
+        //Init per-player tracking of summoned entities
+        initPerPlayerSummonTracking();
+
+        //Hacky stuff used as a band-aid
+        initStaticCaches();
+    }
+
+    private void initPerPlayerSummonTracking() {
+        playerSummonedEntities = new HashMap<>();
+
+        for(CallOfTheWildType callOfTheWildType : CallOfTheWildType.values()) {
+            playerSummonedEntities.put(callOfTheWildType, new ArrayList<TrackedTamingEntity>());
+        }
+    }
+
+    private void initStaticCaches() {
+        //TODO: Temporary static cache, will be changed in 2.2
+        //This is shared between instances of TamingManager
+        if(summoningItems == null) {
+            summoningItems = new HashMap<>();
+
+            summoningItems.put(Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.CAT.getConfigEntityTypeEntry()), CallOfTheWildType.CAT);
+            summoningItems.put(Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.WOLF.getConfigEntityTypeEntry()), CallOfTheWildType.WOLF);
+            summoningItems.put(Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.HORSE.getConfigEntityTypeEntry()), CallOfTheWildType.HORSE);
+        }
+
+        //TODO: Temporary static cache, will be changed in 2.2
+        //This is shared between instances of TamingManager
+        if(cotwSummonDataProperties == null) {
+            cotwSummonDataProperties = new HashMap<>();
+
+            for(CallOfTheWildType callOfTheWildType : CallOfTheWildType.values()) {
+                Material itemSummonMaterial = Config.getInstance().getTamingCOTWMaterial(callOfTheWildType.getConfigEntityTypeEntry());
+                int itemAmountRequired = Config.getInstance().getTamingCOTWAmount(callOfTheWildType.getConfigEntityTypeEntry());
+                int entitiesSummonedPerCOTW = Config.getInstance().getTamingCOTWAmount(callOfTheWildType.getConfigEntityTypeEntry());
+                int summonLifespanSeconds = Config.getInstance().getTamingCOTWLength(callOfTheWildType.getConfigEntityTypeEntry());
+                int perPlayerMaxAmount = Config.getInstance().getTamingCOTWMaxAmount(callOfTheWildType.getConfigEntityTypeEntry());
+
+                TamingSummon tamingSummon = new TamingSummon(callOfTheWildType, itemSummonMaterial, itemAmountRequired, entitiesSummonedPerCOTW, summonLifespanSeconds, perPlayerMaxAmount);
+                cotwSummonDataProperties.put(callOfTheWildType, tamingSummon);
+            }
+        }
+    }
 
     public boolean canUseThickFur() {
         return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_THICK_FUR)
@@ -98,7 +157,6 @@ public class TamingManager extends SkillManager {
      * @param damage The damage being absorbed by the wolf
      */
     public void fastFoodService(Wolf wolf, double damage) {
-        //static chance (3rd param)
         if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_STATIC_CHANCE, SubSkillType.TAMING_FAST_FOOD_SERVICE, getPlayer())) {
             return;
         }
@@ -150,7 +208,7 @@ public class TamingManager extends SkillManager {
             return;
         }
 
-        callOfTheWild(EntityType.OCELOT, Config.getInstance().getTamingCOTWCost(EntityType.OCELOT));
+        processCallOfTheWild();
     }
 
     /**
@@ -164,7 +222,7 @@ public class TamingManager extends SkillManager {
             return;
         }
 
-        callOfTheWild(EntityType.WOLF, Config.getInstance().getTamingCOTWCost(EntityType.WOLF));
+        processCallOfTheWild();
     }
 
     /**
@@ -178,7 +236,7 @@ public class TamingManager extends SkillManager {
             return;
         }
 
-        callOfTheWild(EntityType.HORSE, Config.getInstance().getTamingCOTWCost(EntityType.HORSE));
+        processCallOfTheWild();
     }
 
     /**
@@ -257,151 +315,243 @@ public class TamingManager extends SkillManager {
         }
     }
 
+
+    private void processCallOfTheWild() {
+        //Prevent summoning too many things accidentally if a player holds down the button
+        if(lastSummonTimeStamp + 150 > System.currentTimeMillis()) {
+            return;
+        } else {
+            lastSummonTimeStamp = System.currentTimeMillis();
+        }
+
+        Player player = getPlayer();
+        ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
+
+        //Check if the item the player is currently holding is a COTW item
+        if(isCOTWItem(itemInMainHand)) {
+            //Get the summoning type
+            CallOfTheWildType callOfTheWildType = summoningItems.get(itemInMainHand.getType());
+            TamingSummon tamingSummon = cotwSummonDataProperties.get(callOfTheWildType);
+
+
+            //Check to see if players have the correct amount of the item required to summon
+            if(itemInMainHand.getAmount() >= tamingSummon.getItemAmountRequired()) {
+                //Initial Spawn location
+                Location spawnLocation = Misc.getLocationOffset(player.getLocation(), 1);
+
+                //COTW can summon multiple entities per usage
+                for (int i = 0; i < tamingSummon.getEntitiesSummoned(); i++) {
+
+                    if (getAmountCurrentlySummoned(callOfTheWildType) >= tamingSummon.getSummonCap()) {
+                        NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Taming.Summon.COTW.Limit", String.valueOf(tamingSummon.getSummonCap()));
+                        break;
+                    }
+
+                    spawnLocation = Misc.getLocationOffset(spawnLocation, 1);
+                    spawnCOTWEntity(callOfTheWildType, spawnLocation, tamingSummon.getEntityType());
+                }
+
+                //Remove the items used to summon
+                int itemAmountAfterPayingCost = itemInMainHand.getAmount() - tamingSummon.getItemAmountRequired();
+                itemInMainHand.setAmount(itemAmountAfterPayingCost);
+                player.updateInventory();
+
+                //Inform the player about what they have just done
+                if (tamingSummon.getSummonLifespan() > 0) {
+                    NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Taming.Summon.COTW.Success",
+                            StringUtils.getCapitalized(callOfTheWildType.toString()), String.valueOf(tamingSummon.getSummonLifespan()));
+                } else {
+                    NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Taming.Summon.Complete");
+                }
+
+                //Send Sound
+                SoundManager.sendSound(player, player.getLocation(), SoundType.ABILITY_ACTIVATED_GENERIC);
+
+            } else {
+                //Player did not have enough of the item in their main hand
+                int difference = tamingSummon.getItemAmountRequired() - itemInMainHand.getAmount();
+                NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Item.NotEnough", String.valueOf(difference), StringUtils.getPrettyItemString(itemInMainHand.getType()));
+            }
+        }
+
+    }
+
+    private void spawnCOTWEntity(CallOfTheWildType callOfTheWildType, Location spawnLocation, EntityType entityType) {
+        switch(callOfTheWildType) {
+            case CAT:
+                //Entity type is needed for cats because in 1.13 and below we spawn ocelots, in 1.14 and above we spawn cats
+                spawnCat(spawnLocation, entityType);
+                break;
+            case HORSE:
+                spawnHorse(spawnLocation);
+                break;
+            case WOLF:
+                spawnWolf(spawnLocation);
+                break;
+        }
+    }
+
+    private void spawnWolf(Location spawnLocation) {
+        LivingEntity callOfWildEntity = (LivingEntity) getPlayer().getWorld().spawnEntity(spawnLocation, EntityType.WOLF);
+
+        //This is used to prevent XP gains for damaging this entity
+        applyMetaDataToCOTWEntity(callOfWildEntity);
+
+        setBaseCOTWEntityProperties(callOfWildEntity);
+
+        addToTracker(callOfWildEntity, CallOfTheWildType.WOLF);
+
+        //Setup wolf stats
+        callOfWildEntity.setMaxHealth(20.0);
+        callOfWildEntity.setHealth(callOfWildEntity.getMaxHealth());
+
+        callOfWildEntity.setCustomName(LocaleLoader.getString("Taming.Summon.Name.Format", getPlayer().getName(), StringUtils.getPrettyEntityTypeString(EntityType.WOLF)));
+    }
+
+    private void spawnCat(Location spawnLocation, EntityType entityType) {
+        LivingEntity callOfWildEntity = (LivingEntity) getPlayer().getWorld().spawnEntity(spawnLocation, entityType);
+
+        //This is used to prevent XP gains for damaging this entity
+        applyMetaDataToCOTWEntity(callOfWildEntity);
+
+        setBaseCOTWEntityProperties(callOfWildEntity);
+
+        addToTracker(callOfWildEntity, CallOfTheWildType.CAT);
+
+        //Randomize the cat
+        if(callOfWildEntity instanceof Ocelot) {
+            int numberOfTypes = Ocelot.Type.values().length;
+            ((Ocelot) callOfWildEntity).setCatType(Ocelot.Type.values()[Misc.getRandom().nextInt(numberOfTypes)]);
+        } else if(callOfWildEntity instanceof Cat) {
+            int numberOfTypes = Cat.Type.values().length;
+            ((Cat) callOfWildEntity).setCatType(Cat.Type.values()[Misc.getRandom().nextInt(numberOfTypes)]);
+        }
+
+        callOfWildEntity.setCustomName(LocaleLoader.getString("Taming.Summon.Name.Format", getPlayer().getName(), StringUtils.getPrettyEntityTypeString(entityType)));
+
+        //Particle effect
+        ParticleEffectUtils.playCallOfTheWildEffect(callOfWildEntity);
+    }
+
+    private void spawnHorse(Location spawnLocation) {
+        LivingEntity callOfWildEntity = (LivingEntity) getPlayer().getWorld().spawnEntity(spawnLocation, EntityType.HORSE);
+        applyMetaDataToCOTWEntity(callOfWildEntity);
+
+        setBaseCOTWEntityProperties(callOfWildEntity);
+
+        addToTracker(callOfWildEntity, CallOfTheWildType.HORSE);
+
+        //Randomize Horse
+        Horse horse = (Horse) callOfWildEntity;
+
+        callOfWildEntity.setMaxHealth(15.0 + (Misc.getRandom().nextDouble() * 15));
+        callOfWildEntity.setHealth(callOfWildEntity.getMaxHealth());
+        horse.setColor(Horse.Color.values()[Misc.getRandom().nextInt(Horse.Color.values().length)]);
+        horse.setStyle(Horse.Style.values()[Misc.getRandom().nextInt(Horse.Style.values().length)]);
+        horse.setJumpStrength(Math.max(AdvancedConfig.getInstance().getMinHorseJumpStrength(), Math.min(Math.min(Misc.getRandom().nextDouble(), Misc.getRandom().nextDouble()) * 2, AdvancedConfig.getInstance().getMaxHorseJumpStrength())));
+        //TODO: setSpeed, once available
+
+        callOfWildEntity.setCustomName(LocaleLoader.getString("Taming.Summon.Name.Format", getPlayer().getName(), StringUtils.getPrettyEntityTypeString(EntityType.HORSE)));
+
+        //Particle effect
+        ParticleEffectUtils.playCallOfTheWildEffect(callOfWildEntity);
+    }
+
+    private void setBaseCOTWEntityProperties(LivingEntity callOfWildEntity) {
+        ((Tameable) callOfWildEntity).setOwner(getPlayer());
+        callOfWildEntity.setRemoveWhenFarAway(false);
+    }
+
+    private void applyMetaDataToCOTWEntity(LivingEntity callOfWildEntity) {
+        //This is used to prevent XP gains for damaging this entity
+        callOfWildEntity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+
+        //This helps identify the entity as being summoned by COTW
+        callOfWildEntity.setMetadata(mcMMO.COTW_TEMPORARY_SUMMON, mcMMO.metadataValue);
+    }
+
     /**
-     * Handle the Call of the Wild ability.
-     *
-     * @param type The type of entity to summon.
-     * @param summonAmount The amount of material needed to summon the entity
+     * Whether or not the itemstack is used for COTW
+     * @param itemStack target ItemStack
+     * @return true if it is used for any COTW
      */
-    private void callOfTheWild(EntityType type, int summonAmount) {
-        Player player = getPlayer();
-
-        ItemStack heldItem = player.getInventory().getItemInMainHand();
-        int heldItemAmount = heldItem.getAmount();
-        Location location = player.getLocation();
-
-        if (heldItemAmount < summonAmount) {
-            int moreAmount = summonAmount - heldItemAmount;
-            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Item.NotEnough", String.valueOf(moreAmount), StringUtils.getPrettyItemString(heldItem.getType()));
-            return;
-        }
-
-        if (!rangeCheck(type)) {
-            return;
-        }
-
-        int amount = Config.getInstance().getTamingCOTWAmount(type);
-        int tamingCOTWLength = Config.getInstance().getTamingCOTWLength(type);
-
-        for (int i = 0; i < amount; i++) {
-            if (!summonAmountCheck(type)) {
-                return;
-            }
-
-            location = Misc.getLocationOffset(location, 1);
-            LivingEntity callOfWildEntity = (LivingEntity) player.getWorld().spawnEntity(location, type);
-
-            FakeEntityTameEvent event = new FakeEntityTameEvent(callOfWildEntity, player);
-            mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-            if (event.isCancelled()) {
-                continue;
-            }
-
-            callOfWildEntity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
-            ((Tameable) callOfWildEntity).setOwner(player);
-            callOfWildEntity.setRemoveWhenFarAway(false);
-
-            addToTracker(callOfWildEntity);
-
-            switch (type) {
-                case OCELOT:
-                    ((Ocelot) callOfWildEntity).setCatType(Ocelot.Type.values()[1 + Misc.getRandom().nextInt(3)]);
-                    break;
-
-                case WOLF:
-                    callOfWildEntity.setMaxHealth(20.0);
-                    callOfWildEntity.setHealth(callOfWildEntity.getMaxHealth());
-                    break;
-
-                case HORSE:
-                    Horse horse = (Horse) callOfWildEntity;
-
-                    callOfWildEntity.setMaxHealth(15.0 + (Misc.getRandom().nextDouble() * 15));
-                    callOfWildEntity.setHealth(callOfWildEntity.getMaxHealth());
-                    horse.setColor(Horse.Color.values()[Misc.getRandom().nextInt(Horse.Color.values().length)]);
-                    horse.setStyle(Horse.Style.values()[Misc.getRandom().nextInt(Horse.Style.values().length)]);
-                    horse.setJumpStrength(Math.max(AdvancedConfig.getInstance().getMinHorseJumpStrength(), Math.min(Math.min(Misc.getRandom().nextDouble(), Misc.getRandom().nextDouble()) * 2, AdvancedConfig.getInstance().getMaxHorseJumpStrength())));
-                    //TODO: setSpeed, once available
-                    break;
-
-                default:
-                    break;
-            }
-
-            if (Permissions.renamePets(player)) {
-                callOfWildEntity.setCustomName(LocaleLoader.getString("Taming.Summon.Name.Format", player.getName(), StringUtils.getPrettyEntityTypeString(type)));
-            }
-
-            ParticleEffectUtils.playCallOfTheWildEffect(callOfWildEntity);
-        }
-
-        ItemStack leftovers = new ItemStack(heldItem);
-        leftovers.setAmount(heldItemAmount - summonAmount);
-        player.getInventory().setItemInMainHand(heldItemAmount == summonAmount ? null : leftovers);
-
-        String lifeSpan = "";
-        if (tamingCOTWLength > 0) {
-            lifeSpan = LocaleLoader.getString("Taming.Summon.Lifespan", tamingCOTWLength);
-        }
-
-        NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Taming.Summon.Complete", lifeSpan);
-        player.playSound(location, Sound.ENTITY_FIREWORK_ROCKET_BLAST_FAR, 1F, 0.5F);
+    public boolean isCOTWItem(ItemStack itemStack) {
+        return summoningItems.containsKey(itemStack.getType());
     }
 
-    private boolean rangeCheck(EntityType type) {
-        double range = Config.getInstance().getTamingCOTWRange();
-        Player player = getPlayer();
+    //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
+    private int getAmountCurrentlySummoned(CallOfTheWildType callOfTheWildType) {
+        //The tracker is unreliable so validate its contents first
+        recalibrateTracker();
 
-        if (range == 0) {
-            return true;
+        return playerSummonedEntities.get(callOfTheWildType).size();
+    }
+
+    //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
+    private void addToTracker(LivingEntity livingEntity, CallOfTheWildType callOfTheWildType) {
+        TrackedTamingEntity trackedEntity = new TrackedTamingEntity(livingEntity, callOfTheWildType, this);
+
+        playerSummonedEntities.get(callOfTheWildType).add(trackedEntity);
+    }
+
+    //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
+    public List<TrackedTamingEntity> getTrackedEntities(CallOfTheWildType callOfTheWildType) {
+        return playerSummonedEntities.get(callOfTheWildType);
+    }
+
+    //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
+    public void removeFromTracker(TrackedTamingEntity trackedEntity) {
+        if(playerSummonedEntities.get(trackedEntity.getCallOfTheWildType()).contains(trackedEntity))
+            playerSummonedEntities.get(trackedEntity.getCallOfTheWildType()).remove(trackedEntity);
+
+        NotificationManager.sendPlayerInformationChatOnly(getPlayer(), "Taming.Summon.COTW.TimeExpired", StringUtils.getPrettyEntityTypeString(trackedEntity.getLivingEntity().getType()));
+    }
+
+    /**
+     * Builds a new tracked list by determining which tracked things are still valid
+     */
+    //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
+    private void recalibrateTracker() {
+        for(CallOfTheWildType callOfTheWildType : CallOfTheWildType.values()) {
+            ArrayList<TrackedTamingEntity> validEntities = getValidTrackedEntities(callOfTheWildType);
+            playerSummonedEntities.put(callOfTheWildType, validEntities); //Replace the old list with the new list
         }
+    }
 
-        for (Entity entity : player.getNearbyEntities(range, range, range)) {
-            if (entity.getType() == type) {
-                NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, Taming.getCallOfTheWildFailureMessage(type));
-                return false;
+    //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
+    private ArrayList<TrackedTamingEntity> getValidTrackedEntities(CallOfTheWildType callOfTheWildType) {
+        ArrayList<TrackedTamingEntity> validTrackedEntities = new ArrayList<>();
+
+        for(TrackedTamingEntity trackedTamingEntity : getTrackedEntities(callOfTheWildType)) {
+            LivingEntity livingEntity = trackedTamingEntity.getLivingEntity();
+
+            //Remove from existence
+            if(livingEntity != null && livingEntity.isValid()) {
+                validTrackedEntities.add(trackedTamingEntity);
             }
         }
 
-        return true;
+        return validTrackedEntities;
     }
 
-    private boolean summonAmountCheck(EntityType entityType) {
-        Player player = getPlayer();
+    /**
+     * Remove all tracked entities from existence if they currently exist
+     * Clear the tracked entity lists afterwards
+     */
+    //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
+    public void cleanupAllSummons() {
+        for(List<TrackedTamingEntity> trackedTamingEntities : playerSummonedEntities.values()) {
+            for(TrackedTamingEntity trackedTamingEntity : trackedTamingEntities) {
+                LivingEntity livingEntity = trackedTamingEntity.getLivingEntity();
 
-        int maxAmountSummons = Config.getInstance().getTamingCOTWMaxAmount(entityType);
+                //Remove from existence
+                if(livingEntity != null && livingEntity.isValid()) {
+                    livingEntity.remove();
+                }
+            }
 
-        if (maxAmountSummons <= 0) {
-            return true;
+            //Clear the list
+            trackedTamingEntities.clear();
         }
-
-        List<TrackedTamingEntity> trackedEntities = getTrackedEntities(entityType);
-        int summonAmount = trackedEntities == null ? 0 : trackedEntities.size();
-
-        if (summonAmount >= maxAmountSummons) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Taming.Summon.Fail.TooMany", String.valueOf(maxAmountSummons));
-            return false;
-        }
-
-        return true;
-    }
-
-    protected static void addToTracker(LivingEntity livingEntity) {
-        TrackedTamingEntity trackedEntity = new TrackedTamingEntity(livingEntity);
-
-        if (!summonedEntities.containsKey(livingEntity.getType())) {
-            summonedEntities.put(livingEntity.getType(), new ArrayList<TrackedTamingEntity>());
-        }
-
-        summonedEntities.get(livingEntity.getType()).add(trackedEntity);
-    }
-
-    protected static List<TrackedTamingEntity> getTrackedEntities(EntityType entityType) {
-        return summonedEntities.get(entityType);
-    }
-
-    protected static void removeFromTracker(TrackedTamingEntity trackedEntity) {
-        summonedEntities.get(trackedEntity.getLivingEntity().getType()).remove(trackedEntity);
     }
 }

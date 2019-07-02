@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.taming;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.CombatUtils;
@@ -15,14 +16,18 @@ import java.util.UUID;
 
 public class TrackedTamingEntity extends BukkitRunnable {
     private LivingEntity livingEntity;
+    private final CallOfTheWildType callOfTheWildType;
     private UUID id;
     private int length;
+    private final TamingManager tamingManagerRef;
 
-    protected TrackedTamingEntity(LivingEntity livingEntity) {
+    protected TrackedTamingEntity(LivingEntity livingEntity, CallOfTheWildType callOfTheWildType, TamingManager tamingManagerRef) {
+        this.tamingManagerRef = tamingManagerRef;
+        this.callOfTheWildType = callOfTheWildType;
         this.livingEntity = livingEntity;
         this.id = livingEntity.getUniqueId();
 
-        int tamingCOTWLength = Config.getInstance().getTamingCOTWLength(livingEntity.getType());
+        int tamingCOTWLength = Config.getInstance().getTamingCOTWLength(callOfTheWildType.getConfigEntityTypeEntry());
 
         if (tamingCOTWLength > 0) {
             this.length = tamingCOTWLength * Misc.TICK_CONVERSION_FACTOR;
@@ -36,18 +41,25 @@ public class TrackedTamingEntity extends BukkitRunnable {
             Location location = livingEntity.getLocation();
             location.getWorld().playSound(location, Sound.BLOCK_FIRE_EXTINGUISH, 0.8F, 0.8F);
             ParticleEffectUtils.playCallOfTheWildEffect(livingEntity);
-            CombatUtils.dealDamage(livingEntity, livingEntity.getMaxHealth(), DamageCause.SUICIDE, livingEntity);
+
+            if(tamingManagerRef != null)
+                tamingManagerRef.removeFromTracker(this);
+
+            livingEntity.remove();
         }
 
-        TamingManager.removeFromTracker(this);
         this.cancel();
     }
 
-    protected LivingEntity getLivingEntity() {
+    public CallOfTheWildType getCallOfTheWildType() {
+        return callOfTheWildType;
+    }
+
+    public LivingEntity getLivingEntity() {
         return livingEntity;
     }
 
-    protected UUID getID() {
+    public UUID getID() {
         return id;
     }
 }

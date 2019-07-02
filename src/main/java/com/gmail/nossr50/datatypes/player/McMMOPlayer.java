@@ -1026,8 +1026,8 @@ public class McMMOPlayer {
      */
     public void logout(boolean syncSave) {
         Player thisPlayer = getPlayer();
-        resetAbilityMode();
-        BleedTimerTask.bleedOut(thisPlayer);
+        BleedTimerTask.bleedOut(getPlayer());
+        cleanup();
 
         if (syncSave) {
             getProfile().save(true);
@@ -1046,5 +1046,16 @@ public class McMMOPlayer {
 
         //Remove user from cache
         mcMMO.getDatabaseManager().cleanupUser(thisPlayer.getUniqueId());
+    }
+
+    /**
+     * Cleanup various things related to this player
+     * Such as temporary summons..
+     * Turning off abilities...
+     * Etc...
+     */
+    public void cleanup() {
+        resetAbilityMode();
+        getTamingManager().cleanupAllSummons();
     }
 }

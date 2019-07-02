@@ -25,6 +25,7 @@
 EarlyGameBoost:
     Enabled: true
 ExploitFix:
+    COTWBreeding: true
     UnsafeEnchantments: false
     # Prevent many exploits related to fishing
     Fishing: true

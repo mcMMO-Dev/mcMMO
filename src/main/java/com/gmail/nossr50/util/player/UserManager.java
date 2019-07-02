@@ -46,8 +46,9 @@ public final class UserManager {
         McMMOPlayer mcMMOPlayer = getPlayer(player);
         player.removeMetadata(mcMMO.playerDataKey, mcMMO.p);
 
-        if(playerDataSet != null && playerDataSet.contains(mcMMOPlayer))
+        if(playerDataSet != null && playerDataSet.contains(mcMMOPlayer)) {
             playerDataSet.remove(mcMMOPlayer); //Clear sync save tracking
+        }
     }
 
     /**
