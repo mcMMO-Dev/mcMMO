@@ -44,6 +44,7 @@ public final class UserManager {
      */
     public static void remove(Player player) {
         McMMOPlayer mcMMOPlayer = getPlayer(player);
+        mcMMOPlayer.cleanup();
         player.removeMetadata(mcMMO.playerDataKey, mcMMO.p);
 
         if(playerDataSet != null && playerDataSet.contains(mcMMOPlayer)) {
