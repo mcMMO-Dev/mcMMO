@@ -62,7 +62,7 @@ public class WoodcuttingManager extends SkillManager {
                 && ItemUtils.isAxe(heldItem);
     }
 
-    protected boolean canGetDoubleDrops() {
+    private boolean canGetDoubleDrops() {
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
                 && RankUtils.hasReachedRank(1, getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
                 && RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.WOODCUTTING_HARVEST_LUMBER, getPlayer());

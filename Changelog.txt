@@ -1,5 +1,7 @@
 Version 2.1.94
     Fixed a bug where 2 people using Tree Feller could result in the tree being rejected for being too big
+    Updated Japanese locale (thanks snake)
+    Updated hu_HU locale (thanks andris155)
 
 Version 2.1.93
     Fixed a bug where players would be told they could not breed summoned animals when the animals weren't summoned (bug didn't actually do anything besides send you a message)
