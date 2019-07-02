@@ -1,18 +1,19 @@
 Version 2.1.92
     Call Of The Wild (COTW) no longer cares if entities of the same type are nearby when attempting to summon a new entity
-    Most COTW messages have been tweaked and new COTW messages have been added
-    COTW Horses now always spawn in as adults
-    By default players are no longer allowed to breed COTW summoned animals with other animals, you can turn this off (see the notes)
-    Changed the sound effect for COTW (Fireworks -> Pop)
     Fixed a bug where COTW summon limit was global instead of per player
-    The default summon limit for COTW is now per player instead of global which is how it is intended to be, for wolves this defaults to 2, for other entities it defaults to 1
-    There is now a small 150ms window in which you cannot summon an entity via COTW to prevent accidentally summoning extra entities
-    The setting named Summon_Max_Amount in config.yml has been renamed to Per_Player_Limit
-    COTW entities now send the player a message when they die, time out, or get removed through other means
+    If you are playing in 1.14 mcMMO will now summon cats instead of ocelots
+    The default summon limit for COTW is now per player instead of global which is how it should be, for wolves this defaults to 2, for other entities it defaults to 1
+    The COTW setting named Summon_Max_Amount in config.yml has been renamed to Per_Player_Limit
+    By default players are no longer allowed to breed COTW summoned animals with other animals, you can turn this off (see the notes)
+    If a player tries to breed animals with a COTW animal and the server settings prevent this, they are informed via a message that it is not allowed
     If the COTW summon has a lifespan, players are now informed about this lifespan when the entity is first summoned
+    COTW entities now send the player a message when they die, time out, or get removed through other means
     COTW summons now have their name prefixed with some colored text to to make it easier to identify them.
     COTW summons now despawn if their owner logs out
-    If a player tries to breed animals with a COTW animal and the server settings prevent this, they are informed via a message that it is not allowed
+    There is now a small 150ms window in which you cannot summon an entity via COTW to prevent accidentally summoning extra entities
+    COTW Horses, Cats, and Wolves now always spawn in as adults
+    Changed the sound effect for COTW (Fireworks -> Pop)
+    Most COTW messages have been tweaked and new COTW messages have been added
     Added new setting to experience.yml 'ExploitFix.COTWBreeding' - Prevents breeding with COTW summoned entities when set to true, defaults to true
     Removed the 'mcmmo.ability.taming.callofthewild.renamepets' permission node as it is seen as unnecessary
 

@@ -406,6 +406,7 @@ public class TamingManager extends SkillManager {
 
         setBaseCOTWEntityProperties(callOfWildEntity);
 
+        ((Wolf) callOfWildEntity).setAdult();
         addToTracker(callOfWildEntity, CallOfTheWildType.WOLF);
 
         //Setup wolf stats
@@ -429,9 +430,11 @@ public class TamingManager extends SkillManager {
         if(callOfWildEntity instanceof Ocelot) {
             int numberOfTypes = Ocelot.Type.values().length;
             ((Ocelot) callOfWildEntity).setCatType(Ocelot.Type.values()[Misc.getRandom().nextInt(numberOfTypes)]);
+            ((Ocelot) callOfWildEntity).setAdult();
         } else if(callOfWildEntity instanceof Cat) {
             int numberOfTypes = Cat.Type.values().length;
             ((Cat) callOfWildEntity).setCatType(Cat.Type.values()[Misc.getRandom().nextInt(numberOfTypes)]);
+            ((Cat) callOfWildEntity).setAdult();
         }
 
         callOfWildEntity.setCustomName(LocaleLoader.getString("Taming.Summon.Name.Format", getPlayer().getName(), StringUtils.getPrettyEntityTypeString(entityType)));
