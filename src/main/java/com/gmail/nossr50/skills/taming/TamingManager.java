@@ -355,10 +355,10 @@ public class TamingManager extends SkillManager {
 
                     //Inform the player about what they have just done
                     if (tamingSummon.getSummonLifespan() > 0) {
-                        NotificationManager.sendPlayerInformationChatOnly(player, "Taming.Summon.COTW.Success",
+                        NotificationManager.sendPlayerInformationChatOnly(player, "Taming.Summon.COTW.Success.WithLifespan",
                                 StringUtils.getCapitalized(callOfTheWildType.toString()), String.valueOf(tamingSummon.getSummonLifespan()));
                     } else {
-                        NotificationManager.sendPlayerInformationChatOnly(player, "Taming.Summon.Complete");
+                        NotificationManager.sendPlayerInformationChatOnly(player, "Taming.Summon.COTW.Success.WithoutLifespan", StringUtils.getCapitalized(callOfTheWildType.toString()));
                     }
 
                     //Send Sound
@@ -378,10 +378,9 @@ public class TamingManager extends SkillManager {
             } else {
                 //Player did not have enough of the item in their main hand
                 int difference = tamingSummon.getItemAmountRequired() - itemInMainHand.getAmount();
-                NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Item.NotEnough", String.valueOf(difference), StringUtils.getPrettyItemString(itemInMainHand.getType()));
+                NotificationManager.sendPlayerInformationChatOnly(player, "Taming.Summon.COTW.NeedMoreItems", String.valueOf(difference), StringUtils.getPrettyItemString(itemInMainHand.getType()));
             }
         }
-
     }
 
     private void spawnCOTWEntity(CallOfTheWildType callOfTheWildType, Location spawnLocation, EntityType entityType) {

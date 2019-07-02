@@ -1,5 +1,6 @@
 Version 2.1.92
     Call Of The Wild (COTW) no longer cares if entities of the same type are nearby when attempting to summon a new entity
+    Most COTW messages have been tweaked and new COTW messages have been added
     By default players are no longer allowed to breed COTW summoned animals with other animals, you can turn this off (see the notes)
     Changed the sound effect for COTW (Fireworks -> Pop)
     Fixed a bug where COTW summon limit was global instead of per player
@@ -18,9 +19,13 @@ Version 2.1.92
         Taming.Summon.Fail.Ocelot
         Taming.Summon.Fail.Wolf
         Taming.Summon.Fail.Horse
+        Taming.Summon.Fail.TooMany
+        Taming.Summon.Lifespan
     Added new locale strings
+        Taming.Summon.COTW.NeedMoreItems
         Taming.Summon.COTW.BreedingDisallowed
-        Taming.Summon.COTW.Success
+        Taming.Summon.COTW.Success.WithLifespan
+        Taming.Summon.COTW.Success.WithoutLifespan
         Taming.Summon.COTW.Limit
         Taming.Summon.COTW.TimeExpired
     Tweaked locale string
