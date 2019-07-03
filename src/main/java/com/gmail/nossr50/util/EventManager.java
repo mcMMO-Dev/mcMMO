@@ -315,7 +315,7 @@ public class EventManager {
     }
 
     public boolean handleXpGainEvent(Player player, PrimarySkillType skill, double xpGained, XPGainReason xpGainReason) {
-        McMMOPlayerXpGainEvent event = new McMMOPlayerXpGainEvent(player, skill, xpGained, xpGainReason);
+        McMMOPlayerXpGainEvent event = new McMMOPlayerXpGainEvent(player, skill, getSkillLevel(player, skill), xpGained, xpGainReason);
         pluginRef.getServer().getPluginManager().callEvent(event);
 
         boolean isCancelled = event.isCancelled();
@@ -457,6 +457,10 @@ public class EventManager {
         pluginRef.getServer().getPluginManager().callEvent(event);
 
         return event;
+    }
+
+    private int getSkillLevel(Player player, PrimarySkillType primarySkillType) {
+        return pluginRef.getUserManager().getPlayer(player).getSkillLevel(primarySkillType);
     }
 
     /**

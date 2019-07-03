@@ -18,17 +18,17 @@ public abstract class McMMOPlayerExperienceEvent extends PlayerEvent implements 
     private boolean cancelled;
 
     @Deprecated
-    protected McMMOPlayerExperienceEvent(Player player, PrimarySkillType skill) {
+    protected McMMOPlayerExperienceEvent(Player player, PrimarySkillType skill, int skillLevel) {
         super(player);
         this.skill = skill;
-        this.skillLevel = pluginRef.getUserManager().getPlayer(player).getSkillLevel(skill);
+        this.skillLevel = skillLevel;
         this.xpGainReason = XPGainReason.UNKNOWN;
     }
 
-    protected McMMOPlayerExperienceEvent(Player player, PrimarySkillType skill, XPGainReason xpGainReason) {
+    protected McMMOPlayerExperienceEvent(Player player, PrimarySkillType skill, int skillLevel, XPGainReason xpGainReason) {
         super(player);
         this.skill = skill;
-        this.skillLevel = pluginRef.getUserManager().getPlayer(player).getSkillLevel(skill);
+        this.skillLevel = skillLevel;
         this.xpGainReason = xpGainReason;
     }
 

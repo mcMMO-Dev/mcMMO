@@ -13,24 +13,24 @@ public class McMMOPlayerLevelDownEvent extends McMMOPlayerLevelChangeEvent {
     private int levelsLost;
 
     @Deprecated
-    public McMMOPlayerLevelDownEvent(Player player, PrimarySkillType skill) {
-        super(player, skill, XPGainReason.UNKNOWN);
+    public McMMOPlayerLevelDownEvent(Player player, PrimarySkillType skill, int skillLevel) {
+        super(player, skill, skillLevel, XPGainReason.UNKNOWN);
         this.levelsLost = 1;
     }
 
     @Deprecated
-    public McMMOPlayerLevelDownEvent(Player player, PrimarySkillType skill, int levelsLost) {
-        super(player, skill, XPGainReason.UNKNOWN);
+    public McMMOPlayerLevelDownEvent(Player player, PrimarySkillType skill, int levelsLost, int skillLevel) {
+        super(player, skill, skillLevel, XPGainReason.UNKNOWN);
         this.levelsLost = levelsLost;
     }
 
-    public McMMOPlayerLevelDownEvent(Player player, PrimarySkillType skill, XPGainReason xpGainReason) {
-        super(player, skill, xpGainReason);
+    public McMMOPlayerLevelDownEvent(Player player, PrimarySkillType skill, int skillLevel, XPGainReason xpGainReason) {
+        super(player, skill, skillLevel, xpGainReason);
         this.levelsLost = 1;
     }
 
-    public McMMOPlayerLevelDownEvent(Player player, PrimarySkillType skill, int levelsLost, XPGainReason xpGainReason) {
-        super(player, skill, xpGainReason);
+    public McMMOPlayerLevelDownEvent(Player player, PrimarySkillType skill, int levelsLost, int skillLevel, XPGainReason xpGainReason) {
+        super(player, skill, skillLevel, xpGainReason);
         this.levelsLost = levelsLost;
     }
 

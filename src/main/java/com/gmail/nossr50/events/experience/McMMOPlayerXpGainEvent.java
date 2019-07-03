@@ -13,13 +13,13 @@ public class McMMOPlayerXpGainEvent extends McMMOPlayerExperienceEvent {
     private double xpGained;
 
     @Deprecated
-    public McMMOPlayerXpGainEvent(Player player, PrimarySkillType skill, double xpGained) {
-        super(player, skill, XPGainReason.UNKNOWN);
+    public McMMOPlayerXpGainEvent(Player player, PrimarySkillType skill, int skillLevel, double xpGained) {
+        super(player, skill, skillLevel, XPGainReason.UNKNOWN);
         this.xpGained = xpGained;
     }
 
-    public McMMOPlayerXpGainEvent(Player player, PrimarySkillType skill, double xpGained, XPGainReason xpGainReason) {
-        super(player, skill, xpGainReason);
+    public McMMOPlayerXpGainEvent(Player player, PrimarySkillType skill, int skillLevel, double xpGained, XPGainReason xpGainReason) {
+        super(player, skill, skillLevel, xpGainReason);
         this.xpGained = xpGained;
     }
 

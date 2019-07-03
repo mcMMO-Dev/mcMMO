@@ -9,11 +9,11 @@ import org.bukkit.entity.Player;
  */
 public abstract class McMMOPlayerLevelChangeEvent extends McMMOPlayerExperienceEvent {
     @Deprecated
-    public McMMOPlayerLevelChangeEvent(Player player, PrimarySkillType skill) {
-        super(player, skill, XPGainReason.UNKNOWN);
+    public McMMOPlayerLevelChangeEvent(Player player, PrimarySkillType skill, int skillLevel) {
+        super(player, skill, skillLevel, XPGainReason.UNKNOWN);
     }
 
-    public McMMOPlayerLevelChangeEvent(Player player, PrimarySkillType skill, XPGainReason xpGainReason) {
-        super(player, skill, xpGainReason);
+    public McMMOPlayerLevelChangeEvent(Player player, PrimarySkillType skill, int skillLevel, XPGainReason xpGainReason) {
+        super(player, skill, skillLevel, xpGainReason);
     }
 }
