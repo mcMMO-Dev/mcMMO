@@ -59,7 +59,7 @@ public final class HardcoreManager {
             totalLevelsLost += levelsLost;
         }
 
-        if (!EventUtils.handleStatsLossEvent(player, levelChanged, experienceChanged)) {
+        if (!pluginRef.getEventManager().handleStatsLossEvent(player, levelChanged, experienceChanged)) {
             return;
         }
 
@@ -114,7 +114,7 @@ public final class HardcoreManager {
             totalLevelsStolen += levelsStolen;
         }
 
-        if (!EventUtils.handleVampirismEvent(killer, victim, levelChanged, experienceChanged)) {
+        if (!pluginRef.getEventManager().handleVampirismEvent(killer, victim, levelChanged, experienceChanged)) {
             return;
         }
 

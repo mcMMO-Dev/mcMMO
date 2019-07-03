@@ -183,7 +183,7 @@ public class FishingManager extends SkillManager {
             return false;
         }
 
-        return EventUtils.simulateBlockBreak(block, player, false);
+        return pluginRef.getEventManager().simulateBlockBreak(block, player, false);
     }
 
     /**
@@ -237,7 +237,7 @@ public class FishingManager extends SkillManager {
         }
 
         // Recast in the new spot
-        EventUtils.callFakeFishEvent(getPlayer(), hook);
+        pluginRef.getEventManager().callFakeFishEvent(getPlayer(), hook);
     }
 
     public void masterAngler(FishHook hook) {
@@ -289,7 +289,7 @@ public class FishingManager extends SkillManager {
                 enchants = handleMagicHunter(treasureDrop);
             }
 
-            McMMOPlayerFishingTreasureEvent event = EventUtils.callFishingTreasureEvent(player, treasureDrop, treasure.getXp(), enchants);
+            McMMOPlayerFishingTreasureEvent event = pluginRef.getEventManager().callFishingTreasureEvent(player, treasureDrop, treasure.getXp(), enchants);
 
             if (!event.isCancelled()) {
                 treasureDrop = event.getTreasure();

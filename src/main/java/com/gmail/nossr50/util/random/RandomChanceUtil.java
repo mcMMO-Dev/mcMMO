@@ -5,7 +5,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillEvent;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillRandomCheckEvent;
-import com.gmail.nossr50.util.EventUtils;
+import com.gmail.nossr50.util.EventManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.entity.Player;
@@ -35,7 +35,7 @@ public class RandomChanceUtil {
             case RANDOM_STATIC_CHANCE:
                 return checkRandomStaticChanceExecutionSuccess(player, subSkillType);
             case ALWAYS_FIRES:
-                SubSkillEvent event = EventUtils.callSubSkillEvent(player, subSkillType);
+                SubSkillEvent event = pluginRef.getEventManager().callSubSkillEvent(player, subSkillType);
                 return !event.isCancelled();
             default:
                 return false;

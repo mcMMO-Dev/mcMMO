@@ -6,7 +6,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
-import com.gmail.nossr50.util.EventUtils;
+import com.gmail.nossr50.util.EventManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
@@ -130,7 +130,7 @@ public class SalvageManager extends SkillManager {
         ItemStack salvageResults = new ItemStack(salvageable.getSalvagedItemMaterial(), lotteryResults);
 
         //Call event
-        if (EventUtils.callSalvageCheckEvent(player, item, salvageResults, enchantBook).isCancelled()) {
+        if (pluginRef.getEventManager().callSalvageCheckEvent(player, item, salvageResults, enchantBook).isCancelled()) {
             return;
         }
 

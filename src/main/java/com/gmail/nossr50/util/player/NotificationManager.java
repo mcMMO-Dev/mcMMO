@@ -7,7 +7,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
-import com.gmail.nossr50.util.EventUtils;
+import com.gmail.nossr50.util.EventManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -67,7 +67,7 @@ public class NotificationManager {
             return;
 
         TextComponent textComponent = TextComponentFactory.getNotificationTextComponentFromLocale(key);
-        McMMOPlayerNotificationEvent customEvent = EventUtils.createAndCallNotificationEvent(player, notificationType, textComponent);
+        McMMOPlayerNotificationEvent customEvent = pluginRef.getEventManager().createAndCallNotificationEvent(player, notificationType, textComponent);
 
         sendNotification(customEvent);
     }
@@ -120,7 +120,7 @@ public class NotificationManager {
             return;
 
         TextComponent textComponent = buildTextComponent(key, values);
-        McMMOPlayerNotificationEvent customEvent = EventUtils.createAndCallNotificationEvent(player, notificationType, textComponent);
+        McMMOPlayerNotificationEvent customEvent = pluginRef.getEventManager().createAndCallNotificationEvent(player, notificationType, textComponent);
 
         sendNotification(customEvent);
     }
@@ -137,7 +137,7 @@ public class NotificationManager {
             return;
 
         TextComponent levelUpTextComponent = TextComponentFactory.getNotificationLevelUpTextComponent(skillName, levelsGained, newLevel);
-        McMMOPlayerNotificationEvent customEvent = EventUtils.createAndCallNotificationEvent(mcMMOPlayer.getPlayer(), NotificationType.LEVEL_UP_MESSAGE, levelUpTextComponent);
+        McMMOPlayerNotificationEvent customEvent = pluginRef.getEventManager().createAndCallNotificationEvent(mcMMOPlayer.getPlayer(), NotificationType.LEVEL_UP_MESSAGE, levelUpTextComponent);
 
         sendNotification(customEvent);
     }

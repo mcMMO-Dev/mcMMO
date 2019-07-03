@@ -32,7 +32,7 @@ import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
-import com.gmail.nossr50.util.EventUtils;
+import com.gmail.nossr50.util.EventManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.experience.ExperienceBarManager;
@@ -581,7 +581,7 @@ public class McMMOPlayer {
             return;
         }
 
-        if (!EventUtils.handleXpGainEvent(player, primarySkillType, xp, xpGainReason)) {
+        if (!pluginRef.getEventManager().handleXpGainEvent(player, primarySkillType, xp, xpGainReason)) {
             return;
         }
 
@@ -617,7 +617,7 @@ public class McMMOPlayer {
             levelsGained++;
         }
 
-        if (EventUtils.tryLevelChangeEvent(player, primarySkillType, levelsGained, xpRemoved, true, xpGainReason)) {
+        if (pluginRef.getEventManager().tryLevelChangeEvent(player, primarySkillType, levelsGained, xpRemoved, true, xpGainReason)) {
             return;
         }
 
@@ -867,7 +867,7 @@ public class McMMOPlayer {
             return;
         }
 
-        if (EventUtils.callPlayerAbilityActivateEvent(player, skill).isCancelled()) {
+        if (pluginRef.getEventManager().callPlayerAbilityActivateEvent(player, skill).isCancelled()) {
             return;
         }
 

@@ -6,7 +6,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.EventUtils;
+import com.gmail.nossr50.util.EventManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
@@ -59,14 +59,14 @@ public class Roll extends AcrobaticsSubSkill {
         EntityDamageEvent entityDamageEvent = (EntityDamageEvent) event;
 
         //Make sure a real player was damaged in this event
-        if (!EventUtils.isRealPlayerDamaged(entityDamageEvent))
+        if (!pluginRef.getEventManager().isRealPlayerDamaged(entityDamageEvent))
             return false;
 
         switch (entityDamageEvent.getCause()) {
             case FALL:
 
                 //Grab the player
-                McMMOPlayer mcMMOPlayer = EventUtils.getMcMMOPlayer(entityDamageEvent.getEntity());
+                McMMOPlayer mcMMOPlayer = pluginRef.getEventManager().getMcMMOPlayer(entityDamageEvent.getEntity());
 
                 if (mcMMOPlayer == null)
                     break;

@@ -161,7 +161,7 @@ public class PlayerListener implements Listener {
         }
 
         if (statLossEnabled || (killer != null && vampirismEnabled)) {
-            if (EventUtils.callPreDeathPenaltyEvent(killedPlayer).isCancelled()) {
+            if (pluginRef.getEventManager().callPreDeathPenaltyEvent(killedPlayer).isCancelled()) {
                 return;
             }
 
@@ -760,7 +760,7 @@ public class PlayerListener implements Listener {
                 if (herbalismManager.canGreenThumbBlock(blockState)) {
                     Bukkit.getPluginManager().callEvent(fakeSwing);
                     player.getInventory().setItemInMainHand(new ItemStack(Material.WHEAT_SEEDS, heldItem.getAmount() - 1));
-                    if (herbalismManager.processGreenThumbBlocks(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
+                    if (herbalismManager.processGreenThumbBlocks(blockState) && pluginRef.getEventManager().simulateBlockBreak(block, player, false)) {
                         blockState.update(true);
                     }
                 }
@@ -768,7 +768,7 @@ public class PlayerListener implements Listener {
                 else if (herbalismManager.canUseShroomThumb(blockState)) {
                     Bukkit.getPluginManager().callEvent(fakeSwing);
                     event.setCancelled(true);
-                    if (herbalismManager.processShroomThumb(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
+                    if (herbalismManager.processShroomThumb(blockState) && pluginRef.getEventManager().simulateBlockBreak(block, player, false)) {
                         blockState.update(true);
                     }
                 }

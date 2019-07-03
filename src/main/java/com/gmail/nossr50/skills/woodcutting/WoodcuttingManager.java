@@ -117,7 +117,7 @@ public class WoodcuttingManager extends SkillManager {
         for (BlockState blockState : treeFellerBlocks) {
             Block block = blockState.getBlock();
 
-            if (!EventUtils.simulateBlockBreak(block, player, true)) {
+            if (!pluginRef.getEventManager().simulateBlockBreak(block, player, true)) {
                 break; // TODO: Shouldn't we use continue instead?
             }
 

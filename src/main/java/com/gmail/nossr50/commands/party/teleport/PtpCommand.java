@@ -7,7 +7,7 @@ import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.items.TeleportationWarmup;
-import com.gmail.nossr50.util.EventUtils;
+import com.gmail.nossr50.util.EventManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
@@ -93,7 +93,7 @@ public class PtpCommand implements TabExecutor {
             teleportingPlayer.sendMessage(pluginRef.getLocaleManager().getString("Teleport.Commencing", warmup));
             new TeleportationWarmup(mcMMOPlayer, mcMMOTarget).runTaskLater(pluginRef, 20 * warmup);
         } else {
-            EventUtils.handlePartyTeleportEvent(teleportingPlayer, targetPlayer);
+            pluginRef.getEventManager().handlePartyTeleportEvent(teleportingPlayer, targetPlayer);
         }
     }
 

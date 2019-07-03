@@ -227,7 +227,7 @@ public class HerbalismManager extends SkillManager {
         for (HylianTreasure treasure : treasures) {
             if (skillLevel >= treasure.getDropLevel()
                     && RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(treasure.getDropChance(), getPlayer(), SubSkillType.HERBALISM_HYLIAN_LUCK))) {
-                if (!EventUtils.simulateBlockBreak(blockState.getBlock(), player, false)) {
+                if (!pluginRef.getEventManager().simulateBlockBreak(blockState.getBlock(), player, false)) {
                     return false;
                 }
                 blockState.setType(Material.AIR);

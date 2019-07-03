@@ -71,6 +71,7 @@ public class mcMMO extends JavaPlugin {
     private LocaleManager localeManager;
     private ChatManager chatManager;
     private MobHealthBarManager mobHealthBarManager;
+    private EventManager eventManager;
 
     /* File Paths */
     private String mainDirectory;
@@ -181,6 +182,8 @@ public class mcMMO extends JavaPlugin {
             getLogger().info("Please do not replace the mcMMO jar while the server is running.");
         }
 
+        //TODO: Put all manager init somewhere nice and tidy
+
         //Init Material Maps
         materialMapStore = new MaterialMapStore();
 
@@ -195,6 +198,9 @@ public class mcMMO extends JavaPlugin {
 
         //Init Mob Health Bar Manager
         mobHealthBarManager = new MobHealthBarManager(this);
+
+        //Init Event Manager
+        eventManager = new EventManager(this);
     }
 
     @Override
@@ -628,5 +634,9 @@ public class mcMMO extends JavaPlugin {
 
     public MobHealthBarManager getMobHealthBarManager() {
         return mobHealthBarManager;
+    }
+
+    public EventManager getEventManager() {
+        return eventManager;
     }
 }

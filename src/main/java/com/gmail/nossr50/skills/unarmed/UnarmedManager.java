@@ -8,7 +8,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.EventUtils;
+import com.gmail.nossr50.util.EventManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -95,7 +95,7 @@ public class UnarmedManager extends SkillManager {
      */
     public void disarmCheck(Player defender) {
         if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.UNARMED_DISARM, getPlayer()) && !hasIronGrip(defender)) {
-            if (EventUtils.callDisarmEvent(defender).isCancelled()) {
+            if (pluginRef.getEventManager().callDisarmEvent(defender).isCancelled()) {
                 return;
             }
 

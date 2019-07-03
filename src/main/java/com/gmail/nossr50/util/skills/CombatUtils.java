@@ -487,7 +487,7 @@ public final class CombatUtils {
             }
 
             LivingEntity livingEntity = (LivingEntity) entity;
-            EventUtils.callFakeArmSwingEvent(attacker);
+            pluginRef.getEventManager().callFakeArmSwingEvent(attacker);
 
             switch (type) {
                 case SWORDS:

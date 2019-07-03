@@ -1,7 +1,7 @@
 package com.gmail.nossr50.datatypes.party;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.util.EventUtils;
+import com.gmail.nossr50.util.EventManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -203,7 +203,7 @@ public class Party {
      * @param xp Experience amount to add
      */
     public void applyXpGain(double xp) {
-        if (!EventUtils.handlePartyXpGainEvent(this, xp)) {
+        if (!pluginRef.getEventManager().handlePartyXpGainEvent(this, xp)) {
             return;
         }
 
@@ -224,7 +224,7 @@ public class Party {
             levelsGained++;
         }
 
-        if (!EventUtils.handlePartyLevelChangeEvent(this, levelsGained, xpRemoved)) {
+        if (!pluginRef.getEventManager().handlePartyLevelChangeEvent(this, levelsGained, xpRemoved)) {
             return;
         }
 
