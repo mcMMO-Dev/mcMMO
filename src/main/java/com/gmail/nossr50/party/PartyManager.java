@@ -88,7 +88,7 @@ public final class PartyManager {
 
         if (warmup > 0) {
             teleportingPlayer.sendMessage(pluginRef.getLocaleManager().getString("Teleport.Commencing", warmup));
-            new TeleportationWarmup(mcMMOPlayer, mcMMOTarget).runTaskLater(pluginRef, 20 * warmup);
+            new TeleportationWarmup(pluginRef, mcMMOPlayer, mcMMOTarget).runTaskLater(pluginRef, 20 * warmup);
         } else {
             pluginRef.getEventManager().handlePartyTeleportEvent(teleportingPlayer, targetPlayer);
         }

@@ -45,15 +45,23 @@ import com.gmail.nossr50.worldguard.WorldGuardManager;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class mcMMO extends JavaPlugin {
     /* Managers */
@@ -572,10 +580,10 @@ public class mcMMO extends JavaPlugin {
     private void registerCustomRecipes() {
         getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
             if (configManager.getConfigItems().isChimaeraWingEnabled()) {
-                Recipe recipe = ChimaeraWing.getChimaeraWingRecipe();
+                Recipe recipe = getChimaeraWingRecipe();
 
                 if(!SkillUtils.hasRecipeBeenRegistered(recipe))
-                    getServer().addRecipe(ChimaeraWing.getChimaeraWingRecipe());
+                    getServer().addRecipe(getChimaeraWingRecipe());
             }
         }, 40);
     }
@@ -586,7 +594,7 @@ public class mcMMO extends JavaPlugin {
         new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
 
         // Cleanup the backups folder
-        new CleanBackupFilesTask().runTaskAsynchronously(this);
+        new CleanBackupFilesTask(this).runTaskAsynchronously(this);
 
         // Bleed timer (Runs every 0.5 seconds)
         new BleedTimerTask().runTaskTimer(this, Misc.TICK_CONVERSION_FACTOR, (Misc.TICK_CONVERSION_FACTOR / 2));
@@ -595,9 +603,9 @@ public class mcMMO extends JavaPlugin {
         long purgeIntervalTicks = getConfigManager().getConfigDatabase().getConfigSectionCleaning().getPurgeInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
 
         if (getDatabaseCleaningSettings().isOnlyPurgeAtStartup()) {
-            new UserPurgeTask().runTaskLaterAsynchronously(this, 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
+            new UserPurgeTask(this).runTaskLaterAsynchronously(this, 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
         } else if (purgeIntervalTicks > 0) {
-            new UserPurgeTask().runTaskTimerAsynchronously(this, purgeIntervalTicks, purgeIntervalTicks);
+            new UserPurgeTask(this).runTaskTimerAsynchronously(this, purgeIntervalTicks, purgeIntervalTicks);
         }
 
         //Party System Stuff
@@ -621,8 +629,44 @@ public class mcMMO extends JavaPlugin {
         }
 
         if (configManager.getConfigNotifications().getConfigNotificationGeneral().isPlayerTips()) {
-            new NotifySquelchReminderTask().runTaskTimer(this, 60, ((20 * 60) * 60));
+            new NotifySquelchReminderTask(this).runTaskTimer(this, 60, ((20 * 60) * 60));
         }
+    }
+
+    //TODO: Add this stuff to DSM, this location is temporary
+    private ShapelessRecipe getChimaeraWingRecipe() {
+        Material ingredient = Material.matchMaterial(configManager.getConfigItems().getChimaeraWingRecipeMats());
+
+        if(ingredient == null)
+            ingredient = Material.FEATHER;
+
+        int amount = configManager.getConfigItems().getChimaeraWingUseCost();
+
+        ShapelessRecipe chimaeraWing = new ShapelessRecipe(new NamespacedKey(this, "Chimaera"), getChimaeraWing());
+        chimaeraWing.addIngredient(amount, ingredient);
+        return chimaeraWing;
+    }
+
+    //TODO: Add this stuff to DSM, this location is temporary
+    public ItemStack getChimaeraWing() {
+        Material ingredient = Material.matchMaterial(configManager.getConfigItems().getChimaeraWingRecipeMats());
+
+        if(ingredient == null)
+            ingredient = Material.FEATHER;
+
+        //TODO: Make it so Chimaera wing amounts made is customizeable
+        ItemStack itemStack = new ItemStack(ingredient, 1);
+
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(ChatColor.GOLD + localeManager.getString("Item.ChimaeraWing.Name"));
+
+        List<String> itemLore = new ArrayList<>();
+        itemLore.add("mcMMO Item");
+        itemLore.add(localeManager.getString("Item.ChimaeraWing.Lore"));
+        itemMeta.setLore(itemLore);
+
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
     }
 
     public DynamicSettingsManager getDynamicSettingsManager() {

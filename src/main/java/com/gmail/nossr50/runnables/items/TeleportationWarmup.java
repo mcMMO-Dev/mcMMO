@@ -1,6 +1,7 @@
 package com.gmail.nossr50.runnables.items;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Location;
@@ -8,10 +9,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class TeleportationWarmup extends BukkitRunnable {
+    private final mcMMO pluginRef;
     private McMMOPlayer mcMMOPlayer;
     private McMMOPlayer mcMMOTarget;
 
-    public TeleportationWarmup(McMMOPlayer mcMMOPlayer, McMMOPlayer mcMMOTarget) {
+    public TeleportationWarmup(mcMMO pluginRef, McMMOPlayer mcMMOPlayer, McMMOPlayer mcMMOTarget) {
+        this.pluginRef = pluginRef;
         this.mcMMOPlayer = mcMMOPlayer;
         this.mcMMOTarget = mcMMOTarget;
     }

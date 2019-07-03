@@ -1,6 +1,7 @@
 package com.gmail.nossr50.runnables.items;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
@@ -11,9 +12,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ChimaeraWingWarmup extends BukkitRunnable {
+    private mcMMO pluginRef;
     private McMMOPlayer mcMMOPlayer;
 
-    public ChimaeraWingWarmup(McMMOPlayer mcMMOPlayer) {
+    public ChimaeraWingWarmup(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
+        this.pluginRef = pluginRef;
         this.mcMMOPlayer = mcMMOPlayer;
     }
 
@@ -25,8 +28,9 @@ public class ChimaeraWingWarmup extends BukkitRunnable {
     private void checkChimaeraWingTeleport() {
         Player player = mcMMOPlayer.getPlayer();
         Location previousLocation = mcMMOPlayer.getTeleportCommenceLocation();
+        ChimaeraWing chimaeraWing = new ChimaeraWing(pluginRef, mcMMOPlayer);
 
-        if (player.getLocation().distanceSquared(previousLocation) > 1.0 || !player.getInventory().containsAtLeast(ChimaeraWing.getChimaeraWing(0), 1)) {
+        if (player.getLocation().distanceSquared(previousLocation) > 1.0 || !player.getInventory().containsAtLeast(pluginRef.getChimaeraWing(), 1)) {
             player.sendMessage(pluginRef.getLocaleManager().getString("Teleport.Cancelled"));
             mcMMOPlayer.setTeleportCommenceLocation(null);
             return;
@@ -51,6 +55,6 @@ public class ChimaeraWingWarmup extends BukkitRunnable {
             }
         }
 
-        ChimaeraWing.chimaeraExecuteTeleport();
+        chimaeraWing.chimaeraExecuteTeleport();
     }
 }

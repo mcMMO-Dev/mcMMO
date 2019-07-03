@@ -2,41 +2,36 @@ package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.items.ChimaeraWingWarmup;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapelessRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public final class ChimaeraWing {
-    private static McMMOPlayer mcMMOPlayer;
-    private static Location location;
+    private final mcMMO pluginRef;
+    private final McMMOPlayer mcMMOPlayer;
+    private final Player player;
+    private final Location location;
 
-    private ChimaeraWing() {
+    public ChimaeraWing(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
+        this.pluginRef = pluginRef;
+        this.mcMMOPlayer = mcMMOPlayer;
+        this.player = mcMMOPlayer.getPlayer();
+        this.location = player.getLocation();
     }
 
     /**
      * Check for item usage.
      *
-     * @param player Player whose item usage to check
      */
-    public static void activationCheck(Player player) {
-        if (!pluginRef.getConfigManager().getConfigItems().isChimaeraWingEnabled()) {
-            return;
-        }
-
+    public void activationCheck() {
         ItemStack inHand = player.getInventory().getItemInMainHand();
 
         if (!ItemUtils.isChimaeraWing(inHand)) {
@@ -47,12 +42,6 @@ public final class ChimaeraWing {
             pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
             return;
         }
-
-        mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
-
-        //Not loaded
-        if (mcMMOPlayer == null)
-            return;
 
         if (mcMMOPlayer.getTeleportCommenceLocation() != null) {
             return;
@@ -90,11 +79,9 @@ public final class ChimaeraWing {
             }
         }
 
-        location = player.getLocation();
-
         if (pluginRef.getConfigManager().getConfigItems().isPreventUndergroundUse()) {
             if (location.getY() < player.getWorld().getHighestBlockYAt(location)) {
-                player.getInventory().setItemInMainHand(new ItemStack(getChimaeraWing(amount - pluginRef.getConfigManager().getConfigItems().getChimaeraWingUseCost())));
+                player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - pluginRef.getConfigManager().getConfigItems().getChimaeraWingUseCost());
                 pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Item.ChimaeraWing.Fail");
                 player.updateInventory();
                 player.setVelocity(new Vector(0, 0.5D, 0));
@@ -110,13 +97,13 @@ public final class ChimaeraWing {
 
         if (warmup > 0) {
             pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.ITEM_MESSAGE, "Teleport.Commencing", String.valueOf(warmup));
-            new ChimaeraWingWarmup(mcMMOPlayer).runTaskLater(pluginRef, 20 * warmup);
+            new ChimaeraWingWarmup(pluginRef, mcMMOPlayer).runTaskLater(pluginRef, 20 * warmup);
         } else {
             chimaeraExecuteTeleport();
         }
     }
 
-    public static void chimaeraExecuteTeleport() {
+    public void chimaeraExecuteTeleport() {
         Player player = mcMMOPlayer.getPlayer();
 
         if (pluginRef.getConfigManager().getConfigItems().doesChimaeraUseBedSpawn() && player.getBedSpawnLocation() != null) {
@@ -130,7 +117,7 @@ public final class ChimaeraWing {
             }
         }
 
-        player.getInventory().setItemInMainHand(new ItemStack(getChimaeraWing(player.getInventory().getItemInMainHand().getAmount() - pluginRef.getConfigManager().getConfigItems().getChimaeraWingUseCost())));
+        player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - pluginRef.getConfigManager().getConfigItems().getChimaeraWingUseCost());
         player.updateInventory();
         mcMMOPlayer.actualizeChimeraWingLastUse();
         mcMMOPlayer.setTeleportCommenceLocation(null);
@@ -140,38 +127,5 @@ public final class ChimaeraWing {
         }
 
         pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.ITEM_MESSAGE, "Item.ChimaeraWing.Pass");
-    }
-
-    public static ItemStack getChimaeraWing(int amount) {
-        Material ingredient = Material.matchMaterial(pluginRef.getConfigManager().getConfigItems().getChimaeraWingRecipeMats());
-
-        if(ingredient == null)
-            ingredient = Material.FEATHER;
-
-        ItemStack itemStack = new ItemStack(ingredient, amount);
-
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.GOLD + pluginRef.getLocaleManager().getString("Item.ChimaeraWing.Name"));
-
-        List<String> itemLore = new ArrayList<>();
-        itemLore.add("mcMMO Item");
-        itemLore.add(pluginRef.getLocaleManager().getString("Item.ChimaeraWing.Lore"));
-        itemMeta.setLore(itemLore);
-
-        itemStack.setItemMeta(itemMeta);
-        return itemStack;
-    }
-
-    public static ShapelessRecipe getChimaeraWingRecipe() {
-        Material ingredient = Material.matchMaterial(pluginRef.getConfigManager().getConfigItems().getChimaeraWingRecipeMats());
-
-        if(ingredient == null)
-            ingredient = Material.FEATHER;
-
-        int amount = pluginRef.getConfigManager().getConfigItems().getChimaeraWingUseCost();
-
-        ShapelessRecipe chimaeraWing = new ShapelessRecipe(new NamespacedKey(pluginRef, "Chimaera"), getChimaeraWing(1));
-        chimaeraWing.addIngredient(amount, ingredient);
-        return chimaeraWing;
     }
 }
