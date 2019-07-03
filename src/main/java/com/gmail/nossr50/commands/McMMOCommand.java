@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 
 public class McMMOCommand implements CommandExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public McMMOCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

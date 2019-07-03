@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 
 public class ChatManager {
     private final String ADMIN_CHAT_PERMISSION = "mcmmo.chat.adminchat";
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public ChatManager(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

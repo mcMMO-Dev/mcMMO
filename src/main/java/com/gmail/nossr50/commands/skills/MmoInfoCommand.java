@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class MmoInfoCommand implements TabExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public MmoInfoCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

@@ -11,7 +11,7 @@ import org.bukkit.command.CommandSender;
  */
 public final class ReloadLocaleCommand implements CommandExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public ReloadLocaleCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

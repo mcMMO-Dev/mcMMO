@@ -13,7 +13,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
 public final class MobHealthBarManager {
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public MobHealthBarManager(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

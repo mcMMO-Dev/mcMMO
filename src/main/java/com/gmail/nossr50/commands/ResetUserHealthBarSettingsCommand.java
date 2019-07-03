@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ResetUserHealthBarSettingsCommand implements TabExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public ResetUserHealthBarSettingsCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

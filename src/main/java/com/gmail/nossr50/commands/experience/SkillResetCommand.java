@@ -24,7 +24,7 @@ import java.util.UUID;
  */
 public class SkillResetCommand implements TabExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public SkillResetCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

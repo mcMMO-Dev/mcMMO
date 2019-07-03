@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 
 public class ConvertDatabaseCommand implements CommandExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public ConvertDatabaseCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

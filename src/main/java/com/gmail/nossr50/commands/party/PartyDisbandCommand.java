@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class PartyDisbandCommand implements CommandExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public PartyDisbandCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 public class PartyQuitCommand implements CommandExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public PartyQuitCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

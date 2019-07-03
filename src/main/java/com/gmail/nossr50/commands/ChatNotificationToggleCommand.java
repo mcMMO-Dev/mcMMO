@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ChatNotificationToggleCommand implements TabExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public ChatNotificationToggleCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

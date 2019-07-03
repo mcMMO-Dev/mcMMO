@@ -55,7 +55,7 @@ import java.util.Map;
  */
 public class EventManager {
     
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public EventManager(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

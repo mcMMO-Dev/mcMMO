@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ExperienceRateCommand implements TabExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public ExperienceRateCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ScoreboardCommand implements TabExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public ScoreboardCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

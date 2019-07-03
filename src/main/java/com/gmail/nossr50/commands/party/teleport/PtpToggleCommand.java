@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 
 public class PtpToggleCommand implements CommandExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public PtpToggleCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

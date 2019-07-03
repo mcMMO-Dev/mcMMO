@@ -24,7 +24,7 @@ import java.util.List;
 //TODO: This class horrifies me, rewrite it at some point
 public class PartyCommand implements TabExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
     private CommandExecutor partyJoinCommand;
     private CommandExecutor partyAcceptCommand;
     private CommandExecutor partyCreateCommand;

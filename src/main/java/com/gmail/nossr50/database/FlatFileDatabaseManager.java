@@ -16,7 +16,7 @@ import java.io.*;
 import java.util.*;
 
 public final class FlatFileDatabaseManager implements DatabaseManager {
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
     private final Object fileWritingLock = new Object();
     private int USERNAME = 0;
     private int SKILLS_MINING = 1;

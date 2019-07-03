@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 public class PartyCreateCommand implements CommandExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public PartyCreateCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

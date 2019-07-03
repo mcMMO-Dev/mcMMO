@@ -2,6 +2,7 @@ package com.gmail.nossr50.runnables.commands;
 
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -9,15 +10,17 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.Map;
 
 /**
- * Display the results of McrankCommandAsyncTask to the sender.
+ * Display the results of RankCommandAsyncTask to the sender.
  */
-public class McrankCommandDisplayTask extends BukkitRunnable {
+public class RankCommandDisplayTask extends BukkitRunnable {
+    private final mcMMO pluginRef;
     private final Map<PrimarySkillType, Integer> skills;
     private final CommandSender sender;
     private final String playerName;
     private final boolean useBoard, useChat;
 
-    McrankCommandDisplayTask(Map<PrimarySkillType, Integer> skills, CommandSender sender, String playerName, boolean useBoard, boolean useChat) {
+    RankCommandDisplayTask(mcMMO pluginRef, Map<PrimarySkillType, Integer> skills, CommandSender sender, String playerName, boolean useBoard, boolean useChat) {
+        this.pluginRef = pluginRef;
         this.skills = skills;
         this.sender = sender;
         this.playerName = playerName;

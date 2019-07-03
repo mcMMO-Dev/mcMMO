@@ -82,7 +82,7 @@ import java.util.Set;
  * Settings in configs are sometimes not platform-ready, you can find platform ready implementations in the {@link com.gmail.nossr50.core.DynamicSettingsManager DynamicSettingsManager}
  */
 public final class ConfigManager {
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
 
     /* File array - Used for backups */

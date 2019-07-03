@@ -4,7 +4,7 @@ import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.commands.MctopCommandAsyncTask;
+import com.gmail.nossr50.runnables.commands.LeaderboardsCommandAsyncTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.google.common.collect.ImmutableList;
@@ -20,7 +20,7 @@ import java.util.List;
 
 public class LeaderboardCommand implements TabExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public LeaderboardCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
@@ -120,7 +120,7 @@ public class LeaderboardCommand implements TabExecutor {
         boolean useBoard = (sender instanceof Player) && (pluginRef.getScoreboardSettings().isScoreboardEnabled(pluginRef.getScoreboardManager().SidebarType.TOP_BOARD));
         boolean useChat = !useBoard || pluginRef.getScoreboardSettings().isScoreboardPrinting(pluginRef.getScoreboardManager().SidebarType.TOP_BOARD);
 
-        new MctopCommandAsyncTask(page, skill, sender, useBoard, useChat).runTaskAsynchronously(pluginRef);
+        new LeaderboardsCommandAsyncTask(page, skill, sender, useBoard, useChat).runTaskAsynchronously(pluginRef);
     }
 
     private PrimarySkillType extractSkill(CommandSender sender, String skillName) {

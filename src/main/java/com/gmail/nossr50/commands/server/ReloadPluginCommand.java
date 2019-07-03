@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ReloadPluginCommand implements CommandExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public ReloadPluginCommand(mcMMO plugin) {
         this.pluginRef = plugin;

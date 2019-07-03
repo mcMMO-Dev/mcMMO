@@ -16,7 +16,7 @@ import java.util.List;
 
 public class PartyInfoCommand implements CommandExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public PartyInfoCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class InspectCommand implements TabExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public InspectCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

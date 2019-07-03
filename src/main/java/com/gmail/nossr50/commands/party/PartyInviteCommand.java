@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class PartyInviteCommand implements CommandExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public PartyInviteCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

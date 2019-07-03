@@ -13,7 +13,7 @@ import java.util.List;
 public class BonusDropManager {
 
     private HashMap<Material, Boolean> bonusDropWhitelist;
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public BonusDropManager(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

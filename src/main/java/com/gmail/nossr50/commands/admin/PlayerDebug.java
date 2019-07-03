@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 
 public class PlayerDebug implements CommandExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public PlayerDebug(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

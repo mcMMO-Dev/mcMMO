@@ -16,7 +16,7 @@ import java.util.HashMap;
  * Hacky way to do this until I rewrite the skill system fully
  */
 public class SkillPropertiesManager {
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     private HashMap<SubSkillType, Double> maxChanceMap;
     private HashMap<SubSkillType, Double> staticActivationChanceMap;

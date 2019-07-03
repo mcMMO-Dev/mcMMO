@@ -2,7 +2,7 @@ package com.gmail.nossr50.runnables.player;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.runnables.commands.McScoreboardKeepTask;
+import com.gmail.nossr50.runnables.commands.ScoreboardKeepTask;
 import com.gmail.nossr50.util.Misc;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -87,7 +87,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
 
                 if (pluginRef.getScoreboardSettings().getShowStatsAfterLogin()) {
                     pluginRef.getScoreboardManager().enablePlayerStatsScoreboard(player);
-                    new McScoreboardKeepTask(player).runTaskLater(pluginRef, Misc.TICK_CONVERSION_FACTOR);
+                    new ScoreboardKeepTask(player).runTaskLater(pluginRef, Misc.TICK_CONVERSION_FACTOR);
                 }
             }
 

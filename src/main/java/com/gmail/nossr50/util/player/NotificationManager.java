@@ -29,7 +29,7 @@ import java.util.HashMap;
 public class NotificationManager {
 
     private HashMap<NotificationType, PlayerNotificationSettings> playerNotificationHashMap;
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public NotificationManager(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

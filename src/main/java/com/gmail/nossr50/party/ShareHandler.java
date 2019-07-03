@@ -17,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public final class ShareHandler {
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
     private Party party;
 
     public ShareHandler(mcMMO pluginRef, Party party) {

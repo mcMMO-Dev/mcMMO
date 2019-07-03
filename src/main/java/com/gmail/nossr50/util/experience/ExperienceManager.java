@@ -13,7 +13,7 @@ import java.util.HashMap;
  * This class handles the XP maps for various skills
  */
 public class ExperienceManager {
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     private HashMap<PrimarySkillType, HashMap<Material, String>> skillMaterialXPMap;
     private HashMap<String, Integer> miningFullyQualifiedBlockXpMap;

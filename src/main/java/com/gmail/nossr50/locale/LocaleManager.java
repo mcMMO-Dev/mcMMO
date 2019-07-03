@@ -18,7 +18,7 @@ public final class LocaleManager {
     private ResourceBundle bundle;
     private ResourceBundle filesystemBundle;
     private ResourceBundle enBundle;
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public LocaleManager(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

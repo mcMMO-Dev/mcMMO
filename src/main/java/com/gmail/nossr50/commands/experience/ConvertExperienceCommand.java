@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 public class ConvertExperienceCommand implements CommandExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public ConvertExperienceCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

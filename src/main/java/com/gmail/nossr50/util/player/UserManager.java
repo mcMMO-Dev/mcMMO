@@ -15,7 +15,7 @@ import java.util.HashSet;
 
 public final class UserManager {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public UserManager(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

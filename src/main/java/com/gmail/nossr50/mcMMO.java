@@ -18,7 +18,7 @@ import com.gmail.nossr50.listeners.*;
 import com.gmail.nossr50.locale.LocaleManager;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.SaveTimerTask;
-import com.gmail.nossr50.runnables.backups.CleanBackupsTask;
+import com.gmail.nossr50.runnables.backups.CleanBackupFilesTask;
 import com.gmail.nossr50.runnables.commands.NotifySquelchReminderTask;
 import com.gmail.nossr50.runnables.database.UserPurgeTask;
 import com.gmail.nossr50.runnables.party.PartyAutoKickTask;
@@ -586,7 +586,7 @@ public class mcMMO extends JavaPlugin {
         new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
 
         // Cleanup the backups folder
-        new CleanBackupsTask().runTaskAsynchronously(this);
+        new CleanBackupFilesTask().runTaskAsynchronously(this);
 
         // Bleed timer (Runs every 0.5 seconds)
         new BleedTimerTask().runTaskTimer(this, Misc.TICK_CONVERSION_FACTOR, (Misc.TICK_CONVERSION_FACTOR / 2));

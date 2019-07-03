@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 public class PartyChangePasswordCommand implements CommandExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public PartyChangePasswordCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

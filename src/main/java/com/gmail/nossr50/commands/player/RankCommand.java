@@ -3,7 +3,7 @@ package com.gmail.nossr50.commands.player;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.commands.McrankCommandAsyncTask;
+import com.gmail.nossr50.runnables.commands.RankCommandAsyncTask;
 import com.gmail.nossr50.util.Permissions;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class RankCommand implements TabExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public RankCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
@@ -117,7 +117,7 @@ public class RankCommand implements TabExecutor {
                 && (pluginRef.getScoreboardSettings().isScoreboardEnabled(pluginRef.getScoreboardManager().SidebarType.RANK_BOARD));
         boolean useChat = !useBoard || pluginRef.getScoreboardSettings().isScoreboardPrinting(pluginRef.getScoreboardManager().SidebarType.RANK_BOARD);
 
-        new McrankCommandAsyncTask(playerName, sender, useBoard, useChat).runTaskAsynchronously(pluginRef);
+        new RankCommandAsyncTask(playerName, sender, useBoard, useChat).runTaskAsynchronously(pluginRef);
     }
 
     private long getCDSeconds(McMMOPlayer mcMMOPlayer, long cooldownMillis) {

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class SkillStatsCommand implements TabExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public SkillStatsCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

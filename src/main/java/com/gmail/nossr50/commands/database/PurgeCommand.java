@@ -10,7 +10,7 @@ import java.util.List;
 
 public class PurgeCommand implements TabExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public PurgeCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

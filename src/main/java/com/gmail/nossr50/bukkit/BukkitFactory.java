@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
  */
 public class BukkitFactory {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public BukkitFactory(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

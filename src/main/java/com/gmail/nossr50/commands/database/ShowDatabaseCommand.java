@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ShowDatabaseCommand implements TabExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public ShowDatabaseCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

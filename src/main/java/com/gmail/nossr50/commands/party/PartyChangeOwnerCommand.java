@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class PartyChangeOwnerCommand implements CommandExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public PartyChangeOwnerCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

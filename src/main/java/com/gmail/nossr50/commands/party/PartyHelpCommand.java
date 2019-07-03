@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 
 public class PartyHelpCommand implements CommandExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public PartyHelpCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

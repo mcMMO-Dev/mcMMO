@@ -22,7 +22,7 @@ import java.util.List;
 //TODO: Needs to be rewritten
 public class TextComponentFactory {
     
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public TextComponentFactory(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

@@ -24,7 +24,7 @@ import java.util.HashMap;
  */
 public class DynamicSettingsManager {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     /* UNLOAD REGISTER */
     private SkillPropertiesManager skillPropertiesManager;

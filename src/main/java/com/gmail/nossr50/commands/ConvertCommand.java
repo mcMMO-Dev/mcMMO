@@ -23,7 +23,7 @@ public class ConvertCommand implements TabExecutor {
     private CommandExecutor databaseConvertCommand;
     private CommandExecutor experienceConvertCommand;
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public ConvertCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

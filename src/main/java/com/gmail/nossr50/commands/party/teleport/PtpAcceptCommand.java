@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 
 public class PtpAcceptCommand implements CommandExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public PtpAcceptCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

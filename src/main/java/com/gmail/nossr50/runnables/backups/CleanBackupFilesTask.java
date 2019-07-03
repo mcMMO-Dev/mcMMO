@@ -1,5 +1,6 @@
 package com.gmail.nossr50.runnables.backups;
 
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
@@ -11,9 +12,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class CleanBackupsTask extends BukkitRunnable {
-    private static final String BACKUP_DIRECTORY = pluginRef.getMainDirectory() + "backup" + File.separator;
-    private static final File BACKUP_DIR = new File(BACKUP_DIRECTORY);
+public class CleanBackupFilesTask extends BukkitRunnable {
+    private final mcMMO pluginRef;
+    private final File BACKUP_DIR;
+
+    public CleanBackupFilesTask(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+
+        BACKUP_DIR = new File(pluginRef.getMainDirectory() + "backup" + File.separator);
+    }
 
     @Override
     public void run() {
@@ -24,13 +31,8 @@ public class CleanBackupsTask extends BukkitRunnable {
         int amountDeleted = 0;
         int oldFileAgeLimit = pluginRef.getConfigManager().getConfigAutomatedBackups().getBackupDayLimit();
 
-        if (BACKUP_DIR.listFiles() == null) {
-            return;
-        }
-
-        //if(BACKUP_DIR.listFiles().length < mcMMO.getConfigManager().getConfigAutomatedBackups().getMinimumBackupCount())
         //Don't remove files unless there is at least 10 of them
-        if (BACKUP_DIR.listFiles().length < 10)
+        if (BACKUP_DIR.listFiles() == null || BACKUP_DIR.listFiles().length < 10)
             return;
 
         // Check files in backup folder from oldest to newest

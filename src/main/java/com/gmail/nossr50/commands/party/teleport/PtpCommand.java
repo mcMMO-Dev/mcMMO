@@ -24,7 +24,7 @@ import java.util.List;
 
 public class PtpCommand implements TabExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
     private CommandExecutor ptpToggleCommand;
     private CommandExecutor ptpAcceptAnyCommand;
     private CommandExecutor ptpAcceptCommand;

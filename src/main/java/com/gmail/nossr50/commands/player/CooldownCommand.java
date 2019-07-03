@@ -13,7 +13,7 @@ import java.util.List;
 
 public class CooldownCommand implements TabExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public CooldownCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

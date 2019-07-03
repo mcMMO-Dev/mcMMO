@@ -1,19 +1,25 @@
 package com.gmail.nossr50.runnables.commands;
 
+import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
 import org.apache.commons.lang.Validate;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Map;
+import java.util.List;
 
-public class McrankCommandAsyncTask extends BukkitRunnable {
-    private final String playerName;
+public class LeaderboardsCommandAsyncTask extends BukkitRunnable {
+    private final mcMMO pluginRef;
     private final CommandSender sender;
+    private final PrimarySkillType skill;
+    private final int page;
     private final boolean useBoard, useChat;
 
-    public McrankCommandAsyncTask(String playerName, CommandSender sender, boolean useBoard, boolean useChat) {
+    public LeaderboardsCommandAsyncTask(mcMMO pluginRef, int page, PrimarySkillType skill, CommandSender sender, boolean useBoard, boolean useChat) {
+        this.pluginRef = pluginRef;
+
         Validate.isTrue(useBoard || useChat, "Attempted to start a rank retrieval with both board and chat off");
         Validate.notNull(sender, "Attempted to start a rank retrieval with no recipient");
 
@@ -21,7 +27,8 @@ public class McrankCommandAsyncTask extends BukkitRunnable {
             Validate.isTrue(sender instanceof Player, "Attempted to start a rank retrieval displaying scoreboard to a non-player");
         }
 
-        this.playerName = playerName;
+        this.page = page;
+        this.skill = skill;
         this.sender = sender;
         this.useBoard = useBoard;
         this.useChat = useChat;
@@ -29,9 +36,8 @@ public class McrankCommandAsyncTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        Map<PrimarySkillType, Integer> skills = pluginRef.getDatabaseManager().readRank(playerName);
+        final List<PlayerStat> userStats = pluginRef.getDatabaseManager().readLeaderboard(skill, page, 10);
 
-        new McrankCommandDisplayTask(skills, sender, playerName, useBoard, useChat).runTaskLater(pluginRef, 1);
+        new LeaderboardsCommandDisplayTask(pluginRef, userStats, page, skill, sender, useBoard, useChat).runTaskLater(pluginRef, 1);
     }
 }
-

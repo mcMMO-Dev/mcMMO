@@ -19,7 +19,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class Party {
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
     private static final String ONLINE_PLAYER_PREFIX = "⬤";
     private static final String OFFLINE_PLAYER_PREFIX = "○";
     private final LinkedHashMap<UUID, String> members = new LinkedHashMap<>();

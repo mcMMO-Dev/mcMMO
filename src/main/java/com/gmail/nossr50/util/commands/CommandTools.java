@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class CommandTools {
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public CommandTools(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

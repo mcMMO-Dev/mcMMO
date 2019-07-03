@@ -26,7 +26,7 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 public final class PartyManager {
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
     private List<Party> parties;
     private File partyFile;
 

@@ -4,7 +4,7 @@ import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.mcMMO;
 
 public class DatabaseManagerFactory {
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
     private Class<? extends DatabaseManager> customManager = null;
 
     public DatabaseManagerFactory(mcMMO pluginRef) {

@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class PartyLockCommand implements CommandExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public PartyLockCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

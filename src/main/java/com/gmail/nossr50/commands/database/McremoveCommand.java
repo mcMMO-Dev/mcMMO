@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class McremoveCommand implements TabExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public McremoveCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

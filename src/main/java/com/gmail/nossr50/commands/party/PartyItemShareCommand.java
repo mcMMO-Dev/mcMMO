@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 
 public class PartyItemShareCommand implements CommandExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public PartyItemShareCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

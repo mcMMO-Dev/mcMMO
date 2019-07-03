@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 public class PartyRenameCommand implements CommandExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public PartyRenameCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

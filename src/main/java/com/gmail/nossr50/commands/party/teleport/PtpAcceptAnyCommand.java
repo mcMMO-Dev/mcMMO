@@ -8,7 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 public class PtpAcceptAnyCommand implements CommandExecutor {
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
 
     public PtpAcceptAnyCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;

@@ -19,7 +19,7 @@ import java.util.List;
 
 public class PartyAllianceCommand implements TabExecutor {
 
-    private mcMMO pluginRef;
+    private final mcMMO pluginRef;
     private Player player;
     private Party playerParty;
     private Party targetParty;
