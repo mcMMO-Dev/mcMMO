@@ -7,11 +7,8 @@ import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.items.TeleportationWarmup;
-import com.gmail.nossr50.util.EventManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
@@ -44,7 +41,7 @@ public class PtpCommand implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (CommandUtils.noConsoleUsage(sender)) {
+        if (pluginRef.getCommandTools().noConsoleUsage(sender)) {
             return true;
         }
 
@@ -125,7 +122,7 @@ public class PtpCommand implements TabExecutor {
                 }
             }
 
-            sendTeleportRequest(sender, player, CommandUtils.getMatchedPlayerName(args[0]));
+            sendTeleportRequest(sender, player, pluginRef.getCommandTools().getMatchedPlayerName(args[0]));
             return true;
         }
         return false;

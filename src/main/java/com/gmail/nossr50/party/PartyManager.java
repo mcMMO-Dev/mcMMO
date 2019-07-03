@@ -11,7 +11,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.items.TeleportationWarmup;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -41,7 +40,7 @@ public final class PartyManager {
     public boolean canTeleport(CommandSender sender, Player player, String targetName) {
         McMMOPlayer mcMMOTarget = UserManager.getPlayer(targetName);
 
-        if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
+        if (!pluginRef.getCommandTools().checkPlayerExistence(sender, targetName, mcMMOTarget)) {
             return false;
         }
 

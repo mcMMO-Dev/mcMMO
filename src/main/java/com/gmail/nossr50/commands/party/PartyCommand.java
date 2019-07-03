@@ -8,7 +8,6 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -93,7 +92,7 @@ public class PartyCommand implements TabExecutor {
         if (!pluginRef.getConfigManager().getConfigParty().isPartySystemEnabled())
             return true;
 
-        if (CommandUtils.noConsoleUsage(sender)) {
+        if (pluginRef.getCommandTools().noConsoleUsage(sender)) {
             return true;
         }
 
@@ -220,7 +219,7 @@ public class PartyCommand implements TabExecutor {
                     case INVITE:
                     case KICK:
                     case OWNER:
-                        List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
+                        List<String> playerNames = pluginRef.getCommandTools().getOnlinePlayerNames(sender);
                         return StringUtil.copyPartialMatches(args[1], playerNames, new ArrayList<>(playerNames.size()));
                     case XPSHARE:
                         return StringUtil.copyPartialMatches(args[1], XPSHARE_COMPLETIONS, new ArrayList<>(XPSHARE_COMPLETIONS.size()));
@@ -228,9 +227,9 @@ public class PartyCommand implements TabExecutor {
                         return StringUtil.copyPartialMatches(args[1], ITEMSHARE_COMPLETIONS, new ArrayList<>(ITEMSHARE_COMPLETIONS.size()));
                     case LOCK:
                     case CHAT:
-                        return StringUtil.copyPartialMatches(args[1], CommandUtils.TRUE_FALSE_OPTIONS, new ArrayList<>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
+                        return StringUtil.copyPartialMatches(args[1], CommandConstants.TRUE_FALSE_OPTIONS, new ArrayList<>(CommandConstants.TRUE_FALSE_OPTIONS.size()));
                     case PASSWORD:
-                        return StringUtil.copyPartialMatches(args[1], CommandUtils.RESET_OPTIONS, new ArrayList<>(CommandUtils.RESET_OPTIONS.size()));
+                        return StringUtil.copyPartialMatches(args[1], CommandConstants.RESET_OPTIONS, new ArrayList<>(CommandConstants.RESET_OPTIONS.size()));
                     case TELEPORT:
                         List<String> matches = StringUtil.copyPartialMatches(args[1], CommandConstants.TELEPORT_SUBCOMMANDS, new ArrayList<>(CommandConstants.TELEPORT_SUBCOMMANDS.size()));
 
@@ -255,7 +254,7 @@ public class PartyCommand implements TabExecutor {
                 }
             case 3:
                 if (PartySubcommandType.getSubcommand(args[0]) == PartySubcommandType.ITEMSHARE && isItemShareCategory(args[1])) {
-                    return StringUtil.copyPartialMatches(args[2], CommandUtils.TRUE_FALSE_OPTIONS, new ArrayList<>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
+                    return StringUtil.copyPartialMatches(args[2], CommandConstants.TRUE_FALSE_OPTIONS, new ArrayList<>(CommandConstants.TRUE_FALSE_OPTIONS.size()));
                 }
 
                 return ImmutableList.of();

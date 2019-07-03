@@ -7,7 +7,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.MctopCommandAsyncTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
@@ -54,7 +53,7 @@ public class MctopCommand implements TabExecutor {
                 return true;
 
             case 2:
-                if (CommandUtils.isInvalidInteger(sender, args[1])) {
+                if (pluginRef.getCommandTools().isInvalidInteger(sender, args[1])) {
                     return true;
                 }
 
@@ -89,7 +88,7 @@ public class MctopCommand implements TabExecutor {
         }
 
         if (sender instanceof Player) {
-            if (!CommandUtils.hasPlayerDataKey(sender)) {
+            if (!pluginRef.getCommandTools().hasPlayerDataKey(sender)) {
                 return;
             }
 
@@ -127,13 +126,13 @@ public class MctopCommand implements TabExecutor {
     }
 
     private PrimarySkillType extractSkill(CommandSender sender, String skillName) {
-        if (CommandUtils.isInvalidSkill(sender, skillName)) {
+        if (pluginRef.getCommandTools().isInvalidSkill(sender, skillName)) {
             return null;
         }
 
         PrimarySkillType skill = PrimarySkillType.getSkill(skillName);
 
-        if (CommandUtils.isChildSkill(sender, skill)) {
+        if (pluginRef.getCommandTools().isChildSkill(sender, skill)) {
             return null;
         }
 

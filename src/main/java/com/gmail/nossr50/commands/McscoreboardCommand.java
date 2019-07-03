@@ -1,7 +1,6 @@
 package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -24,7 +23,7 @@ public class McscoreboardCommand implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (CommandUtils.noConsoleUsage(sender)) {
+        if (pluginRef.getCommandTools().noConsoleUsage(sender)) {
             return true;
         }
 
@@ -56,7 +55,7 @@ public class McscoreboardCommand implements TabExecutor {
 
             case 2:
                 if (args[0].equalsIgnoreCase("time") || args[0].equalsIgnoreCase("timer")) {
-                    if (CommandUtils.isInvalidInteger(sender, args[1])) {
+                    if (pluginRef.getCommandTools().isInvalidInteger(sender, args[1])) {
                         return true;
                     }
 

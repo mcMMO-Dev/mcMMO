@@ -3,7 +3,6 @@ package com.gmail.nossr50.commands.party;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,10 +22,10 @@ public class PartyJoinCommand implements CommandExecutor {
         switch (args.length) {
             case 2:
             case 3:
-                String targetName = CommandUtils.getMatchedPlayerName(args[1]);
+                String targetName = pluginRef.getCommandTools().getMatchedPlayerName(args[1]);
                 McMMOPlayer mcMMOTarget = UserManager.getPlayer(targetName);
 
-                if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
+                if (!pluginRef.getCommandTools().checkPlayerExistence(sender, targetName, mcMMOTarget)) {
                     return true;
                 }
 

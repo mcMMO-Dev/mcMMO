@@ -1,7 +1,5 @@
 package com.gmail.nossr50.datatypes.party;
 
-import com.gmail.nossr50.util.commands.CommandUtils;
-
 public enum ShareMode {
     NONE,
     EQUAL,
@@ -13,7 +11,7 @@ public enum ShareMode {
         } catch (IllegalArgumentException ex) {
             if (string.equalsIgnoreCase("even")) {
                 return EQUAL;
-            } else if (CommandUtils.shouldDisableToggle(string)) {
+            } else if (pluginRef.getCommandTools().shouldDisableToggle(string)) {
                 return NONE;
             }
 

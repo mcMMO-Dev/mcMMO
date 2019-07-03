@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -36,9 +35,9 @@ public class PartyXpShareCommand implements CommandExecutor {
 
         switch (args.length) {
             case 2:
-                if (args[1].equalsIgnoreCase("none") || CommandUtils.shouldDisableToggle(args[1])) {
+                if (args[1].equalsIgnoreCase("none") || pluginRef.getCommandTools().shouldDisableToggle(args[1])) {
                     handleChangingShareMode(party, ShareMode.NONE);
-                } else if (args[1].equalsIgnoreCase("equal") || args[1].equalsIgnoreCase("even") || CommandUtils.shouldEnableToggle(args[1])) {
+                } else if (args[1].equalsIgnoreCase("equal") || args[1].equalsIgnoreCase("even") || pluginRef.getCommandTools().shouldEnableToggle(args[1])) {
                     handleChangingShareMode(party, ShareMode.EQUAL);
                 } else {
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Usage.2", "party", "xpshare", "<NONE | EQUAL>"));

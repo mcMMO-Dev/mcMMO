@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.OfflinePlayer;
@@ -40,7 +39,7 @@ public abstract class ExperienceCommand implements TabExecutor {
 
         switch (args.length) {
             case 2:
-                if (CommandUtils.noConsoleUsage(sender)) {
+                if (pluginRef.getCommandTools().noConsoleUsage(sender)) {
                     return true;
                 }
 
@@ -97,7 +96,7 @@ public abstract class ExperienceCommand implements TabExecutor {
 
                 int value = Integer.parseInt(args[2]);
 
-                String playerName = CommandUtils.getMatchedPlayerName(args[0]);
+                String playerName = pluginRef.getCommandTools().getMatchedPlayerName(args[0]);
                 McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(playerName);
 
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
@@ -109,7 +108,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                     }
                     PlayerProfile profile = pluginRef.getDatabaseManager().loadPlayerProfile(playerName, uuid, false);
 
-                    if (CommandUtils.unloadedProfile(sender, profile)) {
+                    if (pluginRef.getCommandTools().unloadedProfile(sender, profile)) {
                         return true;
                     }
 
@@ -130,7 +129,7 @@ public abstract class ExperienceCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         switch (args.length) {
             case 1:
-                List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
+                List<String> playerNames = pluginRef.getCommandTools().getOnlinePlayerNames(sender);
                 return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<>(playerNames.size()));
             case 2:
                 return StringUtil.copyPartialMatches(args[1], PrimarySkillType.SKILL_NAMES, new ArrayList<>(PrimarySkillType.SKILL_NAMES.size()));
@@ -150,7 +149,7 @@ public abstract class ExperienceCommand implements TabExecutor {
     protected abstract void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill);
 
     private boolean validateArguments(CommandSender sender, String skillName, String value) {
-        return !(CommandUtils.isInvalidInteger(sender, value) || (!skillName.equalsIgnoreCase("all") && CommandUtils.isInvalidSkill(sender, skillName)));
+        return !(pluginRef.getCommandTools().isInvalidInteger(sender, value) || (!skillName.equalsIgnoreCase("all") && pluginRef.getCommandTools().isInvalidSkill(sender, skillName)));
     }
 
     protected void editValues(Player player, PlayerProfile profile, PrimarySkillType skill, int value) {

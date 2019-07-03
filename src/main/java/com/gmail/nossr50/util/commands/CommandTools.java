@@ -4,11 +4,11 @@ import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
-import com.google.common.collect.ImmutableList;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -16,14 +16,14 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class CommandUtils {
-    public static final List<String> TRUE_FALSE_OPTIONS = ImmutableList.of("on", "off", "true", "false", "enabled", "disabled");
-    public static final List<String> RESET_OPTIONS = ImmutableList.of("clear", "reset");
+public final class CommandTools {
+    private mcMMO pluginRef;
 
-    private CommandUtils() {
+    public CommandTools(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
     }
 
-    public static boolean isChildSkill(CommandSender sender, PrimarySkillType skill) {
+    public boolean isChildSkill(CommandSender sender, PrimarySkillType skill) {
         if (skill == null || !skill.isChildSkill()) {
             return false;
         }
@@ -32,7 +32,7 @@ public final class CommandUtils {
         return true;
     }
 
-    public static boolean tooFar(CommandSender sender, Player target, boolean hasPermission) {
+    public boolean tooFar(CommandSender sender, Player target, boolean hasPermission) {
         if(!target.isOnline() && !hasPermission) {
             sender.sendMessage(pluginRef.getLocaleManager().getString("Inspect.Offline"));
             return true;
@@ -48,11 +48,11 @@ public final class CommandUtils {
         return false;
     }
 
-    public static boolean hidden(CommandSender sender, Player target, boolean hasPermission) {
+    public boolean hidden(CommandSender sender, Player target, boolean hasPermission) {
         return sender instanceof Player && !((Player) sender).canSee(target) && !hasPermission;
     }
 
-    public static boolean noConsoleUsage(CommandSender sender) {
+    public boolean noConsoleUsage(CommandSender sender) {
         if (sender instanceof Player) {
             return false;
         }
@@ -61,7 +61,7 @@ public final class CommandUtils {
         return true;
     }
 
-    public static boolean isOffline(CommandSender sender, OfflinePlayer player) {
+    public boolean isOffline(CommandSender sender, OfflinePlayer player) {
         if (player.isOnline()) {
             return false;
         }
@@ -78,9 +78,9 @@ public final class CommandUtils {
      * @param mcMMOPlayer mcMMOPlayer object of the target player
      * @return true if the player is online and a valid mcMMOPlayer object was found
      */
-    public static boolean checkPlayerExistence(CommandSender sender, String playerName, McMMOPlayer mcMMOPlayer) {
+    public boolean checkPlayerExistence(CommandSender sender, String playerName, McMMOPlayer mcMMOPlayer) {
         if (mcMMOPlayer != null) {
-            if (CommandUtils.hidden(sender, mcMMOPlayer.getPlayer(), false)) {
+            if (hidden(sender, mcMMOPlayer.getPlayer(), false)) {
                 sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Offline"));
                 return false;
             }
@@ -97,7 +97,7 @@ public final class CommandUtils {
         return false;
     }
 
-    public static boolean unloadedProfile(CommandSender sender, PlayerProfile profile) {
+    public boolean unloadedProfile(CommandSender sender, PlayerProfile profile) {
         if (profile.isLoaded()) {
             return false;
         }
@@ -106,7 +106,7 @@ public final class CommandUtils {
         return true;
     }
 
-    public static boolean hasPlayerDataKey(CommandSender sender) {
+    public boolean hasPlayerDataKey(CommandSender sender) {
         if (!(sender instanceof Player)) {
             return false;
         }
@@ -120,7 +120,7 @@ public final class CommandUtils {
         return hasPlayerDataKey;
     }
 
-    public static boolean isLoaded(CommandSender sender, PlayerProfile profile) {
+    public boolean isLoaded(CommandSender sender, PlayerProfile profile) {
         if (profile.isLoaded()) {
             return true;
         }
@@ -129,7 +129,7 @@ public final class CommandUtils {
         return false;
     }
 
-    public static boolean isInvalidInteger(CommandSender sender, String value) {
+    public boolean isInvalidInteger(CommandSender sender, String value) {
         if (StringUtils.isInt(value)) {
             return false;
         }
@@ -138,7 +138,7 @@ public final class CommandUtils {
         return true;
     }
 
-    public static boolean isInvalidDouble(CommandSender sender, String value) {
+    public boolean isInvalidDouble(CommandSender sender, String value) {
         if (StringUtils.isDouble(value)) {
             return false;
         }
@@ -147,7 +147,7 @@ public final class CommandUtils {
         return true;
     }
 
-    public static boolean isInvalidSkill(CommandSender sender, String skillName) {
+    public boolean isInvalidSkill(CommandSender sender, String skillName) {
         if (SkillUtils.isSkill(skillName)) {
             return false;
         }
@@ -156,11 +156,11 @@ public final class CommandUtils {
         return true;
     }
 
-    public static boolean shouldEnableToggle(String arg) {
+    public boolean shouldEnableToggle(String arg) {
         return arg.equalsIgnoreCase("on") || arg.equalsIgnoreCase("true") || arg.equalsIgnoreCase("enabled");
     }
 
-    public static boolean shouldDisableToggle(String arg) {
+    public boolean shouldDisableToggle(String arg) {
         return arg.equalsIgnoreCase("off") || arg.equalsIgnoreCase("false") || arg.equalsIgnoreCase("disabled");
     }
 
@@ -170,11 +170,11 @@ public final class CommandUtils {
      * @param inspect The player to retrieve stats for
      * @param display The sender to display stats to
      */
-    public static void printGatheringSkills(Player inspect, CommandSender display) {
+    public void printGatheringSkills(Player inspect, CommandSender display) {
         printGroupedSkillData(inspect, display, pluginRef.getLocaleManager().getString("Stats.Header.Gathering"), PrimarySkillType.GATHERING_SKILLS);
     }
 
-    public static void printGatheringSkills(Player player) {
+    public void printGatheringSkills(Player player) {
         printGatheringSkills(player, player);
     }
 
@@ -184,11 +184,11 @@ public final class CommandUtils {
      * @param inspect The player to retrieve stats for
      * @param display The sender to display stats to
      */
-    public static void printCombatSkills(Player inspect, CommandSender display) {
+    public void printCombatSkills(Player inspect, CommandSender display) {
         printGroupedSkillData(inspect, display, pluginRef.getLocaleManager().getString("Stats.Header.Combat"), PrimarySkillType.COMBAT_SKILLS);
     }
 
-    public static void printCombatSkills(Player player) {
+    public void printCombatSkills(Player player) {
         printCombatSkills(player, player);
     }
 
@@ -198,15 +198,15 @@ public final class CommandUtils {
      * @param inspect The player to retrieve stats for
      * @param display The sender to display stats to
      */
-    public static void printMiscSkills(Player inspect, CommandSender display) {
+    public void printMiscSkills(Player inspect, CommandSender display) {
         printGroupedSkillData(inspect, display, pluginRef.getLocaleManager().getString("Stats.Header.Misc"), PrimarySkillType.MISC_SKILLS);
     }
 
-    public static void printMiscSkills(Player player) {
+    public void printMiscSkills(Player player) {
         printMiscSkills(player, player);
     }
 
-    public static String displaySkill(PlayerProfile profile, PrimarySkillType skill) {
+    public String displaySkill(PlayerProfile profile, PrimarySkillType skill) {
         if (skill.isChildSkill()) {
             return pluginRef.getLocaleManager().getString("Skills.ChildStats", pluginRef.getLocaleManager().getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill));
         }
@@ -214,7 +214,7 @@ public final class CommandUtils {
         return pluginRef.getLocaleManager().getString("Skills.Stats", pluginRef.getLocaleManager().getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill), profile.getSkillXpLevel(skill), profile.getXpToLevel(skill));
     }
 
-    private static void printGroupedSkillData(Player inspect, CommandSender display, String header, List<PrimarySkillType> skillGroup) {
+    private void printGroupedSkillData(Player inspect, CommandSender display, String header, List<PrimarySkillType> skillGroup) {
         if (UserManager.getPlayer(inspect) == null)
             return;
 
@@ -236,7 +236,7 @@ public final class CommandUtils {
         }
     }
 
-    public static List<String> getOnlinePlayerNames(CommandSender sender) {
+    public List<String> getOnlinePlayerNames(CommandSender sender) {
         Player player = sender instanceof Player ? (Player) sender : null;
         List<String> onlinePlayerNames = new ArrayList<>();
 
@@ -255,7 +255,7 @@ public final class CommandUtils {
      * @param partialName Name to match
      * @return Matched name or {@code partialName} if no match was found
      */
-    public static String getMatchedPlayerName(String partialName) {
+    public String getMatchedPlayerName(String partialName) {
         if (pluginRef.getConfigManager().getConfigCommands().getMisc().isMatchOfflinePlayers()) {
             List<String> matches = matchPlayer(partialName);
 
@@ -282,7 +282,7 @@ public final class CommandUtils {
      * @param partialName Name to match
      * @return List of all possible names
      */
-    private static List<String> matchPlayer(String partialName) {
+    private List<String> matchPlayer(String partialName) {
         List<String> matchedPlayers = new ArrayList<>();
 
         for (OfflinePlayer offlinePlayer : pluginRef.getServer().getOfflinePlayers()) {

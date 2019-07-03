@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.ChatColor;
@@ -40,7 +39,7 @@ public class PartyAllianceCommand implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (CommandUtils.noConsoleUsage(sender)) {
+        if (pluginRef.getCommandTools().noConsoleUsage(sender)) {
             return true;
         }
 
@@ -119,7 +118,7 @@ public class PartyAllianceCommand implements TabExecutor {
                 List<String> matches = StringUtil.copyPartialMatches(args[0], CommandConstants.ALLIANCE_SUBCOMMANDS, new ArrayList<>(CommandConstants.ALLIANCE_SUBCOMMANDS.size()));
 
                 if (matches.size() == 0) {
-                    List<String> playerNames = CommandUtils.getOnlinePlayerNames(commandSender);
+                    List<String> playerNames = pluginRef.getCommandTools().getOnlinePlayerNames(commandSender);
                     return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<>(playerNames.size()));
                 }
 

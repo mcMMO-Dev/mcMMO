@@ -1,7 +1,6 @@
 package com.gmail.nossr50.runnables.items;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.util.EventManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Location;

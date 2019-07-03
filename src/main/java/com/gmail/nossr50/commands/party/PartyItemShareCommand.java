@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -50,9 +49,9 @@ public class PartyItemShareCommand implements CommandExecutor {
             case 3:
                 boolean toggle;
 
-                if (CommandUtils.shouldEnableToggle(args[2])) {
+                if (pluginRef.getCommandTools().shouldEnableToggle(args[2])) {
                     toggle = true;
-                } else if (CommandUtils.shouldDisableToggle(args[2])) {
+                } else if (pluginRef.getCommandTools().shouldDisableToggle(args[2])) {
                     toggle = false;
                 } else {
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Usage.2", "party", "itemshare", "<loot | mining | herbalism | woodcutting | misc> <true | false>"));

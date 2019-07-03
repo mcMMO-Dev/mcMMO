@@ -3,7 +3,6 @@ package com.gmail.nossr50.commands.party;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -29,7 +28,7 @@ public class PartyKickCommand implements CommandExecutor {
                 }
 
                 Party playerParty = UserManager.getPlayer((Player) sender).getParty();
-                String targetName = CommandUtils.getMatchedPlayerName(args[1]);
+                String targetName = pluginRef.getCommandTools().getMatchedPlayerName(args[1]);
 
                 if (!playerParty.hasMember(targetName)) {
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Party.NotInYourParty", targetName));

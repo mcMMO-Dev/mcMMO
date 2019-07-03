@@ -1,7 +1,6 @@
 package com.gmail.nossr50.commands.database;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.Bukkit;
@@ -25,9 +24,9 @@ public class McremoveCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 1) {
-            String playerName = CommandUtils.getMatchedPlayerName(args[0]);
+            String playerName = pluginRef.getCommandTools().getMatchedPlayerName(args[0]);
 
-            if (UserManager.getOfflinePlayer(playerName) == null && CommandUtils.unloadedProfile(sender, pluginRef.getDatabaseManager().loadPlayerProfile(playerName, false))) {
+            if (UserManager.getOfflinePlayer(playerName) == null && pluginRef.getCommandTools().unloadedProfile(sender, pluginRef.getDatabaseManager().loadPlayerProfile(playerName, false))) {
                 return true;
             }
 
@@ -52,7 +51,7 @@ public class McremoveCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         switch (args.length) {
             case 1:
-                List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
+                List<String> playerNames = pluginRef.getCommandTools().getOnlinePlayerNames(sender);
                 return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<>(playerNames.size()));
             default:
                 return ImmutableList.of();

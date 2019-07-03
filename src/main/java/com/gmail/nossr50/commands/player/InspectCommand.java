@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
@@ -30,14 +29,14 @@ public class InspectCommand implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 1:
-                String playerName = CommandUtils.getMatchedPlayerName(args[0]);
+                String playerName = pluginRef.getCommandTools().getMatchedPlayerName(args[0]);
                 McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(playerName);
 
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {
                     PlayerProfile profile = pluginRef.getDatabaseManager().loadPlayerProfile(playerName, false); // Temporary Profile
 
-                    if (!CommandUtils.isLoaded(sender, profile)) {
+                    if (!pluginRef.getCommandTools().isLoaded(sender, profile)) {
                         return true;
                     }
 
@@ -55,27 +54,27 @@ public class InspectCommand implements TabExecutor {
 
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Stats.Header.Gathering"));
                     for (PrimarySkillType skill : PrimarySkillType.GATHERING_SKILLS) {
-                        sender.sendMessage(CommandUtils.displaySkill(profile, skill));
+                        sender.sendMessage(pluginRef.getCommandTools().displaySkill(profile, skill));
                     }
 
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Stats.Header.Combat"));
                     for (PrimarySkillType skill : PrimarySkillType.COMBAT_SKILLS) {
-                        sender.sendMessage(CommandUtils.displaySkill(profile, skill));
+                        sender.sendMessage(pluginRef.getCommandTools().displaySkill(profile, skill));
                     }
 
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Stats.Header.Misc"));
                     for (PrimarySkillType skill : PrimarySkillType.MISC_SKILLS) {
-                        sender.sendMessage(CommandUtils.displaySkill(profile, skill));
+                        sender.sendMessage(pluginRef.getCommandTools().displaySkill(profile, skill));
                     }
 
                 } else {
                     Player target = mcMMOPlayer.getPlayer();
 
-                    if (CommandUtils.hidden(sender, target, Permissions.inspectHidden(sender))) {
+                    if (pluginRef.getCommandTools().hidden(sender, target, Permissions.inspectHidden(sender))) {
                         sender.sendMessage(pluginRef.getLocaleManager().getString("Inspect.Offline"));
                         return true;
                     }
-                    else if (CommandUtils.tooFar(sender, target, Permissions.inspectFar(sender))) {
+                    else if (pluginRef.getCommandTools().tooFar(sender, target, Permissions.inspectFar(sender))) {
                         return true;
                     }
 
@@ -88,9 +87,9 @@ public class InspectCommand implements TabExecutor {
                     }
 
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Inspect.Stats", target.getName()));
-                    CommandUtils.printGatheringSkills(target, sender);
-                    CommandUtils.printCombatSkills(target, sender);
-                    CommandUtils.printMiscSkills(target, sender);
+                    pluginRef.getCommandTools().printGatheringSkills(target, sender);
+                    pluginRef.getCommandTools().printCombatSkills(target, sender);
+                    pluginRef.getCommandTools().printMiscSkills(target, sender);
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.PowerLevel", mcMMOPlayer.getPowerLevel()));
                 }
 
@@ -105,7 +104,7 @@ public class InspectCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         switch (args.length) {
             case 1:
-                List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
+                List<String> playerNames = pluginRef.getCommandTools().getOnlinePlayerNames(sender);
                 return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<>(playerNames.size()));
             default:
                 return ImmutableList.of();

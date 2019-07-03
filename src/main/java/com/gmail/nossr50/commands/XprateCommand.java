@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.notifications.SensitiveCommandType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.commands.CommandUtils;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -60,7 +59,7 @@ public class XprateCommand implements TabExecutor {
                 return true;
 
             case 2:
-                if (CommandUtils.isInvalidInteger(sender, args[0])) {
+                if (pluginRef.getCommandTools().isInvalidInteger(sender, args[0])) {
                     return true;
                 }
 
@@ -69,9 +68,9 @@ public class XprateCommand implements TabExecutor {
                     return true;
                 }
 
-                if (CommandUtils.shouldDisableToggle(args[1])) {
+                if (pluginRef.getCommandTools().shouldDisableToggle(args[1])) {
                     pluginRef.setXPEventEnabled(false);
-                } else if (CommandUtils.shouldEnableToggle(args[1])) {
+                } else if (pluginRef.getCommandTools().shouldEnableToggle(args[1])) {
                     pluginRef.setXPEventEnabled(true);
                 } else {
                     return false;
@@ -116,9 +115,9 @@ public class XprateCommand implements TabExecutor {
                     return ImmutableList.of();
                 }
 
-                return StringUtil.copyPartialMatches(args[0], CommandUtils.RESET_OPTIONS, new ArrayList<>(CommandUtils.RESET_OPTIONS.size()));
+                return StringUtil.copyPartialMatches(args[0], CommandConstants.RESET_OPTIONS, new ArrayList<>(CommandConstants.RESET_OPTIONS.size()));
             case 2:
-                return StringUtil.copyPartialMatches(args[1], CommandUtils.TRUE_FALSE_OPTIONS, new ArrayList<>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
+                return StringUtil.copyPartialMatches(args[1], CommandConstants.TRUE_FALSE_OPTIONS, new ArrayList<>(CommandConstants.TRUE_FALSE_OPTIONS.size()));
             default:
                 return ImmutableList.of();
         }

@@ -32,6 +32,7 @@ import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
 import com.gmail.nossr50.util.commands.CommandRegistrationManager;
+import com.gmail.nossr50.util.commands.CommandTools;
 import com.gmail.nossr50.util.experience.FormulaManager;
 import com.gmail.nossr50.util.nbt.NBTManager;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -72,6 +73,9 @@ public class mcMMO extends JavaPlugin {
     private ChatManager chatManager;
     private MobHealthBarManager mobHealthBarManager;
     private EventManager eventManager;
+
+    /* Not-Managers but my naming scheme sucks */
+    private CommandTools commandTools;
 
     /* File Paths */
     private String mainDirectory;
@@ -201,6 +205,8 @@ public class mcMMO extends JavaPlugin {
 
         //Init Event Manager
         eventManager = new EventManager(this);
+
+        commandTools = new CommandTools(this);
     }
 
     @Override
@@ -638,5 +644,9 @@ public class mcMMO extends JavaPlugin {
 
     public EventManager getEventManager() {
         return eventManager;
+    }
+
+    public CommandTools getCommandTools() {
+        return commandTools;
     }
 }

@@ -1,7 +1,6 @@
 package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -17,7 +16,7 @@ public abstract class ToggleCommand implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 0:
-                if (CommandUtils.noConsoleUsage(sender)) {
+                if (pluginRef.getCommandTools().noConsoleUsage(sender)) {
                     return true;
                 }
 
@@ -26,7 +25,7 @@ public abstract class ToggleCommand implements TabExecutor {
                     return true;
                 }
 
-                if (!CommandUtils.hasPlayerDataKey(sender)) {
+                if (!pluginRef.getCommandTools().hasPlayerDataKey(sender)) {
                     return true;
                 }
 
@@ -39,14 +38,14 @@ public abstract class ToggleCommand implements TabExecutor {
                     return true;
                 }
 
-                String playerName = CommandUtils.getMatchedPlayerName(args[0]);
+                String playerName = pluginRef.getCommandTools().getMatchedPlayerName(args[0]);
                 McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName);
 
-                if (!CommandUtils.checkPlayerExistence(sender, playerName, mcMMOPlayer)) {
+                if (!pluginRef.getCommandTools().checkPlayerExistence(sender, playerName, mcMMOPlayer)) {
                     return true;
                 }
 
-                if (CommandUtils.isOffline(sender, mcMMOPlayer.getPlayer())) {
+                if (pluginRef.getCommandTools().isOffline(sender, mcMMOPlayer.getPlayer())) {
                     return true;
                 }
 
@@ -63,7 +62,7 @@ public abstract class ToggleCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         switch (args.length) {
             case 1:
-                List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
+                List<String> playerNames = pluginRef.getCommandTools().getOnlinePlayerNames(sender);
                 return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<>(playerNames.size()));
             default:
                 return ImmutableList.of();

@@ -1,7 +1,6 @@
 package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
@@ -22,11 +21,11 @@ public class McstatsCommand implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (CommandUtils.noConsoleUsage(sender)) {
+        if (pluginRef.getCommandTools().noConsoleUsage(sender)) {
             return true;
         }
 
-        if (!CommandUtils.hasPlayerDataKey(sender)) {
+        if (!pluginRef.getCommandTools().hasPlayerDataKey(sender)) {
             return true;
         }
 
@@ -50,9 +49,9 @@ public class McstatsCommand implements TabExecutor {
                 player.sendMessage(pluginRef.getLocaleManager().getString("Stats.Own.Stats"));
                 player.sendMessage(pluginRef.getLocaleManager().getString("mcMMO.NoSkillNote"));
 
-                CommandUtils.printGatheringSkills(player);
-                CommandUtils.printCombatSkills(player);
-                CommandUtils.printMiscSkills(player);
+                pluginRef.getCommandTools().printGatheringSkills(player);
+                pluginRef.getCommandTools().printCombatSkills(player);
+                pluginRef.getCommandTools().printMiscSkills(player);
 
                 int powerLevelCap = pluginRef.getPlayerLevelingSettings().getConfigSectionLevelCaps().getPowerLevelSettings().getLevelCap();
 

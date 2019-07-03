@@ -1,10 +1,10 @@
 package com.gmail.nossr50.commands.chat;
 
+import com.gmail.nossr50.commands.CommandConstants;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -31,11 +31,11 @@ public abstract class ChatCommand implements TabExecutor {
 
         switch (args.length) {
             case 0:
-                if (CommandUtils.noConsoleUsage(sender)) {
+                if (pluginRef.getCommandTools().noConsoleUsage(sender)) {
                     return true;
                 }
 
-                if (!CommandUtils.hasPlayerDataKey(sender)) {
+                if (!pluginRef.getCommandTools().hasPlayerDataKey(sender)) {
                     return true;
                 }
 
@@ -50,11 +50,11 @@ public abstract class ChatCommand implements TabExecutor {
                 return true;
 
             case 1:
-                if (CommandUtils.shouldEnableToggle(args[0])) {
-                    if (CommandUtils.noConsoleUsage(sender)) {
+                if (pluginRef.getCommandTools().shouldEnableToggle(args[0])) {
+                    if (pluginRef.getCommandTools().noConsoleUsage(sender)) {
                         return true;
                     }
-                    if (!CommandUtils.hasPlayerDataKey(sender)) {
+                    if (!pluginRef.getCommandTools().hasPlayerDataKey(sender)) {
                         return true;
                     }
 
@@ -62,11 +62,11 @@ public abstract class ChatCommand implements TabExecutor {
                     return true;
                 }
 
-                if (CommandUtils.shouldDisableToggle(args[0])) {
-                    if (CommandUtils.noConsoleUsage(sender)) {
+                if (pluginRef.getCommandTools().shouldDisableToggle(args[0])) {
+                    if (pluginRef.getCommandTools().noConsoleUsage(sender)) {
                         return true;
                     }
-                    if (!CommandUtils.hasPlayerDataKey(sender)) {
+                    if (!pluginRef.getCommandTools().hasPlayerDataKey(sender)) {
                         return true;
                     }
 
@@ -86,7 +86,7 @@ public abstract class ChatCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         switch (args.length) {
             case 1:
-                return StringUtil.copyPartialMatches(args[0], CommandUtils.TRUE_FALSE_OPTIONS, new ArrayList<>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
+                return StringUtil.copyPartialMatches(args[0], CommandConstants.TRUE_FALSE_OPTIONS, new ArrayList<>(CommandConstants.TRUE_FALSE_OPTIONS.size()));
             default:
                 return ImmutableList.of();
         }

@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.McrankCommandAsyncTask;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
@@ -31,7 +30,7 @@ public class McrankCommand implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 0:
-                if (CommandUtils.noConsoleUsage(sender)) {
+                if (pluginRef.getCommandTools().noConsoleUsage(sender)) {
                     return true;
                 }
 
@@ -40,7 +39,7 @@ public class McrankCommand implements TabExecutor {
                     return true;
                 }
 
-                if (!CommandUtils.hasPlayerDataKey(sender)) {
+                if (!pluginRef.getCommandTools().hasPlayerDataKey(sender)) {
                     return true;
                 }
 
@@ -54,18 +53,18 @@ public class McrankCommand implements TabExecutor {
                     return true;
                 }
 
-                if (!CommandUtils.hasPlayerDataKey(sender)) {
+                if (!pluginRef.getCommandTools().hasPlayerDataKey(sender)) {
                     return true;
                 }
 
-                String playerName = CommandUtils.getMatchedPlayerName(args[0]);
+                String playerName = pluginRef.getCommandTools().getMatchedPlayerName(args[0]);
                 McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(playerName);
 
                 if (mcMMOPlayer != null) {
                     Player player = mcMMOPlayer.getPlayer();
                     playerName = player.getName();
 
-                    if (CommandUtils.tooFar(sender, player, Permissions.mcrankFar(sender))) {
+                    if (pluginRef.getCommandTools().tooFar(sender, player, Permissions.mcrankFar(sender))) {
                         return true;
                     }
                 }
@@ -82,7 +81,7 @@ public class McrankCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         switch (args.length) {
             case 1:
-                List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
+                List<String> playerNames = pluginRef.getCommandTools().getOnlinePlayerNames(sender);
                 return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<>(playerNames.size()));
             default:
                 return ImmutableList.of();
