@@ -120,7 +120,7 @@ public class PlayerListener implements Listener {
         }
 
         Player player = event.getEntity();
-        event.setDeathMessage(MobHealthbarUtils.fixDeathMessage(deathMessage, player));
+        event.setDeathMessage(pluginRef.getMobHealthBarManager().fixDeathMessage(deathMessage, player));
     }
 
     /**

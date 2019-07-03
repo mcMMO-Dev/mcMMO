@@ -12,8 +12,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
-public final class MobHealthbarUtils {
-    private MobHealthbarUtils() {
+public final class MobHealthBarManager {
+    private mcMMO pluginRef;
+
+    public MobHealthBarManager(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
     }
 
     /**
@@ -23,7 +26,7 @@ public final class MobHealthbarUtils {
      * @param player       The player who died
      * @return the fixed death message
      */
-    public static String fixDeathMessage(String deathMessage, Player player) {
+    public String fixDeathMessage(String deathMessage, Player player) {
         EntityDamageEvent lastDamageCause = player.getLastDamageCause();
         String replaceString = lastDamageCause instanceof EntityDamageByEntityEvent ? StringUtils.getPrettyEntityTypeString(((EntityDamageByEntityEvent) lastDamageCause).getDamager().getType()) : "a mob";
 
@@ -36,7 +39,7 @@ public final class MobHealthbarUtils {
      * @param target the targetted entity
      * @param damage damage done by the attack triggering this
      */
-    public static void handleMobHealthbars(LivingEntity target, double damage, mcMMO plugin) {
+    public void handleMobHealthbars(LivingEntity target, double damage, mcMMO plugin) {
         if (pluginRef.isHealthBarPluginEnabled() || !pluginRef.getConfigManager().getConfigMobs().getCombat().getHealthBars().isEnableHealthBars()) {
             return;
         }
@@ -81,7 +84,7 @@ public final class MobHealthbarUtils {
         }
     }
 
-    private static String createHealthDisplay(MobHealthbarType mobHealthbarType, LivingEntity entity, double damage) {
+    private String createHealthDisplay(MobHealthbarType mobHealthbarType, LivingEntity entity, double damage) {
         double maxHealth = entity.getMaxHealth();
         double currentHealth = Math.max(entity.getHealth() - damage, 0);
         double healthPercentage = (currentHealth / maxHealth) * 100.0D;
@@ -145,7 +148,7 @@ public final class MobHealthbarUtils {
      * @param livingEntity The {@link LivingEntity} of the livingEntity to check
      * @return true if the livingEntity is a boss, false otherwise
      */
-    private static boolean isBoss(LivingEntity livingEntity) {
+    private boolean isBoss(LivingEntity livingEntity) {
         switch (livingEntity.getType()) {
             case ENDER_DRAGON:
             case WITHER:

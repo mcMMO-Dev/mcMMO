@@ -70,6 +70,7 @@ public class mcMMO extends JavaPlugin {
     private PartyManager partyManager;
     private LocaleManager localeManager;
     private ChatManager chatManager;
+    private MobHealthBarManager mobHealthBarManager;
 
     /* File Paths */
     private String mainDirectory;
@@ -189,7 +190,11 @@ public class mcMMO extends JavaPlugin {
         //Init Notification Manager
         notificationManager = new NotificationManager();
 
+        //Init Chat Manager
         chatManager = new ChatManager(this);
+
+        //Init Mob Health Bar Manager
+        mobHealthBarManager = new MobHealthBarManager(this);
     }
 
     @Override
@@ -494,11 +499,11 @@ public class mcMMO extends JavaPlugin {
     }
 
     private void registerDynamicSettings() {
-        dynamicSettingsManager = new DynamicSettingsManager();
+        dynamicSettingsManager = new DynamicSettingsManager(this);
     }
 
     private void loadConfigFiles() {
-        configManager = new ConfigManager();
+        configManager = new ConfigManager(this);
         configManager.loadConfigs();
     }
 
@@ -619,5 +624,9 @@ public class mcMMO extends JavaPlugin {
 
     public ChatManager getChatManager() {
         return chatManager;
+    }
+
+    public MobHealthBarManager getMobHealthBarManager() {
+        return mobHealthBarManager;
     }
 }

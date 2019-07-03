@@ -812,6 +812,6 @@ public final class CombatUtils {
             return;
         }
 
-        MobHealthbarUtils.handleMobHealthbars(target, damage, plugin);
+        pluginRef.getMobHealthBarManager().handleMobHealthbars(target, damage, plugin);
     }
 }

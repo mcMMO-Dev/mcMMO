@@ -1,7 +1,7 @@
 package com.gmail.nossr50.runnables.skills;
 
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.util.MobHealthbarUtils;
+import com.gmail.nossr50.util.MobHealthBarManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -122,7 +122,7 @@ public class BleedTimerTask extends BukkitRunnable {
 //                debugMessage+="Rank4Bonus=["+String.valueOf(containerEntry.getValue().bleedRank >= 3)+"], ";
 
 
-                MobHealthbarUtils.handleMobHealthbars(target, damage, pluginRef); //Update health bars
+                pluginRef.getMobHealthBarManager().handleMobHealthbars(target, damage, pluginRef); //Update health bars
             }
 
 //            debugMessage+="FullArmor=["+String.valueOf(armorCount > 3)+"], ";
