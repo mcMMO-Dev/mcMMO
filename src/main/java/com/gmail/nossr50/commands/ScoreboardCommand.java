@@ -1,7 +1,6 @@
 package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -30,7 +29,7 @@ public class ScoreboardCommand implements TabExecutor {
         switch (args.length) {
             case 1:
                 if (args[0].equalsIgnoreCase("clear") || args[0].equalsIgnoreCase("reset")) {
-                    ScoreboardManager.clearBoard(sender.getName());
+                    pluginRef.getScoreboardManager().clearBoard(sender.getName());
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Scoreboard.Clear"));
                     return true;
                 }
@@ -41,12 +40,12 @@ public class ScoreboardCommand implements TabExecutor {
                         return true;
                     }
 
-                    if (!ScoreboardManager.isBoardShown(sender.getName())) {
+                    if (!pluginRef.getScoreboardManager().isBoardShown(sender.getName())) {
                         sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Scoreboard.NoBoard"));
                         return true;
                     }
 
-                    ScoreboardManager.keepBoard(sender.getName());
+                    pluginRef.getScoreboardManager().keepBoard(sender.getName());
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Scoreboard.Keep"));
                     return true;
                 }
@@ -61,7 +60,7 @@ public class ScoreboardCommand implements TabExecutor {
 
                     int time = Math.abs(Integer.parseInt(args[1]));
 
-                    ScoreboardManager.setRevertTimer(sender.getName(), time);
+                    pluginRef.getScoreboardManager().setRevertTimer(sender.getName(), time);
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Scoreboard.Timer", time));
                     return true;
                 }

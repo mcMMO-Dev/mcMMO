@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.runnables.player.PlayerProfileSaveTask;
 import com.gmail.nossr50.skills.child.FamilyTree;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.HashMap;
@@ -408,7 +407,7 @@ public class PlayerProfile {
      * @return the total amount of Xp until next level
      */
     public int getXpToLevel(PrimarySkillType primarySkillType) {
-        int level = (pluginRef.getConfigManager().getConfigLeveling().getConfigExperienceFormula().isCumulativeCurveEnabled()) ? UserManager.getPlayer(playerName).getPowerLevel() : skills.get(primarySkillType);
+        int level = (pluginRef.getConfigManager().getConfigLeveling().getConfigExperienceFormula().isCumulativeCurveEnabled()) ? pluginRef.getUserManager().getPlayer(playerName).getPowerLevel() : skills.get(primarySkillType);
 
         return pluginRef.getFormulaManager().getXPtoNextLevel(level);
     }

@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,12 +21,12 @@ public class PartyRenameCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 2:
-                if (UserManager.getPlayer((Player) sender) == null) {
+                if (pluginRef.getUserManager().getPlayer((Player) sender) == null) {
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
                     return true;
                 }
 
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer((Player) sender);
+                McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer((Player) sender);
                 Party playerParty = mcMMOPlayer.getParty();
 
                 String oldPartyName = playerParty.getName();

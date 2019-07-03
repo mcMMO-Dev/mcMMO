@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -43,13 +42,13 @@ public class PartyAllianceCommand implements TabExecutor {
             return true;
         }
 
-        if (UserManager.getPlayer((Player) sender) == null) {
+        if (pluginRef.getUserManager().getPlayer((Player) sender) == null) {
             sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
             return true;
         }
 
         player = (Player) sender;
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
         playerParty = mcMMOPlayer.getParty();
 

@@ -62,7 +62,7 @@ public class NotificationManager {
      * @param key              the locale key for the notifications defined message
      */
     public void sendPlayerInformation(Player player, NotificationType notificationType, String key) {
-        if (UserManager.getPlayer(player) == null || !UserManager.getPlayer(player).useChatNotifications())
+        if (pluginRef.getUserManager().getPlayer(player) == null || !pluginRef.getUserManager().getPlayer(player).useChatNotifications())
             return;
 
         TextComponent textComponent = TextComponentFactory.getNotificationTextComponentFromLocale(key);
@@ -106,7 +106,7 @@ public class NotificationManager {
 
     public void sendPlayerInformationChatOnly(Player player, String key, String... values)
     {
-        if(UserManager.getPlayer(player) == null || !UserManager.getPlayer(player).useChatNotifications())
+        if(pluginRef.getUserManager().getPlayer(player) == null || !pluginRef.getUserManager().getPlayer(player).useChatNotifications())
             return;
 
         String preColoredString = pluginRef.getLocaleManager().getString(key, (Object[]) values);
@@ -115,7 +115,7 @@ public class NotificationManager {
 
     public void sendPlayerInformation(Player player, NotificationType notificationType, String key, String... values)
     {
-        if(UserManager.getPlayer(player) == null || !UserManager.getPlayer(player).useChatNotifications())
+        if(pluginRef.getUserManager().getPlayer(player) == null || !pluginRef.getUserManager().getPlayer(player).useChatNotifications())
             return;
 
         TextComponent textComponent = buildTextComponent(key, values);
@@ -263,9 +263,9 @@ public class NotificationManager {
     }
 
     public boolean doesPlayerUseNotifications(Player player) {
-        if (UserManager.getPlayer(player) == null)
+        if (pluginRef.getUserManager().getPlayer(player) == null)
             return false;
         else
-            return UserManager.getPlayer(player).useChatNotifications();
+            return pluginRef.getUserManager().getPlayer(player).useChatNotifications();
     }
 }

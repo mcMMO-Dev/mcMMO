@@ -7,7 +7,6 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.PerksUtils;
@@ -125,7 +124,7 @@ public class Roll extends AcrobaticsSubSkill {
         String rollChance, rollChanceLucky, gracefulRollChance, gracefulRollChanceLucky;
 
         /* Values related to the player */
-        PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
+        PlayerProfile playerProfile = pluginRef.getUserManager().getPlayer(player).getProfile();
         float skillValue = playerProfile.getSkillLevel(getPrimarySkill());
         boolean isLucky = Permissions.lucky(player, getPrimarySkill());
 
@@ -280,10 +279,10 @@ public class Roll extends AcrobaticsSubSkill {
         }
 
         //Teleport CD
-        if (System.currentTimeMillis() < UserManager.getPlayer(player).getTeleportATS())
+        if (System.currentTimeMillis() < pluginRef.getUserManager().getPlayer(player).getTeleportATS())
             return true;
 
-        if (UserManager.getPlayer(player).getAcrobaticsManager().hasFallenInLocationBefore(getBlockLocation(player)))
+        if (pluginRef.getUserManager().getPlayer(player).getAcrobaticsManager().hasFallenInLocationBefore(getBlockLocation(player)))
             return true;
 
         return false;
@@ -408,7 +407,7 @@ public class Roll extends AcrobaticsSubSkill {
     }
 
     public void addFallLocation(Player player) {
-        UserManager.getPlayer(player).getAcrobaticsManager().addLocationToFallMap(getBlockLocation(player));
+        pluginRef.getUserManager().getPlayer(player).getAcrobaticsManager().addLocationToFallMap(getBlockLocation(player));
     }
 
     public Location getBlockLocation(Player player) {

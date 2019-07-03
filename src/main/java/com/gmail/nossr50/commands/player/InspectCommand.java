@@ -5,8 +5,6 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -30,7 +28,7 @@ public class InspectCommand implements TabExecutor {
         switch (args.length) {
             case 1:
                 String playerName = pluginRef.getCommandTools().getMatchedPlayerName(args[0]);
-                McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(playerName);
+                McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getOfflinePlayer(playerName);
 
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {
@@ -43,7 +41,7 @@ public class InspectCommand implements TabExecutor {
 
                     if (pluginRef.getScoreboardSettings().getScoreboardsEnabled() && sender instanceof Player
                             && pluginRef.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionInspectBoard().isUseThisBoard()) {
-                        ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, profile);
+                        pluginRef.getScoreboardManager().enablePlayerInspectScoreboard((Player) sender, profile);
 
                         if (!pluginRef.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionInspectBoard().isPrintToChat()) {
                             return true;
@@ -79,7 +77,7 @@ public class InspectCommand implements TabExecutor {
                     }
 
                     if (pluginRef.getScoreboardSettings().getScoreboardsEnabled() && sender instanceof Player && pluginRef.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionInspectBoard().isUseThisBoard()) {
-                        ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, mcMMOPlayer.getProfile());
+                        pluginRef.getScoreboardManager().enablePlayerInspectScoreboard((Player) sender, mcMMOPlayer.getProfile());
 
                         if (!pluginRef.getScoreboardSettings().getConfigSectionScoreboardTypes().getConfigSectionInspectBoard().isPrintToChat()) {
                             return true;

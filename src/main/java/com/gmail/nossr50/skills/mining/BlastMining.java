@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills.mining;
 
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
@@ -44,7 +43,7 @@ public class BlastMining {
     }
 
     public static boolean processBlastMiningExplosion(EntityDamageByEntityEvent event, TNTPrimed tnt, Player defender) {
-        if (!tnt.hasMetadata(MetadataConstants.TNT_TRACKING_METAKEY) || !UserManager.hasPlayerDataKey(defender)) {
+        if (!tnt.hasMetadata(MetadataConstants.TNT_TRACKING_METAKEY) || !pluginRef.getUserManager().hasPlayerDataKey(defender)) {
             return false;
         }
 
@@ -55,11 +54,11 @@ public class BlastMining {
             return false;
         }
 
-        if (UserManager.getPlayer(defender) == null) {
+        if (pluginRef.getUserManager().getPlayer(defender) == null) {
             return false;
         }
 
-        MiningManager miningManager = UserManager.getPlayer(defender).getMiningManager();
+        MiningManager miningManager = pluginRef.getUserManager().getPlayer(defender).getMiningManager();
 
         if (!miningManager.canUseDemolitionsExpertise()) {
             return false;

@@ -3,7 +3,6 @@ package com.gmail.nossr50.util;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.runnables.items.ChimaeraWingWarmup;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -49,7 +48,7 @@ public final class ChimaeraWing {
             return;
         }
 
-        mcMMOPlayer = UserManager.getPlayer(player);
+        mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
         //Not loaded
         if (mcMMOPlayer == null)

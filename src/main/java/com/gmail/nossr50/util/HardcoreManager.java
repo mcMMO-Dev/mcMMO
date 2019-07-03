@@ -3,7 +3,6 @@ package com.gmail.nossr50.util;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.entity.Player;
@@ -25,10 +24,10 @@ public final class HardcoreManager {
         double statLossPercentage = pluginRef.getConfigManager().getConfigHardcore().getDeathPenalty().getPenaltyPercentage();
         int levelThreshold = pluginRef.getConfigManager().getConfigHardcore().getDeathPenalty().getLevelThreshold();
 
-        if (UserManager.getPlayer(player) == null)
+        if (pluginRef.getUserManager().getPlayer(player) == null)
             return;
 
-        PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
+        PlayerProfile playerProfile = pluginRef.getUserManager().getPlayer(player).getProfile();
         int totalLevelsLost = 0;
 
         HashMap<String, Integer> levelChanged = new HashMap<>();
@@ -77,11 +76,11 @@ public final class HardcoreManager {
         double vampirismStatLeechPercentage = pluginRef.getConfigManager().getConfigHardcore().getVampirism().getPenaltyPercentage();
         int levelThreshold = pluginRef.getConfigManager().getConfigHardcore().getVampirism().getLevelThreshold();
 
-        if (UserManager.getPlayer(killer) == null || UserManager.getPlayer(victim) == null)
+        if (pluginRef.getUserManager().getPlayer(killer) == null || pluginRef.getUserManager().getPlayer(victim) == null)
             return;
 
-        PlayerProfile killerProfile = UserManager.getPlayer(killer).getProfile();
-        PlayerProfile victimProfile = UserManager.getPlayer(victim).getProfile();
+        PlayerProfile killerProfile = pluginRef.getUserManager().getPlayer(killer).getProfile();
+        PlayerProfile victimProfile = pluginRef.getUserManager().getPlayer(victim).getProfile();
         int totalLevelsStolen = 0;
 
         HashMap<String, Integer> levelChanged = new HashMap<>();

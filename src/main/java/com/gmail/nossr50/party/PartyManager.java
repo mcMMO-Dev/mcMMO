@@ -11,7 +11,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.items.TeleportationWarmup;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.OfflinePlayer;
@@ -38,7 +37,7 @@ public final class PartyManager {
     }
 
     public boolean canTeleport(CommandSender sender, Player player, String targetName) {
-        McMMOPlayer mcMMOTarget = UserManager.getPlayer(targetName);
+        McMMOPlayer mcMMOTarget = pluginRef.getUserManager().getPlayer(targetName);
 
         if (!pluginRef.getCommandTools().checkPlayerExistence(sender, targetName, mcMMOTarget)) {
             return false;
@@ -70,18 +69,18 @@ public final class PartyManager {
     }
 
     public void handleTeleportWarmup(Player teleportingPlayer, Player targetPlayer) {
-        if (UserManager.getPlayer(targetPlayer) == null) {
+        if (pluginRef.getUserManager().getPlayer(targetPlayer) == null) {
             targetPlayer.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
             return;
         }
 
-        if (UserManager.getPlayer(teleportingPlayer) == null) {
+        if (pluginRef.getUserManager().getPlayer(teleportingPlayer) == null) {
             teleportingPlayer.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(teleportingPlayer);
-        McMMOPlayer mcMMOTarget = UserManager.getPlayer(targetPlayer);
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(teleportingPlayer);
+        McMMOPlayer mcMMOTarget = pluginRef.getUserManager().getPlayer(targetPlayer);
 
         long warmup = pluginRef.getConfigManager().getConfigParty().getPTP().getPtpWarmup();
 
@@ -172,17 +171,17 @@ public final class PartyManager {
             return false;
 
         //Profile not loaded
-        if (UserManager.getPlayer(firstPlayer) == null) {
+        if (pluginRef.getUserManager().getPlayer(firstPlayer) == null) {
             return false;
         }
 
         //Profile not loaded
-        if (UserManager.getPlayer(secondPlayer) == null) {
+        if (pluginRef.getUserManager().getPlayer(secondPlayer) == null) {
             return false;
         }
 
-        Party firstParty = UserManager.getPlayer(firstPlayer).getParty();
-        Party secondParty = UserManager.getPlayer(secondPlayer).getParty();
+        Party firstParty = pluginRef.getUserManager().getPlayer(firstPlayer).getParty();
+        Party secondParty = pluginRef.getUserManager().getPlayer(secondPlayer).getParty();
 
         if (firstParty == null || secondParty == null) {
             return false;
@@ -197,17 +196,17 @@ public final class PartyManager {
             return false;
 
         //Profile not loaded
-        if (UserManager.getPlayer(firstPlayer) == null) {
+        if (pluginRef.getUserManager().getPlayer(firstPlayer) == null) {
             return false;
         }
 
         //Profile not loaded
-        if (UserManager.getPlayer(secondPlayer) == null) {
+        if (pluginRef.getUserManager().getPlayer(secondPlayer) == null) {
             return false;
         }
 
-        Party firstParty = UserManager.getPlayer(firstPlayer).getParty();
-        Party secondParty = UserManager.getPlayer(secondPlayer).getParty();
+        Party firstParty = pluginRef.getUserManager().getPlayer(firstPlayer).getParty();
+        Party secondParty = pluginRef.getUserManager().getPlayer(secondPlayer).getParty();
 
         if (firstParty == null || secondParty == null || firstParty.getAlly() == null || secondParty.getAlly() == null) {
             return false;
@@ -373,11 +372,11 @@ public final class PartyManager {
      */
     public Party getParty(Player player) {
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (pluginRef.getUserManager().getPlayer(player) == null) {
             return null;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
         return mcMMOPlayer.getParty();
     }
@@ -438,11 +437,11 @@ public final class PartyManager {
         //TODO: Potential issues with unloaded profile?
         for (Player member : party.getOnlineMembers()) {
             //Profile not loaded
-            if (UserManager.getPlayer(member) == null) {
+            if (pluginRef.getUserManager().getPlayer(member) == null) {
                 continue;
             }
 
-            processPartyLeaving(UserManager.getPlayer(member));
+            processPartyLeaving(pluginRef.getUserManager().getPlayer(member));
         }
 
         // Disband the alliance between the disbanded party and it's ally

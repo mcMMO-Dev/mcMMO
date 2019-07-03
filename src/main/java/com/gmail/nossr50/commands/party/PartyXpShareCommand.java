@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,12 +20,12 @@ public class PartyXpShareCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (UserManager.getPlayer((Player) sender) == null) {
+        if (pluginRef.getUserManager().getPlayer((Player) sender) == null) {
             sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
             return true;
         }
 
-        Party party = UserManager.getPlayer((Player) sender).getParty();
+        Party party = pluginRef.getUserManager().getPlayer((Player) sender).getParty();
 
         if (party.getLevel() < pluginRef.getPartyManager().getPartyFeatureUnlockLevel(PartyFeature.XP_SHARE)) {
             sender.sendMessage(pluginRef.getLocaleManager().getString("Party.Feature.Disabled.5"));

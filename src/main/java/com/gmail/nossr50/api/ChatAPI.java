@@ -76,7 +76,7 @@
 //     * @return true if the player is using party chat, false otherwise
 //     */
 //    public static boolean isUsingPartyChat(Player player) {
-//        return UserManager.getPlayer(player).isChatEnabled(ChatMode.PARTY);
+//        return pluginRef.getUserManager().getPlayer(player).isChatEnabled(ChatMode.PARTY);
 //    }
 //
 //    /**
@@ -86,7 +86,7 @@
 //     * @return true if the player is using party chat, false otherwise
 //     */
 //    public static boolean isUsingPartyChat(String playerName) {
-//        return UserManager.getPlayer(playerName).isChatEnabled(ChatMode.PARTY);
+//        return pluginRef.getUserManager().getPlayer(playerName).isChatEnabled(ChatMode.PARTY);
 //    }
 //
 //    /**
@@ -96,7 +96,7 @@
 //     * @return true if the player is using admin chat, false otherwise
 //     */
 //    public static boolean isUsingAdminChat(Player player) {
-//        return UserManager.getPlayer(player).isChatEnabled(ChatMode.ADMIN);
+//        return pluginRef.getUserManager().getPlayer(player).isChatEnabled(ChatMode.ADMIN);
 //    }
 //
 //    /**
@@ -106,7 +106,7 @@
 //     * @return true if the player is using admin chat, false otherwise
 //     */
 //    public static boolean isUsingAdminChat(String playerName) {
-//        return UserManager.getPlayer(playerName).isChatEnabled(ChatMode.ADMIN);
+//        return pluginRef.getUserManager().getPlayer(playerName).isChatEnabled(ChatMode.ADMIN);
 //    }
 //
 //    /**
@@ -115,7 +115,7 @@
 //     * @param player The player to toggle party chat on.
 //     */
 //    public static void togglePartyChat(Player player) {
-//        UserManager.getPlayer(player).toggleChat(ChatMode.PARTY);
+//        pluginRef.getUserManager().getPlayer(player).toggleChat(ChatMode.PARTY);
 //    }
 //
 //    /**
@@ -124,7 +124,7 @@
 //     * @param playerName The name of the player to toggle party chat on.
 //     */
 //    public static void togglePartyChat(String playerName) {
-//        UserManager.getPlayer(playerName).toggleChat(ChatMode.PARTY);
+//        pluginRef.getUserManager().getPlayer(playerName).toggleChat(ChatMode.PARTY);
 //    }
 //
 //    /**
@@ -133,7 +133,7 @@
 //     * @param player The player to toggle admin chat on.
 //     */
 //    public static void toggleAdminChat(Player player) {
-//        UserManager.getPlayer(player).toggleChat(ChatMode.ADMIN);
+//        pluginRef.getUserManager().getPlayer(player).toggleChat(ChatMode.ADMIN);
 //    }
 //
 //    /**
@@ -142,7 +142,7 @@
 //     * @param playerName The name of the player to toggle party chat on.
 //     */
 //    public static void toggleAdminChat(String playerName) {
-//        UserManager.getPlayer(playerName).toggleChat(ChatMode.ADMIN);
+//        pluginRef.getUserManager().getPlayer(playerName).toggleChat(ChatMode.ADMIN);
 //    }
 //
 //    private static ChatManager getPartyChatManager(Plugin plugin, String party) {

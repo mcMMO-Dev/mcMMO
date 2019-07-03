@@ -38,9 +38,9 @@
 //        if (player != null
 //                && !Misc.isNPCEntity(player)
 //                && Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CATALYSIS)
-//                && UserManager.getPlayer(player) != null) {
+//                && pluginRef.getUserManager().getPlayer(player) != null) {
 //
-//            double catalysis = UserManager.getPlayer(player).getAlchemyManager().calculateBrewSpeed(Permissions.lucky(player, PrimarySkillType.ALCHEMY));
+//            double catalysis = pluginRef.getUserManager().getPlayer(player).getAlchemyManager().calculateBrewSpeed(Permissions.lucky(player, PrimarySkillType.ALCHEMY));
 //
 //            McMMOPlayerCatalysisEvent event = new McMMOPlayerCatalysisEvent(player, catalysis);
 //            mcMMO.p.getServer().getPluginManager().callEvent(event);

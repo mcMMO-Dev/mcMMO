@@ -3,8 +3,6 @@ package com.gmail.nossr50.commands.player;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -35,20 +33,20 @@ public class CooldownCommand implements TabExecutor {
             case 0:
                 Player player = (Player) sender;
 
-                if (pluginRef.getScoreboardSettings().getScoreboardsEnabled() && pluginRef.getScoreboardSettings().isScoreboardEnabled(ScoreboardManager.SidebarType.COOLDOWNS_BOARD)) {
-                    ScoreboardManager.enablePlayerCooldownScoreboard(player);
+                if (pluginRef.getScoreboardSettings().getScoreboardsEnabled() && pluginRef.getScoreboardSettings().isScoreboardEnabled(pluginRef.getScoreboardManager().SidebarType.COOLDOWNS_BOARD)) {
+                    pluginRef.getScoreboardManager().enablePlayerCooldownScoreboard(player);
 
-                    if (!pluginRef.getScoreboardSettings().isScoreboardPrinting(ScoreboardManager.SidebarType.COOLDOWNS_BOARD)) {
+                    if (!pluginRef.getScoreboardSettings().isScoreboardPrinting(pluginRef.getScoreboardManager().SidebarType.COOLDOWNS_BOARD)) {
                         return true;
                     }
                 }
 
-                if (UserManager.getPlayer(player) == null) {
+                if (pluginRef.getUserManager().getPlayer(player) == null) {
                     player.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
                     return true;
                 }
 
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+                McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
                 player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Cooldowns.Header"));
                 player.sendMessage(pluginRef.getLocaleManager().getString("mcMMO.NoSkillNote"));

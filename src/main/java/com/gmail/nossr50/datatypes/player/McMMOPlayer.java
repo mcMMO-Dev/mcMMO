@@ -11,7 +11,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.runnables.skills.ToolLowerTask;
@@ -35,8 +34,6 @@ import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.experience.ExperienceBarManager;
-import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -1022,10 +1019,10 @@ public class McMMOPlayer {
             getProfile().scheduleAsyncSave();
         }
 
-        UserManager.remove(thisPlayer);
+        pluginRef.getUserManager().remove(thisPlayer);
 
         if (pluginRef.getScoreboardSettings().getScoreboardsEnabled())
-            ScoreboardManager.teardownPlayer(thisPlayer);
+            pluginRef.getScoreboardManager().teardownPlayer(thisPlayer);
 
         if (inParty()) {
             party.removeOnlineMember(thisPlayer);

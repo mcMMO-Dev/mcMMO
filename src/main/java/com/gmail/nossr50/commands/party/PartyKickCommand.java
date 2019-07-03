@@ -3,7 +3,6 @@ package com.gmail.nossr50.commands.party;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,12 +21,12 @@ public class PartyKickCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 2:
-                if (UserManager.getPlayer((Player) sender) == null) {
+                if (pluginRef.getUserManager().getPlayer((Player) sender) == null) {
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
                     return true;
                 }
 
-                Party playerParty = UserManager.getPlayer((Player) sender).getParty();
+                Party playerParty = pluginRef.getUserManager().getPlayer((Player) sender).getParty();
                 String targetName = pluginRef.getCommandTools().getMatchedPlayerName(args[1]);
 
                 if (!playerParty.hasMember(targetName)) {
@@ -45,7 +44,7 @@ public class PartyKickCommand implements CommandExecutor {
                         return true;
                     }
 
-                    pluginRef.getPartyManager().processPartyLeaving(UserManager.getPlayer(onlineTarget));
+                    pluginRef.getPartyManager().processPartyLeaving(pluginRef.getUserManager().getPlayer(onlineTarget));
                     onlineTarget.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.Kick", partyName));
                 }
 

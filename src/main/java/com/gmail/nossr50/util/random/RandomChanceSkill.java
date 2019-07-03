@@ -3,7 +3,6 @@ package com.gmail.nossr50.util.random;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.Player;
 
 public class RandomChanceSkill implements RandomChanceExecution {
@@ -20,7 +19,7 @@ public class RandomChanceSkill implements RandomChanceExecution {
         this.probabilityCap = RandomChanceUtil.LINEAR_CURVE_VAR;
 
         if (player != null)
-            this.skillLevel = UserManager.getPlayer(player).getSkillLevel(primarySkillType);
+            this.skillLevel = pluginRef.getUserManager().getPlayer(player).getSkillLevel(primarySkillType);
         else
             this.skillLevel = 0;
 
@@ -40,7 +39,7 @@ public class RandomChanceSkill implements RandomChanceExecution {
         this.subSkillType = subSkillType;
 
         if (player != null)
-            this.skillLevel = UserManager.getPlayer(player).getSkillLevel(primarySkillType);
+            this.skillLevel = pluginRef.getUserManager().getPlayer(player).getSkillLevel(primarySkillType);
         else
             this.skillLevel = 0;
 

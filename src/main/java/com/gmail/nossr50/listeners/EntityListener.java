@@ -18,7 +18,6 @@ import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -368,7 +367,7 @@ public class EntityListener implements Listener {
                     }
 
                     //Deflect checks
-                    UnarmedManager unarmedManager = UserManager.getPlayer(defendingPlayer).getUnarmedManager();
+                    UnarmedManager unarmedManager = pluginRef.getUserManager().getPlayer(defendingPlayer).getUnarmedManager();
 
                     if (unarmedManager.canDeflect()) {
                         if(unarmedManager.deflectCheck()) {
@@ -423,7 +422,7 @@ public class EntityListener implements Listener {
     }
 
     public boolean checkParties(Cancellable event, Player defendingPlayer, Player attackingPlayer) {
-        if (!UserManager.hasPlayerDataKey(defendingPlayer) || !UserManager.hasPlayerDataKey(attackingPlayer)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(defendingPlayer) || !pluginRef.getUserManager().hasPlayerDataKey(attackingPlayer)) {
             return true;
         }
 
@@ -510,11 +509,11 @@ public class EntityListener implements Listener {
         if (livingEntity instanceof Player) {
             Player player = (Player) entity;
 
-            if (!UserManager.hasPlayerDataKey(player)) {
+            if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
                 return;
             }
 
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+            McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
             //Profile not loaded
             if (mcMMOPlayer == null)
@@ -548,11 +547,11 @@ public class EntityListener implements Listener {
                 Wolf wolf = (Wolf) pet;
 
                 //Profile not loaded
-                if (UserManager.getPlayer(player) == null) {
+                if (pluginRef.getUserManager().getPlayer(player) == null) {
                     return;
                 }
 
-                TamingManager tamingManager = UserManager.getPlayer(player).getTamingManager();
+                TamingManager tamingManager = pluginRef.getUserManager().getPlayer(player).getTamingManager();
 
                 switch (cause) {
                     case CONTACT:
@@ -721,12 +720,12 @@ public class EntityListener implements Listener {
         // using this exact metadata
         Player player = plugin.getServer().getPlayerExact(entity.getMetadata(MetadataConstants.TNT_TRACKING_METAKEY).get(0).asString());
 
-        if (!UserManager.hasPlayerDataKey(player)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
             return;
         }
 
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (pluginRef.getUserManager().getPlayer(player) == null) {
             return;
         }
 
@@ -736,7 +735,7 @@ public class EntityListener implements Listener {
                 return;
         }
 
-        MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
+        MiningManager miningManager = pluginRef.getUserManager().getPlayer(player).getMiningManager();
 
         if (miningManager.canUseBiggerBombs()) {
             event.setRadius(miningManager.biggerBombs(event.getRadius()));
@@ -764,7 +763,7 @@ public class EntityListener implements Listener {
         // using this exact metadata
         Player player = plugin.getServer().getPlayerExact(entity.getMetadata(MetadataConstants.TNT_TRACKING_METAKEY).get(0).asString());
 
-        if (!UserManager.hasPlayerDataKey(player)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
             return;
         }
 
@@ -775,11 +774,11 @@ public class EntityListener implements Listener {
         }
 
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (pluginRef.getUserManager().getPlayer(player) == null) {
             return;
         }
 
-        MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
+        MiningManager miningManager = pluginRef.getUserManager().getPlayer(player).getMiningManager();
 
         if (miningManager.canUseBlastMining()) {
             miningManager.blastMiningDropProcessing(event.getYield(), event.blockList());
@@ -827,7 +826,7 @@ public class EntityListener implements Listener {
         Player player = (Player) entity;
 
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (pluginRef.getUserManager().getPlayer(player) == null) {
             return;
         }
 
@@ -837,7 +836,7 @@ public class EntityListener implements Listener {
                 return;
         }
 
-        if (!UserManager.hasPlayerDataKey(player)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
             return;
         }
 
@@ -898,7 +897,7 @@ public class EntityListener implements Listener {
              */
             case POTATO: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
                 if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
-                    event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(newFoodLevel));
+                    event.setFoodLevel(pluginRef.getUserManager().getPlayer(player).getHerbalismManager().farmersDiet(newFoodLevel));
                 }
                 return;
             case COD:
@@ -907,7 +906,7 @@ public class EntityListener implements Listener {
             case COOKED_COD:
             case COOKED_SALMON:
                 if (Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_FISHERMANS_DIET)) {
-                    event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(newFoodLevel));
+                    event.setFoodLevel(pluginRef.getUserManager().getPlayer(player).getFishingManager().handleFishermanDiet(newFoodLevel));
                 }
                 return;
 
@@ -940,7 +939,7 @@ public class EntityListener implements Listener {
 
         LivingEntity entity = event.getEntity();
 
-        if (!UserManager.hasPlayerDataKey(player) || Misc.isNPCEntityExcludingVillagers(entity) || entity.hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || Misc.isNPCEntityExcludingVillagers(entity) || entity.hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY)) {
             return;
         }
 
@@ -949,12 +948,12 @@ public class EntityListener implements Listener {
 
         //Profile not loaded
         //TODO: Redundant
-        /*if(UserManager.getPlayer(player) == null)
+        /*if(pluginRef.getUserManager().getPlayer(player) == null)
         {
             return;
         }*/
 
-        UserManager.getPlayer(player).getTamingManager().awardTamingXP(entity);
+        pluginRef.getUserManager().getPlayer(player).getTamingManager().awardTamingXP(entity);
 
     }
 
@@ -986,7 +985,7 @@ public class EntityListener implements Listener {
 
         Tameable tameable = (Tameable) entity;
 
-        if (!UserManager.hasPlayerDataKey(player) || !CombatUtils.isFriendlyPet(player, tameable)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || !CombatUtils.isFriendlyPet(player, tameable)) {
             return;
         }
 

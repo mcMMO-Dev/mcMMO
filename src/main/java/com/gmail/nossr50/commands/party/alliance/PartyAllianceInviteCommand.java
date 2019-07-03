@@ -3,7 +3,6 @@ package com.gmail.nossr50.commands.party.alliance;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,7 +21,7 @@ public class PartyAllianceInviteCommand implements CommandExecutor {
         switch (args.length) {
             case 3:
                 String targetName = pluginRef.getCommandTools().getMatchedPlayerName(args[2]);
-                McMMOPlayer mcMMOTarget = UserManager.getOfflinePlayer(targetName);
+                McMMOPlayer mcMMOTarget = pluginRef.getUserManager().getOfflinePlayer(targetName);
 
                 if (!pluginRef.getCommandTools().checkPlayerExistence(sender, targetName, mcMMOTarget)) {
                     return false;
@@ -30,13 +29,13 @@ public class PartyAllianceInviteCommand implements CommandExecutor {
 
                 Player target = mcMMOTarget.getPlayer();
 
-                if (UserManager.getPlayer((Player) sender) == null) {
+                if (pluginRef.getUserManager().getPlayer((Player) sender) == null) {
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
                     return true;
                 }
 
                 Player player = (Player) sender;
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+                McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
                 String playerName = player.getName();
 
                 if (player.equals(target)) {

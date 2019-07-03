@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -28,12 +27,12 @@ public class PartyInfoCommand implements CommandExecutor {
         switch (args.length) {
             case 0:
             case 1:
-                if (UserManager.getPlayer((Player) sender) == null) {
+                if (pluginRef.getUserManager().getPlayer((Player) sender) == null) {
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
                     return true;
                 }
                 Player player = (Player) sender;
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+                McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
                 Party party = mcMMOPlayer.getParty();
 
                 displayPartyHeader(player, party);

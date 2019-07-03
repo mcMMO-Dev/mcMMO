@@ -9,7 +9,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -55,11 +54,11 @@ public final class ShareHandler {
 
         for (Player member : nearMembers) {
             //Profile not loaded
-            if (UserManager.getPlayer(member) == null) {
+            if (pluginRef.getUserManager().getPlayer(member) == null) {
                 continue;
             }
 
-            UserManager.getPlayer(member).beginUnsharedXpGain(primarySkillType, splitXp, xpGainReason, XPGainSource.PARTY_MEMBERS);
+            pluginRef.getUserManager().getPlayer(member).beginUnsharedXpGain(primarySkillType, splitXp, xpGainReason, XPGainSource.PARTY_MEMBERS);
         }
 
         return true;
@@ -113,10 +112,10 @@ public final class ShareHandler {
                     int highestRoll = 0;
 
                     for (Player member : nearMembers) {
-                        McMMOPlayer mcMMOMember = UserManager.getPlayer(member);
+                        McMMOPlayer mcMMOMember = pluginRef.getUserManager().getPlayer(member);
 
                         //Profile not loaded
-                        if (UserManager.getPlayer(member) == null) {
+                        if (pluginRef.getUserManager().getPlayer(member) == null) {
                             continue;
                         }
 
@@ -131,14 +130,14 @@ public final class ShareHandler {
                         highestRoll = diceRoll;
 
                         if (winningPlayer != null) {
-                            McMMOPlayer mcMMOWinning = UserManager.getPlayer(winningPlayer);
+                            McMMOPlayer mcMMOWinning = pluginRef.getUserManager().getPlayer(winningPlayer);
                             mcMMOWinning.setItemShareModifier(mcMMOWinning.getItemShareModifier() + itemWeight);
                         }
 
                         winningPlayer = member;
                     }
 
-                    McMMOPlayer mcMMOTarget = UserManager.getPlayer(winningPlayer);
+                    McMMOPlayer mcMMOTarget = pluginRef.getUserManager().getPlayer(winningPlayer);
                     mcMMOTarget.setItemShareModifier(mcMMOTarget.getItemShareModifier() - itemWeight);
                     awardDrop(winningPlayer, newStack);
                 }

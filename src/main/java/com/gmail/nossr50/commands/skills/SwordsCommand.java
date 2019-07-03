@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -42,7 +41,7 @@ public class SwordsCommand extends SkillCommand {
 
         // SWORDS_RUPTURE
         if (canBleed) {
-            bleedLength = UserManager.getPlayer(player).getSwordsManager().getRuptureBleedTicks();
+            bleedLength = pluginRef.getUserManager().getPlayer(player).getSwordsManager().getRuptureBleedTicks();
 
             String[] bleedStrings = getAbilityDisplayValues(player, SubSkillType.SWORDS_RUPTURE);
             bleedChance = bleedStrings[0];
@@ -68,7 +67,7 @@ public class SwordsCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, double skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
-        int ruptureTicks = UserManager.getPlayer(player).getSwordsManager().getRuptureBleedTicks();
+        int ruptureTicks = pluginRef.getUserManager().getPlayer(player).getSwordsManager().getRuptureBleedTicks();
         double ruptureDamagePlayer = pluginRef.getConfigManager().getConfigSwords().getRuptureDamagePlayer();
         double pveRupture = pluginRef.getConfigManager().getConfigSwords().getRuptureDamageMobs();
 
@@ -98,7 +97,7 @@ public class SwordsCommand extends SkillCommand {
 
         if (canUseSubskill(player, SubSkillType.SWORDS_STAB)) {
             messages.add(getStatMessage(SubSkillType.SWORDS_STAB,
-                    String.valueOf(UserManager.getPlayer(player).getSwordsManager().getStabDamage())));
+                    String.valueOf(pluginRef.getUserManager().getPlayer(player).getSwordsManager().getStabDamage())));
         }
 
         if (canUseSubskill(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK)) {

@@ -3,7 +3,6 @@ package com.gmail.nossr50.commands.party.alliance;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,12 +20,12 @@ public class PartyAllianceDisbandCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 2:
-                if (UserManager.getPlayer((Player) sender) == null) {
+                if (pluginRef.getUserManager().getPlayer((Player) sender) == null) {
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
                     return true;
                 }
                 Player player = (Player) sender;
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+                McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
                 Party party = mcMMOPlayer.getParty();
 
                 if (party.getAlly() == null) {

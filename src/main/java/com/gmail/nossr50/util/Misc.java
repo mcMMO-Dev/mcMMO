@@ -2,7 +2,6 @@ package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableSet;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -176,7 +175,7 @@ public final class Misc {
         Player player = pluginRef.getServer().getPlayerExact(playerName);
 
         if (player != null) {
-            UserManager.remove(player);
+            pluginRef.getUserManager().remove(player);
             new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(pluginRef, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
         }
     }

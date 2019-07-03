@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Bukkit;
@@ -389,7 +388,7 @@ public class Party {
         //First add the party leader
         memberList.append(partyLeaderPrefix);
 
-        List<Player> nearbyPlayerList = getNearMembers(UserManager.getPlayer(player));
+        List<Player> nearbyPlayerList = getNearMembers(pluginRef.getUserManager().getPlayer(player));
 
         boolean useDisplayNames = pluginRef.getConfigManager().getConfigParty().isPartyDisplayNamesEnabled();
 

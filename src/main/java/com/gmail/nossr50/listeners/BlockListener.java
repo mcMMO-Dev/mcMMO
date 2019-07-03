@@ -20,7 +20,6 @@ import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
@@ -43,10 +42,10 @@ import org.bukkit.metadata.MetadataValue;
 import java.util.List;
 
 public class BlockListener implements Listener {
-    private final mcMMO plugin;
+    private final mcMMO pluginRef;
 
-    public BlockListener(final mcMMO plugin) {
-        this.plugin = plugin;
+    public BlockListener(final mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -71,7 +70,7 @@ public class BlockListener implements Listener {
         }
 
         if(event.getBlock().hasMetadata(MetadataConstants.BONUS_DROPS_METAKEY))
-            event.getBlock().removeMetadata(MetadataConstants.BONUS_DROPS_METAKEY, plugin);
+            event.getBlock().removeMetadata(MetadataConstants.BONUS_DROPS_METAKEY, pluginRef);
     }
 
     /*@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -192,7 +191,7 @@ public class BlockListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (!UserManager.hasPlayerDataKey(player)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
             return;
         }
 
@@ -205,7 +204,7 @@ public class BlockListener implements Listener {
                 pluginRef.getPlaceStore().setTrue(blockState);
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
         if (blockState.getType() == Repair.getInstance().getAnvilMaterial()
                 && PrimarySkillType.REPAIR.getPermissions(player)) {
@@ -235,7 +234,7 @@ public class BlockListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (!UserManager.hasPlayerDataKey(player)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
             return;
         }
 
@@ -277,7 +276,7 @@ public class BlockListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!plugin.getWorldGuardManager().hasMainFlag(event.getPlayer()))
+            if (!pluginRef.getWorldGuardManager().hasMainFlag(event.getPlayer()))
                 return;
         }
 
@@ -298,11 +297,11 @@ public class BlockListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (!UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
         //Check if profile is loaded
         if (mcMMOPlayer == null)
@@ -371,7 +370,7 @@ public class BlockListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!plugin.getWorldGuardManager().hasMainFlag(event.getPlayer()))
+            if (!pluginRef.getWorldGuardManager().hasMainFlag(event.getPlayer()))
                 return;
         }
 
@@ -381,12 +380,12 @@ public class BlockListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (!UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (pluginRef.getUserManager().getPlayer(player) == null) {
             return;
         }
 
@@ -399,7 +398,7 @@ public class BlockListener implements Listener {
         }
 
         if (ItemUtils.isSword(heldItem)) {
-            HerbalismManager herbalismManager = UserManager.getPlayer(player).getHerbalismManager();
+            HerbalismManager herbalismManager = pluginRef.getUserManager().getPlayer(player).getHerbalismManager();
 
             if (herbalismManager.canUseHylianLuck()) {
                 if (herbalismManager.processHylianLuck(blockState)) {
@@ -413,7 +412,7 @@ public class BlockListener implements Listener {
             }
         }
         /*else if (!heldItem.containsEnchantment(Enchantment.SILK_TOUCH)) {
-            SmeltingManager smeltingManager = UserManager.getPlayer(player).getSmeltingManager();
+            SmeltingManager smeltingManager = pluginRef.getUserManager().getPlayer(player).getSmeltingManager();
 
             if (smeltingManager.canUseFluxMining(blockState)) {
                 if (smeltingManager.processFluxMining(blockState)) {
@@ -440,18 +439,18 @@ public class BlockListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!plugin.getWorldGuardManager().hasMainFlag(event.getPlayer()))
+            if (!pluginRef.getWorldGuardManager().hasMainFlag(event.getPlayer()))
                 return;
         }
 
         if (event instanceof FakeBlockDamageEvent) {
             return;
         }
-        if (!UserManager.hasPlayerDataKey(player)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
         //Profile not loaded
         if (mcMMOPlayer == null) {
@@ -494,7 +493,7 @@ public class BlockListener implements Listener {
             return null;
         }
 
-        return plugin.getServer().getPlayerExact(metadata.get(0).asString());
+        return pluginRef.getServer().getPlayerExact(metadata.get(0).asString());
     }
 
     /**
@@ -510,7 +509,7 @@ public class BlockListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!plugin.getWorldGuardManager().hasMainFlag(event.getPlayer()))
+            if (!pluginRef.getWorldGuardManager().hasMainFlag(event.getPlayer()))
                 return;
         }
 
@@ -520,14 +519,14 @@ public class BlockListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (!UserManager.hasPlayerDataKey(player)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (pluginRef.getUserManager().getPlayer(player) == null) {
             return;
         }
 
@@ -564,7 +563,7 @@ public class BlockListener implements Listener {
         Player player = event.getPlayer();
 
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (pluginRef.getUserManager().getPlayer(player) == null) {
             return;
         }
 
@@ -579,16 +578,16 @@ public class BlockListener implements Listener {
             player.sendMessage("[mcMMO DEBUG] This block is not natural and does not reward treasures/XP");
         else {
             player.sendMessage("[mcMMO DEBUG] This block is considered natural by mcMMO");
-            UserManager.getPlayer(player).getExcavationManager().printExcavationDebug(player, blockState);
+            pluginRef.getUserManager().getPlayer(player).getExcavationManager().printExcavationDebug(player, blockState);
         }
 
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (plugin.getWorldGuardManager().hasMainFlag(player))
+            if (pluginRef.getWorldGuardManager().hasMainFlag(player))
                 player.sendMessage("[mcMMO DEBUG] World Guard main flag is permitted for this player in this region");
             else
                 player.sendMessage("[mcMMO DEBUG] World Guard main flag is DENIED for this player in this region");
 
-            if (plugin.getWorldGuardManager().hasXPFlag(player))
+            if (pluginRef.getWorldGuardManager().hasXPFlag(player))
                 player.sendMessage("[mcMMO DEBUG] World Guard xp flag is permitted for this player in this region");
             else
                 player.sendMessage("[mcMMO DEBUG] World Guard xp flag is not permitted for this player in this region");

@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.database.FormulaConversionTask;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,8 +29,8 @@ public class ConvertExperienceCommand implements CommandExecutor {
 
                         sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mcconvert.Experience.Start", previousType.toString(), pluginRef.getConfigManager().getConfigLeveling().getFormulaType().toString()));
 
-                        UserManager.saveAll();
-                        UserManager.clearAll();
+                        pluginRef.getUserManager().saveAll();
+                        pluginRef.getUserManager().clearAll();
 
                         new FormulaConversionTask(sender, previousType).runTaskLater(pluginRef, 1);
 

@@ -6,7 +6,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.axes.Axes;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -37,7 +36,7 @@ public class AxesCommand extends SkillCommand {
     protected void dataCalculations(Player player, double skillValue) {
         // ARMOR IMPACT
         if (canImpact) {
-            impactDamage = UserManager.getPlayer(player).getAxesManager().getImpactDurabilityDamage();
+            impactDamage = pluginRef.getUserManager().getPlayer(player).getAxesManager().getImpactDurabilityDamage();
         }
 
         // AXE MASTERY

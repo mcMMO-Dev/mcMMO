@@ -181,7 +181,7 @@ public class SkillUtils {
                 }
             }
 
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+            McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
             //Not Loaded
             if(mcMMOPlayer == null)

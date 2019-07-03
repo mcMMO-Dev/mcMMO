@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config.hocon.scoreboard;
 
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
+import com.gmail.nossr50.util.scoreboards.SidebarType;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -57,7 +57,7 @@ public class ConfigScoreboard {
         return configSectionGeneral.isUseAbilityNameInsteadOfGeneric();
     }
 
-    public boolean isScoreboardEnabled(ScoreboardManager.SidebarType sidebarType) {
+    public boolean isScoreboardEnabled(SidebarType sidebarType) {
         switch (sidebarType) {
             case TOP_BOARD:
                 return getConfigSectionScoreboardTypes().getConfigSectionTopBoard().isUseThisBoard();
@@ -74,7 +74,7 @@ public class ConfigScoreboard {
         }
     }
 
-    public boolean isScoreboardPrinting(ScoreboardManager.SidebarType sidebarType) {
+    public boolean isScoreboardPrinting(SidebarType sidebarType) {
         switch (sidebarType) {
             case TOP_BOARD:
                 return getConfigSectionScoreboardTypes().getConfigSectionTopBoard().isPrintToChat();
@@ -90,7 +90,7 @@ public class ConfigScoreboard {
         }
     }
 
-    public int getScoreboardDisplayTime(ScoreboardManager.SidebarType sidebarType) {
+    public int getScoreboardDisplayTime(SidebarType sidebarType) {
         switch (sidebarType) {
             case TOP_BOARD:
                 return getConfigSectionScoreboardTypes().getConfigSectionTopBoard().getDisplayTimeInSeconds();

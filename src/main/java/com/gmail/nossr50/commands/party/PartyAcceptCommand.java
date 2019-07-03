@@ -2,7 +2,6 @@ package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,12 +21,12 @@ public class PartyAcceptCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             //Check if player profile is loaded
-            if (UserManager.getPlayer(player) == null) {
+            if (pluginRef.getUserManager().getPlayer(player) == null) {
                 sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
                 return true;
             }
 
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+            McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
 
             if (!mcMMOPlayer.hasPartyInvite()) {

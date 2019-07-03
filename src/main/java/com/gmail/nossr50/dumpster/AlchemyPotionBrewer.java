@@ -88,11 +88,11 @@
 //    }
 //
 //    private static List<ItemStack> getValidIngredients(Player player) {
-//        if (player == null || UserManager.getPlayer(player) == null) {
+//        if (player == null || pluginRef.getUserManager().getPlayer(player) == null) {
 //            return PotionManager.getInstance().getIngredients(1);
 //        }
 //
-//        return PotionManager.getInstance().getIngredients(!Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CONCOCTIONS) ? 1 : UserManager.getPlayer(player).getAlchemyManager().getTier());
+//        return PotionManager.getInstance().getIngredients(!Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CONCOCTIONS) ? 1 : pluginRef.getUserManager().getPlayer(player).getAlchemyManager().getTier());
 //    }
 //
 //    public static void finishBrewing(BlockState brewingStand, Player player, boolean forced) {
@@ -142,8 +142,8 @@
 //                PotionStage potionStage = PotionStage.getPotionStage(input, output);
 //
 //                //TODO: hmm
-//                if (UserManager.hasPlayerDataKey(player)) {
-//                    UserManager.getPlayer(player).getAlchemyManager().handlePotionBrewSuccesses(potionStage, 1);
+//                if (pluginRef.getUserManager().hasPlayerDataKey(player)) {
+//                    pluginRef.getUserManager().getPlayer(player).getAlchemyManager().handlePotionBrewSuccesses(potionStage, 1);
 //                }
 //            }
 //        }

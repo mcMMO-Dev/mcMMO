@@ -7,7 +7,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -206,10 +205,10 @@ public final class CommandTools {
     }
 
     private void printGroupedSkillData(Player inspect, CommandSender display, String header, List<PrimarySkillType> skillGroup) {
-        if (UserManager.getPlayer(inspect) == null)
+        if (pluginRef.getUserManager().getPlayer(inspect) == null)
             return;
 
-        PlayerProfile profile = UserManager.getPlayer(inspect).getProfile();
+        PlayerProfile profile = pluginRef.getUserManager().getPlayer(inspect).getProfile();
 
         List<String> displayData = new ArrayList<>();
         displayData.add(header);

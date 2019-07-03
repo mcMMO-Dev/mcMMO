@@ -8,8 +8,6 @@ import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.PlayerLevelUtils;
-import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.entity.Player;
@@ -34,14 +32,14 @@ public class SelfListener implements Listener {
         for (int i = 0; i < event.getLevelsGained(); i++) {
             int previousLevelGained = event.getSkillLevel() - i;
             //Send player skill unlock notifications
-            UserManager.getPlayer(player).processUnlockNotifications(plugin, event.getSkill(), previousLevelGained);
+            pluginRef.getUserManager().getPlayer(player).processUnlockNotifications(plugin, event.getSkill(), previousLevelGained);
         }
 
         //Reset the delay timer
         RankUtils.resetUnlockDelayTimer();
 
         if (pluginRef.getScoreboardSettings().getScoreboardsEnabled())
-            ScoreboardManager.handleLevelUp(player, skill);
+            pluginRef.getScoreboardManager().handleLevelUp(player, skill);
 
         /*if ((event.getSkillLevel() % Config.getInstance().getLevelUpEffectsTier()) == 0) {
             skill.celebrateLevelUp(player);
@@ -51,19 +49,19 @@ public class SelfListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerXp(McMMOPlayerXpGainEvent event) {
         if (pluginRef.getScoreboardSettings().getScoreboardsEnabled())
-            ScoreboardManager.handleXp(event.getPlayer(), event.getSkill());
+            pluginRef.getScoreboardManager().handleXp(event.getPlayer(), event.getSkill());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onAbility(McMMOPlayerAbilityActivateEvent event) {
         if (pluginRef.getScoreboardSettings().getScoreboardsEnabled())
-            ScoreboardManager.cooldownUpdate(event.getPlayer(), event.getSkill());
+            pluginRef.getScoreboardManager().cooldownUpdate(event.getPlayer(), event.getSkill());
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerXpGain(McMMOPlayerXpGainEvent event) {
         Player player = event.getPlayer();
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
         PrimarySkillType primarySkillType = event.getSkill();
 
         //WorldGuard XP Check

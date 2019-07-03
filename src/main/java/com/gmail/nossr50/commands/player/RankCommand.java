@@ -5,8 +5,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.McrankCommandAsyncTask;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -58,7 +56,7 @@ public class RankCommand implements TabExecutor {
                 }
 
                 String playerName = pluginRef.getCommandTools().getMatchedPlayerName(args[0]);
-                McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(playerName);
+                McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getOfflinePlayer(playerName);
 
                 if (mcMMOPlayer != null) {
                     Player player = mcMMOPlayer.getPlayer();
@@ -91,7 +89,7 @@ public class RankCommand implements TabExecutor {
     private void display(CommandSender sender, String playerName) {
         if (sender instanceof Player) {
 
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
+            McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(sender.getName());
 
             if (mcMMOPlayer == null) {
                 sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
@@ -116,8 +114,8 @@ public class RankCommand implements TabExecutor {
         }
 
         boolean useBoard = pluginRef.getScoreboardSettings().getScoreboardsEnabled() && (sender instanceof Player)
-                && (pluginRef.getScoreboardSettings().isScoreboardEnabled(ScoreboardManager.SidebarType.RANK_BOARD));
-        boolean useChat = !useBoard || pluginRef.getScoreboardSettings().isScoreboardPrinting(ScoreboardManager.SidebarType.RANK_BOARD);
+                && (pluginRef.getScoreboardSettings().isScoreboardEnabled(pluginRef.getScoreboardManager().SidebarType.RANK_BOARD));
+        boolean useChat = !useBoard || pluginRef.getScoreboardSettings().isScoreboardPrinting(pluginRef.getScoreboardManager().SidebarType.RANK_BOARD);
 
         new McrankCommandAsyncTask(playerName, sender, useBoard, useChat).runTaskAsynchronously(pluginRef);
     }

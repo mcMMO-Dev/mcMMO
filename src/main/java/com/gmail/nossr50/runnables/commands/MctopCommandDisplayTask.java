@@ -3,7 +3,6 @@ package com.gmail.nossr50.runnables.commands;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -81,9 +80,9 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
 
     private void displayBoard() {
         if (skill == null) {
-            ScoreboardManager.showTopPowerScoreboard((Player) sender, page, userStats);
+            pluginRef.getScoreboardManager().showTopPowerScoreboard((Player) sender, page, userStats);
         } else {
-            ScoreboardManager.showTopScoreboard((Player) sender, skill, page, userStats);
+            pluginRef.getScoreboardManager().showTopScoreboard((Player) sender, skill, page, userStats);
         }
     }
 }

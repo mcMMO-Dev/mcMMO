@@ -22,7 +22,6 @@ import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.*;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -76,20 +75,20 @@ public class PlayerListener implements Listener {
                 return;
         }
 
-        if (!UserManager.hasPlayerDataKey(player) || event.getFrom().equals(event.getTo())) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || event.getFrom().equals(event.getTo())) {
             return;
         }
 
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (pluginRef.getUserManager().getPlayer(player) == null) {
             return;
         }
 
         if (pluginRef.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
-            UserManager.getPlayer(player).actualizeTeleportATS();
+            pluginRef.getUserManager().getPlayer(player).actualizeTeleportATS();
 
 
-        UserManager.getPlayer(player).actualizeTeleportATS();
+        pluginRef.getUserManager().getPlayer(player).actualizeTeleportATS();
     }
 
     /**
@@ -188,16 +187,16 @@ public class PlayerListener implements Listener {
     public void onPlayerWorldChange(PlayerChangedWorldEvent event) {
         Player player = event.getPlayer();
 
-        if (!UserManager.hasPlayerDataKey(player)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
             return;
         }
 
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (pluginRef.getUserManager().getPlayer(player) == null) {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
         mcMMOPlayer.checkGodMode();
         mcMMOPlayer.checkParty();
@@ -256,16 +255,16 @@ public class PlayerListener implements Listener {
                 return;
         }
 
-        if (!UserManager.hasPlayerDataKey(player) || !PrimarySkillType.FISHING.getPermissions(player)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || !PrimarySkillType.FISHING.getPermissions(player)) {
             return;
         }
 
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (pluginRef.getUserManager().getPlayer(player) == null) {
             return;
         }
 
-        FishingManager fishingManager = UserManager.getPlayer(player).getFishingManager();
+        FishingManager fishingManager = pluginRef.getUserManager().getPlayer(player).getFishingManager();
 
         switch (event.getState()) {
             case CAUGHT_FISH:
@@ -331,17 +330,17 @@ public class PlayerListener implements Listener {
                 return;
         }
 
-        if (!UserManager.hasPlayerDataKey(player) || !PrimarySkillType.FISHING.getPermissions(player)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || !PrimarySkillType.FISHING.getPermissions(player)) {
             return;
         }
 
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (pluginRef.getUserManager().getPlayer(player) == null) {
             return;
         }
 
         Entity caught = event.getCaught();
-        FishingManager fishingManager = UserManager.getPlayer(player).getFishingManager();
+        FishingManager fishingManager = pluginRef.getUserManager().getPlayer(player).getFishingManager();
 
         //Track the hook
         if (pluginRef.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().isPreventFishingExploits()) {
@@ -424,16 +423,16 @@ public class PlayerListener implements Listener {
                     return;
             }
 
-            if (!UserManager.hasPlayerDataKey(player)) {
+            if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
                 return;
             }
 
             //Profile not loaded
-            if (UserManager.getPlayer(player) == null) {
+            if (pluginRef.getUserManager().getPlayer(player) == null) {
                 return;
             }
 
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+            McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
             Item drop = event.getItem();
             //Remove tracking
@@ -483,16 +482,16 @@ public class PlayerListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        if (!UserManager.hasPlayerDataKey(player)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
             return;
         }
 
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (pluginRef.getUserManager().getPlayer(player) == null) {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
         //There's an issue with using Async saves on player quit
         //Basically there are conditions in which an async task does not execute fast enough to save the data if the server shutdown shortly after this task was scheduled
         mcMMOPlayer.logout(true);
@@ -545,16 +544,16 @@ public class PlayerListener implements Listener {
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
 
-        if (!UserManager.hasPlayerDataKey(player)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
             return;
         }
 
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (pluginRef.getUserManager().getPlayer(player) == null) {
             return;
         }
 
-        UserManager.getPlayer(player).actualizeRespawnATS();
+        pluginRef.getUserManager().getPlayer(player).actualizeRespawnATS();
     }
 
     /**
@@ -576,16 +575,16 @@ public class PlayerListener implements Listener {
                 return;
         }
 
-        if (event.getHand() != EquipmentSlot.HAND || !UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
+        if (event.getHand() != EquipmentSlot.HAND || !pluginRef.getUserManager().hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (pluginRef.getUserManager().getPlayer(player) == null) {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
         MiningManager miningManager = mcMMOPlayer.getMiningManager();
         Block block = event.getClickedBlock();
         ItemStack heldItem = player.getInventory().getItemInMainHand();
@@ -615,7 +614,7 @@ public class PlayerListener implements Listener {
                             && RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR)
                             && pluginRef.getSalvageableManager().isSalvageable(heldItem)
                             && heldItem.getAmount() <= 1) {
-                                SalvageManager salvageManager = UserManager.getPlayer(player).getSalvageManager();
+                                SalvageManager salvageManager = pluginRef.getUserManager().getPlayer(player).getSalvageManager();
                                 event.setCancelled(true);
 
                                 // Make sure the player knows what he's doing when trying to salvage an enchanted item
@@ -689,16 +688,16 @@ public class PlayerListener implements Listener {
                 return;
         }
 
-        if (event.getHand() != EquipmentSlot.HAND || !UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
+        if (event.getHand() != EquipmentSlot.HAND || !pluginRef.getUserManager().hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (pluginRef.getUserManager().getPlayer(player) == null) {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         //Spam Fishing Detection
@@ -836,11 +835,11 @@ public class PlayerListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntityExcludingVillagers(player) || !UserManager.hasPlayerDataKey(player)) {
+        if (Misc.isNPCEntityExcludingVillagers(player) || !pluginRef.getUserManager().hasPlayerDataKey(player)) {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(player);
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getOfflinePlayer(player);
 
         if (mcMMOPlayer == null) {
             pluginRef.debug(player.getName() + "is chatting, but is currently not logged in to the server.");

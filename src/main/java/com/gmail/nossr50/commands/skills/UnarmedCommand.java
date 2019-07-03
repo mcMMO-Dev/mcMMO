@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -60,7 +59,7 @@ public class UnarmedCommand extends SkillCommand {
 
         // IRON ARM
         if (canIronArm) {
-            ironArmBonus = UserManager.getPlayer(player).getUnarmedManager().getIronArmDamage();
+            ironArmBonus = pluginRef.getUserManager().getPlayer(player).getUnarmedManager().getIronArmDamage();
         }
 
         // IRON GRIP

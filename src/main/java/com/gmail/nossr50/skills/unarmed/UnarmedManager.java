@@ -11,7 +11,6 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -98,13 +97,13 @@ public class UnarmedManager extends SkillManager {
                 return;
             }
 
-            if (UserManager.getPlayer(defender) == null)
+            if (pluginRef.getUserManager().getPlayer(defender) == null)
                 return;
 
             Item item = Misc.dropItem(defender.getLocation(), defender.getInventory().getItemInMainHand());
 
             if (item != null && pluginRef.getConfigManager().getConfigUnarmed().doesDisarmPreventTheft()) {
-                item.setMetadata(MetadataConstants.DISARMED_ITEM_METAKEY, UserManager.getPlayer(defender).getPlayerMetadata());
+                item.setMetadata(MetadataConstants.DISARMED_ITEM_METAKEY, pluginRef.getUserManager().getPlayer(defender).getPlayerMetadata());
             }
 
             defender.getInventory().setItemInMainHand(new ItemStack(Material.AIR));

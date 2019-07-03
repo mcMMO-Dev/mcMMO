@@ -6,7 +6,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
@@ -45,7 +44,7 @@ public class ExcavationCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, double skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
-        ExcavationManager excavationManager = UserManager.getPlayer(player).getExcavationManager();
+        ExcavationManager excavationManager = pluginRef.getUserManager().getPlayer(player).getExcavationManager();
 
         if (canGigaDrill) {
             messages.add(getStatMessage(SubSkillType.EXCAVATION_GIGA_DRILL_BREAKER, gigaDrillBreakerLength)

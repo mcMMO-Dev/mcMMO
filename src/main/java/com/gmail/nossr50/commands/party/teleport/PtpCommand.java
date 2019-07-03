@@ -9,7 +9,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import com.google.common.collect.ImmutableList;
@@ -57,16 +56,16 @@ public class PtpCommand implements TabExecutor {
         if (WorldBlacklist.isWorldBlacklisted(player.getWorld()))
             return true;
 
-        if (!UserManager.hasPlayerDataKey(player)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
             return true;
         }
 
-        if (UserManager.getPlayer((Player) sender) == null) {
+        if (pluginRef.getUserManager().getPlayer((Player) sender) == null) {
             sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
             return true;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
         if (!mcMMOPlayer.inParty()) {
             sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.None"));
@@ -135,13 +134,13 @@ public class PtpCommand implements TabExecutor {
                 List<String> matches = StringUtil.copyPartialMatches(args[0], CommandConstants.TELEPORT_SUBCOMMANDS, new ArrayList<>(CommandConstants.TELEPORT_SUBCOMMANDS.size()));
 
                 if (matches.size() == 0) {
-                    if (UserManager.getPlayer((Player) sender) == null) {
+                    if (pluginRef.getUserManager().getPlayer((Player) sender) == null) {
                         sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
                         return ImmutableList.of();
                     }
 
                     Player player = (Player) sender;
-                    McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+                    McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
                     if (!mcMMOPlayer.inParty()) {
                         return ImmutableList.of();
@@ -162,7 +161,7 @@ public class PtpCommand implements TabExecutor {
             return;
         }
 
-        McMMOPlayer mcMMOTarget = UserManager.getPlayer(targetName);
+        McMMOPlayer mcMMOTarget = pluginRef.getUserManager().getPlayer(targetName);
         Player target = mcMMOTarget.getPlayer();
 
         PartyTeleportRecord ptpRecord = mcMMOTarget.getPartyTeleportRecord();

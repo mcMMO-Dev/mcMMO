@@ -6,7 +6,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.util.TextComponentFactory;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
@@ -37,7 +36,7 @@ public class SalvageCommand extends SkillCommand {
     @Override
     protected List<String> statsDisplay(Player player, double skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
-        SalvageManager salvageManager = UserManager.getPlayer(player).getSalvageManager();
+        SalvageManager salvageManager = pluginRef.getUserManager().getPlayer(player).getSalvageManager();
 
         if (canScrapCollector) {
             messages.add(getStatMessage(false, true,

@@ -74,6 +74,8 @@ public class mcMMO extends JavaPlugin {
     private ChatManager chatManager;
     private MobHealthBarManager mobHealthBarManager;
     private EventManager eventManager;
+    private UserManager userManager;
+    private ScoreboardManager scoreboardManager;
 
     /* Not-Managers but my naming scheme sucks */
     private CommandTools commandTools;
@@ -212,6 +214,12 @@ public class mcMMO extends JavaPlugin {
         //Init Command Tools
         //TODO: Better name?
         commandTools = new CommandTools(this);
+
+        //Init User Manager
+        userManager = new UserManager(this);
+
+        //Init Scoreboard Manager
+        scoreboardManager = new ScoreboardManager(this);
     }
 
     @Override
@@ -230,13 +238,13 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onDisable() {
         try {
-            UserManager.saveAll();      // Make sure to save player information if the server shuts down
-            UserManager.clearAll();
-            getPartyManager().saveParties(); // Save our parties
+            userManager.saveAll();      // Make sure to save player information if the server shuts down
+            userManager.clearAll();
+            partyManager.saveParties(); // Save our parties
 
             //TODO: Needed?
             if (getScoreboardSettings().getScoreboardsEnabled())
-                ScoreboardManager.teardownAll();
+                scoreboardManager.teardownAll();
 
             placeStore.saveAll();       // Save our metadata
             placeStore.cleanUp();       // Cleanup empty metadata stores
@@ -657,5 +665,13 @@ public class mcMMO extends JavaPlugin {
 
     public DatabaseManagerFactory getDatabaseManagerFactory() {
         return databaseManagerFactory;
+    }
+
+    public UserManager getUserManager() {
+        return userManager;
+    }
+
+    public ScoreboardManager getScoreboardManager() {
+        return scoreboardManager;
     }
 }

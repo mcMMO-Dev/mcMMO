@@ -2,7 +2,6 @@ package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -37,7 +36,7 @@ public abstract class ToggleCommand implements TabExecutor {
                     return true;
                 }
 
-                applyCommandAction(UserManager.getPlayer(sender.getName()));
+                applyCommandAction(pluginRef.getUserManager().getPlayer(sender.getName()));
                 return true;
 
             case 1:
@@ -47,7 +46,7 @@ public abstract class ToggleCommand implements TabExecutor {
                 }
 
                 String playerName = pluginRef.getCommandTools().getMatchedPlayerName(args[0]);
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName);
+                McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(playerName);
 
                 if (!pluginRef.getCommandTools().checkPlayerExistence(sender, playerName, mcMMOPlayer)) {
                     return true;

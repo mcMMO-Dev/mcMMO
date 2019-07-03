@@ -8,7 +8,6 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -103,16 +102,16 @@ public class PartyCommand implements TabExecutor {
 
         Player player = (Player) sender;
 
-        if (!UserManager.hasPlayerDataKey(player)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
             return true;
         }
 
-        if (UserManager.getPlayer(player) == null) {
+        if (pluginRef.getUserManager().getPlayer(player) == null) {
             player.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
             return true;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
         if (args.length < 1) {
             if (!mcMMOPlayer.inParty()) {
@@ -237,12 +236,12 @@ public class PartyCommand implements TabExecutor {
                             Player player = (Player) sender;
 
                             //Not Loaded
-                            if (UserManager.getPlayer(player) == null) {
+                            if (pluginRef.getUserManager().getPlayer(player) == null) {
                                 sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
                                 return ImmutableList.of();
                             }
 
-                            Party party = UserManager.getPlayer(player).getParty();
+                            Party party = pluginRef.getUserManager().getPlayer(player).getParty();
 
                             playerNames = party.getOnlinePlayerNames(player);
                             return StringUtil.copyPartialMatches(args[1], playerNames, new ArrayList<>(playerNames.size()));

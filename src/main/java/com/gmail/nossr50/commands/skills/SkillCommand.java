@@ -8,9 +8,7 @@ import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.TextComponentFactory;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -62,7 +60,7 @@ public abstract class SkillCommand implements TabExecutor {
             return true;
         }
 
-        if (UserManager.getPlayer((Player) sender) == null) {
+        if (pluginRef.getUserManager().getPlayer((Player) sender) == null) {
             sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
             return true;
         }
@@ -70,7 +68,7 @@ public abstract class SkillCommand implements TabExecutor {
         switch (args.length) {
             case 0:
                 Player player = (Player) sender;
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+                McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
                 boolean isLucky = Permissions.lucky(player, skill);
                 boolean hasEndurance = SkillUtils.getEnduranceLength(player) > 0;
@@ -118,7 +116,7 @@ public abstract class SkillCommand implements TabExecutor {
                 if (pluginRef.getScoreboardSettings().getScoreboardsEnabled()
                         && pluginRef.getScoreboardSettings().getConfigSectionScoreboardTypes()
                         .getConfigSectionSkillBoard().isUseThisBoard()) {
-                    ScoreboardManager.enablePlayerSkillScoreboard(player, skill);
+                    pluginRef.getScoreboardManager().enablePlayerSkillScoreboard(player, skill);
                 }
 
                 return true;
@@ -214,9 +212,9 @@ public abstract class SkillCommand implements TabExecutor {
 
     protected String[] formatLengthDisplayValues(Player player, double skillValue) {
 
-        int length = SkillUtils.calculateAbilityLength(UserManager.getPlayer(player), skill, skill.getSuperAbility());
+        int length = SkillUtils.calculateAbilityLength(pluginRef.getUserManager().getPlayer(player), skill, skill.getSuperAbility());
 
-        int enduranceLength = SkillUtils.calculateAbilityLengthPerks(UserManager.getPlayer(player), skill, skill.getSuperAbility());
+        int enduranceLength = SkillUtils.calculateAbilityLengthPerks(pluginRef.getUserManager().getPlayer(player), skill, skill.getSuperAbility());
 
         return new String[]{String.valueOf(length), String.valueOf(enduranceLength)};
     }

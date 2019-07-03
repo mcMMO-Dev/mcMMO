@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -85,7 +84,7 @@ public class ChatManager {
         /*
          * Party Chat Spying
          */
-        for (McMMOPlayer mcMMOPlayer : UserManager.getPlayers()) {
+        for (McMMOPlayer mcMMOPlayer : pluginRef.getUserManager().getPlayers()) {
             Player player = mcMMOPlayer.getPlayer();
 
             //Check for toggled players

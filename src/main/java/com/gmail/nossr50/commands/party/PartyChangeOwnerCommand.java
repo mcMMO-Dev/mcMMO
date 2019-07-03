@@ -2,7 +2,6 @@ package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,12 +21,12 @@ public class PartyChangeOwnerCommand implements CommandExecutor {
         switch (args.length) {
             case 2:
                 //Check if player profile is loaded
-                if (UserManager.getPlayer((Player) sender) == null) {
+                if (pluginRef.getUserManager().getPlayer((Player) sender) == null) {
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
                     return true;
                 }
 
-                Party playerParty = UserManager.getPlayer((Player) sender).getParty();
+                Party playerParty = pluginRef.getUserManager().getPlayer((Player) sender).getParty();
                 String targetName = pluginRef.getCommandTools().getMatchedPlayerName(args[1]);
                 OfflinePlayer target = pluginRef.getServer().getOfflinePlayer(targetName);
 

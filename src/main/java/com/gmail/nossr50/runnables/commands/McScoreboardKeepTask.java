@@ -1,6 +1,5 @@
 package com.gmail.nossr50.runnables.commands;
 
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -13,8 +12,8 @@ public class McScoreboardKeepTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (player.isValid() && ScoreboardManager.isBoardShown(player.getName())) {
-            ScoreboardManager.keepBoard(player.getName());
+        if (player.isValid() && pluginRef.getScoreboardManager().isBoardShown(player.getName())) {
+            pluginRef.getScoreboardManager().keepBoard(player.getName());
         }
     }
 }

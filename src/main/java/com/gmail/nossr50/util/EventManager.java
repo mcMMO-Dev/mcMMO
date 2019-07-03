@@ -31,7 +31,6 @@ import com.gmail.nossr50.events.skills.salvage.McMMOPlayerSalvageCheckEvent;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillEvent;
 import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -83,7 +82,7 @@ public class EventManager {
      * @return the associated McMMOPlayer for this entity
      */
     public McMMOPlayer getMcMMOPlayer(Entity entity) {
-        return UserManager.getPlayer((Player) entity);
+        return pluginRef.getUserManager().getPlayer((Player) entity);
     }
 
     /**
@@ -141,11 +140,11 @@ public class EventManager {
         if (livingEntity instanceof Player) {
             Player player = (Player) entity;
 
-            if (!UserManager.hasPlayerDataKey(player)) {
+            if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
                 return true;
             }
 
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+            McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
             if (mcMMOPlayer == null) {
                 return true;
@@ -216,7 +215,7 @@ public class EventManager {
         boolean isCancelled = event.isCancelled();
 
         if (isCancelled) {
-            PlayerProfile profile = UserManager.getPlayer(player).getProfile();
+            PlayerProfile profile = pluginRef.getUserManager().getPlayer(player).getProfile();
 
             profile.modifySkill(skill, profile.getSkillLevel(skill) - (isLevelUp ? levelsChanged : -levelsChanged));
             profile.addXp(skill, xpRemoved);
@@ -232,7 +231,7 @@ public class EventManager {
         boolean isCancelled = event.isCancelled();
 
         if (isCancelled) {
-            PlayerProfile profile = UserManager.getPlayer(player).getProfile();
+            PlayerProfile profile = pluginRef.getUserManager().getPlayer(player).getProfile();
 
             profile.modifySkill(skill, profile.getSkillLevel(skill) - (isLevelUp ? levelsChanged : -levelsChanged));
             profile.addXp(skill, xpRemoved);
@@ -267,7 +266,7 @@ public class EventManager {
     }
 
     public void handlePartyTeleportEvent(Player teleportingPlayer, Player targetPlayer) {
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(teleportingPlayer);
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(teleportingPlayer);
 
         if (mcMMOPlayer == null)
             return;
@@ -322,15 +321,15 @@ public class EventManager {
         boolean isCancelled = event.isCancelled();
 
         if (!isCancelled) {
-            UserManager.getPlayer(player).addXp(skill, event.getRawXpGained());
-            UserManager.getPlayer(player).getProfile().registerXpGain(skill, event.getRawXpGained());
+            pluginRef.getUserManager().getPlayer(player).addXp(skill, event.getRawXpGained());
+            pluginRef.getUserManager().getPlayer(player).getProfile().registerXpGain(skill, event.getRawXpGained());
         }
 
         return !isCancelled;
     }
 
     public boolean handleStatsLossEvent(Player player, HashMap<String, Integer> levelChanged, HashMap<String, Double> experienceChanged) {
-        if (UserManager.getPlayer(player) == null)
+        if (pluginRef.getUserManager().getPlayer(player) == null)
             return true;
 
         McMMOPlayerStatLossEvent event = new McMMOPlayerStatLossEvent(player, levelChanged, experienceChanged);
@@ -341,7 +340,7 @@ public class EventManager {
         if (!isCancelled) {
             levelChanged = event.getLevelChanged();
             experienceChanged = event.getExperienceChanged();
-            PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
+            PlayerProfile playerProfile = pluginRef.getUserManager().getPlayer(player).getProfile();
 
             for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
                 String skillName = primarySkillType.toString();
@@ -378,17 +377,17 @@ public class EventManager {
             HashMap<String, Integer> levelChangedVictim = eventVictim.getLevelChanged();
             HashMap<String, Double> experienceChangedVictim = eventVictim.getExperienceChanged();
 
-            McMMOPlayer killerPlayer = UserManager.getPlayer(killer);
+            McMMOPlayer killerPlayer = pluginRef.getUserManager().getPlayer(killer);
 
             //Not loaded
             if (killerPlayer == null)
                 return true;
 
             //Not loaded
-            if (UserManager.getPlayer(victim) == null)
+            if (pluginRef.getUserManager().getPlayer(victim) == null)
                 return true;
 
-            PlayerProfile victimProfile = UserManager.getPlayer(victim).getProfile();
+            PlayerProfile victimProfile = pluginRef.getUserManager().getPlayer(victim).getProfile();
 
             for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
                 String skillName = primarySkillType.toString();

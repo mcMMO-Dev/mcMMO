@@ -1,8 +1,6 @@
 package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -31,17 +29,17 @@ public class SkillStatsCommand implements TabExecutor {
 
         switch (args.length) {
             case 0:
-                if (UserManager.getPlayer((Player) sender) == null) {
+                if (pluginRef.getUserManager().getPlayer((Player) sender) == null) {
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
                     return true;
                 }
 
                 Player player = (Player) sender;
 
-                if (pluginRef.getScoreboardSettings().isScoreboardEnabled(ScoreboardManager.SidebarType.STATS_BOARD) && pluginRef.getScoreboardSettings().getScoreboardsEnabled()) {
-                    ScoreboardManager.enablePlayerStatsScoreboard(player);
+                if (pluginRef.getScoreboardSettings().isScoreboardEnabled(pluginRef.getScoreboardManager().SidebarType.STATS_BOARD) && pluginRef.getScoreboardSettings().getScoreboardsEnabled()) {
+                    pluginRef.getScoreboardManager().enablePlayerStatsScoreboard(player);
 
-                    if (!pluginRef.getScoreboardSettings().isScoreboardPrinting(ScoreboardManager.SidebarType.STATS_BOARD)) {
+                    if (!pluginRef.getScoreboardSettings().isScoreboardPrinting(pluginRef.getScoreboardManager().SidebarType.STATS_BOARD)) {
                         return true;
                     }
                 }
@@ -56,9 +54,9 @@ public class SkillStatsCommand implements TabExecutor {
                 int powerLevelCap = pluginRef.getPlayerLevelingSettings().getConfigSectionLevelCaps().getPowerLevelSettings().getLevelCap();
 
                 if (pluginRef.getPlayerLevelingSettings().getConfigSectionLevelCaps().getPowerLevelSettings().isLevelCapEnabled()) {
-                    player.sendMessage(pluginRef.getLocaleManager().getString("Commands.PowerLevel.Capped", UserManager.getPlayer(player).getPowerLevel(), powerLevelCap));
+                    player.sendMessage(pluginRef.getLocaleManager().getString("Commands.PowerLevel.Capped", pluginRef.getUserManager().getPlayer(player).getPowerLevel(), powerLevelCap));
                 } else {
-                    player.sendMessage(pluginRef.getLocaleManager().getString("Commands.PowerLevel", UserManager.getPlayer(player).getPowerLevel()));
+                    player.sendMessage(pluginRef.getLocaleManager().getString("Commands.PowerLevel", pluginRef.getUserManager().getPlayer(player).getPowerLevel()));
                 }
 
                 return true;

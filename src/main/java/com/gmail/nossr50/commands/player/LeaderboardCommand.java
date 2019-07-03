@@ -7,8 +7,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.MctopCommandAsyncTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -92,7 +90,7 @@ public class LeaderboardCommand implements TabExecutor {
                 return;
             }
 
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
+            McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(sender.getName());
             long cooldownMillis = 5000;
 
             if (mcMMOPlayer.getDatabaseATS() + cooldownMillis > System.currentTimeMillis()) {
@@ -119,8 +117,8 @@ public class LeaderboardCommand implements TabExecutor {
     }
 
     private void display(int page, PrimarySkillType skill, CommandSender sender) {
-        boolean useBoard = (sender instanceof Player) && (pluginRef.getScoreboardSettings().isScoreboardEnabled(ScoreboardManager.SidebarType.TOP_BOARD));
-        boolean useChat = !useBoard || pluginRef.getScoreboardSettings().isScoreboardPrinting(ScoreboardManager.SidebarType.TOP_BOARD);
+        boolean useBoard = (sender instanceof Player) && (pluginRef.getScoreboardSettings().isScoreboardEnabled(pluginRef.getScoreboardManager().SidebarType.TOP_BOARD));
+        boolean useChat = !useBoard || pluginRef.getScoreboardSettings().isScoreboardPrinting(pluginRef.getScoreboardManager().SidebarType.TOP_BOARD);
 
         new MctopCommandAsyncTask(page, skill, sender, useBoard, useChat).runTaskAsynchronously(pluginRef);
     }

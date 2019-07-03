@@ -4,8 +4,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.runnables.commands.McScoreboardKeepTask;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -81,14 +79,14 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
             }
 
             mcMMOPlayer.setupPartyData();
-            UserManager.track(mcMMOPlayer);
+            pluginRef.getUserManager().track(mcMMOPlayer);
             mcMMOPlayer.actualizeRespawnATS();
 
             if (pluginRef.getScoreboardSettings().getScoreboardsEnabled()) {
-                ScoreboardManager.setupPlayer(player);
+                pluginRef.getScoreboardManager().setupPlayer(player);
 
                 if (pluginRef.getScoreboardSettings().getShowStatsAfterLogin()) {
-                    ScoreboardManager.enablePlayerStatsScoreboard(player);
+                    pluginRef.getScoreboardManager().enablePlayerStatsScoreboard(player);
                     new McScoreboardKeepTask(player).runTaskLater(pluginRef, Misc.TICK_CONVERSION_FACTOR);
                 }
             }

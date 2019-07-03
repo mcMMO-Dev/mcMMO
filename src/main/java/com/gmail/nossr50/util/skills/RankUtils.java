@@ -10,7 +10,6 @@ import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.runnables.skills.SkillUnlockNotificationTask;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
@@ -169,11 +168,11 @@ public class RankUtils {
         //Get our rank map
         HashMap<Integer, Integer> rankMap = subSkillRanks.get(skillName);
 
-        if (UserManager.getPlayer(player) == null)
+        if (pluginRef.getUserManager().getPlayer(player) == null)
             return 0;
 
         //Skill level of parent skill
-        int currentSkillLevel = UserManager.getPlayer(player).getSkillLevel(subSkillType.getParentSkill());
+        int currentSkillLevel = pluginRef.getUserManager().getPlayer(player).getSkillLevel(subSkillType.getParentSkill());
 
         for (int i = 0; i < numRanks; i++) {
             //Compare against the highest to lowest rank in that order
@@ -215,11 +214,11 @@ public class RankUtils {
         //Get our rank map
         HashMap<Integer, Integer> rankMap = subSkillRanks.get(skillName);
 
-        if (UserManager.getPlayer(player) == null)
+        if (pluginRef.getUserManager().getPlayer(player) == null)
             return 0;
 
         //Skill level of parent skill
-        int currentSkillLevel = UserManager.getPlayer(player).getSkillLevel(abstractSubSkill.getPrimarySkill());
+        int currentSkillLevel = pluginRef.getUserManager().getPlayer(player).getSkillLevel(abstractSubSkill.getPrimarySkill());
 
         for (int i = 0; i < numRanks; i++) {
             //Compare against the highest to lowest rank in that order

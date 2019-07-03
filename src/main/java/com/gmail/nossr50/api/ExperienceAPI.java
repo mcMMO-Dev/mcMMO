@@ -1143,10 +1143,10 @@
 //     */
 //    @Deprecated
 //    private static McMMOPlayer getPlayer(Player player) throws McMMOPlayerNotFoundException {
-//        if (!UserManager.hasPlayerDataKey(player)) {
+//        if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
 //            throw new McMMOPlayerNotFoundException(player);
 //        }
 //
-//        return UserManager.getPlayer(player);
+//        return pluginRef.getUserManager().getPlayer(player);
 //    }
 //}

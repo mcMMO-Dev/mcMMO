@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -63,7 +62,7 @@ public class SkillResetCommand implements TabExecutor {
                     skill = PrimarySkillType.getSkill(args[1]);
                 }
 
-                editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), skill);
+                editValues((Player) sender, pluginRef.getUserManager().getPlayer(sender.getName()).getProfile(), skill);
                 return true;
 
             case 2:
@@ -83,7 +82,7 @@ public class SkillResetCommand implements TabExecutor {
                 }
 
                 String playerName = pluginRef.getCommandTools().getMatchedPlayerName(args[0]);
-                McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(playerName);
+                McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getOfflinePlayer(playerName);
 
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {

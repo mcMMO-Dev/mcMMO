@@ -9,7 +9,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.Material;
@@ -49,17 +48,17 @@ public class InventoryListener implements Listener {
 
         HumanEntity player = event.getPlayer();
 
-        if (!UserManager.hasPlayerDataKey(player)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
             return;
         }
 
         //Profile not loaded
-        if (UserManager.getPlayer((Player) player) == null) {
+        if (pluginRef.getUserManager().getPlayer((Player) player) == null) {
             return;
         }
 
         if (!furnaceBlock.hasMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY) && furnaceBlock.getMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY).size() == 0)
-            furnaceBlock.setMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY, UserManager.getPlayer((Player) player).getPlayerMetadata());
+            furnaceBlock.setMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY, pluginRef.getUserManager().getPlayer((Player) player).getPlayerMetadata());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -76,7 +75,7 @@ public class InventoryListener implements Listener {
 
         HumanEntity player = event.getPlayer();
 
-        if (!UserManager.hasPlayerDataKey(player)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
             return;
         }
 
@@ -105,16 +104,16 @@ public class InventoryListener implements Listener {
                 return;
         }
 
-        if (!UserManager.hasPlayerDataKey(player) || !Permissions.isSubSkillEnabled(player, SubSkillType.SMELTING_FUEL_EFFICIENCY)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || !Permissions.isSubSkillEnabled(player, SubSkillType.SMELTING_FUEL_EFFICIENCY)) {
             return;
         }
 
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (pluginRef.getUserManager().getPlayer(player) == null) {
             return;
         }
 
-        event.setBurnTime(UserManager.getPlayer(player).getSmeltingManager().fuelEfficiency(event.getBurnTime()));
+        event.setBurnTime(pluginRef.getUserManager().getPlayer(player).getSmeltingManager().fuelEfficiency(event.getBurnTime()));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -138,16 +137,16 @@ public class InventoryListener implements Listener {
                 return;
         }
 
-        if (!UserManager.hasPlayerDataKey(player) || !PrimarySkillType.SMELTING.getPermissions(player)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || !PrimarySkillType.SMELTING.getPermissions(player)) {
             return;
         }
 
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (pluginRef.getUserManager().getPlayer(player) == null) {
             return;
         }
 
-        event.setResult(UserManager.getPlayer(player).getSmeltingManager().smeltProcessing(smelting, event.getResult()));
+        event.setResult(pluginRef.getUserManager().getPlayer(player).getSmeltingManager().smeltProcessing(smelting, event.getResult()));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -170,17 +169,17 @@ public class InventoryListener implements Listener {
                 return;
         }
 
-        if (!UserManager.hasPlayerDataKey(player) || !Permissions.vanillaXpBoost(player, PrimarySkillType.SMELTING)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || !Permissions.vanillaXpBoost(player, PrimarySkillType.SMELTING)) {
             return;
         }
 
         //Profile not loaded
-        if (UserManager.getPlayer(player) == null) {
+        if (pluginRef.getUserManager().getPlayer(player) == null) {
             return;
         }
 
         int xpToDrop = event.getExpToDrop();
-        int exp = UserManager.getPlayer(player).getSmeltingManager().vanillaXPBoost(xpToDrop);
+        int exp = pluginRef.getUserManager().getPlayer(player).getSmeltingManager().vanillaXPBoost(xpToDrop);
         event.setExpToDrop(exp);
     }
 
@@ -201,11 +200,11 @@ public class InventoryListener implements Listener {
                     furnaceBlock.removeMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY, pluginRef);
 
                 //Profile not loaded
-                if (UserManager.getPlayer(player) == null) {
+                if (pluginRef.getUserManager().getPlayer(player) == null) {
                     return;
                 }
 
-                furnaceBlock.setMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY, UserManager.getPlayer(player).getPlayerMetadata());
+                furnaceBlock.setMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY, pluginRef.getUserManager().getPlayer(player).getPlayerMetadata());
             }
         }
 
@@ -225,7 +224,7 @@ public class InventoryListener implements Listener {
         //TODO: This is where Alchemy permissions used to be checked
         //TODO: This is where Alchemy permissions used to be checked
         //TODO: This is where Alchemy permissions used to be checked
-        /*if (!UserManager.hasPlayerDataKey(event.getWhoClicked()) || !Permissions.isSubSkillEnabled(whoClicked, SubSkillType.ALCHEMY_CONCOCTIONS)) {
+        /*if (!pluginRef.getUserManager().hasPlayerDataKey(event.getWhoClicked()) || !Permissions.isSubSkillEnabled(whoClicked, SubSkillType.ALCHEMY_CONCOCTIONS)) {
             return;
         }*/
 
@@ -335,7 +334,7 @@ public class InventoryListener implements Listener {
         //TODO: This is where alchemy permissions used to be checked
         //TODO: This is where alchemy permissions used to be checked
         //TODO: This is where alchemy permissions used to be checked
-        /*if (!UserManager.hasPlayerDataKey(event.getWhoClicked()) || !Permissions.isSubSkillEnabled(whoClicked, SubSkillType.ALCHEMY_CONCOCTIONS)) {
+        /*if (!pluginRef.getUserManager().hasPlayerDataKey(event.getWhoClicked()) || !Permissions.isSubSkillEnabled(whoClicked, SubSkillType.ALCHEMY_CONCOCTIONS)) {
             return;
         }*/
 

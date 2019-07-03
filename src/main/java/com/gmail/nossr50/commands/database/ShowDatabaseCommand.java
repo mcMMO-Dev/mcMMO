@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.database;
 
-import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;

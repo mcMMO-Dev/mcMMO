@@ -1,7 +1,6 @@
 package com.gmail.nossr50.commands.database;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -26,7 +25,7 @@ public class McremoveCommand implements TabExecutor {
         if (args.length == 1) {
             String playerName = pluginRef.getCommandTools().getMatchedPlayerName(args[0]);
 
-            if (UserManager.getOfflinePlayer(playerName) == null && pluginRef.getCommandTools().unloadedProfile(sender, pluginRef.getDatabaseManager().loadPlayerProfile(playerName, false))) {
+            if (pluginRef.getUserManager().getOfflinePlayer(playerName) == null && pluginRef.getCommandTools().unloadedProfile(sender, pluginRef.getDatabaseManager().loadPlayerProfile(playerName, false))) {
                 return true;
             }
 

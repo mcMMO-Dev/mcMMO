@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -39,7 +38,7 @@ public abstract class ChatCommand implements TabExecutor {
                     return true;
                 }
 
-                mcMMOPlayer = UserManager.getPlayer(sender.getName());
+                mcMMOPlayer = pluginRef.getUserManager().getPlayer(sender.getName());
 
                 if (mcMMOPlayer.isChatEnabled(chatMode)) {
                     disableChatMode(mcMMOPlayer, sender);
@@ -58,7 +57,7 @@ public abstract class ChatCommand implements TabExecutor {
                         return true;
                     }
 
-                    enableChatMode(UserManager.getPlayer(sender.getName()), sender);
+                    enableChatMode(pluginRef.getUserManager().getPlayer(sender.getName()), sender);
                     return true;
                 }
 
@@ -70,7 +69,7 @@ public abstract class ChatCommand implements TabExecutor {
                         return true;
                     }
 
-                    disableChatMode(UserManager.getPlayer(sender.getName()), sender);
+                    disableChatMode(pluginRef.getUserManager().getPlayer(sender.getName()), sender);
                     return true;
                 }
 

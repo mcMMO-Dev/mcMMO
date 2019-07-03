@@ -2,7 +2,6 @@ package com.gmail.nossr50.runnables.commands;
 
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -60,9 +59,9 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
 
     public void displayBoard() {
         if (sender.getName().equalsIgnoreCase(playerName)) {
-            ScoreboardManager.showPlayerRankScoreboard((Player) sender, skills);
+            pluginRef.getScoreboardManager().showPlayerRankScoreboard((Player) sender, skills);
         } else {
-            ScoreboardManager.showPlayerRankScoreboardOthers((Player) sender, playerName, skills);
+            pluginRef.getScoreboardManager().showPlayerRankScoreboardOthers((Player) sender, playerName, skills);
         }
     }
 }

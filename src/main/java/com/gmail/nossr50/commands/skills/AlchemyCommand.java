@@ -25,12 +25,12 @@
 //
 ////    protected String[] calculateAbilityDisplayValues(Player player) {
 ////        //TODO: Needed?
-////        if (UserManager.getPlayer(player) == null) {
+////        if (pluginRef.getUserManager().getPlayer(player) == null) {
 ////            player.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
 ////            return new String[]{"DATA NOT LOADED", "DATA NOT LOADED"};
 ////        }
 ////
-////        AlchemyManager alchemyManager = UserManager.getPlayer(player).getAlchemyManager();
+////        AlchemyManager alchemyManager = pluginRef.getUserManager().getPlayer(player).getAlchemyManager();
 ////        String[] displayValues = new String[2];
 ////
 ////        boolean isLucky = Permissions.lucky(player, PrimarySkillType.ALCHEMY);
@@ -52,7 +52,7 @@
 ////
 ////        // ALCHEMY_CONCOCTIONS
 ////        if (canConcoctions) {
-////            AlchemyManager alchemyManager = UserManager.getPlayer(player).getAlchemyManager();
+////            AlchemyManager alchemyManager = pluginRef.getUserManager().getPlayer(player).getAlchemyManager();
 ////            tier = alchemyManager.getTier();
 ////            ingredientCount = alchemyManager.getIngredients().size();
 ////            ingredientList = alchemyManager.getIngredientList();

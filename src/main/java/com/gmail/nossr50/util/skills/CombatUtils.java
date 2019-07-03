@@ -22,7 +22,6 @@ import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableMap;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -49,7 +48,7 @@ public final class CombatUtils {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
         SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
         double initialDamage = event.getDamage();
         double finalDamage = initialDamage;
@@ -92,7 +91,7 @@ public final class CombatUtils {
         double finalDamage = initialDamage;
         Map<DamageModifier, Double> modifiers = getModifiers(event);
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
         AxesManager axesManager = mcMMOPlayer.getAxesManager();
 
         if (axesManager.canActivateAbility()) {
@@ -133,7 +132,7 @@ public final class CombatUtils {
         double initialDamage = event.getDamage();
         double finalDamage = initialDamage;
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
         UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
 
         if (unarmedManager.canActivateAbility()) {
@@ -168,7 +167,7 @@ public final class CombatUtils {
         double initialDamage = event.getDamage();
         double finalDamage = initialDamage;
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(master);
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(master);
         TamingManager tamingManager = mcMMOPlayer.getTamingManager();
 
         if (tamingManager.canUseFastFoodService()) {
@@ -192,13 +191,13 @@ public final class CombatUtils {
     private static void processArcheryCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event, Arrow arrow) {
         double initialDamage = event.getDamage();
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
         ArcheryManager archeryManager = mcMMOPlayer.getArcheryManager();
 
         double finalDamage = event.getDamage();
 
         if (target instanceof Player && PrimarySkillType.UNARMED.getPVPEnabled()) {
-            UnarmedManager unarmedManager = UserManager.getPlayer((Player) target).getUnarmedManager();
+            UnarmedManager unarmedManager = pluginRef.getUserManager().getPlayer((Player) target).getUnarmedManager();
 
             if (unarmedManager.canDeflect()) {
                 event.setCancelled(unarmedManager.deflectCheck());
@@ -250,10 +249,10 @@ public final class CombatUtils {
             }
 
             Player player = (Player) target;
-            if (!UserManager.hasPlayerDataKey(player)) {
+            if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
                 return;
             }
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+            McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
             AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
 
             if (acrobaticsManager.canDodge(target)) {
@@ -276,7 +275,7 @@ public final class CombatUtils {
         if (attacker instanceof Player && entityType == EntityType.PLAYER) {
             Player player = (Player) attacker;
 
-            if (!UserManager.hasPlayerDataKey(player)) {
+            if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
                 return;
             }
 
@@ -284,7 +283,7 @@ public final class CombatUtils {
 
             if (target instanceof Tameable) {
                 if (heldItem.getType() == Material.BONE) {
-                    TamingManager tamingManager = UserManager.getPlayer(player).getTamingManager();
+                    TamingManager tamingManager = pluginRef.getUserManager().getPlayer(player).getTamingManager();
 
                     if (tamingManager.canUseBeastLore()) {
                         tamingManager.beastLore(target);
@@ -346,7 +345,7 @@ public final class CombatUtils {
                 }
 
                 if (target.getType() != EntityType.CREEPER && !Misc.isNPCEntityExcludingVillagers(player) && PrimarySkillType.TAMING.getPermissions(player)) {
-                    McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+                    McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
                     TamingManager tamingManager = mcMMOPlayer.getTamingManager();
                     tamingManager.attackTarget(target);
                 }
@@ -497,7 +496,7 @@ public final class CombatUtils {
                         pluginRef.getNotificationManager().sendPlayerInformation((Player) entity, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.SS.Struck");
                     }
 
-                    UserManager.getPlayer(attacker).getSwordsManager().ruptureCheck(target);
+                    pluginRef.getUserManager().getPlayer(attacker).getSwordsManager().ruptureCheck(target);
                     break;
 
                 case AXES:
@@ -601,10 +600,10 @@ public final class CombatUtils {
             Player defender = (Player) entity;
 
             //TODO: NPC Interaction?
-            if (UserManager.getPlayer(defender) == null)
+            if (pluginRef.getUserManager().getPlayer(defender) == null)
                 return true;
 
-            if (!defender.getWorld().getPVP() || defender == player || UserManager.getPlayer(defender).getGodMode()) {
+            if (!defender.getWorld().getPVP() || defender == player || pluginRef.getUserManager().getPlayer(defender).getGodMode()) {
                 return false;
             }
 

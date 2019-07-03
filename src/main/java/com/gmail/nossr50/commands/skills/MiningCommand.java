@@ -6,7 +6,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
@@ -41,7 +40,7 @@ public class MiningCommand extends SkillCommand {
     protected void dataCalculations(Player player, double skillValue) {
         // BLAST MINING
         if (canBlast || canDemoExpert || canBiggerBombs) {
-            MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
+            MiningManager miningManager = pluginRef.getUserManager().getPlayer(player).getMiningManager();
 
             blastMiningRank = miningManager.getBlastMiningTier();
             bonusTNTDrops = miningManager.getDropMultiplier();

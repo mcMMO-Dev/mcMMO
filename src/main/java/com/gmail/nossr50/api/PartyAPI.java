@@ -28,7 +28,7 @@
 //            return null;
 //        }
 //
-//        return UserManager.getPlayer(player).getParty().getName();
+//        return pluginRef.getUserManager().getPlayer(player).getParty().getName();
 //    }
 //
 //    /**
@@ -40,10 +40,10 @@
 //     * @return true if the player is in a party, false otherwise
 //     */
 //    public static boolean inParty(Player player) {
-//        if (UserManager.getPlayer(player) == null)
+//        if (pluginRef.getUserManager().getPlayer(player) == null)
 //            return false;
 //
-//        return UserManager.getPlayer(player).inParty();
+//        return pluginRef.getUserManager().getPlayer(player).inParty();
 //    }
 //
 //    /**
@@ -82,7 +82,7 @@
 //    @Deprecated
 //    public static void addToParty(Player player, String partyName) {
 //        //Check if player profile is loaded
-//        if (UserManager.getPlayer(player) == null)
+//        if (pluginRef.getUserManager().getPlayer(player) == null)
 //            return;
 //
 //        Party party = pluginRef.getPartyManager().getParty(partyName);
@@ -96,7 +96,7 @@
 //            }
 //        }
 //
-//        pluginRef.getPartyManager().addToParty(UserManager.getPlayer(player), party);
+//        pluginRef.getPartyManager().addToParty(pluginRef.getUserManager().getPlayer(player), party);
 //    }
 //
 //    /**
@@ -130,7 +130,7 @@
 //    //TODO: bypasslimit not used?
 //    public static void addToParty(Player player, String partyName, boolean bypassLimit) {
 //        //Check if player profile is loaded
-//        if (UserManager.getPlayer(player) == null)
+//        if (pluginRef.getUserManager().getPlayer(player) == null)
 //            return;
 //
 //        Party party = pluginRef.getPartyManager().getParty(partyName);
@@ -139,7 +139,7 @@
 //            party = new Party(new PartyLeader(player.getUniqueId(), player.getName()), partyName);
 //        }
 //
-//        pluginRef.getPartyManager().addToParty(UserManager.getPlayer(player), party);
+//        pluginRef.getPartyManager().addToParty(pluginRef.getUserManager().getPlayer(player), party);
 //    }
 //
 //    /**
@@ -151,10 +151,10 @@
 //     */
 //    public static void removeFromParty(Player player) {
 //        //Check if player profile is loaded
-//        if (UserManager.getPlayer(player) == null)
+//        if (pluginRef.getUserManager().getPlayer(player) == null)
 //            return;
 //
-//        pluginRef.getPartyManager().removeFromParty(UserManager.getPlayer(player));
+//        pluginRef.getPartyManager().removeFromParty(pluginRef.getUserManager().getPlayer(player));
 //    }
 //
 //    /**
