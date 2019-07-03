@@ -56,6 +56,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class McMMOPlayer {
+    private final mcMMO pluginRef;
     private final Map<PrimarySkillType, SkillManager> skillManagers = new HashMap<>();
     private final Map<SuperAbilityType, Boolean> abilityMode = new HashMap<>();
     private final Map<SuperAbilityType, Boolean> abilityInformed = new HashMap<>();
@@ -85,7 +86,8 @@ public class McMMOPlayer {
     private HashMap<PrimarySkillType, Double> personalXPModifiers;
     private String playerName;
 
-    public McMMOPlayer(Player player, PlayerProfile profile) {
+    public McMMOPlayer(Player player, PlayerProfile profile, mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
         this.playerName = player.getName();
         UUID uuid = player.getUniqueId();
 
@@ -531,7 +533,7 @@ public class McMMOPlayer {
         }
 
         // Return if the experience has been shared
-        if (party != null && ShareHandler.handleXpShare(xp, this, skill, ShareHandler.getSharedXpGainReason(xpGainReason))) {
+        if (party != null && party.getShareHandler().handleXpShare(xp, this, skill, party.getShareHandler().getSharedXpGainReason(xpGainReason))) {
             return;
         }
 

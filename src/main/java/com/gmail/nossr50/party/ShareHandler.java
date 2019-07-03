@@ -7,6 +7,7 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.Material;
@@ -17,7 +18,11 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public final class ShareHandler {
-    private ShareHandler() {
+    private mcMMO pluginRef;
+    private Party party;
+
+    public ShareHandler(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
     }
 
     /**
@@ -28,9 +33,7 @@ public final class ShareHandler {
      * @param primarySkillType Skill being used
      * @return True is the xp has been shared
      */
-    public static boolean handleXpShare(double xp, McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, XPGainReason xpGainReason) {
-        Party party = mcMMOPlayer.getParty();
-
+    public boolean handleXpShare(double xp, McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, XPGainReason xpGainReason) {
         if (party.getXpShareMode() != ShareMode.EQUAL) {
             return false;
         }
@@ -47,7 +50,7 @@ public final class ShareHandler {
         double shareBonus = Math.min(pluginRef.getPartyXPShareSettings().getPartyShareXPBonusBase()
                         + (partySize * pluginRef.getPartyXPShareSettings().getPartyShareBonusIncrease()),
                 pluginRef.getPartyXPShareSettings().getPartyShareBonusCap());
-        double splitXp = (double) (xp / partySize * shareBonus);
+        double splitXp = (xp / partySize * shareBonus);
 
         for (Player member : nearMembers) {
             //Profile not loaded
@@ -68,15 +71,13 @@ public final class ShareHandler {
      * @param mcMMOPlayer Player who picked up the item
      * @return True if the item has been shared
      */
-    public static boolean handleItemShare(Item drop, McMMOPlayer mcMMOPlayer) {
+    public boolean handleItemShare(Item drop, McMMOPlayer mcMMOPlayer) {
         ItemStack itemStack = drop.getItemStack();
         ItemShareType dropType = ItemShareType.getShareType(itemStack);
 
         if (dropType == null) {
             return false;
         }
-
-        Party party = mcMMOPlayer.getParty();
 
         if (!party.sharingDrops(dropType)) {
             return false;
@@ -156,14 +157,14 @@ public final class ShareHandler {
         }
     }
 
-    public static int getItemWeight(Material material) {
+    private int getItemWeight(Material material) {
         if (pluginRef.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(material) == null)
             return 5;
         else
             return pluginRef.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(material);
     }
 
-    public static XPGainReason getSharedXpGainReason(XPGainReason xpGainReason) {
+    public XPGainReason getSharedXpGainReason(XPGainReason xpGainReason) {
         if (xpGainReason == XPGainReason.PVE) {
             return XPGainReason.SHARED_PVE;
         } else if (xpGainReason == XPGainReason.PVP) {
@@ -173,7 +174,7 @@ public final class ShareHandler {
         }
     }
 
-    private static void awardDrop(Player winningPlayer, ItemStack drop) {
+    private void awardDrop(Player winningPlayer, ItemStack drop) {
         if (winningPlayer.getInventory().addItem(drop).size() != 0) {
             winningPlayer.getWorld().dropItem(winningPlayer.getLocation(), drop);
         }

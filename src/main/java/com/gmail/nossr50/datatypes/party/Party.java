@@ -1,6 +1,8 @@
 package com.gmail.nossr50.datatypes.party;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -18,6 +20,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class Party {
+    private mcMMO pluginRef;
     private static final String ONLINE_PLAYER_PREFIX = "⬤";
     private static final String OFFLINE_PLAYER_PREFIX = "○";
     private final LinkedHashMap<UUID, String> members = new LinkedHashMap<>();
@@ -29,6 +32,8 @@ public class Party {
     private Party ally;
     private int level;
     private double xp;
+
+    private ShareHandler shareHandler;
 
     private ShareMode xpShareMode = ShareMode.NONE;
     private ShareMode itemShareMode = ShareMode.NONE;
@@ -43,27 +48,41 @@ public class Party {
         this.name = name;
     }
 
-    public Party(PartyLeader leader, String name) {
+    public Party(PartyLeader leader, String name, mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
         this.leader = leader;
         this.name = name;
         this.locked = true;
         this.level = 0;
+
+        initShareHandler();
     }
 
-    public Party(PartyLeader leader, String name, String password) {
+    public Party(PartyLeader leader, String name, String password, mcMMO pluginRef)
+    {
+        this.pluginRef = pluginRef;
         this.leader = leader;
         this.name = name;
         this.password = password;
         this.locked = true;
         this.level = 0;
+
+        initShareHandler();
     }
 
-    public Party(PartyLeader leader, String name, String password, boolean locked) {
+    public Party(PartyLeader leader, String name, String password, boolean locked, mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
         this.leader = leader;
         this.name = name;
         this.password = password;
         this.locked = locked;
         this.level = 0;
+
+        initShareHandler();
+    }
+
+    private void initShareHandler() {
+        shareHandler = new ShareHandler(pluginRef);
     }
 
     public LinkedHashMap<UUID, String> getMembers() {
@@ -516,5 +535,9 @@ public class Party {
         }
 
         return this.getName().equals(other.getName());
+    }
+
+    public ShareHandler getShareHandler() {
+        return shareHandler;
     }
 }
