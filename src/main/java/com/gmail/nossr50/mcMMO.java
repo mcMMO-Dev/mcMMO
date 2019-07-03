@@ -575,7 +575,7 @@ public class mcMMO extends JavaPlugin {
 
             //TODO: Should do this differently
             if (configManager.getConfigCoreSkills().isRollEnabled()) {
-                InteractionManager.registerSubSkill(new Roll());
+                InteractionManager.registerSubSkill(new Roll(this));
             }
         }
     }
@@ -594,14 +594,14 @@ public class mcMMO extends JavaPlugin {
     private void scheduleTasks() {
         // Periodic save timer (Saves every 10 minutes by default)
         long saveIntervalTicks = Math.max(1200, (getConfigManager().getConfigDatabase().getConfigSectionDatabaseGeneral().getSaveIntervalMinutes() * (20 * 60)));
-        new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
+        new SaveTimerTask(this).runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
 
         // Cleanup the backups folder
         new CleanBackupFilesTask(this).runTaskAsynchronously(this);
 
         // Bleed timer (Runs every 0.5 seconds)
         bleedTimerTask = new BleedTimerTask(this);
-        pluginRef.getBleedTimerTask().runTaskTimer(this, Misc.TICK_CONVERSION_FACTOR, (Misc.TICK_CONVERSION_FACTOR / 2));
+        bleedTimerTask.runTaskTimer(this, Misc.TICK_CONVERSION_FACTOR, (Misc.TICK_CONVERSION_FACTOR / 2));
 
         // Old & Powerless User remover
         long purgeIntervalTicks = getConfigManager().getConfigDatabase().getConfigSectionCleaning().getPurgeInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;

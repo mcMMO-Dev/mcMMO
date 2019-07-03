@@ -271,7 +271,7 @@ public class McMMOPlayer {
     public void resetAbilityMode() {
         for (SuperAbilityType ability : SuperAbilityType.values()) {
             // Correctly disable and handle any special deactivate code
-            new AbilityDisableTask(this, ability).run();
+            new AbilityDisableTask(pluginRef,this, ability).run();
         }
     }
 
@@ -889,7 +889,7 @@ public class McMMOPlayer {
         }
 
         setToolPreparationMode(tool, false);
-        new AbilityDisableTask(this, ability).runTaskLater(pluginRef, abilityLength * Misc.TICK_CONVERSION_FACTOR);
+        new AbilityDisableTask(pluginRef,   this, ability).runTaskLater(pluginRef, abilityLength * Misc.TICK_CONVERSION_FACTOR);
     }
 
     public void processAbilityActivation(PrimarySkillType skill) {
@@ -936,7 +936,7 @@ public class McMMOPlayer {
             }
 
             setToolPreparationMode(tool, true);
-            new ToolLowerTask(this, tool).runTaskLater(pluginRef, 4 * Misc.TICK_CONVERSION_FACTOR);
+            new ToolLowerTask(pluginRef,this, tool).runTaskLater(pluginRef, 4 * Misc.TICK_CONVERSION_FACTOR);
         }
     }
 
