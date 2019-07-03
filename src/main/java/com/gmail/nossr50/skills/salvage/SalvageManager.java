@@ -4,6 +4,7 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.behaviours.SalvageBehaviour;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
@@ -29,9 +30,11 @@ import java.util.Map.Entry;
 public class SalvageManager extends SkillManager {
     private boolean placedAnvil;
     private int lastClick;
+    private SalvageBehaviour salvageBehaviour;
 
     public SalvageManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
         super(pluginRef, mcMMOPlayer, PrimarySkillType.SALVAGE);
+        this.salvageBehaviour = pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getSalvageBehaviour();
     }
 
     /**
@@ -85,7 +88,7 @@ public class SalvageManager extends SkillManager {
             return;
         }
 
-        int potentialSalvageYield = Salvage.calculateSalvageableAmount(item.getDurability(), salvageable.getMaximumDurability(), salvageable.getMaximumQuantity());
+        int potentialSalvageYield = salvageBehaviour.calculateSalvageableAmount(item.getDurability(), salvageable.getMaximumDurability(), salvageable.getMaximumQuantity());
 
         if (potentialSalvageYield <= 0) {
             pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.TooDamaged");
@@ -237,14 +240,14 @@ public class SalvageManager extends SkillManager {
                 }
             }
 
-            if (!Salvage.arcaneSalvageEnchantLoss
+            if (!salvageBehaviour.isArcaneSalvageEnchantLoss()
                     || Permissions.hasSalvageEnchantBypassPerk(player)
                     || RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractFullEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
 
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchantLevel, true);
             }
             else if (enchantLevel > 1
-                    && Salvage.arcaneSalvageDowngrades
+                    && salvageBehaviour.isArcaneSalvageDowngrades()
                     && RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractPartialEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchantLevel - 1, true);
                 downgraded = true;
