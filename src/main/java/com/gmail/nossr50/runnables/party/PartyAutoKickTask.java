@@ -1,6 +1,7 @@
 package com.gmail.nossr50.runnables.party;
 
 import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -11,7 +12,13 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 public class PartyAutoKickTask extends BukkitRunnable {
-    private final static long KICK_TIME = 24L * 60L * 60L * 1000L * pluginRef.getConfigManager().getConfigParty().getPartyCleanup().getPartyAutoKickHoursInterval();
+    private final mcMMO pluginRef;
+    private final long KICK_TIME;
+
+    public PartyAutoKickTask(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+        KICK_TIME = 24L * 60L * 60L * 1000L * pluginRef.getConfigManager().getConfigParty().getPartyCleanup().getPartyAutoKickHoursInterval();
+    }
 
     @Override
     public void run() {

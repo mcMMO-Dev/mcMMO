@@ -2,6 +2,7 @@ package com.gmail.nossr50.runnables.player;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.ScoreboardKeepTask;
 import com.gmail.nossr50.util.Misc;
 import org.bukkit.Server;
@@ -9,14 +10,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerProfileLoadingTask extends BukkitRunnable {
+    private final mcMMO pluginRef;
     private final Player player;
     private int attempt = 0;
 
-    public PlayerProfileLoadingTask(Player player) {
+    public PlayerProfileLoadingTask(mcMMO pluginRef, Player player) {
+        this.pluginRef = pluginRef;
         this.player = player;
     }
 
-    private PlayerProfileLoadingTask(Player player, int attempt) {
+    private PlayerProfileLoadingTask(mcMMO pluginRef, Player player, int attempt) {
+        this.pluginRef = pluginRef;
         this.player = player;
         this.attempt = attempt;
     }
@@ -39,7 +43,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
         PlayerProfile profile = pluginRef.getDatabaseManager().loadPlayerProfile(player.getName(), player.getUniqueId(), true);
         // If successful, schedule the apply
         if (profile.isLoaded()) {
-            new ApplySuccessfulProfile(new McMMOPlayer(player, profile)).runTask(pluginRef);
+            new ApplySuccessfulProfile(new McMMOPlayer(player, profile, pluginRef)).runTask(pluginRef);
             return;
         }
 
@@ -59,7 +63,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
         // Increment attempt counter and try
         attempt++;
 
-        new PlayerProfileLoadingTask(player, attempt).runTaskLaterAsynchronously(pluginRef, (100 + (attempt * 100)));
+        new PlayerProfileLoadingTask(pluginRef, player, attempt).runTaskLaterAsynchronously(pluginRef, (100 + (attempt * 100)));
     }
 
     private class ApplySuccessfulProfile extends BukkitRunnable {
@@ -87,7 +91,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
 
                 if (pluginRef.getScoreboardSettings().getShowStatsAfterLogin()) {
                     pluginRef.getScoreboardManager().enablePlayerStatsScoreboard(player);
-                    new ScoreboardKeepTask(player).runTaskLater(pluginRef, Misc.TICK_CONVERSION_FACTOR);
+                    new ScoreboardKeepTask(pluginRef, player).runTaskLater(pluginRef, Misc.TICK_CONVERSION_FACTOR);
                 }
             }
 
