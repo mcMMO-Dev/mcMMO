@@ -18,20 +18,20 @@ public enum McMMOWebLinks {
         return StringUtils.getCapitalized(toString());
     }
 
-    public String getLocaleDescription() {
+    public String getLocaleKey() {
         switch (this) {
             case WEBSITE:
-                return pluginRef.getLocaleManager().getString("JSON.URL.Website");
+                return "JSON.URL.Website";
             case DISCORD:
-                return pluginRef.getLocaleManager().getString("JSON.URL.Discord");
+                return "JSON.URL.Discord";
             case PATREON:
-                return pluginRef.getLocaleManager().getString("JSON.URL.Patreon");
+                return "JSON.URL.Patreon";
             case HELP_TRANSLATE:
-                return pluginRef.getLocaleManager().getString("JSON.URL.Translation");
+                return "JSON.URL.Translation";
             case SPIGOT:
-                return pluginRef.getLocaleManager().getString("JSON.URL.Spigot");
+                return "JSON.URL.Spigot";
             case WIKI:
-                return pluginRef.getLocaleManager().getString("JSON.URL.Wiki");
+                return "JSON.URL.Wiki";
             default:
                 return "";
         }

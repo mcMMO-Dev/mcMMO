@@ -451,7 +451,7 @@ public class PlayerListener implements Listener {
 
 
             if (!drop.hasMetadata(MetadataConstants.DROPPED_ITEM_TRACKING_METAKEY) && mcMMOPlayer.inParty() && ItemUtils.isSharable(dropStack)) {
-                event.setCancelled(ShareHandler.handleItemShare(drop, mcMMOPlayer));
+                event.setCancelled(mcMMOPlayer.getParty().getShareHandler().handleItemShare(drop, mcMMOPlayer));
 
                 SoundManager.sendSound(player, player.getLocation(), SoundType.POP);
             }

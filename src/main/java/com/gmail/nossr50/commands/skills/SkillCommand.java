@@ -93,7 +93,7 @@ public abstract class SkillCommand implements TabExecutor {
 
                 //Send JSON text components
 
-                TextComponentFactory.sendPlayerSubSkillList(player, subskillTextComponents);
+                pluginRef.getTextComponentFactory().sendPlayerSubSkillList(player, subskillTextComponents);
 
                 /*for(TextComponent tc : subskillTextComponents)
                 {
@@ -109,7 +109,7 @@ public abstract class SkillCommand implements TabExecutor {
                 //Link Header
                 if (pluginRef.getConfigManager().getConfigAds().isShowWebsiteLinks()) {
                     player.sendMessage(pluginRef.getLocaleManager().getString("Overhaul.mcMMO.Header"));
-                    TextComponentFactory.sendPlayerUrlHeader(player);
+                    pluginRef.getTextComponentFactory().sendPlayerUrlHeader(player);
                 }
 
 

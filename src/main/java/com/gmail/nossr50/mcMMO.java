@@ -60,7 +60,6 @@ public class mcMMO extends JavaPlugin {
     private ChunkManager placeStore;
     private ConfigManager configManager;
     private DynamicSettingsManager dynamicSettingsManager;
-    private DatabaseManagerFactory databaseManagerFactory;
     private DatabaseManager databaseManager;
     private FormulaManager formulaManager;
     private MaterialMapStore materialMapStore;
@@ -78,7 +77,9 @@ public class mcMMO extends JavaPlugin {
     private ScoreboardManager scoreboardManager;
 
     /* Not-Managers but my naming scheme sucks */
+    private DatabaseManagerFactory databaseManagerFactory;
     private CommandTools commandTools;
+    private TextComponentFactory textComponentFactory;
 
     /* File Paths */
     private String mainDirectory;
@@ -113,6 +114,9 @@ public class mcMMO extends JavaPlugin {
 
             loadConfigFiles();
             registerDynamicSettings(); //Do this after configs are loaded
+
+            //Init TextComponentFactory
+            textComponentFactory = new TextComponentFactory(this);
 
             if (healthBarPluginEnabled) {
                 getLogger().info("HealthBar plugin found, mcMMO's healthbars are automatically disabled.");
@@ -200,7 +204,7 @@ public class mcMMO extends JavaPlugin {
         playerLevelUtils = new PlayerLevelUtils();
 
         //Init Notification Manager
-        notificationManager = new NotificationManager();
+        notificationManager = new NotificationManager(this);
 
         //Init Chat Manager
         chatManager = new ChatManager(this);
@@ -673,5 +677,9 @@ public class mcMMO extends JavaPlugin {
 
     public ScoreboardManager getScoreboardManager() {
         return scoreboardManager;
+    }
+
+    public TextComponentFactory getTextComponentFactory() {
+        return textComponentFactory;
     }
 }

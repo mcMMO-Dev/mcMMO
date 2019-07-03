@@ -7,6 +7,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -28,8 +29,10 @@ import java.util.HashMap;
 public class NotificationManager {
 
     private HashMap<NotificationType, PlayerNotificationSettings> playerNotificationHashMap;
+    private mcMMO pluginRef;
 
-    public NotificationManager() {
+    public NotificationManager(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
         playerNotificationHashMap = new HashMap<>();
 
         initMaps();
@@ -65,7 +68,7 @@ public class NotificationManager {
         if (pluginRef.getUserManager().getPlayer(player) == null || !pluginRef.getUserManager().getPlayer(player).useChatNotifications())
             return;
 
-        TextComponent textComponent = TextComponentFactory.getNotificationTextComponentFromLocale(key);
+        TextComponent textComponent = pluginRef.getTextComponentFactory().getNotificationTextComponentFromLocale(key);
         McMMOPlayerNotificationEvent customEvent = pluginRef.getEventManager().createAndCallNotificationEvent(player, notificationType, textComponent);
 
         sendNotification(customEvent);
@@ -78,7 +81,7 @@ public class NotificationManager {
      * @return TextComponent for this message
      */
     public TextComponent buildTextComponent(String key, String... values) {
-        return TextComponentFactory.getNotificationMultipleValues(key, values);
+        return pluginRef.getTextComponentFactory().getNotificationMultipleValues(key, values);
     }
 
     /**
@@ -87,7 +90,7 @@ public class NotificationManager {
      * @return TextComponent for this message
      */
     public TextComponent buildTextComponent(String key) {
-        return TextComponentFactory.getNotificationTextComponentFromLocale(key);
+        return pluginRef.getTextComponentFactory().getNotificationTextComponentFromLocale(key);
     }
 
     /**
@@ -135,7 +138,7 @@ public class NotificationManager {
         if (!mcMMOPlayer.useChatNotifications())
             return;
 
-        TextComponent levelUpTextComponent = TextComponentFactory.getNotificationLevelUpTextComponent(skillName, levelsGained, newLevel);
+        TextComponent levelUpTextComponent = pluginRef.getTextComponentFactory().getNotificationLevelUpTextComponent(skillName, levelsGained, newLevel);
         McMMOPlayerNotificationEvent customEvent = pluginRef.getEventManager().createAndCallNotificationEvent(mcMMOPlayer.getPlayer(), NotificationType.LEVEL_UP_MESSAGE, levelUpTextComponent);
 
         sendNotification(customEvent);
@@ -179,7 +182,7 @@ public class NotificationManager {
             return;
 
         //CHAT MESSAGE
-        mcMMOPlayer.getPlayer().spigot().sendMessage(TextComponentFactory.getSubSkillUnlockedNotificationComponents(mcMMOPlayer.getPlayer(), subSkillType));
+        mcMMOPlayer.getPlayer().spigot().sendMessage(pluginRef.getTextComponentFactory().getSubSkillUnlockedNotificationComponents(mcMMOPlayer.getPlayer(), subSkillType));
 
         //Unlock Sound Effect
         SoundManager.sendCategorizedSound(mcMMOPlayer.getPlayer(), mcMMOPlayer.getPlayer().getLocation(), SoundType.SKILL_UNLOCKED, SoundCategory.MASTER);

@@ -17,10 +17,10 @@ import org.bukkit.event.Listener;
 
 public class SelfListener implements Listener {
     //Used in task scheduling and other things
-    private final mcMMO plugin;
+    private final mcMMO pluginRef;
 
-    public SelfListener(mcMMO plugin) {
-        this.plugin = plugin;
+    public SelfListener(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -32,7 +32,7 @@ public class SelfListener implements Listener {
         for (int i = 0; i < event.getLevelsGained(); i++) {
             int previousLevelGained = event.getSkillLevel() - i;
             //Send player skill unlock notifications
-            pluginRef.getUserManager().getPlayer(player).processUnlockNotifications(plugin, event.getSkill(), previousLevelGained);
+            pluginRef.getUserManager().getPlayer(player).processUnlockNotifications(pluginRef, event.getSkill(), previousLevelGained);
         }
 
         //Reset the delay timer
@@ -70,7 +70,7 @@ public class SelfListener implements Listener {
                 event.getXpGainReason() == XPGainReason.SHARED_PVE ||
                 event.getXpGainReason() == XPGainReason.SHARED_PVP) {
             if (WorldGuardUtils.isWorldGuardLoaded()) {
-                if (!plugin.getWorldGuardManager().hasXPFlag(player)) {
+                if (!pluginRef.getWorldGuardManager().hasXPFlag(player)) {
                     event.setRawXpGained(0);
                     event.setCancelled(true);
                 }

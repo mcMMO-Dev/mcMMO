@@ -28,10 +28,10 @@ import org.bukkit.metadata.MetadataValue;
 import java.util.List;
 
 public class InventoryListener implements Listener {
-    private final mcMMO plugin;
+    private final mcMMO pluginRef;
 
-    public InventoryListener(final mcMMO plugin) {
-        this.plugin = plugin;
+    public InventoryListener(final mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -79,7 +79,7 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        furnaceBlock.removeMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY, plugin);
+        furnaceBlock.removeMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY, pluginRef);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -100,7 +100,7 @@ public class InventoryListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!plugin.getWorldGuardManager().hasMainFlag(player))
+            if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -133,7 +133,7 @@ public class InventoryListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!plugin.getWorldGuardManager().hasMainFlag(player))
+            if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -165,7 +165,7 @@ public class InventoryListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!plugin.getWorldGuardManager().hasMainFlag(player))
+            if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -232,7 +232,7 @@ public class InventoryListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!plugin.getWorldGuardManager().hasMainFlag(player))
+            if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -454,11 +454,11 @@ public class InventoryListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!plugin.getWorldGuardManager().hasMainFlag(player))
+            if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
-        new PlayerUpdateInventoryTask((Player) whoClicked).runTaskLater(plugin, 0);
+        new PlayerUpdateInventoryTask((Player) whoClicked).runTaskLater(pluginRef, 0);
     }
 
     private Block processInventoryOpenOrCloseEvent(Inventory inventory) {
@@ -482,6 +482,6 @@ public class InventoryListener implements Listener {
             return null;
         }
 
-        return plugin.getServer().getPlayerExact(metadata.get(0).asString());
+        return pluginRef.getServer().getPlayerExact(metadata.get(0).asString());
     }
 }

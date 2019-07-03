@@ -41,16 +41,17 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 
 public class EntityListener implements Listener {
-    private final mcMMO plugin;
+    private final mcMMO pluginRef;
 
-    public EntityListener(final mcMMO plugin) {
-        this.plugin = plugin;
+    public EntityListener(final mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityTransform(EntityTransformEvent event) {
         //Transfer metadata keys from mob-spawned mobs to new mobs
-        if (event.getEntity().getMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY) != null || event.getEntity().getMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY).size() >= 1) {
+        if (event.getEntity().hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY)
+                || event.getEntity().getMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY).size() >= 1) {
             for (Entity entity : event.getTransformedEntities()) {
                 entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
             }
@@ -69,7 +70,8 @@ public class EntityListener implements Listener {
 
         //Prevent entities from giving XP if they target endermite
         if (event.getTarget() instanceof Endermite) {
-            if (event.getEntity().getMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY) == null || event.getEntity().getMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY).size() <= 0)
+            if (event.getEntity().hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY)
+                    || event.getEntity().getMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY).size() <= 0)
                 event.getEntity().setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
         }
     }
@@ -85,7 +87,7 @@ public class EntityListener implements Listener {
 
             /* WORLD GUARD MAIN FLAG CHECK */
             if (WorldGuardUtils.isWorldGuardLoaded()) {
-                if (!plugin.getWorldGuardManager().hasMainFlag(player))
+                if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                     return;
             }
         }
@@ -104,10 +106,10 @@ public class EntityListener implements Listener {
         }
 
         projectile.setMetadata(MetadataConstants.BOW_FORCE_METAKEY,
-                new FixedMetadataValue(plugin,
+                new FixedMetadataValue(pluginRef,
                         Math.min(event.getForce()
                                 * pluginRef.getConfigManager().getConfigExperience().getExperienceArchery().getForceMultiplier(), 1.0)));
-        projectile.setMetadata(MetadataConstants.ARROW_DISTANCE_METAKEY, new FixedMetadataValue(plugin, projectile.getLocation()));
+        projectile.setMetadata(MetadataConstants.ARROW_DISTANCE_METAKEY, new FixedMetadataValue(pluginRef, projectile.getLocation()));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -122,7 +124,7 @@ public class EntityListener implements Listener {
 
             /* WORLD GUARD MAIN FLAG CHECK */
             if (WorldGuardUtils.isWorldGuardLoaded()) {
-                if (!plugin.getWorldGuardManager().hasMainFlag(player))
+                if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                     return;
             }
 
@@ -131,8 +133,8 @@ public class EntityListener implements Listener {
             if(!(projectile instanceof Arrow))
                 return;
 
-            projectile.setMetadata(MetadataConstants.BOW_FORCE_METAKEY, new FixedMetadataValue(plugin, 1.0));
-            projectile.setMetadata(MetadataConstants.ARROW_DISTANCE_METAKEY, new FixedMetadataValue(plugin, projectile.getLocation()));
+            projectile.setMetadata(MetadataConstants.BOW_FORCE_METAKEY, new FixedMetadataValue(pluginRef, 1.0));
+            projectile.setMetadata(MetadataConstants.ARROW_DISTANCE_METAKEY, new FixedMetadataValue(pluginRef, projectile.getLocation()));
 
             for(Enchantment enchantment : player.getInventory().getItemInMainHand().getEnchantments().keySet()) {
                 if(enchantment.getName().equalsIgnoreCase("piercing"))
@@ -240,7 +242,7 @@ public class EntityListener implements Listener {
         Entity defender = event.getEntity();
 
         if (defender.getMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY).size() > 0) {
-            defender.removeMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY, plugin);
+            defender.removeMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY, pluginRef);
 
             if (defender instanceof Player) {
                 LivingEntity defLive = (LivingEntity) defender;
@@ -287,7 +289,7 @@ public class EntityListener implements Listener {
         {
             if(attacker instanceof Player) {
 
-                if(!plugin.getWorldGuardManager().hasMainFlag((Player) attacker))
+                if(!pluginRef.getWorldGuardManager().hasMainFlag((Player) attacker))
                     return;
 
             } else if(attacker instanceof Projectile) {
@@ -295,7 +297,7 @@ public class EntityListener implements Listener {
                 Projectile projectile = (Projectile) attacker;
 
                 if(projectile.getShooter() instanceof Player) {
-                    if(!plugin.getWorldGuardManager().hasMainFlag((Player) projectile.getShooter()))
+                    if(!pluginRef.getWorldGuardManager().hasMainFlag((Player) projectile.getShooter()))
                         return;
                 }
 
@@ -406,7 +408,7 @@ public class EntityListener implements Listener {
         }
 
         CombatUtils.processCombatAttack(event, attacker, target);
-        CombatUtils.handleHealthbars(attacker, target, event.getFinalDamage(), plugin);
+        CombatUtils.handleHealthbars(attacker, target, event.getFinalDamage(), pluginRef);
 
         /**
          * This sets entity names back to whatever they are supposed to be
@@ -459,7 +461,7 @@ public class EntityListener implements Listener {
             Player player = (Player) event.getEntity();
             /* WORLD GUARD MAIN FLAG CHECK */
             if (WorldGuardUtils.isWorldGuardLoaded()) {
-                if (!plugin.getWorldGuardManager().hasMainFlag(player))
+                if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                     return;
             }
         }
@@ -468,7 +470,7 @@ public class EntityListener implements Listener {
          * Process Registered Interactions
          */
 
-        InteractionManager.processEvent(event, plugin, InteractType.ON_ENTITY_DAMAGE);
+        InteractionManager.processEvent(event, pluginRef, InteractType.ON_ENTITY_DAMAGE);
 
         /*
          * Old code
@@ -537,7 +539,7 @@ public class EntityListener implements Listener {
                 Player player = (Player) owner;
                 /* WORLD GUARD MAIN FLAG CHECK */
                 if (WorldGuardUtils.isWorldGuardLoaded()) {
-                    if (!plugin.getWorldGuardManager().hasMainFlag(player))
+                    if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                         return;
                 }
             }
@@ -630,16 +632,16 @@ public class EntityListener implements Listener {
 
         if (entity.hasMetadata(MetadataConstants.CUSTOM_NAME_METAKEY)) {
             entity.setCustomName(entity.getMetadata(MetadataConstants.CUSTOM_NAME_METAKEY).get(0).asString());
-            entity.removeMetadata(MetadataConstants.CUSTOM_NAME_METAKEY, plugin);
+            entity.removeMetadata(MetadataConstants.CUSTOM_NAME_METAKEY, pluginRef);
         }
 
         if (entity.hasMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY)) {
             entity.setCustomNameVisible(entity.getMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY).get(0).asBoolean());
-            entity.removeMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY, plugin);
+            entity.removeMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY, pluginRef);
         }
 
         if (entity.hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY)) {
-            entity.removeMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, plugin);
+            entity.removeMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, pluginRef);
         }
     }
 
@@ -718,7 +720,7 @@ public class EntityListener implements Listener {
 
         // We can make this assumption because we (should) be the only ones
         // using this exact metadata
-        Player player = plugin.getServer().getPlayerExact(entity.getMetadata(MetadataConstants.TNT_TRACKING_METAKEY).get(0).asString());
+        Player player = pluginRef.getServer().getPlayerExact(entity.getMetadata(MetadataConstants.TNT_TRACKING_METAKEY).get(0).asString());
 
         if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
             return;
@@ -731,7 +733,7 @@ public class EntityListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!plugin.getWorldGuardManager().hasMainFlag(player))
+            if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -761,7 +763,7 @@ public class EntityListener implements Listener {
 
         // We can make this assumption because we (should) be the only ones
         // using this exact metadata
-        Player player = plugin.getServer().getPlayerExact(entity.getMetadata(MetadataConstants.TNT_TRACKING_METAKEY).get(0).asString());
+        Player player = pluginRef.getServer().getPlayerExact(entity.getMetadata(MetadataConstants.TNT_TRACKING_METAKEY).get(0).asString());
 
         if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
             return;
@@ -769,7 +771,7 @@ public class EntityListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!plugin.getWorldGuardManager().hasMainFlag(player))
+            if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -832,7 +834,7 @@ public class EntityListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!plugin.getWorldGuardManager().hasMainFlag(player))
+            if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -933,7 +935,7 @@ public class EntityListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!plugin.getWorldGuardManager().hasMainFlag(player))
+            if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 
@@ -979,7 +981,7 @@ public class EntityListener implements Listener {
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (!plugin.getWorldGuardManager().hasMainFlag(player))
+            if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
 

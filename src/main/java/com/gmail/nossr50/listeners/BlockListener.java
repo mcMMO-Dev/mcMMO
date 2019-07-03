@@ -73,30 +73,6 @@ public class BlockListener implements Listener {
             event.getBlock().removeMetadata(MetadataConstants.BONUS_DROPS_METAKEY, pluginRef);
     }
 
-    /*@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockDropItemEvent(BlockDropItemEvent event)
-    {
-        for(Item item : event.getItems())
-        {
-            ItemStack is = new ItemStack(item.getItemStack());
-
-            if(event.getBlock().getMetadata(mcMMO.doubleDrops).size() > 0)
-            {
-                List<MetadataValue> metadataValue = event.getBlock().getMetadata(mcMMO.doubleDrops);
-
-                BonusDrops bonusDrops = (BonusDrops) metadataValue.get(0);
-                Collection<ItemStack> potentialDrops = (Collection<ItemStack>) bonusDrops.value();
->>>>>>> 2746bac86ac8b201960ac47bc19eac4b84d790a0
-
-                for (int i = 0; i < bonusCount; i++) {
-                    event.getBlock().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                }
-
-                event.getBlock().removeMetadata(MetadataConstants.BONUS_DROPS_METAKEY, plugin);
-            }
-        }
-    }
-
     /**
      * Monitor BlockPistonExtend events.
      *

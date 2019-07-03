@@ -40,7 +40,7 @@ public abstract class AbstractSubSkill implements SubSkill, Interaction, Rank, S
     public void printInfo(Player player) {
         /* DEFAULT SETTINGS PRINT THE BARE MINIMUM */
 
-        //TextComponentFactory.sendPlayerUrlHeader(player);
+        //pluginRef.getTextComponentFactory().sendPlayerUrlHeader(player);
         player.sendMessage(pluginRef.getLocaleManager().getString("Commands.MmoInfo.Header"));
         player.sendMessage(pluginRef.getLocaleManager().getString("Commands.MmoInfo.SubSkillHeader", getConfigKeyName()));
         player.sendMessage(pluginRef.getLocaleManager().getString("Commands.MmoInfo.DetailsHeader"));

@@ -462,7 +462,7 @@ public final class PartyManager {
     public void createParty(McMMOPlayer mcMMOPlayer, String partyName, String password) {
         Player player = mcMMOPlayer.getPlayer();
 
-        Party party = new Party(new PartyLeader(player.getUniqueId(), player.getName()), partyName.replace(".", ""), password);
+        Party party = new Party(new PartyLeader(player.getUniqueId(), player.getName()), partyName.replace(".", ""), password, pluginRef);
 
         if (password != null) {
             player.sendMessage(pluginRef.getLocaleManager().getString("Party.Password.Set", password));

@@ -16,10 +16,10 @@ import org.bukkit.event.world.WorldUnloadEvent;
 import java.io.File;
 
 public class WorldListener implements Listener {
-    private final mcMMO plugin;
+    private final mcMMO pluginRef;
 
-    public WorldListener(final mcMMO plugin) {
-        this.plugin = plugin;
+    public WorldListener(final mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
     }
 
     /**
@@ -55,11 +55,11 @@ public class WorldListener implements Listener {
 
         World world = event.getWorld();
 
-        if (!new File(world.getWorldFolder(), "mcmmo_data").exists() || plugin == null) {
+        if (!new File(world.getWorldFolder(), "mcmmo_data").exists() || pluginRef == null) {
             return;
         }
 
-        plugin.getLogger().info("Converting block storage for " + world.getName() + " to a new format.");
+        pluginRef.getLogger().info("Converting block storage for " + world.getName() + " to a new format.");
 
         //new BlockStoreConversionMain(world).run();
     }

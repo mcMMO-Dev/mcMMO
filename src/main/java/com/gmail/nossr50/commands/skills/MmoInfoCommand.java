@@ -78,7 +78,7 @@ public class MmoInfoCommand implements TabExecutor {
         if (abstractSubSkill != null) {
             /* New System Skills are programmable */
             abstractSubSkill.printInfo(player);
-            //TextComponentFactory.sendPlayerUrlHeader(player);
+            //pluginRef.getTextComponentFactory().sendPlayerUrlHeader(player);
         } else {
             /*
              * Skill is only in the old system
@@ -95,6 +95,6 @@ public class MmoInfoCommand implements TabExecutor {
         }
 
         //Send Player Wiki Link
-        TextComponentFactory.sendPlayerSubSkillWikiLink(player, subSkillName);
+        pluginRef.getTextComponentFactory().sendPlayerSubSkillWikiLink(player, subSkillName);
     }
 }
