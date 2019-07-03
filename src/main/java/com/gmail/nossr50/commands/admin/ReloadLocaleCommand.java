@@ -21,7 +21,9 @@ public final class ReloadLocaleCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
             if (!Permissions.reloadlocale(sender)) {
-                sender.sendMessage(command.getPermissionMessage());
+                if(command.getPermissionMessage() != null)
+                    sender.sendMessage(command.getPermissionMessage());
+
                 return true;
             }
 

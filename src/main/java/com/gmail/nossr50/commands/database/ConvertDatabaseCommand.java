@@ -28,12 +28,12 @@ public class ConvertDatabaseCommand implements CommandExecutor {
                 DatabaseType previousType = DatabaseType.getDatabaseType(args[1]);
                 DatabaseType newType = pluginRef.getDatabaseManager().getDatabaseType();
 
-                if (previousType == newType || (newType == DatabaseType.CUSTOM && DatabaseManagerFactory.getCustomDatabaseManagerClass().getSimpleName().equalsIgnoreCase(args[1]))) {
+                if (previousType == newType || (newType == DatabaseType.CUSTOM && pluginRef.getDatabaseManagerFactory().getCustomDatabaseManagerClass().getSimpleName().equalsIgnoreCase(args[1]))) {
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mcconvert.Database.Same", newType.toString()));
                     return true;
                 }
 
-                DatabaseManager oldDatabase = DatabaseManagerFactory.createDatabaseManager(previousType);
+                DatabaseManager oldDatabase = pluginRef.getDatabaseManagerFactory().createDatabaseManager(previousType);
 
                 if (previousType == DatabaseType.CUSTOM) {
                     Class<?> clazz;
@@ -46,7 +46,7 @@ public class ConvertDatabaseCommand implements CommandExecutor {
                             return true;
                         }
 
-                        oldDatabase = DatabaseManagerFactory.createCustomDatabaseManager((Class<? extends DatabaseManager>) clazz);
+                        oldDatabase = pluginRef.getDatabaseManagerFactory().createCustomDatabaseManager((Class<? extends DatabaseManager>) clazz);
                     } catch (Throwable e) {
                         e.printStackTrace();
                         sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mcconvert.Database.InvalidType", args[1]));

@@ -9,6 +9,7 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.player.UniqueDataType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
@@ -18,17 +19,27 @@ import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 public final class SQLDatabaseManager implements DatabaseManager {
-    public static final String COM_MYSQL_JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String ALL_QUERY_VERSION = "total";
+    private mcMMO pluginRef;
+    public final String COM_MYSQL_JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    private final String ALL_QUERY_VERSION = "total";
     private final Map<UUID, Integer> cachedUserIDs = new HashMap<>();
     private String tablePrefix = pluginRef.getMySQLConfigSettings().getConfigSectionDatabase().getTablePrefix();
     private DataSource miscPool;
     private DataSource loadPool;
     private DataSource savePool;
 
+    //How long since a users last login before we purge them
+    long purgeTime;
+    // During convertUsers, how often to output a status
+    int progressInterval;
+
     private ReentrantLock massUpdateLock = new ReentrantLock();
 
-    protected SQLDatabaseManager() {
+    protected SQLDatabaseManager(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+        purgeTime = 2630000000L * pluginRef.getDatabaseCleaningSettings().getOldUserCutoffMonths();
+        progressInterval = 200;
+
         String connectionString = "jdbc:mysql://" + pluginRef.getMySQLConfigSettings().getUserConfigSectionServer().getServerAddress()
                 + ":" + pluginRef.getMySQLConfigSettings().getUserConfigSectionServer().getServerPort() + "/" + pluginRef.getMySQLConfigSettings().getConfigSectionDatabase().getDatabaseName();
 
@@ -148,7 +159,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     public void purgeOldUsers() {
         massUpdateLock.lock();
-        pluginRef.getLogger().info("Purging inactive users older than " + (PURGE_TIME / 2630000000L) + " months...");
+        pluginRef.getLogger().info("Purging inactive users older than " + (purgeTime / 2630000000L) + " months...");
 
         Connection connection = null;
         Statement statement = null;
@@ -163,7 +174,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
                     "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
                     "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
-                    "WHERE ((UNIX_TIMESTAMP() - lastlogin) > " + PURGE_TIME + ")");
+                    "WHERE ((UNIX_TIMESTAMP() - lastlogin) > " + purgeTime + ")");
         } catch (SQLException ex) {
             printErrors(ex);
         } finally {

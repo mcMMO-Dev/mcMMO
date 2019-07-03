@@ -49,7 +49,7 @@ public class ConvertCommand implements TabExecutor {
         databaseTypes.remove(DatabaseType.CUSTOM.toString());
 
         if (pluginRef.getDatabaseManager().getDatabaseType() == DatabaseType.CUSTOM) {
-            databaseTypes.add(DatabaseManagerFactory.getCustomDatabaseManagerClass().getName());
+            databaseTypes.add(pluginRef.getDatabaseManagerFactory().getCustomDatabaseManagerClass().getName());
         }
 
         Collections.sort(formulaTypes);

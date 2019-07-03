@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands;
 
-import com.gmail.nossr50.database.FlatfileDatabaseManager;
+import com.gmail.nossr50.database.FlatFileDatabaseManager;
 import com.gmail.nossr50.database.SQLDatabaseManager;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
@@ -23,17 +23,17 @@ public class ResetUserHealthBarSettingsCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (pluginRef.getDatabaseManager() instanceof SQLDatabaseManager) {
-            SQLDatabaseManager m = (SQLDatabaseManager) pluginRef.getDatabaseManager();
-            m.resetMobHealthSettings();
+            SQLDatabaseManager sqlDatabaseManager = (SQLDatabaseManager) pluginRef.getDatabaseManager();
+            sqlDatabaseManager.resetMobHealthSettings();
             for (McMMOPlayer player : UserManager.getPlayers()) {
                 player.getProfile().setMobHealthbarType(pluginRef.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType());
             }
             sender.sendMessage("Mob health reset");
             return true;
         }
-        if (pluginRef.getDatabaseManager() instanceof FlatfileDatabaseManager) {
-            FlatfileDatabaseManager m = (FlatfileDatabaseManager) pluginRef.getDatabaseManager();
-            m.resetMobHealthSettings();
+        if (pluginRef.getDatabaseManager() instanceof FlatFileDatabaseManager) {
+            FlatFileDatabaseManager flatFileDatabaseManager = (FlatFileDatabaseManager) pluginRef.getDatabaseManager();
+            flatFileDatabaseManager.resetMobHealthSettings();
             for (McMMOPlayer player : UserManager.getPlayers()) {
                 player.getProfile().setMobHealthbarType(pluginRef.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType());
             }

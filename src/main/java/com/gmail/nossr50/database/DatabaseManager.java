@@ -10,11 +10,6 @@ import java.util.Map;
 import java.util.UUID;
 
 public interface DatabaseManager {
-    // One month in milliseconds
-    long PURGE_TIME = 2630000000L * pluginRef.getDatabaseCleaningSettings().getOldUserCutoffMonths();
-    // During convertUsers, how often to output a status
-    int progressInterval = 200;
-
     /**
      * Purge users with 0 power level from the database.
      */

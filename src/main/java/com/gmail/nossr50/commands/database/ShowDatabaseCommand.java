@@ -20,7 +20,7 @@ public class ShowDatabaseCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
-            Class<?> clazz = DatabaseManagerFactory.getCustomDatabaseManagerClass();
+            Class<?> clazz = pluginRef.getDatabaseManagerFactory().getCustomDatabaseManagerClass();
 
             if (clazz != null) {
                 sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mmoshowdb", clazz.getName()));

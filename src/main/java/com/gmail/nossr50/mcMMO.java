@@ -60,6 +60,7 @@ public class mcMMO extends JavaPlugin {
     private ChunkManager placeStore;
     private ConfigManager configManager;
     private DynamicSettingsManager dynamicSettingsManager;
+    private DatabaseManagerFactory databaseManagerFactory;
     private DatabaseManager databaseManager;
     private FormulaManager formulaManager;
     private MaterialMapStore materialMapStore;
@@ -120,7 +121,9 @@ public class mcMMO extends JavaPlugin {
                 getLogger().warning("mcMMO will not work properly alongside NoCheatPlus without CompatNoCheatPlus");
             }
 
-            databaseManager = DatabaseManagerFactory.getDatabaseManager();
+            //TODO: Strange design...
+            databaseManagerFactory = new DatabaseManagerFactory(this);
+            databaseManager = getDatabaseManagerFactory().getDatabaseManager();
 
             //Check for the newer API and tell them what to do if its missing
             CompatibilityCheck.checkForOutdatedAPI(serverAPIOutdated, getServerSoftwareStr());
@@ -650,5 +653,9 @@ public class mcMMO extends JavaPlugin {
 
     public CommandTools getCommandTools() {
         return commandTools;
+    }
+
+    public DatabaseManagerFactory getDatabaseManagerFactory() {
+        return databaseManagerFactory;
     }
 }

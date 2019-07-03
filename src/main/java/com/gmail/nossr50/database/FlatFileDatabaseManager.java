@@ -7,6 +7,7 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.player.UniqueDataType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.OfflinePlayer;
@@ -14,59 +15,70 @@ import org.bukkit.OfflinePlayer;
 import java.io.*;
 import java.util.*;
 
-public final class FlatfileDatabaseManager implements DatabaseManager {
-    private static final Object fileWritingLock = new Object();
-    public static int USERNAME = 0;
-    public static int SKILLS_MINING = 1;
-    public static int EXP_MINING = 4;
-    public static int SKILLS_WOODCUTTING = 5;
-    public static int EXP_WOODCUTTING = 6;
-    public static int SKILLS_REPAIR = 7;
-    public static int SKILLS_UNARMED = 8;
-    public static int SKILLS_HERBALISM = 9;
-    public static int SKILLS_EXCAVATION = 10;
-    public static int SKILLS_ARCHERY = 11;
-    public static int SKILLS_SWORDS = 12;
-    public static int SKILLS_AXES = 13;
-    public static int SKILLS_ACROBATICS = 14;
-    public static int EXP_REPAIR = 15;
-    public static int EXP_UNARMED = 16;
-    public static int EXP_HERBALISM = 17;
-    public static int EXP_EXCAVATION = 18;
-    public static int EXP_ARCHERY = 19;
-    public static int EXP_SWORDS = 20;
-    public static int EXP_AXES = 21;
-    public static int EXP_ACROBATICS = 22;
-    public static int SKILLS_TAMING = 24;
-    public static int EXP_TAMING = 25;
-    public static int COOLDOWN_BERSERK = 26;
-    public static int COOLDOWN_GIGA_DRILL_BREAKER = 27;
-    public static int COOLDOWN_TREE_FELLER = 28;
-    public static int COOLDOWN_GREEN_TERRA = 29;
-    public static int COOLDOWN_SERRATED_STRIKES = 30;
-    public static int COOLDOWN_SKULL_SPLITTER = 31;
-    public static int COOLDOWN_SUPER_BREAKER = 32;
-    public static int SKILLS_FISHING = 34;
-    public static int EXP_FISHING = 35;
-    public static int COOLDOWN_BLAST_MINING = 36;
-    public static int LAST_LOGIN = 37;
-    public static int HEALTHBAR = 38;
-    public static int SKILLS_ALCHEMY = 39;
-    public static int EXP_ALCHEMY = 40;
-    public static int UUID_INDEX = 41;
-    public static int SCOREBOARD_TIPS = 42;
-    public static int COOLDOWN_CHIMAERA_WING = 43;
+public final class FlatFileDatabaseManager implements DatabaseManager {
+    private mcMMO pluginRef;
+    private final Object fileWritingLock = new Object();
+    private int USERNAME = 0;
+    private int SKILLS_MINING = 1;
+    private int EXP_MINING = 4;
+    private int SKILLS_WOODCUTTING = 5;
+    private int EXP_WOODCUTTING = 6;
+    private int SKILLS_REPAIR = 7;
+    private int SKILLS_UNARMED = 8;
+    private int SKILLS_HERBALISM = 9;
+    private int SKILLS_EXCAVATION = 10;
+    private int SKILLS_ARCHERY = 11;
+    private int SKILLS_SWORDS = 12;
+    private int SKILLS_AXES = 13;
+    private int SKILLS_ACROBATICS = 14;
+    private int EXP_REPAIR = 15;
+    private int EXP_UNARMED = 16;
+    private int EXP_HERBALISM = 17;
+    private int EXP_EXCAVATION = 18;
+    private int EXP_ARCHERY = 19;
+    private int EXP_SWORDS = 20;
+    private int EXP_AXES = 21;
+    private int EXP_ACROBATICS = 22;
+    private int SKILLS_TAMING = 24;
+    private int EXP_TAMING = 25;
+    private int COOLDOWN_BERSERK = 26;
+    private int COOLDOWN_GIGA_DRILL_BREAKER = 27;
+    private int COOLDOWN_TREE_FELLER = 28;
+    private int COOLDOWN_GREEN_TERRA = 29;
+    private int COOLDOWN_SERRATED_STRIKES = 30;
+    private int COOLDOWN_SKULL_SPLITTER = 31;
+    private int COOLDOWN_SUPER_BREAKER = 32;
+    private int SKILLS_FISHING = 34;
+    private int EXP_FISHING = 35;
+    private int COOLDOWN_BLAST_MINING = 36;
+    private int LAST_LOGIN = 37;
+    private int HEALTHBAR = 38;
+    private int SKILLS_ALCHEMY = 39;
+    private int EXP_ALCHEMY = 40;
+    private int UUID_INDEX = 41;
+    private int SCOREBOARD_TIPS = 42;
+    private int COOLDOWN_CHIMAERA_WING = 43;
     private final HashMap<PrimarySkillType, List<PlayerStat>> playerStatHash = new HashMap<>();
     private final List<PlayerStat> powerLevels = new ArrayList<>();
     private final File usersFile;
     private long lastUpdate = 0;
     private long updateWaitTime;
 
-    protected FlatfileDatabaseManager() {
+    //How long since a users last login before we purge them
+    long purgeTime;
+    // During convertUsers, how often to output a status
+    int progressInterval;
+
+    protected FlatFileDatabaseManager(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+        purgeTime = 2630000000L * pluginRef.getDatabaseCleaningSettings().getOldUserCutoffMonths();
+        progressInterval = 200;
+
         updateWaitTime = pluginRef.getConfigManager().getConfigDatabase().getConfigDatabaseFlatFile().getLeaderboardUpdateIntervalMinutes() * (1000 * 60);
         usersFile = new File(pluginRef.getUsersFilePath());
         checkStructure();
         updateLeaderboards();
+
 
         /*if (mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.ADD_UUIDS)) {
             new UUIDUpdateAsyncTask(mcMMO.p, getStoredUsers()).runTaskAsynchronously(mcMMO.p);
@@ -168,7 +180,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         rewrite = true;
                     }
 
-                    if (currentTime - lastPlayed > PURGE_TIME) {
+                    if (currentTime - lastPlayed > purgeTime) {
                         removedPlayers++;
                     } else {
                         if (rewrite) {

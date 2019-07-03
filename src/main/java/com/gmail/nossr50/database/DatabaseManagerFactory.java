@@ -1,11 +1,17 @@
 package com.gmail.nossr50.database;
 
 import com.gmail.nossr50.datatypes.database.DatabaseType;
+import com.gmail.nossr50.mcMMO;
 
 public class DatabaseManagerFactory {
-    private static Class<? extends DatabaseManager> customManager = null;
+    private mcMMO pluginRef;
+    private Class<? extends DatabaseManager> customManager = null;
 
-    public static DatabaseManager getDatabaseManager() {
+    public DatabaseManagerFactory(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
+
+    public DatabaseManager getDatabaseManager() {
         if (customManager != null) {
             try {
                 return createDefaultCustomDatabaseManager();
@@ -19,10 +25,10 @@ public class DatabaseManagerFactory {
             pluginRef.debug("Falling back on " + (pluginRef.getMySQLConfigSettings().isMySQLEnabled() ? "SQL" : "Flatfile") + " database");
         }
 
-        return pluginRef.getMySQLConfigSettings().isMySQLEnabled() ? new SQLDatabaseManager() : new FlatfileDatabaseManager();
+        return pluginRef.getMySQLConfigSettings().isMySQLEnabled() ? new SQLDatabaseManager(pluginRef) : new FlatFileDatabaseManager(pluginRef);
     }
 
-    public static Class<? extends DatabaseManager> getCustomDatabaseManagerClass() {
+    public Class<? extends DatabaseManager> getCustomDatabaseManagerClass() {
         return customManager;
     }
 
@@ -41,7 +47,7 @@ public class DatabaseManagerFactory {
      * @throws IllegalArgumentException if the provided class does not have
      *                                  an empty constructor
      */
-    public static void setCustomDatabaseManagerClass(Class<? extends DatabaseManager> clazz) {
+    public void setCustomDatabaseManagerClass(Class<? extends DatabaseManager> clazz) {
         try {
             clazz.getConstructor();
             customManager = clazz;
@@ -50,13 +56,13 @@ public class DatabaseManagerFactory {
         }
     }
 
-    public static DatabaseManager createDatabaseManager(DatabaseType type) {
+    public DatabaseManager createDatabaseManager(DatabaseType type) {
         switch (type) {
             case FLATFILE:
-                return new FlatfileDatabaseManager();
+                return new FlatFileDatabaseManager(pluginRef);
 
             case SQL:
-                return new SQLDatabaseManager();
+                return new SQLDatabaseManager(pluginRef);
 
             case CUSTOM:
                 try {
@@ -70,7 +76,7 @@ public class DatabaseManagerFactory {
         }
     }
 
-    public static DatabaseManager createDefaultCustomDatabaseManager() throws Throwable {
+    public DatabaseManager createDefaultCustomDatabaseManager() throws Throwable {
         return customManager.getConstructor().newInstance();
     }
 
