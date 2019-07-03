@@ -7,7 +7,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;

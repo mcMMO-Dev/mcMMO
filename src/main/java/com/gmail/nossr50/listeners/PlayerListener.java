@@ -11,7 +11,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;

@@ -9,7 +9,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;

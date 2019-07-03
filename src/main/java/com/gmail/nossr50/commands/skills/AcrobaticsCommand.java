@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import net.md_5.bungee.api.chat.TextComponent;

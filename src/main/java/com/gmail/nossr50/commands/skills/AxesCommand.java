@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.axes.Axes;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;

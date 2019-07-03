@@ -85,6 +85,11 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }*/
     }
 
+    @Override
+    public int getDatabaseProgressPrintInterval() {
+        return progressInterval;
+    }
+
     public void purgePowerlessUsers() {
         int purgedUsers = 0;
 

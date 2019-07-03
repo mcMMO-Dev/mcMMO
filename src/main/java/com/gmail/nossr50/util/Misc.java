@@ -180,12 +180,6 @@ public final class Misc {
         }
     }
 
-    public static void printProgress(int convertedUsers, int progressInterval, long startMillis) {
-        if ((convertedUsers % progressInterval) == 0) {
-            pluginRef.getLogger().info(String.format("Conversion progress: %d users at %.2f users/second", convertedUsers, convertedUsers / (double) ((System.currentTimeMillis() - startMillis) / TIME_CONVERSION_FACTOR)));
-        }
-    }
-
     public static String getModName(String materialName) {
         for (String mod : modNames) {
             if (materialName.contains(mod)) {

@@ -1,19 +1,28 @@
 package com.gmail.nossr50.runnables.database;
 
-import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
 
+//TODO: PUUUUUUUUUUURGE
+/**
+ * This whole design of this thing is Jank
+ * The name is Jank
+ * Everything about this is Jank
+ *
+ * Fix this at some point in the future
+ */
 public class FormulaConversionTask extends BukkitRunnable {
     private CommandSender sender;
     private FormulaType previousFormula;
+    private mcMMO pluginRef;
 
-    public FormulaConversionTask(CommandSender sender, FormulaType previousFormula) {
+    public FormulaConversionTask(mcMMO pluginRef, CommandSender sender, FormulaType previousFormula) {
+        this.pluginRef = pluginRef;
         this.sender = sender;
         this.previousFormula = previousFormula;
     }
@@ -43,7 +52,7 @@ public class FormulaConversionTask extends BukkitRunnable {
                 editValues(profile);
             }
             convertedUsers++;
-            Misc.printProgress(convertedUsers, DatabaseManager.progressInterval, startMillis);
+            pluginRef.getDatabaseManager().printProgress(convertedUsers, startMillis, pluginRef.getLogger());
         }
 
         sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mcconvert.Experience.Finish", pluginRef.getConfigManager().getConfigLeveling().getConfigExperienceFormula().toString()));

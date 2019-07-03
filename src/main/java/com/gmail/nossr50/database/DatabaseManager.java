@@ -8,6 +8,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public interface DatabaseManager {
     /**
@@ -28,6 +29,19 @@ public interface DatabaseManager {
      * @return true if the user was successfully removed, false otherwise
      */
     public boolean removeUser(String playerName, UUID uuid);
+
+    /**
+     * Prints progress on long database operations
+     * @param convertedUsers amount of users converted so far
+     * @param startMillis the start time stamp in millis
+     * @param logger logger
+     */
+    //TODO: Hacky fix, cleanup later
+    default void printProgress(int convertedUsers, long startMillis, Logger logger) {
+        if ((convertedUsers % getDatabaseProgressPrintInterval()) == 0) {
+            logger.info(String.format("Conversion progress: %d users at %.2f users/second", convertedUsers, convertedUsers / (double) ((System.currentTimeMillis() - startMillis) / 1000)));
+        }
+    }
 
     /**
      * Removes any cache used for faster lookups
@@ -124,6 +138,12 @@ public interface DatabaseManager {
     boolean saveUserUUID(String userName, UUID uuid);
 
     boolean saveUserUUIDs(Map<String, UUID> fetchedUUIDs);
+
+    /**
+     * Gets the interval in which any task that does an operation over the whole database should print progress updates to console
+     * @return the interval in which progress should be reported for database wide operations
+     */
+    int getDatabaseProgressPrintInterval();
 
     /**
      * Retrieve the type of database in use. Custom databases should return CUSTOM.

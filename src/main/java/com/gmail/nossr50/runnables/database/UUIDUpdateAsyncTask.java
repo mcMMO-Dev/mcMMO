@@ -1,8 +1,6 @@
 package com.gmail.nossr50.runnables.database;
 
-import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.uuid.UUIDFetcher;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -13,19 +11,19 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 public class UUIDUpdateAsyncTask extends BukkitRunnable {
-    private mcMMO plugin;
-    private static final int MAX_LOOKUP = 100;
-    private static final int RATE_LIMIT = 300;
-    private static final long LIMIT_PERIOD = 6000;
-    private static final int BATCH_SIZE = MAX_LOOKUP * 3;
+    private mcMMO pluginRef;
+    private final int MAX_LOOKUP = 100;
+    private final int RATE_LIMIT = 300;
+    private final long LIMIT_PERIOD = 6000;
+    private final int BATCH_SIZE = MAX_LOOKUP * 3;
 
     private List<String> userNames;
     private int size;
     private int checkedUsers;
     private long startMillis;
 
-    public UUIDUpdateAsyncTask(mcMMO plugin, List<String> userNames) {
-        this.plugin = plugin;
+    public UUIDUpdateAsyncTask(mcMMO pluginRef, List<String> userNames) {
+        this.pluginRef = pluginRef;
         this.userNames = userNames;
 
         this.checkedUsers = 0;
@@ -36,7 +34,7 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
     public void run() {
         size = userNames.size();
 
-        plugin.getLogger().info("Starting to check and update UUIDs, total amount of users: " + size);
+        pluginRef.getLogger().info("Starting to check and update UUIDs, total amount of users: " + size);
 
         List<String> userNamesSection;
         Map<String, UUID> fetchedUUIDs = new HashMap<String, UUID>();
@@ -77,7 +75,7 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
                     }
                 }
 
-                plugin.getLogger().log(Level.SEVERE, "Unable to fetch UUIDs!", e);
+                pluginRef.getLogger().log(Level.SEVERE, "Unable to fetch UUIDs!", e);
                 return;
             }
 
@@ -85,7 +83,8 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
             userNamesSection.clear();
             size = userNames.size();
 
-            Misc.printProgress(checkedUsers, DatabaseManager.progressInterval, startMillis);
+            pluginRef.getDatabaseManager().printProgress(checkedUsers, startMillis, pluginRef.getLogger());
+
             if (fetchedUUIDs.size() >= BATCH_SIZE) {
                 pluginRef.getDatabaseManager().saveUserUUIDs(fetchedUUIDs);
                 fetchedUUIDs = new HashMap<String, UUID>();
@@ -94,7 +93,7 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
 
         if (fetchedUUIDs.size() == 0 || pluginRef.getDatabaseManager().saveUserUUIDs(fetchedUUIDs)) {
             //mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_UUIDS);
-            plugin.getLogger().info("UUID upgrade completed!");
+            pluginRef.getLogger().info("UUID upgrade completed!");
         }
     }
 }

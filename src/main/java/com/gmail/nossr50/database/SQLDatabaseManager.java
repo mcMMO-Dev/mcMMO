@@ -23,7 +23,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private final String COM_MYSQL_JDBC_DRIVER = "com.mysql.jdbc.Driver";
     private final String ALL_QUERY_VERSION = "total";
     private final Map<UUID, Integer> cachedUserIDs = new HashMap<>();
-    private String tablePrefix = pluginRef.getMySQLConfigSettings().getConfigSectionDatabase().getTablePrefix();
+    private String tablePrefix;
     private DataSource miscPool;
     private DataSource loadPool;
     private DataSource savePool;
@@ -37,6 +37,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     protected SQLDatabaseManager(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
+
+        tablePrefix = pluginRef.getMySQLConfigSettings().getConfigSectionDatabase().getTablePrefix();
         purgeTime = 2630000000L * pluginRef.getDatabaseCleaningSettings().getOldUserCutoffMonths();
         progressInterval = 200;
 
@@ -111,6 +113,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
         poolProperties.setValidationInterval(30000);
 
         return poolProperties;
+    }
+
+    @Override
+    public int getDatabaseProgressPrintInterval() {
+        return progressInterval;
     }
 
     public void purgePowerlessUsers() {
