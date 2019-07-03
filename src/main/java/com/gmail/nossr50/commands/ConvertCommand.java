@@ -17,16 +17,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class McconvertCommand implements TabExecutor {
+public class ConvertCommand implements TabExecutor {
     private List<String> FORMULA_TYPES;
     private List<String> DATABASE_TYPES;
-    private final List<String> SUBCOMMANDS = ImmutableList.of("database", "experience");
+    private final List<String> CONVERSION_SUBCOMMANDS = ImmutableList.of("database", "experience");
     private CommandExecutor databaseConvertCommand;
     private CommandExecutor experienceConvertCommand;
 
     private mcMMO pluginRef;
 
-    public McconvertCommand(mcMMO pluginRef) {
+    public ConvertCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
         databaseConvertCommand = new ConvertDatabaseCommand(pluginRef);
         experienceConvertCommand = new ConvertExperienceCommand(pluginRef);
@@ -79,7 +79,7 @@ public class McconvertCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         switch (args.length) {
             case 1:
-                return StringUtil.copyPartialMatches(args[0], SUBCOMMANDS, new ArrayList<>(SUBCOMMANDS.size()));
+                return StringUtil.copyPartialMatches(args[0], CONVERSION_SUBCOMMANDS, new ArrayList<>(CONVERSION_SUBCOMMANDS.size()));
             case 2:
                 if (args[1].equalsIgnoreCase("database") || args[1].equalsIgnoreCase("db")) {
                     return StringUtil.copyPartialMatches(args[0], DATABASE_TYPES, new ArrayList<>(DATABASE_TYPES.size()));

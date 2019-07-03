@@ -8,42 +8,47 @@ import com.gmail.nossr50.util.Permissions;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class AddlevelsCommand extends ExperienceCommand {
-
-    public AddlevelsCommand(mcMMO pluginRef) {
+public class SkillEditCommand extends ExperienceCommand {
+    public SkillEditCommand(mcMMO pluginRef) {
         super(pluginRef);
     }
 
     @Override
     protected boolean permissionsCheckSelf(CommandSender sender) {
-        return Permissions.addlevels(sender);
+        return Permissions.mmoedit(sender);
     }
 
     @Override
     protected boolean permissionsCheckOthers(CommandSender sender) {
-        return Permissions.addlevelsOthers(sender);
+        return Permissions.mmoeditOthers(sender);
     }
 
     @Override
     protected void handleCommand(Player player, PlayerProfile profile, PrimarySkillType skill, int value) {
+        int skillLevel = profile.getSkillLevel(skill);
         double xpRemoved = profile.getSkillXpLevelRaw(skill);
-        profile.addLevels(skill, value);
+
+        profile.modifySkill(skill, value);
 
         if (player == null) {
             profile.scheduleAsyncSave();
             return;
         }
 
-        pluginRef.getEventManager().tryLevelChangeEvent(player, skill, value, xpRemoved, true, XPGainReason.COMMAND);
+        if (value == skillLevel) {
+            return;
+        }
+
+        pluginRef.getEventManager().tryLevelEditEvent(player, skill, value, xpRemoved, value > skillLevel, XPGainReason.COMMAND, skillLevel);
     }
 
     @Override
     protected void handlePlayerMessageAll(Player player, int value) {
-        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardAll.1", value));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.mmoedit.AllSkills.1", value));
     }
 
     @Override
     protected void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill) {
-        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardSkill.1", value, skill.getName()));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.mmoedit.Modified.1", skill.getName(), value));
     }
 }

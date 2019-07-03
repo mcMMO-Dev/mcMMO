@@ -8,11 +8,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-public class McmmoCommand implements CommandExecutor {
+public class McMMOCommand implements CommandExecutor {
 
     private mcMMO pluginRef;
 
-    public McmmoCommand(mcMMO pluginRef) {
+    public McMMOCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
     }
 

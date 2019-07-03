@@ -61,15 +61,6 @@ public final class CommandTools {
         return true;
     }
 
-    public boolean isOffline(CommandSender sender, OfflinePlayer player) {
-        if (player.isOnline()) {
-            return false;
-        }
-
-        sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Offline"));
-        return true;
-    }
-
     /**
      * Checks if there is a valid mcMMOPlayer object.
      *

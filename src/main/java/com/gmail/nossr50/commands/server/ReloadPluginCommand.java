@@ -9,11 +9,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class ReloadCommand implements CommandExecutor {
+public class ReloadPluginCommand implements CommandExecutor {
 
     private mcMMO pluginRef;
 
-    public ReloadCommand(mcMMO plugin) {
+    public ReloadPluginCommand(mcMMO plugin) {
         this.pluginRef = plugin;
     }
 

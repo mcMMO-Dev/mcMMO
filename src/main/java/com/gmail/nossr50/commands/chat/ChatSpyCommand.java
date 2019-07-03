@@ -2,10 +2,18 @@ package com.gmail.nossr50.commands.chat;
 
 import com.gmail.nossr50.commands.ToggleCommand;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import org.bukkit.command.CommandSender;
 
-public class McChatSpy extends ToggleCommand {
+public class ChatSpyCommand extends ToggleCommand {
+
+    private mcMMO pluginRef;
+
+    public ChatSpyCommand(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
+
     @Override
     protected boolean hasOtherPermission(CommandSender sender) {
         return Permissions.adminChatSpyOthers(sender);

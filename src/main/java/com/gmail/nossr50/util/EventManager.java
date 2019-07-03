@@ -209,7 +209,7 @@ public class EventManager {
 
     }
 
-    public boolean tryLevelChangeEvent(Player player, PrimarySkillType skill, int levelsChanged, float xpRemoved, boolean isLevelUp, XPGainReason xpGainReason) {
+    public boolean tryLevelChangeEvent(Player player, PrimarySkillType skill, int levelsChanged, double xpRemoved, boolean isLevelUp, XPGainReason xpGainReason) {
         McMMOPlayerLevelChangeEvent event = isLevelUp ? new McMMOPlayerLevelUpEvent(player, skill, levelsChanged, xpGainReason) : new McMMOPlayerLevelDownEvent(player, skill, levelsChanged, xpGainReason);
         pluginRef.getServer().getPluginManager().callEvent(event);
 
@@ -225,7 +225,7 @@ public class EventManager {
         return isCancelled;
     }
 
-    public boolean tryLevelEditEvent(Player player, PrimarySkillType skill, int levelsChanged, float xpRemoved, boolean isLevelUp, XPGainReason xpGainReason, int oldLevel) {
+    public boolean tryLevelEditEvent(Player player, PrimarySkillType skill, int levelsChanged, double xpRemoved, boolean isLevelUp, XPGainReason xpGainReason, int oldLevel) {
         McMMOPlayerLevelChangeEvent event = isLevelUp ? new McMMOPlayerLevelUpEvent(player, skill, levelsChanged - oldLevel, xpGainReason) : new McMMOPlayerLevelDownEvent(player, skill, levelsChanged, xpGainReason);
         pluginRef.getServer().getPluginManager().callEvent(event);
 

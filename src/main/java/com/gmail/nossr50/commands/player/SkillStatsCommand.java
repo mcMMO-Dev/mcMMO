@@ -11,11 +11,11 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class McstatsCommand implements TabExecutor {
+public class SkillStatsCommand implements TabExecutor {
 
     private mcMMO pluginRef;
 
-    public McstatsCommand(mcMMO pluginRef) {
+    public SkillStatsCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
     }
 

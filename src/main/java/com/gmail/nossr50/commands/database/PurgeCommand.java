@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.database;
 
-import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -9,28 +8,30 @@ import org.bukkit.command.TabExecutor;
 
 import java.util.List;
 
-public class MmoshowdbCommand implements TabExecutor {
+public class PurgeCommand implements TabExecutor {
 
     private mcMMO pluginRef;
 
-    public MmoshowdbCommand(mcMMO pluginRef) {
+    public PurgeCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length == 0) {
-            Class<?> clazz = DatabaseManagerFactory.getCustomDatabaseManagerClass();
+        switch (args.length) {
+            case 0:
+                pluginRef.getDatabaseManager().purgePowerlessUsers();
 
-            if (clazz != null) {
-                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mmoshowdb", clazz.getName()));
+                if (pluginRef.getDatabaseCleaningSettings().getOldUserCutoffMonths() != -1) {
+                    pluginRef.getDatabaseManager().purgeOldUsers();
+                }
+
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mcpurge.Success"));
                 return true;
-            }
 
-            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mmoshowdb", (pluginRef.getMySQLConfigSettings().isMySQLEnabled() ? "sql" : "flatfile")));
-            return true;
+            default:
+                return false;
         }
-        return false;
     }
 
     @Override

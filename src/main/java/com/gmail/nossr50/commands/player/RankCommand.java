@@ -18,11 +18,11 @@ import org.bukkit.util.StringUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class McrankCommand implements TabExecutor {
+public class RankCommand implements TabExecutor {
 
     private mcMMO pluginRef;
 
-    public McrankCommand(mcMMO pluginRef) {
+    public RankCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
     }
 

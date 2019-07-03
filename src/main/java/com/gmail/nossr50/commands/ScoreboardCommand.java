@@ -11,11 +11,11 @@ import org.bukkit.util.StringUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class McscoreboardCommand implements TabExecutor {
+public class ScoreboardCommand implements TabExecutor {
 
     private mcMMO pluginRef;
 
-    public McscoreboardCommand(mcMMO pluginRef) {
+    public ScoreboardCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
     }
 

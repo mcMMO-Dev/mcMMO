@@ -11,11 +11,11 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class McnotifyCommand implements TabExecutor {
+public class ChatNotificationToggleCommand implements TabExecutor {
 
     private mcMMO pluginRef;
 
-    public McnotifyCommand(mcMMO pluginRef) {
+    public ChatNotificationToggleCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
     }
 

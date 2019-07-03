@@ -20,11 +20,11 @@ import org.bukkit.util.StringUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MctopCommand implements TabExecutor {
+public class LeaderboardCommand implements TabExecutor {
 
     private mcMMO pluginRef;
 
-    public MctopCommand(mcMMO pluginRef) {
+    public LeaderboardCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
     }
 

@@ -13,11 +13,11 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class MccooldownCommand implements TabExecutor {
+public class CooldownCommand implements TabExecutor {
 
     private mcMMO pluginRef;
 
-    public MccooldownCommand(mcMMO pluginRef) {
+    public CooldownCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
     }
 

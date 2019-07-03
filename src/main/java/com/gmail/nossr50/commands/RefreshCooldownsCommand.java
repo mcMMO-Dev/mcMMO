@@ -5,11 +5,11 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import org.bukkit.command.CommandSender;
 
-public class McrefreshCommand extends ToggleCommand {
+public class RefreshCooldownsCommand extends ToggleCommand {
 
     private mcMMO pluginRef;
 
-    public McrefreshCommand(mcMMO pluginRef) {
+    public RefreshCooldownsCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
     }
 

@@ -5,11 +5,11 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import org.bukkit.command.CommandSender;
 
-public class McabilityCommand extends ToggleCommand {
+public class AbilityToggleCommand extends ToggleCommand {
 
     private mcMMO pluginRef;
 
-    public McabilityCommand(mcMMO pluginRef) {
+    public AbilityToggleCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
     }
 

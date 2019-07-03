@@ -9,11 +9,11 @@ import org.bukkit.command.CommandSender;
 /**
  * @author Mark Vainomaa
  */
-public final class McmmoReloadLocaleCommand implements CommandExecutor {
+public final class ReloadLocaleCommand implements CommandExecutor {
 
     private mcMMO pluginRef;
 
-    public McmmoReloadLocaleCommand(mcMMO pluginRef) {
+    public ReloadLocaleCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
     }
 

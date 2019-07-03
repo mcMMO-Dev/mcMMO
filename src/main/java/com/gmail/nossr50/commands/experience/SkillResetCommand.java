@@ -23,15 +23,15 @@ import java.util.UUID;
  * This class mirrors the structure of ExperienceCommand, except the
  * value/quantity argument is removed.
  */
-public class SkillresetCommand implements TabExecutor {
+public class SkillResetCommand implements TabExecutor {
 
     private mcMMO pluginRef;
 
-    public SkillresetCommand(mcMMO pluginRef) {
+    public SkillResetCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
     }
 
-    protected static void handleSenderMessage(CommandSender sender, String playerName, PrimarySkillType skill) {
+    protected void handleSenderMessage(CommandSender sender, String playerName, PrimarySkillType skill) {
         if (skill == null) {
             sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardAll.2", playerName));
         } else {

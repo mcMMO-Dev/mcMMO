@@ -206,6 +206,8 @@ public class mcMMO extends JavaPlugin {
         //Init Event Manager
         eventManager = new EventManager(this);
 
+        //Init Command Tools
+        //TODO: Better name?
         commandTools = new CommandTools(this);
     }
 

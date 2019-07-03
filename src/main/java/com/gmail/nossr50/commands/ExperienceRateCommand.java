@@ -14,11 +14,11 @@ import org.bukkit.util.StringUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class XprateCommand implements TabExecutor {
+public class ExperienceRateCommand implements TabExecutor {
 
     private mcMMO pluginRef;
 
-    public XprateCommand(mcMMO pluginRef) {
+    public ExperienceRateCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
     }
 

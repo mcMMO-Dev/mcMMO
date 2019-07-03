@@ -1,21 +1,21 @@
 package com.gmail.nossr50.util.commands;
 
 import com.gmail.nossr50.commands.*;
-import com.gmail.nossr50.commands.admin.McmmoReloadLocaleCommand;
+import com.gmail.nossr50.commands.admin.ReloadLocaleCommand;
 import com.gmail.nossr50.commands.chat.AdminChatCommand;
-import com.gmail.nossr50.commands.chat.McChatSpy;
+import com.gmail.nossr50.commands.chat.ChatSpyCommand;
 import com.gmail.nossr50.commands.chat.PartyChatCommand;
-import com.gmail.nossr50.commands.database.McpurgeCommand;
+import com.gmail.nossr50.commands.database.PurgeCommand;
 import com.gmail.nossr50.commands.database.McremoveCommand;
-import com.gmail.nossr50.commands.database.MmoshowdbCommand;
-import com.gmail.nossr50.commands.experience.AddlevelsCommand;
-import com.gmail.nossr50.commands.experience.AddxpCommand;
-import com.gmail.nossr50.commands.experience.MmoeditCommand;
-import com.gmail.nossr50.commands.experience.SkillresetCommand;
+import com.gmail.nossr50.commands.database.ShowDatabaseCommand;
+import com.gmail.nossr50.commands.experience.AddLevelsCommand;
+import com.gmail.nossr50.commands.experience.AddXPCommand;
+import com.gmail.nossr50.commands.experience.SkillEditCommand;
+import com.gmail.nossr50.commands.experience.SkillResetCommand;
 import com.gmail.nossr50.commands.party.PartyCommand;
 import com.gmail.nossr50.commands.party.teleport.PtpCommand;
 import com.gmail.nossr50.commands.player.*;
-import com.gmail.nossr50.commands.server.ReloadCommand;
+import com.gmail.nossr50.commands.server.ReloadPluginCommand;
 import com.gmail.nossr50.commands.skills.*;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
@@ -120,7 +120,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.addlevels;mcmmo.commands.addlevels.others");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.3", "addlevels", "[" + pluginRef.getLocaleManager().getString("Commands.Usage.Player") + "]", "<" + pluginRef.getLocaleManager().getString("Commands.Usage.Skill") + ">", "<" + pluginRef.getLocaleManager().getString("Commands.Usage.Level") + ">"));
-        command.setExecutor(new AddlevelsCommand());
+        command.setExecutor(new AddLevelsCommand());
     }
 
     private void registerAddxpCommand() {
@@ -129,7 +129,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.addxp;mcmmo.commands.addxp.others");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.3", "addxp", "[" + pluginRef.getLocaleManager().getString("Commands.Usage.Player") + "]", "<" + pluginRef.getLocaleManager().getString("Commands.Usage.Skill") + ">", "<" + pluginRef.getLocaleManager().getString("Commands.Usage.XP") + ">"));
-        command.setExecutor(new AddxpCommand());
+        command.setExecutor(new AddXPCommand());
     }
 
     private void registerMcgodCommand() {
@@ -138,7 +138,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.mcgod;mcmmo.commands.mcgod.others");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.1", "mcgod", "[" + pluginRef.getLocaleManager().getString("Commands.Usage.Player") + "]"));
-        command.setExecutor(new McgodCommand());
+        command.setExecutor(new GodModeCommand());
     }
 
     private void registerMmoInfoCommand() {
@@ -156,7 +156,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.mcchatspy;mcmmo.commands.mcchatspy.others");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.1", "mcchatspy", "[" + pluginRef.getLocaleManager().getString("Commands.Usage.Player") + "]"));
-        command.setExecutor(new McChatSpy());
+        command.setExecutor(new ChatSpyCommand());
     }
 
     private void registerMcrefreshCommand() {
@@ -165,7 +165,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.mcrefresh;mcmmo.commands.mcrefresh.others");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.1", "mcrefresh", "[" + pluginRef.getLocaleManager().getString("Commands.Usage.Player") + "]"));
-        command.setExecutor(new McrefreshCommand());
+        command.setExecutor(new RefreshCooldownsCommand());
     }
 
     private void registerMmoeditCommand() {
@@ -174,7 +174,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.mmoedit;mcmmo.commands.mmoedit.others");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.3", "mmoedit", "[" + pluginRef.getLocaleManager().getString("Commands.Usage.Player") + "]", "<" + pluginRef.getLocaleManager().getString("Commands.Usage.Skill") + ">", "<" + pluginRef.getLocaleManager().getString("Commands.Usage.Level") + ">"));
-        command.setExecutor(new MmoeditCommand());
+        command.setExecutor(new SkillEditCommand());
     }
 
     private void registerMcmmoReloadCommand() {
@@ -183,7 +183,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.reload");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.0", "mcmmoreload"));
-        command.setExecutor(new ReloadCommand(pluginRef));
+        command.setExecutor(new ReloadPluginCommand(pluginRef));
     }
 
     private void registerSkillresetCommand() {
@@ -192,7 +192,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.skillreset;mcmmo.commands.skillreset.others"); // Only need the main ones, not the individual skill ones
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.2", "skillreset", "[" + pluginRef.getLocaleManager().getString("Commands.Usage.Player") + "]", "<" + pluginRef.getLocaleManager().getString("Commands.Usage.Skill") + ">"));
-        command.setExecutor(new SkillresetCommand());
+        command.setExecutor(new SkillResetCommand());
     }
 
     private void registerXprateCommand() {
@@ -206,7 +206,7 @@ public final class CommandRegistrationManager {
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.2", "xprate", "<" + pluginRef.getLocaleManager().getString("Commands.Usage.Rate") + ">", "<true|false>"));
         command.setUsage(command.getUsage() + "\n" + pluginRef.getLocaleManager().getString("Commands.Usage.1", "xprate", "reset"));
         command.setAliases(aliasList);
-        command.setExecutor(new XprateCommand());
+        command.setExecutor(new ExperienceRateCommand());
     }
 
     private void registerInspectCommand() {
@@ -224,7 +224,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.mccooldown");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.0", "mccooldowns"));
-        command.setExecutor(new MccooldownCommand());
+        command.setExecutor(new CooldownCommand());
     }
 
     private void registerMcabilityCommand() {
@@ -233,7 +233,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.mcability;mcmmo.commands.mcability.others");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.1", "mcability", "[" + pluginRef.getLocaleManager().getString("Commands.Usage.Player") + "]"));
-        command.setExecutor(new McabilityCommand());
+        command.setExecutor(new AbilityToggleCommand());
     }
 
     private void registerMcmmoCommand() {
@@ -243,7 +243,7 @@ public final class CommandRegistrationManager {
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.0", "mcmmo"));
         command.setUsage(command.getUsage() + "\n" + pluginRef.getLocaleManager().getString("Commands.Usage.1", "mcmmo", "help"));
-        command.setExecutor(new McmmoCommand());
+        command.setExecutor(new McMMOCommand());
     }
 
     private void registerMcrankCommand() {
@@ -252,7 +252,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.mcrank;mcmmo.commands.mcrank.others;mcmmo.commands.mcrank.others.far;mcmmo.commands.mcrank.others.offline");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.1", "mcrank", "[" + pluginRef.getLocaleManager().getString("Commands.Usage.Player") + "]"));
-        command.setExecutor(new McrankCommand());
+        command.setExecutor(new RankCommand());
     }
 
     private void registerMcstatsCommand() {
@@ -261,7 +261,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.mcstats");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.0", "mcstats"));
-        command.setExecutor(new McstatsCommand());
+        command.setExecutor(new SkillStatsCommand());
     }
 
     private void registerMctopCommand() {
@@ -270,7 +270,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.mctop"); // Only need the main one, not the individual skill ones
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.2", "mctop", "[" + pluginRef.getLocaleManager().getString("Commands.Usage.Skill") + "]", "[" + pluginRef.getLocaleManager().getString("Commands.Usage.Page") + "]"));
-        command.setExecutor(new MctopCommand());
+        command.setExecutor(new LeaderboardCommand());
     }
 
     private void registerMcpurgeCommand() {
@@ -279,7 +279,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.mcpurge");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.0", "mcpurge"));
-        command.setExecutor(new McpurgeCommand());
+        command.setExecutor(new PurgeCommand());
     }
 
     private void registerMcremoveCommand() {
@@ -297,7 +297,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.mmoshowdb");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.0", "mmoshowdb"));
-        command.setExecutor(new MmoshowdbCommand());
+        command.setExecutor(new ShowDatabaseCommand());
     }
 
     private void registerMcconvertCommand() {
@@ -307,7 +307,7 @@ public final class CommandRegistrationManager {
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.2", "mcconvert", "database", "<flatfile|sql>"));
         command.setUsage(command.getUsage() + "\n" + pluginRef.getLocaleManager().getString("Commands.Usage.2", "mcconvert", "experience", "<linear|exponential>"));
-        command.setExecutor(new McconvertCommand());
+        command.setExecutor(new ConvertCommand());
     }
 
     private void registerAdminChatCommand() {
@@ -379,7 +379,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.mcnotify");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.0", "mcnotify"));
-        command.setExecutor(new McnotifyCommand());
+        command.setExecutor(new ChatNotificationToggleCommand());
     }
 
     private void registerMHDCommand() {
@@ -398,7 +398,7 @@ public final class CommandRegistrationManager {
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.1", "mcscoreboard", "<CLEAR | KEEP>"));
         command.setUsage(command.getUsage() + "\n" + pluginRef.getLocaleManager().getString("Commands.Usage.2", "mcscoreboard", "time", "<seconds>"));
-        command.setExecutor(new McscoreboardCommand());
+        command.setExecutor(new ScoreboardCommand());
     }
 
     private void registerMcImportCommand() {
@@ -416,7 +416,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.reloadlocale");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.0", "mcmmoreloadlocale"));
-        command.setExecutor(new McmmoReloadLocaleCommand());
+        command.setExecutor(new ReloadLocaleCommand());
     }
 
     public void registerCommands() {
