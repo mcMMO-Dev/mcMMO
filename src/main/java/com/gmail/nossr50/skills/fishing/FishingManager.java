@@ -49,7 +49,7 @@ public class FishingManager extends SkillManager {
     private long fishHookSpawnTimestamp;
     private long lastWarned;
     private long lastWarnedExhaust;
-    public static final int FISHING_ROD_CAST_CD_MILLISECONDS = 100;
+    public final int FISHING_ROD_CAST_CD_MILLISECONDS = 100;
     private final long FISHING_COOLDOWN_SECONDS = 1000L;
 
     private FishHook fishHookReference;

@@ -9,6 +9,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
+import com.gmail.nossr50.datatypes.skills.behaviours.HerbalismBehaviour;
 import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.HerbalismBlockUpdaterTask;
@@ -21,6 +22,8 @@ import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.Player;
@@ -28,9 +31,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.FixedMetadataValue;
 
+import java.util.HashSet;
 import java.util.List;
 
 public class HerbalismManager extends SkillManager {
+
+    private final HerbalismBehaviour herbalismBehaviour;
 
     public HerbalismManager(mcMMO pluginRef,  McMMOPlayer mcMMOPlayer) {
         super(pluginRef, mcMMOPlayer, PrimarySkillType.HERBALISM);
@@ -114,7 +120,7 @@ public class HerbalismManager extends SkillManager {
         playerInventory.removeItem(seed);
         player.updateInventory(); // Needed until replacement available
 
-        return Herbalism.convertGreenTerraBlocks(blockState);
+        return convertGreenTerraBlocks(blockState);
     }
 
     /**
@@ -152,9 +158,9 @@ public class HerbalismManager extends SkillManager {
         if (!oneBlockPlant) {
             //Kelp is actually two blocks mixed together
             if (material == Material.KELP_PLANT || material == Material.KELP) {
-                amount = Herbalism.countAndMarkDoubleDropsKelp(blockState, greenTerra, this);
+                amount = countAndMarkDoubleDropsKelp(blockState, greenTerra, this);
             } else {
-                amount = Herbalism.countAndMarkDoubleDropsMultiBlockPlant(blockState, greenTerra, this);
+                amount = countAndMarkDoubleDropsMultiBlockPlant(blockState, greenTerra, this);
             }
 
             xp *= amount;
@@ -198,7 +204,7 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        return Herbalism.convertGreenTerraBlocks(blockState);
+        return convertGreenTerraBlocks(blockState);
     }
 
     /**
@@ -269,7 +275,7 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        return Herbalism.convertShroomThumb(blockState);
+        return convertShroomThumb(blockState);
     }
 
     /**

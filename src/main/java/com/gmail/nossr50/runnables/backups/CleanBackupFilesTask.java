@@ -24,8 +24,8 @@ public class CleanBackupFilesTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        List<Integer> savedDays = new ArrayList<>();
-        HashMap<Integer, List<Integer>> savedYearsWeeks = new HashMap<>();
+        List<Integer> savedDays = new ArrayList<>(); //TODO: Should probably look into why this isn't used...
+        HashMap<Integer, List<Integer>> savedYearsWeeks = new HashMap<>(); //TODO: Should probably look into why this isn't used...
         List<File> toDelete = new ArrayList<>();
         int amountTotal = 0;
         int amountDeleted = 0;

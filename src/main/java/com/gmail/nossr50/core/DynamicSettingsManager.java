@@ -2,6 +2,7 @@ package com.gmail.nossr50.core;
 
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.behaviours.SkillBehaviourManager;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableManager;
@@ -41,6 +42,11 @@ public class DynamicSettingsManager {
     private HashMap<Material, Integer> partyItemWeights;
     private HashMap<PartyFeature, Integer> partyFeatureUnlocks;
 
+    /* Skill Behaviours */
+    private SkillBehaviourManager skillBehaviourManager;
+    //TODO: This class is a band-aid fix for a large problem with mcMMO code, they will be removed once the new skill system is in place
+
+
     public DynamicSettingsManager(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
         /*
@@ -70,12 +76,14 @@ public class DynamicSettingsManager {
      * Misc managers
      */
     private void initMiscManagers() {
+        //Init Skill Behaviour Manager
+        skillBehaviourManager = new SkillBehaviourManager(pluginRef);
+
         experienceManager = new ExperienceManager(pluginRef);
         //Set the global XP val
         experienceManager.setGlobalXpMult(pluginRef.getConfigManager().getConfigExperience().getGlobalXPMultiplier());
         experienceManager.buildBlockXPMaps(); //Block XP value maps
         experienceManager.fillCombatXPMultiplierMap(pluginRef.getConfigManager().getConfigExperience().getCombatExperienceMap());
-//        potionManager = new PotionManager();
     }
 
     /**

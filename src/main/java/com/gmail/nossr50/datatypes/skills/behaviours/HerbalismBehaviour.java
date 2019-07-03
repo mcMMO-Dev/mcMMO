@@ -1,6 +1,8 @@
-package com.gmail.nossr50.skills.herbalism;
+package com.gmail.nossr50.datatypes.skills.behaviours;
 
 import com.gmail.nossr50.core.MetadataConstants;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
@@ -10,7 +12,20 @@ import org.bukkit.block.BlockState;
 
 import java.util.HashSet;
 
-public class Herbalism {
+/**
+ * These behaviour classes are a band-aid fix for a larger problem
+ * Until the new skill system for mcMMO is finished/implemented, there is no good place to store the hardcoded behaviours for each skill
+ * These behaviour classes server this purpose, they act as a bad solution to a bad problem
+ * These classes will be removed when the new skill system is in place
+ */
+@Deprecated
+public class HerbalismBehaviour {
+
+    private final mcMMO pluginRef;
+
+    public HerbalismBehaviour(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
 
     /**
      * Convert blocks affected by the Green Thumb & Green Terra abilities.
@@ -18,7 +33,7 @@ public class Herbalism {
      * @param blockState The {@link BlockState} to check ability activation for
      * @return true if the ability was successful, false otherwise
      */
-    protected static boolean convertGreenTerraBlocks(BlockState blockState) {
+    protected boolean convertGreenTerraBlocks(BlockState blockState) {
         switch (blockState.getType()) {
             case COBBLESTONE_WALL:
                 blockState.setType(Material.MOSSY_COBBLESTONE_WALL);
@@ -42,11 +57,11 @@ public class Herbalism {
         }
     }
 
-    private static int calculateChorusPlantDrops(Block target, boolean triple, HerbalismManager herbalismManager) {
+    private int calculateChorusPlantDrops(Block target, boolean triple, HerbalismManager herbalismManager) {
         return calculateChorusPlantDropsRecursive(target, new HashSet<>(), triple, herbalismManager);
     }
 
-    private static int calculateChorusPlantDropsRecursive(Block target, HashSet<Block> traversed, boolean triple, HerbalismManager herbalismManager) {
+    private int calculateChorusPlantDropsRecursive(Block target, HashSet<Block> traversed, boolean triple, HerbalismManager herbalismManager) {
         if (target.getType() != Material.CHORUS_PLANT)
             return 0;
 
@@ -81,7 +96,7 @@ public class Herbalism {
      * @param blockState The {@link BlockState} of the bottom block of the plant
      * @return the number of bonus drops to award from the blocks in this plant
      */
-    protected static int countAndMarkDoubleDropsMultiBlockPlant(BlockState blockState, boolean triple, HerbalismManager herbalismManager) {
+    protected int countAndMarkDoubleDropsMultiBlockPlant(BlockState blockState, boolean triple, HerbalismManager herbalismManager) {
         Block block = blockState.getBlock();
         Material blockType = blockState.getType();
         int dropAmount = 0;
@@ -137,7 +152,7 @@ public class Herbalism {
      * @param blockState The {@link BlockState} of the bottom block of the plant
      * @return the number of bonus drops to award from the blocks in this plant
      */
-    protected static int countAndMarkDoubleDropsKelp(BlockState blockState, boolean triple, HerbalismManager herbalismManager) {
+    protected int countAndMarkDoubleDropsKelp(BlockState blockState, boolean triple, HerbalismManager herbalismManager) {
         Block block = blockState.getBlock();
 
         int kelpMaxHeight = 255;
@@ -160,7 +175,7 @@ public class Herbalism {
         return amount;
     }
 
-    private static int addKelpDrops(int dropAmount, Block relativeBlock) {
+    private int addKelpDrops(int dropAmount, Block relativeBlock) {
         if (isKelp(relativeBlock) && !pluginRef.getPlaceStore().isTrue(relativeBlock)) {
             dropAmount++;
         } else {
@@ -170,7 +185,7 @@ public class Herbalism {
         return dropAmount;
     }
 
-    private static boolean isKelp(Block relativeBlock) {
+    private boolean isKelp(Block relativeBlock) {
         Material kelptype_1 = Material.KELP_PLANT;
         Material kelptype_2 = Material.KELP;
 
@@ -183,7 +198,7 @@ public class Herbalism {
      * @param blockState The {@link BlockState} to check ability activation for
      * @return true if the ability was successful, false otherwise
      */
-    protected static boolean convertShroomThumb(BlockState blockState) {
+    protected boolean convertShroomThumb(BlockState blockState) {
         switch (blockState.getType()) {
             case DIRT:
             case GRASS_BLOCK:
@@ -202,7 +217,7 @@ public class Herbalism {
      * @param blockState The {@link BlockState} to check green thumb regrown for
      * @return true if the block is recently regrown, false otherwise
      */
-    public static boolean isRecentlyRegrown(BlockState blockState) {
+    public boolean isRecentlyRegrown(BlockState blockState) {
         return blockState.hasMetadata(MetadataConstants.GREEN_THUMB_METAKEY) && !SkillUtils.cooldownExpired(blockState.getMetadata(MetadataConstants.GREEN_THUMB_METAKEY).get(0).asInt(), 1);
     }
 }
