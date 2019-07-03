@@ -4,6 +4,7 @@ import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.behaviours.ExcavationBehaviour;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
@@ -21,8 +22,12 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class ExcavationManager extends SkillManager {
+
+    private final ExcavationBehaviour excavationBehaviour;
+
     public ExcavationManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
         super(pluginRef, mcMMOPlayer, PrimarySkillType.EXCAVATION);
+        this.excavationBehaviour = pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getExcavationBehaviour();
     }
 
     /**
@@ -31,10 +36,10 @@ public class ExcavationManager extends SkillManager {
      * @param blockState The {@link BlockState} to check ability activation for
      */
     public void excavationBlockCheck(BlockState blockState) {
-        int xp = Excavation.getBlockXP(blockState);
+        int xp = excavationBehaviour.getBlockXP(blockState);
 
         if (Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
-            List<ExcavationTreasure> treasures = Excavation.getTreasures(blockState);
+            List<ExcavationTreasure> treasures = excavationBehaviour.getTreasures(blockState);
 
             if (!treasures.isEmpty()) {
                 int skillLevel = getSkillLevel();
@@ -75,7 +80,7 @@ public class ExcavationManager extends SkillManager {
     public void printExcavationDebug(Player player, BlockState blockState)
     {
         if (Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
-            List<ExcavationTreasure> treasures = Excavation.getTreasures(blockState);
+            List<ExcavationTreasure> treasures = excavationBehaviour.getTreasures(blockState);
 
             if (!treasures.isEmpty()) {
                 for (ExcavationTreasure treasure : treasures) {

@@ -33,7 +33,7 @@ public class HerbalismBehaviour {
      * @param blockState The {@link BlockState} to check ability activation for
      * @return true if the ability was successful, false otherwise
      */
-    protected boolean convertGreenTerraBlocks(BlockState blockState) {
+    public boolean convertGreenTerraBlocks(BlockState blockState) {
         switch (blockState.getType()) {
             case COBBLESTONE_WALL:
                 blockState.setType(Material.MOSSY_COBBLESTONE_WALL);
@@ -96,7 +96,7 @@ public class HerbalismBehaviour {
      * @param blockState The {@link BlockState} of the bottom block of the plant
      * @return the number of bonus drops to award from the blocks in this plant
      */
-    protected int countAndMarkDoubleDropsMultiBlockPlant(BlockState blockState, boolean triple, HerbalismManager herbalismManager) {
+    public int countAndMarkDoubleDropsMultiBlockPlant(BlockState blockState, boolean triple, HerbalismManager herbalismManager) {
         Block block = blockState.getBlock();
         Material blockType = blockState.getType();
         int dropAmount = 0;
@@ -152,7 +152,7 @@ public class HerbalismBehaviour {
      * @param blockState The {@link BlockState} of the bottom block of the plant
      * @return the number of bonus drops to award from the blocks in this plant
      */
-    protected int countAndMarkDoubleDropsKelp(BlockState blockState, boolean triple, HerbalismManager herbalismManager) {
+    public int countAndMarkDoubleDropsKelp(BlockState blockState, boolean triple, HerbalismManager herbalismManager) {
         Block block = blockState.getBlock();
 
         int kelpMaxHeight = 255;
@@ -198,7 +198,7 @@ public class HerbalismBehaviour {
      * @param blockState The {@link BlockState} to check ability activation for
      * @return true if the ability was successful, false otherwise
      */
-    protected boolean convertShroomThumb(BlockState blockState) {
+    public boolean convertShroomThumb(BlockState blockState) {
         switch (blockState.getType()) {
             case DIRT:
             case GRASS_BLOCK:

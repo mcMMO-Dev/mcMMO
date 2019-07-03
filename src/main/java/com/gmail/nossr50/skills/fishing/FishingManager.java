@@ -8,6 +8,7 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.behaviours.FishingBehaviour;
 import com.gmail.nossr50.datatypes.treasure.EnchantmentTreasure;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
 import com.gmail.nossr50.datatypes.treasure.Rarity;
@@ -57,9 +58,11 @@ public class FishingManager extends SkillManager {
     private Location hookLocation;
     private int fishCaughtCounter;
     private int overFishCount;
+    private FishingBehaviour fishingBehaviour;
 
     public FishingManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
         super(pluginRef, mcMMOPlayer, PrimarySkillType.FISHING);
+        fishingBehaviour = pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getFishingBehaviour();
 
         fishCaughtCounter = 1;
     }
@@ -78,7 +81,7 @@ public class FishingManager extends SkillManager {
         if (currentTime > fishHookSpawnTimestamp + 1000)
             return;
 
-        if (currentTime < fishingRodCastTimestamp + Fishing.getInstance().getFishingRodCastCdMilliseconds()) {
+        if (currentTime < fishingRodCastTimestamp + fishingBehaviour.getFishingRodCastCdMilliseconds()) {
             getPlayer().setFoodLevel(Math.max(getPlayer().getFoodLevel() - 1, 0));
             getPlayer().getInventory().getItemInMainHand().setDurability((short) (getPlayer().getInventory().getItemInMainHand().getDurability() + 5));
             getPlayer().updateInventory();
@@ -123,7 +126,7 @@ public class FishingManager extends SkillManager {
             return false;
         }*/
 
-        int overfishLimit = Fishing.getInstance().getOverfishLimit();
+        int overfishLimit = fishingBehaviour.getOverfishLimit();
 
         BoundingBox newCastBoundingBox = makeBoundingBox(centerOfCastVector);
 
@@ -159,7 +162,7 @@ public class FishingManager extends SkillManager {
     }
 
     public BoundingBox makeBoundingBox(Vector centerOfCastVector) {
-        double boundingBoxSize = Fishing.getInstance().getBoundingBoxSize();
+        double boundingBoxSize = fishingBehaviour.getBoundingBoxSize();
         return BoundingBox.of(centerOfCastVector, boundingBoxSize, boundingBoxSize, boundingBoxSize);
     }
 
@@ -177,7 +180,7 @@ public class FishingManager extends SkillManager {
         }
 
         // Make sure this is a body of water, not just a block of ice.
-        if (!Fishing.getInstance().getIceFishingBiomes().contains(block.getBiome()) && (block.getRelative(BlockFace.DOWN, 3).getType() != Material.WATER)) {
+        if (!fishingBehaviour.getIceFishingBiomes().contains(block.getBiome()) && (block.getRelative(BlockFace.DOWN, 3).getType() != Material.WATER)) {
             return false;
         }
 
@@ -251,7 +254,7 @@ public class FishingManager extends SkillManager {
 
         hookLocation = location;
 
-        if (Fishing.getInstance().getMasterAnglerBiomes().contains(location.getBlock().getBiome())) {
+        if (fishingBehaviour.getMasterAnglerBiomes().contains(location.getBlock().getBiome())) {
             biteChance = biteChance * AdvancedConfig.getInstance().getMasterAnglerBiomeModifier();
         }
 
@@ -274,7 +277,7 @@ public class FishingManager extends SkillManager {
      * @param fishingCatch The {@link Item} initially caught
      */
     public void handleFishing(Item fishingCatch) {
-        int fishXp = Fishing.getInstance().getFishXPValue(fishingCatch.getItemStack().getType());
+        int fishXp = fishingBehaviour.getFishXPValue(fishingCatch.getItemStack().getType());
         int treasureXp = 0;
         Player player = getPlayer();
         FishingTreasure treasure = null;
@@ -349,13 +352,13 @@ public class FishingManager extends SkillManager {
      */
     public void shakeCheck(LivingEntity target) {
         if (RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getShakeChance(), getPlayer(), SubSkillType.FISHING_SHAKE))) {
-            List<ShakeTreasure> possibleDrops = Fishing.getInstance().findPossibleDrops(target);
+            List<ShakeTreasure> possibleDrops = fishingBehaviour.findPossibleDrops(target);
 
             if (possibleDrops == null || possibleDrops.isEmpty()) {
                 return;
             }
 
-            ItemStack drop = Fishing.getInstance().chooseDrop(possibleDrops);
+            ItemStack drop = fishingBehaviour.chooseDrop(possibleDrops);
 
             // It's possible that chooseDrop returns null if the sum of probability in possibleDrops is inferior than 100
             if (drop == null) {
@@ -565,8 +568,8 @@ public class FishingManager extends SkillManager {
     private List<Enchantment> getPossibleEnchantments(ItemStack treasureDrop) {
         Material dropType = treasureDrop.getType();
 
-        if (Fishing.getInstance().getEnchantableCache().containsKey(dropType)) {
-            return Fishing.getInstance().getEnchantableCache().get(dropType);
+        if (fishingBehaviour.getEnchantableCache().containsKey(dropType)) {
+            return fishingBehaviour.getEnchantableCache().get(dropType);
         }
 
         List<Enchantment> possibleEnchantments = new ArrayList<>();
@@ -577,7 +580,7 @@ public class FishingManager extends SkillManager {
             }
         }
 
-        Fishing.getInstance().getEnchantableCache().put(dropType, possibleEnchantments);
+        fishingBehaviour.getEnchantableCache().put(dropType, possibleEnchantments);
         return possibleEnchantments;
     }
 }

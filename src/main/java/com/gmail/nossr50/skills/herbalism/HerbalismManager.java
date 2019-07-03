@@ -22,8 +22,6 @@ import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.Player;
@@ -31,7 +29,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import java.util.HashSet;
 import java.util.List;
 
 public class HerbalismManager extends SkillManager {
@@ -40,6 +37,7 @@ public class HerbalismManager extends SkillManager {
 
     public HerbalismManager(mcMMO pluginRef,  McMMOPlayer mcMMOPlayer) {
         super(pluginRef, mcMMOPlayer, PrimarySkillType.HERBALISM);
+        herbalismBehaviour = pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getHerbalismBehaviour();
     }
 
     public boolean canBlockCheck() {
@@ -120,7 +118,7 @@ public class HerbalismManager extends SkillManager {
         playerInventory.removeItem(seed);
         player.updateInventory(); // Needed until replacement available
 
-        return convertGreenTerraBlocks(blockState);
+        return herbalismBehaviour.convertGreenTerraBlocks(blockState);
     }
 
     /**
@@ -158,9 +156,9 @@ public class HerbalismManager extends SkillManager {
         if (!oneBlockPlant) {
             //Kelp is actually two blocks mixed together
             if (material == Material.KELP_PLANT || material == Material.KELP) {
-                amount = countAndMarkDoubleDropsKelp(blockState, greenTerra, this);
+                amount = herbalismBehaviour.countAndMarkDoubleDropsKelp(blockState, greenTerra, this);
             } else {
-                amount = countAndMarkDoubleDropsMultiBlockPlant(blockState, greenTerra, this);
+                amount = herbalismBehaviour.countAndMarkDoubleDropsMultiBlockPlant(blockState, greenTerra, this);
             }
 
             xp *= amount;
@@ -204,7 +202,7 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        return convertGreenTerraBlocks(blockState);
+        return herbalismBehaviour.convertGreenTerraBlocks(blockState);
     }
 
     /**
@@ -275,7 +273,7 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        return convertShroomThumb(blockState);
+        return herbalismBehaviour.convertShroomThumb(blockState);
     }
 
     /**
