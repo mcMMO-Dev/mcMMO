@@ -7,10 +7,8 @@ import org.bukkit.command.CommandSender;
 
 public class GodModeCommand extends ToggleCommand {
 
-    private mcMMO pluginRef;
-
     public GodModeCommand(mcMMO pluginRef) {
-        this.pluginRef = pluginRef;
+        super(pluginRef);
     }
 
     @Override

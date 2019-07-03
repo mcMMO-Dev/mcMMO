@@ -1,6 +1,7 @@
 package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -12,6 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ToggleCommand implements TabExecutor {
+
+    protected mcMMO pluginRef;
+
+    public ToggleCommand(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
@@ -45,9 +53,10 @@ public abstract class ToggleCommand implements TabExecutor {
                     return true;
                 }
 
-                if (pluginRef.getCommandTools().isOffline(sender, mcMMOPlayer.getPlayer())) {
+                //TODO: Does it matter if they are offline?
+                /*if (pluginRef.getCommandTools().isOffline(sender, mcMMOPlayer.getPlayer())) {
                     return true;
-                }
+                }*/
 
                 applyCommandAction(mcMMOPlayer);
                 sendSuccessMessage(sender, playerName);

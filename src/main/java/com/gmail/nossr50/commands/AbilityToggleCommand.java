@@ -7,10 +7,8 @@ import org.bukkit.command.CommandSender;
 
 public class AbilityToggleCommand extends ToggleCommand {
 
-    private mcMMO pluginRef;
-
     public AbilityToggleCommand(mcMMO pluginRef) {
-        this.pluginRef = pluginRef;
+        super(pluginRef);
     }
 
     @Override

@@ -18,9 +18,9 @@ import java.util.List;
 
 public abstract class ChatCommand implements TabExecutor {
     private ChatMode chatMode;
-    public mcMMO pluginRef;
+    protected mcMMO pluginRef;
 
-    public ChatCommand(ChatMode chatMode, mcMMO pluginRef) {
+    ChatCommand(ChatMode chatMode, mcMMO pluginRef) {
         this.chatMode = chatMode;
         this.pluginRef = pluginRef;
     }

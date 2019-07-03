@@ -7,10 +7,8 @@ import org.bukkit.command.CommandSender;
 
 public class RefreshCooldownsCommand extends ToggleCommand {
 
-    private mcMMO pluginRef;
-
     public RefreshCooldownsCommand(mcMMO pluginRef) {
-        this.pluginRef = pluginRef;
+        super(pluginRef);
     }
 
     @Override

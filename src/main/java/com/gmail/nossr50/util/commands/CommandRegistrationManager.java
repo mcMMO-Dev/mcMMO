@@ -388,7 +388,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.mhd");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.0", "mhd"));
-        command.setExecutor(new MHDCommand());
+        command.setExecutor(new ResetUserHealthBarSettingsCommand());
     }
 
     private void registerMcscoreboardCommand() {

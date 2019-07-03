@@ -40,7 +40,7 @@ public abstract class SkillCommand implements TabExecutor {
         this.pluginRef = pluginRef;
         this.skill = skill;
         skillName = skill.getName();
-        skillGuideCommand = new SkillGuideCommand(skill);
+        skillGuideCommand = new SkillGuideCommand(skill, pluginRef);
     }
 
     public static String[] addItemToFirstPositionOfArray(String itemToAdd, String... existingArray) {

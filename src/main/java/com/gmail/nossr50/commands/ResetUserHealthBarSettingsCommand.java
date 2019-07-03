@@ -12,11 +12,11 @@ import org.bukkit.command.TabExecutor;
 
 import java.util.List;
 
-public class MHDCommand implements TabExecutor {
+public class ResetUserHealthBarSettingsCommand implements TabExecutor {
 
     private mcMMO pluginRef;
 
-    public MHDCommand(mcMMO pluginRef) {
+    public ResetUserHealthBarSettingsCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
     }
 

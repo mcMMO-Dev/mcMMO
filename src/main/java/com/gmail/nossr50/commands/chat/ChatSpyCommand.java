@@ -8,10 +8,8 @@ import org.bukkit.command.CommandSender;
 
 public class ChatSpyCommand extends ToggleCommand {
 
-    private mcMMO pluginRef;
-
     public ChatSpyCommand(mcMMO pluginRef) {
-        this.pluginRef = pluginRef;
+        super(pluginRef);
     }
 
     @Override
