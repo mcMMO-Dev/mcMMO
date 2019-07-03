@@ -1,15 +1,19 @@
 package com.gmail.nossr50.runnables;
 
 import com.gmail.nossr50.core.MetadataConstants;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class MobHealthDisplayUpdaterTask extends BukkitRunnable {
+    private final mcMMO pluginRef;
     private LivingEntity target;
     private String oldName;
     private boolean oldNameVisible;
 
-    public MobHealthDisplayUpdaterTask(LivingEntity target) {
+    public MobHealthDisplayUpdaterTask(mcMMO pluginRef, LivingEntity target) {
+        this.pluginRef = pluginRef;
+
         if (target.isValid()) {
             this.target = target;
             this.oldName = target.getMetadata(MetadataConstants.CUSTOM_NAME_METAKEY).get(0).asString();
