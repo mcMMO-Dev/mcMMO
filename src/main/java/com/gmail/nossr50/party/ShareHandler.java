@@ -21,8 +21,9 @@ public final class ShareHandler {
     private mcMMO pluginRef;
     private Party party;
 
-    public ShareHandler(mcMMO pluginRef) {
+    public ShareHandler(mcMMO pluginRef, Party party) {
         this.pluginRef = pluginRef;
+        this.party = party;
     }
 
     /**
