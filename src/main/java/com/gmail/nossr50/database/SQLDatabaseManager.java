@@ -20,7 +20,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public final class SQLDatabaseManager implements DatabaseManager {
     private mcMMO pluginRef;
-    public final String COM_MYSQL_JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    private final String COM_MYSQL_JDBC_DRIVER = "com.mysql.jdbc.Driver";
     private final String ALL_QUERY_VERSION = "total";
     private final Map<UUID, Integer> cachedUserIDs = new HashMap<>();
     private String tablePrefix = pluginRef.getMySQLConfigSettings().getConfigSectionDatabase().getTablePrefix();

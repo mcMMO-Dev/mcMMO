@@ -14,12 +14,10 @@ public abstract class McMMOPlayerSkillEvent extends PlayerEvent {
      **/
     private static final HandlerList handlers = new HandlerList();
     protected PrimarySkillType skill;
-    protected int skillLevel;
 
     protected McMMOPlayerSkillEvent(Player player, PrimarySkillType skill) {
         super(player);
         this.skill = skill;
-        this.skillLevel = pluginRef.getUserManager().getPlayer(player).getSkillLevel(skill);
     }
 
     public static HandlerList getHandlerList() {
@@ -31,13 +29,6 @@ public abstract class McMMOPlayerSkillEvent extends PlayerEvent {
      */
     public PrimarySkillType getSkill() {
         return skill;
-    }
-
-    /**
-     * @return The level of the skill involved in this event
-     */
-    public int getSkillLevel() {
-        return skillLevel;
     }
 
     @Override
