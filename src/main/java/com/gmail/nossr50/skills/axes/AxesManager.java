@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
+import com.gmail.nossr50.datatypes.skills.behaviours.AxesBehaviour;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
@@ -20,8 +21,12 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Map;
 
 public class AxesManager extends SkillManager {
+
+    private final AxesBehaviour axesBehaviour;
+
     public AxesManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
         super(pluginRef, mcMMOPlayer, PrimarySkillType.AXES);
+        this.axesBehaviour = pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getAxesBehaviour();
     }
 
     public boolean canUseAxeMastery() {
@@ -42,14 +47,14 @@ public class AxesManager extends SkillManager {
         if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_ARMOR_IMPACT))
             return false;
 
-        return target.isValid() && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.AXES_ARMOR_IMPACT) && Axes.hasArmor(target);
+        return target.isValid() && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.AXES_ARMOR_IMPACT) && axesBehaviour.hasArmor(target);
     }
 
     public boolean canGreaterImpact(LivingEntity target) {
         if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_GREATER_IMPACT))
             return false;
 
-        return target.isValid() && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.AXES_GREATER_IMPACT) && !Axes.hasArmor(target);
+        return target.isValid() && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.AXES_GREATER_IMPACT) && !axesBehaviour.hasArmor(target);
     }
 
     public boolean canUseSkullSplitter(LivingEntity target) {
@@ -71,7 +76,7 @@ public class AxesManager extends SkillManager {
             return 0;
         }
 
-        return Axes.getAxeMasteryBonusDamage(getPlayer());
+        return axesBehaviour.getAxeMasteryBonusDamage(getPlayer());
     }
 
     /**

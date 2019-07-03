@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.behaviours.AcrobaticsBehaviour;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
@@ -25,9 +26,13 @@ public class AcrobaticsManager extends SkillManager {
     private long rollXPInterval;
     private long rollXPIntervalLengthen = (1000 * 10); //10 Seconds
     private LimitedSizeList fallLocationMap;
+    private AcrobaticsBehaviour acrobaticsBehaviour;
 
     public AcrobaticsManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
         super(pluginRef, mcMMOPlayer, PrimarySkillType.ACROBATICS);
+        //Init Behaviour
+        acrobaticsBehaviour = pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getAcrobaticsBehaviour();
+
         rollXPInterval = (1000 * pluginRef.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().getRollXPGainCooldownSeconds());
 
         //Save some memory if exploit prevention is off
@@ -80,7 +85,7 @@ public class AcrobaticsManager extends SkillManager {
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
     public double dodgeCheck(double damage) {
-        double modifiedDamage = Acrobatics.calculateModifiedDodgeDamage(damage, Acrobatics.dodgeDamageModifier);
+        double modifiedDamage = acrobaticsBehaviour.calculateModifiedDodgeDamage(damage, acrobaticsBehaviour.getDodgeDamageModifier());
         Player player = getPlayer();
 
         if (!isFatal(modifiedDamage) && RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ACROBATICS_DODGE, player)) {
@@ -92,10 +97,10 @@ public class AcrobaticsManager extends SkillManager {
 
             //Check respawn to prevent abuse
             if (!pluginRef.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
-                applyXpGain((float) (damage * Acrobatics.dodgeXpModifier), XPGainReason.PVP);
+                applyXpGain((float) (damage * acrobaticsBehaviour.getDodgeXpModifier()), XPGainReason.PVP);
             else if (SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)
                     && mcMMOPlayer.getTeleportATS() < System.currentTimeMillis()) {
-                applyXpGain((float) (damage * Acrobatics.dodgeXpModifier), XPGainReason.PVP);
+                applyXpGain((float) (damage * acrobaticsBehaviour.getDodgeXpModifier()), XPGainReason.PVP);
             }
 
             return modifiedDamage;

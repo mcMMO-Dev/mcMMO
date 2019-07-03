@@ -170,4 +170,7 @@ public class DynamicSettingsManager {
         return skillPropertiesManager;
     }
 
+    public SkillBehaviourManager getSkillBehaviourManager() {
+        return skillBehaviourManager;
+    }
 }

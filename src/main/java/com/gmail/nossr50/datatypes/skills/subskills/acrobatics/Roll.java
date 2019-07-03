@@ -28,9 +28,11 @@ import org.bukkit.inventory.ItemStack;
 
 public class Roll extends AcrobaticsSubSkill {
 
+    private final mcMMO pluginRef;
 
-    public Roll() {
+    public Roll(mcMMO pluginRef) {
         super("Roll", EventPriority.HIGHEST, SubSkillType.ACROBATICS_ROLL);
+        this.pluginRef = pluginRef;
     }
 
     protected static double calculateModifiedRollDamage(double damage, double damageThreshold) {

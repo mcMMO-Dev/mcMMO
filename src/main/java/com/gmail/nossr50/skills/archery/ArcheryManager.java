@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.behaviours.ArcheryBehaviour;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
@@ -21,8 +22,14 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class ArcheryManager extends SkillManager {
+
+    private final ArcheryBehaviour archeryBehaviour;
+
     public ArcheryManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
         super(pluginRef, mcMMOPlayer, PrimarySkillType.ARCHERY);
+
+        //Init Behaviour
+        this.archeryBehaviour = pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getArcheryBehaviour();
     }
 
     public boolean canDaze(LivingEntity target) {
@@ -64,7 +71,7 @@ public class ArcheryManager extends SkillManager {
             return 1;
         }
 
-        return 1 + Math.min(firedLocation.distance(targetLocation), 50) * Archery.getDistanceXpMultiplier();
+        return 1 + Math.min(firedLocation.distance(targetLocation), 50) * archeryBehaviour.getDistanceXpMultiplier();
     }
 
     /**
@@ -74,7 +81,7 @@ public class ArcheryManager extends SkillManager {
      */
     public void processArrowRetrievalActivation(LivingEntity target, Projectile projectile) {
         if(projectile.hasMetadata(MetadataConstants.ARROW_TRACKER_METAKEY)) {
-            Archery.incrementArrowCount(target);
+            archeryBehaviour.incrementArrowCount(target);
             projectile.removeMetadata(MetadataConstants.ARROW_TRACKER_METAKEY, pluginRef); //Only 1 entity per projectile
         }
     }
@@ -104,7 +111,7 @@ public class ArcheryManager extends SkillManager {
             pluginRef.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.TargetDazed");
         }
 
-        return Archery.getDazeBonusDamage();
+        return archeryBehaviour.getDazeBonusDamage();
     }
 
     /**
@@ -117,6 +124,6 @@ public class ArcheryManager extends SkillManager {
             return oldDamage;
         }
 
-        return Archery.getSkillShotBonusDamage(getPlayer(), oldDamage);
+        return archeryBehaviour.getSkillShotBonusDamage(getPlayer(), oldDamage);
     }
 }
