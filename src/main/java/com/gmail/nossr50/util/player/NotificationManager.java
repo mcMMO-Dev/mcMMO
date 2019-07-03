@@ -76,6 +76,16 @@ public class NotificationManager {
         player.sendMessage(preColoredString);
     }
 
+    public static void sendPlayerInformationChatOnlyPrefixed(Player player, String key, String... values)
+    {
+        if(UserManager.getPlayer(player) == null || !UserManager.getPlayer(player).useChatNotifications())
+            return;
+
+        String preColoredString = LocaleLoader.getString(key, (Object[]) values);
+        String prefixFormattedMessage = LocaleLoader.getString("mcMMO.Template.Prefix", preColoredString);
+        player.sendMessage(prefixFormattedMessage);
+    }
+
     public static void sendPlayerInformation(Player player, NotificationType notificationType, String key, String... values)
     {
         if(UserManager.getPlayer(player) == null || !UserManager.getPlayer(player).useChatNotifications())

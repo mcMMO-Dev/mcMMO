@@ -2,6 +2,7 @@ package com.gmail.nossr50.util.commands;
 
 import com.gmail.nossr50.commands.*;
 import com.gmail.nossr50.commands.admin.McmmoReloadLocaleCommand;
+import com.gmail.nossr50.commands.admin.PlayerDebugCommand;
 import com.gmail.nossr50.commands.chat.AdminChatCommand;
 import com.gmail.nossr50.commands.chat.McChatSpy;
 import com.gmail.nossr50.commands.chat.PartyChatCommand;
@@ -148,6 +149,15 @@ public final class CommandRegistrationManager {
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mmoinfo", "[" + LocaleLoader.getString("Commands.Usage.SubSkill") + "]"));
         command.setExecutor(new MmoInfoCommand());
+    }
+
+    private static void registerMmoDebugCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mmodebug");
+        command.setDescription(LocaleLoader.getString("Commands.Description.mmodebug"));
+        command.setPermission(null); //No perm required to save support headaches
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mmodebug"));
+        command.setExecutor(new PlayerDebugCommand());
     }
 
     private static void registerMcChatSpyCommand() {
@@ -413,6 +423,7 @@ public final class CommandRegistrationManager {
     public static void registerCommands() {
         // Generic Commands
         registerMmoInfoCommand();
+        registerMmoDebugCommand();
         registerMcImportCommand();
         registerMcabilityCommand();
         registerMcgodCommand();

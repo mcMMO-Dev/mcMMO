@@ -30,10 +30,7 @@ import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Tag;
+import org.bukkit.*;
 import org.bukkit.block.*;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -619,14 +616,16 @@ public class BlockListener implements Listener {
         debugStickDump(player, blockState);
     }
 
-    public void debugStickDump(Player player, BlockState blockState) {
+    //TODO: Rewrite this
+    //TODO: Convert into locale strings
+    private void debugStickDump(Player player, BlockState blockState) {
         //Profile not loaded
         if(UserManager.getPlayer(player) == null)
         {
             return;
         }
 
-        if(player.getInventory().getItemInMainHand().getType() == Material.DEBUG_STICK)
+        if(UserManager.getPlayer(player).isDebugMode())
         {
             if(mcMMO.getPlaceStore().isTrue(blockState))
                 player.sendMessage("[mcMMO DEBUG] This block is not natural and does not reward treasures/XP");
@@ -667,10 +666,12 @@ public class BlockListener implements Listener {
 
             if(ExperienceConfig.getInstance().isExperienceBarsEnabled())
                 player.sendMessage("[mcMMO DEBUG] XP bars are enabled, however you should check per-skill settings to make sure those are enabled.");
+
+            player.sendMessage(ChatColor.RED+"You can turn this debug info off by typing "+ChatColor.GOLD+"/mmodebug");
         }
     }
 
-    public void cleanupAbilityTools(Player player, McMMOPlayer mcMMOPlayer, BlockState blockState, ItemStack heldItem) {
+    private void cleanupAbilityTools(Player player, McMMOPlayer mcMMOPlayer, BlockState blockState, ItemStack heldItem) {
         if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
             if ((ItemUtils.isPickaxe(heldItem) && !mcMMOPlayer.getAbilityMode(SuperAbilityType.SUPER_BREAKER)) || (ItemUtils.isShovel(heldItem) && !mcMMOPlayer.getAbilityMode(SuperAbilityType.GIGA_DRILL_BREAKER))) {
                 SkillUtils.removeAbilityBuff(heldItem);

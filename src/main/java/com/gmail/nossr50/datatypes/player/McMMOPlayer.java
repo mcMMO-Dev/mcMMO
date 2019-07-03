@@ -81,6 +81,7 @@ public class McMMOPlayer {
     private boolean partyChatMode;
     private boolean adminChatMode;
     private boolean displaySkillNotifications = true;
+    private boolean debugMode;
 
     private boolean abilityUse = true;
     private boolean godMode;
@@ -139,6 +140,8 @@ public class McMMOPlayer {
         }
 
         experienceBarManager = new ExperienceBarManager(this);
+
+        debugMode = false; //Debug mode helps solve support issues, players can toggle it on or off
     }
 
     public String getPlayerName() {
@@ -436,6 +439,18 @@ public class McMMOPlayer {
     public boolean isPartyChatSpying() { return chatSpy; }
 
     public void togglePartyChatSpying() { chatSpy = !chatSpy;}
+
+    /*
+     * Debug Mode Flags
+     */
+
+    public boolean isDebugMode() {
+        return debugMode;
+    }
+
+    public void toggleDebugMode() {
+        debugMode = !debugMode;
+    }
 
     /*
      * Skill notifications

@@ -23,6 +23,7 @@ public class McmmoCommand implements CommandExecutor {
                 String description = LocaleLoader.getString("mcMMO.Description");
                 String[] mcSplit = description.split(",");
                 sender.sendMessage(mcSplit);
+                sender.sendMessage(LocaleLoader.getString("mcMMO.Description.FormerDevs"));
 
                 if (Config.getInstance().getDonateMessageEnabled()) {
                     sender.sendMessage(LocaleLoader.getString("MOTD.Donate"));

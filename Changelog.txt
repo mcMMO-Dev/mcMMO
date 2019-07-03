@@ -1,5 +1,13 @@
 Version 2.1.94
+    2 new devs have joined the mcMMO team (electronicboy, kashike), bringing the active dev team to 3 including myself! Strings relating to authors of mcMMO have been updated to reflect this
     Fixed a bug where 2 people using Tree Feller could result in the tree being rejected for being too big
+    New command /mmodebug (or /mcmmodebugmode) - Prints useful information when players punch blocks while they are in debug mode
+    mcMMO no longer prints debug information when you attack stuff with the debug stick, use the new command (/mmodebug) instead
+    Added locale string 'mcMMO.Description.FormerDevs'
+    Added locale string 'mcMMO.Template.Prefix'
+    Added locale string 'Commands.Mmodebug.Toggle'
+    Added locale string 'Commands.Description.mmodebug'
+    Tweaked locale string 'mcMMO.Description'
     Updated Japanese locale (thanks snake)
     Updated hu_HU locale (thanks andris155)
 
