@@ -48,7 +48,7 @@ public class PtpAcceptCommand implements CommandExecutor {
         Player target = ptpRecord.getRequestor();
         ptpRecord.removeRequest();
 
-        if (!PtpCommand.canTeleport(sender, player, target.getName())) {
+        if (!pluginRef.getPartyManager().canTeleport(sender, player, target.getName())) {
             return true;
         }
 
@@ -67,7 +67,7 @@ public class PtpAcceptCommand implements CommandExecutor {
             }
         }
 
-        PtpCommand.handleTeleportWarmup(target, player);
+        pluginRef.getPartyManager().handleTeleportWarmup(target, player);
         return true;
     }
 }

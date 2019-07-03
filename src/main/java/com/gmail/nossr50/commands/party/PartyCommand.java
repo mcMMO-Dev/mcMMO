@@ -1,5 +1,6 @@
 package com.gmail.nossr50.commands.party;
 
+import com.gmail.nossr50.commands.CommandConstants;
 import com.gmail.nossr50.commands.chat.PartyChatCommand;
 import com.gmail.nossr50.commands.party.alliance.PartyAllianceCommand;
 import com.gmail.nossr50.commands.party.teleport.PtpCommand;
@@ -22,13 +23,51 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+//TODO: This class horrifies me, rewrite it at some point
 public class PartyCommand implements TabExecutor {
 
     private mcMMO pluginRef;
+    private CommandExecutor partyJoinCommand;
+    private CommandExecutor partyAcceptCommand;
+    private CommandExecutor partyCreateCommand;
+    private CommandExecutor partyQuitCommand;
+    private CommandExecutor partyXpShareCommand;
+    private CommandExecutor partyItemShareCommand;
+    private CommandExecutor partyInviteCommand;
+    private CommandExecutor partyKickCommand;
+    private CommandExecutor partyDisbandCommand;
+    private CommandExecutor partyChangeOwnerCommand;
+    private CommandExecutor partyLockCommand;
+    private CommandExecutor partyChangePasswordCommand;
+    private CommandExecutor partyRenameCommand;
+    private CommandExecutor partyInfoCommand;
+    private CommandExecutor partyHelpCommand;
+    private CommandExecutor partyTeleportCommand;
+    private CommandExecutor partyChatCommand;
+    private CommandExecutor partyAllianceCommand;
 
     public PartyCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
         initSubCommandList();
+
+        partyJoinCommand = new PartyJoinCommand(pluginRef);
+        partyAcceptCommand = new PartyAcceptCommand(pluginRef);
+        partyCreateCommand = new PartyCreateCommand(pluginRef);
+        partyQuitCommand = new PartyQuitCommand(pluginRef);
+        partyXpShareCommand = new PartyXpShareCommand(pluginRef);
+        partyItemShareCommand = new PartyItemShareCommand(pluginRef);
+        partyInviteCommand = new PartyInviteCommand(pluginRef);
+        partyKickCommand = new PartyKickCommand(pluginRef);
+        partyDisbandCommand = new PartyDisbandCommand(pluginRef);
+        partyChangeOwnerCommand = new PartyChangeOwnerCommand(pluginRef);
+        partyLockCommand = new PartyLockCommand(pluginRef);
+        partyChangePasswordCommand = new PartyChangePasswordCommand(pluginRef);
+        partyRenameCommand = new PartyRenameCommand(pluginRef);
+        partyInfoCommand = new PartyInfoCommand(pluginRef);
+        partyHelpCommand = new PartyHelpCommand(pluginRef);
+        partyTeleportCommand = new PtpCommand(pluginRef);
+        partyChatCommand = new PartyChatCommand(pluginRef);
+        partyAllianceCommand = new PartyAllianceCommand(pluginRef);
     }
 
     private List<String> PARTY_SUBCOMMANDS;
@@ -46,24 +85,7 @@ public class PartyCommand implements TabExecutor {
         PARTY_SUBCOMMANDS = ImmutableList.copyOf(subcommands);
     }
 
-    private CommandExecutor partyJoinCommand = new PartyJoinCommand();
-    private CommandExecutor partyAcceptCommand = new PartyAcceptCommand();
-    private CommandExecutor partyCreateCommand = new PartyCreateCommand();
-    private CommandExecutor partyQuitCommand = new PartyQuitCommand();
-    private CommandExecutor partyXpShareCommand = new PartyXpShareCommand();
-    private CommandExecutor partyItemShareCommand = new PartyItemShareCommand();
-    private CommandExecutor partyInviteCommand = new PartyInviteCommand();
-    private CommandExecutor partyKickCommand = new PartyKickCommand();
-    private CommandExecutor partyDisbandCommand = new PartyDisbandCommand();
-    private CommandExecutor partyChangeOwnerCommand = new PartyChangeOwnerCommand();
-    private CommandExecutor partyLockCommand = new PartyLockCommand();
-    private CommandExecutor partyChangePasswordCommand = new PartyChangePasswordCommand();
-    private CommandExecutor partyRenameCommand = new PartyRenameCommand();
-    private CommandExecutor partyInfoCommand = new PartyInfoCommand();
-    private CommandExecutor partyHelpCommand = new PartyHelpCommand();
-    private CommandExecutor partyTeleportCommand = new PtpCommand();
-    private CommandExecutor partyChatCommand = new PartyChatCommand();
-    private CommandExecutor partyAllianceCommand = new PartyAllianceCommand();
+
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -210,7 +232,7 @@ public class PartyCommand implements TabExecutor {
                     case PASSWORD:
                         return StringUtil.copyPartialMatches(args[1], CommandUtils.RESET_OPTIONS, new ArrayList<>(CommandUtils.RESET_OPTIONS.size()));
                     case TELEPORT:
-                        List<String> matches = StringUtil.copyPartialMatches(args[1], PtpCommand.TELEPORT_SUBCOMMANDS, new ArrayList<>(PtpCommand.TELEPORT_SUBCOMMANDS.size()));
+                        List<String> matches = StringUtil.copyPartialMatches(args[1], CommandConstants.TELEPORT_SUBCOMMANDS, new ArrayList<>(CommandConstants.TELEPORT_SUBCOMMANDS.size()));
 
                         if (matches.size() == 0) {
                             Player player = (Player) sender;

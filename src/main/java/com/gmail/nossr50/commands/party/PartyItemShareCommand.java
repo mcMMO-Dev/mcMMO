@@ -4,6 +4,7 @@ import com.gmail.nossr50.datatypes.party.ItemShareType;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.ShareMode;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
@@ -13,6 +14,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class PartyItemShareCommand implements CommandExecutor {
+
+    private mcMMO pluginRef;
+
+    public PartyItemShareCommand(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (UserManager.getPlayer((Player) sender) == null) {

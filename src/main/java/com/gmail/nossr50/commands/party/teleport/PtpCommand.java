@@ -1,5 +1,6 @@
 package com.gmail.nossr50.commands.party.teleport;
 
+import com.gmail.nossr50.commands.CommandConstants;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
@@ -40,8 +41,6 @@ public class PtpCommand implements TabExecutor {
         ptpAcceptAnyCommand = new PtpAcceptAnyCommand(pluginRef);
         ptpAcceptCommand = new PtpAcceptCommand(pluginRef);
     }
-
-    public final List<String> TELEPORT_SUBCOMMANDS = ImmutableList.of("toggle", "accept", "acceptany", "acceptall");
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -136,7 +135,7 @@ public class PtpCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         switch (args.length) {
             case 1:
-                List<String> matches = StringUtil.copyPartialMatches(args[0], TELEPORT_SUBCOMMANDS, new ArrayList<>(TELEPORT_SUBCOMMANDS.size()));
+                List<String> matches = StringUtil.copyPartialMatches(args[0], CommandConstants.TELEPORT_SUBCOMMANDS, new ArrayList<>(CommandConstants.TELEPORT_SUBCOMMANDS.size()));
 
                 if (matches.size() == 0) {
                     if (UserManager.getPlayer((Player) sender) == null) {

@@ -1,8 +1,10 @@
 package com.gmail.nossr50.commands.party.alliance;
 
+import com.gmail.nossr50.commands.CommandConstants;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
@@ -18,13 +20,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PartyAllianceCommand implements TabExecutor {
-    public static final List<String> ALLIANCE_SUBCOMMANDS = ImmutableList.of("invite", "accept", "disband");
+
+    private mcMMO pluginRef;
     private Player player;
     private Party playerParty;
     private Party targetParty;
-    private CommandExecutor partyAllianceInviteCommand = new PartyAllianceInviteCommand();
-    private CommandExecutor partyAllianceAcceptCommand = new PartyAllianceAcceptCommand();
-    private CommandExecutor partyAllianceDisbandCommand = new PartyAllianceDisbandCommand();
+    private CommandExecutor partyAllianceInviteCommand;
+    private CommandExecutor partyAllianceAcceptCommand;
+    private CommandExecutor partyAllianceDisbandCommand;
+
+    public PartyAllianceCommand(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+
+        //Init SubCommands
+        partyAllianceInviteCommand = new PartyAllianceInviteCommand(pluginRef);
+        partyAllianceAcceptCommand = new PartyAllianceAcceptCommand(pluginRef);
+        partyAllianceDisbandCommand = new PartyAllianceDisbandCommand(pluginRef);
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -104,7 +116,7 @@ public class PartyAllianceCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender commandSender, Command command, String label, String[] args) {
         switch (args.length) {
             case 1:
-                List<String> matches = StringUtil.copyPartialMatches(args[0], ALLIANCE_SUBCOMMANDS, new ArrayList<>(ALLIANCE_SUBCOMMANDS.size()));
+                List<String> matches = StringUtil.copyPartialMatches(args[0], CommandConstants.ALLIANCE_SUBCOMMANDS, new ArrayList<>(CommandConstants.ALLIANCE_SUBCOMMANDS.size()));
 
                 if (matches.size() == 0) {
                     List<String> playerNames = CommandUtils.getOnlinePlayerNames(commandSender);
