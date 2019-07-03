@@ -28,74 +28,20 @@ import java.util.List;
 public class PtpCommand implements TabExecutor {
 
     private mcMMO pluginRef;
+    private CommandExecutor ptpToggleCommand;
+    private CommandExecutor ptpAcceptAnyCommand;
+    private CommandExecutor ptpAcceptCommand;
 
     public PtpCommand(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
+
+        //Init SubCommands
+        ptpToggleCommand = new PtpToggleCommand(pluginRef);
+        ptpAcceptAnyCommand = new PtpAcceptAnyCommand(pluginRef);
+        ptpAcceptCommand = new PtpAcceptCommand(pluginRef);
     }
 
     public final List<String> TELEPORT_SUBCOMMANDS = ImmutableList.of("toggle", "accept", "acceptany", "acceptall");
-
-    private CommandExecutor ptpToggleCommand = new PtpToggleCommand();
-    private CommandExecutor ptpAcceptAnyCommand = new PtpAcceptAnyCommand();
-    private CommandExecutor ptpAcceptCommand = new PtpAcceptCommand();
-
-    protected boolean canTeleport(CommandSender sender, Player player, String targetName) {
-        McMMOPlayer mcMMOTarget = UserManager.getPlayer(targetName);
-
-        if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
-            return false;
-        }
-
-        Player target = mcMMOTarget.getPlayer();
-
-        if (player.equals(target)) {
-            player.sendMessage(pluginRef.getLocaleManager().getString("Party.Teleport.Self"));
-            return false;
-        }
-
-        if (!pluginRef.getPartyManager().inSameParty(player, target)) {
-            player.sendMessage(pluginRef.getLocaleManager().getString("Party.NotInYourParty", targetName));
-            return false;
-        }
-
-        if (!mcMMOTarget.getPartyTeleportRecord().isEnabled()) {
-            player.sendMessage(pluginRef.getLocaleManager().getString("Party.Teleport.Disabled", targetName));
-            return false;
-        }
-
-        if (!target.isValid()) {
-            player.sendMessage(pluginRef.getLocaleManager().getString("Party.Teleport.Dead"));
-            return false;
-        }
-
-        return true;
-    }
-
-    protected void handleTeleportWarmup(Player teleportingPlayer, Player targetPlayer) {
-        if (UserManager.getPlayer(targetPlayer) == null) {
-            targetPlayer.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
-            return;
-        }
-
-        if (UserManager.getPlayer(teleportingPlayer) == null) {
-            teleportingPlayer.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
-            return;
-        }
-
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(teleportingPlayer);
-        McMMOPlayer mcMMOTarget = UserManager.getPlayer(targetPlayer);
-
-        long warmup = pluginRef.getConfigManager().getConfigParty().getPTP().getPtpWarmup();
-
-        mcMMOPlayer.actualizeTeleportCommenceLocation(teleportingPlayer);
-
-        if (warmup > 0) {
-            teleportingPlayer.sendMessage(pluginRef.getLocaleManager().getString("Teleport.Commencing", warmup));
-            new TeleportationWarmup(mcMMOPlayer, mcMMOTarget).runTaskLater(pluginRef, 20 * warmup);
-        } else {
-            pluginRef.getEventManager().handlePartyTeleportEvent(teleportingPlayer, targetPlayer);
-        }
-    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -216,7 +162,7 @@ public class PtpCommand implements TabExecutor {
     }
 
     private void sendTeleportRequest(CommandSender sender, Player player, String targetName) {
-        if (!canTeleport(sender, player, targetName)) {
+        if (!pluginRef.getPartyManager().canTeleport(sender, player, targetName)) {
             return;
         }
 
@@ -226,7 +172,7 @@ public class PtpCommand implements TabExecutor {
         PartyTeleportRecord ptpRecord = mcMMOTarget.getPartyTeleportRecord();
 
         if (!ptpRecord.isConfirmRequired()) {
-            handleTeleportWarmup(player, target);
+            pluginRef.getPartyManager().handleTeleportWarmup(player, target);
             return;
         }
 

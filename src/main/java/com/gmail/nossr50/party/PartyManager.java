@@ -8,12 +8,15 @@ import com.gmail.nossr50.events.party.McMMOPartyAllianceChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.runnables.items.TeleportationWarmup;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -33,6 +36,64 @@ public final class PartyManager {
         this.pluginRef = pluginRef;
         parties = new ArrayList<>();
         partyFile = new File(pluginRef.getFlatFileDirectory() + "parties.yml");
+    }
+
+    public boolean canTeleport(CommandSender sender, Player player, String targetName) {
+        McMMOPlayer mcMMOTarget = UserManager.getPlayer(targetName);
+
+        if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
+            return false;
+        }
+
+        Player target = mcMMOTarget.getPlayer();
+
+        if (player.equals(target)) {
+            player.sendMessage(pluginRef.getLocaleManager().getString("Party.Teleport.Self"));
+            return false;
+        }
+
+        if (!pluginRef.getPartyManager().inSameParty(player, target)) {
+            player.sendMessage(pluginRef.getLocaleManager().getString("Party.NotInYourParty", targetName));
+            return false;
+        }
+
+        if (!mcMMOTarget.getPartyTeleportRecord().isEnabled()) {
+            player.sendMessage(pluginRef.getLocaleManager().getString("Party.Teleport.Disabled", targetName));
+            return false;
+        }
+
+        if (!target.isValid()) {
+            player.sendMessage(pluginRef.getLocaleManager().getString("Party.Teleport.Dead"));
+            return false;
+        }
+
+        return true;
+    }
+
+    public void handleTeleportWarmup(Player teleportingPlayer, Player targetPlayer) {
+        if (UserManager.getPlayer(targetPlayer) == null) {
+            targetPlayer.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
+            return;
+        }
+
+        if (UserManager.getPlayer(teleportingPlayer) == null) {
+            teleportingPlayer.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
+            return;
+        }
+
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(teleportingPlayer);
+        McMMOPlayer mcMMOTarget = UserManager.getPlayer(targetPlayer);
+
+        long warmup = pluginRef.getConfigManager().getConfigParty().getPTP().getPtpWarmup();
+
+        mcMMOPlayer.actualizeTeleportCommenceLocation(teleportingPlayer);
+
+        if (warmup > 0) {
+            teleportingPlayer.sendMessage(pluginRef.getLocaleManager().getString("Teleport.Commencing", warmup));
+            new TeleportationWarmup(mcMMOPlayer, mcMMOTarget).runTaskLater(pluginRef, 20 * warmup);
+        } else {
+            pluginRef.getEventManager().handlePartyTeleportEvent(teleportingPlayer, targetPlayer);
+        }
     }
 
     /**
