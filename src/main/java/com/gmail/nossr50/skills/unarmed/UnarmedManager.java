@@ -7,6 +7,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
@@ -23,8 +24,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class UnarmedManager extends SkillManager {
-    public UnarmedManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.UNARMED);
+    public UnarmedManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
+        super(pluginRef, mcMMOPlayer, PrimarySkillType.UNARMED);
     }
 
     public boolean canActivateAbility() {

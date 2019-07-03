@@ -9,7 +9,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
-import com.gmail.nossr50.runnables.skills.BleedTimerTask;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -31,8 +31,8 @@ import java.util.List;
 public class TamingManager extends SkillManager {
     private static HashMap<EntityType, List<TrackedTamingEntity>> summonedEntities = new HashMap<>();
 
-    public TamingManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.TAMING);
+    public TamingManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
+        super(pluginRef, mcMMOPlayer, PrimarySkillType.TAMING);
     }
 
     protected static void addToTracker(LivingEntity livingEntity) {
@@ -138,7 +138,7 @@ public class TamingManager extends SkillManager {
             return 0;
         }
 
-        BleedTimerTask.add(target, getPlayer(), Taming.getInstance().getGoreBleedTicks(), 1, 2);
+        pluginRef.getBleedTimerTask().add(target, getPlayer(), Taming.getInstance().getGoreBleedTicks(), 1, 2);
 
         if (target instanceof Player) {
             pluginRef.getNotificationManager().sendPlayerInformation((Player) target, NotificationType.SUBSKILL_MESSAGE, "Combat.StruckByGore");

@@ -4,6 +4,7 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -25,8 +26,8 @@ public class RepairManager extends SkillManager {
     private boolean placedAnvil;
     private int lastClick;
 
-    public RepairManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.REPAIR);
+    public RepairManager(mcMMO pluginRef,  McMMOPlayer mcMMOPlayer) {
+        super(pluginRef, mcMMOPlayer, PrimarySkillType.REPAIR);
     }
 
     /**

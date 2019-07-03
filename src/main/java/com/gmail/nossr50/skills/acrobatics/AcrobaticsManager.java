@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -25,8 +26,8 @@ public class AcrobaticsManager extends SkillManager {
     private long rollXPIntervalLengthen = (1000 * 10); //10 Seconds
     private LimitedSizeList fallLocationMap;
 
-    public AcrobaticsManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.ACROBATICS);
+    public AcrobaticsManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
+        super(pluginRef, mcMMOPlayer, PrimarySkillType.ACROBATICS);
         rollXPInterval = (1000 * pluginRef.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().getRollXPGainCooldownSeconds());
 
         //Save some memory if exploit prevention is off

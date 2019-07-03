@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -20,8 +21,8 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class ExcavationManager extends SkillManager {
-    public ExcavationManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.EXCAVATION);
+    public ExcavationManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
+        super(pluginRef, mcMMOPlayer, PrimarySkillType.EXCAVATION);
     }
 
     /**

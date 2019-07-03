@@ -44,7 +44,7 @@ public class RankUtils {
 
             //The players level is the exact level requirement for this skill
             if (newLevel == innerMap.get(playerRankInSkill)) {
-                SkillUnlockNotificationTask skillUnlockNotificationTask = new SkillUnlockNotificationTask(mcMMOPlayer, subSkillType, newLevel);
+                SkillUnlockNotificationTask skillUnlockNotificationTask = new SkillUnlockNotificationTask(mcMMOPlayer, subSkillType);
 
                 skillUnlockNotificationTask.runTaskLater(plugin, (count * 100));
 

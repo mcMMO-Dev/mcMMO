@@ -84,6 +84,6 @@
 //    }
 //
 //    public static boolean isBleeding(LivingEntity entity) {
-//        return BleedTimerTask.isBleeding(entity);
+//        return pluginRef.getBleedTimerTask().isBleeding(entity);
 //    }
 //}

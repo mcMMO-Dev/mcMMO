@@ -6,9 +6,9 @@ import com.gmail.nossr50.util.experience.ExperienceBarManager;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ExperienceBarHideTask extends BukkitRunnable {
-    public final McMMOPlayer mcMMOPlayer;
-    public final PrimarySkillType primarySkillType;
-    public final ExperienceBarManager experienceBarManagerRef;
+    private final McMMOPlayer mcMMOPlayer;
+    private final PrimarySkillType primarySkillType;
+    private final ExperienceBarManager experienceBarManagerRef;
 
     public ExperienceBarHideTask(ExperienceBarManager experienceBarManagerRef, McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType) {
         this.experienceBarManagerRef = experienceBarManagerRef;

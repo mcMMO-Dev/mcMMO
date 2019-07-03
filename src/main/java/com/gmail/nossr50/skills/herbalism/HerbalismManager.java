@@ -10,6 +10,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.HerbalismBlockUpdaterTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.*;
@@ -31,8 +32,8 @@ import java.util.List;
 
 public class HerbalismManager extends SkillManager {
 
-    public HerbalismManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.HERBALISM);
+    public HerbalismManager(mcMMO pluginRef,  McMMOPlayer mcMMOPlayer) {
+        super(pluginRef, mcMMOPlayer, PrimarySkillType.HERBALISM);
     }
 
     public boolean canBlockCheck() {

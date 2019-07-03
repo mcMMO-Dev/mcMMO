@@ -12,7 +12,6 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
-import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.runnables.skills.ToolLowerTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
@@ -1011,7 +1010,7 @@ public class McMMOPlayer {
     public void logout(boolean syncSave) {
         Player thisPlayer = getPlayer();
         resetAbilityMode();
-        BleedTimerTask.bleedOut(thisPlayer);
+        pluginRef.getBleedTimerTask().bleedOut(thisPlayer);
 
         if (syncSave) {
             getProfile().save(true);

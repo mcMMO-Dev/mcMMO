@@ -1,4 +1,4 @@
-package com.gmail.nossr50.runnables.skills;
+package com.gmail.nossr50.datatypes.skills;
 
 import org.bukkit.entity.LivingEntity;
 

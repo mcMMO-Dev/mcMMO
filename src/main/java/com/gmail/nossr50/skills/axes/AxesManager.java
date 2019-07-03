@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
@@ -19,8 +20,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Map;
 
 public class AxesManager extends SkillManager {
-    public AxesManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.AXES);
+    public AxesManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
+        super(pluginRef, mcMMOPlayer, PrimarySkillType.AXES);
     }
 
     public boolean canUseAxeMastery() {

@@ -2,12 +2,13 @@ package com.gmail.nossr50.skills.alchemy;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 
 public class AlchemyManager extends SkillManager {
 
-    public AlchemyManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.ALCHEMY);
+    public AlchemyManager(mcMMO pluginRef,  McMMOPlayer mcMMOPlayer) {
+        super(pluginRef, mcMMOPlayer, PrimarySkillType.ALCHEMY);
     }
 
 //

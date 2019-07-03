@@ -7,6 +7,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.AbilityCooldownTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.BlockUtils;
@@ -27,8 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MiningManager extends SkillManager {
-    public MiningManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.MINING);
+    public MiningManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
+        super(pluginRef, mcMMOPlayer, PrimarySkillType.MINING);
     }
 
     public static double getOreBonus(int rank) {

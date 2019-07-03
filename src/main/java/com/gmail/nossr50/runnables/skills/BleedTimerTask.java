@@ -1,6 +1,8 @@
 package com.gmail.nossr50.runnables.skills;
 
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.datatypes.skills.BleedContainer;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -16,17 +18,22 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class BleedTimerTask extends BukkitRunnable {
-    private static Map<LivingEntity, BleedContainer> bleedList = new HashMap<>();
+    private final mcMMO pluginRef;
+    private Map<LivingEntity, BleedContainer> bleedList;
 
-    public static BleedContainer copyContainer(BleedContainer container) {
+    public BleedTimerTask(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+        bleedList = new HashMap<>();
+    }
+
+    private BleedContainer copyContainer(BleedContainer container) {
         LivingEntity target = container.target;
         LivingEntity source = container.damageSource;
         int bleedTicks = container.bleedTicks;
         int bleedRank = container.bleedRank;
         int toolTier = container.toolTier;
 
-        BleedContainer newContainer = new BleedContainer(target, bleedTicks, bleedRank, toolTier, source);
-        return newContainer;
+        return new BleedContainer(target, bleedTicks, bleedRank, toolTier, source);
     }
 
     /**
@@ -34,7 +41,7 @@ public class BleedTimerTask extends BukkitRunnable {
      *
      * @param entity LivingEntity to bleed out
      */
-    public static void bleedOut(LivingEntity entity) {
+    public void bleedOut(LivingEntity entity) {
         /*
          * Don't remove anything from the list outside of run()
          */
@@ -50,7 +57,7 @@ public class BleedTimerTask extends BukkitRunnable {
      * @param entity LivingEntity to add
      * @param ticks  Number of bleeding ticks
      */
-    public static void add(LivingEntity entity, LivingEntity attacker, int ticks, int bleedRank, int toolTier) {
+    public void add(LivingEntity entity, LivingEntity attacker, int ticks, int bleedRank, int toolTier) {
         if (toolTier < 4)
             ticks = Math.max(1, (ticks / 3));
 
@@ -58,7 +65,7 @@ public class BleedTimerTask extends BukkitRunnable {
         bleedList.put(entity, newBleedContainer);
     }
 
-    public static boolean isBleeding(LivingEntity entity) {
+    public boolean isBleeding(LivingEntity entity) {
         return bleedList.containsKey(entity);
     }
 

@@ -14,6 +14,7 @@ import com.gmail.nossr50.datatypes.treasure.Rarity;
 import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerShakeEvent;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.ItemUtils;
@@ -57,8 +58,8 @@ public class FishingManager extends SkillManager {
     private int fishCaughtCounter;
     private int overFishCount;
 
-    public FishingManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.FISHING);
+    public FishingManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
+        super(pluginRef, mcMMOPlayer, PrimarySkillType.FISHING);
 
         fishCaughtCounter = 1;
     }

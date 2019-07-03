@@ -4,6 +4,7 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.util.Misc;
@@ -29,8 +30,8 @@ public class SalvageManager extends SkillManager {
     private boolean placedAnvil;
     private int lastClick;
 
-    public SalvageManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.SALVAGE);
+    public SalvageManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
+        super(pluginRef, mcMMOPlayer, PrimarySkillType.SALVAGE);
     }
 
     /**

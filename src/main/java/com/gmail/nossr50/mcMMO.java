@@ -89,6 +89,9 @@ public class mcMMO extends JavaPlugin {
     private CommandTools commandTools;
     private TextComponentFactory textComponentFactory;
 
+    /* Never-Ending tasks */
+    private BleedTimerTask bleedTimerTask;
+
     /* File Paths */
     private String mainDirectory;
     private String localesDirectory;
@@ -164,7 +167,7 @@ public class mcMMO extends JavaPlugin {
                 formulaManager = new FormulaManager();
 
                 for (Player player : getServer().getOnlinePlayers()) {
-                    new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(this, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
+                    new PlayerProfileLoadingTask(this, player).runTaskLaterAsynchronously(this, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
                 }
 
                 debug("Version " + getDescription().getVersion() + " is enabled!");
@@ -597,7 +600,8 @@ public class mcMMO extends JavaPlugin {
         new CleanBackupFilesTask(this).runTaskAsynchronously(this);
 
         // Bleed timer (Runs every 0.5 seconds)
-        new BleedTimerTask().runTaskTimer(this, Misc.TICK_CONVERSION_FACTOR, (Misc.TICK_CONVERSION_FACTOR / 2));
+        bleedTimerTask = new BleedTimerTask(this);
+        pluginRef.getBleedTimerTask().runTaskTimer(this, Misc.TICK_CONVERSION_FACTOR, (Misc.TICK_CONVERSION_FACTOR / 2));
 
         // Old & Powerless User remover
         long purgeIntervalTicks = getConfigManager().getConfigDatabase().getConfigSectionCleaning().getPurgeInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
@@ -614,18 +618,18 @@ public class mcMMO extends JavaPlugin {
             long kickIntervalTicks = getConfigManager().getConfigParty().getPartyCleanup().getPartyAutoKickHoursInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
 
             if (kickIntervalTicks == 0) {
-                new PartyAutoKickTask().runTaskLater(this, 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
+                new PartyAutoKickTask(this).runTaskLater(this, 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
             } else if (kickIntervalTicks > 0) {
-                new PartyAutoKickTask().runTaskTimer(this, kickIntervalTicks, kickIntervalTicks);
+                new PartyAutoKickTask(this).runTaskTimer(this, kickIntervalTicks, kickIntervalTicks);
             }
         }
 
         // Update power level tag scoreboards
-        new PowerLevelUpdatingTask().runTaskTimer(this, 2 * Misc.TICK_CONVERSION_FACTOR, 2 * Misc.TICK_CONVERSION_FACTOR);
+        new PowerLevelUpdatingTask(this).runTaskTimer(this, 2 * Misc.TICK_CONVERSION_FACTOR, 2 * Misc.TICK_CONVERSION_FACTOR);
 
         // Clear the registered XP data so players can earn XP again
         if (getConfigManager().getConfigLeveling().getConfigLevelingDiminishedReturns().isDiminishedReturnsEnabled()) {
-            new ClearRegisteredXPGainTask().runTaskTimer(this, 60, 60);
+            new ClearRegisteredXPGainTask(this).runTaskTimer(this, 60, 60);
         }
 
         if (configManager.getConfigNotifications().getConfigNotificationGeneral().isPlayerTips()) {
@@ -725,5 +729,9 @@ public class mcMMO extends JavaPlugin {
 
     public TextComponentFactory getTextComponentFactory() {
         return textComponentFactory;
+    }
+
+    public BleedTimerTask getBleedTimerTask() {
+        return bleedTimerTask;
     }
 }

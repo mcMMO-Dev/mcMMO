@@ -7,6 +7,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 
+//TODO: Why is this a task? Investigate later.
 public class AwardCombatXpTask extends BukkitRunnable {
     private McMMOPlayer mcMMOPlayer;
     private double baseXp;

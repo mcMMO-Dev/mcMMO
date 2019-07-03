@@ -3,13 +3,16 @@ package com.gmail.nossr50.runnables.skills;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.ToolType;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ToolLowerTask extends BukkitRunnable {
-    private McMMOPlayer mcMMOPlayer;
-    private ToolType tool;
+    private final mcMMO pluginRef;
+    private final McMMOPlayer mcMMOPlayer;
+    private final ToolType tool;
 
-    public ToolLowerTask(McMMOPlayer mcMMOPlayer, ToolType tool) {
+    public ToolLowerTask(mcMMO pluginRef, McMMOPlayer mcMMOPlayer, ToolType tool) {
+        this.pluginRef = pluginRef;
         this.mcMMOPlayer = mcMMOPlayer;
         this.tool = tool;
     }

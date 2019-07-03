@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.ItemUtils;
@@ -26,8 +27,8 @@ import java.util.Set;
 
 public class WoodcuttingManager extends SkillManager {
 
-    public WoodcuttingManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.WOODCUTTING);
+    public WoodcuttingManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
+        super(pluginRef, mcMMOPlayer, PrimarySkillType.WOODCUTTING);
     }
 
     public boolean canUseLeafBlower(ItemStack heldItem) {
