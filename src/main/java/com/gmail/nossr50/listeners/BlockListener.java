@@ -1,6 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.meta.BonusDropMeta;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -81,7 +80,7 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getBlock().getWorld().getName()))
             return;
 
         BlockFace direction = event.getDirection();
@@ -106,7 +105,7 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getBlock().getWorld().getName()))
             return;
 
         // Get opposite direction so we get correct block
@@ -128,7 +127,7 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityBlockFormEvent(EntityBlockFormEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getBlock().getWorld().getName()))
             return;
 
         if (BlockUtils.shouldBeWatched(event.getBlock().getState())) {
@@ -139,7 +138,7 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockFormEvent(BlockFormEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getBlock().getWorld().getName()))
             return;
         
         Block newBlock = event.getNewState().getBlock();
@@ -162,7 +161,7 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockPlace(BlockPlaceEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getBlock().getWorld().getName()))
             return;
 
         Player player = event.getPlayer();
@@ -205,7 +204,7 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockMultiPlace(BlockMultiPlaceEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getBlock().getWorld().getName()))
             return;
 
         Player player = event.getPlayer();
@@ -227,7 +226,7 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockGrow(BlockGrowEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getBlock().getWorld().getName()))
             return;
 
         BlockState blockState = event.getBlock().getState();
@@ -247,7 +246,7 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getBlock().getWorld().getName()))
             return;
 
         /* WORLD GUARD MAIN FLAG CHECK */
@@ -341,7 +340,7 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreakHigher(BlockBreakEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getBlock().getWorld().getName()))
             return;
 
         /* WORLD GUARD MAIN FLAG CHECK */
@@ -410,7 +409,7 @@ public class BlockListener implements Listener {
         BlockState blockState = event.getBlock().getState();
 
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getBlock().getWorld().getName()))
             return;
 
         /* WORLD GUARD MAIN FLAG CHECK */
@@ -480,7 +479,7 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockDamageHigher(BlockDamageEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getBlock().getWorld().getName()))
             return;
 
         /* WORLD GUARD MAIN FLAG CHECK */

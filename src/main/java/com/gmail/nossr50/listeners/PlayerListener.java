@@ -2,7 +2,6 @@ package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.config.MainConfig;
-import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.Party;
@@ -63,7 +62,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getPlayer().getWorld().getName()))
             return;
 
         Player player = event.getPlayer();
@@ -102,7 +101,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerDeathLowest(PlayerDeathEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getEntity().getWorld().getName()))
             return;
 
         String deathMessage = event.getDeathMessage();
@@ -134,7 +133,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerDeathMonitor(PlayerDeathEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getEntity().getWorld().getName()))
             return;
 
         boolean statLossEnabled = HardcoreManager.isStatLossEnabled();
@@ -213,7 +212,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getPlayer().getWorld().getName()))
             return;
 
         /* WORLD GUARD MAIN FLAG CHECK */
@@ -243,7 +242,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerFishHighest(PlayerFishEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getPlayer().getWorld().getName()))
             return;
 
         Player player = event.getPlayer();
@@ -318,7 +317,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerFishMonitor(PlayerFishEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getPlayer().getWorld().getName()))
             return;
 
         Player player = event.getPlayer();
@@ -410,7 +409,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerPickupItem(EntityPickupItemEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getEntity().getWorld().getName()))
             return;
 
         if (event.getEntity() instanceof Player) {
@@ -510,7 +509,7 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
 
         //Delay loading for 3 seconds in case the player has a save task running, its hacky but it should do the trick
-        new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(pluginRef, 60);
+        new PlayerProfileLoadingTask(pluginRef, player).runTaskLaterAsynchronously(pluginRef, 60);
 
         if (pluginRef.getConfigManager().getConfigMOTD().isEnableMOTD()) {
             Motd.displayAll(player);
@@ -563,7 +562,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerInteractLowest(PlayerInteractEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getPlayer().getWorld().getName()))
             return;
 
         Player player = event.getPlayer();
@@ -676,7 +675,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteractMonitor(PlayerInteractEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getPlayer().getWorld().getName()))
             return;
 
         Player player = event.getPlayer();
@@ -736,7 +735,9 @@ public class PlayerListener implements Listener {
                         mcMMOPlayer.processAbilityActivation(PrimarySkillType.WOODCUTTING);
                     }
 
-                    ChimaeraWing.activationCheck(player);
+                    //TODO: Something needs to be done about this
+                    ChimaeraWing chimaeraWing = new ChimaeraWing(pluginRef, mcMMOPlayer);
+                    chimaeraWing.activationCheck();
                 }
 
                 /* GREEN THUMB CHECK */
@@ -789,7 +790,9 @@ public class PlayerListener implements Listener {
                 }
 
                 /* ITEM CHECKS */
-                ChimaeraWing.activationCheck(player);
+                //TODO: Something needs to be done about this
+                ChimaeraWing chimaeraWing = new ChimaeraWing(pluginRef, mcMMOPlayer);
+                chimaeraWing.activationCheck();
 
                 /* BLAST MINING CHECK */
                 MiningManager miningManager = mcMMOPlayer.getMiningManager();
@@ -897,7 +900,7 @@ public class PlayerListener implements Listener {
     /*@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerStatisticIncrementEvent(PlayerStatisticIncrementEvent event) {
         *//* WORLD BLACKLIST CHECK *//*
-        if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
+        if(pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getPlayer().getWorld().getName()))
             return;
 
         if (!mcMMO.getHolidayManager().isAprilFirst()) {

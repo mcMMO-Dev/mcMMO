@@ -1,6 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -30,7 +29,7 @@ public class WorldListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onStructureGrow(StructureGrowEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getWorld().getName()))
             return;
 
         if (!pluginRef.getPlaceStore().isTrue(event.getLocation().getBlock())) {
@@ -50,7 +49,7 @@ public class WorldListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldInit(WorldInitEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getWorld().getName()))
             return;
 
         World world = event.getWorld();
@@ -72,7 +71,7 @@ public class WorldListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldUnload(WorldUnloadEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getWorld().getName()))
             return;
 
         pluginRef.getPlaceStore().unloadWorld(event.getWorld());
@@ -86,7 +85,7 @@ public class WorldListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(event.getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getWorld().getName()))
             return;
 
         Chunk chunk = event.getChunk();

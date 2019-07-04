@@ -1,7 +1,6 @@
 package com.gmail.nossr50.commands.party.teleport;
 
 import com.gmail.nossr50.commands.CommandConstants;
-import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
@@ -53,7 +52,7 @@ public class PtpCommand implements TabExecutor {
         }
 
         /* WORLD BLACKLIST CHECK */
-        if (WorldBlacklist.isWorldBlacklisted(player.getWorld()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(player.getWorld().getName()))
             return true;
 
         if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {

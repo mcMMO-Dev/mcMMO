@@ -37,6 +37,7 @@ public class DynamicSettingsManager {
     /* Platform Ready Managers */
     private BonusDropManager bonusDropManager;
     private ExperienceManager experienceManager;
+    private WorldBlackListManager worldBlackListManager;
 
     /* Party Settings */
     private HashMap<Material, Integer> partyItemWeights;
@@ -79,6 +80,17 @@ public class DynamicSettingsManager {
         //Init Skill Behaviour Manager
         skillBehaviourManager = new SkillBehaviourManager(pluginRef);
 
+        initExperienceManager();
+
+        initWorldBlackList();
+    }
+
+    private void initWorldBlackList() {
+        worldBlackListManager = new WorldBlackListManager();
+        worldBlackListManager.addBlackListedWorlds(pluginRef.getConfigManager().getConfigWorldBlacklist().getBlackListedWorlds());
+    }
+
+    private void initExperienceManager() {
         experienceManager = new ExperienceManager(pluginRef);
         //Set the global XP val
         experienceManager.setGlobalXpMult(pluginRef.getConfigManager().getConfigExperience().getGlobalXPMultiplier());
@@ -172,5 +184,13 @@ public class DynamicSettingsManager {
 
     public SkillBehaviourManager getSkillBehaviourManager() {
         return skillBehaviourManager;
+    }
+
+    public WorldBlackListManager getWorldBlackListManager() {
+        return worldBlackListManager;
+    }
+
+    public boolean isWorldBlacklisted(String worldName) {
+        return getWorldBlackListManager().isWorldBlacklisted(worldName);
     }
 }

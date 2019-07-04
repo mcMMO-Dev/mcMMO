@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes.player;
 
-import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
@@ -813,7 +812,7 @@ public class McMMOPlayer {
 
     public void checkGodMode() {
         if (godMode && !Permissions.mcgod(player)
-                || godMode && WorldBlacklist.isWorldBlacklisted(player.getWorld())) {
+                || godMode && pluginRef.getDynamicSettingsManager().isWorldBlacklisted(player.getWorld().getName())) {
             toggleGodMode();
             player.sendMessage(pluginRef.getLocaleManager().getString("Commands.GodMode.Forbidden"));
         }
