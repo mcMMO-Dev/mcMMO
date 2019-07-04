@@ -49,6 +49,6 @@ public class SkillEditCommand extends ExperienceCommand {
 
     @Override
     protected void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill) {
-        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.mmoedit.Modified.1", skill.getLocalizedSkillName(), value));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.mmoedit.Modified.1", pluginRef.getSkillTools().getLocalizedSkillName(skill), value));
     }
 }

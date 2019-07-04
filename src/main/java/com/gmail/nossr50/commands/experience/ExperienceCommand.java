@@ -28,7 +28,7 @@ public abstract class ExperienceCommand implements TabExecutor {
         if (skill == null) {
             sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardAll.2", playerName));
         } else {
-            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardSkill.2", skill.getLocalizedSkillName(), playerName));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardSkill.2", pluginRef.getSkillTools().getLocalizedSkillName(skill), playerName));
         }
     }
 
@@ -51,13 +51,13 @@ public abstract class ExperienceCommand implements TabExecutor {
                     return true;
                 }
 
-                skill = PrimarySkillType.matchSkill(args[0]);
+                skill = pluginRef.getSkillTools().matchSkill(args[0]);
 
                 if (args[1].equalsIgnoreCase("all")) {
                     skill = null;
                 }
 
-                if (skill != null && skill.isChildSkill()) {
+                if (skill != null && pluginRef.getSkillTools().isChildSkill(skill)) {
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Skill.ChildSkill"));
                     return true;
                 }
@@ -82,13 +82,13 @@ public abstract class ExperienceCommand implements TabExecutor {
                     return true;
                 }
 
-                skill = PrimarySkillType.matchSkill(args[1]);
+                skill = pluginRef.getSkillTools().matchSkill(args[1]);
 
                 if (args[1].equalsIgnoreCase("all")) {
                     skill = null;
                 }
 
-                if (skill != null && skill.isChildSkill()) {
+                if (skill != null && pluginRef.getSkillTools().isChildSkill(skill)) {
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Skill.ChildSkill"));
                     return true;
                 }
@@ -131,7 +131,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                 List<String> playerNames = pluginRef.getCommandTools().getOnlinePlayerNames(sender);
                 return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<>(playerNames.size()));
             case 2:
-                return StringUtil.copyPartialMatches(args[1], PrimarySkillType.SKILL_NAMES, new ArrayList<>(PrimarySkillType.SKILL_NAMES.size()));
+                return StringUtil.copyPartialMatches(args[1], pluginRef.getSkillTools().LOCALIZED_SKILL_NAMES, new ArrayList<>(pluginRef.getSkillTools().LOCALIZED_SKILL_NAMES.size()));
             default:
                 return ImmutableList.of();
         }

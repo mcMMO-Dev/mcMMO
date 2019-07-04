@@ -34,7 +34,7 @@ public class SkillResetCommand implements TabExecutor {
         if (skill == null) {
             sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardAll.2", playerName));
         } else {
-            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardSkill.2", skill.getLocalizedSkillName(), playerName));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardSkill.2", pluginRef.getSkillTools().getLocalizedSkillName(skill), playerName));
         }
     }
 
@@ -59,7 +59,7 @@ public class SkillResetCommand implements TabExecutor {
                 if (args[0].equalsIgnoreCase("all")) {
                     skill = null;
                 } else {
-                    skill = PrimarySkillType.matchSkill(args[1]);
+                    skill = pluginRef.getSkillTools().matchSkill(args[1]);
                 }
 
                 editValues((Player) sender, pluginRef.getUserManager().getPlayer(sender.getName()).getProfile(), skill);
@@ -78,7 +78,7 @@ public class SkillResetCommand implements TabExecutor {
                 if (args[1].equalsIgnoreCase("all")) {
                     skill = null;
                 } else {
-                    skill = PrimarySkillType.matchSkill(args[1]);
+                    skill = pluginRef.getSkillTools().matchSkill(args[1]);
                 }
 
                 String playerName = pluginRef.getCommandTools().getMatchedPlayerName(args[0]);
@@ -117,7 +117,7 @@ public class SkillResetCommand implements TabExecutor {
                 List<String> playerNames = pluginRef.getCommandTools().getOnlinePlayerNames(sender);
                 return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<>(playerNames.size()));
             case 2:
-                return StringUtil.copyPartialMatches(args[1], PrimarySkillType.SKILL_NAMES, new ArrayList<>(PrimarySkillType.SKILL_NAMES.size()));
+                return StringUtil.copyPartialMatches(args[1], pluginRef.getSkillTools().LOCALIZED_SKILL_NAMES, new ArrayList<>(pluginRef.getSkillTools().LOCALIZED_SKILL_NAMES.size()));
             default:
                 return ImmutableList.of();
         }
@@ -150,7 +150,7 @@ public class SkillResetCommand implements TabExecutor {
     }
 
     protected void handlePlayerMessageSkill(Player player, PrimarySkillType skill) {
-        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Reset.Single", skill.getLocalizedSkillName()));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Reset.Single", pluginRef.getSkillTools().getLocalizedSkillName(skill)));
     }
 
     private boolean validateArguments(CommandSender sender, String skillName) {

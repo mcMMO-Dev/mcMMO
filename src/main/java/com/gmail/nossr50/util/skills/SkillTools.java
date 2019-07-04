@@ -636,10 +636,13 @@ public class SkillTools {
     }
 
     public SuperAbilityType getSuperAbility(PrimarySkillType primarySkillType) {
+        if(mainActivatedAbilityChildMap.get(primarySkillType) == null)
+            return null;
+
         return mainActivatedAbilityChildMap.get(primarySkillType);
     }
 
-    public boolean isSuperAbilityUnlocked(Player player, PrimarySkillType primarySkillType) {
+    public boolean isSuperAbilityUnlocked(PrimarySkillType primarySkillType, Player player) {
         return RankUtils.getRank(player, getSuperAbility(primarySkillType).getSubSkillTypeDefinition()) >= 1;
     }
 

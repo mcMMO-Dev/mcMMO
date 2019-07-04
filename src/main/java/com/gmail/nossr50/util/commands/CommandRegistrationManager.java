@@ -35,9 +35,9 @@ public final class CommandRegistrationManager {
     }
 
     private void registerSkillCommands() {
-        for (PrimarySkillType skill : PrimarySkillType.values()) {
-            String commandName = skill.toString().toLowerCase();
-            String localizedName = skill.getLocalizedSkillName().toLowerCase();
+        for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            String commandName = primarySkillType.toString().toLowerCase();
+            String localizedName = pluginRef.getSkillTools().getLocalizedSkillName(primarySkillType).toLowerCase();
 
             PluginCommand command;
 
@@ -48,7 +48,7 @@ public final class CommandRegistrationManager {
             command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.0", localizedName));
             command.setUsage(command.getUsage() + "\n" + pluginRef.getLocaleManager().getString("Commands.Usage.2", localizedName, "?", "[" + pluginRef.getLocaleManager().getString("Commands.Usage.Page") + "]"));
 
-            switch (skill) {
+            switch (primarySkillType) {
                 case ACROBATICS:
                     command.setExecutor(new AcrobaticsCommand(pluginRef));
                     break;

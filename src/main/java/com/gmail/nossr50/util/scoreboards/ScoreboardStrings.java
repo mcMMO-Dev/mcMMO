@@ -97,14 +97,14 @@ public class ScoreboardStrings {
             Collections.shuffle(colors, Misc.getRandom());
 
             int i = 0;
-            for (PrimarySkillType type : PrimarySkillType.values()) {
+            for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
                 // Include child skills
-                skillLabelBuilder.put(type, getShortenedName(colors.get(i) + type.getLocalizedSkillName(), false));
+                skillLabelBuilder.put(primarySkillType, getShortenedName(colors.get(i) + pluginRef.getSkillTools().getLocalizedSkillName(primarySkillType), false));
 
-                if (type.getSuperAbility() != null) {
-                    abilityLabelBuilder.put(type.getSuperAbility(), getShortenedName(colors.get(i) + type.getSuperAbility().getName()));
+                if (pluginRef.getSkillTools().getSuperAbility(primarySkillType) != null) {
+                    abilityLabelBuilder.put(pluginRef.getSkillTools().getSuperAbility(primarySkillType), getShortenedName(colors.get(i) + pluginRef.getSkillTools().getSuperAbility(primarySkillType).getName()));
 
-                    if (type == PrimarySkillType.MINING) {
+                    if (primarySkillType == PrimarySkillType.MINING) {
                         abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, getShortenedName(colors.get(i) + SuperAbilityType.BLAST_MINING.getName()));
                     }
                 }
@@ -119,14 +119,14 @@ public class ScoreboardStrings {
          * Stylizes the targetBoard using our normal color scheme
          */
         else {
-            for (PrimarySkillType type : PrimarySkillType.values()) {
+            for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
                 // Include child skills
-                skillLabelBuilder.put(type, getShortenedName(ChatColor.GREEN + type.getLocalizedSkillName()));
+                skillLabelBuilder.put(primarySkillType, getShortenedName(ChatColor.GREEN + pluginRef.getSkillTools().getLocalizedSkillName(primarySkillType)));
 
-                if (type.getSuperAbility() != null) {
-                    abilityLabelBuilder.put(type.getSuperAbility(), formatAbility(type.getSuperAbility().getName()));
+                if (pluginRef.getSkillTools().getSuperAbility(primarySkillType) != null) {
+                    abilityLabelBuilder.put(pluginRef.getSkillTools().getSuperAbility(primarySkillType), formatAbility(pluginRef.getSkillTools().getSuperAbility(primarySkillType).getName()));
 
-                    if (type == PrimarySkillType.MINING) {
+                    if (primarySkillType == PrimarySkillType.MINING) {
                         abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, formatAbility(SuperAbilityType.BLAST_MINING.getName()));
                     }
                 }

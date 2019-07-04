@@ -182,7 +182,7 @@ public class McMMOPlayer {
         //Check each skill for custom XP perks
         for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
             //Skip over child skills
-            if (primarySkillType.isChildSkill())
+            if (pluginRef.getSkillTools().isChildSkill(primarySkillType))
                 continue;
 
             //Set the players custom XP modifier, defaults to 1.0D on missing entries
@@ -216,7 +216,9 @@ public class McMMOPlayer {
         if(hasReachedPowerLevelCap()) {
             pluginRef.getNotificationManager().sendPlayerInformationChatOnly(player, "LevelCap.PowerLevel", String.valueOf(pluginRef.getConfigManager().getConfigLeveling().getPowerLevelCap()));
         } else if(hasReachedLevelCap(primarySkillType)) {
-            pluginRef.getNotificationManager().sendPlayerInformationChatOnly(player, "LevelCap.Skill", String.valueOf(pluginRef.getConfigManager().getConfigLeveling().getSkillLevelCap(primarySkillType)), primarySkillType.getLocalizedSkillName());
+            pluginRef.getNotificationManager().sendPlayerInformationChatOnly(player, "LevelCap.Skill",
+                    String.valueOf(pluginRef.getConfigManager().getConfigLeveling().getSkillLevelCap(primarySkillType)),
+                    pluginRef.getSkillTools().getLocalizedSkillName(primarySkillType));
         }
 
         //Updates from Party sources
@@ -237,7 +239,7 @@ public class McMMOPlayer {
     public void updateXPBar(PrimarySkillType primarySkillType, Plugin plugin) {
         //Skill Unlock Notifications
 
-        if (primarySkillType.isChildSkill())
+        if (pluginRef.getSkillTools().isChildSkill(primarySkillType))
             return;
 
         //XP BAR UPDATES
@@ -518,9 +520,9 @@ public class McMMOPlayer {
     public int getPowerLevel() {
         int powerLevel = 0;
 
-        for (PrimarySkillType type : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
-            if (type.doesPlayerHaveSkillPermission(player)) {
-                powerLevel += getSkillLevel(type);
+        for (PrimarySkillType primarySkillType : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
+            if (pluginRef.getSkillTools().doesPlayerHaveSkillPermission(primarySkillType, player)) {
+                powerLevel += getSkillLevel(primarySkillType);
             }
         }
 
@@ -555,22 +557,22 @@ public class McMMOPlayer {
     /**
      * Begins an experience gain. The amount will be affected by skill modifiers, global rate, perks, and may be shared with the party
      *
-     * @param skill Skill being used
+     * @param primarySkillType Skill being used
      * @param xp    Experience amount to process
      */
-    public void beginXpGain(PrimarySkillType skill, double xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
+    public void beginXpGain(PrimarySkillType primarySkillType, double xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
         Validate.isTrue(xp >= 0.0, "XP gained should be greater than or equal to zero.");
 
         if (xp <= 0.0) {
             return;
         }
 
-        if (skill.isChildSkill()) {
-            Set<PrimarySkillType> parentSkills = FamilyTree.getParents(skill);
+        if (pluginRef.getSkillTools().isChildSkill(primarySkillType)) {
+            Set<PrimarySkillType> parentSkills = FamilyTree.getParents(primarySkillType);
             double splitXp = xp / parentSkills.size();
 
             for (PrimarySkillType parentSkill : parentSkills) {
-                if (parentSkill.doesPlayerHaveSkillPermission(player)) {
+                if (pluginRef.getSkillTools().doesPlayerHaveSkillPermission(parentSkill, player)) {
                     beginXpGain(parentSkill, splitXp, xpGainReason, xpGainSource);
                 }
             }
@@ -579,11 +581,11 @@ public class McMMOPlayer {
         }
 
         // Return if the experience has been shared
-        if (party != null && party.getShareHandler().handleXpShare(xp, this, skill, party.getShareHandler().getSharedXpGainReason(xpGainReason))) {
+        if (party != null && party.getShareHandler().handleXpShare(xp, this, primarySkillType, party.getShareHandler().getSharedXpGainReason(xpGainReason))) {
             return;
         }
 
-        beginUnsharedXpGain(skill, xp, xpGainReason, xpGainSource);
+        beginUnsharedXpGain(primarySkillType, xp, xpGainReason, xpGainSource);
     }
 
     /**
@@ -614,11 +616,11 @@ public class McMMOPlayer {
      * @param xp               Experience amount to add
      */
     public void applyXpGain(PrimarySkillType primarySkillType, double xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
-        if (!primarySkillType.doesPlayerHaveSkillPermission(player)) {
+        if (!pluginRef.getSkillTools().doesPlayerHaveSkillPermission(primarySkillType, player)) {
             return;
         }
 
-        if (primarySkillType.isChildSkill()) {
+        if (pluginRef.getSkillTools().isChildSkill(primarySkillType)) {
             Set<PrimarySkillType> parentSkills = FamilyTree.getParents(primarySkillType);
 
             for (PrimarySkillType parentSkill : parentSkills) {
@@ -849,13 +851,13 @@ public class McMMOPlayer {
      * @return Modified experience
      */
     private double modifyXpGain(PrimarySkillType primarySkillType, double xp) {
-        if (((primarySkillType.getMaxLevel() <= getSkillLevel(primarySkillType))
+        if (((pluginRef.getConfigManager().getConfigLeveling().getSkillLevelCap(primarySkillType) <= getSkillLevel(primarySkillType))
                 && pluginRef.getPlayerLevelingSettings().isSkillLevelCapEnabled(primarySkillType))
                 || (pluginRef.getPlayerLevelingSettings().getConfigSectionLevelCaps().getPowerLevelSettings().getLevelCap() <= getPowerLevel())) {
             return 0;
         }
 
-        xp = (double) (xp / primarySkillType.getXpModifier() * pluginRef.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult());
+        xp = (double) (xp / pluginRef.getSkillTools().getXpModifier(primarySkillType) * pluginRef.getDynamicSettingsManager().getExperienceManager().getGlobalXpMult());
 
         //Multiply by the players personal XP rate
         return xp * personalXPModifiers.get(primarySkillType);
@@ -879,23 +881,24 @@ public class McMMOPlayer {
     /**
      * Check to see if an ability can be activated.
      *
-     * @param skill The skill the ability is based on
+     * @param primarySkillType The skill the ability is based on
      */
-    public void checkAbilityActivation(PrimarySkillType skill) {
-        ToolType tool = skill.getPrimarySkillToolType();
-        SuperAbilityType ability = skill.getSuperAbility();
+    public void checkAbilityActivation(PrimarySkillType primarySkillType) {
+        //TODO: Disgusting..
+        ToolType tool = pluginRef.getSkillTools().getPrimarySkillToolType(primarySkillType);
+        SuperAbilityType ability = pluginRef.getSkillTools().getSuperAbility(primarySkillType);
 
         if (getAbilityMode(ability) || !ability.getPermissions(player)) {
             return;
         }
 
-        //TODO: This is hacky and temporary solution until skills are move to the new system
+        //TODO: This is hacky and temporary solution until skills are moved to the new system
         //Potential problems with this include skills with two super abilities (ie mining)
-        if (!skill.isSuperAbilityUnlocked(getPlayer())) {
-            int diff = RankUtils.getSuperAbilityUnlockRequirement(skill.getSuperAbility()) - getSkillLevel(skill);
+        if (!pluginRef.getSkillTools().isSuperAbilityUnlocked(primarySkillType, getPlayer())) {
+            int diff = RankUtils.getSuperAbilityUnlockRequirement(pluginRef.getSkillTools().getSuperAbility(primarySkillType)) - getSkillLevel(primarySkillType);
 
             //Inform the player they are not yet skilled enough
-            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.AbilityGateRequirementFail", String.valueOf(diff), skill.getLocalizedSkillName());
+            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.AbilityGateRequirementFail", String.valueOf(diff), pluginRef.getSkillTools().getLocalizedSkillName(primarySkillType));
             return;
         }
 
@@ -906,7 +909,7 @@ public class McMMOPlayer {
              * Axes and Woodcutting are odd because they share the same tool.
              * We show them the too tired message when they take action.
              */
-            if (skill == PrimarySkillType.WOODCUTTING || skill == PrimarySkillType.AXES) {
+            if (primarySkillType == PrimarySkillType.WOODCUTTING || primarySkillType == PrimarySkillType.AXES) {
                 pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf(timeRemaining));
                 //SoundManager.sendSound(player, player.getLocation(), SoundType.TIRED);
             }
@@ -914,7 +917,7 @@ public class McMMOPlayer {
             return;
         }
 
-        if (pluginRef.getEventManager().callPlayerAbilityActivateEvent(player, skill).isCancelled()) {
+        if (pluginRef.getEventManager().callPlayerAbilityActivateEvent(player, primarySkillType).isCancelled()) {
             return;
         }
 
@@ -928,7 +931,7 @@ public class McMMOPlayer {
         //Sounds
         SoundManager.worldSendSound(player.getWorld(), player.getLocation(), SoundType.ABILITY_ACTIVATED_GENERIC);
 
-        int abilityLength = pluginRef.getSkillTools().calculateAbilityLengthPerks(this, skill, ability);
+        int abilityLength = pluginRef.getSkillTools().calculateAbilityLengthPerks(this, primarySkillType, ability);
 
         // Enable the ability
         profile.setAbilityDATS(ability, System.currentTimeMillis() + (abilityLength * Misc.TIME_CONVERSION_FACTOR));
@@ -942,7 +945,7 @@ public class McMMOPlayer {
         new AbilityDisableTask(pluginRef,   this, ability).runTaskLater(pluginRef, abilityLength * Misc.TICK_CONVERSION_FACTOR);
     }
 
-    public void processAbilityActivation(PrimarySkillType skill) {
+    public void processAbilityActivation(PrimarySkillType primarySkillType) {
         if (pluginRef.getConfigManager().getConfigSuperAbilities().isMustSneakToActivate() && !player.isSneaking()) {
             return;
         }
@@ -963,15 +966,15 @@ public class McMMOPlayer {
             }
         }
 
-        SuperAbilityType ability = skill.getSuperAbility();
-        ToolType tool = skill.getPrimarySkillToolType();
+        SuperAbilityType ability = pluginRef.getSkillTools().getSuperAbility(primarySkillType);
+        ToolType tool = pluginRef.getSkillTools().getPrimarySkillToolType(primarySkillType);
 
         /*
          * Woodcutting & Axes need to be treated differently.
          * Basically the tool always needs to ready and we check to see if the cooldown is over when the user takes action
          */
         if (tool.inHand(inHand) && !getToolPreparationMode(tool)) {
-            if (skill != PrimarySkillType.WOODCUTTING && skill != PrimarySkillType.AXES) {
+            if (primarySkillType != PrimarySkillType.WOODCUTTING && primarySkillType != PrimarySkillType.AXES) {
                 int timeRemaining = calculateTimeRemaining(ability);
 
                 if (!getAbilityMode(ability) && timeRemaining > 0) {

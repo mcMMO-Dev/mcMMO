@@ -59,9 +59,9 @@ public class LeaderboardsCommandDisplayTask extends BukkitRunnable {
             }
         } else {
             if (sender instanceof Player) {
-                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Skill.Leaderboard", skill.getLocalizedSkillName()));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Skill.Leaderboard", pluginRef.getSkillTools().getLocalizedSkillName(skill)));
             } else {
-                sender.sendMessage(ChatColor.stripColor(pluginRef.getLocaleManager().getString("Commands.Skill.Leaderboard", skill.getLocalizedSkillName())));
+                sender.sendMessage(ChatColor.stripColor(pluginRef.getLocaleManager().getString("Commands.Skill.Leaderboard", pluginRef.getSkillTools().getLocalizedSkillName(skill))));
             }
         }
 
