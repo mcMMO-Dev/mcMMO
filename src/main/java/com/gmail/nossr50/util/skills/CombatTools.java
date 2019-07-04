@@ -19,7 +19,6 @@ import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.Unarmed;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
-import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.google.common.collect.ImmutableMap;
@@ -263,7 +262,7 @@ public final class CombatTools {
                 event.setDamage(acrobaticsManager.dodgeCheck(event.getDamage()));
             }
 
-            if (ItemUtils.isSword(player.getInventory().getItemInMainHand())) {
+            if (pluginRef.getItemTools().isSword(player.getInventory().getItemInMainHand())) {
                 if (!pluginRef.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.SWORDS, target)) {
                     return;
                 }
@@ -301,7 +300,7 @@ public final class CombatTools {
                 }
             }
 
-            if (ItemUtils.isSword(heldItem)) {
+            if (pluginRef.getItemTools().isSword(heldItem)) {
                 if (!pluginRef.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.SWORDS, target)) {
                     return;
                 }
@@ -309,7 +308,7 @@ public final class CombatTools {
                 if (pluginRef.getSkillTools().doesPlayerHaveSkillPermission(PrimarySkillType.SWORDS, player)) {
                     processSwordCombat(target, player, event);
                 }
-            } else if (ItemUtils.isAxe(heldItem)) {
+            } else if (pluginRef.getItemTools().isAxe(heldItem)) {
                 if (!pluginRef.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.AXES, target)) {
                     return;
                 }
@@ -317,7 +316,7 @@ public final class CombatTools {
                 if (pluginRef.getSkillTools().doesPlayerHaveSkillPermission(PrimarySkillType.AXES, player)) {
                     processAxeCombat(target, player, event);
                 }
-            } else if (ItemUtils.isUnarmed(heldItem)) {
+            } else if (pluginRef.getItemTools().isUnarmed(heldItem)) {
                 if (!pluginRef.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.UNARMED, target)) {
                     return;
                 }
@@ -784,15 +783,15 @@ public final class CombatTools {
     private int getTier(ItemStack inHand) {
         int tier = 0;
 
-        if (ItemUtils.isWoodTool(inHand)) {
+        if (pluginRef.getItemTools().isWoodTool(inHand)) {
             tier = 1;
-        } else if (ItemUtils.isStoneTool(inHand)) {
+        } else if (pluginRef.getItemTools().isStoneTool(inHand)) {
             tier = 2;
-        } else if (ItemUtils.isIronTool(inHand)) {
+        } else if (pluginRef.getItemTools().isIronTool(inHand)) {
             tier = 3;
-        } else if (ItemUtils.isGoldTool(inHand)) {
+        } else if (pluginRef.getItemTools().isGoldTool(inHand)) {
             tier = 1;
-        } else if (ItemUtils.isDiamondTool(inHand)) {
+        } else if (pluginRef.getItemTools().isDiamondTool(inHand)) {
             tier = 4;
         }
         /*else if (mcMMO.getModManager().isCustomTool(inHand)) {

@@ -3,7 +3,6 @@ package com.gmail.nossr50.runnables.items;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.ChimaeraWing;
-import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -37,7 +36,7 @@ public class ChimaeraWingWarmup extends BukkitRunnable {
 
         ItemStack inHand = player.getInventory().getItemInMainHand();
 
-        if (!ItemUtils.isChimaeraWing(inHand) || inHand.getAmount() < pluginRef.getConfigManager().getConfigItems().getChimaeraWingUseCost()) {
+        if (!pluginRef.getItemTools().isChimaeraWing(inHand) || inHand.getAmount() < pluginRef.getConfigManager().getConfigItems().getChimaeraWingUseCost()) {
             player.sendMessage(pluginRef.getLocaleManager().getString("Skills.NeedMore", pluginRef.getLocaleManager().getString("Item.ChimaeraWing.Name")));
             return;
         }

@@ -17,7 +17,6 @@ import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerShakeEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
@@ -287,7 +286,7 @@ public class FishingManager extends SkillManager {
             Map<Enchantment, Integer> enchants = new HashMap<>();
 
             if (isMagicHunterEnabled()
-                    && ItemUtils.isEnchantable(treasureDrop)) {
+                    && pluginRef.getItemTools().isEnchantable(treasureDrop)) {
                 enchants = handleMagicHunter(treasureDrop);
             }
 

@@ -9,7 +9,6 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.behaviours.WoodcuttingBehaviour;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -39,12 +38,12 @@ public class WoodcuttingManager extends SkillManager {
     public boolean canUseLeafBlower(ItemStack heldItem) {
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.WOODCUTTING_LEAF_BLOWER)
                 && pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.WOODCUTTING_LEAF_BLOWER)
-                && ItemUtils.isAxe(heldItem);
+                && pluginRef.getItemTools().isAxe(heldItem);
     }
 
     public boolean canUseTreeFeller(ItemStack heldItem) {
         return mcMMOPlayer.getAbilityMode(SuperAbilityType.TREE_FELLER)
-                && ItemUtils.isAxe(heldItem);
+                && pluginRef.getItemTools().isAxe(heldItem);
     }
 
     public boolean canGetDoubleDrops() {

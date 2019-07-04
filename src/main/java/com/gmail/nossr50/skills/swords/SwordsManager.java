@@ -8,7 +8,6 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.entity.Entity;
@@ -91,11 +90,11 @@ public class SwordsManager extends SkillManager {
     }
 
     public int getToolTier(ItemStack itemStack) {
-        if (ItemUtils.isDiamondTool(itemStack))
+        if (pluginRef.getItemTools().isDiamondTool(itemStack))
             return 4;
-        else if (ItemUtils.isIronTool(itemStack) || ItemUtils.isGoldTool(itemStack))
+        else if (pluginRef.getItemTools().isIronTool(itemStack) || pluginRef.getItemTools().isGoldTool(itemStack))
             return 3;
-        else if (ItemUtils.isStoneTool(itemStack))
+        else if (pluginRef.getItemTools().isStoneTool(itemStack))
             return 2;
         else
             return 1;

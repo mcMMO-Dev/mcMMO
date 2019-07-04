@@ -32,7 +32,7 @@ public final class ChimaeraWing {
     public void activationCheck() {
         ItemStack inHand = player.getInventory().getItemInMainHand();
 
-        if (!ItemUtils.isChimaeraWing(inHand)) {
+        if (!pluginRef.getItemTools().isChimaeraWing(inHand)) {
             return;
         }
 

@@ -95,6 +95,7 @@ public class mcMMO extends JavaPlugin {
     private MaterialMapStore materialMapStore;
     private RandomChanceTools randomChanceTools;
     private RankTools rankTools;
+    private ItemTools itemTools;
 
     /* Never-Ending tasks */
     private BleedTimerTask bleedTimerTask;
@@ -258,6 +259,9 @@ public class mcMMO extends JavaPlugin {
 
         //Init Block Tools
         blockTools = new BlockTools(this);
+
+        //Init Item Tools
+        itemTools = new ItemTools(this);
     }
 
     @Override
@@ -776,5 +780,9 @@ public class mcMMO extends JavaPlugin {
 
     public BlockTools getBlockTools() {
         return blockTools;
+    }
+
+    public ItemTools getItemTools() {
+        return itemTools;
     }
 }

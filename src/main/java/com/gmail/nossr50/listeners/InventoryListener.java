@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
-import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.block.Block;
@@ -88,7 +87,7 @@ public class InventoryListener implements Listener {
         BlockState furnaceState = furnaceBlock.getState();
         ItemStack smelting = furnaceState instanceof Furnace ? ((Furnace) furnaceState).getInventory().getSmelting() : null;
 
-        if (!ItemUtils.isSmeltable(smelting)) {
+        if (!pluginRef.getItemTools().isSmeltable(smelting)) {
             return;
         }
 
@@ -121,7 +120,7 @@ public class InventoryListener implements Listener {
         Block furnaceBlock = event.getBlock();
         ItemStack smelting = event.getSource();
 
-        if (!ItemUtils.isSmeltable(smelting)) {
+        if (!pluginRef.getItemTools().isSmeltable(smelting)) {
             return;
         }
 
@@ -153,7 +152,7 @@ public class InventoryListener implements Listener {
 
         Block furnaceBlock = event.getBlock();
 
-        if (!ItemUtils.isSmelted(new ItemStack(event.getItemType(), event.getItemAmount()))) {
+        if (!pluginRef.getItemTools().isSmelted(new ItemStack(event.getItemType(), event.getItemAmount()))) {
             return;
         }
 
@@ -461,7 +460,7 @@ public class InventoryListener implements Listener {
 
         ItemStack result = event.getRecipe().getResult();
 
-        if (!ItemUtils.isMcMMOItem(result)) {
+        if (!pluginRef.getItemTools().isMcMMOItem(result)) {
             return;
         }
 

@@ -9,7 +9,6 @@ import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.datatypes.skills.behaviours.AxesBehaviour;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -120,7 +119,7 @@ public class AxesManager extends SkillManager {
         double durabilityDamage = getImpactDurabilityDamage();
 
         for (ItemStack armor : target.getEquipment().getArmorContents()) {
-            if (armor != null && ItemUtils.isArmor(armor)) {
+            if (armor != null && pluginRef.getItemTools().isArmor(armor)) {
                 if (pluginRef.getRandomChanceTools().isActivationSuccessful(SkillActivationType.RANDOM_STATIC_CHANCE, SubSkillType.AXES_ARMOR_IMPACT, getPlayer())) {
                     pluginRef.getSkillTools().handleDurabilityChange(armor, durabilityDamage, 1);
                 }

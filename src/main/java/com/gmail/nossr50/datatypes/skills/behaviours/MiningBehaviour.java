@@ -4,7 +4,6 @@ import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.mining.MiningManager;
-import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
@@ -32,7 +31,7 @@ public class MiningBehaviour {
 
     public MiningBehaviour(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
-        this.detonators = ItemUtils.matchMaterials(pluginRef.getConfigManager().getConfigMining().getDetonators());
+        this.detonators = pluginRef.getItemTools().matchMaterials(pluginRef.getConfigManager().getConfigMining().getDetonators());
     }
 
     public double getBlastRadiusModifier(int rank) {

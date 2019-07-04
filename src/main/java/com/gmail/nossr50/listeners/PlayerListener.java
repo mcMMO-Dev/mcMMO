@@ -220,7 +220,7 @@ public class PlayerListener implements Listener {
         Item drop = event.getItemDrop();
         ItemStack dropStack = drop.getItemStack();
 
-        if (ItemUtils.isSharable(dropStack)) {
+        if (pluginRef.getItemTools().isSharable(dropStack)) {
             drop.setMetadata(MetadataConstants.DROPPED_ITEM_TRACKING_METAKEY, MetadataConstants.metadataValue);
         }
 
@@ -444,7 +444,7 @@ public class PlayerListener implements Listener {
             }
 
 
-            if (!drop.hasMetadata(MetadataConstants.DROPPED_ITEM_TRACKING_METAKEY) && mcMMOPlayer.inParty() && ItemUtils.isSharable(dropStack)) {
+            if (!drop.hasMetadata(MetadataConstants.DROPPED_ITEM_TRACKING_METAKEY) && mcMMOPlayer.inParty() && pluginRef.getItemTools().isSharable(dropStack)) {
                 event.setCancelled(mcMMOPlayer.getParty().getShareHandler().handleItemShare(drop, mcMMOPlayer));
 
                 SoundManager.sendSound(player, player.getLocation(), SoundType.POP);

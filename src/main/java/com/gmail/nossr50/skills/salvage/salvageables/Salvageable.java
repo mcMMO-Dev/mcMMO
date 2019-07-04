@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills.salvage.salvageables;
 
 import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
 import com.gmail.nossr50.datatypes.skills.ItemType;
-import com.gmail.nossr50.util.ItemUtils;
 import org.bukkit.Material;
 
 /**
@@ -28,8 +27,8 @@ public class Salvageable {
     public Salvageable(Material itemMaterial, Material salvagedItemMaterial, int minimumLevel, int maximumQuantity) {
         this.itemMaterial = itemMaterial;
         this.salvagedItemMaterial = salvagedItemMaterial;
-        this.salvageItemType = ItemUtils.determineItemType(itemMaterial);
-        this.salvageItemMaterialCategory = ItemUtils.determineMaterialType(salvagedItemMaterial);
+        this.salvageItemType = pluginRef.getItemTools().determineItemType(itemMaterial);
+        this.salvageItemMaterialCategory = pluginRef.getItemTools().determineMaterialType(salvagedItemMaterial);
         this.minimumLevel = Math.max(0, minimumLevel);
         this.maximumQuantity = Math.max(1, maximumQuantity);
         this.maximumDurability = itemMaterial.getMaxDurability();

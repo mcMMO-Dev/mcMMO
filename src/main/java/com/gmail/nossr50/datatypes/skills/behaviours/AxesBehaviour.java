@@ -2,7 +2,6 @@ package com.gmail.nossr50.datatypes.skills.behaviours;
 
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.ItemUtils;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -24,7 +23,7 @@ public class AxesBehaviour {
 
     public boolean hasArmor(LivingEntity target) {
         for (ItemStack itemStack : target.getEquipment().getArmorContents()) {
-            if (itemStack != null && ItemUtils.isArmor(itemStack)) {
+            if (itemStack != null && pluginRef.getItemTools().isArmor(itemStack)) {
                 return true;
             }
         }

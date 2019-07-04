@@ -10,7 +10,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
@@ -400,7 +399,7 @@ public class SkillTools {
     }
 
     public void removeAbilityBuff(ItemStack item) {
-        if (item == null || item.getType() == Material.AIR || (!ItemUtils.isPickaxe(item) && !ItemUtils.isShovel(item)) || !item.containsEnchantment(Enchantment.DIG_SPEED)) {
+        if (item == null || item.getType() == Material.AIR || (!pluginRef.getItemTools().isPickaxe(item) && !pluginRef.getItemTools().isShovel(item)) || !item.containsEnchantment(Enchantment.DIG_SPEED)) {
             return;
         }
 
@@ -458,19 +457,19 @@ public class SkillTools {
     }
 
     protected Material getRepairAndSalvageItem(ItemStack inHand) {
-        if (ItemUtils.isDiamondTool(inHand) || ItemUtils.isDiamondArmor(inHand)) {
+        if (pluginRef.getItemTools().isDiamondTool(inHand) || pluginRef.getItemTools().isDiamondArmor(inHand)) {
             return Material.DIAMOND;
-        } else if (ItemUtils.isGoldTool(inHand) || ItemUtils.isGoldArmor(inHand)) {
+        } else if (pluginRef.getItemTools().isGoldTool(inHand) || pluginRef.getItemTools().isGoldArmor(inHand)) {
             return Material.GOLD_INGOT;
-        } else if (ItemUtils.isIronTool(inHand) || ItemUtils.isIronArmor(inHand)) {
+        } else if (pluginRef.getItemTools().isIronTool(inHand) || pluginRef.getItemTools().isIronArmor(inHand)) {
             return Material.IRON_INGOT;
-        } else if (ItemUtils.isStoneTool(inHand)) {
+        } else if (pluginRef.getItemTools().isStoneTool(inHand)) {
             return Material.COBBLESTONE;
-        } else if (ItemUtils.isWoodTool(inHand)) {
+        } else if (pluginRef.getItemTools().isWoodTool(inHand)) {
             return Material.OAK_WOOD;
-        } else if (ItemUtils.isLeatherArmor(inHand)) {
+        } else if (pluginRef.getItemTools().isLeatherArmor(inHand)) {
             return Material.LEATHER;
-        } else if (ItemUtils.isStringTool(inHand)) {
+        } else if (pluginRef.getItemTools().isStringTool(inHand)) {
             return Material.STRING;
         } else {
             return null;

@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes.skills;
 
-import com.gmail.nossr50.util.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -37,22 +36,22 @@ public enum ToolType {
     public boolean inHand(ItemStack itemStack) {
         switch (this) {
             case AXE:
-                return ItemUtils.isAxe(itemStack);
+                return pluginRef.getItemTools().isAxe(itemStack);
 
             case FISTS:
                 return itemStack.getType() == Material.AIR;
 
             case HOE:
-                return ItemUtils.isHoe(itemStack);
+                return pluginRef.getItemTools().isHoe(itemStack);
 
             case PICKAXE:
-                return ItemUtils.isPickaxe(itemStack);
+                return pluginRef.getItemTools().isPickaxe(itemStack);
 
             case SHOVEL:
-                return ItemUtils.isShovel(itemStack);
+                return pluginRef.getItemTools().isShovel(itemStack);
 
             case SWORD:
-                return ItemUtils.isSword(itemStack);
+                return pluginRef.getItemTools().isSword(itemStack);
 
             default:
                 return false;

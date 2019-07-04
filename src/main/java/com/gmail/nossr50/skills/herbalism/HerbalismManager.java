@@ -14,7 +14,6 @@ import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.HerbalismBlockUpdaterTask;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
@@ -329,7 +328,7 @@ public class HerbalismManager extends SkillManager {
             return;
         }
 
-        if (!ItemUtils.isHoe(getPlayer().getInventory().getItemInMainHand())) {
+        if (!pluginRef.getItemTools().isHoe(getPlayer().getInventory().getItemInMainHand())) {
             if (!playerInventory.containsAtLeast(seedStack, 1)) {
                 return;
             }

@@ -2,6 +2,7 @@ package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
 import com.gmail.nossr50.datatypes.skills.ItemType;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.FurnaceRecipe;
@@ -12,11 +13,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class ItemUtils {
-    private ItemUtils() {
+public final class ItemTools {
+    private final mcMMO pluginRef;
+
+    public ItemTools(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
     }
 
-    public static ArrayList<String> getRepairItemMaterials(List<Material> repairItemList) {
+    public ArrayList<String> getRepairItemMaterials(List<Material> repairItemList) {
         ArrayList<String> repairMaterialList = new ArrayList<>();
 
         for (Material m : repairItemList) {
@@ -26,7 +30,7 @@ public final class ItemUtils {
         return repairMaterialList;
     }
 
-    public static ArrayList<Material> matchMaterials(List<String> ItemBlockRegistryKeyList) {
+    public ArrayList<Material> matchMaterials(List<String> ItemBlockRegistryKeyList) {
         ArrayList<Material> matchedMaterials = new ArrayList<>();
 
         for (String s : ItemBlockRegistryKeyList) {
@@ -42,10 +46,10 @@ public final class ItemUtils {
      * @param material target material
      * @return the matching ItemType returns OTHER if no match
      */
-    public static ItemType determineItemType(Material material) {
-        if (ItemUtils.isMinecraftTool(new ItemStack(material))) {
+    public ItemType determineItemType(Material material) {
+        if (isMinecraftTool(new ItemStack(material))) {
             return ItemType.TOOL;
-        } else if (ItemUtils.isArmor(new ItemStack((material)))) {
+        } else if (isArmor(new ItemStack((material)))) {
             return ItemType.ARMOR;
         } else {
             return ItemType.OTHER;
@@ -58,7 +62,7 @@ public final class ItemUtils {
      * @param material target material
      * @return the matching ItemMaterialCategory, return OTHER if no match
      */
-    public static ItemMaterialCategory determineMaterialType(Material material) {
+    public ItemMaterialCategory determineMaterialType(Material material) {
         switch (material) {
             case STRING:
                 return ItemMaterialCategory.STRING;
@@ -97,7 +101,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a bow, false otherwise
      */
-    public static boolean isBow(ItemStack item) {
+    public boolean isBow(ItemStack item) {
         Material type = item.getType();
 
         switch (type) {
@@ -116,7 +120,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a sword, false otherwise
      */
-    public static boolean isSword(ItemStack item) {
+    public boolean isSword(ItemStack item) {
         Material type = item.getType();
 
         switch (type) {
@@ -139,7 +143,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a hoe, false otherwise
      */
-    public static boolean isHoe(ItemStack item) {
+    public boolean isHoe(ItemStack item) {
         Material type = item.getType();
 
         switch (type) {
@@ -162,7 +166,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a shovel, false otherwise
      */
-    public static boolean isShovel(ItemStack item) {
+    public boolean isShovel(ItemStack item) {
         Material type = item.getType();
 
         switch (type) {
@@ -185,7 +189,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is an axe, false otherwise
      */
-    public static boolean isAxe(ItemStack item) {
+    public boolean isAxe(ItemStack item) {
         Material type = item.getType();
 
         switch (type) {
@@ -208,7 +212,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a pickaxe, false otherwise
      */
-    public static boolean isPickaxe(ItemStack item) {
+    public boolean isPickaxe(ItemStack item) {
         Material type = item.getType();
 
         switch (type) {
@@ -231,7 +235,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item counts as unarmed, false otherwise
      */
-    public static boolean isUnarmed(ItemStack item) {
+    public boolean isUnarmed(ItemStack item) {
         if (pluginRef.getConfigManager().getConfigUnarmed().doItemsCountAsUnarmed()) {
             return !isMinecraftTool(item);
         }
@@ -245,7 +249,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a helmet, false otherwise
      */
-    public static boolean isHelmet(ItemStack item) {
+    public boolean isHelmet(ItemStack item) {
         Material type = item.getType();
 
         switch (type) {
@@ -268,7 +272,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a chestplate, false otherwise
      */
-    public static boolean isChestplate(ItemStack item) {
+    public boolean isChestplate(ItemStack item) {
         Material type = item.getType();
 
         switch (type) {
@@ -291,7 +295,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a pair of pants, false otherwise
      */
-    public static boolean isLeggings(ItemStack item) {
+    public boolean isLeggings(ItemStack item) {
         Material type = item.getType();
 
         switch (type) {
@@ -314,7 +318,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a pair of boots, false otherwise
      */
-    public static boolean isBoots(ItemStack item) {
+    public boolean isBoots(ItemStack item) {
         Material type = item.getType();
 
         switch (type) {
@@ -337,7 +341,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is armor, false otherwise
      */
-    public static boolean isArmor(ItemStack item) {
+    public boolean isArmor(ItemStack item) {
         return isHelmet(item) || isChestplate(item) || isLeggings(item) || isBoots(item);
     }
 
@@ -347,7 +351,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is armor, false otherwise
      */
-    public static boolean isMinecraftArmor(ItemStack item) {
+    public boolean isMinecraftArmor(ItemStack item) {
         return isLeatherArmor(item) || isGoldArmor(item) || isIronArmor(item) || isDiamondArmor(item) || isChainmailArmor(item);
     }
 
@@ -357,7 +361,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is leather armor, false otherwise
      */
-    public static boolean isLeatherArmor(ItemStack item) {
+    public boolean isLeatherArmor(ItemStack item) {
         switch (item.getType()) {
             case LEATHER_BOOTS:
             case LEATHER_CHESTPLATE:
@@ -376,7 +380,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is gold armor, false otherwise
      */
-    public static boolean isGoldArmor(ItemStack item) {
+    public boolean isGoldArmor(ItemStack item) {
         switch (item.getType()) {
             case GOLDEN_BOOTS:
             case GOLDEN_CHESTPLATE:
@@ -395,7 +399,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is iron armor, false otherwise
      */
-    public static boolean isIronArmor(ItemStack item) {
+    public boolean isIronArmor(ItemStack item) {
         switch (item.getType()) {
             case IRON_BOOTS:
             case IRON_CHESTPLATE:
@@ -414,7 +418,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is diamond armor, false otherwise
      */
-    public static boolean isDiamondArmor(ItemStack item) {
+    public boolean isDiamondArmor(ItemStack item) {
         switch (item.getType()) {
             case DIAMOND_BOOTS:
             case DIAMOND_CHESTPLATE:
@@ -433,7 +437,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is chainmail armor, false otherwise
      */
-    public static boolean isChainmailArmor(ItemStack item) {
+    public boolean isChainmailArmor(ItemStack item) {
         switch (item.getType()) {
             case CHAINMAIL_BOOTS:
             case CHAINMAIL_CHESTPLATE:
@@ -452,7 +456,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a tool, false otherwise
      */
-    public static boolean isMinecraftTool(ItemStack item) {
+    public boolean isMinecraftTool(ItemStack item) {
         return isStoneTool(item) || isWoodTool(item) || isGoldTool(item) || isIronTool(item) || isDiamondTool(item) || isStringTool(item) || item.getType() == Material.TRIDENT;
     }
 
@@ -462,7 +466,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a stone tool, false otherwise
      */
-    public static boolean isStoneTool(ItemStack item) {
+    public boolean isStoneTool(ItemStack item) {
         switch (item.getType()) {
             case STONE_AXE:
             case STONE_HOE:
@@ -482,7 +486,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a wooden tool, false otherwise
      */
-    public static boolean isWoodTool(ItemStack item) {
+    public boolean isWoodTool(ItemStack item) {
         switch (item.getType()) {
             case WOODEN_AXE:
             case WOODEN_HOE:
@@ -502,7 +506,7 @@ public final class ItemUtils {
      * @param material Material to check
      * @return true if the item is a wooden tool, false otherwise
      */
-    public static boolean isWoodTool(Material material) {
+    public boolean isWoodTool(Material material) {
         switch (material) {
             case WOODEN_AXE:
             case WOODEN_HOE:
@@ -522,7 +526,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a string tool, false otherwise
      */
-    public static boolean isStringTool(ItemStack item) {
+    public boolean isStringTool(ItemStack item) {
         switch (item.getType()) {
             case BOW:
             case CARROT_ON_A_STICK:
@@ -540,7 +544,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a stone tool, false otherwise
      */
-    public static boolean isGoldTool(ItemStack item) {
+    public boolean isGoldTool(ItemStack item) {
         switch (item.getType()) {
             case GOLDEN_AXE:
             case GOLDEN_HOE:
@@ -560,7 +564,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is an iron tool, false otherwise
      */
-    public static boolean isIronTool(ItemStack item) {
+    public boolean isIronTool(ItemStack item) {
         switch (item.getType()) {
             case BUCKET:
             case FLINT_AND_STEEL:
@@ -583,7 +587,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a diamond tool, false otherwise
      */
-    public static boolean isDiamondTool(ItemStack item) {
+    public boolean isDiamondTool(ItemStack item) {
         switch (item.getType()) {
             case DIAMOND_AXE:
             case DIAMOND_HOE:
@@ -603,7 +607,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is enchantable, false otherwise
      */
-    public static boolean isEnchantable(ItemStack item) {
+    public boolean isEnchantable(ItemStack item) {
         switch (item.getType()) {
             case ENCHANTED_BOOK:
             case SHEARS:
@@ -618,11 +622,11 @@ public final class ItemUtils {
         }
     }
 
-    public static boolean isSmeltable(ItemStack item) {
+    public boolean isSmeltable(ItemStack item) {
         return item != null && item.getType().isBlock() && MaterialUtils.isOre(item.getType());
     }
 
-    public static boolean isSmelted(ItemStack item) {
+    public boolean isSmelted(ItemStack item) {
         if (item == null) {
             return false;
         }
@@ -644,7 +648,7 @@ public final class ItemUtils {
      * @param item Item that will get shared
      * @return True if the item can be shared.
      */
-    public static boolean isSharable(ItemStack item) {
+    public boolean isSharable(ItemStack item) {
         if (item == null || item.getType() == Material.AIR) {
             return false;
         }
@@ -658,7 +662,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a mining drop, false otherwise
      */
-    public static boolean isMiningDrop(ItemStack item) {
+    public boolean isMiningDrop(ItemStack item) {
         //TODO: 1.14 This needs to be updated
         switch (item.getType()) {
             case COAL:
@@ -689,7 +693,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a herbalism drop, false otherwise
      */
-    public static boolean isHerbalismDrop(ItemStack item) {
+    public boolean isHerbalismDrop(ItemStack item) {
         //TODO: 1.14 This needs to be updated
         switch (item.getType()) {
             case WHEAT:
@@ -728,7 +732,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a mob drop, false otherwise
      */
-    public static boolean isMobDrop(ItemStack item) {
+    public boolean isMobDrop(ItemStack item) {
         //TODO: 1.14 This needs to be updated
         switch (item.getType()) {
             case STRING:
@@ -786,7 +790,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a woodcutting drop, false otherwise
      */
-    public static boolean isWoodcuttingDrop(ItemStack item) {
+    public boolean isWoodcuttingDrop(ItemStack item) {
         switch (item.getType()) {
             case ACACIA_LOG:
             case BIRCH_LOG:
@@ -826,11 +830,11 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a miscellaneous drop, false otherwise
      */
-    public static boolean isMiscDrop(ItemStack item) {
+    public boolean isMiscDrop(ItemStack item) {
         return pluginRef.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(item.getType()) != null;
     }
 
-    public static boolean isMcMMOItem(ItemStack item) {
+    public boolean isMcMMOItem(ItemStack item) {
         if (!item.hasItemMeta()) {
             return false;
         }
@@ -839,7 +843,7 @@ public final class ItemUtils {
         return itemMeta.hasLore() && itemMeta.getLore().contains("mcMMO Item");
     }
 
-    public static boolean isChimaeraWing(ItemStack item) {
+    public boolean isChimaeraWing(ItemStack item) {
         if (!isMcMMOItem(item)) {
             return false;
         }
