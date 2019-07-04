@@ -14,9 +14,7 @@ import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
-import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.RepairManager;
-import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.*;
@@ -252,7 +250,7 @@ public class PlayerListener implements Listener {
                 return;
         }
 
-        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || !PrimarySkillType.FISHING.doesPlayerHaveSkillPermission(player)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || !pluginRef.getSkillTools().doesPlayerHaveSkillPermission(PrimarySkillType.FISHING, player)) {
             return;
         }
 
@@ -327,7 +325,7 @@ public class PlayerListener implements Listener {
                 return;
         }
 
-        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || !PrimarySkillType.FISHING.doesPlayerHaveSkillPermission(player)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || !pluginRef.getSkillTools().doesPlayerHaveSkillPermission(PrimarySkillType.FISHING, player)) {
             return;
         }
 
@@ -592,8 +590,8 @@ public class PlayerListener implements Listener {
 
                 if (!pluginRef.getConfigManager().getConfigSuperAbilities().isMustSneakToActivate() || player.isSneaking()) {
                     /* REPAIR CHECKS */
-                    if (type == Repair.getInstance().getAnvilMaterial()
-                            && PrimarySkillType.REPAIR.doesPlayerHaveSkillPermission(player)
+                    if (type == pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getRepairBehaviour().getAnvilMaterial()
+                            && pluginRef.getSkillTools().doesPlayerHaveSkillPermission(PrimarySkillType.REPAIR, player)
                             && pluginRef.getRepairableManager().isRepairable(heldItem)
                             && heldItem.getAmount() <= 1) {
                         RepairManager repairManager = mcMMOPlayer.getRepairManager();
@@ -606,8 +604,8 @@ public class PlayerListener implements Listener {
                         }
                     }
                     /* SALVAGE CHECKS */
-                    else if (type == Salvage.anvilMaterial
-                            && PrimarySkillType.SALVAGE.doesPlayerHaveSkillPermission(player)
+                    else if (type == pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getSalvageBehaviour().getAnvilMaterial()
+                            && pluginRef.getSkillTools().doesPlayerHaveSkillPermission(PrimarySkillType.SALVAGE, player)
                             && RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR)
                             && pluginRef.getSalvageableManager().isSalvageable(heldItem)
                             && heldItem.getAmount() <= 1) {
@@ -634,30 +632,32 @@ public class PlayerListener implements Listener {
                 break;
 
             case LEFT_CLICK_BLOCK:
-                type = block.getType();
-
-                if (!pluginRef.getConfigManager().getConfigSuperAbilities().isMustSneakToActivate() || player.isSneaking()) {
-                    /* REPAIR CHECKS */
-                    if (type == Repair.getInstance().getAnvilMaterial() && PrimarySkillType.REPAIR.doesPlayerHaveSkillPermission(player) && pluginRef.getRepairableManager().isRepairable(heldItem)) {
-                        RepairManager repairManager = mcMMOPlayer.getRepairManager();
-
-                        // Cancel repairing an enchanted item
-                        if (repairManager.checkConfirmation(false)) {
-                            repairManager.setLastAnvilUse(0);
-                            player.sendMessage(pluginRef.getLocaleManager().getString("Skills.Cancelled", pluginRef.getLocaleManager().getString("Repair.Pretty.Name")));
-                        }
-                    }
-                    /* SALVAGE CHECKS */
-                    else if (type == Salvage.anvilMaterial && PrimarySkillType.SALVAGE.doesPlayerHaveSkillPermission(player) && pluginRef.getSalvageableManager().isSalvageable(heldItem)) {
-                        SalvageManager salvageManager = mcMMOPlayer.getSalvageManager();
-
-                        // Cancel salvaging an enchanted item
-                        if (salvageManager.checkConfirmation(false)) {
-                            salvageManager.setLastAnvilUse(0);
-                            player.sendMessage(pluginRef.getLocaleManager().getString("Skills.Cancelled", pluginRef.getLocaleManager().getString("Salvage.Pretty.Name")));
-                        }
-                    }
-                }
+                //TODO: Not sure why this code is here, I disabled it for now.
+                //TODO: Not sure why this code is here, I disabled it for now.
+                //TODO: Not sure why this code is here, I disabled it for now.
+//                type = block.getType();
+//                if (!pluginRef.getConfigManager().getConfigSuperAbilities().isMustSneakToActivate() || player.isSneaking()) {
+//                    /* REPAIR CHECKS */
+//                    if (type == Repair.getInstance().getAnvilMaterial() && PrimarySkillType.REPAIR.doesPlayerHaveSkillPermission(player) && pluginRef.getRepairableManager().isRepairable(heldItem)) {
+//                        RepairManager repairManager = mcMMOPlayer.getRepairManager();
+//
+//                        // Cancel repairing an enchanted item
+//                        if (repairManager.checkConfirmation(false)) {
+//                            repairManager.setLastAnvilUse(0);
+//                            player.sendMessage(pluginRef.getLocaleManager().getString("Skills.Cancelled", pluginRef.getLocaleManager().getString("Repair.Pretty.Name")));
+//                        }
+//                    }
+//                    /* SALVAGE CHECKS */
+//                    else if (type == Salvage.anvilMaterial && PrimarySkillType.SALVAGE.doesPlayerHaveSkillPermission(player) && pluginRef.getSalvageableManager().isSalvageable(heldItem)) {
+//                        SalvageManager salvageManager = mcMMOPlayer.getSalvageManager();
+//
+//                        // Cancel salvaging an enchanted item
+//                        if (salvageManager.checkConfirmation(false)) {
+//                            salvageManager.setLastAnvilUse(0);
+//                            player.sendMessage(pluginRef.getLocaleManager().getString("Skills.Cancelled", pluginRef.getLocaleManager().getString("Salvage.Pretty.Name")));
+//                        }
+//                    }
+//                }
 
                 break;
 
@@ -880,11 +880,11 @@ public class PlayerListener implements Listener {
             String lowerCaseCommand = command.toLowerCase();
 
             // Do these ACTUALLY have to be lower case to work properly?
-            for (PrimarySkillType skill : PrimarySkillType.values()) {
-                String skillName = skill.toString().toLowerCase();
-                String localizedName = skill.getLocalizedSkillName().toLowerCase();
+            for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+                String skillName = primarySkillType.toString().toLowerCase();
+                String localizedName = pluginRef.getSkillTools().getLocalizedSkillName(primarySkillType).toLowerCase();
 
-                if (lowerCaseCommand.equals(localizedName)) {
+                if (command.equalsIgnoreCase(localizedName)) {
                     event.setMessage(message.replace(command, skillName));
                     break;
                 }
@@ -895,17 +895,4 @@ public class PlayerListener implements Listener {
             }
         }
     }
-
-    /*@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerStatisticIncrementEvent(PlayerStatisticIncrementEvent event) {
-        *//* WORLD BLACKLIST CHECK *//*
-        if(pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getPlayer().getWorld().getName()))
-            return;
-
-        if (!mcMMO.getHolidayManager().isAprilFirst()) {
-            return;
-        }
-
-        mcMMO.getHolidayManager().handleStatisticEvent(event);
-    }*/
 }

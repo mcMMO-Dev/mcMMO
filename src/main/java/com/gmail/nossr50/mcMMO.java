@@ -39,6 +39,7 @@ import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.PlayerLevelUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
+import com.gmail.nossr50.util.skills.CombatTools;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
@@ -88,6 +89,7 @@ public class mcMMO extends JavaPlugin {
     private DatabaseManagerFactory databaseManagerFactory;
     private CommandTools commandTools;
     private SkillTools skillTools; //TODO: Remove once a new skill system is in place
+    private CombatTools combatTools; //TODO: Rewrite this garbo
     private TextComponentFactory textComponentFactory;
 
     /* Never-Ending tasks */
@@ -239,6 +241,9 @@ public class mcMMO extends JavaPlugin {
 
         //Init Skill Tools
         skillTools = new SkillTools(this);
+
+        //Init Combat Tools
+        combatTools = new CombatTools(this);
     }
 
     @Override
@@ -741,5 +746,9 @@ public class mcMMO extends JavaPlugin {
 
     public SkillTools getSkillTools() {
         return skillTools;
+    }
+
+    public CombatTools getCombatTools() {
+        return combatTools;
     }
 }

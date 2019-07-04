@@ -673,7 +673,7 @@ public final class PartyManager {
             ArrayList<Party> hasAlly = new ArrayList<Party>();
 
             for (String partyName : partiesFile.getConfigurationSection("").getKeys(false)) {
-                Party party = new Party(partyName);
+                Party party = new Party(partyName, pluginRef);
 
                 String[] leaderSplit = partiesFile.getString(partyName + ".Leader").split("[|]");
                 party.setLeader(new PartyLeader(UUID.fromString(leaderSplit[0]), leaderSplit[1]));

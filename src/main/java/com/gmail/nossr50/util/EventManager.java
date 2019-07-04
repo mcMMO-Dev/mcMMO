@@ -31,7 +31,6 @@ import com.gmail.nossr50.events.skills.salvage.McMMOPlayerSalvageCheckEvent;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillEvent;
 import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.skills.CombatUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -133,7 +132,7 @@ public class EventManager {
 
         LivingEntity livingEntity = (LivingEntity) entity;
 
-        if (CombatUtils.isInvincible(livingEntity, damage)) {
+        if (pluginRef.getCombatTools().isInvincible(livingEntity, damage)) {
             return false;
         }
 

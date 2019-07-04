@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.items.ChimaeraWingWarmup;
-import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Location;
@@ -84,7 +83,7 @@ public final class ChimaeraWing {
                 pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Item.ChimaeraWing.Fail");
                 player.updateInventory();
                 player.setVelocity(new Vector(0, 0.5D, 0));
-                CombatUtils.dealDamage(player, Misc.getRandom().nextInt((int) (player.getHealth() - 10)));
+                pluginRef.getCombatTools().dealDamage(player, Misc.getRandom().nextInt((int) (player.getHealth() - 10)));
                 mcMMOPlayer.actualizeChimeraWingLastUse();
                 return;
             }

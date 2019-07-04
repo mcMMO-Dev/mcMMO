@@ -3,7 +3,6 @@ package com.gmail.nossr50.runnables.skills;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.skills.BleedContainer;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -47,7 +46,7 @@ public class BleedTimerTask extends BukkitRunnable {
          */
 
         if (bleedList.containsKey(entity)) {
-            CombatUtils.dealNoInvulnerabilityTickDamage(entity, bleedList.get(entity).bleedTicks * 2, bleedList.get(entity).damageSource);
+            pluginRef.getCombatTools().dealNoInvulnerabilityTickDamage(entity, bleedList.get(entity).bleedTicks * 2, bleedList.get(entity).damageSource);
         }
     }
 
@@ -155,7 +154,7 @@ public class BleedTimerTask extends BukkitRunnable {
 
 //            debugMessage+="TargetHealthBeforeDMG=["+String.valueOf(target.getHealth())+"], ";
 
-            CombatUtils.dealNoInvulnerabilityTickDamageRupture(target, damage, containerEntry.getValue().damageSource, toolTier);
+            pluginRef.getCombatTools().dealNoInvulnerabilityTickDamageRupture(target, damage, containerEntry.getValue().damageSource, toolTier);
 
             double victimHealthAftermath = target.getHealth();
 

@@ -1,6 +1,7 @@
 package com.gmail.nossr50.datatypes.skills.behaviours;
 
 import com.gmail.nossr50.mcMMO;
+import org.bukkit.Material;
 
 /**
  * These behaviour classes are a band-aid fix for a larger problem
@@ -12,9 +13,14 @@ import com.gmail.nossr50.mcMMO;
 public class RepairBehaviour {
 
     private final mcMMO pluginRef;
+    private final Material anvilMaterial;
 
     public RepairBehaviour(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
+        this.anvilMaterial = pluginRef.getConfigManager().getConfigRepair().getRepairGeneral().getRepairAnvilMaterial();
     }
 
+    public Material getAnvilMaterial() {
+        return anvilMaterial;
+    }
 }

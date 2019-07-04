@@ -14,7 +14,6 @@ import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
-import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.Material;
@@ -107,7 +106,7 @@ public class WoodcuttingManager extends SkillManager {
             double health = player.getHealth();
 
             if (health > 1) {
-                CombatUtils.dealDamage(player, Misc.getRandom().nextInt((int) (health - 1)));
+                pluginRef.getCombatTools().dealDamage(player, Misc.getRandom().nextInt((int) (health - 1)));
             }
 
             return;

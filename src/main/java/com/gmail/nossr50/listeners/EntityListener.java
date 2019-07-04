@@ -8,8 +8,6 @@ import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.archery.Archery;
-import com.gmail.nossr50.skills.mining.BlastMining;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.skills.taming.TamingManager;
@@ -18,7 +16,6 @@ import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
-import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.Material;
@@ -327,7 +324,7 @@ public class EntityListener implements Listener {
 
         LivingEntity target = (LivingEntity) defender;
 
-        if (CombatUtils.isInvincible(target, damage)) {
+        if (pluginRef.getCombatTools().isInvincible(target, damage)) {
             return;
         }
 
@@ -342,7 +339,7 @@ public class EntityListener implements Listener {
                 attacker = (Entity) animalTamer;
             }
         } else if (attacker instanceof TNTPrimed && defender instanceof Player) {
-            if (BlastMining.processBlastMiningExplosion(event, (TNTPrimed) attacker, (Player) defender)) {
+            if (pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getMiningBehaviour().processBlastMiningExplosion(event, (TNTPrimed) attacker, (Player) defender)) {
                 return;
             }
         }
@@ -406,18 +403,18 @@ public class EntityListener implements Listener {
             return;
         }
 
-        CombatUtils.processCombatAttack(event, attacker, target);
-        CombatUtils.handleHealthbars(attacker, target, event.getFinalDamage(), pluginRef);
+        pluginRef.getCombatTools().processCombatAttack(event, attacker, target);
+        pluginRef.getCombatTools().handleHealthbars(attacker, target, event.getFinalDamage(), pluginRef);
 
         /**
          * This sets entity names back to whatever they are supposed to be
          */
         if (event.getFinalDamage() >= target.getHealth()) {
             if (attacker instanceof LivingEntity) {
-                CombatUtils.fixNames((LivingEntity) attacker);
+                pluginRef.getCombatTools().fixNames((LivingEntity) attacker);
             }
 
-            CombatUtils.fixNames(target);
+            pluginRef.getCombatTools().fixNames(target);
         }
 
     }
@@ -501,7 +498,7 @@ public class EntityListener implements Listener {
 
         LivingEntity livingEntity = (LivingEntity) entity;
 
-        if (CombatUtils.isInvincible(livingEntity, damage)) {
+        if (pluginRef.getCombatTools().isInvincible(livingEntity, damage)) {
             return;
         }
 
@@ -661,7 +658,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        Archery.arrowRetrievalCheck(entity);
+        pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getArcheryBehaviour().arrowRetrievalCheck(entity);
     }
 
     /**
@@ -986,7 +983,7 @@ public class EntityListener implements Listener {
 
         Tameable tameable = (Tameable) entity;
 
-        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || !CombatUtils.isFriendlyPet(player, tameable)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || !pluginRef.getCombatTools().isFriendlyPet(player, tameable)) {
             return;
         }
 

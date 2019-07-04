@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills.taming;
 
 import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -35,7 +34,7 @@ public class TrackedTamingEntity extends BukkitRunnable {
             Location location = livingEntity.getLocation();
             location.getWorld().playSound(location, Sound.BLOCK_FIRE_EXTINGUISH, 0.8F, 0.8F);
             ParticleEffectUtils.playCallOfTheWildEffect(livingEntity);
-            CombatUtils.dealDamage(livingEntity, livingEntity.getMaxHealth(), DamageCause.SUICIDE, livingEntity);
+            pluginRef.getCombatTools().dealDamage(livingEntity, livingEntity.getMaxHealth(), DamageCause.SUICIDE, livingEntity);
         }
 
         TamingManager.removeFromTracker(this);

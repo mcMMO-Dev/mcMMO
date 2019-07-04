@@ -1,6 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -9,7 +8,6 @@ import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.BrewingStand;
@@ -135,7 +133,7 @@ public class InventoryListener implements Listener {
                 return;
         }
 
-        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || !PrimarySkillType.SMELTING.doesPlayerHaveSkillPermission(player)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || !pluginRef.getSkillTools().doesPlayerHaveSkillPermission(PrimarySkillType.SMELTING, player)) {
             return;
         }
 
@@ -401,16 +399,35 @@ public class InventoryListener implements Listener {
         }
 
         ItemStack item = event.getItem();
-
-        if (MainConfig.getInstance().getPreventHopperTransferIngredients() && item.getType() != Material.POTION && item.getType() != Material.SPLASH_POTION && item.getType() != Material.LINGERING_POTION) {
-            event.setCancelled(true);
-            return;
-        }
-
-        if (MainConfig.getInstance().getPreventHopperTransferBottles() && (item.getType() == Material.POTION || item.getType() == Material.SPLASH_POTION || item.getType() == Material.LINGERING_POTION)) {
-            event.setCancelled(true);
-            return;
-        }
+        //TODO: Code here relating to preventing hoppers for Alchemy, needs to be replaced
+        //TODO: Code here relating to preventing hoppers for Alchemy, needs to be replaced
+        //TODO: Code here relating to preventing hoppers for Alchemy, needs to be replaced
+        //TODO: Code here relating to preventing hoppers for Alchemy, needs to be replaced
+        //TODO: Code here relating to preventing hoppers for Alchemy, needs to be replaced
+        //TODO: Code here relating to preventing hoppers for Alchemy, needs to be replaced
+        //TODO: Code here relating to preventing hoppers for Alchemy, needs to be replaced
+        //TODO: Code here relating to preventing hoppers for Alchemy, needs to be replaced
+        //TODO: Code here relating to preventing hoppers for Alchemy, needs to be replaced
+        //TODO: Code here relating to preventing hoppers for Alchemy, needs to be replaced
+        //TODO: Code here relating to preventing hoppers for Alchemy, needs to be replaced
+        //TODO: Code here relating to preventing hoppers for Alchemy, needs to be replaced
+        //TODO: Code here relating to preventing hoppers for Alchemy, needs to be replaced
+        //TODO: Code here relating to preventing hoppers for Alchemy, needs to be replaced
+        //TODO: Code here relating to preventing hoppers for Alchemy, needs to be replaced
+        //TODO: Code here relating to preventing hoppers for Alchemy, needs to be replaced
+        //TODO: Code here relating to preventing hoppers for Alchemy, needs to be replaced
+        //TODO: Code here relating to preventing hoppers for Alchemy, needs to be replaced
+        //TODO: Code here relating to preventing hoppers for Alchemy, needs to be replaced
+        //TODO: Code here relating to preventing hoppers for Alchemy, needs to be replaced
+//        if (MainConfig.getInstance().getPreventHopperTransferIngredients() && item.getType() != Material.POTION && item.getType() != Material.SPLASH_POTION && item.getType() != Material.LINGERING_POTION) {
+//            event.setCancelled(true);
+//            return;
+//        }
+//
+//        if (MainConfig.getInstance().getPreventHopperTransferBottles() && (item.getType() == Material.POTION || item.getType() == Material.SPLASH_POTION || item.getType() == Material.LINGERING_POTION)) {
+//            event.setCancelled(true);
+//            return;
+//        }
 
 //        if (MainConfig.getInstance().getEnabledForHoppers() && AlchemyPotionBrewer.isValidIngredient(null, item)) {
 //            AlchemyPotionBrewer.scheduleCheck(null, (BrewingStand) holder);

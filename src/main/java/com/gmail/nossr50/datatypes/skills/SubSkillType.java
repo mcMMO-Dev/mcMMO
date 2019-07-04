@@ -131,30 +131,8 @@ public enum SubSkillType {
      *
      * @return
      */
-    public PrimarySkillType getParentSkill() {
-        return PrimarySkillType.getPrimarySkillBySubSkill(this);
-    }
-
-    /**
-     * Returns the root address for this skill in the advanced.yml file
-     *
-     * @return the root address for this skill in advanced.yml
-     */
-    public String[] getAdvConfigAddress() {
-        //return "Skills." + StringUtils.getCapitalized(getParentSkill().toString()) + "." + getConfigName(toString());
-        //TODO: Reduce string operations
-        return new String[]{"Skills", StringUtils.getCapitalized(getParentSkill().toString()), getConfigName(toString())};
-    }
-
-    /**
-     * Returns the root address for this skill in the rankskills.yml file
-     *
-     * @return the root address for this skill in rankskills.yml
-     */
-    public String[] getRankConfigAddress() {
-        //return StringUtils.getCapitalized(getParentSkill().toString()) + "." + getConfigName(toString());
-        //TODO: Reduce string operations
-        return new String[]{StringUtils.getCapitalized(getParentSkill().toString()), getConfigName(toString())};
+    public PrimarySkillType getParentSkill(mcMMO pluginRef) {
+        return pluginRef.getSkillTools().getPrimarySkillBySubSkill(this);
     }
 
     /**
@@ -162,9 +140,9 @@ public enum SubSkillType {
      *
      * @return the permission node for this subskill
      */
-    public String getPermissionNodeAddress() {
+    public String getPermissionNodeAddress(mcMMO pluginRef) {
         //TODO: This could be optimized
-        return "mcmmo.ability." + getParentSkill().toString().toLowerCase() + "." + getConfigName(toString()).toLowerCase();
+        return "mcmmo.ability." + getParentSkill(pluginRef).toString().toLowerCase() + "." + getConfigName(toString()).toLowerCase();
     }
 
     /**
@@ -270,7 +248,7 @@ public enum SubSkillType {
      * @return The parent skill as defined in the locale
      */
     public String getParentNiceNameLocale(mcMMO pluginRef) {
-        return pluginRef.getLocaleManager().getString(StringUtils.getCapitalized(getParentSkill().toString()) + ".SkillName");
+        return pluginRef.getLocaleManager().getString(StringUtils.getCapitalized(getParentSkill(pluginRef).toString()) + ".SkillName");
     }
 
     /**
@@ -304,8 +282,8 @@ public enum SubSkillType {
         return subStringIndex;
     }
 
-    public String getLocaleKeyRoot() {
-        return StringUtils.getCapitalized(getParentSkill().toString()) + ".SubSkill." + getConfigName(toString());
+    public String getLocaleKeyRoot(mcMMO pluginRef) {
+        return StringUtils.getCapitalized(getParentSkill(pluginRef).toString()) + ".SubSkill." + getConfigName(toString());
     }
 
     public String getLocaleName(mcMMO pluginRef) {
@@ -320,16 +298,16 @@ public enum SubSkillType {
         return getFromLocaleSubAddress(pluginRef,".Stat");
     }
 
-    public String getLocaleKeyStatDescription() {
-        return getLocaleKeyFromSubAddress(".Stat");
+    public String getLocaleKeyStatDescription(mcMMO pluginRef) {
+        return getLocaleKeyFromSubAddress(pluginRef, ".Stat");
     }
 
     public String getLocaleStatExtraDescription(mcMMO pluginRef) {
         return getFromLocaleSubAddress(pluginRef,".Stat.Extra");
     }
 
-    public String getLocaleKeyStatExtraDescription() {
-        return getLocaleKeyFromSubAddress(".Stat.Extra");
+    public String getLocaleKeyStatExtraDescription(mcMMO pluginRef) {
+        return getLocaleKeyFromSubAddress(pluginRef, ".Stat.Extra");
     }
 
     public String getLocaleStat(mcMMO pluginRef, String... vars) {
@@ -343,10 +321,10 @@ public enum SubSkillType {
     }
 
     private String getFromLocaleSubAddress(mcMMO pluginRef, String s) {
-        return pluginRef.getLocaleManager().getString(getLocaleKeyRoot() + s);
+        return pluginRef.getLocaleManager().getString(getLocaleKeyRoot(pluginRef) + s);
     }
 
-    private String getLocaleKeyFromSubAddress(String s) {
-        return getLocaleKeyRoot() + s;
+    private String getLocaleKeyFromSubAddress(mcMMO pluginRef, String subAddress) {
+        return getLocaleKeyRoot(pluginRef) + subAddress;
     }
 }

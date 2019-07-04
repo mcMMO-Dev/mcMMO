@@ -71,7 +71,7 @@ public class AcrobaticsManager extends SkillManager {
                 return false;
             }*/
 
-            return skill.canCombatSkillsTrigger(damager);
+            return pluginRef.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.ACROBATICS, damager);
         }
 
         return false;

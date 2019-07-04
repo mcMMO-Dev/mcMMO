@@ -11,7 +11,6 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
-import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.entity.Entity;
@@ -121,7 +120,7 @@ public class SwordsManager extends SkillManager {
      */
     public void counterAttackChecks(LivingEntity attacker, double damage) {
         if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_COUNTER_ATTACK, getPlayer())) {
-            CombatUtils.dealDamage(attacker, damage / pluginRef.getConfigManager().getConfigSwords().getCounterAttackDamageModifier(), getPlayer());
+            pluginRef.getCombatTools().dealDamage(attacker, damage / pluginRef.getConfigManager().getConfigSwords().getCounterAttackDamageModifier(), getPlayer());
 
             pluginRef.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Countered");
 
@@ -138,6 +137,6 @@ public class SwordsManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public void serratedStrikes(LivingEntity target, double damage, Map<DamageModifier, Double> modifiers) {
-        CombatUtils.applyAbilityAoE(getPlayer(), target, damage / pluginRef.getConfigManager().getConfigSwords().getSerratedStrikesDamageModifier(), modifiers, skill);
+        pluginRef.getCombatTools().applyAbilityAoE(getPlayer(), target, damage / pluginRef.getConfigManager().getConfigSwords().getSerratedStrikesDamageModifier(), modifiers, skill);
     }
 }

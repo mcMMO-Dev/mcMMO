@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.axes.Axes;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
@@ -95,7 +94,7 @@ public class AxesCommand extends SkillCommand {
 
         if (canUseSubskill(player, SubSkillType.AXES_AXES_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.AXES_AXES_LIMIT_BREAK,
-                    String.valueOf(CombatUtils.getLimitBreakDamage(player, SubSkillType.AXES_AXES_LIMIT_BREAK))));
+                    String.valueOf(pluginRef.getCombatTools().getLimitBreakDamage(player, SubSkillType.AXES_AXES_LIMIT_BREAK))));
         }
 
         return messages;

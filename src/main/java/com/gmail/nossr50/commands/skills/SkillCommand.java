@@ -32,11 +32,11 @@ public abstract class SkillCommand implements TabExecutor {
     private CommandExecutor skillGuideCommand;
     protected mcMMO pluginRef;
 
-    public SkillCommand(PrimarySkillType skill, mcMMO pluginRef) {
+    public SkillCommand(PrimarySkillType primarySkillType, mcMMO pluginRef) {
         this.pluginRef = pluginRef;
-        this.skill = skill;
-        skillName = skill.getLocalizedSkillName();
-        skillGuideCommand = new SkillGuideCommand(skill, pluginRef);
+        this.skill = primarySkillType;
+        skillName = pluginRef.getSkillTools().getLocalizedSkillName(primarySkillType);
+        skillGuideCommand = new SkillGuideCommand(primarySkillType, pluginRef);
     }
 
     public static String[] addItemToFirstPositionOfArray(String itemToAdd, String... existingArray) {
@@ -145,7 +145,7 @@ public abstract class SkillCommand implements TabExecutor {
 
         player.sendMessage(pluginRef.getLocaleManager().getString("Skills.Overhaul.Header", skillName));
 
-        if (!skill.isChildSkill()) {
+        if (!pluginRef.getSkillTools().isChildSkill(skill)) {
             /*
              * NON-CHILD SKILLS
              */
@@ -173,10 +173,10 @@ public abstract class SkillCommand implements TabExecutor {
 
             for (int i = 0; i < parentList.size(); i++) {
                 if (i + 1 < parentList.size()) {
-                    parentMessage.append(pluginRef.getLocaleManager().getString("Effects.Child.ParentList", parentList.get(i).getLocalizedSkillName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
+                    parentMessage.append(pluginRef.getLocaleManager().getString("Effects.Child.ParentList", pluginRef.getSkillTools().getLocalizedSkillName(parentList.get(i)), mcMMOPlayer.getSkillLevel(parentList.get(i))));
                     parentMessage.append(ChatColor.GRAY + ", ");
                 } else {
-                    parentMessage.append(pluginRef.getLocaleManager().getString("Effects.Child.ParentList", parentList.get(i).getLocalizedSkillName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
+                    parentMessage.append(pluginRef.getLocaleManager().getString("Effects.Child.ParentList", pluginRef.getSkillTools().getLocalizedSkillName(parentList.get(i)), mcMMOPlayer.getSkillLevel(parentList.get(i))));
                 }
             }
 
@@ -210,9 +210,9 @@ public abstract class SkillCommand implements TabExecutor {
 
     protected String[] formatLengthDisplayValues(Player player, double skillValue) {
 
-        int length = pluginRef.getSkillTools().calculateAbilityLength(pluginRef.getUserManager().getPlayer(player), skill, skill.getSuperAbility());
+        int length = pluginRef.getSkillTools().calculateAbilityLength(pluginRef.getUserManager().getPlayer(player), skill, pluginRef.getSkillTools().getSuperAbility(skill));
 
-        int enduranceLength = pluginRef.getSkillTools().calculateAbilityLengthPerks(pluginRef.getUserManager().getPlayer(player), skill, skill.getSuperAbility());
+        int enduranceLength = pluginRef.getSkillTools().calculateAbilityLengthPerks(pluginRef.getUserManager().getPlayer(player), skill, pluginRef.getSkillTools().getSuperAbility(skill));
 
         return new String[]{String.valueOf(length), String.valueOf(enduranceLength)};
     }
@@ -223,7 +223,7 @@ public abstract class SkillCommand implements TabExecutor {
 
     protected String getStatMessage(boolean isExtra, boolean isCustom, SubSkillType subSkillType, String... vars) {
         String templateKey = isCustom ? "Ability.Generic.Template.Custom" : "Ability.Generic.Template";
-        String statDescriptionKey = !isExtra ? subSkillType.getLocaleKeyStatDescription() : subSkillType.getLocaleKeyStatExtraDescription();
+        String statDescriptionKey = !isExtra ? subSkillType.getLocaleKeyStatDescription(pluginRef) : subSkillType.getLocaleKeyStatExtraDescription(pluginRef);
 
         if (isCustom)
             return pluginRef.getLocaleManager().getString(templateKey, pluginRef.getLocaleManager().getString(statDescriptionKey, vars));

@@ -12,6 +12,7 @@ Version 2.2.0
     Parties no longer have a cap, you can level them forever for bragging rights
     You can now specify multiple repair-items for an item (such as specifying that a wooden sword can be repaired by all types of planks)
     Repair config has been rewritten and expanded to support much more complex settings
+    Fixed a bug where salvage anvil noises wouldn't play for a player that lacked repair permissions nodes
     Removed the following Repair/Salvage permissions
         mcmmo.ability.repair.stonerepair
         mcmmo.ability.repair.stringrepair

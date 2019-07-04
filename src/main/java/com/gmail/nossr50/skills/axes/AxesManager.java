@@ -12,7 +12,6 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
-import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -173,6 +172,6 @@ public class AxesManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public void skullSplitterCheck(LivingEntity target, double damage, Map<DamageModifier, Double> modifiers) {
-        CombatUtils.applyAbilityAoE(getPlayer(), target, damage / pluginRef.getConfigManager().getConfigAxes().getConfigAxesSkullSplitter().getSkullSplitterDamageDivisor(), modifiers, skill);
+        pluginRef.getCombatTools().applyAbilityAoE(getPlayer(), target, damage / pluginRef.getConfigManager().getConfigAxes().getConfigAxesSkullSplitter().getSkullSplitterDamageDivisor(), modifiers, skill);
     }
 }
