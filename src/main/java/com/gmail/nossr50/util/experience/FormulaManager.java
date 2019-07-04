@@ -2,6 +2,7 @@ package com.gmail.nossr50.util.experience;
 
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +15,10 @@ public class FormulaManager {
     private Map<Integer, Integer> experienceNeededStandardExponential;
 
     private FormulaType currentFormula;
+    private final mcMMO pluginRef;
 
-    public FormulaManager() {
+    public FormulaManager(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
         currentFormula = pluginRef.getConfigManager().getConfigLeveling().getFormulaType();
         initExperienceNeededMaps();
     }

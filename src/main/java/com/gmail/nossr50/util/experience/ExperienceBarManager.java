@@ -2,6 +2,7 @@ package com.gmail.nossr50.util.experience;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.ExperienceBarHideTask;
 import org.bukkit.plugin.Plugin;
 
@@ -15,8 +16,11 @@ public class ExperienceBarManager {
     HashMap<PrimarySkillType, ExperienceBarWrapper> experienceBars;
     HashMap<PrimarySkillType, ExperienceBarHideTask> experienceBarHideTaskHashMap;
     private McMMOPlayer mcMMOPlayer;
+    private final mcMMO pluginRef;
 
-    public ExperienceBarManager(McMMOPlayer mcMMOPlayer) {
+    public ExperienceBarManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
+        this.pluginRef = pluginRef;
+
         //Init map
         experienceBars = new HashMap<>();
         experienceBarHideTaskHashMap = new HashMap<>();
@@ -30,7 +34,7 @@ public class ExperienceBarManager {
 
         //Init Bar
         if (experienceBars.get(primarySkillType) == null)
-            experienceBars.put(primarySkillType, new ExperienceBarWrapper(primarySkillType, mcMMOPlayer));
+            experienceBars.put(primarySkillType, new ExperienceBarWrapper(pluginRef, primarySkillType, mcMMOPlayer));
 
         //Get Bar
         ExperienceBarWrapper experienceBarWrapper = experienceBars.get(primarySkillType);

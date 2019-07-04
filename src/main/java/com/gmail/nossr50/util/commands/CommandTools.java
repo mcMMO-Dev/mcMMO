@@ -22,7 +22,7 @@ public final class CommandTools {
     }
 
     public boolean isChildSkill(CommandSender sender, PrimarySkillType skill) {
-        if (skill == null || !skill.isChildSkill()) {
+        if (skill == null || !pluginRef.getSkillTools().isChildSkill(skill)) {
             return false;
         }
 
@@ -160,7 +160,7 @@ public final class CommandTools {
      * @param display The sender to display stats to
      */
     public void printGatheringSkills(Player inspect, CommandSender display) {
-        printGroupedSkillData(inspect, display, pluginRef.getLocaleManager().getString("Stats.Header.Gathering"), PrimarySkillType.GATHERING_SKILLS);
+        printGroupedSkillData(inspect, display, pluginRef.getLocaleManager().getString("Stats.Header.Gathering"), pluginRef.getSkillTools().GATHERING_SKILLS);
     }
 
     public void printGatheringSkills(Player player) {
@@ -174,7 +174,7 @@ public final class CommandTools {
      * @param display The sender to display stats to
      */
     public void printCombatSkills(Player inspect, CommandSender display) {
-        printGroupedSkillData(inspect, display, pluginRef.getLocaleManager().getString("Stats.Header.Combat"), PrimarySkillType.COMBAT_SKILLS);
+        printGroupedSkillData(inspect, display, pluginRef.getLocaleManager().getString("Stats.Header.Combat"), pluginRef.getSkillTools().COMBAT_SKILLS);
     }
 
     public void printCombatSkills(Player player) {
@@ -188,7 +188,7 @@ public final class CommandTools {
      * @param display The sender to display stats to
      */
     public void printMiscSkills(Player inspect, CommandSender display) {
-        printGroupedSkillData(inspect, display, pluginRef.getLocaleManager().getString("Stats.Header.Misc"), PrimarySkillType.MISC_SKILLS);
+        printGroupedSkillData(inspect, display, pluginRef.getLocaleManager().getString("Stats.Header.Misc"), pluginRef.getSkillTools().MISC_SKILLS);
     }
 
     public void printMiscSkills(Player player) {
@@ -196,7 +196,7 @@ public final class CommandTools {
     }
 
     public String displaySkill(PlayerProfile profile, PrimarySkillType skill) {
-        if (skill.isChildSkill()) {
+        if (pluginRef.getSkillTools().isChildSkill(skill)) {
             return pluginRef.getLocaleManager().getString("Skills.ChildStats", pluginRef.getLocaleManager().getString(StringUtils.getCapitalized(skill.toString()) + ".Listener") + " ", profile.getSkillLevel(skill));
         }
 
@@ -212,9 +212,9 @@ public final class CommandTools {
         List<String> displayData = new ArrayList<>();
         displayData.add(header);
 
-        for (PrimarySkillType skill : skillGroup) {
-            if (skill.doesPlayerHaveSkillPermission(inspect)) {
-                displayData.add(displaySkill(profile, skill));
+        for (PrimarySkillType primarySkillType : skillGroup) {
+            if (pluginRef.getSkillTools().doesPlayerHaveSkillPermission(primarySkillType, inspect)) {
+                displayData.add(displaySkill(profile, primarySkillType));
             }
         }
 

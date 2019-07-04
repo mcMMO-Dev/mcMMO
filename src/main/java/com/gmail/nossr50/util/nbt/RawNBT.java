@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util.nbt;
 
+import com.gmail.nossr50.mcMMO;
 import net.minecraft.server.v1_13_R2.NBTBase;
 
 /**
@@ -27,7 +28,7 @@ public class RawNBT {
         this.nbtContents = nbtContents;
     }
 
-    public NBTBase getNbtData() {
+    public NBTBase getNbtData(mcMMO pluginRef) {
         return pluginRef.getNbtManager().constructNBT(nbtContents);
     }
 }

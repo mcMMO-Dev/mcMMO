@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util.nbt;
 
 
+import com.gmail.nossr50.mcMMO;
 import net.minecraft.server.v1_13_R2.NBTBase;
 import net.minecraft.server.v1_13_R2.NBTList;
 import net.minecraft.server.v1_13_R2.NBTTagCompound;
@@ -13,8 +14,10 @@ public class NBTManager {
 
     private static final String CRAFT_META_ITEM_CLASS_PATH = "org.bukkit.craftbukkit.inventory.CraftMetaItem";
     private Class<?> craftMetaItemClass;
+    private final mcMMO pluginRef;
 
-    public NBTManager() {
+    public NBTManager(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
         init(); //Setup method references etc
     }
 

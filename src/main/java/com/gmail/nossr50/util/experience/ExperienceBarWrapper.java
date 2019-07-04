@@ -2,6 +2,7 @@ package com.gmail.nossr50.util.experience;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.player.PlayerLevelUtils;
 import org.bukkit.boss.BarColor;
@@ -20,6 +21,7 @@ public class ExperienceBarWrapper {
     private final PrimarySkillType primarySkillType; //Primary Skill
     private BossBar bossBar;
     private int lastLevelUpdated;
+    private final mcMMO pluginRef;
 
     /*
      * This is stored to help optimize updating the title
@@ -27,7 +29,8 @@ public class ExperienceBarWrapper {
     protected String niceSkillName;
     protected String title;
 
-    public ExperienceBarWrapper(PrimarySkillType primarySkillType, McMMOPlayer mcMMOPlayer) {
+    public ExperienceBarWrapper(mcMMO pluginRef, PrimarySkillType primarySkillType, McMMOPlayer mcMMOPlayer) {
+        this.pluginRef = pluginRef;
         this.mcMMOPlayer = mcMMOPlayer;
         this.primarySkillType = primarySkillType;
         title = "";

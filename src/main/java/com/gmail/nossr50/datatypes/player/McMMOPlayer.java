@@ -106,7 +106,7 @@ public class McMMOPlayer {
             toolMode.put(toolType, false);
         }
 
-        experienceBarManager = new ExperienceBarManager(this);
+        experienceBarManager = new ExperienceBarManager(pluginRef,this);
         fillPersonalXPModifiers(); //Cache players XP rates
     }
 

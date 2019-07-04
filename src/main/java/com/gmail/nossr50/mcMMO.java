@@ -167,7 +167,7 @@ public class mcMMO extends JavaPlugin {
                 registerCustomRecipes();
                 initParties();
 
-                formulaManager = new FormulaManager();
+                formulaManager = new FormulaManager(this);
 
                 for (Player player : getServer().getOnlinePlayers()) {
                     new PlayerProfileLoadingTask(this, player).runTaskLaterAsynchronously(this, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
