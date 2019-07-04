@@ -7,7 +7,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.google.common.collect.ImmutableList;
@@ -205,7 +204,7 @@ public abstract class SkillCommand implements TabExecutor {
     }
 
     protected String[] getAbilityDisplayValues(Player player, SubSkillType subSkill) {
-        return RandomChanceUtil.calculateAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, subSkill);
+        return pluginRef.getRandomChanceTools().calculateAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, subSkill);
     }
 
     protected String[] formatLengthDisplayValues(Player player, double skillValue) {

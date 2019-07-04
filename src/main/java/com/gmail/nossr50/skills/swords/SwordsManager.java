@@ -10,7 +10,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.entity.Entity;
@@ -58,7 +57,7 @@ public class SwordsManager extends SkillManager {
      * @param target The defending entity
      */
     public void ruptureCheck(LivingEntity target) {
-        if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_RUPTURE, getPlayer())) {
+        if (pluginRef.getRandomChanceTools().isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_RUPTURE, getPlayer())) {
 
             if (target instanceof Player) {
                 Player defender = (Player) target;
@@ -119,7 +118,7 @@ public class SwordsManager extends SkillManager {
      * @param damage   The amount of damage initially dealt by the event
      */
     public void counterAttackChecks(LivingEntity attacker, double damage) {
-        if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_COUNTER_ATTACK, getPlayer())) {
+        if (pluginRef.getRandomChanceTools().isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_COUNTER_ATTACK, getPlayer())) {
             pluginRef.getCombatTools().dealDamage(attacker, damage / pluginRef.getConfigManager().getConfigSwords().getCounterAttackDamageModifier(), getPlayer());
 
             pluginRef.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Countered");

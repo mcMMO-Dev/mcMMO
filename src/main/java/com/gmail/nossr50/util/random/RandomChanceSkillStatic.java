@@ -1,13 +1,14 @@
 package com.gmail.nossr50.util.random;
 
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.entity.Player;
 
 public class RandomChanceSkillStatic extends RandomChanceSkill {
     private final double xPos;
 
-    public RandomChanceSkillStatic(double xPos, Player player, SubSkillType subSkillType) {
-        super(player, subSkillType);
+    public RandomChanceSkillStatic(mcMMO pluginRef, double xPos, Player player, SubSkillType subSkillType) {
+        super(pluginRef, player, subSkillType);
 
         this.xPos = xPos;
     }

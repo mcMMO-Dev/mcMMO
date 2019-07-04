@@ -15,7 +15,6 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -114,7 +113,7 @@ public class TamingManager extends SkillManager {
      */
     public void fastFoodService(Wolf wolf, double damage) {
         //static chance (3rd param)
-        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_STATIC_CHANCE, SubSkillType.TAMING_FAST_FOOD_SERVICE, getPlayer())) {
+        if (!pluginRef.getRandomChanceTools().isActivationSuccessful(SkillActivationType.RANDOM_STATIC_CHANCE, SubSkillType.TAMING_FAST_FOOD_SERVICE, getPlayer())) {
             return;
         }
 
@@ -134,7 +133,7 @@ public class TamingManager extends SkillManager {
      * @param damage The initial damage
      */
     public double gore(LivingEntity target, double damage) {
-        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.TAMING_GORE, getPlayer())) {
+        if (!pluginRef.getRandomChanceTools().isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.TAMING_GORE, getPlayer())) {
             return 0;
         }
 
@@ -230,7 +229,7 @@ public class TamingManager extends SkillManager {
         if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_PUMMEL))
             return;
 
-        if (!RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(AdvancedConfig.getInstance().getPummelChance(), getPlayer(), SubSkillType.TAMING_PUMMEL)))
+        if (!pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(AdvancedConfig.getInstance().getPummelChance(), getPlayer(), SubSkillType.TAMING_PUMMEL)))
             return;
 
         ParticleEffectUtils.playGreaterImpactEffect(target);

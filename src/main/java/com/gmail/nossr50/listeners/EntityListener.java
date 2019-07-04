@@ -15,7 +15,6 @@ import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.Material;
@@ -137,7 +136,7 @@ public class EntityListener implements Listener {
                     return;
             }
 
-            if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ARCHERY_ARROW_RETRIEVAL, player)) {
+            if (pluginRef.getRandomChanceTools().isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ARCHERY_ARROW_RETRIEVAL, player)) {
                 projectile.setMetadata(MetadataConstants.ARROW_TRACKER_METAKEY, MetadataConstants.metadataValue);
             }
         }

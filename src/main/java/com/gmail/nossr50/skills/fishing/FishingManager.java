@@ -22,7 +22,6 @@ import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -349,7 +348,7 @@ public class FishingManager extends SkillManager {
      * @param target The {@link LivingEntity} affected by the ability
      */
     public void shakeCheck(LivingEntity target) {
-        if (RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getShakeChance(), getPlayer(), SubSkillType.FISHING_SHAKE))) {
+        if (pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getShakeChance(), getPlayer(), SubSkillType.FISHING_SHAKE))) {
             List<ShakeTreasure> possibleDrops = fishingBehaviour.findPossibleDrops(target);
 
             if (possibleDrops == null || possibleDrops.isEmpty()) {

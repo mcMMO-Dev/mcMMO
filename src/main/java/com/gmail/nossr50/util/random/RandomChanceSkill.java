@@ -2,6 +2,7 @@ package com.gmail.nossr50.util.random;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import org.bukkit.entity.Player;
 
@@ -11,12 +12,15 @@ public class RandomChanceSkill implements RandomChanceExecution {
     protected final SubSkillType subSkillType;
     protected final double probabilityCap;
     protected final boolean isLucky;
-    private int skillLevel;
+    protected int skillLevel;
+    protected final mcMMO pluginRef;
 
-    public RandomChanceSkill(Player player, SubSkillType subSkillType) {
-        this.primarySkillType = subSkillType.getParentSkill();
+    public RandomChanceSkill(mcMMO pluginRef, Player player, SubSkillType subSkillType) {
+        this.pluginRef = pluginRef;
+
+        this.primarySkillType = subSkillType.getParentSkill(pluginRef);
         this.subSkillType = subSkillType;
-        this.probabilityCap = RandomChanceUtil.LINEAR_CURVE_VAR;
+        this.probabilityCap = pluginRef.getRandomChanceTools().LINEAR_CURVE_VAR;
 
         if (player != null)
             this.skillLevel = pluginRef.getUserManager().getPlayer(player).getSkillLevel(primarySkillType);
@@ -29,13 +33,15 @@ public class RandomChanceSkill implements RandomChanceExecution {
             isLucky = false;
     }
 
-    public RandomChanceSkill(Player player, SubSkillType subSkillType, boolean hasCap) {
+    public RandomChanceSkill(mcMMO pluginRef, Player player, SubSkillType subSkillType, boolean hasCap) {
+        this.pluginRef = pluginRef;
+
         if (hasCap)
             this.probabilityCap = pluginRef.getDynamicSettingsManager().getSkillMaxChance(subSkillType);
         else
-            this.probabilityCap = RandomChanceUtil.LINEAR_CURVE_VAR;
+            this.probabilityCap = pluginRef.getRandomChanceTools().LINEAR_CURVE_VAR;
 
-        this.primarySkillType = subSkillType.getParentSkill();
+        this.primarySkillType = subSkillType.getParentSkill(pluginRef);
         this.subSkillType = subSkillType;
 
         if (player != null)

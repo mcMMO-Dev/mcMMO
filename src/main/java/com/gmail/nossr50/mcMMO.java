@@ -38,6 +38,7 @@ import com.gmail.nossr50.util.nbt.NBTManager;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.PlayerLevelTools;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.random.RandomChanceTools;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.CombatTools;
 import com.gmail.nossr50.util.skills.RankUtils;
@@ -82,6 +83,7 @@ public class mcMMO extends JavaPlugin {
     private EventManager eventManager;
     private UserManager userManager;
     private ScoreboardManager scoreboardManager;
+    private RandomChanceTools randomChanceTools;
 
     /* Not-Managers but my naming scheme sucks */
     private DatabaseManagerFactory databaseManagerFactory;
@@ -108,6 +110,7 @@ public class mcMMO extends JavaPlugin {
     private boolean serverAPIOutdated = false;
     // XP Event Check
     private boolean xpEventEnabled;
+
     /**
      * Things to be run when the plugin is enabled.
      */
@@ -244,6 +247,9 @@ public class mcMMO extends JavaPlugin {
 
         //Init Combat Tools
         combatTools = new CombatTools(this);
+
+        //Init Random Chance Tools
+        randomChanceTools = new RandomChanceTools(this);
     }
 
     @Override
@@ -750,5 +756,9 @@ public class mcMMO extends JavaPlugin {
 
     public CombatTools getCombatTools() {
         return combatTools;
+    }
+
+    public RandomChanceTools getRandomChanceTools() {
+        return randomChanceTools;
     }
 }

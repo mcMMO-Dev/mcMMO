@@ -9,7 +9,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
@@ -81,7 +80,7 @@ public class FishingCommand extends SkillCommand {
 
         // FISHING_SHAKE
         if (canShake) {
-            String[] shakeStrings = RandomChanceUtil.calculateAbilityDisplayValuesStatic(player, PrimarySkillType.FISHING, fishingManager.getShakeChance());
+            String[] shakeStrings = pluginRef.getRandomChanceTools().calculateAbilityDisplayValuesStatic(player, PrimarySkillType.FISHING, fishingManager.getShakeChance());
             shakeChance = shakeStrings[0];
             shakeChanceLucky = shakeStrings[1];
         }

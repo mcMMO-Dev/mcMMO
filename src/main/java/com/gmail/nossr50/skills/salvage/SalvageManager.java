@@ -12,7 +12,6 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -113,7 +112,7 @@ public class SalvageManager extends SkillManager {
 
         for(int x = 0; x < potentialSalvageYield-1; x++) {
 
-            if(RandomChanceUtil.rollDice(chanceOfSuccess, 100)) {
+            if(pluginRef.getRandomChanceTools().rollDice(chanceOfSuccess, 100)) {
                 chanceOfSuccess-=2;
                 Math.max(chanceOfSuccess, 95);
 
@@ -241,13 +240,13 @@ public class SalvageManager extends SkillManager {
 
             if (!salvageBehaviour.isArcaneSalvageEnchantLoss()
                     || Permissions.hasSalvageEnchantBypassPerk(player)
-                    || RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractFullEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
+                    || pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractFullEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
 
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchantLevel, true);
             }
             else if (enchantLevel > 1
                     && salvageBehaviour.isArcaneSalvageDowngrades()
-                    && RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractPartialEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
+                    && pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractPartialEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchantLevel - 1, true);
                 downgraded = true;
             } else {

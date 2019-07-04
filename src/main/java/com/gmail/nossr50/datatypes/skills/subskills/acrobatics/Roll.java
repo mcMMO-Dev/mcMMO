@@ -8,7 +8,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -129,14 +128,14 @@ public class Roll extends AcrobaticsSubSkill {
         float skillValue = playerProfile.getSkillLevel(getPrimarySkill());
         boolean isLucky = Permissions.lucky(player, getPrimarySkill());
 
-        String[] rollStrings = RandomChanceUtil.calculateAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.ACROBATICS_ROLL);
+        String[] rollStrings = pluginRef.getRandomChanceTools().calculateAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.ACROBATICS_ROLL);
         rollChance = rollStrings[0];
         rollChanceLucky = rollStrings[1];
 
         /*
          * Graceful is double the odds of a normal roll
          */
-        String[] gracefulRollStrings = RandomChanceUtil.calculateAbilityDisplayValuesCustom(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.ACROBATICS_ROLL, 2.0D);
+        String[] gracefulRollStrings = pluginRef.getRandomChanceTools().calculateAbilityDisplayValuesCustom(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.ACROBATICS_ROLL, 2.0D);
         gracefulRollChance = gracefulRollStrings[0];
         gracefulRollChanceLucky = gracefulRollStrings[1];
 
@@ -202,7 +201,7 @@ public class Roll extends AcrobaticsSubSkill {
         double modifiedDamage = calculateModifiedRollDamage(damage, pluginRef.getConfigManager().getConfigAcrobatics().getRollDamageTheshold());
 
         if (!isFatal(player, modifiedDamage)
-                && RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ACROBATICS_ROLL, player)) {
+                && pluginRef.getRandomChanceTools().isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ACROBATICS_ROLL, player)) {
             pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Roll.Text");
             SoundManager.sendCategorizedSound(player, player.getLocation(), SoundType.ROLL_ACTIVATED, SoundCategory.PLAYERS);
 
@@ -241,7 +240,7 @@ public class Roll extends AcrobaticsSubSkill {
         rcs.setSkillLevel(rcs.getSkillLevel() * 2); //Double the effective odds
 
         if (!isFatal(player, modifiedDamage)
-                && RandomChanceUtil.checkRandomChanceExecutionSuccess(rcs)) {
+                && pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(rcs)) {
             pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Ability.Proc");
             SoundManager.sendCategorizedSound(player, player.getLocation(), SoundType.ROLL_ACTIVATED, SoundCategory.PLAYERS, 0.5F);
 
@@ -373,11 +372,11 @@ public class Roll extends AcrobaticsSubSkill {
         rollGraceHalfMaxSkill.setSkillLevel(1); //Level 1 skill
 
         //Chance Stat Calculations
-        rollChanceHalfMax = RandomChanceUtil.getRandomChanceExecutionChance(rollHalfMaxSkill);
-        graceChanceHalfMax = RandomChanceUtil.getRandomChanceExecutionChance(rollGraceHalfMaxSkill);
+        rollChanceHalfMax = pluginRef.getRandomChanceTools().getRandomChanceExecutionChance(rollHalfMaxSkill);
+        graceChanceHalfMax = pluginRef.getRandomChanceTools().getRandomChanceExecutionChance(rollGraceHalfMaxSkill);
         damageThreshold = pluginRef.getConfigManager().getConfigAcrobatics().getRollDamageTheshold();
 
-        chancePerLevel = RandomChanceUtil.getRandomChanceExecutionChance(rollOneSkillLevel);
+        chancePerLevel = pluginRef.getRandomChanceTools().getRandomChanceExecutionChance(rollOneSkillLevel);
 
         double maxLevel = pluginRef.getDynamicSettingsManager().getSkillMaxBonusLevel(SubSkillType.ACROBATICS_ROLL);
 
@@ -400,8 +399,8 @@ public class Roll extends AcrobaticsSubSkill {
         graceful.setSkillLevel(graceful.getSkillLevel() * 2); //Double odds
 
         //Calculate
-        playerChanceRoll = RandomChanceUtil.getRandomChanceExecutionChance(roll);
-        playerChanceGrace = RandomChanceUtil.getRandomChanceExecutionChance(graceful);
+        playerChanceRoll = pluginRef.getRandomChanceTools().getRandomChanceExecutionChance(roll);
+        playerChanceGrace = pluginRef.getRandomChanceTools().getRandomChanceExecutionChance(graceful);
 
         Double[] stats = {playerChanceRoll, playerChanceGrace}; //DEBUG
         return stats;

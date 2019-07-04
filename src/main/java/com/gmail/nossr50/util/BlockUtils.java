@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -52,7 +51,7 @@ public final class BlockUtils {
      */
     public static boolean checkDoubleDrops(Player player, BlockState blockState, SubSkillType subSkillType) {
         if (pluginRef.getDynamicSettingsManager().isBonusDropsEnabled(blockState.getType()) && Permissions.isSubSkillEnabled(player, subSkillType)) {
-            return RandomChanceUtil.checkRandomChanceExecutionSuccess(new RandomChanceSkill(player, subSkillType, true));
+            return pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(new RandomChanceSkill(player, subSkillType, true));
         }
 
         return false;

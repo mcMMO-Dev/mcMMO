@@ -14,7 +14,6 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -104,7 +103,7 @@ public class MiningManager extends SkillManager {
             return;
 
         //TODO: Make this readable
-        if (RandomChanceUtil.checkRandomChanceExecutionSuccess(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS)) {
+        if (pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS)) {
             BlockUtils.markDropsAsBonus(blockState, mcMMOPlayer.getAbilityMode(skill.getSuperAbility()));
         }
     }

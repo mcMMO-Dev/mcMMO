@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -64,8 +63,8 @@ public class AcrobaticsCommand extends SkillCommand {
                 grace_rcs.setSkillLevel(grace_rcs.getSkillLevel() * 2); //Double Odds
 
                 //Chance Stat Calculations
-                rollChance = RandomChanceUtil.getRandomChanceExecutionChance(roll_rcs);
-                graceChance = RandomChanceUtil.getRandomChanceExecutionChance(grace_rcs);
+                rollChance = pluginRef.getRandomChanceTools().getRandomChanceExecutionChance(roll_rcs);
+                graceChance = pluginRef.getRandomChanceTools().getRandomChanceExecutionChance(grace_rcs);
                 //damageThreshold  = AdvancedConfig.getInstance().getRollDamageThreshold();
 
                 String[] rollStrings = getAbilityDisplayValues(player, SubSkillType.ACROBATICS_ROLL);
