@@ -383,7 +383,7 @@ public class RankUtils {
 
         try {
             SkillRankProperty skillRankProperty
-                    = (SkillRankProperty) rankConfigRoot.getNode(subSkillType.getParentSkill().getCapitalizedName())
+                    = (SkillRankProperty) rankConfigRoot.getNode(subSkillType.getParentSkill().getCapitalizedPrimarySkillName())
                     .getNode(subSkillType.getHoconFriendlyConfigName())
                     .getValue(TypeToken.of(SkillRankProperty.class));
 

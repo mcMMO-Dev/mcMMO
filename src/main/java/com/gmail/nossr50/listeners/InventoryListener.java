@@ -8,7 +8,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -136,7 +135,7 @@ public class InventoryListener implements Listener {
                 return;
         }
 
-        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || !PrimarySkillType.SMELTING.getPermissions(player)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || !PrimarySkillType.SMELTING.doesPlayerHaveSkillPermission(player)) {
             return;
         }
 
@@ -420,15 +419,15 @@ public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClickEvent(InventoryClickEvent event) {
-        SkillUtils.removeAbilityBuff(event.getCurrentItem());
+        pluginRef.getSkillTools().removeAbilityBuff(event.getCurrentItem());
         if (event.getAction() == InventoryAction.HOTBAR_SWAP) {
-            SkillUtils.removeAbilityBuff(event.getWhoClicked().getInventory().getItem(event.getHotbarButton()));
+            pluginRef.getSkillTools().removeAbilityBuff(event.getWhoClicked().getInventory().getItem(event.getHotbarButton()));
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryOpenEvent(InventoryOpenEvent event) {
-        SkillUtils.removeAbilityBuff(event.getPlayer().getInventory().getItemInMainHand());
+        pluginRef.getSkillTools().removeAbilityBuff(event.getPlayer().getInventory().getItemInMainHand());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

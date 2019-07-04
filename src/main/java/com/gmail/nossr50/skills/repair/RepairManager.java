@@ -12,7 +12,6 @@ import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.enchantments.Enchantment;
@@ -185,7 +184,7 @@ public class RepairManager extends SkillManager {
         Player player = getPlayer();
         long lastUse = getLastAnvilUse();
 
-        if (!SkillUtils.cooldownExpired(lastUse, 3) || !pluginRef.getConfigManager().getConfigRepair().getRepairGeneral().isEnchantedItemsRequireConfirm()) {
+        if (!pluginRef.getSkillTools().cooldownExpired(lastUse, 3) || !pluginRef.getConfigManager().getConfigRepair().getRepairGeneral().isEnchantedItemsRequireConfirm()) {
             return true;
         }
 

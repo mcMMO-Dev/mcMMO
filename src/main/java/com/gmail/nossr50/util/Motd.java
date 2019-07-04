@@ -2,7 +2,6 @@ package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.util.skills.PerksUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 
@@ -111,7 +110,7 @@ public final class Motd {
      * @param player Target player
      */
     public static void displayActivationPerks(Player player) {
-        int perkAmount = SkillUtils.getEnduranceLength(player);
+        int perkAmount = pluginRef.getSkillTools().getEnduranceLength(player);
 
         if (perkAmount > 0) {
             player.sendMessage(PERK_PREFIX + pluginRef.getLocaleManager().getString("Effects.Template", pluginRef.getLocaleManager().getString("Perks.ActivationTime.Name"), pluginRef.getLocaleManager().getString("Perks.ActivationTime.Desc", perkAmount)));

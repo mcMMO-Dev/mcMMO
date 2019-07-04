@@ -128,7 +128,7 @@ public class LeaderboardCommand implements TabExecutor {
             return null;
         }
 
-        PrimarySkillType skill = PrimarySkillType.getSkill(skillName);
+        PrimarySkillType skill = PrimarySkillType.matchSkill(skillName);
 
         if (pluginRef.getCommandTools().isChildSkill(sender, skill)) {
             return null;

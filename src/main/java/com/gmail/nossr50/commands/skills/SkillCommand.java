@@ -10,7 +10,6 @@ import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import com.google.common.collect.ImmutableList;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -36,7 +35,7 @@ public abstract class SkillCommand implements TabExecutor {
     public SkillCommand(PrimarySkillType skill, mcMMO pluginRef) {
         this.pluginRef = pluginRef;
         this.skill = skill;
-        skillName = skill.getName();
+        skillName = skill.getLocalizedSkillName();
         skillGuideCommand = new SkillGuideCommand(skill, pluginRef);
     }
 
@@ -70,7 +69,7 @@ public abstract class SkillCommand implements TabExecutor {
                 McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
                 boolean isLucky = Permissions.lucky(player, skill);
-                boolean hasEndurance = SkillUtils.getEnduranceLength(player) > 0;
+                boolean hasEndurance = pluginRef.getSkillTools().getEnduranceLength(player) > 0;
                 double skillValue = mcMMOPlayer.getSkillLevel(skill);
 
                 //Send the players a few blank lines to make finding the top of the skill command easier
@@ -174,10 +173,10 @@ public abstract class SkillCommand implements TabExecutor {
 
             for (int i = 0; i < parentList.size(); i++) {
                 if (i + 1 < parentList.size()) {
-                    parentMessage.append(pluginRef.getLocaleManager().getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
+                    parentMessage.append(pluginRef.getLocaleManager().getString("Effects.Child.ParentList", parentList.get(i).getLocalizedSkillName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
                     parentMessage.append(ChatColor.GRAY + ", ");
                 } else {
-                    parentMessage.append(pluginRef.getLocaleManager().getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
+                    parentMessage.append(pluginRef.getLocaleManager().getString("Effects.Child.ParentList", parentList.get(i).getLocalizedSkillName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
                 }
             }
 
@@ -211,9 +210,9 @@ public abstract class SkillCommand implements TabExecutor {
 
     protected String[] formatLengthDisplayValues(Player player, double skillValue) {
 
-        int length = SkillUtils.calculateAbilityLength(pluginRef.getUserManager().getPlayer(player), skill, skill.getSuperAbility());
+        int length = pluginRef.getSkillTools().calculateAbilityLength(pluginRef.getUserManager().getPlayer(player), skill, skill.getSuperAbility());
 
-        int enduranceLength = SkillUtils.calculateAbilityLengthPerks(pluginRef.getUserManager().getPlayer(player), skill, skill.getSuperAbility());
+        int enduranceLength = pluginRef.getSkillTools().calculateAbilityLengthPerks(pluginRef.getUserManager().getPlayer(player), skill, skill.getSuperAbility());
 
         return new String[]{String.valueOf(length), String.valueOf(enduranceLength)};
     }

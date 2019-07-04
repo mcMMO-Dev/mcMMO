@@ -37,7 +37,7 @@ public final class CommandRegistrationManager {
     private void registerSkillCommands() {
         for (PrimarySkillType skill : PrimarySkillType.values()) {
             String commandName = skill.toString().toLowerCase();
-            String localizedName = skill.getName().toLowerCase();
+            String localizedName = skill.getLocalizedSkillName().toLowerCase();
 
             PluginCommand command;
 

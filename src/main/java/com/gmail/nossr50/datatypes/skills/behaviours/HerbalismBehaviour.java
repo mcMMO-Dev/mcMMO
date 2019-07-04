@@ -4,7 +4,6 @@ import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.util.BlockUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -218,6 +217,6 @@ public class HerbalismBehaviour {
      * @return true if the block is recently regrown, false otherwise
      */
     public boolean isRecentlyRegrown(BlockState blockState) {
-        return blockState.hasMetadata(MetadataConstants.GREEN_THUMB_METAKEY) && !SkillUtils.cooldownExpired(blockState.getMetadata(MetadataConstants.GREEN_THUMB_METAKEY).get(0).asInt(), 1);
+        return blockState.hasMetadata(MetadataConstants.GREEN_THUMB_METAKEY) && !pluginRef.getSkillTools().cooldownExpired(blockState.getMetadata(MetadataConstants.GREEN_THUMB_METAKEY).get(0).asInt(), 1);
     }
 }

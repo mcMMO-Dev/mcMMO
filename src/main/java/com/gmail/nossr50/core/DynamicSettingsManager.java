@@ -44,8 +44,8 @@ public class DynamicSettingsManager {
     private HashMap<PartyFeature, Integer> partyFeatureUnlocks;
 
     /* Skill Behaviours */
-    private SkillBehaviourManager skillBehaviourManager;
     //TODO: This class is a band-aid fix for a large problem with mcMMO code, they will be removed once the new skill system is in place
+    private SkillBehaviourManager skillBehaviourManager;
 
 
     public DynamicSettingsManager(mcMMO pluginRef) {

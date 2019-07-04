@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -72,9 +73,9 @@ public class PartyInfoCommand implements CommandExecutor {
             }
 
             if (isUnlockedFeature(party, partyFeature)) {
-                unlockedPartyFeatures.add(partyFeature.getLocaleString());
+                unlockedPartyFeatures.add(getPartyFeatureLocaleString(partyFeature));
             } else {
-                lockedPartyFeatures.add(partyFeature.getFeatureLockedLocaleString());
+                lockedPartyFeatures.add(getFeatureLockedLocaleString(partyFeature));
             }
         }
 
@@ -83,6 +84,17 @@ public class PartyInfoCommand implements CommandExecutor {
         for (String message : lockedPartyFeatures) {
             player.sendMessage(message);
         }
+    }
+
+    public String getPartyFeatureLocaleString(PartyFeature partyFeature) {
+        return pluginRef.getLocaleManager().getString("Party.Feature." + StringUtils.getPrettyPartyFeatureString(partyFeature).replace(" ", ""));
+    }
+
+    public String getFeatureLockedLocaleString(PartyFeature partyFeature) {
+        return pluginRef.getLocaleManager().getString("Ability.Generic.Template.Lock",
+                pluginRef.getLocaleManager().getString("Party.Feature.Locked."
+                                + StringUtils.getPrettyPartyFeatureString(partyFeature).replace(" ", ""),
+                        pluginRef.getPartyManager().getPartyFeatureUnlockLevel(partyFeature)));
     }
 
     private boolean isUnlockedFeature(Party party, PartyFeature partyFeature) {

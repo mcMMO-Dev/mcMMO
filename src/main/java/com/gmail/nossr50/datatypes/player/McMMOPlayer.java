@@ -1,5 +1,6 @@
 package com.gmail.nossr50.datatypes.player;
 
+import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
@@ -34,7 +35,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.experience.ExperienceBarManager;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.apache.commons.lang.Validate;
@@ -94,19 +94,8 @@ public class McMMOPlayer {
             profile.setUniqueId(uuid);
         }
 
-        /*
-         * I'm using this method because it makes code shorter and safer (we don't have to add all SkillTypes manually),
-         * but I actually have no idea about the performance impact, if there is any.
-         * If in the future someone wants to remove this, don't forget to also remove what is in the PrimarySkillType enum. - bm01
-         */
-        try {
-            for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-                skillManagers.put(primarySkillType, primarySkillType.getManagerClass().getConstructor(McMMOPlayer.class).newInstance(this));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            pluginRef.getPluginLoader().disablePlugin(pluginRef);
-        }
+        //What was here before initSkillManagers() was worse, trust me
+        initSkillManagers();
 
         for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {
             abilityMode.put(superAbilityType, false);
@@ -119,6 +108,68 @@ public class McMMOPlayer {
 
         experienceBarManager = new ExperienceBarManager(this);
         fillPersonalXPModifiers(); //Cache players XP rates
+    }
+
+    private void initSkillManagers() {
+        for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            try {
+                initManager(primarySkillType);
+            } catch (InvalidSkillException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void initManager(PrimarySkillType primarySkillType) throws InvalidSkillException {
+        switch(primarySkillType) {
+            case ACROBATICS:
+                skillManagers.put(primarySkillType, new AcrobaticsManager(pluginRef, this));
+                break;
+            case ALCHEMY:
+                skillManagers.put(primarySkillType, new AlchemyManager(pluginRef, this));
+                break;
+            case ARCHERY:
+                skillManagers.put(primarySkillType, new ArcheryManager(pluginRef, this));
+                break;
+            case AXES:
+                skillManagers.put(primarySkillType, new AxesManager(pluginRef, this));
+                break;
+            case EXCAVATION:
+                skillManagers.put(primarySkillType, new ExcavationManager(pluginRef, this));
+                break;
+            case FISHING:
+                skillManagers.put(primarySkillType, new FishingManager(pluginRef, this));
+                break;
+            case HERBALISM:
+                skillManagers.put(primarySkillType, new HerbalismManager(pluginRef, this));
+                break;
+            case MINING:
+                skillManagers.put(primarySkillType, new MiningManager(pluginRef, this));
+                break;
+            case REPAIR:
+                skillManagers.put(primarySkillType, new RepairManager(pluginRef, this));
+                break;
+            case SALVAGE:
+                skillManagers.put(primarySkillType, new SalvageManager(pluginRef, this));
+                break;
+            case SMELTING:
+                skillManagers.put(primarySkillType, new SmeltingManager(pluginRef, this));
+                break;
+            case SWORDS:
+                skillManagers.put(primarySkillType, new SwordsManager(pluginRef, this));
+                break;
+            case TAMING:
+                skillManagers.put(primarySkillType, new TamingManager(pluginRef, this));
+                break;
+            case UNARMED:
+                skillManagers.put(primarySkillType, new UnarmedManager(pluginRef, this));
+                break;
+            case WOODCUTTING:
+                skillManagers.put(primarySkillType, new WoodcuttingManager(pluginRef, this));
+                break;
+            default:
+                throw new InvalidSkillException("The skill named has no manager! Contact the devs!");
+        }
     }
 
     /**
@@ -165,7 +216,7 @@ public class McMMOPlayer {
         if(hasReachedPowerLevelCap()) {
             pluginRef.getNotificationManager().sendPlayerInformationChatOnly(player, "LevelCap.PowerLevel", String.valueOf(pluginRef.getConfigManager().getConfigLeveling().getPowerLevelCap()));
         } else if(hasReachedLevelCap(primarySkillType)) {
-            pluginRef.getNotificationManager().sendPlayerInformationChatOnly(player, "LevelCap.Skill", String.valueOf(pluginRef.getConfigManager().getConfigLeveling().getSkillLevelCap(primarySkillType)), primarySkillType.getName());
+            pluginRef.getNotificationManager().sendPlayerInformationChatOnly(player, "LevelCap.Skill", String.valueOf(pluginRef.getConfigManager().getConfigLeveling().getSkillLevelCap(primarySkillType)), primarySkillType.getLocalizedSkillName());
         }
 
         //Updates from Party sources
@@ -467,8 +518,8 @@ public class McMMOPlayer {
     public int getPowerLevel() {
         int powerLevel = 0;
 
-        for (PrimarySkillType type : PrimarySkillType.NON_CHILD_SKILLS) {
-            if (type.getPermissions(player)) {
+        for (PrimarySkillType type : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
+            if (type.doesPlayerHaveSkillPermission(player)) {
                 powerLevel += getSkillLevel(type);
             }
         }
@@ -519,7 +570,7 @@ public class McMMOPlayer {
             double splitXp = xp / parentSkills.size();
 
             for (PrimarySkillType parentSkill : parentSkills) {
-                if (parentSkill.getPermissions(player)) {
+                if (parentSkill.doesPlayerHaveSkillPermission(player)) {
                     beginXpGain(parentSkill, splitXp, xpGainReason, xpGainSource);
                 }
             }
@@ -563,7 +614,7 @@ public class McMMOPlayer {
      * @param xp               Experience amount to add
      */
     public void applyXpGain(PrimarySkillType primarySkillType, double xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
-        if (!primarySkillType.getPermissions(player)) {
+        if (!primarySkillType.doesPlayerHaveSkillPermission(player)) {
             return;
         }
 
@@ -647,7 +698,7 @@ public class McMMOPlayer {
 
     public void setupPartyData() {
         party = pluginRef.getPartyManager().getPlayerParty(player.getName(), player.getUniqueId());
-        ptpRecord = new PartyTeleportRecord();
+        ptpRecord = new PartyTeleportRecord(pluginRef);
 
         if (inParty()) {
             loginParty();
@@ -831,7 +882,7 @@ public class McMMOPlayer {
      * @param skill The skill the ability is based on
      */
     public void checkAbilityActivation(PrimarySkillType skill) {
-        ToolType tool = skill.getTool();
+        ToolType tool = skill.getPrimarySkillToolType();
         SuperAbilityType ability = skill.getSuperAbility();
 
         if (getAbilityMode(ability) || !ability.getPermissions(player)) {
@@ -844,7 +895,7 @@ public class McMMOPlayer {
             int diff = RankUtils.getSuperAbilityUnlockRequirement(skill.getSuperAbility()) - getSkillLevel(skill);
 
             //Inform the player they are not yet skilled enough
-            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.AbilityGateRequirementFail", String.valueOf(diff), skill.getName());
+            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.AbilityGateRequirementFail", String.valueOf(diff), skill.getLocalizedSkillName());
             return;
         }
 
@@ -872,19 +923,19 @@ public class McMMOPlayer {
             //player.sendMessage(ability.getAbilityOn());
         }
 
-        SkillUtils.sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, ability.getAbilityPlayer());
+        pluginRef.getSkillTools().sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, ability.getAbilityPlayer());
 
         //Sounds
         SoundManager.worldSendSound(player.getWorld(), player.getLocation(), SoundType.ABILITY_ACTIVATED_GENERIC);
 
-        int abilityLength = SkillUtils.calculateAbilityLengthPerks(this, skill, ability);
+        int abilityLength = pluginRef.getSkillTools().calculateAbilityLengthPerks(this, skill, ability);
 
         // Enable the ability
         profile.setAbilityDATS(ability, System.currentTimeMillis() + (abilityLength * Misc.TIME_CONVERSION_FACTOR));
         setAbilityMode(ability, true);
 
         if (ability == SuperAbilityType.SUPER_BREAKER || ability == SuperAbilityType.GIGA_DRILL_BREAKER) {
-            SkillUtils.handleAbilitySpeedIncrease(player);
+            pluginRef.getSkillTools().handleAbilitySpeedIncrease(player);
         }
 
         setToolPreparationMode(tool, false);
@@ -913,7 +964,7 @@ public class McMMOPlayer {
         }
 
         SuperAbilityType ability = skill.getSuperAbility();
-        ToolType tool = skill.getTool();
+        ToolType tool = skill.getPrimarySkillToolType();
 
         /*
          * Woodcutting & Axes need to be treated differently.

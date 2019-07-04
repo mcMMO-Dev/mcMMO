@@ -1,5 +1,6 @@
 package com.gmail.nossr50.datatypes.party;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import org.bukkit.entity.Player;
 
@@ -8,7 +9,7 @@ public class PartyTeleportRecord {
     private boolean enabled, confirmRequired;
     private int timeout, lastUse;
 
-    public PartyTeleportRecord() {
+    public PartyTeleportRecord(mcMMO pluginRef) {
         requestor = null;
         enabled = true;
         confirmRequired = pluginRef.getConfigManager().getConfigParty().getPTP().isPtpAcceptRequired();

@@ -47,13 +47,13 @@ public class RankCommandDisplayTask extends BukkitRunnable {
         sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mcrank.Heading"));
         sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mcrank.Player", playerName));
 
-        for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
+        for (PrimarySkillType skill : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
 //            if (!skill.getPermissions(player)) {
 //                continue;
 //            }
 
             rank = skills.get(skill);
-            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mcrank.Skill", skill.getName(), (rank == null ? pluginRef.getLocaleManager().getString("Commands.mcrank.Unranked") : rank)));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mcrank.Skill", skill.getLocalizedSkillName(), (rank == null ? pluginRef.getLocaleManager().getString("Commands.mcrank.Unranked") : rank)));
         }
 
         rank = skills.get(null);

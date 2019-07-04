@@ -260,7 +260,7 @@ public final class CombatUtils {
             }
 
             if (ItemUtils.isSword(player.getInventory().getItemInMainHand())) {
-                if (!PrimarySkillType.SWORDS.shouldProcess(target)) {
+                if (!PrimarySkillType.SWORDS.canCombatSkillsTrigger(target)) {
                     return;
                 }
 
@@ -298,27 +298,27 @@ public final class CombatUtils {
             }
 
             if (ItemUtils.isSword(heldItem)) {
-                if (!PrimarySkillType.SWORDS.shouldProcess(target)) {
+                if (!PrimarySkillType.SWORDS.canCombatSkillsTrigger(target)) {
                     return;
                 }
 
-                if (PrimarySkillType.SWORDS.getPermissions(player)) {
+                if (PrimarySkillType.SWORDS.doesPlayerHaveSkillPermission(player)) {
                     processSwordCombat(target, player, event);
                 }
             } else if (ItemUtils.isAxe(heldItem)) {
-                if (!PrimarySkillType.AXES.shouldProcess(target)) {
+                if (!PrimarySkillType.AXES.canCombatSkillsTrigger(target)) {
                     return;
                 }
 
-                if (PrimarySkillType.AXES.getPermissions(player)) {
+                if (PrimarySkillType.AXES.doesPlayerHaveSkillPermission(player)) {
                     processAxeCombat(target, player, event);
                 }
             } else if (ItemUtils.isUnarmed(heldItem)) {
-                if (!PrimarySkillType.UNARMED.shouldProcess(target)) {
+                if (!PrimarySkillType.UNARMED.canCombatSkillsTrigger(target)) {
                     return;
                 }
 
-                if (PrimarySkillType.UNARMED.getPermissions(player)) {
+                if (PrimarySkillType.UNARMED.doesPlayerHaveSkillPermission(player)) {
                     processUnarmedCombat(target, player, event);
                 }
             }
@@ -326,10 +326,10 @@ public final class CombatUtils {
             Wolf wolf = (Wolf) damager;
             AnimalTamer tamer = wolf.getOwner();
 
-            if (tamer instanceof Player && PrimarySkillType.TAMING.shouldProcess(target)) {
+            if (tamer instanceof Player && PrimarySkillType.TAMING.canCombatSkillsTrigger(target)) {
                 Player master = (Player) tamer;
 
-                if (!Misc.isNPCEntityExcludingVillagers(master) && PrimarySkillType.TAMING.getPermissions(master)) {
+                if (!Misc.isNPCEntityExcludingVillagers(master) && PrimarySkillType.TAMING.doesPlayerHaveSkillPermission(master)) {
                     processTamingCombat(target, master, wolf, event);
                 }
             }
@@ -337,14 +337,14 @@ public final class CombatUtils {
             Arrow arrow = (Arrow) damager;
             ProjectileSource projectileSource = arrow.getShooter();
 
-            if (projectileSource instanceof Player && PrimarySkillType.ARCHERY.shouldProcess(target)) {
+            if (projectileSource instanceof Player && PrimarySkillType.ARCHERY.canCombatSkillsTrigger(target)) {
                 Player player = (Player) projectileSource;
 
-                if (!Misc.isNPCEntityExcludingVillagers(player) && PrimarySkillType.ARCHERY.getPermissions(player)) {
+                if (!Misc.isNPCEntityExcludingVillagers(player) && PrimarySkillType.ARCHERY.doesPlayerHaveSkillPermission(player)) {
                     processArcheryCombat(target, player, event, arrow);
                 }
 
-                if (target.getType() != EntityType.CREEPER && !Misc.isNPCEntityExcludingVillagers(player) && PrimarySkillType.TAMING.getPermissions(player)) {
+                if (target.getType() != EntityType.CREEPER && !Misc.isNPCEntityExcludingVillagers(player) && PrimarySkillType.TAMING.doesPlayerHaveSkillPermission(player)) {
                     McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
                     TamingManager tamingManager = mcMMOPlayer.getTamingManager();
                     tamingManager.attackTarget(target);
@@ -538,7 +538,7 @@ public final class CombatUtils {
             xpGainReason = XPGainReason.PVP;
             Player defender = (Player) target;
 
-            if (defender.isOnline() && SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
+            if (defender.isOnline() && pluginRef.getSkillTools().cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
                 baseXPMultiplier = 20 * pluginRef.getDynamicSettingsManager().getExperienceManager().getSpecialCombatXP(SpecialXPKey.PVP);
             }
         } else {

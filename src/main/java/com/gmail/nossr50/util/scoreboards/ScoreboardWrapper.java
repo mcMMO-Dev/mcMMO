@@ -483,13 +483,13 @@ public class ScoreboardWrapper {
 
                 // Calculate power level here
                 int powerLevel = 0;
-                for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) { // Don't include child skills, makes the list too long
+                for (PrimarySkillType skill : pluginRef.getSkillTools().NON_CHILD_SKILLS) { // Don't include child skills, makes the list too long
                     int level = newProfile.getSkillLevel(skill);
 
                     powerLevel += level;
 
                     // TODO: Verify that this is what we want - calculated in power level but not displayed
-                    if (!skill.getPermissions(player)) {
+                    if (!skill.doesPlayerHaveSkillPermission(player)) {
                         continue;
                     }
 
@@ -516,8 +516,8 @@ public class ScoreboardWrapper {
         Integer rank;
         Player player = pluginRef.getServer().getPlayerExact(playerName);
 
-        for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
-            if (!skill.getPermissions(player)) {
+        for (PrimarySkillType skill : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
+            if (!skill.doesPlayerHaveSkillPermission(player)) {
                 continue;
             }
 

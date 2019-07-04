@@ -279,7 +279,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setInt(12, profile.getSkillLevel(PrimarySkillType.FISHING));
             statement.setInt(13, profile.getSkillLevel(PrimarySkillType.ALCHEMY));
             int total = 0;
-            for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS)
+            for (PrimarySkillType primarySkillType : pluginRef.getSkillTools().NON_CHILD_SKILLS)
                 total += profile.getSkillLevel(primarySkillType);
             statement.setInt(14, total);
             statement.setInt(15, id);
@@ -401,7 +401,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         try {
             connection = getConnection(PoolIdentifier.MISC);
-            for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+            for (PrimarySkillType primarySkillType : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
                 String skillName = primarySkillType.name().toLowerCase();
                 // Get count of all users with higher skill level than player
                 String sql = "SELECT COUNT(*) AS rank FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillName + " > 0 " +
@@ -563,10 +563,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     id = newUser(connection, playerName, uuid);
                     create = false;
                     if (id == -1) {
-                        return new PlayerProfile(playerName, false);
+                        return new PlayerProfile(pluginRef, playerName, false);
                     }
                 } else {
-                    return new PlayerProfile(playerName, false);
+                    return new PlayerProfile(pluginRef, playerName, false);
                 }
             }
             // There is such a user
@@ -633,7 +633,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         // return unloaded profile
         if (!retry) {
-            return new PlayerProfile(playerName, false);
+            return new PlayerProfile(pluginRef, playerName, false);
         }
 
         // Retry, and abort on re-failure
@@ -674,7 +674,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     // Ignore
                 }
                 convertedUsers++;
-                Misc.printProgress(convertedUsers, progressInterval, startMillis);
+                printProgress(convertedUsers, startMillis, pluginRef.getLogger());
             }
         } catch (SQLException e) {
             printErrors(e);
@@ -850,7 +850,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
                 String startingLevel = "'" + pluginRef.getPlayerLevelingSettings().getConfigSectionLevelingGeneral().getStartingLevel() + "'";
-                String totalLevel = "'" + (pluginRef.getPlayerLevelingSettings().getConfigSectionLevelingGeneral().getStartingLevel() * (PrimarySkillType.values().length - PrimarySkillType.CHILD_SKILLS.size())) + "'";
+                String totalLevel = "'" + (pluginRef.getPlayerLevelingSettings().getConfigSectionLevelingGeneral().getStartingLevel() * (PrimarySkillType.values().length - pluginRef.getSkillTools().COMBAT_SKILLS.size())) + "'";
                 createStatement = connection.createStatement();
                 createStatement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "skills` ("
                         + "`user_id` int(10) unsigned NOT NULL,"
@@ -907,7 +907,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             //Level Cap Stuff
             if (pluginRef.getPlayerLevelingSettings().getConfigSectionLevelCaps().getReducePlayerSkillsAboveCap()) {
-                for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
+                for (PrimarySkillType skill : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
                     if (!pluginRef.getPlayerLevelingSettings().isSkillLevelCapEnabled(skill))
                         continue;
 
@@ -1140,7 +1140,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             uuid = null;
         }
 
-        return new PlayerProfile(playerName, uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown, uniqueData);
+        return new PlayerProfile(pluginRef, playerName, uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown, uniqueData);
     }
 
     private void printErrors(SQLException ex) {
@@ -1240,10 +1240,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
             resultSet = statement.executeQuery("SHOW INDEX FROM `" + tablePrefix + "skills` WHERE `Key_name` LIKE 'idx\\_%'");
             resultSet.last();
 
-            if (resultSet.getRow() != PrimarySkillType.NON_CHILD_SKILLS.size()) {
+            if (resultSet.getRow() != pluginRef.getSkillTools().NON_CHILD_SKILLS.size()) {
                 pluginRef.getLogger().info("Indexing tables, this may take a while on larger databases");
 
-                for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
+                for (PrimarySkillType skill : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
                     String skill_name = skill.name().toLowerCase();
 
                     try {

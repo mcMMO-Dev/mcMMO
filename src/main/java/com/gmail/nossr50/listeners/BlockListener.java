@@ -182,15 +182,15 @@ public class BlockListener implements Listener {
         McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
         if (blockState.getType() == Repair.getInstance().getAnvilMaterial()
-                && PrimarySkillType.REPAIR.getPermissions(player)) {
+                && PrimarySkillType.REPAIR.doesPlayerHaveSkillPermission(player)) {
             if (mcMMOPlayer == null)
                 return;
 
             if (blockState.getType() == Repair.getInstance().getAnvilMaterial()
-                    && PrimarySkillType.REPAIR.getPermissions(player)) {
+                    && PrimarySkillType.REPAIR.doesPlayerHaveSkillPermission(player)) {
                 mcMMOPlayer.getRepairManager().placedAnvilCheck();
             } else if (blockState.getType() == Salvage.anvilMaterial
-                    && PrimarySkillType.SALVAGE.getPermissions(player)) {
+                    && PrimarySkillType.SALVAGE.doesPlayerHaveSkillPermission(player)) {
                 mcMMOPlayer.getSalvageManager().placedAnvilCheck();
             }
         }
@@ -297,19 +297,19 @@ public class BlockListener implements Listener {
              * We don't check the block store here because herbalism has too many unusual edge cases.
              * Instead, we check it inside the drops handler.
              */
-            if (PrimarySkillType.HERBALISM.getPermissions(player)) {
+            if (PrimarySkillType.HERBALISM.doesPlayerHaveSkillPermission(player)) {
                 herbalismManager.herbalismBlockCheck(blockState);
             }
         }
 
         /* MINING */
-        else if (BlockUtils.affectedBySuperBreaker(blockState) && ItemUtils.isPickaxe(heldItem) && PrimarySkillType.MINING.getPermissions(player) && !pluginRef.getPlaceStore().isTrue(blockState)) {
+        else if (BlockUtils.affectedBySuperBreaker(blockState) && ItemUtils.isPickaxe(heldItem) && PrimarySkillType.MINING.doesPlayerHaveSkillPermission(player) && !pluginRef.getPlaceStore().isTrue(blockState)) {
             MiningManager miningManager = mcMMOPlayer.getMiningManager();
             miningManager.miningBlockCheck(blockState);
         }
 
         /* WOOD CUTTING */
-        else if (BlockUtils.isLog(blockState) && ItemUtils.isAxe(heldItem) && PrimarySkillType.WOODCUTTING.getPermissions(player) && !pluginRef.getPlaceStore().isTrue(blockState)) {
+        else if (BlockUtils.isLog(blockState) && ItemUtils.isAxe(heldItem) && PrimarySkillType.WOODCUTTING.doesPlayerHaveSkillPermission(player) && !pluginRef.getPlaceStore().isTrue(blockState)) {
             WoodcuttingManager woodcuttingManager = mcMMOPlayer.getWoodcuttingManager();
             if (woodcuttingManager.canUseTreeFeller(heldItem)) {
                 woodcuttingManager.processTreeFeller(blockState);
@@ -319,7 +319,7 @@ public class BlockListener implements Listener {
         }
 
         /* EXCAVATION */
-        else if (BlockUtils.affectedByGigaDrillBreaker(blockState) && ItemUtils.isShovel(heldItem) && PrimarySkillType.EXCAVATION.getPermissions(player) && !pluginRef.getPlaceStore().isTrue(blockState)) {
+        else if (BlockUtils.affectedByGigaDrillBreaker(blockState) && ItemUtils.isShovel(heldItem) && PrimarySkillType.EXCAVATION.doesPlayerHaveSkillPermission(player) && !pluginRef.getPlaceStore().isTrue(blockState)) {
             ExcavationManager excavationManager = mcMMOPlayer.getExcavationManager();
             excavationManager.excavationBlockCheck(blockState);
 

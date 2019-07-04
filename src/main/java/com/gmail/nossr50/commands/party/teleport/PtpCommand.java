@@ -8,7 +8,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -91,7 +90,7 @@ public class PtpCommand implements TabExecutor {
             int hurtCooldown = pluginRef.getConfigManager().getConfigParty().getPTP().getPtpRecentlyHurtCooldown();
 
             if (hurtCooldown > 0) {
-                int timeRemaining = SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, hurtCooldown, player);
+                int timeRemaining = pluginRef.getSkillTools().calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, hurtCooldown, player);
 
                 if (timeRemaining > 0) {
                     player.sendMessage(pluginRef.getLocaleManager().getString("Item.Injured.Wait", timeRemaining));
@@ -112,7 +111,7 @@ public class PtpCommand implements TabExecutor {
             long ptpLastUse = mcMMOPlayer.getPartyTeleportRecord().getLastUse();
 
             if (ptpCooldown > 0) {
-                int timeRemaining = SkillUtils.calculateTimeLeft(ptpLastUse * Misc.TIME_CONVERSION_FACTOR, ptpCooldown, player);
+                int timeRemaining = pluginRef.getSkillTools().calculateTimeLeft(ptpLastUse * Misc.TIME_CONVERSION_FACTOR, ptpCooldown, player);
 
                 if (timeRemaining > 0) {
                     player.sendMessage(pluginRef.getLocaleManager().getString("Item.Generic.Wait", timeRemaining));

@@ -342,7 +342,7 @@ public class EventManager {
             experienceChanged = event.getExperienceChanged();
             PlayerProfile playerProfile = pluginRef.getUserManager().getPlayer(player).getProfile();
 
-            for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+            for (PrimarySkillType primarySkillType : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
                 String skillName = primarySkillType.toString();
                 int playerSkillLevel = playerProfile.getSkillLevel(primarySkillType);
 
@@ -389,7 +389,7 @@ public class EventManager {
 
             PlayerProfile victimProfile = pluginRef.getUserManager().getPlayer(victim).getProfile();
 
-            for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+            for (PrimarySkillType primarySkillType : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
                 String skillName = primarySkillType.toString();
                 int victimSkillLevel = victimProfile.getSkillLevel(primarySkillType);
 
@@ -413,7 +413,7 @@ public class EventManager {
     }
 
     public void callAbilityDeactivateEvent(Player player, SuperAbilityType ability) {
-        McMMOPlayerAbilityDeactivateEvent event = new McMMOPlayerAbilityDeactivateEvent(player, PrimarySkillType.byAbility(ability));
+        McMMOPlayerAbilityDeactivateEvent event = new McMMOPlayerAbilityDeactivateEvent(player, PrimarySkillType.getPrimarySkillBySuperAbility(ability));
         pluginRef.getServer().getPluginManager().callEvent(event);
 
     }

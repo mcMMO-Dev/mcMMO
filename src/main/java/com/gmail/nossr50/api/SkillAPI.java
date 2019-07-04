@@ -31,7 +31,7 @@
 //     * @return a list of strings with valid skill names
 //     */
 //    public static List<String> getNonChildSkills() {
-//        return getListFromEnum(PrimarySkillType.NON_CHILD_SKILLS);
+//        return getListFromEnum(pluginRef.getSkillTools().NON_CHILD_SKILLS);
 //    }
 //
 //    /**

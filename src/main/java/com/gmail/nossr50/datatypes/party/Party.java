@@ -4,6 +4,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Bukkit;
@@ -43,7 +44,8 @@ public class Party {
     private boolean shareWoodcuttingDrops = true;
     private boolean shareMiscDrops = true;
 
-    public Party(String name) {
+    public Party(String name, mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
         this.name = name;
     }
 
@@ -81,7 +83,7 @@ public class Party {
     }
 
     private void initShareHandler() {
-        shareHandler = new ShareHandler(pluginRef);
+        shareHandler = new ShareHandler(pluginRef, this);
     }
 
     public LinkedHashMap<UUID, String> getMembers() {
@@ -169,11 +171,15 @@ public class Party {
 
         for (ItemShareType shareType : ItemShareType.values()) {
             if (sharingDrops(shareType)) {
-                shareCategories.add(shareType.getLocaleString());
+                shareCategories.add(getShareTypeLocaleString(shareType));
             }
         }
 
         return shareCategories;
+    }
+
+    public String getShareTypeLocaleString(ItemShareType itemShareType) {
+        return pluginRef.getLocaleManager().getString("Party.ItemShare.Category." + StringUtils.getCapitalized(itemShareType.toString()));
     }
 
     public int getLevel() {

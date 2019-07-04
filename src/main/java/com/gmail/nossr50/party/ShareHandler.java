@@ -8,6 +8,7 @@ import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -73,7 +74,7 @@ public final class ShareHandler {
      */
     public boolean handleItemShare(Item drop, McMMOPlayer mcMMOPlayer) {
         ItemStack itemStack = drop.getItemStack();
-        ItemShareType dropType = ItemShareType.getShareType(itemStack);
+        ItemShareType dropType = getShareType(itemStack);
 
         if (dropType == null) {
             return false;
@@ -155,6 +156,22 @@ public final class ShareHandler {
             default:
                 return false;
         }
+    }
+
+    public ItemShareType getShareType(ItemStack itemStack) {
+        if (ItemUtils.isMobDrop(itemStack)) {
+            return ItemShareType.LOOT;
+        } else if (ItemUtils.isMiningDrop(itemStack)) {
+            return ItemShareType.MINING;
+        } else if (ItemUtils.isHerbalismDrop(itemStack)) {
+            return ItemShareType.HERBALISM;
+        } else if (ItemUtils.isWoodcuttingDrop(itemStack)) {
+            return ItemShareType.WOODCUTTING;
+        } else if (pluginRef.getConfigManager().getConfigParty().getPartyItemShare().getItemShareMap().get(itemStack.getType()) != null) {
+            return ItemShareType.MISC;
+        }
+
+        return null;
     }
 
     private int getItemWeight(Material material) {

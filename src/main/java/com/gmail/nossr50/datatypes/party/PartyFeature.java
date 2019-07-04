@@ -2,7 +2,6 @@ package com.gmail.nossr50.datatypes.party;
 
 import com.gmail.nossr50.commands.party.PartySubcommandType;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.entity.Player;
 
 public enum PartyFeature {
@@ -11,17 +10,6 @@ public enum PartyFeature {
     ALLIANCE,
     ITEM_SHARE,
     XP_SHARE;
-
-    public String getLocaleString() {
-        return pluginRef.getLocaleManager().getString("Party.Feature." + StringUtils.getPrettyPartyFeatureString(this).replace(" ", ""));
-    }
-
-    public String getFeatureLockedLocaleString() {
-        return pluginRef.getLocaleManager().getString("Ability.Generic.Template.Lock",
-                pluginRef.getLocaleManager().getString("Party.Feature.Locked."
-                                + StringUtils.getPrettyPartyFeatureString(this).replace(" ", ""),
-                        pluginRef.getPartyManager().getPartyFeatureUnlockLevel(this)));
-    }
 
     public boolean hasPermission(Player player) {
         PartySubcommandType partySubCommandType;
@@ -44,7 +32,6 @@ public enum PartyFeature {
             default:
                 return false;
         }
-
 
         return Permissions.partySubcommand(player, partySubCommandType);
     }

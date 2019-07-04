@@ -34,7 +34,7 @@ public class SkillResetCommand implements TabExecutor {
         if (skill == null) {
             sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardAll.2", playerName));
         } else {
-            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardSkill.2", skill.getName(), playerName));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardSkill.2", skill.getLocalizedSkillName(), playerName));
         }
     }
 
@@ -59,7 +59,7 @@ public class SkillResetCommand implements TabExecutor {
                 if (args[0].equalsIgnoreCase("all")) {
                     skill = null;
                 } else {
-                    skill = PrimarySkillType.getSkill(args[1]);
+                    skill = PrimarySkillType.matchSkill(args[1]);
                 }
 
                 editValues((Player) sender, pluginRef.getUserManager().getPlayer(sender.getName()).getProfile(), skill);
@@ -78,7 +78,7 @@ public class SkillResetCommand implements TabExecutor {
                 if (args[1].equalsIgnoreCase("all")) {
                     skill = null;
                 } else {
-                    skill = PrimarySkillType.getSkill(args[1]);
+                    skill = PrimarySkillType.matchSkill(args[1]);
                 }
 
                 String playerName = pluginRef.getCommandTools().getMatchedPlayerName(args[0]);
@@ -150,7 +150,7 @@ public class SkillResetCommand implements TabExecutor {
     }
 
     protected void handlePlayerMessageSkill(Player player, PrimarySkillType skill) {
-        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Reset.Single", skill.getName()));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Reset.Single", skill.getLocalizedSkillName()));
     }
 
     private boolean validateArguments(CommandSender sender, String skillName) {
@@ -159,7 +159,7 @@ public class SkillResetCommand implements TabExecutor {
 
     protected void editValues(Player player, PlayerProfile profile, PrimarySkillType skill) {
         if (skill == null) {
-            for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+            for (PrimarySkillType primarySkillType : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
                 handleCommand(player, profile, primarySkillType);
             }
 

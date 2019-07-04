@@ -40,7 +40,7 @@ import com.gmail.nossr50.util.player.PlayerLevelUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
+import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bstats.bukkit.Metrics;
@@ -87,6 +87,7 @@ public class mcMMO extends JavaPlugin {
     /* Not-Managers but my naming scheme sucks */
     private DatabaseManagerFactory databaseManagerFactory;
     private CommandTools commandTools;
+    private SkillTools skillTools; //TODO: Remove once a new skill system is in place
     private TextComponentFactory textComponentFactory;
 
     /* Never-Ending tasks */
@@ -235,6 +236,9 @@ public class mcMMO extends JavaPlugin {
 
         //Init Scoreboard Manager
         scoreboardManager = new ScoreboardManager(this);
+
+        //Init Skill Tools
+        skillTools = new SkillTools(this);
     }
 
     @Override
@@ -585,7 +589,7 @@ public class mcMMO extends JavaPlugin {
             if (configManager.getConfigItems().isChimaeraWingEnabled()) {
                 Recipe recipe = getChimaeraWingRecipe();
 
-                if(!SkillUtils.hasRecipeBeenRegistered(recipe))
+                if(!getSkillTools().hasRecipeBeenRegistered(recipe))
                     getServer().addRecipe(getChimaeraWingRecipe());
             }
         }, 40);
@@ -733,5 +737,9 @@ public class mcMMO extends JavaPlugin {
 
     public BleedTimerTask getBleedTimerTask() {
         return bleedTimerTask;
+    }
+
+    public SkillTools getSkillTools() {
+        return skillTools;
     }
 }

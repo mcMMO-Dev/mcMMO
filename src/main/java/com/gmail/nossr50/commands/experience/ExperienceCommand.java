@@ -28,7 +28,7 @@ public abstract class ExperienceCommand implements TabExecutor {
         if (skill == null) {
             sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardAll.2", playerName));
         } else {
-            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardSkill.2", skill.getName(), playerName));
+            sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardSkill.2", skill.getLocalizedSkillName(), playerName));
         }
     }
 
@@ -51,7 +51,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                     return true;
                 }
 
-                skill = PrimarySkillType.getSkill(args[0]);
+                skill = PrimarySkillType.matchSkill(args[0]);
 
                 if (args[1].equalsIgnoreCase("all")) {
                     skill = null;
@@ -82,7 +82,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                     return true;
                 }
 
-                skill = PrimarySkillType.getSkill(args[1]);
+                skill = PrimarySkillType.matchSkill(args[1]);
 
                 if (args[1].equalsIgnoreCase("all")) {
                     skill = null;
@@ -153,7 +153,7 @@ public abstract class ExperienceCommand implements TabExecutor {
 
     protected void editValues(Player player, PlayerProfile profile, PrimarySkillType skill, int value) {
         if (skill == null) {
-            for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+            for (PrimarySkillType primarySkillType : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
                 handleCommand(player, profile, primarySkillType, value);
             }
 

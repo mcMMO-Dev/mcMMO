@@ -707,7 +707,7 @@
 //        int powerLevel = 0;
 //        PlayerProfile profile = getOfflineProfile(playerName);
 //
-//        for (PrimarySkillType type : PrimarySkillType.NON_CHILD_SKILLS) {
+//        for (PrimarySkillType type : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
 //            powerLevel += profile.getSkillLevel(type);
 //        }
 //
@@ -727,7 +727,7 @@
 //        int powerLevel = 0;
 //        PlayerProfile profile = getOfflineProfile(uuid);
 //
-//        for (PrimarySkillType type : PrimarySkillType.NON_CHILD_SKILLS) {
+//        for (PrimarySkillType type : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
 //            powerLevel += profile.getSkillLevel(type);
 //        }
 //

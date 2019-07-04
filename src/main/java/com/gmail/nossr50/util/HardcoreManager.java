@@ -33,7 +33,7 @@ public final class HardcoreManager {
         HashMap<String, Integer> levelChanged = new HashMap<>();
         HashMap<String, Double> experienceChanged = new HashMap<>();
 
-        for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+        for (PrimarySkillType primarySkillType : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
             if (!primarySkillType.getHardcoreStatLossEnabled()) {
                 levelChanged.put(primarySkillType.toString(), 0);
                 experienceChanged.put(primarySkillType.toString(), 0.0);
@@ -86,7 +86,7 @@ public final class HardcoreManager {
         HashMap<String, Integer> levelChanged = new HashMap<>();
         HashMap<String, Double> experienceChanged = new HashMap<>();
 
-        for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+        for (PrimarySkillType primarySkillType : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
             if (!primarySkillType.getHardcoreVampirismEnabled()) {
                 levelChanged.put(primarySkillType.toString(), 0);
                 experienceChanged.put(primarySkillType.toString(), 0.0);
@@ -134,7 +134,7 @@ public final class HardcoreManager {
     public static boolean isStatLossEnabled() {
         boolean enabled = false;
 
-        for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+        for (PrimarySkillType primarySkillType : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
             if (primarySkillType.getHardcoreStatLossEnabled()) {
                 enabled = true;
                 break;
@@ -152,7 +152,7 @@ public final class HardcoreManager {
     public static boolean isVampirismEnabled() {
         boolean enabled = false;
 
-        for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+        for (PrimarySkillType primarySkillType : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
             if (primarySkillType.getHardcoreVampirismEnabled()) {
                 enabled = true;
                 break;

@@ -7,7 +7,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -77,7 +76,7 @@ public final class CommandTools {
             return true;
         }
 
-        PlayerProfile profile = new PlayerProfile(playerName, false);
+        PlayerProfile profile = new PlayerProfile(pluginRef, playerName, false);
 
         if (unloadedProfile(sender, profile)) {
             return false;
@@ -138,7 +137,7 @@ public final class CommandTools {
     }
 
     public boolean isInvalidSkill(CommandSender sender, String skillName) {
-        if (SkillUtils.isSkill(skillName)) {
+        if (pluginRef.getSkillTools().isSkill(skillName)) {
             return false;
         }
 
@@ -214,7 +213,7 @@ public final class CommandTools {
         displayData.add(header);
 
         for (PrimarySkillType skill : skillGroup) {
-            if (skill.getPermissions(inspect)) {
+            if (skill.doesPlayerHaveSkillPermission(inspect)) {
                 displayData.add(displaySkill(profile, skill));
             }
         }

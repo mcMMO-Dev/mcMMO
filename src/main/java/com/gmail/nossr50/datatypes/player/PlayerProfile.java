@@ -4,6 +4,7 @@ import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.experience.SkillXpGain;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerProfileSaveTask;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.google.common.collect.ImmutableMap;
@@ -31,13 +32,15 @@ public class PlayerProfile {
     // Store previous XP gains for diminished returns
     private DelayQueue<SkillXpGain> gainedSkillsXp = new DelayQueue<SkillXpGain>();
     private HashMap<PrimarySkillType, Double> rollingSkillsXp = new HashMap<PrimarySkillType, Double>();
+    private final mcMMO pluginRef;
 
     @Deprecated
-    public PlayerProfile(String playerName) {
-        this(playerName, null);
+    public PlayerProfile(mcMMO pluginRef, String playerName) {
+        this(pluginRef, playerName, null);
     }
 
-    public PlayerProfile(String playerName, UUID uuid) {
+    public PlayerProfile(mcMMO pluginRef, String playerName, UUID uuid) {
+        this.pluginRef = pluginRef;
         this.uuid = uuid;
         this.playerName = playerName;
 
@@ -48,7 +51,7 @@ public class PlayerProfile {
             abilityDATS.put(superAbilityType, 0);
         }
 
-        for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+        for (PrimarySkillType primarySkillType : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
             skills.put(primarySkillType, pluginRef.getPlayerLevelingSettings().getConfigSectionLevelingGeneral().getStartingLevel());
             skillsXp.put(primarySkillType, 0.0);
         }
@@ -58,17 +61,18 @@ public class PlayerProfile {
     }
 
     @Deprecated
-    public PlayerProfile(String playerName, boolean isLoaded) {
-        this(playerName);
+    public PlayerProfile(mcMMO pluginRef, String playerName, boolean isLoaded) {
+        this(pluginRef, playerName);
         this.loaded = isLoaded;
     }
 
-    public PlayerProfile(String playerName, UUID uuid, boolean isLoaded) {
-        this(playerName, uuid);
+    public PlayerProfile(mcMMO pluginRef, String playerName, UUID uuid, boolean isLoaded) {
+        this(pluginRef, playerName, uuid);
         this.loaded = isLoaded;
     }
 
-    public PlayerProfile(String playerName, UUID uuid, Map<PrimarySkillType, Integer> levelData, Map<PrimarySkillType, Double> xpData, Map<SuperAbilityType, Integer> cooldownData, MobHealthbarType mobHealthbarType, int scoreboardTipsShown, Map<UniqueDataType, Integer> uniqueProfileData) {
+    public PlayerProfile(mcMMO pluginRef, String playerName, UUID uuid, Map<PrimarySkillType, Integer> levelData, Map<PrimarySkillType, Double> xpData, Map<SuperAbilityType, Integer> cooldownData, MobHealthbarType mobHealthbarType, int scoreboardTipsShown, Map<UniqueDataType, Integer> uniqueProfileData) {
+        this.pluginRef = pluginRef;
         this.playerName = playerName;
         this.uuid = uuid;
         this.mobHealthbarType = mobHealthbarType;
@@ -106,7 +110,7 @@ public class PlayerProfile {
         }
 
         // TODO should this part be synchronized?
-        PlayerProfile profileCopy = new PlayerProfile(playerName, uuid, ImmutableMap.copyOf(skills), ImmutableMap.copyOf(skillsXp), ImmutableMap.copyOf(abilityDATS), mobHealthbarType, scoreboardTipsShown, ImmutableMap.copyOf(uniquePlayerData));
+        PlayerProfile profileCopy = new PlayerProfile(pluginRef, playerName, uuid, ImmutableMap.copyOf(skills), ImmutableMap.copyOf(skillsXp), ImmutableMap.copyOf(abilityDATS), mobHealthbarType, scoreboardTipsShown, ImmutableMap.copyOf(uniquePlayerData));
         changed = !pluginRef.getDatabaseManager().saveUser(profileCopy);
 
         if (changed) {

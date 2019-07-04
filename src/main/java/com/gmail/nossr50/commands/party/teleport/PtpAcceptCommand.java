@@ -3,7 +3,6 @@ package com.gmail.nossr50.commands.party.teleport;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -38,7 +37,7 @@ public class PtpAcceptCommand implements CommandExecutor {
             return true;
         }
 
-        if (SkillUtils.cooldownExpired(ptpRecord.getTimeout(), pluginRef.getConfigManager().getConfigParty().getPTP().getPtpRequestTimeout())) {
+        if (pluginRef.getSkillTools().cooldownExpired(ptpRecord.getTimeout(), pluginRef.getConfigManager().getConfigParty().getPTP().getPtpRequestTimeout())) {
             ptpRecord.removeRequest();
             player.sendMessage(pluginRef.getLocaleManager().getString("Commands.ptp.RequestExpired"));
             return true;

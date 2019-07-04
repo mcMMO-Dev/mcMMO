@@ -11,11 +11,9 @@ public enum ShareMode {
         } catch (IllegalArgumentException ex) {
             if (string.equalsIgnoreCase("even")) {
                 return EQUAL;
-            } else if (pluginRef.getCommandTools().shouldDisableToggle(string)) {
+            } else {
                 return NONE;
             }
-
-            return null;
         }
     }
 }

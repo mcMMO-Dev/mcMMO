@@ -406,7 +406,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
         Map<PrimarySkillType, Integer> skills = new HashMap<>();
 
-        for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
+        for (PrimarySkillType skill : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
             skills.put(skill, getPlayerRank(playerName, playerStatHash.get(skill)));
         }
 
@@ -533,11 +533,11 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 if (create) {
                     if (uuid == null) {
                         newUser(playerName, uuid);
-                        return new PlayerProfile(playerName, true);
+                        return new PlayerProfile(pluginRef, playerName, true);
                     }
 
                     newUser(playerName, uuid);
-                    return new PlayerProfile(playerName, uuid, true);
+                    return new PlayerProfile(pluginRef, playerName, uuid, true);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -556,10 +556,10 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
         // Return unloaded profile
         if (uuid == null) {
-            return new PlayerProfile(playerName);
+            return new PlayerProfile(pluginRef, playerName);
         }
 
-        return new PlayerProfile(playerName, uuid);
+        return new PlayerProfile(pluginRef, playerName, uuid);
     }
 
     public void convertUsers(DatabaseManager destination) {
@@ -583,7 +583,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                         e.printStackTrace();
                     }
                     convertedUsers++;
-                    Misc.printProgress(convertedUsers, progressInterval, startMillis);
+                    printProgress(convertedUsers, startMillis, pluginRef.getLogger());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -909,7 +909,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                         }
 
                         if (pluginRef.getPlayerLevelingSettings().getConfigSectionLevelCaps().getReducePlayerSkillsAboveCap()) {
-                            for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
+                            for (PrimarySkillType skill : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
                                 int index = getSkillIndex(skill);
                                 if (index >= character.length) {
                                     continue;
@@ -918,7 +918,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                                 if (pluginRef.getPlayerLevelingSettings().isSkillLevelCapEnabled(skill)) {
                                     int cap = pluginRef.getPlayerLevelingSettings().getSkillLevelCap(skill);
                                     if (Integer.valueOf(character[index]) > cap) {
-                                        pluginRef.getLogger().warning("Truncating " + skill.getName() + " to configured max level for player " + character[USERNAME]);
+                                        pluginRef.getLogger().warning("Truncating " + pluginRef.getSkillTools().getLocalizedSkillName(skill) + " to configured max level for player " + character[USERNAME]);
                                         character[index] = cap + "";
                                         updated = true;
                                     }
@@ -1051,7 +1051,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
                         if (pluginRef.getPlayerLevelingSettings().getConfigSectionLevelCaps().getReducePlayerSkillsAboveCap()) {
                             Map<PrimarySkillType, Integer> skills = getSkillMapFromLine(character);
-                            for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
+                            for (PrimarySkillType skill : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
                                 int cap = Integer.MAX_VALUE;
                                 if (skills.get(skill) > cap) {
                                     updated = true;
@@ -1194,7 +1194,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             uniquePlayerDataMap.put(UniqueDataType.CHIMAERA_WING_DATS, 0);
         }
 
-        return new PlayerProfile(character[USERNAME], uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown, uniquePlayerDataMap);
+        return new PlayerProfile(pluginRef, character[USERNAME], uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown, uniquePlayerDataMap);
     }
 
     private Map<PrimarySkillType, Integer> getSkillMapFromLine(String[] character) {

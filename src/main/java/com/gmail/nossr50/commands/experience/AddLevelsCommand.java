@@ -44,6 +44,6 @@ public class AddLevelsCommand extends ExperienceCommand {
 
     @Override
     protected void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill) {
-        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardSkill.1", value, skill.getName()));
+        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.addlevels.AwardSkill.1", value, skill.getLocalizedSkillName()));
     }
 }

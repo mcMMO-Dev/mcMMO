@@ -61,7 +61,7 @@ public class FormulaConversionTask extends BukkitRunnable {
     private void editValues(PlayerProfile profile) {
         pluginRef.debug("========================================================================");
         pluginRef.debug("Conversion report for " + profile.getPlayerName() + ":");
-        for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
+        for (PrimarySkillType primarySkillType : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
             int oldLevel = profile.getSkillLevel(primarySkillType);
             int oldXPLevel = profile.getSkillXpLevel(primarySkillType);
             int totalOldXP = pluginRef.getFormulaManager().calculateTotalExperience(oldLevel, oldXPLevel, previousFormula);

@@ -1,6 +1,7 @@
 package com.gmail.nossr50.datatypes.skills;
 
 import com.gmail.nossr50.config.hocon.HOCONUtil;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
 
 public enum SubSkillType {
@@ -131,7 +132,7 @@ public enum SubSkillType {
      * @return
      */
     public PrimarySkillType getParentSkill() {
-        return PrimarySkillType.bySecondaryAbility(this);
+        return PrimarySkillType.getPrimarySkillBySubSkill(this);
     }
 
     /**
@@ -268,7 +269,7 @@ public enum SubSkillType {
      *
      * @return The parent skill as defined in the locale
      */
-    public String getParentNiceNameLocale() {
+    public String getParentNiceNameLocale(mcMMO pluginRef) {
         return pluginRef.getLocaleManager().getString(StringUtils.getCapitalized(getParentSkill().toString()) + ".SkillName");
     }
 
@@ -307,41 +308,41 @@ public enum SubSkillType {
         return StringUtils.getCapitalized(getParentSkill().toString()) + ".SubSkill." + getConfigName(toString());
     }
 
-    public String getLocaleName() {
-        return getFromLocaleSubAddress(".Name");
+    public String getLocaleName(mcMMO pluginRef) {
+        return getFromLocaleSubAddress(pluginRef,".Name");
     }
 
-    public String getLocaleDescription() {
-        return getFromLocaleSubAddress(".Description");
+    public String getLocaleDescription(mcMMO pluginRef) {
+        return getFromLocaleSubAddress(pluginRef,".Description");
     }
 
-    public String getLocaleStatDescription() {
-        return getFromLocaleSubAddress(".Stat");
+    public String getLocaleStatDescription(mcMMO pluginRef) {
+        return getFromLocaleSubAddress(pluginRef,".Stat");
     }
 
     public String getLocaleKeyStatDescription() {
         return getLocaleKeyFromSubAddress(".Stat");
     }
 
-    public String getLocaleStatExtraDescription() {
-        return getFromLocaleSubAddress(".Stat.Extra");
+    public String getLocaleStatExtraDescription(mcMMO pluginRef) {
+        return getFromLocaleSubAddress(pluginRef,".Stat.Extra");
     }
 
     public String getLocaleKeyStatExtraDescription() {
         return getLocaleKeyFromSubAddress(".Stat.Extra");
     }
 
-    public String getLocaleStat(String... vars) {
+    public String getLocaleStat(mcMMO pluginRef, String... vars) {
         String statMsg = pluginRef.getLocaleManager().getString("Ability.Generic.Template", (Object[]) vars);
         return statMsg;
     }
 
-    public String getCustomLocaleStat(String... vars) {
+    public String getCustomLocaleStat(mcMMO pluginRef, String... vars) {
         String statMsg = pluginRef.getLocaleManager().getString("Ability.Generic.Template.Custom", (Object[]) vars);
         return statMsg;
     }
 
-    private String getFromLocaleSubAddress(String s) {
+    private String getFromLocaleSubAddress(mcMMO pluginRef, String s) {
         return pluginRef.getLocaleManager().getString(getLocaleKeyRoot() + s);
     }
 

@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.PerksUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -34,7 +33,7 @@ public class AbilityDisableTask extends BukkitRunnable {
         switch (ability) {
             case SUPER_BREAKER:
             case GIGA_DRILL_BREAKER:
-                SkillUtils.handleAbilitySpeedDecrease(player);
+                pluginRef.getSkillTools().handleAbilitySpeedDecrease(player);
                 // Fallthrough
 
             case BERSERK:
@@ -56,7 +55,7 @@ public class AbilityDisableTask extends BukkitRunnable {
         }
 
 
-        SkillUtils.sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, ability.getAbilityPlayerOff());
+        pluginRef.getSkillTools().sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, ability.getAbilityPlayerOff());
         new AbilityCooldownTask(pluginRef, mcMMOPlayer, ability).runTaskLater(pluginRef, PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TICK_CONVERSION_FACTOR);
     }
 

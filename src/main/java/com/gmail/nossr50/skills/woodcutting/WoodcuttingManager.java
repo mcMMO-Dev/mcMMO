@@ -17,7 +17,6 @@ import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -206,7 +205,7 @@ public class WoodcuttingManager extends SkillManager {
             }
         }
 
-        SkillUtils.handleDurabilityChange(inHand, durabilityLoss);
+        pluginRef.getSkillTools().handleDurabilityChange(inHand, durabilityLoss);
         return (inHand.getDurability() < (pluginRef.getRepairableManager().isRepairable(type) ? pluginRef.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability()));
     }
 

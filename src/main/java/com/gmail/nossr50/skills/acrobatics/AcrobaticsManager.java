@@ -15,7 +15,6 @@ import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -72,7 +71,7 @@ public class AcrobaticsManager extends SkillManager {
                 return false;
             }*/
 
-            return skill.shouldProcess(damager);
+            return skill.canCombatSkillsTrigger(damager);
         }
 
         return false;
@@ -98,7 +97,7 @@ public class AcrobaticsManager extends SkillManager {
             //Check respawn to prevent abuse
             if (!pluginRef.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitAcrobatics().isPreventAcrobaticsAbuse())
                 applyXpGain((float) (damage * acrobaticsBehaviour.getDodgeXpModifier()), XPGainReason.PVP);
-            else if (SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)
+            else if (pluginRef.getSkillTools().cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)
                     && mcMMOPlayer.getTeleportATS() < System.currentTimeMillis()) {
                 applyXpGain((float) (damage * acrobaticsBehaviour.getDodgeXpModifier()), XPGainReason.PVP);
             }
