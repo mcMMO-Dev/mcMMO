@@ -7,7 +7,7 @@ import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.player.PlayerLevelUtils;
+import com.gmail.nossr50.util.player.PlayerLevelTools;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.entity.Player;
@@ -86,7 +86,7 @@ public class SelfListener implements Listener {
             int earlyGameBonusXP = 0;
 
             //Give some bonus XP for low levels
-            if(PlayerLevelUtils.qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType))
+            if(PlayerLevelTools.qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType))
             {
                 earlyGameBonusXP += (mcMMOPlayer.getXpToLevel(primarySkillType) * 0.05);
                 event.setRawXpGained(event.getRawXpGained() + earlyGameBonusXP);

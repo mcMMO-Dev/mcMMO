@@ -3,16 +3,19 @@ package com.gmail.nossr50.util.player;
 import com.gmail.nossr50.datatypes.experience.CustomXPPerk;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
 import java.util.HashSet;
 
-public class PlayerLevelUtils {
+public class PlayerLevelTools {
+    private final mcMMO pluginRef;
     private HashSet<CustomXPPerk> customXpPerkNodes;
 
-    public PlayerLevelUtils() {
+    public PlayerLevelTools(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
         registerCustomPerkPermissions();
         applyConfigPerks();
     }
@@ -39,7 +42,7 @@ public class PlayerLevelUtils {
      * @param primarySkillType target skill
      * @return if the player would qualify for the XP boost if its enabled
      */
-    public static boolean qualifiesForEarlyGameBoost(McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType) {
+    public boolean qualifiesForEarlyGameBoost(McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType) {
         return mcMMOPlayer.getSkillLevel(primarySkillType) < 1;
     }
 

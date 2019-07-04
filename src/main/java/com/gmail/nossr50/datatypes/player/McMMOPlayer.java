@@ -186,7 +186,7 @@ public class McMMOPlayer {
                 continue;
 
             //Set the players custom XP modifier, defaults to 1.0D on missing entries
-            personalXPModifiers.put(primarySkillType, pluginRef.getPlayerLevelUtils().determineXpPerkValue(player, primarySkillType));
+            personalXPModifiers.put(primarySkillType, pluginRef.getPlayerLevelTools().determineXpPerkValue(player, primarySkillType));
         }
     }
 

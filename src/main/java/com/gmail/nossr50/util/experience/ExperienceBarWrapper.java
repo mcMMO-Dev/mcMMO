@@ -4,7 +4,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.player.PlayerLevelUtils;
+import com.gmail.nossr50.util.player.PlayerLevelTools;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -55,7 +55,7 @@ public class ExperienceBarWrapper {
 
     private String getTitleTemplate() {
         //If they are using extra details
-        if(pluginRef.getConfigManager().getConfigLeveling().getEarlyGameBoost().isEnableEarlyGameBoost() && PlayerLevelUtils.qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType)) {
+        if(pluginRef.getConfigManager().getConfigLeveling().getEarlyGameBoost().isEnableEarlyGameBoost() && PlayerLevelTools.qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType)) {
                 return pluginRef.getLocaleManager().getString("XPBar.Template.EarlyGameBoost");
         } else if(pluginRef.getConfigManager().getConfigLeveling().getConfigExperienceBars().isMoreDetailedXPBars())
             return pluginRef.getLocaleManager().getString("XPBar.Complex.Template", pluginRef.getLocaleManager().getString("XPBar."+niceSkillName, getLevel()), getCurrentXP(), getMaxXP(), getPowerLevel(), getPercentageOfLevel());
@@ -122,7 +122,7 @@ public class ExperienceBarWrapper {
             bossBar.setProgress(v);
 
         //Check player level
-        if(pluginRef.getConfigManager().getConfigLeveling().getEarlyGameBoost().isEnableEarlyGameBoost() && PlayerLevelUtils.qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType)) {
+        if(pluginRef.getConfigManager().getConfigLeveling().getEarlyGameBoost().isEnableEarlyGameBoost() && PlayerLevelTools.qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType)) {
            setColor(BarColor.YELLOW);
         } else {
             setColor(pluginRef.getConfigManager().getConfigLeveling().getConfigExperienceBars().getXPBarColor(primarySkillType));

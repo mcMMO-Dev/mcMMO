@@ -36,7 +36,7 @@ import com.gmail.nossr50.util.commands.CommandTools;
 import com.gmail.nossr50.util.experience.FormulaManager;
 import com.gmail.nossr50.util.nbt.NBTManager;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.player.PlayerLevelUtils;
+import com.gmail.nossr50.util.player.PlayerLevelTools;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.CombatTools;
@@ -71,8 +71,6 @@ public class mcMMO extends JavaPlugin {
     private DynamicSettingsManager dynamicSettingsManager;
     private DatabaseManager databaseManager;
     private FormulaManager formulaManager;
-    private MaterialMapStore materialMapStore;
-    private PlayerLevelUtils playerLevelUtils;
     private NotificationManager notificationManager;
     private CommandRegistrationManager commandRegistrationManager;
     private NBTManager nbtManager;
@@ -91,6 +89,8 @@ public class mcMMO extends JavaPlugin {
     private SkillTools skillTools; //TODO: Remove once a new skill system is in place
     private CombatTools combatTools; //TODO: Rewrite this garbo
     private TextComponentFactory textComponentFactory;
+    private PlayerLevelTools playerLevelTools;
+    private MaterialMapStore materialMapStore;
 
     /* Never-Ending tasks */
     private BleedTimerTask bleedTimerTask;
@@ -179,7 +179,7 @@ public class mcMMO extends JavaPlugin {
                 commandRegistrationManager = new CommandRegistrationManager(this);
                 commandRegistrationManager.registerCommands();
 
-                nbtManager = new NBTManager();
+                nbtManager = new NBTManager(this);
 
                 placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
 
@@ -215,7 +215,7 @@ public class mcMMO extends JavaPlugin {
         materialMapStore = new MaterialMapStore();
 
         //Init player level values
-        playerLevelUtils = new PlayerLevelUtils();
+        playerLevelTools = new PlayerLevelTools(this);
 
         //Init Notification Manager
         notificationManager = new NotificationManager(this);
@@ -309,8 +309,8 @@ public class mcMMO extends JavaPlugin {
             getPartyManager().loadParties();
     }
 
-    public PlayerLevelUtils getPlayerLevelUtils() {
-        return playerLevelUtils;
+    public PlayerLevelTools getPlayerLevelTools() {
+        return playerLevelTools;
     }
 
     /**
