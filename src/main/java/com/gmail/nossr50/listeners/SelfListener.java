@@ -8,7 +8,6 @@ import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.PlayerLevelTools;
-import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,7 +35,7 @@ public class SelfListener implements Listener {
         }
 
         //Reset the delay timer
-        RankUtils.resetUnlockDelayTimer();
+        pluginRef.getRankTools().resetUnlockDelayTimer();
 
         if (pluginRef.getScoreboardSettings().getScoreboardsEnabled())
             pluginRef.getScoreboardManager().handleLevelUp(player, skill);

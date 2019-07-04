@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -54,7 +53,7 @@ public class SmeltingCommand extends SkillCommand {
         canFuelEfficiency = canUseSubskill(player, SubSkillType.SMELTING_FUEL_EFFICIENCY);
         canSecondSmelt = canUseSubskill(player, SubSkillType.SMELTING_SECOND_SMELT);
         //canFluxMine = canUseSubskill(player, SubSkillType.SMELTING_FLUX_MINING);
-        canUnderstandTheArt = Permissions.vanillaXpBoost(player, skill) && RankUtils.hasUnlockedSubskill(player, SubSkillType.SMELTING_UNDERSTANDING_THE_ART);
+        canUnderstandTheArt = Permissions.vanillaXpBoost(player, skill) && pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.SMELTING_UNDERSTANDING_THE_ART);
     }
 
     @Override

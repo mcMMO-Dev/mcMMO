@@ -7,7 +7,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.google.common.collect.ImmutableList;
 import net.md_5.bungee.api.ChatColor;
@@ -250,6 +249,6 @@ public abstract class SkillCommand implements TabExecutor {
      * @return true if the player has permission and has the skill unlocked
      */
     protected boolean canUseSubskill(Player player, SubSkillType subSkillType) {
-        return Permissions.isSubSkillEnabled(player, subSkillType) && RankUtils.hasUnlockedSubskill(player, subSkillType);
+        return Permissions.isSubSkillEnabled(player, subSkillType) && pluginRef.getRankTools().hasUnlockedSubskill(player, subSkillType);
     }
 }

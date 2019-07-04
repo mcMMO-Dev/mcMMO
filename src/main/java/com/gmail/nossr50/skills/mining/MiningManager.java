@@ -11,10 +11,8 @@ import com.gmail.nossr50.datatypes.skills.behaviours.MiningBehaviour;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.AbilityCooldownTask;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -50,7 +48,7 @@ public class MiningManager extends SkillManager {
     }
 
     public boolean canUseDemolitionsExpertise() {
-        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_DEMOLITIONS_EXPERTISE))
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_DEMOLITIONS_EXPERTISE))
             return false;
 
         return getSkillLevel() >= miningBehaviour.getDemolitionExpertUnlockLevel() && Permissions.demolitionsExpertise(getPlayer());
@@ -66,18 +64,18 @@ public class MiningManager extends SkillManager {
 
     public boolean canUseBlastMining() {
         //Not checking permissions?
-        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_BLAST_MINING);
+        return pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_BLAST_MINING);
     }
 
     public boolean canUseBiggerBombs() {
-        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_BIGGER_BOMBS))
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_BIGGER_BOMBS))
             return false;
 
         return getSkillLevel() >= miningBehaviour.getBiggerBombsUnlockLevel() && Permissions.biggerBombs(getPlayer());
     }
 
     public boolean canDoubleDrop() {
-        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS);
+        return pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS);
     }
 
     /**
@@ -104,7 +102,7 @@ public class MiningManager extends SkillManager {
 
         //TODO: Make this readable
         if (pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS)) {
-            BlockUtils.markDropsAsBonus(blockState, mcMMOPlayer.getAbilityMode(skill.getSuperAbility()));
+            pluginRef.getBlockTools().markDropsAsBonus(blockState, mcMMOPlayer.getAbilityMode(skill.getSuperAbility()));
         }
     }
 
@@ -113,7 +111,7 @@ public class MiningManager extends SkillManager {
      */
     public void remoteDetonation() {
         Player player = getPlayer();
-        Block targetBlock = player.getTargetBlock(BlockUtils.getTransparentBlocks(), miningBehaviour.MAXIMUM_REMOTE_DETONATION_DISTANCE);
+        Block targetBlock = player.getTargetBlock(pluginRef.getBlockTools().getTransparentBlocks(), miningBehaviour.MAXIMUM_REMOTE_DETONATION_DISTANCE);
 
         //Blast mining cooldown check needs to be first so the player can be messaged
         if (!blastMiningCooldownOver() || targetBlock.getType() != Material.TNT || !pluginRef.getEventManager().simulateBlockBreak(targetBlock, player, true)) {
@@ -155,7 +153,7 @@ public class MiningManager extends SkillManager {
         for (Block block : blockList) {
             BlockState blockState = block.getState();
 
-            if (BlockUtils.isOre(blockState)) {
+            if (pluginRef.getBlockTools().isOre(blockState)) {
                 ores.add(blockState);
             } else {
                 debris.add(blockState);
@@ -209,7 +207,7 @@ public class MiningManager extends SkillManager {
      * @return the Blast Mining tier
      */
     public int getBlastMiningTier() {
-        return RankUtils.getRank(getPlayer(), SubSkillType.MINING_BLAST_MINING);
+        return pluginRef.getRankTools().getRank(getPlayer(), SubSkillType.MINING_BLAST_MINING);
     }
 
     /**

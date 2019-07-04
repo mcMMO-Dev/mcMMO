@@ -12,7 +12,6 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
-import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Location;
@@ -81,8 +80,8 @@ public class SalvageManager extends SkillManager {
         int minimumSalvageableLevel = salvageable.getMinimumLevel();*/
 
         // Level check
-        if (!RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE)) {
-            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Salvage.Skills.Adept.Level", String.valueOf(RankUtils.getUnlockLevel(SubSkillType.SALVAGE_ARCANE_SALVAGE)), StringUtils.getPrettyItemString(item.getType()));
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE)) {
+            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Salvage.Skills.Adept.Level", String.valueOf(pluginRef.getRankTools().getUnlockLevel(SubSkillType.SALVAGE_ARCANE_SALVAGE)), StringUtils.getPrettyItemString(item.getType()));
             return;
         }
 
@@ -120,7 +119,7 @@ public class SalvageManager extends SkillManager {
             }
         }
 
-        if(lotteryResults == potentialSalvageYield && potentialSalvageYield != 1 && RankUtils.isPlayerMaxRankInSubSkill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE)) {
+        if(lotteryResults == potentialSalvageYield && potentialSalvageYield != 1 && pluginRef.getRankTools().isPlayerMaxRankInSubSkill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE)) {
             pluginRef.getNotificationManager().sendPlayerInformationChatOnly(player, "Salvage.Skills.Lottery.Perfect", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
         } else if(salvageable.getMaximumQuantity() == 1 || getSalvageLimit() >= salvageable.getMaximumQuantity()) {
             pluginRef.getNotificationManager().sendPlayerInformationChatOnly(player,  "Salvage.Skills.Lottery.Normal", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
@@ -167,7 +166,7 @@ public class SalvageManager extends SkillManager {
     }*/
 
     public int getSalvageLimit() {
-        return (RankUtils.getRank(getPlayer(), SubSkillType.SALVAGE_SCRAP_COLLECTOR));
+        return (pluginRef.getRankTools().getRank(getPlayer(), SubSkillType.SALVAGE_SCRAP_COLLECTOR));
     }
 
     /**
@@ -176,7 +175,7 @@ public class SalvageManager extends SkillManager {
      * @return the current Arcane Salvage rank
      */
     public int getArcaneSalvageRank() {
-        return RankUtils.getRank(getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE);
+        return pluginRef.getRankTools().getRank(getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE);
     }
 
     /*public double getExtractFullEnchantChance() {
@@ -217,7 +216,7 @@ public class SalvageManager extends SkillManager {
     private ItemStack arcaneSalvageCheck(Map<Enchantment, Integer> enchants) {
         Player player = getPlayer();
 
-        if (!RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE) || !Permissions.arcaneSalvage(player)) {
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE) || !Permissions.arcaneSalvage(player)) {
             pluginRef.getNotificationManager().sendPlayerInformationChatOnly(player, "Salvage.Skills.ArcaneFailed");
             return null;
         }

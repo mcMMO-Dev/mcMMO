@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -66,11 +65,11 @@ public class MiningCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canBiggerBombs = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_BIGGER_BOMBS) && Permissions.biggerBombs(player);
-        canBlast = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_BLAST_MINING) && Permissions.remoteDetonation(player);
-        canDemoExpert = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_DEMOLITIONS_EXPERTISE) && Permissions.demolitionsExpertise(player);
+        canBiggerBombs = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.MINING_BIGGER_BOMBS) && Permissions.biggerBombs(player);
+        canBlast = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.MINING_BLAST_MINING) && Permissions.remoteDetonation(player);
+        canDemoExpert = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.MINING_DEMOLITIONS_EXPERTISE) && Permissions.demolitionsExpertise(player);
         canDoubleDrop = canUseSubskill(player, SubSkillType.MINING_DOUBLE_DROPS);
-        canSuperBreaker = RankUtils.hasUnlockedSubskill(player, SubSkillType.MINING_SUPER_BREAKER) && Permissions.superBreaker(player);
+        canSuperBreaker = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.MINING_SUPER_BREAKER) && Permissions.superBreaker(player);
     }
 
     @Override
@@ -83,7 +82,7 @@ public class MiningCommand extends SkillCommand {
         }
 
         if (canBlast) {
-            messages.add(getStatMessage(false, true, SubSkillType.MINING_BLAST_MINING, String.valueOf(blastMiningRank), String.valueOf(RankUtils.getHighestRank(SubSkillType.MINING_BLAST_MINING)), pluginRef.getLocaleManager().getString("Mining.Blast.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
+            messages.add(getStatMessage(false, true, SubSkillType.MINING_BLAST_MINING, String.valueOf(blastMiningRank), String.valueOf(pluginRef.getRankTools().getHighestRank(SubSkillType.MINING_BLAST_MINING)), pluginRef.getLocaleManager().getString("Mining.Blast.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
             //messages.add(pluginRef.getLocaleManager().getString("Mining.Blast.Rank", blastMiningRank, RankUtils.getHighestRank(SubSkillType.MINING_BLAST_MINING), pluginRef.getLocaleManager().getString("Mining.Blast.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
         }
 

@@ -8,28 +8,34 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.SkillUnlockNotificationTask;
 import com.gmail.nossr50.util.Permissions;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 
-public class RankUtils {
-    private static HashMap<String, HashMap<Integer, Integer>> subSkillRanks;
-    private static int count = 0;
+public class RankTools {
+
+    private final mcMMO pluginRef;
+
+    public RankTools(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
+
+    private HashMap<String, HashMap<Integer, Integer>> subSkillRanks;
+    private int count = 0;
 
     /**
-     * @param plugin           plugin instance ref
      * @param mcMMOPlayer      target player
      * @param primarySkillType target primary skill
      * @param newLevel         the new level of this skill
      */
-    public static void executeSkillUnlockNotifications(Plugin plugin, McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, int newLevel) {
-        for (SubSkillType subSkillType : primarySkillType.getSkillAbilities()) {
+    public void executeSkillUnlockNotifications(McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, int newLevel) {
+        for (SubSkillType subSkillType : pluginRef.getSkillTools().getSkillAbilities(primarySkillType)) {
             int playerRankInSkill = getRank(mcMMOPlayer.getPlayer(), subSkillType);
 
             HashMap<Integer, Integer> innerMap = subSkillRanks.get(subSkillType.toString());
@@ -44,21 +50,21 @@ public class RankUtils {
 
             //The players level is the exact level requirement for this skill
             if (newLevel == innerMap.get(playerRankInSkill)) {
-                SkillUnlockNotificationTask skillUnlockNotificationTask = new SkillUnlockNotificationTask(mcMMOPlayer, subSkillType);
+                SkillUnlockNotificationTask skillUnlockNotificationTask = new SkillUnlockNotificationTask(pluginRef, mcMMOPlayer, subSkillType);
 
-                skillUnlockNotificationTask.runTaskLater(plugin, (count * 100));
+                skillUnlockNotificationTask.runTaskLater(pluginRef, (count * 100));
 
                 count++;
             }
         }
     }
 
-    public static void resetUnlockDelayTimer() {
+    public void resetUnlockDelayTimer() {
         count = 0;
     }
 
     /* NEW SYSTEM */
-    private static void addRanks(AbstractSubSkill abstractSubSkill) {
+    private void addRanks(AbstractSubSkill abstractSubSkill) {
         //Fill out the rank array
         for (int i = 0; i < abstractSubSkill.getNumRanks(); i++) {
             //This adds the highest ranks first
@@ -69,7 +75,7 @@ public class RankUtils {
         }
     }
 
-    private static void addRanks(SubSkillType subSkillType) {
+    private void addRanks(SubSkillType subSkillType) {
         //Fill out the rank array
         for (int i = 0; i < subSkillType.getNumRanks(); i++) {
             //This adds the highest ranks first
@@ -83,7 +89,7 @@ public class RankUtils {
     /**
      * Populates the ranks for every skill we know about
      */
-    public static void populateRanks() {
+    public void populateRanks() {
         for (SubSkillType subSkillType : SubSkillType.values()) {
             addRanks(subSkillType);
         }
@@ -100,7 +106,7 @@ public class RankUtils {
      * @param subSkillType the target subskill
      * @return true if the player has at least one rank in the skill
      */
-    public static boolean hasUnlockedSubskill(Player player, SubSkillType subSkillType) {
+    public boolean hasUnlockedSubskill(Player player, SubSkillType subSkillType) {
         int curRank = getRank(player, subSkillType);
 
         //-1 means the skill has no unlockable levels and is therefor unlocked
@@ -114,7 +120,7 @@ public class RankUtils {
      * @param abstractSubSkill the target subskill
      * @return true if the player has at least one rank in the skill
      */
-    public static boolean hasUnlockedSubskill(Player player, AbstractSubSkill abstractSubSkill) {
+    public boolean hasUnlockedSubskill(Player player, AbstractSubSkill abstractSubSkill) {
         int curRank = getRank(player, abstractSubSkill);
 
         //-1 means the skill has no unlockable levels and is therefor unlocked
@@ -129,7 +135,7 @@ public class RankUtils {
      * @param subSkillType the target subskill
      * @return true if the player is at least that rank in this subskill
      */
-    public static boolean hasReachedRank(int rank, Player player, SubSkillType subSkillType) {
+    public boolean hasReachedRank(int rank, Player player, SubSkillType subSkillType) {
         return getRank(player, subSkillType) >= rank;
     }
 
@@ -141,7 +147,7 @@ public class RankUtils {
      * @param abstractSubSkill the target subskill
      * @return true if the player is at least that rank in this subskill
      */
-    public static boolean hasReachedRank(int rank, Player player, AbstractSubSkill abstractSubSkill) {
+    public boolean hasReachedRank(int rank, Player player, AbstractSubSkill abstractSubSkill) {
         return getRank(player, abstractSubSkill) >= rank;
     }
 
@@ -152,7 +158,7 @@ public class RankUtils {
      * @param subSkillType Target subskill
      * @return The rank the player currently has achieved in this skill. -1 for skills without ranks.
      */
-    public static int getRank(Player player, SubSkillType subSkillType) {
+    public int getRank(Player player, SubSkillType subSkillType) {
         String skillName = subSkillType.toString();
         int numRanks = subSkillType.getNumRanks();
 
@@ -172,7 +178,7 @@ public class RankUtils {
             return 0;
 
         //Skill level of parent skill
-        int currentSkillLevel = pluginRef.getUserManager().getPlayer(player).getSkillLevel(subSkillType.getParentSkill());
+        int currentSkillLevel = pluginRef.getUserManager().getPlayer(player).getSkillLevel(subSkillType.getParentSkill(pluginRef));
 
         for (int i = 0; i < numRanks; i++) {
             //Compare against the highest to lowest rank in that order
@@ -198,7 +204,7 @@ public class RankUtils {
      * @param abstractSubSkill Target subskill
      * @return The rank the player currently has achieved in this skill. -1 for skills without ranks.
      */
-    public static int getRank(Player player, AbstractSubSkill abstractSubSkill) {
+    public int getRank(Player player, AbstractSubSkill abstractSubSkill) {
         String skillName = abstractSubSkill.getConfigKeyName();
         int numRanks = abstractSubSkill.getNumRanks();
 
@@ -243,7 +249,7 @@ public class RankUtils {
      * @param abstractSubSkill The subskill to add ranks for
      * @param rank             The rank to add
      */
-    private static void addRank(AbstractSubSkill abstractSubSkill, int rank) {
+    private void addRank(AbstractSubSkill abstractSubSkill, int rank) {
         initMaps(abstractSubSkill.getConfigKeyName());
 
         HashMap<Integer, Integer> rankMap = subSkillRanks.get(abstractSubSkill.getConfigKeyName());
@@ -252,7 +258,7 @@ public class RankUtils {
     }
 
     @Deprecated
-    private static void addRank(SubSkillType subSkillType, int rank) {
+    private void addRank(SubSkillType subSkillType, int rank) {
         initMaps(subSkillType.toString());
 
         HashMap<Integer, Integer> rankMap = subSkillRanks.get(subSkillType.toString());
@@ -260,14 +266,14 @@ public class RankUtils {
         rankMap.put(rank, getRankUnlockLevel(subSkillType, rank));
     }
 
-    private static void initMaps(String s) {
+    private void initMaps(String s) {
         if (subSkillRanks == null)
             subSkillRanks = new HashMap<>();
 
         subSkillRanks.computeIfAbsent(s, k -> new HashMap<>());
     }
 
-/*    public static int getSubSkillUnlockRequirement(SubSkillType subSkillType)
+/*    public int getSubSkillUnlockRequirement(SubSkillType subSkillType)
     {
         String skillName = subSkillType.toString();
         int numRanks = subSkillType.getNumRanks();
@@ -292,11 +298,11 @@ public class RankUtils {
      * @return The level at which this rank unlocks
      */
     @Deprecated
-    public static int getRankUnlockLevel(SubSkillType subSkillType, int rank) {
+    public int getRankUnlockLevel(SubSkillType subSkillType, int rank) {
         return getSubSkillUnlockLevel(subSkillType, rank);
     }
 
-    public static int getRankUnlockLevel(AbstractSubSkill abstractSubSkill, int rank) {
+    public int getRankUnlockLevel(AbstractSubSkill abstractSubSkill, int rank) {
         return getSubSkillUnlockLevel(abstractSubSkill, rank);
     }
 
@@ -306,7 +312,7 @@ public class RankUtils {
      * @param subSkillType target subskill
      * @return The unlock requirements for rank 1 in this skill
      */
-    public static int getUnlockLevel(SubSkillType subSkillType) {
+    public int getUnlockLevel(SubSkillType subSkillType) {
         return getSubSkillUnlockLevel(subSkillType, 1);
     }
 
@@ -316,7 +322,7 @@ public class RankUtils {
      * @param abstractSubSkill target subskill
      * @return The unlock requirements for rank 1 in this skill
      */
-    public static int getUnlockLevel(AbstractSubSkill abstractSubSkill) {
+    public int getUnlockLevel(AbstractSubSkill abstractSubSkill) {
         return getSubSkillUnlockLevel(abstractSubSkill, 1);
     }
 
@@ -326,11 +332,11 @@ public class RankUtils {
      * @param subSkillType target subskill
      * @return the last rank of a subskill
      */
-    public static int getHighestRank(SubSkillType subSkillType) {
+    public int getHighestRank(SubSkillType subSkillType) {
         return subSkillType.getNumRanks();
     }
 
-    public static String getHighestRankStr(SubSkillType subSkillType) {
+    public String getHighestRankStr(SubSkillType subSkillType) {
         return String.valueOf(subSkillType.getNumRanks());
     }
 
@@ -340,11 +346,11 @@ public class RankUtils {
      * @param abstractSubSkill target subskill
      * @return the last rank of a subskill
      */
-    public static int getHighestRank(AbstractSubSkill abstractSubSkill) {
+    public int getHighestRank(AbstractSubSkill abstractSubSkill) {
         return abstractSubSkill.getNumRanks();
     }
 
-    public static int getSuperAbilityUnlockRequirement(SuperAbilityType superAbilityType) {
+    public int getSuperAbilityUnlockRequirement(SuperAbilityType superAbilityType) {
         return getRankUnlockLevel(superAbilityType.getSubSkillTypeDefinition(), 1);
     }
 
@@ -355,7 +361,7 @@ public class RankUtils {
      * @param rank         the rank we are checking
      * @return the level requirement for a subskill at this particular rank
      */
-    public static int getSubSkillUnlockLevel(SubSkillType subSkillType, int rank) {
+    public int getSubSkillUnlockLevel(SubSkillType subSkillType, int rank) {
         return findRankByRootAddress(rank, subSkillType);
     }
 
@@ -366,7 +372,7 @@ public class RankUtils {
      * @param rank             the rank we are checking
      * @return the level requirement for a subskill at this particular rank
      */
-    public static int getSubSkillUnlockLevel(AbstractSubSkill abstractSubSkill, int rank) {
+    public int getSubSkillUnlockLevel(AbstractSubSkill abstractSubSkill, int rank) {
         return findRankByRootAddress(rank, abstractSubSkill.getSubSkillType());
     }
 
@@ -377,13 +383,13 @@ public class RankUtils {
      * @param rank the rank we are checking
      * @return the level requirement for a subskill at this particular rank
      */
-    private static int findRankByRootAddress(int rank, SubSkillType subSkillType) {
+    private int findRankByRootAddress(int rank, SubSkillType subSkillType) {
 
         CommentedConfigurationNode rankConfigRoot = pluginRef.getConfigManager().getConfigRanksRootNode();
 
         try {
             SkillRankProperty skillRankProperty
-                    = (SkillRankProperty) rankConfigRoot.getNode(subSkillType.getParentSkill().getCapitalizedPrimarySkillName())
+                    = (SkillRankProperty) rankConfigRoot.getNode(pluginRef.getSkillTools().getCapitalizedPrimarySkillName(subSkillType.getParentSkill(pluginRef)))
                     .getNode(subSkillType.getHoconFriendlyConfigName())
                     .getValue(TypeToken.of(SkillRankProperty.class));
 
@@ -397,10 +403,10 @@ public class RankUtils {
         }
 
         //Default to the max level for the skill if any errors were encountered incorrect
-        return pluginRef.getConfigManager().getConfigLeveling().getSkillLevelCap(subSkillType.getParentSkill());
+        return pluginRef.getConfigManager().getConfigLeveling().getSkillLevelCap(subSkillType.getParentSkill(pluginRef));
     }
 
-    public static boolean isPlayerMaxRankInSubSkill(Player player, SubSkillType subSkillType) {
+    public boolean isPlayerMaxRankInSubSkill(Player player, SubSkillType subSkillType) {
         int playerRank = getRank(player, subSkillType);
         int highestRank = getHighestRank(subSkillType);
 

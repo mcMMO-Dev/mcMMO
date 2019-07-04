@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.meta.TrackedArrowMeta;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -54,7 +53,7 @@ public class ArcheryBehaviour {
     }
 
     public double getDamageBonusPercent(Player player) {
-        return ((RankUtils.getRank(player, SubSkillType.ARCHERY_SKILL_SHOT)) * pluginRef.getConfigManager().getConfigArchery().getSkillShotDamageMultiplier()) / 100.0D;
+        return ((pluginRef.getRankTools().getRank(player, SubSkillType.ARCHERY_SKILL_SHOT)) * pluginRef.getConfigManager().getConfigArchery().getSkillShotDamageMultiplier()) / 100.0D;
     }
 
     public double getSkillShotDamageCap() {

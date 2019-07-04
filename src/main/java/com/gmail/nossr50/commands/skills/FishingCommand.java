@@ -9,7 +9,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -87,7 +86,7 @@ public class FishingCommand extends SkillCommand {
 
         // FISHERMAN'S DIET
         if (canFishermansDiet) {
-            fishermansDietRank = RankUtils.getRank(player, SubSkillType.FISHING_FISHERMANS_DIET);
+            fishermansDietRank = pluginRef.getRankTools().getRank(player, SubSkillType.FISHING_FISHERMANS_DIET);
         }
 
         // MASTER ANGLER
@@ -156,7 +155,7 @@ public class FishingCommand extends SkillCommand {
         }
 
         if (canTreasureHunt) {
-            messages.add(getStatMessage(false, true, SubSkillType.FISHING_TREASURE_HUNTER, String.valueOf(lootTier), String.valueOf(RankUtils.getHighestRank(SubSkillType.FISHING_TREASURE_HUNTER))));
+            messages.add(getStatMessage(false, true, SubSkillType.FISHING_TREASURE_HUNTER, String.valueOf(lootTier), String.valueOf(pluginRef.getRankTools().getHighestRank(SubSkillType.FISHING_TREASURE_HUNTER))));
             messages.add(getStatMessage(true, true, SubSkillType.FISHING_TREASURE_HUNTER,
                     String.valueOf(commonTreasure),
                     String.valueOf(uncommonTreasure),

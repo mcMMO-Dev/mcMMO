@@ -411,8 +411,8 @@ public class EventManager {
         return !isCancelled;
     }
 
-    public void callAbilityDeactivateEvent(Player player, SuperAbilityType ability) {
-        McMMOPlayerAbilityDeactivateEvent event = new McMMOPlayerAbilityDeactivateEvent(player, PrimarySkillType.getPrimarySkillBySuperAbility(ability));
+    public void callAbilityDeactivateEvent(Player player, SuperAbilityType superAbilityType) {
+        McMMOPlayerAbilityDeactivateEvent event = new McMMOPlayerAbilityDeactivateEvent(player, pluginRef.getSkillTools().getPrimarySkillBySuperAbility(superAbilityType));
         pluginRef.getServer().getPluginManager().callEvent(event);
 
     }

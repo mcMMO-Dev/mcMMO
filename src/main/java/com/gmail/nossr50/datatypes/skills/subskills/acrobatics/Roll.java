@@ -9,7 +9,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
 import com.gmail.nossr50.util.skills.PerksUtils;
-import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -181,7 +180,7 @@ public class Roll extends AcrobaticsSubSkill {
     }
 
     private boolean canRoll(Player player) {
-        return RankUtils.hasUnlockedSubskill(player, SubSkillType.ACROBATICS_ROLL) && Permissions.isSubSkillEnabled(player, SubSkillType.ACROBATICS_ROLL);
+        return pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.ACROBATICS_ROLL) && Permissions.isSubSkillEnabled(player, SubSkillType.ACROBATICS_ROLL);
     }
 
     /**

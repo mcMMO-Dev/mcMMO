@@ -389,7 +389,7 @@ public class PlayerProfile {
      * @param xp               Experience amount to add
      */
     public void registerXpGain(PrimarySkillType primarySkillType, double xp) {
-        gainedSkillsXp.add(new SkillXpGain(primarySkillType, xp));
+        gainedSkillsXp.add(new SkillXpGain(primarySkillType, xp, pluginRef.getConfigManager().getConfigLeveling().getDimishedReturnTimeInterval()));
         rollingSkillsXp.put(primarySkillType, getRegisteredXpGain(primarySkillType) + xp);
     }
 

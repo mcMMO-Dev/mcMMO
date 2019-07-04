@@ -23,7 +23,7 @@ public class ConvertDatabaseCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 2:
-                DatabaseType previousType = DatabaseType.getDatabaseType(args[1]);
+                DatabaseType previousType = getDatabaseType(args[1]);
                 DatabaseType newType = pluginRef.getDatabaseManager().getDatabaseType();
 
                 if (previousType == newType || (newType == DatabaseType.CUSTOM && pluginRef.getDatabaseManagerFactory().getCustomDatabaseManagerClass().getSimpleName().equalsIgnoreCase(args[1]))) {
@@ -64,14 +64,30 @@ public class ConvertDatabaseCommand implements CommandExecutor {
                         pluginRef.getDatabaseManager().saveUser(profile);
                     }
 
-                    new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(pluginRef, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
+                    new PlayerProfileLoadingTask(pluginRef, player).runTaskLaterAsynchronously(pluginRef, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
                 }
 
-                new DatabaseConversionTask(oldDatabase, sender, previousType.toString(), newType.toString()).runTaskAsynchronously(pluginRef);
+                new DatabaseConversionTask(pluginRef, oldDatabase, sender, previousType.toString(), newType.toString()).runTaskAsynchronously(pluginRef);
                 return true;
 
             default:
                 return false;
         }
+    }
+
+    public DatabaseType getDatabaseType(String typeName) {
+        for (DatabaseType type : DatabaseType.values()) {
+            if (type.name().equalsIgnoreCase(typeName)) {
+                return type;
+            }
+        }
+
+        if (typeName.equalsIgnoreCase("file")) {
+            return DatabaseType.FLATFILE;
+        } else if (typeName.equalsIgnoreCase("mysql")) {
+            return DatabaseType.SQL;
+        }
+
+        return DatabaseType.CUSTOM;
     }
 }

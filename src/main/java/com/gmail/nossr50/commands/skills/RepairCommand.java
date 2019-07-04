@@ -6,7 +6,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -94,8 +93,8 @@ public class RepairCommand extends SkillCommand {
 
             messages.add(getStatMessage(false, true,
                     SubSkillType.REPAIR_ARCANE_FORGING,
-                    String.valueOf(RankUtils.getRank(player, SubSkillType.REPAIR_ARCANE_FORGING)),
-                    RankUtils.getHighestRankStr(SubSkillType.REPAIR_ARCANE_FORGING)));
+                    String.valueOf(pluginRef.getRankTools().getRank(player, SubSkillType.REPAIR_ARCANE_FORGING)),
+                    pluginRef.getRankTools().getHighestRankStr(SubSkillType.REPAIR_ARCANE_FORGING)));
 
             if (pluginRef.getConfigManager().getConfigRepair().getArcaneForging().isDowngradesEnabled() || pluginRef.getConfigManager().getConfigRepair().getArcaneForging().isMayLoseEnchants()) {
                 messages.add(getStatMessage(true, true, SubSkillType.REPAIR_ARCANE_FORGING,

@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.axes.Axes;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -59,7 +58,7 @@ public class AxesCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canSkullSplitter = Permissions.skullSplitter(player) && RankUtils.hasUnlockedSubskill(player, SubSkillType.AXES_SKULL_SPLITTER);
+        canSkullSplitter = Permissions.skullSplitter(player) && pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.AXES_SKULL_SPLITTER);
         canCritical = canUseSubskill(player, SubSkillType.AXES_CRITICAL_STRIKES);
         canAxeMastery = canUseSubskill(player, SubSkillType.AXES_AXE_MASTERY);
         canImpact = canUseSubskill(player, SubSkillType.AXES_ARMOR_IMPACT);

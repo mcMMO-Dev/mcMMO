@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes.skills;
 
-import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.Material;
@@ -197,19 +196,19 @@ public enum SuperAbilityType {
     public boolean blockCheck(BlockState blockState) {
         switch (this) {
             case BERSERK:
-                return (BlockUtils.affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW);
+                return (pluginRef.getBlockTools().affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW);
 
             case GIGA_DRILL_BREAKER:
-                return BlockUtils.affectedByGigaDrillBreaker(blockState);
+                return pluginRef.getBlockTools().affectedByGigaDrillBreaker(blockState);
 
             case GREEN_TERRA:
-                return BlockUtils.canMakeMossy(blockState);
+                return pluginRef.getBlockTools().canMakeMossy(blockState);
 
             case SUPER_BREAKER:
-                return BlockUtils.affectedBySuperBreaker(blockState);
+                return pluginRef.getBlockTools().affectedBySuperBreaker(blockState);
 
             case TREE_FELLER:
-                return BlockUtils.isLog(blockState);
+                return pluginRef.getBlockTools().isLog(blockState);
 
             default:
                 return false;

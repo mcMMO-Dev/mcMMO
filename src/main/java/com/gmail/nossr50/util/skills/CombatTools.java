@@ -376,7 +376,7 @@ public final class CombatTools {
     }
 
     public int getLimitBreakDamage(Player player, SubSkillType subSkillType) {
-        return RankUtils.getRank(player, subSkillType);
+        return pluginRef.getRankTools().getRank(player, subSkillType);
     }
 
     /**
@@ -386,7 +386,7 @@ public final class CombatTools {
      * @return true if the player has access to the limit break
      */
     public boolean canUseLimitBreak(Player player, SubSkillType subSkillType) {
-        return RankUtils.hasUnlockedSubskill(player, subSkillType)
+        return pluginRef.getRankTools().hasUnlockedSubskill(player, subSkillType)
                 && Permissions.isSubSkillEnabled(player, subSkillType);
     }
 

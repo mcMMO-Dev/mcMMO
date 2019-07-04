@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -58,7 +57,7 @@ public class SwordsCommand extends SkillCommand {
     protected void permissionsCheck(Player player) {
         canBleed = canUseSubskill(player, SubSkillType.SWORDS_RUPTURE);
         canCounter = canUseSubskill(player, SubSkillType.SWORDS_COUNTER_ATTACK);
-        canSerratedStrike = RankUtils.hasUnlockedSubskill(player, SubSkillType.SWORDS_SERRATED_STRIKES) && Permissions.serratedStrikes(player);
+        canSerratedStrike = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.SWORDS_SERRATED_STRIKES) && Permissions.serratedStrikes(player);
     }
 
     @Override
@@ -69,8 +68,8 @@ public class SwordsCommand extends SkillCommand {
         double ruptureDamagePlayer = pluginRef.getConfigManager().getConfigSwords().getRuptureDamagePlayer();
         double pveRupture = pluginRef.getConfigManager().getConfigSwords().getRuptureDamageMobs();
 
-        double pvpDamageRupture = RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? ruptureDamagePlayer * 1.5D : ruptureDamagePlayer;
-        double ruptureDamageMobs = RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? pveRupture * 1.5D : pveRupture;
+        double pvpDamageRupture = pluginRef.getRankTools().getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? ruptureDamagePlayer * 1.5D : ruptureDamagePlayer;
+        double ruptureDamageMobs = pluginRef.getRankTools().getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? pveRupture * 1.5D : pveRupture;
 
         if (canCounter) {
             messages.add(getStatMessage(SubSkillType.SWORDS_COUNTER_ATTACK, counterChance)

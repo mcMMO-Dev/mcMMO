@@ -9,11 +9,9 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.behaviours.WoodcuttingBehaviour;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -40,7 +38,7 @@ public class WoodcuttingManager extends SkillManager {
 
     public boolean canUseLeafBlower(ItemStack heldItem) {
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.WOODCUTTING_LEAF_BLOWER)
-                && RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.WOODCUTTING_LEAF_BLOWER)
+                && pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.WOODCUTTING_LEAF_BLOWER)
                 && ItemUtils.isAxe(heldItem);
     }
 
@@ -51,7 +49,7 @@ public class WoodcuttingManager extends SkillManager {
 
     public boolean canGetDoubleDrops() {
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
-                && RankUtils.hasReachedRank(1, getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
+                && pluginRef.getRankTools().hasReachedRank(1, getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
                 && pluginRef.getRandomChanceTools().isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.WOODCUTTING_HARVEST_LUMBER, getPlayer());
     }
 
@@ -198,7 +196,7 @@ public class WoodcuttingManager extends SkillManager {
         Material type = inHand.getType();
 
         for (BlockState blockState : treeFellerBlocks) {
-            if (BlockUtils.isLog(blockState)) {
+            if (pluginRef.getBlockTools().isLog(blockState)) {
                 durabilityLoss += pluginRef.getConfigManager().getConfigSuperAbilities().getSuperAbilityLimits().getToolDurabilityDamage();
             }
         }
@@ -229,11 +227,11 @@ public class WoodcuttingManager extends SkillManager {
             treeFellerReachedThreshold = true;
         }
 
-        if (BlockUtils.isLog(blockState)) {
+        if (pluginRef.getBlockTools().isLog(blockState)) {
             treeFellerBlocks.add(blockState);
             futureCenterBlocks.add(blockState);
             return true;
-        } else if (BlockUtils.isLeaves(blockState)) {
+        } else if (pluginRef.getBlockTools().isLeaves(blockState)) {
             treeFellerBlocks.add(blockState);
             return false;
         }
@@ -269,14 +267,14 @@ public class WoodcuttingManager extends SkillManager {
                 xp += woodcuttingBehaviour.processTreeFellerXPGains(blockState, processedLogCount);
                 Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
             } else {
-                if (BlockUtils.isLog(blockState)) {
+                if (pluginRef.getBlockTools().isLog(blockState)) {
                     if (canGetDoubleDrops()) {
                         woodcuttingBehaviour.checkForDoubleDrop(blockState);
                     }
                     xp += woodcuttingBehaviour.processTreeFellerXPGains(blockState, processedLogCount);
                     Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
                 }
-                if (BlockUtils.isLeaves(blockState)) {
+                if (pluginRef.getBlockTools().isLeaves(blockState)) {
                     Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
                 }
             }

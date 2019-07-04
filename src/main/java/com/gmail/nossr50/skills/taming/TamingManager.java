@@ -1,7 +1,5 @@
 package com.gmail.nossr50.skills.taming;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -16,7 +14,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
-import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -28,13 +25,13 @@ import java.util.HashMap;
 import java.util.List;
 
 public class TamingManager extends SkillManager {
-    private static HashMap<EntityType, List<TrackedTamingEntity>> summonedEntities = new HashMap<>();
+    private HashMap<EntityType, List<TrackedTamingEntity>> summonedEntities = new HashMap<>();
 
     public TamingManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
         super(pluginRef, mcMMOPlayer, PrimarySkillType.TAMING);
     }
 
-    protected static void addToTracker(LivingEntity livingEntity) {
+    protected void addToTracker(LivingEntity livingEntity) {
         TrackedTamingEntity trackedEntity = new TrackedTamingEntity(livingEntity);
 
         if (!summonedEntities.containsKey(livingEntity.getType())) {
@@ -44,53 +41,53 @@ public class TamingManager extends SkillManager {
         summonedEntities.get(livingEntity.getType()).add(trackedEntity);
     }
 
-    protected static List<TrackedTamingEntity> getTrackedEntities(EntityType entityType) {
+    protected List<TrackedTamingEntity> getTrackedEntities(EntityType entityType) {
         return summonedEntities.get(entityType);
     }
 
-    protected static void removeFromTracker(TrackedTamingEntity trackedEntity) {
+    protected void removeFromTracker(TrackedTamingEntity trackedEntity) {
         summonedEntities.get(trackedEntity.getLivingEntity().getType()).remove(trackedEntity);
     }
 
     public boolean canUseThickFur() {
-        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_THICK_FUR)
+        return pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_THICK_FUR)
                 && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.TAMING_THICK_FUR);
     }
 
     public boolean canUseEnvironmentallyAware() {
-        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_ENVIRONMENTALLY_AWARE)
+        return pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_ENVIRONMENTALLY_AWARE)
                 && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.TAMING_ENVIRONMENTALLY_AWARE);
     }
 
     public boolean canUseShockProof() {
-        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_SHOCK_PROOF)
+        return pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_SHOCK_PROOF)
                 && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.TAMING_SHOCK_PROOF);
     }
 
     public boolean canUseHolyHound() {
-        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_ENVIRONMENTALLY_AWARE)
+        return pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_ENVIRONMENTALLY_AWARE)
                 && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.TAMING_HOLY_HOUND);
     }
 
     public boolean canUseFastFoodService() {
-        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_FAST_FOOD_SERVICE)
+        return pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_FAST_FOOD_SERVICE)
                 && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.TAMING_FAST_FOOD_SERVICE);
     }
 
     public boolean canUseSharpenedClaws() {
-        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_SHARPENED_CLAWS)
+        return pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_SHARPENED_CLAWS)
                 && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.TAMING_SHARPENED_CLAWS);
     }
 
     public boolean canUseGore() {
-        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_GORE))
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_GORE))
             return false;
 
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.TAMING_GORE);
     }
 
     public boolean canUseBeastLore() {
-        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_BEAST_LORE))
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_BEAST_LORE))
             return false;
 
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.TAMING_BEAST_LORE);
@@ -112,7 +109,7 @@ public class TamingManager extends SkillManager {
      * @param damage The damage being absorbed by the wolf
      */
     public void fastFoodService(Wolf wolf, double damage) {
-        //static chance (3rd param)
+        //chance (3rd param)
         if (!pluginRef.getRandomChanceTools().isActivationSuccessful(SkillActivationType.RANDOM_STATIC_CHANCE, SubSkillType.TAMING_FAST_FOOD_SERVICE, getPlayer())) {
             return;
         }
@@ -157,7 +154,7 @@ public class TamingManager extends SkillManager {
      * Summon an ocelot to your side.
      */
     public void summonOcelot() {
-        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_CALL_OF_THE_WILD))
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_CALL_OF_THE_WILD))
             return;
 
         if (!Permissions.callOfTheWild(getPlayer(), EntityType.OCELOT)) {
@@ -171,7 +168,7 @@ public class TamingManager extends SkillManager {
      * Summon a wolf to your side.
      */
     public void summonWolf() {
-        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_CALL_OF_THE_WILD))
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_CALL_OF_THE_WILD))
             return;
 
         if (!Permissions.callOfTheWild(getPlayer(), EntityType.WOLF)) {
@@ -185,7 +182,7 @@ public class TamingManager extends SkillManager {
      * Summon a horse to your side.
      */
     public void summonHorse() {
-        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_CALL_OF_THE_WILD))
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_CALL_OF_THE_WILD))
             return;
 
         if (!Permissions.callOfTheWild(getPlayer(), EntityType.HORSE)) {
@@ -226,7 +223,7 @@ public class TamingManager extends SkillManager {
     }
 
     public void pummel(LivingEntity target, Wolf wolf) {
-        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_PUMMEL))
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_PUMMEL))
             return;
 
         if (!pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(AdvancedConfig.getInstance().getPummelChance(), getPlayer(), SubSkillType.TAMING_PUMMEL)))

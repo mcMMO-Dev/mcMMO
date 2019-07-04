@@ -17,12 +17,10 @@ import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerShakeEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
-import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Bukkit;
@@ -65,11 +63,11 @@ public class FishingManager extends SkillManager {
     }
 
     public boolean canShake(Entity target) {
-        return target instanceof LivingEntity && RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.FISHING_SHAKE) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_SHAKE);
+        return target instanceof LivingEntity && pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.FISHING_SHAKE) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_SHAKE);
     }
 
     public boolean canMasterAngler() {
-        return getSkillLevel() >= RankUtils.getUnlockLevel(SubSkillType.FISHING_MASTER_ANGLER) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_MASTER_ANGLER);
+        return getSkillLevel() >= pluginRef.getRankTools().getUnlockLevel(SubSkillType.FISHING_MASTER_ANGLER) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_MASTER_ANGLER);
     }
 
     public void setFishingRodCastTimestamp() {
@@ -164,11 +162,11 @@ public class FishingManager extends SkillManager {
     }
 
     public void setFishingTarget() {
-        getPlayer().getTargetBlock(BlockUtils.getTransparentBlocks(), 100);
+        getPlayer().getTargetBlock(pluginRef.getBlockTools().getTransparentBlocks(), 100);
     }
 
     public boolean canIceFish(Block block) {
-        if (getSkillLevel() < RankUtils.getUnlockLevel(SubSkillType.FISHING_ICE_FISHING)) {
+        if (getSkillLevel() < pluginRef.getRankTools().getUnlockLevel(SubSkillType.FISHING_ICE_FISHING)) {
             return false;
         }
 
@@ -196,7 +194,7 @@ public class FishingManager extends SkillManager {
      * @return the loot tier
      */
     public int getLootTier() {
-        return RankUtils.getRank(getPlayer(), SubSkillType.FISHING_TREASURE_HUNTER);
+        return pluginRef.getRankTools().getRank(getPlayer(), SubSkillType.FISHING_TREASURE_HUNTER);
     }
 
     public double getShakeChance() {
@@ -204,7 +202,7 @@ public class FishingManager extends SkillManager {
     }
 
     public int getInnerPeaceMultiplier() {
-        return pluginRef.getConfigManager().getConfigFishing().getVanillaXPMultInnerPeace(RankUtils.getRank(getPlayer(), SubSkillType.FISHING_INNER_PEACE));
+        return pluginRef.getConfigManager().getConfigFishing().getVanillaXPMultInnerPeace(pluginRef.getRankTools().getRank(getPlayer(), SubSkillType.FISHING_INNER_PEACE));
     }
 
     /**
@@ -263,8 +261,8 @@ public class FishingManager extends SkillManager {
     }
 
     public boolean isMagicHunterEnabled() {
-        return RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.FISHING_MAGIC_HUNTER)
-                && RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.FISHING_TREASURE_HUNTER)
+        return pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.FISHING_MAGIC_HUNTER)
+                && pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.FISHING_TREASURE_HUNTER)
                 && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_TREASURE_HUNTER);
     }
 

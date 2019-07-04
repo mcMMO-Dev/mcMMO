@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
-import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -40,14 +39,14 @@ public class SalvageCommand extends SkillCommand {
         if (canScrapCollector) {
             messages.add(getStatMessage(false, true,
                     SubSkillType.SALVAGE_SCRAP_COLLECTOR,
-                    String.valueOf(RankUtils.getRank(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR)),
-                    RankUtils.getHighestRankStr(SubSkillType.SALVAGE_SCRAP_COLLECTOR)));
+                    String.valueOf(pluginRef.getRankTools().getRank(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR)),
+                    pluginRef.getRankTools().getHighestRankStr(SubSkillType.SALVAGE_SCRAP_COLLECTOR)));
         }
 
         if (canArcaneSalvage) {
             messages.add(getStatMessage(false, true, SubSkillType.SALVAGE_ARCANE_SALVAGE,
                     String.valueOf(salvageManager.getArcaneSalvageRank()),
-                    String.valueOf(RankUtils.getHighestRank(SubSkillType.SALVAGE_ARCANE_SALVAGE))));
+                    String.valueOf(pluginRef.getRankTools().getHighestRank(SubSkillType.SALVAGE_ARCANE_SALVAGE))));
 
             if (Salvage.arcaneSalvageEnchantLoss) {
                 messages.add(pluginRef.getLocaleManager().getString("Ability.Generic.Template", pluginRef.getLocaleManager().getString("Salvage.Arcane.ExtractFull"), percent.format(salvageManager.getExtractFullEnchantChance() / 100)));

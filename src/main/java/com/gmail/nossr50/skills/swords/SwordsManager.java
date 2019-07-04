@@ -10,7 +10,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -30,22 +29,22 @@ public class SwordsManager extends SkillManager {
     }
 
     public boolean canUseStab() {
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_STAB) && RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_STAB);
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_STAB) && pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_STAB);
     }
 
     public boolean canUseRupture() {
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_RUPTURE) && RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_RUPTURE);
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_RUPTURE) && pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_RUPTURE);
     }
 
     public boolean canUseCounterAttack(Entity target) {
-        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_COUNTER_ATTACK))
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_COUNTER_ATTACK))
             return false;
 
         return target instanceof LivingEntity && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_COUNTER_ATTACK);
     }
 
     public boolean canUseSerratedStrike() {
-        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_SERRATED_STRIKES))
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_SERRATED_STRIKES))
             return false;
 
         return mcMMOPlayer.getAbilityMode(SuperAbilityType.SERRATED_STRIKES);
@@ -72,7 +71,7 @@ public class SwordsManager extends SkillManager {
                 }
             }
 
-            pluginRef.getBleedTimerTask().add(target, getPlayer(), getRuptureBleedTicks(), RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE), getToolTier(getPlayer().getInventory().getItemInMainHand()));
+            pluginRef.getBleedTimerTask().add(target, getPlayer(), getRuptureBleedTicks(), pluginRef.getRankTools().getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE), getToolTier(getPlayer().getInventory().getItemInMainHand()));
 
             if (mcMMOPlayer.useChatNotifications()) {
                 pluginRef.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding");
@@ -81,7 +80,7 @@ public class SwordsManager extends SkillManager {
     }
 
     public double getStabDamage() {
-        int rank = RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_STAB);
+        int rank = pluginRef.getRankTools().getRank(getPlayer(), SubSkillType.SWORDS_STAB);
 
         if (rank > 0) {
             double stabDamage = 1.0D + (rank * 1.5);
@@ -103,7 +102,7 @@ public class SwordsManager extends SkillManager {
     }
 
     public int getRuptureBleedTicks() {
-        int bleedTicks = pluginRef.getConfigManager().getConfigSwords().getRuptureBaseTicks() * RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE);
+        int bleedTicks = pluginRef.getConfigManager().getConfigSwords().getRuptureBaseTicks() * pluginRef.getRankTools().getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE);
 
         /*if (bleedTicks > AdvancedConfig.getInstance().getRuptureMaxTicks())
             bleedTicks = AdvancedConfig.getInstance().getRuptureMaxTicks();*/

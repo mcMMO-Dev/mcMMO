@@ -9,7 +9,6 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
-import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -203,7 +202,7 @@ public class RepairManager extends SkillManager {
      * @return the current Arcane Forging rank
      */
     public int getArcaneForgingRank() {
-        return RankUtils.getRank(getPlayer(), SubSkillType.REPAIR_ARCANE_FORGING);
+        return pluginRef.getRankTools().getRank(getPlayer(), SubSkillType.REPAIR_ARCANE_FORGING);
     }
 
     /**
@@ -235,7 +234,7 @@ public class RepairManager extends SkillManager {
         Player player = getPlayer();
 
         if (Permissions.isSubSkillEnabled(player, SubSkillType.REPAIR_REPAIR_MASTERY)
-                && RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.REPAIR_REPAIR_MASTERY)) {
+                && pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.REPAIR_REPAIR_MASTERY)) {
 
             double maxBonusCalc = pluginRef.getDynamicSettingsManager().getSkillPropertiesManager().getMaxBonus(SubSkillType.REPAIR_REPAIR_MASTERY) / 100.0D;
             double skillLevelBonusCalc = (maxBonusCalc / pluginRef.getDynamicSettingsManager().getSkillPropertiesManager().getMaxBonusLevel(SubSkillType.REPAIR_REPAIR_MASTERY)) * (getSkillLevel() / 100.0D);
@@ -261,7 +260,7 @@ public class RepairManager extends SkillManager {
      * @return true if bonus granted, false otherwise
      */
     private boolean checkPlayerProcRepair() {
-        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.REPAIR_SUPER_REPAIR))
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.REPAIR_SUPER_REPAIR))
             return false;
 
         if (pluginRef.getRandomChanceTools().isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.REPAIR_SUPER_REPAIR, getPlayer())) {

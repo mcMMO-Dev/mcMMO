@@ -1,7 +1,6 @@
 package com.gmail.nossr50.runnables;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.BlockUtils;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -25,7 +24,7 @@ public class StickyPistonTrackerTask extends BukkitRunnable {
             return;
         }
 
-        if (!BlockUtils.isPistonPiece(movedBlock.getState())) {
+        if (!pluginRef.getBlockTools().isPistonPiece(movedBlock.getState())) {
             // The block didn't move
             return;
         }

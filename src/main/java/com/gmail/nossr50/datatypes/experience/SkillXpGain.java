@@ -5,19 +5,22 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
+//TODO: Hmm, not sure this is working correctly.
 public class SkillXpGain implements Delayed {
     private final long expiryTime;
     private final double xp;
     private final PrimarySkillType type;
+    private final int interval;
 
-    public SkillXpGain(PrimarySkillType type, double xp) {
+    public SkillXpGain(PrimarySkillType type, double xp, int interval) {
         this.expiryTime = System.currentTimeMillis() + getDuration();
         this.xp = xp;
         this.type = type;
+        this.interval = interval;
     }
 
-    private static long getDuration() {
-        return TimeUnit.MINUTES.toMillis(pluginRef.getConfigManager().getConfigLeveling().getDimishedReturnTimeInterval());
+    private long getDuration() {
+        return TimeUnit.MINUTES.toMillis(interval);
     }
 
     public PrimarySkillType getSkill() {

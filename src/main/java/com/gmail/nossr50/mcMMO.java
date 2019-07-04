@@ -41,7 +41,7 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceTools;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.CombatTools;
-import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.skills.RankTools;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import net.shatteredlands.shatt.backup.ZipLibrary;
@@ -83,16 +83,18 @@ public class mcMMO extends JavaPlugin {
     private EventManager eventManager;
     private UserManager userManager;
     private ScoreboardManager scoreboardManager;
-    private RandomChanceTools randomChanceTools;
 
     /* Not-Managers but my naming scheme sucks */
     private DatabaseManagerFactory databaseManagerFactory;
     private CommandTools commandTools;
     private SkillTools skillTools; //TODO: Remove once a new skill system is in place
+    private BlockTools blockTools;
     private CombatTools combatTools; //TODO: Rewrite this garbo
     private TextComponentFactory textComponentFactory;
     private PlayerLevelTools playerLevelTools;
     private MaterialMapStore materialMapStore;
+    private RandomChanceTools randomChanceTools;
+    private RankTools rankTools;
 
     /* Never-Ending tasks */
     private BleedTimerTask bleedTimerTask;
@@ -190,8 +192,11 @@ public class mcMMO extends JavaPlugin {
                     Permissions.generateWorldTeleportPermissions();
                 }
 
+                //Init Rank Tools
+                rankTools = new RankTools(this);
+
                 //Populate Ranked Skill Maps (DO THIS LAST)
-                RankUtils.populateRanks();
+                rankTools.populateRanks();
             }
 
             //If anonymous statistics are enabled then use them
@@ -250,6 +255,9 @@ public class mcMMO extends JavaPlugin {
 
         //Init Random Chance Tools
         randomChanceTools = new RandomChanceTools(this);
+
+        //Init Block Tools
+        blockTools = new BlockTools(this);
     }
 
     @Override
@@ -760,5 +768,13 @@ public class mcMMO extends JavaPlugin {
 
     public RandomChanceTools getRandomChanceTools() {
         return randomChanceTools;
+    }
+
+    public RankTools getRankTools() {
+        return rankTools;
+    }
+
+    public BlockTools getBlockTools() {
+        return blockTools;
     }
 }

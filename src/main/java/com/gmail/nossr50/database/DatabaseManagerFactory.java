@@ -80,7 +80,7 @@ public class DatabaseManagerFactory {
         return customManager.getConstructor().newInstance();
     }
 
-    public static DatabaseManager createCustomDatabaseManager(Class<? extends DatabaseManager> clazz) throws Throwable {
+    public DatabaseManager createCustomDatabaseManager(Class<? extends DatabaseManager> clazz) throws Throwable {
         return clazz.getConstructor().newInstance();
     }
 }

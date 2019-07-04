@@ -276,7 +276,7 @@ public class SkillTools {
     }
 
     public int handleFoodSkills(Player player, int eventFoodLevel, SubSkillType subSkillType) {
-        int curRank = RankUtils.getRank(player, subSkillType);
+        int curRank = pluginRef.getRankTools().getRank(player, subSkillType);
 
         int currentFoodLevel = player.getFoodLevel();
         int foodChange = eventFoodLevel - currentFoodLevel;
@@ -643,7 +643,7 @@ public class SkillTools {
     }
 
     public boolean isSuperAbilityUnlocked(PrimarySkillType primarySkillType, Player player) {
-        return RankUtils.getRank(player, getSuperAbility(primarySkillType).getSubSkillTypeDefinition()) >= 1;
+        return pluginRef.getRankTools().getRank(player, getSuperAbility(primarySkillType).getSubSkillTypeDefinition()) >= 1;
     }
 
     public boolean getPVPEnabled(PrimarySkillType primarySkillType) {

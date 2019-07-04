@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -35,7 +34,7 @@ public class ExcavationCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canGigaDrill = Permissions.gigaDrillBreaker(player) && RankUtils.hasUnlockedSubskill(player, SubSkillType.EXCAVATION_GIGA_DRILL_BREAKER);
+        canGigaDrill = Permissions.gigaDrillBreaker(player) && pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.EXCAVATION_GIGA_DRILL_BREAKER);
         canTreasureHunt = canUseSubskill(player, SubSkillType.EXCAVATION_ARCHAEOLOGY);
     }
 

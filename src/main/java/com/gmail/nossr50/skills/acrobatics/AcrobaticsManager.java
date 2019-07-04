@@ -12,7 +12,6 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
-import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -62,7 +61,7 @@ public class AcrobaticsManager extends SkillManager {
     }
 
     public boolean canDodge(Entity damager) {
-        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.ACROBATICS_DODGE))
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.ACROBATICS_DODGE))
             return false;
 
         if (Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.ACROBATICS_DODGE)) {

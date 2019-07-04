@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -70,7 +69,7 @@ public class UnarmedCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canBerserk = RankUtils.hasUnlockedSubskill(player, SubSkillType.UNARMED_BERSERK) && Permissions.berserk(player);
+        canBerserk = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.UNARMED_BERSERK) && Permissions.berserk(player);
         canIronArm = canUseSubskill(player, SubSkillType.UNARMED_IRON_ARM_STYLE);
         canDeflect = canUseSubskill(player, SubSkillType.UNARMED_ARROW_DEFLECT);
         canDisarm = canUseSubskill(player, SubSkillType.UNARMED_DISARM);

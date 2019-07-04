@@ -34,7 +34,6 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.experience.ExperienceBarManager;
 import com.gmail.nossr50.util.skills.PerksUtils;
-import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.apache.commons.lang.Validate;
@@ -232,8 +231,8 @@ public class McMMOPlayer {
         updateXPBar(primarySkillType, plugin);
     }
 
-    public void processUnlockNotifications(mcMMO plugin, PrimarySkillType primarySkillType, int skillLevel) {
-        RankUtils.executeSkillUnlockNotifications(plugin, this, primarySkillType, skillLevel);
+    public void processUnlockNotifications(PrimarySkillType primarySkillType, int skillLevel) {
+        pluginRef.getRankTools().executeSkillUnlockNotifications( this, primarySkillType, skillLevel);
     }
 
     public void updateXPBar(PrimarySkillType primarySkillType, Plugin plugin) {
@@ -895,7 +894,7 @@ public class McMMOPlayer {
         //TODO: This is hacky and temporary solution until skills are moved to the new system
         //Potential problems with this include skills with two super abilities (ie mining)
         if (!pluginRef.getSkillTools().isSuperAbilityUnlocked(primarySkillType, getPlayer())) {
-            int diff = RankUtils.getSuperAbilityUnlockRequirement(pluginRef.getSkillTools().getSuperAbility(primarySkillType)) - getSkillLevel(primarySkillType);
+            int diff = pluginRef.getRankTools().getSuperAbilityUnlockRequirement(pluginRef.getSkillTools().getSuperAbility(primarySkillType)) - getSkillLevel(primarySkillType);
 
             //Inform the player they are not yet skilled enough
             pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.AbilityGateRequirementFail", String.valueOf(diff), pluginRef.getSkillTools().getLocalizedSkillName(primarySkillType));

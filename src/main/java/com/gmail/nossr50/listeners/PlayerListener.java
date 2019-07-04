@@ -18,7 +18,6 @@ import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.*;
-import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
@@ -606,7 +605,7 @@ public class PlayerListener implements Listener {
                     /* SALVAGE CHECKS */
                     else if (type == pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getSalvageBehaviour().getAnvilMaterial()
                             && pluginRef.getSkillTools().doesPlayerHaveSkillPermission(PrimarySkillType.SALVAGE, player)
-                            && RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR)
+                            && pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR)
                             && pluginRef.getSalvageableManager().isSalvageable(heldItem)
                             && heldItem.getAmount() <= 1) {
                                 SalvageManager salvageManager = pluginRef.getUserManager().getPlayer(player).getSalvageManager();
@@ -720,9 +719,9 @@ public class PlayerListener implements Listener {
                 BlockState blockState = block.getState();
 
                 /* ACTIVATION & ITEM CHECKS */
-                if (BlockUtils.canActivateTools(blockState)) {
+                if (pluginRef.getBlockTools().canActivateTools(blockState)) {
                     if (pluginRef.getConfigManager().getConfigSuperAbilities().isSuperAbilitiesEnabled()) {
-                        if (BlockUtils.canActivateHerbalism(blockState)) {
+                        if (pluginRef.getBlockTools().canActivateHerbalism(blockState)) {
                             mcMMOPlayer.processAbilityActivation(PrimarySkillType.HERBALISM);
                         }
 

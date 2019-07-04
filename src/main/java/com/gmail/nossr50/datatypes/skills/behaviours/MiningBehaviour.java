@@ -6,7 +6,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
@@ -49,7 +48,7 @@ public class MiningBehaviour {
 
         for (int i = 0; i < SubSkillType.MINING_BLAST_MINING.getNumRanks() - 1; i++) {
             if (getBlastDamageDecrease(i + 1) > 0)
-                return RankUtils.getRankUnlockLevel(SubSkillType.MINING_BLAST_MINING, i + 1);
+                return pluginRef.getRankTools().getRankUnlockLevel(SubSkillType.MINING_BLAST_MINING, i + 1);
         }
 
         return 0;
@@ -59,7 +58,7 @@ public class MiningBehaviour {
 
         for (int i = 0; i < SubSkillType.MINING_BLAST_MINING.getNumRanks() - 1; i++) {
             if (getBlastRadiusModifier(i + 1) > 0)
-                return RankUtils.getRankUnlockLevel(SubSkillType.MINING_BLAST_MINING, i + 1);
+                return pluginRef.getRankTools().getRankUnlockLevel(SubSkillType.MINING_BLAST_MINING, i + 1);
         }
 
         return 0;

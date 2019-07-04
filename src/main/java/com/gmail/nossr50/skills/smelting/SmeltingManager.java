@@ -8,7 +8,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.inventory.ItemStack;
@@ -33,7 +32,7 @@ public class SmeltingManager extends SkillManager {
     }
 
     public int getFuelEfficiencyMultiplier() {
-        switch (RankUtils.getRank(getPlayer(), SubSkillType.SMELTING_FUEL_EFFICIENCY)) {
+        switch (pluginRef.getRankTools().getRank(getPlayer(), SubSkillType.SMELTING_FUEL_EFFICIENCY)) {
             case 1:
                 return 2;
             case 2:
@@ -72,6 +71,6 @@ public class SmeltingManager extends SkillManager {
      * @return the vanilla XP multiplier
      */
     public int getVanillaXpMultiplier() {
-        return Math.max(1, RankUtils.getRank(getPlayer(), SubSkillType.SMELTING_UNDERSTANDING_THE_ART));
+        return Math.max(1, pluginRef.getRankTools().getRank(getPlayer(), SubSkillType.SMELTING_UNDERSTANDING_THE_ART));
     }
 }

@@ -12,7 +12,6 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
@@ -32,7 +31,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canUseIronArm() {
-        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_IRON_ARM_STYLE))
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_IRON_ARM_STYLE))
             return false;
 
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_IRON_ARM_STYLE);
@@ -43,14 +42,14 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canDisarm(LivingEntity target) {
-        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_DISARM))
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_DISARM))
             return false;
 
         return target instanceof Player && ((Player) target).getInventory().getItemInMainHand().getType() != Material.AIR && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_DISARM);
     }
 
     public boolean canDeflect() {
-        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_ARROW_DEFLECT))
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_ARROW_DEFLECT))
             return false;
 
         Player player = getPlayer();
@@ -59,7 +58,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canUseBlockCracker() {
-        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_BLOCK_CRACKER))
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_BLOCK_CRACKER))
             return false;
 
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_BLOCK_CRACKER);
@@ -150,7 +149,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public double getIronArmDamage() {
-        int rank = RankUtils.getRank(getPlayer(), SubSkillType.UNARMED_IRON_ARM_STYLE);
+        int rank = pluginRef.getRankTools().getRank(getPlayer(), SubSkillType.UNARMED_IRON_ARM_STYLE);
 
         if (rank == 1) {
             return 4;

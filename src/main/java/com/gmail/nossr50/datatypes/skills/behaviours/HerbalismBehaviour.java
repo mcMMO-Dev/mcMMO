@@ -3,7 +3,6 @@ package com.gmail.nossr50.datatypes.skills.behaviours;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
-import com.gmail.nossr50.util.BlockUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -79,7 +78,7 @@ public class HerbalismBehaviour {
             dropAmount++;
 
             if (herbalismManager.checkDoubleDrop(target.getState()))
-                BlockUtils.markDropsAsBonus(target.getState(), triple);
+                pluginRef.getBlockTools().markDropsAsBonus(target.getState(), triple);
         }
 
         for (BlockFace blockFace : new BlockFace[]{BlockFace.UP, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST})
@@ -139,7 +138,7 @@ public class HerbalismBehaviour {
         }
 
         //Mark the original block for bonus drops
-        BlockUtils.markDropsAsBonus(blockState, bonusDropAmount);
+        pluginRef.getBlockTools().markDropsAsBonus(blockState, bonusDropAmount);
 
         return dropAmount;
     }
@@ -167,7 +166,7 @@ public class HerbalismBehaviour {
             amount += 1;
 
             if (herbalismManager.checkDoubleDrop(relativeUpBlock.getState()))
-                BlockUtils.markDropsAsBonus(relativeUpBlock.getState(), triple);
+                pluginRef.getBlockTools().markDropsAsBonus(relativeUpBlock.getState(), triple);
 
         }
 

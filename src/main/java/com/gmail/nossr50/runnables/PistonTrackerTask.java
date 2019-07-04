@@ -2,7 +2,6 @@ package com.gmail.nossr50.runnables;
 
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.BlockUtils;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -25,7 +24,7 @@ public class PistonTrackerTask extends BukkitRunnable {
     @Override
     public void run() {
         // Check to see if futureEmptyBlock is empty - if it isn't; the blocks didn't move
-        if (!BlockUtils.isPistonPiece(futureEmptyBlock.getState())) {
+        if (!pluginRef.getBlockTools().isPistonPiece(futureEmptyBlock.getState())) {
             return;
         }
 

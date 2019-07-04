@@ -7,7 +7,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.*;
@@ -273,7 +272,7 @@ public class TextComponentFactory {
         //Get skill name
         String skillName = subSkillType.getLocaleName();
 
-        boolean skillUnlocked = RankUtils.hasUnlockedSubskill(player, subSkillType);
+        boolean skillUnlocked = pluginRef.getRankTools().hasUnlockedSubskill(player, subSkillType);
 
         TextComponent textComponent = initNewSkillTextComponent(player, skillName, subSkillType, skillUnlocked);
 
@@ -297,7 +296,7 @@ public class TextComponentFactory {
         //Setup Text Component
         SubSkillType subSkillType = abstractSubSkill.getSubSkillType();
 
-        boolean skillUnlocked = RankUtils.hasUnlockedSubskill(player, subSkillType);
+        boolean skillUnlocked = pluginRef.getRankTools().hasUnlockedSubskill(player, subSkillType);
 
         TextComponent textComponent = initNewSkillTextComponent(player, skillName, subSkillType, skillUnlocked);
 
@@ -313,7 +312,7 @@ public class TextComponentFactory {
     private TextComponent initNewSkillTextComponent(Player player, String skillName, SubSkillType subSkillType, boolean skillUnlocked) {
         TextComponent textComponent;
         if (skillUnlocked) {
-            if (RankUtils.getHighestRank(subSkillType) == RankUtils.getRank(player, subSkillType) && subSkillType.getNumRanks() > 1)
+            if (pluginRef.getRankTools().getHighestRank(subSkillType) == pluginRef.getRankTools().getRank(player, subSkillType) && subSkillType.getNumRanks() > 1)
                 textComponent = new TextComponent(pluginRef.getLocaleManager().getString("JSON.Hover.MaxRankSkillName", skillName));
             else
                 textComponent = new TextComponent(pluginRef.getLocaleManager().getString("JSON.Hover.SkillName", skillName));
@@ -322,7 +321,7 @@ public class TextComponentFactory {
 
         } else {
             textComponent = new TextComponent(pluginRef.getLocaleManager().getString("JSON.Hover.Mystery",
-                    String.valueOf(RankUtils.getUnlockLevel(subSkillType))));
+                    String.valueOf(pluginRef.getRankTools().getUnlockLevel(subSkillType))));
 
             textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/mmoinfo ???"));
         }
@@ -364,23 +363,23 @@ public class TextComponentFactory {
         SubSkillType subSkillType = abstractSubSkill.getSubSkillType();
 
         //SubSkillType Name
-        ComponentBuilder componentBuilder = setupSkillComponentNameStyle(player, skillName, subSkillType, RankUtils.hasUnlockedSubskill(player, abstractSubSkill));
+        ComponentBuilder componentBuilder = setupSkillComponentNameStyle(player, skillName, subSkillType, pluginRef.getRankTools().hasUnlockedSubskill(player, abstractSubSkill));
 
-        if (!RankUtils.hasUnlockedSubskill(player, abstractSubSkill)) {
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(player, abstractSubSkill)) {
             //Skill is not unlocked yet
             addLocked(abstractSubSkill, ccLocked, ccLevelRequirement, ccLevelRequired, componentBuilder);
         } else {
             addSubSkillTypeToHoverEventJSON(abstractSubSkill, componentBuilder);
 
             //RANK
-            int curRank = RankUtils.getRank(player, abstractSubSkill);
+            int curRank = pluginRef.getRankTools().getRank(player, abstractSubSkill);
             int nextRank = 0;
 
             if (curRank < abstractSubSkill.getNumRanks() && abstractSubSkill.getNumRanks() > 0) {
-                nextRank = RankUtils.getRankUnlockLevel(abstractSubSkill, curRank + 1);
+                nextRank = pluginRef.getRankTools().getRankUnlockLevel(abstractSubSkill, curRank + 1);
             }
 
-            addRanked(ccRank, ccCurRank, ccPossessive, ccNumRanks, componentBuilder, abstractSubSkill.getNumRanks(), RankUtils.getRank(player, abstractSubSkill), nextRank);
+            addRanked(ccRank, ccCurRank, ccPossessive, ccNumRanks, componentBuilder, abstractSubSkill.getNumRanks(), pluginRef.getRankTools().getRank(player, abstractSubSkill), nextRank);
 
             componentBuilder.append(pluginRef.getLocaleManager().getString("JSON.DescriptionHeader"));
             componentBuilder.append("\n").append(abstractSubSkill.getDescription()).append("\n");
@@ -399,13 +398,13 @@ public class TextComponentFactory {
     private ComponentBuilder setupSkillComponentNameStyle(Player player, String skillName, SubSkillType subSkillType, boolean skillUnlocked) {
         ComponentBuilder componentBuilder;
         if (skillUnlocked) {
-            if (RankUtils.getHighestRank(subSkillType) == RankUtils.getRank(player, subSkillType) && subSkillType.getNumRanks() > 1)
+            if (pluginRef.getRankTools().getHighestRank(subSkillType) == pluginRef.getRankTools().getRank(player, subSkillType) && subSkillType.getNumRanks() > 1)
                 componentBuilder = getNewComponentBuilder(pluginRef.getLocaleManager().getString("JSON.Hover.MaxRankSkillName", skillName));
             else
                 componentBuilder = getNewComponentBuilder(pluginRef.getLocaleManager().getString("JSON.Hover.SkillName", skillName));
         } else
             componentBuilder = getNewComponentBuilder(pluginRef.getLocaleManager().getString("JSON.Hover.Mystery",
-                    String.valueOf(RankUtils.getUnlockLevel(subSkillType))));
+                    String.valueOf(pluginRef.getRankTools().getUnlockLevel(subSkillType))));
         return componentBuilder;
     }
 
@@ -433,13 +432,13 @@ public class TextComponentFactory {
 
     private void addLocked(SubSkillType subSkillType, ChatColor ccLocked, ChatColor ccLevelRequirement, ChatColor ccLevelRequired, ComponentBuilder componentBuilder) {
         addLocked(ccLocked, ccLevelRequirement, componentBuilder);
-        componentBuilder.append(String.valueOf(RankUtils.getSubSkillUnlockLevel(subSkillType, 1))).color(ccLevelRequired);
+        componentBuilder.append(String.valueOf(pluginRef.getRankTools().getSubSkillUnlockLevel(subSkillType, 1))).color(ccLevelRequired);
         //componentBuilder.append("\n");
     }
 
     private void addLocked(AbstractSubSkill abstractSubSkill, ChatColor ccLocked, ChatColor ccLevelRequirement, ChatColor ccLevelRequired, ComponentBuilder componentBuilder) {
         addLocked(ccLocked, ccLevelRequirement, componentBuilder);
-        componentBuilder.append(String.valueOf(RankUtils.getSubSkillUnlockLevel(abstractSubSkill, 1))).color(ccLevelRequired);
+        componentBuilder.append(String.valueOf(pluginRef.getRankTools().getSubSkillUnlockLevel(abstractSubSkill, 1))).color(ccLevelRequired);
         //componentBuilder.append("\n");m
     }
 
@@ -468,9 +467,9 @@ public class TextComponentFactory {
         ChatColor ccLevelRequired = ChatColor.RED;
 
         //SubSkillType Name
-        ComponentBuilder componentBuilder = setupSkillComponentNameStyle(player, skillName, subSkillType, RankUtils.hasUnlockedSubskill(player, subSkillType));
+        ComponentBuilder componentBuilder = setupSkillComponentNameStyle(player, skillName, subSkillType, pluginRef.getRankTools().hasUnlockedSubskill(player, subSkillType));
 
-        if (!RankUtils.hasUnlockedSubskill(player, subSkillType)) {
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(player, subSkillType)) {
             //Skill is not unlocked yet
             addLocked(subSkillType, ccLocked, ccLevelRequirement, ccLevelRequired, componentBuilder);
         } else {
@@ -478,14 +477,14 @@ public class TextComponentFactory {
 
             //RANK
             if (subSkillType.getNumRanks() > 0) {
-                int curRank = RankUtils.getRank(player, subSkillType);
+                int curRank = pluginRef.getRankTools().getRank(player, subSkillType);
                 int nextRank = 0;
 
                 if (curRank < subSkillType.getNumRanks() && subSkillType.getNumRanks() > 0) {
-                    nextRank = RankUtils.getRankUnlockLevel(subSkillType, curRank + 1);
+                    nextRank = pluginRef.getRankTools().getRankUnlockLevel(subSkillType, curRank + 1);
                 }
 
-                addRanked(ccRank, ccCurRank, ccPossessive, ccNumRanks, componentBuilder, subSkillType.getNumRanks(), RankUtils.getRank(player, subSkillType), nextRank);
+                addRanked(ccRank, ccCurRank, ccPossessive, ccNumRanks, componentBuilder, subSkillType.getNumRanks(), pluginRef.getRankTools().getRank(player, subSkillType), nextRank);
 
             }
 
@@ -536,7 +535,7 @@ public class TextComponentFactory {
 
     public TextComponent getSubSkillUnlockedNotificationComponents(Player player, SubSkillType subSkillType) {
         TextComponent unlockMessage = new TextComponent("");
-        unlockMessage.setText(pluginRef.getLocaleManager().getString("JSON.SkillUnlockMessage", subSkillType.getLocaleName(), RankUtils.getRank(player, subSkillType)));
+        unlockMessage.setText(pluginRef.getLocaleManager().getString("JSON.SkillUnlockMessage", subSkillType.getLocaleName(), pluginRef.getRankTools().getRank(player, subSkillType)));
         unlockMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, getSubSkillHoverComponent(player, subSkillType)));
         unlockMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + subSkillType.getParentSkill().toString().toLowerCase()));
         return unlockMessage;

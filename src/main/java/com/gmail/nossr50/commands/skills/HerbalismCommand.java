@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -50,7 +49,7 @@ public class HerbalismCommand extends SkillCommand {
 
         // FARMERS DIET
         if (canFarmersDiet) {
-            farmersDietRank = RankUtils.getRank(player, SubSkillType.HERBALISM_FARMERS_DIET);
+            farmersDietRank = pluginRef.getRankTools().getRank(player, SubSkillType.HERBALISM_FARMERS_DIET);
         }
 
         // GREEN TERRA
@@ -62,7 +61,7 @@ public class HerbalismCommand extends SkillCommand {
 
         // GREEN THUMB
         if (canGreenThumbBlocks || canGreenThumbPlants) {
-            greenThumbStage = RankUtils.getRank(player, SubSkillType.HERBALISM_GREEN_THUMB);
+            greenThumbStage = pluginRef.getRankTools().getRank(player, SubSkillType.HERBALISM_GREEN_THUMB);
 
             String[] greenThumbStrings = getAbilityDisplayValues(player, SubSkillType.HERBALISM_GREEN_THUMB);
             greenThumbChance = greenThumbStrings[0];
@@ -88,8 +87,8 @@ public class HerbalismCommand extends SkillCommand {
     protected void permissionsCheck(Player player) {
         hasHylianLuck = canUseSubskill(player, SubSkillType.HERBALISM_HYLIAN_LUCK);
         canGreenTerra = Permissions.greenTerra(player);
-        canGreenThumbPlants = RankUtils.hasUnlockedSubskill(player, SubSkillType.HERBALISM_GREEN_THUMB) && (Permissions.greenThumbPlant(player, Material.WHEAT) || Permissions.greenThumbPlant(player, Material.CARROT) || Permissions.greenThumbPlant(player, Material.POTATO) || Permissions.greenThumbPlant(player, Material.BEETROOT) || Permissions.greenThumbPlant(player, Material.NETHER_WART) || Permissions.greenThumbPlant(player, Material.COCOA));
-        canGreenThumbBlocks = RankUtils.hasUnlockedSubskill(player, SubSkillType.HERBALISM_GREEN_THUMB) && (Permissions.greenThumbBlock(player, Material.DIRT) || Permissions.greenThumbBlock(player, Material.COBBLESTONE) || Permissions.greenThumbBlock(player, Material.COBBLESTONE_WALL) || Permissions.greenThumbBlock(player, Material.STONE_BRICKS));
+        canGreenThumbPlants = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.HERBALISM_GREEN_THUMB) && (Permissions.greenThumbPlant(player, Material.WHEAT) || Permissions.greenThumbPlant(player, Material.CARROT) || Permissions.greenThumbPlant(player, Material.POTATO) || Permissions.greenThumbPlant(player, Material.BEETROOT) || Permissions.greenThumbPlant(player, Material.NETHER_WART) || Permissions.greenThumbPlant(player, Material.COCOA));
+        canGreenThumbBlocks = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.HERBALISM_GREEN_THUMB) && (Permissions.greenThumbBlock(player, Material.DIRT) || Permissions.greenThumbBlock(player, Material.COBBLESTONE) || Permissions.greenThumbBlock(player, Material.COBBLESTONE_WALL) || Permissions.greenThumbBlock(player, Material.STONE_BRICKS));
         canFarmersDiet = canUseSubskill(player, SubSkillType.HERBALISM_FARMERS_DIET);
         canDoubleDrop = canUseSubskill(player, SubSkillType.HERBALISM_DOUBLE_DROPS);
         canShroomThumb = canUseSubskill(player, SubSkillType.HERBALISM_SHROOM_THUMB);

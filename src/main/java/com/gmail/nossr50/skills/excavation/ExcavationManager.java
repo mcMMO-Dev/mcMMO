@@ -10,7 +10,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.EntityType;
@@ -72,7 +71,7 @@ public class ExcavationManager extends SkillManager {
     }
 
     public int getArchaeologyRank() {
-        return RankUtils.getRank(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY);
+        return pluginRef.getRankTools().getRank(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY);
     }
 
     public void printExcavationDebug(Player player, BlockState blockState)

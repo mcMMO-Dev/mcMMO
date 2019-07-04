@@ -14,9 +14,11 @@ import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.HerbalismBlockUpdaterTask;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.*;
+import com.gmail.nossr50.util.ItemUtils;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
-import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -43,35 +45,35 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canGreenThumbBlock(BlockState blockState) {
-        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_GREEN_THUMB))
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_GREEN_THUMB))
             return false;
 
         Player player = getPlayer();
         ItemStack item = player.getInventory().getItemInMainHand();
 
-        return item.getAmount() > 0 && item.getType() == Material.WHEAT_SEEDS && BlockUtils.canMakeMossy(blockState) && Permissions.greenThumbBlock(player, blockState.getType());
+        return item.getAmount() > 0 && item.getType() == Material.WHEAT_SEEDS && pluginRef.getBlockTools().canMakeMossy(blockState) && Permissions.greenThumbBlock(player, blockState.getType());
     }
 
     public boolean canUseShroomThumb(BlockState blockState) {
-        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_SHROOM_THUMB))
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_SHROOM_THUMB))
             return false;
 
         Player player = getPlayer();
         PlayerInventory inventory = player.getInventory();
         Material itemType = inventory.getItemInMainHand().getType();
 
-        return (itemType == Material.BROWN_MUSHROOM || itemType == Material.RED_MUSHROOM) && inventory.contains(Material.BROWN_MUSHROOM, 1) && inventory.contains(Material.RED_MUSHROOM, 1) && BlockUtils.canMakeShroomy(blockState) && Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_SHROOM_THUMB);
+        return (itemType == Material.BROWN_MUSHROOM || itemType == Material.RED_MUSHROOM) && inventory.contains(Material.BROWN_MUSHROOM, 1) && inventory.contains(Material.RED_MUSHROOM, 1) && pluginRef.getBlockTools().canMakeShroomy(blockState) && Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_SHROOM_THUMB);
     }
 
     public boolean canUseHylianLuck() {
-        if (!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_HYLIAN_LUCK))
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.HERBALISM_HYLIAN_LUCK))
             return false;
 
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.HERBALISM_HYLIAN_LUCK);
     }
 
     public boolean canGreenTerraBlock(BlockState blockState) {
-        return mcMMOPlayer.getAbilityMode(SuperAbilityType.GREEN_TERRA) && BlockUtils.canMakeMossy(blockState);
+        return mcMMOPlayer.getAbilityMode(SuperAbilityType.GREEN_TERRA) && pluginRef.getBlockTools().canMakeMossy(blockState);
     }
 
     public boolean canActivateAbility() {
@@ -163,7 +165,7 @@ public class HerbalismManager extends SkillManager {
         } else {
             /* MARK SINGLE BLOCK CROP FOR DOUBLE DROP */
             if (checkDoubleDrop(blockState))
-                BlockUtils.markDropsAsBonus(blockState, greenTerra);
+                pluginRef.getBlockTools().markDropsAsBonus(blockState, greenTerra);
         }
 
         if (Permissions.greenThumbPlant(player, material)) {
@@ -185,7 +187,7 @@ public class HerbalismManager extends SkillManager {
      * @return true if double drop succeeds
      */
     public boolean checkDoubleDrop(BlockState blockState) {
-        return BlockUtils.checkDoubleDrops(getPlayer(), blockState, SubSkillType.HERBALISM_DOUBLE_DROPS);
+        return pluginRef.getBlockTools().checkDoubleDrops(getPlayer(), blockState, SubSkillType.HERBALISM_DOUBLE_DROPS);
     }
 
     /**
@@ -281,7 +283,7 @@ public class HerbalismManager extends SkillManager {
      * @param greenTerra boolean to determine if greenTerra is active or not
      */
     private void processGreenThumbPlants(BlockState blockState, boolean greenTerra) {
-        if (!BlockUtils.isFullyGrown(blockState))
+        if (!pluginRef.getBlockTools().isFullyGrown(blockState))
             return;
 
         Player player = getPlayer();
@@ -387,6 +389,6 @@ public class HerbalismManager extends SkillManager {
     }
 
     private int getGreenThumbStage() {
-        return RankUtils.getRank(getPlayer(), SubSkillType.HERBALISM_GREEN_THUMB);
+        return pluginRef.getRankTools().getRank(getPlayer(), SubSkillType.HERBALISM_GREEN_THUMB);
     }
 }

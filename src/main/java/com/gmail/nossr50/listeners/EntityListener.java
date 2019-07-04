@@ -12,7 +12,6 @@ import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
-import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -158,7 +157,7 @@ public class EntityListener implements Listener {
         // When the event is fired for the falling block that changes back to a
         // normal block
         // event.getBlock().getType() returns AIR
-        if (!BlockUtils.shouldBeWatched(block.getState())
+        if (!pluginRef.getBlockTools().shouldBeWatched(block.getState())
                 && block.getState().getType() != Material.WATER
                 && block.getType() != Material.AIR) {
             return;

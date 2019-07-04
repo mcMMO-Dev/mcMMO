@@ -3,8 +3,7 @@ package com.gmail.nossr50.util;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.meta.BonusDropMeta;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.skills.repair.Repair;
-import com.gmail.nossr50.skills.salvage.Salvage;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,9 +14,12 @@ import org.bukkit.entity.Player;
 
 import java.util.HashSet;
 
-public final class BlockUtils {
+public final class BlockTools {
 
-    private BlockUtils() {
+    private final mcMMO pluginRef;
+    
+    public BlockTools(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
     }
 
     /**
@@ -26,7 +28,7 @@ public final class BlockUtils {
      * @param blockState target blockstate
      * @param triple     marks the block to give triple drops
      */
-    public static void markDropsAsBonus(BlockState blockState, boolean triple) {
+    public void markDropsAsBonus(BlockState blockState, boolean triple) {
         if (triple)
             blockState.setMetadata(MetadataConstants.BONUS_DROPS_METAKEY, new BonusDropMeta(2, pluginRef));
         else
@@ -39,7 +41,7 @@ public final class BlockUtils {
      * @param blockState target blockstate
      * @param amount     amount of extra items to drop
      */
-    public static void markDropsAsBonus(BlockState blockState, int amount) {
+    public void markDropsAsBonus(BlockState blockState, int amount) {
         blockState.setMetadata(MetadataConstants.BONUS_DROPS_METAKEY, new BonusDropMeta(amount, pluginRef));
     }
 
@@ -49,9 +51,9 @@ public final class BlockUtils {
      * @param blockState the blockstate
      * @return true if the player succeeded in the check
      */
-    public static boolean checkDoubleDrops(Player player, BlockState blockState, SubSkillType subSkillType) {
+    public boolean checkDoubleDrops(Player player, BlockState blockState, SubSkillType subSkillType) {
         if (pluginRef.getDynamicSettingsManager().isBonusDropsEnabled(blockState.getType()) && Permissions.isSubSkillEnabled(player, subSkillType)) {
-            return pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(new RandomChanceSkill(player, subSkillType, true));
+            return pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(new RandomChanceSkill(pluginRef, player, subSkillType, true));
         }
 
         return false;
@@ -63,7 +65,7 @@ public final class BlockUtils {
      * @param block The {@link Block} of the block to check
      * @return true if the block awards XP, false otherwise
      */
-    public static boolean shouldBeWatched(Block block) {
+    public boolean shouldBeWatched(Block block) {
         return affectedByGigaDrillBreaker(block.getType()) || affectedByGreenTerra(block.getType()) || affectedBySuperBreaker(block.getType()) || isLog(block.getType());
     }
 
@@ -73,7 +75,7 @@ public final class BlockUtils {
      * @param blockState The {@link BlockState} of the block to check
      * @return true if the block awards XP, false otherwise
      */
-    public static boolean shouldBeWatched(BlockState blockState) {
+    public boolean shouldBeWatched(BlockState blockState) {
         return affectedByGigaDrillBreaker(blockState) || affectedByGreenTerra(blockState) || affectedBySuperBreaker(blockState) || isLog(blockState);
     }
 
@@ -83,7 +85,7 @@ public final class BlockUtils {
      * @param material The {@link Material} of the block to check
      * @return true if the block awards XP, false otherwise
      */
-    public static boolean shouldBeWatched(Material material) {
+    public boolean shouldBeWatched(Material material) {
         return affectedByGigaDrillBreaker(material) || affectedByGreenTerra(material) || affectedBySuperBreaker(material) || isLog(material);
     }
 
@@ -94,7 +96,7 @@ public final class BlockUtils {
      * @return true if the block should allow ability activation, false
      * otherwise
      */
-    public static boolean canActivateAbilities(BlockState blockState) {
+    public boolean canActivateAbilities(BlockState blockState) {
         return !pluginRef.getMaterialMapStore().isAbilityActivationBlackListed(blockState.getType());
     }
 
@@ -106,7 +108,7 @@ public final class BlockUtils {
      * @return true if the block should allow ability activation, false
      * otherwise
      */
-    public static boolean canActivateTools(BlockState blockState) {
+    public boolean canActivateTools(BlockState blockState) {
         return !pluginRef.getMaterialMapStore().isToolActivationBlackListed(blockState.getType());
     }
 
@@ -116,7 +118,7 @@ public final class BlockUtils {
      * @param blockState The {@link BlockState} of the block to check
      * @return true if the block is an ore, false otherwise
      */
-    public static boolean isOre(BlockState blockState) {
+    public boolean isOre(BlockState blockState) {
         return MaterialUtils.isOre(blockState.getType());
     }
 
@@ -126,7 +128,7 @@ public final class BlockUtils {
      * @param blockState The {@link BlockState} of the block to check
      * @return true if the block can be made mossy, false otherwise
      */
-    public static boolean canMakeMossy(BlockState blockState) {
+    public boolean canMakeMossy(BlockState blockState) {
         return pluginRef.getMaterialMapStore().isMossyWhiteListed(blockState.getType());
     }
 
@@ -136,7 +138,7 @@ public final class BlockUtils {
      * @param blockState The {@link BlockState} of the block to check
      * @return true if the block should affected by Green Terra, false otherwise
      */
-    public static boolean affectedByGreenTerra(BlockState blockState) {
+    public boolean affectedByGreenTerra(BlockState blockState) {
         return pluginRef.getDynamicSettingsManager().getExperienceManager().hasHerbalismXp(blockState.getType());
     }
 
@@ -146,7 +148,7 @@ public final class BlockUtils {
      * @param material The {@link Material} of the block to check
      * @return true if the block should affected by Green Terra, false otherwise
      */
-    public static boolean affectedByGreenTerra(Material material) {
+    public boolean affectedByGreenTerra(Material material) {
         return pluginRef.getDynamicSettingsManager().getExperienceManager().hasHerbalismXp(material);
     }
 
@@ -157,7 +159,7 @@ public final class BlockUtils {
      * @return true if the block should affected by Super Breaker, false
      * otherwise
      */
-    public static Boolean affectedBySuperBreaker(BlockState blockState) {
+    public Boolean affectedBySuperBreaker(BlockState blockState) {
         if (pluginRef.getDynamicSettingsManager().getExperienceManager().hasMiningXp(blockState.getType()))
             return true;
 
@@ -171,7 +173,7 @@ public final class BlockUtils {
      * @return true if the block should affected by Super Breaker, false
      * otherwise
      */
-    public static Boolean affectedBySuperBreaker(Material material) {
+    public Boolean affectedBySuperBreaker(Material material) {
         if (pluginRef.getDynamicSettingsManager().getExperienceManager().hasMiningXp(material))
             return true;
 
@@ -184,7 +186,7 @@ public final class BlockUtils {
      * @param material target blocks material
      * @return
      */
-    public static boolean isMineable(Material material) {
+    public boolean isMineable(Material material) {
         switch (material) {
             case COAL_ORE:
             case DIAMOND_ORE:
@@ -211,7 +213,7 @@ public final class BlockUtils {
         }
     }
 
-    public static boolean isMineable(BlockState blockState) {
+    public boolean isMineable(BlockState blockState) {
         return isMineable(blockState.getType());
     }
 
@@ -222,7 +224,7 @@ public final class BlockUtils {
      * @return true if the block should affected by Giga Drill Breaker, false
      * otherwise
      */
-    public static boolean affectedByGigaDrillBreaker(Material material) {
+    public boolean affectedByGigaDrillBreaker(Material material) {
         if (pluginRef.getDynamicSettingsManager().getExperienceManager().hasExcavationXp(material))
             return true;
 
@@ -236,7 +238,7 @@ public final class BlockUtils {
      * @return true if the block should affected by Giga Drill Breaker, false
      * otherwise
      */
-    public static boolean affectedByGigaDrillBreaker(BlockState blockState) {
+    public boolean affectedByGigaDrillBreaker(BlockState blockState) {
         if (pluginRef.getDynamicSettingsManager().getExperienceManager().hasExcavationXp(blockState.getType()))
             return true;
 
@@ -250,7 +252,7 @@ public final class BlockUtils {
      * @return true if a shovel is typically used for digging this block
      */
     @Deprecated
-    public static boolean isDiggable(BlockState blockState) {
+    public boolean isDiggable(BlockState blockState) {
         return isDiggable(blockState.getType());
     }
 
@@ -260,7 +262,7 @@ public final class BlockUtils {
      * @param material target blocks material
      * @return true if a shovel is typically used for digging this block
      */
-    public static boolean isDiggable(Material material) {
+    public boolean isDiggable(Material material) {
         switch (material) {
             case CLAY:
             case FARMLAND:
@@ -288,7 +290,7 @@ public final class BlockUtils {
      * @param blockState The {@link BlockState} of the block to check
      * @return true if the block is a log, false otherwise
      */
-    public static boolean isLog(BlockState blockState) {
+    public boolean isLog(BlockState blockState) {
         if (pluginRef.getDynamicSettingsManager().getExperienceManager().hasWoodcuttingXp(blockState.getType()))
             return true;
 
@@ -302,7 +304,7 @@ public final class BlockUtils {
      * @param material The {@link Material} of the block to check
      * @return true if the block is a log, false otherwise
      */
-    public static boolean isLog(Material material) {
+    public boolean isLog(Material material) {
         if (pluginRef.getDynamicSettingsManager().getExperienceManager().hasWoodcuttingXp(material))
             return true;
 
@@ -316,7 +318,7 @@ public final class BlockUtils {
      * @param material target material
      * @return true if the block is gathered via axe
      */
-    public static boolean isLoggingRelated(Material material) {
+    public boolean isLoggingRelated(Material material) {
         switch (material) {
             case ACACIA_LOG:
             case BIRCH_LOG:
@@ -354,7 +356,7 @@ public final class BlockUtils {
      * @param blockState target blockstate
      * @return true if the block is gathered via axe
      */
-    public static boolean isLoggingRelated(BlockState blockState) {
+    public boolean isLoggingRelated(BlockState blockState) {
         return isLoggingRelated(blockState.getType());
     }
 
@@ -364,7 +366,7 @@ public final class BlockUtils {
      * @param blockState The {@link BlockState} of the block to check
      * @return true if the block is a leaf, false otherwise
      */
-    public static boolean isLeaves(BlockState blockState) {
+    public boolean isLeaves(BlockState blockState) {
         return pluginRef.getMaterialMapStore().isLeavesWhiteListed(blockState.getType());
     }
 
@@ -374,7 +376,7 @@ public final class BlockUtils {
      * @param blockState The {@link BlockState} of the block to check
      * @return true if the block should affected by Flux Mining, false otherwise
      */
-    public static boolean affectedByFluxMining(BlockState blockState) {
+    public boolean affectedByFluxMining(BlockState blockState) {
         switch (blockState.getType()) {
             case IRON_ORE:
             case GOLD_ORE:
@@ -393,7 +395,7 @@ public final class BlockUtils {
      * @return true if the block can be activate Herbalism abilities, false
      * otherwise
      */
-    public static boolean canActivateHerbalism(BlockState blockState) {
+    public boolean canActivateHerbalism(BlockState blockState) {
         return pluginRef.getMaterialMapStore().isHerbalismAbilityWhiteListed(blockState.getType());
     }
 
@@ -404,7 +406,7 @@ public final class BlockUtils {
      * @return true if the block should affected by Block Cracker, false
      * otherwise
      */
-    public static boolean affectedByBlockCracker(BlockState blockState) {
+    public boolean affectedByBlockCracker(BlockState blockState) {
         return pluginRef.getMaterialMapStore().isBlockCrackerWhiteListed(blockState.getType());
     }
 
@@ -414,23 +416,23 @@ public final class BlockUtils {
      * @param blockState The {@link BlockState} of the block to check
      * @return true if the block can be made into Mycelium, false otherwise
      */
-    public static boolean canMakeShroomy(BlockState blockState) {
+    public boolean canMakeShroomy(BlockState blockState) {
         return pluginRef.getMaterialMapStore().isShroomyWhiteListed(blockState.getType());
     }
 
-    /**
-     * Determine if a given block is an mcMMO anvil
-     *
-     * @param blockState The {@link BlockState} of the block to check
-     * @return true if the block is an mcMMO anvil, false otherwise
-     */
-    public static boolean isMcMMOAnvil(BlockState blockState) {
-        Material type = blockState.getType();
+//    /**
+//     * Determine if a given block is an mcMMO anvil
+//     *
+//     * @param blockState The {@link BlockState} of the block to check
+//     * @return true if the block is an mcMMO anvil, false otherwise
+//     */
+//    public boolean isMcMMOAnvil(BlockState blockState) {
+//        Material type = blockState.getType();
+//
+//        return type == Repair.getInstance().getAnvilMaterial() || type == Salvage.anvilMaterial;
+//    }
 
-        return type == Repair.getInstance().getAnvilMaterial() || type == Salvage.anvilMaterial;
-    }
-
-    public static boolean isPistonPiece(BlockState blockState) {
+    public boolean isPistonPiece(BlockState blockState) {
         Material type = blockState.getType();
 
         return type == Material.MOVING_PISTON || type == Material.AIR;
@@ -441,7 +443,7 @@ public final class BlockUtils {
      *
      * @return HashSet with the IDs of every transparent block
      */
-    public static HashSet<Material> getTransparentBlocks() {
+    public HashSet<Material> getTransparentBlocks() {
         HashSet<Material> transparentBlocks = new HashSet<>();
 
         for (Material material : Material.values()) {
@@ -453,7 +455,7 @@ public final class BlockUtils {
         return transparentBlocks;
     }
 
-    public static boolean isFullyGrown(BlockState blockState) {
+    public boolean isFullyGrown(BlockState blockState) {
         BlockData data = blockState.getBlockData();
         if (data.getMaterial() == Material.CACTUS || data.getMaterial() == Material.SUGAR_CANE)
             return true;
