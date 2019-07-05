@@ -67,7 +67,9 @@ public final class Misc {
     }
 
     public static boolean isVillager(Entity entity) {
-        return (entity instanceof AbstractVillager);
+        String entityType = entity.getType().toString();
+        //This weird code is for 1.13 & 1.14 compatibility
+        return entityType.equalsIgnoreCase("wandering_trader") || entity instanceof Villager;
     }
 
     public static boolean isNPCIncludingVillagers(Entity entity) {
