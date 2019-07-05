@@ -1,6 +1,6 @@
 Version 2.1.95
     Fixed a bug preventing Wandering Traders from granting XP
-
+    Added missing 'Chorus_Flower' entry to herbalism in experience.yml (update your config manually or delete the file to regenerate it)
 
 Version 2.1.94
     2 new devs have joined the mcMMO team (electronicboy, kashike), bringing the active dev team to 3 including myself! Strings relating to authors of mcMMO have been updated to reflect this
