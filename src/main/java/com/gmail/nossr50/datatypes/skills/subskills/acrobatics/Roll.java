@@ -297,6 +297,9 @@ public class Roll extends AcrobaticsSubSkill {
     }
 
     private float calculateRollXP(Player player, double damage, boolean isRoll) {
+        //Clamp Damage to account for insane DRs
+        damage = Math.min(40, damage);
+
         ItemStack boots = player.getInventory().getBoots();
         float xp = (float) (damage * (isRoll ? ExperienceConfig.getInstance().getRollXPModifier() : ExperienceConfig.getInstance().getFallXPModifier()));
 

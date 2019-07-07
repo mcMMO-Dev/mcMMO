@@ -5,6 +5,7 @@ Version 2.1.95
     Fixed a bug which could cause Large Fern's to reward less XP
     Fixed a bug where certain herbalism crops could have fewer than intended bonus drops
     Fixed a bug involving Ender Pearl and Acrobatics
+    Added some protection to Acrobatics to prevent gaining too much XP in one Roll.
     Added 'Carrots, Cocoa, Potatoes, Wheat, Beetroots, Nether_Wart' to Herbalism in experience.yml (See notes)
     Removed the _Ripe entries from experience.yml (no longer used)
     Added missing 'Chorus_Flower' entry to herbalism in experience.yml
