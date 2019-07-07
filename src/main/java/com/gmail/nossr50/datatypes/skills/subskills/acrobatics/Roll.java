@@ -10,6 +10,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EventUtils;
+import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
@@ -276,7 +277,7 @@ public class Roll extends AcrobaticsSubSkill {
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if (player.getInventory().getItemInMainHand().getType() == Material.ENDER_PEARL || player.isInsideVehicle()) {
+        if (ItemUtils.hasItemInEitherHand(player, Material.ENDER_PEARL) || player.isInsideVehicle()) {
             if(mcMMOPlayer.isDebugMode()) {
                 mcMMOPlayer.getPlayer().sendMessage("Acrobatics XP Prevented: Ender Pearl or Inside Vehicle");
             }

@@ -11,7 +11,6 @@ import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import org.bukkit.Material;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;

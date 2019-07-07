@@ -72,8 +72,6 @@ public class EntityListener implements Listener {
         if(!ExperienceConfig.getInstance().isEndermanEndermiteFarmingPrevented())
             return;
 
-        if(event.getReason() == EntityTargetEvent.TargetReason.TEMPT)
-
         //It's rare but targets can be null sometimes
         if(event.getTarget() == null)
         {
@@ -83,7 +81,7 @@ public class EntityListener implements Listener {
         //Prevent entities from giving XP if they target endermite
         if(event.getTarget() instanceof Endermite)
         {
-            if(event.getEntity().getMetadata(mcMMO.entityMetadataKey) == null || event.getEntity().getMetadata(mcMMO.entityMetadataKey).size() <= 0)
+            if(event.getEntity().hasMetadata(mcMMO.entityMetadataKey))
                 event.getEntity().setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
         }
     }
@@ -189,6 +187,7 @@ public class EntityListener implements Listener {
 
             if (mcMMO.getPlaceStore().isTrue(block) && !isTracked) {
                 mcMMO.getPlaceStore().setFalse(block);
+
                 entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
             }
             else if (isTracked) {
