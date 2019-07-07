@@ -24,6 +24,7 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableMap;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -74,7 +75,7 @@ public final class CombatUtils {
             swordsManager.serratedStrikes(target, initialDamage, modifiers);
         }
 
-        if(canUseLimitBreak(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK))
+        if(canUseLimitBreak(player, target, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK))
         {
             finalDamage+=getLimitBreakDamage(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK);
         }
@@ -118,7 +119,7 @@ public final class CombatUtils {
             finalDamage+=axesManager.criticalHit(target, finalDamage);
         }
 
-        if(canUseLimitBreak(player, SubSkillType.AXES_AXES_LIMIT_BREAK))
+        if(canUseLimitBreak(player, target, SubSkillType.AXES_AXES_LIMIT_BREAK))
         {
             finalDamage+=getLimitBreakDamage(player, SubSkillType.AXES_AXES_LIMIT_BREAK);
         }
@@ -157,7 +158,7 @@ public final class CombatUtils {
                 unarmedManager.disarmCheck((Player) target);
             }
 
-            if(canUseLimitBreak(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK))
+            if(canUseLimitBreak(player, target, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK))
             {
                 finalDamage+=getLimitBreakDamage(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK);
             }
@@ -225,7 +226,7 @@ public final class CombatUtils {
             archeryManager.retrieveArrows(target, arrow);
         }
 
-        if(canUseLimitBreak(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK))
+        if(canUseLimitBreak(player, target, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK))
         {
             finalDamage+=getLimitBreakDamage(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK);
         }
@@ -383,8 +384,61 @@ public final class CombatUtils {
         }
     }
 
-    public static int getLimitBreakDamage(Player player, SubSkillType subSkillType) {
-        return RankUtils.getRank(player, subSkillType);
+    public static int getLimitBreakDamage(Player player, Player defender, SubSkillType subSkillType) {
+        int rawDamageBoost = RankUtils.getRank(player, subSkillType);
+        int armorQualityLevel = getArmorQualityLevel(defender);
+
+        if(armorQualityLevel <= 4) {
+            rawDamageBoost *= .25; //75% Nerf
+        } else if(armorQualityLevel <= 8) {
+            rawDamageBoost *= .50; //50% Nerf
+        } else if(armorQualityLevel <= 12) {
+            rawDamageBoost *= .75; //25% Nerf
+        }
+
+        return rawDamageBoost;
+    }
+
+    public static int getArmorQualityLevel(Player defender) {
+        int armorQualityLevel = 0;
+
+        for(ItemStack itemStack : defender.getInventory().getArmorContents()) {
+            if(itemStack != null) {
+                armorQualityLevel += getArmorQuality(itemStack);
+            }
+        }
+
+        return armorQualityLevel;
+    }
+
+    private static int getArmorQuality(ItemStack itemStack) {
+        int quality = 0;
+
+        switch(itemStack.getType()) {
+            case LEATHER_HELMET:
+            case LEATHER_BOOTS:
+            case LEATHER_CHESTPLATE:
+            case LEATHER_LEGGINGS:
+                return 1;
+            case IRON_HELMET:
+            case IRON_BOOTS:
+            case IRON_CHESTPLATE:
+            case IRON_LEGGINGS:
+                return 2;
+            case GOLDEN_HELMET:
+            case GOLDEN_BOOTS:
+            case GOLDEN_CHESTPLATE:
+            case GOLDEN_LEGGINGS:
+                return 3;
+            case DIAMOND_HELMET:
+            case DIAMOND_BOOTS:
+            case DIAMOND_CHESTPLATE:
+            case DIAMOND_LEGGINGS:
+                return 6;
+            default:
+                return 1;
+
+        }
     }
 
     /**
@@ -392,9 +446,13 @@ public final class CombatUtils {
      * @param player target player
      * @return true if the player has access to the limit break
      */
-    public static boolean canUseLimitBreak(Player player, SubSkillType subSkillType) {
-        return RankUtils.hasUnlockedSubskill(player, subSkillType)
-                && Permissions.isSubSkillEnabled(player, subSkillType);
+    public static boolean canUseLimitBreak(Player player, LivingEntity target, SubSkillType subSkillType) {
+        if(target instanceof Player) {
+            return RankUtils.hasUnlockedSubskill(player, subSkillType)
+                    && Permissions.isSubSkillEnabled(player, subSkillType);
+        } else {
+            return false;
+        }
     }
 
     /**

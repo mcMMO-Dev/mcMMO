@@ -1,5 +1,8 @@
 Version 2.1.95
     Added missing Chorus_Fruit & Chorus_Plant entries to Herbalism's Bonus Drops in config.yml (See notes)
+    Limit Break damage bonuses now only apply to Players
+    Limit Break now does dramatically less damage to players with lower grades of armor
+    Updated in game text to reflect changes to Limit Break
     Fixed a bug preventing Wandering Traders from granting XP
     Fixed a bug that prevented Chorus Tree's from giving full XP if you broke anything other than the bottom block
     Fixed a bug which could cause Large Fern's to reward less XP
@@ -8,6 +11,7 @@ Version 2.1.95
     Added some protection to Acrobatics to prevent gaining too much XP in one Roll.
     Added 'Carrots, Cocoa, Potatoes, Wheat, Beetroots, Nether_Wart' to Herbalism in experience.yml (See notes)
     Removed the _Ripe entries from experience.yml (no longer used)
+    Updated locale string 'Swords.SubSkill.SwordsLimitBreak.Description' & 'Swords.SubSkill.SwordsLimitBreak.Stat'
     Added missing 'Chorus_Flower' entry to herbalism in experience.yml
     Added some debug messages about XP gains if you are in debug mode
     Added some debug messages for Acrobatics if you are in debug mode
