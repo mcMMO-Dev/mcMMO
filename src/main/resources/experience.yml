@@ -311,26 +311,25 @@ Experience_Values:
         Dead_Horn_Coral_Wall_Fan: 10
         Allium: 300
         Azure_Bluet: 150
-        Beetroots_Ripe: 50
         Blue_Orchid: 150
         Brown_Mushroom: 150
         Cactus: 30
-        Carrots_Ripe: 50
-        Chorus_Flower_Ripe: 25
         Chorus_Flower: 25
         Chorus_Plant: 1
-        Cocoa_Ripe: 30
-        Wheat_Ripe: 50
+        Carrots: 50
+        Cocoa: 30
+        Potatoes: 50
+        Wheat: 50
+        Beetroots: 50
+        Nether_Wart: 50
         Dead_Bush: 30
         Lilac: 50
         Melon: 20
-        Nether_Wart_Ripe: 50
         Orange_Tulip: 150
         Oxeye_Daisy: 150
         Peony: 50
         Pink_Tulip: 150
         Poppy: 100
-        Potatoes_Ripe: 50
         Pumpkin: 20
         Red_Mushroom: 150
         Red_Tulip: 150
@@ -347,8 +346,8 @@ Experience_Values:
         Dandelion: 100
         Bamboo: 10
         Cornflower: 150
-        Lily_of_the_valley: 150
-        Wither_rose: 500
+        Lily_Of_The_Valley: 150
+        Wither_Rose: 500
     Mining:
         Magma_Block: 30
         Tube_Coral_Block: 75

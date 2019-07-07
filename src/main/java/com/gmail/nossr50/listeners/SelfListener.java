@@ -75,6 +75,11 @@ public class SelfListener implements Listener {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         PrimarySkillType primarySkillType = event.getSkill();
 
+        if(mcMMOPlayer.isDebugMode()) {
+            mcMMOPlayer.getPlayer().sendMessage(event.getSkill().toString() + " XP Gained");
+            mcMMOPlayer.getPlayer().sendMessage("Incoming Raw XP: "+event.getRawXpGained());
+        }
+
         //WorldGuard XP Check
         if(event.getXpGainReason() == XPGainReason.PVE ||
                 event.getXpGainReason() == XPGainReason.PVP ||
@@ -87,6 +92,10 @@ public class SelfListener implements Listener {
                 {
                     event.setRawXpGained(0);
                     event.setCancelled(true);
+
+                    if(mcMMOPlayer.isDebugMode()) {
+                        mcMMOPlayer.getPlayer().sendMessage("No WG XP Flag - New Raw XP: "+event.getRawXpGained());
+                    }
                 }
             }
         }
@@ -112,6 +121,9 @@ public class SelfListener implements Listener {
         int threshold = ExperienceConfig.getInstance().getDiminishedReturnsThreshold(primarySkillType);
 
         if (threshold <= 0 || !ExperienceConfig.getInstance().getDiminishedReturnsEnabled()) {
+            if(mcMMOPlayer.isDebugMode()) {
+                mcMMOPlayer.getPlayer().sendMessage("Final Raw XP: "+event.getRawXpGained());
+            }
             // Diminished returns is turned off
             return;
         }
@@ -155,6 +167,10 @@ public class SelfListener implements Listener {
                 event.setRawXpGained(guaranteedMinimum);
             }
 
+        }
+
+        if(mcMMOPlayer.isDebugMode()) {
+            mcMMOPlayer.getPlayer().sendMessage("Final Raw XP: "+event.getRawXpGained());
         }
     }
 

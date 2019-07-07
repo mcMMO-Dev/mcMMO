@@ -11,6 +11,7 @@ import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
@@ -261,8 +262,9 @@ public final class BlockUtils {
 
     public static boolean isFullyGrown(BlockState blockState) {
         BlockData data = blockState.getBlockData();
-        if (data.getMaterial() == Material.CACTUS || data.getMaterial() == Material.SUGAR_CANE)
+        if (data.getMaterial() == Material.CACTUS || data.getMaterial() == Material.SUGAR_CANE) {
             return true;
+        }
         if (data instanceof Ageable) {
             Ageable ageable = (Ageable) data;
             return ageable.getAge() == ageable.getMaximumAge();

@@ -1,6 +1,17 @@
 Version 2.1.95
+    Added missing Chorus_Fruit & Chorus_Plant entries to Herbalism's Bonus Drops in config.yml (See notes)
+    Added 'Carrots, Cocoa, Potatoes, Wheat, Beetroots, Nether_Wart' to Herbalism in experience.yml (See notes)
     Fixed a bug preventing Wandering Traders from granting XP
+    Fixed a bug that prevented Chorus Tree's from giving full XP if you broke anything other than the bottom block
+    Fixed a bug which could cause Large Fern's to reward less XP
+    Fixed a bug where certain herbalism crops could have fewer than intended bonus drops
     Added missing 'Chorus_Flower' entry to herbalism in experience.yml (update your config manually or delete the file to regenerate it)
+    Added some debug messages about XP gains if you are in debug mode
+    Added some debug messages for Acrobatics if you are in debug mode
+
+    NOTES:
+    Add 'Chorus_Fruit' and 'Chorus_Plant' under Bonus_Drops.Herbalism in config.yml or you will not be getting double drops for Chorus Fruit.
+    You shouldn't need to add "Carrots, Cocoa, Potatoes, Wheat, Beetroots, Nether_Wart" to your experience file, it seems that file updates automatically for missing entries.
 
 Version 2.1.94
     2 new devs have joined the mcMMO team (electronicboy, kashike), bringing the active dev team to 3 including myself! Strings relating to authors of mcMMO have been updated to reflect this

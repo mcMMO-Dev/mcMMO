@@ -343,7 +343,7 @@ public class BlockListener implements Listener {
              * Instead, we check it inside the drops handler.
              */
             if (PrimarySkillType.HERBALISM.getPermissions(player)) {
-                herbalismManager.herbalismBlockCheck(blockState);
+                herbalismManager.processHerbalismBlockBreakEvent(event);
             }
         }
 
@@ -574,7 +574,7 @@ public class BlockListener implements Listener {
          * We don't need to check permissions here because they've already been checked for the ability to even activate.
          */
         if (mcMMOPlayer.getAbilityMode(SuperAbilityType.GREEN_TERRA) && BlockUtils.canMakeMossy(blockState)) {
-            if (mcMMOPlayer.getHerbalismManager().processGreenTerra(blockState)) {
+            if (mcMMOPlayer.getHerbalismManager().processGreenTerraBlockConversion(blockState)) {
                 blockState.update(true);
             }
         }

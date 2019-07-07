@@ -274,12 +274,23 @@ public class Roll extends AcrobaticsSubSkill {
             return false;
         }
 
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
         if (player.getInventory().getItemInMainHand().getType() == Material.ENDER_PEARL || player.isInsideVehicle()) {
+            if(mcMMOPlayer.isDebugMode()) {
+                mcMMOPlayer.getPlayer().sendMessage("Acrobatics XP Prevented: Ender Pearl or Inside Vehicle");
+            }
             return true;
         }
 
         if(UserManager.getPlayer(player).getAcrobaticsManager().hasFallenInLocationBefore(getBlockLocation(player)))
+        {
+            if(mcMMOPlayer.isDebugMode()) {
+                mcMMOPlayer.getPlayer().sendMessage("Acrobatics XP Prevented: Fallen in location before");
+            }
+
             return true;
+        }
 
         return false; //NOT EXPLOITING
     }

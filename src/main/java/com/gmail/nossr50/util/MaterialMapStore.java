@@ -20,7 +20,7 @@ public class MaterialMapStore {
     private HashSet<String> herbalismAbilityBlackList;
     private HashSet<String> blockCrackerWhiteList;
     private HashSet<String> canMakeShroomyWhiteList;
-    private HashSet<String> multiBlockEntities;
+    private HashSet<String> multiBlockPlant;
     private HashSet<String> foodItemWhiteList;
 
     public MaterialMapStore()
@@ -32,15 +32,15 @@ public class MaterialMapStore {
         herbalismAbilityBlackList = new HashSet<>();
         blockCrackerWhiteList = new HashSet<>();
         canMakeShroomyWhiteList = new HashSet<>();
-        multiBlockEntities = new HashSet<>();
+        multiBlockPlant = new HashSet<>();
         foodItemWhiteList = new HashSet<>();
 
         fillHardcodedHashSets();
     }
 
-    public boolean isMultiBlock(Material material)
+    public boolean isMultiBlockPlant(Material material)
     {
-        return multiBlockEntities.contains(material.getKey().getKey());
+        return multiBlockPlant.contains(material.getKey().getKey());
     }
 
     public boolean isAbilityActivationBlackListed(Material material)
@@ -81,13 +81,13 @@ public class MaterialMapStore {
     private void fillHardcodedHashSets()
     {
         fillAbilityBlackList();
-        filltoolBlackList();
+        fillToolBlackList();
         fillMossyWhiteList();
         fillLeavesWhiteList();
         fillHerbalismAbilityBlackList();
         fillBlockCrackerWhiteList();
         fillShroomyWhiteList();
-        fillMultiBlockEntitiesList();
+        fillMultiBlockPlantSet();
         fillFoodWhiteList();
     }
 
@@ -134,16 +134,30 @@ public class MaterialMapStore {
         return foodItemWhiteList.contains(material.getKey().getKey());
     }
 
-    private void fillMultiBlockEntitiesList()
+    private void fillMultiBlockPlantSet()
     {
-        multiBlockEntities.add("cactus");
-        multiBlockEntities.add("chorus_plant");
-        multiBlockEntities.add("sugar_cane");
-        multiBlockEntities.add("kelp_plant");
-        multiBlockEntities.add("kelp");
-        multiBlockEntities.add("tall_seagrass");
-        multiBlockEntities.add("tall_grass");
-        multiBlockEntities.add("bamboo");
+        //Single Block Plants
+//        plantBlockSet.add("melon");
+//        plantBlockSet.add("pumpkin");
+//        plantBlockSet.add("potatoes");
+//        plantBlockSet.add("carrots");
+//        plantBlockSet.add("beetroots");
+//        plantBlockSet.add("nether_wart");
+//        plantBlockSet.add("grass");
+//        plantBlockSet.add("fern");
+//        plantBlockSet.add("large_fern");
+
+        //Multi-Block Plants
+        multiBlockPlant.add("cactus");
+        multiBlockPlant.add("chorus_plant");
+        multiBlockPlant.add("chorus_flower");
+        multiBlockPlant.add("sugar_cane");
+        multiBlockPlant.add("kelp_plant");
+        multiBlockPlant.add("kelp");
+        multiBlockPlant.add("tall_seagrass");
+        multiBlockPlant.add("large_fern");
+        multiBlockPlant.add("tall_grass");
+        multiBlockPlant.add("bamboo");
     }
 
     private void fillShroomyWhiteList()
@@ -287,7 +301,7 @@ public class MaterialMapStore {
         abilityBlackList.add("sign"); //1.13 and lower?
     }
     
-    private void filltoolBlackList()
+    private void fillToolBlackList()
     {
         //TODO: Add anvils / missing logs
         toolBlackList.add("black_bed");
