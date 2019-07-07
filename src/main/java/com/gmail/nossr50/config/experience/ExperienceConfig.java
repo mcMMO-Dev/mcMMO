@@ -145,6 +145,7 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
 
     /* EXPLOIT TOGGLES */
     public boolean isEndermanEndermiteFarmingPrevented() { return config.getBoolean("ExploitFix.EndermanEndermiteFarms", true); }
+    public boolean isPistonCheatingPrevented() { return config.getBoolean("ExploitFix.PistonCheating", true); }
     public boolean isPistonExploitPrevented() { return config.getBoolean("ExploitFix.Pistons", false); }
     public boolean allowUnsafeEnchantments() { return config.getBoolean("ExploitFix.UnsafeEnchantments", false); }
     public boolean isCOTWBreedingPrevented() { return config.getBoolean("ExploitFix.COTWBreeding", true); }

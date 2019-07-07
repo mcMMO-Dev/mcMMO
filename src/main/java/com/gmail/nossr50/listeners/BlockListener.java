@@ -129,6 +129,10 @@ public class BlockListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
 
+        if(!ExperienceConfig.getInstance().isPistonCheatingPrevented()) {
+            return;
+        }
+
         BlockFace direction = event.getDirection();
         Block movedBlock = event.getBlock();
         movedBlock = movedBlock.getRelative(direction, 2);
@@ -151,6 +155,10 @@ public class BlockListener implements Listener {
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
+
+        if(!ExperienceConfig.getInstance().isPistonCheatingPrevented()) {
+            return;
+        }
 
         // Get opposite direction so we get correct block
         BlockFace direction = event.getDirection();
