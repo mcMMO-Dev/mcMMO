@@ -1,8 +1,9 @@
 Version 2.1.95
     Added missing Chorus_Fruit & Chorus_Plant entries to Herbalism's Bonus Drops in config.yml (See notes)
-    Limit Break damage bonuses now only apply to Players
     Limit Break now does dramatically less damage to players with lower grades of armor
+    Limit Break damage bonuses now only apply to Players
     Updated in game text to reflect changes to Limit Break
+    Fixed a bug where opponents used your stats instead of their own to activate Iron Grip
     Fixed a bug preventing Wandering Traders from granting XP
     Fixed a bug that prevented Chorus Tree's from giving full XP if you broke anything other than the bottom block
     Fixed a bug which could cause Large Fern's to reward less XP

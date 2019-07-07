@@ -181,8 +181,9 @@ public class UnarmedManager extends SkillManager {
      * @return true if the defender was not disarmed, false otherwise
      */
     private boolean hasIronGrip(Player defender) {
-        if (!Misc.isNPCEntityExcludingVillagers(defender) && Permissions.isSubSkillEnabled(defender, SubSkillType.UNARMED_IRON_GRIP)
-                && RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.UNARMED_IRON_GRIP, getPlayer())) {
+        if (!Misc.isNPCEntityExcludingVillagers(defender)
+                && Permissions.isSubSkillEnabled(defender, SubSkillType.UNARMED_IRON_GRIP)
+                && RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.UNARMED_IRON_GRIP, defender)) {
             NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Unarmed.Ability.IronGrip.Defender");
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Unarmed.Ability.IronGrip.Attacker");
 

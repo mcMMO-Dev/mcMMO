@@ -98,7 +98,7 @@ public class AxesCommand extends SkillCommand {
 
         if(canUseSubskill(player, SubSkillType.AXES_AXES_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.AXES_AXES_LIMIT_BREAK,
-                    String.valueOf(CombatUtils.getLimitBreakDamage(player, SubSkillType.AXES_AXES_LIMIT_BREAK))));
+                    String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, SubSkillType.AXES_AXES_LIMIT_BREAK, 1000))));
         }
 
         return messages;

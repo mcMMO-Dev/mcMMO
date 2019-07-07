@@ -24,7 +24,6 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableMap;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -77,7 +76,7 @@ public final class CombatUtils {
 
         if(canUseLimitBreak(player, target, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK))
         {
-            finalDamage+=getLimitBreakDamage(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK);
+            finalDamage+=getLimitBreakDamage(player, (Player) target, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK);
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
@@ -121,7 +120,7 @@ public final class CombatUtils {
 
         if(canUseLimitBreak(player, target, SubSkillType.AXES_AXES_LIMIT_BREAK))
         {
-            finalDamage+=getLimitBreakDamage(player, SubSkillType.AXES_AXES_LIMIT_BREAK);
+            finalDamage+=getLimitBreakDamage(player, (Player) target, SubSkillType.AXES_AXES_LIMIT_BREAK);
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
@@ -160,7 +159,7 @@ public final class CombatUtils {
 
             if(canUseLimitBreak(player, target, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK))
             {
-                finalDamage+=getLimitBreakDamage(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK);
+                finalDamage+=getLimitBreakDamage(player, (Player) target, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK);
             }
         }
 
@@ -228,7 +227,7 @@ public final class CombatUtils {
 
         if(canUseLimitBreak(player, target, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK))
         {
-            finalDamage+=getLimitBreakDamage(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK);
+            finalDamage+=getLimitBreakDamage(player, (Player) target, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK);
         }
 
         double distanceMultiplier = archeryManager.distanceXpBonusMultiplier(target, arrow);
@@ -385,8 +384,11 @@ public final class CombatUtils {
     }
 
     public static int getLimitBreakDamage(Player player, Player defender, SubSkillType subSkillType) {
+        return getLimitBreakDamageAgainstQuality(player, subSkillType, getArmorQualityLevel(defender));
+    }
+
+    public static int getLimitBreakDamageAgainstQuality(Player player, SubSkillType subSkillType, int armorQualityLevel) {
         int rawDamageBoost = RankUtils.getRank(player, subSkillType);
-        int armorQualityLevel = getArmorQualityLevel(defender);
 
         if(armorQualityLevel <= 4) {
             rawDamageBoost *= .25; //75% Nerf

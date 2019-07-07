@@ -103,7 +103,7 @@ public class SwordsCommand extends SkillCommand {
 
         if(canUseSubskill(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.SWORDS_SWORDS_LIMIT_BREAK,
-                    String.valueOf(CombatUtils.getLimitBreakDamage(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK))));
+                    String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK, 1000))));
         }
 
         return messages;

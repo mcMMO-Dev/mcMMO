@@ -116,7 +116,7 @@ public class UnarmedCommand extends SkillCommand {
 
         if(canUseSubskill(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.UNARMED_UNARMED_LIMIT_BREAK,
-                    String.valueOf(CombatUtils.getLimitBreakDamage(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK))));
+                    String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK, 1000))));
         }
 
         return messages;
