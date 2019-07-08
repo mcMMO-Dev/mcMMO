@@ -1,8 +1,12 @@
 Version 2.1.96
+    Added the setting 'Skills.General.LimitBreak.AllowPVE' to advanced.yml to allow Limit Break damage bonus to apply in PVE again, defaults to false
+    Updated Limit Break locale strings
+    Fixed a few more places where 'Archaeology' was misspelled in the locale
     Added the setting 'ExploitFix.PistonCheating' to experience.yml at the request of a user
     Added a missing 's' to Nether_Bricks (thanks Sikatsu) in experience.yml
 
     NOTES:
+    The Skill Tooltips are a bit limited right now, in the future they will be more flexible. In order to reflect that Limit Break doesn't always work in PVE (now up to server settings) I added a crappy note to its hover window tip. I'll be fixing this in the future.
     You shouldn't need to update you config entry for Nether_Bricks, I believe that file updates automatically (the old config system is a bit janky, some stuff updates, some other stuff doesn't.)
     PistonCheating prevents blocks from being marked "natural" once they've been moved, we've never had an option for this before.
     A discord user requested it, its a strange request but I added it anyways.

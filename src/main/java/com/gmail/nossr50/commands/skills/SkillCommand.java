@@ -274,6 +274,14 @@ public abstract class SkillCommand implements TabExecutor {
         }
     }
 
+    protected String getLimitBreakDescriptionParameter() {
+        if(AdvancedConfig.getInstance().canApplyLimitBreakPVE()) {
+            return "(PVP/PVE)";
+        } else {
+            return "(PVP)";
+        }
+    }
+
     protected abstract void dataCalculations(Player player, float skillValue);
 
     protected abstract void permissionsCheck(Player player);

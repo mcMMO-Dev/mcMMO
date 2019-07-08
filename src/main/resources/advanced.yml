@@ -77,6 +77,8 @@ Feedback:
             SendCopyOfMessageToChat: true
 Skills:
     General:
+        LimitBreak:
+            AllowPVE: false
         StartingLevel: 0
         Ability:
             Length:

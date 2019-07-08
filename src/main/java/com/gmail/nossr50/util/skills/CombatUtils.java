@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util.skills;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -76,7 +77,7 @@ public final class CombatUtils {
 
         if(canUseLimitBreak(player, target, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK))
         {
-            finalDamage+=getLimitBreakDamage(player, (Player) target, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK);
+            finalDamage+=getLimitBreakDamage(player, target, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK);
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
@@ -120,7 +121,7 @@ public final class CombatUtils {
 
         if(canUseLimitBreak(player, target, SubSkillType.AXES_AXES_LIMIT_BREAK))
         {
-            finalDamage+=getLimitBreakDamage(player, (Player) target, SubSkillType.AXES_AXES_LIMIT_BREAK);
+            finalDamage+=getLimitBreakDamage(player, target, SubSkillType.AXES_AXES_LIMIT_BREAK);
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
@@ -159,7 +160,7 @@ public final class CombatUtils {
 
             if(canUseLimitBreak(player, target, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK))
             {
-                finalDamage+=getLimitBreakDamage(player, (Player) target, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK);
+                finalDamage+=getLimitBreakDamage(player, target, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK);
             }
         }
 
@@ -227,7 +228,7 @@ public final class CombatUtils {
 
         if(canUseLimitBreak(player, target, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK))
         {
-            finalDamage+=getLimitBreakDamage(player, (Player) target, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK);
+            finalDamage+=getLimitBreakDamage(player, target, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK);
         }
 
         double distanceMultiplier = archeryManager.distanceXpBonusMultiplier(target, arrow);
@@ -383,8 +384,13 @@ public final class CombatUtils {
         }
     }
 
-    public static int getLimitBreakDamage(Player player, Player defender, SubSkillType subSkillType) {
-        return getLimitBreakDamageAgainstQuality(player, subSkillType, getArmorQualityLevel(defender));
+    public static int getLimitBreakDamage(Player player, LivingEntity defender, SubSkillType subSkillType) {
+        if(defender instanceof Player) {
+            Player playerDefender = (Player) defender;
+            return getLimitBreakDamageAgainstQuality(player, subSkillType, getArmorQualityLevel(playerDefender));
+        } else {
+            return getLimitBreakDamageAgainstQuality(player, subSkillType, 1000);
+        }
     }
 
     public static int getLimitBreakDamageAgainstQuality(Player player, SubSkillType subSkillType, int armorQualityLevel) {
@@ -445,11 +451,11 @@ public final class CombatUtils {
 
     /**
      * Checks if player has access to their weapons limit break
-     * @param player target player
+     * @param player target entity
      * @return true if the player has access to the limit break
      */
     public static boolean canUseLimitBreak(Player player, LivingEntity target, SubSkillType subSkillType) {
-        if(target instanceof Player) {
+        if(target instanceof Player || AdvancedConfig.getInstance().canApplyLimitBreakPVE()) {
             return RankUtils.hasUnlockedSubskill(player, subSkillType)
                     && Permissions.isSubSkillEnabled(player, subSkillType);
         } else {
