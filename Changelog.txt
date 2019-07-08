@@ -1,3 +1,13 @@
+Version 2.1.96
+    Added the setting 'ExploitFix.PistonCheating' to experience.yml at the request of a user
+    Added a missing 's' to Nether_Bricks (thanks Sikatsu) in experience.yml
+
+    NOTES:
+    You shouldn't need to update you config entry for Nether_Bricks, I believe that file updates automatically (the old config system is a bit janky, some stuff updates, some other stuff doesn't.)
+    PistonCheating prevents blocks from being marked "natural" once they've been moved, we've never had an option for this before.
+    A discord user requested it, its a strange request but I added it anyways.
+    Of course, it defaults to "true" which prevents cheating with pistons.
+
 Version 2.1.95
     Added missing Chorus_Fruit & Chorus_Plant entries to Herbalism's Bonus Drops in config.yml (See notes)
     Limit Break now does dramatically less damage to players with lower grades of armor

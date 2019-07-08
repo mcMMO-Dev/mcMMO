@@ -360,7 +360,7 @@ Experience_Values:
         Diamond_Ore: 2400
         Emerald_Ore: 1000
         End_Bricks: 50
-        Nether_Brick: 50
+        Nether_Bricks: 50
         End_Stone: 15
         Glowstone: 15
         Gold_Ore: 1300
