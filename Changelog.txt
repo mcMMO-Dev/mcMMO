@@ -1,3 +1,6 @@
+Version 2.1.97
+    Fixed a NPE that could occur if a pet participated in combat and its master's mcMMO data was not available
+
 Version 2.1.96
     Added the setting 'Skills.General.LimitBreak.AllowPVE' to advanced.yml to allow Limit Break damage bonus to apply in PVE again, defaults to false
     Updated Limit Break locale strings

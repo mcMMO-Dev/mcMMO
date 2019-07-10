@@ -173,25 +173,34 @@ public final class CombatUtils {
         double initialDamage = event.getDamage();
         double finalDamage = initialDamage;
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(master);
-        TamingManager tamingManager = mcMMOPlayer.getTamingManager();
+        if(master != null && !master.isOnline() && master.isValid()) {
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(master);
 
-        if (tamingManager.canUseFastFoodService()) {
-            tamingManager.fastFoodService(wolf, event.getDamage());
+            //Make sure the profiles been loaded
+            if(mcMMOPlayer == null) {
+                return;
+            }
+
+            TamingManager tamingManager = mcMMOPlayer.getTamingManager();
+
+            if (tamingManager.canUseFastFoodService()) {
+                tamingManager.fastFoodService(wolf, event.getDamage());
+            }
+
+            tamingManager.pummel(target, wolf);
+
+            if (tamingManager.canUseSharpenedClaws()) {
+                finalDamage+=tamingManager.sharpenedClaws();
+            }
+
+            if (tamingManager.canUseGore()) {
+                finalDamage+=tamingManager.gore(target, initialDamage);
+            }
+
+            applyScaledModifiers(initialDamage, finalDamage, event);
+            startGainXp(mcMMOPlayer, target, PrimarySkillType.TAMING);
         }
 
-        tamingManager.pummel(target, wolf);
-
-        if (tamingManager.canUseSharpenedClaws()) {
-            finalDamage+=tamingManager.sharpenedClaws();
-        }
-
-        if (tamingManager.canUseGore()) {
-            finalDamage+=tamingManager.gore(target, initialDamage);
-        }
-
-        applyScaledModifiers(initialDamage, finalDamage, event);
-        startGainXp(mcMMOPlayer, target, PrimarySkillType.TAMING);
     }
 
     private static void processArcheryCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event, Arrow arrow) {
