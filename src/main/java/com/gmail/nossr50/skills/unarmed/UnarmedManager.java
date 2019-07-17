@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.unarmed;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -164,14 +165,27 @@ public class UnarmedManager extends SkillManager {
     }
 
     public double getIronArmDamage() {
-        int rank = RankUtils.getRank(getPlayer(), SubSkillType.UNARMED_IRON_ARM_STYLE);
-
-        if(rank == 1)
-        {
-            return 4;
-        } else {
-            return 3 + (rank * 2);
+        Config config = Config.getInstance();
+        Player player = getPlayer();
+        double bonusDamage;
+        if (player == null) {
+            return 0;
         }
+
+        if (config.getUnarmedUseRankIncrement()) {
+            int rank = RankUtils.getRank(player, SubSkillType.UNARMED_IRON_ARM_STYLE);
+            bonusDamage = rank * config.getUnarmedBonusPerIncrement();
+            if (bonusDamage > config.getUnarmedMaxBonus()) {
+                return config.getUnarmedMaxBonus();
+            }
+        } else {
+            int level = UserManager.getPlayer(player).getSkillLevel(SubSkillType.UNARMED_IRON_ARM_STYLE.getParentSkill());
+            bonusDamage = (level * config.getUnarmedBonusPerIncrement()) / config.getUnarmedLevelIncrement();
+            if (bonusDamage > config.getUnarmedMaxBonus()) {
+                return config.getUnarmedMaxBonus();
+            }
+        }
+        return bonusDamage;
     }
 
     /**

@@ -541,10 +541,14 @@ Skills:
                 RetroMode: 1000
 
         IronArmStyle:
-            # BonusMin: Minimum bonus damage for unarmed
+            # IncreaseLevel: How many levels it is per bonus damage increment (NOT USED when UseRankIncrement: true)
             # BonusMax: Maximum bonus damage for unarmed
-            # IncreaseLevel: Bonus damage increases every increase level
+            # BonusPerLevelIncrement: Bonus damage increased per increment
+            # UseRankIncrement: Should RankIncrement be used or LevelIncrementing
             IncreaseLevel: 10
+            BonusMax: 5
+            BonusPerIncrement: 0.05
+            UseRankIncrement: false
     #
     #  Settings for Woodcutting
     ###

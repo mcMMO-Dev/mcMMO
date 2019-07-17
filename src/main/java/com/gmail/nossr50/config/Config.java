@@ -523,6 +523,10 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getUnarmedItemPickupDisabled() { return config.getBoolean("Skills.Unarmed.Item_Pickup_Disabled_Full_Inventory", true); }
     public boolean getUnarmedItemsAsUnarmed() { return config.getBoolean("Skills.Unarmed.Items_As_Unarmed", false); }
     public int getUnarmedGate() { return config.getInt("Skills.Unarmed.Ability_Activation_Level_Gate", 10); }
+    public int getUnarmedMaxBonus() { return config.getInt("Skills.Unarmed.Max_Bonus", 5); }
+    public int getUnarmedLevelIncrement() { return config.getInt("Skills.Unarmed.Level_Increment", 10); }
+    public double getUnarmedBonusPerIncrement() { return config.getDouble("Skills.Unarmed.Bonus_Per_Increment", 0.1); }
+    public boolean getUnarmedUseRankIncrement() { return config.getBoolean("Skills.Unarmed.Use_Rank_Increment", false); }
 
     /* Swords */
     public int getSwordsGate() { return config.getInt("Skills.Swords.Ability_Activation_Level_Gate", 10); }
