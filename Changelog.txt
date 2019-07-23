@@ -1,5 +1,8 @@
 Version 2.1.97
+    mcMMO is compatible with 1.14.4 (Didn't require any changes)
     Fixed a NPE that could occur if a pet participated in combat and its master's mcMMO data was not available
+    mcMMO now properly closes its region files as it creates them (thanks Yukiiro-Nite)
+    Updated Hungarian locale (thanks andris)
 
 Version 2.1.96
     Added the setting 'Skills.General.LimitBreak.AllowPVE' to advanced.yml to allow Limit Break damage bonus to apply in PVE again, defaults to false
