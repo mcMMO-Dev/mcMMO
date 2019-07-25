@@ -1,3 +1,6 @@
+Version 2.1.98
+    Fixed a bug that prevented Taming XP from combat
+
 Version 2.1.97
     mcMMO is compatible with 1.14.4 (Didn't require any changes)
     Fixed a NPE that could occur if a pet participated in combat and its master's mcMMO data was not available
