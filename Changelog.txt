@@ -1,3 +1,7 @@
+Version 2.1.99
+    MASSIVE update to the Russian locale (ru) credit to myfbone
+    Debug mode (/mmodebug) will now print info about XP perks and how they are modifying your incoming XP
+
 Version 2.1.98
     Fixed a bug that prevented Taming XP from combat
 
