@@ -461,6 +461,7 @@ public final class ItemUtils {
     public static boolean isIronTool(ItemStack item) {
         switch (item.getType()) {
             case BUCKET:
+            case SHIELD:
             case FLINT_AND_STEEL:
             case IRON_AXE:
             case IRON_HOE:

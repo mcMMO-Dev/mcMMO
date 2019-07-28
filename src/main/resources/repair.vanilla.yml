@@ -117,6 +117,9 @@ Repairables:
     IRON_BOOTS:
         MinimumLevel: 0
         XpMultiplier: 2
+    SHIELD:
+        MinimumLevel: 0
+        XpMultiplier: 2
     #
     # Gold repairables
     ###
@@ -195,6 +198,22 @@ Repairables:
         MinimumLevel: 0
         XpMultiplier: 1
     LEATHER_BOOTS:
+        MinimumLevel: 0
+        XpMultiplier: 1
+    #
+    # Chainmail repairables
+    ###
+    # Armor
+    CHAINMAIL_HELMET:
+        MinimumLevel: 0
+        XpMultiplier: 1
+    CHAINMAIL_CHESTPLATE:
+        MinimumLevel: 0
+        XpMultiplier: 1
+    CHAINMAIL_LEGGINGS:
+        MinimumLevel: 0
+        XpMultiplier: 1
+    CHAINMAIL_BOOTS:
         MinimumLevel: 0
         XpMultiplier: 1
     #

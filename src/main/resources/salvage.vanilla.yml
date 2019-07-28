@@ -137,6 +137,10 @@ Salvageables:
         MinimumLevel: 0
         XpMultiplier: 2
         MaximumQuantity: 4
+    SHIELD:
+        MinimumLevel: 0
+        XpMultiplier: 2
+        MaximumQuantity: 1
     #
     # Gold salvageables
     ###
@@ -236,6 +240,26 @@ Salvageables:
         XpMultiplier: 1
         MaximumQuantity: 7
     LEATHER_BOOTS:
+        MinimumLevel: 0
+        XpMultiplier: 1
+        MaximumQuantity: 4
+    #
+    # Chainmail salvageables
+    ###
+    # Armor
+    CHAINMAIL_HELMET:
+        MinimumLevel: 0
+        XpMultiplier: 1
+        MaximumQuantity: 5
+    CHAINMAIL_CHESTPLATE:
+        MinimumLevel: 0
+        XpMultiplier: 1
+        MaximumQuantity: 8
+    CHAINMAIL_LEGGINGS:
+        MinimumLevel: 0
+        XpMultiplier: 1
+        MaximumQuantity: 7
+    CHAINMAIL_BOOTS:
         MinimumLevel: 0
         XpMultiplier: 1
         MaximumQuantity: 4

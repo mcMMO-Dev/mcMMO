@@ -64,7 +64,7 @@ public class RepairConfig extends ConfigLoader {
                 else if (ItemUtils.isLeatherArmor(repairItem)) {
                     repairMaterialType = MaterialType.LEATHER;
                 }
-                else if (ItemUtils.isIronArmor(repairItem) || ItemUtils.isIronTool(repairItem)) {
+                else if (ItemUtils.isIronArmor(repairItem) || ItemUtils.isIronTool(repairItem) || ItemUtils.isChainmailArmor(repairItem)) {
                     repairMaterialType = MaterialType.IRON;
                 }
                 else if (ItemUtils.isGoldArmor(repairItem) || ItemUtils.isGoldTool(repairItem)) {

@@ -60,7 +60,7 @@ public class SalvageConfig extends ConfigLoader {
                 else if (ItemUtils.isLeatherArmor(salvageItem)) {
                     salvageMaterialType = MaterialType.LEATHER;
                 }
-                else if (ItemUtils.isIronArmor(salvageItem) || ItemUtils.isIronTool(salvageItem)) {
+                else if (ItemUtils.isIronArmor(salvageItem) || ItemUtils.isIronTool(salvageItem) || ItemUtils.isChainmailArmor(salvageItem)) {
                     salvageMaterialType = MaterialType.IRON;
                 }
                 else if (ItemUtils.isGoldArmor(salvageItem) || ItemUtils.isGoldTool(salvageItem)) {
