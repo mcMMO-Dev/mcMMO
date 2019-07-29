@@ -259,8 +259,6 @@ public class EntityListener implements Listener {
 
         if(defender.getMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY).size() > 0)
         {
-            defender.removeMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, plugin);
-
             if(defender instanceof Player)
             {
                 LivingEntity defLive = (LivingEntity) defender;

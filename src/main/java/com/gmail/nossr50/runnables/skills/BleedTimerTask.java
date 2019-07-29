@@ -9,6 +9,8 @@ import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -171,6 +173,10 @@ public class BleedTimerTask extends BukkitRunnable {
      * @param ticks Number of bleeding ticks
      */
     public static void add(LivingEntity entity, LivingEntity attacker, int ticks, int bleedRank, int toolTier) {
+        if (!Bukkit.isPrimaryThread()) {
+            throw new IllegalStateException("Cannot add bleed task async!");
+        }
+
         if(toolTier < 4)
             ticks = Math.max(1, (ticks / 3));
 
