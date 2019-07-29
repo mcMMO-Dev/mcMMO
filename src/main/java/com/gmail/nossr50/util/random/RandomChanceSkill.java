@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util.random;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.Permissions;
@@ -21,10 +22,12 @@ public class RandomChanceSkill implements RandomChanceExecution {
         this.subSkillType = subSkillType;
         this.probabilityCap = RandomChanceUtil.LINEAR_CURVE_VAR;
 
-        if(player != null)
-            this.skillLevel = UserManager.getPlayer(player).getSkillLevel(primarySkillType);
-        else
+        final McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        if (player != null && mcMMOPlayer != null) {
+            this.skillLevel = mcMMOPlayer.getSkillLevel(primarySkillType);
+        } else {
             this.skillLevel = 0;
+        }
 
         if(player != null)
             isLucky = Permissions.lucky(player, primarySkillType);
@@ -42,10 +45,12 @@ public class RandomChanceSkill implements RandomChanceExecution {
         this.primarySkillType = subSkillType.getParentSkill();
         this.subSkillType = subSkillType;
 
-        if(player != null)
-            this.skillLevel = UserManager.getPlayer(player).getSkillLevel(primarySkillType);
-        else
+        final McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        if (player != null && mcMMOPlayer != null) {
+            this.skillLevel = mcMMOPlayer.getSkillLevel(primarySkillType);
+        } else {
             this.skillLevel = 0;
+        }
 
         if(player != null)
             isLucky = Permissions.lucky(player, primarySkillType);

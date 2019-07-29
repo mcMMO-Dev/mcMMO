@@ -1,9 +1,8 @@
-Version 2.1.101
-    mcnotify command now checks that it's being executed by a player
-    Fixed some concurrency concerns around BleedTasks
-
 Version 2.1.100
     Corrected some mistakes made in the updated Russian locale (thanks myfbone!)
+    mcnotify command now checks that it's being executed by a player
+    Fixed some concurrency concerns around BleedTasks
+    Fixed an NPE that may occur with random chances on a player without loaded data
 
 Version 2.1.99
     MASSIVE update to the Russian locale (ru) credit to myfbone
