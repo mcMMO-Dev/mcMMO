@@ -1,10 +1,10 @@
 Version 2.1.100
-    Updated Russian locale (thanks myfbone!)
     Fixed a bug where plants could double drop when the skill was not yet unlocked
     Fixed a bug where plants ALWAYS double dropped
     mcnotify command now checks that it's being executed by a player
     Fixed some concurrency concerns around BleedTasks
     Fixed an NPE that may occur with random chances on a player without loaded data
+    Updated Russian locale (thanks myfbone!)
 
 Version 2.1.99
     MASSIVE update to the Russian locale (ru) credit to myfbone
