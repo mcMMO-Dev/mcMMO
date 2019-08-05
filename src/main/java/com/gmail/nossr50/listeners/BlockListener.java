@@ -353,6 +353,11 @@ public class BlockListener implements Listener {
             if (PrimarySkillType.HERBALISM.getPermissions(player)) {
                 herbalismManager.processHerbalismBlockBreakEvent(event);
             }
+            /*
+             * We return here so that we don't unmark any affected blocks
+             * due to special checks managing this on their own:
+             */
+            return;
         }
 
         /* MINING */
