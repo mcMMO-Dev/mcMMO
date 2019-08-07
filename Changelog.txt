@@ -1,3 +1,6 @@
+Version 2.1.101
+    Fixed an exploit where chorus plants could be used to gain automatic XP
+
 Version 2.1.100
     Fixed a bug where plants could double drop when the skill was not yet unlocked
     Fixed a bug where plants ALWAYS double dropped
