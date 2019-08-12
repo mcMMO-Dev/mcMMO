@@ -22,9 +22,11 @@ import java.util.Map.Entry;
 
 public class BleedTimerTask extends BukkitRunnable {
     private static Map<LivingEntity, BleedContainer> bleedList = new HashMap<LivingEntity, BleedContainer>();
+    private static boolean isIterating = false;
 
     @Override
     public void run() {
+        isIterating = true;
         Iterator<Entry<LivingEntity, BleedContainer>> bleedIterator = bleedList.entrySet().iterator();
 
         while (bleedIterator.hasNext()) {
@@ -136,6 +138,7 @@ public class BleedTimerTask extends BukkitRunnable {
 
 //            Bukkit.broadcastMessage(debugMessage);
         }
+        isIterating = false;
     }
 
     public static BleedContainer copyContainer(BleedContainer container)
@@ -175,6 +178,8 @@ public class BleedTimerTask extends BukkitRunnable {
         if (!Bukkit.isPrimaryThread()) {
             throw new IllegalStateException("Cannot add bleed task async!");
         }
+
+        if (isIterating) throw new IllegalStateException("Cannot add task while iterating timers!");
 
         if(toolTier < 4)
             ticks = Math.max(1, (ticks / 3));
