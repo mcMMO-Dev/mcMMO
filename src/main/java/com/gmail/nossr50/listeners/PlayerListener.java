@@ -27,6 +27,7 @@ import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -69,8 +70,16 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
+        if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld())) {
+            //Remove scoreboards
+            ScoreboardManager.teardownPlayer(event.getPlayer());
             return;
+        } else if(WorldBlacklist.isWorldBlacklisted(event.getFrom().getWorld())) {
+            //This only fires if they are traveling to a non-blacklisted world from a blacklisted world
+
+            //Setup scoreboards
+            ScoreboardManager.setupPlayer(event.getPlayer());
+        }
 
         Player player = event.getPlayer();
 

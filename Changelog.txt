@@ -1,3 +1,6 @@
+Version 2.1.102
+    Scoreboards will now be removed from players who teleport to a blacklisted world
+
 Version 2.1.101
     Fixed an exploit where chorus plants could be used to gain automatic XP
     Added blast furnace, cartography table, grindstone, lectern, loom, scaffolding, smoker, stonecutter, and sweet berry bush to the list of internal blocks that don't trigger tool readying
