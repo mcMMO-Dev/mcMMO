@@ -52,7 +52,7 @@ public final class BlockTools {
      * @return true if the player succeeded in the check
      */
     public boolean checkDoubleDrops(Player player, BlockState blockState, SubSkillType subSkillType) {
-        if (pluginRef.getDynamicSettingsManager().isBonusDropsEnabled(blockState.getType()) && Permissions.isSubSkillEnabled(player, subSkillType)) {
+        if (pluginRef.getDynamicSettingsManager().isBonusDropsEnabled(blockState.getType()) && pluginRef.getPermissionTools().isSubSkillEnabled(player, subSkillType)) {
             return pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(new RandomChanceSkill(pluginRef, player, subSkillType, true));
         }
 

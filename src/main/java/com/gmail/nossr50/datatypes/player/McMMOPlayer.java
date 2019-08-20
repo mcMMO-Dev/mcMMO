@@ -31,7 +31,6 @@ import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.experience.ExperienceBarManager;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -67,6 +66,8 @@ public class McMMOPlayer {
     private boolean partyChatMode;
     private boolean adminChatMode;
     private boolean displaySkillNotifications = true;
+    private boolean debugMode;
+
     private boolean abilityUse = true;
     private boolean godMode;
     private boolean chatSpy = false; //Off by default
@@ -106,6 +107,7 @@ public class McMMOPlayer {
         }
 
         experienceBarManager = new ExperienceBarManager(pluginRef,this);
+        debugMode = false; //Debug mode helps solve support issues, players can toggle it on or off
         fillPersonalXPModifiers(); //Cache players XP rates
     }
 
@@ -500,6 +502,18 @@ public class McMMOPlayer {
     }
 
     /*
+     * Debug Mode Flags
+     */
+
+    public boolean isDebugMode() {
+        return debugMode;
+    }
+
+    public void toggleDebugMode() {
+        debugMode = !debugMode;
+    }
+
+    /*
      * Skill notifications
      */
 
@@ -863,7 +877,7 @@ public class McMMOPlayer {
     }
 
     public void checkGodMode() {
-        if (godMode && !Permissions.mcgod(player)
+        if (godMode && !pluginRef.getPermissionTools().mcgod(player)
                 || godMode && pluginRef.getDynamicSettingsManager().isWorldBlacklisted(player.getWorld().getName())) {
             toggleGodMode();
             player.sendMessage(pluginRef.getLocaleManager().getString("Commands.GodMode.Forbidden"));
@@ -871,7 +885,7 @@ public class McMMOPlayer {
     }
 
     public void checkParty() {
-        if (inParty() && !Permissions.party(player)) {
+        if (inParty() && !pluginRef.getPermissionTools().party(player)) {
             removeParty();
             player.sendMessage(pluginRef.getLocaleManager().getString("Party.Forbidden"));
         }
@@ -1063,6 +1077,7 @@ public class McMMOPlayer {
         Player thisPlayer = getPlayer();
         resetAbilityMode();
         pluginRef.getBleedTimerTask().bleedOut(thisPlayer);
+        cleanup();
 
         if (syncSave) {
             getProfile().save(true);
@@ -1081,5 +1096,16 @@ public class McMMOPlayer {
 
         //Remove user from cache
         pluginRef.getDatabaseManager().cleanupUser(thisPlayer.getUniqueId());
+    }
+
+    /**
+     * Cleanup various things related to this player
+     * Such as temporary summons..
+     * Turning off abilities...
+     * Etc...
+     */
+    public void cleanup() {
+        resetAbilityMode();
+        getTamingManager().cleanupAllSummons();
     }
 }

@@ -517,7 +517,7 @@ public class TextComponentFactory {
     public void getSubSkillTextComponents(Player player, List<TextComponent> textComponents, PrimarySkillType parentSkill) {
         for (SubSkillType subSkillType : SubSkillType.values()) {
             if (subSkillType.getParentSkill() == parentSkill) {
-                if (Permissions.isSubSkillEnabled(player, subSkillType)) {
+                if (pluginRef.getPermissionTools().isSubSkillEnabled(player, subSkillType)) {
                     if (!InteractionManager.hasSubSkill(subSkillType))
                         textComponents.add(pluginRef.getTextComponentFactory().getSubSkillTextComponent(player, subSkillType));
                 }
@@ -527,7 +527,7 @@ public class TextComponentFactory {
         /* NEW SKILL SYSTEM */
         for (AbstractSubSkill abstractSubSkill : InteractionManager.getSubSkillList()) {
             if (abstractSubSkill.getPrimarySkill() == parentSkill) {
-                if (Permissions.isSubSkillEnabled(player, abstractSubSkill))
+                if (pluginRef.getPermissionTools().isSubSkillEnabled(player, abstractSubSkill))
                     textComponents.add(pluginRef.getTextComponentFactory().getSubSkillTextComponent(player, abstractSubSkill));
             }
         }

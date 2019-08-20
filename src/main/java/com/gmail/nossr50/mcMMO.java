@@ -96,6 +96,7 @@ public class mcMMO extends JavaPlugin {
     private RandomChanceTools randomChanceTools;
     private RankTools rankTools;
     private ItemTools itemTools;
+    private PermissionTools permissionTools;
 
     /* Never-Ending tasks */
     private BleedTimerTask bleedTimerTask;
@@ -121,10 +122,18 @@ public class mcMMO extends JavaPlugin {
     public void onEnable() {
         try {
             getLogger().setFilter(new LogFilter(this));
+
+            //TODO: Disgusting...
             MetadataConstants.metadataValue = new FixedMetadataValue(this, true);
+
             PluginManager pluginManager = getServer().getPluginManager();
             healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;
+
+            //Init Locale Manager
             localeManager = new LocaleManager(this);
+
+            //Init Permission Tools
+            permissionTools = new PermissionTools(this);
 
             //upgradeManager = new UpgradeManager();
 
@@ -190,7 +199,7 @@ public class mcMMO extends JavaPlugin {
                 placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
 
                 if (getConfigManager().getConfigParty().getPTP().isPtpWorldBasedPermissions()) {
-                    Permissions.generateWorldTeleportPermissions();
+                    pluginRef.getPermissionTools().generateWorldTeleportPermissions();
                 }
 
                 //Init Rank Tools
@@ -784,5 +793,9 @@ public class mcMMO extends JavaPlugin {
 
     public ItemTools getItemTools() {
         return itemTools;
+    }
+
+    public PermissionTools getPermissionTools() {
+        return permissionTools;
     }
 }

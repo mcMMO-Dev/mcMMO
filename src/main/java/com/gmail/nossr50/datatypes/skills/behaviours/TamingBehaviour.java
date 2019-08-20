@@ -1,6 +1,12 @@
 package com.gmail.nossr50.datatypes.skills.behaviours;
 
+import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
+import com.gmail.nossr50.datatypes.skills.subskills.taming.TamingSummon;
 import com.gmail.nossr50.mcMMO;
+import org.bukkit.Material;
+import sun.security.krb5.Config;
+
+import java.util.HashMap;
 
 /**
  * These behaviour classes are a band-aid fix for a larger problem
@@ -12,9 +18,14 @@ import com.gmail.nossr50.mcMMO;
 public class TamingBehaviour {
 
     private final mcMMO pluginRef;
+    private HashMap<CallOfTheWildType, TamingSummon> cotwSummonDataProperties;
 
     public TamingBehaviour(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
+    }
+
+    public TamingSummon getSummon(CallOfTheWildType callOfTheWildType) {
+        return pluginRef.getConfigManager().getConfigTaming().getCallOfTheWild().getCOTWSummon(callOfTheWildType);
     }
 
 }

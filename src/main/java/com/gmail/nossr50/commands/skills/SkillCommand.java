@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.child.FamilyTree;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.google.common.collect.ImmutableList;
@@ -66,7 +65,7 @@ public abstract class SkillCommand implements TabExecutor {
                 Player player = (Player) sender;
                 McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
-                boolean isLucky = Permissions.lucky(player, skill);
+                boolean isLucky = pluginRef.getPermissionTools().lucky(player, skill);
                 boolean hasEndurance = pluginRef.getSkillTools().getEnduranceLength(player) > 0;
                 double skillValue = mcMMOPlayer.getSkillLevel(skill);
 
@@ -231,7 +230,19 @@ public abstract class SkillCommand implements TabExecutor {
         }
     }
 
+<<<<<<< HEAD
     protected abstract void dataCalculations(Player player, double skillValue);
+=======
+    protected String getLimitBreakDescriptionParameter() {
+        if(AdvancedConfig.getInstance().canApplyLimitBreakPVE()) {
+            return "(PVP/PVE)";
+        } else {
+            return "(PVP)";
+        }
+    }
+
+    protected abstract void dataCalculations(Player player, float skillValue);
+>>>>>>> 308e3a4b1f46e9e3de28d6d540dd055a540ed4d5
 
     protected abstract void permissionsCheck(Player player);
 
@@ -249,6 +260,6 @@ public abstract class SkillCommand implements TabExecutor {
      * @return true if the player has permission and has the skill unlocked
      */
     protected boolean canUseSubskill(Player player, SubSkillType subSkillType) {
-        return Permissions.isSubSkillEnabled(player, subSkillType) && pluginRef.getRankTools().hasUnlockedSubskill(player, subSkillType);
+        return pluginRef.getPermissionTools().isSubSkillEnabled(player, subSkillType) && pluginRef.getRankTools().hasUnlockedSubskill(player, subSkillType);
     }
 }

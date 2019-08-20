@@ -11,7 +11,7 @@ description: >
     in order to evaluate and balance the mechanics of mcMMO in every update.
 
 author: nossr50
-authors: [GJ, NuclearW, bm01, Glitchfinder, TfT_02, t00thpick1, Riking]
+authors: [GJ, NuclearW, bm01, Glitchfinder, TfT_02, t00thpick1, Riking, electronicboy, kashike]
 website: https://www.mcmmo.org
 main: com.gmail.nossr50.mcMMO
 softdepend: [WorldGuard, CombatTag, HealthBar]
@@ -19,6 +19,9 @@ load: STARTUP
 api-version: 1.13
 
 commands:
+    mmodebug:
+        aliases: [mcmmodebugmode]
+        description: Toggles a debug mode which will print useful information to chat
     mmoinfo:
         aliases: [mcinfo]
         description: Info pages for mcMMO
@@ -541,14 +544,11 @@ permissions:
         children:
             mcmmo.ability.taming.callofthewild.horse: true
             mcmmo.ability.taming.callofthewild.ocelot: true
-            mcmmo.ability.taming.callofthewild.renamepets: true
             mcmmo.ability.taming.callofthewild.wolf: true
     mcmmo.ability.taming.callofthewild.horse:
         description: Allows players to summon Horses with Call of the Wild
     mcmmo.ability.taming.callofthewild.ocelot:
         description: Allows players to summon Ocelots with Call of the Wild
-    mcmmo.ability.taming.callofthewild.renamepets:
-        description: Allows players to rename pets with Call of the Wild
     mcmmo.ability.taming.callofthewild.wolf:
         description: Allows players to summon Wolves with Call of the Wild
     mcmmo.ability.taming.environmentallyaware:

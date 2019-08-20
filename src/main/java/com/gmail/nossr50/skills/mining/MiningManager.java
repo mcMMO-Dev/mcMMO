@@ -12,7 +12,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.AbilityCooldownTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -51,7 +50,7 @@ public class MiningManager extends SkillManager {
         if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_DEMOLITIONS_EXPERTISE))
             return false;
 
-        return getSkillLevel() >= miningBehaviour.getDemolitionExpertUnlockLevel() && Permissions.demolitionsExpertise(getPlayer());
+        return getSkillLevel() >= miningBehaviour.getDemolitionExpertUnlockLevel() && pluginRef.getPermissionTools().demolitionsExpertise(getPlayer());
     }
 
     public boolean canDetonate() {
@@ -59,7 +58,7 @@ public class MiningManager extends SkillManager {
 
         return canUseBlastMining() && player.isSneaking()
                 && miningBehaviour.isDetonator(player.getInventory().getItemInMainHand())
-                && Permissions.remoteDetonation(player);
+                && pluginRef.getPermissionTools().remoteDetonation(player);
     }
 
     public boolean canUseBlastMining() {
@@ -71,11 +70,11 @@ public class MiningManager extends SkillManager {
         if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_BIGGER_BOMBS))
             return false;
 
-        return getSkillLevel() >= miningBehaviour.getBiggerBombsUnlockLevel() && Permissions.biggerBombs(getPlayer());
+        return getSkillLevel() >= miningBehaviour.getBiggerBombsUnlockLevel() && pluginRef.getPermissionTools().biggerBombs(getPlayer());
     }
 
     public boolean canDoubleDrop() {
-        return pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS);
+        return pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS) && pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS);
     }
 
     /**

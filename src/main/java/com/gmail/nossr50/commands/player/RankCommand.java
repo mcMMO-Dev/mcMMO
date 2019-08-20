@@ -4,7 +4,6 @@ import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.RankCommandAsyncTask;
-import com.gmail.nossr50.util.Permissions;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -32,7 +31,7 @@ public class RankCommand implements TabExecutor {
                     return true;
                 }
 
-                if (!Permissions.mcrank(sender)) {
+                if (!pluginRef.getPermissionTools().mcrank(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }
@@ -46,7 +45,7 @@ public class RankCommand implements TabExecutor {
                 return true;
 
             case 1:
-                if (!Permissions.mcrankOthers(sender)) {
+                if (!pluginRef.getPermissionTools().mcrankOthers(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }
@@ -62,7 +61,7 @@ public class RankCommand implements TabExecutor {
                     Player player = mcMMOPlayer.getPlayer();
                     playerName = player.getName();
 
-                    if (pluginRef.getCommandTools().tooFar(sender, player, Permissions.mcrankFar(sender))) {
+                    if (pluginRef.getCommandTools().tooFar(sender, player, pluginRef.getPermissionTools().mcrankFar(sender))) {
                         return true;
                     }
                 }

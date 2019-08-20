@@ -3,7 +3,6 @@ package com.gmail.nossr50.commands.skills;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -50,7 +49,7 @@ public class WoodcuttingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canTreeFell = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_TREE_FELLER) && Permissions.treeFeller(player);
+        canTreeFell = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_TREE_FELLER) && pluginRef.getPermissionTools().treeFeller(player);
         canDoubleDrop = canUseSubskill(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER) && pluginRef.getRankTools().getRank(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER) >= 1;
         canLeafBlow = canUseSubskill(player, SubSkillType.WOODCUTTING_LEAF_BLOWER);
         /*canSplinter = canUseSubskill(player, SubSkillType.WOODCUTTING_SPLINTER);

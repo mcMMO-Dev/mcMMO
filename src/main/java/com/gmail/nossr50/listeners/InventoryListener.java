@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -99,7 +98,7 @@ public class InventoryListener implements Listener {
                 return;
         }
 
-        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || !Permissions.isSubSkillEnabled(player, SubSkillType.SMELTING_FUEL_EFFICIENCY)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || !pluginRef.getPermissionTools().isSubSkillEnabled(player, SubSkillType.SMELTING_FUEL_EFFICIENCY)) {
             return;
         }
 
@@ -164,7 +163,7 @@ public class InventoryListener implements Listener {
                 return;
         }
 
-        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || !Permissions.vanillaXpBoost(player, PrimarySkillType.SMELTING)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || !pluginRef.getPermissionTools().vanillaXpBoost(player, PrimarySkillType.SMELTING)) {
             return;
         }
 

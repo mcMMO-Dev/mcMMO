@@ -1,7 +1,6 @@
 package com.gmail.nossr50.commands.admin;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,7 +19,7 @@ public final class ReloadLocaleCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
-            if (!Permissions.reloadlocale(sender)) {
+            if (!pluginRef.getPermissionTools().reloadlocale(sender)) {
                 if(command.getPermissionMessage() != null)
                     sender.sendMessage(command.getPermissionMessage());
 

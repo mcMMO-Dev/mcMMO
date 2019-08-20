@@ -9,7 +9,6 @@ import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.EntityType;
@@ -35,7 +34,7 @@ public class ExcavationManager extends SkillManager {
     public void excavationBlockCheck(BlockState blockState) {
         int xp = excavationBehaviour.getBlockXP(blockState);
 
-        if (Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
+        if (pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
             List<ExcavationTreasure> treasures = excavationBehaviour.getTreasures(blockState);
 
             if (!treasures.isEmpty()) {
@@ -76,7 +75,7 @@ public class ExcavationManager extends SkillManager {
 
     public void printExcavationDebug(Player player, BlockState blockState)
     {
-        if (Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
+        if (pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
             List<ExcavationTreasure> treasures = excavationBehaviour.getTreasures(blockState);
 
             if (!treasures.isEmpty()) {

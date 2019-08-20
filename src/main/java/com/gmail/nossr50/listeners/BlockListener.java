@@ -13,10 +13,10 @@ import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Tag;
@@ -78,6 +78,9 @@ public class BlockListener implements Listener {
         if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getBlock().getWorld().getName()))
             return;
 
+        if(!pluginRef.getConfigManager().getConfigExploitPrevention().doPistonsMarkBlocksUnnatural())
+            return;
+
         BlockFace direction = event.getDirection();
         Block movedBlock = event.getBlock();
 //        movedBlock = movedBlock.getRelative(direction, 2);
@@ -86,8 +89,7 @@ public class BlockListener implements Listener {
             if (pluginRef.getBlockTools().shouldBeWatched(b.getState())) {
                 movedBlock = b.getRelative(direction);
 
-                if (pluginRef.getConfigManager().getConfigExploitPrevention().doPistonsMarkBlocksUnnatural())
-                    pluginRef.getPlaceStore().setTrue(movedBlock);
+                pluginRef.getPlaceStore().setTrue(movedBlock);
             }
         }
     }
@@ -102,6 +104,10 @@ public class BlockListener implements Listener {
         /* WORLD BLACKLIST CHECK */
         if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getBlock().getWorld().getName()))
             return;
+
+        if(!pluginRef.getConfigManager().getConfigExploitPrevention().doPistonsMarkBlocksUnnatural()) {
+            return;
+        }
 
         // Get opposite direction so we get correct block
         BlockFace direction = event.getDirection();
@@ -291,7 +297,7 @@ public class BlockListener implements Listener {
              * Instead, we check it inside the drops handler.
              */
             if (pluginRef.getSkillTools().doesPlayerHaveSkillPermission(PrimarySkillType.HERBALISM, player)) {
-                herbalismManager.herbalismBlockCheck(blockState);
+                herbalismManager.processHerbalismBlockBreakEvent(event);
             }
         }
 
@@ -433,15 +439,15 @@ public class BlockListener implements Listener {
         if (pluginRef.getBlockTools().canActivateAbilities(blockState)) {
             ItemStack heldItem = player.getInventory().getItemInMainHand();
 
-            if (mcMMOPlayer.getToolPreparationMode(ToolType.HOE) && pluginRef.getItemTools().isHoe(heldItem) && (pluginRef.getBlockTools().affectedByGreenTerra(blockState) || pluginRef.getBlockTools().canMakeMossy(blockState)) && Permissions.greenTerra(player)) {
+            if (mcMMOPlayer.getToolPreparationMode(ToolType.HOE) && pluginRef.getItemTools().isHoe(heldItem) && (pluginRef.getBlockTools().affectedByGreenTerra(blockState) || pluginRef.getBlockTools().canMakeMossy(blockState)) && pluginRef.getPermissionTools().greenTerra(player)) {
                 mcMMOPlayer.checkAbilityActivation(PrimarySkillType.HERBALISM);
-            } else if (mcMMOPlayer.getToolPreparationMode(ToolType.AXE) && pluginRef.getItemTools().isAxe(heldItem) && pluginRef.getBlockTools().isLog(blockState) && Permissions.treeFeller(player)) {
+            } else if (mcMMOPlayer.getToolPreparationMode(ToolType.AXE) && pluginRef.getItemTools().isAxe(heldItem) && pluginRef.getBlockTools().isLog(blockState) && pluginRef.getPermissionTools().treeFeller(player)) {
                 mcMMOPlayer.checkAbilityActivation(PrimarySkillType.WOODCUTTING);
-            } else if (mcMMOPlayer.getToolPreparationMode(ToolType.PICKAXE) && pluginRef.getItemTools().isPickaxe(heldItem) && pluginRef.getBlockTools().affectedBySuperBreaker(blockState) && Permissions.superBreaker(player)) {
+            } else if (mcMMOPlayer.getToolPreparationMode(ToolType.PICKAXE) && pluginRef.getItemTools().isPickaxe(heldItem) && pluginRef.getBlockTools().affectedBySuperBreaker(blockState) && pluginRef.getPermissionTools().superBreaker(player)) {
                 mcMMOPlayer.checkAbilityActivation(PrimarySkillType.MINING);
-            } else if (mcMMOPlayer.getToolPreparationMode(ToolType.SHOVEL) && pluginRef.getItemTools().isShovel(heldItem) && pluginRef.getBlockTools().affectedByGigaDrillBreaker(blockState) && Permissions.gigaDrillBreaker(player)) {
+            } else if (mcMMOPlayer.getToolPreparationMode(ToolType.SHOVEL) && pluginRef.getItemTools().isShovel(heldItem) && pluginRef.getBlockTools().affectedByGigaDrillBreaker(blockState) && pluginRef.getPermissionTools().gigaDrillBreaker(player)) {
                 mcMMOPlayer.checkAbilityActivation(PrimarySkillType.EXCAVATION);
-            } else if (mcMMOPlayer.getToolPreparationMode(ToolType.FISTS) && heldItem.getType() == Material.AIR && (pluginRef.getBlockTools().affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW || pluginRef.getBlockTools().affectedByBlockCracker(blockState) && Permissions.berserk(player))) {
+            } else if (mcMMOPlayer.getToolPreparationMode(ToolType.FISTS) && heldItem.getType() == Material.AIR && (pluginRef.getBlockTools().affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW || pluginRef.getBlockTools().affectedByBlockCracker(blockState) && pluginRef.getPermissionTools().berserk(player))) {
                 mcMMOPlayer.checkAbilityActivation(PrimarySkillType.UNARMED);
             }
         }
@@ -508,7 +514,7 @@ public class BlockListener implements Listener {
          * We don't need to check permissions here because they've already been checked for the ability to even activate.
          */
         if (mcMMOPlayer.getAbilityMode(SuperAbilityType.GREEN_TERRA) && pluginRef.getBlockTools().canMakeMossy(blockState)) {
-            if (mcMMOPlayer.getHerbalismManager().processGreenTerra(blockState)) {
+            if (mcMMOPlayer.getHerbalismManager().processGreenTerraBlockConversion(blockState)) {
                 blockState.update(true);
             }
         } else if (mcMMOPlayer.getAbilityMode(SuperAbilityType.BERSERK) && heldItem.getType() == Material.AIR) {
@@ -540,18 +546,19 @@ public class BlockListener implements Listener {
         }
     }
 
-    public void debugStickDump(Player player, BlockState blockState) {
-
-        if (pluginRef.getPlaceStore().isTrue(blockState))
-            player.sendMessage("[mcMMO DEBUG] This block is not natural and does not reward treasures/XP");
-        else {
-            player.sendMessage("[mcMMO DEBUG] This block is considered natural by mcMMO");
-            pluginRef.getUserManager().getPlayer(player).getExcavationManager().printExcavationDebug(player, blockState);
+    //TODO: Rewrite this
+    //TODO: Convert into locale strings
+    private void debugStickDump(Player player, BlockState blockState) {
+        //Profile not loaded
+        if(pluginRef.getUserManager().getPlayer(player) == null)
+        {
+            return;
         }
 
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
-            if (pluginRef.getWorldGuardManager().hasMainFlag(player))
-                player.sendMessage("[mcMMO DEBUG] World Guard main flag is permitted for this player in this region");
+        if(pluginRef.getUserManager().getPlayer(player).isDebugMode())
+        {
+            if(pluginRef.getPlaceStore().isTrue(blockState))
+                player.sendMessage("[mcMMO DEBUG] This block is not natural and does not reward treasures/XP");
             else
                 player.sendMessage("[mcMMO DEBUG] World Guard main flag is DENIED for this player in this region");
 
@@ -569,8 +576,14 @@ public class BlockListener implements Listener {
                 if (furnacePlayer != null) {
                     player.sendMessage("[mcMMO DEBUG] This furnace is owned by player " + furnacePlayer.getName());
                 }
-            } else
-                player.sendMessage("[mcMMO DEBUG] This furnace does not have a registered owner");
+                else
+                    player.sendMessage("[mcMMO DEBUG] This furnace does not have a registered owner");
+            }
+
+            if(pluginRef.getConfigManager().getConfigLeveling().getConfigExperienceBars().isEnableXPBars())
+                player.sendMessage("[mcMMO DEBUG] XP bars are enabled, however you should check per-skill settings to make sure those are enabled.");
+
+            player.sendMessage(ChatColor.RED+"You can turn this debug info off by typing "+ ChatColor.GOLD+"/mmodebug");
         }
 
         if (pluginRef.getConfigManager().getConfigLeveling().isEnableXPBars())

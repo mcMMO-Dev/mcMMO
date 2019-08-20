@@ -7,7 +7,6 @@ import com.gmail.nossr50.commands.party.teleport.PtpCommand;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -95,7 +94,7 @@ public class PartyCommand implements TabExecutor {
             return true;
         }
 
-        if (!Permissions.party(sender)) {
+        if (!pluginRef.getPermissionTools().party(sender)) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
         }
@@ -129,7 +128,7 @@ public class PartyCommand implements TabExecutor {
         }
 
         // Can't use this for lock/unlock since they're handled by the same command
-        if (subcommand != PartySubcommandType.LOCK && subcommand != PartySubcommandType.UNLOCK && !Permissions.partySubcommand(sender, subcommand)) {
+        if (subcommand != PartySubcommandType.LOCK && subcommand != PartySubcommandType.UNLOCK && !pluginRef.getPermissionTools().partySubcommand(sender, subcommand)) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
         }

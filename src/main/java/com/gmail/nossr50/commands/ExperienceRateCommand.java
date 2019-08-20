@@ -2,7 +2,6 @@ package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.datatypes.notifications.SensitiveCommandType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.ChatColor;
@@ -30,7 +29,7 @@ public class ExperienceRateCommand implements TabExecutor {
                     return false;
                 }
 
-                if (!Permissions.xprateReset(sender)) {
+                if (!pluginRef.getPermissionTools().xprateReset(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }
@@ -63,7 +62,7 @@ public class ExperienceRateCommand implements TabExecutor {
                     return true;
                 }
 
-                if (!Permissions.xprateSet(sender)) {
+                if (!pluginRef.getPermissionTools().xprateSet(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }

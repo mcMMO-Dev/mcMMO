@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config.hocon.skills.taming;
 
+import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -22,7 +23,7 @@ public class ConfigTamingSubSkills {
     private ConfigTamingThickFur thickFur = new ConfigTamingThickFur();
 
     @Setting(value = "Environmentally-Aware")
-    private ConfigTamingEnvironmentalllyAware environmentalllyAware = new ConfigTamingEnvironmentalllyAware();
+    private ConfigTamingEnvironmentallyAware environmentallyAware = new ConfigTamingEnvironmentallyAware();
 
     @Setting(value = "Fast-Food-Service")
     private ConfigTamingFastFoodService fastFoodService = new ConfigTamingFastFoodService();
@@ -50,8 +51,8 @@ public class ConfigTamingSubSkills {
         return thickFur;
     }
 
-    public ConfigTamingEnvironmentalllyAware getEnvironmentalllyAware() {
-        return environmentalllyAware;
+    public ConfigTamingEnvironmentallyAware getEnvironmentallyAware() {
+        return environmentallyAware;
     }
 
     public ConfigTamingFastFoodService getFastFoodService() {
@@ -60,5 +61,17 @@ public class ConfigTamingSubSkills {
 
     public ConfigTamingPummel getPummel() {
         return pummel;
+    }
+
+    public String getItemString(CallOfTheWildType callOfTheWildType) {
+        return callOfTheWild.getItemString(callOfTheWildType);
+    }
+
+    public double getMinHorseJumpStrength() {
+        return callOfTheWild.getMinHorseJumpStrength();
+    }
+
+    public double getMaxHorseJumpStrength() {
+        return callOfTheWild.getMaxHorseJumpStrength();
     }
 }

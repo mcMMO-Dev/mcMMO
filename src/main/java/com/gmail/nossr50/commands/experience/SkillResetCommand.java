@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -138,11 +137,11 @@ public class SkillResetCommand implements TabExecutor {
     }
 
     protected boolean permissionsCheckSelf(CommandSender sender) {
-        return Permissions.skillreset(sender);
+        return pluginRef.getPermissionTools().skillreset(sender);
     }
 
     protected boolean permissionsCheckOthers(CommandSender sender) {
-        return Permissions.skillresetOthers(sender);
+        return pluginRef.getPermissionTools().skillresetOthers(sender);
     }
 
     protected void handlePlayerMessageAll(Player player) {

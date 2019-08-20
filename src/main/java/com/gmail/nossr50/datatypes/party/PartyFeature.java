@@ -1,7 +1,6 @@
 package com.gmail.nossr50.datatypes.party;
 
 import com.gmail.nossr50.commands.party.PartySubcommandType;
-import com.gmail.nossr50.util.Permissions;
 import org.bukkit.entity.Player;
 
 public enum PartyFeature {
@@ -33,6 +32,6 @@ public enum PartyFeature {
                 return false;
         }
 
-        return Permissions.partySubcommand(player, partySubCommandType);
+        return pluginRef.getPermissionTools().partySubcommand(player, partySubCommandType);
     }
 }

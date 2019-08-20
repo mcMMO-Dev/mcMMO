@@ -31,7 +31,7 @@ public final class Motd {
      * @param version Plugin version
      */
     public static void displayVersion(Player player, String version) {
-        if (Permissions.showversion(player)) {
+        if (pluginRef.getPermissionTools().showversion(player)) {
             player.sendMessage(pluginRef.getLocaleManager().getString("MOTD.Version.Overhaul", version));
         }
     }
@@ -124,7 +124,7 @@ public final class Motd {
      */
     public static void displayLuckyPerks(Player player) {
         for (PrimarySkillType skill : PrimarySkillType.values()) {
-            if (Permissions.lucky(player, skill)) {
+            if (pluginRef.getPermissionTools().lucky(player, skill)) {
                 player.sendMessage(PERK_PREFIX + pluginRef.getLocaleManager().getString("Effects.Template", pluginRef.getLocaleManager().getString("Perks.Lucky.Name"), pluginRef.getLocaleManager().getString("Perks.Lucky.Desc.Login")));
                 return;
             }

@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.experience.CustomXPPerk;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
@@ -24,7 +23,7 @@ public class PlayerLevelTools {
      * Register our custom permission perks with bukkit
      */
     private void registerCustomPerkPermissions() {
-        Permissions.addCustomXPPerks();
+        pluginRef.getPermissionTools().addCustomXPPerks();
     }
 
     /**
@@ -58,7 +57,7 @@ public class PlayerLevelTools {
 
         //Check all registered XP Perk nodes for this player
         for (CustomXPPerk customXPPerk : customXpPerkNodes) {
-            if (Permissions.hasCustomXPPerk(player, customXPPerk)) {
+            if (pluginRef.getPermissionTools().hasCustomXPPerk(player, customXPPerk)) {
                 enabledXPPerks.add(customXPPerk);
             }
         }
@@ -92,17 +91,17 @@ public class PlayerLevelTools {
         }
 
         //Disgusting legacy support start
-        if (Permissions.quadrupleXp(player, skill)) {
+        if (pluginRef.getPermissionTools().quadrupleXp(player, skill)) {
             xpPerkValues.add(4.0);
-        } else if (Permissions.tripleXp(player, skill)) {
+        } else if (pluginRef.getPermissionTools().tripleXp(player, skill)) {
             xpPerkValues.add(3.0);
-        } else if (Permissions.doubleAndOneHalfXp(player, skill)) {
+        } else if (pluginRef.getPermissionTools().doubleAndOneHalfXp(player, skill)) {
             xpPerkValues.add(2.5);
-        } else if (Permissions.doubleXp(player, skill)) {
+        } else if (pluginRef.getPermissionTools().doubleXp(player, skill)) {
             xpPerkValues.add(2.0);
-        } else if (Permissions.oneAndOneHalfXp(player, skill)) {
+        } else if (pluginRef.getPermissionTools().oneAndOneHalfXp(player, skill)) {
             xpPerkValues.add(1.5);
-        } else if (Permissions.oneAndOneTenthXp(player, skill)) {
+        } else if (pluginRef.getPermissionTools().oneAndOneTenthXp(player, skill)) {
             xpPerkValues.add(1.1);
         }
         //Disgusting legacy support end

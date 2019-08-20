@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util.skills;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.experience.SpecialXPKey;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
@@ -17,10 +18,8 @@ import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
-import com.gmail.nossr50.skills.unarmed.Unarmed;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.google.common.collect.ImmutableMap;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -76,8 +75,9 @@ public final class CombatTools {
             swordsManager.serratedStrikes(target, initialDamage, modifiers);
         }
 
-        if (canUseLimitBreak(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK)) {
-            finalDamage += getLimitBreakDamage(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK);
+        if(canUseLimitBreak(player, target, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK))
+        {
+            finalDamage+=getLimitBreakDamage(player, target, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK);
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
@@ -118,8 +118,9 @@ public final class CombatTools {
             finalDamage += axesManager.criticalHit(target, finalDamage);
         }
 
-        if (canUseLimitBreak(player, SubSkillType.AXES_AXES_LIMIT_BREAK)) {
-            finalDamage += getLimitBreakDamage(player, SubSkillType.AXES_AXES_LIMIT_BREAK);
+        if(canUseLimitBreak(player, target, SubSkillType.AXES_AXES_LIMIT_BREAK))
+        {
+            finalDamage+=getLimitBreakDamage(player, target, SubSkillType.AXES_AXES_LIMIT_BREAK);
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
@@ -155,39 +156,54 @@ public final class CombatTools {
                 unarmedManager.disarmCheck((Player) target);
             }
 
-            if (canUseLimitBreak(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK)) {
-                finalDamage += getLimitBreakDamage(player, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK);
+            if(canUseLimitBreak(player, target, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK))
+            {
+                finalDamage+=getLimitBreakDamage(player, target, SubSkillType.UNARMED_UNARMED_LIMIT_BREAK);
             }
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
         startGainXp(mcMMOPlayer, target, PrimarySkillType.UNARMED);
-        Unarmed.lastAttacked = System.currentTimeMillis(); //Track how often the player is punching
+        unarmedManager.setLastAttacked(System.currentTimeMillis()); //Track how often the player is punching
     }
 
     private void processTamingCombat(LivingEntity target, Player master, Wolf wolf, EntityDamageByEntityEvent event) {
         double initialDamage = event.getDamage();
         double finalDamage = initialDamage;
 
-        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(master);
-        TamingManager tamingManager = mcMMOPlayer.getTamingManager();
+        if(master != null && !master.isOnline() && master.isValid()) {
+            McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(master);
 
-        if (tamingManager.canUseFastFoodService()) {
-            tamingManager.fastFoodService(wolf, event.getDamage());
+            //Make sure the profiles been loaded
+            if(mcMMOPlayer == null) {
+                return;
+            }
+
+            TamingManager tamingManager = mcMMOPlayer.getTamingManager();
+
+            if (tamingManager.canUseFastFoodService()) {
+                tamingManager.fastFoodService(wolf, event.getDamage());
+            }
+
+            tamingManager.pummel(target, wolf);
+
+            if (tamingManager.canUseSharpenedClaws()) {
+                if(target instanceof Player) {
+                    finalDamage+=tamingManager.sharpenedClaws(false);
+                } else {
+                    finalDamage+=tamingManager.sharpenedClaws(true);
+                }
+
+            }
+
+            if (tamingManager.canUseGore()) {
+                finalDamage+=tamingManager.gore(target, initialDamage);
+            }
+
+            applyScaledModifiers(initialDamage, finalDamage, event);
+            startGainXp(mcMMOPlayer, target, PrimarySkillType.TAMING);
         }
 
-        tamingManager.pummel(target, wolf);
-
-        if (tamingManager.canUseSharpenedClaws()) {
-            finalDamage += tamingManager.getSharpenedClawsDamage();
-        }
-
-        if (tamingManager.canUseGore()) {
-            finalDamage += tamingManager.gore(target, initialDamage);
-        }
-
-        applyScaledModifiers(initialDamage, finalDamage, event);
-        startGainXp(mcMMOPlayer, target, PrimarySkillType.TAMING);
     }
 
     private void processArcheryCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event, Arrow arrow) {
@@ -223,8 +239,9 @@ public final class CombatTools {
             archeryManager.processArrowRetrievalActivation(target, arrow);
         }
 
-        if (canUseLimitBreak(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK)) {
-            finalDamage += getLimitBreakDamage(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK);
+        if(canUseLimitBreak(player, target, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK))
+        {
+            finalDamage+=getLimitBreakDamage(player, target, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK);
         }
 
         double distanceMultiplier = archeryManager.distanceXpBonusMultiplier(target, arrow);
@@ -374,19 +391,81 @@ public final class CombatTools {
         }
     }
 
-    public int getLimitBreakDamage(Player player, SubSkillType subSkillType) {
-        return pluginRef.getRankTools().getRank(player, subSkillType);
+    public int getLimitBreakDamage(Player player, LivingEntity defender, SubSkillType subSkillType) {
+        if(defender instanceof Player) {
+            Player playerDefender = (Player) defender;
+            return getLimitBreakDamageAgainstQuality(player, subSkillType, getArmorQualityLevel(playerDefender));
+        } else {
+            return getLimitBreakDamageAgainstQuality(player, subSkillType, 1000);
+        }
+    }
+
+    public int getLimitBreakDamageAgainstQuality(Player player, SubSkillType subSkillType, int armorQualityLevel) {
+        int rawDamageBoost = pluginRef.getRankTools().getRank(player, subSkillType);
+
+        if(armorQualityLevel <= 4) {
+            rawDamageBoost *= .25; //75% Nerf
+        } else if(armorQualityLevel <= 8) {
+            rawDamageBoost *= .50; //50% Nerf
+        } else if(armorQualityLevel <= 12) {
+            rawDamageBoost *= .75; //25% Nerf
+        }
+
+        return rawDamageBoost;
+    }
+
+    public int getArmorQualityLevel(Player defender) {
+        int armorQualityLevel = 0;
+
+        for(ItemStack itemStack : defender.getInventory().getArmorContents()) {
+            if(itemStack != null) {
+                armorQualityLevel += getArmorQuality(itemStack);
+            }
+        }
+
+        return armorQualityLevel;
+    }
+
+    private int getArmorQuality(ItemStack itemStack) {
+        switch(itemStack.getType()) {
+            case LEATHER_HELMET:
+            case LEATHER_BOOTS:
+            case LEATHER_CHESTPLATE:
+            case LEATHER_LEGGINGS:
+                return 1;
+            case IRON_HELMET:
+            case IRON_BOOTS:
+            case IRON_CHESTPLATE:
+            case IRON_LEGGINGS:
+                return 2;
+            case GOLDEN_HELMET:
+            case GOLDEN_BOOTS:
+            case GOLDEN_CHESTPLATE:
+            case GOLDEN_LEGGINGS:
+                return 3;
+            case DIAMOND_HELMET:
+            case DIAMOND_BOOTS:
+            case DIAMOND_CHESTPLATE:
+            case DIAMOND_LEGGINGS:
+                return 6;
+            default:
+                return 1;
+        }
     }
 
     /**
      * Checks if player has access to their weapons limit break
      *
-     * @param player target player
+     * @param player target entity
      * @return true if the player has access to the limit break
      */
-    public boolean canUseLimitBreak(Player player, SubSkillType subSkillType) {
-        return pluginRef.getRankTools().hasUnlockedSubskill(player, subSkillType)
-                && Permissions.isSubSkillEnabled(player, subSkillType);
+    public boolean canUseLimitBreak(Player player, LivingEntity target, SubSkillType subSkillType) {
+        if(target instanceof Player || AdvancedConfig.getInstance().canApplyLimitBreakPVE()) {
+            return pluginRef.getRankTools().hasUnlockedSubskill(player, subSkillType)
+                    && pluginRef.getPermissionTools().isSubSkillEnabled(player, subSkillType);
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -610,7 +689,7 @@ public final class CombatTools {
                 return false;
             }
 
-            if ((pluginRef.getPartyManager().inSameParty(player, defender) || pluginRef.getPartyManager().areAllies(player, defender)) && !(Permissions.friendlyFire(player) && Permissions.friendlyFire(defender))) {
+            if ((pluginRef.getPartyManager().inSameParty(player, defender) || pluginRef.getPartyManager().areAllies(player, defender)) && !(pluginRef.getPermissionTools().friendlyFire(player) && pluginRef.getPermissionTools().friendlyFire(defender))) {
                 return false;
             }
 
@@ -633,7 +712,7 @@ public final class CombatTools {
                 // isFriendlyPet ensures that the Tameable is: Tamed, owned by a player, and the owner is in the same party
                 // So we can make some assumptions here, about our casting and our check
                 Player owner = (Player) ((Tameable) entity).getOwner();
-                if (!(Permissions.friendlyFire(player) && Permissions.friendlyFire(owner))) {
+                if (!(pluginRef.getPermissionTools().friendlyFire(player) && pluginRef.getPermissionTools().friendlyFire(owner))) {
                     return false;
                 }
             }

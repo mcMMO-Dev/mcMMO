@@ -2,7 +2,6 @@ package com.gmail.nossr50.commands.party.teleport;
 
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,7 +18,7 @@ public class PtpAcceptCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!Permissions.partyTeleportAccept(sender)) {
+        if (!pluginRef.getPermissionTools().partyTeleportAccept(sender)) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
         }
@@ -54,11 +53,11 @@ public class PtpAcceptCommand implements CommandExecutor {
             World targetWorld = target.getWorld();
             World playerWorld = player.getWorld();
 
-            if (!Permissions.partyTeleportAllWorlds(target)) {
-                if (!Permissions.partyTeleportWorld(target, targetWorld)) {
+            if (!pluginRef.getPermissionTools().partyTeleportAllWorlds(target)) {
+                if (!pluginRef.getPermissionTools().partyTeleportWorld(target, targetWorld)) {
                     target.sendMessage(pluginRef.getLocaleManager().getString("Commands.ptp.NoWorldPermissions", targetWorld.getName()));
                     return true;
-                } else if (targetWorld != playerWorld && !Permissions.partyTeleportWorld(target, playerWorld)) {
+                } else if (targetWorld != playerWorld && !pluginRef.getPermissionTools().partyTeleportWorld(target, playerWorld)) {
                     target.sendMessage(pluginRef.getLocaleManager().getString("Commands.ptp.NoWorldPermissions", playerWorld.getName()));
                     return true;
                 }

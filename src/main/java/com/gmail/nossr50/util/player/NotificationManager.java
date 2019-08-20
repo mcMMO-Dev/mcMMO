@@ -8,7 +8,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import net.md_5.bungee.api.ChatMessageType;
@@ -113,6 +112,16 @@ public class NotificationManager {
 
         String preColoredString = pluginRef.getLocaleManager().getString(key, (Object[]) values);
         player.sendMessage(preColoredString);
+    }
+
+    public void sendPlayerInformationChatOnlyPrefixed(Player player, String key, String... values)
+    {
+        if(pluginRef.getUserManager().getPlayer(player) == null || !pluginRef.getUserManager().getPlayer(player).useChatNotifications())
+            return;
+
+        String preColoredString = pluginRef.getLocaleManager().getString(key, (Object[]) values);
+        String prefixFormattedMessage = pluginRef.getLocaleManager().getString("mcMMO.Template.Prefix", preColoredString);
+        player.sendMessage(prefixFormattedMessage);
     }
 
     public void sendPlayerInformation(Player player, NotificationType notificationType, String key, String... values)
@@ -228,7 +237,7 @@ public class NotificationManager {
             return;
 
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-            if (player.isOp() || Permissions.adminChat(player)) {
+            if (player.isOp() || pluginRef.getPermissionTools().adminChat(player)) {
                 player.sendMessage(pluginRef.getLocaleManager().getString("Notifications.Admin.Format.Others", msg));
             }
         }

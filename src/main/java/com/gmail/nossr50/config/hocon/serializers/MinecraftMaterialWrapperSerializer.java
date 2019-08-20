@@ -7,6 +7,9 @@ import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
 import org.bukkit.Material;
 
+/**
+ * Class is for example purposes
+ */
 public class MinecraftMaterialWrapperSerializer implements TypeSerializer<MinecraftMaterialWrapper> {
 
     private static final String FULLY_QUALIFIED_NAME = "Fully-Qualified-Name";

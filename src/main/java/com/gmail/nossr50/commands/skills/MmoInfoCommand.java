@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -37,7 +36,7 @@ public class MmoInfoCommand implements TabExecutor {
                 return false;
 
             Player player = (Player) commandSender;
-            if (Permissions.mmoinfo(player)) {
+            if (pluginRef.getPermissionTools().mmoinfo(player)) {
                 if (args == null || args[0] == null)
                     return false;
 

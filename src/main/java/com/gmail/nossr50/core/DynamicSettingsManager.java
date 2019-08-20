@@ -43,9 +43,11 @@ public class DynamicSettingsManager {
     private HashMap<Material, Integer> partyItemWeights;
     private HashMap<PartyFeature, Integer> partyFeatureUnlocks;
 
-    /* Skill Behaviours */
+    /* Misc Managers*/
     //TODO: This class is a band-aid fix for a large problem with mcMMO code, they will be removed once the new skill system is in place
     private SkillBehaviourManager skillBehaviourManager;
+    //TODO: Generify and better cross version support
+    private TamingItemManager tamingItemManager;
 
 
     public DynamicSettingsManager(mcMMO pluginRef) {
@@ -74,15 +76,23 @@ public class DynamicSettingsManager {
     }
 
     /**
-     * Misc managers
+     * Misc managers init
      */
     private void initMiscManagers() {
         //Init Skill Behaviour Manager
-        skillBehaviourManager = new SkillBehaviourManager(pluginRef);
-
-        initExperienceManager();
 
         initWorldBlackList();
+        initExperienceManager();
+        initSkillBehaviourManager();
+        initTamingItemManager();
+    }
+
+    private void initSkillBehaviourManager() {
+        skillBehaviourManager = new SkillBehaviourManager(pluginRef);
+    }
+
+    private void initTamingItemManager() {
+        tamingItemManager = new TamingItemManager(pluginRef);
     }
 
     private void initWorldBlackList() {
@@ -136,7 +146,7 @@ public class DynamicSettingsManager {
     /**
      * Registers bonus drops from several skill configs
      */
-    public void registerBonusDrops() {
+    private void registerBonusDrops() {
         bonusDropManager.addToWhitelistByNameID(pluginRef.getConfigManager().getConfigMining().getBonusDrops());
         bonusDropManager.addToWhitelistByNameID(pluginRef.getConfigManager().getConfigHerbalism().getBonusDrops());
 //        bonusDropManager.addToWhitelistByNameID(mcMMO.getConfigManager().getConfigWoodcutting().getBonusDrops());
@@ -188,6 +198,10 @@ public class DynamicSettingsManager {
 
     public WorldBlackListManager getWorldBlackListManager() {
         return worldBlackListManager;
+    }
+
+    public TamingItemManager getTamingItemManager() {
+        return tamingItemManager;
     }
 
     public boolean isWorldBlacklisted(String worldName) {

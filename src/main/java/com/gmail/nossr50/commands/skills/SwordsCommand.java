@@ -3,7 +3,6 @@ package com.gmail.nossr50.commands.skills;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -57,7 +56,7 @@ public class SwordsCommand extends SkillCommand {
     protected void permissionsCheck(Player player) {
         canBleed = canUseSubskill(player, SubSkillType.SWORDS_RUPTURE);
         canCounter = canUseSubskill(player, SubSkillType.SWORDS_COUNTER_ATTACK);
-        canSerratedStrike = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.SWORDS_SERRATED_STRIKES) && Permissions.serratedStrikes(player);
+        canSerratedStrike = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.SWORDS_SERRATED_STRIKES) && pluginRef.getPermissionTools().serratedStrikes(player);
     }
 
     @Override
@@ -99,7 +98,11 @@ public class SwordsCommand extends SkillCommand {
 
         if (canUseSubskill(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.SWORDS_SWORDS_LIMIT_BREAK,
+<<<<<<< HEAD
                     String.valueOf(pluginRef.getCombatTools().getLimitBreakDamage(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK))));
+=======
+                    String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK, 1000))));
+>>>>>>> 308e3a4b1f46e9e3de28d6d540dd055a540ed4d5
         }
 
         return messages;

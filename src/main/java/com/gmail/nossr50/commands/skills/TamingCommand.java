@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.taming.Taming;
-import com.gmail.nossr50.util.Permissions;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -42,7 +41,7 @@ public class TamingCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canBeastLore = canUseSubskill(player, SubSkillType.TAMING_BEAST_LORE);
-        canCallWild = Permissions.callOfTheWild(player, EntityType.HORSE) || Permissions.callOfTheWild(player, EntityType.WOLF) || Permissions.callOfTheWild(player, EntityType.OCELOT);
+        canCallWild = pluginRef.getPermissionTools().callOfTheWild(player, EntityType.HORSE) || pluginRef.getPermissionTools().callOfTheWild(player, EntityType.WOLF) || pluginRef.getPermissionTools().callOfTheWild(player, EntityType.OCELOT);
         canEnvironmentallyAware = canUseSubskill(player, SubSkillType.TAMING_ENVIRONMENTALLY_AWARE);
         canFastFood = canUseSubskill(player, SubSkillType.TAMING_FAST_FOOD_SERVICE);
         canGore = canUseSubskill(player, SubSkillType.TAMING_GORE);

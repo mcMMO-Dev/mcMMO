@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -68,11 +67,11 @@ public class InspectCommand implements TabExecutor {
                 } else {
                     Player target = mcMMOPlayer.getPlayer();
 
-                    if (pluginRef.getCommandTools().hidden(sender, target, Permissions.inspectHidden(sender))) {
+                    if (pluginRef.getCommandTools().hidden(sender, target, pluginRef.getPermissionTools().inspectHidden(sender))) {
                         sender.sendMessage(pluginRef.getLocaleManager().getString("Inspect.Offline"));
                         return true;
                     }
-                    else if (pluginRef.getCommandTools().tooFar(sender, target, Permissions.inspectFar(sender))) {
+                    else if (pluginRef.getCommandTools().tooFar(sender, target, pluginRef.getPermissionTools().inspectFar(sender))) {
                         return true;
                     }
 

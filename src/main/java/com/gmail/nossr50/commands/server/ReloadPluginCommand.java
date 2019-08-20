@@ -1,7 +1,6 @@
 package com.gmail.nossr50.commands.server;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,7 +19,7 @@ public class ReloadPluginCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
-            if (!Permissions.reload(sender))
+            if (!pluginRef.getPermissionTools().reload(sender))
                 return false;
         }
 

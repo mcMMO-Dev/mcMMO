@@ -9,7 +9,6 @@ import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.datatypes.skills.behaviours.AxesBehaviour;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.entity.LivingEntity;
@@ -32,39 +31,39 @@ public class AxesManager extends SkillManager {
         if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_AXE_MASTERY))
             return false;
 
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.AXES_AXE_MASTERY);
+        return pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.AXES_AXE_MASTERY);
     }
 
     public boolean canCriticalHit(LivingEntity target) {
         if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_CRITICAL_STRIKES))
             return false;
 
-        return target.isValid() && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.AXES_CRITICAL_STRIKES);
+        return target.isValid() && pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.AXES_CRITICAL_STRIKES);
     }
 
     public boolean canImpact(LivingEntity target) {
         if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_ARMOR_IMPACT))
             return false;
 
-        return target.isValid() && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.AXES_ARMOR_IMPACT) && axesBehaviour.hasArmor(target);
+        return target.isValid() && pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.AXES_ARMOR_IMPACT) && axesBehaviour.hasArmor(target);
     }
 
     public boolean canGreaterImpact(LivingEntity target) {
         if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_GREATER_IMPACT))
             return false;
 
-        return target.isValid() && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.AXES_GREATER_IMPACT) && !axesBehaviour.hasArmor(target);
+        return target.isValid() && pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.AXES_GREATER_IMPACT) && !axesBehaviour.hasArmor(target);
     }
 
     public boolean canUseSkullSplitter(LivingEntity target) {
         if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_SKULL_SPLITTER))
             return false;
 
-        return target.isValid() && mcMMOPlayer.getAbilityMode(SuperAbilityType.SKULL_SPLITTER) && Permissions.skullSplitter(getPlayer());
+        return target.isValid() && mcMMOPlayer.getAbilityMode(SuperAbilityType.SKULL_SPLITTER) && pluginRef.getPermissionTools().skullSplitter(getPlayer());
     }
 
     public boolean canActivateAbility() {
-        return mcMMOPlayer.getToolPreparationMode(ToolType.AXE) && Permissions.skullSplitter(getPlayer());
+        return mcMMOPlayer.getToolPreparationMode(ToolType.AXE) && pluginRef.getPermissionTools().skullSplitter(getPlayer());
     }
 
     /**

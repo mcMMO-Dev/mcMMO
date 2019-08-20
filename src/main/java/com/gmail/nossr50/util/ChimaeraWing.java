@@ -36,7 +36,7 @@ public final class ChimaeraWing {
             return;
         }
 
-        if (!Permissions.chimaeraWing(player)) {
+        if (!pluginRef.getPermissionTools().chimaeraWing(player)) {
             pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
             return;
         }

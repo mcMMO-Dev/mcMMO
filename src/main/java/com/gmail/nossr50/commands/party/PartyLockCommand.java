@@ -2,7 +2,6 @@ package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -63,7 +62,7 @@ public class PartyLockCommand implements CommandExecutor {
 
         Party party = pluginRef.getUserManager().getPlayer((Player) sender).getParty();
 
-        if (!Permissions.partySubcommand(sender, lock ? PartySubcommandType.LOCK : PartySubcommandType.UNLOCK)) {
+        if (!pluginRef.getPermissionTools().partySubcommand(sender, lock ? PartySubcommandType.LOCK : PartySubcommandType.UNLOCK)) {
             sender.sendMessage(pluginRef.getLocaleManager().getString("mcMMO.NoPermission"));
             return;
         }

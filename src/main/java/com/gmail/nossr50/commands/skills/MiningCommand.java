@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.mining.MiningManager;
-import com.gmail.nossr50.util.Permissions;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -65,11 +64,11 @@ public class MiningCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canBiggerBombs = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.MINING_BIGGER_BOMBS) && Permissions.biggerBombs(player);
-        canBlast = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.MINING_BLAST_MINING) && Permissions.remoteDetonation(player);
-        canDemoExpert = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.MINING_DEMOLITIONS_EXPERTISE) && Permissions.demolitionsExpertise(player);
+        canBiggerBombs = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.MINING_BIGGER_BOMBS) && pluginRef.getPermissionTools().biggerBombs(player);
+        canBlast = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.MINING_BLAST_MINING) && pluginRef.getPermissionTools().remoteDetonation(player);
+        canDemoExpert = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.MINING_DEMOLITIONS_EXPERTISE) && pluginRef.getPermissionTools().demolitionsExpertise(player);
         canDoubleDrop = canUseSubskill(player, SubSkillType.MINING_DOUBLE_DROPS);
-        canSuperBreaker = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.MINING_SUPER_BREAKER) && Permissions.superBreaker(player);
+        canSuperBreaker = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.MINING_SUPER_BREAKER) && pluginRef.getPermissionTools().superBreaker(player);
     }
 
     @Override

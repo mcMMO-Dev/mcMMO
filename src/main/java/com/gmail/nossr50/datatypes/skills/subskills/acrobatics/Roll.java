@@ -6,7 +6,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -22,6 +22,10 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
+
+<<<<<<<HEAD
+=======
+        >>>>>>>308e3a4b1f46e9e3de28d6d540dd055a540ed4d5
 
 public class Roll extends AcrobaticsSubSkill {
 
@@ -109,7 +113,7 @@ public class Roll extends AcrobaticsSubSkill {
      */
     @Override
     public boolean hasPermission(Player player) {
-        return Permissions.isSubSkillEnabled(player, this);
+        return pluginRef.getPermissionTools().isSubSkillEnabled(player, this);
     }
 
     /**
@@ -125,7 +129,7 @@ public class Roll extends AcrobaticsSubSkill {
         /* Values related to the player */
         PlayerProfile playerProfile = pluginRef.getUserManager().getPlayer(player).getProfile();
         float skillValue = playerProfile.getSkillLevel(getPrimarySkill());
-        boolean isLucky = Permissions.lucky(player, getPrimarySkill());
+        boolean isLucky = pluginRef.getPermissionTools().lucky(player, getPrimarySkill());
 
         String[] rollStrings = pluginRef.getRandomChanceTools().calculateAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.ACROBATICS_ROLL);
         rollChance = rollStrings[0];
@@ -180,7 +184,7 @@ public class Roll extends AcrobaticsSubSkill {
     }
 
     private boolean canRoll(Player player) {
-        return pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.ACROBATICS_ROLL) && Permissions.isSubSkillEnabled(player, SubSkillType.ACROBATICS_ROLL);
+        return pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.ACROBATICS_ROLL) && pluginRef.getPermissionTools().isSubSkillEnabled(player, SubSkillType.ACROBATICS_ROLL);
     }
 
     /**
@@ -273,21 +277,39 @@ public class Roll extends AcrobaticsSubSkill {
             return false;
         }
 
-        if (player.getInventory().getItemInMainHand().getType() == Material.ENDER_PEARL || player.isInsideVehicle()) {
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        if (ItemUtils.hasItemInEitherHand(player, Material.ENDER_PEARL) || player.isInsideVehicle()) {
+            if(mcMMOPlayer.isDebugMode()) {
+                mcMMOPlayer.getPlayer().sendMessage("Acrobatics XP Prevented: Ender Pearl or Inside Vehicle");
+            }
             return true;
         }
 
+<<<<<<< HEAD
         //Teleport CD
         if (System.currentTimeMillis() < pluginRef.getUserManager().getPlayer(player).getTeleportATS())
             return true;
 
         if (pluginRef.getUserManager().getPlayer(player).getAcrobaticsManager().hasFallenInLocationBefore(getBlockLocation(player)))
+=======
+        if(UserManager.getPlayer(player).getAcrobaticsManager().hasFallenInLocationBefore(getBlockLocation(player)))
+        {
+            if(mcMMOPlayer.isDebugMode()) {
+                mcMMOPlayer.getPlayer().sendMessage("Acrobatics XP Prevented: Fallen in location before");
+            }
+
+>>>>>>> 308e3a4b1f46e9e3de28d6d540dd055a540ed4d5
             return true;
+        }
 
         return false;
     }
 
     private float calculateRollXP(Player player, double damage, boolean isRoll) {
+        //Clamp Damage to account for insane DRs
+        damage = Math.min(40, damage);
+
         ItemStack boots = player.getInventory().getBoots();
         float xp = (float) (damage * (isRoll ? pluginRef.getConfigManager().getConfigExperience().getRollXP() : pluginRef.getConfigManager().getConfigExperience().getFallXP()));
 

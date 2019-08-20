@@ -2,7 +2,6 @@ package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
 import org.bukkit.command.CommandSender;
 
 public class AbilityToggleCommand extends ToggleCommand {
@@ -13,12 +12,12 @@ public class AbilityToggleCommand extends ToggleCommand {
 
     @Override
     protected boolean hasOtherPermission(CommandSender sender) {
-        return Permissions.mcabilityOthers(sender);
+        return pluginRef.getPermissionTools().mcabilityOthers(sender);
     }
 
     @Override
     protected boolean hasSelfPermission(CommandSender sender) {
-        return Permissions.mcability(sender);
+        return pluginRef.getPermissionTools().mcability(sender);
     }
 
     @Override

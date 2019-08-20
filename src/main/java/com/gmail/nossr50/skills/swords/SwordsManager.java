@@ -8,7 +8,6 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -24,22 +23,22 @@ public class SwordsManager extends SkillManager {
     }
 
     public boolean canActivateAbility() {
-        return mcMMOPlayer.getToolPreparationMode(ToolType.SWORD) && Permissions.serratedStrikes(getPlayer());
+        return mcMMOPlayer.getToolPreparationMode(ToolType.SWORD) && pluginRef.getPermissionTools().serratedStrikes(getPlayer());
     }
 
     public boolean canUseStab() {
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_STAB) && pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_STAB);
+        return pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_STAB) && pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_STAB);
     }
 
     public boolean canUseRupture() {
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_RUPTURE) && pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_RUPTURE);
+        return pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_RUPTURE) && pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_RUPTURE);
     }
 
     public boolean canUseCounterAttack(Entity target) {
         if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_COUNTER_ATTACK))
             return false;
 
-        return target instanceof LivingEntity && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_COUNTER_ATTACK);
+        return target instanceof LivingEntity && pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_COUNTER_ATTACK);
     }
 
     public boolean canUseSerratedStrike() {

@@ -81,7 +81,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
 
         /*if (mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.ADD_UUIDS)) {
-            new UUIDUpdateAsyncTask(mcMMO.p, getStoredUsers()).runTaskAsynchronously(mcMMO.p);
+            new UUIDUpdateAsyncTask(mcMMO.p, getStoredUsers()).runTaskAsynchronously(pluginRef);
         }*/
     }
 

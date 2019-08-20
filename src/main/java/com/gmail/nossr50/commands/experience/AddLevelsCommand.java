@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -16,12 +15,12 @@ public class AddLevelsCommand extends ExperienceCommand {
 
     @Override
     protected boolean permissionsCheckSelf(CommandSender sender) {
-        return Permissions.addlevels(sender);
+        return pluginRef.getPermissionTools().addlevels(sender);
     }
 
     @Override
     protected boolean permissionsCheckOthers(CommandSender sender) {
-        return Permissions.addlevelsOthers(sender);
+        return pluginRef.getPermissionTools().addlevelsOthers(sender);
     }
 
     @Override

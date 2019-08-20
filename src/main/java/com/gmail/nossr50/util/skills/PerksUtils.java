@@ -1,7 +1,6 @@
 package com.gmail.nossr50.util.skills;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.util.Permissions;
 import org.bukkit.entity.Player;
 
 public final class PerksUtils {
@@ -12,11 +11,11 @@ public final class PerksUtils {
     }
 
     public static int handleCooldownPerks(Player player, int cooldown) {
-        if (Permissions.halvedCooldowns(player)) {
+        if (pluginRef.getPermissionTools().halvedCooldowns(player)) {
             cooldown *= 0.5;
-        } else if (Permissions.thirdedCooldowns(player)) {
+        } else if (pluginRef.getPermissionTools().thirdedCooldowns(player)) {
             cooldown *= (2.0 / 3.0);
-        } else if (Permissions.quarteredCooldowns(player)) {
+        } else if (pluginRef.getPermissionTools().quarteredCooldowns(player)) {
             cooldown *= 0.75;
         }
 
@@ -31,7 +30,7 @@ public final class PerksUtils {
      * @return the activation chance with "lucky perk" accounted for
      */
     public static int handleLuckyPerks(Player player, PrimarySkillType skill) {
-        if (Permissions.lucky(player, skill)) {
+        if (pluginRef.getPermissionTools().lucky(player, skill)) {
             return LUCKY_SKILL_ACTIVATION_CHANCE;
         }
 

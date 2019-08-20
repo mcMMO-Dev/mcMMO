@@ -84,7 +84,7 @@ public class SkillPropertiesManager {
             if(subSkillCategoryNode != null) {
 
                 //Check all the "children" of this skill, this will need to be rewritten in the future
-                for (SubSkillType subSkillType : primarySkillType.getSkillAbilities()) {
+                for (SubSkillType subSkillType : pluginRef.getSkillTools().getSkillAbilities(primarySkillType)) {
 
                     //HOCON friendly subskill name
                     String hoconFriendlySubskillName = subSkillType.getHoconFriendlyConfigName();

@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.LeaderboardsCommandAsyncTask;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -80,7 +79,7 @@ public class LeaderboardCommand implements TabExecutor {
     }
 
     private void display(int page, PrimarySkillType skill, CommandSender sender, Command command) {
-        if (skill != null && !Permissions.mctop(sender, skill)) {
+        if (skill != null && !pluginRef.getPermissionTools().mctop(sender, skill)) {
             sender.sendMessage(command.getPermissionMessage());
             return;
         }

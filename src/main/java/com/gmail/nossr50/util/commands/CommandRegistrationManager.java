@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util.commands;
 
 import com.gmail.nossr50.commands.*;
+import com.gmail.nossr50.commands.admin.PlayerDebugCommand;
 import com.gmail.nossr50.commands.admin.ReloadLocaleCommand;
 import com.gmail.nossr50.commands.chat.AdminChatCommand;
 import com.gmail.nossr50.commands.chat.ChatSpyCommand;
@@ -149,6 +150,16 @@ public final class CommandRegistrationManager {
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.1", "mmoinfo", "[" + pluginRef.getLocaleManager().getString("Commands.Usage.SubSkill") + "]"));
         command.setExecutor(new MmoInfoCommand(pluginRef));
+    }
+
+
+    private void registerMmoDebugCommand() {
+        PluginCommand command = pluginRef.getCommand("mmodebug");
+        command.setDescription(pluginRef.getLocaleManager().getString("Commands.Description.mmodebug"));
+        command.setPermission(null); //No perm required to save support headaches
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.0", "mmodebug"));
+        command.setExecutor(new PlayerDebugCommand());
     }
 
     private void registerMcChatSpyCommand() {
@@ -415,6 +426,7 @@ public final class CommandRegistrationManager {
     public void registerCommands() {
         // Generic Commands
         registerMmoInfoCommand();
+        registerMmoDebugCommand();
         registerMcabilityCommand();
         registerMcgodCommand();
         registerMcChatSpyCommand();

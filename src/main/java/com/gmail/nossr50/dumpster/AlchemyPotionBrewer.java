@@ -238,13 +238,13 @@
 //    }
 //
 //    public static void scheduleCheck(Player player, BrewingStand brewingStand) {
-//        new AlchemyBrewCheckTask(player, brewingStand).runTask(mcMMO.p);
+//        new AlchemyBrewCheckTask(player, brewingStand).runTask(pluginRef);
 //    }
 //
 //    public static void scheduleUpdate(Inventory inventory) {
 //        for (HumanEntity humanEntity : inventory.getViewers()) {
 //            if (humanEntity instanceof Player) {
-//                new PlayerUpdateInventoryTask((Player) humanEntity).runTask(mcMMO.p);
+//                new PlayerUpdateInventoryTask((Player) humanEntity).runTask(pluginRef);
 //            }
 //        }
 //    }

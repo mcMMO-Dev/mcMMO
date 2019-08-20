@@ -11,7 +11,6 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.Bukkit;
@@ -263,11 +262,11 @@ public class SkillTools {
     }
 
     public int getEnduranceLength(Player player) {
-        if (Permissions.twelveSecondActivationBoost(player)) {
+        if (pluginRef.getPermissionTools().twelveSecondActivationBoost(player)) {
             return 12;
-        } else if (Permissions.eightSecondActivationBoost(player)) {
+        } else if (pluginRef.getPermissionTools().eightSecondActivationBoost(player)) {
             return  8;
-        } else if (Permissions.fourSecondActivationBoost(player)) {
+        } else if (pluginRef.getPermissionTools().fourSecondActivationBoost(player)) {
             return  4;
         } else {
             return 0;
@@ -728,7 +727,7 @@ public class SkillTools {
     }
 
     public boolean doesPlayerHaveSkillPermission(PrimarySkillType primarySkillType, Player player) {
-        return Permissions.skillEnabled(player, primarySkillType);
+        return pluginRef.getPermissionTools().skillEnabled(player, primarySkillType);
     }
 
     public boolean canCombatSkillsTrigger(PrimarySkillType primarySkillType, Entity target) {

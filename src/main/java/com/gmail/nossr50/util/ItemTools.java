@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -112,6 +113,10 @@ public final class ItemTools {
                 return false;
             //return mcMMO.getModManager().isCustomBow(type);
         }
+    }
+
+    public static boolean hasItemInEitherHand(Player player, Material material) {
+        return player.getInventory().getItemInMainHand().getType() == material || player.getInventory().getItemInOffHand().getType() == material;
     }
 
     /**

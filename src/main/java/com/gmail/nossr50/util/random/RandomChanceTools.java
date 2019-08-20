@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillEvent;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillRandomCheckEvent;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.entity.Player;
 
@@ -249,7 +248,7 @@ public class RandomChanceTools {
         double successChance = getActivationChance(skillActivationType, subSkillType, player);
         String[] displayValues = new String[2];
 
-        boolean isLucky = Permissions.lucky(player, subSkillType.getParentSkill(pluginRef));
+        boolean isLucky = pluginRef.getPermissionTools().lucky(player, subSkillType.getParentSkill(pluginRef));
 
         displayValues[0] = percent.format(Math.min(successChance, 100.0D) / 100.0D);
         displayValues[1] = isLucky ? percent.format(Math.min(successChance * 1.3333D, 100.0D) / 100.0D) : null;
@@ -266,7 +265,7 @@ public class RandomChanceTools {
 
         String[] displayValues = new String[2];
 
-        boolean isLucky = Permissions.lucky(player, primarySkillType);
+        boolean isLucky = pluginRef.getPermissionTools().lucky(player, primarySkillType);
 
         displayValues[0] = percent.format(Math.min(successChance, 100.0D) / 100.0D);
         displayValues[1] = isLucky ? percent.format(Math.min(successChance_lucky, 100.0D) / 100.0D) : null;
@@ -281,7 +280,7 @@ public class RandomChanceTools {
 
         //TODO: Account for lucky in this
 
-        boolean isLucky = Permissions.lucky(player, subSkillType.getParentSkill(pluginRef));
+        boolean isLucky = pluginRef.getPermissionTools().lucky(player, subSkillType.getParentSkill(pluginRef));
 
         displayValues[0] = percent.format(Math.min(successChance, 100.0D) / 100.0D);
         displayValues[1] = isLucky ? percent.format(Math.min(successChance * 1.3333D, 100.0D) / 100.0D) : null;
@@ -290,7 +289,7 @@ public class RandomChanceTools {
     }
 
     public double addLuck(Player player, PrimarySkillType primarySkillType, double chance) {
-        if (Permissions.lucky(player, primarySkillType))
+        if (pluginRef.getPermissionTools().lucky(player, primarySkillType))
             return chance * 1.333D;
         else
             return chance;

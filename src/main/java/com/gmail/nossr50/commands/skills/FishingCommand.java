@@ -8,7 +8,6 @@ import com.gmail.nossr50.datatypes.treasure.Rarity;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.fishing.FishingManager;
-import com.gmail.nossr50.util.Permissions;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -107,7 +106,7 @@ public class FishingCommand extends SkillCommand {
                 rawBiteChance = rawBiteChance * AdvancedConfig.getInstance().getMasterAnglerBoatModifier();
             }
 
-            double luckyModifier = Permissions.lucky(player, PrimarySkillType.FISHING) ? 1.333D : 1.0D;
+            double luckyModifier = pluginRef.getPermissionTools().lucky(player, PrimarySkillType.FISHING) ? 1.333D : 1.0D;
 
             biteChance = percent.format((rawBiteChance * 100.0D) * luckyModifier);
         }

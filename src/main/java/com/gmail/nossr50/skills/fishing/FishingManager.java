@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.fishing;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -18,7 +17,6 @@ import com.gmail.nossr50.events.skills.fishing.McMMOPlayerShakeEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -62,11 +60,11 @@ public class FishingManager extends SkillManager {
     }
 
     public boolean canShake(Entity target) {
-        return target instanceof LivingEntity && pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.FISHING_SHAKE) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_SHAKE);
+        return target instanceof LivingEntity && pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.FISHING_SHAKE) && pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_SHAKE);
     }
 
     public boolean canMasterAngler() {
-        return getSkillLevel() >= pluginRef.getRankTools().getUnlockLevel(SubSkillType.FISHING_MASTER_ANGLER) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_MASTER_ANGLER);
+        return getSkillLevel() >= pluginRef.getRankTools().getUnlockLevel(SubSkillType.FISHING_MASTER_ANGLER) && pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_MASTER_ANGLER);
     }
 
     public void setFishingRodCastTimestamp() {
@@ -146,7 +144,7 @@ public class FishingManager extends SkillManager {
 
         if (overFishCount == 2) {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                if (player.isOp() || Permissions.adminChat(player)) {
+                if (player.isOp() || pluginRef.getPermissionTools().adminChat(player)) {
                     player.sendMessage(pluginRef.getLocaleManager().getString("Fishing.OverFishingDetected", getPlayer().getDisplayName()));
                 }
             }
@@ -180,7 +178,7 @@ public class FishingManager extends SkillManager {
 
         Player player = getPlayer();
 
-        if (!Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_ICE_FISHING)) {
+        if (!pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_ICE_FISHING)) {
             return false;
         }
 
@@ -262,7 +260,7 @@ public class FishingManager extends SkillManager {
     public boolean isMagicHunterEnabled() {
         return pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.FISHING_MAGIC_HUNTER)
                 && pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.FISHING_TREASURE_HUNTER)
-                && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_TREASURE_HUNTER);
+                && pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_TREASURE_HUNTER);
     }
 
     /**
@@ -277,7 +275,7 @@ public class FishingManager extends SkillManager {
         FishingTreasure treasure = null;
 
         if (pluginRef.getConfigManager().getConfigFishing().isAllowCustomDrops()
-                && Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_TREASURE_HUNTER)) {
+                && pluginRef.getPermissionTools().isSubSkillEnabled(player, SubSkillType.FISHING_TREASURE_HUNTER)) {
             treasure = getFishingTreasure();
         }
 

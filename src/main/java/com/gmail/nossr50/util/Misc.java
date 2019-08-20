@@ -36,17 +36,42 @@ public final class Misc {
     private Misc() {
     }
 
+    /**
+     * Determines if an entity is an NPC but not a villager
+     * This method aims to establish compatibility between mcMMO and other plugins which create "NPCs"
+     *
+     * It does this by checking the following
+     * 1) The entity is not a Villager
+     * 2) The entity can be considered an NPC
+     *
+     * In this context, an NPC is a bit hard to define. Various plugins determine what an NPC is in different ways.
+     * @see Misc::isNPCIncludingVillagers
+     * @param entity target entity
+     * @return true if the entity is not a Villager and is not a "NPC"
+     */
     public static boolean isNPCEntityExcludingVillagers(Entity entity) {
-        return (entity == null
-                || (entity.hasMetadata("NPC") && !(entity instanceof Villager))
-                || (entity instanceof NPC && !(entity instanceof Villager))
-                || entity.getClass().getName().equalsIgnoreCase("cofh.entity.PlayerFake"));
+        return (!isVillager(entity)
+                && isNPCIncludingVillagers(entity)); //Compatibility with some mod..
     }
 
-    public static boolean isNPCIncludingVillagers(Player entity) {
+    public static boolean isNPCClassType(Entity entity) {
+        return entity instanceof NPC;
+    }
+
+    public static boolean hasNPCMetadataTag(Entity entity) {
+        return entity.hasMetadata("NPC");
+    }
+
+    public static boolean isVillager(Entity entity) {
+        String entityType = entity.getType().toString();
+        //This weird code is for 1.13 & 1.14 compatibility
+        return entityType.equalsIgnoreCase("wandering_trader") || entity instanceof Villager;
+    }
+
+    public static boolean isNPCIncludingVillagers(Entity entity) {
         return (entity == null
-                || (entity.hasMetadata("NPC"))
-                || (entity instanceof NPC)
+                || (hasNPCMetadataTag(entity))
+                || (isNPCClassType(entity))
                 || entity.getClass().getName().equalsIgnoreCase("cofh.entity.PlayerFake"));
     }
 

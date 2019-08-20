@@ -13,7 +13,6 @@ import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.Material;
@@ -64,8 +63,7 @@ public class EntityListener implements Listener {
 
         //Prevent entities from giving XP if they target endermite
         if (event.getTarget() instanceof Endermite) {
-            if (event.getEntity().hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY)
-                    || event.getEntity().getMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY).size() <= 0)
+            if (event.getEntity().hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY))
                 event.getEntity().setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
         }
     }
@@ -174,11 +172,8 @@ public class EntityListener implements Listener {
             } else if (isTracked) {
                 pluginRef.getPlaceStore().setTrue(block);
             }
-        } else if ((block.getType() == Material.REDSTONE_ORE)) {
-        } else {
-            if (pluginRef.getPlaceStore().isTrue(block)) {
-                pluginRef.getPlaceStore().setFalse(block);
-            }
+        } else if(pluginRef.getPlaceStore().isTrue(block)) {
+            pluginRef.getPlaceStore().setFalse(block);
         }
     }
 
@@ -257,13 +252,15 @@ public class EntityListener implements Listener {
                 Projectile projectile = (Projectile) event.getCombuster();
                 if(projectile.getShooter() instanceof Player) {
                     Player attacker = (Player) projectile.getShooter();
-                    if(checkParties(event, defender, attacker))
-                        return;
+
+                    //Don't Ignite party members
+                    event.setCancelled(checkParties(event, defender, attacker));
                 }
             } else if(event.getCombuster() instanceof Player) {
                 Player attacker = (Player) event.getCombuster();
-                if(checkParties(event, defender, attacker))
-                    return;
+
+                //Don't Ignite party members
+                event.setCancelled(checkParties(event, defender, attacker));
             }
         }
     }
@@ -432,9 +429,8 @@ public class EntityListener implements Listener {
         if(!pluginRef.getConfigManager().getConfigParty().isPartyFriendlyFireEnabled())
             if ((pluginRef.getPartyManager().inSameParty(defendingPlayer, attackingPlayer)
                     || pluginRef.getPartyManager().areAllies(defendingPlayer, attackingPlayer))
-                    && !(Permissions.friendlyFire(attackingPlayer)
-                    && Permissions.friendlyFire(defendingPlayer))) {
-                event.setCancelled(true);
+                    && !(pluginRef.getPermissionTools().friendlyFire(attackingPlayer)
+                    && pluginRef.getPermissionTools().friendlyFire(defendingPlayer))) {
                 return true;
             }
         return false;
@@ -644,7 +640,7 @@ public class EntityListener implements Listener {
      *
      * @param event The event to watch
      */
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
         /* WORLD BLACKLIST CHECK */
         if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getEntity().getWorld().getName()))
@@ -692,6 +688,29 @@ public class EntityListener implements Listener {
                 return;
 
             default:
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    public void onEntityBreed(EntityBreedEvent event) {
+        if(pluginRef.getConfigManager().getConfigExploitPrevention().areSummonsBreedable()) {
+            //TODO: Change to NBT
+            if(event.getFather().hasMetadata(MetadataConstants.COTW_TEMPORARY_SUMMON) || event.getMother().hasMetadata(MetadataConstants.COTW_TEMPORARY_SUMMON)) {
+                event.setCancelled(true);
+                Animals mom = (Animals) event.getMother();
+                Animals father = (Animals) event.getFather();
+
+                //Prevent love mode spam
+                mom.setLoveModeTicks(0);
+                father.setLoveModeTicks(0);
+
+                //Inform the player
+                if(event.getBreeder() instanceof Player) {
+                    Player player = (Player) event.getBreeder();
+                    pluginRef.getNotificationManager().sendPlayerInformationChatOnly(player, "Taming.Summon.COTW.BreedingDisallowed");
+                }
+            }
+
         }
     }
 
@@ -892,7 +911,7 @@ public class EntityListener implements Listener {
              * @ 1000
              */
             case POTATO: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-                if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
+                if (pluginRef.getPermissionTools().isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
                     event.setFoodLevel(pluginRef.getUserManager().getPlayer(player).getHerbalismManager().farmersDiet(newFoodLevel));
                 }
                 return;
@@ -901,7 +920,7 @@ public class EntityListener implements Listener {
             case TROPICAL_FISH:
             case COOKED_COD:
             case COOKED_SALMON:
-                if (Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_FISHERMANS_DIET)) {
+                if (pluginRef.getPermissionTools().isSubSkillEnabled(player, SubSkillType.FISHING_FISHERMANS_DIET)) {
                     event.setFoodLevel(pluginRef.getUserManager().getPlayer(player).getFishingManager().handleFishermanDiet(newFoodLevel));
                 }
                 return;
@@ -988,7 +1007,7 @@ public class EntityListener implements Listener {
         // isFriendlyPet ensures that the Tameable is: Tamed, owned by a player,
         // and the owner is in the same party
         // So we can make some assumptions here, about our casting and our check
-        if (!(Permissions.friendlyFire(player) && Permissions.friendlyFire((Player) tameable.getOwner()))) {
+        if (!(pluginRef.getPermissionTools().friendlyFire(player) && pluginRef.getPermissionTools().friendlyFire((Player) tameable.getOwner()))) {
             event.setCancelled(true);
         }
     }

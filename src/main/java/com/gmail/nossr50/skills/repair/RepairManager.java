@@ -7,7 +7,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -233,7 +232,7 @@ public class RepairManager extends SkillManager {
     private short repairCalculate(short durability, int repairAmount) {
         Player player = getPlayer();
 
-        if (Permissions.isSubSkillEnabled(player, SubSkillType.REPAIR_REPAIR_MASTERY)
+        if (pluginRef.getPermissionTools().isSubSkillEnabled(player, SubSkillType.REPAIR_REPAIR_MASTERY)
                 && pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.REPAIR_REPAIR_MASTERY)) {
 
             double maxBonusCalc = pluginRef.getDynamicSettingsManager().getSkillPropertiesManager().getMaxBonus(SubSkillType.REPAIR_REPAIR_MASTERY) / 100.0D;
@@ -243,7 +242,7 @@ public class RepairManager extends SkillManager {
             repairAmount += bonus;
         }
 
-        if (Permissions.isSubSkillEnabled(player, SubSkillType.REPAIR_SUPER_REPAIR) && checkPlayerProcRepair()) {
+        if (pluginRef.getPermissionTools().isSubSkillEnabled(player, SubSkillType.REPAIR_SUPER_REPAIR) && checkPlayerProcRepair()) {
             repairAmount *= 2.0D;
         }
 
@@ -285,12 +284,12 @@ public class RepairManager extends SkillManager {
             return;
         }
 
-        if (Permissions.arcaneBypass(player)) {
+        if (pluginRef.getPermissionTools().arcaneBypass(player)) {
             pluginRef.getNotificationManager().sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Repair.Arcane.Perfect");
             return;
         }
 
-        if (getArcaneForgingRank() == 0 || !Permissions.isSubSkillEnabled(player, SubSkillType.REPAIR_ARCANE_FORGING)) {
+        if (getArcaneForgingRank() == 0 || !pluginRef.getPermissionTools().isSubSkillEnabled(player, SubSkillType.REPAIR_ARCANE_FORGING)) {
             for (Enchantment enchant : enchants.keySet()) {
                 item.removeEnchantment(enchant);
             }

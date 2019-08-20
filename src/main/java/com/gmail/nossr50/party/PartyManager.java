@@ -10,7 +10,6 @@ import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.items.TeleportationWarmup;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.OfflinePlayer;
@@ -131,7 +130,7 @@ public final class PartyManager {
      * @return true if party is full and cannot be joined
      */
     public boolean isPartyFull(Player player, Party targetParty) {
-        return !Permissions.partySizeBypass(player)
+        return !pluginRef.getPermissionTools().partySizeBypass(player)
                 && targetParty.getMembers().size() >= pluginRef.getConfigManager().getConfigParty().getPartySizeLimit();
     }
 

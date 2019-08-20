@@ -9,7 +9,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -66,12 +65,12 @@ public class SalvageManager extends SkillManager {
         }
 
         // Permissions checks on material and item types
-        if (!Permissions.salvageItemType(player, salvageable.getSalvageItemType())) {
+        if (!pluginRef.getPermissionTools().salvageItemType(player, salvageable.getSalvageItemType())) {
             pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
             return;
         }
 
-        if (!Permissions.salvageMaterialType(player, salvageable.getSalvageItemMaterialCategory())) {
+        if (!pluginRef.getPermissionTools().salvageMaterialType(player, salvageable.getSalvageItemMaterialCategory())) {
             pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
             return;
         }
@@ -203,7 +202,7 @@ public class SalvageManager extends SkillManager {
     }*/
 
     public double getExtractFullEnchantChance() {
-        if (Permissions.hasSalvageEnchantBypassPerk(getPlayer()))
+        if (pluginRef.getPermissionTools().hasSalvageEnchantBypassPerk(getPlayer()))
             return 100.0D;
 
         return pluginRef.getConfigManager().getConfigSalvage().getConfigArcaneSalvage().getExtractFullEnchantChance().get(getArcaneSalvageRank());
@@ -216,7 +215,7 @@ public class SalvageManager extends SkillManager {
     private ItemStack arcaneSalvageCheck(Map<Enchantment, Integer> enchants) {
         Player player = getPlayer();
 
-        if (!pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE) || !Permissions.arcaneSalvage(player)) {
+        if (!pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE) || !pluginRef.getPermissionTools().arcaneSalvage(player)) {
             pluginRef.getNotificationManager().sendPlayerInformationChatOnly(player, "Salvage.Skills.ArcaneFailed");
             return null;
         }
@@ -238,7 +237,7 @@ public class SalvageManager extends SkillManager {
             }
 
             if (!salvageBehaviour.isArcaneSalvageEnchantLoss()
-                    || Permissions.hasSalvageEnchantBypassPerk(player)
+                    || pluginRef.getPermissionTools().hasSalvageEnchantBypassPerk(player)
                     || pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractFullEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
 
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchantLevel, true);

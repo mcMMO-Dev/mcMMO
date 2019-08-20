@@ -387,23 +387,19 @@ Skills:
                 Item_Amount: 10
                 Summon_Amount: 1
                 Summon_Length: 240
-                Summon_Max_Amount: 10
+                Per_Player_Limit: 2
             Ocelot:
                 Item_Material: COD
                 Item_Amount: 10
                 Summon_Amount: 1
                 Summon_Length: 240
-                Summon_Max_Amount: 10
+                Per_Player_Limit: 1
             Horse:
                 Item_Material: APPLE
                 Item_Amount: 10
                 Summon_Amount: 1
                 Summon_Length: 240
-                Summon_Max_Amount: 10
-
-            # Range to check for nearby pets when using Call Of The Wild, 0 will disable the check
-            Range: 40.0
-
+                Per_Player_Limit: 1
     Unarmed:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
@@ -424,6 +420,8 @@ Skills:
 ###
 Bonus_Drops:
     Herbalism:
+        Chorus_Fruit: true
+        Chorus_Plant: true
         Beetroots: true
         Beetroot: true
         Brown_Mushroom: true

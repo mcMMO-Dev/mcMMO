@@ -2,7 +2,6 @@ package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
 import org.bukkit.command.CommandSender;
 
 public class RefreshCooldownsCommand extends ToggleCommand {
@@ -13,12 +12,12 @@ public class RefreshCooldownsCommand extends ToggleCommand {
 
     @Override
     protected boolean hasOtherPermission(CommandSender sender) {
-        return Permissions.mcrefreshOthers(sender);
+        return pluginRef.getPermissionTools().mcrefreshOthers(sender);
     }
 
     @Override
     protected boolean hasSelfPermission(CommandSender sender) {
-        return Permissions.mcrefresh(sender);
+        return pluginRef.getPermissionTools().mcrefresh(sender);
     }
 
     @Override

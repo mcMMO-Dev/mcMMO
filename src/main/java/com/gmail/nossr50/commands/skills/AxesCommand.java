@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.axes.Axes;
-import com.gmail.nossr50.util.Permissions;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -58,7 +57,7 @@ public class AxesCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canSkullSplitter = Permissions.skullSplitter(player) && pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.AXES_SKULL_SPLITTER);
+        canSkullSplitter = pluginRef.getPermissionTools().skullSplitter(player) && pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.AXES_SKULL_SPLITTER);
         canCritical = canUseSubskill(player, SubSkillType.AXES_CRITICAL_STRIKES);
         canAxeMastery = canUseSubskill(player, SubSkillType.AXES_AXE_MASTERY);
         canImpact = canUseSubskill(player, SubSkillType.AXES_ARMOR_IMPACT);
@@ -93,7 +92,11 @@ public class AxesCommand extends SkillCommand {
 
         if (canUseSubskill(player, SubSkillType.AXES_AXES_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.AXES_AXES_LIMIT_BREAK,
+<<<<<<< HEAD
                     String.valueOf(pluginRef.getCombatTools().getLimitBreakDamage(player, SubSkillType.AXES_AXES_LIMIT_BREAK))));
+=======
+                    String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, SubSkillType.AXES_AXES_LIMIT_BREAK, 1000))));
+>>>>>>> 308e3a4b1f46e9e3de28d6d540dd055a540ed4d5
         }
 
         return messages;

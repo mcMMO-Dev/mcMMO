@@ -10,7 +10,6 @@ import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.SkillUnlockNotificationTask;
-import com.gmail.nossr50.util.Permissions;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
@@ -45,7 +44,7 @@ public class RankTools {
                 continue;
 
             //Don't send notifications if the player lacks the permission node
-            if(!Permissions.isSubSkillEnabled(mcMMOPlayer.getPlayer(), subSkillType))
+            if(!pluginRef.getPermissionTools().isSubSkillEnabled(mcMMOPlayer.getPlayer(), subSkillType))
                 continue;
 
             //The players level is the exact level requirement for this skill

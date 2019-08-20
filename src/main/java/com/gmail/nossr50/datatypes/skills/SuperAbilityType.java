@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes.skills;
 
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
@@ -159,28 +158,28 @@ public enum SuperAbilityType {
     public boolean getPermissions(Player player) {
         switch (this) {
             case BERSERK:
-                return Permissions.berserk(player);
+                return pluginRef.getPermissionTools().berserk(player);
 
             case BLAST_MINING:
-                return Permissions.remoteDetonation(player);
+                return pluginRef.getPermissionTools().remoteDetonation(player);
 
             case GIGA_DRILL_BREAKER:
-                return Permissions.gigaDrillBreaker(player);
+                return pluginRef.getPermissionTools().gigaDrillBreaker(player);
 
             case GREEN_TERRA:
-                return Permissions.greenTerra(player);
+                return pluginRef.getPermissionTools().greenTerra(player);
 
             case SERRATED_STRIKES:
-                return Permissions.serratedStrikes(player);
+                return pluginRef.getPermissionTools().serratedStrikes(player);
 
             case SKULL_SPLITTER:
-                return Permissions.skullSplitter(player);
+                return pluginRef.getPermissionTools().skullSplitter(player);
 
             case SUPER_BREAKER:
-                return Permissions.superBreaker(player);
+                return pluginRef.getPermissionTools().superBreaker(player);
 
             case TREE_FELLER:
-                return Permissions.treeFeller(player);
+                return pluginRef.getPermissionTools().treeFeller(player);
 
             default:
                 return false;

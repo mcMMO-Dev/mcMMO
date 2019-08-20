@@ -51,9 +51,11 @@ public final class UserManager {
     public void remove(Player player) {
         McMMOPlayer mcMMOPlayer = getPlayer(player);
         player.removeMetadata(MetadataConstants.PLAYER_DATA_METAKEY, pluginRef);
+        mcMMOPlayer.cleanup();
 
-        if(playerDataSet != null && playerDataSet.contains(mcMMOPlayer))
+        if(playerDataSet != null && playerDataSet.contains(mcMMOPlayer)) {
             playerDataSet.remove(mcMMOPlayer); //Clear sync save tracking
+        }
     }
 
     /**

@@ -1,13 +1,13 @@
 package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.chat.ChatManager;
-import com.gmail.nossr50.config.MainConfig;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
@@ -17,7 +17,10 @@ import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
-import com.gmail.nossr50.util.*;
+import com.gmail.nossr50.util.ChimaeraWing;
+import com.gmail.nossr50.util.HardcoreManager;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Motd;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
@@ -141,7 +144,7 @@ public class PlayerListener implements Listener {
 
         Player killedPlayer = event.getEntity();
 
-        if (!killedPlayer.hasMetadata(MetadataConstants.PLAYER_DATA_METAKEY) || Permissions.hardcoreBypass(killedPlayer)) {
+        if (!killedPlayer.hasMetadata(MetadataConstants.PLAYER_DATA_METAKEY) || pluginRef.getPermissionTools().hardcoreBypass(killedPlayer)) {
             return;
         }
 
@@ -274,7 +277,7 @@ public class PlayerListener implements Listener {
                     }
                 }
 
-                if (Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_INNER_PEACE)) {
+                if (pluginRef.getPermissionTools().isSubSkillEnabled(player, SubSkillType.FISHING_INNER_PEACE)) {
                     //Don't modify XP below vanilla values
                     if (fishingManager.addInnerPeaceVanillaXPBoost(event.getExpToDrop()) > 1)
                         event.setExpToDrop(fishingManager.addInnerPeaceVanillaXPBoost(event.getExpToDrop()));
@@ -811,11 +814,18 @@ public class PlayerListener implements Listener {
                 Material type = heldItem.getType();
                 TamingManager tamingManager = mcMMOPlayer.getTamingManager();
 
-                if (type == MainConfig.getInstance().getTamingCOTWMaterial(EntityType.WOLF)) {
+
+                switch(type) {
+                    case
+                }
+
+                if (type == ) {
                     tamingManager.summonWolf();
-                } else if (type == MainConfig.getInstance().getTamingCOTWMaterial(EntityType.OCELOT)) {
+                }
+                else if (type == Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.CAT.getConfigEntityTypeEntry())) {
                     tamingManager.summonOcelot();
-                } else if (type == MainConfig.getInstance().getTamingCOTWMaterial(EntityType.HORSE)) {
+                }
+                else if (type == Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.HORSE.getConfigEntityTypeEntry())) {
                     tamingManager.summonHorse();
                 }
 

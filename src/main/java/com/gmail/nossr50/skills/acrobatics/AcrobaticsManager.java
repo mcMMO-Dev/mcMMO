@@ -10,7 +10,6 @@ import com.gmail.nossr50.datatypes.skills.behaviours.AcrobaticsBehaviour;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.Location;
@@ -64,7 +63,7 @@ public class AcrobaticsManager extends SkillManager {
         if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.ACROBATICS_DODGE))
             return false;
 
-        if (Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.ACROBATICS_DODGE)) {
+        if (pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.ACROBATICS_DODGE)) {
             /*if (damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled) {
                 return false;
             }*/

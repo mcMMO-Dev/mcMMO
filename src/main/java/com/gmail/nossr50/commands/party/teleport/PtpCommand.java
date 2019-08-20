@@ -7,7 +7,6 @@ import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -102,7 +101,7 @@ public class PtpCommand implements TabExecutor {
                 return ptpAcceptCommand.onCommand(sender, command, label, args);
             }
 
-            if (!Permissions.partyTeleportSend(sender)) {
+            if (!pluginRef.getPermissionTools().partyTeleportSend(sender)) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }

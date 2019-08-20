@@ -10,7 +10,6 @@ import com.gmail.nossr50.datatypes.skills.behaviours.WoodcuttingBehaviour;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -36,7 +35,7 @@ public class WoodcuttingManager extends SkillManager {
     }
 
     public boolean canUseLeafBlower(ItemStack heldItem) {
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.WOODCUTTING_LEAF_BLOWER)
+        return pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.WOODCUTTING_LEAF_BLOWER)
                 && pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.WOODCUTTING_LEAF_BLOWER)
                 && pluginRef.getItemTools().isAxe(heldItem);
     }
@@ -46,8 +45,8 @@ public class WoodcuttingManager extends SkillManager {
                 && pluginRef.getItemTools().isAxe(heldItem);
     }
 
-    public boolean canGetDoubleDrops() {
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
+    private boolean canGetDoubleDrops() {
+        return pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
                 && pluginRef.getRankTools().hasReachedRank(1, getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER)
                 && pluginRef.getRandomChanceTools().isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.WOODCUTTING_HARVEST_LUMBER, getPlayer());
     }
@@ -108,7 +107,7 @@ public class WoodcuttingManager extends SkillManager {
             return;
         }
 
-        dropBlocks(treeFellerBlocks);
+        dropTreeFellerLootFromBlocks(treeFellerBlocks);
         treeFellerReachedThreshold = false; // Reset the value after we're done with Tree Feller each time.
     }
 
@@ -247,7 +246,7 @@ public class WoodcuttingManager extends SkillManager {
      *
      * @param treeFellerBlocks List of blocks to be dropped
      */
-    private void dropBlocks(Set<BlockState> treeFellerBlocks) {
+    private void dropTreeFellerLootFromBlocks(Set<BlockState> treeFellerBlocks) {
         Player player = getPlayer();
         int xp = 0;
         int processedLogCount = 0;

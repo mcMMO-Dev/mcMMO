@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
-import com.gmail.nossr50.util.Permissions;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -81,7 +80,7 @@ public class RepairCommand extends SkillCommand {
 //        canRepairString = Permissions.repairMaterialType(player, ItemMaterialCategory.STRING);
 //        canRepairLeather = Permissions.repairMaterialType(player, ItemMaterialCategory.LEATHER);
 //        canRepairWood = Permissions.repairMaterialType(player, ItemMaterialCategory.WOOD);
-        arcaneBypass = (Permissions.arcaneBypass(player) || Permissions.hasRepairEnchantBypassPerk(player));
+        arcaneBypass = (pluginRef.getPermissionTools().arcaneBypass(player) || pluginRef.getPermissionTools().hasRepairEnchantBypassPerk(player));
     }
 
     @Override

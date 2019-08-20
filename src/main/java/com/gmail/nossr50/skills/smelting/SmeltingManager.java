@@ -7,7 +7,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.inventory.ItemStack;
@@ -18,7 +17,7 @@ public class SmeltingManager extends SkillManager {
     }
 
     public boolean isSecondSmeltSuccessful() {
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SMELTING_SECOND_SMELT)
+        return pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.SMELTING_SECOND_SMELT)
                 && pluginRef.getRandomChanceTools().isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SMELTING_SECOND_SMELT, getPlayer());
     }
 

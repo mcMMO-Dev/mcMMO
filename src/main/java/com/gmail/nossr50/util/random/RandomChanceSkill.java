@@ -3,7 +3,6 @@ package com.gmail.nossr50.util.random;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
 import org.bukkit.entity.Player;
 
 public class RandomChanceSkill implements RandomChanceExecution {
@@ -28,7 +27,7 @@ public class RandomChanceSkill implements RandomChanceExecution {
             this.skillLevel = 0;
 
         if (player != null)
-            isLucky = Permissions.lucky(player, primarySkillType);
+            isLucky = pluginRef.getPermissionTools().lucky(player, primarySkillType);
         else
             isLucky = false;
     }
@@ -50,7 +49,7 @@ public class RandomChanceSkill implements RandomChanceExecution {
             this.skillLevel = 0;
 
         if (player != null)
-            isLucky = Permissions.lucky(player, primarySkillType);
+            isLucky = pluginRef.getPermissionTools().lucky(player, primarySkillType);
         else
             isLucky = false;
     }

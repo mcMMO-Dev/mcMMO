@@ -9,7 +9,6 @@ import com.gmail.nossr50.datatypes.skills.behaviours.ArcheryBehaviour;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -34,21 +33,21 @@ public class ArcheryManager extends SkillManager {
         if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.ARCHERY_DAZE))
             return false;
 
-        return target instanceof Player && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.ARCHERY_DAZE);
+        return target instanceof Player && pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.ARCHERY_DAZE);
     }
 
     public boolean canSkillShot() {
         if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.ARCHERY_SKILL_SHOT))
             return false;
 
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.ARCHERY_SKILL_SHOT);
+        return pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.ARCHERY_SKILL_SHOT);
     }
 
     public boolean canRetrieveArrows() {
         if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.ARCHERY_ARROW_RETRIEVAL))
             return false;
 
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.ARCHERY_ARROW_RETRIEVAL);
+        return pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.ARCHERY_ARROW_RETRIEVAL);
     }
 
     /**
