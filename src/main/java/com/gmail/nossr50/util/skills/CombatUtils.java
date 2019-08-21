@@ -543,7 +543,8 @@ public final class CombatUtils {
             boolean wasMetaSet = target.getMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY).size() != 0;
             target.setMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.metadataValue);
             target.damage(9999, attacker);
-            if (!wasMetaSet) target.removeMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.p);
+            if (!wasMetaSet)
+                target.removeMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.p);
         }
         else
             target.setHealth(newHealth);
