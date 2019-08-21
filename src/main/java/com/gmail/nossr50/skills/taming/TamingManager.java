@@ -27,6 +27,7 @@ import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 
@@ -254,6 +255,12 @@ public class TamingManager extends SkillManager {
         }
 
         message = message.concat(LocaleLoader.getString("Combat.BeastLoreHealth", target.getHealth(), target.getMaxHealth()));
+
+        if (beast instanceof AbstractHorse) {
+            AbstractHorse horse = (AbstractHorse) beast;
+            message = message.concat("\n" + LocaleLoader.getString("Combat.BeastLoreHorseSpeed", horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getValue() * 43));
+        }
+
         player.sendMessage(message);
     }
 
