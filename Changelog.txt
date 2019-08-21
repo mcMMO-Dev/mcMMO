@@ -1,4 +1,5 @@
 Version 2.1.103
+    Fixed an issue with salvage checking the incorrect level requirement
 
 Version 2.1.102
     Scoreboards will now be removed from players who teleport to a blacklisted world
