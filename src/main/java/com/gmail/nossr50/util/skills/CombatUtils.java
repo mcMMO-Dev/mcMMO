@@ -539,7 +539,11 @@ public final class CombatUtils {
 
         if(newHealth == 0)
         {
+            // TODO: This is horrible, but there is no cleaner way to do this without potentially breaking existing code right now
+            boolean wasMetaSet = target.getMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY).size() != 0;
+            target.setMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.metadataValue);
             target.damage(9999, attacker);
+            if (!wasMetaSet) target.removeMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.p);
         }
         else
             target.setHealth(newHealth);
@@ -550,9 +554,11 @@ public final class CombatUtils {
             return;
         }
 
+        // This is horrible, but there is no cleaner way to do this without potentially breaking existing code
+        boolean wasMetaSet = target.getMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY).size() != 0;
         target.setMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.metadataValue);
         target.damage(damage, attacker);
-        target.removeMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.p);
+        if (!wasMetaSet) target.removeMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.p);
 
 //        //IFrame storage
 ////        int noDamageTicks = target.getNoDamageTicks();
