@@ -393,17 +393,32 @@ public final class CombatUtils {
         }
     }
 
-    public static int getLimitBreakDamage(Player player, LivingEntity defender, SubSkillType subSkillType) {
+    /**
+     * Calculate and return the RAW damage bonus from Limit Break before reductions
+     * @param attacker attacking player
+     * @param defender defending living entity
+     * @param subSkillType the specific limit break skill for calculations
+     * @return the RAW damage bonus from Limit Break which is applied before reductions
+     */
+    public static int getLimitBreakDamage(Player attacker, LivingEntity defender, SubSkillType subSkillType) {
         if(defender instanceof Player) {
             Player playerDefender = (Player) defender;
-            return getLimitBreakDamageAgainstQuality(player, subSkillType, getArmorQualityLevel(playerDefender));
+            return getLimitBreakDamageAgainstQuality(attacker, subSkillType, getArmorQualityLevel(playerDefender));
         } else {
-            return getLimitBreakDamageAgainstQuality(player, subSkillType, 1000);
+            return getLimitBreakDamageAgainstQuality(attacker, subSkillType, 1000);
         }
     }
 
-    public static int getLimitBreakDamageAgainstQuality(Player player, SubSkillType subSkillType, int armorQualityLevel) {
-        int rawDamageBoost = RankUtils.getRank(player, subSkillType);
+    /**
+     * Calculate the RAW daamge value of limit break based on the armor quality of the target
+     * PVE mobs are passed in with a value of 1000 for armor quality, hacky... I'll change it later
+     * @param attacker Living entity attacker
+     * @param subSkillType Target limit break
+     * @param armorQualityLevel Armor quality level
+     * @return the RAW damage boost after its been mutated by armor quality
+     */
+    public static int getLimitBreakDamageAgainstQuality(Player attacker, SubSkillType subSkillType, int armorQualityLevel) {
+        int rawDamageBoost = RankUtils.getRank(attacker, subSkillType);
 
         if(armorQualityLevel <= 4) {
             rawDamageBoost *= .25; //75% Nerf
@@ -416,6 +431,11 @@ public final class CombatUtils {
         return rawDamageBoost;
     }
 
+    /**
+     * Get the quality level of the armor of a player used for Limit Break calculations
+     * @param defender target defending player
+     * @return the armor quality of the defending player
+     */
     public static int getArmorQualityLevel(Player defender) {
         int armorQualityLevel = 0;
 
@@ -428,6 +448,11 @@ public final class CombatUtils {
         return armorQualityLevel;
     }
 
+    /**
+     * Get the armor quality for a specific item used for Limit Break calculations
+     * @param itemStack target item stack
+     * @return the armor quality of a specific Item Stack
+     */
     private static int getArmorQuality(ItemStack itemStack) {
         int quality = 0;
 
