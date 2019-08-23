@@ -1,4 +1,5 @@
 Version 2.1.103
+    Fixed a bug where Tree Feller was only rewarding 1 XP per log broken no matter the circumstances
     Fixed an issue with salvage checking the incorrect level requirement
     Updated Italian locale (thanks Leomixer17)
     Fixed grammar in one of the Salvage strings (thanks QuantumToasted)
