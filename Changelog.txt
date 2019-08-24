@@ -1,3 +1,5 @@
+Version 2.1.104
+
 Version 2.1.103
     Treasure item amount will default to 1 if not specified instead of breaking mcMMO
     Fishing treasures will now return the amount defined in treasures config file, an option to randomize amounts will be coming in the future. See notes.
