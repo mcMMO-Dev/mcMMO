@@ -480,9 +480,10 @@ public class FishingManager extends SkillManager {
             treasureDrop.setDurability((short) (Misc.getRandom().nextInt(maxDurability)));
         }
 
-        if (treasureDrop.getAmount() > 1) {
+        //TODO: Add option to randomize the amount rewarded
+        /*if (treasureDrop.getAmount() > 1) {
             treasureDrop.setAmount(Misc.getRandom().nextInt(treasureDrop.getAmount()) + 1);
-        }
+        }*/
 
         treasure.setDrop(treasureDrop);
 
