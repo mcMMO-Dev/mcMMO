@@ -558,21 +558,19 @@ public final class CombatUtils {
             return;
         }
 
-        double incDmg = getFakeDamageFinalResult(attacker, target, DamageCause.ENTITY_ATTACK, damage);
-
-        double newHealth = Math.max(0, target.getHealth() - incDmg);
-
-        if(newHealth == 0)
-        {
-            // TODO: This is horrible, but there is no cleaner way to do this without potentially breaking existing code right now
-            boolean wasMetaSet = target.getMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY).size() != 0;
-            target.setMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.metadataValue);
-            target.damage(9999, attacker);
-            if (!wasMetaSet)
-                target.removeMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.p);
-        }
-        else
-            target.setHealth(newHealth);
+        // TODO: This is horrible, but there is no cleaner way to do this without potentially breaking existing code right now
+        // calling damage here is a double edged sword: On one hand, without a call, plugins won't see this properly when the entity dies,
+        // potentially mis-attributing the death cause; calling a fake event would partially fix this, but this and setting the last damage
+        // cause do have issues around plugin observability. This is not a perfect solution, but it appears to be the best one here
+        // We also set no damage ticks to 0, to ensure that damage is applied for this case, and reset it back to the original value
+        boolean wasMetaSet = target.getMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY).size() != 0;
+        target.setMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.metadataValue);
+        int noDamageTicks = target.getNoDamageTicks();
+        target.setNoDamageTicks(0);
+        target.damage(damage, attacker);
+        target.setNoDamageTicks(noDamageTicks);
+        if (!wasMetaSet)
+            target.removeMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.p);
     }
 
     public static void dealNoInvulnerabilityTickDamageRupture(LivingEntity target, double damage, Entity attacker, int toolTier) {
@@ -580,11 +578,7 @@ public final class CombatUtils {
             return;
         }
 
-        // This is horrible, but there is no cleaner way to do this without potentially breaking existing code
-        boolean wasMetaSet = target.getMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY).size() != 0;
-        target.setMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.metadataValue);
-        target.damage(damage, attacker);
-        if (!wasMetaSet) target.removeMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.p);
+        dealNoInvulnerabilityTickDamage(target, damage, attacker);
 
 //        //IFrame storage
 ////        int noDamageTicks = target.getNoDamageTicks();
