@@ -1,4 +1,7 @@
 Version 2.1.104
+    Fixed a bug resulting in many errors when using Rupture
+    Large update to the Japanese locale (thanks ethernetcat)
+    Updated Hungarian locale (thanks andris)
 
 Version 2.1.103
     Treasure item amount will default to 1 if not specified instead of breaking mcMMO
