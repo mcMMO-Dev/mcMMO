@@ -62,10 +62,7 @@ public class EventUtils {
      * @return true if damage is NOT from an unnatural mcMMO skill (such as bleed DOTs)
      */
     public static boolean isDamageFromMcMMOComplexBehaviour(Event event) {
-        if (event instanceof FakeEntityDamageEvent) {
-            return true;
-        }
-        return false;
+        return event instanceof FakeEntityDamageEvent;
     }
 
     /**

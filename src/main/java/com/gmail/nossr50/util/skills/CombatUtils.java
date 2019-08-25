@@ -777,18 +777,14 @@ public final class CombatUtils {
             }
 
             // It may seem a bit redundant but we need a check here to prevent bleed from being applied in applyAbilityAoE()
-            if (getFakeDamageFinalResult(player, entity, 1.0) == 0) {
-                return false;
-            }
+            return getFakeDamageFinalResult(player, entity, 1.0) != 0;
         }
         else if (entity instanceof Tameable) {
             if (isFriendlyPet(player, (Tameable) entity)) {
                 // isFriendlyPet ensures that the Tameable is: Tamed, owned by a player, and the owner is in the same party
                 // So we can make some assumptions here, about our casting and our check
                 Player owner = (Player) ((Tameable) entity).getOwner();
-                if (!(Permissions.friendlyFire(player) && Permissions.friendlyFire(owner))) {
-                    return false;
-                }
+                return Permissions.friendlyFire(player) && Permissions.friendlyFire(owner);
             }
         }
 
@@ -850,11 +846,7 @@ public final class CombatUtils {
     public static boolean canDamage(Entity attacker, Entity target, DamageCause damageCause, double damage) {
         EntityDamageEvent damageEvent = sendEntityDamageEvent(attacker, target, damageCause, damage);
 
-        if (damageEvent.isCancelled()) {
-            return false;
-        }
-
-        return true;
+        return !damageEvent.isCancelled();
     }
 
     public static EntityDamageEvent sendEntityDamageEvent(Entity attacker, Entity target, DamageCause damageCause, double damage) {

@@ -80,10 +80,7 @@ public class RandomChanceUtil
     public static boolean rollDice(double chanceOfSuccess, int bound) {
         Random random = new Random();
 
-        if (chanceOfSuccess > random.nextInt(bound))
-            return true;
-        else
-            return false;
+        return chanceOfSuccess > random.nextInt(bound);
     }
 
     /**

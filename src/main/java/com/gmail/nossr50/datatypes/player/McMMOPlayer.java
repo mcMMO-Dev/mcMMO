@@ -491,10 +491,7 @@ public class McMMOPlayer {
         if(hasReachedPowerLevelCap())
             return true;
 
-        if(getSkillLevel(primarySkillType) >= Config.getInstance().getLevelCap(primarySkillType))
-            return true;
-
-        return false;
+        return getSkillLevel(primarySkillType) >= Config.getInstance().getLevelCap(primarySkillType);
     }
 
     /**
