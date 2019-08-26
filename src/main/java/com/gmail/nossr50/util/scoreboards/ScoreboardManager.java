@@ -13,6 +13,7 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -173,8 +174,13 @@ public class ScoreboardManager {
         dirtyPowerLevels.add(player.getName());
     }
 
-    // Called by PlayerQuitEvent listener
+    // Called by PlayerQuitEvent listener and OnPlayerTeleport under certain circumstances
     public static void teardownPlayer(Player player) {
+        //Hacky world blacklist fix
+        if(player.isOnline() && player.isValid())
+            if(Bukkit.getServer().getScoreboardManager() != null)
+                player.setScoreboard(Bukkit.getServer().getScoreboardManager().getMainScoreboard());
+
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.remove(player.getName());
 
         if (wrapper != null && wrapper.revertTask != null) {
