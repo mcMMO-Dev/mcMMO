@@ -1,5 +1,6 @@
 Version 2.1.105
     mcMMO will reset players scoreboard to the main scoreboard if they move into a blacklisted world
+    Large update to Italian locale (thanks Leomixer17)
 
     NOTES:
     The scoreboard change should result in mcMMO removing scoreboards from players properly when they enter a black listed world. This is a hacky band aid fix as our scoreboard code is archaic and needs to be rewritten in 2.2 and not 2.1. Expect a scoreboard overhaul sometime in the future.
