@@ -31,6 +31,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private DataSource loadPool;
     private DataSource savePool;
 
+    private boolean debug = false;
+
     private ReentrantLock massUpdateLock = new ReentrantLock();
 
     protected SQLDatabaseManager() {
@@ -55,6 +57,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             return;
             //throw e; // aborts onEnable()  Riking if you want to do this, fully implement it.
         }
+
+        debug = Config.getInstance().getMySQLDebug();
 
 
         PoolProperties poolProperties = new PoolProperties();
@@ -1148,6 +1152,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private void printErrors(SQLException ex) {
+        if (debug) {
+            ex.printStackTrace();
+        }
+
         StackTraceElement element = ex.getStackTrace()[0];
         mcMMO.p.getLogger().severe("Location: " + element.getClassName() + " " + element.getMethodName() + " " + element.getLineNumber());
         mcMMO.p.getLogger().severe("SQLException: " + ex.getMessage());
