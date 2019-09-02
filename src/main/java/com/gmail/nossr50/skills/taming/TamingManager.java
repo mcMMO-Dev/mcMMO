@@ -256,9 +256,13 @@ public class TamingManager extends SkillManager {
 
         message = message.concat(LocaleLoader.getString("Combat.BeastLoreHealth", target.getHealth(), target.getMaxHealth()));
 
-        if (beast instanceof AbstractHorse) {
-            AbstractHorse horse = (AbstractHorse) beast;
-            message = message.concat("\n" + LocaleLoader.getString("Combat.BeastLoreHorseSpeed", horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getValue() * 43));
+        if (beast instanceof Horse) {
+            Horse horse = (Horse) beast;
+            double jumpStrength = horse.getAttribute(Attribute.HORSE_JUMP_STRENGTH).getValue();
+            // Taken from https://minecraft.gamepedia.com/Horse#Jump_strength
+            jumpStrength = -0.1817584952 * Math.pow(jumpStrength, 3) + 3.689713992 * Math.pow(jumpStrength, 2) + 2.128599134 * jumpStrength - 0.343930367;
+            message = message.concat("\n" + LocaleLoader.getString("Combat.BeastLoreHorseSpeed", horse.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getValue() * 43))
+                    .concat("\n" + LocaleLoader.getString("Combat.BeastLoreHorseJumpStrength", jumpStrength));
         }
 
         player.sendMessage(message);
