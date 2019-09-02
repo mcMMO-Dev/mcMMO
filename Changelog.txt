@@ -1,5 +1,8 @@
 Version 2.1.105
     mcMMO will reset players scoreboard to the main scoreboard if they move into a blacklisted world
+    Beast lore now shows max jump height and other tweaks (Thanks QuantumToasted)
+    If the server has enabled level caps (which are not on by default) players will be shown that they are at max level instead of seeing how much XP needed to reach an impossible level (thanks Shrek5InTheatres2019)
+
     Large update to Italian locale (thanks Leomixer17)
 
     NOTES:
