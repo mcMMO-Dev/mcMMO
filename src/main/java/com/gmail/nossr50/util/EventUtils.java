@@ -20,6 +20,7 @@ import com.gmail.nossr50.events.hardcore.McMMOPlayerVampirismEvent;
 import com.gmail.nossr50.events.party.McMMOPartyLevelUpEvent;
 import com.gmail.nossr50.events.party.McMMOPartyTeleportEvent;
 import com.gmail.nossr50.events.party.McMMOPartyXpGainEvent;
+import com.gmail.nossr50.events.players.McMMOPlayerProfileLoadEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityDeactivateEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
@@ -148,6 +149,13 @@ public class EventUtils {
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         return event;
+    }
+
+    public static McMMOPlayerProfileLoadEvent callPlayerProfileLoadEvent(Player player, PlayerProfile profile){
+        McMMOPlayerProfileLoadEvent e = new McMMOPlayerProfileLoadEvent(player, profile);
+        mcMMO.p.getServer().getPluginManager().callEvent(e);
+
+        return e;
     }
 
     /**

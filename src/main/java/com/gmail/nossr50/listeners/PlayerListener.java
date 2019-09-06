@@ -13,6 +13,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
+import com.gmail.nossr50.events.players.McMMOPlayerProfileLoadEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.ShareHandler;
@@ -67,6 +68,7 @@ public class PlayerListener implements Listener {
      *
      * @param event The event to monitor
      */
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         /* WORLD BLACKLIST CHECK */
@@ -102,7 +104,6 @@ public class PlayerListener implements Listener {
 
         UserManager.getPlayer(player).actualizeTeleportATS();
     }
-
     /**
      * Handle PlayerDeathEvents at the lowest priority.
      * <p>
