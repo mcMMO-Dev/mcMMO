@@ -1,3 +1,6 @@
+Version 2.1.106
+    Added a few missing blocks to the ability blacklist tables (prevents readying/using abilities on certain blocks that have right click functionality)
+
 Version 2.1.105
     mcMMO will reset players scoreboard to the main scoreboard if they move into a blacklisted world
     Beast lore now shows max jump height and other tweaks (Thanks QuantumToasted)
