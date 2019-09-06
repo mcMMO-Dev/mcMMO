@@ -1,5 +1,7 @@
 Version 2.1.106
     Added a few missing blocks to the ability blacklist tables (prevents readying/using abilities on certain blocks that have right click functionality)
+    Updated Japanese locale (thanks ethernetcat)
+    Updated Simplified Chinese locale (thanks Fu_Meng)
 
 Version 2.1.105
     mcMMO will reset players scoreboard to the main scoreboard if they move into a blacklisted world
