@@ -68,7 +68,6 @@ public class PlayerListener implements Listener {
      *
      * @param event The event to monitor
      */
-
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         /* WORLD BLACKLIST CHECK */
