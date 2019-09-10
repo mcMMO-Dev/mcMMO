@@ -152,10 +152,10 @@ public class EventUtils {
     }
 
     public static McMMOPlayerProfileLoadEvent callPlayerProfileLoadEvent(Player player, PlayerProfile profile){
-        McMMOPlayerProfileLoadEvent e = new McMMOPlayerProfileLoadEvent(player, profile);
-        mcMMO.p.getServer().getPluginManager().callEvent(e);
+        McMMOPlayerProfileLoadEvent event = new McMMOPlayerProfileLoadEvent(player, profile);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
 
-        return e;
+        return event;
     }
 
     /**
