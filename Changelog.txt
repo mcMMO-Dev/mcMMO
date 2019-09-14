@@ -1,3 +1,7 @@
+Version 2.1.107
+    Fixed an exploit that allowed automated XP gain for Excavation
+
+
 Version 2.1.106
     Added a few missing blocks to the ability blacklist tables (prevents readying/using abilities on certain blocks that have right click functionality)
     Updated Japanese locale (thanks ethernetcat)

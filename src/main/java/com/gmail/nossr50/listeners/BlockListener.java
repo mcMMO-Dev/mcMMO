@@ -183,9 +183,11 @@ public class BlockListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
 
-        if(BlockUtils.shouldBeWatched(event.getBlock().getState()))
+        BlockState blockState = event.getNewState();
+
+        if(BlockUtils.shouldBeWatched(blockState))
         {
-            mcMMO.getPlaceStore().setTrue(event.getBlock());
+            mcMMO.getPlaceStore().setTrue(blockState.getBlock());
         }
     }
 
@@ -198,7 +200,8 @@ public class BlockListener implements Listener {
 
         if(ExperienceConfig.getInstance().preventStoneLavaFarming())
         {
-            if(event.getNewState().getType() != Material.OBSIDIAN && BlockUtils.shouldBeWatched(event.getNewState())
+            if(event.getNewState().getType() != Material.OBSIDIAN
+                    && BlockUtils.shouldBeWatched(event.getNewState())
                     && ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.MINING, event.getNewState().getBlockData()))
             {
                 mcMMO.getPlaceStore().setTrue(event.getNewState());
