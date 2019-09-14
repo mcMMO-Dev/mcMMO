@@ -3,7 +3,6 @@ Version 2.1.107
     Fixed encoding of russian translation
     New API event McMMOPlayerProfileLoadEvent (thanks Shrek5InTheatres2019)
 
-
 Version 2.1.106
     Added a few missing blocks to the ability blacklist tables (prevents readying/using abilities on certain blocks that have right click functionality)
     Updated Japanese locale (thanks ethernetcat)
