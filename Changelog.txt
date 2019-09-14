@@ -1,6 +1,7 @@
 Version 2.1.107
     Fixed an exploit that allowed automated XP gain for Excavation
     Fixed encoding of russian translation
+    New API event McMMOPlayerProfileLoadEvent (thanks Shrek5InTheatres2019)
 
 
 Version 2.1.106
