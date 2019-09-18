@@ -268,11 +268,12 @@ public final class CombatUtils {
             if (!UserManager.hasPlayerDataKey(player)) {
                 return;
             }
+
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
             AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
 
             if (acrobaticsManager.canDodge(target)) {
-                event.setDamage(acrobaticsManager.dodgeCheck(event.getDamage()));
+                event.setDamage(acrobaticsManager.dodgeCheck(attacker, event.getDamage()));
             }
 
             if (ItemUtils.isSword(player.getInventory().getItemInMainHand())) {

@@ -1,3 +1,10 @@
+Version 2.1.108
+    Fixed an amusing exploit for easy leveling in Acrobatics
+
+    NOTES:
+    Mobs will now only reward Dodge XP a certain amount of times
+    You can turn off this exploit prevention by disabling ExploitFix.Acrobatics in experience.yml
+
 Version 2.1.107
     Fixed an exploit that allowed automated XP gain for Excavation
     Fixed encoding of russian translation

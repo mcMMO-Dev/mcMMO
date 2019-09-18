@@ -109,6 +109,7 @@ public class mcMMO extends JavaPlugin {
 
     /* Metadata Values */
     public static final String FISH_HOOK_REF_METAKEY = "mcMMO: Fish Hook Tracker";
+    public static final String DODGE_TRACKER        = "mcMMO: Dodge Tracker";
     public static final String CUSTOM_DAMAGE_METAKEY = "mcMMO: Custom Damage";
     public static final String COTW_TEMPORARY_SUMMON = "mcMMO: COTW Entity";
     public final static String entityMetadataKey   = "mcMMO: Spawned Entity";

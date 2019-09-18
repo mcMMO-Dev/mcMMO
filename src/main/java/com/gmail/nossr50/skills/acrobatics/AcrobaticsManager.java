@@ -7,6 +7,7 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -20,6 +21,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 
 public class AcrobaticsManager extends SkillManager {
 
@@ -81,7 +84,7 @@ public class AcrobaticsManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
-    public double dodgeCheck(double damage) {
+    public double dodgeCheck(Entity attacker, double damage) {
         double modifiedDamage = Acrobatics.calculateModifiedDodgeDamage(damage, Acrobatics.dodgeDamageModifier);
         Player player = getPlayer();
 
@@ -92,11 +95,26 @@ public class AcrobaticsManager extends SkillManager {
                 NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Combat.Proc");
             }
 
-            //Check respawn to prevent abuse
             if (SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
-                applyXpGain((float) (damage * Acrobatics.dodgeXpModifier), XPGainReason.PVP);
+                if(!(attacker instanceof Player)) {
+                    //Check to see how many dodge XP rewards this mob has handed out
+                    if(attacker.hasMetadata(mcMMO.DODGE_TRACKER) && ExperienceConfig.getInstance().isAcrobaticsExploitingPrevented()) {
+                        //If Dodge XP has been handed out 5 times then consider it being exploited
+                        MetadataValue metadataValue = attacker.getMetadata(mcMMO.DODGE_TRACKER).get(0);
+                        int count = attacker.getMetadata(mcMMO.DODGE_TRACKER).get(0).asInt();
+
+                        if(count <= 5) {
+                            applyXpGain((float) (damage * Acrobatics.dodgeXpModifier), XPGainReason.PVE);
+                            attacker.setMetadata(mcMMO.DODGE_TRACKER, new FixedMetadataValue(mcMMO.p, count + 1));
+                        }
+                    } else {
+                        applyXpGain((float) (damage * Acrobatics.dodgeXpModifier), XPGainReason.PVE);
+                        attacker.setMetadata(mcMMO.DODGE_TRACKER, new FixedMetadataValue(mcMMO.p, 1));
+                    }
+                }
             }
 
+            //Check respawn to prevent abuse
             return modifiedDamage;
         }
 
