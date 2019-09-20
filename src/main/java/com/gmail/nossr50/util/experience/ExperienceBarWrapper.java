@@ -55,7 +55,7 @@ public class ExperienceBarWrapper {
 
     private String getTitleTemplate() {
         //If they are using extra details
-        if(pluginRef.getConfigManager().getConfigLeveling().getEarlyGameBoost().isEnableEarlyGameBoost() && PlayerLevelTools.qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType)) {
+        if(pluginRef.getConfigManager().getConfigLeveling().getEarlyGameBoost().isEnableEarlyGameBoost() && pluginRef.getPlayerLevelTools().qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType)) {
                 return pluginRef.getLocaleManager().getString("XPBar.Template.EarlyGameBoost");
         } else if(pluginRef.getConfigManager().getConfigLeveling().getConfigExperienceBars().isMoreDetailedXPBars())
             return pluginRef.getLocaleManager().getString("XPBar.Complex.Template", pluginRef.getLocaleManager().getString("XPBar."+niceSkillName, getLevel()), getCurrentXP(), getMaxXP(), getPowerLevel(), getPercentageOfLevel());
@@ -122,7 +122,7 @@ public class ExperienceBarWrapper {
             bossBar.setProgress(v);
 
         //Check player level
-        if(pluginRef.getConfigManager().getConfigLeveling().getEarlyGameBoost().isEnableEarlyGameBoost() && PlayerLevelTools.qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType)) {
+        if(pluginRef.getConfigManager().getConfigLeveling().getEarlyGameBoost().isEnableEarlyGameBoost() && pluginRef.getPlayerLevelTools().qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType)) {
            setColor(BarColor.YELLOW);
         } else {
             setColor(pluginRef.getConfigManager().getConfigLeveling().getConfigExperienceBars().getXPBarColor(primarySkillType));

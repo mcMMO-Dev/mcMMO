@@ -21,6 +21,9 @@ public class ConfigAxesSubSkills {
     @Setting(value = "Skull-Splitter")
     private ConfigAxesSkullSplitter configAxesSkullSplitter = new ConfigAxesSkullSplitter();
 
+    @Setting(value = "Limit-Break")
+    private ConfigAxesLimitBreak configAxesLimitBreak = new ConfigAxesLimitBreak();
+
     public double getCriticalStrikesMaxActivationChance() {
         return configAxesCriticalStrikes.getMaxActivationChance();
     }
@@ -61,6 +64,10 @@ public class ConfigAxesSubSkills {
         return configAxesSkullSplitter;
     }
 
+    public ConfigAxesLimitBreak getConfigAxesLimitBreak() {
+        return configAxesLimitBreak;
+    }
+
     public double getImpactDurabilityDamageModifier() {
         return configAxesImpact.getImpactDurabilityDamageModifier();
     }
@@ -68,4 +75,6 @@ public class ConfigAxesSubSkills {
     public double getAxeMasteryMultiplier() {
         return configAxesAxeMastery.getAxeMasteryMultiplier();
     }
+
+
 }
