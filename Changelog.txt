@@ -1,6 +1,7 @@
 Version 2.1.108
     Fixed an amusing exploit for easy leveling in Acrobatics
     mcMMO should no longer break if FAWE is being used in conjunction with WG on the server
+    Improved WG compatibility, mcMMO will now check if WG has loaded properly before hooking into it, which will prevent mcMMO from breaking if WG could not load properly.
     mcMMO now loads after worlds do during start up (which is what it should be doing)
 
     NOTES:

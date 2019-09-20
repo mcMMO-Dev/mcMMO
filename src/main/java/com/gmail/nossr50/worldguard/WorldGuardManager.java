@@ -1,5 +1,6 @@
 package com.gmail.nossr50.worldguard;
 
+import com.gmail.nossr50.mcMMO;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.BukkitPlayer;
 import com.sk89q.worldguard.WorldGuard;
@@ -85,21 +86,25 @@ public class WorldGuardManager {
 
     public void registerFlags()
     {
-        FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
-
         try {
-            // register our flag with the registry
-            registry.register(WorldGuardFlags.MCMMO_ENABLE_WG_FLAG);
-            registry.register(WorldGuardFlags.MCMMO_XP_WG_FLAG);
-            registry.register(WorldGuardFlags.MCMMO_HARDCORE_WG_FLAG);
-            System.out.println("mcMMO has registered WG flags successfully!");
-        } catch (FlagConflictException e) {
-            e.printStackTrace();
-            System.out.println("mcMMO has failed to register WG flags!");
-            // some other plugin registered a flag by the same name already.
-            // you may want to re-register with a different name, but this
-            // could cause issues with saved flags in region files. it's better
-            // to print a message to let the server admin know of the conflict
+            FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
+
+            try {
+                // register our flag with the registry
+                registry.register(WorldGuardFlags.MCMMO_ENABLE_WG_FLAG);
+                registry.register(WorldGuardFlags.MCMMO_XP_WG_FLAG);
+                registry.register(WorldGuardFlags.MCMMO_HARDCORE_WG_FLAG);
+                System.out.println("mcMMO has registered WG flags successfully!");
+            } catch (FlagConflictException e) {
+                e.printStackTrace();
+                System.out.println("mcMMO has failed to register WG flags!");
+                // some other plugin registered a flag by the same name already.
+                // you may want to re-register with a different name, but this
+                // could cause issues with saved flags in region files. it's better
+                // to print a message to let the server admin know of the conflict
+            }
+        } catch (NoClassDefFoundError e) {
+            System.out.println("[mcMMO] Could not register WG Flags!"); //Don't use the Logger here
         }
     }
 
