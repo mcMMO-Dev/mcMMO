@@ -1,5 +1,7 @@
 Version 2.1.108
     Fixed an amusing exploit for easy leveling in Acrobatics
+    mcMMO should no longer break if FAWE is being used in conjunction with WG on the server
+    mcMMO now loads after worlds do during start up (which is what it should be doing)
 
     NOTES:
     Mobs will now only reward Dodge XP a certain amount of times

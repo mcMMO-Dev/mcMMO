@@ -15,7 +15,7 @@ authors: [GJ, NuclearW, bm01, Glitchfinder, TfT_02, t00thpick1, Riking, electron
 website: https://www.mcmmo.org
 main: com.gmail.nossr50.mcMMO
 softdepend: [WorldGuard, CombatTag, HealthBar]
-load: STARTUP
+load: POSTWORLD
 api-version: 1.13
 
 commands:
