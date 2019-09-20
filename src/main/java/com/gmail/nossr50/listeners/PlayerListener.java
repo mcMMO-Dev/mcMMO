@@ -811,23 +811,8 @@ public class PlayerListener implements Listener {
                 }
 
                 /* CALL OF THE WILD CHECKS */
-                Material type = heldItem.getType();
                 TamingManager tamingManager = mcMMOPlayer.getTamingManager();
-
-
-                switch(type) {
-                    case
-                }
-
-                if (type == ) {
-                    tamingManager.summonWolf();
-                }
-                else if (type == Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.CAT.getConfigEntityTypeEntry())) {
-                    tamingManager.summonOcelot();
-                }
-                else if (type == Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.HORSE.getConfigEntityTypeEntry())) {
-                    tamingManager.summonHorse();
-                }
+                tamingManager.processCallOfTheWild();
 
                 break;
 

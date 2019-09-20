@@ -164,48 +164,6 @@ public class TamingManager extends SkillManager {
     }
 
     /**
-     * Summon an ocelot to your side.
-     */
-    public void summonOcelot() {
-        if(!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_CALL_OF_THE_WILD))
-            return;
-
-        if (!pluginRef.getPermissionTools().callOfTheWild(getPlayer(), EntityType.OCELOT)) {
-            return;
-        }
-
-        processCallOfTheWild();
-    }
-
-    /**
-     * Summon a wolf to your side.
-     */
-    public void summonWolf() {
-        if(!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_CALL_OF_THE_WILD))
-            return;
-
-        if (!pluginRef.getPermissionTools().callOfTheWild(getPlayer(), EntityType.WOLF)) {
-            return;
-        }
-
-        processCallOfTheWild();
-    }
-
-    /**
-     * Summon a horse to your side.
-     */
-    public void summonHorse() {
-        if(!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_CALL_OF_THE_WILD))
-            return;
-
-        if (!pluginRef.getPermissionTools().callOfTheWild(getPlayer(), EntityType.HORSE)) {
-            return;
-        }
-
-        processCallOfTheWild();
-    }
-
-    /**
      * Handle the Beast Lore ability.
      *
      * @param target The entity to examine
@@ -282,7 +240,10 @@ public class TamingManager extends SkillManager {
     }
 
 
-    private void processCallOfTheWild() {
+    public void processCallOfTheWild() {
+        if(!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.TAMING_CALL_OF_THE_WILD))
+            return;
+
         //Prevent summoning too many things accidentally if a player holds down the button
         if(lastSummonTimeStamp + 150 > System.currentTimeMillis()) {
             return;
@@ -298,6 +259,11 @@ public class TamingManager extends SkillManager {
             //Get the summoning type
             CallOfTheWildType callOfTheWildType = pluginRef.getDynamicSettingsManager().getTamingItemManager().getCallType(itemInMainHand.getType());
             TamingSummon tamingSummon = tamingBehaviour.getSummon(callOfTheWildType);
+
+            //Permission Check
+            if(!pluginRef.getPermissionTools().callOfTheWild(getPlayer(), tamingSummon.getEntityType())) {
+                return;
+            }
 
             //Players will pay for the cost if at least one thing was summoned
             int amountSummoned = 0;
