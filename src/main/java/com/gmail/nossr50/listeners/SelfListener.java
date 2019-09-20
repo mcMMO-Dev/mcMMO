@@ -7,7 +7,6 @@ import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -72,7 +71,7 @@ public class SelfListener implements Listener {
                 event.getXpGainReason() == XPGainReason.PVP ||
                 event.getXpGainReason() == XPGainReason.SHARED_PVE ||
                 event.getXpGainReason() == XPGainReason.SHARED_PVP) {
-            if (WorldGuardUtils.isWorldGuardLoaded()) {
+            if (pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
                 if (!pluginRef.getWorldGuardManager().hasXPFlag(player)) {
                     event.setRawXpGained(0);
                     event.setCancelled(true);

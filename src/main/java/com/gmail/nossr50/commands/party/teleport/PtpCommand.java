@@ -7,7 +7,6 @@ import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -44,7 +43,7 @@ public class PtpCommand implements TabExecutor {
         Player player = (Player) sender;
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
+        if (pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
             if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return true;
         }

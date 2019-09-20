@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
-import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -15,7 +14,7 @@ public final class HardcoreManager {
 
     public static void invokeStatPenalty(Player player) {
 
-        if(WorldGuardUtils.isWorldGuardLoaded()) {
+        if(pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
             if(!WorldGuardManager.getInstance().hasHardcoreFlag(player)) {
                 return;
             }
@@ -67,7 +66,7 @@ public final class HardcoreManager {
 
     public static void invokeVampirism(Player killer, Player victim) {
 
-        if(WorldGuardUtils.isWorldGuardLoaded()) {
+        if(pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
             if(!WorldGuardManager.getInstance().hasHardcoreFlag(killer) || !WorldGuardManager.getInstance().hasHardcoreFlag(victim)) {
                 return;
             }

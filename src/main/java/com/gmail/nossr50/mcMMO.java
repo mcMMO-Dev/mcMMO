@@ -44,6 +44,7 @@ import com.gmail.nossr50.util.skills.CombatTools;
 import com.gmail.nossr50.util.skills.RankTools;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
+import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -97,6 +98,7 @@ public class mcMMO extends JavaPlugin {
     private RankTools rankTools;
     private ItemTools itemTools;
     private PermissionTools permissionTools;
+    private WorldGuardUtils worldGuardUtils;
 
     /* Never-Ending tasks */
     private BleedTimerTask bleedTimerTask;
@@ -271,6 +273,9 @@ public class mcMMO extends JavaPlugin {
 
         //Init Item Tools
         itemTools = new ItemTools(this);
+
+        //Init World Guard Utils (Not sure about the order of this one, might need to be loaded earlier)
+        worldGuardUtils = new WorldGuardUtils(this);
     }
 
     @Override
@@ -797,5 +802,9 @@ public class mcMMO extends JavaPlugin {
 
     public PermissionTools getPermissionTools() {
         return permissionTools;
+    }
+
+    public WorldGuardUtils getWorldGuardUtils() {
+        return worldGuardUtils;
     }
 }

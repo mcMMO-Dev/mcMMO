@@ -15,7 +15,6 @@ import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
-import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -249,7 +248,7 @@ public class BlockListener implements Listener {
             return;
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
+        if (pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
             if (!pluginRef.getWorldGuardManager().hasMainFlag(event.getPlayer()))
                 return;
         }
@@ -343,7 +342,7 @@ public class BlockListener implements Listener {
             return;
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
+        if (pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
             if (!pluginRef.getWorldGuardManager().hasMainFlag(event.getPlayer()))
                 return;
         }
@@ -412,7 +411,7 @@ public class BlockListener implements Listener {
             return;
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
+        if (pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
             if (!pluginRef.getWorldGuardManager().hasMainFlag(event.getPlayer()))
                 return;
         }
@@ -482,7 +481,7 @@ public class BlockListener implements Listener {
             return;
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
+        if (pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
             if (!pluginRef.getWorldGuardManager().hasMainFlag(event.getPlayer()))
                 return;
         }

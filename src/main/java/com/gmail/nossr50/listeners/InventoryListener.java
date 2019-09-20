@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
-import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.BrewingStand;
@@ -93,7 +92,7 @@ public class InventoryListener implements Listener {
         Player player = getPlayerFromFurnace(furnaceBlock);
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
+        if (pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
             if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
@@ -126,7 +125,7 @@ public class InventoryListener implements Listener {
         Player player = getPlayerFromFurnace(furnaceBlock);
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
+        if (pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
             if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
@@ -158,7 +157,7 @@ public class InventoryListener implements Listener {
         Player player = getPlayerFromFurnace(furnaceBlock);
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
+        if (pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
             if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
@@ -225,7 +224,7 @@ public class InventoryListener implements Listener {
         Player player = (Player) whoClicked;
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
+        if (pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
             if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
@@ -343,7 +342,7 @@ public class InventoryListener implements Listener {
 //            Player player = (Player) whoClicked;
 //
 //            /* WORLD GUARD MAIN FLAG CHECK */
-//            if (WorldGuardUtils.isWorldGuardLoaded()) {
+//            if (pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
 //                if (!plugin.getWorldGuardManager().hasMainFlag(player))
 //                    return;
 //            }
@@ -466,7 +465,7 @@ public class InventoryListener implements Listener {
         Player player = (Player) whoClicked;
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
+        if (pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
             if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }

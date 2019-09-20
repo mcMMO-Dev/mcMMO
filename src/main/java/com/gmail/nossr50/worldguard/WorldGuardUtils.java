@@ -1,5 +1,6 @@
 package com.gmail.nossr50.worldguard;
 
+import com.gmail.nossr50.mcMMO;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import org.bukkit.plugin.Plugin;
 
@@ -8,10 +9,15 @@ import java.util.ArrayList;
 import static org.bukkit.Bukkit.getServer;
 
 public class WorldGuardUtils {
-    private static WorldGuardPlugin worldGuardPluginRef;
-    private static boolean isLoaded = false;
-    private static boolean detectedIncompatibleWG = false;
+    private WorldGuardPlugin worldGuardPluginRef;
+    private boolean isLoaded = false;
+    private boolean detectedIncompatibleWG = false;
     private static final ArrayList<String> WGClassList;
+    private final mcMMO pluginRef;
+
+    public WorldGuardUtils(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
 
     static {
         /*
@@ -37,7 +43,7 @@ public class WorldGuardUtils {
         WGClassList.add("com.sk89q.worldguard.protection.regions.RegionQuery");
     }
 
-    public static boolean isWorldGuardLoaded()
+    public boolean isWorldGuardLoaded()
     {
         if(detectedIncompatibleWG)
             return false;
@@ -52,7 +58,7 @@ public class WorldGuardUtils {
      * Results are cached
      * @return the instance of WG plugin, null if its not compatible or isn't present
      */
-    private static WorldGuardPlugin getWorldGuard()
+    private WorldGuardPlugin getWorldGuard()
     {
         //WG plugin reference is already cached so just return it
         if(isLoaded)
@@ -90,7 +96,7 @@ public class WorldGuardUtils {
      * This does not guarantee compatibility, but it should help reduce the chance that mcMMO tries to hook into WG and its not compatible
      * @return true if the version of WG appears to be compatible
      */
-    private static boolean isCompatibleVersion(Plugin plugin) {
+    private boolean isCompatibleVersion(Plugin plugin) {
         //Check that the version of WG is at least version 7.xx
         if(!plugin.getDescription().getVersion().startsWith("7")) {
             markWGIncompatible();
@@ -114,7 +120,7 @@ public class WorldGuardUtils {
     /**
      * Mark WG as being incompatible to avoid unnecessary operations
      */
-    private static void markWGIncompatible() {
+    private void markWGIncompatible() {
         pluginRef.getLogger().severe("You are using a version of WG that is not compatible with mcMMO, " +
                 "WG features for mcMMO will be disabled. mcMMO requires you to be using a new version of WG7 " +
                 "in order for it to use WG features. Not all versions of WG7 are compatible.");

@@ -14,7 +14,6 @@ import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.SkillActivationType;
-import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
@@ -78,7 +77,7 @@ public class EntityListener implements Listener {
             Player player = (Player) event.getEntity();
 
             /* WORLD GUARD MAIN FLAG CHECK */
-            if (WorldGuardUtils.isWorldGuardLoaded()) {
+            if (pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
                 if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                     return;
             }
@@ -115,7 +114,7 @@ public class EntityListener implements Listener {
             Player player = (Player) event.getEntity().getShooter();
 
             /* WORLD GUARD MAIN FLAG CHECK */
-            if (WorldGuardUtils.isWorldGuardLoaded()) {
+            if (pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
                 if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                     return;
             }
@@ -276,7 +275,7 @@ public class EntityListener implements Listener {
         Entity defender = event.getEntity();
         Entity attacker = event.getDamager();
 
-        if(WorldGuardUtils.isWorldGuardLoaded())
+        if(pluginRef.getWorldGuardUtils().isWorldGuardLoaded())
         {
             if(attacker instanceof Player) {
 
@@ -450,7 +449,7 @@ public class EntityListener implements Listener {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             /* WORLD GUARD MAIN FLAG CHECK */
-            if (WorldGuardUtils.isWorldGuardLoaded()) {
+            if (pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
                 if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                     return;
             }
@@ -528,7 +527,7 @@ public class EntityListener implements Listener {
             if (owner instanceof Player) {
                 Player player = (Player) owner;
                 /* WORLD GUARD MAIN FLAG CHECK */
-                if (WorldGuardUtils.isWorldGuardLoaded()) {
+                if (pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
                     if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                         return;
                 }
@@ -745,7 +744,7 @@ public class EntityListener implements Listener {
         }
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
+        if (pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
             if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
@@ -783,7 +782,7 @@ public class EntityListener implements Listener {
         }
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
+        if (pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
             if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
@@ -846,7 +845,7 @@ public class EntityListener implements Listener {
         }
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
+        if (pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
             if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
@@ -947,7 +946,7 @@ public class EntityListener implements Listener {
         Player player = (Player) event.getOwner();
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
+        if (pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
             if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
@@ -993,7 +992,7 @@ public class EntityListener implements Listener {
         Player player = (Player) target;
 
         /* WORLD GUARD MAIN FLAG CHECK */
-        if (WorldGuardUtils.isWorldGuardLoaded()) {
+        if (pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
             if (!pluginRef.getWorldGuardManager().hasMainFlag(player))
                 return;
         }
