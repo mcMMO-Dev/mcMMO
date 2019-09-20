@@ -3,7 +3,6 @@ package com.gmail.nossr50.runnables.player;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.events.players.McMMOPlayerProfileLoadEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.McScoreboardKeepTask;
@@ -11,10 +10,8 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
-import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerProfileLoadingTask extends BukkitRunnable {

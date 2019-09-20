@@ -101,7 +101,7 @@ public class WorldGuardUtils {
                 try {
                     Class<?> checkForClass = Class.forName(classString);
                     detectedIncompatibleWG = false; //In case this was set to true previously
-                } catch (ClassNotFoundException e) {
+                } catch (ClassNotFoundException | NoClassDefFoundError e) {
                     mcMMO.p.getLogger().severe("Missing WorldGuard class - "+classString);
                     markWGIncompatible();
                     return false;
