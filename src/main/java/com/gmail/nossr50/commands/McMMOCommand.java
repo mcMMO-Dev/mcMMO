@@ -27,7 +27,7 @@ public class McMMOCommand implements CommandExecutor {
                 String description = pluginRef.getLocaleManager().getString("mcMMO.Description");
                 String[] mcSplit = description.split(",");
                 sender.sendMessage(mcSplit);
-                sender.sendMessage(LocaleLoader.getString("mcMMO.Description.FormerDevs"));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("mcMMO.Description.FormerDevs"));
 
                 if (pluginRef.getConfigManager().getConfigAds().isShowDonationInfo()) {
                     sender.sendMessage(pluginRef.getLocaleManager().getString("MOTD.Donate"));

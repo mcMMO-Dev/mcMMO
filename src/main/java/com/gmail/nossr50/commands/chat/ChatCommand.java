@@ -121,7 +121,7 @@ public abstract class ChatCommand implements TabExecutor {
         }
 
         mcMMOPlayer.enableChat(chatMode);
-        sender.sendMessage(chatMode.getEnabledMessage());
+        sender.sendMessage(getChatModeEnabledMessage(chatMode, true));
     }
 
     private void disableChatMode(McMMOPlayer mcMMOPlayer, CommandSender sender) {
@@ -131,6 +131,29 @@ public abstract class ChatCommand implements TabExecutor {
         }
 
         mcMMOPlayer.disableChat(chatMode);
-        sender.sendMessage(chatMode.getDisabledMessage());
+        sender.sendMessage(getChatModeEnabledMessage(chatMode, false));
+    }
+
+    private String getChatModeEnabledMessage(ChatMode chatMode, boolean enabled) {
+        switch(chatMode) {
+            case ADMIN:
+                return getAdminMessage(enabled);
+            default:
+                return getPartyMessage(enabled);
+        }
+    }
+
+    private String getAdminMessage(boolean enabled) {
+        if(enabled)
+            return pluginRef.getLocaleManager().getString("Commands.AdminChat.On");
+        else
+            return pluginRef.getLocaleManager().getString("Commands.AdminChat.Off");
+    }
+
+    private String getPartyMessage(boolean enabled) {
+        if(enabled)
+            return pluginRef.getLocaleManager().getString("Commands.Party.Chat.On");
+        else
+            return pluginRef.getLocaleManager().getString("Commands.Party.Chat.Off");
     }
 }
