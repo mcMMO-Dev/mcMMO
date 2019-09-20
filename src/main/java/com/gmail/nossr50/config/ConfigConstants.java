@@ -40,72 +40,72 @@ public class ConfigConstants {
         EXAMPLE_BLACKLIST_WORLDS_LIST_DEFAULT.add(EXAMPLE_BLACKLIST_WORLDS[2]);
     }
 
-    /**
-     * Return the data folder for mcMMO
-     *
-     * @return the File for the data folder used by mcMMO
-     */
-    public static File getDataFolder() {
-        return pluginRef.getDataFolder();
-    }
-
-    public static File getConfigFolder() {
-        return new File(getDataFolder(), FOLDER_NAME_CONFIG);
-    }
-
-    public static File getDefaultsFolder() {
-        return new File(getConfigFolder().getAbsolutePath(), FOLDER_NAME_DEFAULTS);
-    }
-
-    public static File getDefaultsConfigFolder() {
-        return new File(getDefaultsFolder().getAbsolutePath(), FOLDER_NAME_CONFIG);
-    }
-
-    public static File getDefaultsSkillFolder() {
-        return new File(getDefaultsConfigFolder().getAbsolutePath(), FOLDER_NAME_SKILLS);
-    }
-
-    public static File getDefaultsXPFolder() {
-        return new File(getDefaultsConfigFolder().getAbsolutePath(), FOLDER_NAME_EXPERIENCE);
-    }
-
-    public static File getConfigSkillFolder() {
-        return new File(getConfigFolder().getAbsolutePath(), FOLDER_NAME_SKILLS);
-    }
-
-    public static File getConfigXPFolder() {
-        return new File(getConfigFolder().getAbsolutePath(), FOLDER_NAME_EXPERIENCE);
-    }
-
-    /**
-     * Creates all directories used by mcMMO config files
-     */
-    public static void makeAllConfigDirectories() {
-        /* CONFIG DIRECTORY */
-
-        if (!getConfigFolder().exists())
-            getConfigFolder().mkdirs();
-
-        /* DEFAULT DIRECTORIES */
-
-        if (!getDefaultsFolder().exists())
-            getDefaultsFolder().mkdirs();
-
-        if (!getDefaultsConfigFolder().exists())
-            getDefaultsConfigFolder().mkdirs();
-
-        if (!getDefaultsSkillFolder().exists())
-            getDefaultsSkillFolder().mkdirs();
-
-        if (!getDefaultsXPFolder().exists())
-            getDefaultsXPFolder().mkdirs();
-
-        /* CONFIG SUBDIRECTORIES */
-
-        if (!getConfigSkillFolder().exists())
-            getConfigSkillFolder().mkdirs();
-
-        if (!getConfigXPFolder().exists())
-            getConfigXPFolder().mkdirs();
-    }
+//    /**
+//     * Return the data folder for mcMMO
+//     *
+//     * @return the File for the data folder used by mcMMO
+//     */
+//    public static File getDataFolder() {
+//        return pluginRef.getDataFolder();
+//    }
+//
+//    public static File getConfigFolder() {
+//        return new File(getDataFolder(), FOLDER_NAME_CONFIG);
+//    }
+//
+//    public static File getDefaultsFolder() {
+//        return new File(getConfigFolder().getAbsolutePath(), FOLDER_NAME_DEFAULTS);
+//    }
+//
+//    public static File getDefaultsConfigFolder() {
+//        return new File(getDefaultsFolder().getAbsolutePath(), FOLDER_NAME_CONFIG);
+//    }
+//
+//    public static File getDefaultsSkillFolder() {
+//        return new File(getDefaultsConfigFolder().getAbsolutePath(), FOLDER_NAME_SKILLS);
+//    }
+//
+//    public static File getDefaultsXPFolder() {
+//        return new File(getDefaultsConfigFolder().getAbsolutePath(), FOLDER_NAME_EXPERIENCE);
+//    }
+//
+//    public static File getConfigSkillFolder() {
+//        return new File(getConfigFolder().getAbsolutePath(), FOLDER_NAME_SKILLS);
+//    }
+//
+//    public static File getConfigXPFolder() {
+//        return new File(getConfigFolder().getAbsolutePath(), FOLDER_NAME_EXPERIENCE);
+//    }
+//
+//    /**
+//     * Creates all directories used by mcMMO config files
+//     */
+//    public static void makeAllConfigDirectories() {
+//        /* CONFIG DIRECTORY */
+//
+//        if (!getConfigFolder().exists())
+//            getConfigFolder().mkdirs();
+//
+//        /* DEFAULT DIRECTORIES */
+//
+//        if (!getDefaultsFolder().exists())
+//            getDefaultsFolder().mkdirs();
+//
+//        if (!getDefaultsConfigFolder().exists())
+//            getDefaultsConfigFolder().mkdirs();
+//
+//        if (!getDefaultsSkillFolder().exists())
+//            getDefaultsSkillFolder().mkdirs();
+//
+//        if (!getDefaultsXPFolder().exists())
+//            getDefaultsXPFolder().mkdirs();
+//
+//        /* CONFIG SUBDIRECTORIES */
+//
+//        if (!getConfigSkillFolder().exists())
+//            getConfigSkillFolder().mkdirs();
+//
+//        if (!getConfigXPFolder().exists())
+//            getConfigXPFolder().mkdirs();
+//    }
 }

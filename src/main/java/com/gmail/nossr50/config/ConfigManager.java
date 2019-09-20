@@ -47,9 +47,6 @@ import com.gmail.nossr50.config.hocon.sound.ConfigSound;
 import com.gmail.nossr50.config.hocon.sound.SoundSetting;
 import com.gmail.nossr50.config.hocon.superabilities.ConfigSuperAbilities;
 import com.gmail.nossr50.config.hocon.worldblacklist.ConfigWorldBlacklist;
-import com.gmail.nossr50.config.treasure.ExcavationTreasureConfig;
-import com.gmail.nossr50.config.treasure.FishingTreasureConfig;
-import com.gmail.nossr50.config.treasure.HerbalismTreasureConfig;
 import com.gmail.nossr50.datatypes.experience.CustomXPPerk;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.items.ItemMatch;
@@ -139,18 +136,6 @@ public final class ConfigManager {
 
     //Data
     private SerializedConfigLoader<ConfigPartyData> partyData;
-
-    //YAML CONFIGS
-
-    private MainConfig mainConfig;
-    private FishingTreasureConfig fishingTreasureConfig;
-    private ExcavationTreasureConfig excavationTreasureConfig;
-    private HerbalismTreasureConfig herbalismTreasureConfig;
-    private AdvancedConfig advancedConfig;
-
-    /* CONFIG ERRORS */
-
-    private ArrayList<String> configErrors; //Collect errors to whine about to server admins
 
     public ConfigManager(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
@@ -339,26 +324,6 @@ public final class ConfigManager {
      */
     public ArrayList<File> getConfigFiles() {
         return userFiles;
-    }
-
-    public MainConfig getMainConfig() {
-        return mainConfig;
-    }
-
-    public FishingTreasureConfig getFishingTreasureConfig() {
-        return fishingTreasureConfig;
-    }
-
-    public ExcavationTreasureConfig getExcavationTreasureConfig() {
-        return excavationTreasureConfig;
-    }
-
-    public HerbalismTreasureConfig getHerbalismTreasureConfig() {
-        return herbalismTreasureConfig;
-    }
-
-    public AdvancedConfig getAdvancedConfig() {
-        return advancedConfig;
     }
 
     public ConfigCoreSkills getConfigCoreSkills() {

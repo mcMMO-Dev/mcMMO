@@ -197,6 +197,9 @@ public class FishingManager extends SkillManager {
     public double getShakeChance() {
         return AdvancedConfig.getInstance().getShakeChance(getLootTier());
     }
+    public double getShakeChance() {
+        return pluginRef.getConfigManager().getFishingTreasureConfig().getShakeChance(getLootTier());
+    }
 
     public int getInnerPeaceMultiplier() {
         return pluginRef.getConfigManager().getConfigFishing().getVanillaXPMultInnerPeace(pluginRef.getRankTools().getRank(getPlayer(), SubSkillType.FISHING_INNER_PEACE));
