@@ -3,8 +3,6 @@ package com.gmail.nossr50.datatypes.skills.behaviours;
 import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.datatypes.skills.subskills.taming.TamingSummon;
 import com.gmail.nossr50.mcMMO;
-import org.bukkit.Material;
-import sun.security.krb5.Config;
 
 import java.util.HashMap;
 
