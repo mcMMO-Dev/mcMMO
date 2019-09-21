@@ -1,46 +1,36 @@
 package com.gmail.nossr50.config.hocon.skills.archery;
 
-import com.gmail.nossr50.datatypes.skills.properties.MaxBonusLevel;
+import com.gmail.nossr50.config.ConfigConstants;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
 @ConfigSerializable
 public class ConfigArchery {
 
-    @Setting(value = "Daze")
-    private ConfigArcheryDaze daze = new ConfigArcheryDaze();
-
-    @Setting(value = "Skill-Shot")
-    private ConfigArcherySkillShot skillShot = new ConfigArcherySkillShot();
-
-    @Setting("Arrow-Retrieval")
-    private ConfigArcheryArrowRetrieval arrowRetrieval = new ConfigArcheryArrowRetrieval();
+    @Setting(value = ConfigConstants.SUB_SKILL_NODE)
+    private ConfigArcherySubSkills subSkills = new ConfigArcherySubSkills();
 
     public ConfigArcheryDaze getDaze() {
-        return daze;
+        return subSkills.getDaze();
     }
 
     public ConfigArcherySkillShot getSkillShot() {
-        return skillShot;
+        return subSkills.getSkillShot();
+    }
+
+    public ConfigArcheryLimitBreak getLimitBreak() {
+        return subSkills.getLimitBreak();
     }
 
     public double getSkillShotDamageMultiplier() {
-        return skillShot.getSkillShotDamageMultiplier();
+        return subSkills.getSkillShotDamageMultiplier();
     }
 
     public double getSkillShotDamageCeiling() {
-        return skillShot.getSkillShotDamageCeiling();
-    }
-
-    public double getMaxChance() {
-        return daze.getMaxChance();
-    }
-
-    public MaxBonusLevel getMaxBonusLevel() {
-        return daze.getMaxBonusLevel();
+        return subSkills.getSkillShotDamageCeiling();
     }
 
     public double getBonusDamage() {
-        return daze.getDazeBonusDamage();
+        return subSkills.getBonusDamage();
     }
 }
