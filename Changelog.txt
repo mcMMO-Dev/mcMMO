@@ -1,3 +1,6 @@
+Version 2.1.109
+    Added missing 1.14 blocks to ability/tool activation blacklists
+
 Version 2.1.108
     Fixed an amusing exploit for easy leveling in Acrobatics
     mcMMO should no longer break if FAWE is being used in conjunction with WG on the server

@@ -311,6 +311,7 @@ public class MaterialMapStore {
         abilityBlackList.add("gold_block");
         abilityBlackList.add("bell");
         abilityBlackList.add("barrel");
+        abilityBlackList.add("blast_furnace");
         abilityBlackList.add("campfire");
         abilityBlackList.add("composter");
 
@@ -319,6 +320,7 @@ public class MaterialMapStore {
     private void fillToolBlackList()
     {
         //TODO: Add anvils / missing logs
+        //TODO: Reorganize this list, can we also dynamically populate some of this?
         toolBlackList.add("black_bed");
         toolBlackList.add("blue_bed");
         toolBlackList.add("brown_bed");
@@ -442,8 +444,15 @@ public class MaterialMapStore {
         toolBlackList.add("gold_block");
         toolBlackList.add("bell");
         toolBlackList.add("barrel");
+        toolBlackList.add("blast_furnace");
         toolBlackList.add("campfire");
+        toolBlackList.add("cartography_table");
         toolBlackList.add("composter");
+        toolBlackList.add("grindstone");
+        toolBlackList.add("lectern");
+        toolBlackList.add("loom");
+        toolBlackList.add("smoker");
+        toolBlackList.add("stonecutter");
     }
 
     private void addToHashSet(String string, HashSet<String> stringHashSet)
