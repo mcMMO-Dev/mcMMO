@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -22,10 +21,6 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
-
-<<<<<<<HEAD
-=======
-        >>>>>>>308e3a4b1f46e9e3de28d6d540dd055a540ed4d5
 
 public class Roll extends AcrobaticsSubSkill {
 
@@ -239,7 +234,7 @@ public class Roll extends AcrobaticsSubSkill {
     private double gracefulRollCheck(Player player, McMMOPlayer mcMMOPlayer, double damage, int skillLevel) {
         double modifiedDamage = calculateModifiedRollDamage(damage, pluginRef.getConfigManager().getConfigAcrobatics().getRollDamageThreshold() * 2);
 
-        RandomChanceSkill rcs = new RandomChanceSkill(player, subSkillType);
+        RandomChanceSkill rcs = new RandomChanceSkill(pluginRef, player, subSkillType);
         rcs.setSkillLevel(rcs.getSkillLevel() * 2); //Double the effective odds
 
         if (!isFatal(player, modifiedDamage)
@@ -277,29 +272,25 @@ public class Roll extends AcrobaticsSubSkill {
             return false;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
-        if (ItemUtils.hasItemInEitherHand(player, Material.ENDER_PEARL) || player.isInsideVehicle()) {
+        if (pluginRef.getItemTools().hasItemInEitherHand(player, Material.ENDER_PEARL) || player.isInsideVehicle()) {
             if(mcMMOPlayer.isDebugMode()) {
                 mcMMOPlayer.getPlayer().sendMessage("Acrobatics XP Prevented: Ender Pearl or Inside Vehicle");
             }
             return true;
         }
 
-<<<<<<< HEAD
         //Teleport CD
         if (System.currentTimeMillis() < pluginRef.getUserManager().getPlayer(player).getTeleportATS())
             return true;
 
         if (pluginRef.getUserManager().getPlayer(player).getAcrobaticsManager().hasFallenInLocationBefore(getBlockLocation(player)))
-=======
-        if(UserManager.getPlayer(player).getAcrobaticsManager().hasFallenInLocationBefore(getBlockLocation(player)))
         {
             if(mcMMOPlayer.isDebugMode()) {
                 mcMMOPlayer.getPlayer().sendMessage("Acrobatics XP Prevented: Fallen in location before");
             }
 
->>>>>>> 308e3a4b1f46e9e3de28d6d540dd055a540ed4d5
             return true;
         }
 
@@ -380,16 +371,16 @@ public class Roll extends AcrobaticsSubSkill {
         double rollChanceHalfMax, graceChanceHalfMax, damageThreshold, chancePerLevel;
 
         //Chance to roll at half max skill
-        RandomChanceSkill rollHalfMaxSkill = new RandomChanceSkill(null, subSkillType);
+        RandomChanceSkill rollHalfMaxSkill = new RandomChanceSkill(pluginRef, null, subSkillType);
         int halfMaxSkillValue = pluginRef.isRetroModeEnabled() ? 500 : 50;
         rollHalfMaxSkill.setSkillLevel(halfMaxSkillValue);
 
         //Chance to graceful roll at full skill
-        RandomChanceSkill rollGraceHalfMaxSkill = new RandomChanceSkill(null, subSkillType);
+        RandomChanceSkill rollGraceHalfMaxSkill = new RandomChanceSkill(pluginRef, null, subSkillType);
         rollGraceHalfMaxSkill.setSkillLevel(halfMaxSkillValue * 2); //Double the effective odds
 
         //Chance to roll per level
-        RandomChanceSkill rollOneSkillLevel = new RandomChanceSkill(null, subSkillType);
+        RandomChanceSkill rollOneSkillLevel = new RandomChanceSkill(pluginRef, null, subSkillType);
         rollGraceHalfMaxSkill.setSkillLevel(1); //Level 1 skill
 
         //Chance Stat Calculations
@@ -414,8 +405,8 @@ public class Roll extends AcrobaticsSubSkill {
     public Double[] getStats(Player player) {
         double playerChanceRoll, playerChanceGrace;
 
-        RandomChanceSkill roll = new RandomChanceSkill(player, getSubSkillType());
-        RandomChanceSkill graceful = new RandomChanceSkill(player, getSubSkillType());
+        RandomChanceSkill roll = new RandomChanceSkill(pluginRef, player, getSubSkillType());
+        RandomChanceSkill graceful = new RandomChanceSkill(pluginRef, player, getSubSkillType());
 
         graceful.setSkillLevel(graceful.getSkillLevel() * 2); //Double odds
 

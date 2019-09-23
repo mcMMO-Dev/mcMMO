@@ -115,7 +115,7 @@ public final class ItemTools {
         }
     }
 
-    public static boolean hasItemInEitherHand(Player player, Material material) {
+    public boolean hasItemInEitherHand(Player player, Material material) {
         return player.getInventory().getItemInMainHand().getType() == material || player.getInventory().getItemInOffHand().getType() == material;
     }
 
