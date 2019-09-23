@@ -87,7 +87,7 @@ public class MiningManager extends SkillManager {
 
         applyXpGain(miningBehaviour.getBlockXp(blockState), XPGainReason.PVE);
 
-        if (mcMMOPlayer.getAbilityMode(skill.getSuperAbility())) {
+        if (mcMMOPlayer.getSuperAbilityMode(skill.getSuperAbility())) {
             pluginRef.getSkillTools().handleDurabilityChange(getPlayer().getInventory().getItemInMainHand(), pluginRef.getConfigManager().getConfigSuperAbilities().getSuperAbilityLimits().getToolDurabilityDamage());
         }
 
@@ -101,7 +101,7 @@ public class MiningManager extends SkillManager {
 
         //TODO: Make this readable
         if (pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS)) {
-            pluginRef.getBlockTools().markDropsAsBonus(blockState, mcMMOPlayer.getAbilityMode(skill.getSuperAbility()));
+            pluginRef.getBlockTools().markDropsAsBonus(blockState, mcMMOPlayer.getSuperAbilityMode(skill.getSuperAbility()));
         }
     }
 

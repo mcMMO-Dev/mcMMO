@@ -24,7 +24,7 @@ public class AbilityDisableTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (!mcMMOPlayer.getAbilityMode(superAbilityType)) {
+        if (!mcMMOPlayer.getSuperAbilityMode(superAbilityType)) {
             return;
         }
 
@@ -46,7 +46,7 @@ public class AbilityDisableTask extends BukkitRunnable {
 
         pluginRef.getEventManager().callAbilityDeactivateEvent(player, superAbilityType);
 
-        mcMMOPlayer.setAbilityMode(superAbilityType, false);
+        mcMMOPlayer.setSuperAbilityMode(superAbilityType, false);
         mcMMOPlayer.setAbilityInformed(superAbilityType, false);
 
         if (mcMMOPlayer.useChatNotifications()) {

@@ -22,7 +22,7 @@ public class AbilityToggleCommand extends ToggleCommand {
 
     @Override
     protected void applyCommandAction(McMMOPlayer mcMMOPlayer) {
-        mcMMOPlayer.getPlayer().sendMessage(pluginRef.getLocaleManager().getString("Commands.Ability." + (mcMMOPlayer.getAbilityUse() ? "Off" : "On")));
+        mcMMOPlayer.getPlayer().sendMessage(pluginRef.getLocaleManager().getString("Commands.Ability." + (mcMMOPlayer.getAllowAbilityUse() ? "Off" : "On")));
         mcMMOPlayer.toggleAbilityUse();
     }
 

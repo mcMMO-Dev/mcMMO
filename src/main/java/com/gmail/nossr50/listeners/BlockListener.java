@@ -321,7 +321,7 @@ public class BlockListener implements Listener {
             ExcavationManager excavationManager = mcMMOPlayer.getExcavationManager();
             excavationManager.excavationBlockCheck(blockState);
 
-            if (mcMMOPlayer.getAbilityMode(SuperAbilityType.GIGA_DRILL_BREAKER)) {
+            if (mcMMOPlayer.getSuperAbilityMode(SuperAbilityType.GIGA_DRILL_BREAKER)) {
                 excavationManager.gigaDrillBreaker(blockState);
             }
         }
@@ -512,11 +512,11 @@ public class BlockListener implements Listener {
          *
          * We don't need to check permissions here because they've already been checked for the ability to even activate.
          */
-        if (mcMMOPlayer.getAbilityMode(SuperAbilityType.GREEN_TERRA) && pluginRef.getBlockTools().canMakeMossy(blockState)) {
+        if (mcMMOPlayer.getSuperAbilityMode(SuperAbilityType.GREEN_TERRA) && pluginRef.getBlockTools().canMakeMossy(blockState)) {
             if (mcMMOPlayer.getHerbalismManager().processGreenTerraBlockConversion(blockState)) {
                 blockState.update(true);
             }
-        } else if (mcMMOPlayer.getAbilityMode(SuperAbilityType.BERSERK) && heldItem.getType() == Material.AIR) {
+        } else if (mcMMOPlayer.getSuperAbilityMode(SuperAbilityType.BERSERK) && heldItem.getType() == Material.AIR) {
             if (pluginRef.getSkillTools().superAbilityBlockCheck(SuperAbilityType.BERSERK, block.getState())
                     && pluginRef.getEventManager().simulateBlockBreak(block, player, true)) {
                 event.setInstaBreak(true);

@@ -59,7 +59,7 @@ public class AxesManager extends SkillManager {
         if (!pluginRef.getRankTools().hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_SKULL_SPLITTER))
             return false;
 
-        return target.isValid() && mcMMOPlayer.getAbilityMode(SuperAbilityType.SKULL_SPLITTER) && pluginRef.getPermissionTools().skullSplitter(getPlayer());
+        return target.isValid() && mcMMOPlayer.getSuperAbilityMode(SuperAbilityType.SKULL_SPLITTER) && pluginRef.getPermissionTools().skullSplitter(getPlayer());
     }
 
     public boolean canActivateAbility() {

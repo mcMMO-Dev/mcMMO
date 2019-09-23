@@ -50,10 +50,10 @@ import java.util.UUID;
 
 public class McMMOPlayer {
     private final mcMMO pluginRef;
-    private final Map<PrimarySkillType, SkillManager> skillManagers = new HashMap<>();
-    private final Map<SuperAbilityType, Boolean> abilityMode = new HashMap<>();
-    private final Map<SuperAbilityType, Boolean> abilityInformed = new HashMap<>();
-    private final Map<ToolType, Boolean> toolMode = new HashMap<>();
+    private final Map<PrimarySkillType, SkillManager> skillManagerMap = new HashMap<>();
+    private final Map<SuperAbilityType, Boolean> superAbilityModeMap = new HashMap<>();
+    private final Map<SuperAbilityType, Boolean> superAbilityInformedMap = new HashMap<>();
+    private final Map<ToolType, Boolean> toolModeMap = new HashMap<>();
     private final FixedMetadataValue playerMetadata;
     private Player player;
     private PlayerProfile profile;
@@ -68,7 +68,7 @@ public class McMMOPlayer {
     private boolean displaySkillNotifications = true;
     private boolean debugMode;
 
-    private boolean abilityUse = true;
+    private boolean allowAbilityUse = true;
     private boolean godMode;
     private boolean chatSpy = false; //Off by default
     private int recentlyHurt;
@@ -98,12 +98,12 @@ public class McMMOPlayer {
         initSkillManagers();
 
         for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {
-            abilityMode.put(superAbilityType, false);
-            abilityInformed.put(superAbilityType, true); // This is intended
+            superAbilityModeMap.put(superAbilityType, false);
+            superAbilityInformedMap.put(superAbilityType, true); // This is intended
         }
 
         for (ToolType toolType : ToolType.values()) {
-            toolMode.put(toolType, false);
+            toolModeMap.put(toolType, false);
         }
 
         experienceBarManager = new ExperienceBarManager(pluginRef,this);
@@ -124,49 +124,49 @@ public class McMMOPlayer {
     private void initManager(PrimarySkillType primarySkillType) throws InvalidSkillException {
         switch(primarySkillType) {
             case ACROBATICS:
-                skillManagers.put(primarySkillType, new AcrobaticsManager(pluginRef, this));
+                skillManagerMap.put(primarySkillType, new AcrobaticsManager(pluginRef, this));
                 break;
             case ALCHEMY:
-                skillManagers.put(primarySkillType, new AlchemyManager(pluginRef, this));
+                skillManagerMap.put(primarySkillType, new AlchemyManager(pluginRef, this));
                 break;
             case ARCHERY:
-                skillManagers.put(primarySkillType, new ArcheryManager(pluginRef, this));
+                skillManagerMap.put(primarySkillType, new ArcheryManager(pluginRef, this));
                 break;
             case AXES:
-                skillManagers.put(primarySkillType, new AxesManager(pluginRef, this));
+                skillManagerMap.put(primarySkillType, new AxesManager(pluginRef, this));
                 break;
             case EXCAVATION:
-                skillManagers.put(primarySkillType, new ExcavationManager(pluginRef, this));
+                skillManagerMap.put(primarySkillType, new ExcavationManager(pluginRef, this));
                 break;
             case FISHING:
-                skillManagers.put(primarySkillType, new FishingManager(pluginRef, this));
+                skillManagerMap.put(primarySkillType, new FishingManager(pluginRef, this));
                 break;
             case HERBALISM:
-                skillManagers.put(primarySkillType, new HerbalismManager(pluginRef, this));
+                skillManagerMap.put(primarySkillType, new HerbalismManager(pluginRef, this));
                 break;
             case MINING:
-                skillManagers.put(primarySkillType, new MiningManager(pluginRef, this));
+                skillManagerMap.put(primarySkillType, new MiningManager(pluginRef, this));
                 break;
             case REPAIR:
-                skillManagers.put(primarySkillType, new RepairManager(pluginRef, this));
+                skillManagerMap.put(primarySkillType, new RepairManager(pluginRef, this));
                 break;
             case SALVAGE:
-                skillManagers.put(primarySkillType, new SalvageManager(pluginRef, this));
+                skillManagerMap.put(primarySkillType, new SalvageManager(pluginRef, this));
                 break;
             case SMELTING:
-                skillManagers.put(primarySkillType, new SmeltingManager(pluginRef, this));
+                skillManagerMap.put(primarySkillType, new SmeltingManager(pluginRef, this));
                 break;
             case SWORDS:
-                skillManagers.put(primarySkillType, new SwordsManager(pluginRef, this));
+                skillManagerMap.put(primarySkillType, new SwordsManager(pluginRef, this));
                 break;
             case TAMING:
-                skillManagers.put(primarySkillType, new TamingManager(pluginRef, this));
+                skillManagerMap.put(primarySkillType, new TamingManager(pluginRef, this));
                 break;
             case UNARMED:
-                skillManagers.put(primarySkillType, new UnarmedManager(pluginRef, this));
+                skillManagerMap.put(primarySkillType, new UnarmedManager(pluginRef, this));
                 break;
             case WOODCUTTING:
-                skillManagers.put(primarySkillType, new WoodcuttingManager(pluginRef, this));
+                skillManagerMap.put(primarySkillType, new WoodcuttingManager(pluginRef, this));
                 break;
             default:
                 throw new InvalidSkillException("The skill named has no manager! Contact the devs!");
@@ -255,63 +255,63 @@ public class McMMOPlayer {
     }
 
     public AcrobaticsManager getAcrobaticsManager() {
-        return (AcrobaticsManager) skillManagers.get(PrimarySkillType.ACROBATICS);
+        return (AcrobaticsManager) skillManagerMap.get(PrimarySkillType.ACROBATICS);
     }
 
     public AlchemyManager getAlchemyManager() {
-        return (AlchemyManager) skillManagers.get(PrimarySkillType.ALCHEMY);
+        return (AlchemyManager) skillManagerMap.get(PrimarySkillType.ALCHEMY);
     }
 
     public ArcheryManager getArcheryManager() {
-        return (ArcheryManager) skillManagers.get(PrimarySkillType.ARCHERY);
+        return (ArcheryManager) skillManagerMap.get(PrimarySkillType.ARCHERY);
     }
 
     public AxesManager getAxesManager() {
-        return (AxesManager) skillManagers.get(PrimarySkillType.AXES);
+        return (AxesManager) skillManagerMap.get(PrimarySkillType.AXES);
     }
 
     public ExcavationManager getExcavationManager() {
-        return (ExcavationManager) skillManagers.get(PrimarySkillType.EXCAVATION);
+        return (ExcavationManager) skillManagerMap.get(PrimarySkillType.EXCAVATION);
     }
 
     public FishingManager getFishingManager() {
-        return (FishingManager) skillManagers.get(PrimarySkillType.FISHING);
+        return (FishingManager) skillManagerMap.get(PrimarySkillType.FISHING);
     }
 
     public HerbalismManager getHerbalismManager() {
-        return (HerbalismManager) skillManagers.get(PrimarySkillType.HERBALISM);
+        return (HerbalismManager) skillManagerMap.get(PrimarySkillType.HERBALISM);
     }
 
     public MiningManager getMiningManager() {
-        return (MiningManager) skillManagers.get(PrimarySkillType.MINING);
+        return (MiningManager) skillManagerMap.get(PrimarySkillType.MINING);
     }
 
     public RepairManager getRepairManager() {
-        return (RepairManager) skillManagers.get(PrimarySkillType.REPAIR);
+        return (RepairManager) skillManagerMap.get(PrimarySkillType.REPAIR);
     }
 
     public SalvageManager getSalvageManager() {
-        return (SalvageManager) skillManagers.get(PrimarySkillType.SALVAGE);
+        return (SalvageManager) skillManagerMap.get(PrimarySkillType.SALVAGE);
     }
 
     public SmeltingManager getSmeltingManager() {
-        return (SmeltingManager) skillManagers.get(PrimarySkillType.SMELTING);
+        return (SmeltingManager) skillManagerMap.get(PrimarySkillType.SMELTING);
     }
 
     public SwordsManager getSwordsManager() {
-        return (SwordsManager) skillManagers.get(PrimarySkillType.SWORDS);
+        return (SwordsManager) skillManagerMap.get(PrimarySkillType.SWORDS);
     }
 
     public TamingManager getTamingManager() {
-        return (TamingManager) skillManagers.get(PrimarySkillType.TAMING);
+        return (TamingManager) skillManagerMap.get(PrimarySkillType.TAMING);
     }
 
     public UnarmedManager getUnarmedManager() {
-        return (UnarmedManager) skillManagers.get(PrimarySkillType.UNARMED);
+        return (UnarmedManager) skillManagerMap.get(PrimarySkillType.UNARMED);
     }
 
     public WoodcuttingManager getWoodcuttingManager() {
-        return (WoodcuttingManager) skillManagers.get(PrimarySkillType.WOODCUTTING);
+        return (WoodcuttingManager) skillManagerMap.get(PrimarySkillType.WOODCUTTING);
     }
 
     /*
@@ -321,69 +321,69 @@ public class McMMOPlayer {
     /**
      * Reset the mode of all abilities.
      */
-    public void resetAbilityMode() {
-        for (SuperAbilityType ability : SuperAbilityType.values()) {
+    public void resetSuperAbilityMode() {
+        for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {
             // Correctly disable and handle any special deactivate code
-            new AbilityDisableTask(pluginRef,this, ability).run();
+            new AbilityDisableTask(pluginRef,this, superAbilityType).run();
         }
     }
 
     /**
      * Get the mode of an ability.
      *
-     * @param ability The ability to check
+     * @param superAbilityType The ability to check
      * @return true if the ability is enabled, false otherwise
      */
-    public boolean getAbilityMode(SuperAbilityType ability) {
-        return abilityMode.get(ability);
+    public boolean getSuperAbilityMode(SuperAbilityType superAbilityType) {
+        return superAbilityModeMap.get(superAbilityType);
     }
 
     /**
      * Set the mode of an ability.
      *
-     * @param ability  The ability to check
+     * @param superAbilityType  The ability to check
      * @param isActive True if the ability is active, false otherwise
      */
-    public void setAbilityMode(SuperAbilityType ability, boolean isActive) {
-        abilityMode.put(ability, isActive);
+    public void setSuperAbilityMode(SuperAbilityType superAbilityType, boolean isActive) {
+        superAbilityModeMap.put(superAbilityType, isActive);
     }
 
     /**
      * Get the informed state of an ability
      *
-     * @param ability The ability to check
+     * @param superAbilityType The ability to check
      * @return true if the ability is informed, false otherwise
      */
-    public boolean getAbilityInformed(SuperAbilityType ability) {
-        return abilityInformed.get(ability);
+    public boolean getSuperAbilityInformed(SuperAbilityType superAbilityType) {
+        return superAbilityInformedMap.get(superAbilityType);
     }
 
     /**
      * Set the informed state of an ability.
      *
-     * @param ability    The ability to check
+     * @param superAbilityType    The ability to check
      * @param isInformed True if the ability is informed, false otherwise
      */
-    public void setAbilityInformed(SuperAbilityType ability, boolean isInformed) {
-        abilityInformed.put(ability, isInformed);
+    public void setAbilityInformed(SuperAbilityType superAbilityType, boolean isInformed) {
+        superAbilityInformedMap.put(superAbilityType, isInformed);
     }
 
     /**
      * Get the current prep mode of a tool.
      *
-     * @param tool Tool to get the mode for
+     * @param toolType Tool to get the mode for
      * @return true if the tool is prepped, false otherwise
      */
-    public boolean getToolPreparationMode(ToolType tool) {
-        return toolMode.get(tool);
+    public boolean getToolPreparationMode(ToolType toolType) {
+        return toolModeMap.get(toolType);
     }
 
-    public boolean getAbilityUse() {
-        return abilityUse;
+    public boolean getAllowAbilityUse() {
+        return allowAbilityUse;
     }
 
     public void toggleAbilityUse() {
-        abilityUse = !abilityUse;
+        allowAbilityUse = !allowAbilityUse;
     }
 
     /*
@@ -402,11 +402,11 @@ public class McMMOPlayer {
     /**
      * Set the current prep mode of a tool.
      *
-     * @param tool       Tool to set the mode for
+     * @param toolType       Tool to set the mode for
      * @param isPrepared true if the tool should be prepped, false otherwise
      */
-    public void setToolPreparationMode(ToolType tool, boolean isPrepared) {
-        toolMode.put(tool, isPrepared);
+    public void setToolPreparationMode(ToolType toolType, boolean isPrepared) {
+        toolModeMap.put(toolType, isPrepared);
     }
 
     /*
@@ -901,7 +901,7 @@ public class McMMOPlayer {
         ToolType tool = pluginRef.getSkillTools().getPrimarySkillToolType(primarySkillType);
         SuperAbilityType superAbility = pluginRef.getSkillTools().getSuperAbility(primarySkillType);
 
-        if (getAbilityMode(superAbility) || !pluginRef.getSkillTools().superAbilityPermissionCheck(superAbility, player)) {
+        if (getSuperAbilityMode(superAbility) || !pluginRef.getSkillTools().superAbilityPermissionCheck(superAbility, player)) {
             return;
         }
 
@@ -948,7 +948,7 @@ public class McMMOPlayer {
 
         // Enable the ability
         profile.setAbilityDATS(superAbility, System.currentTimeMillis() + (abilityLength * Misc.TIME_CONVERSION_FACTOR));
-        setAbilityMode(superAbility, true);
+        setSuperAbilityMode(superAbility, true);
 
         if (superAbility == SuperAbilityType.SUPER_BREAKER || superAbility == SuperAbilityType.GIGA_DRILL_BREAKER) {
             pluginRef.getSkillTools().handleAbilitySpeedIncrease(player);
@@ -969,12 +969,12 @@ public class McMMOPlayer {
             return;
         }*/
 
-        if (!getAbilityUse()) {
+        if (!getAllowAbilityUse()) {
             return;
         }
 
         for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {
-            if (getAbilityMode(superAbilityType)) {
+            if (getSuperAbilityMode(superAbilityType)) {
                 return;
             }
         }
@@ -990,7 +990,7 @@ public class McMMOPlayer {
             if (primarySkillType != PrimarySkillType.WOODCUTTING && primarySkillType != PrimarySkillType.AXES) {
                 int timeRemaining = calculateTimeRemaining(ability);
 
-                if (!getAbilityMode(ability) && timeRemaining > 0) {
+                if (!getSuperAbilityMode(ability) && timeRemaining > 0) {
                     pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf(timeRemaining));
                     return;
                 }
@@ -1021,44 +1021,44 @@ public class McMMOPlayer {
     /*
      * These functions are wrapped from PlayerProfile so that we don't always have to store it alongside the McMMOPlayer object.
      */
-    public int getSkillLevel(PrimarySkillType skill) {
-        return profile.getSkillLevel(skill);
+    public int getSkillLevel(PrimarySkillType primarySkillType) {
+        return profile.getSkillLevel(primarySkillType);
     }
 
-    public double getSkillXpLevelRaw(PrimarySkillType skill) {
-        return profile.getSkillXpLevelRaw(skill);
+    public double getSkillXpLevelRaw(PrimarySkillType primarySkillType) {
+        return profile.getSkillXpLevelRaw(primarySkillType);
     }
 
-    public int getSkillXpLevel(PrimarySkillType skill) {
-        return profile.getSkillXpLevel(skill);
+    public int getSkillXpLevel(PrimarySkillType primarySkillType) {
+        return profile.getSkillXpLevel(primarySkillType);
     }
 
-    public void setSkillXpLevel(PrimarySkillType skill, double xpLevel) {
-        profile.setSkillXpLevel(skill, xpLevel);
+    public void setSkillXpLevel(PrimarySkillType primarySkillType, double xpLevel) {
+        profile.setSkillXpLevel(primarySkillType, xpLevel);
     }
 
-    public int getXpToLevel(PrimarySkillType skill) {
-        return profile.getXpToLevel(skill);
+    public int getXpToLevel(PrimarySkillType primarySkillType) {
+        return profile.getXpToLevel(primarySkillType);
     }
 
-    public void removeXp(PrimarySkillType skill, int xp) {
-        profile.removeXp(skill, xp);
+    public void removeXp(PrimarySkillType primarySkillType, int xp) {
+        profile.removeXp(primarySkillType, xp);
     }
 
-    public void modifySkill(PrimarySkillType skill, int level) {
-        profile.modifySkill(skill, level);
+    public void modifySkill(PrimarySkillType primarySkillType, int level) {
+        profile.modifySkill(primarySkillType, level);
     }
 
-    public void addLevels(PrimarySkillType skill, int levels) {
-        profile.addLevels(skill, levels);
+    public void addLevels(PrimarySkillType primarySkillType, int levels) {
+        profile.addLevels(primarySkillType, levels);
     }
 
-    public void addXp(PrimarySkillType skill, double xp) {
-        profile.addXp(skill, xp);
+    public void addXp(PrimarySkillType primarySkillType, double xp) {
+        profile.addXp(primarySkillType, xp);
     }
 
-    public void setAbilityDATS(SuperAbilityType ability, long DATS) {
-        profile.setAbilityDATS(ability, DATS);
+    public void setAbilityDATS(SuperAbilityType superAbilityType, long DATS) {
+        profile.setAbilityDATS(superAbilityType, DATS);
     }
 
     public void resetCooldowns() {
@@ -1076,7 +1076,7 @@ public class McMMOPlayer {
      */
     public void logout(boolean syncSave) {
         Player thisPlayer = getPlayer();
-        resetAbilityMode();
+        resetSuperAbilityMode();
         pluginRef.getBleedTimerTask().bleedOut(thisPlayer);
         cleanup();
 
@@ -1106,7 +1106,7 @@ public class McMMOPlayer {
      * Etc...
      */
     public void cleanup() {
-        resetAbilityMode();
+        resetSuperAbilityMode();
         getTamingManager().cleanupAllSummons();
     }
 }

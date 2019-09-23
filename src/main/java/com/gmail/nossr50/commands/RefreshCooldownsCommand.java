@@ -25,7 +25,7 @@ public class RefreshCooldownsCommand extends ToggleCommand {
         mcMMOPlayer.setRecentlyHurt(0);
         mcMMOPlayer.resetCooldowns();
         mcMMOPlayer.resetToolPrepMode();
-        mcMMOPlayer.resetAbilityMode();
+        mcMMOPlayer.resetSuperAbilityMode();
 
         mcMMOPlayer.getPlayer().sendMessage(pluginRef.getLocaleManager().getString("Ability.Generic.Refresh"));
     }

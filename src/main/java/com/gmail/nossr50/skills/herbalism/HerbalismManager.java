@@ -80,7 +80,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canGreenTerraBlock(BlockState blockState) {
-        return mcMMOPlayer.getAbilityMode(SuperAbilityType.GREEN_TERRA) && pluginRef.getBlockTools().canMakeMossy(blockState);
+        return mcMMOPlayer.getSuperAbilityMode(SuperAbilityType.GREEN_TERRA) && pluginRef.getBlockTools().canMakeMossy(blockState);
     }
 
     public boolean canActivateAbility() {
@@ -88,7 +88,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean isGreenTerraActive() {
-        return mcMMOPlayer.getAbilityMode(SuperAbilityType.GREEN_TERRA);
+        return mcMMOPlayer.getSuperAbilityMode(SuperAbilityType.GREEN_TERRA);
     }
 
     /**
@@ -283,7 +283,7 @@ public class HerbalismManager extends SkillManager {
 
     public void markForBonusDrops(BlockState brokenPlantState) {
         //Add metadata to mark this block for double or triple drops
-        boolean awardTriple = mcMMOPlayer.getAbilityMode(SuperAbilityType.GREEN_TERRA);
+        boolean awardTriple = mcMMOPlayer.getSuperAbilityMode(SuperAbilityType.GREEN_TERRA);
         pluginRef.getBlockTools().markDropsAsBonus(brokenPlantState, awardTriple);
     }
 
