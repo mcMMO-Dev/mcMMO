@@ -7,6 +7,7 @@ import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
@@ -20,12 +21,13 @@ public class TrackedTamingEntity extends BukkitRunnable {
     private final mcMMO pluginRef;
 
     protected TrackedTamingEntity(mcMMO pluginRef, LivingEntity livingEntity, CallOfTheWildType callOfTheWildType, TamingManager tamingManagerRef) {
+        this.pluginRef = pluginRef;
         this.tamingManagerRef = tamingManagerRef;
         this.callOfTheWildType = callOfTheWildType;
         this.livingEntity = livingEntity;
         this.id = livingEntity.getUniqueId();
 
-        int tamingCOTWLength = pluginRef.getConfigManager().getConfigTaming().getSubSkills().getCallOfTheWild()..getTamingCOTWLength(livingEntity.getType());
+        int tamingCOTWLength = pluginRef.getConfigManager().getConfigTaming().getSubSkills().getCallOfTheWild().getCOTWSummon(callOfTheWildType).getSummonLifespan();
 
         if (tamingCOTWLength > 0) {
             this.length = tamingCOTWLength * Misc.TICK_CONVERSION_FACTOR;
@@ -39,7 +41,7 @@ public class TrackedTamingEntity extends BukkitRunnable {
             Location location = livingEntity.getLocation();
             location.getWorld().playSound(location, Sound.BLOCK_FIRE_EXTINGUISH, 0.8F, 0.8F);
             ParticleEffectUtils.playCallOfTheWildEffect(livingEntity);
-            pluginRef.getCombatTools().dealDamage(livingEntity, livingEntity.getMaxHealth(), DamageCause.SUICIDE, livingEntity);
+            pluginRef.getCombatTools().dealDamage(livingEntity, livingEntity.getMaxHealth(), EntityDamageEvent.DamageCause.SUICIDE, livingEntity);
 
             if(tamingManagerRef != null)
                 tamingManagerRef.removeFromTracker(this);
