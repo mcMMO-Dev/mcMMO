@@ -2,12 +2,12 @@ package com.gmail.nossr50.util.nbt;
 
 
 import com.gmail.nossr50.mcMMO;
-import net.minecraft.server.v1_13_R2.NBTBase;
-import net.minecraft.server.v1_13_R2.NBTList;
-import net.minecraft.server.v1_13_R2.NBTTagCompound;
+import net.minecraft.server.v1_14_R1.NBTBase;
+import net.minecraft.server.v1_14_R1.NBTList;
+import net.minecraft.server.v1_14_R1.NBTTagCompound;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
-import org.bukkit.craftbukkit.v1_13_R2.util.CraftNBTTagConfigSerializer;
+import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_14_R1.util.CraftNBTTagConfigSerializer;
 import org.bukkit.inventory.ItemStack;
 
 public class NBTManager {
@@ -31,7 +31,7 @@ public class NBTManager {
 
     public NBTTagCompound getNBT(ItemStack itemStack) {
         Bukkit.broadcastMessage("Checking NBT for "+itemStack.toString());
-        net.minecraft.server.v1_13_R2.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(itemStack);
+        net.minecraft.server.v1_14_R1.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(itemStack);
         NBTTagCompound rootTag = nmsItemStack.getTag();
         return rootTag;
     }

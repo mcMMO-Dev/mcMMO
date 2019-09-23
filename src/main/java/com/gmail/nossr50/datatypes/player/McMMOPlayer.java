@@ -986,7 +986,7 @@ public class McMMOPlayer {
          * Woodcutting & Axes need to be treated differently.
          * Basically the tool always needs to ready and we check to see if the cooldown is over when the user takes action
          */
-        if (tool.inHand(inHand) && !getToolPreparationMode(tool)) {
+        if (tool.inHand(pluginRef, inHand) && !getToolPreparationMode(tool)) {
             if (primarySkillType != PrimarySkillType.WOODCUTTING && primarySkillType != PrimarySkillType.AXES) {
                 int timeRemaining = calculateTimeRemaining(ability);
 

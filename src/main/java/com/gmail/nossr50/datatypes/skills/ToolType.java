@@ -1,5 +1,6 @@
 package com.gmail.nossr50.datatypes.skills;
 
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -33,7 +34,7 @@ public enum ToolType {
      * @param itemStack The item to check
      * @return true if the item is the right type, false otherwise
      */
-    public boolean inHand(ItemStack itemStack) {
+    public boolean inHand(mcMMO pluginRef, ItemStack itemStack) {
         switch (this) {
             case AXE:
                 return pluginRef.getItemTools().isAxe(itemStack);

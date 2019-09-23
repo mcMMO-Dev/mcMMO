@@ -1,6 +1,7 @@
 package com.gmail.nossr50.config.hocon;
 
 import com.gmail.nossr50.config.ConfigConstants;
+import com.gmail.nossr50.mcMMO;
 import ninja.leaping.configurate.ConfigurationOptions;
 import ninja.leaping.configurate.ValueType;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
@@ -52,6 +53,8 @@ import java.util.Objects;
  * @param <T> the class type of the config
  */
 public class SerializedConfigLoader<T> {
+    private final mcMMO pluginRef;
+
     private static final String CONFIG_HEADER = "Configuration files are now in the HOCON file format!\n" +
             "\nHOCON is a lot less strict than YAML, so don't worry about the number of spaces and such!\n" +
             "\nIt is recommended that you use a nice text editor to view and edit these files" +
@@ -80,7 +83,8 @@ public class SerializedConfigLoader<T> {
      */
     private ObjectMapper<T>.BoundInstance configMapper;
 
-    public SerializedConfigLoader(Class<T> clazz, String fileName, String rootNodeName, SerializedConfigLoader parent) {
+    public SerializedConfigLoader(mcMMO pluginRef, Class<T> clazz, String fileName, String rootNodeName, SerializedConfigLoader parent) {
+        this.pluginRef = pluginRef;
         ROOT_NODE_ADDRESS = rootNodeName;
         this.parent = parent;
         this.path = getPathFromFileName(fileName);
@@ -119,7 +123,7 @@ public class SerializedConfigLoader<T> {
     }
 
     private Path getPathFromFileName(String fileName) {
-        File configFile = new File(ConfigConstants.getConfigFolder(), fileName);
+        File configFile = new File(ConfigConstants.getConfigFolder(pluginRef), fileName);
         return configFile.toPath();
     }
 
