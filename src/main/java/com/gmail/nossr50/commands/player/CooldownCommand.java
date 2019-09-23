@@ -52,16 +52,16 @@ public class CooldownCommand implements TabExecutor {
                 player.sendMessage(pluginRef.getLocaleManager().getString("mcMMO.NoSkillNote"));
 
                 for (SuperAbilityType ability : SuperAbilityType.values()) {
-                    if (!ability.getPermissions(player)) {
+                    if (!ability.superAbilityPermissionCheck(player)) {
                         continue;
                     }
 
                     int seconds = mcMMOPlayer.calculateTimeRemaining(ability);
 
                     if (seconds <= 0) {
-                        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Cooldowns.Row.Y", ability.getName()));
+                        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Cooldowns.Row.Y", ability.getPrettySuperAbilityName()));
                     } else {
-                        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Cooldowns.Row.N", ability.getName(), seconds));
+                        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Cooldowns.Row.N", ability.getPrettySuperAbilityName(), seconds));
                     }
                 }
 

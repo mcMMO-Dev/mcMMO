@@ -1,6 +1,7 @@
 package com.gmail.nossr50.config.hocon.superabilities;
 
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.mcMMO;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -58,7 +59,7 @@ public class ConfigSuperAbilities {
         return superAbilityLimits;
     }
 
-    public int getCooldownForSuper(SuperAbilityType superAbilityType) {
+    public int getCooldownForSuper(mcMMO pluginRef, SuperAbilityType superAbilityType) {
         switch (superAbilityType) {
             case BERSERK:
                 return superAbilityCooldowns.getBerserk();
@@ -82,7 +83,7 @@ public class ConfigSuperAbilities {
         }
     }
 
-    public int getMaxLengthForSuper(SuperAbilityType superAbilityType) {
+    public int getMaxLengthForSuper(mcMMO pluginRef, SuperAbilityType superAbilityType) {
         switch (superAbilityType) {
             case BERSERK:
                 return superAbilityMaxLength.getBerserk();

@@ -415,25 +415,25 @@ permissions:
     mcmmo.ability.mining.all:
         description: Allows access to all Mining abilities
         children:
-            mcmmo.ability.mining.blastmining.all: true
+            mcmmo.ability.SuperAbility.BlastMining.all: true
             mcmmo.ability.mining.doubledrops: true
             mcmmo.ability.mining.superbreaker: true
-    mcmmo.ability.mining.blastmining.*:
+    mcmmo.ability.SuperAbility.BlastMining.*:
         default: false
         description: Allows access to all Blast Mining abilities
         children:
-            mcmmo.ability.mining.blastmining.all: true
-    mcmmo.ability.mining.blastmining.all:
+            mcmmo.ability.SuperAbility.BlastMining.all: true
+    mcmmo.ability.SuperAbility.BlastMining.all:
         description: Allows access to all Blast Mining abilities
         children:
-            mcmmo.ability.mining.blastmining.biggerbombs: true
-            mcmmo.ability.mining.blastmining.demolitionsexpertise: true
-            mcmmo.ability.mining.blastmining.detonate: true
-    mcmmo.ability.mining.blastmining.biggerbombs:
+            mcmmo.ability.SuperAbility.BlastMining.biggerbombs: true
+            mcmmo.ability.SuperAbility.BlastMining.demolitionsexpertise: true
+            mcmmo.ability.SuperAbility.BlastMining.detonate: true
+    mcmmo.ability.SuperAbility.BlastMining.biggerbombs:
         description: Allows access to the Bigger Bombs ability
-    mcmmo.ability.mining.blastmining.demolitionsexpertise:
+    mcmmo.ability.SuperAbility.BlastMining.demolitionsexpertise:
         description: Allows access to the Demolitions Expertise ability
-    mcmmo.ability.mining.blastmining.detonate:
+    mcmmo.ability.SuperAbility.BlastMining.detonate:
         description: Allows for remote TNT detonation
     mcmmo.ability.mining.doubledrops:
         description: Allows double drop chance when mining

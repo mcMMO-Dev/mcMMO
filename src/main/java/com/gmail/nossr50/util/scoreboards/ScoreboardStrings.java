@@ -102,10 +102,10 @@ public class ScoreboardStrings {
                 skillLabelBuilder.put(primarySkillType, getShortenedName(colors.get(i) + pluginRef.getSkillTools().getLocalizedSkillName(primarySkillType), false));
 
                 if (pluginRef.getSkillTools().getSuperAbility(primarySkillType) != null) {
-                    abilityLabelBuilder.put(pluginRef.getSkillTools().getSuperAbility(primarySkillType), getShortenedName(colors.get(i) + pluginRef.getSkillTools().getSuperAbility(primarySkillType).getName()));
+                    abilityLabelBuilder.put(pluginRef.getSkillTools().getSuperAbility(primarySkillType), getShortenedName(colors.get(i) + pluginRef.getSkillTools().getSuperAbility(primarySkillType).getPrettySuperAbilityName()));
 
                     if (primarySkillType == PrimarySkillType.MINING) {
-                        abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, getShortenedName(colors.get(i) + SuperAbilityType.BLAST_MINING.getName()));
+                        abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, getShortenedName(colors.get(i) + SuperAbilityType.BLAST_MINING.getPrettySuperAbilityName()));
                     }
                 }
 
@@ -124,17 +124,17 @@ public class ScoreboardStrings {
                 skillLabelBuilder.put(primarySkillType, getShortenedName(ChatColor.GREEN + pluginRef.getSkillTools().getLocalizedSkillName(primarySkillType)));
 
                 if (pluginRef.getSkillTools().getSuperAbility(primarySkillType) != null) {
-                    abilityLabelBuilder.put(pluginRef.getSkillTools().getSuperAbility(primarySkillType), formatAbility(pluginRef.getSkillTools().getSuperAbility(primarySkillType).getName()));
+                    abilityLabelBuilder.put(pluginRef.getSkillTools().getSuperAbility(primarySkillType), formatAbility(pluginRef.getSkillTools().getSuperAbility(primarySkillType).getPrettySuperAbilityName()));
 
                     if (primarySkillType == PrimarySkillType.MINING) {
-                        abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, formatAbility(SuperAbilityType.BLAST_MINING.getName()));
+                        abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, formatAbility(SuperAbilityType.BLAST_MINING.getPrettySuperAbilityName()));
                     }
                 }
             }
         }
 
         for (SuperAbilityType type : SuperAbilityType.values()) {
-            abilityLabelSkillBuilder.put(type, formatAbility((type == SuperAbilityType.BLAST_MINING ? ChatColor.BLUE : ChatColor.AQUA), type.getName()));
+            abilityLabelSkillBuilder.put(type, formatAbility((type == SuperAbilityType.BLAST_MINING ? ChatColor.BLUE : ChatColor.AQUA), type.getPrettySuperAbilityName()));
         }
 
         skillLabels = skillLabelBuilder.build();

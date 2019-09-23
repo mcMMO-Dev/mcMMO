@@ -14,23 +14,23 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class AbilityDisableTask extends BukkitRunnable {
     private final mcMMO pluginRef;
     private McMMOPlayer mcMMOPlayer;
-    private SuperAbilityType ability;
+    private SuperAbilityType superAbilityType;
 
-    public AbilityDisableTask(mcMMO pluginRef, McMMOPlayer mcMMOPlayer, SuperAbilityType ability) {
+    public AbilityDisableTask(mcMMO pluginRef, McMMOPlayer mcMMOPlayer, SuperAbilityType superAbilityType) {
         this.pluginRef = pluginRef;
         this.mcMMOPlayer = mcMMOPlayer;
-        this.ability = ability;
+        this.superAbilityType = superAbilityType;
     }
 
     @Override
     public void run() {
-        if (!mcMMOPlayer.getAbilityMode(ability)) {
+        if (!mcMMOPlayer.getAbilityMode(superAbilityType)) {
             return;
         }
 
         Player player = mcMMOPlayer.getPlayer();
 
-        switch (ability) {
+        switch (superAbilityType) {
             case SUPER_BREAKER:
             case GIGA_DRILL_BREAKER:
                 pluginRef.getSkillTools().handleAbilitySpeedDecrease(player);
@@ -44,19 +44,23 @@ public class AbilityDisableTask extends BukkitRunnable {
                 break;
         }
 
-        pluginRef.getEventManager().callAbilityDeactivateEvent(player, ability);
+        pluginRef.getEventManager().callAbilityDeactivateEvent(player, superAbilityType);
 
-        mcMMOPlayer.setAbilityMode(ability, false);
-        mcMMOPlayer.setAbilityInformed(ability, false);
+        mcMMOPlayer.setAbilityMode(superAbilityType, false);
+        mcMMOPlayer.setAbilityInformed(superAbilityType, false);
 
         if (mcMMOPlayer.useChatNotifications()) {
             //player.sendMessage(ability.getAbilityOff());
-            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_OFF, ability.getAbilityOff());
+            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_OFF,
+                    pluginRef.getSkillTools().getSuperAbilityOff(superAbilityType));
         }
 
 
-        pluginRef.getSkillTools().sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, ability.getAbilityPlayerOff());
-        new AbilityCooldownTask(pluginRef, mcMMOPlayer, ability).runTaskLater(pluginRef, PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TICK_CONVERSION_FACTOR);
+        pluginRef.getSkillTools().sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS,
+                pluginRef.getSkillTools().getSuperAbilityOtherPlayerDeactivationStr(superAbilityType));
+        new AbilityCooldownTask(pluginRef, mcMMOPlayer, superAbilityType).runTaskLater(pluginRef,
+                PerksUtils.handleCooldownPerks(player,
+                        pluginRef.getSkillTools().getSuperAbilityCooldown(superAbilityType) * Misc.TICK_CONVERSION_FACTOR));
     }
 
     private void resendChunkRadiusAt(Player player) {

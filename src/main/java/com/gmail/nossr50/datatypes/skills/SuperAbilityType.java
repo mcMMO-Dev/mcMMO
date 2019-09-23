@@ -1,70 +1,16 @@
 package com.gmail.nossr50.datatypes.skills;
 
 import com.gmail.nossr50.util.StringUtils;
-import org.bukkit.Material;
-import org.bukkit.block.BlockState;
-import org.bukkit.entity.Player;
 
 public enum SuperAbilityType {
-    BERSERK(
-            "Unarmed.Skills.Berserk.On",
-            "Unarmed.Skills.Berserk.Off",
-            "Unarmed.Skills.Berserk.Other.On",
-            "Unarmed.Skills.Berserk.Refresh",
-            "Unarmed.Skills.Berserk.Other.Off"),
-
-    SUPER_BREAKER(
-            "Mining.Skills.SuperBreaker.On",
-            "Mining.Skills.SuperBreaker.Off",
-            "Mining.Skills.SuperBreaker.Other.On",
-            "Mining.Skills.SuperBreaker.Refresh",
-            "Mining.Skills.SuperBreaker.Other.Off"),
-
-    GIGA_DRILL_BREAKER(
-            "Excavation.Skills.GigaDrillBreaker.On",
-            "Excavation.Skills.GigaDrillBreaker.Off",
-            "Excavation.Skills.GigaDrillBreaker.Other.On",
-            "Excavation.Skills.GigaDrillBreaker.Refresh",
-            "Excavation.Skills.GigaDrillBreaker.Other.Off"),
-
-    GREEN_TERRA(
-            "Herbalism.Skills.GTe.On",
-            "Herbalism.Skills.GTe.Off",
-            "Herbalism.Skills.GTe.Other.On",
-            "Herbalism.Skills.GTe.Refresh",
-            "Herbalism.Skills.GTe.Other.Off"),
-
-    SKULL_SPLITTER(
-            "Axes.Skills.SS.On",
-            "Axes.Skills.SS.Off",
-            "Axes.Skills.SS.Other.On",
-            "Axes.Skills.SS.Refresh",
-            "Axes.Skills.SS.Other.Off"),
-
-    TREE_FELLER(
-            "Woodcutting.Skills.TreeFeller.On",
-            "Woodcutting.Skills.TreeFeller.Off",
-            "Woodcutting.Skills.TreeFeller.Other.On",
-            "Woodcutting.Skills.TreeFeller.Refresh",
-            "Woodcutting.Skills.TreeFeller.Other.Off"),
-
-    SERRATED_STRIKES(
-            "Swords.Skills.SS.On",
-            "Swords.Skills.SS.Off",
-            "Swords.Skills.SS.Other.On",
-            "Swords.Skills.SS.Refresh",
-            "Swords.Skills.SS.Other.Off"),
-
-    /**
-     * Has cooldown - but has to share a skill with Super Breaker, so needs special treatment
-     */
-    BLAST_MINING(
-            null,
-            null,
-            "Mining.Blast.Other.On",
-            "Mining.Blast.Refresh",
-            null),
-    ;
+    BERSERK,
+    SUPER_BREAKER,
+    GIGA_DRILL_BREAKER,
+    GREEN_TERRA,
+    SKULL_SPLITTER,
+    TREE_FELLER,
+    SERRATED_STRIKES,
+    BLAST_MINING;
 
     /*
      * Defining their associated SubSkillType definitions
@@ -81,51 +27,15 @@ public enum SuperAbilityType {
         BLAST_MINING.subSkillTypeDefinition = SubSkillType.MINING_BLAST_MINING;
     }
 
-    private String abilityOn;
-    private String abilityOff;
-    private String abilityPlayer;
-    private String abilityRefresh;
-    private String abilityPlayerOff;
     private SubSkillType subSkillTypeDefinition;
 
-    SuperAbilityType(String abilityOn, String abilityOff, String abilityPlayer, String abilityRefresh, String abilityPlayerOff) {
-        this.abilityOn = abilityOn;
-        this.abilityOff = abilityOff;
-        this.abilityPlayer = abilityPlayer;
-        this.abilityRefresh = abilityRefresh;
-        this.abilityPlayerOff = abilityPlayerOff;
-    }
-
-    public int getCooldown() {
-        return pluginRef.getConfigManager().getConfigSuperAbilities().getCooldownForSuper(this);
-    }
-
-    public int getMaxLength() {
-        return pluginRef.getConfigManager().getConfigSuperAbilities().getMaxLengthForSuper(this);
-    }
-
-    public String getAbilityOn() {
-        return abilityOn;
-    }
-
-    public String getAbilityOff() {
-        return abilityOff;
-    }
-
-    public String getAbilityPlayer() {
-        return abilityPlayer;
-    }
-
-    public String getAbilityPlayerOff() {
-        return abilityPlayerOff;
-    }
-
-    public String getAbilityRefresh() {
-        return abilityRefresh;
-    }
-
-    public String getName() {
-        return StringUtils.getPrettyAbilityString(this);
+    /**
+     * Grabs the associated SubSkillType definition for this SuperAbilityType
+     *
+     * @return the matching SubSkillType definition for this SuperAbilityType
+     */
+    public SubSkillType getSubSkillTypeDefinition() {
+        return subSkillTypeDefinition;
     }
 
     @Override
@@ -147,79 +57,5 @@ public enum SuperAbilityType {
         }
 
         return formattedString;
-    }
-
-    /**
-     * Get the permissions for this ability.
-     *
-     * @param player Player to check permissions for
-     * @return true if the player has permissions, false otherwise
-     */
-    public boolean getPermissions(Player player) {
-        switch (this) {
-            case BERSERK:
-                return pluginRef.getPermissionTools().berserk(player);
-
-            case BLAST_MINING:
-                return pluginRef.getPermissionTools().remoteDetonation(player);
-
-            case GIGA_DRILL_BREAKER:
-                return pluginRef.getPermissionTools().gigaDrillBreaker(player);
-
-            case GREEN_TERRA:
-                return pluginRef.getPermissionTools().greenTerra(player);
-
-            case SERRATED_STRIKES:
-                return pluginRef.getPermissionTools().serratedStrikes(player);
-
-            case SKULL_SPLITTER:
-                return pluginRef.getPermissionTools().skullSplitter(player);
-
-            case SUPER_BREAKER:
-                return pluginRef.getPermissionTools().superBreaker(player);
-
-            case TREE_FELLER:
-                return pluginRef.getPermissionTools().treeFeller(player);
-
-            default:
-                return false;
-        }
-    }
-
-    /**
-     * Check if a block is affected by this ability.
-     *
-     * @param blockState the block to check
-     * @return true if the block is affected by this ability, false otherwise
-     */
-    public boolean blockCheck(BlockState blockState) {
-        switch (this) {
-            case BERSERK:
-                return (pluginRef.getBlockTools().affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW);
-
-            case GIGA_DRILL_BREAKER:
-                return pluginRef.getBlockTools().affectedByGigaDrillBreaker(blockState);
-
-            case GREEN_TERRA:
-                return pluginRef.getBlockTools().canMakeMossy(blockState);
-
-            case SUPER_BREAKER:
-                return pluginRef.getBlockTools().affectedBySuperBreaker(blockState);
-
-            case TREE_FELLER:
-                return pluginRef.getBlockTools().isLog(blockState);
-
-            default:
-                return false;
-        }
-    }
-
-    /**
-     * Grabs the associated SubSkillType definition for this SuperAbilityType
-     *
-     * @return the matching SubSkillType definition for this SuperAbilityType
-     */
-    public SubSkillType getSubSkillTypeDefinition() {
-        return subSkillTypeDefinition;
     }
 }

@@ -517,7 +517,8 @@ public class BlockListener implements Listener {
                 blockState.update(true);
             }
         } else if (mcMMOPlayer.getAbilityMode(SuperAbilityType.BERSERK) && heldItem.getType() == Material.AIR) {
-            if (SuperAbilityType.BERSERK.blockCheck(block.getState()) && pluginRef.getEventManager().simulateBlockBreak(block, player, true)) {
+            if (pluginRef.getSkillTools().superAbilityBlockCheck(SuperAbilityType.BERSERK, block.getState())
+                    && pluginRef.getEventManager().simulateBlockBreak(block, player, true)) {
                 event.setInstaBreak(true);
                 SoundManager.sendSound(player, block.getLocation(), SoundType.POP);
             } else if (mcMMOPlayer.getUnarmedManager().canUseBlockCracker() && pluginRef.getBlockTools().affectedByBlockCracker(blockState) && pluginRef.getEventManager().simulateBlockBreak(block, player, true)) {

@@ -395,15 +395,15 @@ public final class PermissionTools {
 
     /* MINING */
     public boolean biggerBombs(Permissible permissible) {
-        return permissible.hasPermission("mcmmo.ability.mining.blastmining.biggerbombs");
+        return permissible.hasPermission("mcmmo.ability.SuperAbility.BlastMining.biggerbombs");
     }
 
     public boolean demolitionsExpertise(Permissible permissible) {
-        return permissible.hasPermission("mcmmo.ability.mining.blastmining.demolitionsexpertise");
+        return permissible.hasPermission("mcmmo.ability.SuperAbility.BlastMining.demolitionsexpertise");
     }
 
     public boolean remoteDetonation(Permissible permissible) {
-        return permissible.hasPermission("mcmmo.ability.mining.blastmining.detonate");
+        return permissible.hasPermission("mcmmo.ability.SuperAbility.BlastMining.detonate");
     }
 
     public boolean superBreaker(Permissible permissible) {

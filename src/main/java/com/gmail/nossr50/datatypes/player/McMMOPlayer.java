@@ -899,9 +899,9 @@ public class McMMOPlayer {
     public void checkAbilityActivation(PrimarySkillType primarySkillType) {
         //TODO: Disgusting..
         ToolType tool = pluginRef.getSkillTools().getPrimarySkillToolType(primarySkillType);
-        SuperAbilityType ability = pluginRef.getSkillTools().getSuperAbility(primarySkillType);
+        SuperAbilityType superAbility = pluginRef.getSkillTools().getSuperAbility(primarySkillType);
 
-        if (getAbilityMode(ability) || !ability.getPermissions(player)) {
+        if (getAbilityMode(superAbility) || !pluginRef.getSkillTools().superAbilityPermissionCheck(superAbility, player)) {
             return;
         }
 
@@ -915,7 +915,7 @@ public class McMMOPlayer {
             return;
         }
 
-        int timeRemaining = calculateTimeRemaining(ability);
+        int timeRemaining = calculateTimeRemaining(superAbility);
 
         if (timeRemaining > 0) {
             /*
@@ -935,27 +935,27 @@ public class McMMOPlayer {
         }
 
         if (useChatNotifications()) {
-            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUPER_ABILITY, ability.getAbilityOn());
-            //player.sendMessage(ability.getAbilityOn());
+            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUPER_ABILITY, pluginRef.getSkillTools().getSuperAbilityOn(superAbility));
         }
 
-        pluginRef.getSkillTools().sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, ability.getAbilityPlayer());
+        pluginRef.getSkillTools().sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS,
+                pluginRef.getSkillTools().getSuperAbilityOtherPlayerActivationStr(superAbility));
 
         //Sounds
         SoundManager.worldSendSound(player.getWorld(), player.getLocation(), SoundType.ABILITY_ACTIVATED_GENERIC);
 
-        int abilityLength = pluginRef.getSkillTools().calculateAbilityLengthPerks(this, primarySkillType, ability);
+        int abilityLength = pluginRef.getSkillTools().calculateAbilityLengthPerks(this, primarySkillType, superAbility);
 
         // Enable the ability
-        profile.setAbilityDATS(ability, System.currentTimeMillis() + (abilityLength * Misc.TIME_CONVERSION_FACTOR));
-        setAbilityMode(ability, true);
+        profile.setAbilityDATS(superAbility, System.currentTimeMillis() + (abilityLength * Misc.TIME_CONVERSION_FACTOR));
+        setAbilityMode(superAbility, true);
 
-        if (ability == SuperAbilityType.SUPER_BREAKER || ability == SuperAbilityType.GIGA_DRILL_BREAKER) {
+        if (superAbility == SuperAbilityType.SUPER_BREAKER || superAbility == SuperAbilityType.GIGA_DRILL_BREAKER) {
             pluginRef.getSkillTools().handleAbilitySpeedIncrease(player);
         }
 
         setToolPreparationMode(tool, false);
-        new AbilityDisableTask(pluginRef,   this, ability).runTaskLater(pluginRef, abilityLength * Misc.TICK_CONVERSION_FACTOR);
+        new AbilityDisableTask(pluginRef,   this, superAbility).runTaskLater(pluginRef, abilityLength * Misc.TICK_CONVERSION_FACTOR);
     }
 
     public void processAbilityActivation(PrimarySkillType primarySkillType) {
@@ -1009,12 +1009,13 @@ public class McMMOPlayer {
     /**
      * Calculate the time remaining until the ability's cooldown expires.
      *
-     * @param ability SuperAbilityType whose cooldown to check
+     * @param superAbilityType SuperAbilityType whose cooldown to check
      * @return the number of seconds remaining before the cooldown expires
      */
-    public int calculateTimeRemaining(SuperAbilityType ability) {
-        long deactivatedTimestamp = profile.getAbilityDATS(ability) * Misc.TIME_CONVERSION_FACTOR;
-        return (int) (((deactivatedTimestamp + (PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
+    public int calculateTimeRemaining(SuperAbilityType superAbilityType) {
+        long deactivatedTimestamp = profile.getAbilityDATS(superAbilityType) * Misc.TIME_CONVERSION_FACTOR;
+        return (int) (((deactivatedTimestamp + (PerksUtils.handleCooldownPerks(player,
+                pluginRef.getSkillTools().getSuperAbilityCooldown(superAbilityType)) * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
     }
 
     /*

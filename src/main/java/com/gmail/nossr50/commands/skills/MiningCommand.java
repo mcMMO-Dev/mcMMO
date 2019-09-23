@@ -77,12 +77,12 @@ public class MiningCommand extends SkillCommand {
 
         if (canBiggerBombs) {
             messages.add(getStatMessage(true, true, SubSkillType.MINING_BLAST_MINING, String.valueOf(blastRadiusIncrease)));
-            //messages.add(pluginRef.getLocaleManager().getString("Mining.Blast.Radius.Increase", blastRadiusIncrease));
+            //messages.add(pluginRef.getLocaleManager().getString("SuperAbility.BlastMining.Radius.Increase", blastRadiusIncrease));
         }
 
         if (canBlast) {
-            messages.add(getStatMessage(false, true, SubSkillType.MINING_BLAST_MINING, String.valueOf(blastMiningRank), String.valueOf(pluginRef.getRankTools().getHighestRank(SubSkillType.MINING_BLAST_MINING)), pluginRef.getLocaleManager().getString("Mining.Blast.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
-            //messages.add(pluginRef.getLocaleManager().getString("Mining.Blast.Rank", blastMiningRank, RankUtils.getHighestRank(SubSkillType.MINING_BLAST_MINING), pluginRef.getLocaleManager().getString("Mining.Blast.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
+            messages.add(getStatMessage(false, true, SubSkillType.MINING_BLAST_MINING, String.valueOf(blastMiningRank), String.valueOf(pluginRef.getRankTools().getHighestRank(SubSkillType.MINING_BLAST_MINING)), pluginRef.getLocaleManager().getString("SuperAbility.BlastMining.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
+            //messages.add(pluginRef.getLocaleManager().getString("SuperAbility.BlastMining.Rank", blastMiningRank, RankUtils.getHighestRank(SubSkillType.MINING_BLAST_MINING), pluginRef.getLocaleManager().getString("SuperAbility.BlastMining.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
         }
 
         if (canDemoExpert) {

@@ -17,6 +17,7 @@ import com.google.common.collect.ImmutableSet;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.BlockState;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -255,7 +256,7 @@ public class SkillTools {
         //These values change depending on whether or not the server is in retro mode
         int abilityLengthVar = pluginRef.getConfigManager().getConfigSuperAbilities().getSuperAbilityStartingSeconds();
 
-        int maxLength = pluginRef.getConfigManager().getConfigSuperAbilities().getMaxLengthForSuper(superAbilityType);
+        int maxLength = pluginRef.getConfigManager().getConfigSuperAbilities().getMaxLengthForSuper(pluginRef, superAbilityType);
 
         int skillLevel = mcMMOPlayer.getSkillLevel(skill);
 
@@ -758,5 +759,105 @@ public class SkillTools {
 
     public String getCapitalizedPrimarySkillName(PrimarySkillType primarySkillType) {
         return StringUtils.getCapitalized(primarySkillType.toString());
+    }
+
+    public int getSuperAbilityCooldown(SuperAbilityType superAbilityType) {
+        return pluginRef.getConfigManager().getConfigSuperAbilities().getCooldownForSuper(pluginRef, superAbilityType);
+    }
+
+    public int getSuperAbilityMaxLength(SuperAbilityType superAbilityType) {
+        return pluginRef.getConfigManager().getConfigSuperAbilities().getMaxLengthForSuper(pluginRef, superAbilityType);
+    }
+
+    public String getSuperAbilityOn(SuperAbilityType superAbilityType) {
+        return pluginRef.getLocaleManager().getString("SuperAbility." + superAbilityType.toString() + ".On");
+    }
+
+    public String getSuperAbilityOff(SuperAbilityType superAbilityType) {
+        return pluginRef.getLocaleManager().getString("SuperAbility." + superAbilityType.toString() + ".Off");
+    }
+
+    public String getSuperAbilityOtherPlayerActivationStr(SuperAbilityType superAbilityType) {
+        return pluginRef.getLocaleManager().getString("SuperAbility." + superAbilityType.toString() + ".Other.On");
+    }
+
+    public String getSuperAbilityOtherPlayerDeactivationStr(SuperAbilityType superAbilityType) {
+        return pluginRef.getLocaleManager().getString("SuperAbility." + superAbilityType.toString() + "Other.Off");
+    }
+
+    public String getSuperAbilityRefreshedStr(SuperAbilityType superAbilityType) {
+        return pluginRef.getLocaleManager().getString("SuperAbility." + superAbilityType.toString() + ".Refresh");
+    }
+
+    public String getPrettySuperAbilityName(SuperAbilityType superAbilityType) {
+        return StringUtils.getPrettyAbilityString(superAbilityType);
+    }
+
+
+    /**
+     * Get the permissions for this ability.
+     *
+     * @param player Player to check permissions for
+     * @param superAbilityType target super ability
+     * @return true if the player has permissions, false otherwise
+     */
+    public boolean superAbilityPermissionCheck(SuperAbilityType superAbilityType, Player player) {
+        switch (superAbilityType) {
+            case BERSERK:
+                return pluginRef.getPermissionTools().berserk(player);
+
+            case BLAST_MINING:
+                return pluginRef.getPermissionTools().remoteDetonation(player);
+
+            case GIGA_DRILL_BREAKER:
+                return pluginRef.getPermissionTools().gigaDrillBreaker(player);
+
+            case GREEN_TERRA:
+                return pluginRef.getPermissionTools().greenTerra(player);
+
+            case SERRATED_STRIKES:
+                return pluginRef.getPermissionTools().serratedStrikes(player);
+
+            case SKULL_SPLITTER:
+                return pluginRef.getPermissionTools().skullSplitter(player);
+
+            case SUPER_BREAKER:
+                return pluginRef.getPermissionTools().superBreaker(player);
+
+            case TREE_FELLER:
+                return pluginRef.getPermissionTools().treeFeller(player);
+
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * Check if a block is affected by this ability.
+     *
+     * @param blockState the block to check
+     * @param superAbilityType target super ability
+     * @return true if the block is affected by this ability, false otherwise
+     */
+    public boolean superAbilityBlockCheck(SuperAbilityType superAbilityType, BlockState blockState) {
+        switch (superAbilityType) {
+            case BERSERK:
+                return (pluginRef.getBlockTools().affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW);
+
+            case GIGA_DRILL_BREAKER:
+                return pluginRef.getBlockTools().affectedByGigaDrillBreaker(blockState);
+
+            case GREEN_TERRA:
+                return pluginRef.getBlockTools().canMakeMossy(blockState);
+
+            case SUPER_BREAKER:
+                return pluginRef.getBlockTools().affectedBySuperBreaker(blockState);
+
+            case TREE_FELLER:
+                return pluginRef.getBlockTools().isLog(blockState);
+
+            default:
+                return false;
+        }
     }
 }
