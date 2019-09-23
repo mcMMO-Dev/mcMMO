@@ -18,8 +18,8 @@ import java.util.concurrent.DelayQueue;
 public class PlayerProfile {
     private final String playerName;
     /* Skill Data */
-    private final Map<PrimarySkillType, Integer> skills = new HashMap<>();   // Skill & Level
-    private final Map<PrimarySkillType, Double> skillsXp = new HashMap<>();     // Skill & XP
+    private final Map<PrimarySkillType, Integer> primarySkillLevelMap = new HashMap<>();   // Skill & Level
+    private final Map<PrimarySkillType, Double> primarySkillXPMap = new HashMap<>();     // Skill & XP
     private final Map<SuperAbilityType, Integer> abilityDATS = new HashMap<>(); // Ability & Cooldown
     private final Map<UniqueDataType, Integer> uniquePlayerData = new HashMap<>(); //Misc data that doesn't fit into other categories (chimaera wing, etc..)
     private UUID uuid;
@@ -52,8 +52,8 @@ public class PlayerProfile {
         }
 
         for (PrimarySkillType primarySkillType : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
-            skills.put(primarySkillType, pluginRef.getPlayerLevelingSettings().getConfigSectionLevelingGeneral().getStartingLevel());
-            skillsXp.put(primarySkillType, 0.0);
+            primarySkillLevelMap.put(primarySkillType, pluginRef.getPlayerLevelingSettings().getConfigSectionLevelingGeneral().getStartingLevel());
+            primarySkillXPMap.put(primarySkillType, 0.0);
         }
 
         //Misc Cooldowns
@@ -78,8 +78,8 @@ public class PlayerProfile {
         this.mobHealthbarType = mobHealthbarType;
         this.scoreboardTipsShown = scoreboardTipsShown;
 
-        skills.putAll(levelData);
-        skillsXp.putAll(xpData);
+        primarySkillLevelMap.putAll(levelData);
+        primarySkillXPMap.putAll(xpData);
         abilityDATS.putAll(cooldownData);
         uniquePlayerData.putAll(uniqueProfileData);
 
@@ -110,7 +110,7 @@ public class PlayerProfile {
         }
 
         // TODO should this part be synchronized?
-        PlayerProfile profileCopy = new PlayerProfile(pluginRef, playerName, uuid, ImmutableMap.copyOf(skills), ImmutableMap.copyOf(skillsXp), ImmutableMap.copyOf(abilityDATS), mobHealthbarType, scoreboardTipsShown, ImmutableMap.copyOf(uniquePlayerData));
+        PlayerProfile profileCopy = new PlayerProfile(pluginRef, playerName, uuid, ImmutableMap.copyOf(primarySkillLevelMap), ImmutableMap.copyOf(primarySkillXPMap), ImmutableMap.copyOf(abilityDATS), mobHealthbarType, scoreboardTipsShown, ImmutableMap.copyOf(uniquePlayerData));
         changed = !pluginRef.getDatabaseManager().saveUser(profileCopy);
 
         if (changed) {
@@ -220,23 +220,23 @@ public class PlayerProfile {
     /**
      * Get the current deactivation timestamp of an ability.
      *
-     * @param ability The {@link SuperAbilityType} to get the DATS for
+     * @param superAbilityType The {@link SuperAbilityType} to get the DATS for
      * @return the deactivation timestamp for the ability
      */
-    public long getAbilityDATS(SuperAbilityType ability) {
-        return abilityDATS.get(ability);
+    public long getAbilityDATS(SuperAbilityType superAbilityType) {
+        return abilityDATS.get(superAbilityType);
     }
 
     /**
      * Set the current deactivation timestamp of an ability.
      *
-     * @param ability The {@link SuperAbilityType} to set the DATS for
+     * @param superAbilityType The {@link SuperAbilityType} to set the DATS for
      * @param DATS    the DATS of the ability
      */
-    protected void setAbilityDATS(SuperAbilityType ability, long DATS) {
+    protected void setAbilityDATS(SuperAbilityType superAbilityType, long DATS) {
         markProfileDirty();
 
-        abilityDATS.put(ability, (int) (DATS * .001D));
+        abilityDATS.put(superAbilityType, (int) (DATS * .001D));
     }
 
     /**
@@ -254,26 +254,26 @@ public class PlayerProfile {
      * Xp Functions
      */
 
-    public int getSkillLevel(PrimarySkillType skill) {
-        return skill.isChildSkill() ? getChildSkillLevel(skill) : skills.get(skill);
+    public int getSkillLevel(PrimarySkillType primarySkillType) {
+        return pluginRef.getSkillTools().isChildSkill(primarySkillType) ? getChildSkillLevel(primarySkillType) : primarySkillLevelMap.get(primarySkillType);
     }
 
-    public double getSkillXpLevelRaw(PrimarySkillType skill) {
-        return skillsXp.get(skill);
+    public double getSkillXpLevelRaw(PrimarySkillType primarySkillType) {
+        return primarySkillXPMap.get(primarySkillType);
     }
 
-    public int getSkillXpLevel(PrimarySkillType skill) {
-        return (int) Math.floor(getSkillXpLevelRaw(skill));
+    public int getSkillXpLevel(PrimarySkillType primarySkillType) {
+        return (int) Math.floor(getSkillXpLevelRaw(primarySkillType));
     }
 
-    public void setSkillXpLevel(PrimarySkillType skill, double xpLevel) {
-        if (skill.isChildSkill()) {
+    public void setSkillXpLevel(PrimarySkillType primarySkillType, double xpLevel) {
+        if (pluginRef.getSkillTools().isChildSkill(primarySkillType)) {
             return;
         }
 
         markProfileDirty();
 
-        skillsXp.put(skill, xpLevel);
+        primarySkillXPMap.put(primarySkillType, xpLevel);
     }
 
     protected double levelUp(PrimarySkillType skill) {
@@ -281,8 +281,8 @@ public class PlayerProfile {
 
         markProfileDirty();
 
-        skills.put(skill, skills.get(skill) + 1);
-        skillsXp.put(skill, skillsXp.get(skill) - xpRemoved);
+        primarySkillLevelMap.put(skill, primarySkillLevelMap.get(skill) + 1);
+        primarySkillXPMap.put(skill, primarySkillXPMap.get(skill) - xpRemoved);
 
         return xpRemoved;
     }
@@ -290,37 +290,37 @@ public class PlayerProfile {
     /**
      * Remove Xp from a skill.
      *
-     * @param skill Type of skill to modify
+     * @param primarySkillType Type of skill to modify
      * @param xp    Amount of xp to remove
      */
-    public void removeXp(PrimarySkillType skill, int xp) {
-        if (skill.isChildSkill()) {
+    public void removeXp(PrimarySkillType primarySkillType, int xp) {
+        if (pluginRef.getSkillTools().isChildSkill(primarySkillType)) {
             return;
         }
 
         markProfileDirty();
 
-        skillsXp.put(skill, skillsXp.get(skill) - xp);
+        primarySkillXPMap.put(primarySkillType, primarySkillXPMap.get(primarySkillType) - xp);
     }
 
-    public void removeXp(PrimarySkillType skill, double xp) {
-        if (skill.isChildSkill()) {
+    public void removeXp(PrimarySkillType primarySkillType, double xp) {
+        if (pluginRef.getSkillTools().isChildSkill(primarySkillType)) {
             return;
         }
 
         markProfileDirty();
 
-        skillsXp.put(skill, skillsXp.get(skill) - xp);
+        primarySkillXPMap.put(primarySkillType, primarySkillXPMap.get(primarySkillType) - xp);
     }
 
     /**
      * Modify a skill level.
      *
-     * @param skill Type of skill to modify
+     * @param primarySkillType Type of skill to modify
      * @param level New level value for the skill
      */
-    public void modifySkill(PrimarySkillType skill, int level) {
-        if (skill.isChildSkill()) {
+    public void modifySkill(PrimarySkillType primarySkillType, int level) {
+        if (pluginRef.getSkillTools().isChildSkill(primarySkillType)) {
             return;
         }
 
@@ -330,38 +330,38 @@ public class PlayerProfile {
         if (level < 0)
             level = 0;
 
-        skills.put(skill, level);
-        skillsXp.put(skill, 0.0);
+        primarySkillLevelMap.put(primarySkillType, level);
+        primarySkillXPMap.put(primarySkillType, 0.0);
     }
 
     /**
      * Add levels to a skill.
      *
-     * @param skill  Type of skill to add levels to
+     * @param primarySkillType  Type of skill to add levels to
      * @param levels Number of levels to add
      */
-    public void addLevels(PrimarySkillType skill, int levels) {
-        modifySkill(skill, skills.get(skill) + levels);
+    public void addLevels(PrimarySkillType primarySkillType, int levels) {
+        modifySkill(primarySkillType, primarySkillLevelMap.get(primarySkillType) + levels);
     }
 
     /**
      * Add Experience to a skill.
      *
-     * @param skill Type of skill to add experience to
+     * @param primarySkillType Type of skill to add experience to
      * @param xp    Number of experience to add
      */
-    public void addXp(PrimarySkillType skill, double xp) {
+    public void addXp(PrimarySkillType primarySkillType, double xp) {
         markProfileDirty();
 
-        if (skill.isChildSkill()) {
-            Set<PrimarySkillType> parentSkills = FamilyTree.getParents(skill);
+        if (pluginRef.getSkillTools().isChildSkill(primarySkillType)) {
+            Set<PrimarySkillType> parentSkills = FamilyTree.getParents(primarySkillType);
             double dividedXP = (xp / parentSkills.size());
 
             for (PrimarySkillType parentSkill : parentSkills) {
-                skillsXp.put(parentSkill, skillsXp.get(parentSkill) + dividedXP);
+                primarySkillXPMap.put(parentSkill, primarySkillXPMap.get(parentSkill) + dividedXP);
             }
         } else {
-            skillsXp.put(skill, skillsXp.get(skill) + xp);
+            primarySkillXPMap.put(primarySkillType, primarySkillXPMap.get(primarySkillType) + xp);
         }
     }
 
@@ -411,7 +411,7 @@ public class PlayerProfile {
      * @return the total amount of Xp until next level
      */
     public int getXpToLevel(PrimarySkillType primarySkillType) {
-        int level = (pluginRef.getConfigManager().getConfigLeveling().getConfigExperienceFormula().isCumulativeCurveEnabled()) ? pluginRef.getUserManager().getPlayer(playerName).getPowerLevel() : skills.get(primarySkillType);
+        int level = (pluginRef.getConfigManager().getConfigLeveling().getConfigExperienceFormula().isCumulativeCurveEnabled()) ? pluginRef.getUserManager().getPlayer(playerName).getPowerLevel() : primarySkillLevelMap.get(primarySkillType);
 
         return pluginRef.getFormulaManager().getXPtoNextLevel(level);
     }
@@ -420,11 +420,11 @@ public class PlayerProfile {
         Set<PrimarySkillType> parents = FamilyTree.getParents(primarySkillType);
         int sum = 0;
 
-        for (PrimarySkillType parent : parents) {
-            if (pluginRef.getPlayerLevelingSettings().isSkillLevelCapEnabled(parent))
-                sum += Math.min(getSkillLevel(parent), parent.getMaxLevel());
+        for (PrimarySkillType parentSkill : parents) {
+            if (pluginRef.getPlayerLevelingSettings().isSkillLevelCapEnabled(parentSkill))
+                sum += Math.min(getSkillLevel(parentSkill), pluginRef.getConfigManager().getConfigLeveling().getSkillLevelCap(parentSkill));
             else
-                sum += getSkillLevel(parent);
+                sum += getSkillLevel(parentSkill);
         }
 
         return sum / parents.size();
