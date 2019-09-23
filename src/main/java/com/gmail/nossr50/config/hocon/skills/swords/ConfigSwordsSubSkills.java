@@ -16,6 +16,9 @@ public class ConfigSwordsSubSkills {
     @Setting(value = "Serrated-Strikes")
     private ConfigSwordsSerratedStrikes serratedStrikes = new ConfigSwordsSerratedStrikes();
 
+    @Setting(value = "Limit-Break")
+    private ConfigSwordsLimitBreak swordsLimitBreak = new ConfigSwordsLimitBreak();
+
     public ConfigSwordsCounterAttack getCounterAttack() {
         return counterAttack;
     }
@@ -62,5 +65,9 @@ public class ConfigSwordsSubSkills {
 
     public int getRuptureBaseTicks() {
         return rupture.getRuptureBaseTicks();
+    }
+
+    public ConfigSwordsLimitBreak getSwordsLimitBreak() {
+        return swordsLimitBreak;
     }
 }

@@ -201,7 +201,7 @@ public class Roll extends AcrobaticsSubSkill {
             return gracefulRollCheck(player, mcMMOPlayer, damage, skillLevel);
         }
 
-        double modifiedDamage = calculateModifiedRollDamage(damage, pluginRef.getConfigManager().getConfigAcrobatics().getRollDamageTheshold());
+        double modifiedDamage = calculateModifiedRollDamage(damage, pluginRef.getConfigManager().getConfigAcrobatics().getRollDamageThreshold());
 
         if (!isFatal(player, modifiedDamage)
                 && pluginRef.getRandomChanceTools().isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ACROBATICS_ROLL, player)) {
@@ -237,7 +237,7 @@ public class Roll extends AcrobaticsSubSkill {
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
     private double gracefulRollCheck(Player player, McMMOPlayer mcMMOPlayer, double damage, int skillLevel) {
-        double modifiedDamage = calculateModifiedRollDamage(damage, pluginRef.getConfigManager().getConfigAcrobatics().getRollDamageTheshold() * 2);
+        double modifiedDamage = calculateModifiedRollDamage(damage, pluginRef.getConfigManager().getConfigAcrobatics().getRollDamageThreshold() * 2);
 
         RandomChanceSkill rcs = new RandomChanceSkill(player, subSkillType);
         rcs.setSkillLevel(rcs.getSkillLevel() * 2); //Double the effective odds
@@ -395,7 +395,7 @@ public class Roll extends AcrobaticsSubSkill {
         //Chance Stat Calculations
         rollChanceHalfMax = pluginRef.getRandomChanceTools().getRandomChanceExecutionChance(rollHalfMaxSkill);
         graceChanceHalfMax = pluginRef.getRandomChanceTools().getRandomChanceExecutionChance(rollGraceHalfMaxSkill);
-        damageThreshold = pluginRef.getConfigManager().getConfigAcrobatics().getRollDamageTheshold();
+        damageThreshold = pluginRef.getConfigManager().getConfigAcrobatics().getRollDamageThreshold();
 
         chancePerLevel = pluginRef.getRandomChanceTools().getRandomChanceExecutionChance(rollOneSkillLevel);
 
