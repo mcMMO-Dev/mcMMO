@@ -3,7 +3,6 @@ package com.gmail.nossr50.commands.skills;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.axes.Axes;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -37,7 +36,7 @@ public class AxesCommand extends SkillCommand {
 
         // AXE MASTERY
         if (canAxeMastery) {
-            axeMasteryDamage = Axes.getAxeMasteryBonusDamage(player);
+            axeMasteryDamage = pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getAxesBehaviour().getAxeMasteryBonusDamage(player);
         }
 
         // CRITICAL HIT
@@ -92,11 +91,7 @@ public class AxesCommand extends SkillCommand {
 
         if (canUseSubSkill(player, SubSkillType.AXES_AXES_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.AXES_AXES_LIMIT_BREAK,
-<<<<<<< HEAD
-                    String.valueOf(pluginRef.getCombatTools().getLimitBreakDamage(player, SubSkillType.AXES_AXES_LIMIT_BREAK))));
-=======
-                    String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, SubSkillType.AXES_AXES_LIMIT_BREAK, 1000))));
->>>>>>> 308e3a4b1f46e9e3de28d6d540dd055a540ed4d5
+            String.valueOf(pluginRef.getCombatTools().getLimitBreakDamageAgainstQuality(player, SubSkillType.AXES_AXES_LIMIT_BREAK, 1000))));
         }
 
         return messages;
