@@ -3,7 +3,6 @@ package com.gmail.nossr50.commands.skills;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
@@ -48,11 +47,11 @@ public class SalvageCommand extends SkillCommand {
                     String.valueOf(salvageManager.getArcaneSalvageRank()),
                     String.valueOf(pluginRef.getRankTools().getHighestRank(SubSkillType.SALVAGE_ARCANE_SALVAGE))));
 
-            if (Salvage.arcaneSalvageEnchantLoss) {
+            if (pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getSalvageBehaviour().isArcaneSalvageEnchantLoss()) {
                 messages.add(pluginRef.getLocaleManager().getString("Ability.Generic.Template", pluginRef.getLocaleManager().getString("Salvage.Arcane.ExtractFull"), percent.format(salvageManager.getExtractFullEnchantChance() / 100)));
             }
 
-            if (Salvage.arcaneSalvageDowngrades) {
+            if (pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getSalvageBehaviour().isArcaneSalvageDowngrades()) {
                 messages.add(pluginRef.getLocaleManager().getString("Ability.Generic.Template", pluginRef.getLocaleManager().getString("Salvage.Arcane.ExtractPartial"), percent.format(salvageManager.getExtractPartialEnchantChance() / 100)));
             }
         }

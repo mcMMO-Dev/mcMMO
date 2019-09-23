@@ -16,9 +16,9 @@ public class SkillGuideCommand implements CommandExecutor {
     private String invalidPage;
     private final mcMMO pluginRef;
 
-    public SkillGuideCommand(PrimarySkillType skill, mcMMO pluginRef) {
-        header = pluginRef.getLocaleManager().getString("Guides.Header", skill.getLocalizedSkillName());
-        guide = getGuide(skill);
+    public SkillGuideCommand(PrimarySkillType primarySkillType, mcMMO pluginRef) {
+        header = pluginRef.getLocaleManager().getString("Guides.Header", pluginRef.getSkillTools().getLocalizedSkillName(primarySkillType));
+        guide = getGuide(primarySkillType);
         invalidPage = pluginRef.getLocaleManager().getString("Guides.Page.Invalid");
         this.pluginRef = pluginRef;
     }
