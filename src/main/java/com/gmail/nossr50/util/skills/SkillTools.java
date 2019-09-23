@@ -13,6 +13,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -38,8 +39,10 @@ public class SkillTools {
     private final mcMMO pluginRef;
     private final int ENCHANT_SPEED_VAR;
 
+    //TODO: Should these be hash sets instead of lists?
     public final List<String> LOCALIZED_SKILL_NAMES;
-    public final List<String> SUBSKILL_NAMES;
+    public final List<String> FORMATTED_SUBSKILL_NAMES;
+    public final Set<String> EXACT_SUBSKILL_NAMES;
     public final List<PrimarySkillType> CHILD_SKILLS;
     public final List<PrimarySkillType> NON_CHILD_SKILLS;
     public final List<PrimarySkillType> COMBAT_SKILLS;
@@ -63,7 +66,6 @@ public class SkillTools {
         initPrimaryChildMap();
         initPrimaryToolMap();
         initSuperAbilityParentRelationships();
-        buildSubSkillNameList();
 
         List<PrimarySkillType> childSkills = new ArrayList<>();
         List<PrimarySkillType> nonChildSkills = new ArrayList<>();
@@ -81,7 +83,8 @@ public class SkillTools {
         MISC_SKILLS = ImmutableList.of(PrimarySkillType.ACROBATICS, PrimarySkillType.ALCHEMY, PrimarySkillType.REPAIR, PrimarySkillType.SALVAGE, PrimarySkillType.SMELTING);
 
         LOCALIZED_SKILL_NAMES = ImmutableList.copyOf(buildLocalizedPrimarySkillNames());
-        SUBSKILL_NAMES = ImmutableList.copyOf(buildSubSkillNameList());
+        FORMATTED_SUBSKILL_NAMES = ImmutableList.copyOf(buildFormattedSubSkillNameList());
+        EXACT_SUBSKILL_NAMES = ImmutableSet.copyOf(buildExactSubSkillNameList());
 
         CHILD_SKILLS = ImmutableList.copyOf(childSkills);
         NON_CHILD_SKILLS = ImmutableList.copyOf(nonChildSkills);
@@ -98,6 +101,15 @@ public class SkillTools {
         primarySkillToolMap.put(PrimarySkillType.EXCAVATION, ToolType.SHOVEL);
         primarySkillToolMap.put(PrimarySkillType.HERBALISM, ToolType.HOE);
         primarySkillToolMap.put(PrimarySkillType.MINING, ToolType.PICKAXE);
+    }
+
+    /**
+     * See if a skill enum exists
+     * @param subSkillName
+     * @return
+     */
+    public boolean isSubSkillNameExact(String subSkillName) {
+        return EXACT_SUBSKILL_NAMES.contains(subSkillName);
     }
 
     private void initSuperAbilityParentRelationships() {
@@ -183,7 +195,7 @@ public class SkillTools {
      * Used in tab completion mostly
      * @return a list of formatted sub skill names
      */
-    private ArrayList<String> buildSubSkillNameList() {
+    private ArrayList<String> buildFormattedSubSkillNameList() {
         ArrayList<String> subSkillNameList = new ArrayList<>();
 
         for(SubSkillType subSkillType : SubSkillType.values()) {
@@ -191,6 +203,16 @@ public class SkillTools {
         }
 
         return subSkillNameList;
+    }
+
+    private HashSet<String> buildExactSubSkillNameList() {
+        HashSet<String> subSkillNameExactSet = new HashSet<>();
+
+        for(SubSkillType subSkillType : SubSkillType.values()) {
+            subSkillNameExactSet.add(subSkillType.toString());
+        }
+
+        return subSkillNameExactSet;
     }
 
     /**
