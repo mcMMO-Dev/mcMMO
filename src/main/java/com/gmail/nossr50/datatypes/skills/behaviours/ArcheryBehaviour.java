@@ -47,12 +47,12 @@ public class ArcheryBehaviour {
     }
 
     public double getSkillShotBonusDamage(Player player, double oldDamage) {
-        double damageBonusPercent = getDamageBonusPercent(player);
+        double damageBonusPercent = getSkillShotDamageBonusPercent(player);
         double newDamage = oldDamage + (oldDamage * damageBonusPercent);
         return Math.min(newDamage, getSkillShotDamageCap());
     }
 
-    public double getDamageBonusPercent(Player player) {
+    public double getSkillShotDamageBonusPercent(Player player) {
         return ((pluginRef.getRankTools().getRank(player, SubSkillType.ARCHERY_SKILL_SHOT)) * pluginRef.getConfigManager().getConfigArchery().getSkillShotDamageMultiplier()) / 100.0D;
     }
 

@@ -3,7 +3,6 @@ package com.gmail.nossr50.commands.skills;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.archery.Archery;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -43,7 +42,7 @@ public class ArcheryCommand extends SkillCommand {
 
         // SKILL SHOT
         if (canSkillShot) {
-            skillShotBonus = percent.format(Archery.getDamageBonusPercent(player));
+            skillShotBonus = percent.format(pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getArcheryBehaviour().getSkillShotDamageBonusPercent(player));
         }
     }
 
@@ -74,11 +73,7 @@ public class ArcheryCommand extends SkillCommand {
 
         if (canUseSubSkill(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK,
-<<<<<<< HEAD
-                    String.valueOf(pluginRef.getCombatTools().getLimitBreakDamage(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK))));
-=======
-                String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK, 1000))));
->>>>>>> 308e3a4b1f46e9e3de28d6d540dd055a540ed4d5
+            String.valueOf(pluginRef.getCombatTools().getLimitBreakDamageAgainstQuality(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK, 1000))));
         }
 
         return messages;

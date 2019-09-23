@@ -56,10 +56,10 @@ public class AcrobaticsCommand extends SkillCommand {
                 double rollChance, graceChance;
 
                 //Chance to roll at half
-                RandomChanceSkill roll_rcs = new RandomChanceSkill(player, SubSkillType.ACROBATICS_ROLL);
+                RandomChanceSkill roll_rcs = new RandomChanceSkill(pluginRef, player, SubSkillType.ACROBATICS_ROLL);
 
                 //Chance to graceful roll
-                RandomChanceSkill grace_rcs = new RandomChanceSkill(player, SubSkillType.ACROBATICS_ROLL);
+                RandomChanceSkill grace_rcs = new RandomChanceSkill(pluginRef, player, SubSkillType.ACROBATICS_ROLL);
                 grace_rcs.setSkillLevel(grace_rcs.getSkillLevel() * 2); //Double Odds
 
                 //Chance Stat Calculations
