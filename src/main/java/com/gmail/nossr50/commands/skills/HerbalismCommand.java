@@ -84,13 +84,13 @@ public class HerbalismCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        hasHylianLuck = canUseSubskill(player, SubSkillType.HERBALISM_HYLIAN_LUCK);
+        hasHylianLuck = canUseSubSkill(player, SubSkillType.HERBALISM_HYLIAN_LUCK);
         canGreenTerra = pluginRef.getPermissionTools().greenTerra(player);
         canGreenThumbPlants = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.HERBALISM_GREEN_THUMB) && (pluginRef.getPermissionTools().greenThumbPlant(player, Material.WHEAT) || pluginRef.getPermissionTools().greenThumbPlant(player, Material.CARROT) || pluginRef.getPermissionTools().greenThumbPlant(player, Material.POTATO) || pluginRef.getPermissionTools().greenThumbPlant(player, Material.BEETROOT) || pluginRef.getPermissionTools().greenThumbPlant(player, Material.NETHER_WART) || pluginRef.getPermissionTools().greenThumbPlant(player, Material.COCOA));
         canGreenThumbBlocks = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.HERBALISM_GREEN_THUMB) && (pluginRef.getPermissionTools().greenThumbBlock(player, Material.DIRT) || pluginRef.getPermissionTools().greenThumbBlock(player, Material.COBBLESTONE) || pluginRef.getPermissionTools().greenThumbBlock(player, Material.COBBLESTONE_WALL) || pluginRef.getPermissionTools().greenThumbBlock(player, Material.STONE_BRICKS));
-        canFarmersDiet = canUseSubskill(player, SubSkillType.HERBALISM_FARMERS_DIET);
-        canDoubleDrop = canUseSubskill(player, SubSkillType.HERBALISM_DOUBLE_DROPS);
-        canShroomThumb = canUseSubskill(player, SubSkillType.HERBALISM_SHROOM_THUMB);
+        canFarmersDiet = canUseSubSkill(player, SubSkillType.HERBALISM_FARMERS_DIET);
+        canDoubleDrop = canUseSubSkill(player, SubSkillType.HERBALISM_DOUBLE_DROPS);
+        canShroomThumb = canUseSubSkill(player, SubSkillType.HERBALISM_SHROOM_THUMB);
     }
 
     @Override

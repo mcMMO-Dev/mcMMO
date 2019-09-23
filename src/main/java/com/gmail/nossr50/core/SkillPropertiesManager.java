@@ -19,7 +19,7 @@ public class SkillPropertiesManager {
     private final mcMMO pluginRef;
 
     private HashMap<SubSkillType, Double> maxChanceMap;
-    private HashMap<SubSkillType, Double> staticActivationChanceMap;
+    private HashMap<SubSkillType, Double> staticActivationChanceMap; //TODO: Doesn't allow for per rank changes
     private HashMap<SubSkillType, Integer> maxBonusLevelMap;
     private HashMap<SubSkillType, Double> maxBonusMap;
 

@@ -50,8 +50,8 @@ public class WoodcuttingCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canTreeFell = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_TREE_FELLER) && pluginRef.getPermissionTools().treeFeller(player);
-        canDoubleDrop = canUseSubskill(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER) && pluginRef.getRankTools().getRank(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER) >= 1;
-        canLeafBlow = canUseSubskill(player, SubSkillType.WOODCUTTING_LEAF_BLOWER);
+        canDoubleDrop = canUseSubSkill(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER) && pluginRef.getRankTools().getRank(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER) >= 1;
+        canLeafBlow = canUseSubSkill(player, SubSkillType.WOODCUTTING_LEAF_BLOWER);
         /*canSplinter = canUseSubskill(player, SubSkillType.WOODCUTTING_SPLINTER);
         canBarkSurgeon = canUseSubskill(player, SubSkillType.WOODCUTTING_BARK_SURGEON);
         canNaturesBounty = canUseSubskill(player, SubSkillType.WOODCUTTING_NATURES_BOUNTY);*/

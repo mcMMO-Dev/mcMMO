@@ -14,6 +14,7 @@ Version 2.2.0
     Repair config has been rewritten and expanded to support much more complex settings
     Fixed a bug where salvage anvil noises wouldn't play for a player that lacked repair permissions nodes
     Sharpened Claws now has settings to change its damage for PVE or PVP instead of a flat setting that applied to both
+    Gore tick length is now customizable
     Removed the following Repair/Salvage permissions
         mcmmo.ability.repair.stonerepair
         mcmmo.ability.repair.stringrepair

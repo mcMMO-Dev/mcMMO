@@ -54,8 +54,8 @@ public class SwordsCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canBleed = canUseSubskill(player, SubSkillType.SWORDS_RUPTURE);
-        canCounter = canUseSubskill(player, SubSkillType.SWORDS_COUNTER_ATTACK);
+        canBleed = canUseSubSkill(player, SubSkillType.SWORDS_RUPTURE);
+        canCounter = canUseSubSkill(player, SubSkillType.SWORDS_COUNTER_ATTACK);
         canSerratedStrike = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.SWORDS_SERRATED_STRIKES) && pluginRef.getPermissionTools().serratedStrikes(player);
     }
 
@@ -91,12 +91,12 @@ public class SwordsCommand extends SkillCommand {
                     + (hasEndurance ? pluginRef.getLocaleManager().getString("Perks.ActivationTime.Bonus", serratedStrikesLengthEndurance) : ""));
         }
 
-        if (canUseSubskill(player, SubSkillType.SWORDS_STAB)) {
+        if (canUseSubSkill(player, SubSkillType.SWORDS_STAB)) {
             messages.add(getStatMessage(SubSkillType.SWORDS_STAB,
                     String.valueOf(pluginRef.getUserManager().getPlayer(player).getSwordsManager().getStabDamage())));
         }
 
-        if (canUseSubskill(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK)) {
+        if (canUseSubSkill(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.SWORDS_SWORDS_LIMIT_BREAK,
 <<<<<<< HEAD
                     String.valueOf(pluginRef.getCombatTools().getLimitBreakDamage(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK))));

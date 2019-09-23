@@ -118,13 +118,13 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canTreasureHunt = canUseSubskill(player, SubSkillType.FISHING_TREASURE_HUNTER);
-        canMagicHunt = canUseSubskill(player, SubSkillType.FISHING_MAGIC_HUNTER) && canUseSubskill(player, SubSkillType.FISHING_TREASURE_HUNTER);
-        canShake = canUseSubskill(player, SubSkillType.FISHING_SHAKE);
-        canFishermansDiet = canUseSubskill(player, SubSkillType.FISHING_FISHERMANS_DIET);
-        canMasterAngler = canUseSubskill(player, SubSkillType.FISHING_MASTER_ANGLER);
-        canIceFish = canUseSubskill(player, SubSkillType.FISHING_ICE_FISHING);
-        canInnerPeace = canUseSubskill(player, SubSkillType.FISHING_INNER_PEACE);
+        canTreasureHunt = canUseSubSkill(player, SubSkillType.FISHING_TREASURE_HUNTER);
+        canMagicHunt = canUseSubSkill(player, SubSkillType.FISHING_MAGIC_HUNTER) && canUseSubSkill(player, SubSkillType.FISHING_TREASURE_HUNTER);
+        canShake = canUseSubSkill(player, SubSkillType.FISHING_SHAKE);
+        canFishermansDiet = canUseSubSkill(player, SubSkillType.FISHING_FISHERMANS_DIET);
+        canMasterAngler = canUseSubSkill(player, SubSkillType.FISHING_MASTER_ANGLER);
+        canIceFish = canUseSubSkill(player, SubSkillType.FISHING_ICE_FISHING);
+        canInnerPeace = canUseSubSkill(player, SubSkillType.FISHING_INNER_PEACE);
     }
 
     @Override

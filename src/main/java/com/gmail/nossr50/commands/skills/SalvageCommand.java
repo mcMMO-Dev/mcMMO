@@ -27,8 +27,8 @@ public class SalvageCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canScrapCollector = canUseSubskill(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR);
-        canArcaneSalvage = canUseSubskill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE);
+        canScrapCollector = canUseSubSkill(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR);
+        canArcaneSalvage = canUseSubSkill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE);
     }
 
     @Override

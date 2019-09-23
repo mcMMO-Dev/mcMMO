@@ -34,7 +34,7 @@ public class ExcavationCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canGigaDrill = pluginRef.getPermissionTools().gigaDrillBreaker(player) && pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.EXCAVATION_GIGA_DRILL_BREAKER);
-        canTreasureHunt = canUseSubskill(player, SubSkillType.EXCAVATION_ARCHAEOLOGY);
+        canTreasureHunt = canUseSubSkill(player, SubSkillType.EXCAVATION_ARCHAEOLOGY);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ExcavationCommand extends SkillCommand {
             //messages.add(pluginRef.getLocaleManager().getString("Excavation.Effect.Length", gigaDrillBreakerLength) + (hasEndurance ? pluginRef.getLocaleManager().getString("Perks.ActivationTime.Bonus", gigaDrillBreakerLengthEndurance) : ""));
         }
 
-        if(canUseSubskill(player, SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
+        if(canUseSubSkill(player, SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
             messages.add(getStatMessage(false, false, SubSkillType.EXCAVATION_ARCHAEOLOGY,
                     percent.format(excavationManager.getArchaelogyExperienceOrbChance() / 100.0D)));
             messages.add(getStatMessage(true, false, SubSkillType.EXCAVATION_ARCHAEOLOGY,

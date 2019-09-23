@@ -9,7 +9,6 @@ import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.mining.MiningManager;
-import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.Misc;
@@ -533,7 +532,7 @@ public class EntityListener implements Listener {
                 }
             }
 
-            if (Taming.getInstance().canPreventDamage(pet, owner)) {
+            if (pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getTamingBehaviour().canPreventDamage(pet, owner)) {
                 Player player = (Player) owner;
                 Wolf wolf = (Wolf) pet;
 
@@ -562,7 +561,7 @@ public class EntityListener implements Listener {
                     case ENTITY_ATTACK:
                     case PROJECTILE:
                         if (tamingManager.canUseThickFur()) {
-                            event.setDamage(Taming.getInstance().processThickFur(wolf, event.getDamage()));
+                            event.setDamage(pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getTamingBehaviour().processThickFur(wolf, event.getDamage()));
 
                             if (event.getFinalDamage() == 0) {
                                 event.setCancelled(true);
@@ -572,7 +571,7 @@ public class EntityListener implements Listener {
 
                     case FIRE_TICK:
                         if (tamingManager.canUseThickFur()) {
-                            Taming.getInstance().processThickFurFire(wolf);
+                            pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getTamingBehaviour().processThickFurFire(wolf);
                         }
                         return;
 
@@ -580,7 +579,7 @@ public class EntityListener implements Listener {
                     case POISON:
                     case WITHER:
                         if (tamingManager.canUseHolyHound()) {
-                            Taming.getInstance().processHolyHound(wolf, event.getDamage());
+                            pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getTamingBehaviour().processHolyHound(wolf, event.getDamage());
                         }
                         return;
 
@@ -588,7 +587,7 @@ public class EntityListener implements Listener {
                     case ENTITY_EXPLOSION:
                     case LIGHTNING:
                         if (tamingManager.canUseShockProof()) {
-                            event.setDamage(Taming.getInstance().processShockProof(wolf, event.getDamage()));
+                            event.setDamage(pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getTamingBehaviour().processShockProof(wolf, event.getDamage()));
 
                             if (event.getFinalDamage() == 0) {
                                 event.setCancelled(true);

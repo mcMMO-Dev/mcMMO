@@ -58,10 +58,10 @@ public class AxesCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canSkullSplitter = pluginRef.getPermissionTools().skullSplitter(player) && pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.AXES_SKULL_SPLITTER);
-        canCritical = canUseSubskill(player, SubSkillType.AXES_CRITICAL_STRIKES);
-        canAxeMastery = canUseSubskill(player, SubSkillType.AXES_AXE_MASTERY);
-        canImpact = canUseSubskill(player, SubSkillType.AXES_ARMOR_IMPACT);
-        canGreaterImpact = canUseSubskill(player, SubSkillType.AXES_GREATER_IMPACT);
+        canCritical = canUseSubSkill(player, SubSkillType.AXES_CRITICAL_STRIKES);
+        canAxeMastery = canUseSubSkill(player, SubSkillType.AXES_AXE_MASTERY);
+        canImpact = canUseSubSkill(player, SubSkillType.AXES_ARMOR_IMPACT);
+        canGreaterImpact = canUseSubSkill(player, SubSkillType.AXES_GREATER_IMPACT);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class AxesCommand extends SkillCommand {
                     + (hasEndurance ? pluginRef.getLocaleManager().getString("Perks.ActivationTime.Bonus", skullSplitterLengthEndurance) : ""));
         }
 
-        if (canUseSubskill(player, SubSkillType.AXES_AXES_LIMIT_BREAK)) {
+        if (canUseSubSkill(player, SubSkillType.AXES_AXES_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.AXES_AXES_LIMIT_BREAK,
 <<<<<<< HEAD
                     String.valueOf(pluginRef.getCombatTools().getLimitBreakDamage(player, SubSkillType.AXES_AXES_LIMIT_BREAK))));

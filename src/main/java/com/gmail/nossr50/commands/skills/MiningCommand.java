@@ -67,7 +67,7 @@ public class MiningCommand extends SkillCommand {
         canBiggerBombs = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.MINING_BIGGER_BOMBS) && pluginRef.getPermissionTools().biggerBombs(player);
         canBlast = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.MINING_BLAST_MINING) && pluginRef.getPermissionTools().remoteDetonation(player);
         canDemoExpert = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.MINING_DEMOLITIONS_EXPERTISE) && pluginRef.getPermissionTools().demolitionsExpertise(player);
-        canDoubleDrop = canUseSubskill(player, SubSkillType.MINING_DOUBLE_DROPS);
+        canDoubleDrop = canUseSubSkill(player, SubSkillType.MINING_DOUBLE_DROPS);
         canSuperBreaker = pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.MINING_SUPER_BREAKER) && pluginRef.getPermissionTools().superBreaker(player);
     }
 

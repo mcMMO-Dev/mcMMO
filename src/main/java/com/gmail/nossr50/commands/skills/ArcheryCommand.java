@@ -49,9 +49,9 @@ public class ArcheryCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canSkillShot = canUseSubskill(player, SubSkillType.ARCHERY_SKILL_SHOT);
-        canDaze = canUseSubskill(player, SubSkillType.ARCHERY_DAZE);
-        canRetrieve = canUseSubskill(player, SubSkillType.ARCHERY_ARROW_RETRIEVAL);
+        canSkillShot = canUseSubSkill(player, SubSkillType.ARCHERY_SKILL_SHOT);
+        canDaze = canUseSubSkill(player, SubSkillType.ARCHERY_DAZE);
+        canRetrieve = canUseSubSkill(player, SubSkillType.ARCHERY_ARROW_RETRIEVAL);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class ArcheryCommand extends SkillCommand {
             messages.add(getStatMessage(SubSkillType.ARCHERY_SKILL_SHOT, skillShotBonus));
         }
 
-        if (canUseSubskill(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK)) {
+        if (canUseSubSkill(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK,
 <<<<<<< HEAD
                     String.valueOf(pluginRef.getCombatTools().getLimitBreakDamage(player, SubSkillType.ARCHERY_ARCHERY_LIMIT_BREAK))));

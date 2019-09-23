@@ -49,8 +49,8 @@ public class SmeltingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canFuelEfficiency = canUseSubskill(player, SubSkillType.SMELTING_FUEL_EFFICIENCY);
-        canSecondSmelt = canUseSubskill(player, SubSkillType.SMELTING_SECOND_SMELT);
+        canFuelEfficiency = canUseSubSkill(player, SubSkillType.SMELTING_FUEL_EFFICIENCY);
+        canSecondSmelt = canUseSubSkill(player, SubSkillType.SMELTING_SECOND_SMELT);
         //canFluxMine = canUseSubskill(player, SubSkillType.SMELTING_FLUX_MINING);
         canUnderstandTheArt = pluginRef.getPermissionTools().vanillaXpBoost(player, skill) && pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.SMELTING_UNDERSTANDING_THE_ART);
     }

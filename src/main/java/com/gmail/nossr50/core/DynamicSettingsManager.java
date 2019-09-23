@@ -188,6 +188,11 @@ public class DynamicSettingsManager {
         return skillPropertiesManager.getMaxChance(subSkillType);
     }
 
+    //TODO: Doesn't allow for per rank changes in static chance
+    public double getSkillStaticChance(SubSkillType subSkillType) {
+        return skillPropertiesManager.getStaticChance(subSkillType);
+    }
+
     public SkillPropertiesManager getSkillPropertiesManager() {
         return skillPropertiesManager;
     }
