@@ -232,8 +232,37 @@ public abstract class SkillCommand implements TabExecutor {
 
     protected abstract void dataCalculations(Player player, double skillValue);
 
-    protected String getLimitBreakDescriptionParameter() {
-        if(AdvancedConfig.getInstance().canApplyLimitBreakPVE()) {
+    protected String getLimitBreakDescriptionParameter(SubSkillType subSkillType) {
+        //TODO: Hacky gross code below
+
+        boolean pveAllowed = false;
+
+        switch(subSkillType) {
+            case ARCHERY_ARCHERY_LIMIT_BREAK:
+                if(pluginRef.getConfigManager().getConfigArchery().getLimitBreak().isEnabledForPVE()) {
+                    pveAllowed = true;
+                }
+                break;
+            case AXES_AXES_LIMIT_BREAK:
+                if(pluginRef.getConfigManager().getConfigAxes().getSubSkills().getConfigAxesLimitBreak().isEnabledForPVE()) {
+                    pveAllowed = true;
+                }
+                break;
+            case SWORDS_SWORDS_LIMIT_BREAK:
+                if(pluginRef.getConfigManager().getConfigSwords().getSubSkills().getSwordsLimitBreak().isEnabledForPVE()) {
+                    pveAllowed = true;
+                }
+                break;
+            case UNARMED_UNARMED_LIMIT_BREAK:
+                if(pluginRef.getConfigManager().getConfigUnarmed().getSubSkills().getUnarmedLimitBreak().isEnabledForPVE()) {
+                    pveAllowed = true;
+                }
+                break;
+            default:
+                pluginRef.getLogger().severe("This skill has no limit break PVE setting defined!");
+        }
+
+        if(pveAllowed) {
             return "(PVP/PVE)";
         } else {
             return "(PVP)";
