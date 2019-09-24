@@ -11,7 +11,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -311,7 +310,7 @@ public class EntityListener implements Listener {
         }
 
 
-        if (Misc.isNPCEntityExcludingVillagers(defender) || !defender.isValid() || !(defender instanceof LivingEntity)) {
+        if (pluginRef.getMiscTools().isNPCEntityExcludingVillagers(defender) || !defender.isValid() || !(defender instanceof LivingEntity)) {
             return;
         }
 
@@ -321,7 +320,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if (Misc.isNPCEntityExcludingVillagers(attacker)) {
+        if (pluginRef.getMiscTools().isNPCEntityExcludingVillagers(attacker)) {
             return;
         }
 
@@ -484,7 +483,7 @@ public class EntityListener implements Listener {
         }
         */
 
-        if (Misc.isNPCEntityExcludingVillagers(entity) || !entity.isValid() || !(entity instanceof LivingEntity)) {
+        if (pluginRef.getMiscTools().isNPCEntityExcludingVillagers(entity) || !entity.isValid() || !(entity instanceof LivingEntity)) {
             return;
         }
 
@@ -614,7 +613,7 @@ public class EntityListener implements Listener {
 
         LivingEntity entity = event.getEntity();
 
-        if (Misc.isNPCEntityExcludingVillagers(entity)) {
+        if (pluginRef.getMiscTools().isNPCEntityExcludingVillagers(entity)) {
             return;
         }
 
@@ -646,7 +645,7 @@ public class EntityListener implements Listener {
 
         LivingEntity entity = event.getEntity();
 
-        if (Misc.isNPCEntityExcludingVillagers(entity)) {
+        if (pluginRef.getMiscTools().isNPCEntityExcludingVillagers(entity)) {
             return;
         }
 
@@ -952,7 +951,7 @@ public class EntityListener implements Listener {
 
         LivingEntity entity = event.getEntity();
 
-        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || Misc.isNPCEntityExcludingVillagers(entity) || entity.hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || pluginRef.getMiscTools().isNPCEntityExcludingVillagers(entity) || entity.hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY)) {
             return;
         }
 

@@ -18,7 +18,6 @@ import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.HardcoreManager;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -834,7 +833,7 @@ public class PlayerListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntityExcludingVillagers(player) || !pluginRef.getUserManager().hasPlayerDataKey(player)) {
+        if (pluginRef.getMiscTools().isNPCEntityExcludingVillagers(player) || !pluginRef.getUserManager().hasPlayerDataKey(player)) {
             return;
         }
 

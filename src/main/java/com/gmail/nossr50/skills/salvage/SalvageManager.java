@@ -8,7 +8,6 @@ import com.gmail.nossr50.datatypes.skills.behaviours.SalvageBehaviour;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -146,10 +145,10 @@ public class SalvageManager extends SkillManager {
         anvilLoc.add(0, .1, 0);
 
         if (enchantBook != null) {
-            Misc.spawnItemTowardsLocation(anvilLoc.clone(), playerLoc.clone(), enchantBook, vectorSpeed);
+            pluginRef.getMiscTools().spawnItemTowardsLocation(anvilLoc.clone(), playerLoc.clone(), enchantBook, vectorSpeed);
         }
 
-        Misc.spawnItemTowardsLocation(anvilLoc.clone(), playerLoc.clone(), salvageResults, vectorSpeed);
+        pluginRef.getMiscTools().spawnItemTowardsLocation(anvilLoc.clone(), playerLoc.clone(), salvageResults, vectorSpeed);
 
         // BWONG BWONG BWONG - CLUNK!
         if (pluginRef.getConfigManager().getConfigSalvage().getGeneral().isAnvilUseSounds()) {
@@ -318,6 +317,6 @@ public class SalvageManager extends SkillManager {
     }
 
     public void actualizeLastAnvilUse() {
-        lastClick = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+        lastClick = (int) (System.currentTimeMillis() / pluginRef.getMiscTools().TIME_CONVERSION_FACTOR);
     }
 }

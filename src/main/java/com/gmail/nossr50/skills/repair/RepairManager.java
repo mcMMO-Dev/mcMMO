@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -362,6 +361,6 @@ public class RepairManager extends SkillManager {
     }
 
     public void actualizeLastAnvilUse() {
-        lastClick = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+        lastClick = (int) (System.currentTimeMillis() / pluginRef.getMiscTools().TIME_CONVERSION_FACTOR);
     }
 }

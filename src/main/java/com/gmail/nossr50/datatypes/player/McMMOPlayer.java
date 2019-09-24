@@ -30,7 +30,6 @@ import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.experience.ExperienceBarManager;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -421,7 +420,7 @@ public class McMMOPlayer {
     }
 
     public void actualizeRecentlyHurt() {
-        recentlyHurt = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+        recentlyHurt = (int) (System.currentTimeMillis() / pluginRef.getMiscTools().TIME_CONVERSION_FACTOR);
     }
 
     /*
@@ -433,7 +432,7 @@ public class McMMOPlayer {
     }
 
     public void actualizeChimeraWingLastUse() {
-        profile.setChimaeraWingDATS((int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR));
+        profile.setChimaeraWingDATS((int) (System.currentTimeMillis() / pluginRef.getMiscTools().TIME_CONVERSION_FACTOR));
     }
 
     public Location getTeleportCommenceLocation() {
@@ -457,7 +456,7 @@ public class McMMOPlayer {
     }
 
     public void actualizeRespawnATS() {
-        respawnATS = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+        respawnATS = (int) (System.currentTimeMillis() / pluginRef.getMiscTools().TIME_CONVERSION_FACTOR);
     }
 
     public long getTeleportATS() {
@@ -946,7 +945,7 @@ public class McMMOPlayer {
         int abilityLength = pluginRef.getSkillTools().calculateAbilityLengthPerks(this, primarySkillType, superAbility);
 
         // Enable the ability
-        profile.setAbilityDATS(superAbility, System.currentTimeMillis() + (abilityLength * Misc.TIME_CONVERSION_FACTOR));
+        profile.setAbilityDATS(superAbility, System.currentTimeMillis() + (abilityLength * pluginRef.getMiscTools().TIME_CONVERSION_FACTOR));
         setSuperAbilityMode(superAbility, true);
 
         if (superAbility == SuperAbilityType.SUPER_BREAKER || superAbility == SuperAbilityType.GIGA_DRILL_BREAKER) {
@@ -954,7 +953,7 @@ public class McMMOPlayer {
         }
 
         setToolPreparationMode(tool, false);
-        new AbilityDisableTask(pluginRef,   this, superAbility).runTaskLater(pluginRef, abilityLength * Misc.TICK_CONVERSION_FACTOR);
+        new AbilityDisableTask(pluginRef,   this, superAbility).runTaskLater(pluginRef, abilityLength * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR);
     }
 
     public void processAbilityActivation(PrimarySkillType primarySkillType) {
@@ -1001,7 +1000,7 @@ public class McMMOPlayer {
             }
 
             setToolPreparationMode(tool, true);
-            new ToolLowerTask(pluginRef,this, tool).runTaskLater(pluginRef, 4 * Misc.TICK_CONVERSION_FACTOR);
+            new ToolLowerTask(pluginRef,this, tool).runTaskLater(pluginRef, 4 * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR);
         }
     }
 
@@ -1012,9 +1011,9 @@ public class McMMOPlayer {
      * @return the number of seconds remaining before the cooldown expires
      */
     public int calculateTimeRemaining(SuperAbilityType superAbilityType) {
-        long deactivatedTimestamp = profile.getAbilityDATS(superAbilityType) * Misc.TIME_CONVERSION_FACTOR;
+        long deactivatedTimestamp = profile.getAbilityDATS(superAbilityType) * pluginRef.getMiscTools().TIME_CONVERSION_FACTOR;
         return (int) (((deactivatedTimestamp + (PerksUtils.handleCooldownPerks(player,
-                pluginRef.getSkillTools().getSuperAbilityCooldown(superAbilityType)) * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
+                pluginRef.getSkillTools().getSuperAbilityCooldown(superAbilityType)) * pluginRef.getMiscTools().TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / pluginRef.getMiscTools().TIME_CONVERSION_FACTOR);
     }
 
     /*

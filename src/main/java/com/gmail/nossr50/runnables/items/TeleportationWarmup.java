@@ -2,7 +2,6 @@ package com.gmail.nossr50.runnables.items;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -41,7 +40,7 @@ public class TeleportationWarmup extends BukkitRunnable {
         int hurtCooldown = pluginRef.getConfigManager().getConfigParty().getPTP().getPtpRecentlyHurtCooldown();
 
         if (hurtCooldown > 0) {
-            int timeRemaining = pluginRef.getSkillTools().calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, hurtCooldown, teleportingPlayer);
+            int timeRemaining = pluginRef.getSkillTools().calculateTimeLeft(recentlyHurt * pluginRef.getMiscTools().TIME_CONVERSION_FACTOR, hurtCooldown, teleportingPlayer);
 
             if (timeRemaining > 0) {
                 teleportingPlayer.sendMessage(pluginRef.getLocaleManager().getString("Item.Injured.Wait", timeRemaining));

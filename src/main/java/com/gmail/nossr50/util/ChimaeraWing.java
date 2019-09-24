@@ -56,7 +56,7 @@ public final class ChimaeraWing {
         int cooldown = pluginRef.getConfigManager().getConfigItems().getCooldown();
 
         if (cooldown > 0) {
-            int timeRemaining = pluginRef.getSkillTools().calculateTimeLeft(lastTeleport * Misc.TIME_CONVERSION_FACTOR, cooldown, player);
+            int timeRemaining = pluginRef.getSkillTools().calculateTimeLeft(lastTeleport * pluginRef.getMiscTools().TIME_CONVERSION_FACTOR, cooldown, player);
 
             if (timeRemaining > 0) {
                 pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Item.Generic.Wait", String.valueOf(timeRemaining));
@@ -68,7 +68,7 @@ public final class ChimaeraWing {
         int hurtCooldown = pluginRef.getConfigManager().getConfigItems().getRecentlyHurtCooldown();
 
         if (hurtCooldown > 0) {
-            int timeRemaining = pluginRef.getSkillTools().calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, hurtCooldown, player);
+            int timeRemaining = pluginRef.getSkillTools().calculateTimeLeft(recentlyHurt * pluginRef.getMiscTools().TIME_CONVERSION_FACTOR, hurtCooldown, player);
 
             if (timeRemaining > 0) {
                 pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.ITEM_MESSAGE, "Item.Injured.Wait", String.valueOf(timeRemaining));
@@ -82,7 +82,7 @@ public final class ChimaeraWing {
                 pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Item.ChimaeraWing.Fail");
                 player.updateInventory();
                 player.setVelocity(new Vector(0, 0.5D, 0));
-                pluginRef.getCombatTools().dealDamage(player, Misc.getRandom().nextInt((int) (player.getHealth() - 10)));
+                pluginRef.getCombatTools().dealDamage(player, pluginRef.getMiscTools().getRandom().nextInt((int) (player.getHealth() - 10)));
                 mcMMOPlayer.actualizeChimeraWingLastUse();
                 return;
             }

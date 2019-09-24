@@ -4,7 +4,6 @@ import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.meta.TrackedArrowMeta;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -33,7 +32,7 @@ public class ArcheryBehaviour {
      */
     public void arrowRetrievalCheck(LivingEntity livingEntity) {
         if(livingEntity.hasMetadata(MetadataConstants.ARROW_TRACKER_METAKEY)) {
-            Misc.dropItems(livingEntity.getLocation(), new ItemStack(Material.ARROW), livingEntity.getMetadata(MetadataConstants.ARROW_TRACKER_METAKEY).get(0).asInt());
+            pluginRef.getMiscTools().dropItems(livingEntity.getLocation(), new ItemStack(Material.ARROW), livingEntity.getMetadata(MetadataConstants.ARROW_TRACKER_METAKEY).get(0).asInt());
         }
     }
 

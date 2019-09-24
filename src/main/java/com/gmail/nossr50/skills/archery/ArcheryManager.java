@@ -8,7 +8,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.behaviours.ArcheryBehaviour;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -94,7 +93,7 @@ public class ArcheryManager extends SkillManager {
         }
 
         Location dazedLocation = defender.getLocation();
-        dazedLocation.setPitch(90 - Misc.getRandom().nextInt(181));
+        dazedLocation.setPitch(90 - pluginRef.getMiscTools().getRandom().nextInt(181));
 
         defender.teleport(dazedLocation);
         defender.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 10, 10));

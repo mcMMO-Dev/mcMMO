@@ -7,7 +7,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.events.scoreboard.McMMOScoreboardMakeboardEvent;
 import com.gmail.nossr50.events.scoreboard.ScoreboardEventReason;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -291,7 +290,7 @@ public class ScoreboardManager {
         if (displayTime == -1) {
             wrapper.showBoardWithNoRevert();
         } else {
-            wrapper.showBoardAndScheduleRevert(displayTime * Misc.TICK_CONVERSION_FACTOR);
+            wrapper.showBoardAndScheduleRevert(displayTime * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR);
         }
     }
 
@@ -308,7 +307,7 @@ public class ScoreboardManager {
     }
 
     public void setRevertTimer(String playerName, int seconds) {
-        PLAYER_SCOREBOARDS.get(playerName).showBoardAndScheduleRevert(seconds * Misc.TICK_CONVERSION_FACTOR);
+        PLAYER_SCOREBOARDS.get(playerName).showBoardAndScheduleRevert(seconds * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR);
     }
 
     public List<String> getDirtyPowerLevels() {

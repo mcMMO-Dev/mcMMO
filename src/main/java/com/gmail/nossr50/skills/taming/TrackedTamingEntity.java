@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills.taming;
 
 import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -30,7 +29,7 @@ public class TrackedTamingEntity extends BukkitRunnable {
         int tamingCOTWLength = pluginRef.getConfigManager().getConfigTaming().getSubSkills().getCallOfTheWild().getCOTWSummon(callOfTheWildType).getSummonLifespan();
 
         if (tamingCOTWLength > 0) {
-            this.length = tamingCOTWLength * Misc.TICK_CONVERSION_FACTOR;
+            this.length = tamingCOTWLength * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR;
             this.runTaskLater(pluginRef, length);
         }
     }

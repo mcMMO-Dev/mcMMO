@@ -15,7 +15,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.DelayedHerbalismXPCheckTask;
 import com.gmail.nossr50.runnables.skills.HerbalismBlockUpdaterTask;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.Material;
@@ -685,7 +684,7 @@ public class HerbalismManager extends SkillManager {
     private boolean processGrowingPlants(BlockState blockState, boolean greenTerra) {
         int greenThumbStage = getGreenThumbStage();
 
-        blockState.setMetadata(MetadataConstants.GREEN_THUMB_METAKEY, new FixedMetadataValue(pluginRef, (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)));
+        blockState.setMetadata(MetadataConstants.GREEN_THUMB_METAKEY, new FixedMetadataValue(pluginRef, (int) (System.currentTimeMillis() / pluginRef.getMiscTools().TIME_CONVERSION_FACTOR)));
         Ageable crops = (Ageable) blockState.getBlockData();
 
         switch (blockState.getType()) {

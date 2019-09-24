@@ -3,7 +3,6 @@ package com.gmail.nossr50.util.scoreboards;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import org.bukkit.ChatColor;
@@ -94,7 +93,7 @@ public class ScoreboardStrings {
                     ChatColor.DARK_GREEN,
                     ChatColor.DARK_BLUE);
 
-            Collections.shuffle(colors, Misc.getRandom());
+            Collections.shuffle(colors, pluginRef.getMiscTools().getRandom());
 
             int i = 0;
             for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {

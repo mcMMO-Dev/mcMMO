@@ -4,7 +4,6 @@ import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.mining.MiningManager;
-import com.gmail.nossr50.util.Misc;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
@@ -171,7 +170,7 @@ public class MiningBehaviour {
             case REDSTONE_ORE:
             case STONE:
             case PRISMARINE:
-                Misc.dropItem(Misc.getBlockCenter(blockState), new ItemStack(blockState.getType()));
+                pluginRef.getMiscTools().dropItem(pluginRef.getMiscTools().getBlockCenter(blockState), new ItemStack(blockState.getType()));
                 return;
 
             default:
@@ -237,7 +236,7 @@ public class MiningBehaviour {
             case YELLOW_TERRACOTTA:
             case STONE:
             case NETHER_QUARTZ_ORE:
-                Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
+                pluginRef.getMiscTools().dropItems(pluginRef.getMiscTools().getBlockCenter(blockState), blockState.getBlock().getDrops());
                 return;
 
             default:

@@ -18,7 +18,6 @@ import com.gmail.nossr50.skills.axes.AxesManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
-import com.gmail.nossr50.util.Misc;
 import com.google.common.collect.ImmutableMap;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -263,7 +262,7 @@ public final class CombatTools {
         EntityType entityType = damager.getType();
 
         if (target instanceof Player) {
-            if (Misc.isNPCEntityExcludingVillagers(target)) {
+            if (pluginRef.getMiscTools().isNPCEntityExcludingVillagers(target)) {
                 return;
             }
 
@@ -348,7 +347,7 @@ public final class CombatTools {
             if (tamer instanceof Player && pluginRef.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.TAMING, target)) {
                 Player master = (Player) tamer;
 
-                if (!Misc.isNPCEntityExcludingVillagers(master) && pluginRef.getSkillTools().doesPlayerHaveSkillPermission(PrimarySkillType.TAMING, master)) {
+                if (!pluginRef.getMiscTools().isNPCEntityExcludingVillagers(master) && pluginRef.getSkillTools().doesPlayerHaveSkillPermission(PrimarySkillType.TAMING, master)) {
                     processTamingCombat(target, master, wolf, event);
                 }
             }
@@ -359,11 +358,11 @@ public final class CombatTools {
             if (projectileSource instanceof Player && pluginRef.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.ARCHERY, target)) {
                 Player player = (Player) projectileSource;
 
-                if (!Misc.isNPCEntityExcludingVillagers(player) && pluginRef.getSkillTools().doesPlayerHaveSkillPermission(PrimarySkillType.ARCHERY, player)) {
+                if (!pluginRef.getMiscTools().isNPCEntityExcludingVillagers(player) && pluginRef.getSkillTools().doesPlayerHaveSkillPermission(PrimarySkillType.ARCHERY, player)) {
                     processArcheryCombat(target, player, event, arrow);
                 }
 
-                if (target.getType() != EntityType.CREEPER && !Misc.isNPCEntityExcludingVillagers(player) && pluginRef.getSkillTools().doesPlayerHaveSkillPermission(PrimarySkillType.TAMING, player)) {
+                if (target.getType() != EntityType.CREEPER && !pluginRef.getMiscTools().isNPCEntityExcludingVillagers(player) && pluginRef.getSkillTools().doesPlayerHaveSkillPermission(PrimarySkillType.TAMING, player)) {
                     McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
                     TamingManager tamingManager = mcMMOPlayer.getTamingManager();
                     tamingManager.attackTarget(target);
@@ -564,7 +563,7 @@ public final class CombatTools {
                 break;
             }
 
-            if (Misc.isNPCEntityExcludingVillagers(entity) || !(entity instanceof LivingEntity) || !shouldBeAffected(attacker, entity)) {
+            if (pluginRef.getMiscTools().isNPCEntityExcludingVillagers(entity) || !(entity instanceof LivingEntity) || !shouldBeAffected(attacker, entity)) {
                 continue;
             }
 
@@ -619,7 +618,7 @@ public final class CombatTools {
             xpGainReason = XPGainReason.PVP;
             Player defender = (Player) target;
 
-            if (defender.isOnline() && pluginRef.getSkillTools().cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
+            if (defender.isOnline() && pluginRef.getSkillTools().cooldownExpired(mcMMOPlayer.getRespawnATS(), pluginRef.getMiscTools().PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
                 baseXPMultiplier = 20 * pluginRef.getDynamicSettingsManager().getExperienceManager().getSpecialCombatXP(SpecialXPKey.PVP);
             }
         } else {
@@ -886,7 +885,7 @@ public final class CombatTools {
 
         Player player = (Player) attacker;
 
-        if (Misc.isNPCEntityExcludingVillagers(player) || Misc.isNPCEntityExcludingVillagers(target)) {
+        if (pluginRef.getMiscTools().isNPCEntityExcludingVillagers(player) || pluginRef.getMiscTools().isNPCEntityExcludingVillagers(target)) {
             return;
         }
 

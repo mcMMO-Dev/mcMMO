@@ -9,7 +9,6 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
@@ -107,7 +106,7 @@ public class UnarmedManager extends SkillManager {
             if (pluginRef.getUserManager().getPlayer(defender) == null)
                 return;
 
-            Item item = Misc.dropItem(defender.getLocation(), defender.getInventory().getItemInMainHand());
+            Item item = pluginRef.getMiscTools().dropItem(defender.getLocation(), defender.getInventory().getItemInMainHand());
 
             if (item != null && pluginRef.getConfigManager().getConfigUnarmed().doesDisarmPreventTheft()) {
                 item.setMetadata(MetadataConstants.DISARMED_ITEM_METAKEY, pluginRef.getUserManager().getPlayer(defender).getPlayerMetadata());
@@ -173,7 +172,7 @@ public class UnarmedManager extends SkillManager {
      * @return true if the defender was not disarmed, false otherwise
      */
     private boolean hasIronGrip(Player defender) {
-        if (!Misc.isNPCEntityExcludingVillagers(defender)
+        if (!pluginRef.getMiscTools().isNPCEntityExcludingVillagers(defender)
                 && pluginRef.getPermissionTools().isSubSkillEnabled(defender, SubSkillType.UNARMED_IRON_GRIP)
                 && pluginRef.getRandomChanceTools().isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.UNARMED_IRON_GRIP, defender)) {
             pluginRef.getNotificationManager().sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Unarmed.Ability.IronGrip.Defender");

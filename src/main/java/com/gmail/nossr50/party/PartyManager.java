@@ -9,7 +9,6 @@ import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.items.TeleportationWarmup;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -228,7 +227,7 @@ public final class PartyManager {
             double range = pluginRef.getPartyXPShareSettings().getPartyShareRange();
 
             for (Player member : party.getOnlineMembers()) {
-                if (!player.equals(member) && member.isValid() && Misc.isNear(player.getLocation(), member.getLocation(), range)) {
+                if (!player.equals(member) && member.isValid() && pluginRef.getMiscTools().isNear(player.getLocation(), member.getLocation(), range)) {
                     nearMembers.add(member);
                 }
             }
@@ -248,7 +247,7 @@ public final class PartyManager {
             for (Player member : party.getVisibleMembers(player)) {
                 if (!player.equals(member)
                         && member.isValid()
-                        && Misc.isNear(player.getLocation(), member.getLocation(), range)) {
+                        && pluginRef.getMiscTools().isNear(player.getLocation(), member.getLocation(), range)) {
                     nearMembers.add(member);
                 }
             }

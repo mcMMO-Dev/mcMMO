@@ -4,6 +4,7 @@ import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.RankCommandAsyncTask;
+import com.gmail.nossr50.util.scoreboards.SidebarType;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -116,7 +117,7 @@ public class RankCommand implements TabExecutor {
                 && (pluginRef.getScoreboardSettings().isScoreboardEnabled(SidebarType.RANK_BOARD));
         boolean useChat = !useBoard || pluginRef.getScoreboardSettings().isScoreboardPrinting(SidebarType.RANK_BOARD);
 
-        new RankCommandAsyncTask(playerName, sender, useBoard, useChat).runTaskAsynchronously(pluginRef);
+        new RankCommandAsyncTask(pluginRef, playerName, sender, useBoard, useChat).runTaskAsynchronously(pluginRef);
     }
 
     private long getCDSeconds(McMMOPlayer mcMMOPlayer, long cooldownMillis) {

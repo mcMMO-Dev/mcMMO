@@ -11,7 +11,6 @@ import com.gmail.nossr50.datatypes.skills.behaviours.MiningBehaviour;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.AbilityCooldownTask;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.Misc;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -129,7 +128,7 @@ public class MiningManager extends SkillManager {
 
         mcMMOPlayer.setAbilityDATS(SuperAbilityType.BLAST_MINING, System.currentTimeMillis());
         mcMMOPlayer.setAbilityInformed(SuperAbilityType.BLAST_MINING, false);
-        new AbilityCooldownTask(pluginRef, mcMMOPlayer, SuperAbilityType.BLAST_MINING).runTaskLater(pluginRef, SuperAbilityType.BLAST_MINING.getCooldown() * Misc.TICK_CONVERSION_FACTOR);
+        new AbilityCooldownTask(pluginRef, mcMMOPlayer, SuperAbilityType.BLAST_MINING).runTaskLater(pluginRef, SuperAbilityType.BLAST_MINING.getCooldown() * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR);
     }
 
     /**
@@ -160,12 +159,12 @@ public class MiningManager extends SkillManager {
         }
 
         for (BlockState blockState : ores) {
-            if (Misc.getRandom().nextFloat() < (yield + oreBonus)) {
+            if (pluginRef.getMiscTools().getRandom().nextFloat() < (yield + oreBonus)) {
                 if (!pluginRef.getPlaceStore().isTrue(blockState)) {
                     xp += miningBehaviour.getBlockXp(blockState);
                 }
 
-                Misc.dropItem(Misc.getBlockCenter(blockState), new ItemStack(blockState.getType())); // Initial block that would have been dropped
+                pluginRef.getMiscTools().dropItem(pluginRef.getMiscTools().getBlockCenter(blockState), new ItemStack(blockState.getType())); // Initial block that would have been dropped
 
                 if (!pluginRef.getPlaceStore().isTrue(blockState)) {
                     for (int i = 1; i < dropMultiplier; i++) {
@@ -177,8 +176,8 @@ public class MiningManager extends SkillManager {
 
         if (debrisYield > 0) {
             for (BlockState blockState : debris) {
-                if (Misc.getRandom().nextFloat() < debrisYield) {
-                    Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
+                if (pluginRef.getMiscTools().getRandom().nextFloat() < debrisYield) {
+                    pluginRef.getMiscTools().dropItems(pluginRef.getMiscTools().getBlockCenter(blockState), blockState.getBlock().getDrops());
                 }
             }
         }

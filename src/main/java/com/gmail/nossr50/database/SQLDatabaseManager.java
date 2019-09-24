@@ -10,7 +10,6 @@ import com.gmail.nossr50.datatypes.player.UniqueDataType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 
@@ -222,7 +221,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             if(uuid != null)
                 cleanupUser(uuid);
 
-            Misc.profileCleanup(playerName);
+            pluginRef.getMiscTools().profileCleanup(playerName);
         }
 
         return success;

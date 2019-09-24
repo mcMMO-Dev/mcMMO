@@ -9,7 +9,6 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.behaviours.WoodcuttingBehaviour;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -101,7 +100,7 @@ public class WoodcuttingManager extends SkillManager {
             double health = player.getHealth();
 
             if (health > 1) {
-                pluginRef.getCombatTools().dealDamage(player, Misc.getRandom().nextInt((int) (health - 1)));
+                pluginRef.getCombatTools().dealDamage(player, pluginRef.getMiscTools().getRandom().nextInt((int) (health - 1)));
             }
 
             return;
@@ -263,17 +262,17 @@ public class WoodcuttingManager extends SkillManager {
             //TODO: Update this to drop the correct items/blocks via NMS
             if (material == Material.BROWN_MUSHROOM_BLOCK || material == Material.RED_MUSHROOM_BLOCK) {
                 xp += woodcuttingBehaviour.processTreeFellerXPGains(blockState, processedLogCount);
-                Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
+                pluginRef.getMiscTools().dropItems(pluginRef.getMiscTools().getBlockCenter(blockState), block.getDrops());
             } else {
                 if (pluginRef.getBlockTools().isLog(blockState)) {
                     if (canGetDoubleDrops()) {
                         woodcuttingBehaviour.checkForDoubleDrop(blockState);
                     }
                     xp += woodcuttingBehaviour.processTreeFellerXPGains(blockState, processedLogCount);
-                    Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
+                    pluginRef.getMiscTools().dropItems(pluginRef.getMiscTools().getBlockCenter(blockState), block.getDrops());
                 }
                 if (pluginRef.getBlockTools().isLeaves(blockState)) {
-                    Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
+                    pluginRef.getMiscTools().dropItems(pluginRef.getMiscTools().getBlockCenter(blockState), block.getDrops());
                 }
             }
 

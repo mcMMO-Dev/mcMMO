@@ -1,7 +1,6 @@
 package com.gmail.nossr50.datatypes.party;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
 import org.bukkit.entity.Player;
 
 public class PartyTeleportRecord {
@@ -54,7 +53,7 @@ public class PartyTeleportRecord {
     }
 
     public void actualizeLastUse() {
-        lastUse = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+        lastUse = (int) (System.currentTimeMillis() / pluginRef.getMiscTools().TIME_CONVERSION_FACTOR);
     }
 
     public int getTimeout() {
@@ -62,6 +61,6 @@ public class PartyTeleportRecord {
     }
 
     public void actualizeTimeout() {
-        timeout = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+        timeout = (int) (System.currentTimeMillis() / pluginRef.getMiscTools().TIME_CONVERSION_FACTOR);
     }
 }

@@ -103,6 +103,7 @@ public class mcMMO extends JavaPlugin {
     private PermissionTools permissionTools;
     private WorldGuardUtils worldGuardUtils;
     private MessageOfTheDayUtils messageOfTheDayUtils;
+    private MiscTools miscTools;
     private ZipLibrary zipLibrary;
 
     /* Never-Ending tasks */
@@ -289,6 +290,9 @@ public class mcMMO extends JavaPlugin {
 
         //Init Sound Manager
         soundManager = new SoundManager(this);
+
+        //Misc Tools Init
+        miscTools = new MiscTools(this);
     }
 
     @Override
@@ -656,13 +660,13 @@ public class mcMMO extends JavaPlugin {
 
         // Bleed timer (Runs every 0.5 seconds)
         bleedTimerTask = new BleedTimerTask(this);
-        bleedTimerTask.runTaskTimer(this, Misc.TICK_CONVERSION_FACTOR, (Misc.TICK_CONVERSION_FACTOR / 2));
+        bleedTimerTask.runTaskTimer(this, miscTools.TICK_CONVERSION_FACTOR, (miscTools.TICK_CONVERSION_FACTOR / 2));
 
         // Old & Powerless User remover
-        long purgeIntervalTicks = getConfigManager().getConfigDatabase().getConfigSectionCleaning().getPurgeInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
+        long purgeIntervalTicks = getConfigManager().getConfigDatabase().getConfigSectionCleaning().getPurgeInterval() * 60L * 60L * miscTools.TICK_CONVERSION_FACTOR;
 
         if (getDatabaseCleaningSettings().isOnlyPurgeAtStartup()) {
-            new UserPurgeTask(this).runTaskLaterAsynchronously(this, 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
+            new UserPurgeTask(this).runTaskLaterAsynchronously(this, 2 * miscTools.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
         } else if (purgeIntervalTicks > 0) {
             new UserPurgeTask(this).runTaskTimerAsynchronously(this, purgeIntervalTicks, purgeIntervalTicks);
         }
@@ -670,17 +674,17 @@ public class mcMMO extends JavaPlugin {
         //Party System Stuff
         if (configManager.getConfigParty().isPartySystemEnabled()) {
             // Automatically remove old members from parties
-            long kickIntervalTicks = getConfigManager().getConfigParty().getPartyCleanup().getPartyAutoKickHoursInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
+            long kickIntervalTicks = getConfigManager().getConfigParty().getPartyCleanup().getPartyAutoKickHoursInterval() * 60L * 60L * miscTools.TICK_CONVERSION_FACTOR;
 
             if (kickIntervalTicks == 0) {
-                new PartyAutoKickTask(this).runTaskLater(this, 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
+                new PartyAutoKickTask(this).runTaskLater(this, 2 * miscTools.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
             } else if (kickIntervalTicks > 0) {
                 new PartyAutoKickTask(this).runTaskTimer(this, kickIntervalTicks, kickIntervalTicks);
             }
         }
 
         // Update power level tag scoreboards
-        new PowerLevelUpdatingTask(this).runTaskTimer(this, 2 * Misc.TICK_CONVERSION_FACTOR, 2 * Misc.TICK_CONVERSION_FACTOR);
+        new PowerLevelUpdatingTask(this).runTaskTimer(this, 2 * miscTools.TICK_CONVERSION_FACTOR, 2 * miscTools.TICK_CONVERSION_FACTOR);
 
         // Clear the registered XP data so players can earn XP again
         if (getConfigManager().getConfigLeveling().getConfigLevelingDiminishedReturns().isDiminishedReturnsEnabled()) {
@@ -832,5 +836,9 @@ public class mcMMO extends JavaPlugin {
 
     public ChunkManagerFactory getChunkManagerFactory() {
         return chunkManagerFactory;
+    }
+
+    public MiscTools getMiscTools() {
+        return miscTools;
     }
 }

@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -36,7 +35,7 @@ public final class CommandTools {
             return true;
         } else if (pluginRef.getConfigManager().getConfigCommands().isLimitInspectRange()
                         && sender instanceof Player
-                && !Misc.isNear(((Player) sender).getLocation(), target.getLocation(),
+                && !pluginRef.getMiscTools().isNear(((Player) sender).getLocation(), target.getLocation(),
                         pluginRef.getConfigManager().getConfigCommands().getInspectCommandMaxDistance())
                 && !hasPermission) {
             sender.sendMessage(pluginRef.getLocaleManager().getString("Inspect.TooFar"));

@@ -11,7 +11,6 @@ import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.datatypes.skills.subskills.taming.TamingSummon;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
@@ -269,7 +268,7 @@ public class TamingManager extends SkillManager {
             //Check to see if players have the correct amount of the item required to summon
             if(itemInMainHand.getAmount() >= tamingSummon.getItemAmountRequired()) {
                 //Initial Spawn location
-                Location spawnLocation = Misc.getLocationOffset(player.getLocation(), 1);
+                Location spawnLocation = pluginRef.getMiscTools().getLocationOffset(player.getLocation(), 1);
 
                 //COTW can summon multiple entities per usage
                 for (int i = 0; i < tamingSummon.getEntitiesSummoned(); i++) {
@@ -281,7 +280,7 @@ public class TamingManager extends SkillManager {
                         break;
                     }
 
-                    spawnLocation = Misc.getLocationOffset(spawnLocation, 1);
+                    spawnLocation = pluginRef.getMiscTools().getLocationOffset(spawnLocation, 1);
                     spawnCOTWEntity(callOfTheWildType, spawnLocation, tamingSummon.getEntityType());
 
                     //Inform the player about what they have just done
@@ -360,11 +359,11 @@ public class TamingManager extends SkillManager {
         //Randomize the cat
         if(callOfWildEntity instanceof Ocelot) {
             int numberOfTypes = Ocelot.Type.values().length;
-            ((Ocelot) callOfWildEntity).setCatType(Ocelot.Type.values()[Misc.getRandom().nextInt(numberOfTypes)]);
+            ((Ocelot) callOfWildEntity).setCatType(Ocelot.Type.values()[pluginRef.getMiscTools().getRandom().nextInt(numberOfTypes)]);
             ((Ocelot) callOfWildEntity).setAdult();
         } else if(callOfWildEntity instanceof Cat) {
             int numberOfTypes = Cat.Type.values().length;
-            ((Cat) callOfWildEntity).setCatType(Cat.Type.values()[Misc.getRandom().nextInt(numberOfTypes)]);
+            ((Cat) callOfWildEntity).setCatType(Cat.Type.values()[pluginRef.getMiscTools().getRandom().nextInt(numberOfTypes)]);
             ((Cat) callOfWildEntity).setAdult();
         }
 
@@ -385,12 +384,12 @@ public class TamingManager extends SkillManager {
         //Randomize Horse
         Horse horse = (Horse) callOfWildEntity;
 
-        callOfWildEntity.setMaxHealth(15.0 + (Misc.getRandom().nextDouble() * 15));
+        callOfWildEntity.setMaxHealth(15.0 + (pluginRef.getMiscTools().getRandom().nextDouble() * 15));
         callOfWildEntity.setHealth(callOfWildEntity.getMaxHealth());
-        horse.setColor(Horse.Color.values()[Misc.getRandom().nextInt(Horse.Color.values().length)]);
-        horse.setStyle(Horse.Style.values()[Misc.getRandom().nextInt(Horse.Style.values().length)]);
+        horse.setColor(Horse.Color.values()[pluginRef.getMiscTools().getRandom().nextInt(Horse.Color.values().length)]);
+        horse.setStyle(Horse.Style.values()[pluginRef.getMiscTools().getRandom().nextInt(Horse.Style.values().length)]);
         horse.setJumpStrength(Math.max(pluginRef.getConfigManager().getConfigTaming().getMinHorseJumpStrength(),
-                Math.min(Math.min(Misc.getRandom().nextDouble(), Misc.getRandom().nextDouble()) * 2, pluginRef.getConfigManager().getConfigTaming().getMaxHorseJumpStrength())));
+                Math.min(Math.min(pluginRef.getMiscTools().getRandom().nextDouble(), pluginRef.getMiscTools().getRandom().nextDouble()) * 2, pluginRef.getConfigManager().getConfigTaming().getMaxHorseJumpStrength())));
         horse.setAdult();
 
         //TODO: setSpeed, once available

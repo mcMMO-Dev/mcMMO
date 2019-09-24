@@ -123,7 +123,7 @@ public class EventManager {
         Entity entity = entityDamageEvent.getEntity();
 
         //Check to make sure the entity is not an NPC
-        if(Misc.isNPCEntityExcludingVillagers(entity))
+        if(pluginRef.getMiscTools().isNPCEntityExcludingVillagers(entity))
             return false;
 
         if (!entity.isValid() || !(entity instanceof LivingEntity)) {

@@ -80,7 +80,7 @@ public final class MobHealthBarManager {
                 target.setMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY, new FixedMetadataValue(pluginRef, false));
             }
 
-            new MobHealthDisplayUpdaterTask(target).runTaskLater(pluginRef, displayTime * Misc.TICK_CONVERSION_FACTOR); // Clear health display after 3 seconds
+            new MobHealthDisplayUpdaterTask(target).runTaskLater(pluginRef, displayTime * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR); // Clear health display after 3 seconds
         }
     }
 

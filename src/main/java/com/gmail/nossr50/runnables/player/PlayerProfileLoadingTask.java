@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.ScoreboardKeepTask;
-import com.gmail.nossr50.util.Misc;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -30,7 +29,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
     @Override
     public void run() {
 
-        if (Misc.isNPCIncludingVillagers(player)) {
+        if (pluginRef.getMiscTools().isNPCIncludingVillagers(player)) {
             return;
         }
 
@@ -91,7 +90,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
 
                 if (pluginRef.getScoreboardSettings().getShowStatsAfterLogin()) {
                     pluginRef.getScoreboardManager().enablePlayerStatsScoreboard(player);
-                    new ScoreboardKeepTask(pluginRef, player).runTaskLater(pluginRef, Misc.TICK_CONVERSION_FACTOR);
+                    new ScoreboardKeepTask(pluginRef, player).runTaskLater(pluginRef, pluginRef.getMiscTools().TICK_CONVERSION_FACTOR);
                 }
             }
 

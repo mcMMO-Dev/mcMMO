@@ -11,7 +11,6 @@ import com.gmail.nossr50.events.scoreboard.ScoreboardEventReason;
 import com.gmail.nossr50.events.scoreboard.ScoreboardObjectiveEventReason;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.child.FamilyTree;
-import com.gmail.nossr50.util.Misc;
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -82,7 +81,7 @@ public class ScoreboardWrapper {
         if (cooldownTask == null) {
             // Repeat every 5 seconds.
             // Cancels once all cooldowns are done, using stopCooldownUpdating().
-            cooldownTask = new ScoreboardCooldownTask().runTaskTimer(pluginRef, 5 * Misc.TICK_CONVERSION_FACTOR, 5 * Misc.TICK_CONVERSION_FACTOR);
+            cooldownTask = new ScoreboardCooldownTask().runTaskTimer(pluginRef, 5 * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR, 5 * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR);
         }
     }
 

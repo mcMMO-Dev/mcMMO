@@ -2,7 +2,6 @@ package com.gmail.nossr50.util.sounds;
 
 import com.gmail.nossr50.config.hocon.sound.SoundSetting;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -100,10 +99,10 @@ public class SoundManager {
     }
 
     public float getFizzPitch() {
-        return 2.6F + (Misc.getRandom().nextFloat() - Misc.getRandom().nextFloat()) * 0.8F;
+        return 2.6F + (pluginRef.getMiscTools().getRandom().nextFloat() - pluginRef.getMiscTools().getRandom().nextFloat()) * 0.8F;
     }
 
     public float getPopPitch() {
-        return ((Misc.getRandom().nextFloat() - Misc.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F;
+        return ((pluginRef.getMiscTools().getRandom().nextFloat() - pluginRef.getMiscTools().getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F;
     }
 }

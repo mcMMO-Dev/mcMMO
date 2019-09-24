@@ -8,7 +8,6 @@ import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -120,7 +119,7 @@ public final class ShareHandler {
                         }
 
                         int itemShareModifier = mcMMOMember.getItemShareModifier();
-                        int diceRoll = Misc.getRandom().nextInt(itemShareModifier);
+                        int diceRoll = pluginRef.getMiscTools().getRandom().nextInt(itemShareModifier);
 
                         if (diceRoll <= highestRoll) {
                             mcMMOMember.setItemShareModifier(itemShareModifier + itemWeight);
@@ -146,7 +145,7 @@ public final class ShareHandler {
 
             case RANDOM:
                 for (int i = 0; i < itemStack.getAmount(); i++) {
-                    winningPlayer = nearMembers.get(Misc.getRandom().nextInt(partySize));
+                    winningPlayer = nearMembers.get(pluginRef.getMiscTools().getRandom().nextInt(partySize));
                     awardDrop(winningPlayer, newStack);
                 }
 

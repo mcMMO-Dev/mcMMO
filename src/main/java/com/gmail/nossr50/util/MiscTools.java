@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.google.common.collect.ImmutableSet;
 import org.bukkit.Location;
@@ -14,26 +15,18 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.Set;
 
-public final class Misc {
-    public static final int TIME_CONVERSION_FACTOR = 1000;
-    public static final int TICK_CONVERSION_FACTOR = 20;
-    public static final int PLAYER_RESPAWN_COOLDOWN_SECONDS = 5;
-    public static final double SKILL_MESSAGE_MAX_SENDING_DISTANCE = 10.0;
-    public static final Set<String> modNames = ImmutableSet.of("LOTR", "BUILDCRAFT", "ENDERIO", "ENHANCEDBIOMES", "IC2", "METALLURGY", "FORESTRY", "GALACTICRAFT", "RAILCRAFT", "TWILIGHTFOREST", "THAUMCRAFT", "GRAVESTONEMOD", "GROWTHCRAFT", "ARCTICMOBS", "DEMONMOBS", "INFERNOMOBS", "SWAMPMOBS", "MARICULTURE", "MINESTRAPPOLATION");
+public final class MiscTools {
+    public final int TIME_CONVERSION_FACTOR = 1000;
+    public final int TICK_CONVERSION_FACTOR = 20;
+    public final int PLAYER_RESPAWN_COOLDOWN_SECONDS = 5;
+    public final double SKILL_MESSAGE_MAX_SENDING_DISTANCE = 10.0;
+    public final Set<String> modNames = ImmutableSet.of("LOTR", "BUILDCRAFT", "ENDERIO", "ENHANCEDBIOMES", "IC2", "METALLURGY", "FORESTRY", "GALACTICRAFT", "RAILCRAFT", "TWILIGHTFOREST", "THAUMCRAFT", "GRAVESTONEMOD", "GROWTHCRAFT", "ARCTICMOBS", "DEMONMOBS", "INFERNOMOBS", "SWAMPMOBS", "MARICULTURE", "MINESTRAPPOLATION");
+    private final mcMMO pluginRef;
 
-    // Sound Pitches & Volumes from CB
-/*    public static final float ANVIL_USE_PITCH  = 0.3F;  // Not in CB directly, I went off the place sound values
-    public static final float ANVIL_USE_VOLUME = 1.0F * MainConfig.getInstance().getMasterVolume();  // Not in CB directly, I went off the place sound values
-    public static final float FIZZ_VOLUME      = 0.5F * MainConfig.getInstance().getMasterVolume();
-    public static final float POP_VOLUME       = 0.2F * MainConfig.getInstance().getMasterVolume();
-    public static final float BAT_VOLUME       = 1.0F * MainConfig.getInstance().getMasterVolume();
-    public static final float BAT_PITCH        = 0.6F;
-    public static final float GHAST_VOLUME     = 1.0F * MainConfig.getInstance().getMasterVolume();
-    public static final float LEVELUP_PITCH    = 0.5F;  // Reduced to differentiate between vanilla level-up
-    public static final float LEVELUP_VOLUME   = 0.75F * MainConfig.getInstance().getMasterVolume(); // Use max volume always*/
-    private static Random random = new Random();
+    private Random random = new Random();
 
-    private Misc() {
+    public MiscTools(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
     }
 
     /**
@@ -45,30 +38,30 @@ public final class Misc {
      * 2) The entity can be considered an NPC
      *
      * In this context, an NPC is a bit hard to define. Various plugins determine what an NPC is in different ways.
-     * @see Misc::isNPCIncludingVillagers
+     * @see MiscTools ::isNPCIncludingVillagers
      * @param entity target entity
      * @return true if the entity is not a Villager and is not a "NPC"
      */
-    public static boolean isNPCEntityExcludingVillagers(Entity entity) {
+    public boolean isNPCEntityExcludingVillagers(Entity entity) {
         return (!isVillager(entity)
                 && isNPCIncludingVillagers(entity)); //Compatibility with some mod..
     }
 
-    public static boolean isNPCClassType(Entity entity) {
+    public boolean isNPCClassType(Entity entity) {
         return entity instanceof NPC;
     }
 
-    public static boolean hasNPCMetadataTag(Entity entity) {
+    public boolean hasNPCMetadataTag(Entity entity) {
         return entity.hasMetadata("NPC");
     }
 
-    public static boolean isVillager(Entity entity) {
+    public boolean isVillager(Entity entity) {
         String entityType = entity.getType().toString();
         //This weird code is for 1.13 & 1.14 compatibility
         return entityType.equalsIgnoreCase("wandering_trader") || entity instanceof Villager;
     }
 
-    public static boolean isNPCIncludingVillagers(Entity entity) {
+    public boolean isNPCIncludingVillagers(Entity entity) {
         return (entity == null
                 || (hasNPCMetadataTag(entity))
                 || (isNPCClassType(entity))
@@ -83,7 +76,7 @@ public final class Misc {
      * @param maxDistance The max distance apart
      * @return true if the distance between {@code first} and {@code second} is less than {@code maxDistance}, false otherwise
      */
-    public static boolean isNear(Location first, Location second, double maxDistance) {
+    public boolean isNear(Location first, Location second, double maxDistance) {
         return (first.getWorld() == second.getWorld()) && (first.distanceSquared(second) < (maxDistance * maxDistance) || maxDistance == 0);
     }
 
@@ -93,11 +86,11 @@ public final class Misc {
      * @param blockState The {@link BlockState} of the block
      * @return A {@link Location} lying at the center of the block
      */
-    public static Location getBlockCenter(BlockState blockState) {
+    public Location getBlockCenter(BlockState blockState) {
         return blockState.getLocation().add(0.5, 0.5, 0.5);
     }
 
-    public static void dropItems(Location location, Collection<ItemStack> drops) {
+    public void dropItems(Location location, Collection<ItemStack> drops) {
         for (ItemStack drop : drops) {
             dropItem(location, drop);
         }
@@ -110,7 +103,7 @@ public final class Misc {
      * @param is       The items to drop
      * @param quantity The amount of items to drop
      */
-    public static void dropItems(Location location, ItemStack is, int quantity) {
+    public void dropItems(Location location, ItemStack is, int quantity) {
         for (int i = 0; i < quantity; i++) {
             dropItem(location, is);
         }
@@ -123,7 +116,7 @@ public final class Misc {
      * @param itemStack The item to drop
      * @return Dropped Item entity or null if invalid or cancelled
      */
-    public static Item dropItem(Location location, ItemStack itemStack) {
+    public Item dropItem(Location location, ItemStack itemStack) {
         if (itemStack.getType() == Material.AIR) {
             return null;
         }
@@ -147,7 +140,7 @@ public final class Misc {
      * @param speed the speed that the item should travel
      * @param quantity The amount of items to drop
      */
-    public static void spawnItemsTowardsLocation(Location fromLocation, Location toLocation, ItemStack is, int quantity, double speed) {
+    public void spawnItemsTowardsLocation(Location fromLocation, Location toLocation, ItemStack is, int quantity, double speed) {
         for (int i = 0; i < quantity; i++) {
             spawnItemTowardsLocation(fromLocation, toLocation, is, speed);
         }
@@ -163,7 +156,7 @@ public final class Misc {
      * @param speed the speed that the item should travel
      * @return Dropped Item entity or null if invalid or cancelled
      */
-    public static Item spawnItemTowardsLocation(Location fromLocation, Location toLocation, ItemStack itemToSpawn, double speed) {
+    public Item spawnItemTowardsLocation(Location fromLocation, Location toLocation, ItemStack itemToSpawn, double speed) {
         if (itemToSpawn.getType() == Material.AIR) {
             return null;
         }
@@ -196,16 +189,16 @@ public final class Misc {
         return spawnedItem;
     }
 
-    public static void profileCleanup(String playerName) {
+    public void profileCleanup(String playerName) {
         Player player = pluginRef.getServer().getPlayerExact(playerName);
 
         if (player != null) {
             pluginRef.getUserManager().remove(player);
-            new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(pluginRef, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
+            new PlayerProfileLoadingTask(pluginRef, player).runTaskLaterAsynchronously(pluginRef, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
         }
     }
 
-    public static String getModName(String materialName) {
+    public String getModName(String materialName) {
         for (String mod : modNames) {
             if (materialName.contains(mod)) {
                 return mod;
@@ -224,7 +217,7 @@ public final class Misc {
     /**
      * Gets a random location near the specified location
      */
-    public static Location getLocationOffset(Location location, double strength) {
+    public Location getLocationOffset(Location location, double strength) {
         double blockX = location.getBlockX();
         double blockZ = location.getBlockZ();
 
@@ -238,7 +231,7 @@ public final class Misc {
         return new Location(location.getWorld(), blockX, location.getY(), blockZ);
     }
 
-    public static Random getRandom() {
+    public Random getRandom() {
         return random;
     }
 }

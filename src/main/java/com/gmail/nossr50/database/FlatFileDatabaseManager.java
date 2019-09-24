@@ -8,7 +8,6 @@ import com.gmail.nossr50.datatypes.player.UniqueDataType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.OfflinePlayer;
 
@@ -175,7 +174,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                     long lastPlayed = 0;
                     boolean rewrite = false;
                     try {
-                        lastPlayed = Long.parseLong(character[37]) * Misc.TIME_CONVERSION_FACTOR;
+                        lastPlayed = Long.parseLong(character[37]) * pluginRef.getMiscTools().TIME_CONVERSION_FACTOR;
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
                     }
@@ -272,7 +271,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             }
         }
 
-        Misc.profileCleanup(playerName);
+        pluginRef.getMiscTools().profileCleanup(playerName);
 
         return worked;
     }
@@ -382,7 +381,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         writer.append(profile.getSkillLevel(PrimarySkillType.FISHING)).append(":");
         writer.append(profile.getSkillXpLevel(PrimarySkillType.FISHING)).append(":");
         writer.append((int) profile.getAbilityDATS(SuperAbilityType.BLAST_MINING)).append(":");
-        writer.append(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR).append(":");
+        writer.append(System.currentTimeMillis() / pluginRef.getMiscTools().TIME_CONVERSION_FACTOR).append(":");
         MobHealthbarType mobHealthbarType = profile.getMobHealthbarType();
         writer.append(mobHealthbarType == null ? pluginRef.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType().toString() : mobHealthbarType.toString()).append(":");
         writer.append(profile.getSkillLevel(PrimarySkillType.ALCHEMY)).append(":");
@@ -462,7 +461,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                 out.append(startingLevel); // Fishing
                 out.append("0:"); // FishingXp
                 out.append("0:"); // Blast Mining
-                out.append(String.valueOf(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)).append(":"); // LastLogin
+                out.append(String.valueOf(System.currentTimeMillis() / pluginRef.getMiscTools().TIME_CONVERSION_FACTOR)).append(":"); // LastLogin
                 out.append(pluginRef.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType().toString()).append(":"); // Mob Healthbar HUD
                 out.append(startingLevel); // Alchemy
                 out.append("0:"); // AlchemyXp
@@ -1019,7 +1018,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                             if (character[i].isEmpty() && !(i == 2 || i == 3 || i == 23 || i == 33 || i == 41)) {
                                 corrupted = true;
                                 if (i == 37) {
-                                    character[i] = String.valueOf(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+                                    character[i] = String.valueOf(System.currentTimeMillis() / pluginRef.getMiscTools().TIME_CONVERSION_FACTOR);
                                 } else if (i == 38) {
                                     character[i] = pluginRef.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType().toString();
                                 } else {

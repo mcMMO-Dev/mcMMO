@@ -1,7 +1,6 @@
 package com.gmail.nossr50.datatypes.skills.behaviours;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
 import org.bukkit.block.BlockState;
 
 /**
@@ -82,7 +81,7 @@ public class WoodcuttingBehaviour {
         }
         else {*/
         if (pluginRef.getDynamicSettingsManager().getBonusDropManager().isBonusDropWhitelisted(blockState.getType())) {
-            Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
+            pluginRef.getMiscTools().dropItems(pluginRef.getMiscTools().getBlockCenter(blockState), blockState.getBlock().getDrops());
         }
         //}
     }

@@ -10,7 +10,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -316,7 +315,7 @@ public class SkillTools {
      * @return the number of seconds remaining before the cooldown expires
      */
     public int calculateTimeLeft(long deactivatedTimeStamp, int cooldown, Player player) {
-        return (int) (((deactivatedTimeStamp + (PerksUtils.handleCooldownPerks(player, cooldown) * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
+        return (int) (((deactivatedTimeStamp + (PerksUtils.handleCooldownPerks(player, cooldown) * pluginRef.getMiscTools().TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / pluginRef.getMiscTools().TIME_CONVERSION_FACTOR);
     }
 
     /**
@@ -328,7 +327,7 @@ public class SkillTools {
      * @return true if the cooldown is expired
      */
     public boolean cooldownExpired(long deactivatedTimeStamp, int cooldown) {
-        return System.currentTimeMillis() >= (deactivatedTimeStamp + cooldown) * Misc.TIME_CONVERSION_FACTOR;
+        return System.currentTimeMillis() >= (deactivatedTimeStamp + cooldown) * pluginRef.getMiscTools().TIME_CONVERSION_FACTOR;
     }
 
     /**
@@ -345,7 +344,7 @@ public class SkillTools {
         Location location = player.getLocation();
 
         for (Player otherPlayer : player.getWorld().getPlayers()) {
-            if (otherPlayer != player && Misc.isNear(location, otherPlayer.getLocation(), Misc.SKILL_MESSAGE_MAX_SENDING_DISTANCE)) {
+            if (otherPlayer != player && pluginRef.getMiscTools().isNear(location, otherPlayer.getLocation(), pluginRef.getMiscTools().SKILL_MESSAGE_MAX_SENDING_DISTANCE)) {
                 pluginRef.getNotificationManager().sendNearbyPlayersInformation(otherPlayer, notificationType, key, player.getName());
             }
         }
