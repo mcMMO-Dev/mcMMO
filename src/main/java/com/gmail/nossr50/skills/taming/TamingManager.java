@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.taming;
 
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -109,7 +108,7 @@ public class TamingManager extends SkillManager {
      * @param entity The LivingEntity to award XP for
      */
     public void awardTamingXP(LivingEntity entity) {
-        applyXpGain(ExperienceConfig.getInstance().getTamingXP(entity.getType()), XPGainReason.PVE);
+        applyXpGain(pluginRef.getDynamicSettingsManager().getExperienceManager().getTamingXp(entity.getType()), XPGainReason.PVE);
     }
 
     /**
