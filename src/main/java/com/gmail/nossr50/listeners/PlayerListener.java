@@ -387,7 +387,15 @@ public class PlayerListener implements Listener {
                 return;
             case CAUGHT_ENTITY:
                 if (fishingManager.canShake(caught)) {
-                    fishingManager.shakeCheck((LivingEntity) caught);
+                    //TODO: SHAKE REWRITE
+                    //TODO: SHAKE REWRITE
+                    //TODO: SHAKE REWRITE
+                    //TODO: SHAKE REWRITE
+                    //TODO: SHAKE REWRITE
+                    //TODO: SHAKE REWRITE
+                    //TODO: SHAKE REWRITE
+                    //TODO: SHAKE REWRITE
+//                    fishingManager.shakeCheck((LivingEntity) caught);
                     fishingManager.setFishingTarget();
                 }
                 return;

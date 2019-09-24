@@ -1,14 +1,10 @@
 package com.gmail.nossr50.datatypes.skills.behaviours;
 
-import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.adapter.BiomeAdapter;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.List;
@@ -61,39 +57,39 @@ public class FishingBehaviour {
         }
     }
 
-    /**
-     * Finds the possible drops of an entity
-     *
-     * @param target Targeted entity
-     * @return possibleDrops List of ItemStack that can be dropped
-     */
-    public List<ShakeTreasure> findPossibleDrops(LivingEntity target) {
-        if (FishingTreasureConfig.getInstance().shakeMap.containsKey(target.getType()))
-            return FishingTreasureConfig.getInstance().shakeMap.get(target.getType());
+//    /**
+//     * Finds the possible drops of an entity
+//     *
+//     * @param target Targeted entity
+//     * @return possibleDrops List of ItemStack that can be dropped
+//     */
+//    public List<ShakeTreasure> findPossibleDrops(LivingEntity target) {
+//        if (FishingTreasureConfig.getInstance().shakeMap.containsKey(target.getType()))
+//            return FishingTreasureConfig.getInstance().shakeMap.get(target.getType());
+//
+//        return null;
+//    }
 
-        return null;
-    }
-
-    /**
-     * Randomly chooses a drop among the list
-     *
-     * @param possibleDrops List of ItemStack that can be dropped
-     * @return Chosen ItemStack
-     */
-    public ItemStack chooseDrop(List<ShakeTreasure> possibleDrops) {
-        int dropProbability = Misc.getRandom().nextInt(100);
-        double cumulatedProbability = 0;
-
-        for (ShakeTreasure treasure : possibleDrops) {
-            cumulatedProbability += treasure.getDropChance();
-
-            if (dropProbability < cumulatedProbability) {
-                return treasure.getDrop().clone();
-            }
-        }
-
-        return null;
-    }
+//    /**
+//     * Randomly chooses a drop among the list
+//     *
+//     * @param possibleDrops List of ItemStack that can be dropped
+//     * @return Chosen ItemStack
+//     */
+//    public ItemStack chooseDrop(List<ShakeTreasure> possibleDrops) {
+//        int dropProbability = Misc.getRandom().nextInt(100);
+//        double cumulatedProbability = 0;
+//
+//        for (ShakeTreasure treasure : possibleDrops) {
+//            cumulatedProbability += treasure.getDropChance();
+//
+//            if (dropProbability < cumulatedProbability) {
+//                return treasure.getDrop().clone();
+//            }
+//        }
+//
+//        return null;
+//    }
 
     public HashMap<Material, List<Enchantment>> getEnchantableCache() {
         return enchantableCache;
