@@ -19,7 +19,6 @@ import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.HardcoreManager;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Motd;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Bukkit;
@@ -517,7 +516,7 @@ public class PlayerListener implements Listener {
         new PlayerProfileLoadingTask(pluginRef, player).runTaskLaterAsynchronously(pluginRef, 60);
 
         if (pluginRef.getConfigManager().getConfigMOTD().isEnableMOTD()) {
-            Motd.displayAll(player);
+            pluginRef.getMessageOfTheDayUtils().displayAll(player);
         }
 
         if (pluginRef.isXPEventEnabled()) {

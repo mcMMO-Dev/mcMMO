@@ -99,6 +99,7 @@ public class mcMMO extends JavaPlugin {
     private ItemTools itemTools;
     private PermissionTools permissionTools;
     private WorldGuardUtils worldGuardUtils;
+    private MessageOfTheDayUtils messageOfTheDayUtils;
     private ZipLibrary zipLibrary;
 
     /* Never-Ending tasks */
@@ -277,6 +278,9 @@ public class mcMMO extends JavaPlugin {
 
         //Init World Guard Utils (Not sure about the order of this one, might need to be loaded earlier)
         worldGuardUtils = new WorldGuardUtils(this);
+
+        //Init MOTD Utils
+        messageOfTheDayUtils = new MessageOfTheDayUtils(this);
     }
 
     @Override
@@ -809,4 +813,10 @@ public class mcMMO extends JavaPlugin {
     public WorldGuardUtils getWorldGuardUtils() {
         return worldGuardUtils;
     }
+
+    public MessageOfTheDayUtils getMessageOfTheDayUtils() {
+        return messageOfTheDayUtils;
+    }
+
+
 }
