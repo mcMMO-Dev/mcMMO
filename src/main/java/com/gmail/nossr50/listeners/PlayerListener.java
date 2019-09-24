@@ -17,7 +17,6 @@ import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.ChimaeraWing;
-import com.gmail.nossr50.util.HardcoreManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -130,8 +129,8 @@ public class PlayerListener implements Listener {
         if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getEntity().getWorld().getName()))
             return;
 
-        boolean statLossEnabled = HardcoreManager.isStatLossEnabled();
-        boolean vampirismEnabled = HardcoreManager.isVampirismEnabled();
+        boolean statLossEnabled = pluginRef.getHardcoreManager().isStatLossEnabled();
+        boolean vampirismEnabled = pluginRef.getHardcoreManager().isVampirismEnabled();
 
         if (!statLossEnabled && !vampirismEnabled) {
             return;
@@ -157,11 +156,11 @@ public class PlayerListener implements Listener {
             }
 
             if (killer != null && vampirismEnabled) {
-                HardcoreManager.invokeVampirism(killer, killedPlayer);
+                pluginRef.getHardcoreManager().invokeVampirism(killer, killedPlayer);
             }
 
             if (statLossEnabled) {
-                HardcoreManager.invokeStatPenalty(killedPlayer);
+                pluginRef.getHardcoreManager().invokeStatPenalty(killedPlayer);
             }
         }
     }

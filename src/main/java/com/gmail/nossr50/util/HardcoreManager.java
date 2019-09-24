@@ -3,19 +3,23 @@ package com.gmail.nossr50.util;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.worldguard.WorldGuardManager;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
 public final class HardcoreManager {
-    private HardcoreManager() {
+
+    private final mcMMO pluginRef;
+
+    public HardcoreManager(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
     }
 
-    public static void invokeStatPenalty(Player player) {
+    public void invokeStatPenalty(Player player) {
 
         if(pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
-            if(!WorldGuardManager.getInstance().hasHardcoreFlag(player)) {
+            if(!pluginRef.getWorldGuardManager().hasHardcoreFlag(player)) {
                 return;
             }
         }
@@ -33,7 +37,7 @@ public final class HardcoreManager {
         HashMap<String, Double> experienceChanged = new HashMap<>();
 
         for (PrimarySkillType primarySkillType : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
-            if (!primarySkillType.getHardcoreStatLossEnabled()) {
+            if (!pluginRef.getSkillTools().getHardcoreStatLossEnabled(primarySkillType)) {
                 levelChanged.put(primarySkillType.toString(), 0);
                 experienceChanged.put(primarySkillType.toString(), 0.0);
                 continue;
@@ -64,10 +68,10 @@ public final class HardcoreManager {
         pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.HARDCORE_MODE, "Hardcore.DeathStatLoss.PlayerDeath", String.valueOf(totalLevelsLost));
     }
 
-    public static void invokeVampirism(Player killer, Player victim) {
+    public void invokeVampirism(Player killer, Player victim) {
 
         if(pluginRef.getWorldGuardUtils().isWorldGuardLoaded()) {
-            if(!WorldGuardManager.getInstance().hasHardcoreFlag(killer) || !WorldGuardManager.getInstance().hasHardcoreFlag(victim)) {
+            if(!pluginRef.getWorldGuardManager().hasHardcoreFlag(killer) || !pluginRef.getWorldGuardManager().hasHardcoreFlag(victim)) {
                 return;
             }
         }
@@ -86,7 +90,7 @@ public final class HardcoreManager {
         HashMap<String, Double> experienceChanged = new HashMap<>();
 
         for (PrimarySkillType primarySkillType : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
-            if (!primarySkillType.getHardcoreVampirismEnabled()) {
+            if (!pluginRef.getSkillTools().getHardcoreVampirismEnabled(primarySkillType)) {
                 levelChanged.put(primarySkillType.toString(), 0);
                 experienceChanged.put(primarySkillType.toString(), 0.0);
                 continue;
@@ -130,11 +134,11 @@ public final class HardcoreManager {
      *
      * @return true if Stat Loss is enabled for one or more skill types
      */
-    public static boolean isStatLossEnabled() {
+    public boolean isStatLossEnabled() {
         boolean enabled = false;
 
         for (PrimarySkillType primarySkillType : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
-            if (primarySkillType.getHardcoreStatLossEnabled()) {
+            if (pluginRef.getSkillTools().getHardcoreStatLossEnabled(primarySkillType)) {
                 enabled = true;
                 break;
             }
@@ -148,11 +152,11 @@ public final class HardcoreManager {
      *
      * @return true if Vampirism is enabled for one or more skill types
      */
-    public static boolean isVampirismEnabled() {
+    public boolean isVampirismEnabled() {
         boolean enabled = false;
 
         for (PrimarySkillType primarySkillType : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
-            if (primarySkillType.getHardcoreVampirismEnabled()) {
+            if (pluginRef.getSkillTools().getHardcoreVampirismEnabled(primarySkillType)) {
                 enabled = true;
                 break;
             }

@@ -47,8 +47,8 @@ public final class MessageOfTheDayUtils {
      * @param player Target player
      */
     public void displayHardcoreSettings(Player player) {
-        boolean deathStatLossEnabled = HardcoreManager.isStatLossEnabled();
-        boolean vampirismEnabled = HardcoreManager.isVampirismEnabled();
+        boolean deathStatLossEnabled = pluginRef.getHardcoreManager().isStatLossEnabled();
+        boolean vampirismEnabled = pluginRef.getHardcoreManager().isVampirismEnabled();
 
         if (!deathStatLossEnabled && !vampirismEnabled) {
             return;

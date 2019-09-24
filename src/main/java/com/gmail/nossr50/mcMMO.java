@@ -105,6 +105,7 @@ public class mcMMO extends JavaPlugin {
     private MessageOfTheDayUtils messageOfTheDayUtils;
     private MiscTools miscTools;
     private ZipLibrary zipLibrary;
+    private HardcoreManager hardcoreManager;
 
     /* Never-Ending tasks */
     private BleedTimerTask bleedTimerTask;
@@ -293,6 +294,9 @@ public class mcMMO extends JavaPlugin {
 
         //Misc Tools Init
         miscTools = new MiscTools(this);
+
+        //Init HardcoreManager
+        hardcoreManager = new HardcoreManager(this);
     }
 
     @Override
@@ -840,5 +844,9 @@ public class mcMMO extends JavaPlugin {
 
     public MiscTools getMiscTools() {
         return miscTools;
+    }
+
+    public HardcoreManager getHardcoreManager() {
+        return hardcoreManager;
     }
 }

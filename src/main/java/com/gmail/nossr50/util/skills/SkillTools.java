@@ -674,12 +674,12 @@ public class SkillTools {
         return pluginRef.getConfigManager().getConfigCoreSkills().isPVEEnabled(primarySkillType);
     }
 
-    public boolean getHardcoreStatLossEnabled() {
-        return pluginRef.getConfigManager().getConfigHardcore().getDeathPenalty().getSkillToggleMap().get(this);
+    public boolean getHardcoreStatLossEnabled(PrimarySkillType primarySkillType) {
+        return pluginRef.getConfigManager().getConfigHardcore().getDeathPenalty().getSkillToggleMap().get(primarySkillType);
     }
 
-    public boolean getHardcoreVampirismEnabled() {
-        return pluginRef.getConfigManager().getConfigHardcore().getVampirism().getSkillToggleMap().get(this);
+    public boolean getHardcoreVampirismEnabled(PrimarySkillType primarySkillType) {
+        return pluginRef.getConfigManager().getConfigHardcore().getVampirism().getSkillToggleMap().get(primarySkillType);
     }
 
     public ToolType getPrimarySkillToolType(PrimarySkillType primarySkillType) {
