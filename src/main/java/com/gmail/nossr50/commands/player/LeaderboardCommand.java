@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.LeaderboardsCommandAsyncTask;
 import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.scoreboards.SidebarType;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -116,10 +117,10 @@ public class LeaderboardCommand implements TabExecutor {
     }
 
     private void display(int page, PrimarySkillType skill, CommandSender sender) {
-        boolean useBoard = (sender instanceof Player) && (pluginRef.getScoreboardSettings().isScoreboardEnabled(pluginRef.getScoreboardManager().SidebarType.TOP_BOARD));
-        boolean useChat = !useBoard || pluginRef.getScoreboardSettings().isScoreboardPrinting(pluginRef.getScoreboardManager().SidebarType.TOP_BOARD);
+        boolean useBoard = (sender instanceof Player) && (pluginRef.getScoreboardSettings().isScoreboardEnabled(SidebarType.TOP_BOARD));
+        boolean useChat = !useBoard || pluginRef.getScoreboardSettings().isScoreboardPrinting(SidebarType.TOP_BOARD);
 
-        new LeaderboardsCommandAsyncTask(page, skill, sender, useBoard, useChat).runTaskAsynchronously(pluginRef);
+        new LeaderboardsCommandAsyncTask(pluginRef, page, skill, sender, useBoard, useChat).runTaskAsynchronously(pluginRef);
     }
 
     private PrimarySkillType extractSkill(CommandSender sender, String skillName) {
@@ -127,7 +128,7 @@ public class LeaderboardCommand implements TabExecutor {
             return null;
         }
 
-        PrimarySkillType skill = PrimarySkillType.matchSkill(skillName);
+        PrimarySkillType skill = pluginRef.getSkillTools().matchSkill(skillName);
 
         if (pluginRef.getCommandTools().isChildSkill(sender, skill)) {
             return null;

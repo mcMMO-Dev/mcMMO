@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 public class UnarmedManager extends SkillManager {
     private long lastAttacked;
     private long attackInterval;
+    public double berserkDamageModifier = 1.5;
 
     public UnarmedManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
         super(pluginRef, mcMMOPlayer, PrimarySkillType.UNARMED);
@@ -135,7 +136,7 @@ public class UnarmedManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public double berserkDamage(double damage) {
-        damage = (damage * Unarmed.berserkDamageModifier) - damage;
+        damage = (damage * berserkDamageModifier) - damage;
 
         return damage;
     }

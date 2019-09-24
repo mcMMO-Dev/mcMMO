@@ -1,6 +1,5 @@
 package com.gmail.nossr50.config.hocon.skills.taming;
 
-import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -61,10 +60,6 @@ public class ConfigTamingSubSkills {
 
     public ConfigTamingPummel getPummel() {
         return pummel;
-    }
-
-    public String getItemString(CallOfTheWildType callOfTheWildType) {
-        return callOfTheWild.getItemString(callOfTheWildType);
     }
 
     public double getMinHorseJumpStrength() {

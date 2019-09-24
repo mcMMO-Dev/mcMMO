@@ -1,6 +1,7 @@
 package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.scoreboards.SidebarType;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -36,10 +37,10 @@ public class SkillStatsCommand implements TabExecutor {
 
                 Player player = (Player) sender;
 
-                if (pluginRef.getScoreboardSettings().isScoreboardEnabled(pluginRef.getScoreboardManager().SidebarType.STATS_BOARD) && pluginRef.getScoreboardSettings().getScoreboardsEnabled()) {
+                if (pluginRef.getScoreboardSettings().isScoreboardEnabled(SidebarType.STATS_BOARD) && pluginRef.getScoreboardSettings().getScoreboardsEnabled()) {
                     pluginRef.getScoreboardManager().enablePlayerStatsScoreboard(player);
 
-                    if (!pluginRef.getScoreboardSettings().isScoreboardPrinting(pluginRef.getScoreboardManager().SidebarType.STATS_BOARD)) {
+                    if (!pluginRef.getScoreboardSettings().isScoreboardPrinting(SidebarType.STATS_BOARD)) {
                         return true;
                     }
                 }

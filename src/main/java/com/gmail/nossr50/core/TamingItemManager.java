@@ -42,7 +42,8 @@ public class TamingItemManager {
     }
 
     public void registerSummonItemRelationships(CallOfTheWildType callOfTheWildType, Material defaultType) {
-        String materialString = pluginRef.getConfigManager().getConfigTaming().getSubSkills().getCallOfTheWild().getItemString(callOfTheWildType);
+        //TODO: Unnecessarily complicated
+        String materialString = pluginRef.getConfigManager().getConfigTaming().getSubSkills().getCallOfTheWild().getCOTWSummon(callOfTheWildType).getItemType().getKey().toString();
         pluginRef.getLogger().info("Registering COTW Summon Item - "+callOfTheWildType.toString()+" | "+materialString);
         Material material = Material.matchMaterial(materialString);
 

@@ -3,6 +3,7 @@ package com.gmail.nossr50.commands.player;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.scoreboards.SidebarType;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -33,10 +34,10 @@ public class CooldownCommand implements TabExecutor {
             case 0:
                 Player player = (Player) sender;
 
-                if (pluginRef.getScoreboardSettings().getScoreboardsEnabled() && pluginRef.getScoreboardSettings().isScoreboardEnabled(pluginRef.getScoreboardManager().SidebarType.COOLDOWNS_BOARD)) {
+                if (pluginRef.getScoreboardSettings().getScoreboardsEnabled() && pluginRef.getScoreboardSettings().isScoreboardEnabled(SidebarType.COOLDOWNS_BOARD)) {
                     pluginRef.getScoreboardManager().enablePlayerCooldownScoreboard(player);
 
-                    if (!pluginRef.getScoreboardSettings().isScoreboardPrinting(pluginRef.getScoreboardManager().SidebarType.COOLDOWNS_BOARD)) {
+                    if (!pluginRef.getScoreboardSettings().isScoreboardPrinting(SidebarType.COOLDOWNS_BOARD)) {
                         return true;
                     }
                 }
@@ -51,17 +52,17 @@ public class CooldownCommand implements TabExecutor {
                 player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Cooldowns.Header"));
                 player.sendMessage(pluginRef.getLocaleManager().getString("mcMMO.NoSkillNote"));
 
-                for (SuperAbilityType ability : SuperAbilityType.values()) {
-                    if (!ability.superAbilityPermissionCheck(player)) {
+                for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {
+                    if (!pluginRef.getSkillTools().superAbilityPermissionCheck(superAbilityType, player)) {
                         continue;
                     }
 
-                    int seconds = mcMMOPlayer.calculateTimeRemaining(ability);
+                    int seconds = mcMMOPlayer.calculateTimeRemaining(superAbilityType);
 
                     if (seconds <= 0) {
-                        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Cooldowns.Row.Y", ability.getPrettySuperAbilityName()));
+                        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Cooldowns.Row.Y", pluginRef.getSkillTools().getPrettySuperAbilityName(superAbilityType)));
                     } else {
-                        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Cooldowns.Row.N", ability.getPrettySuperAbilityName(), seconds));
+                        player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Cooldowns.Row.N", pluginRef.getSkillTools().getPrettySuperAbilityName(superAbilityType), seconds));
                     }
                 }
 

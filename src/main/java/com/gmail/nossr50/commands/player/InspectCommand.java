@@ -50,17 +50,17 @@ public class InspectCommand implements TabExecutor {
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Inspect.OfflineStats", playerName));
 
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Stats.Header.Gathering"));
-                    for (PrimarySkillType skill : PrimarySkillType.GATHERING_SKILLS) {
+                    for (PrimarySkillType skill : pluginRef.getSkillTools().GATHERING_SKILLS) {
                         sender.sendMessage(pluginRef.getCommandTools().displaySkill(profile, skill));
                     }
 
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Stats.Header.Combat"));
-                    for (PrimarySkillType skill : PrimarySkillType.COMBAT_SKILLS) {
+                    for (PrimarySkillType skill : pluginRef.getSkillTools().COMBAT_SKILLS) {
                         sender.sendMessage(pluginRef.getCommandTools().displaySkill(profile, skill));
                     }
 
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Stats.Header.Misc"));
-                    for (PrimarySkillType skill : PrimarySkillType.MISC_SKILLS) {
+                    for (PrimarySkillType skill : pluginRef.getSkillTools().MISC_SKILLS) {
                         sender.sendMessage(pluginRef.getCommandTools().displaySkill(profile, skill));
                     }
 

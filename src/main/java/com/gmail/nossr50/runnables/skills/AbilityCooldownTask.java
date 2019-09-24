@@ -9,23 +9,23 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class AbilityCooldownTask extends BukkitRunnable {
     private final mcMMO pluginRef;
     private final McMMOPlayer mcMMOPlayer;
-    private final SuperAbilityType ability;
+    private final SuperAbilityType superAbilityType;
 
-    public AbilityCooldownTask(mcMMO pluginRef, McMMOPlayer mcMMOPlayer, SuperAbilityType ability) {
+    public AbilityCooldownTask(mcMMO pluginRef, McMMOPlayer mcMMOPlayer, SuperAbilityType superAbilityType) {
         this.pluginRef = pluginRef;
         this.mcMMOPlayer = mcMMOPlayer;
-        this.ability = ability;
+        this.superAbilityType = superAbilityType;
     }
 
     @Override
     public void run() {
-        if (!mcMMOPlayer.getPlayer().isOnline() || mcMMOPlayer.getSuperAbilityInformed(ability)) {
+        if (!mcMMOPlayer.getPlayer().isOnline() || mcMMOPlayer.getSuperAbilityInformed(superAbilityType)) {
             return;
         }
 
-        mcMMOPlayer.setAbilityInformed(ability, true);
+        mcMMOPlayer.setAbilityInformed(superAbilityType, true);
 
-        pluginRef.getNotificationManager().sendPlayerInformation(mcMMOPlayer.getPlayer(), NotificationType.ABILITY_REFRESHED, ability.getSuperAbilityRefreshedStr());
+        pluginRef.getNotificationManager().sendPlayerInformation(mcMMOPlayer.getPlayer(), NotificationType.ABILITY_REFRESHED, pluginRef.getSkillTools().getSuperAbilityRefreshedStr(superAbilityType));
         //mcMMOPlayer.getPlayer().sendMessage(ability.getAbilityRefresh());
     }
 }

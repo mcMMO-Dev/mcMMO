@@ -22,7 +22,6 @@ public class ConvertExperienceCommand implements CommandExecutor {
         switch (args.length) {
             case 2:
 
-
                 for(FormulaType formulaType : FormulaType.values()) {
                     if(formulaType.toString().equalsIgnoreCase(args[1])) {
                         FormulaType previousType = formulaType;
@@ -32,10 +31,10 @@ public class ConvertExperienceCommand implements CommandExecutor {
                         pluginRef.getUserManager().saveAll();
                         pluginRef.getUserManager().clearAll();
 
-                        new FormulaConversionTask(sender, previousType).runTaskLater(pluginRef, 1);
+                        new FormulaConversionTask(pluginRef, sender, previousType).runTaskLater(pluginRef, 1);
 
                         for (Player player : pluginRef.getServer().getOnlinePlayers()) {
-                            new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(pluginRef, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
+                            new PlayerProfileLoadingTask(pluginRef, player).runTaskLaterAsynchronously(pluginRef, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
                         }
 
                         return true;
@@ -44,8 +43,6 @@ public class ConvertExperienceCommand implements CommandExecutor {
 
                 sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mcconvert.Experience.Invalid"));
                 return true;
-
-
 
             default:
                 return false;

@@ -113,8 +113,8 @@ public class RankCommand implements TabExecutor {
         }
 
         boolean useBoard = pluginRef.getScoreboardSettings().getScoreboardsEnabled() && (sender instanceof Player)
-                && (pluginRef.getScoreboardSettings().isScoreboardEnabled(pluginRef.getScoreboardManager().SidebarType.RANK_BOARD));
-        boolean useChat = !useBoard || pluginRef.getScoreboardSettings().isScoreboardPrinting(pluginRef.getScoreboardManager().SidebarType.RANK_BOARD);
+                && (pluginRef.getScoreboardSettings().isScoreboardEnabled(SidebarType.RANK_BOARD));
+        boolean useChat = !useBoard || pluginRef.getScoreboardSettings().isScoreboardPrinting(SidebarType.RANK_BOARD);
 
         new RankCommandAsyncTask(playerName, sender, useBoard, useChat).runTaskAsynchronously(pluginRef);
     }
