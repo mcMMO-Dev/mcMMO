@@ -99,6 +99,7 @@ public class mcMMO extends JavaPlugin {
     private ItemTools itemTools;
     private PermissionTools permissionTools;
     private WorldGuardUtils worldGuardUtils;
+    private ZipLibrary zipLibrary;
 
     /* Never-Ending tasks */
     private BleedTimerTask bleedTimerTask;
@@ -316,7 +317,8 @@ public class mcMMO extends JavaPlugin {
         if (getConfigManager().getConfigAutomatedBackups().isZipBackupsEnabled()) {
             // Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
             try {
-                ZipLibrary.mcMMOBackup();
+                zipLibrary = new ZipLibrary(this);
+                zipLibrary.mcMMOBackup();
             } catch (IOException e) {
                 getLogger().severe(e.toString());
             } catch (Throwable e) {

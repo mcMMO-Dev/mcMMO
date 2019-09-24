@@ -15,28 +15,34 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class ZipLibrary {
-    private static String BACKUP_DIRECTORY = mcMMO.getMainDirectory() + "backup" + File.separator;
-    private static File BACKUP_DIR = new File(BACKUP_DIRECTORY);
-    private static File FLAT_FILE_DIRECTORY = new File(mcMMO.getFlatFileDirectory());
-    private static File MOD_FILE_DIRECTORY = new File(mcMMO.getModDirectory());
-   /* private static File CONFIG_FILE = new File(mcMMO.getMainDirectory() + "config.yml");
-    private static File EXPERIENCE_FILE = new File(mcMMO.getMainDirectory() + "experience.yml");
-    //private static File TREASURE_FILE = new File(mcMMO.getMainDirectory() + "treasures.yml");
-    private static File ADVANCED_FILE = new File(mcMMO.getMainDirectory() + "advanced.yml");
-    private static File REPAIR_FILE = new File(mcMMO.getMainDirectory() + "repair.vanilla.yml");*/
+    private final mcMMO pluginRef;
 
-    public static void mcMMOBackup() throws IOException {
-        if (mcMMO.getMySQLConfigSettings().isMySQLEnabled()) {
-            mcMMO.p.debug("This server is running in SQL Mode.");
-            mcMMO.p.debug("Only config files will be backed up.");
+    private String BACKUP_DIRECTORY;
+    private File BACKUP_DIR;
+    private File FLAT_FILE_DIRECTORY;
+    private File MOD_FILE_DIRECTORY;
+
+    public ZipLibrary(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+
+        BACKUP_DIRECTORY = pluginRef.getMainDirectory() + "backup" + File.separator;
+        BACKUP_DIR = new File(BACKUP_DIRECTORY);
+        FLAT_FILE_DIRECTORY = new File(pluginRef.getFlatFileDirectory());
+        MOD_FILE_DIRECTORY = new File(pluginRef.getModDirectory());
+    }
+
+    public void mcMMOBackup() throws IOException {
+        if (pluginRef.getMySQLConfigSettings().isMySQLEnabled()) {
+            pluginRef.debug("This server is running in SQL Mode.");
+            pluginRef.debug("Only config files will be backed up.");
         }
 
         try {
             if (BACKUP_DIR.mkdir()) {
-                mcMMO.p.debug("Created Backup Directory.");
+                pluginRef.debug("Created Backup Directory.");
             }
         } catch (Exception e) {
-            mcMMO.p.getLogger().severe(e.toString());
+            pluginRef.getLogger().severe(e.toString());
         }
 
         // Generate the proper date for the backup filename
@@ -48,19 +54,19 @@ public class ZipLibrary {
         List<File> sources = new ArrayList<>();
 
         sources.add(FLAT_FILE_DIRECTORY);
-        sources.addAll(mcMMO.getConfigManager().getConfigFiles()); //Config File Backups
+        sources.addAll(pluginRef.getConfigManager().getConfigFiles()); //Config File Backups
 
         if (MOD_FILE_DIRECTORY.exists()) {
             sources.add(MOD_FILE_DIRECTORY);
         }
 
         // Actually do something
-        mcMMO.p.debug("Backing up your mcMMO Configuration... ");
+        pluginRef.debug("Backing up your mcMMO Configuration... ");
 
         packZip(fileZip, sources);
     }
 
-    private static void packZip(File output, List<File> sources) throws IOException {
+    private void packZip(File output, List<File> sources) throws IOException {
         ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(output));
         zipOut.setLevel(Deflater.DEFAULT_COMPRESSION);
 
@@ -74,10 +80,10 @@ public class ZipLibrary {
 
         zipOut.flush();
         zipOut.close();
-        mcMMO.p.debug("Backup Completed.");
+        pluginRef.debug("Backup Completed.");
     }
 
-    private static String buildPath(String path, String file) {
+    private String buildPath(String path, String file) {
         if (path == null || path.isEmpty()) {
             return file;
         }
@@ -85,9 +91,9 @@ public class ZipLibrary {
         return path + File.separator + file;
     }
 
-    private static void zipDir(ZipOutputStream zos, String path, File dir) throws IOException {
+    private void zipDir(ZipOutputStream zos, String path, File dir) throws IOException {
         if (!dir.canRead()) {
-            mcMMO.p.getLogger().severe("Cannot read " + dir.getCanonicalPath() + " (Maybe because of permissions?)");
+            pluginRef.getLogger().severe("Cannot read " + dir.getCanonicalPath() + " (Maybe because of permissions?)");
             return;
         }
 
@@ -103,9 +109,9 @@ public class ZipLibrary {
         }
     }
 
-    private static void zipFile(ZipOutputStream zos, String path, File file) throws IOException {
+    private void zipFile(ZipOutputStream zos, String path, File file) throws IOException {
         if (!file.canRead()) {
-            mcMMO.p.getLogger().severe("Cannot read " + file.getCanonicalPath() + "(File Permissions?)");
+            pluginRef.getLogger().severe("Cannot read " + file.getCanonicalPath() + "(File Permissions?)");
             return;
         }
 
