@@ -11,16 +11,13 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.datatypes.skills.behaviours.HerbalismBehaviour;
-import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.DelayedHerbalismXPCheckTask;
 import com.gmail.nossr50.runnables.skills.HerbalismBlockUpdaterTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
 import com.gmail.nossr50.util.skills.SkillActivationType;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -36,7 +33,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 public class HerbalismManager extends SkillManager {
 
@@ -556,35 +552,36 @@ public class HerbalismManager extends SkillManager {
      * @return true if the ability was successful, false otherwise
      */
     public boolean processHylianLuck(BlockState blockState) {
-        if (!pluginRef.getRandomChanceTools().isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.HERBALISM_HYLIAN_LUCK, getPlayer())) {
-            return false;
-        }
-
-        String friendly = StringUtils.getFriendlyConfigBlockDataString(blockState.getBlockData());
-        if (!HerbalismTreasureConfig.getInstance().hylianMap.containsKey(friendly))
-            return false;
-        List<HylianTreasure> treasures = HerbalismTreasureConfig.getInstance().hylianMap.get(friendly);
-
-        Player player = getPlayer();
-
-        if (treasures.isEmpty()) {
-            return false;
-        }
-        int skillLevel = getSkillLevel();
-        Location location = Misc.getBlockCenter(blockState);
-
-        for (HylianTreasure treasure : treasures) {
-            if (skillLevel >= treasure.getDropLevel()
-                    && pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(treasure.getDropChance(), getPlayer(), SubSkillType.HERBALISM_HYLIAN_LUCK))) {
-                if (!pluginRef.getEventManager().simulateBlockBreak(blockState.getBlock(), player, false)) {
-                    return false;
-                }
-                blockState.setType(Material.AIR);
-                Misc.dropItem(location, treasure.getDrop());
-                pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Herbalism.HylianLuck");
-                return true;
-            }
-        }
+//        if (!pluginRef.getRandomChanceTools().isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.HERBALISM_HYLIAN_LUCK, getPlayer())) {
+//            return false;
+//        }
+//
+//        String friendly = StringUtils.getFriendlyConfigBlockDataString(blockState.getBlockData());
+//        if (!HerbalismTreasureConfig.getInstance().hylianMap.containsKey(friendly))
+//            return false;
+//        List<HylianTreasure> treasures = HerbalismTreasureConfig.getInstance().hylianMap.get(friendly);
+//
+//        Player player = getPlayer();
+//
+//        if (treasures.isEmpty()) {
+//            return false;
+//        }
+//        int skillLevel = getSkillLevel();
+//        Location location = Misc.getBlockCenter(blockState);
+//
+//        for (HylianTreasure treasure : treasures) {
+//            if (skillLevel >= treasure.getDropLevel()
+//                    && pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(treasure.getDropChance(), getPlayer(), SubSkillType.HERBALISM_HYLIAN_LUCK))) {
+//                if (!pluginRef.getEventManager().simulateBlockBreak(blockState.getBlock(), player, false)) {
+//                    return false;
+//                }
+//                blockState.setType(Material.AIR);
+//                Misc.dropItem(location, treasure.getDrop());
+//                pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Herbalism.HylianLuck");
+//                return true;
+//            }
+//        }
+//        return false;
         return false;
     }
 

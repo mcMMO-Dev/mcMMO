@@ -5,17 +5,10 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.behaviours.ExcavationBehaviour;
-import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.Misc;
-import org.bukkit.Location;
 import org.bukkit.block.BlockState;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
-
-import java.util.List;
 
 public class ExcavationManager extends SkillManager {
 
@@ -34,29 +27,29 @@ public class ExcavationManager extends SkillManager {
     public void excavationBlockCheck(BlockState blockState) {
         int xp = excavationBehaviour.getBlockXP(blockState);
 
-        if (pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
-            List<ExcavationTreasure> treasures = excavationBehaviour.getTreasures(blockState);
-
-            if (!treasures.isEmpty()) {
-                int skillLevel = getSkillLevel();
-                Location location = Misc.getBlockCenter(blockState);
-
-                for (ExcavationTreasure treasure : treasures) {
-                    if (skillLevel >= treasure.getDropLevel()
-                            && pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(getPlayer(), PrimarySkillType.EXCAVATION, treasure.getDropChance())) {
-
-                        //Spawn Vanilla XP orbs if a dice roll succeeds
-                        if(pluginRef.getRandomChanceTools().rollDice(getArchaelogyExperienceOrbChance(), 100)) {
-                            ExperienceOrb experienceOrb = (ExperienceOrb) getPlayer().getWorld().spawnEntity(location, EntityType.EXPERIENCE_ORB);
-                            experienceOrb.setExperience(getExperienceOrbsReward());
-                        }
-
-                        xp += treasure.getXp();
-                        Misc.dropItem(location, treasure.getDrop());
-                    }
-                }
-            }
-        }
+//        if (pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
+//            List<ExcavationTreasure> treasures = excavationBehaviour.getTreasures(blockState);
+//
+//            if (!treasures.isEmpty()) {
+//                int skillLevel = getSkillLevel();
+//                Location location = Misc.getBlockCenter(blockState);
+//
+//                for (ExcavationTreasure treasure : treasures) {
+//                    if (skillLevel >= treasure.getDropLevel()
+//                            && pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(getPlayer(), PrimarySkillType.EXCAVATION, treasure.getDropChance())) {
+//
+//                        //Spawn Vanilla XP orbs if a dice roll succeeds
+//                        if(pluginRef.getRandomChanceTools().rollDice(getArchaelogyExperienceOrbChance(), 100)) {
+//                            ExperienceOrb experienceOrb = (ExperienceOrb) getPlayer().getWorld().spawnEntity(location, EntityType.EXPERIENCE_ORB);
+//                            experienceOrb.setExperience(getExperienceOrbsReward());
+//                        }
+//
+//                        xp += treasure.getXp();
+//                        Misc.dropItem(location, treasure.getDrop());
+//                    }
+//                }
+//            }
+//        }
 
         applyXpGain(xp, XPGainReason.PVE);
     }
@@ -75,21 +68,21 @@ public class ExcavationManager extends SkillManager {
 
     public void printExcavationDebug(Player player, BlockState blockState)
     {
-        if (pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
-            List<ExcavationTreasure> treasures = excavationBehaviour.getTreasures(blockState);
-
-            if (!treasures.isEmpty()) {
-                for (ExcavationTreasure treasure : treasures) {
-                    player.sendMessage("|||||||||||||||||||||||||||||||||");
-                    player.sendMessage("[mcMMO DEBUG] Treasure found: (" + treasure.getDrop().getType().toString() + ")");
-                    player.sendMessage("[mcMMO DEBUG] Drop Chance for Treasure: " + treasure.getDropChance());
-                    player.sendMessage("[mcMMO DEBUG] Skill Level Required: " + treasure.getDropLevel());
-                    player.sendMessage("[mcMMO DEBUG] XP for Treasure: " + treasure.getXp());
-                }
-            } else {
-                player.sendMessage("[mcMMO DEBUG] No treasures found for this block.");
-            }
-        }
+//        if (pluginRef.getPermissionTools().isSubSkillEnabled(getPlayer(), SubSkillType.EXCAVATION_ARCHAEOLOGY)) {
+//            List<ExcavationTreasure> treasures = excavationBehaviour.getTreasures(blockState);
+//
+//            if (!treasures.isEmpty()) {
+//                for (ExcavationTreasure treasure : treasures) {
+//                    player.sendMessage("|||||||||||||||||||||||||||||||||");
+//                    player.sendMessage("[mcMMO DEBUG] Treasure found: (" + treasure.getDrop().getType().toString() + ")");
+//                    player.sendMessage("[mcMMO DEBUG] Drop Chance for Treasure: " + treasure.getDropChance());
+//                    player.sendMessage("[mcMMO DEBUG] Skill Level Required: " + treasure.getDropLevel());
+//                    player.sendMessage("[mcMMO DEBUG] XP for Treasure: " + treasure.getXp());
+//                }
+//            } else {
+//                player.sendMessage("[mcMMO DEBUG] No treasures found for this block.");
+//            }
+//        }
     }
 
     /**

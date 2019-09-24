@@ -270,17 +270,17 @@ public class TextComponentFactory {
 
     private TextComponent getSubSkillTextComponent(Player player, SubSkillType subSkillType) {
         //Get skill name
-        String skillName = subSkillType.getLocaleName();
+        String subSkillTypeLocaleName = subSkillType.getLocaleName(pluginRef);
 
         boolean skillUnlocked = pluginRef.getRankTools().hasUnlockedSubskill(player, subSkillType);
 
-        TextComponent textComponent = initNewSkillTextComponent(player, skillName, subSkillType, skillUnlocked);
+        TextComponent textComponent = initNewSkillTextComponent(player, subSkillTypeLocaleName, subSkillType, skillUnlocked);
 
         //Hover Event
         addNewHoverComponentToTextComponent(textComponent, getSubSkillHoverComponent(player, subSkillType));
 
         //Insertion
-        textComponent.setInsertion(skillName);
+        textComponent.setInsertion(subSkillTypeLocaleName);
 
         return textComponent;
     }
@@ -450,7 +450,7 @@ public class TextComponentFactory {
 
     @Deprecated
     private BaseComponent[] getSubSkillHoverEventJSON(SubSkillType subSkillType, Player player) {
-        String skillName = subSkillType.getLocaleName();
+        String skillName = subSkillType.getLocaleName(pluginRef);
 
         /*
          * Hover Event BaseComponent color table
@@ -492,7 +492,7 @@ public class TextComponentFactory {
             componentBuilder.append(pluginRef.getLocaleManager().getString("JSON.DescriptionHeader"));
             componentBuilder.color(ccDescriptionHeader);
             componentBuilder.append("\n");
-            componentBuilder.append(subSkillType.getLocaleDescription());
+            componentBuilder.append(subSkillType.getLocaleDescription(pluginRef));
             componentBuilder.color(ccDescription);
         }
 
@@ -516,7 +516,7 @@ public class TextComponentFactory {
 
     public void getSubSkillTextComponents(Player player, List<TextComponent> textComponents, PrimarySkillType parentSkill) {
         for (SubSkillType subSkillType : SubSkillType.values()) {
-            if (subSkillType.getParentSkill() == parentSkill) {
+            if (pluginRef.getSkillTools().getPrimarySkillBySubSkill(subSkillType) == parentSkill) {
                 if (pluginRef.getPermissionTools().isSubSkillEnabled(player, subSkillType)) {
                     if (!InteractionManager.hasSubSkill(subSkillType))
                         textComponents.add(pluginRef.getTextComponentFactory().getSubSkillTextComponent(player, subSkillType));
@@ -535,11 +535,9 @@ public class TextComponentFactory {
 
     public TextComponent getSubSkillUnlockedNotificationComponents(Player player, SubSkillType subSkillType) {
         TextComponent unlockMessage = new TextComponent("");
-        unlockMessage.setText(pluginRef.getLocaleManager().getString("JSON.SkillUnlockMessage", subSkillType.getLocaleName(), pluginRef.getRankTools().getRank(player, subSkillType)));
+        unlockMessage.setText(pluginRef.getLocaleManager().getString("JSON.SkillUnlockMessage", subSkillType.getLocaleName(pluginRef), pluginRef.getRankTools().getRank(player, subSkillType)));
         unlockMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, getSubSkillHoverComponent(player, subSkillType)));
-        unlockMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + subSkillType.getParentSkill().toString().toLowerCase()));
+        unlockMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + pluginRef.getSkillTools().getPrimarySkillBySubSkill(subSkillType).toString().toLowerCase()));
         return unlockMessage;
     }
 }
-
-

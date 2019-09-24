@@ -154,42 +154,42 @@ public final class ConfigManager {
     }
 
     private void initSerializedDataFiles() {
-        partyData = new SerializedConfigLoader<>(ConfigPartyData.class, "partydata.conf", "PartyData", null);
+        partyData = new SerializedConfigLoader<>(pluginRef, ConfigPartyData.class, "partydata.conf", "PartyData", null);
     }
 
     private void initSerializedConfigs() {
         //There's some race conditions here because mcMMO is goddamn spaghetti mess, language has to load first
-        configLanguage = new SerializedConfigLoader<>(ConfigLanguage.class, "language.conf", "Language", null);
+        configLanguage = new SerializedConfigLoader<>(pluginRef, ConfigLanguage.class, "language.conf", "Language", null);
 
         /*
          * No more race conditions
          */
 
-        configDatabase = new SerializedConfigLoader<>(ConfigDatabase.class, "database_settings.conf", "Database", null);
-        configScoreboard = new SerializedConfigLoader<>(ConfigScoreboard.class, "scoreboard.conf", "Scoreboard", null);
-        configLeveling = new SerializedConfigLoader<>(ConfigLeveling.class, "player_leveling.conf", "Player-Leveling", null);
-        configWorldBlacklist = new SerializedConfigLoader<>(ConfigWorldBlacklist.class, "world_blacklist.conf", "World-Blacklist", null);
-        configExploitPrevention = new SerializedConfigLoader<>(ConfigExploitPrevention.class, "anti_exploit.conf", "Anti-Exploit", null);
-        configMOTD = new SerializedConfigLoader<>(ConfigMOTD.class, "message_of_the_day.conf", "MOTD", null);
-        configHardcore = new SerializedConfigLoader<>(ConfigHardcore.class, "hardcore_mode.conf", "Hardcore-Mode", null);
-        configMetrics = new SerializedConfigLoader<>(ConfigMetrics.class, "analytics_reporting.conf", "Analytic-Reporting", null);
-        configAuthorAdvertisements = new SerializedConfigLoader<>(ConfigAuthorAdvertisements.class, "author_support_advertisements.conf", "mcMMO", null);
-        configAutomatedBackups = new SerializedConfigLoader<>(ConfigAutomatedBackups.class, "automated_backups.conf", "Automated-Backups", null);
-        configCommands = new SerializedConfigLoader<>(ConfigCommands.class, "commands.conf", "Commands", null);
-        configItems = new SerializedConfigLoader<>(ConfigItems.class, "custom_items.conf", "Items", null);
-        configParticles = new SerializedConfigLoader<>(ConfigParticles.class, "particle_spawning.conf", "Particles", null);
-        configParty = new SerializedConfigLoader<>(ConfigParty.class, "party.conf", "Party", null);
-        configNotifications = new SerializedConfigLoader<>(ConfigNotifications.class, "alerts_and_notifications.conf", "Notifications", null);
-        configSuperAbilities = new SerializedConfigLoader<>(ConfigSuperAbilities.class, "skill_super_abilities.conf", "Super-Abilities", null);
-        configAdmin = new SerializedConfigLoader<>(ConfigAdmin.class, "admin.conf", "Admin", null);
-        configMobs = new SerializedConfigLoader<>(ConfigMobs.class, "creatures.conf", "Creatures", null);
-        configExperience = new SerializedConfigLoader<>(ConfigExperience.class, "experience.conf", "Experience", null);
-        configCoreSkills = new SerializedConfigLoader<>(ConfigCoreSkills.class, "core_skills.conf", "Core-Skills", null);
-        configEvent = new SerializedConfigLoader<>(ConfigEvent.class, "events.conf", "Events", null);
-        configRanks = new SerializedConfigLoader<>(ConfigRanks.class, "ranks.conf", "Skill-Ranks", null);
-        configSound = new SerializedConfigLoader<>(ConfigSound.class, "sounds.conf", "Sounds", null);
+        configDatabase = new SerializedConfigLoader<>(pluginRef, ConfigDatabase.class, "database_settings.conf", "Database", null);
+        configScoreboard = new SerializedConfigLoader<>(pluginRef, ConfigScoreboard.class, "scoreboard.conf", "Scoreboard", null);
+        configLeveling = new SerializedConfigLoader<>(pluginRef, ConfigLeveling.class, "player_leveling.conf", "Player-Leveling", null);
+        configWorldBlacklist = new SerializedConfigLoader<>(pluginRef, ConfigWorldBlacklist.class, "world_blacklist.conf", "World-Blacklist", null);
+        configExploitPrevention = new SerializedConfigLoader<>(pluginRef, ConfigExploitPrevention.class, "anti_exploit.conf", "Anti-Exploit", null);
+        configMOTD = new SerializedConfigLoader<>(pluginRef, ConfigMOTD.class, "message_of_the_day.conf", "MOTD", null);
+        configHardcore = new SerializedConfigLoader<>(pluginRef, ConfigHardcore.class, "hardcore_mode.conf", "Hardcore-Mode", null);
+        configMetrics = new SerializedConfigLoader<>(pluginRef, ConfigMetrics.class, "analytics_reporting.conf", "Analytic-Reporting", null);
+        configAuthorAdvertisements = new SerializedConfigLoader<>(pluginRef, ConfigAuthorAdvertisements.class, "author_support_advertisements.conf", "mcMMO", null);
+        configAutomatedBackups = new SerializedConfigLoader<>(pluginRef, ConfigAutomatedBackups.class, "automated_backups.conf", "Automated-Backups", null);
+        configCommands = new SerializedConfigLoader<>(pluginRef, ConfigCommands.class, "commands.conf", "Commands", null);
+        configItems = new SerializedConfigLoader<>(pluginRef, ConfigItems.class, "custom_items.conf", "Items", null);
+        configParticles = new SerializedConfigLoader<>(pluginRef, ConfigParticles.class, "particle_spawning.conf", "Particles", null);
+        configParty = new SerializedConfigLoader<>(pluginRef, ConfigParty.class, "party.conf", "Party", null);
+        configNotifications = new SerializedConfigLoader<>(pluginRef, ConfigNotifications.class, "alerts_and_notifications.conf", "Notifications", null);
+        configSuperAbilities = new SerializedConfigLoader<>(pluginRef, ConfigSuperAbilities.class, "skill_super_abilities.conf", "Super-Abilities", null);
+        configAdmin = new SerializedConfigLoader<>(pluginRef, ConfigAdmin.class, "admin.conf", "Admin", null);
+        configMobs = new SerializedConfigLoader<>(pluginRef, ConfigMobs.class, "creatures.conf", "Creatures", null);
+        configExperience = new SerializedConfigLoader<>(pluginRef, ConfigExperience.class, "experience.conf", "Experience", null);
+        configCoreSkills = new SerializedConfigLoader<>(pluginRef, ConfigCoreSkills.class, "core_skills.conf", "Core-Skills", null);
+        configEvent = new SerializedConfigLoader<>(pluginRef, ConfigEvent.class, "events.conf", "Events", null);
+        configRanks = new SerializedConfigLoader<>(pluginRef, ConfigRanks.class, "ranks.conf", "Skill-Ranks", null);
+        configSound = new SerializedConfigLoader<>(pluginRef, ConfigSound.class, "sounds.conf", "Sounds", null);
 
-        configDefaultExamples = new SerializedConfigLoader<>(ConfigNameRegisterDefaults.class, "minecraft_item_block_name_examples.conf", "Minecraft", null);
+        configDefaultExamples = new SerializedConfigLoader<>(pluginRef, ConfigNameRegisterDefaults.class, "minecraft_item_block_name_examples.conf", "Minecraft", null);
         initSerializedSkillConfigs();
     }
 
