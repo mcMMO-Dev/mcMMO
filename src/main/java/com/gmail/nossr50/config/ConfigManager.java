@@ -288,7 +288,7 @@ public final class ConfigManager {
     }
 
     private void registerSkillConfig(PrimarySkillType primarySkillType, Class clazz) {
-        skillConfigLoaders.put(primarySkillType, SkillConfigFactory.initSkillConfig(primarySkillType, clazz));
+        skillConfigLoaders.put(primarySkillType, SkillConfigFactory.initSkillConfig(pluginRef, primarySkillType, clazz));
     }
 
     /**

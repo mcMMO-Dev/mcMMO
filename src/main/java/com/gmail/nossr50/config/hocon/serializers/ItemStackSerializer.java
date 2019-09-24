@@ -24,7 +24,7 @@ public class ItemStackSerializer implements TypeSerializer<MMOItem<?>> {
         Material itemMatch = Material.matchMaterial(itemIdentifier);
 
         if(itemMatch == null) {
-            pluginRef.getLogger().info("Could not find a match for "+itemIdentifier);
+            System.out.println("[mcMMO Deserializer Debug] Could not find a match for "+itemIdentifier);
             return null;
         }
 

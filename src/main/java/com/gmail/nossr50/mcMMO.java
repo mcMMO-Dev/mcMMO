@@ -166,7 +166,7 @@ public class mcMMO extends JavaPlugin {
             databaseManager = getDatabaseManagerFactory().getDatabaseManager();
 
             //Check for the newer API and tell them what to do if its missing
-            CompatibilityCheck.checkForOutdatedAPI(serverAPIOutdated, getServerSoftwareStr());
+            CompatibilityCheck.checkForOutdatedAPI(this, serverAPIOutdated, getServerSoftwareStr());
 
             if (serverAPIOutdated) {
                 Bukkit

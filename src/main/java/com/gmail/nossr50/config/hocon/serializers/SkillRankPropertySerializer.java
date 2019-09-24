@@ -30,7 +30,7 @@ public class SkillRankPropertySerializer implements TypeSerializer<SkillRankProp
             retroHashMap = new HashMap<>(retroMap);
 
         } catch (ObjectMappingException e) {
-            pluginRef.getLogger().severe("Unable to deserialize rank property information from the config, make sure the ranks are correctly set in the config. You can delete the rank config to generate a new one if problems persist.");
+            System.out.println("[mcMMO Deserializer Debug] Unable to deserialize rank property information from the config, make sure the ranks are correctly set in the config. You can delete the rank config to generate a new one if problems persist.");
             throw e;
         }
 

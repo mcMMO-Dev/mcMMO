@@ -1,12 +1,14 @@
 package com.gmail.nossr50.util;
 
+import com.gmail.nossr50.mcMMO;
+
 import java.lang.reflect.Method;
 
 public class CompatibilityCheck {
     /**
      * Uses reflection to check for incompatible server software
      */
-    public static void checkForOutdatedAPI(boolean serverAPIOutdated, String software) {
+    public static void checkForOutdatedAPI(mcMMO pluginRef, boolean serverAPIOutdated, String software) {
         try {
             Class<?> checkForClass = Class.forName("org.bukkit.event.block.BlockDropItemEvent");
             Method newerAPIMethod = checkForClass.getMethod("getItems");
