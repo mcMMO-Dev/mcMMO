@@ -33,7 +33,6 @@ import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.experience.ExperienceBarManager;
 import com.gmail.nossr50.util.skills.PerksUtils;
-import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.apache.commons.lang.Validate;
 import org.bukkit.GameMode;
@@ -683,7 +682,7 @@ public class McMMOPlayer {
             return;
         }
 
-        SoundManager.sendSound(player, player.getLocation(), SoundType.LEVEL_UP);
+        pluginRef.getSoundManager().sendSound(player, player.getLocation(), SoundType.LEVEL_UP);
 
         /*
          * Check to see if the player unlocked any new skills
@@ -924,7 +923,7 @@ public class McMMOPlayer {
              */
             if (primarySkillType == PrimarySkillType.WOODCUTTING || primarySkillType == PrimarySkillType.AXES) {
                 pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf(timeRemaining));
-                //SoundManager.sendSound(player, player.getLocation(), SoundType.TIRED);
+                //pluginRef.getSoundManager().sendSound(player, player.getLocation(), SoundType.TIRED);
             }
 
             return;
@@ -942,7 +941,7 @@ public class McMMOPlayer {
                 pluginRef.getSkillTools().getSuperAbilityOtherPlayerActivationStr(superAbility));
 
         //Sounds
-        SoundManager.worldSendSound(player.getWorld(), player.getLocation(), SoundType.ABILITY_ACTIVATED_GENERIC);
+        pluginRef.getSoundManager().worldSendSound(player.getWorld(), player.getLocation(), SoundType.ABILITY_ACTIVATED_GENERIC);
 
         int abilityLength = pluginRef.getSkillTools().calculateAbilityLengthPerks(this, primarySkillType, superAbility);
 
@@ -998,7 +997,7 @@ public class McMMOPlayer {
 
             if (pluginRef.getConfigManager().getConfigNotifications().isSuperAbilityToolMessage()) {
                 pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.TOOL, tool.getRaiseTool());
-                SoundManager.sendSound(player, player.getLocation(), SoundType.TOOL_READY);
+                pluginRef.getSoundManager().sendSound(player, player.getLocation(), SoundType.TOOL_READY);
             }
 
             setToolPreparationMode(tool, true);

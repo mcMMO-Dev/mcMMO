@@ -9,7 +9,6 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
 import com.gmail.nossr50.util.skills.SkillActivationType;
-import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -41,7 +40,7 @@ public class RepairManager extends SkillManager {
         }
 
         if (pluginRef.getConfigManager().getConfigRepair().getRepairGeneral().isAnvilPlacedSounds()) {
-            SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
+            pluginRef.getSoundManager().sendSound(player, player.getLocation(), SoundType.ANVIL);
         }
 
         togglePlacedAnvil();
@@ -160,8 +159,8 @@ public class RepairManager extends SkillManager {
 //
 //        // BWONG BWONG BWONG
 //        if (mcMMO.getConfigManager().getConfigRepair().getRepairGeneral().isAnvilUseSounds()) {
-//            SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
-//            SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_BREAK);
+//            pluginRef.getSoundManager().sendSound(player, player.getLocation(), SoundType.ANVIL);
+//            pluginRef.getSoundManager().sendSound(player, player.getLocation(), SoundType.ITEM_BREAK);
 //        }
 //
 //        // Repair the item!

@@ -13,7 +13,6 @@ import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
-import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -456,7 +455,7 @@ public class BlockListener implements Listener {
          *
          * We don't need to check permissions here because they've already been checked for the ability to even activate.
          */
-        SoundManager.sendSound(player, blockState.getLocation(), SoundType.FIZZ);
+        pluginRef.getSoundManager().sendSound(player, blockState.getLocation(), SoundType.FIZZ);
     }
 
     private Player getPlayerFromFurnace(Block furnaceBlock) {
@@ -520,7 +519,7 @@ public class BlockListener implements Listener {
             if (pluginRef.getSkillTools().superAbilityBlockCheck(SuperAbilityType.BERSERK, block.getState())
                     && pluginRef.getEventManager().simulateBlockBreak(block, player, true)) {
                 event.setInstaBreak(true);
-                SoundManager.sendSound(player, block.getLocation(), SoundType.POP);
+                pluginRef.getSoundManager().sendSound(player, block.getLocation(), SoundType.POP);
             } else if (mcMMOPlayer.getUnarmedManager().canUseBlockCracker() && pluginRef.getBlockTools().affectedByBlockCracker(blockState) && pluginRef.getEventManager().simulateBlockBreak(block, player, true)) {
                 if (mcMMOPlayer.getUnarmedManager().blockCrackerCheck(blockState)) {
                     blockState.update();
@@ -528,7 +527,7 @@ public class BlockListener implements Listener {
             }
         } else if (mcMMOPlayer.getWoodcuttingManager().canUseLeafBlower(heldItem) && pluginRef.getBlockTools().isLeaves(blockState) && pluginRef.getEventManager().simulateBlockBreak(block, player, true)) {
             event.setInstaBreak(true);
-            SoundManager.sendSound(player, block.getLocation(), SoundType.POP);
+            pluginRef.getSoundManager().sendSound(player, block.getLocation(), SoundType.POP);
         }
     }
 

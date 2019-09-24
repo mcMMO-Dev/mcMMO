@@ -11,7 +11,6 @@ import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
-import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -48,7 +47,7 @@ public class SalvageManager extends SkillManager {
         }
 
         if (pluginRef.getConfigManager().getConfigSalvage().getGeneral().isAnvilPlacedSounds()) {
-            SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
+            pluginRef.getSoundManager().sendSound(player, player.getLocation(), SoundType.ANVIL);
         }
 
         togglePlacedAnvil();
@@ -154,7 +153,7 @@ public class SalvageManager extends SkillManager {
 
         // BWONG BWONG BWONG - CLUNK!
         if (pluginRef.getConfigManager().getConfigSalvage().getGeneral().isAnvilUseSounds()) {
-            SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_BREAK);
+            pluginRef.getSoundManager().sendSound(player, player.getLocation(), SoundType.ITEM_BREAK);
         }
 
         pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Salvage.Skills.Success");

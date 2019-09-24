@@ -10,7 +10,6 @@ import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.items.TeleportationWarmup;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -887,7 +886,7 @@ public final class PartyManager {
         for (Player member : party.getOnlineMembers()) {
             member.sendMessage(pluginRef.getLocaleManager().getString("Party.LevelUp", levelsGained, level));
 
-            SoundManager.sendSound(member, member.getLocation(), SoundType.LEVEL_UP);
+            pluginRef.getSoundManager().sendSound(member, member.getLocation(), SoundType.LEVEL_UP);
         }
     }
 

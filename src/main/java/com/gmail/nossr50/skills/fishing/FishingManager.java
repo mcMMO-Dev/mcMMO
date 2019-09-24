@@ -8,7 +8,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.behaviours.FishingBehaviour;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -69,7 +68,7 @@ public class FishingManager extends SkillManager {
             if (lastWarnedExhaust + (1000) < currentTime) {
                 getPlayer().sendMessage(pluginRef.getLocaleManager().getString("Fishing.Exhausting"));
                 lastWarnedExhaust = currentTime;
-                SoundManager.sendSound(getPlayer(), getPlayer().getLocation(), SoundType.TIRED);
+                pluginRef.getSoundManager().sendSound(getPlayer(), getPlayer().getLocation(), SoundType.TIRED);
             }
         }
 

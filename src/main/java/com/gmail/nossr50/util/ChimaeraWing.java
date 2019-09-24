@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.items.ChimaeraWingWarmup;
-import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -121,7 +120,7 @@ public final class ChimaeraWing {
         mcMMOPlayer.setTeleportCommenceLocation(null);
 
         if (pluginRef.getConfigManager().getConfigItems().isChimaeraWingSoundEnabled()) {
-            SoundManager.sendSound(player, location, SoundType.CHIMAERA_WING);
+            pluginRef.getSoundManager().sendSound(player, location, SoundType.CHIMAERA_WING);
         }
 
         pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.ITEM_MESSAGE, "Item.ChimaeraWing.Pass");

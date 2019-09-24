@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.skills.BleedContainer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
-import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -162,7 +161,7 @@ public class BleedTimerTask extends BukkitRunnable {
 
             if (victimHealthAftermath <= 0 || victimHealth != victimHealthAftermath) {
                 //Play Bleed Sound
-                SoundManager.worldSendSound(target.getWorld(), target.getLocation(), SoundType.BLEED);
+                pluginRef.getSoundManager().worldSendSound(target.getWorld(), target.getLocation(), SoundType.BLEED);
 
                 ParticleEffectUtils.playBleedEffect(target);
             }

@@ -43,6 +43,7 @@ import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.CombatTools;
 import com.gmail.nossr50.util.skills.RankTools;
 import com.gmail.nossr50.util.skills.SkillTools;
+import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import net.shatteredlands.shatt.backup.ZipLibrary;
@@ -84,6 +85,7 @@ public class mcMMO extends JavaPlugin {
     private EventManager eventManager;
     private UserManager userManager;
     private ScoreboardManager scoreboardManager;
+    private SoundManager soundManager;
 
     /* Not-Managers but my naming scheme sucks */
     private DatabaseManagerFactory databaseManagerFactory;
@@ -284,6 +286,9 @@ public class mcMMO extends JavaPlugin {
 
         //Init MOTD Utils
         messageOfTheDayUtils = new MessageOfTheDayUtils(this);
+
+        //Init Sound Manager
+        soundManager = new SoundManager(this);
     }
 
     @Override
@@ -821,5 +826,11 @@ public class mcMMO extends JavaPlugin {
         return messageOfTheDayUtils;
     }
 
+    public SoundManager getSoundManager() {
+        return soundManager;
+    }
 
+    public ChunkManagerFactory getChunkManagerFactory() {
+        return chunkManagerFactory;
+    }
 }

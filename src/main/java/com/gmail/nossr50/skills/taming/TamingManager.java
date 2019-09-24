@@ -16,7 +16,6 @@ import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
-import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
@@ -294,7 +293,7 @@ public class TamingManager extends SkillManager {
                     }
 
                     //Send Sound
-                    SoundManager.sendSound(player, player.getLocation(), SoundType.ABILITY_ACTIVATED_GENERIC);
+                    pluginRef.getSoundManager().sendSound(player, player.getLocation(), SoundType.ABILITY_ACTIVATED_GENERIC);
 
                     amountSummoned++;
                 }

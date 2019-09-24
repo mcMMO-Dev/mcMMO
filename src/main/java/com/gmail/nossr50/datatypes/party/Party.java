@@ -5,7 +5,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -257,7 +256,7 @@ public class Party {
             if (leader != null) {
                 leader.sendMessage(pluginRef.getLocaleManager().getString("Party.LevelUp", levelsGained, getLevel()));
 
-                SoundManager.sendSound(leader, leader.getLocation(), SoundType.LEVEL_UP);
+                pluginRef.getSoundManager().sendSound(leader, leader.getLocation(), SoundType.LEVEL_UP);
             }
             return;
         }

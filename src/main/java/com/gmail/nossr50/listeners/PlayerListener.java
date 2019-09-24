@@ -19,7 +19,6 @@ import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.HardcoreManager;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -455,7 +454,7 @@ public class PlayerListener implements Listener {
             if (!drop.hasMetadata(MetadataConstants.DROPPED_ITEM_TRACKING_METAKEY) && mcMMOPlayer.inParty() && pluginRef.getItemTools().isSharable(dropStack)) {
                 event.setCancelled(mcMMOPlayer.getParty().getShareHandler().handleItemShare(drop, mcMMOPlayer));
 
-                SoundManager.sendSound(player, player.getLocation(), SoundType.POP);
+                pluginRef.getSoundManager().sendSound(player, player.getLocation(), SoundType.POP);
             }
 
             /*if (player.getInventory().getItemInMainHand().getType() == Material.AIR) {

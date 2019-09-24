@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util.sounds;
 
 import com.gmail.nossr50.config.hocon.sound.SoundSetting;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -9,29 +10,36 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 public class SoundManager {
+
+    private final mcMMO pluginRef;
+
+    public SoundManager(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
+
     /**
      * Sends a sound to the player
      *
      * @param soundType the type of sound
      */
-    public static void sendSound(Player player, Location location, SoundType soundType) {
+    public void sendSound(Player player, Location location, SoundType soundType) {
         if (pluginRef.getConfigManager().getConfigSound().isSoundEnabled(soundType))
             player.playSound(location, getSound(soundType), SoundCategory.MASTER, getVolume(soundType), getPitch(soundType));
     }
 
-    public static void sendCategorizedSound(Player player, Location location, SoundType soundType, SoundCategory soundCategory) {
+    public void sendCategorizedSound(Player player, Location location, SoundType soundType, SoundCategory soundCategory) {
         if (pluginRef.getConfigManager().getConfigSound().isSoundEnabled(soundType))
             player.playSound(location, getSound(soundType), soundCategory, getVolume(soundType), getPitch(soundType));
     }
 
-    public static void sendCategorizedSound(Player player, Location location, SoundType soundType, SoundCategory soundCategory, float pitchModifier) {
+    public void sendCategorizedSound(Player player, Location location, SoundType soundType, SoundCategory soundCategory, float pitchModifier) {
         float totalPitch = Math.min(2.0F, (getPitch(soundType) + pitchModifier));
 
         if (pluginRef.getConfigManager().getConfigSound().isSoundEnabled(soundType))
             player.playSound(location, getSound(soundType), soundCategory, getVolume(soundType), totalPitch);
     }
 
-    public static void worldSendSound(World world, Location location, SoundType soundType) {
+    public void worldSendSound(World world, Location location, SoundType soundType) {
         if (pluginRef.getConfigManager().getConfigSound().isSoundEnabled(soundType))
             world.playSound(location, getSound(soundType), getVolume(soundType), getPitch(soundType));
     }
@@ -42,12 +50,12 @@ public class SoundManager {
      * @param soundType target soundtype
      * @return the volume for this soundtype
      */
-    private static float getVolume(SoundType soundType) {
+    private float getVolume(SoundType soundType) {
         SoundSetting soundSetting = pluginRef.getConfigManager().getConfigSound().getSoundSetting(soundType);
         return soundSetting.getVolume() * (float) pluginRef.getConfigManager().getConfigSound().getMasterVolume();
     }
 
-    private static float getPitch(SoundType soundType) {
+    private float getPitch(SoundType soundType) {
         if (soundType == SoundType.FIZZ)
             return getFizzPitch();
         else if (soundType == SoundType.POP)
@@ -58,7 +66,7 @@ public class SoundManager {
         }
     }
 
-    private static Sound getSound(SoundType soundType) {
+    private Sound getSound(SoundType soundType) {
         switch (soundType) {
             case ANVIL:
                 return Sound.BLOCK_ANVIL_PLACE;
@@ -91,11 +99,11 @@ public class SoundManager {
         }
     }
 
-    public static float getFizzPitch() {
+    public float getFizzPitch() {
         return 2.6F + (Misc.getRandom().nextFloat() - Misc.getRandom().nextFloat()) * 0.8F;
     }
 
-    public static float getPopPitch() {
+    public float getPopPitch() {
         return ((Misc.getRandom().nextFloat() - Misc.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F;
     }
 }
