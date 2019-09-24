@@ -87,6 +87,7 @@ public class mcMMO extends JavaPlugin {
 
     /* Not-Managers but my naming scheme sucks */
     private DatabaseManagerFactory databaseManagerFactory;
+    private ChunkManagerFactory chunkManagerFactory;
     private CommandTools commandTools;
     private SkillTools skillTools; //TODO: Remove once a new skill system is in place
     private BlockTools blockTools;
@@ -200,7 +201,9 @@ public class mcMMO extends JavaPlugin {
 
                 nbtManager = new NBTManager(this);
 
-                placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
+                //Init Chunk Manager Factory
+                chunkManagerFactory = new ChunkManagerFactory(this);
+                placeStore = chunkManagerFactory.getChunkManager(); // Get our ChunkletManager
 
                 if (getConfigManager().getConfigParty().getPTP().isPtpWorldBasedPermissions()) {
                     getPermissionTools().generateWorldTeleportPermissions();

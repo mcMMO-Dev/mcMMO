@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util.blockmeta.conversion;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.blockmeta.ChunkletStore;
 import com.gmail.nossr50.util.blockmeta.HashChunkletManager;
 import com.gmail.nossr50.util.blockmeta.PrimitiveChunkletStore;
@@ -22,8 +23,10 @@ public class BlockStoreConversionZDirectory implements Runnable {
     private PrimitiveChunkletStore primitiveChunklet = null;
     private PrimitiveExChunkletStore primitiveExChunklet = null;
     private PrimitiveChunkStore currentChunk;
+    private final mcMMO pluginRef;
 
-    public BlockStoreConversionZDirectory() {
+    public BlockStoreConversionZDirectory(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
         this.taskID = -1;
     }
 

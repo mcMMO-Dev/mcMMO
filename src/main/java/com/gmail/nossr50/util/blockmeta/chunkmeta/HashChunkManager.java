@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util.blockmeta.chunkmeta;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.blockmeta.conversion.BlockStoreConversionZDirectory;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -14,6 +15,11 @@ public class HashChunkManager implements ChunkManager {
     public ArrayList<BlockStoreConversionZDirectory> converters = new ArrayList<>();
     private HashMap<UUID, HashMap<Long, McMMOSimpleRegionFile>> regionFiles = new HashMap<>();
     private HashMap<UUID, Boolean> oldData = new HashMap<>();
+    private final mcMMO pluginRef;
+
+    public HashChunkManager(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
 
     @Override
     public synchronized void closeAll() {
@@ -438,7 +444,7 @@ public class HashChunkManager implements ChunkManager {
         }
 
         if (!conversionSet) {
-            BlockStoreConversionZDirectory converter = new BlockStoreConversionZDirectory();
+            BlockStoreConversionZDirectory converter = new BlockStoreConversionZDirectory(pluginRef);
             converter.start(world, cxDir, czDir);
             converters.add(converter);
         }

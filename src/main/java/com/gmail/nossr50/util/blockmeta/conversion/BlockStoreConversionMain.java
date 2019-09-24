@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util.blockmeta.conversion;
 
 import com.gmail.nossr50.core.ChunkConversionOptions;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.io.File;
@@ -12,8 +13,10 @@ public class BlockStoreConversionMain implements Runnable {
     BlockStoreConversionXDirectory[] converters;
     private int taskID;
     private org.bukkit.World world;
+    private final mcMMO pluginRef;
 
-    public BlockStoreConversionMain(org.bukkit.World world) {
+    public BlockStoreConversionMain(mcMMO pluginRef, org.bukkit.World world) {
+        this.pluginRef = pluginRef;
         this.taskID = -1;
         this.world = world;
         this.scheduler = pluginRef.getServer().getScheduler();
