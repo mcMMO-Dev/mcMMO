@@ -7,7 +7,7 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 public class ConfigCoreSkillsAcrobatics {
 
     private static final boolean ROLL_DEFAULT = true;
-    public static final boolean ACROBATICS_MASTER_DEFAULT = true;
+    private static final boolean ACROBATICS_MASTER_DEFAULT = true;
 
     @Setting(value = "Disable", comment = "Enable the primary skill Acrobatics")
     private boolean enableAcrobatics = ACROBATICS_MASTER_DEFAULT;

@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.skills.subskills.interfaces.Interaction;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.Rank;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.SubSkill;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.SubSkillProperties;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.entity.Player;
 
 public abstract class AbstractSubSkill implements SubSkill, Interaction, Rank, SubSkillProperties {
@@ -14,8 +15,10 @@ public abstract class AbstractSubSkill implements SubSkill, Interaction, Rank, S
     protected String configKeySubSkill;
     protected String configKeyPrimary;
     protected SubSkillType subSkillType;
+    protected final mcMMO pluginRef;
 
-    public AbstractSubSkill(String configKeySubSkill, String configKeyPrimary, SubSkillType subSkillType) {
+    public AbstractSubSkill(mcMMO pluginRef, String configKeySubSkill, String configKeyPrimary, SubSkillType subSkillType) {
+        this.pluginRef = pluginRef;
         this.configKeySubSkill = configKeySubSkill;
         this.configKeyPrimary = configKeyPrimary;
         this.subSkillType = subSkillType;

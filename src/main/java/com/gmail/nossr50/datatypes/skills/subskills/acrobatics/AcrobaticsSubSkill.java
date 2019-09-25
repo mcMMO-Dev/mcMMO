@@ -13,8 +13,8 @@ public abstract class AcrobaticsSubSkill extends AbstractSubSkill {
 
     protected EventPriority interactionPriority;
 
-    public AcrobaticsSubSkill(String configKeySub, EventPriority interactionPriority, SubSkillType subSkillType) {
-        super(configKeySub, "Acrobatics", subSkillType);
+    public AcrobaticsSubSkill(mcMMO pluginRef, String configKeySub, EventPriority interactionPriority, SubSkillType subSkillType) {
+        super(pluginRef, configKeySub, "Acrobatics", subSkillType);
 
         this.interactionPriority = interactionPriority;
     }
