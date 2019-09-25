@@ -927,7 +927,7 @@ public class McMMOPlayer {
             return;
         }
 
-        if (pluginRef.getEventManager().callPlayerAbilityActivateEvent(player, primarySkillType).isCancelled()) {
+        if (pluginRef.getEventManager().callPlayerAbilityActivateEvent(player, primarySkillType, superAbility).isCancelled()) {
             return;
         }
 

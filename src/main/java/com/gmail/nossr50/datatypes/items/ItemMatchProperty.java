@@ -1,6 +1,6 @@
 package com.gmail.nossr50.datatypes.items;
 
-import net.minecraft.server.v1_13_R2.NBTTagCompound;
+import net.minecraft.server.v1_14_R1.NBTTagCompound;
 
 import java.util.Objects;
 
