@@ -31,7 +31,6 @@ import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.experience.ExperienceBarManager;
-import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.apache.commons.lang.Validate;
 import org.bukkit.GameMode;
@@ -1012,7 +1011,7 @@ public class McMMOPlayer {
      */
     public int calculateTimeRemaining(SuperAbilityType superAbilityType) {
         long deactivatedTimestamp = profile.getAbilityDATS(superAbilityType) * pluginRef.getMiscTools().TIME_CONVERSION_FACTOR;
-        return (int) (((deactivatedTimestamp + (PerksUtils.handleCooldownPerks(player,
+        return (int) (((deactivatedTimestamp + (pluginRef.getPerkUtils().handleCooldownPerks(player,
                 pluginRef.getSkillTools().getSuperAbilityCooldown(superAbilityType)) * pluginRef.getMiscTools().TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / pluginRef.getMiscTools().TIME_CONVERSION_FACTOR);
     }
 

@@ -315,7 +315,7 @@ public class SkillTools {
      * @return the number of seconds remaining before the cooldown expires
      */
     public int calculateTimeLeft(long deactivatedTimeStamp, int cooldown, Player player) {
-        return (int) (((deactivatedTimeStamp + (PerksUtils.handleCooldownPerks(player, cooldown) * pluginRef.getMiscTools().TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / pluginRef.getMiscTools().TIME_CONVERSION_FACTOR);
+        return (int) (((deactivatedTimeStamp + (pluginRef.getPerkUtils().handleCooldownPerks(player, cooldown) * pluginRef.getMiscTools().TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / pluginRef.getMiscTools().TIME_CONVERSION_FACTOR);
     }
 
     /**
@@ -401,10 +401,10 @@ public class SkillTools {
 
             if(abilityLengthCap > 0)
             {
-                ticks = PerksUtils.calculateAbilityLength(player,  Math.min(abilityLengthCap, 2 + (mcMMOPlayer.getSkillLevel(skill) / abilityLengthVar)),
+                ticks = pluginRef.getPerkUtils().calculateAbilityLength(player,  Math.min(abilityLengthCap, 2 + (mcMMOPlayer.getSkillLevel(skill) / abilityLengthVar)),
                         skill.getSuperAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
             } else {
-                ticks = PerksUtils.calculateAbilityLength(player, 2 + ((mcMMOPlayer.getSkillLevel(skill)) / abilityLengthVar),
+                ticks = pluginRef.getPerkUtils().calculateAbilityLength(player, 2 + ((mcMMOPlayer.getSkillLevel(skill)) / abilityLengthVar),
                         skill.getSuperAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
             }
 

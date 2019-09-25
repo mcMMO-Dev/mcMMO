@@ -1,16 +1,19 @@
 package com.gmail.nossr50.util.skills;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.entity.Player;
 
-public final class PerksUtils {
-    private static final int LUCKY_SKILL_ACTIVATION_CHANCE = 75;
-    private static final int NORMAL_SKILL_ACTIVATION_CHANCE = 100;
+public final class PerkUtils {
+    private final int LUCKY_SKILL_ACTIVATION_CHANCE = 75;
+    private final int NORMAL_SKILL_ACTIVATION_CHANCE = 100;
+    private final mcMMO pluginRef;
 
-    private PerksUtils() {
+    public PerkUtils(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
     }
 
-    public static int handleCooldownPerks(Player player, int cooldown) {
+    public int handleCooldownPerks(Player player, int cooldown) {
         if (pluginRef.getPermissionTools().halvedCooldowns(player)) {
             cooldown *= 0.5;
         } else if (pluginRef.getPermissionTools().thirdedCooldowns(player)) {
@@ -29,7 +32,7 @@ public final class PerksUtils {
      * @param skill  PrimarySkillType to check the activation chance of
      * @return the activation chance with "lucky perk" accounted for
      */
-    public static int handleLuckyPerks(Player player, PrimarySkillType skill) {
+    public int handleLuckyPerks(Player player, PrimarySkillType skill) {
         if (pluginRef.getPermissionTools().lucky(player, skill)) {
             return LUCKY_SKILL_ACTIVATION_CHANCE;
         }

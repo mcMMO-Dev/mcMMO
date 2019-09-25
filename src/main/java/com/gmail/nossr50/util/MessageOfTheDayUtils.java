@@ -2,7 +2,6 @@ package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.skills.PerksUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 
@@ -88,7 +87,7 @@ public final class MessageOfTheDayUtils {
      */
     public void displayXpPerks(Player player) {
         for (PrimarySkillType skill : PrimarySkillType.values()) {
-//            if (PerksUtils.handleXpPerks(player, 1, skill) > 1) {
+//            if (pluginRef.getPerkUtils().handleXpPerks(player, 1, skill) > 1) {
 //                player.sendMessage(PERK_PREFIX + pluginRef.getLocaleManager().getString("Effects.Template", pluginRef.getLocaleManager().getString("Perks.XP.Name"), pluginRef.getLocaleManager().getString("Perks.XP.Desc")));
 //                return;
 //            }
@@ -101,7 +100,7 @@ public final class MessageOfTheDayUtils {
      * @param player Target player
      */
     public void displayCooldownPerks(Player player) {
-        double cooldownReduction = 1 - (PerksUtils.handleCooldownPerks(player, 12) / 12.0);
+        double cooldownReduction = 1 - (pluginRef.getPerkUtils().handleCooldownPerks(player, 12) / 12.0);
 
         if (cooldownReduction > 0.0) {
             DecimalFormat percent = new DecimalFormat("##0.00%");

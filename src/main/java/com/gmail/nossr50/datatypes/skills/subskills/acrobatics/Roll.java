@@ -7,7 +7,6 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
-import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.sounds.SoundType;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -221,7 +220,7 @@ public class Roll extends AcrobaticsSubSkill {
     }
 
     private int getActivationChance(McMMOPlayer mcMMOPlayer) {
-        return PerksUtils.handleLuckyPerks(mcMMOPlayer.getPlayer(), getPrimarySkill());
+        return pluginRef.getPerkUtils().handleLuckyPerks(mcMMOPlayer.getPlayer(), getPrimarySkill());
     }
 
     /**

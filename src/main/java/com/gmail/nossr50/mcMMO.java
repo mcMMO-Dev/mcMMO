@@ -41,6 +41,7 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceTools;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.CombatTools;
+import com.gmail.nossr50.util.skills.PerkUtils;
 import com.gmail.nossr50.util.skills.RankTools;
 import com.gmail.nossr50.util.skills.SkillTools;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -86,6 +87,7 @@ public class mcMMO extends JavaPlugin {
     private UserManager userManager;
     private ScoreboardManager scoreboardManager;
     private SoundManager soundManager;
+    private HardcoreManager hardcoreManager;
 
     /* Not-Managers but my naming scheme sucks */
     private DatabaseManagerFactory databaseManagerFactory;
@@ -105,7 +107,7 @@ public class mcMMO extends JavaPlugin {
     private MessageOfTheDayUtils messageOfTheDayUtils;
     private MiscTools miscTools;
     private ZipLibrary zipLibrary;
-    private HardcoreManager hardcoreManager;
+    private PerkUtils perkUtils;
 
     /* Never-Ending tasks */
     private BleedTimerTask bleedTimerTask;
@@ -297,6 +299,9 @@ public class mcMMO extends JavaPlugin {
 
         //Init HardcoreManager
         hardcoreManager = new HardcoreManager(this);
+
+        //Init PerkUtils
+        perkUtils = new PerkUtils(this);
     }
 
     @Override
@@ -848,5 +853,9 @@ public class mcMMO extends JavaPlugin {
 
     public HardcoreManager getHardcoreManager() {
         return hardcoreManager;
+    }
+
+    public PerkUtils getPerkUtils() {
+        return perkUtils;
     }
 }

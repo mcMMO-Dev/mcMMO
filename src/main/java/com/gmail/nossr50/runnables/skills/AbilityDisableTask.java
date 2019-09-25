@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.skills.PerksUtils;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -58,7 +57,7 @@ public class AbilityDisableTask extends BukkitRunnable {
         pluginRef.getSkillTools().sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS,
                 pluginRef.getSkillTools().getSuperAbilityOtherPlayerDeactivationStr(superAbilityType));
         new AbilityCooldownTask(pluginRef, mcMMOPlayer, superAbilityType).runTaskLater(pluginRef,
-                PerksUtils.handleCooldownPerks(player,
+                pluginRef.getPerkUtils().handleCooldownPerks(player,
                         pluginRef.getSkillTools().getSuperAbilityCooldown(superAbilityType) * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR));
     }
 
