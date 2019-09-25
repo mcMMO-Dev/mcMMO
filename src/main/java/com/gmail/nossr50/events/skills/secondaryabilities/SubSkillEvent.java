@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
 public class SubSkillEvent extends McMMOPlayerSkillEvent implements Cancellable {
-    private SubSkillType subSkillType;
+    private final SubSkillType subSkillType;
     private boolean cancelled = false;
 
     /**
@@ -26,6 +26,7 @@ public class SubSkillEvent extends McMMOPlayerSkillEvent implements Cancellable 
 
     public SubSkillEvent(Player player, AbstractSubSkill abstractSubSkill) {
         super(player, abstractSubSkill.getPrimarySkill());
+        this.subSkillType = abstractSubSkill.getSubSkillType();
     }
 
     /**

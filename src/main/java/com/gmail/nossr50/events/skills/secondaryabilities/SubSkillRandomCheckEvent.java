@@ -1,5 +1,6 @@
 package com.gmail.nossr50.events.skills.secondaryabilities;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import org.bukkit.entity.Player;
@@ -7,8 +8,9 @@ import org.bukkit.entity.Player;
 public class SubSkillRandomCheckEvent extends SubSkillEvent {
     private double chance;
 
-    public SubSkillRandomCheckEvent(Player player, SubSkillType ability, double chance) {
-        super(player, ability);
+    @Deprecated
+    public SubSkillRandomCheckEvent(Player player, SubSkillType subSkillType, double chance, PrimarySkillType primarySkillType) {
+        super(player, subSkillType, primarySkillType);
         this.chance = chance;
     }
 

@@ -230,7 +230,7 @@ public class RandomChanceTools {
     }
 
     public boolean sendSkillEvent(Player player, SubSkillType subSkillType, double activationChance) {
-        SubSkillRandomCheckEvent event = new SubSkillRandomCheckEvent(player, subSkillType, activationChance);
+        SubSkillRandomCheckEvent event = new SubSkillRandomCheckEvent(player, subSkillType, activationChance, pluginRef.getSkillTools().getPrimarySkillBySubSkill(subSkillType));
         return !event.isCancelled();
     }
 

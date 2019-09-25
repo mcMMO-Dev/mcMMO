@@ -68,7 +68,7 @@ public class PartyInfoCommand implements CommandExecutor {
         List<String> lockedPartyFeatures = new ArrayList<>();
 
         for (PartyFeature partyFeature : PartyFeature.values()) {
-            if (!partyFeature.hasPermission(player)) {
+            if (!partyFeature.hasPermission(pluginRef, player)) {
                 continue;
             }
 

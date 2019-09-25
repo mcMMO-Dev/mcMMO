@@ -246,7 +246,7 @@ public class ConfigLeveling {
             case SALVAGE:
                 return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getSalvage().getLevelCap();
             default:
-                pluginRef.getLogger().severe("No defined level cap for " + primarySkillType.toString() + " - Contact the mcMMO dev team!");
+                System.out.println(("[mcMMO Debug LevelingConfig] No defined level cap for " + primarySkillType.toString() + " - Contact the mcMMO dev team!"));
                 return Integer.MAX_VALUE;
         }
     }
@@ -284,7 +284,7 @@ public class ConfigLeveling {
             case SALVAGE:
                 return configSectionLevelCaps.getConfigSectionSkillLevelCaps().getSalvage().isLevelCapEnabled();
             default:
-                pluginRef.getLogger().severe("No defined level cap for " + primarySkillType.toString() + " - Contact the mcMMO dev team!");
+                System.out.println(("[mcMMO Debug LevelingConfig] No defined level cap for " + primarySkillType.toString() + " - Contact the mcMMO dev team!"));
                 return false;
         }
     }

@@ -1,6 +1,7 @@
 package com.gmail.nossr50.datatypes.party;
 
 import com.gmail.nossr50.commands.party.PartySubcommandType;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.entity.Player;
 
 public enum PartyFeature {
@@ -10,7 +11,8 @@ public enum PartyFeature {
     ITEM_SHARE,
     XP_SHARE;
 
-    public boolean hasPermission(Player player) {
+    //TODO: hacky...
+    public boolean hasPermission(mcMMO pluginRef, Player player) {
         PartySubcommandType partySubCommandType;
         switch (this) {
             case CHAT:
