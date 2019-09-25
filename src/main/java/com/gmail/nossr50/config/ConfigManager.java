@@ -56,6 +56,7 @@ import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.properties.DamageProperty;
 import com.gmail.nossr50.datatypes.skills.properties.MaxBonusLevel;
+import com.gmail.nossr50.datatypes.skills.subskills.taming.TamingSummon;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.RepairCost;
 import com.gmail.nossr50.skills.repair.RepairTransaction;
@@ -261,6 +262,7 @@ public final class ConfigManager {
         customSerializers.registerType(new TypeToken<MMOItem<?>>() {}, new ItemStackSerializer());
         customSerializers.registerType(new TypeToken<Set<?>>() {}, new SetSerializer());
 
+        customSerializers.registerType(TypeToken.of(TamingSummon.class), new TamingSummonSerializer());
         customSerializers.registerType(TypeToken.of(Repairable.class), new RepairableSerializer());
         customSerializers.registerType(TypeToken.of(Salvageable.class), new SalvageableSerializer());
         customSerializers.registerType(TypeToken.of(MinecraftMaterialWrapper.class), new MinecraftMaterialWrapperSerializer());
