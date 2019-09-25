@@ -33,7 +33,7 @@ public class BlockStoreConversionZDirectory implements Runnable {
     public void start(org.bukkit.World world, File xDir, File dataDir) {
         this.world = world;
         this.scheduler = pluginRef.getServer().getScheduler();
-        this.manager = new HashChunkletManager();
+        this.manager = new HashChunkletManager(pluginRef);
         this.newManager = (HashChunkManager) pluginRef.getPlaceStore();
         this.dataDir = dataDir;
         this.xDir = xDir;

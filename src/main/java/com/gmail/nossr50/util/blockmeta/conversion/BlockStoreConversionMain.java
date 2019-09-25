@@ -55,7 +55,7 @@ public class BlockStoreConversionMain implements Runnable {
 
         for (int i = 0; (i < ChunkConversionOptions.getConversionRate()) && (i < this.xDirs.length); i++) {
             if (this.converters[i] == null) {
-                this.converters[i] = new BlockStoreConversionXDirectory();
+                this.converters[i] = new BlockStoreConversionXDirectory(pluginRef);
             }
 
             this.converters[i].start(this.world, this.xDirs[i]);

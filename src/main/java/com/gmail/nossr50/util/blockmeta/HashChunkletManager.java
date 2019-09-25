@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util.blockmeta;
 
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
@@ -7,7 +8,12 @@ import java.io.*;
 import java.util.HashMap;
 
 public class HashChunkletManager implements ChunkletManager {
+    private final mcMMO pluginRef;
     public HashMap<String, ChunkletStore> store = new HashMap<>();
+
+    public HashChunkletManager(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+    }
 
     @Override
     public void loadChunklet(int cx, int cy, int cz, World world) {
