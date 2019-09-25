@@ -7,8 +7,10 @@ public class PartyTeleportRecord {
     private Player requestor;
     private boolean enabled, confirmRequired;
     private int timeout, lastUse;
+    private final mcMMO pluginRef;
 
     public PartyTeleportRecord(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
         requestor = null;
         enabled = true;
         confirmRequired = pluginRef.getConfigManager().getConfigParty().getPTP().isPtpAcceptRequired();

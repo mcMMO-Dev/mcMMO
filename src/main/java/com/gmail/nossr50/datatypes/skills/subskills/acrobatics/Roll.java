@@ -25,7 +25,7 @@ public class Roll extends AcrobaticsSubSkill {
     private final mcMMO pluginRef;
 
     public Roll(mcMMO pluginRef) {
-        super("Roll", EventPriority.HIGHEST, SubSkillType.ACROBATICS_ROLL);
+        super(pluginRef, "Roll", EventPriority.HIGHEST, SubSkillType.ACROBATICS_ROLL);
         this.pluginRef = pluginRef;
     }
 

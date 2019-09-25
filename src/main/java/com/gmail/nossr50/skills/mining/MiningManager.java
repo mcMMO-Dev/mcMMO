@@ -86,7 +86,7 @@ public class MiningManager extends SkillManager {
 
         applyXpGain(miningBehaviour.getBlockXp(blockState), XPGainReason.PVE);
 
-        if (mcMMOPlayer.getSuperAbilityMode(skill.getSuperAbility())) {
+        if (mcMMOPlayer.getSuperAbilityMode(pluginRef.getSkillTools().getSuperAbility(skill))) {
             pluginRef.getSkillTools().handleDurabilityChange(getPlayer().getInventory().getItemInMainHand(), pluginRef.getConfigManager().getConfigSuperAbilities().getSuperAbilityLimits().getToolDurabilityDamage());
         }
 
@@ -100,7 +100,7 @@ public class MiningManager extends SkillManager {
 
         //TODO: Make this readable
         if (pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS)) {
-            pluginRef.getBlockTools().markDropsAsBonus(blockState, mcMMOPlayer.getSuperAbilityMode(skill.getSuperAbility()));
+            pluginRef.getBlockTools().markDropsAsBonus(blockState, mcMMOPlayer.getSuperAbilityMode(pluginRef.getSkillTools().getSuperAbility(skill)));
         }
     }
 
@@ -128,7 +128,9 @@ public class MiningManager extends SkillManager {
 
         mcMMOPlayer.setAbilityDATS(SuperAbilityType.BLAST_MINING, System.currentTimeMillis());
         mcMMOPlayer.setAbilityInformed(SuperAbilityType.BLAST_MINING, false);
-        new AbilityCooldownTask(pluginRef, mcMMOPlayer, SuperAbilityType.BLAST_MINING).runTaskLater(pluginRef, SuperAbilityType.BLAST_MINING.getCooldown() * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR);
+        new AbilityCooldownTask(pluginRef, mcMMOPlayer, SuperAbilityType.BLAST_MINING)
+                .runTaskLater(pluginRef, pluginRef.getSkillTools().getSuperAbilityCooldown(SuperAbilityType.BLAST_MINING)
+                        * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR);
     }
 
     /**

@@ -403,7 +403,7 @@ public class ScoreboardWrapper {
             case SKILL_BOARD:
                 Validate.notNull(targetSkill);
 
-                if (!targetSkill.isChildSkill()) {
+                if (!pluginRef.getSkillTools().isChildSkill(targetSkill)) {
                     int currentXP = mcMMOPlayer.getSkillXpLevel(targetSkill);
 
                     sidebarObjective.getScore(scoreboardStrings.LABEL_CURRENT_XP).setScore(currentXP);
@@ -416,7 +416,7 @@ public class ScoreboardWrapper {
 
                 sidebarObjective.getScore(scoreboardStrings.LABEL_LEVEL).setScore(mcMMOPlayer.getSkillLevel(targetSkill));
 
-                if (targetSkill.getSuperAbility() != null) {
+                if (pluginRef.getSkillTools().getSuperAbility(targetSkill) != null) {
                     boolean stopUpdating;
 
                     if (targetSkill == PrimarySkillType.MINING) {
@@ -431,7 +431,7 @@ public class ScoreboardWrapper {
 
                         stopUpdating = (secondsSB == 0 && secondsBM == 0);
                     } else {
-                        SuperAbilityType ability = targetSkill.getSuperAbility();
+                        SuperAbilityType ability = pluginRef.getSkillTools().getSuperAbility(targetSkill);
                         Score cooldown = sidebarObjective.getScore(scoreboardStrings.abilityLabelsSkill.get(ability));
                         int seconds = Math.max(mcMMOPlayer.calculateTimeRemaining(ability), 0);
 
@@ -482,17 +482,17 @@ public class ScoreboardWrapper {
 
                 // Calculate power level here
                 int powerLevel = 0;
-                for (PrimarySkillType skill : pluginRef.getSkillTools().NON_CHILD_SKILLS) { // Don't include child skills, makes the list too long
-                    int level = newProfile.getSkillLevel(skill);
+                for (PrimarySkillType primarySkillType : pluginRef.getSkillTools().NON_CHILD_SKILLS) { // Don't include child skills, makes the list too long
+                    int level = newProfile.getSkillLevel(primarySkillType);
 
                     powerLevel += level;
 
                     // TODO: Verify that this is what we want - calculated in power level but not displayed
-                    if (!skill.doesPlayerHaveSkillPermission(player)) {
+                    if (!pluginRef.getPermissionTools().skillEnabled(player, primarySkillType)) {
                         continue;
                     }
 
-                    sidebarObjective.getScore(scoreboardStrings.skillLabels.get(skill)).setScore(level);
+                    sidebarObjective.getScore(scoreboardStrings.skillLabels.get(primarySkillType)).setScore(level);
                 }
 
                 sidebarObjective.getScore(scoreboardStrings.LABEL_POWER_LEVEL).setScore(powerLevel);
@@ -515,15 +515,15 @@ public class ScoreboardWrapper {
         Integer rank;
         Player player = pluginRef.getServer().getPlayerExact(playerName);
 
-        for (PrimarySkillType skill : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
-            if (!skill.doesPlayerHaveSkillPermission(player)) {
+        for (PrimarySkillType primarySkillType : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
+            if (!pluginRef.getPermissionTools().skillEnabled(player, primarySkillType)) {
                 continue;
             }
 
-            rank = rankData.get(skill);
+            rank = rankData.get(primarySkillType);
 
             if (rank != null) {
-                sidebarObjective.getScore(scoreboardStrings.skillLabels.get(skill)).setScore(rank);
+                sidebarObjective.getScore(scoreboardStrings.skillLabels.get(primarySkillType)).setScore(rank);
             }
         }
 
