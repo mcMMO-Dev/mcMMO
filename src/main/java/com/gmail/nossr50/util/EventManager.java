@@ -165,8 +165,8 @@ public class EventManager {
      * Others
      */
 
-    public McMMOPlayerAbilityActivateEvent callPlayerAbilityActivateEvent(Player player, PrimarySkillType skill) {
-        McMMOPlayerAbilityActivateEvent event = new McMMOPlayerAbilityActivateEvent(player, skill);
+    public McMMOPlayerAbilityActivateEvent callPlayerAbilityActivateEvent(Player player, PrimarySkillType primarySkillType, SuperAbilityType superAbilityType) {
+        McMMOPlayerAbilityActivateEvent event = new McMMOPlayerAbilityActivateEvent(player, primarySkillType, superAbilityType);
         pluginRef.getServer().getPluginManager().callEvent(event);
 
         return event;
@@ -180,8 +180,8 @@ public class EventManager {
      * @return the event after it has been fired
      */
     @Deprecated
-    public SubSkillEvent callSubSkillEvent(Player player, SubSkillType subSkillType) {
-        SubSkillEvent event = new SubSkillEvent(player, subSkillType);
+    public SubSkillEvent callSubSkillEvent(Player player, SubSkillType subSkillType, PrimarySkillType primarySkillType) {
+        SubSkillEvent event = new SubSkillEvent(player, subSkillType, primarySkillType);
         pluginRef.getServer().getPluginManager().callEvent(event);
 
         return event;
@@ -412,7 +412,7 @@ public class EventManager {
     }
 
     public void callAbilityDeactivateEvent(Player player, SuperAbilityType superAbilityType) {
-        McMMOPlayerAbilityDeactivateEvent event = new McMMOPlayerAbilityDeactivateEvent(player, pluginRef.getSkillTools().getPrimarySkillBySuperAbility(superAbilityType));
+        McMMOPlayerAbilityDeactivateEvent event = new McMMOPlayerAbilityDeactivateEvent(player, pluginRef.getSkillTools().getPrimarySkillBySuperAbility(superAbilityType), superAbilityType);
         pluginRef.getServer().getPluginManager().callEvent(event);
 
     }

@@ -159,7 +159,7 @@ public final class CommandRegistrationManager {
         command.setPermission(null); //No perm required to save support headaches
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.0", "mmodebug"));
-        command.setExecutor(new PlayerDebugCommand());
+        command.setExecutor(new PlayerDebugCommand(pluginRef));
     }
 
     private void registerMcChatSpyCommand() {

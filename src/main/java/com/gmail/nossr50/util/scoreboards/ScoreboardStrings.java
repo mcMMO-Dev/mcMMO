@@ -57,13 +57,13 @@ public class ScoreboardStrings {
         LABEL_ABILITY_COOLDOWN = pluginRef.getLocaleManager().getString("Scoreboard.Misc.Cooldown");
         LABEL_OVERALL = pluginRef.getLocaleManager().getString("Scoreboard.Misc.Overall");
 
-        init(pluginRef);
+        init();
     }
 
     /*
      * Initializes the properties of this class
      */
-    private void init(mcMMO pluginRef) {
+    private void init() {
         /*
          * We need immutable objects for our ConfigScoreboard's labels
          */
@@ -101,10 +101,10 @@ public class ScoreboardStrings {
                 skillLabelBuilder.put(primarySkillType, getShortenedName(colors.get(i) + pluginRef.getSkillTools().getLocalizedSkillName(primarySkillType), false));
 
                 if (pluginRef.getSkillTools().getSuperAbility(primarySkillType) != null) {
-                    abilityLabelBuilder.put(pluginRef.getSkillTools().getSuperAbility(primarySkillType), getShortenedName(colors.get(i) + pluginRef.getSkillTools().getSuperAbility(primarySkillType).getPrettySuperAbilityName()));
+                    abilityLabelBuilder.put(pluginRef.getSkillTools().getSuperAbility(primarySkillType), getShortenedName(colors.get(i) + pluginRef.getSkillTools().getPrettySuperAbilityName(pluginRef.getSkillTools().getSuperAbility(primarySkillType))));
 
                     if (primarySkillType == PrimarySkillType.MINING) {
-                        abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, getShortenedName(colors.get(i) + SuperAbilityType.BLAST_MINING.getPrettySuperAbilityName()));
+                        abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, getShortenedName(colors.get(i) + pluginRef.getSkillTools().getPrettySuperAbilityName(SuperAbilityType.BLAST_MINING)));
                     }
                 }
 
@@ -123,17 +123,20 @@ public class ScoreboardStrings {
                 skillLabelBuilder.put(primarySkillType, getShortenedName(ChatColor.GREEN + pluginRef.getSkillTools().getLocalizedSkillName(primarySkillType)));
 
                 if (pluginRef.getSkillTools().getSuperAbility(primarySkillType) != null) {
-                    abilityLabelBuilder.put(pluginRef.getSkillTools().getSuperAbility(primarySkillType), formatAbility(pluginRef.getSkillTools().getSuperAbility(primarySkillType).getPrettySuperAbilityName()));
+                    abilityLabelBuilder.put(pluginRef.getSkillTools().getSuperAbility(primarySkillType),
+                            formatAbility(pluginRef.getSkillTools().getPrettySuperAbilityName(pluginRef.getSkillTools().getSuperAbility(primarySkillType))));
 
                     if (primarySkillType == PrimarySkillType.MINING) {
-                        abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, formatAbility(SuperAbilityType.BLAST_MINING.getPrettySuperAbilityName()));
+                        abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING,
+                                formatAbility(pluginRef.getSkillTools().getPrettySuperAbilityName(SuperAbilityType.BLAST_MINING)));
                     }
                 }
             }
         }
 
-        for (SuperAbilityType type : SuperAbilityType.values()) {
-            abilityLabelSkillBuilder.put(type, formatAbility((type == SuperAbilityType.BLAST_MINING ? ChatColor.BLUE : ChatColor.AQUA), type.getPrettySuperAbilityName()));
+        for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {
+            abilityLabelSkillBuilder.put(superAbilityType,
+                    formatAbility((superAbilityType == SuperAbilityType.BLAST_MINING ? ChatColor.BLUE : ChatColor.AQUA), pluginRef.getSkillTools().getPrettySuperAbilityName(superAbilityType)));
         }
 
         skillLabels = skillLabelBuilder.build();

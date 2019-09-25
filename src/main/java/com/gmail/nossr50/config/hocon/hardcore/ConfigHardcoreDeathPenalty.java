@@ -16,7 +16,7 @@ public class ConfigHardcoreDeathPenalty {
         HARDCORE_SKILL_TOGGLE_MAP_DEFAULT = new HashMap<>();
 
         for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            if(primarySkillType.isChildSkill())
+            if(primarySkillType == PrimarySkillType.SALVAGE || primarySkillType == PrimarySkillType.SMELTING)
                 continue;
 
             HARDCORE_SKILL_TOGGLE_MAP_DEFAULT.put(primarySkillType, false);

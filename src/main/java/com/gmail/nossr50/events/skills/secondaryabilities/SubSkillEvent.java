@@ -19,8 +19,8 @@ public class SubSkillEvent extends McMMOPlayerSkillEvent implements Cancellable 
      * @Deprecated Skills will be using a new system stemming from the AbstractSubSkill class so make sure you check for both events, this event will be removed eventually.
      */
     @Deprecated
-    public SubSkillEvent(Player player, SubSkillType subSkillType) {
-        super(player, PrimarySkillType.getPrimarySkillBySubSkill(subSkillType));
+    public SubSkillEvent(Player player, SubSkillType subSkillType, PrimarySkillType primarySkillType) {
+        super(player, primarySkillType);
         this.subSkillType = subSkillType;
     }
 

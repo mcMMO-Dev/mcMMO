@@ -43,7 +43,7 @@ public class RandomChanceTools {
             case RANDOM_STATIC_CHANCE:
                 return checkRandomStaticChanceExecutionSuccess(player, subSkillType);
             case ALWAYS_FIRES:
-                SubSkillEvent event = pluginRef.getEventManager().callSubSkillEvent(player, subSkillType);
+                SubSkillEvent event = pluginRef.getEventManager().callSubSkillEvent(player, subSkillType, pluginRef.getSkillTools().getPrimarySkillBySubSkill(subSkillType));
                 return !event.isCancelled();
             default:
                 return false;

@@ -1,7 +1,7 @@
 package com.gmail.nossr50.util.nbt;
 
 import com.gmail.nossr50.mcMMO;
-import net.minecraft.server.v1_13_R2.NBTBase;
+import net.minecraft.server.v1_14_R1.NBTBase;
 
 /**
  * A simple class that acts as a container for raw NBT data

@@ -16,7 +16,8 @@ public class ConfigVampirism {
         HARDCORE_SKILL_TOGGLE_MAP_DEFAULT = new HashMap<>();
 
         for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            if(primarySkillType.isChildSkill())
+            //TODO: Hacky fix to avoid the main class reference
+            if(primarySkillType == PrimarySkillType.SALVAGE || primarySkillType == PrimarySkillType.SMELTING)
                 continue;
 
             HARDCORE_SKILL_TOGGLE_MAP_DEFAULT.put(primarySkillType, false);
