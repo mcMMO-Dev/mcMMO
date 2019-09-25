@@ -1,7 +1,6 @@
 package com.gmail.nossr50.util.nbt;
 
 
-import com.gmail.nossr50.mcMMO;
 import net.minecraft.server.v1_14_R1.NBTBase;
 import net.minecraft.server.v1_14_R1.NBTList;
 import net.minecraft.server.v1_14_R1.NBTTagCompound;
@@ -14,10 +13,8 @@ public class NBTManager {
 
     private static final String CRAFT_META_ITEM_CLASS_PATH = "org.bukkit.craftbukkit.inventory.CraftMetaItem";
     private Class<?> craftMetaItemClass;
-    private final mcMMO pluginRef;
 
-    public NBTManager(mcMMO pluginRef) {
-        this.pluginRef = pluginRef;
+    public NBTManager() {
         init(); //Setup method references etc
     }
 
@@ -29,30 +26,30 @@ public class NBTManager {
         }
     }
 
-    public NBTTagCompound getNBT(ItemStack itemStack) {
+    public static NBTTagCompound getNBT(ItemStack itemStack) {
         Bukkit.broadcastMessage("Checking NBT for "+itemStack.toString());
         net.minecraft.server.v1_14_R1.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(itemStack);
         NBTTagCompound rootTag = nmsItemStack.getTag();
         return rootTag;
     }
 
-    public NBTBase constructNBT(String nbtString) {
+    public static NBTBase constructNBT(String nbtString) {
         try {
             return CraftNBTTagConfigSerializer.deserialize(nbtString);
         } catch (Exception e) {
             e.printStackTrace();
-            pluginRef.getLogger().severe("mcMMO was unable parse the NBT string from your config! Double check that it is proper NBT!");
+            System.out.println(("[mcMMO NBT Debug] was unable parse the NBT string from your config! Double check that it is proper NBT!"));
             return null;
         }
     }
 
-    public void printNBT(ItemStack itemStack) {
+    public static void printNBT(ItemStack itemStack) {
         for(String key : getNBT(itemStack).getKeys()) {
             Bukkit.broadcastMessage("NBT Key found: "+key);
         }
     }
 
-    public boolean hasNBT(NBTBase nbt, NBTTagCompound otherNbt) {
+    public static boolean hasNBT(NBTBase nbt, NBTTagCompound otherNbt) {
         if(nbt instanceof NBTList<?>) {
 
         } else {

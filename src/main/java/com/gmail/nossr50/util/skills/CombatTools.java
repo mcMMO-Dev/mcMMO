@@ -458,7 +458,35 @@ public final class CombatTools {
      * @return true if the player has access to the limit break
      */
     public boolean canUseLimitBreak(Player player, LivingEntity target, SubSkillType subSkillType) {
-        if(target instanceof Player || AdvancedConfig.getInstance().canApplyLimitBreakPVE()) {
+        boolean pveAllowed = false;
+
+        //TODO: Hacky fix below
+        switch(subSkillType) {
+            case ARCHERY_ARCHERY_LIMIT_BREAK:
+                if(pluginRef.getConfigManager().getConfigArchery().getLimitBreak().isEnabledForPVE()) {
+                    pveAllowed = true;
+                }
+                break;
+            case AXES_AXES_LIMIT_BREAK:
+                if(pluginRef.getConfigManager().getConfigAxes().getSubSkills().getConfigAxesLimitBreak().isEnabledForPVE()) {
+                    pveAllowed = true;
+                }
+                break;
+            case SWORDS_SWORDS_LIMIT_BREAK:
+                if(pluginRef.getConfigManager().getConfigSwords().getSubSkills().getSwordsLimitBreak().isEnabledForPVE()) {
+                    pveAllowed = true;
+                }
+                break;
+            case UNARMED_UNARMED_LIMIT_BREAK:
+                if(pluginRef.getConfigManager().getConfigUnarmed().getSubSkills().getUnarmedLimitBreak().isEnabledForPVE()) {
+                    pveAllowed = true;
+                }
+                break;
+            default:
+                pluginRef.getLogger().severe("This skill has no limit break PVE setting defined!");
+        }
+
+        if(target instanceof Player || pveAllowed) {
             return pluginRef.getRankTools().hasUnlockedSubskill(player, subSkillType)
                     && pluginRef.getPermissionTools().isSubSkillEnabled(player, subSkillType);
         } else {

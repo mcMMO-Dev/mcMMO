@@ -7,8 +7,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.behaviours.SalvageBehaviour;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
-import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Location;
@@ -53,109 +51,109 @@ public class SalvageManager extends SkillManager {
     }
 
     public void handleSalvage(Location location, ItemStack item) {
-        Player player = getPlayer();
-
-        Salvageable salvageable = pluginRef.getSalvageableManager().getSalvageable(item.getType());
-
-        if (item.getItemMeta().isUnbreakable()) {
-            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Anvil.Unbreakable");
-            return;
-        }
-
-        // Permissions checks on material and item types
-        if (!pluginRef.getPermissionTools().salvageItemType(player, salvageable.getSalvageItemType())) {
-            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
-            return;
-        }
-
-        if (!pluginRef.getPermissionTools().salvageMaterialType(player, salvageable.getSalvageItemMaterialCategory())) {
-            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
-            return;
-        }
-
-        /*int skillLevel = getSkillLevel();
-        int minimumSalvageableLevel = salvageable.getMinimumLevel();*/
-
-        // Level check
-        if (!pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE)) {
-            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Salvage.Skills.Adept.Level", String.valueOf(pluginRef.getRankTools().getUnlockLevel(SubSkillType.SALVAGE_ARCANE_SALVAGE)), StringUtils.getPrettyItemString(item.getType()));
-            return;
-        }
-
-        int potentialSalvageYield = salvageBehaviour.calculateSalvageableAmount(item.getDurability(), salvageable.getMaximumDurability(), salvageable.getMaximumQuantity());
-
-        if (potentialSalvageYield <= 0) {
-            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.TooDamaged");
-            return;
-        }
-
-        potentialSalvageYield = Math.min(potentialSalvageYield, getSalvageLimit()); // Always get at least something back, if you're capable of salvaging it.
-
-        player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-        location.add(0.5, 1, 0.5);
-
-        Map<Enchantment, Integer> enchants = item.getEnchantments();
-
-        ItemStack enchantBook = null;
-        if (!enchants.isEmpty()) {
-            enchantBook = arcaneSalvageCheck(enchants);
-        }
-
-        //Lottery on Salvageable Amount
-
-        int lotteryResults = 1;
-        int chanceOfSuccess = 99;
-
-        for(int x = 0; x < potentialSalvageYield-1; x++) {
-
-            if(pluginRef.getRandomChanceTools().rollDice(chanceOfSuccess, 100)) {
-                chanceOfSuccess-=2;
-                Math.max(chanceOfSuccess, 95);
-
-                lotteryResults+=1;
-            }
-        }
-
-        if(lotteryResults == potentialSalvageYield && potentialSalvageYield != 1 && pluginRef.getRankTools().isPlayerMaxRankInSubSkill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE)) {
-            pluginRef.getNotificationManager().sendPlayerInformationChatOnly(player, "Salvage.Skills.Lottery.Perfect", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
-        } else if(salvageable.getMaximumQuantity() == 1 || getSalvageLimit() >= salvageable.getMaximumQuantity()) {
-            pluginRef.getNotificationManager().sendPlayerInformationChatOnly(player,  "Salvage.Skills.Lottery.Normal", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
-        } else {
-            pluginRef.getNotificationManager().sendPlayerInformationChatOnly(player,  "Salvage.Skills.Lottery.Untrained", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
-        }
-
-        ItemStack salvageResults = new ItemStack(salvageable.getSalvagedItemMaterial(), lotteryResults);
-
-        //Call event
-        if (pluginRef.getEventManager().callSalvageCheckEvent(player, item, salvageResults, enchantBook).isCancelled()) {
-            return;
-        }
-
-        Location anvilLoc = location.clone();
-        Location playerLoc = player.getLocation().clone();
-        double distance = anvilLoc.distance(playerLoc);
-
-        double speedLimit = .6;
-        double minSpeed = .3;
-
-        //Clamp the speed and vary it by distance
-        double vectorSpeed = Math.min(speedLimit, Math.max(minSpeed, distance * .2));
-
-        //Add a very small amount of height
-        anvilLoc.add(0, .1, 0);
-
-        if (enchantBook != null) {
-            pluginRef.getMiscTools().spawnItemTowardsLocation(anvilLoc.clone(), playerLoc.clone(), enchantBook, vectorSpeed);
-        }
-
-        pluginRef.getMiscTools().spawnItemTowardsLocation(anvilLoc.clone(), playerLoc.clone(), salvageResults, vectorSpeed);
-
-        // BWONG BWONG BWONG - CLUNK!
-        if (pluginRef.getConfigManager().getConfigSalvage().getGeneral().isAnvilUseSounds()) {
-            pluginRef.getSoundManager().sendSound(player, player.getLocation(), SoundType.ITEM_BREAK);
-        }
-
-        pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Salvage.Skills.Success");
+//        Player player = getPlayer();
+//
+//        Salvageable salvageable = pluginRef.getSalvageableManager().getSalvageable(item.getType());
+//
+//        if (item.getItemMeta().isUnbreakable()) {
+//            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Anvil.Unbreakable");
+//            return;
+//        }
+//
+//        // Permissions checks on material and item types
+//        if (!pluginRef.getPermissionTools().salvageItemType(player, salvageable.getSalvageItemType())) {
+//            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
+//            return;
+//        }
+//
+//        if (!pluginRef.getPermissionTools().salvageMaterialType(player, salvageable.getSalvageItemMaterialCategory())) {
+//            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.NO_PERMISSION, "mcMMO.NoPermission");
+//            return;
+//        }
+//
+//        /*int skillLevel = getSkillLevel();
+//        int minimumSalvageableLevel = salvageable.getMinimumLevel();*/
+//
+//        // Level check
+//        if (!pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE)) {
+//            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Salvage.Skills.Adept.Level", String.valueOf(pluginRef.getRankTools().getUnlockLevel(SubSkillType.SALVAGE_ARCANE_SALVAGE)), StringUtils.getPrettyItemString(item.getType()));
+//            return;
+//        }
+//
+//        int potentialSalvageYield = salvageBehaviour.calculateSalvageableAmount(item.getDurability(), salvageable.getMaximumDurability(), salvageable.getMaximumQuantity());
+//
+//        if (potentialSalvageYield <= 0) {
+//            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Salvage.Skills.TooDamaged");
+//            return;
+//        }
+//
+//        potentialSalvageYield = Math.min(potentialSalvageYield, getSalvageLimit()); // Always get at least something back, if you're capable of salvaging it.
+//
+//        player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+//        location.add(0.5, 1, 0.5);
+//
+//        Map<Enchantment, Integer> enchants = item.getEnchantments();
+//
+//        ItemStack enchantBook = null;
+//        if (!enchants.isEmpty()) {
+//            enchantBook = arcaneSalvageCheck(enchants);
+//        }
+//
+//        //Lottery on Salvageable Amount
+//
+//        int lotteryResults = 1;
+//        int chanceOfSuccess = 99;
+//
+//        for(int x = 0; x < potentialSalvageYield-1; x++) {
+//
+//            if(pluginRef.getRandomChanceTools().rollDice(chanceOfSuccess, 100)) {
+//                chanceOfSuccess-=2;
+//                Math.max(chanceOfSuccess, 95);
+//
+//                lotteryResults+=1;
+//            }
+//        }
+//
+//        if(lotteryResults == potentialSalvageYield && potentialSalvageYield != 1 && pluginRef.getRankTools().isPlayerMaxRankInSubSkill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE)) {
+//            pluginRef.getNotificationManager().sendPlayerInformationChatOnly(player, "Salvage.Skills.Lottery.Perfect", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
+//        } else if(salvageable.getMaximumQuantity() == 1 || getSalvageLimit() >= salvageable.getMaximumQuantity()) {
+//            pluginRef.getNotificationManager().sendPlayerInformationChatOnly(player,  "Salvage.Skills.Lottery.Normal", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
+//        } else {
+//            pluginRef.getNotificationManager().sendPlayerInformationChatOnly(player,  "Salvage.Skills.Lottery.Untrained", String.valueOf(lotteryResults), StringUtils.getPrettyItemString(item.getType()));
+//        }
+//
+//        ItemStack salvageResults = new ItemStack(salvageable.getSalvagedItemMaterial(), lotteryResults);
+//
+//        //Call event
+//        if (pluginRef.getEventManager().callSalvageCheckEvent(player, item, salvageResults, enchantBook).isCancelled()) {
+//            return;
+//        }
+//
+//        Location anvilLoc = location.clone();
+//        Location playerLoc = player.getLocation().clone();
+//        double distance = anvilLoc.distance(playerLoc);
+//
+//        double speedLimit = .6;
+//        double minSpeed = .3;
+//
+//        //Clamp the speed and vary it by distance
+//        double vectorSpeed = Math.min(speedLimit, Math.max(minSpeed, distance * .2));
+//
+//        //Add a very small amount of height
+//        anvilLoc.add(0, .1, 0);
+//
+//        if (enchantBook != null) {
+//            pluginRef.getMiscTools().spawnItemTowardsLocation(anvilLoc.clone(), playerLoc.clone(), enchantBook, vectorSpeed);
+//        }
+//
+//        pluginRef.getMiscTools().spawnItemTowardsLocation(anvilLoc.clone(), playerLoc.clone(), salvageResults, vectorSpeed);
+//
+//        // BWONG BWONG BWONG - CLUNK!
+//        if (pluginRef.getConfigManager().getConfigSalvage().getGeneral().isAnvilUseSounds()) {
+//            pluginRef.getSoundManager().sendSound(player, player.getLocation(), SoundType.ITEM_BREAK);
+//        }
+//
+//        pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Salvage.Skills.Success");
     }
 
     /*public double getMaxSalvagePercentage() {
@@ -236,13 +234,13 @@ public class SalvageManager extends SkillManager {
 
             if (!salvageBehaviour.isArcaneSalvageEnchantLoss()
                     || pluginRef.getPermissionTools().hasSalvageEnchantBypassPerk(player)
-                    || pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractFullEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
+                    || pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(pluginRef, getExtractFullEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
 
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchantLevel, true);
             }
             else if (enchantLevel > 1
                     && salvageBehaviour.isArcaneSalvageDowngrades()
-                    && pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getExtractPartialEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
+                    && pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(pluginRef, getExtractPartialEnchantChance(), getPlayer(), SubSkillType.SALVAGE_ARCANE_SALVAGE))) {
                 enchantMeta.addStoredEnchant(enchant.getKey(), enchantLevel - 1, true);
                 downgraded = true;
             } else {

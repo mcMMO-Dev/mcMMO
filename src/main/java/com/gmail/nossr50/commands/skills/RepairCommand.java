@@ -4,9 +4,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.RepairManager;
-import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -41,10 +39,10 @@ public class RepairCommand extends SkillCommand {
     @Override
     protected void dataCalculations(Player player, double skillValue) {
         // We're using pickaxes here, not the best but it works
-        Repairable diamondRepairable = pluginRef.getRepairableManager().getRepairable(Material.DIAMOND_PICKAXE);
-        Repairable goldRepairable = pluginRef.getRepairableManager().getRepairable(Material.GOLDEN_PICKAXE);
-        Repairable ironRepairable = pluginRef.getRepairableManager().getRepairable(Material.IRON_PICKAXE);
-        Repairable stoneRepairable = pluginRef.getRepairableManager().getRepairable(Material.STONE_PICKAXE);
+//        Repairable diamondRepairable = pluginRef.getRepairableManager().getRepairable(Material.DIAMOND_PICKAXE);
+//        Repairable goldRepairable = pluginRef.getRepairableManager().getRepairable(Material.GOLDEN_PICKAXE);
+//        Repairable ironRepairable = pluginRef.getRepairableManager().getRepairable(Material.IRON_PICKAXE);
+//        Repairable stoneRepairable = pluginRef.getRepairableManager().getRepairable(Material.STONE_PICKAXE);
 
         // TODO: This isn't really accurate - if they don't have pickaxes loaded it doesn't always mean the repair level is 0
 //        diamondLevel = (diamondRepairable == null) ? 0 : diamondRepairable.getMinimumLevel();

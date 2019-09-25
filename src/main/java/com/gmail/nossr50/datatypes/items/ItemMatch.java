@@ -1,5 +1,7 @@
 package com.gmail.nossr50.datatypes.items;
 
+import com.gmail.nossr50.util.nbt.NBTManager;
+
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -78,7 +80,7 @@ public class ItemMatch<T extends MMOItem<?>> implements DefinedMatch<MMOItem<T>>
      */
     private boolean isStrictMatch(MMOItem<T> otherItem) {
         for(ItemMatchProperty itemMatchProperty : itemMatchProperties) {
-            if(!pluginRef.getNbtManager().hasNBT(otherItem.getRawNBT().getNbtData(), itemMatchProperty.getNbtData())) {
+            if(!NBTManager.hasNBT(otherItem.getRawNBT().getNbtData(), itemMatchProperty.getNbtData())) {
                 return false;
             }
         }

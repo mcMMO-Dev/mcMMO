@@ -276,7 +276,7 @@ public final class ConfigManager {
         customSerializers.registerType(TypeToken.of(ItemMatch.class), new CustomItemTargetSerializer());
         customSerializers.registerType(TypeToken.of(RepairTransaction.class), new RepairTransactionSerializer());
         customSerializers.registerType(TypeToken.of(RawNBT.class), new RawNBTSerializer());
-        customSerializers.registerType(TypeToken.of(RepairCost.class), new RepairCostSerializer());
+        customSerializers.registerType(TypeToken.of(RepairCost.class), new SimpleRepairCostSerializer());
     }
 
     /**
