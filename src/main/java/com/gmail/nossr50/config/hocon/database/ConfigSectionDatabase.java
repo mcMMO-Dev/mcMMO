@@ -16,6 +16,9 @@ public class ConfigSectionDatabase {
     @Setting(value = "Table-Prefix", comment = "The Prefix that will be used for tables in your DB")
     private String tablePrefix = "mcmmo_";
 
+    @Setting(value = "Debug", comment = "Enables printing of exceptions for mysql errors")
+    private boolean debugMode = false;
+
     /*
      * GETTER BOILERPLATE
      */
@@ -29,4 +32,7 @@ public class ConfigSectionDatabase {
     }
 
 
+    public boolean isDebug() {
+        return debugMode;
+    }
 }

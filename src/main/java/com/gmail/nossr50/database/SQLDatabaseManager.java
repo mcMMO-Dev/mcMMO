@@ -27,6 +27,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private DataSource loadPool;
     private DataSource savePool;
 
+    private boolean debug = false;
     //How long since a users last login before we purge them
     long purgeTime;
     // During convertUsers, how often to output a status
@@ -64,6 +65,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         //Setup Save, Load, and Misc pools
         setupPools(connectionString);
+        debug = pluginRef.getMySQLConfigSettings().getConfigSectionDatabase().isDebug();
 
         checkStructure();
     }
@@ -1143,6 +1145,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private void printErrors(SQLException ex) {
+        if (debug) {
+            ex.printStackTrace();
+        }
+
         StackTraceElement element = ex.getStackTrace()[0];
         pluginRef.getLogger().severe("Location: " + element.getClassName() + " " + element.getMethodName() + " " + element.getLineNumber());
         pluginRef.getLogger().severe("SQLException: " + ex.getMessage());

@@ -43,6 +43,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
         // If successful, schedule the apply
         if (profile.isLoaded()) {
             new ApplySuccessfulProfile(new McMMOPlayer(player, profile, pluginRef)).runTask(pluginRef);
+            pluginRef.getEventManager().callPlayerProfileLoadEvent(player, profile);
             return;
         }
 

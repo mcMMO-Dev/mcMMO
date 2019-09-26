@@ -271,10 +271,27 @@ public class MaterialMapStore {
         abilityBlackList.add("shulker_box");
         abilityBlackList.add("wall_sign"); //1.13 and lower?
         abilityBlackList.add("sign"); //1.13 and lower?
+        abilityBlackList.add("cartography_table");
+        abilityBlackList.add("grindstone");
+        abilityBlackList.add("lectern");
+        abilityBlackList.add("loom");
+        abilityBlackList.add("scaffolding");
+        abilityBlackList.add("smoker");
+        abilityBlackList.add("stonecutter");
+        abilityBlackList.add("sweet_berry_bush");
+        abilityBlackList.add("iron_block");
+        abilityBlackList.add("gold_block");
+        abilityBlackList.add("bell");
+        abilityBlackList.add("barrel");
+        abilityBlackList.add("blast_furnace");
+        abilityBlackList.add("campfire");
+        abilityBlackList.add("composter");
+
     }
     private void fillToolBlackList()
     {
         //TODO: Add anvils / missing logs
+        //TODO: Reorganize this list, can we also dynamically populate some of this?
         toolBlackList.add("black_bed");
         toolBlackList.add("blue_bed");
         toolBlackList.add("brown_bed");
@@ -394,9 +411,19 @@ public class MaterialMapStore {
         toolBlackList.add("oak_log");
         toolBlackList.add("oak_wood");
         toolBlackList.add("spruce_log");
-        toolBlackList.add("spruce_wood");
         toolBlackList.add("iron_block");
         toolBlackList.add("gold_block");
+        toolBlackList.add("bell");
+        toolBlackList.add("barrel");
+        toolBlackList.add("blast_furnace");
+        toolBlackList.add("campfire");
+        toolBlackList.add("cartography_table");
+        toolBlackList.add("composter");
+        toolBlackList.add("grindstone");
+        toolBlackList.add("lectern");
+        toolBlackList.add("loom");
+        toolBlackList.add("smoker");
+        toolBlackList.add("stonecutter");
     }
 
     private void addToHashSet(String string, HashSet<String> stringHashSet) {

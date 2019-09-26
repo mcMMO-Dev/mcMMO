@@ -129,8 +129,8 @@ public class BlockListener implements Listener {
         if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getBlock().getWorld().getName()))
             return;
 
-        if (pluginRef.getBlockTools().shouldBeWatched(event.getBlock().getState())) {
-            pluginRef.getPlaceStore().setTrue(event.getBlock());
+        if (pluginRef.getBlockTools().shouldBeWatched(event.getNewState())) {
+            pluginRef.getPlaceStore().setTrue(event.getNewState().getBlock());
         }
     }
 
@@ -144,10 +144,10 @@ public class BlockListener implements Listener {
         Material material = newBlock.getType();
 
         if (pluginRef.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitSkills().isPreventCobblestoneStoneGeneratorXP()) {
-            if (material != Material.OBSIDIAN 
-                    && pluginRef.getBlockTools().shouldBeWatched(material)
-                    && pluginRef.getDynamicSettingsManager().getExperienceManager().hasMiningXp(material)) { //Hacky fix to prevent trees growing from being marked as unnatural
-                pluginRef.getPlaceStore().setTrue(newBlock);
+            if (event.getNewState().getType() != Material.OBSIDIAN
+                    && pluginRef.getBlockTools().shouldBeWatched(event.getNewState())
+                    && pluginRef.getDynamicSettingsManager().getExperienceManager().hasMiningXp(event.getNewState().getBlockData().getMaterial())) { //Hacky fix to prevent trees growing from being marked as unnatural
+                pluginRef.getPlaceStore().setTrue(event.getNewState());
             }
         }
     }
@@ -297,6 +297,11 @@ public class BlockListener implements Listener {
             if (pluginRef.getSkillTools().doesPlayerHaveSkillPermission(PrimarySkillType.HERBALISM, player)) {
                 herbalismManager.processHerbalismBlockBreakEvent(event);
             }
+            /*
+             * We return here so that we don't unmark any affected blocks
+             * due to special checks managing this on their own:
+             */
+            return;
         }
 
         /* MINING */

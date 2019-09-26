@@ -24,10 +24,7 @@
 //    public boolean doesPlayerExistInDB(UUID uuid) {
 //        PlayerProfile playerProfile = mcMMO.getDatabaseManager().loadPlayerProfile(uuid);
 //
-//        if(playerProfile.isLoaded())
-//            return true;
-//        else
-//            return false;
+//        return playerProfile.isLoaded();
 //    }
 //
 //}

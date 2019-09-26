@@ -223,22 +223,6 @@ public class EntityListener implements Listener {
         Bukkit.broadcastMessage("");
     }*/
 
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onEntityDamageLowest(EntityDamageByEntityEvent event) {
-        Entity defender = event.getEntity();
-
-        if (defender.getMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY).size() > 0) {
-            defender.removeMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY, pluginRef);
-
-            if (defender instanceof Player) {
-                LivingEntity defLive = (LivingEntity) defender;
-                defLive.setHealth(Math.max(0, (defLive.getHealth() - event.getFinalDamage())));
-                event.setCancelled(true);
-            }
-
-        }
-    }
-
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityCombustByEntityEvent(EntityCombustByEntityEvent event) {
         //Prevent players from setting fire to each other if they are in the same party
@@ -297,6 +281,13 @@ public class EntityListener implements Listener {
             return;
 
         if (event instanceof FakeEntityDamageByEntityEvent) {
+            return;
+        }
+
+        // Don't process this event for marked entities, for players this is handled above,
+        // However, for entities, we do not wanna cancel this event to allow plugins to observe changes
+        // properly
+        if (defender.getMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY).size() > 0) {
             return;
         }
 

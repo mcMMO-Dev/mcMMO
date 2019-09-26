@@ -231,7 +231,6 @@ public class HashChunkManager implements ChunkManager {
             return;
         }
 
-        closeAll();
         String worldName = world.getName();
 
         List<String> keys = new ArrayList<>(store.keySet());
@@ -245,6 +244,7 @@ public class HashChunkManager implements ChunkManager {
                 }
             }
         }
+        closeAll();
     }
 
     @Override

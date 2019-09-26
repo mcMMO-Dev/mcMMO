@@ -251,6 +251,7 @@ public class WoodcuttingManager extends SkillManager {
         int processedLogCount = 0;
 
         for (BlockState blockState : treeFellerBlocks) {
+            int beforeXP = xp;
             Block block = blockState.getBlock();
 
             if (!pluginRef.getEventManager().simulateBlockBreak(block, player, true)) {
@@ -278,9 +279,18 @@ public class WoodcuttingManager extends SkillManager {
 
             blockState.setType(Material.AIR);
             blockState.update(true);
-            processedLogCount+=1;
+
+            //Update only when XP changes
+            processedLogCount = updateProcessedLogCount(xp, processedLogCount, beforeXP);
         }
 
         applyXpGain(xp, XPGainReason.PVE);
+    }
+
+    private int updateProcessedLogCount(int xp, int processedLogCount, int beforeXP) {
+        if(beforeXP != xp)
+            processedLogCount+=1;
+
+        return processedLogCount;
     }
 }

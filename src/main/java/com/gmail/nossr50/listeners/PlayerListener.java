@@ -55,8 +55,16 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getPlayer().getWorld().getName()))
+        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getPlayer().getWorld().getName())) {
+            //Remove scoreboards
+            pluginRef.getScoreboardManager().teardownPlayer(event.getPlayer());
             return;
+        } else if(pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getFrom().getWorld().getName())) {
+            //This only fires if they are traveling to a non-blacklisted world from a blacklisted world
+
+            //Setup scoreboards
+            pluginRef.getScoreboardManager().setupPlayer(event.getPlayer());
+        }
 
         Player player = event.getPlayer();
 
@@ -81,7 +89,6 @@ public class PlayerListener implements Listener {
 
         pluginRef.getUserManager().getPlayer(player).actualizeTeleportATS();
     }
-
     /**
      * Handle PlayerDeathEvents at the lowest priority.
      * <p>
@@ -702,7 +709,8 @@ public class PlayerListener implements Listener {
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         //Spam Fishing Detection
-        if (pluginRef.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().isPreventFishingExploits()) {
+        if (pluginRef.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().isPreventFishingExploits()
+            && (heldItem.getType() == Material.FISHING_ROD || player.getInventory().getItemInOffHand().getType() == Material.FISHING_ROD)) {
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) {
                 if (player.isInsideVehicle() && (player.getVehicle() instanceof Minecart || player.getVehicle() instanceof PoweredMinecart)) {
                     player.getVehicle().eject();

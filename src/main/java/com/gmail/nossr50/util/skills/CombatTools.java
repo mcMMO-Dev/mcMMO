@@ -274,7 +274,7 @@ public final class CombatTools {
             AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
 
             if (acrobaticsManager.canDodge(target)) {
-                event.setDamage(acrobaticsManager.dodgeCheck(event.getDamage()));
+                event.setDamage(acrobaticsManager.dodgeCheck(attacker, event.getDamage()));
             }
 
             if (pluginRef.getItemTools().isSword(player.getInventory().getItemInMainHand())) {
@@ -389,17 +389,33 @@ public final class CombatTools {
         }
     }
 
-    public int getLimitBreakDamage(Player player, LivingEntity defender, SubSkillType subSkillType) {
+
+    /**
+     * Calculate and return the RAW damage bonus from Limit Break before reductions
+     * @param attacker attacking player
+     * @param defender defending living entity
+     * @param subSkillType the specific limit break skill for calculations
+     * @return the RAW damage bonus from Limit Break which is applied before reductions
+     */
+    public int getLimitBreakDamage(Player attacker, LivingEntity defender, SubSkillType subSkillType) {
         if(defender instanceof Player) {
             Player playerDefender = (Player) defender;
-            return getLimitBreakDamageAgainstQuality(player, subSkillType, getArmorQualityLevel(playerDefender));
+            return getLimitBreakDamageAgainstQuality(attacker, subSkillType, getArmorQualityLevel(playerDefender));
         } else {
-            return getLimitBreakDamageAgainstQuality(player, subSkillType, 1000);
+            return getLimitBreakDamageAgainstQuality(attacker, subSkillType, 1000);
         }
     }
 
-    public int getLimitBreakDamageAgainstQuality(Player player, SubSkillType subSkillType, int armorQualityLevel) {
-        int rawDamageBoost = pluginRef.getRankTools().getRank(player, subSkillType);
+    /**
+     * Calculate the RAW daamge value of limit break based on the armor quality of the target
+     * PVE mobs are passed in with a value of 1000 for armor quality, hacky... I'll change it later
+     * @param attacker Living entity attacker
+     * @param subSkillType Target limit break
+     * @param armorQualityLevel Armor quality level
+     * @return the RAW damage boost after its been mutated by armor quality
+     */
+    public int getLimitBreakDamageAgainstQuality(Player attacker, SubSkillType subSkillType, int armorQualityLevel) {
+        int rawDamageBoost = pluginRef.getRankTools().getRank(attacker, subSkillType);
 
         if(armorQualityLevel <= 4) {
             rawDamageBoost *= .25; //75% Nerf
@@ -412,6 +428,11 @@ public final class CombatTools {
         return rawDamageBoost;
     }
 
+    /**
+     * Get the quality level of the armor of a player used for Limit Break calculations
+     * @param defender target defending player
+     * @return the armor quality of the defending player
+     */
     public int getArmorQualityLevel(Player defender) {
         int armorQualityLevel = 0;
 
@@ -424,7 +445,14 @@ public final class CombatTools {
         return armorQualityLevel;
     }
 
+
+    /**
+     * Get the armor quality for a specific item used for Limit Break calculations
+     * @param itemStack target item stack
+     * @return the armor quality of a specific Item Stack
+     */
     private int getArmorQuality(ItemStack itemStack) {
+        int quality = 0;
         switch(itemStack.getType()) {
             case LEATHER_HELMET:
             case LEATHER_BOOTS:
@@ -555,14 +583,19 @@ public final class CombatTools {
             return;
         }
 
-        double incDmg = getFakeDamageFinalResult(attacker, target, DamageCause.ENTITY_ATTACK, damage);
-
-        double newHealth = Math.max(0, target.getHealth() - incDmg);
-
-        if (newHealth == 0) {
-            target.damage(9999, attacker);
-        } else
-            target.setHealth(newHealth);
+        // TODO: This is horrible, but there is no cleaner way to do this without potentially breaking existing code right now
+        // calling damage here is a double edged sword: On one hand, without a call, plugins won't see this properly when the entity dies,
+        // potentially mis-attributing the death cause; calling a fake event would partially fix this, but this and setting the last damage
+        // cause do have issues around plugin observability. This is not a perfect solution, but it appears to be the best one here
+        // We also set no damage ticks to 0, to ensure that damage is applied for this case, and reset it back to the original value
+        boolean wasMetaSet = target.getMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY).size() != 0;
+        target.setMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY, MetadataConstants.metadataValue);
+        int noDamageTicks = target.getNoDamageTicks();
+        target.setNoDamageTicks(0);
+        target.damage(damage, attacker);
+        target.setNoDamageTicks(noDamageTicks);
+        if (!wasMetaSet)
+            target.removeMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY, pluginRef);
     }
 
     public void dealNoInvulnerabilityTickDamageRupture(LivingEntity target, double damage, Entity attacker, int toolTier) {
@@ -570,8 +603,36 @@ public final class CombatTools {
             return;
         }
 
-        target.setMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY, MetadataConstants.metadataValue);
-        target.damage(damage, attacker);
+        dealNoInvulnerabilityTickDamage(target, damage, attacker);
+
+//        //IFrame storage
+////        int noDamageTicks = target.getNoDamageTicks();
+//
+////        String debug = "BLEED DMG RESULT: INC DMG:"+damage+", HP-Before:"+target.getHealth()+", HP-After:";
+//
+////        double incDmg = getFakeDamageFinalResult(attacker, target, DamageCause.ENTITY_ATTACK, damage);
+//
+////        double newHealth = Math.max(0, target.getHealth() - incDmg);
+//
+//        //Don't kill things with a stone or wooden weapon
+////        if(toolTier < 3 && newHealth == 0)
+////            return;
+//
+//        target.setMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.metadataValue);
+//
+//        if(newHealth == 0 && !(target instanceof Player))
+//        {
+//            target.damage(99999, attacker);
+//        }
+//        else
+//        {
+////            Vector beforeRuptureVec = new Vector(target.getVelocity().getX(), target.getVelocity().getY(), target.getVelocity().getZ()); ;
+//            target.damage(damage, attacker);
+////            debug+=target.getHealth();
+//            Bukkit.broadcastMessage(debug);
+////            target.setNoDamageTicks(noDamageTicks); //Do not add additional IFrames
+////            target.setVelocity(beforeRuptureVec);
+//        }
     }
 
     /**
@@ -730,20 +791,15 @@ public final class CombatTools {
             }
 
             // It may seem a bit redundant but we need a check here to prevent bleed from being applied in applyAbilityAoE()
-            if (getFakeDamageFinalResult(player, entity, 1.0) == 0) {
-                return false;
-            }
+            return getFakeDamageFinalResult(player, entity, 1.0) != 0;
         } else if (entity instanceof Tameable) {
             if (isFriendlyPet(player, (Tameable) entity)) {
                 // isFriendlyPet ensures that the Tameable is: Tamed, owned by a player, and the owner is in the same party
                 // So we can make some assumptions here, about our casting and our check
                 Player owner = (Player) ((Tameable) entity).getOwner();
-                if (!(pluginRef.getPermissionTools().friendlyFire(player) && pluginRef.getPermissionTools().friendlyFire(owner))) {
-                    return false;
-                }
+                return pluginRef.getPermissionTools().friendlyFire(player) && pluginRef.getPermissionTools().friendlyFire(owner);
             }
         }
-
         return true;
     }
 
@@ -802,11 +858,7 @@ public final class CombatTools {
     public boolean canDamage(Entity attacker, Entity target, DamageCause damageCause, double damage) {
         EntityDamageEvent damageEvent = sendEntityDamageEvent(attacker, target, damageCause, damage);
 
-        if (damageEvent.isCancelled()) {
-            return false;
-        }
-
-        return true;
+        return !damageEvent.isCancelled();
     }
 
     public EntityDamageEvent sendEntityDamageEvent(Entity attacker, Entity target, DamageCause damageCause, double damage) {

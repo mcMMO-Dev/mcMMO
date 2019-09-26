@@ -9,6 +9,7 @@ public class MetadataConstants {
 
     /* Metadata Values */
     public static final String FISH_HOOK_REF_METAKEY = "mcMMO: Fish Hook Tracker";
+    public static final String DODGE_TRACKER        = "mcMMO: Dodge Tracker";
     public static final String CUSTOM_DAMAGE_METAKEY = "mcMMO: Custom Damage";
     public final static String UNNATURAL_MOB_METAKEY = "mcMMO: Spawned Entity";
     public final static String PISTON_TRACKING_METAKEY = "mcMMO: Piston Tracking";

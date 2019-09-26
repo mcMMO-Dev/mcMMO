@@ -145,6 +145,7 @@ Backups:
 ###
 MySQL:
     Enabled: false
+    Debug: false
     Database:
         User_Name: UserName
         User_Password: UserPassword

@@ -8,6 +8,8 @@ import com.gmail.nossr50.events.scoreboard.McMMOScoreboardMakeboardEvent;
 import com.gmail.nossr50.events.scoreboard.ScoreboardEventReason;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -58,6 +60,11 @@ public class ScoreboardManager {
 
     // Called by PlayerQuitEvent listener
     public void teardownPlayer(Player player) {
+        //Hacky world blacklist fix
+        if(player.isOnline() && player.isValid())
+            if(Bukkit.getServer().getScoreboardManager() != null)
+                player.setScoreboard(Bukkit.getServer().getScoreboardManager().getMainScoreboard());
+
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.remove(player.getName());
 
         if (wrapper != null && wrapper.revertTask != null) {

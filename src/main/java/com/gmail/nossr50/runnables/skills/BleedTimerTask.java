@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.skills.BleedContainer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.sounds.SoundType;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -18,6 +19,7 @@ import java.util.Map.Entry;
 public class BleedTimerTask extends BukkitRunnable {
     private final mcMMO pluginRef;
     private Map<LivingEntity, BleedContainer> bleedList;
+    private boolean isIterating = false;
 
     public BleedTimerTask(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
@@ -56,6 +58,12 @@ public class BleedTimerTask extends BukkitRunnable {
      * @param ticks  Number of bleeding ticks
      */
     public void add(LivingEntity entity, LivingEntity attacker, int ticks, int bleedRank, int toolTier) {
+        if (!Bukkit.isPrimaryThread()) {
+            throw new IllegalStateException("Cannot add bleed task async!");
+        }
+
+        if (isIterating) throw new IllegalStateException("Cannot add task while iterating timers!");
+
         if (toolTier < 4)
             ticks = Math.max(1, (ticks / 3));
 
@@ -69,6 +77,7 @@ public class BleedTimerTask extends BukkitRunnable {
 
     @Override
     public void run() {
+        isIterating = true;
         Iterator<Entry<LivingEntity, BleedContainer>> bleedIterator = bleedList.entrySet().iterator();
 
         while (bleedIterator.hasNext()) {
@@ -175,5 +184,6 @@ public class BleedTimerTask extends BukkitRunnable {
 
 //            Bukkit.broadcastMessage(debugMessage);
         }
+        isIterating = false;
     }
 }

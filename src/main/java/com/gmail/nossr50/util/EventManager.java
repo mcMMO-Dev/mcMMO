@@ -22,6 +22,7 @@ import com.gmail.nossr50.events.party.McMMOPartyLevelUpEvent;
 import com.gmail.nossr50.events.party.McMMOPartyTeleportEvent;
 import com.gmail.nossr50.events.party.McMMOPartyXpGainEvent;
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
+import com.gmail.nossr50.events.players.McMMOPlayerProfileLoadEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityDeactivateEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
@@ -67,11 +68,8 @@ public class EventManager {
      * @param event this event
      * @return true if damage is NOT from an unnatural mcMMO skill (such as bleed DOTs)
      */
-    public boolean isDamageFromMcMMOComplexBehaviour(Event event) {
-        if (event instanceof FakeEntityDamageEvent) {
-            return true;
-        }
-        return false;
+    public static boolean isDamageFromMcMMOComplexBehaviour(Event event) {
+        return event instanceof FakeEntityDamageEvent;
     }
 
     /**
@@ -168,6 +166,13 @@ public class EventManager {
     public McMMOPlayerAbilityActivateEvent callPlayerAbilityActivateEvent(Player player, PrimarySkillType primarySkillType, SuperAbilityType superAbilityType) {
         McMMOPlayerAbilityActivateEvent event = new McMMOPlayerAbilityActivateEvent(player, primarySkillType, superAbilityType);
         pluginRef.getServer().getPluginManager().callEvent(event);
+
+        return event;
+    }
+
+    public static McMMOPlayerProfileLoadEvent callPlayerProfileLoadEvent(Player player, PlayerProfile profile){
+        McMMOPlayerProfileLoadEvent event = new McMMOPlayerProfileLoadEvent(player, profile);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         return event;
     }

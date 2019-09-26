@@ -426,18 +426,19 @@ public class FishingManager extends SkillManager {
 //
 //        if (getPlayer().getInventory().getItemInMainHand().getType() == Material.FISHING_ROD) {
 //            luck = getPlayer().getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.LUCK);
-//        } else {
+//        }
+//        else {
 //            // We know something was caught, so if the rod wasn't in the main hand it must be in the offhand
 //            luck = getPlayer().getInventory().getItemInOffHand().getEnchantmentLevel(Enchantment.LUCK);
 //        }
 //
 //        // Rather than subtracting luck (and causing a minimum 3% chance for every drop), scale by luck.
-//        diceRoll *= (1.0 - luck * pluginRef.getConfigManager().getConfigFishing().getLureLuckModifier() / 100);
+//        diceRoll *= (1.0 - luck * Config.getInstance().getFishingLureModifier() / 100);
 //
 //        FishingTreasure treasure = null;
 //
 //        for (Rarity rarity : Rarity.values()) {
-//            double dropRate = FishingTreasureConfig.getInstance().getItemDropRate(getLootTier(), rarity);
+//            double dropRate = TreasureConfig.getInstance().getItemDropRate(getLootTier(), rarity);
 //
 //            if (diceRoll <= dropRate) {
 //                /*if (rarity == Rarity.TRAP) {
@@ -445,7 +446,7 @@ public class FishingManager extends SkillManager {
 //                    break;
 //                }*/
 //
-//                List<FishingTreasure> fishingTreasures = FishingTreasureConfig.getInstance().fishingRewards.get(rarity);
+//                List<FishingTreasure> fishingTreasures = TreasureConfig.getInstance().fishingRewards.get(rarity);
 //
 //                if (fishingTreasures.isEmpty()) {
 //                    return null;
@@ -469,9 +470,10 @@ public class FishingManager extends SkillManager {
 //            treasureDrop.setDurability((short) (Misc.getRandom().nextInt(maxDurability)));
 //        }
 //
-//        if (treasureDrop.getAmount() > 1) {
+//        //TODO: Add option to randomize the amount rewarded
+//        /*if (treasureDrop.getAmount() > 1) {
 //            treasureDrop.setAmount(Misc.getRandom().nextInt(treasureDrop.getAmount()) + 1);
-//        }
+//        }*/
 //
 //        treasure.setDrop(treasureDrop);
 //
