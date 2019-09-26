@@ -9,20 +9,20 @@ import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public class SimpleRepairCostSerializer implements TypeSerializer<SimpleRepairCost<?>> {
+public class SimpleRepairCostSerializer implements TypeSerializer<SimpleRepairCost> {
 
     private static final String ITEM_MATCH = "Item-Match";
 
     @Nullable
     @Override
-    public SimpleRepairCost<?> deserialize(@NonNull TypeToken<?> type, @NonNull ConfigurationNode value) throws ObjectMappingException {
+    public SimpleRepairCost deserialize(@NonNull TypeToken<?> type, @NonNull ConfigurationNode value) throws ObjectMappingException {
         ItemMatch<?> itemMatch = value.getNode(ITEM_MATCH).getValue(new TypeToken<ItemMatch<?>>() {});
         SimpleRepairCost<?> simpleRepairCost = new SimpleRepairCost<>(itemMatch);
         return simpleRepairCost;
     }
 
     @Override
-    public void serialize(@NonNull TypeToken<?> type, @Nullable SimpleRepairCost<?> obj, @NonNull ConfigurationNode value) throws ObjectMappingException {
+    public void serialize(@NonNull TypeToken<?> type, @Nullable SimpleRepairCost obj, @NonNull ConfigurationNode value) throws ObjectMappingException {
         value.getNode(ITEM_MATCH).setValue(obj.getItemMatch());
     }
 }

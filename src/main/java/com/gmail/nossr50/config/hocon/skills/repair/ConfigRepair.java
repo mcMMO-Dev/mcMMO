@@ -6,16 +6,13 @@ import com.gmail.nossr50.config.hocon.skills.repair.repairmastery.ConfigRepairRe
 import com.gmail.nossr50.config.hocon.skills.repair.subskills.ConfigRepairSubSkills;
 import com.gmail.nossr50.datatypes.items.BukkitMMOItem;
 import com.gmail.nossr50.datatypes.items.ItemMatch;
-import com.gmail.nossr50.datatypes.items.ItemMatchProperty;
 import com.gmail.nossr50.datatypes.items.ItemWildcards;
-import com.gmail.nossr50.datatypes.permissions.PermissionWrapper;
 import com.gmail.nossr50.skills.repair.RepairCost;
 import com.gmail.nossr50.skills.repair.RepairTransaction;
 import com.gmail.nossr50.skills.repair.SimpleRepairCost;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;

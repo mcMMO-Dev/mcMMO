@@ -16,7 +16,7 @@ import org.bukkit.inventory.PlayerInventory;
  * This type is strictly for use with RepairTransaction, which represents the full cost of a Repair.
  * @see com.gmail.nossr50.skills.repair.RepairTransaction for more details
  */
-public class SimpleRepairCost<T extends ItemMatch> implements RepairCost<ItemMatch<?>> {
+public class SimpleRepairCost<T extends ItemMatch> implements RepairCost {
 
     private T itemMatch;
 
