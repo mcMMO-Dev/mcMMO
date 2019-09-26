@@ -2,6 +2,7 @@ package com.gmail.nossr50.config.hocon.serializers;
 
 import com.gmail.nossr50.datatypes.items.BukkitMMOItem;
 import com.gmail.nossr50.datatypes.items.MMOItem;
+import com.gmail.nossr50.util.nbt.RawNBT;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.ValueType;
@@ -15,6 +16,7 @@ public class ItemStackSerializer implements TypeSerializer<MMOItem<?>> {
 
     private static final String ITEM_MINECRAFT_NAME = "Item-Name";
     private static final String AMOUNT = "Amount";
+    private static final String NBT = "NBT";
 
     @Nullable
     @Override
@@ -38,7 +40,13 @@ public class ItemStackSerializer implements TypeSerializer<MMOItem<?>> {
             amount = 1;
         }
 
-        return new BukkitMMOItem(itemIdentifier, amount);
+        RawNBT rawNBT = null;
+
+        if(itemNode.getNode(NBT).getValueType() != ValueType.NULL) {
+            rawNBT = value.getNode(NBT).getValue(TypeToken.of(RawNBT.class));
+        }
+
+        return new BukkitMMOItem(itemIdentifier, amount, rawNBT);
     }
 
     @Override
@@ -46,6 +54,7 @@ public class ItemStackSerializer implements TypeSerializer<MMOItem<?>> {
         ConfigurationNode itemNode = value.getNode(ITEM_MINECRAFT_NAME);
         value.getNode(ITEM_MINECRAFT_NAME).setValue(obj.getNamespaceKey());
         itemNode.getNode(AMOUNT).setValue(obj.getItemAmount());
+        itemNode.getNode(NBT).setValue(obj.getRawNBT());
     }
 
 }
