@@ -4,10 +4,18 @@ import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.config.hocon.skills.repair.general.ConfigRepairGeneral;
 import com.gmail.nossr50.config.hocon.skills.repair.repairmastery.ConfigRepairRepairMastery;
 import com.gmail.nossr50.config.hocon.skills.repair.subskills.ConfigRepairSubSkills;
+import com.gmail.nossr50.datatypes.items.BukkitMMOItem;
+import com.gmail.nossr50.datatypes.items.ItemMatch;
+import com.gmail.nossr50.datatypes.items.ItemMatchProperty;
 import com.gmail.nossr50.datatypes.items.ItemWildcards;
+import com.gmail.nossr50.datatypes.permissions.PermissionWrapper;
+import com.gmail.nossr50.skills.repair.RepairCost;
+import com.gmail.nossr50.skills.repair.RepairTransaction;
+import com.gmail.nossr50.skills.repair.SimpleRepairCost;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -35,6 +43,38 @@ public class ConfigRepair {
         REPAIR_WILDCARDS_DEFAULTS.add(planksWildCard);
 
         CONFIG_REPAIRABLES_DEFAULTS = new ArrayList<>();
+
+        //TODO: Make a builder
+        //TODO: Make a builder
+        //TODO: Make a builder
+        //TODO: Make a builder
+        //TODO: Make a builder
+
+        //Diamond chestplate
+        ItemStack diamondArmorItemStack;
+        BukkitMMOItem<ItemStack> diamondArmorMMOItem = new BukkitMMOItem<>(DIAMOND_CHESTPLATE.getKey().toString(), 1, null);
+        ItemMatch<BukkitMMOItem<ItemStack>> diamondArmorItemMatch = new ItemMatch<>(diamondArmorMMOItem, null);
+
+        //Diamond Ore
+        BukkitMMOItem<ItemStack> diamondOre = new BukkitMMOItem<>(DIAMOND.getKey().toString(), 1, null);
+        ItemMatch<BukkitMMOItem<ItemStack>> diamondOreItemMatch = new ItemMatch<>(diamondArmorMMOItem, null);
+
+        //Repair Cost(s)
+        SimpleRepairCost<ItemMatch> diamondArmorRepairCost = new SimpleRepairCost<ItemMatch>(diamondOreItemMatch); //Just diamonds
+
+        //Repair Cost Hash Set
+        HashSet<RepairCost> diamondArmorRepairCosts = new HashSet<>();
+        diamondArmorRepairCosts.add(diamondArmorRepairCost); //Only costs 1 item
+
+        RepairTransaction repairTransaction = new RepairTransaction(diamondArmorRepairCosts);
+        Repairable diamondArmor = new Repairable(diamondArmorItemMatch, 0, diamondArmorMMOItem.getItemImplementation().getType().getMaxDurability(), repairTransaction, 1000, 10, null);
+
+        //TODO: ^ Make a builder
+        //TODO: ^ Make a builder
+        //TODO: ^ Make a builder
+        //TODO: ^ Make a builder
+
+        CONFIG_REPAIRABLES_DEFAULTS.add(diamondArmor);
 //        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(WOODEN_SWORD, planksWildCard, 1, 0, .25D));
 //        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(WOODEN_SHOVEL, planksWildCard, 1, 0, .15D));
 //        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(WOODEN_PICKAXE, Arrays.asList(PLANKS), 1, 0, .5D));
