@@ -96,6 +96,9 @@ public class WorldGuardUtils {
     private static boolean isCompatibleVersion(Plugin plugin) {
         //Check that the version of WG is at least version 7.xx
         boolean allClassesFound = true;
+        if (detectedIncompatibleWG) {
+            return false;
+        }
 
         if (!plugin.getDescription().getVersion().startsWith("7")) {
             markWGIncompatible();

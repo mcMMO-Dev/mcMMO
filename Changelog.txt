@@ -1,5 +1,6 @@
 Version 2.1.109
     Added missing 1.14 blocks to ability/tool activation blacklists
+    Fixed spamming of incompatible worldguard version message
 
 Version 2.1.108
     Fixed an amusing exploit for easy leveling in Acrobatics
