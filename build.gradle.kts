@@ -1,3 +1,4 @@
+import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     `java-library`
@@ -32,6 +33,10 @@ tasks {
         relocate("org.apache.juli", "com.gmail.nossr50.database.tomcat.juli")
         relocate("org.apache.tomcat", "com.gmail.nossr50.database.tomcat")
         relocate("org.bstats", "com.gmail.nossr50.metrics.bstat")
+    }
+
+    processResources {
+        filter<ReplaceTokens>("tokens" to mapOf("project.version" to project.version))
     }
 }
 
