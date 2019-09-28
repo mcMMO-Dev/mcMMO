@@ -8,7 +8,6 @@ import com.gmail.nossr50.events.scoreboard.McMMOScoreboardMakeboardEvent;
 import com.gmail.nossr50.events.scoreboard.ScoreboardEventReason;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;

@@ -77,7 +77,6 @@ public class mcMMO extends JavaPlugin {
     private NotificationManager notificationManager;
     private CommandRegistrationManager commandRegistrationManager;
 //    private NBTManager nbtManager;
-    private WorldGuardManager worldGuardManager;
     private PartyManager partyManager;
     private LocaleManager localeManager;
     private ChatManager chatManager;
@@ -284,9 +283,6 @@ public class mcMMO extends JavaPlugin {
         //Init Item Tools
         itemTools = new ItemTools(this);
 
-        //Init World Guard Utils (Not sure about the order of this one, might need to be loaded earlier)
-        worldGuardUtils = new WorldGuardUtils(this);
-
         //Init MOTD Utils
         messageOfTheDayUtils = new MessageOfTheDayUtils(this);
 
@@ -306,10 +302,14 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onLoad()
     {
-        worldGuardManager = new WorldGuardManager();
-
         if(getServer().getPluginManager().getPlugin("WorldGuard") != null) {
-            worldGuardManager.registerFlags();
+            worldGuardUtils = new WorldGuardUtils(); //Init WGU
+
+            if(worldGuardUtils.isWorldGuardLoaded()) {
+                //Register flags
+                System.out.println("[mcMMO - Registering World Guard Flags...]");
+                worldGuardUtils.getWorldGuardManager().registerFlags();
+            }
         }
     }
 
@@ -755,7 +755,7 @@ public class mcMMO extends JavaPlugin {
     }
 
     public WorldGuardManager getWorldGuardManager() {
-        return worldGuardManager;
+        return worldGuardUtils.getWorldGuardManager();
     }
 
     public PartyManager getPartyManager() {
