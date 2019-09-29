@@ -151,6 +151,10 @@ public class mcMMO extends JavaPlugin {
             //Init Locale Manager
             localeManager = new LocaleManager(this);
 
+            //Init Skill Tools
+            skillTools = new SkillTools(this);
+
+            //Init DST
             registerDynamicSettings(); //Do this after configs are loaded
 
             //Init TextComponentFactory
@@ -267,9 +271,6 @@ public class mcMMO extends JavaPlugin {
 
         //Init Scoreboard Manager
         scoreboardManager = new ScoreboardManager(this);
-
-        //Init Skill Tools
-        skillTools = new SkillTools(this);
 
         //Init Combat Tools
         combatTools = new CombatTools(this);
