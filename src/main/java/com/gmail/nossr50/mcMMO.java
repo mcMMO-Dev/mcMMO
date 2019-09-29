@@ -138,9 +138,6 @@ public class mcMMO extends JavaPlugin {
             PluginManager pluginManager = getServer().getPluginManager();
             healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;
 
-            //Init Locale Manager
-            localeManager = new LocaleManager(this);
-
             //Init Permission Tools
             permissionTools = new PermissionTools(this);
 
@@ -148,9 +145,12 @@ public class mcMMO extends JavaPlugin {
 
             setupFilePaths();
 
-            //modManager = new ModManager();
-
+            //Init config manager etc
             loadConfigFiles();
+
+            //Init Locale Manager
+            localeManager = new LocaleManager(this);
+
             registerDynamicSettings(); //Do this after configs are loaded
 
             //Init TextComponentFactory
