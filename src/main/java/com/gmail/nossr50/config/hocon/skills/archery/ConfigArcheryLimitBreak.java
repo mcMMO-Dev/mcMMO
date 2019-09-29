@@ -1,7 +1,9 @@
 package com.gmail.nossr50.config.hocon.skills.archery;
 
 import ninja.leaping.configurate.objectmapping.Setting;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
+@ConfigSerializable
 public class ConfigArcheryLimitBreak {
 
     private static final boolean DEFAULT_PVE = false;
