@@ -13,9 +13,9 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.HashSet;
 
-public class CustomItemTargetSerializer implements TypeSerializer<ItemMatch> {
+public class CustomItemTargetSerializer implements TypeSerializer<ItemMatch<?>> {
 
-    private static final String ITEM_CONSUMED_FOR_REPAIR = "Item-Consumed-For-Repair";
+    private static final String ITEM_CONSUMED_FOR_REPAIR = "Target-Item";
     private static final String NBT_REQUIREMENTS = "NBT-Requirements";
 
     @Nullable
@@ -32,7 +32,7 @@ public class CustomItemTargetSerializer implements TypeSerializer<ItemMatch> {
     }
 
     @Override
-    public void serialize(@NonNull TypeToken<?> type, @Nullable ItemMatch obj, @NonNull ConfigurationNode value) throws ObjectMappingException {
+    public void serialize(@NonNull TypeToken<?> type, @Nullable ItemMatch<?> obj, @NonNull ConfigurationNode value) throws ObjectMappingException {
         value.getNode(ITEM_CONSUMED_FOR_REPAIR).setValue(obj.getItem());
 
         if(obj.getItemMatchProperties().size() > 0) {

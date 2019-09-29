@@ -261,6 +261,8 @@ public final class ConfigManager {
         customSerializers.registerType(new TypeToken<FormulaType>() {}, new CustomEnumValueSerializer());
         customSerializers.registerType(new TypeToken<MMOItem<?>>() {}, new ItemStackSerializer());
         customSerializers.registerType(new TypeToken<Set<?>>() {}, new SetSerializer());
+
+        customSerializers.registerType(new TypeToken<ItemMatch<?>>() {}, new CustomItemTargetSerializer());
         customSerializers.registerType(new TypeToken<SimpleRepairCost>() {}, new SimpleRepairCostSerializer());
 
         customSerializers.registerType(TypeToken.of(TamingSummon.class), new TamingSummonSerializer());
@@ -274,7 +276,6 @@ public final class ConfigManager {
         customSerializers.registerType(TypeToken.of(PlayerNotificationSettings.class), new PlayerNotificationSerializer());
         customSerializers.registerType(TypeToken.of(SoundSetting.class), new SoundSettingSerializer());
         customSerializers.registerType(TypeToken.of(ItemWildcards.class), new ItemWildcardSerializer());
-        customSerializers.registerType(TypeToken.of(ItemMatch.class), new CustomItemTargetSerializer());
         customSerializers.registerType(TypeToken.of(RepairTransaction.class), new RepairTransactionSerializer());
         customSerializers.registerType(TypeToken.of(RawNBT.class), new RawNBTSerializer());
     }
