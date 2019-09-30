@@ -27,7 +27,7 @@ public class PrimitiveExChunkletStore implements ChunkletStore, Externalizable {
      *  - z = 0001 = 1
      *  => Chunklet coordinates (0, 1)
      *
-     * 01011111
+     * 01011111:
      *  - x = 0101 = 5
      *  - z = 1111 = 15
      *  => Chunklet coordinates (5, 15)

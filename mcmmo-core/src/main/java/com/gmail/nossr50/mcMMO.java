@@ -2,12 +2,12 @@ package com.gmail.nossr50;
 
 import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.config.ConfigManager;
-import com.gmail.nossr50.config.hocon.database.ConfigSectionCleaning;
-import com.gmail.nossr50.config.hocon.database.ConfigSectionMySQL;
-import com.gmail.nossr50.config.hocon.party.ConfigSectionPartyExperienceSharing;
-import com.gmail.nossr50.config.hocon.party.ConfigSectionPartyLevel;
-import com.gmail.nossr50.config.hocon.playerleveling.ConfigLeveling;
-import com.gmail.nossr50.config.hocon.scoreboard.ConfigScoreboard;
+import com.gmail.nossr50.config.database.ConfigSectionCleaning;
+import com.gmail.nossr50.config.database.ConfigSectionMySQL;
+import com.gmail.nossr50.config.party.ConfigSectionPartyExperienceSharing;
+import com.gmail.nossr50.config.party.ConfigSectionPartyLevel;
+import com.gmail.nossr50.config.playerleveling.ConfigLeveling;
+import com.gmail.nossr50.config.scoreboard.ConfigScoreboard;
 import com.gmail.nossr50.core.DynamicSettingsManager;
 import com.gmail.nossr50.core.MaterialMapStore;
 import com.gmail.nossr50.core.MetadataConstants;

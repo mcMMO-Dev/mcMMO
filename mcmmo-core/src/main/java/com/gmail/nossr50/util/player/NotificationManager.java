@@ -1,6 +1,6 @@
 package com.gmail.nossr50.util.player;
 
-import com.gmail.nossr50.config.hocon.notifications.PlayerNotificationSettings;
+import com.gmail.nossr50.config.notifications.PlayerNotificationSettings;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.notifications.SensitiveCommandType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;

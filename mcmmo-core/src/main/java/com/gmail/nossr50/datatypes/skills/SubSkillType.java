@@ -1,6 +1,6 @@
 package com.gmail.nossr50.datatypes.skills;
 
-import com.gmail.nossr50.config.hocon.HOCONUtil;
+import com.gmail.nossr50.config.HOCONUtil;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
 

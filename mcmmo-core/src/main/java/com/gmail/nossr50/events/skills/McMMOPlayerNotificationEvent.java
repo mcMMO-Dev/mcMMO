@@ -1,6 +1,6 @@
 package com.gmail.nossr50.events.skills;
 
-import com.gmail.nossr50.config.hocon.notifications.PlayerNotificationSettings;
+import com.gmail.nossr50.config.notifications.PlayerNotificationSettings;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
