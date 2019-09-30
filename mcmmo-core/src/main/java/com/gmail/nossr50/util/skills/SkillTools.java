@@ -461,7 +461,9 @@ public class SkillTools {
         }
 
         Material type = itemStack.getType();
-        short maxDurability = pluginRef.getRepairableManager().isRepairable(type) ? pluginRef.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability();
+        //TODO: Return to former implementation after Repair rewrite? Implementation is strange...
+        //TODO: (FORMER IMPLEMENTATION) short maxDurability = pluginRef.getRepairableManager().isRepairable(type) ? pluginRef.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability();
+        short maxDurability = type.getMaxDurability();
         durabilityModifier = (int) Math.min(durabilityModifier / (itemStack.getEnchantmentLevel(Enchantment.DURABILITY) + 1), maxDurability * maxDamageModifier);
 
         itemStack.setDurability((short) Math.min(itemStack.getDurability() + durabilityModifier, maxDurability));

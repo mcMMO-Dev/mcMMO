@@ -199,7 +199,9 @@ public class WoodcuttingManager extends SkillManager {
         }
 
         pluginRef.getSkillTools().handleDurabilityChange(inHand, durabilityLoss);
-        return (inHand.getDurability() < (pluginRef.getRepairableManager().isRepairable(type) ? pluginRef.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability()));
+        //TODO: Revert code back to its former implementation after the Repair rewrite? The implementation is strange so idk.
+        // (FORMER IMPLEMENTATION) return (inHand.getDurability() < (pluginRef.getRepairableManager().isRepairable(type) ? pluginRef.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability()));
+        return (inHand.getDurability() < type.getMaxDurability());
     }
 
     /**

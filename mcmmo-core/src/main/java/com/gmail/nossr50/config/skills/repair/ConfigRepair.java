@@ -4,42 +4,27 @@ import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.config.skills.repair.general.ConfigRepairGeneral;
 import com.gmail.nossr50.config.skills.repair.repairmastery.ConfigRepairRepairMastery;
 import com.gmail.nossr50.config.skills.repair.subskills.ConfigRepairSubSkills;
-import com.gmail.nossr50.datatypes.items.BukkitMMOItem;
-import com.gmail.nossr50.datatypes.items.ItemMatch;
-import com.gmail.nossr50.datatypes.items.ItemWildcards;
-import com.gmail.nossr50.skills.repair.RepairCost;
-import com.gmail.nossr50.skills.repair.RepairTransaction;
-import com.gmail.nossr50.skills.repair.SimpleRepairCost;
-import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-
-import static org.bukkit.Material.*;
 
 @ConfigSerializable
 public class ConfigRepair {
 
-    public static final ArrayList<Repairable> CONFIG_REPAIRABLES_DEFAULTS;
-    public static final HashSet<ItemWildcards> REPAIR_WILDCARDS_DEFAULTS;
+//    public static final ArrayList<Repairable> CONFIG_REPAIRABLES_DEFAULTS;
+//    public static final HashSet<ItemWildcards> REPAIR_WILDCARDS_DEFAULTS;
 //    public static final Material[] PLANKS = new Material[]{OAK_PLANKS, BIRCH_PLANKS, DARK_OAK_PLANKS, ACACIA_PLANKS, JUNGLE_PLANKS, SPRUCE_PLANKS};
 
     static {
-        REPAIR_WILDCARDS_DEFAULTS = new HashSet<>();
+//        REPAIR_WILDCARDS_DEFAULTS = new HashSet<>();
+//
+//        List<ItemStack> planksList = Arrays.asList(new ItemStack[]{new ItemStack(OAK_PLANKS, 1),
+//                new ItemStack(BIRCH_PLANKS, 1), new ItemStack(DARK_OAK_PLANKS, 1),
+//                new ItemStack(ACACIA_PLANKS, 1), new ItemStack(JUNGLE_PLANKS, 1),
+//                new ItemStack(SPRUCE_PLANKS, 1)});
+//        ItemWildcards planksWildCard = new ItemWildcards("Planks", new HashSet<>(planksList));
+//        REPAIR_WILDCARDS_DEFAULTS.add(planksWildCard);
 
-        List<ItemStack> planksList = Arrays.asList(new ItemStack[]{new ItemStack(OAK_PLANKS, 1),
-                new ItemStack(BIRCH_PLANKS, 1), new ItemStack(DARK_OAK_PLANKS, 1),
-                new ItemStack(ACACIA_PLANKS, 1), new ItemStack(JUNGLE_PLANKS, 1),
-                new ItemStack(SPRUCE_PLANKS, 1)});
-        ItemWildcards planksWildCard = new ItemWildcards("Planks", new HashSet<>(planksList));
-        REPAIR_WILDCARDS_DEFAULTS.add(planksWildCard);
-
-        CONFIG_REPAIRABLES_DEFAULTS = new ArrayList<>();
+//        CONFIG_REPAIRABLES_DEFAULTS = new ArrayList<>();
 
         //TODO: Make a builder
         //TODO: Make a builder
@@ -48,30 +33,30 @@ public class ConfigRepair {
         //TODO: Make a builder
 
         //Diamond chestplate
-        ItemStack diamondArmorItemStack;
-        BukkitMMOItem<ItemStack> diamondArmorMMOItem = new BukkitMMOItem<>(DIAMOND_CHESTPLATE.getKey().toString(), 1, null);
-        ItemMatch<BukkitMMOItem<ItemStack>> diamondArmorItemMatch = new ItemMatch<>(diamondArmorMMOItem, null);
-
-        //Diamond Ore
-        BukkitMMOItem<ItemStack> diamondOre = new BukkitMMOItem<>(DIAMOND.getKey().toString(), 1, null);
-        ItemMatch<BukkitMMOItem<ItemStack>> diamondOreItemMatch = new ItemMatch<>(diamondArmorMMOItem, null);
-
-        //Repair Cost(s)
-        SimpleRepairCost<ItemMatch> diamondArmorRepairCost = new SimpleRepairCost<ItemMatch>(diamondOreItemMatch); //Just diamonds
-
-        //Repair Cost Hash Set
-        HashSet<RepairCost> diamondArmorRepairCosts = new HashSet<>();
-        diamondArmorRepairCosts.add(diamondArmorRepairCost); //Only costs 1 item
-
-        RepairTransaction repairTransaction = new RepairTransaction(diamondArmorRepairCosts);
-        Repairable diamondArmor = new Repairable(diamondArmorItemMatch, 0, diamondArmorMMOItem.getItemImplementation().getType().getMaxDurability(), repairTransaction, 1000, 10, null);
+//        ItemStack diamondArmorItemStack;
+//        BukkitMMOItem<ItemStack> diamondArmorMMOItem = new BukkitMMOItem<>(DIAMOND_CHESTPLATE.getKey().toString(), 1, null);
+//        ItemMatch<BukkitMMOItem<ItemStack>> diamondArmorItemMatch = new ItemMatch<>(diamondArmorMMOItem, null);
+//
+//        //Diamond Ore
+//        BukkitMMOItem<ItemStack> diamondOre = new BukkitMMOItem<>(DIAMOND.getKey().toString(), 1, null);
+//        ItemMatch<BukkitMMOItem<ItemStack>> diamondOreItemMatch = new ItemMatch<>(diamondArmorMMOItem, null);
+//
+//        //Repair Cost(s)
+//        SimpleRepairCost<ItemMatch> diamondArmorRepairCost = new SimpleRepairCost<ItemMatch>(diamondOreItemMatch); //Just diamonds
+//
+//        //Repair Cost Hash Set
+//        HashSet<RepairCost> diamondArmorRepairCosts = new HashSet<>();
+//        diamondArmorRepairCosts.add(diamondArmorRepairCost); //Only costs 1 item
+//
+//        RepairTransaction repairTransaction = new RepairTransaction(diamondArmorRepairCosts);
+//        Repairable diamondArmor = new Repairable(diamondArmorItemMatch, 0, diamondArmorMMOItem.getItemImplementation().getType().getMaxDurability(), repairTransaction, 1000, 10, null);
 
         //TODO: ^ Make a builder
         //TODO: ^ Make a builder
         //TODO: ^ Make a builder
         //TODO: ^ Make a builder
 
-        CONFIG_REPAIRABLES_DEFAULTS.add(diamondArmor);
+//        CONFIG_REPAIRABLES_DEFAULTS.add(diamondArmor);
 //        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(WOODEN_SWORD, planksWildCard, 1, 0, .25D));
 //        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(WOODEN_SHOVEL, planksWildCard, 1, 0, .15D));
 //        CONFIG_REPAIRABLES_DEFAULTS.add(new Repairable(WOODEN_PICKAXE, Arrays.asList(PLANKS), 1, 0, .5D));
@@ -129,20 +114,20 @@ public class ConfigRepair {
     @Setting(value = ConfigConstants.SUB_SKILL_NODE, comment = "Settings for subskills stemming from Repair")
     private ConfigRepairSubSkills repairSubSkills = new ConfigRepairSubSkills();
 
-    @Setting(value = "Z-Repairables", comment = "This is the list of what can be repaired in mcMMO by Anvils and their properties." +
-            "\nThe \"Z\" in this config keys name is literally just to place this at the bottom of the config since the serializer uses alphabetical sorting." +
-            "\n\n -- Explanation for Parameters --" +
-            "\nItem: The name of the item, this has to be equivalent to the internal registry key (Name ID) Minecraft uses for this item" +
-            "\nItems-Used-To-Repair: The name of the item consumed as part of repairing, this has to be equivalent to the internal registry key (Name ID) Minecraft uses for this item" +
-            "\nMinimum-Quantity-Used-To-Repair: The amount of this item that is required to repair this item at a minimum." +
-            "\nOverride-Level-Requirement: If you would like to specify a specific skill level required to repair an item, do it here. It should be noted that a lot of items will be given automatic level requirements if you leave this at zero." +
-            "\nXP-Multiplier: When calculating how much XP to give the player for the repair, the end result will be multiplied by this value." +
-            "\n\nName ID List: https://minecraft.gamepedia.com/Java_Edition_data_values" +
-            "\nTIP: You can omit \"minecraft:\" from the Name ID if you want to, for example you can write \"red_wool\" instead of \"minecraft:red_wool\"")
-    private ArrayList<Repairable> configRepairablesList = CONFIG_REPAIRABLES_DEFAULTS;
+//    @Setting(value = "Z-Repairables", comment = "This is the list of what can be repaired in mcMMO by Anvils and their properties." +
+//            "\nThe \"Z\" in this config keys name is literally just to place this at the bottom of the config since the serializer uses alphabetical sorting." +
+//            "\n\n -- Explanation for Parameters --" +
+//            "\nItem: The name of the item, this has to be equivalent to the internal registry key (Name ID) Minecraft uses for this item" +
+//            "\nItems-Used-To-Repair: The name of the item consumed as part of repairing, this has to be equivalent to the internal registry key (Name ID) Minecraft uses for this item" +
+//            "\nMinimum-Quantity-Used-To-Repair: The amount of this item that is required to repair this item at a minimum." +
+//            "\nOverride-Level-Requirement: If you would like to specify a specific skill level required to repair an item, do it here. It should be noted that a lot of items will be given automatic level requirements if you leave this at zero." +
+//            "\nXP-Multiplier: When calculating how much XP to give the player for the repair, the end result will be multiplied by this value." +
+//            "\n\nName ID List: https://minecraft.gamepedia.com/Java_Edition_data_values" +
+//            "\nTIP: You can omit \"minecraft:\" from the Name ID if you want to, for example you can write \"red_wool\" instead of \"minecraft:red_wool\"")
+//    private ArrayList<Repairable> configRepairablesList = CONFIG_REPAIRABLES_DEFAULTS;
 
-    @Setting(value = "Z-Repairables-Wildcards", comment = "Used to define an alias that can be matched to several materials.")
-    private HashSet<ItemWildcards> itemWildcards = new HashSet<>();
+//    @Setting(value = "Z-Repairables-Wildcards", comment = "Used to define an alias that can be matched to several materials.")
+//    private HashSet<ItemWildcards> itemWildcards = new HashSet<>();
 
     public ConfigRepairGeneral getRepairGeneral() {
         return repairGeneral;
@@ -164,11 +149,11 @@ public class ConfigRepair {
         return repairSubSkills.getArcaneForging();
     }
 
-    public ArrayList<Repairable> getConfigRepairablesList() {
-        return configRepairablesList;
-    }
+//    public ArrayList<Repairable> getConfigRepairablesList() {
+//        return configRepairablesList;
+//    }
 
-    public HashSet<ItemWildcards> getItemWildcards() {
-        return itemWildcards;
-    }
+//    public HashSet<ItemWildcards> getItemWildcards() {
+//        return itemWildcards;
+//    }
 }

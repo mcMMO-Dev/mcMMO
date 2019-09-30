@@ -13,8 +13,6 @@ import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
-import com.gmail.nossr50.skills.repair.RepairManager;
-import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -599,40 +597,41 @@ public class PlayerListener implements Listener {
             case RIGHT_CLICK_BLOCK:
                 Material type = block.getType();
 
-                if (!pluginRef.getConfigManager().getConfigSuperAbilities().isMustSneakToActivate() || player.isSneaking()) {
-                    /* REPAIR CHECKS */
-                    if (type == pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getRepairBehaviour().getAnvilMaterial()
-                            && pluginRef.getSkillTools().doesPlayerHaveSkillPermission(PrimarySkillType.REPAIR, player)
-                            && pluginRef.getRepairableManager().isRepairable(heldItem)
-                            && heldItem.getAmount() <= 1) {
-                        RepairManager repairManager = mcMMOPlayer.getRepairManager();
-                        event.setCancelled(true);
-
-                        // Make sure the player knows what he's doing when trying to repair an enchanted item
-                        if (repairManager.checkConfirmation(true)) {
-                            repairManager.handleRepair(heldItem);
-                            player.updateInventory();
-                        }
-                    }
-                    /* SALVAGE CHECKS */
-                    else if (type == pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getSalvageBehaviour().getAnvilMaterial()
-                            && pluginRef.getSkillTools().doesPlayerHaveSkillPermission(PrimarySkillType.SALVAGE, player)
-                            && pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR)
-                            && pluginRef.getSalvageableManager().isSalvageable(heldItem)
-                            && heldItem.getAmount() <= 1) {
-                                SalvageManager salvageManager = pluginRef.getUserManager().getPlayer(player).getSalvageManager();
-                                event.setCancelled(true);
-
-                                // Make sure the player knows what he's doing when trying to salvage an enchanted item
-                                if (salvageManager.checkConfirmation(true)) {
-                                    pluginRef.getSkillTools().handleAbilitySpeedDecrease(player);
-                                    salvageManager.handleSalvage(block.getLocation(), heldItem);
-                                    player.updateInventory();
-                                }
-                    }
-                }
+//                if (!pluginRef.getConfigManager().getConfigSuperAbilities().isMustSneakToActivate() || player.isSneaking()) {
+//                    /* REPAIR CHECKS */
+//                    if (type == pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getRepairBehaviour().getAnvilMaterial()
+//                            && pluginRef.getSkillTools().doesPlayerHaveSkillPermission(PrimarySkillType.REPAIR, player)
+//                            && pluginRef.getRepairableManager().isRepairable(heldItem)
+//                            && heldItem.getAmount() <= 1) {
+//                        RepairManager repairManager = mcMMOPlayer.getRepairManager();
+//                        event.setCancelled(true);
+//
+//                        // Make sure the player knows what he's doing when trying to repair an enchanted item
+//                        if (repairManager.checkConfirmation(true)) {
+//                            repairManager.handleRepair(heldItem);
+//                            player.updateInventory();
+//                        }
+//                    }
+//                    /* SALVAGE CHECKS */
+//                    else if (type == pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getSalvageBehaviour().getAnvilMaterial()
+//                            && pluginRef.getSkillTools().doesPlayerHaveSkillPermission(PrimarySkillType.SALVAGE, player)
+//                            && pluginRef.getRankTools().hasUnlockedSubskill(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR)
+//                            && pluginRef.getSalvageableManager().isSalvageable(heldItem)
+//                            && heldItem.getAmount() <= 1) {
+//                                SalvageManager salvageManager = pluginRef.getUserManager().getPlayer(player).getSalvageManager();
+//                                event.setCancelled(true);
+//
+//                                // Make sure the player knows what he's doing when trying to salvage an enchanted item
+//                                if (salvageManager.checkConfirmation(true)) {
+//                                    pluginRef.getSkillTools().handleAbilitySpeedDecrease(player);
+//                                    salvageManager.handleSalvage(block.getLocation(), heldItem);
+//                                    player.updateInventory();
+//                                }
+//                    }
+//                }
                 /* BLAST MINING CHECK */
-                else if (miningManager.canDetonate()) {
+                //TODO: Turn to else if after repair/salvage rewrites (canDetonate check)
+                if (miningManager.canDetonate()) {
                     if (type == Material.TNT) {
                         event.setCancelled(true); // Don't detonate the TNT if they're too close
                     } else {

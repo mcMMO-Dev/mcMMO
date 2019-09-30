@@ -48,20 +48,13 @@ import com.gmail.nossr50.config.superabilities.ConfigSuperAbilities;
 import com.gmail.nossr50.config.worldblacklist.ConfigWorldBlacklist;
 import com.gmail.nossr50.datatypes.experience.CustomXPPerk;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
-import com.gmail.nossr50.datatypes.items.ItemMatch;
-import com.gmail.nossr50.datatypes.items.ItemWildcards;
-import com.gmail.nossr50.datatypes.items.MMOItem;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.properties.DamageProperty;
 import com.gmail.nossr50.datatypes.skills.properties.MaxBonusLevel;
 import com.gmail.nossr50.datatypes.skills.subskills.taming.TamingSummon;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.repair.RepairTransaction;
-import com.gmail.nossr50.skills.repair.SimpleRepairCost;
-import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
-import com.gmail.nossr50.util.nbt.RawNBT;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection;
@@ -258,14 +251,14 @@ public final class ConfigManager {
         customSerializers.registerType(new TypeToken<Material>() {}, new CustomEnumValueSerializer());
         customSerializers.registerType(new TypeToken<PartyFeature>() {}, new CustomEnumValueSerializer());
         customSerializers.registerType(new TypeToken<FormulaType>() {}, new CustomEnumValueSerializer());
-        customSerializers.registerType(new TypeToken<MMOItem<?>>() {}, new ItemStackSerializer());
+//        customSerializers.registerType(new TypeToken<MMOItem<?>>() {}, new ItemStackSerializer());
         customSerializers.registerType(new TypeToken<Set<?>>() {}, new SetSerializer());
 
-        customSerializers.registerType(new TypeToken<ItemMatch<?>>() {}, new CustomItemTargetSerializer());
-        customSerializers.registerType(new TypeToken<SimpleRepairCost>() {}, new SimpleRepairCostSerializer());
+//        customSerializers.registerType(new TypeToken<ItemMatch<?>>() {}, new CustomItemTargetSerializer());
+//        customSerializers.registerType(new TypeToken<SimpleRepairCost>() {}, new SimpleRepairCostSerializer());
 
         customSerializers.registerType(TypeToken.of(TamingSummon.class), new TamingSummonSerializer());
-        customSerializers.registerType(TypeToken.of(Repairable.class), new RepairableSerializer());
+//        customSerializers.registerType(TypeToken.of(Repairable.class), new RepairableSerializer());
         customSerializers.registerType(TypeToken.of(Salvageable.class), new SalvageableSerializer());
         customSerializers.registerType(TypeToken.of(MinecraftMaterialWrapper.class), new MinecraftMaterialWrapperSerializer());
         customSerializers.registerType(TypeToken.of(CustomXPPerk.class), new CustomXPPerkSerializer());
@@ -274,9 +267,9 @@ public final class ConfigManager {
         customSerializers.registerType(TypeToken.of(MaxBonusLevel.class), new MaxBonusLevelSerializer());
         customSerializers.registerType(TypeToken.of(PlayerNotificationSettings.class), new PlayerNotificationSerializer());
         customSerializers.registerType(TypeToken.of(SoundSetting.class), new SoundSettingSerializer());
-        customSerializers.registerType(TypeToken.of(ItemWildcards.class), new ItemWildcardSerializer());
-        customSerializers.registerType(TypeToken.of(RepairTransaction.class), new RepairTransactionSerializer());
-        customSerializers.registerType(TypeToken.of(RawNBT.class), new RawNBTSerializer());
+//        customSerializers.registerType(TypeToken.of(ItemWildcards.class), new ItemWildcardSerializer());
+//        customSerializers.registerType(TypeToken.of(RepairTransaction.class), new RepairTransactionSerializer());
+//        customSerializers.registerType(TypeToken.of(RawNBT.class), new RawNBTSerializer());
     }
 
     /**

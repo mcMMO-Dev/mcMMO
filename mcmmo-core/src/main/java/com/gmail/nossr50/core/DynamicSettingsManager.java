@@ -4,8 +4,6 @@ import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.behaviours.SkillBehaviourManager;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.repair.repairables.Repairable;
-import com.gmail.nossr50.skills.repair.repairables.RepairableManager;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.skills.salvage.salvageables.SalvageableManager;
 import com.gmail.nossr50.util.experience.ExperienceManager;
@@ -31,7 +29,7 @@ public class DynamicSettingsManager {
     private SkillPropertiesManager skillPropertiesManager;
 
     /* COLLECTION MANAGERS */
-    private RepairableManager repairableManager;
+//    private RepairableManager repairableManager;
     private SalvageableManager salvageableManager;
 
     /* Platform Ready Managers */
@@ -113,7 +111,7 @@ public class DynamicSettingsManager {
      */
     private void initCollectionManagers() {
         // Handles registration of repairables
-        repairableManager = new RepairableManager(getRepairables());
+//        repairableManager = new RepairableManager(getRepairables());
 
         // Handles registration of salvageables
         salvageableManager = new SalvageableManager(getSalvageables());
@@ -130,9 +128,9 @@ public class DynamicSettingsManager {
      *
      * @return the currently loaded repairables
      */
-    public ArrayList<Repairable> getRepairables() {
-        return pluginRef.getConfigManager().getConfigRepair().getConfigRepairablesList();
-    }
+//    public ArrayList<Repairable> getRepairables() {
+//        return pluginRef.getConfigManager().getConfigRepair().getConfigRepairablesList();
+//    }
 
     /**
      * Get all loaded salvageables (loaded from all salvageable configs)
@@ -152,9 +150,9 @@ public class DynamicSettingsManager {
 //        bonusDropManager.addToWhitelistByNameID(mcMMO.getConfigManager().getConfigWoodcutting().getBonusDrops());
     }
 
-    public RepairableManager getRepairableManager() {
-        return repairableManager;
-    }
+//    public RepairableManager getRepairableManager() {
+//        return repairableManager;
+//    }
 
     public SalvageableManager getSalvageableManager() {
         return salvageableManager;
