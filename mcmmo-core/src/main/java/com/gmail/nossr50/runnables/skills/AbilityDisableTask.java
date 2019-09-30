@@ -50,12 +50,12 @@ public class AbilityDisableTask extends BukkitRunnable {
         if (mcMMOPlayer.useChatNotifications()) {
             //player.sendMessage(ability.getAbilityOff());
             pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.ABILITY_OFF,
-                    pluginRef.getSkillTools().getSuperAbilityOff(superAbilityType));
+                    pluginRef.getSkillTools().getSuperAbilityOffLocaleKey(superAbilityType));
         }
 
 
         pluginRef.getSkillTools().sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS,
-                pluginRef.getSkillTools().getSuperAbilityOtherPlayerDeactivationStr(superAbilityType));
+                pluginRef.getSkillTools().getSuperAbilityOtherPlayerDeactivationLocaleKey(superAbilityType));
         new AbilityCooldownTask(pluginRef, mcMMOPlayer, superAbilityType).runTaskLater(pluginRef,
                 pluginRef.getPerkUtils().handleCooldownPerks(player,
                         pluginRef.getSkillTools().getSuperAbilityCooldown(superAbilityType) * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR));

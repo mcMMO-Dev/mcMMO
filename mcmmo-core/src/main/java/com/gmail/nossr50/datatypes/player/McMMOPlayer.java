@@ -929,11 +929,11 @@ public class McMMOPlayer {
         }
 
         if (useChatNotifications()) {
-            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUPER_ABILITY, pluginRef.getSkillTools().getSuperAbilityOn(superAbility));
+            pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUPER_ABILITY, pluginRef.getSkillTools().getSuperAbilityOnLocaleKey(superAbility));
         }
 
         pluginRef.getSkillTools().sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS,
-                pluginRef.getSkillTools().getSuperAbilityOtherPlayerActivationStr(superAbility));
+                pluginRef.getSkillTools().getSuperAbilityOtherPlayerActivationLocaleKey(superAbility));
 
         //Sounds
         pluginRef.getSoundManager().worldSendSound(player.getWorld(), player.getLocation(), SoundType.ABILITY_ACTIVATED_GENERIC);

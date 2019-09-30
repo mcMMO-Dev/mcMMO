@@ -770,30 +770,33 @@ public class SkillTools {
         return pluginRef.getConfigManager().getConfigSuperAbilities().getMaxLengthForSuper(pluginRef, superAbilityType);
     }
 
-    public String getSuperAbilityOn(SuperAbilityType superAbilityType) {
-        return pluginRef.getLocaleManager().getString("SuperAbility." + superAbilityType.toString() + ".On");
+    public String getSuperAbilityOnLocaleKey(SuperAbilityType superAbilityType) {
+        return "SuperAbility." + getPrettyCamelCaseName(superAbilityType) + ".On";
     }
 
-    public String getSuperAbilityOff(SuperAbilityType superAbilityType) {
-        return pluginRef.getLocaleManager().getString("SuperAbility." + superAbilityType.toString() + ".Off");
+    public String getSuperAbilityOffLocaleKey(SuperAbilityType superAbilityType) {
+        return "SuperAbility." + getPrettyCamelCaseName(superAbilityType) + ".Off";
     }
 
-    public String getSuperAbilityOtherPlayerActivationStr(SuperAbilityType superAbilityType) {
-        return pluginRef.getLocaleManager().getString("SuperAbility." + superAbilityType.toString() + ".Other.On");
+    public String getSuperAbilityOtherPlayerActivationLocaleKey(SuperAbilityType superAbilityType) {
+        return "SuperAbility." + getPrettyCamelCaseName(superAbilityType) + ".Other.On";
     }
 
-    public String getSuperAbilityOtherPlayerDeactivationStr(SuperAbilityType superAbilityType) {
-        return pluginRef.getLocaleManager().getString("SuperAbility." + superAbilityType.toString() + "Other.Off");
+    public String getSuperAbilityOtherPlayerDeactivationLocaleKey(SuperAbilityType superAbilityType) {
+        return "SuperAbility." + getPrettyCamelCaseName(superAbilityType) + "Other.Off";
     }
 
-    public String getSuperAbilityRefreshedStr(SuperAbilityType superAbilityType) {
-        return pluginRef.getLocaleManager().getString("SuperAbility." + superAbilityType.toString() + ".Refresh");
+    public String getSuperAbilityRefreshedLocaleKey(SuperAbilityType superAbilityType) {
+        return "SuperAbility." + getPrettyCamelCaseName(superAbilityType) + ".Refresh";
+    }
+
+    public String getPrettyCamelCaseName(Enum en) {
+        return StringUtils.convertToCamelCaseString(en.toString(), "_");
     }
 
     public String getPrettySuperAbilityName(SuperAbilityType superAbilityType) {
-        return StringUtils.getPrettyAbilityString(superAbilityType);
+        return StringUtils.getPrettySuperAbilityString(superAbilityType);
     }
-
 
     /**
      * Get the permissions for this ability.

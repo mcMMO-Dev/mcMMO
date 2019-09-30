@@ -37,7 +37,7 @@ public class StringUtils {
         return createPrettyString(entity.toString());
     }
 
-    public static String getPrettyAbilityString(SuperAbilityType ability) {
+    public static String getPrettySuperAbilityString(SuperAbilityType ability) {
         return createPrettyString(ability.toString());
     }
 
@@ -84,6 +84,24 @@ public class StringUtils {
 
     public static String getPrettyPartyFeatureString(PartyFeature partyFeature) {
         return createPrettyString(partyFeature.toString());
+    }
+
+    public static String convertToCamelCaseString(String baseString, String splitBy) {
+        String[] substrings = baseString.split(splitBy);
+        String prettyString = "";
+        int size = 1;
+
+        for (String string : substrings) {
+            prettyString = prettyString.concat(getCapitalized(string));
+
+            if (size < substrings.length) {
+                prettyString = prettyString.concat("");
+            }
+
+            size++;
+        }
+
+        return prettyString;
     }
 
     private static String createPrettyString(String baseString) {

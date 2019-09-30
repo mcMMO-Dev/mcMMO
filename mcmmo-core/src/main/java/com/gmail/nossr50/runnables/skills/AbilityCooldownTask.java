@@ -25,7 +25,7 @@ public class AbilityCooldownTask extends BukkitRunnable {
 
         mcMMOPlayer.setAbilityInformed(superAbilityType, true);
 
-        pluginRef.getNotificationManager().sendPlayerInformation(mcMMOPlayer.getPlayer(), NotificationType.ABILITY_REFRESHED, pluginRef.getSkillTools().getSuperAbilityRefreshedStr(superAbilityType));
+        pluginRef.getNotificationManager().sendPlayerInformation(mcMMOPlayer.getPlayer(), NotificationType.ABILITY_REFRESHED, pluginRef.getSkillTools().getSuperAbilityRefreshedLocaleKey(superAbilityType));
         //mcMMOPlayer.getPlayer().sendMessage(ability.getAbilityRefresh());
     }
 }
