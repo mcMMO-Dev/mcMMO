@@ -1,6 +1,5 @@
 package com.gmail.nossr50.worldguard;
 
-import com.gmail.nossr50.mcMMO;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.BukkitPlayer;
 import com.sk89q.worldguard.WorldGuard;
@@ -9,12 +8,8 @@ import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-
-import static org.bukkit.Bukkit.getServer;
 
 public class WorldGuardManager {
-    private WorldGuardPlugin worldGuardPluginRef;
 
     public boolean hasMainFlag(Player player)
     {
@@ -61,18 +56,6 @@ public class WorldGuardManager {
         //ApplicableRegionSet set = query.getApplicableRegions(loc);
 
         return query.testState(loc, WorldGuardPlugin.inst().wrapPlayer(player), WorldGuardFlags.MCMMO_HARDCORE_WG_FLAG);
-    }
-
-    private WorldGuardPlugin getWorldGuard() {
-        Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
-
-        // WorldGuard may not be loaded
-        if (!(plugin instanceof WorldGuardPlugin)) {
-            return null; // Maybe you want throw an exception instead
-        }
-
-        worldGuardPluginRef = (WorldGuardPlugin) plugin;
-        return worldGuardPluginRef;
     }
 
     public void registerFlags()

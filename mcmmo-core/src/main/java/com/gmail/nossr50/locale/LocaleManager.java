@@ -118,6 +118,7 @@ public final class LocaleManager {
                     pluginRef.getLogger().log(Level.WARNING, "Failed to load locale from " + localePath, e);
                 }
             }
+
             bundle = ResourceBundle.getBundle(BUNDLE_ROOT, locale);
             enBundle = ResourceBundle.getBundle(BUNDLE_ROOT, java.util.Locale.US);
         }

@@ -77,7 +77,6 @@ public class mcMMO extends JavaPlugin {
     private NotificationManager notificationManager;
     private CommandRegistrationManager commandRegistrationManager;
 //    private NBTManager nbtManager;
-    private WorldGuardManager worldGuardManager;
     private PartyManager partyManager;
     private LocaleManager localeManager;
     private ChatManager chatManager;
@@ -139,9 +138,6 @@ public class mcMMO extends JavaPlugin {
             PluginManager pluginManager = getServer().getPluginManager();
             healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;
 
-            //Init Locale Manager
-            localeManager = new LocaleManager(this);
-
             //Init Permission Tools
             permissionTools = new PermissionTools(this);
 
@@ -149,9 +145,16 @@ public class mcMMO extends JavaPlugin {
 
             setupFilePaths();
 
-            //modManager = new ModManager();
-
+            //Init config manager etc
             loadConfigFiles();
+
+            //Init Locale Manager
+            localeManager = new LocaleManager(this);
+
+            //Init Skill Tools
+            skillTools = new SkillTools(this);
+
+            //Init DST
             registerDynamicSettings(); //Do this after configs are loaded
 
             //Init TextComponentFactory
@@ -269,9 +272,6 @@ public class mcMMO extends JavaPlugin {
         //Init Scoreboard Manager
         scoreboardManager = new ScoreboardManager(this);
 
-        //Init Skill Tools
-        skillTools = new SkillTools(this);
-
         //Init Combat Tools
         combatTools = new CombatTools(this);
 
@@ -283,9 +283,6 @@ public class mcMMO extends JavaPlugin {
 
         //Init Item Tools
         itemTools = new ItemTools(this);
-
-        //Init World Guard Utils (Not sure about the order of this one, might need to be loaded earlier)
-        worldGuardUtils = new WorldGuardUtils(this);
 
         //Init MOTD Utils
         messageOfTheDayUtils = new MessageOfTheDayUtils(this);
@@ -306,10 +303,14 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onLoad()
     {
-        worldGuardManager = new WorldGuardManager();
-
         if(getServer().getPluginManager().getPlugin("WorldGuard") != null) {
-            worldGuardManager.registerFlags();
+            worldGuardUtils = new WorldGuardUtils(); //Init WGU
+
+            if(worldGuardUtils.isWorldGuardLoaded()) {
+                //Register flags
+                System.out.println("[mcMMO - Registering World Guard Flags...]");
+                worldGuardUtils.getWorldGuardManager().registerFlags();
+            }
         }
     }
 
@@ -755,7 +756,7 @@ public class mcMMO extends JavaPlugin {
     }
 
     public WorldGuardManager getWorldGuardManager() {
-        return worldGuardManager;
+        return worldGuardUtils.getWorldGuardManager();
     }
 
     public PartyManager getPartyManager() {
