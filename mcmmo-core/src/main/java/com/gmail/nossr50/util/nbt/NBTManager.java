@@ -4,10 +4,11 @@ package com.gmail.nossr50.util.nbt;
 import net.minecraft.server.v1_14_R1.NBTBase;
 import net.minecraft.server.v1_14_R1.NBTList;
 import net.minecraft.server.v1_14_R1.NBTTagCompound;
-import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_14_R1.util.CraftNBTTagConfigSerializer;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class NBTManager {
 
@@ -26,11 +27,26 @@ public class NBTManager {
         }
     }
 
+    public static void debugNBTInMainHandItem(Player player) {
+        player.sendMessage("Starting NBT Debug Dump...");
+        ItemStack itemStack = player.getInventory().getItemInMainHand();
+        player.sendMessage("Checking NBT for "+itemStack.toString());
+        NBTTagCompound nbtTagCompound = getNBT(itemStack);
+
+        if(nbtTagCompound == null) {
+            player.sendMessage("No NBT data found for main hand item.");
+            return;
+        }
+
+        player.sendMessage("Total NBT Entries: "+nbtTagCompound.getKeys().size());
+        printNBT(nbtTagCompound, player);
+        player.sendMessage("-- END OF NBT REPORT --");
+    }
+
+    @Nullable
     public static NBTTagCompound getNBT(ItemStack itemStack) {
-        Bukkit.broadcastMessage("Checking NBT for "+itemStack.toString());
         net.minecraft.server.v1_14_R1.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(itemStack);
-        NBTTagCompound rootTag = nmsItemStack.getTag();
-        return rootTag;
+        return nmsItemStack.getTag();
     }
 
     public static NBTBase constructNBT(String nbtString) {
@@ -43,9 +59,11 @@ public class NBTManager {
         }
     }
 
-    public static void printNBT(ItemStack itemStack) {
-        for(String key : getNBT(itemStack).getKeys()) {
-            Bukkit.broadcastMessage("NBT Key found: "+key);
+    public static void printNBT(NBTTagCompound nbtTagCompound, Player player) {
+        for(String key : nbtTagCompound.getKeys()) {
+            player.sendMessage("");
+            player.sendMessage("NBT Key: "+key);
+            player.sendMessage("NBT Value: " + nbtTagCompound.get(key).asString());
         }
     }
 

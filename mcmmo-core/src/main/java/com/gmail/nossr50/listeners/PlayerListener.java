@@ -15,6 +15,7 @@ import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.ChimaeraWing;
+import com.gmail.nossr50.util.nbt.NBTManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -894,6 +895,20 @@ public class PlayerListener implements Listener {
 
                 if (lowerCaseCommand.equals(skillName)) {
                     break;
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onDebugPlayerInteract(PlayerInteractEvent event) {
+        if(pluginRef.getUserManager().getPlayer(event.getPlayer()) != null) {
+            McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(event.getPlayer());
+            if(mcMMOPlayer.isDebugMode()) {
+                switch(event.getAction()) {
+                    case LEFT_CLICK_AIR:
+                    case LEFT_CLICK_BLOCK:
+                        NBTManager.debugNBTInMainHandItem(event.getPlayer());
                 }
             }
         }
