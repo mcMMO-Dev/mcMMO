@@ -5,6 +5,7 @@ subprojects {
 
     repositories {
         mavenLocal()
+        mavenCentral()
         maven("https://repo.spongepowered.org/maven")
         maven("https://hub.spigotmc.org/nexus/content/repositories/snapshoits")
         maven("https://repo.codemc.org/repository/maven-public")
