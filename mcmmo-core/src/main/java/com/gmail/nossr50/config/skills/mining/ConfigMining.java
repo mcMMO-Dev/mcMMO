@@ -53,7 +53,7 @@ public class ConfigMining {
     @Setting(value = ConfigConstants.SUB_SKILL_NODE)
     private ConfigMiningSubskills miningSubskills = new ConfigMiningSubskills();
 
-    public ConfigMiningSubskills getMiningSubskills() {
+    public ConfigMiningSubskills getMiningSubSkills() {
         return miningSubskills;
     }
 

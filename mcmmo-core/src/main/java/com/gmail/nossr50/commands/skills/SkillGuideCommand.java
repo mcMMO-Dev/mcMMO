@@ -17,10 +17,10 @@ public class SkillGuideCommand implements CommandExecutor {
     private final mcMMO pluginRef;
 
     public SkillGuideCommand(PrimarySkillType primarySkillType, mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
         header = pluginRef.getLocaleManager().getString("Guides.Header", pluginRef.getSkillTools().getLocalizedSkillName(primarySkillType));
         guide = getGuide(primarySkillType);
         invalidPage = pluginRef.getLocaleManager().getString("Guides.Page.Invalid");
-        this.pluginRef = pluginRef;
     }
 
     @Override

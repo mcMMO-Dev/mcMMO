@@ -52,6 +52,7 @@ import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.properties.DamageProperty;
 import com.gmail.nossr50.datatypes.skills.properties.MaxBonusLevel;
+import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.datatypes.skills.subskills.taming.TamingSummon;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
@@ -251,6 +252,7 @@ public final class ConfigManager {
         customSerializers.registerType(new TypeToken<Material>() {}, new CustomEnumValueSerializer());
         customSerializers.registerType(new TypeToken<PartyFeature>() {}, new CustomEnumValueSerializer());
         customSerializers.registerType(new TypeToken<FormulaType>() {}, new CustomEnumValueSerializer());
+        customSerializers.registerType(new TypeToken<CallOfTheWildType>() {}, new CustomEnumValueSerializer());
 //        customSerializers.registerType(new TypeToken<MMOItem<?>>() {}, new ItemStackSerializer());
         customSerializers.registerType(new TypeToken<Set<?>>() {}, new SetSerializer());
 

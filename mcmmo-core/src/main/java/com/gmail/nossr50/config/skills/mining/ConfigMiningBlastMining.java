@@ -2,7 +2,6 @@ package com.gmail.nossr50.config.skills.mining;
 
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
-import org.bukkit.Material;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,18 +11,18 @@ public class ConfigMiningBlastMining {
 
     private static final ArrayList<String> DETONATORS_DEFAULT;
     private static final HashMap<Integer, Double> DAMAGE_DECREASE_RANK_MAP;
-    private static final HashMap<Integer, Double> OREBONUS_RANK_MAP;
+    private static final HashMap<Integer, Double> ORE_BONUS_RANK_MAP;
     private static final HashMap<Integer, Double> DEBRIS_REDUCTION_MAP;
     private static final HashMap<Integer, Integer> DROP_MULTIPLIER_MAP;
     private static final HashMap<Integer, Double> RADIUS_MAP;
 
     static {
         DETONATORS_DEFAULT = new ArrayList<>();
-        DETONATORS_DEFAULT.add(Material.FLINT_AND_STEEL.getKey().toString());
-        DETONATORS_DEFAULT.add(Material.DIAMOND_PICKAXE.getKey().toString());
-        DETONATORS_DEFAULT.add(Material.GOLDEN_PICKAXE.getKey().toString());
-        DETONATORS_DEFAULT.add(Material.IRON_PICKAXE.getKey().toString());
-        DETONATORS_DEFAULT.add(Material.WOODEN_PICKAXE.getKey().toString());
+        DETONATORS_DEFAULT.add("flint_and_steel");
+        DETONATORS_DEFAULT.add("diamond_pickaxe");
+        DETONATORS_DEFAULT.add("golden_pickaxe");
+        DETONATORS_DEFAULT.add("iron_pickaxe");
+        DETONATORS_DEFAULT.add("wooden_pickaxe");
 
         DAMAGE_DECREASE_RANK_MAP = new HashMap<>();
         DAMAGE_DECREASE_RANK_MAP.put(1, 5.0);
@@ -35,15 +34,15 @@ public class ConfigMiningBlastMining {
         DAMAGE_DECREASE_RANK_MAP.put(7, 75.0);
         DAMAGE_DECREASE_RANK_MAP.put(8, 100.0);
 
-        OREBONUS_RANK_MAP = new HashMap<>();
-        OREBONUS_RANK_MAP.put(1, 35.0);
-        OREBONUS_RANK_MAP.put(2, 40.0);
-        OREBONUS_RANK_MAP.put(3, 45.0);
-        OREBONUS_RANK_MAP.put(4, 50.0);
-        OREBONUS_RANK_MAP.put(5, 55.0);
-        OREBONUS_RANK_MAP.put(6, 60.0);
-        OREBONUS_RANK_MAP.put(7, 65.0);
-        OREBONUS_RANK_MAP.put(8, 70.0);
+        ORE_BONUS_RANK_MAP = new HashMap<>();
+        ORE_BONUS_RANK_MAP.put(1, 35.0);
+        ORE_BONUS_RANK_MAP.put(2, 40.0);
+        ORE_BONUS_RANK_MAP.put(3, 45.0);
+        ORE_BONUS_RANK_MAP.put(4, 50.0);
+        ORE_BONUS_RANK_MAP.put(5, 55.0);
+        ORE_BONUS_RANK_MAP.put(6, 60.0);
+        ORE_BONUS_RANK_MAP.put(7, 65.0);
+        ORE_BONUS_RANK_MAP.put(8, 70.0);
 
         DEBRIS_REDUCTION_MAP = new HashMap<>();
         DEBRIS_REDUCTION_MAP.put(1, 5.0);
@@ -83,7 +82,7 @@ public class ConfigMiningBlastMining {
     private HashMap<Integer, Double> damageDecreaseMap = DAMAGE_DECREASE_RANK_MAP;
 
     @Setting(value = "Ore-Bonus-Per-Rank")
-    private HashMap<Integer, Double> orebonusMap = OREBONUS_RANK_MAP;
+    private HashMap<Integer, Double> orebonusMap = ORE_BONUS_RANK_MAP;
 
     @Setting(value = "Debris-Decrease-Per-Rank")
     private HashMap<Integer, Double> debrisReductionMap = DEBRIS_REDUCTION_MAP;

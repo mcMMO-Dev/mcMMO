@@ -153,6 +153,12 @@ public class mcMMO extends JavaPlugin {
             //Init Skill Tools
             skillTools = new SkillTools(this);
 
+            //Init Item Tools
+            itemTools = new ItemTools(this);
+
+            //Misc Tools Init
+            miscTools = new MiscTools(this);
+
             //Init DST
             registerDynamicSettings(); //Do this after configs are loaded
 
@@ -280,17 +286,11 @@ public class mcMMO extends JavaPlugin {
         //Init Block Tools
         blockTools = new BlockTools(this);
 
-        //Init Item Tools
-        itemTools = new ItemTools(this);
-
         //Init MOTD Utils
         messageOfTheDayUtils = new MessageOfTheDayUtils(this);
 
         //Init Sound Manager
         soundManager = new SoundManager(this);
-
-        //Misc Tools Init
-        miscTools = new MiscTools(this);
 
         //Init HardcoreManager
         hardcoreManager = new HardcoreManager(this);

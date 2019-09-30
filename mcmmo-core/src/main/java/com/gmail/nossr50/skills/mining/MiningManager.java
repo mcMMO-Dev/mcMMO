@@ -95,7 +95,7 @@ public class MiningManager extends SkillManager {
 
         boolean silkTouch = player.getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH);
 
-        if (silkTouch && !pluginRef.getConfigManager().getConfigMining().getMiningSubskills().getDoubleDrops().isAllowSilkTouchDoubleDrops())
+        if (silkTouch && !pluginRef.getConfigManager().getConfigMining().getMiningSubSkills().getDoubleDrops().isAllowSilkTouchDoubleDrops())
             return;
 
         //TODO: Make this readable
