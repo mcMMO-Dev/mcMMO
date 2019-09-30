@@ -7,6 +7,10 @@ plugins {
 
 tasks {
 
+    build {
+        dependsOn(shadowJar)
+    }
+
     shadowJar {
         dependencies {
             include(dependency("org.spongepowered:configurate-yaml"))
