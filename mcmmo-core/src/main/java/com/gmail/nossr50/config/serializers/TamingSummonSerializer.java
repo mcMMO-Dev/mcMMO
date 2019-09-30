@@ -2,6 +2,7 @@ package com.gmail.nossr50.config.serializers;
 
 import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.datatypes.skills.subskills.taming.TamingSummon;
+import com.google.common.collect.ImmutableList;
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
@@ -13,7 +14,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public class TamingSummonSerializer implements TypeSerializer<TamingSummon> {
 
     private static final String ITEM_MATERIAL = "Item-Id";
-    private static final String AMOUNT_REQUIRED = "Amount-Required";
+    private static final String AMOUNT_REQUIRED = "Item-Amount-Required";
     private static final String ENTITIES_SUMMONED = "Entities-Summoned";
     private static final String SUMMON_LIFESPAN_SECONDS = "Summon-Lifespan-Seconds";
     private static final String SUMMON_LIMIT = "Summon-Limit";
@@ -42,6 +43,20 @@ public class TamingSummonSerializer implements TypeSerializer<TamingSummon> {
         value.getNode(ENTITIES_SUMMONED).setValue(obj.getEntitiesSummoned());
         value.getNode(SUMMON_LIFESPAN_SECONDS).setValue(obj.getSummonLifespan());
         value.getNode(SUMMON_LIMIT).setValue(obj.getSummonCap());
-        value.getNode(CALL_OF_THE_WILD_TYPE).setValue(obj.getCallOfTheWildType());
+
+        /*
+         In order to append our ENUM directly we need to do this as Configurate seems to have no idea what serializer to use on its own accord
+         */
+
+        ConfigurationNode cotwNode = value.getNode(CALL_OF_THE_WILD_TYPE);
+        TypeToken<?> entryType = type.resolveType(CallOfTheWildType.class);
+        TypeSerializer entrySerial = cotwNode.getOptions().getSerializers().get(entryType);
+
+        if (entrySerial == null) {
+            throw new ObjectMappingException("No applicable type serializer for type " + entryType);
+        }
+
+        cotwNode.setValue(ImmutableList.of());
+        entrySerial.serialize(entryType, obj.getCallOfTheWildType(), cotwNode.getAppendedNode());
     }
 }
