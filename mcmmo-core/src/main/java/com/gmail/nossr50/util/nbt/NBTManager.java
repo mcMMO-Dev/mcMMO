@@ -32,27 +32,24 @@ public class NBTManager {
 
     public void debugNBTInMainHandItem(Player player) {
         player.sendMessage("Starting NBT Debug Dump...");
+
         ItemStack itemStack = player.getInventory().getItemInMainHand();
         player.sendMessage("Checking NBT for "+itemStack.toString());
-        NBTTagCompound nbtTagCompound = getNBTCopy(itemStack);
 
-        player.sendMessage("Total NBT Entries: "+nbtTagCompound.getKeys().size());
-        printNBT(itemStack, player);
+        player.sendMessage("Total NBT Entries: "+getNBTCopy(player.getInventory().getItemInMainHand()).getKeys().size());
+        printNBT(player.getInventory().getItemInMainHand(), player);
         player.sendMessage("-- END OF NBT REPORT --");
 
         player.sendMessage("Attempting to add NBT key named - Herp");
-        addFloatNBT(itemStack, "herp", 13.37F);
+        addFloatNBT(player.getInventory().getItemInMainHand(), "herp", 13.37F);
+        player.updateInventory();
 
-        player.sendMessage("(After HERP) Total NBT Entries: "+nbtTagCompound.getKeys().size());
-        printNBT(itemStack, player);
+        player.sendMessage("(After HERP) Total NBT Entries: "+getNBTCopy(player.getInventory().getItemInMainHand()).getKeys().size());
+        printNBT(player.getInventory().getItemInMainHand(), player);
         player.sendMessage("-- END OF NBT REPORT --");
 
         player.sendMessage("Attempting to save NBT data...");
         player.updateInventory();
-    }
-
-    public void addNewNBT(ItemStack itemStack) {
-
     }
 
     public net.minecraft.server.v1_14_R1.ItemStack getNMSItemStack(ItemStack itemStack) {
