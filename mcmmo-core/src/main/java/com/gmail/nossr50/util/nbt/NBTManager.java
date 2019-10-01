@@ -1,9 +1,11 @@
 package com.gmail.nossr50.util.nbt;
 
 
+import net.minecraft.server.v1_14_R1.Item;
 import net.minecraft.server.v1_14_R1.NBTBase;
 import net.minecraft.server.v1_14_R1.NBTList;
 import net.minecraft.server.v1_14_R1.NBTTagCompound;
+import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_14_R1.util.CraftNBTTagConfigSerializer;
 import org.bukkit.entity.Player;
@@ -41,12 +43,39 @@ public class NBTManager {
         player.sendMessage("Total NBT Entries: "+nbtTagCompound.getKeys().size());
         printNBT(nbtTagCompound, player);
         player.sendMessage("-- END OF NBT REPORT --");
+
+        player.sendMessage("Attempting to add NBT key named - Herp");
+        addFloatNBT(nbtTagCompound, "herp", 13.37F);
+
+        player.sendMessage("(After HERP) Total NBT Entries: "+nbtTagCompound.getKeys().size());
+        printNBT(nbtTagCompound, player);
+        player.sendMessage("-- END OF NBT REPORT --");
+
+        player.sendMessage("Attempting to save NBT data...");
+        player.getInventory().setItemInMainHand(saveNBT(itemStack, nbtTagCompound));
+        player.updateInventory();
+    }
+
+    public static ItemStack saveNBT(ItemStack itemStack, NBTTagCompound nbtTagCompound) {
+        net.minecraft.server.v1_14_R1.ItemStack nmsItemStack = getNMSItemStack(itemStack);
+        nmsItemStack.save(nbtTagCompound);
+        CraftItemStack craftItemStack = CraftItemStack.asCraftMirror(nmsItemStack);
+        itemStack.setItemMeta(craftItemStack.getItemMeta());
+        return itemStack;
+    }
+
+    public static net.minecraft.server.v1_14_R1.ItemStack getNMSItemStack(ItemStack itemStack) {
+        return CraftItemStack.asNMSCopy(itemStack);
     }
 
     @Nullable
     public static NBTTagCompound getNBT(ItemStack itemStack) {
         net.minecraft.server.v1_14_R1.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(itemStack);
         return nmsItemStack.getTag();
+    }
+
+    public static void addFloatNBT(NBTTagCompound nbtTagCompound, String key, float value) {
+        nbtTagCompound.setFloat(key, value);
     }
 
     public static NBTBase constructNBT(String nbtString) {
