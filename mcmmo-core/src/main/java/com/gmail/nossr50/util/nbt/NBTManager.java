@@ -37,21 +37,19 @@ public class NBTManager {
         NBTTagCompound nbtTagCompound = getNBTCopy(itemStack);
 
         player.sendMessage("Total NBT Entries: "+nbtTagCompound.getKeys().size());
-        printNBT(nbtTagCompound, player);
+        printNBT(itemStack, player);
         player.sendMessage("-- END OF NBT REPORT --");
 
         player.sendMessage("Attempting to add NBT key named - Herp");
         addFloatNBT(itemStack, "herp", 13.37F);
 
         player.sendMessage("(After HERP) Total NBT Entries: "+nbtTagCompound.getKeys().size());
-        printNBT(nbtTagCompound, player);
+        printNBT(itemStack, player);
         player.sendMessage("-- END OF NBT REPORT --");
 
         player.sendMessage("Attempting to save NBT data...");
         player.updateInventory();
     }
-
-
 
     public void addNewNBT(ItemStack itemStack) {
 
@@ -109,11 +107,12 @@ public class NBTManager {
         }
     }
 
-    public void printNBT(NBTTagCompound nbtTagCompound, Player player) {
-        for(String key : nbtTagCompound.getKeys()) {
+    public void printNBT(ItemStack itemStack, Player player) {
+        NBTTagCompound tagCompoundCopy = getNBTCopy(itemStack);
+        for(String key : tagCompoundCopy.getKeys()) {
             player.sendMessage("");
             player.sendMessage("NBT Key: "+key);
-            player.sendMessage("NBT Value: " + nbtTagCompound.get(key).asString());
+            player.sendMessage("NBT Value: " + tagCompoundCopy.get(key).asString());
         }
     }
 
