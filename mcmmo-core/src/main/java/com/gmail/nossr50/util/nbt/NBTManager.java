@@ -59,28 +59,40 @@ public class NBTManager {
     @NonNull
     public NBTTagCompound getNBTCopy(ItemStack itemStack) {
         net.minecraft.server.v1_14_R1.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(itemStack);
-        return nmsItemStack.save(new NBTTagCompound());
+        NBTTagCompound freshNBTCopy = nmsItemStack.save(new NBTTagCompound());
+
+        if(!freshNBTCopy.hasKeyOfType("tag", 10)) {
+            freshNBTCopy.set("tag", new NBTTagCompound());
+        }
+
+        return freshNBTCopy;
     }
 
     public void addFloatNBT(ItemStack itemStack, String key, float value) {
         //NBT Copied off Item
         net.minecraft.server.v1_14_R1.ItemStack nmsIS = getNMSItemStack(itemStack);
-        NBTTagCompound freshNBTCopy = nmsIS.save(new NBTTagCompound());
+        NBTTagCompound freshNBTCopy = getNBTCopy(itemStack);
 
         //New Float NBT Value
         NBTTagCompound updatedNBT = new NBTTagCompound();
         updatedNBT.setFloat(key, value);
 
         //Merge
-        freshNBTCopy.a(updatedNBT);
+        mergeToTagCompound(freshNBTCopy, updatedNBT);
 
         //Invoke load() time
-        applyNBT(nmsIS, updatedNBT);
+        applyNBT(nmsIS, freshNBTCopy);
 
         //Apply Item Meta (Not sure if needed)
         CraftItemStack craftItemStack = CraftItemStack.asCraftMirror(nmsIS);
         itemStack.setItemMeta(craftItemStack.getItemMeta());
     }
+
+    public void mergeToTagCompound(NBTTagCompound targetCompound, NBTTagCompound modificationCompound) {
+        NBTTagCompound tagCompound = (NBTTagCompound) targetCompound.get("tag");
+        tagCompound.a(modificationCompound);
+    }
+
 
 
     public void applyNBT(net.minecraft.server.v1_14_R1.ItemStack nmsItemStack, NBTTagCompound nbtTagCompound) {
