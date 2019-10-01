@@ -76,10 +76,14 @@ public class NBTManager {
 
         //Invoke load() time
         applyNBT(nmsIS, updatedNBT);
+
+        //Apply Item Meta (Not sure if needed)
+        CraftItemStack craftItemStack = CraftItemStack.asCraftMirror(nmsIS);
+        itemStack.setItemMeta(craftItemStack.getItemMeta());
     }
 
 
-    public net.minecraft.server.v1_14_R1.ItemStack applyNBT(net.minecraft.server.v1_14_R1.ItemStack nmsItemStack, NBTTagCompound nbtTagCompound) {
+    public void applyNBT(net.minecraft.server.v1_14_R1.ItemStack nmsItemStack, NBTTagCompound nbtTagCompound) {
 
         try {
             Class clazz = Class.forName("net.minecraft.server.v1_14_R1.ItemStack");
@@ -90,8 +94,6 @@ public class NBTManager {
         } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
         }
-
-        return nmsItemStack;
     }
 
     public NBTBase constructNBT(String nbtString) {
