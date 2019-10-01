@@ -12,6 +12,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 public class NBTManager {
 
     private static final String CRAFT_META_ITEM_CLASS_PATH = "org.bukkit.craftbukkit.inventory.CraftMetaItem";
@@ -58,9 +61,19 @@ public class NBTManager {
 
     public static ItemStack saveNBT(ItemStack itemStack, NBTTagCompound nbtTagCompound) {
         net.minecraft.server.v1_14_R1.ItemStack nmsItemStack = getNMSItemStack(itemStack);
-        nmsItemStack.save(nbtTagCompound);
-        CraftItemStack craftItemStack = CraftItemStack.asCraftMirror(nmsItemStack);
-        itemStack.setItemMeta(craftItemStack.getItemMeta());
+
+        try {
+            Class clazz = Class.forName("net.minecraft.server.v1_14_R1.ItemStack");
+            Class[] methodParameters = new Class[]{ NBTTagCompound.class };
+            Method loadMethod = clazz.getDeclaredMethod("load", methodParameters);
+            loadMethod.setAccessible(true);
+            loadMethod.invoke(nmsItemStack, nbtTagCompound);
+        } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+//        nmsItemStack.save(nbtTagCompound);
+//        itemStack.setItemMeta(nmsItemStack..getItemMeta());
         return itemStack;
     }
 
