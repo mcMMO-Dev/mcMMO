@@ -4,7 +4,7 @@ import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
@@ -192,7 +192,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+        BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
         mcMMOPlayer.checkGodMode();
         mcMMOPlayer.checkParty();
@@ -436,7 +436,7 @@ public class PlayerListener implements Listener {
                 return;
             }
 
-            McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+            BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
             Item drop = event.getItem();
             //Remove tracking
@@ -495,7 +495,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+        BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
         //There's an issue with using Async saves on player quit
         //Basically there are conditions in which an async task does not execute fast enough to save the data if the server shutdown shortly after this task was scheduled
         mcMMOPlayer.logout(true);
@@ -588,7 +588,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+        BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
         MiningManager miningManager = mcMMOPlayer.getMiningManager();
         Block block = event.getClickedBlock();
         ItemStack heldItem = player.getInventory().getItemInMainHand();
@@ -704,7 +704,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+        BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         //Spam Fishing Detection
@@ -843,7 +843,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getOfflinePlayer(player);
+        BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getOfflinePlayer(player);
 
         if (mcMMOPlayer == null) {
             pluginRef.debug(player.getName() + "is chatting, but is currently not logged in to the server.");

@@ -1,7 +1,7 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.items.ChimaeraWingWarmup;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -13,11 +13,11 @@ import org.bukkit.util.Vector;
 
 public final class ChimaeraWing {
     private final mcMMO pluginRef;
-    private final McMMOPlayer mcMMOPlayer;
+    private final BukkitMMOPlayer mcMMOPlayer;
     private final Player player;
     private final Location location;
 
-    public ChimaeraWing(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
+    public ChimaeraWing(mcMMO pluginRef, BukkitMMOPlayer mcMMOPlayer) {
         this.pluginRef = pluginRef;
         this.mcMMOPlayer = mcMMOPlayer;
         this.player = mcMMOPlayer.getPlayer();

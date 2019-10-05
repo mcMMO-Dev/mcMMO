@@ -1,6 +1,6 @@
 package com.gmail.nossr50.runnables.items;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.ChimaeraWing;
 import org.bukkit.Location;
@@ -10,9 +10,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class ChimaeraWingWarmup extends BukkitRunnable {
     private mcMMO pluginRef;
-    private McMMOPlayer mcMMOPlayer;
+    private BukkitMMOPlayer mcMMOPlayer;
 
-    public ChimaeraWingWarmup(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
+    public ChimaeraWingWarmup(mcMMO pluginRef, BukkitMMOPlayer mcMMOPlayer) {
         this.pluginRef = pluginRef;
         this.mcMMOPlayer = mcMMOPlayer;
     }

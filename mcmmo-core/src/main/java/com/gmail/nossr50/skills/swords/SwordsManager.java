@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills.swords;
 
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Map;
 
 public class SwordsManager extends SkillManager {
-    public SwordsManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
+    public SwordsManager(mcMMO pluginRef, BukkitMMOPlayer mcMMOPlayer) {
         super(pluginRef, mcMMOPlayer, PrimarySkillType.SWORDS);
     }
 

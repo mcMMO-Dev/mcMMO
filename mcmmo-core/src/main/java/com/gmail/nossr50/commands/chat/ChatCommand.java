@@ -3,7 +3,7 @@ package com.gmail.nossr50.commands.chat;
 import com.gmail.nossr50.commands.CommandConstants;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -26,7 +26,7 @@ public abstract class ChatCommand implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        McMMOPlayer mcMMOPlayer;
+        BukkitMMOPlayer mcMMOPlayer;
 
         switch (args.length) {
             case 0:
@@ -109,7 +109,7 @@ public abstract class ChatCommand implements TabExecutor {
 
     protected abstract void handleChatSending(CommandSender sender, String[] args);
 
-    private void enableChatMode(McMMOPlayer mcMMOPlayer, CommandSender sender) {
+    private void enableChatMode(BukkitMMOPlayer mcMMOPlayer, CommandSender sender) {
         if (chatMode == ChatMode.PARTY && mcMMOPlayer.getParty() == null) {
             sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.None"));
             return;
@@ -124,7 +124,7 @@ public abstract class ChatCommand implements TabExecutor {
         sender.sendMessage(getChatModeEnabledMessage(chatMode, true));
     }
 
-    private void disableChatMode(McMMOPlayer mcMMOPlayer, CommandSender sender) {
+    private void disableChatMode(BukkitMMOPlayer mcMMOPlayer, CommandSender sender) {
         if (chatMode == ChatMode.PARTY && mcMMOPlayer.getParty() == null) {
             sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.None"));
             return;

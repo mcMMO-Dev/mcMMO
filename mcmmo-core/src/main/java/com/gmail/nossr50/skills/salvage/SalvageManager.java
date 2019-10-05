@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills.salvage;
 
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.behaviours.SalvageBehaviour;
@@ -24,7 +24,7 @@ public class SalvageManager extends SkillManager {
     private int lastClick;
     private SalvageBehaviour salvageBehaviour;
 
-    public SalvageManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
+    public SalvageManager(mcMMO pluginRef, BukkitMMOPlayer mcMMOPlayer) {
         super(pluginRef, mcMMOPlayer, PrimarySkillType.SALVAGE);
         this.salvageBehaviour = pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getSalvageBehaviour();
     }

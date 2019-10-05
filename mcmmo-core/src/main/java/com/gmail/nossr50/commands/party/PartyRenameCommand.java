@@ -1,7 +1,7 @@
 package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.command.Command;
@@ -26,7 +26,7 @@ public class PartyRenameCommand implements CommandExecutor {
                     return true;
                 }
 
-                McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer((Player) sender);
+                BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer((Player) sender);
                 Party playerParty = mcMMOPlayer.getParty();
 
                 String oldPartyName = playerParty.getName();

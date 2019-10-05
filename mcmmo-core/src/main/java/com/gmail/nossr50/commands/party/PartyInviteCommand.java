@@ -1,7 +1,7 @@
 package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -21,7 +21,7 @@ public class PartyInviteCommand implements CommandExecutor {
         switch (args.length) {
             case 2:
                 String targetName = pluginRef.getCommandTools().getMatchedPlayerName(args[1]);
-                McMMOPlayer mcMMOTarget = pluginRef.getUserManager().getOfflinePlayer(targetName);
+                BukkitMMOPlayer mcMMOTarget = pluginRef.getUserManager().getOfflinePlayer(targetName);
 
                 if (!pluginRef.getCommandTools().checkPlayerExistence(sender, targetName, mcMMOTarget)) {
                     return false;
@@ -35,7 +35,7 @@ public class PartyInviteCommand implements CommandExecutor {
                 }
 
                 Player player = (Player) sender;
-                McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+                BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
                 String playerName = player.getName();
 
                 if (player.equals(target)) {

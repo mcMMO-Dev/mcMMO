@@ -2,7 +2,7 @@ package com.gmail.nossr50.skills.archery;
 
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.behaviours.ArcheryBehaviour;
@@ -21,7 +21,7 @@ public class ArcheryManager extends SkillManager {
 
     private final ArcheryBehaviour archeryBehaviour;
 
-    public ArcheryManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
+    public ArcheryManager(mcMMO pluginRef, BukkitMMOPlayer mcMMOPlayer) {
         super(pluginRef, mcMMOPlayer, PrimarySkillType.ARCHERY);
 
         //Init Behaviour

@@ -4,7 +4,7 @@ import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -235,11 +235,11 @@ public class SkillTools {
         }
     }
 
-    public void applyXpGain(McMMOPlayer mcMMOPlayer, PrimarySkillType skill, float xp, XPGainReason xpGainReason) {
+    public void applyXpGain(BukkitMMOPlayer mcMMOPlayer, PrimarySkillType skill, float xp, XPGainReason xpGainReason) {
         mcMMOPlayer.beginXpGain(skill, xp, xpGainReason, XPGainSource.SELF);
     }
 
-    public void applyXpGain(McMMOPlayer mcMMOPlayer, PrimarySkillType skill, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
+    public void applyXpGain(BukkitMMOPlayer mcMMOPlayer, PrimarySkillType skill, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
         mcMMOPlayer.beginXpGain(skill, xp, xpGainReason, xpGainSource);
     }
 
@@ -251,7 +251,7 @@ public class SkillTools {
      * @param superAbilityType target Super Ability
      * @return how long an ability should last in seconds
      */
-    public int calculateAbilityLength(McMMOPlayer mcMMOPlayer, PrimarySkillType skill, SuperAbilityType superAbilityType) {
+    public int calculateAbilityLength(BukkitMMOPlayer mcMMOPlayer, PrimarySkillType skill, SuperAbilityType superAbilityType) {
         //These values change depending on whether or not the server is in retro mode
         int abilityLengthVar = pluginRef.getConfigManager().getConfigSuperAbilities().getSuperAbilityStartingSeconds();
 
@@ -279,7 +279,7 @@ public class SkillTools {
      * @param superAbilityType target Super Ability
      * @return how long an ability should last in seconds
      */
-    public int calculateAbilityLengthPerks(McMMOPlayer mcMMOPlayer, PrimarySkillType skill, SuperAbilityType superAbilityType) {
+    public int calculateAbilityLengthPerks(BukkitMMOPlayer mcMMOPlayer, PrimarySkillType skill, SuperAbilityType superAbilityType) {
         return getEnduranceLength(mcMMOPlayer.getPlayer()) + calculateAbilityLength(mcMMOPlayer, skill, superAbilityType);
     }
 

@@ -11,6 +11,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcmmo.api.data.MMOPlayer;
 import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
 import com.gmail.nossr50.runnables.skills.ToolLowerTask;
 import com.gmail.nossr50.skills.SkillManager;
@@ -45,7 +46,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-public class McMMOPlayer {
+public class BukkitMMOPlayer implements MMOPlayer<Player> {
     private final mcMMO pluginRef;
     private final Map<PrimarySkillType, SkillManager> skillManagerMap = new HashMap<>();
     private final Map<SuperAbilityType, Boolean> superAbilityModeMap = new HashMap<>();
@@ -78,7 +79,7 @@ public class McMMOPlayer {
     private HashMap<PrimarySkillType, Double> personalXPModifiers;
     private String playerName;
 
-    public McMMOPlayer(Player player, PlayerProfile profile, mcMMO pluginRef) {
+    public BukkitMMOPlayer(Player player, PlayerProfile profile, mcMMO pluginRef) {
         this.pluginRef = pluginRef;
         this.playerName = player.getName();
         UUID uuid = player.getUniqueId();
@@ -693,6 +694,7 @@ public class McMMOPlayer {
      * Players & Profiles
      */
 
+    @Override
     public Player getPlayer() {
         return player;
     }

@@ -2,7 +2,7 @@ package com.gmail.nossr50.skills.woodcutting;
 
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -27,7 +27,7 @@ public class WoodcuttingManager extends SkillManager {
     private final WoodcuttingBehaviour woodcuttingBehaviour;
     private boolean treeFellerReachedThreshold;
 
-    public WoodcuttingManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
+    public WoodcuttingManager(mcMMO pluginRef, BukkitMMOPlayer mcMMOPlayer) {
         super(pluginRef, mcMMOPlayer, PrimarySkillType.WOODCUTTING);
         this.treeFellerReachedThreshold = false;
         this.woodcuttingBehaviour = pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getWoodcuttingBehaviour();

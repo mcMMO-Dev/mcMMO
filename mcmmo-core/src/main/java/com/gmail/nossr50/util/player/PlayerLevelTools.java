@@ -1,7 +1,7 @@
 package com.gmail.nossr50.util.player;
 
 import com.gmail.nossr50.datatypes.experience.CustomXPPerk;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.entity.Player;
@@ -41,7 +41,7 @@ public class PlayerLevelTools {
      * @param primarySkillType target skill
      * @return if the player would qualify for the XP boost if its enabled
      */
-    public boolean qualifiesForEarlyGameBoost(McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType) {
+    public boolean qualifiesForEarlyGameBoost(BukkitMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType) {
         return mcMMOPlayer.getSkillLevel(primarySkillType) < 1;
     }
 

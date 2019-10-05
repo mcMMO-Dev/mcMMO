@@ -1,7 +1,7 @@
 package com.gmail.nossr50.util.scoreboards;
 
 import com.gmail.nossr50.datatypes.database.PlayerStat;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.events.scoreboard.McMMOScoreboardMakeboardEvent;
@@ -239,7 +239,7 @@ public class ScoreboardManager {
         }
 
         for (String playerName : dirtyPowerLevels) {
-            McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(playerName);
+            BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(playerName);
 
             if (mcMMOPlayer == null) {
                 continue;

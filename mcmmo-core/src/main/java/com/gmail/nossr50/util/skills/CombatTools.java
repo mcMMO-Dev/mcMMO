@@ -5,7 +5,7 @@ import com.gmail.nossr50.datatypes.experience.SpecialXPKey;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.meta.OldName;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
@@ -47,7 +47,7 @@ public final class CombatTools {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+        BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
         SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
         double initialDamage = event.getDamage();
         double finalDamage = initialDamage;
@@ -91,7 +91,7 @@ public final class CombatTools {
         double finalDamage = initialDamage;
         Map<DamageModifier, Double> modifiers = getModifiers(event);
 
-        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+        BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
         AxesManager axesManager = mcMMOPlayer.getAxesManager();
 
         if (axesManager.canActivateAbility()) {
@@ -133,7 +133,7 @@ public final class CombatTools {
         double initialDamage = event.getDamage();
         double finalDamage = initialDamage;
 
-        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+        BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
         UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
 
         if (unarmedManager.canActivateAbility()) {
@@ -170,7 +170,7 @@ public final class CombatTools {
         double finalDamage = initialDamage;
 
         if(master != null && !master.isOnline() && master.isValid()) {
-            McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(master);
+            BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(master);
 
             //Make sure the profiles been loaded
             if(mcMMOPlayer == null) {
@@ -207,7 +207,7 @@ public final class CombatTools {
     private void processArcheryCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event, Arrow arrow) {
         double initialDamage = event.getDamage();
 
-        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+        BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
         ArcheryManager archeryManager = mcMMOPlayer.getArcheryManager();
 
         double finalDamage = event.getDamage();
@@ -270,7 +270,7 @@ public final class CombatTools {
             if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
                 return;
             }
-            McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+            BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
             AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
 
             if (acrobaticsManager.canDodge(target)) {
@@ -363,7 +363,7 @@ public final class CombatTools {
                 }
 
                 if (target.getType() != EntityType.CREEPER && !pluginRef.getMiscTools().isNPCEntityExcludingVillagers(player) && pluginRef.getSkillTools().doesPlayerHaveSkillPermission(PrimarySkillType.TAMING, player)) {
-                    McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+                    BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
                     TamingManager tamingManager = mcMMOPlayer.getTamingManager();
                     tamingManager.attackTarget(target);
                 }
@@ -684,7 +684,7 @@ public final class CombatTools {
         }
     }
 
-    public void startGainXp(McMMOPlayer mcMMOPlayer, LivingEntity target, PrimarySkillType primarySkillType) {
+    public void startGainXp(BukkitMMOPlayer mcMMOPlayer, LivingEntity target, PrimarySkillType primarySkillType) {
         startGainXp(mcMMOPlayer, target, primarySkillType, 1.0);
     }
 
@@ -695,7 +695,7 @@ public final class CombatTools {
      * @param target           The defending entity
      * @param primarySkillType The skill being used
      */
-    private void startGainXp(McMMOPlayer mcMMOPlayer, LivingEntity target, PrimarySkillType primarySkillType, double multiplier) {
+    private void startGainXp(BukkitMMOPlayer mcMMOPlayer, LivingEntity target, PrimarySkillType primarySkillType, double multiplier) {
         double baseXPMultiplier = 0;
         XPGainReason xpGainReason;
 

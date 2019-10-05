@@ -2,21 +2,21 @@ package com.gmail.nossr50.runnables.skills;
 
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 
 //TODO: Why is this a task? Investigate later.
 public class AwardCombatXpTask extends BukkitRunnable {
-    private McMMOPlayer mcMMOPlayer;
+    private BukkitMMOPlayer mcMMOPlayer;
     private double baseXp;
     private PrimarySkillType primarySkillType;
     private LivingEntity target;
     private XPGainReason xpGainReason;
     private double baseHealth;
 
-    public AwardCombatXpTask(McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, double baseXp, LivingEntity target, XPGainReason xpGainReason) {
+    public AwardCombatXpTask(BukkitMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, double baseXp, LivingEntity target, XPGainReason xpGainReason) {
         this.mcMMOPlayer = mcMMOPlayer;
         this.primarySkillType = primarySkillType;
         this.baseXp = baseXp;

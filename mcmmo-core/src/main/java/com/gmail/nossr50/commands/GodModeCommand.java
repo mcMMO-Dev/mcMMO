@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.command.CommandSender;
 
@@ -21,7 +21,7 @@ public class GodModeCommand extends ToggleCommand {
     }
 
     @Override
-    protected void applyCommandAction(McMMOPlayer mcMMOPlayer) {
+    protected void applyCommandAction(BukkitMMOPlayer mcMMOPlayer) {
         mcMMOPlayer.getPlayer().sendMessage(pluginRef.getLocaleManager().getString("Commands.GodMode." + (mcMMOPlayer.getGodMode() ? "Disabled" : "Enabled")));
         mcMMOPlayer.toggleGodMode();
     }

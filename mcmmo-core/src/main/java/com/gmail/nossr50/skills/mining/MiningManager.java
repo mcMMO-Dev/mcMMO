@@ -3,7 +3,7 @@ package com.gmail.nossr50.skills.mining;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -26,7 +26,7 @@ public class MiningManager extends SkillManager {
     
     private final MiningBehaviour miningBehaviour;
     
-    public MiningManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
+    public MiningManager(mcMMO pluginRef, BukkitMMOPlayer mcMMOPlayer) {
         super(pluginRef, mcMMOPlayer, PrimarySkillType.MINING);
         
         //Init behaviour

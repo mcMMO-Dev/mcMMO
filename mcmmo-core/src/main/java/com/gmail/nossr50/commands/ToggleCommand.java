@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -46,7 +46,7 @@ public abstract class ToggleCommand implements TabExecutor {
                 }
 
                 String playerName = pluginRef.getCommandTools().getMatchedPlayerName(args[0]);
-                McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(playerName);
+                BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(playerName);
 
                 if (!pluginRef.getCommandTools().checkPlayerExistence(sender, playerName, mcMMOPlayer)) {
                     return true;
@@ -81,7 +81,7 @@ public abstract class ToggleCommand implements TabExecutor {
 
     protected abstract boolean hasSelfPermission(CommandSender sender);
 
-    protected abstract void applyCommandAction(McMMOPlayer mcMMOPlayer);
+    protected abstract void applyCommandAction(BukkitMMOPlayer mcMMOPlayer);
 
     protected abstract void sendSuccessMessage(CommandSender sender, String playerName);
 }

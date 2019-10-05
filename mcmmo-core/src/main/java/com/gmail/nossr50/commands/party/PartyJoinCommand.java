@@ -1,7 +1,7 @@
 package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,7 +22,7 @@ public class PartyJoinCommand implements CommandExecutor {
             case 2:
             case 3:
                 String targetName = pluginRef.getCommandTools().getMatchedPlayerName(args[1]);
-                McMMOPlayer mcMMOTarget = pluginRef.getUserManager().getPlayer(targetName);
+                BukkitMMOPlayer mcMMOTarget = pluginRef.getUserManager().getPlayer(targetName);
 
                 if (!pluginRef.getCommandTools().checkPlayerExistence(sender, targetName, mcMMOTarget)) {
                     return true;
@@ -42,7 +42,7 @@ public class PartyJoinCommand implements CommandExecutor {
                     return true;
                 }
 
-                McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+                BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
                 Party targetParty = mcMMOTarget.getParty();
 
                 if (player.equals(target) || (mcMMOPlayer.inParty() && mcMMOPlayer.getParty().equals(targetParty))) {

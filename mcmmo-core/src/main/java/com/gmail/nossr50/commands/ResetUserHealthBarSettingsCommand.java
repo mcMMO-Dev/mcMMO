@@ -2,7 +2,7 @@ package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.database.FlatFileDatabaseManager;
 import com.gmail.nossr50.database.SQLDatabaseManager;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -24,7 +24,7 @@ public class ResetUserHealthBarSettingsCommand implements TabExecutor {
         if (pluginRef.getDatabaseManager() instanceof SQLDatabaseManager) {
             SQLDatabaseManager sqlDatabaseManager = (SQLDatabaseManager) pluginRef.getDatabaseManager();
             sqlDatabaseManager.resetMobHealthSettings();
-            for (McMMOPlayer player : pluginRef.getUserManager().getPlayers()) {
+            for (BukkitMMOPlayer player : pluginRef.getUserManager().getPlayers()) {
                 player.getProfile().setMobHealthbarType(pluginRef.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType());
             }
             sender.sendMessage("Mob health reset");
@@ -33,7 +33,7 @@ public class ResetUserHealthBarSettingsCommand implements TabExecutor {
         if (pluginRef.getDatabaseManager() instanceof FlatFileDatabaseManager) {
             FlatFileDatabaseManager flatFileDatabaseManager = (FlatFileDatabaseManager) pluginRef.getDatabaseManager();
             flatFileDatabaseManager.resetMobHealthSettings();
-            for (McMMOPlayer player : pluginRef.getUserManager().getPlayers()) {
+            for (BukkitMMOPlayer player : pluginRef.getUserManager().getPlayers()) {
                 player.getProfile().setMobHealthbarType(pluginRef.getConfigManager().getConfigMobs().getCombat().getHealthBars().getDisplayBarType());
             }
             sender.sendMessage("Mob health reset");

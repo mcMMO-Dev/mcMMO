@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.party;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -21,7 +21,7 @@ public class PartyCreateCommand implements CommandExecutor {
             case 2:
             case 3:
                 Player player = (Player) sender;
-                McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+                BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
                 if (pluginRef.getUserManager().getPlayer(player) == null) {
                     player.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));

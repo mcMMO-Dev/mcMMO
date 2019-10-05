@@ -3,7 +3,7 @@ package com.gmail.nossr50.util.player;
 import com.gmail.nossr50.config.notifications.PlayerNotificationSettings;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.notifications.SensitiveCommandType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
@@ -141,7 +141,7 @@ public class NotificationManager {
      * @param skillName   skill that leveled up
      * @param newLevel    new level of that skill
      */
-    public void sendPlayerLevelUpNotification(McMMOPlayer mcMMOPlayer, PrimarySkillType skillName, int levelsGained, int newLevel) {
+    public void sendPlayerLevelUpNotification(BukkitMMOPlayer mcMMOPlayer, PrimarySkillType skillName, int levelsGained, int newLevel) {
         if (!mcMMOPlayer.useChatNotifications())
             return;
 
@@ -184,7 +184,7 @@ public class NotificationManager {
         }
     }
 
-    public void sendPlayerUnlockNotification(McMMOPlayer mcMMOPlayer, SubSkillType subSkillType) {
+    public void sendPlayerUnlockNotification(BukkitMMOPlayer mcMMOPlayer, SubSkillType subSkillType) {
         if (!mcMMOPlayer.useChatNotifications())
             return;
 

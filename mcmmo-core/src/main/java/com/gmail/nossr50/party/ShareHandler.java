@@ -5,7 +5,7 @@ import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.party.ItemShareType;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.ShareMode;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
@@ -32,7 +32,7 @@ public final class ShareHandler {
      * @param primarySkillType Skill being used
      * @return True is the xp has been shared
      */
-    public boolean handleXpShare(double xp, McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, XPGainReason xpGainReason) {
+    public boolean handleXpShare(double xp, BukkitMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, XPGainReason xpGainReason) {
         if (party.getXpShareMode() != ShareMode.EQUAL) {
             return false;
         }
@@ -70,7 +70,7 @@ public final class ShareHandler {
      * @param mcMMOPlayer Player who picked up the item
      * @return True if the item has been shared
      */
-    public boolean handleItemShare(Item drop, McMMOPlayer mcMMOPlayer) {
+    public boolean handleItemShare(Item drop, BukkitMMOPlayer mcMMOPlayer) {
         ItemStack itemStack = drop.getItemStack();
         ItemShareType dropType = getShareType(itemStack);
 
@@ -111,7 +111,7 @@ public final class ShareHandler {
                     int highestRoll = 0;
 
                     for (Player member : nearMembers) {
-                        McMMOPlayer mcMMOMember = pluginRef.getUserManager().getPlayer(member);
+                        BukkitMMOPlayer mcMMOMember = pluginRef.getUserManager().getPlayer(member);
 
                         //Profile not loaded
                         if (pluginRef.getUserManager().getPlayer(member) == null) {
@@ -129,14 +129,14 @@ public final class ShareHandler {
                         highestRoll = diceRoll;
 
                         if (winningPlayer != null) {
-                            McMMOPlayer mcMMOWinning = pluginRef.getUserManager().getPlayer(winningPlayer);
+                            BukkitMMOPlayer mcMMOWinning = pluginRef.getUserManager().getPlayer(winningPlayer);
                             mcMMOWinning.setItemShareModifier(mcMMOWinning.getItemShareModifier() + itemWeight);
                         }
 
                         winningPlayer = member;
                     }
 
-                    McMMOPlayer mcMMOTarget = pluginRef.getUserManager().getPlayer(winningPlayer);
+                    BukkitMMOPlayer mcMMOTarget = pluginRef.getUserManager().getPlayer(winningPlayer);
                     mcMMOTarget.setItemShareModifier(mcMMOTarget.getItemShareModifier() - itemWeight);
                     awardDrop(winningPlayer, newStack);
                 }

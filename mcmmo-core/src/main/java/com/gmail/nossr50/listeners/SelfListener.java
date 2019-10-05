@@ -1,7 +1,7 @@
 package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
@@ -58,7 +58,7 @@ public class SelfListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerXpGain(McMMOPlayerXpGainEvent event) {
         Player player = event.getPlayer();
-        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+        BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
         PrimarySkillType primarySkillType = event.getSkill();
 
         if(mcMMOPlayer.isDebugMode()) {

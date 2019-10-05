@@ -1,6 +1,6 @@
 package com.gmail.nossr50.util.random;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
@@ -22,7 +22,7 @@ public class RandomChanceSkill implements RandomChanceExecution {
         this.subSkillType = subSkillType;
         this.probabilityCap = pluginRef.getRandomChanceTools().LINEAR_CURVE_VAR;
 
-        final McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+        final BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
         if (player != null && mcMMOPlayer != null) {
             this.skillLevel = mcMMOPlayer.getSkillLevel(primarySkillType);
         } else {
@@ -46,7 +46,7 @@ public class RandomChanceSkill implements RandomChanceExecution {
         this.primarySkillType = subSkillType.getParentSkill(pluginRef);
         this.subSkillType = subSkillType;
 
-        final McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+        final BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
         if (player != null && mcMMOPlayer != null) {
             this.skillLevel = mcMMOPlayer.getSkillLevel(primarySkillType);
         } else {

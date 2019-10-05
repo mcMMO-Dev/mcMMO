@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills.axes;
 
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -22,7 +22,7 @@ public class AxesManager extends SkillManager {
 
     private final AxesBehaviour axesBehaviour;
 
-    public AxesManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer) {
+    public AxesManager(mcMMO pluginRef, BukkitMMOPlayer mcMMOPlayer) {
         super(pluginRef, mcMMOPlayer, PrimarySkillType.AXES);
         this.axesBehaviour = pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getAxesBehaviour();
     }

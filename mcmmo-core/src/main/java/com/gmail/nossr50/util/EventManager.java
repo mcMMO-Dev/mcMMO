@@ -4,7 +4,7 @@ import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -78,7 +78,7 @@ public class EventManager {
      * @param entity target entity
      * @return the associated McMMOPlayer for this entity
      */
-    public McMMOPlayer getMcMMOPlayer(Entity entity) {
+    public BukkitMMOPlayer getMcMMOPlayer(Entity entity) {
         return pluginRef.getUserManager().getPlayer((Player) entity);
     }
 
@@ -141,7 +141,7 @@ public class EventManager {
                 return true;
             }
 
-            McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+            BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
             if (mcMMOPlayer == null) {
                 return true;
@@ -270,7 +270,7 @@ public class EventManager {
     }
 
     public void handlePartyTeleportEvent(Player teleportingPlayer, Player targetPlayer) {
-        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(teleportingPlayer);
+        BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(teleportingPlayer);
 
         if (mcMMOPlayer == null)
             return;
@@ -381,7 +381,7 @@ public class EventManager {
             HashMap<String, Integer> levelChangedVictim = eventVictim.getLevelChanged();
             HashMap<String, Double> experienceChangedVictim = eventVictim.getExperienceChanged();
 
-            McMMOPlayer killerPlayer = pluginRef.getUserManager().getPlayer(killer);
+            BukkitMMOPlayer killerPlayer = pluginRef.getUserManager().getPlayer(killer);
 
             //Not loaded
             if (killerPlayer == null)

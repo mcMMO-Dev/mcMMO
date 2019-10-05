@@ -38,6 +38,7 @@ tasks {
 
 
 dependencies {
+    api(project(":mcmmo-api"))
     api("org.apache.tomcat:tomcat-jdbc:7.0.52")
     api("com.typesafe:config:1.3.2")
     api("org.spongepowered:configurate-core:3.7-SNAPSHOT")

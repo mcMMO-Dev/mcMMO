@@ -2,7 +2,7 @@ package com.gmail.nossr50.skills;
 
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.entity.Entity;
@@ -10,11 +10,11 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public abstract class SkillManager {
-    protected McMMOPlayer mcMMOPlayer;
+    protected BukkitMMOPlayer mcMMOPlayer;
     protected PrimarySkillType skill;
     protected final mcMMO pluginRef;
 
-    public SkillManager(mcMMO pluginRef, McMMOPlayer mcMMOPlayer, PrimarySkillType skill) {
+    public SkillManager(mcMMO pluginRef, BukkitMMOPlayer mcMMOPlayer, PrimarySkillType skill) {
         this.pluginRef = pluginRef;
         this.mcMMOPlayer = mcMMOPlayer;
         this.skill = skill;

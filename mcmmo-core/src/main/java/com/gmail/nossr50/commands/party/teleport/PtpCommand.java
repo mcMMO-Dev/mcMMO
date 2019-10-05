@@ -4,7 +4,7 @@ import com.gmail.nossr50.commands.CommandConstants;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -60,7 +60,7 @@ public class PtpCommand implements TabExecutor {
             return true;
         }
 
-        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+        BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
         if (!mcMMOPlayer.inParty()) {
             sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.None"));
@@ -135,7 +135,7 @@ public class PtpCommand implements TabExecutor {
                     }
 
                     Player player = (Player) sender;
-                    McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+                    BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
                     if (!mcMMOPlayer.inParty()) {
                         return ImmutableList.of();
@@ -156,7 +156,7 @@ public class PtpCommand implements TabExecutor {
             return;
         }
 
-        McMMOPlayer mcMMOTarget = pluginRef.getUserManager().getPlayer(targetName);
+        BukkitMMOPlayer mcMMOTarget = pluginRef.getUserManager().getPlayer(targetName);
         Player target = mcMMOTarget.getPlayer();
 
         PartyTeleportRecord ptpRecord = mcMMOTarget.getPartyTeleportRecord();

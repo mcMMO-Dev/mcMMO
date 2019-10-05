@@ -2,7 +2,7 @@ package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.meta.BonusDropMeta;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
@@ -174,7 +174,7 @@ public class BlockListener implements Listener {
                 pluginRef.getPlaceStore().setTrue(blockState);
         }
 
-        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+        BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
         if (mcMMOPlayer == null)
             return;
@@ -273,7 +273,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+        BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
         //Check if profile is loaded
         if (mcMMOPlayer == null)
@@ -427,7 +427,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+        BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
         //Profile not loaded
         if (mcMMOPlayer == null) {
@@ -500,7 +500,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+        BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
         //Profile not loaded
         if (pluginRef.getUserManager().getPlayer(player) == null) {

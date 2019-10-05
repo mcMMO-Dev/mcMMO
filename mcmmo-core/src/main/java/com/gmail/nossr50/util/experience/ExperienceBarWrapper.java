@@ -1,6 +1,6 @@
 package com.gmail.nossr50.util.experience;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class ExperienceBarWrapper {
 
-    protected final McMMOPlayer mcMMOPlayer;
+    protected final BukkitMMOPlayer mcMMOPlayer;
     private final PrimarySkillType primarySkillType; //Primary Skill
     private BossBar bossBar;
     private int lastLevelUpdated;
@@ -28,7 +28,7 @@ public class ExperienceBarWrapper {
     protected String niceSkillName;
     protected String title;
 
-    public ExperienceBarWrapper(mcMMO pluginRef, PrimarySkillType primarySkillType, McMMOPlayer mcMMOPlayer) {
+    public ExperienceBarWrapper(mcMMO pluginRef, PrimarySkillType primarySkillType, BukkitMMOPlayer mcMMOPlayer) {
         this.pluginRef = pluginRef;
         this.mcMMOPlayer = mcMMOPlayer;
         this.primarySkillType = primarySkillType;

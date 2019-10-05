@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.party;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -26,7 +26,7 @@ public class PartyAcceptCommand implements CommandExecutor {
                 return true;
             }
 
-            McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+            BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
 
             if (!mcMMOPlayer.hasPartyInvite()) {

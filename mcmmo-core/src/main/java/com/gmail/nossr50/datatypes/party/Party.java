@@ -1,6 +1,6 @@
 package com.gmail.nossr50.datatypes.party;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.util.StringUtils;
@@ -503,7 +503,7 @@ public class Party {
      * @param mcMMOPlayer The player to check
      * @return the near party members
      */
-    public List<Player> getNearMembers(McMMOPlayer mcMMOPlayer) {
+    public List<Player> getNearMembers(BukkitMMOPlayer mcMMOPlayer) {
         List<Player> nearMembers = new ArrayList<Player>();
         Party party = mcMMOPlayer.getParty();
 

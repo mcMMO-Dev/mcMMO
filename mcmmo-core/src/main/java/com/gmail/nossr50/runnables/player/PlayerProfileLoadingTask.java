@@ -1,6 +1,6 @@
 package com.gmail.nossr50.runnables.player;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.ScoreboardKeepTask;
@@ -42,7 +42,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
         PlayerProfile profile = pluginRef.getDatabaseManager().loadPlayerProfile(player.getName(), player.getUniqueId(), true);
         // If successful, schedule the apply
         if (profile.isLoaded()) {
-            new ApplySuccessfulProfile(new McMMOPlayer(player, profile, pluginRef)).runTask(pluginRef);
+            new ApplySuccessfulProfile(new BukkitMMOPlayer(player, profile, pluginRef)).runTask(pluginRef);
             pluginRef.getEventManager().callPlayerProfileLoadEvent(player, profile);
             return;
         }
@@ -67,9 +67,9 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
     }
 
     private class ApplySuccessfulProfile extends BukkitRunnable {
-        private final McMMOPlayer mcMMOPlayer;
+        private final BukkitMMOPlayer mcMMOPlayer;
 
-        private ApplySuccessfulProfile(McMMOPlayer mcMMOPlayer) {
+        private ApplySuccessfulProfile(BukkitMMOPlayer mcMMOPlayer) {
             this.mcMMOPlayer = mcMMOPlayer;
         }
 

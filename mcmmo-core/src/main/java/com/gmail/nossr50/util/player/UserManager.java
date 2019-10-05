@@ -1,7 +1,7 @@
 package com.gmail.nossr50.util.player;
 
 import com.gmail.nossr50.core.MetadataConstants;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.OfflinePlayer;
@@ -21,7 +21,7 @@ public final class UserManager {
         this.pluginRef = pluginRef;
     }
     
-    private HashSet<McMMOPlayer> playerDataSet; //Used to track players for sync saves on shutdown
+    private HashSet<BukkitMMOPlayer> playerDataSet; //Used to track players for sync saves on shutdown
 
 
     /**
@@ -29,7 +29,7 @@ public final class UserManager {
      *
      * @param mcMMOPlayer the player profile to start tracking
      */
-    public void track(McMMOPlayer mcMMOPlayer) {
+    public void track(BukkitMMOPlayer mcMMOPlayer) {
         mcMMOPlayer.getPlayer().setMetadata(MetadataConstants.PLAYER_DATA_METAKEY, new FixedMetadataValue(pluginRef, mcMMOPlayer));
 
         if(playerDataSet == null)
@@ -38,7 +38,7 @@ public final class UserManager {
         playerDataSet.add(mcMMOPlayer); //for sync saves on shutdown
     }
 
-    public void cleanupPlayer(McMMOPlayer mcMMOPlayer) {
+    public void cleanupPlayer(BukkitMMOPlayer mcMMOPlayer) {
         if(playerDataSet != null && playerDataSet.contains(mcMMOPlayer))
             playerDataSet.remove(mcMMOPlayer);
     }
@@ -49,7 +49,7 @@ public final class UserManager {
      * @param player The Player object
      */
     public void remove(Player player) {
-        McMMOPlayer mcMMOPlayer = getPlayer(player);
+        BukkitMMOPlayer mcMMOPlayer = getPlayer(player);
         player.removeMetadata(MetadataConstants.PLAYER_DATA_METAKEY, pluginRef);
         mcMMOPlayer.cleanup();
 
@@ -77,11 +77,11 @@ public final class UserManager {
         if(playerDataSet == null)
             return;
 
-        ImmutableList<McMMOPlayer> trackedSyncData = ImmutableList.copyOf(playerDataSet);
+        ImmutableList<BukkitMMOPlayer> trackedSyncData = ImmutableList.copyOf(playerDataSet);
 
         pluginRef.getLogger().info("Saving mcMMOPlayers... (" + trackedSyncData.size() + ")");
 
-        for (McMMOPlayer playerData : trackedSyncData) {
+        for (BukkitMMOPlayer playerData : trackedSyncData) {
             try
             {
                 pluginRef.getLogger().info("Saving data for player: "+playerData.getPlayerName());
@@ -96,8 +96,8 @@ public final class UserManager {
         pluginRef.getLogger().info("Finished save operation for "+trackedSyncData.size()+" players!");
     }
 
-    public Collection<McMMOPlayer> getPlayers() {
-        Collection<McMMOPlayer> playerCollection = new ArrayList<>();
+    public Collection<BukkitMMOPlayer> getPlayers() {
+        Collection<BukkitMMOPlayer> playerCollection = new ArrayList<>();
 
         for (Player player : pluginRef.getServer().getOnlinePlayers()) {
             if (hasPlayerDataKey(player)) {
@@ -114,11 +114,11 @@ public final class UserManager {
      * @param playerName The name of the player whose McMMOPlayer to retrieve
      * @return the player's McMMOPlayer object
      */
-    public McMMOPlayer getPlayer(String playerName) {
+    public BukkitMMOPlayer getPlayer(String playerName) {
         return retrieveMcMMOPlayer(playerName, false);
     }
 
-    public McMMOPlayer getOfflinePlayer(OfflinePlayer player) {
+    public BukkitMMOPlayer getOfflinePlayer(OfflinePlayer player) {
         if (player instanceof Player) {
             return getPlayer((Player) player);
         }
@@ -126,7 +126,7 @@ public final class UserManager {
         return retrieveMcMMOPlayer(player.getName(), true);
     }
 
-    public McMMOPlayer getOfflinePlayer(String playerName) {
+    public BukkitMMOPlayer getOfflinePlayer(String playerName) {
         return retrieveMcMMOPlayer(playerName, true);
     }
 
@@ -136,15 +136,15 @@ public final class UserManager {
      * @param player target player
      * @return McMMOPlayer object for this player, null if Player has not been loaded
      */
-    public McMMOPlayer getPlayer(Player player) {
+    public BukkitMMOPlayer getPlayer(Player player) {
         //Avoid Array Index out of bounds
         if (player != null && player.hasMetadata(MetadataConstants.PLAYER_DATA_METAKEY))
-            return (McMMOPlayer) player.getMetadata(MetadataConstants.PLAYER_DATA_METAKEY).get(0).value();
+            return (BukkitMMOPlayer) player.getMetadata(MetadataConstants.PLAYER_DATA_METAKEY).get(0).value();
         else
             return null;
     }
 
-    private McMMOPlayer retrieveMcMMOPlayer(String playerName, boolean offlineValid) {
+    private BukkitMMOPlayer retrieveMcMMOPlayer(String playerName, boolean offlineValid) {
         Player player = pluginRef.getServer().getPlayerExact(playerName);
 
         if (player == null) {

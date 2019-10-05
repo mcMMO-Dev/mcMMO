@@ -1,7 +1,7 @@
 package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.core.MetadataConstants;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.InteractType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
@@ -493,7 +493,7 @@ public class EntityListener implements Listener {
                 return;
             }
 
-            McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+            BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
             //Profile not loaded
             if (mcMMOPlayer == null)

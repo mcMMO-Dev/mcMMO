@@ -2,7 +2,7 @@ package com.gmail.nossr50.datatypes.skills.subskills.acrobatics;
 
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
@@ -60,7 +60,7 @@ public class Roll extends AcrobaticsSubSkill {
             case FALL:
 
                 //Grab the player
-                McMMOPlayer mcMMOPlayer = pluginRef.getEventManager().getMcMMOPlayer(entityDamageEvent.getEntity());
+                BukkitMMOPlayer mcMMOPlayer = pluginRef.getEventManager().getMcMMOPlayer(entityDamageEvent.getEntity());
 
                 if (mcMMOPlayer == null)
                     break;
@@ -186,7 +186,7 @@ public class Roll extends AcrobaticsSubSkill {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
-    private double rollCheck(Player player, McMMOPlayer mcMMOPlayer, double damage) {
+    private double rollCheck(Player player, BukkitMMOPlayer mcMMOPlayer, double damage) {
 
         int skillLevel = mcMMOPlayer.getSkillLevel(getPrimarySkill());
 
@@ -219,7 +219,7 @@ public class Roll extends AcrobaticsSubSkill {
         return damage;
     }
 
-    private int getActivationChance(McMMOPlayer mcMMOPlayer) {
+    private int getActivationChance(BukkitMMOPlayer mcMMOPlayer) {
         return pluginRef.getPerkUtils().handleLuckyPerks(mcMMOPlayer.getPlayer(), getPrimarySkill());
     }
 
@@ -229,7 +229,7 @@ public class Roll extends AcrobaticsSubSkill {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
-    private double gracefulRollCheck(Player player, McMMOPlayer mcMMOPlayer, double damage, int skillLevel) {
+    private double gracefulRollCheck(Player player, BukkitMMOPlayer mcMMOPlayer, double damage, int skillLevel) {
         double modifiedDamage = calculateModifiedRollDamage(damage, pluginRef.getConfigManager().getConfigAcrobatics().getRollDamageThreshold() * 2);
 
         RandomChanceSkill rcs = new RandomChanceSkill(pluginRef, player, subSkillType);
@@ -270,7 +270,7 @@ public class Roll extends AcrobaticsSubSkill {
             return false;
         }
 
-        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+        BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
         if (pluginRef.getItemTools().hasItemInEitherHand(player, Material.ENDER_PEARL) || player.isInsideVehicle()) {
             if(mcMMOPlayer.isDebugMode()) {

@@ -1,7 +1,7 @@
 package com.gmail.nossr50.util.commands;
 
 import com.gmail.nossr50.core.MetadataConstants;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
@@ -66,7 +66,7 @@ public final class CommandTools {
      * @param mcMMOPlayer mcMMOPlayer object of the target player
      * @return true if the player is online and a valid mcMMOPlayer object was found
      */
-    public boolean checkPlayerExistence(CommandSender sender, String playerName, McMMOPlayer mcMMOPlayer) {
+    public boolean checkPlayerExistence(CommandSender sender, String playerName, BukkitMMOPlayer mcMMOPlayer) {
         if (mcMMOPlayer != null) {
             if (hidden(sender, mcMMOPlayer.getPlayer(), false)) {
                 sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Offline"));

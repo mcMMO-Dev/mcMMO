@@ -5,7 +5,7 @@ import com.gmail.nossr50.datatypes.BlockSnapshot;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -37,7 +37,7 @@ public class HerbalismManager extends SkillManager {
 
     private final HerbalismBehaviour herbalismBehaviour;
 
-    public HerbalismManager(mcMMO pluginRef,  McMMOPlayer mcMMOPlayer) {
+    public HerbalismManager(mcMMO pluginRef,  BukkitMMOPlayer mcMMOPlayer) {
         super(pluginRef, mcMMOPlayer, PrimarySkillType.HERBALISM);
         herbalismBehaviour = pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getHerbalismBehaviour();
     }

@@ -1,7 +1,7 @@
 package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.core.MetadataConstants;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.RankCommandAsyncTask;
 import com.gmail.nossr50.util.scoreboards.SidebarType;
@@ -56,7 +56,7 @@ public class RankCommand implements TabExecutor {
                 }
 
                 String playerName = pluginRef.getCommandTools().getMatchedPlayerName(args[0]);
-                McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getOfflinePlayer(playerName);
+                BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getOfflinePlayer(playerName);
 
                 if (mcMMOPlayer != null) {
                     Player player = mcMMOPlayer.getPlayer();
@@ -89,7 +89,7 @@ public class RankCommand implements TabExecutor {
     private void display(CommandSender sender, String playerName) {
         if (sender instanceof Player) {
 
-            McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(sender.getName());
+            BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(sender.getName());
 
             if (mcMMOPlayer == null) {
                 sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
@@ -120,7 +120,7 @@ public class RankCommand implements TabExecutor {
         new RankCommandAsyncTask(pluginRef, playerName, sender, useBoard, useChat).runTaskAsynchronously(pluginRef);
     }
 
-    private long getCDSeconds(McMMOPlayer mcMMOPlayer, long cooldownMillis) {
+    private long getCDSeconds(BukkitMMOPlayer mcMMOPlayer, long cooldownMillis) {
         return ((mcMMOPlayer.getDatabaseATS() + cooldownMillis) - System.currentTimeMillis());
     }
 }

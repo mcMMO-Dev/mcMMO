@@ -3,7 +3,7 @@ package com.gmail.nossr50.commands.party.alliance;
 import com.gmail.nossr50.commands.CommandConstants;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.ChatColor;
@@ -48,7 +48,7 @@ public class PartyAllianceCommand implements TabExecutor {
         }
 
         player = (Player) sender;
-        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+        BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
         playerParty = mcMMOPlayer.getParty();
 
@@ -132,7 +132,7 @@ public class PartyAllianceCommand implements TabExecutor {
         player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.Alliance.Ally", playerParty.getName(), targetParty.getName()));
     }
 
-    private void displayMemberInfo(McMMOPlayer mcMMOPlayer) {
+    private void displayMemberInfo(BukkitMMOPlayer mcMMOPlayer) {
         player.sendMessage(pluginRef.getLocaleManager().getString("Commands.Party.Alliance.Members.Header"));
         player.sendMessage(playerParty.createMembersList(player));
         player.sendMessage(ChatColor.DARK_GRAY + "----------------------------");

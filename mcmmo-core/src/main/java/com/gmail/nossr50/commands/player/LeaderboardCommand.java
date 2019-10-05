@@ -1,7 +1,7 @@
 package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.core.MetadataConstants;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.LeaderboardsCommandAsyncTask;
@@ -90,7 +90,7 @@ public class LeaderboardCommand implements TabExecutor {
                 return;
             }
 
-            McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(sender.getName());
+            BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(sender.getName());
             long cooldownMillis = 5000;
 
             if (mcMMOPlayer.getDatabaseATS() + cooldownMillis > System.currentTimeMillis()) {

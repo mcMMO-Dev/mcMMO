@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
@@ -63,7 +63,7 @@ public abstract class SkillCommand implements TabExecutor {
         switch (args.length) {
             case 0:
                 Player player = (Player) sender;
-                McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+                BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
 
                 boolean isLucky = pluginRef.getPermissionTools().lucky(player, skill);
                 boolean hasEndurance = pluginRef.getSkillTools().getEnduranceLength(player) > 0;
@@ -134,7 +134,7 @@ public abstract class SkillCommand implements TabExecutor {
         player.sendMessage(pluginRef.getLocaleManager().getString("Guides.Available", skillName, skillName.toLowerCase()));
     }
 
-    private void sendSkillCommandHeader(Player player, McMMOPlayer mcMMOPlayer, int skillValue) {
+    private void sendSkillCommandHeader(Player player, BukkitMMOPlayer mcMMOPlayer, int skillValue) {
         ChatColor hd1 = ChatColor.DARK_AQUA;
         ChatColor c1 = ChatColor.GOLD;
         ChatColor c2 = ChatColor.RED;

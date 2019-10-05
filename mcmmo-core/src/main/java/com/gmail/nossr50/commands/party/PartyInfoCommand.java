@@ -3,7 +3,7 @@ package com.gmail.nossr50.commands.party;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.ShareMode;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.ChatColor;
@@ -33,7 +33,7 @@ public class PartyInfoCommand implements CommandExecutor {
                     return true;
                 }
                 Player player = (Player) sender;
-                McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+                BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
                 Party party = mcMMOPlayer.getParty();
 
                 displayPartyHeader(player, party);
@@ -133,7 +133,7 @@ public class PartyInfoCommand implements CommandExecutor {
         }
     }
 
-    private void displayMemberInfo(Player player, McMMOPlayer mcMMOPlayer, Party party) {
+    private void displayMemberInfo(Player player, BukkitMMOPlayer mcMMOPlayer, Party party) {
         /*
          * Only show members of the party that this member can see
          */

@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -26,7 +26,7 @@ public class ChatNotificationToggleCommand implements TabExecutor {
 
         switch (args.length) {
             case 0:
-                McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer((Player) sender);
+                BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer((Player) sender);
 
                 //Not Loaded yet
                 if (mcMMOPlayer == null)

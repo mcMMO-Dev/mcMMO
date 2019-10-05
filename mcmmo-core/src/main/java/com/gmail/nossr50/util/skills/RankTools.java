@@ -2,7 +2,7 @@ package com.gmail.nossr50.util.skills;
 
 import com.gmail.nossr50.api.exceptions.MissingSkillPropertyDefinition;
 import com.gmail.nossr50.config.skills.ranks.SkillRankProperty;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -33,7 +33,7 @@ public class RankTools {
      * @param primarySkillType target primary skill
      * @param newLevel         the new level of this skill
      */
-    public void executeSkillUnlockNotifications(McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, int newLevel) {
+    public void executeSkillUnlockNotifications(BukkitMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, int newLevel) {
         for (SubSkillType subSkillType : pluginRef.getSkillTools().getSkillAbilities(primarySkillType)) {
             int playerRankInSkill = getRank(mcMMOPlayer.getPlayer(), subSkillType);
 
