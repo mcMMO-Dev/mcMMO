@@ -75,7 +75,7 @@ public final class CommandTools {
             return true;
         }
 
-        PlayerProfile profile = new PlayerProfile(pluginRef, playerName, false);
+        PlayerProfile profile = new PlayerProfile(pluginRef, playerName, null, false);
 
         if (unloadedProfile(sender, profile)) {
             return false;

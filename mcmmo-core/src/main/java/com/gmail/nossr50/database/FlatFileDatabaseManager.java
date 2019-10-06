@@ -530,11 +530,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
 
                 // Didn't find the player, create a new one
                 if (create) {
-                    if (uuid == null) {
-                        newUser(playerName, uuid);
-                        return new PlayerProfile(pluginRef, playerName, true);
-                    }
-
                     newUser(playerName, uuid);
                     return new PlayerProfile(pluginRef, playerName, uuid, true);
                 }
@@ -554,10 +549,6 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
         }
 
         // Return unloaded profile
-        if (uuid == null) {
-            return new PlayerProfile(pluginRef, playerName);
-        }
-
         return new PlayerProfile(pluginRef, playerName, uuid);
     }
 
