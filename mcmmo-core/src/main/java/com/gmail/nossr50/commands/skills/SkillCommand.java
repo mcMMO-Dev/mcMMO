@@ -223,10 +223,10 @@ public abstract class SkillCommand implements TabExecutor {
         String statDescriptionKey = !isExtra ? subSkillType.getLocaleKeyStatDescription(pluginRef) : subSkillType.getLocaleKeyStatExtraDescription(pluginRef);
 
         if (isCustom)
-            return pluginRef.getLocaleManager().getString(templateKey, pluginRef.getLocaleManager().getString(statDescriptionKey, vars));
+            return pluginRef.getLocaleManager().getString(templateKey, pluginRef.getLocaleManager().getString(statDescriptionKey, (Object[]) vars));
         else {
             String[] mergedList = pluginRef.getNotificationManager().addItemToFirstPositionOfArray(pluginRef.getLocaleManager().getString(statDescriptionKey), vars);
-            return pluginRef.getLocaleManager().getString(templateKey, mergedList);
+            return pluginRef.getLocaleManager().getString(templateKey, (Object[]) mergedList);
         }
     }
 

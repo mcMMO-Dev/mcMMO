@@ -214,12 +214,12 @@ public class NotificationManager {
         //Send the notification
         switch (sensitiveCommandType) {
             case XPRATE_MODIFY:
-                sendAdminNotification(pluginRef.getLocaleManager().getString("Notifications.Admin.XPRate.Start.Others", addItemToFirstPositionOfArray(senderName, args)));
-                sendAdminCommandConfirmation(commandSender, pluginRef.getLocaleManager().getString("Notifications.Admin.XPRate.Start.Self", args));
+                sendAdminNotification(pluginRef.getLocaleManager().getString("Notifications.Admin.XPRate.Start.Others", (Object[]) addItemToFirstPositionOfArray(senderName, args)));
+                sendAdminCommandConfirmation(commandSender, pluginRef.getLocaleManager().getString("Notifications.Admin.XPRate.Start.Self", (Object[]) args));
                 break;
             case XPRATE_END:
-                sendAdminNotification(pluginRef.getLocaleManager().getString("Notifications.Admin.XPRate.End.Others", addItemToFirstPositionOfArray(senderName, args)));
-                sendAdminCommandConfirmation(commandSender, pluginRef.getLocaleManager().getString("Notifications.Admin.XPRate.End.Self", args));
+                sendAdminNotification(pluginRef.getLocaleManager().getString("Notifications.Admin.XPRate.End.Others", (Object[]) addItemToFirstPositionOfArray(senderName, args)));
+                sendAdminCommandConfirmation(commandSender, pluginRef.getLocaleManager().getString("Notifications.Admin.XPRate.End.Self", (Object[]) args));
                 break;
         }
     }
