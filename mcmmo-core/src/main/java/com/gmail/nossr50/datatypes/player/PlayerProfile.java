@@ -60,12 +60,6 @@ public class PlayerProfile {
         uniquePlayerData.put(UniqueDataType.CHIMAERA_WING_DATS, 0); //Chimaera wing
     }
 
-    @Deprecated
-    public PlayerProfile(mcMMO pluginRef, String playerName, boolean isLoaded) {
-        this(pluginRef, playerName);
-        this.loaded = isLoaded;
-    }
-
     public PlayerProfile(mcMMO pluginRef, String playerName, UUID uuid, boolean isLoaded) {
         this(pluginRef, playerName, uuid);
         this.loaded = isLoaded;

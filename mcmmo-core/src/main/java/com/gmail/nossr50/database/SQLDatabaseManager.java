@@ -564,10 +564,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     id = newUser(connection, playerName, uuid);
                     create = false;
                     if (id == -1) {
-                        return new PlayerProfile(pluginRef, playerName, false);
+                        return new PlayerProfile(pluginRef, playerName, uuid, false);
                     }
                 } else {
-                    return new PlayerProfile(pluginRef, playerName, false);
+                    return new PlayerProfile(pluginRef, playerName, uuid,false);
                 }
             }
             // There is such a user
@@ -634,7 +634,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         // return unloaded profile
         if (!retry) {
-            return new PlayerProfile(pluginRef, playerName, false);
+            return new PlayerProfile(pluginRef, playerName, uuid, false);
         }
 
         // Retry, and abort on re-failure
