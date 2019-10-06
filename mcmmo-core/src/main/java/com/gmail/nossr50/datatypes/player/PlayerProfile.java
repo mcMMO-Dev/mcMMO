@@ -34,11 +34,6 @@ public class PlayerProfile {
     private HashMap<PrimarySkillType, Double> rollingSkillsXp = new HashMap<PrimarySkillType, Double>();
     private final mcMMO pluginRef;
 
-    @Deprecated
-    public PlayerProfile(mcMMO pluginRef, String playerName) {
-        this(pluginRef, playerName, null);
-    }
-
     public PlayerProfile(mcMMO pluginRef, String playerName, UUID uuid) {
         this.pluginRef = pluginRef;
         this.uuid = uuid;
