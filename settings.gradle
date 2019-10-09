@@ -1,4 +1,4 @@
 rootProject.name= 'mcMMO'
 include 'mcmmo-core'
 include 'mcmmo-api'
-
+include 'mcmmo-bukkit'

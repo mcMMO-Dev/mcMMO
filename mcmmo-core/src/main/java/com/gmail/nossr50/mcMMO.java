@@ -16,6 +16,8 @@ import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.datatypes.skills.subskills.acrobatics.Roll;
 import com.gmail.nossr50.listeners.*;
 import com.gmail.nossr50.locale.LocaleManager;
+import com.gmail.nossr50.mcmmo.api.McMMOApi;
+import com.gmail.nossr50.mcmmo.api.platform.PlatformProvider;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.SaveTimerTask;
 import com.gmail.nossr50.runnables.backups.CleanBackupFilesTask;
@@ -65,8 +67,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
-public class mcMMO extends JavaPlugin {
+public class mcMMO implements McMMOApi {
     /* Managers */
     private ChunkManager placeStore;
     private ConfigManager configManager;
@@ -123,18 +126,23 @@ public class mcMMO extends JavaPlugin {
     // XP Event Check
     private boolean xpEventEnabled;
 
+    private PlatformProvider platformProvider;
+
+    public mcMMO(PlatformProvider platformProvider) {
+        this.platformProvider = platformProvider;
+    }
+
     /**
      * Things to be run when the plugin is enabled.
      */
-    @Override
     public void onEnable() {
         try {
-            getLogger().setFilter(new LogFilter(this));
+            platformProvider.getLogger().setFilter(new LogFilter(this));
 
             //TODO: Disgusting...
             MetadataConstants.metadataValue = new FixedMetadataValue(this, true);
 
-            PluginManager pluginManager = getServer().getPluginManager();
+            PluginManager pluginManager = platformProvider.getServer().getPluginManager();
             healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;
 
             //Init Permission Tools
@@ -299,7 +307,6 @@ public class mcMMO extends JavaPlugin {
         perkUtils = new PerkUtils(this);
     }
 
-    @Override
     public void onLoad()
     {
         if(getServer().getPluginManager().getPlugin("WorldGuard") != null) {
@@ -316,7 +323,6 @@ public class mcMMO extends JavaPlugin {
     /**
      * Things to be run when the plugin is disabled.
      */
-    @Override
     public void onDisable() {
         try {
             userManager.saveAll();      // Make sure to save player information if the server shuts down
@@ -333,10 +339,7 @@ public class mcMMO extends JavaPlugin {
             e.printStackTrace();
         }
 
-        debug("Canceling all tasks...");
-        getServer().getScheduler().cancelTasks(this); // This removes our tasks
-        debug("Unregister all events...");
-        HandlerList.unregisterAll(this); // Cancel event registrations
+        platformProvider.tearDown();
 
         if (getConfigManager().getConfigAutomatedBackups().isZipBackupsEnabled()) {
             // Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
@@ -568,6 +571,10 @@ public class mcMMO extends JavaPlugin {
         getLogger().info("[Debug] " + message);
     }
 
+    @Deprecated
+    public Logger getLogger() {
+        return platformProvider.getLogger();
+    }
     /**
      * Setup the various storage file paths
      */
