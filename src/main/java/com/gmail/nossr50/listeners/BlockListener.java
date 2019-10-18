@@ -58,9 +58,15 @@ public class BlockListener implements Listener {
         //Track how many "things" are being dropped
         HashSet<Material> uniqueMaterials = new HashSet<>();
         boolean dontRewardTE = false; //If we suspect TEs are mixed in with other things don't reward bonus drops for anything that isn't a block
+        int blockCount = 0;
 
         for(Item item : event.getItems()) {
+            //Track unique materials
             uniqueMaterials.add(item.getItemStack().getType());
+
+            //Count blocks as a second failsafe
+            if(item.getItemStack().getType().isBlock())
+                blockCount++;
         }
 
         if(uniqueMaterials.size() > 1) {
@@ -69,32 +75,35 @@ public class BlockListener implements Listener {
             dontRewardTE = true;
         }
 
-        for(Item item : event.getItems())
-        {
-            ItemStack is = new ItemStack(item.getItemStack());
+        //If there are more than one block in the item list we can't really trust it and will back out of rewarding bonus drops
+        if(blockCount <= 1) {
+            for(Item item : event.getItems())
+            {
+                ItemStack is = new ItemStack(item.getItemStack());
 
-            if(is.getAmount() <= 0)
-                continue;
-
-            //TODO: Ignore this abomination its rewritten in 2.2
-            if(!Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.MINING, is.getType())
-                    && !Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.HERBALISM, is.getType())
-                        && !Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, is.getType()))
-                continue;
-
-            //If we suspect TEs might be duped only reward block
-            if(dontRewardTE) {
-                if(!is.getType().isBlock()) {
+                if(is.getAmount() <= 0)
                     continue;
+
+                //TODO: Ignore this abomination its rewritten in 2.2
+                if(!Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.MINING, is.getType())
+                        && !Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.HERBALISM, is.getType())
+                        && !Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, is.getType()))
+                    continue;
+
+                //If we suspect TEs might be duped only reward block
+                if(dontRewardTE) {
+                    if(!is.getType().isBlock()) {
+                        continue;
+                    }
                 }
-            }
 
-            if (event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).size() > 0) {
-                BonusDropMeta bonusDropMeta = (BonusDropMeta) event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).get(0);
-                int bonusCount = bonusDropMeta.asInt();
+                if (event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).size() > 0) {
+                    BonusDropMeta bonusDropMeta = (BonusDropMeta) event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).get(0);
+                    int bonusCount = bonusDropMeta.asInt();
 
-                for (int i = 0; i < bonusCount; i++) {
-                    event.getBlock().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                    for (int i = 0; i < bonusCount; i++) {
+                        event.getBlock().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                    }
                 }
             }
         }
