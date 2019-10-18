@@ -1,3 +1,7 @@
+Version 2.1.110
+    Fixed a dupe bug
+    Added Lithuanian locale (thanks Vyciokazz)
+
 Version 2.1.109
     Block Cracker will now correctly crack stone_bricks during Berserk again
     Added Lily_Of_The_Valley to the Bonus Drops list in config.yml (you'll probably want to add this manually) which enables it to double drop

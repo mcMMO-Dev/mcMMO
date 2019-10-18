@@ -41,7 +41,9 @@ import org.bukkit.event.block.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class BlockListener implements Listener {
     private final mcMMO plugin;
@@ -53,6 +55,20 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockDropItemEvent(BlockDropItemEvent event)
     {
+        //Track how many "things" are being dropped
+        HashSet<Material> uniqueMaterials = new HashSet<>();
+        boolean dontRewardTE = false; //If we suspect TEs are mixed in with other things don't reward bonus drops for anything that isn't a block
+
+        for(Item item : event.getItems()) {
+            uniqueMaterials.add(item.getItemStack().getType());
+        }
+
+        if(uniqueMaterials.size() > 1) {
+            //Too many things are dropping, assume tile entities might be duped
+            //Technically this would also prevent something like coal from being bonus dropped if you placed a TE above a coal ore when mining it but that's pretty edge case and this is a good solution for now
+            dontRewardTE = true;
+        }
+
         for(Item item : event.getItems())
         {
             ItemStack is = new ItemStack(item.getItemStack());
@@ -65,6 +81,13 @@ public class BlockListener implements Listener {
                     && !Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.HERBALISM, is.getType())
                         && !Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, is.getType()))
                 continue;
+
+            //If we suspect TEs might be duped only reward block
+            if(dontRewardTE) {
+                if(!is.getType().isBlock()) {
+                    continue;
+                }
+            }
 
             if (event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).size() > 0) {
                 BonusDropMeta bonusDropMeta = (BonusDropMeta) event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).get(0);
@@ -79,44 +102,6 @@ public class BlockListener implements Listener {
         if(event.getBlock().hasMetadata(mcMMO.BONUS_DROPS_METAKEY))
             event.getBlock().removeMetadata(mcMMO.BONUS_DROPS_METAKEY, plugin);
     }
-
-    /*@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockDropItemEvent(BlockDropItemEvent event)
-    {
-        for(Item item : event.getItems())
-        {
-            ItemStack is = new ItemStack(item.getItemStack());
-
-            if(event.getBlock().getMetadata(mcMMO.doubleDrops).size() > 0)
-            {
-                List<MetadataValue> metadataValue = event.getBlock().getMetadata(mcMMO.doubleDrops);
-
-                BonusDrops bonusDrops = (BonusDrops) metadataValue.get(0);
-                Collection<ItemStack> potentialDrops = (Collection<ItemStack>) bonusDrops.value();
-
-                if(potentialDrops.contains(is))
-                {
-                    event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                }
-
-                event.getBlock().removeMetadata(mcMMO.doubleDrops, plugin);
-            } else {
-                if(event.getBlock().getMetadata(mcMMO.tripleDrops).size() > 0) {
-                    List<MetadataValue> metadataValue = event.getBlock().getMetadata(mcMMO.tripleDrops);
-
-                    BonusDrops bonusDrops = (BonusDrops) metadataValue.get(0);
-                    Collection<ItemStack> potentialDrops = (Collection<ItemStack>) bonusDrops.value();
-
-                    if (potentialDrops.contains(is)) {
-                        event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                        event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                    }
-
-                    event.getBlock().removeMetadata(mcMMO.tripleDrops, plugin);
-                }
-            }
-        }
-    }*/
 
     /**
      * Monitor BlockPistonExtend events.
