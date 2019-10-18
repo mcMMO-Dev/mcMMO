@@ -1,5 +1,7 @@
 Version 2.1.110
     Fixed a dupe bug
+    Actually fixed Block Cracker
+    You can now crack Infested Stone Bricks with Block Cracker
     Added Lithuanian locale (thanks Vyciokazz)
 
 Version 2.1.109

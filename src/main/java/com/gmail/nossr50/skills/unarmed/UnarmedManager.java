@@ -92,7 +92,14 @@ public class UnarmedManager extends SkillManager {
                     return false;
                 }
 
-                blockState.setType(Material.CRACKED_STONE_BRICKS);
+                blockState.getBlock().setType(Material.CRACKED_STONE_BRICKS);
+                return true;
+            case INFESTED_STONE_BRICKS:
+                if (!Unarmed.blockCrackerSmoothBrick) {
+                    return false;
+                }
+
+                blockState.getBlock().setType(Material.INFESTED_CRACKED_STONE_BRICKS);
                 return true;
 
             default:

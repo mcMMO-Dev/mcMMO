@@ -1,5 +1,6 @@
 package com.gmail.nossr50.listeners;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
@@ -588,7 +589,7 @@ public class BlockListener implements Listener {
                 blockState.update(true);
             }
         }
-        else if (mcMMOPlayer.getAbilityMode(SuperAbilityType.BERSERK) && heldItem.getType() == Material.AIR) {
+        else if (mcMMOPlayer.getAbilityMode(SuperAbilityType.BERSERK) && (heldItem.getType() == Material.AIR || Config.getInstance().getUnarmedItemsAsUnarmed())) {
             if (mcMMOPlayer.getUnarmedManager().canUseBlockCracker() && BlockUtils.affectedByBlockCracker(blockState)) {
                 if (EventUtils.simulateBlockBreak(block, player, true) && mcMMOPlayer.getUnarmedManager().blockCrackerCheck(blockState)) {
                     blockState.update();
