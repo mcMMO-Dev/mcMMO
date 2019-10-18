@@ -462,6 +462,7 @@ Bonus_Drops:
         Lilac: true
         Rose_Bush: true
         Peony: true
+        Lily_Of_The_Valley: true
     Mining:
         Andesite: true
         Diorite: true

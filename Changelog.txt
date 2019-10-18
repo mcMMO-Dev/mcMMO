@@ -1,6 +1,9 @@
 Version 2.1.109
+    Block Cracker will now correctly crack stone_bricks during Berserk again
+    Added Lily_Of_The_Valley to the Bonus Drops list in config.yml (you'll probably want to add this manually) which enables it to double drop
     Added missing 1.14 blocks to ability/tool activation blacklists
     Fixed spamming of incompatible worldguard version message
+    Updated Italian locale (thanks Fabrimat)
 
 Version 2.1.108
     Fixed an amusing exploit for easy leveling in Acrobatics
