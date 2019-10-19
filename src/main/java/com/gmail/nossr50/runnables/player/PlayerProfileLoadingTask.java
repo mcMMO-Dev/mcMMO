@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.McScoreboardKeepTask;
+import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
@@ -42,9 +43,11 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
         }
 
         PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(player.getName(), player.getUniqueId(), true);
+
         // If successful, schedule the apply
         if (profile.isLoaded()) {
             new ApplySuccessfulProfile(new McMMOPlayer(player, profile)).runTask(mcMMO.p);
+            EventUtils.callPlayerProfileLoadEvent(player, profile);
             return;
         }
 

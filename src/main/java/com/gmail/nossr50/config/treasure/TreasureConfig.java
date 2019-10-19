@@ -150,7 +150,7 @@ public class TreasureConfig extends ConfigLoader {
             }
 
             if (amount <= 0) {
-                reason.add("Amount of " + treasureName + " must be greater than 0! " + amount);
+                amount = 1;
             }
 
             if (material != null && material.isBlock() && (data > 127 || data < -128)) {

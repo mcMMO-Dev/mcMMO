@@ -1,5 +1,76 @@
+Version 2.1.110
+    Fixed a dupe bug
+    Actually fixed Block Cracker
+    You can now crack Infested Stone Bricks with Block Cracker
+    Added Lithuanian locale (thanks Vyciokazz)
+
+Version 2.1.109
+    Block Cracker will now correctly crack stone_bricks during Berserk again
+    Added Lily_Of_The_Valley to the Bonus Drops list in config.yml (you'll probably want to add this manually) which enables it to double drop
+    Added missing 1.14 blocks to ability/tool activation blacklists
+    Fixed spamming of incompatible worldguard version message
+    Updated Italian locale (thanks Fabrimat)
+
+Version 2.1.108
+    Fixed an amusing exploit for easy leveling in Acrobatics
+    mcMMO should no longer break if FAWE is being used in conjunction with WG on the server
+    Improved WG compatibility, mcMMO will now check if WG has loaded properly before hooking into it, which will prevent mcMMO from breaking if WG could not load properly.
+    mcMMO now loads after worlds do during start up (which is what it should be doing)
+
+    NOTES:
+    Mobs will now only reward Dodge XP a certain amount of times
+    You can turn off this exploit prevention by disabling ExploitFix.Acrobatics in experience.yml
+
+Version 2.1.107
+    Fixed an exploit that allowed automated XP gain for Excavation
+    Fixed encoding of russian translation
+    New API event McMMOPlayerProfileLoadEvent (thanks Shrek5InTheatres2019)
+
+Version 2.1.106
+    Added a few missing blocks to the ability blacklist tables (prevents readying/using abilities on certain blocks that have right click functionality)
+    Updated Japanese locale (thanks ethernetcat)
+    Updated Simplified Chinese locale (thanks Fu_Meng)
+
+Version 2.1.105
+    mcMMO will reset players scoreboard to the main scoreboard if they move into a blacklisted world
+    Beast lore now shows max jump height and other tweaks (Thanks QuantumToasted)
+    If the server has enabled level caps (which are not on by default) players will be shown that they are at max level instead of seeing how much XP needed to reach an impossible level (thanks Shrek5InTheatres2019)
+    Large update to Italian locale (thanks Leomixer17)
+
+    NOTES:
+    The scoreboard change should result in mcMMO removing scoreboards from players properly when they enter a black listed world. This is a hacky band aid fix as our scoreboard code is archaic and needs to be rewritten in 2.2 and not 2.1. Expect a scoreboard overhaul sometime in the future.
+
+Version 2.1.104
+    Fixed a bug resulting in many errors when using Rupture
+    Large update to the Japanese locale (thanks ethernetcat)
+    Updated Hungarian locale (thanks andris)
+
+Version 2.1.103
+    Treasure item amount will default to 1 if not specified instead of breaking mcMMO
+    Fishing treasures will now return the amount defined in treasures config file, an option to randomize amounts will be coming in the future. See notes.
+    Fixed a bug where Tree Feller was only rewarding 1 XP per log broken no matter the circumstances
+    Fixed an issue with salvage checking the incorrect level requirement
+    Updated Italian locale (thanks Leomixer17)
+    Fixed grammar in one of the Salvage strings (thanks QuantumToasted)
+
+    NOTES:
+    Sometime in 2014 a decision was made that any fishing treasure over the amount of 1 will be randomized in its yield, while this is not necessarily a bad thing it means control over the drop is a bit random. I've removed this randomness temporarily, in the future you will be able to chose if the amount is randomized or static.
+
+Version 2.1.102
+    Scoreboards will now be removed from players who teleport to a blacklisted world
+    Fixed a bug where Rupture could trigger itself
+
+Version 2.1.101
+    Fixed an exploit where chorus plants could be used to gain automatic XP
+    Added blast furnace, cartography table, grindstone, lectern, loom, scaffolding, smoker, stonecutter, and sweet berry bush to the list of internal blocks that don't trigger tool readying
+
 Version 2.1.100
-    Corrected some mistakes made in the updated Russian locale (thanks myfbone!)
+    Fixed a bug where plants could double drop when the skill was not yet unlocked
+    Fixed a bug where plants ALWAYS double dropped
+    mcnotify command now checks that it's being executed by a player
+    Fixed some concurrency concerns around BleedTasks
+    Fixed an NPE that may occur with random chances on a player without loaded data
+    Updated Russian locale (thanks myfbone!)
 
 Version 2.1.99
     MASSIVE update to the Russian locale (ru) credit to myfbone

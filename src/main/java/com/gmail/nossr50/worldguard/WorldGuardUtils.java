@@ -1,7 +1,9 @@
 package com.gmail.nossr50.worldguard;
 
 import com.gmail.nossr50.mcMMO;
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.flags.registry.SimpleFlagRegistry;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
@@ -93,23 +95,42 @@ public class WorldGuardUtils {
      */
     private static boolean isCompatibleVersion(Plugin plugin) {
         //Check that the version of WG is at least version 7.xx
-        if(!plugin.getDescription().getVersion().startsWith("7")) {
+        boolean allClassesFound = true;
+        if (detectedIncompatibleWG) {
+            return false;
+        }
+
+        if (!plugin.getDescription().getVersion().startsWith("7")) {
             markWGIncompatible();
         } else {
             //Use Reflection to check for a class not present in all versions of WG7
             for(String classString : WGClassList) {
                 try {
                     Class<?> checkForClass = Class.forName(classString);
-                    detectedIncompatibleWG = false; //In case this was set to true previously
-                } catch (ClassNotFoundException e) {
+                } catch (ClassNotFoundException | NoClassDefFoundError e) {
+                    allClassesFound = false;
                     mcMMO.p.getLogger().severe("Missing WorldGuard class - "+classString);
                     markWGIncompatible();
-                    return false;
                 }
+            }
+
+            /*
+             * If WG appears to have all of its classes we can then check to see if its been initialized properly
+             */
+            try {
+                if(allClassesFound) {
+                    if(!((SimpleFlagRegistry) WorldGuard.getInstance().getFlagRegistry()).isInitialized()) {
+                        markWGIncompatible();
+                        mcMMO.p.getLogger().severe("WG did not initialize properly, this can cause errors with mcMMO so mcMMO is disabling certain features.");
+                    }
+                }
+            } catch (Exception e) {
+                markWGIncompatible();
+                e.printStackTrace();
             }
         }
 
-        return true;
+        return !detectedIncompatibleWG;
     }
 
     /**

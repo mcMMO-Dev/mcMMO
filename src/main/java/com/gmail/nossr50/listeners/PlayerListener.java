@@ -27,6 +27,7 @@ import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
@@ -69,8 +70,16 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
+        if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld())) {
+            //Remove scoreboards
+            ScoreboardManager.teardownPlayer(event.getPlayer());
             return;
+        } else if(WorldBlacklist.isWorldBlacklisted(event.getFrom().getWorld())) {
+            //This only fires if they are traveling to a non-blacklisted world from a blacklisted world
+
+            //Setup scoreboards
+            ScoreboardManager.setupPlayer(event.getPlayer());
+        }
 
         Player player = event.getPlayer();
 
@@ -93,7 +102,6 @@ public class PlayerListener implements Listener {
 
         UserManager.getPlayer(player).actualizeTeleportATS();
     }
-
     /**
      * Handle PlayerDeathEvents at the lowest priority.
      * <p>
@@ -718,7 +726,8 @@ public class PlayerListener implements Listener {
         //Spam Fishing Detection
         if(event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)
         {
-            if(heldItem.getType() == Material.FISHING_ROD || player.getInventory().getItemInOffHand().getType() == Material.FISHING_ROD)
+            if(ExperienceConfig.getInstance().isFishingExploitingPrevented()
+                       && (heldItem.getType() == Material.FISHING_ROD || player.getInventory().getItemInOffHand().getType() == Material.FISHING_ROD))
             {
                 if(player.isInsideVehicle() && (player.getVehicle() instanceof Minecart || player.getVehicle() instanceof PoweredMinecart))
                 {

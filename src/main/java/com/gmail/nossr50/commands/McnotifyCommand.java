@@ -2,6 +2,7 @@ package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -14,6 +15,10 @@ import java.util.List;
 public class McnotifyCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (CommandUtils.noConsoleUsage(sender)) {
+            return true;
+        }
+
         switch (args.length) {
             case 0:
                 McMMOPlayer mcMMOPlayer = UserManager.getPlayer((Player) sender);

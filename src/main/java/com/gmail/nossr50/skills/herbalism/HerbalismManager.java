@@ -164,7 +164,7 @@ public class HerbalismManager extends SkillManager {
          * Mark blocks for double drops
          * Be aware of the hacky interactions we are doing with Chorus Plants
          */
-        checkDoubleDropsOnBrokenPlants(brokenPlants);
+        checkDoubleDropsOnBrokenPlants(blockBreakEvent.getPlayer(), brokenPlants);
 
         //It would take an expensive algorithm to predict which parts of a Chorus Tree will break as a result of root break
         //So this hacky method is used instead
@@ -212,7 +212,20 @@ public class HerbalismManager extends SkillManager {
         }
     }
 
-    public void checkDoubleDropsOnBrokenPlants(Collection<Block> brokenPlants) {
+    /**
+     * Check for double drops on a collection of broken blocks
+     * If a double drop has occurred, it will be marked here for bonus drops
+     * @param player player who broke the blocks
+     * @param brokenPlants the collection of broken plants
+     */
+    public void checkDoubleDropsOnBrokenPlants(Player player, Collection<Block> brokenPlants) {
+
+        //Only proceed if skill unlocked and permission enabled
+        if (!RankUtils.hasUnlockedSubskill(player, SubSkillType.HERBALISM_DOUBLE_DROPS)
+                || !Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_DOUBLE_DROPS)) {
+            return;
+        }
+
         for(Block brokenPlant : brokenPlants) {
             BlockState brokenPlantState = brokenPlant.getState();
             BlockData plantData = brokenPlantState.getBlockData();
@@ -233,7 +246,9 @@ public class HerbalismManager extends SkillManager {
                     Ageable ageable = (Ageable) plantData;
 
                     if(isAgeableMature(ageable) || isBizarreAgeable(plantData)) {
-                        markForBonusDrops(brokenPlantState);
+                        if(checkDoubleDrop(brokenPlantState)) {
+                            markForBonusDrops(brokenPlantState);
+                        }
                     }
                 } else if(checkDoubleDrop(brokenPlantState)) {
                     //Add metadata to mark this block for double or triple drops

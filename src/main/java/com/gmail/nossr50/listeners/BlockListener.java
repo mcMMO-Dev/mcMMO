@@ -1,5 +1,6 @@
 package com.gmail.nossr50.listeners;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
@@ -41,7 +42,9 @@ import org.bukkit.event.block.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class BlockListener implements Listener {
     private final mcMMO plugin;
@@ -53,25 +56,55 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockDropItemEvent(BlockDropItemEvent event)
     {
-        for(Item item : event.getItems())
-        {
-            ItemStack is = new ItemStack(item.getItemStack());
+        //Track how many "things" are being dropped
+        HashSet<Material> uniqueMaterials = new HashSet<>();
+        boolean dontRewardTE = false; //If we suspect TEs are mixed in with other things don't reward bonus drops for anything that isn't a block
+        int blockCount = 0;
 
-            if(is.getAmount() <= 0)
-                continue;
+        for(Item item : event.getItems()) {
+            //Track unique materials
+            uniqueMaterials.add(item.getItemStack().getType());
 
-            //TODO: Ignore this abomination its rewritten in 2.2
-            if(!Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.MINING, is.getType())
-                    && !Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.HERBALISM, is.getType())
+            //Count blocks as a second failsafe
+            if(item.getItemStack().getType().isBlock())
+                blockCount++;
+        }
+
+        if(uniqueMaterials.size() > 1) {
+            //Too many things are dropping, assume tile entities might be duped
+            //Technically this would also prevent something like coal from being bonus dropped if you placed a TE above a coal ore when mining it but that's pretty edge case and this is a good solution for now
+            dontRewardTE = true;
+        }
+
+        //If there are more than one block in the item list we can't really trust it and will back out of rewarding bonus drops
+        if(blockCount <= 1) {
+            for(Item item : event.getItems())
+            {
+                ItemStack is = new ItemStack(item.getItemStack());
+
+                if(is.getAmount() <= 0)
+                    continue;
+
+                //TODO: Ignore this abomination its rewritten in 2.2
+                if(!Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.MINING, is.getType())
+                        && !Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.HERBALISM, is.getType())
                         && !Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, is.getType()))
-                continue;
+                    continue;
 
-            if (event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).size() > 0) {
-                BonusDropMeta bonusDropMeta = (BonusDropMeta) event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).get(0);
-                int bonusCount = bonusDropMeta.asInt();
+                //If we suspect TEs might be duped only reward block
+                if(dontRewardTE) {
+                    if(!is.getType().isBlock()) {
+                        continue;
+                    }
+                }
 
-                for (int i = 0; i < bonusCount; i++) {
-                    event.getBlock().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                if (event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).size() > 0) {
+                    BonusDropMeta bonusDropMeta = (BonusDropMeta) event.getBlock().getMetadata(mcMMO.BONUS_DROPS_METAKEY).get(0);
+                    int bonusCount = bonusDropMeta.asInt();
+
+                    for (int i = 0; i < bonusCount; i++) {
+                        event.getBlock().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                    }
                 }
             }
         }
@@ -79,44 +112,6 @@ public class BlockListener implements Listener {
         if(event.getBlock().hasMetadata(mcMMO.BONUS_DROPS_METAKEY))
             event.getBlock().removeMetadata(mcMMO.BONUS_DROPS_METAKEY, plugin);
     }
-
-    /*@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockDropItemEvent(BlockDropItemEvent event)
-    {
-        for(Item item : event.getItems())
-        {
-            ItemStack is = new ItemStack(item.getItemStack());
-
-            if(event.getBlock().getMetadata(mcMMO.doubleDrops).size() > 0)
-            {
-                List<MetadataValue> metadataValue = event.getBlock().getMetadata(mcMMO.doubleDrops);
-
-                BonusDrops bonusDrops = (BonusDrops) metadataValue.get(0);
-                Collection<ItemStack> potentialDrops = (Collection<ItemStack>) bonusDrops.value();
-
-                if(potentialDrops.contains(is))
-                {
-                    event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                }
-
-                event.getBlock().removeMetadata(mcMMO.doubleDrops, plugin);
-            } else {
-                if(event.getBlock().getMetadata(mcMMO.tripleDrops).size() > 0) {
-                    List<MetadataValue> metadataValue = event.getBlock().getMetadata(mcMMO.tripleDrops);
-
-                    BonusDrops bonusDrops = (BonusDrops) metadataValue.get(0);
-                    Collection<ItemStack> potentialDrops = (Collection<ItemStack>) bonusDrops.value();
-
-                    if (potentialDrops.contains(is)) {
-                        event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                        event.getBlock().getState().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
-                    }
-
-                    event.getBlock().removeMetadata(mcMMO.tripleDrops, plugin);
-                }
-            }
-        }
-    }*/
 
     /**
      * Monitor BlockPistonExtend events.
@@ -183,9 +178,11 @@ public class BlockListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
             return;
 
-        if(BlockUtils.shouldBeWatched(event.getBlock().getState()))
+        BlockState blockState = event.getNewState();
+
+        if(BlockUtils.shouldBeWatched(blockState))
         {
-            mcMMO.getPlaceStore().setTrue(event.getBlock());
+            mcMMO.getPlaceStore().setTrue(blockState.getBlock());
         }
     }
 
@@ -198,7 +195,8 @@ public class BlockListener implements Listener {
 
         if(ExperienceConfig.getInstance().preventStoneLavaFarming())
         {
-            if(event.getNewState().getType() != Material.OBSIDIAN && BlockUtils.shouldBeWatched(event.getNewState())
+            if(event.getNewState().getType() != Material.OBSIDIAN
+                    && BlockUtils.shouldBeWatched(event.getNewState())
                     && ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.MINING, event.getNewState().getBlockData()))
             {
                 mcMMO.getPlaceStore().setTrue(event.getNewState());
@@ -353,6 +351,11 @@ public class BlockListener implements Listener {
             if (PrimarySkillType.HERBALISM.getPermissions(player)) {
                 herbalismManager.processHerbalismBlockBreakEvent(event);
             }
+            /*
+             * We return here so that we don't unmark any affected blocks
+             * due to special checks managing this on their own:
+             */
+            return;
         }
 
         /* MINING */
@@ -586,15 +589,15 @@ public class BlockListener implements Listener {
                 blockState.update(true);
             }
         }
-        else if (mcMMOPlayer.getAbilityMode(SuperAbilityType.BERSERK) && heldItem.getType() == Material.AIR) {
-            if (SuperAbilityType.BERSERK.blockCheck(block.getState()) && EventUtils.simulateBlockBreak(block, player, true)) {
-                event.setInstaBreak(true);
-                SoundManager.sendSound(player, block.getLocation(), SoundType.POP);
-            }
-            else if (mcMMOPlayer.getUnarmedManager().canUseBlockCracker() && BlockUtils.affectedByBlockCracker(blockState) && EventUtils.simulateBlockBreak(block, player, true)) {
-                if (mcMMOPlayer.getUnarmedManager().blockCrackerCheck(blockState)) {
+        else if (mcMMOPlayer.getAbilityMode(SuperAbilityType.BERSERK) && (heldItem.getType() == Material.AIR || Config.getInstance().getUnarmedItemsAsUnarmed())) {
+            if (mcMMOPlayer.getUnarmedManager().canUseBlockCracker() && BlockUtils.affectedByBlockCracker(blockState)) {
+                if (EventUtils.simulateBlockBreak(block, player, true) && mcMMOPlayer.getUnarmedManager().blockCrackerCheck(blockState)) {
                     blockState.update();
                 }
+            }
+            else if (SuperAbilityType.BERSERK.blockCheck(block.getState()) && EventUtils.simulateBlockBreak(block, player, true)) {
+                event.setInstaBreak(true);
+                SoundManager.sendSound(player, block.getLocation(), SoundType.POP);
             }
         }
         else if (mcMMOPlayer.getWoodcuttingManager().canUseLeafBlower(heldItem) && BlockUtils.isLeaves(blockState) && EventUtils.simulateBlockBreak(block, player, true)) {
