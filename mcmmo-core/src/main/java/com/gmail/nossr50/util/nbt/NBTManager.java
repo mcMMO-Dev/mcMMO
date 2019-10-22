@@ -30,6 +30,23 @@ public class NBTManager {
 //        }
     }
 
+    /**
+     * Used for testing NBT stuff, will be deleted later
+     * @param player target player
+     */
+    //TODO: DELETE
+    //TODO: DELETE
+    //TODO: DELETE
+    //TODO: DELETE
+    //TODO: DELETE
+    //TODO: DELETE
+    //TODO: DELETE
+    //TODO: DELETE
+    //TODO: DELETE
+    //TODO: DELETE
+    //TODO: DELETE
+    //TODO: DELETE
+    //TODO: DELETE
     public void debugNBTInMainHandItem(Player player) {
         player.sendMessage("Starting NBT Debug Dump...");
 
@@ -52,10 +69,20 @@ public class NBTManager {
         player.updateInventory();
     }
 
+    /**
+     * Gets the NMS.ItemStack Copy of a Bukkit.ItemStack
+     * @param itemStack target bukkit ItemStack
+     * @return the NMS.ItemStack "copy" of the Bukkit ItemStack
+     */
     public net.minecraft.server.v1_14_R1.ItemStack getNMSItemStack(ItemStack itemStack) {
         return CraftItemStack.asNMSCopy(itemStack);
     }
 
+    /**
+     * Copies the NBT off an ItemStack and adds a tag compound if it doesn't exist
+     * @param itemStack target ItemStack
+     * @return the NBT copy of an ItemStack
+     */
     @NonNull
     public NBTTagCompound getNBTCopy(ItemStack itemStack) {
         net.minecraft.server.v1_14_R1.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(itemStack);
@@ -68,6 +95,12 @@ public class NBTManager {
         return freshNBTCopy;
     }
 
+    /**
+     * Adds a Float Value to an ItemStack's NBT
+     * @param itemStack target ItemStack
+     * @param key the key for the new NBT float kv pair
+     * @param value the value of the new NBT float kv pair
+     */
     public void addFloatNBT(ItemStack itemStack, String key, float value) {
         //NBT Copied off Item
         net.minecraft.server.v1_14_R1.ItemStack nmsIS = getNMSItemStack(itemStack);
@@ -88,13 +121,21 @@ public class NBTManager {
         itemStack.setItemMeta(craftItemStack.getItemMeta());
     }
 
+    /**
+     * Merges the modification compound into the target compound's tag NBT node
+     * @param targetCompound target NBT to merge into
+     * @param modificationCompound data to merge
+     */
     public void mergeToTagCompound(NBTTagCompound targetCompound, NBTTagCompound modificationCompound) {
         NBTTagCompound tagCompound = (NBTTagCompound) targetCompound.get("tag");
         tagCompound.a(modificationCompound);
     }
 
-
-
+    /**
+     * Applies NBT to an NMS.ItemStack
+     * @param nmsItemStack target NMS.ItemStack
+     * @param nbtTagCompound the new NBT data for the NMS.ItemStack
+     */
     public void applyNBT(net.minecraft.server.v1_14_R1.ItemStack nmsItemStack, NBTTagCompound nbtTagCompound) {
 
         try {
@@ -118,6 +159,11 @@ public class NBTManager {
         }
     }
 
+    /**
+     * Prints all the NBT KV pairs on an ItemStack
+     * @param itemStack target ItemStack
+     * @param player target player to send the message to
+     */
     public void printNBT(ItemStack itemStack, Player player) {
         NBTTagCompound tagCompoundCopy = getNBTCopy(itemStack);
         for(String key : tagCompoundCopy.getKeys()) {
