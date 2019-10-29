@@ -4,7 +4,6 @@ import java.util.List;
 
 public class NBTList implements NBTBase {
 
-    private int length;
     private String key;
     private List<? extends NBTBase> values;
 
@@ -14,7 +13,7 @@ public class NBTList implements NBTBase {
     }
 
     public int getLength() {
-        return length;
+        return values.size();
     }
 
     public String getKey() {

@@ -25,4 +25,5 @@ public class NBTByte implements NBTBase {
     public void setValue(Byte value) {
         this.value = value;
     }
+
 }
