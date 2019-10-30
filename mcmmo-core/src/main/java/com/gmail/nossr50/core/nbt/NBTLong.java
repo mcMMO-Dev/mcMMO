@@ -2,8 +2,8 @@ package com.gmail.nossr50.core.nbt;
 
 public class NBTLong implements NBTBase {
 
-    public String key;
-    public long value;
+    private String key;
+    private long value;
 
     public String getKey() {
         return key;

@@ -5,12 +5,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class NBTTagCompound implements NBTBase {
+public class NBTCompound implements NBTBase {
 
     private String key;
     private Map<String, NBTBase> tagMap;
 
-    public NBTTagCompound(String key) {
+    public NBTCompound(String key) {
         tagMap = new LinkedHashMap<>();
     }
 

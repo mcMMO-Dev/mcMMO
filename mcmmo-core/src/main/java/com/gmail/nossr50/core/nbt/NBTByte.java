@@ -5,6 +5,10 @@ public class NBTByte implements NBTBase {
     private String key;
     private Byte value;
 
+    public NBTByte(Byte value) {
+        this.value = value;
+    }
+
     @Override
     public NBTType getNBTType() {
         return NBTType.BYTE;
