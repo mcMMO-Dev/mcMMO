@@ -1,6 +1,6 @@
 package com.gmail.nossr50.core.nbt;
 
-public class NBTInteger implements NBTBase {
+public class NBTInt implements NBTBase {
 
     private String key;
     private int value;

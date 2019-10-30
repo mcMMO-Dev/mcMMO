@@ -8,6 +8,10 @@ public abstract class PlatformAdapter {
         this.nbtAdapter = nbtAdapter;
     }
 
+    /**
+     * Get the NBT Adapter for this platform
+     * @return the platform's NBT adapter
+     */
     public NBTAdapter getNbtAdapter() {
         return nbtAdapter;
     }
