@@ -1,10 +1,9 @@
 package com.gmail.nossr50.core.adapters.NMS_114;
 
 import com.gmail.nossr50.core.adapters.NBTAdapter;
-import com.gmail.nossr50.core.nbt.*;
 import com.gmail.nossr50.core.nbt.NBTBase;
 import com.gmail.nossr50.core.nbt.NBTList;
-import com.gmail.nossr50.core.nbt.NBTCompound;
+import com.gmail.nossr50.core.nbt.*;
 import net.minecraft.server.v1_14_R1.*;
 
 public class BukkitNBTAdapter implements NBTAdapter {

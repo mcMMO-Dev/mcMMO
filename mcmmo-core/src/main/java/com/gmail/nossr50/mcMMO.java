@@ -11,6 +11,7 @@ import com.gmail.nossr50.config.scoreboard.ConfigScoreboard;
 import com.gmail.nossr50.core.DynamicSettingsManager;
 import com.gmail.nossr50.core.MaterialMapStore;
 import com.gmail.nossr50.core.MetadataConstants;
+import com.gmail.nossr50.core.PlatformManager;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.datatypes.skills.subskills.acrobatics.Roll;
@@ -86,6 +87,7 @@ public class mcMMO extends JavaPlugin {
     private ScoreboardManager scoreboardManager;
     private SoundManager soundManager;
     private HardcoreManager hardcoreManager;
+    private PlatformManager platformManager;
 
     /* Not-Managers but my naming scheme sucks */
     private DatabaseManagerFactory databaseManagerFactory;
@@ -131,6 +133,9 @@ public class mcMMO extends JavaPlugin {
     public void onEnable() {
         try {
             getLogger().setFilter(new LogFilter(this));
+
+            //Init PlatformManager
+            platformManager = new PlatformManager(this);
 
             //TODO: Disgusting...
             MetadataConstants.metadataValue = new FixedMetadataValue(this, true);
@@ -861,5 +866,9 @@ public class mcMMO extends JavaPlugin {
 
     public NBTManager getNbtManager() {
         return nbtManager;
+    }
+
+    public PlatformManager getPlatformManager() {
+        return platformManager;
     }
 }
