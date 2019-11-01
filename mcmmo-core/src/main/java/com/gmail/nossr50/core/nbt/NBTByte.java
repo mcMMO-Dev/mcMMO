@@ -1,11 +1,12 @@
 package com.gmail.nossr50.core.nbt;
 
+import java.util.Objects;
+
 public class NBTByte implements NBTBase {
 
-    private String key;
-    private Byte value;
+    private byte value;
 
-    public NBTByte(Byte value) {
+    public NBTByte(byte value) {
         this.value = value;
     }
 
@@ -14,20 +15,31 @@ public class NBTByte implements NBTBase {
         return NBTType.BYTE;
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public Byte getValue() {
+    public byte getValue() {
         return value;
     }
 
-    public void setValue(Byte value) {
+    public void setValue(byte value) {
         this.value = value;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NBTByte nbtByte = (NBTByte) o;
+        return value == nbtByte.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
+
+    @Override
+    public String toString() {
+        return "NBTByte{" +
+                "value=" + value +
+                '}';
+    }
 }

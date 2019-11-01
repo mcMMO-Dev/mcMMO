@@ -1,16 +1,15 @@
 package com.gmail.nossr50.core.nbt;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.util.*;
 
 public class NBTCompound implements NBTBase {
 
-    private String key;
+    @NonNull
     private Map<String, NBTBase> tagMap;
 
-    public NBTCompound(String key) {
+    public NBTCompound() {
         tagMap = new LinkedHashMap<>();
     }
 
@@ -21,14 +20,6 @@ public class NBTCompound implements NBTBase {
 
     public NBTBase getTag(String key) {
         return tagMap.get(key);
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
     }
 
     public void addNBT(String tagKey, NBTBase nbt) {
@@ -49,6 +40,26 @@ public class NBTCompound implements NBTBase {
 
     public void removeEntry(String tagKey) {
         tagMap.remove(tagKey);
+    }
+
+    @Override
+    public String toString() {
+        return "NBTCompound{" +
+                "tagMap=" + tagMap +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NBTCompound that = (NBTCompound) o;
+        return tagMap.equals(that.tagMap);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(tagMap);
     }
 }
 

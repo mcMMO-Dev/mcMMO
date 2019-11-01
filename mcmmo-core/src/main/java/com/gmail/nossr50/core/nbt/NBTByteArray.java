@@ -1,9 +1,16 @@
 package com.gmail.nossr50.core.nbt;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.util.Arrays;
+
 public class NBTByteArray implements NBTBase {
 
-    private String key;
     private byte[] values;
+
+    public NBTByteArray(byte[] values) {
+        this.values = values;
+    }
 
     @Override
     public NBTType getNBTType() {
@@ -14,19 +21,31 @@ public class NBTByteArray implements NBTBase {
         return values.length;
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
     public byte[] getValues() {
         return values;
     }
 
     public void setValues(byte[] values) {
         this.values = values;
+    }
+
+    @Override
+    public String toString() {
+        return "NBTByteArray{" +
+                "values=" + Arrays.toString(values) +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NBTByteArray that = (NBTByteArray) o;
+        return Arrays.equals(values, that.values);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(values);
     }
 }

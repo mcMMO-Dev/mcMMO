@@ -1,16 +1,13 @@
 package com.gmail.nossr50.core.nbt;
 
+import java.util.Objects;
+
 public class NBTLong implements NBTBase {
 
-    private String key;
     private long value;
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
+    public NBTLong(long value) {
+        this.value = value;
     }
 
     public long getValue() {
@@ -24,5 +21,25 @@ public class NBTLong implements NBTBase {
     @Override
     public NBTType getNBTType() {
         return NBTType.LONG;
+    }
+
+    @Override
+    public String toString() {
+        return "NBTLong{" +
+                "value=" + value +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NBTLong nbtLong = (NBTLong) o;
+        return value == nbtLong.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }

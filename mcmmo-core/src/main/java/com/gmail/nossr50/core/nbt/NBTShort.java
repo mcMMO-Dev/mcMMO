@@ -1,21 +1,18 @@
 package com.gmail.nossr50.core.nbt;
 
+import java.util.Objects;
+
 public class NBTShort implements NBTBase {
 
-    private String key;
     private short value;
+
+    public NBTShort(short value) {
+        this.value = value;
+    }
 
     @Override
     public NBTType getNBTType() {
         return NBTType.SHORT;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
     }
 
     public short getValue() {
@@ -24,5 +21,25 @@ public class NBTShort implements NBTBase {
 
     public void setValue(short value) {
         this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return "NBTShort{" +
+                "value=" + value +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NBTShort nbtShort = (NBTShort) o;
+        return value == nbtShort.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }
