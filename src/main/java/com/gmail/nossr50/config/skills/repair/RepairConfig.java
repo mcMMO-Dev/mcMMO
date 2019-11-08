@@ -3,6 +3,7 @@ package com.gmail.nossr50.config.skills.repair;
 import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
 import com.gmail.nossr50.util.ItemUtils;
@@ -26,7 +27,13 @@ public class RepairConfig extends ConfigLoader {
     protected void loadKeys() {
         repairables = new ArrayList<Repairable>();
 
+        if (!config.isConfigurationSection("Repairables")) {
+            mcMMO.p.getLogger().severe("Could not find Repairables section in " + fileName);
+            return;
+        }
+
         ConfigurationSection section = config.getConfigurationSection("Repairables");
+
         Set<String> keys = section.getKeys(false);
 
         for (String key : keys) {
