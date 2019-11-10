@@ -33,7 +33,6 @@ public class RepairConfig extends ConfigLoader {
         }
 
         ConfigurationSection section = config.getConfigurationSection("Repairables");
-
         Set<String> keys = section.getKeys(false);
 
         for (String key : keys) {
