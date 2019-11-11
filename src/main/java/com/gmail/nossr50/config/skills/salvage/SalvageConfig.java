@@ -3,6 +3,7 @@ package com.gmail.nossr50.config.skills.salvage;
 import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.skills.salvage.salvageables.SalvageableFactory;
 import com.gmail.nossr50.util.ItemUtils;
@@ -26,6 +27,11 @@ public class SalvageConfig extends ConfigLoader {
     @Override
     protected void loadKeys() {
         salvageables = new ArrayList<Salvageable>();
+
+        if (!config.isConfigurationSection("Salvageables")) {
+            mcMMO.p.getLogger().severe("Could not find Salvageables section in " + fileName);
+            return;
+        }
 
         ConfigurationSection section = config.getConfigurationSection("Salvageables");
         Set<String> keys = section.getKeys(false);
