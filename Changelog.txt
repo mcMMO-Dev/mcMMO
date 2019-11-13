@@ -1,3 +1,7 @@
+Version 2.1.111
+    Further prevent nesting of bleed damage calls
+    Warn about reparable/salvage configs with missing sections
+
 Version 2.1.110
     Fixed a dupe bug
     Actually fixed Block Cracker
