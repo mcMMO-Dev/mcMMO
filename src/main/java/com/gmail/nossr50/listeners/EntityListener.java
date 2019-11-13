@@ -319,6 +319,10 @@ public class EntityListener implements Listener {
             return;
         }
 
+        if (CombatUtils.isProcessingNoInvulnDamage()) {
+            return;
+        }
+
         if (event.getEntity() instanceof ArmorStand) {
             return;
         }

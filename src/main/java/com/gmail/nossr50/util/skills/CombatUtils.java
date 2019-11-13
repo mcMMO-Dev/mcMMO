@@ -39,6 +39,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 public final class CombatUtils {
     private CombatUtils() {}
 
@@ -554,6 +556,11 @@ public final class CombatUtils {
             target.damage(damage);
     }
 
+    private static boolean processingNoInvulnDamage;
+    public static boolean isProcessingNoInvulnDamage() {
+        return processingNoInvulnDamage;
+    }
+
     public static void dealNoInvulnerabilityTickDamage(LivingEntity target, double damage, Entity attacker) {
         if (target.isDead()) {
             return;
@@ -564,7 +571,11 @@ public final class CombatUtils {
         // potentially mis-attributing the death cause; calling a fake event would partially fix this, but this and setting the last damage
         // cause do have issues around plugin observability. This is not a perfect solution, but it appears to be the best one here
         // We also set no damage ticks to 0, to ensure that damage is applied for this case, and reset it back to the original value
+        // Snapshot current state so we can pop up properly
         boolean wasMetaSet = target.getMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY).size() != 0;
+        boolean wasProcessing = processingNoInvulnDamage;
+        // set markers
+        processingNoInvulnDamage = true;
         target.setMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.metadataValue);
         int noDamageTicks = target.getNoDamageTicks();
         target.setNoDamageTicks(0);
@@ -572,6 +583,8 @@ public final class CombatUtils {
         target.setNoDamageTicks(noDamageTicks);
         if (!wasMetaSet)
             target.removeMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.p);
+        if (!wasProcessing)
+            processingNoInvulnDamage = false;
     }
 
     public static void dealNoInvulnerabilityTickDamageRupture(LivingEntity target, double damage, Entity attacker, int toolTier) {
