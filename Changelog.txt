@@ -6,6 +6,11 @@ Version 2.1.111
     Breaking a Bee Nest will result in Herbalism XP (Update your experience.yml file, see notes)
     Breeding bees will now result in Taming XP (Update your experience.yml file, see notes)
 
+    NOTES:
+        You will need to update your experience.yml by hand or delete it to get XP from new things in 1.15
+        The default version of mcMMO's experience.yml looks like this: https://paste.gg/p/anonymous/15c34df6e60d45d9a3508b379a5e6514
+        You'll want to add Bee to combat XP section, and Bee_Nest to Herbalism XP, and Bee to Taming XP section.
+
 Version 2.1.110
     Fixed a dupe bug
     Actually fixed Block Cracker
