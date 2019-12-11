@@ -275,6 +275,7 @@ Experience_Values:
         Brown_Mushroom_Block: 70
         Mushroom_Stem: 80
     Herbalism:
+        Bee_Nest: 200
         Sweet_Berry_Bush: 300
         Seagrass: 10
         Tall_Seagrass: 10
@@ -441,6 +442,7 @@ Experience_Values:
             Cat: 500
             Fox: 1000
             Panda: 1000
+            Bee: 100
     Combat:
         Multiplier:
             Animals: 1.0
@@ -502,4 +504,5 @@ Experience_Values:
             Ravager: 4.0
             Trader_Llama: 1.0
             Wandering_trader: 1.0
+            Bee: 1.5
 

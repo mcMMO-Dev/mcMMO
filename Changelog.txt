@@ -1,6 +1,9 @@
 Version 2.1.111
     Further prevent nesting of bleed damage calls
     Warn about reparable/salvage configs with missing sections
+    Added Bee combat experience modifier to experience.yml (Update your experience.yml file, see notes)
+    Breaking a Bee Nest will result in Herbalism XP (Update your experience.yml file, see notes)
+    Breeding bees will now result in Taming XP (Update your experience.yml file, see notes)
 
 Version 2.1.110
     Fixed a dupe bug
