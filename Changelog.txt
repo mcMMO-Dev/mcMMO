@@ -1,4 +1,5 @@
 Version 2.1.111
+    mcMMO is compatible with the following versions of MC: 1.15 / 1.14.4 / 1.14.3 / 1.14.2 / 1.14.1 / 1.14 / 1.13.2
     Further prevent nesting of bleed damage calls
     Warn about reparable/salvage configs with missing sections
     Added Bee combat experience modifier to experience.yml (Update your experience.yml file, see notes)
