@@ -1,3 +1,6 @@
+Version 2.1.112
+    Correct locale usage for enum access, now enforces using the english locale to prevent issues with oddball locales for configs/commands
+
 Version 2.1.111
     mcMMO is compatible with the following versions of MC: 1.15 / 1.14.4 / 1.14.3 / 1.14.2 / 1.14.1 / 1.14 / 1.13.2
     Further prevent nesting of bleed damage calls

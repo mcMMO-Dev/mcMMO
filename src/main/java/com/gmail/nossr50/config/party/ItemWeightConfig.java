@@ -5,6 +5,7 @@ import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.Material;
 
 import java.util.HashSet;
+import java.util.Locale;
 
 public class ItemWeightConfig extends ConfigLoader {
     private static ItemWeightConfig instance;
@@ -29,7 +30,7 @@ public class ItemWeightConfig extends ConfigLoader {
         HashSet<Material> miscItems = new HashSet<Material>();
 
         for (String item : config.getStringList("Party_Shareables.Misc_Items")) {
-            Material material = Material.getMaterial(item.toUpperCase());
+            Material material = Material.getMaterial(item.toUpperCase(Locale.ENGLISH));
 
             if (material != null) {
                 miscItems.add(material);

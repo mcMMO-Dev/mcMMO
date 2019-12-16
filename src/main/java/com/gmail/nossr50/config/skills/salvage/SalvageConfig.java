@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class SalvageConfig extends ConfigLoader {
@@ -78,7 +79,7 @@ public class SalvageConfig extends ConfigLoader {
             }
             else {
                 try {
-                    salvageMaterialType = MaterialType.valueOf(salvageMaterialTypeString.replace(" ", "_").toUpperCase());
+                    salvageMaterialType = MaterialType.valueOf(salvageMaterialTypeString.replace(" ", "_").toUpperCase(Locale.ENGLISH));
                 }
                 catch (IllegalArgumentException ex) {
                     reason.add(key + " has an invalid MaterialType of " + salvageMaterialTypeString);
@@ -112,7 +113,7 @@ public class SalvageConfig extends ConfigLoader {
             }
             else {
                 try {
-                    salvageItemType = ItemType.valueOf(salvageItemTypeString.replace(" ", "_").toUpperCase());
+                    salvageItemType = ItemType.valueOf(salvageItemTypeString.replace(" ", "_").toUpperCase(Locale.ENGLISH));
                 }
                 catch (IllegalArgumentException ex) {
                     reason.add(key + " has an invalid ItemType of " + salvageItemTypeString);

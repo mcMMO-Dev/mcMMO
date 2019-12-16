@@ -6,6 +6,7 @@ import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.EnumSet;
+import java.util.Locale;
 
 public class ChildConfig extends AutoUpdateConfigLoader {
     public ChildConfig() {
@@ -27,7 +28,7 @@ public class ChildConfig extends AutoUpdateConfigLoader {
 
             for (String name : config.getStringList(StringUtils.getCapitalized(skill.name()))) {
                 try {
-                    PrimarySkillType parentSkill = PrimarySkillType.valueOf(name.toUpperCase());
+                    PrimarySkillType parentSkill = PrimarySkillType.valueOf(name.toUpperCase(Locale.ENGLISH));
                     FamilyTree.enforceNotChildSkill(parentSkill);
                     parentSkills.add(parentSkill);
                 }
@@ -45,7 +46,7 @@ public class ChildConfig extends AutoUpdateConfigLoader {
                      * If they're dedicated enough to have modified it, they can have the errors it may produce.
                      * Alternatively, this can be used to allow child skills to be parent skills, provided there are no circular dependencies this is an advanced sort of configuration.
                      */
-                    parentSkills.add(PrimarySkillType.valueOf(name.toUpperCase()));
+                    parentSkills.add(PrimarySkillType.valueOf(name.toUpperCase(Locale.ENGLISH)));
                 }
             }
 

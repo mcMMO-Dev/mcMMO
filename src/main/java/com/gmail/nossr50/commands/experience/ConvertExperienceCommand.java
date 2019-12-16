@@ -11,13 +11,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Locale;
+
 public class ConvertExperienceCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 2:
                 FormulaType previousType = mcMMO.getFormulaManager().getPreviousFormulaType();
-                FormulaType newType = FormulaType.getFormulaType(args[1].toUpperCase());
+                FormulaType newType = FormulaType.getFormulaType(args[1].toUpperCase(Locale.ENGLISH));
 
                 if (newType == FormulaType.UNKNOWN) {
                     sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Experience.Invalid"));

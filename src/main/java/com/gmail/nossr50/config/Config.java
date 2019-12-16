@@ -12,6 +12,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class Config extends AutoUpdateConfigLoader {
@@ -277,7 +278,7 @@ public class Config extends AutoUpdateConfigLoader {
     /* Mob Healthbar */
     public MobHealthbarType getMobHealthbarDefault() {
         try {
-            return MobHealthbarType.valueOf(config.getString("Mob_Healthbar.Display_Type", "HEARTS").toUpperCase().trim());
+            return MobHealthbarType.valueOf(config.getString("Mob_Healthbar.Display_Type", "HEARTS").toUpperCase(Locale.ENGLISH).trim());
         }
         catch (IllegalArgumentException ex) {
             return MobHealthbarType.HEARTS;

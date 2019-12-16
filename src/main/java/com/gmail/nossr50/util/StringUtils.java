@@ -7,6 +7,8 @@ import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.EntityType;
 
+import java.util.Locale;
+
 public class StringUtils {
 
     /**

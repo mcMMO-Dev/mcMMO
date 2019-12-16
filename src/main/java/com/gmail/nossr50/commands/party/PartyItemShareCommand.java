@@ -14,6 +14,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Locale;
+
 public class PartyItemShareCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -32,7 +34,7 @@ public class PartyItemShareCommand implements CommandExecutor {
 
         switch (args.length) {
             case 2:
-                ShareMode mode = ShareMode.getShareMode(args[1].toUpperCase());
+                ShareMode mode = ShareMode.getShareMode(args[1].toUpperCase(Locale.ENGLISH));
 
                 if (mode == null) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<NONE | EQUAL | RANDOM>"));
@@ -57,7 +59,7 @@ public class PartyItemShareCommand implements CommandExecutor {
                 }
 
                 try {
-                    handleToggleItemShareCategory(party, ItemShareType.valueOf(args[1].toUpperCase()), toggle);
+                    handleToggleItemShareCategory(party, ItemShareType.valueOf(args[1].toUpperCase(Locale.ENGLISH)), toggle);
                 }
                 catch (IllegalArgumentException ex) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<loot | mining | herbalism | woodcutting | misc> <true | false>"));
