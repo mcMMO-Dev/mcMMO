@@ -342,7 +342,7 @@ public class Roll extends AcrobaticsSubSkill {
         //player.sendMessage(getDescription());
         //Player stats
         player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.Stats",
-                            LocaleLoader.getString("Acrobatics.SubSkill.Roll.Stats", getStats(player)[0], getStats(player)[1])));
+                            LocaleLoader.getString("Acrobatics.SubSkill.Roll.Stats", getStats(player))));
 
         //Mechanics
         player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.Mechanics"));
@@ -362,6 +362,9 @@ public class Roll extends AcrobaticsSubSkill {
         //1 = chance to roll with grace at half max level
         //2 = level where maximum bonus is reached
         //3 = additive chance to succeed per level
+        //4 = damage threshold when rolling
+        //5 = damage threshold when rolling with grace
+        //6 = half of level where maximum bonus is reached
         /*
         Roll:
             # ChanceMax: Maximum chance of rolling when on <MaxBonusLevel> or higher
@@ -375,7 +378,7 @@ public class Roll extends AcrobaticsSubSkill {
 
         //Chance to roll at half max skill
         RandomChanceSkill rollHalfMaxSkill = new RandomChanceSkill(null, subSkillType);
-        int halfMaxSkillValue = mcMMO.isRetroModeEnabled() ? 500 : 50;
+        int halfMaxSkillValue = AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL)/2;
         rollHalfMaxSkill.setSkillLevel(halfMaxSkillValue);
 
         //Chance to graceful roll at full skill
@@ -395,7 +398,7 @@ public class Roll extends AcrobaticsSubSkill {
 
         double maxLevel         = AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL);
 
-        return LocaleLoader.getString("Acrobatics.SubSkill.Roll.Mechanics", rollChanceHalfMax, graceChanceHalfMax, maxLevel, chancePerLevel, damageThreshold, damageThreshold * 2);
+        return LocaleLoader.getString("Acrobatics.SubSkill.Roll.Mechanics", rollChanceHalfMax, graceChanceHalfMax, maxLevel, chancePerLevel, damageThreshold, damageThreshold * 2,halfMaxSkillValue);
     }
 
     /**
