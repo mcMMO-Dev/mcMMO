@@ -44,6 +44,11 @@ public final class MobHealthbarUtils {
             return;
         }
 
+        // Don't mangle invalid entities, they're not going to be rendered anyways
+        if (!target.isValid()) {
+            return;
+        }
+
         String originalName = target.getName();
         String oldName = target.getCustomName();
 
@@ -60,10 +65,6 @@ public final class MobHealthbarUtils {
             return;
         }
 
-        // Don't mangle invalid entities, they're not going to be rendered anyways
-        if (!target.isValid()) {
-            return;
-        }
 
         boolean oldNameVisible = target.isCustomNameVisible();
         String newName = createHealthDisplay(Config.getInstance().getMobHealthbarDefault(), target, damage);
