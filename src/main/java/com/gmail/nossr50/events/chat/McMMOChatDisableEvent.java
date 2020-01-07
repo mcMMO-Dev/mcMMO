@@ -6,11 +6,11 @@ import java.util.UUID;
 
 public class McMMOChatDisableEvent extends McMMOSwitchChatEvent {
 
-    public McMMOChatDisableEvent(Plugin plugin, UUID playerUUID, String playerName) {
-        super(plugin, playerUUID, playerName);
+    public McMMOChatDisableEvent(Plugin plugin, UUID playerUUID, String playerName, String chatName) {
+        super(plugin, playerUUID, playerName, chatName);
     }
 
-    public McMMOChatDisableEvent(Plugin plugin, UUID playerUUID, String playerName, boolean isAsync) {
-        super(plugin, playerUUID, playerName, isAsync);
+    public McMMOChatDisableEvent(Plugin plugin, UUID playerUUID, String playerName, String chatName, boolean isAsync) {
+        super(plugin, playerUUID, playerName, chatName, isAsync);
     }
 }
