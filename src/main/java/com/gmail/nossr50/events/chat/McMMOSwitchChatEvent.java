@@ -13,18 +13,21 @@ public class McMMOSwitchChatEvent extends Event implements Cancellable {
     private Plugin plugin;
     private UUID playerUUID;
     private String playerName;
+    private String chatName;
 
-    public McMMOSwitchChatEvent(Plugin plugin, UUID playerUUID, String playerName) {
+    public McMMOSwitchChatEvent(Plugin plugin, UUID playerUUID, String playerName, String chatName) {
         this.plugin = plugin;
         this.playerUUID = playerUUID;
         this.playerName = playerName;
+        this.chatName = chatName;
     }
 
-    public McMMOSwitchChatEvent(Plugin plugin, UUID playerUUID, String playerName, boolean isAsync) {
+    public McMMOSwitchChatEvent(Plugin plugin, UUID playerUUID, String playerName, String chatName, boolean isAsync) {
         super(isAsync);
         this.plugin = plugin;
         this.playerUUID = playerUUID;
         this.playerName = playerName;
+        this.chatName = chatName;
     }
 
     /**
@@ -46,6 +49,13 @@ public class McMMOSwitchChatEvent extends Event implements Cancellable {
      */
     public String getPlayer() {
         return playerName;
+    }
+
+    /**
+     * @return The party name, if applicable. Returns {@code null} if using AdminChat
+     */
+    public String getChatName() {
+        return chatName;
     }
 
     /**
