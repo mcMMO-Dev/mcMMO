@@ -6,8 +6,11 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.events.chat.McMMOChatDisableEvent;
+import com.gmail.nossr50.events.chat.McMMOChatEnableEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
@@ -126,6 +129,12 @@ public abstract class ChatCommand implements TabExecutor {
             return;
         }
 
+        McMMOChatEnableEvent chatEnableEvent = EventUtils.callChatEnableEvent(mcMMOPlayer);
+        if (chatEnableEvent.isCancelled()) {
+            sender.sendMessage(chatMode.getSwitchCancelledMessage());
+            return;
+        }
+
         mcMMOPlayer.enableChat(chatMode);
         sender.sendMessage(chatMode.getEnabledMessage());
     }
@@ -133,6 +142,12 @@ public abstract class ChatCommand implements TabExecutor {
     private void disableChatMode(McMMOPlayer mcMMOPlayer, CommandSender sender) {
         if (chatMode == ChatMode.PARTY && mcMMOPlayer.getParty() == null) {
             sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
+            return;
+        }
+
+        McMMOChatDisableEvent chatDisableEvent = EventUtils.callChatDisableEvent(mcMMOPlayer);
+        if (chatDisableEvent.isCancelled()) {
+            sender.sendMessage(chatMode.getSwitchCancelledMessage());
             return;
         }
 

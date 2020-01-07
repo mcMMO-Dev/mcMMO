@@ -9,11 +9,17 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
+import com.gmail.nossr50.events.chat.McMMOChatDisableEvent;
+import com.gmail.nossr50.events.chat.McMMOChatEnableEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelChangeEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelDownEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
-import com.gmail.nossr50.events.fake.*;
+import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
+import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
+import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
+import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
+import com.gmail.nossr50.events.fake.FakePlayerFishEvent;
 import com.gmail.nossr50.events.hardcore.McMMOPlayerPreDeathPenaltyEvent;
 import com.gmail.nossr50.events.hardcore.McMMOPlayerStatLossEvent;
 import com.gmail.nossr50.events.hardcore.McMMOPlayerVampirismEvent;
@@ -445,5 +451,18 @@ public class EventUtils {
         return event;
     }
 
+    public static McMMOChatEnableEvent callChatEnableEvent(McMMOPlayer player) {
+        McMMOChatEnableEvent event = new McMMOChatEnableEvent(mcMMO.p, player.getProfile().getUniqueId(), player.getPlayerName(), player.getParty().getName());
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        return event;
+    }
+
+    public static McMMOChatDisableEvent callChatDisableEvent(McMMOPlayer player) {
+        McMMOChatDisableEvent event = new McMMOChatDisableEvent(mcMMO.p, player.getProfile().getUniqueId(), player.getPlayerName(), player.getParty().getName());
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        return event;
+    }
 
 }
