@@ -32,7 +32,7 @@ public class PartyDisbandCommand implements CommandExecutor {
                     member.sendMessage(LocaleLoader.getString("Party.Disband"));
                 }
 
-                PartyManager.disbandParty(playerParty);
+                PartyManager.disbandParty(playerParty, (Player) sender);
                 return true;
 
             default:

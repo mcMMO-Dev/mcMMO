@@ -13,6 +13,8 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.events.party.McMMOPartyAllianceChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
+import com.gmail.nossr50.events.party.McMMOPartyCreatedEvent;
+import com.gmail.nossr50.events.party.McMMOPartyDisbandedEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
@@ -350,8 +352,9 @@ public final class PartyManager {
      * Disband a party. Kicks out all members and removes the party.
      *
      * @param party The party to remove
+     * @param player The player disbanding the party
      */
-    public static void disbandParty(Party party) {
+    public static void disbandParty(Party party, Player player) {
         //TODO: Potential issues with unloaded profile?
         for (Player member : party.getOnlineMembers()) {
             //Profile not loaded
@@ -369,6 +372,7 @@ public final class PartyManager {
         }
 
         parties.remove(party);
+        handlePartyDisbandedEvent(player, party);
     }
 
     /**
@@ -391,6 +395,7 @@ public final class PartyManager {
 
         player.sendMessage(LocaleLoader.getString("Commands.Party.Create", party.getName()));
         addToParty(mcMMOPlayer, party);
+        handlePartyCreatedEvent(player, party);
     }
 
     /**
@@ -787,6 +792,34 @@ public final class PartyManager {
      */
     public static boolean handlePartyChangeAllianceEvent(Player player, String oldAllyName, String newAllyName, McMMOPartyAllianceChangeEvent.EventReason reason) {
         McMMOPartyAllianceChangeEvent event = new McMMOPartyAllianceChangeEvent(player, oldAllyName, newAllyName, reason);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        return !event.isCancelled();
+    }
+
+    /**
+     * Handle party created event.
+     *
+     * @param player The player creating the party
+     * @param party The created party
+     * @return true if the change event was successful, false otherwise
+     */
+    public static boolean handlePartyCreatedEvent(Player player, Party party) {
+        McMMOPartyCreatedEvent event = new McMMOPartyCreatedEvent(player, party);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        return !event.isCancelled();
+    }
+
+    /**
+     * Handle party disbanded event.
+     *
+     * @param player The player disbanding the party
+     * @param party The disbanded party
+     * @return true if the change event was successful, false otherwise
+     */
+    public static boolean handlePartyDisbandedEvent(Player player, Party party) {
+        McMMOPartyDisbandedEvent event = new McMMOPartyDisbandedEvent(player, party);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         return !event.isCancelled();
