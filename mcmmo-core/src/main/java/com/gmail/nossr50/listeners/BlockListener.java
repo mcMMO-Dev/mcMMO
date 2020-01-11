@@ -31,6 +31,7 @@ import org.bukkit.event.block.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 
+import java.util.HashSet;
 import java.util.List;
 
 public class BlockListener implements Listener {
@@ -42,21 +43,51 @@ public class BlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockDropItemEvent(BlockDropItemEvent event) {
-        for (Item item : event.getItems()) {
-            ItemStack is = new ItemStack(item.getItemStack());
+        //Track how many "things" are being dropped
+        HashSet<Material> uniqueMaterials = new HashSet<>();
+        boolean dontRewardTE = false; //If we suspect TEs are mixed in with other things don't reward bonus drops for anything that isn't a block
+        int blockCount = 0;
 
-            if (is.getAmount() <= 0)
-                continue;
+        for(Item item : event.getItems()) {
+            //Track unique materials
+            uniqueMaterials.add(item.getItemStack().getType());
 
-            if (!pluginRef.getDynamicSettingsManager().getBonusDropManager().isBonusDropWhitelisted(is.getType()))
-                continue;
+            //Count blocks as a second failsafe
+            if(item.getItemStack().getType().isBlock())
+                blockCount++;
+        }
 
-            if (event.getBlock().getMetadata(MetadataConstants.BONUS_DROPS_METAKEY).size() > 0) {
-                BonusDropMeta bonusDropMeta = (BonusDropMeta) event.getBlock().getMetadata(MetadataConstants.BONUS_DROPS_METAKEY).get(0);
-                int bonusCount = bonusDropMeta.asInt();
+        if(uniqueMaterials.size() > 1) {
+            //Too many things are dropping, assume tile entities might be duped
+            //Technically this would also prevent something like coal from being bonus dropped if you placed a TE above a coal ore when mining it but that's pretty edge case and this is a good solution for now
+            dontRewardTE = true;
+        }
 
-                for (int i = 0; i < bonusCount; i++) {
-                    event.getBlock().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+        //If there are more than one block in the item list we can't really trust it and will back out of rewarding bonus drops
+        if (blockCount <= 1){
+            for (Item item : event.getItems()) {
+                ItemStack is = new ItemStack(item.getItemStack());
+
+                if (is.getAmount() <= 0)
+                    continue;
+
+                if (!pluginRef.getDynamicSettingsManager().getBonusDropManager().isBonusDropWhitelisted(is.getType()))
+                    continue;
+
+                //If we suspect TEs might be duped only reward block
+                if (dontRewardTE) {
+                    if (!is.getType().isBlock()) {
+                        continue;
+                    }
+                }
+
+                if (event.getBlock().getMetadata(MetadataConstants.BONUS_DROPS_METAKEY).size() > 0) {
+                    BonusDropMeta bonusDropMeta = (BonusDropMeta) event.getBlock().getMetadata(MetadataConstants.BONUS_DROPS_METAKEY).get(0);
+                    int bonusCount = bonusDropMeta.asInt();
+
+                    for (int i = 0; i < bonusCount; i++) {
+                        event.getBlock().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                    }
                 }
             }
         }
