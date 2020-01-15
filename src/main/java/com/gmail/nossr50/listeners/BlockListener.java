@@ -1,6 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
@@ -44,7 +43,6 @@ import org.bukkit.metadata.MetadataValue;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class BlockListener implements Listener {
     private final mcMMO plugin;

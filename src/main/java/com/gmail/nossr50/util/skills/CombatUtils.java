@@ -39,8 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 public final class CombatUtils {
     private CombatUtils() {}
 
@@ -50,6 +48,12 @@ public final class CombatUtils {
         }
         
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        //Make sure the profiles been loaded
+        if(mcMMOPlayer == null) {
+            return;
+        }
+
         SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
         double initialDamage = event.getDamage();
         double finalDamage = initialDamage;
@@ -96,6 +100,12 @@ public final class CombatUtils {
         Map<DamageModifier, Double> modifiers = getModifiers(event);
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        //Make sure the profiles been loaded
+        if(mcMMOPlayer == null) {
+            return;
+        }
+
         AxesManager axesManager = mcMMOPlayer.getAxesManager();
 
         if (axesManager.canActivateAbility()) {
@@ -139,6 +149,12 @@ public final class CombatUtils {
         double finalDamage = initialDamage;
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        //Make sure the profiles been loaded
+        if(mcMMOPlayer == null) {
+            return;
+        }
+
         UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
 
         if (unarmedManager.canActivateAbility()) {
@@ -209,6 +225,12 @@ public final class CombatUtils {
         double initialDamage = event.getDamage();
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        //Make sure the profiles been loaded
+        if(mcMMOPlayer == null) {
+            return;
+        }
+
         ArcheryManager archeryManager = mcMMOPlayer.getArcheryManager();
         
         double finalDamage = event.getDamage();
