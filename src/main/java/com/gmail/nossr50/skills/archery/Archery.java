@@ -70,6 +70,6 @@ public class Archery {
     }
 
     public static double getDamageBonusPercent(Player player) {
-        return ((RankUtils.getRank(player, SubSkillType.ARCHERY_SKILL_SHOT)) * AdvancedConfig.getInstance().getSkillShotRankDamageMultiplier()) / 100.0D;
+        return ((RankUtils.getRank(player, SubSkillType.ARCHERY_SKILL_SHOT)) * (AdvancedConfig.getInstance().getSkillShotRankDamageMultiplier()) / 100.0D);
     }
 }

@@ -3,6 +3,7 @@ Version 2.1.112
     Fixed a NPE that can occur if a player engages in combat with specific skills before their profile is loaded
     mcMMO is now more compatible with certain mob stacking plugins
     Improved behaviour for mob health bars
+    Archery's Skill Shot bonus damage is now multiplicative instead of additive (nerfing early game skill shot ranks)
 
 Version 2.1.111
     mcMMO is compatible with the following versions of MC: 1.15 / 1.14.4 / 1.14.3 / 1.14.2 / 1.14.1 / 1.14 / 1.13.2
