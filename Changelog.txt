@@ -4,6 +4,7 @@ Version 2.1.112
     mcMMO is now more compatible with certain mob stacking plugins
     Improved behaviour for mob health bars
     Archery's Skill Shot bonus damage is now multiplicative instead of additive (nerfing early game skill shot ranks)
+    Sweet Berry Bush's default Herbalism XP is now 50 instead of 300 (Update your experience.yml or delete it to generate a new one)
 
 Version 2.1.111
     mcMMO is compatible with the following versions of MC: 1.15 / 1.14.4 / 1.14.3 / 1.14.2 / 1.14.1 / 1.14 / 1.13.2
