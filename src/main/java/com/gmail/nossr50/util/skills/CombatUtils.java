@@ -248,7 +248,7 @@ public final class CombatUtils {
         }
 
         if (archeryManager.canSkillShot()) {
-            //not additive
+            //Not Additive
             finalDamage = archeryManager.skillShot(initialDamage);
         }
 
