@@ -1,4 +1,6 @@
 Version 2.1.112
+    Use ThreadedLocalRandom for RNG utils, random is seeded, thus creating new instances of Random breaks randomness
+Version 2.1.112
     Correct locale usage for enum access, now enforces using the english locale to prevent issues with oddball locales for configs/commands
     Fixed a NPE that can occur if a player engages in combat with specific skills before their profile is loaded
     mcMMO is now more compatible with certain mob stacking plugins
