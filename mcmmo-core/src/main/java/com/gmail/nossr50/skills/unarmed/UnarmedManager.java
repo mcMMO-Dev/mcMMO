@@ -80,6 +80,7 @@ public class UnarmedManager extends SkillManager {
 
         switch (blockState.getType()) {
             case STONE_BRICKS:
+                // TODO: REREF? https://github.com/mcMMO-Dev/mcMMO/blame/421a394f68fc714899f167dc3faf53114b8469ce/src/main/java/com/gmail/nossr50/skills/unarmed/UnarmedManager.java#L95
                 /*if (!Unarmed.blockCrackerSmoothBrick) {
                     return false;
                 }*/

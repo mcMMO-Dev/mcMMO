@@ -84,8 +84,9 @@ public class ConfigExperienceHerbalism {
         HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:dead_bush", 30);
 
         /* MISC */
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:bee_nest", 200);
         HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:lily_pad", 100);
-        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:sweet_berry_bush", 300);
+        HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:sweet_berry_bush", 50);
 
         /* MUSHROOMS */
         HERBALISM_EXPERIENCE_DEFAULT.put("minecraft:red_mushroom", 150);

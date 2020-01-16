@@ -3,6 +3,7 @@ package com.gmail.nossr50.runnables.items;
 import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -47,6 +48,23 @@ public class TeleportationWarmup extends BukkitRunnable {
                 return;
             }
         }
+
+        if (pluginRef.getConfigManager().getConfigParty().getPTP().isPtpWorldBasedPermissions()) {
+            World targetWorld = targetPlayer.getWorld();
+            World playerWorld = teleportingPlayer.getWorld();
+
+            if (!pluginRef.getPermissionTools().partyTeleportAllWorlds(teleportingPlayer)) {
+                if (!pluginRef.getPermissionTools().partyTeleportWorld(targetPlayer, targetWorld)) {
+                    teleportingPlayer.sendMessage(pluginRef.getLocaleManager().formatString("Commands.ptp.NoWorldPermissions", targetWorld.getName()));
+                    return;
+                }
+                else if (targetWorld != playerWorld && !pluginRef.getPermissionTools().partyTeleportWorld(teleportingPlayer, targetWorld)) {
+                    teleportingPlayer.sendMessage(pluginRef.getLocaleManager().formatString("Commands.ptp.NoWorldPermissions", targetWorld.getName()));
+                    return;
+                }
+            }
+        }
+
 
         pluginRef.getEventManager().handlePartyTeleportEvent(teleportingPlayer, targetPlayer);
     }

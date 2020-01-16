@@ -12,7 +12,7 @@ public class ConfigExperienceTaming {
 
     static {
         TAMING_EXPERIENCE_DEFAULT = new HashMap<>();
-
+        // TODO: namespace
         TAMING_EXPERIENCE_DEFAULT.put("wolf", 250);
         TAMING_EXPERIENCE_DEFAULT.put("ocelot", 500);
         TAMING_EXPERIENCE_DEFAULT.put("cat", 500);
@@ -25,6 +25,7 @@ public class ConfigExperienceTaming {
         TAMING_EXPERIENCE_DEFAULT.put("parrot", 1100);
         TAMING_EXPERIENCE_DEFAULT.put("fox", 1000);
         TAMING_EXPERIENCE_DEFAULT.put("panda", 1000);
+        TAMING_EXPERIENCE_DEFAULT.put("bee", 100);
     }
 
     @Setting(value = "Taming-XP-Values")
