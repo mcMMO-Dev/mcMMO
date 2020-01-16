@@ -200,6 +200,34 @@ Version 2.2.0
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
     Added 'UndefinedSkillBehaviour' for trying to use a method that has no behaviour defined for the provided skill
+
+Version 2.1.112
+    Correct locale usage for enum access, now enforces using the english locale to prevent issues with oddball locales for configs/commands
+    Fixed a NPE that can occur if a player engages in combat with specific skills before their profile is loaded
+    mcMMO is now more compatible with certain mob stacking plugins
+    Improved behaviour for mob health bars
+    Archery's Skill Shot bonus damage is now multiplicative instead of additive (nerfing early game skill shot ranks)
+    Sweet Berry Bush's default Herbalism XP is now 50 instead of 300 (Update your experience.yml or delete it to generate a new one)
+
+Version 2.1.111
+    mcMMO is compatible with the following versions of MC: 1.15 / 1.14.4 / 1.14.3 / 1.14.2 / 1.14.1 / 1.14 / 1.13.2
+    Further prevent nesting of bleed damage calls
+    Warn about reparable/salvage configs with missing sections
+    Added Bee combat experience modifier to experience.yml (Update your experience.yml file, see notes)
+    Breaking a Bee Nest will result in Herbalism XP (Update your experience.yml file, see notes)
+    Breeding bees will now result in Taming XP (Update your experience.yml file, see notes)
+
+    NOTES:
+        You will need to update your experience.yml by hand or delete it to get XP from new things in 1.15
+        The default version of mcMMO's experience.yml looks like this: https://paste.gg/p/anonymous/15c34df6e60d45d9a3508b379a5e6514
+        You'll want to add Bee to combat XP section, and Bee_Nest to Herbalism XP, and Bee to Taming XP section.
+
+Version 2.1.110
+    Fixed a dupe bug
+    Actually fixed Block Cracker
+    You can now crack Infested Stone Bricks with Block Cracker
+    Added Lithuanian locale (thanks Vyciokazz)
+
 Version 2.1.109
     Block Cracker will now correctly crack stone_bricks during Berserk again
     Added Lily_Of_The_Valley to the Bonus Drops list in config.yml (you'll probably want to add this manually) which enables it to double drop

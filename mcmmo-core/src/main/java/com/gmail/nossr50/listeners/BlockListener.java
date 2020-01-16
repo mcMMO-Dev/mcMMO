@@ -551,7 +551,7 @@ public class BlockListener implements Listener {
             if (mcMMOPlayer.getHerbalismManager().processGreenTerraBlockConversion(blockState)) {
                 blockState.update(true);
             }
-        } else if (mcMMOPlayer.getSuperAbilityMode(SuperAbilityType.BERSERK) && heldItem.getType() == Material.AIR) {
+        } else if (mcMMOPlayer.getSuperAbilityMode(SuperAbilityType.BERSERK) && (heldItem.getType() == Material.AIR || pluginRef.getConfigManager().getConfigUnarmed().doItemsCountAsUnarmed())) {
             if (pluginRef.getSkillTools().superAbilityBlockCheck(SuperAbilityType.BERSERK, block.getState())
                     && pluginRef.getEventManager().simulateBlockBreak(block, player, true)) {
                 event.setInstaBreak(true);

@@ -2,6 +2,8 @@ package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.util.StringUtils;
 
+import java.util.Locale;
+
 public final class HOCONUtil {
 
     public static String serializeENUMName(String hyphenedString) {
@@ -24,7 +26,7 @@ public final class HOCONUtil {
 
         for (int x = 0; x < split.length; x++) {
             if (x + 1 >= split.length)
-                formattedString.append(split[x].toUpperCase());
+                formattedString.append(split[x].toUpperCase(Locale.ENGLISH));
             else
                 formattedString.append(split[x]).append('_');
         }

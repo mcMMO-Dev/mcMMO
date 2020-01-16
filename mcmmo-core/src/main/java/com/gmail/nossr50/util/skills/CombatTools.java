@@ -48,6 +48,12 @@ public final class CombatTools {
         }
 
         McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+
+        //Make sure the profiles been loaded
+        if(mcMMOPlayer == null) {
+            return;
+        }
+
         SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
         double initialDamage = event.getDamage();
         double finalDamage = initialDamage;
@@ -92,6 +98,12 @@ public final class CombatTools {
         Map<DamageModifier, Double> modifiers = getModifiers(event);
 
         McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+
+        //Make sure the profiles been loaded
+        if(mcMMOPlayer == null) {
+            return;
+        }
+
         AxesManager axesManager = mcMMOPlayer.getAxesManager();
 
         if (axesManager.canActivateAbility()) {
@@ -134,6 +146,12 @@ public final class CombatTools {
         double finalDamage = initialDamage;
 
         McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+
+        //Make sure the profiles been loaded
+        if(mcMMOPlayer == null) {
+            return;
+        }
+
         UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
 
         if (unarmedManager.canActivateAbility()) {
@@ -208,6 +226,12 @@ public final class CombatTools {
         double initialDamage = event.getDamage();
 
         McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+
+        //Make sure the profiles been loaded
+        if(mcMMOPlayer == null) {
+            return;
+        }
+
         ArcheryManager archeryManager = mcMMOPlayer.getArcheryManager();
 
         double finalDamage = event.getDamage();
@@ -226,7 +250,8 @@ public final class CombatTools {
         }
 
         if (archeryManager.canSkillShot()) {
-            finalDamage += archeryManager.skillShot(initialDamage);
+            //Not Additive
+            finalDamage = archeryManager.skillShot(initialDamage);
         }
 
         if (archeryManager.canDaze(target)) {
@@ -578,6 +603,12 @@ public final class CombatTools {
             target.damage(damage);
     }
 
+
+    private boolean processingNoInvulnDamage;
+    public boolean isProcessingNoInvulnDamage() {
+        return processingNoInvulnDamage;
+    }
+
     public void dealNoInvulnerabilityTickDamage(LivingEntity target, double damage, Entity attacker) {
         if (target.isDead()) {
             return;
@@ -588,7 +619,12 @@ public final class CombatTools {
         // potentially mis-attributing the death cause; calling a fake event would partially fix this, but this and setting the last damage
         // cause do have issues around plugin observability. This is not a perfect solution, but it appears to be the best one here
         // We also set no damage ticks to 0, to ensure that damage is applied for this case, and reset it back to the original value
+        // Snapshot current state so we can pop up properly
         boolean wasMetaSet = target.getMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY).size() != 0;
+        target.setMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY, MetadataConstants.metadataValue);
+        boolean wasProcessing = processingNoInvulnDamage;
+        // set markers
+        processingNoInvulnDamage = true;
         target.setMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY, MetadataConstants.metadataValue);
         int noDamageTicks = target.getNoDamageTicks();
         target.setNoDamageTicks(0);
@@ -596,6 +632,8 @@ public final class CombatTools {
         target.setNoDamageTicks(noDamageTicks);
         if (!wasMetaSet)
             target.removeMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY, pluginRef);
+        if (!wasProcessing)
+            processingNoInvulnDamage = false;
     }
 
     public void dealNoInvulnerabilityTickDamageRupture(LivingEntity target, double damage, Entity attacker, int toolTier) {
