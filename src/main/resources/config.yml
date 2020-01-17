@@ -429,19 +429,15 @@ Bonus_Drops:
     Herbalism:
         Chorus_Fruit: true
         Chorus_Plant: true
-        Beetroots: true
         Beetroot: true
         Brown_Mushroom: true
         Cactus: true
-        Carrots: true
         Carrot: true
-        Cocoa: true
         Cocoa_Beans: true
         Wheat: true
         Melon: true
         Melon_Slice: true
         Nether_Wart: true
-        Potatoes: true
         Potato: true
         Pumpkin: true
         Red_Mushroom: true
