@@ -33,7 +33,7 @@ dependencies {
     implementation(project(":mcmmo-core"))
 
     api("org.apache.tomcat:tomcat-jdbc:7.0.52")
-    implementation("org.jetbrains:annotations:17.0.0")
+    api("net.kyori:event-api:3.0.0")
     implementation("org.apache.maven.scm:maven-scm-provider-gitexe:1.8.1")
     implementation("org.bstats:bstats-bukkit:1.4")
     implementation("org.spigotmc:spigot:1.14.4-R0.1-SNAPSHOT")

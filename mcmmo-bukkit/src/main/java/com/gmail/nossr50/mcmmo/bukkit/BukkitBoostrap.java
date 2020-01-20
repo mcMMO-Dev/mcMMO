@@ -2,6 +2,7 @@ package com.gmail.nossr50.mcmmo.bukkit;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcmmo.api.platform.PlatformProvider;
+import com.gmail.nossr50.mcmmo.api.platform.util.MetadataStore;
 
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,5 +25,10 @@ public class BukkitBoostrap extends JavaPlugin implements PlatformProvider {
         getServer().getScheduler().cancelTasks(this); // This removes our tasks
         core.debug("Unregister all events...");
         HandlerList.unregisterAll(this); // Cancel event registrations
+    }
+
+    @Override
+    public MetadataStore getMetadataStore() {
+        return null;
     }
 }

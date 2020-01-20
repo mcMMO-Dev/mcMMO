@@ -139,9 +139,6 @@ public class mcMMO implements McMMOApi {
         try {
             platformProvider.getLogger().setFilter(new LogFilter(this));
 
-            //TODO: Disgusting...
-            MetadataConstants.metadataValue = new FixedMetadataValue(this, true);
-
             PluginManager pluginManager = platformProvider.getServer().getPluginManager();
             healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;
 
@@ -214,7 +211,7 @@ public class mcMMO implements McMMOApi {
                     new PlayerProfileLoadingTask(this, player).runTaskLaterAsynchronously(this, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
                 }
 
-                debug("Version " + getDescription().getVersion() + " is enabled!");
+                debug("Version " + getVersion() + " is enabled!");
 
                 scheduleTasks();
                 commandRegistrationManager = new CommandRegistrationManager(this);
@@ -305,6 +302,10 @@ public class mcMMO implements McMMOApi {
 
         //Init PerkUtils
         perkUtils = new PerkUtils(this);
+    }
+
+    private String getVersion() {
+        platformProvider.getVersion();
     }
 
     public void onLoad()
@@ -579,7 +580,7 @@ public class mcMMO implements McMMOApi {
      * Setup the various storage file paths
      */
     private void setupFilePaths() {
-        mainDirectory = getDataFolder().getPath() + File.separator;
+        mainDirectory = platformProvider.getDataFolder().getPath() + File.separator;
         localesDirectory = mainDirectory + "locales" + File.separator;
         flatFileDirectory = mainDirectory + "flatfile" + File.separator;
         usersFile = flatFileDirectory + "mcmmo.users";
