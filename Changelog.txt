@@ -1,3 +1,6 @@
+Version 2.1.113
+    Check player's PTP world permissions before executing a party teleport
+
 Version 2.1.112
     Correct locale usage for enum access, now enforces using the english locale to prevent issues with oddball locales for configs/commands
     Fixed a NPE that can occur if a player engages in combat with specific skills before their profile is loaded
