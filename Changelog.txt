@@ -4,7 +4,7 @@ Version 2.1.113
     Fixed bug where BlockCracker didn't work on infested_stone_bricks
     Fixed a bug where beacons could be duplicated
     Check player's PTP world permissions before executing a party teleport
-    Use ThreadedLocalRandom for RNG utils, random is seeded, thus creating new instances of Random breaks randomness
+    Improved how mcMMO handles randomness
 
 Version 2.1.112
     Correct locale usage for enum access, now enforces using the english locale to prevent issues with oddball locales for configs/commands
