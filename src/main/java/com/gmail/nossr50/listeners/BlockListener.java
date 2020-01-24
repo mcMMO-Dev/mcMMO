@@ -512,8 +512,23 @@ public class BlockListener implements Listener {
             else if (mcMMOPlayer.getToolPreparationMode(ToolType.SHOVEL) && ItemUtils.isShovel(heldItem) && BlockUtils.affectedByGigaDrillBreaker(blockState) && Permissions.gigaDrillBreaker(player)) {
                 mcMMOPlayer.checkAbilityActivation(PrimarySkillType.EXCAVATION);
             }
-            else if (mcMMOPlayer.getToolPreparationMode(ToolType.FISTS) && heldItem.getType() == Material.AIR && (BlockUtils.affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW || BlockUtils.affectedByBlockCracker(blockState) && Permissions.berserk(player))) {
+            else if (mcMMOPlayer.getToolPreparationMode(ToolType.FISTS) && heldItem.getType() == Material.AIR && (BlockUtils.affectedByGigaDrillBreaker(blockState)
+                    || mcMMO.getMaterialMapStore().isGlass(blockState.getType())
+                    || blockState.getType() == Material.SNOW
+                    || BlockUtils.affectedByBlockCracker(blockState) && Permissions.berserk(player))) {
                 mcMMOPlayer.checkAbilityActivation(PrimarySkillType.UNARMED);
+
+                if(mcMMOPlayer.getAbilityMode(SuperAbilityType.BERSERK)) {
+                    if (SuperAbilityType.BERSERK.blockCheck(blockState) && EventUtils.simulateBlockBreak(blockState.getBlock(), player, true)) {
+                        event.setInstaBreak(true);
+
+                        if(blockState.getType().getKey().getKey().contains("glass")) {
+                            SoundManager.worldSendSound(player.getWorld(), blockState.getLocation(), SoundType.GLASS);
+                        } else {
+                            SoundManager.sendSound(player, blockState.getLocation(), SoundType.POP);
+                        }
+                    }
+                }
             }
         }
 
@@ -593,10 +608,10 @@ public class BlockListener implements Listener {
                     blockState.update();
                 }
             }
-            else if (SuperAbilityType.BERSERK.blockCheck(block.getState()) && EventUtils.simulateBlockBreak(block, player, true)) {
+            else if (!event.getInstaBreak() && SuperAbilityType.BERSERK.blockCheck(blockState) && EventUtils.simulateBlockBreak(block, player, true)) {
                 event.setInstaBreak(true);
 
-                if(block.getState().getType().getKey().getKey().contains("glass")) {
+                if(blockState.getType().getKey().getKey().contains("glass")) {
                     SoundManager.worldSendSound(player.getWorld(), block.getLocation(), SoundType.GLASS);
                 } else {
                     SoundManager.sendSound(player, block.getLocation(), SoundType.POP);

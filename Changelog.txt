@@ -1,5 +1,7 @@
 Version 2.1.113
+    Activating Berserk on a soft block (glass, snow, dirts) will break that material right away instead of only breaking subsequent blocks hit by the player
     Berserk will now break glass and glass pane blocks
+    Hitting glass with berserk readied will activate it
     Added GLASS settings to sounds.yml for Berserk
     Fixed bug where BlockCracker didn't work on infested_stone_bricks
     Fixed a bug where beacons could be duplicated

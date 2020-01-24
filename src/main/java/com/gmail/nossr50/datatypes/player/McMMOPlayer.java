@@ -849,7 +849,6 @@ public class McMMOPlayer {
             return;
         }
 
-
         //TODO: This is hacky and temporary solution until skills are move to the new system
         //Potential problems with this include skills with two super abilities (ie mining)
         if(!skill.isSuperAbilityUnlocked(getPlayer()))
