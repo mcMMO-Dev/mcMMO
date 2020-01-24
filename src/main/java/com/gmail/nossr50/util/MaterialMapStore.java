@@ -22,6 +22,7 @@ public class MaterialMapStore {
     private HashSet<String> canMakeShroomyWhiteList;
     private HashSet<String> multiBlockPlant;
     private HashSet<String> foodItemWhiteList;
+    private HashSet<String> glassBlocks;
 
     public MaterialMapStore()
     {
@@ -34,6 +35,7 @@ public class MaterialMapStore {
         canMakeShroomyWhiteList = new HashSet<>();
         multiBlockPlant = new HashSet<>();
         foodItemWhiteList = new HashSet<>();
+        glassBlocks = new HashSet<>();
 
         fillHardcodedHashSets();
     }
@@ -89,6 +91,44 @@ public class MaterialMapStore {
         fillShroomyWhiteList();
         fillMultiBlockPlantSet();
         fillFoodWhiteList();
+        fillGlassBlockWhiteList();
+    }
+
+    private void fillGlassBlockWhiteList() {
+        glassBlocks.add("glass");
+        glassBlocks.add("glass_pane");
+        glassBlocks.add("black_stained_glass");
+        glassBlocks.add("black_stained_glass_pane");
+        glassBlocks.add("blue_stained_glass");
+        glassBlocks.add("blue_stained_glass_pane");
+        glassBlocks.add("brown_stained_glass");
+        glassBlocks.add("brown_stained_glass_pane");
+        glassBlocks.add("cyan_stained_glass");
+        glassBlocks.add("cyan_stained_glass_pane");
+        glassBlocks.add("gray_stained_glass");
+        glassBlocks.add("gray_stained_glass_pane");
+        glassBlocks.add("green_stained_glass");
+        glassBlocks.add("green_stained_glass_pane");
+        glassBlocks.add("light_blue_stained_glass");
+        glassBlocks.add("light_blue_stained_glass_pane");
+        glassBlocks.add("light_gray_stained_glass");
+        glassBlocks.add("light_gray_stained_glass_pane");
+        glassBlocks.add("lime_stained_glass");
+        glassBlocks.add("lime_stained_glass_pane");
+        glassBlocks.add("magenta_stained_glass");
+        glassBlocks.add("magenta_stained_glass_pane");
+        glassBlocks.add("orange_stained_glass");
+        glassBlocks.add("orange_stained_glass_pane");
+        glassBlocks.add("pink_stained_glass");
+        glassBlocks.add("pink_stained_glass_pane");
+        glassBlocks.add("purple_stained_glass");
+        glassBlocks.add("purple_stained_glass_pane");
+        glassBlocks.add("red_stained_glass");
+        glassBlocks.add("red_stained_glass_pane");
+        glassBlocks.add("white_stained_glass");
+        glassBlocks.add("white_stained_glass_pane");
+        glassBlocks.add("yellow_stained_glass");
+        glassBlocks.add("yellow_stained_glass_pane");
     }
 
     private void fillFoodWhiteList() {
@@ -128,6 +168,10 @@ public class MaterialMapStore {
         foodItemWhiteList.add("suspicious_stew");
         foodItemWhiteList.add("sweet_berries");
         foodItemWhiteList.add("tropical_fish");
+    }
+
+    public boolean isGlass(Material material) {
+        return glassBlocks.contains(material.getKey().getKey());
     }
 
     public boolean isFood(Material material) {

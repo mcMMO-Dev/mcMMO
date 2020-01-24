@@ -1,7 +1,9 @@
 package com.gmail.nossr50.datatypes.skills;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
+import com.gmail.nossr50.util.MaterialMapStore;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.Material;
@@ -198,7 +200,7 @@ public enum SuperAbilityType {
     public boolean blockCheck(BlockState blockState) {
         switch (this) {
             case BERSERK:
-                return (BlockUtils.affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW);
+                return (BlockUtils.affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW || mcMMO.getMaterialMapStore().isGlass(blockState.getType()));
 
             case GIGA_DRILL_BREAKER:
                 return BlockUtils.affectedByGigaDrillBreaker(blockState);

@@ -595,7 +595,12 @@ public class BlockListener implements Listener {
             }
             else if (SuperAbilityType.BERSERK.blockCheck(block.getState()) && EventUtils.simulateBlockBreak(block, player, true)) {
                 event.setInstaBreak(true);
-                SoundManager.sendSound(player, block.getLocation(), SoundType.POP);
+
+                if(block.getState().getType().getKey().getKey().contains("glass")) {
+                    SoundManager.worldSendSound(player.getWorld(), block.getLocation(), SoundType.GLASS);
+                } else {
+                    SoundManager.sendSound(player, block.getLocation(), SoundType.POP);
+                }
             }
         }
         else if (mcMMOPlayer.getWoodcuttingManager().canUseLeafBlower(heldItem) && BlockUtils.isLeaves(blockState) && EventUtils.simulateBlockBreak(block, player, true)) {

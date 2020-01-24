@@ -1,4 +1,6 @@
 Version 2.1.113
+    Berserk will now break glass and glass pane blocks
+    Added GLASS settings to sounds.yml for Berserk
     Fixed bug where BlockCracker didn't work on infested_stone_bricks
     Fixed a bug where beacons could be duplicated
     Check player's PTP world permissions before executing a party teleport

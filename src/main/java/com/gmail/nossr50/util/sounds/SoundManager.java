@@ -91,6 +91,8 @@ public class SoundManager {
                 return Sound.BLOCK_CONDUIT_AMBIENT;
             case BLEED:
                 return Sound.ENTITY_ENDER_EYE_DEATH;
+            case GLASS:
+                return Sound.BLOCK_GLASS_BREAK;
             default:
                 return null;
         }
