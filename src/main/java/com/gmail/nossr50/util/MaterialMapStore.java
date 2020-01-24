@@ -170,6 +170,8 @@ public class MaterialMapStore {
     private void fillBlockCrackerWhiteList()
     {
         blockCrackerWhiteList.add("stone_bricks");
+        blockCrackerWhiteList.add("infested_stone_bricks");
+
     }
 
     private void fillHerbalismAbilityBlackList()
