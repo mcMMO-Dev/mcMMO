@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.text.DecimalFormat;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomChanceUtil
 {
@@ -78,9 +79,7 @@ public class RandomChanceUtil
     }
 
     public static boolean rollDice(double chanceOfSuccess, int bound) {
-        Random random = new Random();
-
-        return chanceOfSuccess > random.nextInt(bound);
+        return chanceOfSuccess > ThreadLocalRandom.current().nextInt(bound);
     }
 
     /**
@@ -99,8 +98,6 @@ public class RandomChanceUtil
     public static boolean checkRandomChanceExecutionSuccess(RandomChanceSkill randomChance)
     {
         double chanceOfSuccess = calculateChanceOfSuccess(randomChance);
-
-        Random random = new Random();
 
         //Check the odds
         return rollDice(chanceOfSuccess, 100);
