@@ -115,7 +115,6 @@ public class mcMMO extends JavaPlugin {
     public final static String furnaceMetadataKey  = "mcMMO: Tracked Furnace";
     public final static String tntMetadataKey      = "mcMMO: Tracked TNT";
     public final static String funfettiMetadataKey = "mcMMO: Funfetti";
-    public final static String tntsafeMetadataKey  = "mcMMO: Safe TNT";
     public final static String customNameKey       = "mcMMO: Custom Name";
     public final static String customVisibleKey    = "mcMMO: Name Visibility";
     public final static String droppedItemKey      = "mcMMO: Tracked Item";

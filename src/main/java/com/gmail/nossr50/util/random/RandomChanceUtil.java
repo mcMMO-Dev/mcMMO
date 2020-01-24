@@ -12,7 +12,6 @@ import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.entity.Player;
 
 import java.text.DecimalFormat;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomChanceUtil

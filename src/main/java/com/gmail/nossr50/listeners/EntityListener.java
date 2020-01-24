@@ -842,27 +842,6 @@ public class EntityListener implements Listener {
     }
 
     /**
-     * Handle EntityExplode events that involve modifying the event.
-     *
-     * @param event
-     *            The event to modify
-     */
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onEntityExplodeMonitor(EntityExplodeEvent event) {
-        /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
-            return;
-
-        Entity entity = event.getEntity();
-
-        if (!(entity instanceof TNTPrimed) || !entity.hasMetadata(mcMMO.tntsafeMetadataKey)) {
-            return;
-        }
-
-        event.blockList().clear();
-    }
-
-    /**
      * Handle FoodLevelChange events that involve modifying the event.
      *
      * @param event

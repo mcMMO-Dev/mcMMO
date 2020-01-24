@@ -134,6 +134,7 @@ public class MiningManager extends SkillManager {
         int xp = 0;
 
         float oreBonus = (float) (getOreBonus() / 100);
+        //TODO: Pretty sure something is fucked with debrisReduction stuff
         float debrisReduction = (float) (getDebrisReduction() / 100);
         int dropMultiplier = getDropMultiplier();
 
@@ -145,7 +146,8 @@ public class MiningManager extends SkillManager {
             if (BlockUtils.isOre(blockState)) {
                 ores.add(blockState);
             }
-            else {
+            //Server bug that allows beacons to be duped when yield is set to 0
+            else if(blockState.getType() != Material.BEACON) {
                 debris.add(blockState);
             }
         }
