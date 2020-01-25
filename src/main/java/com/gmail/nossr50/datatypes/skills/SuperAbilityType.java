@@ -3,7 +3,6 @@ package com.gmail.nossr50.datatypes.skills;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.BlockUtils;
-import com.gmail.nossr50.util.MaterialMapStore;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.Material;

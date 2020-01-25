@@ -178,7 +178,7 @@ public class BlockListener implements Listener {
 
         BlockState blockState = event.getNewState();
 
-        if(BlockUtils.shouldBeWatched(blockState))
+        if(ExperienceConfig.getInstance().isSnowExploitPrevented() && BlockUtils.shouldBeWatched(blockState))
         {
             mcMMO.getPlaceStore().setTrue(blockState.getBlock());
         }

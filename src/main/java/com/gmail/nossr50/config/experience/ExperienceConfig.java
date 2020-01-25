@@ -144,6 +144,7 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
      */
 
     /* EXPLOIT TOGGLES */
+    public boolean isSnowExploitPrevented() { return config.getBoolean("SnowGolemExcavation", true); }
     public boolean isEndermanEndermiteFarmingPrevented() { return config.getBoolean("ExploitFix.EndermanEndermiteFarms", true); }
     public boolean isPistonCheatingPrevented() { return config.getBoolean("ExploitFix.PistonCheating", true); }
     public boolean isPistonExploitPrevented() { return config.getBoolean("ExploitFix.Pistons", false); }
