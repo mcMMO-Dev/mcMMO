@@ -81,7 +81,7 @@ public class EntityListener implements Listener {
         //Prevent entities from giving XP if they target endermite
         if(event.getTarget() instanceof Endermite)
         {
-            if(event.getEntity().hasMetadata(mcMMO.entityMetadataKey))
+            if(!event.getEntity().hasMetadata(mcMMO.entityMetadataKey))
                 event.getEntity().setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
         }
     }
