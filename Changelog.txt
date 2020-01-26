@@ -1,3 +1,6 @@
+Version 2.1.114
+    Fix some more locale usages, should aim to further prevent issues with oddball locales
+
 Version 2.1.113
     Activating Berserk on a soft block (glass, snow, dirts) will break that material right away instead of only breaking subsequent blocks hit by the player
     Berserk will now break glass and glass pane blocks

@@ -9,6 +9,7 @@ import org.bukkit.event.Event;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class InteractionManager {
     private static HashMap<InteractType, ArrayList<Interaction>> interactRegister;
@@ -47,7 +48,7 @@ public class InteractionManager {
         //Register skill
         arrayRef.add(abstractSubSkill);
 
-        String lowerCaseName = abstractSubSkill.getConfigKeyName().toLowerCase();
+        String lowerCaseName = abstractSubSkill.getConfigKeyName().toLowerCase(Locale.ENGLISH);
 
         //Register in name map
         if(subSkillNameMap.get(lowerCaseName) == null)
@@ -64,7 +65,7 @@ public class InteractionManager {
      */
     public static AbstractSubSkill getAbstractByName(String name)
     {
-        return subSkillNameMap.get(name.toLowerCase());
+        return subSkillNameMap.get(name.toLowerCase(Locale.ENGLISH));
     }
 
     /**

@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public final class CommandUtils {
     public static final List<String> TRUE_FALSE_OPTIONS = ImmutableList.of("on", "off", "true", "false", "enabled", "disabled");
@@ -302,7 +303,7 @@ public final class CommandUtils {
                 break;
             }
 
-            if (playerName.toLowerCase().contains(partialName.toLowerCase())) {
+            if (playerName.toLowerCase(Locale.ENGLISH).contains(partialName.toLowerCase(Locale.ENGLISH))) {
                 // Partial match
                 matchedPlayers.add(playerName);
             }

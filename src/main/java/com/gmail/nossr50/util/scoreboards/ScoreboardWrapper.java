@@ -203,7 +203,7 @@ public class ScoreboardWrapper {
         revertTask = new ScoreboardChangeTask().runTaskLater(mcMMO.p, ticks);
 
         // TODO is there any way to do the time that looks acceptable?
-        // player.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Timer", StringUtils.capitalize(sidebarType.toString().toLowerCase()), ticks / 20F));
+        // player.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Timer", StringUtils.capitalize(sidebarType.toString().toLowerCase(Locale.ENGLISH)), ticks / 20F));
 
         if(UserManager.getPlayer(playerName) == null)
             return;

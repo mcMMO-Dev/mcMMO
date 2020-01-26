@@ -30,6 +30,7 @@ import org.bukkit.entity.Player;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public abstract class SkillCommand implements TabExecutor {
@@ -134,7 +135,7 @@ public abstract class SkillCommand implements TabExecutor {
             }
         }
 
-        player.sendMessage(LocaleLoader.getString("Guides.Available", skillName, skillName.toLowerCase()));
+        player.sendMessage(LocaleLoader.getString("Guides.Available", skillName, skillName.toLowerCase(Locale.ENGLISH)));
     }
 
     private void sendSkillCommandHeader(Player player, McMMOPlayer mcMMOPlayer, int skillValue) {

@@ -3,6 +3,7 @@ package com.gmail.nossr50.util;
 import org.bukkit.Material;
 
 import java.util.HashSet;
+import java.util.Locale;
 
 /**
  * Stores hash tables for item and block names
@@ -503,6 +504,6 @@ public class MaterialMapStore {
 
     private void addToHashSet(String string, HashSet<String> stringHashSet)
     {
-        stringHashSet.add(string.toLowerCase());
+        stringHashSet.add(string.toLowerCase(Locale.ENGLISH));
     }
 }

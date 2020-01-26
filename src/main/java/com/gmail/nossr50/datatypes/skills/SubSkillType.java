@@ -3,6 +3,8 @@ package com.gmail.nossr50.datatypes.skills;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.StringUtils;
 
+import java.util.Locale;
+
 public enum SubSkillType {
     /* !! Warning -- Do not let subskills share a name with any existing PrimarySkillType as it will clash with the static import !! */
 
@@ -157,7 +159,7 @@ public enum SubSkillType {
     public String getPermissionNodeAddress()
     {
         //TODO: This could be optimized
-        return "mcmmo.ability." + getParentSkill().toString().toLowerCase() + "." + getConfigName(toString()).toLowerCase();
+        return "mcmmo.ability." + getParentSkill().toString().toLowerCase(Locale.ENGLISH) + "." + getConfigName(toString()).toLowerCase(Locale.ENGLISH);
     }
 
     /**

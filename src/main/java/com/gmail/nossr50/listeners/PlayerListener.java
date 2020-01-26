@@ -51,6 +51,8 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Locale;
+
 public class PlayerListener implements Listener {
     private final mcMMO plugin;
 
@@ -909,12 +911,12 @@ public class PlayerListener implements Listener {
         if (!Config.getInstance().getLocale().equalsIgnoreCase("en_US")) {
             String message = event.getMessage();
             String command = message.substring(1).split(" ")[0];
-            String lowerCaseCommand = command.toLowerCase();
+            String lowerCaseCommand = command.toLowerCase(Locale.ENGLISH);
 
             // Do these ACTUALLY have to be lower case to work properly?
             for (PrimarySkillType skill : PrimarySkillType.values()) {
-                String skillName = skill.toString().toLowerCase();
-                String localizedName = skill.getName().toLowerCase();
+                String skillName = skill.toString().toLowerCase(Locale.ENGLISH);
+                String localizedName = skill.getName().toLowerCase(Locale.ENGLISH);
 
                 if (lowerCaseCommand.equals(localizedName)) {
                     event.setMessage(message.replace(command, skillName));

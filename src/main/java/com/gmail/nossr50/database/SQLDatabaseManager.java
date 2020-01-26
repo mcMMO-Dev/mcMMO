@@ -347,7 +347,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     public List<PlayerStat> readLeaderboard(PrimarySkillType skill, int pageNumber, int statsPerPage) {
         List<PlayerStat> stats = new ArrayList<PlayerStat>();
 
-        String query = skill == null ? ALL_QUERY_VERSION : skill.name().toLowerCase();
+        String query = skill == null ? ALL_QUERY_VERSION : skill.name().toLowerCase(Locale.ENGLISH);
         ResultSet resultSet = null;
         PreparedStatement statement = null;
         Connection connection = null;
@@ -391,7 +391,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         try {
             connection = getConnection(PoolIdentifier.MISC);
             for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
-                String skillName = primarySkillType.name().toLowerCase();
+                String skillName = primarySkillType.name().toLowerCase(Locale.ENGLISH);
                 // Get count of all users with higher skill level than player
                 String sql = "SELECT COUNT(*) AS rank FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillName + " > 0 " +
                         "AND " + skillName + " > (SELECT " + skillName + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id " +
@@ -911,7 +911,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
                     int cap = Config.getInstance().getLevelCap(skill);
                     if (cap != Integer.MAX_VALUE) {
-                        statement = connection.prepareStatement("UPDATE `" + tablePrefix + "skills` SET `" + skill.name().toLowerCase() + "` = " + cap + " WHERE `" + skill.name().toLowerCase() + "` > " + cap);
+                        statement = connection.prepareStatement("UPDATE `" + tablePrefix + "skills` SET `" + skill.name().toLowerCase(Locale.ENGLISH) + "` = " + cap + " WHERE `" + skill.name().toLowerCase(Locale.ENGLISH) + "` > " + cap);
                         statement.executeUpdate();
                         tryClose(statement);
                     }
@@ -951,7 +951,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 break;
         }
         if (connection == null) {
-            throw new RuntimeException("getConnection() for " + identifier.name().toLowerCase() + " pool timed out.  Increase max connections settings.");
+            throw new RuntimeException("getConnection() for " + identifier.name().toLowerCase(Locale.ENGLISH) + " pool timed out.  Increase max connections settings.");
         }
         return connection;
     }
@@ -1262,7 +1262,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 mcMMO.p.getLogger().info("Indexing tables, this may take a while on larger databases");
 
                 for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
-                    String skill_name = skill.name().toLowerCase();
+                    String skill_name = skill.name().toLowerCase(Locale.ENGLISH);
 
                     try {
                         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "skills` ADD INDEX `idx_" + skill_name + "` (`" + skill_name + "`) USING BTREE");

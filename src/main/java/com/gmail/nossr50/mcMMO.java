@@ -62,6 +62,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class mcMMO extends JavaPlugin {
     /* Managers */
@@ -286,9 +287,9 @@ public class mcMMO extends JavaPlugin {
 
     private ServerSoftwareType getServerSoftware()
     {
-        if(Bukkit.getVersion().toLowerCase().contains("paper"))
+        if(Bukkit.getVersion().toLowerCase(Locale.ENGLISH).contains("paper"))
             return ServerSoftwareType.PAPER;
-        else if(Bukkit.getVersion().toLowerCase().contains("spigot"))
+        else if(Bukkit.getVersion().toLowerCase(Locale.ENGLISH).contains("spigot"))
             return ServerSoftwareType.SPIGOT;
         else
             return ServerSoftwareType.CRAFTBUKKIT;

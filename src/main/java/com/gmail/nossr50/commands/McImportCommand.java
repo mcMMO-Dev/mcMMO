@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class McImportCommand implements CommandExecutor {
     int fileAmount;
@@ -129,7 +130,7 @@ public class McImportCommand implements CommandExecutor {
         }
 
         FileWriter out = null;
-        String type = modConfigType.name().toLowerCase();
+        String type = modConfigType.name().toLowerCase(Locale.ENGLISH);
 
         for (String modName : materialNames.keySet()) {
             File outputFile = new File(outputFilePath, modName + "." + type + ".yml");

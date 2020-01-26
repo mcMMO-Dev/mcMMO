@@ -28,6 +28,7 @@ import org.bukkit.command.PluginCommand;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public final class CommandRegistrationManager {
     private CommandRegistrationManager() {};
@@ -36,8 +37,8 @@ public final class CommandRegistrationManager {
 
     private static void registerSkillCommands() {
         for (PrimarySkillType skill : PrimarySkillType.values()) {
-            String commandName = skill.toString().toLowerCase();
-            String localizedName = skill.getName().toLowerCase();
+            String commandName = skill.toString().toLowerCase(Locale.ENGLISH);
+            String localizedName = skill.getName().toLowerCase(Locale.ENGLISH);
 
             PluginCommand command;
 
