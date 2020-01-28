@@ -380,7 +380,7 @@ public final class CombatUtils {
                 }
             }
         }
-        else if (entityType == EntityType.ARROW) {
+        else if (entityType == EntityType.ARROW || entityType == EntityType.SPECTRAL_ARROW) {
             Arrow arrow = (Arrow) damager;
             ProjectileSource projectileSource = arrow.getShooter();
 

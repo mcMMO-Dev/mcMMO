@@ -1,3 +1,7 @@
+Version 2.1.115
+    Fixed an issue with arrows causing exceptions with players not yet having data loaded
+    Spectral arrows are now tracked by mcMMO
+
 Version 2.1.114
     Fix some more locale usages, should aim to further prevent issues with oddball locales
     Fixed a bug where newer versions of MySQL did not like our rank command
