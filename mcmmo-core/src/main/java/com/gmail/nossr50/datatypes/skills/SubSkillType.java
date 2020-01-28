@@ -4,6 +4,8 @@ import com.gmail.nossr50.config.HOCONUtil;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
 
+import java.util.Locale;
+
 public enum SubSkillType {
     /* !! Warning -- Do not let subskills share a name with any existing PrimarySkillType as it will clash with the static import !! */
 
@@ -142,7 +144,7 @@ public enum SubSkillType {
      */
     public String getPermissionNodeAddress(mcMMO pluginRef) {
         //TODO: This could be optimized
-        return "mcmmo.ability." + getParentSkill(pluginRef).toString().toLowerCase() + "." + getConfigName(toString()).toLowerCase();
+        return "mcmmo.ability." + getParentSkill(pluginRef).toString().toLowerCase() + "." + getConfigName(toString()).toLowerCase(Locale.ENGLISH);
     }
 
     /**

@@ -59,9 +59,16 @@ public class EntityListener implements Listener {
         }
 
         //Prevent entities from giving XP if they target endermite
+<<<<<<< HEAD:mcmmo-core/src/main/java/com/gmail/nossr50/listeners/EntityListener.java
         if (event.getTarget() instanceof Endermite) {
             if (event.getEntity().hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY))
                 event.getEntity().setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
+=======
+        if(event.getTarget() instanceof Endermite)
+        {
+            if(!event.getEntity().hasMetadata(mcMMO.entityMetadataKey))
+                event.getEntity().setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+>>>>>>> 550a3df6169b457fdea552b58861bb42c53420c2:src/main/java/com/gmail/nossr50/listeners/EntityListener.java
         }
     }
 
@@ -794,6 +801,7 @@ public class EntityListener implements Listener {
     }
 
     /**
+<<<<<<< HEAD:mcmmo-core/src/main/java/com/gmail/nossr50/listeners/EntityListener.java
      * Handle EntityExplode events that involve modifying the event.
      *
      * @param event The event to modify
@@ -814,6 +822,8 @@ public class EntityListener implements Listener {
     }
 
     /**
+=======
+>>>>>>> 550a3df6169b457fdea552b58861bb42c53420c2:src/main/java/com/gmail/nossr50/listeners/EntityListener.java
      * Handle FoodLevelChange events that involve modifying the event.
      *
      * @param event The event to modify

@@ -29,6 +29,7 @@ public class ConfigSound {
         SOUND_SETTINGS_MAP_DEFAULT.put(SoundType.ABILITY_ACTIVATED_BERSERK, new SoundSetting(0.5, 1.7));
         SOUND_SETTINGS_MAP_DEFAULT.put(SoundType.TIRED, new SoundSetting(1.0, 1.7));
         SOUND_SETTINGS_MAP_DEFAULT.put(SoundType.BLEED, new SoundSetting(2.0, 2.0));
+        SOUND_SETTINGS_MAP_DEFAULT.put(SoundType.GLASS, new SoundSetting(1.0, 1.0));
     }
 
     @Setting(value = "Sound-Settings", comment = "Adjust sound settings for various mcMMO sounds here." +

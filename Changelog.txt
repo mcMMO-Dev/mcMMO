@@ -201,6 +201,19 @@ Version 2.2.0
     Added API method to check if a skill was being level capped
     Added 'UndefinedSkillBehaviour' for trying to use a method that has no behaviour defined for the provided skill
 
+Version 2.1.114
+    Fix some more locale usages, should aim to further prevent issues with oddball locales
+
+Version 2.1.113
+    Activating Berserk on a soft block (glass, snow, dirts) will break that material right away instead of only breaking subsequent blocks hit by the player
+    Berserk will now break glass and glass pane blocks
+    Hitting glass with berserk readied will activate it
+    Added GLASS settings to sounds.yml for Berserk
+    Fixed bug where BlockCracker didn't work on infested_stone_bricks
+    Fixed a bug where beacons could be duplicated
+    Check player's PTP world permissions before executing a party teleport
+    Improved how mcMMO handles randomness
+
 Version 2.1.112
     Correct locale usage for enum access, now enforces using the english locale to prevent issues with oddball locales for configs/commands
     Fixed a NPE that can occur if a player engages in combat with specific skills before their profile is loaded
