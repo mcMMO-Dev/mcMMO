@@ -372,7 +372,7 @@ public class Roll extends AcrobaticsSubSkill {
 
         //Chance to roll at half max skill
         RandomChanceSkill rollHalfMaxSkill = new RandomChanceSkill(pluginRef, null, subSkillType);
-        int halfMaxSkillValue = pluginRef.isRetroModeEnabled() ? 500 : 50;
+        int halfMaxSkillValue = (int) pluginRef.getDynamicSettingsManager().getSkillMaxBonusLevel(subSkillType) / 2;
         rollHalfMaxSkill.setSkillLevel(halfMaxSkillValue);
 
         //Chance to graceful roll at full skill
