@@ -1,6 +1,9 @@
 package com.gmail.nossr50.worldguard;
 
+import com.gmail.nossr50.mcMMO;
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.flags.registry.SimpleFlagRegistry;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
@@ -12,10 +15,7 @@ public class WorldGuardUtils {
     private boolean isLoaded = false;
     private boolean detectedIncompatibleWG = false;
     private static final ArrayList<String> WGClassList;
-    private WorldGuardManager worldGuardManager;
-
-    public WorldGuardUtils() {
-    }
+    protected final mcMMO pluginRef;
 
     static {
         /*
@@ -39,6 +39,10 @@ public class WorldGuardUtils {
         WGClassList.add("com.sk89q.worldguard.protection.flags.registry.FlagRegistry");
         WGClassList.add("com.sk89q.worldguard.protection.regions.RegionContainer");
         WGClassList.add("com.sk89q.worldguard.protection.regions.RegionQuery");
+    }
+
+    public WorldGuardUtils(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
     }
 
     public boolean isWorldGuardLoaded()
@@ -68,7 +72,7 @@ public class WorldGuardUtils {
         if(plugin == null) {
             //WG is not present
             detectedIncompatibleWG = true;
-            System.out.println("[mcMMO WorldGuardUtils Debug] WorldGuard was not detected.");
+            pluginRef.getLogger().info("WorldGuard was not detected.");
         } else {
             //Check that its actually of class WorldGuardPlugin
             if(plugin instanceof WorldGuardPlugin)
@@ -77,15 +81,13 @@ public class WorldGuardUtils {
                 {
                     worldGuardPluginRef = (WorldGuardPlugin) plugin;
                     isLoaded = true;
-
-                    //Init WG Manager
-                    worldGuardManager = new WorldGuardManager();
                 }
             } else {
                 //Plugin is not of the expected type
                 markWGIncompatible();
             }
         }
+
 
         return worldGuardPluginRef;
     }
@@ -98,7 +100,10 @@ public class WorldGuardUtils {
      */
     private boolean isCompatibleVersion(Plugin plugin) {
         //Check that the version of WG is at least version 7.xx
-//        boolean allClassesFound = true;
+        boolean allClassesFound = true;
+        if (detectedIncompatibleWG) {
+            return false;
+        }
 
         if (!plugin.getDescription().getVersion().startsWith("7")) {
             markWGIncompatible();
@@ -107,10 +112,9 @@ public class WorldGuardUtils {
             for(String classString : WGClassList) {
                 try {
                     Class<?> checkForClass = Class.forName(classString);
-                    detectedIncompatibleWG = false; //In case this was set to true previously
                 } catch (ClassNotFoundException | NoClassDefFoundError e) {
-//                    allClassesFound = false;
-                    System.out.println("[mcMMO WorldGuardUtils Debug] Missing WorldGuard class - "+classString);
+                    allClassesFound = false;
+                    pluginRef.getLogger().severe("Missing WorldGuard class - "+classString);
                     markWGIncompatible();
                 }
             }
@@ -118,17 +122,17 @@ public class WorldGuardUtils {
             /*
              * If WG appears to have all of its classes we can then check to see if its been initialized properly
              */
-//            try {
-//                if(allClassesFound) {
-//                    if(!((SimpleFlagRegistry) WorldGuard.getInstance().getFlagRegistry()).isInitialized()) {
-//                        markWGIncompatible();
-//                        System.out.println("[mcMMO WorldGuardUtils Debug] WG did not initialize properly, this can cause errors with mcMMO so mcMMO is disabling certain features.");
-//                    }
-//                }
-//            } catch (Exception e) {
-//                markWGIncompatible();
-//                e.printStackTrace();
-//            }
+            try {
+                if(allClassesFound) {
+                    if(!((SimpleFlagRegistry) WorldGuard.getInstance().getFlagRegistry()).isInitialized()) {
+                        markWGIncompatible();
+                        pluginRef.getLogger().severe("WG did not initialize properly, this can cause errors with mcMMO so mcMMO is disabling certain features.");
+                    }
+                }
+            } catch (Exception e) {
+                markWGIncompatible();
+                e.printStackTrace();
+            }
         }
 
         return !detectedIncompatibleWG;
@@ -138,14 +142,10 @@ public class WorldGuardUtils {
      * Mark WG as being incompatible to avoid unnecessary operations
      */
     private void markWGIncompatible() {
-        System.out.println("[mcMMO WorldGuardUtils Debug] You are using a version of WG that is not compatible with mcMMO, " +
+        pluginRef.getLogger().severe("You are using a version of WG that is not compatible with mcMMO, " +
                 "WG features for mcMMO will be disabled. mcMMO requires you to be using a new version of WG7 " +
                 "in order for it to use WG features. Not all versions of WG7 are compatible.");
-        System.out.println("[mcMMO WorldGuardUtils Debug] mcMMO will continue to function normally, but if you wish to use WG support you must use a compatible version.");
+        pluginRef.getLogger().severe("mcMMO will continue to function normally, but if you wish to use WG support you must use a compatible version.");
         detectedIncompatibleWG = true;
-    }
-
-    public WorldGuardManager getWorldGuardManager() {
-        return worldGuardManager;
     }
 }

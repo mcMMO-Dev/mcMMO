@@ -86,6 +86,7 @@ public class mcMMO extends JavaPlugin {
     private ScoreboardManager scoreboardManager;
     private SoundManager soundManager;
     private HardcoreManager hardcoreManager;
+    private WorldGuardManager worldGuardManager;
 
     /* Not-Managers but my naming scheme sucks */
     private DatabaseManagerFactory databaseManagerFactory;
@@ -307,13 +308,15 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onLoad()
     {
+        worldGuardUtils = new WorldGuardUtils(this); //Init WGU
+
         if(getServer().getPluginManager().getPlugin("WorldGuard") != null) {
-            worldGuardUtils = new WorldGuardUtils(); //Init WGU
 
             if(worldGuardUtils.isWorldGuardLoaded()) {
                 //Register flags
                 System.out.println("[mcMMO - Registering World Guard Flags...]");
-                worldGuardUtils.getWorldGuardManager().registerFlags();
+                worldGuardManager = new WorldGuardManager();
+                worldGuardManager.registerFlags();
             }
         }
     }
@@ -749,7 +752,7 @@ public class mcMMO extends JavaPlugin {
     }
 
     public WorldGuardManager getWorldGuardManager() {
-        return worldGuardUtils.getWorldGuardManager();
+        return worldGuardManager;
     }
 
     public PartyManager getPartyManager() {
