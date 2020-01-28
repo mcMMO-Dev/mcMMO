@@ -1,5 +1,8 @@
 Version 2.1.114
     Fix some more locale usages, should aim to further prevent issues with oddball locales
+    Fixed a bug where newer versions of MySQL did not like our rank command
+    Added a new setting to turn off the Snow Golem Exploit prevention to experience.yml next to the other exploit fixes
+    Fixed a bug which stopped the optional Endermite XP exploit fix from working
 
 Version 2.1.113
     Activating Berserk on a soft block (glass, snow, dirts) will break that material right away instead of only breaking subsequent blocks hit by the player
