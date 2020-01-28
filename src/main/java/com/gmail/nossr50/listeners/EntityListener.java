@@ -381,12 +381,15 @@ public class EntityListener implements Listener {
                     }
 
                     //Deflect checks
-                    UnarmedManager unarmedManager = UserManager.getPlayer(defendingPlayer).getUnarmedManager();
+                    final McMMOPlayer mcMMOPlayer = UserManager.getPlayer(defendingPlayer);
+                    if (mcMMOPlayer != null) {
+                        UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
 
-                    if (unarmedManager.canDeflect()) {
-                        if(unarmedManager.deflectCheck()) {
-                            event.setCancelled(true);
-                            return;
+                        if (unarmedManager.canDeflect()) {
+                            if (unarmedManager.deflectCheck()) {
+                                event.setCancelled(true);
+                                return;
+                            }
                         }
                     }
                 } else {
