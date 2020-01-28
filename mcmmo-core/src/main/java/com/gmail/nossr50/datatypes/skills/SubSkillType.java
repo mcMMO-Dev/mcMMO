@@ -144,7 +144,7 @@ public enum SubSkillType {
      */
     public String getPermissionNodeAddress(mcMMO pluginRef) {
         //TODO: This could be optimized
-        return "mcmmo.ability." + getParentSkill(pluginRef).toString().toLowerCase() + "." + getConfigName(toString()).toLowerCase(Locale.ENGLISH);
+        return "mcmmo.ability." + getParentSkill(pluginRef).toString().toLowerCase(Locale.ENGLISH) + "." + getConfigName(toString()).toLowerCase(Locale.ENGLISH);
     }
 
     /**

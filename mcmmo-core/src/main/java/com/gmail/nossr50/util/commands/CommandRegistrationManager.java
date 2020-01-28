@@ -25,6 +25,7 @@ import org.bukkit.command.PluginCommand;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public final class CommandRegistrationManager {
     private final mcMMO pluginRef;
@@ -37,8 +38,8 @@ public final class CommandRegistrationManager {
 
     private void registerSkillCommands() {
         for (PrimarySkillType primarySkillType : PrimarySkillType.values()) {
-            String commandName = primarySkillType.toString().toLowerCase();
-            String localizedName = pluginRef.getSkillTools().getLocalizedSkillName(primarySkillType).toLowerCase();
+            String commandName = primarySkillType.toString().toLowerCase(Locale.ENGLISH);
+            String localizedName = pluginRef.getSkillTools().getLocalizedSkillName(primarySkillType).toLowerCase(Locale.ENGLISH);
 
             PluginCommand command;
 

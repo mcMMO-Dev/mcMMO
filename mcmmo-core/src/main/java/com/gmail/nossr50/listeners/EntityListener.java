@@ -59,16 +59,9 @@ public class EntityListener implements Listener {
         }
 
         //Prevent entities from giving XP if they target endermite
-<<<<<<< HEAD:mcmmo-core/src/main/java/com/gmail/nossr50/listeners/EntityListener.java
         if (event.getTarget() instanceof Endermite) {
-            if (event.getEntity().hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY))
+            if (!event.getEntity().hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY))
                 event.getEntity().setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
-=======
-        if(event.getTarget() instanceof Endermite)
-        {
-            if(!event.getEntity().hasMetadata(mcMMO.entityMetadataKey))
-                event.getEntity().setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
->>>>>>> 550a3df6169b457fdea552b58861bb42c53420c2:src/main/java/com/gmail/nossr50/listeners/EntityListener.java
         }
     }
 
@@ -801,29 +794,6 @@ public class EntityListener implements Listener {
     }
 
     /**
-<<<<<<< HEAD:mcmmo-core/src/main/java/com/gmail/nossr50/listeners/EntityListener.java
-     * Handle EntityExplode events that involve modifying the event.
-     *
-     * @param event The event to modify
-     */
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onEntityExplodeMonitor(EntityExplodeEvent event) {
-        /* WORLD BLACKLIST CHECK */
-        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getEntity().getWorld().getName()))
-            return;
-
-        Entity entity = event.getEntity();
-
-        if (!(entity instanceof TNTPrimed) || !entity.hasMetadata(MetadataConstants.SAFE_TNT_METAKEY)) {
-            return;
-        }
-
-        event.blockList().clear();
-    }
-
-    /**
-=======
->>>>>>> 550a3df6169b457fdea552b58861bb42c53420c2:src/main/java/com/gmail/nossr50/listeners/EntityListener.java
      * Handle FoodLevelChange events that involve modifying the event.
      *
      * @param event The event to modify
