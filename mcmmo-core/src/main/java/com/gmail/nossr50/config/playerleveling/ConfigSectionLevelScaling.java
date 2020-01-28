@@ -7,22 +7,19 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 public class ConfigSectionLevelScaling {
 
     /* DEFAULT VALUES */
-    public static final boolean USE_RETRO_MODE_DEFAULT = true;
+    public static final int LEVEL_SCALE_MODIFIER_DEFAULT = 1;
 
     /*
      * CONFIG NODES
      */
 
-    @Setting(value = "Use-Retro-Mode",
-            comment = "Enables 1-1000 Level Scaling" +
-                    "\nIf set to false, Standard Scaling is used instead (1-100 Level Scaling)")
-    private boolean useRetroMode = USE_RETRO_MODE_DEFAULT;
+    @Setting(value = "Cosmetic-Level-Scaling",
+            comment = "Changes the max number of levels and adjusts settings appropriately" +
+                    "\nThe default value will make level 1000 the max level, settings in the configs are based around that and are mutated based on this setting." +
+                    "\nLeave this setting at a value of 1 if you do not wish to change the cosmetic amount of levels")
+    private int cosmeticLevelScaleModifier = LEVEL_SCALE_MODIFIER_DEFAULT;
 
-    /*
-     * GETTER BOILERPLATE
-     */
-
-    public boolean isRetroModeEnabled() {
-        return useRetroMode;
+    public int getCosmeticLevelScaleModifier() {
+        return cosmeticLevelScaleModifier;
     }
 }

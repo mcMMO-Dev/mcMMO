@@ -5,6 +5,8 @@ Version 2.2.0
     !!!!!!!!!!!!!!!!!!!!!!!!
     !!!!!!!!!!!!!!!!!!!!!!!!
     mcMMO's config system has been rewritten
+    Retro and Standard mode have been removed, now levels are based around 1-1000 and are changed based on a new setting
+    Added Cosmetic Level Scaling setting to the leveling config, you can use this to for example, make the max level 100 instead of 1000
     mcMMO build management is now handled by Gradle (KTS) instead of Maven
     Nearly every config setting has been renamed and most have brand new comments
     You can now add an unlimited number of custom XP perks with custom defined XP boosts
