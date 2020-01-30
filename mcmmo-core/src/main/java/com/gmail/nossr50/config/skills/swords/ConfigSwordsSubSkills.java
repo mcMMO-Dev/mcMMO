@@ -1,6 +1,5 @@
 package com.gmail.nossr50.config.skills.swords;
 
-import com.gmail.nossr50.datatypes.skills.properties.MaxBonusLevel;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -35,10 +34,6 @@ public class ConfigSwordsSubSkills {
         return counterAttack.getCounterAttackMaxChance();
     }
 
-    public MaxBonusLevel getCounterAttackMaxBonusLevel() {
-        return counterAttack.getCounterAttackMaxBonusLevel();
-    }
-
     public double getCounterAttackDamageModifier() {
         return counterAttack.getCounterAttackDamageModifier();
     }
@@ -49,10 +44,6 @@ public class ConfigSwordsSubSkills {
 
     public double getRuptureMaxChance() {
         return rupture.getRuptureMaxChance();
-    }
-
-    public MaxBonusLevel getRuptureMaxBonusLevel() {
-        return rupture.getRuptureMaxBonusLevel();
     }
 
     public double getRuptureDamagePlayer() {

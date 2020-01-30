@@ -1,6 +1,5 @@
 package com.gmail.nossr50.config.skills.smelting;
 
-import com.gmail.nossr50.datatypes.skills.properties.MaxBonusLevel;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -18,10 +17,6 @@ public class ConfigSmeltingSubSkills {
 
     public double getMaxChance() {
         return smeltingSecondSmelt.getMaxChance();
-    }
-
-    public MaxBonusLevel getMaxBonusLevel() {
-        return smeltingSecondSmelt.getMaxBonusLevel();
     }
 
     public HashMap<Integer, Integer> getXpMultiplierTable() {

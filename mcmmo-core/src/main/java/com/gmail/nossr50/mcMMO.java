@@ -68,6 +68,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.Locale;
 
 public class mcMMO implements McMMOApi {
     /* Managers */
@@ -88,6 +89,7 @@ public class mcMMO implements McMMOApi {
     private ScoreboardManager scoreboardManager;
     private SoundManager soundManager;
     private HardcoreManager hardcoreManager;
+    private WorldGuardManager worldGuardManager;
 
     /* Not-Managers but my naming scheme sucks */
     private DatabaseManagerFactory databaseManagerFactory;
@@ -240,10 +242,14 @@ public class mcMMO implements McMMOApi {
                 metrics = new Metrics(this);
                 metrics.addCustomChart(new Metrics.SimplePie("version", () -> getDescription().getVersion()));
 
-                if (!configManager.getConfigLeveling().getConfigSectionLevelingGeneral().getConfigSectionLevelScaling().isRetroModeEnabled())
+                int levelScaleModifier = configManager.getConfigLeveling().getConfigSectionLevelingGeneral().getConfigSectionLevelScaling().getCosmeticLevelScaleModifier();
+
+                if (levelScaleModifier == 10)
                     metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Standard"));
-                else
+                else if (levelScaleModifier == 1)
                     metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Retro"));
+                else
+                    metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Custom"));
             }
         } catch (Throwable t) {
             getLogger().severe("There was an error while enabling mcMMO!");
@@ -310,13 +316,15 @@ public class mcMMO implements McMMOApi {
 
     public void onLoad()
     {
+        worldGuardUtils = new WorldGuardUtils(this); //Init WGU
+
         if(getServer().getPluginManager().getPlugin("WorldGuard") != null) {
-            worldGuardUtils = new WorldGuardUtils(); //Init WGU
 
             if(worldGuardUtils.isWorldGuardLoaded()) {
                 //Register flags
                 System.out.println("[mcMMO - Registering World Guard Flags...]");
-                worldGuardUtils.getWorldGuardManager().registerFlags();
+                worldGuardManager = new WorldGuardManager();
+                worldGuardManager.registerFlags();
             }
         }
     }
@@ -382,9 +390,9 @@ public class mcMMO implements McMMOApi {
      * @return the ServerSoftwareType which likely matches the server
      */
     private ServerSoftwareType getServerSoftware() {
-        if (Bukkit.getVersion().toLowerCase().contains("paper"))
+        if (Bukkit.getVersion().toLowerCase(Locale.ENGLISH).contains("paper"))
             return ServerSoftwareType.PAPER;
-        else if (Bukkit.getVersion().toLowerCase().contains("spigot"))
+        else if (Bukkit.getVersion().toLowerCase(Locale.ENGLISH).contains("spigot"))
             return ServerSoftwareType.SPIGOT;
         else
             return ServerSoftwareType.CRAFTBUKKIT;
@@ -511,17 +519,6 @@ public class mcMMO implements McMMOApi {
 
     public boolean isHealthBarPluginEnabled() {
         return healthBarPluginEnabled;
-    }
-
-    /**
-     * Checks if this plugin is using retro mode
-     * Retro mode is a 0-1000 skill system
-     * Standard mode is scaled for 1-100
-     *
-     * @return true if retro mode is enabled
-     */
-    public boolean isRetroModeEnabled() {
-        return configManager.isRetroMode();
     }
 
     public ConfigManager getConfigManager() {
@@ -763,7 +760,7 @@ public class mcMMO implements McMMOApi {
     }
 
     public WorldGuardManager getWorldGuardManager() {
-        return worldGuardUtils.getWorldGuardManager();
+        return worldGuardManager;
     }
 
     public PartyManager getPartyManager() {

@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public final class CommandTools {
     private final mcMMO pluginRef;
@@ -288,7 +289,7 @@ public final class CommandTools {
                 break;
             }
 
-            if (playerName.toLowerCase().contains(partialName.toLowerCase())) {
+            if (playerName.toLowerCase(Locale.ENGLISH).contains(partialName.toLowerCase(Locale.ENGLISH))) {
                 // Partial match
                 matchedPlayers.add(playerName);
             }

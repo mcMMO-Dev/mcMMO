@@ -129,6 +129,10 @@ public class ConfigLeveling {
         return configSectionLevelCaps;
     }
 
+    public int getCosmeticLevelScaleModifier() {
+        return configSectionLevelingGeneral.getCosmeticLevelScaleModifier();
+    }
+
     public ConfigSectionSkillLevelCap getPowerLevelSettings() {
         return configSectionLevelCaps.getPowerLevelSettings();
     }
@@ -159,10 +163,6 @@ public class ConfigLeveling {
 
     public FormulaType getFormulaType() {
         return configExperienceFormula.getFormulaType();
-    }
-
-    public boolean isRetroModeEnabled() {
-        return getConfigSectionLevelScaling().isRetroModeEnabled();
     }
 
     public ConfigExperienceFormulaLinear getConfigExperienceFormulaLinear() {

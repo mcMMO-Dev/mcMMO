@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * This class handles many of the JSON components that mcMMO makes and uses
@@ -537,7 +538,7 @@ public class TextComponentFactory {
         TextComponent unlockMessage = new TextComponent("");
         unlockMessage.setText(pluginRef.getLocaleManager().getString("JSON.SkillUnlockMessage", subSkillType.getLocaleName(pluginRef), pluginRef.getRankTools().getRank(player, subSkillType)));
         unlockMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, getSubSkillHoverComponent(player, subSkillType)));
-        unlockMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + pluginRef.getSkillTools().getPrimarySkillBySubSkill(subSkillType).toString().toLowerCase()));
+        unlockMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + pluginRef.getSkillTools().getPrimarySkillBySubSkill(subSkillType).toString().toLowerCase(Locale.ENGLISH)));
         return unlockMessage;
     }
 }

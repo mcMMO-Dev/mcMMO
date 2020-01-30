@@ -93,6 +93,8 @@ public class SoundManager {
             case DEFLECT_ARROWS:
             case BLEED:
                 return Sound.ENTITY_ENDER_EYE_DEATH;
+            case GLASS:
+                return Sound.BLOCK_GLASS_BREAK;
             default:
                 return null;
         }

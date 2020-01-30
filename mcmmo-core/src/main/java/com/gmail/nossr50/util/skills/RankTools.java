@@ -392,7 +392,7 @@ public class RankTools {
                     .getNode(subSkillType.getHoconFriendlyConfigName())
                     .getValue(TypeToken.of(SkillRankProperty.class));
 
-            int unlockLevel = skillRankProperty.getUnlockLevel(pluginRef.isRetroModeEnabled(), rank);
+            int unlockLevel = skillRankProperty.getUnlockLevel(pluginRef, rank);
             return unlockLevel;
 
         } catch (ObjectMappingException | MissingSkillPropertyDefinition | NullPointerException e) {

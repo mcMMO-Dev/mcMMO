@@ -7,6 +7,8 @@ import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.EntityType;
 
+import java.util.Locale;
+
 public class StringUtils {
 
     /**
@@ -16,7 +18,7 @@ public class StringUtils {
      * @return the capitalized string
      */
     public static String getCapitalized(String target) {
-        return target.substring(0, 1).toUpperCase() + target.substring(1).toLowerCase();
+        return target.substring(0, 1).toUpperCase() + target.substring(1).toLowerCase(Locale.ENGLISH);
     }
 
     /**

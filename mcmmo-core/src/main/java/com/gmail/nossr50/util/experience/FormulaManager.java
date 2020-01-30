@@ -9,10 +9,10 @@ import java.util.Map;
 
 public class FormulaManager {
     // Experience needed to reach a level, cached values for speed
-    private Map<Integer, Integer> experienceNeededRetroLinear;
-    private Map<Integer, Integer> experienceNeededStandardLinear;
-    private Map<Integer, Integer> experienceNeededRetroExponential;
-    private Map<Integer, Integer> experienceNeededStandardExponential;
+    private Map<Integer, Integer> experienceNeededCosmeticLinear;
+    private Map<Integer, Integer> experienceNeededLinear;
+    private Map<Integer, Integer> experienceNeededCosmeticExponential;
+    private Map<Integer, Integer> experienceNeededExponential;
 
     private FormulaType currentFormula;
     private final mcMMO pluginRef;
@@ -27,10 +27,10 @@ public class FormulaManager {
      * Initialize maps used for XP to next level
      */
     private void initExperienceNeededMaps() {
-        experienceNeededRetroLinear = new HashMap<>();
-        experienceNeededRetroExponential = new HashMap<>();
-        experienceNeededStandardLinear = new HashMap<>();
-        experienceNeededStandardExponential = new HashMap<>();
+        experienceNeededCosmeticLinear = new HashMap<>();
+        experienceNeededCosmeticExponential = new HashMap<>();
+        experienceNeededLinear = new HashMap<>();
+        experienceNeededExponential = new HashMap<>();
     }
 
     /**
@@ -121,33 +121,20 @@ public class FormulaManager {
     }
 
     /**
-     * Gets the value of XP needed for the next level based on the level Scaling, the level, and the formula type
-     * @param level target level
-     * @param formulaType target formulaType
-     */
-    private int processXPToNextLevel(int level, FormulaType formulaType) {
-        if(pluginRef.isRetroModeEnabled())
-        {
-            return processXPRetroToNextLevel(level, formulaType);
-        } else {
-            return processStandardXPToNextLevel(level, formulaType);
-        }
-    }
-
-    /**
      * Calculate the XP needed for the next level for the linear formula for Standard scaling (1-100)
      * @param level target level
      * @return raw xp needed to reach the next level
      */
-    private int processStandardXPToNextLevel(int level, FormulaType formulaType) {
-        Map<Integer, Integer> experienceMapRef = formulaType == FormulaType.LINEAR ? experienceNeededStandardLinear : experienceNeededStandardExponential;
+    private int processXPToNextLevel(int level, FormulaType formulaType) {
+        Map<Integer, Integer> experienceMapRef = formulaType == FormulaType.LINEAR ? experienceNeededLinear : experienceNeededExponential;
 
         if(!experienceMapRef.containsKey(level)) {
+            int cosmeticScaleMod = pluginRef.getPlayerLevelingSettings().getCosmeticLevelScaleModifier();
             int experienceSum = 0;
-            int retroIndex = (level * 10) + 1;
+            int cosmeticIndex = (level * cosmeticScaleMod) + 1;
 
             //Sum the range of levels in Retro that this Standard level would represent
-            for(int x = retroIndex; x < (retroIndex + 10); x++) {
+            for(int x = cosmeticIndex; x < (cosmeticIndex + cosmeticScaleMod); x++) {
                 //calculateXPNeeded doesn't cache results so we use that instead of invoking the Retro XP methods to avoid memory bloat
                 experienceSum += calculateXPNeeded(x, formulaType);
             }
@@ -166,7 +153,7 @@ public class FormulaManager {
      * @return raw xp needed to reach the next level based on formula type
      */
     private int processXPRetroToNextLevel(int level, FormulaType formulaType) {
-        Map<Integer, Integer> experienceMapRef = formulaType == FormulaType.LINEAR ? experienceNeededRetroLinear : experienceNeededRetroExponential;
+        Map<Integer, Integer> experienceMapRef = formulaType == FormulaType.LINEAR ? experienceNeededCosmeticLinear : experienceNeededCosmeticExponential;
 
         if (!experienceMapRef.containsKey(level)) {
             int experience = calculateXPNeeded(level, formulaType);

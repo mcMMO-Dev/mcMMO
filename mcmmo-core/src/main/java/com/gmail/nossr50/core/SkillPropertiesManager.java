@@ -3,7 +3,6 @@ package com.gmail.nossr50.core;
 import com.gmail.nossr50.config.ConfigConstants;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.datatypes.skills.properties.MaxBonusLevel;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.random.InvalidStaticChance;
 import com.google.common.reflect.TypeToken;
@@ -31,8 +30,8 @@ public class SkillPropertiesManager {
         staticActivationChanceMap = new HashMap<>();
     }
 
-    public void registerMaxBonusLevel(SubSkillType subSkillType, MaxBonusLevel maxBonusLevel) {
-        maxBonusLevelMap.put(subSkillType, pluginRef.isRetroModeEnabled() ? maxBonusLevel.getRetroScaleValue() : maxBonusLevel.getStandardScaleValue());
+    public void registerMaxBonusLevel(SubSkillType subSkillType, int maxBonusLevel) {
+        maxBonusLevelMap.put(subSkillType, maxBonusLevel);
     }
 
     public void registerMaxBonus(SubSkillType subSkillType, double maxBonus) {
@@ -133,13 +132,9 @@ public class SkillPropertiesManager {
     }
 
     private void attemptRegisterMaxBonusLevel(SubSkillType subSkillType, CommentedConfigurationNode childNode) {
-        try {
-            pluginRef.getLogger().info("Registering MaxBonusLevel for "+subSkillType.toString());
-            MaxBonusLevel maxBonusLevel = childNode.getValue(TypeToken.of(MaxBonusLevel.class));
-            registerMaxBonusLevel(subSkillType, maxBonusLevel);
-        } catch (ObjectMappingException e) {
-            //This time a silent exception is fine
-        }
+        pluginRef.getLogger().info("Registering MaxBonusLevel for "+subSkillType.toString());
+        int maxBonusLevel = childNode.getInt();
+        registerMaxBonusLevel(subSkillType, maxBonusLevel);
     }
 
     private void attemptRegisterMaxChance(SubSkillType subSkillType, CommentedConfigurationNode childNode) {

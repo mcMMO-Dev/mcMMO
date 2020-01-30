@@ -160,7 +160,7 @@ public class BlockListener implements Listener {
         if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getBlock().getWorld().getName()))
             return;
 
-        if (pluginRef.getBlockTools().shouldBeWatched(event.getNewState())) {
+        if (pluginRef.getConfigManager().getConfigExploitPrevention().isSnowGolemExploitPrevented() && pluginRef.getBlockTools().shouldBeWatched(event.getNewState())) {
             pluginRef.getPlaceStore().setTrue(event.getNewState().getBlock());
         }
     }
@@ -481,8 +481,27 @@ public class BlockListener implements Listener {
                 mcMMOPlayer.checkAbilityActivation(PrimarySkillType.MINING);
             } else if (mcMMOPlayer.getToolPreparationMode(ToolType.SHOVEL) && pluginRef.getItemTools().isShovel(heldItem) && pluginRef.getBlockTools().affectedByGigaDrillBreaker(blockState) && pluginRef.getPermissionTools().gigaDrillBreaker(player)) {
                 mcMMOPlayer.checkAbilityActivation(PrimarySkillType.EXCAVATION);
-            } else if (mcMMOPlayer.getToolPreparationMode(ToolType.FISTS) && heldItem.getType() == Material.AIR && (pluginRef.getBlockTools().affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW || pluginRef.getBlockTools().affectedByBlockCracker(blockState) && pluginRef.getPermissionTools().berserk(player))) {
+            } else if (mcMMOPlayer.getToolPreparationMode(ToolType.FISTS)
+                    && heldItem.getType() == Material.AIR
+                    && ((pluginRef.getBlockTools().affectedByGigaDrillBreaker(blockState)
+                        || blockState.getType() == Material.SNOW
+                        || pluginRef.getBlockTools().affectedByBlockCracker(blockState)
+                        || pluginRef.getMaterialMapStore().isGlass(blockState.getType()))
+                    && pluginRef.getPermissionTools().berserk(player))) {
                 mcMMOPlayer.checkAbilityActivation(PrimarySkillType.UNARMED);
+
+                if(mcMMOPlayer.getSuperAbilityMode(SuperAbilityType.BERSERK)) {
+                    if (pluginRef.getSkillTools().superAbilityBlockCheck(SuperAbilityType.BERSERK, blockState)
+                            && pluginRef.getEventManager().simulateBlockBreak(blockState.getBlock(), player, true)) {
+                        event.setInstaBreak(true);
+
+                        if(blockState.getType().getKey().getKey().contains("glass")) {
+                            pluginRef.getSoundManager().worldSendSound(player.getWorld(), blockState.getLocation(), SoundType.GLASS);
+                        } else {
+                            pluginRef.getSoundManager().sendSound(player, blockState.getLocation(), SoundType.POP);
+                        }
+                    }
+                }
             }
         }
 
@@ -556,12 +575,30 @@ public class BlockListener implements Listener {
                     && pluginRef.getEventManager().simulateBlockBreak(block, player, true)) {
                 event.setInstaBreak(true);
                 pluginRef.getSoundManager().sendSound(player, block.getLocation(), SoundType.POP);
-            } else if (mcMMOPlayer.getUnarmedManager().canUseBlockCracker() && pluginRef.getBlockTools().affectedByBlockCracker(blockState) && pluginRef.getEventManager().simulateBlockBreak(block, player, true)) {
+            } else if (mcMMOPlayer.getUnarmedManager().canUseBlockCracker()
+                    && pluginRef.getBlockTools().affectedByBlockCracker(blockState)
+                    && pluginRef.getEventManager().simulateBlockBreak(block, player, true)) {
                 if (mcMMOPlayer.getUnarmedManager().blockCrackerCheck(blockState)) {
                     blockState.update();
                 }
             }
-        } else if (mcMMOPlayer.getWoodcuttingManager().canUseLeafBlower(heldItem) && pluginRef.getBlockTools().isLeaves(blockState) && pluginRef.getEventManager().simulateBlockBreak(block, player, true)) {
+            //Only run if insta-break isn't on, this is because we turn it on in another event of this same type but different priority under certain conditions
+            else if (!event.getInstaBreak()
+                    && pluginRef.getBlockTools().canActivateAbilities(blockState)
+                    && pluginRef.getEventManager().simulateBlockBreak(block, player, true)) {
+                event.setInstaBreak(true);
+
+                //Break Glass
+                if(blockState.getType().getKey().getKey().contains("glass")) {
+                    pluginRef.getSoundManager().worldSendSound(player.getWorld(), block.getLocation(), SoundType.GLASS);
+                } else {
+                    pluginRef.getSoundManager().sendSound(player, block.getLocation(), SoundType.POP);
+                }
+            }
+        }
+        else if (mcMMOPlayer.getWoodcuttingManager().canUseLeafBlower(heldItem)
+                && pluginRef.getBlockTools().isLeaves(blockState)
+                && pluginRef.getEventManager().simulateBlockBreak(block, player, true)) {
             event.setInstaBreak(true);
             pluginRef.getSoundManager().sendSound(player, block.getLocation(), SoundType.POP);
         }

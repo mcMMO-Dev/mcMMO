@@ -163,7 +163,7 @@ public class ScoreboardWrapper {
         revertTask = new ScoreboardChangeTask().runTaskLater(pluginRef, ticks);
 
         // TODO is there any way to do the time that looks acceptable?
-        // player.sendMessage(pluginRef.getLocaleManager().getString("Commands.ConfigScoreboard.Timer", StringUtils.capitalize(sidebarType.toString().toLowerCase()), ticks / 20F));
+        // player.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Timer", StringUtils.capitalize(sidebarType.toString().toLowerCase(Locale.ENGLISH)), ticks / 20F));
 
         if (pluginRef.getUserManager().getPlayer(playerName) == null)
             return;

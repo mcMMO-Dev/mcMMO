@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
 
@@ -208,7 +209,7 @@ public final class MiscTools {
         String[] materialSplit = materialName.split("_");
 
         if (materialSplit.length > 1) {
-            return materialSplit[0].toLowerCase();
+            return materialSplit[0].toLowerCase(Locale.ENGLISH);
         }
 
         return "UnknownMods";

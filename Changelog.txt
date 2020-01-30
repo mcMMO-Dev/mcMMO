@@ -5,6 +5,8 @@ Version 2.2.0
     !!!!!!!!!!!!!!!!!!!!!!!!
     !!!!!!!!!!!!!!!!!!!!!!!!
     mcMMO's config system has been rewritten
+    Retro and Standard mode have been removed, now levels are based around 1-1000 and are changed based on a new setting
+    Added Cosmetic Level Scaling setting to the leveling config, you can use this to for example, make the max level 100 instead of 1000
     mcMMO build management is now handled by Gradle (KTS) instead of Maven
     Nearly every config setting has been renamed and most have brand new comments
     You can now add an unlimited number of custom XP perks with custom defined XP boosts
@@ -200,6 +202,22 @@ Version 2.2.0
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
     Added 'UndefinedSkillBehaviour' for trying to use a method that has no behaviour defined for the provided skill
+
+Version 2.1.114
+    Fix some more locale usages, should aim to further prevent issues with oddball locales
+    Fixed a bug where newer versions of MySQL did not like our rank command
+    Added a new setting to turn off the Snow Golem Exploit prevention to experience.yml next to the other exploit fixes
+    Fixed a bug which stopped the optional Endermite XP exploit fix from working
+
+Version 2.1.113
+    Activating Berserk on a soft block (glass, snow, dirts) will break that material right away instead of only breaking subsequent blocks hit by the player
+    Berserk will now break glass and glass pane blocks
+    Hitting glass with berserk readied will activate it
+    Added GLASS settings to sounds.yml for Berserk
+    Fixed bug where BlockCracker didn't work on infested_stone_bricks
+    Fixed a bug where beacons could be duplicated
+    Check player's PTP world permissions before executing a party teleport
+    Improved how mcMMO handles randomness
 
 Version 2.1.112
     Correct locale usage for enum access, now enforces using the english locale to prevent issues with oddball locales for configs/commands

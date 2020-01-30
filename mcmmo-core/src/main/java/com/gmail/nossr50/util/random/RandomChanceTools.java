@@ -10,7 +10,7 @@ import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.entity.Player;
 
 import java.text.DecimalFormat;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomChanceTools {
     
@@ -79,10 +79,8 @@ public class RandomChanceTools {
         return rollDice(chance, 10000);
     }
 
-    public boolean rollDice(double chanceOfSuccess, int bound) {
-        Random random = new Random();
-
-        return chanceOfSuccess > random.nextInt(bound);
+    public static boolean rollDice(double chanceOfSuccess, int bound) {
+        return chanceOfSuccess > ThreadLocalRandom.current().nextInt(bound);
     }
 
     /**
