@@ -10,7 +10,6 @@ import com.gmail.nossr50.config.playerleveling.ConfigLeveling;
 import com.gmail.nossr50.config.scoreboard.ConfigScoreboard;
 import com.gmail.nossr50.core.DynamicSettingsManager;
 import com.gmail.nossr50.core.MaterialMapStore;
-import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.datatypes.skills.subskills.acrobatics.Roll;
@@ -49,26 +48,21 @@ import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.Locale;
 
 public class mcMMO implements McMMOApi {
     /* Managers */
@@ -186,23 +180,12 @@ public class mcMMO implements McMMOApi {
             databaseManager = getDatabaseManagerFactory().getDatabaseManager();
 
             //Check for the newer API and tell them what to do if its missing
-            CompatibilityCheck.checkForOutdatedAPI(this, serverAPIOutdated, getServerSoftwareStr());
+            CompatibilityCheck.checkForOutdatedAPI(this, serverAPIOutdated, platformProvider.getServerType().getFriendlyName());
 
-            if (serverAPIOutdated) {
-                Bukkit
-                        .getScheduler()
-                        .scheduleSyncRepeatingTask(this,
-                                () -> getLogger().severe("You are running an outdated version of " + getServerSoftware() + ", mcMMO will not work unless you update to a newer version!"),
-                                20, 20 * 60 * 30);
-
-                if (getServerSoftware() == ServerSoftwareType.CRAFTBUKKIT) {
-                    Bukkit.getScheduler()
-                            .scheduleSyncRepeatingTask(this,
-                                    () -> getLogger().severe("We have detected you are using incompatible server software, our best guess is that you are using CraftBukkit. mcMMO requires Spigot or Paper, if you are not using CraftBukkit, you will still need to update your custom server software before mcMMO will work."),
-                                    20, 20 * 60 * 30);
-                }
+            if (!platformProvider.isSupported(true)) {
+                return;
             } else {
-                registerEvents();
+                platformProvider.earlyInit();
                 registerCoreSkills();
                 registerCustomRecipes();
                 initParties();
@@ -240,7 +223,7 @@ public class mcMMO implements McMMOApi {
             if (getConfigManager().getConfigMetrics().isAllowAnonymousUsageStatistics()) {
                 Metrics metrics;
                 metrics = new Metrics(this);
-                metrics.addCustomChart(new Metrics.SimplePie("version", () -> getDescription().getVersion()));
+                metrics.addCustomChart(new Metrics.SimplePie("version", this::getVersion));
 
                 int levelScaleModifier = configManager.getConfigLeveling().getConfigSectionLevelingGeneral().getConfigSectionLevelScaling().getCosmeticLevelScaleModifier();
 
@@ -311,11 +294,12 @@ public class mcMMO implements McMMOApi {
     }
 
     private String getVersion() {
-        platformProvider.getVersion();
+        return platformProvider.getVersion();
     }
 
     public void onLoad()
     {
+        platformProvider.onLoad();
         worldGuardUtils = new WorldGuardUtils(this); //Init WGU
 
         if(getServer().getPluginManager().getPlugin("WorldGuard") != null) {
@@ -383,36 +367,6 @@ public class mcMMO implements McMMOApi {
         return playerLevelTools;
     }
 
-    /**
-     * Returns a ServerSoftwareType based on version strings
-     * Custom software is returned as CRAFTBUKKIT
-     *
-     * @return the ServerSoftwareType which likely matches the server
-     */
-    private ServerSoftwareType getServerSoftware() {
-        if (Bukkit.getVersion().toLowerCase(Locale.ENGLISH).contains("paper"))
-            return ServerSoftwareType.PAPER;
-        else if (Bukkit.getVersion().toLowerCase(Locale.ENGLISH).contains("spigot"))
-            return ServerSoftwareType.SPIGOT;
-        else
-            return ServerSoftwareType.CRAFTBUKKIT;
-    }
-
-    /**
-     * Gets a string version of ServerSoftwareType
-     *
-     * @return Formatted String of ServerSoftwareType
-     */
-    private String getServerSoftwareStr() {
-        switch (getServerSoftware()) {
-            case PAPER:
-                return "Paper";
-            case SPIGOT:
-                return "Spigot";
-            default:
-                return "CraftBukkit";
-        }
-    }
 
     public MaterialMapStore getMaterialMapStore() {
         return materialMapStore;
@@ -619,18 +573,6 @@ public class mcMMO implements McMMOApi {
         configManager.loadConfigs();
     }
 
-    private void registerEvents() {
-        PluginManager pluginManager = getServer().getPluginManager();
-
-        // Register events
-        pluginManager.registerEvents(new PlayerListener(this), this);
-        pluginManager.registerEvents(new BlockListener(this), this);
-        pluginManager.registerEvents(new EntityListener(this), this);
-        pluginManager.registerEvents(new InventoryListener(this), this);
-        pluginManager.registerEvents(new SelfListener(this), this);
-        pluginManager.registerEvents(new WorldListener(this), this);
-    }
-
     /**
      * Registers core skills
      * This enables the skills in the new skill system
@@ -747,12 +689,6 @@ public class mcMMO implements McMMOApi {
 
     public DynamicSettingsManager getDynamicSettingsManager() {
         return dynamicSettingsManager;
-    }
-
-    private enum ServerSoftwareType {
-        PAPER,
-        SPIGOT,
-        CRAFTBUKKIT
     }
 
     public NotificationManager getNotificationManager() {

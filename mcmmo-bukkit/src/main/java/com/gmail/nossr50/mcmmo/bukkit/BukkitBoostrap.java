@@ -1,13 +1,23 @@
 package com.gmail.nossr50.mcmmo.bukkit;
 
+import com.gmail.nossr50.listeners.BlockListener;
+import com.gmail.nossr50.listeners.EntityListener;
+import com.gmail.nossr50.listeners.InventoryListener;
+import com.gmail.nossr50.listeners.PlayerListener;
+import com.gmail.nossr50.listeners.SelfListener;
+import com.gmail.nossr50.listeners.WorldListener;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcmmo.api.platform.PlatformProvider;
+import com.gmail.nossr50.mcmmo.api.platform.ServerSoftwareType;
 import com.gmail.nossr50.mcmmo.api.platform.util.MetadataStore;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Locale;
 import java.util.logging.Logger;
 
 public class BukkitBoostrap extends JavaPlugin implements PlatformProvider {
@@ -30,5 +40,65 @@ public class BukkitBoostrap extends JavaPlugin implements PlatformProvider {
     @Override
     public MetadataStore getMetadataStore() {
         return null;
+    }
+
+    @Override
+    public String getVersion() {
+        return this.getVersion();
+    }
+
+    @Override
+    public void earlyInit() {
+        registerEvents();
+
+    }
+
+    @Override
+    public boolean isSupported(boolean print) {
+        boolean ret = getServerType() != ServerSoftwareType.CRAFTBUKKIT;
+        if (!ret) {
+            Bukkit
+                    .getScheduler()
+                    .scheduleSyncRepeatingTask(this,
+                            () -> getLogger().severe("You are running an outdated version of " + getServerType() + ", mcMMO will not work unless you update to a newer version!"),
+                            20, 20 * 60 * 30);
+
+            if (getServerType() == ServerSoftwareType.CRAFTBUKKIT) {
+                Bukkit.getScheduler()
+                        .scheduleSyncRepeatingTask(this,
+                                () -> getLogger().severe("We have detected you are using incompatible server software, our best guess is that you are using CraftBukkit. mcMMO requires Spigot or Paper, if you are not using CraftBukkit, you will still need to update your custom server software before mcMMO will work."),
+                                20, 20 * 60 * 30);
+            }
+        }
+
+        return ret;
+    }
+
+    @Override
+    public ServerSoftwareType getServerType() {
+        if (Bukkit.getVersion().toLowerCase(Locale.ENGLISH).contains("paper"))
+            return ServerSoftwareType.PAPER;
+        else if (Bukkit.getVersion().toLowerCase(Locale.ENGLISH).contains("spigot"))
+            return ServerSoftwareType.SPIGOT;
+        else
+            return ServerSoftwareType.CRAFTBUKKIT;
+    }
+
+    @Override
+    public void printUnsupported() {
+
+    }
+
+
+    private void registerEvents() {
+        PluginManager pluginManager = getServer().getPluginManager();
+
+        // Register events
+        pluginManager.registerEvents(new PlayerListener(core), this);
+        pluginManager.registerEvents(new BlockListener(core), this);
+        pluginManager.registerEvents(new EntityListener(core), this);
+        pluginManager.registerEvents(new InventoryListener(core), this);
+        pluginManager.registerEvents(new SelfListener(core), this);
+        pluginManager.registerEvents(new WorldListener(core), this);
     }
 }
