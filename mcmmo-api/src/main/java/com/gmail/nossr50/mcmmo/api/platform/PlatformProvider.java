@@ -1,6 +1,6 @@
 package com.gmail.nossr50.mcmmo.api.platform;
 
-import com.gmail.nossr50.mcmmo.api.platform.schedular.PlatformScheduler;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.PlatformScheduler;
 import com.gmail.nossr50.mcmmo.api.platform.util.MetadataStore;
 
 import java.io.File;
@@ -33,4 +33,6 @@ public interface PlatformProvider {
     void printUnsupported();
 
     PlatformScheduler getScheduler();
+
+    void checkMetrics();
 }

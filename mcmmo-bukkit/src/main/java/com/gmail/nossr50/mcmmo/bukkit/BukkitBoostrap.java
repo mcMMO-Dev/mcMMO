@@ -9,8 +9,11 @@ import com.gmail.nossr50.listeners.WorldListener;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcmmo.api.platform.PlatformProvider;
 import com.gmail.nossr50.mcmmo.api.platform.ServerSoftwareType;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.PlatformScheduler;
 import com.gmail.nossr50.mcmmo.api.platform.util.MetadataStore;
+import com.gmail.nossr50.mcmmo.bukkit.platform.scheduler.BukkitPlatformScheduler;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
@@ -23,6 +26,7 @@ import java.util.logging.Logger;
 public class BukkitBoostrap extends JavaPlugin implements PlatformProvider {
 
     private mcMMO core = new mcMMO(this);
+    private final BukkitPlatformScheduler scheduler = new BukkitPlatformScheduler(this);
 
     @Override
     public @NotNull Logger getLogger() {
@@ -87,6 +91,30 @@ public class BukkitBoostrap extends JavaPlugin implements PlatformProvider {
     @Override
     public void printUnsupported() {
 
+    }
+
+    @Override
+    public PlatformScheduler getScheduler() {
+        return scheduler;
+    }
+
+    @Override
+    public void checkMetrics() {
+        //If anonymous statistics are enabled then use them
+        if (core.getConfigManager().getConfigMetrics().isAllowAnonymousUsageStatistics()) {
+            Metrics metrics;
+            metrics = new Metrics(this);
+            metrics.addCustomChart(new Metrics.SimplePie("version", this::getVersion));
+
+            int levelScaleModifier = core.getConfigManager().getConfigLeveling().getConfigSectionLevelingGeneral().getConfigSectionLevelScaling().getCosmeticLevelScaleModifier();
+
+            if (levelScaleModifier == 10)
+                metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Standard"));
+            else if (levelScaleModifier == 1)
+                metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Retro"));
+            else
+                metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Custom"));
+        }
     }
 
 

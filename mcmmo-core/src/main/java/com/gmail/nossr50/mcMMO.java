@@ -219,21 +219,7 @@ public class mcMMO implements McMMOApi {
                 rankTools.populateRanks();
             }
 
-            //If anonymous statistics are enabled then use them
-            if (getConfigManager().getConfigMetrics().isAllowAnonymousUsageStatistics()) {
-                Metrics metrics;
-                metrics = new Metrics(this);
-                metrics.addCustomChart(new Metrics.SimplePie("version", this::getVersion));
-
-                int levelScaleModifier = configManager.getConfigLeveling().getConfigSectionLevelingGeneral().getConfigSectionLevelScaling().getCosmeticLevelScaleModifier();
-
-                if (levelScaleModifier == 10)
-                    metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Standard"));
-                else if (levelScaleModifier == 1)
-                    metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Retro"));
-                else
-                    metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Custom"));
-            }
+            platformProvider.checkMetrics();
         } catch (Throwable t) {
             getLogger().severe("There was an error while enabling mcMMO!");
             t.printStackTrace();
