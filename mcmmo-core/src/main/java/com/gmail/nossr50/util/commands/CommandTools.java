@@ -69,7 +69,7 @@ public final class CommandTools {
      */
     public boolean checkPlayerExistence(CommandSender sender, String playerName, BukkitMMOPlayer mcMMOPlayer) {
         if (mcMMOPlayer != null) {
-            if (hidden(sender, mcMMOPlayer.getPlayer(), false)) {
+            if (hidden(sender, mcMMOPlayer.getNative(), false)) {
                 sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Offline"));
                 return false;
             }

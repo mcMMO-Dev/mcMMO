@@ -15,7 +15,6 @@ public class BukkitPlatformScheduler implements PlatformScheduler {
     private final BukkitBoostrap bukkitBoostrap;
 
     public BukkitPlatformScheduler(BukkitBoostrap bukkitBoostrap) {
-
         this.bukkitBoostrap = bukkitBoostrap;
     }
 

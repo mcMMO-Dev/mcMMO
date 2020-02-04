@@ -508,7 +508,7 @@ public class Party {
         Party party = mcMMOPlayer.getParty();
 
         if (party != null) {
-            Player player = mcMMOPlayer.getPlayer();
+            Player player = mcMMOPlayer.getNative();
             double range = pluginRef.getConfigManager().getConfigParty().getPartyXP().getPartyExperienceSharing().getPartyShareRange();
 
             for (Player member : party.getOnlineMembers()) {

@@ -349,7 +349,7 @@ public class HerbalismManager extends SkillManager {
         }
 
         if(mcMMOPlayer.isDebugMode()) {
-            mcMMOPlayer.getPlayer().sendMessage("Plants processed: "+brokenPlants.size());
+            mcMMOPlayer.getNative().sendMessage("Plants processed: "+brokenPlants.size());
         }
 
         //Reward XP
@@ -400,8 +400,8 @@ public class HerbalismManager extends SkillManager {
         }
 
         if(mcMMOPlayer.isDebugMode()) {
-            mcMMOPlayer.getPlayer().sendMessage("Chorus Plants checked for XP: "+brokenPlants.size());
-            mcMMOPlayer.getPlayer().sendMessage("Valid Chorus Plant XP Gains: "+blocksGivingXP);
+            mcMMOPlayer.getNative().sendMessage("Chorus Plants checked for XP: "+brokenPlants.size());
+            mcMMOPlayer.getNative().sendMessage("Valid Chorus Plant XP Gains: "+blocksGivingXP);
         }
 
         //Reward XP

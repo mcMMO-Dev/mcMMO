@@ -113,7 +113,7 @@ public abstract class ExperienceCommand implements TabExecutor {
 
                     editValues(null, profile, skill, value);
                 } else {
-                    editValues(mcMMOPlayer.getPlayer(), mcMMOPlayer.getProfile(), skill, value);
+                    editValues(mcMMOPlayer.getNative(), mcMMOPlayer.getProfile(), skill, value);
                 }
 
                 handleSenderMessage(sender, playerName, skill);

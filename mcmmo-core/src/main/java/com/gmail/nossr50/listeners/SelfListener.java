@@ -62,8 +62,8 @@ public class SelfListener implements Listener {
         PrimarySkillType primarySkillType = event.getSkill();
 
         if(mcMMOPlayer.isDebugMode()) {
-            mcMMOPlayer.getPlayer().sendMessage(event.getSkill().toString() + " XP Gained");
-            mcMMOPlayer.getPlayer().sendMessage("Incoming Raw XP: "+event.getRawXpGained());
+            mcMMOPlayer.getNative().sendMessage(event.getSkill().toString() + " XP Gained");
+            mcMMOPlayer.getNative().sendMessage("Incoming Raw XP: "+event.getRawXpGained());
         }
 
         //WorldGuard XP Check
@@ -77,7 +77,7 @@ public class SelfListener implements Listener {
                     event.setCancelled(true);
 
                     if(mcMMOPlayer.isDebugMode()) {
-                        mcMMOPlayer.getPlayer().sendMessage("No WG XP Flag - New Raw XP: "+event.getRawXpGained());
+                        mcMMOPlayer.getNative().sendMessage("No WG XP Flag - New Raw XP: "+event.getRawXpGained());
                     }
                 }
             }
@@ -103,7 +103,7 @@ public class SelfListener implements Listener {
 
         if (threshold <= 0 || !pluginRef.getConfigManager().getConfigLeveling().getConfigLevelingDiminishedReturns().isDiminishedReturnsEnabled()) {
             if(mcMMOPlayer.isDebugMode()) {
-                mcMMOPlayer.getPlayer().sendMessage("Final Raw XP: "+event.getRawXpGained());
+                mcMMOPlayer.getNative().sendMessage("Final Raw XP: "+event.getRawXpGained());
             }
             // Diminished returns is turned off
             return;
@@ -149,7 +149,7 @@ public class SelfListener implements Listener {
         }
 
         if(mcMMOPlayer.isDebugMode()) {
-            mcMMOPlayer.getPlayer().sendMessage("Final Raw XP: "+event.getRawXpGained());
+            mcMMOPlayer.getNative().sendMessage("Final Raw XP: "+event.getRawXpGained());
         }
     }
 

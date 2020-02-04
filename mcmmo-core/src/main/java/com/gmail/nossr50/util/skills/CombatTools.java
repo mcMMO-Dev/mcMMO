@@ -11,7 +11,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.mcmmo.api.data.MMOPlayer;
 import com.gmail.nossr50.runnables.skills.AwardCombatXpTask;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
@@ -739,7 +738,7 @@ public final class CombatTools {
         XPGainReason xpGainReason;
 
         if (target instanceof Player) {
-            if (!pluginRef.getConfigManager().getConfigExperience().isPvpXPEnabled() || pluginRef.getPartyManager().inSameParty(mcMMOPlayer.getPlayer(), (Player) target)) {
+            if (!pluginRef.getConfigManager().getConfigExperience().isPvpXPEnabled() || pluginRef.getPartyManager().inSameParty(mcMMOPlayer.getNative(), (Player) target)) {
                 return;
             }
 

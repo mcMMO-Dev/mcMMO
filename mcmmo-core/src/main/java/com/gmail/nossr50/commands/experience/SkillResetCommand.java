@@ -98,7 +98,7 @@ public class SkillResetCommand implements TabExecutor {
 
                     editValues(null, profile, skill);
                 } else {
-                    editValues(mcMMOPlayer.getPlayer(), mcMMOPlayer.getProfile(), skill);
+                    editValues(mcMMOPlayer.getNative(), mcMMOPlayer.getProfile(), skill);
                 }
 
                 handleSenderMessage(sender, playerName, skill);

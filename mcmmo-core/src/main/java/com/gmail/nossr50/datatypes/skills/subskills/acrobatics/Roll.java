@@ -222,7 +222,7 @@ public class Roll extends AcrobaticsSubSkill {
     }
 
     private int getActivationChance(BukkitMMOPlayer mcMMOPlayer) {
-        return pluginRef.getPerkUtils().handleLuckyPerks(mcMMOPlayer.getPlayer(), getPrimarySkill());
+        return pluginRef.getPerkUtils().handleLuckyPerks(mcMMOPlayer.getNative(), getPrimarySkill());
     }
 
     /**
@@ -276,7 +276,7 @@ public class Roll extends AcrobaticsSubSkill {
 
         if (pluginRef.getItemTools().hasItemInEitherHand(player, Material.ENDER_PEARL) || player.isInsideVehicle()) {
             if(mcMMOPlayer.isDebugMode()) {
-                mcMMOPlayer.getPlayer().sendMessage("Acrobatics XP Prevented: Ender Pearl or Inside Vehicle");
+                mcMMOPlayer.getNative().sendMessage("Acrobatics XP Prevented: Ender Pearl or Inside Vehicle");
             }
             return true;
         }
@@ -288,7 +288,7 @@ public class Roll extends AcrobaticsSubSkill {
         if (pluginRef.getUserManager().getPlayer(player).getAcrobaticsManager().hasFallenInLocationBefore(getBlockLocation(player)))
         {
             if(mcMMOPlayer.isDebugMode()) {
-                mcMMOPlayer.getPlayer().sendMessage("Acrobatics XP Prevented: Fallen in location before");
+                mcMMOPlayer.getNative().sendMessage("Acrobatics XP Prevented: Fallen in location before");
             }
 
             return true;

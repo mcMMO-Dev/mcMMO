@@ -146,7 +146,7 @@ public class NotificationManager {
             return;
 
         TextComponent levelUpTextComponent = pluginRef.getTextComponentFactory().getNotificationLevelUpTextComponent(skillName, levelsGained, newLevel);
-        McMMOPlayerNotificationEvent customEvent = pluginRef.getEventManager().createAndCallNotificationEvent(mcMMOPlayer.getPlayer(), NotificationType.LEVEL_UP_MESSAGE, levelUpTextComponent);
+        McMMOPlayerNotificationEvent customEvent = pluginRef.getEventManager().createAndCallNotificationEvent(mcMMOPlayer.getNative(), NotificationType.LEVEL_UP_MESSAGE, levelUpTextComponent);
 
         sendNotification(customEvent);
     }
@@ -189,10 +189,10 @@ public class NotificationManager {
             return;
 
         //CHAT MESSAGE
-        mcMMOPlayer.getPlayer().spigot().sendMessage(pluginRef.getTextComponentFactory().getSubSkillUnlockedNotificationComponents(mcMMOPlayer.getPlayer(), subSkillType));
+        mcMMOPlayer.getNative().spigot().sendMessage(pluginRef.getTextComponentFactory().getSubSkillUnlockedNotificationComponents(mcMMOPlayer.getNative(), subSkillType));
 
         //Unlock Sound Effect
-        pluginRef.getSoundManager().sendCategorizedSound(mcMMOPlayer.getPlayer(), mcMMOPlayer.getPlayer().getLocation(), SoundType.SKILL_UNLOCKED, SoundCategory.MASTER);
+        pluginRef.getSoundManager().sendCategorizedSound(mcMMOPlayer.getNative(), mcMMOPlayer.getNative().getLocation(), SoundType.SKILL_UNLOCKED, SoundCategory.MASTER);
     }
 
     /**

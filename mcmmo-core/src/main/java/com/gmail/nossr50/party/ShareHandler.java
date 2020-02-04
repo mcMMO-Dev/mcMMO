@@ -43,7 +43,7 @@ public final class ShareHandler {
             return false;
         }
 
-        nearMembers.add(mcMMOPlayer.getPlayer());
+        nearMembers.add(mcMMOPlayer.getNative());
 
         int partySize = nearMembers.size();
         double shareBonus = Math.min(pluginRef.getPartyXPShareSettings().getPartyShareXPBonusBase()
@@ -97,7 +97,7 @@ public final class ShareHandler {
         Player winningPlayer = null;
         ItemStack newStack = itemStack.clone();
 
-        nearMembers.add(mcMMOPlayer.getPlayer());
+        nearMembers.add(mcMMOPlayer.getNative());
         int partySize = nearMembers.size();
 
         drop.remove();

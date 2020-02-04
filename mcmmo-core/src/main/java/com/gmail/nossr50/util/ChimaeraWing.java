@@ -20,7 +20,7 @@ public final class ChimaeraWing {
     public ChimaeraWing(mcMMO pluginRef, BukkitMMOPlayer mcMMOPlayer) {
         this.pluginRef = pluginRef;
         this.mcMMOPlayer = mcMMOPlayer;
-        this.player = mcMMOPlayer.getPlayer();
+        this.player = mcMMOPlayer.getNative();
         this.location = player.getLocation();
     }
 
@@ -101,7 +101,7 @@ public final class ChimaeraWing {
     }
 
     public void chimaeraExecuteTeleport() {
-        Player player = mcMMOPlayer.getPlayer();
+        Player player = mcMMOPlayer.getNative();
 
         if (pluginRef.getConfigManager().getConfigItems().doesChimaeraUseBedSpawn() && player.getBedSpawnLocation() != null) {
             player.teleport(player.getBedSpawnLocation());

@@ -22,7 +22,7 @@ public class GodModeCommand extends ToggleCommand {
 
     @Override
     protected void applyCommandAction(BukkitMMOPlayer mcMMOPlayer) {
-        mcMMOPlayer.getPlayer().sendMessage(pluginRef.getLocaleManager().getString("Commands.GodMode." + (mcMMOPlayer.getGodMode() ? "Disabled" : "Enabled")));
+        mcMMOPlayer.getNative().sendMessage(pluginRef.getLocaleManager().getString("Commands.GodMode." + (mcMMOPlayer.getGodMode() ? "Disabled" : "Enabled")));
         mcMMOPlayer.toggleGodMode();
     }
 

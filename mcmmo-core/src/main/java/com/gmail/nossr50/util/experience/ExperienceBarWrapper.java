@@ -156,9 +156,9 @@ public class ExperienceBarWrapper {
     }*/
 
     private void createBossBar() {
-        bossBar = mcMMOPlayer.getPlayer().getServer().createBossBar(title,
+        bossBar = mcMMOPlayer.getNative().getServer().createBossBar(title,
                 pluginRef.getConfigManager().getConfigLeveling().getXPBarColor(primarySkillType),
                 pluginRef.getConfigManager().getConfigLeveling().getXPBarStyle(primarySkillType));
-        bossBar.addPlayer(mcMMOPlayer.getPlayer());
+        bossBar.addPlayer(mcMMOPlayer.getNative());
     }
 }

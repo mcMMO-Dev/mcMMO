@@ -26,7 +26,7 @@ public class ToolLowerTask extends BukkitRunnable {
         mcMMOPlayer.setToolPreparationMode(tool, false);
 
         if (pluginRef.getConfigManager().getConfigNotifications().isSuperAbilityToolMessage()) {
-            pluginRef.getNotificationManager().sendPlayerInformation(mcMMOPlayer.getPlayer(), NotificationType.TOOL, tool.getLowerTool());
+            pluginRef.getNotificationManager().sendPlayerInformation(mcMMOPlayer.getNative(), NotificationType.TOOL, tool.getLowerTool());
         }
     }
 }

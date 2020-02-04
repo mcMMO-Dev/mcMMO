@@ -23,7 +23,7 @@ public class ChatSpyCommand extends ToggleCommand {
 
     @Override
     protected void applyCommandAction(BukkitMMOPlayer mcMMOPlayer) {
-        mcMMOPlayer.getPlayer().sendMessage(pluginRef.getLocaleManager().getString("Commands.AdminChatSpy." + (mcMMOPlayer.isPartyChatSpying() ? "Disabled" : "Enabled")));
+        mcMMOPlayer.getNative().sendMessage(pluginRef.getLocaleManager().getString("Commands.AdminChatSpy." + (mcMMOPlayer.isPartyChatSpying() ? "Disabled" : "Enabled")));
         mcMMOPlayer.togglePartyChatSpying();
     }
 

@@ -59,7 +59,7 @@ public class RankCommand implements TabExecutor {
                 BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getOfflinePlayer(playerName);
 
                 if (mcMMOPlayer != null) {
-                    Player player = mcMMOPlayer.getPlayer();
+                    Player player = mcMMOPlayer.getNative();
                     playerName = player.getName();
 
                     if (pluginRef.getCommandTools().tooFar(sender, player, pluginRef.getPermissionTools().mcrankFar(sender))) {

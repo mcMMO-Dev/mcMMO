@@ -85,7 +85,7 @@ public class ChatManager {
          * Party Chat Spying
          */
         for (BukkitMMOPlayer mcMMOPlayer : pluginRef.getUserManager().getPlayers()) {
-            Player player = mcMMOPlayer.getPlayer();
+            Player player = mcMMOPlayer.getNative();
 
             //Check for toggled players
             if (mcMMOPlayer.isPartyChatSpying()) {

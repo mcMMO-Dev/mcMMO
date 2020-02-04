@@ -2,6 +2,7 @@ package com.gmail.nossr50.mcmmo.api.platform;
 
 import com.gmail.nossr50.mcmmo.api.platform.scheduler.PlatformScheduler;
 import com.gmail.nossr50.mcmmo.api.platform.util.MetadataStore;
+import com.gmail.nossr50.mcmmo.api.platform.util.MobHealthBarManager;
 
 import java.io.File;
 import java.util.logging.Logger;
@@ -35,4 +36,6 @@ public interface PlatformProvider {
     PlatformScheduler getScheduler();
 
     void checkMetrics();
+
+    MobHealthBarManager getHealthBarManager();
 }

@@ -47,7 +47,7 @@ import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import net.shatteredlands.shatt.backup.ZipLibrary;
-import org.bstats.bukkit.Metrics;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -77,7 +77,6 @@ public class mcMMO implements McMMOApi {
     private PartyManager partyManager;
     private LocaleManager localeManager;
     private ChatManager chatManager;
-    private MobHealthBarManager mobHealthBarManager;
     private EventManager eventManager;
     private UserManager userManager;
     private ScoreboardManager scoreboardManager;
@@ -115,8 +114,6 @@ public class mcMMO implements McMMOApi {
     private String usersFile;
     private String modDirectory;
 
-    /* Plugin Checks */
-    private boolean healthBarPluginEnabled;
     // API checks
     private boolean serverAPIOutdated = false;
     // XP Event Check
@@ -134,9 +131,6 @@ public class mcMMO implements McMMOApi {
     public void onEnable() {
         try {
             platformProvider.getLogger().setFilter(new LogFilter(this));
-
-            PluginManager pluginManager = platformProvider.getServer().getPluginManager();
-            healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;
 
             //Init Permission Tools
             permissionTools = new PermissionTools(this);
@@ -166,14 +160,6 @@ public class mcMMO implements McMMOApi {
             //Init TextComponentFactory
             textComponentFactory = new TextComponentFactory(this);
 
-            if (healthBarPluginEnabled) {
-                getLogger().info("HealthBar plugin found, mcMMO's healthbars are automatically disabled.");
-            }
-
-            if (pluginManager.getPlugin("NoCheatPlus") != null && pluginManager.getPlugin("CompatNoCheatPlus") == null) {
-                getLogger().warning("NoCheatPlus plugin found, but CompatNoCheatPlus was not found!");
-                getLogger().warning("mcMMO will not work properly alongside NoCheatPlus without CompatNoCheatPlus");
-            }
 
             //TODO: Strange design...
             databaseManagerFactory = new DatabaseManagerFactory(this);
@@ -242,7 +228,7 @@ public class mcMMO implements McMMOApi {
         chatManager = new ChatManager(this);
 
         //Init Mob Health Bar Manager
-        mobHealthBarManager = new MobHealthBarManager(this);
+        bukkitMobHealthBarManager = new BukkitMobHealthBarManager(this);
 
         //Init Event Manager
         eventManager = new EventManager(this);
@@ -455,10 +441,6 @@ public class mcMMO implements McMMOApi {
      */
     public ConfigScoreboard getScoreboardSettings() {
         return configManager.getConfigScoreboard();
-    }
-
-    public boolean isHealthBarPluginEnabled() {
-        return healthBarPluginEnabled;
     }
 
     public ConfigManager getConfigManager() {
@@ -697,10 +679,6 @@ public class mcMMO implements McMMOApi {
         return chatManager;
     }
 
-    public MobHealthBarManager getMobHealthBarManager() {
-        return mobHealthBarManager;
-    }
-
     public EventManager getEventManager() {
         return eventManager;
     }
@@ -757,6 +735,7 @@ public class mcMMO implements McMMOApi {
         return permissionTools;
     }
 
+    @Deprecated // This needs to be removed...
     public WorldGuardUtils getWorldGuardUtils() {
         return worldGuardUtils;
     }

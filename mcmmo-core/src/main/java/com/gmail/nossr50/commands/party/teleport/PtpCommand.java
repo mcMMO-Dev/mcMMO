@@ -158,7 +158,7 @@ public class PtpCommand implements TabExecutor {
         }
 
         BukkitMMOPlayer mcMMOTarget = pluginRef.getUserManager().getPlayer(targetName);
-        Player target = mcMMOTarget.getPlayer();
+        Player target = mcMMOTarget.getNative();
 
         if (pluginRef.getConfigManager().getConfigParty().getPTP().isPtpWorldBasedPermissions()) {
             World targetWorld = target.getWorld();

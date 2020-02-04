@@ -26,7 +26,7 @@ public class AbilityDisableTask extends BukkitRunnable {
             return;
         }
 
-        Player player = mcMMOPlayer.getPlayer();
+        Player player = mcMMOPlayer.getNative();
 
         switch (superAbilityType) {
             case SUPER_BREAKER:

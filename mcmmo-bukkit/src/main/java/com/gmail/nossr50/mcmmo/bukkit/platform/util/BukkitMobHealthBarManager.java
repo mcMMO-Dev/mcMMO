@@ -1,22 +1,37 @@
-package com.gmail.nossr50.util;
+package com.gmail.nossr50.mcmmo.bukkit.platform.util;
 
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.meta.OldName;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcmmo.api.data.MMOEntity;
+import com.gmail.nossr50.mcmmo.api.data.MMOPlayer;
+import com.gmail.nossr50.mcmmo.api.platform.util.MobHealthBarManager;
 import com.gmail.nossr50.runnables.MobHealthDisplayUpdaterTask;
+import com.gmail.nossr50.util.StringUtils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.PluginManager;
 
-public final class MobHealthBarManager {
+public final class BukkitMobHealthBarManager implements MobHealthBarManager<Player, LivingEntity> {
     private final mcMMO pluginRef;
+    private final boolean healthBarPluginEnabled;
 
-    public MobHealthBarManager(mcMMO pluginRef) {
+    public BukkitMobHealthBarManager(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
+        PluginManager pluginManager = Bukkit.getServer().getPluginManager();
+        healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;
+
+        if (healthBarPluginEnabled) {
+            pluginRef.getLogger().info("HealthBar plugin found, mcMMO's healthbars are automatically disabled.");
+        }
+
     }
 
     /**
@@ -26,8 +41,9 @@ public final class MobHealthBarManager {
      * @param player       The player who died
      * @return the fixed death message
      */
-    public String fixDeathMessage(String deathMessage, Player player) {
-        EntityDamageEvent lastDamageCause = player.getLastDamageCause();
+    @Override
+    public String fixDeathMessage(String deathMessage, MMOPlayer<Player> player) {
+        EntityDamageEvent lastDamageCause = player.getNative().getLastDamageCause();
         String replaceString = lastDamageCause instanceof EntityDamageByEntityEvent ? StringUtils.getPrettyEntityTypeString(((EntityDamageByEntityEvent) lastDamageCause).getDamager().getType()) : "a mob";
 
         return deathMessage.replaceAll("(?:\u00A7(?:[0-9A-FK-ORa-fk-or]){1}(?:[\u2764\u25A0]{1,10})){1,2}", replaceString);
@@ -39,10 +55,12 @@ public final class MobHealthBarManager {
      * @param target the targetted entity
      * @param damage damage done by the attack triggering this
      */
-    public void handleMobHealthbars(LivingEntity target, double damage, mcMMO plugin) {
-        if (pluginRef.isHealthBarPluginEnabled() || !pluginRef.getConfigManager().getConfigMobs().getCombat().getHealthBars().isEnableHealthBars()) {
+    @Override
+    public void handleMobHealthbars(MMOEntity<LivingEntity> mmoTarget, double damage) {
+        if (healthBarPluginEnabled || !pluginRef.getConfigManager().getConfigMobs().getCombat().getHealthBars().isEnableHealthBars()) {
             return;
         }
+        LivingEntity target = mmoTarget.getNative();
 
         if (isBoss(target)) {
             return;
@@ -60,7 +78,7 @@ public final class MobHealthBarManager {
          * Store the name in metadata
          */
         if (target.getMetadata("mcMMO_oldName").size() <= 0 && originalName != null)
-            target.setMetadata("mcMMO_oldName", new OldName(originalName, plugin));
+            target.setMetadata("mcMMO_oldName", new OldName(originalName, pluginRef));
 
         if (oldName == null) {
             oldName = "";

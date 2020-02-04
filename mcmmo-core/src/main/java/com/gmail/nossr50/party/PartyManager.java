@@ -40,7 +40,7 @@ public final class PartyManager {
             return false;
         }
 
-        Player target = mcMMOTarget.getPlayer();
+        Player target = mcMMOTarget.getNative();
 
         if (player.equals(target)) {
             player.sendMessage(pluginRef.getLocaleManager().getString("Party.Teleport.Self"));
@@ -140,7 +140,7 @@ public final class PartyManager {
      * @return true if the party was joined successfully, false otherwise
      */
     public boolean changeOrJoinParty(BukkitMMOPlayer mcMMOPlayer, String newPartyName) {
-        Player player = mcMMOPlayer.getPlayer();
+        Player player = mcMMOPlayer.getNative();
 
         if (mcMMOPlayer.inParty()) {
             Party oldParty = mcMMOPlayer.getParty();
@@ -223,7 +223,7 @@ public final class PartyManager {
         Party party = mcMMOPlayer.getParty();
 
         if (party != null) {
-            Player player = mcMMOPlayer.getPlayer();
+            Player player = mcMMOPlayer.getNative();
             double range = pluginRef.getPartyXPShareSettings().getPartyShareRange();
 
             for (Player member : party.getOnlineMembers()) {
@@ -241,7 +241,7 @@ public final class PartyManager {
         Party party = mcMMOPlayer.getParty();
 
         if (party != null) {
-            Player player = mcMMOPlayer.getPlayer();
+            Player player = mcMMOPlayer.getNative();
             double range = pluginRef.getPartyXPShareSettings().getPartyShareRange();
 
             for (Player member : party.getVisibleMembers(player)) {
@@ -421,7 +421,7 @@ public final class PartyManager {
      * @param mcMMOPlayer The player to remove
      */
     public void removeFromParty(BukkitMMOPlayer mcMMOPlayer) {
-        removeFromParty(mcMMOPlayer.getPlayer(), mcMMOPlayer.getParty());
+        removeFromParty(mcMMOPlayer.getNative(), mcMMOPlayer.getParty());
         processPartyLeaving(mcMMOPlayer);
     }
 
@@ -457,7 +457,7 @@ public final class PartyManager {
      * @param password    The password for this party, null if there was no password
      */
     public void createParty(BukkitMMOPlayer mcMMOPlayer, String partyName, String password) {
-        Player player = mcMMOPlayer.getPlayer();
+        Player player = mcMMOPlayer.getNative();
 
         Party party = new Party(new PartyLeader(player.getUniqueId(), player.getName()), partyName.replace(".", ""), password, pluginRef);
 
@@ -512,7 +512,7 @@ public final class PartyManager {
 
         // Check if the party still exists, it might have been disbanded
         if (!parties.contains(invite)) {
-            pluginRef.getNotificationManager().sendPlayerInformation(mcMMOPlayer.getPlayer(), NotificationType.PARTY_MESSAGE, "Party.Disband");
+            pluginRef.getNotificationManager().sendPlayerInformation(mcMMOPlayer.getNative(), NotificationType.PARTY_MESSAGE, "Party.Disband");
             return;
         }
 
@@ -520,13 +520,13 @@ public final class PartyManager {
          * Don't let players join a full party
          */
         if (pluginRef.getConfigManager().getConfigParty().isPartySizeCapped() && invite.getMembers().size() >= pluginRef.getConfigManager().getConfigParty().getPartySizeLimit()) {
-            pluginRef.getNotificationManager().sendPlayerInformation(mcMMOPlayer.getPlayer(),
+            pluginRef.getNotificationManager().sendPlayerInformation(mcMMOPlayer.getNative(),
                     NotificationType.PARTY_MESSAGE, "Commands.Party.PartyFull.InviteAccept",
                     invite.getName(), String.valueOf(pluginRef.getConfigManager().getConfigParty().getPartySizeLimit()));
             return;
         }
 
-        pluginRef.getNotificationManager().sendPlayerInformation(mcMMOPlayer.getPlayer(), NotificationType.PARTY_MESSAGE, "Commands.Party.Invite.Accepted", invite.getName());
+        pluginRef.getNotificationManager().sendPlayerInformation(mcMMOPlayer.getNative(), NotificationType.PARTY_MESSAGE, "Commands.Party.Invite.Accepted", invite.getName());
         mcMMOPlayer.removePartyInvite();
         addToParty(mcMMOPlayer, invite);
     }
@@ -538,7 +538,7 @@ public final class PartyManager {
      */
     public void acceptAllianceInvite(BukkitMMOPlayer mcMMOPlayer) {
         Party invite = mcMMOPlayer.getPartyAllianceInvite();
-        Player player = mcMMOPlayer.getPlayer();
+        Player player = mcMMOPlayer.getNative();
 
         // Check if the party still exists, it might have been disbanded
         if (!parties.contains(invite)) {
@@ -593,7 +593,7 @@ public final class PartyManager {
      * @param party       The party
      */
     public void addToParty(BukkitMMOPlayer mcMMOPlayer, Party party) {
-        Player player = mcMMOPlayer.getPlayer();
+        Player player = mcMMOPlayer.getNative();
         String playerName = player.getName();
 
         informPartyMembersJoin(party, playerName);
@@ -647,7 +647,7 @@ public final class PartyManager {
     public boolean canInvite(BukkitMMOPlayer mcMMOPlayer) {
         Party party = mcMMOPlayer.getParty();
 
-        return !party.isLocked() || party.getLeader().getUniqueId().equals(mcMMOPlayer.getPlayer().getUniqueId());
+        return !party.isLocked() || party.getLeader().getUniqueId().equals(mcMMOPlayer.getNative().getUniqueId());
     }
 
     /**

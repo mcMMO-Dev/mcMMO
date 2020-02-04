@@ -695,7 +695,7 @@ public class BukkitMMOPlayer implements MMOPlayer<Player> {
      */
 
     @Override
-    public Player getPlayer() {
+    public Player getNative() {
         return player;
     }
 
@@ -769,7 +769,7 @@ public class BukkitMMOPlayer implements MMOPlayer<Player> {
     }
 
     public void loginParty() {
-        party.addOnlineMember(this.getPlayer());
+        party.addOnlineMember(this.getNative());
     }
 
     public int getItemShareModifier() {
@@ -903,7 +903,7 @@ public class BukkitMMOPlayer implements MMOPlayer<Player> {
 
         //TODO: This is hacky and temporary solution until skills are moved to the new system
         //Potential problems with this include skills with two super abilities (ie mining)
-        if (!pluginRef.getSkillTools().isSuperAbilityUnlocked(primarySkillType, getPlayer())) {
+        if (!pluginRef.getSkillTools().isSuperAbilityUnlocked(primarySkillType, getNative())) {
             int diff = pluginRef.getRankTools().getSuperAbilityUnlockRequirement(pluginRef.getSkillTools().getSuperAbility(primarySkillType)) - getSkillLevel(primarySkillType);
 
             //Inform the player they are not yet skilled enough
@@ -1071,7 +1071,7 @@ public class BukkitMMOPlayer implements MMOPlayer<Player> {
      * @param syncSave if true, data is saved synchronously
      */
     public void logout(boolean syncSave) {
-        Player thisPlayer = getPlayer();
+        Player thisPlayer = getNative();
         resetSuperAbilityMode();
         pluginRef.getBleedTimerTask().bleedOut(thisPlayer);
         cleanup();

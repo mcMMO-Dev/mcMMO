@@ -245,7 +245,7 @@ public class ScoreboardManager {
                 continue;
             }
 
-            Player player = mcMMOPlayer.getPlayer();
+            Player player = mcMMOPlayer.getNative();
             int power = mcMMOPlayer.getPowerLevel();
 
             mainObjective.getScore(playerName).setScore(power);

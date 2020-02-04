@@ -22,7 +22,7 @@ public class AbilityToggleCommand extends ToggleCommand {
 
     @Override
     protected void applyCommandAction(BukkitMMOPlayer mcMMOPlayer) {
-        mcMMOPlayer.getPlayer().sendMessage(pluginRef.getLocaleManager().getString("Commands.Ability." + (mcMMOPlayer.getAllowAbilityUse() ? "Off" : "On")));
+        mcMMOPlayer.getNative().sendMessage(pluginRef.getLocaleManager().getString("Commands.Ability." + (mcMMOPlayer.getAllowAbilityUse() ? "Off" : "On")));
         mcMMOPlayer.toggleAbilityUse();
     }
 

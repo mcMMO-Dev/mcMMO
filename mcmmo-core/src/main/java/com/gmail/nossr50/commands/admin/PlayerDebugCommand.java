@@ -20,7 +20,7 @@ public class PlayerDebugCommand implements CommandExecutor {
         if(sender instanceof Player) {
             BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer((Player) sender);
             mcMMOPlayer.toggleDebugMode(); //Toggle debug mode
-            pluginRef.getNotificationManager().sendPlayerInformationChatOnlyPrefixed(mcMMOPlayer.getPlayer(), "Commands.Mmodebug.Toggle", String.valueOf(mcMMOPlayer.isDebugMode()));
+            pluginRef.getNotificationManager().sendPlayerInformationChatOnlyPrefixed(mcMMOPlayer.getNative(), "Commands.Mmodebug.Toggle", String.valueOf(mcMMOPlayer.isDebugMode()));
             return true;
         } else {
             return false;

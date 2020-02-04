@@ -30,7 +30,7 @@ public final class UserManager {
      * @param mcMMOPlayer the player profile to start tracking
      */
     public void track(BukkitMMOPlayer mcMMOPlayer) {
-        mcMMOPlayer.getPlayer().setMetadata(MetadataConstants.PLAYER_DATA_METAKEY, new FixedMetadataValue(pluginRef, mcMMOPlayer));
+        mcMMOPlayer.getNative().setMetadata(MetadataConstants.PLAYER_DATA_METAKEY, new FixedMetadataValue(pluginRef, mcMMOPlayer));
 
         if(playerDataSet == null)
             playerDataSet = new HashSet<>();

@@ -35,7 +35,7 @@ public class RankTools {
      */
     public void executeSkillUnlockNotifications(BukkitMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, int newLevel) {
         for (SubSkillType subSkillType : pluginRef.getSkillTools().getSkillAbilities(primarySkillType)) {
-            int playerRankInSkill = getRank(mcMMOPlayer.getPlayer(), subSkillType);
+            int playerRankInSkill = getRank(mcMMOPlayer.getNative(), subSkillType);
 
             HashMap<Integer, Integer> innerMap = subSkillRanks.get(subSkillType.toString());
 
@@ -44,7 +44,7 @@ public class RankTools {
                 continue;
 
             //Don't send notifications if the player lacks the permission node
-            if(!pluginRef.getPermissionTools().isSubSkillEnabled(mcMMOPlayer.getPlayer(), subSkillType))
+            if(!pluginRef.getPermissionTools().isSubSkillEnabled(mcMMOPlayer.getNative(), subSkillType))
                 continue;
 
             //The players level is the exact level requirement for this skill

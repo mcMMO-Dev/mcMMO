@@ -21,7 +21,7 @@ public abstract class SkillManager {
     }
 
     public Player getPlayer() {
-        return mcMMOPlayer.getPlayer();
+        return mcMMOPlayer.getNative();
     }
 
     public int getSkillLevel() {

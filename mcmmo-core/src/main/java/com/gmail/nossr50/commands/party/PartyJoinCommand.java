@@ -28,7 +28,7 @@ public class PartyJoinCommand implements CommandExecutor {
                     return true;
                 }
 
-                Player target = mcMMOTarget.getPlayer();
+                Player target = mcMMOTarget.getNative();
 
                 if (!mcMMOTarget.inParty()) {
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Party.PlayerNotInParty", targetName));

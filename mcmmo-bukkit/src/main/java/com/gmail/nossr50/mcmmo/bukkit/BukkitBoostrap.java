@@ -11,7 +11,9 @@ import com.gmail.nossr50.mcmmo.api.platform.PlatformProvider;
 import com.gmail.nossr50.mcmmo.api.platform.ServerSoftwareType;
 import com.gmail.nossr50.mcmmo.api.platform.scheduler.PlatformScheduler;
 import com.gmail.nossr50.mcmmo.api.platform.util.MetadataStore;
+import com.gmail.nossr50.mcmmo.api.platform.util.MobHealthBarManager;
 import com.gmail.nossr50.mcmmo.bukkit.platform.scheduler.BukkitPlatformScheduler;
+import com.gmail.nossr50.mcmmo.bukkit.platform.util.BukkitMobHealthBarManager;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -27,6 +29,7 @@ public class BukkitBoostrap extends JavaPlugin implements PlatformProvider {
 
     private mcMMO core = new mcMMO(this);
     private final BukkitPlatformScheduler scheduler = new BukkitPlatformScheduler(this);
+    private final MobHealthBarManager healthBarManager = new BukkitMobHealthBarManager(core);
 
     @Override
     public @NotNull Logger getLogger() {
@@ -53,6 +56,12 @@ public class BukkitBoostrap extends JavaPlugin implements PlatformProvider {
 
     @Override
     public void earlyInit() {
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        if (pluginManager.getPlugin("NoCheatPlus") != null && pluginManager.getPlugin("CompatNoCheatPlus") == null) {
+            getLogger().warning("NoCheatPlus plugin found, but CompatNoCheatPlus was not found!");
+            getLogger().warning("mcMMO will not work properly alongside NoCheatPlus without CompatNoCheatPlus");
+        }
+
         registerEvents();
 
     }
@@ -115,6 +124,11 @@ public class BukkitBoostrap extends JavaPlugin implements PlatformProvider {
             else
                 metrics.addCustomChart(new Metrics.SimplePie("scaling", () -> "Custom"));
         }
+    }
+
+    @Override
+    public MobHealthBarManager getHealthBarManager() {
+        return null;
     }
 
 

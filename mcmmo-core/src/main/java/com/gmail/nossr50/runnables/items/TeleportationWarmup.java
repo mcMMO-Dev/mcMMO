@@ -20,10 +20,10 @@ public class TeleportationWarmup extends BukkitRunnable {
 
     @Override
     public void run() {
-        Player teleportingPlayer = mcMMOPlayer.getPlayer();
-        Player targetPlayer = mcMMOTarget.getPlayer();
+        Player teleportingPlayer = mcMMOPlayer.getNative();
+        Player targetPlayer = mcMMOTarget.getNative();
         Location previousLocation = mcMMOPlayer.getTeleportCommenceLocation();
-        Location newLocation = mcMMOPlayer.getPlayer().getLocation();
+        Location newLocation = mcMMOPlayer.getNative().getLocation();
         long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
 
         mcMMOPlayer.setTeleportCommenceLocation(null);

@@ -23,7 +23,7 @@ public class ChimaeraWingWarmup extends BukkitRunnable {
     }
 
     private void checkChimaeraWingTeleport() {
-        Player player = mcMMOPlayer.getPlayer();
+        Player player = mcMMOPlayer.getNative();
         Location previousLocation = mcMMOPlayer.getTeleportCommenceLocation();
         ChimaeraWing chimaeraWing = new ChimaeraWing(pluginRef, mcMMOPlayer);
 

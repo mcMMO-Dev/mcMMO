@@ -280,7 +280,7 @@ public class SkillTools {
      * @return how long an ability should last in seconds
      */
     public int calculateAbilityLengthPerks(BukkitMMOPlayer mcMMOPlayer, PrimarySkillType skill, SuperAbilityType superAbilityType) {
-        return getEnduranceLength(mcMMOPlayer.getPlayer()) + calculateAbilityLength(mcMMOPlayer, skill, superAbilityType);
+        return getEnduranceLength(mcMMOPlayer.getNative()) + calculateAbilityLength(mcMMOPlayer, skill, superAbilityType);
     }
 
     public int getEnduranceLength(Player player) {

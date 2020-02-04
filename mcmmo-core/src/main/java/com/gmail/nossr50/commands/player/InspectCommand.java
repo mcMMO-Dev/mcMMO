@@ -65,7 +65,7 @@ public class InspectCommand implements TabExecutor {
                     }
 
                 } else {
-                    Player target = mcMMOPlayer.getPlayer();
+                    Player target = mcMMOPlayer.getNative();
 
                     if (pluginRef.getCommandTools().hidden(sender, target, pluginRef.getPermissionTools().inspectHidden(sender))) {
                         sender.sendMessage(pluginRef.getLocaleManager().getString("Inspect.Offline"));

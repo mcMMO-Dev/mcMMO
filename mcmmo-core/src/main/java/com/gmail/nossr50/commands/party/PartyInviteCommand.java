@@ -27,7 +27,7 @@ public class PartyInviteCommand implements CommandExecutor {
                     return false;
                 }
 
-                Player target = mcMMOTarget.getPlayer();
+                Player target = mcMMOTarget.getNative();
 
                 if (pluginRef.getUserManager().getPlayer((Player) sender) == null) {
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Profile.PendingLoad"));
