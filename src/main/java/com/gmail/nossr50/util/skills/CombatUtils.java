@@ -221,7 +221,7 @@ public final class CombatUtils {
 
     }
 
-    private static void processArcheryCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event, AbstractArrow arrow) {
+    private static void processArcheryCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event, Projectile arrow) {
         double initialDamage = event.getDamage();
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
@@ -381,7 +381,7 @@ public final class CombatUtils {
             }
         }
         else if (entityType == EntityType.ARROW || entityType == EntityType.SPECTRAL_ARROW) {
-            AbstractArrow arrow = (AbstractArrow) damager;
+            Projectile arrow = (Projectile) damager;
             ProjectileSource projectileSource = arrow.getShooter();
 
             if (projectileSource != null && projectileSource instanceof Player && PrimarySkillType.ARCHERY.shouldProcess(target)) {
