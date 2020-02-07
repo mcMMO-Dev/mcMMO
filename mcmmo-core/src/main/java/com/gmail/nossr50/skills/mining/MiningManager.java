@@ -155,7 +155,8 @@ public class MiningManager extends SkillManager {
 
             if (pluginRef.getBlockTools().isOre(blockState)) {
                 ores.add(blockState);
-            } else {
+            //A bug where beacons can drop when yield is set to 0 on explosion events is prevented here
+            } else if(blockState.getType() != Material.BEACON) {
                 debris.add(blockState);
             }
         }

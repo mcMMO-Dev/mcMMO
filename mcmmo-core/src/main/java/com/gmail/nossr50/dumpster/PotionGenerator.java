@@ -253,7 +253,7 @@
 //        if (target.equals("II")) { // hacks
 //            return target;
 //        }
-//        return target.substring(0, 1).toUpperCase() + target.substring(1).toLowerCase();
+//        return target.substring(0, 1).toUpperCase() + target.substring(1).toLowerCase(Locale.ENGLISH);
 //    }
 //
 //    private static String getName(PotionEffectType type) {

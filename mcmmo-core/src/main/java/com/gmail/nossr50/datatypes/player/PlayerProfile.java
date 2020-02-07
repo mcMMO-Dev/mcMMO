@@ -34,11 +34,6 @@ public class PlayerProfile {
     private HashMap<PrimarySkillType, Double> rollingSkillsXp = new HashMap<PrimarySkillType, Double>();
     private final mcMMO pluginRef;
 
-    @Deprecated
-    public PlayerProfile(mcMMO pluginRef, String playerName) {
-        this(pluginRef, playerName, null);
-    }
-
     public PlayerProfile(mcMMO pluginRef, String playerName, UUID uuid) {
         this.pluginRef = pluginRef;
         this.uuid = uuid;
@@ -58,12 +53,6 @@ public class PlayerProfile {
 
         //Misc Cooldowns
         uniquePlayerData.put(UniqueDataType.CHIMAERA_WING_DATS, 0); //Chimaera wing
-    }
-
-    @Deprecated
-    public PlayerProfile(mcMMO pluginRef, String playerName, boolean isLoaded) {
-        this(pluginRef, playerName);
-        this.loaded = isLoaded;
     }
 
     public PlayerProfile(mcMMO pluginRef, String playerName, UUID uuid, boolean isLoaded) {

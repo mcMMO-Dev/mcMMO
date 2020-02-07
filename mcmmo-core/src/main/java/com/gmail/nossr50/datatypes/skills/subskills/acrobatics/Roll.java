@@ -20,6 +20,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Locale;
+
 public class Roll extends AcrobaticsSubSkill {
 
     private final mcMMO pluginRef;
@@ -95,7 +97,7 @@ public class Roll extends AcrobaticsSubSkill {
      */
     @Override
     public String getPermissionNode() {
-        return ("mcmmo.ability." + getPrimaryKeyName() + "." + getConfigKeyName()).toLowerCase();
+        return ("mcmmo.ability." + getPrimaryKeyName() + "." + getConfigKeyName()).toLowerCase(Locale.ENGLISH);
     }
 
     /**
@@ -370,7 +372,7 @@ public class Roll extends AcrobaticsSubSkill {
 
         //Chance to roll at half max skill
         RandomChanceSkill rollHalfMaxSkill = new RandomChanceSkill(pluginRef, null, subSkillType);
-        int halfMaxSkillValue = pluginRef.isRetroModeEnabled() ? 500 : 50;
+        int halfMaxSkillValue = (int) pluginRef.getDynamicSettingsManager().getSkillMaxBonusLevel(subSkillType) / 2;
         rollHalfMaxSkill.setSkillLevel(halfMaxSkillValue);
 
         //Chance to graceful roll at full skill

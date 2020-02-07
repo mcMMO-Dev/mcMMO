@@ -51,7 +51,6 @@ import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.properties.DamageProperty;
-import com.gmail.nossr50.datatypes.skills.properties.MaxBonusLevel;
 import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.datatypes.skills.subskills.taming.TamingSummon;
 import com.gmail.nossr50.mcMMO;
@@ -266,7 +265,6 @@ public final class ConfigManager {
         customSerializers.registerType(TypeToken.of(CustomXPPerk.class), new CustomXPPerkSerializer());
         customSerializers.registerType(TypeToken.of(DamageProperty.class), new DamagePropertySerializer());
         customSerializers.registerType(TypeToken.of(SkillRankProperty.class), new SkillRankPropertySerializer());
-        customSerializers.registerType(TypeToken.of(MaxBonusLevel.class), new MaxBonusLevelSerializer());
         customSerializers.registerType(TypeToken.of(PlayerNotificationSettings.class), new PlayerNotificationSerializer());
         customSerializers.registerType(TypeToken.of(SoundSetting.class), new SoundSettingSerializer());
 //        customSerializers.registerType(TypeToken.of(ItemWildcards.class), new ItemWildcardSerializer());
@@ -481,17 +479,6 @@ public final class ConfigManager {
      */
     public CommentedConfigurationNode getConfigRanksRootNode() {
         return configRanks.getRootNode();
-    }
-
-    /**
-     * Checks if this plugin is using retro mode
-     * Retro mode is a 0-1000 skill system
-     * Standard mode is scaled for 1-100
-     *
-     * @return true if retro mode is enabled
-     */
-    public boolean isRetroMode() {
-        return getConfigLeveling().getConfigSectionLevelingGeneral().getConfigSectionLevelScaling().isRetroModeEnabled();
     }
 
     public ConfigExperience getConfigExperience() {

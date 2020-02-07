@@ -15,7 +15,7 @@ public class ConfigExperienceCombat {
 
     static {
         COMBAT_EXPERIENCE_DEFAULT = new HashMap<>();
-
+        // TODO: namespace
         COMBAT_EXPERIENCE_DEFAULT.put("creeper", 4.0);
         COMBAT_EXPERIENCE_DEFAULT.put("cat", 1.0);
         COMBAT_EXPERIENCE_DEFAULT.put("fox", 1.0);
@@ -74,6 +74,7 @@ public class ConfigExperienceCombat {
         COMBAT_EXPERIENCE_DEFAULT.put("dolphin", 1.0);
         COMBAT_EXPERIENCE_DEFAULT.put("phantom", 4.0);
         COMBAT_EXPERIENCE_DEFAULT.put("wandering_trader", 1.0);
+        COMBAT_EXPERIENCE_DEFAULT.put("bee", 1.5);
 
         //SPECIAL
         SPECIAL_COMBAT_EXPERIENCE_DEFAULT = new HashMap<>();

@@ -561,6 +561,7 @@ Enchantment_Drop_Rates:
         LEGENDARY: 0.75
 #
 #  Settings for Excavation's Archaeology
+#  If you are in retro mode, Drop_Level is multiplied by 10.
 ###
 Excavation:
     CAKE:
@@ -691,6 +692,7 @@ Excavation:
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand]
 #
 #  Settings for Hylian Luck
+#  If you are in retro mode, Drop_Level is multiplied by 10.
 ###
 Hylian_Luck:
     MELON_SEEDS:
@@ -748,7 +750,8 @@ Hylian_Luck:
         Drop_Level: 0
         Drops_From: [Pots]
 #
-#	Settings for Shake
+#  Settings for Shake
+#  If you are in retro mode, Drop_Level is multiplied by 10.
 ###
 Shake:
     BLAZE:

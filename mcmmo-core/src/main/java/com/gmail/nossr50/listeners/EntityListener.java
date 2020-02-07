@@ -60,7 +60,7 @@ public class EntityListener implements Listener {
 
         //Prevent entities from giving XP if they target endermite
         if (event.getTarget() instanceof Endermite) {
-            if (event.getEntity().hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY))
+            if (!event.getEntity().hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY))
                 event.getEntity().setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
         }
     }
@@ -288,6 +288,10 @@ public class EntityListener implements Listener {
         // However, for entities, we do not wanna cancel this event to allow plugins to observe changes
         // properly
         if (defender.getMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY).size() > 0) {
+            return;
+        }
+
+        if (pluginRef.getCombatTools().isProcessingNoInvulnDamage()) {
             return;
         }
 
@@ -787,26 +791,6 @@ public class EntityListener implements Listener {
             miningManager.blastMiningDropProcessing(event.getYield(), event.blockList());
             event.setYield(0);
         }
-    }
-
-    /**
-     * Handle EntityExplode events that involve modifying the event.
-     *
-     * @param event The event to modify
-     */
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onEntityExplodeMonitor(EntityExplodeEvent event) {
-        /* WORLD BLACKLIST CHECK */
-        if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getEntity().getWorld().getName()))
-            return;
-
-        Entity entity = event.getEntity();
-
-        if (!(entity instanceof TNTPrimed) || !entity.hasMetadata(MetadataConstants.SAFE_TNT_METAKEY)) {
-            return;
-        }
-
-        event.blockList().clear();
     }
 
     /**

@@ -8,25 +8,21 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class MobHealthDisplayUpdaterTask extends BukkitRunnable {
     private final mcMMO pluginRef;
     private LivingEntity target;
-    private String oldName;
-    private boolean oldNameVisible;
 
     public MobHealthDisplayUpdaterTask(mcMMO pluginRef, LivingEntity target) {
         this.pluginRef = pluginRef;
-
-        if (target.isValid()) {
-            this.target = target;
-            this.oldName = target.getMetadata(MetadataConstants.CUSTOM_NAME_METAKEY).get(0).asString();
-            this.oldNameVisible = target.getMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY).get(0).asBoolean();
-        }
+        this.target = target;
     }
 
     @Override
     public void run() {
-        if (target != null && target.isValid()) {
-            target.setCustomNameVisible(oldNameVisible);
-            target.setCustomName(oldName);
+        if (target.hasMetadata(MetadataConstants.CUSTOM_NAME_METAKEY)) {
+            target.setCustomName(target.getMetadata(MetadataConstants.CUSTOM_NAME_METAKEY).get(0).asString());
             target.removeMetadata(MetadataConstants.CUSTOM_NAME_METAKEY, pluginRef);
+        }
+
+        if (target.hasMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY)) {
+            target.setCustomNameVisible(target.getMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY).get(0).asBoolean());
             target.removeMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY, pluginRef);
         }
     }
