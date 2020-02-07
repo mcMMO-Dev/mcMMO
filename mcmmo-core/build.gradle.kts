@@ -20,12 +20,14 @@ tasks {
             include(dependency("org.apache.tomcat:tomcat-jdbc"))
             include(dependency("org.apache.tomcat:tomcat-juli"))
             include(dependency("com.typesafe:config"))
+            include(dependency("co.aikar:acf-bukkit"))
             exclude(dependency("org.spigotmc:spigot"))
         }
         relocate("org.apache.commons.logging", "com.gmail.nossr50.commons.logging")
         relocate("org.apache.juli", "com.gmail.nossr50.database.tomcat.juli")
         relocate("org.apache.tomcat", "com.gmail.nossr50.database.tomcat")
         relocate("org.bstats", "com.gmail.nossr50.metrics.bstat")
+        relocate("co.aikar.commands", "com.gmail.nossr50.acf")
     }
 
     processResources {
@@ -43,6 +45,7 @@ dependencies {
     api("org.spongepowered:configurate-core:3.7-SNAPSHOT")
     api("org.spongepowered:configurate-yaml:3.7-SNAPSHOT")
     api("org.spongepowered:configurate-hocon:3.7-SNAPSHOT")
+    api("co.aikar:acf-bukkit:0.5.0-SNAPSHOT")
     implementation("org.jetbrains:annotations:17.0.0")
     implementation("org.apache.maven.scm:maven-scm-provider-gitexe:1.8.1")
     implementation("org.bstats:bstats-bukkit:1.4")

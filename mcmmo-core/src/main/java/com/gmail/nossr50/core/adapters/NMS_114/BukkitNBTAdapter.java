@@ -32,7 +32,7 @@ public class BukkitNBTAdapter implements NBTAdapter {
             case LIST:
                 return asNativeNBTList((NBTList) nbtBase);
             case COMPOUND:
-                return ;
+                return asNativeNBTCompound((NBTCompound) nbtBase);
             case INT_ARRAY:
                 return asNativeNBTIntArray((NBTIntArray) nbtBase);
             case LONG_ARRAY:
@@ -130,9 +130,12 @@ public class BukkitNBTAdapter implements NBTAdapter {
      * @param nbtCompound target NBTCompound
      * @return NBTTagCompound copy of our NBTCompound representation
      */
+    //TODO: Finish
     private NBTTagCompound asNativeNBTCompound(NBTCompound nbtCompound) {
+        System.out.println("FINISH asNativeNBTCompound()");
         NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        nbtCompound
+
+        return nbtTagCompound;
     }
 
     /**

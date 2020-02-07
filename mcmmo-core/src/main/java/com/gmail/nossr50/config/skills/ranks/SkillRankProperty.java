@@ -3,7 +3,6 @@ package com.gmail.nossr50.config.skills.ranks;
 import com.gmail.nossr50.api.exceptions.MissingSkillPropertyDefinition;
 import com.gmail.nossr50.datatypes.skills.properties.SkillProperty;
 import com.gmail.nossr50.mcMMO;
-import org.apache.logging.log4j.Level;
 
 import java.util.HashMap;
 

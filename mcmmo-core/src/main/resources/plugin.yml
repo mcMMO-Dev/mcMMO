@@ -19,6 +19,9 @@ load: POSTWORLD
 api-version: 1.13
 
 commands:
+    nbttools:
+        description: Modify or Read NBT from an item in hand
+        permission: mcmmo.commands.nbttools
     mmodebug:
         aliases: [mcmmodebugmode]
         description: Toggles a debug mode which will print useful information to chat
@@ -628,6 +631,10 @@ permissions:
         children:
             mcmmo.commands.mcconvert.all: true
             mcmmo.commands.xprate.all: true
+            mcmmo.commands.nbttools: true
+    mcmmo.commands.nbttools:
+        default: false
+        description: Modify or Read NBT of an item in-hand
     mcmmo.bypass.*:
         default: false
         description: Implies all bypass permissions.

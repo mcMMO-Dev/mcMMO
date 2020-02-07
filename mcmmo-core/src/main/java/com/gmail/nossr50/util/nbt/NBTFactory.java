@@ -5,28 +5,30 @@ import com.gmail.nossr50.core.nbt.NBTCompound;
 import net.minecraft.server.v1_14_R1.NBTTagByte;
 
 public class NBTFactory {
+    //TODO: Finish
     /**
      * Converts NMS NBT types into our own NBT type representation
      * @param nmsNBT target NMS Compound
      * @return NMS Representation of our NBT
      */
-    public NBTCompound asNBT(net.minecraft.server.v1_14_R1.NBTTagCompound nmsNBT) {
-        NBTCompound nbtCompound = new NBTCompound("");
+//    public NBTCompound asNBT(net.minecraft.server.v1_14_R1.NBTTagCompound nmsNBT) {
+//        NBTCompound nbtCompound = new NBTCompound("");
+//
+//        //Traverse the NMS Map
+//        for(String key : nmsNBT.getKeys()) {
+//
+//        }
+//    }
 
-        //Traverse the NMS Map
-        for(String key : nmsNBT.getKeys()) {
-
-        }
-    }
-
-    /**
-     * Convert our NBT type into the NMS NBT Type equivalent
-     * @param nbtCompound target nbt compound
-     * @return NMS NBT copy of our NBT type
-     */
-    public net.minecraft.server.v1_14_R1.NBTTagCompound asNMSCopy(NBTCompound nbtCompound) {
-
-    }
+    //TODO: Finish
+//    /**
+//     * Convert our NBT type into the NMS NBT Type equivalent
+//     * @param nbtCompound target nbt compound
+//     * @return NMS NBT copy of our NBT type
+//     */
+//    public net.minecraft.server.v1_14_R1.NBTTagCompound asNMSCopy(NBTCompound nbtCompound) {
+//
+//    }
 
     /**
      * Create a new NMS NBT tag compound with only 1 tag compound named "tag"
@@ -40,12 +42,13 @@ public class NBTFactory {
         return nbtTagCompound;
     }
 
-    private NBTCompound deepCopy(NBTCompound target, String key, net.minecraft.server.v1_14_R1.NBTBase nbtBase) {
-        switch (nbtBase.getTypeId()) {
-            case 0:
-                return new NBTCompound();
-        }
-    }
+    //TODO: Finish
+//    private NBTCompound deepCopy(NBTCompound target, String key, net.minecraft.server.v1_14_R1.NBTBase nbtBase) {
+//        switch (nbtBase.getTypeId()) {
+//            case 0:
+//                return new NBTCompound();
+//        }
+//    }
 
     /**
      * Create a NBTByte representation of NBTTagByte (NMS Type)

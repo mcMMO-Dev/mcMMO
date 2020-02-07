@@ -1,6 +1,8 @@
 package com.gmail.nossr50.util.commands;
 
+import co.aikar.commands.BukkitCommandManager;
 import com.gmail.nossr50.commands.*;
+import com.gmail.nossr50.commands.admin.NBTToolsCommand;
 import com.gmail.nossr50.commands.admin.PlayerDebugCommand;
 import com.gmail.nossr50.commands.admin.ReloadLocaleCommand;
 import com.gmail.nossr50.commands.chat.AdminChatCommand;
@@ -30,10 +32,12 @@ import java.util.Locale;
 public final class CommandRegistrationManager {
     private final mcMMO pluginRef;
     private String permissionsMessage;
+    private BukkitCommandManager bukkitCommandManager;
 
     public CommandRegistrationManager(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
         permissionsMessage = pluginRef.getLocaleManager().getString("mcMMO.NoPermission");
+        bukkitCommandManager = new BukkitCommandManager(pluginRef);
     }
 
     private void registerSkillCommands() {
@@ -117,6 +121,40 @@ public final class CommandRegistrationManager {
         }
     }
 
+    /**
+     * Initialize ACF commands
+     */
+    private void initACF() {
+        //TODO: See if needed
+        bukkitCommandManager.enableUnstableAPI("help");
+
+
+        registerACFCommands();
+    }
+
+    /**
+     * Register ACF Commands
+     */
+    private void registerACFCommands() {
+        //Register ACF Commands
+        registerNBTToolsCommand();
+        registerMmoDebugCommand();
+    }
+
+    /**
+     * Register the NBT Tools command
+     */
+    private void registerNBTToolsCommand() {
+        bukkitCommandManager.registerCommand(new NBTToolsCommand());
+    }
+
+    /**
+     * Register the MMO Debug command
+     */
+    private void registerMmoDebugCommand() {
+        bukkitCommandManager.registerCommand(new PlayerDebugCommand());
+    }
+
     private void registerAddlevelsCommand() {
         PluginCommand command = pluginRef.getCommand("addlevels");
         command.setDescription(pluginRef.getLocaleManager().getString("Commands.Description.addlevels"));
@@ -151,16 +189,6 @@ public final class CommandRegistrationManager {
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.1", "mmoinfo", "[" + pluginRef.getLocaleManager().getString("Commands.Usage.SubSkill") + "]"));
         command.setExecutor(new MmoInfoCommand(pluginRef));
-    }
-
-
-    private void registerMmoDebugCommand() {
-        PluginCommand command = pluginRef.getCommand("mmodebug");
-        command.setDescription(pluginRef.getLocaleManager().getString("Commands.Description.mmodebug"));
-        command.setPermission(null); //No perm required to save support headaches
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.0", "mmodebug"));
-        command.setExecutor(new PlayerDebugCommand(pluginRef));
     }
 
     private void registerMcChatSpyCommand() {
@@ -476,5 +504,8 @@ public final class CommandRegistrationManager {
         registerMcmmoReloadCommand();
         // Admin commands
         registerReloadLocaleCommand();
+
+        //ACF Commands
+        initACF();
     }
 }

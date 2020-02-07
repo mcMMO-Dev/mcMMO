@@ -1,7 +1,5 @@
 package com.gmail.nossr50.core.nbt;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-
 import java.util.Arrays;
 
 public class NBTByteArray implements NBTBase {
