@@ -1,6 +1,7 @@
 Version 2.1.115
     Fixed an issue with arrows causing exceptions with players not yet having data loaded
     Spectral arrows are now tracked by mcMMO
+    Use minimum level of salvageable properly
 
 Version 2.1.114
     Fix some more locale usages, should aim to further prevent issues with oddball locales
