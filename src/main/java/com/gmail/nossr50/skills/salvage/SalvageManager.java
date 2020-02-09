@@ -82,11 +82,11 @@ public class SalvageManager extends SkillManager {
             return;
         }
 
-        /*int skillLevel = getSkillLevel();
-        int minimumSalvageableLevel = salvageable.getMinimumLevel();*/
+        /*int skillLevel = getSkillLevel();*/
+        int minimumSalvageableLevel = salvageable.getMinimumLevel();
 
         // Level check
-        if (!RankUtils.hasUnlockedSubskill(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR)) {
+        if (getSkillLevel() < minimumSalvageableLevel) {
             NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Salvage.Skills.Adept.Level", String.valueOf(RankUtils.getUnlockLevel(SubSkillType.SALVAGE_ARCANE_SALVAGE)), StringUtils.getPrettyItemString(item.getType()));
             return;
         }
