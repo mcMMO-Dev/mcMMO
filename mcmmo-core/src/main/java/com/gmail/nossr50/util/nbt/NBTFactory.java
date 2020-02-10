@@ -1,7 +1,6 @@
 package com.gmail.nossr50.util.nbt;
 
 import com.gmail.nossr50.core.nbt.NBTByte;
-import com.gmail.nossr50.core.nbt.NBTCompound;
 import net.minecraft.server.v1_14_R1.NBTTagByte;
 
 public class NBTFactory {
