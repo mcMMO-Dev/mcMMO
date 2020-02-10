@@ -11,6 +11,7 @@ import com.gmail.nossr50.config.scoreboard.ConfigScoreboard;
 import com.gmail.nossr50.core.DynamicSettingsManager;
 import com.gmail.nossr50.core.MaterialMapStore;
 import com.gmail.nossr50.core.MetadataConstants;
+import com.gmail.nossr50.core.PlatformManager;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.datatypes.skills.subskills.acrobatics.Roll;
@@ -33,6 +34,7 @@ import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
 import com.gmail.nossr50.util.commands.CommandRegistrationManager;
 import com.gmail.nossr50.util.commands.CommandTools;
 import com.gmail.nossr50.util.experience.FormulaManager;
+import com.gmail.nossr50.util.nbt.NBTManager;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.PlayerLevelTools;
 import com.gmail.nossr50.util.player.UserManager;
@@ -76,7 +78,7 @@ public class mcMMO extends JavaPlugin {
     private FormulaManager formulaManager;
     private NotificationManager notificationManager;
     private CommandRegistrationManager commandRegistrationManager;
-//    private NBTManager nbtManager;
+    private NBTManager nbtManager;
     private PartyManager partyManager;
     private LocaleManager localeManager;
     private ChatManager chatManager;
@@ -86,6 +88,7 @@ public class mcMMO extends JavaPlugin {
     private ScoreboardManager scoreboardManager;
     private SoundManager soundManager;
     private HardcoreManager hardcoreManager;
+    private PlatformManager platformManager;
     private WorldGuardManager worldGuardManager;
 
     /* Not-Managers but my naming scheme sucks */
@@ -132,6 +135,9 @@ public class mcMMO extends JavaPlugin {
     public void onEnable() {
         try {
             getLogger().setFilter(new LogFilter(this));
+
+            //Init PlatformManager
+            platformManager = new PlatformManager(this);
 
             //TODO: Disgusting...
             MetadataConstants.metadataValue = new FixedMetadataValue(this, true);
@@ -214,7 +220,7 @@ public class mcMMO extends JavaPlugin {
                 commandRegistrationManager = new CommandRegistrationManager(this);
                 commandRegistrationManager.registerCommands();
 
-//                nbtManager = new NBTManager();
+                nbtManager = new NBTManager();
 
                 //Init Chunk Manager Factory
                 chunkManagerFactory = new ChunkManagerFactory(this);
@@ -853,5 +859,13 @@ public class mcMMO extends JavaPlugin {
 
     public PerkUtils getPerkUtils() {
         return perkUtils;
+    }
+
+    public NBTManager getNbtManager() {
+        return nbtManager;
+    }
+
+    public PlatformManager getPlatformManager() {
+        return platformManager;
     }
 }

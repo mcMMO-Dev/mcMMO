@@ -11,6 +11,8 @@ subprojects {
         maven("https://repo.codemc.org/repository/maven-public")
         maven("https://maven.sk89q.com/repo")
         maven("https://mvnrepository.com/artifact/org.jetbrains/annotations")
+        maven("https://repo.aikar.co/content/groups/aikar/")
+        maven("https://hub.spigotmc.org/nexus/content/groups/public/")
     }
 
     tasks {
