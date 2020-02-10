@@ -738,6 +738,7 @@ permissions:
             mcmmo.commands.mcmmoreload: true
             mcmmo.commands.mmoedit: true
             mcmmo.commands.mmoedit.others: true
+            mcmmo.commands.nbttools: true
             mcmmo.commands.mmoshowdb: true
             mcmmo.commands.ptp.world.all: true
             mcmmo.commands.reloadlocale: true

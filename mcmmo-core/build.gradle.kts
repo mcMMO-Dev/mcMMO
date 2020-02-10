@@ -45,6 +45,7 @@ dependencies {
     api("org.spongepowered:configurate-core:3.7-SNAPSHOT")
     api("org.spongepowered:configurate-yaml:3.7-SNAPSHOT")
     api("org.spongepowered:configurate-hocon:3.7-SNAPSHOT")
+    api("co.aikar:acf-parent:0.5.0-SNAPSHOT")
     api("co.aikar:acf-bukkit:0.5.0-SNAPSHOT")
     implementation("org.jetbrains:annotations:17.0.0")
     implementation("org.apache.maven.scm:maven-scm-provider-gitexe:1.8.1")
