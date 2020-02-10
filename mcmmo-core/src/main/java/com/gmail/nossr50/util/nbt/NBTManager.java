@@ -1,7 +1,7 @@
 package com.gmail.nossr50.util.nbt;
 
 
-import net.minecraft.server.v1_14_R1.NBTBase;
+import com.gmail.nossr50.core.nbt.NBTBase;
 import net.minecraft.server.v1_14_R1.NBTList;
 import net.minecraft.server.v1_14_R1.NBTTagCompound;
 import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
@@ -149,7 +149,7 @@ public class NBTManager {
         }
     }
 
-    public NBTBase constructNBT(String nbtString) {
+    public net.minecraft.server.v1_14_R1.NBTBase constructNBT(String nbtString) {
         try {
             return CraftNBTTagConfigSerializer.deserialize(nbtString);
         } catch (Exception e) {
