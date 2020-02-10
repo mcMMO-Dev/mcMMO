@@ -901,17 +901,17 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onDebugPlayerInteract(PlayerInteractEvent event) {
-        if(pluginRef.getUserManager().getPlayer(event.getPlayer()) != null) {
-            McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(event.getPlayer());
-            if(mcMMOPlayer.isDebugMode()) {
-                switch(event.getAction()) {
-                    case LEFT_CLICK_AIR:
-                    case LEFT_CLICK_BLOCK:
-                        pluginRef.getNbtManager().debugNBTInMainHandItem(event.getPlayer());
-                }
-            }
-        }
-    }
+//    @EventHandler(priority = EventPriority.LOWEST)
+//    public void onDebugPlayerInteract(PlayerInteractEvent event) {
+//        if(pluginRef.getUserManager().getPlayer(event.getPlayer()) != null) {
+//            McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(event.getPlayer());
+//            if(mcMMOPlayer.isDebugMode()) {
+//                switch(event.getAction()) {
+//                    case LEFT_CLICK_AIR:
+//                    case LEFT_CLICK_BLOCK:
+//                        pluginRef.getNbtManager().debugNBTInMainHandItem(event.getPlayer());
+//                }
+//            }
+//        }
+//    }
 }
