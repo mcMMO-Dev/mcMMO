@@ -1,6 +1,7 @@
 package com.gmail.nossr50.commands.admin;
 
 import co.aikar.commands.BaseCommand;
+import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Description;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -15,6 +16,7 @@ public class PlayerDebugCommand extends BaseCommand {
     @Dependency
     private mcMMO pluginRef;
 
+    @Default
     public void onCommand(CommandSender sender) {
         if(sender instanceof Player) {
             McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer((Player) sender);
