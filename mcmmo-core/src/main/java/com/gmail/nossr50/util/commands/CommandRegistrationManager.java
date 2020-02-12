@@ -1,6 +1,6 @@
 package com.gmail.nossr50.util.commands;
 
-import co.aikar.commands.BukkitCommandManager;
+import co.aikar.commands.PaperCommandManager;
 import com.gmail.nossr50.commands.*;
 import com.gmail.nossr50.commands.admin.NBTToolsCommand;
 import com.gmail.nossr50.commands.admin.PlayerDebugCommand;
@@ -29,15 +29,70 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+//TODO: Properly rewrite ACF integration later
 public final class CommandRegistrationManager {
     private final mcMMO pluginRef;
     private String permissionsMessage;
-    private BukkitCommandManager bukkitCommandManager;
+    //NOTE: Does not actually require paper, will work for bukkit
+    private PaperCommandManager commandManager;
 
     public CommandRegistrationManager(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
         permissionsMessage = pluginRef.getLocaleManager().getString("mcMMO.NoPermission");
-        bukkitCommandManager = new BukkitCommandManager(pluginRef);
+        commandManager = new PaperCommandManager(pluginRef);
+    }
+
+    /**
+     * Register ACF Commands
+     */
+    //TODO: Properly rewrite ACF integration later
+    public void registerACFCommands() {
+        //Register ACF Commands
+        registerNBTToolsCommand();
+        registerMmoDebugCommand();
+    }
+
+    /**
+     * Register exception handlers for the ACF commands
+     */
+    //TODO: Properly rewrite ACF integration later
+    private void registerExceptionHandlers() {
+        registerDefaultExceptionHandler();
+    }
+
+    /**
+     * Register default exception handler
+     */
+    //TODO: Properly rewrite ACF integration later
+    private void registerDefaultExceptionHandler() {
+        commandManager.setDefaultExceptionHandler((command, registeredCommand, sender, args, t) -> {
+            pluginRef.getLogger().warning("Error occurred while executing command " + command.getName());
+            return false;
+        });
+    }
+
+    /**
+     * Register contexts for ACF
+     */
+    //TODO: Properly rewrite ACF integration later
+    private void registerContexts() {
+
+    }
+
+    /**
+     * Register the NBT Tools command
+     */
+    //TODO: Properly rewrite ACF integration later
+    private void registerNBTToolsCommand() {
+        commandManager.registerCommand(new NBTToolsCommand());
+    }
+
+    /**
+     * Register the MMO Debug command
+     */
+    //TODO: Properly rewrite ACF integration later
+    private void registerMmoDebugCommand() {
+        commandManager.registerCommand(new PlayerDebugCommand());
     }
 
     private void registerSkillCommands() {
@@ -119,40 +174,6 @@ public final class CommandRegistrationManager {
                     break;
             }
         }
-    }
-
-    /**
-     * Initialize ACF commands
-     */
-    private void initACF() {
-        //TODO: See if needed
-        bukkitCommandManager.enableUnstableAPI("help");
-
-
-        registerACFCommands();
-    }
-
-    /**
-     * Register ACF Commands
-     */
-    private void registerACFCommands() {
-        //Register ACF Commands
-        registerNBTToolsCommand();
-        registerMmoDebugCommand();
-    }
-
-    /**
-     * Register the NBT Tools command
-     */
-    private void registerNBTToolsCommand() {
-        bukkitCommandManager.registerCommand(new NBTToolsCommand());
-    }
-
-    /**
-     * Register the MMO Debug command
-     */
-    private void registerMmoDebugCommand() {
-        bukkitCommandManager.registerCommand(new PlayerDebugCommand());
     }
 
     private void registerAddlevelsCommand() {
@@ -455,7 +476,6 @@ public final class CommandRegistrationManager {
     public void registerCommands() {
         // Generic Commands
         registerMmoInfoCommand();
-        registerMmoDebugCommand();
         registerMcabilityCommand();
         registerMcgodCommand();
         registerMcChatSpyCommand();
@@ -504,8 +524,5 @@ public final class CommandRegistrationManager {
         registerMcmmoReloadCommand();
         // Admin commands
         registerReloadLocaleCommand();
-
-        //ACF Commands
-        initACF();
     }
 }

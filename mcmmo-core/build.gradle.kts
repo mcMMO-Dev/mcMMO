@@ -63,7 +63,7 @@ dependencies {
     api("org.spongepowered:configurate-yaml:3.7-SNAPSHOT")
     api("org.spongepowered:configurate-hocon:3.7-SNAPSHOT")
     api("co.aikar:acf-core:0.5.0-SNAPSHOT") //Don't change without updating the artifacts for its dependencies (see the other comments)
-    api("co.aikar:acf-bukkit:0.5.0-SNAPSHOT") //Don't change without updating the artifacts for its dependencies (see the other comments)
+    api("co.aikar:acf-paper:0.5.0-SNAPSHOT") //Don't change without updating the artifacts for its dependencies (see the other comments)
 //    api("co.aikar:locales:1.0-SNAPSHOT") //ACF 0.5.0-SNAPSHOT is dependent on this version of locales
 //    api("co.aikar:table:1.0.0-SNAPSHOT") //ACF 0.5.0-SNAPSHOT is dependent on this version of table
 //    api("net.jodah:expiring-map:0.5.8") //ACF 0.5.0-SNAPSHOT is dependent on this version of expiring map
