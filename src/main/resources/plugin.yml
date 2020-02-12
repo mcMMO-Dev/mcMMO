@@ -273,7 +273,7 @@ permissions:
         description: Allows access to all Axes abilities
         children:
             mcmmo.ability.axes.axemastery: true
-            mcmmo.ability.axes.criticalhit: true
+            mcmmo.ability.axes.criticalstrikes: true
             mcmmo.ability.axes.greaterimpact: true
             mcmmo.ability.axes.armorimpact: true
             mcmmo.ability.axes.skullsplitter: true
@@ -282,8 +282,8 @@ permissions:
         description: Adds damage to axes
     mcmmo.ability.axes.axemastery:
         description: Allows bonus damage from Axes
-    mcmmo.ability.axes.criticalhit:
-        description: Allows access to the Critical Hit ability
+    mcmmo.ability.axes.criticalstrikes:
+        description: Allows access to the Critical Strikes ability
     mcmmo.ability.axes.greaterimpact:
         description: Allows access to the Greater Impact ability
     mcmmo.ability.axes.armorimpact:
