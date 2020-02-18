@@ -4,6 +4,7 @@ package com.gmail.nossr50.util.nbt;
 import com.gmail.nossr50.core.nbt.NBTBase;
 import net.minecraft.server.v1_14_R1.NBTList;
 import net.minecraft.server.v1_14_R1.NBTTagCompound;
+import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_14_R1.util.CraftNBTTagConfigSerializer;
 import org.bukkit.entity.Player;
@@ -166,11 +167,36 @@ public class NBTManager {
      */
     public void printNBT(ItemStack itemStack, Player player) {
         NBTTagCompound tagCompoundCopy = getNBTCopy(itemStack);
-        for(String key : tagCompoundCopy.getKeys()) {
+        printNBT(tagCompoundCopy, player);
+    }
+
+    private void printNBT(NBTTagCompound nbtTagCompound, Player player) {
+        for(String key : nbtTagCompound.getKeys()) {
             player.sendMessage("");
-            player.sendMessage("NBT Key: "+key);
-            player.sendMessage("NBT Value: " + tagCompoundCopy.get(key).asString());
+
+            net.minecraft.server.v1_14_R1.NBTBase targetTag = nbtTagCompound.get(key);
+
+            //Recursively print contents
+            if(targetTag instanceof NBTTagCompound) {
+                NBTTagCompound childTagCompound = nbtTagCompound.getCompound(key);
+                if(childTagCompound != null) {
+                    player.sendMessage(ChatColor.BLUE + "NBT named " + ChatColor.GOLD + key + ChatColor.BLUE + " is a tag compound, printing contents...");
+                    printNBT(childTagCompound, player);
+                    player.sendMessage(ChatColor.BLUE + "Exiting "+ key);
+                    continue;
+                }
+            }
+
+            player.sendMessage(ChatColor.GOLD + "Tag Key: " + ChatColor.RESET + key);
+
+            if(targetTag == null) {
+                player.sendMessage(ChatColor.RED + "Tag is null!");
+                continue;
+            }
+
+            player.sendMessage(ChatColor.GREEN + "Tag Value: " + ChatColor.RESET + targetTag.asString());
         }
+
     }
 
     public boolean hasNBT(NBTBase nbt, NBTTagCompound otherNbt) {
