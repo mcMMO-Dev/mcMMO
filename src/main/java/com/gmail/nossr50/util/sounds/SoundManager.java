@@ -39,6 +39,11 @@ public class SoundManager {
             world.playSound(location, getSound(soundType), getVolume(soundType), getPitch(soundType));
     }
 
+    public static void worldSendSoundMaxPitch(World world, Location location, SoundType soundType) {
+        if(SoundConfig.getInstance().getIsEnabled(soundType))
+            world.playSound(location, getSound(soundType), getVolume(soundType), 2.0F);
+    }
+
     /**
      * All volume is multiplied by the master volume to get its final value
      * @param soundType target soundtype

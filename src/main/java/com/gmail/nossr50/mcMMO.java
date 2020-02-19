@@ -107,6 +107,7 @@ public class mcMMO extends JavaPlugin {
     private static boolean isRetroModeEnabled;
 
     /* Metadata Values */
+    public final static String REPLANT_META_KEY = "mcMMO: Recently Replanted";
     public static final String FISH_HOOK_REF_METAKEY = "mcMMO: Fish Hook Tracker";
     public static final String DODGE_TRACKER        = "mcMMO: Dodge Tracker";
     public static final String CUSTOM_DAMAGE_METAKEY = "mcMMO: Custom Damage";

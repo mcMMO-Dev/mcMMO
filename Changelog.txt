@@ -1,4 +1,6 @@
 Version 2.1.115
+    Hoes no longer give free replants
+    There is now a feature in place to prevent breaking a newly automatically replanted (via green thumb) crop from being breakable for a few seconds after it appears
     Using a hoe on non-fully grown crops will replant them as a convenience feature for those who can't bother to wait for all of their plants to grow (put away the hoe to break non-fully grown crops)
     Fixed a bug where Salvage always gave the best results
     Fixed an issue with arrows causing exceptions with players not yet having data loaded

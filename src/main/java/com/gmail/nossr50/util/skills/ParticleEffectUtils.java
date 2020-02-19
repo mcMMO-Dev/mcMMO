@@ -1,6 +1,8 @@
 package com.gmail.nossr50.util.skills;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.util.sounds.SoundManager;
+import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,6 +15,12 @@ import org.bukkit.entity.Player;
 public final class ParticleEffectUtils {
 
     private ParticleEffectUtils() {};
+
+    public static void playGreenThumbEffect(Location location) {
+        World world = location.getWorld();
+        playSmokeEffect(location);
+        SoundManager.worldSendSoundMaxPitch(world, location, SoundType.POP);
+    }
 
     public static void playBleedEffect(LivingEntity livingEntity) {
         if (!Config.getInstance().getBleedEffectEnabled()) {
@@ -27,7 +35,7 @@ public final class ParticleEffectUtils {
             return;
         }
 
-        playSmokeEffect(player);
+        playSmokeEffect(player.getLocation());
     }
 
     public static void playFluxEffect(Location location) {
@@ -38,9 +46,8 @@ public final class ParticleEffectUtils {
         location.getWorld().playEffect(location, Effect.MOBSPAWNER_FLAMES, 1);
     }
 
-    public static void playSmokeEffect(LivingEntity livingEntity) {
-        Location location = livingEntity.getEyeLocation();
-        World world = livingEntity.getWorld();
+    public static void playSmokeEffect(Location location) {
+        World world = location.getWorld();
 
         // Have to do it this way, because not all block directions are valid for smoke
         world.playEffect(location, Effect.SMOKE, BlockFace.SOUTH_EAST);

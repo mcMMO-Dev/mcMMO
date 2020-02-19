@@ -12,4 +12,5 @@ public class OldName extends FixedMetadataValue {
     {
         super(plugin, oldName);
     }
+
 }
