@@ -2,7 +2,8 @@ Version 2.1.115
     Fixed an issue with arrows causing exceptions with players not yet having data loaded
     Spectral arrows are now tracked by mcMMO
     Use minimum level of salvageable properly
-    Fix axes Critical Strikes default permissions
+    Fix Axes Critical Strikes default permissions ( new fixed permission: mcmmo.ability.axes.criticalstrikes )
+    Fix potential null pointer exception for salvage
 
 Version 2.1.114
     Fix some more locale usages, should aim to further prevent issues with oddball locales

@@ -66,7 +66,7 @@ public class SalvageManager extends SkillManager {
 
         Salvageable salvageable = mcMMO.getSalvageableManager().getSalvageable(item.getType());
 
-        if (item.getItemMeta().isUnbreakable()) {
+        if (item.getItemMeta() != null && item.getItemMeta().isUnbreakable()) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Anvil.Unbreakable");
             return;
         }
