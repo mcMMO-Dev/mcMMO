@@ -143,6 +143,9 @@ public class HerbalismManager extends SkillManager {
         //Grab all broken blocks
         HashSet<Block> brokenBlocks = getBrokenHerbalismBlocks(blockBreakEvent);
 
+        if(brokenBlocks.size() == 0)
+            return;
+
         //Handle rewards, xp, ability interactions, etc
         processHerbalismOnBlocksBroken(blockBreakEvent, brokenBlocks);
     }
@@ -157,7 +160,12 @@ public class HerbalismManager extends SkillManager {
 
         //TODO: The design of Green Terra needs to change, this is a mess
         if(Permissions.greenThumbPlant(getPlayer(), originalBreak.getType())) {
-            processGreenThumbPlants(originalBreak, isGreenTerraActive());
+            processGreenThumbPlants(originalBreak, blockBreakEvent, isGreenTerraActive());
+        }
+
+        //When replanting a immature crop we cancel the block break event and back out
+        if(blockBreakEvent.isCancelled()) {
+            return;
         }
 
         /*
@@ -339,9 +347,11 @@ public class HerbalismManager extends SkillManager {
                 //Calculate XP
                 if(plantData instanceof Ageable) {
                     Ageable plantAgeable = (Ageable) plantData;
+
                     if(isAgeableMature(plantAgeable) || isBizarreAgeable(plantData)) {
                         xpToReward += ExperienceConfig.getInstance().getXp(PrimarySkillType.HERBALISM, brokenBlockNewState.getType());
                     }
+
                 } else {
                     xpToReward += ExperienceConfig.getInstance().getXp(PrimarySkillType.HERBALISM, brokenPlantBlock.getType());
                 }
@@ -635,9 +645,17 @@ public class HerbalismManager extends SkillManager {
      * @param blockState The {@link BlockState} to check ability activation for
      * @param greenTerra boolean to determine if greenTerra is active or not
      */
-    private void processGreenThumbPlants(BlockState blockState, boolean greenTerra) {
-        if (!BlockUtils.isFullyGrown(blockState))
+    private void processGreenThumbPlants(BlockState blockState, BlockBreakEvent blockBreakEvent, boolean greenTerra) {
+        BlockData blockData = blockState.getBlockData();
+
+        if (!(blockData instanceof Ageable))
             return;
+
+        //If the ageable is NOT mature and the player is NOT using a hoe, abort
+        if(!isAgeableMature((Ageable) blockData) && !ItemUtils.isHoe(getPlayer().getItemInHand())) {
+            return;
+        }
+
 
         Player player = getPlayer();
         PlayerInventory playerInventory = player.getInventory();
@@ -678,7 +696,7 @@ public class HerbalismManager extends SkillManager {
             return;
         }
 
-        if (!processGrowingPlants(blockState, greenTerra)) {
+        if (!processGrowingPlants(blockState, blockBreakEvent, greenTerra)) {
             return;
         }
 
@@ -695,11 +713,18 @@ public class HerbalismManager extends SkillManager {
         new HerbalismBlockUpdaterTask(blockState).runTaskLater(mcMMO.p, 0);
     }
 
-    private boolean processGrowingPlants(BlockState blockState, boolean greenTerra) {
+    private boolean processGrowingPlants(BlockState blockState, BlockBreakEvent blockBreakEvent, boolean greenTerra) {
+        Ageable crops = (Ageable) blockState.getBlockData();
         int greenThumbStage = getGreenThumbStage();
 
+        //Immature plants will start over at 0
+        if(!isAgeableMature(crops)) {
+            crops.setAge(0);
+            blockBreakEvent.setCancelled(true);
+            return true;
+        }
+
         blockState.setMetadata(mcMMO.greenThumbDataKey, new FixedMetadataValue(mcMMO.p, (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)));
-        Ageable crops = (Ageable) blockState.getBlockData();
 
         switch (blockState.getType()) {
 
