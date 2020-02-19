@@ -1,4 +1,5 @@
 Version 2.1.115
+    Fixed a bug where Salvage always gave the best results
     Fixed an issue with arrows causing exceptions with players not yet having data loaded
     Spectral arrows are now tracked by mcMMO
     Use minimum level of salvageable properly

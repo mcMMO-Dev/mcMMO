@@ -437,8 +437,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     private HashSet<Block> getBrokenChorusBlocks(BlockState originalBreak) {
-        HashSet<Block> traversedBlocks = grabChorusTreeBrokenBlocksRecursive(originalBreak.getBlock(), new HashSet<>());
-        return traversedBlocks;
+        return grabChorusTreeBrokenBlocksRecursive(originalBreak.getBlock(), new HashSet<>());
     }
 
     private HashSet<Block> grabChorusTreeBrokenBlocksRecursive(Block currentBlock, HashSet<Block> traversed) {

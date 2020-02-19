@@ -118,8 +118,8 @@ public class SalvageManager extends SkillManager {
         for(int x = 0; x < potentialSalvageYield-1; x++) {
 
             if(RandomChanceUtil.rollDice(chanceOfSuccess, 100)) {
-                chanceOfSuccess-=2;
-                Math.max(chanceOfSuccess, 95);
+                chanceOfSuccess-=3;
+                chanceOfSuccess = Math.max(chanceOfSuccess, 90);
 
                 lotteryResults+=1;
             }
