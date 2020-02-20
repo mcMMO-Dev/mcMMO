@@ -1,4 +1,6 @@
 Version 2.1.115
+    Green Thumb now requires a hoe to activate
+    You can sneak to break plants with a hoe in your hand (or just put the hoe away)
     Hoes no longer give free replants
     There is now a feature in place to prevent breaking a newly automatically replanted (via green thumb) crop from being breakable for a few seconds after it appears
     Using a hoe on non-fully grown crops will replant them as a convenience feature for those who can't bother to wait for all of their plants to grow (put away the hoe to break non-fully grown crops)

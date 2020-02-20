@@ -98,6 +98,8 @@ public class SoundManager {
                 return Sound.ENTITY_ENDER_EYE_DEATH;
             case GLASS:
                 return Sound.BLOCK_GLASS_BREAK;
+            case ITEM_CONSUMED:
+                return Sound.ITEM_BOTTLE_EMPTY;
             default:
                 return null;
         }

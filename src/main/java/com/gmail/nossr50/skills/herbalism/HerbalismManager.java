@@ -26,6 +26,8 @@ import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import com.gmail.nossr50.util.sounds.SoundManager;
+import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -667,17 +669,19 @@ public class HerbalismManager extends SkillManager {
      * @param greenTerra boolean to determine if greenTerra is active or not
      */
     private void processGreenThumbPlants(BlockState blockState, BlockBreakEvent blockBreakEvent, boolean greenTerra) {
+        if(blockBreakEvent.getPlayer().isSneaking() || !ItemUtils.isHoe(blockBreakEvent.getPlayer().getInventory().getItemInMainHand())) {
+            return;
+        }
+
         BlockData blockData = blockState.getBlockData();
 
-        if (!(blockData instanceof Ageable))
+        if (!(blockData instanceof Ageable)) {
             return;
+        }
 
         Ageable ageable = (Ageable) blockData;
 
         //If the ageable is NOT mature and the player is NOT using a hoe, abort
-        if(!isAgeableMature(ageable) && !ItemUtils.isHoe(getPlayer().getItemInHand())) {
-            return;
-        }
 
         Player player = getPlayer();
         PlayerInventory playerInventory = player.getInventory();
@@ -729,6 +733,8 @@ public class HerbalismManager extends SkillManager {
 
         playerInventory.removeItem(seedStack);
         player.updateInventory(); // Needed until replacement available
+        //Play sound
+        SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_CONSUMED);
 
         new HerbalismBlockUpdaterTask(blockState).runTaskLater(mcMMO.p, 0);
     }
