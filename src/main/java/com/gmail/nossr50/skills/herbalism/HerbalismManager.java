@@ -140,12 +140,19 @@ public class HerbalismManager extends SkillManager {
         }
 
         //Check if the plant was recently replanted
-        if(blockBreakEvent.getBlock().getMetadata(mcMMO.REPLANT_META_KEY).size() >= 1) {
-            if(blockBreakEvent.getBlock().getMetadata(mcMMO.REPLANT_META_KEY).get(0).asBoolean()) {
-                //Crop is recently replanted to back out of destroying it
-                blockBreakEvent.setCancelled(true);
+        if(blockBreakEvent.getBlock().getBlockData() instanceof Ageable) {
+            Ageable ageableCrop = (Ageable) blockBreakEvent.getBlock().getBlockData();
 
-                return;
+            if(blockBreakEvent.getBlock().getMetadata(mcMMO.REPLANT_META_KEY).size() >= 1) {
+                if(blockBreakEvent.getBlock().getMetadata(mcMMO.REPLANT_META_KEY).get(0).asBoolean()) {
+                    if(isAgeableMature(ageableCrop)) {
+                        blockBreakEvent.getBlock().removeMetadata(mcMMO.REPLANT_META_KEY, mcMMO.p);
+                    } else {
+                        //Crop is recently replanted to back out of destroying it
+                        blockBreakEvent.setCancelled(true);
+                        return;
+                    }
+                }
             }
         }
 
@@ -756,9 +763,10 @@ public class HerbalismManager extends SkillManager {
 
         //Immature plants will start over at 0
         if(!isAgeableMature(ageable)) {
-            blockBreakEvent.setCancelled(true);
+//            blockBreakEvent.setCancelled(true);
             startReplantTask(0, blockBreakEvent, blockState, true);
-            blockState.setType(Material.AIR);
+//            blockState.setType(Material.AIR);
+            blockBreakEvent.setDropItems(false);
             return true;
         }
 
