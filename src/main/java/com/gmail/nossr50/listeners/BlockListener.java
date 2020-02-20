@@ -424,11 +424,6 @@ public class BlockListener implements Listener {
         BlockState blockState = event.getBlock().getState();
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
-        if (Herbalism.isRecentlyRegrown(blockState)) {
-            event.setCancelled(true);
-            return;
-        }
-
         if (ItemUtils.isSword(heldItem)) {
             HerbalismManager herbalismManager = UserManager.getPlayer(player).getHerbalismManager();
 

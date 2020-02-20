@@ -58,14 +58,4 @@ public class Herbalism {
         }
     }
 
-    /**
-     * Check if the block has a recently grown crop from Green Thumb
-     *
-     * @param blockState
-     *            The {@link BlockState} to check green thumb regrown for
-     * @return true if the block is recently regrown, false otherwise
-     */
-    public static boolean isRecentlyRegrown(BlockState blockState) {
-        return blockState.hasMetadata(mcMMO.greenThumbDataKey) && !SkillUtils.cooldownExpired(blockState.getMetadata(mcMMO.greenThumbDataKey).get(0).asInt(), 1);
-    }
 }
