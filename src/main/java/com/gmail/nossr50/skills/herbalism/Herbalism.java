@@ -1,7 +1,5 @@
 package com.gmail.nossr50.skills.herbalism;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 

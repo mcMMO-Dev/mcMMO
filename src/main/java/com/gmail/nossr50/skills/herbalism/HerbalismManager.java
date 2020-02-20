@@ -17,7 +17,6 @@ import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.DelayedCropReplant;
 import com.gmail.nossr50.runnables.skills.DelayedHerbalismXPCheckTask;
-import com.gmail.nossr50.runnables.skills.HerbalismBlockUpdaterTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -39,7 +38,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -189,7 +187,12 @@ public class HerbalismManager extends SkillManager {
 
         //When replanting a immature crop we cancel the block break event and back out
         if(greenThumbActivated) {
-            return;
+            if(originalBreak.getBlock().getBlockData() instanceof Ageable) {
+                Ageable ageableCrop = (Ageable) originalBreak.getBlock().getBlockData();
+                if(!isAgeableMature(ageableCrop)) {
+                    return;
+                }
+            }
         }
 
         /*

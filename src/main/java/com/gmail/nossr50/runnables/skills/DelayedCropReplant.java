@@ -6,7 +6,6 @@ import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -40,7 +39,7 @@ public class DelayedCropReplant extends BukkitRunnable {
         BlockState currentState = cropBlock.getState();
 
         //Remove the metadata marking the block as recently replanted
-        new markPlantAsOld(blockBreakEvent.getBlock().getLocation()).runTaskLater(mcMMO.p, 20*5);
+        new markPlantAsOld(blockBreakEvent.getBlock().getLocation()).runTaskLater(mcMMO.p, 10);
 
         if(blockBreakEvent.isCancelled()) {
             wasImmaturePlant = true;
@@ -90,8 +89,6 @@ public class DelayedCropReplant extends BukkitRunnable {
             Block cropBlock = cropLoc.getBlock();
             if(cropBlock.getMetadata(mcMMO.REPLANT_META_KEY).size() > 0)
                 cropBlock.setMetadata(mcMMO.REPLANT_META_KEY, new RecentlyReplantedCropMeta(mcMMO.p, false));
-
-            ParticleEffectUtils.playFluxEffect(cropLocation);
         }
     }
 

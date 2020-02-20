@@ -14,7 +14,6 @@ import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
-import com.gmail.nossr50.skills.herbalism.Herbalism;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
