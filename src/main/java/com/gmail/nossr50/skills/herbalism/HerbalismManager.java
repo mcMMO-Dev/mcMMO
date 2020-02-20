@@ -171,7 +171,8 @@ public class HerbalismManager extends SkillManager {
 
         //TODO: The design of Green Terra needs to change, this is a mess
         if(Permissions.greenThumbPlant(getPlayer(), originalBreak.getType())) {
-            processGreenThumbPlants(originalBreak, blockBreakEvent, isGreenTerraActive());
+            if(!getPlayer().isSneaking())
+                processGreenThumbPlants(originalBreak, blockBreakEvent, isGreenTerraActive());
         }
 
         //When replanting a immature crop we cancel the block break event and back out
@@ -669,7 +670,7 @@ public class HerbalismManager extends SkillManager {
      * @param greenTerra boolean to determine if greenTerra is active or not
      */
     private void processGreenThumbPlants(BlockState blockState, BlockBreakEvent blockBreakEvent, boolean greenTerra) {
-        if(blockBreakEvent.getPlayer().isSneaking() || !ItemUtils.isHoe(blockBreakEvent.getPlayer().getInventory().getItemInMainHand())) {
+        if(!ItemUtils.isHoe(blockBreakEvent.getPlayer().getInventory().getItemInMainHand())) {
             return;
         }
 
