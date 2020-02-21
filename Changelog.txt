@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Version 2.2.0
     !!!!!!!!!!!!!!!!!!!!!!!!
     !!!!!!!!!!!!!!!!!!!!!!!!
@@ -202,6 +203,9 @@ Version 2.2.0
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
     Added 'UndefinedSkillBehaviour' for trying to use a method that has no behaviour defined for the provided skill
+
+Version 2.1.116
+    Fixed directional plants not maintaining their direction when replanted
 
 Version 2.1.115
     Green Thumb now requires a hoe to activate
