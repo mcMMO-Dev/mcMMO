@@ -3,7 +3,6 @@ package com.gmail.nossr50.commands.admin;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import com.gmail.nossr50.mcMMO;
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import net.kyori.text.TextComponent;
 import net.kyori.text.adapter.bukkit.TextAdapter;
 import net.kyori.text.format.TextColor;

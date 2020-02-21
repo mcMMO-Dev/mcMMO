@@ -44,7 +44,6 @@ import com.gmail.nossr50.util.skills.*;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
-import net.kyori.text.adapter.bukkit.TextAdapter;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;

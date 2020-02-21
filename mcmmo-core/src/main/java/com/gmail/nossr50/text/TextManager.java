@@ -4,7 +4,6 @@ import com.gmail.nossr50.mcMMO;
 import net.kyori.text.TextComponent;
 import net.kyori.text.adapter.bukkit.TextAdapter;
 import net.kyori.text.serializer.gson.GsonComponentSerializer;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 

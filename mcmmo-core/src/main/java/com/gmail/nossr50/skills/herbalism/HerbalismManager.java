@@ -15,13 +15,10 @@ import com.gmail.nossr50.datatypes.skills.behaviours.HerbalismBehaviour;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.DelayedCropReplant;
 import com.gmail.nossr50.runnables.skills.DelayedHerbalismXPCheckTask;
-import com.gmail.nossr50.runnables.skills.HerbalismBlockUpdaterTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
-import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -32,7 +29,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -190,7 +186,12 @@ public class HerbalismManager extends SkillManager {
 
         //When replanting a immature crop we cancel the block break event and back out
         if(greenThumbActivated) {
-            return;
+            if(originalBreak.getBlock().getBlockData() instanceof Ageable) {
+                Ageable ageableCrop = (Ageable) originalBreak.getBlock().getBlockData();
+                if(!isAgeableMature(ageableCrop)) {
+                    return;
+                }
+            }
         }
 
         /*

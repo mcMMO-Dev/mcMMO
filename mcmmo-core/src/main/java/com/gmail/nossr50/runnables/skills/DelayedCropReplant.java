@@ -3,11 +3,9 @@ package com.gmail.nossr50.runnables.skills;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.meta.RecentlyReplantedCropMeta;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -43,7 +41,7 @@ public class DelayedCropReplant extends BukkitRunnable {
         BlockState currentState = cropBlock.getState();
 
         //Remove the metadata marking the block as recently replanted
-        new markPlantAsOld(blockBreakEvent.getBlock().getLocation()).runTaskLater(pluginRef, 20*5);
+        new markPlantAsOld(blockBreakEvent.getBlock().getLocation()).runTaskLater(pluginRef, 10);
 
         if(blockBreakEvent.isCancelled()) {
             wasImmaturePlant = true;
@@ -91,10 +89,11 @@ public class DelayedCropReplant extends BukkitRunnable {
         @Override
         public void run() {
             Block cropBlock = cropLoc.getBlock();
-            if(cropBlock.getMetadata(MetadataConstants.REPLANT_META_KEY).size() > 0)
-                cropBlock.setMetadata(MetadataConstants.REPLANT_META_KEY, new RecentlyReplantedCropMeta(pluginRef, false));
 
-            pluginRef.getParticleEffectUtils().playFluxEffect(cropLocation);
+            if(cropBlock.getMetadata(MetadataConstants.REPLANT_META_KEY).size() > 0) {
+                cropBlock.setMetadata(MetadataConstants.REPLANT_META_KEY, new RecentlyReplantedCropMeta(pluginRef, false));
+                pluginRef.getParticleEffectUtils().playFluxEffect(cropLocation);
+            }
         }
     }
 

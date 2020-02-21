@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes.skills.behaviours;
 
-import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;

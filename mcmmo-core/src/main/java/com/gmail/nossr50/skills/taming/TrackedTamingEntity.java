@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills.taming;
 
 import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
