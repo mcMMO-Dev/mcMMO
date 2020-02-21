@@ -1,11 +1,6 @@
 package com.gmail.nossr50.mcmmo.bukkit;
 
-import com.gmail.nossr50.listeners.BlockListener;
-import com.gmail.nossr50.listeners.EntityListener;
-import com.gmail.nossr50.listeners.InventoryListener;
-import com.gmail.nossr50.listeners.PlayerListener;
-import com.gmail.nossr50.listeners.SelfListener;
-import com.gmail.nossr50.listeners.WorldListener;
+import com.gmail.nossr50.listeners.*;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcmmo.api.platform.PlatformProvider;
 import com.gmail.nossr50.mcmmo.api.platform.ServerSoftwareType;
@@ -14,7 +9,6 @@ import com.gmail.nossr50.mcmmo.api.platform.util.MetadataStore;
 import com.gmail.nossr50.mcmmo.api.platform.util.MobHealthBarManager;
 import com.gmail.nossr50.mcmmo.bukkit.platform.scheduler.BukkitPlatformScheduler;
 import com.gmail.nossr50.mcmmo.bukkit.platform.util.BukkitMobHealthBarManager;
-
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;

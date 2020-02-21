@@ -19,9 +19,6 @@ load: POSTWORLD
 api-version: 1.13
 
 commands:
-    mmodebug:
-        aliases: [mcmmodebugmode]
-        description: Toggles a debug mode which will print useful information to chat
     mmoinfo:
         aliases: [mcinfo]
         description: Info pages for mcMMO
@@ -264,7 +261,7 @@ permissions:
         description: Allows access to all Axes abilities
         children:
             mcmmo.ability.axes.axemastery: true
-            mcmmo.ability.axes.criticalhit: true
+            mcmmo.ability.axes.criticalstrikes: true
             mcmmo.ability.axes.greaterimpact: true
             mcmmo.ability.axes.armorimpact: true
             mcmmo.ability.axes.skullsplitter: true
@@ -273,8 +270,8 @@ permissions:
         description: Adds damage to axes
     mcmmo.ability.axes.axemastery:
         description: Allows bonus damage from Axes
-    mcmmo.ability.axes.criticalhit:
-        description: Allows access to the Critical Hit ability
+    mcmmo.ability.axes.criticalstrikes:
+        description: Allows access to the Critical Strikes ability
     mcmmo.ability.axes.greaterimpact:
         description: Allows access to the Greater Impact ability
     mcmmo.ability.axes.armorimpact:
@@ -628,6 +625,10 @@ permissions:
         children:
             mcmmo.commands.mcconvert.all: true
             mcmmo.commands.xprate.all: true
+            mcmmo.commands.nbttools: true
+    mcmmo.commands.nbttools:
+        default: false
+        description: Modify or Read NBT of an item in-hand
     mcmmo.bypass.*:
         default: false
         description: Implies all bypass permissions.
@@ -731,6 +732,7 @@ permissions:
             mcmmo.commands.mcmmoreload: true
             mcmmo.commands.mmoedit: true
             mcmmo.commands.mmoedit.others: true
+            mcmmo.commands.nbttools: true
             mcmmo.commands.mmoshowdb: true
             mcmmo.commands.ptp.world.all: true
             mcmmo.commands.reloadlocale: true

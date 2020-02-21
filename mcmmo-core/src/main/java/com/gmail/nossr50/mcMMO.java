@@ -10,10 +10,11 @@ import com.gmail.nossr50.config.playerleveling.ConfigLeveling;
 import com.gmail.nossr50.config.scoreboard.ConfigScoreboard;
 import com.gmail.nossr50.core.DynamicSettingsManager;
 import com.gmail.nossr50.core.MaterialMapStore;
+import com.gmail.nossr50.core.PlatformManager;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.datatypes.skills.subskills.acrobatics.Roll;
-import com.gmail.nossr50.listeners.*;
+import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.locale.LocaleManager;
 import com.gmail.nossr50.mcmmo.api.McMMOApi;
 import com.gmail.nossr50.mcmmo.api.platform.PlatformProvider;
@@ -34,20 +35,17 @@ import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
 import com.gmail.nossr50.util.commands.CommandRegistrationManager;
 import com.gmail.nossr50.util.commands.CommandTools;
 import com.gmail.nossr50.util.experience.FormulaManager;
+import com.gmail.nossr50.util.nbt.NBTManager;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.PlayerLevelTools;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceTools;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
-import com.gmail.nossr50.util.skills.CombatTools;
-import com.gmail.nossr50.util.skills.PerkUtils;
-import com.gmail.nossr50.util.skills.RankTools;
-import com.gmail.nossr50.util.skills.SkillTools;
+import com.gmail.nossr50.util.skills.*;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import net.shatteredlands.shatt.backup.ZipLibrary;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -56,7 +54,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.PluginManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,7 +70,7 @@ public class mcMMO implements McMMOApi {
     private FormulaManager formulaManager;
     private NotificationManager notificationManager;
     private CommandRegistrationManager commandRegistrationManager;
-//    private NBTManager nbtManager;
+    private NBTManager nbtManager;
     private PartyManager partyManager;
     private LocaleManager localeManager;
     private ChatManager chatManager;
@@ -82,9 +79,11 @@ public class mcMMO implements McMMOApi {
     private ScoreboardManager scoreboardManager;
     private SoundManager soundManager;
     private HardcoreManager hardcoreManager;
+    private PlatformManager platformManager;
     private WorldGuardManager worldGuardManager;
 
     /* Not-Managers but my naming scheme sucks */
+    private ParticleEffectUtils particleEffectUtils;
     private DatabaseManagerFactory databaseManagerFactory;
     private ChunkManagerFactory chunkManagerFactory;
     private CommandTools commandTools;
@@ -186,9 +185,10 @@ public class mcMMO implements McMMOApi {
 
                 scheduleTasks();
                 commandRegistrationManager = new CommandRegistrationManager(this);
+                commandRegistrationManager.registerACFCommands();
                 commandRegistrationManager.registerCommands();
 
-//                nbtManager = new NBTManager();
+                nbtManager = new NBTManager();
 
                 //Init Chunk Manager Factory
                 chunkManagerFactory = new ChunkManagerFactory(this);
@@ -263,6 +263,9 @@ public class mcMMO implements McMMOApi {
 
         //Init PerkUtils
         perkUtils = new PerkUtils(this);
+
+        //Init particle effect utils
+        particleEffectUtils = new ParticleEffectUtils(this);
     }
 
     private String getVersion() {
@@ -762,5 +765,17 @@ public class mcMMO implements McMMOApi {
 
     public PerkUtils getPerkUtils() {
         return perkUtils;
+    }
+
+    public NBTManager getNbtManager() {
+        return nbtManager;
+    }
+
+    public PlatformManager getPlatformManager() {
+        return platformManager;
+    }
+
+    public ParticleEffectUtils getParticleEffectUtils() {
+        return particleEffectUtils;
     }
 }

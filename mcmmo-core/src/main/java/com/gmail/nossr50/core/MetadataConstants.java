@@ -1,7 +1,6 @@
 package com.gmail.nossr50.core;
 
 import com.gmail.nossr50.mcmmo.api.platform.util.MetadataKey;
-
 import org.bukkit.metadata.FixedMetadataValue;
 
 /**
@@ -10,6 +9,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 public class MetadataConstants {
 
     /* Metadata Values */
+    public static final MetadataKey<Boolean> REPLANT_META_KEY = new MetadataKey<>("mcMMO: Recently Replanted");
     public static final MetadataKey<Boolean> FISH_HOOK_REF_METAKEY = new MetadataKey<>("mcMMO: Fish Hook Tracker");
     public static final MetadataKey<Boolean> DODGE_TRACKER        = new MetadataKey<>("mcMMO: Dodge Tracker");
     public static final MetadataKey<Boolean> CUSTOM_DAMAGE_METAKEY = new MetadataKey<>("mcMMO: Custom Damage");
@@ -33,5 +33,7 @@ public class MetadataConstants {
     public final static MetadataKey<Boolean> DATABASE_PROCESSING_COMMAND_METAKEY = new MetadataKey<>("mcMMO: Processing Database Command");
     public final static MetadataKey<Boolean> PETS_ANIMAL_TRACKING_METAKEY = new MetadataKey<>("mcMMO: Pet Animal");
     public static final MetadataKey<Boolean> COTW_TEMPORARY_SUMMON = new MetadataKey<>("mcMMO: COTW Entity");
+
+    public static FixedMetadataValue metadataValue; //Gains value in onEnable
 
 }

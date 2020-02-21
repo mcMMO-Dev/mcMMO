@@ -1,6 +1,8 @@
 package com.gmail.nossr50.util.commands;
 
+import co.aikar.commands.PaperCommandManager;
 import com.gmail.nossr50.commands.*;
+import com.gmail.nossr50.commands.admin.NBTToolsCommand;
 import com.gmail.nossr50.commands.admin.PlayerDebugCommand;
 import com.gmail.nossr50.commands.admin.ReloadLocaleCommand;
 import com.gmail.nossr50.commands.chat.AdminChatCommand;
@@ -27,13 +29,70 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+//TODO: Properly rewrite ACF integration later
 public final class CommandRegistrationManager {
     private final mcMMO pluginRef;
     private String permissionsMessage;
+    //NOTE: Does not actually require paper, will work for bukkit
+    private PaperCommandManager commandManager;
 
     public CommandRegistrationManager(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
         permissionsMessage = pluginRef.getLocaleManager().getString("mcMMO.NoPermission");
+        commandManager = new PaperCommandManager(pluginRef);
+    }
+
+    /**
+     * Register ACF Commands
+     */
+    //TODO: Properly rewrite ACF integration later
+    public void registerACFCommands() {
+        //Register ACF Commands
+        registerNBTToolsCommand();
+        registerMmoDebugCommand();
+    }
+
+    /**
+     * Register exception handlers for the ACF commands
+     */
+    //TODO: Properly rewrite ACF integration later
+    private void registerExceptionHandlers() {
+        registerDefaultExceptionHandler();
+    }
+
+    /**
+     * Register default exception handler
+     */
+    //TODO: Properly rewrite ACF integration later
+    private void registerDefaultExceptionHandler() {
+        commandManager.setDefaultExceptionHandler((command, registeredCommand, sender, args, t) -> {
+            pluginRef.getLogger().warning("Error occurred while executing command " + command.getName());
+            return false;
+        });
+    }
+
+    /**
+     * Register contexts for ACF
+     */
+    //TODO: Properly rewrite ACF integration later
+    private void registerContexts() {
+
+    }
+
+    /**
+     * Register the NBT Tools command
+     */
+    //TODO: Properly rewrite ACF integration later
+    private void registerNBTToolsCommand() {
+        commandManager.registerCommand(new NBTToolsCommand());
+    }
+
+    /**
+     * Register the MMO Debug command
+     */
+    //TODO: Properly rewrite ACF integration later
+    private void registerMmoDebugCommand() {
+        commandManager.registerCommand(new PlayerDebugCommand());
     }
 
     private void registerSkillCommands() {
@@ -151,16 +210,6 @@ public final class CommandRegistrationManager {
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.1", "mmoinfo", "[" + pluginRef.getLocaleManager().getString("Commands.Usage.SubSkill") + "]"));
         command.setExecutor(new MmoInfoCommand(pluginRef));
-    }
-
-
-    private void registerMmoDebugCommand() {
-        PluginCommand command = pluginRef.getCommand("mmodebug");
-        command.setDescription(pluginRef.getLocaleManager().getString("Commands.Description.mmodebug"));
-        command.setPermission(null); //No perm required to save support headaches
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(pluginRef.getLocaleManager().getString("Commands.Usage.0", "mmodebug"));
-        command.setExecutor(new PlayerDebugCommand(pluginRef));
     }
 
     private void registerMcChatSpyCommand() {
@@ -427,7 +476,6 @@ public final class CommandRegistrationManager {
     public void registerCommands() {
         // Generic Commands
         registerMmoInfoCommand();
-        registerMmoDebugCommand();
         registerMcabilityCommand();
         registerMcgodCommand();
         registerMcChatSpyCommand();

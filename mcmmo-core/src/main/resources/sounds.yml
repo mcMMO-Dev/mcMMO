@@ -4,6 +4,10 @@ Sounds:
     # 1.0 = Max volume
     # 0.0 = No Volume
     MasterVolume: 1.0
+    ITEM_CONSUMED:
+        Enable: true
+        Volume: 1.0
+        Pitch: 1.0
     GLASS:
         Enable: true
         Volume: 1.0

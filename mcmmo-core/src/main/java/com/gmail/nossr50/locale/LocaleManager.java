@@ -124,7 +124,7 @@ public final class LocaleManager {
         }
     }
 
-    private static String addColors(String input) {
+    public static String addColors(String input) {
         input = input.replaceAll("\\Q[[BLACK]]\\E", ChatColor.BLACK.toString());
         input = input.replaceAll("\\Q[[DARK_BLUE]]\\E", ChatColor.DARK_BLUE.toString());
         input = input.replaceAll("\\Q[[DARK_GREEN]]\\E", ChatColor.DARK_GREEN.toString());

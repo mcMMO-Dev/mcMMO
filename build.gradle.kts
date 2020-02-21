@@ -6,11 +6,14 @@ subprojects {
     repositories {
         mavenLocal()
         mavenCentral()
+        maven("https://oss.sonatype.org/content/groups/public/")
         maven("https://repo.spongepowered.org/maven")
         maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots")
         maven("https://repo.codemc.org/repository/maven-public")
         maven("https://maven.sk89q.com/repo")
         maven("https://mvnrepository.com/artifact/org.jetbrains/annotations")
+        maven("https://repo.aikar.co/content/groups/aikar/")
+        maven("https://hub.spigotmc.org/nexus/content/groups/public/")
     }
 
     tasks {

@@ -203,6 +203,23 @@ Version 2.2.0
     Added API method to check if a skill was being level capped
     Added 'UndefinedSkillBehaviour' for trying to use a method that has no behaviour defined for the provided skill
 
+Version 2.1.115
+    Green Thumb now requires a hoe to activate
+    Hoes no longer give free replants
+    You can sneak to break plants with a hoe in your hand (or just put the hoe away)
+    Using a hoe on non-fully grown crops will replant them as a convenience feature
+    New sound option in sounds.yml called 'ITEM_CONSUMED', plays when eating seeds for Green Thumb
+    Cocoa plants now require GT of at least 2 to start at the second stage of growth
+    Green Terra now boosts growth on Green Thumb by 1 stage (doesn't go above the maximum value though)
+    There is now a feature in place to prevent breaking a newly automatically replanted (via green thumb) crop from being breakable for a few seconds after it appears
+    Fixed a bug where Salvage always gave the best results
+    Fixed an issue with arrows causing exceptions with players not yet having data loaded
+    Spectral arrows are now tracked by mcMMO
+    Use minimum level of salvageable properly
+    Fix Axes Critical Strikes default permissions ( new fixed permission: mcmmo.ability.axes.criticalstrikes )
+    Fix potential null pointer exception for salvage
+    Updated locale entry 'Herbalism.SubSkill.GreenTerra.Description'
+
 Version 2.1.114
     Fix some more locale usages, should aim to further prevent issues with oddball locales
     Fixed a bug where newer versions of MySQL did not like our rank command

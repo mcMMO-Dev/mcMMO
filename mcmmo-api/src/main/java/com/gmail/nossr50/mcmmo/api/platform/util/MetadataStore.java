@@ -1,7 +1,6 @@
 package com.gmail.nossr50.mcmmo.api.platform.util;
 
 import com.gmail.nossr50.mcmmo.api.data.MMOEntity;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

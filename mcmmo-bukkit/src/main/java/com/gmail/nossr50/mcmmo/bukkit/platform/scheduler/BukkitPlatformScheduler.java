@@ -3,7 +3,6 @@ package com.gmail.nossr50.mcmmo.bukkit.platform.scheduler;
 import com.gmail.nossr50.mcmmo.api.platform.scheduler.PlatformScheduler;
 import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
 import com.gmail.nossr50.mcmmo.bukkit.BukkitBoostrap;
-
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;

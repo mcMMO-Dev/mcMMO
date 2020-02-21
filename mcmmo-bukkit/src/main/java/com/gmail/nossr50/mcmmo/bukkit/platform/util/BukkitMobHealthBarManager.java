@@ -9,7 +9,6 @@ import com.gmail.nossr50.mcmmo.api.data.MMOPlayer;
 import com.gmail.nossr50.mcmmo.api.platform.util.MobHealthBarManager;
 import com.gmail.nossr50.runnables.MobHealthDisplayUpdaterTask;
 import com.gmail.nossr50.util.StringUtils;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;

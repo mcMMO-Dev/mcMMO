@@ -9,7 +9,6 @@ import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.datatypes.skills.behaviours.AxesBehaviour;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -143,7 +142,7 @@ public class AxesManager extends SkillManager {
 
         Player player = getPlayer();
 
-        ParticleEffectUtils.playGreaterImpactEffect(target);
+        pluginRef.getParticleEffectUtils().playGreaterImpactEffect(target);
         target.setVelocity(player.getLocation().getDirection().normalize().multiply(pluginRef.getConfigManager().getConfigAxes().getGreaterImpactKnockBackModifier()));
 
         if (mcMMOPlayer.useChatNotifications()) {

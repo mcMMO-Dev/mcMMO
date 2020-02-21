@@ -2,7 +2,6 @@ package com.gmail.nossr50.mcmmo.bukkit.platform.scheduler;
 
 import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
 import com.google.common.base.Preconditions;
-
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.function.Consumer;

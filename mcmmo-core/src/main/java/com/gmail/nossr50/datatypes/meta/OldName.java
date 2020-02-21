@@ -11,4 +11,5 @@ public class OldName extends FixedMetadataValue {
     public OldName(String oldName, mcMMO plugin) {
         super(plugin, oldName);
     }
+
 }

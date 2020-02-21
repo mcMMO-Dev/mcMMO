@@ -8,6 +8,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,9 +52,11 @@ public final class UserManager {
     public void remove(Player player) {
         BukkitMMOPlayer mcMMOPlayer = getPlayer(player);
         player.removeMetadata(MetadataConstants.PLAYER_DATA_METAKEY, pluginRef);
-        mcMMOPlayer.cleanup();
 
-        if(playerDataSet != null && playerDataSet.contains(mcMMOPlayer)) {
+        if(mcMMOPlayer != null)
+            mcMMOPlayer.cleanup();
+
+        if(playerDataSet != null) {
             playerDataSet.remove(mcMMOPlayer); //Clear sync save tracking
         }
     }
@@ -114,10 +117,12 @@ public final class UserManager {
      * @param playerName The name of the player whose McMMOPlayer to retrieve
      * @return the player's McMMOPlayer object
      */
+    @Nullable
     public BukkitMMOPlayer getPlayer(String playerName) {
         return retrieveMcMMOPlayer(playerName, false);
     }
 
+    @Nullable
     public BukkitMMOPlayer getOfflinePlayer(OfflinePlayer player) {
         if (player instanceof Player) {
             return getPlayer((Player) player);
@@ -136,6 +141,7 @@ public final class UserManager {
      * @param player target player
      * @return McMMOPlayer object for this player, null if Player has not been loaded
      */
+    @Nullable
     public BukkitMMOPlayer getPlayer(Player player) {
         //Avoid Array Index out of bounds
         if (player != null && player.hasMetadata(MetadataConstants.PLAYER_DATA_METAKEY))
@@ -144,6 +150,7 @@ public final class UserManager {
             return null;
     }
 
+    @Nullable
     private BukkitMMOPlayer retrieveMcMMOPlayer(String playerName, boolean offlineValid) {
         Player player = pluginRef.getServer().getPlayerExact(playerName);
 

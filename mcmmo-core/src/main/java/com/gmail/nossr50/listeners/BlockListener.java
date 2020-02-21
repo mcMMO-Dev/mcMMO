@@ -397,27 +397,24 @@ public class BlockListener implements Listener {
             return;
         }
 
+        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
         BlockState blockState = event.getBlock().getState();
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
-        if (pluginRef.getDynamicSettingsManager().getSkillBehaviourManager().getHerbalismBehaviour().isRecentlyRegrown(blockState)) {
-            event.setCancelled(true);
-            return;
-        }
 
         if (pluginRef.getItemTools().isSword(heldItem)) {
-            HerbalismManager herbalismManager = pluginRef.getUserManager().getPlayer(player).getHerbalismManager();
+                HerbalismManager herbalismManager = mcMMOPlayer.getHerbalismManager();
 
-            if (herbalismManager.canUseHylianLuck()) {
-                if (herbalismManager.processHylianLuck(blockState)) {
-                    blockState.update(true);
-                    event.setCancelled(true);
-                } else if (blockState.getType() == Material.FLOWER_POT) {
-                    blockState.setType(Material.AIR);
-                    blockState.update(true);
-                    event.setCancelled(true);
+                if (herbalismManager.canUseHylianLuck()) {
+                    if (herbalismManager.processHylianLuck(blockState)) {
+                        blockState.update(true);
+                        event.setCancelled(true);
+                    } else if (blockState.getType() == Material.FLOWER_POT) {
+                        blockState.setType(Material.AIR);
+                        blockState.update(true);
+                        event.setCancelled(true);
+                    }
                 }
-            }
         }
         /*else if (!heldItem.containsEnchantment(Enchantment.SILK_TOUCH)) {
             SmeltingManager smeltingManager = pluginRef.getUserManager().getPlayer(player).getSmeltingManager();

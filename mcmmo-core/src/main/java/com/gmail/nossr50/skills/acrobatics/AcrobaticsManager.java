@@ -10,7 +10,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.behaviours.AcrobaticsBehaviour;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -87,7 +86,7 @@ public class AcrobaticsManager extends SkillManager {
         Player player = getPlayer();
 
         if (!isFatal(modifiedDamage) && pluginRef.getRandomChanceTools().isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ACROBATICS_DODGE, player)) {
-            ParticleEffectUtils.playDodgeEffect(player);
+            pluginRef.getParticleEffectUtils().playDodgeEffect(player);
 
             if (mcMMOPlayer.useChatNotifications()) {
                 pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Combat.Proc");

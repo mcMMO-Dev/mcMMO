@@ -1,5 +1,7 @@
 package com.gmail.nossr50.util.skills;
 
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,10 +13,19 @@ import org.bukkit.entity.Player;
 
 public final class ParticleEffectUtils {
 
-    private ParticleEffectUtils() {
+    private final mcMMO pluginRef;
+
+    public ParticleEffectUtils(mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
     }
 
-    public static void playBleedEffect(LivingEntity livingEntity) {
+    public void playGreenThumbEffect(Location location) {
+        World world = location.getWorld();
+        playSmokeEffect(location);
+        pluginRef.getSoundManager().worldSendSoundMaxPitch(world, location, SoundType.POP);
+    }
+
+    public void playBleedEffect(LivingEntity livingEntity) {
         /*if (!MainConfig.getInstance().getBleedEffectEnabled()) {
             return;
         }*/
@@ -22,15 +33,15 @@ public final class ParticleEffectUtils {
         livingEntity.getWorld().playEffect(livingEntity.getEyeLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
     }
 
-    public static void playDodgeEffect(Player player) {
+    public void playDodgeEffect(Player player) {
         /*if (!MainConfig.getInstance().getDodgeEffectEnabled()) {
             return;
         }*/
 
-        playSmokeEffect(player);
+        playSmokeEffect(player.getLocation());
     }
 
-    public static void playFluxEffect(Location location) {
+    public void playFluxEffect(Location location) {
         /*if (!MainConfig.getInstance().getFluxEffectEnabled()) {
             return;
         }*/
@@ -38,9 +49,8 @@ public final class ParticleEffectUtils {
         location.getWorld().playEffect(location, Effect.MOBSPAWNER_FLAMES, 1);
     }
 
-    public static void playSmokeEffect(LivingEntity livingEntity) {
-        Location location = livingEntity.getEyeLocation();
-        World world = livingEntity.getWorld();
+    public void playSmokeEffect(Location location) {
+        World world = location.getWorld();
 
         // Have to do it this way, because not all block directions are valid for smoke
         world.playEffect(location, Effect.SMOKE, BlockFace.SOUTH_EAST);
@@ -54,7 +64,7 @@ public final class ParticleEffectUtils {
         world.playEffect(location, Effect.SMOKE, BlockFace.NORTH_WEST);
     }
 
-    public static void playGreaterImpactEffect(LivingEntity livingEntity) {
+    public void playGreaterImpactEffect(LivingEntity livingEntity) {
         /*if (!MainConfig.getInstance().getGreaterImpactEffectEnabled()) {
             return;
         }*/
@@ -64,7 +74,7 @@ public final class ParticleEffectUtils {
         livingEntity.getWorld().createExplosion(location.getX(), location.getY(), location.getZ(), 0F, false, false);
     }
 
-    public static void playCallOfTheWildEffect(LivingEntity livingEntity) {
+    public void playCallOfTheWildEffect(LivingEntity livingEntity) {
         /*if (!MainConfig.getInstance().getCallOfTheWildEffectEnabled()) {
             return;
         }*/
@@ -87,7 +97,7 @@ public final class ParticleEffectUtils {
         firework.setFireworkMeta(fireworkMeta);
     }*/
 
-    private static boolean hasHeadRoom(Player player) {
+    private boolean hasHeadRoom(Player player) {
         boolean hasHeadRoom = true;
         Block headBlock = player.getEyeLocation().getBlock();
 

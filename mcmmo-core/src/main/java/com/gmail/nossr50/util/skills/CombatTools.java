@@ -222,7 +222,7 @@ public final class CombatTools {
 
     }
 
-    private void processArcheryCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event, Arrow arrow) {
+    private void processArcheryCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event, Projectile arrow) {
         double initialDamage = event.getDamage();
 
         BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
@@ -376,8 +376,9 @@ public final class CombatTools {
                     processTamingCombat(target, master, wolf, event);
                 }
             }
-        } else if (entityType == EntityType.ARROW) {
-            Arrow arrow = (Arrow) damager;
+        }
+        else if (entityType == EntityType.ARROW || entityType == EntityType.SPECTRAL_ARROW) {
+            Projectile arrow = (Projectile) damager;
             ProjectileSource projectileSource = arrow.getShooter();
 
             if (projectileSource instanceof Player && pluginRef.getSkillTools().canCombatSkillsTrigger(PrimarySkillType.ARCHERY, target)) {
@@ -407,11 +408,9 @@ public final class CombatTools {
         if (metadataValue.size() <= 0)
             return;
 
-        if (metadataValue != null) {
-            OldName oldName = (OldName) metadataValue.get(0);
-            entity.setCustomName(oldName.asString());
-            entity.setCustomNameVisible(false);
-        }
+        OldName oldName = (OldName) metadataValue.get(0);
+        entity.setCustomName(oldName.asString());
+        entity.setCustomNameVisible(false);
     }
 
 

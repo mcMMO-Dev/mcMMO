@@ -43,6 +43,11 @@ public class SoundManager {
             world.playSound(location, getSound(soundType), getVolume(soundType), getPitch(soundType));
     }
 
+    public void worldSendSoundMaxPitch(World world, Location location, SoundType soundType) {
+        if(pluginRef.getConfigManager().getConfigSound().isSoundEnabled(soundType))
+            world.playSound(location, getSound(soundType), getVolume(soundType), 2.0F);
+    }
+
     /**
      * All volume is multiplied by the master volume to get its final value
      *
@@ -95,6 +100,8 @@ public class SoundManager {
                 return Sound.ENTITY_ENDER_EYE_DEATH;
             case GLASS:
                 return Sound.BLOCK_GLASS_BREAK;
+            case ITEM_CONSUMED:
+                return Sound.ITEM_BOTTLE_EMPTY;
             default:
                 return null;
         }

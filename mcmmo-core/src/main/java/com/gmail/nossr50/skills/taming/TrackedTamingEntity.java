@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills.taming;
 
 import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
@@ -39,7 +38,7 @@ public class TrackedTamingEntity extends BukkitRunnable {
         if (livingEntity.isValid()) {
             Location location = livingEntity.getLocation();
             location.getWorld().playSound(location, Sound.BLOCK_FIRE_EXTINGUISH, 0.8F, 0.8F);
-            ParticleEffectUtils.playCallOfTheWildEffect(livingEntity);
+            pluginRef.getParticleEffectUtils().playCallOfTheWildEffect(livingEntity);
             pluginRef.getCombatTools().dealDamage(livingEntity, livingEntity.getMaxHealth(), EntityDamageEvent.DamageCause.SUICIDE, livingEntity);
 
             if(tamingManagerRef != null)
