@@ -6,8 +6,11 @@ import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -18,6 +21,7 @@ public class DelayedCropReplant extends BukkitRunnable {
     private final Material cropMaterial;
     private boolean wasImmaturePlant;
     private final BlockBreakEvent blockBreakEvent;
+    private BlockFace cropFace;
 
     /**
      * Replants a crop after a delay setting the age to desiredCropAge
@@ -25,6 +29,13 @@ public class DelayedCropReplant extends BukkitRunnable {
      * @param desiredCropAge desired age of the crop
      */
     public DelayedCropReplant(BlockBreakEvent blockBreakEvent, BlockState cropState, int desiredCropAge, boolean wasImmaturePlant) {
+        BlockData cropData = cropState.getBlockData();
+
+        if(cropData instanceof Directional) {
+            Directional cropDir = (Directional) cropData;
+            cropFace = cropDir.getFacing();
+        }
+
         //The plant was either immature or something cancelled the event, therefor we need to treat it differently
         this.blockBreakEvent = blockBreakEvent;
         this.wasImmaturePlant = wasImmaturePlant;
@@ -51,22 +62,33 @@ public class DelayedCropReplant extends BukkitRunnable {
             //The space is not currently occupied by a block so we can fill it
             cropBlock.setType(cropMaterial);
 
+
             //Get new state (necessary?)
             BlockState newState = cropBlock.getState();
-//            newState.update();
+            BlockData newData = newState.getBlockData();
 
-            Ageable ageable = (Ageable) newState.getBlockData();
+            int age = 0;
 
             //Crop age should always be 0 if the plant was immature
-            if(wasImmaturePlant) {
-                ageable.setAge(0);
-            } else {
+            if(!wasImmaturePlant) {
+                age = desiredCropAge;
                 //Otherwise make the plant the desired age
-                ageable.setAge(desiredCropAge);
+            }
+
+            if(newData instanceof Directional) {
+                //Cocoa Version
+                Directional directional = (Directional) newState.getBlockData();
+                directional.setFacing(cropFace);
+
+                newState.setBlockData(directional);
             }
 
             //Age the crop
+            Ageable ageable = (Ageable) newState.getBlockData();
+            ageable.setAge(age);
             newState.setBlockData(ageable);
+
+
             newState.update(true);
 
             //Play an effect
