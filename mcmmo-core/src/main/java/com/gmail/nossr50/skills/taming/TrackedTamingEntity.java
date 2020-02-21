@@ -39,7 +39,7 @@ public class TrackedTamingEntity extends BukkitRunnable {
         if (livingEntity.isValid()) {
             Location location = livingEntity.getLocation();
             location.getWorld().playSound(location, Sound.BLOCK_FIRE_EXTINGUISH, 0.8F, 0.8F);
-            ParticleEffectUtils.playCallOfTheWildEffect(livingEntity);
+            pluginRef.getParticleEffectUtils().playCallOfTheWildEffect(livingEntity);
             pluginRef.getCombatTools().dealDamage(livingEntity, livingEntity.getMaxHealth(), EntityDamageEvent.DamageCause.SUICIDE, livingEntity);
 
             if(tamingManagerRef != null)

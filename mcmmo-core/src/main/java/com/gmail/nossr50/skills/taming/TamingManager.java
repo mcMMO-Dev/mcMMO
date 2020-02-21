@@ -208,7 +208,7 @@ public class TamingManager extends SkillManager {
         if(!pluginRef.getRandomChanceTools().checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(pluginRef, pluginRef.getDynamicSettingsManager().getSkillPropertiesManager().getStaticChance(SubSkillType.TAMING_PUMMEL), getPlayer(), SubSkillType.TAMING_PUMMEL)))
             return;
 
-        ParticleEffectUtils.playGreaterImpactEffect(target);
+        pluginRef.getParticleEffectUtils().playGreaterImpactEffect(target);
         target.setVelocity(wolf.getLocation().getDirection().normalize().multiply(1.5D));
 
         if (target instanceof Player) {
@@ -381,7 +381,7 @@ public class TamingManager extends SkillManager {
         callOfWildEntity.setCustomName(pluginRef.getLocaleManager().getString("Taming.Summon.Name.Format", getPlayer().getName(), StringUtils.getPrettyEntityTypeString(entityType)));
 
         //Particle effect
-        ParticleEffectUtils.playCallOfTheWildEffect(callOfWildEntity);
+        pluginRef.getParticleEffectUtils().playCallOfTheWildEffect(callOfWildEntity);
     }
 
     private void spawnHorse(Location spawnLocation) {
@@ -408,7 +408,7 @@ public class TamingManager extends SkillManager {
         callOfWildEntity.setCustomName(pluginRef.getLocaleManager().getString("Taming.Summon.Name.Format", getPlayer().getName(), StringUtils.getPrettyEntityTypeString(EntityType.HORSE)));
 
         //Particle effect
-        ParticleEffectUtils.playCallOfTheWildEffect(callOfWildEntity);
+        pluginRef.getParticleEffectUtils().playCallOfTheWildEffect(callOfWildEntity);
     }
 
     private void setBaseCOTWEntityProperties(LivingEntity callOfWildEntity) {

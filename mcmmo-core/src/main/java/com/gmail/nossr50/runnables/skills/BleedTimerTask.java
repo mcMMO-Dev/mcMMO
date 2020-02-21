@@ -172,7 +172,7 @@ public class BleedTimerTask extends BukkitRunnable {
                 //Play Bleed Sound
                 pluginRef.getSoundManager().worldSendSound(target.getWorld(), target.getLocation(), SoundType.BLEED);
 
-                ParticleEffectUtils.playBleedEffect(target);
+                pluginRef.getParticleEffectUtils().playBleedEffect(target);
             }
 
             //Lower Bleed Ticks

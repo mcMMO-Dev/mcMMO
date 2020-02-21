@@ -40,10 +40,7 @@ import com.gmail.nossr50.util.player.PlayerLevelTools;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceTools;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
-import com.gmail.nossr50.util.skills.CombatTools;
-import com.gmail.nossr50.util.skills.PerkUtils;
-import com.gmail.nossr50.util.skills.RankTools;
-import com.gmail.nossr50.util.skills.SkillTools;
+import com.gmail.nossr50.util.skills.*;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
@@ -93,6 +90,7 @@ public class mcMMO extends JavaPlugin {
     private WorldGuardManager worldGuardManager;
 
     /* Not-Managers but my naming scheme sucks */
+    private ParticleEffectUtils particleEffectUtils;
     private DatabaseManagerFactory databaseManagerFactory;
     private ChunkManagerFactory chunkManagerFactory;
     private CommandTools commandTools;
@@ -311,6 +309,9 @@ public class mcMMO extends JavaPlugin {
 
         //Init PerkUtils
         perkUtils = new PerkUtils(this);
+
+        //Init particle effect utils
+        particleEffectUtils = new ParticleEffectUtils(this);
     }
 
     @Override
@@ -869,5 +870,9 @@ public class mcMMO extends JavaPlugin {
 
     public PlatformManager getPlatformManager() {
         return platformManager;
+    }
+
+    public ParticleEffectUtils getParticleEffectUtils() {
+        return particleEffectUtils;
     }
 }

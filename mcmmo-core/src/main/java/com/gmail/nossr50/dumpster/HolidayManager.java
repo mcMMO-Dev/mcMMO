@@ -370,7 +370,7 @@
 //        int levelTotal = Misc.getRandom().nextInt(1 + pluginRef.getUserManager().getPlayer(player).getSkillLevel(PrimarySkillType.MINING)) + 1;
 //        pluginRef.getSoundManager().sendSound(player, player.getLocation(), SoundType.LEVEL_UP);
 //        mcMMO.getNotificationManager().sendPlayerInformation(player, NotificationType.HOLIDAY, "Holiday.AprilFools.Levelup", StringUtils.getCapitalized(fakeSkillType.toString()), String.valueOf(levelTotal));
-////        ParticleEffectUtils.fireworkParticleShower(player, ALL_COLORS.get(Misc.getRandom().nextInt(ALL_COLORS.size())));
+////        pluginRef.getParticleEffectUtils().fireworkParticleShower(player, ALL_COLORS.get(Misc.getRandom().nextInt(ALL_COLORS.size())));
 //    }
 //
 //    public void registerAprilCommand() {

@@ -143,7 +143,7 @@ public class AxesManager extends SkillManager {
 
         Player player = getPlayer();
 
-        ParticleEffectUtils.playGreaterImpactEffect(target);
+        pluginRef.getParticleEffectUtils().playGreaterImpactEffect(target);
         target.setVelocity(player.getLocation().getDirection().normalize().multiply(pluginRef.getConfigManager().getConfigAxes().getGreaterImpactKnockBackModifier()));
 
         if (mcMMOPlayer.useChatNotifications()) {

@@ -87,7 +87,7 @@ public class AcrobaticsManager extends SkillManager {
         Player player = getPlayer();
 
         if (!isFatal(modifiedDamage) && pluginRef.getRandomChanceTools().isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ACROBATICS_DODGE, player)) {
-            ParticleEffectUtils.playDodgeEffect(player);
+            pluginRef.getParticleEffectUtils().playDodgeEffect(player);
 
             if (mcMMOPlayer.useChatNotifications()) {
                 pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Combat.Proc");
