@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.concurrent.Callable;
 
 public class UUIDFetcher implements Callable<Map<String, UUID>> {
-    private static final int PROFILES_PER_REQUEST = 50;
+    private static final int PROFILES_PER_REQUEST = 10;
     private static final long RATE_LIMIT = 100L;
     private static final String PROFILE_URL = "https://api.mojang.com/profiles/minecraft";
     private final List<String> names;
