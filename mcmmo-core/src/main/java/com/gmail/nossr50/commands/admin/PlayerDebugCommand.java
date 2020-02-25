@@ -22,6 +22,10 @@ public class PlayerDebugCommand extends BaseCommand {
     public void onCommand(CommandSender sender) {
         if(sender instanceof Player) {
             McMMOPlayer mcMMOPlayer = plugin.getUserManager().getPlayer((Player) sender);
+
+            if(mcMMOPlayer == null)
+                return;
+
             mcMMOPlayer.toggleDebugMode(); //Toggle debug mode
             plugin.getNotificationManager().sendPlayerInformationChatOnlyPrefixed(mcMMOPlayer.getPlayer(), "Commands.Mmodebug.Toggle", String.valueOf(mcMMOPlayer.isDebugMode()));
         } else {
