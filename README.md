@@ -1,6 +1,6 @@
 # mcMMO
 ## The #1 RPG Mod for Minecraft
-
+[![Translation status](https://translate.mcmmo.org/widgets/mcmmo/-/svg-badge.svg)](https://translate.mcmmo.org/engage/mcmmo/?utm_source=widget)
 ## Website
 I'm working on a brand new website for mcMMO
 
