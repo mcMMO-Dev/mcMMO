@@ -147,7 +147,7 @@ public class MiningManager extends SkillManager {
                 ores.add(blockState);
             }
             //Server bug that allows beacons to be duped when yield is set to 0
-            else if(blockState.getType() != Material.BEACON) {
+            else if(blockState.getType() != Material.BEACON && blockState.getType() != Material.SHULKER_BOX) {
                 debris.add(blockState);
             }
         }
