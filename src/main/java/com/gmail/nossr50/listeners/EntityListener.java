@@ -839,8 +839,8 @@ public class EntityListener implements Listener {
         MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
 
         if (miningManager.canUseBlastMining()) {
-            miningManager.blastMiningDropProcessing(event.getYield(), event.blockList());
-            event.setYield(0);
+            miningManager.blastMiningDropProcessing(event.getYield(), event);
+//            event.setYield(0);
         }
     }
 

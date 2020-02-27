@@ -7,6 +7,8 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -206,6 +208,42 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     /* Materials  */
     public int getXp(PrimarySkillType skill, Material data)
     {
+        String baseString = "Experience_Values." + StringUtils.getCapitalized(skill.toString()) + ".";
+        String explicitString = baseString + StringUtils.getExplicitConfigMaterialString(data);
+        if (config.contains(explicitString))
+            return config.getInt(explicitString);
+        String friendlyString = baseString + StringUtils.getFriendlyConfigMaterialString(data);
+        if (config.contains(friendlyString))
+            return config.getInt(friendlyString);
+        String wildcardString = baseString + StringUtils.getWildcardConfigMaterialString(data);
+        if (config.contains(wildcardString))
+            return config.getInt(wildcardString);
+        return 0;
+    }
+
+    /* Materials  */
+    public int getXp(PrimarySkillType skill, BlockState blockState)
+    {
+        Material data = blockState.getType();
+
+        String baseString = "Experience_Values." + StringUtils.getCapitalized(skill.toString()) + ".";
+        String explicitString = baseString + StringUtils.getExplicitConfigMaterialString(data);
+        if (config.contains(explicitString))
+            return config.getInt(explicitString);
+        String friendlyString = baseString + StringUtils.getFriendlyConfigMaterialString(data);
+        if (config.contains(friendlyString))
+            return config.getInt(friendlyString);
+        String wildcardString = baseString + StringUtils.getWildcardConfigMaterialString(data);
+        if (config.contains(wildcardString))
+            return config.getInt(wildcardString);
+        return 0;
+    }
+
+    /* Materials  */
+    public int getXp(PrimarySkillType skill, Block block)
+    {
+        Material data = block.getType();
+
         String baseString = "Experience_Values." + StringUtils.getCapitalized(skill.toString()) + ".";
         String explicitString = baseString + StringUtils.getExplicitConfigMaterialString(data);
         if (config.contains(explicitString))
