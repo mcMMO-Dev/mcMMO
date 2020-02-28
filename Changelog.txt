@@ -1,6 +1,7 @@
 Version 2.1.118
     Fixed another dupe bug
     Blast Mining no longer reduces debris from explosions due to some issues with the Bukkit API
+    Modified locale string 'Mining.Blast.Effect' to remove debris reduction mention
 
 Version 2.1.117
     Fixed a rare http error when polling Mojang for UUIDs
