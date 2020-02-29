@@ -1,3 +1,37 @@
+Version 2.1.119
+    1.16 Support
+    Added 'Ancient_Debris' with a value of 7777 to mining experience tables in experience.yml
+    Added 'Netherite_Scrap' to bonus drops for Mining in config.yml
+    Added 'Ancient_Debris' to bonus drops for Mining in config.yml
+    Added 'Basalt' with a value of 40 to mining experience tables in experience.yml
+    Added 'Crimson_Fungus' with a value of 50 to herbalism experience tables in experience.yml
+    Added 'Crimson_Fungus' to bonus drops for Herbalism in config.yml
+    Added 'Warped_Fungus' with a value of 50 to herbalism experience tables in experience.yml
+    Added 'Warped_Fungus' to bonus drops for Herbalism in config.yml
+    Added 'Warped_Nylium' with a value of 5 to mining experience tables in experience.yml
+    Added 'Warped_Nylium' to bonus drops for Mining in config.yml
+    Added 'Crimson_Nylium' with a value of 5 to mining experience tables in experience.yml
+    Added 'Crimson_Nylium' to bonus drops for Mining in config.yml
+    Added 'Crimson_Stem' with a value of 35 to woodcutting experience tables in experience.yml
+    Added 'Crimson_Roots' with a value of 35 to woodcutting experience tables in experience.yml
+    Added 'Warped_Stem' with a value of 35 to woodcutting experience tables in experience.yml
+    Added 'Warped_Roots' with a value of 35 to woodcutting experience tables in experience.yml
+    Added 'Ancient_Debris' with a value of 200 to smelting experience tables in experience.yml
+    Added 'Crimson_Stem' to bonus drops for Woodcutting in config.yml
+    Added 'Warped_Stem' to bonus drops for Woodcutting in config.yml
+    Added 'Nether_Sprouts' with a value of 10 to Herbalism experience tables in experience.yml
+    Added 'Shroomlight' with a value of 100 to Woodcutting experience tables in experience.yml
+    Added 'Shroomlight' to bonus drops for Woodcutting in config.yml
+    Added 'Soul_Soil' with a value of 50 to Excavation experience tables in experience.yml
+    Added 'Nether_Wart_Block' with a value of 20 to Woodcutting experience tables in experience.yml
+    Added 'Nether_Wart_Block' with a value of 20 to Herbalism experience tables in experience.yml
+    Added 'Warped_Wart_Block' with a value of 20 to Woodcutting experience tables in experience.yml
+    Added 'Warped_Wart_Block' with a value of 20 to Herbalism experience tables in experience.yml
+    Added 'Weeping_Vines' with a value of 10 to Herbalism experience tables in experience.yml
+    All excavation drops that can drop from soul_sand now also drop from soul_soil (edited treasures.yml)
+
+
+
 Version 2.1.118
     Fixed another dupe bug
     Blast Mining no longer reduces debris from explosions due to some issues with the Bukkit API

@@ -451,7 +451,7 @@ Excavation:
         XP: 3000
         Drop_Chance: 0.05
         Drop_Level: 75
-        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand]
+        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
     GUNPOWDER:
         Amount: 1
         XP: 30
@@ -541,19 +541,19 @@ Excavation:
         XP: 3000
         Drop_Chance: 0.05
         Drop_Level: 25
-        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand]
+        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
     MUSIC_DISC_CAT:
         Amount: 1
         XP: 3000
         Drop_Chance: 0.05
         Drop_Level: 25
-        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand]
+        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
     DIAMOND:
         Amount: 1
         XP: 1000
         Drop_Chance: 0.13
         Drop_Level: 35
-        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand]
+        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
     COCOA_BEANS:
         Amount: 1
         XP: 100
@@ -565,13 +565,13 @@ Excavation:
         XP: 100
         Drop_Chance: 0.5
         Drop_Level: 85
-        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Mycelium, Soul_Sand]
+        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Mycelium, Soul_Sand, Soul_Soil]
     NAME_TAG:
         Amount: 1
         XP: 3000
         Drop_Chance: 0.05
         Drop_Level: 25
-        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand]
+        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
 #
 #  Settings for Hylian Luck
 #  If you are in retro mode, Drop_Level is multiplied by 10.
