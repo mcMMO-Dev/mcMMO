@@ -7,6 +7,10 @@ public final class MaterialUtils {
     private MaterialUtils() {}
 
     protected static boolean isOre(Material data) {
+        //Netherrite Ore (Kind of)
+        if(data.getKey().getKey().equalsIgnoreCase("ancient_debris"))
+            return true;
+
         switch (data) {
             case COAL_ORE:
             case DIAMOND_ORE:

@@ -266,7 +266,7 @@ public final class ItemUtils {
      * @return true if the item is armor, false otherwise
      */
     public static boolean isMinecraftArmor(ItemStack item) {
-        return isLeatherArmor(item) || isGoldArmor(item) || isIronArmor(item) || isDiamondArmor(item) || isChainmailArmor(item);
+        return isLeatherArmor(item) || isGoldArmor(item) || isIronArmor(item) || isDiamondArmor(item) || isNetherriteTool(item) || isChainmailArmor(item);
     }
 
     /**
@@ -345,6 +345,14 @@ public final class ItemUtils {
         }
     }
 
+    public static boolean isNetherriteArmor(ItemStack itemStack) {
+        return mcMMO.getMaterialMapStore().isNetherriteArmor(itemStack.getType());
+    }
+
+    public static boolean isNetherriteTool(ItemStack itemStack) {
+        return mcMMO.getMaterialMapStore().isNetherriteTool(itemStack.getType());
+    }
+
     /**
      * Checks to see if an item is a chainmail armor piece.
      *
@@ -371,7 +379,7 @@ public final class ItemUtils {
      * @return true if the item is a tool, false otherwise
      */
     public static boolean isMinecraftTool(ItemStack item) {
-        return isStoneTool(item) || isWoodTool(item) || isGoldTool(item) || isIronTool(item) || isDiamondTool(item) || isStringTool(item) || item.getType() == Material.TRIDENT;
+        return isStoneTool(item) || isWoodTool(item) || isGoldTool(item) || isIronTool(item) || isDiamondTool(item) || isNetherriteTool(item) || isStringTool(item) || item.getType() == Material.TRIDENT;
     }
 
     /**

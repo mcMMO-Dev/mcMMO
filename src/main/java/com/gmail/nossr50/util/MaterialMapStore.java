@@ -24,6 +24,8 @@ public class MaterialMapStore {
     private HashSet<String> multiBlockPlant;
     private HashSet<String> foodItemWhiteList;
     private HashSet<String> glassBlocks;
+    private HashSet<String> netherriteArmor;
+    private HashSet<String> netherriteTools;
 
     public MaterialMapStore()
     {
@@ -37,6 +39,8 @@ public class MaterialMapStore {
         multiBlockPlant = new HashSet<>();
         foodItemWhiteList = new HashSet<>();
         glassBlocks = new HashSet<>();
+        netherriteArmor = new HashSet<>();
+        netherriteTools = new HashSet<>();
 
         fillHardcodedHashSets();
     }
@@ -93,6 +97,20 @@ public class MaterialMapStore {
         fillMultiBlockPlantSet();
         fillFoodWhiteList();
         fillGlassBlockWhiteList();
+        fillNetherriteWhiteList();
+    }
+
+    private void fillNetherriteWhiteList() {
+        netherriteTools.add("netherrite_sword");
+        netherriteTools.add("netherrite_axe");
+        netherriteTools.add("netherrite_hoe");
+        netherriteTools.add("netherrite_pickaxe");
+        netherriteTools.add("netherrite_shovel");
+
+        netherriteArmor.add("netherrite_helmet");
+        netherriteArmor.add("netherrite_chestplate");
+        netherriteArmor.add("netherrite_leggings");
+        netherriteArmor.add("netherrite_boots");
     }
 
     private void fillGlassBlockWhiteList() {
@@ -169,6 +187,14 @@ public class MaterialMapStore {
         foodItemWhiteList.add("suspicious_stew");
         foodItemWhiteList.add("sweet_berries");
         foodItemWhiteList.add("tropical_fish");
+    }
+
+    public boolean isNetherriteArmor(Material material) {
+        return netherriteArmor.contains(material.getKey().getKey());
+    }
+
+    public boolean isNetherriteTool(Material material) {
+        return netherriteTools.contains(material.getKey().getKey());
     }
 
     public boolean isGlass(Material material) {
