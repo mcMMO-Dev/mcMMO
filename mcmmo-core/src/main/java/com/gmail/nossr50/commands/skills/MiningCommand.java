@@ -20,7 +20,7 @@ public class MiningCommand extends SkillCommand {
     private int bonusTNTDrops;
     private double blastRadiusIncrease;
     private String oreBonus;
-    private String debrisReduction;
+//    private String debrisReduction;
     private String blastDamageDecrease;
 
     private boolean canSuperBreaker;
@@ -42,7 +42,7 @@ public class MiningCommand extends SkillCommand {
             blastMiningRank = miningManager.getBlastMiningTier();
             bonusTNTDrops = miningManager.getDropMultiplier();
             oreBonus = percent.format(miningManager.getOreBonus() / 30.0D); // Base received in TNT is 30%
-            debrisReduction = percent.format(miningManager.getDebrisReduction() / 30.0D); // Base received in TNT is 30%
+//            debrisReduction = percent.format(miningManager.getDebrisReduction() / 30.0D); // Base received in TNT is 30%
             blastDamageDecrease = percent.format(miningManager.getBlastDamageModifier() / 100.0D);
             blastRadiusIncrease = miningManager.getBlastRadiusModifier();
         }
@@ -81,8 +81,8 @@ public class MiningCommand extends SkillCommand {
         }
 
         if (canBlast) {
-            messages.add(getStatMessage(false, true, SubSkillType.MINING_BLAST_MINING, String.valueOf(blastMiningRank), String.valueOf(pluginRef.getRankTools().getHighestRank(SubSkillType.MINING_BLAST_MINING)), pluginRef.getLocaleManager().getString("SuperAbility.BlastMining.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
-            //messages.add(pluginRef.getLocaleManager().getString("SuperAbility.BlastMining.Rank", blastMiningRank, RankUtils.getHighestRank(SubSkillType.MINING_BLAST_MINING), pluginRef.getLocaleManager().getString("SuperAbility.BlastMining.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
+            messages.add(getStatMessage(false, true, SubSkillType.MINING_BLAST_MINING, String.valueOf(blastMiningRank), String.valueOf(pluginRef.getRankTools().getHighestRank(SubSkillType.MINING_BLAST_MINING)), pluginRef.getLocaleManager().getString("Mining.Blast.Effect", oreBonus, bonusTNTDrops)));
+            //messages.add(LocaleLoader.getString("Mining.Blast.Rank", blastMiningRank, RankUtils.getHighestRank(SubSkillType.MINING_BLAST_MINING), LocaleLoader.getString("Mining.Blast.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
         }
 
         if (canDemoExpert) {

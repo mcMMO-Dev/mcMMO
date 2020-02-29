@@ -14,9 +14,11 @@ import com.gmail.nossr50.skills.SkillManager;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Container;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -137,53 +139,45 @@ public class MiningManager extends SkillManager {
      * Handler for explosion drops and XP gain.
      *
      * @param yield     The % of blocks to drop
-     * @param blockList The list of blocks to drop
+     * @param event The {@link EntityExplodeEvent}
      */
-    public void blastMiningDropProcessing(float yield, List<Block> blockList) {
+    public void blastMiningDropProcessing(float yield, EntityExplodeEvent event) {
         List<BlockState> ores = new ArrayList<>();
-        List<BlockState> debris = new ArrayList<>();
+        List<Block> newYieldList = new ArrayList<>();
+
+        for (Block targetBlock : event.blockList()) {
+            //Containers usually have 0 XP unless someone edited their config in a very strange way
+            if (pluginRef.getDynamicSettingsManager().getExperienceManager().getMiningXp(targetBlock.getType()) == 0 || targetBlock instanceof Container || pluginRef.getPlaceStore().isTrue(targetBlock)) {
+                newYieldList.add(targetBlock);
+            } else {
+                ores.add(targetBlock.getState());
+            }
+        }
+
         int xp = 0;
 
         float oreBonus = (float) (getOreBonus() / 100);
-        float debrisReduction = (float) (getDebrisReduction() / 100);
+        //float debrisReduction = (float) (getDebrisReduction() / 100);
         int dropMultiplier = getDropMultiplier();
 
-        float debrisYield = yield - debrisReduction;
+        //float debrisYield = yield - debrisReduction;
 
-        for (Block block : blockList) {
-            BlockState blockState = block.getState();
 
-            if (pluginRef.getBlockTools().isOre(blockState)) {
-                ores.add(blockState);
-            //A bug where beacons can drop when yield is set to 0 on explosion events is prevented here
-            } else if(blockState.getType() != Material.BEACON) {
-                debris.add(blockState);
-            }
-        }
 
         for (BlockState blockState : ores) {
-            if (pluginRef.getMiscTools().getRandom().nextFloat() < (yield + oreBonus)) {
-                if (!pluginRef.getPlaceStore().isTrue(blockState)) {
-                    xp += miningBehaviour.getBlockXp(blockState);
-                }
+            if (pluginRef.getMiscTools().getRandom().nextFloat() < (newYieldList.size() + oreBonus)) {
+                xp += miningBehaviour.getBlockXp(blockState);
 
                 pluginRef.getMiscTools().dropItem(pluginRef.getMiscTools().getBlockCenter(blockState), new ItemStack(blockState.getType())); // Initial block that would have been dropped
 
-                if (!pluginRef.getPlaceStore().isTrue(blockState)) {
-                    for (int i = 1; i < dropMultiplier; i++) {
-                        miningBehaviour.handleSilkTouchDrops(blockState); // Bonus drops - should drop the block & not the items
-                    }
+                for (int i = 1; i < dropMultiplier; i++) {
+                    miningBehaviour.handleSilkTouchDrops(blockState); // Bonus drops - should drop the block & not the items
                 }
             }
         }
 
-        if (debrisYield > 0) {
-            for (BlockState blockState : debris) {
-                if (pluginRef.getMiscTools().getRandom().nextFloat() < debrisYield) {
-                    pluginRef.getMiscTools().dropItems(pluginRef.getMiscTools().getBlockCenter(blockState), blockState.getBlock().getDrops());
-                }
-            }
-        }
+        event.blockList().clear();
+        event.blockList().addAll(newYieldList);
 
         applyXpGain(xp, XPGainReason.PVE);
     }

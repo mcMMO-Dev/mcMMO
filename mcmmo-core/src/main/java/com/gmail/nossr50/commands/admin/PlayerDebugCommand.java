@@ -21,9 +21,12 @@ public class PlayerDebugCommand extends BaseCommand {
     @Default
     public void onCommand(CommandSender sender) {
         if(sender instanceof Player) {
-            BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer((Player) sender);
+            BukkitMMOPlayer mcMMOPlayer = plugin.getUserManager().getPlayer((Player) sender);
+
+            if(mcMMOPlayer == null)
+                return;
             mcMMOPlayer.toggleDebugMode(); //Toggle debug mode
-            pluginRef.getNotificationManager().sendPlayerInformationChatOnlyPrefixed(mcMMOPlayer.getNative(), "Commands.Mmodebug.Toggle", String.valueOf(mcMMOPlayer.isDebugMode()));
+            plugin.getNotificationManager().sendPlayerInformationChatOnlyPrefixed(mcMMOPlayer.getNative(), "Commands.Mmodebug.Toggle", String.valueOf(mcMMOPlayer.isDebugMode()));
         } else {
             //TODO: Localize
             sender.sendMessage("Players only");
