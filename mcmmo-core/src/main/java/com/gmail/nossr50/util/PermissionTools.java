@@ -8,6 +8,8 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.mcMMO;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.World;
@@ -512,7 +514,7 @@ public final class PermissionTools {
     }
 
     public void generateWorldTeleportPermissions() {
-        Server server = pluginRef.getServer();
+        Server server = Bukkit.getServer();
         PluginManager pluginManager = server.getPluginManager();
 
         for (World world : server.getWorlds()) {
@@ -526,7 +528,7 @@ public final class PermissionTools {
      */
     public void addCustomXPPerks() {
         pluginRef.getLogger().info("Registering custom XP perks with server software...");
-        PluginManager pluginManager = pluginRef.getServer().getPluginManager();
+        PluginManager pluginManager = Bukkit.getServer().getPluginManager();
 
         for (CustomXPPerk customXPPerk : pluginRef.getConfigManager().getConfigExperience().getCustomXPBoosts()) {
             Permission permission = new Permission(customXPPerk.getPerkPermissionAddress());

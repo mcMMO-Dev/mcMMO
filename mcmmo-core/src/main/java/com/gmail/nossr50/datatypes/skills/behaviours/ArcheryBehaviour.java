@@ -9,6 +9,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.Plugin;
 
 /**
  * These behaviour classes are a band-aid fix for a larger problem
@@ -31,17 +32,17 @@ public class ArcheryBehaviour {
      * @param livingEntity The entity hit by the arrows
      */
     public void arrowRetrievalCheck(LivingEntity livingEntity) {
-        if(livingEntity.hasMetadata(MetadataConstants.ARROW_TRACKER_METAKEY)) {
-            pluginRef.getMiscTools().dropItems(livingEntity.getLocation(), new ItemStack(Material.ARROW), livingEntity.getMetadata(MetadataConstants.ARROW_TRACKER_METAKEY).get(0).asInt());
+        if(livingEntity.hasMetadata(MetadataConstants.ARROW_TRACKER_METAKEY.getKey())) {
+            pluginRef.getMiscTools().dropItems(livingEntity.getLocation(), new ItemStack(Material.ARROW), livingEntity.getMetadata(MetadataConstants.ARROW_TRACKER_METAKEY.getKey()).get(0).asInt());
         }
     }
 
     public void incrementArrowCount(LivingEntity livingEntity) {
-        if(livingEntity.hasMetadata(MetadataConstants.ARROW_TRACKER_METAKEY)) {
-            int arrowCount = livingEntity.getMetadata(MetadataConstants.ARROW_TRACKER_METAKEY).get(0).asInt();
-            livingEntity.getMetadata(MetadataConstants.ARROW_TRACKER_METAKEY).set(0, new FixedMetadataValue(pluginRef, arrowCount + 1));
+        if(livingEntity.hasMetadata(MetadataConstants.ARROW_TRACKER_METAKEY.getKey())) {
+            int arrowCount = livingEntity.getMetadata(MetadataConstants.ARROW_TRACKER_METAKEY.getKey()).get(0).asInt();
+            livingEntity.getMetadata(MetadataConstants.ARROW_TRACKER_METAKEY.getKey()).set(0, new FixedMetadataValue((Plugin) pluginRef.getPlatformProvider(), arrowCount + 1));
         } else {
-            livingEntity.setMetadata(MetadataConstants.ARROW_TRACKER_METAKEY, new TrackedArrowMeta(pluginRef, 1));
+            livingEntity.setMetadata(MetadataConstants.ARROW_TRACKER_METAKEY.getKey(), new TrackedArrowMeta((Plugin) pluginRef.getPlatformProvider(), 1));
         }
     }
 

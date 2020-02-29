@@ -8,10 +8,13 @@ import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcmmo.api.data.MMOPlayer;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.skills.SkillActivationType;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
@@ -26,6 +29,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
@@ -40,10 +44,10 @@ public class EntityListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityTransform(EntityTransformEvent event) {
         //Transfer metadata keys from mob-spawned mobs to new mobs
-        if (event.getEntity().hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY)
-                || event.getEntity().getMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY).size() >= 1) {
+        if (event.getEntity().hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY.getKey())
+                || event.getEntity().getMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY.getKey()).size() >= 1) {
             for (Entity entity : event.getTransformedEntities()) {
-                entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
+                entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY.getKey(), MetadataConstants.metadataValue);
             }
         }
     }
@@ -60,8 +64,8 @@ public class EntityListener implements Listener {
 
         //Prevent entities from giving XP if they target endermite
         if (event.getTarget() instanceof Endermite) {
-            if (!event.getEntity().hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY))
-                event.getEntity().setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
+            if (!event.getEntity().hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY.getKey()))
+                event.getEntity().setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY.getKey(), MetadataConstants.metadataValue);
         }
     }
 
@@ -91,14 +95,14 @@ public class EntityListener implements Listener {
 
         if (bow != null
                 && bow.containsEnchantment(Enchantment.ARROW_INFINITE)) {
-            projectile.setMetadata(MetadataConstants.ARROW_TRACKER_METAKEY, MetadataConstants.metadataValue);
+            projectile.setMetadata(MetadataConstants.ARROW_TRACKER_METAKEY.getKey(), MetadataConstants.metadataValue);
         }
 
-        projectile.setMetadata(MetadataConstants.BOW_FORCE_METAKEY,
-                new FixedMetadataValue(pluginRef,
+        projectile.setMetadata(MetadataConstants.BOW_FORCE_METAKEY.getKey(),
+                new FixedMetadataValue((Plugin) pluginRef.getPlatformProvider(),
                         Math.min(event.getForce()
                                 * pluginRef.getConfigManager().getConfigExperience().getExperienceArchery().getForceMultiplier(), 1.0)));
-        projectile.setMetadata(MetadataConstants.ARROW_DISTANCE_METAKEY, new FixedMetadataValue(pluginRef, projectile.getLocation()));
+        projectile.setMetadata(MetadataConstants.ARROW_DISTANCE_METAKEY.getKey(), new FixedMetadataValue((Plugin) pluginRef.getPlatformProvider(), projectile.getLocation()));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -122,8 +126,8 @@ public class EntityListener implements Listener {
             if(!(projectile instanceof Arrow))
                 return;
 
-            projectile.setMetadata(MetadataConstants.BOW_FORCE_METAKEY, new FixedMetadataValue(pluginRef, 1.0));
-            projectile.setMetadata(MetadataConstants.ARROW_DISTANCE_METAKEY, new FixedMetadataValue(pluginRef, projectile.getLocation()));
+            projectile.setMetadata(MetadataConstants.BOW_FORCE_METAKEY.getKey(), new FixedMetadataValue((Plugin) pluginRef.getPlatformProvider(), 1.0));
+            projectile.setMetadata(MetadataConstants.ARROW_DISTANCE_METAKEY.getKey(), new FixedMetadataValue((Plugin) pluginRef.getPlatformProvider(), projectile.getLocation()));
 
             for(Enchantment enchantment : player.getInventory().getItemInMainHand().getEnchantments().keySet()) {
                 if(enchantment.getName().equalsIgnoreCase("piercing"))
@@ -131,7 +135,7 @@ public class EntityListener implements Listener {
             }
 
             if (pluginRef.getRandomChanceTools().isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ARCHERY_ARROW_RETRIEVAL, player)) {
-                projectile.setMetadata(MetadataConstants.ARROW_TRACKER_METAKEY, MetadataConstants.metadataValue);
+                projectile.setMetadata(MetadataConstants.ARROW_TRACKER_METAKEY.getKey(), MetadataConstants.metadataValue);
             }
         }
     }
@@ -161,11 +165,11 @@ public class EntityListener implements Listener {
         Entity entity = event.getEntity();
 
         if (entity instanceof FallingBlock || entity instanceof Enderman) {
-            boolean isTracked = entity.hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY);
+            boolean isTracked = entity.hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY.getKey());
 
             if (pluginRef.getPlaceStore().isTrue(block) && !isTracked) {
                 pluginRef.getPlaceStore().setFalse(block);
-                entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
+                entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY.getKey(), MetadataConstants.metadataValue);
             } else if (isTracked) {
                 pluginRef.getPlaceStore().setTrue(block);
             }
@@ -287,7 +291,7 @@ public class EntityListener implements Listener {
         // Don't process this event for marked entities, for players this is handled above,
         // However, for entities, we do not wanna cancel this event to allow plugins to observe changes
         // properly
-        if (defender.getMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY).size() > 0) {
+        if (defender.getMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY.getKey()).size() > 0) {
             return;
         }
 
@@ -299,7 +303,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if (event.getDamager().hasMetadata(MetadataConstants.SPAWNED_FIREWORKS_METAKEY)) {
+        if (event.getDamager().hasMetadata(MetadataConstants.SPAWNED_FIREWORKS_METAKEY.getKey())) {
             event.setCancelled(true);
             return;
         }
@@ -352,7 +356,7 @@ public class EntityListener implements Listener {
                     }
 
                     //Deflect checks
-                    final McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(defendingPlayer);
+                    final BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(defendingPlayer);
                     if (mcMMOPlayer != null) {
                         UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
 
@@ -615,18 +619,18 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if (entity.hasMetadata(MetadataConstants.CUSTOM_NAME_METAKEY)) {
-            entity.setCustomName(entity.getMetadata(MetadataConstants.CUSTOM_NAME_METAKEY).get(0).asString());
-            entity.removeMetadata(MetadataConstants.CUSTOM_NAME_METAKEY, pluginRef);
+        if (entity.hasMetadata(MetadataConstants.CUSTOM_NAME_METAKEY.getKey())) {
+            entity.setCustomName(entity.getMetadata(MetadataConstants.CUSTOM_NAME_METAKEY.getKey()).get(0).asString());
+            entity.removeMetadata(MetadataConstants.CUSTOM_NAME_METAKEY.getKey(), (Plugin) pluginRef.getPlatformProvider());
         }
 
-        if (entity.hasMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY)) {
-            entity.setCustomNameVisible(entity.getMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY).get(0).asBoolean());
-            entity.removeMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY, pluginRef);
+        if (entity.hasMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY.getKey())) {
+            entity.setCustomNameVisible(entity.getMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY.getKey()).get(0).asBoolean());
+            entity.removeMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY.getKey(), (Plugin) pluginRef.getPlatformProvider());
         }
 
-        if (entity.hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY)) {
-            entity.removeMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, pluginRef);
+        if (entity.hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY.getKey())) {
+            entity.removeMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY.getKey(), (Plugin) pluginRef.getPlatformProvider());
         }
     }
 
@@ -668,18 +672,18 @@ public class EntityListener implements Listener {
             case SPAWNER:
             case SPAWNER_EGG:
                 if (pluginRef.getConfigManager().getConfigExploitPrevention().doSpawnedEntitiesGiveModifiedXP()) {
-                    entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
+                    entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY.getKey(), MetadataConstants.metadataValue);
 
                     Entity passenger = entity.getPassenger();
 
                     if (passenger != null) {
-                        passenger.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
+                        passenger.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY.getKey(), MetadataConstants.metadataValue);
                     }
                 }
                 return;
 
             case BREEDING:
-                entity.setMetadata(MetadataConstants.PETS_ANIMAL_TRACKING_METAKEY, MetadataConstants.metadataValue);
+                entity.setMetadata(MetadataConstants.PETS_ANIMAL_TRACKING_METAKEY.getKey(), MetadataConstants.metadataValue);
                 return;
 
             default:
@@ -690,7 +694,7 @@ public class EntityListener implements Listener {
     public void onEntityBreed(EntityBreedEvent event) {
         if(pluginRef.getConfigManager().getConfigExploitPrevention().areSummonsBreedable()) {
             //TODO: Change to NBT
-            if(event.getFather().hasMetadata(MetadataConstants.COTW_TEMPORARY_SUMMON) || event.getMother().hasMetadata(MetadataConstants.COTW_TEMPORARY_SUMMON)) {
+            if(event.getFather().hasMetadata(MetadataConstants.COTW_TEMPORARY_SUMMON.getKey()) || event.getMother().hasMetadata(MetadataConstants.COTW_TEMPORARY_SUMMON.getKey())) {
                 event.setCancelled(true);
                 Animals mom = (Animals) event.getMother();
                 Animals father = (Animals) event.getFather();
@@ -722,13 +726,13 @@ public class EntityListener implements Listener {
 
         Entity entity = event.getEntity();
 
-        if (!(entity instanceof TNTPrimed) || !entity.hasMetadata(MetadataConstants.TNT_TRACKING_METAKEY)) {
+        if (!(entity instanceof TNTPrimed) || !entity.hasMetadata(MetadataConstants.TNT_TRACKING_METAKEY.getKey())) {
             return;
         }
 
         // We can make this assumption because we (should) be the only ones
         // using this exact metadata
-        Player player = pluginRef.getServer().getPlayerExact(entity.getMetadata(MetadataConstants.TNT_TRACKING_METAKEY).get(0).asString());
+        Player player = Bukkit.getServer().getPlayerExact(entity.getMetadata(MetadataConstants.TNT_TRACKING_METAKEY.getKey()).get(0).asString());
 
         if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
             return;
@@ -765,13 +769,13 @@ public class EntityListener implements Listener {
 
         Entity entity = event.getEntity();
 
-        if (!(entity instanceof TNTPrimed) || !entity.hasMetadata(MetadataConstants.TNT_TRACKING_METAKEY)) {
+        if (!(entity instanceof TNTPrimed) || !entity.hasMetadata(MetadataConstants.TNT_TRACKING_METAKEY.getKey())) {
             return;
         }
 
         // We can make this assumption because we (should) be the only ones
         // using this exact metadata
-        Player player = pluginRef.getServer().getPlayerExact(entity.getMetadata(MetadataConstants.TNT_TRACKING_METAKEY).get(0).asString());
+        Player player = Bukkit.getServer().getPlayerExact(entity.getMetadata(MetadataConstants.TNT_TRACKING_METAKEY.getKey()).get(0).asString());
 
         if (!pluginRef.getUserManager().hasPlayerDataKey(player)) {
             return;
@@ -929,12 +933,12 @@ public class EntityListener implements Listener {
 
         LivingEntity entity = event.getEntity();
 
-        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || pluginRef.getMiscTools().isNPCEntityExcludingVillagers(entity) || entity.hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY)) {
+        if (!pluginRef.getUserManager().hasPlayerDataKey(player) || pluginRef.getMiscTools().isNPCEntityExcludingVillagers(entity) || entity.hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY.getKey())) {
             return;
         }
 
         if (pluginRef.getConfigManager().getConfigExploitPrevention().doTamedEntitiesGiveXP())
-            entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
+            entity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY.getKey(), MetadataConstants.metadataValue);
 
         //Profile not loaded
         //TODO: Redundant
@@ -1017,8 +1021,8 @@ public class EntityListener implements Listener {
         if (pluginRef.getDynamicSettingsManager().isWorldBlacklisted(event.getEntity().getWorld().getName()))
             return;
 
-        if (event.getEntity().hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY)) {
-            event.getPigZombie().setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
+        if (event.getEntity().hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY.getKey())) {
+            event.getPigZombie().setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY.getKey(), MetadataConstants.metadataValue);
         }
     }
 }

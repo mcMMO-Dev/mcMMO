@@ -94,7 +94,10 @@ public final class ChimaeraWing {
 
         if (warmup > 0) {
             pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.ITEM_MESSAGE, "Teleport.Commencing", String.valueOf(warmup));
-            new ChimaeraWingWarmup(pluginRef, mcMMOPlayer).runTaskLater(pluginRef, 20 * warmup);
+            pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                    .setDelay(20 * warmup)
+                    .setTask(new ChimaeraWingWarmup(pluginRef, mcMMOPlayer))
+                    .schedule();
         } else {
             chimaeraExecuteTeleport();
         }

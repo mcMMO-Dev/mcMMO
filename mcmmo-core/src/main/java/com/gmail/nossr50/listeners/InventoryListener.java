@@ -5,6 +5,8 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
+
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.BrewingStand;
@@ -17,6 +19,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.*;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 
@@ -50,8 +53,8 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        if (!furnaceBlock.hasMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY) && furnaceBlock.getMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY).size() == 0)
-            furnaceBlock.setMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY, pluginRef.getUserManager().getPlayer((Player) player).getPlayerMetadata());
+        if (!furnaceBlock.hasMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY.getKey()) && furnaceBlock.getMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY.getKey()).size() == 0)
+            furnaceBlock.setMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY.getKey(), pluginRef.getUserManager().getPlayer((Player) player).getPlayerMetadata());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -62,7 +65,7 @@ public class InventoryListener implements Listener {
 
         Block furnaceBlock = processInventoryOpenOrCloseEvent(event.getInventory());
 
-        if (furnaceBlock == null || furnaceBlock.hasMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY)) {
+        if (furnaceBlock == null || furnaceBlock.hasMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY.getKey())) {
             return;
         }
 
@@ -72,7 +75,7 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        furnaceBlock.removeMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY, pluginRef);
+        furnaceBlock.removeMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY.getKey(), (Plugin) pluginRef.getPlatformProvider());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -189,15 +192,15 @@ public class InventoryListener implements Listener {
             Block furnaceBlock = processInventoryOpenOrCloseEvent(event.getInventory());
 
             if (furnaceBlock != null) {
-                if (furnaceBlock.getMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY).size() > 0)
-                    furnaceBlock.removeMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY, pluginRef);
+                if (furnaceBlock.getMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY.getKey()).size() > 0)
+                    furnaceBlock.removeMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY.getKey(), (Plugin) pluginRef.getPlatformProvider());
 
                 //Profile not loaded
                 if (pluginRef.getUserManager().getPlayer(player) == null) {
                     return;
                 }
 
-                furnaceBlock.setMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY, pluginRef.getUserManager().getPlayer(player).getPlayerMetadata());
+                furnaceBlock.setMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY.getKey(), pluginRef.getUserManager().getPlayer(player).getPlayerMetadata());
             }
         }
 
@@ -452,7 +455,7 @@ public class InventoryListener implements Listener {
 
         final HumanEntity whoClicked = event.getWhoClicked();
 
-        if (!whoClicked.hasMetadata(MetadataConstants.PLAYER_DATA_METAKEY)) {
+        if (!whoClicked.hasMetadata(MetadataConstants.PLAYER_DATA_METAKEY.getKey())) {
             return;
         }
 
@@ -470,7 +473,9 @@ public class InventoryListener implements Listener {
                 return;
         }
 
-        new PlayerUpdateInventoryTask((Player) whoClicked).runTaskLater(pluginRef, 0);
+        pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                .setTask(new PlayerUpdateInventoryTask((Player) whoClicked))
+                .schedule();
     }
 
     private Block processInventoryOpenOrCloseEvent(Inventory inventory) {
@@ -488,12 +493,12 @@ public class InventoryListener implements Listener {
     }
 
     private Player getPlayerFromFurnace(Block furnaceBlock) {
-        List<MetadataValue> metadata = furnaceBlock.getMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY);
+        List<MetadataValue> metadata = furnaceBlock.getMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY.getKey());
 
         if (metadata.isEmpty()) {
             return null;
         }
 
-        return pluginRef.getServer().getPlayerExact(metadata.get(0).asString());
+        return Bukkit.getServer().getPlayerExact(metadata.get(0).asString());
     }
 }

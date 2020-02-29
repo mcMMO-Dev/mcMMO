@@ -30,9 +30,9 @@ public final class BlockTools {
      */
     public void markDropsAsBonus(BlockState blockState, boolean triple) {
         if (triple)
-            blockState.setMetadata(MetadataConstants.BONUS_DROPS_METAKEY, new BonusDropMeta(2, pluginRef));
+            blockState.setMetadata(MetadataConstants.BONUS_DROPS_METAKEY.getKey(), new BonusDropMeta(2, pluginRef));
         else
-            blockState.setMetadata(MetadataConstants.BONUS_DROPS_METAKEY, new BonusDropMeta(1, pluginRef));
+            blockState.setMetadata(MetadataConstants.BONUS_DROPS_METAKEY.getKey(), new BonusDropMeta(1, pluginRef));
     }
 
     /**
@@ -42,7 +42,7 @@ public final class BlockTools {
      * @param amount     amount of extra items to drop
      */
     public void markDropsAsBonus(BlockState blockState, int amount) {
-        blockState.setMetadata(MetadataConstants.BONUS_DROPS_METAKEY, new BonusDropMeta(amount, pluginRef));
+        blockState.setMetadata(MetadataConstants.BONUS_DROPS_METAKEY.getKey(), new BonusDropMeta(amount, pluginRef));
     }
 
     /**

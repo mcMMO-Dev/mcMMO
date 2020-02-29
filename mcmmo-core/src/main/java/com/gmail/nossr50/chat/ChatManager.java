@@ -5,8 +5,11 @@ import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.mcMMO;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,29 +17,32 @@ import java.util.regex.Pattern;
 public class ChatManager {
     private final String ADMIN_CHAT_PERMISSION = "mcmmo.chat.adminchat";
     private final mcMMO pluginRef;
+    @Deprecated
+    private final Plugin legacyPlugin;
 
     public ChatManager(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
+        this.legacyPlugin = (Plugin) pluginRef.getPlatformProvider();
     }
 
     public void processAdminChat(Player player, String message) {
-        sendAdminChatMessage(new McMMOAdminChatEvent(pluginRef, player.getName(), player.getDisplayName(), message));
+        sendAdminChatMessage(new McMMOAdminChatEvent(legacyPlugin, player.getName(), player.getDisplayName(), message));
     }
 
     public void processAdminChat(String senderName, String displayName, String message) {
-        sendAdminChatMessage(new McMMOAdminChatEvent(pluginRef, senderName, displayName, message));
+        sendAdminChatMessage(new McMMOAdminChatEvent(legacyPlugin, senderName, displayName, message));
     }
 
     public void processPartyChat(Party party, Player sender, String message) {
-        sendPartyChatMessage(new McMMOPartyChatEvent(pluginRef, sender.getName(), sender.getDisplayName(), party, message));
+        sendPartyChatMessage(new McMMOPartyChatEvent(legacyPlugin, sender.getName(), sender.getDisplayName(), party, message));
     }
 
     public void processPartyChat(Party party, String senderName, String message) {
-        sendPartyChatMessage(new McMMOPartyChatEvent(pluginRef, senderName, senderName, party, message));
+        sendPartyChatMessage(new McMMOPartyChatEvent(legacyPlugin, senderName, senderName, party, message));
     }
 
     private void sendAdminChatMessage(McMMOAdminChatEvent event) {
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
             return;
@@ -47,11 +53,11 @@ public class ChatManager {
         String displayName = pluginRef.getConfigManager().getConfigCommands().isUseDisplayNames() ? event.getDisplayName() : senderName;
         String message = pluginRef.getLocaleManager().formatString(chatPrefix, displayName) + " " + event.getMessage();
 
-        pluginRef.getServer().broadcast(message, ADMIN_CHAT_PERMISSION);
+        Bukkit.getServer().broadcast(message, ADMIN_CHAT_PERMISSION);
     }
 
     private void sendPartyChatMessage(McMMOPartyChatEvent event) {
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
             return;
@@ -79,7 +85,7 @@ public class ChatManager {
             }
         }
 
-        pluginRef.getServer().getConsoleSender().sendMessage(ChatColor.stripColor("[mcMMO] [P]<" + party.getName() + ">" + message));
+        Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.stripColor("[mcMMO] [P]<" + party.getName() + ">" + message));
 
         /*
          * Party Chat Spying

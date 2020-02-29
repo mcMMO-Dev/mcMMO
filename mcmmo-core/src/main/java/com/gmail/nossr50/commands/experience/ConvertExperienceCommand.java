@@ -4,6 +4,8 @@ import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.database.FormulaConversionTask;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
+
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -31,10 +33,17 @@ public class ConvertExperienceCommand implements CommandExecutor {
                         pluginRef.getUserManager().saveAll();
                         pluginRef.getUserManager().clearAll();
 
-                        new FormulaConversionTask(pluginRef, sender, previousType).runTaskLater(pluginRef, 1);
+                        pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                                .setDelay(1L)
+                                .setTask(new FormulaConversionTask(pluginRef, sender, previousType))
+                                .schedule();
 
-                        for (Player player : pluginRef.getServer().getOnlinePlayers()) {
-                            new PlayerProfileLoadingTask(pluginRef, player).runTaskLaterAsynchronously(pluginRef, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
+                        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+                            pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                                    .setAsync(true)
+                                    .setDelay(1L) // 1 Tick delay to ensure the player is marked as online before we begin loading
+                                    .setTask(new PlayerProfileLoadingTask(pluginRef, player))
+                                    .schedule();
                         }
 
                         return true;

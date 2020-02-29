@@ -250,7 +250,7 @@ public class Party {
         }
 
         if (!pluginRef.getConfigManager().getConfigParty().getPartyXP().getPartyLevel().isInformPartyMembersOnLevelup()) {
-            Player leader = pluginRef.getServer().getPlayer(this.leader.getUniqueId());
+            Player leader = Bukkit.getServer().getPlayer(this.leader.getUniqueId());
 
             if (leader != null) {
                 leader.sendMessage(pluginRef.getLocaleManager().getString("Party.LevelUp", levelsGained, getLevel()));

@@ -9,9 +9,9 @@ public interface PlatformScheduler {
     Task scheduleTask(TaskBuilder taskBuilder);
 
 
-    class TaskBuilder {
-        Integer delay;
-        Integer repeatTime;
+    abstract class TaskBuilder {
+        Long delay;
+        Long repeatTime;
 
         public boolean isAsync() {
             return isAsync;
@@ -25,20 +25,20 @@ public interface PlatformScheduler {
         boolean isAsync = false;
         Consumer<Task> task;
 
-        public Integer getDelay() {
+        public Long getDelay() {
             return delay;
         }
 
-        public TaskBuilder setDelay(Integer delay) {
+        public TaskBuilder setDelay(Long delay) {
             this.delay = delay;
             return this;
         }
 
-        public Integer getRepeatTime() {
+        public Long getRepeatTime() {
             return repeatTime;
         }
 
-        public TaskBuilder setRepeatTime(Integer repeatTime) {
+        public TaskBuilder setRepeatTime(Long repeatTime) {
             this.repeatTime = repeatTime;
             return this;
         }
@@ -51,5 +51,13 @@ public interface PlatformScheduler {
             this.task = task;
             return this;
         }
+
+        @Deprecated
+        public TaskBuilder setTask(Runnable runnableTask) {
+            this.setTask(task -> runnableTask.run());
+            return this;
+        }
+
+        public abstract Task schedule();
     }
 }

@@ -2,6 +2,8 @@ package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.mcMMO;
+
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -28,7 +30,7 @@ public class PartyChangeOwnerCommand implements CommandExecutor {
 
                 Party playerParty = pluginRef.getUserManager().getPlayer((Player) sender).getParty();
                 String targetName = pluginRef.getCommandTools().getMatchedPlayerName(args[1]);
-                OfflinePlayer target = pluginRef.getServer().getOfflinePlayer(targetName);
+                OfflinePlayer target = Bukkit.getServer().getOfflinePlayer(targetName);
 
                 if (!playerParty.hasMember(target.getUniqueId())) {
                     sender.sendMessage(pluginRef.getLocaleManager().getString("Party.NotInYourParty", targetName));

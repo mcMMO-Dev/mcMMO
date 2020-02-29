@@ -6,6 +6,8 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.database.DatabaseConversionTask;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
+
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -57,17 +59,24 @@ public class ConvertDatabaseCommand implements CommandExecutor {
                 pluginRef.getUserManager().saveAll();
                 pluginRef.getUserManager().clearAll();
 
-                for (Player player : pluginRef.getServer().getOnlinePlayers()) {
+                for (Player player : Bukkit.getServer().getOnlinePlayers()) {
                     PlayerProfile profile = oldDatabase.loadPlayerProfile(player.getUniqueId());
 
                     if (profile.isLoaded()) {
                         pluginRef.getDatabaseManager().saveUser(profile);
                     }
 
-                    new PlayerProfileLoadingTask(pluginRef, player).runTaskLaterAsynchronously(pluginRef, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
+                    pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                            .setAsync(true)
+                            .setDelay(1L) // 1 Tick delay to ensure the player is marked as online before we begin loading
+                            .setTask(new PlayerProfileLoadingTask(pluginRef, player))
+                            .schedule();
                 }
 
-                new DatabaseConversionTask(pluginRef, oldDatabase, sender, previousType.toString(), newType.toString()).runTaskAsynchronously(pluginRef);
+                pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                        .setAsync(true)
+                        .setTask(new DatabaseConversionTask(pluginRef, oldDatabase, sender, previousType.toString(), newType.toString()))
+                        .schedule();
                 return true;
 
             default:

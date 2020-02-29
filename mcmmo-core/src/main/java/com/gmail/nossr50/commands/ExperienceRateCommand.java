@@ -4,6 +4,8 @@ import com.gmail.nossr50.datatypes.notifications.SensitiveCommandType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
 import com.google.common.collect.ImmutableList;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -37,15 +39,15 @@ public class ExperienceRateCommand implements TabExecutor {
                 if (pluginRef.isXPEventEnabled()) {
 
                     if (pluginRef.getConfigManager().getConfigEvent().isSendTitleMessages()) {
-                        pluginRef.getNotificationManager().broadcastTitle(pluginRef.getServer(),
+                        pluginRef.getNotificationManager().broadcastTitle(Bukkit.getServer(),
                                 pluginRef.getLocaleManager().getString("Commands.Event.Stop"),
                                 pluginRef.getLocaleManager().getString("Commands.Event.Stop.Subtitle"),
                                 10, 10 * 20, 20);
                     }
 
                     if (pluginRef.getConfigManager().getConfigEvent().isBroadcastXPRateEventMessages()) {
-                        pluginRef.getServer().broadcastMessage(pluginRef.getLocaleManager().getString("Commands.Event.Stop"));
-                        pluginRef.getServer().broadcastMessage(pluginRef.getLocaleManager().getString("Commands.Event.Stop.Subtitle"));
+                        Bukkit.getServer().broadcastMessage(pluginRef.getLocaleManager().getString("Commands.Event.Stop"));
+                        Bukkit.getServer().broadcastMessage(pluginRef.getLocaleManager().getString("Commands.Event.Stop.Subtitle"));
                     }
 
                     //Admin notification
@@ -85,15 +87,15 @@ public class ExperienceRateCommand implements TabExecutor {
                 pluginRef.getDynamicSettingsManager().getExperienceManager().setGlobalXpMult(newXpRate);
 
                 if (pluginRef.getConfigManager().getConfigEvent().isSendTitleMessages()) {
-                    pluginRef.getNotificationManager().broadcastTitle(pluginRef.getServer(),
+                    pluginRef.getNotificationManager().broadcastTitle(Bukkit.getServer(),
                             pluginRef.getLocaleManager().getString("Commands.Event.Start"),
                             pluginRef.getLocaleManager().getString("Commands.Event.XP", newXpRate),
                             10, 10 * 20, 20);
                 }
 
                 if (pluginRef.getConfigManager().getConfigEvent().isBroadcastXPRateEventMessages()) {
-                    pluginRef.getServer().broadcastMessage(pluginRef.getLocaleManager().getString("Commands.Event.Start"));
-                    pluginRef.getServer().broadcastMessage(pluginRef.getLocaleManager().getString("Commands.Event.XP", newXpRate));
+                    Bukkit.getServer().broadcastMessage(pluginRef.getLocaleManager().getString("Commands.Event.Start"));
+                    Bukkit.getServer().broadcastMessage(pluginRef.getLocaleManager().getString("Commands.Event.XP", newXpRate));
                 }
 
                 //Admin notification

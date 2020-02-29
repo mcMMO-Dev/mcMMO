@@ -7,6 +7,7 @@ import com.gmail.nossr50.mcMMO;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
@@ -43,7 +44,7 @@ public class LeaderboardsCommandDisplayTask extends BukkitRunnable {
         }
 
         if (sender instanceof Player) {
-            ((Player) sender).removeMetadata(MetadataConstants.DATABASE_PROCESSING_COMMAND_METAKEY, pluginRef);
+            ((Player) sender).removeMetadata(MetadataConstants.DATABASE_PROCESSING_COMMAND_METAKEY.getKey(), (Plugin) pluginRef.getPlatformProvider());
         }
         if (sender instanceof Player)
             sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.mctop.Tip"));

@@ -16,13 +16,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 public final class BukkitMobHealthBarManager implements MobHealthBarManager<Player, LivingEntity> {
+    private final Plugin plugin;
     private final mcMMO pluginRef;
     private final boolean healthBarPluginEnabled;
 
-    public BukkitMobHealthBarManager(mcMMO pluginRef) {
+    public BukkitMobHealthBarManager(Plugin plugin, mcMMO pluginRef) {
+        this.plugin = plugin;
         this.pluginRef = pluginRef;
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
         healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;
@@ -51,7 +54,7 @@ public final class BukkitMobHealthBarManager implements MobHealthBarManager<Play
     /**
      * Handle the creation of mob healthbars.
      *
-     * @param target the targetted entity
+     * @param mmoTarget the targetted entity
      * @param damage damage done by the attack triggering this
      */
     @Override
@@ -96,14 +99,17 @@ public final class BukkitMobHealthBarManager implements MobHealthBarManager<Play
             boolean updateName = !ChatColor.stripColor(oldName).equalsIgnoreCase(ChatColor.stripColor(newName));
 
             if (updateName) {
-                target.setMetadata(MetadataConstants.CUSTOM_NAME_METAKEY, new FixedMetadataValue(pluginRef, oldName));
-                target.setMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY, new FixedMetadataValue(pluginRef, oldNameVisible));
-            } else if (!target.hasMetadata(MetadataConstants.CUSTOM_NAME_METAKEY)) {
-                target.setMetadata(MetadataConstants.CUSTOM_NAME_METAKEY, new FixedMetadataValue(pluginRef, ""));
-                target.setMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY, new FixedMetadataValue(pluginRef, false));
+                target.setMetadata(MetadataConstants.CUSTOM_NAME_METAKEY.getKey(), new FixedMetadataValue(plugin, oldName));
+                target.setMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY.getKey(), new FixedMetadataValue(plugin, oldNameVisible));
+            } else if (!target.hasMetadata(MetadataConstants.CUSTOM_NAME_METAKEY.getKey())) {
+                target.setMetadata(MetadataConstants.CUSTOM_NAME_METAKEY.getKey(), new FixedMetadataValue(plugin, ""));
+                target.setMetadata(MetadataConstants.NAME_VISIBILITY_METAKEY.getKey(), new FixedMetadataValue(plugin, false));
             }
 
-            new MobHealthDisplayUpdaterTask(pluginRef, target).runTaskLater(pluginRef, displayTime * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR); // Clear health display after 3 seconds
+            pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                    .setDelay(displayTime * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR) // Clear health display after 3 seconds
+                    .setTask(new MobHealthDisplayUpdaterTask(pluginRef, target))
+                    .schedule();
         }
     }
 

@@ -10,8 +10,10 @@ import com.gmail.nossr50.events.scoreboard.McMMOScoreboardRevertEvent;
 import com.gmail.nossr50.events.scoreboard.ScoreboardEventReason;
 import com.gmail.nossr50.events.scoreboard.ScoreboardObjectiveEventReason;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -35,9 +37,9 @@ public class ScoreboardWrapper {
     public String targetPlayer = null;
     public PrimarySkillType targetSkill = null;
     public int leaderboardPage = -1;
-    public BukkitTask updateTask = null;
-    public BukkitTask revertTask = null;
-    public BukkitTask cooldownTask = null;
+    public Task updateTask = null;
+    public Task revertTask = null;
+    public Task cooldownTask = null;
     private boolean tippedKeep = false;
     private boolean tippedClear = false;
     // Internal usage variables (should exist)
@@ -73,7 +75,10 @@ public class ScoreboardWrapper {
     public void doSidebarUpdateSoon() {
         if (updateTask == null) {
             // To avoid spamming the scheduler, store the instance and run 2 ticks later
-            updateTask = new ScoreboardQuickUpdate().runTaskLater(pluginRef, 2L);
+            updateTask = pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                    .setDelay(2L)
+                    .setTask(new ScoreboardQuickUpdate())
+                    .schedule();
         }
     }
 
@@ -81,7 +86,12 @@ public class ScoreboardWrapper {
         if (cooldownTask == null) {
             // Repeat every 5 seconds.
             // Cancels once all cooldowns are done, using stopCooldownUpdating().
-            cooldownTask = new ScoreboardCooldownTask().runTaskTimer(pluginRef, 5 * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR, 5 * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR);
+
+            cooldownTask = pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                                   .setDelay(5 * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR)
+                                   .setRepeatTime(5 * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR)
+                                   .setTask(new ScoreboardCooldownTask())
+                                   .schedule();
         }
     }
 
@@ -112,7 +122,7 @@ public class ScoreboardWrapper {
      * Set the old targetBoard, for use in reverting.
      */
     public void setOldScoreboard() {
-        Player player = pluginRef.getServer().getPlayerExact(playerName);
+        Player player = Bukkit.getServer().getPlayerExact(playerName);
 
         if (player == null) {
             pluginRef.getScoreboardManager().cleanup(this);
@@ -124,7 +134,7 @@ public class ScoreboardWrapper {
         if (oldBoard == scoreboard) { // Already displaying it
             if (this.oldBoard == null) {
                 // (Shouldn't happen) Use failsafe value - we're already displaying our board, but we don't have the one we should revert to
-                this.oldBoard = pluginRef.getServer().getScoreboardManager().getMainScoreboard();
+                this.oldBoard = Bukkit.getServer().getScoreboardManager().getMainScoreboard();
             }
         } else {
             this.oldBoard = oldBoard;
@@ -132,7 +142,7 @@ public class ScoreboardWrapper {
     }
 
     public void showBoardWithNoRevert() {
-        Player player = pluginRef.getServer().getPlayerExact(playerName);
+        Player player = Bukkit.getServer().getPlayerExact(playerName);
 
         if (player == null) {
             pluginRef.getScoreboardManager().cleanup(this);
@@ -148,7 +158,7 @@ public class ScoreboardWrapper {
     }
 
     public void showBoardAndScheduleRevert(int ticks) {
-        Player player = pluginRef.getServer().getPlayerExact(playerName);
+        Player player = Bukkit.getServer().getPlayerExact(playerName);
 
         if (player == null) {
             pluginRef.getScoreboardManager().cleanup(this);
@@ -160,7 +170,10 @@ public class ScoreboardWrapper {
         }
 
         player.setScoreboard(scoreboard);
-        revertTask = new ScoreboardChangeTask().runTaskLater(pluginRef, ticks);
+        revertTask = pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                             .setDelay((long) ticks)
+                             .setTask(new ScoreboardChangeTask())
+                             .schedule();
 
         // TODO is there any way to do the time that looks acceptable?
         // player.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Timer", StringUtils.capitalize(sidebarType.toString().toLowerCase(Locale.ENGLISH)), ticks / 20F));
@@ -185,7 +198,7 @@ public class ScoreboardWrapper {
     }
 
     public void tryRevertBoard() {
-        Player player = pluginRef.getServer().getPlayerExact(playerName);
+        Player player = Bukkit.getServer().getPlayerExact(playerName);
 
         if (player == null) {
             pluginRef.getScoreboardManager().cleanup(this);
@@ -217,7 +230,7 @@ public class ScoreboardWrapper {
     }
 
     public boolean isBoardShown() {
-        Player player = pluginRef.getServer().getPlayerExact(playerName);
+        Player player = Bukkit.getServer().getPlayerExact(playerName);
 
         if (player == null) {
             pluginRef.getScoreboardManager().cleanup(this);
@@ -386,7 +399,7 @@ public class ScoreboardWrapper {
             return;
         }
 
-        Player player = pluginRef.getServer().getPlayerExact(playerName);
+        Player player = Bukkit.getServer().getPlayerExact(playerName);
 
         if (player == null) {
             pluginRef.getScoreboardManager().cleanup(this);
@@ -513,7 +526,7 @@ public class ScoreboardWrapper {
 
     public void acceptRankData(Map<PrimarySkillType, Integer> rankData) {
         Integer rank;
-        Player player = pluginRef.getServer().getPlayerExact(playerName);
+        Player player = Bukkit.getServer().getPlayerExact(playerName);
 
         for (PrimarySkillType primarySkillType : pluginRef.getSkillTools().NON_CHILD_SKILLS) {
             if (!pluginRef.getPermissionTools().skillEnabled(player, primarySkillType)) {

@@ -2,6 +2,7 @@ package com.gmail.nossr50.datatypes.meta;
 
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Stores how many bonus drops a block should give
@@ -9,6 +10,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 public class BonusDropMeta extends FixedMetadataValue {
 
     public BonusDropMeta(int value, mcMMO plugin) {
-        super(plugin, value);
+        super((Plugin) plugin.getPlatformProvider(), value);
     }
 }

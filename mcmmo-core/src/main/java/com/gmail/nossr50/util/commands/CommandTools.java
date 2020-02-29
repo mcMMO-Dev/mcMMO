@@ -6,6 +6,8 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -100,7 +102,7 @@ public final class CommandTools {
             return false;
         }
 
-        boolean hasPlayerDataKey = ((Player) sender).hasMetadata(MetadataConstants.PLAYER_DATA_METAKEY);
+        boolean hasPlayerDataKey = ((Player) sender).hasMetadata(MetadataConstants.PLAYER_DATA_METAKEY.getKey());
 
         if (!hasPlayerDataKey) {
             sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.NotLoaded"));
@@ -229,7 +231,7 @@ public final class CommandTools {
         Player player = sender instanceof Player ? (Player) sender : null;
         List<String> onlinePlayerNames = new ArrayList<>();
 
-        for (Player onlinePlayer : pluginRef.getServer().getOnlinePlayers()) {
+        for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
             if (player != null && player.canSee(onlinePlayer)) {
                 onlinePlayerNames.add(onlinePlayer.getName());
             }
@@ -252,7 +254,7 @@ public final class CommandTools {
                 partialName = matches.get(0);
             }
         } else {
-            Player player = pluginRef.getServer().getPlayer(partialName);
+            Player player = Bukkit.getServer().getPlayer(partialName);
 
             if (player != null) {
                 partialName = player.getName();
@@ -274,7 +276,7 @@ public final class CommandTools {
     private List<String> matchPlayer(String partialName) {
         List<String> matchedPlayers = new ArrayList<>();
 
-        for (OfflinePlayer offlinePlayer : pluginRef.getServer().getOfflinePlayers()) {
+        for (OfflinePlayer offlinePlayer : Bukkit.getServer().getOfflinePlayers()) {
             String playerName = offlinePlayer.getName();
 
             if (playerName == null) { //Do null checking here to detect corrupted data before sending it throuogh .equals

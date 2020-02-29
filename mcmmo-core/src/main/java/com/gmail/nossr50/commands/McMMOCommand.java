@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.Plugin;
 
 public class McMMOCommand implements CommandExecutor {
 
@@ -34,7 +35,7 @@ public class McMMOCommand implements CommandExecutor {
                     sender.sendMessage(ChatColor.GOLD + " - " + ChatColor.GREEN + "nossr50@gmail.com" + ChatColor.GOLD + " Paypal");
                 }
 
-                sender.sendMessage(pluginRef.getLocaleManager().getString("MOTD.Version", pluginRef.getDescription().getVersion()));
+                sender.sendMessage(pluginRef.getLocaleManager().getString("MOTD.Version", ((Plugin) pluginRef.getPlatformProvider()).getDescription().getVersion()));
 
 //                mcMMO.getHolidayManager().anniversaryCheck(sender);
                 return true;

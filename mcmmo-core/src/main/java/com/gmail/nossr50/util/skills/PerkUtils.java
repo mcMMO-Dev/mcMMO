@@ -13,7 +13,7 @@ public final class PerkUtils {
         this.pluginRef = pluginRef;
     }
 
-    public int handleCooldownPerks(Player player, int cooldown) {
+    public long handleCooldownPerks(Player player, long cooldown) {
         if (pluginRef.getPermissionTools().halvedCooldowns(player)) {
             cooldown *= 0.5;
         } else if (pluginRef.getPermissionTools().thirdedCooldowns(player)) {

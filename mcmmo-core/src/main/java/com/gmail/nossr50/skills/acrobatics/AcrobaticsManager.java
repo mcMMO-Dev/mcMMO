@@ -16,6 +16,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 
 public class AcrobaticsManager extends SkillManager {
 
@@ -95,18 +96,18 @@ public class AcrobaticsManager extends SkillManager {
             if (pluginRef.getSkillTools().cooldownExpired(mcMMOPlayer.getRespawnATS(), pluginRef.getMiscTools().PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
                 if(!(attacker instanceof Player)) {
                     //Check to see how many dodge XP rewards this mob has handed out
-                    if(attacker.hasMetadata(MetadataConstants.DODGE_TRACKER) && pluginRef.getConfigManager().getConfigExploitPrevention().isPreventAcrobaticsAbuse()) {
+                    if(attacker.hasMetadata(MetadataConstants.DODGE_TRACKER.getKey()) && pluginRef.getConfigManager().getConfigExploitPrevention().isPreventAcrobaticsAbuse()) {
                         //If Dodge XP has been handed out 5 times then consider it being exploited
-                        MetadataValue metadataValue = attacker.getMetadata(MetadataConstants.DODGE_TRACKER).get(0);
-                        int count = attacker.getMetadata(MetadataConstants.DODGE_TRACKER).get(0).asInt();
+                        MetadataValue metadataValue = attacker.getMetadata(MetadataConstants.DODGE_TRACKER.getKey()).get(0);
+                        int count = attacker.getMetadata(MetadataConstants.DODGE_TRACKER.getKey()).get(0).asInt();
 
                         if(count <= 5) {
                             applyXpGain((float) (damage * acrobaticsBehaviour.getDodgeXpModifier()), XPGainReason.PVE);
-                            attacker.setMetadata(MetadataConstants.DODGE_TRACKER, new FixedMetadataValue(pluginRef, count + 1));
+                            attacker.setMetadata(MetadataConstants.DODGE_TRACKER.getKey(), new FixedMetadataValue((Plugin) pluginRef.getPlatformProvider(), count + 1));
                         }
                     } else {
                         applyXpGain((float) (damage * acrobaticsBehaviour.getDodgeXpModifier()), XPGainReason.PVE);
-                        attacker.setMetadata(MetadataConstants.DODGE_TRACKER, new FixedMetadataValue(pluginRef, 1));
+                        attacker.setMetadata(MetadataConstants.DODGE_TRACKER.getKey(), new FixedMetadataValue((Plugin) pluginRef.getPlatformProvider(), 1));
                     }
                 }
             }

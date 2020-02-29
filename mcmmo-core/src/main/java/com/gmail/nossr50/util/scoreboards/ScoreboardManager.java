@@ -44,8 +44,8 @@ public class ScoreboardManager {
         //TODO: Christ...
 
         //Call our custom event
-        if(pluginRef.getServer().getScoreboardManager() != null) {
-            McMMOScoreboardMakeboardEvent event = new McMMOScoreboardMakeboardEvent(pluginRef.getServer().getScoreboardManager().getNewScoreboard(), player.getScoreboard(), player, ScoreboardEventReason.CREATING_NEW_SCOREBOARD);
+        if(Bukkit.getServer().getScoreboardManager() != null) {
+            McMMOScoreboardMakeboardEvent event = new McMMOScoreboardMakeboardEvent(Bukkit.getServer().getScoreboardManager().getNewScoreboard(), player.getScoreboard(), player, ScoreboardEventReason.CREATING_NEW_SCOREBOARD);
             player.getServer().getPluginManager().callEvent(event);
             return new ScoreboardWrapper(event.getTargetPlayer(), event.getTargetBoard(), scoreboardStrings, pluginRef);
 
@@ -73,7 +73,7 @@ public class ScoreboardManager {
 
     // Called in onDisable()
     public void teardownAll() {
-        ImmutableList<Player> onlinePlayers = ImmutableList.copyOf(pluginRef.getServer().getOnlinePlayers());
+        ImmutableList<Player> onlinePlayers = ImmutableList.copyOf(Bukkit.getServer().getOnlinePlayers());
         pluginRef.debug("Tearing down scoreboards... (" + onlinePlayers.size() + ")");
         for (Player player : onlinePlayers) {
             teardownPlayer(player);
@@ -271,7 +271,7 @@ public class ScoreboardManager {
      */
     public Objective getPowerLevelObjective() {
         if (!pluginRef.getScoreboardSettings().getPowerLevelTagsEnabled()) {
-            Objective objective = pluginRef.getServer().getScoreboardManager().getMainScoreboard().getObjective(scoreboardStrings.POWER_OBJECTIVE);
+            Objective objective = Bukkit.getServer().getScoreboardManager().getMainScoreboard().getObjective(scoreboardStrings.POWER_OBJECTIVE);
 
             if (objective != null) {
                 objective.unregister();
@@ -281,10 +281,10 @@ public class ScoreboardManager {
             return null;
         }
 
-        Objective powerObjective = pluginRef.getServer().getScoreboardManager().getMainScoreboard().getObjective(scoreboardStrings.POWER_OBJECTIVE);
+        Objective powerObjective = Bukkit.getServer().getScoreboardManager().getMainScoreboard().getObjective(scoreboardStrings.POWER_OBJECTIVE);
 
         if (powerObjective == null) {
-            powerObjective = pluginRef.getServer().getScoreboardManager().getMainScoreboard().registerNewObjective(scoreboardStrings.POWER_OBJECTIVE, "dummy");
+            powerObjective = Bukkit.getServer().getScoreboardManager().getMainScoreboard().registerNewObjective(scoreboardStrings.POWER_OBJECTIVE, "dummy");
             powerObjective.setDisplayName(scoreboardStrings.TAG_POWER_LEVEL);
             powerObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
         }
@@ -296,7 +296,7 @@ public class ScoreboardManager {
         if (displayTime == -1) {
             wrapper.showBoardWithNoRevert();
         } else {
-            wrapper.showBoardAndScheduleRevert(displayTime * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR);
+            wrapper.showBoardAndScheduleRevert((int) (displayTime * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR));
         }
     }
 
@@ -313,7 +313,7 @@ public class ScoreboardManager {
     }
 
     public void setRevertTimer(String playerName, int seconds) {
-        PLAYER_SCOREBOARDS.get(playerName).showBoardAndScheduleRevert(seconds * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR);
+        PLAYER_SCOREBOARDS.get(playerName).showBoardAndScheduleRevert((int) (seconds * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR));
     }
 
     public List<String> getDirtyPowerLevels() {

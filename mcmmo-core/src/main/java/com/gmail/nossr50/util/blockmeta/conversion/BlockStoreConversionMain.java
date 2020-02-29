@@ -2,24 +2,25 @@ package com.gmail.nossr50.util.blockmeta.conversion;
 
 import com.gmail.nossr50.core.ChunkConversionOptions;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
+
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.io.File;
 
 public class BlockStoreConversionMain implements Runnable {
-    BukkitScheduler scheduler;
     File dataDir;
     File[] xDirs;
     BlockStoreConversionXDirectory[] converters;
     private int taskID;
     private org.bukkit.World world;
     private final mcMMO pluginRef;
+    private Task task;
 
     public BlockStoreConversionMain(mcMMO pluginRef, org.bukkit.World world) {
         this.pluginRef = pluginRef;
         this.taskID = -1;
         this.world = world;
-        this.scheduler = pluginRef.getServer().getScheduler();
         this.dataDir = new File(this.world.getWorldFolder(), "mcmmo_data");
         this.converters = new BlockStoreConversionXDirectory[ChunkConversionOptions.getConversionRate()];
     }
@@ -29,7 +30,10 @@ public class BlockStoreConversionMain implements Runnable {
             return;
         }
 
-        this.taskID = this.scheduler.runTaskLater(pluginRef, this, 1).getTaskId();
+       this.task = pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                           .setDelay(1L)
+                           .setTask(this)
+                           .schedule();
     }
 
     @Override
@@ -69,7 +73,7 @@ public class BlockStoreConversionMain implements Runnable {
             return;
         }
 
-        this.scheduler.cancelTask(this.taskID);
+        this.task.cancel();
         this.taskID = -1;
     }
 
@@ -86,7 +90,7 @@ public class BlockStoreConversionMain implements Runnable {
         this.dataDir = null;
         this.xDirs = null;
         this.world = null;
-        this.scheduler = null;
+        this.task = null;
         this.converters = null;
     }
 }

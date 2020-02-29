@@ -38,6 +38,9 @@ public class LeaderboardsCommandAsyncTask extends BukkitRunnable {
     public void run() {
         final List<PlayerStat> userStats = pluginRef.getDatabaseManager().readLeaderboard(skill, page, 10);
 
-        new LeaderboardsCommandDisplayTask(pluginRef, userStats, page, skill, sender, useBoard, useChat).runTaskLater(pluginRef, 1);
+        pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                .setDelay(1L)
+                .setTask(new LeaderboardsCommandDisplayTask(pluginRef, userStats, page, skill, sender, useBoard, useChat))
+                .schedule();
     }
 }

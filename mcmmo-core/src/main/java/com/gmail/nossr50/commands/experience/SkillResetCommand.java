@@ -6,6 +6,8 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
+
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -86,7 +88,7 @@ public class SkillResetCommand implements TabExecutor {
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {
                     UUID uuid = null;
-                    OfflinePlayer player = pluginRef.getServer().getOfflinePlayer(playerName);
+                    OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(playerName);
                     if (player != null) {
                         uuid = player.getUniqueId();
                     }

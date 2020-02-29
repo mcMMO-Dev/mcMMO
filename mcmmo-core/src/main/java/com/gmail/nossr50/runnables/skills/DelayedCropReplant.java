@@ -12,6 +12,7 @@ import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class DelayedCropReplant extends BukkitRunnable {
@@ -52,7 +53,10 @@ public class DelayedCropReplant extends BukkitRunnable {
         BlockState currentState = cropBlock.getState();
 
         //Remove the metadata marking the block as recently replanted
-        new markPlantAsOld(blockBreakEvent.getBlock().getLocation()).runTaskLater(pluginRef, 10);
+        pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                .setDelay(10L)
+                .setTask(new markPlantAsOld(blockBreakEvent.getBlock().getLocation()))
+                .schedule();
 
         if(blockBreakEvent.isCancelled()) {
             wasImmaturePlant = true;
@@ -112,8 +116,8 @@ public class DelayedCropReplant extends BukkitRunnable {
         public void run() {
             Block cropBlock = cropLoc.getBlock();
 
-            if(cropBlock.getMetadata(MetadataConstants.REPLANT_META_KEY).size() > 0) {
-                cropBlock.setMetadata(MetadataConstants.REPLANT_META_KEY, new RecentlyReplantedCropMeta(pluginRef, false));
+            if(cropBlock.getMetadata(MetadataConstants.REPLANT_META_KEY.getKey()).size() > 0) {
+                cropBlock.setMetadata(MetadataConstants.REPLANT_META_KEY.getKey(), new RecentlyReplantedCropMeta((Plugin) pluginRef.getPlatformProvider(), false));
                 pluginRef.getParticleEffectUtils().playFluxEffect(cropLocation);
             }
         }

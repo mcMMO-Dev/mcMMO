@@ -1,18 +1,23 @@
 package com.gmail.nossr50.util.blockmeta.conversion;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
 import com.gmail.nossr50.util.blockmeta.ChunkletStore;
 import com.gmail.nossr50.util.blockmeta.HashChunkletManager;
 import com.gmail.nossr50.util.blockmeta.PrimitiveChunkletStore;
 import com.gmail.nossr50.util.blockmeta.PrimitiveExChunkletStore;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.HashChunkManager;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.PrimitiveChunkStore;
+
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.io.File;
+import java.util.function.Consumer;
 
-public class BlockStoreConversionZDirectory implements Runnable {
-    public int taskID, cx, cz, x, y, z, y2, xPos, zPos, cxPos, czPos;
+public class BlockStoreConversionZDirectory implements Consumer<Task> {
+    public int cx, cz, x, y, z, y2, xPos, zPos, cxPos, czPos;
+    public Task task;
     private String cxs, czs, chunkletName, chunkName;
     private org.bukkit.World world;
     private BukkitScheduler scheduler;
@@ -27,26 +32,28 @@ public class BlockStoreConversionZDirectory implements Runnable {
 
     public BlockStoreConversionZDirectory(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
-        this.taskID = -1;
     }
 
     public void start(org.bukkit.World world, File xDir, File dataDir) {
         this.world = world;
-        this.scheduler = pluginRef.getServer().getScheduler();
+        this.scheduler = Bukkit.getServer().getScheduler();
         this.manager = new HashChunkletManager(pluginRef);
         this.newManager = (HashChunkManager) pluginRef.getPlaceStore();
         this.dataDir = dataDir;
         this.xDir = xDir;
 
-        if (this.taskID >= 0) {
+        if (this.task != null) {
             return;
         }
 
-        this.taskID = this.scheduler.runTaskLater(pluginRef, this, 1).getTaskId();
+        this.task = pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                .setDelay(1L)
+                .setTask(this)
+                .schedule();
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         if (!this.dataDir.exists()) {
             stop();
             return;
@@ -165,12 +172,12 @@ public class BlockStoreConversionZDirectory implements Runnable {
     }
 
     public void stop() {
-        if (this.taskID < 0) {
+        if (this.task == null) {
             return;
         }
 
-        this.scheduler.cancelTask(taskID);
-        this.taskID = -1;
+        this.task.cancel();
+        this.task = null;
 
         this.cxs = null;
         this.czs = null;

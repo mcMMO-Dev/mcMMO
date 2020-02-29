@@ -3,6 +3,7 @@ package com.gmail.nossr50.util;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.text.DecimalFormat;
@@ -15,7 +16,7 @@ public final class MessageOfTheDayUtils {
     public MessageOfTheDayUtils(mcMMO pluginRef) {
         this.pluginRef = pluginRef;
         PERK_PREFIX = pluginRef.getLocaleManager().getString("MOTD.PerksPrefix") + " ";
-        pluginDescription = pluginRef.getDescription();
+        pluginDescription = ((Plugin) pluginRef.getPlatformProvider()).getDescription();
     }
 
     public void displayAll(Player player) {

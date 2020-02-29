@@ -34,7 +34,10 @@ public class RankCommandAsyncTask extends BukkitRunnable {
     public void run() {
         Map<PrimarySkillType, Integer> skills = pluginRef.getDatabaseManager().readRank(playerName);
 
-        new RankCommandDisplayTask(pluginRef, skills, sender, playerName, useBoard, useChat).runTaskLater(pluginRef, 1);
+        pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                .setDelay(1L)
+                .setTask(new RankCommandDisplayTask(pluginRef, skills, sender, playerName, useBoard, useChat))
+                .schedule();
     }
 }
 

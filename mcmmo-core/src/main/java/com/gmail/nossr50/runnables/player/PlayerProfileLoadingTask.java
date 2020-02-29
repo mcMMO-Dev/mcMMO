@@ -4,6 +4,8 @@ import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.ScoreboardKeepTask;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -42,7 +44,9 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
         PlayerProfile profile = pluginRef.getDatabaseManager().loadPlayerProfile(player.getName(), player.getUniqueId(), true);
         // If successful, schedule the apply
         if (profile.isLoaded()) {
-            new ApplySuccessfulProfile(new BukkitMMOPlayer(player, profile, pluginRef)).runTask(pluginRef);
+            pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                    .setTask(new ApplySuccessfulProfile(new BukkitMMOPlayer(player, profile, pluginRef)))
+                    .schedule();
             pluginRef.getEventManager().callPlayerProfileLoadEvent(player, profile);
             return;
         }
@@ -54,7 +58,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
                     player.getName(), String.valueOf(attempt)));
 
             //Notify the admins
-            pluginRef.getServer().broadcast(pluginRef.getLocaleManager().getString("Profile.Loading.FailureNotice", player.getName()), Server.BROADCAST_CHANNEL_ADMINISTRATIVE);
+            Bukkit.getServer().broadcast(pluginRef.getLocaleManager().getString("Profile.Loading.FailureNotice", player.getName()), Server.BROADCAST_CHANNEL_ADMINISTRATIVE);
 
             //Notify the player
             player.sendMessage(pluginRef.getLocaleManager().getString("Profile.Loading.FailurePlayer", String.valueOf(attempt)).split("\n"));
@@ -62,8 +66,11 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
 
         // Increment attempt counter and try
         attempt++;
-
-        new PlayerProfileLoadingTask(pluginRef, player, attempt).runTaskLaterAsynchronously(pluginRef, (100 + (attempt * 100)));
+        pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                .setAsync(true)
+                .setDelay((long) (100 + (attempt * 100)))
+                .setTask(new PlayerProfileLoadingTask(pluginRef, player, attempt))
+                .schedule();
     }
 
     private class ApplySuccessfulProfile extends BukkitRunnable {
@@ -91,7 +98,10 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
 
                 if (pluginRef.getScoreboardSettings().getShowStatsAfterLogin()) {
                     pluginRef.getScoreboardManager().enablePlayerStatsScoreboard(player);
-                    new ScoreboardKeepTask(pluginRef, player).runTaskLater(pluginRef, pluginRef.getMiscTools().TICK_CONVERSION_FACTOR);
+                    pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                            .setDelay(pluginRef.getMiscTools().TICK_CONVERSION_FACTOR)
+                            .setTask(new ScoreboardKeepTask(pluginRef, player))
+                            .schedule();
                 }
             }
 

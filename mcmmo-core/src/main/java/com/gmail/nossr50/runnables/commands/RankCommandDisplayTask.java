@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Map;
@@ -37,7 +38,7 @@ public class RankCommandDisplayTask extends BukkitRunnable {
         if (useChat) {
             displayChat();
         }
-        ((Player) sender).removeMetadata(MetadataConstants.DATABASE_PROCESSING_COMMAND_METAKEY, pluginRef);
+        ((Player) sender).removeMetadata(MetadataConstants.DATABASE_PROCESSING_COMMAND_METAKEY.getKey(), (Plugin) pluginRef.getPlatformProvider());
     }
 
     private void displayChat() {

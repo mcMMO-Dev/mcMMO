@@ -2,10 +2,14 @@ package com.gmail.nossr50.runnables.database;
 
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class DatabaseConversionTask extends BukkitRunnable {
+import java.util.function.Consumer;
+
+public class DatabaseConversionTask implements Consumer<Task> {
     private final mcMMO pluginRef;
     private final DatabaseManager sourceDatabase;
     private final CommandSender sender;
@@ -19,9 +23,8 @@ public class DatabaseConversionTask extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         sourceDatabase.convertUsers(pluginRef.getDatabaseManager());
-
-        pluginRef.getServer().getScheduler().runTask(pluginRef, () -> sender.sendMessage(message));
+        sender.sendMessage(message);
     }
 }

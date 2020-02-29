@@ -33,6 +33,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 import java.util.Locale;
 
@@ -117,7 +118,7 @@ public class PlayerListener implements Listener {
         }
 
         Player player = event.getEntity();
-        event.setDeathMessage(pluginRef.getMobHealthBarManager().fixDeathMessage(deathMessage, player));
+        event.setDeathMessage(pluginRef.getPlatformProvider().getHealthBarManager().fixDeathMessage(deathMessage, pluginRef.getUserManager().getPlayer(player)));
     }
 
     /**
@@ -145,7 +146,7 @@ public class PlayerListener implements Listener {
 
         Player killedPlayer = event.getEntity();
 
-        if (!killedPlayer.hasMetadata(MetadataConstants.PLAYER_DATA_METAKEY) || pluginRef.getPermissionTools().hardcoreBypass(killedPlayer)) {
+        if (!killedPlayer.hasMetadata(MetadataConstants.PLAYER_DATA_METAKEY.getKey()) || pluginRef.getPermissionTools().hardcoreBypass(killedPlayer)) {
             return;
         }
 
@@ -225,7 +226,7 @@ public class PlayerListener implements Listener {
         ItemStack dropStack = drop.getItemStack();
 
         if (pluginRef.getItemTools().isSharable(dropStack)) {
-            drop.setMetadata(MetadataConstants.DROPPED_ITEM_TRACKING_METAKEY, MetadataConstants.metadataValue);
+            drop.setMetadata(MetadataConstants.DROPPED_ITEM_TRACKING_METAKEY.getKey(), MetadataConstants.metadataValue);
         }
 
         pluginRef.getSkillTools().removeAbilityBuff(dropStack);
@@ -342,7 +343,7 @@ public class PlayerListener implements Listener {
 
         //Track the hook
         if (pluginRef.getConfigManager().getConfigExploitPrevention().getConfigSectionExploitFishing().isPreventFishingExploits()) {
-            if (event.getHook().getMetadata(MetadataConstants.FISH_HOOK_REF_METAKEY).size() == 0) {
+            if (event.getHook().getMetadata(MetadataConstants.FISH_HOOK_REF_METAKEY.getKey()).size() == 0) {
                 fishingManager.setFishHookReference(event.getHook());
             }
 
@@ -443,12 +444,12 @@ public class PlayerListener implements Listener {
             Item drop = event.getItem();
             //Remove tracking
             ItemStack dropStack = drop.getItemStack();
-            if(drop.hasMetadata(MetadataConstants.ARROW_TRACKER_METAKEY)) {
-                drop.removeMetadata(MetadataConstants.ARROW_TRACKER_METAKEY, pluginRef);
+            if(drop.hasMetadata(MetadataConstants.ARROW_TRACKER_METAKEY.getKey())) {
+                drop.removeMetadata(MetadataConstants.ARROW_TRACKER_METAKEY.getKey(), (Plugin) pluginRef.getPlatformProvider());
             }
 
-            if (drop.hasMetadata(MetadataConstants.DISARMED_ITEM_METAKEY)) {
-                if (!player.getName().equals(drop.getMetadata(MetadataConstants.DISARMED_ITEM_METAKEY).get(0).asString())) {
+            if (drop.hasMetadata(MetadataConstants.DISARMED_ITEM_METAKEY.getKey())) {
+                if (!player.getName().equals(drop.getMetadata(MetadataConstants.DISARMED_ITEM_METAKEY.getKey()).get(0).asString())) {
                     event.setCancelled(true);
                 }
 
@@ -456,7 +457,7 @@ public class PlayerListener implements Listener {
             }
 
 
-            if (!drop.hasMetadata(MetadataConstants.DROPPED_ITEM_TRACKING_METAKEY) && mcMMOPlayer.inParty() && pluginRef.getItemTools().isSharable(dropStack)) {
+            if (!drop.hasMetadata(MetadataConstants.DROPPED_ITEM_TRACKING_METAKEY.getKey()) && mcMMOPlayer.inParty() && pluginRef.getItemTools().isSharable(dropStack)) {
                 event.setCancelled(mcMMOPlayer.getParty().getShareHandler().handleItemShare(drop, mcMMOPlayer));
 
                 pluginRef.getSoundManager().sendSound(player, player.getLocation(), SoundType.POP);
@@ -517,7 +518,11 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
 
         //Delay loading for 3 seconds in case the player has a save task running, its hacky but it should do the trick
-        new PlayerProfileLoadingTask(pluginRef, player).runTaskLaterAsynchronously(pluginRef, 60);
+        pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                .setAsync(true)
+                .setDelay(60L)
+                .setTask(new PlayerProfileLoadingTask(pluginRef, player))
+                .schedule();
 
         if (pluginRef.getConfigManager().getConfigMOTD().isEnableMOTD()) {
             pluginRef.getMessageOfTheDayUtils().displayAll(player);
@@ -528,7 +533,7 @@ public class PlayerListener implements Listener {
         }
 
         //TODO: Remove this warning after 2.2 is done
-        if (pluginRef.getDescription().getVersion().contains("SNAPSHOT")) {
+        if (pluginRef.getPlatformProvider().getVersion().contains("SNAPSHOT")) {
             event.getPlayer().sendMessage(ChatColor.RED + "WARNING: " + ChatColor.WHITE + "This dev build version of mcMMO is in the MIDDLE of completely rewriting the configs, there may be game breaking bugs. It is not recommended to play on this version of mcMMO, please grab the latest stable release from https://www.mcmmo.org and use that instead!");
         }
 

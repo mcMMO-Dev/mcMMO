@@ -3,6 +3,8 @@ package com.gmail.nossr50.util;
 import com.gmail.nossr50.datatypes.skills.ItemMaterialCategory;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.mcMMO;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -636,7 +638,7 @@ public final class ItemTools {
             return false;
         }
 
-        for (Recipe recipe : pluginRef.getServer().getRecipesFor(item)) {
+        for (Recipe recipe : Bukkit.getServer().getRecipesFor(item)) {
             if (recipe instanceof FurnaceRecipe
                     && ((FurnaceRecipe) recipe).getInput().getType().isBlock()
                     && MaterialUtils.isOre(((FurnaceRecipe) recipe).getInput().getType())) {

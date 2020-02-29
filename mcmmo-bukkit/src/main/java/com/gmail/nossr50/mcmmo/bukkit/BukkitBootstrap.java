@@ -1,29 +1,50 @@
 package com.gmail.nossr50.mcmmo.bukkit;
 
+import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.listeners.*;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcmmo.api.data.MMOEntity;
 import com.gmail.nossr50.mcmmo.api.platform.PlatformProvider;
 import com.gmail.nossr50.mcmmo.api.platform.ServerSoftwareType;
 import com.gmail.nossr50.mcmmo.api.platform.scheduler.PlatformScheduler;
 import com.gmail.nossr50.mcmmo.api.platform.util.MetadataStore;
 import com.gmail.nossr50.mcmmo.api.platform.util.MobHealthBarManager;
+import com.gmail.nossr50.mcmmo.bukkit.platform.entity.BukkitMMOEntity;
 import com.gmail.nossr50.mcmmo.bukkit.platform.scheduler.BukkitPlatformScheduler;
 import com.gmail.nossr50.mcmmo.bukkit.platform.util.BukkitMobHealthBarManager;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 import java.util.logging.Logger;
 
-public class BukkitBoostrap extends JavaPlugin implements PlatformProvider {
+import co.aikar.commands.CommandManager;
+import co.aikar.commands.PaperCommandManager;
+
+public class BukkitBootstrap extends JavaPlugin implements PlatformProvider {
 
     private mcMMO core = new mcMMO(this);
     private final BukkitPlatformScheduler scheduler = new BukkitPlatformScheduler(this);
-    private final MobHealthBarManager healthBarManager = new BukkitMobHealthBarManager(core);
+    private final MobHealthBarManager healthBarManager = new BukkitMobHealthBarManager(this, core);
+    private PaperCommandManager paperCommandManager;
+
 
     @Override
     public @NotNull Logger getLogger() {
@@ -45,7 +66,7 @@ public class BukkitBoostrap extends JavaPlugin implements PlatformProvider {
 
     @Override
     public String getVersion() {
-        return this.getVersion();
+        return getDescription().getVersion();
     }
 
     @Override
@@ -57,7 +78,8 @@ public class BukkitBoostrap extends JavaPlugin implements PlatformProvider {
         }
 
         registerEvents();
-
+        paperCommandManager = new PaperCommandManager(this);
+        paperCommandManager.registerDependency(mcMMO.class, core);
     }
 
     @Override
@@ -122,9 +144,77 @@ public class BukkitBoostrap extends JavaPlugin implements PlatformProvider {
 
     @Override
     public MobHealthBarManager getHealthBarManager() {
+        return healthBarManager;
+    }
+
+    @Override
+    public void registerCustomRecipes() {
+        getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
+            if (core.getConfigManager().getConfigItems().isChimaeraWingEnabled()) {
+                Recipe recipe = getChimaeraWingRecipe();
+
+                if(!core.getSkillTools().hasRecipeBeenRegistered(recipe))
+                    getServer().addRecipe(getChimaeraWingRecipe());
+            }
+        }, 40);
+    }
+
+    @Override
+    public CommandManager getCommandManager() {
+        return paperCommandManager;
+    }
+
+    @Override
+    @Deprecated // TODO: This needs proper registration...
+    public MMOEntity<?> getEntity(UUID uniqueId) {
+        final Entity entity = Bukkit.getEntity(uniqueId);
+        if (entity instanceof Player) {
+            core.getUserManager().getPlayer((Player) entity);
+        } else if (entity instanceof LivingEntity) {
+            return new BukkitMMOEntity(entity);
+        } else if (entity != null){
+            return new BukkitMMOEntity(entity);
+        }
         return null;
     }
 
+    //TODO: Add this stuff to DSM, this location is temporary
+    //TODO: even more temp here....
+    private ShapelessRecipe getChimaeraWingRecipe() {
+            Material ingredient = Material.matchMaterial(core.getConfigManager().getConfigItems().getChimaeraWingRecipeMats());
+
+            if(ingredient == null)
+                ingredient = Material.FEATHER;
+
+            int amount = core.getConfigManager().getConfigItems().getChimaeraWingUseCost();
+
+            ShapelessRecipe chimaeraWing = new ShapelessRecipe(new NamespacedKey(this, "Chimaera"), getChimaeraWing());
+            chimaeraWing.addIngredient(amount, ingredient);
+            return chimaeraWing;
+    }
+
+
+    //TODO: Add this stuff to DSM, this location is temporary
+    public ItemStack getChimaeraWing() {
+        Material ingredient = Material.matchMaterial(core.getConfigManager().getConfigItems().getChimaeraWingRecipeMats());
+
+        if(ingredient == null)
+            ingredient = Material.FEATHER;
+
+        //TODO: Make it so Chimaera wing amounts made is customizeable
+        ItemStack itemStack = new ItemStack(ingredient, 1);
+
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(ChatColor.GOLD + core.getLocaleManager().getString("Item.ChimaeraWing.Name"));
+
+        List<String> itemLore = new ArrayList<>();
+        itemLore.add("mcMMO Item");
+        itemLore.add(core.getLocaleManager().getString("Item.ChimaeraWing.Lore"));
+        itemMeta.setLore(itemLore);
+
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
 
     private void registerEvents() {
         PluginManager pluginManager = getServer().getPluginManager();
@@ -136,5 +226,10 @@ public class BukkitBoostrap extends JavaPlugin implements PlatformProvider {
         pluginManager.registerEvents(new InventoryListener(core), this);
         pluginManager.registerEvents(new SelfListener(core), this);
         pluginManager.registerEvents(new WorldListener(core), this);
+    }
+
+    @Override
+    public void onEnable() {
+        core.onEnable();
     }
 }

@@ -10,6 +10,8 @@ import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.items.TeleportationWarmup;
 import com.gmail.nossr50.util.sounds.SoundType;
+
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -85,7 +87,10 @@ public final class PartyManager {
 
         if (warmup > 0) {
             teleportingPlayer.sendMessage(pluginRef.getLocaleManager().getString("Teleport.Commencing", warmup));
-            new TeleportationWarmup(pluginRef, mcMMOPlayer, mcMMOTarget).runTaskLater(pluginRef, 20 * warmup);
+            pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                    .setDelay(20 * warmup)
+                    .setTask(new TeleportationWarmup(pluginRef, mcMMOPlayer, mcMMOTarget))
+                    .schedule();
         } else {
             pluginRef.getEventManager().handlePartyTeleportEvent(teleportingPlayer, targetPlayer);
         }
@@ -621,7 +626,7 @@ public final class PartyManager {
      * @param party The party
      */
     public void setPartyLeader(UUID uuid, Party party) {
-        OfflinePlayer player = pluginRef.getServer().getOfflinePlayer(uuid);
+        OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(uuid);
         UUID leaderUniqueId = party.getLeader().getUniqueId();
 
         for (Player member : party.getOnlineMembers()) {
@@ -842,7 +847,7 @@ public final class PartyManager {
      */
     public boolean handlePartyChangeEvent(Player player, String oldPartyName, String newPartyName, EventReason reason) {
         McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, oldPartyName, newPartyName, reason);
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         return !event.isCancelled();
     }
@@ -858,7 +863,7 @@ public final class PartyManager {
      */
     public boolean handlePartyChangeAllianceEvent(Player player, String oldAllyName, String newAllyName, McMMOPartyAllianceChangeEvent.EventReason reason) {
         McMMOPartyAllianceChangeEvent event = new McMMOPartyAllianceChangeEvent(player, oldAllyName, newAllyName, reason);
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         return !event.isCancelled();
     }

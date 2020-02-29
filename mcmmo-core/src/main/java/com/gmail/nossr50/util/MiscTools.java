@@ -4,6 +4,8 @@ import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.google.common.collect.ImmutableSet;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
@@ -18,7 +20,7 @@ import java.util.Set;
 
 public final class MiscTools {
     public final int TIME_CONVERSION_FACTOR = 1000;
-    public final int TICK_CONVERSION_FACTOR = 20;
+    public final long TICK_CONVERSION_FACTOR = 20;
     public final int PLAYER_RESPAWN_COOLDOWN_SECONDS = 5;
     public final double SKILL_MESSAGE_MAX_SENDING_DISTANCE = 10.0;
     public final Set<String> modNames = ImmutableSet.of("LOTR", "BUILDCRAFT", "ENDERIO", "ENHANCEDBIOMES", "IC2", "METALLURGY", "FORESTRY", "GALACTICRAFT", "RAILCRAFT", "TWILIGHTFOREST", "THAUMCRAFT", "GRAVESTONEMOD", "GROWTHCRAFT", "ARCTICMOBS", "DEMONMOBS", "INFERNOMOBS", "SWAMPMOBS", "MARICULTURE", "MINESTRAPPOLATION");
@@ -124,7 +126,7 @@ public final class MiscTools {
 
         // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
         McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack);
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
             return null;
@@ -169,7 +171,7 @@ public final class MiscTools {
 
         // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
         McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(spawnLocation, clonedItem);
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         //Something cancelled the event so back out
         if (event.isCancelled() || event.getItemStack() == null) {
@@ -191,11 +193,14 @@ public final class MiscTools {
     }
 
     public void profileCleanup(String playerName) {
-        Player player = pluginRef.getServer().getPlayerExact(playerName);
+        Player player = Bukkit.getServer().getPlayerExact(playerName);
 
         if (player != null) {
             pluginRef.getUserManager().remove(player);
-            new PlayerProfileLoadingTask(pluginRef, player).runTaskLaterAsynchronously(pluginRef, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
+            pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                    .setDelay(1L) // 1 Tick delay to ensure the player is marked as online before we begin loading
+                    .setTask(new PlayerProfileLoadingTask(pluginRef, player))
+                    .schedule();
         }
     }
 

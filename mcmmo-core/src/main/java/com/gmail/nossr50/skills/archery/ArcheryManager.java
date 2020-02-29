@@ -14,6 +14,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -57,10 +58,10 @@ public class ArcheryManager extends SkillManager {
      */
     public double distanceXpBonusMultiplier(LivingEntity target, Entity damager) {
         //Hacky Fix - some plugins spawn arrows and assign them to players after the ProjectileLaunchEvent fires
-        if(!damager.hasMetadata(MetadataConstants.ARROW_DISTANCE_METAKEY))
+        if(!damager.hasMetadata(MetadataConstants.ARROW_DISTANCE_METAKEY.getKey()))
             return damager.getLocation().distance(target.getLocation());
 
-        Location firedLocation = (Location) damager.getMetadata(MetadataConstants.ARROW_DISTANCE_METAKEY).get(0).value();
+        Location firedLocation = (Location) damager.getMetadata(MetadataConstants.ARROW_DISTANCE_METAKEY.getKey()).get(0).value();
         Location targetLocation = target.getLocation();
 
         if (firedLocation.getWorld() != targetLocation.getWorld()) {
@@ -76,9 +77,9 @@ public class ArcheryManager extends SkillManager {
      * @param target The {@link LivingEntity} damaged by the arrow
      */
     public void processArrowRetrievalActivation(LivingEntity target, Projectile projectile) {
-        if(projectile.hasMetadata(MetadataConstants.ARROW_TRACKER_METAKEY)) {
+        if(projectile.hasMetadata(MetadataConstants.ARROW_TRACKER_METAKEY.getKey())) {
             archeryBehaviour.incrementArrowCount(target);
-            projectile.removeMetadata(MetadataConstants.ARROW_TRACKER_METAKEY, pluginRef); //Only 1 entity per projectile
+            projectile.removeMetadata(MetadataConstants.ARROW_TRACKER_METAKEY.getKey(), (Plugin) pluginRef.getPlatformProvider()); //Only 1 entity per projectile
         }
     }
 

@@ -165,14 +165,14 @@ public class EventManager {
 
     public McMMOPlayerAbilityActivateEvent callPlayerAbilityActivateEvent(Player player, PrimarySkillType primarySkillType, SuperAbilityType superAbilityType) {
         McMMOPlayerAbilityActivateEvent event = new McMMOPlayerAbilityActivateEvent(player, primarySkillType, superAbilityType);
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         return event;
     }
 
     public McMMOPlayerProfileLoadEvent callPlayerProfileLoadEvent(Player player, PlayerProfile profile){
         McMMOPlayerProfileLoadEvent event = new McMMOPlayerProfileLoadEvent(player, profile);
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         return event;
     }
@@ -187,7 +187,7 @@ public class EventManager {
     @Deprecated
     public SubSkillEvent callSubSkillEvent(Player player, SubSkillType subSkillType, PrimarySkillType primarySkillType) {
         SubSkillEvent event = new SubSkillEvent(player, subSkillType, primarySkillType);
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         return event;
     }
@@ -201,20 +201,20 @@ public class EventManager {
      */
     public SubSkillEvent callSubSkillEvent(Player player, AbstractSubSkill abstractSubSkill) {
         SubSkillEvent event = new SubSkillEvent(player, abstractSubSkill);
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         return event;
     }
 
     public void callFakeArmSwingEvent(Player player) {
         FakePlayerAnimationEvent event = new FakePlayerAnimationEvent(player);
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
     }
 
     public boolean tryLevelChangeEvent(Player player, PrimarySkillType skill, int levelsChanged, double xpRemoved, boolean isLevelUp, XPGainReason xpGainReason) {
         McMMOPlayerLevelChangeEvent event = isLevelUp ? new McMMOPlayerLevelUpEvent(player, skill, levelsChanged, xpGainReason) : new McMMOPlayerLevelDownEvent(player, skill, levelsChanged, xpGainReason);
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         boolean isCancelled = event.isCancelled();
 
@@ -230,7 +230,7 @@ public class EventManager {
 
     public boolean tryLevelEditEvent(Player player, PrimarySkillType skill, int levelsChanged, double xpRemoved, boolean isLevelUp, XPGainReason xpGainReason, int oldLevel) {
         McMMOPlayerLevelChangeEvent event = isLevelUp ? new McMMOPlayerLevelUpEvent(player, skill, levelsChanged - oldLevel, xpGainReason) : new McMMOPlayerLevelDownEvent(player, skill, levelsChanged, xpGainReason);
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         boolean isCancelled = event.isCancelled();
 
@@ -253,7 +253,7 @@ public class EventManager {
      * @return true if the event wasn't cancelled, false otherwise
      */
     public boolean simulateBlockBreak(Block block, Player player, boolean shouldArmSwing) {
-        PluginManager pluginManager = pluginRef.getServer().getPluginManager();
+        PluginManager pluginManager = Bukkit.getServer().getPluginManager();
 
         // Support for NoCheat
         if (shouldArmSwing) {
@@ -276,7 +276,7 @@ public class EventManager {
             return;
 
         McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(teleportingPlayer, targetPlayer, mcMMOPlayer.getParty().getName());
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
             return;
@@ -292,7 +292,7 @@ public class EventManager {
 
     public boolean handlePartyXpGainEvent(Party party, double xpGained) {
         McMMOPartyXpGainEvent event = new McMMOPartyXpGainEvent(party, xpGained);
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         boolean isCancelled = event.isCancelled();
 
@@ -305,7 +305,7 @@ public class EventManager {
 
     public boolean handlePartyLevelChangeEvent(Party party, int levelsChanged, double xpRemoved) {
         McMMOPartyLevelUpEvent event = new McMMOPartyLevelUpEvent(party, levelsChanged);
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         boolean isCancelled = event.isCancelled();
 
@@ -320,7 +320,7 @@ public class EventManager {
 
     public boolean handleXpGainEvent(Player player, PrimarySkillType skill, double xpGained, XPGainReason xpGainReason) {
         McMMOPlayerXpGainEvent event = new McMMOPlayerXpGainEvent(player, skill, getSkillLevel(player, skill), xpGained, xpGainReason);
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         boolean isCancelled = event.isCancelled();
 
@@ -337,7 +337,7 @@ public class EventManager {
             return true;
 
         McMMOPlayerStatLossEvent event = new McMMOPlayerStatLossEvent(player, levelChanged, experienceChanged);
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         boolean isCancelled = event.isCancelled();
 
@@ -369,8 +369,8 @@ public class EventManager {
     public boolean handleVampirismEvent(Player killer, Player victim, HashMap<String, Integer> levelChanged, HashMap<String, Double> experienceChanged) {
         McMMOPlayerVampirismEvent eventKiller = new McMMOPlayerVampirismEvent(killer, false, levelChanged, experienceChanged);
         McMMOPlayerVampirismEvent eventVictim = new McMMOPlayerVampirismEvent(victim, true, levelChanged, experienceChanged);
-        pluginRef.getServer().getPluginManager().callEvent(eventKiller);
-        pluginRef.getServer().getPluginManager().callEvent(eventVictim);
+        Bukkit.getServer().getPluginManager().callEvent(eventKiller);
+        Bukkit.getServer().getPluginManager().callEvent(eventVictim);
 
         boolean isCancelled = eventKiller.isCancelled() || eventVictim.isCancelled();
 
@@ -418,47 +418,47 @@ public class EventManager {
 
     public void callAbilityDeactivateEvent(Player player, SuperAbilityType superAbilityType) {
         McMMOPlayerAbilityDeactivateEvent event = new McMMOPlayerAbilityDeactivateEvent(player, pluginRef.getSkillTools().getPrimarySkillBySuperAbility(superAbilityType), superAbilityType);
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
     }
 
     public McMMOPlayerFishingTreasureEvent callFishingTreasureEvent(Player player, ItemStack treasureDrop, int treasureXp, Map<Enchantment, Integer> enchants) {
         McMMOPlayerFishingTreasureEvent event = enchants.isEmpty() ? new McMMOPlayerFishingTreasureEvent(player, treasureDrop, treasureXp) : new McMMOPlayerMagicHunterEvent(player, treasureDrop, treasureXp, enchants);
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         return event;
     }
 
     public void callFakeFishEvent(Player player, FishHook hook) {
         FakePlayerFishEvent event = new FakePlayerFishEvent(player, null, hook, PlayerFishEvent.State.FISHING);
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
     }
 
     public McMMOPlayerRepairCheckEvent callRepairCheckEvent(Player player, short durability, ItemStack repairMaterial, ItemStack repairedObject) {
         McMMOPlayerRepairCheckEvent event = new McMMOPlayerRepairCheckEvent(player, durability, repairMaterial, repairedObject);
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         return event;
     }
 
     public McMMOPlayerPreDeathPenaltyEvent callPreDeathPenaltyEvent(Player player) {
         McMMOPlayerPreDeathPenaltyEvent event = new McMMOPlayerPreDeathPenaltyEvent(player);
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         return event;
     }
 
     public McMMOPlayerDisarmEvent callDisarmEvent(Player defender) {
         McMMOPlayerDisarmEvent event = new McMMOPlayerDisarmEvent(defender);
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         return event;
     }
 
     public McMMOPlayerSalvageCheckEvent callSalvageCheckEvent(Player player, ItemStack salvageMaterial, ItemStack salvageResults, ItemStack enchantedBook) {
         McMMOPlayerSalvageCheckEvent event = new McMMOPlayerSalvageCheckEvent(player, salvageMaterial, salvageResults, enchantedBook);
-        pluginRef.getServer().getPluginManager().callEvent(event);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         return event;
     }

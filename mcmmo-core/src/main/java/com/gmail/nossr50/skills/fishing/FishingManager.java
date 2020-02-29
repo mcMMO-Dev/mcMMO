@@ -76,10 +76,10 @@ public class FishingManager extends SkillManager {
     }
 
     public void setFishHookReference(FishHook fishHook) {
-        if (fishHook.getMetadata(MetadataConstants.FISH_HOOK_REF_METAKEY).size() > 0)
+        if (fishHook.getMetadata(MetadataConstants.FISH_HOOK_REF_METAKEY.getKey()).size() > 0)
             return;
 
-        fishHook.setMetadata(MetadataConstants.FISH_HOOK_REF_METAKEY, MetadataConstants.metadataValue);
+        fishHook.setMetadata(MetadataConstants.FISH_HOOK_REF_METAKEY.getKey(), MetadataConstants.metadataValue);
         fishHookSpawnTimestamp = System.currentTimeMillis();
         fishingRodCastTimestamp = System.currentTimeMillis();
     }

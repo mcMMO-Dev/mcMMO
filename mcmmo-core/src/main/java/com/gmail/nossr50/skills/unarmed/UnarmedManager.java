@@ -110,7 +110,7 @@ public class UnarmedManager extends SkillManager {
             Item item = pluginRef.getMiscTools().dropItem(defender.getLocation(), defender.getInventory().getItemInMainHand());
 
             if (item != null && pluginRef.getConfigManager().getConfigUnarmed().doesDisarmPreventTheft()) {
-                item.setMetadata(MetadataConstants.DISARMED_ITEM_METAKEY, pluginRef.getUserManager().getPlayer(defender).getPlayerMetadata());
+                item.setMetadata(MetadataConstants.DISARMED_ITEM_METAKEY.getKey(), pluginRef.getUserManager().getPlayer(defender).getPlayerMetadata());
             }
 
             defender.getInventory().setItemInMainHand(new ItemStack(Material.AIR));

@@ -19,6 +19,8 @@ import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.google.common.collect.ImmutableMap;
+
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
@@ -28,6 +30,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.EnumMap;
@@ -258,7 +261,7 @@ public final class CombatTools {
             finalDamage += archeryManager.daze((Player) target);
         }
 
-        if (!arrow.hasMetadata(MetadataConstants.INFINITE_ARROW_METAKEY) && archeryManager.canRetrieveArrows()) {
+        if (!arrow.hasMetadata(MetadataConstants.INFINITE_ARROW_METAKEY.getKey()) && archeryManager.canRetrieveArrows()) {
             archeryManager.processArrowRetrievalActivation(target, arrow);
         }
 
@@ -270,8 +273,8 @@ public final class CombatTools {
         double distanceMultiplier = archeryManager.distanceXpBonusMultiplier(target, arrow);
         double forceMultiplier = 1.0; //Hacky Fix - some plugins spawn arrows and assign them to players after the ProjectileLaunchEvent fires
 
-        if(arrow.hasMetadata(MetadataConstants.BOW_FORCE_METAKEY))
-            forceMultiplier = arrow.getMetadata(MetadataConstants.BOW_FORCE_METAKEY).get(0).asDouble();
+        if(arrow.hasMetadata(MetadataConstants.BOW_FORCE_METAKEY.getKey()))
+            forceMultiplier = arrow.getMetadata(MetadataConstants.BOW_FORCE_METAKEY.getKey()).get(0).asDouble();
 
         applyScaledModifiers(initialDamage, finalDamage, event);
         startGainXp(mcMMOPlayer, target, PrimarySkillType.ARCHERY, forceMultiplier * distanceMultiplier);
@@ -619,18 +622,18 @@ public final class CombatTools {
         // cause do have issues around plugin observability. This is not a perfect solution, but it appears to be the best one here
         // We also set no damage ticks to 0, to ensure that damage is applied for this case, and reset it back to the original value
         // Snapshot current state so we can pop up properly
-        boolean wasMetaSet = target.getMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY).size() != 0;
-        target.setMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY, MetadataConstants.metadataValue);
+        boolean wasMetaSet = target.getMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY.getKey()).size() != 0;
+        target.setMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY.getKey(), MetadataConstants.metadataValue);
         boolean wasProcessing = processingNoInvulnDamage;
         // set markers
         processingNoInvulnDamage = true;
-        target.setMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY, MetadataConstants.metadataValue);
+        target.setMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY.getKey(), MetadataConstants.metadataValue);
         int noDamageTicks = target.getNoDamageTicks();
         target.setNoDamageTicks(0);
         target.damage(damage, attacker);
         target.setNoDamageTicks(noDamageTicks);
         if (!wasMetaSet)
-            target.removeMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY, pluginRef);
+            target.removeMetadata(MetadataConstants.CUSTOM_DAMAGE_METAKEY.getKey(), (Plugin) pluginRef.getPlatformProvider());
         if (!wasProcessing)
             processingNoInvulnDamage = false;
     }
@@ -774,11 +777,11 @@ public final class CombatTools {
                 }
             }
 
-            if (target.hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY) || target.hasMetadata("ES")) {
+            if (target.hasMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY.getKey()) || target.hasMetadata("ES")) {
                 baseXPMultiplier *= pluginRef.getDynamicSettingsManager().getExperienceManager().getSpecialCombatXP(SpecialXPKey.SPAWNED);
             }
 
-            if (target.hasMetadata(MetadataConstants.PETS_ANIMAL_TRACKING_METAKEY)) {
+            if (target.hasMetadata(MetadataConstants.PETS_ANIMAL_TRACKING_METAKEY.getKey())) {
                 baseXPMultiplier *= pluginRef.getDynamicSettingsManager().getExperienceManager().getSpecialCombatXP(SpecialXPKey.PETS);
             }
 
@@ -790,7 +793,9 @@ public final class CombatTools {
         baseXPMultiplier *= multiplier;
 
         if (baseXPMultiplier != 0) {
-            new AwardCombatXpTask(mcMMOPlayer, primarySkillType, baseXPMultiplier, target, xpGainReason).runTaskLater(pluginRef, 0);
+            pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                    .setTask(new AwardCombatXpTask(mcMMOPlayer, primarySkillType, baseXPMultiplier, target, xpGainReason))
+                    .schedule();
         }
     }
 
@@ -900,7 +905,7 @@ public final class CombatTools {
 
     public EntityDamageEvent sendEntityDamageEvent(Entity attacker, Entity target, DamageCause damageCause, double damage) {
         EntityDamageEvent damageEvent = attacker == null ? new FakeEntityDamageEvent(target, damageCause, damage) : new FakeEntityDamageByEntityEvent(attacker, target, damageCause, damage);
-        pluginRef.getServer().getPluginManager().callEvent(damageEvent);
+        Bukkit.getServer().getPluginManager().callEvent(damageEvent);
         return damageEvent;
     }
 
@@ -914,7 +919,7 @@ public final class CombatTools {
 
     public double getFakeDamageFinalResult(Entity attacker, Entity target, DamageCause cause, Map<DamageModifier, Double> modifiers) {
         EntityDamageEvent damageEvent = attacker == null ? new FakeEntityDamageEvent(target, cause, modifiers) : new FakeEntityDamageByEntityEvent(attacker, target, cause, modifiers);
-        pluginRef.getServer().getPluginManager().callEvent(damageEvent);
+        Bukkit.getServer().getPluginManager().callEvent(damageEvent);
 
         if (damageEvent.isCancelled()) {
             return 0;
@@ -1006,10 +1011,11 @@ public final class CombatTools {
             return;
         }
 
-        if (!player.hasMetadata(MetadataConstants.PLAYER_DATA_METAKEY)) {
+        if (!player.hasMetadata(MetadataConstants.PLAYER_DATA_METAKEY.getKey())) {
             return;
         }
 
-        pluginRef.getMobHealthBarManager().handleMobHealthbars(target, damage, plugin);
+
+        pluginRef.getPlatformProvider().getHealthBarManager().handleMobHealthbars(plugin.getPlatformProvider().getEntity(target.getUniqueId()), damage);
     }
 }

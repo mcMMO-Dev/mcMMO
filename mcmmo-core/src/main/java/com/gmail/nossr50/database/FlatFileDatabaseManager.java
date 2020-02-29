@@ -9,6 +9,8 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import java.io.*;
@@ -179,7 +181,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
                         e.printStackTrace();
                     }
                     if (lastPlayed == 0) {
-                        OfflinePlayer player = pluginRef.getServer().getOfflinePlayer(name);
+                        OfflinePlayer player = Bukkit.getServer().getOfflinePlayer(name);
                         lastPlayed = player.getLastPlayed();
                         rewrite = true;
                     }

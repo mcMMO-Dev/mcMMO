@@ -12,10 +12,14 @@ tasks {
     }
 
     shadowJar {
+        /*
         dependencies {
             include(dependency("org.bstats:bstats-bukkit"))
-            exclude(dependency("org.spigotmc:spigot"))
+            include(project(":mcmmo-api"))
+            include(project(":mcmmo-core"))
+            include(project(":mcmmo-bukkit"))
         }
+         */
         relocate("org.apache.commons.logging", "com.gmail.nossr50.commons.logging")
         relocate("org.apache.juli", "com.gmail.nossr50.database.tomcat.juli")
         relocate("org.apache.tomcat", "com.gmail.nossr50.database.tomcat")
@@ -29,14 +33,15 @@ tasks {
 
 
 dependencies {
-    api(project(":mcmmo-api"))
-    implementation(project(":mcmmo-core"))
+    compile(project(":mcmmo-api"))
+    compile(project(":mcmmo-core"))
 
     api("org.apache.tomcat:tomcat-jdbc:7.0.52")
     api("net.kyori:event-api:3.0.0")
     implementation("org.apache.maven.scm:maven-scm-provider-gitexe:1.8.1")
+    implementation("co.aikar:acf-paper:0.5.0-SNAPSHOT") //Don't change without updating the artifacts for its dependencies (see the other comments)
     implementation("org.bstats:bstats-bukkit:1.4")
-    implementation("org.spigotmc:spigot:1.14.4-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot:1.14.4-R0.1-SNAPSHOT")
     implementation("com.sk89q.worldguard:worldguard-legacy:7.0.0-SNAPSHOT")
     testImplementation("junit:junit:4.10")
 }

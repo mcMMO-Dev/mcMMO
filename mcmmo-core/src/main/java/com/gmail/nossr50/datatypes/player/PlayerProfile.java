@@ -76,20 +76,32 @@ public class PlayerProfile {
     }
 
     public void scheduleAsyncSave() {
-        new PlayerProfileSaveTask(this, false).runTaskAsynchronously(pluginRef);
+        pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                .setAsync(true)
+                .setTask(new PlayerProfileSaveTask(this, false))
+                .schedule();
     }
 
     public void scheduleSyncSave() {
-        new PlayerProfileSaveTask(this, true).runTask(pluginRef);
+        pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                .setTask(new PlayerProfileSaveTask(this, true))
+                .schedule();
     }
 
     public void scheduleAsyncSaveDelay() {
-        new PlayerProfileSaveTask(this, false).runTaskLaterAsynchronously(pluginRef, 20);
+        pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                .setAsync(true)
+                .setDelay(20L)
+                .setTask(new PlayerProfileSaveTask(this, false))
+                .schedule();
     }
 
     @Deprecated
     public void scheduleSyncSaveDelay() {
-        new PlayerProfileSaveTask(this, true).runTaskLater(pluginRef, 20);
+        pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                .setDelay(20L)
+                .setTask(new PlayerProfileSaveTask(this, true))
+                .schedule();
     }
 
     public void save(boolean useSync) {

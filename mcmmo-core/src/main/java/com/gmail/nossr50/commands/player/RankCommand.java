@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
@@ -103,11 +104,11 @@ public class RankCommand implements TabExecutor {
                 return;
             }
 
-            if (((Player) sender).hasMetadata(MetadataConstants.DATABASE_PROCESSING_COMMAND_METAKEY)) {
+            if (((Player) sender).hasMetadata(MetadataConstants.DATABASE_PROCESSING_COMMAND_METAKEY.getKey())) {
                 sender.sendMessage(pluginRef.getLocaleManager().getString("Commands.Database.Processing"));
                 return;
             } else {
-                ((Player) sender).setMetadata(MetadataConstants.DATABASE_PROCESSING_COMMAND_METAKEY, new FixedMetadataValue(pluginRef, null));
+                ((Player) sender).setMetadata(MetadataConstants.DATABASE_PROCESSING_COMMAND_METAKEY.getKey(), new FixedMetadataValue((Plugin) pluginRef.getPlatformProvider(), null));
             }
 
             mcMMOPlayer.actualizeDatabaseATS();
@@ -117,7 +118,10 @@ public class RankCommand implements TabExecutor {
                 && (pluginRef.getScoreboardSettings().isScoreboardEnabled(SidebarType.RANK_BOARD));
         boolean useChat = !useBoard || pluginRef.getScoreboardSettings().isScoreboardPrinting(SidebarType.RANK_BOARD);
 
-        new RankCommandAsyncTask(pluginRef, playerName, sender, useBoard, useChat).runTaskAsynchronously(pluginRef);
+        pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                .setAsync(true)
+                .setTask(new RankCommandAsyncTask(pluginRef, playerName, sender, useBoard, useChat))
+                .schedule();
     }
 
     private long getCDSeconds(BukkitMMOPlayer mcMMOPlayer, long cooldownMillis) {

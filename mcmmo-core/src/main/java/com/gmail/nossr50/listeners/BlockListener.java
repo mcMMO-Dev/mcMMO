@@ -14,6 +14,8 @@ import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.sounds.SoundType;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -30,6 +32,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 
 import java.util.HashSet;
 import java.util.List;
@@ -81,8 +84,8 @@ public class BlockListener implements Listener {
                     }
                 }
 
-                if (event.getBlock().getMetadata(MetadataConstants.BONUS_DROPS_METAKEY).size() > 0) {
-                    BonusDropMeta bonusDropMeta = (BonusDropMeta) event.getBlock().getMetadata(MetadataConstants.BONUS_DROPS_METAKEY).get(0);
+                if (event.getBlock().getMetadata(MetadataConstants.BONUS_DROPS_METAKEY.getKey()).size() > 0) {
+                    BonusDropMeta bonusDropMeta = (BonusDropMeta) event.getBlock().getMetadata(MetadataConstants.BONUS_DROPS_METAKEY.getKey()).get(0);
                     int bonusCount = bonusDropMeta.asInt();
 
                     for (int i = 0; i < bonusCount; i++) {
@@ -92,8 +95,8 @@ public class BlockListener implements Listener {
             }
         }
 
-        if(event.getBlock().hasMetadata(MetadataConstants.BONUS_DROPS_METAKEY))
-            event.getBlock().removeMetadata(MetadataConstants.BONUS_DROPS_METAKEY, pluginRef);
+        if(event.getBlock().hasMetadata(MetadataConstants.BONUS_DROPS_METAKEY.getKey()))
+            event.getBlock().removeMetadata(MetadataConstants.BONUS_DROPS_METAKEY.getKey(), (Plugin) pluginRef.getPlatformProvider());
     }
 
     /**
@@ -397,7 +400,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
+        BukkitMMOPlayer mcMMOPlayer = pluginRef.getUserManager().getPlayer(player);
         BlockState blockState = event.getBlock().getState();
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
@@ -511,13 +514,13 @@ public class BlockListener implements Listener {
     }
 
     private Player getPlayerFromFurnace(Block furnaceBlock) {
-        List<MetadataValue> metadata = furnaceBlock.getMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY);
+        List<MetadataValue> metadata = furnaceBlock.getMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY.getKey());
 
         if (metadata.isEmpty()) {
             return null;
         }
 
-        return pluginRef.getServer().getPlayerExact(metadata.get(0).asString());
+        return Bukkit.getServer().getPlayerExact(metadata.get(0).asString());
     }
 
     /**
@@ -639,7 +642,7 @@ public class BlockListener implements Listener {
 
         if (blockState instanceof Furnace) {
             Furnace furnace = (Furnace) blockState;
-            if (furnace.hasMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY)) {
+            if (furnace.hasMetadata(MetadataConstants.FURNACE_TRACKING_METAKEY.getKey())) {
                 player.sendMessage("[mcMMO DEBUG] This furnace has a registered owner");
                 Player furnacePlayer = getPlayerFromFurnace(furnace.getBlock());
                 if (furnacePlayer != null) {

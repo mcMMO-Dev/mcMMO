@@ -2,7 +2,7 @@ package com.gmail.nossr50.mcmmo.bukkit.platform.scheduler;
 
 import com.gmail.nossr50.mcmmo.api.platform.scheduler.PlatformScheduler;
 import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
-import com.gmail.nossr50.mcmmo.bukkit.BukkitBoostrap;
+import com.gmail.nossr50.mcmmo.bukkit.BukkitBootstrap;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
@@ -11,21 +11,26 @@ import java.util.function.Consumer;
 
 public class BukkitPlatformScheduler implements PlatformScheduler {
 
-    private final BukkitBoostrap bukkitBoostrap;
+    private final BukkitBootstrap bukkitBootstrap;
 
-    public BukkitPlatformScheduler(BukkitBoostrap bukkitBoostrap) {
-        this.bukkitBoostrap = bukkitBoostrap;
+    public BukkitPlatformScheduler(BukkitBootstrap bukkitBootstrap) {
+        this.bukkitBootstrap = bukkitBootstrap;
     }
 
     @Override
     public TaskBuilder getTaskBuilder() {
-        return new TaskBuilder();
+        return new TaskBuilder() {
+            @Override
+            public Task schedule() {
+                return BukkitPlatformScheduler.this.scheduleTask(this);
+            }
+        };
     }
 
     @Override
     public Task scheduleTask(TaskBuilder taskBuilder) {
-        final Integer repeatTime = taskBuilder.getRepeatTime();
-        final Integer delay = taskBuilder.getDelay();
+        final Long repeatTime = taskBuilder.getRepeatTime();
+        final Long delay = taskBuilder.getDelay();
         final boolean isAsync = taskBuilder.isAsync();
         final Consumer<Task> taskConsumer = taskBuilder.getTask();
 
@@ -35,19 +40,19 @@ public class BukkitPlatformScheduler implements PlatformScheduler {
         final BukkitTask bukkitTask;
         if (!isAsync) {
             if (delay == null && repeatTime == null) {
-                bukkitTask = bukkitScheduler.runTask(bukkitBoostrap, task);
+                bukkitTask = bukkitScheduler.runTask(bukkitBootstrap, task);
             } else if (delay != null && repeatTime == null) {
-                bukkitTask = bukkitScheduler.runTaskLater(bukkitBoostrap, task, delay);
+                bukkitTask = bukkitScheduler.runTaskLater(bukkitBootstrap, task, delay);
             } else {
-                bukkitTask = bukkitScheduler.runTaskTimer(bukkitBoostrap, task, delay != null ? delay : 0, repeatTime);
+                bukkitTask = bukkitScheduler.runTaskTimer(bukkitBootstrap, task, delay != null ? delay : 0, repeatTime);
             }
         } else {
             if (delay == null && repeatTime == null) {
-                bukkitTask = bukkitScheduler.runTaskAsynchronously(bukkitBoostrap, task);
+                bukkitTask = bukkitScheduler.runTaskAsynchronously(bukkitBootstrap, task);
             } else if (delay != null && repeatTime == null) {
-                bukkitTask = bukkitScheduler.runTaskLaterAsynchronously(bukkitBoostrap, task, delay);
+                bukkitTask = bukkitScheduler.runTaskLaterAsynchronously(bukkitBootstrap, task, delay);
             } else {
-                bukkitTask = bukkitScheduler.runTaskTimerAsynchronously(bukkitBoostrap, task, delay != null ? delay : 0, repeatTime);
+                bukkitTask = bukkitScheduler.runTaskTimerAsynchronously(bukkitBootstrap, task, delay != null ? delay : 0, repeatTime);
             }
         }
 

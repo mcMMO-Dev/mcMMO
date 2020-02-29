@@ -129,7 +129,7 @@ public class mcMMO implements McMMOApi {
      */
     public void onEnable() {
         try {
-            platformProvider.getLogger().setFilter(new LogFilter(this));
+            //platformProvider.getLogger().setFilter(new LogFilter(this));
 
             //Init Permission Tools
             permissionTools = new PermissionTools(this);
@@ -168,6 +168,7 @@ public class mcMMO implements McMMOApi {
             CompatibilityCheck.checkForOutdatedAPI(this, serverAPIOutdated, platformProvider.getServerType().getFriendlyName());
 
             if (!platformProvider.isSupported(true)) {
+                org.bukkit.Bukkit.getLogger().info("WE DEAD");
                 return;
             } else {
                 platformProvider.earlyInit();
@@ -177,9 +178,10 @@ public class mcMMO implements McMMOApi {
 
                 formulaManager = new FormulaManager(this);
 
-                for (Player player : getServer().getOnlinePlayers()) {
-                    new PlayerProfileLoadingTask(this, player).runTaskLaterAsynchronously(this, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
-                }
+                // Don't do this for now
+                //for (Player player : getServer().getOnlinePlayers()) {
+                //    new PlayerProfileLoadingTask(this, player).runTaskLaterAsynchronously(this, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
+                //}
 
                 debug("Version " + getVersion() + " is enabled!");
 
@@ -226,9 +228,6 @@ public class mcMMO implements McMMOApi {
 
         //Init Chat Manager
         chatManager = new ChatManager(this);
-
-        //Init Mob Health Bar Manager
-        bukkitMobHealthBarManager = new BukkitMobHealthBarManager(this);
 
         //Init Event Manager
         eventManager = new EventManager(this);
@@ -277,6 +276,8 @@ public class mcMMO implements McMMOApi {
         platformProvider.onLoad();
         worldGuardUtils = new WorldGuardUtils(this); //Init WGU
 
+        // TODO: 2.2 - MIGRATE
+        /*
         if(getServer().getPluginManager().getPlugin("WorldGuard") != null) {
 
             if(worldGuardUtils.isWorldGuardLoaded()) {
@@ -286,6 +287,7 @@ public class mcMMO implements McMMOApi {
                 worldGuardManager.registerFlags();
             }
         }
+         */
     }
 
     /**
@@ -450,6 +452,10 @@ public class mcMMO implements McMMOApi {
         return configManager;
     }
 
+    public PlatformProvider getPlatformProvider() {
+        return platformProvider;
+    }
+
     /**
      * The directory in which override locales are kept
      *
@@ -566,35 +572,49 @@ public class mcMMO implements McMMOApi {
     }
 
     private void registerCustomRecipes() {
-        getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
-            if (configManager.getConfigItems().isChimaeraWingEnabled()) {
-                Recipe recipe = getChimaeraWingRecipe();
-
-                if(!getSkillTools().hasRecipeBeenRegistered(recipe))
-                    getServer().addRecipe(getChimaeraWingRecipe());
-            }
-        }, 40);
+        getPlatformProvider().registerCustomRecipes();
     }
 
     private void scheduleTasks() {
         // Periodic save timer (Saves every 10 minutes by default)
         long saveIntervalTicks = Math.max(1200, (getConfigManager().getConfigDatabase().getConfigSectionDatabaseGeneral().getSaveIntervalMinutes() * (20 * 60)));
-        new SaveTimerTask(this).runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
+        platformProvider.getScheduler().getTaskBuilder()
+                .setDelay(saveIntervalTicks)
+                .setRepeatTime(saveIntervalTicks)
+                .setTask(new SaveTimerTask(this))
+                .schedule();
 
         // Cleanup the backups folder
-        new CleanBackupFilesTask(this).runTaskAsynchronously(this);
+        platformProvider.getScheduler().getTaskBuilder()
+                .setAsync(true)
+                .setTask(new CleanBackupFilesTask(this))
+                .schedule();
 
         // Bleed timer (Runs every 0.5 seconds)
         bleedTimerTask = new BleedTimerTask(this);
-        bleedTimerTask.runTaskTimer(this, miscTools.TICK_CONVERSION_FACTOR, (miscTools.TICK_CONVERSION_FACTOR / 2));
+        platformProvider.getScheduler().getTaskBuilder()
+                .setDelay(miscTools.TICK_CONVERSION_FACTOR)
+                .setRepeatTime((miscTools.TICK_CONVERSION_FACTOR /2))
+                .setTask(bleedTimerTask)
+                .schedule();
 
         // Old & Powerless User remover
         long purgeIntervalTicks = getConfigManager().getConfigDatabase().getConfigSectionCleaning().getPurgeInterval() * 60L * 60L * miscTools.TICK_CONVERSION_FACTOR;
 
         if (getDatabaseCleaningSettings().isOnlyPurgeAtStartup()) {
-            new UserPurgeTask(this).runTaskLaterAsynchronously(this, 2 * miscTools.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
+            platformProvider.getScheduler().getTaskBuilder()
+                    .setAsync(true)
+                    .setDelay(2 * miscTools.TICK_CONVERSION_FACTOR)
+                    .setTask(new UserPurgeTask(this))
+                    .schedule();
+
         } else if (purgeIntervalTicks > 0) {
-            new UserPurgeTask(this).runTaskTimerAsynchronously(this, purgeIntervalTicks, purgeIntervalTicks);
+            platformProvider.getScheduler().getTaskBuilder()
+                    .setAsync(true)
+                    .setDelay(purgeIntervalTicks)
+                    .setRepeatTime(purgeIntervalTicks)
+                    .setTask(new UserPurgeTask(this))
+                    .schedule();
         }
 
         //Party System Stuff
@@ -603,59 +623,42 @@ public class mcMMO implements McMMOApi {
             long kickIntervalTicks = getConfigManager().getConfigParty().getPartyCleanup().getPartyAutoKickHoursInterval() * 60L * 60L * miscTools.TICK_CONVERSION_FACTOR;
 
             if (kickIntervalTicks == 0) {
-                new PartyAutoKickTask(this).runTaskLater(this, 2 * miscTools.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
+                platformProvider.getScheduler().getTaskBuilder()
+                        .setDelay(2 * miscTools.TICK_CONVERSION_FACTOR)
+                        .setTask(new PartyAutoKickTask(this))
+                        .schedule();
             } else if (kickIntervalTicks > 0) {
-                new PartyAutoKickTask(this).runTaskTimer(this, kickIntervalTicks, kickIntervalTicks);
+                platformProvider.getScheduler().getTaskBuilder()
+                        .setDelay(kickIntervalTicks)
+                        .setRepeatTime(kickIntervalTicks)
+                        .setTask(new PartyAutoKickTask(this))
+                        .schedule();
             }
         }
 
         // Update power level tag scoreboards
-        new PowerLevelUpdatingTask(this).runTaskTimer(this, 2 * miscTools.TICK_CONVERSION_FACTOR, 2 * miscTools.TICK_CONVERSION_FACTOR);
+        platformProvider.getScheduler().getTaskBuilder()
+                .setDelay(2 * miscTools.TICK_CONVERSION_FACTOR)
+                .setRepeatTime(2 * miscTools.TICK_CONVERSION_FACTOR)
+                .setTask(new PowerLevelUpdatingTask(this))
+                .schedule();
 
         // Clear the registered XP data so players can earn XP again
         if (getConfigManager().getConfigLeveling().getConfigLevelingDiminishedReturns().isDiminishedReturnsEnabled()) {
-            new ClearRegisteredXPGainTask(this).runTaskTimer(this, 60, 60);
+            platformProvider.getScheduler().getTaskBuilder()
+                    .setDelay(60L)
+                    .setRepeatTime(60L)
+                    .setTask(new ClearRegisteredXPGainTask(this))
+                    .schedule();
         }
 
         if (configManager.getConfigNotifications().getConfigNotificationGeneral().isPlayerTips()) {
-            new NotifySquelchReminderTask(this).runTaskTimer(this, 60, ((20 * 60) * 60));
+            platformProvider.getScheduler().getTaskBuilder()
+                    .setDelay(60L)
+                    .setRepeatTime((20 * 60) * 60L)
+                    .setTask(new NotifySquelchReminderTask(this))
+                    .schedule();
         }
-    }
-
-    //TODO: Add this stuff to DSM, this location is temporary
-    private ShapelessRecipe getChimaeraWingRecipe() {
-        Material ingredient = Material.matchMaterial(configManager.getConfigItems().getChimaeraWingRecipeMats());
-
-        if(ingredient == null)
-            ingredient = Material.FEATHER;
-
-        int amount = configManager.getConfigItems().getChimaeraWingUseCost();
-
-        ShapelessRecipe chimaeraWing = new ShapelessRecipe(new NamespacedKey(this, "Chimaera"), getChimaeraWing());
-        chimaeraWing.addIngredient(amount, ingredient);
-        return chimaeraWing;
-    }
-
-    //TODO: Add this stuff to DSM, this location is temporary
-    public ItemStack getChimaeraWing() {
-        Material ingredient = Material.matchMaterial(configManager.getConfigItems().getChimaeraWingRecipeMats());
-
-        if(ingredient == null)
-            ingredient = Material.FEATHER;
-
-        //TODO: Make it so Chimaera wing amounts made is customizeable
-        ItemStack itemStack = new ItemStack(ingredient, 1);
-
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.GOLD + localeManager.getString("Item.ChimaeraWing.Name"));
-
-        List<String> itemLore = new ArrayList<>();
-        itemLore.add("mcMMO Item");
-        itemLore.add(localeManager.getString("Item.ChimaeraWing.Lore"));
-        itemMeta.setLore(itemLore);
-
-        itemStack.setItemMeta(itemMeta);
-        return itemStack;
     }
 
     public DynamicSettingsManager getDynamicSettingsManager() {
@@ -777,5 +780,14 @@ public class mcMMO implements McMMOApi {
 
     public ParticleEffectUtils getParticleEffectUtils() {
         return particleEffectUtils;
+    }
+
+    public File getDataFolder() {
+        return platformProvider.getDataFolder();
+    }
+
+    @Deprecated
+    public Object getChimaeraWing() {
+        return platformProvider.getChimaeraWing();
     }
 }

@@ -56,9 +56,11 @@ public class AbilityDisableTask extends BukkitRunnable {
 
         pluginRef.getSkillTools().sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS,
                 pluginRef.getSkillTools().getSuperAbilityOtherPlayerDeactivationLocaleKey(superAbilityType));
-        new AbilityCooldownTask(pluginRef, mcMMOPlayer, superAbilityType).runTaskLater(pluginRef,
-                pluginRef.getPerkUtils().handleCooldownPerks(player,
-                        pluginRef.getSkillTools().getSuperAbilityCooldown(superAbilityType) * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR));
+        pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                .setDelay(pluginRef.getPerkUtils().handleCooldownPerks(player, (pluginRef.getSkillTools().getSuperAbilityCooldown(superAbilityType) * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR)))
+                .setTask(new AbilityCooldownTask(pluginRef, mcMMOPlayer, superAbilityType))
+                .schedule();
+
     }
 
     private void resendChunkRadiusAt(Player player) {

@@ -29,6 +29,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -139,10 +140,10 @@ public class HerbalismManager extends SkillManager {
         if(blockBreakEvent.getBlock().getBlockData() instanceof Ageable) {
             Ageable ageableCrop = (Ageable) blockBreakEvent.getBlock().getBlockData();
 
-            if(blockBreakEvent.getBlock().getMetadata(MetadataConstants.REPLANT_META_KEY).size() >= 1) {
-                if(blockBreakEvent.getBlock().getMetadata(MetadataConstants.REPLANT_META_KEY).get(0).asBoolean()) {
+            if(blockBreakEvent.getBlock().getMetadata(MetadataConstants.REPLANT_META_KEY.getKey()).size() >= 1) {
+                if(blockBreakEvent.getBlock().getMetadata(MetadataConstants.REPLANT_META_KEY.getKey()).get(0).asBoolean()) {
                     if(isAgeableMature(ageableCrop)) {
-                        blockBreakEvent.getBlock().removeMetadata(MetadataConstants.REPLANT_META_KEY, pluginRef);
+                        blockBreakEvent.getBlock().removeMetadata(MetadataConstants.REPLANT_META_KEY.getKey(), (Plugin) pluginRef.getPlatformProvider());
                     } else {
                         //Crop is recently replanted to back out of destroying it
                         blockBreakEvent.setCancelled(true);
@@ -239,10 +240,10 @@ public class HerbalismManager extends SkillManager {
 
         if(delayedChorusBlocks.size() > 0) {
             //Check XP for chorus blocks
-            DelayedHerbalismXPCheckTask delayedHerbalismXPCheckTask = new DelayedHerbalismXPCheckTask(mcMMOPlayer, delayedChorusBlocks);
-
-            //Large delay because the tree takes a while to break
-            delayedHerbalismXPCheckTask.runTaskLater(pluginRef, 20); //Calculate Chorus XP + Bonus Drops 1 tick later
+            pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                    .setDelay(20L) //Large delay because the tree takes a while to break
+                    .setTask(new DelayedHerbalismXPCheckTask(mcMMOPlayer, delayedChorusBlocks))
+                    .schedule();
         }
     }
 
@@ -416,8 +417,8 @@ public class HerbalismManager extends SkillManager {
             BlockState brokenBlockNewState = blockSnapshot.getBlockRef().getState();
 
             //Remove metadata from the snapshot of blocks
-            if(brokenBlockNewState.hasMetadata(MetadataConstants.BONUS_DROPS_METAKEY)) {
-                brokenBlockNewState.removeMetadata(MetadataConstants.BONUS_DROPS_METAKEY, pluginRef);
+            if(brokenBlockNewState.hasMetadata(MetadataConstants.BONUS_DROPS_METAKEY.getKey())) {
+                brokenBlockNewState.removeMetadata(MetadataConstants.BONUS_DROPS_METAKEY.getKey(), (Plugin) pluginRef.getPlatformProvider());
             }
 
             //If the block is not AIR that means it wasn't broken
@@ -676,8 +677,11 @@ public class HerbalismManager extends SkillManager {
      */
     private void startReplantTask(int desiredCropAge, BlockBreakEvent blockBreakEvent, BlockState cropState, boolean isImmature) {
         //Mark the plant as recently replanted to avoid accidental breakage
-        new DelayedCropReplant(pluginRef, blockBreakEvent, cropState, desiredCropAge, isImmature).runTaskLater(pluginRef, 20 * 2);
-        blockBreakEvent.getBlock().setMetadata(MetadataConstants.REPLANT_META_KEY, new RecentlyReplantedCropMeta(pluginRef, true));
+        pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                .setDelay(20 * 2L)
+                .setTask(new DelayedCropReplant(pluginRef, blockBreakEvent, cropState, desiredCropAge, isImmature))
+                .schedule();
+        blockBreakEvent.getBlock().setMetadata(MetadataConstants.REPLANT_META_KEY.getKey(), new RecentlyReplantedCropMeta((Plugin) pluginRef.getPlatformProvider(), true));
     }
 
     /**

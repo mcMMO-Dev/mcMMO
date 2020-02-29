@@ -136,7 +136,7 @@ public class BleedTimerTask extends BukkitRunnable {
 //                debugMessage+="Rank4Bonus=["+String.valueOf(containerEntry.getValue().bleedRank >= 3)+"], ";
 
 
-                pluginRef.getMobHealthBarManager().handleMobHealthbars(target, damage, pluginRef); //Update health bars
+                pluginRef.getPlatformProvider().getHealthBarManager().handleMobHealthbars(pluginRef.getPlatformProvider().getEntity(target.getUniqueId()), damage); //Update health bars
             }
 
 //            debugMessage+="FullArmor=["+String.valueOf(armorCount > 3)+"], ";

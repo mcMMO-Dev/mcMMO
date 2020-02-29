@@ -124,15 +124,16 @@ public class MiningManager extends SkillManager {
         pluginRef.getNotificationManager().sendPlayerInformation(player, NotificationType.SUPER_ABILITY, "miningBehaviour.Blast.Boom");
         //player.sendMessage(pluginRef.getLocaleManager().getString("miningBehaviour.Blast.Boom"));
 
-        tnt.setMetadata(MetadataConstants.TNT_TRACKING_METAKEY, mcMMOPlayer.getPlayerMetadata());
+        tnt.setMetadata(MetadataConstants.TNT_TRACKING_METAKEY.getKey(), mcMMOPlayer.getPlayerMetadata());
         tnt.setFuseTicks(0);
         targetBlock.setType(Material.AIR);
 
         mcMMOPlayer.setAbilityDATS(SuperAbilityType.BLAST_MINING, System.currentTimeMillis());
         mcMMOPlayer.setAbilityInformed(SuperAbilityType.BLAST_MINING, false);
-        new AbilityCooldownTask(pluginRef, mcMMOPlayer, SuperAbilityType.BLAST_MINING)
-                .runTaskLater(pluginRef, pluginRef.getSkillTools().getSuperAbilityCooldown(SuperAbilityType.BLAST_MINING)
-                        * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR);
+        pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                .setDelay( pluginRef.getSkillTools().getSuperAbilityCooldown(SuperAbilityType.BLAST_MINING) * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR)
+                .setTask(new AbilityCooldownTask(pluginRef, mcMMOPlayer, SuperAbilityType.BLAST_MINING))
+                .schedule();
     }
 
     /**

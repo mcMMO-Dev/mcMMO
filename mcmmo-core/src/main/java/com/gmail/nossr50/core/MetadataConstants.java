@@ -1,5 +1,6 @@
 package com.gmail.nossr50.core;
 
+import com.gmail.nossr50.mcmmo.api.data.MMOPlayer;
 import com.gmail.nossr50.mcmmo.api.platform.util.MetadataKey;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -28,7 +29,7 @@ public class MetadataConstants {
     public final static MetadataKey<Boolean> ARROW_TRACKER_METAKEY = new MetadataKey<>("mcMMO: Arrow Tracker");
     public final static MetadataKey<Boolean> BONUS_DROPS_METAKEY = new MetadataKey<>("mcMMO: Bonus Drops");
     public final static MetadataKey<Boolean> DISARMED_ITEM_METAKEY = new MetadataKey<>("mcMMO: Disarmed Item");
-    public final static MetadataKey<Boolean> PLAYER_DATA_METAKEY = new MetadataKey<>("mcMMO: Player Data");
+    public final static MetadataKey<MMOPlayer> PLAYER_DATA_METAKEY = new MetadataKey<>("mcMMO: Player Data");
     public final static MetadataKey<Boolean> GREEN_THUMB_METAKEY = new MetadataKey<>("mcMMO: Green Thumb");
     public final static MetadataKey<Boolean> DATABASE_PROCESSING_COMMAND_METAKEY = new MetadataKey<>("mcMMO: Processing Database Command");
     public final static MetadataKey<Boolean> PETS_ANIMAL_TRACKING_METAKEY = new MetadataKey<>("mcMMO: Pet Animal");

@@ -417,10 +417,10 @@ public class TamingManager extends SkillManager {
 
     private void applyMetaDataToCOTWEntity(LivingEntity callOfWildEntity) {
         //This is used to prevent XP gains for damaging this entity
-        callOfWildEntity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY, MetadataConstants.metadataValue);
+        callOfWildEntity.setMetadata(MetadataConstants.UNNATURAL_MOB_METAKEY.getKey(), MetadataConstants.metadataValue);
 
         //This helps identify the entity as being summoned by COTW
-        callOfWildEntity.setMetadata(MetadataConstants.COTW_TEMPORARY_SUMMON, MetadataConstants.metadataValue);
+        callOfWildEntity.setMetadata(MetadataConstants.COTW_TEMPORARY_SUMMON.getKey(), MetadataConstants.metadataValue);
     }
 
     /**

@@ -1,6 +1,8 @@
 package com.gmail.nossr50.util.blockmeta;
 
 import com.gmail.nossr50.mcMMO;
+
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
@@ -165,7 +167,7 @@ public class HashChunkletManager implements ChunkletManager {
 
     @Override
     public void saveAll() {
-        for (World world : pluginRef.getServer().getWorlds()) {
+        for (World world : Bukkit.getServer().getWorlds()) {
             saveWorld(world);
         }
     }
@@ -173,7 +175,7 @@ public class HashChunkletManager implements ChunkletManager {
     @Override
     public void unloadAll() {
         saveAll();
-        for (World world : pluginRef.getServer().getWorlds()) {
+        for (World world : Bukkit.getServer().getWorlds()) {
             unloadWorld(world);
         }
     }
@@ -274,7 +276,7 @@ public class HashChunkletManager implements ChunkletManager {
         for (String key : store.keySet()) {
             if (store.get(key).isEmpty()) {
                 String[] info = key.split(",");
-                File dataDir = new File(pluginRef.getServer().getWorld(info[0]).getWorldFolder(), "mcmmo_data");
+                File dataDir = new File(Bukkit.getServer().getWorld(info[0]).getWorldFolder(), "mcmmo_data");
 
                 File cxDir = new File(dataDir, "" + info[1]);
                 if (!cxDir.exists()) {

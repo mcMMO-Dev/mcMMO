@@ -5,7 +5,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerProfileSaveTask;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class SaveTimerTask extends BukkitRunnable {
+public class SaveTimerTask implements Runnable {
 
     private final mcMMO pluginRef;
 
@@ -19,7 +19,7 @@ public class SaveTimerTask extends BukkitRunnable {
         int count = 1;
 
         for (BukkitMMOPlayer mcMMOPlayer : pluginRef.getUserManager().getPlayers()) {
-            new PlayerProfileSaveTask(mcMMOPlayer.getProfile(), false).runTaskLaterAsynchronously(pluginRef, count);
+            pluginRef.getPlatformProvider().getScheduler().getTaskBuilder().setAsync(true).setDelay((long) count).setTask(new PlayerProfileSaveTask(mcMMOPlayer.getProfile(), false)).schedule();
             count++;
         }
 

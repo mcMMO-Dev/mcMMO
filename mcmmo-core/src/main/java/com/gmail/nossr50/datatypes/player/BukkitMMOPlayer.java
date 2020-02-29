@@ -85,7 +85,7 @@ public class BukkitMMOPlayer implements MMOPlayer<Player> {
         UUID uuid = player.getUniqueId();
 
         this.player = player;
-        playerMetadata = new FixedMetadataValue(pluginRef, playerName);
+        playerMetadata = new FixedMetadataValue((Plugin) pluginRef.getPlatformProvider(), playerName);
         this.profile = profile;
 
         if (profile.getUniqueId() == null) {
@@ -656,7 +656,7 @@ public class BukkitMMOPlayer implements MMOPlayer<Player> {
             return;
 
         if (getSkillXpLevelRaw(primarySkillType) < getXpToLevel(primarySkillType)) {
-            processPostXpEvent(primarySkillType, pluginRef, xpGainSource);
+            processPostXpEvent(primarySkillType, (Plugin) pluginRef.getPlatformProvider(), xpGainSource);
             return;
         }
 
@@ -687,7 +687,7 @@ public class BukkitMMOPlayer implements MMOPlayer<Player> {
         pluginRef.getNotificationManager().sendPlayerLevelUpNotification(this, primarySkillType, levelsGained, profile.getSkillLevel(primarySkillType));
 
         //UPDATE XP BARS
-        processPostXpEvent(primarySkillType, pluginRef, xpGainSource);
+        processPostXpEvent(primarySkillType, (Plugin) pluginRef.getPlatformProvider(), xpGainSource);
     }
 
     /*
@@ -951,7 +951,10 @@ public class BukkitMMOPlayer implements MMOPlayer<Player> {
         }
 
         setToolPreparationMode(tool, false);
-        new AbilityDisableTask(pluginRef,   this, superAbility).runTaskLater(pluginRef, abilityLength * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR);
+        pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                .setDelay(abilityLength * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR)
+                .setTask(new AbilityDisableTask(pluginRef,   this, superAbility))
+                .schedule();
     }
 
     public void processAbilityActivation(PrimarySkillType primarySkillType) {
@@ -998,7 +1001,10 @@ public class BukkitMMOPlayer implements MMOPlayer<Player> {
             }
 
             setToolPreparationMode(tool, true);
-            new ToolLowerTask(pluginRef,this, tool).runTaskLater(pluginRef, 4 * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR);
+            pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                    .setDelay(4 * pluginRef.getMiscTools().TICK_CONVERSION_FACTOR)
+                    .setTask(new ToolLowerTask(pluginRef,this, tool))
+                    .schedule();
         }
     }
 

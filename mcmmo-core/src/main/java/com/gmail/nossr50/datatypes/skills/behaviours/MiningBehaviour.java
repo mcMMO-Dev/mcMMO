@@ -4,6 +4,8 @@ import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.mining.MiningManager;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
@@ -63,12 +65,12 @@ public class MiningBehaviour {
     }
 
     public boolean processBlastMiningExplosion(EntityDamageByEntityEvent event, TNTPrimed tnt, Player defender) {
-        if (!tnt.hasMetadata(MetadataConstants.TNT_TRACKING_METAKEY) || !pluginRef.getUserManager().hasPlayerDataKey(defender)) {
+        if (!tnt.hasMetadata(MetadataConstants.TNT_TRACKING_METAKEY.getKey()) || !pluginRef.getUserManager().hasPlayerDataKey(defender)) {
             return false;
         }
 
         // We can make this assumption because we (should) be the only ones using this exact metadata
-        Player player = pluginRef.getServer().getPlayerExact(tnt.getMetadata(MetadataConstants.TNT_TRACKING_METAKEY).get(0).asString());
+        Player player = Bukkit.getServer().getPlayerExact(tnt.getMetadata(MetadataConstants.TNT_TRACKING_METAKEY.getKey()).get(0).asString());
 
         if (!player.equals(defender)) {
             return false;
