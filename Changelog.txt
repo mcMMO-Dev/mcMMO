@@ -1,5 +1,6 @@
 Version 2.1.119
     1.16 Support
+    mcMMO is now aware of turtle shell and treats it appropriately
     Added 'Ancient_Debris' with a value of 7777 to mining experience tables in experience.yml
     Added 'Netherite_Scrap' to bonus drops for Mining in config.yml
     Added 'Ancient_Debris' to bonus drops for Mining in config.yml
