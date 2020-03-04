@@ -12,7 +12,7 @@
 ## This defaults to OTHER.
 #
 # MaterialType: This is the type of the material of the item to be salvaged, this is only important for permissions.
-## Valid values are STRING, LEATHER, WOOD, STONE, IRON, GOLD, DIAMOND, and OTHER
+## Valid values are STRING, LEATHER, WOOD, STONE, IRON, GOLD, DIAMOND, NETHERRACK, and OTHER
 ## This defaults to OTHER.
 #
 # SalvageMaterial: This is the material name of the item used to salvage this item.
@@ -216,6 +216,44 @@ Salvageables:
         XpMultiplier: 6
         MaximumQuantity: 7
     DIAMOND_BOOTS:
+        MinimumLevel: 50
+        XpMultiplier: 6
+        MaximumQuantity: 4
+
+    NETHERRITE_SWORD:
+        MinimumLevel: 50
+        XpMultiplier: .5
+        MaximumQuantity: 2
+    NETHERRITE_SHOVEL:
+        MinimumLevel: 50
+        XpMultiplier: .3
+        MaximumQuantity: 1
+    NETHERRITE_PICKAXE:
+        MinimumLevel: 50
+        XpMultiplier: 1
+        MaximumQuantity: 3
+    NETHERRITE_AXE:
+        MinimumLevel: 50
+        XpMultiplier: 1
+        MaximumQuantity: 3
+    NETHERRITE_HOE:
+        MinimumLevel: 50
+        XpMultiplier: .5
+        MaximumQuantity: 2
+    # Armor
+    NETHERRITE_HELMET:
+        MinimumLevel: 50
+        XpMultiplier: 6
+        MaximumQuantity: 5
+    NETHERRITE_CHESTPLATE:
+        MinimumLevel: 50
+        XpMultiplier: 6
+        MaximumQuantity: 8
+    NETHERRITE_LEGGINGS:
+        MinimumLevel: 50
+        XpMultiplier: 6
+        MaximumQuantity: 7
+    NETHERRITE_BOOTS:
         MinimumLevel: 50
         XpMultiplier: 6
         MaximumQuantity: 4

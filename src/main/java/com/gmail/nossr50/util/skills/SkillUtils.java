@@ -298,6 +298,11 @@ public class SkillUtils {
     public static int getRepairAndSalvageQuantities(Material itemMaterial, Material recipeMaterial) {
         int quantity = 0;
 
+        if(mcMMO.getMaterialMapStore().isNetherriteTool(itemMaterial) || mcMMO.getMaterialMapStore().isNetherriteArmor(itemMaterial)) {
+            //One netherrite bar requires 4 netherrite scraps
+            return 4;
+        }
+
         for(Iterator<? extends Recipe> recipeIterator = Bukkit.getServer().recipeIterator(); recipeIterator.hasNext();) {
             Recipe bukkitRecipe = recipeIterator.next();
 

@@ -1,23 +1,28 @@
 Version 2.1.119
     1.16 Support
     Fixed another dupe bug
+    Fixed a bug that can cause blast mining to give out more rewards than intended
+    Blast Mining rewards are now randomized but still influenced by your blast mining rank
     mcMMO is now aware of turtle shell and treats it appropriately
     mcMMO is now aware of chainmail armor and treats it appropriately
     Calculations which change depend on the quality of your tool or armor has had netherrack support coded in
     All excavation drops that can drop from soul_sand now also drop from soul_soil (edited treasures.yml)
 
+    Added Netherrack armor/weapons/tools to repair.vanilla.yml
+    Added Netherrack armor/weapons/tools to salvage.vanilla.yml
+
     Added 'Bamboo_Sapling' to bonus drops for Herbalism in experience.yml
-    Added 'Ancient_Debris' with a value of 7777 to mining experience tables in experience.yml
-    Added 'Basalt' with a value of 40 to mining experience tables in experience.yml
-    Added 'Crimson_Fungus' with a value of 50 to herbalism experience tables in experience.yml
-    Added 'Warped_Fungus' with a value of 50 to herbalism experience tables in experience.yml
-    Added 'Warped_Nylium' with a value of 5 to mining experience tables in experience.yml
-    Added 'Crimson_Nylium' with a value of 5 to mining experience tables in experience.yml
-    Added 'Crimson_Stem' with a value of 35 to woodcutting experience tables in experience.yml
-    Added 'Crimson_Roots' with a value of 35 to woodcutting experience tables in experience.yml
-    Added 'Warped_Stem' with a value of 35 to woodcutting experience tables in experience.yml
-    Added 'Warped_Roots' with a value of 35 to woodcutting experience tables in experience.yml
-    Added 'Ancient_Debris' with a value of 200 to smelting experience tables in experience.yml
+    Added 'Ancient_Debris' with a value of 7777 to Mining experience tables in experience.yml
+    Added 'Basalt' with a value of 40 to Mining experience tables in experience.yml
+    Added 'Crimson_Fungus' with a value of 50 to Herbalism experience tables in experience.yml
+    Added 'Warped_Fungus' with a value of 50 to Herbalism experience tables in experience.yml
+    Added 'Warped_Nylium' with a value of 5 to Mining experience tables in experience.yml
+    Added 'Crimson_Nylium' with a value of 5 to Mining experience tables in experience.yml
+    Added 'Crimson_Stem' with a value of 35 to Woodcutting experience tables in experience.yml
+    Added 'Crimson_Roots' with a value of 35 to Woodcutting experience tables in experience.yml
+    Added 'Warped_Stem' with a value of 35 to Woodcutting experience tables in experience.yml
+    Added 'Warped_Roots' with a value of 35 to Woodcutting experience tables in experience.yml
+    Added 'Ancient_Debris' with a value of 200 to Smelting experience tables in experience.yml
     Added 'Nether_Sprouts' with a value of 10 to Herbalism experience tables in experience.yml
     Added 'Shroomlight' with a value of 100 to Woodcutting experience tables in experience.yml
     Added 'Soul_Soil' with a value of 50 to Excavation experience tables in experience.yml
@@ -38,6 +43,10 @@ Version 2.1.119
     Added 'Shroomlight' to bonus drops for Woodcutting in config.yml
 
     NOTES: You may have to edit your configs for this update to mcMMO, either do it manually or delete the config files to regenerate them.
+    Here are the default configuration files if you wish to compare them to your own servers settings while updating your configs.
+    Netherrack is repaired using netherrack scraps for now, wait for 2.2 for a better version of repair.
+    Netherrack salvages into netherrack scraps for now, wait for 2.2 for a better version of salvage.
+
 
 Version 2.1.118
     Fixed another dupe bug

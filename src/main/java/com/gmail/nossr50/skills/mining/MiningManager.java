@@ -17,6 +17,7 @@ import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -131,6 +132,30 @@ public class MiningManager extends SkillManager {
      * @param yield The % of blocks to drop
      * @param event The {@link EntityExplodeEvent}
      */
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
+    //TODO: Rewrite this garbage
     public void blastMiningDropProcessing(float yield, EntityExplodeEvent event) {
         //Strip out only stuff that gives mining XP
 
@@ -148,7 +173,7 @@ public class MiningManager extends SkillManager {
 
         int xp = 0;
 
-        float oreBonus = (float) (getOreBonus() / 100);
+//        float oreBonus = (float) (getOreBonus() / 100);
         //TODO: Pretty sure something is fucked with debrisReduction stuff
 //        float debrisReduction = (float) (getDebrisReduction() / 100);
         int dropMultiplier = getDropMultiplier();
@@ -156,13 +181,14 @@ public class MiningManager extends SkillManager {
 //        float debrisYield = yield - debrisReduction;
 
         for (BlockState blockState : ores) {
-            if (Misc.getRandom().nextFloat() < (notOres.size() + oreBonus)) {
+            if (RandomUtils.nextInt(ores.size()) >= (ores.size() / 2)) {
                 xp += Mining.getBlockXp(blockState);
 
                 Misc.dropItem(Misc.getBlockCenter(blockState), new ItemStack(blockState.getType())); // Initial block that would have been dropped
 
                 for (int i = 1; i < dropMultiplier; i++) {
-                    Mining.handleSilkTouchDrops(blockState); // Bonus drops - should drop the block & not the items
+                    if(RandomUtils.nextInt(100) >= 75)
+                        Mining.handleSilkTouchDrops(blockState); // Bonus drops - should drop the block & not the items
                 }
             }
         }
@@ -234,7 +260,21 @@ public class MiningManager extends SkillManager {
      * @return the Blast Mining tier
      */
     public int getDropMultiplier() {
-        return getDropMultiplier(getBlastMiningTier());
+        switch(getBlastMiningTier()) {
+            case 8:
+            case 7:
+                return 3;
+            case 6:
+            case 5:
+            case 4:
+            case 3:
+                return 2;
+            case 2:
+            case 1:
+                return 1;
+            default:
+                return 0;
+        }
     }
 
     /**

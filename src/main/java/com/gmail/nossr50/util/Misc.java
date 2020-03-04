@@ -145,6 +145,29 @@ public final class Misc {
     }
 
     /**
+     * Drop an item at a given location.
+     *
+     * @param location The location to drop the item at
+     * @param itemStack The item to drop
+     * @return Dropped Item entity or null if invalid or cancelled
+     */
+    public static Item dropItem(Location location, ItemStack itemStack, int count) {
+        if (itemStack.getType() == Material.AIR) {
+            return null;
+        }
+
+        // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
+        McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            return null;
+        }
+
+        return location.getWorld().dropItem(location, itemStack);
+    }
+
+    /**
      * Drop items at a given location.
      *
      * @param fromLocation The location to drop the items at

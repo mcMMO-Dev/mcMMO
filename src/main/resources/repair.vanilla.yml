@@ -181,6 +181,39 @@ Repairables:
     DIAMOND_BOOTS:
         MinimumLevel: 0
         XpMultiplier: 6
+
+    #
+    # Diamond repairables
+    ###
+    # Tools
+    NETHERRITE_SWORD:
+        MinimumLevel: 0
+        XpMultiplier: .6
+    NETHERRITE_SHOVEL:
+        MinimumLevel: 0
+        XpMultiplier: .4
+    NETHERRITE_PICKAXE:
+        MinimumLevel: 0
+        XpMultiplier: 1.1
+    NETHERRITE_AXE:
+        MinimumLevel: 0
+        XpMultiplier: 1.1
+    NETHERRITE_HOE:
+        MinimumLevel: 0
+        XpMultiplier: .75
+    # Armor
+    NETHERRITE_HELMET:
+        MinimumLevel: 0
+        XpMultiplier: 7
+    NETHERRITE_CHESTPLATE:
+        MinimumLevel: 0
+        XpMultiplier: 7
+    NETHERRITE_LEGGINGS:
+        MinimumLevel: 0
+        XpMultiplier: 7
+    NETHERRITE_BOOTS:
+        MinimumLevel: 0
+        XpMultiplier: 7
     #
     # Leather repairables
     ###
