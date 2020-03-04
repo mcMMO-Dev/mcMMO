@@ -44,8 +44,12 @@ Version 2.1.119
 
     NOTES: You may have to edit your configs for this update to mcMMO, either do it manually or delete the config files to regenerate them.
     Here are the default configuration files if you wish to compare them to your own servers settings while updating your configs.
+    https://paste.gg/p/anonymous/bf8ba1a24c8c4f188da5f8b8ebfc2b35 (Keep scrolling)
+
     Netherrack is repaired using netherrack scraps for now, wait for 2.2 for a better version of repair.
     Netherrack salvages into netherrack scraps for now, wait for 2.2 for a better version of salvage.
+
+    Repairing chainmail/etc will be tackled in 2.2 so don't expect that in this version
 
 
 Version 2.1.118
