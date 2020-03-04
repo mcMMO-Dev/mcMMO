@@ -2,13 +2,16 @@ package com.gmail.nossr50.runnables.items;
 
 import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
 import com.gmail.nossr50.util.ChimaeraWing;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class ChimaeraWingWarmup extends BukkitRunnable {
+import java.util.function.Consumer;
+
+public class ChimaeraWingWarmup implements Consumer<Task> {
     private mcMMO pluginRef;
     private BukkitMMOPlayer mcMMOPlayer;
 
@@ -18,7 +21,7 @@ public class ChimaeraWingWarmup extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         checkChimaeraWingTeleport();
     }
 

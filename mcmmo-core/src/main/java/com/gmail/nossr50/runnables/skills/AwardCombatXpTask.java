@@ -4,11 +4,14 @@ import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
+
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.function.Consumer;
 
 //TODO: Why is this a task? Investigate later.
-public class AwardCombatXpTask extends BukkitRunnable {
+public class AwardCombatXpTask implements Consumer<Task> {
     private BukkitMMOPlayer mcMMOPlayer;
     private double baseXp;
     private PrimarySkillType primarySkillType;
@@ -26,7 +29,7 @@ public class AwardCombatXpTask extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         double health = target.getHealth();
         double damage = baseHealth - health;
 

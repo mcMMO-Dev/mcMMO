@@ -5,8 +5,11 @@ import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
+
 import org.bukkit.command.CommandSender;
-import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.function.Consumer;
 
 //TODO: PUUUUUUUUUUURGE
 /**
@@ -16,7 +19,7 @@ import org.bukkit.scheduler.BukkitRunnable;
  *
  * Fix this at some point in the future
  */
-public class FormulaConversionTask extends BukkitRunnable {
+public class FormulaConversionTask implements Consumer<Task> {
     private CommandSender sender;
     private FormulaType previousFormula;
     private mcMMO pluginRef;
@@ -28,7 +31,7 @@ public class FormulaConversionTask extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         int convertedUsers = 0;
         long startMillis = System.currentTimeMillis();
         for (String playerName : pluginRef.getDatabaseManager().getStoredUsers()) {

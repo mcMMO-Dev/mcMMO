@@ -1,9 +1,12 @@
 package com.gmail.nossr50.runnables.skills;
 
-import org.bukkit.block.BlockState;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
 
-public class HerbalismBlockUpdaterTask extends BukkitRunnable {
+import org.bukkit.block.BlockState;
+
+import java.util.function.Consumer;
+
+public class HerbalismBlockUpdaterTask implements Consumer<Task> {
     private final BlockState blockState;
 
     public HerbalismBlockUpdaterTask(BlockState blockState) {
@@ -11,7 +14,7 @@ public class HerbalismBlockUpdaterTask extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         blockState.update(true);
     }
 }

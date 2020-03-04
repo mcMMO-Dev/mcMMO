@@ -3,14 +3,16 @@ package com.gmail.nossr50.runnables.commands;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
+
 import org.apache.commons.lang.Validate;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
+import java.util.function.Consumer;
 
-public class LeaderboardsCommandAsyncTask extends BukkitRunnable {
+public class LeaderboardsCommandAsyncTask implements Consumer<Task> {
     private final mcMMO pluginRef;
     private final CommandSender sender;
     private final PrimarySkillType skill;
@@ -35,7 +37,7 @@ public class LeaderboardsCommandAsyncTask extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         final List<PlayerStat> userStats = pluginRef.getDatabaseManager().readLeaderboard(skill, page, 10);
 
         pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()

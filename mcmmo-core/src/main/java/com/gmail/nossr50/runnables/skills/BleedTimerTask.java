@@ -4,20 +4,22 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.skills.BleedContainer;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
 import com.gmail.nossr50.util.sounds.SoundType;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Consumer;
 
-public class BleedTimerTask extends BukkitRunnable {
+public class BleedTimerTask implements Consumer<Task> {
     private final mcMMO pluginRef;
     private Map<LivingEntity, BleedContainer> bleedList;
     private boolean isIterating = false;
@@ -71,13 +73,12 @@ public class BleedTimerTask extends BukkitRunnable {
         BleedContainer newBleedContainer = new BleedContainer(entity, ticks, bleedRank, toolTier, attacker);
         bleedList.put(entity, newBleedContainer);
     }
-
     public boolean isBleeding(LivingEntity entity) {
         return bleedList.containsKey(entity);
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         isIterating = true;
         Iterator<Entry<LivingEntity, BleedContainer>> bleedIterator = bleedList.entrySet().iterator();
 

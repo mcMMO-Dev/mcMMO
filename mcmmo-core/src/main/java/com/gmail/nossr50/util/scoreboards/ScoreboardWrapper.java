@@ -16,8 +16,6 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
@@ -25,6 +23,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class ScoreboardWrapper {
     // Initialization variables
@@ -563,25 +562,25 @@ public class ScoreboardWrapper {
         powerObjective.getScore(player.getName()).setScore(newPowerLevel);
     }
 
-    private class ScoreboardQuickUpdate extends BukkitRunnable {
+    private class ScoreboardQuickUpdate implements Consumer<Task>  {
         @Override
-        public void run() {
+        public void accept(Task task) {
             updateSidebar();
             updateTask = null;
         }
     }
 
-    private class ScoreboardChangeTask extends BukkitRunnable {
+    private class ScoreboardChangeTask implements Consumer<Task> {
         @Override
-        public void run() {
+        public void accept(Task task) {
             tryRevertBoard();
             revertTask = null;
         }
     }
 
-    private class ScoreboardCooldownTask extends BukkitRunnable {
+    private class ScoreboardCooldownTask implements Consumer<Task>  {
         @Override
-        public void run() {
+        public void accept(Task task) {
             // Stop updating if it's no longer something displaying cooldowns
             if (isBoardShown() && (isSkillScoreboard() || isCooldownScoreboard())) {
                 doSidebarUpdateSoon();

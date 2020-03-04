@@ -2,12 +2,15 @@ package com.gmail.nossr50.runnables.items;
 
 import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class TeleportationWarmup extends BukkitRunnable {
+import java.util.function.Consumer;
+
+public class TeleportationWarmup implements Consumer<Task> {
     private final mcMMO pluginRef;
     private BukkitMMOPlayer mcMMOPlayer;
     private BukkitMMOPlayer mcMMOTarget;
@@ -19,7 +22,7 @@ public class TeleportationWarmup extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         Player teleportingPlayer = mcMMOPlayer.getNative();
         Player targetPlayer = mcMMOTarget.getNative();
         Location previousLocation = mcMMOPlayer.getTeleportCommenceLocation();

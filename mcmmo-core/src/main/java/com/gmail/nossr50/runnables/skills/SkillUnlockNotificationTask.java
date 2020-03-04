@@ -3,10 +3,12 @@ package com.gmail.nossr50.runnables.skills;
 import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.mcMMO;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
+
+import java.util.function.Consumer;
 
 
-public class SkillUnlockNotificationTask extends BukkitRunnable {
+public class SkillUnlockNotificationTask implements Consumer<Task> {
     private final mcMMO pluginRef;
     private final BukkitMMOPlayer mcMMOPlayer;
     private final SubSkillType subSkillType;
@@ -23,19 +25,8 @@ public class SkillUnlockNotificationTask extends BukkitRunnable {
         this.subSkillType = subSkillType;
     }
 
-    /**
-     * When an object implementing interface <code>Runnable</code> is used
-     * to create a thread, starting the thread causes the object's
-     * <code>run</code> method to be called in that separately executing
-     * thread.
-     * <p>
-     * The general contract of the method <code>run</code> is that it may
-     * take any action whatsoever.
-     *
-     * @see Thread#run()
-     */
     @Override
-    public void run() {
+    public void accept(Task task) {
         //mcMMOPlayer.getPlayer().sendTitle(subSkillType.getLocaleName(), "Rank "+rank, 7, 20, 7);
         pluginRef.getNotificationManager().sendPlayerUnlockNotification(mcMMOPlayer, subSkillType);
     }

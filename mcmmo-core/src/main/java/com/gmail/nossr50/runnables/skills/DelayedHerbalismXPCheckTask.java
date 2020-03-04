@@ -2,11 +2,12 @@ package com.gmail.nossr50.runnables.skills;
 
 import com.gmail.nossr50.datatypes.BlockSnapshot;
 import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
-public class DelayedHerbalismXPCheckTask extends BukkitRunnable {
+public class DelayedHerbalismXPCheckTask implements Consumer<Task> {
 
     private final BukkitMMOPlayer mcMMOPlayer;
     private final ArrayList<BlockSnapshot> chorusBlocks;
@@ -17,7 +18,7 @@ public class DelayedHerbalismXPCheckTask extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         mcMMOPlayer.getHerbalismManager().awardXPForBlockSnapshots(chorusBlocks);
     }
 }

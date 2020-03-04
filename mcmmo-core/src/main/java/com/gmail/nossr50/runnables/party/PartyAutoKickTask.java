@@ -6,7 +6,6 @@ import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.HashMap;

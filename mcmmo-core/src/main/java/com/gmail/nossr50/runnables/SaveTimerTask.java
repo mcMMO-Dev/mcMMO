@@ -2,10 +2,12 @@ package com.gmail.nossr50.runnables;
 
 import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
 import com.gmail.nossr50.runnables.player.PlayerProfileSaveTask;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class SaveTimerTask implements Runnable {
+import java.util.function.Consumer;
+
+public class SaveTimerTask implements Consumer<Task> {
 
     private final mcMMO pluginRef;
 
@@ -14,7 +16,7 @@ public class SaveTimerTask implements Runnable {
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         // All player data will be saved periodically through this
         int count = 1;
 

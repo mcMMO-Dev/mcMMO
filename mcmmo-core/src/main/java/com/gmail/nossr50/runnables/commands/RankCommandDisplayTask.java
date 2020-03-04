@@ -3,17 +3,19 @@ package com.gmail.nossr50.runnables.commands;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Display the results of RankCommandAsyncTask to the sender.
  */
-public class RankCommandDisplayTask extends BukkitRunnable {
+public class RankCommandDisplayTask implements Consumer<Task> {
     private final mcMMO pluginRef;
     private final Map<PrimarySkillType, Integer> skills;
     private final CommandSender sender;
@@ -30,7 +32,7 @@ public class RankCommandDisplayTask extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         if (useBoard && pluginRef.getScoreboardSettings().getScoreboardsEnabled()) {
             displayBoard();
         }

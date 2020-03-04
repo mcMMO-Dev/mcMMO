@@ -2,14 +2,16 @@ package com.gmail.nossr50.runnables;
 
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
+
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
+import java.util.function.Consumer;
 
-public class PistonTrackerTask extends BukkitRunnable {
+public class PistonTrackerTask implements Consumer<Task> {
     private final mcMMO pluginRef;
     private List<Block> blocks;
     private BlockFace direction;
@@ -23,7 +25,7 @@ public class PistonTrackerTask extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         // Check to see if futureEmptyBlock is empty - if it isn't; the blocks didn't move
         if (!pluginRef.getBlockTools().isPistonPiece(futureEmptyBlock.getState())) {
             return;

@@ -2,9 +2,11 @@ package com.gmail.nossr50.runnables.player;
 
 import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.mcMMO;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
 
-public class ClearRegisteredXPGainTask extends BukkitRunnable {
+import java.util.function.Consumer;
+
+public class ClearRegisteredXPGainTask implements Consumer<Task> {
 
     private final mcMMO pluginRef;
 
@@ -13,7 +15,7 @@ public class ClearRegisteredXPGainTask extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         for (BukkitMMOPlayer mcMMOPlayer : pluginRef.getUserManager().getPlayers()) {
             mcMMOPlayer.getProfile().purgeExpiredXpGains();
         }

@@ -4,9 +4,11 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
 
-public class AbilityCooldownTask extends BukkitRunnable {
+import java.util.function.Consumer;
+
+public class AbilityCooldownTask implements Consumer<Task> {
     private final mcMMO pluginRef;
     private final BukkitMMOPlayer mcMMOPlayer;
     private final SuperAbilityType superAbilityType;
@@ -18,7 +20,7 @@ public class AbilityCooldownTask extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         if (!mcMMOPlayer.getNative().isOnline() || mcMMOPlayer.getSuperAbilityInformed(superAbilityType)) {
             return;
         }

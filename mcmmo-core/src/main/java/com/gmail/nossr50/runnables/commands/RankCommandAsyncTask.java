@@ -2,14 +2,16 @@ package com.gmail.nossr50.runnables.commands;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
+
 import org.apache.commons.lang.Validate;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Map;
+import java.util.function.Consumer;
 
-public class RankCommandAsyncTask extends BukkitRunnable {
+public class RankCommandAsyncTask implements Consumer<Task> {
     private final mcMMO pluginRef;
     private final String playerName;
     private final CommandSender sender;
@@ -31,7 +33,7 @@ public class RankCommandAsyncTask extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         Map<PrimarySkillType, Integer> skills = pluginRef.getDatabaseManager().readRank(playerName);
 
         pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()

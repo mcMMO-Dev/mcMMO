@@ -322,7 +322,9 @@ public class BukkitMMOPlayer implements MMOPlayer<Player> {
     public void resetSuperAbilityMode() {
         for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {
             // Correctly disable and handle any special deactivate code
-            new AbilityDisableTask(pluginRef,this, superAbilityType).run();
+            pluginRef.getPlatformProvider().getScheduler().getTaskBuilder()
+                    .setTask(new AbilityDisableTask(pluginRef,this, superAbilityType))
+                    .schedule();
         }
     }
 

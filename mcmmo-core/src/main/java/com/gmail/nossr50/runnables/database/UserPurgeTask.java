@@ -1,11 +1,12 @@
 package com.gmail.nossr50.runnables.database;
 
 import com.gmail.nossr50.mcMMO;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
 
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Consumer;
 
-public class UserPurgeTask extends BukkitRunnable {
+public class UserPurgeTask implements Consumer<Task> {
     private final mcMMO pluginRef;
     private ReentrantLock lock;
 
@@ -15,7 +16,7 @@ public class UserPurgeTask extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         lock.lock();
         if (pluginRef.getDatabaseCleaningSettings().isPurgePowerlessUsers())
             pluginRef.getDatabaseManager().purgePowerlessUsers();

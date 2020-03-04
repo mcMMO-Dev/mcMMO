@@ -1,11 +1,14 @@
 package com.gmail.nossr50.runnables;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
+
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class StickyPistonTrackerTask extends BukkitRunnable {
+import java.util.function.Consumer;
+
+public class StickyPistonTrackerTask implements Consumer<Task> {
     private final mcMMO pluginRef;
     private BlockFace direction;
     private Block block;
@@ -19,7 +22,7 @@ public class StickyPistonTrackerTask extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         if (!pluginRef.getPlaceStore().isTrue(movedBlock.getRelative(direction))) {
             return;
         }

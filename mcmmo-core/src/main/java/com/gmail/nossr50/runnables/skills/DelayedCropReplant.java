@@ -3,6 +3,8 @@ package com.gmail.nossr50.runnables.skills;
 import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.meta.RecentlyReplantedCropMeta;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -13,9 +15,10 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class DelayedCropReplant extends BukkitRunnable {
+import java.util.function.Consumer;
+
+public class DelayedCropReplant implements Consumer<Task> {
 
     private final int desiredCropAge;
     private final Location cropLocation;
@@ -48,7 +51,7 @@ public class DelayedCropReplant extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         Block cropBlock = cropLocation.getBlock();
         BlockState currentState = cropBlock.getState();
 
@@ -104,7 +107,7 @@ public class DelayedCropReplant extends BukkitRunnable {
 
     }
 
-    private class markPlantAsOld extends BukkitRunnable {
+    private class markPlantAsOld implements Consumer<Task> {
 
         private final Location cropLoc;
 
@@ -113,7 +116,7 @@ public class DelayedCropReplant extends BukkitRunnable {
         }
 
         @Override
-        public void run() {
+        public void accept(Task task) {
             Block cropBlock = cropLoc.getBlock();
 
             if(cropBlock.getMetadata(MetadataConstants.REPLANT_META_KEY.getKey()).size() > 0) {

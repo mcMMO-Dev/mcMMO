@@ -1,9 +1,11 @@
 package com.gmail.nossr50.runnables.player;
 
 import com.gmail.nossr50.mcMMO;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
 
-public class PowerLevelUpdatingTask extends BukkitRunnable {
+import java.util.function.Consumer;
+
+public class PowerLevelUpdatingTask implements Consumer<Task> {
 
     private final mcMMO pluginRef;
 
@@ -12,9 +14,9 @@ public class PowerLevelUpdatingTask extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         if (!pluginRef.getScoreboardManager().powerLevelHeartbeat()) {
-            this.cancel();
+            task.cancel();
         }
     }
 }

@@ -5,7 +5,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.function.Consumer;
 

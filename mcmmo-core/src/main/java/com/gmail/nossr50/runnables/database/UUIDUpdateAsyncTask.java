@@ -1,16 +1,17 @@
 package com.gmail.nossr50.runnables.database;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
 import com.gmail.nossr50.util.uuid.UUIDFetcher;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 
-public class UUIDUpdateAsyncTask extends BukkitRunnable {
+public class UUIDUpdateAsyncTask implements Consumer<Task> {
     private mcMMO pluginRef;
     private final int MAX_LOOKUP = 100;
     private final int RATE_LIMIT = 300;
@@ -31,7 +32,7 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         size = userNames.size();
 
         pluginRef.getLogger().info("Starting to check and update UUIDs, total amount of users: " + size);

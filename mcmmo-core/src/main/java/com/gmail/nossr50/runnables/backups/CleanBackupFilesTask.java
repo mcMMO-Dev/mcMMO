@@ -1,7 +1,7 @@
 package com.gmail.nossr50.runnables.backups;
 
 import com.gmail.nossr50.mcMMO;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
 
 import java.io.File;
 import java.text.ParseException;
@@ -11,8 +11,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
-public class CleanBackupFilesTask extends BukkitRunnable {
+public class CleanBackupFilesTask implements Consumer<Task> {
     private final mcMMO pluginRef;
     private final File BACKUP_DIR;
 
@@ -23,7 +24,7 @@ public class CleanBackupFilesTask extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         List<Integer> savedDays = new ArrayList<>(); //TODO: Should probably look into why this isn't used...
         HashMap<Integer, List<Integer>> savedYearsWeeks = new HashMap<>(); //TODO: Should probably look into why this isn't used...
         List<File> toDelete = new ArrayList<>();

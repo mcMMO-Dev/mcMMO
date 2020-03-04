@@ -3,14 +3,16 @@ package com.gmail.nossr50.runnables.player;
 import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
 import com.gmail.nossr50.runnables.commands.ScoreboardKeepTask;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class PlayerProfileLoadingTask extends BukkitRunnable {
+import java.util.function.Consumer;
+
+public class PlayerProfileLoadingTask implements Consumer<Task> {
     private final mcMMO pluginRef;
     private final Player player;
     private int attempt = 0;
@@ -29,8 +31,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
     // WARNING: ASYNC TASK
     // DO NOT MODIFY THE McMMOPLAYER FROM THIS CODE
     @Override
-    public void run() {
-
+    public void accept(Task task) {
         if (pluginRef.getMiscTools().isNPCIncludingVillagers(player)) {
             return;
         }
@@ -73,7 +74,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
                 .schedule();
     }
 
-    private class ApplySuccessfulProfile extends BukkitRunnable {
+    private class ApplySuccessfulProfile implements Consumer<Task>  {
         private final BukkitMMOPlayer mcMMOPlayer;
 
         private ApplySuccessfulProfile(BukkitMMOPlayer mcMMOPlayer) {
@@ -83,7 +84,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
         // Synchronized task
         // No database access permitted
         @Override
-        public void run() {
+        public void accept(Task task) {
             if (!player.isOnline()) {
                 pluginRef.getLogger().info("Aborting profile loading recovery for " + player.getName() + " - player logged out");
                 return;

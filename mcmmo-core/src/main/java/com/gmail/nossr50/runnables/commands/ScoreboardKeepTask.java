@@ -1,10 +1,13 @@
 package com.gmail.nossr50.runnables.commands;
 
 import com.gmail.nossr50.mcMMO;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
 
-public class ScoreboardKeepTask extends BukkitRunnable {
+import org.bukkit.entity.Player;
+
+import java.util.function.Consumer;
+
+public class ScoreboardKeepTask implements Consumer<Task> {
     private final mcMMO pluginRef;
     private Player player;
 
@@ -14,7 +17,7 @@ public class ScoreboardKeepTask extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         if (player.isValid() && pluginRef.getScoreboardManager().isBoardShown(player.getName())) {
             pluginRef.getScoreboardManager().keepBoard(player.getName());
         }

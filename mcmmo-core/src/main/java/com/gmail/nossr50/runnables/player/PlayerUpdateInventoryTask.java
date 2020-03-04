@@ -1,9 +1,12 @@
 package com.gmail.nossr50.runnables.player;
 
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.gmail.nossr50.mcmmo.api.platform.scheduler.Task;
 
-public class PlayerUpdateInventoryTask extends BukkitRunnable {
+import org.bukkit.entity.Player;
+
+import java.util.function.Consumer;
+
+public class PlayerUpdateInventoryTask implements Consumer<Task> {
     private Player player;
 
     public PlayerUpdateInventoryTask(Player player) {
@@ -11,7 +14,7 @@ public class PlayerUpdateInventoryTask extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(Task task) {
         player.updateInventory();
     }
 }
