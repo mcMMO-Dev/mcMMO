@@ -1,3 +1,6 @@
+Version 2.1.121
+    Fixed a netherite related bug that prevented mcMMO from functioning correctly
+
 Version 2.1.120
     Fixed a bug involving the new netherite equipment
 

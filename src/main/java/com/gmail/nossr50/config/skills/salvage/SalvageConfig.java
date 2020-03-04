@@ -45,6 +45,12 @@ public class SalvageConfig extends ConfigLoader {
             Material itemMaterial = Material.matchMaterial(key);
 
             if (itemMaterial == null) {
+
+                if(key.toLowerCase().contains("nether")) {
+                    mcMMO.p.getLogger().info("No support for salvage item "+key+ " in this version of Minecraft, skipping.");
+                    continue;
+                }
+
                 reason.add("Invalid material: " + key);
             }
 
