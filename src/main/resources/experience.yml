@@ -249,8 +249,8 @@ Experience_Values:
         Soul_Sand: 40
         Soul_Soil: 40
     Woodcutting:
-        Nether_Wart_Block: 20
-        Warped_Wart_Block: 20
+        Nether_Wart_Block: 1
+        Warped_Wart_Block: 1
         Shroomlight: 100
         Crimson_Stem: 35
         Warped_Stem: 35

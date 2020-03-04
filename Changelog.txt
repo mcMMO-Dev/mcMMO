@@ -1,3 +1,7 @@
+Version 2.1.122
+    Changed the xp values for Nether_Wart_Block and Warped_Wart_Block from 20 to 1 for Woodcutting
+    mcMMO now treats Nether_Wart_Block and Warped_Wart_Block as leaves
+
 Version 2.1.121
     Fixed a netherite related bug that prevented mcMMO from functioning correctly
 

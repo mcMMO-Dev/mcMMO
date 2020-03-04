@@ -806,6 +806,8 @@ public class MaterialMapStore {
         leavesWhiteList.add("dark_oak_leaves");
         leavesWhiteList.add("jungle_leaves");
         leavesWhiteList.add("spruce_leaves");
+        leavesWhiteList.add("nether_wart_block");
+        leavesWhiteList.add("warped_wart_block");
     }
 
     private void fillMossyWhiteList()
