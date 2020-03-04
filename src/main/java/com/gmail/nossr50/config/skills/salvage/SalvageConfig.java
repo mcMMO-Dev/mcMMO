@@ -45,13 +45,8 @@ public class SalvageConfig extends ConfigLoader {
             Material itemMaterial = Material.matchMaterial(key);
 
             if (itemMaterial == null) {
-
-                if(key.toLowerCase().contains("nether")) {
-                    mcMMO.p.getLogger().info("No support for salvage item "+key+ " in this version of Minecraft, skipping.");
-                    continue;
-                }
-
-                reason.add("Invalid material: " + key);
+                mcMMO.p.getLogger().info("No support for salvage item "+key+ " in this version of Minecraft, skipping.");
+                continue;
             }
 
             // Salvage Material Type
@@ -99,7 +94,8 @@ public class SalvageConfig extends ConfigLoader {
             Material salvageMaterial = (salvageMaterialName == null ? salvageMaterialType.getDefaultMaterial() : Material.matchMaterial(salvageMaterialName));
 
             if (salvageMaterial == null) {
-                reason.add(key + " has an invalid salvage material: " + salvageMaterialName);
+                mcMMO.p.getLogger().info("Could not find a salvage material for item named " + key + ", skipping.");
+                continue;
             }
 
             // Maximum Durability

@@ -48,12 +48,8 @@ public class RepairConfig extends ConfigLoader {
             Material itemMaterial = Material.matchMaterial(key);
 
             if (itemMaterial == null) {
-                if(key.toLowerCase().contains("nether")) {
-                    mcMMO.p.getLogger().info("No support for repair item "+key+ " in this version of Minecraft, skipping.");
-                    continue;
-                }
-
-                reason.add("Invalid material: " + key);
+                mcMMO.p.getLogger().info("No support for repair item "+key+ " in this version of Minecraft, skipping.");
+                continue;
             }
 
             // Repair Material Type
@@ -99,7 +95,8 @@ public class RepairConfig extends ConfigLoader {
             Material repairMaterial = (repairMaterialName == null ? repairMaterialType.getDefaultMaterial() : Material.matchMaterial(repairMaterialName));
 
             if (repairMaterial == null) {
-                reason.add(key + " has an invalid repair material: " + repairMaterialName);
+                mcMMO.p.getLogger().info("Could not find a valid repair material for item named "+key+", skipping.");
+                continue;
             }
 
             // Maximum Durability
