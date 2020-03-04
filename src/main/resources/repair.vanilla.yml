@@ -186,32 +186,32 @@ Repairables:
     # Diamond repairables
     ###
     # Tools
-    netherite_SWORD:
+    NETHERITE_SWORD:
         MinimumLevel: 0
         XpMultiplier: .6
-    netherite_SHOVEL:
+    NETHERITE_SHOVEL:
         MinimumLevel: 0
         XpMultiplier: .4
-    netherite_PICKAXE:
+    NETHERITE_PICKAXE:
         MinimumLevel: 0
         XpMultiplier: 1.1
-    netherite_AXE:
+    NETHERITE_AXE:
         MinimumLevel: 0
         XpMultiplier: 1.1
-    netherite_HOE:
+    NETHERITE_HOE:
         MinimumLevel: 0
         XpMultiplier: .75
     # Armor
-    netherite_HELMET:
+    NETHERITE_HELMET:
         MinimumLevel: 0
         XpMultiplier: 7
-    netherite_CHESTPLATE:
+    NETHERITE_CHESTPLATE:
         MinimumLevel: 0
         XpMultiplier: 7
-    netherite_LEGGINGS:
+    NETHERITE_LEGGINGS:
         MinimumLevel: 0
         XpMultiplier: 7
-    netherite_BOOTS:
+    NETHERITE_BOOTS:
         MinimumLevel: 0
         XpMultiplier: 7
     #
