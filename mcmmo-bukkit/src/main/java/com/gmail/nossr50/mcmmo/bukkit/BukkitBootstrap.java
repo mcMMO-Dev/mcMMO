@@ -65,8 +65,8 @@ public class BukkitBootstrap extends JavaPlugin implements PlatformProvider {
     }
 
     @Override
-    public MetadataStore getMetadataStore() {
-        return null;
+    public MetadataStore<MMOEntity<Entity>> getMetadataStore() {
+        return bukkitMetadataStore;
     }
 
     @Override
