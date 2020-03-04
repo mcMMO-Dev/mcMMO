@@ -411,12 +411,9 @@ public final class CombatUtils {
         if(metadataValue.size() <= 0)
             return;
 
-        if(metadataValue != null)
-        {
-            OldName oldName = (OldName) metadataValue.get(0);
-            entity.setCustomName(oldName.asString());
-            entity.setCustomNameVisible(false);
-        }
+        OldName oldName = (OldName) metadataValue.get(0);
+        entity.setCustomName(oldName.asString());
+        entity.setCustomNameVisible(false);
     }
 
     /**
@@ -480,33 +477,7 @@ public final class CombatUtils {
      * @return the armor quality of a specific Item Stack
      */
     private static int getArmorQuality(ItemStack itemStack) {
-        int quality = 0;
-
-        switch(itemStack.getType()) {
-            case LEATHER_HELMET:
-            case LEATHER_BOOTS:
-            case LEATHER_CHESTPLATE:
-            case LEATHER_LEGGINGS:
-                return 1;
-            case IRON_HELMET:
-            case IRON_BOOTS:
-            case IRON_CHESTPLATE:
-            case IRON_LEGGINGS:
-                return 2;
-            case GOLDEN_HELMET:
-            case GOLDEN_BOOTS:
-            case GOLDEN_CHESTPLATE:
-            case GOLDEN_LEGGINGS:
-                return 3;
-            case DIAMOND_HELMET:
-            case DIAMOND_BOOTS:
-            case DIAMOND_CHESTPLATE:
-            case DIAMOND_LEGGINGS:
-                return 6;
-            default:
-                return 1;
-
-        }
+        return mcMMO.getMaterialMapStore().getTier(itemStack.getType().getKey().getKey());
     }
 
     /**

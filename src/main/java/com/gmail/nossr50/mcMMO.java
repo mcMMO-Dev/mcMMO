@@ -153,6 +153,9 @@ public class mcMMO extends JavaPlugin {
 
             modManager = new ModManager();
 
+            //Init Material Maps
+            materialMapStore = new MaterialMapStore();
+
             loadConfigFiles();
 
             if (!noErrorsInConfigFiles) {
@@ -249,9 +252,6 @@ public class mcMMO extends JavaPlugin {
 
             getServer().getPluginManager().disablePlugin(this);
         }
-
-        //Init Material Maps
-        materialMapStore = new MaterialMapStore();
 
         //Init player level values
         playerLevelUtils = new PlayerLevelUtils();

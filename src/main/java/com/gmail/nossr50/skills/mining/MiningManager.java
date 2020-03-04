@@ -136,11 +136,11 @@ public class MiningManager extends SkillManager {
 
         List<BlockState> ores = new ArrayList<BlockState>();
 
-        List<Block> newYieldList = new ArrayList<>();
+        List<Block> notOres = new ArrayList<>();
         for (Block targetBlock : event.blockList()) {
             //Containers usually have 0 XP unless someone edited their config in a very strange way
             if (ExperienceConfig.getInstance().getXp(PrimarySkillType.MINING, targetBlock) == 0 || targetBlock instanceof Container || mcMMO.getPlaceStore().isTrue(targetBlock)) {
-                newYieldList.add(targetBlock);
+                notOres.add(targetBlock);
             } else {
                 ores.add(targetBlock.getState());
             }
@@ -156,7 +156,7 @@ public class MiningManager extends SkillManager {
 //        float debrisYield = yield - debrisReduction;
 
         for (BlockState blockState : ores) {
-            if (Misc.getRandom().nextFloat() < (newYieldList.size() + oreBonus)) {
+            if (Misc.getRandom().nextFloat() < (notOres.size() + oreBonus)) {
                 xp += Mining.getBlockXp(blockState);
 
                 Misc.dropItem(Misc.getBlockCenter(blockState), new ItemStack(blockState.getType())); // Initial block that would have been dropped
@@ -168,8 +168,9 @@ public class MiningManager extends SkillManager {
         }
 
         //Replace the event blocklist with the newYield list
-        event.blockList().clear();
-        event.blockList().addAll(newYieldList);
+        event.setYield(0F);
+//        event.blockList().clear();
+//        event.blockList().addAll(notOres);
 
         applyXpGain(xp, XPGainReason.PVE);
     }

@@ -2,6 +2,7 @@ package com.gmail.nossr50.util;
 
 import org.bukkit.Material;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 
@@ -53,6 +54,8 @@ public class MaterialMapStore {
 
     private HashSet<String> ores;
 
+    private HashMap<String, Integer> tierValue;
+
 
     public MaterialMapStore()
     {
@@ -96,7 +99,9 @@ public class MaterialMapStore {
 
         ores = new HashSet<>();
 
-        fillHardcodedHashSets();
+        tierValue = new HashMap<>();
+
+        fillVanillaMaterialRegisters();
     }
 
     public boolean isMultiBlockPlant(Material material)
@@ -139,7 +144,7 @@ public class MaterialMapStore {
         return canMakeShroomyWhiteList.contains(material.getKey().getKey());
     }
 
-    private void fillHardcodedHashSets()
+    private void fillVanillaMaterialRegisters()
     {
         fillAbilityBlackList();
         fillToolBlackList();
@@ -155,6 +160,34 @@ public class MaterialMapStore {
         fillTools();
         fillEnchantables();
         fillOres();
+
+        fillTierMap();
+    }
+
+    private void fillTierMap() {
+        for(String id : leatherArmor) {
+            tierValue.put(id, 1);
+        }
+
+        for(String id : ironArmor) {
+            tierValue.put(id, 2);
+        }
+
+        for(String id : goldArmor) {
+            tierValue.put(id, 3);
+        }
+
+        for(String id : chainmailArmor) {
+            tierValue.put(id, 3);
+        }
+
+        for(String id : diamondArmor) {
+            tierValue.put(id, 6);
+        }
+
+        for(String id : netherriteArmor) {
+            tierValue.put(id, 12);
+        }
     }
 
     private void fillOres() {
@@ -1038,6 +1071,14 @@ public class MaterialMapStore {
         toolBlackList.add("loom");
         toolBlackList.add("smoker");
         toolBlackList.add("stonecutter");
+    }
+
+    public int getTier(Material material) {
+        return getTier(material.getKey().getKey());
+    }
+
+    public int getTier(String id) {
+        return tierValue.getOrDefault(id, 1); //1 for unknown items
     }
 
     private void addToHashSet(String string, HashSet<String> stringHashSet)

@@ -427,6 +427,7 @@ Skills:
 ###
 Bonus_Drops:
     Herbalism:
+        Bamboo_Sapling: true
         Crimson_Fungus: true
         Warped_Fungus: true
         Chorus_Fruit: true
