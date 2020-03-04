@@ -143,12 +143,12 @@ public final class ItemUtils {
         return mcMMO.getMaterialMapStore().isDiamondArmor(item.getType().getKey().getKey());
     }
 
-    public static boolean isNetherriteArmor(ItemStack itemStack) {
-        return mcMMO.getMaterialMapStore().isNetherriteArmor(itemStack.getType().getKey().getKey());
+    public static boolean isNetheriteArmor(ItemStack itemStack) {
+        return mcMMO.getMaterialMapStore().isNetheriteArmor(itemStack.getType().getKey().getKey());
     }
 
-    public static boolean isNetherriteTool(ItemStack itemStack) {
-        return mcMMO.getMaterialMapStore().isNetherriteTool(itemStack.getType().getKey().getKey());
+    public static boolean isNetheriteTool(ItemStack itemStack) {
+        return mcMMO.getMaterialMapStore().isNetheriteTool(itemStack.getType().getKey().getKey());
     }
 
     /**

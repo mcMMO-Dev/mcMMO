@@ -298,8 +298,8 @@ public class SkillUtils {
     public static int getRepairAndSalvageQuantities(Material itemMaterial, Material recipeMaterial) {
         int quantity = 0;
 
-        if(mcMMO.getMaterialMapStore().isNetherriteTool(itemMaterial) || mcMMO.getMaterialMapStore().isNetherriteArmor(itemMaterial)) {
-            //One netherrite bar requires 4 netherrite scraps
+        if(mcMMO.getMaterialMapStore().isNetheriteTool(itemMaterial) || mcMMO.getMaterialMapStore().isNetheriteArmor(itemMaterial)) {
+            //One netherite bar requires 4 netherite scraps
             return 4;
         }
 

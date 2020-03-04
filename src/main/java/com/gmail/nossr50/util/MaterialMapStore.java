@@ -26,8 +26,8 @@ public class MaterialMapStore {
     private HashSet<String> foodItemWhiteList;
     private HashSet<String> glassBlocks;
 
-    private HashSet<String> netherriteArmor;
-    private HashSet<String> netherriteTools;
+    private HashSet<String> netheriteArmor;
+    private HashSet<String> netheriteTools;
     private HashSet<String> woodTools;
     private HashSet<String> stoneTools;
     private HashSet<String> leatherArmor;
@@ -75,7 +75,7 @@ public class MaterialMapStore {
         chainmailArmor = new HashSet<>();
         goldArmor = new HashSet<>();
         diamondArmor = new HashSet<>();
-        netherriteArmor = new HashSet<>();
+        netheriteArmor = new HashSet<>();
         armors = new HashSet<>();
 
         woodTools = new HashSet<>();
@@ -83,7 +83,7 @@ public class MaterialMapStore {
         ironTools = new HashSet<>();
         goldTools = new HashSet<>();
         diamondTools = new HashSet<>();
-        netherriteTools = new HashSet<>();
+        netheriteTools = new HashSet<>();
         bows = new HashSet<>();
         stringTools = new HashSet<>();
         tools = new HashSet<>();
@@ -185,7 +185,7 @@ public class MaterialMapStore {
             tierValue.put(id, 6);
         }
 
-        for(String id : netherriteArmor) {
+        for(String id : netheriteArmor) {
             tierValue.put(id, 12);
         }
     }
@@ -209,7 +209,7 @@ public class MaterialMapStore {
         fillChainmailWhiteList();
         fillGoldArmorWhiteList();
         fillDiamondArmorWhiteList();
-        fillNetherriteArmorWhiteList();
+        fillnetheriteArmorWhiteList();
 
         //Add all armors to armors hashset
         armors.addAll(leatherArmor);
@@ -217,7 +217,7 @@ public class MaterialMapStore {
         armors.addAll(chainmailArmor);
         armors.addAll(goldArmor);
         armors.addAll(diamondArmor);
-        armors.addAll(netherriteArmor);
+        armors.addAll(netheriteArmor);
 
         armors.add("turtle_shell");
     }
@@ -245,7 +245,7 @@ public class MaterialMapStore {
         fillIronToolsWhiteList();
         fillGoldToolsWhiteList();
         fillDiamondToolsWhiteList();
-        fillNetherriteToolsWhiteList();
+        fillnetheriteToolsWhiteList();
 
         fillSwords();
         fillAxes();
@@ -262,7 +262,7 @@ public class MaterialMapStore {
         tools.addAll(ironTools);
         tools.addAll(goldTools);
         tools.addAll(diamondTools);
-        tools.addAll(netherriteTools);
+        tools.addAll(netheriteTools);
         tools.addAll(tridents);
         tools.addAll(stringTools);
         tools.addAll(bows);
@@ -290,7 +290,7 @@ public class MaterialMapStore {
         swords.add("gold_sword");
         swords.add("golden_sword");
         swords.add("diamond_sword");
-        swords.add("netherrite_sword");
+        swords.add("netherite_sword");
     }
 
     private void fillAxes() {
@@ -301,7 +301,7 @@ public class MaterialMapStore {
         axes.add("gold_axe");
         axes.add("golden_axe");
         axes.add("diamond_axe");
-        axes.add("netherrite_axe");
+        axes.add("netherite_axe");
     }
 
     private void fillPickAxes() {
@@ -312,7 +312,7 @@ public class MaterialMapStore {
         pickAxes.add("gold_pickaxe");
         pickAxes.add("golden_pickaxe");
         pickAxes.add("diamond_pickaxe");
-        pickAxes.add("netherrite_pickaxe");
+        pickAxes.add("netherite_pickaxe");
     }
 
     private void fillHoes() {
@@ -323,7 +323,7 @@ public class MaterialMapStore {
         hoes.add("gold_hoe");
         hoes.add("golden_hoe");
         hoes.add("diamond_hoe");
-        hoes.add("netherrite_hoe");
+        hoes.add("netherite_hoe");
     }
 
     private void fillShovels() {
@@ -334,7 +334,7 @@ public class MaterialMapStore {
         shovels.add("gold_shovel");
         shovels.add("golden_shovel");
         shovels.add("diamond_shovel");
-        shovels.add("netherrite_shovel");
+        shovels.add("netherite_shovel");
     }
 
     private void fillLeatherArmorWhiteList() {
@@ -378,11 +378,11 @@ public class MaterialMapStore {
         diamondArmor.add("diamond_boots");
     }
 
-    private void fillNetherriteArmorWhiteList() {
-        netherriteArmor.add("netherrite_helmet");
-        netherriteArmor.add("netherrite_chestplate");
-        netherriteArmor.add("netherrite_leggings");
-        netherriteArmor.add("netherrite_boots");
+    private void fillnetheriteArmorWhiteList() {
+        netheriteArmor.add("netherite_helmet");
+        netheriteArmor.add("netherite_chestplate");
+        netheriteArmor.add("netherite_leggings");
+        netheriteArmor.add("netherite_boots");
     }
 
     private void fillWoodToolsWhiteList() {
@@ -464,12 +464,12 @@ public class MaterialMapStore {
         diamondTools.add("diamond_shovel");
     }
 
-    private void fillNetherriteToolsWhiteList() {
-        netherriteTools.add("netherrite_sword");
-        netherriteTools.add("netherrite_axe");
-        netherriteTools.add("netherrite_hoe");
-        netherriteTools.add("netherrite_pickaxe");
-        netherriteTools.add("netherrite_shovel");
+    private void fillnetheriteToolsWhiteList() {
+        netheriteTools.add("netherite_sword");
+        netheriteTools.add("netherite_axe");
+        netheriteTools.add("netherite_hoe");
+        netheriteTools.add("netherite_pickaxe");
+        netheriteTools.add("netherite_shovel");
     }
 
     private void fillGlassBlockWhiteList() {
@@ -638,12 +638,12 @@ public class MaterialMapStore {
         return chainmailArmor.contains(id);
     }
 
-    public boolean isNetherriteArmor(Material material) {
-        return isNetherriteArmor(material.getKey().getKey());
+    public boolean isNetheriteArmor(Material material) {
+        return isNetheriteArmor(material.getKey().getKey());
     }
 
-    public boolean isNetherriteArmor(String id) {
-        return netherriteArmor.contains(id);
+    public boolean isNetheriteArmor(String id) {
+        return netheriteArmor.contains(id);
     }
 
     public boolean isWoodTool(Material material) {
@@ -726,12 +726,12 @@ public class MaterialMapStore {
         return hoes.contains(id);
     }
 
-    public boolean isNetherriteTool(Material material) {
-        return isNetherriteTool(material.getKey().getKey());
+    public boolean isNetheriteTool(Material material) {
+        return isNetheriteTool(material.getKey().getKey());
     }
 
-    public boolean isNetherriteTool(String id) {
-        return netherriteTools.contains(id);
+    public boolean isNetheriteTool(String id) {
+        return netheriteTools.contains(id);
     }
 
     public boolean isStringTool(Material material) {

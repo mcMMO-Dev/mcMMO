@@ -11,7 +11,7 @@
 ## This defaults to OTHER.
 #
 # ItemMaterialCategory: This is the type of the material of the item to be repaired, this is only important for permissions.
-## Valid values are STRING, LEATHER, WOOD, STONE, IRON, GOLD, DIAMOND, and OTHER
+## Valid values are STRING, LEATHER, WOOD, STONE, IRON, GOLD, DIAMOND, NETHER, and OTHER
 ## This defaults to OTHER.
 #
 # RepairMaterial: This is the material name of the item used to repair this repairable.
@@ -186,32 +186,32 @@ Repairables:
     # Diamond repairables
     ###
     # Tools
-    NETHERRITE_SWORD:
+    netherite_SWORD:
         MinimumLevel: 0
         XpMultiplier: .6
-    NETHERRITE_SHOVEL:
+    netherite_SHOVEL:
         MinimumLevel: 0
         XpMultiplier: .4
-    NETHERRITE_PICKAXE:
+    netherite_PICKAXE:
         MinimumLevel: 0
         XpMultiplier: 1.1
-    NETHERRITE_AXE:
+    netherite_AXE:
         MinimumLevel: 0
         XpMultiplier: 1.1
-    NETHERRITE_HOE:
+    netherite_HOE:
         MinimumLevel: 0
         XpMultiplier: .75
     # Armor
-    NETHERRITE_HELMET:
+    netherite_HELMET:
         MinimumLevel: 0
         XpMultiplier: 7
-    NETHERRITE_CHESTPLATE:
+    netherite_CHESTPLATE:
         MinimumLevel: 0
         XpMultiplier: 7
-    NETHERRITE_LEGGINGS:
+    netherite_LEGGINGS:
         MinimumLevel: 0
         XpMultiplier: 7
-    NETHERRITE_BOOTS:
+    netherite_BOOTS:
         MinimumLevel: 0
         XpMultiplier: 7
     #

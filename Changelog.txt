@@ -1,3 +1,6 @@
+Version 2.1.120
+    Fixed a bug involving the new netherite equipment
+
 Version 2.1.119
     1.16 Support
     Fixed another dupe bug
@@ -8,8 +11,8 @@ Version 2.1.119
     Calculations which change depend on the quality of your tool or armor has had netherrack support coded in
     All excavation drops that can drop from soul_sand now also drop from soul_soil (edited treasures.yml)
 
-    Added Netherrack armor/weapons/tools to repair.vanilla.yml
-    Added Netherrack armor/weapons/tools to salvage.vanilla.yml
+    Added netherite armor/weapons/tools to repair.vanilla.yml
+    Added netherite armor/weapons/tools to salvage.vanilla.yml
 
     Added 'Bamboo_Sapling' to bonus drops for Herbalism in experience.yml
     Added 'Ancient_Debris' with a value of 7777 to Mining experience tables in experience.yml
@@ -42,7 +45,8 @@ Version 2.1.119
     Added 'Warped_Stem' to bonus drops for Woodcutting in config.yml
     Added 'Shroomlight' to bonus drops for Woodcutting in config.yml
 
-    NOTES: You may have to edit your configs for this update to mcMMO, either do it manually or delete the config files to regenerate them.
+    NOTES: You will likely need to update repair.vanilla.yml, salvage.vanilla.yml and treasures.yml
+    You can just delete those config files to regenerate them fresh which is much faster if you don't have any custom settings in those files
     Here are the default configuration files if you wish to compare them to your own servers settings while updating your configs.
     https://paste.gg/p/anonymous/bf8ba1a24c8c4f188da5f8b8ebfc2b35 (Keep scrolling)
 
