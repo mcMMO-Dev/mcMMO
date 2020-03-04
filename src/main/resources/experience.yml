@@ -254,8 +254,6 @@ Experience_Values:
         Shroomlight: 100
         Crimson_Stem: 35
         Warped_Stem: 35
-        Crimson_Roots: 35
-        Warped_Roots: 35
         Oak_Log: 70
         Spruce_Log: 80
         Birch_Log: 90
@@ -284,8 +282,10 @@ Experience_Values:
         Brown_Mushroom_Block: 70
         Mushroom_Stem: 80
     Herbalism:
-        Nether_Wart_Block: 20
-        Warped_Wart_Block: 20
+        Crimson_Roots: 6
+        Warped_Roots: 6
+        Nether_Wart_Block: 3
+        Warped_Wart_Block: 3
         Nether_Sprouts: 10
         Crimson_Fungus: 50
         Warped_Fungus: 50

@@ -1,6 +1,11 @@
 Version 2.1.122
     Changed the xp values for Nether_Wart_Block and Warped_Wart_Block from 20 to 1 for Woodcutting
+    Changed the xp values for Nether_Wart_Block and Warped_Wart_Block from 20 to 3 for Herbalism
     mcMMO now treats Nether_Wart_Block and Warped_Wart_Block as leaves
+    Removed Crimson_Roots and Warped_Roots from Woodcutting XP tables in experience.yml
+    Added Crimson_Roots and Warped_Roots to Herbalism XP tables in experience.yml with a value of 6 XP
+
+
 
 Version 2.1.121
     Fixed a netherite related bug that prevented mcMMO from functioning correctly
