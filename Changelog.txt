@@ -6,6 +6,8 @@ Version 2.1.122
     Added Crimson_Roots and Warped_Roots to Herbalism XP tables in experience.yml with a value of 6 XP
     Fixed some start up bugs for salvage/repair
 
+    You can either edit experience.yml yourself or delete it to regenerate a new one to get the new changes
+
 Version 2.1.121
     Fixed a netherite related bug that prevented mcMMO from functioning correctly
 

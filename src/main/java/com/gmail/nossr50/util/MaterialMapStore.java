@@ -821,6 +821,16 @@ public class MaterialMapStore {
 
     private void fillAbilityBlackList()
     {
+        abilityBlackList.add("warped_fence_gate");
+        abilityBlackList.add("crimson_fence_gate");
+        abilityBlackList.add("warped_pressure_plate");
+        abilityBlackList.add("crimson_pressure_plate");
+        abilityBlackList.add("warped_button");
+        abilityBlackList.add("crimson_button");
+        abilityBlackList.add("warped_door");
+        abilityBlackList.add("crimson_door");
+        abilityBlackList.add("warped_trapdoor");
+        abilityBlackList.add("crimson_trapdoor");
         abilityBlackList.add("black_bed");
         abilityBlackList.add("blue_bed");
         abilityBlackList.add("brown_bed");
