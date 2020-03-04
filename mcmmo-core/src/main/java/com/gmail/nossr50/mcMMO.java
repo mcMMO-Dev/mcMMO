@@ -190,7 +190,10 @@ public class mcMMO implements McMMOApi {
                 commandRegistrationManager.registerACFCommands();
                 commandRegistrationManager.registerCommands();
 
+                /*
                 nbtManager = new NBTManager();
+
+                 */
 
                 //Init Chunk Manager Factory
                 chunkManagerFactory = new ChunkManagerFactory(this);

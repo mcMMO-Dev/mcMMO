@@ -35,6 +35,7 @@ public class MetadataConstants {
     public final static MetadataKey<Boolean> PETS_ANIMAL_TRACKING_METAKEY = new MetadataKey<>("mcMMO: Pet Animal");
     public static final MetadataKey<Boolean> COTW_TEMPORARY_SUMMON = new MetadataKey<>("mcMMO: COTW Entity");
 
+    @Deprecated
     public static FixedMetadataValue metadataValue; //Gains value in onEnable
 
 }

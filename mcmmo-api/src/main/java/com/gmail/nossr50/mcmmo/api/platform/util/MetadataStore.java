@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public interface MetadataStore {
+public interface MetadataStore<E extends MMOEntity<?>> {
 
     /**
      * @param holder holder of the metadata
@@ -14,17 +14,15 @@ public interface MetadataStore {
      * @return the metadata value or null
      */
     @Nullable
-    <V> V getMetadata(@NotNull MMOEntity holder, @NotNull MetadataKey<V> key);
+    <V> V getMetadata(@NotNull E holder, @NotNull MetadataKey<V> key);
 
     /**
      * @param holder holder of the metdata
      * @param key metadata key
      * @param value metadata value
      * @param <V> value type
-     * @return the existing metadata value if set, or null
      */
-    @Nullable
-    <V> V setMetadata(@NotNull MMOEntity holder, @NotNull MetadataKey<V> key, @Nullable V value);
+    <V> void setMetadata(@NotNull E holder, @NotNull MetadataKey<V> key, @NotNull V value);
 
     /**
      * @param holder holder of the metadata
@@ -33,6 +31,6 @@ public interface MetadataStore {
      * @return the removed metadata key
      */
     @Nullable
-    <V> V removeMetadata(@NotNull MMOEntity holder, @NotNull MetadataKey<V> key);
+    <V> V removeMetadata(@NotNull E holder, @NotNull MetadataKey<V> key);
 
 }

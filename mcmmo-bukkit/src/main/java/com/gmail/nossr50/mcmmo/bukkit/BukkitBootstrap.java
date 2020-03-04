@@ -1,5 +1,6 @@
 package com.gmail.nossr50.mcmmo.bukkit;
 
+import com.gmail.nossr50.core.MetadataConstants;
 import com.gmail.nossr50.datatypes.player.BukkitMMOPlayer;
 import com.gmail.nossr50.listeners.*;
 import com.gmail.nossr50.mcMMO;
@@ -11,6 +12,7 @@ import com.gmail.nossr50.mcmmo.api.platform.util.MetadataStore;
 import com.gmail.nossr50.mcmmo.api.platform.util.MobHealthBarManager;
 import com.gmail.nossr50.mcmmo.bukkit.platform.entity.BukkitMMOEntity;
 import com.gmail.nossr50.mcmmo.bukkit.platform.scheduler.BukkitPlatformScheduler;
+import com.gmail.nossr50.mcmmo.bukkit.platform.util.BukkitMetadataStore;
 import com.gmail.nossr50.mcmmo.bukkit.platform.util.BukkitMobHealthBarManager;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -25,6 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -43,6 +46,8 @@ public class BukkitBootstrap extends JavaPlugin implements PlatformProvider {
     private mcMMO core = new mcMMO(this);
     private final BukkitPlatformScheduler scheduler = new BukkitPlatformScheduler(this);
     private final MobHealthBarManager healthBarManager = new BukkitMobHealthBarManager(this, core);
+    private final BukkitMetadataStore bukkitMetadataStore = new BukkitMetadataStore(this);
+
     private PaperCommandManager paperCommandManager;
 
 
@@ -80,6 +85,7 @@ public class BukkitBootstrap extends JavaPlugin implements PlatformProvider {
         registerEvents();
         paperCommandManager = new PaperCommandManager(this);
         paperCommandManager.registerDependency(mcMMO.class, core);
+        MetadataConstants.metadataValue = new FixedMetadataValue(this, true);
     }
 
     @Override
