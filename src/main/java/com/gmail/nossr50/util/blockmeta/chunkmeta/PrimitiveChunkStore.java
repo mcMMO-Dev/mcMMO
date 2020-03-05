@@ -3,28 +3,57 @@ package com.gmail.nossr50.util.blockmeta.chunkmeta;
 import com.gmail.nossr50.util.blockmeta.ChunkletStore;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicIntegerArray;
 
 public class PrimitiveChunkStore implements ChunkStore {
     private static final long serialVersionUID = -1L;
     transient private boolean dirty = false;
-    /** X, Z, Y */
+    /**
+     * X, Z, Y
+     */
+    @Deprecated
+    @Nullable
     public boolean[][][] store;
-    private static final int CURRENT_VERSION = 7;
+    // IIII IIII IIII IIII IIII IIII IIII IIII
+    // XXXX XXXX XXXX XXXX YYYY YYYY YYYY YYYY
+    /**
+     * Data of chunk.
+     * <p>
+     * <pre>[PAGE][PAGE]... (Y)
+     *
+     * Page from 8 int.
+     * 1 int store 2 line.
+     *
+     * int position = (y * PAGE_SIZE) + (x >> 1);
+     * int offset = z;
+     * if ((x & 1) != 0) {
+     *     offset += 16; // Because one integer can store two lines.
+     * }
+     * int code = chunk.data.get(position);
+     * boolean isOk = ((code >>> offset) & 1) == 1;
+     * </pre>
+     */
+    public AtomicIntegerArray data;
+    public static final int PAGE_SIZE = 16 * 16 / Integer.SIZE;
+    private static final int CURRENT_VERSION = 8;
     private static final int MAGIC_NUMBER = 0xEA5EDEBB;
     private int cx;
     private int cz;
     private UUID worldUid;
+    private int worldHeight;
 
     public PrimitiveChunkStore(World world, int cx, int cz) {
         this.cx = cx;
         this.cz = cz;
         this.worldUid = world.getUID();
-        this.store = new boolean[16][16][world.getMaxHeight()];
+        this.data = new AtomicIntegerArray((worldHeight = world.getMaxHeight()) * PAGE_SIZE);
     }
 
     @Override
@@ -47,51 +76,75 @@ public class PrimitiveChunkStore implements ChunkStore {
         return cz;
     }
 
+    private boolean isInvalid(int x, int y, int z) {
+        if (y < 0 || y >= worldHeight) return true;
+        return ((x | z) & ~0xF) != 0;
+    }
+
     @Override
     public boolean isTrue(int x, int y, int z) {
-        return store[x][z][y];
+        if (isInvalid(x, y, z)) return false;
+        int status = data.get((y * PAGE_SIZE) + (x >> 1));
+        return ((status >>> (z + (((x & 1) == 1) ? 16 : 0))) & 1) != 0;
+    }
+
+    private void set(int x, int y, int z, boolean val) {
+        if (isInvalid(x, y, z))
+            return;
+        int point = (y * PAGE_SIZE) + (x >> 1);
+        int bit = z + (((x & 1) == 1) ? 16 : 0);
+        int source;
+        do {
+            source = data.get(point);
+            int target = source;
+            if (val) {
+                target |= 1 << bit;
+            } else {
+                target &= ~(1 << bit);
+            }
+            if (data.compareAndSet(point, source, target)) break;
+        } while (true);
+        dirty = true;
     }
 
     @Override
     public void setTrue(int x, int y, int z) {
-        if (y >= store[0][0].length || y < 0)
-            return;
-        store[x][z][y] = true;
-        dirty = true;
+        set(x, y, z, true);
     }
 
     @Override
     public void setFalse(int x, int y, int z) {
-        if (y >= store[0][0].length || y < 0)
-            return;
-        store[x][z][y] = false;
-        dirty = true;
+        set(x, y, z, false);
     }
 
     @Override
     public boolean isEmpty() {
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
-                for (int y = 0; y < store[0][0].length; y++) {
-                    if (store[x][z][y]) {
-                        return false;
-                    }
-                }
-            }
+        int end = data.length();
+        while (end-- > 0) {
+            if (data.get(end) != 0) return false;
         }
         return true;
     }
 
     @Override
     public void copyFrom(ChunkletStore otherStore) {
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
-                for (int y = 0; y < store[0][0].length; y++) {
-                    store[x][z][y] = otherStore.isTrue(x, y, z);
+        if (otherStore instanceof PrimitiveChunkStore) {
+            AtomicIntegerArray data = ((PrimitiveChunkStore) otherStore).data;
+            AtomicIntegerArray to = this.data = new AtomicIntegerArray(data.length());
+            int end = to.length();
+            while (end-- > 0) {
+                to.set(end, data.get(end));
+            }
+        } else {
+            int wh = worldHeight;
+            for (int x = 0; x < 16; x++) {
+                for (int z = 0; z < 16; z++) {
+                    for (int y = 0; y < wh; y++) {
+                        set(x, y, z, otherStore.isTrue(x, y, z));
+                    }
                 }
             }
         }
-        dirty = true;
     }
 
     private void writeObject(ObjectOutputStream out) throws IOException {
@@ -102,7 +155,11 @@ public class PrimitiveChunkStore implements ChunkStore {
         out.writeLong(worldUid.getMostSignificantBits());
         out.writeInt(cx);
         out.writeInt(cz);
-        out.writeObject(store);
+        int len;
+        out.writeInt(len = data.length());
+        for (int i = 0; i < len; i++) {
+            out.writeInt(data.get(i));
+        }
 
         dirty = false;
     }
@@ -122,7 +179,25 @@ public class PrimitiveChunkStore implements ChunkStore {
         cx = in.readInt();
         cz = in.readInt();
 
-        store = (boolean[][][]) in.readObject();
+        if (fileVersionNumber == CURRENT_VERSION) {
+            int size;
+            AtomicIntegerArray data = this.data = new AtomicIntegerArray(size = in.readInt());
+            worldHeight = size / PAGE_SIZE;
+            for (int i = 0; i < size; i++) {
+                data.set(i, in.readInt());
+            }
+        } else {
+            boolean[][][] st = (boolean[][][]) in.readObject();
+            int wh;
+            this.data = new AtomicIntegerArray((wh = worldHeight = st[0][0].length) * PAGE_SIZE);
+            for (int x = 0; x < 16; x++) {
+                for (int z = 0; z < 16; z++) {
+                    for (int y = 0; y < wh; y++) {
+                        set(x, y, z, st[x][z][y]);
+                    }
+                }
+            }
+        }
 
         if (fileVersionNumber < 5) {
             fixArray();
@@ -131,17 +206,13 @@ public class PrimitiveChunkStore implements ChunkStore {
     }
 
     private void fixArray() {
-        boolean[][][] temp = this.store;
-        this.store = new boolean[16][16][Bukkit.getWorld(worldUid).getMaxHeight()];
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
-                for (int y = 0; y < store[0][0].length; y++) {
-                    try {
-                        store[x][z][y] = temp[x][y][z];
-                    }
-                    catch (Exception e) { e.printStackTrace(); }
-                }
-            }
+        AtomicIntegerArray s = this.data;
+        AtomicIntegerArray d = this.data = new AtomicIntegerArray(PAGE_SIZE * (
+                worldHeight = Bukkit.getWorld(worldUid).getMaxHeight()
+        ));
+        int end = Math.max(s.length(), d.length());
+        while (end-- > 0) {
+            d.set(end, s.get(end));
         }
     }
 }
