@@ -41,7 +41,7 @@ import java.util.logging.Logger;
 import co.aikar.commands.CommandManager;
 import co.aikar.commands.PaperCommandManager;
 
-public class BukkitBootstrap extends JavaPlugin implements PlatformProvider {
+public class BukkitBootstrap extends JavaPlugin implements PlatformProvider<Entity> {
 
     private mcMMO core = new mcMMO(this);
     private final BukkitPlatformScheduler scheduler = new BukkitPlatformScheduler(this);
@@ -173,7 +173,11 @@ public class BukkitBootstrap extends JavaPlugin implements PlatformProvider {
     @Override
     @Deprecated // TODO: This needs proper registration...
     public MMOEntity<?> getEntity(UUID uniqueId) {
-        final Entity entity = Bukkit.getEntity(uniqueId);
+        return getEntity(Bukkit.getEntity(uniqueId));
+    }
+
+    @Override
+    public MMOEntity<?> getEntity(Entity entity) {
         if (entity instanceof Player) {
             core.getUserManager().getPlayer((Player) entity);
         } else if (entity instanceof LivingEntity) {
@@ -232,6 +236,12 @@ public class BukkitBootstrap extends JavaPlugin implements PlatformProvider {
         pluginManager.registerEvents(new InventoryListener(core), this);
         pluginManager.registerEvents(new SelfListener(core), this);
         pluginManager.registerEvents(new WorldListener(core), this);
+    }
+
+
+    @Override
+    public void onLoad() {
+        core.onLoad();
     }
 
     @Override

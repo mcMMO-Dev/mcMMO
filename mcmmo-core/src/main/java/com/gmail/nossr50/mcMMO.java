@@ -46,6 +46,8 @@ import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import net.shatteredlands.shatt.backup.ZipLibrary;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -276,12 +278,10 @@ public class mcMMO implements McMMOApi {
 
     public void onLoad()
     {
-        platformProvider.onLoad();
         worldGuardUtils = new WorldGuardUtils(this); //Init WGU
 
         // TODO: 2.2 - MIGRATE
-        /*
-        if(getServer().getPluginManager().getPlugin("WorldGuard") != null) {
+        if(Bukkit.getServer().getPluginManager().getPlugin("WorldGuard") != null) {
 
             if(worldGuardUtils.isWorldGuardLoaded()) {
                 //Register flags
@@ -290,7 +290,6 @@ public class mcMMO implements McMMOApi {
                 worldGuardManager.registerFlags();
             }
         }
-         */
     }
 
     /**

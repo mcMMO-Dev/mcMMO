@@ -13,7 +13,7 @@ import co.aikar.commands.CommandIssuer;
 import co.aikar.commands.CommandManager;
 import co.aikar.commands.CommandOperationContext;
 
-public interface PlatformProvider {
+public interface PlatformProvider<E> {
 
     Logger getLogger();
 
@@ -56,6 +56,9 @@ public interface PlatformProvider {
     // THOU HAST BEEN WARNED
     @Deprecated
     MMOEntity<?> getEntity(UUID uniqueId);
+
+    @Deprecated
+    MMOEntity<?> getEntity(E uniqueId);
 
     @Deprecated
     Object getChimaeraWing();
