@@ -87,7 +87,7 @@ public class SalvageManager extends SkillManager {
 
         // Level check
         if (getSkillLevel() < minimumSalvageableLevel) {
-            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Salvage.Skills.Adept.Level", String.valueOf(RankUtils.getUnlockLevel(SubSkillType.SALVAGE_ARCANE_SALVAGE)), StringUtils.getPrettyItemString(item.getType()));
+            NotificationManager.sendPlayerInformation(player, NotificationType.REQUIREMENTS_NOT_MET, "Salvage.Skills.Adept.Level", String.valueOf(salvageable.getMinimumLevel()), StringUtils.getPrettyItemString(item.getType()));
             return;
         }
 
