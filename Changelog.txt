@@ -2,6 +2,7 @@ Version 2.1.123
     Adept Salvage message will now show the correct minimum level
     'Weeping_Vines' renamed to 'Weeping_Vines_Plant' in experience.yml (no edits necessary)
     'Twisted_Vines_Plant' added to Herbalism XP tables in experience.yml with a value of 10
+    Weeping_Vines_Plant and Twisted_Vines_Plant are now flagged as multi-block plants in Herbalism
 
 Version 2.1.122
     Changed the xp values for Nether_Wart_Block and Warped_Wart_Block from 20 to 1 for Woodcutting

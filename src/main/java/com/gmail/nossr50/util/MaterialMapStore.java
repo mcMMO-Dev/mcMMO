@@ -774,6 +774,8 @@ public class MaterialMapStore {
         multiBlockPlant.add("large_fern");
         multiBlockPlant.add("tall_grass");
         multiBlockPlant.add("bamboo");
+        multiBlockPlant.add("weeping_vines_plant");
+        multiBlockPlant.add("twisted_vines_plant");
     }
 
     private void fillShroomyWhiteList()
