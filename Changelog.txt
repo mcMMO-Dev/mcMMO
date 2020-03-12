@@ -1,4 +1,5 @@
 Version 2.1.123
+    Added 'Nether_Gold_Ore' to Mining XP tables in experience.yml with a value of 1300
     Adept Salvage message will now show the correct minimum level
     'Weeping_Vines' renamed to 'Weeping_Vines_Plant' in experience.yml (no edits necessary)
     'Twisted_Vines_Plant' added to Herbalism XP tables in experience.yml with a value of 10

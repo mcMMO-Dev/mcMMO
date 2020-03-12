@@ -385,6 +385,7 @@ Experience_Values:
         End_Stone: 15
         Glowstone: 15
         Gold_Ore: 1300
+        Nether_Gold_Ore: 1300
         Terracotta: 30
         Iron_Ore: 900
         Lapis_Ore: 800
