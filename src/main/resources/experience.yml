@@ -357,7 +357,8 @@ Experience_Values:
         Tall_Grass: 50
         Large_Fern: 50
         Vine: 10
-        Weeping_Vines: 10
+        Weeping_Vines_Plant: 10
+        Twisting_Vines_Plant: 10
         Lily_Pad: 100
         White_Tulip: 150
         Dandelion: 100
