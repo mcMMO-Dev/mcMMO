@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.UUID;
@@ -17,6 +18,8 @@ public class PrimitiveChunkStore implements ChunkStore {
     transient private boolean dirty = false;
     /**
      * X, Z, Y
+     *
+     * @deprecated This value will no longer be used.
      */
     @Deprecated
     @Nullable
@@ -40,7 +43,7 @@ public class PrimitiveChunkStore implements ChunkStore {
      * boolean isOk = ((code >>> offset) & 1) == 1;
      * </pre>
      */
-    public AtomicIntegerArray data;
+    public AtomicIntegerArray data; // should it private or protected?
     public static final int PAGE_SIZE = 16 * 16 / Integer.SIZE;
     private static final int CURRENT_VERSION = 8;
     private static final int MAGIC_NUMBER = 0xEA5EDEBB;
@@ -57,6 +60,7 @@ public class PrimitiveChunkStore implements ChunkStore {
     }
 
     @Override
+    @Contract(pure = true)
     public boolean isDirty() {
         return dirty;
     }
@@ -67,25 +71,32 @@ public class PrimitiveChunkStore implements ChunkStore {
     }
 
     @Override
+    @Contract(pure = true)
     public int getChunkX() {
         return cx;
     }
 
     @Override
+    @Contract(pure = true)
     public int getChunkZ() {
         return cz;
     }
 
     private boolean isInvalid(int x, int y, int z) {
         if (y < 0 || y >= worldHeight) return true;
-        return ((x | z) & ~0xF) != 0;
+        return ((x | z) & ~0xF) != 0; // < 0 || > 15
     }
 
     @Override
+    @Contract(pure = true)
     public boolean isTrue(int x, int y, int z) {
         if (isInvalid(x, y, z)) return false;
+        // An explanation of the operation of shift is on lines 26 to 42
+        // This is compressed
         int status = data.get((y * PAGE_SIZE) + (x >> 1));
-        return ((status >>> (z + (((x & 1) == 1) ? 16 : 0))) & 1) != 0;
+        return ((status >>> (z +
+                (((x & 1) == 1) ? 16 : 0) // Is it on an odd line
+        )) & 1) != 0;
     }
 
     private void set(int x, int y, int z, boolean val) {
@@ -94,14 +105,18 @@ public class PrimitiveChunkStore implements ChunkStore {
         int point = (y * PAGE_SIZE) + (x >> 1);
         int bit = z + (((x & 1) == 1) ? 16 : 0);
         int source;
+        // An explanation of the operation of shift is on lines 26 to 42
         do {
             source = data.get(point);
             int target = source;
             if (val) {
+                // set bit to true
                 target |= 1 << bit;
             } else {
+                // set bit to false
                 target &= ~(1 << bit);
             }
+            // Try to store changes to memory
             if (data.compareAndSet(point, source, target)) break;
         } while (true);
         dirty = true;
@@ -118,28 +133,43 @@ public class PrimitiveChunkStore implements ChunkStore {
     }
 
     @Override
+    @Contract(pure = true)
     public boolean isEmpty() {
         int end = data.length();
+        // same as for(int i = end.length()-1; i >= 0; i--)
         while (end-- > 0) {
+            // If any bit is true, return false
             if (data.get(end) != 0) return false;
         }
+        // No bit is true
         return true;
     }
 
     @Override
     public void copyFrom(ChunkletStore otherStore) {
-        if (otherStore instanceof PrimitiveChunkStore) {
-            AtomicIntegerArray data = ((PrimitiveChunkStore) otherStore).data;
-            AtomicIntegerArray to = this.data = new AtomicIntegerArray(data.length());
-            int end = to.length();
+        if (otherStore instanceof PrimitiveChunkStore) { // Direct copy.
+            AtomicIntegerArray from = ((PrimitiveChunkStore) otherStore).data;
+            AtomicIntegerArray into = this.data = new AtomicIntegerArray(
+                    worldHeight * PAGE_SIZE
+            );
+            // To ensure that no cross-border
+            // Like:
+            // from: ---- ---- ---- ----
+            // into: ---- ---- ---- ---- ---- ---- ---- ----
+
+            // from: ---- ---- ---- ---- ---- ---- ---- ----
+            // into: ---- ---- ---- ----
+            int end = Math.min(from.length(), into.length());
+            // same as for(int i = end.length()-1; i >= 0; i--)
             while (end-- > 0) {
-                to.set(end, data.get(end));
+                into.set(end, from.get(end));
             }
         } else {
-            int wh = worldHeight;
+            // Copy values with legacy method.
+            int worldHeight = this.worldHeight;
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
-                    for (int y = 0; y < wh; y++) {
+                    for (int y = 0; y < worldHeight; y++) {
                         set(x, y, z, otherStore.isTrue(x, y, z));
                     }
                 }
@@ -155,6 +185,7 @@ public class PrimitiveChunkStore implements ChunkStore {
         out.writeLong(worldUid.getMostSignificantBits());
         out.writeInt(cx);
         out.writeInt(cz);
+        // We don't use out.writeObject(), because it stores extraneous information
         int len;
         out.writeInt(len = data.length());
         for (int i = 0; i < len; i++) {
@@ -180,16 +211,21 @@ public class PrimitiveChunkStore implements ChunkStore {
         cz = in.readInt();
 
         if (fileVersionNumber == CURRENT_VERSION) {
+            // File version 8
             int size;
             AtomicIntegerArray data = this.data = new AtomicIntegerArray(size = in.readInt());
+            if ((size % PAGE_SIZE) != 0)
+                throw new InvalidObjectException("Illegal data length");
             worldHeight = size / PAGE_SIZE;
             for (int i = 0; i < size; i++) {
                 data.set(i, in.readInt());
             }
         } else {
+            // File version 7
             boolean[][][] st = (boolean[][][]) in.readObject();
-            int wh;
+            int wh; // world height
             this.data = new AtomicIntegerArray((wh = worldHeight = st[0][0].length) * PAGE_SIZE);
+            // Legacy value saving.
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
                     for (int y = 0; y < wh; y++) {
@@ -206,13 +242,15 @@ public class PrimitiveChunkStore implements ChunkStore {
     }
 
     private void fixArray() {
-        AtomicIntegerArray s = this.data;
-        AtomicIntegerArray d = this.data = new AtomicIntegerArray(PAGE_SIZE * (
+        AtomicIntegerArray old = this.data;
+        AtomicIntegerArray current = this.data = new AtomicIntegerArray(PAGE_SIZE * (
                 worldHeight = Bukkit.getWorld(worldUid).getMaxHeight()
         ));
-        int end = Math.max(s.length(), d.length());
+        // To ensure that no cross-border
+        int end = Math.min(current.length(), old.length());
+        // same as for(int i = end.length()-1; i >= 0; i--)
         while (end-- > 0) {
-            d.set(end, s.get(end));
+            current.set(end, old.get(end));
         }
     }
 }

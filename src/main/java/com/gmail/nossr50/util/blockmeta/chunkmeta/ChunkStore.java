@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util.blockmeta.chunkmeta;
 
 import com.gmail.nossr50.util.blockmeta.ChunkletStore;
+import org.jetbrains.annotations.Contract;
 
 import java.io.Serializable;
 
@@ -13,6 +14,7 @@ public interface ChunkStore extends Serializable {
      *
      * @return true if the has been modified since it was last saved
      */
+    @Contract(pure = true)
     public boolean isDirty();
 
     /**
@@ -27,6 +29,7 @@ public interface ChunkStore extends Serializable {
      *
      * @return the chunk's x coordinate.
      */
+    @Contract(pure = true)
     public int getChunkX();
 
     /**
@@ -34,6 +37,7 @@ public interface ChunkStore extends Serializable {
      *
      * @return the chunk's z coordinate.
      */
+    @Contract(pure = true)
     public int getChunkZ();
 
     /**
@@ -44,6 +48,7 @@ public interface ChunkStore extends Serializable {
      * @param z z coordinate in current chunklet
      * @return true if the value is true at the given coordinates, false if otherwise
      */
+    @Contract(pure = true)
     public boolean isTrue(int x, int y, int z);
 
     /**
@@ -67,6 +72,7 @@ public interface ChunkStore extends Serializable {
     /**
      * @return true if all values in the chunklet are false, false if otherwise
      */
+    @Contract(pure = true)
     public boolean isEmpty();
 
     /**
