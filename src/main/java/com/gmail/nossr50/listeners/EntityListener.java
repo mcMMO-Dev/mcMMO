@@ -106,6 +106,7 @@ public class EntityListener implements Listener {
 
         Entity projectile = event.getProjectile();
 
+        //Should be noted that there are API changes regarding Arrow from 1.13.2 to current versions of the game
         if (!(projectile instanceof Arrow)) {
             return;
         }
