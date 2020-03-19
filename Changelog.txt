@@ -1,9 +1,12 @@
 Version 2.1.124
-    if Repair's anvil or Salvage's anvil are set to a vanilla block, that block will no longer provide its right-click vanilla function. You can use this to set the vanilla minecraft Anvil as the Anvil used for Repair.
+    Repair/Salvage can now be set to use vanilla blocks that already do something and that vanilla functionality will be disabled by mcMMO (you could use vanilla-anvils instead of iron_blocks for repair now)
     Added Gold_Nugget to Mining's Bonus_Drops in config.yml (edit your config)
     Added Piglin to experience.yml combat XP tables with a value of 2.0 (edit your config)
     Added Hoglin to experience.yml combat XP tables with a value of 4.0 (edit your config)
-    Added Zombified_Piglin & Zombie_Pigman to experience.yml combat XP tables with a value of 3.0
+    Added Zombified_Piglin & Zombie_Pigman to experience.yml combat XP tables with a value of 3.0 (edit your config)
+
+    For this update either edit experience.yml and config.yml manually or delete them to regenerate, keep in mind config.yml has MySQL settings so don't delete it carelessly.
+
 
 Version 2.1.123
     Added 'Nether_Gold_Ore' to Mining XP tables in experience.yml with a value of 1300
