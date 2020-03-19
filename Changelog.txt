@@ -1,3 +1,7 @@
+Version 2.1.124
+    Added Gold_Nugget to Mining's Bonus_Drops in config.yml (edit your config)
+
+
 Version 2.1.123
     Added 'Nether_Gold_Ore' to Mining XP tables in experience.yml with a value of 1300
     Adept Salvage message will now show the correct minimum level
