@@ -82,7 +82,6 @@ public class MiningCommand extends SkillCommand {
 
         if (canBlast) {
             messages.add(getStatMessage(false, true, SubSkillType.MINING_BLAST_MINING, String.valueOf(blastMiningRank), String.valueOf(pluginRef.getRankTools().getHighestRank(SubSkillType.MINING_BLAST_MINING)), pluginRef.getLocaleManager().getString("SuperAbility.BlastMining.Effect", oreBonus, bonusTNTDrops)));
-            //messages.add(pluginRef.getLocaleManager().getString("SuperAbility.BlastMining.Rank", blastMiningRank, RankUtils.getHighestRank(SubSkillType.MINING_BLAST_MINING), pluginRef.getLocaleManager().getString("SuperAbility.BlastMining.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
         }
 
         if (canDemoExpert) {

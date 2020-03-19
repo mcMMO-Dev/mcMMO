@@ -202,8 +202,6 @@ public class MiningManager extends SkillManager {
 
         //Replace the event blocklist with the newYield list
         event.setYield(0F);
-//        event.blockList().clear();
-//        event.blockList().addAll(notOres);
 
         applyXpGain(xp, XPGainReason.PVE);
     }
