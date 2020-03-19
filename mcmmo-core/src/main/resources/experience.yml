@@ -246,7 +246,13 @@ Experience_Values:
         Snow: 20
         Snow_Block: 40
         Soul_Sand: 40
+        Soul_Soil: 40
     Woodcutting:
+        Nether_Wart_Block: 1
+        Warped_Wart_Block: 1
+        Shroomlight: 100
+        Crimson_Stem: 35
+        Warped_Stem: 35
         Oak_Log: 70
         Spruce_Log: 80
         Birch_Log: 90
@@ -275,6 +281,13 @@ Experience_Values:
         Brown_Mushroom_Block: 70
         Mushroom_Stem: 80
     Herbalism:
+        Crimson_Roots: 6
+        Warped_Roots: 6
+        Nether_Wart_Block: 3
+        Warped_Wart_Block: 3
+        Nether_Sprouts: 10
+        Crimson_Fungus: 50
+        Warped_Fungus: 50
         Bee_Nest: 200
         Sweet_Berry_Bush: 50
         Seagrass: 10
@@ -343,6 +356,8 @@ Experience_Values:
         Tall_Grass: 50
         Large_Fern: 50
         Vine: 10
+        Weeping_Vines_Plant: 10
+        Twisting_Vines_Plant: 10
         Lily_Pad: 100
         White_Tulip: 150
         Dandelion: 100
@@ -351,7 +366,11 @@ Experience_Values:
         Lily_Of_The_Valley: 150
         Wither_Rose: 500
     Mining:
+        Warped_Nylium: 5
+        Crimson_Nylium: 5
+        Ancient_Debris: 7777
         Magma_Block: 30
+        Basalt: 40
         Tube_Coral_Block: 75
         Brain_Coral_Block: 80
         Bubble_Coral_Block: 70
@@ -365,6 +384,7 @@ Experience_Values:
         End_Stone: 15
         Glowstone: 15
         Gold_Ore: 1300
+        Nether_Gold_Ore: 1300
         Terracotta: 30
         Iron_Ore: 900
         Lapis_Ore: 800
@@ -420,6 +440,7 @@ Experience_Values:
         String: 1.8
         Other: 1.5
     Smelting:
+        Ancient_Debris: 200
         Coal_Ore: 10
         Diamond_Ore: 75
         Emerald_Ore: 100

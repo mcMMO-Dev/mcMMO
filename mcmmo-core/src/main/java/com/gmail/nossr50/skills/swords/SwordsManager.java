@@ -89,7 +89,9 @@ public class SwordsManager extends SkillManager {
     }
 
     public int getToolTier(ItemStack itemStack) {
-        if (pluginRef.getItemTools().isDiamondTool(itemStack))
+        if(pluginRef.getItemTools().isNetheriteTool(itemStack))
+            return 5;
+        else if (pluginRef.getItemTools().isDiamondTool(itemStack))
             return 4;
         else if (pluginRef.getItemTools().isIronTool(itemStack) || pluginRef.getItemTools().isGoldTool(itemStack))
             return 3;

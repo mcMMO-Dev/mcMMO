@@ -119,7 +119,7 @@ public final class BlockTools {
      * @return true if the block is an ore, false otherwise
      */
     public boolean isOre(BlockState blockState) {
-        return MaterialUtils.isOre(blockState.getType());
+        return pluginRef.getMaterialMapStore().isOre(blockState.getType());
     }
 
     /**

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 Version 2.2.0
     !!!!!!!!!!!!!!!!!!!!!!!!
     !!!!!!!!!!!!!!!!!!!!!!!!
@@ -203,6 +202,94 @@ Version 2.2.0
     Added API method to grab the level cap of a skill by its PrimarySkillType ENUM definition
     Added API method to check if a skill was being level capped
     Added 'UndefinedSkillBehaviour' for trying to use a method that has no behaviour defined for the provided skill
+
+Version 2.1.123
+    Added 'Nether_Gold_Ore' to Mining XP tables in experience.yml with a value of 1300
+    Adept Salvage message will now show the correct minimum level
+    'Weeping_Vines' renamed to 'Weeping_Vines_Plant' in experience.yml (no edits necessary)
+    'Twisted_Vines_Plant' added to Herbalism XP tables in experience.yml with a value of 10
+    Weeping_Vines_Plant and Twisted_Vines_Plant are now flagged as multi-block plants in Herbalism
+
+Version 2.1.122
+    Changed the xp values for Nether_Wart_Block and Warped_Wart_Block from 20 to 1 for Woodcutting
+    Changed the xp values for Nether_Wart_Block and Warped_Wart_Block from 20 to 3 for Herbalism
+    mcMMO now treats Nether_Wart_Block and Warped_Wart_Block as leaves
+    Removed Crimson_Roots and Warped_Roots from Woodcutting XP tables in experience.yml
+    Added Crimson_Roots and Warped_Roots to Herbalism XP tables in experience.yml with a value of 6 XP
+    Fixed some start up bugs for salvage/repair
+
+    You can either edit experience.yml yourself or delete it to regenerate a new one to get the new changes
+
+Version 2.1.121
+    Fixed a netherite related bug that prevented mcMMO from functioning correctly
+
+Version 2.1.120
+    Fixed a bug involving the new netherite equipment
+
+Version 2.1.119
+    1.16 Support
+    Fixed another dupe bug
+    Fixed a bug that can cause blast mining to give out more rewards than intended
+    Blast Mining rewards are now randomized but still influenced by your blast mining rank
+    mcMMO is now aware of turtle shell and treats it appropriately
+    mcMMO is now aware of chainmail armor and treats it appropriately
+    Calculations which change depend on the quality of your tool or armor has had netherrack support coded in
+    All excavation drops that can drop from soul_sand now also drop from soul_soil (edited treasures.yml)
+
+    Added netherite armor/weapons/tools to repair.vanilla.yml
+    Added netherite armor/weapons/tools to salvage.vanilla.yml
+
+    Added 'Bamboo_Sapling' to bonus drops for Herbalism in experience.yml
+    Added 'Ancient_Debris' with a value of 7777 to Mining experience tables in experience.yml
+    Added 'Basalt' with a value of 40 to Mining experience tables in experience.yml
+    Added 'Crimson_Fungus' with a value of 50 to Herbalism experience tables in experience.yml
+    Added 'Warped_Fungus' with a value of 50 to Herbalism experience tables in experience.yml
+    Added 'Warped_Nylium' with a value of 5 to Mining experience tables in experience.yml
+    Added 'Crimson_Nylium' with a value of 5 to Mining experience tables in experience.yml
+    Added 'Crimson_Stem' with a value of 35 to Woodcutting experience tables in experience.yml
+    Added 'Crimson_Roots' with a value of 35 to Woodcutting experience tables in experience.yml
+    Added 'Warped_Stem' with a value of 35 to Woodcutting experience tables in experience.yml
+    Added 'Warped_Roots' with a value of 35 to Woodcutting experience tables in experience.yml
+    Added 'Ancient_Debris' with a value of 200 to Smelting experience tables in experience.yml
+    Added 'Nether_Sprouts' with a value of 10 to Herbalism experience tables in experience.yml
+    Added 'Shroomlight' with a value of 100 to Woodcutting experience tables in experience.yml
+    Added 'Soul_Soil' with a value of 50 to Excavation experience tables in experience.yml
+    Added 'Nether_Wart_Block' with a value of 20 to Woodcutting experience tables in experience.yml
+    Added 'Nether_Wart_Block' with a value of 20 to Herbalism experience tables in experience.yml
+    Added 'Warped_Wart_Block' with a value of 20 to Woodcutting experience tables in experience.yml
+    Added 'Warped_Wart_Block' with a value of 20 to Herbalism experience tables in experience.yml
+    Added 'Weeping_Vines' with a value of 10 to Herbalism experience tables in experience.yml
+
+    Added 'Ancient_Debris' to bonus drops for Mining in config.yml
+    Added 'Netherite_Scrap' to bonus drops for Mining in config.yml
+    Added 'Crimson_Fungus' to bonus drops for Herbalism in config.yml
+    Added 'Warped_Fungus' to bonus drops for Herbalism in config.yml
+    Added 'Warped_Nylium' to bonus drops for Mining in config.yml
+    Added 'Crimson_Nylium' to bonus drops for Mining in config.yml
+    Added 'Crimson_Stem' to bonus drops for Woodcutting in config.yml
+    Added 'Warped_Stem' to bonus drops for Woodcutting in config.yml
+    Added 'Shroomlight' to bonus drops for Woodcutting in config.yml
+
+    NOTES: You will likely need to update repair.vanilla.yml, salvage.vanilla.yml and treasures.yml
+    You can just delete those config files to regenerate them fresh which is much faster if you don't have any custom settings in those files
+    Here are the default configuration files if you wish to compare them to your own servers settings while updating your configs.
+    https://paste.gg/p/anonymous/bf8ba1a24c8c4f188da5f8b8ebfc2b35 (Keep scrolling)
+
+    Netherrack is repaired using netherrack scraps for now, wait for 2.2 for a better version of repair.
+    Netherrack salvages into netherrack scraps for now, wait for 2.2 for a better version of salvage.
+
+    Repairing chainmail/etc will be tackled in 2.2 so don't expect that in this version
+
+
+Version 2.1.118
+    Fixed another dupe bug
+    Blast Mining no longer reduces debris from explosions due to some issues with the Bukkit API
+    Modified locale string 'Mining.Blast.Effect' to remove debris reduction mention
+    Rupture now fires a FakeEntityDamageByEntityEvent before damaging its victims (cancelling it will be ignored)
+
+Version 2.1.117
+    Fixed a rare http error when polling Mojang for UUIDs
+    Fixed a bug that allowed duping
 
 Version 2.1.116
     Fixed directional plants not maintaining their direction when replanted

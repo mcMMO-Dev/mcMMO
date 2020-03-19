@@ -83,6 +83,7 @@ public class EntityListener implements Listener {
 
         Entity projectile = event.getProjectile();
 
+        //Should be noted that there are API changes regarding Arrow from 1.13.2 to current versions of the game
         if (!(projectile instanceof Arrow)) {
             return;
         }
@@ -791,8 +792,8 @@ public class EntityListener implements Listener {
         MiningManager miningManager = pluginRef.getUserManager().getPlayer(player).getMiningManager();
 
         if (miningManager.canUseBlastMining()) {
-            miningManager.blastMiningDropProcessing(event.getYield(), event.blockList());
-            event.setYield(0);
+            miningManager.blastMiningDropProcessing(event.getYield(), event);
+//            event.setYield(0);
         }
     }
 

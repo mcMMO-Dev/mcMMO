@@ -2,11 +2,13 @@ package com.gmail.nossr50.runnables.skills;
 
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.skills.BleedContainer;
+import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -160,6 +162,10 @@ public class BleedTimerTask extends BukkitRunnable {
             double victimHealth = target.getHealth();
 
 //            debugMessage+="TargetHealthBeforeDMG=["+String.valueOf(target.getHealth())+"], ";
+
+            //Fire a fake event
+            FakeEntityDamageByEntityEvent fakeEntityDamageByEntityEvent = (FakeEntityDamageByEntityEvent) pluginRef.getCombatTools().sendEntityDamageEvent(containerEntry.getValue().damageSource, target, EntityDamageEvent.DamageCause.CUSTOM, damage);
+            Bukkit.getPluginManager().callEvent(fakeEntityDamageByEntityEvent);
 
             pluginRef.getCombatTools().dealNoInvulnerabilityTickDamageRupture(target, damage, containerEntry.getValue().damageSource, toolTier);
 

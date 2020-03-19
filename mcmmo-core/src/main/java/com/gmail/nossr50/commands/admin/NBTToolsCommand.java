@@ -54,13 +54,40 @@ public class NBTToolsCommand extends BaseCommand {
         player.sendMessage(ChatColor.GRAY + "NBT Analysis completed!");
     }
 
-    @Subcommand("tags add")
-    public void onAddTags(Player player) {
+    @Subcommand("tags set")
+    public void onAddTags(Player player, String[] args) {
+        if(args.length == 0) {
+            player.sendMessage("No arguments provided!");
+        } else if(args.length == 1) {
+            player.sendMessage("Not enough arguments provided!");
+        } else {
+            player.sendMessage("Modifying NBT on item in hand...");
+            String targetTag = args[0];
 
+            //Check for the tag
+
+        }
     }
 
     @Subcommand("tags remove")
-    public void onRemoveTags(Player player) {
+    public void onRemoveTags(Player player, String[] args) {
+        if(args.length == 0) {
+            player.sendMessage("No arguments provided!");
+        } else if(args.length == 1) {
+            player.sendMessage("Not enough arguments provided!");
+        } else {
+            player.sendMessage("Modifying NBT on item in hand...");
+            String targetTag = args[0];
 
+            //Check for the tag
+
+        }
+    }
+
+    @Subcommand("tags clear")
+    public void onClearTags(Player player) {
+        //Clear all NBT tags that fall under "tag" on the item
+
+        player.sendMessage("Clearing NBT on item...");
     }
 }

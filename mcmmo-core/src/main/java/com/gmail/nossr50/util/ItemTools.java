@@ -103,16 +103,7 @@ public final class ItemTools {
      * @return true if the item is a bow, false otherwise
      */
     public boolean isBow(ItemStack item) {
-        Material type = item.getType();
-
-        switch (type) {
-            case BOW:
-                return true;
-
-            default:
-                return false;
-            //return mcMMO.getModManager().isCustomBow(type);
-        }
+        return pluginRef.getMaterialMapStore().isBow(item.getType().getKey().getKey());
     }
 
     public boolean hasItemInEitherHand(Player player, Material material) {
@@ -126,20 +117,7 @@ public final class ItemTools {
      * @return true if the item is a sword, false otherwise
      */
     public boolean isSword(ItemStack item) {
-        Material type = item.getType();
-
-        switch (type) {
-            case DIAMOND_SWORD:
-            case GOLDEN_SWORD:
-            case IRON_SWORD:
-            case STONE_SWORD:
-            case WOODEN_SWORD:
-                return true;
-
-            default:
-                return false;
-            //return mcMMO.getModManager().isCustomSword(type);
-        }
+        return pluginRef.getMaterialMapStore().isSword(item.getType().getKey().getKey());
     }
 
     /**
@@ -149,20 +127,7 @@ public final class ItemTools {
      * @return true if the item is a hoe, false otherwise
      */
     public boolean isHoe(ItemStack item) {
-        Material type = item.getType();
-
-        switch (type) {
-            case DIAMOND_HOE:
-            case GOLDEN_HOE:
-            case IRON_HOE:
-            case STONE_HOE:
-            case WOODEN_HOE:
-                return true;
-
-            default:
-                return false;
-            //return mcMMO.getModManager().isCustomHoe(type);
-        }
+        return pluginRef.getMaterialMapStore().isHoe(item.getType().getKey().getKey());
     }
 
     /**
@@ -172,20 +137,7 @@ public final class ItemTools {
      * @return true if the item is a shovel, false otherwise
      */
     public boolean isShovel(ItemStack item) {
-        Material type = item.getType();
-
-        switch (type) {
-            case DIAMOND_SHOVEL:
-            case GOLDEN_SHOVEL:
-            case IRON_SHOVEL:
-            case STONE_SHOVEL:
-            case WOODEN_SHOVEL:
-                return true;
-
-            default:
-                return false;
-            //return mcMMO.getModManager().isCustomShovel(type);
-        }
+        return pluginRef.getMaterialMapStore().isShovel(item.getType().getKey().getKey());
     }
 
     /**
@@ -195,20 +147,7 @@ public final class ItemTools {
      * @return true if the item is an axe, false otherwise
      */
     public boolean isAxe(ItemStack item) {
-        Material type = item.getType();
-
-        switch (type) {
-            case DIAMOND_AXE:
-            case GOLDEN_AXE:
-            case IRON_AXE:
-            case STONE_AXE:
-            case WOODEN_AXE:
-                return true;
-
-            default:
-                return false;
-            //return mcMMO.getModManager().isCustomAxe(type);
-        }
+        return pluginRef.getMaterialMapStore().isAxe(item.getType().getKey().getKey());
     }
 
     /**
@@ -218,20 +157,7 @@ public final class ItemTools {
      * @return true if the item is a pickaxe, false otherwise
      */
     public boolean isPickaxe(ItemStack item) {
-        Material type = item.getType();
-
-        switch (type) {
-            case DIAMOND_PICKAXE:
-            case GOLDEN_PICKAXE:
-            case IRON_PICKAXE:
-            case STONE_PICKAXE:
-            case WOODEN_PICKAXE:
-                return true;
-
-            default:
-                return false;
-            //return mcMMO.getModManager().isCustomPickaxe(type);
-        }
+        return pluginRef.getMaterialMapStore().isPickAxe(item.getType().getKey().getKey());
     }
 
     /**
@@ -357,7 +283,7 @@ public final class ItemTools {
      * @return true if the item is armor, false otherwise
      */
     public boolean isMinecraftArmor(ItemStack item) {
-        return isLeatherArmor(item) || isGoldArmor(item) || isIronArmor(item) || isDiamondArmor(item) || isChainmailArmor(item);
+        return pluginRef.getMaterialMapStore().isArmor(item.getType());
     }
 
     /**
@@ -367,16 +293,7 @@ public final class ItemTools {
      * @return true if the item is leather armor, false otherwise
      */
     public boolean isLeatherArmor(ItemStack item) {
-        switch (item.getType()) {
-            case LEATHER_BOOTS:
-            case LEATHER_CHESTPLATE:
-            case LEATHER_HELMET:
-            case LEATHER_LEGGINGS:
-                return true;
-
-            default:
-                return false;
-        }
+        return pluginRef.getMaterialMapStore().isLeatherArmor(item.getType());
     }
 
     /**
@@ -386,16 +303,7 @@ public final class ItemTools {
      * @return true if the item is gold armor, false otherwise
      */
     public boolean isGoldArmor(ItemStack item) {
-        switch (item.getType()) {
-            case GOLDEN_BOOTS:
-            case GOLDEN_CHESTPLATE:
-            case GOLDEN_HELMET:
-            case GOLDEN_LEGGINGS:
-                return true;
-
-            default:
-                return false;
-        }
+        return pluginRef.getMaterialMapStore().isGoldArmor(item.getType().getKey().getKey());
     }
 
     /**
@@ -405,16 +313,7 @@ public final class ItemTools {
      * @return true if the item is iron armor, false otherwise
      */
     public boolean isIronArmor(ItemStack item) {
-        switch (item.getType()) {
-            case IRON_BOOTS:
-            case IRON_CHESTPLATE:
-            case IRON_HELMET:
-            case IRON_LEGGINGS:
-                return true;
-
-            default:
-                return false;
-        }
+        return pluginRef.getMaterialMapStore().isIronArmor(item.getType().getKey().getKey());
     }
 
     /**
@@ -424,16 +323,15 @@ public final class ItemTools {
      * @return true if the item is diamond armor, false otherwise
      */
     public boolean isDiamondArmor(ItemStack item) {
-        switch (item.getType()) {
-            case DIAMOND_BOOTS:
-            case DIAMOND_CHESTPLATE:
-            case DIAMOND_HELMET:
-            case DIAMOND_LEGGINGS:
-                return true;
+        return pluginRef.getMaterialMapStore().isDiamondArmor(item.getType().getKey().getKey());
+    }
 
-            default:
-                return false;
-        }
+    public boolean isNetheriteArmor(ItemStack itemStack) {
+        return pluginRef.getMaterialMapStore().isNetheriteArmor(itemStack.getType().getKey().getKey());
+    }
+
+    public boolean isNetheriteTool(ItemStack itemStack) {
+        return pluginRef.getMaterialMapStore().isNetheriteTool(itemStack.getType().getKey().getKey());
     }
 
     /**
@@ -443,16 +341,7 @@ public final class ItemTools {
      * @return true if the item is chainmail armor, false otherwise
      */
     public boolean isChainmailArmor(ItemStack item) {
-        switch (item.getType()) {
-            case CHAINMAIL_BOOTS:
-            case CHAINMAIL_CHESTPLATE:
-            case CHAINMAIL_HELMET:
-            case CHAINMAIL_LEGGINGS:
-                return true;
-
-            default:
-                return false;
-        }
+        return pluginRef.getMaterialMapStore().isChainmailArmor(item.getType().getKey().getKey());
     }
 
     /**
@@ -462,7 +351,7 @@ public final class ItemTools {
      * @return true if the item is a tool, false otherwise
      */
     public boolean isMinecraftTool(ItemStack item) {
-        return isStoneTool(item) || isWoodTool(item) || isGoldTool(item) || isIronTool(item) || isDiamondTool(item) || isStringTool(item) || item.getType() == Material.TRIDENT;
+        return pluginRef.getMaterialMapStore().isTool(item.getType().getKey().getKey());
     }
 
     /**
@@ -472,17 +361,7 @@ public final class ItemTools {
      * @return true if the item is a stone tool, false otherwise
      */
     public boolean isStoneTool(ItemStack item) {
-        switch (item.getType()) {
-            case STONE_AXE:
-            case STONE_HOE:
-            case STONE_PICKAXE:
-            case STONE_SHOVEL:
-            case STONE_SWORD:
-                return true;
-
-            default:
-                return false;
-        }
+        return pluginRef.getMaterialMapStore().isStoneTool(item.getType().getKey().getKey());
     }
 
     /**
@@ -492,17 +371,7 @@ public final class ItemTools {
      * @return true if the item is a wooden tool, false otherwise
      */
     public boolean isWoodTool(ItemStack item) {
-        switch (item.getType()) {
-            case WOODEN_AXE:
-            case WOODEN_HOE:
-            case WOODEN_PICKAXE:
-            case WOODEN_SHOVEL:
-            case WOODEN_SWORD:
-                return true;
-
-            default:
-                return false;
-        }
+        return pluginRef.getMaterialMapStore().isWoodTool(item.getType().getKey().getKey());
     }
 
     /**
@@ -532,15 +401,7 @@ public final class ItemTools {
      * @return true if the item is a string tool, false otherwise
      */
     public boolean isStringTool(ItemStack item) {
-        switch (item.getType()) {
-            case BOW:
-            case CARROT_ON_A_STICK:
-            case FISHING_ROD:
-                return true;
-
-            default:
-                return false;
-        }
+        return pluginRef.getMaterialMapStore().isStringTool(item.getType().getKey().getKey());
     }
 
     /**
@@ -550,17 +411,7 @@ public final class ItemTools {
      * @return true if the item is a stone tool, false otherwise
      */
     public boolean isGoldTool(ItemStack item) {
-        switch (item.getType()) {
-            case GOLDEN_AXE:
-            case GOLDEN_HOE:
-            case GOLDEN_PICKAXE:
-            case GOLDEN_SHOVEL:
-            case GOLDEN_SWORD:
-                return true;
-
-            default:
-                return false;
-        }
+        return pluginRef.getMaterialMapStore().isGoldTool(item.getType().getKey().getKey());
     }
 
     /**
@@ -570,20 +421,7 @@ public final class ItemTools {
      * @return true if the item is an iron tool, false otherwise
      */
     public boolean isIronTool(ItemStack item) {
-        switch (item.getType()) {
-            case BUCKET:
-            case FLINT_AND_STEEL:
-            case IRON_AXE:
-            case IRON_HOE:
-            case IRON_PICKAXE:
-            case IRON_SHOVEL:
-            case IRON_SWORD:
-            case SHEARS:
-                return true;
-
-            default:
-                return false;
-        }
+        return pluginRef.getMaterialMapStore().isIronTool(item.getType().getKey().getKey());
     }
 
     /**
@@ -593,17 +431,7 @@ public final class ItemTools {
      * @return true if the item is a diamond tool, false otherwise
      */
     public boolean isDiamondTool(ItemStack item) {
-        switch (item.getType()) {
-            case DIAMOND_AXE:
-            case DIAMOND_HOE:
-            case DIAMOND_PICKAXE:
-            case DIAMOND_SHOVEL:
-            case DIAMOND_SWORD:
-                return true;
-
-            default:
-                return false;
-        }
+        return pluginRef.getMaterialMapStore().isDiamondTool(item.getType().getKey().getKey());
     }
 
     /**
@@ -613,22 +441,11 @@ public final class ItemTools {
      * @return true if the item is enchantable, false otherwise
      */
     public boolean isEnchantable(ItemStack item) {
-        switch (item.getType()) {
-            case ENCHANTED_BOOK:
-            case SHEARS:
-            case FISHING_ROD:
-            case CARROT_ON_A_STICK:
-            case FLINT_AND_STEEL:
-            case TRIDENT:
-                return true;
-
-            default:
-                return isArmor(item) || isSword(item) || isAxe(item) || isShovel(item) || isPickaxe(item) || isBow(item);
-        }
+        return pluginRef.getMaterialMapStore().isEnchantable(item.getType().getKey().getKey());
     }
 
     public boolean isSmeltable(ItemStack item) {
-        return item != null && item.getType().isBlock() && MaterialUtils.isOre(item.getType());
+        return item != null && item.getType().isBlock() && pluginRef.getMaterialMapStore().isOre(item.getType());
     }
 
     public boolean isSmelted(ItemStack item) {
@@ -639,7 +456,7 @@ public final class ItemTools {
         for (Recipe recipe : pluginRef.getServer().getRecipesFor(item)) {
             if (recipe instanceof FurnaceRecipe
                     && ((FurnaceRecipe) recipe).getInput().getType().isBlock()
-                    && MaterialUtils.isOre(((FurnaceRecipe) recipe).getInput().getType())) {
+                    && pluginRef.getMaterialMapStore().isOre(((FurnaceRecipe) recipe).getInput().getType())) {
                 return true;
             }
         }
