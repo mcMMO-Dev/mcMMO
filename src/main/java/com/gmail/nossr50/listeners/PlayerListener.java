@@ -41,6 +41,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.*;
 import org.bukkit.entity.minecart.PoweredMinecart;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -596,6 +597,18 @@ public class PlayerListener implements Listener {
                 return;
         }
 
+        //Cancel the event to prevent vanilla functionality
+        if(event.getClickedBlock() != null) {
+            if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                if(event.getClickedBlock().getType() == Repair.anvilMaterial || event.getClickedBlock().getType() == Salvage.anvilMaterial) {
+                    if(event.useInteractedBlock() == Event.Result.ALLOW) {
+                        event.setUseInteractedBlock(Event.Result.DENY);
+                    }
+                }
+            }
+        }
+
+
         if (event.getHand() != EquipmentSlot.HAND || !UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
@@ -646,6 +659,7 @@ public class PlayerListener implements Listener {
                                     player.updateInventory();
                                 }
                     }
+
                 }
                 /* BLAST MINING CHECK */
                 else if (miningManager.canDetonate()) {

@@ -1,4 +1,5 @@
 Version 2.1.124
+    if Repair's anvil or Salvage's anvil are set to a vanilla block, that block will no longer provide its right-click vanilla function. You can use this to set the vanilla minecraft Anvil as the Anvil used for Repair.
     Added Gold_Nugget to Mining's Bonus_Drops in config.yml (edit your config)
     Added Piglin to experience.yml combat XP tables with a value of 2.0 (edit your config)
     Added Hoglin to experience.yml combat XP tables with a value of 4.0 (edit your config)
