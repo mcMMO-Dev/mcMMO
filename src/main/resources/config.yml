@@ -484,7 +484,7 @@ Bonus_Drops:
         Glowstone: true
         Glowstone_Dust: true
         Gold_Ore: true
-        Gold_Nugget:
+        Gold_Nugget: true
         Iron_Ore: true
         Iron_Ingot: true
         Lapis_Ore: true
