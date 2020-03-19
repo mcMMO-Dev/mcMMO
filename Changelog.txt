@@ -1,6 +1,8 @@
 Version 2.1.124
     Added Gold_Nugget to Mining's Bonus_Drops in config.yml (edit your config)
-
+    Added Piglin to experience.yml combat XP tables with a value of 2.0 (edit your config)
+    Added Hoglin to experience.yml combat XP tables with a value of 4.0 (edit your config)
+    Added Zombified_Piglin & Zombie_Pigman to experience.yml combat XP tables with a value of 3.0
 
 Version 2.1.123
     Added 'Nether_Gold_Ore' to Mining XP tables in experience.yml with a value of 1300

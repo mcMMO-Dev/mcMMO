@@ -527,4 +527,8 @@ Experience_Values:
             Trader_Llama: 1.0
             Wandering_trader: 1.0
             Bee: 1.5
+            Piglin: 2.0
+            Hoglin: 4.0
+            Zombie_Pigman: 3.0
+            Zombified_Piglin: 3.0
 
