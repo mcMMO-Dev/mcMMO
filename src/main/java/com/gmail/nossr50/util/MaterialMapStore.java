@@ -939,14 +939,11 @@ public class MaterialMapStore {
         abilityBlackList.add("smoker");
         abilityBlackList.add("stonecutter");
         abilityBlackList.add("sweet_berry_bush");
-        abilityBlackList.add("iron_block");
-        abilityBlackList.add("gold_block");
         abilityBlackList.add("bell");
         abilityBlackList.add("barrel");
         abilityBlackList.add("blast_furnace");
         abilityBlackList.add("campfire");
         abilityBlackList.add("composter");
-
     }
     
     private void fillToolBlackList()
@@ -1072,8 +1069,6 @@ public class MaterialMapStore {
         toolBlackList.add("oak_log");
         toolBlackList.add("oak_wood");
         toolBlackList.add("spruce_log");
-        toolBlackList.add("iron_block");
-        toolBlackList.add("gold_block");
         toolBlackList.add("bell");
         toolBlackList.add("barrel");
         toolBlackList.add("blast_furnace");

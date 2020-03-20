@@ -89,7 +89,9 @@ public final class BlockUtils {
      * otherwise
      */
     public static boolean canActivateTools(BlockState blockState) {
-        return !mcMMO.getMaterialMapStore().isToolActivationBlackListed(blockState.getType());
+        return !mcMMO.getMaterialMapStore().isToolActivationBlackListed(blockState.getType())
+                && blockState.getType() != Repair.anvilMaterial
+                && blockState.getType() != Salvage.anvilMaterial;
     }
 
     /**

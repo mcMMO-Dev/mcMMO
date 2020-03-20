@@ -597,17 +597,23 @@ public class PlayerListener implements Listener {
                 return;
         }
 
-        //Cancel the event to prevent vanilla functionality
-        if(event.getClickedBlock() != null) {
-            if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                if(event.getClickedBlock().getType() == Repair.anvilMaterial || event.getClickedBlock().getType() == Salvage.anvilMaterial) {
-                    if(event.useInteractedBlock() == Event.Result.ALLOW) {
+        Block clickedBlock = event.getClickedBlock();
+        if(clickedBlock != null) {
+            Material clickedBlockType = clickedBlock.getType();
+            //The blacklist contains interactable blocks so its a convenient filter
+            if(clickedBlockType == Repair.anvilMaterial || clickedBlockType == Salvage.anvilMaterial) {
+                Bukkit.broadcastMessage("Debug");
+                event.setUseItemInHand(Event.Result.ALLOW);
+
+                if(mcMMO.getMaterialMapStore().isToolActivationBlackListed(clickedBlockType)) {
+                        Bukkit.broadcastMessage("Derp 2");
                         event.setUseInteractedBlock(Event.Result.DENY);
-                    }
                 }
             }
-        }
 
+            //Cancel the event to prevent vanilla functionality
+            //Only cancel if item in hand has durability
+        }
 
         if (event.getHand() != EquipmentSlot.HAND || !UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
@@ -621,12 +627,11 @@ public class PlayerListener implements Listener {
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         MiningManager miningManager = mcMMOPlayer.getMiningManager();
-        Block block = event.getClickedBlock();
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         switch (event.getAction()) {
             case RIGHT_CLICK_BLOCK:
-                Material type = block.getType();
+                Material type = clickedBlock.getType();
 
                 if (!Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
                     /* REPAIR CHECKS */
@@ -655,7 +660,7 @@ public class PlayerListener implements Listener {
                                 // Make sure the player knows what he's doing when trying to salvage an enchanted item
                                 if (salvageManager.checkConfirmation(true)) {
                                     SkillUtils.handleAbilitySpeedDecrease(player);
-                                    salvageManager.handleSalvage(block.getLocation(), heldItem);
+                                    salvageManager.handleSalvage(clickedBlock.getLocation(), heldItem);
                                     player.updateInventory();
                                 }
                     }
@@ -674,7 +679,7 @@ public class PlayerListener implements Listener {
                 break;
 
             case LEFT_CLICK_BLOCK:
-                type = block.getType();
+                type = clickedBlock.getType();
 
                 if (!Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
                     /* REPAIR CHECKS */
