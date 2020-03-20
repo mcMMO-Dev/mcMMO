@@ -602,11 +602,9 @@ public class PlayerListener implements Listener {
             Material clickedBlockType = clickedBlock.getType();
             //The blacklist contains interactable blocks so its a convenient filter
             if(clickedBlockType == Repair.anvilMaterial || clickedBlockType == Salvage.anvilMaterial) {
-                Bukkit.broadcastMessage("Debug");
                 event.setUseItemInHand(Event.Result.ALLOW);
 
                 if(mcMMO.getMaterialMapStore().isToolActivationBlackListed(clickedBlockType)) {
-                        Bukkit.broadcastMessage("Derp 2");
                         event.setUseInteractedBlock(Event.Result.DENY);
                 }
             }
