@@ -410,6 +410,7 @@ public class EntityListener implements Listener {
             }
         }
 
+
         /*
          * This was put here to solve a plugin conflict with a mod called Project Korra
          * Project Korra sends out a damage event with exactly 0 damage
@@ -425,20 +426,21 @@ public class EntityListener implements Listener {
 
         CombatUtils.processCombatAttack(event, attacker, target);
         CombatUtils.handleHealthbars(attacker, target, event.getFinalDamage(), plugin);
+    }
 
-        /**
-         * This sets entity names back to whatever they are supposed to be
-         */
-        if(event.getFinalDamage() >= target.getHealth())
-        {
-            if(attacker instanceof LivingEntity)
-            {
-                CombatUtils.fixNames((LivingEntity) attacker);
+    @EventHandler(priority =  EventPriority.MONITOR, ignoreCancelled = false)
+    public void onEntityDamageMonitor(EntityDamageByEntityEvent entityDamageEvent) {
+        if(entityDamageEvent.getEntity() instanceof LivingEntity) {
+            LivingEntity livingEntity = (LivingEntity) entityDamageEvent.getEntity();
+
+            if(entityDamageEvent.getFinalDamage() >= livingEntity.getHealth()) {
+
+                /*
+                 * This sets entity names back to whatever they are supposed to be
+                 */
+                CombatUtils.fixNames(livingEntity);
+                }
             }
-
-            CombatUtils.fixNames(target);
-        }
-
     }
 
     public boolean checkParties(Cancellable event, Player defendingPlayer, Player attackingPlayer) {
