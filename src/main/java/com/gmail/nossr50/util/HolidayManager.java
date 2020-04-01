@@ -381,7 +381,7 @@ public final class HolidayManager {
         if(!Config.getInstance().isAprilFoolsAllowed())
             return;
 
-        PluginCommand command = mcMMO.p.getCommand("mcfools");
+        PluginCommand command = mcMMO.p.getCommand("crafting");
         command.setExecutor(new AprilCommand());
     }
 }

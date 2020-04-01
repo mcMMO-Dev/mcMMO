@@ -167,8 +167,9 @@ commands:
         aliases: [mcsb]
         description: Manage your mcMMO Scoreboard
         permission: mcmmo.commands.mcscoreboard
-    mcfools:
-        aliases: [macho, jumping, throwing, wrecking, crafting, walking, swimming, falling, climbing, flying, diving, piggy]
+    #mcfools:
+    crafting:
+        aliases: [macho, jumping, throwing, wrecking, walking, swimming, falling, climbing, flying, diving, piggy]
         description: Deploy jokes
         permission: mcmmo.commands.mcfools
     mcmmoreloadlocale:
