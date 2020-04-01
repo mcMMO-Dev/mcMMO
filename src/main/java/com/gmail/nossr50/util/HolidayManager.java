@@ -3,6 +3,7 @@ package com.gmail.nossr50.util;
 import com.gmail.nossr50.commands.skills.AprilCommand;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -367,7 +368,10 @@ public final class HolidayManager {
         if(!Config.getInstance().isAprilFoolsAllowed())
             return;
 
-        int levelTotal = Misc.getRandom().nextInt(1 + UserManager.getPlayer(player).getSkillLevel(PrimarySkillType.MINING)) + 1;
+        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+        if (mmoPlayer == null) return;
+
+        int levelTotal = Misc.getRandom().nextInt(1 + mmoPlayer.getSkillLevel(PrimarySkillType.MINING)) + 1;
         SoundManager.sendSound(player, player.getLocation(), SoundType.LEVEL_UP);
         NotificationManager.sendPlayerInformation(player, NotificationType.HOLIDAY, "Holiday.AprilFools.Levelup", StringUtils.getCapitalized(fakeSkillType.toString()), String.valueOf(levelTotal));
 //        ParticleEffectUtils.fireworkParticleShower(player, ALL_COLORS.get(Misc.getRandom().nextInt(ALL_COLORS.size())));
