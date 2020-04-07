@@ -75,7 +75,7 @@ public class BlockStoreConversionMain implements Runnable {
     public void softStop() {
         stop();
 
-        if (this.dataDir.exists() || this.dataDir.isDirectory()) {
+        if (this.dataDir.exists() && this.dataDir.isDirectory()) {
             start();
             return;
         }
