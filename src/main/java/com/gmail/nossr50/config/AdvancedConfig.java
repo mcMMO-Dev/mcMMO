@@ -924,6 +924,9 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getArcaneSalvageExtractFullEnchantsChance(int rank) { return config.getDouble("Skills.Salvage.ArcaneSalvage.ExtractFullEnchant.Rank_" + rank); }
     public double getArcaneSalvageExtractPartialEnchantsChance(int rank) { return config.getDouble("Skills.Salvage.ArcaneSalvage.ExtractPartialEnchant.Rank_" + rank); }
 
+    /* SCYTHES */
+    public double getLifeStealModifier() { return config.getDouble("Skills.Scythes.LifeSteal.LifeStealModifier", 10); }
+
     /* SMELTING */
     public int getBurnModifierMaxLevel() {
         if(mcMMO.isRetroModeEnabled())

@@ -185,6 +185,9 @@ public final class Permissions {
     public static boolean salvageItemType(Permissible permissible, ItemType salvageItemType) { return permissible.hasPermission("mcmmo.ability.salvage." + salvageItemType.toString().toLowerCase(Locale.ENGLISH) + "salvage"); }
     public static boolean salvageMaterialType(Permissible permissible, MaterialType salvageMaterialType) { return permissible.hasPermission("mcmmo.ability.salvage." + salvageMaterialType.toString().toLowerCase(Locale.ENGLISH) + "salvage"); }
 
+    /* SCYTHES */
+    public static boolean lifeSteal(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.scythes.lifeSteal"); }
+
     /* SMELTING */
     public static boolean fluxMining(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.smelting.fluxmining"); }
     public static boolean fuelEfficiency(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.smelting.fuelefficiency"); }

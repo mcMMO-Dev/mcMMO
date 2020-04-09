@@ -16,6 +16,7 @@ import com.gmail.nossr50.runnables.skills.AwardCombatXpTask;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
+import com.gmail.nossr50.skills.scythes.ScythesManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
@@ -88,6 +89,33 @@ public final class CombatUtils {
 
         applyScaledModifiers(initialDamage, finalDamage, event);
         startGainXp(mcMMOPlayer, target, PrimarySkillType.SWORDS);
+    }
+
+    private static void processScytheCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event) {
+
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        //Make sure the profiles been loaded
+        if(mcMMOPlayer == null) {
+            return;
+        }
+
+        ScythesManager scythesManager = mcMMOPlayer.getScythesManager();
+        double initialDamage = event.getDamage();
+        double finalDamage = initialDamage;
+
+        Map<DamageModifier, Double> modifiers = getModifiers(event);
+
+        if (scythesManager.canActivateAbility()) {
+            mcMMOPlayer.checkAbilityActivation(PrimarySkillType.SCYTHES);
+        }
+
+        if (scythesManager.canUseLifeSteal()) {
+            scythesManager.lifeSteal(target, initialDamage, modifiers);
+        }
+
+        applyScaledModifiers(initialDamage, finalDamage, event);
+        startGainXp(mcMMOPlayer, target, PrimarySkillType.SCYTHES);
     }
 
     private static void processAxeCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event) {
@@ -643,6 +671,12 @@ public final class CombatUtils {
             EventUtils.callFakeArmSwingEvent(attacker);
 
             switch (type) {
+                case SCYTHES:
+                    if (entity instanceof Player) {
+                        NotificationManager.sendPlayerInformation((Player)entity, NotificationType.SUBSKILL_MESSAGE, "Scythes.Combat.SS.Struck");
+                    }
+
+                    break;
                 case SWORDS:
                     if (entity instanceof Player) {
                         NotificationManager.sendPlayerInformation((Player)entity, NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.SS.Struck");
@@ -934,7 +968,7 @@ public final class CombatUtils {
      * @param inHand The item to check the tier of
      * @return the tier of the item
      */
-    private static int getTier(ItemStack inHand) {
+    public static int getTier(ItemStack inHand) {
         int tier = 0;
 
         if (ItemUtils.isWoodTool(inHand)) {

@@ -59,6 +59,13 @@ public enum SuperAbilityType {
             "Swords.Skills.SS.Refresh",
             "Swords.Skills.SS.Other.Off"),
 
+    LIFE_STEAL(
+            "Scythes.Skills.SS.On",
+            "Scythes.Skills.SS.Off",
+            "Scythes.Skills.SS.Other.On",
+            "Scythes.Skills.SS.Refresh",
+            "Scythes.Skills.SS.Other.Off"),
+
     /**
      * Has cooldown - but has to share a skill with Super Breaker, so needs special treatment
      */

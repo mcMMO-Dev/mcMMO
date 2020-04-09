@@ -2,6 +2,7 @@ package com.gmail.nossr50.datatypes.skills;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.skills.subskills.interfaces.SubSkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
@@ -15,6 +16,7 @@ import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
+import com.gmail.nossr50.skills.scythes.ScythesManager;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
@@ -24,7 +26,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.google.common.collect.ImmutableList;
-import org.bukkit.Color;
+import javafx.scene.paint.Color;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
@@ -54,6 +56,8 @@ public enum PrimarySkillType {
             ImmutableList.of(SubSkillType.REPAIR_ARCANE_FORGING, SubSkillType.REPAIR_REPAIR_MASTERY, SubSkillType.REPAIR_SUPER_REPAIR)),
     SALVAGE(SalvageManager.class, Color.ORANGE,
             ImmutableList.of(SubSkillType.SALVAGE_SCRAP_COLLECTOR, SubSkillType.SALVAGE_ARCANE_SALVAGE)),
+    SCYTHES(ScythesManager.class, Color.AZURE, SuperAbilityType.LIFE_STEAL, ToolType.HOE,
+            ImmutableList.of(SubSkillType.SCYTHE_REND, SubSkillType.SCYTHE_LIFE_STEAL)),
     SMELTING(SmeltingManager.class, Color.YELLOW,
             ImmutableList.of(SubSkillType.SMELTING_UNDERSTANDING_THE_ART, /*SubSkillType.SMELTING_FLUX_MINING,*/ SubSkillType.SMELTING_FUEL_EFFICIENCY, SubSkillType.SMELTING_SECOND_SMELT)),
     SWORDS(SwordsManager.class, Color.fromRGB(178, 34, 34), SuperAbilityType.SERRATED_STRIKES, ToolType.SWORD,
