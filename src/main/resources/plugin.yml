@@ -114,6 +114,9 @@ commands:
     archery:
         description: Detailed mcMMO skill info
         permission: mcmmo.commands.archery
+    scythes:
+        description: Detailed mcMMO skill info
+        permission: mcmmo.commands.scythes
     swords:
         description: Detailed mcMMO skill info
         permission: mcmmo.commands.swords
@@ -213,6 +216,7 @@ permissions:
             mcmmo.ability.repair.all: true
             mcmmo.ability.salvage.all: true
             mcmmo.ability.smelting.all: true
+            mcmmo.ability.scythes.all: true
             mcmmo.ability.swords.all: true
             mcmmo.ability.taming.all: true
             mcmmo.ability.unarmed.all: true
@@ -547,6 +551,17 @@ permissions:
         description: Allows ability to salvage tools
     mcmmo.ability.salvage.woodsalvage:
         description: Allows ability to salvage Wood tools
+    mcmmo.ability.scythes.*:
+        default: false
+        description: Allows access to all Scythes abilities
+        children:
+            mcmmo.ability.scythes.all: true
+    mcmmo.ability.scythes.all:
+      description: Allows access to all Scythes abilities
+      children:
+        mcmmo.ability.scythes.lifesteal: true
+    mcmmo.ability.scythes.lifesteal:
+        description: Allows ability to Life Steal with Scythe weapon
     mcmmo.ability.smelting.*:
         default: false
         description: Allows access to all Smelting abilities

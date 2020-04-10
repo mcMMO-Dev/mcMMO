@@ -287,6 +287,7 @@ Abilities:
     Cooldowns:
         Berserk: 240
         Blast_Mining: 60
+        LifeSteal: 240
         Giga_Drill_Breaker: 240
         Green_Terra: 240
         Serrated_Strikes: 240
@@ -370,6 +371,11 @@ Skills:
         Anvil_Material: GOLD_BLOCK
         # Ask for a confirmation when a player tries to salvage an enchanted item
         Confirm_Required: true
+    Scythes:
+        Enabled_For_PVP: true
+        Enabled_For_PVE: true
+        Level_Cap: 0
+        Ability_Action_Level_Gate: 10
     Smelting:
         Level_Cap: 0
     Swords:

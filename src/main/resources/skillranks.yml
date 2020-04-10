@@ -450,6 +450,20 @@ Fishing:
             Rank_6: 750
             Rank_7: 850
             Rank_8: 1000
+Scythes:
+    LifeSteal:
+        Standard:
+            Rank_1: 5
+            Rank_2: 10
+            Rank_3: 20
+            Rank_4: 30
+            Rank_5: 50
+        RetroMode:
+            Rank_1: 5
+            Rank_2: 10
+            Rank_3: 20
+            Rank_4: 30
+            Rank_5: 50
 Swords:
     SwordsLimitBreak:
         Standard:

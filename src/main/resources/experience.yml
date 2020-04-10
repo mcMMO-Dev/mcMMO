@@ -90,6 +90,10 @@ Experience_Bars:
         Enable: true
         Color: PURPLE
         BarStyle: SEGMENTED_6
+    Scythes:
+        Enable: true
+        Color: BLUE
+        BarStyle: SEGMENTED_6
     Smelting:
         Enable: true
         Color: PURPLE
@@ -146,6 +150,7 @@ Experience_Formula:
 
     # Experience gained will get divided by these values. 1.0 by default, 2.0 means two times less XP gained.
     Modifier:
+        Scythes: 1.0
         Swords: 1.0
         Taming: 1.0
         Acrobatics: 1.0
@@ -178,6 +183,7 @@ Diminished_Returns:
     # Limit the amount of experience a player can earn:
     # Threshold (amount of experience) per Time_Interval (in minutes)
     Threshold:
+        Scythes: 20000
         Swords: 20000
         Taming: 20000
         Acrobatics: 20000
