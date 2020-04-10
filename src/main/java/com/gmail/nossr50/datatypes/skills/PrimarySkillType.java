@@ -26,7 +26,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.google.common.collect.ImmutableList;
-import javafx.scene.paint.Color;
+import org.bukkit.Color;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
@@ -56,7 +56,7 @@ public enum PrimarySkillType {
             ImmutableList.of(SubSkillType.REPAIR_ARCANE_FORGING, SubSkillType.REPAIR_REPAIR_MASTERY, SubSkillType.REPAIR_SUPER_REPAIR)),
     SALVAGE(SalvageManager.class, Color.ORANGE,
             ImmutableList.of(SubSkillType.SALVAGE_SCRAP_COLLECTOR, SubSkillType.SALVAGE_ARCANE_SALVAGE)),
-    SCYTHES(ScythesManager.class, Color.AZURE, SuperAbilityType.LIFE_STEAL, ToolType.HOE,
+    SCYTHES(ScythesManager.class, Color.fromRGB(100, 30, 70), SuperAbilityType.LIFE_STEAL, ToolType.HOE,
             ImmutableList.of(SubSkillType.SCYTHE_REND, SubSkillType.SCYTHE_LIFE_STEAL)),
     SMELTING(SmeltingManager.class, Color.YELLOW,
             ImmutableList.of(SubSkillType.SMELTING_UNDERSTANDING_THE_ART, /*SubSkillType.SMELTING_FLUX_MINING,*/ SubSkillType.SMELTING_FUEL_EFFICIENCY, SubSkillType.SMELTING_SECOND_SMELT)),
