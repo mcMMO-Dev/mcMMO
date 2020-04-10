@@ -186,7 +186,7 @@ public final class Permissions {
     public static boolean salvageMaterialType(Permissible permissible, MaterialType salvageMaterialType) { return permissible.hasPermission("mcmmo.ability.salvage." + salvageMaterialType.toString().toLowerCase(Locale.ENGLISH) + "salvage"); }
 
     /* SCYTHES */
-    public static boolean lifeSteal(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.scythes.lifeSteal"); }
+    public static boolean lifeSteal(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.scythes.lifesteal"); }
 
     /* SMELTING */
     public static boolean fluxMining(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.smelting.fluxmining"); }

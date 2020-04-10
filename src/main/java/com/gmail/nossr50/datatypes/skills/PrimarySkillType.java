@@ -2,7 +2,6 @@ package com.gmail.nossr50.datatypes.skills;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.skills.subskills.interfaces.SubSkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
@@ -57,7 +56,7 @@ public enum PrimarySkillType {
     SALVAGE(SalvageManager.class, Color.ORANGE,
             ImmutableList.of(SubSkillType.SALVAGE_SCRAP_COLLECTOR, SubSkillType.SALVAGE_ARCANE_SALVAGE)),
     SCYTHES(ScythesManager.class, Color.fromRGB(100, 30, 70), SuperAbilityType.LIFE_STEAL, ToolType.HOE,
-            ImmutableList.of(SubSkillType.SCYTHE_REND, SubSkillType.SCYTHE_LIFE_STEAL)),
+            ImmutableList.of(SubSkillType.SCYTHE_LIFE_STEAL)),
     SMELTING(SmeltingManager.class, Color.YELLOW,
             ImmutableList.of(SubSkillType.SMELTING_UNDERSTANDING_THE_ART, /*SubSkillType.SMELTING_FLUX_MINING,*/ SubSkillType.SMELTING_FUEL_EFFICIENCY, SubSkillType.SMELTING_SECOND_SMELT)),
     SWORDS(SwordsManager.class, Color.fromRGB(178, 34, 34), SuperAbilityType.SERRATED_STRIKES, ToolType.SWORD,

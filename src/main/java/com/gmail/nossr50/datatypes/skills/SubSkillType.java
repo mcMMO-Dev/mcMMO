@@ -30,9 +30,6 @@ public enum SubSkillType {
     AXES_GREATER_IMPACT(1),
     AXES_SKULL_SPLITTER(1),
 
-    /* Cooking */
-
-
     /* Excavation */
     EXCAVATION_ARCHAEOLOGY(8),
     EXCAVATION_GIGA_DRILL_BREAKER(1),
@@ -70,8 +67,7 @@ public enum SubSkillType {
     SALVAGE_ARCANE_SALVAGE(8),
 
     /* Scythes */
-    SCYTHE_REND(5),
-    SCYTHE_LIFE_STEAL(2),
+    SCYTHE_LIFE_STEAL(5),
 
     /* Smelting */
     SMELTING_FUEL_EFFICIENCY(3),
