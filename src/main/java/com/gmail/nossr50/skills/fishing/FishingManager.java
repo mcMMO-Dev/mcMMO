@@ -78,8 +78,15 @@ public class FishingManager extends SkillManager {
 
         if(currentTime < fishingRodCastTimestamp + FISHING_ROD_CAST_CD_MILLISECONDS)
         {
+            ItemStack fishingRod = getPlayer().getInventory().getItemInMainHand();
+
+            //Ensure correct hand item is damaged
+            if(fishingRod.getType() != Material.FISHING_ROD) {
+                fishingRod = getPlayer().getInventory().getItemInOffHand();
+            }
+
             getPlayer().setFoodLevel(Math.max(getPlayer().getFoodLevel() - 1, 0));
-            getPlayer().getInventory().getItemInMainHand().setDurability((short) (getPlayer().getInventory().getItemInMainHand().getDurability() + 5));
+            fishingRod.setDurability((short) (fishingRod.getDurability() + 5));
             getPlayer().updateInventory();
 
             if(lastWarnedExhaust + (1000 * 1) < currentTime)
