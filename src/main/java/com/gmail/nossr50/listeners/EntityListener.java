@@ -290,7 +290,6 @@ public class EntityListener implements Listener {
         if(WorldGuardUtils.isWorldGuardLoaded())
         {
             if(attacker instanceof Player) {
-                Bukkit.broadcastMessage("(Player attacked something) EntityDamageEvent fired!");
 
                 if(!WorldGuardManager.getInstance().hasMainFlag((Player) attacker))
                     return;
