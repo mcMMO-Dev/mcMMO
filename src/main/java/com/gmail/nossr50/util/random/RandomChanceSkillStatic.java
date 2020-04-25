@@ -13,6 +13,13 @@ public class RandomChanceSkillStatic extends RandomChanceSkill {
         this.xPos = xPos;
     }
 
+    public RandomChanceSkillStatic(double xPos, Player player, SubSkillType subSkillType, double resultModifier)
+    {
+        super(player, subSkillType, resultModifier);
+
+        this.xPos = xPos;
+    }
+
     /**
      * Gets the XPos used in the formula for success
      *

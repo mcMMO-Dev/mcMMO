@@ -96,6 +96,7 @@ public class McMMOPlayer {
     private int respawnATS;
     private int teleportATS;
     private long databaseATS;
+    private double attackStrength; //captured during arm swing events
     //private int chimeraWingLastUse;
     private Location teleportCommence;
 
@@ -142,10 +143,19 @@ public class McMMOPlayer {
         experienceBarManager = new ExperienceBarManager(this);
 
         debugMode = false; //Debug mode helps solve support issues, players can toggle it on or off
+        attackStrength = 1.0D;
     }
 
     public String getPlayerName() {
         return playerName;
+    }
+
+    public double getAttackStrength() {
+        return attackStrength;
+    }
+
+    public void setAttackStrength(double attackStrength) {
+        this.attackStrength = attackStrength;
     }
 
     /*public void hideXpBar(PrimarySkillType primarySkillType)

@@ -26,22 +26,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class UnarmedManager extends SkillManager {
-    private long lastAttacked;
-    private long attackInterval;
 
     public UnarmedManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.UNARMED);
-        initUnarmedPerPlayerVars();
     }
-
-    /**
-     * Inits variables used for each player for unarmed
-     */
-    private void initUnarmedPerPlayerVars() {
-        lastAttacked = 0;
-        attackInterval = 750;
-    }
-
 
     public boolean canActivateAbility() {
         return mcMMOPlayer.getToolPreparationMode(ToolType.FISTS) && Permissions.berserk(getPlayer());
@@ -113,7 +101,7 @@ public class UnarmedManager extends SkillManager {
      * @param defender The defending player
      */
     public void disarmCheck(Player defender) {
-        if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.UNARMED_DISARM, getPlayer()) && !hasIronGrip(defender)) {
+        if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.UNARMED_DISARM, getPlayer(), mcMMOPlayer.getAttackStrength()) && !hasIronGrip(defender)) {
             if (EventUtils.callDisarmEvent(defender).isCancelled()) {
                 return;
             }
@@ -150,7 +138,7 @@ public class UnarmedManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public double berserkDamage(double damage) {
-        damage = (damage * Unarmed.berserkDamageModifier) - damage;
+        damage = ((damage * Unarmed.berserkDamageModifier) * mcMMOPlayer.getAttackStrength()) - damage;
 
         return damage;
     }
@@ -158,16 +146,12 @@ public class UnarmedManager extends SkillManager {
     /**
      * Handle the effects of the Iron Arm ability
      */
-    public double ironArm() {
+    public double calculateIronArmDamage() {
         if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.ALWAYS_FIRES, SubSkillType.UNARMED_IRON_ARM_STYLE, getPlayer())) {
             return 0;
         }
 
         return getIronArmDamage();
-    }
-
-    public boolean isPunchingCooldownOver() {
-        return (lastAttacked + attackInterval) <= System.currentTimeMillis();
     }
 
     public double getIronArmDamage() {
@@ -198,21 +182,5 @@ public class UnarmedManager extends SkillManager {
         }
 
         return false;
-    }
-
-    public long getLastAttacked() {
-        return lastAttacked;
-    }
-
-    public void setLastAttacked(long lastAttacked) {
-        this.lastAttacked = lastAttacked;
-    }
-
-    public long getAttackInterval() {
-        return attackInterval;
-    }
-
-    public void setAttackInterval(long attackInterval) {
-        this.attackInterval = attackInterval;
     }
 }

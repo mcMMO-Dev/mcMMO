@@ -1,3 +1,12 @@
+Version 2.1.126
+    mcMMO now relies on NMS for some of its features, if NMS cannot properly be wired up when initializing mcMMO behaviours relying on NMS will either be partially supported or disabled
+    mcMMO now has a compatibility mode, any features that require specific versions of Minecraft for full functionality will be disabled if your server is not running a compatible version, mcMMO will still function in compatibility mode, but either the feature will be modified or disabled depending on the version of the server software
+    New command /mmocompat - Shows information about whether or not mcMMO is fully functional or if some features are disabled due to the server software not being fully supported. Can be used by players or console.
+    Fixed an exploit involving fishing rods
+
+    Notes:
+        There are no features that rely on NMS in this version, it took a lot of work to write the NMS framework and I'm going to delay implementation for future versions.
+
 Version 2.1.125
     *Fixed a bug where you could not place blocks on top of certain repair/salvage anvils
 
@@ -5,7 +14,7 @@ Version 2.1.125
 
 Version 2.1.124
     Repair/Salvage can now be set to use vanilla blocks that already do something and that vanilla functionality will be disabled by mcMMO (you could use vanilla-anvils instead of iron_blocks for repair now)
-    Added Gold_Nugget to Mining's Bonus_Drops in config.yml (edit your config)
+    Added Gold_Nugget to Mining's Bonus_Drops in config.yml (edit your config)g
     Added Piglin to experience.yml combat XP tables with a value of 2.0 (edit your config)
     Added Hoglin to experience.yml combat XP tables with a value of 4.0 (edit your config)
     Added Zombified_Piglin & Zombie_Pigman to experience.yml combat XP tables with a value of 3.0 (edit your config)

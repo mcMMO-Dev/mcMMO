@@ -46,6 +46,32 @@ public class RandomChanceUtil
         }
     }
 
+    /**
+     * This method is the final step in determining if a Sub-Skill / Secondary Skill in mcMMO successfully activates either from chance or otherwise
+     * Random skills check for success based on numbers and then fire a cancellable event, if that event is not cancelled they succeed
+     * non-RNG skills just fire the cancellable event and succeed if they go uncancelled
+     *
+     * @param skillActivationType this value represents what kind of activation procedures this sub-skill uses
+     * @param subSkillType The identifier for this specific sub-skill
+     * @param player The owner of this sub-skill
+     * @return returns true if all conditions are met and the event is not cancelled
+     */
+    public static boolean isActivationSuccessful(SkillActivationType skillActivationType, SubSkillType subSkillType, Player player, double resultModifier)
+    {
+        switch(skillActivationType)
+        {
+            case RANDOM_LINEAR_100_SCALE_WITH_CAP:
+                return checkRandomChanceExecutionSuccess(player, subSkillType, true);
+            case RANDOM_STATIC_CHANCE:
+                return checkRandomStaticChanceExecutionSuccess(player, subSkillType, resultModifier);
+            case ALWAYS_FIRES:
+                SubSkillEvent event = EventUtils.callSubSkillEvent(player, subSkillType);
+                return !event.isCancelled();
+            default:
+                return false;
+        }
+    }
+
     public static double getActivationChance(SkillActivationType skillActivationType, SubSkillType subSkillType, Player player)
     {
         switch(skillActivationType)
@@ -78,7 +104,24 @@ public class RandomChanceUtil
     }
 
     public static boolean rollDice(double chanceOfSuccess, int bound) {
-        return chanceOfSuccess > ThreadLocalRandom.current().nextInt(bound);
+        return rollDice(chanceOfSuccess, bound, 1.0F);
+    }
+
+    public static boolean rollDice(double chanceOfSuccess, int bound, double resultModifier) {
+        return chanceOfSuccess > (ThreadLocalRandom.current().nextInt(bound) * resultModifier);
+    }
+
+    /**
+     * Used for stuff like Excavation, Fishing, etc...
+     * @param randomChance
+     * @return
+     */
+    public static boolean checkRandomChanceExecutionSuccess(RandomChanceSkillStatic randomChance, double resultModifier)
+    {
+        double chanceOfSuccess = calculateChanceOfSuccess(randomChance);
+
+        //Check the odds
+        return rollDice(chanceOfSuccess, 100, resultModifier);
     }
 
     /**
@@ -88,10 +131,7 @@ public class RandomChanceUtil
      */
     public static boolean checkRandomChanceExecutionSuccess(RandomChanceSkillStatic randomChance)
     {
-        double chanceOfSuccess = calculateChanceOfSuccess(randomChance);
-
-        //Check the odds
-        return rollDice(chanceOfSuccess, 100);
+        return checkRandomChanceExecutionSuccess(randomChance, 1.0F);
     }
 
     public static boolean checkRandomChanceExecutionSuccess(RandomChanceSkill randomChance)
@@ -115,9 +155,7 @@ public class RandomChanceUtil
      * @return
      */
     public static double getRandomChanceExecutionChance(RandomChanceExecution randomChance) {
-        double chanceOfSuccess = getChanceOfSuccess(randomChance.getXPos(), randomChance.getProbabilityCap(), LINEAR_CURVE_VAR);
-
-        return chanceOfSuccess;
+        return getChanceOfSuccess(randomChance.getXPos(), randomChance.getProbabilityCap(), LINEAR_CURVE_VAR);
     }
 
     public static double getRandomChanceExecutionChance(RandomChanceStatic randomChance) {
@@ -210,7 +248,18 @@ public class RandomChanceUtil
         return checkRandomChanceExecutionSuccess(new RandomChanceSkill(player, subSkillType));
     }
 
-    public static boolean checkRandomStaticChanceExecutionSuccess(Player player, SubSkillType subSkillType)
+    public static boolean checkRandomChanceExecutionSuccess(Player player, SubSkillType subSkillType, boolean hasCap, double resultModifier)
+    {
+        return checkRandomChanceExecutionSuccess(new RandomChanceSkill(player, subSkillType, hasCap, resultModifier));
+    }
+
+    public static boolean checkRandomChanceExecutionSuccess(Player player, SubSkillType subSkillType, double resultModifier)
+    {
+        return checkRandomChanceExecutionSuccess(new RandomChanceSkill(player, subSkillType, resultModifier));
+    }
+
+
+    public static boolean checkRandomStaticChanceExecutionSuccess(Player player, SubSkillType subSkillType, double resultModifier)
     {
         try {
             return checkRandomChanceExecutionSuccess(new RandomChanceSkillStatic(getStaticRandomChance(subSkillType), player, subSkillType));
@@ -220,6 +269,11 @@ public class RandomChanceUtil
         }
 
         return false;
+    }
+
+    public static boolean checkRandomStaticChanceExecutionSuccess(Player player, SubSkillType subSkillType)
+    {
+        return checkRandomStaticChanceExecutionSuccess(player, subSkillType, 1.0F);
     }
 
     /**

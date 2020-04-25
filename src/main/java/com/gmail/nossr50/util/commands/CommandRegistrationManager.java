@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util.commands;
 
 import com.gmail.nossr50.commands.*;
+import com.gmail.nossr50.commands.admin.CompatibilityCommand;
 import com.gmail.nossr50.commands.admin.McmmoReloadLocaleCommand;
 import com.gmail.nossr50.commands.admin.PlayerDebugCommand;
 import com.gmail.nossr50.commands.chat.AdminChatCommand;
@@ -421,6 +422,13 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McmmoReloadLocaleCommand());
     }
 
+    private static void registerCompatibilityCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mmocompat"); //TODO: Localize
+        command.setDescription("Information about mcMMO and whether or not its in compatibility mode or fully functional.");
+        command.setUsage(LocaleLoader.formatString("Commands.Usage.0", "mmocompat"));
+        command.setExecutor(new CompatibilityCommand());
+    }
+
     public static void registerCommands() {
         // Generic Commands
         registerMmoInfoCommand();
@@ -472,5 +480,8 @@ public final class CommandRegistrationManager {
 
         // Admin commands
         registerReloadLocaleCommand();
+
+        // Misc
+        registerCompatibilityCommand();
     }
 }

@@ -14,7 +14,29 @@ public class RandomChanceSkill implements RandomChanceExecution {
     protected final SubSkillType subSkillType;
     protected final double probabilityCap;
     protected final boolean isLucky;
-    private int skillLevel;
+    protected int skillLevel;
+    protected double resultModifier;
+
+    public RandomChanceSkill(Player player, SubSkillType subSkillType, double resultModifier)
+    {
+        this.primarySkillType = subSkillType.getParentSkill();
+        this.subSkillType = subSkillType;
+        this.probabilityCap = RandomChanceUtil.LINEAR_CURVE_VAR;
+
+        final McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        if (player != null && mcMMOPlayer != null) {
+            this.skillLevel = mcMMOPlayer.getSkillLevel(primarySkillType);
+        } else {
+            this.skillLevel = 0;
+        }
+
+        if(player != null)
+            isLucky = Permissions.lucky(player, primarySkillType);
+        else
+            isLucky = false;
+
+        this.resultModifier = resultModifier;
+    }
 
     public RandomChanceSkill(Player player, SubSkillType subSkillType)
     {
@@ -33,6 +55,8 @@ public class RandomChanceSkill implements RandomChanceExecution {
             isLucky = Permissions.lucky(player, primarySkillType);
         else
             isLucky = false;
+
+        this.resultModifier = 1.0D;
     }
 
     public RandomChanceSkill(Player player, SubSkillType subSkillType, boolean hasCap)
@@ -56,6 +80,33 @@ public class RandomChanceSkill implements RandomChanceExecution {
             isLucky = Permissions.lucky(player, primarySkillType);
         else
             isLucky = false;
+
+        this.resultModifier = 1.0D;
+    }
+
+    public RandomChanceSkill(Player player, SubSkillType subSkillType, boolean hasCap, double resultModifier)
+    {
+        if(hasCap)
+            this.probabilityCap = AdvancedConfig.getInstance().getMaximumProbability(subSkillType);
+        else
+            this.probabilityCap = RandomChanceUtil.LINEAR_CURVE_VAR;
+
+        this.primarySkillType = subSkillType.getParentSkill();
+        this.subSkillType = subSkillType;
+
+        final McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        if (player != null && mcMMOPlayer != null) {
+            this.skillLevel = mcMMOPlayer.getSkillLevel(primarySkillType);
+        } else {
+            this.skillLevel = 0;
+        }
+
+        if(player != null)
+            isLucky = Permissions.lucky(player, primarySkillType);
+        else
+            isLucky = false;
+
+        this.resultModifier = resultModifier;
     }
 
     /**
@@ -117,5 +168,13 @@ public class RandomChanceSkill implements RandomChanceExecution {
 
     public boolean isLucky() {
         return isLucky;
+    }
+
+    public double getResultModifier() {
+        return resultModifier;
+    }
+
+    public void setResultModifier(double resultModifier) {
+        this.resultModifier = resultModifier;
     }
 }

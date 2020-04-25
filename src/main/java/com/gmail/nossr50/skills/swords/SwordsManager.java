@@ -60,7 +60,7 @@ public class SwordsManager extends SkillManager {
      * @param target The defending entity
      */
     public void ruptureCheck(LivingEntity target) {
-        if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_RUPTURE, getPlayer())) {
+        if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_RUPTURE, getPlayer(), this.mcMMOPlayer.getAttackStrength())) {
 
             if (target instanceof Player) {
                 Player defender = (Player) target;
@@ -89,8 +89,7 @@ public class SwordsManager extends SkillManager {
 
         if(rank > 0)
         {
-            double stabDamage = 1.0D + (rank * 1.5);
-            return stabDamage;
+            return (1.0D + (rank * 1.5));
         }
 
         return 0;

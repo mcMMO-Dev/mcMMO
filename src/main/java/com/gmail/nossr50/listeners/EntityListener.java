@@ -28,6 +28,7 @@ import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
@@ -289,6 +290,7 @@ public class EntityListener implements Listener {
         if(WorldGuardUtils.isWorldGuardLoaded())
         {
             if(attacker instanceof Player) {
+                Bukkit.broadcastMessage("(Player attacked something) EntityDamageEvent fired!");
 
                 if(!WorldGuardManager.getInstance().hasMainFlag((Player) attacker))
                     return;
