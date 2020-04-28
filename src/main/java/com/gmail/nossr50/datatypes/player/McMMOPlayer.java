@@ -190,17 +190,16 @@ public class McMMOPlayer {
 
     public void updateXPBar(PrimarySkillType primarySkillType, Plugin plugin)
     {
-        //Skill Unlock Notifications
-
-        if(primarySkillType.isChildSkill())
-            return;
-
         //XP BAR UPDATES
         experienceBarManager.updateExperienceBar(primarySkillType, plugin);
     }
 
     public double getProgressInCurrentSkillLevel(PrimarySkillType primarySkillType)
     {
+        if(primarySkillType.isChildSkill()) {
+            return 1.0D;
+        }
+
         double currentXP = profile.getSkillXpLevel(primarySkillType);
         double maxXP = profile.getXpToLevel(primarySkillType);
 

@@ -1,3 +1,9 @@
+Version 2.1.127
+    Child Skills now have XP bars, they are hidden by default
+
+    NOTES:
+    You can enable the child skill bars with the command /mmoxpbar <skill> show
+
 Version 2.1.126
     mcMMO now relies on NMS for some of its features, if NMS cannot properly be wired up when initializing mcMMO behaviours relying on NMS will either be partially supported or disabled
     mcMMO now has a compatibility mode, any features that require specific versions of Minecraft for full functionality will be disabled if your server is not running a compatible version, mcMMO will still function in compatibility mode, but either the feature will be modified or disabled depending on the version of the server software

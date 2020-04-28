@@ -117,19 +117,25 @@ public class ExperienceBarManager {
                 hideExperienceBar(skillType);
                 break;
             case RESET:
-                //Hide all currently permanent bars
-                for(PrimarySkillType permanent : alwaysVisible) {
-                    hideExperienceBar(permanent);
-                }
-
-                alwaysVisible.clear();
-                disabledBars.clear();
-
+                resetBarSettings();
                 break;
         }
 
         informPlayer(settingTarget, skillType);
+    }
 
+    private void resetBarSettings() {
+        //Hide all currently permanent bars
+        for(PrimarySkillType permanent : alwaysVisible) {
+            hideExperienceBar(permanent);
+        }
+
+        alwaysVisible.clear();
+        disabledBars.clear();
+
+        //Hide child skills by default
+        disabledBars.add(PrimarySkillType.SALVAGE);
+        disabledBars.add(PrimarySkillType.SMELTING);
     }
 
     private void informPlayer(@NotNull ExperienceBarManager.@NotNull XPBarSettingTarget settingTarget, @Nullable PrimarySkillType skillType) {
