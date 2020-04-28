@@ -19,6 +19,9 @@ load: POSTWORLD
 api-version: 1.13
 
 commands:
+    mmoxpbar:
+        aliases: xpbarsettings
+        description: Change XP bar settings
     mmocompat:
         description: Information about the server and whether or not its considered fully compatible or running in compatibility mode
     mmodebug:

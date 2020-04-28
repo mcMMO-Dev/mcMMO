@@ -429,8 +429,16 @@ public final class CommandRegistrationManager {
         command.setExecutor(new CompatibilityCommand());
     }
 
+    private static void registerXPBarCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mmoxpbar"); //TODO: Localize
+        command.setDescription(LocaleLoader.getString("Commands.Description.mmoxpbar"));
+        command.setUsage(LocaleLoader.formatString("Commands.Usage.1", "mmoxpbar", "<skillname | reset>", "<show | hide>"));
+        command.setExecutor(new XPBarCommand());
+    }
+
     public static void registerCommands() {
         // Generic Commands
+        registerXPBarCommand();
         registerMmoInfoCommand();
         registerMmoDebugCommand();
         registerMcImportCommand();

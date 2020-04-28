@@ -207,6 +207,10 @@ public class McMMOPlayer {
         return (currentXP / maxXP);
     }
 
+    public ExperienceBarManager getExperienceBarManager() {
+        return experienceBarManager;
+    }
+
     public AcrobaticsManager getAcrobaticsManager() {
         return (AcrobaticsManager) skillManagers.get(PrimarySkillType.ACROBATICS);
     }
