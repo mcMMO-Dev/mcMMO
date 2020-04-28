@@ -424,7 +424,7 @@ public final class CommandRegistrationManager {
 
     private static void registerCompatibilityCommand() {
         PluginCommand command = mcMMO.p.getCommand("mmocompat"); //TODO: Localize
-        command.setDescription("Information about mcMMO and whether or not its in compatibility mode or fully functional.");
+        command.setDescription(LocaleLoader.getString("Commands.Description.mmocompat"));
         command.setUsage(LocaleLoader.formatString("Commands.Usage.0", "mmocompat"));
         command.setExecutor(new CompatibilityCommand());
     }

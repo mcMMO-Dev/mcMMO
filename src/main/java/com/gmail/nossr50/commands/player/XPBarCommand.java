@@ -2,7 +2,9 @@ package com.gmail.nossr50.commands.player;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.experience.ExperienceBarManager;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.google.common.collect.ImmutableList;
@@ -24,7 +26,7 @@ public class XPBarCommand implements TabExecutor {
         if(sender instanceof Player) {
             McMMOPlayer mmoPlayer = UserManager.getPlayer((Player) sender);
             if(mmoPlayer == null) {
-                sender.sendMessage("Your mcMMO data has not loaded yet! Try again in a few moments.");
+                NotificationManager.sendPlayerInformationChatOnlyPrefixed(mmoPlayer.getPlayer(), "Profile.PendingLoad");
                 return false;
             }
 
@@ -90,7 +92,7 @@ public class XPBarCommand implements TabExecutor {
                 List<String> options = new ArrayList<>();
 
                 for(ExperienceBarManager.XPBarSettingTarget settingTarget : ExperienceBarManager.XPBarSettingTarget.values()) {
-                    options.add(settingTarget.toString());
+                    options.add(StringUtils.getCapitalized(settingTarget.toString()));
                 }
 
                 return StringUtil.copyPartialMatches(args[0], options, new ArrayList<>(ExperienceBarManager.XPBarSettingTarget.values().length));

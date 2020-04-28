@@ -31,7 +31,9 @@ public abstract class ExperienceCommand implements TabExecutor {
                 }
 
                 if (!permissionsCheckSelf(sender)) {
-                    sender.sendMessage(command.getPermissionMessage());
+                    if(command.getPermissionMessage() != null)
+                        sender.sendMessage(command.getPermissionMessage());
+                    sender.sendMessage("(mcMMO) No permission!");
                     return true;
                 }
 
