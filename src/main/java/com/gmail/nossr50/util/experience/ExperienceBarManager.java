@@ -83,7 +83,8 @@ public class ExperienceBarManager {
 
     public void hideExperienceBar(PrimarySkillType primarySkillType)
     {
-        experienceBars.get(primarySkillType).hideExperienceBar();
+        if(experienceBars.containsKey(primarySkillType))
+            experienceBars.get(primarySkillType).hideExperienceBar();
     }
 
     public void clearTask(PrimarySkillType primarySkillType)
