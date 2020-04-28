@@ -274,7 +274,7 @@ public final class CombatUtils {
         }
 
         if (archeryManager.canDaze(target)) {
-            finalDamage+=archeryManager.daze((Player) target);
+            finalDamage+=archeryManager.daze((Player) target); //the cast is checked by the if condition
         }
 
         if (!arrow.hasMetadata(mcMMO.infiniteArrowKey) && archeryManager.canRetrieveArrows()) {

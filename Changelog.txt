@@ -3,6 +3,7 @@ Version 2.1.126
     mcMMO now has a compatibility mode, any features that require specific versions of Minecraft for full functionality will be disabled if your server is not running a compatible version, mcMMO will still function in compatibility mode, but either the feature will be modified or disabled depending on the version of the server software
     New command /mmocompat - Shows information about whether or not mcMMO is fully functional or if some features are disabled due to the server software not being fully supported. Can be used by players or console.
     Fixed an exploit involving fishing rods
+    mcMMO is now less verbose about unsupported materials found in configs
 
     Notes:
         There are no features that rely on NMS in this version, it took a lot of work to write the NMS framework and I'm going to delay implementation for future versions.

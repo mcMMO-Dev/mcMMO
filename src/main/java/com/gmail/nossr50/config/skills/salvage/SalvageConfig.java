@@ -12,16 +12,15 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 public class SalvageConfig extends ConfigLoader {
     private List<Salvageable> salvageables;
+    private HashSet<String> notSupported;
 
     public SalvageConfig(String fileName) {
         super(fileName);
+        notSupported = new HashSet<>();
         loadKeys();
     }
 
@@ -45,7 +44,7 @@ public class SalvageConfig extends ConfigLoader {
             Material itemMaterial = Material.matchMaterial(key);
 
             if (itemMaterial == null) {
-                mcMMO.p.getLogger().info("No support for salvage item "+key+ " in this version of Minecraft, skipping.");
+                notSupported.add(key);
                 continue;
             }
 
@@ -94,7 +93,7 @@ public class SalvageConfig extends ConfigLoader {
             Material salvageMaterial = (salvageMaterialName == null ? salvageMaterialType.getDefaultMaterial() : Material.matchMaterial(salvageMaterialName));
 
             if (salvageMaterial == null) {
-                mcMMO.p.getLogger().info("Could not find a salvage material for item named " + key + ", skipping.");
+                notSupported.add(key);
                 continue;
             }
 
@@ -152,6 +151,25 @@ public class SalvageConfig extends ConfigLoader {
                 Salvageable salvageable = SalvageableFactory.getSalvageable(itemMaterial, salvageMaterial, minimumLevel, maximumQuantity, maximumDurability, salvageItemType, salvageMaterialType, xpMultiplier);
                 salvageables.add(salvageable);
             }
+        }
+        //Report unsupported
+        StringBuilder stringBuilder = new StringBuilder();
+
+        if(notSupported.size() > 0) {
+            stringBuilder.append("mcMMO found the following materials in the Salvage config that are not supported by the version of Minecraft running on this server: ");
+
+            for (Iterator<String> iterator = notSupported.iterator(); iterator.hasNext(); ) {
+                String unsupportedMaterial = iterator.next();
+
+                if(!iterator.hasNext()) {
+                    stringBuilder.append(unsupportedMaterial);
+                } else {
+                    stringBuilder.append(unsupportedMaterial).append(", ");
+                }
+            }
+
+            mcMMO.p.getLogger().info(stringBuilder.toString());
+            mcMMO.p.getLogger().info("Items using materials that are not supported will simply be skipped.");
         }
     }
 

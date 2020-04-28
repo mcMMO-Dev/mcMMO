@@ -71,6 +71,7 @@ public class CompatibilityManager {
 
     }
 
+    //TODO: move to text manager
     public void reportCompatibilityStatus(CommandSender commandSender) {
         if(isFullyCompatibleServerSoftware) {
             commandSender.sendMessage(LocaleLoader.getString("mcMMO.Template.Prefix",

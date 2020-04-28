@@ -11,15 +11,15 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class RepairConfig extends ConfigLoader {
     private List<Repairable> repairables;
+    private HashSet<String> notSupported;
 
     public RepairConfig(String fileName) {
         super(fileName);
+        notSupported = new HashSet<>();
         loadKeys();
     }
 
@@ -48,7 +48,8 @@ public class RepairConfig extends ConfigLoader {
             Material itemMaterial = Material.matchMaterial(key);
 
             if (itemMaterial == null) {
-                mcMMO.p.getLogger().info("No support for repair item "+key+ " in this version of Minecraft, skipping.");
+                //mcMMO.p.getLogger().info("No support for repair item "+key+ " in this version of Minecraft, skipping.");
+                notSupported.add(key); //Collect names of unsupported items
                 continue;
             }
 
@@ -95,7 +96,7 @@ public class RepairConfig extends ConfigLoader {
             Material repairMaterial = (repairMaterialName == null ? repairMaterialType.getDefaultMaterial() : Material.matchMaterial(repairMaterialName));
 
             if (repairMaterial == null) {
-                mcMMO.p.getLogger().info("Could not find a valid repair material for item named "+key+", skipping.");
+                notSupported.add(key); //Collect names of unsupported items
                 continue;
             }
 
@@ -151,6 +152,25 @@ public class RepairConfig extends ConfigLoader {
                 Repairable repairable = RepairableFactory.getRepairable(itemMaterial, repairMaterial, null, minimumLevel, maximumDurability, repairItemType, repairMaterialType, xpMultiplier, minimumQuantity);
                 repairables.add(repairable);
             }
+        }
+        //Report unsupported
+        StringBuilder stringBuilder = new StringBuilder();
+
+        if(notSupported.size() > 0) {
+            stringBuilder.append("mcMMO found the following materials in the Repair config that are not supported by the version of Minecraft running on this server: ");
+
+            for (Iterator<String> iterator = notSupported.iterator(); iterator.hasNext(); ) {
+                String unsupportedMaterial = iterator.next();
+
+                if(!iterator.hasNext()) {
+                    stringBuilder.append(unsupportedMaterial);
+                } else {
+                    stringBuilder.append(unsupportedMaterial).append(", ");
+                }
+            }
+
+            mcMMO.p.getLogger().info(stringBuilder.toString());
+            mcMMO.p.getLogger().info("Items using materials that are not supported will simply be skipped.");
         }
     }
 
