@@ -81,7 +81,7 @@ public class CompatibilityManager {
             for(CompatibilityType compatibilityType : CompatibilityType.values()) {
                 if(!supportedLayers.get(compatibilityType)) {
                     commandSender.sendMessage(LocaleLoader.getString("mcMMO.Template.Prefix",
-                            "Support layer for " + StringUtils.getCapitalized(compatibilityType.toString()) + "is not supported on this version of Minecraft."));
+                            LocaleLoader.getString("Compatibility.Layer.Unsupported",  StringUtils.getCapitalized(compatibilityType.toString()))));
                 }
             }
         }

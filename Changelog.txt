@@ -12,6 +12,8 @@ Version 2.1.126
         Commands.Description.mmocompat
         Commands.XPBar.Reset
         Commands.XPBar.SettingChanged
+        Compatibility.Layer.Unsupported
+        Compatibility.Layer.PartialSupport
 
 
     Notes:
