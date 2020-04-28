@@ -7,6 +7,13 @@ Version 2.1.126
     Fixed an exploit involving fishing rods
     mcMMO is now less verbose about unsupported materials found in configs
 
+    New locale strings
+        Commands.Description.mmoxpbar
+        Commands.Description.mmocompat
+        Commands.XPBar.Reset
+        Commands.XPBar.SettingChanged
+
+
     Notes:
         There are no features that rely on NMS in this version, it took a lot of work to write the NMS framework and I'm going to delay implementation for future versions.
         /mmoxpbar (or /xpbarsettings) example usages
