@@ -301,8 +301,9 @@ public final class CombatUtils {
      *
      * @param event The event to run the combat checks on.
      */
-    public static void processCombatAttack(EntityDamageByEntityEvent event, Entity damageSourceEntity, LivingEntity target) {
-        EntityType entityType = damageSourceEntity.getType();
+    public static void processCombatAttack(EntityDamageByEntityEvent event, Entity painSourceRoot, LivingEntity target) {
+        Entity painSource = event.getDamager();
+        EntityType entityType = painSource.getType();
 
         if (target instanceof Player) {
             if (Misc.isNPCEntityExcludingVillagers(target)) {
@@ -318,7 +319,7 @@ public final class CombatUtils {
             AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
 
             if (acrobaticsManager.canDodge(target)) {
-                event.setDamage(acrobaticsManager.dodgeCheck(damageSourceEntity, event.getDamage()));
+                event.setDamage(acrobaticsManager.dodgeCheck(painSourceRoot, event.getDamage()));
             }
 
             if (ItemUtils.isSword(player.getInventory().getItemInMainHand())) {
@@ -328,25 +329,24 @@ public final class CombatUtils {
 
                 SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
 
-                if (swordsManager.canUseCounterAttack(damageSourceEntity)) {
-                    swordsManager.counterAttackChecks((LivingEntity) damageSourceEntity, event.getDamage());
+                if (swordsManager.canUseCounterAttack(painSource)) {
+                    swordsManager.counterAttackChecks((LivingEntity) painSource, event.getDamage());
                 }
             }
         }
 
-        if (damageSourceEntity instanceof Player && entityType == EntityType.PLAYER) {
-            Player player = (Player) damageSourceEntity;
+        if (painSourceRoot instanceof Player && entityType == EntityType.PLAYER) {
+            Player player = (Player) painSourceRoot;
 
-            if (UserManager.getPlayer(player) == null) {
+            if (!UserManager.hasPlayerDataKey(player)) {
                 return;
             }
 
-            McMMOPlayer attackingPlayer = UserManager.getPlayer(player);
             ItemStack heldItem = player.getInventory().getItemInMainHand();
 
             if (target instanceof Tameable) {
                 if (heldItem.getType() == Material.BONE) {
-                    TamingManager tamingManager = attackingPlayer.getTamingManager();
+                    TamingManager tamingManager = UserManager.getPlayer(player).getTamingManager();
 
                     if (tamingManager.canUseBeastLore()) {
                         tamingManager.beastLore(target);
@@ -390,10 +390,10 @@ public final class CombatUtils {
         }
 
         else if (entityType == EntityType.WOLF) {
-            Wolf wolf = (Wolf) damageSourceEntity;
+            Wolf wolf = (Wolf) painSource;
             AnimalTamer tamer = wolf.getOwner();
 
-            if (tamer != null && tamer instanceof Player && PrimarySkillType.TAMING.shouldProcess(target)) {
+            if (tamer instanceof Player && PrimarySkillType.TAMING.shouldProcess(target)) {
                 Player master = (Player) tamer;
 
                 if (!Misc.isNPCEntityExcludingVillagers(master) && PrimarySkillType.TAMING.getPermissions(master)) {
@@ -402,10 +402,10 @@ public final class CombatUtils {
             }
         }
         else if (entityType == EntityType.ARROW || entityType == EntityType.SPECTRAL_ARROW) {
-            Projectile arrow = (Projectile) damageSourceEntity;
+            Projectile arrow = (Projectile) painSource;
             ProjectileSource projectileSource = arrow.getShooter();
 
-            if (projectileSource != null && projectileSource instanceof Player && PrimarySkillType.ARCHERY.shouldProcess(target)) {
+            if (projectileSource instanceof Player && PrimarySkillType.ARCHERY.shouldProcess(target)) {
                 Player player = (Player) projectileSource;
 
                 if (!Misc.isNPCEntityExcludingVillagers(player) && PrimarySkillType.ARCHERY.getPermissions(player)) {

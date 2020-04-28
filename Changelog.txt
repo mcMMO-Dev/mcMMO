@@ -14,7 +14,7 @@ Version 2.1.125
 
 Version 2.1.124
     Repair/Salvage can now be set to use vanilla blocks that already do something and that vanilla functionality will be disabled by mcMMO (you could use vanilla-anvils instead of iron_blocks for repair now)
-    Added Gold_Nugget to Mining's Bonus_Drops in config.yml (edit your config)g
+    Added Gold_Nugget to Mining's Bonus_Drops in config.yml (edit your config)
     Added Piglin to experience.yml combat XP tables with a value of 2.0 (edit your config)
     Added Hoglin to experience.yml combat XP tables with a value of 4.0 (edit your config)
     Added Zombified_Piglin & Zombie_Pigman to experience.yml combat XP tables with a value of 3.0 (edit your config)
