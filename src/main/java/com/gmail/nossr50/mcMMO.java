@@ -560,7 +560,7 @@ public class mcMMO extends JavaPlugin {
 
         if(CoreSkillsConfig.getInstance().isPrimarySkillEnabled(PrimarySkillType.ACROBATICS))
         {
-            System.out.println("[mcMMO]" + " enabling Acrobatics Skills");
+            getLogger().info("Enabling Acrobatics Skills");
 
             //TODO: Should do this differently
             Roll roll = new Roll();
