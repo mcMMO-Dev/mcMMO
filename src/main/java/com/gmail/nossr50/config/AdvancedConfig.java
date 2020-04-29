@@ -796,7 +796,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }
 
         //Invalid Color
-        System.out.println("[mcMMO] " + configColor + " is an invalid color value");
+        mcMMO.p.getLogger().warning(configColor + " is an invalid color value");
         return ChatColor.WHITE;
     }
 

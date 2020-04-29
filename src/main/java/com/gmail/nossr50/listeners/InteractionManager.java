@@ -54,7 +54,7 @@ public class InteractionManager {
         if(subSkillNameMap.get(lowerCaseName) == null)
             subSkillNameMap.put(lowerCaseName, abstractSubSkill);
 
-        System.out.println("[mcMMO] registered subskill: "+ abstractSubSkill.getConfigKeyName());
+        mcMMO.p.getLogger().info("Registered subskill: "+ abstractSubSkill.getConfigKeyName());
     }
 
     /**
