@@ -143,8 +143,6 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onEnable() {
         try {
-            p = this;
-
             //Platform Manager
             platformManager = new PlatformManager();
 
@@ -290,6 +288,8 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onLoad()
     {
+        p = this;
+
         if(getServer().getPluginManager().getPlugin("WorldGuard") != null) {
             WorldGuardManager.getInstance().registerFlags();
         }

@@ -104,7 +104,7 @@ public class WorldGuardManager {
                 // to print a message to let the server admin know of the conflict
             }
         } catch (NoClassDefFoundError e) {
-            System.out.println("[mcMMO] Could not register WG Flags!"); //Don't use the Logger here
+            mcMMO.p.getLogger().warning("Could not register WG Flags!");
         }
     }
 
