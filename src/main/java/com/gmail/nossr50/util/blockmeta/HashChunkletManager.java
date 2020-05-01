@@ -346,7 +346,7 @@ public class HashChunkletManager implements ChunkletManager {
 
         try {
             fileIn = new FileInputStream(location);
-            objIn = new ObjectInputStream(fileIn);
+            objIn = new ObjectInputStream(new BufferedInputStream(fileIn));
             storeIn = (ChunkletStore) objIn.readObject();
         }
         catch (IOException ex) {

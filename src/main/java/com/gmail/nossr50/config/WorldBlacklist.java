@@ -54,15 +54,15 @@ public class WorldBlacklist {
                 if(!blacklist.contains(currentLine))
                     blacklist.add(currentLine);
             }
-
-            //Close readers
-            bufferedReader.close();
-            fileReader.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e)
         {
             e.printStackTrace();
+        } finally {
+            //Close readers
+            if(bufferedReader != null) bufferedReader.close();
+            if(fileReader != null) fileReader.close();
         }
 
         plugin.getLogger().info(blacklist.size()+" entries in mcMMO World Blacklist");

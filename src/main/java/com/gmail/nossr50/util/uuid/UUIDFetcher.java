@@ -49,7 +49,9 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
             String body = array.toString();
 
             writeBody(connection, body);
-            JsonObject[] jsonStreamArray = gson.fromJson(new InputStreamReader(connection.getInputStream()), JsonObject[].class);
+            InputStreamReader tempStream = new InputStreamReader(connection.getInputStream());
+            JsonObject[] jsonStreamArray = gson.fromJson(tempStream, JsonObject[].class);
+            tempStream.close();
 
             for (JsonObject jsonProfile : jsonStreamArray) {
                 String id = jsonProfile.get("id").getAsString();
