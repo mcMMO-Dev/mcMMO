@@ -1,5 +1,10 @@
 Version 2.1.127
     Child Skills now have XP bars, they are hidden by default
+    Updated hu_HU locale (thanks andris155)
+    Updated korean locale (thanks GownHeeJun)
+    Fixed a potential resource leak (thanks f1xme)
+    Fixed some potential chunk bugs (thanks f1xme)
+
 
     NOTES:
     You can enable the child skill bars with the command /mmoxpbar <skill> show
