@@ -137,14 +137,16 @@ public class mcMMO extends JavaPlugin {
 
     public static FixedMetadataValue metadataValue;
 
+    public mcMMO() {
+        p = this;
+    }
+
     /**
      * Things to be run when the plugin is enabled.
      */
     @Override
     public void onEnable() {
         try {
-            p = this;
-
             //Platform Manager
             platformManager = new PlatformManager();
 
