@@ -12,7 +12,9 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.CombatUtils;
 import org.bukkit.block.BlockState;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -33,6 +35,35 @@ public final class ExperienceAPI {
      */
     public static boolean isValidSkillType(String skillType) {
         return PrimarySkillType.getSkill(skillType) != null;
+    }
+
+    /**
+     * Start the task that gives combat XP.
+     * Processes combat XP like mcMMO normally would, so mcMMO will check whether or not the entity should reward XP when giving out the XP
+     *
+     * @param mcMMOPlayer The attacking player
+     * @param target The defending entity
+     * @param primarySkillType The skill being used
+     * @param multiplier final XP result will be multiplied by this
+     * @deprecated Draft API
+     */
+    @Deprecated
+    public static void addCombatXP(McMMOPlayer mcMMOPlayer, LivingEntity target, PrimarySkillType primarySkillType, double multiplier) {
+        CombatUtils.processCombatXP(mcMMOPlayer, target, primarySkillType, multiplier);
+    }
+
+    /**
+     * Start the task that gives combat XP.
+     * Processes combat XP like mcMMO normally would, so mcMMO will check whether or not the entity should reward XP when giving out the XP
+     *
+     * @param mcMMOPlayer The attacking player
+     * @param target The defending entity
+     * @param primarySkillType The skill being used
+     * @deprecated Draft API
+     */
+    @Deprecated
+    public static void addCombatXP(McMMOPlayer mcMMOPlayer, LivingEntity target, PrimarySkillType primarySkillType) {
+        CombatUtils.processCombatXP(mcMMOPlayer, target, primarySkillType);
     }
 
     /**

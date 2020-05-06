@@ -87,7 +87,7 @@ public final class CombatUtils {
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
-        startGainXp(mcMMOPlayer, target, PrimarySkillType.SWORDS);
+        processCombatXP(mcMMOPlayer, target, PrimarySkillType.SWORDS);
     }
 
 //    public static void strengthDebug(Player player) {
@@ -162,7 +162,7 @@ public final class CombatUtils {
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
-        startGainXp(mcMMOPlayer, target, PrimarySkillType.AXES);
+        processCombatXP(mcMMOPlayer, target, PrimarySkillType.AXES);
     }
 
     private static void processUnarmedCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event) {
@@ -205,7 +205,7 @@ public final class CombatUtils {
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
-        startGainXp(mcMMOPlayer, target, PrimarySkillType.UNARMED);
+        processCombatXP(mcMMOPlayer, target, PrimarySkillType.UNARMED);
     }
 
     private static void processTamingCombat(LivingEntity target, Player master, Wolf wolf, EntityDamageByEntityEvent event) {
@@ -237,7 +237,7 @@ public final class CombatUtils {
             }
 
             applyScaledModifiers(initialDamage, finalDamage, event);
-            startGainXp(mcMMOPlayer, target, PrimarySkillType.TAMING);
+            processCombatXP(mcMMOPlayer, target, PrimarySkillType.TAMING);
         }
 
     }
@@ -293,7 +293,7 @@ public final class CombatUtils {
             forceMultiplier = arrow.getMetadata(mcMMO.bowForceKey).get(0).asDouble();
 
         applyScaledModifiers(initialDamage, finalDamage, event);
-        startGainXp(mcMMOPlayer, target, PrimarySkillType.ARCHERY, forceMultiplier * distanceMultiplier);
+        processCombatXP(mcMMOPlayer, target, PrimarySkillType.ARCHERY, forceMultiplier * distanceMultiplier);
     }
 
     /**
@@ -688,8 +688,15 @@ public final class CombatUtils {
         }
     }
 
-    public static void startGainXp(McMMOPlayer mcMMOPlayer, LivingEntity target, PrimarySkillType primarySkillType) {
-        startGainXp(mcMMOPlayer, target, primarySkillType, 1.0);
+    /**
+     * Start the task that gives combat XP.
+     *
+     * @param mcMMOPlayer The attacking player
+     * @param target The defending entity
+     * @param primarySkillType The skill being used
+     */
+    public static void processCombatXP(McMMOPlayer mcMMOPlayer, LivingEntity target, PrimarySkillType primarySkillType) {
+        processCombatXP(mcMMOPlayer, target, primarySkillType, 1.0);
     }
 
     /**
@@ -698,8 +705,9 @@ public final class CombatUtils {
      * @param mcMMOPlayer The attacking player
      * @param target The defending entity
      * @param primarySkillType The skill being used
+     * @param multiplier final XP result will be multiplied by this
      */
-    private static void startGainXp(McMMOPlayer mcMMOPlayer, LivingEntity target, PrimarySkillType primarySkillType, double multiplier) {
+    public static void processCombatXP(McMMOPlayer mcMMOPlayer, LivingEntity target, PrimarySkillType primarySkillType, double multiplier) {
         double baseXP = 0;
         XPGainReason xpGainReason;
 
