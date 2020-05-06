@@ -418,21 +418,22 @@ public final class CommandRegistrationManager {
         command.setDescription("Reloads locale"); // TODO: Localize
         command.setPermission("mcmmo.commands.reloadlocale");
         command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.formatString("Commands.Usage.0", "mcmmoreloadlocale"));
+        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcmmoreloadlocale"));
         command.setExecutor(new McmmoReloadLocaleCommand());
     }
 
     private static void registerCompatibilityCommand() {
         PluginCommand command = mcMMO.p.getCommand("mmocompat"); //TODO: Localize
         command.setDescription(LocaleLoader.getString("Commands.Description.mmocompat"));
-        command.setUsage(LocaleLoader.formatString("Commands.Usage.0", "mmocompat"));
+        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mmocompat"));
         command.setExecutor(new CompatibilityCommand());
     }
 
     private static void registerXPBarCommand() {
         PluginCommand command = mcMMO.p.getCommand("mmoxpbar"); //TODO: Localize
         command.setDescription(LocaleLoader.getString("Commands.Description.mmoxpbar"));
-        command.setUsage(LocaleLoader.formatString("Commands.Usage.1", "mmoxpbar", "<skillname | reset>", "<show | hide>"));
+        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mmoxpbar", "<reset>"));
+        command.setUsage(command.getUsage() +"\n" + LocaleLoader.getString("Commands.Usage.2", "<skillname>", "<show | hide>"));
         command.setExecutor(new XPBarCommand());
     }
 
