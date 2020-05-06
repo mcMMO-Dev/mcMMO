@@ -159,7 +159,7 @@ public class UnarmedManager extends SkillManager {
 
         if(rank == 1)
         {
-            return 4;
+            return 1.5;
         } else {
             return 3 + (rank * 2);
         }

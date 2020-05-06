@@ -1,3 +1,7 @@
+Version 2.1.128
+    The first rank of Iron Arm for Unarmed now only gives 1.5 bonus damage instead of 4 (other ranks are the same as before)
+
+
 Version 2.1.127
     Child Skills now have XP bars, they are hidden by default
     Updated hu_HU locale (thanks andris155)
