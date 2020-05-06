@@ -5,6 +5,8 @@ Version 2.1.128
     (API) Added ExperienceAPI::addCombatXP for adding combat XP to players, signature may change so its deprecated for now
     mcMMO now logs whether or not its using FlatFile or SQL database on load
 
+    NOTES: A more thorough look at Unarmed balance will happen in the future, the intention of this nerf is to make Unarmed less rewarding until it is leveled quite a bit.
+
 Version 2.1.127
     Child Skills now have XP bars, they are hidden by default
     Updated hu_HU locale (thanks andris155)
