@@ -92,6 +92,14 @@ public class ExperienceBarManager {
         experienceBarHideTaskHashMap.remove(primarySkillType);
     }
 
+    public void disableAllBars() {
+        for(PrimarySkillType primarySkillType : PrimarySkillType.values()) {
+            xpBarSettingToggle(XPBarSettingTarget.HIDE, primarySkillType);
+        }
+
+        NotificationManager.sendPlayerInformationChatOnlyPrefixed(mcMMOPlayer.getPlayer(), "Commands.XPBar.DisableAll");
+    }
+
     public void xpBarSettingToggle(@NotNull XPBarSettingTarget settingTarget, @Nullable PrimarySkillType skillType) {
         switch(settingTarget) {
             case SHOW:
@@ -147,5 +155,5 @@ public class ExperienceBarManager {
         }
     }
 
-    public enum XPBarSettingTarget { SHOW, HIDE, RESET }
+    public enum XPBarSettingTarget { SHOW, HIDE, RESET, DISABLE }
 }

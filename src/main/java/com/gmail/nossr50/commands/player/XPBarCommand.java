@@ -38,6 +38,9 @@ public class XPBarCommand implements TabExecutor {
               if(option.equalsIgnoreCase(ExperienceBarManager.XPBarSettingTarget.RESET.toString())) {
                   mmoPlayer.getExperienceBarManager().xpBarSettingToggle(ExperienceBarManager.XPBarSettingTarget.RESET, null);
                   return true;
+              } else if(option.equalsIgnoreCase(ExperienceBarManager.XPBarSettingTarget.DISABLE.toString())) {
+                  mmoPlayer.getExperienceBarManager().disableAllBars();
+                  return true;
               } else {
                   return false;
               }
@@ -80,6 +83,8 @@ public class XPBarCommand implements TabExecutor {
                 return ExperienceBarManager.XPBarSettingTarget.SHOW;
             case "reset":
                 return ExperienceBarManager.XPBarSettingTarget.RESET;
+            case "disable":
+                return ExperienceBarManager.XPBarSettingTarget.DISABLE;
         }
 
         return null;
