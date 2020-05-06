@@ -9,6 +9,7 @@ Version 2.1.128
     (1.16) Strider added to combat experience with a value of 1.2
 
     NOTES: A more thorough look at Unarmed balance will happen in the future, the intention of this nerf is to make Unarmed less rewarding until it is leveled quite a bit.
+    I do plan to add saving XP bar settings to an upcoming version of mcMMO, but I'm working on another thing for mcMMO atm.
 
 Version 2.1.127
     Child Skills now have XP bars, they are hidden by default
