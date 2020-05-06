@@ -181,7 +181,7 @@ public class MiningManager extends SkillManager {
 //        float debrisYield = yield - debrisReduction;
 
         for (BlockState blockState : ores) {
-            if (RandomUtils.nextFloat() >= (yield + getOreBonus())) {
+            if (RandomUtils.nextFloat() < (yield + getOreBonus())) {
                 xp += Mining.getBlockXp(blockState);
 
                 Misc.dropItem(Misc.getBlockCenter(blockState), new ItemStack(blockState.getType())); // Initial block that would have been dropped
