@@ -18,6 +18,7 @@ import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.apache.commons.lang.math.RandomUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -161,33 +162,45 @@ public class MiningManager extends SkillManager {
 
         List<BlockState> ores = new ArrayList<BlockState>();
 
-//        List<Block> notOres = new ArrayList<>();
+        List<BlockState> notOres = new ArrayList<>();
         for (Block targetBlock : event.blockList()) {
+            BlockState blockState = targetBlock.getState();
             //Containers usually have 0 XP unless someone edited their config in a very strange way
             if (ExperienceConfig.getInstance().getXp(PrimarySkillType.MINING, targetBlock) != 0
                     && !(targetBlock instanceof Container)
                     && !mcMMO.getPlaceStore().isTrue(targetBlock)) {
-                ores.add(targetBlock.getState());
+                if(BlockUtils.isOre(blockState)) {
+                    ores.add(blockState);
+                } else {
+                    notOres.add(blockState);
+                }
             }
         }
 
         int xp = 0;
 
-//        float oreBonus = (float) (getOreBonus() / 100);
+        float oreBonus = (float) (getOreBonus() / 100);
         //TODO: Pretty sure something is fucked with debrisReduction stuff
-//        float debrisReduction = (float) (getDebrisReduction() / 100);
+        float debrisReduction = (float) (getDebrisReduction() / 100);
         int dropMultiplier = getDropMultiplier();
+        float debrisYield = yield - debrisReduction;
 
-//        float debrisYield = yield - debrisReduction;
+        //Drop "debris" based on skill modifiers
+        for(BlockState blockState : notOres) {
+            if(RandomUtils.nextFloat() < debrisYield) {
+                Misc.dropItem(Misc.getBlockCenter(blockState), new ItemStack(blockState.getType())); // Initial block that would have been dropped
+            }
+        }
 
         for (BlockState blockState : ores) {
-            if (RandomUtils.nextFloat() < (yield + getOreBonus())) {
+            if (RandomUtils.nextFloat() < (yield + oreBonus)) {
                 xp += Mining.getBlockXp(blockState);
 
                 Misc.dropItem(Misc.getBlockCenter(blockState), new ItemStack(blockState.getType())); // Initial block that would have been dropped
 
                 if (!mcMMO.getPlaceStore().isTrue(blockState)) {
                     for (int i = 1; i < dropMultiplier; i++) {
+//                        Bukkit.broadcastMessage("Bonus Drop on Ore: "+blockState.getType().toString());
                         Mining.handleSilkTouchDrops(blockState); // Bonus drops - should drop the block & not the items
                     }
                 }
