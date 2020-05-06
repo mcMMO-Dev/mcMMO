@@ -161,12 +161,12 @@ public class MiningManager extends SkillManager {
 
         List<BlockState> ores = new ArrayList<BlockState>();
 
-        List<Block> notOres = new ArrayList<>();
+//        List<Block> notOres = new ArrayList<>();
         for (Block targetBlock : event.blockList()) {
             //Containers usually have 0 XP unless someone edited their config in a very strange way
-            if (ExperienceConfig.getInstance().getXp(PrimarySkillType.MINING, targetBlock) == 0 || targetBlock instanceof Container || mcMMO.getPlaceStore().isTrue(targetBlock)) {
-                notOres.add(targetBlock);
-            } else {
+            if (ExperienceConfig.getInstance().getXp(PrimarySkillType.MINING, targetBlock) != 0
+                    && !(targetBlock instanceof Container)
+                    && !mcMMO.getPlaceStore().isTrue(targetBlock)) {
                 ores.add(targetBlock.getState());
             }
         }
@@ -181,14 +181,15 @@ public class MiningManager extends SkillManager {
 //        float debrisYield = yield - debrisReduction;
 
         for (BlockState blockState : ores) {
-            if (RandomUtils.nextInt(ores.size()) >= (ores.size() / 2)) {
+            if (RandomUtils.nextFloat() >= (yield + getOreBonus())) {
                 xp += Mining.getBlockXp(blockState);
 
                 Misc.dropItem(Misc.getBlockCenter(blockState), new ItemStack(blockState.getType())); // Initial block that would have been dropped
 
-                for (int i = 1; i < dropMultiplier; i++) {
-                    if(RandomUtils.nextInt(100) >= 75)
+                if (!mcMMO.getPlaceStore().isTrue(blockState)) {
+                    for (int i = 1; i < dropMultiplier; i++) {
                         Mining.handleSilkTouchDrops(blockState); // Bonus drops - should drop the block & not the items
+                    }
                 }
             }
         }
