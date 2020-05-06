@@ -201,7 +201,7 @@ public class MiningManager extends SkillManager {
                 if (!mcMMO.getPlaceStore().isTrue(blockState)) {
                     for (int i = 1; i < dropMultiplier; i++) {
 //                        Bukkit.broadcastMessage("Bonus Drop on Ore: "+blockState.getType().toString());
-                        Mining.handleSilkTouchDrops(blockState); // Bonus drops - should drop the block & not the items
+                        Misc.dropItem(Misc.getBlockCenter(blockState), new ItemStack(blockState.getType())); // Initial block that would have been dropped
                     }
                 }
             }

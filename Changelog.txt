@@ -2,9 +2,11 @@ Version 2.1.128
     The first rank of Iron Arm for Unarmed now only gives 1.5 bonus damage instead of 4 (other ranks are the same as before)
     Blast Mining nerf reverted
     Fixed a bug where debris were not reduced from Blast Mining skills
+    Fixed a bug where certain types of ore did not receive bonuses from Blast Mining
     Fixed a few locale errors with commands
     (API) Added ExperienceAPI::addCombatXP for adding combat XP to players, signature may change so its deprecated for now
     mcMMO now logs whether or not its using FlatFile or SQL database on load
+    (1.16) Strider added to combat experience with a value of 1.2
 
     NOTES: A more thorough look at Unarmed balance will happen in the future, the intention of this nerf is to make Unarmed less rewarding until it is leveled quite a bit.
 
