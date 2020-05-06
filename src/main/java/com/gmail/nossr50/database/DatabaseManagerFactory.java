@@ -59,13 +59,16 @@ public class DatabaseManagerFactory {
     public static DatabaseManager createDatabaseManager(DatabaseType type) {
         switch (type) {
             case FLATFILE:
+                mcMMO.p.getLogger().info("Using FlatFile Database");
                 return new FlatfileDatabaseManager();
 
             case SQL:
+                mcMMO.p.getLogger().info("Using SQL Database");
                 return new SQLDatabaseManager();
 
             case CUSTOM:
                 try {
+                    mcMMO.p.getLogger().info("Attempting to use Custom Database");
                     return createDefaultCustomDatabaseManager();
                 }
                 catch (Throwable e) {
