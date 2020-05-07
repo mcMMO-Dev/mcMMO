@@ -439,6 +439,7 @@ public class MaterialMapStore {
         ironTools.add("bucket");
         ironTools.add("flint_and_steel");
         ironTools.add("shears");
+        ironTools.add("crossbow");
     }
 
     private void fillGoldToolsWhiteList() {

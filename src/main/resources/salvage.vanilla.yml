@@ -120,6 +120,9 @@ Salvageables:
     FLINT_AND_STEEL:
         MinimumLevel: 0
         XpMultiplier: .3
+    CROSSBOW:
+        MinimumLevel: 0
+        XpMultiplier: .5
     # Armor
     IRON_HELMET:
         MinimumLevel: 0
