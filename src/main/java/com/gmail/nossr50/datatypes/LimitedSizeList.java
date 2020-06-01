@@ -22,15 +22,8 @@ public class LimitedSizeList {
     public void add(Location newItem)
     {
         Location[] newList = new Location[size];
-
-        for(int i = 0; i < size-1; i++)
-        {
-            if(i != 0)
-                newList[i] = limitedSizeOrderedList[i-1];
-            else
-                newList[i] = newItem;
-        }
-
+        newList[0] = newItem;
+        System.arraycopy(limitedSizeOrderedList, 0, newList, 1, size-1);
         limitedSizeOrderedList = newList;
     }
 
