@@ -3,6 +3,7 @@ Version 2.1.129
     New locale string 'Commands.XPBar.DisableAll'
     Added Blackstone to Mining experience tables
     Added Chain to Mining experience tables
+    Added Cracked Nether Bricks to Mining experience tables
 
 Version 2.1.128
     The first rank of Iron Arm for Unarmed now only gives 1.5 bonus damage instead of 4 (other ranks are the same as before)
