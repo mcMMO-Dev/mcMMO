@@ -367,6 +367,7 @@ Experience_Values:
         Lily_Of_The_Valley: 150
         Wither_Rose: 500
     Mining:
+        Chain: 100
         Blackstone: 55
         Warped_Nylium: 5
         Crimson_Nylium: 5
