@@ -6,6 +6,7 @@ Version 2.1.129
     Added Cracked Nether Bricks to Mining experience tables
     Added Chiseled Nether Bricks to Mining experience tables
     Added Crying Obsidian to Mining experience tables
+    Added Gilded Blackstone to Mining experience tables
 
     Edit your experience.yml or delete it to generate a new one
 
