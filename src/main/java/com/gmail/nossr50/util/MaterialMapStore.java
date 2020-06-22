@@ -943,6 +943,7 @@ public class MaterialMapStore {
         abilityBlackList.add("barrel");
         abilityBlackList.add("blast_furnace");
         abilityBlackList.add("campfire");
+        abilityBlackList.add("soul_campfire");
         abilityBlackList.add("composter");
         abilityBlackList.add("lodestone");
         abilityBlackList.add("respawn_anchor");
@@ -1075,6 +1076,7 @@ public class MaterialMapStore {
         toolBlackList.add("barrel");
         toolBlackList.add("blast_furnace");
         toolBlackList.add("campfire");
+        toolBlackList.add("soul_campfire");
         toolBlackList.add("cartography_table");
         toolBlackList.add("composter");
         toolBlackList.add("grindstone");
