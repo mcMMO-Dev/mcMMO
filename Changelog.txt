@@ -12,6 +12,7 @@ Version 2.1.129
     Added Warped Hyphae to Woodcutting experience tables
     Added Stripped Warped Hyphae to Woodcutting experience tables
     Added Shroomlight to Herbalism experience tables
+    Added Zoglin to combat experience tables
     Lodestone will now be ignored for activating abilities
     Respawn Anchor will now be ignored for activating abilities
     Soul Campfire will now be ignored for activating abilities
