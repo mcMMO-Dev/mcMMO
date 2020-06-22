@@ -14,11 +14,13 @@ Version 2.1.129
     Added Stripped Warped Hyphae to Woodcutting experience tables
     Added Shroomlight to Herbalism experience tables
     Added Zoglin to combat experience tables
+    Added Redstone Dust to bonus drops for Mining ( edit config.yml )
     Lodestone will now be ignored for activating abilities
     Respawn Anchor will now be ignored for activating abilities
     Soul Campfire will now be ignored for activating abilities
 
     Edit your experience.yml or delete it to generate a new one
+    Edit config.yml and add Redstone_Dust under bonus drops for Mining, you could delete it to generate a new one but MySQL data is stored here
 
 Version 2.1.128
     The first rank of Iron Arm for Unarmed now only gives 1.5 bonus damage instead of 4 (other ranks are the same as before)

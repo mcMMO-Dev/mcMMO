@@ -496,6 +496,7 @@ Bonus_Drops:
         Nether_Quartz: true
         Redstone_Ore: true
         Redstone: true
+        Redstone_Dust: true
         Sandstone: true
         Stone: true
         Cobblestone: true
