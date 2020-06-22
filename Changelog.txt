@@ -7,6 +7,10 @@ Version 2.1.129
     Added Chiseled Nether Bricks to Mining experience tables
     Added Crying Obsidian to Mining experience tables
     Added Gilded Blackstone to Mining experience tables
+    Added Crimson Hyphae to Woodcutting experience tables
+    Added Stripped Crimson Hyphae to Woodcutting experience tables
+    Added Warped Hyphae to Woodcutting experience tables
+    Added Stripped Warped Hyphae to Woodcutting experience tables
 
     Edit your experience.yml or delete it to generate a new one
 

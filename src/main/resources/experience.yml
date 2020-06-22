@@ -249,6 +249,10 @@ Experience_Values:
         Soul_Sand: 40
         Soul_Soil: 40
     Woodcutting:
+        Crimson_Hyphae: 50
+        Stripped_Crimson_Hyphae: 50
+        Warped_Hyphae: 50
+        Stripped_Warped_Hyphae: 50
         Nether_Wart_Block: 1
         Warped_Wart_Block: 1
         Shroomlight: 100
