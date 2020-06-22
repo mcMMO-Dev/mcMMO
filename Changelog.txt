@@ -11,6 +11,7 @@ Version 2.1.129
     Added Stripped Crimson Hyphae to Woodcutting experience tables
     Added Warped Hyphae to Woodcutting experience tables
     Added Stripped Warped Hyphae to Woodcutting experience tables
+    Added Shroomlight to Herbalism experience tables
     Lodestone will now be ignored for activating abilities
     Respawn Anchor will now be ignored for activating abilities
 
