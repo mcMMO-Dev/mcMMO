@@ -944,6 +944,7 @@ public class MaterialMapStore {
         abilityBlackList.add("blast_furnace");
         abilityBlackList.add("campfire");
         abilityBlackList.add("composter");
+        abilityBlackList.add("lodestone");
     }
     
     private void fillToolBlackList()
@@ -1080,6 +1081,7 @@ public class MaterialMapStore {
         toolBlackList.add("loom");
         toolBlackList.add("smoker");
         toolBlackList.add("stonecutter");
+        toolBlackList.add("lodestone");
     }
 
     public int getTier(Material material) {
