@@ -12,6 +12,7 @@ Version 2.1.129
     Added Warped Hyphae to Woodcutting experience tables
     Added Stripped Warped Hyphae to Woodcutting experience tables
     Lodestone will now be ignored for activating abilities
+    Respawn Anchor will now be ignored for activating abilities
 
     Edit your experience.yml or delete it to generate a new one
 

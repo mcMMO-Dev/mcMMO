@@ -945,6 +945,7 @@ public class MaterialMapStore {
         abilityBlackList.add("campfire");
         abilityBlackList.add("composter");
         abilityBlackList.add("lodestone");
+        abilityBlackList.add("respawn_anchor");
     }
     
     private void fillToolBlackList()
@@ -1082,6 +1083,7 @@ public class MaterialMapStore {
         toolBlackList.add("smoker");
         toolBlackList.add("stonecutter");
         toolBlackList.add("lodestone");
+        toolBlackList.add("respawn_anchor");
     }
 
     public int getTier(Material material) {
