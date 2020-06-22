@@ -17,11 +17,13 @@ import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -112,7 +114,7 @@ public class WoodcuttingManager extends SkillManager {
         }
 
         // If the tool can't sustain the durability loss
-        if (!handleDurabilityLoss(treeFellerBlocks, player.getInventory().getItemInMainHand())) {
+        if (!handleDurabilityLoss(treeFellerBlocks, player.getInventory().getItemInMainHand(), player)) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILED, "Woodcutting.Skills.TreeFeller.Splinter");
 
             double health = player.getHealth();
@@ -200,9 +202,10 @@ public class WoodcuttingManager extends SkillManager {
      *
      * @param treeFellerBlocks List of blocks to be removed
      * @param inHand tool being used
+     * @param player the player holding the item
      * @return True if the tool can sustain the durability loss
      */
-    private static boolean handleDurabilityLoss(Set<BlockState> treeFellerBlocks, ItemStack inHand) {
+    private static boolean handleDurabilityLoss(Set<BlockState> treeFellerBlocks, ItemStack inHand, Player player) {
         //Treat the NBT tag for unbreakable and the durability enchant differently
         if(inHand.getItemMeta() != null && inHand.getItemMeta().isUnbreakable()) {
             return true;
@@ -215,6 +218,14 @@ public class WoodcuttingManager extends SkillManager {
             if (BlockUtils.isLog(blockState)) {
                 durabilityLoss += Config.getInstance().getAbilityToolDamage();
             }
+        }
+
+        // Call PlayerItemDamageEvent first to make sure it's not cancelled
+        final PlayerItemDamageEvent event = new PlayerItemDamageEvent(player, inHand, durabilityLoss);
+        Bukkit.getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            return true;
         }
 
         SkillUtils.handleDurabilityChange(inHand, durabilityLoss);
