@@ -22,6 +22,8 @@ Version 2.1.129
     Edit your experience.yml or delete it to generate a new one
     Edit config.yml and add Redstone_Dust under bonus drops for Mining, you could delete it to generate a new one but MySQL data is stored here
 
+    Default experience.yml looks like this now: https://raw.githubusercontent.com/mcMMO-Dev/mcMMO/master/src/main/resources/experience.yml
+
 Version 2.1.128
     The first rank of Iron Arm for Unarmed now only gives 1.5 bonus damage instead of 4 (other ranks are the same as before)
     Blast Mining nerf reverted
