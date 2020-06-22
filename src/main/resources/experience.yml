@@ -372,6 +372,7 @@ Experience_Values:
         Lily_Of_The_Valley: 150
         Wither_Rose: 500
     Mining:
+        Bone_Block: 500
         Crying_Obsidian: 3000
         Chain: 100
         Blackstone: 55

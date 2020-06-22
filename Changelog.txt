@@ -3,6 +3,7 @@ Version 2.1.129
     New locale string 'Commands.XPBar.DisableAll'
     Added Blackstone to Mining experience tables
     Added Chain to Mining experience tables
+    Added Bone Block to Mining experience tables
     Added Cracked Nether Bricks to Mining experience tables
     Added Chiseled Nether Bricks to Mining experience tables
     Added Crying Obsidian to Mining experience tables
