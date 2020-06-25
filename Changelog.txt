@@ -1,3 +1,9 @@
+Version 2.1.130
+    Fixed a bug that prevented Repair from working on the new Netherite weapons/armors
+
+    NOTES:
+    If you are still having issues with Repair/Salvage, delete the repair and salvage .yml files in /plugins/mcMMO and restart the server
+
 Version 2.1.129
     Added new subcommand /mmoxpbar disable - Hides all mcMMO XP bars
     New locale string 'Commands.XPBar.DisableAll'
