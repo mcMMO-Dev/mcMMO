@@ -221,6 +221,7 @@ public class WoodcuttingManager extends SkillManager {
         }
 
         // Call PlayerItemDamageEvent first to make sure it's not cancelled
+        //TODO: Put this event stuff in handleDurabilityChange
         final PlayerItemDamageEvent event = new PlayerItemDamageEvent(player, inHand, durabilityLoss);
         Bukkit.getPluginManager().callEvent(event);
 
