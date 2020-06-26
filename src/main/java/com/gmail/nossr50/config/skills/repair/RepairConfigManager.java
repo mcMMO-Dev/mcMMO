@@ -1,7 +1,9 @@
 package com.gmail.nossr50.config.skills.repair;
 
+import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
+import com.gmail.nossr50.util.FixSpellingNetheriteUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -29,6 +31,13 @@ public class RepairConfigManager {
 
             if (file.isDirectory()) {
                 continue;
+            }
+
+
+            if(mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.FIX_SPELLING_NETHERITE_REPAIR)) {
+                //Check spelling mistakes (early versions of 1.16 support had Netherite misspelled)
+                plugin.getLogger().info("Checking for certain invalid material names in Repair config...");
+                FixSpellingNetheriteUtil.processFileCheck(mcMMO.p, fileName, UpgradeType.FIX_SPELLING_NETHERITE_REPAIR);
             }
 
             RepairConfig rConfig = new RepairConfig(fileName);

@@ -7,3 +7,5 @@ Upgrades_Finished:
     DROP_SQL_PARTY_NAMES: false
     DROP_SPOUT: false
     ADD_ALCHEMY: false
+    FIX_SPELLING_NETHERITE_SALVAGE: false
+    FIX_SPELLING_NETHERITE_REPAIR: false
