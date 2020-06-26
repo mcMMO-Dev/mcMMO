@@ -1,6 +1,8 @@
 Version 2.1.130
     Fixed a bug that prevented Repair from working on the new Netherite weapons/armors
+    Fixed a bug where Netherite gear used Gold Ingots to repair instead of Netherite Scraps (by default)
     mcMMO will now run a script to fix a misspelling of netherite in repair/salvage configs (script only runs once and then never again)
+    mcMMO will produce a fake ItemDamageEvent before damaging axes in Tree Feller execution
 
 
     NOTES:

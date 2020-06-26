@@ -37,10 +37,10 @@ public enum MaterialType {
                 return Material.DIAMOND;
 
             case NETHER:
-                if(Material.getMaterial("netherite_scrap") != null)
-                    return Material.getMaterial("netherite_scrap");
+                if(Material.getMaterial("NETHERITE_SCRAP") != null)
+                    return Material.getMaterial("NETHERITE_SCRAP");
                 else
-                    return Material.GOLD_INGOT;
+                    return Material.DIAMOND;
 
             case OTHER:
             default:
