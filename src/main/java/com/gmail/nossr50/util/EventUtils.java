@@ -26,6 +26,8 @@ import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityDeactivateEve
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerMagicHunterEvent;
 import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
+import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairEvent;
+import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairPrepareEvent;
 import com.gmail.nossr50.events.skills.salvage.McMMOPlayerSalvageCheckEvent;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillEvent;
 import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
@@ -417,8 +419,22 @@ public class EventUtils {
         return event;
     }
 
+    public static McMMOPlayerRepairPrepareEvent callRepairPrepareEvent(Player player, ItemStack repairMaterial, ItemStack repairedObject) {
+        McMMOPlayerRepairPrepareEvent event = new McMMOPlayerRepairPrepareEvent(player, repairMaterial, repairedObject);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        return event;
+    }
+
     public static McMMOPlayerRepairCheckEvent callRepairCheckEvent(Player player, short durability, ItemStack repairMaterial, ItemStack repairedObject) {
         McMMOPlayerRepairCheckEvent event = new McMMOPlayerRepairCheckEvent(player, durability, repairMaterial, repairedObject);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        return event;
+    }
+
+    public static McMMOPlayerRepairEvent callRepairEvent(Player player, short durability, ItemStack repairedObject) {
+        McMMOPlayerRepairEvent event = new McMMOPlayerRepairEvent(player, durability, repairedObject);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         return event;

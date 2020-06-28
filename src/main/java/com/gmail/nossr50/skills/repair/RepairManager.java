@@ -8,6 +8,8 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairEvent;
+import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairPrepareEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
@@ -94,7 +96,10 @@ public class RepairManager extends SkillManager {
         PlayerInventory inventory = player.getInventory();
 
         Material repairMaterial = repairable.getRepairMaterial();
-        ItemStack toRemove = new ItemStack(repairMaterial);
+
+        //allow plugins to change the repair item (custom repair items for custom items)
+        McMMOPlayerRepairPrepareEvent event = EventUtils.callRepairPrepareEvent(getPlayer(), new ItemStack(repairMaterial), item);
+        ItemStack toRemove = event.getRepairMaterial();
 
         short startDurability = item.getDurability();
 
@@ -104,9 +109,8 @@ public class RepairManager extends SkillManager {
             return;
         }
 
-        // Check if they have the proper material to repair with
-        if (!inventory.contains(repairMaterial)) {
-            String prettyName = repairable.getRepairMaterialPrettyName() == null ? StringUtils.getPrettyItemString(repairMaterial) : repairable.getRepairMaterialPrettyName();
+        if (!inventory.containsAtLeast(toRemove, 1)) { //check for matching item, not material
+            String prettyName = (toRemove.hasItemMeta() && toRemove.getItemMeta().hasDisplayName() ? toRemove.getItemMeta().getDisplayName() : repairable.getRepairMaterialPrettyName() == null ? StringUtils.getPrettyItemString(repairMaterial) : repairable.getRepairMaterialPrettyName());
 
             String materialsNeeded = "";
 
@@ -139,7 +143,6 @@ public class RepairManager extends SkillManager {
         }
 
         // Remove the item
-        toRemove = inventory.getItem(inventory.first(repairMaterial)).clone();
         toRemove.setAmount(1);
 
         inventory.removeItem(toRemove);
@@ -158,6 +161,9 @@ public class RepairManager extends SkillManager {
 
         // Repair the item!
         item.setDurability(newDurability);
+
+        McMMOPlayerRepairEvent repairEvent = EventUtils.callRepairEvent(getPlayer(), (short) (startDurability - newDurability), item);
+        getPlayer().getInventory().setItemInMainHand(repairEvent.getRepairedItem());
     }
 
     private float getPercentageRepaired(short startDurability, short newDurability, short totalDurability) {
