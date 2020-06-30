@@ -2,6 +2,7 @@ Version 2.1.131
 
     New permission node 'mcmmo.ability.repair.netheriterepair' which is included in the mcmmo.defaults permission package
     New permission node 'mcmmo.ability.salvage.netheritesalvage' which is included in the mcmmo.defaults permission package
+    mcMMO will set the default salvage quantities for netherite armor to 4 once and then never again (see notes)
 
     Added Basalt to Bonus Drops for Mining in config.yml (see notes)
     Added Polished Basalt to Bonus Drops for Mining in config.yml (see notes)
@@ -35,6 +36,7 @@ Version 2.1.131
 
     NOTES:
 
+    Default salvage quantities for netherite armor were above 4 in some cases which was not intended, mcMMO will run some code to correct this once and then it will not edit the file again.
     Repair and Salvage are going to get some tweaks regarding Netherite gear really soon.
     This update adds quite a few missing entries for bonus drops, without these entries double drops on these items/blocks will not happen.
     You should not need to edit your configs to receive these changes.
