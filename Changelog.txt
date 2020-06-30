@@ -1,4 +1,34 @@
 Version 2.1.131
+    Added Basalt to Bonus Drops for Mining in config.yml (see notes)
+    Added Polished Basalt to Bonus Drops for Mining in config.yml (see notes)
+    Added Blackstone to Bonus Drops for Mining in config.yml (see notes)
+    Added Chain to Bonus Drops for Mining in config.yml (see notes)
+    Added Nether Bricks to Bonus Drops for Mining in config.yml (see notes)
+    Added Red Nether Bricks to Bonus Drops for Mining in config.yml (see notes)
+    Added Cracked Nether Bricks to Bonus Drops for Mining in config.yml (see notes)
+    Added Chiseled Nether Bricks to Bonus Drops for Mining in config.yml (see notes)
+    Added Crying Obsidian to Bonus Drops for Mining in config.yml (see notes)
+    Added Gilded Blackstone to Bonus Drops for Mining in config.yml (see notes)
+    Added Warped Roots to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Warped Stem to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Crimson Roots to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Crimson Stem to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Shroomlight to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Twisting Vines to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Nether Wart Block to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Warped Wart Block to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Weeping Vines to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Crimson Hyphae to Bonus Drops for Woodcutting in config.yml (see notes)
+    Added Stripped Crimson Hyphae to Bonus Drops for Woodcutting in config.yml (see notes)
+    Added Warped Hyphae to Bonus Drops for Woodcutting in config.yml (see notes)
+    Added Stripped Warped Hyphae to Bonus Drops for Woodcutting in config.yml (see notes)
+
+    Added Red Nether Bricks to Experience tables for Mining in experience.yml (see notes)
+
+    NOTES:
+
+    This update adds an array of missing entries for bonus drops, without these entries double drops on these items/blocks will not happen.
+
 
 Version 2.1.130
     Fixed a bug that prevented Repair from working on the new Netherite weapons/armors

@@ -427,6 +427,15 @@ Skills:
 ###
 Bonus_Drops:
     Herbalism:
+        Weeping_Vines: true
+        Twisting_Vines: true
+        Shroomlight: true
+        Crimson_Stem: true
+        Warped_Stem: true
+        Crimson_Roots: true
+        Warped_Roots: true
+        Nether_Wart_Block: true
+        Warped_Wart_Block: true
         Bamboo_Sapling: true
         Crimson_Fungus: true
         Warped_Fungus: true
@@ -467,6 +476,17 @@ Bonus_Drops:
         Peony: true
         Lily_Of_The_Valley: true
     Mining:
+        Gilded_Blackstone: true
+        Crying_Obsidian: true
+        Nether_Bricks: true
+        Red_Nether_Bricks: true
+        Cracked_Nether_Bricks: true
+        Chiseled_Nether_Bricks: true
+        Chain: true
+        Blackstone: true
+        Basalt: true
+        Polished_Basalt: true
+        Nether_Gold_Ore: true
         Warped_Nylium: true
         Crimson_Nylium: true
         Ancient_Debris: true
@@ -501,6 +521,10 @@ Bonus_Drops:
         Stone: true
         Cobblestone: true
     Woodcutting:
+        Crimson_Hyphae: true
+        Warped_Hyphae: true
+        Stripped_Crimson_Hyphae: true
+        Stripped_Warped_Hyphae: true
         Shroomlight: true
         Crimson_Stem: true
         Warped_Stem: true
