@@ -35,6 +35,7 @@ Version 2.1.131
 
 
     Netherite now requires 100 Salvage skill (by default configs) in order to salvage
+    Added the missing NMS wiring (it should be noted NMS isn't currently being used in mcMMO, but the framework is there. Working on a sideproject involving this...)
 
     NOTES:
 
