@@ -33,7 +33,6 @@ Version 2.1.131
     Added Netherite to Experience tables for Repair in experience.yml (see notes)
     Added Piglin Brute to Experience tables for all combat skills in experience.yml
 
-
     Netherite now requires 100 Salvage skill (by default configs) in order to salvage
     Added the missing NMS wiring (it should be noted NMS isn't currently being used in mcMMO, but the framework is there. Working on a sideproject involving this...)
 

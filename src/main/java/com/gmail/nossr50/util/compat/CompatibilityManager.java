@@ -113,6 +113,11 @@ public class CompatibilityManager {
                         return NMSVersion.NMS_1_14_4;
                     case 15:
                         return NMSVersion.NMS_1_15_2;
+                    case 16:
+                        switch(minecraftGameVersion.getPatchVersion().asInt()) {
+                            case 1:
+                                return NMSVersion.NMS_1_16_1;
+                        }
                 }
         }
 

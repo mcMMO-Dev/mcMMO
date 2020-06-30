@@ -39,6 +39,7 @@ public class SalvageConfig extends ConfigLoader {
         Set<String> keys = section.getKeys(false);
 
         //Original version of 1.16 support had maximum quantities that were bad, this fixes it
+
         if(mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.FIX_NETHERITE_SALVAGE_QUANTITIES)) {
             mcMMO.p.getLogger().info("Fixing incorrect Salvage quantities on Netherite gear, this will only run once...");
             for(String namespacedkey : mcMMO.getMaterialMapStore().getNetheriteArmor()) {
@@ -47,7 +48,7 @@ public class SalvageConfig extends ConfigLoader {
 
             try {
                 config.save(getFile());
-//                mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.FIX_NETHERITE_SALVAGE_QUANTITIES);
+                mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.FIX_NETHERITE_SALVAGE_QUANTITIES);
                 mcMMO.p.getLogger().info("Fixed incorrect Salvage quantities for Netherite gear!");
             } catch (IOException e) {
                 mcMMO.p.getLogger().info("Unable to fix Salvage config, please delete the salvage yml file to generate a new one.");
