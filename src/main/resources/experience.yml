@@ -542,6 +542,7 @@ Experience_Values:
             Wandering_trader: 1.0
             Bee: 1.5
             Piglin: 2.0
+            Piglin_Brute: 4.5
             Hoglin: 4.0
             Zombie_Pigman: 3.0
             Zombified_Piglin: 3.0
