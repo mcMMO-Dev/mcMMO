@@ -1,4 +1,8 @@
 Version 2.1.131
+
+    New permission node 'mcmmo.ability.repair.netheriterepair' which is included in the mcmmo.defaults permission package
+    New permission node 'mcmmo.ability.salvage.netheritesalvage' which is included in the mcmmo.defaults permission package
+
     Added Basalt to Bonus Drops for Mining in config.yml (see notes)
     Added Polished Basalt to Bonus Drops for Mining in config.yml (see notes)
     Added Blackstone to Bonus Drops for Mining in config.yml (see notes)
@@ -24,10 +28,12 @@ Version 2.1.131
     Added Stripped Warped Hyphae to Bonus Drops for Woodcutting in config.yml (see notes)
 
     Added Red Nether Bricks to Experience tables for Mining in experience.yml (see notes)
+    Added Netherite to Experience tables for Repair in experience.yml (see notes)
 
     NOTES:
 
-    This update adds an array of missing entries for bonus drops, without these entries double drops on these items/blocks will not happen.
+    This update adds quite a few missing entries for bonus drops, without these entries double drops on these items/blocks will not happen.
+    You should not need to edit your configs to receive these changes.
 
 
 Version 2.1.130
