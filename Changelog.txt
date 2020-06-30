@@ -29,9 +29,13 @@ Version 2.1.131
 
     Added Red Nether Bricks to Experience tables for Mining in experience.yml (see notes)
     Added Netherite to Experience tables for Repair in experience.yml (see notes)
+    Changed Salvage maximum quantity values to 4 for all Netherite gear
+
+    Netherite now requires 100 Salvage skill (by default configs) in order to salvage
 
     NOTES:
 
+    Repair and Salvage are going to get some tweaks regarding Netherite gear really soon.
     This update adds quite a few missing entries for bonus drops, without these entries double drops on these items/blocks will not happen.
     You should not need to edit your configs to receive these changes.
 

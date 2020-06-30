@@ -1088,6 +1088,15 @@ public class MaterialMapStore {
         toolBlackList.add("respawn_anchor");
     }
 
+    public HashSet<String> getNetheriteArmor() {
+        return netheriteArmor;
+    }
+
+    public HashSet<String> getNetheriteTools() {
+        return netheriteTools;
+    }
+
+
     public int getTier(Material material) {
         return getTier(material.getKey().getKey());
     }
