@@ -206,16 +206,20 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     public boolean hasCombatXP(EntityType entity) {return config.contains("Experience_Values.Combat.Multiplier." + StringUtils.getPrettyEntityTypeString(entity).replace(" ", "_")); }
 
     /* Materials  */
-    public int getXp(PrimarySkillType skill, Material data)
+    public int getXp(PrimarySkillType skill, Material material)
     {
+        //TODO: Temporary measure to fix an exploit caused by a yet to be fixed Spigot bug (as of 7/3/2020)
+        if(material.toString().contains("LILY_PAD"))
+            return 0;
+
         String baseString = "Experience_Values." + StringUtils.getCapitalized(skill.toString()) + ".";
-        String explicitString = baseString + StringUtils.getExplicitConfigMaterialString(data);
+        String explicitString = baseString + StringUtils.getExplicitConfigMaterialString(material);
         if (config.contains(explicitString))
             return config.getInt(explicitString);
-        String friendlyString = baseString + StringUtils.getFriendlyConfigMaterialString(data);
+        String friendlyString = baseString + StringUtils.getFriendlyConfigMaterialString(material);
         if (config.contains(friendlyString))
             return config.getInt(friendlyString);
-        String wildcardString = baseString + StringUtils.getWildcardConfigMaterialString(data);
+        String wildcardString = baseString + StringUtils.getWildcardConfigMaterialString(material);
         if (config.contains(wildcardString))
             return config.getInt(wildcardString);
         return 0;
