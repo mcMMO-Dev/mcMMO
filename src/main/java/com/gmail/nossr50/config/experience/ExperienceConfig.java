@@ -209,7 +209,7 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     public int getXp(PrimarySkillType skill, Material material)
     {
         //TODO: Temporary measure to fix an exploit caused by a yet to be fixed Spigot bug (as of 7/3/2020)
-        if(material.toString().contains("LILY_PAD"))
+        if(material.toString().equalsIgnoreCase("LILY_PAD"))
             return 0;
 
         String baseString = "Experience_Values." + StringUtils.getCapitalized(skill.toString()) + ".";
