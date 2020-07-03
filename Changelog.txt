@@ -1,3 +1,6 @@
+Version 2.1.132
+    Fixed a NPE that could happen when players swapped items from their hotbar
+
 Version 2.1.131
 
     New permission node 'mcmmo.ability.repair.netheriterepair' which is included in the mcmmo.defaults permission package
