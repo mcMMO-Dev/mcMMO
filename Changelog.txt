@@ -8,10 +8,12 @@ Version 2.1.133
     New command /crossbows - Skill Info for Crossbows
 
     Added Sub-Skill named Multi Tasking to Tridents
+    Added Sub-Skill named Tridents Limit Break to Tridents
+
     Added Sub-Skill named Cone of Death to Crossbows
+    Added Sub-Skill named Crossbows Limit Break to Crossbows
 
     Permission node descriptions had mentions of ability changed to sub-skill and other minor corrections
-
 
     (These permissions are all included in the mcmmo.defaults node)
     New permission node 'mcmmo.commands.tridents'
