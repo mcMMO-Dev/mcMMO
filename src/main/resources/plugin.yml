@@ -726,6 +726,9 @@ permissions:
         description: Allows access to all Tridents abilities
         children:
             mcmmo.ability.tridents.multitasking: true
+            mcmmo.ability.tridents.tridentslimitbreak: true
+    mcmmo.ability.tridents.tridentslimitbreak:
+        description: Allows access to Tridents Limit Break sub-skill
     mcmmo.ability.tridents.multitasking:
         description: Allows access to Multitasking Trident sub-skill
     mcmmo.ability.crossbows.*:
@@ -737,6 +740,9 @@ permissions:
         description: Allows access to Crossbow sub-skills
         children:
             mcmmo.ability.crossbows.coneofdeath: true
+            mcmmo.ability.crossbows.crossbowslimitbreak: true
+    mcmmo.ability.crossbows.crossbowslimitbreak:
+        description: Allows access to Crossbows Limit Break sub-skill
     mcmmo.ability.crossbows.coneofdeath:
         description: Allows access to Cone of Death sub-skill
     mcmmo.admin:

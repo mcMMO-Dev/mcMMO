@@ -109,10 +109,12 @@ public enum SubSkillType {
 
     /* TRIDENTS */
     TRIDENTS_MULTI_TASKING(5),
+    TRIDENTS_TRIDENTS_LIMIT_BREAK(10),
 
     /* CROSSBOWS */
 
-    CROSSBOWS_CONE_OF_DEATH(8);
+    CROSSBOWS_CONE_OF_DEATH(8),
+    CROSSBOWS_CROSSBOWS_LIMIT_BREAK(10);
 
 
     private final int numRanks;

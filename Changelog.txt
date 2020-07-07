@@ -15,12 +15,23 @@ Version 2.1.133
     New permission node 'mcmmo.skills.tridents'
     New permission node 'mcmmo.ability.tridents.all'
     New permission node 'mcmmo.ability.tridents.multitasking'
+    New permission node 'mcmmo.ability.tridents.tridentslimitbreak'
+
     New permission node 'mcmmo.commands.crossbows'
     New permission node 'mcmmo.skills.crossbows'
     New permission node 'mcmmo.ability.crossbows.all'
+    New permission node 'mcmmo.ability.crossbows.crossbowslimitbreak'
+    New permission node 'mcmmo.ability.crossbows.coneofdeath'
 
     Added new locale string 'Overhaul.Name.Tridents'
+    Added new locale string 'Tridents.SubSkill.TridentsLimitBreak.Name'
+    Added new locale string 'Tridents.SubSkill.TridentsLimitBreak.Description'
+    Added new locale string 'Tridents.SubSkill.TridentsLimitBreak.Stat'
+
     Added new locale string 'Overhaul.Name.Crossbows'
+    Added new locale string 'Crossbows.SubSkill.CrossbowsLimitBreak.Name'
+    Added new locale string 'Crossbows.SubSkill.CrossbowsLimitBreak.Description'
+    Added new locale string 'Crossbows.SubSkill.CrossbowsLimitBreak.Stat'
 
     Added XP bar settings for Tridents & Crossbows to experience.yml
     Changed some debug level logging to info level for convenience

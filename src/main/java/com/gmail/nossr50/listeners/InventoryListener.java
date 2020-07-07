@@ -436,6 +436,9 @@ public class InventoryListener implements Listener {
     public void onInventoryClickEvent(InventoryClickEvent event) {
         SkillUtils.removeAbilityBuff(event.getCurrentItem());
         if (event.getAction() == InventoryAction.HOTBAR_SWAP) {
+            PlayerInventory playerInventory = event.getWhoClicked().getInventory();
+
+            if(playerInventory.getSize())
             if(event.getWhoClicked().getInventory().getItem(event.getHotbarButton()) != null)
                 SkillUtils.removeAbilityBuff(event.getWhoClicked().getInventory().getItem(event.getHotbarButton()));
         }
