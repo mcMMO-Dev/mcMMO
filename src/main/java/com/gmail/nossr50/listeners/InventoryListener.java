@@ -436,15 +436,13 @@ public class InventoryListener implements Listener {
     public void onInventoryClickEvent(InventoryClickEvent event) {
         SkillUtils.removeAbilityBuff(event.getCurrentItem());
         if (event.getAction() == InventoryAction.HOTBAR_SWAP) {
+            if(event.getHotbarButton() == -1)
+                return;
+
             PlayerInventory playerInventory = event.getWhoClicked().getInventory();
 
-            //TODO: Is this a spigot bug?
-            if(playerInventory.getContents().length > event.getHotbarButton())
-            {
-                if(event.getWhoClicked().getInventory().getItem(event.getHotbarButton()) != null)
-                    SkillUtils.removeAbilityBuff(event.getWhoClicked().getInventory().getItem(event.getHotbarButton()));
-            }
-
+            if(playerInventory.getItem(event.getHotbarButton()) != null)
+                SkillUtils.removeAbilityBuff(event.getWhoClicked().getInventory().getItem(event.getHotbarButton()));
         }
     }
 
