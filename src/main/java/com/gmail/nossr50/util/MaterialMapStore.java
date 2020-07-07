@@ -48,6 +48,7 @@ public class MaterialMapStore {
     private HashSet<String> pickAxes;
     private HashSet<String> tridents;
     private HashSet<String> bows;
+    private HashSet<String> xbows;
     private HashSet<String> tools;
 
     private HashSet<String> enchantables;
@@ -85,6 +86,7 @@ public class MaterialMapStore {
         diamondTools = new HashSet<>();
         netheriteTools = new HashSet<>();
         bows = new HashSet<>();
+        xbows = new HashSet<>();
         stringTools = new HashSet<>();
         tools = new HashSet<>();
 
@@ -255,6 +257,7 @@ public class MaterialMapStore {
         fillTridents();
         fillStringTools();
         fillBows();
+        fillCrossBows();
 
         //Tools collection
         tools.addAll(woodTools);
@@ -266,10 +269,15 @@ public class MaterialMapStore {
         tools.addAll(tridents);
         tools.addAll(stringTools);
         tools.addAll(bows);
+        tools.addAll(xbows);
     }
 
     private void fillBows() {
         bows.add("bow");
+    }
+
+    private void fillCrossBows() {
+        xbows.add("crossbow");
     }
 
     private void fillStringTools() {
@@ -598,6 +606,15 @@ public class MaterialMapStore {
         return bows.contains(id);
     }
 
+    public boolean isCrossbow(Material material) {
+        return isCrossbow(material.getKey().getKey());
+    }
+
+    public boolean isCrossbow(String id) {
+        return xbows.contains(id);
+    }
+
+
     public boolean isLeatherArmor(Material material) {
         return isLeatherArmor(material.getKey().getKey());
     }
@@ -685,6 +702,10 @@ public class MaterialMapStore {
     public boolean isDiamondTool(String id) {
         return diamondTools.contains(id);
     }
+
+    public boolean isTrident(Material material) { return isTrident(material.getKey().getKey()); }
+
+    public boolean isTrident(String id) { return tridents.contains(id); }
 
     public boolean isSword(Material material) {
         return isSword(material.getKey().getKey());

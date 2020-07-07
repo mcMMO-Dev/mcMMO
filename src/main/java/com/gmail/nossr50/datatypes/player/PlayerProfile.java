@@ -11,7 +11,9 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerProfileSaveTask;
 import com.gmail.nossr50.skills.child.FamilyTree;
+import com.gmail.nossr50.util.experience.ExperienceBarManager;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.HashMap;
@@ -36,6 +38,7 @@ public class PlayerProfile {
     private final Map<PrimarySkillType, Float>     skillsXp   = new HashMap<PrimarySkillType, Float>();     // Skill & XP
     private final Map<SuperAbilityType, Integer> abilityDATS = new HashMap<SuperAbilityType, Integer>(); // Ability & Cooldown
     private final Map<UniqueDataType, Integer> uniquePlayerData = new HashMap<>(); //Misc data that doesn't fit into other categories (chimaera wing, etc..)
+    private Map<PrimarySkillType, ExperienceBarManager.BarState> xpBarState = new HashMap<>();
 
     // Store previous XP gains for diminished returns
     private DelayQueue<SkillXpGain> gainedSkillsXp = new DelayQueue<SkillXpGain>();
@@ -70,14 +73,16 @@ public class PlayerProfile {
     public PlayerProfile(String playerName, boolean isLoaded) {
         this(playerName);
         this.loaded = isLoaded;
+        this.xpBarState = SkillUtils.generateDefaultBarStateMap();
     }
 
     public PlayerProfile(String playerName, UUID uuid, boolean isLoaded) {
         this(playerName, uuid);
         this.loaded = isLoaded;
+        this.xpBarState = SkillUtils.generateDefaultBarStateMap();
     }
 
-    public PlayerProfile(String playerName, UUID uuid, Map<PrimarySkillType, Integer> levelData, Map<PrimarySkillType, Float> xpData, Map<SuperAbilityType, Integer> cooldownData, MobHealthbarType mobHealthbarType, int scoreboardTipsShown, Map<UniqueDataType, Integer> uniqueProfileData) {
+    public PlayerProfile(String playerName, UUID uuid, Map<PrimarySkillType, Integer> levelData, Map<PrimarySkillType, Float> xpData, Map<SuperAbilityType, Integer> cooldownData, MobHealthbarType mobHealthbarType, int scoreboardTipsShown, Map<UniqueDataType, Integer> uniqueProfileData, Map<PrimarySkillType, ExperienceBarManager.BarState> barStateMap) {
         this.playerName = playerName;
         this.uuid = uuid;
         this.mobHealthbarType = mobHealthbarType;
@@ -87,6 +92,7 @@ public class PlayerProfile {
         skillsXp.putAll(xpData);
         abilityDATS.putAll(cooldownData);
         uniquePlayerData.putAll(uniqueProfileData);
+        xpBarState.putAll(barStateMap);
 
         loaded = true;
     }
@@ -115,7 +121,7 @@ public class PlayerProfile {
         }
 
         // TODO should this part be synchronized?
-        PlayerProfile profileCopy = new PlayerProfile(playerName, uuid, ImmutableMap.copyOf(skills), ImmutableMap.copyOf(skillsXp), ImmutableMap.copyOf(abilityDATS), mobHealthbarType, scoreboardTipsShown, ImmutableMap.copyOf(uniquePlayerData));
+        PlayerProfile profileCopy = new PlayerProfile(playerName, uuid, ImmutableMap.copyOf(skills), ImmutableMap.copyOf(skillsXp), ImmutableMap.copyOf(abilityDATS), mobHealthbarType, scoreboardTipsShown, ImmutableMap.copyOf(uniquePlayerData), ImmutableMap.copyOf(xpBarState));
         changed = !mcMMO.getDatabaseManager().saveUser(profileCopy);
 
         if (changed) {
@@ -438,5 +444,9 @@ public class PlayerProfile {
         }
 
         return sum / parents.size();
+    }
+
+    public HashMap<PrimarySkillType, ExperienceBarManager.BarState> getXpBarStateMap() {
+        return (HashMap<PrimarySkillType, ExperienceBarManager.BarState>) xpBarState;
     }
 }

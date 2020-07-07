@@ -18,6 +18,7 @@ import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
+import com.gmail.nossr50.skills.tridents.TridentManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -89,6 +90,26 @@ public final class CombatUtils {
         applyScaledModifiers(initialDamage, finalDamage, event);
         processCombatXP(mcMMOPlayer, target, PrimarySkillType.SWORDS);
     }
+
+    public static void processTridentCombat(LivingEntity target, Player player, EntityDamageByEntityEvent entityDamageByEntityEvent) {
+        if (entityDamageByEntityEvent.getCause() == DamageCause.THORNS) {
+            return;
+        }
+
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        //Make sure the profiles been loaded
+        if(mcMMOPlayer == null) {
+            return;
+        }
+
+        TridentManager tridentManager = mcMMOPlayer.getTridentManager();
+//        double initialDamage = entityDamageByEntityEvent.getDamage();
+//        double finalDamage = initialDamage;
+
+        processCombatXP(mcMMOPlayer, target, PrimarySkillType.TRIDENTS);
+    }
+
 
 //    public static void strengthDebug(Player player) {
 //        BukkitPlatform bukkitPlatform = (BukkitPlatform) mcMMO.getPlatformManager().getPlatform();
@@ -385,6 +406,15 @@ public final class CombatUtils {
 
                 if (PrimarySkillType.UNARMED.getPermissions(player)) {
                     processUnarmedCombat(target, player, event);
+                }
+            }
+            else if (ItemUtils.isTrident(heldItem)) {
+                if(!PrimarySkillType.TRIDENTS.shouldProcess(target)) {
+                    return;
+                }
+
+                if(PrimarySkillType.TRIDENTS.getPermissions(player)) {
+                    processTridentCombat(target, player, event);
                 }
             }
         }

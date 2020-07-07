@@ -110,6 +110,14 @@ Experience_Bars:
         Enable: true
         Color: GREEN
         BarStyle: SEGMENTED_6
+    Tridents:
+        Enable: true
+        Color: BLUE
+        BarStyle: SEGMENTED_6
+    Crossbows:
+        Enable: true
+        Color: BLUE
+        BarStyle: SEGMENTED_6
 #
 #  Settings for XP formula
 ###
@@ -159,6 +167,8 @@ Experience_Formula:
         Repair: 1.0
         Fishing: 1.0
         Alchemy: 1.0
+        Tridents: 1.0
+        Crossbows: 1.0
 
     # XP earned by players with the permission mcmmo.perks.xp.customboost.<skillname> will get multiplied
     # with 1.25 by default, resulting in a 25% XP boost
@@ -191,6 +201,8 @@ Diminished_Returns:
         Repair: 20000
         Fishing: 20000
         Alchemy: 20000
+        Tridents: 20000
+        Crossbows: 20000
 
     Time_Interval: 10
 

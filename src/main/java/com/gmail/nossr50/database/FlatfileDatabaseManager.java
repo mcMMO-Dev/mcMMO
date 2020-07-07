@@ -14,6 +14,8 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.experience.ExperienceBarManager;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.OfflinePlayer;
 
 import java.io.*;
@@ -360,6 +362,55 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         writer.append(uuid != null ? uuid.toString() : "NULL").append(":");
         writer.append(profile.getScoreboardTipsShown()).append(":");
         writer.append(profile.getUniqueData(UniqueDataType.CHIMAERA_WING_DATS)).append(":");
+
+        /*
+            public static int SKILLS_TRIDENTS = 44;
+            public static int EXP_TRIDENTS = 45;
+            public static int SKILLS_CROSSBOWS = 46;
+            public static int EXP_CROSSBOWS = 47;
+            public static int BARSTATE_ACROBATICS = 48;
+            public static int BARSTATE_ALCHEMY = 49;
+            public static int BARSTATE_ARCHERY = 50;
+            public static int BARSTATE_AXES = 51;
+            public static int BARSTATE_EXCAVATION = 52;
+            public static int BARSTATE_FISHING = 53;
+            public static int BARSTATE_HERBALISM = 54;
+            public static int BARSTATE_MINING = 55;
+            public static int BARSTATE_REPAIR = 56;
+            public static int BARSTATE_SALVAGE = 57;
+            public static int BARSTATE_SMELTING = 58;
+            public static int BARSTATE_SWORDS = 59;
+            public static int BARSTATE_TAMING = 60;
+            public static int BARSTATE_UNARMED = 61;
+            public static int BARSTATE_WOODCUTTING = 62;
+            public static int BARSTATE_TRIDENTS = 63;
+            public static int BARSTATE_CROSSBOWS = 64;
+         */
+
+        writer.append(profile.getSkillLevel(PrimarySkillType.TRIDENTS)).append(":");
+        writer.append(profile.getSkillXpLevel(PrimarySkillType.TRIDENTS)).append(":");
+        writer.append(profile.getSkillLevel(PrimarySkillType.CROSSBOWS)).append(":");
+        writer.append(profile.getSkillXpLevel(PrimarySkillType.CROSSBOWS)).append(":");
+
+        //XPBar States
+        writer.append(profile.getXpBarStateMap().get(PrimarySkillType.ACROBATICS).toString()).append(":");
+        writer.append(profile.getXpBarStateMap().get(PrimarySkillType.ALCHEMY).toString()).append(":");
+        writer.append(profile.getXpBarStateMap().get(PrimarySkillType.ARCHERY).toString()).append(":");
+        writer.append(profile.getXpBarStateMap().get(PrimarySkillType.AXES).toString()).append(":");
+        writer.append(profile.getXpBarStateMap().get(PrimarySkillType.EXCAVATION).toString()).append(":");
+        writer.append(profile.getXpBarStateMap().get(PrimarySkillType.FISHING).toString()).append(":");
+        writer.append(profile.getXpBarStateMap().get(PrimarySkillType.HERBALISM).toString()).append(":");
+        writer.append(profile.getXpBarStateMap().get(PrimarySkillType.MINING).toString()).append(":");
+        writer.append(profile.getXpBarStateMap().get(PrimarySkillType.REPAIR).toString()).append(":");
+        writer.append(profile.getXpBarStateMap().get(PrimarySkillType.SALVAGE).toString()).append(":");
+        writer.append(profile.getXpBarStateMap().get(PrimarySkillType.SMELTING).toString()).append(":");
+        writer.append(profile.getXpBarStateMap().get(PrimarySkillType.SWORDS).toString()).append(":");
+        writer.append(profile.getXpBarStateMap().get(PrimarySkillType.TAMING).toString()).append(":");
+        writer.append(profile.getXpBarStateMap().get(PrimarySkillType.UNARMED).toString()).append(":");
+        writer.append(profile.getXpBarStateMap().get(PrimarySkillType.WOODCUTTING).toString()).append(":");
+        writer.append(profile.getXpBarStateMap().get(PrimarySkillType.TRIDENTS).toString()).append(":");
+        writer.append(profile.getXpBarStateMap().get(PrimarySkillType.CROSSBOWS).toString()).append(":");
+
         writer.append("\r\n");
     }
 
@@ -438,6 +489,27 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 out.append("0:"); // AlchemyXp
                 out.append(uuid != null ? uuid.toString() : "NULL").append(":"); // UUID
                 out.append("0:"); // Scoreboard tips shown
+                out.append("0:"); // Chimaera Wing Dats
+
+                //Barstates for the 15 currently existing skills by ordinal value
+                out.append("NORMAL:"); // Acrobatics
+                out.append("NORMAL:"); // Alchemy
+                out.append("NORMAL:"); // Archery
+                out.append("NORMAL:"); // Axes
+                out.append("NORMAL:"); // Excavation
+                out.append("NORMAL:"); // Fishing
+                out.append("NORMAL:"); // Herbalism
+                out.append("NORMAL:"); // Mining
+                out.append("NORMAL:"); // Repair
+                out.append("NORMAL:"); // Salvage
+                out.append("NORMAL:"); // Smelting
+                out.append("NORMAL:"); // Swords
+                out.append("NORMAL:"); // Taming
+                out.append("NORMAL:"); // Unarmed
+                out.append("NORMAL:"); // Woodcutting
+                out.append("NORMAL:"); // Tridents
+                out.append("NORMAL:"); // Crossbows
+
                 // Add more in the same format as the line above
 
                 out.newLine();
@@ -495,7 +567,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                     // Update playerName in database after name change
                     if (!character[USERNAME].equalsIgnoreCase(playerName)) {
-                        mcMMO.p.debug("Name change detected: " + character[USERNAME] + " => " + playerName);
+                        mcMMO.p.getLogger().info("Name change detected: " + character[USERNAME] + " => " + playerName);
                         character[USERNAME] = playerName;
                     }
 
@@ -902,6 +974,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             updated = true;
                         }
 
+                        //TODO: If new skills are added this needs to be rewritten
                         if (Config.getInstance().getTruncateSkills()) {
                             for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
                                 int index = getSkillIndex(skill);
@@ -909,7 +982,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                                     continue;
                                 }
                                 int cap = Config.getInstance().getLevelCap(skill);
-                                if (Integer.valueOf(character[index]) > cap) {
+                                if (Integer.parseInt(character[index]) > cap) {
                                     mcMMO.p.getLogger().warning("Truncating " + skill.getName() + " to configured max level for player " + character[USERNAME]);
                                     character[index] = cap + "";
                                     updated = true;
@@ -999,15 +1072,85 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             // Version 1.5.02
                             character = Arrays.copyOf(character, character.length + 1);
                             character[character.length - 1] = "0";
+
                             if (oldVersion == null) {
                                 oldVersion = "1.5.02";
                             }
                         }
 
+                        if(character.length <= 43) {
+                            // Addition of Chimaera wing DATS
+                            character = Arrays.copyOf(character, character.length + 1);
+                            character[character.length - 1] = "0";
+
+                            if (oldVersion == null) {
+                                oldVersion = "2.1.133";
+                            }
+                        }
+
+                        if(character.length <= 65) {
+
+                            if (oldVersion == null) {
+                                oldVersion = "2.1.133";
+                            }
+
+                            character = Arrays.copyOf(character, 64); // new array size
+
+                            /*
+                                public static int SKILLS_TRIDENTS = 44;
+                                public static int EXP_TRIDENTS = 45;
+                                public static int SKILLS_CROSSBOWS = 46;
+                                public static int EXP_CROSSBOWS = 47;
+                                public static int BARSTATE_ACROBATICS = 48;
+                                public static int BARSTATE_ALCHEMY = 49;
+                                public static int BARSTATE_ARCHERY = 50;
+                                public static int BARSTATE_AXES = 51;
+                                public static int BARSTATE_EXCAVATION = 52;
+                                public static int BARSTATE_FISHING = 53;
+                                public static int BARSTATE_HERBALISM = 54;
+                                public static int BARSTATE_MINING = 55;
+                                public static int BARSTATE_REPAIR = 56;
+                                public static int BARSTATE_SALVAGE = 57;
+                                public static int BARSTATE_SMELTING = 58;
+                                public static int BARSTATE_SWORDS = 59;
+                                public static int BARSTATE_TAMING = 60;
+                                public static int BARSTATE_UNARMED = 61;
+                                public static int BARSTATE_WOODCUTTING = 62;
+                                public static int BARSTATE_TRIDENTS = 63;
+                                public static int BARSTATE_CROSSBOWS = 64;
+                             */
+
+                            character[44-1] = "0"; //trident skill lvl
+                            character[45-1] = "0"; //trident xp value
+                            character[46-1] = "0"; //xbow skill lvl
+                            character[47-1] = "0"; //xbow xp lvl
+
+                            //Barstates 48-64
+                            character[48-1] = "NORMAL";
+                            character[49-1] = "NORMAL";
+                            character[50-1] = "NORMAL";
+                            character[51-1] = "NORMAL";
+                            character[52-1] = "NORMAL";
+                            character[53-1] = "NORMAL";
+                            character[54-1] = "NORMAL";
+                            character[55-1] = "NORMAL";
+                            character[56-1] = "NORMAL";
+                            character[57-1] = "DISABLED"; //Child skills
+                            character[58-1] = "DISABLED"; //Child skills
+                            character[59-1] = "NORMAL";
+                            character[60-1] = "NORMAL";
+                            character[61-1] = "NORMAL";
+                            character[62-1] = "NORMAL";
+                            character[63-1] = "NORMAL";
+                            character[64-1] = "NORMAL";
+                        }
+
                         boolean corrupted = false;
 
                         for (int i = 0; i < character.length; i++) {
+                            //Sigh... this code
                             if (character[i].isEmpty() && !(i == 2 || i == 3 || i == 23 || i == 33 || i == 41)) {
+                                mcMMO.p.getLogger().info("Player data at index "+i+" appears to be empty, possible corruption of data has occurred.");
                                 corrupted = true;
                                 if (i == 37) {
                                     character[i] = String.valueOf(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
@@ -1032,11 +1175,11 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         }
 
                         if (corrupted) {
-                            mcMMO.p.debug("Updating corrupted database line for player " + character[USERNAME]);
+                            mcMMO.p.getLogger().info("Updating corrupted database line for player " + character[USERNAME]);
                         }
 
                         if (oldVersion != null) {
-                            mcMMO.p.debug("Updating database line from before version " + oldVersion + " for player " + character[USERNAME]);
+                            mcMMO.p.getLogger().info("Updating database line from before version " + oldVersion + " for player " + character[USERNAME]);
                         }
 
                         updated |= corrupted;
@@ -1099,7 +1242,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         usersFile.getParentFile().mkdir();
 
         try {
-            mcMMO.p.debug("Creating mcmmo.users file...");
+            mcMMO.p.getLogger().info("Creating mcmmo.users file...");
             new File(mcMMO.getUsersFilePath()).createNewFile();
         }
         catch (IOException e) {
@@ -1142,6 +1285,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         Map<PrimarySkillType, Float>     skillsXp   = new EnumMap<PrimarySkillType, Float>(PrimarySkillType.class);     // Skill & XP
         Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<SuperAbilityType, Integer>(SuperAbilityType.class); // Ability & Cooldown
         Map<UniqueDataType, Integer> uniquePlayerDataMap = new EnumMap<UniqueDataType, Integer>(UniqueDataType.class);
+        Map<PrimarySkillType, ExperienceBarManager.BarState> xpBarStateMap = new EnumMap<PrimarySkillType, ExperienceBarManager.BarState>(PrimarySkillType.class);
         MobHealthbarType mobHealthbarType;
         int scoreboardTipsShown;
 
@@ -1160,6 +1304,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         skillsXp.put(PrimarySkillType.ACROBATICS, (float) Integer.valueOf(character[EXP_ACROBATICS]));
         skillsXp.put(PrimarySkillType.FISHING, (float) Integer.valueOf(character[EXP_FISHING]));
         skillsXp.put(PrimarySkillType.ALCHEMY, (float) Integer.valueOf(character[EXP_ALCHEMY]));
+        skillsXp.put(PrimarySkillType.TRIDENTS, (float) Integer.valueOf(character[EXP_TRIDENTS]));
+        skillsXp.put(PrimarySkillType.CROSSBOWS, (float) Integer.valueOf(character[EXP_CROSSBOWS]));
 
         // Taming - Unused
         skillsDATS.put(SuperAbilityType.SUPER_BREAKER, Integer.valueOf(character[COOLDOWN_SUPER_BREAKER]));
@@ -1190,7 +1336,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         }
 
         try {
-            scoreboardTipsShown = Integer.valueOf(character[SCOREBOARD_TIPS]);
+            scoreboardTipsShown = Integer.parseInt(character[SCOREBOARD_TIPS]);
         }
         catch (Exception e) {
             scoreboardTipsShown = 0;
@@ -1203,7 +1349,30 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
             uniquePlayerDataMap.put(UniqueDataType.CHIMAERA_WING_DATS, 0);
         }
 
-        return new PlayerProfile(character[USERNAME], uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown, uniquePlayerDataMap);
+        try {
+            xpBarStateMap.put(PrimarySkillType.ACROBATICS, SkillUtils.asBarState(character[BARSTATE_ACROBATICS]));
+            xpBarStateMap.put(PrimarySkillType.ALCHEMY, SkillUtils.asBarState(character[BARSTATE_ALCHEMY]));
+            xpBarStateMap.put(PrimarySkillType.ARCHERY, SkillUtils.asBarState(character[BARSTATE_ARCHERY]));
+            xpBarStateMap.put(PrimarySkillType.AXES, SkillUtils.asBarState(character[BARSTATE_AXES]));
+            xpBarStateMap.put(PrimarySkillType.EXCAVATION, SkillUtils.asBarState(character[BARSTATE_EXCAVATION]));
+            xpBarStateMap.put(PrimarySkillType.FISHING, SkillUtils.asBarState(character[BARSTATE_FISHING]));
+            xpBarStateMap.put(PrimarySkillType.HERBALISM, SkillUtils.asBarState(character[BARSTATE_HERBALISM]));
+            xpBarStateMap.put(PrimarySkillType.MINING, SkillUtils.asBarState(character[BARSTATE_MINING]));
+            xpBarStateMap.put(PrimarySkillType.REPAIR, SkillUtils.asBarState(character[BARSTATE_REPAIR]));
+            xpBarStateMap.put(PrimarySkillType.SALVAGE, SkillUtils.asBarState(character[BARSTATE_SALVAGE]));
+            xpBarStateMap.put(PrimarySkillType.SMELTING, SkillUtils.asBarState(character[BARSTATE_SMELTING]));
+            xpBarStateMap.put(PrimarySkillType.SWORDS, SkillUtils.asBarState(character[BARSTATE_SWORDS]));
+            xpBarStateMap.put(PrimarySkillType.TAMING, SkillUtils.asBarState(character[BARSTATE_TAMING]));
+            xpBarStateMap.put(PrimarySkillType.UNARMED, SkillUtils.asBarState(character[BARSTATE_UNARMED]));
+            xpBarStateMap.put(PrimarySkillType.WOODCUTTING, SkillUtils.asBarState(character[BARSTATE_WOODCUTTING]));
+            xpBarStateMap.put(PrimarySkillType.TRIDENTS, SkillUtils.asBarState(character[BARSTATE_TRIDENTS]));
+            xpBarStateMap.put(PrimarySkillType.CROSSBOWS, SkillUtils.asBarState(character[BARSTATE_CROSSBOWS]));
+
+        } catch (Exception e) {
+            xpBarStateMap = SkillUtils.generateDefaultBarStateMap();
+        }
+
+        return new PlayerProfile(character[USERNAME], uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown, uniquePlayerDataMap, xpBarStateMap);
     }
 
     private Map<PrimarySkillType, Integer> getSkillMapFromLine(String[] character) {
@@ -1222,6 +1391,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         skills.put(PrimarySkillType.ACROBATICS, Integer.valueOf(character[SKILLS_ACROBATICS]));
         skills.put(PrimarySkillType.FISHING, Integer.valueOf(character[SKILLS_FISHING]));
         skills.put(PrimarySkillType.ALCHEMY, Integer.valueOf(character[SKILLS_ALCHEMY]));
+        skills.put(PrimarySkillType.TRIDENTS, Integer.valueOf(character[SKILLS_TRIDENTS]));
+        skills.put(PrimarySkillType.CROSSBOWS, Integer.valueOf(character[SKILLS_CROSSBOWS]));
 
         return skills;
     }
@@ -1261,6 +1432,10 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 return SKILLS_UNARMED;
             case WOODCUTTING:
                 return SKILLS_WOODCUTTING;
+            case TRIDENTS:
+                return SKILLS_TRIDENTS;
+            case CROSSBOWS:
+                return SKILLS_CROSSBOWS;
             default:
                 throw new RuntimeException("Primary Skills only");
             
@@ -1307,6 +1482,27 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     public static int UUID_INDEX = 41;
     public static int SCOREBOARD_TIPS = 42;
     public static int COOLDOWN_CHIMAERA_WING = 43;
+    public static int SKILLS_TRIDENTS = 44;
+    public static int EXP_TRIDENTS = 45;
+    public static int SKILLS_CROSSBOWS = 46;
+    public static int EXP_CROSSBOWS = 47;
+    public static int BARSTATE_ACROBATICS = 48;
+    public static int BARSTATE_ALCHEMY = 49;
+    public static int BARSTATE_ARCHERY = 50;
+    public static int BARSTATE_AXES = 51;
+    public static int BARSTATE_EXCAVATION = 52;
+    public static int BARSTATE_FISHING = 53;
+    public static int BARSTATE_HERBALISM = 54;
+    public static int BARSTATE_MINING = 55;
+    public static int BARSTATE_REPAIR = 56;
+    public static int BARSTATE_SALVAGE = 57;
+    public static int BARSTATE_SMELTING = 58;
+    public static int BARSTATE_SWORDS = 59;
+    public static int BARSTATE_TAMING = 60;
+    public static int BARSTATE_UNARMED = 61;
+    public static int BARSTATE_WOODCUTTING = 62;
+    public static int BARSTATE_TRIDENTS = 63;
+    public static int BARSTATE_CROSSBOWS = 64;
 
     public void resetMobHealthSettings() {
         BufferedReader in = null;
@@ -1328,7 +1524,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     
                     character[HEALTHBAR] = Config.getInstance().getMobHealthbarDefault().toString();
                     
-                    line = new StringBuilder(org.apache.commons.lang.StringUtils.join(character, ":")).append(":").toString();
+                    line = org.apache.commons.lang.StringUtils.join(character, ":") + ":";
 
                     writer.append(line).append("\r\n");
                 }

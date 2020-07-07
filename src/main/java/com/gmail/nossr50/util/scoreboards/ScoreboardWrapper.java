@@ -245,7 +245,7 @@ public class ScoreboardWrapper {
                 oldBoard = null;
             }
             else {
-                mcMMO.p.debug("Not reverting targetBoard for " + playerName + " - targetBoard was changed by another plugin (Consider disabling the mcMMO scoreboards if you don't want them!)");
+                mcMMO.p.getLogger().info("Not reverting targetBoard for " + playerName + " - targetBoard was changed by another plugin (Consider disabling the mcMMO scoreboards if you don't want them!)");
             }
         }
 

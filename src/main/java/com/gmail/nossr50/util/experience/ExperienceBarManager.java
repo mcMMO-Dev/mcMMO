@@ -6,12 +6,14 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.ExperienceBarHideTask;
 import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 /**
  * ExperienceBarManager handles displaying and updating mcMMO experience bars for players
@@ -24,12 +26,16 @@ public class ExperienceBarManager {
     private HashMap<PrimarySkillType, ExperienceBarWrapper> experienceBars;
     private HashMap<PrimarySkillType, ExperienceBarHideTask> experienceBarHideTaskHashMap;
 
+    private final HashMap<PrimarySkillType, BarState> barStateMap;
+
     private HashSet<PrimarySkillType> alwaysVisible;
     private HashSet<PrimarySkillType> disabledBars;
 
-    public ExperienceBarManager(McMMOPlayer mcMMOPlayer)
+    public ExperienceBarManager(McMMOPlayer mcMMOPlayer, HashMap<PrimarySkillType, BarState> barStateMap)
     {
         this.mcMMOPlayer = mcMMOPlayer;
+        this.barStateMap = barStateMap;
+
         init();
     }
 
@@ -41,6 +47,28 @@ public class ExperienceBarManager {
         //Init sets
         alwaysVisible = new HashSet<>();
         disabledBars = new HashSet<>();
+
+        syncBarStates();
+    }
+
+    private void syncBarStates() {
+        for(Map.Entry<PrimarySkillType, BarState> entry : barStateMap.entrySet()) {
+            PrimarySkillType key = entry.getKey();
+            BarState barState = entry.getValue();
+
+            switch(barState) {
+                case NORMAL:
+                    break;
+                case ALWAYS_ON:
+                    xpBarSettingToggle(XPBarSettingTarget.SHOW, key);
+                case DISABLED:
+                    xpBarSettingToggle(XPBarSettingTarget.HIDE, key);
+            }
+        }
+    }
+
+    private void resetBarStateMap() {
+        SkillUtils.setBarStateDefaults(barStateMap);
     }
 
     public void updateExperienceBar(PrimarySkillType primarySkillType, Plugin plugin)
@@ -112,6 +140,7 @@ public class ExperienceBarManager {
                 }
 
                 updateExperienceBar(skillType, mcMMO.p);
+                barStateMap.put(skillType, BarState.ALWAYS_ON);
                 break;
             case HIDE:
                 alwaysVisible.remove(skillType);
@@ -123,6 +152,7 @@ public class ExperienceBarManager {
                 }
 
                 hideExperienceBar(skillType);
+                barStateMap.put(skillType, BarState.DISABLED);
                 break;
             case RESET:
                 resetBarSettings();
@@ -138,12 +168,14 @@ public class ExperienceBarManager {
             hideExperienceBar(permanent);
         }
 
+        resetBarStateMap();
+
         alwaysVisible.clear();
         disabledBars.clear();
 
         //Hide child skills by default
-        disabledBars.add(PrimarySkillType.SALVAGE);
-        disabledBars.add(PrimarySkillType.SMELTING);
+        xpBarSettingToggle(XPBarSettingTarget.HIDE, PrimarySkillType.SALVAGE);
+        xpBarSettingToggle(XPBarSettingTarget.HIDE, PrimarySkillType.SMELTING);
     }
 
     private void informPlayer(@NotNull ExperienceBarManager.@NotNull XPBarSettingTarget settingTarget, @Nullable PrimarySkillType skillType) {
@@ -156,4 +188,6 @@ public class ExperienceBarManager {
     }
 
     public enum XPBarSettingTarget { SHOW, HIDE, RESET, DISABLE }
+
+    public enum BarState { NORMAL, ALWAYS_ON, DISABLED }
 }

@@ -27,6 +27,7 @@ import com.gmail.nossr50.skills.alchemy.AlchemyManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
 import com.gmail.nossr50.skills.child.FamilyTree;
+import com.gmail.nossr50.skills.crossbows.CrossbowManager;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
@@ -36,6 +37,7 @@ import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
+import com.gmail.nossr50.skills.tridents.TridentManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.EventUtils;
@@ -140,7 +142,7 @@ public class McMMOPlayer {
             toolMode.put(toolType, false);
         }
 
-        experienceBarManager = new ExperienceBarManager(this);
+        experienceBarManager = new ExperienceBarManager(this, profile.getXpBarStateMap());
 
         debugMode = false; //Debug mode helps solve support issues, players can toggle it on or off
         attackStrength = 1.0D;
@@ -264,6 +266,14 @@ public class McMMOPlayer {
 
     public UnarmedManager getUnarmedManager() {
         return (UnarmedManager) skillManagers.get(PrimarySkillType.UNARMED);
+    }
+
+    public TridentManager getTridentManager() {
+        return (TridentManager) skillManagers.get(PrimarySkillType.TRIDENTS);
+    }
+
+    public CrossbowManager getCrossbowManager() {
+        return (CrossbowManager) skillManagers.get(PrimarySkillType.CROSSBOWS);
     }
 
     public WoodcuttingManager getWoodcuttingManager() {

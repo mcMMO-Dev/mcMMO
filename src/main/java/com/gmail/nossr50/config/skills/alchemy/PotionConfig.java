@@ -101,7 +101,7 @@ public class PotionConfig extends ConfigLoader {
             }
         }
 
-        mcMMO.p.debug("Loaded " + pass + " Alchemy potions, skipped " + fail + ".");
+        mcMMO.p.getLogger().info("Loaded " + pass + " Alchemy potions, skipped " + fail + ".");
     }
 
     /**

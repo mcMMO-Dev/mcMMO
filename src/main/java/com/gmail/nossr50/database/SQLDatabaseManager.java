@@ -13,6 +13,7 @@ import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.experience.ExperienceBarManager;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -963,7 +964,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
      */
     private void checkDatabaseStructure(Connection connection, UpgradeType upgrade) {
         if (!mcMMO.getUpgradeManager().shouldUpgrade(upgrade)) {
-            mcMMO.p.debug("Skipping " + upgrade.name() + " upgrade (unneeded)");
+            mcMMO.p.getLogger().info("Skipping " + upgrade.name() + " upgrade (unneeded)");
             return;
         }
 
@@ -1074,6 +1075,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Map<PrimarySkillType, Float> skillsXp = new EnumMap<PrimarySkillType, Float>(PrimarySkillType.class); // Skill & XP
         Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<SuperAbilityType, Integer>(SuperAbilityType.class); // Ability & Cooldown
         Map<UniqueDataType, Integer> uniqueData = new EnumMap<UniqueDataType, Integer>(UniqueDataType.class); //Chimaera wing cooldown and other misc info
+        Map<PrimarySkillType, ExperienceBarManager.BarState> xpBarStateMap = new EnumMap<PrimarySkillType, ExperienceBarManager.BarState>(PrimarySkillType.class);
+
         MobHealthbarType mobHealthbarType;
         UUID uuid;
         int scoreboardTipsShown;
@@ -1148,7 +1151,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             uuid = null;
         }
 
-        return new PlayerProfile(playerName, uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown, uniqueData);
+        return new PlayerProfile(playerName, uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown, uniqueData, xpBarStateMap);
     }
 
     private void printErrors(SQLException ex) {
@@ -1515,7 +1518,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     @Override
     public void onDisable() {
-        mcMMO.p.debug("Releasing connection pool resource...");
+        mcMMO.p.getLogger().info("Releasing connection pool resource...");
         miscPool.close();
         loadPool.close();
         savePool.close();

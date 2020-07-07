@@ -146,6 +146,12 @@ commands:
     salvage:
         description: Detailed mcMMO skill info
         permission: mcmmo.commands.salvage
+    tridents:
+        description: Detailed mcMMO skill info
+        permission: mcmmo.commands.tridents
+    crossbows:
+        description: Detailed mcMMO skill info
+        permission: mcmmo.commands.crossbows
     adminchat:
         aliases: [ac, a]
         description: Toggle Admin chat or send admin chat messages
@@ -222,6 +228,8 @@ permissions:
             mcmmo.ability.taming.all: true
             mcmmo.ability.unarmed.all: true
             mcmmo.ability.woodcutting.all: true
+            mcmmo.ability.tridents.all: true
+            mcmmo.ability.crossbows.all: true
     mcmmo.ability.acrobatics.*:
         default: false
         description: Allows access to all Acrobatics abilities
@@ -709,6 +717,28 @@ permissions:
         description: Allows access to Leaf Blower ability
     mcmmo.ability.woodcutting.treefeller:
         description: Allows access to Tree Feller ability
+    mcmmo.ability.tridents.*:
+        default: false
+        description: Allows access to all Tridents abilities
+        children:
+            mcmmo.ability.tridents.all: true
+    mcmmo.ability.tridents.all:
+        description: Allows access to all Tridents abilities
+        children:
+            mcmmo.ability.tridents.multitasking: true
+    mcmmo.ability.tridents.multitasking:
+        description: Allows access to Multitasking Trident sub-skill
+    mcmmo.ability.crossbows.*:
+        default: false
+        description: Allows access to Crossbow sub-skills
+        children:
+            mcmmo.ability.crossbows.all: true
+    mcmmo.ability.crossbows.all:
+        description: Allows access to Crossbow sub-skills
+        children:
+            mcmmo.ability.crossbows.coneofdeath: true
+    mcmmo.ability.crossbows.coneofdeath:
+        description: Allows access to Cone of Death sub-skill
     mcmmo.admin:
         default: false
         description: Implies access to everything in mcMMO
@@ -795,6 +825,8 @@ permissions:
             mcmmo.commands.taming: true
             mcmmo.commands.unarmed: true
             mcmmo.commands.woodcutting: true
+            mcmmo.commands.tridents: true
+            mcmmo.commands.crossbows: true
     mcmmo.commands.defaultsop:
         description: Implies all default op mcmmo.commands permissions.
         children:
@@ -2007,6 +2039,8 @@ permissions:
             mcmmo.skills.taming: true
             mcmmo.skills.unarmed: true
             mcmmo.skills.woodcutting: true
+            mcmmo.skills.tridents: true
+            mcmmo.skills.crossbows: true
     mcmmo.skills.acrobatics:
         description: Allows access to the Acrobatics skill
         children:
@@ -2082,6 +2116,16 @@ permissions:
         children:
             mcmmo.ability.woodcutting.all: true
             mcmmo.commands.woodcutting: true
+    mcmmo.skills.tridents:
+        description: Allows access to the Tridents skill
+        children:
+            mcmmo.ability.tridents.all: true
+            mcmmo.commands.tridents: true
+    mcmmo.skills.crossbows:
+        description: Allows access to the Crossbows skill
+        children:
+            mcmmo.ability.crossbows.all: true
+            mcmmo.commands.crossbows: true
     mcmmo.showversion:
         default: true
         description: Show mcMMO version number in /mcmmo and motd

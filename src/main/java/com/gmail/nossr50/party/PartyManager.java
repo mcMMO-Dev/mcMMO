@@ -628,7 +628,7 @@ public final class PartyManager {
                 parties.add(party);
             }
 
-            mcMMO.p.debug("Loaded (" + parties.size() + ") Parties...");
+            mcMMO.p.getLogger().info("Loaded (" + parties.size() + ") Parties...");
 
             for (Party party : hasAlly) {
                 party.setAlly(PartyManager.getParty(partiesFile.getString(party.getName() + ".Ally")));
@@ -653,7 +653,7 @@ public final class PartyManager {
 
         YamlConfiguration partiesFile = new YamlConfiguration();
 
-        mcMMO.p.debug("Saving Parties... (" + parties.size() + ")");
+        mcMMO.p.getLogger().info("Saving Parties... (" + parties.size() + ")");
         for (Party party : parties) {
             String partyName = party.getName();
             PartyLeader leader = party.getLeader();
@@ -751,7 +751,7 @@ public final class PartyManager {
             parties.add(party);
         }
 
-        mcMMO.p.debug("Loaded (" + parties.size() + ") Parties...");
+        mcMMO.p.getLogger().info("Loaded (" + parties.size() + ") Parties...");
 
         for (Party party : hasAlly) {
             party.setAlly(PartyManager.getParty(partiesFile.getString(party.getName() + ".Ally")));

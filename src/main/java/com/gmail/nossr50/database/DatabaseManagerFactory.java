@@ -13,14 +13,14 @@ public class DatabaseManagerFactory {
                 return createDefaultCustomDatabaseManager();
             }
             catch (Exception e) {
-                mcMMO.p.debug("Could not create custom database manager");
+                mcMMO.p.getLogger().info("Could not create custom database manager");
                 e.printStackTrace();
             }
             catch (Throwable e) {
-                mcMMO.p.debug("Failed to create custom database manager");
+                mcMMO.p.getLogger().info("Failed to create custom database manager");
                 e.printStackTrace();
             }
-            mcMMO.p.debug("Falling back on " + (Config.getInstance().getUseMySQL() ? "SQL" : "Flatfile") + " database");
+            mcMMO.p.getLogger().info("Falling back on " + (Config.getInstance().getUseMySQL() ? "SQL" : "Flatfile") + " database");
         }
 
         return Config.getInstance().getUseMySQL() ? new SQLDatabaseManager() : new FlatfileDatabaseManager();

@@ -15,6 +15,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.experience.ExperienceBarManager;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.Bukkit;
@@ -31,6 +32,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -42,6 +44,34 @@ public class SkillUtils {
 
     public static void applyXpGain(McMMOPlayer mcMMOPlayer, PrimarySkillType skill, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
         mcMMOPlayer.beginXpGain(skill, xp, xpGainReason, xpGainSource);
+    }
+
+    public static HashMap<PrimarySkillType, ExperienceBarManager.BarState> generateDefaultBarStateMap() {
+        HashMap<PrimarySkillType, ExperienceBarManager.BarState> barStateHashMap = new HashMap<>();
+
+        setBarStateDefaults(barStateHashMap);
+
+        return barStateHashMap;
+    }
+
+    public static ExperienceBarManager.BarState asBarState(String str) {
+        for(ExperienceBarManager.BarState barState : ExperienceBarManager.BarState.values()) {
+            if(barState.toString().equalsIgnoreCase(str)) {
+                return barState;
+            }
+        }
+
+        return ExperienceBarManager.BarState.NORMAL;
+    }
+
+    public static void setBarStateDefaults(HashMap<PrimarySkillType, ExperienceBarManager.BarState> barStateHashMap) {
+        for(PrimarySkillType skillType : PrimarySkillType.values()) {
+            if(skillType.isChildSkill()) {
+                barStateHashMap.put(skillType, ExperienceBarManager.BarState.DISABLED);
+            } else {
+                barStateHashMap.put(skillType, ExperienceBarManager.BarState.NORMAL);
+            }
+        }
     }
 
     /*

@@ -38,7 +38,7 @@ public class CleanBackupsTask extends BukkitRunnable {
             Date date = getDate(fileName.split("[.]")[0]);
 
             if (!fileName.contains(".zip") || date == null) {
-                mcMMO.p.debug("Could not determine date for file: " + fileName);
+                mcMMO.p.getLogger().info("Could not determine date for file: " + fileName);
                 continue;
             }
 
@@ -83,7 +83,7 @@ public class CleanBackupsTask extends BukkitRunnable {
 
         for (File file : toDelete) {
             if (file.delete()) {
-                mcMMO.p.debug("Deleted: " + file.getName());
+                mcMMO.p.getLogger().info("Deleted: " + file.getName());
             }
         }
     }

@@ -25,6 +25,11 @@ public final class ItemUtils {
         return mcMMO.getMaterialMapStore().isBow(item.getType().getKey().getKey());
     }
 
+    public static boolean isCrossbow(ItemStack itemStack) {
+        return mcMMO.getMaterialMapStore().isCrossbow(itemStack.getType().getKey().getKey());
+    }
+
+
     public static boolean hasItemInEitherHand(Player player, Material material) {
         return player.getInventory().getItemInMainHand().getType() == material || player.getInventory().getItemInOffHand().getType() == material;
     }
@@ -38,6 +43,11 @@ public final class ItemUtils {
     public static boolean isSword(ItemStack item) {
         return mcMMO.getMaterialMapStore().isSword(item.getType().getKey().getKey());
     }
+
+    public static boolean isTrident(ItemStack itemStack) {
+        return mcMMO.getMaterialMapStore().isTrident(itemStack.getType().getKey().getKey());
+    }
+
 
     /**
      * Checks if the item is a hoe.

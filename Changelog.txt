@@ -1,3 +1,34 @@
+Version 2.1.133
+    New Skill - Tridents
+    New Skill - Crossbows
+
+    New config file named 'tridents.yml'
+
+    New command /tridents - Skill Info for Tridents
+    New command /crossbows - Skill Info for Crossbows
+
+    Added Sub-Skill named Multi Tasking to Tridents
+    Added Sub-Skill named Cone of Death to Crossbows
+
+    (These permissions are all included in the mcmmo.defaults node)
+    New permission node 'mcmmo.commands.tridents'
+    New permission node 'mcmmo.skills.tridents'
+    New permission node 'mcmmo.ability.tridents.all'
+    New permission node 'mcmmo.ability.tridents.multitasking'
+    New permission node 'mcmmo.commands.crossbows'
+    New permission node 'mcmmo.skills.crossbows'
+    New permission node 'mcmmo.ability.crossbows.all'
+
+    Added new locale string 'Overhaul.Name.Tridents'
+    Added new locale string 'Overhaul.Name.Crossbows'
+
+    Added XP bar settings for Tridents & Crossbows to experience.yml
+    Changed some debug level logging to info level for convenience
+    XP Bar settings (set by /mmoxpbar command) are now saved per player
+
+    Notes:
+    These are the first new skills that I've written for mcMMO in about 9 years, I'll be listening closely to feedback and tweaking them often.
+
 Version 2.1.132
     A fix is in place to prevent an exploit from working that is due to a yet to be patched Spigot server software bug
     Fixed a NPE that could happen when players swapped items from their hotbar
