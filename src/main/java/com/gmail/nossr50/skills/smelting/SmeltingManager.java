@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.smelting;
 
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -111,7 +112,7 @@ public class SmeltingManager extends SkillManager {
     public ItemStack smeltProcessing(ItemStack smelting, ItemStack result) {
         applyXpGain(Smelting.getResourceXp(smelting), XPGainReason.PVE, XPGainSource.PASSIVE);
 
-        if (isSecondSmeltSuccessful()) {
+        if (Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.SMELTING, result.getType()) && isSecondSmeltSuccessful()) {
             ItemStack newResult = result.clone();
 
             newResult.setAmount(result.getAmount() + 1);

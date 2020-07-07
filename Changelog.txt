@@ -14,6 +14,8 @@ Version 2.1.133
     Added Sub-Skill named Crossbows Limit Break to Crossbows
 
     Permission node descriptions had mentions of ability changed to sub-skill and other minor corrections
+    Smelting now has a Bonus Drops section in config.yml
+    Smelting now only doubles smelting results for items which have bonus drop entries in the config
 
     (These permissions are all included in the mcmmo.defaults node)
     New permission node 'mcmmo.commands.tridents'
