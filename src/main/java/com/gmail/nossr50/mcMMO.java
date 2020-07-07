@@ -134,6 +134,7 @@ public class mcMMO extends JavaPlugin {
     public final static String greenThumbDataKey   = "mcMMO: Green Thumb";
     public final static String databaseCommandKey  = "mcMMO: Processing Database Command";
     public final static String bredMetadataKey     = "mcMMO: Bred Animal";
+    public final static String PROJECTILE_ORIGIN_METAKEY = "mcMMO: Projectile Origin";
 
     public static FixedMetadataValue metadataValue;
 

@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.meta.ProjectileOriginMeta;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.InteractType;
@@ -19,6 +20,7 @@ import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.BlockUtils;
+import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
@@ -122,7 +124,7 @@ public class EntityListener implements Listener {
         projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(plugin, projectile.getLocation()));
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onProjectileLaunch(ProjectileLaunchEvent event) {
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
@@ -144,8 +146,18 @@ public class EntityListener implements Listener {
             if(!(projectile instanceof Arrow))
                 return;
 
-            projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(plugin, 1.0));
             projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(plugin, projectile.getLocation()));
+
+            //Track origin of projectile
+            if(ItemUtils.hasItemInMainHand(player, "bow")) {
+                markProjectileOriginAsBow(projectile);
+            } else if(ItemUtils.hasItemInMainHand(player, "crossbow")) {
+                markProjectileOriginAsCrossbow(projectile);
+            } else if(ItemUtils.hasItemInOffHand(player, "bow")) {
+                markProjectileOriginAsBow(projectile);
+            } else if(ItemUtils.hasItemInOffHand(player, "crossbow")) {
+                markProjectileOriginAsCrossbow(projectile);
+            }
 
             for(Enchantment enchantment : player.getInventory().getItemInMainHand().getEnchantments().keySet()) {
                 if(enchantment.getName().equalsIgnoreCase("piercing"))
@@ -156,6 +168,14 @@ public class EntityListener implements Listener {
                 projectile.setMetadata(mcMMO.trackedArrow, mcMMO.metadataValue);
             }
         }
+    }
+
+    private void markProjectileOriginAsCrossbow(Projectile projectile) {
+        projectile.setMetadata(mcMMO.PROJECTILE_ORIGIN_METAKEY, new ProjectileOriginMeta(plugin, 2));
+    }
+
+    private void markProjectileOriginAsBow(Projectile projectile) {
+        projectile.setMetadata(mcMMO.PROJECTILE_ORIGIN_METAKEY, new ProjectileOriginMeta(plugin, 1));
     }
 
     /**

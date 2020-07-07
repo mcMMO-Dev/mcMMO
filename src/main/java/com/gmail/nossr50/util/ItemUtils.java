@@ -31,8 +31,22 @@ public final class ItemUtils {
 
 
     public static boolean hasItemInEitherHand(Player player, Material material) {
-        return player.getInventory().getItemInMainHand().getType() == material || player.getInventory().getItemInOffHand().getType() == material;
+        return hasItemInEitherHand(player, material.getKey().getKey());
     }
+
+    public static boolean hasItemInEitherHand(Player player, String id) {
+        return player.getInventory().getItemInMainHand().getType().getKey().getKey().equalsIgnoreCase(id)
+                || player.getInventory().getItemInOffHand().getType().getKey().getKey().equalsIgnoreCase(id);
+    }
+
+    public static boolean hasItemInMainHand(Player player, String id) {
+        return player.getInventory().getItemInMainHand().getType().getKey().getKey().equalsIgnoreCase(id);
+    }
+
+    public static boolean hasItemInOffHand(Player player, String id) {
+        return player.getInventory().getItemInOffHand().getType().getKey().getKey().equalsIgnoreCase(id);
+    }
+
 
     /**
      * Checks if the item is a sword.

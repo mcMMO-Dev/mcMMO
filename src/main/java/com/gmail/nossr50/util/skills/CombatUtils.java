@@ -16,6 +16,7 @@ import com.gmail.nossr50.runnables.skills.AwardCombatXpTask;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
+import com.gmail.nossr50.skills.crossbows.CrossbowManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.tridents.TridentManager;
@@ -308,13 +309,49 @@ public final class CombatUtils {
         }
 
         double distanceMultiplier = archeryManager.distanceXpBonusMultiplier(target, arrow);
-        double forceMultiplier = 1.0; //Hacky Fix - some plugins spawn arrows and assign them to players after the ProjectileLaunchEvent fires
+//        double forceMultiplier = 1.0; //Hacky Fix - some plugins spawn arrows and assign them to players after the ProjectileLaunchEvent fires
 
-        if(arrow.hasMetadata(mcMMO.bowForceKey))
-            forceMultiplier = arrow.getMetadata(mcMMO.bowForceKey).get(0).asDouble();
+//        if(arrow.hasMetadata(mcMMO.bowForceKey))
+//            forceMultiplier = arrow.getMetadata(mcMMO.bowForceKey).get(0).asDouble();
 
         applyScaledModifiers(initialDamage, finalDamage, event);
-        processCombatXP(mcMMOPlayer, target, PrimarySkillType.ARCHERY, forceMultiplier * distanceMultiplier);
+        processCombatXP(mcMMOPlayer, target, PrimarySkillType.ARCHERY, distanceMultiplier);
+    }
+
+    private static void processCrossbowCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event, Projectile arrow) {
+        double initialDamage = event.getDamage();
+
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        //Make sure the profiles been loaded
+        if(mcMMOPlayer == null) {
+            return;
+        }
+
+        CrossbowManager crossbowManager = mcMMOPlayer.getCrossbowManager();
+
+        double finalDamage = event.getDamage();
+
+        if (target instanceof Player && PrimarySkillType.UNARMED.getPVPEnabled()) {
+            UnarmedManager unarmedManager = UserManager.getPlayer((Player) target).getUnarmedManager();
+
+            if (unarmedManager.canDeflect()) {
+                event.setCancelled(unarmedManager.deflectCheck());
+
+                if (event.isCancelled()) {
+                    return;
+                }
+            }
+        }
+
+        if(canUseLimitBreak(player, target, SubSkillType.CROSSBOWS_CROSSBOWS_LIMIT_BREAK))
+        {
+            finalDamage+=getLimitBreakDamage(player, target, SubSkillType.CROSSBOWS_CROSSBOWS_LIMIT_BREAK);
+        }
+
+        double distanceMultiplier = crossbowManager.distanceXpBonusMultiplier(target, arrow);
+        applyScaledModifiers(initialDamage, finalDamage, event);
+        processCombatXP(mcMMOPlayer, target, PrimarySkillType.CROSSBOWS, distanceMultiplier);
     }
 
     /**
@@ -433,17 +470,31 @@ public final class CombatUtils {
         }
         else if (entityType == EntityType.ARROW || entityType == EntityType.SPECTRAL_ARROW) {
             Projectile arrow = (Projectile) painSource;
-            ProjectileSource projectileSource = arrow.getShooter();
+            ProjectileSource projectileShooter = arrow.getShooter();
 
             //Determine if the arrow belongs to a bow or xbow
 
 
-            if (projectileSource instanceof Player && PrimarySkillType.ARCHERY.shouldProcess(target)) {
-                Player player = (Player) projectileSource;
+            if (projectileShooter instanceof Player) {
+                Player player = (Player) projectileShooter;
 
-                if (!Misc.isNPCEntityExcludingVillagers(player) && PrimarySkillType.ARCHERY.getPermissions(player)) {
-                    processArcheryCombat(target, player, event, arrow);
+                //Has metadata
+                if(arrow.getMetadata(mcMMO.PROJECTILE_ORIGIN_METAKEY).size() > 0) {
+                    if(isProjectileFromBow(arrow)) {
+                        if(PrimarySkillType.ARCHERY.shouldProcess(target)) {
+                            if (!Misc.isNPCEntityExcludingVillagers(player) && PrimarySkillType.ARCHERY.getPermissions(player)) {
+                                processArcheryCombat(target, player, event, arrow);
+                            }
+                        }
+                    } else if(isProjectileFromCrossbow(arrow)) {
+                        if(PrimarySkillType.CROSSBOWS.shouldProcess(target)) {
+                            if (!Misc.isNPCEntityExcludingVillagers(player) && PrimarySkillType.CROSSBOWS.getPermissions(player)) {
+                                processCrossbowCombat(target, player, event, arrow);
+                            }
+                        }
+                    }
                 }
+
 
                 if (target.getType() != EntityType.CREEPER && !Misc.isNPCEntityExcludingVillagers(player) && PrimarySkillType.TAMING.getPermissions(player)) {
                     McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
@@ -452,6 +503,14 @@ public final class CombatUtils {
                 }
             }
         }
+    }
+
+    private static boolean isProjectileFromCrossbow(Projectile arrow) {
+        return arrow.getMetadata(mcMMO.PROJECTILE_ORIGIN_METAKEY).get(0).asInt() == 2;
+    }
+
+    private static boolean isProjectileFromBow(Projectile arrow) {
+        return arrow.getMetadata(mcMMO.PROJECTILE_ORIGIN_METAKEY).get(0).asInt() == 1;
     }
 
     /**

@@ -17,6 +17,7 @@ Version 2.1.133
     Smelting now has a Bonus Drops section in config.yml
     Second Smelt now only doubles smelting results for items which have bonus drop entries in the config
     Fixed an array out of index bug for inventory click events
+    mcMMO will now register arrows shot from the offhand as being from either Archery or Crossbows (before mcMMO ignored offhand Archery)
 
     (These permissions are all included in the mcmmo.defaults node)
     New permission node 'mcmmo.commands.tridents'
