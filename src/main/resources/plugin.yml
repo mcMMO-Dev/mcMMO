@@ -241,9 +241,9 @@ permissions:
             mcmmo.ability.acrobatics.dodge: true
             mcmmo.ability.acrobatics.roll: true
     mcmmo.ability.acrobatics.dodge:
-        description: Allows access to the Dodge ability
+        description: Allows access to the Dodge sub-skill
     mcmmo.ability.acrobatics.roll:
-        description: Allows access to the Roll ability
+        description: Allows access to the Roll sub-skill
     mcmmo.ability.alchemy.*:
         default: false
         description: Allows access to all Alchemy abilities
@@ -255,9 +255,9 @@ permissions:
             mcmmo.ability.alchemy.catalysis: true
             mcmmo.ability.alchemy.concoctions: true
     mcmmo.ability.alchemy.catalysis:
-        description: Allows access to the Catalysis ability
+        description: Allows access to the Catalysis sub-skill
     mcmmo.ability.alchemy.concoctions:
-        description: Allows access to the Concoctions ability
+        description: Allows access to the Concoctions sub-skill
     mcmmo.ability.archery.*:
         default: false
         description: Allows access to all Archery abilities
@@ -273,9 +273,9 @@ permissions:
     mcmmo.ability.archery.archerylimitbreak:
         description: Adds damage to bows and crossbows
     mcmmo.ability.archery.skillshot:
-        description: Allows bonus damage from the Archery SkillShot ability
+        description: Allows bonus damage from the Archery SkillShot sub-skill
     mcmmo.ability.archery.daze:
-        description: Allows access to the Daze ability
+        description: Allows access to the Daze sub-skill
     mcmmo.ability.archery.arrowretrieval:
         description: Allows tracking & retrieval of arrows
     mcmmo.ability.axes.*:
@@ -297,13 +297,13 @@ permissions:
     mcmmo.ability.axes.axemastery:
         description: Allows bonus damage from Axes
     mcmmo.ability.axes.criticalstrikes:
-        description: Allows access to the Critical Strikes ability
+        description: Allows access to the Critical Strikes sub-skill
     mcmmo.ability.axes.greaterimpact:
-        description: Allows access to the Greater Impact ability
+        description: Allows access to the Greater Impact sub-skill
     mcmmo.ability.axes.armorimpact:
-        description: Allows access to the Impact ability
+        description: Allows access to the Impact sub-skill
     mcmmo.ability.axes.skullsplitter:
-        description: Allows access to the Skull Splitter ability
+        description: Allows access to the Skull Splitter sub-skill
     mcmmo.ability.excavation.*:
         default: false
         description: Allows access to all Excavation abilities
@@ -315,7 +315,7 @@ permissions:
             mcmmo.ability.excavation.gigadrillbreaker: true
             mcmmo.ability.excavation.archaeology: true
     mcmmo.ability.excavation.gigadrillbreaker:
-        description: Allows access to the Giga Drill Breaker ability
+        description: Allows access to the Giga Drill Breaker sub-skill
     mcmmo.ability.excavation.archaeology:
         description: Allows treasure drops from Excavation
     mcmmo.ability.fishing.*:
@@ -334,15 +334,15 @@ permissions:
             mcmmo.ability.fishing.treasurehunter: true
             mcmmo.ability.fishing.vanillaxpboost: true
     mcmmo.ability.fishing.fishermansdiet:
-        description: Allows access to the Fishermans's Diet ability
+        description: Allows access to the Fishermans's Diet sub-skill
     mcmmo.ability.fishing.icefishing:
-        description: Allows access to the Ice Fishing ability
+        description: Allows access to the Ice Fishing sub-skill
     mcmmo.ability.fishing.magichunter:
         description: Allows enchanted drops from Fishing
     mcmmo.ability.fishing.masterangler:
-        description: Allows access to the Master Angler ability
+        description: Allows access to the Master Angler sub-skill
     mcmmo.ability.fishing.shake:
-        description: Allows access to the Shake Mob ability
+        description: Allows access to the Shake Mob sub-skill
     mcmmo.ability.fishing.treasurehunter:
         description: Allows treasure drops from Fishing
     mcmmo.ability.fishing.vanillaxpboost:
@@ -364,9 +364,9 @@ permissions:
     mcmmo.ability.herbalism.doubledrops:
         description: Allows double drop chance from Herbalism
     mcmmo.ability.herbalism.farmersdiet:
-        description: Allows access to the Farmer's Diet ability
+        description: Allows access to the Farmer's Diet sub-skill
     mcmmo.ability.herbalism.greenterra:
-        description: Allows access to the Green Terra ability
+        description: Allows access to the Green Terra sub-skill
     mcmmo.ability.herbalism.greenthumb.*:
         default: false
         description: Allows access to all Green Thumb abilities
@@ -391,15 +391,15 @@ permissions:
             mcmmo.ability.herbalism.greenthumb.blocks.grasspath: true
             mcmmo.ability.herbalism.greenthumb.blocks.stonebricks: true
     mcmmo.ability.herbalism.greenthumb.blocks.cobblestone:
-        description: Allows access to the Green Thumb ability for cobblestone
+        description: Allows access to the Green Thumb sub-skill for cobblestone
     mcmmo.ability.herbalism.greenthumb.blocks.cobblestone_wall:
-        description: Allows access to the Green Thumb ability for cobblestone walls
+        description: Allows access to the Green Thumb sub-skill for cobblestone walls
     mcmmo.ability.herbalism.greenthumb.blocks.dirt:
-        description: Allows access to the Green Thumb ability for dirt
+        description: Allows access to the Green Thumb sub-skill for dirt
     mcmmo.ability.herbalism.greenthumb.blocks.grasspath:
-        description: Allows access to the Green Thumb ability for grass path
+        description: Allows access to the Green Thumb sub-skill for grass path
     mcmmo.ability.herbalism.greenthumb.blocks.stonebricks:
-        description: Allows access to the Green Thumb ability for smooth brick
+        description: Allows access to the Green Thumb sub-skill for smooth brick
     mcmmo.ability.herbalism.greenthumb.plants.*:
         default: false
         description: Allows access to all Green Thumb abilities for plants
@@ -415,21 +415,21 @@ permissions:
             mcmmo.ability.herbalism.greenthumb.plants.potatoes: true
             mcmmo.ability.herbalism.greenthumb.plants.beetroots: true
     mcmmo.ability.herbalism.greenthumb.plants.carrots:
-        description: Allows access to the Green Thumb ability for carrots
+        description: Allows access to the Green Thumb sub-skill for carrots
     mcmmo.ability.herbalism.greenthumb.plants.cocoa:
-        description: Allows access to the Green Thumb ability for cocoa
+        description: Allows access to the Green Thumb sub-skill for cocoa
     mcmmo.ability.herbalism.greenthumb.plants.wheat:
-        description: Allows access to the Green Thumb ability for wheat
+        description: Allows access to the Green Thumb sub-skill for wheat
     mcmmo.ability.herbalism.greenthumb.plants.netherwart:
-        description: Allows access to the Green Thumb ability for netherwart
+        description: Allows access to the Green Thumb sub-skill for netherwart
     mcmmo.ability.herbalism.greenthumb.plants.potatoes:
-        description: Allows access to the Green Thumb ability for potatoes
+        description: Allows access to the Green Thumb sub-skill for potatoes
     mcmmo.ability.herbalism.greenthumb.plants.beetroots:
-        description: Allows access to the Green Thumb ability for beetroots
+        description: Allows access to the Green Thumb sub-skill for beetroots
     mcmmo.ability.herbalism.hylianluck:
-        description: Allows access to the Hylian Luck ability
+        description: Allows access to the Hylian Luck sub-skill
     mcmmo.ability.herbalism.shroomthumb:
-        description: Allows access to the Shroom Thumb ability
+        description: Allows access to the Shroom Thumb sub-skill
     mcmmo.ability.mining.*:
         default: false
         description: Allows access to all Mining abilities
@@ -453,15 +453,15 @@ permissions:
             mcmmo.ability.mining.blastmining.demolitionsexpertise: true
             mcmmo.ability.mining.blastmining.detonate: true
     mcmmo.ability.mining.blastmining.biggerbombs:
-        description: Allows access to the Bigger Bombs ability
+        description: Allows access to the Bigger Bombs sub-skill
     mcmmo.ability.mining.blastmining.demolitionsexpertise:
-        description: Allows access to the Demolitions Expertise ability
+        description: Allows access to the Demolitions Expertise sub-skill
     mcmmo.ability.mining.blastmining.detonate:
         description: Allows for remote TNT detonation
     mcmmo.ability.mining.doubledrops:
         description: Allows double drop chance when mining
     mcmmo.ability.mining.superbreaker:
-        description: Allows access to the Super Breaker ability
+        description: Allows access to the Super Breaker sub-skill
     mcmmo.ability.repair.*:
         default: false
         description: Allows access to all Repair abilities
@@ -487,35 +487,35 @@ permissions:
             mcmmo.ability.repair.toolrepair: true
             mcmmo.ability.repair.woodrepair: true
     mcmmo.ability.repair.arcaneforging:
-        description: Allows access to the Arcane Forging ability
+        description: Allows access to the Arcane Forging sub-skill
     mcmmo.ability.repair.armorrepair:
-        description: Allows ability to repair armor
+        description: Allows Repair skill to repair armor
     mcmmo.ability.repair.netheriterepair:
-        description: Allows ability to repair Netherite tools & armor
+        description: Allows Repair skill to repair Netherite tools & armor
     mcmmo.ability.repair.diamondrepair:
-        description: Allows ability to repair Diamond tools & armor
+        description: Allows Repair skill to repair Diamond tools & armor
     mcmmo.ability.repair.goldrepair:
-        description: Allows ability to repair Gold tools & armor
+        description: Allows Repair skill to repair Gold tools & armor
     mcmmo.ability.repair.ironrepair:
-        description: Allows ability to repair Iron tools & armor
+        description: Allows Repair skill to repair Iron tools & armor
     mcmmo.ability.repair.leatherrepair:
-        description: Allows ability to repair Leather armor
+        description: Allows Repair skill to repair Leather armor
     mcmmo.ability.repair.othermaterialrepair:
-        description: Allows ability to repair items of material type OTHER
+        description: Allows Repair skill to repair items of material type OTHER
     mcmmo.ability.repair.otherrepair:
-        description: Allows ability to repair items of type OTHER
+        description: Allows sub-skill to repair items of type OTHER
     mcmmo.ability.repair.superrepair:
         description: Allows access to Super Repair bonus
     mcmmo.ability.repair.repairmastery:
         description: Allows access to Repair Mastery
     mcmmo.ability.repair.stonerepair:
-        description: Allows ability to repair Stone tools
+        description: Allows Repair skill to repair Stone tools
     mcmmo.ability.repair.stringrepair:
-        description: Allows ability to repair Bow and Fishing rod
+        description: Allows Repair skill to repair Bow and Fishing rod
     mcmmo.ability.repair.toolrepair:
-        description: Allows ability to repair tools
+        description: Allows Repair skill to repair tools
     mcmmo.ability.repair.woodrepair:
-        description: Allows ability to repair Wood tools
+        description: Allows Repair skill to repair Wood tools
     mcmmo.ability.salvage.*:
         default: false
         description: Allows access to all Salvage abilities
@@ -539,33 +539,33 @@ permissions:
             mcmmo.ability.salvage.toolsalvage: true
             mcmmo.ability.salvage.woodsalvage: true
     mcmmo.ability.salvage.scrapcollector:
-        description: Allows access to the Scrap Collector ability
+        description: Allows access to the Scrap Collector sub-skill
     mcmmo.ability.salvage.arcanesalvage:
-        description: Allows access to the Arcane Salvage ability
+        description: Allows access to the Arcane Salvage sub-skill
     mcmmo.ability.salvage.armorsalvage:
-        description: Allows ability to salvage armor
+        description: Allows Salvage skill to salvage armor
     mcmmo.ability.salvage.netheritesalvage:
-        description: Allows ability to salvage Netherite tools & armor
+        description: Allows Salvage skill to salvage Netherite tools & armor
     mcmmo.ability.salvage.diamondsalvage:
-        description: Allows ability to salvage Diamond tools & armor
+        description: Allows Salvage skill to salvage Diamond tools & armor
     mcmmo.ability.salvage.goldsalvage:
-        description: Allows ability to salvage Gold tools & armor
+        description: Allows Salvage skill to salvage Gold tools & armor
     mcmmo.ability.salvage.ironsalvage:
-        description: Allows ability to salvage Iron tools & armor
+        description: Allows Salvage skill to salvage Iron tools & armor
     mcmmo.ability.salvage.leathersalvage:
-        description: Allows ability to salvage Leather armor
+        description: Allows Salvage skill to salvage Leather armor
     mcmmo.ability.salvage.othermaterialsalvage:
-        description: Allows ability to salvage items of material type OTHER
+        description: Allows Salvage skill to salvage items of material type OTHER
     mcmmo.ability.salvage.othersalvage:
-        description: Allows ability to salvage items of type OTHER
+        description: Allows Salvage skill to salvage items of type OTHER
     mcmmo.ability.salvage.stonesalvage:
-        description: Allows ability to salvage Stone tools
+        description: Allows Salvage skill to salvage Stone tools
     mcmmo.ability.salvage.stringsalvage:
-        description: Allows ability to salvage Bow and Fishing rod
+        description: Allows Salvage skill to salvage Bow and Fishing rod
     mcmmo.ability.salvage.toolsalvage:
-        description: Allows ability to salvage tools
+        description: Allows Salvage skill to salvage tools
     mcmmo.ability.salvage.woodsalvage:
-        description: Allows ability to salvage Wood tools
+        description: Allows Salvage skill to salvage Wood tools
     mcmmo.ability.smelting.*:
         default: false
         description: Allows access to all Smelting abilities
@@ -579,11 +579,11 @@ permissions:
             mcmmo.ability.smelting.fuelefficiency: true
             mcmmo.ability.smelting.vanillaxpboost: true
     mcmmo.ability.smelting.fluxmining:
-        description: Allows access to the Flux Mining ability
+        description: Allows access to the Flux Mining sub-skill
     mcmmo.ability.smelting.fuelefficiency:
-        description: Allows access to the Fuel Efficiency ability
+        description: Allows access to the Fuel Efficiency sub-skill
     mcmmo.ability.smelting.secondsmelt:
-        description: Allows access to the Second Smelt ability
+        description: Allows access to the Second Smelt sub-skill
     mcmmo.ability.smelting.vanillaxpboost:
         description: Allows vanilla XP boost from Smelting
     mcmmo.ability.swords.*:
@@ -604,11 +604,11 @@ permissions:
     mcmmo.ability.swords.swordslimitbreak:
         description: Adds damagee to swords
     mcmmo.ability.swords.rupture:
-        description: Allows access to the Bleed ability
+        description: Allows access to the Rupture sub-skill
     mcmmo.ability.swords.counterattack:
-        description: Allows access to the Counter Attack ability
+        description: Allows access to the Counter Attack sub-skill
     mcmmo.ability.swords.serratedstrikes:
-        description: Allows access to the Serrated Strikes ability
+        description: Allows access to the Serrated Strikes sub-skill
     mcmmo.ability.taming.*:
         default: false
         description: Allows access to all Taming abilities
@@ -628,10 +628,10 @@ permissions:
             mcmmo.ability.taming.thickfur: true
             mcmmo.ability.taming.pummel: true
     mcmmo.ability.taming.beastlore:
-        description: Allows access to the Beast Lore ability
+        description: Allows access to the Beast Lore sub-skill
     mcmmo.ability.taming.callofthewild.*:
         default: false
-        description: Allows access to the Call of the Wild ability
+        description: Allows access to the Call of the Wild sub-skill
         children:
             mcmmo.ability.taming.callofthewild: true
     mcmmo.ability.taming.callofthewild:
@@ -647,21 +647,21 @@ permissions:
     mcmmo.ability.taming.callofthewild.wolf:
         description: Allows players to summon Wolves with Call of the Wild
     mcmmo.ability.taming.environmentallyaware:
-        description: Allows access to the Environmentally Aware ability
+        description: Allows access to the Environmentally Aware sub-skill
     mcmmo.ability.taming.fastfoodservice:
-        description: Allows access to the Fast Food Service ability
+        description: Allows access to the Fast Food Service sub-skill
     mcmmo.ability.taming.gore:
-        description: Allows access to the Gore ability
+        description: Allows access to the Gore sub-skill
     mcmmo.ability.taming.holyhound:
-        description: Allows access to the Holy Hound ability
+        description: Allows access to the Holy Hound sub-skill
     mcmmo.ability.taming.sharpenedclaws:
-        description: Allows access to the Sharpened Claws ability
+        description: Allows access to the Sharpened Claws sub-skill
     mcmmo.ability.taming.shockproof:
-        description: Allows access to the Shock Proof ability
+        description: Allows access to the Shock Proof sub-skill
     mcmmo.ability.taming.thickfur:
-        description: Allows access to the Thick Fur ability
+        description: Allows access to the Thick Fur sub-skill
     mcmmo.ability.taming.pummel:
-        description: Allows access to the Pummel ability
+        description: Allows access to the Pummel sub-skill
     mcmmo.ability.unarmed.*:
         default: false
         description: Allows access to all Unarmed abilities
@@ -680,17 +680,17 @@ permissions:
     mcmmo.ability.unarmed.unarmedlimitbreak:
         description: Adds damage to unarmed attacks
     mcmmo.ability.unarmed.berserk:
-        description: Allows access to the Berserker ability
+        description: Allows access to the Berserker sub-skill
     mcmmo.ability.unarmed.blockcracker:
-        description: Allows access to the Block Cracker ability
+        description: Allows access to the Block Cracker sub-skill
     mcmmo.ability.unarmed.ironarmstyle:
-        description: Allows bonus damage from the Iron Arm ability
+        description: Allows bonus damage from the Iron Arm sub-skill
     mcmmo.ability.unarmed.arrowdeflect:
-        description: Allows access to the Arrow Deflect ability
+        description: Allows access to the Arrow Deflect sub-skill
     mcmmo.ability.unarmed.disarm:
-        description: Allows access to the Disarm ability
+        description: Allows access to the Disarm sub-skill
     mcmmo.ability.unarmed.irongrip:
-        description: Allows access to the Iron Grip ability
+        description: Allows access to the Iron Grip sub-skill
     mcmmo.ability.woodcutting.*:
         default: false
         description: Allows access to all Woodcutting abilities
@@ -714,9 +714,9 @@ permissions:
     mcmmo.ability.woodcutting.harvestlumber:
         description: Allows double drop chance when woodcutting
     mcmmo.ability.woodcutting.leafblower:
-        description: Allows access to Leaf Blower ability
+        description: Allows access to Leaf Blower sub-skill
     mcmmo.ability.woodcutting.treefeller:
-        description: Allows access to Tree Feller ability
+        description: Allows access to Tree Feller sub-skill
     mcmmo.ability.tridents.*:
         default: false
         description: Allows access to all Tridents abilities
