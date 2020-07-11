@@ -6,6 +6,7 @@ import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.meta.ProjectileOriginMeta;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.InteractType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
@@ -148,15 +149,32 @@ public class EntityListener implements Listener {
 
             projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(plugin, projectile.getLocation()));
 
+            boolean isCrossbow = false;
+
             //Track origin of projectile
             if(ItemUtils.hasItemInMainHand(player, "bow")) {
                 markProjectileOriginAsBow(projectile);
             } else if(ItemUtils.hasItemInMainHand(player, "crossbow")) {
                 markProjectileOriginAsCrossbow(projectile);
+                isCrossbow = true;
             } else if(ItemUtils.hasItemInOffHand(player, "bow")) {
                 markProjectileOriginAsBow(projectile);
             } else if(ItemUtils.hasItemInOffHand(player, "crossbow")) {
                 markProjectileOriginAsCrossbow(projectile);
+                isCrossbow = true;
+            }
+
+            //Crossbow only
+            if(isCrossbow) {
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+                //Process launch event
+                if(Permissions.skillEnabled(player, PrimarySkillType.CROSSBOWS)) {
+                    if(mcMMOPlayer != null) {
+                        mcMMOPlayer.getCrossbowManager().processProjectileLaunchEvent(event);
+                    }
+                }
+
             }
 
             for(Enchantment enchantment : player.getInventory().getItemInMainHand().getEnchantments().keySet()) {
@@ -164,8 +182,11 @@ public class EntityListener implements Listener {
                     return;
             }
 
-            if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ARCHERY_ARROW_RETRIEVAL, player)) {
-                projectile.setMetadata(mcMMO.trackedArrow, mcMMO.metadataValue);
+            //Bow only
+            if(!isCrossbow) {
+                if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ARCHERY_ARROW_RETRIEVAL, player)) {
+                    projectile.setMetadata(mcMMO.trackedArrow, mcMMO.metadataValue);
+                }
             }
         }
     }

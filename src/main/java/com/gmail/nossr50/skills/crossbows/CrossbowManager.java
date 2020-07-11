@@ -8,6 +8,7 @@ import com.gmail.nossr50.skills.archery.Archery;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 
 public class CrossbowManager extends SkillManager {
     public CrossbowManager(McMMOPlayer mcMMOPlayer) {
@@ -35,5 +36,14 @@ public class CrossbowManager extends SkillManager {
         //TODO: Should use its own variable
         return 1 + Math.min(firedLocation.distance(targetLocation), 50) * Archery.DISTANCE_XP_MULTIPLIER;
     }
+
+    /**
+     * Used for sub-skills that activate on projectile launch
+     * @param projectileLaunchEvent target event
+     */
+    public void processProjectileLaunchEvent(ProjectileLaunchEvent projectileLaunchEvent) {
+        mcMMOPlayer.getPlayer().sendMessage("Pew pew!");
+    }
+
 
 }
