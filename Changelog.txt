@@ -1,5 +1,8 @@
 Version 2.1.134
     Fixed a NPE that could happen with thrown potions
+    Fixed a locale mistake in locale hu_HU
+    Fixed a locale mistake in locale ru
+    Changed the UUID updater task to not catastrophically fail when requests failed
 
 Version 2.1.133
     A fix for an 'array out of bounds' error related to players clicking outside the inventory windows has been fixed

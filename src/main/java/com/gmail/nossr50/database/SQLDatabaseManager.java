@@ -1338,7 +1338,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 }
 
                 if (!names.isEmpty()) {
-                    new UUIDUpdateAsyncTask(mcMMO.p, names).run();
+                    UUIDUpdateAsyncTask updateTask = new UUIDUpdateAsyncTask(mcMMO.p, names);
+                    updateTask.start();
+                    updateTask.waitUntilFinished();
                 }
             } finally {
                 massUpdateLock.unlock();
