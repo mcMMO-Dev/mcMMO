@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class SkillGuideCommand implements CommandExecutor {
-    private String header;
-    private ArrayList<String> guide;
+    private final String header;
+    private final ArrayList<String> guide;
 
-    private String invalidPage = LocaleLoader.getString("Guides.Page.Invalid");
+    private final String invalidPage = LocaleLoader.getString("Guides.Page.Invalid");
 
     public SkillGuideCommand(PrimarySkillType skill) {
         header = LocaleLoader.getString("Guides.Header", skill.getName());

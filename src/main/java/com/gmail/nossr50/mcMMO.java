@@ -506,7 +506,6 @@ public class mcMMO extends JavaPlugin {
         new ChildConfig();
 
         List<Repairable> repairables = new ArrayList<Repairable>();
-        List<Salvageable> salvageables = new ArrayList<Salvageable>();
 
         if (Config.getInstance().getToolModsEnabled()) {
             new ToolConfigManager(this);
@@ -532,7 +531,7 @@ public class mcMMO extends JavaPlugin {
 
         // Load salvage configs, make manager and register them at this time
         SalvageConfigManager sManager = new SalvageConfigManager(this);
-        salvageables.addAll(sManager.getLoadedSalvageables());
+        List<Salvageable> salvageables = new ArrayList<Salvageable>(sManager.getLoadedSalvageables());
         salvageableManager = new SimpleSalvageableManager(salvageables.size());
         salvageableManager.registerSalvageables(salvageables);
     }

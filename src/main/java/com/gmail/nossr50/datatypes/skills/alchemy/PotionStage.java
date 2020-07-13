@@ -16,7 +16,7 @@ public enum PotionStage {
 
     int numerical;
 
-    private PotionStage(int numerical) {
+    PotionStage(int numerical) {
         this.numerical = numerical;
     }
 

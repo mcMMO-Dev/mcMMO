@@ -104,23 +104,21 @@ public class CompatibilityManager {
     }
 
     private NMSVersion determineNMSVersion() {
-        switch(minecraftGameVersion.getMajorVersion().asInt()) {
-            case 1:
-                switch(minecraftGameVersion.getMinorVersion().asInt()) {
-                    case 12:
-                        return NMSVersion.NMS_1_12_2;
-                    case 13:
-                        return NMSVersion.NMS_1_13_2;
-                    case 14:
-                        return NMSVersion.NMS_1_14_4;
-                    case 15:
-                        return NMSVersion.NMS_1_15_2;
-                    case 16:
-                        switch(minecraftGameVersion.getPatchVersion().asInt()) {
-                            case 1:
-                                return NMSVersion.NMS_1_16_1;
-                        }
-                }
+        if (minecraftGameVersion.getMajorVersion().asInt() == 1) {
+            switch (minecraftGameVersion.getMinorVersion().asInt()) {
+                case 12:
+                    return NMSVersion.NMS_1_12_2;
+                case 13:
+                    return NMSVersion.NMS_1_13_2;
+                case 14:
+                    return NMSVersion.NMS_1_14_4;
+                case 15:
+                    return NMSVersion.NMS_1_15_2;
+                case 16:
+                    if (minecraftGameVersion.getPatchVersion().asInt() == 1) {
+                        return NMSVersion.NMS_1_16_1;
+                    }
+            }
         }
 
         return NMSVersion.UNSUPPORTED;

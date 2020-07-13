@@ -38,24 +38,24 @@ public class PartyCommand implements TabExecutor {
         PARTY_SUBCOMMANDS = ImmutableList.copyOf(subcommands);
     }
 
-    private CommandExecutor partyJoinCommand           = new PartyJoinCommand();
-    private CommandExecutor partyAcceptCommand         = new PartyAcceptCommand();
-    private CommandExecutor partyCreateCommand         = new PartyCreateCommand();
-    private CommandExecutor partyQuitCommand           = new PartyQuitCommand();
-    private CommandExecutor partyXpShareCommand        = new PartyXpShareCommand();
-    private CommandExecutor partyItemShareCommand      = new PartyItemShareCommand();
-    private CommandExecutor partyInviteCommand         = new PartyInviteCommand();
-    private CommandExecutor partyKickCommand           = new PartyKickCommand();
-    private CommandExecutor partyDisbandCommand        = new PartyDisbandCommand();
-    private CommandExecutor partyChangeOwnerCommand    = new PartyChangeOwnerCommand();
-    private CommandExecutor partyLockCommand           = new PartyLockCommand();
-    private CommandExecutor partyChangePasswordCommand = new PartyChangePasswordCommand();
-    private CommandExecutor partyRenameCommand         = new PartyRenameCommand();
-    private CommandExecutor partyInfoCommand           = new PartyInfoCommand();
-    private CommandExecutor partyHelpCommand           = new PartyHelpCommand();
-    private CommandExecutor partyTeleportCommand       = new PtpCommand();
-    private CommandExecutor partyChatCommand           = new PartyChatCommand();
-    private CommandExecutor partyAllianceCommand       = new PartyAllianceCommand();
+    private final CommandExecutor partyJoinCommand           = new PartyJoinCommand();
+    private final CommandExecutor partyAcceptCommand         = new PartyAcceptCommand();
+    private final CommandExecutor partyCreateCommand         = new PartyCreateCommand();
+    private final CommandExecutor partyQuitCommand           = new PartyQuitCommand();
+    private final CommandExecutor partyXpShareCommand        = new PartyXpShareCommand();
+    private final CommandExecutor partyItemShareCommand      = new PartyItemShareCommand();
+    private final CommandExecutor partyInviteCommand         = new PartyInviteCommand();
+    private final CommandExecutor partyKickCommand           = new PartyKickCommand();
+    private final CommandExecutor partyDisbandCommand        = new PartyDisbandCommand();
+    private final CommandExecutor partyChangeOwnerCommand    = new PartyChangeOwnerCommand();
+    private final CommandExecutor partyLockCommand           = new PartyLockCommand();
+    private final CommandExecutor partyChangePasswordCommand = new PartyChangePasswordCommand();
+    private final CommandExecutor partyRenameCommand         = new PartyRenameCommand();
+    private final CommandExecutor partyInfoCommand           = new PartyInfoCommand();
+    private final CommandExecutor partyHelpCommand           = new PartyHelpCommand();
+    private final CommandExecutor partyTeleportCommand       = new PtpCommand();
+    private final CommandExecutor partyChatCommand           = new PartyChatCommand();
+    private final CommandExecutor partyAllianceCommand       = new PartyAllianceCommand();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

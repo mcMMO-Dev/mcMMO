@@ -18,14 +18,11 @@ public class McImportCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        switch (args.length) {
-            case 0:
-                importModConfig();
-                return true;
-
-            default:
-                return false;
+        if (args.length == 0) {
+            importModConfig();
+            return true;
         }
+        return false;
     }
 
     public boolean importModConfig() {

@@ -18,7 +18,7 @@ import java.util.Random;
 import java.util.Set;
 
 public final class Misc {
-    private static Random random = new Random();
+    private static final Random random = new Random();
 
     public static final int TIME_CONVERSION_FACTOR = 1000;
     public static final int TICK_CONVERSION_FACTOR = 20;
@@ -39,7 +39,7 @@ public final class Misc {
 
     public static final Set<String> modNames = ImmutableSet.of("LOTR", "BUILDCRAFT", "ENDERIO", "ENHANCEDBIOMES", "IC2", "METALLURGY", "FORESTRY", "GALACTICRAFT", "RAILCRAFT", "TWILIGHTFOREST", "THAUMCRAFT", "GRAVESTONEMOD", "GROWTHCRAFT", "ARCTICMOBS", "DEMONMOBS", "INFERNOMOBS", "SWAMPMOBS", "MARICULTURE", "MINESTRAPPOLATION");
 
-    private Misc() {};
+    private Misc() {}
 
     /**
      * Determines if an entity is an NPC but not a villager

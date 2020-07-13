@@ -85,14 +85,14 @@ public enum SuperAbilityType {
         BLAST_MINING.subSkillTypeDefinition         = SubSkillType.MINING_BLAST_MINING;
     }
 
-    private String abilityOn;
-    private String abilityOff;
-    private String abilityPlayer;
-    private String abilityRefresh;
-    private String abilityPlayerOff;
+    private final String abilityOn;
+    private final String abilityOff;
+    private final String abilityPlayer;
+    private final String abilityRefresh;
+    private final String abilityPlayerOff;
     private SubSkillType subSkillTypeDefinition;
 
-    private SuperAbilityType(String abilityOn, String abilityOff, String abilityPlayer, String abilityRefresh, String abilityPlayerOff) {
+    SuperAbilityType(String abilityOn, String abilityOff, String abilityPlayer, String abilityRefresh, String abilityPlayerOff) {
         this.abilityOn = abilityOn;
         this.abilityOff = abilityOff;
         this.abilityPlayer = abilityPlayer;

@@ -9,9 +9,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.List;
 
 public class PistonTrackerTask extends BukkitRunnable {
-    private List<Block> blocks;
-    private BlockFace direction;
-    private Block futureEmptyBlock;
+    private final List<Block> blocks;
+    private final BlockFace direction;
+    private final Block futureEmptyBlock;
 
     public PistonTrackerTask(List<Block> blocks, BlockFace direction, Block futureEmptyBlock) {
         this.blocks = blocks;

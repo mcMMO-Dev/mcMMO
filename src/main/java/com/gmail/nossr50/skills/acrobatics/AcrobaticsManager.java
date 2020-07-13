@@ -32,9 +32,9 @@ public class AcrobaticsManager extends SkillManager {
     }
 
     private long rollXPCooldown = 0;
-    private long rollXPInterval = (1000 * 3); //1 Minute
+    private final long rollXPInterval = (1000 * 3); //1 Minute
     private long rollXPIntervalLengthen = (1000 * 10); //10 Seconds
-    private LimitedSizeList fallLocationMap;
+    private final LimitedSizeList fallLocationMap;
 
     public boolean hasFallenInLocationBefore(Location location)
     {

@@ -65,11 +65,11 @@ public enum PrimarySkillType {
     WOODCUTTING(WoodcuttingManager.class, Color.OLIVE, SuperAbilityType.TREE_FELLER, ToolType.AXE,
             ImmutableList.of(SubSkillType.WOODCUTTING_LEAF_BLOWER, SubSkillType.WOODCUTTING_TREE_FELLER, SubSkillType.WOODCUTTING_HARVEST_LUMBER));
 
-    private Class<? extends SkillManager> managerClass;
-    private Color skillColor;
-    private SuperAbilityType ability;
-    private ToolType tool;
-    private List<SubSkillType> subSkillTypes;
+    private final Class<? extends SkillManager> managerClass;
+    private final Color skillColor;
+    private final SuperAbilityType ability;
+    private final ToolType tool;
+    private final List<SubSkillType> subSkillTypes;
 
     public static final List<String> SKILL_NAMES;
     public static final List<String> SUBSKILL_NAMES;
@@ -110,11 +110,11 @@ public enum PrimarySkillType {
         NON_CHILD_SKILLS = ImmutableList.copyOf(nonChildSkills);
     }
 
-    private PrimarySkillType(Class<? extends SkillManager> managerClass, Color skillColor, List<SubSkillType> subSkillTypes) {
+    PrimarySkillType(Class<? extends SkillManager> managerClass, Color skillColor, List<SubSkillType> subSkillTypes) {
         this(managerClass, skillColor, null, null, subSkillTypes);
     }
 
-    private PrimarySkillType(Class<? extends SkillManager> managerClass, Color skillColor, SuperAbilityType ability, ToolType tool, List<SubSkillType> subSkillTypes) {
+    PrimarySkillType(Class<? extends SkillManager> managerClass, Color skillColor, SuperAbilityType ability, ToolType tool, List<SubSkillType> subSkillTypes) {
         this.managerClass = managerClass;
         this.skillColor = skillColor;
         this.ability = ability;

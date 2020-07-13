@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
 public class McMMOPlayerBrewEvent extends McMMOPlayerSkillEvent implements Cancellable {
-    private BlockState brewingStand;
+    private final BlockState brewingStand;
 
     private boolean cancelled;
 

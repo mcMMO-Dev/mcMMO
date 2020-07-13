@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 
 public final class ParticleEffectUtils {
 
-    private ParticleEffectUtils() {};
+    private ParticleEffectUtils() {}
 
     public static void playGreenThumbEffect(Location location) {
         World world = location.getWorld();

@@ -15,7 +15,7 @@ import java.util.*;
 
 public class RepairConfig extends ConfigLoader {
     private List<Repairable> repairables;
-    private HashSet<String> notSupported;
+    private final HashSet<String> notSupported;
 
     public RepairConfig(String fileName) {
         super(fileName);

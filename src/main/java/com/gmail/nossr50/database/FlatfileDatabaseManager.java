@@ -809,20 +809,20 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
         SkillComparator c = new SkillComparator();
 
-        Collections.sort(mining, c);
-        Collections.sort(woodcutting, c);
-        Collections.sort(repair, c);
-        Collections.sort(unarmed, c);
-        Collections.sort(herbalism, c);
-        Collections.sort(excavation, c);
-        Collections.sort(archery, c);
-        Collections.sort(swords, c);
-        Collections.sort(axes, c);
-        Collections.sort(acrobatics, c);
-        Collections.sort(taming, c);
-        Collections.sort(fishing, c);
-        Collections.sort(alchemy, c);
-        Collections.sort(powerLevels, c);
+        mining.sort(c);
+        woodcutting.sort(c);
+        repair.sort(c);
+        unarmed.sort(c);
+        herbalism.sort(c);
+        excavation.sort(c);
+        archery.sort(c);
+        swords.sort(c);
+        axes.sort(c);
+        acrobatics.sort(c);
+        taming.sort(c);
+        fishing.sort(c);
+        alchemy.sort(c);
+        powerLevels.sort(c);
 
         playerStatHash.put(PrimarySkillType.MINING, mining);
         playerStatHash.put(PrimarySkillType.WOODCUTTING, woodcutting);

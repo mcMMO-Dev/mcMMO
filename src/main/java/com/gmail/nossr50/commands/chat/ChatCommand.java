@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ChatCommand implements TabExecutor {
-    private ChatMode chatMode;
+    private final ChatMode chatMode;
     protected ChatManager chatManager;
 
     public ChatCommand(ChatMode chatMode) {
@@ -89,12 +89,10 @@ public abstract class ChatCommand implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        switch (args.length) {
-            case 1:
-                return StringUtil.copyPartialMatches(args[0], CommandUtils.TRUE_FALSE_OPTIONS, new ArrayList<String>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
-            default:
-                return ImmutableList.of();
+        if (args.length == 1) {
+            return StringUtil.copyPartialMatches(args[0], CommandUtils.TRUE_FALSE_OPTIONS, new ArrayList<String>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
         }
+        return ImmutableList.of();
     }
 
     protected String buildChatMessage(String[] args, int index) {

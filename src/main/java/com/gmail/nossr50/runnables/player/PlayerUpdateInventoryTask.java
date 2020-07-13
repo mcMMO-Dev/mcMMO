@@ -5,7 +5,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 @SuppressWarnings("deprecation")
 public class PlayerUpdateInventoryTask extends BukkitRunnable {
-    private Player player;
+    private final Player player;
 
     public PlayerUpdateInventoryTask(Player player) {
         this.player = player;

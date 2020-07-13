@@ -27,9 +27,9 @@ public class PartyAllianceCommand implements TabExecutor {
 
     public static final List<String> ALLIANCE_SUBCOMMANDS = ImmutableList.of("invite", "accept", "disband");
 
-    private CommandExecutor partyAllianceInviteCommand = new PartyAllianceInviteCommand();
-    private CommandExecutor partyAllianceAcceptCommand = new PartyAllianceAcceptCommand();
-    private CommandExecutor partyAllianceDisbandCommand = new PartyAllianceDisbandCommand();
+    private final CommandExecutor partyAllianceInviteCommand = new PartyAllianceInviteCommand();
+    private final CommandExecutor partyAllianceAcceptCommand = new PartyAllianceAcceptCommand();
+    private final CommandExecutor partyAllianceDisbandCommand = new PartyAllianceDisbandCommand();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -109,19 +109,17 @@ public class PartyAllianceCommand implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String label, String[] args) {
-        switch (args.length) {
-            case 1:
-                List<String> matches = StringUtil.copyPartialMatches(args[0], ALLIANCE_SUBCOMMANDS, new ArrayList<String>(ALLIANCE_SUBCOMMANDS.size()));
+        if (args.length == 1) {
+            List<String> matches = StringUtil.copyPartialMatches(args[0], ALLIANCE_SUBCOMMANDS, new ArrayList<String>(ALLIANCE_SUBCOMMANDS.size()));
 
-                if (matches.size() == 0) {
-                    List<String> playerNames = CommandUtils.getOnlinePlayerNames(commandSender);
-                    return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<String>(playerNames.size()));
-                }
+            if (matches.size() == 0) {
+                List<String> playerNames = CommandUtils.getOnlinePlayerNames(commandSender);
+                return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<String>(playerNames.size()));
+            }
 
-                return matches;
-            default:
-                return ImmutableList.of();
+            return matches;
         }
+        return ImmutableList.of();
     }
 
     private void displayPartyHeader() {

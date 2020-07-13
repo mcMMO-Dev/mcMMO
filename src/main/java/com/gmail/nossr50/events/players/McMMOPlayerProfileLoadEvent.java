@@ -9,8 +9,8 @@ import org.bukkit.event.HandlerList;
 
 public class McMMOPlayerProfileLoadEvent extends Event implements Cancellable {
     private boolean cancelled;
-    private PlayerProfile profile;
-    private Player player;
+    private final PlayerProfile profile;
+    private final Player player;
     public McMMOPlayerProfileLoadEvent(Player player, PlayerProfile profile){
         super(!Bukkit.isPrimaryThread());
 

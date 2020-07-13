@@ -130,7 +130,7 @@ public class ScoreboardManager {
         abilityLabelsSkill = abilityLabelSkillBuilder.build();
     }
 
-    private static List<String> dirtyPowerLevels = new ArrayList<String>();
+    private static final List<String> dirtyPowerLevels = new ArrayList<String>();
 
     public enum SidebarType {
         NONE,
@@ -138,7 +138,7 @@ public class ScoreboardManager {
         STATS_BOARD,
         COOLDOWNS_BOARD,
         RANK_BOARD,
-        TOP_BOARD;
+        TOP_BOARD
     }
 
     private static String formatAbility(String abilityName) {

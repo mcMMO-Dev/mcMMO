@@ -189,7 +189,7 @@ public enum SubSkillType {
         String subskillNameWithoutPrefix = subSkillName.substring(subStringIndex);
         if(subskillNameWithoutPrefix.contains("_"))
         {
-            String splitStrings[] = subskillNameWithoutPrefix.split("_");
+            String[] splitStrings = subskillNameWithoutPrefix.split("_");
 
             for(String string : splitStrings)
             {
@@ -215,7 +215,7 @@ public enum SubSkillType {
         String subskillNameWithoutPrefix = subSkillName.substring(subStringIndex);
         if(subskillNameWithoutPrefix.contains("_"))
         {
-            String splitStrings[] = subskillNameWithoutPrefix.split("_");
+            String[] splitStrings = subskillNameWithoutPrefix.split("_");
 
             for(int i = 0; i < splitStrings.length; i++)
             {
@@ -295,14 +295,12 @@ public enum SubSkillType {
 
     public String getLocaleStat(String... vars)
     {
-        String statMsg = LocaleLoader.getString("Ability.Generic.Template", (Object[]) vars);
-        return statMsg;
+        return LocaleLoader.getString("Ability.Generic.Template", (Object[]) vars);
     }
 
     public String getCustomLocaleStat(String... vars)
     {
-        String statMsg = LocaleLoader.getString("Ability.Generic.Template.Custom", (Object[]) vars);
-        return statMsg;
+        return LocaleLoader.getString("Ability.Generic.Template.Custom", (Object[]) vars);
     }
 
     private String getFromLocaleSubAddress(String s) {

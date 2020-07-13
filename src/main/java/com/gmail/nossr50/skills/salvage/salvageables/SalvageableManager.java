@@ -11,14 +11,14 @@ public interface SalvageableManager {
      *
      * @param salvageable Salvageable to register
      */
-    public void registerSalvageable(Salvageable salvageable);
+    void registerSalvageable(Salvageable salvageable);
 
     /**
      * Register a list of salvageables with the SalvageManager
      *
      * @param salvageables List<Salvageable> to register
      */
-    public void registerSalvageables(List<Salvageable> salvageables);
+    void registerSalvageables(List<Salvageable> salvageables);
 
     /**
      * Checks if an item is salvageable
@@ -27,7 +27,7 @@ public interface SalvageableManager {
      *
      * @return true if salvageable, false if not
      */
-    public boolean isSalvageable(Material type);
+    boolean isSalvageable(Material type);
 
     /**
      * Checks if an item is salvageable
@@ -36,7 +36,7 @@ public interface SalvageableManager {
      *
      * @return true if salvageable, false if not
      */
-    public boolean isSalvageable(ItemStack itemStack);
+    boolean isSalvageable(ItemStack itemStack);
 
     /**
      * Gets the salvageable with this type
@@ -45,5 +45,5 @@ public interface SalvageableManager {
      *
      * @return the salvageable, can be null
      */
-    public Salvageable getSalvageable(Material type);
+    Salvageable getSalvageable(Material type);
 }

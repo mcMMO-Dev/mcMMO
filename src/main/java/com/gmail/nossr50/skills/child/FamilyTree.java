@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class FamilyTree {
-    private static HashMap<PrimarySkillType, Set<PrimarySkillType>> tree = new HashMap<PrimarySkillType, Set<PrimarySkillType>>();
+    private static final HashMap<PrimarySkillType, Set<PrimarySkillType>> tree = new HashMap<PrimarySkillType, Set<PrimarySkillType>>();
 
     public static Set<PrimarySkillType> getParents(PrimarySkillType childSkill) {
         enforceChildSkill(childSkill);

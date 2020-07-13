@@ -6,7 +6,7 @@ import org.bukkit.plugin.Plugin;
  * Called when a chat is sent to a party channel
  */
 public class McMMOPartyChatEvent extends McMMOChatEvent {
-    private String party;
+    private final String party;
 
     public McMMOPartyChatEvent(Plugin plugin, String sender, String displayName, String party, String message) {
         super(plugin, sender, displayName, message);

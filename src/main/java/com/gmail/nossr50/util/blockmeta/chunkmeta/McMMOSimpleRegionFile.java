@@ -39,7 +39,7 @@ public class McMMOSimpleRegionFile {
     @SuppressWarnings("unused")
     private long lastAccessTime = System.currentTimeMillis();
     @SuppressWarnings("unused")
-    private static long TIMEOUT_TIME = 300000; // 5 min
+    private static final long TIMEOUT_TIME = 300000; // 5 min
 
     public McMMOSimpleRegionFile(File f, int rx, int rz) {
         this(f, rx, rz, 10);

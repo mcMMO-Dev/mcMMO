@@ -20,7 +20,7 @@ public final class LocaleLoader {
     private static ResourceBundle filesystemBundle = null;
     private static ResourceBundle enBundle = null;
 
-    private LocaleLoader() {};
+    private LocaleLoader() {}
 
     public static String getString(String key) {
         return getString(key, (Object[]) null);

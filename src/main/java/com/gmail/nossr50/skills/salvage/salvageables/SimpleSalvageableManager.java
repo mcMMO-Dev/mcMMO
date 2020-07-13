@@ -8,7 +8,7 @@ import java.util.List;
 
 
 public class SimpleSalvageableManager implements SalvageableManager {
-    private HashMap<Material, Salvageable> salvageables;
+    private final HashMap<Material, Salvageable> salvageables;
 
     public SimpleSalvageableManager() {
         this(55);

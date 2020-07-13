@@ -13,20 +13,17 @@ import java.util.List;
 public class McpurgeCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        switch (args.length) {
-            case 0:
-                mcMMO.getDatabaseManager().purgePowerlessUsers();
+        if (args.length == 0) {
+            mcMMO.getDatabaseManager().purgePowerlessUsers();
 
-                if (Config.getInstance().getOldUsersCutoff() != -1) {
-                    mcMMO.getDatabaseManager().purgeOldUsers();
-                }
+            if (Config.getInstance().getOldUsersCutoff() != -1) {
+                mcMMO.getDatabaseManager().purgeOldUsers();
+            }
 
-                sender.sendMessage(LocaleLoader.getString("Commands.mcpurge.Success"));
-                return true;
-
-            default:
-                return false;
+            sender.sendMessage(LocaleLoader.getString("Commands.mcpurge.Success"));
+            return true;
         }
+        return false;
     }
 
     @Override

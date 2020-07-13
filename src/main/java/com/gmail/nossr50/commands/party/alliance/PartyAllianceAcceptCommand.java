@@ -12,32 +12,28 @@ import org.bukkit.entity.Player;
 public class PartyAllianceAcceptCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        switch (args.length) {
-            case 2:
-                if(UserManager.getPlayer((Player) sender) == null)
-                {
-                    sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
-                    return true;
-                }
-                Player player = (Player) sender;
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-
-                if (!mcMMOPlayer.hasPartyAllianceInvite()) {
-                    sender.sendMessage(LocaleLoader.getString("mcMMO.NoInvites"));
-                    return true;
-                }
-
-                if (mcMMOPlayer.getParty().getAlly() != null) {
-                    player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.AlreadyAllies"));
-                    return true;
-                }
-
-                PartyManager.acceptAllianceInvite(mcMMOPlayer);
+        if (args.length == 2) {
+            if (UserManager.getPlayer((Player) sender) == null) {
+                sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return true;
+            }
+            Player player = (Player) sender;
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-            default:
-                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "alliance", "accept"));
+            if (!mcMMOPlayer.hasPartyAllianceInvite()) {
+                sender.sendMessage(LocaleLoader.getString("mcMMO.NoInvites"));
                 return true;
+            }
+
+            if (mcMMOPlayer.getParty().getAlly() != null) {
+                player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.AlreadyAllies"));
+                return true;
+            }
+
+            PartyManager.acceptAllianceInvite(mcMMOPlayer);
+            return true;
         }
+        sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "alliance", "accept"));
+        return true;
     }
 }

@@ -26,49 +26,44 @@ public class MccooldownCommand implements TabExecutor {
             return true;
         }
 
-        switch (args.length) {
-            case 0:
-                Player player = (Player) sender;
+        if (args.length == 0) {
+            Player player = (Player) sender;
 
-                if (Config.getInstance().getScoreboardsEnabled() && Config.getInstance().getCooldownUseBoard()) {
-                    ScoreboardManager.enablePlayerCooldownScoreboard(player);
+            if (Config.getInstance().getScoreboardsEnabled() && Config.getInstance().getCooldownUseBoard()) {
+                ScoreboardManager.enablePlayerCooldownScoreboard(player);
 
-                    if (!Config.getInstance().getCooldownUseChat()) {
-                        return true;
-                    }
-                }
-
-                if(UserManager.getPlayer(player) == null)
-                {
-                    player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                if (!Config.getInstance().getCooldownUseChat()) {
                     return true;
                 }
+            }
 
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+            if (UserManager.getPlayer(player) == null) {
+                player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                return true;
+            }
 
-                player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Header"));
-                player.sendMessage(LocaleLoader.getString("mcMMO.NoSkillNote"));
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-                for (SuperAbilityType ability : SuperAbilityType.values()) {
-                    if (!ability.getPermissions(player)) {
-                        continue;
-                    }
+            player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Header"));
+            player.sendMessage(LocaleLoader.getString("mcMMO.NoSkillNote"));
 
-                    int seconds = mcMMOPlayer.calculateTimeRemaining(ability);
-
-                    if (seconds <= 0) {
-                        player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.Y", ability.getName()));
-                    }
-                    else {
-                        player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.N", ability.getName(), seconds));
-                    }
+            for (SuperAbilityType ability : SuperAbilityType.values()) {
+                if (!ability.getPermissions(player)) {
+                    continue;
                 }
 
-                return true;
+                int seconds = mcMMOPlayer.calculateTimeRemaining(ability);
 
-            default:
-                return false;
+                if (seconds <= 0) {
+                    player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.Y", ability.getName()));
+                } else {
+                    player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.N", ability.getName(), seconds));
+                }
+            }
+
+            return true;
         }
+        return false;
     }
 
     @Override

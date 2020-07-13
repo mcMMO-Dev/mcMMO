@@ -14,8 +14,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class TeleportationWarmup extends BukkitRunnable {
-    private McMMOPlayer mcMMOPlayer;
-    private McMMOPlayer mcMMOTarget;
+    private final McMMOPlayer mcMMOPlayer;
+    private final McMMOPlayer mcMMOTarget;
 
     public TeleportationWarmup(McMMOPlayer mcMMOPlayer, McMMOPlayer mcMMOTarget) {
         this.mcMMOPlayer = mcMMOPlayer;

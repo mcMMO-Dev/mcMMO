@@ -18,7 +18,7 @@ import java.util.*;
 
 public class SalvageConfig extends ConfigLoader {
     private List<Salvageable> salvageables;
-    private HashSet<String> notSupported;
+    private final HashSet<String> notSupported;
 
     public SalvageConfig(String fileName) {
         super(fileName);

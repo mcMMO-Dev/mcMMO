@@ -6,9 +6,9 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
 public class McMMOPartyAllianceChangeEvent extends PlayerEvent implements Cancellable {
-    private String oldAlly;
-    private String newAlly;
-    private EventReason reason;
+    private final String oldAlly;
+    private final String newAlly;
+    private final EventReason reason;
     private boolean cancelled;
 
     public McMMOPartyAllianceChangeEvent(Player player, String oldAlly, String newAlly, EventReason reason) {
@@ -62,7 +62,7 @@ public class McMMOPartyAllianceChangeEvent extends PlayerEvent implements Cancel
         /**
          * Any reason that doesn't fit elsewhere.
          */
-        CUSTOM;
+        CUSTOM
     }
 
     /** Following are required for Cancellable **/

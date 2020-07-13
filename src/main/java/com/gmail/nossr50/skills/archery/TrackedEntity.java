@@ -7,8 +7,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.UUID;
 
 public class TrackedEntity extends BukkitRunnable {
-    private LivingEntity livingEntity;
-    private UUID id;
+    private final LivingEntity livingEntity;
+    private final UUID id;
     private int arrowCount;
 
     protected TrackedEntity(LivingEntity livingEntity) {

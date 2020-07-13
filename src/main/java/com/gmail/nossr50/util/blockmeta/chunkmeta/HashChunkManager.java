@@ -11,10 +11,10 @@ import java.io.*;
 import java.util.*;
 
 public class HashChunkManager implements ChunkManager {
-    private HashMap<UUID, HashMap<Long, McMMOSimpleRegionFile>> regionFiles = new HashMap<UUID, HashMap<Long, McMMOSimpleRegionFile>>();
+    private final HashMap<UUID, HashMap<Long, McMMOSimpleRegionFile>> regionFiles = new HashMap<UUID, HashMap<Long, McMMOSimpleRegionFile>>();
     public HashMap<String, ChunkStore> store = new HashMap<String, ChunkStore>();
     public ArrayList<BlockStoreConversionZDirectory> converters = new ArrayList<BlockStoreConversionZDirectory>();
-    private HashMap<UUID, Boolean> oldData = new HashMap<UUID, Boolean>();
+    private final HashMap<UUID, Boolean> oldData = new HashMap<UUID, Boolean>();
 
     @Override
     public synchronized void closeAll() {
@@ -98,12 +98,7 @@ public class HashChunkManager implements ChunkManager {
 
         UUID key = world.getUID();
 
-        HashMap<Long, McMMOSimpleRegionFile> worldRegions = regionFiles.get(key);
-
-        if (worldRegions == null) {
-            worldRegions = new HashMap<Long, McMMOSimpleRegionFile>();
-            regionFiles.put(key, worldRegions);
-        }
+        HashMap<Long, McMMOSimpleRegionFile> worldRegions = regionFiles.computeIfAbsent(key, k -> new HashMap<Long, McMMOSimpleRegionFile>());
 
         int rx = x >> 5;
         int rz = z >> 5;

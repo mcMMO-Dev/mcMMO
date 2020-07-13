@@ -366,25 +366,7 @@ Axes:
 ###
 Bows:
     #Bow_1
-    X999:
-        XP_Modifer: 1.0
-        Ability_Enabled: true
-        Tier: 1
-        Repairable: true
-        Repair_Material: X99
-        Repair_Material_Data_Value: 0
-        Repair_Material_Quantity: 9
-        Durability: 9999
     #Bow_2
-    X999:
-        XP_Modifer: 1.0
-        Ability_Enabled: true
-        Tier: 1
-        Repairable: true
-        Repair_Material: X99
-        Repair_Material_Data_Value: 0
-        Repair_Material_Quantity: 9
-        Durability: 9999
 
 #
 #  Settings for Hoes

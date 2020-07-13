@@ -38,8 +38,8 @@ public class PlayerProfile {
     private final Map<UniqueDataType, Integer> uniquePlayerData = new HashMap<>(); //Misc data that doesn't fit into other categories (chimaera wing, etc..)
 
     // Store previous XP gains for diminished returns
-    private DelayQueue<SkillXpGain> gainedSkillsXp = new DelayQueue<SkillXpGain>();
-    private HashMap<PrimarySkillType, Float> rollingSkillsXp = new HashMap<PrimarySkillType, Float>();
+    private final DelayQueue<SkillXpGain> gainedSkillsXp = new DelayQueue<SkillXpGain>();
+    private final HashMap<PrimarySkillType, Float> rollingSkillsXp = new HashMap<PrimarySkillType, Float>();
 
     @Deprecated
     public PlayerProfile(String playerName) {
@@ -248,9 +248,7 @@ public class PlayerProfile {
     protected void resetCooldowns() {
         markProfileDirty();
 
-        for (SuperAbilityType ability : abilityDATS.keySet()) {
-            abilityDATS.put(ability, 0);
-        }
+        abilityDATS.replaceAll((a, v) -> 0);
     }
 
     /*

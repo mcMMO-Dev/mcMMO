@@ -23,7 +23,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public final class SQLDatabaseManager implements DatabaseManager {
     private static final String ALL_QUERY_VERSION = "total";
-    private String tablePrefix = Config.getInstance().getMySQLTablePrefix();
+    private final String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
     private final Map<UUID, Integer> cachedUserIDs = new HashMap<UUID, Integer>();
 
@@ -33,7 +33,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     private boolean debug = false;
 
-    private ReentrantLock massUpdateLock = new ReentrantLock();
+    private final ReentrantLock massUpdateLock = new ReentrantLock();
 
     protected SQLDatabaseManager() {
         String connectionString = "jdbc:mysql://" + Config.getInstance().getMySQLServerName()
@@ -1488,9 +1488,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                int id = resultSet.getInt("id");
 
-                return id;
+                return resultSet.getInt("id");
             }
         }
         catch (SQLException ex) {

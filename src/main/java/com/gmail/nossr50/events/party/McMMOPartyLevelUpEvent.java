@@ -6,7 +6,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class McMMOPartyLevelUpEvent extends Event implements Cancellable {
-    private Party party;
+    private final Party party;
     private int levelsChanged;
     private boolean cancelled;
 

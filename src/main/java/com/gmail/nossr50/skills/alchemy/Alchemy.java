@@ -64,9 +64,7 @@ public final class Alchemy {
     public static void finishAllBrews() {
         mcMMO.p.debug("Completing " + brewingStandMap.size() + " unfinished Alchemy brews.");
 
-        List<AlchemyBrewTask> toFinish = new ArrayList<AlchemyBrewTask>();
-
-        toFinish.addAll(brewingStandMap.values());
+        List<AlchemyBrewTask> toFinish = new ArrayList<AlchemyBrewTask>(brewingStandMap.values());
 
         for (AlchemyBrewTask alchemyBrewTask : toFinish) {
             alchemyBrewTask.finishImmediately();

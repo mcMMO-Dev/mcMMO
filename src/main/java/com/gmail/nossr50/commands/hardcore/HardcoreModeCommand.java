@@ -109,16 +109,14 @@ public abstract class HardcoreModeCommand implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        switch (args.length) {
-            case 1:
-                if (StringUtils.isDouble(args[0])) {
-                    return ImmutableList.of();
-                }
-
-                return StringUtil.copyPartialMatches(args[0], CommandUtils.TRUE_FALSE_OPTIONS, new ArrayList<String>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
-            default:
+        if (args.length == 1) {
+            if (StringUtils.isDouble(args[0])) {
                 return ImmutableList.of();
+            }
+
+            return StringUtil.copyPartialMatches(args[0], CommandUtils.TRUE_FALSE_OPTIONS, new ArrayList<String>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
         }
+        return ImmutableList.of();
     }
 
     protected abstract boolean checkTogglePermissions(CommandSender sender);

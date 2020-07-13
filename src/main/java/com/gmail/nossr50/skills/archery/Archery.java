@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Archery {
-    private static List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
+    private static final List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
 
     public static double skillShotMaxBonusDamage     = AdvancedConfig.getInstance().getSkillShotDamageMax();
 

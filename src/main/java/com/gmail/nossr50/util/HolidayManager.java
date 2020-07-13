@@ -25,8 +25,8 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public final class HolidayManager {
-    private ArrayList<String> hasCelebrated;
-    private int currentYear;
+    private final ArrayList<String> hasCelebrated;
+    private final int currentYear;
     private static final int START_YEAR = 2011;
 
     private static final List<Color> ALL_COLORS;

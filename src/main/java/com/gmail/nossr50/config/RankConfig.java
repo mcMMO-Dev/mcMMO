@@ -13,7 +13,7 @@ public class RankConfig extends AutoUpdateConfigLoader {
     {
         super("skillranks.yml");
         validate();
-        this.instance = this;
+        instance = this;
     }
 
     @Override

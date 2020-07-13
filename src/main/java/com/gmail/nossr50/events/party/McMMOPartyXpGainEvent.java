@@ -6,7 +6,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class McMMOPartyXpGainEvent extends Event implements Cancellable {
-    private Party party;
+    private final Party party;
     private float xpGained;
     private boolean cancelled;
 

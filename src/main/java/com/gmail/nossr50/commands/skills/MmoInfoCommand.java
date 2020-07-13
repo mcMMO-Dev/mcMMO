@@ -62,12 +62,10 @@ public class MmoInfoCommand implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        switch (args.length) {
-            case 1:
-                return StringUtil.copyPartialMatches(args[0], PrimarySkillType.SUBSKILL_NAMES, new ArrayList<String>(PrimarySkillType.SUBSKILL_NAMES.size()));
-            default:
-                return ImmutableList.of();
+        if (args.length == 1) {
+            return StringUtil.copyPartialMatches(args[0], PrimarySkillType.SUBSKILL_NAMES, new ArrayList<String>(PrimarySkillType.SUBSKILL_NAMES.size()));
         }
+        return ImmutableList.of();
     }
 
     private void displayInfo(Player player, String subSkillName)

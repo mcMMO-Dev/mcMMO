@@ -12,19 +12,17 @@ import org.bukkit.command.CommandSender;
 public final class McmmoReloadLocaleCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        switch (args.length) {
-            case 0:
-                if (!Permissions.reloadlocale(sender)) {
-                    sender.sendMessage(command.getPermissionMessage());
-                    return true;
-                }
-
-                LocaleLoader.reloadLocale();
-                sender.sendMessage(LocaleLoader.getString("Locale.Reloaded"));
-
+        if (args.length == 0) {
+            if (!Permissions.reloadlocale(sender)) {
+                sender.sendMessage(command.getPermissionMessage());
                 return true;
-            default:
-                return false;
+            }
+
+            LocaleLoader.reloadLocale();
+            sender.sendMessage(LocaleLoader.getString("Locale.Reloaded"));
+
+            return true;
         }
+        return false;
     }
 }

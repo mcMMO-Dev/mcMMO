@@ -11,9 +11,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.Arrays;
 
 public class AlchemyBrewCheckTask extends BukkitRunnable {
-    private Player player;
-    private BrewingStand brewingStand;
-    private ItemStack[] oldInventory;
+    private final Player player;
+    private final BrewingStand brewingStand;
+    private final ItemStack[] oldInventory;
 
     public AlchemyBrewCheckTask(Player player, BrewingStand brewingStand) {
         this.player = player;

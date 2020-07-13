@@ -32,9 +32,9 @@ import java.util.List;
 import java.util.Locale;
 
 public final class CommandRegistrationManager {
-    private CommandRegistrationManager() {};
+    private CommandRegistrationManager() {}
 
-    private static String permissionsMessage = LocaleLoader.getString("mcMMO.NoPermission");
+    private static final String permissionsMessage = LocaleLoader.getString("mcMMO.NoPermission");
 
     private static void registerSkillCommands() {
         for (PrimarySkillType skill : PrimarySkillType.values()) {

@@ -13,31 +13,27 @@ import org.bukkit.entity.Player;
 public class PartyDisbandCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        switch (args.length) {
-            case 1:
-                if(UserManager.getPlayer((Player) sender) == null)
-                {
-                    sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+        if (args.length == 1) {
+            if (UserManager.getPlayer((Player) sender) == null) {
+                sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                return true;
+            }
+
+            Party playerParty = UserManager.getPlayer((Player) sender).getParty();
+            String partyName = playerParty.getName();
+
+            for (Player member : playerParty.getOnlineMembers()) {
+                if (!PartyManager.handlePartyChangeEvent(member, partyName, null, EventReason.KICKED_FROM_PARTY)) {
                     return true;
                 }
 
-                Party playerParty = UserManager.getPlayer((Player) sender).getParty();
-                String partyName = playerParty.getName();
+                member.sendMessage(LocaleLoader.getString("Party.Disband"));
+            }
 
-                for (Player member : playerParty.getOnlineMembers()) {
-                    if (!PartyManager.handlePartyChangeEvent(member, partyName, null, EventReason.KICKED_FROM_PARTY)) {
-                        return true;
-                    }
-
-                    member.sendMessage(LocaleLoader.getString("Party.Disband"));
-                }
-
-                PartyManager.disbandParty(playerParty);
-                return true;
-
-            default:
-                sender.sendMessage(LocaleLoader.getString("Commands.Usage.1", "party", "disband"));
-                return true;
+            PartyManager.disbandParty(playerParty);
+            return true;
         }
+        sender.sendMessage(LocaleLoader.getString("Commands.Usage.1", "party", "disband"));
+        return true;
     }
 }

@@ -67,7 +67,7 @@ public class PartyLockCommand implements CommandExecutor {
             return;
         }
 
-        if (lock ? party.isLocked() : !party.isLocked()) {
+        if (lock == party.isLocked()) {
             sender.sendMessage(LocaleLoader.getString("Party." + (lock ? "IsLocked" : "IsntLocked")));
             return;
         }

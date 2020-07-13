@@ -3,7 +3,7 @@ package com.gmail.nossr50.util.platform.version;
 import org.jetbrains.annotations.NotNull;
 
 public class SimpleNumericVersion extends SimpleVersion implements NumericVersioned {
-    private int versionNumber;
+    private final int versionNumber;
 
     public SimpleNumericVersion(int versionNumber) {
         super(String.valueOf(versionNumber));

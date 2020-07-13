@@ -18,14 +18,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class AlchemyBrewTask extends BukkitRunnable {
-    private static double DEFAULT_BREW_SPEED = 1.0;
-    private static int    DEFAULT_BREW_TICKS = 400;
+    private static final double DEFAULT_BREW_SPEED = 1.0;
+    private static final int    DEFAULT_BREW_TICKS = 400;
 
-    private BlockState brewingStand;
-    private Location location;
+    private final BlockState brewingStand;
+    private final Location location;
     private double brewSpeed;
     private double brewTimer;
-    private Player player;
+    private final Player player;
     private int fuel;
     private boolean firstRun = true;
 

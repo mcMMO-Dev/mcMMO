@@ -17,8 +17,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class AbilityDisableTask extends BukkitRunnable {
-    private McMMOPlayer mcMMOPlayer;
-    private SuperAbilityType ability;
+    private final McMMOPlayer mcMMOPlayer;
+    private final SuperAbilityType ability;
 
     public AbilityDisableTask(McMMOPlayer mcMMOPlayer, SuperAbilityType ability) {
         this.mcMMOPlayer = mcMMOPlayer;
@@ -41,7 +41,7 @@ public class AbilityDisableTask extends BukkitRunnable {
 
             case BERSERK:
                 if (Config.getInstance().getRefreshChunksEnabled()) {
-                    resendChunkRadiusAt(player, 1);
+                    resendChunkRadiusAt(player);
                 }
                 // Fallthrough
 
@@ -66,12 +66,14 @@ public class AbilityDisableTask extends BukkitRunnable {
         new AbilityCooldownTask(mcMMOPlayer, ability).runTaskLater(mcMMO.p, PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TICK_CONVERSION_FACTOR);
     }
 
-    private void resendChunkRadiusAt(Player player, int radius) {
+    private void resendChunkRadiusAt(Player player) {
         Chunk chunk = player.getLocation().getChunk();
         World world = player.getWorld();
 
         int chunkX = chunk.getX();
         int chunkZ = chunk.getZ();
+
+        int radius = 1;
 
         for (int x = chunkX - radius; x <= chunkX + radius; x++) {
             for (int z = chunkZ - radius; z <= chunkZ + radius; z++) {

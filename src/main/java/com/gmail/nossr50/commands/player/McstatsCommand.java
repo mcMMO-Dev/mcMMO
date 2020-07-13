@@ -24,45 +24,40 @@ public class McstatsCommand implements TabExecutor {
             return true;
         }
 
-        switch (args.length) {
-            case 0:
-                if(UserManager.getPlayer((Player) sender) == null)
-                {
-                    sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+        if (args.length == 0) {
+            if (UserManager.getPlayer((Player) sender) == null) {
+                sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
+                return true;
+            }
+
+            Player player = (Player) sender;
+
+            if (Config.getInstance().getStatsUseBoard() && Config.getInstance().getScoreboardsEnabled()) {
+                ScoreboardManager.enablePlayerStatsScoreboard(player);
+
+                if (!Config.getInstance().getStatsUseChat()) {
                     return true;
                 }
+            }
 
-                Player player = (Player) sender;
+            player.sendMessage(LocaleLoader.getString("Stats.Own.Stats"));
+            player.sendMessage(LocaleLoader.getString("mcMMO.NoSkillNote"));
 
-                if (Config.getInstance().getStatsUseBoard() && Config.getInstance().getScoreboardsEnabled()) {
-                    ScoreboardManager.enablePlayerStatsScoreboard(player);
+            CommandUtils.printGatheringSkills(player);
+            CommandUtils.printCombatSkills(player);
+            CommandUtils.printMiscSkills(player);
 
-                    if (!Config.getInstance().getStatsUseChat()) {
-                        return true;
-                    }
-                }
+            int powerLevelCap = Config.getInstance().getPowerLevelCap();
 
-                player.sendMessage(LocaleLoader.getString("Stats.Own.Stats"));
-                player.sendMessage(LocaleLoader.getString("mcMMO.NoSkillNote"));
+            if (powerLevelCap != Integer.MAX_VALUE) {
+                player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped", UserManager.getPlayer(player).getPowerLevel(), powerLevelCap));
+            } else {
+                player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", UserManager.getPlayer(player).getPowerLevel()));
+            }
 
-                CommandUtils.printGatheringSkills(player);
-                CommandUtils.printCombatSkills(player);
-                CommandUtils.printMiscSkills(player);
-
-                int powerLevelCap = Config.getInstance().getPowerLevelCap();
-
-                if (powerLevelCap != Integer.MAX_VALUE) {
-                    player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped", UserManager.getPlayer(player).getPowerLevel(), powerLevelCap));
-                }
-                else {
-                    player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", UserManager.getPlayer(player).getPowerLevel()));
-                }
-
-                return true;
-
-            default:
-                return false;
+            return true;
         }
+        return false;
     }
 
     @Override

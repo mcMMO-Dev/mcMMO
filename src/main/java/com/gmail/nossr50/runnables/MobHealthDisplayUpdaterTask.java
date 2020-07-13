@@ -5,7 +5,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class MobHealthDisplayUpdaterTask extends BukkitRunnable {
-    private LivingEntity target;
+    private final LivingEntity target;
 
     public MobHealthDisplayUpdaterTask(LivingEntity target) {
         this.target = target;

@@ -58,11 +58,7 @@ public class CleanBackupsTask extends BukkitRunnable {
                 continue;
             }
             else {
-                List<Integer> savedWeeks = savedYearsWeeks.get(year);
-                if (savedWeeks == null) {
-                    savedWeeks = new ArrayList<Integer>();
-                    savedYearsWeeks.put(year, savedWeeks);
-                }
+                List<Integer> savedWeeks = savedYearsWeeks.computeIfAbsent(year, k -> new ArrayList<Integer>());
 
                 if (!savedWeeks.contains(weekOfYear) && Config.getInstance().getKeepWeeklyPastMonth()) {
                     // Keep one backup of each week

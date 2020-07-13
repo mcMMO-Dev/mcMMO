@@ -687,9 +687,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     }
 
     public double getMaximumProbability(SubSkillType subSkillType) {
-        double maximumProbability = config.getDouble(subSkillType.getAdvConfigAddress() + ".ChanceMax", 100.0D);
 
-        return maximumProbability;
+        return config.getDouble(subSkillType.getAdvConfigAddress() + ".ChanceMax", 100.0D);
     }
 
     public double getMaximumProbability(AbstractSubSkill abstractSubSkill)

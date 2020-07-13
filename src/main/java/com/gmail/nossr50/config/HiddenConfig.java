@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 
 public class HiddenConfig {
     private static HiddenConfig instance;
-    private String fileName;
+    private final String fileName;
     private YamlConfiguration config;
     private boolean chunkletsEnabled;
     private int conversionRate;

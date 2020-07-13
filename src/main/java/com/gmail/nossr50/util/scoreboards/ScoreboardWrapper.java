@@ -37,7 +37,7 @@ public class ScoreboardWrapper {
     // Internal usage variables (should exist)
     private SidebarType sidebarType;
     private Objective sidebarObjective;
-    private Objective powerObjective;
+    private final Objective powerObjective;
 
     // Parameter variables (May be null / invalid)
     private Scoreboard oldBoard = null;

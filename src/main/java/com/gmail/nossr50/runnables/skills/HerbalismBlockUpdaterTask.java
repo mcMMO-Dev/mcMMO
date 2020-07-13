@@ -4,7 +4,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class HerbalismBlockUpdaterTask extends BukkitRunnable {
-    private BlockState blockState;
+    private final BlockState blockState;
 
     public HerbalismBlockUpdaterTask(BlockState blockState) {
         this.blockState = blockState;

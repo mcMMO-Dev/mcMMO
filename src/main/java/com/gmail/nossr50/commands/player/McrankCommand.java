@@ -73,13 +73,11 @@ public class McrankCommand implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        switch (args.length) {
-            case 1:
-                List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
-                return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<String>(playerNames.size()));
-            default:
-                return ImmutableList.of();
+        if (args.length == 1) {
+            List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
+            return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<String>(playerNames.size()));
         }
+        return ImmutableList.of();
     }
 
     private void display(CommandSender sender, String playerName) {

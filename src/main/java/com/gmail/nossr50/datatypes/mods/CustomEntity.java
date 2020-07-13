@@ -3,12 +3,12 @@ package com.gmail.nossr50.datatypes.mods;
 import org.bukkit.inventory.ItemStack;
 
 public class CustomEntity {
-    private double xpMultiplier;
-    private boolean canBeTamed;
-    private int tamingXP;
-    private boolean canBeSummoned;
-    private ItemStack callOfTheWildItem;
-    private int callOfTheWildAmount;
+    private final double xpMultiplier;
+    private final boolean canBeTamed;
+    private final int tamingXP;
+    private final boolean canBeSummoned;
+    private final ItemStack callOfTheWildItem;
+    private final int callOfTheWildAmount;
 
     public CustomEntity(double xpMultiplier, boolean canBeTamed, int tamingXP, boolean canBeSummoned, ItemStack callOfTheWildItem, int callOfTheWildAmount) {
         this.xpMultiplier = xpMultiplier;

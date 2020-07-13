@@ -33,9 +33,9 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 public final class PartyManager {
-    private static String partiesFilePath = mcMMO.getFlatFileDirectory() + "parties.yml";
-    private static List<Party> parties = new ArrayList<Party>();
-    private static File partyFile = new File(partiesFilePath);
+    private static final String partiesFilePath = mcMMO.getFlatFileDirectory() + "parties.yml";
+    private static final List<Party> parties = new ArrayList<Party>();
+    private static final File partyFile = new File(partiesFilePath);
 
     private PartyManager() {}
 

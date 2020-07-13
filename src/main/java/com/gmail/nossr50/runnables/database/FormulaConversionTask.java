@@ -14,8 +14,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class FormulaConversionTask extends BukkitRunnable {
-    private CommandSender sender;
-    private FormulaType formulaType;
+    private final CommandSender sender;
+    private final FormulaType formulaType;
 
     public FormulaConversionTask(CommandSender sender, FormulaType formulaType) {
         this.sender = sender;

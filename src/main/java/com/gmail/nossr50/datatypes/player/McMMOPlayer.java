@@ -65,11 +65,11 @@ import java.util.Set;
 import java.util.UUID;
 
 public class McMMOPlayer {
-    private Player        player;
-    private PlayerProfile profile;
+    private final Player        player;
+    private final PlayerProfile profile;
 
     private final Map<PrimarySkillType, SkillManager> skillManagers = new HashMap<PrimarySkillType, SkillManager>();
-    private ExperienceBarManager experienceBarManager;
+    private final ExperienceBarManager experienceBarManager;
 
     private Party   party;
     private Party   invite;
@@ -102,7 +102,7 @@ public class McMMOPlayer {
 
     private boolean isUsingUnarmed;
     private final FixedMetadataValue playerMetadata;
-    private String playerName;
+    private final String playerName;
 
     public McMMOPlayer(Player player, PlayerProfile profile) {
         this.playerName = player.getName();
