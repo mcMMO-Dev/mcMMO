@@ -51,20 +51,22 @@ public class CompatibilityManager {
      * For any unsupported layers, load a dummy layer
      */
     private void initCompatibilityLayers() {
-        if(nmsVersion == NMSVersion.UNSUPPORTED) {
-            mcMMO.p.getLogger().info("NMS not supported for this version of Minecraft, possible solutions include updating mcMMO or updating your server software. NMS Support is not available on every version of Minecraft.");
-            mcMMO.p.getLogger().info("Certain features of mcMMO that require NMS will be disabled, you can check what is disabled by running the /mmocompat command!");
-            //Load dummy compatibility layers
-            isFullyCompatibleServerSoftware = false;
-            loadDummyCompatibilityLayers();
-        } else {
-            playerAttackCooldownExploitPreventionLayer = new PlayerAttackCooldownExploitPreventionLayer(nmsVersion);
+        isFullyCompatibleServerSoftware = true;
 
-            //Mark as operational
-            if(playerAttackCooldownExploitPreventionLayer.noErrorsOnInitialize()) {
-                supportedLayers.put(CompatibilityType.PLAYER_ATTACK_COOLDOWN_EXPLOIT_PREVENTION, true);
-            }
-        }
+//        if(nmsVersion == NMSVersion.UNSUPPORTED) {
+//            mcMMO.p.getLogger().info("NMS not supported for this version of Minecraft, possible solutions include updating mcMMO or updating your server software. NMS Support is not available on every version of Minecraft.");
+//            mcMMO.p.getLogger().info("Certain features of mcMMO that require NMS will be disabled, you can check what is disabled by running the /mmocompat command!");
+//            //Load dummy compatibility layers
+//            isFullyCompatibleServerSoftware = false;
+//            loadDummyCompatibilityLayers();
+//        } else {
+//            playerAttackCooldownExploitPreventionLayer = new PlayerAttackCooldownExploitPreventionLayer(nmsVersion);
+//
+//            //Mark as operational
+//            if(playerAttackCooldownExploitPreventionLayer.noErrorsOnInitialize()) {
+//                supportedLayers.put(CompatibilityType.PLAYER_ATTACK_COOLDOWN_EXPLOIT_PREVENTION, true);
+//            }
+//        }
     }
 
     private void loadDummyCompatibilityLayers() {

@@ -3,6 +3,7 @@ Version 2.1.133
     French locale has been updated (thanks Elikill58)
     Another fix has been deployed to prevent mobs from having hearts in player death messages (thanks FrankHeijden)
     Players no longer ready their tool if they don't have access to the skill (thanks Draycia)
+    Unused NMS compatibility layers have been disabled for now (expect them to be used in the future for 1.12/1.8 support stuff)
 
 Version 2.1.132
     A fix is in place to prevent an exploit from working that is due to a yet to be patched Spigot server software bug
