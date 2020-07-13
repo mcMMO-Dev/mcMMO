@@ -31,7 +31,7 @@ public class RankConfig extends AutoUpdateConfigLoader {
 
     @Override
     protected boolean validateKeys() {
-        List<String> reason = new ArrayList<String>();
+        List<String> reason = new ArrayList<>();
 
         /*
          * In the future this method will check keys for all skills, but for now it only checks overhauled skills

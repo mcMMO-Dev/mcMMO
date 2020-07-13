@@ -1,5 +1,16 @@
 Version 2.1.134
+    Minor code cleanup
+    Smelting now has a Bonus Drops section in config.yml
+    Smelting now only doubles smelting results for items which have bonus drop entries in the config
+    Fixed a bug where players could set each other on fire when partied or when PVP was disabled
     Fixed a NPE that could happen with thrown potions
+    Fixed a potential NPE when damaging player armor with Axes
+    Fixed a potential NPE when damaging a player with Blast Mining
+    Fixed a potential NPE when checking tools related to Super Abilities
+    Fixed a potential NPE when checking the Chimaera Wing
+    Fixed a potential NPE when creating party member lists
+    Fixed a potential NPE when fishing
+    Fixed a potential NPE when players right click blocks
     Fixed a locale mistake in locale hu_HU
     Fixed a locale mistake in locale ru
     Changed the UUID updater task to not catastrophically fail when requests failed

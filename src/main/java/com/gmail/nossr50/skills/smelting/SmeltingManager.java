@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.smelting;
 
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -10,7 +11,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
-import org.bukkit.block.BlockState;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -31,10 +31,10 @@ public class SmeltingManager extends SkillManager {
                 && RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SMELTING_SECOND_SMELT, getPlayer());
     }
 
-    /**
-     * Process the Flux Mining ability.
-     *
-     * @param blockState The {@link BlockState} to check ability activation for
+    /*
+      Process the Flux Mining ability.
+
+      @param blockState The {@link BlockState} to check ability activation for
      * @return true if the ability was successful, false otherwise
      */
     /*public boolean processFluxMining(BlockState blockState) {
@@ -109,9 +109,11 @@ public class SmeltingManager extends SkillManager {
     }
 
     public ItemStack smeltProcessing(ItemStack smelting, ItemStack result) {
+
         applyXpGain(Smelting.getResourceXp(smelting), XPGainReason.PVE, XPGainSource.PASSIVE);
 
-        if (isSecondSmeltSuccessful()) {
+        if (Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.SMELTING, result.getType())
+                && isSecondSmeltSuccessful()) {
             ItemStack newResult = result.clone();
 
             newResult.setAmount(result.getAmount() + 1);

@@ -103,7 +103,7 @@ public class XPBarCommand implements TabExecutor {
                 return StringUtil.copyPartialMatches(args[0], options, new ArrayList<>(ExperienceBarManager.XPBarSettingTarget.values().length));
             case 2:
                 if(!args[0].equalsIgnoreCase(ExperienceBarManager.XPBarSettingTarget.RESET.toString()))
-                    return StringUtil.copyPartialMatches(args[1], PrimarySkillType.SKILL_NAMES, new ArrayList<String>(PrimarySkillType.SKILL_NAMES.size()));
+                    return StringUtil.copyPartialMatches(args[1], PrimarySkillType.SKILL_NAMES, new ArrayList<>(PrimarySkillType.SKILL_NAMES.size()));
             default:
                 return ImmutableList.of();
         }

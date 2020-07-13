@@ -116,9 +116,9 @@ public class FormulaManager {
      * @return amount of experience needed to reach next level
      */
     public int getXPtoNextLevel(int level, FormulaType formulaType) {
-        /**
-         * Retro mode XP requirements are the default requirements
-         * Standard mode XP requirements are multiplied by a factor of 10
+        /*
+          Retro mode XP requirements are the default requirements
+          Standard mode XP requirements are multiplied by a factor of 10
          */
 
         //TODO: When the heck is Unknown used?

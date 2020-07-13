@@ -5,6 +5,7 @@ import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Generic event for mcMMO skill handling.
@@ -37,7 +38,7 @@ public abstract class McMMOPlayerSkillEvent extends PlayerEvent {
     private static final HandlerList handlers = new HandlerList();
 
     @Override
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return handlers;
     }
 

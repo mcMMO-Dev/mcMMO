@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class McMMOPartyAllianceChangeEvent extends PlayerEvent implements Cancellable {
     private final String oldAlly;
@@ -80,7 +81,7 @@ public class McMMOPartyAllianceChangeEvent extends PlayerEvent implements Cancel
     private static final HandlerList handlers = new HandlerList();
 
     @Override
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return handlers;
     }
 

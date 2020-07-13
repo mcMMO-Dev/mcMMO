@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.scoreboard.Scoreboard;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * The parent class of all mcMMO scoreboard events
@@ -25,7 +26,7 @@ abstract public class McMMOScoreboardEvent extends Event {
         this.targetPlayer = targetPlayer;
     }
 
-    /** GETTER & SETTER BOILERPLATE **/
+    /* GETTER & SETTER BOILERPLATE **/
 
     /**
      * This is the scoreboard the player will be assigned to after this event
@@ -80,7 +81,7 @@ abstract public class McMMOScoreboardEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
 
     @Override
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return handlers;
     }
 

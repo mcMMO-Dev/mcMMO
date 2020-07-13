@@ -288,21 +288,23 @@ public class PlayerListener implements Listener {
 
         switch (event.getState()) {
             case CAUGHT_FISH:
-                //TODO Update to new API once available! Waiting for case CAUGHT_TREASURE:
-                Item fishingCatch = (Item) event.getCaught();
+                //TODO Update to new API once available! Waiting for case CAUGHT_TREASURE
+                if(event.getCaught() != null) {
+                    Item fishingCatch = (Item) event.getCaught();
 
-                if (Config.getInstance().   getFishingOverrideTreasures() &&
-                        fishingCatch.getItemStack().getType() != Material.SALMON &&
-                        fishingCatch.getItemStack().getType() != Material.COD &&
-                        fishingCatch.getItemStack().getType() != Material.TROPICAL_FISH &&
-                        fishingCatch.getItemStack().getType() != Material.PUFFERFISH) {
-                    fishingCatch.setItemStack(new ItemStack(Material.SALMON, 1));
-                }
+                    if (Config.getInstance().   getFishingOverrideTreasures() &&
+                            fishingCatch.getItemStack().getType() != Material.SALMON &&
+                            fishingCatch.getItemStack().getType() != Material.COD &&
+                            fishingCatch.getItemStack().getType() != Material.TROPICAL_FISH &&
+                            fishingCatch.getItemStack().getType() != Material.PUFFERFISH) {
+                        fishingCatch.setItemStack(new ItemStack(Material.SALMON, 1));
+                    }
 
-                if (Permissions.vanillaXpBoost(player, PrimarySkillType.FISHING)) {
-                    //Don't modify XP below vanilla values
-                    if(fishingManager.handleVanillaXpBoost(event.getExpToDrop()) > 1)
-                        event.setExpToDrop(fishingManager.handleVanillaXpBoost(event.getExpToDrop()));
+                    if (Permissions.vanillaXpBoost(player, PrimarySkillType.FISHING)) {
+                        //Don't modify XP below vanilla values
+                        if(fishingManager.handleVanillaXpBoost(event.getExpToDrop()) > 1)
+                            event.setExpToDrop(fishingManager.handleVanillaXpBoost(event.getExpToDrop()));
+                    }
                 }
                 return;
 
@@ -318,7 +320,6 @@ public class PlayerListener implements Listener {
                 return;
 
             default:
-                return;
         }
     }
 
@@ -397,19 +398,21 @@ public class PlayerListener implements Listener {
             case CAUGHT_FISH:
                 if(ExperienceConfig.getInstance().isFishingExploitingPrevented())
                 {
-                    if(fishingManager.isExploitingFishing(event.getHook().getLocation().toVector()))
-                    {
-                        player.sendMessage(LocaleLoader.getString("Fishing.ScarcityTip", 3));
-                        event.setExpToDrop(0);
-                        Item caughtItem = (Item) caught;
-                        caughtItem.remove();
-                        return;
+                    if(caught instanceof Item) {
+                        if(fishingManager.isExploitingFishing(event.getHook().getLocation().toVector()))
+                        {
+                            player.sendMessage(LocaleLoader.getString("Fishing.ScarcityTip", 3));
+                            event.setExpToDrop(0);
+                            Item caughtItem = (Item) caught;
+                            caughtItem.remove();
+
+                            return;
+                        }
+
+                        fishingManager.handleFishing((Item) caught);
+                        fishingManager.setFishingTarget();
                     }
                 }
-
-                fishingManager.handleFishing((Item) caught);
-                fishingManager.setFishingTarget();
-                //fishingManager.setFishHookReference(null);
                 return;
             case CAUGHT_ENTITY:
                 if (fishingManager.canShake(caught)) {
@@ -418,7 +421,6 @@ public class PlayerListener implements Listener {
                 }
                 return;
             default:
-                return;
         }
     }
 
@@ -480,7 +482,6 @@ public class PlayerListener implements Listener {
 
                 if (event.isCancelled()) {
                     SoundManager.sendSound(player, player.getLocation(), SoundType.POP);
-                    return;
                 }
             }
 
@@ -597,20 +598,18 @@ public class PlayerListener implements Listener {
                 return;
         }
 
+        if(event.getClickedBlock() == null)
+            return;
+
         Block clickedBlock = event.getClickedBlock();
-        if(clickedBlock != null) {
-            Material clickedBlockType = clickedBlock.getType();
-            //The blacklist contains interactable blocks so its a convenient filter
-            if(clickedBlockType == Repair.anvilMaterial || clickedBlockType == Salvage.anvilMaterial) {
-                event.setUseItemInHand(Event.Result.ALLOW);
+        Material clickedBlockType = clickedBlock.getType();
+        //The blacklist contains interactable blocks so its a convenient filter
+        if(clickedBlockType == Repair.anvilMaterial || clickedBlockType == Salvage.anvilMaterial) {
+            event.setUseItemInHand(Event.Result.ALLOW);
 
-                if(mcMMO.getMaterialMapStore().isToolActivationBlackListed(clickedBlockType)) {
-                        event.setUseInteractedBlock(Event.Result.DENY);
-                }
+            if(mcMMO.getMaterialMapStore().isToolActivationBlackListed(clickedBlockType)) {
+                    event.setUseInteractedBlock(Event.Result.DENY);
             }
-
-            //Cancel the event to prevent vanilla functionality
-            //Only cancel if item in hand has durability
         }
 
         if (event.getHand() != EquipmentSlot.HAND || !UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
@@ -763,7 +762,11 @@ public class PlayerListener implements Listener {
                 if(player.getInventory().getItemInOffHand().getType() != Material.AIR && !player.isInsideVehicle() && !player.isSneaking()) {
                     break;
                 }
-                
+
+                //Hmm
+                if(event.getClickedBlock() == null)
+                    return;
+
                 Block block = event.getClickedBlock();
                 BlockState blockState = block.getState();
 

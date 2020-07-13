@@ -39,7 +39,7 @@ public class Config extends AutoUpdateConfigLoader {
     @Override
     protected boolean validateKeys() {
         // Validate all the settings!
-        List<String> reason = new ArrayList<String>();
+        List<String> reason = new ArrayList<>();
 
         /* General Settings */
         if (getSaveInterval() <= 0) {

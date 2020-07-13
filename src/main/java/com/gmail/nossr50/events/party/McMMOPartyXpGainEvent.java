@@ -4,6 +4,7 @@ import com.gmail.nossr50.datatypes.party.Party;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 public class McMMOPartyXpGainEvent extends Event implements Cancellable {
     private final Party party;
@@ -65,7 +66,7 @@ public class McMMOPartyXpGainEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
 
     @Override
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return handlers;
     }
 

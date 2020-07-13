@@ -250,7 +250,7 @@ public final class BlockUtils {
      * @return HashSet with the IDs of every transparent block
      */
     public static HashSet<Material> getTransparentBlocks() {
-        HashSet<Material> transparentBlocks = new HashSet<Material>();
+        HashSet<Material> transparentBlocks = new HashSet<>();
 
         for (Material material : Material.values()) {
             if (material.isTransparent()) {

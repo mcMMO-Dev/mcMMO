@@ -96,9 +96,9 @@ public final class HolidayManager {
             Statistic.PIG_ONE_CM);
 
     static {
-        List<Color> colors = new ArrayList<Color>();
-        List<ChatColor> chatColors = new ArrayList<ChatColor>();
-        List<ChatColor> chatFormats = new ArrayList<ChatColor>();
+        List<Color> colors = new ArrayList<>();
+        List<ChatColor> chatColors = new ArrayList<>();
+        List<ChatColor> chatFormats = new ArrayList<>();
 
         for (ChatColor color : ChatColor.values()) {
             if (color.isColor()) {
@@ -137,7 +137,7 @@ public final class HolidayManager {
             }
         }
 
-        hasCelebrated = new ArrayList<String>();
+        hasCelebrated = new ArrayList<>();
 
         try {
             hasCelebrated.clear();
@@ -161,7 +161,7 @@ public final class HolidayManager {
     private void cleanupFiles() {
         File FlatFileDir = new File(mcMMO.getFlatFileDirectory());
         File legacy = new File(FlatFileDir, "anniversary.yml");
-        List<File> toDelete = new ArrayList<File>();
+        List<File> toDelete = new ArrayList<>();
 
         if (legacy.exists()) {
             toDelete.add(legacy);

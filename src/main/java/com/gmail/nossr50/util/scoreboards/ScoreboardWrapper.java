@@ -235,8 +235,8 @@ public class ScoreboardWrapper {
 
         if (oldBoard != null) {
             if (player.getScoreboard() == scoreboard) {
-                /**
-                 * Call the revert scoreboard custom event
+                /*
+                  Call the revert scoreboard custom event
                  */
                 McMMOScoreboardRevertEvent event = new McMMOScoreboardRevertEvent(oldBoard, player.getScoreboard(), player, ScoreboardEventReason.REVERTING_BOARD);
                 player.getServer().getPluginManager().callEvent(event);

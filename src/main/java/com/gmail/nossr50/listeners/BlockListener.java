@@ -126,8 +126,7 @@ public class BlockListener implements Listener {
         }
 
         BlockFace direction = event.getDirection();
-        Block movedBlock = event.getBlock();
-        movedBlock = movedBlock.getRelative(direction, 2);
+        Block movedBlock;
 
         for (Block b : event.getBlocks()) {
             if (BlockUtils.shouldBeWatched(b.getState())) {

@@ -12,6 +12,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.util.StringUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,8 +27,8 @@ public class McconvertCommand implements TabExecutor {
     private final CommandExecutor experienceConvertCommand = new ConvertExperienceCommand();
 
     static {
-        ArrayList<String> formulaTypes = new ArrayList<String>();
-        ArrayList<String> databaseTypes = new ArrayList<String>();
+        ArrayList<String> formulaTypes = new ArrayList<>();
+        ArrayList<String> databaseTypes = new ArrayList<>();
 
         for (FormulaType type : FormulaType.values()) {
             formulaTypes.add(type.toString());
@@ -53,7 +54,7 @@ public class McconvertCommand implements TabExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length == 2) {
             if (args[0].equalsIgnoreCase("database") || args[0].equalsIgnoreCase("db")) {
                 return databaseConvertCommand.onCommand(sender, command, label, args);
@@ -67,17 +68,17 @@ public class McconvertCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         switch (args.length) {
             case 1:
-                return StringUtil.copyPartialMatches(args[0], SUBCOMMANDS, new ArrayList<String>(SUBCOMMANDS.size()));
+                return StringUtil.copyPartialMatches(args[0], SUBCOMMANDS, new ArrayList<>(SUBCOMMANDS.size()));
             case 2:
                 if (args[0].equalsIgnoreCase("database") || args[0].equalsIgnoreCase("db")) {
-                    return StringUtil.copyPartialMatches(args[0], DATABASE_TYPES, new ArrayList<String>(DATABASE_TYPES.size()));
+                    return StringUtil.copyPartialMatches(args[0], DATABASE_TYPES, new ArrayList<>(DATABASE_TYPES.size()));
                 }
 
                 if (args[0].equalsIgnoreCase("experience") || args[0].equalsIgnoreCase("xp") || args[0].equalsIgnoreCase("exp")) {
-                    return StringUtil.copyPartialMatches(args[0], FORMULA_TYPES, new ArrayList<String>(FORMULA_TYPES.size()));
+                    return StringUtil.copyPartialMatches(args[0], FORMULA_TYPES, new ArrayList<>(FORMULA_TYPES.size()));
                 }
 
                 return ImmutableList.of();

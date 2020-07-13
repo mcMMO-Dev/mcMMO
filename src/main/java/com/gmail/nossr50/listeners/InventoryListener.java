@@ -280,7 +280,6 @@ public class InventoryListener implements Listener {
                     AlchemyPotionBrewer.scheduleCheck(player, stand);
                     return;
                 default:
-                    return;
             }
         }
         else if (slot == InventoryType.SlotType.FUEL) {

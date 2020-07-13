@@ -536,6 +536,16 @@ Bonus_Drops:
         Jungle_Log: true
         Spruce_Wood: true
         Spruce_Log: true
+    Smelting:
+        Iron_Ingot: true
+        Gold_Ingot: true
+        Emerald: true
+        Diamond: true
+        Lapis_Lazuli: true
+        Coal: true
+        Nether_Quartz: true
+        Quartz: true
+        Redstone: true
 
 #
 #  Settings for commands

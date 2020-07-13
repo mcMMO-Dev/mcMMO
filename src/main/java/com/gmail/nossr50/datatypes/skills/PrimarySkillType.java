@@ -82,9 +82,9 @@ public enum PrimarySkillType {
     public static final List<PrimarySkillType> MISC_SKILLS = ImmutableList.of(ACROBATICS, ALCHEMY, REPAIR, SALVAGE, SMELTING);
 
     static {
-        List<PrimarySkillType> childSkills = new ArrayList<PrimarySkillType>();
-        List<PrimarySkillType> nonChildSkills = new ArrayList<PrimarySkillType>();
-        ArrayList<String> names = new ArrayList<String>();
+        List<PrimarySkillType> childSkills = new ArrayList<>();
+        List<PrimarySkillType> nonChildSkills = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
         ArrayList<String> subSkillNames = new ArrayList<>();
 
         for (PrimarySkillType skill : values()) {

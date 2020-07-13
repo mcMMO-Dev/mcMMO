@@ -159,7 +159,7 @@ public class MiningManager extends SkillManager {
     public void blastMiningDropProcessing(float yield, EntityExplodeEvent event) {
         //Strip out only stuff that gives mining XP
 
-        List<BlockState> ores = new ArrayList<BlockState>();
+        List<BlockState> ores = new ArrayList<>();
 
         List<BlockState> notOres = new ArrayList<>();
         for (Block targetBlock : event.blockList()) {

@@ -82,7 +82,7 @@ public final class SkillAPI {
     }
 
     private static List<String> getListFromEnum(List<PrimarySkillType> skillsTypes) {
-        List<String> skills = new ArrayList<String>();
+        List<String> skills = new ArrayList<>();
 
         for (PrimarySkillType primarySkillType : skillsTypes) {
             skills.add(primarySkillType.name());

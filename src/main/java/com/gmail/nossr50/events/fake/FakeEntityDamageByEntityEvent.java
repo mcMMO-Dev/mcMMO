@@ -23,7 +23,7 @@ public class FakeEntityDamageByEntityEvent extends EntityDamageByEntityEvent {
     }
 
     public static EnumMap<DamageModifier, Function<? super Double, Double>> getFunctionModifiers(Map<DamageModifier, Double> modifiers) {
-        EnumMap<DamageModifier, Function<? super Double, Double>> modifierFunctions = new EnumMap<DamageModifier, Function<? super Double, Double>>(DamageModifier.class);
+        EnumMap<DamageModifier, Function<? super Double, Double>> modifierFunctions = new EnumMap<>(DamageModifier.class);
         Function<? super Double, Double> ZERO = Functions.constant(-0.0);
 
         for (DamageModifier modifier : modifiers.keySet()) {

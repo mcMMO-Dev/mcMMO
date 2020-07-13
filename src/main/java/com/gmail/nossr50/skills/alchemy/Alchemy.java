@@ -54,7 +54,7 @@ public final class Alchemy {
     public static double catalysisMinSpeed      = AdvancedConfig.getInstance().getCatalysisMinSpeed();
     public static double catalysisMaxSpeed      = AdvancedConfig.getInstance().getCatalysisMaxSpeed();
 
-    public static Map<Location, AlchemyBrewTask> brewingStandMap = new HashMap<Location, AlchemyBrewTask>();
+    public static Map<Location, AlchemyBrewTask> brewingStandMap = new HashMap<>();
 
     private Alchemy() {}
 
@@ -64,7 +64,7 @@ public final class Alchemy {
     public static void finishAllBrews() {
         mcMMO.p.debug("Completing " + brewingStandMap.size() + " unfinished Alchemy brews.");
 
-        List<AlchemyBrewTask> toFinish = new ArrayList<AlchemyBrewTask>(brewingStandMap.values());
+        List<AlchemyBrewTask> toFinish = new ArrayList<>(brewingStandMap.values());
 
         for (AlchemyBrewTask alchemyBrewTask : toFinish) {
             alchemyBrewTask.finishImmediately();

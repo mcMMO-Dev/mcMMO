@@ -84,7 +84,7 @@ public class UnarmedCommand extends SkillCommand {
 
     @Override
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
-        List<String> messages = new ArrayList<String>();
+        List<String> messages = new ArrayList<>();
 
         if (canDeflect) {
             messages.add(getStatMessage(SubSkillType.UNARMED_ARROW_DEFLECT, deflectChance)

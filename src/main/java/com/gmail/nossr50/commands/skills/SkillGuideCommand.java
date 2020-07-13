@@ -6,6 +6,7 @@ import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +23,7 @@ public class SkillGuideCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         switch (args.length) {
             case 1:
                 if (!args[0].equals("?")) {
@@ -67,7 +68,7 @@ public class SkillGuideCommand implements CommandExecutor {
 
     private ArrayList<String> grabPageContents(int page) {
         int pageIndexStart = 8 * (page - 1); // Determine what string to start at
-        ArrayList<String> allStrings = new ArrayList<String>();
+        ArrayList<String> allStrings = new ArrayList<>();
 
         allStrings.add(header);
 
@@ -86,7 +87,7 @@ public class SkillGuideCommand implements CommandExecutor {
     }
 
     private ArrayList<String> getGuide(PrimarySkillType skill) {
-        ArrayList<String> guide = new ArrayList<String>();
+        ArrayList<String> guide = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
             String[] section = LocaleLoader.getString("Guides." + StringUtils.getCapitalized(skill.toString()) + ".Section." + i).split("\n");

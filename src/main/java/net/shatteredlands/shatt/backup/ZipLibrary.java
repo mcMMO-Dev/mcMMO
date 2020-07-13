@@ -47,7 +47,7 @@ public class ZipLibrary {
         File fileZip = new File(BACKUP_DIRECTORY + File.separator + dateFormat.format(date) + ".zip");
 
         // Create the Source List, and add directories/etc to the file.
-        List<File> sources = new ArrayList<File>();
+        List<File> sources = new ArrayList<>();
 
         sources.add(FLAT_FILE_DIRECTORY);
         sources.add(CONFIG_FILE);

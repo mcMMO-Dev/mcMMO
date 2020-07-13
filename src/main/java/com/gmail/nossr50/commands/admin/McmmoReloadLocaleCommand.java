@@ -5,13 +5,14 @@ import com.gmail.nossr50.util.Permissions;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Mark Vainomaa
  */
 public final class McmmoReloadLocaleCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length == 0) {
             if (!Permissions.reloadlocale(sender)) {
                 sender.sendMessage(command.getPermissionMessage());

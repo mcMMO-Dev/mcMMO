@@ -45,7 +45,6 @@ import com.gmail.nossr50.util.experience.ExperienceBarManager;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
-import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -68,7 +67,7 @@ public class McMMOPlayer {
     private final Player        player;
     private final PlayerProfile profile;
 
-    private final Map<PrimarySkillType, SkillManager> skillManagers = new HashMap<PrimarySkillType, SkillManager>();
+    private final Map<PrimarySkillType, SkillManager> skillManagers = new HashMap<>();
     private final ExperienceBarManager experienceBarManager;
 
     private Party   party;
@@ -87,10 +86,10 @@ public class McMMOPlayer {
     private boolean godMode;
     private boolean chatSpy = false; //Off by default
 
-    private final Map<SuperAbilityType, Boolean> abilityMode     = new HashMap<SuperAbilityType, Boolean>();
-    private final Map<SuperAbilityType, Boolean> abilityInformed = new HashMap<SuperAbilityType, Boolean>();
+    private final Map<SuperAbilityType, Boolean> abilityMode     = new HashMap<>();
+    private final Map<SuperAbilityType, Boolean> abilityInformed = new HashMap<>();
 
-    private final Map<ToolType, Boolean> toolMode = new HashMap<ToolType, Boolean>();
+    private final Map<ToolType, Boolean> toolMode = new HashMap<>();
 
     private int recentlyHurt;
     private int respawnATS;
@@ -766,7 +765,6 @@ public class McMMOPlayer {
                 return;
 
             default:
-                return;
         }
     }
 
@@ -783,7 +781,6 @@ public class McMMOPlayer {
                 return;
 
             default:
-                return;
         }
 
     }
@@ -801,7 +798,6 @@ public class McMMOPlayer {
                 return;
 
             default:
-                return;
         }
     }
 
@@ -906,9 +902,6 @@ public class McMMOPlayer {
             ticks = PerksUtils.handleActivationPerks(player, 2 + (getSkillLevel(skill) / abilityLengthVar), ability.getMaxLength());
         }
 
-        // Notify people that ability has been activated
-        ParticleEffectUtils.playAbilityEnabledEffect(player);
-
         if (useChatNotifications()) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUPER_ABILITY, ability.getAbilityOn());
             //player.sendMessage(ability.getAbilityOn());
@@ -918,7 +911,6 @@ public class McMMOPlayer {
 
         //Sounds
         SoundManager.worldSendSound(player.getWorld(), player.getLocation(), SoundType.ABILITY_ACTIVATED_GENERIC);
-
 
         // Enable the ability
         profile.setAbilityDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));

@@ -28,7 +28,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     @Override
     protected boolean validateKeys() {
         // Validate all the settings!
-        List<String> reason = new ArrayList<String>();
+        List<String> reason = new ArrayList<>();
 
         /* GENERAL */
         if (getAbilityLength() < 1) {

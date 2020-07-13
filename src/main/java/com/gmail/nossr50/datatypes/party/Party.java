@@ -31,8 +31,8 @@ public class Party {
 //    private static final String OFFLINE_PLAYER_PREFIX = "☆";
     private static final String OFFLINE_PLAYER_PREFIX = "○";
 //    private static final String OFFLINE_PLAYER_PREFIX = "⭕" + ChatColor.RESET;
-    private final LinkedHashMap<UUID, String> members = new LinkedHashMap<UUID, String>();
-    private final List<Player> onlineMembers = new ArrayList<Player>();
+    private final LinkedHashMap<UUID, String> members = new LinkedHashMap<>();
+    private final List<Player> onlineMembers = new ArrayList<>();
 
     private PartyLeader leader;
     private String name;
@@ -101,7 +101,7 @@ public class Party {
 
     public List<String> getOnlinePlayerNames(CommandSender sender) {
         Player player = sender instanceof Player ? (Player) sender : null;
-        List<String> onlinePlayerNames = new ArrayList<String>();
+        List<String> onlinePlayerNames = new ArrayList<>();
 
         for (Player onlinePlayer : getOnlineMembers()) {
             if (player != null && player.canSee(onlinePlayer)) {
@@ -141,7 +141,7 @@ public class Party {
     }
 
     public List<String> getItemShareCategories() {
-        List<String> shareCategories = new ArrayList<String>();
+        List<String> shareCategories = new ArrayList<>();
 
         for (ItemShareType shareType : ItemShareType.values()) {
             if (sharingDrops(shareType)) {
@@ -323,16 +323,15 @@ public class Party {
                 break;
 
             default:
-                return;
         }
     }
 
     public boolean hasMember(String memberName) {
-        return this.getMembers().values().contains(memberName);
+        return this.getMembers().containsValue(memberName);
     }
 
     public boolean hasMember(UUID uuid) {
-        return this.getMembers().keySet().contains(uuid);
+        return this.getMembers().containsKey(uuid);
     }
 
     /**
@@ -361,7 +360,8 @@ public class Party {
         {
             Player onlinePlayer = Bukkit.getPlayer(onlineMember);
 
-            if(!isNotSamePerson(player.getUniqueId(), onlineMember) || player.canSee(onlinePlayer))
+            if(!isNotSamePerson(player.getUniqueId(), onlineMember)
+                    || onlinePlayer != null && player.canSee(onlinePlayer))
             {
                 visiblePartyList.add(onlineMember);
             } else {
@@ -515,7 +515,7 @@ public class Party {
      * @return the near party members
      */
     public List<Player> getNearMembers(McMMOPlayer mcMMOPlayer) {
-        List<Player> nearMembers = new ArrayList<Player>();
+        List<Player> nearMembers = new ArrayList<>();
         Party party = mcMMOPlayer.getParty();
 
         if (party != null) {

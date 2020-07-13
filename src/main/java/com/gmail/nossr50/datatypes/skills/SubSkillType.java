@@ -180,7 +180,7 @@ public enum SubSkillType {
         /*
          * Find where to begin our substring (after the prefix)
          */
-        String endResult = "";
+        StringBuilder endResult = new StringBuilder();
         int subStringIndex = getSubStringIndex(subSkillName);
 
         /*
@@ -193,20 +193,20 @@ public enum SubSkillType {
 
             for(String string : splitStrings)
             {
-                endResult += StringUtils.getCapitalized(string);
+                endResult.append(StringUtils.getCapitalized(string));
             }
         } else {
-            endResult += StringUtils.getCapitalized(subskillNameWithoutPrefix);
+            endResult.append(StringUtils.getCapitalized(subskillNameWithoutPrefix));
         }
 
-        return endResult;
+        return endResult.toString();
     }
 
     public String getWikiName(String subSkillName) {
         /*
          * Find where to begin our substring (after the prefix)
          */
-        String endResult = "";
+        StringBuilder endResult = new StringBuilder();
         int subStringIndex = getSubStringIndex(subSkillName);
 
         /*
@@ -220,17 +220,17 @@ public enum SubSkillType {
             for(int i = 0; i < splitStrings.length; i++)
             {
                 if(i+1 >= splitStrings.length)
-                    endResult+=StringUtils.getCapitalized(splitStrings[i]);
+                    endResult.append(StringUtils.getCapitalized(splitStrings[i]));
                 else {
-                    endResult += StringUtils.getCapitalized(splitStrings[i]);
-                    endResult += "_";
+                    endResult.append(StringUtils.getCapitalized(splitStrings[i]));
+                    endResult.append("_");
                 }
             }
         } else {
-            endResult += StringUtils.getCapitalized(subskillNameWithoutPrefix);
+            endResult.append(StringUtils.getCapitalized(subskillNameWithoutPrefix));
         }
 
-        return endResult;
+        return endResult.toString();
     }
 
     /**

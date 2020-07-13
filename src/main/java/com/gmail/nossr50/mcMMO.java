@@ -62,7 +62,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -280,8 +279,8 @@ public class mcMMO extends JavaPlugin {
     private void checkForOutdatedAPI() {
         try {
             Class<?> checkForClass = Class.forName("org.bukkit.event.block.BlockDropItemEvent");
-            Method newerAPIMethod =  checkForClass.getMethod("getItems");
-            Class<?> checkForClassBaseComponent = Class.forName("net.md_5.bungee.api.chat.BaseComponent");
+            checkForClass.getMethod("getItems");
+            Class.forName("net.md_5.bungee.api.chat.BaseComponent");
         } catch (ClassNotFoundException | NoSuchMethodException e) {
             serverAPIOutdated = true;
             String software = platformManager.getServerSoftwareStr();
@@ -505,7 +504,7 @@ public class mcMMO extends JavaPlugin {
 
         new ChildConfig();
 
-        List<Repairable> repairables = new ArrayList<Repairable>();
+        List<Repairable> repairables = new ArrayList<>();
 
         if (Config.getInstance().getToolModsEnabled()) {
             new ToolConfigManager(this);
@@ -531,7 +530,7 @@ public class mcMMO extends JavaPlugin {
 
         // Load salvage configs, make manager and register them at this time
         SalvageConfigManager sManager = new SalvageConfigManager(this);
-        List<Salvageable> salvageables = new ArrayList<Salvageable>(sManager.getLoadedSalvageables());
+        List<Salvageable> salvageables = new ArrayList<>(sManager.getLoadedSalvageables());
         salvageableManager = new SimpleSalvageableManager(salvageables.size());
         salvageableManager.registerSalvageables(salvageables);
     }
@@ -587,7 +586,7 @@ public class mcMMO extends JavaPlugin {
         new CleanBackupsTask().runTaskAsynchronously(mcMMO.p);
 
         // Bleed timer (Runs every 0.5 seconds)
-        new BleedTimerTask().runTaskTimer(this, 1 * Misc.TICK_CONVERSION_FACTOR, 1 * (Misc.TICK_CONVERSION_FACTOR / 2));
+        new BleedTimerTask().runTaskTimer(this, Misc.TICK_CONVERSION_FACTOR, (Misc.TICK_CONVERSION_FACTOR / 2));
 
         // Old & Powerless User remover
         long purgeIntervalTicks = Config.getInstance().getPurgeInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
@@ -613,7 +612,7 @@ public class mcMMO extends JavaPlugin {
         new PowerLevelUpdatingTask().runTaskTimer(this, 2 * Misc.TICK_CONVERSION_FACTOR, 2 * Misc.TICK_CONVERSION_FACTOR);
 
         if (getHolidayManager().nearingAprilFirst()) {
-            new CheckDateTask().runTaskTimer(this, 10L * Misc.TICK_CONVERSION_FACTOR, 1L * 60L * 60L * Misc.TICK_CONVERSION_FACTOR);
+            new CheckDateTask().runTaskTimer(this, 10L * Misc.TICK_CONVERSION_FACTOR, 60L * 60L * Misc.TICK_CONVERSION_FACTOR);
         }
 
         // Clear the registered XP data so players can earn XP again

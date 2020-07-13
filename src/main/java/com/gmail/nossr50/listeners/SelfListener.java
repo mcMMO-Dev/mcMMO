@@ -49,7 +49,6 @@ public class SelfListener implements Listener {
             ScoreboardManager.handleLevelUp(player, skill);
 
         if (!Config.getInstance().getLevelUpEffectsEnabled()) {
-            return;
         }
 
         /*if ((event.getSkillLevel() % Config.getInstance().getLevelUpEffectsTier()) == 0) {

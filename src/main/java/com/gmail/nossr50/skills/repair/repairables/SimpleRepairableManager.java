@@ -14,7 +14,7 @@ public class SimpleRepairableManager implements RepairableManager {
     }
 
     public SimpleRepairableManager(int repairablesSize) {
-        this.repairables = new HashMap<Material, Repairable>(repairablesSize);
+        this.repairables = new HashMap<>(repairablesSize);
     }
 
     @Override

@@ -26,6 +26,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public abstract class SkillCommand implements TabExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (CommandUtils.noConsoleUsage(sender)) {
             return true;
         }
@@ -161,31 +162,28 @@ public abstract class SkillCommand implements TabExecutor {
 
 
             Set<PrimarySkillType> parents = FamilyTree.getParents(skill);
-            ArrayList<PrimarySkillType> parentList = new ArrayList<>();
 
             //TODO: Add JSON here
-            for (PrimarySkillType parent : parents) {
-                parentList.add(parent);
-                /*player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level.Overhaul", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)))*/
-            }
+            /*player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level.Overhaul", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)))*/
+            ArrayList<PrimarySkillType> parentList = new ArrayList<>(parents);
 
-            String parentMessage = "";
+            StringBuilder parentMessage = new StringBuilder();
 
             for(int i = 0; i < parentList.size(); i++)
             {
                 if(i+1 < parentList.size())
                 {
-                    parentMessage += LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i)));
-                    parentMessage += ChatColor.GRAY+", ";
+                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
+                    parentMessage.append(ChatColor.GRAY).append(", ");
                 } else {
-                    parentMessage += LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i)));
+                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
                 }
             }
 
             //XP GAIN METHOD
             player.sendMessage(LocaleLoader.getString("Commands.XPGain.Overhaul", LocaleLoader.getString("Commands.XPGain.Child")));
 
-            player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, parentMessage));
+            player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, parentMessage.toString()));
             //LEVEL
             //player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, skillValue));
 
@@ -211,7 +209,7 @@ public abstract class SkillCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         if (args.length == 1) {
             return ImmutableList.of("?");
         }

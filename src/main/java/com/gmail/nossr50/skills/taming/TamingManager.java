@@ -64,7 +64,7 @@ public class TamingManager extends SkillManager {
         playerSummonedEntities = new HashMap<>();
 
         for(CallOfTheWildType callOfTheWildType : CallOfTheWildType.values()) {
-            playerSummonedEntities.put(callOfTheWildType, new ArrayList<TrackedTamingEntity>());
+            playerSummonedEntities.put(callOfTheWildType, new ArrayList<>());
         }
     }
 
@@ -524,8 +524,7 @@ public class TamingManager extends SkillManager {
 
     //TODO: The way this tracker was written is garbo, I should just rewrite it, I'll save that for a future update
     public void removeFromTracker(TrackedTamingEntity trackedEntity) {
-        if(playerSummonedEntities.get(trackedEntity.getCallOfTheWildType()).contains(trackedEntity))
-            playerSummonedEntities.get(trackedEntity.getCallOfTheWildType()).remove(trackedEntity);
+        playerSummonedEntities.get(trackedEntity.getCallOfTheWildType()).remove(trackedEntity);
 
         NotificationManager.sendPlayerInformationChatOnly(getPlayer(), "Taming.Summon.COTW.TimeExpired", StringUtils.getPrettyEntityTypeString(trackedEntity.getLivingEntity().getType()));
     }

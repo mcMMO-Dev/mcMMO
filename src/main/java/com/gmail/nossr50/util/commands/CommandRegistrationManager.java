@@ -199,7 +199,7 @@ public final class CommandRegistrationManager {
     }
 
     private static void registerXprateCommand() {
-        List<String> aliasList = new ArrayList<String>();
+        List<String> aliasList = new ArrayList<>();
         aliasList.add("mcxprate");
 
         PluginCommand command = mcMMO.p.getCommand("xprate");

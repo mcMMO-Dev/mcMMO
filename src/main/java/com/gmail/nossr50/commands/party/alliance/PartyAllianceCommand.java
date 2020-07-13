@@ -16,6 +16,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class PartyAllianceCommand implements TabExecutor {
     private final CommandExecutor partyAllianceDisbandCommand = new PartyAllianceDisbandCommand();
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (CommandUtils.noConsoleUsage(sender)) {
             return true;
         }
@@ -108,13 +109,13 @@ public class PartyAllianceCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String label, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length == 1) {
-            List<String> matches = StringUtil.copyPartialMatches(args[0], ALLIANCE_SUBCOMMANDS, new ArrayList<String>(ALLIANCE_SUBCOMMANDS.size()));
+            List<String> matches = StringUtil.copyPartialMatches(args[0], ALLIANCE_SUBCOMMANDS, new ArrayList<>(ALLIANCE_SUBCOMMANDS.size()));
 
             if (matches.size() == 0) {
                 List<String> playerNames = CommandUtils.getOnlinePlayerNames(commandSender);
-                return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<String>(playerNames.size()));
+                return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<>(playerNames.size()));
             }
 
             return matches;

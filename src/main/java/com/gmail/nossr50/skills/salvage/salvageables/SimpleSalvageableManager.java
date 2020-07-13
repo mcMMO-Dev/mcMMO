@@ -15,7 +15,7 @@ public class SimpleSalvageableManager implements SalvageableManager {
     }
 
     public SimpleSalvageableManager(int salvageablesSize) {
-        this.salvageables = new HashMap<Material, Salvageable>(salvageablesSize);
+        this.salvageables = new HashMap<>(salvageablesSize);
     }
 
     @Override

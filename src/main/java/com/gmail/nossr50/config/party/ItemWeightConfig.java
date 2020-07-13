@@ -27,7 +27,7 @@ public class ItemWeightConfig extends ConfigLoader {
     }
 
     public HashSet<Material> getMiscItems() {
-        HashSet<Material> miscItems = new HashSet<Material>();
+        HashSet<Material> miscItems = new HashSet<>();
 
         for (String item : config.getStringList("Party_Shareables.Misc_Items")) {
             Material material = Material.getMaterial(item.toUpperCase(Locale.ENGLISH));
