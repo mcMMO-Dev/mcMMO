@@ -943,6 +943,10 @@ public class McMMOPlayer {
     }
 
     public void processAbilityActivation(PrimarySkillType skill) {
+        if (!skill.getPermissions(getPlayer())) {
+            return;
+        }
+
         if (Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() && !player.isSneaking()) {
             return;
         }
