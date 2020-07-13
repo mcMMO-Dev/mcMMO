@@ -29,6 +29,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.*;
 import org.bukkit.metadata.MetadataValue;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -45,26 +46,57 @@ public class InventoryListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
             return;
 
-        Block furnaceBlock = processInventoryOpenOrCloseEvent(event.getInventory());
-
-        if (furnaceBlock == null) {
-            return;
-        }
-
-        HumanEntity player = event.getPlayer();
-
-        if (!UserManager.hasPlayerDataKey(player)) {
-            return;
-        }
+        HumanEntity humanEntity = event.getPlayer();
+        Player player = (Player) humanEntity;
 
         //Profile not loaded
-        if(UserManager.getPlayer((Player) player) == null)
+        if(UserManager.getPlayer(player) == null)
         {
             return;
         }
 
-        if(!furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey) && furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey).size() == 0)
-            furnaceBlock.setMetadata(mcMMO.furnaceMetadataKey, UserManager.getPlayer((Player) player).getPlayerMetadata());
+        if(event.getInventory() instanceof Furnace) {
+
+        }
+        Furnace furnace = getFurnace(event.getInventory());
+
+        if (furnace != null) {
+            if(isFurnaceAvailable(furnace, player)) {
+                assignFurnace(furnace, player);
+            }
+        }
+    }
+
+    public boolean isFurnaceAvailable(Furnace furnace, Player player) {
+        if(!furnace.hasMetadata(mcMMO.furnaceMetadataKey)
+                && furnace.getMetadata(mcMMO.furnaceMetadataKey).size() == 0) {
+            return true;
+        } else {
+            if(player != getPlayerFromFurnace(furnace)) {
+
+                if(isFurnaceResultEmpty(furnace)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isFurnaceResultEmpty(Furnace furnace) {
+        return furnace.getInventory().getResult() == null;
+    }
+
+    public void assignFurnace(Furnace furnace, Player player) {
+
+        if(furnace.hasMetadata(mcMMO.furnaceMetadataKey)) {
+            furnace.removeMetadata(mcMMO.furnaceMetadataKey, mcMMO.p);
+        }
+
+        furnace.setMetadata(mcMMO.furnaceMetadataKey, UserManager.getPlayer(player).getPlayerMetadata());
+
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -73,19 +105,15 @@ public class InventoryListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
             return;
 
-        Block furnaceBlock = processInventoryOpenOrCloseEvent(event.getInventory());
+        if(event.getInventory() instanceof FurnaceInventory) {
+            if(getFurnace(event.getInventory()) != null) {
+                Furnace furnace = getFurnace(event.getInventory());
 
-        if (furnaceBlock == null || furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey)) {
-            return;
+                if(isFurnaceOwned(furnace) && isFurnaceResultEmpty(furnace)) {
+                        removeFurnaceOwner(furnace);
+                    }
+                }
         }
-
-        HumanEntity player = event.getPlayer();
-
-        if (!UserManager.hasPlayerDataKey(player)) {
-            return;
-        }
-
-        furnaceBlock.removeMetadata(mcMMO.furnaceMetadataKey, plugin);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -102,7 +130,9 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        Player player = getPlayerFromFurnace(furnaceBlock);
+        Furnace furnace = (Furnace) furnaceState;
+
+        Player player = getPlayerFromFurnace(furnace);
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if(WorldGuardUtils.isWorldGuardLoaded())
@@ -137,26 +167,29 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        Player player = getPlayerFromFurnace(furnaceBlock);
-
-        /* WORLD GUARD MAIN FLAG CHECK */
-        if(WorldGuardUtils.isWorldGuardLoaded())
+        if(furnaceBlock instanceof Furnace)
         {
-            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+            Player player = getPlayerFromFurnace((Furnace) furnaceBlock);
+
+            /* WORLD GUARD MAIN FLAG CHECK */
+            if(WorldGuardUtils.isWorldGuardLoaded())
+            {
+                if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                    return;
+            }
+
+            if (!UserManager.hasPlayerDataKey(player) || !PrimarySkillType.SMELTING.getPermissions(player)) {
                 return;
-        }
+            }
 
-        if (!UserManager.hasPlayerDataKey(player) || !PrimarySkillType.SMELTING.getPermissions(player)) {
-            return;
-        }
+            //Profile not loaded
+            if(UserManager.getPlayer(player) == null)
+            {
+                return;
+            }
 
-        //Profile not loaded
-        if(UserManager.getPlayer(player) == null)
-        {
-            return;
+            event.setResult(UserManager.getPlayer(player).getSmeltingManager().smeltProcessing(smelting, event.getResult()));
         }
-
-        event.setResult(UserManager.getPlayer(player).getSmeltingManager().smeltProcessing(smelting, event.getResult()));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -171,28 +204,31 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        Player player = getPlayerFromFurnace(furnaceBlock);
+        if(furnaceBlock instanceof Furnace) {
+            Furnace furnace = (Furnace) furnaceBlock;
+            Player player = getPlayerFromFurnace(furnace);
 
-        /* WORLD GUARD MAIN FLAG CHECK */
-        if(WorldGuardUtils.isWorldGuardLoaded())
-        {
-            if(!WorldGuardManager.getInstance().hasMainFlag(player))
+            /* WORLD GUARD MAIN FLAG CHECK */
+            if(WorldGuardUtils.isWorldGuardLoaded())
+            {
+                if(!WorldGuardManager.getInstance().hasMainFlag(player))
+                    return;
+            }
+
+            if (!UserManager.hasPlayerDataKey(player) || !Permissions.vanillaXpBoost(player, PrimarySkillType.SMELTING)) {
                 return;
-        }
+            }
 
-        if (!UserManager.hasPlayerDataKey(player) || !Permissions.vanillaXpBoost(player, PrimarySkillType.SMELTING)) {
-            return;
-        }
+            //Profile not loaded
+            if(UserManager.getPlayer(player) == null)
+            {
+                return;
+            }
 
-        //Profile not loaded
-        if(UserManager.getPlayer(player) == null)
-        {
-            return;
+            int xpToDrop = event.getExpToDrop();
+            int exp = UserManager.getPlayer(player).getSmeltingManager().vanillaXPBoost(xpToDrop);
+            event.setExpToDrop(exp);
         }
-
-        int xpToDrop = event.getExpToDrop();
-        int exp = UserManager.getPlayer(player).getSmeltingManager().vanillaXPBoost(xpToDrop);
-        event.setExpToDrop(exp);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -206,12 +242,13 @@ public class InventoryListener implements Listener {
         if(event.getWhoClicked() instanceof Player)
         {
             Player player = ((Player) event.getWhoClicked()).getPlayer();
-            Block furnaceBlock = processInventoryOpenOrCloseEvent(event.getInventory());
+            Furnace furnace = getFurnace(event.getInventory());
 
-            if (furnaceBlock != null)
+            if (furnace != null)
             {
-                if (furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey).size() > 0)
-                    furnaceBlock.removeMetadata(mcMMO.furnaceMetadataKey, mcMMO.p);
+                if (isFurnaceOwned(furnace)) {
+                    removeFurnaceOwner(furnace);
+                }
 
                 //Profile not loaded
                 if(UserManager.getPlayer(player) == null)
@@ -219,7 +256,7 @@ public class InventoryListener implements Listener {
                     return;
                 }
 
-                furnaceBlock.setMetadata(mcMMO.furnaceMetadataKey, UserManager.getPlayer(player).getPlayerMetadata());
+                assignFurnace(furnace, player);
             }
         }
 
@@ -323,6 +360,14 @@ public class InventoryListener implements Listener {
                 }
             }
         }
+    }
+
+    public boolean isFurnaceOwned(Furnace furnace) {
+        return furnace.getMetadata(mcMMO.furnaceMetadataKey).size() > 0;
+    }
+
+    public void removeFurnaceOwner(Furnace furnace) {
+        furnace.removeMetadata(mcMMO.furnaceMetadataKey, mcMMO.p);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -480,7 +525,7 @@ public class InventoryListener implements Listener {
         new PlayerUpdateInventoryTask((Player) whoClicked).runTaskLater(plugin, 0);
     }
 
-    private Block processInventoryOpenOrCloseEvent(Inventory inventory) {
+    private Furnace getFurnace(Inventory inventory) {
         if (!(inventory instanceof FurnaceInventory)) {
             return null;
         }
@@ -491,11 +536,12 @@ public class InventoryListener implements Listener {
             return null;
         }
 
-        return furnace.getBlock();
+        return furnace;
     }
 
-    private Player getPlayerFromFurnace(Block furnaceBlock) {
-        List<MetadataValue> metadata = furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey);
+    @Nullable
+    private Player getPlayerFromFurnace(Furnace furnace) {
+        List<MetadataValue> metadata = furnace.getMetadata(mcMMO.furnaceMetadataKey);
 
         if (metadata.isEmpty()) {
             return null;
