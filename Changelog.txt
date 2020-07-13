@@ -1,3 +1,9 @@
+Version 2.1.133
+    A fix for an 'array out of bounds' error related to players clicking outside the inventory windows has been fixed
+    French locale has been updated (thanks Elikill58)
+    Another fix has been deployed to prevent mobs from having hearts in player death messages (thanks FrankHeijden)
+    Players no longer ready their tool if they don't have access to the skill (thanks Draycia)
+
 Version 2.1.132
     A fix is in place to prevent an exploit from working that is due to a yet to be patched Spigot server software bug
     Fixed a NPE that could happen when players swapped items from their hotbar
