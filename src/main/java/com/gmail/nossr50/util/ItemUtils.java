@@ -4,12 +4,12 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.FurnaceRecipe;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public final class ItemUtils {
@@ -61,6 +61,24 @@ public final class ItemUtils {
     public static boolean isTrident(ItemStack itemStack) {
         return mcMMO.getMaterialMapStore().isTrident(itemStack.getType().getKey().getKey());
     }
+
+    public static void registerTridentRecipes() {
+        Material tridentMaterial = Material.getMaterial("trident");
+        if(tridentMaterial != null) {
+            ItemStack weakTridentIS = new ItemStack(tridentMaterial);
+            NamespacedKey weakTridentNamespacedKey = new NamespacedKey(mcMMO.p, "mcmmo:weak_trident");
+
+            ShapedRecipe weakTridentRecipe = new ShapedRecipe(weakTridentNamespacedKey, weakTridentIS);
+
+            weakTridentRecipe.
+            Bukkit.addRecipe(weakTridentRecipe);
+        }
+        if(Material.getMaterial("trident") == null) {
+            return;
+        }
+
+    }
+
 
 
     /**
