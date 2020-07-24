@@ -1,5 +1,5 @@
 Version 2.1.134
-    Smelting furnaces are now more flexible about who they consider their owner (see notes)
+    Furnaces now change ownership to the last player who clicks in their inventory and is legally allowed to break the furnace
     Smelting now has a Bonus Drops section in config.yml
     Smelting now only doubles smelting results for items which have bonus drop entries in config.yml
     Minor code cleanup
@@ -17,14 +17,8 @@ Version 2.1.134
     Fixed a locale mistake in locale ru
 
     NOTES:
-    Furnaces give XP to their owner while smelting
-    You become the owner of a Furnace by doing one of the following
-    1) Opening an empty furnace
-    2) Interacting with a furnace
-
     It used to be that Furnaces would assign an owner and that would be their owner until the server shutdown, now owners will change based on who last had their hands on the furnace.
-
-    You won't become the owner if you are not allowed to view the inventory of a furnace
+    You won't become the owner if you are not allowed to view the inventory of a furnace, or break the furnace, or interact with the contents of the furnace
 
 Version 2.1.133
     A fix for an 'array out of bounds' error related to players clicking outside the inventory windows has been fixed

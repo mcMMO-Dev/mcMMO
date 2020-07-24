@@ -18,6 +18,7 @@ import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.salvage.Salvage;
+import com.gmail.nossr50.skills.smelting.Smelting;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.EventUtils;
@@ -535,16 +536,6 @@ public class BlockListener implements Listener {
         }
     }
 
-    private Player getPlayerFromFurnace(Block furnaceBlock) {
-        List<MetadataValue> metadata = furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey);
-
-        if (metadata.isEmpty()) {
-            return null;
-        }
-
-        return plugin.getServer().getPlayerExact(metadata.get(0).asString());
-    }
-
     /**
      * Handle BlockDamage events where the event is modified.
      *
@@ -628,7 +619,6 @@ public class BlockListener implements Listener {
             return;
         }
 
-
         BlockState blockState = event.getBlock().getState();
 
         ItemStack heldItem = player.getInventory().getItemInMainHand();
@@ -673,10 +663,10 @@ public class BlockListener implements Listener {
             if(blockState instanceof Furnace)
             {
                 Furnace furnace = (Furnace) blockState;
-                if(furnace.hasMetadata(mcMMO.furnaceMetadataKey))
+                if(mcMMO.getSmeltingTracker().isFurnaceOwned(furnace))
                 {
                     player.sendMessage("[mcMMO DEBUG] This furnace has a registered owner");
-                    Player furnacePlayer = getPlayerFromFurnace(furnace.getBlock());
+                    OfflinePlayer furnacePlayer = mcMMO.getSmeltingTracker().getPlayerFromFurnace(furnace);
                     if(furnacePlayer != null)
                     {
                         player.sendMessage("[mcMMO DEBUG] This furnace is owned by player "+furnacePlayer.getName());

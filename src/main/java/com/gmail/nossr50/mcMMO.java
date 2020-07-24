@@ -46,6 +46,7 @@ import com.gmail.nossr50.util.player.PlayerLevelUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.skills.SmeltingTracker;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.google.common.base.Charsets;
@@ -78,6 +79,7 @@ public class mcMMO extends JavaPlugin {
     private static UpgradeManager     upgradeManager;
     private static MaterialMapStore materialMapStore;
     private static PlayerLevelUtils playerLevelUtils;
+    private static SmeltingTracker smeltingTracker;
 
     /* Blacklist */
     private static WorldBlacklist worldBlacklist;
@@ -116,7 +118,6 @@ public class mcMMO extends JavaPlugin {
     public static final String COTW_TEMPORARY_SUMMON = "mcMMO: COTW Entity";
     public final static String entityMetadataKey   = "mcMMO: Spawned Entity";
     public final static String blockMetadataKey    = "mcMMO: Piston Tracking";
-    public final static String furnaceMetadataKey  = "mcMMO: Tracked Furnace";
     public final static String tntMetadataKey      = "mcMMO: Tracked TNT";
     public final static String funfettiMetadataKey = "mcMMO: Funfetti";
     public final static String customNameKey       = "mcMMO: Custom Name";
@@ -266,6 +267,9 @@ public class mcMMO extends JavaPlugin {
 
         //Init the blacklist
         worldBlacklist = new WorldBlacklist(this);
+
+        //Init smelting tracker
+        smeltingTracker = new SmeltingTracker();
     }
 
     public static PlayerLevelUtils getPlayerLevelUtils() {
@@ -669,5 +673,9 @@ public class mcMMO extends JavaPlugin {
 
     public static PlatformManager getPlatformManager() {
         return platformManager;
+    }
+
+    public static SmeltingTracker getSmeltingTracker() {
+        return smeltingTracker;
     }
 }
