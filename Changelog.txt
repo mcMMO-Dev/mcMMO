@@ -2,7 +2,8 @@ Version 2.1.134
     Furnaces now change ownership to the last player who clicks in their inventory and is legally allowed to break the furnace
     Smelting now has a Bonus Drops section in config.yml
     Smelting now only doubles smelting results for items which have bonus drop entries in config.yml
-    Minor code cleanup
+    Smelting XP can now be gained offline, but all other benefits from Smelting don't happen unless you're online
+    Fix brewing stand not consuming items (thanks Durburz)
     Changed the UUID updater task to not catastrophically fail when requests failed
     Fixed a bug where players could set each other on fire when partied or when PVP was disabled
     Fixed a NPE that could happen with thrown potions
@@ -15,6 +16,7 @@ Version 2.1.134
     Fixed a potential NPE when players right click blocks
     Fixed a locale mistake in locale hu_HU
     Fixed a locale mistake in locale ru
+    Minor code cleanup
 
     NOTES:
     It used to be that Furnaces would assign an owner and that would be their owner until the server shutdown, now owners will change based on who last had their hands on the furnace.
