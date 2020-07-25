@@ -1,6 +1,8 @@
 Version 2.1.135
-    Fixed an issue where Fishing would break if exploit protection was turned off for Fishing (Thanks Ineusia)
     Furnaces no longer simulate block break checks when assigning ownership as it caused some unwanted plugin conflicts
+    Fixed an issue where Fishing would break if exploit protection was turned off for Fishing (Thanks Ineusia)
+    Fixed Super abilities not being translated on scoreboards (Thanks Ineusia)
+    Added option in advanced.yml to squelch ability activation messages being sent to other players via action bar (Thanks Ineusia)
 
 Version 2.1.134
     Furnaces now change ownership to the last player who clicks in their inventory and is legally allowed to break the furnace
