@@ -396,11 +396,9 @@ public class PlayerListener implements Listener {
                 }
                 return;
             case CAUGHT_FISH:
-                if(ExperienceConfig.getInstance().isFishingExploitingPrevented())
-                {
-                    if(caught instanceof Item) {
-                        if(fishingManager.isExploitingFishing(event.getHook().getLocation().toVector()))
-                        {
+                if(caught instanceof Item) {
+                    if(ExperienceConfig.getInstance().isFishingExploitingPrevented()) {
+                        if (fishingManager.isExploitingFishing(event.getHook().getLocation().toVector())) {
                             player.sendMessage(LocaleLoader.getString("Fishing.ScarcityTip", 3));
                             event.setExpToDrop(0);
                             Item caughtItem = (Item) caught;
@@ -408,10 +406,10 @@ public class PlayerListener implements Listener {
 
                             return;
                         }
-
-                        fishingManager.handleFishing((Item) caught);
-                        fishingManager.setFishingTarget();
                     }
+
+                    fishingManager.handleFishing((Item) caught);
+                    fishingManager.setFishingTarget();
                 }
                 return;
             case CAUGHT_ENTITY:
