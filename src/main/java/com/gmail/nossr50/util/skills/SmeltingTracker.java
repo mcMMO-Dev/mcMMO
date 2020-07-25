@@ -53,10 +53,7 @@ public class SmeltingTracker {
         if(!Permissions.skillEnabled(player, PrimarySkillType.SMELTING))
             return;
 
-        //If the player is legally allowed to break the block then they can steal ownership
-        if(EventUtils.simulateBlockBreak(furnace.getBlock(), player, true)) {
-            changeFurnaceOwnership(furnace, player);
-        }
+        changeFurnaceOwnership(furnace, player);
     }
 
     public void untrackFurnace(Furnace furnace) {

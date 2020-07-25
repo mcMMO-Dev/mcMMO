@@ -1,3 +1,6 @@
+Version 2.1.135
+    Furnaces no longer simulate block break checks when assigning ownership as it caused some unwanted plugin conflicts
+
 Version 2.1.134
     Furnaces now change ownership to the last player who clicks in their inventory and is legally allowed to break the furnace
     Smelting now has a Bonus Drops section in config.yml
