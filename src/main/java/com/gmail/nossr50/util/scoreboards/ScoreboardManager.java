@@ -90,10 +90,10 @@ public class ScoreboardManager {
                 skillLabelBuilder.put(type, getShortenedName(colors.get(i) + type.getName(), false));
 
                 if (type.getAbility() != null) {
-                    abilityLabelBuilder.put(type.getAbility(), getShortenedName(colors.get(i) + type.getAbility().getName()));
+                    abilityLabelBuilder.put(type.getAbility(), getShortenedName(colors.get(i) + type.getAbility().getLocalizedName()));
 
                     if (type == PrimarySkillType.MINING) {
-                        abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, getShortenedName(colors.get(i) + SuperAbilityType.BLAST_MINING.getName()));
+                        abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, getShortenedName(colors.get(i) + SuperAbilityType.BLAST_MINING.getLocalizedName()));
                     }
                 }
 
@@ -112,17 +112,17 @@ public class ScoreboardManager {
                 skillLabelBuilder.put(type, getShortenedName(ChatColor.GREEN + type.getName()));
 
                 if (type.getAbility() != null) {
-                    abilityLabelBuilder.put(type.getAbility(), formatAbility(type.getAbility().getName()));
+                    abilityLabelBuilder.put(type.getAbility(), formatAbility(type.getAbility().getLocalizedName()));
 
                     if (type == PrimarySkillType.MINING) {
-                        abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, formatAbility(SuperAbilityType.BLAST_MINING.getName()));
+                        abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, formatAbility(SuperAbilityType.BLAST_MINING.getLocalizedName()));
                     }
                 }
             }
         }
 
         for (SuperAbilityType type : SuperAbilityType.values()) {
-            abilityLabelSkillBuilder.put(type, formatAbility((type == SuperAbilityType.BLAST_MINING ? ChatColor.BLUE : ChatColor.AQUA), type.getName()));
+            abilityLabelSkillBuilder.put(type, formatAbility((type == SuperAbilityType.BLAST_MINING ? ChatColor.BLUE : ChatColor.AQUA), type.getLocalizedName()));
         }
 
         skillLabels = skillLabelBuilder.build();
