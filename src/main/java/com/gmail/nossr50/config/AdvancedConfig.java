@@ -718,6 +718,11 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         return config.getBoolean("Feedback.Events.XP.SendTitles", true);
     }
 
+    public boolean sendAbilityNotificationToOtherPlayers()
+    {
+        return config.getBoolean("Feedback.Events.AbilityActivation.SendNotificationToOtherPlayers", true);
+    }
+
     /*
      * JSON Style Settings
      */
