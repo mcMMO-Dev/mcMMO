@@ -56,9 +56,9 @@ public class MccooldownCommand implements TabExecutor {
                 int seconds = mcMMOPlayer.calculateTimeRemaining(ability);
 
                 if (seconds <= 0) {
-                    player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.Y", ability.getName()));
+                    player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.Y", ability.getLocalizedName()));
                 } else {
-                    player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.N", ability.getName(), seconds));
+                    player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.N", ability.getLocalizedName(), seconds));
                 }
             }
 
