@@ -907,7 +907,9 @@ public class McMMOPlayer {
             //player.sendMessage(ability.getAbilityOn());
         }
 
-        SkillUtils.sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, ability.getAbilityPlayer());
+        if (AdvancedConfig.getInstance().sendAbilityNotificationToOtherPlayers()) {
+            SkillUtils.sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, ability.getAbilityPlayer());
+        }
 
         //Sounds
         SoundManager.worldSendSound(player.getWorld(), player.getLocation(), SoundType.ABILITY_ACTIVATED_GENERIC);

@@ -1,5 +1,6 @@
 package com.gmail.nossr50.runnables.skills;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -61,8 +62,9 @@ public class AbilityDisableTask extends BukkitRunnable {
             NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_OFF, ability.getAbilityOff());
         }
 
-
-        SkillUtils.sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, ability.getAbilityPlayerOff());
+        if (AdvancedConfig.getInstance().sendAbilityNotificationToOtherPlayers()) {
+            SkillUtils.sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, ability.getAbilityPlayerOff());
+        }
         new AbilityCooldownTask(mcMMOPlayer, ability).runTaskLater(mcMMO.p, PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TICK_CONVERSION_FACTOR);
     }
 
