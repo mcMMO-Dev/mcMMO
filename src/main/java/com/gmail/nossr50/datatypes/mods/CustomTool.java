@@ -1,9 +1,9 @@
 package com.gmail.nossr50.datatypes.mods;
 
 public class CustomTool {
-    private double xpMultiplier;
-    private boolean abilityEnabled;
-    private int tier;
+    private final double xpMultiplier;
+    private final boolean abilityEnabled;
+    private final int tier;
 
     public CustomTool(int tier, boolean abilityEnabled, double xpMultiplier) {
         this.xpMultiplier = xpMultiplier;

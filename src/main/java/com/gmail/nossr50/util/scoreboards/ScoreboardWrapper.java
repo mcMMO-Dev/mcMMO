@@ -37,7 +37,7 @@ public class ScoreboardWrapper {
     // Internal usage variables (should exist)
     private SidebarType sidebarType;
     private Objective sidebarObjective;
-    private Objective powerObjective;
+    private final Objective powerObjective;
 
     // Parameter variables (May be null / invalid)
     private Scoreboard oldBoard = null;
@@ -235,8 +235,8 @@ public class ScoreboardWrapper {
 
         if (oldBoard != null) {
             if (player.getScoreboard() == scoreboard) {
-                /**
-                 * Call the revert scoreboard custom event
+                /*
+                  Call the revert scoreboard custom event
                  */
                 McMMOScoreboardRevertEvent event = new McMMOScoreboardRevertEvent(oldBoard, player.getScoreboard(), player, ScoreboardEventReason.REVERTING_BOARD);
                 player.getServer().getPluginManager().callEvent(event);

@@ -138,19 +138,19 @@ public final class MobHealthbarUtils {
         int coloredDisplay = (int) Math.ceil(fullDisplay * (healthPercentage / 100.0D));
         int grayDisplay = fullDisplay - coloredDisplay;
 
-        String healthbar = color + "";
+        StringBuilder healthbar = new StringBuilder(color + "");
 
         for (int i = 0; i < coloredDisplay; i++) {
-            healthbar += symbol;
+            healthbar.append(symbol);
         }
 
-        healthbar += ChatColor.GRAY;
+        healthbar.append(ChatColor.GRAY);
 
         for (int i = 0; i < grayDisplay; i++) {
-            healthbar += symbol;
+            healthbar.append(symbol);
         }
 
-        return healthbar;
+        return healthbar.toString();
     }
 
     /**

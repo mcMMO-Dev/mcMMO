@@ -99,10 +99,6 @@ Woodcutting:
         Double_Drops_Enabled: true
         Is_Log: true
     # Fir Quarters
-    X2209|1:
-        XP_Gain: 80
-        Double_Drops_Enabled: true
-        Is_Log: true
     X2211|1:
         XP_Gain: 100
         Double_Drops_Enabled: true
@@ -116,10 +112,6 @@ Woodcutting:
         Double_Drops_Enabled: true
         Is_Log: true        
     # Oak Quarters
-    X2209|2:
-        XP_Gain: 70
-        Double_Drops_Enabled: true
-        Is_Log: true
     X2211|2:
         XP_Gain: 100
         Double_Drops_Enabled: true
@@ -133,15 +125,7 @@ Woodcutting:
         Double_Drops_Enabled: true
         Is_Log: true
     # Acacia 
-    X2209|1:
-        XP_Gain: 80
-        Double_Drops_Enabled: true
-        Is_Log: true
-    # Cypress 
-    X2209|2:
-        XP_Gain: 90
-        Double_Drops_Enabled: true
-        Is_Log: true
+    # Cypress
     # Bald Cypress Quarter
     X2225|0:
         XP_Gain: 90

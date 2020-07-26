@@ -11,57 +11,46 @@ import org.bukkit.block.Block;
 public class NullChunkletManager implements ChunkletManager {
     @Override
     public void loadChunklet(int cx, int cy, int cz, World world) {
-        return;
     }
 
     @Override
     public void unloadChunklet(int cx, int cy, int cz, World world) {
-        return;
     }
 
     @Override
     public void loadChunk(int cx, int cz, World world) {
-        return;
     }
 
     @Override
     public void unloadChunk(int cx, int cz, World world) {
-        return;
     }
 
     @Override
     public void chunkLoaded(int cx, int cz, World world) {
-        return;
     }
 
     @Override
     public void chunkUnloaded(int cx, int cz, World world) {
-        return;
     }
 
     @Override
     public void saveWorld(World world) {
-        return;
     }
 
     @Override
     public void unloadWorld(World world) {
-        return;
     }
 
     @Override
     public void loadWorld(World world) {
-        return;
     }
 
     @Override
     public void saveAll() {
-        return;
     }
 
     @Override
     public void unloadAll() {
-        return;
     }
 
     @Override
@@ -76,26 +65,21 @@ public class NullChunkletManager implements ChunkletManager {
 
     @Override
     public void setTrue(int x, int y, int z, World world) {
-        return;
     }
 
     @Override
     public void setTrue(Block block) {
-        return;
     }
 
     @Override
     public void setFalse(int x, int y, int z, World world) {
-        return;
     }
 
     @Override
     public void setFalse(Block block) {
-        return;
     }
 
     @Override
     public void cleanUp() {
-        return;
     }
 }

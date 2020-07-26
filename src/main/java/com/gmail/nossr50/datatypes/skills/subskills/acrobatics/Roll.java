@@ -65,31 +65,24 @@ public class Roll extends AcrobaticsSubSkill {
         if(!EventUtils.isRealPlayerDamaged(entityDamageEvent))
             return false;
 
-        switch (entityDamageEvent.getCause()) {
-            case FALL:
+        if (entityDamageEvent.getCause() == EntityDamageEvent.DamageCause.FALL) {//Grab the player
+            McMMOPlayer mcMMOPlayer = EventUtils.getMcMMOPlayer(entityDamageEvent.getEntity());
 
-                //Grab the player
-                McMMOPlayer mcMMOPlayer = EventUtils.getMcMMOPlayer(entityDamageEvent.getEntity());
+            if (mcMMOPlayer == null)
+                return false;
 
-                if(mcMMOPlayer == null)
-                    break;
+            /*
+             * Check for success
+             */
+            Player player = (Player) ((EntityDamageEvent) event).getEntity();
+            if (canRoll(player)) {
+                entityDamageEvent.setDamage(rollCheck(player, mcMMOPlayer, entityDamageEvent.getDamage()));
 
-                /*
-                 * Check for success
-                 */
-                Player player = (Player) ((EntityDamageEvent) event).getEntity();
-                if (canRoll(player)) {
-                    entityDamageEvent.setDamage(rollCheck(player, mcMMOPlayer, entityDamageEvent.getDamage()));
-
-                    if (entityDamageEvent.getFinalDamage() == 0) {
-                        entityDamageEvent.setCancelled(true);
-                        return true;
-                    }
+                if (entityDamageEvent.getFinalDamage() == 0) {
+                    entityDamageEvent.setCancelled(true);
+                    return true;
                 }
-                break;
-
-            default:
-                break;
+            }
         }
 
         return false;
@@ -420,8 +413,7 @@ public class Roll extends AcrobaticsSubSkill {
         playerChanceRoll        = RandomChanceUtil.getRandomChanceExecutionChance(roll);
         playerChanceGrace       = RandomChanceUtil.getRandomChanceExecutionChance(graceful);
 
-        Double[] stats = { playerChanceRoll, playerChanceGrace }; //DEBUG
-        return stats;
+        return new Double[]{ playerChanceRoll, playerChanceGrace };
     }
 
     public void addFallLocation(Player player)

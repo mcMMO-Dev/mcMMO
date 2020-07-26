@@ -9,10 +9,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class PartyLockCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         switch (args.length) {
             case 1:
                 if (args[0].equalsIgnoreCase("lock")) {
@@ -67,7 +68,7 @@ public class PartyLockCommand implements CommandExecutor {
             return;
         }
 
-        if (lock ? party.isLocked() : !party.isLocked()) {
+        if (lock == party.isLocked()) {
             sender.sendMessage(LocaleLoader.getString("Party." + (lock ? "IsLocked" : "IsntLocked")));
             return;
         }

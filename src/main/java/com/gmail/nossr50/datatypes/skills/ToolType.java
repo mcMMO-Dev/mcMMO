@@ -12,10 +12,10 @@ public enum ToolType {
     SHOVEL("Excavation.Ability.Lower", "Excavation.Ability.Ready"),
     SWORD("Swords.Ability.Lower", "Swords.Ability.Ready");
 
-    private String lowerTool;
-    private String raiseTool;
+    private final String lowerTool;
+    private final String raiseTool;
 
-    private ToolType(String lowerTool, String raiseTool) {
+    ToolType(String lowerTool, String raiseTool) {
         this.lowerTool = lowerTool;
         this.raiseTool = raiseTool;
     }

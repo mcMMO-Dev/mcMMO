@@ -89,7 +89,7 @@ public class FishingManager extends SkillManager {
             fishingRod.setDurability((short) (fishingRod.getDurability() + 5));
             getPlayer().updateInventory();
 
-            if(lastWarnedExhaust + (1000 * 1) < currentTime)
+            if(lastWarnedExhaust + (1000) < currentTime)
             {
                 getPlayer().sendMessage(LocaleLoader.getString("Fishing.Exhausting"));
                 lastWarnedExhaust = currentTime;
@@ -118,7 +118,7 @@ public class FishingManager extends SkillManager {
         long fishHookSpawnCD = fishHookSpawnTimestamp + 1000;
         boolean hasFished = (currentTime < fishHookSpawnCD);
 
-        if(hasFished && (lastWarned + (1000 * 1) < currentTime))
+        if(hasFished && (lastWarned + (1000) < currentTime))
         {
             getPlayer().sendMessage(LocaleLoader.getString("Fishing.Scared"));
             lastWarned = System.currentTimeMillis();
@@ -286,7 +286,7 @@ public class FishingManager extends SkillManager {
 
         if (treasure != null) {
             ItemStack treasureDrop = treasure.getDrop().clone(); // Not cloning is bad, m'kay?
-            Map<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
+            Map<Enchantment, Integer> enchants = new HashMap<>();
 
             if (isMagicHunterEnabled()
                     && ItemUtils.isEnchantable(treasureDrop)) {
@@ -505,7 +505,7 @@ public class FishingManager extends SkillManager {
      * @return true if the item has been enchanted
      */
     private Map<Enchantment, Integer> handleMagicHunter(ItemStack treasureDrop) {
-        Map<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
+        Map<Enchantment, Integer> enchants = new HashMap<>();
         List<EnchantmentTreasure> fishingEnchantments = null;
 
         double diceRoll = Misc.getRandom().nextDouble() * 100;
@@ -535,7 +535,7 @@ public class FishingManager extends SkillManager {
         }
 
         List<Enchantment> validEnchantments = getPossibleEnchantments(treasureDrop);
-        List<EnchantmentTreasure> possibleEnchants = new ArrayList<EnchantmentTreasure>();
+        List<EnchantmentTreasure> possibleEnchants = new ArrayList<>();
 
         for (EnchantmentTreasure enchantmentTreasure : fishingEnchantments) {
             if (validEnchantments.contains(enchantmentTreasure.getEnchantment())) {
@@ -574,7 +574,7 @@ public class FishingManager extends SkillManager {
             return Fishing.ENCHANTABLE_CACHE.get(dropType);
         }
 
-        List<Enchantment> possibleEnchantments = new ArrayList<Enchantment>();
+        List<Enchantment> possibleEnchantments = new ArrayList<>();
 
         for (Enchantment enchantment : Enchantment.values()) {
             if (enchantment.canEnchantItem(treasureDrop)) {

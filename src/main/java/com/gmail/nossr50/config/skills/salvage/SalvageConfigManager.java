@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class SalvageConfigManager {
-    private final List<Salvageable> salvageables = new ArrayList<Salvageable>();
+    private final List<Salvageable> salvageables = new ArrayList<>();
 
     public SalvageConfigManager(mcMMO plugin) {
         Pattern pattern = Pattern.compile("salvage\\.(?:.+)\\.yml");

@@ -7,9 +7,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 
 public class SkillUnlockNotificationTask extends BukkitRunnable {
-    private McMMOPlayer mcMMOPlayer;
-    private SubSkillType subSkillType;
-    private int rank;
+    private final McMMOPlayer mcMMOPlayer;
+    private final SubSkillType subSkillType;
+    private final int rank;
     /**
      * Notify a player about a newly unlocked subskill
      * @param mcMMOPlayer target player

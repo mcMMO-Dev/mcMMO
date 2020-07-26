@@ -26,6 +26,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -35,12 +36,12 @@ import java.util.Set;
 
 public abstract class SkillCommand implements TabExecutor {
     protected PrimarySkillType skill;
-    private String skillName;
+    private final String skillName;
 
     protected DecimalFormat percent = new DecimalFormat("##0.00%");
     protected DecimalFormat decimal = new DecimalFormat("##0.00");
 
-    private CommandExecutor skillGuideCommand;
+    private final CommandExecutor skillGuideCommand;
 
     public SkillCommand(PrimarySkillType skill) {
         this.skill = skill;
@@ -49,7 +50,7 @@ public abstract class SkillCommand implements TabExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (CommandUtils.noConsoleUsage(sender)) {
             return true;
         }
@@ -64,64 +65,60 @@ public abstract class SkillCommand implements TabExecutor {
             return true;
         }
 
-        switch (args.length) {
-            case 0:
-                Player player = (Player) sender;
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        if (args.length == 0) {
+            Player player = (Player) sender;
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-                boolean isLucky = Permissions.lucky(player, skill);
-                boolean hasEndurance = (PerksUtils.handleActivationPerks(player, 0, 0) != 0);
-                float skillValue = mcMMOPlayer.getSkillLevel(skill);
+            boolean isLucky = Permissions.lucky(player, skill);
+            boolean hasEndurance = (PerksUtils.handleActivationPerks(player, 0, 0) != 0);
+            float skillValue = mcMMOPlayer.getSkillLevel(skill);
 
-                //Send the players a few blank lines to make finding the top of the skill command easier
-                if(AdvancedConfig.getInstance().doesSkillCommandSendBlankLines())
-                    for(int i = 0; i < 2; i++)
-                    {
-                        player.sendMessage("");
-                    }
+            //Send the players a few blank lines to make finding the top of the skill command easier
+            if (AdvancedConfig.getInstance().doesSkillCommandSendBlankLines())
+                for (int i = 0; i < 2; i++) {
+                    player.sendMessage("");
+                }
 
-                permissionsCheck(player);
-                dataCalculations(player, skillValue);
+            permissionsCheck(player);
+            dataCalculations(player, skillValue);
 
-                sendSkillCommandHeader(player, mcMMOPlayer, (int) skillValue);
+            sendSkillCommandHeader(player, mcMMOPlayer, (int) skillValue);
 
-                //Make JSON text components
-                List<TextComponent> subskillTextComponents = getTextComponents(player);
+            //Make JSON text components
+            List<TextComponent> subskillTextComponents = getTextComponents(player);
 
-                //Subskills Header
-                player.sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", LocaleLoader.getString("Effects.SubSkills.Overhaul")));
+            //Subskills Header
+            player.sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", LocaleLoader.getString("Effects.SubSkills.Overhaul")));
 
-                //Send JSON text components
+            //Send JSON text components
 
-                TextComponentFactory.sendPlayerSubSkillList(player, subskillTextComponents);
+            TextComponentFactory.sendPlayerSubSkillList(player, subskillTextComponents);
 
                 /*for(TextComponent tc : subskillTextComponents)
                 {
                     player.spigot().sendMessage(new TextComponent[]{tc, new TextComponent(": TESTING")});
                 }*/
 
-                //Stats
-                getStatMessages(player, isLucky, hasEndurance, skillValue);
+            //Stats
+            getStatMessages(player, isLucky, hasEndurance, skillValue);
 
-                //Header
-
-
-                //Link Header
-                if(Config.getInstance().getUrlLinksEnabled())
-                {
-                    player.sendMessage(LocaleLoader.getString("Overhaul.mcMMO.Header"));
-                    TextComponentFactory.sendPlayerUrlHeader(player);
-                }
+            //Header
 
 
-                if (Config.getInstance().getScoreboardsEnabled() && Config.getInstance().getSkillUseBoard()) {
-                    ScoreboardManager.enablePlayerSkillScoreboard(player, skill);
-                }
+            //Link Header
+            if (Config.getInstance().getUrlLinksEnabled()) {
+                player.sendMessage(LocaleLoader.getString("Overhaul.mcMMO.Header"));
+                TextComponentFactory.sendPlayerUrlHeader(player);
+            }
 
-                return true;
-            default:
-                return skillGuideCommand.onCommand(sender, command, label, args);
+
+            if (Config.getInstance().getScoreboardsEnabled() && Config.getInstance().getSkillUseBoard()) {
+                ScoreboardManager.enablePlayerSkillScoreboard(player, skill);
+            }
+
+            return true;
         }
+        return skillGuideCommand.onCommand(sender, command, label, args);
     }
 
     private void getStatMessages(Player player, boolean isLucky, boolean hasEndurance, float skillValue) {
@@ -165,31 +162,28 @@ public abstract class SkillCommand implements TabExecutor {
 
 
             Set<PrimarySkillType> parents = FamilyTree.getParents(skill);
-            ArrayList<PrimarySkillType> parentList = new ArrayList<>();
 
             //TODO: Add JSON here
-            for (PrimarySkillType parent : parents) {
-                parentList.add(parent);
-                /*player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level.Overhaul", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)))*/;
-            }
+            /*player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level.Overhaul", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)))*/
+            ArrayList<PrimarySkillType> parentList = new ArrayList<>(parents);
 
-            String parentMessage = "";
+            StringBuilder parentMessage = new StringBuilder();
 
             for(int i = 0; i < parentList.size(); i++)
             {
                 if(i+1 < parentList.size())
                 {
-                    parentMessage += LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i)));
-                    parentMessage += ChatColor.GRAY+", ";
+                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
+                    parentMessage.append(ChatColor.GRAY).append(", ");
                 } else {
-                    parentMessage += LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i)));
+                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
                 }
             }
 
             //XP GAIN METHOD
             player.sendMessage(LocaleLoader.getString("Commands.XPGain.Overhaul", LocaleLoader.getString("Commands.XPGain.Child")));
 
-            player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, parentMessage));
+            player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, parentMessage.toString()));
             //LEVEL
             //player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, skillValue));
 
@@ -215,13 +209,11 @@ public abstract class SkillCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        switch (args.length) {
-            case 1:
-                return ImmutableList.of("?");
-            default:
-                return ImmutableList.of();
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
+        if (args.length == 1) {
+            return ImmutableList.of("?");
         }
+        return ImmutableList.of();
     }
 
     protected int calculateRank(float skillValue, int maxLevel, int rankChangeLevel) {

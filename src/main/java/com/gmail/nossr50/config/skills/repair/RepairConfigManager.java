@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class RepairConfigManager {
-    private final List<Repairable> repairables = new ArrayList<Repairable>();
+    private final List<Repairable> repairables = new ArrayList<>();
 
     public RepairConfigManager(mcMMO plugin) {
         Pattern pattern = Pattern.compile("repair\\.(?:.+)\\.yml");

@@ -1,4 +1,4 @@
-Version 2.1.134
+Version 2.2.000
     New Skill - Tridents
     New Skill - Crossbows
 
@@ -48,6 +48,37 @@ Version 2.1.134
 
     Notes:
     These are the first new skills that I've written for mcMMO in about 9 years, I'll be listening closely to feedback and tweaking them often.
+
+Version 2.1.135
+    Furnaces no longer simulate block break checks when assigning ownership as it caused some unwanted plugin conflicts
+    Fixed an issue where Fishing would break if exploit protection was turned off for Fishing (Thanks Ineusia)
+    Fixed Super abilities not being translated on scoreboards (Thanks Ineusia)
+    Added option in advanced.yml to squelch ability activation messages being sent to other players via action bar (Thanks Ineusia)
+
+Version 2.1.134
+    Furnaces now change ownership to the last player who clicks in their inventory and is legally allowed to break the furnace
+    Smelting now has a Bonus Drops section in config.yml
+    Smelting now only doubles smelting results for items which have bonus drop entries in config.yml
+    Smelting XP can now be gained offline, but all other benefits from Smelting don't happen unless you're online
+    Fix brewing stand not consuming items (thanks Durburz)
+    Changed the UUID updater task to not catastrophically fail when requests failed
+    Fixed a bug where players could set each other on fire when partied or when PVP was disabled
+    Fixed a NPE that could happen with thrown potions
+    Fixed a potential NPE when damaging player armor with Axes
+    Fixed a potential NPE when damaging a player with Blast Mining
+    Fixed a potential NPE when checking tools related to Super Abilities
+    Fixed a potential NPE when checking the Chimaera Wing
+    Fixed a potential NPE when creating party member lists
+    Fixed a potential NPE when fishing
+    Fixed a potential NPE when players right click blocks
+    Fixed a locale mistake in locale hu_HU
+    Fixed a locale mistake in locale ru
+    Minor code cleanup
+
+    NOTES:
+    It used to be that Furnaces would assign an owner and that would be their owner until the server shutdown, now owners will change based on who last had their hands on the furnace.
+    You won't become the owner if you are not allowed to view the inventory of a furnace, or break the furnace, or interact with the contents of the furnace
+>>>>>>> a28d1cd537caddb07a27ba2b7dd0ed7a37b39a48
 
 Version 2.1.133
     A fix for an 'array out of bounds' error related to players clicking outside the inventory windows has been fixed

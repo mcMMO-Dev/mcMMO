@@ -236,7 +236,6 @@ public class EntityListener implements Listener {
                 mcMMO.getPlaceStore().setTrue(block);
             }
         } else if ((block.getType() == Material.REDSTONE_ORE)) {
-            return;
         }
         else {
             if (mcMMO.getPlaceStore().isTrue(block)) {
@@ -304,13 +303,15 @@ public class EntityListener implements Listener {
                 Projectile projectile = (Projectile) event.getCombuster();
                 if(projectile.getShooter() instanceof Player) {
                     Player attacker = (Player) projectile.getShooter();
-                    if(checkParties(event, defender, attacker))
-                        return;
+                    if(checkParties(event, defender, attacker)) {
+                        event.setCancelled(true);
+                    }
                 }
             } else if(event.getCombuster() instanceof Player) {
                 Player attacker = (Player) event.getCombuster();
-                if(checkParties(event, defender, attacker))
-                    return;
+                if(checkParties(event, defender, attacker)) {
+                    event.setCancelled(true);
+                }
             }
         }
     }
@@ -677,7 +678,6 @@ public class EntityListener implements Listener {
                         return;
 
                     default:
-                        return;
                 }
             }
         }
@@ -769,7 +769,6 @@ public class EntityListener implements Listener {
                 return;
 
             default:
-                return;
         }
     }
 
@@ -1001,7 +1000,6 @@ public class EntityListener implements Listener {
                 return;
 
             default:
-                return;
         }
     }
 
@@ -1100,6 +1098,9 @@ public class EntityListener implements Listener {
     public void onPotionSplash(PotionSplashEvent event) {
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+            return;
+
+        if(event.getPotion().getItem().getItemMeta() == null)
             return;
 
         for (PotionEffect effect : ((PotionMeta) event.getPotion().getItem().getItemMeta()).getCustomEffects()) {

@@ -16,6 +16,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.util.StringUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ public class XprateCommand implements TabExecutor {
     private final double ORIGINAL_XP_RATE = ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier();
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         switch (args.length) {
             case 1:
                 if (!args[0].equalsIgnoreCase("reset") &&  !args[0].equalsIgnoreCase("clear")) {
@@ -116,16 +117,16 @@ public class XprateCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         switch (args.length) {
             case 1:
                 if (StringUtils.isInt(args[0])) {
                     return ImmutableList.of();
                 }
 
-                return StringUtil.copyPartialMatches(args[0], CommandUtils.RESET_OPTIONS, new ArrayList<String>(CommandUtils.RESET_OPTIONS.size()));
+                return StringUtil.copyPartialMatches(args[0], CommandUtils.RESET_OPTIONS, new ArrayList<>(CommandUtils.RESET_OPTIONS.size()));
             case 2:
-                return StringUtil.copyPartialMatches(args[1], CommandUtils.TRUE_FALSE_OPTIONS, new ArrayList<String>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
+                return StringUtil.copyPartialMatches(args[1], CommandUtils.TRUE_FALSE_OPTIONS, new ArrayList<>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
             default:
                 return ImmutableList.of();
         }

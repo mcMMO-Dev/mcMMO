@@ -13,9 +13,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.UUID;
 
 public class TrackedTamingEntity extends BukkitRunnable {
-    private LivingEntity livingEntity;
+    private final LivingEntity livingEntity;
     private final CallOfTheWildType callOfTheWildType;
-    private UUID id;
+    private final UUID id;
     private int length;
     private final TamingManager tamingManagerRef;
 

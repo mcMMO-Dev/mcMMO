@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class EnchantmentUtils {
 
-    private static final HashMap<String, Enchantment> enchants = new HashMap<String, Enchantment>();
+    private static final HashMap<String, Enchantment> enchants = new HashMap<>();
 
     static {
         enchants.put("SHARPNESS", Enchantment.DAMAGE_ALL);

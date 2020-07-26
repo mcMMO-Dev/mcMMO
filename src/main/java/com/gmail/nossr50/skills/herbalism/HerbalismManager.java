@@ -701,7 +701,7 @@ public class HerbalismManager extends SkillManager {
 
         Player player = getPlayer();
         PlayerInventory playerInventory = player.getInventory();
-        Material seed = null;
+        Material seed;
 
         switch (blockState.getType()) {
             case CARROTS:
@@ -761,7 +761,7 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        int finalAge = 0;
+        int finalAge;
         int greenThumbStage = getGreenThumbStage(greenTerra);
 
         //Immature plants will start over at 0

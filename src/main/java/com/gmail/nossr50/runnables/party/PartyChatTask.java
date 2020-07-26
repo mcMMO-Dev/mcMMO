@@ -12,11 +12,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PartyChatTask extends BukkitRunnable {
-    private Plugin plugin;
+    private final Plugin plugin;
 
-    private Party party;
-    private String senderName;
-    private String displayName;
+    private final Party party;
+    private final String senderName;
+    private final String displayName;
     private String message;
 
     public PartyChatTask(Plugin plugin, Party party, String senderName, String displayName, String message) {

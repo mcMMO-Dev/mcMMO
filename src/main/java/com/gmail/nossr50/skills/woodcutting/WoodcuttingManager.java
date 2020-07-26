@@ -99,7 +99,7 @@ public class WoodcuttingManager extends SkillManager {
      */
     public void processTreeFeller(BlockState blockState) {
         Player player = getPlayer();
-        Set<BlockState> treeFellerBlocks = new HashSet<BlockState>();
+        Set<BlockState> treeFellerBlocks = new HashSet<>();
 
         treeFellerReachedThreshold = false;
 
@@ -160,7 +160,7 @@ public class WoodcuttingManager extends SkillManager {
      * before taking measurements).
      */
     private void processTree(BlockState blockState, Set<BlockState> treeFellerBlocks) {
-        List<BlockState> futureCenterBlocks = new ArrayList<BlockState>();
+        List<BlockState> futureCenterBlocks = new ArrayList<>();
 
         // Check the block up and take different behavior (smaller search) if it's a log
         if (processTreeFellerTargetBlock(blockState.getBlock().getRelative(BlockFace.UP).getState(), futureCenterBlocks, treeFellerBlocks)) {

@@ -9,32 +9,29 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class PartyAllianceDisbandCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        switch (args.length) {
-            case 2:
-                if(UserManager.getPlayer((Player) sender) == null)
-                {
-                    sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
-                    return true;
-                }
-                Player player = (Player) sender;
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-                Party party = mcMMOPlayer.getParty();
-
-                if (party.getAlly() == null) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.None"));
-                    return true;
-                }
-
-                PartyManager.disbandAlliance(player, party, party.getAlly());
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        if (args.length == 2) {
+            if (UserManager.getPlayer((Player) sender) == null) {
+                sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return true;
+            }
+            Player player = (Player) sender;
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+            Party party = mcMMOPlayer.getParty();
 
-            default:
-                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "alliance", "disband"));
+            if (party.getAlly() == null) {
+                sender.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.None"));
                 return true;
+            }
+
+            PartyManager.disbandAlliance(player, party, party.getAlly());
+            return true;
         }
+        sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "alliance", "disband"));
+        return true;
     }
 }

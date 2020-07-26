@@ -6,11 +6,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 public class McMMOPlayerProfileLoadEvent extends Event implements Cancellable {
     private boolean cancelled;
-    private PlayerProfile profile;
-    private Player player;
+    private final PlayerProfile profile;
+    private final Player player;
     public McMMOPlayerProfileLoadEvent(Player player, PlayerProfile profile){
         super(!Bukkit.isPrimaryThread());
 
@@ -32,7 +33,7 @@ public class McMMOPlayerProfileLoadEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
 
     @Override
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return handlers;
     }
 

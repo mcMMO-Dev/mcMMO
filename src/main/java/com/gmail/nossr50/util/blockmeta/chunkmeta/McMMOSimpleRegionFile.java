@@ -29,7 +29,7 @@ public class McMMOSimpleRegionFile {
     private final int[] dataStart = new int[1024];
     private final int[] dataActualLength = new int[1024];
     private final int[] dataLength = new int[1024];
-    private final ArrayList<Boolean> inuse = new ArrayList<Boolean>();
+    private final ArrayList<Boolean> inuse = new ArrayList<>();
     private int segmentSize;
     private int segmentMask;
     private final int rx;
@@ -39,7 +39,7 @@ public class McMMOSimpleRegionFile {
     @SuppressWarnings("unused")
     private long lastAccessTime = System.currentTimeMillis();
     @SuppressWarnings("unused")
-    private static long TIMEOUT_TIME = 300000; // 5 min
+    private static final long TIMEOUT_TIME = 300000; // 5 min
 
     public McMMOSimpleRegionFile(File f, int rx, int rz) {
         this(f, rx, rz, 10);

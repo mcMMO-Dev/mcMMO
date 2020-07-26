@@ -9,7 +9,7 @@ import org.bukkit.block.Block;
  */
 public class BlockSnapshot {
     private final Material oldType;
-    private Block blockRef;
+    private final Block blockRef;
 
     public BlockSnapshot(Material oldType, Block blockRef) {
         this.oldType = oldType;

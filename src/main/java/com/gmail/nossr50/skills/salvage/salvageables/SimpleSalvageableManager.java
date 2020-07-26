@@ -8,14 +8,14 @@ import java.util.List;
 
 
 public class SimpleSalvageableManager implements SalvageableManager {
-    private HashMap<Material, Salvageable> salvageables;
+    private final HashMap<Material, Salvageable> salvageables;
 
     public SimpleSalvageableManager() {
         this(55);
     }
 
     public SimpleSalvageableManager(int salvageablesSize) {
-        this.salvageables = new HashMap<Material, Salvageable>(salvageablesSize);
+        this.salvageables = new HashMap<>(salvageablesSize);
     }
 
     @Override

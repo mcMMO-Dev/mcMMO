@@ -13,13 +13,14 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PartyInfoCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         switch (args.length) {
             case 0:
             case 1:
@@ -60,8 +61,8 @@ public class PartyInfoCommand implements CommandExecutor {
     private void displayPartyFeatures(Player player, Party party) {
         player.sendMessage(LocaleLoader.getString("Commands.Party.Features.Header"));
 
-        List<String> unlockedPartyFeatures = new ArrayList<String>();
-        List<String> lockedPartyFeatures = new ArrayList<String>();
+        List<String> unlockedPartyFeatures = new ArrayList<>();
+        List<String> lockedPartyFeatures = new ArrayList<>();
 
         for (PartyFeature partyFeature : PartyFeature.values()) {
             if (!partyFeature.hasPermission(player)) {

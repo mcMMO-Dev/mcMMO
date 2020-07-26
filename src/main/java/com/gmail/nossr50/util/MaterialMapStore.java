@@ -57,7 +57,6 @@ public class MaterialMapStore {
 
     private HashMap<String, Integer> tierValue;
 
-
     public MaterialMapStore()
     {
         abilityBlackList = new HashSet<>();

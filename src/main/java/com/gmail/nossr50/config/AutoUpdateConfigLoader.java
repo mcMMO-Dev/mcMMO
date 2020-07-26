@@ -28,10 +28,10 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
 
         boolean needSave = false;
 
-        Set<String> oldKeys = new HashSet<String>(configKeys);
+        Set<String> oldKeys = new HashSet<>(configKeys);
         oldKeys.removeAll(internalConfigKeys);
 
-        Set<String> newKeys = new HashSet<String>(internalConfigKeys);
+        Set<String> newKeys = new HashSet<>(internalConfigKeys);
         newKeys.removeAll(configKeys);
 
         // Don't need a re-save if we have old keys sticking around?
@@ -66,17 +66,17 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
             try {
                 // Read internal
                 BufferedReader reader = new BufferedReader(new InputStreamReader(plugin.getResource(fileName)));
-                LinkedHashMap<String, String> comments = new LinkedHashMap<String, String>();
-                String temp = "";
+                LinkedHashMap<String, String> comments = new LinkedHashMap<>();
+                StringBuilder temp = new StringBuilder();
 
                 String line;
                 while ((line = reader.readLine()) != null) {
                     if (line.contains("#")) {
-                        temp += line + "\n";
+                        temp.append(line).append("\n");
                     }
                     else if (line.contains(":")) {
                         line = line.substring(0, line.indexOf(":") + 1);
-                        if (!temp.isEmpty()) {
+                        if (temp.length() > 0) {
                             if(comments.containsKey(line)) {
                                 int index = 0;
                                 while(comments.containsKey(line + index)) {
@@ -86,14 +86,14 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
                                 line = line + index;
                             }
 
-                            comments.put(line, temp);
-                            temp = "";
+                            comments.put(line, temp.toString());
+                            temp = new StringBuilder();
                         }
                     }
                 }
 
                 // Dump to the new one
-                HashMap<String, Integer> indexed = new HashMap<String, Integer>();
+                HashMap<String, Integer> indexed = new HashMap<>();
                 for (String key : comments.keySet()) {
                     String actualkey = key.substring(0, key.indexOf(":") + 1);
 

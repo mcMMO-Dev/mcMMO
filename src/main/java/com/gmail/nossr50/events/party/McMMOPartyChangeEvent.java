@@ -4,14 +4,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Called when a player attempts to join, leave, or change parties.
  */
 public class McMMOPartyChangeEvent extends PlayerEvent implements Cancellable {
-    private String oldParty;
-    private String newParty;
-    private EventReason reason;
+    private final String oldParty;
+    private final String newParty;
+    private final EventReason reason;
     private boolean cancelled;
 
     public McMMOPartyChangeEvent(Player player, String oldParty, String newParty, EventReason reason) {
@@ -75,7 +76,7 @@ public class McMMOPartyChangeEvent extends PlayerEvent implements Cancellable {
         /**
          * Any reason that doesn't fit elsewhere.
          */
-        CUSTOM;
+        CUSTOM
     }
 
     /** Following are required for Cancellable **/
@@ -93,7 +94,7 @@ public class McMMOPartyChangeEvent extends PlayerEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
 
     @Override
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return handlers;
     }
 

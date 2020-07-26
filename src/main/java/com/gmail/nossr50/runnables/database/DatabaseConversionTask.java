@@ -21,11 +21,6 @@ public class DatabaseConversionTask extends BukkitRunnable {
     public void run() {
         sourceDatabase.convertUsers(mcMMO.getDatabaseManager());
 
-        mcMMO.p.getServer().getScheduler().runTask(mcMMO.p, new Runnable() {
-            @Override
-            public void run() {
-                sender.sendMessage(message);
-            }
-        });
+        mcMMO.p.getServer().getScheduler().runTask(mcMMO.p, () -> sender.sendMessage(message));
     }
 }

@@ -38,7 +38,7 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
 
     @Override
     protected boolean validateKeys() {
-        List<String> reason = new ArrayList<String>();
+        List<String> reason = new ArrayList<>();
 
         /*
          * FORMULA SETTINGS

@@ -2,6 +2,7 @@ package com.gmail.nossr50.datatypes.experience;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
@@ -40,7 +41,7 @@ public class SkillXpGain implements Delayed {
     }
 
     @Override
-    public int compareTo(Delayed other) {
+    public int compareTo(@NotNull Delayed other) {
         if (other instanceof SkillXpGain) {
             // Use more efficient method if possible (private fields)
             return this.compareTo((SkillXpGain) other);

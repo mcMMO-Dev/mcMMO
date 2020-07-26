@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public class WorldBlacklist {
     private static ArrayList<String> blacklist;
-    private mcMMO plugin;
+    private final mcMMO plugin;
 
     private final String blackListFileName = "world_blacklist.txt";
 

@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ChimaeraWingWarmup extends BukkitRunnable {
-    private McMMOPlayer mcMMOPlayer;
+    private final McMMOPlayer mcMMOPlayer;
 
     public ChimaeraWingWarmup(McMMOPlayer mcMMOPlayer) {
         this.mcMMOPlayer = mcMMOPlayer;

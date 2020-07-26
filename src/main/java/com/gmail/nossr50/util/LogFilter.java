@@ -6,7 +6,7 @@ import java.util.logging.Filter;
 import java.util.logging.LogRecord;
 
 public class LogFilter implements Filter {
-    private boolean debug;
+    private final boolean debug;
 
     public LogFilter(mcMMO plugin) {
         // Doing a config loading lite here, because we can't depend on the config loader to have loaded before any debug messages are sent

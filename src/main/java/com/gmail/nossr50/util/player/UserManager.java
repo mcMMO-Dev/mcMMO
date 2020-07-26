@@ -33,7 +33,7 @@ public final class UserManager {
     }
 
     public static void cleanupPlayer(McMMOPlayer mcMMOPlayer) {
-        if(playerDataSet != null && playerDataSet.contains(mcMMOPlayer))
+        if(playerDataSet != null)
             playerDataSet.remove(mcMMOPlayer);
     }
 
@@ -47,7 +47,7 @@ public final class UserManager {
         mcMMOPlayer.cleanup();
         player.removeMetadata(mcMMO.playerDataKey, mcMMO.p);
 
-        if(playerDataSet != null && playerDataSet.contains(mcMMOPlayer)) {
+        if(playerDataSet != null) {
             playerDataSet.remove(mcMMOPlayer); //Clear sync save tracking
         }
     }
@@ -91,7 +91,7 @@ public final class UserManager {
     }
 
     public static Collection<McMMOPlayer> getPlayers() {
-        Collection<McMMOPlayer> playerCollection = new ArrayList<McMMOPlayer>();
+        Collection<McMMOPlayer> playerCollection = new ArrayList<>();
 
         for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
             if (hasPlayerDataKey(player)) {

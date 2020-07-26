@@ -69,11 +69,11 @@ public enum PrimarySkillType {
     TRIDENTS(TridentManager.class, Color.TEAL, ImmutableList.of(SubSkillType.TRIDENTS_MULTI_TASKING, SubSkillType.TRIDENTS_TRIDENTS_LIMIT_BREAK)),
     CROSSBOWS(CrossbowManager.class, Color.ORANGE, ImmutableList.of(SubSkillType.CROSSBOWS_CONE_OF_DEATH, SubSkillType.CROSSBOWS_CROSSBOWS_LIMIT_BREAK));
 
-    private Class<? extends SkillManager> managerClass;
-    private Color skillColor;
-    private SuperAbilityType ability;
-    private ToolType tool;
-    private List<SubSkillType> subSkillTypes;
+    private final Class<? extends SkillManager> managerClass;
+    private final Color skillColor;
+    private final SuperAbilityType ability;
+    private final ToolType tool;
+    private final List<SubSkillType> subSkillTypes;
 
     public static final List<String> SKILL_NAMES;
     public static final List<String> SUBSKILL_NAMES;
@@ -86,9 +86,9 @@ public enum PrimarySkillType {
     public static final List<PrimarySkillType> MISC_SKILLS = ImmutableList.of(ACROBATICS, ALCHEMY, REPAIR, SALVAGE, SMELTING);
 
     static {
-        List<PrimarySkillType> childSkills = new ArrayList<PrimarySkillType>();
-        List<PrimarySkillType> nonChildSkills = new ArrayList<PrimarySkillType>();
-        ArrayList<String> names = new ArrayList<String>();
+        List<PrimarySkillType> childSkills = new ArrayList<>();
+        List<PrimarySkillType> nonChildSkills = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
         ArrayList<String> subSkillNames = new ArrayList<>();
 
         for (PrimarySkillType skill : values()) {
@@ -114,11 +114,11 @@ public enum PrimarySkillType {
         NON_CHILD_SKILLS = ImmutableList.copyOf(nonChildSkills);
     }
 
-    private PrimarySkillType(Class<? extends SkillManager> managerClass, Color skillColor, List<SubSkillType> subSkillTypes) {
+    PrimarySkillType(Class<? extends SkillManager> managerClass, Color skillColor, List<SubSkillType> subSkillTypes) {
         this(managerClass, skillColor, null, null, subSkillTypes);
     }
 
-    private PrimarySkillType(Class<? extends SkillManager> managerClass, Color skillColor, SuperAbilityType ability, ToolType tool, List<SubSkillType> subSkillTypes) {
+    PrimarySkillType(Class<? extends SkillManager> managerClass, Color skillColor, SuperAbilityType ability, ToolType tool, List<SubSkillType> subSkillTypes) {
         this.managerClass = managerClass;
         this.skillColor = skillColor;
         this.ability = ability;

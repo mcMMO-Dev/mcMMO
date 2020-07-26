@@ -18,7 +18,7 @@ import java.util.*;
 
 public class SalvageConfig extends ConfigLoader {
     private List<Salvageable> salvageables;
-    private HashSet<String> notSupported;
+    private final HashSet<String> notSupported;
 
     public SalvageConfig(String fileName) {
         super(fileName);
@@ -28,7 +28,7 @@ public class SalvageConfig extends ConfigLoader {
 
     @Override
     protected void loadKeys() {
-        salvageables = new ArrayList<Salvageable>();
+        salvageables = new ArrayList<>();
 
         if (!config.isConfigurationSection("Salvageables")) {
             mcMMO.p.getLogger().severe("Could not find Salvageables section in " + fileName);
@@ -59,7 +59,7 @@ public class SalvageConfig extends ConfigLoader {
 
         for (String key : keys) {
             // Validate all the things!
-            List<String> reason = new ArrayList<String>();
+            List<String> reason = new ArrayList<>();
 
             // Item Material
             Material itemMaterial = Material.matchMaterial(key);
@@ -195,7 +195,7 @@ public class SalvageConfig extends ConfigLoader {
     }
 
     protected List<Salvageable> getLoadedSalvageables() {
-        return salvageables == null ? new ArrayList<Salvageable>() : salvageables;
+        return salvageables == null ? new ArrayList<>() : salvageables;
     }
 
     private boolean noErrorsInSalvageable(List<String> issues) {

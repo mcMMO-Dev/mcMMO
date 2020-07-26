@@ -56,19 +56,19 @@ public final class AlchemyPotionBrewer {
     }
 
     private static void removeIngredient(BrewerInventory inventory, Player player) {
-        ItemStack ingredient = inventory.getIngredient() == null ? null : inventory.getIngredient().clone();
+        if(inventory.getIngredient() == null)
+            return;
 
-        if (isEmpty(ingredient) || !isValidIngredient(player, ingredient)) {
-            return;
-        }
-        else if (ingredient.getAmount() <= 1) {
-            inventory.setIngredient(null);
-            return;
-        }
-        else {
-            ingredient.setAmount(ingredient.getAmount() - 1);
-            inventory.setIngredient(ingredient);
-            return;
+        ItemStack ingredient = inventory.getIngredient().clone();
+
+        if (!isEmpty(ingredient) && isValidIngredient(player, ingredient)) {
+            if (ingredient.getAmount() <= 1) {
+                inventory.setIngredient(null);
+            }
+            else {
+                ingredient.setAmount(ingredient.getAmount() - 1);
+                inventory.setIngredient(ingredient);
+            }
         }
     }
 
@@ -113,7 +113,7 @@ public final class AlchemyPotionBrewer {
             return;
         }
 
-        List<AlchemyPotion> inputList = new ArrayList<AlchemyPotion>();
+        List<AlchemyPotion> inputList = new ArrayList<>();
 
         for (int i = 0; i < 3; i++) {
             ItemStack item = inventory.getItem(i);

@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class BleedTimerTask extends BukkitRunnable {
-    private static Map<LivingEntity, BleedContainer> bleedList = new HashMap<LivingEntity, BleedContainer>();
+    private static final Map<LivingEntity, BleedContainer> bleedList = new HashMap<>();
     private static boolean isIterating = false;
 
     @Override
@@ -71,8 +71,7 @@ public class BleedTimerTask extends BukkitRunnable {
                 //Count Armor
                 for(ItemStack armorPiece : ((Player) target).getInventory().getArmorContents())
                 {
-                    if(armorPiece != null)
-                        armorCount++;
+                    armorCount++;
                 }
 
             } else {
@@ -155,8 +154,7 @@ public class BleedTimerTask extends BukkitRunnable {
         int bleedRank = container.bleedRank;
         int toolTier = container.toolTier;
 
-        BleedContainer newContainer = new BleedContainer(target, bleedTicks, bleedRank, toolTier, source);
-        return newContainer;
+        return new BleedContainer(target, bleedTicks, bleedRank, toolTier, source);
     }
 
     /**
