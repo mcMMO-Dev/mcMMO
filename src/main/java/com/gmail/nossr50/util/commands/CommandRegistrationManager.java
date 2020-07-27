@@ -433,7 +433,7 @@ public final class CommandRegistrationManager {
         PluginCommand command = mcMMO.p.getCommand("mmoxpbar"); //TODO: Localize
         command.setDescription(LocaleLoader.getString("Commands.Description.mmoxpbar"));
         command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mmoxpbar", "<reset | disable>"));
-        command.setUsage(command.getUsage() +"\n" + LocaleLoader.getString("Commands.Usage.2", "mmoxpbar", "<show | hide>", "<skillname>"));
+        command.setUsage(command.getUsage() +"\n" + LocaleLoader.getString("Commands.Usage.2", "mmoxpbar", "<show | hide | disable>", "<skillname>"));
         command.setExecutor(new XPBarCommand());
     }
 
