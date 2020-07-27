@@ -128,6 +128,9 @@ public class RepairManager extends SkillManager {
         int baseRepairAmount = repairable.getBaseRepairDurability(item); // Did they send me daughters?
         short newDurability = repairCalculate(startDurability, baseRepairAmount); // When I asked for sons?
 
+        // toRemove should be refreshed before the event call.
+        toRemove = inventory.getItem(inventory.first(repairMaterial)).clone();
+        
         // Call event
         if (EventUtils.callRepairCheckEvent(player, (short) (startDurability - newDurability), toRemove, item).isCancelled()) {
             return;
@@ -139,7 +142,6 @@ public class RepairManager extends SkillManager {
         }
 
         // Remove the item
-        toRemove = inventory.getItem(inventory.first(repairMaterial)).clone();
         toRemove.setAmount(1);
 
         inventory.removeItem(toRemove);
