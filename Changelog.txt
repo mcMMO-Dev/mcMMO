@@ -1,3 +1,6 @@
+Version 2.1.136
+    Furnace ownership was made more reliable
+
 Version 2.1.135
     Furnaces no longer simulate block break checks when assigning ownership as it caused some unwanted plugin conflicts
     Fixed an issue where Fishing would break if exploit protection was turned off for Fishing (Thanks Ineusia)
