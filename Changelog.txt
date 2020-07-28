@@ -48,6 +48,8 @@ Version 2.2.000
 
     Notes:
     These are the first new skills that I've written for mcMMO in about 9 years, I'll be listening closely to feedback and tweaking them often.
+Version 2.1.136
+    Furnace ownership was made more reliable
 
 Version 2.1.135
     Furnaces no longer simulate block break checks when assigning ownership as it caused some unwanted plugin conflicts

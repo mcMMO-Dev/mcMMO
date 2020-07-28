@@ -14,7 +14,8 @@ public class FurnaceCleanupTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if(furnace != null && furnace.getInventory().getResult() == null) {
+        if(furnace != null
+                && furnace.getInventory().getSmelting() == null) {
             //Furnace is empty so stop tracking it
             mcMMO.getSmeltingTracker().untrackFurnace(furnace);
         }
