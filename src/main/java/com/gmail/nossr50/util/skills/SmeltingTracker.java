@@ -40,23 +40,23 @@ public class SmeltingTracker {
                         "at location: " + furnace.getLocation().toString());
             }
 
-            if(furnaceOwners.get(furnace) != null) {
-                OfflinePlayer furnaceOwner = furnaceOwners.get(furnace);
+        }
 
-                if(furnaceOwner.isOnline()) {
-                    McMMOPlayer furnaceOwnerProfile = UserManager.getPlayer(furnaceOwner.getPlayer());
+        if(furnaceOwners.get(furnace) != null) {
+            OfflinePlayer furnaceOwner = furnaceOwners.get(furnace);
 
-                    if(furnaceOwnerProfile != null) {
-                        if(furnaceOwnerProfile.isDebugMode()) {
-                            furnaceOwnerProfile.getPlayer().sendMessage("Furnace ownership " +
-                                    ChatColor.RED + "lost " + ChatColor.RESET +
-                                    "at location: " + furnace.getLocation().toString());
-                        }
+            if(furnaceOwner.isOnline()) {
+                McMMOPlayer furnaceOwnerProfile = UserManager.getPlayer(furnaceOwner.getPlayer());
+
+                if(furnaceOwnerProfile != null) {
+                    if(furnaceOwnerProfile.isDebugMode()) {
+                        furnaceOwnerProfile.getPlayer().sendMessage("Furnace ownership " +
+                                ChatColor.RED + "lost " + ChatColor.RESET +
+                                "at location: " + furnace.getLocation().toString());
                     }
                 }
             }
         }
-
 
 
         furnaceOwners.put(furnace, player);
