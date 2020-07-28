@@ -33,6 +33,14 @@ public class SmeltingTracker {
         /*
             Debug output
          */
+        printOwnershipGainDebug(furnace, mcMMOPlayer);
+
+        printOwnershipLossDebug(furnace);
+
+        furnaceOwners.put(furnace, player);
+    }
+
+    private void printOwnershipGainDebug(Furnace furnace, McMMOPlayer mcMMOPlayer) {
         if(mcMMOPlayer != null) {
             if(mcMMOPlayer.isDebugMode()) {
                 mcMMOPlayer.getPlayer().sendMessage("Furnace ownership " +
@@ -41,7 +49,9 @@ public class SmeltingTracker {
             }
 
         }
+    }
 
+    private void printOwnershipLossDebug(Furnace furnace) {
         if(furnaceOwners.get(furnace) != null) {
             OfflinePlayer furnaceOwner = furnaceOwners.get(furnace);
 
@@ -57,9 +67,6 @@ public class SmeltingTracker {
                 }
             }
         }
-
-
-        furnaceOwners.put(furnace, player);
     }
 
     @Nullable
@@ -80,10 +87,6 @@ public class SmeltingTracker {
         return furnaceOwners.get(furnace) != null;
     }
 
-    public void removeFurnaceOwner(Furnace furnace) {
-        furnaceOwners.remove(furnace);
-    }
-
     public void processFurnaceOwnership(Furnace furnace, Player player) {
         if(!Permissions.skillEnabled(player, PrimarySkillType.SMELTING))
             return;
@@ -92,6 +95,7 @@ public class SmeltingTracker {
     }
 
     public void untrackFurnace(Furnace furnace) {
+        printOwnershipLossDebug(furnace);
         furnaceOwners.remove(furnace);
     }
 }
