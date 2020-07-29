@@ -9,7 +9,6 @@ import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.apache.commons.lang.math.RandomUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -18,9 +17,6 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 public class CrossbowManager extends SkillManager {
     public CrossbowManager(McMMOPlayer mcMMOPlayer) {
@@ -58,7 +54,7 @@ public class CrossbowManager extends SkillManager {
         mcMMOPlayer.getPlayer().sendMessage("Pew pew!");
 
         //Testing
-        if(Permissions.isSubSkillEnabled(mcMMOPlayer.getPlayer(), SubSkillType.CROSSBOWS_CONE_OF_DEATH)) {
+        if(Permissions.isSubSkillEnabled(mcMMOPlayer.getPlayer(), SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
             coneOfDeathProcessing(projectileLaunchEvent);
         }
     }
@@ -83,7 +79,7 @@ public class CrossbowManager extends SkillManager {
     }
 
     private int getConeOfDeathProjectileCount() {
-        switch(RankUtils.getRank(mcMMOPlayer.getPlayer(), SubSkillType.CROSSBOWS_CONE_OF_DEATH)) {
+        switch(RankUtils.getRank(mcMMOPlayer.getPlayer(), SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
             case 1:
                 return 9;
             case 2:

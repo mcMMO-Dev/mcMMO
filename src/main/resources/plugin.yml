@@ -739,12 +739,12 @@ permissions:
     mcmmo.ability.crossbows.all:
         description: Allows access to Crossbow sub-skills
         children:
-            mcmmo.ability.crossbows.coneofdeath: true
+            mcmmo.ability.crossbows.supershotgun: true
             mcmmo.ability.crossbows.crossbowslimitbreak: true
     mcmmo.ability.crossbows.crossbowslimitbreak:
         description: Allows access to Crossbows Limit Break sub-skill
-    mcmmo.ability.crossbows.coneofdeath:
-        description: Allows access to Cone of Death sub-skill
+    mcmmo.ability.crossbows.supershotgun:
+        description: Allows access to Super Shotgun sub-skill
     mcmmo.admin:
         default: false
         description: Implies access to everything in mcMMO

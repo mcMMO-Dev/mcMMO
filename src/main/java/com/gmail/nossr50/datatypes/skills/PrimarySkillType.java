@@ -67,7 +67,7 @@ public enum PrimarySkillType {
     WOODCUTTING(WoodcuttingManager.class, Color.OLIVE, SuperAbilityType.TREE_FELLER, ToolType.AXE,
             ImmutableList.of(SubSkillType.WOODCUTTING_LEAF_BLOWER, SubSkillType.WOODCUTTING_TREE_FELLER, SubSkillType.WOODCUTTING_HARVEST_LUMBER)),
     TRIDENTS(TridentManager.class, Color.TEAL, ImmutableList.of(SubSkillType.TRIDENTS_MULTI_TASKING, SubSkillType.TRIDENTS_TRIDENTS_LIMIT_BREAK)),
-    CROSSBOWS(CrossbowManager.class, Color.ORANGE, ImmutableList.of(SubSkillType.CROSSBOWS_CONE_OF_DEATH, SubSkillType.CROSSBOWS_CROSSBOWS_LIMIT_BREAK));
+    CROSSBOWS(CrossbowManager.class, Color.ORANGE, ImmutableList.of(SubSkillType.CROSSBOWS_SUPER_SHOTGUN, SubSkillType.CROSSBOWS_CROSSBOWS_LIMIT_BREAK));
 
     private final Class<? extends SkillManager> managerClass;
     private final Color skillColor;
