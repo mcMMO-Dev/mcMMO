@@ -51,20 +51,20 @@ public class CrossbowManager extends SkillManager {
      * @param projectileLaunchEvent target event
      */
     public void processProjectileLaunchEvent(ProjectileLaunchEvent projectileLaunchEvent) {
-        mcMMOPlayer.getPlayer().sendMessage("Pew pew!");
-
         //Testing
         if(Permissions.isSubSkillEnabled(mcMMOPlayer.getPlayer(), SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
-            coneOfDeathProcessing(projectileLaunchEvent);
+            if(RankUtils.hasUnlockedSubskill(mcMMOPlayer.getPlayer(), SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
+                superShotgunProcessing(projectileLaunchEvent);
+            }
         }
     }
 
 
-    private void coneOfDeathProcessing(ProjectileLaunchEvent projectileLaunchEvent) {
-        spawnConeArrows(projectileLaunchEvent.getEntity());
+    private void superShotgunProcessing(ProjectileLaunchEvent projectileLaunchEvent) {
+        spawnSuperShotgunArrows(projectileLaunchEvent.getEntity());
     }
 
-    private void spawnConeArrows(@NotNull Projectile originProjectile) {
+    private void spawnSuperShotgunArrows(@NotNull Projectile originProjectile) {
         World world = originProjectile.getWorld();
 
         Vector originVector = originProjectile.getVelocity().clone();

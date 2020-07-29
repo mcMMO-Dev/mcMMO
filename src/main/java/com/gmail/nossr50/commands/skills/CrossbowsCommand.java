@@ -34,7 +34,7 @@ public class CrossbowsCommand extends SkillCommand {
 
         if(canUseSubskill(player, SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
             String additionalArrowCount = String.valueOf(crossbowManager.getSuperShotgunAdditionalArrowCount());
-            messages.add(getStatMessage(SubSkillType.CROSSBOWS_CROSSBOWS_LIMIT_BREAK, additionalArrowCount));
+            messages.add(getStatMessage(SubSkillType.CROSSBOWS_SUPER_SHOTGUN, additionalArrowCount));
         }
 
         return messages;
