@@ -72,13 +72,13 @@ public class CrossbowManager extends SkillManager {
 
         Vector originUnitVector = originVector.clone().normalize();
 
-        for(int i = 0; i < getConeOfDeathProjectileCount(); i++) {
+        for(int i = 0; i < getSuperShotgunAdditionalArrowCount(); i++) {
             Vector newProjectileVector = byRotateVector(originUnitVector, 0);
             spawnTrackedProjectile(originProjectile, world, originProjectileMagnitude, newProjectileVector, getRandomizedSpreadValue());
         }
     }
 
-    private int getConeOfDeathProjectileCount() {
+    public int getSuperShotgunAdditionalArrowCount() {
         switch(RankUtils.getRank(mcMMOPlayer.getPlayer(), SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
             case 1:
                 return 9;

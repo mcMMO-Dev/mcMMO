@@ -2,7 +2,9 @@ package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.skills.crossbows.CrossbowManager;
 import com.gmail.nossr50.util.TextComponentFactory;
+import com.gmail.nossr50.util.player.UserManager;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -28,20 +30,14 @@ public class CrossbowsCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
-        /*
-                List<String> messages = new ArrayList<>();
+        CrossbowManager crossbowManager = UserManager.getPlayer(player).getCrossbowManager();
 
-        ExcavationManager excavationManager = UserManager.getPlayer(player).getExcavationManager();
-
-        if (canGigaDrill) {
-            messages.add(getStatMessage(SubSkillType.EXCAVATION_GIGA_DRILL_BREAKER, gigaDrillBreakerLength)
-                    + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", gigaDrillBreakerLengthEndurance) : ""));
-         */
         if(canUseSubskill(player, SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
-
+            String additionalArrowCount = String.valueOf(crossbowManager.getSuperShotgunAdditionalArrowCount());
+            messages.add(getStatMessage(SubSkillType.CROSSBOWS_CROSSBOWS_LIMIT_BREAK, additionalArrowCount));
         }
 
-        return null;
+        return messages;
     }
 
     @Override

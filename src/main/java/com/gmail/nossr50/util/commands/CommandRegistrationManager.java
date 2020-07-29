@@ -111,6 +111,13 @@ public final class CommandRegistrationManager {
                     command.setExecutor(new WoodcuttingCommand());
                     break;
 
+                case CROSSBOWS:
+                    command.setExecutor(new CrossbowsCommand());
+                    break;
+                case TRIDENTS:
+                    command.setExecutor(new TridentsCommand());
+                    break;
+
                 default:
                     break;
             }
