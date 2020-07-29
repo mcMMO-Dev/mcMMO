@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util.compat.layers;
 
-import com.gmail.nossr50.util.compat.CompatibilityLayer;
+import com.gmail.nossr50.util.nms.NMSVersion;
+import org.jetbrains.annotations.NotNull;
 
 /**
  *
@@ -8,9 +9,13 @@ import com.gmail.nossr50.util.compat.CompatibilityLayer;
  * In 2.2 we are switching to modules and that will clean things up significantly
  *
  */
-public abstract class AbstractCompatibilityLayer implements CompatibilityLayer {
+public abstract class AbstractNMSCompatibilityLayer extends AbstractCompatibilityLayer {
 
-    protected boolean noErrorsOnInitialize = true;
+    protected final @NotNull NMSVersion nmsVersion;
+
+    public AbstractNMSCompatibilityLayer(@NotNull NMSVersion nmsVersion) {
+        this.nmsVersion = nmsVersion;
+    }
 
     /**
      * Initialize the CompatibilityLayer

@@ -1,4 +1,4 @@
-package com.gmail.nossr50.util.compat.layers;
+package com.gmail.nossr50.util.compat.layers.attackcooldown;
 
 import org.bukkit.entity.Player;
 
