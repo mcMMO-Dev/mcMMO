@@ -113,7 +113,7 @@ public enum SubSkillType {
 
     /* CROSSBOWS */
 
-    CROSSBOWS_CONE_OF_DEATH(8),
+    CROSSBOWS_CONE_OF_DEATH(3),
     CROSSBOWS_CROSSBOWS_LIMIT_BREAK(10);
 
 

@@ -125,11 +125,17 @@ public class EntityListener implements Listener {
         projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(plugin, projectile.getLocation()));
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onProjectileLaunch(ProjectileLaunchEvent event) {
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
+
+        if(mcMMO.getSpawnedProjectileTracker().isSpawnedProjectile(event.getEntity())) {
+            mcMMO.getSpawnedProjectileTracker().untrackProjectile(event.getEntity());
+            return;
+        }
+
 
         if(event.getEntity().getShooter() instanceof Player)
         {

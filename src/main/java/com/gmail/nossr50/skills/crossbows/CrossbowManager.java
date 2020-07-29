@@ -7,6 +7,8 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.skills.RankUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -14,11 +16,17 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class CrossbowManager extends SkillManager {
     public CrossbowManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkillType.CROSSBOWS);
     }
+    private static final int SPREAD_VALUE = 12;
 
     /**
      * Calculate bonus XP awarded for Archery when hitting a far-away target.
@@ -57,10 +65,47 @@ public class CrossbowManager extends SkillManager {
 
 
     private void coneOfDeathProcessing(ProjectileLaunchEvent projectileLaunchEvent) {
-        Projectile mainProjectile = projectileLaunchEvent.getEntity();
-        World world = mainProjectile.getWorld();
+        spawnConeArrows(projectileLaunchEvent.getEntity());
+    }
 
+    private void spawnConeArrows(@NotNull Projectile originProjectile) {
+        World world = originProjectile.getWorld();
 
+        Vector originVector = originProjectile.getVelocity().clone();
+        float originProjectileMagnitude = (float) originVector.length();
+
+        Vector originUnitVector = originVector.clone().normalize();
+
+        for(int i = 0; i < getConeOfDeathProjectileCount(); i++) {
+            Vector newProjectileVector = byRotateVector(originUnitVector, 0);
+            spawnTrackedProjectile(originProjectile, world, originProjectileMagnitude, newProjectileVector, getRandomizedSpreadValue());
+        }
+    }
+
+    private int getConeOfDeathProjectileCount() {
+        switch(RankUtils.getRank(mcMMOPlayer.getPlayer(), SubSkillType.CROSSBOWS_CONE_OF_DEATH)) {
+            case 1:
+                return 9;
+            case 2:
+                return 18;
+            default:
+                return 27;
+        }
+    }
+
+    private int getRandomizedSpreadValue() {
+        return SPREAD_VALUE + 12 + RandomUtils.nextInt(24);
+    }
+
+    private void spawnTrackedProjectile(@NotNull Projectile originProjectile, World world, float originProjectileMagnitude, Vector additionalProjectileVectorA, int spreadValue) {
+        Projectile spawnedProjectile = world.spawnArrow(originProjectile.getLocation(), additionalProjectileVectorA, originProjectileMagnitude, spreadValue);
+        spawnedProjectile.setShooter(mcMMOPlayer.getPlayer());
+        mcMMO.getSpawnedProjectileTracker().trackProjectile(spawnedProjectile);
+    }
+
+    @NotNull
+    private Vector byRotateVector(Vector originUnitVector, double angle) {
+        return originUnitVector.clone().rotateAroundAxis(originUnitVector, angle);
     }
 
 

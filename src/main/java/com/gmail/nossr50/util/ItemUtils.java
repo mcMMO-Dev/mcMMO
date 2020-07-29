@@ -62,22 +62,22 @@ public final class ItemUtils {
         return mcMMO.getMaterialMapStore().isTrident(itemStack.getType().getKey().getKey());
     }
 
-    public static void registerTridentRecipes() {
-        Material tridentMaterial = Material.getMaterial("trident");
-        if(tridentMaterial != null) {
-            ItemStack weakTridentIS = new ItemStack(tridentMaterial);
-            NamespacedKey weakTridentNamespacedKey = new NamespacedKey(mcMMO.p, "mcmmo:weak_trident");
-
-            ShapedRecipe weakTridentRecipe = new ShapedRecipe(weakTridentNamespacedKey, weakTridentIS);
-
-            weakTridentRecipe.
-            Bukkit.addRecipe(weakTridentRecipe);
-        }
-        if(Material.getMaterial("trident") == null) {
-            return;
-        }
-
-    }
+//    public static void registerTridentRecipes() {
+////        Material tridentMaterial = Material.getMaterial("trident");
+////        if(tridentMaterial != null) {
+////            ItemStack weakTridentIS = new ItemStack(tridentMaterial);
+////            NamespacedKey weakTridentNamespacedKey = new NamespacedKey(mcMMO.p, "mcmmo:weak_trident");
+////
+////            ShapedRecipe weakTridentRecipe = new ShapedRecipe(weakTridentNamespacedKey, weakTridentIS);
+////
+////            weakTridentRecipe.
+////            Bukkit.addRecipe(weakTridentRecipe);
+////        }
+////        if(Material.getMaterial("trident") == null) {
+////            return;
+////        }
+//
+//    }
 
 
 

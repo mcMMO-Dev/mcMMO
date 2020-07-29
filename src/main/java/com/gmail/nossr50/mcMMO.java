@@ -80,6 +80,7 @@ public class mcMMO extends JavaPlugin {
     private static MaterialMapStore materialMapStore;
     private static PlayerLevelUtils playerLevelUtils;
     private static SmeltingTracker smeltingTracker;
+    private static SpawnedProjectileTracker spawnedProjectileTracker;
 
     /* Blacklist */
     private static WorldBlacklist worldBlacklist;
@@ -271,6 +272,9 @@ public class mcMMO extends JavaPlugin {
 
         //Init smelting tracker
         smeltingTracker = new SmeltingTracker();
+
+        //Init spawned projectile tracker
+        spawnedProjectileTracker = new SpawnedProjectileTracker();
     }
 
     public static PlayerLevelUtils getPlayerLevelUtils() {
@@ -678,5 +682,9 @@ public class mcMMO extends JavaPlugin {
 
     public static SmeltingTracker getSmeltingTracker() {
         return smeltingTracker;
+    }
+
+    public static SpawnedProjectileTracker getSpawnedProjectileTracker() {
+        return spawnedProjectileTracker;
     }
 }
