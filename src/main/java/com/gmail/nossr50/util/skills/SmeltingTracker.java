@@ -3,8 +3,6 @@ package com.gmail.nossr50.util.skills;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.smelting.Smelting;
-import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.Bukkit;
@@ -16,15 +14,11 @@ import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
+import java.util.UUID;
 
 public class SmeltingTracker {
 
-    private final HashMap<Furnace, OfflinePlayer> furnaceOwners;
-
-    public SmeltingTracker() {
-        furnaceOwners = new HashMap<>();
-    }
+//    private final HashMap<Furnace, OfflinePlayer> furnaceOwners;
 
     private void changeFurnaceOwnership(Furnace furnace, Player player) {
 
@@ -37,7 +31,11 @@ public class SmeltingTracker {
 
         printOwnershipLossDebug(furnace);
 
-        furnaceOwners.put(furnace, player);
+        setFurnaceOwner(furnace, player);
+    }
+
+    private void setFurnaceOwner(Furnace furnace, Player player) {
+        mcMMO.getCompatibilityManager().getPersistentDataLayer().setFurnaceOwner(furnace, player.getUniqueId());
     }
 
     private void printOwnershipGainDebug(Furnace furnace, McMMOPlayer mcMMOPlayer) {
@@ -52,20 +50,28 @@ public class SmeltingTracker {
     }
 
     private void printOwnershipLossDebug(Furnace furnace) {
-        if(furnaceOwners.get(furnace) != null) {
-            OfflinePlayer furnaceOwner = furnaceOwners.get(furnace);
+        OfflinePlayer furnaceOwner = getFurnaceOwner(furnace);
 
-            if(furnaceOwner.isOnline()) {
-                McMMOPlayer furnaceOwnerProfile = UserManager.getPlayer(furnaceOwner.getPlayer());
+        if(furnaceOwner != null && furnaceOwner.isOnline()) {
+            McMMOPlayer furnaceOwnerProfile = UserManager.getPlayer(furnaceOwner.getPlayer());
 
-                if(furnaceOwnerProfile != null) {
-                    if(furnaceOwnerProfile.isDebugMode()) {
-                        furnaceOwnerProfile.getPlayer().sendMessage("Furnace ownership " +
-                                ChatColor.RED + "lost " + ChatColor.RESET +
-                                "at location: " + furnace.getLocation().toString());
-                    }
+            if(furnaceOwnerProfile != null) {
+                if(furnaceOwnerProfile.isDebugMode()) {
+                    furnaceOwnerProfile.getPlayer().sendMessage("Furnace ownership " +
+                            ChatColor.RED + "lost " + ChatColor.RESET +
+                            "at location: " + furnace.getLocation().toString());
                 }
             }
+        }
+    }
+
+    public @Nullable OfflinePlayer getFurnaceOwner(Furnace furnace) {
+        UUID uuid = mcMMO.getCompatibilityManager().getPersistentDataLayer().getFurnaceOwner(furnace);
+
+        if(uuid != null) {
+            return Bukkit.getOfflinePlayer(uuid);
+        } else {
+            return null;
         }
     }
 
@@ -78,13 +84,8 @@ public class SmeltingTracker {
         return (Furnace) inventory.getHolder();
     }
 
-    @Nullable
-    public OfflinePlayer getPlayerFromFurnace(Furnace furnace) {
-        return furnaceOwners.get(furnace);
-    }
-
     public boolean isFurnaceOwned(Furnace furnace) {
-        return furnaceOwners.get(furnace) != null;
+        return getFurnaceOwner(furnace) != null;
     }
 
     public void processFurnaceOwnership(Furnace furnace, Player player) {
@@ -92,10 +93,5 @@ public class SmeltingTracker {
             return;
 
         changeFurnaceOwnership(furnace, player);
-    }
-
-    public void untrackFurnace(Furnace furnace) {
-        printOwnershipLossDebug(furnace);
-        furnaceOwners.remove(furnace);
     }
 }

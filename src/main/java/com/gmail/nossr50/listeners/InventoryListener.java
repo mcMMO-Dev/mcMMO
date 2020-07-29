@@ -8,7 +8,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakeBrewEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
-import com.gmail.nossr50.runnables.skills.FurnaceCleanupTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.alchemy.AlchemyPotionBrewer;
 import com.gmail.nossr50.util.ItemUtils;
@@ -56,7 +55,7 @@ public class InventoryListener implements Listener {
 
         Furnace furnace = (Furnace) furnaceState;
 
-        OfflinePlayer offlinePlayer = mcMMO.getSmeltingTracker().getPlayerFromFurnace(furnace);
+        OfflinePlayer offlinePlayer = mcMMO.getSmeltingTracker().getFurnaceOwner(furnace);
 
         if(offlinePlayer != null && offlinePlayer.isOnline()) {
 
@@ -94,7 +93,7 @@ public class InventoryListener implements Listener {
 
         if(blockState instanceof Furnace) {
             Furnace furnace = (Furnace) blockState;
-            OfflinePlayer offlinePlayer = mcMMO.getSmeltingTracker().getPlayerFromFurnace(furnace);
+            OfflinePlayer offlinePlayer = mcMMO.getSmeltingTracker().getFurnaceOwner(furnace);
 
             if(offlinePlayer != null) {
 
@@ -105,8 +104,6 @@ public class InventoryListener implements Listener {
                     event.setResult(offlineProfile.getSmeltingManager().smeltProcessing(smelting, event.getResult()));
                 }
             }
-
-            new FurnaceCleanupTask(furnace).runTaskLater(mcMMO.p, 1);
         }
     }
 

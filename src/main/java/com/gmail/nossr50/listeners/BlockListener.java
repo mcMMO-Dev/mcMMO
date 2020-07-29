@@ -18,7 +18,6 @@ import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.salvage.Salvage;
-import com.gmail.nossr50.skills.smelting.Smelting;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.EventUtils;
@@ -39,10 +38,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.MetadataValue;
 
 import java.util.HashSet;
-import java.util.List;
 
 public class BlockListener implements Listener {
     private final mcMMO plugin;
@@ -666,7 +663,7 @@ public class BlockListener implements Listener {
                 if(mcMMO.getSmeltingTracker().isFurnaceOwned(furnace))
                 {
                     player.sendMessage("[mcMMO DEBUG] This furnace has a registered owner");
-                    OfflinePlayer furnacePlayer = mcMMO.getSmeltingTracker().getPlayerFromFurnace(furnace);
+                    OfflinePlayer furnacePlayer = mcMMO.getSmeltingTracker().getFurnaceOwner(furnace);
                     if(furnacePlayer != null)
                     {
                         player.sendMessage("[mcMMO DEBUG] This furnace is owned by player "+furnacePlayer.getName());

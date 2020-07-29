@@ -1,5 +1,6 @@
 Version 2.1.136
-    Furnace ownership was made more reliable
+    Furnace ownership is no longer lost when the furnace stops doing a job
+    Furnaces remember owners between restarts (requires MC 1.14 or higher)
 
 Version 2.1.135
     Furnaces no longer simulate block break checks when assigning ownership as it caused some unwanted plugin conflicts
