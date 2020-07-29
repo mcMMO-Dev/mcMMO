@@ -1,7 +1,6 @@
 package com.gmail.nossr50.util.compat.layers.persistentdata;
 
 import com.gmail.nossr50.mcMMO;
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Furnace;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -38,6 +37,7 @@ public class SpigotPersistentDataLayer extends AbstractPersistentDataLayer {
         //Get container from entity
         PersistentDataContainer dataContainer = ((PersistentDataHolder) furnace).getPersistentDataContainer();
 
+        //Too lazy to make a custom data type for this stuff
         Long mostSigBits = dataContainer.get(furnaceOwner_MostSig_Key, PersistentDataType.LONG);
         Long leastSigBits = dataContainer.get(furnaceOwner_LeastSig_Key, PersistentDataType.LONG);
 

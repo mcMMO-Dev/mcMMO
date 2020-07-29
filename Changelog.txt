@@ -2,6 +2,11 @@ Version 2.1.136
     Furnace ownership is no longer lost when the furnace stops doing a job
     Furnaces remember owners between restarts (requires MC 1.14 or higher)
 
+    NOTES:
+        I'm making use of a Spigot API for persistent data for versions of MC 1.14 and above, for versions below the data will be temporary as it has been up until this point.
+        In the future I'll wire up NMS to make use of NBT and all versions will have persistent data support.
+
+
 Version 2.1.135
     Furnaces no longer simulate block break checks when assigning ownership as it caused some unwanted plugin conflicts
     Fixed an issue where Fishing would break if exploit protection was turned off for Fishing (Thanks Ineusia)
