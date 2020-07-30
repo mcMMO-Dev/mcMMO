@@ -92,6 +92,13 @@ public class SmeltingTracker {
         if(!Permissions.skillEnabled(player, PrimarySkillType.SMELTING))
             return;
 
+        //Don't swap ownership if its the same player
+        if(getFurnaceOwner(furnace) != null) {
+            if(getFurnaceOwner(furnace).getUniqueId().equals(player.getUniqueId()))
+                return;
+        }
+
+
         changeFurnaceOwnership(furnace, player);
     }
 }
