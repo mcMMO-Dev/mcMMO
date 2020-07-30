@@ -23,10 +23,13 @@ public class Axes {
     public static double skullSplitterModifier = AdvancedConfig.getInstance().getSkullSplitterModifier();
 
     protected static boolean hasArmor(LivingEntity target) {
-        if(target.getEquipment() == null)
+        if(target == null || !target.isValid() || target.getEquipment() == null)
             return false;
 
         for (ItemStack itemStack : target.getEquipment().getArmorContents()) {
+            if(itemStack == null)
+                continue;
+
             if (ItemUtils.isArmor(itemStack)) {
                 return true;
             }

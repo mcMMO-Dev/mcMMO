@@ -48,6 +48,9 @@ Version 2.2.000
 
     Notes:
     These are the first new skills that I've written for mcMMO in about 9 years, I'll be listening closely to feedback and tweaking them often.
+Version 2.1.137
+    Added some code to avoid NPE errors when checking armor on entities
+
 Version 2.1.136
     Furnace ownership is no longer lost when the furnace stops doing a job
     Furnaces remember owners between restarts (requires MC 1.14 or higher)
