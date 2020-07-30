@@ -1,9 +1,9 @@
 package com.gmail.nossr50.datatypes.mods;
 
 public class CustomBlock {
-    private int xpGain;
-    private boolean canDoubleDrop;
-    private int smeltingXpGain;
+    private final int xpGain;
+    private final boolean canDoubleDrop;
+    private final int smeltingXpGain;
 
     public CustomBlock(int xpGain, boolean canDoubleDrop, int smeltingXpGain) {
         this.xpGain = xpGain;

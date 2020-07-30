@@ -39,7 +39,7 @@ public class Config extends AutoUpdateConfigLoader {
     @Override
     protected boolean validateKeys() {
         // Validate all the settings!
-        List<String> reason = new ArrayList<String>();
+        List<String> reason = new ArrayList<>();
 
         /* General Settings */
         if (getSaveInterval() <= 0) {
@@ -462,7 +462,13 @@ public class Config extends AutoUpdateConfigLoader {
     /*
      * SKILL SETTINGS
      */
-    public boolean getDoubleDropsEnabled(PrimarySkillType skill, Material material) { return config.getBoolean("Bonus_Drops." + StringUtils.getCapitalized(skill.toString()) + "." + StringUtils.getPrettyItemString(material).replace(" ", "_")); }
+    public boolean getDoubleDropsEnabled(PrimarySkillType skill, Material material) {
+        //TODO: Temporary measure to fix an exploit caused by a yet to be fixed Spigot bug (as of 7/3/2020)
+        if(material.toString().equalsIgnoreCase("LILY_PAD"))
+            return false;
+
+        return config.getBoolean("Bonus_Drops." + StringUtils.getCapitalized(skill.toString()) + "." + StringUtils.getPrettyItemString(material).replace(" ", "_"));
+    }
 
     public boolean getDoubleDropsDisabled(PrimarySkillType skill) {
         String skillName = StringUtils.getCapitalized(skill.toString());

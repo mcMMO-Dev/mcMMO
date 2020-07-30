@@ -32,9 +32,9 @@ import java.util.List;
 import java.util.Locale;
 
 public final class CommandRegistrationManager {
-    private CommandRegistrationManager() {};
+    private CommandRegistrationManager() {}
 
-    private static String permissionsMessage = LocaleLoader.getString("mcMMO.NoPermission");
+    private static final String permissionsMessage = LocaleLoader.getString("mcMMO.NoPermission");
 
     private static void registerSkillCommands() {
         for (PrimarySkillType skill : PrimarySkillType.values()) {
@@ -199,7 +199,7 @@ public final class CommandRegistrationManager {
     }
 
     private static void registerXprateCommand() {
-        List<String> aliasList = new ArrayList<String>();
+        List<String> aliasList = new ArrayList<>();
         aliasList.add("mcxprate");
 
         PluginCommand command = mcMMO.p.getCommand("xprate");
@@ -432,8 +432,8 @@ public final class CommandRegistrationManager {
     private static void registerXPBarCommand() {
         PluginCommand command = mcMMO.p.getCommand("mmoxpbar"); //TODO: Localize
         command.setDescription(LocaleLoader.getString("Commands.Description.mmoxpbar"));
-        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mmoxpbar", "<reset>"));
-        command.setUsage(command.getUsage() +"\n" + LocaleLoader.getString("Commands.Usage.2", "mmoxpbar", "<skillname>", "<show | hide>"));
+        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mmoxpbar", "<reset | disable>"));
+        command.setUsage(command.getUsage() +"\n" + LocaleLoader.getString("Commands.Usage.2", "mmoxpbar", "<show | hide | disable>", "<skillname>"));
         command.setExecutor(new XPBarCommand());
     }
 

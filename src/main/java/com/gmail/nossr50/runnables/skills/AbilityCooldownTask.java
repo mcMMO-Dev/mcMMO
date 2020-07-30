@@ -7,8 +7,8 @@ import com.gmail.nossr50.util.player.NotificationManager;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class AbilityCooldownTask extends BukkitRunnable {
-    private McMMOPlayer mcMMOPlayer;
-    private SuperAbilityType ability;
+    private final McMMOPlayer mcMMOPlayer;
+    private final SuperAbilityType ability;
 
     public AbilityCooldownTask(McMMOPlayer mcMMOPlayer, SuperAbilityType ability) {
         this.mcMMOPlayer = mcMMOPlayer;

@@ -27,7 +27,7 @@ public final class MobHealthbarUtils {
         EntityDamageEvent lastDamageCause = player.getLastDamageCause();
         String replaceString = lastDamageCause instanceof EntityDamageByEntityEvent ? StringUtils.getPrettyEntityTypeString(((EntityDamageByEntityEvent) lastDamageCause).getDamager().getType()) : "a mob";
 
-        return deathMessage.replaceAll("(?:\u00A7(?:[0-9A-FK-ORa-fk-or]){1}(?:[\u2764\u25A0]{1,10})){1,2}", replaceString);
+        return deathMessage.replaceAll("(?:(\u00A7(?:[0-9A-FK-ORa-fk-or]))*(?:[\u2764\u25A0]{1,10})){1,2}", replaceString);
     }
 
     /**
@@ -138,19 +138,19 @@ public final class MobHealthbarUtils {
         int coloredDisplay = (int) Math.ceil(fullDisplay * (healthPercentage / 100.0D));
         int grayDisplay = fullDisplay - coloredDisplay;
 
-        String healthbar = color + "";
+        StringBuilder healthbar = new StringBuilder(color + "");
 
         for (int i = 0; i < coloredDisplay; i++) {
-            healthbar += symbol;
+            healthbar.append(symbol);
         }
 
-        healthbar += ChatColor.GRAY;
+        healthbar.append(ChatColor.GRAY);
 
         for (int i = 0; i < grayDisplay; i++) {
-            healthbar += symbol;
+            healthbar.append(symbol);
         }
 
-        return healthbar;
+        return healthbar.toString();
     }
 
     /**

@@ -6,10 +6,10 @@ public enum ChatMode {
     ADMIN(LocaleLoader.getString("Commands.AdminChat.On"), LocaleLoader.getString("Commands.AdminChat.Off")),
     PARTY(LocaleLoader.getString("Commands.Party.Chat.On"), LocaleLoader.getString("Commands.Party.Chat.Off"));
 
-    private String enabledMessage;
-    private String disabledMessage;
+    private final String enabledMessage;
+    private final String disabledMessage;
 
-    private ChatMode(String enabledMessage, String disabledMessage) {
+    ChatMode(String enabledMessage, String disabledMessage) {
         this.enabledMessage  = enabledMessage;
         this.disabledMessage = disabledMessage;
     }

@@ -465,6 +465,7 @@ permissions:
             mcmmo.ability.repair.arcaneforging: true
             mcmmo.ability.repair.superrepair: true
             mcmmo.ability.repair.armorrepair: true
+            mcmmo.ability.repair.netheriterepair: true
             mcmmo.ability.repair.diamondrepair: true
             mcmmo.ability.repair.goldrepair: true
             mcmmo.ability.repair.ironrepair: true
@@ -481,6 +482,8 @@ permissions:
         description: Allows access to the Arcane Forging ability
     mcmmo.ability.repair.armorrepair:
         description: Allows ability to repair armor
+    mcmmo.ability.repair.netheriterepair:
+        description: Allows ability to repair Netherite tools & armor
     mcmmo.ability.repair.diamondrepair:
         description: Allows ability to repair Diamond tools & armor
     mcmmo.ability.repair.goldrepair:
@@ -517,6 +520,7 @@ permissions:
             mcmmo.ability.salvage.arcanesalvage: true
             mcmmo.ability.salvage.armorsalvage: true
             mcmmo.ability.salvage.diamondsalvage: true
+            mcmmo.ability.salvage.netheritesalvage: true
             mcmmo.ability.salvage.goldsalvage: true
             mcmmo.ability.salvage.ironsalvage: true
             mcmmo.ability.salvage.leathersalvage: true
@@ -532,6 +536,8 @@ permissions:
         description: Allows access to the Arcane Salvage ability
     mcmmo.ability.salvage.armorsalvage:
         description: Allows ability to salvage armor
+    mcmmo.ability.salvage.netheritesalvage:
+        description: Allows ability to salvage Netherite tools & armor
     mcmmo.ability.salvage.diamondsalvage:
         description: Allows ability to salvage Diamond tools & armor
     mcmmo.ability.salvage.goldsalvage:

@@ -393,6 +393,7 @@ Experience_Values:
         Chiseled_Nether_Bricks: 50
         Cracked_Nether_Bricks: 50
         Nether_Bricks: 50
+        Red_Nether_Bricks: 50
         End_Stone: 15
         Glowstone: 15
         Gold_Ore: 1300
@@ -449,6 +450,7 @@ Experience_Values:
         Iron: 2.5
         Gold: 0.3
         Diamond: 5.0
+        Netherite: 6.0
         Leather: 1.6
         String: 1.8
         Other: 1.5
@@ -540,6 +542,7 @@ Experience_Values:
             Wandering_trader: 1.0
             Bee: 1.5
             Piglin: 2.0
+            Piglin_Brute: 4.5
             Hoglin: 4.0
             Zombie_Pigman: 3.0
             Zombified_Piglin: 3.0

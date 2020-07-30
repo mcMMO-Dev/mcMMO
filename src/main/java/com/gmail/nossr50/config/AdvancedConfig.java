@@ -28,7 +28,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     @Override
     protected boolean validateKeys() {
         // Validate all the settings!
-        List<String> reason = new ArrayList<String>();
+        List<String> reason = new ArrayList<>();
 
         /* GENERAL */
         if (getAbilityLength() < 1) {
@@ -687,9 +687,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     }
 
     public double getMaximumProbability(SubSkillType subSkillType) {
-        double maximumProbability = config.getDouble(subSkillType.getAdvConfigAddress() + ".ChanceMax", 100.0D);
 
-        return maximumProbability;
+        return config.getDouble(subSkillType.getAdvConfigAddress() + ".ChanceMax", 100.0D);
     }
 
     public double getMaximumProbability(AbstractSubSkill abstractSubSkill)
@@ -717,6 +716,11 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public boolean useTitlesForXPEvent()
     {
         return config.getBoolean("Feedback.Events.XP.SendTitles", true);
+    }
+
+    public boolean sendAbilityNotificationToOtherPlayers()
+    {
+        return config.getBoolean("Feedback.Events.AbilityActivation.SendNotificationToOtherPlayers", true);
     }
 
     /*

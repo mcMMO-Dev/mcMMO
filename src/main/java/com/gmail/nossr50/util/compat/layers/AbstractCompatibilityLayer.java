@@ -1,8 +1,6 @@
 package com.gmail.nossr50.util.compat.layers;
 
 import com.gmail.nossr50.util.compat.CompatibilityLayer;
-import com.gmail.nossr50.util.nms.NMSVersion;
-import org.jetbrains.annotations.NotNull;
 
 /**
  *
@@ -13,11 +11,6 @@ import org.jetbrains.annotations.NotNull;
 public abstract class AbstractCompatibilityLayer implements CompatibilityLayer {
 
     protected boolean noErrorsOnInitialize = true;
-    protected final @NotNull NMSVersion nmsVersion;
-
-    public AbstractCompatibilityLayer(@NotNull NMSVersion nmsVersion) {
-        this.nmsVersion = nmsVersion;
-    }
 
     /**
      * Initialize the CompatibilityLayer

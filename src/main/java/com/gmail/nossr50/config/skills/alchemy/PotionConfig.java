@@ -18,16 +18,16 @@ import java.util.Map;
 public class PotionConfig extends ConfigLoader {
     private static PotionConfig instance;
 
-    private List<ItemStack> concoctionsIngredientsTierOne = new ArrayList<ItemStack>();
-    private List<ItemStack> concoctionsIngredientsTierTwo = new ArrayList<ItemStack>();
-    private List<ItemStack> concoctionsIngredientsTierThree = new ArrayList<ItemStack>();
-    private List<ItemStack> concoctionsIngredientsTierFour = new ArrayList<ItemStack>();
-    private List<ItemStack> concoctionsIngredientsTierFive = new ArrayList<ItemStack>();
-    private List<ItemStack> concoctionsIngredientsTierSix = new ArrayList<ItemStack>();
-    private List<ItemStack> concoctionsIngredientsTierSeven = new ArrayList<ItemStack>();
-    private List<ItemStack> concoctionsIngredientsTierEight = new ArrayList<ItemStack>();
+    private final List<ItemStack> concoctionsIngredientsTierOne = new ArrayList<>();
+    private final List<ItemStack> concoctionsIngredientsTierTwo = new ArrayList<>();
+    private final List<ItemStack> concoctionsIngredientsTierThree = new ArrayList<>();
+    private final List<ItemStack> concoctionsIngredientsTierFour = new ArrayList<>();
+    private final List<ItemStack> concoctionsIngredientsTierFive = new ArrayList<>();
+    private final List<ItemStack> concoctionsIngredientsTierSix = new ArrayList<>();
+    private final List<ItemStack> concoctionsIngredientsTierSeven = new ArrayList<>();
+    private final List<ItemStack> concoctionsIngredientsTierEight = new ArrayList<>();
 
-    private Map<String, AlchemyPotion> potionMap = new HashMap<String, AlchemyPotion>();
+    private final Map<String, AlchemyPotion> potionMap = new HashMap<>();
 
     private PotionConfig() {
         super("potions.yml");
@@ -137,14 +137,14 @@ public class PotionConfig extends ConfigLoader {
                 material = Material.valueOf(mat);
             }
 
-            List<String> lore = new ArrayList<String>();
+            List<String> lore = new ArrayList<>();
             if (potion_section.contains("Lore")) {
                 for (String line : potion_section.getStringList("Lore")) {
                     lore.add(ChatColor.translateAlternateColorCodes('&', line));
                 }
             }
 
-            List<PotionEffect> effects = new ArrayList<PotionEffect>();
+            List<PotionEffect> effects = new ArrayList<>();
             if (potion_section.contains("Effects")) {
                 for (String effect : potion_section.getStringList("Effects")) {
                     String[] parts = effect.split(" ");
@@ -162,7 +162,7 @@ public class PotionConfig extends ConfigLoader {
                 }
             }
             
-            Color color = null;
+            Color color;
             if (potion_section.contains("Color")) {
                 color = Color.fromRGB(potion_section.getInt("Color"));
             }
@@ -170,7 +170,7 @@ public class PotionConfig extends ConfigLoader {
                 color = this.generateColor(effects);
             }
 
-            Map<ItemStack, String> children = new HashMap<ItemStack, String>();
+            Map<ItemStack, String> children = new HashMap<>();
             if (potion_section.contains("Children")) {
                 for (String child : potion_section.getConfigurationSection("Children").getKeys(false)) {
                     ItemStack ingredient = loadIngredient(child);
@@ -255,7 +255,7 @@ public class PotionConfig extends ConfigLoader {
     
     public Color generateColor(List<PotionEffect> effects) {
         if (effects != null && !effects.isEmpty()) {
-            List<Color> colors = new ArrayList<Color>();
+            List<Color> colors = new ArrayList<>();
             for (PotionEffect effect : effects) {
                 if (effect.getType().getColor() != null) {
                     colors.add(effect.getType().getColor());
@@ -280,8 +280,7 @@ public class PotionConfig extends ConfigLoader {
             green += color.getGreen();
             blue += color.getBlue();
         }
-        Color color = Color.fromRGB(red/colors.size(), green/colors.size(), blue/colors.size());
-        return color;
+        return Color.fromRGB(red/colors.size(), green/colors.size(), blue/colors.size());
     }
     
 }

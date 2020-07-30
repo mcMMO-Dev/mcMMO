@@ -16,7 +16,7 @@ import java.util.Set;
 
 public final class Fishing {
 
-    protected static final HashMap<Material, List<Enchantment>> ENCHANTABLE_CACHE = new HashMap<Material, List<Enchantment>>();
+    protected static final HashMap<Material, List<Enchantment>> ENCHANTABLE_CACHE = new HashMap<>();
 
     public static Set<Biome> masterAnglerBiomes = BiomeAdapter.WATER_BIOMES;
     public static Set<Biome> iceFishingBiomes   = BiomeAdapter.ICE_BIOMES;

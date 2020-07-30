@@ -10,6 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.util.StringUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,43 +18,37 @@ import java.util.UUID;
 
 public class McremoveCommand implements TabExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        switch (args.length) {
-            case 1:
-                String playerName = CommandUtils.getMatchedPlayerName(args[0]);
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        if (args.length == 1) {
+            String playerName = CommandUtils.getMatchedPlayerName(args[0]);
 
-                if (UserManager.getOfflinePlayer(playerName) == null && CommandUtils.unloadedProfile(sender, mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false))) {
-                    return true;
-                }
-
-                UUID uuid = null;
-
-                if(Bukkit.getPlayer(playerName) != null) {
-                    uuid = Bukkit.getPlayer(playerName).getUniqueId();
-                }
-
-                if (mcMMO.getDatabaseManager().removeUser(playerName, uuid)) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.mcremove.Success", playerName));
-                }
-                else {
-                    sender.sendMessage(playerName + " could not be removed from the database."); // Pretty sure this should NEVER happen.
-                }
-
+            if (UserManager.getOfflinePlayer(playerName) == null && CommandUtils.unloadedProfile(sender, mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false))) {
                 return true;
+            }
 
-            default:
-                return false;
+            UUID uuid = null;
+
+            if (Bukkit.getPlayer(playerName) != null) {
+                uuid = Bukkit.getPlayer(playerName).getUniqueId();
+            }
+
+            if (mcMMO.getDatabaseManager().removeUser(playerName, uuid)) {
+                sender.sendMessage(LocaleLoader.getString("Commands.mcremove.Success", playerName));
+            } else {
+                sender.sendMessage(playerName + " could not be removed from the database."); // Pretty sure this should NEVER happen.
+            }
+
+            return true;
         }
+        return false;
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        switch (args.length) {
-            case 1:
-                List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
-                return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<String>(playerNames.size()));
-            default:
-                return ImmutableList.of();
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
+        if (args.length == 1) {
+            List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
+            return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<>(playerNames.size()));
         }
+        return ImmutableList.of();
     }
 }

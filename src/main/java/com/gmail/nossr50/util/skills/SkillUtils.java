@@ -142,7 +142,7 @@ public class SkillUtils {
 
             int efficiencyLevel = heldItem.getEnchantmentLevel(Enchantment.DIG_SPEED);
             ItemMeta itemMeta = heldItem.getItemMeta();
-            List<String> itemLore = new ArrayList<String>();
+            List<String> itemLore = new ArrayList<>();
 
             if (itemMeta.hasLore()) {
                 itemLore = itemMeta.getLore();

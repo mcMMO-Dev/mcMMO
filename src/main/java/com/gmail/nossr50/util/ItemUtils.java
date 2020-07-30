@@ -459,7 +459,12 @@ public final class ItemUtils {
         }
 
         ItemMeta itemMeta = item.getItemMeta();
-        return itemMeta.hasLore() && itemMeta.getLore().contains("mcMMO Item");
+
+        if(itemMeta == null)
+            return false;
+
+        return itemMeta.getLore() != null
+                && itemMeta.getLore().contains("mcMMO Item");
     }
 
     public static boolean isChimaeraWing(ItemStack item) {
@@ -468,6 +473,10 @@ public final class ItemUtils {
         }
 
         ItemMeta itemMeta = item.getItemMeta();
+
+        if(itemMeta == null)
+            return false;
+
         return itemMeta.hasDisplayName() && itemMeta.getDisplayName().equals(ChatColor.GOLD + LocaleLoader.getString("Item.ChimaeraWing.Name"));
     }
 }

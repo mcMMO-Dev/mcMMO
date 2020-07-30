@@ -6,7 +6,7 @@ import com.gmail.nossr50.events.skills.McMMOPlayerSkillEvent;
 import org.bukkit.entity.Player;
 
 public class McMMOPlayerAbilityEvent extends McMMOPlayerSkillEvent {
-    private SuperAbilityType ability;
+    private final SuperAbilityType ability;
 
     protected McMMOPlayerAbilityEvent(Player player, PrimarySkillType skill) {
         super(player, skill);

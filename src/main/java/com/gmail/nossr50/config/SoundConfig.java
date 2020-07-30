@@ -9,7 +9,7 @@ public class SoundConfig extends AutoUpdateConfigLoader {
     {
         super("sounds.yml");
         validate();
-        this.instance = this;
+        instance = this;
     }
 
     @Override

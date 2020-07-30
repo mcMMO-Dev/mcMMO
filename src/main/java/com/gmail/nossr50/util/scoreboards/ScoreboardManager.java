@@ -25,7 +25,7 @@ import java.util.*;
  * Manages the Scoreboards used to display a variety of mcMMO related information to the player
  */
 public class ScoreboardManager {
-    static final Map<String, ScoreboardWrapper> PLAYER_SCOREBOARDS = new HashMap<String, ScoreboardWrapper>();
+    static final Map<String, ScoreboardWrapper> PLAYER_SCOREBOARDS = new HashMap<>();
 
     // do not localize; these are internal identifiers
     static final String SIDEBAR_OBJECTIVE = "mcmmo_sidebar";
@@ -90,10 +90,10 @@ public class ScoreboardManager {
                 skillLabelBuilder.put(type, getShortenedName(colors.get(i) + type.getName(), false));
 
                 if (type.getAbility() != null) {
-                    abilityLabelBuilder.put(type.getAbility(), getShortenedName(colors.get(i) + type.getAbility().getName()));
+                    abilityLabelBuilder.put(type.getAbility(), getShortenedName(colors.get(i) + type.getAbility().getLocalizedName()));
 
                     if (type == PrimarySkillType.MINING) {
-                        abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, getShortenedName(colors.get(i) + SuperAbilityType.BLAST_MINING.getName()));
+                        abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, getShortenedName(colors.get(i) + SuperAbilityType.BLAST_MINING.getLocalizedName()));
                     }
                 }
 
@@ -112,17 +112,17 @@ public class ScoreboardManager {
                 skillLabelBuilder.put(type, getShortenedName(ChatColor.GREEN + type.getName()));
 
                 if (type.getAbility() != null) {
-                    abilityLabelBuilder.put(type.getAbility(), formatAbility(type.getAbility().getName()));
+                    abilityLabelBuilder.put(type.getAbility(), formatAbility(type.getAbility().getLocalizedName()));
 
                     if (type == PrimarySkillType.MINING) {
-                        abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, formatAbility(SuperAbilityType.BLAST_MINING.getName()));
+                        abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, formatAbility(SuperAbilityType.BLAST_MINING.getLocalizedName()));
                     }
                 }
             }
         }
 
         for (SuperAbilityType type : SuperAbilityType.values()) {
-            abilityLabelSkillBuilder.put(type, formatAbility((type == SuperAbilityType.BLAST_MINING ? ChatColor.BLUE : ChatColor.AQUA), type.getName()));
+            abilityLabelSkillBuilder.put(type, formatAbility((type == SuperAbilityType.BLAST_MINING ? ChatColor.BLUE : ChatColor.AQUA), type.getLocalizedName()));
         }
 
         skillLabels = skillLabelBuilder.build();
@@ -130,7 +130,7 @@ public class ScoreboardManager {
         abilityLabelsSkill = abilityLabelSkillBuilder.build();
     }
 
-    private static List<String> dirtyPowerLevels = new ArrayList<String>();
+    private static final List<String> dirtyPowerLevels = new ArrayList<>();
 
     public enum SidebarType {
         NONE,
@@ -138,7 +138,7 @@ public class ScoreboardManager {
         STATS_BOARD,
         COOLDOWNS_BOARD,
         RANK_BOARD,
-        TOP_BOARD;
+        TOP_BOARD
     }
 
     private static String formatAbility(String abilityName) {

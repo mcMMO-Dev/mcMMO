@@ -32,14 +32,14 @@ public class PlayerProfile {
     private int saveAttempts = 0;
 
     /* Skill Data */
-    private final Map<PrimarySkillType, Integer>   skills     = new HashMap<PrimarySkillType, Integer>();   // Skill & Level
-    private final Map<PrimarySkillType, Float>     skillsXp   = new HashMap<PrimarySkillType, Float>();     // Skill & XP
-    private final Map<SuperAbilityType, Integer> abilityDATS = new HashMap<SuperAbilityType, Integer>(); // Ability & Cooldown
+    private final Map<PrimarySkillType, Integer>   skills     = new HashMap<>();   // Skill & Level
+    private final Map<PrimarySkillType, Float>     skillsXp   = new HashMap<>();     // Skill & XP
+    private final Map<SuperAbilityType, Integer> abilityDATS = new HashMap<>(); // Ability & Cooldown
     private final Map<UniqueDataType, Integer> uniquePlayerData = new HashMap<>(); //Misc data that doesn't fit into other categories (chimaera wing, etc..)
 
     // Store previous XP gains for diminished returns
-    private DelayQueue<SkillXpGain> gainedSkillsXp = new DelayQueue<SkillXpGain>();
-    private HashMap<PrimarySkillType, Float> rollingSkillsXp = new HashMap<PrimarySkillType, Float>();
+    private final DelayQueue<SkillXpGain> gainedSkillsXp = new DelayQueue<>();
+    private final HashMap<PrimarySkillType, Float> rollingSkillsXp = new HashMap<>();
 
     @Deprecated
     public PlayerProfile(String playerName) {
@@ -136,7 +136,6 @@ public class PlayerProfile {
                 else
                     scheduleAsyncSaveDelay();
 
-                return;
             } else {
                 mcMMO.p.getLogger().severe("mcMMO has failed to save the profile for "
                         +getPlayerName()+" numerous times." +
@@ -248,9 +247,7 @@ public class PlayerProfile {
     protected void resetCooldowns() {
         markProfileDirty();
 
-        for (SuperAbilityType ability : abilityDATS.keySet()) {
-            abilityDATS.put(ability, 0);
-        }
+        abilityDATS.replaceAll((a, v) -> 0);
     }
 
     /*

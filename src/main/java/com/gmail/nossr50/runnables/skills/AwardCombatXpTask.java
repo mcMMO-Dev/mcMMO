@@ -8,12 +8,12 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class AwardCombatXpTask extends BukkitRunnable {
-    private McMMOPlayer mcMMOPlayer;
-    private double baseXp;
-    private PrimarySkillType primarySkillType;
-    private LivingEntity target;
-    private XPGainReason xpGainReason;
-    private double baseHealth;
+    private final McMMOPlayer mcMMOPlayer;
+    private final double baseXp;
+    private final PrimarySkillType primarySkillType;
+    private final LivingEntity target;
+    private final XPGainReason xpGainReason;
+    private final double baseHealth;
 
     public AwardCombatXpTask(McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, double baseXp, LivingEntity target, XPGainReason xpGainReason) {
         this.mcMMOPlayer = mcMMOPlayer;

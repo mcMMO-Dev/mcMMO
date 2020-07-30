@@ -98,7 +98,7 @@ public class DelayedCropReplant extends BukkitRunnable {
 
     }
 
-    private class markPlantAsOld extends BukkitRunnable {
+    private static class markPlantAsOld extends BukkitRunnable {
 
         private final Location cropLoc;
 

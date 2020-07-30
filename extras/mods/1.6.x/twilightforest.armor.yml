@@ -68,17 +68,7 @@ Chestplates:
         Repair_Material_Quantity: 8
         Durability: 320
     # Knightmetal
-    X28035:
-        Repairable: true
-        Repair_Material: X28032
-        Repair_Material_Pretty_Name: "Knightmetal Ingot"
-        Repair_Material_Data_Value: 0
-        Repair_Material_Quantity: 8
-        Durability: 320
     # Phantom
-    X28035:
-        Repairable: false
-        Durability: 480
 
 Helmets:
     # Ironwood
@@ -106,17 +96,7 @@ Helmets:
         Repair_Material_Quantity: 5
         Durability: 220
     # Knightmetal
-    X28034:
-        Repairable: true
-        Repair_Material: X28032
-        Repair_Material_Pretty_Name: "Knightmetal Ingot"
-        Repair_Material_Data_Value: 0
-        Repair_Material_Quantity: 5
-        Durability: 220
     # Phantom
-    X28034:
-        Repairable: false
-        Durability: 330
 
 Leggings:
     # Ironwood

@@ -15,7 +15,7 @@ import java.util.*;
 
 public class RepairConfig extends ConfigLoader {
     private List<Repairable> repairables;
-    private HashSet<String> notSupported;
+    private final HashSet<String> notSupported;
 
     public RepairConfig(String fileName) {
         super(fileName);
@@ -25,7 +25,7 @@ public class RepairConfig extends ConfigLoader {
 
     @Override
     protected void loadKeys() {
-        repairables = new ArrayList<Repairable>();
+        repairables = new ArrayList<>();
 
         if (!config.isConfigurationSection("Repairables")) {
             mcMMO.p.getLogger().severe("Could not find Repairables section in " + fileName);
@@ -42,7 +42,7 @@ public class RepairConfig extends ConfigLoader {
             }
 
             // Validate all the things!
-            List<String> reason = new ArrayList<String>();
+            List<String> reason = new ArrayList<>();
 
             // Item Material
             Material itemMaterial = Material.matchMaterial(key);
@@ -81,7 +81,7 @@ public class RepairConfig extends ConfigLoader {
                 else if (ItemUtils.isDiamondArmor(repairItem) || ItemUtils.isDiamondTool(repairItem)) {
                     repairMaterialType = MaterialType.DIAMOND;
                 } else if (ItemUtils.isNetheriteArmor(repairItem) || ItemUtils.isNetheriteTool(repairItem)) {
-                    repairMaterialType = MaterialType.NETHER;
+                    repairMaterialType = MaterialType.NETHERITE;
                 }
             }
             else {
@@ -177,7 +177,7 @@ public class RepairConfig extends ConfigLoader {
     }
 
     protected List<Repairable> getLoadedRepairables() {
-        return repairables == null ? new ArrayList<Repairable>() : repairables;
+        return repairables == null ? new ArrayList<>() : repairables;
     }
 
     private boolean noErrorsInRepairable(List<String> issues) {

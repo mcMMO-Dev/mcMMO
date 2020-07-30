@@ -10,6 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -22,51 +23,48 @@ public class AprilCommand implements TabExecutor {
     protected DecimalFormat decimal = new DecimalFormat("##0.00");
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (CommandUtils.noConsoleUsage(sender)) {
             return true;
         }
 
         skillName = StringUtils.getCapitalized(label);
 
-        switch (args.length) {
-            case 0:
-                Player player = (Player) sender;
-                FakeSkillType fakeSkillType = FakeSkillType.getByName(skillName);
+        if (args.length == 0) {
+            Player player = (Player) sender;
+            FakeSkillType fakeSkillType = FakeSkillType.getByName(skillName);
 
-                float skillValue = Misc.getRandom().nextInt(99);
+            float skillValue = Misc.getRandom().nextInt(99);
 
-                player.sendMessage(LocaleLoader.getString("Skills.Header", skillName));
-                player.sendMessage(LocaleLoader.getString("Commands.XPGain", getXPGainString(fakeSkillType)));
-                player.sendMessage(LocaleLoader.getString("Effects.Level", (int) skillValue, Misc.getRandom().nextInt(1000), 1000 + Misc.getRandom().nextInt(1000)));
+            player.sendMessage(LocaleLoader.getString("Skills.Header", skillName));
+            player.sendMessage(LocaleLoader.getString("Commands.XPGain", getXPGainString(fakeSkillType)));
+            player.sendMessage(LocaleLoader.getString("Effects.Level", (int) skillValue, Misc.getRandom().nextInt(1000), 1000 + Misc.getRandom().nextInt(1000)));
 
 
-                List<String> effectMessages = effectsDisplay(fakeSkillType);
+            List<String> effectMessages = effectsDisplay(fakeSkillType);
 
-                if (!effectMessages.isEmpty()) {
-                    player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Effects.Effects")));
+            if (!effectMessages.isEmpty()) {
+                player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Effects.Effects")));
 
-                    for (String message : effectMessages) {
-                        player.sendMessage(message);
-                    }
+                for (String message : effectMessages) {
+                    player.sendMessage(message);
                 }
+            }
 
-                List<String> statsMessages = statsDisplay(fakeSkillType);
+            List<String> statsMessages = statsDisplay(fakeSkillType);
 
-                if (!statsMessages.isEmpty()) {
-                    player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Commands.Stats.Self")));
+            if (!statsMessages.isEmpty()) {
+                player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Commands.Stats.Self")));
 
-                    for (String message : statsMessages) {
-                        player.sendMessage(message);
-                    }
+                for (String message : statsMessages) {
+                    player.sendMessage(message);
                 }
+            }
 
-                player.sendMessage(LocaleLoader.formatString("[[DARK_AQUA]]Guide for {0} available - type /APRIL FOOLS ! :D", skillName));
-                return true;
-
-            default:
-                return true;
+            player.sendMessage(LocaleLoader.formatString("[[DARK_AQUA]]Guide for {0} available - type /APRIL FOOLS ! :D", skillName));
+            return true;
         }
+        return true;
     }
 
     private String getXPGainString(FakeSkillType fakeSkillType) {
@@ -101,17 +99,15 @@ public class AprilCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        switch (args.length) {
-            case 1:
-                return ImmutableList.of("?");
-            default:
-                return ImmutableList.of();
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
+        if (args.length == 1) {
+            return ImmutableList.of("?");
         }
+        return ImmutableList.of();
     }
 
     private List<String> effectsDisplay(FakeSkillType fakeSkillType) {
-        List<String> messages = new ArrayList<String>();
+        List<String> messages = new ArrayList<>();
 
         switch (fakeSkillType) {
             case MACHO:
@@ -157,7 +153,7 @@ public class AprilCommand implements TabExecutor {
     }
 
     private List<String> statsDisplay(FakeSkillType fakeSkillType) {
-        List<String> messages = new ArrayList<String>();
+        List<String> messages = new ArrayList<>();
 
         switch (fakeSkillType) {
             case MACHO:

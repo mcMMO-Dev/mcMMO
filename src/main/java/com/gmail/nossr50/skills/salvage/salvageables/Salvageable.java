@@ -10,28 +10,28 @@ public interface Salvageable {
      *
      * @return the type of this salvageable
      */
-    public Material getItemMaterial();
+    Material getItemMaterial();
 
     /**
      * Gets the material of the items dropped when salvaging this item
      *
      * @return the material of the salvage drop
      */
-    public Material getSalvageMaterial();
+    Material getSalvageMaterial();
 
     /**
      * Gets the ItemType value for this salvageable item
      *
      * @return the ItemType for this salvageable
      */
-    public ItemType getSalvageItemType();
+    ItemType getSalvageItemType();
 
     /**
      * Gets the MaterialType value for this salvageable item
      *
      * @return the MaterialType for this salvageable
      */
-    public MaterialType getSalvageMaterialType();
+    MaterialType getSalvageMaterialType();
 
     /**
      * Gets the maximum quantity of salvage materials ignoring all other salvage bonuses
@@ -40,14 +40,14 @@ public interface Salvageable {
      *
      * @return the maximum number of items
      */
-    public int getMaximumQuantity();
+    int getMaximumQuantity();
 
     /**
      * Gets the maximum durability of this item before it breaks
      *
      * @return the maximum durability
      */
-    public short getMaximumDurability();
+    short getMaximumDurability();
 
     /**
      * Gets the base salvage durability on which to calculate bonuses.
@@ -56,19 +56,19 @@ public interface Salvageable {
      *
      * @return the base salvage durability
      */
-    public short getBaseSalvageDurability();
+    short getBaseSalvageDurability();
 
     /**
      * Gets the minimum salvage level needed to salvage this item
      *
      * @return the minimum level to salvage this item, or 0 for no minimum
      */
-    public int getMinimumLevel();
+    int getMinimumLevel();
 
     /**
      * Gets the xpMultiplier for this salvageable
      *
      * @return the xpMultiplier of this salvageable
      */
-    public double getXpMultiplier();
+    double getXpMultiplier();
 }

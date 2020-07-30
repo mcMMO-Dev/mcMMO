@@ -9,8 +9,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 
 public class CustomEntityConfig extends ConfigLoader {
-    public HashMap<String, CustomEntity> customEntityClassMap = new HashMap<String, CustomEntity>();
-    public HashMap<String, CustomEntity> customEntityTypeMap  = new HashMap<String, CustomEntity>();
+    public HashMap<String, CustomEntity> customEntityClassMap = new HashMap<>();
+    public HashMap<String, CustomEntity> customEntityTypeMap  = new HashMap<>();
 
     protected CustomEntityConfig(String fileName) {
         super("mods", fileName);

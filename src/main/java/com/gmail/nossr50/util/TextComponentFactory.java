@@ -44,8 +44,7 @@ public class TextComponentFactory {
 
     public static TextComponent getNotificationLevelUpTextComponent(PrimarySkillType skill, int levelsGained, int currentLevel)
     {
-        TextComponent textComponent = new TextComponent(LocaleLoader.getString("Overhaul.Levelup", LocaleLoader.getString("Overhaul.Name."+StringUtils.getCapitalized(skill.toString())), levelsGained, currentLevel));
-        return textComponent;
+        return new TextComponent(LocaleLoader.getString("Overhaul.Levelup", LocaleLoader.getString("Overhaul.Name."+StringUtils.getCapitalized(skill.toString())), levelsGained, currentLevel));
     }
 
     private static TextComponent getNotificationTextComponent(String text)
@@ -347,7 +346,6 @@ public class TextComponentFactory {
         ChatColor ccRank                = ChatColor.BLUE;
         ChatColor ccCurRank             = ChatColor.GREEN;
         ChatColor ccPossessive          = ChatColor.WHITE;
-        ChatColor ccNumRanks            = ccCurRank;
         //ChatColor ccDescriptionHeader   = ChatColor.DARK_PURPLE;
         //ChatColor ccDescription         = ChatColor.WHITE;
         ChatColor ccLocked              = ChatColor.DARK_GRAY;
@@ -375,7 +373,7 @@ public class TextComponentFactory {
                 nextRank = RankUtils.getRankUnlockLevel(abstractSubSkill, curRank+1);
             }
 
-            addRanked(ccRank, ccCurRank, ccPossessive, ccNumRanks, componentBuilder, abstractSubSkill.getNumRanks(), RankUtils.getRank(player, abstractSubSkill), nextRank);
+            addRanked(ccRank, ccCurRank, ccPossessive, ccCurRank, componentBuilder, abstractSubSkill.getNumRanks(), RankUtils.getRank(player, abstractSubSkill), nextRank);
 
             componentBuilder.append(LocaleLoader.getString("JSON.DescriptionHeader"));
             componentBuilder.append("\n").append(abstractSubSkill.getDescription()).append("\n");
@@ -456,7 +454,6 @@ public class TextComponentFactory {
         ChatColor ccRank                = ChatColor.BLUE;
         ChatColor ccCurRank             = ChatColor.GREEN;
         ChatColor ccPossessive          = ChatColor.WHITE;
-        ChatColor ccNumRanks            = ccCurRank;
         ChatColor ccDescriptionHeader   = ChatColor.DARK_PURPLE;
         ChatColor ccDescription         = ChatColor.DARK_GRAY;
         ChatColor ccLocked              = ChatColor.DARK_GRAY;
@@ -484,7 +481,7 @@ public class TextComponentFactory {
                     nextRank = RankUtils.getRankUnlockLevel(subSkillType, curRank+1);
                 }
 
-                addRanked(ccRank, ccCurRank, ccPossessive, ccNumRanks, componentBuilder, subSkillType.getNumRanks(), RankUtils.getRank(player, subSkillType), nextRank);
+                addRanked(ccRank, ccCurRank, ccPossessive, ccCurRank, componentBuilder, subSkillType.getNumRanks(), RankUtils.getRank(player, subSkillType), nextRank);
 
             }
 

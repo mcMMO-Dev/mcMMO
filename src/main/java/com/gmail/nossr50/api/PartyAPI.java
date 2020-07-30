@@ -185,7 +185,7 @@ public final class PartyAPI {
      */
     @Deprecated
     public static List<OfflinePlayer> getOnlineAndOfflineMembers(Player player) {
-        List<OfflinePlayer> members = new ArrayList<OfflinePlayer>();
+        List<OfflinePlayer> members = new ArrayList<>();
 
         for (UUID memberUniqueId : PartyManager.getAllMembers(player).keySet()) {
             OfflinePlayer member = mcMMO.p.getServer().getOfflinePlayer(memberUniqueId);

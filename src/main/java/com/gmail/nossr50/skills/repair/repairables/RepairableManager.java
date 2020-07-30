@@ -11,14 +11,14 @@ public interface RepairableManager {
      *
      * @param repairable Repairable to register
      */
-    public void registerRepairable(Repairable repairable);
+    void registerRepairable(Repairable repairable);
 
     /**
      * Register a list of repairables with the RepairManager
      *
      * @param repairables List<Repairable> to register
      */
-    public void registerRepairables(List<Repairable> repairables);
+    void registerRepairables(List<Repairable> repairables);
 
     /**
      * Checks if an item is repairable
@@ -27,7 +27,7 @@ public interface RepairableManager {
      *
      * @return true if repairable, false if not
      */
-    public boolean isRepairable(Material type);
+    boolean isRepairable(Material type);
 
     /**
      * Checks if an item is repairable
@@ -36,7 +36,7 @@ public interface RepairableManager {
      *
      * @return true if repairable, false if not
      */
-    public boolean isRepairable(ItemStack itemStack);
+    boolean isRepairable(ItemStack itemStack);
 
     /**
      * Gets the repairable with this type
@@ -45,5 +45,5 @@ public interface RepairableManager {
      *
      * @return the repairable, can be null
      */
-    public Repairable getRepairable(Material type);
+    Repairable getRepairable(Material type);
 }

@@ -8,8 +8,8 @@ import com.gmail.nossr50.util.player.NotificationManager;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ToolLowerTask extends BukkitRunnable {
-    private McMMOPlayer mcMMOPlayer;
-    private ToolType tool;
+    private final McMMOPlayer mcMMOPlayer;
+    private final ToolType tool;
 
     public ToolLowerTask(McMMOPlayer mcMMOPlayer, ToolType tool) {
         this.mcMMOPlayer = mcMMOPlayer;

@@ -1,3 +1,102 @@
+Version 2.1.136
+    Furnace ownership is no longer lost when the furnace stops doing a job
+    Furnaces remember owners between restarts (requires MC 1.14 or higher)
+
+    NOTES:
+        I'm making use of a Spigot API for persistent data for versions of MC 1.14 and above, for versions below the data will be temporary as it has been up until this point.
+        In the future I'll wire up NMS to make use of NBT and all versions will have persistent data support.
+
+
+Version 2.1.135
+    Furnaces no longer simulate block break checks when assigning ownership as it caused some unwanted plugin conflicts
+    Fixed an issue where Fishing would break if exploit protection was turned off for Fishing (Thanks Ineusia)
+    Fixed Super abilities not being translated on scoreboards (Thanks Ineusia)
+    Added option in advanced.yml to squelch ability activation messages being sent to other players via action bar (Thanks Ineusia)
+
+Version 2.1.134
+    Furnaces now change ownership to the last player who clicks in their inventory and is legally allowed to break the furnace
+    Smelting now has a Bonus Drops section in config.yml
+    Smelting now only doubles smelting results for items which have bonus drop entries in config.yml
+    Smelting XP can now be gained offline, but all other benefits from Smelting don't happen unless you're online
+    Fix brewing stand not consuming items (thanks Durburz)
+    Changed the UUID updater task to not catastrophically fail when requests failed
+    Fixed a bug where players could set each other on fire when partied or when PVP was disabled
+    Fixed a NPE that could happen with thrown potions
+    Fixed a potential NPE when damaging player armor with Axes
+    Fixed a potential NPE when damaging a player with Blast Mining
+    Fixed a potential NPE when checking tools related to Super Abilities
+    Fixed a potential NPE when checking the Chimaera Wing
+    Fixed a potential NPE when creating party member lists
+    Fixed a potential NPE when fishing
+    Fixed a potential NPE when players right click blocks
+    Fixed a locale mistake in locale hu_HU
+    Fixed a locale mistake in locale ru
+    Minor code cleanup
+
+    NOTES:
+    It used to be that Furnaces would assign an owner and that would be their owner until the server shutdown, now owners will change based on who last had their hands on the furnace.
+    You won't become the owner if you are not allowed to view the inventory of a furnace, or break the furnace, or interact with the contents of the furnace
+
+Version 2.1.133
+    A fix for an 'array out of bounds' error related to players clicking outside the inventory windows has been fixed
+    French locale has been updated (thanks Elikill58)
+    Another fix has been deployed to prevent mobs from having hearts in player death messages (thanks FrankHeijden)
+    Players no longer ready their tool if they don't have access to the skill (thanks Draycia)
+    Unused NMS compatibility layers have been disabled for now (expect them to be used in the future for 1.12/1.8 support stuff)
+
+Version 2.1.132
+    A fix is in place to prevent an exploit from working that is due to a yet to be patched Spigot server software bug
+    Fixed a NPE that could happen when players swapped items from their hotbar
+
+    NOTE: The exploit was not described on purpose, please update.
+    I reported the bug to Spigot, so hopefully it will be patched in the near future.
+
+Version 2.1.131
+
+    New permission node 'mcmmo.ability.repair.netheriterepair' which is included in the mcmmo.defaults permission package
+    New permission node 'mcmmo.ability.salvage.netheritesalvage' which is included in the mcmmo.defaults permission package
+    Changed Salvage maximum quantity values to 4 for all Netherite armor
+    mcMMO will set the default salvage quantities for netherite armor to 4 once and then never again (see notes)
+
+    Added Basalt to Bonus Drops for Mining in config.yml (see notes)
+    Added Polished Basalt to Bonus Drops for Mining in config.yml (see notes)
+    Added Blackstone to Bonus Drops for Mining in config.yml (see notes)
+    Added Chain to Bonus Drops for Mining in config.yml (see notes)
+    Added Nether Bricks to Bonus Drops for Mining in config.yml (see notes)
+    Added Red Nether Bricks to Bonus Drops for Mining in config.yml (see notes)
+    Added Cracked Nether Bricks to Bonus Drops for Mining in config.yml (see notes)
+    Added Chiseled Nether Bricks to Bonus Drops for Mining in config.yml (see notes)
+    Added Crying Obsidian to Bonus Drops for Mining in config.yml (see notes)
+    Added Gilded Blackstone to Bonus Drops for Mining in config.yml (see notes)
+    Added Warped Roots to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Warped Stem to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Crimson Roots to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Crimson Stem to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Shroomlight to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Twisting Vines to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Nether Wart Block to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Warped Wart Block to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Weeping Vines to Bonus Drops for Herbalism in config.yml (see notes)
+    Added Crimson Hyphae to Bonus Drops for Woodcutting in config.yml (see notes)
+    Added Stripped Crimson Hyphae to Bonus Drops for Woodcutting in config.yml (see notes)
+    Added Warped Hyphae to Bonus Drops for Woodcutting in config.yml (see notes)
+    Added Stripped Warped Hyphae to Bonus Drops for Woodcutting in config.yml (see notes)
+
+    Added Red Nether Bricks to Experience tables for Mining in experience.yml (see notes)
+    Added Netherite to Experience tables for Repair in experience.yml (see notes)
+    Added Piglin Brute to Experience tables for all combat skills in experience.yml
+
+    Netherite now requires 100 Salvage skill (by default configs) in order to salvage
+    Added the missing NMS wiring (it should be noted NMS isn't currently being used in mcMMO, but the framework is there. Working on a sideproject involving this...)
+
+    NOTES:
+
+    You should not need to edit your configs to receive any changes in this patch, simply starting your server is enough.
+    Default salvage quantities for netherite armor were above 4 in some cases which was not intended, mcMMO will run some code to correct this once and then it will not edit the file again.
+    Repair and Salvage are going to get some tweaks regarding Netherite gear really soon.
+    This update adds quite a few missing entries for bonus drops, without these entries double drops on these items/blocks will not happen.
+
+
 Version 2.1.130
     Fixed a bug that prevented Repair from working on the new Netherite weapons/armors
     Fixed a bug where Netherite gear used Gold Ingots to repair instead of Netherite Scraps (by default)

@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class AlchemyPotion {
-    private Material material;
+    private final Material material;
     private PotionData data;
     private String name;
     private List<String> lore;

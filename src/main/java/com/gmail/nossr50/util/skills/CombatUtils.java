@@ -866,7 +866,7 @@ public final class CombatUtils {
 
     @Deprecated
     public static double getFakeDamageFinalResult(Entity attacker, Entity target, double damage) {
-        return getFakeDamageFinalResult(attacker, target, DamageCause.ENTITY_ATTACK, new EnumMap<DamageModifier, Double>(ImmutableMap.of(DamageModifier.BASE, damage)));
+        return getFakeDamageFinalResult(attacker, target, DamageCause.ENTITY_ATTACK, new EnumMap<>(ImmutableMap.of(DamageModifier.BASE, damage)));
     }
 
     @Deprecated
@@ -912,7 +912,7 @@ public final class CombatUtils {
     }
 
     private static Map<DamageModifier, Double> getModifiers(EntityDamageEvent event) {
-        Map<DamageModifier, Double> modifiers = new HashMap<DamageModifier, Double>();
+        Map<DamageModifier, Double> modifiers = new HashMap<>();
         for (DamageModifier modifier : DamageModifier.values()) {
             modifiers.put(modifier, event.getDamage(modifier));
         }
@@ -921,7 +921,7 @@ public final class CombatUtils {
     }
 
     private static Map<DamageModifier, Double> getScaledModifiers(double damage, Map<DamageModifier, Double> modifiers) {
-        Map<DamageModifier, Double> scaledModifiers = new HashMap<DamageModifier, Double>();
+        Map<DamageModifier, Double> scaledModifiers = new HashMap<>();
 
         for (DamageModifier modifier : modifiers.keySet()) {
             if (modifier == DamageModifier.BASE) {

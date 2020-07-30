@@ -3,7 +3,10 @@ package com.gmail.nossr50.util.compat;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.compat.layers.PlayerAttackCooldownExploitPreventionLayer;
+import com.gmail.nossr50.util.compat.layers.attackcooldown.PlayerAttackCooldownExploitPreventionLayer;
+import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDataLayer;
+import com.gmail.nossr50.util.compat.layers.persistentdata.SpigotPersistentDataLayer;
+import com.gmail.nossr50.util.compat.layers.persistentdata.SpigotTemporaryDataLayer;
 import com.gmail.nossr50.util.nms.NMSVersion;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
 import org.bukkit.command.CommandSender;
@@ -24,6 +27,7 @@ public class CompatibilityManager {
 
     /* Compatibility Layers */
     private PlayerAttackCooldownExploitPreventionLayer playerAttackCooldownExploitPreventionLayer;
+    private AbstractPersistentDataLayer persistentDataLayer;
 
     public CompatibilityManager(MinecraftGameVersion minecraftGameVersion) {
         mcMMO.p.getLogger().info("Loading compatibility layers...");
@@ -42,6 +46,10 @@ public class CompatibilityManager {
         supportedLayers = new HashMap<>(); //Init map
 
         for(CompatibilityType compatibilityType : CompatibilityType.values()) {
+            //TODO: Remove later
+            if(compatibilityType == CompatibilityType.PLAYER_ATTACK_COOLDOWN_EXPLOIT_PREVENTION)
+                continue;
+
             supportedLayers.put(compatibilityType, false); //All layers are set to false when initialized
         }
     }
@@ -51,24 +59,21 @@ public class CompatibilityManager {
      * For any unsupported layers, load a dummy layer
      */
     private void initCompatibilityLayers() {
-        if(nmsVersion == NMSVersion.UNSUPPORTED) {
-            mcMMO.p.getLogger().info("NMS not supported for this version of Minecraft, possible solutions include updating mcMMO or updating your server software. NMS Support is not available on every version of Minecraft.");
-            mcMMO.p.getLogger().info("Certain features of mcMMO that require NMS will be disabled, you can check what is disabled by running the /mmocompat command!");
-            //Load dummy compatibility layers
-            isFullyCompatibleServerSoftware = false;
-            loadDummyCompatibilityLayers();
-        } else {
-            playerAttackCooldownExploitPreventionLayer = new PlayerAttackCooldownExploitPreventionLayer(nmsVersion);
+        initPersistentDataLayer();
 
-            //Mark as operational
-            if(playerAttackCooldownExploitPreventionLayer.noErrorsOnInitialize()) {
-                supportedLayers.put(CompatibilityType.PLAYER_ATTACK_COOLDOWN_EXPLOIT_PREVENTION, true);
-            }
-        }
+        isFullyCompatibleServerSoftware = true;
     }
 
-    private void loadDummyCompatibilityLayers() {
+    private void initPersistentDataLayer() {
+        if(minecraftGameVersion.getMinorVersion().asInt() >= 14 || minecraftGameVersion.getMajorVersion().asInt() >= 2) {
 
+            persistentDataLayer = new SpigotPersistentDataLayer();
+        } else {
+
+            persistentDataLayer = new SpigotTemporaryDataLayer();
+        }
+
+        supportedLayers.put(CompatibilityType.PERSISTENT_DATA, true);
     }
 
     //TODO: move to text manager
@@ -102,18 +107,21 @@ public class CompatibilityManager {
     }
 
     private NMSVersion determineNMSVersion() {
-        switch(minecraftGameVersion.getMajorVersion().asInt()) {
-            case 1:
-                switch(minecraftGameVersion.getMinorVersion().asInt()) {
-                    case 12:
-                        return NMSVersion.NMS_1_12_2;
-                    case 13:
-                        return NMSVersion.NMS_1_13_2;
-                    case 14:
-                        return NMSVersion.NMS_1_14_4;
-                    case 15:
-                        return NMSVersion.NMS_1_15_2;
-                }
+        if (minecraftGameVersion.getMajorVersion().asInt() == 1) {
+            switch (minecraftGameVersion.getMinorVersion().asInt()) {
+                case 12:
+                    return NMSVersion.NMS_1_12_2;
+                case 13:
+                    return NMSVersion.NMS_1_13_2;
+                case 14:
+                    return NMSVersion.NMS_1_14_4;
+                case 15:
+                    return NMSVersion.NMS_1_15_2;
+                case 16:
+                    if (minecraftGameVersion.getPatchVersion().asInt() == 1) {
+                        return NMSVersion.NMS_1_16_1;
+                    }
+            }
         }
 
         return NMSVersion.UNSUPPORTED;
@@ -123,4 +131,7 @@ public class CompatibilityManager {
         return playerAttackCooldownExploitPreventionLayer;
     }
 
+    public AbstractPersistentDataLayer getPersistentDataLayer() {
+        return persistentDataLayer;
+    }
 }

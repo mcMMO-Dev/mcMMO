@@ -7,9 +7,9 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class StickyPistonTrackerTask extends BukkitRunnable {
-    private BlockFace direction;
-    private Block block;
-    private Block movedBlock;
+    private final BlockFace direction;
+    private final Block block;
+    private final Block movedBlock;
 
     public StickyPistonTrackerTask(BlockFace direction, Block block, Block movedBlock) {
         this.direction = direction;

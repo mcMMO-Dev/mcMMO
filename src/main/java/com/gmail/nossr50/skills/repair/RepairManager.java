@@ -220,10 +220,10 @@ public class RepairManager extends SkillManager {
         return AdvancedConfig.getInstance().getArcaneForgingDowngradeChance(getArcaneForgingRank());
     }
 
-    /**
-     * Gets chance of keeping enchantment during repair.
-     *
-     * @return The chance of keeping the enchantment
+    /*
+      Gets chance of keeping enchantment during repair.
+
+      @return The chance of keeping the enchantment
      */
     /*public double getKeepEnchantChance() {
         int skillLevel = getSkillLevel();
@@ -237,10 +237,10 @@ public class RepairManager extends SkillManager {
         return 0;
     }*/
 
-    /**
-     * Gets chance of enchantment being downgraded during repair.
-     *
-     * @return The chance of the enchantment being downgraded
+    /*
+      Gets chance of enchantment being downgraded during repair.
+
+      @return The chance of the enchantment being downgraded
      */
     /*public double getDowngradeEnchantChance() {
         int skillLevel = getSkillLevel();

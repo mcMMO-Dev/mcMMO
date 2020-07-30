@@ -22,7 +22,7 @@ public class Excavation {
         String friendly = StringUtils.getFriendlyConfigBlockDataString(blockState.getBlockData());
         if (TreasureConfig.getInstance().excavationMap.containsKey(friendly))
             return TreasureConfig.getInstance().excavationMap.get(friendly);
-        return new ArrayList<ExcavationTreasure>();
+        return new ArrayList<>();
     }
 
     protected static int getBlockXP(BlockState blockState) {

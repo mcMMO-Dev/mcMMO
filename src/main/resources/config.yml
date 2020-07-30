@@ -336,10 +336,8 @@ Skills:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
         Level_Cap: 0
-        Ability_Activation_Level_Gate: 10
     Excavation:
         Level_Cap: 0
-        Ability_Activation_Level_Gate: 10
     Fishing:
         Level_Cap: 0
         Drops_Enabled: true
@@ -353,7 +351,6 @@ Skills:
     Mining:
         Level_Cap: 0
         Detonator_Name: FLINT_AND_STEEL
-        Ability_Activation_Level_Gate: 10
     Repair:
         Level_Cap: 0
         Anvil_Messages: true
@@ -376,7 +373,6 @@ Skills:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
         Level_Cap: 0
-        Ability_Activation_Level_Gate: 10
     Taming:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
@@ -409,7 +405,6 @@ Skills:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
         Level_Cap: 0
-        Ability_Activation_Level_Gate: 10
         Block_Cracker:
             SmoothBrick_To_CrackedBrick: true
         # When using Unarmed, picked up items will automatically get moved to a free slot instead of going in the slot
@@ -420,13 +415,21 @@ Skills:
     Woodcutting:
         Tree_Feller_Sounds: true
         Level_Cap: 0
-        Ability_Activation_Level_Gate: 10
 
 #
 #  Settings for Double Drops
 ###
 Bonus_Drops:
     Herbalism:
+        Weeping_Vines: true
+        Twisting_Vines: true
+        Shroomlight: true
+        Crimson_Stem: true
+        Warped_Stem: true
+        Crimson_Roots: true
+        Warped_Roots: true
+        Nether_Wart_Block: true
+        Warped_Wart_Block: true
         Bamboo_Sapling: true
         Crimson_Fungus: true
         Warped_Fungus: true
@@ -467,6 +470,17 @@ Bonus_Drops:
         Peony: true
         Lily_Of_The_Valley: true
     Mining:
+        Gilded_Blackstone: true
+        Crying_Obsidian: true
+        Nether_Bricks: true
+        Red_Nether_Bricks: true
+        Cracked_Nether_Bricks: true
+        Chiseled_Nether_Bricks: true
+        Chain: true
+        Blackstone: true
+        Basalt: true
+        Polished_Basalt: true
+        Nether_Gold_Ore: true
         Warped_Nylium: true
         Crimson_Nylium: true
         Ancient_Debris: true
@@ -501,6 +515,10 @@ Bonus_Drops:
         Stone: true
         Cobblestone: true
     Woodcutting:
+        Crimson_Hyphae: true
+        Warped_Hyphae: true
+        Stripped_Crimson_Hyphae: true
+        Stripped_Warped_Hyphae: true
         Shroomlight: true
         Crimson_Stem: true
         Warped_Stem: true
@@ -518,6 +536,16 @@ Bonus_Drops:
         Jungle_Log: true
         Spruce_Wood: true
         Spruce_Log: true
+    Smelting:
+        Iron_Ingot: true
+        Gold_Ingot: true
+        Emerald: true
+        Diamond: true
+        Lapis_Lazuli: true
+        Coal: true
+        Nether_Quartz: true
+        Quartz: true
+        Redstone: true
 
 #
 #  Settings for commands

@@ -28,7 +28,6 @@ public class BlockStoreConversionMain implements Runnable {
         }
 
         this.taskID = this.scheduler.runTaskLater(mcMMO.p, this, 1).getTaskId();
-        return;
     }
 
     @Override
@@ -87,6 +86,5 @@ public class BlockStoreConversionMain implements Runnable {
         this.world = null;
         this.scheduler = null;
         this.converters = null;
-        return;
     }
 }

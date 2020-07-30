@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FormulaManager {
-    private static File formulaFile = new File(mcMMO.getFlatFileDirectory() + "formula.yml");
+    private static final File formulaFile = new File(mcMMO.getFlatFileDirectory() + "formula.yml");
 
     // Experience needed to reach a level, cached values to improve conversion speed
     private Map<Integer, Integer> experienceNeededRetroLinear;
@@ -116,9 +116,9 @@ public class FormulaManager {
      * @return amount of experience needed to reach next level
      */
     public int getXPtoNextLevel(int level, FormulaType formulaType) {
-        /**
-         * Retro mode XP requirements are the default requirements
-         * Standard mode XP requirements are multiplied by a factor of 10
+        /*
+          Retro mode XP requirements are the default requirements
+          Standard mode XP requirements are multiplied by a factor of 10
          */
 
         //TODO: When the heck is Unknown used?

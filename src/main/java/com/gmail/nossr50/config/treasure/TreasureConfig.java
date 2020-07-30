@@ -24,13 +24,13 @@ public class TreasureConfig extends ConfigLoader {
 
     private static TreasureConfig instance;
 
-    public HashMap<String, List<ExcavationTreasure>> excavationMap = new HashMap<String, List<ExcavationTreasure>>();
+    public HashMap<String, List<ExcavationTreasure>> excavationMap = new HashMap<>();
 
-    public HashMap<EntityType, List<ShakeTreasure>> shakeMap  = new HashMap<EntityType, List<ShakeTreasure>>();
-    public HashMap<String, List<HylianTreasure>>    hylianMap = new HashMap<String, List<HylianTreasure>>();
+    public HashMap<EntityType, List<ShakeTreasure>> shakeMap  = new HashMap<>();
+    public HashMap<String, List<HylianTreasure>>    hylianMap = new HashMap<>();
 
-    public HashMap<Rarity, List<FishingTreasure>>     fishingRewards      = new HashMap<Rarity, List<FishingTreasure>>();
-    public HashMap<Rarity, List<EnchantmentTreasure>> fishingEnchantments = new HashMap<Rarity, List<EnchantmentTreasure>>();
+    public HashMap<Rarity, List<FishingTreasure>>     fishingRewards      = new HashMap<>();
+    public HashMap<Rarity, List<EnchantmentTreasure>> fishingEnchantments = new HashMap<>();
 
     private TreasureConfig() {
         super("treasures.yml");
@@ -49,7 +49,7 @@ public class TreasureConfig extends ConfigLoader {
     @Override
     protected boolean validateKeys() {
         // Validate all the settings!
-        List<String> reason = new ArrayList<String>();
+        List<String> reason = new ArrayList<>();
         for (String tier : config.getConfigurationSection("Enchantment_Drop_Rates").getKeys(false)) {
             double totalEnchantDropRate = 0;
             double totalItemDropRate = 0;
@@ -116,13 +116,13 @@ public class TreasureConfig extends ConfigLoader {
         // Initialize fishing HashMap
         for (Rarity rarity : Rarity.values()) {
             if (!fishingRewards.containsKey(rarity)) {
-                fishingRewards.put(rarity, (new ArrayList<FishingTreasure>()));
+                fishingRewards.put(rarity, (new ArrayList<>()));
             }
         }
 
         for (String treasureName : treasureSection.getKeys(false)) {
             // Validate all the things!
-            List<String> reason = new ArrayList<String>();
+            List<String> reason = new ArrayList<>();
 
             String[] treasureInfo = treasureName.split("[|]");
             String materialName = treasureInfo[0];
@@ -135,7 +135,7 @@ public class TreasureConfig extends ConfigLoader {
             if (materialName.contains("INVENTORY")) {
                 // Use magic material BEDROCK to know that we're grabbing something from the inventory and not a normal treasure
                 if (!shakeMap.containsKey(EntityType.PLAYER))
-                    shakeMap.put(EntityType.PLAYER, new ArrayList<ShakeTreasure>());
+                    shakeMap.put(EntityType.PLAYER, new ArrayList<>());
                 shakeMap.get(EntityType.PLAYER).add(new ShakeTreasure(new ItemStack(Material.BEDROCK, 1, (byte) 0), 1, getInventoryStealDropChance(), getInventoryStealDropLevel()));
                 continue;
             } else {
@@ -218,7 +218,7 @@ public class TreasureConfig extends ConfigLoader {
                     }
 
                     if (config.contains(type + "." + treasureName + ".Lore")) {
-                        List<String> lore = new ArrayList<String>();
+                        List<String> lore = new ArrayList<>();
                         for (String s : config.getStringList(type + "." + treasureName + ".Lore")) {
                             lore.add(ChatColor.translateAlternateColorCodes('&', s));
                         }
@@ -237,7 +237,7 @@ public class TreasureConfig extends ConfigLoader {
 
                 if (config.contains(type + "." + treasureName + ".Lore")) {
                     ItemMeta itemMeta = item.getItemMeta();
-                    List<String> lore = new ArrayList<String>();
+                    List<String> lore = new ArrayList<>();
                     for (String s : config.getStringList(type + "." + treasureName + ".Lore")) {
                         lore.add(ChatColor.translateAlternateColorCodes('&', s));
                     }
@@ -254,7 +254,7 @@ public class TreasureConfig extends ConfigLoader {
 
                     EntityType entityType = EntityType.valueOf(type.substring(6));
                     if (!shakeMap.containsKey(entityType))
-                        shakeMap.put(entityType, new ArrayList<ShakeTreasure>());
+                        shakeMap.put(entityType, new ArrayList<>());
                     shakeMap.get(entityType).add(shakeTreasure);
                 } else if (isExcavation) {
                     ExcavationTreasure excavationTreasure = new ExcavationTreasure(item, xp, dropChance, dropLevel);
@@ -262,7 +262,7 @@ public class TreasureConfig extends ConfigLoader {
 
                     for (String blockType : dropList) {
                         if (!excavationMap.containsKey(blockType))
-                            excavationMap.put(blockType, new ArrayList<ExcavationTreasure>());
+                            excavationMap.put(blockType, new ArrayList<>());
                         excavationMap.get(blockType).add(excavationTreasure);
                     }
                 } else if (isHylian) {
@@ -305,7 +305,7 @@ public class TreasureConfig extends ConfigLoader {
 
     private void AddHylianTreasure(String dropper, HylianTreasure treasure) {
         if (!hylianMap.containsKey(dropper))
-            hylianMap.put(dropper, new ArrayList<HylianTreasure>());
+            hylianMap.put(dropper, new ArrayList<>());
         hylianMap.get(dropper).add(treasure);
     }
 
@@ -316,7 +316,7 @@ public class TreasureConfig extends ConfigLoader {
             }
 
             if (!fishingEnchantments.containsKey(rarity)) {
-                fishingEnchantments.put(rarity, (new ArrayList<EnchantmentTreasure>()));
+                fishingEnchantments.put(rarity, (new ArrayList<>()));
             }
 
             ConfigurationSection enchantmentSection = config.getConfigurationSection("Enchantments_Rarity." + rarity.toString());

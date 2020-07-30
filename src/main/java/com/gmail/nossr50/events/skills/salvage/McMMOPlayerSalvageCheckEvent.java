@@ -10,9 +10,9 @@ import org.bukkit.inventory.ItemStack;
  * Called just before a player salvages an item with mcMMO.
  */
 public class McMMOPlayerSalvageCheckEvent extends McMMOPlayerSkillEvent implements Cancellable {
-    private ItemStack salvageItem;
-    private ItemStack salvageResults;
-    private ItemStack enchantedBook;
+    private final ItemStack salvageItem;
+    private final ItemStack salvageResults;
+    private final ItemStack enchantedBook;
     private boolean cancelled;
 
     public McMMOPlayerSalvageCheckEvent(Player player, ItemStack salvageItem, ItemStack salvageResults, ItemStack enchantedBook) {

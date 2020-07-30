@@ -11,7 +11,7 @@ public class SimpleRepairable implements Repairable {
     private final Material itemMaterial, repairMaterial;
     private final int minimumLevel;
     private final short maximumDurability;
-    private String repairMaterialPrettyName;
+    private final String repairMaterialPrettyName;
     private final ItemType repairItemType;
     private final MaterialType repairMaterialType;
     private final double xpMultiplier;

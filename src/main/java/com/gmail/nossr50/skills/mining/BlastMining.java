@@ -99,7 +99,7 @@ public class BlastMining {
         // We can make this assumption because we (should) be the only ones using this exact metadata
         Player player = mcMMO.p.getServer().getPlayerExact(tnt.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
 
-        if (!player.equals(defender)) {
+        if (!(player != null && player.equals(defender))) {
             return false;
         }
 

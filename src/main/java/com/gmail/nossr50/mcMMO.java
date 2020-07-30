@@ -46,6 +46,7 @@ import com.gmail.nossr50.util.player.PlayerLevelUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.skills.SmeltingTracker;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.google.common.base.Charsets;
@@ -62,7 +63,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,6 +79,7 @@ public class mcMMO extends JavaPlugin {
     private static UpgradeManager     upgradeManager;
     private static MaterialMapStore materialMapStore;
     private static PlayerLevelUtils playerLevelUtils;
+    private static SmeltingTracker smeltingTracker;
 
     /* Blacklist */
     private static WorldBlacklist worldBlacklist;
@@ -117,7 +118,6 @@ public class mcMMO extends JavaPlugin {
     public static final String COTW_TEMPORARY_SUMMON = "mcMMO: COTW Entity";
     public final static String entityMetadataKey   = "mcMMO: Spawned Entity";
     public final static String blockMetadataKey    = "mcMMO: Piston Tracking";
-    public final static String furnaceMetadataKey  = "mcMMO: Tracked Furnace";
     public final static String tntMetadataKey      = "mcMMO: Tracked TNT";
     public final static String funfettiMetadataKey = "mcMMO: Funfetti";
     public final static String customNameKey       = "mcMMO: Custom Name";
@@ -267,6 +267,9 @@ public class mcMMO extends JavaPlugin {
 
         //Init the blacklist
         worldBlacklist = new WorldBlacklist(this);
+
+        //Init smelting tracker
+        smeltingTracker = new SmeltingTracker();
     }
 
     public static PlayerLevelUtils getPlayerLevelUtils() {
@@ -280,8 +283,8 @@ public class mcMMO extends JavaPlugin {
     private void checkForOutdatedAPI() {
         try {
             Class<?> checkForClass = Class.forName("org.bukkit.event.block.BlockDropItemEvent");
-            Method newerAPIMethod =  checkForClass.getMethod("getItems");
-            Class<?> checkForClassBaseComponent = Class.forName("net.md_5.bungee.api.chat.BaseComponent");
+            checkForClass.getMethod("getItems");
+            Class.forName("net.md_5.bungee.api.chat.BaseComponent");
         } catch (ClassNotFoundException | NoSuchMethodException e) {
             serverAPIOutdated = true;
             String software = platformManager.getServerSoftwareStr();
@@ -505,8 +508,7 @@ public class mcMMO extends JavaPlugin {
 
         new ChildConfig();
 
-        List<Repairable> repairables = new ArrayList<Repairable>();
-        List<Salvageable> salvageables = new ArrayList<Salvageable>();
+        List<Repairable> repairables = new ArrayList<>();
 
         if (Config.getInstance().getToolModsEnabled()) {
             new ToolConfigManager(this);
@@ -532,7 +534,7 @@ public class mcMMO extends JavaPlugin {
 
         // Load salvage configs, make manager and register them at this time
         SalvageConfigManager sManager = new SalvageConfigManager(this);
-        salvageables.addAll(sManager.getLoadedSalvageables());
+        List<Salvageable> salvageables = new ArrayList<>(sManager.getLoadedSalvageables());
         salvageableManager = new SimpleSalvageableManager(salvageables.size());
         salvageableManager.registerSalvageables(salvageables);
     }
@@ -588,7 +590,7 @@ public class mcMMO extends JavaPlugin {
         new CleanBackupsTask().runTaskAsynchronously(mcMMO.p);
 
         // Bleed timer (Runs every 0.5 seconds)
-        new BleedTimerTask().runTaskTimer(this, 1 * Misc.TICK_CONVERSION_FACTOR, 1 * (Misc.TICK_CONVERSION_FACTOR / 2));
+        new BleedTimerTask().runTaskTimer(this, Misc.TICK_CONVERSION_FACTOR, (Misc.TICK_CONVERSION_FACTOR / 2));
 
         // Old & Powerless User remover
         long purgeIntervalTicks = Config.getInstance().getPurgeInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
@@ -614,7 +616,7 @@ public class mcMMO extends JavaPlugin {
         new PowerLevelUpdatingTask().runTaskTimer(this, 2 * Misc.TICK_CONVERSION_FACTOR, 2 * Misc.TICK_CONVERSION_FACTOR);
 
         if (getHolidayManager().nearingAprilFirst()) {
-            new CheckDateTask().runTaskTimer(this, 10L * Misc.TICK_CONVERSION_FACTOR, 1L * 60L * 60L * Misc.TICK_CONVERSION_FACTOR);
+            new CheckDateTask().runTaskTimer(this, 10L * Misc.TICK_CONVERSION_FACTOR, 60L * 60L * Misc.TICK_CONVERSION_FACTOR);
         }
 
         // Clear the registered XP data so players can earn XP again
@@ -671,5 +673,9 @@ public class mcMMO extends JavaPlugin {
 
     public static PlatformManager getPlatformManager() {
         return platformManager;
+    }
+
+    public static SmeltingTracker getSmeltingTracker() {
+        return smeltingTracker;
     }
 }

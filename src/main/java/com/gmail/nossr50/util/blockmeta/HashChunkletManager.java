@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.HashMap;
 
 public class HashChunkletManager implements ChunkletManager {
-    public HashMap<String, ChunkletStore> store = new HashMap<String, ChunkletStore>();
+    public HashMap<String, ChunkletStore> store = new HashMap<>();
 
     @Override
     public void loadChunklet(int cx, int cy, int cz, World world) {

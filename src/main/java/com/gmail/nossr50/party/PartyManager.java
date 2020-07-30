@@ -33,9 +33,9 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 public final class PartyManager {
-    private static String partiesFilePath = mcMMO.getFlatFileDirectory() + "parties.yml";
-    private static List<Party> parties = new ArrayList<Party>();
-    private static File partyFile = new File(partiesFilePath);
+    private static final String partiesFilePath = mcMMO.getFlatFileDirectory() + "parties.yml";
+    private static final List<Party> parties = new ArrayList<>();
+    private static final File partyFile = new File(partiesFilePath);
 
     private PartyManager() {}
 
@@ -150,7 +150,7 @@ public final class PartyManager {
      * @return the near party members
      */
     public static List<Player> getNearMembers(McMMOPlayer mcMMOPlayer) {
-        List<Player> nearMembers = new ArrayList<Player>();
+        List<Player> nearMembers = new ArrayList<>();
         Party party = mcMMOPlayer.getParty();
 
         if (party != null) {
@@ -168,7 +168,7 @@ public final class PartyManager {
     }
 
     public static List<Player> getNearVisibleMembers(McMMOPlayer mcMMOPlayer) {
-        List<Player> nearMembers = new ArrayList<Player>();
+        List<Player> nearMembers = new ArrayList<>();
         Party party = mcMMOPlayer.getParty();
 
         if (party != null) {
@@ -197,7 +197,7 @@ public final class PartyManager {
     public static LinkedHashMap<UUID, String> getAllMembers(Player player) {
         Party party = getParty(player);
 
-        return party == null ? new LinkedHashMap<UUID, String>() : party.getMembers();
+        return party == null ? new LinkedHashMap<>() : party.getMembers();
     }
 
     /**
@@ -221,7 +221,7 @@ public final class PartyManager {
     }
 
     private static List<Player> getOnlineMembers(Party party) {
-        return party == null ? new ArrayList<Player>() : party.getOnlineMembers();
+        return party == null ? new ArrayList<>() : party.getOnlineMembers();
     }
 
     /**
@@ -249,7 +249,7 @@ public final class PartyManager {
     @Deprecated
     public static Party getPlayerParty(String playerName) {
         for (Party party : parties) {
-            if (party.getMembers().keySet().contains(playerName)) {
+            if (party.getMembers().containsKey(playerName)) {
                 return party;
             }
         }
@@ -266,7 +266,7 @@ public final class PartyManager {
     public static Party getPlayerParty(String playerName, UUID uuid) {
         for (Party party : parties) {
             LinkedHashMap<UUID, String> members = party.getMembers();
-            if (members.keySet().contains(uuid) || members.values().contains(playerName)) {
+            if (members.containsKey(uuid) || members.containsValue(playerName)) {
 
                 // Name changes
                 if (members.get(uuid) == null || !members.get(uuid).equals(playerName)) {
@@ -595,7 +595,7 @@ public final class PartyManager {
             YamlConfiguration partiesFile;
             partiesFile = YamlConfiguration.loadConfiguration(partyFile);
 
-            ArrayList<Party> hasAlly = new ArrayList<Party>();
+            ArrayList<Party> hasAlly = new ArrayList<>();
 
             for (String partyName : partiesFile.getConfigurationSection("").getKeys(false)) {
                 Party party = new Party(partyName);
@@ -671,7 +671,7 @@ public final class PartyManager {
                 partiesFile.set(partyName + ".ItemShareType." + itemShareType.toString(), party.sharingDrops(itemShareType));
             }
 
-            List<String> members = new ArrayList<String>();
+            List<String> members = new ArrayList<>();
 
             for (Entry<UUID, String> memberEntry : party.getMembers().entrySet()) {
                 String memberUniqueId = memberEntry.getKey() == null ? "" : memberEntry.getKey().toString();
@@ -701,7 +701,7 @@ public final class PartyManager {
             return;
         }
 
-        ArrayList<Party> hasAlly = new ArrayList<Party>();
+        ArrayList<Party> hasAlly = new ArrayList<>();
 
         for (String partyName : partiesFile.getConfigurationSection("").getKeys(false)) {
             Party party = new Party(partyName);

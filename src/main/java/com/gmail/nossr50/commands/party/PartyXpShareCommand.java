@@ -12,10 +12,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class PartyXpShareCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if(UserManager.getPlayer((Player) sender) == null)
         {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
@@ -29,24 +30,19 @@ public class PartyXpShareCommand implements CommandExecutor {
             return true;
         }
 
-        switch (args.length) {
-            case 2:
-                if (args[1].equalsIgnoreCase("none") || CommandUtils.shouldDisableToggle(args[1])) {
-                    handleChangingShareMode(party, ShareMode.NONE);
-                }
-                else if (args[1].equalsIgnoreCase("equal") || args[1].equalsIgnoreCase("even") || CommandUtils.shouldEnableToggle(args[1])) {
-                    handleChangingShareMode(party, ShareMode.EQUAL);
-                }
-                else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "xpshare", "<NONE | EQUAL>"));
-                }
-
-                return true;
-
-            default:
+        if (args.length == 2) {
+            if (args[1].equalsIgnoreCase("none") || CommandUtils.shouldDisableToggle(args[1])) {
+                handleChangingShareMode(party, ShareMode.NONE);
+            } else if (args[1].equalsIgnoreCase("equal") || args[1].equalsIgnoreCase("even") || CommandUtils.shouldEnableToggle(args[1])) {
+                handleChangingShareMode(party, ShareMode.EQUAL);
+            } else {
                 sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "xpshare", "<NONE | EQUAL>"));
-                return true;
+            }
+
+            return true;
         }
+        sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "xpshare", "<NONE | EQUAL>"));
+        return true;
     }
 
     private void handleChangingShareMode(Party party, ShareMode mode) {

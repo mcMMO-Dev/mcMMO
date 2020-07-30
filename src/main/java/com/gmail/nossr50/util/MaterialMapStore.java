@@ -15,46 +15,46 @@ import java.util.Locale;
  */
 public class MaterialMapStore {
 
-    private HashSet<String> abilityBlackList;
-    private HashSet<String> toolBlackList;
-    private HashSet<String> mossyWhiteList;
-    private HashSet<String> leavesWhiteList;
-    private HashSet<String> herbalismAbilityBlackList;
-    private HashSet<String> blockCrackerWhiteList;
-    private HashSet<String> canMakeShroomyWhiteList;
-    private HashSet<String> multiBlockPlant;
-    private HashSet<String> foodItemWhiteList;
-    private HashSet<String> glassBlocks;
+    private final HashSet<String> abilityBlackList;
+    private final HashSet<String> toolBlackList;
+    private final HashSet<String> mossyWhiteList;
+    private final HashSet<String> leavesWhiteList;
+    private final HashSet<String> herbalismAbilityBlackList;
+    private final HashSet<String> blockCrackerWhiteList;
+    private final HashSet<String> canMakeShroomyWhiteList;
+    private final HashSet<String> multiBlockPlant;
+    private final HashSet<String> foodItemWhiteList;
+    private final HashSet<String> glassBlocks;
 
-    private HashSet<String> netheriteArmor;
-    private HashSet<String> netheriteTools;
-    private HashSet<String> woodTools;
-    private HashSet<String> stoneTools;
-    private HashSet<String> leatherArmor;
-    private HashSet<String> ironArmor;
-    private HashSet<String> ironTools;
-    private HashSet<String> stringTools;
-    private HashSet<String> goldArmor;
-    private HashSet<String> goldTools;
-    private HashSet<String> chainmailArmor;
-    private HashSet<String> diamondArmor;
-    private HashSet<String> diamondTools;
-    private HashSet<String> armors;
+    private final HashSet<String> netheriteArmor;
+    private final HashSet<String> netheriteTools;
+    private final HashSet<String> woodTools;
+    private final HashSet<String> stoneTools;
+    private final HashSet<String> leatherArmor;
+    private final HashSet<String> ironArmor;
+    private final HashSet<String> ironTools;
+    private final HashSet<String> stringTools;
+    private final HashSet<String> goldArmor;
+    private final HashSet<String> goldTools;
+    private final HashSet<String> chainmailArmor;
+    private final HashSet<String> diamondArmor;
+    private final HashSet<String> diamondTools;
+    private final HashSet<String> armors;
 
-    private HashSet<String> swords;
-    private HashSet<String> axes;
-    private HashSet<String> hoes;
-    private HashSet<String> shovels;
-    private HashSet<String> pickAxes;
-    private HashSet<String> tridents;
-    private HashSet<String> bows;
-    private HashSet<String> tools;
+    private final HashSet<String> swords;
+    private final HashSet<String> axes;
+    private final HashSet<String> hoes;
+    private final HashSet<String> shovels;
+    private final HashSet<String> pickAxes;
+    private final HashSet<String> tridents;
+    private final HashSet<String> bows;
+    private final HashSet<String> tools;
 
-    private HashSet<String> enchantables;
+    private final HashSet<String> enchantables;
 
-    private HashSet<String> ores;
+    private final HashSet<String> ores;
 
-    private HashMap<String, Integer> tierValue;
+    private final HashMap<String, Integer> tierValue;
 
 
     public MaterialMapStore()
@@ -1087,6 +1087,15 @@ public class MaterialMapStore {
         toolBlackList.add("lodestone");
         toolBlackList.add("respawn_anchor");
     }
+
+    public HashSet<String> getNetheriteArmor() {
+        return netheriteArmor;
+    }
+
+    public HashSet<String> getNetheriteTools() {
+        return netheriteTools;
+    }
+
 
     public int getTier(Material material) {
         return getTier(material.getKey().getKey());
