@@ -1,3 +1,6 @@
+Version 2.1.137
+    Added some code to avoid NPE errors when checking armor on entities
+
 Version 2.1.136
     Furnace ownership is no longer lost when the furnace stops doing a job
     Furnaces remember owners between restarts (requires MC 1.14 or higher)

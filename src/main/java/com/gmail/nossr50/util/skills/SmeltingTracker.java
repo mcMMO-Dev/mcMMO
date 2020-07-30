@@ -98,7 +98,6 @@ public class SmeltingTracker {
                 return;
         }
 
-
         changeFurnaceOwnership(furnace, player);
     }
 }
