@@ -1,3 +1,6 @@
+Version 2.1.138
+    Fixed a bug where Netherite weapons/tools/armor weren't applying correct values in some skill calculations
+
 Version 2.1.137
     Added some code to avoid NPE errors when checking armor on entities
 
