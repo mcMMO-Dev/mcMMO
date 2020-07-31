@@ -1072,6 +1072,8 @@ public final class CombatUtils {
         }
         else if (ItemUtils.isDiamondTool(inHand)) {
             tier = 4;
+        } else if (ItemUtils.isNetheriteTool(inHand)) {
+            tier = 5;
         }
         else if (mcMMO.getModManager().isCustomTool(inHand)) {
             tier = mcMMO.getModManager().getTool(inHand).getTier();
