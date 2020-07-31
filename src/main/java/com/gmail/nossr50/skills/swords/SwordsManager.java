@@ -29,7 +29,7 @@ public class SwordsManager extends SkillManager {
     }
 
     public boolean canActivateAbility() {
-        return mcMMOPlayer.getToolPreparationMode(ToolType.SWORD) && Permissions.serratedStrikes(getPlayer());
+        return mcMMOPlayer.getSuperAbilityManager().getToolPreparationMode(ToolType.SWORD) && Permissions.serratedStrikes(getPlayer());
     }
 
     public boolean canUseStab() {
@@ -51,7 +51,7 @@ public class SwordsManager extends SkillManager {
         if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_SERRATED_STRIKES))
             return false;
 
-        return mcMMOPlayer.getAbilityMode(SuperAbilityType.SERRATED_STRIKES);
+        return mcMMOPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.SERRATED_STRIKES);
     }
 
     /**

@@ -32,7 +32,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canActivateAbility() {
-        return mcMMOPlayer.getToolPreparationMode(ToolType.FISTS) && Permissions.berserk(getPlayer());
+        return mcMMOPlayer.getSuperAbilityManager().getToolPreparationMode(ToolType.FISTS) && Permissions.berserk(getPlayer());
     }
 
     public boolean canUseIronArm() {
@@ -43,7 +43,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canUseBerserk() {
-        return mcMMOPlayer.getAbilityMode(SuperAbilityType.BERSERK);
+        return mcMMOPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.BERSERK);
     }
 
     public boolean canDisarm(LivingEntity target) {

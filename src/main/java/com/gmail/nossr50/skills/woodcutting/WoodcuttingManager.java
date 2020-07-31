@@ -60,7 +60,7 @@ public class WoodcuttingManager extends SkillManager {
     }
 
     public boolean canUseTreeFeller(ItemStack heldItem) {
-        return mcMMOPlayer.getAbilityMode(SuperAbilityType.TREE_FELLER)
+        return mcMMOPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.TREE_FELLER)
                 && ItemUtils.isAxe(heldItem);
     }
 

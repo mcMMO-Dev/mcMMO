@@ -241,7 +241,7 @@ public class PlayerProfile {
      * @param ability The {@link SuperAbilityType} to set the DATS for
      * @param DATS the DATS of the ability
      */
-    protected void setAbilityDATS(SuperAbilityType ability, long DATS) {
+    public void setAbilityDATS(SuperAbilityType ability, long DATS) {
         markProfileDirty();
 
         abilityDATS.put(ability, (int) (DATS * .001D));
@@ -250,7 +250,7 @@ public class PlayerProfile {
     /**
      * Reset all ability cooldowns.
      */
-    protected void resetCooldowns() {
+    public void resetCooldowns() {
         markProfileDirty();
 
         abilityDATS.replaceAll((a, v) -> 0);
@@ -286,7 +286,7 @@ public class PlayerProfile {
         skillsXp.put(skill, xpLevel);
     }
 
-    protected float levelUp(PrimarySkillType skill) {
+    public float levelUp(PrimarySkillType skill) {
         float xpRemoved = getXpToLevel(skill);
 
         markProfileDirty();

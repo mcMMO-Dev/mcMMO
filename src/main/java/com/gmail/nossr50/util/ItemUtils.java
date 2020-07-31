@@ -4,13 +4,15 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.*;
+import org.bukkit.inventory.FurnaceRecipe;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import static org.bukkit.Material.AIR;
 
 public final class ItemUtils {
     private ItemUtils() {}
@@ -132,7 +134,7 @@ public final class ItemUtils {
             return !isMinecraftTool(item);
         }
 
-        return item.getType() == Material.AIR;
+        return item.getType() == AIR;
     }
 
     /**
@@ -310,7 +312,7 @@ public final class ItemUtils {
      * @return True if the item can be shared.
      */
     public static boolean isSharable(ItemStack item) {
-        if (item == null || item.getType() == Material.AIR) {
+        if (item == null || item.getType() == AIR) {
             return false;
         }
 

@@ -18,8 +18,8 @@ public class McabilityCommand extends ToggleCommand {
 
     @Override
     protected void applyCommandAction(McMMOPlayer mcMMOPlayer) {
-        mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.Ability." + (mcMMOPlayer.getAbilityUse() ? "Off" : "On")));
-        mcMMOPlayer.toggleAbilityUse();
+        mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.Ability." + (mcMMOPlayer.getSuperAbilityManager().getAbilityActivationPermission() ? "Off" : "On")));
+        mcMMOPlayer.getSuperAbilityManager().toggleAbilityActivationPermission();
     }
 
     @Override

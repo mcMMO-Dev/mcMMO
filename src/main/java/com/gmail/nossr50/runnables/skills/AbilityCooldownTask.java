@@ -17,11 +17,11 @@ public class AbilityCooldownTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (!mcMMOPlayer.getPlayer().isOnline() || mcMMOPlayer.getAbilityInformed(ability)) {
+        if (!mcMMOPlayer.getPlayer().isOnline() || mcMMOPlayer.getSuperAbilityManager().getAbilityInformed(ability)) {
             return;
         }
 
-        mcMMOPlayer.setAbilityInformed(ability, true);
+        mcMMOPlayer.getSuperAbilityManager().setAbilityInformed(ability, true);
 
         NotificationManager.sendPlayerInformation(mcMMOPlayer.getPlayer(), NotificationType.ABILITY_REFRESHED, ability.getAbilityRefresh());
         //mcMMOPlayer.getPlayer().sendMessage(ability.getAbilityRefresh());

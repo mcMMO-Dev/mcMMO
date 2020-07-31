@@ -28,7 +28,7 @@ public class AbilityDisableTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (!mcMMOPlayer.getAbilityMode(ability)) {
+        if (!mcMMOPlayer.getSuperAbilityManager().getAbilityMode(ability)) {
             return;
         }
 
@@ -52,8 +52,8 @@ public class AbilityDisableTask extends BukkitRunnable {
 
         EventUtils.callAbilityDeactivateEvent(player, ability);
 
-        mcMMOPlayer.setAbilityMode(ability, false);
-        mcMMOPlayer.setAbilityInformed(ability, false);
+        mcMMOPlayer.getSuperAbilityManager().setAbilityMode(ability, false);
+        mcMMOPlayer.getSuperAbilityManager().setAbilityInformed(ability, false);
 
         ParticleEffectUtils.playAbilityDisabledEffect(player);
 

@@ -11,38 +11,38 @@ public final class AbilityAPI {
     private AbilityAPI() {}
 
     public static boolean berserkEnabled(Player player) {
-        return UserManager.getPlayer(player).getAbilityMode(SuperAbilityType.BERSERK);
+        return UserManager.getPlayer(player).getSuperAbilityManager().getAbilityMode(SuperAbilityType.BERSERK);
     }
 
     public static boolean gigaDrillBreakerEnabled(Player player) {
-        return UserManager.getPlayer(player).getAbilityMode(SuperAbilityType.GIGA_DRILL_BREAKER);
+        return UserManager.getPlayer(player).getSuperAbilityManager().getAbilityMode(SuperAbilityType.GIGA_DRILL_BREAKER);
     }
 
     public static boolean greenTerraEnabled(Player player) {
-        return UserManager.getPlayer(player).getAbilityMode(SuperAbilityType.GREEN_TERRA);
+        return UserManager.getPlayer(player).getSuperAbilityManager().getAbilityMode(SuperAbilityType.GREEN_TERRA);
     }
 
     public static boolean serratedStrikesEnabled(Player player) {
-        return UserManager.getPlayer(player).getAbilityMode(SuperAbilityType.SERRATED_STRIKES);
+        return UserManager.getPlayer(player).getSuperAbilityManager().getAbilityMode(SuperAbilityType.SERRATED_STRIKES);
     }
 
     public static boolean skullSplitterEnabled(Player player) {
-        return UserManager.getPlayer(player).getAbilityMode(SuperAbilityType.SKULL_SPLITTER);
+        return UserManager.getPlayer(player).getSuperAbilityManager().getAbilityMode(SuperAbilityType.SKULL_SPLITTER);
     }
 
     public static boolean superBreakerEnabled(Player player) {
-        return UserManager.getPlayer(player).getAbilityMode(SuperAbilityType.SUPER_BREAKER);
+        return UserManager.getPlayer(player).getSuperAbilityManager().getAbilityMode(SuperAbilityType.SUPER_BREAKER);
     }
 
     public static boolean treeFellerEnabled(Player player) {
-        return UserManager.getPlayer(player).getAbilityMode(SuperAbilityType.TREE_FELLER);
+        return UserManager.getPlayer(player).getSuperAbilityManager().getAbilityMode(SuperAbilityType.TREE_FELLER);
     }
 
     public static boolean isAnyAbilityEnabled(Player player) {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         for (SuperAbilityType ability : SuperAbilityType.values()) {
-            if (mcMMOPlayer.getAbilityMode(ability)) {
+            if (mcMMOPlayer.getSuperAbilityManager().getAbilityMode(ability)) {
                 return true;
             }
         }

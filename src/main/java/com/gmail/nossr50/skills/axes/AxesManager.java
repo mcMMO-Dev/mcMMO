@@ -57,11 +57,11 @@ public class AxesManager extends SkillManager {
         if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.AXES_SKULL_SPLITTER))
             return false;
 
-        return target.isValid() && mcMMOPlayer.getAbilityMode(SuperAbilityType.SKULL_SPLITTER) && Permissions.skullSplitter(getPlayer());
+        return target.isValid() && mcMMOPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.SKULL_SPLITTER) && Permissions.skullSplitter(getPlayer());
     }
 
     public boolean canActivateAbility() {
-        return mcMMOPlayer.getToolPreparationMode(ToolType.AXE) && Permissions.skullSplitter(getPlayer());
+        return mcMMOPlayer.getSuperAbilityManager().getToolPreparationMode(ToolType.AXE) && Permissions.skullSplitter(getPlayer());
     }
 
     /**

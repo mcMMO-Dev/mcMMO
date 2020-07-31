@@ -81,7 +81,7 @@ public class MiningManager extends SkillManager {
             return;
         }
 
-        if (mcMMOPlayer.getAbilityMode(skill.getAbility())) {
+        if (mcMMOPlayer.getSuperAbilityManager().getAbilityMode(skill.getAbility())) {
             SkillUtils.handleDurabilityChange(getPlayer().getInventory().getItemInMainHand(), Config.getInstance().getAbilityToolDamage());
         }
 
@@ -95,7 +95,7 @@ public class MiningManager extends SkillManager {
 
         //TODO: Make this readable
         if (RandomChanceUtil.checkRandomChanceExecutionSuccess(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS, true)) {
-            BlockUtils.markDropsAsBonus(blockState, mcMMOPlayer.getAbilityMode(skill.getAbility()));
+            BlockUtils.markDropsAsBonus(blockState, mcMMOPlayer.getSuperAbilityManager().getAbilityMode(skill.getAbility()));
         }
     }
 
@@ -122,7 +122,7 @@ public class MiningManager extends SkillManager {
         targetBlock.setType(Material.AIR);
 
         mcMMOPlayer.setAbilityDATS(SuperAbilityType.BLAST_MINING, System.currentTimeMillis());
-        mcMMOPlayer.setAbilityInformed(SuperAbilityType.BLAST_MINING, false);
+        mcMMOPlayer.getSuperAbilityManager().setAbilityInformed(SuperAbilityType.BLAST_MINING, false);
         new AbilityCooldownTask(mcMMOPlayer, SuperAbilityType.BLAST_MINING).runTaskLater(mcMMO.p, SuperAbilityType.BLAST_MINING.getCooldown() * Misc.TICK_CONVERSION_FACTOR);
     }
 

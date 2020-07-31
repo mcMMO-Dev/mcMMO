@@ -772,15 +772,15 @@ public class PlayerListener implements Listener {
                 if (BlockUtils.canActivateTools(blockState)) {
                     if (Config.getInstance().getAbilitiesEnabled()) {
                         if (BlockUtils.canActivateHerbalism(blockState)) {
-                            mcMMOPlayer.processAbilityActivation(PrimarySkillType.HERBALISM);
+                            mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.HERBALISM);
                         }
 
-                        mcMMOPlayer.processAbilityActivation(PrimarySkillType.AXES);
-                        mcMMOPlayer.processAbilityActivation(PrimarySkillType.EXCAVATION);
-                        mcMMOPlayer.processAbilityActivation(PrimarySkillType.MINING);
-                        mcMMOPlayer.processAbilityActivation(PrimarySkillType.SWORDS);
-                        mcMMOPlayer.processAbilityActivation(PrimarySkillType.UNARMED);
-                        mcMMOPlayer.processAbilityActivation(PrimarySkillType.WOODCUTTING);
+                        mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.AXES);
+                        mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.EXCAVATION);
+                        mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.MINING);
+                        mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.SWORDS);
+                        mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.UNARMED);
+                        mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.WOODCUTTING);
                     }
 
                     ChimaeraWing.activationCheck(player);
@@ -826,13 +826,13 @@ public class PlayerListener implements Listener {
                 
                 /* ACTIVATION CHECKS */
                 if (Config.getInstance().getAbilitiesEnabled()) {
-                    mcMMOPlayer.processAbilityActivation(PrimarySkillType.AXES);
-                    mcMMOPlayer.processAbilityActivation(PrimarySkillType.EXCAVATION);
-                    mcMMOPlayer.processAbilityActivation(PrimarySkillType.HERBALISM);
-                    mcMMOPlayer.processAbilityActivation(PrimarySkillType.MINING);
-                    mcMMOPlayer.processAbilityActivation(PrimarySkillType.SWORDS);
-                    mcMMOPlayer.processAbilityActivation(PrimarySkillType.UNARMED);
-                    mcMMOPlayer.processAbilityActivation(PrimarySkillType.WOODCUTTING);
+                    mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.AXES);
+                    mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.EXCAVATION);
+                    mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.HERBALISM);
+                    mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.MINING);
+                    mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.SWORDS);
+                    mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.UNARMED);
+                    mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.WOODCUTTING);
                 }
 
                 /* ITEM CHECKS */

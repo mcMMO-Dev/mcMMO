@@ -204,7 +204,7 @@ public class SkillUtils {
             if(mcMMOPlayer == null)
                 return;
 
-            PrimarySkillType skill = mcMMOPlayer.getAbilityMode(SuperAbilityType.SUPER_BREAKER) ? PrimarySkillType.MINING : PrimarySkillType.EXCAVATION;
+            PrimarySkillType skill = mcMMOPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.SUPER_BREAKER) ? PrimarySkillType.MINING : PrimarySkillType.EXCAVATION;
 
             int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
             int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();

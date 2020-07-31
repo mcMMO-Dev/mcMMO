@@ -63,7 +63,7 @@ public final class CombatUtils {
         Map<DamageModifier, Double> modifiers = getModifiers(event);
 
         if (swordsManager.canActivateAbility()) {
-            mcMMOPlayer.checkAbilityActivation(PrimarySkillType.SWORDS);
+            mcMMOPlayer.getSuperAbilityManager().checkAbilityActivation(PrimarySkillType.SWORDS);
         }
 
         if(target.getHealth() - event.getFinalDamage() >= 1)
@@ -156,7 +156,7 @@ public final class CombatUtils {
         AxesManager axesManager = mcMMOPlayer.getAxesManager();
 
         if (axesManager.canActivateAbility()) {
-            mcMMOPlayer.checkAbilityActivation(PrimarySkillType.AXES);
+            mcMMOPlayer.getSuperAbilityManager().checkAbilityActivation(PrimarySkillType.AXES);
         }
 
         if (axesManager.canUseAxeMastery()) {
@@ -205,7 +205,7 @@ public final class CombatUtils {
         UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
 
         if (unarmedManager.canActivateAbility()) {
-            mcMMOPlayer.checkAbilityActivation(PrimarySkillType.UNARMED);
+            mcMMOPlayer.getSuperAbilityManager().checkAbilityActivation(PrimarySkillType.UNARMED);
         }
 
         //Only execute bonuses if the player is not spamming

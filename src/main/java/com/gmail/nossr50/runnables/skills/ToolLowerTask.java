@@ -18,11 +18,11 @@ public class ToolLowerTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (!mcMMOPlayer.getToolPreparationMode(tool)) {
+        if (!mcMMOPlayer.getSuperAbilityManager().getToolPreparationMode(tool)) {
             return;
         }
 
-        mcMMOPlayer.setToolPreparationMode(tool, false);
+        mcMMOPlayer.getSuperAbilityManager().setToolPreparationMode(tool, false);
 
         if (Config.getInstance().getAbilityMessagesEnabled()) {
             NotificationManager.sendPlayerInformation(mcMMOPlayer.getPlayer(), NotificationType.TOOL, tool.getLowerTool());
