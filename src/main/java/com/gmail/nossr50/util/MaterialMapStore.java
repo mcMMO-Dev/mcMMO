@@ -120,6 +120,11 @@ public class MaterialMapStore {
         return toolBlackList.contains(material.getKey().getKey());
     }
 
+    public boolean isToolActivationBlackListed(String blockId)
+    {
+        return toolBlackList.contains(blockId);
+    }
+
     public boolean isMossyWhiteListed(Material material)
     {
         return mossyWhiteList.contains(material.getKey().getKey());

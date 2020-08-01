@@ -11,6 +11,7 @@ import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
@@ -93,6 +94,48 @@ public final class BlockUtils {
                 && blockState.getType() != Repair.anvilMaterial
                 && blockState.getType() != Salvage.anvilMaterial;
     }
+
+    /**
+     * Check if a given block should allow for the activation of tools
+     * Activating a tool is step 1 of a 2 step process for super ability activation
+     *
+     * @param block The {@link Block} of the block to check
+     * @return true if the block should allow ability activation, false
+     * otherwise
+     */
+    public static boolean canActivateTools(Block block) {
+        return !mcMMO.getMaterialMapStore().isToolActivationBlackListed(block.getType())
+                && block.getType() != Repair.anvilMaterial
+                && block.getType() != Salvage.anvilMaterial;
+    }
+    /**
+     * Check if a given block should allow for the activation of tools
+     * Activating a tool is step 1 of a 2 step process for super ability activation
+     *
+     * @param material The {@link Material} of the block to check
+     * @return true if the block should allow ability activation, false
+     * otherwise
+     */
+    public static boolean canActivateTools(Material material) {
+        return !mcMMO.getMaterialMapStore().isToolActivationBlackListed(material)
+                && material != Repair.anvilMaterial
+                && material != Salvage.anvilMaterial;
+    }
+
+    /**
+     * Check if a given block should allow for the activation of tools
+     * Activating a tool is step 1 of a 2 step process for super ability activation
+     *
+     * @param blockId The {@link String} of the block namespaced id to check
+     * @return true if the block should allow ability activation, false
+     * otherwise
+     */
+    public static boolean canActivateTools(String blockId) {
+        return !mcMMO.getMaterialMapStore().isToolActivationBlackListed(blockId)
+                && !blockId.equals(Repair.anvilMaterial.getKey().getKey())
+                && !blockId.equals(Salvage.anvilMaterial.getKey().getKey());
+    }
+
 
     /**
      * Check if a given block is an ore
@@ -203,6 +246,17 @@ public final class BlockUtils {
      */
     public static boolean canActivateHerbalism(BlockState blockState) {
         return mcMMO.getMaterialMapStore().isHerbalismAbilityWhiteListed(blockState.getType());
+    }
+
+    /**
+     * Determine if a given block can activate Herbalism abilities
+     *
+     * @param block The {@link Block} of the block to check
+     * @return true if the block can be activate Herbalism abilities, false
+     * otherwise
+     */
+    public static boolean canActivateHerbalism(Block block) {
+        return mcMMO.getMaterialMapStore().isHerbalismAbilityWhiteListed(block.getType());
     }
 
     /**

@@ -243,7 +243,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.mcability;mcmmo.commands.mcability.others");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcability", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
-        command.setExecutor(new McabilityCommand());
+        command.setExecutor(new AbilityToggleCommand());
     }
 
     private static void registerMcmmoCommand() {

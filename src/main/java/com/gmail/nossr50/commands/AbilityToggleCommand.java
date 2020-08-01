@@ -5,7 +5,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import org.bukkit.command.CommandSender;
 
-public class McabilityCommand extends ToggleCommand {
+public class AbilityToggleCommand extends ToggleCommand {
     @Override
     protected boolean hasOtherPermission(CommandSender sender) {
         return Permissions.mcabilityOthers(sender);

@@ -39,6 +39,7 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.experience.ExperienceBarManager;
+import com.gmail.nossr50.util.input.AbilityActivationProcessor;
 import com.gmail.nossr50.util.input.SuperAbilityManager;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
@@ -93,6 +94,7 @@ public class McMMOPlayer {
     private final FixedMetadataValue playerMetadata;
     private final String playerName;
     private final SuperAbilityManager superAbilityManager;
+    private final AbilityActivationProcessor abilityActivationProcessor;
 
     public McMMOPlayer(Player player, PlayerProfile profile) {
         this.playerName = player.getName();
@@ -122,6 +124,7 @@ public class McMMOPlayer {
         }
 
         superAbilityManager = new SuperAbilityManager(this);
+        abilityActivationProcessor = new AbilityActivationProcessor(this);
 
         experienceBarManager = new ExperienceBarManager(this, profile.getXpBarStateMap());
 
@@ -834,6 +837,9 @@ public class McMMOPlayer {
         return superAbilityManager;
     }
 
+    public AbilityActivationProcessor getAbilityActivationProcessor() {
+        return abilityActivationProcessor;
+    }
 
     /**
      * Cleanup various things related to this player

@@ -11,20 +11,16 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
-import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.skills.fishing.FishingManager;
-import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
-import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
@@ -34,11 +30,9 @@ import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.entity.*;
 import org.bukkit.entity.minecart.PoweredMinecart;
 import org.bukkit.event.Event;
@@ -709,15 +703,15 @@ public class PlayerListener implements Listener {
     /**
      * Monitor PlayerInteractEvents.
      *
-     * @param event The event to monitor
+     * @param playerInteractEvent The playerInteractEvent to monitor
      */
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerInteractMonitor(PlayerInteractEvent event) {
+    public void onPlayerInteractMonitor(PlayerInteractEvent playerInteractEvent) {
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
+        if(WorldBlacklist.isWorldBlacklisted(playerInteractEvent.getPlayer().getWorld()))
             return;
 
-        Player player = event.getPlayer();
+        Player player = playerInteractEvent.getPlayer();
 
         /* WORLD GUARD MAIN FLAG CHECK */
         if(WorldGuardUtils.isWorldGuardLoaded())
@@ -726,7 +720,7 @@ public class PlayerListener implements Listener {
                 return;
         }
 
-        if (event.getHand() != EquipmentSlot.HAND || !UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
+        if (playerInteractEvent.getHand() != EquipmentSlot.HAND || !UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 
@@ -740,7 +734,7 @@ public class PlayerListener implements Listener {
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         //Spam Fishing Detection
-        if(event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)
+        if(playerInteractEvent.getAction() == Action.RIGHT_CLICK_BLOCK || playerInteractEvent.getAction() == Action.RIGHT_CLICK_AIR)
         {
             if(ExperienceConfig.getInstance().isFishingExploitingPrevented()
                        && (heldItem.getType() == Material.FISHING_ROD || player.getInventory().getItemInOffHand().getType() == Material.FISHING_ROD))
@@ -755,123 +749,7 @@ public class PlayerListener implements Listener {
             }
         }
 
-        switch (event.getAction()) {
-            case RIGHT_CLICK_BLOCK:
-                if(player.getInventory().getItemInOffHand().getType() != Material.AIR && !player.isInsideVehicle() && !player.isSneaking()) {
-                    break;
-                }
-
-                //Hmm
-                if(event.getClickedBlock() == null)
-                    return;
-
-                Block block = event.getClickedBlock();
-                BlockState blockState = block.getState();
-
-                /* ACTIVATION & ITEM CHECKS */
-                if (BlockUtils.canActivateTools(blockState)) {
-                    if (Config.getInstance().getAbilitiesEnabled()) {
-                        if (BlockUtils.canActivateHerbalism(blockState)) {
-                            mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.HERBALISM);
-                        }
-
-                        mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.AXES);
-                        mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.EXCAVATION);
-                        mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.MINING);
-                        mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.SWORDS);
-                        mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.UNARMED);
-                        mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.WOODCUTTING);
-                    }
-
-                    ChimaeraWing.activationCheck(player);
-                }
-
-                /* GREEN THUMB CHECK */
-                HerbalismManager herbalismManager = mcMMOPlayer.getHerbalismManager();
-
-                if (heldItem.getType() == Material.BONE_MEAL) {
-                    switch (blockState.getType()) {
-                        case BEETROOTS:
-                        case CARROT:
-                        case COCOA:
-                        case WHEAT:
-                        case NETHER_WART_BLOCK:
-                        case POTATO:
-                            mcMMO.getPlaceStore().setFalse(blockState);
-                    }
-                }
-
-                FakePlayerAnimationEvent fakeSwing = new FakePlayerAnimationEvent(event.getPlayer()); //PlayerAnimationEvent compat        
-                if (herbalismManager.canGreenThumbBlock(blockState)) {
-                    Bukkit.getPluginManager().callEvent(fakeSwing);
-                    player.getInventory().setItemInMainHand(new ItemStack(Material.WHEAT_SEEDS, heldItem.getAmount() - 1));
-                    if (herbalismManager.processGreenThumbBlocks(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
-                        blockState.update(true);
-                    }
-                }
-                /* SHROOM THUMB CHECK */
-                else if (herbalismManager.canUseShroomThumb(blockState)) {
-                    Bukkit.getPluginManager().callEvent(fakeSwing);
-                    event.setCancelled(true);
-                    if (herbalismManager.processShroomThumb(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
-                        blockState.update(true);
-                    }
-                }
-                break;
-
-            case RIGHT_CLICK_AIR:
-                if(player.getInventory().getItemInOffHand().getType() != Material.AIR && !player.isInsideVehicle() && !player.isSneaking()) {
-                    break;
-                }
-                
-                /* ACTIVATION CHECKS */
-                if (Config.getInstance().getAbilitiesEnabled()) {
-                    mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.AXES);
-                    mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.EXCAVATION);
-                    mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.HERBALISM);
-                    mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.MINING);
-                    mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.SWORDS);
-                    mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.UNARMED);
-                    mcMMOPlayer.getSuperAbilityManager().processAbilityActivation(PrimarySkillType.WOODCUTTING);
-                }
-
-                /* ITEM CHECKS */
-                ChimaeraWing.activationCheck(player);
-
-                /* BLAST MINING CHECK */
-                MiningManager miningManager = mcMMOPlayer.getMiningManager();
-                if (miningManager.canDetonate()) {
-                    miningManager.remoteDetonation();
-                }
-
-                break;
-
-            case LEFT_CLICK_AIR:
-            case LEFT_CLICK_BLOCK:
-
-                if (!player.isSneaking()) {
-                    break;
-                }
-
-                /* CALL OF THE WILD CHECKS */
-                Material type = heldItem.getType();
-                TamingManager tamingManager = mcMMOPlayer.getTamingManager();
-
-                if (type == Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.WOLF.getConfigEntityTypeEntry())) {
-                    tamingManager.summonWolf();
-                }
-                else if (type == Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.CAT.getConfigEntityTypeEntry())) {
-                    tamingManager.summonOcelot();
-                }
-                else if (type == Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.HORSE.getConfigEntityTypeEntry())) {
-                    tamingManager.summonHorse();
-                }
-
-                break;
-
-            default:
-                break;
-        }
+        mcMMOPlayer.getAbilityActivationProcessor().processAbilityAndToolActivations(playerInteractEvent);
     }
 
     /**
