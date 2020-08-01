@@ -100,7 +100,6 @@ public class SalvageManager extends SkillManager {
 
         potentialSalvageYield = Math.min(potentialSalvageYield, getSalvageLimit()); // Always get at least something back, if you're capable of salvaging it.
 
-        player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
         location.add(0.5, 1, 0.5);
 
         Map<Enchantment, Integer> enchants = item.getEnchantments();
@@ -139,6 +138,8 @@ public class SalvageManager extends SkillManager {
         if (EventUtils.callSalvageCheckEvent(player, item, salvageResults, enchantBook).isCancelled()) {
             return;
         }
+
+        player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
 
         Location anvilLoc = location.clone();
         Location playerLoc = player.getLocation().clone();
