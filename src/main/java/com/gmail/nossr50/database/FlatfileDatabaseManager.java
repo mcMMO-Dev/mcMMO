@@ -30,6 +30,72 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     private final File usersFile;
     private static final Object fileWritingLock = new Object();
 
+    //Used to map out the split data in the FFDB
+    public static int USERNAME = 0;
+    public static int SKILLS_MINING = 1;
+    public static int EXP_MINING = 4;
+    public static int SKILLS_WOODCUTTING = 5;
+    public static int EXP_WOODCUTTING = 6;
+    public static int SKILLS_REPAIR = 7;
+    public static int SKILLS_UNARMED = 8;
+    public static int SKILLS_HERBALISM = 9;
+    public static int SKILLS_EXCAVATION = 10;
+    public static int SKILLS_ARCHERY = 11;
+    public static int SKILLS_SWORDS = 12;
+    public static int SKILLS_AXES = 13;
+    public static int SKILLS_ACROBATICS = 14;
+    public static int EXP_REPAIR = 15;
+    public static int EXP_UNARMED = 16;
+    public static int EXP_HERBALISM = 17;
+    public static int EXP_EXCAVATION = 18;
+    public static int EXP_ARCHERY = 19;
+    public static int EXP_SWORDS = 20;
+    public static int EXP_AXES = 21;
+    public static int EXP_ACROBATICS = 22;
+    public static int SKILLS_TAMING = 24;
+    public static int EXP_TAMING = 25;
+    public static int COOLDOWN_BERSERK = 26;
+    public static int COOLDOWN_GIGA_DRILL_BREAKER = 27;
+    public static int COOLDOWN_TREE_FELLER = 28;
+    public static int COOLDOWN_GREEN_TERRA = 29;
+    public static int COOLDOWN_SERRATED_STRIKES = 30;
+    public static int COOLDOWN_SKULL_SPLITTER = 31;
+    public static int COOLDOWN_SUPER_BREAKER = 32;
+    public static int SKILLS_FISHING = 34;
+    public static int EXP_FISHING = 35;
+    public static int COOLDOWN_BLAST_MINING = 36;
+    public static int LAST_LOGIN = 37;
+    public static int HEALTHBAR = 38;
+    public static int SKILLS_ALCHEMY = 39;
+    public static int EXP_ALCHEMY = 40;
+    public static int UUID_INDEX = 41;
+    public static int SCOREBOARD_TIPS = 42;
+    public static int COOLDOWN_CHIMAERA_WING = 43;
+    public static int SKILLS_TRIDENTS = 44;
+    public static int EXP_TRIDENTS = 45;
+    public static int SKILLS_CROSSBOWS = 46;
+    public static int EXP_CROSSBOWS = 47;
+    public static int BARSTATE_ACROBATICS = 48;
+    public static int BARSTATE_ALCHEMY = 49;
+    public static int BARSTATE_ARCHERY = 50;
+    public static int BARSTATE_AXES = 51;
+    public static int BARSTATE_EXCAVATION = 52;
+    public static int BARSTATE_FISHING = 53;
+    public static int BARSTATE_HERBALISM = 54;
+    public static int BARSTATE_MINING = 55;
+    public static int BARSTATE_REPAIR = 56;
+    public static int BARSTATE_SALVAGE = 57;
+    public static int BARSTATE_SMELTING = 58;
+    public static int BARSTATE_SWORDS = 59;
+    public static int BARSTATE_TAMING = 60;
+    public static int BARSTATE_UNARMED = 61;
+    public static int BARSTATE_WOODCUTTING = 62;
+    public static int BARSTATE_TRIDENTS = 63;
+    public static int BARSTATE_CROSSBOWS = 64;
+    public static int COOLDOWN_ARCHERY_SUPER_1 = 65;
+    public static int COOLDOWN_CROSSBOWS_SUPER_1 = 66;
+    public static int COOLDOWN_TRIDENTS_SUPER_1 = 67;
+
     protected FlatfileDatabaseManager() {
         usersFile = new File(mcMMO.getUsersFilePath());
         checkStructure();
@@ -491,6 +557,11 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 out.append("0:"); // Scoreboard tips shown
                 out.append("0:"); // Chimaera Wing Dats
 
+                out.append("0:"); // Tridents Skill Level
+                out.append("0:"); // Tridents XP
+                out.append("0:"); // Crossbow Skill Level
+                out.append("0:"); // Crossbow XP Level
+
                 //Barstates for the 15 currently existing skills by ordinal value
                 out.append("NORMAL:"); // Acrobatics
                 out.append("NORMAL:"); // Alchemy
@@ -860,6 +931,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     powerLevel += putStat(taming, playerName, skills.get(PrimarySkillType.TAMING));
                     powerLevel += putStat(unarmed, playerName, skills.get(PrimarySkillType.UNARMED));
                     powerLevel += putStat(woodcutting, playerName, skills.get(PrimarySkillType.WOODCUTTING));
+                    powerLevel += putStat(woodcutting, playerName, skills.get(PrimarySkillType.CROSSBOWS));
+                    powerLevel += putStat(woodcutting, playerName, skills.get(PrimarySkillType.TRIDENTS));
 
                     putStat(powerLevels, playerName, powerLevel);
                 }
@@ -940,6 +1013,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         }
                         boolean updated = false;
                         String[] character = line.split(":");
+                        int originalLength = character.length;
 
                         // Prevent the same username from being present multiple times
                         if (!usernames.add(character[USERNAME])) {
@@ -950,10 +1024,6 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             }
                         }
 
-                        // Prevent the same player from being present multiple times
-                        if (character.length >= 42 && (!character[UUID_INDEX].isEmpty() && !character[UUID_INDEX].equals("NULL") && !players.add(character[UUID_INDEX]))) {
-                            continue;
-                        }
 
                         if (character.length < 33) {
                             // Before Version 1.0 - Drop
@@ -968,32 +1038,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             // Version 1.4.07-dev2
                             // commit 7bac0e2ca5143bce84dc160617fed97f0b1cb968
                             character[33] = "";
-                            if (oldVersion == null) {
-                                oldVersion = "1.4.07";
-                            }
+                            oldVersion = "1.4.07";
                             updated = true;
-                        }
-
-                        //TODO: If new skills are added this needs to be rewritten
-                        if (Config.getInstance().getTruncateSkills()) {
-                            for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
-                                int index = getSkillIndex(skill);
-                                if (index >= character.length) {
-                                    continue;
-                                }
-                                int cap = Config.getInstance().getLevelCap(skill);
-                                if (Integer.parseInt(character[index]) > cap) {
-                                    mcMMO.p.getLogger().warning("Truncating " + skill.getName() + " to configured max level for player " + character[USERNAME]);
-                                    character[index] = cap + "";
-                                    updated = true;
-                                }
-                            }
-                        }
-
-                        // If they're valid, rewrite them to the file.
-                        if (!updated && character.length == 43) {
-                            writer.append(line).append("\r\n");
-                            continue;
                         }
 
                         if (character.length <= 33) {
@@ -1003,6 +1049,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             character = Arrays.copyOf(character, character.length + 1);
                             character[character.length - 1] = "";
                             oldVersion = "1.1.06";
+                            updated = true;
                         }
 
                         if (character.length <= 35) {
@@ -1015,6 +1062,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             if (oldVersion == null) {
                                 oldVersion = "1.2.00";
                             }
+                            updated = true;
                         }
                         if (character.length <= 36) {
                             // Introduction of Blast Mining cooldowns
@@ -1025,6 +1073,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             if (oldVersion == null) {
                                 oldVersion = "1.3.00";
                             }
+                            updated = true;
                         }
                         if (character.length <= 37) {
                             // Making old-purge work with flatfile
@@ -1036,6 +1085,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             if (oldVersion == null) {
                                 oldVersion = "1.4.00";
                             }
+                            updated = true;
                         }
                         if (character.length <= 38) {
                             // Addition of mob healthbars
@@ -1046,6 +1096,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             if (oldVersion == null) {
                                 oldVersion = "1.4.06";
                             }
+                            updated = true;
                         }
                         if (character.length <= 39) {
                             // Addition of Alchemy
@@ -1056,6 +1107,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             if (oldVersion == null) {
                                 oldVersion = "1.4.08";
                             }
+                            updated = true;
                         }
                         if (character.length <= 41) {
                             // Addition of UUIDs
@@ -1066,6 +1118,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             if (oldVersion == null) {
                                 oldVersion = "1.5.01";
                             }
+                            updated = true;
                         }
                         if (character.length <= 42) {
                             // Addition of scoreboard tips auto disable
@@ -1076,6 +1129,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             if (oldVersion == null) {
                                 oldVersion = "1.5.02";
                             }
+                            updated = true;
                         }
 
                         if(character.length <= 43) {
@@ -1086,15 +1140,16 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             if (oldVersion == null) {
                                 oldVersion = "2.1.133";
                             }
+                            updated = true;
                         }
 
-                        if(character.length <= 65) {
+                        if(character.length <= 67) {
 
                             if (oldVersion == null) {
-                                oldVersion = "2.1.133";
+                                oldVersion = "2.1.134";
                             }
 
-                            character = Arrays.copyOf(character, 64); // new array size
+                            character = Arrays.copyOf(character, 68); // new array size
 
                             /*
                                 public static int SKILLS_TRIDENTS = 44;
@@ -1120,32 +1175,63 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                                 public static int BARSTATE_CROSSBOWS = 64;
                              */
 
-                            character[44-1] = "0"; //trident skill lvl
-                            character[45-1] = "0"; //trident xp value
-                            character[46-1] = "0"; //xbow skill lvl
-                            character[47-1] = "0"; //xbow xp lvl
+                            character[SKILLS_TRIDENTS] = "0"; //trident skill lvl
+                            character[EXP_TRIDENTS] = "0"; //trident xp value
+                            character[SKILLS_CROSSBOWS] = "0"; //xbow skill lvl
+                            character[EXP_CROSSBOWS] = "0"; //xbow xp lvl
 
                             //Barstates 48-64
-                            character[48-1] = "NORMAL";
-                            character[49-1] = "NORMAL";
-                            character[50-1] = "NORMAL";
-                            character[51-1] = "NORMAL";
-                            character[52-1] = "NORMAL";
-                            character[53-1] = "NORMAL";
-                            character[54-1] = "NORMAL";
-                            character[55-1] = "NORMAL";
-                            character[56-1] = "NORMAL";
-                            character[57-1] = "DISABLED"; //Child skills
-                            character[58-1] = "DISABLED"; //Child skills
-                            character[59-1] = "NORMAL";
-                            character[60-1] = "NORMAL";
-                            character[61-1] = "NORMAL";
-                            character[62-1] = "NORMAL";
-                            character[63-1] = "NORMAL";
-                            character[64-1] = "NORMAL";
+                            character[BARSTATE_ACROBATICS] = "NORMAL";
+                            character[BARSTATE_ALCHEMY] = "NORMAL";
+                            character[BARSTATE_ARCHERY] = "NORMAL";
+                            character[BARSTATE_AXES] = "NORMAL";
+                            character[BARSTATE_EXCAVATION] = "NORMAL";
+                            character[BARSTATE_FISHING] = "NORMAL";
+                            character[BARSTATE_HERBALISM] = "NORMAL";
+                            character[BARSTATE_MINING] = "NORMAL";
+                            character[BARSTATE_REPAIR] = "NORMAL";
+                            character[BARSTATE_SALVAGE] = "DISABLED"; //Child skills
+                            character[BARSTATE_SMELTING] = "DISABLED"; //Child skills
+                            character[BARSTATE_SWORDS] = "NORMAL";
+                            character[BARSTATE_TAMING] = "NORMAL";
+                            character[BARSTATE_UNARMED] = "NORMAL";
+                            character[BARSTATE_WOODCUTTING] = "NORMAL";
+                            character[BARSTATE_TRIDENTS] = "NORMAL";
+                            character[BARSTATE_CROSSBOWS] = "NORMAL";
+
+                            character[COOLDOWN_ARCHERY_SUPER_1] = "0";
+                            character[COOLDOWN_CROSSBOWS_SUPER_1] = "0";
+                            character[COOLDOWN_TRIDENTS_SUPER_1] = "0";
+                            updated = true;
+                        }
+
+                        //TODO: If new skills are added this needs to be rewritten
+                        if (Config.getInstance().getTruncateSkills()) {
+                            for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {
+                                int index = getSkillIndex(skill);
+                                if (index >= character.length) {
+                                    continue;
+                                }
+                                int cap = Config.getInstance().getLevelCap(skill);
+                                if (Integer.parseInt(character[index]) > cap) {
+                                    mcMMO.p.getLogger().warning("Truncating " + skill.getName() + " to configured max level for player " + character[USERNAME]);
+                                    character[index] = cap + "";
+                                    updated = true;
+                                }
+                            }
                         }
 
                         boolean corrupted = false;
+
+                        //TODO: Update this corruption code, its super out of date
+                        //TODO: Update this corruption code, its super out of date
+                        //TODO: Update this corruption code, its super out of date
+                        //TODO: Update this corruption code, its super out of date
+                        //TODO: Update this corruption code, its super out of date
+                        //TODO: Update this corruption code, its super out of date
+                        //TODO: Update this corruption code, its super out of date
+                        //TODO: Update this corruption code, its super out of date
+                        //TODO: Update this corruption code, its super out of dated
 
                         for (int i = 0; i < character.length; i++) {
                             //Sigh... this code
@@ -1197,6 +1283,14 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                         if (updated) {
                             line = org.apache.commons.lang.StringUtils.join(character, ":") + ":";
+                        }
+
+                        // Prevent the same player from being present multiple times
+                        if (character.length == originalLength //If the length changed then the schema was expanded
+                                && (!character[UUID_INDEX].isEmpty()
+                                && !character[UUID_INDEX].equals("NULL")
+                                && !players.add(character[UUID_INDEX]))) {
+                            continue;
                         }
 
                         writer.append(line).append("\r\n");
@@ -1314,11 +1408,14 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         skillsDATS.put(SuperAbilityType.BERSERK, Integer.valueOf(character[COOLDOWN_BERSERK]));
         skillsDATS.put(SuperAbilityType.GREEN_TERRA, Integer.valueOf(character[COOLDOWN_GREEN_TERRA]));
         skillsDATS.put(SuperAbilityType.GIGA_DRILL_BREAKER, Integer.valueOf(character[COOLDOWN_GIGA_DRILL_BREAKER]));
-        // Archery - Unused
         skillsDATS.put(SuperAbilityType.SERRATED_STRIKES, Integer.valueOf(character[COOLDOWN_SERRATED_STRIKES]));
         skillsDATS.put(SuperAbilityType.SKULL_SPLITTER, Integer.valueOf(character[COOLDOWN_SKULL_SPLITTER]));
         // Acrobatics - Unused
         skillsDATS.put(SuperAbilityType.BLAST_MINING, Integer.valueOf(character[COOLDOWN_BLAST_MINING]));
+        skillsDATS.put(SuperAbilityType.ARCHERY_SUPER, Integer.valueOf(character[COOLDOWN_ARCHERY_SUPER_1]));
+        skillsDATS.put(SuperAbilityType.SUPER_SHOTGUN, Integer.valueOf(character[COOLDOWN_CROSSBOWS_SUPER_1]));
+        skillsDATS.put(SuperAbilityType.TRIDENT_SUPER, Integer.valueOf(character[COOLDOWN_TRIDENTS_SUPER_1]));
+
 
         try {
             mobHealthbarType = MobHealthbarType.valueOf(character[HEALTHBAR]);
@@ -1401,9 +1498,6 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         return DatabaseType.FLATFILE;
     }
 
-    @Override
-    public void onDisable() { }
-
     private int getSkillIndex(PrimarySkillType skill) {
         switch (skill) {
             case ACROBATICS:
@@ -1438,71 +1532,12 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 return SKILLS_CROSSBOWS;
             default:
                 throw new RuntimeException("Primary Skills only");
-            
+
         }
     }
-    
-    public static int USERNAME = 0;
-    public static int SKILLS_MINING = 1;
-    public static int EXP_MINING = 4;
-    public static int SKILLS_WOODCUTTING = 5;
-    public static int EXP_WOODCUTTING = 6;
-    public static int SKILLS_REPAIR = 7;
-    public static int SKILLS_UNARMED = 8;
-    public static int SKILLS_HERBALISM = 9;
-    public static int SKILLS_EXCAVATION = 10;
-    public static int SKILLS_ARCHERY = 11;
-    public static int SKILLS_SWORDS = 12;
-    public static int SKILLS_AXES = 13;
-    public static int SKILLS_ACROBATICS = 14;
-    public static int EXP_REPAIR = 15;
-    public static int EXP_UNARMED = 16;
-    public static int EXP_HERBALISM = 17;
-    public static int EXP_EXCAVATION = 18;
-    public static int EXP_ARCHERY = 19;
-    public static int EXP_SWORDS = 20;
-    public static int EXP_AXES = 21;
-    public static int EXP_ACROBATICS = 22;
-    public static int SKILLS_TAMING = 24;
-    public static int EXP_TAMING = 25;
-    public static int COOLDOWN_BERSERK = 26;
-    public static int COOLDOWN_GIGA_DRILL_BREAKER = 27;
-    public static int COOLDOWN_TREE_FELLER = 28;
-    public static int COOLDOWN_GREEN_TERRA = 29;
-    public static int COOLDOWN_SERRATED_STRIKES = 30;
-    public static int COOLDOWN_SKULL_SPLITTER = 31;
-    public static int COOLDOWN_SUPER_BREAKER = 32;
-    public static int SKILLS_FISHING = 34;
-    public static int EXP_FISHING = 35;
-    public static int COOLDOWN_BLAST_MINING = 36;
-    public static int LAST_LOGIN = 37;
-    public static int HEALTHBAR = 38;
-    public static int SKILLS_ALCHEMY = 39;
-    public static int EXP_ALCHEMY = 40;
-    public static int UUID_INDEX = 41;
-    public static int SCOREBOARD_TIPS = 42;
-    public static int COOLDOWN_CHIMAERA_WING = 43;
-    public static int SKILLS_TRIDENTS = 44;
-    public static int EXP_TRIDENTS = 45;
-    public static int SKILLS_CROSSBOWS = 46;
-    public static int EXP_CROSSBOWS = 47;
-    public static int BARSTATE_ACROBATICS = 48;
-    public static int BARSTATE_ALCHEMY = 49;
-    public static int BARSTATE_ARCHERY = 50;
-    public static int BARSTATE_AXES = 51;
-    public static int BARSTATE_EXCAVATION = 52;
-    public static int BARSTATE_FISHING = 53;
-    public static int BARSTATE_HERBALISM = 54;
-    public static int BARSTATE_MINING = 55;
-    public static int BARSTATE_REPAIR = 56;
-    public static int BARSTATE_SALVAGE = 57;
-    public static int BARSTATE_SMELTING = 58;
-    public static int BARSTATE_SWORDS = 59;
-    public static int BARSTATE_TAMING = 60;
-    public static int BARSTATE_UNARMED = 61;
-    public static int BARSTATE_WOODCUTTING = 62;
-    public static int BARSTATE_TRIDENTS = 63;
-    public static int BARSTATE_CROSSBOWS = 64;
+
+    @Override
+    public void onDisable() { }
 
     public void resetMobHealthSettings() {
         BufferedReader in = null;

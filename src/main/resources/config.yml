@@ -238,8 +238,6 @@ Items:
         Recipe_Cost: 5
         Item_Name: FEATHER
         Sound_Enabled: true
-    Flux_Pickaxe:
-        Sound_Enabled: true
 
 #
 #  Settings for Parties
@@ -297,6 +295,9 @@ Abilities:
         Skull_Splitter: 240
         Super_Breaker: 240
         Tree_Feller: 240
+        Super_Shotgun: 240
+        Archery_Super: 240
+        Tridents_Super: 240
     Max_Seconds:
         Berserk: 0
         Blast_Mining: 0
@@ -306,6 +307,9 @@ Abilities:
         Skull_Splitter: 0
         Super_Breaker: 0
         Tree_Feller: 0
+        Super_Shotgun: 0
+        Archery_Super: 0
+        Tridents_Super: 0
     Limits:
         Tree_Feller_Threshold: 500
     Tools:

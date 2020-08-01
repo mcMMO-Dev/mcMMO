@@ -563,7 +563,7 @@ public class Config extends AutoUpdateConfigLoader {
     }
 
     public int getLevelCap(PrimarySkillType skill) {
-        int cap = config.getInt("Skills." + StringUtils.getCapitalized(skill.toString()) + ".Level_Cap");
+        int cap = config.getInt("Skills." + StringUtils.getCapitalized(skill.toString()) + ".Level_Cap", 0);
         return (cap <= 0) ? Integer.MAX_VALUE : cap;
     }
 

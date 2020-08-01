@@ -77,6 +77,31 @@ public enum SuperAbilityType {
             "Mining.Blast.Refresh",
             null,
             "Mining.SubSkill.BlastMining.Name"),
+
+    ARCHERY_SUPER(
+            "Archery.SuperAbility.SuperAbilityName.On",
+            "Archery.SuperAbility.SuperAbilityName.Off",
+            "Archery.SuperAbility.SuperAbilityName.InformOthers.On",
+            "Archery.SuperAbility.SuperAbilityName.Refresh",
+            "Archery.SuperAbility.SuperAbilityName.InformOthers.Off",
+            "Archery.SuperAbility.SuperAbilityName.Name"
+    ),
+    SUPER_SHOTGUN(
+            "Crossbows.SuperAbility.SuperShotgun.On",
+            "Crossbows.SuperAbility.SuperShotgun.Off",
+            "Crossbows.SuperAbility.SuperShotgun.InformOthers.On",
+            "Crossbows.SuperAbility.SuperShotgun.Refresh",
+            "Crossbows.SuperAbility.SuperShotgun.InformOthers.Off",
+            "Crossbows.SuperAbility.SuperShotgun.Name"
+    ),
+    TRIDENT_SUPER(
+            "Tridents.SuperAbility.SuperAbilityName.On",
+            "Tridents.SuperAbility.SuperAbilityName.Off",
+            "Tridents.SuperAbility.SuperAbilityName.InformOthers.On",
+            "Tridents.SuperAbility.SuperAbilityName.Refresh",
+            "Tridents.SuperAbility.SuperAbilityName.InformOthers.Off",
+            "Tridents.SuperAbility.SuperAbilityName.Name"
+    ),
     ;
 
     /*
