@@ -20,7 +20,7 @@ public class McrefreshCommand extends ToggleCommand {
     protected void applyCommandAction(McMMOPlayer mcMMOPlayer) {
         mcMMOPlayer.setRecentlyHurt(0);
         mcMMOPlayer.resetCooldowns();
-        mcMMOPlayer.getSuperAbilityManager().resetToolPrepMode();
+        mcMMOPlayer.getSuperAbilityManager().unprimeAllAbilityTools();
         mcMMOPlayer.getSuperAbilityManager().resetSuperAbilities();
 
         mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Ability.Generic.Refresh"));

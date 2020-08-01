@@ -251,7 +251,7 @@ public class MaterialMapStore {
         fillIronToolsWhiteList();
         fillGoldToolsWhiteList();
         fillDiamondToolsWhiteList();
-        fillnetheriteToolsWhiteList();
+        fillNetheriteToolsWhiteList();
 
         fillSwords();
         fillAxes();
@@ -476,7 +476,7 @@ public class MaterialMapStore {
         diamondTools.add("diamond_shovel");
     }
 
-    private void fillnetheriteToolsWhiteList() {
+    private void fillNetheriteToolsWhiteList() {
         netheriteTools.add("netherite_sword");
         netheriteTools.add("netherite_axe");
         netheriteTools.add("netherite_hoe");

@@ -10,7 +10,7 @@ public class McMMOPlayerAbilityEvent extends McMMOPlayerSkillEvent {
 
     protected McMMOPlayerAbilityEvent(Player player, PrimarySkillType skill) {
         super(player, skill);
-        ability = skill.getAbility();
+        ability = skill.getSuperAbilityType();
     }
 
     public SuperAbilityType getAbility() {

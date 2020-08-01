@@ -9,10 +9,10 @@ import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.meta.RecentlyReplantedCropMeta;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.AbilityToolType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.DelayedCropReplant;
@@ -82,7 +82,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canActivateAbility() {
-        return mcMMOPlayer.getSuperAbilityManager().getToolPreparationMode(ToolType.HOE) && Permissions.greenTerra(getPlayer());
+        return mcMMOPlayer.getSuperAbilityManager().isAbilityToolPrimed(AbilityToolType.GREEN_TERRA_TOOL) && Permissions.greenTerra(getPlayer());
     }
 
     public boolean isGreenTerraActive() {

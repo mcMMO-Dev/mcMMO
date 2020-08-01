@@ -3,10 +3,10 @@ package com.gmail.nossr50.skills.unarmed;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.AbilityToolType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.EventUtils;
@@ -32,7 +32,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canActivateAbility() {
-        return mcMMOPlayer.getSuperAbilityManager().getToolPreparationMode(ToolType.FISTS) && Permissions.berserk(getPlayer());
+        return mcMMOPlayer.getSuperAbilityManager().isAbilityToolPrimed(AbilityToolType.BERSERK_TOOL) && Permissions.berserk(getPlayer());
     }
 
     public boolean canUseIronArm() {

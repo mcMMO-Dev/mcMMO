@@ -29,6 +29,14 @@ public class AbilityActivationProcessor {
         this.player = mmoPlayer.getPlayer();
     }
 
+    /**
+     * Checks to see if the player is holding a tool
+     */
+    public boolean isHoldingTool() {
+        return mcMMO.getMaterialMapStore().isTool(player.getInventory().getItemInMainHand().getType());
+    }
+
+
     public void processAbilityAndToolActivations(PlayerInteractEvent event) {
         switch(event.getAction()) {
             case LEFT_CLICK_BLOCK:

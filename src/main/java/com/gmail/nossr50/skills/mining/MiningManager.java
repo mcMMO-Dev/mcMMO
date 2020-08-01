@@ -81,7 +81,7 @@ public class MiningManager extends SkillManager {
             return;
         }
 
-        if (mcMMOPlayer.getSuperAbilityManager().getAbilityMode(skill.getAbility())) {
+        if (mcMMOPlayer.getSuperAbilityManager().getAbilityMode(skill.getSuperAbilityType())) {
             SkillUtils.handleDurabilityChange(getPlayer().getInventory().getItemInMainHand(), Config.getInstance().getAbilityToolDamage());
         }
 
@@ -95,7 +95,7 @@ public class MiningManager extends SkillManager {
 
         //TODO: Make this readable
         if (RandomChanceUtil.checkRandomChanceExecutionSuccess(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS, true)) {
-            BlockUtils.markDropsAsBonus(blockState, mcMMOPlayer.getSuperAbilityManager().getAbilityMode(skill.getAbility()));
+            BlockUtils.markDropsAsBonus(blockState, mcMMOPlayer.getSuperAbilityManager().getAbilityMode(skill.getSuperAbilityType()));
         }
     }
 

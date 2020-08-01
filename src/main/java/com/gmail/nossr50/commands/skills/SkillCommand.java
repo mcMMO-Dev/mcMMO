@@ -225,7 +225,7 @@ public abstract class SkillCommand implements TabExecutor {
     }
 
     protected String[] calculateLengthDisplayValues(Player player, float skillValue) {
-        int maxLength = skill.getAbility().getMaxLength();
+        int maxLength = skill.getSuperAbilityType().getMaxLength();
         int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
         int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
 

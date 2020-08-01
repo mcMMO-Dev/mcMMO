@@ -79,7 +79,7 @@ public class SkillUtils {
      */
 
     public static String[] calculateLengthDisplayValues(Player player, float skillValue, PrimarySkillType skill) {
-        int maxLength = skill.getAbility().getMaxLength();
+        int maxLength = skill.getSuperAbilityType().getMaxLength();
         int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
         int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
 
@@ -214,10 +214,10 @@ public class SkillUtils {
             if(abilityLengthCap > 0)
             {
                 ticks = PerksUtils.handleActivationPerks(player,  Math.min(abilityLengthCap, 2 + (mcMMOPlayer.getSkillLevel(skill) / abilityLengthVar)),
-                        skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
+                        skill.getSuperAbilityType().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
             } else {
                 ticks = PerksUtils.handleActivationPerks(player, 2 + ((mcMMOPlayer.getSkillLevel(skill)) / abilityLengthVar),
-                        skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
+                        skill.getSuperAbilityType().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
             }
 
             PotionEffect abilityBuff = new PotionEffect(PotionEffectType.FAST_DIGGING, duration + ticks, amplifier + 10);

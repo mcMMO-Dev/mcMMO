@@ -4,9 +4,9 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.AbilityToolType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
 import com.gmail.nossr50.runnables.skills.ToolLowerTask;
@@ -29,24 +29,24 @@ public class SuperAbilityManager {
     private final McMMOPlayer mmoPlayer;
     private final Player player;
 
-    private final Map<SuperAbilityType, Boolean> abilityMode     = new HashMap<>();
+    private final Map<SuperAbilityType, Boolean> superAbilityState = new HashMap<>();
     private final Map<SuperAbilityType, Boolean> abilityInformed = new HashMap<>();
 
     private boolean abilityActivationPermission = true;
 
-    private final Map<ToolType, Boolean> toolMode = new HashMap<>();
+    private final Map<AbilityToolType, Boolean> toolMode = new HashMap<>();
 
     public SuperAbilityManager(McMMOPlayer mmoPlayer) {
         this.mmoPlayer = mmoPlayer;
         this.player = mmoPlayer.getPlayer();
 
         for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {
-            abilityMode.put(superAbilityType, false);
+            superAbilityState.put(superAbilityType, false);
             abilityInformed.put(superAbilityType, true); // This is intended
         }
 
-        for (ToolType toolType : ToolType.values()) {
-            toolMode.put(toolType, false);
+        for (AbilityToolType abilityToolType : AbilityToolType.values()) {
+            toolMode.put(abilityToolType, false);
         }
     }
 
@@ -78,14 +78,13 @@ public class SuperAbilityManager {
             }
         }
 
-        SuperAbilityType ability = skill.getAbility();
-        ToolType tool = skill.getTool();
+        SuperAbilityType ability = skill.getSuperAbilityType();
 
         /*
          * Woodcutting & Axes need to be treated differently.
          * Basically the tool always needs to ready and we check to see if the cooldown is over when the user takes action
          */
-        if (tool.inHand(inHand) && !getToolPreparationMode(tool)) {
+        if (mmoPlayer.getAbilityActivationProcessor().isHoldingTool() && !isAbilityToolPrimed(tool)) {
             if (skill != PrimarySkillType.WOODCUTTING && skill != PrimarySkillType.AXES) {
                 int timeRemaining = calculateTimeRemaining(ability);
 
@@ -96,11 +95,11 @@ public class SuperAbilityManager {
             }
 
             if (Config.getInstance().getAbilityMessagesEnabled()) {
-                NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, tool.getRaiseTool());
+                NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, tool.getRaiseToolLocaleKey());
                 SoundManager.sendSound(player, player.getLocation(), SoundType.TOOL_READY);
             }
 
-            setToolPreparationMode(tool, true);
+            setAbilityToolPrime(tool, true);
             new ToolLowerTask(mmoPlayer, tool).runTaskLater(mcMMO.p, 4 * Misc.TICK_CONVERSION_FACTOR);
         }
     }
@@ -111,8 +110,8 @@ public class SuperAbilityManager {
      * @param primarySkillType The primarySkillType the ability is based on
      */
     public void checkAbilityActivation(PrimarySkillType primarySkillType) {
-        ToolType tool = primarySkillType.getTool();
-        SuperAbilityType ability = primarySkillType.getAbility();
+        AbilityToolType tool = primarySkillType.getTool();
+        SuperAbilityType ability = primarySkillType.getSuperAbilityType();
 
         if (getAbilityMode(ability) || !ability.getPermissions(player)) {
             return;
@@ -122,7 +121,7 @@ public class SuperAbilityManager {
         //Potential problems with this include skills with two super abilities (ie mining)
         if(!primarySkillType.isSuperAbilityUnlocked(player))
         {
-            int diff = RankUtils.getSuperAbilityUnlockRequirement(primarySkillType.getAbility()) - mmoPlayer.getSkillLevel(primarySkillType);
+            int diff = RankUtils.getSuperAbilityUnlockRequirement(primarySkillType.getSuperAbilityType()) - mmoPlayer.getSkillLevel(primarySkillType);
 
             //Inform the player they are not yet skilled enough
             NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.AbilityGateRequirementFail", String.valueOf(diff), primarySkillType.getName());
@@ -182,7 +181,7 @@ public class SuperAbilityManager {
             SkillUtils.handleAbilitySpeedIncrease(player);
         }
 
-        setToolPreparationMode(tool, false);
+        setAbilityToolPrime(tool, false);
         new AbilityDisableTask(mmoPlayer, ability).runTaskLater(mcMMO.p, ticks * Misc.TICK_CONVERSION_FACTOR);
     }
 
@@ -207,7 +206,7 @@ public class SuperAbilityManager {
      * @return true if the ability is enabled, false otherwise
      */
     public boolean getAbilityMode(SuperAbilityType ability) {
-        return abilityMode.get(ability);
+        return superAbilityState.get(ability);
     }
 
     /**
@@ -217,7 +216,7 @@ public class SuperAbilityManager {
      * @param isActive True if the ability is active, false otherwise
      */
     public void setAbilityMode(SuperAbilityType ability, boolean isActive) {
-        abilityMode.put(ability, isActive);
+        superAbilityState.put(ability, isActive);
     }
 
     /**
@@ -241,13 +240,13 @@ public class SuperAbilityManager {
     }
 
     /**
-     * Get the current prep mode of a tool.
+     * Whether or not a tool is primed
      *
-     * @param tool Tool to get the mode for
-     * @return true if the tool is prepped, false otherwise
+     * @param abilityToolType ability tool to check
+     * @return true if the abilityToolType is primed, false otherwise
      */
-    public boolean getToolPreparationMode(ToolType tool) {
-        return toolMode.get(tool);
+    public boolean isAbilityToolPrimed(AbilityToolType abilityToolType) {
+        return toolMode.get(abilityToolType);
     }
 
     public boolean getAbilityActivationPermission() {
@@ -265,20 +264,20 @@ public class SuperAbilityManager {
     /**
      * Reset the prep modes of all tools.
      */
-    public void resetToolPrepMode() {
-        for (ToolType tool : ToolType.values()) {
-            setToolPreparationMode(tool, false);
+    public void unprimeAllAbilityTools() {
+        for (AbilityToolType abilityToolType : AbilityToolType.values()) {
+            setAbilityToolPrime(abilityToolType, false);
         }
     }
 
     /**
-     * Set the current prep mode of a tool.
+     * Set the current prep mode of a abilityToolType.
      *
-     * @param tool Tool to set the mode for
-     * @param isPrepared true if the tool should be prepped, false otherwise
+     * @param abilityToolType Tool to set the mode for
+     * @param isPrepared true if the abilityToolType should be prepped, false otherwise
      */
-    public void setToolPreparationMode(ToolType tool, boolean isPrepared) {
-        toolMode.put(tool, isPrepared);
+    public void setAbilityToolPrime(AbilityToolType abilityToolType, boolean isPrepared) {
+        toolMode.put(abilityToolType, isPrepared);
     }
 
     /**

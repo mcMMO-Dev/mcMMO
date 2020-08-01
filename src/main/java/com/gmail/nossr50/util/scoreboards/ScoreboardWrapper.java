@@ -462,7 +462,7 @@ public class ScoreboardWrapper {
 
                 sidebarObjective.getScore(ScoreboardManager.LABEL_LEVEL).setScore(mcMMOPlayer.getSkillLevel(targetSkill));
 
-                if (targetSkill.getAbility() != null) {
+                if (targetSkill.getSuperAbilityType() != null) {
                     boolean stopUpdating;
 
                     if (targetSkill == PrimarySkillType.MINING) {
@@ -478,7 +478,7 @@ public class ScoreboardWrapper {
                         stopUpdating = (secondsSB == 0 && secondsBM == 0);
                     }
                     else {
-                        SuperAbilityType ability = targetSkill.getAbility();
+                        SuperAbilityType ability = targetSkill.getSuperAbilityType();
                         Score cooldown = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(ability));
                         int seconds = Math.max(mcMMOPlayer.calculateTimeRemaining(ability), 0);
 
