@@ -464,6 +464,7 @@ Experience_Values:
         Lapis_Ore: 40
         Nether_Quartz_Ore: 25
         Redstone_Ore: 15
+        Nether_Gold_Ore: 35
     Taming:
         Animal_Taming:
             Llama: 1200
