@@ -207,6 +207,8 @@ public class MaterialMapStore {
         ores.add("redstone_ore");
         ores.add("emerald_ore");
         ores.add("ancient_debris");
+        ores.add("nether_gold_ore");
+        ores.add("gilded_blackstone");
     }
 
     private void fillArmors() {

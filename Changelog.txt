@@ -48,6 +48,13 @@ Version 2.2.000
 
     Notes:
     These are the first new skills that I've written for mcMMO in about 9 years, I'll be listening closely to feedback and tweaking them often.
+Version 2.1.139
+    Code used to fetch UUIDs was reworked to avoid a scenario where it failed (thanks t00thpick1)
+    Added 'Netherite_Gold_Ore' to Smelting XP tables (thanks Quavelen)
+    Added 'Gilded_Blackstone' and 'Nether_Gold_Ore' to code used to determine what can activate Super Breaker in certain situations (thanks Quavelen)
+    MMOinfo for Roll was corrected (thanks emanondev)
+
+>>>>>>> 8df15a4e55b27af7ac0fc72d587acc2bdf5b966a
 Version 2.1.138
     Fixed a bug where Netherite weapons/tools/armor weren't applying correct values in some skill calculations
 

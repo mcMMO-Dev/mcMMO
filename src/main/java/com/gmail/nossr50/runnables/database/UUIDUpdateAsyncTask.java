@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 
 public class UUIDUpdateAsyncTask implements Runnable {
@@ -29,7 +30,7 @@ public class UUIDUpdateAsyncTask implements Runnable {
 
     private static final int BATCH_SIZE = 100; // 100 at a time
 
-    private final Object awaiter = new Object();
+    private final CountDownLatch awaiter = new CountDownLatch(1);
     private final mcMMO plugin;
     private final ImmutableList<String> userNames;
     private int position = 0;
@@ -98,12 +99,10 @@ public class UUIDUpdateAsyncTask implements Runnable {
         position += batch.size();
         plugin.getLogger().info(String.format("Conversion progress: %d/%d users", position, userNames.size()));
 
-        if (position == userNames.size())
-        {
+        if (position == userNames.size()) {
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_UUIDS);
-            awaiter.notify();
-        }
-        else
+            awaiter.countDown();
+        } else
             this.runTaskLaterAsynchronously(plugin, Misc.TICK_CONVERSION_FACTOR * DELAY_PERIOD); // Schedule next batch
     }
 
@@ -122,7 +121,7 @@ public class UUIDUpdateAsyncTask implements Runnable {
 
     public void waitUntilFinished() {
         try {
-            awaiter.wait();
+            awaiter.await();
         } catch (InterruptedException e) {
             // I guess we don't care in this event
         }
