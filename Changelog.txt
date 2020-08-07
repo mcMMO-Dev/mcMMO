@@ -1,3 +1,9 @@
+Version 2.1.139
+    Code used to fetch UUIDs was reworked to avoid a scenario where it failed (thanks t00thpick1)
+    Added 'Netherite_Gold_Ore' to Smelting XP tables (thanks Quavelan)
+    Added 'Gilded_Blackstone' and 'Nether_Gold_Ore' to code used to determine what can activate Super Breaker in certain situations (thanks Quavelan)
+    MMOinfo for Roll was corrected (thanks emanondev)
+
 Version 2.1.138
     Fixed a bug where Netherite weapons/tools/armor weren't applying correct values in some skill calculations
 
