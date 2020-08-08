@@ -1,3 +1,10 @@
+Version 2.1.140
+    Deployed a few fixes to scoreboards code
+    Updated polish locale
+
+    NOTES:
+    Scoreboards code is a mess and most of it is ancient, I plan to rewrite it in a future update. The way scoreboards API works in general is just difficult to deal with.
+
 Version 2.1.139
     Code used to fetch UUIDs was reworked to avoid a scenario where it failed (thanks t00thpick1)
     Added 'Netherite_Gold_Ore' to Smelting XP tables (thanks Quavelen)
