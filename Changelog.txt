@@ -49,11 +49,11 @@ Version 2.2.000
     Notes:
     These are the first new skills that I've written for mcMMO in about 9 years, I'll be listening closely to feedback and tweaking them often.
 Version 2.1.140
-    Deployed a few fixes to scoreboards code
+    Fixed a few potential issues with scoreboards
     Updated polish locale
 
     NOTES:
-    Scoreboards code is a mess and most of it is ancient, I plan to rewrite it in a future update. The way scoreboards API works in general is just difficult to deal with.
+    Scoreboards code in mcMMO is pretty messy and poorly designed, I am going to rewrite it in a future update. The fixes applied in this patch should solve some problems some users were having for now.
 
 Version 2.1.139
     Code used to fetch UUIDs was reworked to avoid a scenario where it failed (thanks t00thpick1)
@@ -74,7 +74,6 @@ Version 2.1.136
     NOTES:
         I'm making use of a Spigot API for persistent data for versions of MC 1.14 and above, for versions below the data will be temporary as it has been up until this point.
         In the future I'll wire up NMS to make use of NBT and all versions will have persistent data support.
-
 
 Version 2.1.135
     Furnaces no longer simulate block break checks when assigning ownership as it caused some unwanted plugin conflicts
