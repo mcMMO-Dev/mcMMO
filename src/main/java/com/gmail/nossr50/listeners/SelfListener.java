@@ -33,39 +33,40 @@ public class SelfListener implements Listener {
     public void onPlayerLevelUp(McMMOPlayerLevelUpEvent event) {
         Player player = event.getPlayer();
         PrimarySkillType skill = event.getSkill();
+        if(player.isOnline()) {
+            //Players can gain multiple levels especially during xprate events
+            for(int i = 0; i < event.getLevelsGained(); i++)
+            {
+                int previousLevelGained = event.getSkillLevel() - i;
+                //Send player skill unlock notifications
+                UserManager.getPlayer(player).processUnlockNotifications(plugin, event.getSkill(), previousLevelGained);
+            }
 
-        //Players can gain multiple levels especially during xprate events
-        for(int i = 0; i < event.getLevelsGained(); i++)
-        {
-            int previousLevelGained = event.getSkillLevel() - i;
-            //Send player skill unlock notifications
-            UserManager.getPlayer(player).processUnlockNotifications(plugin, event.getSkill(), previousLevelGained);
+            //Reset the delay timer
+            RankUtils.resetUnlockDelayTimer();
+
+            if(Config.getInstance().getScoreboardsEnabled())
+                ScoreboardManager.handleLevelUp(player, skill);
         }
-
-        //Reset the delay timer
-        RankUtils.resetUnlockDelayTimer();
-
-        if(Config.getInstance().getScoreboardsEnabled())
-            ScoreboardManager.handleLevelUp(player, skill);
-
-        if (!Config.getInstance().getLevelUpEffectsEnabled()) {
-        }
-
-        /*if ((event.getSkillLevel() % Config.getInstance().getLevelUpEffectsTier()) == 0) {
-            skill.celebrateLevelUp(player);
-        }*/
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerXp(McMMOPlayerXpGainEvent event) {
-        if(Config.getInstance().getScoreboardsEnabled())
-            ScoreboardManager.handleXp(event.getPlayer(), event.getSkill());
+        Player player = event.getPlayer();
+
+        if(player.isOnline()) {
+            if(Config.getInstance().getScoreboardsEnabled())
+                ScoreboardManager.handleXp(player, event.getSkill());
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onAbility(McMMOPlayerAbilityActivateEvent event) {
-        if(Config.getInstance().getScoreboardsEnabled())
-            ScoreboardManager.cooldownUpdate(event.getPlayer(), event.getSkill());
+        Player player = event.getPlayer();
+        if(player.isOnline()) {
+            if(Config.getInstance().getScoreboardsEnabled())
+                ScoreboardManager.cooldownUpdate(event.getPlayer(), event.getSkill());
+        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

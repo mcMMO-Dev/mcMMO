@@ -6,7 +6,10 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.events.scoreboard.*;
+import com.gmail.nossr50.events.scoreboard.McMMOScoreboardObjectiveEvent;
+import com.gmail.nossr50.events.scoreboard.McMMOScoreboardRevertEvent;
+import com.gmail.nossr50.events.scoreboard.ScoreboardEventReason;
+import com.gmail.nossr50.events.scoreboard.ScoreboardObjectiveEventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.child.FamilyTree;
@@ -27,6 +30,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ScoreboardWrapper {
+    public static final String SIDE_OBJECTIVE = "mcMMO_sideObjective";
+    public static final String POWER_OBJECTIVE = "mcMMO_powerObjective";
     // Initialization variables
     public final String playerName;
     public final Player player;
@@ -46,13 +51,13 @@ public class ScoreboardWrapper {
     private PlayerProfile targetProfile = null;
     public int leaderboardPage = -1;
 
-    private ScoreboardWrapper(Player player, Scoreboard scoreboard) {
+    public ScoreboardWrapper(Player player, Scoreboard scoreboard) {
         this.player = player;
         this.playerName = player.getName();
         this.scoreboard = scoreboard;
         sidebarType = SidebarType.NONE;
-        sidebarObjective = this.scoreboard.registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "dummy");
-        powerObjective = this.scoreboard.registerNewObjective(ScoreboardManager.POWER_OBJECTIVE, "dummy");
+        sidebarObjective = this.scoreboard.registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "dummy", SIDE_OBJECTIVE);
+        powerObjective = this.scoreboard.registerNewObjective(ScoreboardManager.POWER_OBJECTIVE, "dummy", POWER_OBJECTIVE);
 
         if (Config.getInstance().getPowerLevelTagsEnabled()) {
             powerObjective.setDisplayName(ScoreboardManager.TAG_POWER_LEVEL);
@@ -62,14 +67,6 @@ public class ScoreboardWrapper {
                 powerObjective.getScore(mcMMOPlayer.getProfile().getPlayerName()).setScore(mcMMOPlayer.getPowerLevel());
             }
         }
-    }
-
-    public static ScoreboardWrapper create(Player player) {
-        //Call our custom event
-        McMMOScoreboardMakeboardEvent event = new McMMOScoreboardMakeboardEvent(mcMMO.p.getServer().getScoreboardManager().getNewScoreboard(), player.getScoreboard(), player, ScoreboardEventReason.CREATING_NEW_SCOREBOARD);
-        player.getServer().getPluginManager().callEvent(event);
-        //Use the values from the event
-        return new ScoreboardWrapper(event.getTargetPlayer(), event.getTargetBoard());
     }
 
     public BukkitTask updateTask = null;
@@ -158,16 +155,17 @@ public class ScoreboardWrapper {
             return;
         }
 
-        Scoreboard oldBoard = player.getScoreboard();
+        Scoreboard previousBoard = player.getScoreboard();
 
-        if (oldBoard == scoreboard) { // Already displaying it
+        if (previousBoard == scoreboard) { // Already displaying it
             if (this.oldBoard == null) {
                 // (Shouldn't happen) Use failsafe value - we're already displaying our board, but we don't have the one we should revert to
-                this.oldBoard = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard();
+                if(mcMMO.p.getServer().getScoreboardManager() != null)
+                    this.oldBoard = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard();
             }
         }
         else {
-            this.oldBoard = oldBoard;
+            this.oldBoard = previousBoard;
         }
     }
 
@@ -394,7 +392,7 @@ public class ScoreboardWrapper {
         //Register objective
         McMMOScoreboardObjectiveEvent registerEvent = callObjectiveEvent(ScoreboardObjectiveEventReason.REGISTER_NEW_OBJECTIVE);
         if(!registerEvent.isCancelled())
-            sidebarObjective = registerEvent.getTargetBoard().registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "dummy");
+            sidebarObjective = registerEvent.getTargetBoard().registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "dummy", SIDE_OBJECTIVE);
 
         if (displayName.length() > 32) {
             displayName = displayName.substring(0, 32);
