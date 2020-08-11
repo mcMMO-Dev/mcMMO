@@ -120,6 +120,8 @@ public class CompatibilityManager {
                 case 16:
                     if (minecraftGameVersion.getPatchVersion().asInt() == 1) {
                         return NMSVersion.NMS_1_16_1;
+                    } else if(minecraftGameVersion.getPatchVersion().asInt() == 2) {
+                        return NMSVersion.NMS_1_16_2;
                     }
             }
         }

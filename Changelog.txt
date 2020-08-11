@@ -1,3 +1,6 @@
+Version 2.1.141
+    Added some missing values for 1.16.2 compatibility modes
+
 Version 2.1.140
     Fixed a few potential issues with scoreboards
     Updated polish locale
