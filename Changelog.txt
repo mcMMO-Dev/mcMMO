@@ -48,6 +48,9 @@ Version 2.2.000
 
     Notes:
     These are the first new skills that I've written for mcMMO in about 9 years, I'll be listening closely to feedback and tweaking them often.
+Version 2.1.141
+    Added some missing values for 1.16.2 compatibility modes
+
 Version 2.1.140
     Fixed a few potential issues with scoreboards
     Updated polish locale

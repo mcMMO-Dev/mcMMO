@@ -99,6 +99,7 @@
                             <include>org.apache.tomcat:tomcat-jdbc</include>
                             <include>org.apache.tomcat:tomcat-juli</include>
                             <include>org.bstats:bstats-bukkit</include>
+                            <include>net.kyori:adventure-api</include>
                         </includes>
                     </artifactSet>
                     <relocations>
@@ -151,8 +152,24 @@
             <id>sk89q-repo</id>
             <url>https://maven.sk89q.com/repo/</url>
         </repository>
+            <!-- ... -->
+            <repository> <!-- for development builds -->
+                <id>sonatype-oss</id>
+                <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            </repository>
+            <!-- ... -->
     </repositories>
     <dependencies>
+<!--        <dependency>-->
+<!--            <groupId>net.kyori</groupId>-->
+<!--            <artifactId>adventure-platform-bukkit</artifactId>-->
+<!--            <version>4.0.0-SNAPSHOT</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>net.kyori</groupId>-->
+<!--            <artifactId>adventure-api</artifactId>-->
+<!--            <version>4.0.0-SNAPSHOT</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.apache.maven.scm</groupId>
             <artifactId>maven-scm-provider-gitexe</artifactId>
@@ -167,7 +184,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.1-R0.1-SNAPSHOT</version>
+            <version>1.16.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
