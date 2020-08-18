@@ -61,7 +61,7 @@ public class UnarmedCommand extends SkillCommand {
 
         // IRON ARM
         if (canIronArm) {
-            ironArmBonus = UserManager.getPlayer(player).getUnarmedManager().getIronArmDamage();
+            ironArmBonus = UserManager.getPlayer(player).getUnarmedManager().getSteelArmStyleDamage();
         }
 
         // IRON GRIP
@@ -75,7 +75,7 @@ public class UnarmedCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canBerserk = RankUtils.hasUnlockedSubskill(player, SubSkillType.UNARMED_BERSERK) && Permissions.berserk(player);
-        canIronArm = canUseSubskill(player, SubSkillType.UNARMED_IRON_ARM_STYLE);
+        canIronArm = canUseSubskill(player, SubSkillType.UNARMED_STEEL_ARM_STYLE);
         canDeflect = canUseSubskill(player, SubSkillType.UNARMED_ARROW_DEFLECT);
         canDisarm = canUseSubskill(player, SubSkillType.UNARMED_DISARM);
         canIronGrip = canUseSubskill(player, SubSkillType.UNARMED_IRON_GRIP);

@@ -1,3 +1,12 @@
+Version 2.1.142
+    Iron Arm Style renamed to Steel Arm Style
+    Steel Arm Style now scales over 20 ranks instead of 5
+    Added 'mcmmo.ability.unarmed.steelarmstyle' permission node
+    Removed 'mcmmo.ability.unarmed.ironarmstyle' permission node
+    Added locale entry 'Unarmed.SubSkill.SteelArmStyle.Name'
+    Added locale entry 'Unarmed.SubSkill.SteelArmStyle.Description'
+    Updated locale entry 'Unarmed.Ability.Bonus.0'
+
 Version 2.1.141
     Added some missing values for 1.16.2 compatibility modes
 

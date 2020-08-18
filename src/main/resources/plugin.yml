@@ -664,7 +664,7 @@ permissions:
         children:
             mcmmo.ability.unarmed.berserk: true
             mcmmo.ability.unarmed.blockcracker: true
-            mcmmo.ability.unarmed.ironarmstyle: true
+            mcmmo.ability.unarmed.steelarmstyle: true
             mcmmo.ability.unarmed.arrowdeflect: true
             mcmmo.ability.unarmed.disarm: true
             mcmmo.ability.unarmed.irongrip: true
@@ -675,8 +675,8 @@ permissions:
         description: Allows access to the Berserker ability
     mcmmo.ability.unarmed.blockcracker:
         description: Allows access to the Block Cracker ability
-    mcmmo.ability.unarmed.ironarmstyle:
-        description: Allows bonus damage from the Iron Arm ability
+    mcmmo.ability.unarmed.steelarmstyle:
+        description: Allows bonus damage from the Steel Arm Style ability
     mcmmo.ability.unarmed.arrowdeflect:
         description: Allows access to the Arrow Deflect ability
     mcmmo.ability.unarmed.disarm:
