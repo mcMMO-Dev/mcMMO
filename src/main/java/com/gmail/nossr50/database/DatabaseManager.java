@@ -3,6 +3,7 @@ package com.gmail.nossr50.database;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
+import com.gmail.nossr50.datatypes.player.MMODataSnapshot;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 
@@ -40,15 +41,14 @@ public interface DatabaseManager {
      * Currently only used for SQL
      * @param uuid target UUID to cleanup
      */
-    void cleanupUser(UUID uuid);
+    void removeCache(UUID uuid);
 
     /**
      * Save a user to the database.
      *
-     * @param profile The profile of the player to save
-     * @return true if successful, false on failure
+     * @param mmoDataSnapshot Snapshot of player data to save
      */
-    boolean saveUser(PlayerProfile profile);
+    boolean saveUser(MMODataSnapshot mmoDataSnapshot);
 
     /**
     * Retrieve leaderboard info.
@@ -82,36 +82,10 @@ public interface DatabaseManager {
     /**
      * Load a player from the database.
      *
-     * @deprecated replaced by {@link #loadPlayerProfile(String playerName, UUID uuid, boolean createNew)}
-     *
-     * @param playerName The name of the player to load from the database
-     * @param createNew Whether to create a new record if the player is not
-     *          found
-     * @return The player's data, or an unloaded PlayerProfile if not found
-     *          and createNew is false
-     */
-    @Deprecated
-    PlayerProfile loadPlayerProfile(String playerName, boolean createNew);
-
-    /**
-     * Load a player from the database.
-     *
      * @param uuid The uuid of the player to load from the database
      * @return The player's data, or an unloaded PlayerProfile if not found
      */
     PlayerProfile loadPlayerProfile(UUID uuid);
-
-    /**
-     * Load a player from the database. Attempt to use uuid, fall back on playername
-     *
-     * @param playerName The name of the player to load from the database
-     * @param uuid The uuid of the player to load from the database
-     * @param createNew Whether to create a new record if the player is not
-     *          found
-     * @return The player's data, or an unloaded PlayerProfile if not found
-     *          and createNew is false
-     */
-    PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean createNew);
 
     /**
      * Get all users currently stored in the database.
@@ -128,9 +102,9 @@ public interface DatabaseManager {
      */
     void convertUsers(DatabaseManager destination);
 
-    boolean saveUserUUID(String userName, UUID uuid);
+//    boolean saveUserUUID(String userName, UUID uuid);
 
-    boolean saveUserUUIDs(Map<String, UUID> fetchedUUIDs);
+//    boolean saveUserUUIDs(Map<String, UUID> fetchedUUIDs);
 
     /**
      * Retrieve the type of database in use. Custom databases should return CUSTOM.

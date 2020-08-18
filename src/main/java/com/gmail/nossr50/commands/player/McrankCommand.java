@@ -7,7 +7,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.McrankCommandAsyncTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -53,10 +52,10 @@ public class McrankCommand implements TabExecutor {
                 }
 
                 String playerName = CommandUtils.getMatchedPlayerName(args[0]);
-                McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(playerName);
+                McMMOPlayer mmoPlayer = mcMMO.getUserManager().getOfflinePlayer(playerName);
 
-                if (mcMMOPlayer != null) {
-                    Player player = mcMMOPlayer.getPlayer();
+                if (mmoPlayer != null) {
+                    Player player = mmoPlayer.getPlayer();
                     playerName = player.getName();
 
                     if (CommandUtils.tooFar(sender, player, Permissions.mcrankFar(sender))) {
@@ -83,9 +82,9 @@ public class McrankCommand implements TabExecutor {
 
     private void display(CommandSender sender, String playerName) {
         if (sender instanceof Player) {
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
+            McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(sender.getName());
 
-            if(mcMMOPlayer == null)
+            if(mmoPlayer == null)
             {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return;
@@ -93,8 +92,8 @@ public class McrankCommand implements TabExecutor {
 
             long cooldownMillis = Math.min(Config.getInstance().getDatabasePlayerCooldown(), 1750);
 
-            if (mcMMOPlayer.getDatabaseATS() + cooldownMillis > System.currentTimeMillis()) {
-                sender.sendMessage(LocaleLoader.getString("Commands.Database.CooldownMS", getCDSeconds(mcMMOPlayer, cooldownMillis)));
+            if (mmoPlayer.getDatabaseCommandATS() + cooldownMillis > System.currentTimeMillis()) {
+                sender.sendMessage(LocaleLoader.getString("Commands.Database.CooldownMS", getCDSeconds(mmoPlayer, cooldownMillis)));
                 return;
             }
 
@@ -105,7 +104,7 @@ public class McrankCommand implements TabExecutor {
                 ((Player) sender).setMetadata(mcMMO.databaseCommandKey, new FixedMetadataValue(mcMMO.p, null));
             }
 
-            mcMMOPlayer.actualizeDatabaseATS();
+            mmoPlayer.actualizeDatabaseCommandATS();
         }
 
         boolean useBoard = Config.getInstance().getScoreboardsEnabled() && (sender instanceof Player) && (Config.getInstance().getRankUseBoard());
@@ -114,7 +113,7 @@ public class McrankCommand implements TabExecutor {
         new McrankCommandAsyncTask(playerName, sender, useBoard, useChat).runTaskAsynchronously(mcMMO.p);
     }
 
-    private long getCDSeconds(McMMOPlayer mcMMOPlayer, long cooldownMillis) {
-        return ((mcMMOPlayer.getDatabaseATS() + cooldownMillis) - System.currentTimeMillis());
+    private long getCDSeconds(McMMOPlayer mmoPlayer, long cooldownMillis) {
+        return ((mmoPlayer.getDatabaseCommandATS() + cooldownMillis) - System.currentTimeMillis());
     }
 }

@@ -5,9 +5,7 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -38,16 +36,16 @@ public class PartyAllianceCommand implements TabExecutor {
             return true;
         }
 
-        if(UserManager.getPlayer((Player) sender) == null)
+        if(mcMMO.getUserManager().getPlayer((Player) sender) == null)
         {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
 
         player = (Player) sender;
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
 
-        playerParty = mcMMOPlayer.getParty();
+        playerParty = mmoPlayer.getParty();
 
         switch (args.length) {
             case 1:
@@ -64,7 +62,7 @@ public class PartyAllianceCommand implements TabExecutor {
                 targetParty = playerParty.getAlly();
 
                 displayPartyHeader();
-                displayMemberInfo(mcMMOPlayer);
+                displayMemberInfo(mmoPlayer);
                 return true;
 
             case 2:
@@ -94,7 +92,7 @@ public class PartyAllianceCommand implements TabExecutor {
                 targetParty = playerParty.getAlly();
 
                 displayPartyHeader();
-                displayMemberInfo(mcMMOPlayer);
+                displayMemberInfo(mmoPlayer);
                 return true;
 
             default:
@@ -125,11 +123,11 @@ public class PartyAllianceCommand implements TabExecutor {
 
     private void displayPartyHeader() {
         player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Header"));
-        player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Ally", playerParty.getName(), targetParty.getName()));
+        player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Ally", playerParty.getPartyName(), targetParty.getPartyName()));
     }
 
-    private void displayMemberInfo(McMMOPlayer mcMMOPlayer) {
-        List<Player> nearMembers = PartyManager.getNearMembers(mcMMOPlayer);
+    private void displayMemberInfo(McMMOPlayer mmoPlayer) {
+        List<Player> nearMembers = mcMMO.getPartyManager().getNearMembers(mmoPlayer);
         player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Members.Header"));
         player.sendMessage(playerParty.createMembersList(player));
         player.sendMessage(ChatColor.DARK_GRAY + "----------------------------");

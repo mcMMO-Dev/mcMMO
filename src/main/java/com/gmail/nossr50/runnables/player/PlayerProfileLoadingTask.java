@@ -8,7 +8,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.commands.McScoreboardKeepTask;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -72,10 +71,10 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
     }
 
     private class ApplySuccessfulProfile extends BukkitRunnable {
-        private final McMMOPlayer mcMMOPlayer;
+        private final McMMOPlayer mmoPlayer;
 
-        private ApplySuccessfulProfile(McMMOPlayer mcMMOPlayer) {
-            this.mcMMOPlayer = mcMMOPlayer;
+        private ApplySuccessfulProfile(McMMOPlayer mmoPlayer) {
+            this.mmoPlayer = mmoPlayer;
         }
 
         // Synchronized task
@@ -87,9 +86,9 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
                 return;
             }
 
-            mcMMOPlayer.setupPartyData();
-            UserManager.track(mcMMOPlayer);
-            mcMMOPlayer.actualizeRespawnATS();
+            mmoPlayer.setupPartyData();
+            mcMMO.getUserManager().track(mmoPlayer);
+            mmoPlayer.actualizeRespawnATS();
 
             if (Config.getInstance().getScoreboardsEnabled()) {
                 ScoreboardManager.setupPlayer(player);

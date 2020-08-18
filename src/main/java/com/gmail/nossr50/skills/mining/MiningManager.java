@@ -32,8 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MiningManager extends SkillManager {
-    public MiningManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.MINING);
+    public MiningManager(McMMOPlayer mmoPlayer) {
+        super(mmoPlayer, PrimarySkillType.MINING);
     }
 
     public boolean canUseDemolitionsExpertise() {
@@ -81,7 +81,7 @@ public class MiningManager extends SkillManager {
             return;
         }
 
-        if (mcMMOPlayer.getSuperAbilityManager().getAbilityMode(skill.getSuperAbilityType())) {
+        if (mmoPlayer.getSuperAbilityManager().getAbilityMode(skill.getSuperAbilityType())) {
             SkillUtils.handleDurabilityChange(getPlayer().getInventory().getItemInMainHand(), Config.getInstance().getAbilityToolDamage());
         }
 
@@ -95,7 +95,7 @@ public class MiningManager extends SkillManager {
 
         //TODO: Make this readable
         if (RandomChanceUtil.checkRandomChanceExecutionSuccess(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS, true)) {
-            BlockUtils.markDropsAsBonus(blockState, mcMMOPlayer.getSuperAbilityManager().getAbilityMode(skill.getSuperAbilityType()));
+            BlockUtils.markDropsAsBonus(blockState, mmoPlayer.getSuperAbilityManager().getAbilityMode(skill.getSuperAbilityType()));
         }
     }
 
@@ -117,13 +117,13 @@ public class MiningManager extends SkillManager {
         NotificationManager.sendPlayerInformation(player, NotificationType.SUPER_ABILITY, "Mining.Blast.Boom");
         //player.sendMessage(LocaleLoader.getString("Mining.Blast.Boom"));
 
-        tnt.setMetadata(mcMMO.tntMetadataKey, mcMMOPlayer.getPlayerMetadata());
+        tnt.setMetadata(mcMMO.tntMetadataKey, mmoPlayer.getPlayerMetadata());
         tnt.setFuseTicks(0);
         targetBlock.setType(Material.AIR);
 
-        mcMMOPlayer.setAbilityDATS(SuperAbilityType.BLAST_MINING, System.currentTimeMillis());
-        mcMMOPlayer.getSuperAbilityManager().setAbilityInformed(SuperAbilityType.BLAST_MINING, false);
-        new AbilityCooldownTask(mcMMOPlayer, SuperAbilityType.BLAST_MINING).runTaskLater(mcMMO.p, SuperAbilityType.BLAST_MINING.getCooldown() * Misc.TICK_CONVERSION_FACTOR);
+        mmoPlayer.getPersistentPlayerData().setAbilityDATS(SuperAbilityType.BLAST_MINING, System.currentTimeMillis());
+        mmoPlayer.getSuperAbilityManager().setAbilityInformed(SuperAbilityType.BLAST_MINING, false);
+        new AbilityCooldownTask(mmoPlayer, SuperAbilityType.BLAST_MINING).runTaskLater(mcMMO.p, SuperAbilityType.BLAST_MINING.getCooldown() * Misc.TICK_CONVERSION_FACTOR);
     }
 
     /**
@@ -309,7 +309,7 @@ public class MiningManager extends SkillManager {
     }
 
     private boolean blastMiningCooldownOver() {
-        int timeRemaining = mcMMOPlayer.calculateTimeRemaining(SuperAbilityType.BLAST_MINING);
+        int timeRemaining = mmoPlayer.calculateTimeRemaining(SuperAbilityType.BLAST_MINING);
 
         if (timeRemaining > 0) {
             //getPlayer().sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));

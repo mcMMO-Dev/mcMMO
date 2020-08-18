@@ -1,7 +1,7 @@
 package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.database.SQLDatabaseManager.PoolIdentifier;
-import com.gmail.nossr50.datatypes.MobHealthbarType;
+import com.gmail.nossr50.datatypes.MobHealthBarType;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
@@ -276,12 +276,12 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getMobHealthbarEnabled() { return config.getBoolean("Mob_Healthbar.Enabled", true); }
 
     /* Mob Healthbar */
-    public MobHealthbarType getMobHealthbarDefault() {
+    public MobHealthBarType getMobHealthbarDefault() {
         try {
-            return MobHealthbarType.valueOf(config.getString("Mob_Healthbar.Display_Type", "HEARTS").toUpperCase(Locale.ENGLISH).trim());
+            return MobHealthBarType.valueOf(config.getString("Mob_Healthbar.Display_Type", "HEARTS").toUpperCase(Locale.ENGLISH).trim());
         }
         catch (IllegalArgumentException ex) {
-            return MobHealthbarType.HEARTS;
+            return MobHealthBarType.HEARTS;
         }
     }
 
@@ -373,12 +373,6 @@ public class Config extends AutoUpdateConfigLoader {
     public void setHardcoreVampirismStatLeechPercentage(double value) { config.set("Hardcore.Vampirism.Leech_Percentage", value); }
 
     public int getHardcoreVampirismLevelThreshold() { return config.getInt("Hardcore.Vampirism.Level_Threshold", 0); }
-
-    /* SMP Mods */
-    public boolean getToolModsEnabled() { return config.getBoolean("Mods.Tool_Mods_Enabled", false); }
-    public boolean getArmorModsEnabled() { return config.getBoolean("Mods.Armor_Mods_Enabled", false); }
-    public boolean getBlockModsEnabled() { return config.getBoolean("Mods.Block_Mods_Enabled", false); }
-    public boolean getEntityModsEnabled() { return config.getBoolean("Mods.Entity_Mods_Enabled", false); }
 
     /* Items */
     public int getChimaeraUseCost() { return config.getInt("Items.Chimaera_Wing.Use_Cost", 1); }

@@ -8,15 +8,15 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class AwardCombatXpTask extends BukkitRunnable {
-    private final McMMOPlayer mcMMOPlayer;
+    private final McMMOPlayer mmoPlayer;
     private final double baseXp;
     private final PrimarySkillType primarySkillType;
     private final LivingEntity target;
     private final XPGainReason xpGainReason;
     private final double baseHealth;
 
-    public AwardCombatXpTask(McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, double baseXp, LivingEntity target, XPGainReason xpGainReason) {
-        this.mcMMOPlayer = mcMMOPlayer;
+    public AwardCombatXpTask(McMMOPlayer mmoPlayer, PrimarySkillType primarySkillType, double baseXp, LivingEntity target, XPGainReason xpGainReason) {
+        this.mmoPlayer = mmoPlayer;
         this.primarySkillType = primarySkillType;
         this.baseXp = baseXp;
         this.target = target;
@@ -39,6 +39,6 @@ public class AwardCombatXpTask extends BukkitRunnable {
             damage += health;
         }
 
-        mcMMOPlayer.beginXpGain(primarySkillType, (int) (damage * baseXp), xpGainReason, XPGainSource.SELF);
+        mmoPlayer.beginXpGain(primarySkillType, (int) (damage * baseXp), xpGainReason, XPGainSource.SELF);
     }
 }

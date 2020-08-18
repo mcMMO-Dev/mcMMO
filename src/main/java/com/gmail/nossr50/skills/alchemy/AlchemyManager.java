@@ -18,8 +18,8 @@ import java.util.List;
 public class AlchemyManager extends SkillManager {
     private final double LUCKY_MODIFIER = 4.0 / 3.0;
 
-    public AlchemyManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.ALCHEMY);
+    public AlchemyManager(McMMOPlayer mmoPlayer) {
+        super(mmoPlayer, PrimarySkillType.ALCHEMY);
     }
 
     public int getTier() {

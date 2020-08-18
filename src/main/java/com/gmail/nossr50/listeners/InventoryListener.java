@@ -12,7 +12,6 @@ import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.alchemy.AlchemyPotionBrewer;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
@@ -67,12 +66,12 @@ public class InventoryListener implements Listener {
                 }
 
                 //Profile doesn't exist
-                if(UserManager.getOfflinePlayer(offlinePlayer) == null)
+                if(mcMMO.getUserManager().getOfflinePlayer(offlinePlayer) == null)
                 {
                     return;
                 }
 
-                event.setBurnTime(UserManager.getPlayer(player).getSmeltingManager().fuelEfficiency(event.getBurnTime()));
+                event.setBurnTime(mcMMO.getUserManager().getPlayer(player).getSmeltingManager().fuelEfficiency(event.getBurnTime()));
             }
         }
 
@@ -97,7 +96,7 @@ public class InventoryListener implements Listener {
 
             if(offlinePlayer != null) {
 
-                McMMOPlayer offlineProfile = UserManager.getOfflinePlayer(offlinePlayer);
+                McMMOPlayer offlineProfile = mcMMO.getUserManager().getOfflinePlayer(offlinePlayer);
 
                 //Profile doesn't exist
                 if(offlineProfile != null) {
@@ -129,18 +128,18 @@ public class InventoryListener implements Listener {
                     return;
             }
 
-            if (!UserManager.hasPlayerDataKey(player) || !Permissions.vanillaXpBoost(player, PrimarySkillType.SMELTING)) {
+            if (!mcMMO.getUserManager().hasPlayerDataKey(player) || !Permissions.vanillaXpBoost(player, PrimarySkillType.SMELTING)) {
                 return;
             }
 
             //Profile not loaded
-            if(UserManager.getPlayer(player) == null)
+            if(mcMMO.getUserManager().getPlayer(player) == null)
             {
                 return;
             }
 
             int xpToDrop = event.getExpToDrop();
-            int exp = UserManager.getPlayer(player).getSmeltingManager().vanillaXPBoost(xpToDrop);
+            int exp = mcMMO.getUserManager().getPlayer(player).getSmeltingManager().vanillaXPBoost(xpToDrop);
             event.setExpToDrop(exp);
         }
     }
@@ -182,7 +181,7 @@ public class InventoryListener implements Listener {
 
         HumanEntity whoClicked = event.getWhoClicked();
 
-        if (!UserManager.hasPlayerDataKey(event.getWhoClicked()) || !Permissions.isSubSkillEnabled(whoClicked, SubSkillType.ALCHEMY_CONCOCTIONS)) {
+        if (!mcMMO.getUserManager().hasPlayerDataKey(event.getWhoClicked()) || !Permissions.isSubSkillEnabled(whoClicked, SubSkillType.ALCHEMY_CONCOCTIONS)) {
             return;
         }
 
@@ -295,7 +294,7 @@ public class InventoryListener implements Listener {
 
         HumanEntity whoClicked = event.getWhoClicked();
 
-        if (!UserManager.hasPlayerDataKey(event.getWhoClicked()) || !Permissions.isSubSkillEnabled(whoClicked, SubSkillType.ALCHEMY_CONCOCTIONS)) {
+        if (!mcMMO.getUserManager().hasPlayerDataKey(event.getWhoClicked()) || !Permissions.isSubSkillEnabled(whoClicked, SubSkillType.ALCHEMY_CONCOCTIONS)) {
             return;
         }
 

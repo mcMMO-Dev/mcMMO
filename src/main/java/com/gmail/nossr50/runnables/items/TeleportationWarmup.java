@@ -3,7 +3,6 @@ package com.gmail.nossr50.runnables.items;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -14,25 +13,25 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class TeleportationWarmup extends BukkitRunnable {
-    private final McMMOPlayer mcMMOPlayer;
+    private final McMMOPlayer mmoPlayer;
     private final McMMOPlayer mcMMOTarget;
 
-    public TeleportationWarmup(McMMOPlayer mcMMOPlayer, McMMOPlayer mcMMOTarget) {
-        this.mcMMOPlayer = mcMMOPlayer;
+    public TeleportationWarmup(McMMOPlayer mmoPlayer, McMMOPlayer mcMMOTarget) {
+        this.mmoPlayer = mmoPlayer;
         this.mcMMOTarget = mcMMOTarget;
     }
 
     @Override
     public void run() {
-        Player teleportingPlayer = mcMMOPlayer.getPlayer();
+        Player teleportingPlayer = mmoPlayer.getPlayer();
         Player targetPlayer = mcMMOTarget.getPlayer();
-        Location previousLocation = mcMMOPlayer.getTeleportCommenceLocation();
-        Location newLocation = mcMMOPlayer.getPlayer().getLocation();
-        long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
+        Location previousLocation = mmoPlayer.getTeleportCommenceLocation();
+        Location newLocation = mmoPlayer.getPlayer().getLocation();
+        long recentlyHurt = mmoPlayer.getRecentlyHurtTimestamp();
 
-        mcMMOPlayer.setTeleportCommenceLocation(null);
+        mmoPlayer.setTeleportCommenceLocation(null);
 
-        if (!PartyManager.inSameParty(teleportingPlayer, targetPlayer)) {
+        if (!mcMMO.getPartyManager().inSameParty(teleportingPlayer, targetPlayer)) {
             teleportingPlayer.sendMessage(LocaleLoader.getString("Party.NotInYourParty", targetPlayer.getName()));
             return;
         }

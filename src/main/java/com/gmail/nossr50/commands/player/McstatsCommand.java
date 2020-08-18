@@ -3,7 +3,6 @@ package com.gmail.nossr50.commands.player;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -26,7 +25,7 @@ public class McstatsCommand implements TabExecutor {
         }
 
         if (args.length == 0) {
-            if (UserManager.getPlayer((Player) sender) == null) {
+            if (mcMMO.getUserManager().getPlayer((Player) sender) == null) {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return true;
             }
@@ -51,9 +50,9 @@ public class McstatsCommand implements TabExecutor {
             int powerLevelCap = Config.getInstance().getPowerLevelCap();
 
             if (powerLevelCap != Integer.MAX_VALUE) {
-                player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped", UserManager.getPlayer(player).getPowerLevel(), powerLevelCap));
+                player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped", mcMMO.getUserManager().getPlayer(player).getPowerLevel(), powerLevelCap));
             } else {
-                player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", UserManager.getPlayer(player).getPowerLevel()));
+                player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", mcMMO.getUserManager().getPlayer(player).getPowerLevel()));
             }
 
             return true;

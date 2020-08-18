@@ -13,10 +13,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ChimaeraWingWarmup extends BukkitRunnable {
-    private final McMMOPlayer mcMMOPlayer;
+    private final McMMOPlayer mmoPlayer;
 
-    public ChimaeraWingWarmup(McMMOPlayer mcMMOPlayer) {
-        this.mcMMOPlayer = mcMMOPlayer;
+    public ChimaeraWingWarmup(McMMOPlayer mmoPlayer) {
+        this.mmoPlayer = mmoPlayer;
     }
 
     @Override
@@ -25,12 +25,12 @@ public class ChimaeraWingWarmup extends BukkitRunnable {
     }
 
     private void checkChimaeraWingTeleport() {
-        Player player = mcMMOPlayer.getPlayer();
-        Location previousLocation = mcMMOPlayer.getTeleportCommenceLocation();
+        Player player = mmoPlayer.getPlayer();
+        Location previousLocation = mmoPlayer.getTeleportCommenceLocation();
 
         if (player.getLocation().distanceSquared(previousLocation) > 1.0 || !player.getInventory().containsAtLeast(ChimaeraWing.getChimaeraWing(0), 1)) {
             player.sendMessage(LocaleLoader.getString("Teleport.Cancelled"));
-            mcMMOPlayer.setTeleportCommenceLocation(null);
+            mmoPlayer.setTeleportCommenceLocation(null);
             return;
         }
 
@@ -41,7 +41,7 @@ public class ChimaeraWingWarmup extends BukkitRunnable {
             return;
         }
 
-        long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
+        long recentlyHurt = mmoPlayer.getRecentlyHurtTimestamp();
         int hurtCooldown = Config.getInstance().getChimaeraRecentlyHurtCooldown();
 
         if (hurtCooldown > 0) {

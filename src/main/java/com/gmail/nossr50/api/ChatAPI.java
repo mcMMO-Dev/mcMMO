@@ -4,8 +4,6 @@ import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.chat.ChatManagerFactory;
 import com.gmail.nossr50.chat.PartyChatManager;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
-import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -75,7 +73,7 @@ public final class ChatAPI {
      * @return true if the player is using party chat, false otherwise
      */
     public static boolean isUsingPartyChat(Player player) {
-        return UserManager.getPlayer(player).isChatEnabled(ChatMode.PARTY);
+        return mcMMO.getUserManager().getPlayer(player).isChatEnabled(ChatMode.PARTY);
     }
 
     /**
@@ -85,7 +83,7 @@ public final class ChatAPI {
      * @return true if the player is using party chat, false otherwise
      */
     public static boolean isUsingPartyChat(String playerName) {
-        return UserManager.getPlayer(playerName).isChatEnabled(ChatMode.PARTY);
+        return mcMMO.getUserManager().getPlayer(playerName).isChatEnabled(ChatMode.PARTY);
     }
 
     /**
@@ -95,7 +93,7 @@ public final class ChatAPI {
      * @return true if the player is using admin chat, false otherwise
      */
     public static boolean isUsingAdminChat(Player player) {
-        return UserManager.getPlayer(player).isChatEnabled(ChatMode.ADMIN);
+        return mcMMO.getUserManager().getPlayer(player).isChatEnabled(ChatMode.ADMIN);
     }
 
     /**
@@ -105,7 +103,7 @@ public final class ChatAPI {
      * @return true if the player is using admin chat, false otherwise
      */
     public static boolean isUsingAdminChat(String playerName) {
-        return UserManager.getPlayer(playerName).isChatEnabled(ChatMode.ADMIN);
+        return mcMMO.getUserManager().getPlayer(playerName).isChatEnabled(ChatMode.ADMIN);
     }
 
     /**
@@ -114,7 +112,7 @@ public final class ChatAPI {
      * @param player The player to toggle party chat on.
      */
     public static void togglePartyChat(Player player) {
-        UserManager.getPlayer(player).toggleChat(ChatMode.PARTY);
+        mcMMO.getUserManager().getPlayer(player).toggleChat(ChatMode.PARTY);
     }
 
     /**
@@ -123,7 +121,7 @@ public final class ChatAPI {
      * @param playerName The name of the player to toggle party chat on.
      */
     public static void togglePartyChat(String playerName) {
-        UserManager.getPlayer(playerName).toggleChat(ChatMode.PARTY);
+        mcMMO.getUserManager().getPlayer(playerName).toggleChat(ChatMode.PARTY);
     }
 
     /**
@@ -132,7 +130,7 @@ public final class ChatAPI {
      * @param player The player to toggle admin chat on.
      */
     public static void toggleAdminChat(Player player) {
-        UserManager.getPlayer(player).toggleChat(ChatMode.ADMIN);
+        mcMMO.getUserManager().getPlayer(player).toggleChat(ChatMode.ADMIN);
     }
 
     /**
@@ -141,12 +139,12 @@ public final class ChatAPI {
      * @param playerName The name of the player to toggle party chat on.
      */
     public static void toggleAdminChat(String playerName) {
-        UserManager.getPlayer(playerName).toggleChat(ChatMode.ADMIN);
+        mcMMO.getUserManager().getPlayer(playerName).toggleChat(ChatMode.ADMIN);
     }
 
     private static ChatManager getPartyChatManager(Plugin plugin, String party) {
         ChatManager chatManager = ChatManagerFactory.getChatManager(plugin, ChatMode.PARTY);
-        ((PartyChatManager) chatManager).setParty(PartyManager.getParty(party));
+        ((PartyChatManager) chatManager).setParty(mcMMO.getPartyManager().getParty(party));
 
         return chatManager;
     }

@@ -2,8 +2,8 @@ package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -21,14 +21,14 @@ public class McnotifyCommand implements TabExecutor {
         }
 
         if (args.length == 0) {
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer((Player) sender);
+            McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer((Player) sender);
 
             //Not Loaded yet
-            if (mcMMOPlayer == null)
+            if (mmoPlayer == null)
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
 
-            sender.sendMessage(LocaleLoader.getString("Commands.Notifications." + (mcMMOPlayer.useChatNotifications() ? "Off" : "On")));
-            mcMMOPlayer.toggleChatNotifications();
+            sender.sendMessage(LocaleLoader.getString("Commands.Notifications." + (mmoPlayer.hasSkillChatNotifications() ? "Off" : "On")));
+            mmoPlayer.toggleSkillChatNotifications();
             return true;
         }
         return false;

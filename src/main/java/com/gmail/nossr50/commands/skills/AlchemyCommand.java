@@ -6,7 +6,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.alchemy.AlchemyManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
@@ -31,13 +30,13 @@ public class AlchemyCommand extends SkillCommand {
 
     protected String[] calculateAbilityDisplayValues(Player player) {
         //TODO: Needed?
-        if(UserManager.getPlayer(player) == null)
+        if(mcMMO.getUserManager().getPlayer(player) == null)
         {
             player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return new String[] {"DATA NOT LOADED", "DATA NOT LOADED"};
         }
 
-        AlchemyManager alchemyManager = UserManager.getPlayer(player).getAlchemyManager();
+        AlchemyManager alchemyManager = mcMMO.getUserManager().getPlayer(player).getAlchemyManager();
         String[] displayValues = new String[2];
 
         boolean isLucky = Permissions.lucky(player, PrimarySkillType.ALCHEMY);
@@ -59,7 +58,7 @@ public class AlchemyCommand extends SkillCommand {
 
         // ALCHEMY_CONCOCTIONS
         if (canConcoctions) {
-            AlchemyManager alchemyManager = UserManager.getPlayer(player).getAlchemyManager();
+            AlchemyManager alchemyManager = mcMMO.getUserManager().getPlayer(player).getAlchemyManager();
             tier = alchemyManager.getTier();
             ingredientCount = alchemyManager.getIngredients().size();
             ingredientList = alchemyManager.getIngredientList();

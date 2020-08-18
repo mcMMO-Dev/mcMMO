@@ -18,21 +18,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class AbilityDisableTask extends BukkitRunnable {
-    private final McMMOPlayer mcMMOPlayer;
+    private final McMMOPlayer mmoPlayer;
     private final SuperAbilityType ability;
 
-    public AbilityDisableTask(McMMOPlayer mcMMOPlayer, SuperAbilityType ability) {
-        this.mcMMOPlayer = mcMMOPlayer;
+    public AbilityDisableTask(McMMOPlayer mmoPlayer, SuperAbilityType ability) {
+        this.mmoPlayer = mmoPlayer;
         this.ability = ability;
     }
 
     @Override
     public void run() {
-        if (!mcMMOPlayer.getSuperAbilityManager().getAbilityMode(ability)) {
+        if (!mmoPlayer.getSuperAbilityManager().getAbilityMode(ability)) {
             return;
         }
 
-        Player player = mcMMOPlayer.getPlayer();
+        Player player = mmoPlayer.getPlayer();
 
         switch (ability) {
             case SUPER_BREAKER:
@@ -52,12 +52,12 @@ public class AbilityDisableTask extends BukkitRunnable {
 
         EventUtils.callAbilityDeactivateEvent(player, ability);
 
-        mcMMOPlayer.getSuperAbilityManager().setAbilityMode(ability, false);
-        mcMMOPlayer.getSuperAbilityManager().setAbilityInformed(ability, false);
+        mmoPlayer.getSuperAbilityManager().setAbilityMode(ability, false);
+        mmoPlayer.getSuperAbilityManager().setAbilityInformed(ability, false);
 
         ParticleEffectUtils.playAbilityDisabledEffect(player);
 
-        if (mcMMOPlayer.useChatNotifications()) {
+        if (mmoPlayer.hasSkillChatNotifications()) {
             //player.sendMessage(ability.getAbilityOff());
             NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_OFF, ability.getAbilityOff());
         }
@@ -65,7 +65,7 @@ public class AbilityDisableTask extends BukkitRunnable {
         if (AdvancedConfig.getInstance().sendAbilityNotificationToOtherPlayers()) {
             SkillUtils.sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, ability.getAbilityPlayerOff());
         }
-        new AbilityCooldownTask(mcMMOPlayer, ability).runTaskLater(mcMMO.p, PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TICK_CONVERSION_FACTOR);
+        new AbilityCooldownTask(mmoPlayer, ability).runTaskLater(mcMMO.p, PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TICK_CONVERSION_FACTOR);
     }
 
     private void resendChunkRadiusAt(Player player) {

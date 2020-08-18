@@ -4,8 +4,6 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,19 +16,19 @@ public class PartyQuitCommand implements CommandExecutor {
         if (args.length == 1) {
             Player player = (Player) sender;
 
-            if (UserManager.getPlayer((Player) sender) == null) {
+            if (mcMMO.getUserManager().getPlayer((Player) sender) == null) {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return true;
             }
 
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-            Party playerParty = mcMMOPlayer.getParty();
+            McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
+            Party playerParty = mmoPlayer.getParty();
 
-            if (!PartyManager.handlePartyChangeEvent(player, playerParty.getName(), null, EventReason.LEFT_PARTY)) {
+            if (!mcMMO.getPartyManager().handlePartyChangeEvent(player, playerParty.getPartyName(), null, EventReason.LEFT_PARTY)) {
                 return true;
             }
 
-            PartyManager.removeFromParty(mcMMOPlayer);
+            mcMMO.getPartyManager().removeFromParty(mmoPlayer);
             sender.sendMessage(LocaleLoader.getString("Commands.Party.Leave"));
             return true;
         }

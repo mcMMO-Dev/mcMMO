@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.events.chat.McMMOChatEvent;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -47,20 +46,20 @@ public abstract class ChatManager {
             McMMOPartyChatEvent partyChatEvent = (McMMOPartyChatEvent) event;
 
             //Find the people with permissions
-            for(McMMOPlayer mcMMOPlayer : UserManager.getPlayers())
+            for(McMMOPlayer mmoPlayer : mcMMO.getUserManager().getPlayers())
             {
-                Player player = mcMMOPlayer.getPlayer();
+                Player player = mmoPlayer.getPlayer();
 
                 //Check for toggled players
-                if(mcMMOPlayer.isPartyChatSpying())
+                if(mmoPlayer.isPartyChatSpying())
                 {
-                    Party adminParty = mcMMOPlayer.getParty();
+                    Party adminParty = mmoPlayer.getParty();
 
                     //Only message admins not part of this party
                     if(adminParty != null)
                     {
                         //TODO: Incorporate JSON
-                        if(!adminParty.getName().equalsIgnoreCase(partyChatEvent.getParty()))
+                        if(!adminParty.getPartyName().equalsIgnoreCase(partyChatEvent.getParty()))
                             player.sendMessage(LocaleLoader.getString("Commands.AdminChatSpy.Chat", partyChatEvent.getParty(), message));
                     } else {
                         player.sendMessage(LocaleLoader.getString("Commands.AdminChatSpy.Chat", partyChatEvent.getParty(), message));

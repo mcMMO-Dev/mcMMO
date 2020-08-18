@@ -39,14 +39,24 @@ public class SelfListener implements Listener {
             {
                 int previousLevelGained = event.getSkillLevel() - i;
                 //Send player skill unlock notifications
-                UserManager.getPlayer(player).processUnlockNotifications(plugin, event.getSkill(), previousLevelGained);
+                RankUtils.executeSkillUnlockNotifications(plugin, mcMMO.getUserManager().getPlayer(player), event.getSkill(), previousLevelGained);
             }
 
-            //Reset the delay timer
-            RankUtils.resetUnlockDelayTimer();
+        for(int i = 0; i < event.getLevelsGained(); i++)
+        {
+            int previousLevelGained = event.getSkillLevel() - i;
+            //Send player skill unlock notifications
+            RankUtils.executeSkillUnlockNotifications(plugin, mcMMO.getUserManager().getPlayer(player), event.getSkill(), previousLevelGained);
+        }
 
-            if(Config.getInstance().getScoreboardsEnabled())
-                ScoreboardManager.handleLevelUp(player, skill);
+        //Reset the delay timer
+        RankUtils.resetUnlockDelayTimer();
+
+        if(Config.getInstance().getScoreboardsEnabled())
+            ScoreboardManager.handleLevelUp(player, skill);
+
+        if(Config.getInstance().getScoreboardsEnabled())
+            ScoreboardManager.handleLevelUp(player, skill);
         }
     }
 
@@ -72,12 +82,12 @@ public class SelfListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerXpGain(McMMOPlayerXpGainEvent event) {
         Player player = event.getPlayer();
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
         PrimarySkillType primarySkillType = event.getSkill();
 
-        if(mcMMOPlayer.isDebugMode()) {
-            mcMMOPlayer.getPlayer().sendMessage(event.getSkill().toString() + " XP Gained");
-            mcMMOPlayer.getPlayer().sendMessage("Incoming Raw XP: "+event.getRawXpGained());
+        if(mmoPlayer.isDebugMode()) {
+            mmoPlayer.getPlayer().sendMessage(event.getSkill().toString() + " XP Gained");
+            mmoPlayer.getPlayer().sendMessage("Incoming Raw XP: "+event.getRawXpGained());
         }
 
         //WorldGuard XP Check
@@ -93,8 +103,8 @@ public class SelfListener implements Listener {
                     event.setRawXpGained(0);
                     event.setCancelled(true);
 
-                    if(mcMMOPlayer.isDebugMode()) {
-                        mcMMOPlayer.getPlayer().sendMessage("No WG XP Flag - New Raw XP: "+event.getRawXpGained());
+                    if(mmoPlayer.isDebugMode()) {
+                        mmoPlayer.getPlayer().sendMessage("No WG XP Flag - New Raw XP: "+event.getRawXpGained());
                     }
                 }
             }
@@ -111,9 +121,9 @@ public class SelfListener implements Listener {
             int earlyGameBonusXP = 0;
 
             //Give some bonus XP for low levels
-            if(PlayerLevelUtils.qualifiesForEarlyGameBoost(mcMMOPlayer, primarySkillType))
+            if(PlayerLevelUtils.qualifiesForEarlyGameBoost(mmoPlayer, primarySkillType))
             {
-                earlyGameBonusXP += (mcMMOPlayer.getXpToLevel(primarySkillType) * 0.05);
+                earlyGameBonusXP += (mmoPlayer.getExperienceManager().getXpToLevel(primarySkillType) * 0.05);
                 event.setRawXpGained(event.getRawXpGained() + earlyGameBonusXP);
             }
         }
@@ -121,8 +131,8 @@ public class SelfListener implements Listener {
         int threshold = ExperienceConfig.getInstance().getDiminishedReturnsThreshold(primarySkillType);
 
         if (threshold <= 0 || !ExperienceConfig.getInstance().getDiminishedReturnsEnabled()) {
-            if(mcMMOPlayer.isDebugMode()) {
-                mcMMOPlayer.getPlayer().sendMessage("Final Raw XP: "+event.getRawXpGained());
+            if(mmoPlayer.isDebugMode()) {
+                mmoPlayer.getPlayer().sendMessage("Final Raw XP: "+event.getRawXpGained());
             }
             // Diminished returns is turned off
             return;
@@ -142,10 +152,10 @@ public class SelfListener implements Listener {
         float guaranteedMinimum = ExperienceConfig.getInstance().getDiminishedReturnsCap() * rawXp;
 
         float modifiedThreshold = (float) (threshold / primarySkillType.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
-        float difference = (mcMMOPlayer.getProfile().getRegisteredXpGain(primarySkillType) - modifiedThreshold) / modifiedThreshold;
+        float difference = (mmoPlayer.getExperienceManager().getRegisteredXpGain(primarySkillType) - modifiedThreshold) / modifiedThreshold;
 
         if (difference > 0) {
-//            System.out.println("Total XP Earned: " + mcMMOPlayer.getProfile().getRegisteredXpGain(primarySkillType) + " / Threshold value: " + threshold);
+//            System.out.println("Total XP Earned: " + mmoPlayer.getProfile().getRegisteredXpGain(primarySkillType) + " / Threshold value: " + threshold);
 //            System.out.println(difference * 100 + "% over the threshold!");
 //            System.out.println("Previous: " + event.getRawXpGained());
 //            System.out.println("Adjusted XP " + (event.getRawXpGained() - (event.getRawXpGained() * difference)));
@@ -169,8 +179,8 @@ public class SelfListener implements Listener {
 
         }
 
-        if(mcMMOPlayer.isDebugMode()) {
-            mcMMOPlayer.getPlayer().sendMessage("Final Raw XP: "+event.getRawXpGained());
+        if(mmoPlayer.isDebugMode()) {
+            mmoPlayer.getPlayer().sendMessage("Final Raw XP: "+event.getRawXpGained());
         }
     }
 

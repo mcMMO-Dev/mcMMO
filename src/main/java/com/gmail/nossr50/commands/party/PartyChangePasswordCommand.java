@@ -2,7 +2,6 @@ package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,13 +11,13 @@ import org.jetbrains.annotations.NotNull;
 public class PartyChangePasswordCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if(UserManager.getPlayer((Player) sender) == null)
+        if(mcMMO.getUserManager().getPlayer((Player) sender) == null)
         {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
 
-        Party party = UserManager.getPlayer((Player) sender).getParty();
+        Party party = mcMMO.getUserManager().getPlayer((Player) sender).getParty();
 
         switch (args.length) {
             case 1:
@@ -42,14 +41,14 @@ public class PartyChangePasswordCommand implements CommandExecutor {
     }
 
     private void unprotectParty(Party party, CommandSender sender) {
-        party.setLocked(true);
-        party.setPassword(null);
+        party.setPartyLock(true);
+        party.setPartyPassword(null);
         sender.sendMessage(LocaleLoader.getString("Party.Password.Removed"));
     }
 
     private void protectParty(Party party, CommandSender sender, String password) {
-        party.setLocked(true);
-        party.setPassword(password);
+        party.setPartyLock(true);
+        party.setPartyPassword(password);
         sender.sendMessage(LocaleLoader.getString("Party.Password.Set", password));
     }
 }

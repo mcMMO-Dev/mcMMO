@@ -33,7 +33,7 @@ public class NotificationManager {
      */
     public static void sendPlayerInformation(Player player, NotificationType notificationType, String key)
     {
-        if(UserManager.getPlayer(player) == null || !UserManager.getPlayer(player).useChatNotifications())
+        if(mcMMO.getUserManager().getPlayer(player) == null || !mcMMO.getUserManager().getPlayer(player).hasSkillChatNotifications())
             return;
 
         ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
@@ -47,10 +47,10 @@ public class NotificationManager {
 
     public static boolean doesPlayerUseNotifications(Player player)
     {
-        if(UserManager.getPlayer(player) == null)
+        if(mcMMO.getUserManager().getPlayer(player) == null)
             return false;
         else
-            return UserManager.getPlayer(player).useChatNotifications();
+            return mcMMO.getUserManager().getPlayer(player).hasSkillChatNotifications();
     }
 
     /**
@@ -69,7 +69,7 @@ public class NotificationManager {
 
     public static void sendPlayerInformationChatOnly(Player player, String key, String... values)
     {
-        if(UserManager.getPlayer(player) == null || !UserManager.getPlayer(player).useChatNotifications())
+        if(mcMMO.getUserManager().getPlayer(player) == null || !mcMMO.getUserManager().getPlayer(player).hasSkillChatNotifications())
             return;
 
         String preColoredString = LocaleLoader.getString(key, (Object[]) values);
@@ -78,7 +78,7 @@ public class NotificationManager {
 
     public static void sendPlayerInformationChatOnlyPrefixed(Player player, String key, String... values)
     {
-        if(UserManager.getPlayer(player) == null || !UserManager.getPlayer(player).useChatNotifications())
+        if(mcMMO.getUserManager().getPlayer(player) == null || !mcMMO.getUserManager().getPlayer(player).hasSkillChatNotifications())
             return;
 
         String preColoredString = LocaleLoader.getString(key, (Object[]) values);
@@ -88,7 +88,7 @@ public class NotificationManager {
 
     public static void sendPlayerInformation(Player player, NotificationType notificationType, String key, String... values)
     {
-        if(UserManager.getPlayer(player) == null || !UserManager.getPlayer(player).useChatNotifications())
+        if(mcMMO.getUserManager().getPlayer(player) == null || !mcMMO.getUserManager().getPlayer(player).hasSkillChatNotifications())
             return;
 
         ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
@@ -129,22 +129,22 @@ public class NotificationManager {
     }
 
     /**
-     * Handles sending level up notifications to a mcMMOPlayer
-     * @param mcMMOPlayer target mcMMOPlayer
+     * Handles sending level up notifications to a mmoPlayer
+     * @param mmoPlayer target mmoPlayer
      * @param skillName skill that leveled up
      * @param newLevel new level of that skill
      */
-    public static void sendPlayerLevelUpNotification(McMMOPlayer mcMMOPlayer, PrimarySkillType skillName, int levelsGained, int newLevel)
+    public static void sendPlayerLevelUpNotification(McMMOPlayer mmoPlayer, PrimarySkillType skillName, int levelsGained, int newLevel)
     {
-        if(!mcMMOPlayer.useChatNotifications())
+        if(!mmoPlayer.hasSkillChatNotifications())
             return;
 
         ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(NotificationType.LEVEL_UP_MESSAGE) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
 
         TextComponent levelUpTextComponent = TextComponentFactory.getNotificationLevelUpTextComponent(skillName, levelsGained, newLevel);
-        McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(mcMMOPlayer.getPlayer(), NotificationType.LEVEL_UP_MESSAGE, destination, levelUpTextComponent);
+        McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(mmoPlayer.getPlayer(), NotificationType.LEVEL_UP_MESSAGE, destination, levelUpTextComponent);
 
-        sendNotification(mcMMOPlayer.getPlayer(), customEvent);
+        sendNotification(mmoPlayer.getPlayer(), customEvent);
     }
 
     public static void broadcastTitle(Server server, String title, String subtitle, int i1, int i2, int i3)
@@ -155,22 +155,22 @@ public class NotificationManager {
         }
     }
 
-    public static void sendPlayerUnlockNotification(McMMOPlayer mcMMOPlayer, SubSkillType subSkillType)
+    public static void sendPlayerUnlockNotification(McMMOPlayer mmoPlayer, SubSkillType subSkillType)
     {
-        if(!mcMMOPlayer.useChatNotifications())
+        if(!mmoPlayer.hasSkillChatNotifications())
             return;
 
         //CHAT MESSAGE
-        mcMMOPlayer.getPlayer().spigot().sendMessage(TextComponentFactory.getSubSkillUnlockedNotificationComponents(mcMMOPlayer.getPlayer(), subSkillType));
+        mmoPlayer.getPlayer().spigot().sendMessage(TextComponentFactory.getSubSkillUnlockedNotificationComponents(mmoPlayer.getPlayer(), subSkillType));
 
         //Unlock Sound Effect
-        SoundManager.sendCategorizedSound(mcMMOPlayer.getPlayer(), mcMMOPlayer.getPlayer().getLocation(), SoundType.SKILL_UNLOCKED, SoundCategory.MASTER);
+        SoundManager.sendCategorizedSound(mmoPlayer.getPlayer(), mmoPlayer.getPlayer().getLocation(), SoundType.SKILL_UNLOCKED, SoundCategory.MASTER);
 
         //ACTION BAR MESSAGE
         /*if(AdvancedConfig.getInstance().doesNotificationUseActionBar(NotificationType.SUBSKILL_UNLOCKED))
-            mcMMOPlayer.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(LocaleLoader.getString("JSON.SkillUnlockMessage",
+            mmoPlayer.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(LocaleLoader.getString("JSON.SkillUnlockMessage",
                     subSkillType.getLocaleName(),
-                    String.valueOf(RankUtils.getRank(mcMMOPlayer.getPlayer(),
+                    String.valueOf(RankUtils.getRank(mmoPlayer.getPlayer(),
                             subSkillType)))));*/
     }
 

@@ -15,9 +15,8 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.experience.ExperienceBarManager;
+import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,46 +31,28 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 public class SkillUtils {
 
-    public static void applyXpGain(McMMOPlayer mcMMOPlayer, PrimarySkillType skill, float xp, XPGainReason xpGainReason) {
-        mcMMOPlayer.beginXpGain(skill, xp, xpGainReason, XPGainSource.SELF);
+    public static void applyXpGain(McMMOPlayer mmoPlayer, PrimarySkillType primarySkillType, float xp, XPGainReason xpGainReason) {
+        mmoPlayer.getExperienceManager().beginXpGain(mmoPlayer.getPlayer(), primarySkillType, xp, xpGainReason, XPGainSource.SELF);
     }
 
-    public static void applyXpGain(McMMOPlayer mcMMOPlayer, PrimarySkillType skill, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
-        mcMMOPlayer.beginXpGain(skill, xp, xpGainReason, xpGainSource);
+    public static void applyXpGain(McMMOPlayer mmoPlayer, PrimarySkillType primarySkillType, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
+        mmoPlayer.getExperienceManager().beginXpGain(mmoPlayer.getPlayer(), primarySkillType, xp, xpGainReason, xpGainSource);
     }
 
-    public static HashMap<PrimarySkillType, ExperienceBarManager.BarState> generateDefaultBarStateMap() {
-        HashMap<PrimarySkillType, ExperienceBarManager.BarState> barStateHashMap = new HashMap<>();
-
-        setBarStateDefaults(barStateHashMap);
-
-        return barStateHashMap;
-    }
-
-    public static ExperienceBarManager.BarState asBarState(String str) {
-        for(ExperienceBarManager.BarState barState : ExperienceBarManager.BarState.values()) {
+    public static MMOExperienceBarManager.BarState asBarState(String str) {
+        for(MMOExperienceBarManager.BarState barState : MMOExperienceBarManager.BarState.values()) {
             if(barState.toString().equalsIgnoreCase(str)) {
                 return barState;
             }
         }
 
-        return ExperienceBarManager.BarState.NORMAL;
-    }
-
-    public static void setBarStateDefaults(HashMap<PrimarySkillType, ExperienceBarManager.BarState> barStateHashMap) {
-        for(PrimarySkillType skillType : PrimarySkillType.values()) {
-            if(skillType.isChildSkill()) {
-                barStateHashMap.put(skillType, ExperienceBarManager.BarState.DISABLED);
-            } else {
-                barStateHashMap.put(skillType, ExperienceBarManager.BarState.NORMAL);
-            }
-        }
+        mcMMO.p.getLogger().severe("Unable to read bar state for value " + str + " setting to default instead.");
+        return MMOExperienceBarManager.BarState.NORMAL;
     }
 
     /*
@@ -198,13 +179,13 @@ public class SkillUtils {
                 }
             }
 
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+            McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
 
             //Not Loaded
-            if(mcMMOPlayer == null)
+            if(mmoPlayer == null)
                 return;
 
-            PrimarySkillType skill = mcMMOPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.SUPER_BREAKER) ? PrimarySkillType.MINING : PrimarySkillType.EXCAVATION;
+            PrimarySkillType skill = mmoPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.SUPER_BREAKER) ? PrimarySkillType.MINING : PrimarySkillType.EXCAVATION;
 
             int abilityLengthVar = AdvancedConfig.getInstance().getAbilityLength();
             int abilityLengthCap = AdvancedConfig.getInstance().getAbilityLengthCap();
@@ -213,10 +194,10 @@ public class SkillUtils {
 
             if(abilityLengthCap > 0)
             {
-                ticks = PerksUtils.handleActivationPerks(player,  Math.min(abilityLengthCap, 2 + (mcMMOPlayer.getSkillLevel(skill) / abilityLengthVar)),
+                ticks = PerksUtils.handleActivationPerks(player,  Math.min(abilityLengthCap, 2 + (mmoPlayer.getExperienceManager().getSkillLevel(skill) / abilityLengthVar)),
                         skill.getSuperAbilityType().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
             } else {
-                ticks = PerksUtils.handleActivationPerks(player, 2 + ((mcMMOPlayer.getSkillLevel(skill)) / abilityLengthVar),
+                ticks = PerksUtils.handleActivationPerks(player, 2 + ((mmoPlayer.getExperienceManager().getSkillLevel(skill)) / abilityLengthVar),
                         skill.getSuperAbilityType().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
             }
 

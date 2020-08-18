@@ -8,7 +8,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -26,10 +25,10 @@ public class InspectCommand implements TabExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length == 1) {
             String playerName = CommandUtils.getMatchedPlayerName(args[0]);
-            McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(playerName);
+            McMMOPlayer mmoPlayer = mcMMO.getUserManager().getOfflinePlayer(playerName);
 
-            // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
-            if (mcMMOPlayer == null) {
+            // If the mmoPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
+            if (mmoPlayer == null) {
                 PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false); // Temporary Profile
 
                 if (!CommandUtils.isLoaded(sender, profile)) {
@@ -62,7 +61,7 @@ public class InspectCommand implements TabExecutor {
                 }
 
             } else {
-                Player target = mcMMOPlayer.getPlayer();
+                Player target = mmoPlayer.getPlayer();
 
                 if (CommandUtils.hidden(sender, target, Permissions.inspectHidden(sender))) {
                     sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
@@ -72,7 +71,7 @@ public class InspectCommand implements TabExecutor {
                 }
 
                 if (Config.getInstance().getScoreboardsEnabled() && sender instanceof Player && Config.getInstance().getInspectUseBoard()) {
-                    ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, mcMMOPlayer.getProfile());
+                    ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, mmoPlayer);
 
                     if (!Config.getInstance().getInspectUseChat()) {
                         return true;
@@ -83,7 +82,7 @@ public class InspectCommand implements TabExecutor {
                 CommandUtils.printGatheringSkills(target, sender);
                 CommandUtils.printCombatSkills(target, sender);
                 CommandUtils.printMiscSkills(target, sender);
-                sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", mcMMOPlayer.getPowerLevel()));
+                sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", mmoPlayer.getPowerLevel()));
             }
 
             return true;

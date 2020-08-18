@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -34,7 +33,7 @@ public class SmeltingCommand extends SkillCommand {
     protected void dataCalculations(Player player, float skillValue) {
         // FUEL EFFICIENCY
         if (canFuelEfficiency) {
-            burnTimeModifier = String.valueOf(UserManager.getPlayer(player).getSmeltingManager().getFuelEfficiencyMultiplier());
+            burnTimeModifier = String.valueOf(mcMMO.getUserManager().getPlayer(player).getSmeltingManager().getFuelEfficiencyMultiplier());
         }
 
         // FLUX MINING
@@ -81,7 +80,7 @@ public class SmeltingCommand extends SkillCommand {
 
         if (canUnderstandTheArt) {
             messages.add(getStatMessage(false, true, SubSkillType.SMELTING_UNDERSTANDING_THE_ART,
-                    String.valueOf(UserManager.getPlayer(player).getSmeltingManager().getVanillaXpMultiplier())));
+                    String.valueOf(mcMMO.getUserManager().getPlayer(player).getSmeltingManager().getVanillaXpMultiplier())));
         }
 
         return messages;

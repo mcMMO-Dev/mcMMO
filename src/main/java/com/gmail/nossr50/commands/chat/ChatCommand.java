@@ -9,7 +9,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -32,7 +31,7 @@ public abstract class ChatCommand implements TabExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        McMMOPlayer mcMMOPlayer;
+        McMMOPlayer mmoPlayer;
 
         switch (args.length) {
             case 0:
@@ -44,13 +43,13 @@ public abstract class ChatCommand implements TabExecutor {
                     return true;
                 }
 
-                mcMMOPlayer = UserManager.getPlayer(sender.getName());
+                mmoPlayer = mcMMO.getUserManager().getPlayer(sender.getName());
 
-                if (mcMMOPlayer.isChatEnabled(chatMode)) {
-                    disableChatMode(mcMMOPlayer, sender);
+                if (mmoPlayer.isChatEnabled(chatMode)) {
+                    disableChatMode(mmoPlayer, sender);
                 }
                 else {
-                    enableChatMode(mcMMOPlayer, sender);
+                    enableChatMode(mmoPlayer, sender);
                 }
 
                 return true;
@@ -64,7 +63,7 @@ public abstract class ChatCommand implements TabExecutor {
                         return true;
                     }
 
-                    enableChatMode(UserManager.getPlayer(sender.getName()), sender);
+                    enableChatMode(mcMMO.getUserManager().getPlayer(sender.getName()), sender);
                     return true;
                 }
 
@@ -76,7 +75,7 @@ public abstract class ChatCommand implements TabExecutor {
                         return true;
                     }
 
-                    disableChatMode(UserManager.getPlayer(sender.getName()), sender);
+                    disableChatMode(mcMMO.getUserManager().getPlayer(sender.getName()), sender);
                     return true;
                 }
 
@@ -114,28 +113,28 @@ public abstract class ChatCommand implements TabExecutor {
 
     protected abstract void handleChatSending(CommandSender sender, String[] args);
 
-    private void enableChatMode(McMMOPlayer mcMMOPlayer, CommandSender sender) {
-        if (chatMode == ChatMode.PARTY && mcMMOPlayer.getParty() == null) {
+    private void enableChatMode(McMMOPlayer mmoPlayer, CommandSender sender) {
+        if (chatMode == ChatMode.PARTY && mmoPlayer.getParty() == null) {
             sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
             return;
         }
 
-        if (chatMode == ChatMode.PARTY && (mcMMOPlayer.getParty().getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.CHAT))) {
+        if (chatMode == ChatMode.PARTY && (mmoPlayer.getParty().getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.CHAT))) {
             sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.1"));
             return;
         }
 
-        mcMMOPlayer.enableChat(chatMode);
+        mmoPlayer.enableChat(chatMode);
         sender.sendMessage(chatMode.getEnabledMessage());
     }
 
-    private void disableChatMode(McMMOPlayer mcMMOPlayer, CommandSender sender) {
-        if (chatMode == ChatMode.PARTY && mcMMOPlayer.getParty() == null) {
+    private void disableChatMode(McMMOPlayer mmoPlayer, CommandSender sender) {
+        if (chatMode == ChatMode.PARTY && mmoPlayer.getParty() == null) {
             sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
             return;
         }
 
-        mcMMOPlayer.disableChat(chatMode);
+        mmoPlayer.disableChat(chatMode);
         sender.sendMessage(chatMode.getDisabledMessage());
     }
 }

@@ -14,7 +14,6 @@ import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -27,12 +26,12 @@ import org.bukkit.inventory.ItemStack;
 
 public class UnarmedManager extends SkillManager {
 
-    public UnarmedManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.UNARMED);
+    public UnarmedManager(McMMOPlayer mmoPlayer) {
+        super(mmoPlayer, PrimarySkillType.UNARMED);
     }
 
     public boolean canActivateAbility() {
-        return mcMMOPlayer.getSuperAbilityManager().isAbilityToolPrimed(AbilityToolType.BERSERK_TOOL) && Permissions.berserk(getPlayer());
+        return mmoPlayer.getSuperAbilityManager().isAbilityToolPrimed(AbilityToolType.BERSERK_TOOL) && Permissions.berserk(getPlayer());
     }
 
     public boolean canUseIronArm() {
@@ -43,7 +42,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canUseBerserk() {
-        return mcMMOPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.BERSERK);
+        return mmoPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.BERSERK);
     }
 
     public boolean canDisarm(LivingEntity target) {
@@ -101,18 +100,18 @@ public class UnarmedManager extends SkillManager {
      * @param defender The defending player
      */
     public void disarmCheck(Player defender) {
-        if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.UNARMED_DISARM, getPlayer(), mcMMOPlayer.getAttackStrength()) && !hasIronGrip(defender)) {
+        if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.UNARMED_DISARM, getPlayer(), mmoPlayer.getAttackStrength()) && !hasIronGrip(defender)) {
             if (EventUtils.callDisarmEvent(defender).isCancelled()) {
                 return;
             }
 
-            if(UserManager.getPlayer(defender) == null)
+            if(mcMMO.getUserManager().getPlayer(defender) == null)
                 return;
 
             Item item = Misc.dropItem(defender.getLocation(), defender.getInventory().getItemInMainHand());
 
             if (item != null && AdvancedConfig.getInstance().getDisarmProtected()) {
-                item.setMetadata(mcMMO.disarmedItemKey, UserManager.getPlayer(defender).getPlayerMetadata());
+                item.setMetadata(mcMMO.disarmedItemKey, mcMMO.getUserManager().getPlayer(defender).getPlayerMetadata());
             }
 
             defender.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
@@ -138,7 +137,7 @@ public class UnarmedManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public double berserkDamage(double damage) {
-        damage = ((damage * Unarmed.berserkDamageModifier) * mcMMOPlayer.getAttackStrength()) - damage;
+        damage = ((damage * Unarmed.berserkDamageModifier) * mmoPlayer.getAttackStrength()) - damage;
 
         return damage;
     }

@@ -9,7 +9,6 @@ import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.alchemy.AlchemyPotionBrewer;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
@@ -40,9 +39,9 @@ public class AlchemyBrewTask extends BukkitRunnable {
         if (player != null
                 && !Misc.isNPCEntityExcludingVillagers(player)
                 && Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CATALYSIS)
-                && UserManager.getPlayer(player) != null) {
+                && mcMMO.getUserManager().getPlayer(player) != null) {
 
-            double catalysis = UserManager.getPlayer(player).getAlchemyManager().calculateBrewSpeed(Permissions.lucky(player, PrimarySkillType.ALCHEMY));
+            double catalysis = mcMMO.getUserManager().getPlayer(player).getAlchemyManager().calculateBrewSpeed(Permissions.lucky(player, PrimarySkillType.ALCHEMY));
 
             McMMOPlayerCatalysisEvent event = new McMMOPlayerCatalysisEvent(player, catalysis);
             mcMMO.p.getServer().getPluginManager().callEvent(event);

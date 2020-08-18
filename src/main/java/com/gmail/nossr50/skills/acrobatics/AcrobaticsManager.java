@@ -26,8 +26,8 @@ import org.bukkit.metadata.MetadataValue;
 
 public class AcrobaticsManager extends SkillManager {
 
-    public AcrobaticsManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.ACROBATICS);
+    public AcrobaticsManager(McMMOPlayer mmoPlayer) {
+        super(mmoPlayer, PrimarySkillType.ACROBATICS);
         fallLocationMap = new LimitedSizeList(50);
     }
 
@@ -91,11 +91,11 @@ public class AcrobaticsManager extends SkillManager {
         if (!isFatal(modifiedDamage) && RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ACROBATICS_DODGE, player)) {
             ParticleEffectUtils.playDodgeEffect(player);
 
-            if (mcMMOPlayer.useChatNotifications()) {
+            if (mmoPlayer.hasSkillChatNotifications()) {
                 NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Combat.Proc");
             }
 
-            if (SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
+            if (SkillUtils.cooldownExpired(mmoPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
                 if(!(attacker instanceof Player)) {
                     //Check to see how many dodge XP rewards this mob has handed out
                     if(attacker.hasMetadata(mcMMO.DODGE_TRACKER) && ExperienceConfig.getInstance().isAcrobaticsExploitingPrevented()) {

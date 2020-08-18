@@ -21,8 +21,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class ArcheryManager extends SkillManager {
-    public ArcheryManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.ARCHERY);
+    public ArcheryManager(McMMOPlayer mmoPlayer) {
+        super(mmoPlayer, PrimarySkillType.ARCHERY);
     }
 
     public boolean canDaze(LivingEntity target) {
@@ -100,7 +100,7 @@ public class ArcheryManager extends SkillManager {
             NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Combat.TouchedFuzzy");
         }
 
-        if (mcMMOPlayer.useChatNotifications()) {
+        if (mmoPlayer.hasSkillChatNotifications()) {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.TargetDazed");
         }
 

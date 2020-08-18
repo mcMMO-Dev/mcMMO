@@ -3,7 +3,6 @@ package com.gmail.nossr50.util;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableSet;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -228,7 +227,7 @@ public final class Misc {
         Player player = mcMMO.p.getServer().getPlayerExact(playerName);
 
         if (player != null) {
-            UserManager.remove(player);
+            mcMMO.getUserManager().remove(player);
             new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
         }
     }

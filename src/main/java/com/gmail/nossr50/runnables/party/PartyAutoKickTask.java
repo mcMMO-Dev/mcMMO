@@ -3,7 +3,6 @@ package com.gmail.nossr50.runnables.party;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -23,7 +22,7 @@ public class PartyAutoKickTask extends BukkitRunnable {
 
         long currentTime = System.currentTimeMillis();
 
-        for (Party party : PartyManager.getParties()) {
+        for (Party party : mcMMO.getPartyManager().getParties()) {
             for (UUID memberUniqueId : party.getMembers().keySet()) {
                 OfflinePlayer member = mcMMO.p.getServer().getOfflinePlayer(memberUniqueId);
                 boolean isProcessed = processedPlayers.contains(memberUniqueId);
@@ -39,7 +38,7 @@ public class PartyAutoKickTask extends BukkitRunnable {
         }
 
         for (Entry<OfflinePlayer, Party> entry : toRemove.entrySet()) {
-            PartyManager.removeFromParty(entry.getKey(), entry.getValue());
+            mcMMO.getPartyManager().removeFromParty(entry.getKey(), entry.getValue());
         }
     }
 }

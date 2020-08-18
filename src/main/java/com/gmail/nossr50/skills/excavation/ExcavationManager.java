@@ -21,8 +21,8 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class ExcavationManager extends SkillManager {
-    public ExcavationManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.EXCAVATION);
+    public ExcavationManager(McMMOPlayer mmoPlayer) {
+        super(mmoPlayer, PrimarySkillType.EXCAVATION);
     }
 
     /**

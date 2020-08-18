@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.Player;
 
 public class RandomChanceSkill implements RandomChanceExecution {
@@ -23,9 +22,9 @@ public class RandomChanceSkill implements RandomChanceExecution {
         this.subSkillType = subSkillType;
         this.probabilityCap = RandomChanceUtil.LINEAR_CURVE_VAR;
 
-        final McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        if (player != null && mcMMOPlayer != null) {
-            this.skillLevel = mcMMOPlayer.getSkillLevel(primarySkillType);
+        final McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
+        if (player != null && mmoPlayer != null) {
+            this.skillLevel = mmoPlayer.getSkillLevel(primarySkillType);
         } else {
             this.skillLevel = 0;
         }
@@ -44,9 +43,9 @@ public class RandomChanceSkill implements RandomChanceExecution {
         this.subSkillType = subSkillType;
         this.probabilityCap = RandomChanceUtil.LINEAR_CURVE_VAR;
 
-        final McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        if (player != null && mcMMOPlayer != null) {
-            this.skillLevel = mcMMOPlayer.getSkillLevel(primarySkillType);
+        final McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
+        if (player != null && mmoPlayer != null) {
+            this.skillLevel = mmoPlayer.getSkillLevel(primarySkillType);
         } else {
             this.skillLevel = 0;
         }
@@ -69,9 +68,9 @@ public class RandomChanceSkill implements RandomChanceExecution {
         this.primarySkillType = subSkillType.getParentSkill();
         this.subSkillType = subSkillType;
 
-        final McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        if (player != null && mcMMOPlayer != null) {
-            this.skillLevel = mcMMOPlayer.getSkillLevel(primarySkillType);
+        final McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
+        if (player != null && mmoPlayer != null) {
+            this.skillLevel = mmoPlayer.getSkillLevel(primarySkillType);
         } else {
             this.skillLevel = 0;
         }
@@ -94,9 +93,9 @@ public class RandomChanceSkill implements RandomChanceExecution {
         this.primarySkillType = subSkillType.getParentSkill();
         this.subSkillType = subSkillType;
 
-        final McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        if (player != null && mcMMOPlayer != null) {
-            this.skillLevel = mcMMOPlayer.getSkillLevel(primarySkillType);
+        final McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
+        if (player != null && mmoPlayer != null) {
+            this.skillLevel = mmoPlayer.getSkillLevel(primarySkillType);
         } else {
             this.skillLevel = 0;
         }

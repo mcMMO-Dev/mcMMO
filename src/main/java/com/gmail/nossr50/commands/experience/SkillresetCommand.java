@@ -9,7 +9,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -53,7 +52,7 @@ public class SkillresetCommand implements TabExecutor {
                     skill = PrimarySkillType.getSkill(args[1]);
                 }
 
-                editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), skill);
+                editValues((Player) sender, mcMMO.getUserManager().getPlayer(sender.getName()), skill);
                 return true;
 
             case 2:
@@ -74,10 +73,10 @@ public class SkillresetCommand implements TabExecutor {
                 }
 
                 String playerName = CommandUtils.getMatchedPlayerName(args[0]);
-                McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(playerName);
+                McMMOPlayer mmoPlayer = mcMMO.getUserManager().getOfflinePlayer(playerName);
 
-                // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
-                if (mcMMOPlayer == null) {
+                // If the mmoPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
+                if (mmoPlayer == null) {
                     UUID uuid = null;
                     OfflinePlayer player = mcMMO.p.getServer().getOfflinePlayer(playerName);
                     if (player != null) {
@@ -92,7 +91,7 @@ public class SkillresetCommand implements TabExecutor {
                     editValues(null, profile, skill);
                 }
                 else {
-                    editValues(mcMMOPlayer.getPlayer(), mcMMOPlayer.getProfile(), skill);
+                    editValues(mmoPlayer.getPlayer(), mmoPlayer, skill);
                 }
 
                 handleSenderMessage(sender, playerName, skill);

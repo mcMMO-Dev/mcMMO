@@ -9,7 +9,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
 import com.gmail.nossr50.runnables.skills.AlchemyBrewCheckTask;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.BrewingStand;
@@ -93,12 +92,12 @@ public final class AlchemyPotionBrewer {
     }
 
     private static List<ItemStack> getValidIngredients(Player player) {
-        if(player == null || UserManager.getPlayer(player) == null)
+        if(player == null || mcMMO.getUserManager().getPlayer(player) == null)
         {
             return PotionConfig.getInstance().getIngredients(1);
         }
 
-        return PotionConfig.getInstance().getIngredients(!Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CONCOCTIONS) ? 1 : UserManager.getPlayer(player).getAlchemyManager().getTier());
+        return PotionConfig.getInstance().getIngredients(!Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CONCOCTIONS) ? 1 : mcMMO.getUserManager().getPlayer(player).getAlchemyManager().getTier());
     }
 
     public static void finishBrewing(BlockState brewingStand, Player player, boolean forced) {
@@ -148,8 +147,8 @@ public final class AlchemyPotionBrewer {
                 PotionStage potionStage = PotionStage.getPotionStage(input, output);
 
                 //TODO: hmm
-                if (UserManager.hasPlayerDataKey(player)) {
-                    UserManager.getPlayer(player).getAlchemyManager().handlePotionBrewSuccesses(potionStage, 1);
+                if (mcMMO.getUserManager().hasPlayerDataKey(player)) {
+                    mcMMO.getUserManager().getPlayer(player).getAlchemyManager().handlePotionBrewSuccesses(potionStage, 1);
                 }
             }
         }

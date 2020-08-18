@@ -15,8 +15,8 @@ import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class SmeltingManager extends SkillManager {
-    public SmeltingManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.SMELTING);
+    public SmeltingManager(McMMOPlayer mmoPlayer) {
+        super(mmoPlayer, PrimarySkillType.SMELTING);
     }
 
     /*public boolean canUseFluxMining(BlockState blockState) {

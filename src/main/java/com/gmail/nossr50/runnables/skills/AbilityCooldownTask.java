@@ -7,23 +7,23 @@ import com.gmail.nossr50.util.player.NotificationManager;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class AbilityCooldownTask extends BukkitRunnable {
-    private final McMMOPlayer mcMMOPlayer;
+    private final McMMOPlayer mmoPlayer;
     private final SuperAbilityType ability;
 
-    public AbilityCooldownTask(McMMOPlayer mcMMOPlayer, SuperAbilityType ability) {
-        this.mcMMOPlayer = mcMMOPlayer;
+    public AbilityCooldownTask(McMMOPlayer mmoPlayer, SuperAbilityType ability) {
+        this.mmoPlayer = mmoPlayer;
         this.ability = ability;
     }
 
     @Override
     public void run() {
-        if (!mcMMOPlayer.getPlayer().isOnline() || mcMMOPlayer.getSuperAbilityManager().getAbilityInformed(ability)) {
+        if (!mmoPlayer.getPlayer().isOnline() || mmoPlayer.getSuperAbilityManager().getAbilityInformed(ability)) {
             return;
         }
 
-        mcMMOPlayer.getSuperAbilityManager().setAbilityInformed(ability, true);
+        mmoPlayer.getSuperAbilityManager().setAbilityInformed(ability, true);
 
-        NotificationManager.sendPlayerInformation(mcMMOPlayer.getPlayer(), NotificationType.ABILITY_REFRESHED, ability.getAbilityRefresh());
-        //mcMMOPlayer.getPlayer().sendMessage(ability.getAbilityRefresh());
+        NotificationManager.sendPlayerInformation(mmoPlayer.getPlayer(), NotificationType.ABILITY_REFRESHED, ability.getAbilityRefresh());
+        //mmoPlayer.getPlayer().sendMessage(ability.getAbilityRefresh());
     }
 }

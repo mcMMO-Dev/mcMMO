@@ -8,16 +8,16 @@ import java.util.ArrayList;
 
 public class DelayedHerbalismXPCheckTask extends BukkitRunnable {
 
-    private final McMMOPlayer mcMMOPlayer;
+    private final McMMOPlayer mmoPlayer;
     private final ArrayList<BlockSnapshot> chorusBlocks;
 
-    public DelayedHerbalismXPCheckTask(McMMOPlayer mcMMOPlayer, ArrayList<BlockSnapshot> chorusBlocks) {
-        this.mcMMOPlayer = mcMMOPlayer;
+    public DelayedHerbalismXPCheckTask(McMMOPlayer mmoPlayer, ArrayList<BlockSnapshot> chorusBlocks) {
+        this.mmoPlayer = mmoPlayer;
         this.chorusBlocks = chorusBlocks;
     }
 
     @Override
     public void run() {
-        mcMMOPlayer.getHerbalismManager().awardXPForBlockSnapshots(chorusBlocks);
+        mmoPlayer.getHerbalismManager().awardXPForBlockSnapshots(chorusBlocks);
     }
 }

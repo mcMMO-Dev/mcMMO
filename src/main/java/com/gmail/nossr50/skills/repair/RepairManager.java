@@ -37,8 +37,8 @@ public class RepairManager extends SkillManager {
     private boolean placedAnvil;
     private int     lastClick;
 
-    public RepairManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.REPAIR);
+    public RepairManager(McMMOPlayer mmoPlayer) {
+        super(mmoPlayer, PrimarySkillType.REPAIR);
     }
 
     /**

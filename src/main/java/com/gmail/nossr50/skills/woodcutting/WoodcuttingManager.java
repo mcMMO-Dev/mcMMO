@@ -48,8 +48,8 @@ public class WoodcuttingManager extends SkillManager {
             new int[] { 2, -1}, new int[] { 2, 0}, new int[] { 2, 1},
     };
 
-    public WoodcuttingManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.WOODCUTTING);
+    public WoodcuttingManager(McMMOPlayer mmoPlayer) {
+        super(mmoPlayer, PrimarySkillType.WOODCUTTING);
         treeFellerThreshold = Config.getInstance().getTreeFellerThreshold();
     }
 
@@ -60,7 +60,7 @@ public class WoodcuttingManager extends SkillManager {
     }
 
     public boolean canUseTreeFeller(ItemStack heldItem) {
-        return mcMMOPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.TREE_FELLER)
+        return mmoPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.TREE_FELLER)
                 && ItemUtils.isAxe(heldItem);
     }
 

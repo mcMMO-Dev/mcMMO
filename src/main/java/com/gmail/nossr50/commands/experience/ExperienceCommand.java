@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -55,14 +54,14 @@ public abstract class ExperienceCommand implements TabExecutor {
                 }
 
                 //Profile not loaded
-                if(UserManager.getPlayer(sender.getName()) == null)
+                if(mcMMO.getUserManager().getPlayer(sender.getName()) == null)
                 {
                     sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                     return true;
                 }
 
 
-                editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), skill, Integer.parseInt(args[1]));
+                editValues((Player) sender, mcMMO.getUserManager().getPlayer(sender.getName()), skill, Integer.parseInt(args[1]));
                 return true;
 
             case 3:
@@ -90,10 +89,10 @@ public abstract class ExperienceCommand implements TabExecutor {
                 int value = Integer.parseInt(args[2]);
 
                 String playerName = CommandUtils.getMatchedPlayerName(args[0]);
-                McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(playerName);
+                McMMOPlayer mmoPlayer = mcMMO.getUserManager().getOfflinePlayer(playerName);
 
-                // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
-                if (mcMMOPlayer == null) {
+                // If the mmoPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
+                if (mmoPlayer == null) {
                     UUID uuid = null;
                     OfflinePlayer player = mcMMO.p.getServer().getOfflinePlayer(playerName);
                     if (player != null) {
@@ -108,7 +107,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                     editValues(null, profile, skill, value);
                 }
                 else {
-                    editValues(mcMMOPlayer.getPlayer(), mcMMOPlayer.getProfile(), skill, value);
+                    editValues(mmoPlayer.getPlayer(), mmoPlayer, skill, value);
                 }
 
                 handleSenderMessage(sender, playerName, skill);

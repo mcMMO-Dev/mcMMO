@@ -1,11 +1,11 @@
 package com.gmail.nossr50.commands.party;
 
 import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.party.PartyMember;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,15 +16,15 @@ public class PartyRenameCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length == 2) {
-            if (UserManager.getPlayer((Player) sender) == null) {
+            if (mcMMO.getUserManager().getPlayer((Player) sender) == null) {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return true;
             }
 
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer((Player) sender);
-            Party playerParty = mcMMOPlayer.getParty();
+            McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer((Player) sender);
+            Party playerParty = mmoPlayer.getParty();
 
-            String oldPartyName = playerParty.getName();
+            String oldPartyName = playerParty.getPartyName();
             String newPartyName = args[1];
 
             // This is to prevent party leaders from spamming other players with the rename message
@@ -33,26 +33,26 @@ public class PartyRenameCommand implements CommandExecutor {
                 return true;
             }
 
-            Player player = mcMMOPlayer.getPlayer();
+            Player player = mmoPlayer.getPlayer();
 
             // Check to see if the party exists, and if it does cancel renaming the party
-            if (PartyManager.checkPartyExistence(player, newPartyName)) {
+            if (mcMMO.getPartyManager().checkPartyExistence(player, newPartyName)) {
                 return true;
             }
 
             String leaderName = playerParty.getLeader().getPlayerName();
 
-            for (Player member : playerParty.getOnlineMembers()) {
-                if (!PartyManager.handlePartyChangeEvent(member, oldPartyName, newPartyName, EventReason.CHANGED_PARTIES)) {
+            for (PartyMember partyMember : playerParty.getPartyMembers()) {
+                if (!mcMMO.getPartyManager().handlePartyChangeEvent(partyMember, oldPartyName, newPartyName, EventReason.CHANGED_PARTIES)) {
                     return true;
                 }
 
-                if (!member.getName().equalsIgnoreCase(leaderName)) {
-                    member.sendMessage(LocaleLoader.getString("Party.InformedOnNameChange", leaderName, newPartyName));
+                if (!partyMember.getName().equalsIgnoreCase(leaderName)) {
+                    partyMember.sendMessage(LocaleLoader.getString("Party.InformedOnNameChange", leaderName, newPartyName));
                 }
             }
 
-            playerParty.setName(newPartyName);
+            playerParty.setPartyName(newPartyName);
 
             sender.sendMessage(LocaleLoader.getString("Commands.Party.Rename", newPartyName));
             return true;

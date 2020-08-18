@@ -5,8 +5,8 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.skills.SkillManager;
 
 public class TridentManager extends SkillManager {
-    public TridentManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.TRIDENTS);
+    public TridentManager(McMMOPlayer mmoPlayer) {
+        super(mmoPlayer, PrimarySkillType.TRIDENTS);
     }
 
 

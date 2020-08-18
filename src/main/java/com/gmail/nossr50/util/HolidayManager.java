@@ -8,7 +8,6 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import com.google.common.collect.ImmutableList;
@@ -368,7 +367,7 @@ public final class HolidayManager {
         if(!Config.getInstance().isAprilFoolsAllowed())
             return;
 
-        final McMMOPlayer mmoPlayer = UserManager.getPlayer(player);
+        final McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
         if (mmoPlayer == null) return;
 
         int levelTotal = Misc.getRandom().nextInt(1 + mmoPlayer.getSkillLevel(PrimarySkillType.MINING)) + 1;

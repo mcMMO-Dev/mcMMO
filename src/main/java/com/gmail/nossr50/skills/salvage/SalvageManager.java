@@ -36,8 +36,8 @@ public class SalvageManager extends SkillManager {
     private boolean placedAnvil;
     private int     lastClick;
 
-    public SalvageManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.SALVAGE);
+    public SalvageManager(McMMOPlayer mmoPlayer) {
+        super(mmoPlayer, PrimarySkillType.SALVAGE);
     }
 
     /**

@@ -638,7 +638,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     /* GENERAL */
 
     public boolean canApplyLimitBreakPVE() { return config.getBoolean("Skills.General.LimitBreak.AllowPVE", false); }
-    public int getStartingLevel() { return config.getInt("Skills.General.StartingLevel", 1); }
+    public int getStartingLevel() { return config.getInt("Skills.General.StartingLevel", 0); }
 
     public boolean allowPlayerTips() {
         return config.getBoolean("Feedback.PlayerTips", true);

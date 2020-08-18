@@ -6,8 +6,6 @@ import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -23,10 +21,10 @@ public class PartyChatCommand extends ChatCommand {
 
         if (sender instanceof Player) {
             //Check if player profile is loaded
-            if(UserManager.getPlayer((Player) sender) == null)
+            if(mcMMO.getUserManager().getPlayer((Player) sender) == null)
                 return;
 
-            party = UserManager.getPlayer((Player) sender).getParty();
+            party = mcMMO.getUserManager().getPlayer((Player) sender).getParty();
 
             if (party == null) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
@@ -46,7 +44,7 @@ public class PartyChatCommand extends ChatCommand {
                 return;
             }
 
-            party = PartyManager.getParty(args[0]);
+            party = mcMMO.getPartyManager().getParty(args[0]);
 
             if (party == null) {
                 sender.sendMessage(LocaleLoader.getString("Party.InvalidName"));

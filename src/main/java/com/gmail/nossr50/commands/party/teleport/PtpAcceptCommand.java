@@ -4,7 +4,6 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -21,14 +20,14 @@ public class PtpAcceptCommand implements CommandExecutor {
             return true;
         }
 
-        if(UserManager.getPlayer((Player) sender) == null)
+        if(mcMMO.getUserManager().getPlayer((Player) sender) == null)
         {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
 
         Player player = (Player) sender;
-        PartyTeleportRecord ptpRecord = UserManager.getPlayer(player).getPartyTeleportRecord();
+        PartyTeleportRecord ptpRecord = mcMMO.getUserManager().getPlayer(player).getPartyTeleportRecord();
 
         if (!ptpRecord.hasRequest()) {
             player.sendMessage(LocaleLoader.getString("Commands.ptp.NoRequests"));

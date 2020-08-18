@@ -12,7 +12,6 @@ import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.PerksUtils;
@@ -59,7 +58,7 @@ public abstract class SkillCommand implements TabExecutor {
             return true;
         }
 
-        if(UserManager.getPlayer((Player) sender) == null)
+        if(mcMMO.getUserManager().getPlayer((Player) sender) == null)
         {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
@@ -67,11 +66,11 @@ public abstract class SkillCommand implements TabExecutor {
 
         if (args.length == 0) {
             Player player = (Player) sender;
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+            McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
 
             boolean isLucky = Permissions.lucky(player, skill);
             boolean hasEndurance = (PerksUtils.handleActivationPerks(player, 0, 0) != 0);
-            float skillValue = mcMMOPlayer.getSkillLevel(skill);
+            float skillValue = mmoPlayer.getSkillLevel(skill);
 
             //Send the players a few blank lines to make finding the top of the skill command easier
             if (AdvancedConfig.getInstance().doesSkillCommandSendBlankLines())
@@ -82,7 +81,7 @@ public abstract class SkillCommand implements TabExecutor {
             permissionsCheck(player);
             dataCalculations(player, skillValue);
 
-            sendSkillCommandHeader(player, mcMMOPlayer, (int) skillValue);
+            sendSkillCommandHeader(player, mmoPlayer, (int) skillValue);
 
             //Make JSON text components
             List<TextComponent> subskillTextComponents = getTextComponents(player);
@@ -135,7 +134,7 @@ public abstract class SkillCommand implements TabExecutor {
         player.sendMessage(LocaleLoader.getString("Guides.Available", skillName, skillName.toLowerCase(Locale.ENGLISH)));
     }
 
-    private void sendSkillCommandHeader(Player player, McMMOPlayer mcMMOPlayer, int skillValue) {
+    private void sendSkillCommandHeader(Player player, McMMOPlayer mmoPlayer, int skillValue) {
         ChatColor hd1 = ChatColor.DARK_AQUA;
         ChatColor c1 = ChatColor.GOLD;
         ChatColor c2 = ChatColor.RED;
@@ -153,7 +152,7 @@ public abstract class SkillCommand implements TabExecutor {
             player.sendMessage(LocaleLoader.getString("Commands.XPGain.Overhaul", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
 
             //LEVEL
-            player.sendMessage(LocaleLoader.getString("Effects.Level.Overhaul", skillValue, mcMMOPlayer.getSkillXpLevel(skill), mcMMOPlayer.getXpToLevel(skill)));
+            player.sendMessage(LocaleLoader.getString("Effects.Level.Overhaul", skillValue, mmoPlayer.getSkillXpLevel(skill), mmoPlayer.getXpToLevel(skill)));
 
         } else {
             /*
@@ -164,7 +163,7 @@ public abstract class SkillCommand implements TabExecutor {
             Set<PrimarySkillType> parents = FamilyTree.getParents(skill);
 
             //TODO: Add JSON here
-            /*player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level.Overhaul", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)))*/
+            /*player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level.Overhaul", mmoPlayer.getSkillLevel(parent), mmoPlayer.getSkillXpLevel(parent), mmoPlayer.getXpToLevel(parent)))*/
             ArrayList<PrimarySkillType> parentList = new ArrayList<>(parents);
 
             StringBuilder parentMessage = new StringBuilder();
@@ -173,10 +172,10 @@ public abstract class SkillCommand implements TabExecutor {
             {
                 if(i+1 < parentList.size())
                 {
-                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
+                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mmoPlayer.getSkillLevel(parentList.get(i))));
                     parentMessage.append(ChatColor.GRAY).append(", ");
                 } else {
-                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mcMMOPlayer.getSkillLevel(parentList.get(i))));
+                    parentMessage.append(LocaleLoader.getString("Effects.Child.ParentList", parentList.get(i).getName(), mmoPlayer.getSkillLevel(parentList.get(i))));
                 }
             }
 
@@ -192,7 +191,7 @@ public abstract class SkillCommand implements TabExecutor {
         if (!skill.isChildSkill()) {
             player.sendMessage(LocaleLoader.getString("Skills.Header", skillName));
             player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
-            player.sendMessage(LocaleLoader.getString("Effects.Level", skillValue, mcMMOPlayer.getSkillXpLevel(skill), mcMMOPlayer.getXpToLevel(skill)));
+            player.sendMessage(LocaleLoader.getString("Effects.Level", skillValue, mmoPlayer.getSkillXpLevel(skill), mmoPlayer.getXpToLevel(skill)));
         } else {
             player.sendMessage(LocaleLoader.getString("Skills.Header", skillName + " " + LocaleLoader.getString("Skills.Child")));
             player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain.Child")));
@@ -202,7 +201,7 @@ public abstract class SkillCommand implements TabExecutor {
             Set<PrimarySkillType> parents = FamilyTree.getParents(skill);
 
             for (PrimarySkillType parent : parents) {
-                player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)));
+                player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level", mmoPlayer.getSkillLevel(parent), mmoPlayer.getSkillXpLevel(parent), mmoPlayer.getXpToLevel(parent)));
             }
         }
         */

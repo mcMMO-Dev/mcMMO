@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -38,12 +37,12 @@ public class MccooldownCommand implements TabExecutor {
                 }
             }
 
-            if (UserManager.getPlayer(player) == null) {
+            if (mcMMO.getUserManager().getPlayer(player) == null) {
                 player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return true;
             }
 
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+            McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
 
             player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Header"));
             player.sendMessage(LocaleLoader.getString("mcMMO.NoSkillNote"));
@@ -53,7 +52,7 @@ public class MccooldownCommand implements TabExecutor {
                     continue;
                 }
 
-                int seconds = mcMMOPlayer.calculateTimeRemaining(ability);
+                int seconds = mmoPlayer.calculateTimeRemaining(ability);
 
                 if (seconds <= 0) {
                     player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.Y", ability.getLocalizedName()));

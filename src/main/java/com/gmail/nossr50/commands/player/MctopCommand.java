@@ -9,7 +9,6 @@ import com.gmail.nossr50.runnables.commands.MctopCommandAsyncTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -85,11 +84,11 @@ public class MctopCommand implements TabExecutor {
                 return;
             }
 
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
+            McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(sender.getName());
             long cooldownMillis = Math.max(Config.getInstance().getDatabasePlayerCooldown(), 1750);
 
-            if (mcMMOPlayer.getDatabaseATS() + cooldownMillis > System.currentTimeMillis()) {
-                double seconds = ((mcMMOPlayer.getDatabaseATS() + cooldownMillis) - System.currentTimeMillis()) / 1000.0D;
+            if (mmoPlayer.getDatabaseCommandATS() + cooldownMillis > System.currentTimeMillis()) {
+                double seconds = ((mmoPlayer.getDatabaseCommandATS() + cooldownMillis) - System.currentTimeMillis()) / 1000.0D;
                 if (seconds < 1) {
                     seconds = 1;
                 }
@@ -105,7 +104,7 @@ public class MctopCommand implements TabExecutor {
                 ((Player) sender).setMetadata(mcMMO.databaseCommandKey, new FixedMetadataValue(mcMMO.p, null));
             }
 
-            mcMMOPlayer.actualizeDatabaseATS();
+            mmoPlayer.actualizeDatabaseCommandATS();
         }
 
         display(page, skill, sender);

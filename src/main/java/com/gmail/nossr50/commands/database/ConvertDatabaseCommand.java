@@ -8,7 +8,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.database.DatabaseConversionTask;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -50,8 +49,8 @@ public class ConvertDatabaseCommand implements CommandExecutor {
 
             sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Database.Start", previousType.toString(), newType.toString()));
 
-            UserManager.saveAll();
-            UserManager.clearAll();
+            mcMMO.getUserManager().saveAllSync();
+            mcMMO.getUserManager().clearAll();
 
             for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
                 PlayerProfile profile = oldDatabase.loadPlayerProfile(player.getUniqueId());

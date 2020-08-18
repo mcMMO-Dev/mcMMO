@@ -43,8 +43,8 @@ public class TamingManager extends SkillManager {
 
     private HashMap<CallOfTheWildType, List<TrackedTamingEntity>> playerSummonedEntities;
 
-    public TamingManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.TAMING);
+    public TamingManager(McMMOPlayer mmoPlayer) {
+        super(mmoPlayer, PrimarySkillType.TAMING);
         init();
     }
 

@@ -10,7 +10,6 @@ import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -51,7 +50,7 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations(Player player, float skillValue) {
-        FishingManager fishingManager = UserManager.getPlayer(player).getFishingManager();
+        FishingManager fishingManager = mcMMO.getUserManager().getPlayer(player).getFishingManager();
 
         // TREASURE HUNTER
         if (canTreasureHunt) {

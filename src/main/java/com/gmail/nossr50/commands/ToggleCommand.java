@@ -2,7 +2,6 @@ package com.gmail.nossr50.commands;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -31,7 +30,7 @@ public abstract class ToggleCommand implements TabExecutor {
                     return true;
                 }
 
-                applyCommandAction(UserManager.getPlayer(sender.getName()));
+                applyCommandAction(mcMMO.getUserManager().getPlayer(sender.getName()));
                 return true;
 
             case 1:
@@ -41,17 +40,17 @@ public abstract class ToggleCommand implements TabExecutor {
                 }
 
                 String playerName = CommandUtils.getMatchedPlayerName(args[0]);
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName);
+                McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(playerName);
 
-                if (!CommandUtils.checkPlayerExistence(sender, playerName, mcMMOPlayer)) {
+                if (!CommandUtils.checkPlayerExistence(sender, playerName, mmoPlayer)) {
                     return true;
                 }
 
-                if (CommandUtils.isOffline(sender, mcMMOPlayer.getPlayer())) {
+                if (CommandUtils.isOffline(sender, mmoPlayer.getPlayer())) {
                     return true;
                 }
 
-                applyCommandAction(mcMMOPlayer);
+                applyCommandAction(mmoPlayer);
                 sendSuccessMessage(sender, playerName);
                 return true;
 
@@ -71,6 +70,6 @@ public abstract class ToggleCommand implements TabExecutor {
 
     protected abstract boolean hasOtherPermission(CommandSender sender);
     protected abstract boolean hasSelfPermission(CommandSender sender);
-    protected abstract void applyCommandAction(McMMOPlayer mcMMOPlayer);
+    protected abstract void applyCommandAction(McMMOPlayer mmoPlayer);
     protected abstract void sendSuccessMessage(CommandSender sender, String playerName);
 }

@@ -3,9 +3,8 @@ package com.gmail.nossr50.commands.player;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.experience.ExperienceBarManager;
+import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
@@ -24,7 +23,7 @@ public class XPBarCommand implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(sender instanceof Player) {
-            McMMOPlayer mmoPlayer = UserManager.getPlayer((Player) sender);
+            McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer((Player) sender);
             if(mmoPlayer == null) {
                 NotificationManager.sendPlayerInformationChatOnlyPrefixed(mmoPlayer.getPlayer(), "Profile.PendingLoad");
                 return false;
@@ -35,10 +34,10 @@ public class XPBarCommand implements TabExecutor {
             } else if(args.length < 2) {
               String option = args[0];
 
-              if(option.equalsIgnoreCase(ExperienceBarManager.XPBarSettingTarget.RESET.toString())) {
-                  mmoPlayer.getExperienceBarManager().xpBarSettingToggle(ExperienceBarManager.XPBarSettingTarget.RESET, null);
+              if(option.equalsIgnoreCase(MMOExperienceBarManager.XPBarSettingTarget.RESET.toString())) {
+                  mmoPlayer.getExperienceBarManager().xpBarSettingToggle(MMOExperienceBarManager.XPBarSettingTarget.RESET, null);
                   return true;
-              } else if(option.equalsIgnoreCase(ExperienceBarManager.XPBarSettingTarget.DISABLE.toString())) {
+              } else if(option.equalsIgnoreCase(MMOExperienceBarManager.XPBarSettingTarget.DISABLE.toString())) {
                   mmoPlayer.getExperienceBarManager().disableAllBars();
                   return true;
               } else {
@@ -56,8 +55,8 @@ public class XPBarCommand implements TabExecutor {
                     //Target setting
                     String option = args[0].toLowerCase();
 
-                    ExperienceBarManager.XPBarSettingTarget settingTarget = getSettingTarget(option);
-                    if(settingTarget != null && settingTarget != ExperienceBarManager.XPBarSettingTarget.RESET) {
+                    MMOExperienceBarManager.XPBarSettingTarget settingTarget = getSettingTarget(option);
+                    if(settingTarget != null && settingTarget != MMOExperienceBarManager.XPBarSettingTarget.RESET) {
                         //Change setting
                         mmoPlayer.getExperienceBarManager().xpBarSettingToggle(settingTarget, targetSkill);
                         return true;
@@ -75,16 +74,16 @@ public class XPBarCommand implements TabExecutor {
         }
     }
 
-    private @Nullable ExperienceBarManager.XPBarSettingTarget getSettingTarget(String string) {
+    private @Nullable MMOExperienceBarManager.XPBarSettingTarget getSettingTarget(String string) {
         switch (string.toLowerCase()) {
             case "hide":
-                return ExperienceBarManager.XPBarSettingTarget.HIDE;
+                return MMOExperienceBarManager.XPBarSettingTarget.HIDE;
             case "show":
-                return ExperienceBarManager.XPBarSettingTarget.SHOW;
+                return MMOExperienceBarManager.XPBarSettingTarget.SHOW;
             case "reset":
-                return ExperienceBarManager.XPBarSettingTarget.RESET;
+                return MMOExperienceBarManager.XPBarSettingTarget.RESET;
             case "disable":
-                return ExperienceBarManager.XPBarSettingTarget.DISABLE;
+                return MMOExperienceBarManager.XPBarSettingTarget.DISABLE;
         }
 
         return null;
@@ -96,13 +95,13 @@ public class XPBarCommand implements TabExecutor {
             case 1:
                 List<String> options = new ArrayList<>();
 
-                for(ExperienceBarManager.XPBarSettingTarget settingTarget : ExperienceBarManager.XPBarSettingTarget.values()) {
+                for(MMOExperienceBarManager.XPBarSettingTarget settingTarget : MMOExperienceBarManager.XPBarSettingTarget.values()) {
                     options.add(StringUtils.getCapitalized(settingTarget.toString()));
                 }
 
-                return StringUtil.copyPartialMatches(args[0], options, new ArrayList<>(ExperienceBarManager.XPBarSettingTarget.values().length));
+                return StringUtil.copyPartialMatches(args[0], options, new ArrayList<>(MMOExperienceBarManager.XPBarSettingTarget.values().length));
             case 2:
-                if(!args[0].equalsIgnoreCase(ExperienceBarManager.XPBarSettingTarget.RESET.toString()))
+                if(!args[0].equalsIgnoreCase(MMOExperienceBarManager.XPBarSettingTarget.RESET.toString()))
                     return StringUtil.copyPartialMatches(args[1], PrimarySkillType.SKILL_NAMES, new ArrayList<>(PrimarySkillType.SKILL_NAMES.size()));
             default:
                 return ImmutableList.of();

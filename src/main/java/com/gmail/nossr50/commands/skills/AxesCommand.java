@@ -6,7 +6,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.axes.Axes;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -38,7 +37,7 @@ public class AxesCommand extends SkillCommand {
     protected void dataCalculations(Player player, float skillValue) {
         // ARMOR IMPACT
         if (canImpact) {
-            impactDamage = UserManager.getPlayer(player).getAxesManager().getImpactDurabilityDamage();
+            impactDamage = mcMMO.getUserManager().getPlayer(player).getAxesManager().getImpactDurabilityDamage();
         }
 
         // AXE MASTERY

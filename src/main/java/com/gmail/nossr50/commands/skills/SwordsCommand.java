@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -44,7 +43,7 @@ public class SwordsCommand extends SkillCommand {
 
         // SWORDS_RUPTURE
         if (canBleed) {
-            bleedLength = UserManager.getPlayer(player).getSwordsManager().getRuptureBleedTicks();
+            bleedLength = mcMMO.getUserManager().getPlayer(player).getSwordsManager().getRuptureBleedTicks();
 
             String[] bleedStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.SWORDS_RUPTURE);
             bleedChance = bleedStrings[0];
@@ -70,7 +69,7 @@ public class SwordsCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
-        int ruptureTicks = UserManager.getPlayer(player).getSwordsManager().getRuptureBleedTicks();
+        int ruptureTicks = mcMMO.getUserManager().getPlayer(player).getSwordsManager().getRuptureBleedTicks();
         double ruptureDamagePlayers =  RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? AdvancedConfig.getInstance().getRuptureDamagePlayer() * 1.5D : AdvancedConfig.getInstance().getRuptureDamagePlayer();
         double ruptureDamageMobs =  RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? AdvancedConfig.getInstance().getRuptureDamageMobs() * 1.5D : AdvancedConfig.getInstance().getRuptureDamageMobs();
 
@@ -98,7 +97,7 @@ public class SwordsCommand extends SkillCommand {
         if(canUseSubskill(player, SubSkillType.SWORDS_STAB))
         {
             messages.add(getStatMessage(SubSkillType.SWORDS_STAB,
-                    String.valueOf(UserManager.getPlayer(player).getSwordsManager().getStabDamage())));
+                    String.valueOf(mcMMO.getUserManager().getPlayer(player).getSwordsManager().getStabDamage())));
         }
 
         if(canUseSubskill(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK)) {

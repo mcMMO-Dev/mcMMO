@@ -6,9 +6,9 @@ import com.gmail.nossr50.commands.party.teleport.PtpCommand;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -71,20 +71,20 @@ public class PartyCommand implements TabExecutor {
 
         Player player = (Player) sender;
 
-        if (!UserManager.hasPlayerDataKey(player)) {
+        if (!mcMMO.getUserManager().hasPlayerDataKey(player)) {
             return true;
         }
 
-        if(UserManager.getPlayer(player) == null)
+        if(mcMMO.getUserManager().getPlayer(player) == null)
         {
             player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
 
         if (args.length < 1) {
-            if (!mcMMOPlayer.inParty()) {
+            if (!mcMMO.getPartyManager().mmoPlayer.inParty()) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
                 return printUsage(player);
             }
@@ -118,7 +118,7 @@ public class PartyCommand implements TabExecutor {
         }
 
         // Party member commands
-        if (!mcMMOPlayer.inParty()) {
+        if (!mmoPlayer.inParty()) {
             sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
             return printUsage(player);
         }
@@ -139,7 +139,7 @@ public class PartyCommand implements TabExecutor {
         }
 
         // Party leader commands
-        if (!mcMMOPlayer.getParty().getLeader().getUniqueId().equals(player.getUniqueId())) {
+        if (!mmoPlayer.getParty().getLeader().getUniqueId().equals(player.getUniqueId())) {
             sender.sendMessage(LocaleLoader.getString("Party.NotOwner"));
             return true;
         }
@@ -206,13 +206,13 @@ public class PartyCommand implements TabExecutor {
                             Player player = (Player) sender;
 
                             //Not Loaded
-                            if(UserManager.getPlayer(player) == null)
+                            if(mcMMO.getUserManager().getPlayer(player) == null)
                             {
                                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                                 return ImmutableList.of();
                             }
 
-                            Party party = UserManager.getPlayer(player).getParty();
+                            Party party = mcMMO.getUserManager().getPlayer(player).getParty();
 
                             playerNames = party.getOnlinePlayerNames(player);
                             return StringUtil.copyPartialMatches(args[1], playerNames, new ArrayList<>(playerNames.size()));

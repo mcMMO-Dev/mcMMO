@@ -9,7 +9,6 @@ import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.runnables.skills.SkillUnlockNotificationTask;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -22,15 +21,15 @@ public class RankUtils {
     /**
      *
      * @param plugin plugin instance ref
-     * @param mcMMOPlayer target player
+     * @param mmoPlayer target player
      * @param primarySkillType
      * @param newLevel the new level of this skill
      */
-    public static void executeSkillUnlockNotifications(Plugin plugin, McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType, int newLevel)
+    public static void executeSkillUnlockNotifications(Plugin plugin, McMMOPlayer mmoPlayer, PrimarySkillType primarySkillType, int newLevel)
     {
         for(SubSkillType subSkillType : primarySkillType.getSkillAbilities())
         {
-            int playerRankInSkill = getRank(mcMMOPlayer.getPlayer(), subSkillType);
+            int playerRankInSkill = getRank(mmoPlayer.getPlayer(), subSkillType);
 
             HashMap<Integer, Integer> innerMap = subSkillRanks.get(subSkillType.toString());
 
@@ -39,13 +38,13 @@ public class RankUtils {
                 continue;
 
             //Don't send notifications if the player lacks the permission node
-            if(!Permissions.isSubSkillEnabled(mcMMOPlayer.getPlayer(), subSkillType))
+            if(!Permissions.isSubSkillEnabled(mmoPlayer.getPlayer(), subSkillType))
                 continue;
 
             //The players level is the exact level requirement for this skill
             if(newLevel == innerMap.get(playerRankInSkill))
             {
-                SkillUnlockNotificationTask skillUnlockNotificationTask = new SkillUnlockNotificationTask(mcMMOPlayer, subSkillType, newLevel);
+                SkillUnlockNotificationTask skillUnlockNotificationTask = new SkillUnlockNotificationTask(mmoPlayer, subSkillType, newLevel);
 
                 skillUnlockNotificationTask.runTaskLater(plugin, (count * 100));
 
@@ -177,11 +176,11 @@ public class RankUtils {
         //Get our rank map
         HashMap<Integer, Integer> rankMap = subSkillRanks.get(skillName);
 
-        if(UserManager.getPlayer(player) == null)
+        if(mcMMO.getUserManager().getPlayer(player) == null)
             return 0;
 
         //Skill level of parent skill
-        int currentSkillLevel = UserManager.getPlayer(player).getSkillLevel(subSkillType.getParentSkill());
+        int currentSkillLevel = mcMMO.getUserManager().getPlayer(player).getSkillLevel(subSkillType.getParentSkill());
 
         for(int i = 0; i < numRanks; i++)
         {
@@ -224,11 +223,11 @@ public class RankUtils {
         //Get our rank map
         HashMap<Integer, Integer> rankMap = subSkillRanks.get(skillName);
 
-        if(UserManager.getPlayer(player) == null)
+        if(mcMMO.getUserManager().getPlayer(player) == null)
             return 0;
 
         //Skill level of parent skill
-        int currentSkillLevel = UserManager.getPlayer(player).getSkillLevel(abstractSubSkill.getPrimarySkill());
+        int currentSkillLevel = mcMMO.getUserManager().getPlayer(player).getSkillLevel(abstractSubSkill.getPrimarySkill());
 
         for(int i = 0; i < numRanks; i++)
         {

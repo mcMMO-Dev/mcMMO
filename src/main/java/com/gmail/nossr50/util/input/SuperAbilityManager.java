@@ -161,7 +161,7 @@ public class SuperAbilityManager {
             ticks = PerksUtils.handleActivationPerks(player, 2 + (mmoPlayer.getSkillLevel(primarySkillType) / abilityLengthVar), ability.getMaxLength());
         }
 
-        if (mmoPlayer.useChatNotifications()) {
+        if (mmoPlayer.hasSkillChatNotifications()) {
             NotificationManager.sendPlayerInformation(player, NotificationType.SUPER_ABILITY, ability.getAbilityOn());
             //player.sendMessage(ability.getAbilityOn());
         }
@@ -174,7 +174,7 @@ public class SuperAbilityManager {
         SoundManager.worldSendSound(player.getWorld(), player.getLocation(), SoundType.ABILITY_ACTIVATED_GENERIC);
 
         // Enable the ability
-        mmoPlayer.getProfile().setAbilityDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));
+        mmoPlayer.getPersistentPlayerData().setAbilityDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));
         setAbilityMode(ability, true);
 
         if (ability == SuperAbilityType.SUPER_BREAKER || ability == SuperAbilityType.GIGA_DRILL_BREAKER) {
@@ -288,7 +288,7 @@ public class SuperAbilityManager {
      * @return the number of seconds remaining before the cooldown expires
      */
     public int calculateTimeRemaining(SuperAbilityType superAbilityType) {
-        long deactivatedTimestamp = mmoPlayer.getProfile().getAbilityDATS(superAbilityType) * Misc.TIME_CONVERSION_FACTOR;
+        long deactivatedTimestamp = mmoPlayer.getAbilityDATS(superAbilityType) * Misc.TIME_CONVERSION_FACTOR;
         return (int) (((deactivatedTimestamp + (PerksUtils.handleCooldownPerks(mmoPlayer.getPlayer(), superAbilityType.getCooldown()) * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
     }
 

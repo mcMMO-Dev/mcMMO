@@ -31,7 +31,6 @@ import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillEvent;
 import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -73,7 +72,7 @@ public class EventUtils {
      */
     public static McMMOPlayer getMcMMOPlayer(Entity entity)
     {
-        return UserManager.getPlayer((Player)entity);
+        return mcMMO.getUserManager().getPlayer((Player)entity);
     }
 
     /**
@@ -117,19 +116,19 @@ public class EventUtils {
         if (livingEntity instanceof Player) {
             Player player = (Player) entity;
 
-            if (!UserManager.hasPlayerDataKey(player)) {
+            if (!mcMMO.getUserManager().hasPlayerDataKey(player)) {
                 return true;
             }
 
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+            McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
 
-            if(mcMMOPlayer == null)
+            if(mmoPlayer == null)
             {
                 return true;
             }
 
             /* Check for invincibility */
-            if (mcMMOPlayer.getGodMode()) {
+            if (mmoPlayer.getGodMode()) {
                 entityDamageEvent.setCancelled(true);
                 return false;
             }
@@ -199,7 +198,7 @@ public class EventUtils {
         boolean isCancelled = event.isCancelled();
 
         if (isCancelled) {
-            PlayerProfile profile = UserManager.getPlayer(player).getProfile();
+            PlayerProfile profile = mcMMO.getUserManager().getPlayer(player);
 
             profile.modifySkill(skill, profile.getSkillLevel(skill) - (isLevelUp ? levelsChanged : -levelsChanged));
             profile.addXp(skill, xpRemoved);
@@ -215,7 +214,7 @@ public class EventUtils {
         boolean isCancelled = event.isCancelled();
 
         if (isCancelled) {
-            PlayerProfile profile = UserManager.getPlayer(player).getProfile();
+            PlayerProfile profile = mcMMO.getUserManager().getPlayer(player);
 
             profile.modifySkill(skill, profile.getSkillLevel(skill) - (isLevelUp ? levelsChanged : -levelsChanged));
             profile.addXp(skill, xpRemoved);
@@ -250,12 +249,12 @@ public class EventUtils {
     }
 
     public static void handlePartyTeleportEvent(Player teleportingPlayer, Player targetPlayer) {
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(teleportingPlayer);
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(teleportingPlayer);
 
-        if(mcMMOPlayer == null)
+        if(mmoPlayer == null)
             return;
 
-        McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(teleportingPlayer, targetPlayer, mcMMOPlayer.getParty().getName());
+        McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(teleportingPlayer, targetPlayer, mmoPlayer.getParty().getName());
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
@@ -267,7 +266,7 @@ public class EventUtils {
         teleportingPlayer.sendMessage(LocaleLoader.getString("Party.Teleport.Player", targetPlayer.getName()));
         targetPlayer.sendMessage(LocaleLoader.getString("Party.Teleport.Target", teleportingPlayer.getName()));
 
-        mcMMOPlayer.getPartyTeleportRecord().actualizeLastUse();
+        mmoPlayer.getPartyTeleportRecord().actualizeLastUse();
     }
 
     public static boolean handlePartyXpGainEvent(Party party, float xpGained) {
@@ -305,15 +304,15 @@ public class EventUtils {
         boolean isCancelled = event.isCancelled();
 
         if (!isCancelled) {
-            UserManager.getPlayer(player).addXp(skill, event.getRawXpGained());
-            UserManager.getPlayer(player).getProfile().registerXpGain(skill, event.getRawXpGained());
+            mcMMO.getUserManager().getPlayer(player).addXp(skill, event.getRawXpGained());
+            mcMMO.getUserManager().getPlayer(player).registerXpGain(skill, event.getRawXpGained());
         }
 
         return !isCancelled;
     }
 
     public static boolean handleStatsLossEvent(Player player, HashMap<String, Integer> levelChanged, HashMap<String, Float> experienceChanged) {
-        if(UserManager.getPlayer(player) == null)
+        if(mcMMO.getUserManager().getPlayer(player) == null)
             return true;
 
         McMMOPlayerStatLossEvent event = new McMMOPlayerStatLossEvent(player, levelChanged, experienceChanged);
@@ -324,7 +323,7 @@ public class EventUtils {
         if (!isCancelled) {
             levelChanged = event.getLevelChanged();
             experienceChanged = event.getExperienceChanged();
-            PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
+            PlayerProfile playerProfile = mcMMO.getUserManager().getPlayer(player);
 
             for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
                 String skillName = primarySkillType.toString();
@@ -361,17 +360,17 @@ public class EventUtils {
             HashMap<String, Integer> levelChangedVictim = eventVictim.getLevelChanged();
             HashMap<String, Float> experienceChangedVictim = eventVictim.getExperienceChanged();
 
-            McMMOPlayer killerPlayer = UserManager.getPlayer(killer);
+            McMMOPlayer killerPlayer = mcMMO.getUserManager().getPlayer(killer);
 
             //Not loaded
             if(killerPlayer == null)
                 return true;
 
             //Not loaded
-            if(UserManager.getPlayer(victim) == null)
+            if(mcMMO.getUserManager().getPlayer(victim) == null)
                 return true;
 
-            PlayerProfile victimProfile = UserManager.getPlayer(victim).getProfile();
+            PlayerProfile victimProfile = mcMMO.getUserManager().getPlayer(victim);
 
             for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
                 String skillName = primarySkillType.toString();

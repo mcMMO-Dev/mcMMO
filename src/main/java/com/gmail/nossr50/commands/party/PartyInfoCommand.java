@@ -6,8 +6,6 @@ import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,19 +22,19 @@ public class PartyInfoCommand implements CommandExecutor {
         switch (args.length) {
             case 0:
             case 1:
-                if(UserManager.getPlayer((Player) sender) == null)
+                if(mcMMO.getUserManager().getPlayer((Player) sender) == null)
                 {
                     sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                     return true;
                 }
                 Player player = (Player) sender;
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-                Party party = mcMMOPlayer.getParty();
+                McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
+                Party party = mmoPlayer.getParty();
 
                 displayPartyHeader(player, party);
                 displayShareModeInfo(player, party);
                 displayPartyFeatures(player, party);
-                displayMemberInfo(player, mcMMOPlayer, party);
+                displayMemberInfo(player, mmoPlayer, party);
                 return true;
 
             default:
@@ -49,7 +47,7 @@ public class PartyInfoCommand implements CommandExecutor {
         player.sendMessage(LocaleLoader.getString("Commands.Party.Header"));
 
         StringBuilder status = new StringBuilder();
-        status.append(LocaleLoader.getString("Commands.Party.Status", party.getName(), LocaleLoader.getString("Party.Status." + (party.isLocked() ? "Locked" : "Unlocked")), party.getLevel()));
+        status.append(LocaleLoader.getString("Commands.Party.Status", party.getPartyName(), LocaleLoader.getString("Party.Status." + (party.isLocked() ? "Locked" : "Unlocked")), party.getLevel()));
 
         if (!party.hasReachedLevelCap()) {
             status.append(" (").append(party.getXpToLevelPercentage()).append(")");
@@ -120,12 +118,12 @@ public class PartyInfoCommand implements CommandExecutor {
         }
     }
 
-    private void displayMemberInfo(Player player, McMMOPlayer mcMMOPlayer, Party party) {
+    private void displayMemberInfo(Player player, McMMOPlayer mmoPlayer, Party party) {
         /*
          * Only show members of the party that this member can see
          */
 
-        List<Player> nearMembers = PartyManager.getNearVisibleMembers(mcMMOPlayer);
+        List<Player> nearMembers = mcMMO.getPartyManager().getNearVisibleMembers(mmoPlayer);
         int membersOnline = party.getVisibleMembers(player).size();
 
         player.sendMessage(LocaleLoader.getString("Commands.Party.Members.Header"));

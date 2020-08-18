@@ -45,8 +45,8 @@ import java.util.HashSet;
 import java.util.List;
 
 public class HerbalismManager extends SkillManager {
-    public HerbalismManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.HERBALISM);
+    public HerbalismManager(McMMOPlayer mmoPlayer) {
+        super(mmoPlayer, PrimarySkillType.HERBALISM);
     }
 
     public boolean canGreenThumbBlock(BlockState blockState) {
@@ -78,15 +78,15 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canGreenTerraBlock(BlockState blockState) {
-        return mcMMOPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.GREEN_TERRA) && BlockUtils.canMakeMossy(blockState);
+        return mmoPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.GREEN_TERRA) && BlockUtils.canMakeMossy(blockState);
     }
 
     public boolean canActivateAbility() {
-        return mcMMOPlayer.getSuperAbilityManager().isAbilityToolPrimed(AbilityToolType.GREEN_TERRA_TOOL) && Permissions.greenTerra(getPlayer());
+        return mmoPlayer.getSuperAbilityManager().isAbilityToolPrimed(AbilityToolType.GREEN_TERRA_TOOL) && Permissions.greenTerra(getPlayer());
     }
 
     public boolean isGreenTerraActive() {
-        return mcMMOPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.GREEN_TERRA);
+        return mmoPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.GREEN_TERRA);
     }
 
     /**
@@ -240,7 +240,7 @@ public class HerbalismManager extends SkillManager {
 
         if(delayedChorusBlocks.size() > 0) {
             //Check XP for chorus blocks
-            DelayedHerbalismXPCheckTask delayedHerbalismXPCheckTask = new DelayedHerbalismXPCheckTask(mcMMOPlayer, delayedChorusBlocks);
+            DelayedHerbalismXPCheckTask delayedHerbalismXPCheckTask = new DelayedHerbalismXPCheckTask(mmoPlayer, delayedChorusBlocks);
 
             //Large delay because the tree takes a while to break
             delayedHerbalismXPCheckTask.runTaskLater(mcMMO.p, 20); //Calculate Chorus XP + Bonus Drops 1 tick later
@@ -328,7 +328,7 @@ public class HerbalismManager extends SkillManager {
 
     public void markForBonusDrops(BlockState brokenPlantState) {
         //Add metadata to mark this block for double or triple drops
-        boolean awardTriple = mcMMOPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.GREEN_TERRA);
+        boolean awardTriple = mmoPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.GREEN_TERRA);
         BlockUtils.markDropsAsBonus(brokenPlantState, awardTriple);
     }
 
@@ -385,8 +385,8 @@ public class HerbalismManager extends SkillManager {
             }
         }
 
-        if(mcMMOPlayer.isDebugMode()) {
-            mcMMOPlayer.getPlayer().sendMessage("Plants processed: "+brokenPlants.size());
+        if(mmoPlayer.isDebugMode()) {
+            mmoPlayer.getPlayer().sendMessage("Plants processed: "+brokenPlants.size());
         }
 
         //Reward XP
@@ -436,9 +436,9 @@ public class HerbalismManager extends SkillManager {
             }
         }
 
-        if(mcMMOPlayer.isDebugMode()) {
-            mcMMOPlayer.getPlayer().sendMessage("Chorus Plants checked for XP: "+brokenPlants.size());
-            mcMMOPlayer.getPlayer().sendMessage("Valid Chorus Plant XP Gains: "+blocksGivingXP);
+        if(mmoPlayer.isDebugMode()) {
+            mmoPlayer.getPlayer().sendMessage("Chorus Plants checked for XP: "+brokenPlants.size());
+            mmoPlayer.getPlayer().sendMessage("Valid Chorus Plant XP Gains: "+blocksGivingXP);
         }
 
         //Reward XP

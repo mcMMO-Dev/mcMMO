@@ -34,17 +34,17 @@ public class PartyChatTask extends BukkitRunnable {
             message = message.replaceFirst(Pattern.quote(displayName), ChatColor.GOLD + Matcher.quoteReplacement(displayName) + ChatColor.RESET);
         }
 
-        for (Player member : party.getOnlineMembers()) {
+        for (Player member : party.getPartyMembers()) {
             member.sendMessage(message);
         }
 
         if (party.getAlly() != null) {
-            for (Player member : party.getAlly().getOnlineMembers()) {
+            for (Player member : party.getAlly().getPartyMembers()) {
                 String allyPrefix = LocaleLoader.formatString(Config.getInstance().getPartyChatPrefixAlly());
                 member.sendMessage(allyPrefix + message);
             }
         }
 
-        plugin.getServer().getConsoleSender().sendMessage(ChatColor.stripColor("[mcMMO] [P]<" + party.getName() + ">" + message));
+        plugin.getServer().getConsoleSender().sendMessage(ChatColor.stripColor("[mcMMO] [P]<" + party.getPartyName() + ">" + message));
     }
 }

@@ -42,9 +42,21 @@ Version 2.2.000
     Added new locale string 'Crossbows.SubSkill.CrossbowsLimitBreak.Description'
     Added new locale string 'Crossbows.SubSkill.CrossbowsLimitBreak.Stat'
 
+    Player Power Levels no longer need to pass permission checks when summing skills
+    Minor improvements to how player data is serialized
+    SMP mod settings removed from config.yml (this is a legacy feature and didn't really do anything anymore)
+    Refactored & Optimized a bunch of code involving player and party data
+
     Added XP bar settings for Tridents & Crossbows to experience.yml
     Changed some debug level logging to info level for convenience
-    XP Bar settings (set by /mmoxpbar command) are now saved per player
+
+    Database Changes
+        XP Bar settings (set by /mmoxpbar command) are now saved
+        Players can now be marked as exempt from leadboards
+        Party Chat Spy toggle is now saved
+        (FlatFile) Fixed a bug where last login was not being saved
+        Schema updated for the new skills and supers and things mentioned above
+
 
     Notes:
     These are the first new skills that I've written for mcMMO in about 9 years, I'll be listening closely to feedback and tweaking them often.
@@ -1080,7 +1092,7 @@ Version 2.1.43
 
 Version 2.1.42
     Fixed McMMOPlayerNotFoundException being thrown instead of null
-    (API) UserManager.getPlayer() returns null again (oopsie)
+    (API) mcMMO.getUserManager().getPlayer() returns null again (oopsie)
     Added new perk permission node `mcmmo.perks.bypass.salvageenchant` - guarantees full enchantment return for Salvage
     Added alternative permission node `mcmmo.perks.bypass.repairenchant` - guarantees full enchantment return for Repair
     Added new wildcard perk `mcmmo.perks.bypass.*` and `mcmmo.perks.bypass.all` (either of these will grant all new mcmmo.perks.bypass perk permissions)
@@ -1096,7 +1108,7 @@ Version 2.1.41
     Fixed a display error preventing the remaining time on /mcrank from being shown if it was on cooldown
 
 Version 2.1.40
-    (API) mcMMO will now return null in all cases for UserManager.getPlayerProfile() if they have not been loaded yet
+    (API) mcMMO will now return null in all cases for mcMMO.getUserManager() if they have not been loaded yet
     (API) Roll stores exploit data in AcrobaticsManager now
     Added new locale string "Profile.Loading.FailureNotice"
     Added new locale string "Profile.Loading.FailurePlayer"
@@ -1661,7 +1673,7 @@ Version 1.5.01
  = Fixed bug where pistons would mess with the block tracking
  = Fixed bug where the Updater was running on the main thread.
  = Fixed bug when players would use /ptp without being in a party
- = Fixed bug where player didn't have a mcMMOPlayer object in AsyncPlayerChatEvent
+ = Fixed bug where player didn't have a mmoPlayer object in AsyncPlayerChatEvent
  = Fixed bug where dodge would check the wrong player skill level
  = Fixed bug which causes /party teleport to stop working
  = Fixed bug where SaveTimerTask would produce an IndexOutOfBoundsException

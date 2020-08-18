@@ -2,18 +2,18 @@ package com.gmail.nossr50.runnables.skills;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.util.experience.ExperienceBarManager;
+import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ExperienceBarHideTask extends BukkitRunnable {
-    public final McMMOPlayer mcMMOPlayer;
+    public final McMMOPlayer mmoPlayer;
     public final PrimarySkillType primarySkillType;
-    public final ExperienceBarManager experienceBarManagerRef;
+    public final MMOExperienceBarManager MMOExperienceBarManagerRef;
 
-    public ExperienceBarHideTask(ExperienceBarManager experienceBarManagerRef, McMMOPlayer mcMMOPlayer, PrimarySkillType primarySkillType)
+    public ExperienceBarHideTask(MMOExperienceBarManager MMOExperienceBarManagerRef, McMMOPlayer mmoPlayer, PrimarySkillType primarySkillType)
     {
-        this.experienceBarManagerRef = experienceBarManagerRef;
-        this.mcMMOPlayer = mcMMOPlayer;
+        this.MMOExperienceBarManagerRef = MMOExperienceBarManagerRef;
+        this.mmoPlayer = mmoPlayer;
         this.primarySkillType = primarySkillType;
     }
 
@@ -30,10 +30,10 @@ public class ExperienceBarHideTask extends BukkitRunnable {
      */
     @Override
     public void run() {
-        if(experienceBarManagerRef == null || mcMMOPlayer == null)
+        if(MMOExperienceBarManagerRef == null || mmoPlayer == null)
             return;
 
-        experienceBarManagerRef.hideExperienceBar(primarySkillType);
-        experienceBarManagerRef.clearTask(primarySkillType);
+        MMOExperienceBarManagerRef.hideExperienceBar(primarySkillType);
+        MMOExperienceBarManagerRef.clearTask(primarySkillType);
     }
 }

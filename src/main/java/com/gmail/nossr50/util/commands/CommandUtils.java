@@ -8,7 +8,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.OfflinePlayer;
@@ -69,17 +68,17 @@ public final class CommandUtils {
     }
 
     /**
-     * Checks if there is a valid mcMMOPlayer object.
+     * Checks if there is a valid mmoPlayer object.
      *
      * @param sender CommandSender who used the command
      * @param playerName name of the target player
-     * @param mcMMOPlayer mcMMOPlayer object of the target player
+     * @param McMMOPlayer mmoPlayer object of the target player
      *
-     * @return true if the player is online and a valid mcMMOPlayer object was found
+     * @return true if the player is online and a valid mmoPlayer object was found
      */
-    public static boolean checkPlayerExistence(CommandSender sender, String playerName, McMMOPlayer mcMMOPlayer) {
-        if (mcMMOPlayer != null) {
-            if (CommandUtils.hidden(sender, mcMMOPlayer.getPlayer(), false)) {
+    public static boolean checkPlayerExistence(CommandSender sender, String playerName, McMMOPlayer mmoPlayer) {
+        if (mmoPlayer != null) {
+            if (CommandUtils.hidden(sender, mmoPlayer.getPlayer(), false)) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
                 return false;
             }
@@ -216,10 +215,10 @@ public final class CommandUtils {
     }
 
     private static void printGroupedSkillData(Player inspect, CommandSender display, String header, List<PrimarySkillType> skillGroup) {
-        if(UserManager.getPlayer(inspect) == null)
+        if(mcMMO.getUserManager().getPlayer(inspect) == null)
             return;
 
-        PlayerProfile profile = UserManager.getPlayer(inspect).getProfile();
+        PlayerProfile profile = mcMMO.getUserManager().getPlayer(inspect);
 
         List<String> displayData = new ArrayList<>();
         displayData.add(header);

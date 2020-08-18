@@ -19,7 +19,7 @@ public class PartyChatManager extends ChatManager {
 
     @Override
     public void handleChat(String senderName, String displayName, String message, boolean isAsync) {
-        handleChat(new McMMOPartyChatEvent(plugin, senderName, displayName, party.getName(), message, isAsync));
+        handleChat(new McMMOPartyChatEvent(plugin, senderName, displayName, party.getPartyName(), message, isAsync));
     }
 
     @Override

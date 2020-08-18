@@ -19,8 +19,8 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 public class CrossbowManager extends SkillManager {
-    public CrossbowManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.CROSSBOWS);
+    public CrossbowManager(McMMOPlayer mmoPlayer) {
+        super(mmoPlayer, PrimarySkillType.CROSSBOWS);
     }
     private static final int SPREAD_VALUE = 12;
 
@@ -52,8 +52,8 @@ public class CrossbowManager extends SkillManager {
      */
     public void processProjectileLaunchEvent(ProjectileLaunchEvent projectileLaunchEvent) {
         //Testing
-        if(Permissions.isSubSkillEnabled(mcMMOPlayer.getPlayer(), SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
-            if(RankUtils.hasUnlockedSubskill(mcMMOPlayer.getPlayer(), SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
+        if(Permissions.isSubSkillEnabled(mmoPlayer.getPlayer(), SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
+            if(RankUtils.hasUnlockedSubskill(mmoPlayer.getPlayer(), SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
                 superShotgunProcessing(projectileLaunchEvent);
             }
         }
@@ -79,7 +79,7 @@ public class CrossbowManager extends SkillManager {
     }
 
     public int getSuperShotgunAdditionalArrowCount() {
-        switch(RankUtils.getRank(mcMMOPlayer.getPlayer(), SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
+        switch(RankUtils.getRank(mmoPlayer.getPlayer(), SubSkillType.CROSSBOWS_SUPER_SHOTGUN)) {
             case 1:
                 return 9;
             case 2:
@@ -95,7 +95,7 @@ public class CrossbowManager extends SkillManager {
 
     private void spawnTrackedProjectile(@NotNull Projectile originProjectile, World world, float originProjectileMagnitude, Vector additionalProjectileVectorA, int spreadValue) {
         Projectile spawnedProjectile = world.spawnArrow(originProjectile.getLocation(), additionalProjectileVectorA, originProjectileMagnitude, spreadValue);
-        spawnedProjectile.setShooter(mcMMOPlayer.getPlayer());
+        spawnedProjectile.setShooter(mmoPlayer.getPlayer());
         mcMMO.getSpawnedProjectileTracker().trackProjectile(spawnedProjectile);
     }
 

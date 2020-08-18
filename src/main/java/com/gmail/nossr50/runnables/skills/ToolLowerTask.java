@@ -8,24 +8,24 @@ import com.gmail.nossr50.util.player.NotificationManager;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ToolLowerTask extends BukkitRunnable {
-    private final McMMOPlayer mcMMOPlayer;
+    private final McMMOPlayer mmoPlayer;
     private final AbilityToolType tool;
 
-    public ToolLowerTask(McMMOPlayer mcMMOPlayer, AbilityToolType abilityToolType) {
-        this.mcMMOPlayer = mcMMOPlayer;
+    public ToolLowerTask(McMMOPlayer mmoPlayer, AbilityToolType abilityToolType) {
+        this.mmoPlayer = mmoPlayer;
         this.tool = abilityToolType;
     }
 
     @Override
     public void run() {
-        if (!mcMMOPlayer.getSuperAbilityManager().isAbilityToolPrimed(tool)) {
+        if (!mmoPlayer.getSuperAbilityManager().isAbilityToolPrimed(tool)) {
             return;
         }
 
-        mcMMOPlayer.getSuperAbilityManager().setAbilityToolPrime(tool, false);
+        mmoPlayer.getSuperAbilityManager().setAbilityToolPrime(tool, false);
 
         if (Config.getInstance().getAbilityMessagesEnabled()) {
-            NotificationManager.sendPlayerInformation(mcMMOPlayer.getPlayer(), NotificationType.TOOL, tool.getLowerToolLocaleKey());
+            NotificationManager.sendPlayerInformation(mmoPlayer.getPlayer(), NotificationType.TOOL, tool.getLowerToolLocaleKey());
         }
     }
 }

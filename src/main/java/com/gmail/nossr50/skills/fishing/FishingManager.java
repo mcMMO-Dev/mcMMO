@@ -57,8 +57,8 @@ public class FishingManager extends SkillManager {
     private Location hookLocation;
     private int fishCaughtCounter = 1;
 
-    public FishingManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, PrimarySkillType.FISHING);
+    public FishingManager(McMMOPlayer mmoPlayer) {
+        super(mmoPlayer, PrimarySkillType.FISHING);
     }
 
     public boolean canShake(Entity target) {

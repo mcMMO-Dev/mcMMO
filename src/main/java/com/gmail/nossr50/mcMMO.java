@@ -2,10 +2,6 @@ package com.gmail.nossr50;
 
 import com.gmail.nossr50.config.*;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.config.mods.ArmorConfigManager;
-import com.gmail.nossr50.config.mods.BlockConfigManager;
-import com.gmail.nossr50.config.mods.EntityConfigManager;
-import com.gmail.nossr50.config.mods.ToolConfigManager;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.config.skills.repair.RepairConfigManager;
 import com.gmail.nossr50.config.skills.salvage.SalvageConfigManager;
@@ -81,6 +77,8 @@ public class mcMMO extends JavaPlugin {
     private static PlayerLevelUtils playerLevelUtils;
     private static SmeltingTracker smeltingTracker;
     private static SpawnedProjectileTracker spawnedProjectileTracker;
+    private static UserManager userManager;
+    private static PartyManager partyManager;
 
     /* Blacklist */
     private static WorldBlacklist worldBlacklist;
@@ -176,10 +174,6 @@ public class mcMMO extends JavaPlugin {
             //Store this value so other plugins can check it
             isRetroModeEnabled = Config.getInstance().getIsRetroMode();
 
-            if (getServer().getName().equals("Cauldron") || getServer().getName().equals("MCPC+")) {
-                checkModConfigs();
-            }
-
             if (healthBarPluginEnabled) {
                 getLogger().info("HealthBar plugin found, mcMMO's healthbars are automatically disabled.");
             }
@@ -214,7 +208,7 @@ public class mcMMO extends JavaPlugin {
                 registerCoreSkills();
                 registerCustomRecipes();
 
-                PartyManager.loadParties();
+                mcMMO.getPartyManager().loadParties();
 
                 formulaManager = new FormulaManager();
                 holidayManager = new HolidayManager();
@@ -275,6 +269,9 @@ public class mcMMO extends JavaPlugin {
 
         //Init spawned projectile tracker
         spawnedProjectileTracker = new SpawnedProjectileTracker();
+
+        //Init Player Data Manager
+        userManager = new UserManager();
     }
 
     public static PlayerLevelUtils getPlayerLevelUtils() {
@@ -311,10 +308,10 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onDisable() {
         try {
-            UserManager.saveAll();      // Make sure to save player information if the server shuts down
-            UserManager.clearAll();
+            userManager.saveAllSync();      // Make sure to save player information if the server shuts down
+            userManager.clearAll();
             Alchemy.finishAllBrews();   // Finish all partially complete AlchemyBrewTasks to prevent vanilla brewing continuation on restart
-            PartyManager.saveParties(); // Save our parties
+            mcMMO.getPartyManager().saveParties(); // Save our parties
 
             //TODO: Needed?
             if(Config.getInstance().getScoreboardsEnabled())
@@ -515,25 +512,8 @@ public class mcMMO extends JavaPlugin {
 
         List<Repairable> repairables = new ArrayList<>();
 
-        if (Config.getInstance().getToolModsEnabled()) {
-            new ToolConfigManager(this);
-        }
-
-        if (Config.getInstance().getArmorModsEnabled()) {
-            new ArmorConfigManager(this);
-        }
-
-        if (Config.getInstance().getBlockModsEnabled()) {
-            new BlockConfigManager(this);
-        }
-
-        if (Config.getInstance().getEntityModsEnabled()) {
-            new EntityConfigManager(this);
-        }
-
         // Load repair configs, make manager, and register them at this time
         repairables.addAll(new RepairConfigManager(this).getLoadedRepairables());
-        repairables.addAll(modManager.getLoadedRepairables());
         repairableManager = new SimpleRepairableManager(repairables.size());
         repairableManager.registerRepairables(repairables);
 
@@ -635,28 +615,6 @@ public class mcMMO extends JavaPlugin {
         }
     }
 
-    private void checkModConfigs() {
-        if (!Config.getInstance().getToolModsEnabled()) {
-            getLogger().warning("Cauldron implementation found, but the custom tool config for mcMMO is disabled!");
-            getLogger().info("To enable, set Mods.Tool_Mods_Enabled to TRUE in config.yml.");
-        }
-
-        if (!Config.getInstance().getArmorModsEnabled()) {
-            getLogger().warning("Cauldron implementation found, but the custom armor config for mcMMO is disabled!");
-            getLogger().info("To enable, set Mods.Armor_Mods_Enabled to TRUE in config.yml.");
-        }
-
-        if (!Config.getInstance().getBlockModsEnabled()) {
-            getLogger().warning("Cauldron implementation found, but the custom block config for mcMMO is disabled!");
-            getLogger().info("To enable, set Mods.Block_Mods_Enabled to TRUE in config.yml.");
-        }
-
-        if (!Config.getInstance().getEntityModsEnabled()) {
-            getLogger().warning("Cauldron implementation found, but the custom entity config for mcMMO is disabled!");
-            getLogger().info("To enable, set Mods.Entity_Mods_Enabled to TRUE in config.yml.");
-        }
-    }
-
     public InputStreamReader getResourceAsReader(String fileName) {
         InputStream in = getResource(fileName);
         return in == null ? null : new InputStreamReader(in, Charsets.UTF_8);
@@ -686,5 +644,13 @@ public class mcMMO extends JavaPlugin {
 
     public static SpawnedProjectileTracker getSpawnedProjectileTracker() {
         return spawnedProjectileTracker;
+    }
+
+    public static UserManager getUserManager() {
+        return userManager;
+    }
+
+    public static PartyManager getPartyManager() {
+        return partyManager;
     }
 }

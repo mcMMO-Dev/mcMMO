@@ -11,7 +11,6 @@ import com.gmail.nossr50.events.scoreboard.ScoreboardEventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -449,14 +448,14 @@ public class ScoreboardManager {
         }
 
         for (String playerName : dirtyPowerLevels) {
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName);
+            McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(playerName);
 
-            if (mcMMOPlayer == null) {
+            if (mmoPlayer == null) {
                 continue;
             }
 
-            Player player = mcMMOPlayer.getPlayer();
-            int power = mcMMOPlayer.getPowerLevel();
+            Player player = mmoPlayer.getPlayer();
+            int power = mmoPlayer.getPowerLevel();
 
             mainObjective.getScore(playerName).setScore(power);
 

@@ -4,7 +4,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -22,12 +21,12 @@ public class SmeltingTracker {
 
     private void changeFurnaceOwnership(Furnace furnace, Player player) {
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
 
         /*
             Debug output
          */
-        printOwnershipGainDebug(furnace, mcMMOPlayer);
+        printOwnershipGainDebug(furnace, mmoPlayer);
 
         printOwnershipLossDebug(furnace);
 
@@ -38,10 +37,10 @@ public class SmeltingTracker {
         mcMMO.getCompatibilityManager().getPersistentDataLayer().setFurnaceOwner(furnace, player.getUniqueId());
     }
 
-    private void printOwnershipGainDebug(Furnace furnace, McMMOPlayer mcMMOPlayer) {
-        if(mcMMOPlayer != null) {
-            if(mcMMOPlayer.isDebugMode()) {
-                mcMMOPlayer.getPlayer().sendMessage("Furnace ownership " +
+    private void printOwnershipGainDebug(Furnace furnace, McMMOPlayer mmoPlayer) {
+        if(mmoPlayer != null) {
+            if(mmoPlayer.isDebugMode()) {
+                mmoPlayer.getPlayer().sendMessage("Furnace ownership " +
                         ChatColor.GREEN +"gained " + ChatColor.RESET +
                         "at location: " + furnace.getLocation().toString());
             }
@@ -53,7 +52,7 @@ public class SmeltingTracker {
         OfflinePlayer furnaceOwner = getFurnaceOwner(furnace);
 
         if(furnaceOwner != null && furnaceOwner.isOnline()) {
-            McMMOPlayer furnaceOwnerProfile = UserManager.getPlayer(furnaceOwner.getPlayer());
+            McMMOPlayer furnaceOwnerProfile = mcMMO.getUserManager().getPlayer(furnaceOwner.getPlayer());
 
             if(furnaceOwnerProfile != null) {
                 if(furnaceOwnerProfile.isDebugMode()) {

@@ -2,8 +2,8 @@ package com.gmail.nossr50.api;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
@@ -11,38 +11,38 @@ public final class AbilityAPI {
     private AbilityAPI() {}
 
     public static boolean berserkEnabled(Player player) {
-        return UserManager.getPlayer(player).getSuperAbilityManager().getAbilityMode(SuperAbilityType.BERSERK);
+        return mcMMO.getUserManager().getPlayer(player).getSuperAbilityManager().getAbilityMode(SuperAbilityType.BERSERK);
     }
 
     public static boolean gigaDrillBreakerEnabled(Player player) {
-        return UserManager.getPlayer(player).getSuperAbilityManager().getAbilityMode(SuperAbilityType.GIGA_DRILL_BREAKER);
+        return mcMMO.getUserManager().getPlayer(player).getSuperAbilityManager().getAbilityMode(SuperAbilityType.GIGA_DRILL_BREAKER);
     }
 
     public static boolean greenTerraEnabled(Player player) {
-        return UserManager.getPlayer(player).getSuperAbilityManager().getAbilityMode(SuperAbilityType.GREEN_TERRA);
+        return mcMMO.getUserManager().getPlayer(player).getSuperAbilityManager().getAbilityMode(SuperAbilityType.GREEN_TERRA);
     }
 
     public static boolean serratedStrikesEnabled(Player player) {
-        return UserManager.getPlayer(player).getSuperAbilityManager().getAbilityMode(SuperAbilityType.SERRATED_STRIKES);
+        return mcMMO.getUserManager().getPlayer(player).getSuperAbilityManager().getAbilityMode(SuperAbilityType.SERRATED_STRIKES);
     }
 
     public static boolean skullSplitterEnabled(Player player) {
-        return UserManager.getPlayer(player).getSuperAbilityManager().getAbilityMode(SuperAbilityType.SKULL_SPLITTER);
+        return mcMMO.getUserManager().getPlayer(player).getSuperAbilityManager().getAbilityMode(SuperAbilityType.SKULL_SPLITTER);
     }
 
     public static boolean superBreakerEnabled(Player player) {
-        return UserManager.getPlayer(player).getSuperAbilityManager().getAbilityMode(SuperAbilityType.SUPER_BREAKER);
+        return mcMMO.getUserManager().getPlayer(player).getSuperAbilityManager().getAbilityMode(SuperAbilityType.SUPER_BREAKER);
     }
 
     public static boolean treeFellerEnabled(Player player) {
-        return UserManager.getPlayer(player).getSuperAbilityManager().getAbilityMode(SuperAbilityType.TREE_FELLER);
+        return mcMMO.getUserManager().getPlayer(player).getSuperAbilityManager().getAbilityMode(SuperAbilityType.TREE_FELLER);
     }
 
     public static boolean isAnyAbilityEnabled(Player player) {
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
 
         for (SuperAbilityType ability : SuperAbilityType.values()) {
-            if (mcMMOPlayer.getSuperAbilityManager().getAbilityMode(ability)) {
+            if (mmoPlayer.getSuperAbilityManager().getAbilityMode(ability)) {
                 return true;
             }
         }
@@ -51,35 +51,35 @@ public final class AbilityAPI {
     }
 
     public static void resetCooldowns(Player player) {
-        UserManager.getPlayer(player).resetCooldowns();
+        mcMMO.getUserManager().getPlayer(player).getPersistentPlayerData().resetCooldowns();
     }
 
     public static void setBerserkCooldown(Player player, long cooldown) {
-        UserManager.getPlayer(player).setAbilityDATS(SuperAbilityType.BERSERK, cooldown);
+        mcMMO.getUserManager().getPlayer(player).getPersistentPlayerData().setAbilityDATS(SuperAbilityType.BERSERK, cooldown);
     }
 
     public static void setGigaDrillBreakerCooldown(Player player, long cooldown) {
-        UserManager.getPlayer(player).setAbilityDATS(SuperAbilityType.GIGA_DRILL_BREAKER, cooldown);
+        mcMMO.getUserManager().getPlayer(player).getPersistentPlayerData().setAbilityDATS(SuperAbilityType.GIGA_DRILL_BREAKER, cooldown);
     }
 
     public static void setGreenTerraCooldown(Player player, long cooldown) {
-        UserManager.getPlayer(player).setAbilityDATS(SuperAbilityType.GREEN_TERRA, cooldown);
+        mcMMO.getUserManager().getPlayer(player).getPersistentPlayerData().setAbilityDATS(SuperAbilityType.GREEN_TERRA, cooldown);
     }
 
     public static void setSerratedStrikesCooldown(Player player, long cooldown) {
-        UserManager.getPlayer(player).setAbilityDATS(SuperAbilityType.SERRATED_STRIKES, cooldown);
+        mcMMO.getUserManager().getPlayer(player).getPersistentPlayerData().setAbilityDATS(SuperAbilityType.SERRATED_STRIKES, cooldown);
     }
 
     public static void setSkullSplitterCooldown(Player player, long cooldown) {
-        UserManager.getPlayer(player).setAbilityDATS(SuperAbilityType.SKULL_SPLITTER, cooldown);
+        mcMMO.getUserManager().getPlayer(player).getPersistentPlayerData().setAbilityDATS(SuperAbilityType.SKULL_SPLITTER, cooldown);
     }
 
     public static void setSuperBreakerCooldown(Player player, long cooldown) {
-        UserManager.getPlayer(player).setAbilityDATS(SuperAbilityType.SUPER_BREAKER, cooldown);
+        mcMMO.getUserManager().getPlayer(player).getPersistentPlayerData().setAbilityDATS(SuperAbilityType.SUPER_BREAKER, cooldown);
     }
 
     public static void setTreeFellerCooldown(Player player, long cooldown) {
-        UserManager.getPlayer(player).setAbilityDATS(SuperAbilityType.TREE_FELLER, cooldown);
+        mcMMO.getUserManager().getPlayer(player).getPersistentPlayerData().setAbilityDATS(SuperAbilityType.TREE_FELLER, cooldown);
     }
 
     public static boolean isBleeding(LivingEntity entity) {

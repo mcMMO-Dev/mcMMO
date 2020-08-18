@@ -1448,7 +1448,7 @@ public final class FlatFileDatabaseManager implements DatabaseManager {
             .setBarStateMap(xpBarStateMap);
 
         PersistentPlayerData persistentPlayerData;
-        
+
         try {
             persistentPlayerData = playerDataBuilder.build();
         } catch (Exception e) {

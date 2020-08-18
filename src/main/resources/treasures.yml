@@ -523,6 +523,10 @@ Excavation:
         XP: 150
         Drop_Chance: 5.0
         Drop_Level: 75
+        Lore:
+            - Line 1
+            - Line 2
+        Custom_Name: Custom Name Test
         Drops_From: [Clay]
     STRING:
         Amount: 1

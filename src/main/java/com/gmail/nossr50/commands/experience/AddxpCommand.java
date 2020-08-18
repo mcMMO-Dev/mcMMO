@@ -6,7 +6,6 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -25,10 +24,10 @@ public class AddxpCommand extends ExperienceCommand {
     protected void handleCommand(Player player, PlayerProfile profile, PrimarySkillType skill, int value) {
         if (player != null) {
             //Check if player profile is loaded
-            if(UserManager.getPlayer(player) == null)
+            if(mcMMO.getUserManager().getPlayer(player) == null)
                 return;
 
-            UserManager.getPlayer(player).applyXpGain(skill, value, XPGainReason.COMMAND, XPGainSource.COMMAND);
+            mcMMO.getUserManager().getPlayer(player).applyXpGain(skill, value, XPGainReason.COMMAND, XPGainSource.COMMAND);
         }
         else {
             profile.addXp(skill, value);
