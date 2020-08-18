@@ -1,27 +1,17 @@
 package com.gmail.nossr50.datatypes.player;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
-import com.gmail.nossr50.datatypes.experience.XPGainReason;
-import com.gmail.nossr50.datatypes.experience.XPGainSource;
-import com.gmail.nossr50.datatypes.mods.CustomTool;
-import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.party.ShareHandler;
-import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.alchemy.AlchemyManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
-import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.skills.crossbows.CrossbowManager;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.fishing.FishingManager;
@@ -35,78 +25,84 @@ import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.tridents.TridentManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
-import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.experience.ExperienceBarManager;
+import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.gmail.nossr50.util.input.AbilityActivationProcessor;
 import com.gmail.nossr50.util.input.SuperAbilityManager;
-import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
-import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.sounds.SoundManager;
-import com.gmail.nossr50.util.sounds.SoundType;
-import org.apache.commons.lang.Validate;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 
-public class McMMOPlayer {
-    private final Player        player;
-    private final PlayerProfile profile;
+public class McMMOPlayer extends PlayerProfile {
+    private final @NotNull Player player;
 
-    private final Map<PrimarySkillType, SkillManager> skillManagers = new HashMap<>();
-    private final ExperienceBarManager experienceBarManager;
+    private final @NotNull Map<PrimarySkillType, SkillManager> skillManagers = new HashMap<>();
+    private final @NotNull MMOExperienceBarManager experienceBarManager;
 
-    private Party   party;
-    private Party   invite;
-    private Party   allianceInvite;
-    private int     itemShareModifier;
+    private @Nullable PartyTeleportRecord ptpRecord;
 
-    private PartyTeleportRecord ptpRecord;
-
+    /* Special Flags */
+    private boolean debugMode = false;
     private boolean partyChatMode;
     private boolean adminChatMode;
-    private boolean displaySkillNotifications = true;
-    private boolean debugMode;
-
     private boolean godMode;
-    private boolean chatSpy = false; //Off by default
+    private boolean displaySkillNotifications = true;
 
     private int recentlyHurt;
     private int respawnATS;
     private int teleportATS;
     private long databaseATS;
-    private double attackStrength; //captured during arm swing events
-    //private int chimeraWingLastUse;
-    private Location teleportCommence;
 
-    private boolean isUsingUnarmed;
-    private final FixedMetadataValue playerMetadata;
-    private final String playerName;
-    private final SuperAbilityManager superAbilityManager;
-    private final AbilityActivationProcessor abilityActivationProcessor;
+    private @Nullable Location teleportCommence;
 
-    public McMMOPlayer(Player player, PlayerProfile profile) {
-        this.playerName = player.getName();
-        UUID uuid = player.getUniqueId();
+    private final @NotNull FixedMetadataValue playerMetadata;
+    private final @NotNull SuperAbilityManager superAbilityManager;
+    private final @NotNull AbilityActivationProcessor abilityActivationProcessor;
+
+    /**
+     * Create a new {@link McMMOPlayer} with default values for a {@link Player}
+     * @param player target player
+     */
+    public McMMOPlayer(@NotNull Player player) {
+        /*
+         * New
+         * Player
+         */
+        super(player);
 
         this.player = player;
-        playerMetadata = new FixedMetadataValue(mcMMO.p, playerName);
-        this.profile = profile;
+        playerMetadata = new FixedMetadataValue(mcMMO.p, player.getName());
+        experienceBarManager = new MMOExperienceBarManager(this, getPersistentPlayerData().getDirtyBarStateMap());
 
-        if (profile.getUniqueId() == null) {
-            profile.setUniqueId(uuid);
-        }
+        superAbilityManager = new SuperAbilityManager(this);
+        abilityActivationProcessor = new AbilityActivationProcessor(this);
+
+        //Update last login
+        updateLastLogin();
+    }
+
+    /**
+     * Create a new instance based on existing player data
+     * @param player target player
+     * @param persistentPlayerData existing player data
+     */
+    public McMMOPlayer(@NotNull Player player, @NotNull PersistentPlayerData persistentPlayerData) {
+        /*
+         * Existing
+         * Player
+         */
+        super(persistentPlayerData);
+
+        this.player = player;
+        playerMetadata = new FixedMetadataValue(mcMMO.p, player.getName());
 
         /*
          * I'm using this method because it makes code shorter and safer (we don't have to add all SkillTypes manually),
@@ -125,206 +121,236 @@ public class McMMOPlayer {
 
         superAbilityManager = new SuperAbilityManager(this);
         abilityActivationProcessor = new AbilityActivationProcessor(this);
+        experienceBarManager = new MMOExperienceBarManager(this, persistentPlayerData.getDirtyBarStateMap());
 
-        experienceBarManager = new ExperienceBarManager(this, profile.getXpBarStateMap());
-
-        debugMode = false; //Debug mode helps solve support issues, players can toggle it on or off
-        attackStrength = 1.0D;
+        //Update last login
+        updateLastLogin();
     }
 
-    public String getPlayerName() {
-        return playerName;
+    /**
+     * Update the last login to the current system time
+     */
+    private void updateLastLogin() {
+        getPersistentPlayerData().setLastLogin(System.currentTimeMillis());
     }
 
-    public double getAttackStrength() {
-        return attackStrength;
-    }
-
-    public void setAttackStrength(double attackStrength) {
-        this.attackStrength = attackStrength;
-    }
-
-    public void processPostXpEvent(PrimarySkillType primarySkillType, Plugin plugin, XPGainSource xpGainSource)
-    {
-        //Check if they've reached the power level cap just now
-        if(hasReachedPowerLevelCap()) {
-            NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.PowerLevel", String.valueOf(Config.getInstance().getPowerLevelCap()));
-        } else if(hasReachedLevelCap(primarySkillType)) {
-            NotificationManager.sendPlayerInformationChatOnly(player, "LevelCap.Skill", String.valueOf(Config.getInstance().getLevelCap(primarySkillType)), primarySkillType.getName());
-        }
-
-        //Updates from Party sources
-        if(xpGainSource == XPGainSource.PARTY_MEMBERS && !ExperienceConfig.getInstance().isPartyExperienceBarsEnabled())
-            return;
-
-        //Updates from passive sources (Alchemy, Smelting, etc...)
-        if(xpGainSource == XPGainSource.PASSIVE && !ExperienceConfig.getInstance().isPassiveGainsExperienceBarsEnabled())
-            return;
-
-        updateXPBar(primarySkillType, plugin);
-    }
-
-    public void processUnlockNotifications(mcMMO plugin, PrimarySkillType primarySkillType, int skillLevel)
-    {
-        RankUtils.executeSkillUnlockNotifications(plugin, this, primarySkillType, skillLevel);
-    }
-
-    public void updateXPBar(PrimarySkillType primarySkillType, Plugin plugin)
-    {
-        //XP BAR UPDATES
-        experienceBarManager.updateExperienceBar(primarySkillType, plugin);
-    }
-
-    public double getProgressInCurrentSkillLevel(PrimarySkillType primarySkillType)
-    {
-        if(primarySkillType.isChildSkill()) {
-            return 1.0D;
-        }
-
-        double currentXP = profile.getSkillXpLevel(primarySkillType);
-        double maxXP = profile.getXpToLevel(primarySkillType);
-
-        return (currentXP / maxXP);
-    }
-
-    public ExperienceBarManager getExperienceBarManager() {
+    /**
+     * Grab the {@link MMOExperienceBarManager} for this player
+     * @return this player's experience bar manager
+     */
+    public @NotNull MMOExperienceBarManager getExperienceBarManager() {
         return experienceBarManager;
     }
 
-    public AcrobaticsManager getAcrobaticsManager() {
+    /**
+     * Grab the {@link AcrobaticsManager} for this player
+     * @return this player's acrobatics manager
+     */
+    public @NotNull AcrobaticsManager getAcrobaticsManager() {
         return (AcrobaticsManager) skillManagers.get(PrimarySkillType.ACROBATICS);
     }
 
-    public AlchemyManager getAlchemyManager() {
+    /**
+     * Grab the {@link AlchemyManager} for this player
+     * @return this player's alchemy manager
+     */
+    public @NotNull AlchemyManager getAlchemyManager() {
         return (AlchemyManager) skillManagers.get(PrimarySkillType.ALCHEMY);
     }
 
-    public ArcheryManager getArcheryManager() {
+    /**
+     * Grab the {@link ArcheryManager} for this player
+     * @return this player's archery manager
+     */
+    public @NotNull ArcheryManager getArcheryManager() {
         return (ArcheryManager) skillManagers.get(PrimarySkillType.ARCHERY);
     }
 
-    public AxesManager getAxesManager() {
+    /**
+     * Grab the {@link AxesManager} for this player
+     * @return this player's axes manager
+     */
+    public @NotNull AxesManager getAxesManager() {
         return (AxesManager) skillManagers.get(PrimarySkillType.AXES);
     }
 
-    public ExcavationManager getExcavationManager() {
+    /**
+     * Grab the {@link ExcavationManager} for this player
+     * @return this player's excavation manager
+     */
+    public @NotNull ExcavationManager getExcavationManager() {
         return (ExcavationManager) skillManagers.get(PrimarySkillType.EXCAVATION);
     }
 
-    public FishingManager getFishingManager() {
+    /**
+     * Grab the {@link FishingManager} for this player
+     * @return this player's fishing manager
+     */
+    public @NotNull FishingManager getFishingManager() {
         return (FishingManager) skillManagers.get(PrimarySkillType.FISHING);
     }
 
-    public HerbalismManager getHerbalismManager() {
+    /**
+     * Grab the {@link HerbalismManager} for this player
+     * @return this player's herbalism manager
+     */
+    public @NotNull HerbalismManager getHerbalismManager() {
         return (HerbalismManager) skillManagers.get(PrimarySkillType.HERBALISM);
     }
 
-    public MiningManager getMiningManager() {
+    /**
+     * Grab the {@link MiningManager} for this player
+     * @return this player's mining manager
+     */
+    public @NotNull MiningManager getMiningManager() {
         return (MiningManager) skillManagers.get(PrimarySkillType.MINING);
     }
 
-    public RepairManager getRepairManager() {
+    /**
+     * Grab the {@link RepairManager} for this player
+     * @return this player's repair manager
+     */
+    public @NotNull RepairManager getRepairManager() {
         return (RepairManager) skillManagers.get(PrimarySkillType.REPAIR);
     }
 
-    public SalvageManager getSalvageManager() {
+    /**
+     * Grab the {@link SalvageManager} for this player
+     * @return this player's salvage manager
+     */
+    public @NotNull SalvageManager getSalvageManager() {
         return (SalvageManager) skillManagers.get(PrimarySkillType.SALVAGE);
     }
 
-    public SmeltingManager getSmeltingManager() {
+    /**
+     * Grab the {@link SmeltingManager} for this player
+     * @return this player's smelting manager
+     */
+    public @NotNull SmeltingManager getSmeltingManager() {
         return (SmeltingManager) skillManagers.get(PrimarySkillType.SMELTING);
     }
 
-    public SwordsManager getSwordsManager() {
+    /**
+     * Grab the {@link SwordsManager} for this player
+     * @return this player's swords manager
+     */
+    public @NotNull SwordsManager getSwordsManager() {
         return (SwordsManager) skillManagers.get(PrimarySkillType.SWORDS);
     }
 
-    public TamingManager getTamingManager() {
+    /**
+     * Grab the {@link TamingManager} for this player
+     * @return this player's taming manager
+     */
+    public @NotNull TamingManager getTamingManager() {
         return (TamingManager) skillManagers.get(PrimarySkillType.TAMING);
     }
 
-    public UnarmedManager getUnarmedManager() {
+    /**
+     * Grab the {@link UnarmedManager} for this player
+     * @return this player's unarmed manager
+     */
+    public @NotNull UnarmedManager getUnarmedManager() {
         return (UnarmedManager) skillManagers.get(PrimarySkillType.UNARMED);
     }
 
-    public TridentManager getTridentManager() {
+    /**
+     * Grab the {@link TridentManager} for this player
+     * @return this player's trident manager
+     */
+    public @NotNull TridentManager getTridentManager() {
         return (TridentManager) skillManagers.get(PrimarySkillType.TRIDENTS);
     }
 
-    public CrossbowManager getCrossbowManager() {
+    /**
+     * Grab the {@link CrossbowManager} for this player
+     * @return this player's crossbow manager
+     */
+    public @NotNull CrossbowManager getCrossbowManager() {
         return (CrossbowManager) skillManagers.get(PrimarySkillType.CROSSBOWS);
     }
 
-    public WoodcuttingManager getWoodcuttingManager() {
+    /**
+     * Grab the {@link WoodcuttingManager} for this player
+     * @return this player's woodcutting manager
+     */
+    public @NotNull WoodcuttingManager getWoodcuttingManager() {
         return (WoodcuttingManager) skillManagers.get(PrimarySkillType.WOODCUTTING);
     }
-
 
     /*
      * Recently Hurt
      */
 
-    public int getRecentlyHurt() {
+    /**
+     * The timestamp of the last time this player was hurt
+     * @return the timestamp of the most recent player damage
+     */
+    public int getRecentlyHurtTimestamp() {
         return recentlyHurt;
     }
 
-    public void setRecentlyHurt(int value) {
+    /**
+     * Set when the player was last hurt
+     * @param value new timestamp
+     */
+    public void setRecentlyHurtTimestamp(int value) {
         recentlyHurt = value;
     }
 
-    public void actualizeRecentlyHurt() {
-        recentlyHurt = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
-    }
-
-    /*
-     * Teleportation cooldown & warmup
+    /**
+     * Update recently hurt timestamp to reflect the current system time
      */
-
-    public int getChimeraWingLastUse() {
-        return profile.getChimaerWingDATS();
-    }
-
-    public void actualizeChimeraWingLastUse() {
-        profile.setChimaeraWingDATS((int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR));
-    }
-
-    public Location getTeleportCommenceLocation() {
-        return teleportCommence;
-    }
-
-    public void setTeleportCommenceLocation(Location location) {
-        teleportCommence = location;
-    }
-
-    public void actualizeTeleportCommenceLocation(Player player) {
-        teleportCommence = player.getLocation();
+    public void actualizeRecentlyHurtTimestamp() {
+        recentlyHurt = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
     }
 
     /*
      * Exploit Prevention
      */
 
+    /**
+     * Get the activation time stamp for this player's last respawn
+     * @return the time stamp of this player's last respawn
+     */
     public int getRespawnATS() {
         return respawnATS;
     }
 
+    /**
+     * Set the respawn timestamp for this player to the current time
+     */
     public void actualizeRespawnATS() {
         respawnATS = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
     }
 
+    /**
+     * Get the activation time stamp for this player's last teleport
+     * @return the time stamp of this player's last teleport
+     */
     public int getTeleportATS() {
         return teleportATS;
     }
 
+    /**
+     * Set the timestamp of the most recent teleport to the current system time
+     */
     public void actualizeTeleportATS() {
         teleportATS = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
     }
 
-    public long getDatabaseATS() {
+    /**
+     * Get the time stamp of when this player last used an expensive database command
+     * @return the time stamp of when this player last used an expensive database command
+     */
+    public long getDatabaseCommandATS() {
         return databaseATS;
     }
 
-    public void actualizeDatabaseATS() {
+    /**
+     * Set the time stamp of when the player last used an expensive database command to the current system time
+     */
+    public void actualizeDatabaseCommandATS() {
         databaseATS = System.currentTimeMillis();
     }
 
@@ -332,30 +358,36 @@ public class McMMOPlayer {
      * God Mode
      */
 
+    /**
+     * Whether or not this player is in god mode
+     * @return true if this player is in god mode
+     */
     public boolean getGodMode() {
         return godMode;
     }
 
+    /**
+     * Toggle the god mode setting for this player
+     */
     public void toggleGodMode() {
         godMode = !godMode;
     }
 
     /*
-     * Party Chat Spy
-     */
-
-    public boolean isPartyChatSpying() { return chatSpy; }
-
-    public void togglePartyChatSpying() { chatSpy = !chatSpy;}
-
-    /*
      * Debug Mode Flags
      */
 
+    /**
+     * Whether or not this player is using debug mode
+     * @return true if this player is in debug mode
+     */
     public boolean isDebugMode() {
         return debugMode;
     }
 
+    /**
+     * Toggle the debug mode for this player
+     */
     public void toggleDebugMode() {
         debugMode = !debugMode;
     }
@@ -364,273 +396,31 @@ public class McMMOPlayer {
      * Skill notifications
      */
 
-    public boolean useChatNotifications() {
+    /**
+     * Whether or not this player receives specific skill notifications in chat
+     * @return true if the player receives specific chat notifications related to skills
+     */
+    public boolean hasSkillChatNotifications() {
         return displaySkillNotifications;
     }
 
-    public void toggleChatNotifications() {
+    /**
+     * Toggles whether or not this player receives specific skill notifications in chat
+     */
+    public void toggleSkillChatNotifications() {
         displaySkillNotifications = !displaySkillNotifications;
-    }
-
-    /**
-     * Gets the power level of this player.
-     *
-     * @return the power level of the player
-     */
-    public int getPowerLevel() {
-        int powerLevel = 0;
-
-        for (PrimarySkillType type : PrimarySkillType.NON_CHILD_SKILLS) {
-            if (type.getPermissions(player)) {
-                powerLevel += getSkillLevel(type);
-            }
-        }
-
-        return powerLevel;
-    }
-
-    /**
-     * Whether or not a player is level capped
-     * If they are at the power level cap, this will return true, otherwise it checks their skill level
-     * @param primarySkillType
-     * @return
-     */
-    public boolean hasReachedLevelCap(PrimarySkillType primarySkillType) {
-        if(hasReachedPowerLevelCap())
-            return true;
-
-        return getSkillLevel(primarySkillType) >= Config.getInstance().getLevelCap(primarySkillType);
-    }
-
-    /**
-     * Whether or not a player is power level capped
-     * Compares their power level total to the current set limit
-     * @return true if they have reached the power level cap
-     */
-    public boolean hasReachedPowerLevelCap() {
-        return this.getPowerLevel() >= Config.getInstance().getPowerLevelCap();
-    }
-
-    /**
-     * Begins an experience gain. The amount will be affected by skill modifiers, global rate, perks, and may be shared with the party
-     *
-     * @param skill Skill being used
-     * @param xp Experience amount to process
-     */
-    public void beginXpGain(PrimarySkillType skill, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
-        Validate.isTrue(xp >= 0.0, "XP gained should be greater than or equal to zero.");
-
-        if (xp <= 0.0) {
-            return;
-        }
-
-        if (skill.isChildSkill()) {
-            Set<PrimarySkillType> parentSkills = FamilyTree.getParents(skill);
-            float splitXp = xp / parentSkills.size();
-
-            for (PrimarySkillType parentSkill : parentSkills) {
-                if (parentSkill.getPermissions(player)) {
-                    beginXpGain(parentSkill, splitXp, xpGainReason, xpGainSource);
-                }
-            }
-
-            return;
-        }
-
-        // Return if the experience has been shared
-        if (party != null && ShareHandler.handleXpShare(xp, this, skill, ShareHandler.getSharedXpGainReason(xpGainReason))) {
-            return;
-        }
-
-        beginUnsharedXpGain(skill, xp, xpGainReason, xpGainSource);
-    }
-
-    /**
-     * Begins an experience gain. The amount will be affected by skill modifiers, global rate and perks
-     *
-     * @param skill Skill being used
-     * @param xp Experience amount to process
-     */
-    public void beginUnsharedXpGain(PrimarySkillType skill, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
-        if(player.getGameMode() == GameMode.CREATIVE)
-            return;
-
-        applyXpGain(skill, modifyXpGain(skill, xp), xpGainReason, xpGainSource);
-
-        if (party == null) {
-            return;
-        }
-
-        if (!Config.getInstance().getPartyXpNearMembersNeeded() || !PartyManager.getNearMembers(this).isEmpty()) {
-            party.applyXpGain(modifyXpGain(skill, xp));
-        }
-    }
-
-    /**
-     * Applies an experience gain
-     *
-     * @param primarySkillType Skill being used
-     * @param xp Experience amount to add
-     */
-    public void applyXpGain(PrimarySkillType primarySkillType, float xp, XPGainReason xpGainReason, XPGainSource xpGainSource) {
-        if (!primarySkillType.getPermissions(player)) {
-            return;
-        }
-
-        if (primarySkillType.isChildSkill()) {
-            Set<PrimarySkillType> parentSkills = FamilyTree.getParents(primarySkillType);
-
-            for (PrimarySkillType parentSkill : parentSkills) {
-                applyXpGain(parentSkill, xp / parentSkills.size(), xpGainReason, xpGainSource);
-            }
-
-            return;
-        }
-
-        if (!EventUtils.handleXpGainEvent(player, primarySkillType, xp, xpGainReason)) {
-            return;
-        }
-
-        isUsingUnarmed = (primarySkillType == PrimarySkillType.UNARMED);
-        checkXp(primarySkillType, xpGainReason, xpGainSource);
-    }
-
-    /**
-     * Check the XP of a skill.
-     *
-     * @param primarySkillType The skill to check
-     */
-    private void checkXp(PrimarySkillType primarySkillType, XPGainReason xpGainReason, XPGainSource xpGainSource) {
-        if(hasReachedLevelCap(primarySkillType))
-            return;
-
-        if (getSkillXpLevelRaw(primarySkillType) < getXpToLevel(primarySkillType)) {
-            processPostXpEvent(primarySkillType, mcMMO.p, xpGainSource);
-            return;
-        }
-
-        int levelsGained = 0;
-        float xpRemoved = 0;
-
-        while (getSkillXpLevelRaw(primarySkillType) >= getXpToLevel(primarySkillType)) {
-            if (hasReachedLevelCap(primarySkillType)) {
-                setSkillXpLevel(primarySkillType, 0);
-                break;
-            }
-
-            xpRemoved += profile.levelUp(primarySkillType);
-            levelsGained++;
-        }
-
-        if (EventUtils.tryLevelChangeEvent(player, primarySkillType, levelsGained, xpRemoved, true, xpGainReason)) {
-            return;
-        }
-
-        if (Config.getInstance().getLevelUpSoundsEnabled()) {
-            SoundManager.sendSound(player, player.getLocation(), SoundType.LEVEL_UP);
-        }
-
-        /*
-         * Check to see if the player unlocked any new skills
-         */
-
-        NotificationManager.sendPlayerLevelUpNotification(this, primarySkillType, levelsGained, profile.getSkillLevel(primarySkillType));
-
-        //UPDATE XP BARS
-        processPostXpEvent(primarySkillType, mcMMO.p, xpGainSource);
     }
 
     /*
      * Players & Profiles
      */
 
-    public Player getPlayer() {
-        return player;
-    }
-
-    public PlayerProfile getProfile() {
-        return profile;
-    }
-
-    /*
-     * Party Stuff
+    /**
+     * Retrieves the associated {@link Player} object for this player
+     * @return the {@link Player} object associated with this player
      */
-
-    public void setupPartyData() {
-        party = PartyManager.getPlayerParty(player.getName(), player.getUniqueId());
-        ptpRecord = new PartyTeleportRecord();
-
-        if (inParty()) {
-            loginParty();
-        }
-    }
-
-    public void setPartyInvite(Party invite) {
-        this.invite = invite;
-    }
-
-    public Party getPartyInvite() {
-        return invite;
-    }
-
-    public boolean hasPartyInvite() {
-        return (invite != null);
-    }
-
-    public void setParty(Party party) {
-        this.party = party;
-    }
-
-    public Party getParty() {
-        return party;
-    }
-
-    public boolean inParty() {
-        return (party != null);
-    }
-
-    public void removeParty() {
-        party = null;
-    }
-
-    public void removePartyInvite() {
-        invite = null;
-    }
-
-    public PartyTeleportRecord getPartyTeleportRecord() {
-        return ptpRecord;
-    }
-
-    public void setPartyAllianceInvite(Party allianceInvite) {
-        this.allianceInvite = allianceInvite;
-    }
-
-    public Party getPartyAllianceInvite() {
-        return allianceInvite;
-    }
-
-    public boolean hasPartyAllianceInvite() {
-        return (allianceInvite != null);
-    }
-
-    public void removePartyAllianceInvite() {
-        allianceInvite = null;
-    }
-
-    public void loginParty() {
-        party.addOnlineMember(this.getPlayer());
-    }
-
-    public int getItemShareModifier() {
-        if (itemShareModifier < 10) {
-            setItemShareModifier(10);
-        }
-
-        return itemShareModifier;
-    }
-
-    public void setItemShareModifier(int modifier) {
-        itemShareModifier = Math.max(10, modifier);
+    public @NotNull Player getPlayer() {
+        return player;
     }
 
     /*
@@ -697,35 +487,20 @@ public class McMMOPlayer {
         }
     }
 
-    public boolean isUsingUnarmed() {
-        return isUsingUnarmed;
+    /**
+     * Update the experience bars for this player
+     * @param primarySkillType target skill
+     * @param plugin your {@link Plugin}
+     */
+    public void updateXPBar(PrimarySkillType primarySkillType, Plugin plugin)
+    {
+        //XP BAR UPDATES
+        experienceBarManager.updateExperienceBar(primarySkillType, plugin);
     }
 
     /**
-     * Modifies an experience gain using skill modifiers, global rate and perks
-     *
-     * @param primarySkillType Skill being used
-     * @param xp Experience amount to process
-     * @return Modified experience
+     * Checks whether or not a player can still be in god mode when transitioning between worlds
      */
-    private float modifyXpGain(PrimarySkillType primarySkillType, float xp) {
-        if ((primarySkillType.getMaxLevel() <= getSkillLevel(primarySkillType)) || (Config.getInstance().getPowerLevelCap() <= getPowerLevel())) {
-            return 0;
-        }
-
-        xp = (float) (xp / primarySkillType.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
-
-        if (Config.getInstance().getToolModsEnabled()) {
-            CustomTool tool = mcMMO.getModManager().getTool(player.getInventory().getItemInMainHand());
-
-            if (tool != null) {
-                xp *= tool.getXpMultiplier();
-            }
-        }
-
-        return PerksUtils.handleXpPerks(player, xp, primarySkillType);
-    }
-
     public void checkGodMode() {
         if (godMode && !Permissions.mcgod(player)
             || godMode && WorldBlacklist.isWorldBlacklisted(player.getWorld())) {
@@ -734,18 +509,10 @@ public class McMMOPlayer {
         }
     }
 
-    public void checkParty() {
-        if (inParty() && !Permissions.party(player)) {
-            removeParty();
-            player.sendMessage(LocaleLoader.getString("Party.Forbidden"));
-        }
-    }
-
-
     /**
      * Calculate the time remaining until the superAbilityType's cooldown expires.
      *
-     * @param superAbilityType SuperAbilityType whose cooldown to check
+     * @param superAbilityType the super ability cooldown to check
      *
      * @return the number of seconds remaining before the cooldown expires
      */
@@ -753,91 +520,28 @@ public class McMMOPlayer {
         return superAbilityManager.calculateTimeRemaining(superAbilityType);
     }
 
-    /*
-     * These functions are wrapped from PlayerProfile so that we don't always have to store it alongside the McMMOPlayer object.
+    /**
+     * This is sort of a hack, used for thread safety
+     * @return this player's {@link FixedMetadataValue}
      */
-    public int getSkillLevel(PrimarySkillType skill) {
-        return profile.getSkillLevel(skill);
-    }
-
-    public float getSkillXpLevelRaw(PrimarySkillType skill) {
-        return profile.getSkillXpLevelRaw(skill);
-    }
-
-    public int getSkillXpLevel(PrimarySkillType skill) {
-        return profile.getSkillXpLevel(skill);
-    }
-
-    public void setSkillXpLevel(PrimarySkillType skill, float xpLevel) {
-        profile.setSkillXpLevel(skill, xpLevel);
-    }
-
-    public int getXpToLevel(PrimarySkillType skill) {
-        return profile.getXpToLevel(skill);
-    }
-
-    public void removeXp(PrimarySkillType skill, int xp) {
-        profile.removeXp(skill, xp);
-    }
-
-    public void modifySkill(PrimarySkillType skill, int level) {
-        profile.modifySkill(skill, level);
-    }
-
-    public void addLevels(PrimarySkillType skill, int levels) {
-        profile.addLevels(skill, levels);
-    }
-
-    public void addXp(PrimarySkillType skill, float xp) {
-        profile.addXp(skill, xp);
-    }
-
-    public void setAbilityDATS(SuperAbilityType ability, long DATS) {
-        profile.setAbilityDATS(ability, DATS);
-    }
-
-    public void resetCooldowns() {
-        profile.resetCooldowns();
-    }
-
-    public FixedMetadataValue getPlayerMetadata() {
+    public @NotNull FixedMetadataValue getPlayerMetadata() {
         return playerMetadata;
     }
 
     /**
-     * This method is called by PlayerQuitEvent to tear down the mcMMOPlayer.
-     *
-     * @param syncSave if true, data is saved synchronously
+     * Grab this players {@link SuperAbilityManager}
+     * @return this player's super ability manager
      */
-    public void logout(boolean syncSave) {
-        Player thisPlayer = getPlayer();
-        BleedTimerTask.bleedOut(getPlayer());
-        cleanup();
-
-        if (syncSave) {
-            getProfile().save(true);
-        } else {
-            getProfile().scheduleAsyncSave();
-        }
-
-        UserManager.remove(thisPlayer);
-
-        if(Config.getInstance().getScoreboardsEnabled())
-            ScoreboardManager.teardownPlayer(thisPlayer);
-
-        if (inParty()) {
-            party.removeOnlineMember(thisPlayer);
-        }
-
-        //Remove user from cache
-        mcMMO.getDatabaseManager().cleanupUser(thisPlayer.getUniqueId());
-    }
-
-    public SuperAbilityManager getSuperAbilityManager() {
+    public @NotNull SuperAbilityManager getSuperAbilityManager() {
         return superAbilityManager;
     }
 
-    public AbilityActivationProcessor getAbilityActivationProcessor() {
+    /**
+     * Grab this player's {@link AbilityActivationProcessor}
+     * Used to process all things related to manually activated abilities
+     * @return this player's ability activation processor
+     */
+    public @NotNull AbilityActivationProcessor getAbilityActivationProcessor() {
         return abilityActivationProcessor;
     }
 
@@ -850,5 +554,20 @@ public class McMMOPlayer {
     public void cleanup() {
         superAbilityManager.resetSuperAbilities();
         getTamingManager().cleanupAllSummons();
+    }
+
+    /**
+     * Whether or not this player is currently spying on all party chat
+     * @return true if this player is currently spying
+     */
+    public boolean isPartyChatSpying() {
+        return getPersistentPlayerData().isPartyChatSpying();
+    }
+
+    /**
+     * Toggle this player's party chat spying flag
+     */
+    public void togglePartyChatSpying() {
+        getPersistentPlayerData().togglePartyChatSpying();
     }
 }
