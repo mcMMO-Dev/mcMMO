@@ -2,7 +2,7 @@ package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.MobHealthbarType;
+import com.gmail.nossr50.datatypes.MobHealthBarType;
 import com.gmail.nossr50.datatypes.meta.OldName;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.MobHealthDisplayUpdaterTask;
@@ -90,7 +90,7 @@ public final class MobHealthbarUtils {
         }
     }
 
-    private static String createHealthDisplay(MobHealthbarType mobHealthbarType, LivingEntity entity, double damage) {
+    private static String createHealthDisplay(MobHealthBarType mobHealthbarType, LivingEntity entity, double damage) {
         double maxHealth = entity.getMaxHealth();
         double currentHealth = Math.max(entity.getHealth() - damage, 0);
         double healthPercentage = (currentHealth / maxHealth) * 100.0D;
