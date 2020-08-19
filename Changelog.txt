@@ -6,7 +6,7 @@ Version 2.1.143
 
     NOTES:
         The item tracking is persistent for MC versions 1.13-1.16.2 (and beyond). However the code handling the persistence for 1.13.2 differs from the other versions. It shouldn't result in any problems.
-        Any items that currently have the "mcMMO Ability Tool" lore on them won't get touched by anything this update does, there is no way to tell what the true enchant values on those items should be.
+        Any items that currently have the old "mcMMO Ability Tool" lore on them will have that lore stripped off them and will have any dig speed enchants removed. This should only affect glitched items that never properly got their buffs removed.
 
 Version 2.1.142
     Iron Arm Style renamed to Steel Arm Style

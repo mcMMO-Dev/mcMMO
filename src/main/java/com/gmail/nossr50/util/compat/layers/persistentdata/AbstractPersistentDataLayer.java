@@ -53,4 +53,7 @@ public abstract class AbstractPersistentDataLayer extends AbstractCompatibilityL
         return lore.contains(LEGACY_ABILITY_TOOL_LORE);
     }
 
+    public static String getLegacyAbilityToolLore() {
+        return LEGACY_ABILITY_TOOL_LORE;
+    }
 }
