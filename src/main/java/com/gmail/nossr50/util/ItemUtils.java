@@ -523,6 +523,11 @@ public final class ItemUtils {
 
     public static void addDigSpeedToItem(ItemStack itemStack, int existingEnchantLevel) {
         ItemMeta itemMeta = itemStack.getItemMeta();
+
+        if(itemMeta == null)
+            return;
+
         itemMeta.addEnchant(Enchantment.DIG_SPEED, existingEnchantLevel + AdvancedConfig.getInstance().getEnchantBuff(), true);
+        itemStack.setItemMeta(itemMeta);
     }
 }

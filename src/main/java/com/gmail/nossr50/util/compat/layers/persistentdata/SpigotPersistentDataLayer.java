@@ -73,8 +73,13 @@ public class SpigotPersistentDataLayer extends AbstractPersistentDataLayer {
 
     @Override
     public void setSuperAbilityBoostedItem(ItemStack itemStack, int originalDigSpeed) {
+        if(itemStack.getItemMeta() == null) {
+            mcMMO.p.getLogger().severe("Can not assign persistent data to an item with null item metadata");
+            return;
+        }
+
         ItemMeta itemMeta = itemStack.getItemMeta();
-        PersistentDataContainer dataContainer = ((PersistentDataHolder) itemMeta).getPersistentDataContainer();
+        PersistentDataContainer dataContainer = itemMeta.getPersistentDataContainer();
 
         dataContainer.set(superAbilityBoosted, PersistentDataType.INTEGER, originalDigSpeed);
 
@@ -82,9 +87,13 @@ public class SpigotPersistentDataLayer extends AbstractPersistentDataLayer {
     }
 
     @Override
-    public boolean isSuperAbilityBoosted(@NotNull ItemMeta itemMeta) {
+    public boolean isSuperAbilityBoosted(ItemStack itemStack) {
+        if(itemStack.getItemMeta() == null)
+            return false;
+
+        ItemMeta itemMeta = itemStack.getItemMeta();
         //Get container from entity
-        PersistentDataContainer dataContainer = ((PersistentDataHolder) itemMeta).getPersistentDataContainer();
+        PersistentDataContainer dataContainer = itemMeta.getPersistentDataContainer();
 
         //If this value isn't null, then the tool can be considered dig speed boosted
         Integer boostValue = dataContainer.get(superAbilityBoosted, PersistentDataType.INTEGER);
@@ -93,9 +102,14 @@ public class SpigotPersistentDataLayer extends AbstractPersistentDataLayer {
     }
 
     @Override
-    public int getSuperAbilityToolOriginalDigSpeed(@NotNull ItemMeta itemMeta) {
+    public int getSuperAbilityToolOriginalDigSpeed(@NotNull ItemStack itemStack) {
         //Get container from entity
-        PersistentDataContainer dataContainer = ((PersistentDataHolder) itemMeta).getPersistentDataContainer();
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        if(itemMeta == null)
+            return 0;
+
+        PersistentDataContainer dataContainer = itemMeta.getPersistentDataContainer();
 
         if(dataContainer.get(superAbilityBoosted, PersistentDataType.INTEGER) == null) {
             mcMMO.p.getLogger().severe("Value should never be null for a boosted item");
@@ -109,11 +123,10 @@ public class SpigotPersistentDataLayer extends AbstractPersistentDataLayer {
 
     @Override
     public void removeBonusDigSpeedOnSuperAbilityTool(@NotNull ItemStack itemStack) {
+        int originalSpeed = getSuperAbilityToolOriginalDigSpeed(itemStack);
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         //TODO: can be optimized
-        int originalSpeed = getSuperAbilityToolOriginalDigSpeed(itemMeta);
-
         if(itemMeta.hasEnchant(Enchantment.DIG_SPEED)) {
             itemMeta.removeEnchant(Enchantment.DIG_SPEED);
         }
@@ -122,7 +135,7 @@ public class SpigotPersistentDataLayer extends AbstractPersistentDataLayer {
             itemMeta.addEnchant(Enchantment.DIG_SPEED, originalSpeed, true);
         }
 
-        PersistentDataContainer dataContainer = ((PersistentDataHolder) itemMeta).getPersistentDataContainer();
+        PersistentDataContainer dataContainer = itemMeta.getPersistentDataContainer();
         dataContainer.remove(superAbilityBoosted); //Remove persistent data
 
         //TODO: needed?

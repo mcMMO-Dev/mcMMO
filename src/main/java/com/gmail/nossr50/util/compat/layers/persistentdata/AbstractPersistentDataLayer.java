@@ -20,9 +20,9 @@ public abstract class AbstractPersistentDataLayer extends AbstractCompatibilityL
 
     public abstract void setSuperAbilityBoostedItem(ItemStack itemStack, int originalDigSpeed);
 
-    public abstract boolean isSuperAbilityBoosted(ItemMeta itemMeta);
+    public abstract boolean isSuperAbilityBoosted(ItemStack itemStack);
 
-    public abstract int getSuperAbilityToolOriginalDigSpeed(ItemMeta itemMeta);
+    public abstract int getSuperAbilityToolOriginalDigSpeed(ItemStack itemStack);
 
     public abstract void removeBonusDigSpeedOnSuperAbilityTool(ItemStack itemStack);
 

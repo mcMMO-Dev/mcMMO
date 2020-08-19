@@ -1,6 +1,7 @@
 Version 2.1.143
     mcMMO now tracks super ability boosted items through item metadata
     mcMMO no longer relies on lore to tell if an item has been modified by a super ability
+    Slight buff to Rupture
 
     NOTES:
         The item tracking on 1.14+ is persistent (up until now its been temporary)

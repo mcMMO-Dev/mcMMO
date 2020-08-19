@@ -24,13 +24,10 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 public class SkillUtils {
 
@@ -210,7 +207,7 @@ public class SkillUtils {
         //1.14+ will have persistent metadata for this itemStack
         AbstractPersistentDataLayer compatLayer = mcMMO.getCompatibilityManager().getPersistentDataLayer();
 
-        if(compatLayer.isSuperAbilityBoosted(itemStack.getItemMeta()))
+        if(compatLayer.isSuperAbilityBoosted(itemStack))
             compatLayer.removeBonusDigSpeedOnSuperAbilityTool(itemStack);
     }
 

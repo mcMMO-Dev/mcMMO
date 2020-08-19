@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.compat.layers.persistentdata;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.meta.SuperAbilityToolMeta;
 import com.gmail.nossr50.datatypes.meta.UUIDMeta;
 import com.gmail.nossr50.mcMMO;
@@ -39,7 +38,7 @@ public class SpigotTemporaryDataLayer extends AbstractPersistentDataLayer {
     }
 
     @Override
-    public void setFurnaceOwner(Furnace furnace, UUID uuid) {
+    public void setFurnaceOwner(@NotNull Furnace furnace, UUID uuid) {
         Metadatable metadatable = (Metadatable) furnace;
 
         if(metadatable.getMetadata(FURNACE_OWNER_METADATA_KEY).size() > 0) {
@@ -50,24 +49,24 @@ public class SpigotTemporaryDataLayer extends AbstractPersistentDataLayer {
     }
 
     @Override
-    public void setSuperAbilityBoostedItem(ItemStack itemStack, int originalDigSpeed) {
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        Metadatable metadatable = (Metadatable) itemMeta;
+    public void setSuperAbilityBoostedItem(@NotNull ItemStack itemStack, int originalDigSpeed) {
+        Metadatable metadatable = getMetadatable(itemStack);
         metadatable.setMetadata(ABILITY_TOOL_METADATA_KEY, new SuperAbilityToolMeta(originalDigSpeed, mcMMO.p));
+    }
 
-        //TODO: needed?
-        itemStack.setItemMeta(itemMeta);
+    private Metadatable getMetadatable(@NotNull ItemStack itemStack) {
+        return (Metadatable) itemStack;
     }
 
     @Override
-    public boolean isSuperAbilityBoosted(@NotNull ItemMeta itemMeta) {
-        Metadatable metadatable = (Metadatable) itemMeta;
+    public boolean isSuperAbilityBoosted(@NotNull ItemStack itemStack) {
+        Metadatable metadatable = getMetadatable(itemStack);
         return metadatable.getMetadata(ABILITY_TOOL_METADATA_KEY).size() > 0;
     }
 
     @Override
-    public int getSuperAbilityToolOriginalDigSpeed(@NotNull ItemMeta itemMeta) {
-        Metadatable metadatable = (Metadatable) itemMeta;
+    public int getSuperAbilityToolOriginalDigSpeed(@NotNull ItemStack itemStack) {
+        Metadatable metadatable = getMetadatable(itemStack);
 
         if(metadatable.getMetadata(ABILITY_TOOL_METADATA_KEY).size() > 0) {
             SuperAbilityToolMeta toolMeta = (SuperAbilityToolMeta) metadatable.getMetadata(ABILITY_TOOL_METADATA_KEY).get(0);
@@ -80,13 +79,13 @@ public class SpigotTemporaryDataLayer extends AbstractPersistentDataLayer {
 
     @Override
     public void removeBonusDigSpeedOnSuperAbilityTool(@NotNull ItemStack itemStack) {
+        int originalSpeed = getSuperAbilityToolOriginalDigSpeed(itemStack);
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         if(itemMeta.hasEnchant(Enchantment.DIG_SPEED)) {
             itemMeta.removeEnchant(Enchantment.DIG_SPEED);
         }
 
-        int originalSpeed = getSuperAbilityToolOriginalDigSpeed(itemMeta);
 
         if(originalSpeed > 0) {
             itemMeta.addEnchant(Enchantment.DIG_SPEED, originalSpeed, true);
