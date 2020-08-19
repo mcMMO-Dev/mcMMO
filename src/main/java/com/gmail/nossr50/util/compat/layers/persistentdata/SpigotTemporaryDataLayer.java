@@ -1,11 +1,9 @@
 package com.gmail.nossr50.util.compat.layers.persistentdata;
 
-import com.gmail.nossr50.datatypes.meta.SuperAbilityToolMeta;
 import com.gmail.nossr50.datatypes.meta.UUIDMeta;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.block.Furnace;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
@@ -53,10 +51,6 @@ public class SpigotTemporaryDataLayer extends AbstractPersistentDataLayer {
 
     @Override
     public void setSuperAbilityBoostedItem(@NotNull ItemStack itemStack, int originalDigSpeed) {
-        Metadatable metadatable = getMetadatable(itemStack);
-        metadatable.setMetadata(ABILITY_TOOL_METADATA_KEY, new SuperAbilityToolMeta(originalDigSpeed, mcMMO.p));
-
-
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         if(itemMeta == null) {
@@ -66,10 +60,6 @@ public class SpigotTemporaryDataLayer extends AbstractPersistentDataLayer {
 
         itemMeta.getCustomTagContainer().setCustomTag(superAbilityBoosted, ItemTagType.INTEGER, originalDigSpeed);
         itemStack.setItemMeta(itemMeta);
-    }
-
-    private Metadatable getMetadatable(@NotNull ItemStack itemStack) {
-        return (Metadatable) itemStack;
     }
 
     @Override
