@@ -27,6 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
@@ -145,11 +146,13 @@ public class SkillUtils {
 
             int originalDigSpeed = heldItem.getEnchantmentLevel(Enchantment.DIG_SPEED);
 
-            //Add lore, add dig speed
-            ItemUtils.addAbilityLore(heldItem); //lore can be a secondary failsafe for 1.13 and below
+            //Add dig speed
+
+            //Lore no longer gets added, no point to it afaik
+            //ItemUtils.addAbilityLore(heldItem); //lore can be a secondary failsafe for 1.13 and below
             ItemUtils.addDigSpeedToItem(heldItem, heldItem.getEnchantmentLevel(Enchantment.DIG_SPEED));
 
-            //1.14+ will have persistent metadata for this item
+            //1.13.2+ will have persistent metadata for this item
             AbstractPersistentDataLayer compatLayer = mcMMO.getCompatibilityManager().getPersistentDataLayer();
             compatLayer.setSuperAbilityBoostedItem(heldItem, originalDigSpeed);
         }
@@ -211,14 +214,25 @@ public class SkillUtils {
         if(!ItemUtils.canBeSuperAbilityDigBoosted(itemStack))
             return;
 
-        //Take the lore off
-        ItemUtils.removeAbilityLore(itemStack);
 
-        //1.14+ will have persistent metadata for this itemStack
+        //1.13.2+ will have persistent metadata for this itemStack
         AbstractPersistentDataLayer compatLayer = mcMMO.getCompatibilityManager().getPersistentDataLayer();
 
-        if(compatLayer.isSuperAbilityBoosted(itemStack))
+        if(compatLayer.isLegacyAbilityTool(itemStack)) {
+            ItemMeta itemMeta = itemStack.getItemMeta();
+
+            //TODO: can be optimized
+            if(itemMeta.hasEnchant(Enchantment.DIG_SPEED)) {
+                itemMeta.removeEnchant(Enchantment.DIG_SPEED);
+            }
+
+            itemStack.setItemMeta(itemMeta);
+            ItemUtils.removeAbilityLore(itemStack);
+        }
+
+        if(compatLayer.isSuperAbilityBoosted(itemStack)) {
             compatLayer.removeBonusDigSpeedOnSuperAbilityTool(itemStack);
+        }
     }
 
     public static void handleDurabilityChange(ItemStack itemStack, int durabilityModifier) {

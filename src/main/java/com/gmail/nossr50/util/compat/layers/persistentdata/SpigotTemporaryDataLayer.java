@@ -19,7 +19,6 @@ import java.util.UUID;
 public class SpigotTemporaryDataLayer extends AbstractPersistentDataLayer {
 
     private final String FURNACE_OWNER_METADATA_KEY = "mcMMO_furnace_owner";
-    private final String ABILITY_TOOL_METADATA_KEY = "mcMMO_super_ability_tool";
 
     @Override
     public boolean initializeLayer() {

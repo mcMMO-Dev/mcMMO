@@ -15,7 +15,6 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public final class ItemUtils {
@@ -486,22 +485,22 @@ public final class ItemUtils {
         return itemMeta.hasDisplayName() && itemMeta.getDisplayName().equals(ChatColor.GOLD + LocaleLoader.getString("Item.ChimaeraWing.Name"));
     }
 
-    public static void addAbilityLore(@NotNull ItemStack itemStack) {
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        List<String> itemLore = new ArrayList<>();
-
-        if(itemMeta == null)
-            return;
-
-        if (itemMeta.hasLore()) {
-            itemLore = itemMeta.getLore();
-        }
-
-        itemLore.add("mcMMO Ability Tool");
-
-        itemMeta.setLore(itemLore);
-        itemStack.setItemMeta(itemMeta);
-    }
+//    public static void addAbilityLore(@NotNull ItemStack itemStack) {
+//        ItemMeta itemMeta = itemStack.getItemMeta();
+//        List<String> itemLore = new ArrayList<>();
+//
+//        if(itemMeta == null)
+//            return;
+//
+//        if (itemMeta.hasLore()) {
+//            itemLore = itemMeta.getLore();
+//        }
+//
+//        itemLore.add("mcMMO Ability Tool");
+//
+//        itemMeta.setLore(itemLore);
+//        itemStack.setItemMeta(itemMeta);
+//    }
 
     public static void removeAbilityLore(@NotNull ItemStack itemStack) {
         ItemMeta itemMeta = itemStack.getItemMeta();
