@@ -30,6 +30,7 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 
@@ -135,6 +136,9 @@ public class SkillUtils {
         if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
             ItemStack heldItem = player.getInventory().getItemInMainHand();
 
+            if(heldItem == null)
+                return;
+
             if (!ItemUtils.canBeSuperAbilityDigBoosted(heldItem)) {
                 return;
             }
@@ -200,7 +204,10 @@ public class SkillUtils {
         }
     }
 
-    public static void removeAbilityBuff(@NotNull ItemStack itemStack) {
+    public static void removeAbilityBuff(@Nullable ItemStack itemStack) {
+        if(itemStack == null)
+            return;
+
         if(!ItemUtils.canBeSuperAbilityDigBoosted(itemStack))
             return;
 

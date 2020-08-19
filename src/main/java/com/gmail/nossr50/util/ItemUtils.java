@@ -31,7 +31,7 @@ public final class ItemUtils {
         return mcMMO.getMaterialMapStore().isBow(item.getType().getKey().getKey());
     }
 
-    public static boolean hasItemInEitherHand(Player player, Material material) {
+    public static boolean hasItemInEitherHand(@NotNull Player player, Material material) {
         return player.getInventory().getItemInMainHand().getType() == material || player.getInventory().getItemInOffHand().getType() == material;
     }
 
@@ -41,7 +41,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a sword, false otherwise
      */
-    public static boolean isSword(ItemStack item) {
+    public static boolean isSword(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isSword(item.getType().getKey().getKey());
     }
 
@@ -51,7 +51,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a hoe, false otherwise
      */
-    public static boolean isHoe(ItemStack item) {
+    public static boolean isHoe(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isHoe(item.getType().getKey().getKey());
     }
 
@@ -61,7 +61,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a shovel, false otherwise
      */
-    public static boolean isShovel(ItemStack item) {
+    public static boolean isShovel(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isShovel(item.getType().getKey().getKey());
     }
 
@@ -71,7 +71,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is an axe, false otherwise
      */
-    public static boolean isAxe(ItemStack item) {
+    public static boolean isAxe(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isAxe(item.getType().getKey().getKey());
     }
 
@@ -81,7 +81,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a pickaxe, false otherwise
      */
-    public static boolean isPickaxe(ItemStack item) {
+    public static boolean isPickaxe(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isPickAxe(item.getType().getKey().getKey());
     }
 

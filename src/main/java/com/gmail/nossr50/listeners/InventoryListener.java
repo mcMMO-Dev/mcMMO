@@ -383,6 +383,10 @@ public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClickEvent(InventoryClickEvent event) {
+        if(event.getCurrentItem() == null) {
+            return;
+        }
+
         SkillUtils.removeAbilityBuff(event.getCurrentItem());
         if (event.getAction() == InventoryAction.HOTBAR_SWAP) {
             if(isOutsideWindowClick(event))
@@ -391,7 +395,7 @@ public class InventoryListener implements Listener {
             PlayerInventory playerInventory = event.getWhoClicked().getInventory();
 
             if(playerInventory.getItem(event.getHotbarButton()) != null)
-                SkillUtils.removeAbilityBuff(event.getWhoClicked().getInventory().getItem(event.getHotbarButton()));
+                SkillUtils.removeAbilityBuff(playerInventory.getItem(event.getHotbarButton()));
         }
     }
 
