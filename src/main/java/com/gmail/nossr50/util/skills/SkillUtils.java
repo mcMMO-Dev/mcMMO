@@ -26,6 +26,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 
@@ -131,7 +132,7 @@ public class SkillUtils {
         if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
             ItemStack heldItem = player.getInventory().getItemInMainHand();
 
-            if (heldItem == null || heldItem.getType() == Material.AIR) {
+            if (!ItemUtils.canBeSuperAbilityDigBoosted(heldItem)) {
                 return;
             }
 
@@ -186,20 +187,19 @@ public class SkillUtils {
         }
     }
 
-    public static void handleAbilitySpeedDecrease(Player player) {
+    public static void removeAbilityBoostsFromInventory(@NotNull Player player) {
         if (!HiddenConfig.getInstance().useEnchantmentBuffs()) {
             return;
         }
 
-        for (ItemStack item : player.getInventory().getContents()) {
-            removeAbilityBuff(item);
+        for (ItemStack itemStack : player.getInventory().getContents()) {
+            removeAbilityBuff(itemStack);
         }
     }
 
-    public static void removeAbilityBuff(ItemStack itemStack) {
-        if (itemStack == null || itemStack.getType() == Material.AIR) {
+    public static void removeAbilityBuff(@NotNull ItemStack itemStack) {
+        if(!ItemUtils.canBeSuperAbilityDigBoosted(itemStack))
             return;
-        }
 
         //Take the lore off
         ItemUtils.removeAbilityLore(itemStack);

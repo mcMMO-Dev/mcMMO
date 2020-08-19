@@ -687,7 +687,7 @@ public class BlockListener implements Listener {
             }
         } else {
             if ((mcMMOPlayer.getAbilityMode(SuperAbilityType.SUPER_BREAKER) && !BlockUtils.affectedBySuperBreaker(blockState)) || (mcMMOPlayer.getAbilityMode(SuperAbilityType.GIGA_DRILL_BREAKER) && !BlockUtils.affectedByGigaDrillBreaker(blockState))) {
-                SkillUtils.handleAbilitySpeedDecrease(player);
+                SkillUtils.removeAbilityBoostsFromInventory(player);
             }
         }
     }

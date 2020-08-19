@@ -21,12 +21,9 @@ public class SpigotPersistentDataLayer extends AbstractPersistentDataLayer {
      */
     public static final String FURNACE_UUID_MOST_SIG = "furnace_uuid_most_sig";
     public static final String FURNACE_UUID_LEAST_SIG = "furnace_uuid_least_sig";
-    public static final String SUPER_ABILITY_BOOSTED = "super_ability_boosted";
 
     private NamespacedKey furnaceOwner_MostSig_Key;
     private NamespacedKey furnaceOwner_LeastSig_Key;
-    private NamespacedKey superAbilityBoosted;
-
 
     @Override
     public boolean initializeLayer() {
@@ -37,16 +34,10 @@ public class SpigotPersistentDataLayer extends AbstractPersistentDataLayer {
     private void initNamespacedKeys() {
         furnaceOwner_MostSig_Key = getNamespacedKey(FURNACE_UUID_MOST_SIG);
         furnaceOwner_LeastSig_Key = getNamespacedKey(FURNACE_UUID_LEAST_SIG);
-        superAbilityBoosted = getNamespacedKey(SUPER_ABILITY_BOOSTED);
-    }
-
-    @NotNull
-    public NamespacedKey getNamespacedKey(String key) {
-        return new NamespacedKey(mcMMO.p, key);
     }
 
     @Override
-    public @Nullable UUID getFurnaceOwner(Furnace furnace) {
+    public @Nullable UUID getFurnaceOwner(@NotNull Furnace furnace) {
         //Get container from entity
         PersistentDataContainer dataContainer = ((PersistentDataHolder) furnace).getPersistentDataContainer();
 
@@ -62,7 +53,7 @@ public class SpigotPersistentDataLayer extends AbstractPersistentDataLayer {
     }
 
     @Override
-    public void setFurnaceOwner(Furnace furnace, UUID uuid) {
+    public void setFurnaceOwner(@NotNull Furnace furnace, @NotNull UUID uuid) {
         PersistentDataContainer dataContainer = ((PersistentDataHolder) furnace).getPersistentDataContainer();
 
         dataContainer.set(furnaceOwner_MostSig_Key, PersistentDataType.LONG, uuid.getMostSignificantBits());
@@ -72,7 +63,7 @@ public class SpigotPersistentDataLayer extends AbstractPersistentDataLayer {
     }
 
     @Override
-    public void setSuperAbilityBoostedItem(ItemStack itemStack, int originalDigSpeed) {
+    public void setSuperAbilityBoostedItem(@NotNull ItemStack itemStack, int originalDigSpeed) {
         if(itemStack.getItemMeta() == null) {
             mcMMO.p.getLogger().severe("Can not assign persistent data to an item with null item metadata");
             return;
@@ -87,7 +78,7 @@ public class SpigotPersistentDataLayer extends AbstractPersistentDataLayer {
     }
 
     @Override
-    public boolean isSuperAbilityBoosted(ItemStack itemStack) {
+    public boolean isSuperAbilityBoosted(@NotNull ItemStack itemStack) {
         if(itemStack.getItemMeta() == null)
             return false;
 

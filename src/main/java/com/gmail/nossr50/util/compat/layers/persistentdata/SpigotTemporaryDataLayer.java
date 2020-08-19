@@ -5,8 +5,11 @@ import com.gmail.nossr50.datatypes.meta.UUIDMeta;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.block.Furnace;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
+import org.bukkit.inventory.meta.tags.ItemTagType;
 import org.bukkit.metadata.Metadatable;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +29,7 @@ public class SpigotTemporaryDataLayer extends AbstractPersistentDataLayer {
     }
 
     @Override
-    public UUID getFurnaceOwner(Furnace furnace) {
+    public UUID getFurnaceOwner(@NotNull Furnace furnace) {
         Metadatable metadatable = (Metadatable) furnace;
 
         if(metadatable.getMetadata(FURNACE_OWNER_METADATA_KEY).size() > 0) {
@@ -38,7 +41,7 @@ public class SpigotTemporaryDataLayer extends AbstractPersistentDataLayer {
     }
 
     @Override
-    public void setFurnaceOwner(@NotNull Furnace furnace, UUID uuid) {
+    public void setFurnaceOwner(@NotNull Furnace furnace, @NotNull UUID uuid) {
         Metadatable metadatable = (Metadatable) furnace;
 
         if(metadatable.getMetadata(FURNACE_OWNER_METADATA_KEY).size() > 0) {
@@ -52,6 +55,17 @@ public class SpigotTemporaryDataLayer extends AbstractPersistentDataLayer {
     public void setSuperAbilityBoostedItem(@NotNull ItemStack itemStack, int originalDigSpeed) {
         Metadatable metadatable = getMetadatable(itemStack);
         metadatable.setMetadata(ABILITY_TOOL_METADATA_KEY, new SuperAbilityToolMeta(originalDigSpeed, mcMMO.p));
+
+
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        if(itemMeta == null) {
+            mcMMO.p.getLogger().severe("Item meta should never be null for a super boosted item!");
+            return;
+        }
+
+        itemMeta.getCustomTagContainer().setCustomTag(superAbilityBoosted, ItemTagType.INTEGER, originalDigSpeed);
+        itemStack.setItemMeta(itemMeta);
     }
 
     private Metadatable getMetadatable(@NotNull ItemStack itemStack) {
@@ -60,19 +74,27 @@ public class SpigotTemporaryDataLayer extends AbstractPersistentDataLayer {
 
     @Override
     public boolean isSuperAbilityBoosted(@NotNull ItemStack itemStack) {
-        Metadatable metadatable = getMetadatable(itemStack);
-        return metadatable.getMetadata(ABILITY_TOOL_METADATA_KEY).size() > 0;
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        if(itemMeta == null)
+            return false;
+
+        CustomItemTagContainer tagContainer = itemMeta.getCustomTagContainer();
+        return tagContainer.hasCustomTag(superAbilityBoosted, ItemTagType.INTEGER);
     }
 
     @Override
     public int getSuperAbilityToolOriginalDigSpeed(@NotNull ItemStack itemStack) {
-        Metadatable metadatable = getMetadatable(itemStack);
+        ItemMeta itemMeta = itemStack.getItemMeta();
 
-        if(metadatable.getMetadata(ABILITY_TOOL_METADATA_KEY).size() > 0) {
-            SuperAbilityToolMeta toolMeta = (SuperAbilityToolMeta) metadatable.getMetadata(ABILITY_TOOL_METADATA_KEY).get(0);
-            return toolMeta.asInt();
+        if(itemMeta == null)
+            return 0;
+
+        CustomItemTagContainer tagContainer = itemMeta.getCustomTagContainer();
+
+        if(tagContainer.hasCustomTag(superAbilityBoosted , ItemTagType.INTEGER)) {
+            return tagContainer.getCustomTag(superAbilityBoosted, ItemTagType.INTEGER);
         } else {
-//            mcMMO.p.getLogger().info("Original dig enchant speed could not be found on item! Most likely it was lost from a server restart.");
             return 0;
         }
     }
@@ -81,6 +103,9 @@ public class SpigotTemporaryDataLayer extends AbstractPersistentDataLayer {
     public void removeBonusDigSpeedOnSuperAbilityTool(@NotNull ItemStack itemStack) {
         int originalSpeed = getSuperAbilityToolOriginalDigSpeed(itemStack);
         ItemMeta itemMeta = itemStack.getItemMeta();
+
+        if(itemMeta == null)
+            return;
 
         if(itemMeta.hasEnchant(Enchantment.DIG_SPEED)) {
             itemMeta.removeEnchant(Enchantment.DIG_SPEED);

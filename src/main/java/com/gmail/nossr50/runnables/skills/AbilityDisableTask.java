@@ -37,7 +37,7 @@ public class AbilityDisableTask extends BukkitRunnable {
         switch (ability) {
             case SUPER_BREAKER:
             case GIGA_DRILL_BREAKER:
-                SkillUtils.handleAbilitySpeedDecrease(player);
+                SkillUtils.removeAbilityBoostsFromInventory(player);
                 // Fallthrough
 
             case BERSERK:
