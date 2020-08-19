@@ -2,6 +2,8 @@ package com.gmail.nossr50.util.compat.layers.persistentdata;
 
 import com.gmail.nossr50.util.compat.layers.AbstractCompatibilityLayer;
 import org.bukkit.block.Furnace;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -15,5 +17,13 @@ public abstract class AbstractPersistentDataLayer extends AbstractCompatibilityL
     public abstract @Nullable UUID getFurnaceOwner(Furnace furnace);
 
     public abstract void setFurnaceOwner(Furnace furnace, UUID uuid);
+
+    public abstract void setSuperAbilityBoostedItem(ItemStack itemStack, int originalDigSpeed);
+
+    public abstract boolean isSuperAbilityBoosted(ItemMeta itemMeta);
+
+    public abstract int getSuperAbilityToolOriginalDigSpeed(ItemMeta itemMeta);
+
+    public abstract void removeBonusDigSpeedOnSuperAbilityTool(ItemStack itemStack);
 
 }

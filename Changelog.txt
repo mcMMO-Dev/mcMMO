@@ -1,3 +1,11 @@
+Version 2.1.143
+    mcMMO now tracks super ability boosted items through item metadata
+    mcMMO no longer relies on lore to tell if an item has been modified by a super ability
+
+    NOTES:
+        The item tracking on 1.14+ is persistent (up until now its been temporary)
+        Lore still gets added and removed from the item, this is sort of a failsafe. It can be considered optional.
+
 Version 2.1.142
     Iron Arm Style renamed to Steel Arm Style
     Steel Arm Style now scales over 20 ranks instead of 5

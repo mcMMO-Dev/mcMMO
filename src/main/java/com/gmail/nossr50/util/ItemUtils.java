@@ -1,16 +1,21 @@
 package com.gmail.nossr50.util;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public final class ItemUtils {
     private ItemUtils() {}
@@ -478,5 +483,46 @@ public final class ItemUtils {
             return false;
 
         return itemMeta.hasDisplayName() && itemMeta.getDisplayName().equals(ChatColor.GOLD + LocaleLoader.getString("Item.ChimaeraWing.Name"));
+    }
+
+    public static void addAbilityLore(ItemStack itemStack) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        List<String> itemLore = new ArrayList<>();
+
+        if(itemMeta == null)
+            return;
+
+        if (itemMeta.hasLore()) {
+            itemLore = itemMeta.getLore();
+        }
+
+        itemLore.add("mcMMO Ability Tool");
+
+        itemMeta.setLore(itemLore);
+        itemStack.setItemMeta(itemMeta);
+    }
+
+    public static void removeAbilityLore(ItemStack itemStack) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        if(itemMeta == null)
+            return;
+
+        if (itemMeta.hasLore()) {
+            List<String> itemLore = itemMeta.getLore();
+
+            if(itemLore == null)
+                return;
+
+            if (itemLore.remove("mcMMO Ability Tool")) {
+                itemMeta.setLore(itemLore);
+                itemStack.setItemMeta(itemMeta);
+            }
+        }
+    }
+
+    public static void addDigSpeedToItem(ItemStack itemStack, int existingEnchantLevel) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.addEnchant(Enchantment.DIG_SPEED, existingEnchantLevel + AdvancedConfig.getInstance().getEnchantBuff(), true);
     }
 }

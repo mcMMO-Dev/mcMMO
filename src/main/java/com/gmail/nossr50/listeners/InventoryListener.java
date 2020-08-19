@@ -414,6 +414,7 @@ public class InventoryListener implements Listener {
 
         ItemStack result = event.getRecipe().getResult();
 
+        //TODO: what is the point of this
         if (!ItemUtils.isMcMMOItem(result)) {
             return;
         }
