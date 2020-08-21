@@ -3,6 +3,7 @@ package com.gmail.nossr50.commands.skills;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.skills.CombatUtils;
@@ -60,7 +61,7 @@ public class UnarmedCommand extends SkillCommand {
 
         // IRON ARM
         if (canIronArm) {
-            ironArmBonus = mcMMO.getUserManager().getPlayer(player).getUnarmedManager().getIronArmDamage();
+            ironArmBonus = mcMMO.getUserManager().getPlayer(player).getUnarmedManager().getSteelArmStyleDamage();
         }
 
         // IRON GRIP
@@ -74,7 +75,7 @@ public class UnarmedCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canBerserk = RankUtils.hasUnlockedSubskill(player, SubSkillType.UNARMED_BERSERK) && Permissions.berserk(player);
-        canIronArm = canUseSubskill(player, SubSkillType.UNARMED_IRON_ARM_STYLE);
+        canIronArm = canUseSubskill(player, SubSkillType.UNARMED_STEEL_ARM_STYLE);
         canDeflect = canUseSubskill(player, SubSkillType.UNARMED_ARROW_DEFLECT);
         canDisarm = canUseSubskill(player, SubSkillType.UNARMED_DISARM);
         canIronGrip = canUseSubskill(player, SubSkillType.UNARMED_IRON_GRIP);

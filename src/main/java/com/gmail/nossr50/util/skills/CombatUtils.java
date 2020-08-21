@@ -208,7 +208,7 @@ public final class CombatUtils {
 
         //Only execute bonuses if the player is not spamming
         if (unarmedManager.canUseIronArm()) {
-            finalDamage+=(unarmedManager.calculateIronArmDamage() * mmoPlayer.getAttackStrength());
+            finalDamage+=(unarmedManager.calculateSteelArmStyleDamage() * mmoPlayer.getAttackStrength());
         }
 
         if (unarmedManager.canUseBerserk()) {

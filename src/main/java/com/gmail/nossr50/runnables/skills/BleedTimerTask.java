@@ -188,6 +188,9 @@ public class BleedTimerTask extends BukkitRunnable {
         if(toolTier < 4)
             ticks = Math.max(1, (ticks / 3));
 
+        ticks+=1;
+
+
         BleedContainer newBleedContainer = new BleedContainer(entity, ticks, bleedRank, toolTier, attacker);
         bleedList.put(entity, newBleedContainer);
     }

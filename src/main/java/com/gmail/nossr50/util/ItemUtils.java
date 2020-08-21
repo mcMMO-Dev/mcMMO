@@ -1,16 +1,21 @@
 package com.gmail.nossr50.util;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 import static org.bukkit.Material.AIR;
 
@@ -23,29 +28,28 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a bow, false otherwise
      */
-    public static boolean isBow(ItemStack item) {
+    public static boolean isBow(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isBow(item.getType().getKey().getKey());
     }
 
-    public static boolean isCrossbow(ItemStack itemStack) {
+    public static boolean isCrossbow(@NotNull ItemStack itemStack) {
         return mcMMO.getMaterialMapStore().isCrossbow(itemStack.getType().getKey().getKey());
     }
 
-
-    public static boolean hasItemInEitherHand(Player player, Material material) {
+    public static boolean hasItemInEitherHand(@NotNull Player player, @NotNull Material material) {
         return hasItemInEitherHand(player, material.getKey().getKey());
     }
 
-    public static boolean hasItemInEitherHand(Player player, String id) {
+    public static boolean hasItemInEitherHand(@NotNull Player player, @NotNull String id) {
         return player.getInventory().getItemInMainHand().getType().getKey().getKey().equalsIgnoreCase(id)
                 || player.getInventory().getItemInOffHand().getType().getKey().getKey().equalsIgnoreCase(id);
     }
 
-    public static boolean hasItemInMainHand(Player player, String id) {
+    public static boolean hasItemInMainHand(@NotNull Player player, @NotNull String id) {
         return player.getInventory().getItemInMainHand().getType().getKey().getKey().equalsIgnoreCase(id);
     }
 
-    public static boolean hasItemInOffHand(Player player, String id) {
+    public static boolean hasItemInOffHand(@NotNull Player player, @NotNull String id) {
         return player.getInventory().getItemInOffHand().getType().getKey().getKey().equalsIgnoreCase(id);
     }
 
@@ -56,11 +60,11 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a sword, false otherwise
      */
-    public static boolean isSword(ItemStack item) {
+    public static boolean isSword(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isSword(item.getType().getKey().getKey());
     }
 
-    public static boolean isTrident(ItemStack itemStack) {
+    public static boolean isTrident(@NotNull ItemStack itemStack) {
         return mcMMO.getMaterialMapStore().isTrident(itemStack.getType().getKey().getKey());
     }
 
@@ -89,7 +93,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a hoe, false otherwise
      */
-    public static boolean isHoe(ItemStack item) {
+    public static boolean isHoe(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isHoe(item.getType().getKey().getKey());
     }
 
@@ -99,7 +103,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a shovel, false otherwise
      */
-    public static boolean isShovel(ItemStack item) {
+    public static boolean isShovel(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isShovel(item.getType().getKey().getKey());
     }
 
@@ -109,7 +113,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is an axe, false otherwise
      */
-    public static boolean isAxe(ItemStack item) {
+    public static boolean isAxe(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isAxe(item.getType().getKey().getKey());
     }
 
@@ -119,7 +123,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a pickaxe, false otherwise
      */
-    public static boolean isPickaxe(ItemStack item) {
+    public static boolean isPickaxe(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isPickAxe(item.getType().getKey().getKey());
     }
 
@@ -129,7 +133,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item counts as unarmed, false otherwise
      */
-    public static boolean isUnarmed(ItemStack item) {
+    public static boolean isUnarmed(@NotNull ItemStack item) {
         if (Config.getInstance().getUnarmedItemsAsUnarmed()) {
             return !isMinecraftTool(item);
         }
@@ -143,7 +147,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is armor, false otherwise
      */
-    public static boolean isArmor(ItemStack item) {
+    public static boolean isArmor(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isArmor(item.getType());
     }
 
@@ -153,7 +157,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is leather armor, false otherwise
      */
-    public static boolean isLeatherArmor(ItemStack item) {
+    public static boolean isLeatherArmor(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isLeatherArmor(item.getType());
     }
 
@@ -163,7 +167,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is gold armor, false otherwise
      */
-    public static boolean isGoldArmor(ItemStack item) {
+    public static boolean isGoldArmor(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isGoldArmor(item.getType().getKey().getKey());
     }
 
@@ -173,7 +177,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is iron armor, false otherwise
      */
-    public static boolean isIronArmor(ItemStack item) {
+    public static boolean isIronArmor(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isIronArmor(item.getType().getKey().getKey());
     }
 
@@ -183,7 +187,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is diamond armor, false otherwise
      */
-    public static boolean isDiamondArmor(ItemStack item) {
+    public static boolean isDiamondArmor(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isDiamondArmor(item.getType().getKey().getKey());
     }
 
@@ -201,7 +205,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is chainmail armor, false otherwise
      */
-    public static boolean isChainmailArmor(ItemStack item) {
+    public static boolean isChainmailArmor(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isChainmailArmor(item.getType().getKey().getKey());
     }
 
@@ -211,7 +215,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a tool, false otherwise
      */
-    public static boolean isMinecraftTool(ItemStack item) {
+    public static boolean isMinecraftTool(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isTool(item.getType().getKey().getKey());
     }
 
@@ -221,7 +225,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a stone tool, false otherwise
      */
-    public static boolean isStoneTool(ItemStack item) {
+    public static boolean isStoneTool(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isStoneTool(item.getType().getKey().getKey());
     }
 
@@ -231,7 +235,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a wooden tool, false otherwise
      */
-    public static boolean isWoodTool(ItemStack item) {
+    public static boolean isWoodTool(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isWoodTool(item.getType().getKey().getKey());
     }
 
@@ -241,7 +245,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a string tool, false otherwise
      */
-    public static boolean isStringTool(ItemStack item) {
+    public static boolean isStringTool(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isStringTool(item.getType().getKey().getKey());
     }
 
@@ -251,7 +255,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a stone tool, false otherwise
      */
-    public static boolean isGoldTool(ItemStack item) {
+    public static boolean isGoldTool(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isGoldTool(item.getType().getKey().getKey());
     }
 
@@ -261,7 +265,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is an iron tool, false otherwise
      */
-    public static boolean isIronTool(ItemStack item) {
+    public static boolean isIronTool(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isIronTool(item.getType().getKey().getKey());
     }
 
@@ -271,7 +275,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a diamond tool, false otherwise
      */
-    public static boolean isDiamondTool(ItemStack item) {
+    public static boolean isDiamondTool(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isDiamondTool(item.getType().getKey().getKey());
     }
 
@@ -281,15 +285,15 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is enchantable, false otherwise
      */
-    public static boolean isEnchantable(ItemStack item) {
+    public static boolean isEnchantable(@NotNull ItemStack item) {
         return mcMMO.getMaterialMapStore().isEnchantable(item.getType().getKey().getKey());
     }
 
-    public static boolean isSmeltable(ItemStack item) {
+    public static boolean isSmeltable(@NotNull ItemStack item) {
         return item != null && item.getType().isBlock() && MaterialUtils.isOre(item.getType());
     }
 
-    public static boolean isSmelted(ItemStack item) {
+    public static boolean isSmelted(@NotNull ItemStack item) {
         if (item == null) {
             return false;
         }
@@ -311,7 +315,7 @@ public final class ItemUtils {
      * @param item Item that will get shared
      * @return True if the item can be shared.
      */
-    public static boolean isSharable(ItemStack item) {
+    public static boolean isSharable(@NotNull ItemStack item) {
         if (item == null || item.getType() == AIR) {
             return false;
         }
@@ -325,7 +329,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a mining drop, false otherwise
      */
-    public static boolean isMiningDrop(ItemStack item) {
+    public static boolean isMiningDrop(@NotNull ItemStack item) {
         //TODO: 1.14 This needs to be updated
         switch (item.getType()) {
             case COAL:
@@ -356,7 +360,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a herbalism drop, false otherwise
      */
-    public static boolean isHerbalismDrop(ItemStack item) {
+    public static boolean isHerbalismDrop(@NotNull ItemStack item) {
         //TODO: 1.14 This needs to be updated
         switch (item.getType()) {
             case WHEAT:
@@ -395,7 +399,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a mob drop, false otherwise
      */
-    public static boolean isMobDrop(ItemStack item) {
+    public static boolean isMobDrop(@NotNull ItemStack item) {
         //TODO: 1.14 This needs to be updated
         switch (item.getType()) {
             case STRING:
@@ -453,7 +457,7 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a woodcutting drop, false otherwise
      */
-    public static boolean isWoodcuttingDrop(ItemStack item) {
+    public static boolean isWoodcuttingDrop(@NotNull ItemStack item) {
         switch (item.getType()) {
             case ACACIA_LOG:
             case BIRCH_LOG:
@@ -493,11 +497,11 @@ public final class ItemUtils {
      * @param item Item to check
      * @return true if the item is a miscellaneous drop, false otherwise
      */
-    public static boolean isMiscDrop(ItemStack item) {
+    public static boolean isMiscDrop(@NotNull ItemStack item) {
         return ItemWeightConfig.getInstance().getMiscItems().contains(item.getType());
     }
 
-    public static boolean isMcMMOItem(ItemStack item) {
+    public static boolean isMcMMOItem(@NotNull ItemStack item) {
         if (!item.hasItemMeta()) {
             return false;
         }
@@ -511,7 +515,7 @@ public final class ItemUtils {
                 && itemMeta.getLore().contains("mcMMO Item");
     }
 
-    public static boolean isChimaeraWing(ItemStack item) {
+    public static boolean isChimaeraWing(@NotNull ItemStack item) {
         if (!isMcMMOItem(item)) {
             return false;
         }
@@ -522,5 +526,55 @@ public final class ItemUtils {
             return false;
 
         return itemMeta.hasDisplayName() && itemMeta.getDisplayName().equals(ChatColor.GOLD + LocaleLoader.getString("Item.ChimaeraWing.Name"));
+    }
+
+//    public static void addAbilityLore(@NotNull ItemStack itemStack) {
+//        ItemMeta itemMeta = itemStack.getItemMeta();
+//        List<String> itemLore = new ArrayList<>();
+//
+//        if(itemMeta == null)
+//            return;
+//
+//        if (itemMeta.hasLore()) {
+//            itemLore = itemMeta.getLore();
+//        }
+//
+//        itemLore.add("mcMMO Ability Tool");
+//
+//        itemMeta.setLore(itemLore);
+//        itemStack.setItemMeta(itemMeta);
+//    }
+
+    public static void removeAbilityLore(@NotNull ItemStack itemStack) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        if(itemMeta == null)
+            return;
+
+        if (itemMeta.hasLore()) {
+            List<String> itemLore = itemMeta.getLore();
+
+            if(itemLore == null)
+                return;
+
+            if (itemLore.remove("mcMMO Ability Tool")) {
+                itemMeta.setLore(itemLore);
+                itemStack.setItemMeta(itemMeta);
+            }
+        }
+    }
+
+    public static void addDigSpeedToItem(@NotNull ItemStack itemStack, int existingEnchantLevel) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        if(itemMeta == null)
+            return;
+
+        itemMeta.addEnchant(Enchantment.DIG_SPEED, existingEnchantLevel + AdvancedConfig.getInstance().getEnchantBuff(), true);
+        itemStack.setItemMeta(itemMeta);
+    }
+
+    public static boolean canBeSuperAbilityDigBoosted(@NotNull ItemStack itemStack) {
+        return isShovel(itemStack) || isPickaxe(itemStack);
     }
 }

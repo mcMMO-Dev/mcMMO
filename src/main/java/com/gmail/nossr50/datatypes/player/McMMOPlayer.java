@@ -30,7 +30,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.gmail.nossr50.util.input.AbilityActivationProcessor;
 import com.gmail.nossr50.util.input.SuperAbilityManager;
-import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -569,5 +568,10 @@ public class McMMOPlayer extends PlayerProfile {
      */
     public void togglePartyChatSpying() {
         getPersistentPlayerData().togglePartyChatSpying();
+    }
+
+    //TODO: Rewrite this
+    public double getAttackStrength() {
+        return 1.0F;
     }
 }

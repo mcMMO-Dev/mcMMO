@@ -35,10 +35,10 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canUseIronArm() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_IRON_ARM_STYLE))
+        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_STEEL_ARM_STYLE))
             return false;
 
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_IRON_ARM_STYLE);
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_STEEL_ARM_STYLE);
     }
 
     public boolean canUseBerserk() {
@@ -145,23 +145,22 @@ public class UnarmedManager extends SkillManager {
     /**
      * Handle the effects of the Iron Arm ability
      */
-    public double calculateIronArmDamage() {
-        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.ALWAYS_FIRES, SubSkillType.UNARMED_IRON_ARM_STYLE, getPlayer())) {
+    public double calculateSteelArmStyleDamage() {
+        if (!RandomChanceUtil.isActivationSuccessful(SkillActivationType.ALWAYS_FIRES, SubSkillType.UNARMED_STEEL_ARM_STYLE, getPlayer())) {
             return 0;
         }
 
-        return getIronArmDamage();
+        return getSteelArmStyleDamage();
     }
 
-    public double getIronArmDamage() {
-        int rank = RankUtils.getRank(getPlayer(), SubSkillType.UNARMED_IRON_ARM_STYLE);
+    public double getSteelArmStyleDamage() {
+        double rank = RankUtils.getRank(getPlayer(), SubSkillType.UNARMED_STEEL_ARM_STYLE);
+        double bonus = 0;
 
-        if(rank == 1)
-        {
-            return 1.5;
-        } else {
-            return 3 + (rank * 2);
-        }
+        if(rank >= 18)
+            bonus = 1 + rank - 18;
+
+        return bonus + 0.5 + (rank / 2);
     }
 
     /**

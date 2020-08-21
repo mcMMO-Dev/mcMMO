@@ -16,6 +16,7 @@ import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
+import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDataLayer;
 import com.gmail.nossr50.util.player.NotificationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -29,10 +30,10 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 public class SkillUtils {
 
@@ -147,23 +148,24 @@ public class SkillUtils {
         if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
             ItemStack heldItem = player.getInventory().getItemInMainHand();
 
-            if (heldItem == null || heldItem.getType() == Material.AIR) {
+            if(heldItem == null)
+                return;
+
+            if (!ItemUtils.canBeSuperAbilityDigBoosted(heldItem)) {
                 return;
             }
 
-            int efficiencyLevel = heldItem.getEnchantmentLevel(Enchantment.DIG_SPEED);
-            ItemMeta itemMeta = heldItem.getItemMeta();
-            List<String> itemLore = new ArrayList<>();
+            int originalDigSpeed = heldItem.getEnchantmentLevel(Enchantment.DIG_SPEED);
 
-            if (itemMeta.hasLore()) {
-                itemLore = itemMeta.getLore();
-            }
+            //Add dig speed
 
-            itemLore.add("mcMMO Ability Tool");
-            itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel + AdvancedConfig.getInstance().getEnchantBuff(), true);
+            //Lore no longer gets added, no point to it afaik
+            //ItemUtils.addAbilityLore(heldItem); //lore can be a secondary failsafe for 1.13 and below
+            ItemUtils.addDigSpeedToItem(heldItem, heldItem.getEnchantmentLevel(Enchantment.DIG_SPEED));
 
-            itemMeta.setLore(itemLore);
-            heldItem.setItemMeta(itemMeta);
+            //1.13.2+ will have persistent metadata for this item
+            AbstractPersistentDataLayer compatLayer = mcMMO.getCompatibilityManager().getPersistentDataLayer();
+            compatLayer.setSuperAbilityBoostedItem(heldItem, originalDigSpeed);
         }
         else {
             int duration = 0;
@@ -206,39 +208,41 @@ public class SkillUtils {
         }
     }
 
-    public static void handleAbilitySpeedDecrease(Player player) {
+    public static void removeAbilityBoostsFromInventory(@NotNull Player player) {
         if (!HiddenConfig.getInstance().useEnchantmentBuffs()) {
             return;
         }
 
-        for (ItemStack item : player.getInventory().getContents()) {
-            removeAbilityBuff(item);
+        for (ItemStack itemStack : player.getInventory().getContents()) {
+            removeAbilityBuff(itemStack);
         }
     }
 
-    public static void removeAbilityBuff(ItemStack item) {
-        if (item == null || item.getType() == Material.AIR || (!ItemUtils.isPickaxe(item) && !ItemUtils.isShovel(item)) || !item.containsEnchantment(Enchantment.DIG_SPEED)) {
+    public static void removeAbilityBuff(@Nullable ItemStack itemStack) {
+        if(itemStack == null)
             return;
+
+        if(!ItemUtils.canBeSuperAbilityDigBoosted(itemStack))
+            return;
+
+
+        //1.13.2+ will have persistent metadata for this itemStack
+        AbstractPersistentDataLayer compatLayer = mcMMO.getCompatibilityManager().getPersistentDataLayer();
+
+        if(compatLayer.isLegacyAbilityTool(itemStack)) {
+            ItemMeta itemMeta = itemStack.getItemMeta();
+
+            //TODO: can be optimized
+            if(itemMeta.hasEnchant(Enchantment.DIG_SPEED)) {
+                itemMeta.removeEnchant(Enchantment.DIG_SPEED);
+            }
+
+            itemStack.setItemMeta(itemMeta);
+            ItemUtils.removeAbilityLore(itemStack);
         }
 
-        ItemMeta itemMeta = item.getItemMeta();
-
-        if (itemMeta.hasLore()) {
-            List<String> itemLore = itemMeta.getLore();
-
-            if (itemLore.remove("mcMMO Ability Tool")) {
-                int efficiencyLevel = item.getEnchantmentLevel(Enchantment.DIG_SPEED);
-
-                if (efficiencyLevel <= AdvancedConfig.getInstance().getEnchantBuff()) {
-                    itemMeta.removeEnchant(Enchantment.DIG_SPEED);
-                }
-                else {
-                    itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel - AdvancedConfig.getInstance().getEnchantBuff(), true);
-                }
-
-                itemMeta.setLore(itemLore);
-                item.setItemMeta(itemMeta);
-            }
+        if(compatLayer.isSuperAbilityBoosted(itemStack)) {
+            compatLayer.removeBonusDigSpeedOnSuperAbilityTool(itemStack);
         }
     }
 
