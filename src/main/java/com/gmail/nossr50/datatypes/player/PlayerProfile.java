@@ -133,4 +133,12 @@ public class PlayerProfile {
     public @NotNull CooldownManager getCooldownManager() {
         return cooldownManager;
     }
+
+    /**
+     * Whether or not this player is excluded from leaderboards
+     * @return true if the player is excluded from leaderboards
+     */
+    public boolean isLeaderBoardExcluded() {
+        return persistentPlayerData.isLeaderBoardExcluded();
+    }
 }

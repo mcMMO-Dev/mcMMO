@@ -29,6 +29,7 @@ public class MMODataSnapshot {
 
     /* Special Flags */
     private final @NotNull Boolean partyChatSpying;
+    private final @NotNull Boolean leaderBoardExclusion;
 
     /* Scoreboards */
     private final @NotNull Integer scoreboardTipsShown;
@@ -48,6 +49,8 @@ public class MMODataSnapshot {
         barStateMap = ImmutableMap.copyOf(persistentPlayerData.getBarStateMap());
 
         partyChatSpying = persistentPlayerData.isPartyChatSpying();
+        leaderBoardExclusion = persistentPlayerData.isLeaderBoardExcluded();
+
         scoreboardTipsShown = persistentPlayerData.getScoreboardTipsShown();
     }
 
@@ -109,5 +112,9 @@ public class MMODataSnapshot {
 
     public long getUniqueData(UniqueDataType uniqueDataType) {
         return uniquePlayerData.getOrDefault(uniqueDataType, 0);
+    }
+
+    public Boolean isLeaderBoardExcluded() {
+        return leaderBoardExclusion;
     }
 }

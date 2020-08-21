@@ -52,12 +52,18 @@ public class ConvertDatabaseCommand implements CommandExecutor {
             mcMMO.getUserManager().saveAllSync();
             mcMMO.getUserManager().clearAll();
 
+            if(oldDatabase == null) {
+                sender.sendMessage("Could not load the other database, failed to convert users.");
+                return true;
+            }
+
             for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
                 PlayerProfile profile = oldDatabase.loadPlayerProfile(player.getUniqueId());
 
-                if (profile.isLoaded()) {
-                    mcMMO.getDatabaseManager().saveUser(profile);
-                }
+                if(profile == null)
+                    continue;
+
+                mcMMO.getUserManager().saveUserImmediately(profile.getPersistentPlayerData(), true);
 
                 new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
             }
