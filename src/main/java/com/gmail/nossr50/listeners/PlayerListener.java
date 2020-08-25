@@ -711,7 +711,7 @@ public class PlayerListener implements Listener {
      *
      * @param event The event to monitor
      */
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerInteractMonitor(PlayerInteractEvent event) {
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getPlayer().getWorld()))
@@ -804,7 +804,8 @@ public class PlayerListener implements Listener {
                 FakePlayerAnimationEvent fakeSwing = new FakePlayerAnimationEvent(event.getPlayer()); //PlayerAnimationEvent compat        
                 if (herbalismManager.canGreenThumbBlock(blockState)) {
                     Bukkit.getPluginManager().callEvent(fakeSwing);
-                    player.getInventory().setItemInMainHand(new ItemStack(Material.WHEAT_SEEDS, heldItem.getAmount() - 1));
+                    player.getInventory().getItemInMainHand().setAmount(heldItem.getAmount() - 1);
+                    player.updateInventory();
                     if (herbalismManager.processGreenThumbBlocks(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
                         blockState.update(true);
                     }
