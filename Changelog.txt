@@ -1,6 +1,7 @@
 Version 2.1.144
     Fixed a NPE that would happen involving taming in combat processing
     Updated hu_HU locale (thanks andris155)
+    mmodebug mode now prints some information when fuel efficiency is applied to a furnace
 
 
 
