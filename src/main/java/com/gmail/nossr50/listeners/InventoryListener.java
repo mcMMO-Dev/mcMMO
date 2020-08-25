@@ -72,7 +72,9 @@ public class InventoryListener implements Listener {
                     return;
                 }
 
+                Bukkit.broadcastMessage("Debug: Modifying burn time from - "+event.getBurnTime());
                 event.setBurnTime(UserManager.getPlayer(player).getSmeltingManager().fuelEfficiency(event.getBurnTime()));
+                Bukkit.broadcastMessage("Debug: New burn time "+event.getBurnTime());
             }
         }
 

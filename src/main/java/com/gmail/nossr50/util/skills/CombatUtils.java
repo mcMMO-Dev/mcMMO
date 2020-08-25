@@ -414,6 +414,10 @@ public final class CombatUtils {
 
                 if (target.getType() != EntityType.CREEPER && !Misc.isNPCEntityExcludingVillagers(player) && PrimarySkillType.TAMING.getPermissions(player)) {
                     McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+                    if(mcMMOPlayer == null)
+                        return;
+
                     TamingManager tamingManager = mcMMOPlayer.getTamingManager();
                     tamingManager.attackTarget(target);
                 }

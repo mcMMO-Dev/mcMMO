@@ -1,3 +1,9 @@
+Version 2.1.144
+    Fixed a NPE that would happen involving taming in combat processing
+    Updated hu_HU locale (thanks andris155)
+
+
+
 Version 2.1.143
     mcMMO now tracks super ability boosted items through persistent metadata
     mcMMO no longer relies on lore to tell if an item has been modified by a super ability
