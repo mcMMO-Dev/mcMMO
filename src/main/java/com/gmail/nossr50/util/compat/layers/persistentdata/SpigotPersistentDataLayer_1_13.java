@@ -16,7 +16,7 @@ import java.util.UUID;
 /**
  * Persistent Data API is unavailable
  */
-public class SpigotTemporaryDataLayer extends AbstractPersistentDataLayer {
+public class SpigotPersistentDataLayer_1_13 extends AbstractPersistentDataLayer {
 
     private final String FURNACE_OWNER_METADATA_KEY = "mcMMO_furnace_owner";
 
