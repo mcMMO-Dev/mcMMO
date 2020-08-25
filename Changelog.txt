@@ -1,4 +1,5 @@
 Version 2.1.144
+    Steel Arm Style damage is now customizable in advanced.yml (make sure to set override to true)
     Fixed a bug where Deflect worked against non-arrow projectiles
     Fixed a bug where Deflect was checked twice, resulting in two chances to deflect effectively
     Fixed a bug where Roll wouldn't award XP when fall height was over a certain amount
@@ -9,6 +10,7 @@ Version 2.1.144
 
     NOTES:
     I seem to consistently find old bugs in mcMMO, this deflect bug where it was checked twice, who knows how many years its been in mcMMO, I didn't check but its probably between 5-7.
+    I was waiting to make Steel Arm Customizable for the config update (due in the future), but enough people ask for it that I decided to do the extra work to put it into 2.1.XX
 
 Version 2.1.143
     mcMMO now tracks super ability boosted items through persistent metadata

@@ -156,12 +156,20 @@ public class UnarmedManager extends SkillManager {
 
     public double getSteelArmStyleDamage() {
         double rank = RankUtils.getRank(getPlayer(), SubSkillType.UNARMED_STEEL_ARM_STYLE);
+
         double bonus = 0;
 
         if(rank >= 18)
             bonus = 1 + rank - 18;
 
-        return bonus + 0.5 + (rank / 2);
+        double finalBonus = bonus + 0.5 + (rank / 2);
+
+
+        if(AdvancedConfig.getInstance().isSteelArmDamageCustom()) {
+            return AdvancedConfig.getInstance().getSteelArmOverride(RankUtils.getRank(getPlayer(), SubSkillType.UNARMED_STEEL_ARM_STYLE), finalBonus);
+        } else {
+            return finalBonus;
+        }
     }
 
     /**
