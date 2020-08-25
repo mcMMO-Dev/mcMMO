@@ -76,7 +76,7 @@ public class Roll extends AcrobaticsSubSkill {
              */
             Player player = (Player) ((EntityDamageEvent) event).getEntity();
             if (canRoll(player)) {
-                entityDamageEvent.setDamage(rollCheck(player, mcMMOPlayer, entityDamageEvent.getDamage()));
+                entityDamageEvent.setDamage(rollCheck(player, mcMMOPlayer, entityDamageEvent.getFinalDamage()));
 
                 if (entityDamageEvent.getFinalDamage() == 0) {
                     entityDamageEvent.setCancelled(true);
@@ -293,7 +293,7 @@ public class Roll extends AcrobaticsSubSkill {
 
     private float calculateRollXP(Player player, double damage, boolean isRoll) {
         //Clamp Damage to account for insane DRs
-        damage = Math.min(40, damage);
+        damage = Math.min(20, damage);
 
         ItemStack boots = player.getInventory().getBoots();
         float xp = (float) (damage * (isRoll ? ExperienceConfig.getInstance().getRollXPModifier() : ExperienceConfig.getInstance().getFallXPModifier()));

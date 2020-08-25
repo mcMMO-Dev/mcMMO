@@ -1,4 +1,6 @@
 Version 2.1.144
+    Fixed a bug where Roll wouldn't award XP when fall height was over a certain amount
+    Lowered the XP ceiling of Roll
     Fixed a NPE that would happen involving taming in combat processing
     Updated hu_HU locale (thanks andris155)
     mmodebug mode now prints some information when fuel efficiency is applied to a furnace
@@ -9,7 +11,7 @@ Version 2.1.143
     mcMMO now tracks super ability boosted items through persistent metadata
     mcMMO no longer relies on lore to tell if an item has been modified by a super ability
     Slight buff to Rupture (1 more tick duration across all ranks)
-    Lore no longer gets added to items being buffed by mcMMO
+    Lore no longer gets added to items being buffed by mcMMO./
 
     NOTES:
         The item tracking is persistent for MC versions 1.13-1.16.2 (and beyond). However the code handling the persistence for 1.13.2 differs from the other versions. It shouldn't result in any problems.
