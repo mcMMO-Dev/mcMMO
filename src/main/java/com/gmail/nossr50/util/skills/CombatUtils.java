@@ -256,18 +256,6 @@ public final class CombatUtils {
         
         double finalDamage = event.getDamage();
 
-        if (target instanceof Player && PrimarySkillType.UNARMED.getPVPEnabled()) {
-            UnarmedManager unarmedManager = UserManager.getPlayer((Player) target).getUnarmedManager();
-
-            if (unarmedManager.canDeflect()) {
-                event.setCancelled(unarmedManager.deflectCheck());
-
-                if (event.isCancelled()) {
-                    return;
-                }
-            }
-        }
-
         if (archeryManager.canSkillShot()) {
             //Not Additive
             finalDamage = archeryManager.skillShot(initialDamage);

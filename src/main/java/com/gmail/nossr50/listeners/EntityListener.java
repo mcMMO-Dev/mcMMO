@@ -388,7 +388,7 @@ public class EntityListener implements Listener {
                         UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
 
                         if (unarmedManager.canDeflect()) {
-                            if (unarmedManager.deflectCheck()) {
+                            if (projectile instanceof Arrow && unarmedManager.deflectCheck()) {
                                 event.setCancelled(true);
                                 return;
                             }
