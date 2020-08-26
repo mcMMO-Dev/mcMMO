@@ -1,3 +1,7 @@
+Version 2.1.145
+    Reverted 'Changed one of the PlayerInteractEvent listeners to ignore cancelled events' from 2.1.144
+
+
 Version 2.1.144
     Steel Arm Style damage is now customizable in advanced.yml (make sure to set override to true)
     Fixed a bug where Deflect worked against non-arrow projectiles
