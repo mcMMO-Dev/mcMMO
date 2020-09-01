@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class SpigotPersistentDataLayer extends AbstractPersistentDataLayer {
+public class SpigotPersistentDataLayer_1_14 extends AbstractPersistentDataLayer {
 
     /*
      * Don't modify these keys

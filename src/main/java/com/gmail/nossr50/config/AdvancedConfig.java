@@ -981,6 +981,11 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     /* UNARMED */
 
+    public boolean isSteelArmDamageCustom() { return config.getBoolean("Skills.Unarmed.SteelArmStyle.Damage_Override", false); }
+    public double getSteelArmOverride(int rank, double def) {
+        String key = "Rank_" + rank;
+        return config.getDouble("Skills.Unarmed.SteelArmStyle.Override." + key, def);
+    }
     public boolean getDisarmProtected() { return config.getBoolean("Skills.Unarmed.Disarm.AntiTheft", false); }
 
     /* WOODCUTTING */

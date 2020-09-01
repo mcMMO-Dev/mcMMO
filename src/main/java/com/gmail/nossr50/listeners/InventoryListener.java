@@ -12,6 +12,7 @@ import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.alchemy.AlchemyPotionBrewer;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
@@ -71,7 +72,22 @@ public class InventoryListener implements Listener {
                     return;
                 }
 
+
+                boolean debugMode = player.isOnline() && mcMMO.getUserManager().getPlayer(player).isDebugMode();
+
+                if(debugMode) {
+                    player.sendMessage("FURNACE FUEL EFFICIENCY DEBUG REPORT");
+                    player.sendMessage("Furnace - "+furnace.hashCode());
+                    player.sendMessage("Furnace Type: "+furnaceBlock.getType().toString());
+                    player.sendMessage("Burn Length before Fuel Efficiency is applied - "+event.getBurnTime());
+                }
+
                 event.setBurnTime(mcMMO.getUserManager().getPlayer(player).getSmeltingManager().fuelEfficiency(event.getBurnTime()));
+
+                if(debugMode) {
+                    player.sendMessage("New Furnace Burn Length (after applying fuel efficiency) "+event.getBurnTime());
+                    player.sendMessage("");
+                }
             }
         }
 

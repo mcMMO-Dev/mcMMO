@@ -412,7 +412,7 @@ public class EntityListener implements Listener {
             Player defendingPlayer = (Player) defender;
             Player attackingPlayer;
 
-            //If the attacker is a Player or a projectile beloning to a player
+            //If the attacker is a Player or a projectile belonging to a player
             if(attacker instanceof Projectile || attacker instanceof Player) {
                 if(attacker instanceof Projectile) {
                     Projectile projectile = (Projectile) attacker;
@@ -433,7 +433,7 @@ public class EntityListener implements Listener {
                         UnarmedManager unarmedManager = mmoPlayer.getUnarmedManager();
 
                         if (unarmedManager.canDeflect()) {
-                            if (unarmedManager.deflectCheck()) {
+                            if (projectile instanceof Arrow && unarmedManager.deflectCheck()) {
                                 event.setCancelled(true);
                                 return;
                             }

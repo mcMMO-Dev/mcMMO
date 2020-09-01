@@ -75,7 +75,7 @@ public class Roll extends AcrobaticsSubSkill {
              */
             Player player = (Player) ((EntityDamageEvent) event).getEntity();
             if (canRoll(player)) {
-                entityDamageEvent.setDamage(rollCheck(player, mmoPlayer, entityDamageEvent.getDamage()));
+                entityDamageEvent.setDamage(rollCheck(player, mmoPlayer, entityDamageEvent.getFinalDamage()));
 
                 if (entityDamageEvent.getFinalDamage() == 0) {
                     entityDamageEvent.setCancelled(true);
@@ -119,8 +119,8 @@ public class Roll extends AcrobaticsSubSkill {
         String rollChance, rollChanceLucky, gracefulRollChance, gracefulRollChanceLucky;
 
         /* Values related to the player */
-        PlayerProfile playerProfile = mcMMO.getUserManager().getPlayer(player);
-        float skillValue = playerProfile.getSkillLevel(getPrimarySkill());
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
+        float skillValue = mmoPlayer.getExperienceManager().getSkillLevel(getPrimarySkill());
         boolean isLucky = Permissions.lucky(player, getPrimarySkill());
 
         String[] rollStrings = RandomChanceUtil.calculateAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.ACROBATICS_ROLL);
@@ -188,7 +188,7 @@ public class Roll extends AcrobaticsSubSkill {
      */
     private double rollCheck(Player player, McMMOPlayer mmoPlayer, double damage) {
 
-        int skillLevel = mmoPlayer.getSkillLevel(getPrimarySkill());
+        int skillLevel = mmoPlayer.getExperienceManager().getSkillLevel(getPrimarySkill());
 
         if (player.isSneaking()) {
             return gracefulRollCheck(player, mmoPlayer, damage, skillLevel);
@@ -292,7 +292,7 @@ public class Roll extends AcrobaticsSubSkill {
 
     private float calculateRollXP(Player player, double damage, boolean isRoll) {
         //Clamp Damage to account for insane DRs
-        damage = Math.min(40, damage);
+        damage = Math.min(20, damage);
 
         ItemStack boots = player.getInventory().getBoots();
         float xp = (float) (damage * (isRoll ? ExperienceConfig.getInstance().getRollXPModifier() : ExperienceConfig.getInstance().getFallXPModifier()));
