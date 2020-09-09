@@ -110,7 +110,8 @@ public class AbilityActivationProcessor {
         FakePlayerAnimationEvent fakeSwing = new FakePlayerAnimationEvent(playerInteractEvent.getPlayer()); //PlayerAnimationEvent compat
         if (herbalismManager.canGreenThumbBlock(blockState)) {
             Bukkit.getPluginManager().callEvent(fakeSwing);
-            player.getInventory().setItemInMainHand(new ItemStack(Material.WHEAT_SEEDS, getHeldItem().getAmount() - 1));
+            player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
+            player.updateInventory();
             if (herbalismManager.processGreenThumbBlocks(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
                 blockState.update(true);
             }
