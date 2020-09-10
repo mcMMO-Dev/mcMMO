@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class Party {
-    private static final String ONLINE_PLAYER_PREFIX = "⬤";
-
     private final String partyName;
     private String partyPassword;
     private boolean partyLock;
@@ -23,30 +21,7 @@ public class Party {
     private final PartyExperienceManager partyExperienceManager;
     private final PartyAllianceManager partyAllianceManager;
 
-    public static final String PARTY_LEADER_PREFIX = ChatColor.GOLD
-            + "♕"
-            + ChatColor.RESET;
-
-    public Party(String partyName, HashSet<PartyMember> partyMembers, int partyLevel) throws RuntimeException {
-        if(partyMembers.isEmpty()) {
-            throw new RuntimeException("No party members for the party named "+ partyName);
-        }
-
-        this.partyName = partyName;
-        this.partyLock = true;
-        this.partyLevel = partyLevel;
-        this.partyMemberManager = new PartyMemberManager(partyMembers);
-        this.partyItemShareManager = new PartyItemShareManager();
-    }
-
-    public Party(Player partyLeader, String partyName, String partyPassword) {
-        this.partyName = partyName;
-        this.partyPassword = partyPassword;
-        this.partyLock = true;
-        this.partyLevel = 0;
-        this.partyMemberManager = new PartyMemberManager(partyLeader);
-        this.partyItemShareManager = new PartyItemShareManager();
-    }
+    public Party(Persistent)
 
     public HashSet<PartyMember> getPartyMembers() {
         return partyMemberManager.getPartyMembers();
