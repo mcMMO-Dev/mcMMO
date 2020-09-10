@@ -122,6 +122,8 @@ public class CompatibilityManager {
                         return NMSVersion.NMS_1_16_1;
                     } else if(minecraftGameVersion.getPatchVersion().asInt() == 2) {
                         return NMSVersion.NMS_1_16_2;
+                    } else if(minecraftGameVersion.getPatchVersion().asInt() == 3) {
+                        return NMSVersion.NMS_1_16_3;
                     }
             }
         }
