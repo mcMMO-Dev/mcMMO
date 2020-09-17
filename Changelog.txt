@@ -1,3 +1,7 @@
+Version 2.1.146
+    Players no longer lose levels below the level threshold in hardcore mode
+    Hardcore now only applies penalties to levels above threshold
+
 Version 2.1.145
     Reverted 'Changed one of the PlayerInteractEvent listeners to ignore cancelled events' from 2.1.144
 

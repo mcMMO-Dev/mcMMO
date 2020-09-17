@@ -50,7 +50,7 @@ public final class HardcoreManager {
                 continue;
             }
 
-            double statsLost = playerSkillLevel * (statLossPercentage * 0.01D);
+            double statsLost = Math.max(0, (playerSkillLevel - levelThreshold)) * (statLossPercentage * 0.01D);
             int levelsLost = (int) statsLost;
             int xpLost = (int) Math.floor(playerSkillXpLevel * (statsLost - levelsLost));
             levelChanged.put(primarySkillType.toString(), levelsLost);
