@@ -11,7 +11,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class DirtyDataMap<K, V> {
+public class DirtyDataMap<K, V> implements Map<K, V> {
 
     private final @NotNull MutableBoolean dirtyFlag; //Can be pointed at a reference
     private @NotNull Map<K, V> dataMap;
@@ -41,7 +41,8 @@ public class DirtyDataMap<K, V> {
 
     /* Map Interface Delegates */
 
-    public V get(K key) {
+    @Override
+    public V get(Object key) {
         return dataMap.get(key);
     }
 
@@ -53,11 +54,13 @@ public class DirtyDataMap<K, V> {
         return dataMap.isEmpty();
     }
 
-    public boolean containsKey(K key) {
+    @Override
+    public boolean containsKey(Object key) {
         return dataMap.containsKey(key);
     }
 
-    public boolean containsValue(V value) {
+    @Override
+    public boolean containsValue(Object value) {
         return dataMap.containsValue(value);
     }
 
@@ -66,7 +69,7 @@ public class DirtyDataMap<K, V> {
         return dataMap.put(key, value);
     }
 
-    public V remove(K key) {
+    public V remove(Object key) {
         setDirty();
         return dataMap.remove(key);
     }
@@ -81,67 +84,84 @@ public class DirtyDataMap<K, V> {
         dataMap.clear();
     }
 
-    public Set<K> keySet() {
+    @Override
+    public @NotNull Set<K> keySet() {
         setDirty();
         return dataMap.keySet();
     }
 
-    public Collection<V> values() {
+    @Override
+    public @NotNull Collection<V> values() {
         setDirty();
         return dataMap.values();
     }
 
-    public Set<Map.Entry<K, V>> entrySet() {
+    @Override
+    public @NotNull Set<Map.Entry<K, V>> entrySet() {
         setDirty();
         return dataMap.entrySet();
     }
 
-    public V getOrDefault(K key, V defaultValue) {
+    @Override
+    public V getOrDefault(Object key, V defaultValue) {
         return dataMap.getOrDefault(key, defaultValue);
     }
 
+    @Override
     public void forEach(BiConsumer<? super K, ? super V> action) {
         setDirty();
         dataMap.forEach(action);
     }
 
+    @Override
     public void replaceAll(BiFunction<? super K, ? super V, ? extends V> function) {
         setDirty();
         dataMap.replaceAll(function);
     }
 
+    @Override
     public V putIfAbsent(K key, V value) {
         setDirty();
         return dataMap.putIfAbsent(key, value);
     }
 
-    public boolean remove(K key, V value) {
+    @Override
+    public boolean remove(Object key, Object value) {
         setDirty();
         return dataMap.remove(key, value);
     }
 
+    @Override
     public boolean replace(K key, V oldValue, V newValue) {
         setDirty();
         return dataMap.replace(key, oldValue, newValue);
     }
 
+    @Override
     public V replace(K key, V value) {
         setDirty();
         return dataMap.replace(key, value);
     }
 
+    @Override
     public V computeIfAbsent(K key, @NotNull Function<? super K, ? extends V> mappingFunction) {
+        setDirty();
         return dataMap.computeIfAbsent(key, mappingFunction);
     }
 
+    @Override
     public V computeIfPresent(K key, @NotNull BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+        setDirty();
         return dataMap.computeIfPresent(key, remappingFunction);
     }
 
+    @Override
     public V compute(K key, @NotNull BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+        setDirty();
         return dataMap.compute(key, remappingFunction);
     }
 
+    @Override
     public V merge(K key, @NotNull V value, @NotNull BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
         setDirty();
         return dataMap.merge(key, value, remappingFunction);
