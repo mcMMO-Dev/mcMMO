@@ -1,5 +1,7 @@
 package com.gmail.nossr50.util;
 
+import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.party.Party;
@@ -329,7 +331,7 @@ public class EventUtils {
                 String skillName = primarySkillType.toString();
                 int playerSkillLevel = playerProfile.getSkillLevel(primarySkillType);
 
-                playerProfile.modifySkill(primarySkillType, playerSkillLevel - levelChanged.get(skillName));
+                playerProfile.modifySkill(primarySkillType, Math.max(Config.getInstance().getHardcoreDeathStatPenaltyLevelThreshold(), playerSkillLevel - levelChanged.get(skillName)));
                 playerProfile.removeXp(primarySkillType, experienceChanged.get(skillName));
 
                 if (playerProfile.getSkillXpLevel(primarySkillType) < 0) {

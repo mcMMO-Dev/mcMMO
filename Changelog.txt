@@ -84,6 +84,9 @@ Version 2.2.000
     Parties got unnecessarily complex in my absence, I have removed many party features in order to simplify parties and bring them closer to my vision. I have also added new features which should improve parties where it matters.
     About the removed party features, all the features I removed I consider poor quality features and I don't think they belong in mcMMO. Feel free to yell at me in discord if you disagree.
     I don't know what genius decided to make parties public by default, when I found out that parties had been changed to such a system I could barely contain my disgust. Parties are back to being private, you get invited by a party leader or party officer. That is the only way to join a party.
+Version 2.1.146
+    Players no longer lose levels below the level threshold in hardcore mode
+    Hardcore now only applies penalties to levels above threshold
 
 Version 2.1.145
     Reverted 'Changed one of the PlayerInteractEvent listeners to ignore cancelled events' from 2.1.144
