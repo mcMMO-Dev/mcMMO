@@ -1,7 +1,6 @@
 package com.gmail.nossr50.util.experience;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.dirtydata.DirtyDataMap;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
@@ -23,13 +22,13 @@ public class MMOExperienceBarManager {
 
     int delaySeconds = 3;
 
-    private @NotNull final DirtyDataMap<PrimarySkillType, BarState> barStateMapRef;
+    private @NotNull final Map<PrimarySkillType, BarState> barStateMapRef;
 
-    private @NotNull EnumMap<PrimarySkillType, ExperienceBarWrapper> experienceBars;
-    private @NotNull EnumMap<PrimarySkillType, ExperienceBarHideTask> experienceBarHideTaskHashMap;
+    private @NotNull final EnumMap<PrimarySkillType, ExperienceBarWrapper> experienceBars;
+    private @NotNull final EnumMap<PrimarySkillType, ExperienceBarHideTask> experienceBarHideTaskHashMap;
 
 
-    public MMOExperienceBarManager(@NotNull McMMOPlayer mmoPlayer, @NotNull DirtyDataMap<PrimarySkillType, BarState> barStateMapRef)
+    public MMOExperienceBarManager(@NotNull McMMOPlayer mmoPlayer, @NotNull Map<PrimarySkillType, BarState> barStateMapRef)
     {
         this.mmoPlayer = mmoPlayer;
         this.barStateMapRef = barStateMapRef;

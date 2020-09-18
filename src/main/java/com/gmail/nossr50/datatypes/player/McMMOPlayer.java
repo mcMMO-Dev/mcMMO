@@ -120,7 +120,7 @@ public class McMMOPlayer extends PlayerProfile {
 
         superAbilityManager = new SuperAbilityManager(this);
         abilityActivationProcessor = new AbilityActivationProcessor(this);
-        experienceBarManager = new MMOExperienceBarManager(this, persistentPlayerData.getDirtyBarStateMap());
+        experienceBarManager = new MMOExperienceBarManager(this, persistentPlayerData.getBarStateMap());
 
         //Update last login
         updateLastLogin();
