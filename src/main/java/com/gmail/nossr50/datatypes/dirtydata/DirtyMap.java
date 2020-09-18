@@ -54,10 +54,12 @@ public class DirtyMap<K, V> implements Map<K, V> {
         return map.get(key);
     }
 
+    @Override
     public int size() {
         return map.size();
     }
 
+    @Override
     public boolean isEmpty() {
         return map.isEmpty();
     }
@@ -72,21 +74,25 @@ public class DirtyMap<K, V> implements Map<K, V> {
         return map.containsValue(value);
     }
 
+    @Override
     public V put(K key, V value) {
         setDirty();
         return map.put(key, value);
     }
 
+    @Override
     public V remove(Object key) {
         setDirty();
         return map.remove(key);
     }
 
+    @Override
     public void putAll(@NotNull Map<? extends K, ? extends V> m) {
         setDirty();
         map.putAll(m);
     }
 
+    @Override
     public void clear() {
         setDirty();
         map.clear();

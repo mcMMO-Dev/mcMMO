@@ -1,7 +1,7 @@
 package com.gmail.nossr50.datatypes.party;
 
 import com.gmail.nossr50.datatypes.dirtydata.DirtyData;
-import com.gmail.nossr50.datatypes.dirtydata.DirtyDataSet;
+import com.gmail.nossr50.datatypes.dirtydata.DirtySet;
 import com.gmail.nossr50.datatypes.mutableprimitives.MutableBoolean;
 import com.gmail.nossr50.datatypes.mutableprimitives.MutableString;
 import com.google.common.base.Objects;
@@ -14,13 +14,13 @@ public class PersistentPartyData {
 
     private final @NotNull MutableBoolean dirtyFlag; //Dirty values in this class will change this flag as needed
     private final @NotNull DirtyData<MutableString> partyName;
-    private final @NotNull DirtyDataSet<PartyMember> partyMembers; //TODO: Add cache for subsets
+    private final @NotNull DirtySet<PartyMember> partyMembers; //TODO: Add cache for subsets
 
     public PersistentPartyData(@NotNull String partyName,
                                @NotNull Set<PartyMember> partyMembers) {
         dirtyFlag = new MutableBoolean(false);
         this.partyName = new DirtyData<>(new MutableString(partyName), dirtyFlag);
-        this.partyMembers = new DirtyDataSet<>(new HashSet<>(partyMembers), dirtyFlag);
+        this.partyMembers = new DirtySet<>(new HashSet<>(partyMembers), dirtyFlag);
     }
 
     public String getPartyName() {
@@ -28,7 +28,7 @@ public class PersistentPartyData {
     }
 
     public Set<PartyMember> getPartyMembers() {
-        return partyMembers.getDataSet();
+        return partyMembers;
     }
 
     public boolean isDataDirty() {

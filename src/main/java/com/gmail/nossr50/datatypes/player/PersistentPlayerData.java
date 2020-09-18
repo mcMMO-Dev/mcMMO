@@ -5,7 +5,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.MobHealthBarType;
 import com.gmail.nossr50.datatypes.dirtydata.DirtyData;
-import com.gmail.nossr50.datatypes.dirtydata.DirtyDataMap;
+import com.gmail.nossr50.datatypes.dirtydata.DirtyMap;
 import com.gmail.nossr50.datatypes.mutableprimitives.MutableBoolean;
 import com.gmail.nossr50.datatypes.mutableprimitives.MutableInteger;
 import com.gmail.nossr50.datatypes.mutableprimitives.MutableLong;
@@ -38,11 +38,11 @@ public class PersistentPlayerData {
     private final @NotNull DirtyData<MobHealthBarType> mobHealthBarType;
 
     /* Skill Data */
-    private final @NotNull DirtyDataMap<PrimarySkillType, Integer> skillLevelValues;
-    private final @NotNull DirtyDataMap<PrimarySkillType, Float> skillExperienceValues;
-    private final @NotNull DirtyDataMap<SuperAbilityType, Integer> abilityDeactivationTimestamps; // Ability & Cooldown
-    private final @NotNull DirtyDataMap<UniqueDataType, Integer> uniquePlayerData; //Misc data that doesn't fit into other categories (chimaera wing, etc..)
-    private final @NotNull DirtyDataMap<PrimarySkillType, MMOExperienceBarManager.BarState> barStateMap;
+    private final @NotNull DirtyMap<PrimarySkillType, Integer> skillLevelValues;
+    private final @NotNull DirtyMap<PrimarySkillType, Float> skillExperienceValues;
+    private final @NotNull DirtyMap<SuperAbilityType, Integer> abilityDeactivationTimestamps; // Ability & Cooldown
+    private final @NotNull DirtyMap<UniqueDataType, Integer> uniquePlayerData; //Misc data that doesn't fit into other categories (chimaera wing, etc..)
+    private final @NotNull DirtyMap<PrimarySkillType, MMOExperienceBarManager.BarState> barStateMap;
 
     /* Special Flags */
     private final @NotNull DirtyData<MutableBoolean> partyChatSpying;
@@ -66,10 +66,10 @@ public class PersistentPlayerData {
         this.playerUUID = playerUUID;
         this.playerName = new DirtyData<>(new MutableString(playerName), dirtyFlag);
 
-        this.skillLevelValues = new DirtyDataMap<>(new EnumMap<>(PrimarySkillType.class), dirtyFlag);
-        this.skillExperienceValues = new DirtyDataMap<>(new EnumMap<>(PrimarySkillType.class), dirtyFlag);
-        this.abilityDeactivationTimestamps = new DirtyDataMap<>(new EnumMap<>(SuperAbilityType.class), dirtyFlag);
-        this.uniquePlayerData = new DirtyDataMap<>(new EnumMap<>(UniqueDataType.class), dirtyFlag);
+        this.skillLevelValues = new DirtyMap<>(new EnumMap<>(PrimarySkillType.class), dirtyFlag);
+        this.skillExperienceValues = new DirtyMap<>(new EnumMap<>(PrimarySkillType.class), dirtyFlag);
+        this.abilityDeactivationTimestamps = new DirtyMap<>(new EnumMap<>(SuperAbilityType.class), dirtyFlag);
+        this.uniquePlayerData = new DirtyMap<>(new EnumMap<>(UniqueDataType.class), dirtyFlag);
         this.mobHealthBarType = new DirtyData<>(Config.getInstance().getMobHealthbarDefault(), dirtyFlag);
 
         this.scoreboardTipsShown = new DirtyData<>(new MutableInteger(0), dirtyFlag);
@@ -88,7 +88,7 @@ public class PersistentPlayerData {
 
         this.partyChatSpying = new DirtyData<>(new MutableBoolean(false), dirtyFlag);
 
-        this.barStateMap = new DirtyDataMap<>(MMOExperienceBarManager.generateDefaultBarStateMap(), dirtyFlag);
+        this.barStateMap = new DirtyMap<>(MMOExperienceBarManager.generateDefaultBarStateMap(), dirtyFlag);
         this.lastLogin = new DirtyData<>(new MutableLong(0), dirtyFlag); //Value of 0 will represent that the user hasn't been seen online
         this.leaderBoardExclusion = new DirtyData<>(new MutableBoolean(false), dirtyFlag);
     }
@@ -128,22 +128,22 @@ public class PersistentPlayerData {
         this.dirtyFlag = new MutableBoolean(false); //Set this one first
 
         validateMap(skillLevelValues);
-        this.skillLevelValues = new DirtyDataMap<>(skillLevelValues, dirtyFlag);
+        this.skillLevelValues = new DirtyMap<>(skillLevelValues, dirtyFlag);
 
         validateMap(skillExperienceValues);
-        this.skillExperienceValues = new DirtyDataMap<>(skillExperienceValues, dirtyFlag);
+        this.skillExperienceValues = new DirtyMap<>(skillExperienceValues, dirtyFlag);
 
         validateMap(abilityDeactivationTimestamps);
-        this.abilityDeactivationTimestamps = new DirtyDataMap<>(abilityDeactivationTimestamps, dirtyFlag);
+        this.abilityDeactivationTimestamps = new DirtyMap<>(abilityDeactivationTimestamps, dirtyFlag);
 
-        this.uniquePlayerData = new DirtyDataMap<>(uniquePlayerData, dirtyFlag);
+        this.uniquePlayerData = new DirtyMap<>(uniquePlayerData, dirtyFlag);
 
         this.scoreboardTipsShown = new DirtyData<>(new MutableInteger(scoreboardTipsShown), dirtyFlag);
         this.mobHealthBarType = new DirtyData<>(mobHealthBarType, dirtyFlag);
 
         this.playerUUID = playerUUID;
         this.playerName = new DirtyData<>(new MutableString(playerName), dirtyFlag);
-        this.barStateMap = new DirtyDataMap<>(barStateMap, dirtyFlag);
+        this.barStateMap = new DirtyMap<>(barStateMap, dirtyFlag);
 
         this.partyChatSpying = new DirtyData<>(new MutableBoolean(partyChatSpying), dirtyFlag);
         this.lastLogin = new DirtyData<>(new MutableLong(lastLogin), dirtyFlag);
@@ -347,30 +347,30 @@ public class PersistentPlayerData {
      * @return the bar state map for this player
      */
     public @NotNull Map<PrimarySkillType, MMOExperienceBarManager.BarState> getBarStateMap() {
-        return barStateMap.getDataMap();
-    }
-
-    /**
-     * Get the {@link DirtyDataMap} for the related {@link com.gmail.nossr50.util.experience.MMOExperienceBarManager.BarState}'s of this player
-     * @return the dirty bar state map for this player
-     */
-    public @NotNull DirtyDataMap<PrimarySkillType, MMOExperienceBarManager.BarState> getDirtyBarStateMap() {
         return barStateMap;
     }
 
     /**
-     * Get the {@link DirtyDataMap} for the skill levels of this player
+     * Get the {@link DirtyMap} for the related {@link com.gmail.nossr50.util.experience.MMOExperienceBarManager.BarState}'s of this player
+     * @return the dirty bar state map for this player
+     */
+    public @NotNull DirtyMap<PrimarySkillType, MMOExperienceBarManager.BarState> getDirtyBarStateMap() {
+        return barStateMap;
+    }
+
+    /**
+     * Get the {@link DirtyMap} for the skill levels of this player
      * @return the dirty skill level map for this player
      */
-    public @NotNull DirtyDataMap<PrimarySkillType, Integer> getDirtySkillLevelMap() {
+    public @NotNull DirtyMap<PrimarySkillType, Integer> getDirtySkillLevelMap() {
         return skillLevelValues;
     }
 
     /**
-     * Get the {@link DirtyDataMap} for the skill experience values of this player
+     * Get the {@link DirtyMap} for the skill experience values of this player
      * @return the dirty skill experience values map for this player
      */
-    public @NotNull DirtyDataMap<PrimarySkillType, Float> getDirtyExperienceValueMap() {
+    public @NotNull DirtyMap<PrimarySkillType, Float> getDirtyExperienceValueMap() {
         return skillExperienceValues;
     }
 
@@ -387,7 +387,7 @@ public class PersistentPlayerData {
      * @return the map of skill levels for this player
      */
     public @NotNull Map<PrimarySkillType, Integer> getSkillLevelsMap() {
-        return skillLevelValues.getDataMap();
+        return skillLevelValues;
     }
 
     /**
@@ -395,7 +395,7 @@ public class PersistentPlayerData {
      * @return the experience values map for this player
      */
     public @NotNull Map<PrimarySkillType, Float> getSkillsExperienceMap() {
-        return skillExperienceValues.getDataMap();
+        return skillExperienceValues;
     }
 
     /**
@@ -403,7 +403,7 @@ public class PersistentPlayerData {
      * @return the ability deactivation timestamps map for this player
      */
     public @NotNull Map<SuperAbilityType, Integer> getAbilityDeactivationTimestamps() {
-        return abilityDeactivationTimestamps.getDataMap();
+        return abilityDeactivationTimestamps;
     }
 
     /**
@@ -411,7 +411,7 @@ public class PersistentPlayerData {
      * @return a map of unique data for this player
      */
     public @NotNull Map<UniqueDataType, Integer> getUniquePlayerData() {
-        return uniquePlayerData.getDataMap();
+        return uniquePlayerData;
     }
 
     /**
