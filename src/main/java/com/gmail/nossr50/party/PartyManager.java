@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.party.ItemShareType;
 import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.party.PartyMember;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -120,29 +121,6 @@ public final class PartyManager {
         return firstParty.equals(secondParty);
     }
 
-    public boolean areAllies(Player firstPlayer, Player secondPlayer) {
-        //Profile not loaded
-        if(mcMMO.getUserManager().getPlayer(firstPlayer) == null)
-        {
-            return false;
-        }
-
-        //Profile not loaded
-        if(mcMMO.getUserManager().getPlayer(secondPlayer) == null)
-        {
-            return false;
-        }
-
-        Party firstParty = mcMMO.getUserManager().getPlayer(firstPlayer).getParty();
-        Party secondParty = mcMMO.getUserManager().getPlayer(secondPlayer).getParty();
-
-        if (firstParty == null || secondParty == null || firstParty.getAlly() == null || secondParty.getAlly() == null) {
-            return false;
-        }
-
-        return firstParty.equals(secondParty.getAlly()) && secondParty.equals(firstParty.getAlly());
-    }
-
     /**
      * Get the near party members.
      *
@@ -157,7 +135,7 @@ public final class PartyManager {
             Player player = mmoPlayer.getPlayer();
             double range = Config.getInstance().getPartyShareRange();
 
-            for (Player member : party.getPartyMembers()) {
+            for (PartyMember member : party.getPartyMembers()) {
                 if (!player.equals(member) && member.isValid() && Misc.isNear(player.getLocation(), member.getLocation(), range)) {
                     nearMembers.add(member);
                 }

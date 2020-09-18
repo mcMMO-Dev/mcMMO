@@ -1,6 +1,7 @@
 package com.gmail.nossr50.datatypes.dirtydata;
 
 import com.gmail.nossr50.datatypes.mutableprimitives.MutableBoolean;
+import com.google.common.base.Objects;
 import org.jetbrains.annotations.NotNull;
 
 public class DirtyData<T> {
@@ -34,5 +35,18 @@ public class DirtyData<T> {
     public void setData(@NotNull T data) {
         this.data = data;
         setDirty(true);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DirtyData<?> dirtyData = (DirtyData<?>) o;
+        return Objects.equal(getData(), dirtyData.getData());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getData());
     }
 }

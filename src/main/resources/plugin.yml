@@ -1081,15 +1081,9 @@ permissions:
             mcmmo.commands.party.invite: true
             mcmmo.commands.party.itemshare: true
             mcmmo.commands.party.join: true
-            mcmmo.commands.party.kick: true
-            mcmmo.commands.party.lock: true
             mcmmo.commands.party.owner: true
-            mcmmo.commands.party.password: true
-            mcmmo.commands.party.quit: true
             mcmmo.commands.party.rename: true
             mcmmo.commands.party.teleport: true
-            mcmmo.commands.party.unlock: true
-            mcmmo.commands.party.alliance: true
     mcmmo.commands.party:
         description: Allows access to the party command
     mcmmo.commands.party.accept:
@@ -1098,6 +1092,7 @@ permissions:
         description: Dummy permission for mcmmo.chat.partychat
         children:
             mcmmo.chat.partychat: true
+            mcmmo.chat.officerpartychat: true
     mcmmo.commands.party.create:
         description: Allows access to the party create command
     mcmmo.commands.party.disband:
@@ -1114,26 +1109,14 @@ permissions:
         description: Allows access to the party itemshare command
     mcmmo.commands.party.join:
         description: Allows access to the party join command
-    mcmmo.commands.party.kick:
-        description: Allows access to the party kick command
-    mcmmo.commands.party.lock:
-        description: Allows access to the party lock command
     mcmmo.commands.party.owner:
         description: Allows access to the party owner command
-    mcmmo.commands.party.password:
-        description: Allows access to the party password command
-    mcmmo.commands.party.quit:
-        description: Allows access to the party quit command
     mcmmo.commands.party.rename:
         description: Allows access to the party rename command
     mcmmo.commands.party.teleport:
         description: Dummy permission for mcmmo.commands.ptp
         children:
             mcmmo.commands.ptp: true
-    mcmmo.commands.party.unlock:
-        description: Allows access to the party unlock command
-    mcmmo.commands.party.alliance:
-        description: Allows access to the party alliance command
     mcmmo.commands.ptp.*:
         default: false
         description: Implies access to all mcmmo.commands.ptp permissions.

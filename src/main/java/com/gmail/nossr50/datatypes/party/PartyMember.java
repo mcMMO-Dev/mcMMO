@@ -1,5 +1,6 @@
 package com.gmail.nossr50.datatypes.party;
 
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -7,37 +8,49 @@ import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 public class PartyMember {
-    private final OfflinePlayer offlinePlayer;
-    private PartyMemberRank partyMemberRank;
-    private final PartyTeleportRecord partyTeleportRecord;
-
+    private String playerName;
+    private final @NotNull UUID playerUUID;
+    private @Nullable OfflinePlayer offlinePlayer;
+    private @NotNull PartyMemberRank partyMemberRank;
+    private @Nullable PartyTeleportRecord partyTeleportRecord;
     private int itemShareModifier;
 
-    public PartyMember(OfflinePlayer offlinePlayer, PartyMemberRank partyMemberRank) {
-        this.offlinePlayer = offlinePlayer;
+    public PartyMember(@NotNull UUID playerUUID, @NotNull PartyMemberRank partyMemberRank) {
+        this.playerUUID = playerUUID;
         this.partyMemberRank = partyMemberRank;
-        this.partyTeleportRecord = new PartyTeleportRecord();
     }
 
     public OfflinePlayer getOfflinePlayer() {
+        if(offlinePlayer == null)
+            offlinePlayer = Bukkit.getOfflinePlayer(playerUUID);
+
+
         return offlinePlayer;
     }
 
-    public PartyMemberRank getPartyMemberRank() {
+    public @NotNull PartyMemberRank getPartyMemberRank() {
         return partyMemberRank;
     }
 
-    public void setPartyMemberRank(PartyMemberRank partyMemberRank) {
+    public void setPartyMemberRank(@NotNull PartyMemberRank partyMemberRank) {
         this.partyMemberRank = partyMemberRank;
     }
 
     public @NotNull UUID getUniqueId() {
-        return offlinePlayer.getUniqueId();
+        return playerUUID;
     }
 
-    @Nullable
+    @NotNull
     public String getName() {
-        return offlinePlayer.getName();
+        if(playerName == null) {
+            if(getOfflinePlayer().getName() != null)
+                playerName = getOfflinePlayer().getName();
+        }
+
+        if(playerName == null)
+            return playerUUID.toString();
+        else
+            return playerName;
     }
 
     public int getItemShareModifier() {
@@ -52,7 +65,7 @@ public class PartyMember {
         itemShareModifier = Math.max(10, modifier);
     }
 
-    public PartyTeleportRecord getPartyTeleportRecord() {
+    public @Nullable PartyTeleportRecord getPartyTeleportRecord() {
         return partyTeleportRecord;
     }
 

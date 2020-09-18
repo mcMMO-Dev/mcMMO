@@ -25,6 +25,8 @@ import java.util.UUID;
 
 public class PersistentPlayerData {
 
+    private final @NotNull MutableBoolean dirtyFlag; //Dirty values in this class will change this flag as needed
+
     /* Player Stuff */
     private final @NotNull DirtyData<MutableString> playerName;
     private final @NotNull UUID playerUUID;
@@ -34,7 +36,6 @@ public class PersistentPlayerData {
 
     /* HUDs */
     private final @NotNull DirtyData<MobHealthBarType> mobHealthBarType;
-    private final @NotNull MutableBoolean dirtyFlag; //Dirty values in this class will change this flag as needed
 
     /* Skill Data */
     private final @NotNull DirtyDataMap<PrimarySkillType, Integer> skillLevelValues;

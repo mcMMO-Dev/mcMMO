@@ -1,5 +1,7 @@
 package com.gmail.nossr50.datatypes.mutableprimitives;
 
+import com.google.common.base.Objects;
+
 public class MutableChar {
 
     private char charValue;
@@ -16,4 +18,16 @@ public class MutableChar {
         this.charValue = charValue;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MutableChar that = (MutableChar) o;
+        return charValue == that.charValue;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(charValue);
+    }
 }

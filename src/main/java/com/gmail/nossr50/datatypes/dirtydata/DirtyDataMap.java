@@ -1,6 +1,7 @@
 package com.gmail.nossr50.datatypes.dirtydata;
 
 import com.gmail.nossr50.datatypes.mutableprimitives.MutableBoolean;
+import com.google.common.base.Objects;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -144,5 +145,18 @@ public class DirtyDataMap<K, V> {
     public V merge(K key, @NotNull V value, @NotNull BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
         setDirty();
         return dataMap.merge(key, value, remappingFunction);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DirtyDataMap<?, ?> that = (DirtyDataMap<?, ?>) o;
+        return Objects.equal(getDataMap(), that.getDataMap());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getDataMap());
     }
 }

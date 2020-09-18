@@ -1,5 +1,7 @@
 package com.gmail.nossr50.datatypes.mutableprimitives;
 
+import com.google.common.base.Objects;
+
 public class MutableByte {
 
     private byte byteValue;
@@ -16,4 +18,16 @@ public class MutableByte {
         this.byteValue = byteValue;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MutableByte that = (MutableByte) o;
+        return byteValue == that.byteValue;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(byteValue);
+    }
 }

@@ -1,6 +1,6 @@
 package com.gmail.nossr50.datatypes.party;
 
-import com.gmail.nossr50.commands.party.PartySubcommandType;
+import com.gmail.nossr50.commands.party.PartySubCommandType;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
@@ -23,22 +23,22 @@ public enum PartyFeature {
     }
 
     public boolean hasPermission(Player player) {
-        PartySubcommandType partySubCommandType;
+        PartySubCommandType partySubCommandType;
         switch (this) {
             case CHAT:
-                partySubCommandType = PartySubcommandType.CHAT;
+                partySubCommandType = PartySubCommandType.CHAT;
                 break;
             case TELEPORT:
-                partySubCommandType = PartySubcommandType.TELEPORT;
+                partySubCommandType = PartySubCommandType.TELEPORT;
                 break;
             case ALLIANCE:
-                partySubCommandType = PartySubcommandType.ALLIANCE;
+                partySubCommandType = PartySubCommandType.ALLIANCE;
                 break;
             case ITEM_SHARE:
-                partySubCommandType = PartySubcommandType.ITEMSHARE;
+                partySubCommandType = PartySubCommandType.ITEMSHARE;
                 break;
             case XP_SHARE:
-                partySubCommandType = PartySubcommandType.XPSHARE;
+                partySubCommandType = PartySubCommandType.XPSHARE;
                 break;
             default:
                 return false;

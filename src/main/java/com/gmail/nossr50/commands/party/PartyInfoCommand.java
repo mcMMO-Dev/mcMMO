@@ -3,10 +3,9 @@ package com.gmail.nossr50.commands.party;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
-import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
-import org.bukkit.ChatColor;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -88,34 +87,18 @@ public class PartyInfoCommand implements CommandExecutor {
 
     private void displayShareModeInfo(Player player, Party party) {
         boolean xpShareEnabled = isUnlockedFeature(party, PartyFeature.XP_SHARE);
-        boolean itemShareEnabled = isUnlockedFeature(party, PartyFeature.ITEM_SHARE);
-        boolean itemSharingActive = (party.getItemShareMode() != ShareMode.NONE);
 
-        if (!xpShareEnabled && !itemShareEnabled) {
+        if (!xpShareEnabled) {
             return;
         }
 
         String expShareInfo = "";
-        String itemShareInfo = "";
-        String separator = "";
 
         if (xpShareEnabled) {
             expShareInfo = LocaleLoader.getString("Commands.Party.ExpShare", party.getXpShareMode().toString());
         }
 
-        if (itemShareEnabled) {
-            itemShareInfo = LocaleLoader.getString("Commands.Party.ItemShare", party.getItemShareMode().toString());
-        }
-
-        if (xpShareEnabled && itemShareEnabled) {
-            separator = ChatColor.DARK_GRAY + " || ";
-        }
-
-        player.sendMessage(LocaleLoader.getString("Commands.Party.ShareMode") + expShareInfo + separator + itemShareInfo);
-
-        if (itemSharingActive) {
-            player.sendMessage(LocaleLoader.getString("Commands.Party.ItemShareCategories", party.getItemShareCategories()));
-        }
+        player.sendMessage(LocaleLoader.getString("Commands.Party.ShareMode") + expShareInfo);
     }
 
     private void displayMemberInfo(Player player, McMMOPlayer mmoPlayer, Party party) {

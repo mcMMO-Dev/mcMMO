@@ -1,6 +1,6 @@
 package com.gmail.nossr50.commands.party;
 
-public enum PartySubcommandType {
+public enum PartySubCommandType {
     JOIN,
     ACCEPT,
     CREATE,
@@ -8,21 +8,18 @@ public enum PartySubcommandType {
     INFO,
     QUIT,
     XPSHARE,
-    ITEMSHARE,
     INVITE,
     KICK,
     DISBAND,
     OWNER,
-    LOCK,
-    UNLOCK,
-    PASSWORD,
     RENAME,
     TELEPORT,
     CHAT,
-    ALLIANCE;
+    PROMOTE,
+    DEMOTE;
 
-    public static PartySubcommandType getSubcommand(String commandName) {
-        for (PartySubcommandType command : values()) {
+    public static PartySubCommandType getSubcommand(String commandName) {
+        for (PartySubCommandType command : values()) {
             if (command.name().equalsIgnoreCase(commandName)) {
                 return command;
             }
@@ -39,14 +36,8 @@ public enum PartySubcommandType {
         }
         else if (commandName.equalsIgnoreCase("xpshare") || commandName.equalsIgnoreCase("shareexp") || commandName.equalsIgnoreCase("sharexp")) {
             return XPSHARE;
+        } else {
+            return null;
         }
-        else if (commandName.equalsIgnoreCase("shareitem") || commandName.equalsIgnoreCase("shareitems")) {
-            return ITEMSHARE;
-        }
-        else if (commandName.equalsIgnoreCase("ally")) {
-            return ALLIANCE;
-        }
-
-        return null;
     }
 }

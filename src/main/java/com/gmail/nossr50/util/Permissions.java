@@ -1,6 +1,6 @@
 package com.gmail.nossr50.util;
 
-import com.gmail.nossr50.commands.party.PartySubcommandType;
+import com.gmail.nossr50.commands.party.PartySubCommandType;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -206,7 +206,7 @@ public final class Permissions {
      */
     public static boolean partySizeBypass(Permissible permissible) { return permissible.hasPermission("mcmmo.bypass.partylimit" ); }
     public static boolean party(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.party"); }
-    public static boolean partySubcommand(Permissible permissible, PartySubcommandType subcommand) { return permissible.hasPermission("mcmmo.commands.party." + subcommand.toString().toLowerCase(Locale.ENGLISH)); }
+    public static boolean partySubcommand(Permissible permissible, PartySubCommandType subcommand) { return permissible.hasPermission("mcmmo.commands.party." + subcommand.toString().toLowerCase(Locale.ENGLISH)); }
     public static boolean friendlyFire(Permissible permissible) { return permissible.hasPermission("mcmmo.party.friendlyfire"); }
 
     /* TELEPORT */

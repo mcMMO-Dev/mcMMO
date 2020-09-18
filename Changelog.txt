@@ -14,9 +14,6 @@ Version 2.2.000
     Added Sub-Skill named Crossbows Limit Break to Crossbows
 
     Permission node descriptions had mentions of ability changed to sub-skill and other minor corrections
-    Smelting now has a Bonus Drops section in config.yml
-    Second Smelt now only doubles smelting results for items which have bonus drop entries in the config
-    Fixed an array out of index bug for inventory click events
     mcMMO will now register arrows shot from the offhand as being from either Archery or Crossbows (before mcMMO ignored offhand Archery)
 
     (These permissions are all included in the mcmmo.defaults node)
@@ -31,6 +28,30 @@ Version 2.2.000
     New permission node 'mcmmo.ability.crossbows.all'
     New permission node 'mcmmo.ability.crossbows.crossbowslimitbreak'
     New permission node 'mcmmo.ability.crossbows.coneofdeath'
+
+
+    The Party system has some new features, and a lot of bad features were removed completely, read the notes
+    Parties can no longer have passwords (see notes)
+    Parties can no longer be locked (see notes)
+    Parties no longer have item share (see notes)
+    Party alliances are gone (see notes)
+    Parties are always private (see notes)
+    Party members can be promoted to Officer by the Party Leader (officers are mini-party leaders)
+    Added Party Officer chat, only other officers (including the party leader) can read and participate
+    Added the following party subcommands: promote, demote
+    Removed the following party subcommands: join, lock, unlock, password, alliance, item share
+
+    Added permission node 'mcmmo.chat.officerpartychat'
+
+    The following permission nodes were removed because their related feature was removed
+    Removed permission node 'mcmmo.commands.party.unlock'
+    Removed permission node 'mcmmo.commands.party.alliance'
+    Removed permission node 'mcmmo.commands.party.password'
+    Removed permission node 'mcmmo.commands.party.itemshare'
+
+    The following permission nodes were removed because permissions for these commands don't make sense, if you want to disable party commands just negate 'mcmmo.commands.party'
+    Removed permission node 'mcmmo.commands.party.quit'
+    Removed permission node 'mcmmo.commands.party.kick'
 
     Added new locale string 'Overhaul.Name.Tridents'
     Added new locale string 'Tridents.SubSkill.TridentsLimitBreak.Name'
@@ -60,6 +81,10 @@ Version 2.2.000
 
     Notes:
     These are the first new skills that I've written for mcMMO in about 9 years, I'll be listening closely to feedback and tweaking them often.
+    Parties got unnecessarily complex in my absence, I have removed many party features in order to simplify parties and bring them closer to my vision. I have also added new features which should improve parties where it matters.
+    About the removed party features, all the features I removed I consider poor quality features and I don't think they belong in mcMMO. Feel free to yell at me in discord if you disagree.
+    I don't know what genius decided to make parties public by default, when I found out that parties had been changed to such a system I could barely contain my disgust. Parties are back to being private, you get invited by a party leader or party officer. That is the only way to join a party.
+
 Version 2.1.145
     Reverted 'Changed one of the PlayerInteractEvent listeners to ignore cancelled events' from 2.1.144
 

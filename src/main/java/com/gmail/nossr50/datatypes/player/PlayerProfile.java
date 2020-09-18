@@ -1,8 +1,11 @@
 package com.gmail.nossr50.datatypes.player;
 
 import com.gmail.nossr50.datatypes.MobHealthBarType;
+import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -132,6 +135,10 @@ public class PlayerProfile {
      */
     public @NotNull CooldownManager getCooldownManager() {
         return cooldownManager;
+    }
+
+    public @Nullable Party getParty(){
+        return mcMMO.getPartyManager().getParty(persistentPlayerData.getPlayerUUID());
     }
 
     /**
