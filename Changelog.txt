@@ -1,5 +1,5 @@
 Version 2.1.146
-    A dupe exploit has been patched
+    Improvements were made to tracking player placed blocks in mcMMO
     Players no longer lose levels below the level threshold in hardcore mode
     Hardcore now only applies penalties to levels above threshold
 
