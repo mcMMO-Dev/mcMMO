@@ -256,8 +256,9 @@ public class TamingManager extends SkillManager {
 
         message = message.concat(LocaleLoader.getString("Combat.BeastLoreHealth", target.getHealth(), target.getMaxHealth()));
 
-        if (beast instanceof Horse) {
-            Horse horse = (Horse) beast;
+        // Bred mules & donkeys can actually have horse-like stats, but llamas cannot.
+        if (beast instanceof AbstractHorse && !(beast instanceof Llama)) {
+            AbstractHorse horse = (AbstractHorse) beast;
             double jumpStrength = horse.getAttribute(Attribute.HORSE_JUMP_STRENGTH).getValue();
             // Taken from https://minecraft.gamepedia.com/Horse#Jump_strength
             jumpStrength = -0.1817584952 * Math.pow(jumpStrength, 3) + 3.689713992 * Math.pow(jumpStrength, 2) + 2.128599134 * jumpStrength - 0.343930367;
