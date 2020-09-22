@@ -246,16 +246,6 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockMultiPlace(BlockMultiPlaceEvent event) {
-        /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
-            return;
-
-        Player player = event.getPlayer();
-
-        if (!UserManager.hasPlayerDataKey(player)) {
-            return;
-        }
-
         for (BlockState replacedBlockState : event.getReplacedBlockStates())
         {
             BlockState blockState = replacedBlockState.getBlock().getState();
@@ -264,6 +254,17 @@ public class BlockListener implements Listener {
             if (BlockUtils.shouldBeWatched(blockState)) {
                 mcMMO.getPlaceStore().setTrue(blockState);
             }
+        }
+
+        /* WORLD BLACKLIST CHECK */
+        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld())) {
+            return;
+        }
+
+        Player player = event.getPlayer();
+
+        if (!UserManager.hasPlayerDataKey(player)) {
+            return;
         }
     }
 
