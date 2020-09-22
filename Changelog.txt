@@ -1,4 +1,5 @@
 Version 2.1.146
+    A dupe exploit has been patched
     Players no longer lose levels below the level threshold in hardcore mode
     Hardcore now only applies penalties to levels above threshold
 
