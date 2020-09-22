@@ -210,7 +210,7 @@ public class BlockListener implements Listener {
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
         if (BlockUtils.shouldBeWatched(blockState)) {
             // Don't count de-barking wood
-            if (!Tag.LOGS.isTagged(event.getBlockReplacedState().getType()) || !Tag.LOGS.isTagged(event.getBlockPlaced().getType()))
+//            if (!Tag.LOGS.isTagged(event.getBlockReplacedState().getType()) || !Tag.LOGS.isTagged(event.getBlockPlaced().getType()))
                 mcMMO.getPlaceStore().setTrue(blockState);
         }
 
@@ -224,7 +224,6 @@ public class BlockListener implements Listener {
         if (!UserManager.hasPlayerDataKey(player)) {
             return;
         }
-
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
@@ -327,8 +326,11 @@ public class BlockListener implements Listener {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         //Check if profile is loaded
-        if(mcMMOPlayer == null)
+        if(mcMMOPlayer == null) {
+            /* Remove metadata from placed watched blocks */
+            mcMMO.getPlaceStore().setFalse(blockState);
             return;
+        }
 
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
