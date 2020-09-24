@@ -50,6 +50,7 @@ import com.gmail.nossr50.util.skills.SmeltingTracker;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.google.common.base.Charsets;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -80,6 +81,9 @@ public class mcMMO extends JavaPlugin {
     private static MaterialMapStore materialMapStore;
     private static PlayerLevelUtils playerLevelUtils;
     private static SmeltingTracker smeltingTracker;
+
+    /* Adventure */
+    private static BukkitAudiences audiences;
 
     /* Blacklist */
     private static WorldBlacklist worldBlacklist;
@@ -270,6 +274,8 @@ public class mcMMO extends JavaPlugin {
 
         //Init smelting tracker
         smeltingTracker = new SmeltingTracker();
+
+        audiences = BukkitAudiences.create(this);
     }
 
     public static PlayerLevelUtils getPlayerLevelUtils() {
@@ -677,5 +683,9 @@ public class mcMMO extends JavaPlugin {
 
     public static SmeltingTracker getSmeltingTracker() {
         return smeltingTracker;
+    }
+
+    public static BukkitAudiences getAudiences() {
+        return audiences;
     }
 }
