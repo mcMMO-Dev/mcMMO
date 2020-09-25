@@ -1,4 +1,5 @@
 Version 2.1.146
+    JSON Text components are now done through 'adventure' library by Kyori, this should help reduce player disconnects from messages due to an unfixed Spigot bug.
     Improvements were made to tracking player placed blocks in mcMMO
     Players no longer lose levels below the level threshold in hardcore mode
     Hardcore now only applies penalties to levels above threshold

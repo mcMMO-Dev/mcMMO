@@ -100,6 +100,16 @@
                             <include>org.apache.tomcat:tomcat-juli</include>
                             <include>org.bstats:bstats-bukkit</include>
                             <include>net.kyori:adventure-api</include>
+                            <include>net.kyori:adventure-text-serializer-gson</include>
+                            <include>net.kyori:adventure-platform-bukkit</include>
+                            <include>net.kyori:adventure-platform-api</include>
+                            <include>net.kyori:adventure-platform-common</include>
+                            <include>net.kyori:adventure-platform-viaversion</include>
+                            <include>net.kyori:adventure-nbt</include>
+                            <include>net.kyori:examination-api</include>
+                            <include>net.kyori:examination-string</include>
+                            <include>net.kyori:adventure-text-serializer-legacy</include>
+                            <include>net.kyori:adventure-text-serializer-bungeecord</include>
                         </includes>
                     </artifactSet>
                     <relocations>
@@ -114,6 +124,10 @@
                         <relocation>
                             <pattern>org.apache.tomcat</pattern>
                             <shadedPattern>com.gmail.nossr50.database.tomcat</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.kyori.adventure</pattern>
+                            <shadedPattern>com.gmail.nossr50.kyori.adventure</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.bstats</pattern>
@@ -160,6 +174,12 @@
             <!-- ... -->
     </repositories>
     <dependencies>
+<!--        adventure-api, adventure-text-serializer-gson, adventure-platform-bukkit-->
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-gson</artifactId>
+            <version>4.0.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-api</artifactId>
@@ -167,7 +187,22 @@
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
+            <artifactId>adventure-nbt</artifactId>
+            <version>4.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
+            <version>4.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-platform-api</artifactId>
+            <version>4.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-platform-common</artifactId>
             <version>4.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>

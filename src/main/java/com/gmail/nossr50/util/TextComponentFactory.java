@@ -483,7 +483,7 @@ public class TextComponentFactory {
                 int curRank = RankUtils.getRank(player, subSkillType);
                 int nextRank = 0;
 
-                if(curRank < subSkillType.getNumRanks() && subSkillType.getNumRanks() > 0)
+                if(curRank < subSkillType.getNumRanks())
                 {
                     nextRank = RankUtils.getRankUnlockLevel(subSkillType, curRank+1);
                 }
