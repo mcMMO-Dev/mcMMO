@@ -198,10 +198,6 @@ public class SkillUtils {
     }
 
     public static void removeAbilityBoostsFromInventory(@NotNull Player player) {
-        if (!HiddenConfig.getInstance().useEnchantmentBuffs()) {
-            return;
-        }
-
         for (ItemStack itemStack : player.getInventory().getContents()) {
             removeAbilityBuff(itemStack);
         }
