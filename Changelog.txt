@@ -1,5 +1,5 @@
 Version 2.1.147
-
+    Fixed a bug where players below the level threshold on a hardcore mode enabled server would gain levels on death in certain circumstances
 
 Version 2.1.146
     A bug where players would disconnect from mcMMO messages has been fixed (thanks kashike / read notes)

@@ -331,16 +331,18 @@ public class EventUtils {
             for (PrimarySkillType primarySkillType : PrimarySkillType.NON_CHILD_SKILLS) {
                 String skillName = primarySkillType.toString();
                 int playerSkillLevel = playerProfile.getSkillLevel(primarySkillType);
+                int threshold = Config.getInstance().getHardcoreDeathStatPenaltyLevelThreshold();
+                if(playerSkillLevel > threshold) {
+                    playerProfile.modifySkill(primarySkillType, Math.max(threshold, playerSkillLevel - levelChanged.get(skillName)));
+                    playerProfile.removeXp(primarySkillType, experienceChanged.get(skillName));
 
-                playerProfile.modifySkill(primarySkillType, Math.max(Config.getInstance().getHardcoreDeathStatPenaltyLevelThreshold(), playerSkillLevel - levelChanged.get(skillName)));
-                playerProfile.removeXp(primarySkillType, experienceChanged.get(skillName));
+                    if (playerProfile.getSkillXpLevel(primarySkillType) < 0) {
+                        playerProfile.setSkillXpLevel(primarySkillType, 0);
+                    }
 
-                if (playerProfile.getSkillXpLevel(primarySkillType) < 0) {
-                    playerProfile.setSkillXpLevel(primarySkillType, 0);
-                }
-
-                if (playerProfile.getSkillLevel(primarySkillType) < 0) {
-                    playerProfile.modifySkill(primarySkillType, 0);
+                    if (playerProfile.getSkillLevel(primarySkillType) < 0) {
+                        playerProfile.modifySkill(primarySkillType, 0);
+                    }
                 }
             }
         }
