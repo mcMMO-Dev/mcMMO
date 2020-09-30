@@ -78,7 +78,7 @@ public class TextComponentFactory {
 
         wikiLinkComponent.hoverEvent(HoverEvent.showText(componentBuilder.build()));
 
-        mcMMO.getAudiences().audience(player).sendMessage(wikiLinkComponent, MessageType.SYSTEM);
+        mcMMO.getAudiences().player(player).sendMessage(wikiLinkComponent, MessageType.SYSTEM);
     }
 
     public static void sendPlayerUrlHeader(Player player) {
@@ -89,7 +89,7 @@ public class TextComponentFactory {
 
         TextComponent emptySpace = TextComponent.space();
 
-        mcMMO.getAudiences().audience(player).sendMessage(TextComponent.ofChildren(
+        mcMMO.getAudiences().player(player).sendMessage(TextComponent.ofChildren(
           prefix,
           getWebLinkTextComponent(McMMOWebLinks.WEBSITE),
           emptySpace,
@@ -113,7 +113,7 @@ public class TextComponentFactory {
         AtomicReference<Component> messageToSend = new AtomicReference<>();
         int newLineCount = 0; //Hacky solution to wordwrap problems
 
-        final Audience audience = mcMMO.getAudiences().audience(player);
+        final Audience audience = mcMMO.getAudiences().player(player);
         for (Component textComponent : textComponents) {
             //Don't send more than 3 subskills per line to avoid MOST wordwrap problems
             if(newLineCount > 2)
