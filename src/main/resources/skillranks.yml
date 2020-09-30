@@ -14,21 +14,21 @@ Alchemy:
     Concoctions:
         Standard:
             Rank_1: 0
-            Rank_2: 1
-            Rank_3: 35
-            Rank_4: 50
-            Rank_5: 65
+            Rank_2: 10
+            Rank_3: 20
+            Rank_4: 35
+            Rank_5: 50
             Rank_6: 75
-            Rank_7: 85
+            Rank_7: 90
             Rank_8: 100
         RetroMode:
             Rank_1: 0
-            Rank_2: 1
-            Rank_3: 350
-            Rank_4: 500
-            Rank_5: 650
+            Rank_2: 100
+            Rank_3: 200
+            Rank_4: 350
+            Rank_5: 500
             Rank_6: 750
-            Rank_7: 850
+            Rank_7: 900
             Rank_8: 1000
 Archery:
     ArcheryLimitBreak:

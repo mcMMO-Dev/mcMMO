@@ -1,3 +1,9 @@
+Version 2.1.148
+    Alchemy progression is now more reasonable (delete skillranks.yml or edit it yourself to receive the change)
+
+    NOTES:
+    Alchemy now progresses much smoother, with rank 2 no longer unlocking right away. Thanks to Momshroom for pointing out this oddity.
+
 Version 2.1.147
     Fixed a bug where players below the level threshold on a hardcore mode enabled server would gain levels on death in certain circumstances
 
