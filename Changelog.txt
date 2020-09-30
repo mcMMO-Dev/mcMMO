@@ -84,9 +84,42 @@ Version 2.2.000
     Parties got unnecessarily complex in my absence, I have removed many party features in order to simplify parties and bring them closer to my vision. I have also added new features which should improve parties where it matters.
     About the removed party features, all the features I removed I consider poor quality features and I don't think they belong in mcMMO. Feel free to yell at me in discord if you disagree.
     I don't know what genius decided to make parties public by default, when I found out that parties had been changed to such a system I could barely contain my disgust. Parties are back to being private, you get invited by a party leader or party officer. That is the only way to join a party.
+Version 2.1.147
+    Fixed a bug where players below the level threshold on a hardcore mode enabled server would gain levels on death in certain circumstances
+
 Version 2.1.146
+    A bug where players would disconnect from mcMMO messages has been fixed (thanks kashike / read notes)
+        It should be noted this was NOT an mcMMO bug, but a bug within Spigot since Spigot 1.16
+    A dupe exploit has been fixed
+    Improvements were made to tracking player placed blocks in mcMMO
     Players no longer lose levels below the level threshold in hardcore mode
     Hardcore now only applies penalties to levels above threshold
+
+    NOTES:
+    Shout out to Kashike
+    Kashike is a developer on the mcMMO team, however after I recruited him had a lot of life stuff come at him and hasn't had a chance to contribute until now!
+
+    JSON is used by Minecraft for a lot of stuff, in this case the JSON mcMMO made use of was related to displaying text in chat or displaying text on the clients screen in other places such as the action bar, there's been a bad bug in Spigot since 1.16 that would disconnect players some of the time when sending JSON components.
+    mcMMO makes heavy use of these components, so since spigot has yet to fix the bug I decided we needed a work around for the time being.
+    The library named 'adventure' is developed by the Kyori organization, which is Kashike's baby.
+    Kashike is a very talented and skilled developer and he did the work on this patch to solve this issue.
+
+    This is a link to an bug report I did on this bug on Spigot's issue tracker, it is my understanding they have yet to find a way to reliably reproduce this bug.
+    If you have any information please post about it in this thread.
+
+    https://hub.spigotmc.org/jira/browse/SPIGOT-6056
+    Although mcMMO solved this issue by switching to Kyori's Adventure library for sending JSON Components, most Spigot plugins have not implemented a work around like this and will continue to make players disconnect until it is solved within Spigot.
+
+    Hardcore changes
+    If you set a level threshold of 100 and player with 150 levels dies, they should never lose more than 50 levels as the first 100 are considered part of the threshold.
+    Prior to this change in this exact same scenario a player could be penalized and be put below the threshold.
+
+    Shout out to HexedHero for reporting the dupe exploit and providing a demonstration of how to replicate it
+
+    Tridents & Crossbows update
+    It is still being worked on but it won't make a September release.
+    October is the new target release but I am terrible with estimates so take it with a grain of salt!
+
 
 Version 2.1.145
     Reverted 'Changed one of the PlayerInteractEvent listeners to ignore cancelled events' from 2.1.144

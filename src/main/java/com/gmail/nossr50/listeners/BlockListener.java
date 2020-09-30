@@ -126,10 +126,8 @@ public class BlockListener implements Listener {
         Block movedBlock;
 
         for (Block b : event.getBlocks()) {
-            if (BlockUtils.shouldBeWatched(b.getState())) {
-                movedBlock = b.getRelative(direction);
-                mcMMO.getPlaceStore().setTrue(movedBlock);
-            }
+            movedBlock = b.getRelative(direction);
+            mcMMO.getPlaceStore().setTrue(movedBlock);
         }
     }
 
@@ -189,7 +187,6 @@ public class BlockListener implements Listener {
         if(ExperienceConfig.getInstance().preventStoneLavaFarming())
         {
             if(event.getNewState().getType() != Material.OBSIDIAN
-                    && BlockUtils.shouldBeWatched(event.getNewState())
                     && ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.MINING, event.getNewState().getBlockData()))
             {
                 mcMMO.getPlaceStore().setTrue(event.getNewState());
@@ -204,23 +201,21 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockPlace(BlockPlaceEvent event) {
+        BlockState blockState = event.getBlock().getState();
+
+        /* Check if the blocks placed should be monitored so they do not give out XP in the future */
+//      if (!Tag.LOGS.isTagged(event.getBlockReplacedState().getType()) || !Tag.LOGS.isTagged(event.getBlockPlaced().getType()))
+        mcMMO.getPlaceStore().setTrue(blockState);
+
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
+        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld())) {
             return;
+        }
 
         Player player = event.getPlayer();
 
         if (!mcMMO.getUserManager().hasPlayerDataKey(player)) {
             return;
-        }
-
-        BlockState blockState = event.getBlock().getState();
-
-        /* Check if the blocks placed should be monitored so they do not give out XP in the future */
-        if (BlockUtils.shouldBeWatched(blockState)) {
-            // Don't count de-barking wood
-            if (!Tag.LOGS.isTagged(event.getBlockReplacedState().getType()) || !Tag.LOGS.isTagged(event.getBlockPlaced().getType()))
-                mcMMO.getPlaceStore().setTrue(blockState);
         }
 
         McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
@@ -243,24 +238,23 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockMultiPlace(BlockMultiPlaceEvent event) {
-        /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld()))
-            return;
-
-        Player player = event.getPlayer();
-
-        if (!mcMMO.getUserManager().hasPlayerDataKey(player)) {
-            return;
-        }
-
         for (BlockState replacedBlockState : event.getReplacedBlockStates())
         {
             BlockState blockState = replacedBlockState.getBlock().getState();
 
             /* Check if the blocks placed should be monitored so they do not give out XP in the future */
-            if (BlockUtils.shouldBeWatched(blockState)) {
-                mcMMO.getPlaceStore().setTrue(blockState);
-            }
+            mcMMO.getPlaceStore().setTrue(blockState);
+        }
+
+        /* WORLD BLACKLIST CHECK */
+        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld())) {
+            return;
+        }
+
+        Player player = event.getPlayer();
+
+        if (!mcMMO.getUserManager().hasPlayerDataKey(player)) {
+            return;
         }
     }
 
@@ -273,9 +267,9 @@ public class BlockListener implements Listener {
 
         BlockState blockState = event.getBlock().getState();
 
-        if (!BlockUtils.shouldBeWatched(blockState)) {
-            return;
-        }
+//        if (!BlockUtils.shouldBeWatched(blockState)) {
+//            return;
+//        }
 
         mcMMO.getPlaceStore().setFalse(blockState);
     }
@@ -305,9 +299,9 @@ public class BlockListener implements Listener {
         BlockState blockState = event.getBlock().getState();
         Location location = blockState.getLocation();
 
-        if (!BlockUtils.shouldBeWatched(blockState)) {
-            return;
-        }
+//        if (!BlockUtils.shouldBeWatched(blockState)) {
+//            return;
+//        }
 
         /* ALCHEMY - Cancel any brew in progress for that BrewingStand */
         if (blockState instanceof BrewingStand && Alchemy.brewingStandMap.containsKey(location)) {
@@ -323,8 +317,11 @@ public class BlockListener implements Listener {
         McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
 
         //Check if profile is loaded
-        if(mmoPlayer == null)
+        if(mmoPlayer == null) {
+            /* Remove metadata from placed watched blocks */
+            mcMMO.getPlaceStore().setFalse(blockState);
             return;
+        }
 
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 

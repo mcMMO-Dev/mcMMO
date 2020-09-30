@@ -10,12 +10,14 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.McMMOMessageType;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.audience.MessageType;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -36,9 +38,9 @@ public class NotificationManager {
         if(mcMMO.getUserManager().getPlayer(player) == null || !mcMMO.getUserManager().getPlayer(player).hasSkillChatNotifications())
             return;
 
-        ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
+        McMMOMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? McMMOMessageType.ACTION_BAR : McMMOMessageType.SYSTEM;
 
-        TextComponent message = TextComponentFactory.getNotificationTextComponentFromLocale(key);
+        Component message = TextComponentFactory.getNotificationTextComponentFromLocale(key);
         McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(player, notificationType, destination, message);
 
         sendNotification(player, customEvent);
@@ -91,9 +93,9 @@ public class NotificationManager {
         if(mcMMO.getUserManager().getPlayer(player) == null || !mcMMO.getUserManager().getPlayer(player).hasSkillChatNotifications())
             return;
 
-        ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
+        McMMOMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? McMMOMessageType.ACTION_BAR : McMMOMessageType.SYSTEM;
 
-        TextComponent message = TextComponentFactory.getNotificationMultipleValues(key, values);
+        Component message = TextComponentFactory.getNotificationMultipleValues(key, values);
         McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(player, notificationType, destination, message);
 
         sendNotification(player, customEvent);
@@ -103,22 +105,24 @@ public class NotificationManager {
         if (customEvent.isCancelled())
             return;
 
+        final Audience audience = mcMMO.getAudiences().audience(player);
+
         //If the message is being sent to the action bar we need to check if the copy if a copy is sent to the chat system
-        if(customEvent.getChatMessageType() == ChatMessageType.ACTION_BAR)
+        if(customEvent.getChatMessageType() == McMMOMessageType.ACTION_BAR)
         {
-            player.spigot().sendMessage(customEvent.getChatMessageType(), customEvent.getNotificationTextComponent());
+            audience.sendActionBar(customEvent.getNotificationTextComponent());
 
             if(customEvent.isMessageAlsoBeingSentToChat())
             {
                 //Send copy to chat system
-                player.spigot().sendMessage(ChatMessageType.SYSTEM, customEvent.getNotificationTextComponent());
+                audience.sendMessage(customEvent.getNotificationTextComponent(), MessageType.SYSTEM);
             }
         } else {
-            player.spigot().sendMessage(customEvent.getChatMessageType(), customEvent.getNotificationTextComponent());
+            audience.sendMessage(customEvent.getNotificationTextComponent(), MessageType.SYSTEM);
         }
     }
 
-    private static McMMOPlayerNotificationEvent checkNotificationEvent(Player player, NotificationType notificationType, ChatMessageType destination, TextComponent message) {
+    private static McMMOPlayerNotificationEvent checkNotificationEvent(Player player, NotificationType notificationType, McMMOMessageType destination, Component message) {
         //Init event
         McMMOPlayerNotificationEvent customEvent = new McMMOPlayerNotificationEvent(player,
                 notificationType, message, destination, AdvancedConfig.getInstance().doesNotificationSendCopyToChat(notificationType));
@@ -139,9 +143,9 @@ public class NotificationManager {
         if(!mmoPlayer.hasSkillChatNotifications())
             return;
 
-        ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(NotificationType.LEVEL_UP_MESSAGE) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
+        McMMOMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(NotificationType.LEVEL_UP_MESSAGE) ? McMMOMessageType.ACTION_BAR : McMMOMessageType.SYSTEM;
 
-        TextComponent levelUpTextComponent = TextComponentFactory.getNotificationLevelUpTextComponent(skillName, levelsGained, newLevel);
+        Component levelUpTextComponent = TextComponentFactory.getNotificationLevelUpTextComponent(skillName, levelsGained, newLevel);
         McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(mmoPlayer.getPlayer(), NotificationType.LEVEL_UP_MESSAGE, destination, levelUpTextComponent);
 
         sendNotification(mmoPlayer.getPlayer(), customEvent);
@@ -161,7 +165,8 @@ public class NotificationManager {
             return;
 
         //CHAT MESSAGE
-        mmoPlayer.getPlayer().spigot().sendMessage(TextComponentFactory.getSubSkillUnlockedNotificationComponents(mmoPlayer.getPlayer(), subSkillType));
+
+        mcMMO.getAudiences().audience(mcMMOPlayer.getPlayer()).sendMessage(TextComponentFactory.getSubSkillUnlockedNotificationComponents(mmoPlayer.getPlayer(), subSkillType));
 
         //Unlock Sound Effect
         SoundManager.sendCategorizedSound(mmoPlayer.getPlayer(), mmoPlayer.getPlayer().getLocation(), SoundType.SKILL_UNLOCKED, SoundCategory.MASTER);

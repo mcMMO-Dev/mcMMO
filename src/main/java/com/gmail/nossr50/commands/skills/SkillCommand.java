@@ -18,6 +18,7 @@ import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.google.common.collect.ImmutableList;
+import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.Command;
@@ -84,7 +85,7 @@ public abstract class SkillCommand implements TabExecutor {
             sendSkillCommandHeader(player, mmoPlayer, (int) skillValue);
 
             //Make JSON text components
-            List<TextComponent> subskillTextComponents = getTextComponents(player);
+            List<Component> subskillTextComponents = getTextComponents(player);
 
             //Subskills Header
             player.sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", LocaleLoader.getString("Effects.SubSkills.Overhaul")));
@@ -282,7 +283,7 @@ public abstract class SkillCommand implements TabExecutor {
 
     protected abstract List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky);
 
-    protected abstract List<TextComponent> getTextComponents(Player player);
+    protected abstract List<Component> getTextComponents(Player player);
 
     /**
      * Checks if a player can use a skill
