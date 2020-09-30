@@ -105,7 +105,7 @@ public class NotificationManager {
         if (customEvent.isCancelled())
             return;
 
-        final Audience audience = mcMMO.getAudiences().audience(player);
+        final Audience audience = mcMMO.getAudiences().player(player);
 
         //If the message is being sent to the action bar we need to check if the copy if a copy is sent to the chat system
         if(customEvent.getChatMessageType() == McMMOMessageType.ACTION_BAR)
@@ -165,8 +165,7 @@ public class NotificationManager {
             return;
 
         //CHAT MESSAGE
-
-        mcMMO.getAudiences().audience(mcMMOPlayer.getPlayer()).sendMessage(TextComponentFactory.getSubSkillUnlockedNotificationComponents(mmoPlayer.getPlayer(), subSkillType));
+        mcMMO.getAudiences().player(mmoPlayer.getPlayer()).sendMessage(TextComponentFactory.getSubSkillUnlockedNotificationComponents(mmoPlayer.getPlayer(), subSkillType));
 
         //Unlock Sound Effect
         SoundManager.sendCategorizedSound(mmoPlayer.getPlayer(), mmoPlayer.getPlayer().getLocation(), SoundType.SKILL_UNLOCKED, SoundCategory.MASTER);
