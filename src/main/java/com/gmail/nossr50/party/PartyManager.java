@@ -43,17 +43,11 @@ public final class PartyManager {
     /**
      * Check if a party with a given name already exists.
      *
-     * @param player The player to notify
      * @param partyName The name of the party to check
      * @return true if a party with that name exists, false otherwise
      */
-    public boolean checkPartyExistence(Player player, String partyName) {
-        if (getParty(partyName) == null) {
-            return false;
-        }
-
-        player.sendMessage(LocaleLoader.getString("Commands.Party.AlreadyExists", partyName));
-        return true;
+    public boolean checkPartyExistence(String partyName) {
+        return getParty(partyName) != null;
     }
 
     /**
@@ -64,7 +58,8 @@ public final class PartyManager {
      */
     public boolean isPartyFull(Player player, Party targetParty)
     {
-        return !Permissions.partySizeBypass(player) && Config.getInstance().getPartyMaxSize() >= 1 && targetParty.getPartyMembers().size() >= Config.getInstance().getPartyMaxSize();
+        return !Permissions.partySizeBypass(player)
+                && targetParty.getPartyMembers().size() >= Config.getInstance().getPartyMaxSize();
     }
 
     /**
@@ -77,7 +72,7 @@ public final class PartyManager {
     public boolean changeOrJoinParty(McMMOPlayer mmoPlayer, String newPartyName) {
         Player player = mmoPlayer.getPlayer();
 
-        if (mmoPlayer.inParty()) {
+        if (inParty(mmoPlayer)) {
             Party oldParty = mmoPlayer.getParty();
 
             if (!handlePartyChangeEvent(player, oldParty.getPartyName(), newPartyName, EventReason.CHANGED_PARTIES)) {

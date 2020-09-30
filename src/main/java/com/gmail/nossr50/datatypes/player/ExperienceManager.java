@@ -35,6 +35,7 @@ public class ExperienceManager {
 
     /**
      * Gets the power level of this player.
+     * A power level is the sum of all skill levels for this player
      *
      * @return the power level of the player
      */
@@ -48,26 +49,35 @@ public class ExperienceManager {
         return powerLevel;
     }
 
-    public float getSkillXpLevelRaw(PrimarySkillType skill) {
-        return skillExperienceValuesMap.get(skill);
+    /**
+     * Get the current value of raw XP for a skill
+     * @param primarySkillType target skill
+     * @return the value of raw XP for target skill
+     */
+    public float getSkillXpLevelRaw(PrimarySkillType primarySkillType) {
+        return persistentPlayerDataRef.getSkillsExperienceMap().get(primarySkillType);
     }
 
-    public int getSkillXpLevel(PrimarySkillType skill) {
-        if(skill.isChildSkill()) {
+    /**
+     * Get the value of XP a player has accumulated in target skill
+     * Child Skills will return 0 (Child Skills will be removed in a future update)
+     * @param primarySkillType target skill
+     * @return the value for XP the player has accumulated in target skill
+     */
+    public int getSkillXpValue(PrimarySkillType primarySkillType) {
+        if(primarySkillType.isChildSkill()) {
             return 0;
         }
 
-        return (int) Math.floor(getSkillXpLevelRaw(skill));
+        return (int) Math.floor(getSkillXpLevelRaw(primarySkillType));
     }
 
-    public void setSkillXpLevel(PrimarySkillType skill, float xpLevel) {
+    public void setSkillXpValue(PrimarySkillType skill, float xpLevel) {
         if (skill.isChildSkill()) {
             return;
         }
 
-        markProfileDirty();
-
-        skillsXp.put(skill, xpLevel);
+        persistentPlayerDataRef.getSkillsExperienceMap().put(skill, xpLevel);
     }
 
     public float levelUp(PrimarySkillType skill) {
@@ -204,7 +214,7 @@ public class ExperienceManager {
 
         while (getSkillXpLevelRaw(primarySkillType) >= getXpToLevel(primarySkillType)) {
             if (hasReachedLevelCap(primarySkillType)) {
-                setSkillXpLevel(primarySkillType, 0);
+                setSkillXpValue(primarySkillType, 0);
                 break;
             }
 
@@ -318,12 +328,10 @@ public class ExperienceManager {
      * @param skill Type of skill to modify
      * @param level New level value for the skill
      */
-    public void modifySkill(PrimarySkillType skill, int level) {
+    public void setSkillLevel(PrimarySkillType skill, int level) {
         if (skill.isChildSkill()) {
             return;
         }
-
-        markProfileDirty();
 
         //Don't allow levels to be negative
         if(level < 0)
@@ -340,7 +348,7 @@ public class ExperienceManager {
      * @param levels Number of levels to add
      */
     public void addLevels(PrimarySkillType skill, int levels) {
-        modifySkill(skill, skills.get(skill) + levels);
+        setSkillLevel(skill, skills.get(skill) + levels);
     }
 
     /**
@@ -435,7 +443,7 @@ public class ExperienceManager {
             return 1.0D;
         }
 
-        double currentXP = getSkillXpLevel(primarySkillType);
+        double currentXP = getSkillXpValue(primarySkillType);
         double maxXP = getXpToLevel(primarySkillType);
 
         return (currentXP / maxXP);

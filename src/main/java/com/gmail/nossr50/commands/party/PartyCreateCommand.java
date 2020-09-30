@@ -25,7 +25,8 @@ public class PartyCreateCommand implements CommandExecutor {
                 }
 
                 // Check to see if the party exists, and if it does cancel creating a new party
-                if (mcMMO.getPartyManager().checkPartyExistence(player, args[1])) {
+                if (mcMMO.getPartyManager().checkPartyExistence(args[1])) {
+                    player.sendMessage(LocaleLoader.getString("Commands.Party.AlreadyExists", args[1]));
                     return true;
                 }
 

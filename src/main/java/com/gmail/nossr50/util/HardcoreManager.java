@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
@@ -40,8 +41,8 @@ public final class HardcoreManager {
                 continue;
             }
 
-            int playerSkillLevel = playerProfile.getSkillLevel(primarySkillType);
-            int playerSkillXpLevel = playerProfile.getSkillXpLevel(primarySkillType);
+            int playerSkillLevel = playerProfile.getExperienceManager().getSkillLevel(primarySkillType);
+            int playerSkillXpLevel = playerProfile.getExperienceManager().getSkillXpValue(primarySkillType);
 
             if (playerSkillLevel <= 0 || playerSkillLevel <= levelThreshold) {
                 levelChanged.put(primarySkillType.toString(), 0);
@@ -92,8 +93,8 @@ public final class HardcoreManager {
                 continue;
             }
 
-            int killerSkillLevel = killerProfile.getSkillLevel(primarySkillType);
-            int victimSkillLevel = victimProfile.getSkillLevel(primarySkillType);
+            int killerSkillLevel = killerProfile.getExperienceManager().getSkillLevel(primarySkillType);
+            int victimSkillLevel = victimProfile.getExperienceManager().getSkillLevel(primarySkillType);
 
             if (victimSkillLevel <= 0 || victimSkillLevel < killerSkillLevel / 2 || victimSkillLevel <= levelThreshold) {
                 levelChanged.put(primarySkillType.toString(), 0);
@@ -101,7 +102,7 @@ public final class HardcoreManager {
                 continue;
             }
 
-            int victimSkillXpLevel = victimProfile.getSkillXpLevel(primarySkillType);
+            int victimSkillXpLevel = victimProfile.getExperienceManager().getSkillXpValue(primarySkillType);
 
             double statsStolen = victimSkillLevel * (vampirismStatLeechPercentage * 0.01D);
             int levelsStolen = (int) statsStolen;

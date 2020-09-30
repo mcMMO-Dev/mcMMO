@@ -390,7 +390,7 @@ public final class ExperienceAPI {
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static int getXP(Player player, String skillType) {
-        return getPlayer(player).getExperienceManager().getSkillXpLevel(getNonChildSkillType(skillType));
+        return getPlayer(player).getExperienceManager().getSkillXpValue(getNonChildSkillType(skillType));
     }
 
     /**
@@ -408,7 +408,7 @@ public final class ExperienceAPI {
      */
     @Deprecated
     public static int getOfflineXP(String playerName, String skillType) {
-        return getOfflineProfile(playerName).getExperienceManager().getSkillXpLevel(getNonChildSkillType(skillType));
+        return getOfflineProfile(playerName).getExperienceManager().getSkillXpValue(getNonChildSkillType(skillType));
     }
 
     /**
@@ -425,7 +425,7 @@ public final class ExperienceAPI {
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static int getOfflineXP(UUID uuid, String skillType) {
-        return getOfflineProfile(uuid).getExperienceManager().getSkillXpLevel(getNonChildSkillType(skillType));
+        return getOfflineProfile(uuid).getExperienceManager().getSkillXpValue(getNonChildSkillType(skillType));
     }
 
     /**
@@ -547,7 +547,7 @@ public final class ExperienceAPI {
 
         PlayerProfile profile = getPlayer(player);
 
-        return profile.getExperienceManager().getXpToLevel(skill) - profile.getExperienceManager().getSkillXpLevel(skill);
+        return profile.getExperienceManager().getXpToLevel(skill) - profile.getExperienceManager().getSkillXpValue(skill);
     }
 
     /**
@@ -568,7 +568,7 @@ public final class ExperienceAPI {
         PrimarySkillType skill = getNonChildSkillType(skillType);
         PlayerProfile profile = getOfflineProfile(playerName);
 
-        return profile.getExperienceManager().getXpToLevel(skill) - profile.getExperienceManager().getSkillXpLevel(skill);
+        return profile.getExperienceManager().getXpToLevel(skill) - profile.getExperienceManager().getSkillXpValue(skill);
     }
 
     /**
@@ -894,7 +894,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      */
     public static void setLevel(Player player, String skillType, int skillLevel) {
-        getPlayer(player).getExperienceManager().modifySkill(getSkillType(skillType), skillLevel);
+        getPlayer(player).getExperienceManager().setSkillLevel(getSkillType(skillType), skillLevel);
     }
 
     /**
@@ -911,7 +911,7 @@ public final class ExperienceAPI {
      */
     @Deprecated
     public static void setLevelOffline(String playerName, String skillType, int skillLevel) {
-        getOfflineProfile(playerName).getExperienceManager().modifySkill(getSkillType(skillType), skillLevel);
+        getOfflineProfile(playerName).getExperienceManager().setSkillLevel(getSkillType(skillType), skillLevel);
     }
 
     /**
@@ -927,7 +927,7 @@ public final class ExperienceAPI {
      * @throws InvalidPlayerException if the given player does not exist in the database
      */
     public static void setLevelOffline(UUID uuid, String skillType, int skillLevel) {
-        getOfflineProfile(uuid).getExperienceManager().modifySkill(getSkillType(skillType), skillLevel);
+        getOfflineProfile(uuid).getExperienceManager().setSkillLevel(getSkillType(skillType), skillLevel);
     }
 
     /**
@@ -943,7 +943,7 @@ public final class ExperienceAPI {
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static void setXP(Player player, String skillType, int newValue) {
-        getPlayer(player).getExperienceManager().setSkillXpLevel(getNonChildSkillType(skillType), (float) newValue);
+        getPlayer(player).getExperienceManager().setSkillXpValue(getNonChildSkillType(skillType), (float) newValue);
     }
 
     /**
@@ -961,7 +961,7 @@ public final class ExperienceAPI {
      */
     @Deprecated
     public static void setXPOffline(String playerName, String skillType, int newValue) {
-        getOfflineProfile(playerName).getExperienceManager().setSkillXpLevel(getNonChildSkillType(skillType), newValue);
+        getOfflineProfile(playerName).getExperienceManager().setSkillXpValue(getNonChildSkillType(skillType), newValue);
     }
 
     /**
@@ -978,7 +978,7 @@ public final class ExperienceAPI {
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static void setXPOffline(UUID uuid, String skillType, int newValue) {
-        getOfflineProfile(uuid).getExperienceManager().setSkillXpLevel(getNonChildSkillType(skillType), newValue);
+        getOfflineProfile(uuid).getExperienceManager().setSkillXpValue(getNonChildSkillType(skillType), newValue);
     }
 
     /**
