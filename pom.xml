@@ -105,11 +105,13 @@
                             <include>net.kyori:adventure-platform-api</include>
                             <include>net.kyori:adventure-platform-common</include>
                             <include>net.kyori:adventure-platform-viaversion</include>
+                            <include>net.kyori:adventure-platform-facet</include>
                             <include>net.kyori:adventure-nbt</include>
                             <include>net.kyori:examination-api</include>
                             <include>net.kyori:examination-string</include>
                             <include>net.kyori:adventure-text-serializer-legacy</include>
                             <include>net.kyori:adventure-text-serializer-bungeecord</include>
+                            <include>net.kyori:adventure-text-serializer-craftbukkit</include>
                         </includes>
                     </artifactSet>
                     <relocations>

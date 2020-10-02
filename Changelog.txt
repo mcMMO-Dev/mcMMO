@@ -17,7 +17,7 @@ Version 2.1.146
 
     NOTES:
     Shout out to Kashike
-    Kashike is a developer on the mcMMO team, however after I recruited him had a lot of life stuff come at him and hasn't had a chance to contribute until now!
+    Kashike is a developer on the mcMMO team, however after I recruited him had a lot of life stuff come at him and has./tn't had a chance to contribute until now!
 
     JSON is used by Minecraft for a lot of stuff, in this case the JSON mcMMO made use of was related to displaying text in chat or displaying text on the clients screen in other places such as the action bar, there's been a bad bug in Spigot since 1.16 that would disconnect players some of the time when sending JSON components.
     mcMMO makes heavy use of these components, so since spigot has yet to fix the bug I decided we needed a work around for the time being.
