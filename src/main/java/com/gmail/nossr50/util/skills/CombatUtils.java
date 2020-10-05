@@ -42,6 +42,18 @@ import java.util.Map;
 public final class CombatUtils {
     private CombatUtils() {}
 
+    //Likely.. because who knows what plugins are throwing around
+    public static boolean isDamageLikelyFromNormalCombat(DamageCause damageCause) {
+        switch (damageCause) {
+            case ENTITY_ATTACK:
+            case ENTITY_SWEEP_ATTACK:
+            case PROJECTILE:
+                return true;
+            default:
+                return false;
+        }
+    }
+
     private static void processSwordCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event) {
         if (event.getCause() == DamageCause.THORNS) {
             return;

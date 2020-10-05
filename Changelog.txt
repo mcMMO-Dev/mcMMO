@@ -1,4 +1,5 @@
 Version 2.1.148
+    Fixed a bug where weakness potions could prevent unarmed skills from activating and thus making unarmed useless
     Alchemy progression is now more reasonable (delete skillranks.yml or edit it yourself to receive the change)
 
     NOTES:

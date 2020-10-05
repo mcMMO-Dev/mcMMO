@@ -411,7 +411,6 @@ public class EntityListener implements Listener {
             }
         }
 
-
         /*
          * This was put here to solve a plugin conflict with a mod called Project Korra
          * Project Korra sends out a damage event with exactly 0 damage
@@ -421,7 +420,7 @@ public class EntityListener implements Listener {
          * Surprising this kind of thing
          *
          */
-        if(damage <= 0) {
+        if(event.getDamage() <= 0 && !CombatUtils.isDamageLikelyFromNormalCombat(event.getCause())) {
             return;
         }
 
