@@ -5,6 +5,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.InteractType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
@@ -328,12 +329,6 @@ public class EntityListener implements Listener {
         if (event.getEntity() instanceof ArmorStand) {
             return;
         }
-        
-        if (event.getDamager().hasMetadata(mcMMO.funfettiMetadataKey))
-        {
-            event.setCancelled(true);
-            return;
-        }
 
         if (Misc.isNPCEntityExcludingVillagers(defender) || !defender.isValid() || !(defender instanceof LivingEntity)) {
             return;
@@ -420,8 +415,10 @@ public class EntityListener implements Listener {
          * Surprising this kind of thing
          *
          */
-        if(event.getDamage() <= 0 && !CombatUtils.isDamageLikelyFromNormalCombat(event.getCause())) {
-            return;
+        if(mcMMO.isProjectKorraEnabled()) {
+            if(event.getFinalDamage() == 0) {
+                return;
+            }
         }
 
         CombatUtils.processCombatAttack(event, attacker, target);

@@ -21,7 +21,6 @@ import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.google.common.collect.ImmutableList;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

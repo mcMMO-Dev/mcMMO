@@ -35,7 +35,7 @@ public class UnarmedManager extends SkillManager {
         return mcMMOPlayer.getToolPreparationMode(ToolType.FISTS) && Permissions.berserk(getPlayer());
     }
 
-    public boolean canUseIronArm() {
+    public boolean canUseSteelArm() {
         if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_STEEL_ARM_STYLE))
             return false;
 

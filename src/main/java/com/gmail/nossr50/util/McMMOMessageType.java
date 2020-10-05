@@ -1,9 +1,10 @@
 package com.gmail.nossr50.util;
 
-import java.util.function.BiConsumer;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.audience.MessageType;
 import net.kyori.adventure.text.Component;
+
+import java.util.function.BiConsumer;
 
 public enum McMMOMessageType {
     ACTION_BAR(Audience::sendActionBar),

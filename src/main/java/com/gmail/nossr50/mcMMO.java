@@ -102,6 +102,7 @@ public class mcMMO extends JavaPlugin {
 
     /* Plugin Checks */
     private static boolean healthBarPluginEnabled;
+    private static boolean projectKorraEnabled;
 
     // API checks
     private static boolean serverAPIOutdated = false;
@@ -159,6 +160,7 @@ public class mcMMO extends JavaPlugin {
 
             PluginManager pluginManager = getServer().getPluginManager();
             healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;
+            projectKorraEnabled = pluginManager.getPlugin("ProjectKorra") != null;
 
             upgradeManager = new UpgradeManager();
 
@@ -180,6 +182,10 @@ public class mcMMO extends JavaPlugin {
 
             if (getServer().getName().equals("Cauldron") || getServer().getName().equals("MCPC+")) {
                 checkModConfigs();
+            }
+
+            if(projectKorraEnabled) {
+                getLogger().info("ProjectKorra was detected, this can cause some issues with weakness potions and combat skills for mcMMO");
             }
 
             if (healthBarPluginEnabled) {
@@ -688,5 +694,9 @@ public class mcMMO extends JavaPlugin {
 
     public static BukkitAudiences getAudiences() {
         return audiences;
+    }
+
+    public static boolean isProjectKorraEnabled() {
+        return projectKorraEnabled;
     }
 }

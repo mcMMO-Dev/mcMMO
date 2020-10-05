@@ -2,7 +2,6 @@ package com.gmail.nossr50.datatypes.skills.subskills.interfaces;
 
 import com.gmail.nossr50.datatypes.skills.interfaces.Skill;
 import net.kyori.adventure.text.TextComponent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.entity.Player;
 
 public interface SubSkill extends Skill {
