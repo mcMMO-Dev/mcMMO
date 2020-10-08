@@ -1,9 +1,30 @@
 Version 2.1.148
-    Fixed a bug where weakness potions could prevent unarmed skills from activating and thus making unarmed useless
+    Fixed a memory leak involving entity metadata
     Alchemy progression is now more reasonable (delete skillranks.yml or edit it yourself to receive the change)
+    Made some optimizations to combat processing
+    New experience multiplier labeled 'Eggs' in experience.yml with a default value of 0 (previously mobs from eggs were using the Mobspawner experience multiplier)
+    New experience multiplier labeled 'Nether_Portal' in experience.yml with a default value of 0
+
+    Fixed a bug where mobs from eggs were only tracked if it was dispensed (egg tracking now tracks from egg items as well)
+    Fixed a bug where egg spawned mobs were sometimes not marked as being from an egg (used in experience multipliers)
+    Fixed a bug where entities transformed by a single event (such as lightning) weren't tracked properly if there was more than one entity involved
+    mmodebug now prints out some information about final damage when attacking an entity with certain weapons
+
+    (1.14+ required)
+        Mobs spawned from mob spawners are tracked persistently and are no longer forgotten about after a restart
+        Tamed mobs are tracked persistently and are no longer forgotten about after a restart
+        Egg spawned mobs are tracked persistently and are no longer forgotten about after a restart
+        Nether Portal spawned mobs are tracked persistently and are no longer forgotten about after a restart
+        Endermen who target endermite are tracked persistently and are no longer forgotten about after a restart
+        COTW spawned mobs are tracked persistently and are no longer forgotten about after a restart
+
 
     NOTES:
+    Egg mobs & Nether portal pigs being assigned to the mobspawner xp multiplier didn't make sense to me, so it has been changed. They have their own XP multipliers now.
+    While working on making data persistent I stumbled upon some alarming memory leak candidates, one of them was 7 years old. Sigh.
     Alchemy now progresses much smoother, with rank 2 no longer unlocking right away. Thanks to Momshroom for pointing out this oddity.
+    There's no persistent API for entities in Spigot for 1.13.2, but in the future I'll wire up NMS and write it to NBT myself.
+    This means the new persistence stuff requires 1.14.0 or higher, if you're still on 1.13.2 for now that stuff will behave like it always did
 
 Version 2.1.147
     Fixed a bug where players below the level threshold on a hardcore mode enabled server would gain levels on death in certain circumstances

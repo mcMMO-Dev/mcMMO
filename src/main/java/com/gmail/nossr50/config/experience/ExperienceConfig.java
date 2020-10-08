@@ -175,6 +175,8 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
 
     /* Spawned Mob modifier */
     public double getSpawnedMobXpMultiplier() { return config.getDouble("Experience_Formula.Mobspawners.Multiplier", 0.0); }
+    public double getEggXpMultiplier() { return config.getDouble("Experience_Formula.Eggs.Multiplier", 0.0); }
+    public double getNetherPortalXpMultiplier() { return config.getDouble("Experience_Formula.Nether_Portal.Multiplier", 0.0); }
     public double getBredMobXpMultiplier() { return config.getDouble("Experience_Formula.Breeding.Multiplier", 1.0); }
 
     /* Skill modifiers */

@@ -20,6 +20,8 @@ import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.*;
+import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDataLayer;
+import com.gmail.nossr50.util.compat.layers.persistentdata.MobMetaFlagType;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableMap;
@@ -41,7 +43,12 @@ import java.util.List;
 import java.util.Map;
 
 public final class CombatUtils {
+
     private CombatUtils() {}
+
+    private static AbstractPersistentDataLayer getPersistentData() {
+        return mcMMO.getCompatibilityManager().getPersistentDataLayer();
+    }
 
     //Likely.. because who knows what plugins are throwing around
     public static boolean isDamageLikelyFromNormalCombat(DamageCause damageCause) {
@@ -106,6 +113,14 @@ public final class CombatUtils {
 
         applyScaledModifiers(initialDamage, finalDamage, event);
         processCombatXP(mcMMOPlayer, target, PrimarySkillType.SWORDS);
+
+        printFinalDamageDebug(player, event, mcMMOPlayer);
+    }
+
+    private static void printFinalDamageDebug(Player player, EntityDamageByEntityEvent event, McMMOPlayer mcMMOPlayer) {
+        if(mcMMOPlayer.isDebugMode()) {
+            player.sendMessage("Final Damage value after mcMMO modifiers: "+ event.getFinalDamage());
+        }
     }
 
 //    public static void strengthDebug(Player player) {
@@ -181,6 +196,8 @@ public final class CombatUtils {
 
         applyScaledModifiers(initialDamage, finalDamage, event);
         processCombatXP(mcMMOPlayer, target, PrimarySkillType.AXES);
+
+        printFinalDamageDebug(player, event, mcMMOPlayer);
     }
 
     private static void processUnarmedCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event) {
@@ -223,6 +240,8 @@ public final class CombatUtils {
 
         applyScaledModifiers(initialDamage, finalDamage, event);
         processCombatXP(mcMMOPlayer, target, PrimarySkillType.UNARMED);
+
+        printFinalDamageDebug(player, event, mcMMOPlayer);
     }
 
     private static void processTamingCombat(LivingEntity target, Player master, Wolf wolf, EntityDamageByEntityEvent event) {
@@ -299,6 +318,8 @@ public final class CombatUtils {
 
         applyScaledModifiers(initialDamage, finalDamage, event);
         processCombatXP(mcMMOPlayer, target, PrimarySkillType.ARCHERY, forceMultiplier * distanceMultiplier);
+
+        printFinalDamageDebug(player, event, mcMMOPlayer);
     }
 
     /**
@@ -372,6 +393,7 @@ public final class CombatUtils {
 
                 if (PrimarySkillType.SWORDS.getPermissions(player)) {
                     processSwordCombat(target, player, event);
+
                 }
             }
             else if (ItemUtils.isAxe(heldItem)) {
@@ -428,6 +450,7 @@ public final class CombatUtils {
                 }
             }
         }
+
     }
 
     /**
@@ -547,21 +570,21 @@ public final class CombatUtils {
         dealDamage(target, damage, DamageCause.CUSTOM, attacker);
     }
 
-    /**
-     * Attempt to damage target for value dmg with reason ENTITY_ATTACK with damager attacker
-     *
-     * @param target LivingEntity which to attempt to damage
-     * @param damage Amount of damage to attempt to do
-     * @param attacker Player to pass to event as damager
-     */
-    public static void dealDamage(LivingEntity target, double damage, Map<DamageModifier, Double> modifiers, LivingEntity attacker) {
-        if (target.isDead()) {
-            return;
-        }
-
-        // Aren't we applying the damage twice????
-        target.damage(getFakeDamageFinalResult(attacker, target, damage, modifiers));
-    }
+//    /**
+//     * Attempt to damage target for value dmg with reason ENTITY_ATTACK with damager attacker
+//     *
+//     * @param target LivingEntity which to attempt to damage
+//     * @param damage Amount of damage to attempt to do
+//     * @param attacker Player to pass to event as damager
+//     */
+//    public static void dealDamage(LivingEntity target, double damage, Map<DamageModifier, Double> modifiers, LivingEntity attacker) {
+//        if (target.isDead()) {
+//            return;
+//        }
+//
+//        // Aren't we applying the damage twice????
+//        target.damage(getFakeDamageFinalResult(attacker, target, damage, modifiers));
+//    }
 
     /**
      * Attempt to damage target for value dmg with reason ENTITY_ATTACK with damager attacker
@@ -576,8 +599,11 @@ public final class CombatUtils {
             return;
         }
 
-        if(canDamage(attacker, target, cause, damage))
+        if(canDamage(attacker, target, cause, damage)) {
+            applyIgnoreDamageMetadata(target);
             target.damage(damage);
+            removeIgnoreDamageMetadata(target);
+        }
     }
 
     private static boolean processingNoInvulnDamage;
@@ -596,19 +622,31 @@ public final class CombatUtils {
         // cause do have issues around plugin observability. This is not a perfect solution, but it appears to be the best one here
         // We also set no damage ticks to 0, to ensure that damage is applied for this case, and reset it back to the original value
         // Snapshot current state so we can pop up properly
-        boolean wasMetaSet = target.getMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY).size() != 0;
+        boolean wasMetaSet = hasIgnoreDamageMetadata(target);
         boolean wasProcessing = processingNoInvulnDamage;
         // set markers
         processingNoInvulnDamage = true;
-        target.setMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.metadataValue);
+        applyIgnoreDamageMetadata(target);
         int noDamageTicks = target.getNoDamageTicks();
         target.setNoDamageTicks(0);
         target.damage(damage, attacker);
         target.setNoDamageTicks(noDamageTicks);
         if (!wasMetaSet)
-            target.removeMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.p);
+            removeIgnoreDamageMetadata(target);
         if (!wasProcessing)
             processingNoInvulnDamage = false;
+    }
+
+    public static void removeIgnoreDamageMetadata(LivingEntity target) {
+        target.removeMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.p);
+    }
+
+    public static void applyIgnoreDamageMetadata(LivingEntity target) {
+        target.setMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY, mcMMO.metadataValue);
+    }
+
+    public static boolean hasIgnoreDamageMetadata(LivingEntity target) {
+        return target.getMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY).size() != 0;
     }
 
     public static void dealNoInvulnerabilityTickDamageRupture(LivingEntity target, double damage, Entity attacker, int toolTier) {
@@ -767,19 +805,20 @@ public final class CombatUtils {
                 }
             }
 
-            if (target.hasMetadata(mcMMO.entityMetadataKey)
-                    //Epic Spawners compatibility
-                    || target.hasMetadata("ES")) {
+            if(getPersistentData().hasMobFlag(MobMetaFlagType.COTW_SUMMONED_MOB, target)) {
+                baseXP = 0;
+            } else if(getPersistentData().hasMobFlag(MobMetaFlagType.MOB_SPAWNER_MOB, target) || target.hasMetadata("ES")) {
                 baseXP *= ExperienceConfig.getInstance().getSpawnedMobXpMultiplier();
-            }
-
-            if (target.hasMetadata(mcMMO.bredMetadataKey)) {
+            } else if(getPersistentData().hasMobFlag(MobMetaFlagType.NETHER_PORTAL_MOB, target)) {
+                baseXP *= ExperienceConfig.getInstance().getNetherPortalXpMultiplier();
+            } else if(getPersistentData().hasMobFlag(MobMetaFlagType.EGG_MOB, target)) {
+                baseXP *= ExperienceConfig.getInstance().getEggXpMultiplier();
+            } else if (getPersistentData().hasMobFlag(MobMetaFlagType.PLAYER_BRED_MOB, target)) {
                 baseXP *= ExperienceConfig.getInstance().getBredMobXpMultiplier();
             }
 
-            xpGainReason = XPGainReason.PVE;
-
             baseXP *= 10;
+            xpGainReason = XPGainReason.PVE;
         }
 
         baseXP *= multiplier;

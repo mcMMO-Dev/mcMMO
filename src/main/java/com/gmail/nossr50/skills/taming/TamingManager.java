@@ -17,6 +17,7 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.compat.layers.persistentdata.MobMetaFlagType;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
@@ -485,12 +486,9 @@ public class TamingManager extends SkillManager {
         callOfWildEntity.setRemoveWhenFarAway(false);
     }
 
-    private void applyMetaDataToCOTWEntity(LivingEntity callOfWildEntity) {
-        //This is used to prevent XP gains for damaging this entity
-        callOfWildEntity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
-
+    private void applyMetaDataToCOTWEntity(LivingEntity summonedEntity) {
         //This helps identify the entity as being summoned by COTW
-        callOfWildEntity.setMetadata(mcMMO.COTW_TEMPORARY_SUMMON, mcMMO.metadataValue);
+        mcMMO.getCompatibilityManager().getPersistentDataLayer().flagMetadata(MobMetaFlagType.COTW_SUMMONED_MOB, summonedEntity);
     }
 
     /**

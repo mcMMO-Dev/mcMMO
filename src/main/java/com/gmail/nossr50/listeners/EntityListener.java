@@ -5,7 +5,6 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.InteractType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
@@ -22,6 +21,8 @@ import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDataLayer;
+import com.gmail.nossr50.util.compat.layers.persistentdata.MobMetaFlagType;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
@@ -46,30 +47,36 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
+import org.jetbrains.annotations.NotNull;
 
 public class EntityListener implements Listener {
-    private final mcMMO plugin;
+    private final mcMMO pluginRef;
+    private final @NotNull AbstractPersistentDataLayer persistentDataLayer;
 
-    public EntityListener(final mcMMO plugin) {
-        this.plugin = plugin;
+    public EntityListener(final mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
+        persistentDataLayer = mcMMO.getCompatibilityManager().getPersistentDataLayer();
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onEntityTransform(EntityTransformEvent event)
-    {
-        //Transfer metadata keys from mob-spawned mobs to new mobs
-        if(event.getEntity().getMetadata(mcMMO.entityMetadataKey) != null || event.getEntity().getMetadata(mcMMO.entityMetadataKey).size() >= 1)
-        {
-            for(Entity entity : event.getTransformedEntities())
-            {
-                entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+    public void onEntityTransform(EntityTransformEvent event) {
+        if(event.getEntity() instanceof LivingEntity) {
+            LivingEntity livingEntity = (LivingEntity) event.getEntity();
+
+            //Transfer metadata keys from mob-spawned mobs to new mobs
+            if(persistentDataLayer.hasMobFlags(livingEntity)) {
+                for(Entity entity : event.getTransformedEntities()) {
+                    if(entity instanceof LivingEntity) {
+                        LivingEntity transformedEntity = (LivingEntity) entity;
+                        persistentDataLayer.addMobFlags(livingEntity, transformedEntity);
+                    }
+                }
             }
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onEntityTargetEntity(EntityTargetLivingEntityEvent event)
-    {
+    public void onEntityTargetEntity(EntityTargetLivingEntityEvent event) {
         if(!ExperienceConfig.getInstance().isEndermanEndermiteFarmingPrevented())
             return;
 
@@ -82,8 +89,13 @@ public class EntityListener implements Listener {
         //Prevent entities from giving XP if they target endermite
         if(event.getTarget() instanceof Endermite)
         {
-            if(!event.getEntity().hasMetadata(mcMMO.entityMetadataKey))
-                event.getEntity().setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+            if(event.getEntity() instanceof Enderman) {
+                Enderman enderman = (Enderman) event.getEntity();
+
+                if(!persistentDataLayer.hasMobFlag(MobMetaFlagType.EXPLOITED_ENDERMEN, enderman)) {
+                    persistentDataLayer.flagMetadata(MobMetaFlagType.EXPLOITED_ENDERMEN, enderman);
+                }
+            }
         }
     }
 
@@ -119,8 +131,8 @@ public class EntityListener implements Listener {
             projectile.setMetadata(mcMMO.infiniteArrowKey, mcMMO.metadataValue);
         }
 
-        projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(plugin, Math.min(event.getForce() * AdvancedConfig.getInstance().getForceMultiplier(), 1.0)));
-        projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(plugin, projectile.getLocation()));
+        projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(pluginRef, Math.min(event.getForce() * AdvancedConfig.getInstance().getForceMultiplier(), 1.0)));
+        projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(pluginRef, projectile.getLocation()));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -145,8 +157,8 @@ public class EntityListener implements Listener {
             if(!(projectile instanceof Arrow))
                 return;
 
-            projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(plugin, 1.0));
-            projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(plugin, projectile.getLocation()));
+            projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(pluginRef, 1.0));
+            projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(pluginRef, projectile.getLocation()));
 
             for(Enchantment enchantment : player.getInventory().getItemInMainHand().getEnchantments().keySet()) {
                 if(enchantment.getName().equalsIgnoreCase("piercing"))
@@ -185,73 +197,37 @@ public class EntityListener implements Listener {
         Entity entity = event.getEntity();
 
         if (entity instanceof FallingBlock || entity instanceof Enderman) {
-            boolean isTracked = entity.hasMetadata(mcMMO.entityMetadataKey);
-
-            if (mcMMO.getPlaceStore().isTrue(block) && !isTracked) {
-                mcMMO.getPlaceStore().setFalse(block);
-
-                entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
-            }
-            else if (isTracked) {
-                mcMMO.getPlaceStore().setTrue(block);
-            }
-        } else if ((block.getType() == Material.REDSTONE_ORE)) {
-        }
-        else {
+            trackMovingBlocks(block, entity); //ignore the IDE warning
+        //Apparently redstone ore will throw these events
+        } else if ((block.getType() != Material.REDSTONE_ORE)) {
             if (mcMMO.getPlaceStore().isTrue(block)) {
                 mcMMO.getPlaceStore().setFalse(block);
             }
         }
     }
 
-    /*@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onEntityDamageDebugLowest(EntityDamageEvent event)
-    {
-        if(event instanceof FakeEntityDamageByEntityEvent)
-            return;
+    /**
+     * This is a complex hack to track blocks for this event
+     * This event is called when a block starts its movement, or ends its movement
+     * It can start the movement through physics (falling blocks) or through being picked up (endermen)
+     * Since this event can be cancelled, its even weirder to track this stuff
+     * @param block this will either be the block that was originally picked up, or the block in its final destination
+     * @param movementSourceEntity this will either be an Endermen or a Falling Block
+     */
+    private void trackMovingBlocks(@NotNull Block block, @NotNull Entity movementSourceEntity) {
 
-        if(event instanceof FakeEntityDamageEvent)
-            return;
-
-        Bukkit.broadcastMessage(ChatColor.DARK_AQUA+"DMG Before Events: "
-                +ChatColor.RESET+event.getDamage());
+        //A block that has reached its destination, either being placed by endermen or having finished its fall
+        if(movementSourceEntity.hasMetadata(mcMMO.travelingBlock)) {
+            mcMMO.getPlaceStore().setTrue(block);
+            movementSourceEntity.removeMetadata(mcMMO.travelingBlock, pluginRef);
+        } else {
+            //A block that is starting movement (from either Endermen or Falling/Physics)
+            if(mcMMO.getPlaceStore().isTrue(block)) {
+                mcMMO.getPlaceStore().setFalse(block);
+                movementSourceEntity.setMetadata(mcMMO.blockMetadataKey, mcMMO.metadataValue);
+            }
+        }
     }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onEntityDamageDebugMonitor(EntityDamageEvent event)
-    {
-        if(event instanceof FakeEntityDamageByEntityEvent)
-            return;
-
-        if(event instanceof FakeEntityDamageEvent)
-            return;
-
-        if(!(event.getEntity() instanceof LivingEntity))
-            return;
-
-        LivingEntity entity = (LivingEntity) event.getEntity();
-
-        double rawDamage = event.getDamage();
-        double dmgAfterReduction = event.getFinalDamage();
-
-        Bukkit.broadcastMessage(ChatColor.GOLD+"DMG After Events: "
-                + event.getEntity().getName()+ChatColor.RESET
-                +"RawDMG["+rawDamage+"], "
-                +"FinalDMG=["+dmgAfterReduction+"]");
-
-        Bukkit.broadcastMessage(
-                event.getEntity().getName()
-                +ChatColor.GREEN
-                +" HP "
-                +ChatColor.RESET
-                +entity.getHealth()
-                +ChatColor.YELLOW
-                +" -> "
-                +ChatColor.RESET
-                +(entity.getHealth()-event.getFinalDamage()));
-
-        Bukkit.broadcastMessage("");
-    }*/
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityCombustByEntityEvent(EntityCombustByEntityEvent event) {
@@ -284,6 +260,10 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        if (event instanceof FakeEntityDamageByEntityEvent) {
+            return;
+        }
+
         double damage = event.getFinalDamage();
         Entity defender = event.getEntity();
         Entity attacker = event.getDamager();
@@ -292,35 +272,31 @@ public class EntityListener implements Listener {
         {
             if(attacker instanceof Player) {
 
-                if(!WorldGuardManager.getInstance().hasMainFlag((Player) attacker))
+                if(!WorldGuardManager.getInstance().hasMainFlag((Player) attacker)) {
                     return;
+                }
 
             } else if(attacker instanceof Projectile) {
 
                 Projectile projectile = (Projectile) attacker;
 
                 if(projectile.getShooter() instanceof Player) {
-                    if(!WorldGuardManager.getInstance().hasMainFlag((Player) projectile.getShooter()))
+                    if(!WorldGuardManager.getInstance().hasMainFlag((Player) projectile.getShooter())) {
                         return;
+                    }
                 }
 
             }
         }
 
         /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
-            return;
-
-        if (event instanceof FakeEntityDamageByEntityEvent) {
+        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld())) {
             return;
         }
 
         // Don't process this event for marked entities, for players this is handled above,
         // However, for entities, we do not wanna cancel this event to allow plugins to observe changes
         // properly
-        if (defender.getMetadata(mcMMO.CUSTOM_DAMAGE_METAKEY).size() > 0) {
-            return;
-        }
 
         if (CombatUtils.isProcessingNoInvulnDamage()) {
             return;
@@ -341,6 +317,10 @@ public class EntityListener implements Listener {
         }
 
         if (Misc.isNPCEntityExcludingVillagers(attacker)) {
+            return;
+        }
+
+        if (CombatUtils.hasIgnoreDamageMetadata(target)) {
             return;
         }
 
@@ -422,7 +402,7 @@ public class EntityListener implements Listener {
         }
 
         CombatUtils.processCombatAttack(event, attacker, target);
-        CombatUtils.handleHealthbars(attacker, target, event.getFinalDamage(), plugin);
+        CombatUtils.handleHealthbars(attacker, target, event.getFinalDamage(), pluginRef);
     }
 
     @EventHandler(priority =  EventPriority.MONITOR, ignoreCancelled = false)
@@ -490,7 +470,7 @@ public class EntityListener implements Listener {
          * Process Registered Interactions
          */
 
-        InteractionManager.processEvent(event, plugin, InteractType.ON_ENTITY_DAMAGE);
+        InteractionManager.processEvent(event, pluginRef, InteractType.ON_ENTITY_DAMAGE);
 
         /*
          * Old code
@@ -646,29 +626,7 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityDeathLowest(EntityDeathEvent event) {
-        /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
-            return;
-
-        LivingEntity entity = event.getEntity();
-
-        if (Misc.isNPCEntityExcludingVillagers(entity)) {
-            return;
-        }
-
-        if (entity.hasMetadata(mcMMO.customNameKey)) {
-            entity.setCustomName(entity.getMetadata(mcMMO.customNameKey).get(0).asString());
-            entity.removeMetadata(mcMMO.customNameKey, plugin);
-        }
-
-        if (entity.hasMetadata(mcMMO.customVisibleKey)) {
-            entity.setCustomNameVisible(entity.getMetadata(mcMMO.customVisibleKey).get(0).asBoolean());
-            entity.removeMetadata(mcMMO.customVisibleKey, plugin);
-        }
-
-        if (entity.hasMetadata(mcMMO.entityMetadataKey)) {
-            entity.removeMetadata(mcMMO.entityMetadataKey, plugin);
-        }
+        mcMMO.getTransientMetadataTools().cleanAllMobMetadata(event.getEntity());
     }
 
     /**
@@ -704,33 +662,41 @@ public class EntityListener implements Listener {
         if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
             return;
 
-        LivingEntity entity = event.getEntity();
+        LivingEntity livingEntity = event.getEntity();
 
         switch (event.getSpawnReason()) {
             case NETHER_PORTAL:
+                trackSpawnedAndPassengers(livingEntity, MobMetaFlagType.NETHER_PORTAL_MOB);
+                break;
             case SPAWNER:
             case SPAWNER_EGG:
-                entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
-
-                Entity passenger = entity.getPassenger();
-
-                if (passenger != null) {
-                    passenger.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
-                }
-                return;
-
+                trackSpawnedAndPassengers(livingEntity, MobMetaFlagType.MOB_SPAWNER_MOB);
+                break;
+            case DISPENSE_EGG:
+            case EGG:
+                trackSpawnedAndPassengers(livingEntity, MobMetaFlagType.EGG_MOB);
+                break;
             case BREEDING:
-                entity.setMetadata(mcMMO.bredMetadataKey, mcMMO.metadataValue);
-                return;
-
+                trackSpawnedAndPassengers(livingEntity, MobMetaFlagType.PLAYER_BRED_MOB);
+                break;
             default:
+        }
+    }
+
+    private void trackSpawnedAndPassengers(LivingEntity livingEntity, MobMetaFlagType mobMetaFlagType) {
+        persistentDataLayer.flagMetadata(mobMetaFlagType, livingEntity);
+
+        for(Entity passenger : livingEntity.getPassengers()) {
+            if(passenger != null) {
+                persistentDataLayer.flagMetadata(mobMetaFlagType, livingEntity);
+            }
         }
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onEntityBreed(EntityBreedEvent event) {
         if(ExperienceConfig.getInstance().isCOTWBreedingPrevented()) {
-            if(event.getFather().hasMetadata(mcMMO.COTW_TEMPORARY_SUMMON) || event.getMother().hasMetadata(mcMMO.COTW_TEMPORARY_SUMMON)) {
+            if(persistentDataLayer.hasMobFlag(MobMetaFlagType.COTW_SUMMONED_MOB, event.getFather()) || persistentDataLayer.hasMobFlag(MobMetaFlagType.COTW_SUMMONED_MOB, event.getMother())) {
                 event.setCancelled(true);
                 Animals mom = (Animals) event.getMother();
                 Animals father = (Animals) event.getFather();
@@ -745,7 +711,6 @@ public class EntityListener implements Listener {
                     NotificationManager.sendPlayerInformationChatOnly(player, "Taming.Summon.COTW.BreedingDisallowed");
                 }
             }
-
         }
     }
 
@@ -769,7 +734,7 @@ public class EntityListener implements Listener {
 
         // We can make this assumption because we (should) be the only ones
         // using this exact metadata
-        Player player = plugin.getServer().getPlayerExact(entity.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
+        Player player = pluginRef.getServer().getPlayerExact(entity.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
 
         if (!UserManager.hasPlayerDataKey(player)) {
             return;
@@ -815,7 +780,7 @@ public class EntityListener implements Listener {
 
         // We can make this assumption because we (should) be the only ones
         // using this exact metadata
-        Player player = plugin.getServer().getPlayerExact(entity.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
+        Player player = pluginRef.getServer().getPlayerExact(entity.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
 
         if (!UserManager.hasPlayerDataKey(player)) {
             return;
@@ -983,13 +948,16 @@ public class EntityListener implements Listener {
                 return;
         }
 
-        LivingEntity entity = event.getEntity();
+        LivingEntity livingEntity = event.getEntity();
 
-        if (!UserManager.hasPlayerDataKey(player) || Misc.isNPCEntityExcludingVillagers(entity) || entity.hasMetadata(mcMMO.entityMetadataKey)) {
+        if (!UserManager.hasPlayerDataKey(player)
+                || Misc.isNPCEntityExcludingVillagers(livingEntity)
+                || persistentDataLayer.hasMobFlag(MobMetaFlagType.EGG_MOB, livingEntity)
+                || persistentDataLayer.hasMobFlag(MobMetaFlagType.MOB_SPAWNER_MOB, livingEntity)) {
             return;
         }
 
-        entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+        persistentDataLayer.flagMetadata(MobMetaFlagType.PLAYER_TAMED_MOB, livingEntity);
 
         //Profile not loaded
         if(UserManager.getPlayer(player) == null)
@@ -997,7 +965,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        UserManager.getPlayer(player).getTamingManager().awardTamingXP(entity);
+        UserManager.getPlayer(player).getTamingManager().awardTamingXP(livingEntity);
     }
 
     /**
@@ -1067,17 +1035,6 @@ public class EntityListener implements Listener {
                 int duration = (int) (effect.getDuration() * event.getIntensity(entity));
                 entity.addPotionEffect(new PotionEffect(effect.getType(), duration, effect.getAmplifier(), effect.isAmbient()));
             }
-        }
-    }
-    
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPigZapEvent(PigZapEvent event) {
-        /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
-            return;
-
-        if (event.getEntity().hasMetadata(mcMMO.entityMetadataKey)) {
-            event.getPigZombie().setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
         }
     }
 }

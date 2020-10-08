@@ -139,7 +139,11 @@ Experience_Formula:
         PVP: 1.0
 
     # Experience gained from mobs not naturally spawned will get multiplied by this value. 0 by default.
+    Eggs:
+        Multiplier: 0
     Mobspawners:
+        Multiplier: 0
+    Nether_Portal:
         Multiplier: 0
     Breeding:
         Multiplier: 1.0
