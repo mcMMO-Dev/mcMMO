@@ -2,6 +2,7 @@ package com.gmail.nossr50.util.compat.layers.persistentdata;
 
 import com.gmail.nossr50.api.exceptions.IncompleteNamespacedKeyRegister;
 import com.gmail.nossr50.mcMMO;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Furnace;
 import org.bukkit.enchantments.Enchantment;
@@ -37,7 +38,6 @@ public class SpigotPersistentDataLayer_1_14 extends AbstractPersistentDataLayer 
     private void initMobFlagKeyMap() throws IncompleteNamespacedKeyRegister {
         for(MobMetaFlagType mobMetaFlagType : MobMetaFlagType.values()) {
             switch(mobMetaFlagType) {
-
                 case MOB_SPAWNER_MOB:
                     mobFlagKeyMap.put(mobMetaFlagType, NSK_MOB_SPAWNER_MOB);
                     break;
@@ -67,7 +67,7 @@ public class SpigotPersistentDataLayer_1_14 extends AbstractPersistentDataLayer 
 
     @Override
     public boolean hasMobFlag(@NotNull MobMetaFlagType flag, @NotNull LivingEntity livingEntity) {
-        return livingEntity.getPersistentDataContainer().has(mobFlagKeyMap.get(flag), PersistentDataType.SHORT);
+        return livingEntity.getPersistentDataContainer().has(mobFlagKeyMap.get(flag), PersistentDataType.BYTE);
     }
 
     @Override

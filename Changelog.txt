@@ -17,6 +17,7 @@ Version 2.1.148
         Nether Portal spawned mobs are tracked persistently and are no longer forgotten about after a restart
         Endermen who target endermite are tracked persistently and are no longer forgotten about after a restart
         COTW spawned mobs are tracked persistently and are no longer forgotten about after a restart
+        Player bred mobs are tracked persistently and are no longer forgotten about after a restart
 
 
     NOTES:
