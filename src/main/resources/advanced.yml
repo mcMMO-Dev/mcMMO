@@ -275,6 +275,8 @@ Skills:
     #  Settings for Mining
     ###
     Mining:
+        SuperBreaker:
+            AllowTripleDrops: true
         DoubleDrops:
             SilkTouch: true
             # ChanceMax: Maximum chance of receiving double drops when on <MaxBonusLevel> or higher

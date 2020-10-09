@@ -5,6 +5,7 @@ Version 2.1.148
     New experience multiplier labeled 'Eggs' in experience.yml with a default value of 0 (previously mobs from eggs were using the Mobspawner experience multiplier)
     New experience multiplier labeled 'Nether_Portal' in experience.yml with a default value of 0
     New experience multiplier labeled 'Player_Tamed' in experience.yml with a default value of 0
+    New advanced.yml config setting 'Skills.Mining.SuperBreaker.AllowTripleDrops' defaults to true
 
     Fixed a bug where mobs from eggs were only tracked if it was dispensed (egg tracking now tracks from egg items as well)
     Fixed a bug where egg spawned mobs were sometimes not marked as being from an egg (used in experience multipliers)
