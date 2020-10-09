@@ -815,6 +815,8 @@ public final class CombatUtils {
                 baseXP *= ExperienceConfig.getInstance().getEggXpMultiplier();
             } else if (getPersistentData().hasMobFlag(MobMetaFlagType.PLAYER_BRED_MOB, target)) {
                 baseXP *= ExperienceConfig.getInstance().getBredMobXpMultiplier();
+            } else if(getPersistentData().hasMobFlag(MobMetaFlagType.PLAYER_TAMED_MOB, target)) {
+                baseXP *= ExperienceConfig.getInstance().getTamedMobXpMultiplier();
             }
 
             baseXP *= 10;
