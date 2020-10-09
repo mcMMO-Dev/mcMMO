@@ -744,7 +744,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getDropMultiplier(int rank) { return config.getInt("Skills.Mining.BlastMining.DropMultiplier.Rank_" + rank); }
     public double getBlastRadiusModifier(int rank) { return config.getDouble("Skills.Mining.BlastMining.BlastRadiusModifier.Rank_" + rank); }
 
-
     /* REPAIR */
     public double getRepairMasteryMaxBonus() { return config.getDouble("Skills.Repair.RepairMastery.MaxBonusPercentage", 200.0D); }
     public int getRepairMasteryMaxLevel() { return config.getInt("Skills.Repair.RepairMastery.MaxBonusLevel", 100); }
