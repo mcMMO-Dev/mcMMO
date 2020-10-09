@@ -197,37 +197,82 @@ public class EntityListener implements Listener {
         Entity entity = event.getEntity();
 
         if (entity instanceof FallingBlock || entity instanceof Enderman) {
-            trackMovingBlocks(block, entity); //ignore the IDE warning
-        //Apparently redstone ore will throw these events
-        } else if ((block.getType() != Material.REDSTONE_ORE)) {
+            boolean isTracked = entity.hasMetadata(mcMMO.travelingBlock);
+
+            if (mcMMO.getPlaceStore().isTrue(block) && !isTracked) {
+                mcMMO.getPlaceStore().setFalse(block);
+
+                entity.setMetadata(mcMMO.travelingBlock, mcMMO.metadataValue);
+            }
+            else if (isTracked) {
+                mcMMO.getPlaceStore().setTrue(block);
+            }
+        } else if ((block.getType() == Material.REDSTONE_ORE)) {
+        }
+        else {
             if (mcMMO.getPlaceStore().isTrue(block)) {
                 mcMMO.getPlaceStore().setFalse(block);
             }
         }
     }
 
-    /**
-     * This is a complex hack to track blocks for this event
-     * This event is called when a block starts its movement, or ends its movement
-     * It can start the movement through physics (falling blocks) or through being picked up (endermen)
-     * Since this event can be cancelled, its even weirder to track this stuff
-     * @param block this will either be the block that was originally picked up, or the block in its final destination
-     * @param movementSourceEntity this will either be an Endermen or a Falling Block
-     */
-    private void trackMovingBlocks(@NotNull Block block, @NotNull Entity movementSourceEntity) {
+//    /**
+//     * Monitor EntityChangeBlock events.
+//     *
+//     * @param event
+//     *            The event to watch
+//     */
+//    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+//    public void onEntityChangeBlock(EntityChangeBlockEvent event) {
+//        /* WORLD BLACKLIST CHECK */
+//        if(WorldBlacklist.isWorldBlacklisted(event.getEntity().getWorld()))
+//            return;
+//
+//        Block block = event.getBlock();
+//
+//        // When the event is fired for the falling block that changes back to a
+//        // normal block
+//        // event.getBlock().getType() returns AIR
+//        if (!BlockUtils.shouldBeWatched(block.getState())
+//                && block.getState().getType() != Material.WATER
+//                && block.getType() != Material.AIR) {
+//            return;
+//        }
+//
+//        Entity entity = event.getEntity();
+//
+//        if (entity instanceof FallingBlock || entity instanceof Enderman) {
+//            trackMovingBlocks(block, entity); //ignore the IDE warning
+//        //Apparently redstone ore will throw these events
+//        } else if ((block.getType() != Material.REDSTONE_ORE)) {
+//            if (mcMMO.getPlaceStore().isTrue(block)) {
+//                mcMMO.getPlaceStore().setFalse(block);
+//            }
+//        }
+//    }
 
-        //A block that has reached its destination, either being placed by endermen or having finished its fall
-        if(movementSourceEntity.hasMetadata(mcMMO.travelingBlock)) {
-            mcMMO.getPlaceStore().setTrue(block);
-            movementSourceEntity.removeMetadata(mcMMO.travelingBlock, pluginRef);
-        } else {
-            //A block that is starting movement (from either Endermen or Falling/Physics)
-            if(mcMMO.getPlaceStore().isTrue(block)) {
-                mcMMO.getPlaceStore().setFalse(block);
-                movementSourceEntity.setMetadata(mcMMO.blockMetadataKey, mcMMO.metadataValue);
-            }
-        }
-    }
+//    /**
+//     * This is a complex hack to track blocks for this event
+//     * This event is called when a block starts its movement, or ends its movement
+//     * It can start the movement through physics (falling blocks) or through being picked up (endermen)
+//     * Since this event can be cancelled, its even weirder to track this stuff
+//     * @param block this will either be the block that was originally picked up, or the block in its final destination
+//     * @param movementSourceEntity this will either be an Endermen or a Falling Block
+//     */
+//    private void trackMovingBlocks(@NotNull Block block, @NotNull Entity movementSourceEntity) {
+//
+//        //A block that has reached its destination, either being placed by endermen or having finished its fall
+//        if(movementSourceEntity.hasMetadata(mcMMO.travelingBlock)) {
+//            mcMMO.getPlaceStore().setTrue(block);
+//            movementSourceEntity.removeMetadata(mcMMO.travelingBlock, pluginRef);
+//        } else {
+//            //A block that is starting movement (from either Endermen or Falling/Physics)
+//            if(mcMMO.getPlaceStore().isTrue(block)) {
+//                mcMMO.getPlaceStore().setFalse(block);
+//                movementSourceEntity.setMetadata(mcMMO.blockMetadataKey, mcMMO.metadataValue);
+//            }
+//        }
+//    }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityCombustByEntityEvent(EntityCombustByEntityEvent event) {

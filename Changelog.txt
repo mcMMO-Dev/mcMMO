@@ -19,7 +19,6 @@ Version 2.1.148
         COTW spawned mobs are tracked persistently and are no longer forgotten about after a restart
         Player bred mobs are tracked persistently and are no longer forgotten about after a restart
 
-
     NOTES:
     Egg mobs & Nether portal pigs being assigned to the mobspawner xp multiplier didn't make sense to me, so it has been changed. They have their own XP multipliers now.
     While working on making data persistent I stumbled upon some alarming memory leak candidates, one of them was 7 years old. Sigh.
