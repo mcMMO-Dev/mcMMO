@@ -1,5 +1,5 @@
 Version 2.1.149
-    Added new config file 'persistentdata.yml'
+    Added new config file 'persistent_data.yml'
     Almost all persistent mob data is now off by default and needs to be turned on in persistentdata.yml (new config file) for performance concerns
 
     NOTES:
@@ -7,6 +7,9 @@ Version 2.1.149
     Not every server will suffer from these issues, most probably will not, I am making it opt-in so only those aware of the performance risk will be using this feature.
     Persistent data on mobs is a new feature that was introduced in 2.1.148, it was not in mcMMO for the last 10 years and most of you probably didn't even know that it was missing.
     An example of persistent data would be, normally mcMMO would give 0 XP for a mob from a mob spawner, in the last 10 years if the server rebooted then those existing mobs would give XP again. But with the persistent data option turned on in persistentdata.yml they will be saved to disk, and mcMMO will not forget about them upon reboot.
+
+    For now it is not recommended to use persistent data without monitoring performance of ticks afterwards to make sure it was something your server could handle.
+    I have a solution in mind to make persistent data not so expensive, but writing the code for that will take some time. This will serve as an interim fix.
 
 Version 2.1.148
     Fixed a memory leak involving entity metadata

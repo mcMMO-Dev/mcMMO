@@ -2,6 +2,9 @@
 # For 10 years mcMMO had transient data (temporary) for a lot of things and recently in October 2020 I added the option to have things be persistent (saved to disk and permanently remembered)
 # However, this is Minecraft, and Minecraft has a lot of entities, and when you start to make data persistent there is a performance cost associated with that
 # Any option you turn on, is another thing your disk has to save when a chunk is being unloaded with that entity inside of it, Minecraft can quickly build up tens of thousands of entities so keep this in mind.
+#
+# I am considering alternative to using Spigots NBT API to avoid this performance cost, but the code for those will take some time to write and test, for now it is not recommended
+#  to turn any of these settings on without monitoring the TPS of your server afterwards. With the exception of the COTW setting which will probably have almost no performance impact if left on.
 Persistent_Data:
     Mobs:
         Flags:

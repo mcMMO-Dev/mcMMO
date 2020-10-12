@@ -6,7 +6,7 @@ public class PersistentDataConfig extends AutoUpdateConfigLoader {
     private static PersistentDataConfig instance;
 
     private PersistentDataConfig() {
-        super("persistentdata.yml");
+        super("persistent_data.yml");
         validate();
     }
 
@@ -29,9 +29,9 @@ public class PersistentDataConfig extends AutoUpdateConfigLoader {
     }
 
     //Persistent Data Toggles
-
     public boolean isMobPersistent(MobMetaFlagType mobMetaFlagType) {
         String key = "Persistent_Data.Mobs.Flags." + mobMetaFlagType.toString() + ".Saved_To_Disk";
         return config.getBoolean(key, false);
     }
+
 }
