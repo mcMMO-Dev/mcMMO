@@ -21,10 +21,12 @@ import java.util.UUID;
 public class SpigotPersistentDataLayer_1_14 extends AbstractPersistentDataLayer {
 
     private final @NotNull EnumMap<MobMetaFlagType, NamespacedKey> mobFlagKeyMap;
+    private final @NotNull SpigotPersistentDataLayer_1_13 transientLayer;
 
     public SpigotPersistentDataLayer_1_14() {
         mobFlagKeyMap = new EnumMap<>(MobMetaFlagType.class);
         initMobFlagKeyMap();
+        transientLayer = new SpigotPersistentDataLayer_1_13(); //For disabled persistent types
     }
 
     @Override
