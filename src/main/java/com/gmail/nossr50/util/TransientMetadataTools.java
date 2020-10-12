@@ -29,9 +29,7 @@ public class TransientMetadataTools {
             livingEntity.removeMetadata(mcMMO.travelingBlock, pluginRef);
         }
 
-        //1.13.2 uses transient mob flags and needs to be cleaned up
-        if(mcMMO.getCompatibilityManager().getPersistentDataLayer() instanceof SpigotPersistentDataLayer_1_13) {
-            mcMMO.getCompatibilityManager().getPersistentDataLayer().removeMobFlags(livingEntity);
-        }
+        //Cleanup mob metadata
+        mcMMO.getCompatibilityManager().getPersistentDataLayer().removeMobFlags(livingEntity);
     }
 }
