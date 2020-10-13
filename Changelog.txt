@@ -7,7 +7,7 @@ There are some performance issues with how Spigot/MC saves NBT when you start ad
 
 Not every server will suffer a TPS hit when using the persistent data options, but there is a significant IO cost which can affect TPS if you have them on
 
-I am therefor making many persistent options (the problematic ones involving mobs) opt-in so only those aware of the performance risk will be using the feature.
+I am therefore making many persistent options (the problematic ones involving mobs) opt-in so only those aware of the performance risk will be using the feature.
 
 Persistent data on mobs was a new feature that was introduced in 2.1.148, it was not in mcMMO for the last 10 years and most of you probably didn't even know that it was missing
 
