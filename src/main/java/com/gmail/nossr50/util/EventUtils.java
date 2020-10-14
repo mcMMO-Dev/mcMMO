@@ -44,6 +44,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.HashMap;
@@ -52,10 +53,30 @@ import java.util.Map;
 /**
  * This class is meant to help make event related code less boilerplate
  */
-public class EventUtils {
+public final class EventUtils {
+
+    /**
+     * This is a static utility class, therefore we don't want any instances of
+     * this class. Making the constructor private prevents accidents like that.
+     */
+    private EventUtils() {}
+
     /*
      * Quality of Life methods
      */
+
+    /**
+     * This is a simple check to see if an {@link Event} is fake or not.
+     * {@link FakeEvent FakeEvents} should not be processed like normally and maybe even 
+     * be ignored by other {@link Plugin plugins} completely.
+     * 
+     * @param event The {@link Event} in question
+     * @return Whether this {@link Event} has been faked by mcMMO and should not be processed normally.
+     */
+    public static boolean isFakeEvent(Event event) {
+        return event instanceof FakeEvent;
+    }
+
     /**
      * Checks to see if damage is from natural sources
      * This cannot be used to determine if damage is from vanilla MC, it just checks to see if the damage is from a complex behaviour in mcMMO such as bleed.
@@ -69,6 +90,7 @@ public class EventUtils {
 
     /**
      * This little method is just to make the code more readable
+     * 
      * @param entity target entity
      * @return the associated McMMOPlayer for this entity
      */
