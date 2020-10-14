@@ -1,3 +1,6 @@
+Version 2.1.150
+    (API) Fake events in mcMMO now implement 'FakeEvent' (thanks TheBusyBiscuit)
+
 Version 2.1.149
     Added a new config file 'persistent_data.yml'
     Almost all persistent mob data is now off by default and needs to be turned on in persistent_data.yml (new config file) for performance concerns
@@ -18,7 +21,7 @@ For now it is not recommended to use persistent data without monitoring performa
 I have a solution in mind to make persistent data not so expensive, but writing the code for that will take some time. This will serve as an interim fix.
 
 I am going to focus on Tridents & Crossbows instead of that alternative solution, so don't expect it anytime soon. Use persistent data only if you understand the potential performance cost risk.
-
+@
 Version 2.1.148
     Fixed a memory leak involving entity metadata
     Alchemy progression is now more reasonable (delete skillranks.yml or edit it yourself to receive the change, see notes)
