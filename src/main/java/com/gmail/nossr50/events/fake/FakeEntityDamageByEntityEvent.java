@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Called when mcMMO applies damage from an entity due to special abilities.
  */
-public class FakeEntityDamageByEntityEvent extends EntityDamageByEntityEvent {
+public class FakeEntityDamageByEntityEvent extends EntityDamageByEntityEvent implements FakeEvent {
 
     public FakeEntityDamageByEntityEvent(Entity damager, Entity damagee, DamageCause cause, final Map<DamageModifier, Double> modifiers) {
         super(damager, damagee, cause, modifiers, getFunctionModifiers(modifiers));
