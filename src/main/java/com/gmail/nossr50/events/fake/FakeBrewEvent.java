@@ -4,7 +4,7 @@ import org.bukkit.block.Block;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.inventory.BrewerInventory;
 
-public class FakeBrewEvent extends BrewEvent {
+public class FakeBrewEvent extends BrewEvent implements FakeEvent {
     public FakeBrewEvent(Block brewer, BrewerInventory contents, int fuelLevel) {
         super(brewer, contents, fuelLevel);
     }
