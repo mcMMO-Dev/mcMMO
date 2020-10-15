@@ -51,7 +51,7 @@ public final class ChimaeraWing {
             return;
         }
 
-        mmoPlayer = mcMMO.getUserManager().getPlayer(player);
+        mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer(player);
 
         //Not loaded
         if(mmoPlayer == null)

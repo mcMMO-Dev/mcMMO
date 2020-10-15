@@ -82,9 +82,9 @@ public class SkillresetCommand implements TabExecutor {
                     if (player != null) {
                         uuid = player.getUniqueId();
                     }
-                    PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, uuid, false);
+                    PlayerProfile profile = mcMMO.getDatabaseManager().queryPlayerDataByUUID(playerName, uuid, false);
 
-                    if (CommandUtils.unloadedProfile(sender, profile)) {
+                    if (CommandUtils.hasNoProfile(sender, profile)) {
                         return true;
                     }
 

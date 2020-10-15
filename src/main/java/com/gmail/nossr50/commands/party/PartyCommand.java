@@ -69,13 +69,13 @@ public class PartyCommand implements TabExecutor {
             return true;
         }
 
-        if(mcMMO.getUserManager().getPlayer(player) == null)
+        if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null)
         {
             player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer(player);
 
         if (args.length < 1) {
             if (!mcMMO.getPartyManager().mmoPlayer.inParty()) {
@@ -189,13 +189,13 @@ public class PartyCommand implements TabExecutor {
                             Player player = (Player) sender;
 
                             //Not Loaded
-                            if(mcMMO.getUserManager().getPlayer(player) == null)
+                            if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null)
                             {
                                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                                 return ImmutableList.of();
                             }
 
-                            Party party = mcMMO.getUserManager().getPlayer(player).getParty();
+                            Party party = mcMMO.getUserManager().queryMcMMOPlayer(player).getParty();
 
                             playerNames = party.getOnlinePlayerNames(player);
                             return StringUtil.copyPartialMatches(args[1], playerNames, new ArrayList<>(playerNames.size()));

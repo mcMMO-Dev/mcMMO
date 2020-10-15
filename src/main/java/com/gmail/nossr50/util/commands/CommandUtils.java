@@ -87,7 +87,7 @@ public final class CommandUtils {
 
         PlayerProfile profile = new PlayerProfile(playerName, false);
 
-        if (unloadedProfile(sender, profile)) {
+        if (hasNoProfile(sender, profile)) {
             return false;
         }
 
@@ -95,12 +95,12 @@ public final class CommandUtils {
         return false;
     }
 
-    public static boolean unloadedProfile(CommandSender sender, PlayerProfile profile) {
+    public static boolean hasNoProfile(CommandSender sender, PlayerProfile profile) {
         if (profile.isLoaded()) {
             return false;
         }
 
-        sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
+
         return true;
     }
 
@@ -215,10 +215,10 @@ public final class CommandUtils {
     }
 
     private static void printGroupedSkillData(Player inspect, CommandSender display, String header, List<PrimarySkillType> skillGroup) {
-        if(mcMMO.getUserManager().getPlayer(inspect) == null)
+        if(mcMMO.getUserManager().queryMcMMOPlayer(inspect) == null)
             return;
 
-        PlayerProfile profile = mcMMO.getUserManager().getPlayer(inspect);
+        PlayerProfile profile = mcMMO.getUserManager().queryMcMMOPlayer(inspect);
 
         List<String> displayData = new ArrayList<>();
         displayData.add(header);

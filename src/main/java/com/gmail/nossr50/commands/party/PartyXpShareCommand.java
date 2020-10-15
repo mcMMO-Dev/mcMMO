@@ -17,13 +17,13 @@ import org.jetbrains.annotations.NotNull;
 public class PartyXpShareCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if(mcMMO.getUserManager().getPlayer((Player) sender) == null)
+        if(mcMMO.getUserManager().queryMcMMOPlayer((Player) sender) == null)
         {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
 
-        Party party = mcMMO.getUserManager().getPlayer((Player) sender).getParty();
+        Party party = mcMMO.getUserManager().queryMcMMOPlayer((Player) sender).getParty();
 
         if (party.getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.XP_SHARE)) {
             sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.5"));

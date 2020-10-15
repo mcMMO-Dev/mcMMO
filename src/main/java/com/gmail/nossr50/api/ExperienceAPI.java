@@ -1144,7 +1144,7 @@ public final class ExperienceAPI {
     }
 
     private static PlayerProfile getOfflineProfile(UUID uuid) {
-        PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(uuid);
+        PlayerProfile profile = mcMMO.getDatabaseManager().queryPlayerDataByUUID(uuid);
 
         if (profile == null) {
             throw new InvalidPlayerException();
@@ -1156,7 +1156,7 @@ public final class ExperienceAPI {
     @Deprecated
     private static PlayerProfile getOfflineProfile(String playerName) {
         UUID uuid = mcMMO.p.getServer().getOfflinePlayer(playerName).getUniqueId();
-        PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(uuid);
+        PlayerProfile profile = mcMMO.getDatabaseManager().queryPlayerDataByUUID(uuid);
 
         if (profile == null) {
             throw new InvalidPlayerException();
@@ -1217,6 +1217,6 @@ public final class ExperienceAPI {
             throw new McMMOPlayerNotFoundException(player);
         }
 
-        return mcMMO.getUserManager().getPlayer(player);
+        return mcMMO.getUserManager().queryMcMMOPlayer(player);
     }
 }

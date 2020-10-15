@@ -105,13 +105,13 @@ public class UnarmedManager extends SkillManager {
                 return;
             }
 
-            if(mcMMO.getUserManager().getPlayer(defender) == null)
+            if(mcMMO.getUserManager().queryMcMMOPlayer(defender) == null)
                 return;
 
             Item item = Misc.dropItem(defender.getLocation(), defender.getInventory().getItemInMainHand());
 
             if (item != null && AdvancedConfig.getInstance().getDisarmProtected()) {
-                item.setMetadata(mcMMO.disarmedItemKey, mcMMO.getUserManager().getPlayer(defender).getPlayerMetadata());
+                item.setMetadata(mcMMO.disarmedItemKey, mcMMO.getUserManager().queryMcMMOPlayer(defender).getPlayerMetadata());
             }
 
             defender.getInventory().setItemInMainHand(new ItemStack(Material.AIR));

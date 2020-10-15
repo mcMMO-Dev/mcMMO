@@ -1,12 +1,19 @@
 package com.gmail.nossr50.database;
 
+import com.gmail.nossr50.api.exceptions.ProfileRetrievalException;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.MMODataSnapshot;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import org.apache.commons.lang.NullArgumentException;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -31,24 +38,24 @@ public interface DatabaseManager {
      * Remove a user from the database.
      *
      * @param playerName The name of the user to remove
-     * @param uuid player UUID, can be null
+     * @param uuid uuid of player to remove, can be null
      * @return true if the user was successfully removed, false otherwise
      */
-    boolean removeUser(String playerName, UUID uuid);
+    boolean removeUser(@NotNull String playerName, @Nullable UUID uuid);
 
     /**
      * Removes any cache used for faster lookups
      * Currently only used for SQL
      * @param uuid target UUID to cleanup
      */
-    void removeCache(UUID uuid);
+    void removeCache(@NotNull UUID uuid);
 
     /**
      * Save a user to the database.
      *
      * @param mmoDataSnapshot Snapshot of player data to save
      */
-    boolean saveUser(MMODataSnapshot mmoDataSnapshot);
+    boolean saveUser(@NotNull MMODataSnapshot mmoDataSnapshot);
 
     /**
     * Retrieve leaderboard info.
@@ -58,7 +65,7 @@ public interface DatabaseManager {
     * @param statsPerPage The number of stats per page
     * @return the requested leaderboard information
     */
-    List<PlayerStat> readLeaderboard(PrimarySkillType skill, int pageNumber, int statsPerPage);
+    @NotNull List<PlayerStat> readLeaderboard(@NotNull PrimarySkillType skill, int pageNumber, int statsPerPage);
 
     /**
      * Retrieve rank info into a HashMap from PrimarySkillType to the rank.
@@ -69,38 +76,54 @@ public interface DatabaseManager {
      * @param playerName The name of the user to retrieve the rankings for
      * @return the requested rank information
      */
-    Map<PrimarySkillType, Integer> readRank(String playerName);
+    @NotNull Map<PrimarySkillType, Integer> readRank(@NotNull String playerName);
 
     /**
      * Add a new user to the database.
-     *
-     * @param playerName The name of the player to be added to the database
+     *  @param playerName The name of the player to be added to the database
      * @param uuid The uuid of the player to be added to the database
      */
-    void newUser(String playerName, UUID uuid);
+    void insertNewUser(@NotNull String playerName, @NotNull UUID uuid) throws Exception;
+
+    @Nullable PlayerProfile queryPlayerDataByPlayer(@NotNull Player player) throws ProfileRetrievalException, NullArgumentException;
 
     /**
-     * Load a player from the database.
+     * Load player data (in the form of {@link PlayerProfile}) if player data exists
+     * Returns null if it doesn't
      *
      * @param uuid The uuid of the player to load from the database
-     * @return The player's data, or an unloaded PlayerProfile if not found
+     * @param playerName the current player name for this player
+     * @return The player's data, or null if not found
      */
-    PlayerProfile loadPlayerProfile(UUID uuid);
+    @Nullable PlayerProfile queryPlayerDataByUUID(@NotNull UUID uuid, @NotNull String playerName) throws ProfileRetrievalException, NullArgumentException;
+
+    /**
+     * This method queries the DB for player data for target player
+     * If it fails to find data for this player, or if it does find data but the data is corrupted,
+     *  it will then proceed to make brand new data for the target player, which will be saved to the DB during the next save
+     *
+     * This method will return null for all other errors, which indicates a problem with the DB, in which case mcMMO
+     *  will try to load the player data periodically, but that isn't handled in this method
+     *
+     * @param player target player
+     * @return {@link PlayerProfile} for the target player
+     */
+    @Nullable PlayerProfile initPlayerProfile(@NotNull Player player) throws Exception;
 
     /**
      * Get all users currently stored in the database.
      *
      * @return list of playernames
      */
-    List<String> getStoredUsers();
+    @NotNull List<String> getStoredUsers();
 
     /**
      * Convert all users from this database to the provided database using
-     * {@link #saveUser(PlayerProfile)}.
+     * {@link #saveUser(MMODataSnapshot)}.
      *
      * @param destination The DatabaseManager to save to
      */
-    void convertUsers(DatabaseManager destination);
+    void convertUsers(@NotNull DatabaseManager destination);
 
 //    boolean saveUserUUID(String userName, UUID uuid);
 
@@ -111,7 +134,7 @@ public interface DatabaseManager {
      *
      * @return The type of database
      */
-    DatabaseType getDatabaseType();
+    @NotNull DatabaseType getDatabaseType();
 
     /**
      * Called when the plugin disables

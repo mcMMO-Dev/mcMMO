@@ -25,13 +25,13 @@ public class PartyInviteCommand implements CommandExecutor {
 
             Player target = mcMMOTarget.getPlayer();
 
-            if (mcMMO.getUserManager().getPlayer((Player) sender) == null) {
+            if (mcMMO.getUserManager().queryMcMMOPlayer((Player) sender) == null) {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return true;
             }
 
             Player player = (Player) sender;
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
+            McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer(player);
             String playerName = player.getName();
 
             if (player.equals(target)) {

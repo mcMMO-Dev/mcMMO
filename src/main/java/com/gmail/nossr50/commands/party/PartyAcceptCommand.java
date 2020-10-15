@@ -16,12 +16,12 @@ public class PartyAcceptCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             //Check if player profile is loaded
-            if (mcMMO.getUserManager().getPlayer(player) == null) {
+            if (mcMMO.getUserManager().queryMcMMOPlayer(player) == null) {
                 sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
                 return true;
             }
 
-            McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
+            McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer(player);
 
 
             if (!mmoPlayer.hasPartyInvite()) {

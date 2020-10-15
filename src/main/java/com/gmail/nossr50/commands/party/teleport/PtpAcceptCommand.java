@@ -21,14 +21,14 @@ public class PtpAcceptCommand implements CommandExecutor {
             return true;
         }
 
-        if(mcMMO.getUserManager().getPlayer((Player) sender) == null)
+        if(mcMMO.getUserManager().queryMcMMOPlayer((Player) sender) == null)
         {
             sender.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return true;
         }
 
         Player player = (Player) sender;
-        PartyTeleportRecord ptpRecord = mcMMO.getUserManager().getPlayer(player).getPartyTeleportRecord();
+        PartyTeleportRecord ptpRecord = mcMMO.getUserManager().queryMcMMOPlayer(player).getPartyTeleportRecord();
 
         if (!ptpRecord.hasRequest()) {
             player.sendMessage(LocaleLoader.getString("Commands.ptp.NoRequests"));

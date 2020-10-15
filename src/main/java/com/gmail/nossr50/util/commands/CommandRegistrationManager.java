@@ -8,7 +8,7 @@ import com.gmail.nossr50.commands.chat.AdminChatCommand;
 import com.gmail.nossr50.commands.chat.McChatSpy;
 import com.gmail.nossr50.commands.chat.PartyChatCommand;
 import com.gmail.nossr50.commands.database.McpurgeCommand;
-import com.gmail.nossr50.commands.database.McremoveCommand;
+import com.gmail.nossr50.commands.database.DatabaseRemovePlayerCommand;
 import com.gmail.nossr50.commands.database.MmoshowdbCommand;
 import com.gmail.nossr50.commands.experience.AddlevelsCommand;
 import com.gmail.nossr50.commands.experience.AddxpCommand;
@@ -298,7 +298,7 @@ public final class CommandRegistrationManager {
         command.setPermission("mcmmo.commands.mcremove");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcremove", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
-        command.setExecutor(new McremoveCommand());
+        command.setExecutor(new DatabaseRemovePlayerCommand());
     }
 
     private static void registerMmoshowdbCommand() {

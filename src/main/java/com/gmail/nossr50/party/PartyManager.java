@@ -41,6 +41,15 @@ public final class PartyManager {
     }
 
     /**
+     * Get the level of a party
+     * @param party target party
+     * @return the level value of the target party
+     */
+    public int getPartyLevel(@NotNull Party party) {
+        return party.getPartyExperienceManager().getLevel();
+    }
+
+    /**
      * Check if a party with a given name already exists.
      *
      * @param partyName The name of the party to check
@@ -95,19 +104,19 @@ public final class PartyManager {
      */
     public boolean inSameParty(Player firstPlayer, Player secondPlayer) {
         //Profile not loaded
-        if(mcMMO.getUserManager().getPlayer(firstPlayer) == null)
+        if(mcMMO.getUserManager().queryMcMMOPlayer(firstPlayer) == null)
         {
             return false;
         }
 
         //Profile not loaded
-        if(mcMMO.getUserManager().getPlayer(secondPlayer) == null)
+        if(mcMMO.getUserManager().queryMcMMOPlayer(secondPlayer) == null)
         {
             return false;
         }
 
-        Party firstParty = mcMMO.getUserManager().getPlayer(firstPlayer).getParty();
-        Party secondParty = mcMMO.getUserManager().getPlayer(secondPlayer).getParty();
+        Party firstParty = mcMMO.getUserManager().queryMcMMOPlayer(firstPlayer).getParty();
+        Party secondParty = mcMMO.getUserManager().queryMcMMOPlayer(secondPlayer).getParty();
 
         if (firstParty == null || secondParty == null) {
             return false;
@@ -261,12 +270,12 @@ public final class PartyManager {
      */
     public Party getParty(Player player) {
         //Profile not loaded
-        if(mcMMO.getUserManager().getPlayer(player) == null)
+        if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null)
         {
             return null;
         }
 
-        McMMOPlayer mmoPlayer = mcMMO.getUserManager().getPlayer(player);
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer(player);
 
         return mmoPlayer.getParty();
     }
@@ -328,12 +337,12 @@ public final class PartyManager {
         //TODO: Potential issues with unloaded profile?
         for (Player member : party.getPartyMembers()) {
             //Profile not loaded
-            if(mcMMO.getUserManager().getPlayer(member) == null)
+            if(mcMMO.getUserManager().queryMcMMOPlayer(member) == null)
             {
                 continue;
             }
 
-            processPartyLeaving(mcMMO.getUserManager().getPlayer(member));
+            processPartyLeaving(mcMMO.getUserManager().queryMcMMOPlayer(member));
         }
 
         // Disband the alliance between the disbanded party and it's ally
@@ -679,7 +688,7 @@ public final class PartyManager {
             Party party = new Party(partyName);
 
             String leaderName = partiesFile.getString(partyName + ".Leader");
-            PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(leaderName, false);
+            PlayerProfile profile = mcMMO.getDatabaseManager().queryPlayerDataByUUID(leaderName, false);
 
             if (!profile.isLoaded()) {
                 mcMMO.p.getLogger().warning("Could not find UUID in database for party leader " + leaderName + " in party " + partyName);
@@ -708,7 +717,7 @@ public final class PartyManager {
             LinkedHashMap<UUID, String> members = party.getMembers();
 
             for (String memberName : partiesFile.getStringList(partyName + ".Members")) {
-                PlayerProfile memberProfile = mcMMO.getDatabaseManager().loadPlayerProfile(memberName, false);
+                PlayerProfile memberProfile = mcMMO.getDatabaseManager().queryPlayerDataByUUID(memberName, false);
 
                 if (!memberProfile.isLoaded()) {
                     mcMMO.p.getLogger().warning("Could not find UUID in database for party member " + memberName + " in party " + partyName);

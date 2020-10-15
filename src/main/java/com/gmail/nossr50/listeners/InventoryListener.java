@@ -66,13 +66,13 @@ public class InventoryListener implements Listener {
                 }
 
                 //Profile doesn't exist
-                if(mcMMO.getUserManager().getOfflinePlayer(offlinePlayer) == null)
+                if(mcMMO.getUserManager().queryMcMMOPlayer(offlinePlayer) == null)
                 {
                     return;
                 }
 
 
-                boolean debugMode = player.isOnline() && mcMMO.getUserManager().getPlayer(player).isDebugMode();
+                boolean debugMode = player.isOnline() && mcMMO.getUserManager().queryMcMMOPlayer(player).isDebugMode();
 
                 if(debugMode) {
                     player.sendMessage("FURNACE FUEL EFFICIENCY DEBUG REPORT");
@@ -81,7 +81,7 @@ public class InventoryListener implements Listener {
                     player.sendMessage("Burn Length before Fuel Efficiency is applied - "+event.getBurnTime());
                 }
 
-                event.setBurnTime(mcMMO.getUserManager().getPlayer(player).getSmeltingManager().fuelEfficiency(event.getBurnTime()));
+                event.setBurnTime(mcMMO.getUserManager().queryMcMMOPlayer(player).getSmeltingManager().fuelEfficiency(event.getBurnTime()));
 
                 if(debugMode) {
                     player.sendMessage("New Furnace Burn Length (after applying fuel efficiency) "+event.getBurnTime());
@@ -111,7 +111,7 @@ public class InventoryListener implements Listener {
 
             if(offlinePlayer != null) {
 
-                McMMOPlayer offlineProfile = mcMMO.getUserManager().getOfflinePlayer(offlinePlayer);
+                McMMOPlayer offlineProfile = mcMMO.getUserManager().queryMcMMOPlayer(offlinePlayer);
 
                 //Profile doesn't exist
                 if(offlineProfile != null) {
@@ -148,13 +148,13 @@ public class InventoryListener implements Listener {
             }
 
             //Profile not loaded
-            if(mcMMO.getUserManager().getPlayer(player) == null)
+            if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null)
             {
                 return;
             }
 
             int xpToDrop = event.getExpToDrop();
-            int exp = mcMMO.getUserManager().getPlayer(player).getSmeltingManager().vanillaXPBoost(xpToDrop);
+            int exp = mcMMO.getUserManager().queryMcMMOPlayer(player).getSmeltingManager().vanillaXPBoost(xpToDrop);
             event.setExpToDrop(exp);
         }
     }

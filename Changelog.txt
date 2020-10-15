@@ -29,7 +29,6 @@ Version 2.2.000
     New permission node 'mcmmo.ability.crossbows.crossbowslimitbreak'
     New permission node 'mcmmo.ability.crossbows.coneofdeath'
 
-
     The Party system has some new features, and a lot of bad features were removed completely, read the notes
     Parties can no longer have passwords (see notes)
     Parties can no longer be locked (see notes)
@@ -62,6 +61,10 @@ Version 2.2.000
     Added new locale string 'Crossbows.SubSkill.CrossbowsLimitBreak.Name'
     Added new locale string 'Crossbows.SubSkill.CrossbowsLimitBreak.Description'
     Added new locale string 'Crossbows.SubSkill.CrossbowsLimitBreak.Stat'
+
+    Added new locale string 'Commands.MissingProfile'
+    Removed locale string 'Commands.Offline'
+
 
     Player Power Levels no longer need to pass permission checks when summing skills
     Minor improvements to how player data is serialized

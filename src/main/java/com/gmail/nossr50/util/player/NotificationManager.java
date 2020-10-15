@@ -35,7 +35,7 @@ public class NotificationManager {
      */
     public static void sendPlayerInformation(Player player, NotificationType notificationType, String key)
     {
-        if(mcMMO.getUserManager().getPlayer(player) == null || !mcMMO.getUserManager().getPlayer(player).hasSkillChatNotifications())
+        if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null || !mcMMO.getUserManager().queryMcMMOPlayer(player).hasSkillChatNotifications())
             return;
 
         McMMOMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? McMMOMessageType.ACTION_BAR : McMMOMessageType.SYSTEM;
@@ -49,10 +49,10 @@ public class NotificationManager {
 
     public static boolean doesPlayerUseNotifications(Player player)
     {
-        if(mcMMO.getUserManager().getPlayer(player) == null)
+        if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null)
             return false;
         else
-            return mcMMO.getUserManager().getPlayer(player).hasSkillChatNotifications();
+            return mcMMO.getUserManager().queryMcMMOPlayer(player).hasSkillChatNotifications();
     }
 
     /**
@@ -71,7 +71,7 @@ public class NotificationManager {
 
     public static void sendPlayerInformationChatOnly(Player player, String key, String... values)
     {
-        if(mcMMO.getUserManager().getPlayer(player) == null || !mcMMO.getUserManager().getPlayer(player).hasSkillChatNotifications())
+        if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null || !mcMMO.getUserManager().queryMcMMOPlayer(player).hasSkillChatNotifications())
             return;
 
         String preColoredString = LocaleLoader.getString(key, (Object[]) values);
@@ -80,7 +80,7 @@ public class NotificationManager {
 
     public static void sendPlayerInformationChatOnlyPrefixed(Player player, String key, String... values)
     {
-        if(mcMMO.getUserManager().getPlayer(player) == null || !mcMMO.getUserManager().getPlayer(player).hasSkillChatNotifications())
+        if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null || !mcMMO.getUserManager().queryMcMMOPlayer(player).hasSkillChatNotifications())
             return;
 
         String preColoredString = LocaleLoader.getString(key, (Object[]) values);
@@ -90,7 +90,7 @@ public class NotificationManager {
 
     public static void sendPlayerInformation(Player player, NotificationType notificationType, String key, String... values)
     {
-        if(mcMMO.getUserManager().getPlayer(player) == null || !mcMMO.getUserManager().getPlayer(player).hasSkillChatNotifications())
+        if(mcMMO.getUserManager().queryMcMMOPlayer(player) == null || !mcMMO.getUserManager().queryMcMMOPlayer(player).hasSkillChatNotifications())
             return;
 
         McMMOMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? McMMOMessageType.ACTION_BAR : McMMOMessageType.SYSTEM;

@@ -93,7 +93,7 @@ public class RepairCommand extends SkillCommand {
         List<String> messages = new ArrayList<>();
 
         if (canArcaneForge) {
-            RepairManager repairManager = mcMMO.getUserManager().getPlayer(player).getRepairManager();
+            RepairManager repairManager = mcMMO.getUserManager().queryMcMMOPlayer(player).getRepairManager();
 
             messages.add(getStatMessage(false, true,
                     SubSkillType.REPAIR_ARCANE_FORGING,

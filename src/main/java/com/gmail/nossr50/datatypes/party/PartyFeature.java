@@ -10,8 +10,6 @@ import org.bukkit.entity.Player;
 public enum PartyFeature {
     CHAT,
     TELEPORT,
-    ALLIANCE,
-    ITEM_SHARE,
     XP_SHARE;
 
     public String getLocaleString() {
@@ -30,12 +28,6 @@ public enum PartyFeature {
                 break;
             case TELEPORT:
                 partySubCommandType = PartySubCommandType.TELEPORT;
-                break;
-            case ALLIANCE:
-                partySubCommandType = PartySubCommandType.ALLIANCE;
-                break;
-            case ITEM_SHARE:
-                partySubCommandType = PartySubCommandType.ITEMSHARE;
                 break;
             case XP_SHARE:
                 partySubCommandType = PartySubCommandType.XPSHARE;

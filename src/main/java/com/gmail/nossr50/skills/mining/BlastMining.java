@@ -102,12 +102,12 @@ public class BlastMining {
             return false;
         }
 
-        if(mcMMO.getUserManager().getPlayer(defender) == null)
+        if(mcMMO.getUserManager().queryMcMMOPlayer(defender) == null)
         {
             return false;
         }
 
-        MiningManager miningManager =  mcMMO.getUserManager().getPlayer(defender).getMiningManager();
+        MiningManager miningManager =  mcMMO.getUserManager().queryMcMMOPlayer(defender).getMiningManager();
 
         if (!miningManager.canUseDemolitionsExpertise()) {
             return false;

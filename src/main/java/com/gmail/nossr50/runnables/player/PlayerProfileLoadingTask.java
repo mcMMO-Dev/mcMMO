@@ -41,33 +41,32 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
             return;
         }
 
-        PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(player.getName(), player.getUniqueId(), true);
-
-        // If successful, schedule the apply
-        if (profile.isLoaded()) {
+        try {
+            PlayerProfile profile = mcMMO.getDatabaseManager().queryPlayerDataByUUID(player.getUniqueId());
             new ApplySuccessfulProfile(new McMMOPlayer(player, profile)).runTask(mcMMO.p);
             EventUtils.callPlayerProfileLoadEvent(player, profile);
             return;
+
+        } catch () {
+            // Print errors to console/logs if we're failing at least 2 times in a row to load the profile
+            if (attempt >= 3)
+            {
+                //Log the error
+                mcMMO.p.getLogger().severe(LocaleLoader.getString("Profile.Loading.FailureNotice",
+                        player.getName(), String.valueOf(attempt)));
+
+                //Notify the admins
+                mcMMO.p.getServer().broadcast(LocaleLoader.getString("Profile.Loading.FailureNotice", player.getName()), Server.BROADCAST_CHANNEL_ADMINISTRATIVE);
+
+                //Notify the player
+                player.sendMessage(LocaleLoader.getString("Profile.Loading.FailurePlayer", String.valueOf(attempt)).split("\n"));
+            }
+
+            // Increment attempt counter and try
+            attempt++;
+
+            new PlayerProfileLoadingTask(player, attempt).runTaskLaterAsynchronously(mcMMO.p, (100 + (attempt * 100)));
         }
-
-        // Print errors to console/logs if we're failing at least 2 times in a row to load the profile
-        if (attempt >= 3)
-        {
-            //Log the error
-            mcMMO.p.getLogger().severe(LocaleLoader.getString("Profile.Loading.FailureNotice",
-                    player.getName(), String.valueOf(attempt)));
-
-            //Notify the admins
-            mcMMO.p.getServer().broadcast(LocaleLoader.getString("Profile.Loading.FailureNotice", player.getName()), Server.BROADCAST_CHANNEL_ADMINISTRATIVE);
-
-            //Notify the player
-            player.sendMessage(LocaleLoader.getString("Profile.Loading.FailurePlayer", String.valueOf(attempt)).split("\n"));
-        }
-
-        // Increment attempt counter and try
-        attempt++;
-
-        new PlayerProfileLoadingTask(player, attempt).runTaskLaterAsynchronously(mcMMO.p, (100 + (attempt * 100)));
     }
 
     private class ApplySuccessfulProfile extends BukkitRunnable {
@@ -86,7 +85,6 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
                 return;
             }
 
-            mmoPlayer.setupPartyData();
             mcMMO.getUserManager().track(mmoPlayer);
             mmoPlayer.actualizeRespawnATS();
 

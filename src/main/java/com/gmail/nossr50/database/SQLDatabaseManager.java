@@ -1,5 +1,6 @@
 package com.gmail.nossr50.database;
 
+import com.gmail.nossr50.api.exceptions.ProfileRetrievalException;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.MobHealthBarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
@@ -13,6 +14,7 @@ import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import org.apache.commons.lang.NullArgumentException;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 import org.bukkit.entity.Player;
@@ -24,7 +26,7 @@ import java.sql.*;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
-public final class SQLDatabaseManager implements DatabaseManager {
+public final class SQLDatabaseManager extends AbstractDatabaseManager {
     private static final String ALL_QUERY_VERSION = "total";
     private final String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
@@ -179,7 +181,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         mcMMO.p.getLogger().info("Purged " + purged + " users from the database.");
     }
 
-    public boolean removeUser(String playerName, UUID uuid) {
+    public boolean removeUser(String playerName, @Nullable UUID uuid) {
         boolean success = false;
         Connection connection = null;
         PreparedStatement statement = null;
@@ -220,7 +222,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         cachedUserIDs.remove(uuid);
     }
 
-    public boolean saveUser(MMODataSnapshot dataSnapshot) {
+    public boolean saveUser(@NotNull MMODataSnapshot dataSnapshot) {
         boolean success = true;
         PreparedStatement statement = null;
         Connection connection = null;
@@ -401,7 +403,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return success;
     }
 
-    public List<PlayerStat> readLeaderboard(PrimarySkillType skill, int pageNumber, int statsPerPage) {
+    public @NotNull List<PlayerStat> readLeaderboard(@NotNull PrimarySkillType skill, int pageNumber, int statsPerPage) {
         List<PlayerStat> stats = new ArrayList<>();
 
         String query = skill == null ? ALL_QUERY_VERSION : skill.name().toLowerCase(Locale.ENGLISH);
@@ -440,7 +442,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return stats;
     }
 
-    public Map<PrimarySkillType, Integer> readRank(String playerName) {
+    public @NotNull Map<PrimarySkillType, Integer> readRank(@NotNull String playerName) {
         Map<PrimarySkillType, Integer> skills = new HashMap<>();
 
         ResultSet resultSet = null;
@@ -536,7 +538,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return skills;
     }
 
-    public void newUser(String playerName, UUID uuid) {
+    public void insertNewUser(@NotNull String playerName, @NotNull UUID uuid) {
         Connection connection = null;
 
         try {
@@ -589,25 +591,12 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return -1;
     }
 
-//    @Deprecated
-//    public PlayerProfile loadPlayerProfile(String playerName, boolean create) {
-//        return loadPlayerProfile(playerName, null);
-//    }
-
-    public @Nullable PlayerProfile loadPlayerProfile(UUID uuid) {
-        return loadPlayerProfile(null, "", uuid);
+    @Override
+    public @Nullable PlayerProfile queryPlayerDataByPlayer(@NotNull Player player) throws ProfileRetrievalException, NullArgumentException {
     }
 
-    public @Nullable PlayerProfile loadPlayerProfile(String playerName) {
-        return loadPlayerProfile(null, playerName, null);
-    }
-
-    public @Nullable PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean create) {
-        return loadPlayerProfile(null, playerName, uuid);
-    }
-
-    public @NotNull PlayerProfile loadPlayerProfile(Player player) {
-        return loadPlayerProfile(player, player.getName(), player.getUniqueId());
+    @Override
+    public @Nullable PlayerProfile queryPlayerDataByUUID(@NotNull UUID uuid, @NotNull String playerName) throws ProfileRetrievalException, NullArgumentException {
     }
 
     private @Nullable PlayerProfile loadPlayerProfile(@Nullable Player player, @NotNull String playerName, @Nullable UUID playerUUID) {
@@ -685,7 +674,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return null;
     }
 
-    public void convertUsers(DatabaseManager destination) {
+    public void convertUsers(@NotNull DatabaseManager destination) {
         PreparedStatement statement = null;
         Connection connection = null;
         ResultSet resultSet = null;
@@ -815,7 +804,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 //        }
 //    }
 
-    public List<String> getStoredUsers() {
+    public @NotNull List<String> getStoredUsers() {
         ArrayList<String> users = new ArrayList<>();
 
         Statement statement = null;
@@ -1341,7 +1330,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         mcMMO.p.getLogger().severe("VendorError: " + ex.getErrorCode());
     }
 
-    public DatabaseType getDatabaseType() {
+    public @NotNull DatabaseType getDatabaseType() {
         return DatabaseType.SQL;
     }
 
@@ -1743,7 +1732,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void removeCache(UUID uuid) {
+    public void removeCache(@NotNull UUID uuid) {
         cachedUserIDs.remove(uuid);
     }
 }
