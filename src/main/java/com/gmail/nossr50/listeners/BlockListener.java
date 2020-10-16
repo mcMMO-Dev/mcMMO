@@ -128,7 +128,7 @@ public class BlockListener implements Listener {
 
         for (Block b : event.getBlocks()) {
             movedBlock = b.getRelative(direction);
-            mcMMO.getPlaceStore().setTrue(movedBlock);
+            mcMMO.getPlaceStore().setTrueAsync(movedBlock);
         }
     }
 
@@ -150,11 +150,11 @@ public class BlockListener implements Listener {
         // Get opposite direction so we get correct block
         BlockFace direction = event.getDirection();
         Block movedBlock = event.getBlock().getRelative(direction);
-        mcMMO.getPlaceStore().setTrue(movedBlock);
+        mcMMO.getPlaceStore().setTrueAsync(movedBlock);
 
         for (Block block : event.getBlocks()) {
             movedBlock = block.getRelative(direction);
-            mcMMO.getPlaceStore().setTrue(movedBlock);
+            mcMMO.getPlaceStore().setTrueAsync(movedBlock);
         }
     }
 
@@ -174,7 +174,7 @@ public class BlockListener implements Listener {
 
         if(ExperienceConfig.getInstance().isSnowExploitPrevented() && BlockUtils.shouldBeWatched(blockState))
         {
-            mcMMO.getPlaceStore().setTrue(blockState.getBlock());
+            mcMMO.getPlaceStore().setTrueAsync(blockState.getBlock());
         }
     }
 
@@ -190,7 +190,7 @@ public class BlockListener implements Listener {
             if(event.getNewState().getType() != Material.OBSIDIAN
                     && ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.MINING, event.getNewState().getBlockData()))
             {
-                mcMMO.getPlaceStore().setTrue(event.getNewState());
+                mcMMO.getPlaceStore().setTrueAsync(event.getNewState());
             }
         }
     }
@@ -206,7 +206,7 @@ public class BlockListener implements Listener {
 
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
 //      if (!Tag.LOGS.isTagged(event.getBlockReplacedState().getType()) || !Tag.LOGS.isTagged(event.getBlockPlaced().getType()))
-        mcMMO.getPlaceStore().setTrue(blockState);
+        mcMMO.getPlaceStore().setTrueAsync(blockState);
 
         /* WORLD BLACKLIST CHECK */
         if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld())) {
@@ -244,7 +244,7 @@ public class BlockListener implements Listener {
             BlockState blockState = replacedBlockState.getBlock().getState();
 
             /* Check if the blocks placed should be monitored so they do not give out XP in the future */
-            mcMMO.getPlaceStore().setTrue(blockState);
+            mcMMO.getPlaceStore().setTrueAsync(blockState);
         }
 
         /* WORLD BLACKLIST CHECK */
@@ -272,7 +272,7 @@ public class BlockListener implements Listener {
 //            return;
 //        }
 
-        mcMMO.getPlaceStore().setFalse(blockState);
+        mcMMO.getPlaceStore().setFalseAsync(blockState);
     }
 
     /**
@@ -320,7 +320,7 @@ public class BlockListener implements Listener {
         //Check if profile is loaded
         if(mcMMOPlayer == null) {
             /* Remove metadata from placed watched blocks */
-            mcMMO.getPlaceStore().setFalse(blockState);
+            mcMMO.getPlaceStore().setFalseAsync(blockState);
             return;
         }
 
@@ -377,7 +377,7 @@ public class BlockListener implements Listener {
         }
 
         /* Remove metadata from placed watched blocks */
-        mcMMO.getPlaceStore().setFalse(blockState);
+        mcMMO.getPlaceStore().setFalseAsync(blockState);
     }
 
     /**

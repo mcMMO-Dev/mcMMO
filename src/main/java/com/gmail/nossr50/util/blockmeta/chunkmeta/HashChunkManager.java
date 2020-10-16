@@ -325,7 +325,7 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized boolean isTrue(int x, int y, int z, World world) {
+    public boolean isTrue(int x, int y, int z, World world) {
         if (world == null) {
             return false;
         }
@@ -351,7 +351,12 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized boolean isTrue(Block block) {
+    public CompletableFuture<Boolean> isTrueAsync(int x, int y, int z, World world) {
+        return lockManager.supplyAsyncWithLock(getBlockKey(world, x, y, z), () -> isTrue(x, y, z, world));
+    }
+
+    @Override
+    public boolean isTrue(Block block) {
         if (block == null) {
             return false;
         }
@@ -360,7 +365,12 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized boolean isTrue(BlockState blockState) {
+    public CompletableFuture<Boolean> isTrueAsync(Block block) {
+        return lockManager.supplyAsyncWithLock(getBlockKey(block), () -> isTrue(block));
+    }
+
+    @Override
+    public boolean isTrue(BlockState blockState) {
         if (blockState == null) {
             return false;
         }
@@ -369,7 +379,12 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized void setTrue(int x, int y, int z, World world) {
+    public CompletableFuture<Boolean> isTrueAsync(BlockState blockState) {
+        return lockManager.supplyAsyncWithLock(getBlockKey(blockState), () -> isTrue(blockState));
+    }
+
+    @Override
+    public void setTrue(int x, int y, int z, World world) {
         if (world == null) {
             return;
         }
@@ -397,12 +412,22 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized void setTrue(Block block) {
+    public CompletableFuture<Void> setTrueAsync(int x, int y, int z, World world) {
+        return lockManager.runAsyncWithLock(getBlockKey(world, x, y, z), () -> setTrue(x, y, z, world));
+    }
+
+    @Override
+    public void setTrue(Block block) {
         if (block == null) {
             return;
         }
 
         setTrue(block.getX(), block.getY(), block.getZ(), block.getWorld());
+    }
+
+    @Override
+    public CompletableFuture<Void> setTrueAsync(Block block) {
+        return lockManager.runAsyncWithLock(getBlockKey(block), () -> setTrue(block));
     }
 
     @Override
@@ -415,7 +440,12 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized void setFalse(int x, int y, int z, World world) {
+    public CompletableFuture<Void> setTrueAsync(BlockState blockState) {
+        return lockManager.runAsyncWithLock(getBlockKey(blockState), () -> setTrue(blockState));
+    }
+
+    @Override
+    public void setFalse(int x, int y, int z, World world) {
         if (world == null) {
             return;
         }
@@ -442,7 +472,12 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized void setFalse(Block block) {
+    public CompletableFuture<Void> setFalseAsync(int x, int y, int z, World world) {
+        return lockManager.runAsyncWithLock(getBlockKey(world, x, y, z), () -> setFalse(x, y, z, world));
+    }
+
+    @Override
+    public void setFalse(Block block) {
         if (block == null) {
             return;
         }
@@ -451,12 +486,22 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized void setFalse(BlockState blockState) {
+    public CompletableFuture<Void> setFalseAsync(Block block) {
+        return lockManager.runAsyncWithLock(getBlockKey(block), () -> setFalse(block));
+    }
+
+    @Override
+    public void setFalse(BlockState blockState) {
         if (blockState == null) {
             return;
         }
 
         setFalse(blockState.getX(), blockState.getY(), blockState.getZ(), blockState.getWorld());
+    }
+
+    @Override
+    public CompletableFuture<Void> setFalseAsync(BlockState blockState) {
+        return lockManager.runAsyncWithLock(getBlockKey(blockState), () -> setFalse(blockState));
     }
 
     @Override
@@ -509,5 +554,18 @@ public class HashChunkManager implements ChunkManager {
     public static String getChunkKey(World world, int cx, int cz) {
         if (world == null) return UUID.randomUUID().toString();
         return world.getName() + "," + cx + "," + cz;
+    }
+
+    public static String getBlockKey(World world, int x, int y, int z) {
+        if (world == null) return UUID.randomUUID().toString();
+        return world.getName() + "," + x + "," + y + "," + z;
+    }
+
+    public static String getBlockKey(Block block) {
+        return getBlockKey(block.getWorld(), block.getX(), block.getY(), block.getZ());
+    }
+
+    public static String getBlockKey(BlockState state) {
+        return getBlockKey(state.getWorld(), state.getX(), state.getY(), state.getZ());
     }
 }

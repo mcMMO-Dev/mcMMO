@@ -199,20 +199,24 @@ public class EntityListener implements Listener {
         if (entity instanceof FallingBlock || entity instanceof Enderman) {
             boolean isTracked = entity.hasMetadata(mcMMO.travelingBlock);
 
-            if (mcMMO.getPlaceStore().isTrue(block) && !isTracked) {
-                mcMMO.getPlaceStore().setFalse(block);
+            mcMMO.getPlaceStore().isTrueAsync(block).thenAccept(isTrue -> {
+                if (isTrue && !isTracked) {
+                    mcMMO.getPlaceStore().setFalseAsync(block);
 
-                entity.setMetadata(mcMMO.travelingBlock, mcMMO.metadataValue);
-            }
-            else if (isTracked) {
-                mcMMO.getPlaceStore().setTrue(block);
-            }
+                    entity.setMetadata(mcMMO.travelingBlock, mcMMO.metadataValue);
+                }
+                else if (isTracked) {
+                    mcMMO.getPlaceStore().setTrueAsync(block);
+                }
+            });
         } else if ((block.getType() == Material.REDSTONE_ORE)) {
         }
         else {
-            if (mcMMO.getPlaceStore().isTrue(block)) {
-                mcMMO.getPlaceStore().setFalse(block);
-            }
+            mcMMO.getPlaceStore().isTrueAsync(block).thenAccept(isTrue -> {
+                if (isTrue) {
+                    mcMMO.getPlaceStore().setTrueAsync(block);
+                }
+            });
         }
     }
 

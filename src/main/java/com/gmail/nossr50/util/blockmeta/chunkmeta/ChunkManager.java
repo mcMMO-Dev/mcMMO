@@ -146,6 +146,8 @@ public interface ChunkManager {
      */
     boolean isTrue(int x, int y, int z, World world);
 
+    CompletableFuture<Boolean> isTrueAsync(int x, int y, int z, World world);
+
     /**
      * Check to see if a given block location is set to true
      *
@@ -154,6 +156,8 @@ public interface ChunkManager {
      */
     boolean isTrue(Block block);
 
+    CompletableFuture<Boolean> isTrueAsync(Block block);
+
     /**
      * Check to see if a given BlockState location is set to true
      *
@@ -161,6 +165,8 @@ public interface ChunkManager {
      * @return true if the given BlockState location is set to true, false if otherwise
      */
     boolean isTrue(BlockState blockState);
+
+    CompletableFuture<Boolean> isTrueAsync(BlockState blockState);
 
     /**
      * Set a given location to true, should create stores as necessary if the location does not exist
@@ -172,6 +178,8 @@ public interface ChunkManager {
      */
     void setTrue(int x, int y, int z, World world);
 
+    CompletableFuture<Void> setTrueAsync(int x, int y, int z, World world);
+
     /**
      * Set a given block location to true, should create stores as necessary if the location does not exist
      *
@@ -179,12 +187,16 @@ public interface ChunkManager {
      */
     void setTrue(Block block);
 
+    CompletableFuture<Void> setTrueAsync(Block block);
+
     /**
      * Set a given BlockState location to true, should create stores as necessary if the location does not exist
      *
      * @param blockState BlockState location to set
      */
     void setTrue(BlockState blockState);
+
+    CompletableFuture<Void> setTrueAsync(BlockState blockState);
 
     /**
      * Set a given location to false, should not create stores if one does not exist for the given location
@@ -196,6 +208,8 @@ public interface ChunkManager {
      */
     void setFalse(int x, int y, int z, World world);
 
+    CompletableFuture<Void> setFalseAsync(int x, int y, int z, World world);
+
     /**
      * Set a given block location to false, should not create stores if one does not exist for the given location
      *
@@ -203,12 +217,16 @@ public interface ChunkManager {
      */
     void setFalse(Block block);
 
+    CompletableFuture<Void> setFalseAsync(Block block);
+
     /**
      * Set a given BlockState location to false, should not create stores if one does not exist for the given location
      *
      * @param blockState BlockState location to set
      */
     void setFalse(BlockState blockState);
+
+    CompletableFuture<Void> setFalseAsync(BlockState blockState);
 
     /**
      * Delete any ChunkletStores that are empty

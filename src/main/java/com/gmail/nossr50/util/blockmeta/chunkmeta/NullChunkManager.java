@@ -121,8 +121,18 @@ public class NullChunkManager implements ChunkManager {
     }
 
     @Override
+    public CompletableFuture<Boolean> isTrueAsync(int x, int y, int z, World world) {
+        return CompletableFuture.completedFuture(false);
+    }
+
+    @Override
     public boolean isTrue(Block block) {
         return false;
+    }
+
+    @Override
+    public CompletableFuture<Boolean> isTrueAsync(Block block) {
+        return CompletableFuture.completedFuture(false);
     }
 
     @Override
@@ -131,22 +141,57 @@ public class NullChunkManager implements ChunkManager {
     }
 
     @Override
+    public CompletableFuture<Boolean> isTrueAsync(BlockState blockState) {
+        return CompletableFuture.completedFuture(false);
+    }
+
+    @Override
     public void setTrue(int x, int y, int z, World world) {}
+
+    @Override
+    public CompletableFuture<Void> setTrueAsync(int x, int y, int z, World world) {
+        return CompletableFuture.completedFuture(null);
+    }
 
     @Override
     public void setTrue(Block block) {}
 
     @Override
+    public CompletableFuture<Void> setTrueAsync(Block block) {
+        return CompletableFuture.completedFuture(null);
+    }
+
+    @Override
     public void setTrue(BlockState blockState) {}
+
+    @Override
+    public CompletableFuture<Void> setTrueAsync(BlockState blockState) {
+        return CompletableFuture.completedFuture(null);
+    }
 
     @Override
     public void setFalse(int x, int y, int z, World world) {}
 
     @Override
+    public CompletableFuture<Void> setFalseAsync(int x, int y, int z, World world) {
+        return CompletableFuture.completedFuture(null);
+    }
+
+    @Override
     public void setFalse(Block block) {}
 
     @Override
+    public CompletableFuture<Void> setFalseAsync(Block block) {
+        return CompletableFuture.completedFuture(null);
+    }
+
+    @Override
     public void setFalse(BlockState blockState) {}
+
+    @Override
+    public CompletableFuture<Void> setFalseAsync(BlockState blockState) {
+        return CompletableFuture.completedFuture(null);
+    }
 
     @Override
     public void cleanUp() {}
