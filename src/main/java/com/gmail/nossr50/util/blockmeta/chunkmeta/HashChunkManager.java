@@ -2,6 +2,7 @@ package com.gmail.nossr50.util.blockmeta.chunkmeta;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.blockmeta.conversion.BlockStoreConversionZDirectory;
+import com.google.common.collect.Sets;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -9,17 +10,20 @@ import org.bukkit.entity.Entity;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class HashChunkManager implements ChunkManager {
-    private final HashMap<UUID, HashMap<Long, McMMOSimpleRegionFile>> regionFiles = new HashMap<>();
-    public HashMap<String, ChunkStore> store = new HashMap<>();
-    public ArrayList<BlockStoreConversionZDirectory> converters = new ArrayList<>();
-    private final HashMap<UUID, Boolean> oldData = new HashMap<>();
+    private final Map<UUID, Map<Long, McMMOSimpleRegionFile>> regionFiles = new ConcurrentHashMap<>();
+    public Map<String, ChunkStore> store = new ConcurrentHashMap<>();
+    public Set<BlockStoreConversionZDirectory> converters = Sets.newConcurrentHashSet();
+    private final Map<UUID, Boolean> oldData = new ConcurrentHashMap<>();
+    private final LockManager lockManager = new LockManager();
 
     @Override
-    public synchronized void closeAll() {
+    public void closeAll() {
         for (UUID uid : regionFiles.keySet()) {
-            HashMap<Long, McMMOSimpleRegionFile> worldRegions = regionFiles.get(uid);
+            Map<Long, McMMOSimpleRegionFile> worldRegions = regionFiles.get(uid);
             for (Iterator<McMMOSimpleRegionFile> worldRegionIterator = worldRegions.values().iterator(); worldRegionIterator.hasNext(); ) {
                 McMMOSimpleRegionFile rf = worldRegionIterator.next();
                 if (rf != null) {
@@ -54,7 +58,18 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized void writeChunkStore(World world, int x, int z, ChunkStore data) {
+    public CompletableFuture<ChunkStore> readChunkStoreAsync(World world, int x, int z) {
+        return lockManager.supplyAsyncWithLock(getChunkKey(world, x, z), () -> {
+            try {
+                return readChunkStore(world, x, z);
+            } catch (IOException ex) {
+                throw new RuntimeException("Unable to read chunk meta data for " + x + ", " + z, ex);
+            }
+        });
+    }
+
+    @Override
+    public void writeChunkStore(World world, int x, int z, ChunkStore data) {
         if (!data.isDirty()) {
             return;
         }
@@ -72,21 +87,31 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized void closeChunkStore(World world, int x, int z) {
+    public CompletableFuture<Void> writeChunkStoreAsync(World world, int x, int z, ChunkStore data) {
+        return lockManager.runAsyncWithLock(getChunkKey(world, x, z), () -> writeChunkStore(world, x, z, data));
+    }
+
+    @Override
+    public void closeChunkStore(World world, int x, int z) {
         McMMOSimpleRegionFile rf = getSimpleRegionFile(world, x, z);
         if (rf != null) {
             rf.close();
         }
     }
 
-    private synchronized McMMOSimpleRegionFile getSimpleRegionFile(World world, int x, int z) {
+    @Override
+    public CompletableFuture<Void> closeChunkStoreAsync(World world, int x, int z) {
+        return lockManager.runAsyncWithLock(getChunkKey(world, x, z), () -> closeChunkStore(world, x, z));
+    }
+
+    private McMMOSimpleRegionFile getSimpleRegionFile(World world, int x, int z) {
         File directory = new File(world.getWorldFolder(), "mcmmo_regions");
 
         directory.mkdirs();
 
         UUID key = world.getUID();
 
-        HashMap<Long, McMMOSimpleRegionFile> worldRegions = regionFiles.computeIfAbsent(key, k -> new HashMap<>());
+        Map<Long, McMMOSimpleRegionFile> worldRegions = regionFiles.computeIfAbsent(key, k -> new HashMap<>());
 
         int rx = x >> 5;
         int rz = z >> 5;
@@ -105,17 +130,27 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized void loadChunklet(int cx, int cy, int cz, World world) {
+    public void loadChunklet(int cx, int cy, int cz, World world) {
         loadChunk(cx, cz, world, null);
     }
 
     @Override
-    public synchronized void unloadChunklet(int cx, int cy, int cz, World world) {
+    public CompletableFuture<Void> loadChunkletAsync(int cx, int cy, int cz, World world) {
+        return lockManager.runAsyncWithLock(getChunkKey(world, cx, cz), () -> loadChunklet(cx, cy, cz, world));
+    }
+
+    @Override
+    public void unloadChunklet(int cx, int cy, int cz, World world) {
         unloadChunk(cx, cz, world);
     }
 
     @Override
-    public synchronized void loadChunk(int cx, int cz, World world, Entity[] entities) {
+    public CompletableFuture<Void> unloadChunkletAsync(int cx, int cy, int cz, World world) {
+        return lockManager.runAsyncWithLock(getChunkKey(world, cx, cz), () -> unloadChunklet(cx, cy, cz, world));
+    }
+
+    @Override
+    public void loadChunk(int cx, int cz, World world, Entity[] entities) {
         if (world == null || store.containsKey(world.getName() + "," + cx + "," + cz)) {
             return;
         }
@@ -146,7 +181,13 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized void unloadChunk(int cx, int cz, World world) {
+    public CompletableFuture<Void> loadChunkAsync(int cx, int cz, World world, Entity[] entities) {
+        String chunkKey = getChunkKey(world, cx, cz);
+        return lockManager.runAsyncWithLock(chunkKey, () -> loadChunk(cx, cz, world, entities));
+    }
+
+    @Override
+    public void unloadChunk(int cx, int cz, World world) {
         saveChunk(cx, cz, world);
 
         if (store.containsKey(world.getName() + "," + cx + "," + cz)) {
@@ -154,6 +195,11 @@ public class HashChunkManager implements ChunkManager {
 
             //closeChunkStore(world, cx, cz);
         }
+    }
+
+    @Override
+    public CompletableFuture<Void> unloadChunkAsync(int cx, int cz, World world) {
+        return lockManager.runAsyncWithLock(getChunkKey(world, cx, cz), () -> unloadChunk(cx, cz, world));
     }
 
     @Override
@@ -176,7 +222,12 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized boolean isChunkLoaded(int cx, int cz, World world) {
+    public CompletableFuture<Void> saveChunkAsync(int cx, int cz, World world) {
+        return lockManager.runAsyncWithLock(getChunkKey(world, cx, cz), () -> saveChunk(cx, cz, world));
+    }
+
+    @Override
+    public boolean isChunkLoaded(int cx, int cz, World world) {
         if (world == null) {
             return false;
         }
@@ -185,10 +236,15 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized void chunkLoaded(int cx, int cz, World world) {}
+    public void chunkLoaded(int cx, int cz, World world) {}
 
     @Override
-    public synchronized void chunkUnloaded(int cx, int cz, World world) {
+    public CompletableFuture<Void> chunkLoadedAsync(int cx, int cz, World world) {
+        return lockManager.runAsyncWithLock(getChunkKey(world, cx, cz), () -> chunkLoaded(cx, cz, world));
+    }
+
+    @Override
+    public void chunkUnloaded(int cx, int cz, World world) {
         if (world == null) {
             return;
         }
@@ -197,7 +253,12 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
-    public synchronized void saveWorld(World world) {
+    public CompletableFuture<Void> chunkUnloadedAsync(int cx, int cz, World world) {
+        return lockManager.runAsyncWithLock(getChunkKey(world, cx, cz), () -> chunkUnloaded(cx, cz, world));
+    }
+
+    @Override
+    public void saveWorld(World world) {
         if (world == null) {
             return;
         }
@@ -443,5 +504,10 @@ public class HashChunkManager implements ChunkManager {
         }
 
         return true;
+    }
+
+    public static String getChunkKey(World world, int cx, int cz) {
+        if (world == null) return UUID.randomUUID().toString();
+        return world.getName() + "," + cx + "," + cz;
     }
 }

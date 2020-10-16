@@ -6,6 +6,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 public class NullChunkManager implements ChunkManager {
 
@@ -18,25 +19,65 @@ public class NullChunkManager implements ChunkManager {
     }
 
     @Override
+    public CompletableFuture<ChunkStore> readChunkStoreAsync(World world, int x, int z) {
+        return CompletableFuture.completedFuture(null);
+    }
+
+    @Override
     public void writeChunkStore(World world, int x, int z, ChunkStore data) {}
+
+    @Override
+    public CompletableFuture<Void> writeChunkStoreAsync(World world, int x, int z, ChunkStore data) {
+        return CompletableFuture.completedFuture(null);
+    }
 
     @Override
     public void closeChunkStore(World world, int x, int z) {}
 
     @Override
+    public CompletableFuture<Void> closeChunkStoreAsync(World world, int x, int z) {
+        return CompletableFuture.completedFuture(null);
+    }
+
+    @Override
     public void loadChunklet(int cx, int cy, int cz, World world) {}
+
+    @Override
+    public CompletableFuture<Void> loadChunkletAsync(int cx, int cy, int cz, World world) {
+        return CompletableFuture.completedFuture(null);
+    }
 
     @Override
     public void unloadChunklet(int cx, int cy, int cz, World world) {}
 
     @Override
+    public CompletableFuture<Void> unloadChunkletAsync(int cx, int cy, int cz, World world) {
+        return CompletableFuture.completedFuture(null);
+    }
+
+    @Override
     public void loadChunk(int cx, int cz, World world, Entity[] entities) {}
+
+    @Override
+    public CompletableFuture<Void> loadChunkAsync(int cx, int cz, World world, Entity[] entities) {
+        return CompletableFuture.completedFuture(null);
+    }
 
     @Override
     public void unloadChunk(int cx, int cz, World world) {}
 
     @Override
+    public CompletableFuture<Void> unloadChunkAsync(int cx, int cz, World world) {
+        return CompletableFuture.completedFuture(null);
+    }
+
+    @Override
     public void saveChunk(int cx, int cz, World world) {}
+
+    @Override
+    public CompletableFuture<Void> saveChunkAsync(int cx, int cz, World world) {
+        return CompletableFuture.completedFuture(null);
+    }
 
     @Override
     public boolean isChunkLoaded(int cx, int cz, World world) {
@@ -47,7 +88,17 @@ public class NullChunkManager implements ChunkManager {
     public void chunkLoaded(int cx, int cz, World world) {}
 
     @Override
+    public CompletableFuture<Void> chunkLoadedAsync(int cx, int cz, World world) {
+        return CompletableFuture.completedFuture(null);
+    }
+
+    @Override
     public void chunkUnloaded(int cx, int cz, World world) {}
+
+    @Override
+    public CompletableFuture<Void> chunkUnloadedAsync(int cx, int cz, World world) {
+        return CompletableFuture.completedFuture(null);
+    }
 
     @Override
     public void saveWorld(World world) {}

@@ -6,15 +6,22 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 public interface ChunkManager {
     void closeAll();
 
     ChunkStore readChunkStore(World world, int x, int z) throws IOException;
 
+    CompletableFuture<ChunkStore> readChunkStoreAsync(World world, int x, int z);
+
     void writeChunkStore(World world, int x, int z, ChunkStore data);
 
+    CompletableFuture<Void> writeChunkStoreAsync(World world, int x, int z, ChunkStore data);
+
     void closeChunkStore(World world, int x, int z);
+
+    CompletableFuture<Void> closeChunkStoreAsync(World world, int x, int z);
 
     /**
      * Loads a specific chunklet
@@ -26,6 +33,8 @@ public interface ChunkManager {
      */
     void loadChunklet(int cx, int cy, int cz, World world);
 
+    CompletableFuture<Void> loadChunkletAsync(int cx, int cy, int cz, World world);
+
     /**
      * Unload a specific chunklet
      *
@@ -36,6 +45,8 @@ public interface ChunkManager {
      */
     void unloadChunklet(int cx, int cy, int cz, World world);
 
+    CompletableFuture<Void> unloadChunkletAsync(int cx, int cy, int cz, World world);
+
     /**
      * Load a given Chunk's Chunklet data
      *
@@ -44,6 +55,8 @@ public interface ChunkManager {
      * @param world World that the Chunk is in
      */
     void loadChunk(int cx, int cz, World world, Entity[] entities);
+
+    CompletableFuture<Void> loadChunkAsync(int cx, int cz, World world, Entity[] entities);
 
     /**
      * Unload a given Chunk's Chunklet data
@@ -54,6 +67,8 @@ public interface ChunkManager {
      */
     void unloadChunk(int cx, int cz, World world);
 
+    CompletableFuture<Void> unloadChunkAsync(int cx, int cz, World world);
+
     /**
      * Saves a given Chunk's Chunklet data
      *
@@ -62,6 +77,8 @@ public interface ChunkManager {
      * @param world World that the Chunk is in
      */
     void saveChunk(int cx, int cz, World world);
+
+    CompletableFuture<Void> saveChunkAsync(int cx, int cz, World world);
 
     boolean isChunkLoaded(int cx, int cz, World world);
 
@@ -74,6 +91,8 @@ public interface ChunkManager {
      */
     void chunkLoaded(int cx, int cz, World world);
 
+    CompletableFuture<Void> chunkLoadedAsync(int cx, int cz, World world);
+
     /**
      * Informs the ChunkletManager a chunk is unloaded
      *
@@ -82,6 +101,8 @@ public interface ChunkManager {
      * @param world World that the chunk was unloaded in
      */
     void chunkUnloaded(int cx, int cz, World world);
+
+    CompletableFuture<Void> chunkUnloadedAsync(int cx, int cz, World world);
 
     /**
      * Save all ChunkletStores related to the given world
