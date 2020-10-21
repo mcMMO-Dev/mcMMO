@@ -1,23 +1,7 @@
 package com.gmail.nossr50.util.skills;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.HiddenConfig;
-import com.gmail.nossr50.datatypes.experience.XPGainReason;
-import com.gmail.nossr50.datatypes.experience.XPGainSource;
-import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.ItemUtils;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDataLayer;
-import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.player.UserManager;
+import java.util.Iterator;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,9 +17,32 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Iterator;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.HiddenConfig;
+import com.gmail.nossr50.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.datatypes.experience.XPGainSource;
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.ItemUtils;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDataLayer;
+import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.util.player.UserManager;
 
-public class SkillUtils {
+public final class SkillUtils {
+
+    /**
+     * This is a static utility class, therefore we don't want any instances of
+     * this class. Making the constructor private prevents accidents like that.
+     */
+    private SkillUtils() {}
 
     public static void applyXpGain(McMMOPlayer mcMMOPlayer, PrimarySkillType skill, float xp, XPGainReason xpGainReason) {
         mcMMOPlayer.beginXpGain(skill, xp, xpGainReason, XPGainSource.SELF);
@@ -173,8 +180,9 @@ public class SkillUtils {
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
             //Not Loaded
-            if(mcMMOPlayer == null)
+            if (mcMMOPlayer == null) {
                 return;
+            }
 
             PrimarySkillType skill = mcMMOPlayer.getAbilityMode(SuperAbilityType.SUPER_BREAKER) ? PrimarySkillType.MINING : PrimarySkillType.EXCAVATION;
 
@@ -183,11 +191,11 @@ public class SkillUtils {
 
             int ticks;
 
-            if(abilityLengthCap > 0)
-            {
+            if (abilityLengthCap > 0) {
                 ticks = PerksUtils.handleActivationPerks(player,  Math.min(abilityLengthCap, 2 + (mcMMOPlayer.getSkillLevel(skill) / abilityLengthVar)),
                         skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
-            } else {
+            } 
+            else {
                 ticks = PerksUtils.handleActivationPerks(player, 2 + ((mcMMOPlayer.getSkillLevel(skill)) / abilityLengthVar),
                         skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
             }
@@ -204,29 +212,29 @@ public class SkillUtils {
     }
 
     public static void removeAbilityBuff(@Nullable ItemStack itemStack) {
-        if(itemStack == null)
+        if (itemStack == null) {
             return;
+        }
 
-        if(!ItemUtils.canBeSuperAbilityDigBoosted(itemStack))
+        if (!ItemUtils.canBeSuperAbilityDigBoosted(itemStack)) {
             return;
+        }
 
 
-        //1.13.2+ will have persistent metadata for this itemStack
+        // 1.13.2+ will have persistent metadata for this itemStack
         AbstractPersistentDataLayer compatLayer = mcMMO.getCompatibilityManager().getPersistentDataLayer();
 
-        if(compatLayer.isLegacyAbilityTool(itemStack)) {
+        if (compatLayer.isLegacyAbilityTool(itemStack)) {
             ItemMeta itemMeta = itemStack.getItemMeta();
 
-            //TODO: can be optimized
-            if(itemMeta.hasEnchant(Enchantment.DIG_SPEED)) {
-                itemMeta.removeEnchant(Enchantment.DIG_SPEED);
-            }
+            // This is safe to call without prior checks.
+            itemMeta.removeEnchant(Enchantment.DIG_SPEED);
 
             itemStack.setItemMeta(itemMeta);
             ItemUtils.removeAbilityLore(itemStack);
         }
 
-        if(compatLayer.isSuperAbilityBoosted(itemStack)) {
+        if (compatLayer.isSuperAbilityBoosted(itemStack)) {
             compatLayer.removeBonusDigSpeedOnSuperAbilityTool(itemStack);
         }
     }
@@ -243,7 +251,9 @@ public class SkillUtils {
      * @param maxDamageModifier the amount to adjust the max damage by
      */
     public static void handleDurabilityChange(ItemStack itemStack, double durabilityModifier, double maxDamageModifier) {
-        if(itemStack.getItemMeta() != null && itemStack.getItemMeta().isUnbreakable()) {
+        ItemMeta meta = itemStack.getItemMeta();
+
+        if (meta != null && meta.isUnbreakable()) {
             return;
         }
 
@@ -264,7 +274,7 @@ public class SkillUtils {
         return false;
     }
 
-    protected static Material getRepairAndSalvageItem(ItemStack inHand) {
+    static Material getRepairAndSalvageItem(ItemStack inHand) {
         if (ItemUtils.isDiamondTool(inHand) || ItemUtils.isDiamondArmor(inHand)) {
             return Material.DIAMOND;
         }
@@ -298,18 +308,19 @@ public class SkillUtils {
     public static int getRepairAndSalvageQuantities(Material itemMaterial, Material recipeMaterial) {
         int quantity = 0;
 
-        if(mcMMO.getMaterialMapStore().isNetheriteTool(itemMaterial) || mcMMO.getMaterialMapStore().isNetheriteArmor(itemMaterial)) {
+        if (mcMMO.getMaterialMapStore().isNetheriteTool(itemMaterial) || mcMMO.getMaterialMapStore().isNetheriteArmor(itemMaterial)) {
             //One netherite bar requires 4 netherite scraps
             return 4;
         }
 
-        for(Iterator<? extends Recipe> recipeIterator = Bukkit.getServer().recipeIterator(); recipeIterator.hasNext();) {
+        for (Iterator<? extends Recipe> recipeIterator = Bukkit.getServer().recipeIterator(); recipeIterator.hasNext();) {
             Recipe bukkitRecipe = recipeIterator.next();
 
-            if(bukkitRecipe.getResult().getType() != itemMaterial)
+            if (bukkitRecipe.getResult().getType() != itemMaterial) {
                 continue;
+            }
 
-            if(bukkitRecipe instanceof ShapelessRecipe) {
+            if (bukkitRecipe instanceof ShapelessRecipe) {
                 for (ItemStack ingredient : ((ShapelessRecipe) bukkitRecipe).getIngredientList()) {
                     if (ingredient != null
                             && (recipeMaterial == null || ingredient.getType() == recipeMaterial)
@@ -317,7 +328,8 @@ public class SkillUtils {
                         quantity += ingredient.getAmount();
                     }
                 }
-            } else if(bukkitRecipe instanceof ShapedRecipe) {
+            } 
+            else if (bukkitRecipe instanceof ShapedRecipe) {
                 for (ItemStack ingredient : ((ShapedRecipe) bukkitRecipe).getIngredientMap().values()) {
                     if (ingredient != null
                             && (recipeMaterial == null || ingredient.getType() == recipeMaterial)
