@@ -1,22 +1,10 @@
 package com.gmail.nossr50.skills.woodcutting;
 
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.experience.XPGainReason;
-import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.*;
-import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
-import com.gmail.nossr50.util.skills.CombatUtils;
-import com.gmail.nossr50.util.skills.RankUtils;
-import com.gmail.nossr50.util.skills.SkillActivationType;
-import com.gmail.nossr50.util.skills.SkillUtils;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -25,11 +13,30 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.experience.XPGainReason;
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.skills.SkillManager;
+import com.gmail.nossr50.util.BlockUtils;
+import com.gmail.nossr50.util.EventUtils;
+import com.gmail.nossr50.util.ItemUtils;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.util.random.RandomChanceUtil;
+import com.gmail.nossr50.util.skills.CombatUtils;
+import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.skills.SkillActivationType;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class WoodcuttingManager extends SkillManager {
 
@@ -207,7 +214,9 @@ public class WoodcuttingManager extends SkillManager {
      */
     private static boolean handleDurabilityLoss(Set<BlockState> treeFellerBlocks, ItemStack inHand, Player player) {
         //Treat the NBT tag for unbreakable and the durability enchant differently
-        if(inHand.getItemMeta() != null && inHand.getItemMeta().isUnbreakable()) {
+        ItemMeta meta = inHand.getItemMeta();
+
+        if (meta != null && meta.isUnbreakable()) {
             return true;
         }
 
@@ -230,7 +239,9 @@ public class WoodcuttingManager extends SkillManager {
         }
 
         SkillUtils.handleDurabilityChange(inHand, durabilityLoss);
-        return (inHand.getDurability() < (mcMMO.getRepairableManager().isRepairable(type) ? mcMMO.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability()));
+        
+        int durability = meta instanceof Damageable ? ((Damageable) meta).getDamage(): 0;
+        return (durability < (mcMMO.getRepairableManager().isRepairable(type) ? mcMMO.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability()));
     }
 
     /**
@@ -317,8 +328,9 @@ public class WoodcuttingManager extends SkillManager {
     }
 
     private int updateProcessedLogCount(int xp, int processedLogCount, int beforeXP) {
-        if(beforeXP != xp)
+        if (beforeXP != xp) {
             processedLogCount+=1;
+        }
 
         return processedLogCount;
     }
@@ -336,14 +348,16 @@ public class WoodcuttingManager extends SkillManager {
     private static int processTreeFellerXPGains(BlockState blockState, int woodCount) {
         int rawXP = ExperienceConfig.getInstance().getXp(PrimarySkillType.WOODCUTTING, blockState.getType());
 
-        if(rawXP <= 0)
+        if (rawXP <= 0) {
             return 0;
+        }
 
-        if(ExperienceConfig.getInstance().isTreeFellerXPReduced()) {
+        if (ExperienceConfig.getInstance().isTreeFellerXPReduced()) {
             int reducedXP = rawXP - (woodCount * 5);
             rawXP = Math.max(1, reducedXP);
             return rawXP;
-        } else {
+        } 
+        else {
             return ExperienceConfig.getInstance().getXp(PrimarySkillType.WOODCUTTING, blockState.getType());
         }
     }
@@ -371,10 +385,8 @@ public class WoodcuttingManager extends SkillManager {
         if (mcMMO.getModManager().isCustomLog(blockState) && mcMMO.getModManager().getBlock(blockState).isDoubleDropEnabled()) {
             Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
         }
-        else {
-            if (Config.getInstance().getWoodcuttingDoubleDropsEnabled(blockState.getBlockData())) {
-                Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
-            }
+        else if (Config.getInstance().getWoodcuttingDoubleDropsEnabled(blockState.getBlockData())) {
+            Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
         }
     }
 }
