@@ -3,10 +3,9 @@ package com.gmail.nossr50.chat;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 
@@ -21,7 +20,7 @@ public final class ChatManagerFactory {
     private ChatManagerFactory() {}
     
     @Nullable
-    public static ChatManager getChatManager(@Nonnull Plugin plugin, @Nonnull ChatMode mode) {
+    public static ChatManager getChatManager(@NotNull Plugin plugin, @NotNull ChatMode mode) {
         switch (mode) {
             case ADMIN:
                 if (!adminChatManagers.containsKey(plugin)) {
