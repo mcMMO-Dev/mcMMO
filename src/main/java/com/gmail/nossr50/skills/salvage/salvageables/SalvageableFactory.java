@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.skills.MaterialType;
 import org.bukkit.Material;
 
 public final class SalvageableFactory {
-
     /**
      * This is a static utility class, therefore we don't want any instances of
      * this class. Making the constructor private prevents accidents like that.
