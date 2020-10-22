@@ -228,6 +228,14 @@
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-core</artifactId>
             <version>7.0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <!-- We use jetbrains instead. Excluding this -->
+                    <!-- prevents us from using inconsistent annotations -->
+                    <groupId>com.google.code.findbugs</groupId>
+                    <artifactId>jsr305</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>

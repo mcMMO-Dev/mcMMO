@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Set;
 
 public class WoodcuttingManager extends SkillManager {
-
     private boolean treeFellerReachedThreshold = false;
     private static int treeFellerThreshold; //TODO: Shared setting, will be removed in 2.2
 

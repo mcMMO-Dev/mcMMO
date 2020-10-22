@@ -267,7 +267,8 @@ public final class SkillUtils {
         return false;
     }
 
-    static Material getRepairAndSalvageItem(ItemStack inHand) {
+    @Nullable
+    public static Material getRepairAndSalvageItem(@NotNull ItemStack inHand) {
         if (ItemUtils.isDiamondTool(inHand) || ItemUtils.isDiamondArmor(inHand)) {
             return Material.DIAMOND;
         }
