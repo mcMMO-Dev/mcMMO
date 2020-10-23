@@ -259,6 +259,14 @@ Repairables:
         RepairMaterial: STRING
         MinimumQuantity: 3
         MaximumDurability: 326
+    WARPED_FUNGUS_ON_A_STICK:
+        MinimumLevel: 0
+        XpMultiplier: .5
+        ItemType: TOOL
+        ItemMaterialCategory: STRING
+        RepairMaterial: STRING
+        MinimumQuantity: 3
+        MaximumDurability: 100
     #
     # Other
     ###
