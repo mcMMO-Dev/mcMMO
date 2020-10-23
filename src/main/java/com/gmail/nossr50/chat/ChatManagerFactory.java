@@ -1,15 +1,26 @@
 package com.gmail.nossr50.chat;
 
-import com.gmail.nossr50.datatypes.chat.ChatMode;
-import org.bukkit.plugin.Plugin;
-
 import java.util.HashMap;
+import java.util.Map;
 
-public class ChatManagerFactory {
-    private static final HashMap<Plugin, AdminChatManager> adminChatManagers = new HashMap<>();
-    private static final HashMap<Plugin, PartyChatManager> partyChatManagers = new HashMap<>();
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-    public static ChatManager getChatManager(Plugin plugin, ChatMode mode) {
+import com.gmail.nossr50.datatypes.chat.ChatMode;
+
+public final class ChatManagerFactory {
+    private static final Map<Plugin, AdminChatManager> adminChatManagers = new HashMap<>();
+    private static final Map<Plugin, PartyChatManager> partyChatManagers = new HashMap<>();
+
+    /**
+     * This is a static utility class, therefore we don't want any instances of
+     * this class. Making the constructor private prevents accidents like that.
+     */
+    private ChatManagerFactory() {}
+    
+    @Nullable
+    public static ChatManager getChatManager(@NotNull Plugin plugin, @NotNull ChatMode mode) {
         switch (mode) {
             case ADMIN:
                 if (!adminChatManagers.containsKey(plugin)) {
