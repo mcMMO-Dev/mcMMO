@@ -17,6 +17,7 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
+import com.gmail.nossr50.events.experience.McMMOPlayerPreXpGainEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
@@ -56,6 +57,8 @@ import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import net.kyori.adventure.identity.Identified;
 import net.kyori.adventure.identity.Identity;
+import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -600,6 +603,10 @@ public class McMMOPlayer implements Identified {
         if (!primarySkillType.getPermissions(player)) {
             return;
         }
+
+        final McMMOPlayerPreXpGainEvent mcMMOPlayerPreXpGainEvent = new McMMOPlayerPreXpGainEvent(player, primarySkillType, xp, xpGainReason);
+        Bukkit.getPluginManager().callEvent(mcMMOPlayerPreXpGainEvent);
+        xp = mcMMOPlayerPreXpGainEvent.getXpGained();
 
         if (primarySkillType.isChildSkill()) {
             Set<PrimarySkillType> parentSkills = FamilyTree.getParents(primarySkillType);
