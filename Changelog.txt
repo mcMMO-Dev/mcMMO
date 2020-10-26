@@ -1,6 +1,6 @@
 Version 2.1.150
-    mcMMO Party & Admin Chat have had a rewrite, work was put in to make sure their API would be mostly compatible with the old one
     mcMMO should now be compatible with 1.16.4's new social features
+    mcMMO Party & Admin Chat have had a rewrite, work was put in to make sure their API would be mostly compatible with the old one
     The style and look of admin/party chat is now determined by locale file instead of options in config.yml
     Improved messages players recieve when they toggle on or off admin or party chat
     All locale files have had [[]] color codes replaced by & color codes, you can still use [[GOLD]] and stuff if you want
@@ -9,6 +9,7 @@ Version 2.1.150
     Added new locale string 'Chat.Style.Party'
     Added new locale string 'Chat.Channel.On'
     Added new locale string 'Chat.Channel.Off'
+    Fixed an ArrayIndexOutOfBounds exception when using /skillreset
     (API) ChatAPI::getPartyChatManager() has been removed
     (API) ChatAPI::sendPartyChat has been removed (similar functionality can be found in the new ChatManager class)
     (API) ChatAPI::sendAdminChat has been removed (similar functionality can be found in the new ChatManager class)
