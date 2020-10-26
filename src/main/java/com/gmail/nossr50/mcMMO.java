@@ -1,5 +1,7 @@
 package com.gmail.nossr50;
 
+import com.gmail.nossr50.chat.ChatManager;
+import com.gmail.nossr50.commands.CommandManager;
 import com.gmail.nossr50.config.*;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.mods.ArmorConfigManager;
@@ -82,6 +84,8 @@ public class mcMMO extends JavaPlugin {
     private static PlayerLevelUtils playerLevelUtils;
     private static SmeltingTracker smeltingTracker;
     private static TransientMetadataTools transientMetadataTools;
+    private static ChatManager chatManager;
+    private static CommandManager commandManager; //ACF
 
     /* Adventure */
     private static BukkitAudiences audiences;
@@ -280,6 +284,10 @@ public class mcMMO extends JavaPlugin {
         audiences = BukkitAudiences.create(this);
 
         transientMetadataTools = new TransientMetadataTools(this);
+
+        chatManager = new ChatManager(this);
+
+        commandManager = new CommandManager(this);
     }
 
     public static PlayerLevelUtils getPlayerLevelUtils() {
@@ -700,5 +708,13 @@ public class mcMMO extends JavaPlugin {
 
     public static TransientMetadataTools getTransientMetadataTools() {
         return transientMetadataTools;
+    }
+
+    public ChatManager getChatManager() {
+        return chatManager;
+    }
+
+    public CommandManager getCommandManager() {
+        return commandManager;
     }
 }

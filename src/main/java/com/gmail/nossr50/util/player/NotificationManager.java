@@ -17,6 +17,7 @@ import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.audience.MessageType;
+import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -115,10 +116,10 @@ public class NotificationManager {
             if(customEvent.isMessageAlsoBeingSentToChat())
             {
                 //Send copy to chat system
-                audience.sendMessage(customEvent.getNotificationTextComponent(), MessageType.SYSTEM);
+                audience.sendMessage(Identity.nil(), customEvent.getNotificationTextComponent(), MessageType.SYSTEM);
             }
         } else {
-            audience.sendMessage(customEvent.getNotificationTextComponent(), MessageType.SYSTEM);
+            audience.sendMessage(Identity.nil(), customEvent.getNotificationTextComponent(), MessageType.SYSTEM);
         }
     }
 
@@ -165,7 +166,7 @@ public class NotificationManager {
             return;
 
         //CHAT MESSAGE
-        mcMMO.getAudiences().player(mcMMOPlayer.getPlayer()).sendMessage(TextComponentFactory.getSubSkillUnlockedNotificationComponents(mcMMOPlayer.getPlayer(), subSkillType));
+        mcMMO.getAudiences().player(mcMMOPlayer.getPlayer()).sendMessage(Identity.nil(), TextComponentFactory.getSubSkillUnlockedNotificationComponents(mcMMOPlayer.getPlayer(), subSkillType));
 
         //Unlock Sound Effect
         SoundManager.sendCategorizedSound(mcMMOPlayer.getPlayer(), mcMMOPlayer.getPlayer().getLocation(), SoundType.SKILL_UNLOCKED, SoundCategory.MASTER);

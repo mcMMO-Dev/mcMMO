@@ -1,5 +1,11 @@
 package com.gmail.nossr50.events.chat;
 
+import com.gmail.nossr50.chat.author.Author;
+import com.gmail.nossr50.chat.message.AbstractChatMessage;
+import com.gmail.nossr50.chat.message.ChatMessage;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -8,66 +14,123 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class McMMOChatEvent extends Event implements Cancellable {
     private boolean cancelled;
-    private final Plugin plugin;
-    private final String sender;
-    private String displayName;
-    private String message;
+    protected final @NotNull Plugin plugin;
+    protected final @NotNull AbstractChatMessage chatMessage;
 
-    protected McMMOChatEvent(Plugin plugin, String sender, String displayName, String message) {
-        this.plugin = plugin;
-        this.sender = sender;
-        this.displayName = displayName;
-        this.message = message;
-    }
-
-    protected McMMOChatEvent(Plugin plugin, String sender, String displayName, String message, boolean isAsync) {
+    protected McMMOChatEvent(@NotNull Plugin plugin, @NotNull AbstractChatMessage chatMessage, boolean isAsync) {
         super(isAsync);
         this.plugin = plugin;
-        this.sender = sender;
-        this.displayName = displayName;
-        this.message = message;
+        this.chatMessage = chatMessage;
     }
 
     /**
-     * @return The plugin responsible for this event, note this can be null
+     * The {@link Author} of this message
+     *
+     * @return the {@link Author} of this message
      */
-    public Plugin getPlugin() {
+    public @NotNull Author getAuthor() {
+        return chatMessage.getAuthor();
+    }
+
+    /**
+     * The {@link Audience} for this message
+     *
+     * @return the {@link Audience} for this message
+     */
+    public @NotNull Audience getAudience() {
+        return chatMessage.getAudience();
+    }
+
+    /**
+     * Set the {@link Audience} for this message
+     *
+     * @param audience target {@link Audience}
+     */
+    public void setAudience(@NotNull Audience audience) {
+        chatMessage.setAudience(audience);
+    }
+
+    /**
+     * @return The plugin responsible for this event
+     */
+    public @NotNull Plugin getPlugin() {
         return plugin;
     }
 
     /**
-     * @return String name of the player who sent the chat, or "Console"
+     * The display name of the author
+     *
+     * @return the display name of the author
+     * @deprecated Use {@link #getDisplayName()} instead
      */
-    public String getSender() {
-        return sender;
+    @Deprecated
+    public @NotNull String getSender() {
+        return getAuthor().getAuthoredName();
     }
 
     /**
-     * @return String display name of the player who sent the chat, or "Console"
+     * The name of the author
+     * @return the author's name
      */
-    public String getDisplayName() {
-        return displayName;
+    public @NotNull String getDisplayName() {
+        return getAuthor().getAuthoredName();
     }
 
     /**
-     * @return String message that will be sent
+     * Don't use this method
+     *
+     * @return The raw message
+     * @deprecated use {@link #getComponentMessage()} instead
      */
-    public String getMessage() {
-        return message;
+    @Deprecated
+    public @NotNull String getMessage() {
+        return chatMessage.rawMessage();
     }
 
     /**
-     * @param displayName String display name of the player who sent the chat
+     * The original message typed by the player before any formatting
+     * The raw message is immutable
+     *
+     * @return the message as it was typed by the player, this is before any formatting
      */
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public @NotNull String getRawMessage() {
+        return chatMessage.rawMessage();
     }
 
     /**
-     * @param message String message to be sent in chat
+     * The {@link TextComponent} as it will be sent to all players which should include formatting such as adding chat prefixes, player names, etc
+     *
+     * @return the message that will be sent to the {@link Audience}
      */
-    public void setMessage(String message) {
-        this.message = message;
+    public @NotNull TextComponent getComponentMessage() {
+        return chatMessage.getChatMessage();
+    }
+
+    /**
+     * This will be the final message sent to the audience, this should be the message after its been formatted and has had player names added to it etc
+     *
+     * @param chatMessage the new chat message
+     */
+    public void setMessagePayload(@NotNull TextComponent chatMessage) {
+        this.chatMessage.setChatMessage(chatMessage);
+    }
+
+    /**
+     * Does not function anymore
+     */
+    @Deprecated
+    public void setDisplayName(@NotNull String displayName) {
+        return;
+    }
+
+    /**
+     * @param message Adjusts the final message sent to players in the party
+     *
+     * @deprecated use {{@link #setMessagePayload(TextComponent)}}
+     */
+    @Deprecated
+    public void setMessage(@NotNull String message) {
+        chatMessage.setChatMessage(Component.text(message));
     }
 
     /** Following are required for Cancellable **/
@@ -82,14 +145,22 @@ public abstract class McMMOChatEvent extends Event implements Cancellable {
     }
 
     /** Rest of file is required boilerplate for custom events **/
-    private static final HandlerList handlers = new HandlerList();
+    private static final @NotNull HandlerList handlers = new HandlerList();
 
     @Override
     public @NotNull HandlerList getHandlers() {
         return handlers;
     }
 
-    public static HandlerList getHandlerList() {
+    public static @NotNull HandlerList getHandlerList() {
         return handlers;
+    }
+
+    /**
+     * The {@link ChatMessage}
+     * @return the chat message
+     */
+    public @NotNull ChatMessage getChatMessage() {
+        return chatMessage;
     }
 }

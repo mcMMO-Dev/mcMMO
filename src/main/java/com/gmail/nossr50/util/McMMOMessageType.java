@@ -2,13 +2,14 @@ package com.gmail.nossr50.util;
 
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.audience.MessageType;
+import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
 
 import java.util.function.BiConsumer;
 
 public enum McMMOMessageType {
     ACTION_BAR(Audience::sendActionBar),
-    SYSTEM((audience, message) -> audience.sendMessage(message, MessageType.SYSTEM));
+    SYSTEM((audience, message) -> audience.sendMessage(Identity.nil(), message, MessageType.SYSTEM));
 
     private final BiConsumer<Audience, Component> sender;
 

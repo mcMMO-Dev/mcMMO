@@ -1,7 +1,6 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.compat.layers.persistentdata.SpigotPersistentDataLayer_1_13;
 import org.bukkit.entity.LivingEntity;
 
 public class TransientMetadataTools {

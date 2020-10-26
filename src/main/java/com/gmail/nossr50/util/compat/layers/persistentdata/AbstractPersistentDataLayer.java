@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util.compat.layers.persistentdata;
 
-import com.gmail.nossr50.api.exceptions.IncompleteNamespacedKeyRegister;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.compat.layers.AbstractCompatibilityLayer;
 import org.bukkit.NamespacedKey;
@@ -11,7 +10,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 public abstract class AbstractPersistentDataLayer extends AbstractCompatibilityLayer {
 

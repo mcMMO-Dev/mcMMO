@@ -1,13 +1,8 @@
 package com.gmail.nossr50.listeners;
 
-import com.gmail.nossr50.chat.ChatManager;
-import com.gmail.nossr50.chat.ChatManagerFactory;
-import com.gmail.nossr50.chat.PartyChatManager;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.chat.ChatMode;
-import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -896,27 +891,13 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        ChatManager chatManager = null;
-
-        if (mcMMOPlayer.isChatEnabled(ChatMode.PARTY)) {
-            Party party = mcMMOPlayer.getParty();
-
-            if (party == null) {
-                mcMMOPlayer.disableChat(ChatMode.PARTY);
-                player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
-                return;
-            }
-
-            chatManager = ChatManagerFactory.getChatManager(plugin, ChatMode.PARTY);
-            ((PartyChatManager) chatManager).setParty(party);
-        }
-        else if (mcMMOPlayer.isChatEnabled(ChatMode.ADMIN)) {
-            chatManager = ChatManagerFactory.getChatManager(plugin, ChatMode.ADMIN);
-        }
-
-        if (chatManager != null) {
-            chatManager.handleChat(player, event.getMessage(), event.isAsynchronous());
+        //If the message is allowed we cancel this event to avoid double sending messages
+        if(plugin.getChatManager().isMessageAllowed(mcMMOPlayer)) {
+            plugin.getChatManager().processPlayerMessage(mcMMOPlayer, event.getMessage(), event.isAsynchronous());
             event.setCancelled(true);
+        } else {
+            //Message wasn't allowed, remove the player from their channel
+            plugin.getChatManager().setOrToggleChatChannel(mcMMOPlayer, mcMMOPlayer.getChatChannel());
         }
     }
 

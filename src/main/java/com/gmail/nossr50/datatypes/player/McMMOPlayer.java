@@ -1,10 +1,12 @@
 package com.gmail.nossr50.datatypes.player;
 
+import com.gmail.nossr50.chat.author.AdminAuthor;
+import com.gmail.nossr50.chat.author.PartyAuthor;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.chat.ChatMode;
+import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
@@ -50,6 +52,8 @@ import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
+import net.kyori.adventure.identity.Identified;
+import net.kyori.adventure.identity.Identity;
 import org.apache.commons.lang.Validate;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -57,13 +61,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-public class McMMOPlayer {
+public class McMMOPlayer implements Identified {
+    private final @NotNull Identity identity;
+
+    //Hacky fix for now, redesign later
+    private final @NotNull PartyAuthor partyAuthor;
+    private final @NotNull AdminAuthor adminAuthor;
+
     private final Player        player;
     private final PlayerProfile profile;
 
@@ -77,14 +89,14 @@ public class McMMOPlayer {
 
     private PartyTeleportRecord ptpRecord;
 
-    private boolean partyChatMode;
-    private boolean adminChatMode;
     private boolean displaySkillNotifications = true;
     private boolean debugMode;
 
     private boolean abilityUse = true;
     private boolean godMode;
     private boolean chatSpy = false; //Off by default
+
+    private ChatChannel chatChannel;
 
     private final Map<SuperAbilityType, Boolean> abilityMode     = new HashMap<>();
     private final Map<SuperAbilityType, Boolean> abilityInformed = new HashMap<>();
@@ -106,6 +118,7 @@ public class McMMOPlayer {
     public McMMOPlayer(Player player, PlayerProfile profile) {
         this.playerName = player.getName();
         UUID uuid = player.getUniqueId();
+        identity = Identity.identity(uuid);
 
         this.player = player;
         playerMetadata = new FixedMetadataValue(mcMMO.p, playerName);
@@ -143,6 +156,11 @@ public class McMMOPlayer {
 
         debugMode = false; //Debug mode helps solve support issues, players can toggle it on or off
         attackStrength = 1.0D;
+
+        this.adminAuthor = new AdminAuthor(player);
+        this.partyAuthor = new PartyAuthor(player);
+
+        this.chatChannel = ChatChannel.NONE;
     }
 
     public String getPlayerName() {
@@ -737,70 +755,6 @@ public class McMMOPlayer {
         itemShareModifier = Math.max(10, modifier);
     }
 
-    /*
-     * Chat modes
-     */
-
-    public boolean isChatEnabled(ChatMode mode) {
-        switch (mode) {
-            case ADMIN:
-                return adminChatMode;
-
-            case PARTY:
-                return partyChatMode;
-
-            default:
-                return false;
-        }
-    }
-
-    public void disableChat(ChatMode mode) {
-        switch (mode) {
-            case ADMIN:
-                adminChatMode = false;
-                return;
-
-            case PARTY:
-                partyChatMode = false;
-                return;
-
-            default:
-        }
-    }
-
-    public void enableChat(ChatMode mode) {
-        switch (mode) {
-            case ADMIN:
-                adminChatMode = true;
-                partyChatMode = false;
-                return;
-
-            case PARTY:
-                partyChatMode = true;
-                adminChatMode = false;
-                return;
-
-            default:
-        }
-
-    }
-
-    public void toggleChat(ChatMode mode) {
-        switch (mode) {
-            case ADMIN:
-                adminChatMode = !adminChatMode;
-                partyChatMode = !adminChatMode && partyChatMode;
-                return;
-
-            case PARTY:
-                partyChatMode = !partyChatMode;
-                adminChatMode = !partyChatMode && adminChatMode;
-                return;
-
-            default:
-        }
-    }
-
     public boolean isUsingUnarmed() {
         return isUsingUnarmed;
     }
@@ -1079,5 +1033,33 @@ public class McMMOPlayer {
     public void cleanup() {
         resetAbilityMode();
         getTamingManager().cleanupAllSummons();
+    }
+
+    /**
+     * For use with Adventure API (Kyori lib)
+     * @return this players identity
+     */
+    @Override
+    public @NonNull Identity identity() {
+        return identity;
+    }
+
+    //TODO: Replace this hacky crap
+    public @NotNull PartyAuthor getPartyAuthor() {
+        return partyAuthor;
+    }
+
+    //TODO: Replace this hacky crap
+    public @NotNull AdminAuthor getAdminAuthor() {
+        return adminAuthor;
+    }
+
+    public @NotNull ChatChannel getChatChannel() {
+        return chatChannel;
+    }
+
+    public void setChatMode(ChatChannel chatChannel) {
+        //TODO: Code in the "you turned off blah, you turned on blah" messages.
+        this.chatChannel = chatChannel;
     }
 }

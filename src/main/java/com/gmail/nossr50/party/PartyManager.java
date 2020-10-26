@@ -1,7 +1,7 @@
 package com.gmail.nossr50.party;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.chat.ChatMode;
+import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.party.ItemShareType;
@@ -799,7 +799,7 @@ public final class PartyManager {
      */
     public static void processPartyLeaving(McMMOPlayer mcMMOPlayer) {
         mcMMOPlayer.removeParty();
-        mcMMOPlayer.disableChat(ChatMode.PARTY);
+        mcMMOPlayer.setChatMode(ChatChannel.NONE);
         mcMMOPlayer.setItemShareModifier(10);
     }
 

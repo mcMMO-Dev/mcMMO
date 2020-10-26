@@ -1,5 +1,24 @@
 Version 2.1.150
+    mcMMO Party & Admin Chat have had a rewrite, work was put in to make sure their API would be mostly compatible with the old one
+    mcMMO should now be compatible with 1.16.4's new social features
+    The style and look of admin/party chat is now determined by locale file instead of options in config.yml
+    Improved messages players recieve when they toggle on or off admin or party chat
+    All locale files have had [[]] color codes replaced by & color codes, you can still use [[GOLD]] and stuff if you want
+    Added new locale string 'Chat.Identity.Console'
+    Added new locale string 'Chat.Style.Admin'
+    Added new locale string 'Chat.Style.Party'
+    Added new locale string 'Chat.Channel.On'
+    Added new locale string 'Chat.Channel.Off'
+    (API) ChatAPI::getPartyChatManager() has been removed
+    (API) ChatAPI::sendPartyChat has been removed (similar functionality can be found in the new ChatManager class)
+    (API) ChatAPI::sendAdminChat has been removed (similar functionality can be found in the new ChatManager class)
     (API) Fake events in mcMMO now implement 'FakeEvent' (thanks TheBusyBiscuit)
+    (API) Updated Adventure Library to 4.1.1
+    (API) McMMOChatEvent has been reworked, plugins dependent on this event should review this class and make appropriate changes
+
+    NOTES:
+    The mcMMO chat events now make use of adventure library by Kyori, you can override the message payload with a TextComponent, which allows for some fancy stuff potentially.
+    I'll put in some of my own fancy stuff for party and admin chat in a future update.
 
 Version 2.1.149
     Added a new config file 'persistent_data.yml'
