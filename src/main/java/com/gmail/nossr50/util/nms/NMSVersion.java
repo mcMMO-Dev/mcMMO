@@ -20,6 +20,7 @@ public enum NMSVersion {
     NMS_1_16_1("1.16.1"),
     NMS_1_16_2("1.16.2"),
     NMS_1_16_3("1.16.3"),
+    NMS_1_16_4("1.16.4"),
 
     //Version not known to this build of mcMMO
     UNSUPPORTED("unsupported");
