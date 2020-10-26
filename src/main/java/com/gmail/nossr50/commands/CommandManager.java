@@ -33,17 +33,6 @@ public class CommandManager {
     }
 
     public void registerConditions() {
-        //TODO: Might be making a mistake with this lambda here, double check
-        //TODO: Might be making a mistake with this lambda here, double check
-        //TODO: Might be making a mistake with this lambda here, double check
-        //TODO: Might be making a mistake with this lambda here, double check
-        //TODO: Might be making a mistake with this lambda here, double check
-        //TODO: Might be making a mistake with this lambda here, double check
-        //TODO: Might be making a mistake with this lambda here, double check
-        //TODO: Might be making a mistake with this lambda here, double check
-        //TODO: Might be making a mistake with this lambda here, double check
-        //TODO: Might be making a mistake with this lambda here, double check
-
         // Method or Class based - Can only be used on methods
         bukkitCommandManager.getCommandConditions().addCondition(ADMIN_CONDITION, (context) -> {
             BukkitCommandIssuer issuer = context.getIssuer();
