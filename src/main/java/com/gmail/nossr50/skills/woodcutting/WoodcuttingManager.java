@@ -25,6 +25,8 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -32,7 +34,6 @@ import java.util.List;
 import java.util.Set;
 
 public class WoodcuttingManager extends SkillManager {
-
     private boolean treeFellerReachedThreshold = false;
     private static int treeFellerThreshold; //TODO: Shared setting, will be removed in 2.2
 
@@ -207,11 +208,13 @@ public class WoodcuttingManager extends SkillManager {
      */
     private static boolean handleDurabilityLoss(Set<BlockState> treeFellerBlocks, ItemStack inHand, Player player) {
         //Treat the NBT tag for unbreakable and the durability enchant differently
-        if(inHand.getItemMeta() != null && inHand.getItemMeta().isUnbreakable()) {
+        ItemMeta meta = inHand.getItemMeta();
+
+        if (meta != null && meta.isUnbreakable()) {
             return true;
         }
 
-        short durabilityLoss = 0;
+        int durabilityLoss = 0;
         Material type = inHand.getType();
 
         for (BlockState blockState : treeFellerBlocks) {
@@ -230,7 +233,8 @@ public class WoodcuttingManager extends SkillManager {
         }
 
         SkillUtils.handleDurabilityChange(inHand, durabilityLoss);
-        return (inHand.getDurability() < (mcMMO.getRepairableManager().isRepairable(type) ? mcMMO.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability()));
+        int durability = meta instanceof Damageable ? ((Damageable) meta).getDamage(): 0;
+        return (durability < (mcMMO.getRepairableManager().isRepairable(type) ? mcMMO.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability()));
     }
 
     /**

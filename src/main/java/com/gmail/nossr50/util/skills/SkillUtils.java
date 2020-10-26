@@ -35,7 +35,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 
-public class SkillUtils {
+public final class SkillUtils {
+    /**
+     * This is a static utility class, therefore we don't want any instances of
+     * this class. Making the constructor private prevents accidents like that.
+     */
+    private SkillUtils() {}
 
     public static void applyXpGain(McMMOPlayer mcMMOPlayer, PrimarySkillType skill, float xp, XPGainReason xpGainReason) {
         mcMMOPlayer.beginXpGain(skill, xp, xpGainReason, XPGainSource.SELF);
@@ -217,10 +222,8 @@ public class SkillUtils {
         if(compatLayer.isLegacyAbilityTool(itemStack)) {
             ItemMeta itemMeta = itemStack.getItemMeta();
 
-            //TODO: can be optimized
-            if(itemMeta.hasEnchant(Enchantment.DIG_SPEED)) {
-                itemMeta.removeEnchant(Enchantment.DIG_SPEED);
-            }
+            // This is safe to call without prior checks.
+            itemMeta.removeEnchant(Enchantment.DIG_SPEED);
 
             itemStack.setItemMeta(itemMeta);
             ItemUtils.removeAbilityLore(itemStack);
@@ -264,7 +267,8 @@ public class SkillUtils {
         return false;
     }
 
-    protected static Material getRepairAndSalvageItem(ItemStack inHand) {
+    @Nullable
+    public static Material getRepairAndSalvageItem(@NotNull ItemStack inHand) {
         if (ItemUtils.isDiamondTool(inHand) || ItemUtils.isDiamondArmor(inHand)) {
             return Material.DIAMOND;
         }
