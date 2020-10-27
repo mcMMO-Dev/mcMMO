@@ -1,20 +1,20 @@
 Version 2.1.150
-    mcMMO should now be compatible with 1.16.4's new social features
-    mcMMO Party & Admin Chat have had a rewrite, work was put in to make sure their API would be mostly compatible with the old one
+    Fixed an ArrayIndexOutOfBounds exception when using /skillreset
+    You can now add "-s" at the end of mmoedit, addlevels, or addxp to silence the command. Which will prevent the target of the command from being informed that the command was executed.
+    mcMMO should now be compatible with 1.16.4's new social features (affects Party/Admin chat)
+    mcMMO Party & Admin Chat have had a complete rewrite
     Players & Console can now use color codes (including stuff like &a or [[GREEN]]) in party or admin chat
     Added new permission node 'mcmmo.chat.colors' which allows players to use color codes, negate to disallow this
     The style and look of admin/party chat is now determined by locale file instead of options in config.yml
     The default style of admin/party chat has been updated, and it may be updated again in the future
-    Improved messages players recieve when they toggle on or off admin or party chat
-    All locale files have had [[]] color codes replaced by & color codes, you can still use [[GOLD]] and stuff if you want
-    You can now add "-s" at the end of mmoedit, addlevels, or addxp to silence the command. Which will prevent the target of the command from being informed that the command was executed.
+    Improved messages players receive when they toggle on or off admin or party chat
+    All locale files have had 99.9% of their [[]] color codes replaced by & color codes, you can still use [[GOLD]] and stuff if you want
     Added new locale entry 'Commands.Usage.3.XP'
     Added new locale entry 'Chat.Identity.Console'
     Added new locale entry 'Chat.Style.Admin'
     Added new locale entry 'Chat.Style.Party'
     Added new locale entry 'Chat.Channel.On'
     Added new locale entry 'Chat.Channel.Off'
-    Fixed an ArrayIndexOutOfBounds exception when using /skillreset
     (API) ChatAPI::getPartyChatManager() has been removed
     (API) ChatAPI::sendPartyChat has been removed (similar functionality can be found in the new ChatManager class)
     (API) ChatAPI::sendAdminChat has been removed (similar functionality can be found in the new ChatManager class)
@@ -23,6 +23,8 @@ Version 2.1.150
     (API) McMMOChatEvent has been reworked, plugins dependent on this event should review this class and make appropriate changes
 
     NOTES:
+    The yet to be released Tridents & Crossbows update will also feature some new features related to party chat, so expect more tweaks to those features in the future.
+    I actually spent a little over a week on this, the old code for party/admin chat was absolutely horrid and when porting in the new 1.16.4 features I couldn't stand the sight of it so I burned everything to the ground and rewrote all of it.
     The mcMMO chat events now make use of adventure library by Kyori, you can override the message payload with a TextComponent, which allows for some fancy stuff potentially.
     I'll put in some of my own fancy stuff for party and admin chat in a future update.
 
