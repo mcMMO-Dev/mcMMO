@@ -746,12 +746,15 @@ permissions:
     mcmmo.chat.all:
         description: Implies all mcmmo.chat permissions. (Warning, contains adminchat)
         children:
-            mcmmo.chat.adminchat: true 
-            mcmmo.chat.partychat: true 
+            mcmmo.chat.adminchat: true
+            mcmmo.chat.partychat: true
+            mcmmo.chat.colors: true
     mcmmo.chat.adminchat:
         description: Allows participation in admin chat
     mcmmo.chat.partychat:
         description: Allows participation in party chat
+    mcmmo.chat.colors:
+        description: players can use color codes like &a or [[GREEN]] in mcMMO chat channels
     mcmmo.motd:
         description: Allows access to the motd
     mcmmo.commands.*:
@@ -1297,6 +1300,7 @@ permissions:
             mcmmo.commands.defaults: true
             mcmmo.motd: true 
             mcmmo.skills.all: true
+            mcmmo.chat.colors: true
     mcmmo.defaultsop:
         default: op
         description: mcmmo permissions that default to op

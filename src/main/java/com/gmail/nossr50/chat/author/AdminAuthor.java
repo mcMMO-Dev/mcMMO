@@ -30,6 +30,14 @@ public class AdminAuthor implements Author {
         }
     }
 
+    public @NotNull Player getPlayer() {
+        return player;
+    }
+
+    public @Nullable String getOverrideName() {
+        return overrideName;
+    }
+
     @Override
     public void setName(@NotNull String newName) {
         overrideName = newName;

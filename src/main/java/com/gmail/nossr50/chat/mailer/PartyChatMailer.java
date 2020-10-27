@@ -21,8 +21,8 @@ public class PartyChatMailer extends AbstractChatMailer {
         super(pluginRef);
     }
 
-    public void processChatMessage(@NotNull Author author, @NotNull String rawString, @NotNull Party party, boolean isAsync) {
-        PartyChatMessage chatMessage = new PartyChatMessage(pluginRef, author, constructPartyAudience(party), rawString, addStyle(author, rawString), party);
+    public void processChatMessage(@NotNull Author author, @NotNull String rawString, @NotNull Party party, boolean isAsync, boolean canColor) {
+        PartyChatMessage chatMessage = new PartyChatMessage(pluginRef, author, constructPartyAudience(party), rawString, addStyle(author, rawString, canColor), party);
 
         McMMOChatEvent chatEvent = new McMMOPartyChatEvent(pluginRef, chatMessage, party, isAsync);
         Bukkit.getPluginManager().callEvent(chatEvent);
@@ -36,8 +36,19 @@ public class PartyChatMailer extends AbstractChatMailer {
         return mcMMO.getAudiences().filter(party.getSamePartyPredicate());
     }
 
-    public @NotNull TextComponent addStyle(@NotNull Author author, @NotNull String message) {
-        return Component.text(LocaleLoader.getString("Chat.Style.Party", author.getAuthoredName(), message));
+    /**
+     * Styles a string using a locale entry
+     * @param author message author
+     * @param message message contents
+     * @param canColor whether to replace colors codes with colors in the raw message
+     * @return the styled string, based on a locale entry
+     */
+    public @NotNull TextComponent addStyle(@NotNull Author author, @NotNull String message, boolean canColor) {
+        if(canColor) {
+            return Component.text(LocaleLoader.getString("Chat.Style.Party", author.getAuthoredName(), LocaleLoader.addColors(message)));
+        } else {
+            return Component.text(LocaleLoader.getString("Chat.Style.Party", author.getAuthoredName(), message));
+        }
     }
 
     @Override

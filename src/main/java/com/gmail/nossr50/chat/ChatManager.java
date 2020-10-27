@@ -60,10 +60,10 @@ public class ChatManager {
     private void processPlayerMessage(@NotNull McMMOPlayer mmoPlayer, @NotNull ChatChannel chatChannel, @NotNull String rawMessage, boolean isAsync) {
         switch (chatChannel) {
             case ADMIN:
-                adminChatMailer.processChatMessage(mmoPlayer.getAdminAuthor(), rawMessage, isAsync);
+                adminChatMailer.processChatMessage(mmoPlayer.getAdminAuthor(), rawMessage, isAsync, Permissions.colorChat(mmoPlayer.getPlayer()));
                 break;
             case PARTY:
-                partyChatMailer.processChatMessage(mmoPlayer.getPartyAuthor(), rawMessage, mmoPlayer.getParty(), isAsync);
+                partyChatMailer.processChatMessage(mmoPlayer.getPartyAuthor(), rawMessage, mmoPlayer.getParty(), isAsync, Permissions.colorChat(mmoPlayer.getPlayer()));
                 break;
             case PARTY_OFFICER:
             case NONE:
@@ -76,7 +76,7 @@ public class ChatManager {
      * @param rawMessage raw message from the console
      */
     public void processConsoleMessage(@NotNull String rawMessage) {
-        adminChatMailer.processChatMessage(getConsoleAuthor(), rawMessage, false);
+        adminChatMailer.processChatMessage(getConsoleAuthor(), rawMessage, false, true);
     }
 
     /**
@@ -93,7 +93,7 @@ public class ChatManager {
      * @param party target party
      */
     public void processConsoleMessage(@NotNull String rawMessage, @NotNull Party party) {
-        partyChatMailer.processChatMessage(getConsoleAuthor(), rawMessage, party, false);
+        partyChatMailer.processChatMessage(getConsoleAuthor(), rawMessage, party, false, true);
     }
 
     /**
