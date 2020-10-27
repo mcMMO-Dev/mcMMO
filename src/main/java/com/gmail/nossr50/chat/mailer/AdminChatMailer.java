@@ -1,6 +1,5 @@
 package com.gmail.nossr50.chat.mailer;
 
-import com.gmail.nossr50.chat.author.AdminAuthor;
 import com.gmail.nossr50.chat.author.Author;
 import com.gmail.nossr50.chat.message.AdminChatMessage;
 import com.gmail.nossr50.chat.message.ChatMessage;
@@ -8,14 +7,12 @@ import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
 import com.gmail.nossr50.events.chat.McMMOChatEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Permissions;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
