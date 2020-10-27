@@ -4,11 +4,13 @@ Version 2.1.150
     The style and look of admin/party chat is now determined by locale file instead of options in config.yml
     Improved messages players recieve when they toggle on or off admin or party chat
     All locale files have had [[]] color codes replaced by & color codes, you can still use [[GOLD]] and stuff if you want
-    Added new locale string 'Chat.Identity.Console'
-    Added new locale string 'Chat.Style.Admin'
-    Added new locale string 'Chat.Style.Party'
-    Added new locale string 'Chat.Channel.On'
-    Added new locale string 'Chat.Channel.Off'
+    You can now add "-s" at the end of mmoedit, addlevels, or addxp to silence the command. Which will prevent the target of the command from being informed that the command was executed.
+    Added new locale entry 'Commands.Usage.3.XP'
+    Added new locale entry 'Chat.Identity.Console'
+    Added new locale entry 'Chat.Style.Admin'
+    Added new locale entry 'Chat.Style.Party'
+    Added new locale entry 'Chat.Channel.On'
+    Added new locale entry 'Chat.Channel.Off'
     Fixed an ArrayIndexOutOfBounds exception when using /skillreset
     (API) ChatAPI::getPartyChatManager() has been removed
     (API) ChatAPI::sendPartyChat has been removed (similar functionality can be found in the new ChatManager class)
