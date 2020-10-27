@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public class ConsoleAuthor implements Author {
     private final UUID uuid;
-    private @NotNull String name;
+    private final @NotNull String name;
 
     public ConsoleAuthor(@NotNull String name) {
         this.name = name;
@@ -17,11 +17,6 @@ public class ConsoleAuthor implements Author {
     @Override
     public @NotNull String getAuthoredName() {
         return name;
-    }
-
-    @Override
-    public void setName(@NotNull String newName) {
-        this.name = newName;
     }
 
     @Override

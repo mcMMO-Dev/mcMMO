@@ -3,8 +3,10 @@ package com.gmail.nossr50.chat.message;
 import com.gmail.nossr50.chat.author.Author;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
+import com.google.common.base.Objects;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -31,18 +33,28 @@ public class PartyChatMessage extends AbstractChatMessage {
 
     @Override
     public void sendMessage() {
+        /*
+         * It should be noted that Party messages don't include console as part of the audience to avoid double messaging
+         * The console gets a message that has the party name included, player parties do not
+         */
+
+        //Sends to everyone but console
         audience.sendMessage(author, componentMessage);
+        TextComponent spyMessage = Component.text(LocaleLoader.getString("Chat.Spy.Party", author.getAuthoredName(), rawMessage, party.getName()));
 
         //Relay to spies
-        TextComponent textComponent = Component.text("[" + getParty().getName() + "] ->" ).append(getChatMessage());
-        relayChatToSpies(textComponent);
+        messagePartyChatSpies(spyMessage);
+
+        //Console message
+        mcMMO.p.getChatManager().sendConsoleMessage(author, spyMessage);
     }
 
     /**
+     * Console and Party Chat Spies get a more verbose version of the message
      * Party Chat Spies will get a copy of the message as well
      * @param spyMessage the message to copy to spies
      */
-    private void relayChatToSpies(@NotNull TextComponent spyMessage) {
+    private void messagePartyChatSpies(@NotNull TextComponent spyMessage) {
         //Find the people with permissions
         for(McMMOPlayer mcMMOPlayer : UserManager.getPlayers()) {
             Player player = mcMMOPlayer.getPlayer();
@@ -59,5 +71,19 @@ public class PartyChatMessage extends AbstractChatMessage {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        PartyChatMessage that = (PartyChatMessage) o;
+        return Objects.equal(party, that.party);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(super.hashCode(), party);
     }
 }

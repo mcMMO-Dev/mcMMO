@@ -11,8 +11,10 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.TextComponent;
+import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 //TODO: Micro optimization - Cache audiences and update cache when needed
 public class ChatManager {
@@ -20,11 +22,15 @@ public class ChatManager {
     private final @NotNull AdminChatMailer adminChatMailer;
     private final @NotNull PartyChatMailer partyChatMailer;
 
-    private @Nullable ConsoleAuthor consoleAuthor;
+    private final @NotNull ConsoleAuthor consoleAuthor;
+    private final @NotNull Audience consoleAudience;
 
     public ChatManager(@NotNull mcMMO pluginRef) {
         adminChatMailer = new AdminChatMailer(pluginRef);
         partyChatMailer = new PartyChatMailer(pluginRef);
+
+        this.consoleAuthor = new ConsoleAuthor(LocaleLoader.getString("Chat.Identity.Console"));
+        this.consoleAudience = mcMMO.getAudiences().filter((cs) -> cs instanceof ConsoleCommandSender);
     }
 
     /**
@@ -97,26 +103,10 @@ public class ChatManager {
     }
 
     /**
-     * Handles console messaging to a specific party
-     * @param args raw command args from the console
-     * @param party target party
-     */
-    public void processConsoleMessage(@NotNull String[] args, @NotNull Party party) {
-        String chatMessageWithoutCommand = buildChatMessage(args);
-
-        processConsoleMessage(chatMessageWithoutCommand, party);
-    }
-
-    /**
      * Gets a console author
-     * Constructs one if it doesn't already exist
      * @return a {@link ConsoleAuthor}
      */
     private @NotNull Author getConsoleAuthor() {
-        if (consoleAuthor == null) {
-            consoleAuthor = new ConsoleAuthor(LocaleLoader.getString("Chat.Identity.Console"));
-        }
-
         return consoleAuthor;
     }
 
@@ -179,6 +169,15 @@ public class ChatManager {
         }
 
         return false;
+    }
+
+    /**
+     * Sends just the console a message
+     * @param author author of the message
+     * @param message message contents in component form
+     */
+    public void sendConsoleMessage(@NotNull Author author, @NotNull TextComponent message) {
+        consoleAudience.sendMessage(author, message);
     }
 }
 

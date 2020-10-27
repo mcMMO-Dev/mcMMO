@@ -4,6 +4,7 @@ Version 2.1.150
     Players & Console can now use color codes (including stuff like &a or [[GREEN]]) in party or admin chat
     Added new permission node 'mcmmo.chat.colors' which allows players to use color codes, negate to disallow this
     The style and look of admin/party chat is now determined by locale file instead of options in config.yml
+    The default style of admin/party chat has been updated, and it may be updated again in the future
     Improved messages players recieve when they toggle on or off admin or party chat
     All locale files have had [[]] color codes replaced by & color codes, you can still use [[GOLD]] and stuff if you want
     You can now add "-s" at the end of mmoedit, addlevels, or addxp to silence the command. Which will prevent the target of the command from being informed that the command was executed.

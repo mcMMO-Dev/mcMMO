@@ -1,6 +1,7 @@
 package com.gmail.nossr50.chat.message;
 
 import com.gmail.nossr50.chat.author.Author;
+import com.google.common.base.Objects;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.plugin.Plugin;
@@ -55,5 +56,22 @@ public abstract class AbstractChatMessage implements ChatMessage {
     @Override
     public void setAudience(@NotNull Audience newAudience) {
         audience = newAudience;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AbstractChatMessage that = (AbstractChatMessage) o;
+        return Objects.equal(pluginRef, that.pluginRef) &&
+                Objects.equal(author, that.author) &&
+                Objects.equal(rawMessage, that.rawMessage) &&
+                Objects.equal(componentMessage, that.componentMessage) &&
+                Objects.equal(audience, that.audience);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(pluginRef, author, rawMessage, componentMessage, audience);
     }
 }

@@ -12,12 +12,6 @@ public interface Author extends Identity {
     @NotNull String getAuthoredName();
 
     /**
-     * Set the name of this author
-     * @param newName value of the new name
-     */
-    void setName(@NotNull String newName);
-
-    /**
      * Whether or not this author is a {@link org.bukkit.command.ConsoleCommandSender}
      *
      * @return true if this author is the console

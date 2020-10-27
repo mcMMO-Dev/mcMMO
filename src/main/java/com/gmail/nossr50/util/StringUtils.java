@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.EntityType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
@@ -20,6 +21,25 @@ public class StringUtils {
      */
     public static String getCapitalized(String target) {
         return target.substring(0, 1).toUpperCase() + target.substring(1).toLowerCase(Locale.ENGLISH);
+    }
+
+    /**
+     * Creates a string from an array skipping the first n elements
+     * @param args the array to iterate over when forming the string
+     * @param index the amount of elements to skip over
+     * @return the "trimmed" string
+     */
+    public static String buildStringAfterNthElement(@NotNull String @NotNull []args, int index) {
+        StringBuilder trimMessage = new StringBuilder();
+
+        for (int i = index; i < args.length; i++) {
+            if(i + 1 >= args.length)
+                trimMessage.append(args[i]);
+            else
+                trimMessage.append(args[i]).append(" ");
+        }
+
+        return trimMessage.toString();
     }
 
     public static String getPrettyItemString(Material material) {

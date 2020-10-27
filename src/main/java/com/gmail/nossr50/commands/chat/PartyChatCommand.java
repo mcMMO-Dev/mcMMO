@@ -11,11 +11,12 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-@CommandAlias("p|partychat") //Kept for historical reasons
+@CommandAlias("p|partychat|pchat") //Kept for historical reasons
 public class PartyChatCommand extends BaseCommand {
     private final @NotNull mcMMO pluginRef;
 
@@ -78,7 +79,7 @@ public class PartyChatCommand extends BaseCommand {
             Party targetParty = PartyManager.getParty(args[0]);
 
             if(targetParty != null) {
-                pluginRef.getChatManager().processConsoleMessage(args, targetParty);
+                pluginRef.getChatManager().processConsoleMessage(StringUtils.buildStringAfterNthElement(args, 1), targetParty);
             } else {
                 mcMMO.p.getLogger().severe("A party with that name doesn't exist!");
             }

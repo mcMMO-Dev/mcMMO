@@ -12,7 +12,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
 import org.jetbrains.annotations.NotNull;
 
-@CommandAlias("a|adminchat") //Kept for historical reasons
+@CommandAlias("a|adminchat|achat") //Kept for historical reasons
 public class AdminChatCommand extends BaseCommand {
     private final @NotNull mcMMO pluginRef;
 

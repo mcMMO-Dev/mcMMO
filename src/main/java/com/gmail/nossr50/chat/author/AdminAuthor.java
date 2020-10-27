@@ -1,6 +1,7 @@
 package com.gmail.nossr50.chat.author;
 
 import com.gmail.nossr50.config.Config;
+import com.google.common.base.Objects;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +39,10 @@ public class AdminAuthor implements Author {
         return overrideName;
     }
 
-    @Override
+    /**
+     * Set the name of this author
+     * @param newName value of the new name
+     */
     public void setName(@NotNull String newName) {
         overrideName = newName;
     }
@@ -56,5 +60,19 @@ public class AdminAuthor implements Author {
     @Override
     public @NonNull UUID uuid() {
         return player.getUniqueId();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AdminAuthor that = (AdminAuthor) o;
+        return Objects.equal(player, that.player) &&
+                Objects.equal(overrideName, that.overrideName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(player, overrideName);
     }
 }
