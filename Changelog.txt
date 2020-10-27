@@ -13,6 +13,7 @@ Version 2.1.150
     Added new locale entry 'Chat.Identity.Console'
     Added new locale entry 'Chat.Style.Admin'
     Added new locale entry 'Chat.Style.Party'
+    Added new locale entry 'Chat.Spy.Party'
     Added new locale entry 'Chat.Channel.On'
     Added new locale entry 'Chat.Channel.Off'
     (API) ChatAPI::getPartyChatManager() has been removed
