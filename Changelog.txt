@@ -1,3 +1,6 @@
+Version 2.1.151
+    Fixed a bug where players could chat to party chat without the party chat permission
+
 Version 2.1.150
     Fixed an ArrayIndexOutOfBounds exception when using /skillreset
     You can now add "-s" at the end of mmoedit, addlevels, or addxp to silence the command. Which will prevent the target of the command from being informed that the command was executed.

@@ -159,7 +159,7 @@ public class ChatManager {
                 }
                 break;
             case PARTY:
-                if(mmoPlayer.getParty() != null) {
+                if(mmoPlayer.getParty() != null && Permissions.partyChat(mmoPlayer.getPlayer())) {
                     return true;
                 }
                 break;
