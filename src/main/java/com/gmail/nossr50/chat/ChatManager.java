@@ -4,6 +4,7 @@ import com.gmail.nossr50.chat.author.Author;
 import com.gmail.nossr50.chat.author.ConsoleAuthor;
 import com.gmail.nossr50.chat.mailer.AdminChatMailer;
 import com.gmail.nossr50.chat.mailer.PartyChatMailer;
+import com.gmail.nossr50.config.ChatConfig;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -25,12 +26,15 @@ public class ChatManager {
     private final @NotNull ConsoleAuthor consoleAuthor;
     private final @NotNull Audience consoleAudience;
 
+    private final boolean isChatEnabled;
+
     public ChatManager(@NotNull mcMMO pluginRef) {
         adminChatMailer = new AdminChatMailer(pluginRef);
         partyChatMailer = new PartyChatMailer(pluginRef);
 
         this.consoleAuthor = new ConsoleAuthor(LocaleLoader.getString("Chat.Identity.Console"));
         this.consoleAudience = mcMMO.getAudiences().filter((cs) -> cs instanceof ConsoleCommandSender);
+        this.isChatEnabled = ChatConfig.getInstance().isChatEnabled();
     }
 
     /**
@@ -178,6 +182,41 @@ public class ChatManager {
      */
     public void sendConsoleMessage(@NotNull Author author, @NotNull TextComponent message) {
         consoleAudience.sendMessage(author, message);
+    }
+
+    /**
+     * Whether the mcMMO chat system which handles party and admin chat is enabled or disabled
+     * @return true if mcMMO chat processing (for party/admin chat) is enabled
+     */
+    public boolean isChatEnabled() {
+        return isChatEnabled;
+    }
+
+    /**
+     * Whether or not a specific chat channel is enabled
+     * ChatChannels are enabled/disabled via user config
+     *
+     * If chat is disabled, this always returns false
+     * If NONE is passed as a {@link ChatChannel} it will return true
+     * @param chatChannel target chat channel
+     * @return true if the chat channel is enabled
+     */
+    public boolean isChatChannelEnabled(@NotNull ChatChannel chatChannel) {
+        if(!isChatEnabled) {
+            return false;
+        } else {
+            switch(chatChannel) {
+
+                case ADMIN:
+                case PARTY:
+                case PARTY_OFFICER:
+                    return ChatConfig.getInstance().isChatChannelEnabled(chatChannel);
+                case NONE:
+                    return true;
+                default:
+                    return false;
+            }
+        }
     }
 }
 

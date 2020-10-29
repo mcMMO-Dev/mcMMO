@@ -5,6 +5,8 @@ import co.aikar.commands.BukkitCommandManager;
 import co.aikar.commands.ConditionFailedException;
 import com.gmail.nossr50.commands.chat.AdminChatCommand;
 import com.gmail.nossr50.commands.chat.PartyChatCommand;
+import com.gmail.nossr50.config.ChatConfig;
+import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -18,9 +20,9 @@ import org.jetbrains.annotations.NotNull;
  * For now this class will only handle ACF converted commands, all other commands will be handled elsewhere
  */
 public class CommandManager {
-    public static final String ADMIN_CONDITION = "adminCondition";
-    public static final String PARTY_CONDITION = "partyCondition";
-    public static final String MMO_DATA_LOADED = "mmoDataLoaded";
+    public static final @NotNull String ADMIN_CONDITION = "adminCondition";
+    public static final @NotNull String PARTY_CONDITION = "partyCondition";
+    public static final @NotNull String MMO_DATA_LOADED = "mmoDataLoaded";
 
     private final @NotNull mcMMO pluginRef;
     private final @NotNull BukkitCommandManager bukkitCommandManager;
@@ -34,8 +36,21 @@ public class CommandManager {
     }
 
     private void registerCommands() {
-        bukkitCommandManager.registerCommand(new AdminChatCommand(pluginRef));
-        bukkitCommandManager.registerCommand(new PartyChatCommand(pluginRef));
+        registerChatCommands();
+    }
+
+    /**
+     * Registers chat commands if the chat system is enabled
+     */
+    private void registerChatCommands() {
+        if(ChatConfig.getInstance().isChatEnabled()) {
+            if(ChatConfig.getInstance().isChatChannelEnabled(ChatChannel.ADMIN)) {
+                bukkitCommandManager.registerCommand(new AdminChatCommand(pluginRef));
+            }
+            if(ChatConfig.getInstance().isChatChannelEnabled(ChatChannel.PARTY)) {
+                bukkitCommandManager.registerCommand(new PartyChatCommand(pluginRef));
+            }
+        }
     }
 
     public void registerConditions() {

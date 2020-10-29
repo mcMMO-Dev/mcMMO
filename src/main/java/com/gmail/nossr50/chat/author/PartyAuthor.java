@@ -1,6 +1,7 @@
 package com.gmail.nossr50.chat.author;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.ChatConfig;
+import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.google.common.base.Objects;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -23,7 +24,7 @@ public class PartyAuthor implements Author {
         if(overrideName != null) {
             return overrideName;
         } else {
-            if(Config.getInstance().getPartyDisplayNames()) {
+            if(ChatConfig.getInstance().useDisplayNames(ChatChannel.PARTY)) {
                 return player.getDisplayName();
             } else {
                 return player.getName();

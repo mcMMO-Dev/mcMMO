@@ -1,8 +1,10 @@
 package com.gmail.nossr50.datatypes.party;
 
 import com.gmail.nossr50.chat.SamePartyPredicate;
+import com.gmail.nossr50.config.ChatConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -403,7 +405,7 @@ public class Party {
 
         List<Player> nearbyPlayerList = getNearMembers(UserManager.getPlayer(player));
 
-        boolean useDisplayNames = Config.getInstance().getPartyDisplayNames();
+        boolean useDisplayNames = ChatConfig.getInstance().useDisplayNames(ChatChannel.PARTY);
 
         if(isPartyLeaderOfflineOrHidden)
         {
