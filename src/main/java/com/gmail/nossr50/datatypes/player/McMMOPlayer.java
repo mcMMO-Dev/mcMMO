@@ -3,6 +3,7 @@ package com.gmail.nossr50.datatypes.player;
 import com.gmail.nossr50.chat.author.AdminAuthor;
 import com.gmail.nossr50.chat.author.PartyAuthor;
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.ChatConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
@@ -161,6 +162,10 @@ public class McMMOPlayer implements Identified {
         this.partyAuthor = new PartyAuthor(player);
 
         this.chatChannel = ChatChannel.NONE;
+
+        if(ChatConfig.getInstance().isSpyingAutomatic() && Permissions.adminChatSpy(getPlayer())) {
+            chatSpy = true;
+        }
     }
 
     public String getPlayerName() {

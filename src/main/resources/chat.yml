@@ -8,6 +8,9 @@ Chat:
             Enable: true
             # Whether or not to use the current display name of a player
             Use_Display_Names: true
+            Spies:
+                # Whether or not players with the chat spy permission join the server with chat spying toggled on
+                Automatically_Enable_Spying: false
         Admin:
             # Enable or disable party chat
             Enable: true

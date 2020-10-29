@@ -48,4 +48,9 @@ public class ChatConfig extends AutoUpdateConfigLoader {
         String key = "Chat.Channels." + StringUtils.getCapitalized(chatChannel.toString()) + ".Use_Display_Names";
         return config.getBoolean(key, true);
     }
+
+    public boolean isSpyingAutomatic() {
+        return config.getBoolean("Chat.Channels.Party.Spies.Automatically_Enable_Spying", false);
+    }
+
 }
