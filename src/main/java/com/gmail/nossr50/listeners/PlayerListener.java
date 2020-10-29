@@ -1,6 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import com.gmail.nossr50.config.ChatConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;

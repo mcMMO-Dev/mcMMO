@@ -73,12 +73,16 @@ public class ChatManager {
                 adminChatMailer.processChatMessage(mmoPlayer.getAdminAuthor(), rawMessage, isAsync, Permissions.colorChat(mmoPlayer.getPlayer()));
                 break;
             case PARTY:
-                partyChatMailer.processChatMessage(mmoPlayer.getPartyAuthor(), rawMessage, mmoPlayer.getParty(), isAsync, Permissions.colorChat(mmoPlayer.getPlayer()));
+                partyChatMailer.processChatMessage(mmoPlayer.getPartyAuthor(), rawMessage, mmoPlayer.getParty(), isAsync, Permissions.colorChat(mmoPlayer.getPlayer()), isPartyLeader(mmoPlayer));
                 break;
             case PARTY_OFFICER:
             case NONE:
                 break;
         }
+    }
+
+    private boolean isPartyLeader(@NotNull McMMOPlayer mmoPlayer) {
+        return mmoPlayer.getParty().getLeader().getUniqueId().equals(mmoPlayer.getPlayer().getUniqueId());
     }
 
     /**
@@ -103,7 +107,7 @@ public class ChatManager {
      * @param party target party
      */
     public void processConsoleMessage(@NotNull String rawMessage, @NotNull Party party) {
-        partyChatMailer.processChatMessage(getConsoleAuthor(), rawMessage, party, false, true);
+        partyChatMailer.processChatMessage(getConsoleAuthor(), rawMessage, party, false, true, false);
     }
 
     /**

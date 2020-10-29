@@ -20,7 +20,10 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.UUID;
 import java.util.function.Predicate;
 
 public class Party {
@@ -347,7 +350,7 @@ public class Party {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerUUID);
 
             if(offlinePlayer.isOnline() && player.canSee((Player) offlinePlayer)) {
-                ChatColor onlineColor = leader.getUniqueId() == playerUUID ? ChatColor.GOLD : ChatColor.GREEN;
+                ChatColor onlineColor = leader.getUniqueId().equals(playerUUID) ? ChatColor.GOLD : ChatColor.GREEN;
                 coloredNames.add(onlineColor + offlinePlayer.getName());
             } else {
                 coloredNames.add(ChatColor.DARK_GRAY + members.get(playerUUID));
