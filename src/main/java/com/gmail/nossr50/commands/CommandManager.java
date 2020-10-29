@@ -11,6 +11,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permissible;
 import org.jetbrains.annotations.NotNull;
 
 /*
@@ -30,6 +31,11 @@ public class CommandManager {
 
         registerConditions();
         registerCommands();
+    }
+
+    private void registerCommands() {
+        bukkitCommandManager.registerCommand(new AdminChatCommand(pluginRef));
+        bukkitCommandManager.registerCommand(new PartyChatCommand(pluginRef));
     }
 
     public void registerConditions() {
@@ -56,13 +62,15 @@ public class CommandManager {
             if(bukkitCommandIssuer.getIssuer() instanceof Player) {
                 validateLoadedData(bukkitCommandIssuer.getPlayer());
                 validatePlayerParty(bukkitCommandIssuer.getPlayer());
+                validatePermission("mcmmo.chat.partychat", bukkitCommandIssuer.getPlayer());
             }
         });
     }
 
-    private void registerCommands() {
-        bukkitCommandManager.registerCommand(new AdminChatCommand(pluginRef));
-        bukkitCommandManager.registerCommand(new PartyChatCommand(pluginRef));
+    private void validatePermission(@NotNull String permissionNode, @NotNull Permissible permissible) {
+        if(!permissible.hasPermission(permissionNode)) {
+            throw new ConditionFailedException("You do not have the appropriate permission to use this command.");
+        }
     }
 
 
