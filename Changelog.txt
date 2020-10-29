@@ -1,9 +1,9 @@
 Version 2.1.151
-    Fixed a bug where players could use the party chat command without the party chat permission
     Added new config 'chat.yml'
     Added 'Chat.Channels.Party.Spies.Automatically_Enable_Spying' to chat.yml which when enabled will start users who have the chat spy permission in chat spying mode
     All chat settings that used to be in 'config.yml' are now in 'chat.yml'
     The list of party members shown when using the party command has been simplified, this will change again in the T&C update
+    Fixed a bug where players could use the party chat command without the party chat permission
 
     NOTES:
     I greatly disliked the old party member list but was avoiding rewriting it until later, someone pointed out how ugly it was and my OCD triggered and now it is rewritten. I will rewrite it again in T&C.

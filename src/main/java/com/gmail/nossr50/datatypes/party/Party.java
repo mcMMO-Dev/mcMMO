@@ -1,11 +1,8 @@
 package com.gmail.nossr50.datatypes.party;
 
-import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.chat.SamePartyPredicate;
-import com.gmail.nossr50.config.ChatConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -13,7 +10,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Bukkit;
@@ -29,12 +25,6 @@ import java.util.function.Predicate;
 
 public class Party {
     private final @NotNull Predicate<CommandSender> samePartyPredicate;
-//    private static final String ONLINE_PLAYER_PREFIX = "★";
-//    private static final String ONLINE_PLAYER_PREFIX = "●" + ChatColor.RESET;
-    private static final String ONLINE_PLAYER_PREFIX = "⬤";
-//    private static final String OFFLINE_PLAYER_PREFIX = "☆";
-    private static final String OFFLINE_PLAYER_PREFIX = "○";
-//    private static final String OFFLINE_PLAYER_PREFIX = "⭕" + ChatColor.RESET;
     private final LinkedHashMap<UUID, String> members = new LinkedHashMap<>();
     private final List<Player> onlineMembers = new ArrayList<>();
 
@@ -355,10 +345,11 @@ public class Party {
 
         for(UUID playerUUID : members.keySet()) {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerUUID);
+
             if(offlinePlayer.isOnline() && player.canSee((Player) offlinePlayer)) {
                 coloredNames.add(ChatColor.GREEN + offlinePlayer.getName());
             } else {
-                coloredNames.add(ChatColor.DARK_GRAY + offlinePlayer.getName());
+                coloredNames.add(ChatColor.DARK_GRAY + members.get(playerUUID));
             }
         }
 
@@ -377,31 +368,6 @@ public class Party {
                         .append(" ");
             }
         }
-    }
-
-    private boolean isNotSamePerson(UUID onlinePlayerUUID, UUID uniqueId) {
-        return onlinePlayerUUID != uniqueId;
-    }
-
-    private void applyOnlineAndRangeFormatting(StringBuilder stringBuilder, boolean isVisibleOrOnline, boolean isNear)
-    {
-        if(isVisibleOrOnline)
-        {
-            if(isNear)
-            {
-                stringBuilder.append(ChatColor.GREEN);
-            } else {
-                stringBuilder.append(ChatColor.GRAY);
-            }
-
-//            stringBuilder.append(ChatColor.BOLD);
-            stringBuilder.append(ONLINE_PLAYER_PREFIX);
-        } else {
-            stringBuilder.append(ChatColor.GRAY);
-            stringBuilder.append(OFFLINE_PLAYER_PREFIX);
-        }
-
-        stringBuilder.append(ChatColor.RESET);
     }
 
     /**
