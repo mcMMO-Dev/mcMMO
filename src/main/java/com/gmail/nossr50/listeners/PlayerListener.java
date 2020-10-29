@@ -1,5 +1,6 @@
 package com.gmail.nossr50.listeners;
 
+import com.gmail.nossr50.config.ChatConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
@@ -892,14 +893,16 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        if(mcMMOPlayer.getChatChannel() != ChatChannel.NONE) {
-            if(plugin.getChatManager().isMessageAllowed(mcMMOPlayer)) {
-                //If the message is allowed we cancel this event to avoid double sending messages
-                plugin.getChatManager().processPlayerMessage(mcMMOPlayer, event.getMessage(), event.isAsynchronous());
-                event.setCancelled(true);
-            } else {
-                //Message wasn't allowed, remove the player from their channel
-                plugin.getChatManager().setOrToggleChatChannel(mcMMOPlayer, mcMMOPlayer.getChatChannel());
+        if(plugin.getChatManager().isChatChannelEnabled(mcMMOPlayer.getChatChannel())) {
+            if(mcMMOPlayer.getChatChannel() != ChatChannel.NONE) {
+                if(plugin.getChatManager().isMessageAllowed(mcMMOPlayer)) {
+                    //If the message is allowed we cancel this event to avoid double sending messages
+                    plugin.getChatManager().processPlayerMessage(mcMMOPlayer, event.getMessage(), event.isAsynchronous());
+                    event.setCancelled(true);
+                } else {
+                    //Message wasn't allowed, remove the player from their channel
+                    plugin.getChatManager().setOrToggleChatChannel(mcMMOPlayer, mcMMOPlayer.getChatChannel());
+                }
             }
         }
     }

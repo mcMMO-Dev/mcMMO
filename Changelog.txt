@@ -3,8 +3,10 @@ Version 2.1.151
     Added new config 'chat.yml'
     Added 'Chat.Channels.Party.Spies.Automatically_Enable_Spying' to chat.yml which when enabled will start users who have the chat spy permission in chat spying mode
     All chat settings that used to be in 'config.yml' are now in 'chat.yml'
+    The list of party members shown when using the party command has been simplified, this will change again in the T&C update
 
     NOTES:
+    I greatly disliked the old party member list but was avoiding rewriting it until later, someone pointed out how ugly it was and my OCD triggered and now it is rewritten. I will rewrite it again in T&C.
     The new config file lets you disable the chat system (you can disable all of it, or just party chat, and or just admin chat) without permission nodes.
     If you disable the party/admin chat, then the party/admin chat command never gets registered and attempting to use the command will result in a whole lot of nothing.
     I hate adding more config files using the old .yml system, but the config update is a ways out and this works for now.

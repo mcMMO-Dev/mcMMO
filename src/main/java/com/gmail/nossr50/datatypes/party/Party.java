@@ -1,5 +1,6 @@
 package com.gmail.nossr50.datatypes.party;
 
+import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.chat.SamePartyPredicate;
 import com.gmail.nossr50.config.ChatConfig;
 import com.gmail.nossr50.config.Config;
@@ -17,17 +18,14 @@ import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class Party {
     private final @NotNull Predicate<CommandSender> samePartyPredicate;
@@ -353,144 +351,32 @@ public class Party {
      */
     public String createMembersList(Player player) {
         StringBuilder memberList = new StringBuilder();
+        List<String> coloredNames = new ArrayList<>();
 
-        List<UUID> onlineMembers = members.keySet().stream()
-                .filter(x -> Bukkit.getOfflinePlayer(x).isOnline())
-                .collect(Collectors.toList());
-
-        List<UUID> offlineMembers = members.keySet().stream()
-                .filter(x -> !Bukkit.getOfflinePlayer(x).isOnline())
-                .collect(Collectors.toList());
-
-        ArrayList<UUID> visiblePartyList = new ArrayList<>();
-        boolean isPartyLeaderOfflineOrHidden = false;
-        ArrayList<UUID> offlineOrHiddenPartyList = new ArrayList<>();
-
-        for(UUID onlineMember : onlineMembers)
-        {
-            Player onlinePlayer = Bukkit.getPlayer(onlineMember);
-
-            if(!isNotSamePerson(player.getUniqueId(), onlineMember)
-                    || onlinePlayer != null && player.canSee(onlinePlayer))
-            {
-                visiblePartyList.add(onlineMember);
+        for(UUID playerUUID : members.keySet()) {
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerUUID);
+            if(offlinePlayer.isOnline() && player.canSee((Player) offlinePlayer)) {
+                coloredNames.add(ChatColor.GREEN + offlinePlayer.getName());
             } else {
-                //Party leader and cannot be seen by this player
-                if(isNotSamePerson(leader.getUniqueId(), player.getUniqueId()) && onlineMember == leader.getUniqueId())
-                    isPartyLeaderOfflineOrHidden = true;
-
-                offlineOrHiddenPartyList.add(onlineMember);
+                coloredNames.add(ChatColor.DARK_GRAY + offlinePlayer.getName());
             }
         }
 
-        if(offlineMembers.contains(leader.getUniqueId()))
-            isPartyLeaderOfflineOrHidden = true;
-
-        //Add all the actually offline members
-        offlineOrHiddenPartyList.addAll(offlineMembers);
-
-        /* BUILD THE PARTY LIST WITH FORMATTING */
-
-        String partyLeaderPrefix =
-                /*ChatColor.WHITE
-                + "["
-                +*/ ChatColor.GOLD
-                + "♕"
-                /*+ ChatColor.WHITE
-                + "]"*/
-                + ChatColor.RESET;
-
-        //First add the party leader
-        memberList.append(partyLeaderPrefix);
-
-        List<Player> nearbyPlayerList = getNearMembers(UserManager.getPlayer(player));
-
-        boolean useDisplayNames = ChatConfig.getInstance().useDisplayNames(ChatChannel.PARTY);
-
-        if(isPartyLeaderOfflineOrHidden)
-        {
-            if(isNotSamePerson(player.getUniqueId(), leader.getUniqueId()))
-                applyOnlineAndRangeFormatting(memberList, false, false);
-
-            memberList.append(ChatColor.GRAY)
-                      .append(leader.getPlayerName());
-        }
-        else {
-            if(isNotSamePerson(leader.getUniqueId(), player.getUniqueId()))
-                applyOnlineAndRangeFormatting(memberList, true, nearbyPlayerList.contains(Bukkit.getPlayer(leader.getUniqueId())));
-
-            if(useDisplayNames) {
-                memberList.append(leader.getPlayerName());
-            } else {
-                memberList.append(ChatColor.GOLD)
-                          .append(Bukkit.getOfflinePlayer(leader.getUniqueId()));
-            }
-        }
-
-        //Space
-        memberList.append(" ");
-
-        //Now do online members
-        for(UUID onlinePlayerUUID : visiblePartyList)
-        {
-            if(onlinePlayerUUID == leader.getUniqueId())
-                continue;
-
-            if(isNotSamePerson(onlinePlayerUUID, player.getUniqueId()))
-                applyOnlineAndRangeFormatting(memberList, true, nearbyPlayerList.contains(Bukkit.getPlayer(onlinePlayerUUID)));
-
-            if(useDisplayNames)
-            {
-                memberList.append(Bukkit.getPlayer(onlinePlayerUUID).getDisplayName());
-            }
-            else
-            {
-                //Color allies green, players dark aqua
-                memberList.append(ChatColor.GREEN)
-                        .append(Bukkit.getPlayer(onlinePlayerUUID).getName());
-            }
-
-            memberList.append(" ").append(ChatColor.RESET);
-        }
-
-        for(UUID offlineOrHiddenPlayer : offlineOrHiddenPartyList)
-        {
-            if(offlineOrHiddenPlayer == leader.getUniqueId())
-                continue;
-
-            applyOnlineAndRangeFormatting(memberList, false, false);
-
-            memberList.append(ChatColor.GRAY)
-                      .append(Bukkit.getOfflinePlayer(offlineOrHiddenPlayer).getName())
-                      .append(" ").append(ChatColor.RESET);
-        }
-
-
-//        for (Player otherPlayer : this.getVisibleMembers(player)) {
-//            String memberName = otherPlayer.getName();
-//
-//            if (this.getLeader().getUniqueId().equals(otherPlayer.getUniqueId())) {
-//                memberList.append(ChatColor.GOLD);
-//
-//                if (otherPlayer == null) {
-//                    memberName = memberName.substring(0, 1) + ChatColor.GRAY + ChatColor.ITALIC + "" + memberName.substring(1);
-//                }
-//            }
-//            else if (otherPlayer != null) {
-//                memberList.append(ChatColor.WHITE);
-//            }
-//            else {
-//                memberList.append(ChatColor.GRAY);
-//            }
-//
-//            if (player.getName().equalsIgnoreCase(otherPlayer.getName())) {
-//                memberList.append(ChatColor.ITALIC);
-//            }
-//
-//            memberList.append(memberName).append(ChatColor.RESET).append(" ");
-//        }
-
+        buildChatMessage(memberList, coloredNames.toArray(new String[0]));
         return memberList.toString();
+    }
+
+    private void buildChatMessage(@NotNull StringBuilder stringBuilder, String @NotNull [] names) {
+        for(int i = 0; i < names.length; i++) {
+            if(i + 1 >= names.length) {
+                stringBuilder
+                        .append(names[i]);
+            } else {
+                stringBuilder
+                        .append(names[i])
+                        .append(" ");
+            }
+        }
     }
 
     private boolean isNotSamePerson(UUID onlinePlayerUUID, UUID uniqueId) {

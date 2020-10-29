@@ -206,7 +206,6 @@ public class ChatManager {
             return false;
         } else {
             switch(chatChannel) {
-
                 case ADMIN:
                 case PARTY:
                 case PARTY_OFFICER:
