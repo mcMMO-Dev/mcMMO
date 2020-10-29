@@ -347,7 +347,8 @@ public class Party {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerUUID);
 
             if(offlinePlayer.isOnline() && player.canSee((Player) offlinePlayer)) {
-                coloredNames.add(ChatColor.GREEN + offlinePlayer.getName());
+                ChatColor onlineColor = leader.getUniqueId() == playerUUID ? ChatColor.GOLD : ChatColor.GREEN;
+                coloredNames.add(onlineColor + offlinePlayer.getName());
             } else {
                 coloredNames.add(ChatColor.DARK_GRAY + members.get(playerUUID));
             }
