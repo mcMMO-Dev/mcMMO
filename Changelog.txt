@@ -1,17 +1,20 @@
 Version 2.1.151
-    Added new config 'chat.yml'
+    Added new config for chat options named 'chat.yml'
     Added 'Chat.Channels.Party.Spies.Automatically_Enable_Spying' to chat.yml which when enabled will start users who have the chat spy permission in chat spying mode
     All chat settings that used to be in 'config.yml' are now in 'chat.yml'
     The list of party members shown when using the party command has been simplified, this will change again in the T&C update
     Fixed a bug where players could use the party chat command without the party chat permission
-    Added 'Chat.Style.Party.Leader' which is the chat style the party leader uses when communicating to the party
+    Party Leaders now use a different style when chatting than normal party members (can be customized)
+    Added 'Chat.Style.Party.Leader' to the locale, party leaders use this as their chat style
 
     NOTES:
-    I greatly disliked the old party member list but was avoiding rewriting it until later, someone pointed out how ugly it was and my OCD triggered and now it is rewritten. I will rewrite it again in T&C.
+    I greatly disliked the old party member list but was avoiding rewriting it until later, someone pointed out how ugly it was and my OCD triggered and now it is rewritten. I will rewrite it again in Tridents & Crossbows.
     The new config file lets you disable the chat system (you can disable all of it, or just party chat, and or just admin chat) without permission nodes.
-    If you disable the party/admin chat, then the party/admin chat command never gets registered and attempting to use the command will result in a whole lot of nothing.
+    If you disable the party/admin chat, then the party/admin chat command never gets registered and attempting to use the command will result in a whole lot of nothing, so if you want users to have a permission denied message then just stick to negating permission nodes.
+    I'll probably be tweaking mcMMO visually a lot in the near future, probably after Tridents & Crossbows goes out.
     I hate adding more config files using the old .yml system, but the config update is a ways out and this works for now.
     Reminder that the look/feel of party/admin chat is now determined by locale entries
+    https://mcmmo.org/wiki/Locale can help you understand how to change the locale
 
 Version 2.1.150
     Fixed an ArrayIndexOutOfBounds exception when using /skillreset
