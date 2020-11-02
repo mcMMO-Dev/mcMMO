@@ -16,7 +16,7 @@ import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-@CommandAlias("p|partychat|pchat") //Kept for historical reasons
+@CommandAlias("pc|p|partychat|pchat") //Kept for historical reasons
 public class PartyChatCommand extends BaseCommand {
     private final @NotNull mcMMO pluginRef;
 

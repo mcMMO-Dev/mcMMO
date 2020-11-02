@@ -2,10 +2,12 @@ Version 2.1.152
     Fixed a bug where Tree Feller would sometimes double drop blocks inappropriately
     Added some code to prevent a possible NPE when spawning items in a world that got unloaded
     Fixed a bug with bleed damage calculations and player armor
+    Added the missing 'pc' alias for party chat
+    Added the missing 'ac' alias for admin chat
+    Updated hu_HU locale (thanks andris)
     (API) New ENUM ItemSpawnReason which gives context for why mcMMO is dropping an item
     (API) McMMOItemSpawnEvent::getItemSpawnReason() was added
     (API) Many instances of spawning items that didn't used to create and call an McMMOItemSpawnEvent now do
-    Updated hu_HU locale (thanks andris)
 
     NOTES:
     I really should stop letting my OCD compel me to rewrite code all the time.
