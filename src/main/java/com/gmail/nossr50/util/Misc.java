@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util;
 
+import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
@@ -11,6 +12,8 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Locale;
@@ -18,7 +21,7 @@ import java.util.Random;
 import java.util.Set;
 
 public final class Misc {
-    private static final Random random = new Random();
+    private static final @NotNull Random random = new Random();
 
     public static final int TIME_CONVERSION_FACTOR = 1000;
     public static final int TICK_CONVERSION_FACTOR = 20;
@@ -37,7 +40,7 @@ public final class Misc {
     public static final float LEVELUP_PITCH    = 0.5F;  // Reduced to differentiate between vanilla level-up
     public static final float LEVELUP_VOLUME   = 0.75F * Config.getInstance().getMasterVolume(); // Use max volume always*/
 
-    public static final Set<String> modNames = ImmutableSet.of("LOTR", "BUILDCRAFT", "ENDERIO", "ENHANCEDBIOMES", "IC2", "METALLURGY", "FORESTRY", "GALACTICRAFT", "RAILCRAFT", "TWILIGHTFOREST", "THAUMCRAFT", "GRAVESTONEMOD", "GROWTHCRAFT", "ARCTICMOBS", "DEMONMOBS", "INFERNOMOBS", "SWAMPMOBS", "MARICULTURE", "MINESTRAPPOLATION");
+    public static final @NotNull Set<String> modNames = ImmutableSet.of("LOTR", "BUILDCRAFT", "ENDERIO", "ENHANCEDBIOMES", "IC2", "METALLURGY", "FORESTRY", "GALACTICRAFT", "RAILCRAFT", "TWILIGHTFOREST", "THAUMCRAFT", "GRAVESTONEMOD", "GROWTHCRAFT", "ARCTICMOBS", "DEMONMOBS", "INFERNOMOBS", "SWAMPMOBS", "MARICULTURE", "MINESTRAPPOLATION");
 
     private Misc() {}
 
@@ -54,7 +57,7 @@ public final class Misc {
      * @param entity target entity
      * @return true if the entity is not a Villager and is not a "NPC"
      */
-    public static boolean isNPCEntityExcludingVillagers(Entity entity) {
+    public static boolean isNPCEntityExcludingVillagers(@NotNull Entity entity) {
         return (!isVillager(entity)
                 && isNPCIncludingVillagers(entity)); //Compatibility with some mod..
     }
@@ -73,7 +76,7 @@ public final class Misc {
         return entityType.equalsIgnoreCase("wandering_trader") || entity instanceof Villager;
     }
 
-    public static boolean isNPCIncludingVillagers(Entity entity) {
+    public static boolean isNPCIncludingVillagers(@Nullable Entity entity) {
         return (entity == null
                 || (hasNPCMetadataTag(entity))
                 || (isNPCClassType(entity))
@@ -88,7 +91,7 @@ public final class Misc {
      * @param maxDistance The max distance apart
      * @return true if the distance between {@code first} and {@code second} is less than {@code maxDistance}, false otherwise
      */
-    public static boolean isNear(Location first, Location second, double maxDistance) {
+    public static boolean isNear(@NotNull Location first, @NotNull Location second, double maxDistance) {
         return (first.getWorld() == second.getWorld()) && (first.distanceSquared(second) < (maxDistance * maxDistance) || maxDistance == 0);
     }
 
@@ -102,9 +105,25 @@ public final class Misc {
         return blockState.getLocation().add(0.5, 0.5, 0.5);
     }
 
-    public static void dropItems(Location location, Collection<ItemStack> drops) {
+    public static void spawnItemsFromCollection(@NotNull Location location, @NotNull Collection<ItemStack> drops, @NotNull ItemSpawnReason itemSpawnReason) {
         for (ItemStack drop : drops) {
-            dropItem(location, drop);
+            spawnItem(location, drop, itemSpawnReason);
+        }
+    }
+
+    /**
+     * Drops only the first n items in a collection
+     * Size should always be a positive integer above 0
+     *
+     * @param location target drop location
+     * @param drops collection to iterate over
+     * @param sizeLimit the number of drops to process
+     */
+    public static void spawnItemsFromCollection(@NotNull Location location, @NotNull Collection<ItemStack> drops, @NotNull ItemSpawnReason itemSpawnReason, int sizeLimit) {
+        ItemStack[] arrayDrops = drops.toArray(new ItemStack[0]);
+
+        for(int i = 0; i < sizeLimit-1; i++) {
+            spawnItem(location, arrayDrops[i], itemSpawnReason);
         }
     }
 
@@ -115,9 +134,9 @@ public final class Misc {
      * @param is The items to drop
      * @param quantity The amount of items to drop
      */
-    public static void dropItems(Location location, ItemStack is, int quantity) {
+    public static void spawnItems(@NotNull Location location, @NotNull ItemStack is, int quantity, @NotNull ItemSpawnReason itemSpawnReason) {
         for (int i = 0; i < quantity; i++) {
-            dropItem(location, is);
+            spawnItem(location, is, itemSpawnReason);
         }
     }
 
@@ -126,15 +145,16 @@ public final class Misc {
      *
      * @param location The location to drop the item at
      * @param itemStack The item to drop
+     * @param itemSpawnReason the reason for the item drop
      * @return Dropped Item entity or null if invalid or cancelled
      */
-    public static Item dropItem(Location location, ItemStack itemStack) {
-        if (itemStack.getType() == Material.AIR) {
+    public static @Nullable Item spawnItem(@NotNull Location location, @NotNull ItemStack itemStack, @NotNull ItemSpawnReason itemSpawnReason) {
+        if (itemStack.getType() == Material.AIR || location.getWorld() == null) {
             return null;
         }
 
         // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
-        McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack);
+        McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack, itemSpawnReason);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
@@ -149,22 +169,23 @@ public final class Misc {
      *
      * @param location The location to drop the item at
      * @param itemStack The item to drop
+     * @param itemSpawnReason the reason for the item drop
      * @return Dropped Item entity or null if invalid or cancelled
      */
-    public static Item dropItem(Location location, ItemStack itemStack, int count) {
-        if (itemStack.getType() == Material.AIR) {
+    public static @Nullable Item spawnItemNaturally(@NotNull Location location, @NotNull ItemStack itemStack, @NotNull ItemSpawnReason itemSpawnReason) {
+        if (itemStack.getType() == Material.AIR || location.getWorld() == null) {
             return null;
         }
 
         // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
-        McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack);
+        McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack, itemSpawnReason);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
             return null;
         }
 
-        return location.getWorld().dropItem(location, itemStack);
+        return location.getWorld().dropItemNaturally(location, itemStack);
     }
 
     /**
@@ -175,9 +196,9 @@ public final class Misc {
      * @param speed the speed that the item should travel
      * @param quantity The amount of items to drop
      */
-    public static void spawnItemsTowardsLocation(Location fromLocation, Location toLocation, ItemStack is, int quantity, double speed) {
+    public static void spawnItemsTowardsLocation(@NotNull Location fromLocation, @NotNull Location toLocation, @NotNull ItemStack is, int quantity, double speed, @NotNull ItemSpawnReason itemSpawnReason) {
         for (int i = 0; i < quantity; i++) {
-            spawnItemTowardsLocation(fromLocation, toLocation, is, speed);
+            spawnItemTowardsLocation(fromLocation, toLocation, is, speed, itemSpawnReason);
         }
     }
 
@@ -191,7 +212,7 @@ public final class Misc {
      * @param speed the speed that the item should travel
      * @return Dropped Item entity or null if invalid or cancelled
      */
-    public static Item spawnItemTowardsLocation(Location fromLocation, Location toLocation, ItemStack itemToSpawn, double speed) {
+    public static @Nullable Item spawnItemTowardsLocation(@NotNull Location fromLocation, @NotNull Location toLocation, @NotNull ItemStack itemToSpawn, double speed, @NotNull ItemSpawnReason itemSpawnReason) {
         if (itemToSpawn.getType() == Material.AIR) {
             return null;
         }
@@ -201,12 +222,15 @@ public final class Misc {
         Location spawnLocation = fromLocation.clone();
         Location targetLocation = toLocation.clone();
 
+        if(spawnLocation.getWorld() == null)
+            return null;
+
         // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
-        McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(spawnLocation, clonedItem);
+        McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(spawnLocation, clonedItem, itemSpawnReason);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         //Something cancelled the event so back out
-        if (event.isCancelled() || event.getItemStack() == null) {
+        if (event.isCancelled()) {
             return null;
         }
 
@@ -224,7 +248,7 @@ public final class Misc {
         return spawnedItem;
     }
 
-    public static void profileCleanup(String playerName) {
+    public static void profileCleanup(@NotNull String playerName) {
         Player player = mcMMO.p.getServer().getPlayerExact(playerName);
 
         if (player != null) {
@@ -239,7 +263,7 @@ public final class Misc {
         }
     }
 
-    public static String getModName(String materialName) {
+    public static String getModName(@NotNull String materialName) {
         for (String mod : modNames) {
             if (materialName.contains(mod)) {
                 return mod;
@@ -258,7 +282,7 @@ public final class Misc {
     /**
      * Gets a random location near the specified location
      */
-    public static Location getLocationOffset(Location location, double strength) {
+    public static Location getLocationOffset(@NotNull Location location, double strength) {
         double blockX = location.getBlockX();
         double blockZ = location.getBlockZ();
 
@@ -272,7 +296,7 @@ public final class Misc {
         return new Location(location.getWorld(), blockX, location.getY(), blockZ);
     }
 
-    public static Random getRandom() {
+    public static @NotNull Random getRandom() {
         return random;
     }
 }

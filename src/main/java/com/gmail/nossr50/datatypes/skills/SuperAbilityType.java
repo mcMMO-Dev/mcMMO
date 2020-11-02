@@ -226,7 +226,7 @@ public enum SuperAbilityType {
                 return BlockUtils.affectedBySuperBreaker(blockState);
 
             case TREE_FELLER:
-                return BlockUtils.isLog(blockState);
+                return BlockUtils.hasWoodcuttingXP(blockState);
 
             default:
                 return false;

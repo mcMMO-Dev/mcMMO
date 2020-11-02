@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.unarmed;
 
+import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -109,7 +110,7 @@ public class UnarmedManager extends SkillManager {
             if(UserManager.getPlayer(defender) == null)
                 return;
 
-            Item item = Misc.dropItem(defender.getLocation(), defender.getInventory().getItemInMainHand());
+            Item item = Misc.spawnItem(defender.getLocation(), defender.getInventory().getItemInMainHand(), ItemSpawnReason.UNARMED_DISARMED_ITEM);
 
             if (item != null && AdvancedConfig.getInstance().getDisarmProtected()) {
                 item.setMetadata(mcMMO.disarmedItemKey, UserManager.getPlayer(defender).getPlayerMetadata());

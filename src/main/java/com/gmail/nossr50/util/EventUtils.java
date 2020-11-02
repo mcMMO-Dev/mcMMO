@@ -46,6 +46,7 @@ import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -73,7 +74,7 @@ public final class EventUtils {
      * @param event The {@link Event} in question
      * @return Whether this {@link Event} has been faked by mcMMO and should not be processed normally.
      */
-    public static boolean isFakeEvent(Event event) {
+    public static boolean isFakeEvent(@NotNull Event event) {
         return event instanceof FakeEvent;
     }
 
@@ -84,7 +85,7 @@ public final class EventUtils {
      * @param event this event
      * @return true if damage is NOT from an unnatural mcMMO skill (such as bleed DOTs)
      */
-    public static boolean isDamageFromMcMMOComplexBehaviour(Event event) {
+    public static boolean isDamageFromMcMMOComplexBehaviour(@NotNull Event event) {
         return event instanceof FakeEntityDamageEvent;
     }
 
@@ -94,7 +95,7 @@ public final class EventUtils {
      * @param entity target entity
      * @return the associated McMMOPlayer for this entity
      */
-    public static McMMOPlayer getMcMMOPlayer(Entity entity)
+    public static McMMOPlayer getMcMMOPlayer(@NotNull Entity entity)
     {
         return UserManager.getPlayer((Player)entity);
     }
@@ -112,7 +113,7 @@ public final class EventUtils {
      * @param entityDamageEvent
      * @return
      */
-    public static boolean isRealPlayerDamaged(EntityDamageEvent entityDamageEvent)
+    public static boolean isRealPlayerDamaged(@NotNull EntityDamageEvent entityDamageEvent)
     {
         //Make sure the damage is above 0
         double damage = entityDamageEvent.getFinalDamage();
@@ -167,14 +168,14 @@ public final class EventUtils {
      * Others
      */
 
-    public static McMMOPlayerAbilityActivateEvent callPlayerAbilityActivateEvent(Player player, PrimarySkillType skill) {
+    public static @NotNull McMMOPlayerAbilityActivateEvent callPlayerAbilityActivateEvent(@NotNull Player player, @NotNull PrimarySkillType skill) {
         McMMOPlayerAbilityActivateEvent event = new McMMOPlayerAbilityActivateEvent(player, skill);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         return event;
     }
 
-    public static McMMOPlayerProfileLoadEvent callPlayerProfileLoadEvent(Player player, PlayerProfile profile){
+    public static @NotNull McMMOPlayerProfileLoadEvent callPlayerProfileLoadEvent(@NotNull Player player, @NotNull PlayerProfile profile){
         McMMOPlayerProfileLoadEvent event = new McMMOPlayerProfileLoadEvent(player, profile);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 

@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.salvage;
 
+import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
@@ -159,10 +160,10 @@ public class SalvageManager extends SkillManager {
         anvilLoc.add(0, .1, 0);
 
         if (enchantBook != null) {
-            Misc.spawnItemTowardsLocation(anvilLoc.clone(), playerLoc.clone(), enchantBook, vectorSpeed);
+            Misc.spawnItemTowardsLocation(anvilLoc.clone(), playerLoc.clone(), enchantBook, vectorSpeed, ItemSpawnReason.SALVAGE_ENCHANTMENT_BOOK);
         }
 
-        Misc.spawnItemTowardsLocation(anvilLoc.clone(), playerLoc.clone(), salvageResults, vectorSpeed);
+        Misc.spawnItemTowardsLocation(anvilLoc.clone(), playerLoc.clone(), salvageResults, vectorSpeed, ItemSpawnReason.SALVAGE_MATERIALS);
 
         // BWONG BWONG BWONG - CLUNK!
         if (Config.getInstance().getSalvageAnvilUseSoundsEnabled()) {

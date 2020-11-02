@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.excavation;
 
+import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -51,7 +52,7 @@ public class ExcavationManager extends SkillManager {
                         }
 
                         xp += treasure.getXp();
-                        Misc.dropItem(location, treasure.getDrop());
+                        Misc.spawnItem(location, treasure.getDrop(), ItemSpawnReason.EXCAVATION_TREASURE);
                     }
                 }
             }

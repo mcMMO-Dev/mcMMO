@@ -1,3 +1,14 @@
+Version 2.1.152
+    Updated hu_HU locale (thanks andris)
+    Fixed a bug where Tree Feller would sometimes double drop blocks inappropriately
+    Added some code to prevent a possible NPE when spawning items in a world that got unloaded
+    (API) New ENUM ItemSpawnReason which gives context for why mcMMO is dropping an item
+    (API) McMMOItemSpawnEvent::getItemSpawnReason() was added
+    (API) Many instances of spawning items that didn't used to create and call an McMMOItemSpawnEvent now do
+
+    NOTES:
+    I really should stop letting my OCD compel me to rewrite code all the time.
+
 Version 2.1.151
     Added new config for chat options named 'chat.yml'
     Added 'Chat.Channels.Party.Spies.Automatically_Enable_Spying' to chat.yml which when enabled will start users who have the chat spy permission in chat spying mode

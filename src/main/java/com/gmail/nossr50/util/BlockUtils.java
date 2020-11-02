@@ -66,7 +66,7 @@ public final class BlockUtils {
      * @return true if the block awards XP, false otherwise
      */
     public static boolean shouldBeWatched(BlockState blockState) {
-        return affectedByGigaDrillBreaker(blockState) || affectedByGreenTerra(blockState) || affectedBySuperBreaker(blockState) || isLog(blockState)
+        return affectedByGigaDrillBreaker(blockState) || affectedByGreenTerra(blockState) || affectedBySuperBreaker(blockState) || hasWoodcuttingXP(blockState)
                 || Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.MINING, blockState.getType())
                 || Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.EXCAVATION, blockState.getType())
                 || Config.getInstance().getDoubleDropsEnabled(PrimarySkillType.WOODCUTTING, blockState.getType())
@@ -165,10 +165,8 @@ public final class BlockUtils {
      * @param blockState The {@link BlockState} of the block to check
      * @return true if the block is a log, false otherwise
      */
-    public static boolean isLog(BlockState blockState) {
-        if (ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.WOODCUTTING, blockState.getBlockData()))
-            return true;
-        return mcMMO.getModManager().isCustomLog(blockState);
+    public static boolean hasWoodcuttingXP(BlockState blockState) {
+        return ExperienceConfig.getInstance().doesBlockGiveSkillXP(PrimarySkillType.WOODCUTTING, blockState.getBlockData());
     }
 
     /**
@@ -177,8 +175,8 @@ public final class BlockUtils {
      * @param blockState The {@link BlockState} of the block to check
      * @return true if the block is a leaf, false otherwise
      */
-    public static boolean isLeaves(BlockState blockState) {
-        return mcMMO.getMaterialMapStore().isLeavesWhiteListed(blockState.getType());
+    public static boolean isNonWoodPartOfTree(BlockState blockState) {
+        return mcMMO.getMaterialMapStore().isTreeFellerDestructible(blockState.getType());
     }
 
     /**

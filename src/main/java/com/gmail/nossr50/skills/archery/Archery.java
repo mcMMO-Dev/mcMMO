@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.archery;
 
+import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -9,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -50,12 +52,12 @@ public class Archery {
      *
      * @param livingEntity The entity hit by the arrows
      */
-    public static void arrowRetrievalCheck(LivingEntity livingEntity) {
+    public static void arrowRetrievalCheck(@NotNull LivingEntity livingEntity) {
         for (Iterator<TrackedEntity> entityIterator = trackedEntities.iterator(); entityIterator.hasNext();) {
             TrackedEntity trackedEntity = entityIterator.next();
 
             if (trackedEntity.getID() == livingEntity.getUniqueId()) {
-                Misc.dropItems(livingEntity.getLocation(), new ItemStack(Material.ARROW), trackedEntity.getArrowCount());
+                Misc.spawnItems(livingEntity.getLocation(), new ItemStack(Material.ARROW), trackedEntity.getArrowCount(), ItemSpawnReason.ARROW_RETRIEVAL_ACTIVATED);
                 entityIterator.remove();
                 return;
             }
