@@ -1,13 +1,16 @@
 Version 2.1.152
-    Updated hu_HU locale (thanks andris)
     Fixed a bug where Tree Feller would sometimes double drop blocks inappropriately
     Added some code to prevent a possible NPE when spawning items in a world that got unloaded
+    Fixed a bug with bleed damage calculations and player armor
     (API) New ENUM ItemSpawnReason which gives context for why mcMMO is dropping an item
     (API) McMMOItemSpawnEvent::getItemSpawnReason() was added
     (API) Many instances of spawning items that didn't used to create and call an McMMOItemSpawnEvent now do
+    Updated hu_HU locale (thanks andris)
 
     NOTES:
     I really should stop letting my OCD compel me to rewrite code all the time.
+    Bleed was meant to do reduced damage to players wearing 4 pieces of armor or more, it was incorrectly counting everyone as wearing 4 pieces even when they weren't.
+    This means Bleed was doing a bit less damage than was intended against players without a full set of armor equipped.
 
 Version 2.1.151
     Added new config for chat options named 'chat.yml'
