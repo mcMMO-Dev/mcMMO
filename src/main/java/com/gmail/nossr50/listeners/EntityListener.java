@@ -31,6 +31,7 @@ import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.worldguard.WorldGuardManager;
 import com.gmail.nossr50.worldguard.WorldGuardUtils;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -53,6 +54,12 @@ import org.jetbrains.annotations.NotNull;
 public class EntityListener implements Listener {
     private final mcMMO pluginRef;
     private final @NotNull AbstractPersistentDataLayer persistentDataLayer;
+
+    /**
+     * We can use this {@link NamespacedKey} for {@link Enchantment} comparisons to
+     * check if a {@link Player} has a {@link Trident} enchanted with "Piercing".
+     */
+    private final NamespacedKey piercingEnchantment = NamespacedKey.minecraft("piercing");
 
     public EntityListener(final mcMMO pluginRef) {
         this.pluginRef = pluginRef;
@@ -161,9 +168,10 @@ public class EntityListener implements Listener {
             projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(pluginRef, 1.0));
             projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(pluginRef, projectile.getLocation()));
 
-            for(Enchantment enchantment : player.getInventory().getItemInMainHand().getEnchantments().keySet()) {
-                if(enchantment.getName().equalsIgnoreCase("piercing"))
+            for (Enchantment enchantment : player.getInventory().getItemInMainHand().getEnchantments().keySet()) {
+                if (enchantment.getKey().equals(piercingEnchantment)) {
                     return;
+                }
             }
 
             if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ARCHERY_ARROW_RETRIEVAL, player)) {
