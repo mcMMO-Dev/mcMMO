@@ -69,9 +69,11 @@ public class BleedTimerTask extends BukkitRunnable {
                 }
 
                 //Count Armor
-                for(ItemStack armorPiece : ((Player) target).getInventory().getArmorContents())
-                {
-                    armorCount++;
+                for (ItemStack armorPiece : ((Player) target).getInventory().getArmorContents()) {
+                    //We only want to count slots that contain armor.
+                    if (armorPiece != null) {
+                        armorCount++;
+                    }
                 }
 
             } else {
