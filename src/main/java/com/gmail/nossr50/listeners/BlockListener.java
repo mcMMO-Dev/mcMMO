@@ -245,16 +245,16 @@ public class BlockListener implements Listener {
             mcMMO.getPlaceStore().setTrue(blockState);
         }
 
-        /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld())) {
-            return;
-        }
-
-        Player player = event.getPlayer();
-
-        if (!UserManager.hasPlayerDataKey(player)) {
-            return;
-        }
+//        /* WORLD BLACKLIST CHECK */
+//        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld())) {
+//            return;
+//        }
+//
+//        Player player = event.getPlayer();
+//
+//        if (!UserManager.hasPlayerDataKey(player)) {
+//            return;
+//        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
