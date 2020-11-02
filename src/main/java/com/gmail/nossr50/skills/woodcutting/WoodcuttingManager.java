@@ -372,13 +372,8 @@ public class WoodcuttingManager extends SkillManager {
      * @param blockState Block being broken
      */
     protected static void checkForDoubleDrop(BlockState blockState) {
-        if (mcMMO.getModManager().isCustomLog(blockState) && mcMMO.getModManager().getBlock(blockState).isDoubleDropEnabled()) {
+        if (Config.getInstance().getWoodcuttingDoubleDropsEnabled(blockState.getBlockData())) {
             Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
-        }
-        else {
-            if (Config.getInstance().getWoodcuttingDoubleDropsEnabled(blockState.getBlockData())) {
-                Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
-            }
         }
     }
 }
