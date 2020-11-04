@@ -22,11 +22,15 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * This class handles many of the JSON components that mcMMO makes and uses
@@ -105,48 +109,137 @@ public class TextComponentFactory {
         ), MessageType.SYSTEM);
     }
 
-    public static void sendPlayerSubSkillList(Player player, List<Component> textComponents)
-    {
-        TextComponent emptySpace = Component.space();
-
-        AtomicReference<Component> messageToSend = new AtomicReference<>();
-        int newLineCount = 0; //Hacky solution to wordwrap problems
-
+    public static void sendPlayerSubSkillList(@NotNull Player player, @NotNull List<Component> subSkillComponents) {
         final Audience audience = mcMMO.getAudiences().player(player);
-        for (Component textComponent : textComponents) {
-            //Don't send more than 3 subskills per line to avoid MOST wordwrap problems
-            if(newLineCount > 2)
-            {
-                Component toSend = messageToSend.get();
-                if (toSend != null) {
-                    audience.sendMessage(Identity.nil(), toSend.append(emptySpace));
-                }
 
-                messageToSend.set(null);
-                newLineCount = 0;
-            }
-            //Style the skills into @links
-            final String originalTxt = textComponent instanceof TextComponent ? ((TextComponent) textComponent).content() : "";
+        //@ Signs, done for style
+        Component space = Component.space();
+        TextComponent atSignComponent = Component.text(LocaleLoader.getString("JSON.Hover.AtSymbolSkills"));
 
-            TextComponent.Builder stylizedText = Component.text().content(LocaleLoader.getString("JSON.Hover.AtSymbolSkills"));
-            addChild(stylizedText, originalTxt);
+        //Only send 3 sub-skills per line
+        Component[][] splitSubSkills = splitComponentsIntoGroups(subSkillComponents, 3);
+        ArrayList<Component> individualLinesToSend = new ArrayList<>();
 
-            if(textComponent.hoverEvent() != null)
-                stylizedText.hoverEvent(textComponent.hoverEvent());
-
-            if(textComponent.clickEvent() != null)
-                stylizedText.clickEvent(textComponent.clickEvent());
-
-            messageToSend.set(stylizedText.build().append(emptySpace));
-
-            newLineCount++;
+        //Create each line
+        for (Component[] componentArray : splitSubSkills) {
+            individualLinesToSend.add(fromArray(componentArray, atSignComponent, space));
         }
 
-        Component toSend = messageToSend.get();
-        if (toSend != null) {
-            audience.sendMessage(Identity.nil(), toSend.append(emptySpace));
+        //Send each group
+        for(Component curLine : individualLinesToSend) {
+            audience.sendMessage(Identity.nil(), curLine);
         }
     }
+
+    /**
+     * Makes a single component from an array of components, can optionally add prefixes and suffixes to come before and after each component
+     * @param componentsArray target array
+     * @return
+     */
+    private static @NotNull Component fromArray(@NotNull Component[] componentsArray, @Nullable Component prefixComponent, @Nullable Component suffixComponent) {
+        TextComponent.Builder componentBuilder = Component.text();
+
+        for(Component component : componentsArray) {
+            if(component == null) //Individual elements can be null
+                continue;
+
+            if(prefixComponent != null)
+                componentBuilder.append(prefixComponent);
+
+            componentBuilder.append(component);
+
+            if(suffixComponent != null)
+                componentBuilder.append(suffixComponent);
+
+        }
+
+        return componentBuilder.build();
+    }
+
+
+    /**
+     * Takes a list of components and splits them into arrays each with a maximum element limit
+     * Individual elements in [][X] may be null
+     *
+     * @param components target component list
+     * @param groupsSize maximum size per array
+     * @return a 2D array with components split into groups
+     */
+    private static @NotNull Component[][] splitComponentsIntoGroups(@NotNull List<Component> components, int groupsSize) {
+        int groupCount = (int) Math.ceil((double) components.size() / (double) groupsSize);
+
+        Component[][] splitGroups = new Component[groupCount][groupsSize];
+
+        int groupsFinished = 0;
+
+        while (groupsFinished < groupCount) {
+            //Fill group with members
+            for(int i = 0; i < groupsSize; i++) {
+                int indexOfPotentialMember = i + (groupsFinished * 3); //Groups don't always fill all members neatly
+
+                //Some groups won't have entirely non-null elements
+                if(indexOfPotentialMember > components.size()-1) {
+                    break;
+                }
+
+                Component potentialMember = components.get(indexOfPotentialMember);
+
+                //Make sure the potential member exists because of rounding
+                if(potentialMember != null) {
+                    splitGroups[groupsFinished][i] = potentialMember;
+                }
+            }
+
+            //Another group is finished
+            groupsFinished++;
+        }
+
+        return splitGroups;
+    }
+
+
+//    public static void sendPlayerSubSkillList(Player player, List<Component> textComponents)
+//    {
+//        TextComponent emptySpace = Component.space();
+//
+//        AtomicReference<Component> messageToSend = new AtomicReference<>();
+//        int newLineCount = 0; //Hacky solution to wordwrap problems
+//
+//        final Audience audience = mcMMO.getAudiences().player(player);
+//        for (Component textComponent : textComponents) {
+//            //Don't send more than 3 subskills per line to avoid MOST wordwrap problems
+//            if(newLineCount > 2)
+//            {
+//                Component toSend = messageToSend.get();
+//                if (toSend != null) {
+//                    audience.sendMessage(Identity.nil(), toSend.append(emptySpace));
+//                }
+//
+//                messageToSend.set(null);
+//                newLineCount = 0;
+//            }
+//            //Style the skills into @links
+//            final String originalTxt = textComponent instanceof TextComponent ? ((TextComponent) textComponent).content() : "";
+//
+//            TextComponent.Builder stylizedText = Component.text().content(LocaleLoader.getString("JSON.Hover.AtSymbolSkills"));
+//            addChild(stylizedText, originalTxt);
+//
+//            if(textComponent.hoverEvent() != null)
+//                stylizedText.hoverEvent(textComponent.hoverEvent());
+//
+//            if(textComponent.clickEvent() != null)
+//                stylizedText.clickEvent(textComponent.clickEvent());
+//
+//            messageToSend.set(stylizedText.build().append(emptySpace));
+//
+//            newLineCount++;
+//        }
+//
+//        Component toSend = messageToSend.get();
+//        if (toSend != null) {
+//            audience.sendMessage(Identity.nil(), toSend.append(emptySpace));
+//        }
+//    }
 
     private static Component getWebLinkTextComponent(McMMOWebLinks webLinks)
     {
@@ -201,8 +294,7 @@ public class TextComponentFactory {
     }
 
     private static void addChild(ComponentBuilder<?, ?> webTextComponent, String childName) {
-        TextComponent childComponent = Component.text(childName);
-        childComponent.color(NamedTextColor.BLUE);
+        TextComponent childComponent = Component.text(childName).color(NamedTextColor.BLUE);
         webTextComponent.append(childComponent);
     }
 

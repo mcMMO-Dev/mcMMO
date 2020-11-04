@@ -1,3 +1,7 @@
+Version 2.1.153
+    Fixed a bug where most sub-skills were not being displayed when using a skills command (for example /taming)
+    Fixed a bug where some URL links were not being colored
+
 Version 2.1.152
     Fixed a bug where Tree Feller would sometimes double drop blocks inappropriately
     Fixed a bug with bleed damage calculations and player armor
