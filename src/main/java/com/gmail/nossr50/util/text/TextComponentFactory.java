@@ -1,4 +1,4 @@
-package com.gmail.nossr50.util;
+package com.gmail.nossr50.util.text;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.RankConfig;
@@ -10,24 +10,21 @@ import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.RankUtils;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.audience.MessageType;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentBuilder;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -56,7 +53,7 @@ public class TextComponentFactory {
 
     public static Component getNotificationLevelUpTextComponent(PrimarySkillType skill, int levelsGained, int currentLevel)
     {
-        return Component.text(LocaleLoader.getString("Overhaul.Levelup", LocaleLoader.getString("Overhaul.Name."+StringUtils.getCapitalized(skill.toString())), levelsGained, currentLevel));
+        return Component.text(LocaleLoader.getString("Overhaul.Levelup", LocaleLoader.getString("Overhaul.Name."+ StringUtils.getCapitalized(skill.toString())), levelsGained, currentLevel));
     }
 
     private static TextComponent getNotificationTextComponent(String text)
@@ -109,6 +106,13 @@ public class TextComponentFactory {
         ), MessageType.SYSTEM);
     }
 
+    /**
+     * Sends a player a bunch of text components that represent a list of sub-skills
+     * Styling and formatting is applied before sending the messages
+     *
+     * @param player target player
+     * @param subSkillComponents the text components representing the sub-skills by name
+     */
     public static void sendPlayerSubSkillList(@NotNull Player player, @NotNull List<Component> subSkillComponents) {
         final Audience audience = mcMMO.getAudiences().player(player);
 
@@ -117,12 +121,12 @@ public class TextComponentFactory {
         TextComponent atSignComponent = Component.text(LocaleLoader.getString("JSON.Hover.AtSymbolSkills"));
 
         //Only send 3 sub-skills per line
-        Component[][] splitSubSkills = splitComponentsIntoGroups(subSkillComponents, 3);
+        Component[][] splitSubSkills = TextUtils.splitComponentsIntoGroups(subSkillComponents, 3);
         ArrayList<Component> individualLinesToSend = new ArrayList<>();
 
         //Create each line
         for (Component[] componentArray : splitSubSkills) {
-            individualLinesToSend.add(fromArray(componentArray, atSignComponent, space));
+            individualLinesToSend.add(TextUtils.fromArray(componentArray, atSignComponent, space));
         }
 
         //Send each group
@@ -130,116 +134,6 @@ public class TextComponentFactory {
             audience.sendMessage(Identity.nil(), curLine);
         }
     }
-
-    /**
-     * Makes a single component from an array of components, can optionally add prefixes and suffixes to come before and after each component
-     * @param componentsArray target array
-     * @return
-     */
-    private static @NotNull Component fromArray(@NotNull Component[] componentsArray, @Nullable Component prefixComponent, @Nullable Component suffixComponent) {
-        TextComponent.Builder componentBuilder = Component.text();
-
-        for(Component component : componentsArray) {
-            if(component == null) //Individual elements can be null
-                continue;
-
-            if(prefixComponent != null)
-                componentBuilder.append(prefixComponent);
-
-            componentBuilder.append(component);
-
-            if(suffixComponent != null)
-                componentBuilder.append(suffixComponent);
-
-        }
-
-        return componentBuilder.build();
-    }
-
-
-    /**
-     * Takes a list of components and splits them into arrays each with a maximum element limit
-     * Individual elements in [][X] may be null
-     *
-     * @param components target component list
-     * @param groupsSize maximum size per array
-     * @return a 2D array with components split into groups
-     */
-    private static @NotNull Component[][] splitComponentsIntoGroups(@NotNull List<Component> components, int groupsSize) {
-        int groupCount = (int) Math.ceil((double) components.size() / (double) groupsSize);
-
-        Component[][] splitGroups = new Component[groupCount][groupsSize];
-
-        int groupsFinished = 0;
-
-        while (groupsFinished < groupCount) {
-            //Fill group with members
-            for(int i = 0; i < groupsSize; i++) {
-                int indexOfPotentialMember = i + (groupsFinished * 3); //Groups don't always fill all members neatly
-
-                //Some groups won't have entirely non-null elements
-                if(indexOfPotentialMember > components.size()-1) {
-                    break;
-                }
-
-                Component potentialMember = components.get(indexOfPotentialMember);
-
-                //Make sure the potential member exists because of rounding
-                if(potentialMember != null) {
-                    splitGroups[groupsFinished][i] = potentialMember;
-                }
-            }
-
-            //Another group is finished
-            groupsFinished++;
-        }
-
-        return splitGroups;
-    }
-
-
-//    public static void sendPlayerSubSkillList(Player player, List<Component> textComponents)
-//    {
-//        TextComponent emptySpace = Component.space();
-//
-//        AtomicReference<Component> messageToSend = new AtomicReference<>();
-//        int newLineCount = 0; //Hacky solution to wordwrap problems
-//
-//        final Audience audience = mcMMO.getAudiences().player(player);
-//        for (Component textComponent : textComponents) {
-//            //Don't send more than 3 subskills per line to avoid MOST wordwrap problems
-//            if(newLineCount > 2)
-//            {
-//                Component toSend = messageToSend.get();
-//                if (toSend != null) {
-//                    audience.sendMessage(Identity.nil(), toSend.append(emptySpace));
-//                }
-//
-//                messageToSend.set(null);
-//                newLineCount = 0;
-//            }
-//            //Style the skills into @links
-//            final String originalTxt = textComponent instanceof TextComponent ? ((TextComponent) textComponent).content() : "";
-//
-//            TextComponent.Builder stylizedText = Component.text().content(LocaleLoader.getString("JSON.Hover.AtSymbolSkills"));
-//            addChild(stylizedText, originalTxt);
-//
-//            if(textComponent.hoverEvent() != null)
-//                stylizedText.hoverEvent(textComponent.hoverEvent());
-//
-//            if(textComponent.clickEvent() != null)
-//                stylizedText.clickEvent(textComponent.clickEvent());
-//
-//            messageToSend.set(stylizedText.build().append(emptySpace));
-//
-//            newLineCount++;
-//        }
-//
-//        Component toSend = messageToSend.get();
-//        if (toSend != null) {
-//            audience.sendMessage(Identity.nil(), toSend.append(emptySpace));
-//        }
-//    }
 
     private static Component getWebLinkTextComponent(McMMOWebLinks webLinks)
     {
@@ -249,53 +143,42 @@ public class TextComponentFactory {
         {
             case WEBSITE:
                 webTextComponent = Component.text().content(LocaleLoader.getString("JSON.Hover.AtSymbolURL"));
-                addChild(webTextComponent, "Web");
+                TextUtils.addChildWebComponent(webTextComponent, "Web");
                 webTextComponent.clickEvent(getUrlClickEvent(McMMOUrl.urlWebsite));
                 break;
             case SPIGOT:
                 webTextComponent = Component.text().content(LocaleLoader.getString("JSON.Hover.AtSymbolURL"));
-                addChild(webTextComponent, "Spigot");
+                TextUtils.addChildWebComponent(webTextComponent, "Spigot");
                 webTextComponent.clickEvent(getUrlClickEvent(McMMOUrl.urlSpigot));
                 break;
             case DISCORD:
                 webTextComponent = Component.text().content(LocaleLoader.getString("JSON.Hover.AtSymbolURL"));
-                addChild(webTextComponent, "Discord");
+                TextUtils.addChildWebComponent(webTextComponent, "Discord");
                 webTextComponent.clickEvent(getUrlClickEvent(McMMOUrl.urlDiscord));
                 break;
             case PATREON:
                 webTextComponent = Component.text().content(LocaleLoader.getString("JSON.Hover.AtSymbolURL"));
-                addChild(webTextComponent, "Patreon");
+                TextUtils.addChildWebComponent(webTextComponent, "Patreon");
                 webTextComponent.clickEvent(getUrlClickEvent(McMMOUrl.urlPatreon));
                 break;
             case WIKI:
                 webTextComponent = Component.text().content(LocaleLoader.getString("JSON.Hover.AtSymbolURL"));
-                addChild(webTextComponent, "Wiki");
+                TextUtils.addChildWebComponent(webTextComponent, "Wiki");
                 webTextComponent.clickEvent(getUrlClickEvent(McMMOUrl.urlWiki));
                 break;
             case HELP_TRANSLATE:
                 webTextComponent = Component.text().content(LocaleLoader.getString("JSON.Hover.AtSymbolURL"));
-                addChild(webTextComponent, "Lang");
+                TextUtils.addChildWebComponent(webTextComponent, "Lang");
                 webTextComponent.clickEvent(getUrlClickEvent(McMMOUrl.urlTranslate));
                 break;
             default:
                 webTextComponent = Component.text().content("NOT DEFINED");
         }
 
-        addNewHoverComponentToTextComponent(webTextComponent, getUrlHoverEvent(webLinks));
+        TextUtils.addNewHoverComponentToTextComponent(webTextComponent, getUrlHoverEvent(webLinks));
         webTextComponent.insertion(webLinks.getUrl());
 
         return webTextComponent.build();
-    }
-
-    private static void addChild(Component webTextComponent, String childName) {
-        TextComponent childComponent = Component.text(childName);
-        childComponent.color(NamedTextColor.BLUE);
-        webTextComponent.append(childComponent);
-    }
-
-    private static void addChild(ComponentBuilder<?, ?> webTextComponent, String childName) {
-        TextComponent childComponent = Component.text(childName).color(NamedTextColor.BLUE);
-        webTextComponent.append(childComponent);
     }
 
     private static Component getUrlHoverEvent(McMMOWebLinks webLinks)
@@ -367,16 +250,12 @@ public class TextComponentFactory {
         TextComponent.Builder textComponent = initNewSkillTextComponent(player, skillName, subSkillType, skillUnlocked);
 
         //Hover Event
-        addNewHoverComponentToTextComponent(textComponent, getSubSkillHoverComponent(player, subSkillType));
+        TextUtils.addNewHoverComponentToTextComponent(textComponent, getSubSkillHoverComponent(player, subSkillType));
 
         //Insertion
         textComponent.insertion(skillName);
 
         return textComponent.build();
-    }
-
-    private static void addNewHoverComponentToTextComponent(TextComponent.Builder textComponent, Component baseComponent) {
-        textComponent.hoverEvent(HoverEvent.showText(baseComponent));
     }
 
     private static TextComponent getSubSkillTextComponent(Player player, AbstractSubSkill abstractSubSkill)
@@ -392,7 +271,7 @@ public class TextComponentFactory {
         TextComponent.Builder textComponent = initNewSkillTextComponent(player, skillName, subSkillType, skillUnlocked);
 
         //Hover Event
-        addNewHoverComponentToTextComponent(textComponent, getSubSkillHoverComponent(player, abstractSubSkill));
+        TextUtils.addNewHoverComponentToTextComponent(textComponent, getSubSkillHoverComponent(player, abstractSubSkill));
 
         //Insertion
         textComponent.insertion(skillName);

@@ -2,7 +2,7 @@ package com.gmail.nossr50.config;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
-import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.text.StringUtils;
 
 public class CoreSkillsConfig extends AutoUpdateConfigLoader {
     private static CoreSkillsConfig instance;

@@ -2,13 +2,13 @@ package com.gmail.nossr50.util.compat;
 
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.compat.layers.attackcooldown.PlayerAttackCooldownExploitPreventionLayer;
 import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDataLayer;
 import com.gmail.nossr50.util.compat.layers.persistentdata.SpigotPersistentDataLayer_1_13;
 import com.gmail.nossr50.util.compat.layers.persistentdata.SpigotPersistentDataLayer_1_14;
 import com.gmail.nossr50.util.nms.NMSVersion;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
+import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.command.CommandSender;
 
 import java.util.HashMap;

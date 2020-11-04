@@ -2,7 +2,7 @@ package com.gmail.nossr50.datatypes.party;
 
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.ItemUtils;
-import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.inventory.ItemStack;
 
 public enum ItemShareType {
