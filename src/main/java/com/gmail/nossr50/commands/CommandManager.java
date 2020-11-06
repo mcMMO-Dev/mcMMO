@@ -59,6 +59,7 @@ public class CommandManager {
             BukkitCommandIssuer issuer = context.getIssuer();
 
             if(issuer.getIssuer() instanceof Player) {
+                validateLoadedData(issuer.getPlayer());
                 validateAdmin(issuer.getPlayer());
             }
         });

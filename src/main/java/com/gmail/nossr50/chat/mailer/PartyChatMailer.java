@@ -46,13 +46,17 @@ public class PartyChatMailer extends AbstractChatMailer {
      */
     public @NotNull TextComponent addStyle(@NotNull Author author, @NotNull String message, boolean canColor, boolean isLeader) {
         if(canColor) {
-            message = LocaleLoader.addColors(message);
-        }
-
-        if(isLeader) {
-            return TextUtils.ofLegacyTextRaw(LocaleLoader.getString("Chat.Style.Party.Leader", author.getAuthoredName(ChatChannel.PARTY), message));
+            if(isLeader) {
+                return LocaleLoader.getTextComponent("Chat.Style.Party.Leader", TextUtils.sanitizeAuthorName(author, ChatChannel.PARTY), message);
+            } else {
+                return LocaleLoader.getTextComponent("Chat.Style.Party", author.getAuthoredName(ChatChannel.PARTY), message);
+            }
         } else {
-            return TextUtils.ofLegacyTextRaw(LocaleLoader.getString("Chat.Style.Party", author.getAuthoredName(ChatChannel.PARTY), message));
+            if(isLeader) {
+                return TextUtils.ofLegacyTextRaw(LocaleLoader.getString("Chat.Style.Party.Leader", author.getAuthoredName(ChatChannel.PARTY), message));
+            } else {
+                return TextUtils.ofLegacyTextRaw(LocaleLoader.getString("Chat.Style.Party", author.getAuthoredName(ChatChannel.PARTY), message));
+            }
         }
     }
 

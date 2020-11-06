@@ -1,6 +1,9 @@
 Version 2.1.154
-    Fixed a bug where Tree Feller was not dropping stuff like saplings
-    Fixed a bug where player names that used hex color codes weren't working in party or admin chat
+    Hex colors are now supported in Party & Admin chat
+    Added support for &#RRGGBB color codes (hex colors) in chat and nicknames for party and admin chat
+    Added hex colored nickname support to admin/party chat
+    Fixed a bug where Tree Feller was not dropping some items like saplings
+    Fixed a bug where using admin chat would in some circumstances throw a NPE
     (API) Author class has been reworked
     (API) McMMOChatEvent::getSender removed (use getDisplayName() instead)
     (API) McMMMOChatEvent::setDisplayName() removed (you can set author names in Author)
@@ -8,6 +11,11 @@ Version 2.1.154
     (API) Modified Author::getAuthoredName signature to -> Author::getAuthoredName(ChatChannel)
     (API) Added Author::getAuthoredComponentName(ChatChannel)
     (API) PartyAuthor and AdminAuthor removed, replaced by PlayerAuthor
+    (API) Probably some more undocumented changes that I'm forgetting...
+
+Notes:
+    For example '/p &#ccFF33hi guys' will send a message colored in hex colors
+    You'll see ~§x in console when hex color codes are used, this is a quirk of how the 'adventure' library we are using is handling some bungee component related things, so it's outside of my hands for now
 
 Version 2.1.153
     Fixed a bug where most sub-skills were not being displayed when using a skills command (for example /taming)

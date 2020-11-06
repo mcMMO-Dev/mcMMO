@@ -1,5 +1,7 @@
 package com.gmail.nossr50.util.text;
 
+import com.gmail.nossr50.chat.author.Author;
+import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.mcMMO;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentBuilder;
@@ -14,6 +16,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class TextUtils {
+
+    private static @Nullable LegacyComponentSerializer customLegacySerializer;
+
     /**
      * Makes a single component from an array of components, can optionally add prefixes and suffixes to come before and after each component
      * @param componentsArray target array
@@ -102,5 +107,31 @@ public class TextUtils {
 
     public static @NotNull TextComponent ofLegacyTextRaw(@NotNull String rawString) {
         return LegacyComponentSerializer.legacySection().deserialize(rawString);
+    }
+
+    public static @NotNull TextComponent colorizeText(String rawtext) {
+        if(customLegacySerializer == null) {
+            customLegacySerializer = getSerializer();
+        }
+
+        return customLegacySerializer.deserialize(rawtext);
+    }
+
+    @NotNull
+    private static LegacyComponentSerializer getSerializer() {
+        return LegacyComponentSerializer.builder().hexColors().useUnusualXRepeatedCharacterHexFormat().character('&').hexCharacter('#').build();
+    }
+
+    public static @NotNull String sanitizeForSerializer(@NotNull String string) {
+        if(customLegacySerializer == null) {
+            customLegacySerializer = getSerializer();
+        }
+
+        TextComponent componentForm = ofLegacyTextRaw(string);
+        return customLegacySerializer.serialize(componentForm);
+    }
+
+    public static @NotNull String sanitizeAuthorName(@NotNull Author author, @NotNull ChatChannel chatChannel) {
+        return sanitizeForSerializer(author.getAuthoredName(ChatChannel.ADMIN));
     }
 }

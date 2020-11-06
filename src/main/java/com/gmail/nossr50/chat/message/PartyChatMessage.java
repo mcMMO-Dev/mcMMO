@@ -46,7 +46,7 @@ public class PartyChatMessage extends AbstractChatMessage {
 
         //Sends to everyone but console
         audience.sendMessage(author, componentMessage);
-        TextComponent spyMessage = TextUtils.ofLegacyTextRaw(LocaleLoader.getString("Chat.Spy.Party", author.getAuthoredName(ChatChannel.PARTY), rawMessage, party.getName()));
+        TextComponent spyMessage = LocaleLoader.getTextComponent("Chat.Spy.Party", TextUtils.sanitizeAuthorName(author, ChatChannel.PARTY), rawMessage, party.getName());
 
         //Relay to spies
         messagePartyChatSpies(spyMessage);

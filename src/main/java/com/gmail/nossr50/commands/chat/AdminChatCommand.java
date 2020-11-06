@@ -36,6 +36,9 @@ public class AdminChatCommand extends BaseCommand {
             if(bukkitCommandIssuer.isPlayer()) {
                 McMMOPlayer mmoPlayer = UserManager.getPlayer(bukkitCommandIssuer.getPlayer());
 
+                if(mmoPlayer == null)
+                    return;
+
                 //Message contains the original command so it needs to be passed to this method to trim it
                 pluginRef.getChatManager().processPlayerMessage(mmoPlayer, args, ChatChannel.ADMIN);
             } else {
