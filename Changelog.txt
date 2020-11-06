@@ -1,3 +1,12 @@
+Version 2.1.154
+    (API) Author class has been reworked
+    (API) McMMOChatEvent::getSender removed (use getDisplayName() instead)
+    (API) McMMMOChatEvent::setDisplayName() removed (you can set author names in Author)
+    (API) Removed Author::setName use Player::SetDisplayName instead
+    (API) Modified Author::getAuthoredName signature to -> Author::getAuthoredName(ChatChannel)
+    (API) Added Author::getAuthoredComponentName(ChatChannel)
+    (API) PartyAuthor and AdminAuthor removed, replaced by PlayerAuthor
+
 Version 2.1.153
     Fixed a bug where most sub-skills were not being displayed when using a skills command (for example /taming)
     Fixed a bug where some URL links were not being colored

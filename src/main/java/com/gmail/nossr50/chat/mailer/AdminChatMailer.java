@@ -3,12 +3,13 @@ package com.gmail.nossr50.chat.mailer;
 import com.gmail.nossr50.chat.author.Author;
 import com.gmail.nossr50.chat.message.AdminChatMessage;
 import com.gmail.nossr50.chat.message.ChatMessage;
+import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
 import com.gmail.nossr50.events.chat.McMMOChatEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.text.TextUtils;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -53,9 +54,9 @@ public class AdminChatMailer extends AbstractChatMailer {
      */
     public @NotNull TextComponent addStyle(@NotNull Author author, @NotNull String message, boolean canColor) {
         if(canColor) {
-            return Component.text(LocaleLoader.getString("Chat.Style.Admin", author.getAuthoredName(), LocaleLoader.addColors(message)));
+            return TextUtils.ofBungeeRawStrings(LocaleLoader.getString("Chat.Style.Admin", author.getAuthoredName(ChatChannel.ADMIN), LocaleLoader.addColors(message)));
         } else {
-            return Component.text(LocaleLoader.getString("Chat.Style.Admin", author.getAuthoredName(), message));
+            return TextUtils.ofBungeeRawStrings(LocaleLoader.getString("Chat.Style.Admin", author.getAuthoredName(ChatChannel.ADMIN), message));
         }
     }
 

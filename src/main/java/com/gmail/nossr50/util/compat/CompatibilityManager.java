@@ -2,7 +2,9 @@ package com.gmail.nossr50.util.compat;
 
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.compat.layers.attackcooldown.PlayerAttackCooldownExploitPreventionLayer;
+import com.gmail.nossr50.util.compat.layers.bungee.AbstractBungeeSerializerCompatibilityLayer;
+import com.gmail.nossr50.util.compat.layers.bungee.BungeeLegacySerializerCompatibilityLayer;
+import com.gmail.nossr50.util.compat.layers.bungee.BungeeModernSerializerCompatibilityLayer;
 import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDataLayer;
 import com.gmail.nossr50.util.compat.layers.persistentdata.SpigotPersistentDataLayer_1_13;
 import com.gmail.nossr50.util.compat.layers.persistentdata.SpigotPersistentDataLayer_1_14;
@@ -26,8 +28,9 @@ public class CompatibilityManager {
     private final NMSVersion nmsVersion;
 
     /* Compatibility Layers */
-    private PlayerAttackCooldownExploitPreventionLayer playerAttackCooldownExploitPreventionLayer;
+//    private PlayerAttackCooldownExploitPreventionLayer playerAttackCooldownExploitPreventionLayer;
     private AbstractPersistentDataLayer persistentDataLayer;
+    private AbstractBungeeSerializerCompatibilityLayer bungeeSerializerCompatibilityLayer;
 
     public CompatibilityManager(MinecraftGameVersion minecraftGameVersion) {
         mcMMO.p.getLogger().info("Loading compatibility layers...");
@@ -60,8 +63,17 @@ public class CompatibilityManager {
      */
     private void initCompatibilityLayers() {
         initPersistentDataLayer();
+        initBungeeSerializerLayer();
 
         isFullyCompatibleServerSoftware = true;
+    }
+
+    private void initBungeeSerializerLayer() {
+        if(minecraftGameVersion.getMinorVersion().asInt() >= 16) {
+            bungeeSerializerCompatibilityLayer = new BungeeModernSerializerCompatibilityLayer();
+        } else {
+            bungeeSerializerCompatibilityLayer = new BungeeLegacySerializerCompatibilityLayer();
+        }
     }
 
     private void initPersistentDataLayer() {
@@ -133,8 +145,13 @@ public class CompatibilityManager {
         return NMSVersion.UNSUPPORTED;
     }
 
-    public PlayerAttackCooldownExploitPreventionLayer getPlayerAttackCooldownExploitPreventionLayer() {
-        return playerAttackCooldownExploitPreventionLayer;
+//    public PlayerAttackCooldownExploitPreventionLayer getPlayerAttackCooldownExploitPreventionLayer() {
+//        return playerAttackCooldownExploitPreventionLayer;
+//    }
+
+
+    public AbstractBungeeSerializerCompatibilityLayer getBungeeSerializerCompatibilityLayer() {
+        return bungeeSerializerCompatibilityLayer;
     }
 
     public AbstractPersistentDataLayer getPersistentDataLayer() {

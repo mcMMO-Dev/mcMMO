@@ -1,6 +1,7 @@
 package com.gmail.nossr50.chat.message;
 
 import com.gmail.nossr50.chat.author.Author;
+import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.plugin.Plugin;
@@ -14,5 +15,10 @@ public class AdminChatMessage extends AbstractChatMessage {
     @Override
     public void sendMessage() {
         audience.sendMessage(author, componentMessage);
+    }
+
+    @Override
+    public @NotNull String getAuthorDisplayName() {
+        return author.getAuthoredName(ChatChannel.ADMIN);
     }
 }

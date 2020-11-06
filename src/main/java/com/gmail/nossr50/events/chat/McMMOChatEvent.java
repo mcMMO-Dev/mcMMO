@@ -3,6 +3,7 @@ package com.gmail.nossr50.events.chat;
 import com.gmail.nossr50.chat.author.Author;
 import com.gmail.nossr50.chat.message.AbstractChatMessage;
 import com.gmail.nossr50.chat.message.ChatMessage;
+import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -58,22 +59,12 @@ public abstract class McMMOChatEvent extends Event implements Cancellable {
     }
 
     /**
-     * The display name of the author
-     *
-     * @return the display name of the author
-     * @deprecated Use {@link #getDisplayName()} instead
-     */
-    @Deprecated
-    public @NotNull String getSender() {
-        return getAuthor().getAuthoredName();
-    }
-
-    /**
      * The name of the author
+     * Will return the display name if mcMMO chat config is set to, otherwise returns the players Mojang registered nickname
      * @return the author's name
      */
-    public @NotNull String getDisplayName() {
-        return getAuthor().getAuthoredName();
+    public @NotNull String getDisplayName(ChatChannel chatChannel) {
+        return getAuthor().getAuthoredName(chatChannel);
     }
 
     /**
@@ -113,14 +104,6 @@ public abstract class McMMOChatEvent extends Event implements Cancellable {
      */
     public void setMessagePayload(@NotNull TextComponent chatMessage) {
         this.chatMessage.setChatMessage(chatMessage);
-    }
-
-    /**
-     * Does not function anymore
-     */
-    @Deprecated
-    public void setDisplayName(@NotNull String displayName) {
-        return;
     }
 
     /**

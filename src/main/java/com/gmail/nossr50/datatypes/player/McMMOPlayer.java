@@ -1,7 +1,6 @@
 package com.gmail.nossr50.datatypes.player;
 
-import com.gmail.nossr50.chat.author.AdminAuthor;
-import com.gmail.nossr50.chat.author.PartyAuthor;
+import com.gmail.nossr50.chat.author.PlayerAuthor;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.ChatConfig;
 import com.gmail.nossr50.config.Config;
@@ -74,8 +73,7 @@ public class McMMOPlayer implements Identified {
     private final @NotNull Identity identity;
 
     //Hacky fix for now, redesign later
-    private final @NotNull PartyAuthor partyAuthor;
-    private final @NotNull AdminAuthor adminAuthor;
+    private final @NotNull PlayerAuthor playerAuthor;
 
     private final Player        player;
     private final PlayerProfile profile;
@@ -158,8 +156,7 @@ public class McMMOPlayer implements Identified {
         debugMode = false; //Debug mode helps solve support issues, players can toggle it on or off
         attackStrength = 1.0D;
 
-        this.adminAuthor = new AdminAuthor(player);
-        this.partyAuthor = new PartyAuthor(player);
+        this.playerAuthor = new PlayerAuthor(player);
 
         this.chatChannel = ChatChannel.NONE;
 
@@ -176,9 +173,9 @@ public class McMMOPlayer implements Identified {
         return attackStrength;
     }
 
-    public void setAttackStrength(double attackStrength) {
-        this.attackStrength = attackStrength;
-    }
+//    public void setAttackStrength(double attackStrength) {
+//        this.attackStrength = attackStrength;
+//    }
 
     /*public void hideXpBar(PrimarySkillType primarySkillType)
     {
@@ -1049,22 +1046,25 @@ public class McMMOPlayer implements Identified {
         return identity;
     }
 
-    //TODO: Replace this hacky crap
-    public @NotNull PartyAuthor getPartyAuthor() {
-        return partyAuthor;
-    }
 
-    //TODO: Replace this hacky crap
-    public @NotNull AdminAuthor getAdminAuthor() {
-        return adminAuthor;
+    /**
+     * The {@link com.gmail.nossr50.chat.author.Author} for this player, used by mcMMO chat
+     * @return the {@link com.gmail.nossr50.chat.author.Author} for this player
+     */
+    public @NotNull PlayerAuthor getPlayerAuthor() {
+        return playerAuthor;
     }
 
     public @NotNull ChatChannel getChatChannel() {
         return chatChannel;
     }
 
-    public void setChatMode(ChatChannel chatChannel) {
-        //TODO: Code in the "you turned off blah, you turned on blah" messages.
+    /**
+     * Change the chat channel for a player
+     * This does not inform the player
+     * @param chatChannel new chat channel
+     */
+    public void setChatMode(@NotNull ChatChannel chatChannel) {
         this.chatChannel = chatChannel;
     }
 }

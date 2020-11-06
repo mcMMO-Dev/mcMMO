@@ -1,14 +1,15 @@
 package com.gmail.nossr50.chat.message;
 
 import com.gmail.nossr50.chat.author.Author;
+import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.text.TextUtils;
 import com.google.common.base.Objects;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -32,6 +33,11 @@ public class PartyChatMessage extends AbstractChatMessage {
     }
 
     @Override
+    public @NotNull String getAuthorDisplayName() {
+        return author.getAuthoredName(ChatChannel.PARTY);
+    }
+
+    @Override
     public void sendMessage() {
         /*
          * It should be noted that Party messages don't include console as part of the audience to avoid double messaging
@@ -40,7 +46,7 @@ public class PartyChatMessage extends AbstractChatMessage {
 
         //Sends to everyone but console
         audience.sendMessage(author, componentMessage);
-        TextComponent spyMessage = Component.text(LocaleLoader.getString("Chat.Spy.Party", author.getAuthoredName(), rawMessage, party.getName()));
+        TextComponent spyMessage = TextUtils.ofBungeeRawStrings(LocaleLoader.getString("Chat.Spy.Party", author.getAuthoredName(ChatChannel.PARTY), rawMessage, party.getName()));
 
         //Relay to spies
         messagePartyChatSpies(spyMessage);

@@ -3,13 +3,14 @@ package com.gmail.nossr50.chat.mailer;
 import com.gmail.nossr50.chat.author.Author;
 import com.gmail.nossr50.chat.message.ChatMessage;
 import com.gmail.nossr50.chat.message.PartyChatMessage;
+import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.events.chat.McMMOChatEvent;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.text.TextUtils;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -49,9 +50,9 @@ public class PartyChatMailer extends AbstractChatMailer {
         }
 
         if(isLeader) {
-            return Component.text(LocaleLoader.getString("Chat.Style.Party.Leader", author.getAuthoredName(), message));
+            return TextUtils.ofBungeeRawStrings(LocaleLoader.getString("Chat.Style.Party.Leader", author.getAuthoredName(ChatChannel.PARTY), message));
         } else {
-            return Component.text(LocaleLoader.getString("Chat.Style.Party", author.getAuthoredName(), message));
+            return TextUtils.ofBungeeRawStrings(LocaleLoader.getString("Chat.Style.Party", author.getAuthoredName(ChatChannel.PARTY), message));
         }
     }
 
