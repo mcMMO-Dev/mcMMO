@@ -50,9 +50,9 @@ public class PartyChatMailer extends AbstractChatMailer {
         }
 
         if(isLeader) {
-            return TextUtils.ofBungeeRawStrings(LocaleLoader.getString("Chat.Style.Party.Leader", author.getAuthoredName(ChatChannel.PARTY), message));
+            return TextUtils.ofLegacyTextRaw(LocaleLoader.getString("Chat.Style.Party.Leader", author.getAuthoredName(ChatChannel.PARTY), message));
         } else {
-            return TextUtils.ofBungeeRawStrings(LocaleLoader.getString("Chat.Style.Party", author.getAuthoredName(ChatChannel.PARTY), message));
+            return TextUtils.ofLegacyTextRaw(LocaleLoader.getString("Chat.Style.Party", author.getAuthoredName(ChatChannel.PARTY), message));
         }
     }
 

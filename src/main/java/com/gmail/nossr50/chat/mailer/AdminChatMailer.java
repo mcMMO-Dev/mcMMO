@@ -54,9 +54,9 @@ public class AdminChatMailer extends AbstractChatMailer {
      */
     public @NotNull TextComponent addStyle(@NotNull Author author, @NotNull String message, boolean canColor) {
         if(canColor) {
-            return TextUtils.ofBungeeRawStrings(LocaleLoader.getString("Chat.Style.Admin", author.getAuthoredName(ChatChannel.ADMIN), LocaleLoader.addColors(message)));
+            return TextUtils.ofLegacyTextRaw(LocaleLoader.getString("Chat.Style.Admin", author.getAuthoredName(ChatChannel.ADMIN), LocaleLoader.addColors(message)));
         } else {
-            return TextUtils.ofBungeeRawStrings(LocaleLoader.getString("Chat.Style.Admin", author.getAuthoredName(ChatChannel.ADMIN), message));
+            return TextUtils.ofLegacyTextRaw(LocaleLoader.getString("Chat.Style.Admin", author.getAuthoredName(ChatChannel.ADMIN), message));
         }
     }
 

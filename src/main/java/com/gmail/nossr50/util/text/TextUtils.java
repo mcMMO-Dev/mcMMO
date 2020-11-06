@@ -6,6 +6,7 @@ import net.kyori.adventure.text.ComponentBuilder;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -97,5 +98,9 @@ public class TextUtils {
 
     public static @NotNull TextComponent ofBungeeRawStrings(@NotNull String bungeeRawString) {
         return ofBungeeComponents(convertToBungeeComponent(bungeeRawString));
+    }
+
+    public static @NotNull TextComponent ofLegacyTextRaw(@NotNull String rawString) {
+        return LegacyComponentSerializer.legacySection().deserialize(rawString);
     }
 }

@@ -39,7 +39,7 @@ public abstract class AbstractPlayerAuthor implements Author {
             return componentDisplayName;
         } else {
             //convert to adventure component
-            componentDisplayName = TextUtils.ofBungeeRawStrings(displayName);
+            componentDisplayName = TextUtils.ofLegacyTextRaw(displayName);
         }
         return componentDisplayName;
     }
@@ -56,7 +56,7 @@ public abstract class AbstractPlayerAuthor implements Author {
             return componentUserName;
         } else {
             //convert to adventure component
-            componentUserName = TextUtils.ofBungeeRawStrings(player.getName());
+            componentUserName = TextUtils.ofLegacyTextRaw(player.getName());
         }
         return componentUserName;
     }
