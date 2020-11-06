@@ -1,5 +1,6 @@
 Version 2.1.154
     Fixed a bug where Tree Feller was not dropping stuff like saplings
+    Fixed a bug where player names that used hex color codes weren't working in party or admin chat
     (API) Author class has been reworked
     (API) McMMOChatEvent::getSender removed (use getDisplayName() instead)
     (API) McMMMOChatEvent::setDisplayName() removed (you can set author names in Author)
