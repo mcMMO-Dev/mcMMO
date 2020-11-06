@@ -301,7 +301,8 @@ public class WoodcuttingManager extends SkillManager {
                 processHarvestLumber(blockState);
             } else if (BlockUtils.isNonWoodPartOfTree(blockState)) {
                 //Drop displaced non-woodcutting XP blocks
-                Misc.spawnItemsFromCollection(Misc.getBlockCenter(blockState), block.getDrops(), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK, 1);
+//                Misc.spawnItemsFromCollection(Misc.getBlockCenter(blockState), block.getDrops(), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK, 1);
+                Misc.spawnItemsFromCollection(Misc.getBlockCenter(blockState), block.getDrops(), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
             }
 
             blockState.setType(Material.AIR);

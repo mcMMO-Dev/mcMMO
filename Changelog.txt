@@ -1,4 +1,5 @@
 Version 2.1.154
+    Fixed a bug where Tree Feller was not dropping stuff like saplings
     (API) Author class has been reworked
     (API) McMMOChatEvent::getSender removed (use getDisplayName() instead)
     (API) McMMMOChatEvent::setDisplayName() removed (you can set author names in Author)
