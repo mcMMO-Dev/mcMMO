@@ -13,8 +13,8 @@ public interface Author extends Identity {
      * This can either be the player's display name or the player's official registered nickname with Mojang it depends on the servers chat settings for mcMMO
      *
      * NOTE:
-     * mcMMO doesn't use this method currently because we convert the whole chat message from raw Bungee-compatible strings to Bungee components before converting it to adventure components (hacky and will be changed later)
-     * So this method is provided for future use or if plugins want to make use of it
+     * mcMMO doesn't transform a players name into a component when creating the chat message, instead it converts the whole string from raw legacy text (including md5 stuff) -> TextComponent via {@link net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer}
+     * This method is just provided for convenience, it uses lazy initialization
      *
      * @param chatChannel which chat channel this is going to
      * @return The name of this author as used in mcMMO chat
