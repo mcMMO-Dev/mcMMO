@@ -22,6 +22,14 @@ public class PartyChatMailer extends AbstractChatMailer {
         super(pluginRef);
     }
 
+    /**
+     * Processes a chat message from an author to an audience of party members
+     *
+     * @param author the author
+     * @param rawString the raw message as the author typed it before any styling
+     * @param isAsync whether or not this is being processed asynchronously
+     * @param canColor whether or not the author can use colors in chat
+     */
     public void processChatMessage(@NotNull Author author, @NotNull String rawString, @NotNull Party party, boolean isAsync, boolean canColor, boolean isLeader) {
         PartyChatMessage chatMessage = new PartyChatMessage(pluginRef, author, constructPartyAudience(party), rawString, addStyle(author, rawString, canColor, isLeader), party);
 
@@ -33,12 +41,19 @@ public class PartyChatMailer extends AbstractChatMailer {
         }
     }
 
+    /**
+     * Constructs an {@link Audience} of party members
+     *
+     * @param party target party
+     * @return an {@link Audience} of party members
+     */
     public @NotNull Audience constructPartyAudience(@NotNull Party party) {
         return mcMMO.getAudiences().filter(party.getSamePartyPredicate());
     }
 
     /**
      * Styles a string using a locale entry
+     *
      * @param author message author
      * @param message message contents
      * @param canColor whether to replace colors codes with colors in the raw message
@@ -47,7 +62,7 @@ public class PartyChatMailer extends AbstractChatMailer {
     public @NotNull TextComponent addStyle(@NotNull Author author, @NotNull String message, boolean canColor, boolean isLeader) {
         if(canColor) {
             if(isLeader) {
-                return LocaleLoader.getTextComponent("Chat.Style.Party.Leader", TextUtils.sanitizeAuthorName(author, ChatChannel.PARTY), message);
+                return LocaleLoader.getTextComponent("Chat.Style.Party.Leader", author.getAuthoredName(ChatChannel.PARTY), message);
             } else {
                 return LocaleLoader.getTextComponent("Chat.Style.Party", author.getAuthoredName(ChatChannel.PARTY), message);
             }

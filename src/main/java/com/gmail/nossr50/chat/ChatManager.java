@@ -10,6 +10,7 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.text.StringUtils;
 import net.kyori.adventure.audience.Audience;
@@ -39,6 +40,7 @@ public class ChatManager {
 
     /**
      * Handles player messaging when they are either in party chat or admin chat modes
+     *
      * @param mmoPlayer target player
      * @param rawMessage the raw message from the player as it was typed
      * @param isAsync whether or not this is getting processed via async
@@ -49,6 +51,7 @@ public class ChatManager {
 
     /**
      * Handles player messaging for a specific chat channel
+     *
      * @param mmoPlayer target player
      * @param args the raw command arguments from the player
      * @param chatChannel target channel
@@ -62,6 +65,7 @@ public class ChatManager {
 
     /**
      * Handles player messaging for a specific chat channel
+     *
      * @param mmoPlayer target player
      * @param chatChannel target chat channel
      * @param rawMessage raw chat message as it was typed
@@ -73,16 +77,12 @@ public class ChatManager {
                 adminChatMailer.processChatMessage(mmoPlayer.getPlayerAuthor(), rawMessage, isAsync, Permissions.colorChat(mmoPlayer.getPlayer()));
                 break;
             case PARTY:
-                partyChatMailer.processChatMessage(mmoPlayer.getPlayerAuthor(), rawMessage, mmoPlayer.getParty(), isAsync, Permissions.colorChat(mmoPlayer.getPlayer()), isPartyLeader(mmoPlayer));
+                partyChatMailer.processChatMessage(mmoPlayer.getPlayerAuthor(), rawMessage, mmoPlayer.getParty(), isAsync, Permissions.colorChat(mmoPlayer.getPlayer()), Misc.isPartyLeader(mmoPlayer));
                 break;
             case PARTY_OFFICER:
             case NONE:
                 break;
         }
-    }
-
-    private boolean isPartyLeader(@NotNull McMMOPlayer mmoPlayer) {
-        return mmoPlayer.getParty().getLeader().getUniqueId().equals(mmoPlayer.getPlayer().getUniqueId());
     }
 
     /**
@@ -221,4 +221,5 @@ public class ChatManager {
             }
         }
     }
+
 }

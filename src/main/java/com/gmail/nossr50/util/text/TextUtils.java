@@ -1,7 +1,5 @@
 package com.gmail.nossr50.util.text;
 
-import com.gmail.nossr50.chat.author.Author;
-import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.mcMMO;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentBuilder;
@@ -129,9 +127,5 @@ public class TextUtils {
 
         TextComponent componentForm = ofLegacyTextRaw(string);
         return customLegacySerializer.serialize(componentForm);
-    }
-
-    public static @NotNull String sanitizeAuthorName(@NotNull Author author, @NotNull ChatChannel chatChannel) {
-        return sanitizeForSerializer(author.getAuthoredName(ChatChannel.ADMIN));
     }
 }

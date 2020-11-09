@@ -7,7 +7,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.text.TextUtils;
 import com.google.common.base.Objects;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.TextComponent;
@@ -46,7 +45,7 @@ public class PartyChatMessage extends AbstractChatMessage {
 
         //Sends to everyone but console
         audience.sendMessage(author, componentMessage);
-        TextComponent spyMessage = LocaleLoader.getTextComponent("Chat.Spy.Party", TextUtils.sanitizeAuthorName(author, ChatChannel.PARTY), rawMessage, party.getName());
+        TextComponent spyMessage = LocaleLoader.getTextComponent("Chat.Spy.Party", author.getAuthoredName(ChatChannel.PARTY), rawMessage, party.getName());
 
         //Relay to spies
         messagePartyChatSpies(spyMessage);

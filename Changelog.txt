@@ -1,3 +1,13 @@
+Version 2.1.155
+    Optimized party/admin chat a bit
+    Fixed a bug where party members other than the party leader had names that weren't properly hex colored
+    (API) Removed AbstractPlayerAuthor#getComponentDisplayName
+    (API) Removed AbstractPlayerAuthor#getComponentUserName
+    (API) Removed Author#getAuthoredComponentName
+
+    NOTES:
+    Removed some unnecessary API, we aren't a chat plugin so these things shouldn't be here.
+
 Version 2.1.154
     Hex colors are now supported in Party & Admin chat
     Added support for &#RRGGBB color codes (hex colors) in chat and nicknames for party and admin chat
@@ -6,7 +16,7 @@ Version 2.1.154
     Fixed a bug where using admin chat would in some circumstances throw a NPE
     (API) Author class has been reworked
     (API) McMMOChatEvent::getSender removed (use getDisplayName() instead)
-    (API) McMMMOChatEvent::setDisplayName() removed (you can set author names in Author)
+    (API) McMMMOChatEvent::setDisplayName() removed
     (API) Removed Author::setName use Player::SetDisplayName instead
     (API) Modified Author::getAuthoredName signature to -> Author::getAuthoredName(ChatChannel)
     (API) Added Author::getAuthoredComponentName(ChatChannel)

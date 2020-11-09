@@ -29,6 +29,7 @@ public class AdminChatMailer extends AbstractChatMailer {
 
     /**
      * Constructs an audience of admins
+     *
      * @return an audience of admins
      */
     public @NotNull Audience constructAudience() {
@@ -37,6 +38,7 @@ public class AdminChatMailer extends AbstractChatMailer {
 
     /**
      * Predicate used to filter the audience
+     *
      * @return admin chat audience predicate
      */
     public @NotNull Predicate<CommandSender> predicate() {
@@ -47,6 +49,7 @@ public class AdminChatMailer extends AbstractChatMailer {
 
     /**
      * Styles a string using a locale entry
+     *
      * @param author message author
      * @param message message contents
      * @param canColor whether to replace colors codes with colors in the raw message
@@ -54,7 +57,7 @@ public class AdminChatMailer extends AbstractChatMailer {
      */
     public @NotNull TextComponent addStyle(@NotNull Author author, @NotNull String message, boolean canColor) {
         if(canColor) {
-            return LocaleLoader.getTextComponent("Chat.Style.Admin", TextUtils.sanitizeAuthorName(author, ChatChannel.ADMIN), message);
+            return LocaleLoader.getTextComponent("Chat.Style.Admin", author.getAuthoredName(ChatChannel.ADMIN), message);
         } else {
             return TextUtils.ofLegacyTextRaw(LocaleLoader.getString("Chat.Style.Admin", author.getAuthoredName(ChatChannel.ADMIN), message));
         }
@@ -65,6 +68,14 @@ public class AdminChatMailer extends AbstractChatMailer {
         chatMessage.sendMessage();
     }
 
+    /**
+     * Processes a chat message from an author to an audience of admins
+     *
+     * @param author the author
+     * @param rawString the raw message as the author typed it before any styling
+     * @param isAsync whether or not this is being processed asynchronously
+     * @param canColor whether or not the author can use colors in chat
+     */
     public void processChatMessage(@NotNull Author author, @NotNull String rawString, boolean isAsync, boolean canColor) {
         AdminChatMessage chatMessage = new AdminChatMessage(pluginRef, author, constructAudience(), rawString, addStyle(author, rawString, canColor));
 
