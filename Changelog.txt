@@ -1,6 +1,7 @@
 Version 2.1.155
-    Optimized party/admin chat a bit
+    Fixed a bug where Spectral Arrow awarded too much XP
     Fixed a bug where party members other than the party leader had names that weren't properly hex colored
+    Optimized party/admin chat a bit
     (API) Removed AbstractPlayerAuthor#getComponentDisplayName
     (API) Removed AbstractPlayerAuthor#getComponentUserName
     (API) Removed Author#getAuthoredComponentName
