@@ -161,21 +161,24 @@ public class EntityListener implements Listener {
             }
 
             Projectile projectile = event.getEntity();
+            EntityType entityType = projectile.getType();
 
-            if(!(projectile instanceof Arrow))
-                return;
+            if(entityType == EntityType.ARROW || entityType == EntityType.SPECTRAL_ARROW) {
+                if(!projectile.hasMetadata(mcMMO.bowForceKey))
+                    projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(pluginRef, 1.0));
 
-            projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(pluginRef, 1.0));
-            projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(pluginRef, projectile.getLocation()));
+                if(!projectile.hasMetadata(mcMMO.arrowDistanceKey))
+                    projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(pluginRef, projectile.getLocation()));
 
-            for (Enchantment enchantment : player.getInventory().getItemInMainHand().getEnchantments().keySet()) {
-                if (enchantment.getKey().equals(piercingEnchantment)) {
-                    return;
+                for (Enchantment enchantment : player.getInventory().getItemInMainHand().getEnchantments().keySet()) {
+                    if (enchantment.getKey().equals(piercingEnchantment)) {
+                        return;
+                    }
                 }
-            }
 
-            if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ARCHERY_ARROW_RETRIEVAL, player)) {
-                projectile.setMetadata(mcMMO.trackedArrow, mcMMO.metadataValue);
+                if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ARCHERY_ARROW_RETRIEVAL, player)) {
+                    projectile.setMetadata(mcMMO.trackedArrow, mcMMO.metadataValue);
+                }
             }
         }
     }

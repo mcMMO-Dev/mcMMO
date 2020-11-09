@@ -36,6 +36,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -117,9 +119,14 @@ public final class CombatUtils {
         printFinalDamageDebug(player, event, mcMMOPlayer);
     }
 
-    private static void printFinalDamageDebug(Player player, EntityDamageByEntityEvent event, McMMOPlayer mcMMOPlayer) {
+    private static void printFinalDamageDebug(@NotNull Player player, @NotNull EntityDamageByEntityEvent event, @NotNull McMMOPlayer mcMMOPlayer, @Nullable String... extraInfoLines) {
         if(mcMMOPlayer.isDebugMode()) {
             player.sendMessage("Final Damage value after mcMMO modifiers: "+ event.getFinalDamage());
+            if(extraInfoLines != null) {
+                for(String str : extraInfoLines) {
+                    player.sendMessage(str);
+                }
+            }
         }
     }
 
@@ -317,9 +324,14 @@ public final class CombatUtils {
             forceMultiplier = arrow.getMetadata(mcMMO.bowForceKey).get(0).asDouble();
 
         applyScaledModifiers(initialDamage, finalDamage, event);
+
         processCombatXP(mcMMOPlayer, target, PrimarySkillType.ARCHERY, forceMultiplier * distanceMultiplier);
 
-        printFinalDamageDebug(player, event, mcMMOPlayer);
+        printFinalDamageDebug(player, event, mcMMOPlayer,
+                "Distance Multiplier: "+distanceMultiplier,
+                "Force Multiplier: "+forceMultiplier,
+                "Initial Damage: "+initialDamage,
+                "Final Damage: "+finalDamage);
     }
 
     /**
