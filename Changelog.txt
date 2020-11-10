@@ -20,12 +20,14 @@ Version 2.1.155
     (API) Removed Author#getAuthoredComponentName
 
     NOTES:
-    Master Angler won't work if you aren't on 1.16.4, the truth is it hasn't worked for a very long time. The Spigot API related to it has been broken since years and years ago, they finally updated the API but its only in the newest builds of Spigot.
+    Master Angler won't work if you aren't on 1.16.4, the truth is it hasn't worked for a very long time (Since before 1.13.2)
+    The Spigot API related to it has been broken since years and years ago, and they finally updated the API but it is only in the newest builds of Spigot.
     If you are on something that doesn't support the new Master Angler that skill will be missing when you type /fishing
-    The boat bonus for master angler is static and doesn't improve when leveling master angler
+    The boat bonus for master angler is static and doesn't improve when leveling master angler.
+    All the new master angler stuff is configurable and can be found in advanced.yml
     The configurable reduction tick stuff for master angler is multiplied by the rank level when determining the final bonus (use /mmodebug when fishing to see some details)
-    Removed some unnecessary API, we aren't a chat plugin so these things shouldn't be here.
     Master Angler stacks with the Lure enchant
+    Removed some unnecessary API, we aren't a chat plugin so these things shouldn't be here.
     Slowly adding Nullability annotations to the codebase
 
 Version 2.1.154
