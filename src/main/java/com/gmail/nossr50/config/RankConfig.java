@@ -126,7 +126,7 @@ public class RankConfig extends AutoUpdateConfigLoader {
         String key = getRankAddressKey(subSkillType, rank, retroMode);
         int defaultValue = getInternalConfig().getInt(key);
         config.set(key, defaultValue);
-        plugin.getLogger().info(key +" set to a value of: " + defaultValue);
+        plugin.getLogger().info(key +" SET -> " + defaultValue);
     }
 
     /**
