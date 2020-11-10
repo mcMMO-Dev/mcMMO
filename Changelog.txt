@@ -1,5 +1,6 @@
 Version 2.1.156
     Fixed a bug where the admin and party chat toggles in chat.yml didn't function as intended
+    Added some errors that trigger if a plugin hooking into mcMMO is grabbing leaderboards for child skills through our SQL/FlatFile class (which don't exist)
 
 Version 2.1.155
     Master Angler now has 8 ranks

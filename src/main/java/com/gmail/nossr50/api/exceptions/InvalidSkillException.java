@@ -6,4 +6,8 @@ public class InvalidSkillException extends RuntimeException {
     public InvalidSkillException() {
         super("That is not a valid skill.");
     }
+
+    public InvalidSkillException(String msg) {
+        super(msg);
+    }
 }

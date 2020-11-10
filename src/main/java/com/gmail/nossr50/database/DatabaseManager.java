@@ -1,5 +1,6 @@
 package com.gmail.nossr50.database;
 
+import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
@@ -58,7 +59,7 @@ public interface DatabaseManager {
     * @param statsPerPage The number of stats per page
     * @return the requested leaderboard information
     */
-    List<PlayerStat> readLeaderboard(PrimarySkillType skill, int pageNumber, int statsPerPage);
+    List<PlayerStat> readLeaderboard(PrimarySkillType skill, int pageNumber, int statsPerPage) throws InvalidSkillException;
 
     /**
      * Retrieve rank info into a HashMap from PrimarySkillType to the rank.
