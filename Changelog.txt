@@ -1,6 +1,12 @@
 Version 2.1.156
     Fixed a bug where the admin and party chat toggles in chat.yml didn't function as intended
     Added some errors that trigger if a plugin hooking into mcMMO is grabbing leaderboards for child skills through our SQL/FlatFile class (which don't exist)
+    mcMMO will automatically fix some errors in logic for user settings in skillranks.yml
+    Corrected some logic errors when checking for oddities in skillranks.yml
+    * Fixed a bug where Master Angler rank 1 was set too high (default configs)
+
+    NOTES:
+    * - If you haven't manually edited your Master Angler entries in skillranks.yml then the previous mcMMO update has rank 1 for Master Angler too high, this update automatically fixes it. You don't need to do anything.
 
 Version 2.1.155
     Master Angler now has 8 ranks

@@ -10,7 +10,7 @@ import java.util.List;
 public abstract class ConfigLoader {
     protected static final mcMMO plugin = mcMMO.p;
     protected String fileName;
-    private final File configFile;
+    protected final File configFile;
     protected FileConfiguration config;
 
     public ConfigLoader(String relativePath, String fileName) {
