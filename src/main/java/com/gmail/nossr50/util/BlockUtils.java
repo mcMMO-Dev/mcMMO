@@ -11,6 +11,7 @@ import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.util.random.RandomChanceSkill;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
@@ -179,6 +180,10 @@ public final class BlockUtils {
         return mcMMO.getMaterialMapStore().isTreeFellerDestructible(blockState.getType());
     }
 
+    public static boolean isNonWoodPartOfTree(Material material) {
+        return mcMMO.getMaterialMapStore().isTreeFellerDestructible(material);
+    }
+
     /**
      * Determine if a given block should be affected by Flux Mining
      *
@@ -273,5 +278,9 @@ public final class BlockUtils {
             return ageable.getAge() == ageable.getMaximumAge();
         }
         return true;
+    }
+
+    public static boolean isPartOfTree(Block rayCast) {
+        return hasWoodcuttingXP(rayCast.getState()) || isNonWoodPartOfTree(rayCast.getType());
     }
 }

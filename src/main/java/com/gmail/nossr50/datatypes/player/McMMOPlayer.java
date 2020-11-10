@@ -14,8 +14,10 @@ import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
+import com.gmail.nossr50.datatypes.skills.subskills.interfaces.SubSkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
@@ -40,6 +42,7 @@ import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
+import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -57,6 +60,7 @@ import net.kyori.adventure.identity.Identity;
 import org.apache.commons.lang.Validate;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -918,20 +922,78 @@ public class McMMOPlayer implements Identified {
             if (skill != PrimarySkillType.WOODCUTTING && skill != PrimarySkillType.AXES) {
                 int timeRemaining = calculateTimeRemaining(ability);
 
-                if (!getAbilityMode(ability) && timeRemaining > 0) {
+                if (isAbilityOnCooldown(ability)) {
                     NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf(timeRemaining));
                     return;
                 }
             }
 
             if (Config.getInstance().getAbilityMessagesEnabled()) {
-                NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, tool.getRaiseTool());
+                /*
+                 *
+                 * IF THE TOOL IS AN AXE
+                 *
+                 */
+                if(tool == ToolType.AXE) {
+                    processAxeToolMessages();
+                } else {
+                    NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, tool.getRaiseTool());
+                }
+
+                //Send Sound
                 SoundManager.sendSound(player, player.getLocation(), SoundType.TOOL_READY);
             }
 
             setToolPreparationMode(tool, true);
             new ToolLowerTask(this, tool).runTaskLater(mcMMO.p, 4 * Misc.TICK_CONVERSION_FACTOR);
         }
+    }
+
+    public void processAxeToolMessages() {
+        Block rayCast = player.getTargetBlock(null, 100);
+
+        /*
+         * IF BOTH TREE FELLER & SKULL SPLITTER ARE ON CD
+         */
+        if(isAbilityOnCooldown(SuperAbilityType.TREE_FELLER) && isAbilityOnCooldown(SuperAbilityType.SKULL_SPLITTER)) {
+            tooTiredMultiple(PrimarySkillType.WOODCUTTING, SubSkillType.WOODCUTTING_TREE_FELLER, SuperAbilityType.TREE_FELLER, SubSkillType.AXES_SKULL_SPLITTER, SuperAbilityType.SKULL_SPLITTER);
+        /*
+         * IF TREE FELLER IS ON CD
+         * AND PLAYER IS LOOKING AT TREE
+         */
+        } else if(isAbilityOnCooldown(SuperAbilityType.TREE_FELLER)
+                && BlockUtils.isPartOfTree(rayCast)) {
+            raiseToolWithCooldowns(SubSkillType.WOODCUTTING_TREE_FELLER, SuperAbilityType.TREE_FELLER);
+
+        /*
+         * IF SKULL SPLITTER IS ON CD
+         */
+        } else if(isAbilityOnCooldown(SuperAbilityType.SKULL_SPLITTER)) {
+            raiseToolWithCooldowns(SubSkillType.AXES_SKULL_SPLITTER, SuperAbilityType.SKULL_SPLITTER);
+        } else {
+            NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, ToolType.AXE.getRaiseTool());
+        }
+    }
+
+    private void tooTiredMultiple(PrimarySkillType primarySkillType, SubSkillType aSubSkill, SuperAbilityType aSuperAbility, SubSkillType bSubSkill, SuperAbilityType bSuperAbility) {
+        String aSuperAbilityCD = LocaleLoader.getString("Skills.TooTired.Named", aSubSkill.getLocaleName(), String.valueOf(calculateTimeRemaining(aSuperAbility)));
+        String bSuperAbilityCD = LocaleLoader.getString("Skills.TooTired.Named", bSubSkill.getLocaleName(), String.valueOf(calculateTimeRemaining(bSuperAbility)));
+        String allCDStr = aSuperAbilityCD + ", " + bSuperAbilityCD;
+
+        NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, "Skills.TooTired.Extra",
+                primarySkillType.getName(),
+                allCDStr);
+    }
+
+    private void raiseToolWithCooldowns(SubSkillType subSkillType, SuperAbilityType superAbilityType) {
+        NotificationManager.sendPlayerInformation(player, NotificationType.TOOL,
+                "Axes.Ability.Ready.Extra",
+                subSkillType.getLocaleName(),
+                String.valueOf(calculateTimeRemaining(superAbilityType)));
+    }
+
+    public boolean isAbilityOnCooldown(SuperAbilityType ability) {
+        return !getAbilityMode(ability) && calculateTimeRemaining(ability) > 0;
     }
 
     /**

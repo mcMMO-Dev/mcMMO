@@ -303,7 +303,7 @@ Abilities:
         Super_Breaker: 0
         Tree_Feller: 0
     Limits:
-        Tree_Feller_Threshold: 500
+        Tree_Feller_Threshold: 1000
     Tools:
         # Use more tool durability while using abilities. Set Durability_Loss to 0 to disable the extra durability damage.
         Durability_Loss: 1

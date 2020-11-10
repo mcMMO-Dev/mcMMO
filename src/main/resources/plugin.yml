@@ -695,8 +695,11 @@ permissions:
             mcmmo.ability.woodcutting.splinter: true
             mcmmo.ability.woodcutting.barksurgeon: true
             mcmmo.ability.woodcutting.naturesbounty: true
+            mcmmo.ability.woodcutting.knockonwood: true
             mcmmo.ability.woodcutting.leafblower: true
             mcmmo.ability.woodcutting.treefeller: true
+    mcmmo.ability.woodcutting.knockonwood:
+        description: Allows access to Knock on Wood subskill
     mcmmo.ability.woodcutting.splinter:
         description: Allows access to Splinter
     mcmmo.ability.woodcutting.barksurgeon:

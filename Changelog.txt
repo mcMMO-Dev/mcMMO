@@ -1,4 +1,13 @@
 Version 2.1.156
+    Added Woodcutting skill 'Knock on Wood' - This ability gives you goodies (saplings, xp orbs, apples, etc) when using Tree Feller
+    Tree Feller no longer gives non-wood items by default, it now requires Knock on Wood for additional loot
+    Added new permission node 'mcmmo.ability.woodcutting.knockonwood'
+    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Name'
+    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Stat'
+    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Description'
+    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Loot.Normal'
+    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Loot.Rank2'
+    When you raise your axe you will now see information about any super abilities on CD
     Fixed a bug where Green Thumb would replant blocks floating in the air
     Fixed a bug where the admin and party chat toggles in chat.yml didn't function as intended
     * Fixed a bug where Master Angler rank 1 level requirement was set too high (default configs)
@@ -8,6 +17,7 @@ Version 2.1.156
     Removed incorrect translations of Master Angler from various locales
     Modified Master Angler stat lines in /fishing
     Updated Green Thumb description to mention that it needs a hoe
+    'Abilities.Limits.Tree_Feller_Threshold' in config.yml now defaults to 1000 instead of 500
 
     NOTES:
     You don't need to touch your config files, this update handles everything automagically.

@@ -605,15 +605,6 @@ Unarmed:
             Rank_20: 1000
 
 Woodcutting:
-    Splinter:
-        Standard:
-            Rank_1: 5
-            Rank_2: 30
-            Rank_3: 55
-        RetroMode:
-            Rank_1: 50
-            Rank_2: 300
-            Rank_3: 550
     TreeFeller:
         Standard:
             Rank_1: 5
@@ -627,29 +618,18 @@ Woodcutting:
             Rank_3: 500
             Rank_4: 750
             Rank_5: 1000
-    BarkSurgeon:
-        Standard:
-            Rank_1: 70
-            Rank_2: 80
-            Rank_3: 95
-        RetroMode:
-            Rank_1: 700
-            Rank_2: 800
-            Rank_3: 950
-    NaturesBounty:
-        Standard:
-            Rank_1: 40
-            Rank_2: 60
-            Rank_3: 90
-        RetroMode:
-            Rank_1: 400
-            Rank_2: 600
-            Rank_3: 900
     HarvestLumber:
         Standard:
             Rank_1: 1
         RetroMode:
             Rank_1: 1
+    KnockOnWood:
+        Standard:
+            Rank_1: 30
+            Rank_2: 60
+        RetroMode:
+            Rank_1: 300
+            Rank_2: 600
     LeafBlower:
         Standard:
             Rank_1: 15

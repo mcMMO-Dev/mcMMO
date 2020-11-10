@@ -22,6 +22,7 @@ public class WoodcuttingCommand extends SkillCommand {
     private boolean canTreeFell;
     private boolean canLeafBlow;
     private boolean canDoubleDrop;
+    private boolean canKnockOnWood;
     private boolean canSplinter;
     private boolean canBarkSurgeon;
     private boolean canNaturesBounty;
@@ -56,6 +57,7 @@ public class WoodcuttingCommand extends SkillCommand {
         canTreeFell = RankUtils.hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_TREE_FELLER) && Permissions.treeFeller(player);
         canDoubleDrop = canUseSubskill(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER) && !skill.getDoubleDropsDisabled() && RankUtils.getRank(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER) >= 1;
         canLeafBlow = canUseSubskill(player, SubSkillType.WOODCUTTING_LEAF_BLOWER);
+        canKnockOnWood = canTreeFell && canUseSubskill(player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD);
         /*canSplinter = canUseSubskill(player, SubSkillType.WOODCUTTING_SPLINTER);
         canBarkSurgeon = canUseSubskill(player, SubSkillType.WOODCUTTING_BARK_SURGEON);
         canNaturesBounty = canUseSubskill(player, SubSkillType.WOODCUTTING_NATURES_BOUNTY);*/
@@ -68,6 +70,18 @@ public class WoodcuttingCommand extends SkillCommand {
         if (canDoubleDrop) {
             messages.add(getStatMessage(SubSkillType.WOODCUTTING_HARVEST_LUMBER, doubleDropChance)
                     + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
+        }
+
+        if (canKnockOnWood) {
+            String lootNote;
+
+            if(RankUtils.hasReachedRank(2, player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
+                lootNote = LocaleLoader.getString("Woodcutting.SubSkill.KnockOnWood.Loot.Rank2");
+            } else {
+                lootNote = LocaleLoader.getString("Woodcutting.SubSkill.KnockOnWood.Loot.Normal");
+            }
+
+            messages.add(getStatMessage(SubSkillType.WOODCUTTING_KNOCK_ON_WOOD, lootNote));
         }
         
         if (canLeafBlow) {

@@ -301,8 +301,20 @@ public class WoodcuttingManager extends SkillManager {
                 processHarvestLumber(blockState);
             } else if (BlockUtils.isNonWoodPartOfTree(blockState)) {
                 //Drop displaced non-woodcutting XP blocks
-//                Misc.spawnItemsFromCollection(Misc.getBlockCenter(blockState), block.getDrops(), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK, 1);
-                Misc.spawnItemsFromCollection(Misc.getBlockCenter(blockState), block.getDrops(), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
+
+                if(RankUtils.hasUnlockedSubskill(player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
+                    Misc.spawnItemsFromCollection(Misc.getBlockCenter(blockState), block.getDrops(), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK);
+
+                    if(RankUtils.hasReachedRank(2, player, SubSkillType.WOODCUTTING_KNOCK_ON_WOOD)) {
+                        if(RandomChanceUtil.rollDice(75, 100)) {
+                            int randOrbCount = Math.max(1, Misc.getRandom().nextInt(50));
+                            Misc.spawnExperienceOrb(blockState.getLocation(), randOrbCount);
+                        }
+                    }
+
+                } else {
+                    Misc.spawnItemsFromCollection(Misc.getBlockCenter(blockState), block.getDrops(), ItemSpawnReason.TREE_FELLER_DISPLACED_BLOCK, 1);
+                }
             }
 
             blockState.setType(Material.AIR);

@@ -15,8 +15,6 @@ import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -47,8 +45,7 @@ public class ExcavationManager extends SkillManager {
 
                         //Spawn Vanilla XP orbs if a dice roll succeeds
                         if(RandomChanceUtil.rollDice(getArchaelogyExperienceOrbChance(), 100)) {
-                            ExperienceOrb experienceOrb = (ExperienceOrb) getPlayer().getWorld().spawnEntity(location, EntityType.EXPERIENCE_ORB);
-                            experienceOrb.setExperience(getExperienceOrbsReward());
+                            Misc.spawnExperienceOrb(location, getExperienceOrbsReward());
                         }
 
                         xp += treasure.getXp();

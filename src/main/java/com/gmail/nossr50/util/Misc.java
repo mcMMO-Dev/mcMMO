@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -309,5 +310,38 @@ public final class Misc {
      */
     public static boolean isPartyLeader(@NotNull McMMOPlayer mmoPlayer) {
         return mmoPlayer.getParty().getLeader().getUniqueId().equals(mmoPlayer.getPlayer().getUniqueId());
+    }
+
+//    public static void spawnExperienceOrb(@NotNull Location location, int orbAmount, int experienceValue) {
+//        for (int i = 0; i < orbAmount; i++) {
+//            new SpawnOrbTask(location, experienceValue).runTaskLater(mcMMO.p, 20);
+//        }
+//    }
+
+    public static void spawnExperienceOrb(@NotNull Location location, int experienceValue) {
+        if(location.getWorld() == null)
+            return;
+
+        ExperienceOrb experienceOrb = (ExperienceOrb) location.getWorld().spawnEntity(location, EntityType.EXPERIENCE_ORB);
+        experienceOrb.setExperience(experienceValue);
+    }
+
+    private static class SpawnOrbTask extends BukkitRunnable {
+        private final Location location;
+        private int orbExpValue;
+
+        private SpawnOrbTask(Location location, int orbExpValue) {
+            this.location = location;
+            this.orbExpValue = orbExpValue;
+        }
+
+        @Override
+        public void run() {
+            if(location == null || location.getWorld() == null)
+                return;
+
+            ExperienceOrb experienceOrb = (ExperienceOrb) location.getWorld().spawnEntity(location, EntityType.EXPERIENCE_ORB);
+            experienceOrb.setExperience(orbExpValue);
+        }
     }
 }

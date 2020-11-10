@@ -450,7 +450,7 @@ public class Config extends AutoUpdateConfigLoader {
     public int getAbilityToolDamage() { return config.getInt("Abilities.Tools.Durability_Loss", 1); }
 
     /* Thresholds */
-    public int getTreeFellerThreshold() { return config.getInt("Abilities.Limits.Tree_Feller_Threshold", 500); }
+    public int getTreeFellerThreshold() { return config.getInt("Abilities.Limits.Tree_Feller_Threshold", 1000); }
 
     /*
      * SKILL SETTINGS
