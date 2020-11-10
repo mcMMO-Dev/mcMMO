@@ -28,7 +28,7 @@ public class StringUtils {
     }
 
     public static String ticksToSeconds(double ticks) {
-        return shortDecimal.format(ticks / 20) + "s";
+        return shortDecimal.format(ticks / 20);
     }
 
 

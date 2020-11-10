@@ -1,10 +1,13 @@
 Version 2.1.156
+    Fixed a bug where Green Thumb would replant blocks floating in the air
     Fixed a bug where the admin and party chat toggles in chat.yml didn't function as intended
+    * Fixed a bug where Master Angler rank 1 level requirement was set too high (default configs)
     Added some errors that trigger if a plugin hooking into mcMMO is grabbing leaderboards for child skills through our SQL/FlatFile class (which don't exist)
     mcMMO will automatically fix some errors in logic for user settings in skillranks.yml
     Corrected some logic errors when checking for oddities in skillranks.yml
-    * Fixed a bug where Master Angler rank 1 was set too high (default configs)
     Removed incorrect translations of Master Angler from various locales
+    Modified Master Angler stat lines in /fishing
+    Updated Green Thumb description to mention that it needs a hoe
 
     NOTES:
     You don't need to touch your config files, this update handles everything automagically.
