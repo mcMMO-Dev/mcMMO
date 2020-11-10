@@ -8,10 +8,13 @@ import com.gmail.nossr50.util.compat.layers.bungee.BungeeModernSerializerCompati
 import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDataLayer;
 import com.gmail.nossr50.util.compat.layers.persistentdata.SpigotPersistentDataLayer_1_13;
 import com.gmail.nossr50.util.compat.layers.persistentdata.SpigotPersistentDataLayer_1_14;
+import com.gmail.nossr50.util.compat.layers.skills.AbstractMasterAnglerCompatibility;
+import com.gmail.nossr50.util.compat.layers.skills.MasterAnglerCompatibilityLayer;
 import com.gmail.nossr50.util.nms.NMSVersion;
 import com.gmail.nossr50.util.platform.MinecraftGameVersion;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 
@@ -21,6 +24,7 @@ import java.util.HashMap;
  * In 2.2 we are switching to modules and that will clean things up significantly
  *
  */
+//TODO: I need to rewrite this crap
 public class CompatibilityManager {
     private HashMap<CompatibilityType, Boolean> supportedLayers;
     private boolean isFullyCompatibleServerSoftware = true; //true if all compatibility layers load successfully
@@ -31,6 +35,7 @@ public class CompatibilityManager {
 //    private PlayerAttackCooldownExploitPreventionLayer playerAttackCooldownExploitPreventionLayer;
     private AbstractPersistentDataLayer persistentDataLayer;
     private AbstractBungeeSerializerCompatibilityLayer bungeeSerializerCompatibilityLayer;
+    private AbstractMasterAnglerCompatibility masterAnglerCompatibility;
 
     public CompatibilityManager(MinecraftGameVersion minecraftGameVersion) {
         mcMMO.p.getLogger().info("Loading compatibility layers...");
@@ -49,10 +54,6 @@ public class CompatibilityManager {
         supportedLayers = new HashMap<>(); //Init map
 
         for(CompatibilityType compatibilityType : CompatibilityType.values()) {
-            //TODO: Remove later
-            if(compatibilityType == CompatibilityType.PLAYER_ATTACK_COOLDOWN_EXPLOIT_PREVENTION)
-                continue;
-
             supportedLayers.put(compatibilityType, false); //All layers are set to false when initialized
         }
     }
@@ -64,8 +65,29 @@ public class CompatibilityManager {
     private void initCompatibilityLayers() {
         initPersistentDataLayer();
         initBungeeSerializerLayer();
+        initMasterAnglerLayer();
 
         isFullyCompatibleServerSoftware = true;
+    }
+
+    private void initMasterAnglerLayer() {
+        if(minecraftGameVersion.getMinorVersion().asInt() >= 16 || minecraftGameVersion.getMajorVersion().asInt() >= 2) {
+            if(hasNewFishingHookAPI()) {
+                masterAnglerCompatibility = new MasterAnglerCompatibilityLayer();
+            }
+        } else {
+            masterAnglerCompatibility = null;
+        }
+    }
+
+    private boolean hasNewFishingHookAPI() {
+        try {
+            Class<?> checkForClass = Class.forName("org.bukkit.entity.FishHook");
+            checkForClass.getMethod("getMinWaitTime");
+            return true;
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
+            return false;
+        }
     }
 
     private void initBungeeSerializerLayer() {
@@ -74,6 +96,8 @@ public class CompatibilityManager {
         } else {
             bungeeSerializerCompatibilityLayer = new BungeeLegacySerializerCompatibilityLayer();
         }
+
+        supportedLayers.put(CompatibilityType.BUNGEE_SERIALIZER, true);
     }
 
     private void initPersistentDataLayer() {
@@ -145,16 +169,15 @@ public class CompatibilityManager {
         return NMSVersion.UNSUPPORTED;
     }
 
-//    public PlayerAttackCooldownExploitPreventionLayer getPlayerAttackCooldownExploitPreventionLayer() {
-//        return playerAttackCooldownExploitPreventionLayer;
-//    }
-
-
     public AbstractBungeeSerializerCompatibilityLayer getBungeeSerializerCompatibilityLayer() {
         return bungeeSerializerCompatibilityLayer;
     }
 
     public AbstractPersistentDataLayer getPersistentDataLayer() {
         return persistentDataLayer;
+    }
+
+    public @Nullable AbstractMasterAnglerCompatibility getMasterAnglerCompatibilityLayer() {
+        return masterAnglerCompatibility;
     }
 }

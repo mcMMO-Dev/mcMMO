@@ -1,13 +1,32 @@
 Version 2.1.155
+    Master Angler now has 8 ranks
+    Master Angler is now supported by the latest builds of Spigot on 1.16.4
+    Wolves will now earn a lot more XP from combat than before (Wolves are going to be tweaked a lot in the near future)
     Fixed a bug where Spectral Arrow awarded too much XP
     Fixed a bug where party members other than the party leader had names that weren't properly hex colored
+    Added 'Skills.Fishing.MasterAngler.Tick_Reduction_Per_Rank.Min_Wait' to advanced.yml
+    Added 'Skills.Fishing.MasterAngler.Tick_Reduction_Per_Rank.Max_Wait' to advanced.yml
+    Added 'Skills.Fishing.MasterAngler.Boat_Tick_Reduction.Max_Wait' to advanced.yml
+    Added 'Skills.Fishing.MasterAngler.Boat_Tick_Reduction.Min_Wait' to advanced.yml
+    Added 'Skills.Fishing.MasterAngler.Tick_Reduction_Caps.Min_Wait' to advanced.yml
+    Added 'Skills.Fishing.MasterAngler.Tick_Reduction_Caps.Max_Wait' to advanced.yml
+    Removed Skills.Fishing.MasterAngler.BoatModifier from advanced.yml
+    Removed Skills.Fishing.MasterAngler.BoatModifier from advanced.yml
     Optimized party/admin chat a bit
+    Added some misc safeguards against possible NPEs
+    Added some debug output when fishing if mmodebug is on
     (API) Removed AbstractPlayerAuthor#getComponentDisplayName
     (API) Removed AbstractPlayerAuthor#getComponentUserName
     (API) Removed Author#getAuthoredComponentName
 
     NOTES:
+    Master Angler won't work if you aren't on 1.16.4, the truth is it hasn't worked for a very long time. The Spigot API related to it has been broken since years and years ago, they finally updated the API but its only in the newest builds of Spigot.
+    If you are on something that doesn't support the new Master Angler that skill will be missing when you type /fishing
+    The boat bonus for master angler is static and doesn't improve when leveling master angler
+    The configurable reduction tick stuff for master angler is multiplied by the rank level when determining the final bonus (use /mmodebug when fishing to see some details)
     Removed some unnecessary API, we aren't a chat plugin so these things shouldn't be here.
+    Master Angler stacks with the Lure enchant
+    Slowly adding Nullability annotations to the codebase
 
 Version 2.1.154
     Hex colors are now supported in Party & Admin chat

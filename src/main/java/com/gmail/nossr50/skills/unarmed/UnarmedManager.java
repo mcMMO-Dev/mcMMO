@@ -33,7 +33,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canActivateAbility() {
-        return mcMMOPlayer.getToolPreparationMode(ToolType.FISTS) && Permissions.berserk(getPlayer());
+        return mmoPlayer.getToolPreparationMode(ToolType.FISTS) && Permissions.berserk(getPlayer());
     }
 
     public boolean canUseSteelArm() {
@@ -44,7 +44,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canUseBerserk() {
-        return mcMMOPlayer.getAbilityMode(SuperAbilityType.BERSERK);
+        return mmoPlayer.getAbilityMode(SuperAbilityType.BERSERK);
     }
 
     public boolean canDisarm(LivingEntity target) {
@@ -102,7 +102,7 @@ public class UnarmedManager extends SkillManager {
      * @param defender The defending player
      */
     public void disarmCheck(Player defender) {
-        if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.UNARMED_DISARM, getPlayer(), mcMMOPlayer.getAttackStrength()) && !hasIronGrip(defender)) {
+        if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.UNARMED_DISARM, getPlayer(), mmoPlayer.getAttackStrength()) && !hasIronGrip(defender)) {
             if (EventUtils.callDisarmEvent(defender).isCancelled()) {
                 return;
             }
@@ -139,7 +139,7 @@ public class UnarmedManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public double berserkDamage(double damage) {
-        damage = ((damage * Unarmed.berserkDamageModifier) * mcMMOPlayer.getAttackStrength()) - damage;
+        damage = ((damage * Unarmed.berserkDamageModifier) * mmoPlayer.getAttackStrength()) - damage;
 
         return damage;
     }

@@ -721,6 +721,12 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getShakeChance(int rank) { return config.getDouble("Skills.Fishing.ShakeChance.Rank_" + rank); }
     public int getFishingVanillaXPModifier(int rank) { return config.getInt("Skills.Fishing.VanillaXPMultiplier.Rank_" + rank); }
 
+    public int getFishingReductionMinWaitTicks() { return config.getInt("Skills.Fishing.MasterAngler.Tick_Reduction_Per_Rank.Min_Wait", 10);}
+    public int getFishingReductionMaxWaitTicks() { return config.getInt("Skills.Fishing.MasterAngler.Tick_Reduction_Per_Rank.Max_Wait", 30);}
+    public int getFishingBoatReductionMinWaitTicks() { return config.getInt("Skills.Fishing.MasterAngler.Boat_Tick_Reduction.Min_Wait", 10);}
+    public int getFishingBoatReductionMaxWaitTicks() { return config.getInt("Skills.Fishing.MasterAngler.Boat_Tick_Reduction.Max_Wait", 30);}
+    public int getFishingReductionMinWaitCap() { return config.getInt("Skills.Fishing.MasterAngler.Tick_Reduction_Caps.Min_Wait", 40);}
+    public int getFishingReductionMaxWaitCap() { return config.getInt("Skills.Fishing.MasterAngler.Tick_Reduction_Caps.Max_Wait", 100);}
     public int getFishermanDietRankChange() { return config.getInt("Skills.Fishing.FishermansDiet.RankChange", 200); }
 
     /*public int getIceFishingUnlockLevel() { return config.getInt("Skills.Fishing.IceFishing.UnlockLevel", 50); }

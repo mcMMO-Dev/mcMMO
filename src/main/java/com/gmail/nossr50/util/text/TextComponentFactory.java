@@ -493,6 +493,11 @@ public class TextComponentFactory {
         {
             if(subSkillType.getParentSkill() == parentSkill)
             {
+                //TODO: Hacky rewrite later
+                //Only some versions of MC have this skill
+                if(subSkillType == SubSkillType.FISHING_MASTER_ANGLER && mcMMO.getCompatibilityManager().getMasterAnglerCompatibilityLayer() == null)
+                    continue;
+
                 if(Permissions.isSubSkillEnabled(player, subSkillType))
                 {
                     if(!InteractionManager.hasSubSkill(subSkillType))

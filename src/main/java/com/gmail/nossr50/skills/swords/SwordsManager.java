@@ -29,7 +29,7 @@ public class SwordsManager extends SkillManager {
     }
 
     public boolean canActivateAbility() {
-        return mcMMOPlayer.getToolPreparationMode(ToolType.SWORD) && Permissions.serratedStrikes(getPlayer());
+        return mmoPlayer.getToolPreparationMode(ToolType.SWORD) && Permissions.serratedStrikes(getPlayer());
     }
 
     public boolean canUseStab() {
@@ -51,7 +51,7 @@ public class SwordsManager extends SkillManager {
         if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_SERRATED_STRIKES))
             return false;
 
-        return mcMMOPlayer.getAbilityMode(SuperAbilityType.SERRATED_STRIKES);
+        return mmoPlayer.getAbilityMode(SuperAbilityType.SERRATED_STRIKES);
     }
 
     /**
@@ -60,7 +60,7 @@ public class SwordsManager extends SkillManager {
      * @param target The defending entity
      */
     public void ruptureCheck(LivingEntity target) {
-        if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_RUPTURE, getPlayer(), this.mcMMOPlayer.getAttackStrength())) {
+        if (RandomChanceUtil.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_RUPTURE, getPlayer(), this.mmoPlayer.getAttackStrength())) {
 
             if (target instanceof Player) {
                 Player defender = (Player) target;
@@ -77,7 +77,7 @@ public class SwordsManager extends SkillManager {
 
             BleedTimerTask.add(target, getPlayer(), getRuptureBleedTicks(), RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE), getToolTier(getPlayer().getInventory().getItemInMainHand()));
 
-            if (mcMMOPlayer.useChatNotifications()) {
+            if (mmoPlayer.useChatNotifications()) {
                 NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Swords.Combat.Bleeding");
             }
         }

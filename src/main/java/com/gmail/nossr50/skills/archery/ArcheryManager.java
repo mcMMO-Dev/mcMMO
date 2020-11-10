@@ -57,8 +57,12 @@ public class ArcheryManager extends SkillManager {
         if(!arrow.hasMetadata(mcMMO.arrowDistanceKey))
             return arrow.getLocation().distance(target.getLocation());
 
+
         Location firedLocation = (Location) arrow.getMetadata(mcMMO.arrowDistanceKey).get(0).value();
         Location targetLocation = target.getLocation();
+
+        if(firedLocation == null || firedLocation.getWorld() == null)
+            return 1;
 
         if (firedLocation.getWorld() != targetLocation.getWorld()) {
             return 1;
@@ -100,7 +104,7 @@ public class ArcheryManager extends SkillManager {
             NotificationManager.sendPlayerInformation(defender, NotificationType.SUBSKILL_MESSAGE, "Combat.TouchedFuzzy");
         }
 
-        if (mcMMOPlayer.useChatNotifications()) {
+        if (mmoPlayer.useChatNotifications()) {
             NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.SUBSKILL_MESSAGE, "Combat.TargetDazed");
         }
 

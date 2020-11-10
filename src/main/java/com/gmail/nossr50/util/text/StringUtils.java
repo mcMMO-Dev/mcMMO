@@ -8,9 +8,13 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DecimalFormat;
 import java.util.Locale;
 
 public class StringUtils {
+
+    protected static DecimalFormat percent = new DecimalFormat("##0.00%");
+    protected static DecimalFormat shortDecimal = new DecimalFormat("##0.0");
 
     /**
      * Gets a capitalized version of the target string.
@@ -22,6 +26,11 @@ public class StringUtils {
     public static String getCapitalized(String target) {
         return target.substring(0, 1).toUpperCase() + target.substring(1).toLowerCase(Locale.ENGLISH);
     }
+
+    public static String ticksToSeconds(double ticks) {
+        return shortDecimal.format(ticks / 20) + "s";
+    }
+
 
     /**
      * Creates a string from an array skipping the first n elements

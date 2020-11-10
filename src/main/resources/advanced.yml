@@ -231,10 +231,16 @@ Skills:
             RankChange: 20
 
         MasterAngler:
-            # BoatMultiplier: Catch rate is multiplied by this modifier
-            # BiomeModifier: Catch rate is multiplied by this modifier
-            BoatModifier: 2.0
-            BiomeModifier: 2.0
+            Boat_Tick_Reduction:
+                Min_Wait: 10
+                Max_Wait: 30
+            Tick_Reduction_Per_Rank:
+                Min_Wait: 10
+                Max_Wait: 30
+            Tick_Reduction_Caps:
+                # Don't modify these two unless you fully understand what you are doing
+                Min_Wait: 40
+                Max_Wait: 100
     #
     #  Settings for Herbalism
     ###

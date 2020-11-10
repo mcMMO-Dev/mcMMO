@@ -82,7 +82,7 @@ public class MiningManager extends SkillManager {
             return;
         }
 
-        if (mcMMOPlayer.getAbilityMode(skill.getAbility())) {
+        if (mmoPlayer.getAbilityMode(skill.getAbility())) {
             SkillUtils.handleDurabilityChange(getPlayer().getInventory().getItemInMainHand(), Config.getInstance().getAbilityToolDamage());
         }
 
@@ -96,7 +96,7 @@ public class MiningManager extends SkillManager {
 
         //TODO: Make this readable
         if (RandomChanceUtil.checkRandomChanceExecutionSuccess(getPlayer(), SubSkillType.MINING_DOUBLE_DROPS, true)) {
-            boolean useTriple = mcMMOPlayer.getAbilityMode(skill.getAbility()) && AdvancedConfig.getInstance().getAllowMiningTripleDrops();
+            boolean useTriple = mmoPlayer.getAbilityMode(skill.getAbility()) && AdvancedConfig.getInstance().getAllowMiningTripleDrops();
             BlockUtils.markDropsAsBonus(blockState, useTriple);
         }
     }
@@ -119,13 +119,13 @@ public class MiningManager extends SkillManager {
         NotificationManager.sendPlayerInformation(player, NotificationType.SUPER_ABILITY, "Mining.Blast.Boom");
         //player.sendMessage(LocaleLoader.getString("Mining.Blast.Boom"));
 
-        tnt.setMetadata(mcMMO.tntMetadataKey, mcMMOPlayer.getPlayerMetadata());
+        tnt.setMetadata(mcMMO.tntMetadataKey, mmoPlayer.getPlayerMetadata());
         tnt.setFuseTicks(0);
         targetBlock.setType(Material.AIR);
 
-        mcMMOPlayer.setAbilityDATS(SuperAbilityType.BLAST_MINING, System.currentTimeMillis());
-        mcMMOPlayer.setAbilityInformed(SuperAbilityType.BLAST_MINING, false);
-        new AbilityCooldownTask(mcMMOPlayer, SuperAbilityType.BLAST_MINING).runTaskLater(mcMMO.p, SuperAbilityType.BLAST_MINING.getCooldown() * Misc.TICK_CONVERSION_FACTOR);
+        mmoPlayer.setAbilityDATS(SuperAbilityType.BLAST_MINING, System.currentTimeMillis());
+        mmoPlayer.setAbilityInformed(SuperAbilityType.BLAST_MINING, false);
+        new AbilityCooldownTask(mmoPlayer, SuperAbilityType.BLAST_MINING).runTaskLater(mcMMO.p, SuperAbilityType.BLAST_MINING.getCooldown() * Misc.TICK_CONVERSION_FACTOR);
     }
 
     /**
@@ -311,7 +311,7 @@ public class MiningManager extends SkillManager {
     }
 
     private boolean blastMiningCooldownOver() {
-        int timeRemaining = mcMMOPlayer.calculateTimeRemaining(SuperAbilityType.BLAST_MINING);
+        int timeRemaining = mmoPlayer.calculateTimeRemaining(SuperAbilityType.BLAST_MINING);
 
         if (timeRemaining > 0) {
             //getPlayer().sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));
