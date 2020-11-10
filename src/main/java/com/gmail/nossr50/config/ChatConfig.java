@@ -35,7 +35,7 @@ public class ChatConfig extends AutoUpdateConfigLoader {
     }
 
     public boolean isChatChannelEnabled(@NotNull ChatChannel chatChannel) {
-        String key = "Chat.Channels." + StringUtils.getCapitalized(chatChannel.toString()) + ".Enabled";
+        String key = "Chat.Channels." + StringUtils.getCapitalized(chatChannel.toString()) + ".Enable";
         return config.getBoolean(key, true);
     }
 
