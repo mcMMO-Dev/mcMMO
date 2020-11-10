@@ -1,12 +1,6 @@
 Version 2.1.156
     Added Woodcutting skill 'Knock on Wood' - This ability gives you goodies (saplings, xp orbs, apples, etc) when using Tree Feller
     Tree Feller no longer gives non-wood items by default, it now requires Knock on Wood for additional loot
-    Added new permission node 'mcmmo.ability.woodcutting.knockonwood'
-    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Name'
-    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Stat'
-    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Description'
-    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Loot.Normal'
-    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Loot.Rank2'
     When you raise your axe you will now see information about any super abilities on CD
     Fixed a bug where Green Thumb would replant blocks floating in the air
     Fixed a bug where the admin and party chat toggles in chat.yml didn't function as intended
@@ -17,12 +11,19 @@ Version 2.1.156
     Removed incorrect translations of Master Angler from various locales
     Modified Master Angler stat lines in /fishing
     Updated Green Thumb description to mention that it needs a hoe
-    'Abilities.Limits.Tree_Feller_Threshold' in config.yml now defaults to 1000 instead of 500
+    'Abilities.Limits.Tree_Feller_Threshold' in config.yml now defaults to 1000 instead of 500 (edit your config)
+    Added new permission node 'mcmmo.ability.woodcutting.knockonwood'
+    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Name'
+    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Stat'
+    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Description'
+    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Loot.Normal'
+    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Loot.Rank2'
 
     NOTES:
-    You don't need to touch your config files, this update handles everything automagically.
+    You don't need to touch your config files unless you want to get the new tree feller threshold (1000 instead of 500), you could also delete config.yml and regenerate it, for all the other config changes in this update, they are handled automagically.
     * - If you haven't manually edited your Master Angler entries in skillranks.yml then the previous mcMMO update has rank 1 for Master Angler too high, this update automatically fixes it.
     You may have noticed sometimes config file entries are in a strange jumbled order, yeah that's "normal". We'll be moving to HOCON for the config update and wont' have to deal with this crap for much longer.
+    I'll probably be doing a bunch of tweaks to mcMMO UI in the near future, I don't know, or I'll work on T&C
 
 Version 2.1.155
     Master Angler now has 8 ranks
