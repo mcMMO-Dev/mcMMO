@@ -6,6 +6,8 @@ import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -53,13 +55,14 @@ public interface DatabaseManager {
 
     /**
     * Retrieve leaderboard info.
+     * Will never be null but it may be empty
     *
     * @param skill The skill to retrieve info on
     * @param pageNumber Which page in the leaderboards to retrieve
     * @param statsPerPage The number of stats per page
     * @return the requested leaderboard information
     */
-    List<PlayerStat> readLeaderboard(PrimarySkillType skill, int pageNumber, int statsPerPage) throws InvalidSkillException;
+    @NotNull List<PlayerStat> readLeaderboard(@Nullable PrimarySkillType skill, int pageNumber, int statsPerPage) throws InvalidSkillException;
 
     /**
      * Retrieve rank info into a HashMap from PrimarySkillType to the rank.

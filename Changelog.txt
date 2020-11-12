@@ -1,3 +1,6 @@
+Version 2.1.157
+    Fixed a NPE that prevented mctop (Leaderboards) from working
+
 Version 2.1.156
     Added Woodcutting skill 'Knock on Wood' - This ability gives you goodies (saplings, xp orbs, apples, etc) when using Tree Feller
     Tree Feller no longer gives non-wood items by default, it now requires Knock on Wood for additional loot
