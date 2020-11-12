@@ -87,6 +87,207 @@ Version 2.2.000
     Parties got unnecessarily complex in my absence, I have removed many party features in order to simplify parties and bring them closer to my vision. I have also added new features which should improve parties where it matters.
     About the removed party features, all the features I removed I consider poor quality features and I don't think they belong in mcMMO. Feel free to yell at me in discord if you disagree.
     I don't know what genius decided to make parties public by default, when I found out that parties had been changed to such a system I could barely contain my disgust. Parties are back to being private, you get invited by a party leader or party officer. That is the only way to join a party.
+Version 2.1.156
+    Added Woodcutting skill 'Knock on Wood' - This ability gives you goodies (saplings, xp orbs, apples, etc) when using Tree Feller
+    Tree Feller no longer gives non-wood items by default, it now requires Knock on Wood for additional loot
+    When you raise your axe you will now see information about any super abilities on CD
+    Fixed a bug where Green Thumb would replant blocks floating in the air
+    Fixed a bug where the admin and party chat toggles in chat.yml didn't function as intended
+    * Fixed a bug where Master Angler rank 1 level requirement was set too high (default configs)
+    Added some errors that trigger if a plugin hooking into mcMMO is grabbing leaderboards for child skills through our SQL/FlatFile class (which don't exist)
+    mcMMO will automatically fix some errors in logic for user settings in skillranks.yml
+    Corrected some logic errors when checking for oddities in skillranks.yml
+    Removed incorrect translations of Master Angler from various locales
+    Modified Master Angler stat lines in /fishing
+    Updated Green Thumb description to mention that it needs a hoe
+    'Abilities.Limits.Tree_Feller_Threshold' in config.yml now defaults to 1000 instead of 500 (edit your config)
+    Added new permission node 'mcmmo.ability.woodcutting.knockonwood'
+    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Name'
+    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Stat'
+    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Description'
+    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Loot.Normal'
+    Added new locale line 'Woodcutting.SubSkill.KnockOnWood.Loot.Rank2'
+
+    NOTES:
+    You don't need to touch your config files unless you want to get the new tree feller threshold (1000 instead of 500), you could also delete config.yml and regenerate it, for all the other config changes in this update, they are handled automagically.
+    * - If you haven't manually edited your Master Angler entries in skillranks.yml then the previous mcMMO update has rank 1 for Master Angler too high, this update automatically fixes it.
+    You may have noticed sometimes config file entries are in a strange jumbled order, yeah that's "normal". We'll be moving to HOCON for the config update and wont' have to deal with this crap for much longer.
+    I'll probably be doing a bunch of tweaks to mcMMO UI in the near future, I don't know, or I'll work on T&C
+
+Version 2.1.155
+    Master Angler now has 8 ranks
+    Master Angler is now supported by the latest builds of Spigot on 1.16.4
+    Wolves will now earn a lot more XP from combat than before (Wolves are going to be tweaked a lot in the near future)
+    Fixed a bug where Spectral Arrow awarded too much XP
+    Fixed a bug where party members other than the party leader had names that weren't properly hex colored
+    Added 'Skills.Fishing.MasterAngler.Tick_Reduction_Per_Rank.Min_Wait' to advanced.yml
+    Added 'Skills.Fishing.MasterAngler.Tick_Reduction_Per_Rank.Max_Wait' to advanced.yml
+    Added 'Skills.Fishing.MasterAngler.Boat_Tick_Reduction.Max_Wait' to advanced.yml
+    Added 'Skills.Fishing.MasterAngler.Boat_Tick_Reduction.Min_Wait' to advanced.yml
+    Added 'Skills.Fishing.MasterAngler.Tick_Reduction_Caps.Min_Wait' to advanced.yml
+    Added 'Skills.Fishing.MasterAngler.Tick_Reduction_Caps.Max_Wait' to advanced.yml
+    Removed Skills.Fishing.MasterAngler.BoatModifier from advanced.yml
+    Removed Skills.Fishing.MasterAngler.BoatModifier from advanced.yml
+    Optimized party/admin chat a bit
+    Added some misc safeguards against possible NPEs
+    Added some debug output when fishing if mmodebug is on
+    (API) Removed AbstractPlayerAuthor#getComponentDisplayName
+    (API) Removed AbstractPlayerAuthor#getComponentUserName
+    (API) Removed Author#getAuthoredComponentName
+
+    NOTES:
+    Master Angler won't work if you aren't on 1.16.4, the truth is it hasn't worked for a very long time (Since before 1.13.2)
+    The Spigot API related to it has been broken since years and years ago, and they finally updated the API but it is only in the newest builds of Spigot.
+    If you are on something that doesn't support the new Master Angler that skill will be missing when you type /fishing
+    The boat bonus for master angler is static and doesn't improve when leveling master angler.
+    All the new master angler stuff is configurable and can be found in advanced.yml
+    The configurable reduction tick stuff for master angler is multiplied by the rank level when determining the final bonus (use /mmodebug when fishing to see some details)
+    Master Angler stacks with the Lure enchant
+    Removed some unnecessary API, we aren't a chat plugin so these things shouldn't be here.
+    Slowly adding Nullability annotations to the codebase
+
+Version 2.1.154
+    Hex colors are now supported in Party & Admin chat
+    Added support for &#RRGGBB color codes (hex colors) in chat and nicknames for party and admin chat
+    Added hex colored nickname support to admin/party chat
+    Fixed a bug where Tree Feller was not dropping some items like saplings
+    Fixed a bug where using admin chat would in some circumstances throw a NPE
+    (API) Author class has been reworked
+    (API) McMMOChatEvent::getSender removed (use getDisplayName() instead)
+    (API) McMMMOChatEvent::setDisplayName() removed
+    (API) Removed Author::setName use Player::SetDisplayName instead
+    (API) Modified Author::getAuthoredName signature to -> Author::getAuthoredName(ChatChannel)
+    (API) Added Author::getAuthoredComponentName(ChatChannel)
+    (API) PartyAuthor and AdminAuthor removed, replaced by PlayerAuthor
+    (API) Probably some more undocumented changes that I'm forgetting...
+
+Notes:
+    For example '/p &#ccFF33hi guys' will send a message colored in hex colors
+    You'll see ~§x in console when hex color codes are used, this is a quirk of how the 'adventure' library we are using is handling some bungee component related things, so it's outside of my hands for now
+
+Version 2.1.153
+    Fixed a bug where most sub-skills were not being displayed when using a skills command (for example /taming)
+    Fixed a bug where some URL links were not being colored
+    Updated fr locale (thanks Vlammar)
+
+Version 2.1.152
+    Fixed a bug where Tree Feller would sometimes double drop blocks inappropriately
+    Fixed a bug with bleed damage calculations and player armor
+    Added some code to prevent a possible NPE when spawning items in a world that got unloaded
+    Added the missing 'pc' alias for party chat
+    Added the missing 'ac' alias for admin chat
+    (API) New ENUM ItemSpawnReason which gives context for why mcMMO is dropping an item
+    (API) McMMOItemSpawnEvent::getItemSpawnReason() was added
+    (API) Many instances of spawning items that didn't used to create and call an McMMOItemSpawnEvent now do
+    Updated hu_HU locale (thanks andris)
+
+    NOTES:
+    I really should stop letting my OCD compel me to rewrite code all the time.
+    Bleed was meant to do reduced damage to players wearing 4 pieces of armor or more, it was incorrectly counting everyone as wearing 4 pieces even when they weren't.
+    This means Bleed was doing a bit less damage than was intended against players without a full set of armor equipped.
+
+Version 2.1.151
+    Added new config for chat options named 'chat.yml'
+    Added 'Chat.Channels.Party.Spies.Automatically_Enable_Spying' to chat.yml which when enabled will start users who have the chat spy permission in chat spying mode
+    All chat settings that used to be in 'config.yml' are now in 'chat.yml'
+    The list of party members shown when using the party command has been simplified, this will change again in the T&C update
+    Fixed a bug where players could use the party chat command without the party chat permission
+    Party Leaders now use a different style when chatting than normal party members (can be customized)
+    Added 'Chat.Style.Party.Leader' to the locale, party leaders use this as their chat style
+
+    NOTES:
+    I greatly disliked the old party member list but was avoiding rewriting it until later, someone pointed out how ugly it was and my OCD triggered and now it is rewritten. I will rewrite it again in Tridents & Crossbows.
+    The new config file lets you disable the chat system (you can disable all of it, or just party chat, and or just admin chat) without permission nodes.
+    If you disable the party/admin chat, then the party/admin chat command never gets registered and attempting to use the command will result in a whole lot of nothing, so if you want users to have a permission denied message then just stick to negating permission nodes.
+    I'll probably be tweaking mcMMO visually a lot in the near future, probably after Tridents & Crossbows goes out.
+    I hate adding more config files using the old .yml system, but the config update is a ways out and this works for now.
+    Reminder that the look/feel of party/admin chat is now determined by locale entries
+    https://mcmmo.org/wiki/Locale can help you understand how to change the locale
+
+Version 2.1.150
+    Fixed an ArrayIndexOutOfBounds exception when using /skillreset
+    You can now add "-s" at the end of mmoedit, addlevels, or addxp to silence the command. Which will prevent the target of the command from being informed that the command was executed.
+    mcMMO should now be compatible with 1.16.4's new social features (affects Party/Admin chat)
+    mcMMO Party & Admin Chat have had a complete rewrite
+    Players & Console can now use color codes (including stuff like &a or [[GREEN]]) in party or admin chat
+    Added new permission node 'mcmmo.chat.colors' which allows players to use color codes, negate to disallow this
+    The style and look of admin/party chat is now determined by locale file instead of options in config.yml
+    The default style of admin/party chat has been updated, and it may be updated again in the future
+    Improved messages players receive when they toggle on or off admin or party chat
+    All locale files have had 99.9% of their [[]] color codes replaced by & color codes, you can still use [[GOLD]] and stuff if you want
+    Added new locale entry 'Commands.Usage.3.XP'
+    Added new locale entry 'Chat.Identity.Console'
+    Added new locale entry 'Chat.Style.Admin'
+    Added new locale entry 'Chat.Style.Party'
+    Added new locale entry 'Chat.Spy.Party'
+    Added new locale entry 'Chat.Channel.On'
+    Added new locale entry 'Chat.Channel.Off'
+    (API) ChatAPI::getPartyChatManager() has been removed
+    (API) ChatAPI::sendPartyChat has been removed (similar functionality can be found in the new ChatManager class)
+    (API) ChatAPI::sendAdminChat has been removed (similar functionality can be found in the new ChatManager class)
+    (API) Fake events in mcMMO now implement 'FakeEvent' (thanks TheBusyBiscuit)
+    (API) Updated Adventure Library to 4.1.1
+    (API) McMMOChatEvent has been reworked, plugins dependent on this event should review this class and make appropriate changes
+
+    NOTES:
+    The yet to be released Tridents & Crossbows update will also feature some new features related to party chat, so expect more tweaks to those features in the future.
+    I actually spent a little over a week on this, the old code for party/admin chat was absolutely horrid and when porting in the new 1.16.4 features I couldn't stand the sight of it so I burned everything to the ground and rewrote all of it.
+    The mcMMO chat events now make use of adventure library by Kyori, you can override the message payload with a TextComponent, which allows for some fancy stuff potentially.
+    I'll put in some of my own fancy stuff for party and admin chat in a future update.
+
+Version 2.1.149
+    Added a new config file 'persistent_data.yml'
+    Almost all persistent mob data is now off by default and needs to be turned on in persistent_data.yml (new config file) for performance concerns
+
+NOTES:
+There are some performance issues with how Spigot/MC saves NBT when you start adding NBT to mobs, because of this I have decided that the new persistent data from 2.1.148 is now opt-in.
+
+Not every server will suffer a TPS hit when using the persistent data options, but there is a significant IO cost which can affect TPS if you have them on
+
+I am therefore making many persistent options (the problematic ones involving mobs) opt-in so only those aware of the performance risk will be using the feature.
+
+Persistent data on mobs was a new feature that was introduced in 2.1.148, it was not in mcMMO for the last 10 years and most of you probably didn't even know that it was missing
+
+An example of persistent data would be, normally mcMMO would give 0 XP for a mob from a mob spawner, in the last 10 years if the server rebooted then those existing mobs would give XP again. But with the persistent data option turned on in persistentdata.yml they will be saved to disk, and mcMMO will not forget about them upon reboot.
+
+For now it is not recommended to use persistent data without monitoring performance of ticks afterwards to make sure it was something your server could handle.
+
+I have a solution in mind to make persistent data not so expensive, but writing the code for that will take some time. This will serve as an interim fix.
+
+I am going to focus on Tridents & Crossbows instead of that alternative solution, so don't expect it anytime soon. Use persistent data only if you understand the potential performance cost risk.
+@
+Version 2.1.148
+    Fixed a memory leak involving entity metadata
+    Alchemy progression is now more reasonable (delete skillranks.yml or edit it yourself to receive the change, see notes)
+    Made some optimizations to combat processing
+    New experience multiplier labeled 'Eggs' in experience.yml with a default value of 0 (previously mobs from eggs were using the Mobspawner experience multiplier)
+    New experience multiplier labeled 'Nether_Portal' in experience.yml with a default value of 0
+    New experience multiplier labeled 'Player_Tamed' in experience.yml with a default value of 0
+    New advanced.yml config setting 'Skills.Mining.SuperBreaker.AllowTripleDrops' defaults to true
+
+    Fixed a bug where mobs from eggs were only tracked if it was dispensed (egg tracking now tracks from egg items as well)
+    Fixed a bug where egg spawned mobs were sometimes not marked as being from an egg (used in experience multipliers)
+    Fixed a bug where entities transformed by a single event (such as lightning) weren't tracked properly if there was more than one entity involved
+    mmodebug now prints out some information about final damage when attacking an entity in certain circumstances
+
+    (1.14+ required)
+        Mobs spawned from mob spawners are tracked persistently and are no longer forgotten about after a restart
+        Tamed mobs are tracked persistently and are no longer forgotten about after a restart
+        Egg spawned mobs are tracked persistently and are no longer forgotten about after a restart
+        Nether Portal spawned mobs are tracked persistently and are no longer forgotten about after a restart
+        Endermen who target endermite are tracked persistently and are no longer forgotten about after a restart
+        COTW spawned mobs are tracked persistently and are no longer forgotten about after a restart
+        Player bred mobs are tracked persistently and are no longer forgotten about after a restart
+        Player tamed mobs are tracked persistently and are no longer forgotten about after a restart
+
+    NOTES:
+    Egg mobs & Nether portal pigs being assigned to the mobspawner xp multiplier didn't make sense to me, so it has been changed. They have their own XP multipliers now.
+    While working on making data persistent I stumbled upon some alarming memory leak candidates, one of them was 7 years old. Sigh.
+    Alchemy now progresses much smoother, with rank 2 no longer unlocking right away. Thanks to Momshroom for pointing out this oddity. Delete skillranks.yml or edit it yourself to recieve this change.
+    https://gist.github.com/nossr50/4c8efc980314781a960a3bdd7bb34f0d This link shows the new Alchemy progression in skillranks.yml feel free to copy paste (or just delete the file and regenerate it)
+    There's no persistent API for entities in Spigot for 1.13.2, but in the future I'll wire up NMS and write it to NBT myself.
+    This means the new persistence stuff requires 1.14.0 or higher, if you're still on 1.13.2 for now that stuff will behave like it always did
+
 Version 2.1.147
     Fixed a bug where players below the level threshold on a hardcore mode enabled server would gain levels on death in certain circumstances
 
@@ -100,7 +301,7 @@ Version 2.1.146
 
     NOTES:
     Shout out to Kashike
-    Kashike is a developer on the mcMMO team, however after I recruited him had a lot of life stuff come at him and hasn't had a chance to contribute until now!
+    Kashike is a developer on the mcMMO team, however after I recruited him had a lot of life stuff come at him and has./tn't had a chance to contribute until now!
 
     JSON is used by Minecraft for a lot of stuff, in this case the JSON mcMMO made use of was related to displaying text in chat or displaying text on the clients screen in other places such as the action bar, there's been a bad bug in Spigot since 1.16 that would disconnect players some of the time when sending JSON components.
     mcMMO makes heavy use of these components, so since spigot has yet to fix the bug I decided we needed a work around for the time being.
@@ -145,7 +346,6 @@ Version 2.1.144
     I was waiting to make Steel Arm Customizable for the config update (due in the future), but enough people ask for it that I decided to do the extra work to put it into 2.1.XX
     Tridents & Crossbows is likely going to be in development continuing into September, I am taking my time to make it feature packed and I hope you guys will appreciate it.
 
->>>>>>> 2810d36e085d6adaa209a6a119f92504234a0560
 Version 2.1.143
     mcMMO now tracks super ability boosted items through persistent metadata
     mcMMO no longer relies on lore to tell if an item has been modified by a super ability
@@ -165,7 +365,6 @@ Version 2.1.142
     Added locale entry 'Unarmed.SubSkill.SteelArmStyle.Description'
     Updated locale entry 'Unarmed.Ability.Bonus.0'
 
->>>>>>> b35c58ec21f8eaec83f57f11b869fba6765b3856
 Version 2.1.141
     Added some missing values for 1.16.2 compatibility modes
 
@@ -225,7 +424,6 @@ Version 2.1.134
     NOTES:
     It used to be that Furnaces would assign an owner and that would be their owner until the server shutdown, now owners will change based on who last had their hands on the furnace.
     You won't become the owner if you are not allowed to view the inventory of a furnace, or break the furnace, or interact with the contents of the furnace
->>>>>>> a28d1cd537caddb07a27ba2b7dd0ed7a37b39a48
 
 Version 2.1.133
     A fix for an 'array out of bounds' error related to players clicking outside the inventory windows has been fixed
@@ -1198,7 +1396,7 @@ Version 2.1.43
 
 Version 2.1.42
     Fixed McMMOPlayerNotFoundException being thrown instead of null
-    (API) mcMMO.getUserManager().getPlayer() returns null again (oopsie)
+    (API) UserManager.getPlayer() returns null again (oopsie)
     Added new perk permission node `mcmmo.perks.bypass.salvageenchant` - guarantees full enchantment return for Salvage
     Added alternative permission node `mcmmo.perks.bypass.repairenchant` - guarantees full enchantment return for Repair
     Added new wildcard perk `mcmmo.perks.bypass.*` and `mcmmo.perks.bypass.all` (either of these will grant all new mcmmo.perks.bypass perk permissions)
@@ -1214,7 +1412,7 @@ Version 2.1.41
     Fixed a display error preventing the remaining time on /mcrank from being shown if it was on cooldown
 
 Version 2.1.40
-    (API) mcMMO will now return null in all cases for mcMMO.getUserManager() if they have not been loaded yet
+    (API) mcMMO will now return null in all cases for UserManager.getPlayerProfile() if they have not been loaded yet
     (API) Roll stores exploit data in AcrobaticsManager now
     Added new locale string "Profile.Loading.FailureNotice"
     Added new locale string "Profile.Loading.FailurePlayer"
@@ -1779,7 +1977,7 @@ Version 1.5.01
  = Fixed bug where pistons would mess with the block tracking
  = Fixed bug where the Updater was running on the main thread.
  = Fixed bug when players would use /ptp without being in a party
- = Fixed bug where player didn't have a mmoPlayer object in AsyncPlayerChatEvent
+ = Fixed bug where player didn't have a mcMMOPlayer object in AsyncPlayerChatEvent
  = Fixed bug where dodge would check the wrong player skill level
  = Fixed bug which causes /party teleport to stop working
  = Fixed bug where SaveTimerTask would produce an IndexOutOfBoundsException

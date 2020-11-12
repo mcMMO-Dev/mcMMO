@@ -1,16 +1,19 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.TextComponentFactory;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
+import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +40,7 @@ public class UnarmedCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(Player player, float skillValue) {
+    protected void dataCalculations(@NotNull McMMOPlayer mmoPlayer, float skillValue) {
         // UNARMED_ARROW_DEFLECT
         if (canDeflect) {
             String[] deflectStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.UNARMED_ARROW_DEFLECT);
@@ -47,7 +50,7 @@ public class UnarmedCommand extends SkillCommand {
         
         // BERSERK
         if (canBerserk) {
-            String[] berserkStrings = calculateLengthDisplayValues(player, skillValue);
+            String[] berserkStrings = calculateLengthDisplayValues(mmoPlayer, skillValue);
             berserkLength = berserkStrings[0];
             berserkLengthEndurance = berserkStrings[1];
         }
@@ -61,7 +64,7 @@ public class UnarmedCommand extends SkillCommand {
 
         // IRON ARM
         if (canIronArm) {
-            ironArmBonus = mcMMO.getUserManager().queryMcMMOPlayer(player).getUnarmedManager().getSteelArmStyleDamage();
+            ironArmBonus = mmoPlayer.getUnarmedManager().getSteelArmStyleDamage();
         }
 
         // IRON GRIP
@@ -73,12 +76,12 @@ public class UnarmedCommand extends SkillCommand {
     }
 
     @Override
-    protected void permissionsCheck(Player player) {
-        canBerserk = RankUtils.hasUnlockedSubskill(player, SubSkillType.UNARMED_BERSERK) && Permissions.berserk(player);
-        canIronArm = canUseSubskill(player, SubSkillType.UNARMED_STEEL_ARM_STYLE);
-        canDeflect = canUseSubskill(player, SubSkillType.UNARMED_ARROW_DEFLECT);
-        canDisarm = canUseSubskill(player, SubSkillType.UNARMED_DISARM);
-        canIronGrip = canUseSubskill(player, SubSkillType.UNARMED_IRON_GRIP);
+    protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
+        canBerserk = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.UNARMED_BERSERK) && Permissions.berserk(player);
+        canIronArm = canUseSubskill(mmoPlayer, SubSkillType.UNARMED_STEEL_ARM_STYLE);
+        canDeflect = canUseSubskill(mmoPlayer, SubSkillType.UNARMED_ARROW_DEFLECT);
+        canDisarm = canUseSubskill(mmoPlayer, SubSkillType.UNARMED_DISARM);
+        canIronGrip = canUseSubskill(mmoPlayer, SubSkillType.UNARMED_IRON_GRIP);
         // TODO: Apparently we forgot about block cracker?
     }
 

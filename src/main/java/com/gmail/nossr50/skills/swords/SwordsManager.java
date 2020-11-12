@@ -41,14 +41,14 @@ public class SwordsManager extends SkillManager {
     }
 
     public boolean canUseCounterAttack(Entity target) {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_COUNTER_ATTACK))
+        if(!RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.SWORDS_COUNTER_ATTACK))
             return false;
 
         return target instanceof LivingEntity && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_COUNTER_ATTACK);
     }
 
     public boolean canUseSerratedStrike() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.SWORDS_SERRATED_STRIKES))
+        if(!RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.SWORDS_SERRATED_STRIKES))
             return false;
 
         return mmoPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.SERRATED_STRIKES);
@@ -111,7 +111,7 @@ public class SwordsManager extends SkillManager {
 
     public int getRuptureBleedTicks()
     {
-        int bleedTicks = 2 * RankUtils.getRank(getPlayer(), SubSkillType.SWORDS_RUPTURE);
+        int bleedTicks = 2 * RankUtils.getRank(mmoPlayer, SubSkillType.SWORDS_RUPTURE);
 
         if(bleedTicks > Swords.bleedMaxTicks)
             bleedTicks = Swords.bleedMaxTicks;

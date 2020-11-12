@@ -7,8 +7,9 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import com.gmail.nossr50.util.text.StringUtils;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -72,7 +73,7 @@ public final class CommandUtils {
      *
      * @param sender CommandSender who used the command
      * @param playerName name of the target player
-     * @param McMMOPlayer mmoPlayer object of the target player
+     * @param mcMMOPlayer object of the target player
      *
      * @return true if the player is online and a valid mmoPlayer object was found
      */

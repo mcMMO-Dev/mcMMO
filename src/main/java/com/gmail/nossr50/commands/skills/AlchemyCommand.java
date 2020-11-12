@@ -1,14 +1,17 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.alchemy.AlchemyManager;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,18 +31,23 @@ public class AlchemyCommand extends SkillCommand {
         super(PrimarySkillType.ALCHEMY);
     }
 
-    protected String[] calculateAbilityDisplayValues(Player player) {
+    protected String[] calculateAbilityDisplayValues(@NotNull Player player) {
         //TODO: Needed?
-        if(mcMMO.getUserManager().getPlayer(player) == null)
+        McMMOPlayer mmoPlayer = mcMMO.getUserManager().queryMcMMOPlayer(player);
+        if(mmoPlayer == null)
         {
             player.sendMessage(LocaleLoader.getString("Profile.PendingLoad"));
             return new String[] {"DATA NOT LOADED", "DATA NOT LOADED"};
         }
 
-        AlchemyManager alchemyManager = mcMMO.getUserManager().getPlayer(player).getAlchemyManager();
+        return calculateAbilityDisplayValues(mmoPlayer);
+    }
+
+    protected String[] calculateAbilityDisplayValues(@NotNull McMMOPlayer mmoPlayer) {
+        AlchemyManager alchemyManager = mmoPlayer.getAlchemyManager();
         String[] displayValues = new String[2];
 
-        boolean isLucky = Permissions.lucky(player, PrimarySkillType.ALCHEMY);
+        boolean isLucky = Permissions.lucky(mmoPlayer.getPlayer(), PrimarySkillType.ALCHEMY);
 
         displayValues[0] = decimal.format(alchemyManager.calculateBrewSpeed(false)) + "x";
         displayValues[1] = isLucky ? decimal.format(alchemyManager.calculateBrewSpeed(true)) + "x" : null;
@@ -47,18 +55,19 @@ public class AlchemyCommand extends SkillCommand {
         return displayValues;
     }
 
+
     @Override
-    protected void dataCalculations(Player player, float skillValue) {
+    protected void dataCalculations(McMMOPlayer mmoPlayer, float skillValue) {
         // ALCHEMY_CATALYSIS
         if (canCatalysis) {
-            String[] catalysisStrings = calculateAbilityDisplayValues(player);
+            String[] catalysisStrings = calculateAbilityDisplayValues(mmoPlayer.getPlayer());
             brewSpeed = catalysisStrings[0];
             brewSpeedLucky = catalysisStrings[1];
         }
 
         // ALCHEMY_CONCOCTIONS
         if (canConcoctions) {
-            AlchemyManager alchemyManager = mcMMO.getUserManager().getPlayer(player).getAlchemyManager();
+            AlchemyManager alchemyManager = mmoPlayer.getAlchemyManager();
             tier = alchemyManager.getTier();
             ingredientCount = alchemyManager.getIngredients().size();
             ingredientList = alchemyManager.getIngredientList();

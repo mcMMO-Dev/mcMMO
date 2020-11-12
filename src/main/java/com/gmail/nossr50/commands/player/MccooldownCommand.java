@@ -52,7 +52,7 @@ public class MccooldownCommand implements TabExecutor {
                     continue;
                 }
 
-                int seconds = mmoPlayer.calculateTimeRemaining(ability);
+                int seconds = mmoPlayer.getCooldownSeconds(ability);
 
                 if (seconds <= 0) {
                     player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Row.Y", ability.getLocalizedName()));

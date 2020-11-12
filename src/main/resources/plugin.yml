@@ -703,8 +703,11 @@ permissions:
             mcmmo.ability.woodcutting.splinter: true
             mcmmo.ability.woodcutting.barksurgeon: true
             mcmmo.ability.woodcutting.naturesbounty: true
+            mcmmo.ability.woodcutting.knockonwood: true
             mcmmo.ability.woodcutting.leafblower: true
             mcmmo.ability.woodcutting.treefeller: true
+    mcmmo.ability.woodcutting.knockonwood:
+        description: Allows access to Knock on Wood subskill
     mcmmo.ability.woodcutting.splinter:
         description: Allows access to Splinter
     mcmmo.ability.woodcutting.barksurgeon:
@@ -782,12 +785,15 @@ permissions:
     mcmmo.chat.all:
         description: Implies all mcmmo.chat permissions. (Warning, contains adminchat)
         children:
-            mcmmo.chat.adminchat: true 
-            mcmmo.chat.partychat: true 
+            mcmmo.chat.adminchat: true
+            mcmmo.chat.partychat: true
+            mcmmo.chat.colors: true
     mcmmo.chat.adminchat:
         description: Allows participation in admin chat
     mcmmo.chat.partychat:
         description: Allows participation in party chat
+    mcmmo.chat.colors:
+        description: players can use color codes like &a or [[GREEN]] in mcMMO chat channels
     mcmmo.motd:
         description: Allows access to the motd
     mcmmo.commands.*:
@@ -1318,6 +1324,7 @@ permissions:
             mcmmo.commands.defaults: true
             mcmmo.motd: true 
             mcmmo.skills.all: true
+            mcmmo.chat.colors: true
     mcmmo.defaultsop:
         default: op
         description: mcmmo permissions that default to op

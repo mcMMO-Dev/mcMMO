@@ -302,7 +302,7 @@ Abilities:
         Archery_Super: 0
         Tridents_Super: 0
     Limits:
-        Tree_Feller_Threshold: 500
+        Tree_Feller_Threshold: 1000
     Tools:
         # Use more tool durability while using abilities. Set Durability_Loss to 0 to disable the extra durability damage.
         Durability_Loss: 1
@@ -583,13 +583,6 @@ Commands:
         # If true, require players to have a mcmmo.commands.ptp.world.[WorldName] permission
         # to teleport to, from, or within any given world.
         World_Based_Permissions: false
-    partychat:
-        Chat_Prefix_Format: '[[GREEN]]([[WHITE]]{0}[[GREEN]])'
-        Use_Display_Names: true
-        Chat_Prefix_Format_Ally: '[[GREEN]](A)[[RESET]]'
-    adminchat:
-        Chat_Prefix_Format: '[[AQUA]][[[WHITE]]{0}[[AQUA]]]'
-        Use_Display_Names: true
 
 #
 #  Settings for particles

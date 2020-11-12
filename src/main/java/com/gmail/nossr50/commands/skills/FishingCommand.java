@@ -1,21 +1,20 @@
 package com.gmail.nossr50.commands.skills;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.treasure.Rarity;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.fishing.Fishing;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.fishing.FishingManager;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.text.StringUtils;
+import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Location;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +24,7 @@ public class FishingCommand extends SkillCommand {
     private String shakeChance;
     private String shakeChanceLucky;
     private int fishermansDietRank;
-    private String biteChance;
 
-    private String trapTreasure;
     private String commonTreasure;
     private String uncommonTreasure;
     private String rareTreasure;
@@ -44,13 +41,15 @@ public class FishingCommand extends SkillCommand {
     private boolean canMasterAngler;
     private boolean canIceFish;
 
+    private String maMinWaitTime, maMaxWaitTime;
+
     public FishingCommand() {
         super(PrimarySkillType.FISHING);
     }
 
     @Override
-    protected void dataCalculations(Player player, float skillValue) {
-        FishingManager fishingManager = mcMMO.getUserManager().getPlayer(player).getFishingManager();
+    protected void dataCalculations(@NotNull McMMOPlayer mmoPlayer, float skillValue) {
+        FishingManager fishingManager = mmoPlayer.getFishingManager();
 
         // TREASURE HUNTER
         if (canTreasureHunt) {
@@ -81,52 +80,35 @@ public class FishingCommand extends SkillCommand {
 
         // FISHING_SHAKE
         if (canShake) {
-            String[] shakeStrings = RandomChanceUtil.calculateAbilityDisplayValuesStatic(player, PrimarySkillType.FISHING, fishingManager.getShakeChance());
+            String[] shakeStrings = RandomChanceUtil.calculateAbilityDisplayValuesStatic(mmoPlayer, PrimarySkillType.FISHING, fishingManager.getShakeChance());
             shakeChance = shakeStrings[0];
             shakeChanceLucky = shakeStrings[1];
         }
 
         // FISHERMAN'S DIET
         if (canFishermansDiet) {
-            fishermansDietRank = RankUtils.getRank(player, SubSkillType.FISHING_FISHERMANS_DIET);
+            fishermansDietRank = RankUtils.getRank(mmoPlayer, SubSkillType.FISHING_FISHERMANS_DIET);
         }
 
         // MASTER ANGLER
         if (canMasterAngler) {
-            double rawBiteChance = 1.0 / (player.getWorld().hasStorm() ? 300 : 500);
-
-            Location location = fishingManager.getHookLocation();
-
-            if (location == null) {
-                location = player.getLocation();
-            }
-
-            if (Fishing.masterAnglerBiomes.contains(location.getBlock().getBiome())) {
-                rawBiteChance = rawBiteChance * AdvancedConfig.getInstance().getMasterAnglerBiomeModifier();
-            }
-
-            if (player.isInsideVehicle() && player.getVehicle().getType() == EntityType.BOAT) {
-                rawBiteChance = rawBiteChance * AdvancedConfig.getInstance().getMasterAnglerBoatModifier();
-            }
-
-            double luckyModifier = Permissions.lucky(player, PrimarySkillType.FISHING) ? 1.333D : 1.0D;
-
-            biteChance = percent.format((rawBiteChance * 100.0D) * luckyModifier);
+            maMinWaitTime = StringUtils.ticksToSeconds(fishingManager.getMasterAnglerTickMinWaitReduction(RankUtils.getRank(mmoPlayer, SubSkillType.FISHING_MASTER_ANGLER), false));
+            maMaxWaitTime = StringUtils.ticksToSeconds(fishingManager.getMasterAnglerTickMaxWaitReduction(RankUtils.getRank(mmoPlayer, SubSkillType.FISHING_MASTER_ANGLER), false));
         }
     }
 
     @Override
-    protected void permissionsCheck(Player player) {
-        canTreasureHunt = canUseSubskill(player, SubSkillType.FISHING_TREASURE_HUNTER);
-        canMagicHunt = canUseSubskill(player, SubSkillType.FISHING_MAGIC_HUNTER) && canUseSubskill(player, SubSkillType.FISHING_TREASURE_HUNTER);
-        canShake = canUseSubskill(player, SubSkillType.FISHING_SHAKE);
-        canFishermansDiet = canUseSubskill(player, SubSkillType.FISHING_FISHERMANS_DIET);
-        canMasterAngler = canUseSubskill(player, SubSkillType.FISHING_MASTER_ANGLER);
-        canIceFish = canUseSubskill(player, SubSkillType.FISHING_ICE_FISHING);
+    protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
+        canTreasureHunt = canUseSubskill(mmoPlayer, SubSkillType.FISHING_TREASURE_HUNTER);
+        canMagicHunt = canUseSubskill(mmoPlayer, SubSkillType.FISHING_MAGIC_HUNTER) && canUseSubskill(mmoPlayer, SubSkillType.FISHING_TREASURE_HUNTER);
+        canShake = canUseSubskill(mmoPlayer, SubSkillType.FISHING_SHAKE);
+        canFishermansDiet = canUseSubskill(mmoPlayer, SubSkillType.FISHING_FISHERMANS_DIET);
+        canMasterAngler = mcMMO.getCompatibilityManager().getMasterAnglerCompatibilityLayer() != null && canUseSubskill(mmoPlayer, SubSkillType.FISHING_MASTER_ANGLER);
+        canIceFish = canUseSubskill(mmoPlayer, SubSkillType.FISHING_ICE_FISHING);
     }
 
     @Override
-    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected List<String> statsDisplay(@NotNull McMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
         
         if (canFishermansDiet) {
@@ -142,8 +124,13 @@ public class FishingCommand extends SkillCommand {
         }
 
         if (canMasterAngler) {
-            //TODO: Update this with more details
-            messages.add(getStatMessage(false, true, SubSkillType.FISHING_MASTER_ANGLER, biteChance));
+            messages.add(getStatMessage(false,true,
+                    SubSkillType.FISHING_MASTER_ANGLER,
+                    maMinWaitTime));
+
+            messages.add(getStatMessage(true,true,
+                    SubSkillType.FISHING_MASTER_ANGLER,
+                    maMaxWaitTime));
         }
         
         if (canShake) {
@@ -166,10 +153,10 @@ public class FishingCommand extends SkillCommand {
     }
 
     @Override
-    protected List<Component> getTextComponents(Player player) {
+    protected List<Component> getTextComponents(@NotNull McMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.FISHING);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.FISHING);
 
         return textComponents;
     }

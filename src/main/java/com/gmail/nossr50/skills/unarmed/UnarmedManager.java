@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.unarmed;
 
+import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -34,8 +35,8 @@ public class UnarmedManager extends SkillManager {
         return mmoPlayer.getSuperAbilityManager().isAbilityToolPrimed(AbilityToolType.BERSERK_TOOL) && Permissions.berserk(getPlayer());
     }
 
-    public boolean canUseIronArm() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_STEEL_ARM_STYLE))
+    public boolean canUseSteelArm() {
+        if(!RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.UNARMED_STEEL_ARM_STYLE))
             return false;
 
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_STEEL_ARM_STYLE);
@@ -46,14 +47,14 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canDisarm(LivingEntity target) {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_DISARM))
+        if(!RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.UNARMED_DISARM))
             return false;
 
         return target instanceof Player && ((Player) target).getInventory().getItemInMainHand().getType() != Material.AIR && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_DISARM);
     }
 
     public boolean canDeflect() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_ARROW_DEFLECT))
+        if(!RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.UNARMED_ARROW_DEFLECT))
             return false;
 
         Player player = getPlayer();
@@ -62,7 +63,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canUseBlockCracker() {
-        if(!RankUtils.hasUnlockedSubskill(getPlayer(), SubSkillType.UNARMED_BLOCK_CRACKER))
+        if(!RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.UNARMED_BLOCK_CRACKER))
             return false;
 
         return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_BLOCK_CRACKER);
@@ -108,7 +109,7 @@ public class UnarmedManager extends SkillManager {
             if(mcMMO.getUserManager().queryMcMMOPlayer(defender) == null)
                 return;
 
-            Item item = Misc.dropItem(defender.getLocation(), defender.getInventory().getItemInMainHand());
+            Item item = Misc.spawnItem(defender.getLocation(), defender.getInventory().getItemInMainHand(), ItemSpawnReason.UNARMED_DISARMED_ITEM);
 
             if (item != null && AdvancedConfig.getInstance().getDisarmProtected()) {
                 item.setMetadata(mcMMO.disarmedItemKey, mcMMO.getUserManager().queryMcMMOPlayer(defender).getPlayerMetadata());
@@ -154,7 +155,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public double getSteelArmStyleDamage() {
-        double rank = RankUtils.getRank(getPlayer(), SubSkillType.UNARMED_STEEL_ARM_STYLE);
+        double rank = RankUtils.getRank(mmoPlayer, SubSkillType.UNARMED_STEEL_ARM_STYLE);
 
         double bonus = 0;
 

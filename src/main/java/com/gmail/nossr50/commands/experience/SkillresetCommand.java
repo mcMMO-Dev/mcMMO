@@ -49,7 +49,7 @@ public class SkillresetCommand implements TabExecutor {
                     skill = null;
                 }
                 else {
-                    skill = PrimarySkillType.getSkill(args[1]);
+                    skill = PrimarySkillType.getSkill(args[0]);
                 }
 
                 editValues((Player) sender, mcMMO.getUserManager().getPlayer(sender.getName()), skill);

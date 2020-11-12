@@ -43,7 +43,9 @@ import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,10 +53,30 @@ import java.util.Map;
 /**
  * This class is meant to help make event related code less boilerplate
  */
-public class EventUtils {
+public final class EventUtils {
+
+    /**
+     * This is a static utility class, therefore we don't want any instances of
+     * this class. Making the constructor private prevents accidents like that.
+     */
+    private EventUtils() {}
+
     /*
      * Quality of Life methods
      */
+
+    /**
+     * This is a simple check to see if an {@link Event} is fake or not.
+     * {@link FakeEvent FakeEvents} should not be processed like normally and maybe even 
+     * be ignored by other {@link Plugin plugins} completely.
+     * 
+     * @param event The {@link Event} in question
+     * @return Whether this {@link Event} has been faked by mcMMO and should not be processed normally.
+     */
+    public static boolean isFakeEvent(@NotNull Event event) {
+        return event instanceof FakeEvent;
+    }
+
     /**
      * Checks to see if damage is from natural sources
      * This cannot be used to determine if damage is from vanilla MC, it just checks to see if the damage is from a complex behaviour in mcMMO such as bleed.
@@ -62,16 +84,17 @@ public class EventUtils {
      * @param event this event
      * @return true if damage is NOT from an unnatural mcMMO skill (such as bleed DOTs)
      */
-    public static boolean isDamageFromMcMMOComplexBehaviour(Event event) {
+    public static boolean isDamageFromMcMMOComplexBehaviour(@NotNull Event event) {
         return event instanceof FakeEntityDamageEvent;
     }
 
     /**
      * This little method is just to make the code more readable
+     * 
      * @param entity target entity
      * @return the associated McMMOPlayer for this entity
      */
-    public static McMMOPlayer getMcMMOPlayer(Entity entity)
+    public static McMMOPlayer getMcMMOPlayer(@NotNull Entity entity)
     {
         return mcMMO.getUserManager().queryMcMMOPlayer((Player)entity);
     }
@@ -89,7 +112,7 @@ public class EventUtils {
      * @param entityDamageEvent
      * @return
      */
-    public static boolean isRealPlayerDamaged(EntityDamageEvent entityDamageEvent)
+    public static boolean isRealPlayerDamaged(@NotNull EntityDamageEvent entityDamageEvent)
     {
         //Make sure the damage is above 0
         double damage = entityDamageEvent.getFinalDamage();
@@ -144,14 +167,14 @@ public class EventUtils {
      * Others
      */
 
-    public static McMMOPlayerAbilityActivateEvent callPlayerAbilityActivateEvent(Player player, PrimarySkillType skill) {
+    public static @NotNull McMMOPlayerAbilityActivateEvent callPlayerAbilityActivateEvent(@NotNull Player player, @NotNull PrimarySkillType skill) {
         McMMOPlayerAbilityActivateEvent event = new McMMOPlayerAbilityActivateEvent(player, skill);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         return event;
     }
 
-    public static McMMOPlayerProfileLoadEvent callPlayerProfileLoadEvent(Player player, PlayerProfile profile){
+    public static @NotNull McMMOPlayerProfileLoadEvent callPlayerProfileLoadEvent(@NotNull Player player, @NotNull PlayerProfile profile){
         McMMOPlayerProfileLoadEvent event = new McMMOPlayerProfileLoadEvent(player, profile);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 

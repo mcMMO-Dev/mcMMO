@@ -6,6 +6,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Permissions;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public final class PerksUtils {
     private static final int LUCKY_SKILL_ACTIVATION_CHANCE = 75;
@@ -27,7 +28,7 @@ public final class PerksUtils {
         return cooldown;
     }
 
-    public static int handleActivationPerks(Player player, int ticks, int maxTicks) {
+    public static int handleActivationPerks(@NotNull Player player, int ticks, int maxTicks) {
         if (maxTicks != 0) {
             ticks = Math.min(ticks, maxTicks);
         }

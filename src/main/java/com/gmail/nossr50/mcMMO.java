@@ -1,5 +1,7 @@
 package com.gmail.nossr50;
 
+import com.gmail.nossr50.chat.ChatManager;
+import com.gmail.nossr50.commands.CommandManager;
 import com.gmail.nossr50.config.*;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
@@ -80,6 +82,9 @@ public class mcMMO extends JavaPlugin {
     private static SpawnedProjectileTracker spawnedProjectileTracker;
     private static UserManager userManager;
     private static PartyManager partyManager;
+    private static TransientMetadataTools transientMetadataTools;
+    private static ChatManager chatManager;
+    private static CommandManager commandManager; //ACF
 
     /* Adventure */
     private static BukkitAudiences audiences;
@@ -101,6 +106,7 @@ public class mcMMO extends JavaPlugin {
 
     /* Plugin Checks */
     private static boolean healthBarPluginEnabled;
+    private static boolean projectKorraEnabled;
 
     // API checks
     private static boolean serverAPIOutdated = false;
@@ -118,11 +124,9 @@ public class mcMMO extends JavaPlugin {
     public static final String FISH_HOOK_REF_METAKEY = "mcMMO: Fish Hook Tracker";
     public static final String DODGE_TRACKER        = "mcMMO: Dodge Tracker";
     public static final String CUSTOM_DAMAGE_METAKEY = "mcMMO: Custom Damage";
-    public static final String COTW_TEMPORARY_SUMMON = "mcMMO: COTW Entity";
-    public final static String entityMetadataKey   = "mcMMO: Spawned Entity";
+    public final static String travelingBlock      = "mcMMO: Traveling Block";
     public final static String blockMetadataKey    = "mcMMO: Piston Tracking";
     public final static String tntMetadataKey      = "mcMMO: Tracked TNT";
-    public final static String funfettiMetadataKey = "mcMMO: Funfetti";
     public final static String customNameKey       = "mcMMO: Custom Name";
     public final static String customVisibleKey    = "mcMMO: Name Visibility";
     public final static String droppedItemKey      = "mcMMO: Tracked Item";
@@ -131,10 +135,8 @@ public class mcMMO extends JavaPlugin {
     public final static String bowForceKey         = "mcMMO: Bow Force";
     public final static String arrowDistanceKey    = "mcMMO: Arrow Distance";
     public final static String BONUS_DROPS_METAKEY = "mcMMO: Double Drops";
-    //public final static String customDamageKey     = "mcMMO: Custom Damage";
     public final static String disarmedItemKey     = "mcMMO: Disarmed Item";
     public final static String playerDataKey       = "mcMMO: Player Data";
-    public final static String greenThumbDataKey   = "mcMMO: Green Thumb";
     public final static String databaseCommandKey  = "mcMMO: Processing Database Command";
     public final static String bredMetadataKey     = "mcMMO: Bred Animal";
     public final static String PROJECTILE_ORIGIN_METAKEY = "mcMMO: Projectile Origin";
@@ -159,6 +161,7 @@ public class mcMMO extends JavaPlugin {
 
             PluginManager pluginManager = getServer().getPluginManager();
             healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;
+            projectKorraEnabled = pluginManager.getPlugin("ProjectKorra") != null;
 
             upgradeManager = new UpgradeManager();
 
@@ -177,6 +180,11 @@ public class mcMMO extends JavaPlugin {
 
             //Store this value so other plugins can check it
             isRetroModeEnabled = Config.getInstance().getIsRetroMode();
+
+
+            if(projectKorraEnabled) {
+                getLogger().info("ProjectKorra was detected, this can cause some issues with weakness potions and combat skills for mcMMO");
+            }
 
             if (healthBarPluginEnabled) {
                 getLogger().info("HealthBar plugin found, mcMMO's healthbars are automatically disabled.");
@@ -277,6 +285,12 @@ public class mcMMO extends JavaPlugin {
         //Init Player Data Manager
         userManager = new UserManager();
         audiences = BukkitAudiences.create(this);
+
+        transientMetadataTools = new TransientMetadataTools(this);
+
+        chatManager = new ChatManager(this);
+
+        commandManager = new CommandManager(this);
     }
 
     public static PlayerLevelUtils getPlayerLevelUtils() {
@@ -662,5 +676,21 @@ public class mcMMO extends JavaPlugin {
 
     public static BukkitAudiences getAudiences() {
         return audiences;
+    }
+
+    public static boolean isProjectKorraEnabled() {
+        return projectKorraEnabled;
+    }
+
+    public static TransientMetadataTools getTransientMetadataTools() {
+        return transientMetadataTools;
+    }
+
+    public ChatManager getChatManager() {
+        return chatManager;
+    }
+
+    public CommandManager getCommandManager() {
+        return commandManager;
     }
 }

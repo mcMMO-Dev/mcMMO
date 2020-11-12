@@ -14,21 +14,21 @@ Alchemy:
     Concoctions:
         Standard:
             Rank_1: 0
-            Rank_2: 1
-            Rank_3: 35
-            Rank_4: 50
-            Rank_5: 65
+            Rank_2: 10
+            Rank_3: 20
+            Rank_4: 35
+            Rank_5: 50
             Rank_6: 75
-            Rank_7: 85
+            Rank_7: 90
             Rank_8: 100
         RetroMode:
             Rank_1: 0
-            Rank_2: 1
-            Rank_3: 350
-            Rank_4: 500
-            Rank_5: 650
+            Rank_2: 100
+            Rank_3: 200
+            Rank_4: 350
+            Rank_5: 500
             Rank_6: 750
-            Rank_7: 850
+            Rank_7: 900
             Rank_8: 1000
 Archery:
     ArcheryLimitBreak:
@@ -410,9 +410,23 @@ Fishing:
             Rank_1: 150
     MasterAngler:
         Standard:
-            Rank_1: 50
+            Rank_1: 1
+            Rank_2: 20
+            Rank_3: 30
+            Rank_4: 40
+            Rank_5: 60
+            Rank_6: 70
+            Rank_7: 80
+            Rank_8: 90
         RetroMode:
-            Rank_1: 500
+            Rank_1: 1
+            Rank_2: 200
+            Rank_3: 300
+            Rank_4: 400
+            Rank_5: 600
+            Rank_6: 700
+            Rank_7: 800
+            Rank_8: 900
     IceFishing:
         Standard:
             Rank_1: 5
@@ -591,15 +605,6 @@ Unarmed:
             Rank_20: 1000
 
 Woodcutting:
-    Splinter:
-        Standard:
-            Rank_1: 5
-            Rank_2: 30
-            Rank_3: 55
-        RetroMode:
-            Rank_1: 50
-            Rank_2: 300
-            Rank_3: 550
     TreeFeller:
         Standard:
             Rank_1: 5
@@ -613,29 +618,18 @@ Woodcutting:
             Rank_3: 500
             Rank_4: 750
             Rank_5: 1000
-    BarkSurgeon:
-        Standard:
-            Rank_1: 70
-            Rank_2: 80
-            Rank_3: 95
-        RetroMode:
-            Rank_1: 700
-            Rank_2: 800
-            Rank_3: 950
-    NaturesBounty:
-        Standard:
-            Rank_1: 40
-            Rank_2: 60
-            Rank_3: 90
-        RetroMode:
-            Rank_1: 400
-            Rank_2: 600
-            Rank_3: 900
     HarvestLumber:
         Standard:
             Rank_1: 1
         RetroMode:
             Rank_1: 1
+    KnockOnWood:
+        Standard:
+            Rank_1: 30
+            Rank_2: 60
+        RetroMode:
+            Rank_1: 300
+            Rank_2: 600
     LeafBlower:
         Standard:
             Rank_1: 15

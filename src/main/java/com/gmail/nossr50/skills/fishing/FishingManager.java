@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.fishing;
 
+import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
@@ -17,8 +18,10 @@ import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerShakeEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.runnables.skills.MasterAnglerTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.*;
+import com.gmail.nossr50.util.compat.layers.skills.MasterAnglerCompatibilityLayer;
 import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.random.RandomChanceSkillStatic;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
@@ -27,6 +30,7 @@ import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -39,6 +43,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -66,7 +71,7 @@ public class FishingManager extends SkillManager {
     }
 
     public boolean canMasterAngler() {
-        return getSkillLevel() >= RankUtils.getUnlockLevel(SubSkillType.FISHING_MASTER_ANGLER) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_MASTER_ANGLER);
+        return mcMMO.getCompatibilityManager().getMasterAnglerCompatibilityLayer() != null && getSkillLevel() >= RankUtils.getUnlockLevel(SubSkillType.FISHING_MASTER_ANGLER) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.FISHING_MASTER_ANGLER);
     }
 
     public void setFishingRodCastTimestamp()
@@ -193,7 +198,7 @@ public class FishingManager extends SkillManager {
      * @return the loot tier
      */
     public int getLootTier() {
-        return RankUtils.getRank(getPlayer(), SubSkillType.FISHING_TREASURE_HUNTER);
+        return RankUtils.getRank(mmoPlayer, SubSkillType.FISHING_TREASURE_HUNTER);
     }
 
     public double getShakeChance() {
@@ -242,23 +247,108 @@ public class FishingManager extends SkillManager {
         EventUtils.callFakeFishEvent(getPlayer(), hook);
     }
 
-    public void masterAngler(FishHook hook) {
-        Player player = getPlayer();
-        Location location = hook.getLocation();
-        double biteChance = hook.getBiteChance();
-
-        hookLocation = location;
-
-        if (Fishing.masterAnglerBiomes.contains(location.getBlock().getBiome())) {
-            biteChance = biteChance * AdvancedConfig.getInstance().getMasterAnglerBiomeModifier();
-        }
-
-        if (player.isInsideVehicle() && player.getVehicle().getType() == EntityType.BOAT) {
-            biteChance = biteChance * AdvancedConfig.getInstance().getMasterAnglerBoatModifier();
-        }
-
-        hook.setBiteChance(Math.min(biteChance, 1.0));
+    public void masterAngler(@NotNull FishHook hook) {
+        new MasterAnglerTask(hook, this).runTaskLater(mcMMO.p, 0); //We run later to get the lure bonus applied
     }
+
+    /**
+     * Processes master angler
+     * Reduced tick time on fish hook, etc
+     * @param fishHook target fish hook
+     */
+    public void processMasterAngler(@NotNull FishHook fishHook) {
+        MasterAnglerCompatibilityLayer masterAnglerCompatibilityLayer = (MasterAnglerCompatibilityLayer) mcMMO.getCompatibilityManager().getMasterAnglerCompatibilityLayer();
+
+        if(masterAnglerCompatibilityLayer != null) {
+            int maxWaitTicks = masterAnglerCompatibilityLayer.getMaxWaitTime(fishHook);
+            int minWaitTicks = masterAnglerCompatibilityLayer.getMinWaitTime(fishHook);
+
+            int masterAnglerRank = RankUtils.getRank(mmoPlayer, SubSkillType.FISHING_MASTER_ANGLER);
+
+            boolean boatBonus = isInBoat();
+            int minWaitReduction = getMasterAnglerTickMinWaitReduction(masterAnglerRank, boatBonus);
+            int maxWaitReduction = getMasterAnglerTickMaxWaitReduction(masterAnglerRank, boatBonus);
+
+            //Ticks for minWait and maxWait never go below this value
+            int bonusCapMin = AdvancedConfig.getInstance().getFishingReductionMinWaitCap();
+            int bonusCapMax = AdvancedConfig.getInstance().getFishingReductionMaxWaitCap();
+
+            int reducedMinWaitTime = getReducedTicks(minWaitTicks, minWaitReduction, bonusCapMin);
+            int reducedMaxWaitTime = getReducedTicks(maxWaitTicks, maxWaitReduction, bonusCapMax);
+
+            if(mmoPlayer.isDebugMode()) {
+                mmoPlayer.getPlayer().sendMessage(ChatColor.GOLD + "Master Angler Debug");
+
+                mmoPlayer.getPlayer().sendMessage("ALLOW STACK WITH LURE: " + masterAnglerCompatibilityLayer.getApplyLure(fishHook));
+                mmoPlayer.getPlayer().sendMessage("MIN TICK REDUCTION: " + minWaitReduction);
+                mmoPlayer.getPlayer().sendMessage("MAX TICK REDUCTION: " + maxWaitReduction);
+                mmoPlayer.getPlayer().sendMessage("BOAT BONUS: " + boatBonus);
+
+                if(boatBonus) {
+                    mmoPlayer.getPlayer().sendMessage("BOAT MAX TICK REDUCTION: " + maxWaitReduction);
+                    mmoPlayer.getPlayer().sendMessage("BOAT MIN TICK REDUCTION: " + maxWaitReduction);
+                }
+
+                mmoPlayer.getPlayer().sendMessage("");
+
+                mmoPlayer.getPlayer().sendMessage(ChatColor.DARK_AQUA + "BEFORE MASTER ANGLER WAS APPLIED");
+                mmoPlayer.getPlayer().sendMessage("Original Max Wait Ticks: " + maxWaitTicks);
+                mmoPlayer.getPlayer().sendMessage("Original Min Wait Ticks: " + minWaitTicks);
+                mmoPlayer.getPlayer().sendMessage("");
+
+                mmoPlayer.getPlayer().sendMessage(ChatColor.DARK_AQUA + "AFTER MASTER ANGLER WAS APPLIED");
+                mmoPlayer.getPlayer().sendMessage("Current Max Wait Ticks: " + reducedMaxWaitTime);
+                mmoPlayer.getPlayer().sendMessage("Current Min Wait Ticks: " + reducedMinWaitTime);
+
+                mmoPlayer.getPlayer().sendMessage("");
+
+                mmoPlayer.getPlayer().sendMessage(ChatColor.DARK_AQUA + "Caps / Limits (edit in advanced.yml)");
+                mmoPlayer.getPlayer().sendMessage("Lowest possible max wait ticks " + bonusCapMax);
+                mmoPlayer.getPlayer().sendMessage("Lowest possible min wait ticks " + bonusCapMin);
+            }
+
+            masterAnglerCompatibilityLayer.setMaxWaitTime(fishHook, reducedMaxWaitTime);
+            masterAnglerCompatibilityLayer.setMinWaitTime(fishHook, reducedMinWaitTime);
+        }
+
+    }
+
+    public int getReducedTicks(int ticks, int totalBonus, int tickBounds) {
+        return Math.max(tickBounds, ticks - totalBonus);
+    }
+
+    public boolean isInBoat() {
+        return mmoPlayer.getPlayer().isInsideVehicle() && mmoPlayer.getPlayer().getVehicle() instanceof Boat;
+    }
+
+    public int getMasterAnglerTickMaxWaitReduction(int masterAnglerRank, boolean boatBonus) {
+        int totalBonus = AdvancedConfig.getInstance().getFishingReductionMaxWaitTicks() * masterAnglerRank;
+
+        if(boatBonus) {
+            totalBonus += getFishingBoatMaxWaitReduction();
+        }
+
+        return totalBonus;
+    }
+
+    public int getMasterAnglerTickMinWaitReduction(int masterAnglerRank, boolean boatBonus) {
+        int totalBonus = AdvancedConfig.getInstance().getFishingReductionMinWaitTicks() * masterAnglerRank;
+
+        if(boatBonus) {
+            totalBonus += getFishingBoatMinWaitReduction();
+        }
+
+        return totalBonus;
+    }
+
+    public int getFishingBoatMinWaitReduction() {
+        return AdvancedConfig.getInstance().getFishingBoatReductionMinWaitTicks();
+    }
+
+    public int getFishingBoatMaxWaitReduction() {
+        return AdvancedConfig.getInstance().getFishingBoatReductionMaxWaitTicks();
+    }
+
 
     public boolean isMagicHunterEnabled()
     {
@@ -318,7 +408,7 @@ public class FishingManager extends SkillManager {
                 }
 
                 if (Config.getInstance().getFishingExtraFish()) {
-                    Misc.dropItem(player.getEyeLocation(), fishingCatch.getItemStack());
+                    Misc.spawnItem(player.getEyeLocation(), fishingCatch.getItemStack(), ItemSpawnReason.FISHING_EXTRA_FISH);
                 }
 
                 fishingCatch.setItemStack(treasureDrop);
@@ -426,7 +516,7 @@ public class FishingManager extends SkillManager {
                 return;
             }
 
-            Misc.dropItem(target.getLocation(), drop);
+            Misc.spawnItem(target.getLocation(), drop, ItemSpawnReason.FISHING_SHAKE_TREASURE);
             CombatUtils.dealDamage(target, Math.min(Math.max(target.getMaxHealth() / 4, 1), 10), EntityDamageEvent.DamageCause.CUSTOM, getPlayer()); // Make it so you can shake a mob no more than 4 times.
             applyXpGain(ExperienceConfig.getInstance().getFishingShakeXP(), XPGainReason.PVE);
         }

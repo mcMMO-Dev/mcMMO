@@ -10,6 +10,7 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 import java.util.concurrent.ThreadLocalRandom;
@@ -314,7 +315,7 @@ public class RandomChanceUtil
         return isActivationSuccessful(skillActivationType, abstractSubSkill.getSubSkillType(), player);
     }
 
-    public static String[] calculateAbilityDisplayValues(SkillActivationType skillActivationType, Player player, SubSkillType subSkillType) {
+    public static String[] calculateAbilityDisplayValues(@NotNull SkillActivationType skillActivationType, @NotNull Player player, @NotNull SubSkillType subSkillType) {
         double successChance = getActivationChance(skillActivationType, subSkillType, player);
         String[] displayValues = new String[2];
 

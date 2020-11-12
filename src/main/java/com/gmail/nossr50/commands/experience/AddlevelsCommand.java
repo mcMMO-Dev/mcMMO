@@ -34,12 +34,18 @@ public class AddlevelsCommand extends ExperienceCommand {
     }
 
     @Override
-    protected void handlePlayerMessageAll(Player player, int value) {
+    protected void handlePlayerMessageAll(Player player, int value, boolean isSilent) {
+        if(isSilent)
+            return;
+
         player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.1", value));
     }
 
     @Override
-    protected void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill) {
+    protected void handlePlayerMessageSkill(Player player, int value, PrimarySkillType skill, boolean isSilent) {
+        if(isSilent)
+            return;
+
         player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", value, skill.getName()));
     }
 }

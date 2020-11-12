@@ -1,60 +1,88 @@
 package com.gmail.nossr50.commands.chat;
 
-import com.gmail.nossr50.chat.PartyChatManager;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.chat.ChatMode;
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.BukkitCommandIssuer;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.Conditions;
+import co.aikar.commands.annotation.Default;
+import com.gmail.nossr50.commands.CommandManager;
+import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.party.PartyFeature;
-import com.gmail.nossr50.locale.LocaleLoader;
-import org.bukkit.command.CommandSender;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-public class PartyChatCommand extends ChatCommand {
-    public PartyChatCommand() {
-        super(ChatMode.PARTY);
+@CommandAlias("pc|p|partychat|pchat") //Kept for historical reasons
+public class PartyChatCommand extends BaseCommand {
+    private final @NotNull mcMMO pluginRef;
+
+    public PartyChatCommand(@NotNull mcMMO pluginRef) {
+        this.pluginRef = pluginRef;
     }
 
-    @Override
-    protected void handleChatSending(CommandSender sender, String[] args) {
-        Party party;
-        String message;
+    @Default
+    @Conditions(CommandManager.PARTY_CONDITION)
+    public void processCommand(String[] args) {
+        BukkitCommandIssuer bukkitCommandIssuer = (BukkitCommandIssuer) getCurrentCommandIssuer();
 
-        if (sender instanceof Player) {
-            //Check if player profile is loaded
-            if(mcMMO.getUserManager().getPlayer((Player) sender) == null)
-                return;
-
-            party = mcMMO.getUserManager().getPlayer((Player) sender).getParty();
-
-            if (party == null) {
-                sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
-                return;
+        if(args == null || args.length == 0) {
+            //Process with no arguments
+            if(bukkitCommandIssuer.isPlayer()) {
+                McMMOPlayer mmoPlayer = UserManager.getPlayer(bukkitCommandIssuer.getPlayer());
+                pluginRef.getChatManager().setOrToggleChatChannel(mmoPlayer, ChatChannel.PARTY);
+            } else {
+                //Not support for console
+                mcMMO.p.getLogger().info("You cannot switch chat channels as console, please provide full arguments.");
             }
+        } else {
+            //Here we split the logic, consoles need to target a party name and players do not
 
-            if (party.getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.CHAT)) {
-                sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.1"));
-                return;
+            /*
+             * Player Logic
+             */
+            if(bukkitCommandIssuer.getIssuer() instanceof Player) {
+                McMMOPlayer mmoPlayer = UserManager.getPlayer(bukkitCommandIssuer.getPlayer());
+                processCommandArgsPlayer(mmoPlayer, args);
+            /*
+             * Console Logic
+             */
+            } else {
+                processCommandArgsConsole(args);
             }
-
-            message = buildChatMessage(args, 0);
         }
-        else {
-            if (args.length < 2) {
-                sender.sendMessage(LocaleLoader.getString("Party.Specify"));
-                return;
+    }
+
+    /**
+     * Processes the command with arguments for a {@link McMMOPlayer}
+     * @param mmoPlayer target player
+     * @param args command arguments
+     */
+    private void processCommandArgsPlayer(@NotNull McMMOPlayer mmoPlayer, @NotNull String[] args) {
+        //Player is not toggling and is chatting directly to party
+        pluginRef.getChatManager().processPlayerMessage(mmoPlayer, args, ChatChannel.PARTY);
+    }
+
+    /**
+     * Processes the command with arguments for a {@link com.gmail.nossr50.chat.author.ConsoleAuthor}
+     * @param args command arguments
+     */
+    private void processCommandArgsConsole(@NotNull String[] args) {
+        if(args.length <= 1) {
+            //Only specific a party and not the message
+            mcMMO.p.getLogger().severe("You need to specify a party name and then write a message afterwards.");
+        } else {
+            //Grab party
+            Party targetParty = PartyManager.getParty(args[0]);
+
+            if(targetParty != null) {
+                pluginRef.getChatManager().processConsoleMessage(StringUtils.buildStringAfterNthElement(args, 1), targetParty);
+            } else {
+                mcMMO.p.getLogger().severe("A party with that name doesn't exist!");
             }
-
-            party = mcMMO.getPartyManager().getParty(args[0]);
-
-            if (party == null) {
-                sender.sendMessage(LocaleLoader.getString("Party.InvalidName"));
-                return;
-            }
-
-            message = buildChatMessage(args, 1);
         }
-
-        ((PartyChatManager) chatManager).setParty(party);
-        chatManager.handleChat(sender.getName(), getDisplayName(sender), message);
     }
 }

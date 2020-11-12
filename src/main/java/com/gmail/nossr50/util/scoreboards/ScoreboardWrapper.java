@@ -466,8 +466,8 @@ public class ScoreboardWrapper {
                         // Special-Case: Mining has two abilities, both with cooldowns
                         Score cooldownSB = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(SuperAbilityType.SUPER_BREAKER));
                         Score cooldownBM = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(SuperAbilityType.BLAST_MINING));
-                        int secondsSB = Math.max(mmoPlayer.calculateTimeRemaining(SuperAbilityType.SUPER_BREAKER), 0);
-                        int secondsBM = Math.max(mmoPlayer.calculateTimeRemaining(SuperAbilityType.BLAST_MINING), 0);
+                        int secondsSB = Math.max(mmoPlayer.getCooldownSeconds(SuperAbilityType.SUPER_BREAKER), 0);
+                        int secondsBM = Math.max(mmoPlayer.getCooldownSeconds(SuperAbilityType.BLAST_MINING), 0);
 
                         cooldownSB.setScore(secondsSB);
                         cooldownBM.setScore(secondsBM);
@@ -477,7 +477,7 @@ public class ScoreboardWrapper {
                     else {
                         SuperAbilityType ability = targetSkill.getSuperAbilityType();
                         Score cooldown = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(ability));
-                        int seconds = Math.max(mmoPlayer.calculateTimeRemaining(ability), 0);
+                        int seconds = Math.max(mmoPlayer.getCooldownSeconds(ability), 0);
 
                         cooldown.setScore(seconds);
 
@@ -497,7 +497,7 @@ public class ScoreboardWrapper {
                 boolean anyCooldownsActive = false;
 
                 for (SuperAbilityType ability : SuperAbilityType.values()) {
-                    int seconds = Math.max(mmoPlayer.calculateTimeRemaining(ability), 0);
+                    int seconds = Math.max(mmoPlayer.getCooldownSeconds(ability), 0);
 
                     if (seconds != 0) {
                         anyCooldownsActive = true;

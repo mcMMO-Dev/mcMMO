@@ -22,7 +22,7 @@ public abstract class SkillManager {
     }
 
     public int getSkillLevel() {
-        return mmoPlayer.getSkillLevel(skill);
+        return mmoPlayer.getExperienceManager().getSkillLevel(skill);
     }
 
     /**

@@ -1,13 +1,9 @@
 package com.gmail.nossr50.listeners;
 
-import com.gmail.nossr50.chat.ChatManager;
-import com.gmail.nossr50.chat.ChatManagerFactory;
-import com.gmail.nossr50.chat.PartyChatManager;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.WorldBlacklist;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.chat.ChatMode;
-import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -775,27 +771,17 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        ChatManager chatManager = null;
-
-        if (mmoPlayer.isChatEnabled(ChatMode.PARTY)) {
-            Party party = mmoPlayer.getParty();
-
-            if (party == null) {
-                mmoPlayer.disableChat(ChatMode.PARTY);
-                player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
-                return;
+        if(plugin.getChatManager().isChatChannelEnabled(mmoPlayer.getChatChannel())) {
+            if(mmoPlayer.getChatChannel() != ChatChannel.NONE) {
+                if(plugin.getChatManager().isMessageAllowed(mmoPlayer)) {
+                    //If the message is allowed we cancel this event to avoid double sending messages
+                    plugin.getChatManager().processPlayerMessage(mmoPlayer, event.getMessage(), event.isAsynchronous());
+                    event.setCancelled(true);
+                } else {
+                    //Message wasn't allowed, remove the player from their channel
+                    plugin.getChatManager().setOrToggleChatChannel(mmoPlayer, mmoPlayer.getChatChannel());
+                }
             }
-
-            chatManager = ChatManagerFactory.getChatManager(plugin, ChatMode.PARTY);
-            ((PartyChatManager) chatManager).setParty(party);
-        }
-        else if (mmoPlayer.isChatEnabled(ChatMode.ADMIN)) {
-            chatManager = ChatManagerFactory.getChatManager(plugin, ChatMode.ADMIN);
-        }
-
-        if (chatManager != null) {
-            chatManager.handleChat(player, event.getMessage(), event.isAsynchronous());
-            event.setCancelled(true);
         }
     }
 

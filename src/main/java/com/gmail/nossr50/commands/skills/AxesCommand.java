@@ -1,16 +1,19 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.axes.Axes;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.TextComponentFactory;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
+import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +37,10 @@ public class AxesCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(Player player, float skillValue) {
+    protected void dataCalculations(@NotNull McMMOPlayer mmoPlayer, float skillValue) {
         // ARMOR IMPACT
         if (canImpact) {
-            impactDamage = mcMMO.getUserManager().getPlayer(player).getAxesManager().getImpactDurabilityDamage();
+            impactDamage = mmoPlayer.getAxesManager().getImpactDurabilityDamage();
         }
 
         // AXE MASTERY
@@ -61,12 +64,12 @@ public class AxesCommand extends SkillCommand {
     }
 
     @Override
-    protected void permissionsCheck(Player player) {
-        canSkullSplitter = Permissions.skullSplitter(player) && RankUtils.hasUnlockedSubskill(player, SubSkillType.AXES_SKULL_SPLITTER);
-        canCritical = canUseSubskill(player, SubSkillType.AXES_CRITICAL_STRIKES);
-        canAxeMastery = canUseSubskill(player, SubSkillType.AXES_AXE_MASTERY);
-        canImpact = canUseSubskill(player, SubSkillType.AXES_ARMOR_IMPACT);
-        canGreaterImpact = canUseSubskill(player, SubSkillType.AXES_GREATER_IMPACT);
+    protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
+        canSkullSplitter = Permissions.skullSplitter(mmoPlayer.getPlayer()) && RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.AXES_SKULL_SPLITTER);
+        canCritical = canUseSubskill(mmoPlayer, SubSkillType.AXES_CRITICAL_STRIKES);
+        canAxeMastery = canUseSubskill(mmoPlayer, SubSkillType.AXES_AXE_MASTERY);
+        canImpact = canUseSubskill(mmoPlayer, SubSkillType.AXES_ARMOR_IMPACT);
+        canGreaterImpact = canUseSubskill(mmoPlayer, SubSkillType.AXES_GREATER_IMPACT);
     }
 
     @Override

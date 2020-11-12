@@ -10,13 +10,14 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.McMMOMessageType;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
+import com.gmail.nossr50.util.text.McMMOMessageType;
+import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.audience.MessageType;
+import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -115,10 +116,10 @@ public class NotificationManager {
             if(customEvent.isMessageAlsoBeingSentToChat())
             {
                 //Send copy to chat system
-                audience.sendMessage(customEvent.getNotificationTextComponent(), MessageType.SYSTEM);
+                audience.sendMessage(Identity.nil(), customEvent.getNotificationTextComponent(), MessageType.SYSTEM);
             }
         } else {
-            audience.sendMessage(customEvent.getNotificationTextComponent(), MessageType.SYSTEM);
+            audience.sendMessage(Identity.nil(), customEvent.getNotificationTextComponent(), MessageType.SYSTEM);
         }
     }
 
@@ -165,7 +166,7 @@ public class NotificationManager {
             return;
 
         //CHAT MESSAGE
-        mcMMO.getAudiences().player(mmoPlayer.getPlayer()).sendMessage(TextComponentFactory.getSubSkillUnlockedNotificationComponents(mmoPlayer.getPlayer(), subSkillType));
+        mcMMO.getAudiences().player(mmoPlayer.getPlayer()).sendMessage(Identity.nil(), TextComponentFactory.getSubSkillUnlockedNotificationComponents(mmoPlayer.getPlayer(), subSkillType));
 
         //Unlock Sound Effect
         SoundManager.sendCategorizedSound(mmoPlayer.getPlayer(), mmoPlayer.getPlayer().getLocation(), SoundType.SKILL_UNLOCKED, SoundCategory.MASTER);

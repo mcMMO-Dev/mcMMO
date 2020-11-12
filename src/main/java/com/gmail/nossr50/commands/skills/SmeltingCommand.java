@@ -1,14 +1,17 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.TextComponentFactory;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
+import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +33,10 @@ public class SmeltingCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(Player player, float skillValue) {
+    protected void dataCalculations(@NotNull McMMOPlayer mmoPlayer, float skillValue) {
         // FUEL EFFICIENCY
         if (canFuelEfficiency) {
-            burnTimeModifier = String.valueOf(mcMMO.getUserManager().getPlayer(player).getSmeltingManager().getFuelEfficiencyMultiplier());
+            burnTimeModifier = String.valueOf(mmoPlayer.getSmeltingManager().getFuelEfficiencyMultiplier());
         }
 
         // FLUX MINING
@@ -52,15 +55,15 @@ public class SmeltingCommand extends SkillCommand {
     }
 
     @Override
-    protected void permissionsCheck(Player player) {
-        canFuelEfficiency = canUseSubskill(player, SubSkillType.SMELTING_FUEL_EFFICIENCY);
-        canSecondSmelt = canUseSubskill(player, SubSkillType.SMELTING_SECOND_SMELT);
+    protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
+        canFuelEfficiency = canUseSubskill(mmoPlayer, SubSkillType.SMELTING_FUEL_EFFICIENCY);
+        canSecondSmelt = canUseSubskill(mmoPlayer, SubSkillType.SMELTING_SECOND_SMELT);
         //canFluxMine = canUseSubskill(player, SubSkillType.SMELTING_FLUX_MINING);
-        canUnderstandTheArt = Permissions.vanillaXpBoost(player, skill) && RankUtils.hasUnlockedSubskill(player, SubSkillType.SMELTING_UNDERSTANDING_THE_ART);
+        canUnderstandTheArt = Permissions.vanillaXpBoost(mmoPlayer.getPlayer(), skill) && RankUtils.hasUnlockedSubskill(player, SubSkillType.SMELTING_UNDERSTANDING_THE_ART);
     }
 
     @Override
-    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected List<String> statsDisplay(@NotNull McMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
         /*if (canFluxMine) {
@@ -80,17 +83,17 @@ public class SmeltingCommand extends SkillCommand {
 
         if (canUnderstandTheArt) {
             messages.add(getStatMessage(false, true, SubSkillType.SMELTING_UNDERSTANDING_THE_ART,
-                    String.valueOf(mcMMO.getUserManager().getPlayer(player).getSmeltingManager().getVanillaXpMultiplier())));
+                    String.valueOf(mmoPlayer.getSmeltingManager().getVanillaXpMultiplier())));
         }
 
         return messages;
     }
 
     @Override
-    protected List<Component> getTextComponents(Player player) {
+    protected List<Component> getTextComponents(@NotNull McMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.SMELTING);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.SMELTING);
 
         return textComponents;
     }

@@ -6,7 +6,7 @@ import org.bukkit.event.player.PlayerAnimationEvent;
 /**
  * Called when handling extra drops to avoid issues with NoCheat.
  */
-public class FakePlayerAnimationEvent extends PlayerAnimationEvent {
+public class FakePlayerAnimationEvent extends PlayerAnimationEvent implements FakeEvent {
     public FakePlayerAnimationEvent(Player player) {
         super(player);
     }

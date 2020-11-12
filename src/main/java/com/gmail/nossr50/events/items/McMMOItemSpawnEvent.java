@@ -1,5 +1,6 @@
 package com.gmail.nossr50.events.items;
 
+import com.gmail.nossr50.api.ItemSpawnReason;
 import org.bukkit.Location;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -14,38 +15,49 @@ public class McMMOItemSpawnEvent extends Event implements Cancellable {
     private Location location;
     private ItemStack itemStack;
     private boolean cancelled;
+    private final ItemSpawnReason itemSpawnReason;
 
-    public McMMOItemSpawnEvent(Location location, ItemStack itemStack) {
+    public McMMOItemSpawnEvent(@NotNull Location location, @NotNull ItemStack itemStack, @NotNull ItemSpawnReason itemSpawnReason) {
         this.location = location;
         this.itemStack = itemStack;
+        this.itemSpawnReason = itemSpawnReason;
         this.cancelled = false;
+    }
+
+    /**
+     * The reason an item is being spawned by mcMMO
+     * @see ItemSpawnReason
+     * @return the item drop reason
+     */
+    public ItemSpawnReason getItemSpawnReason() {
+        return itemSpawnReason;
     }
 
     /**
      * @return Location where the item will be dropped
      */
-    public Location getLocation() {
+    public @NotNull Location getLocation() {
         return location;
     }
 
     /**
      * @param location Location where to drop the item
      */
-    public void setLocation(Location location) {
+    public void setLocation(@NotNull Location location) {
         this.location = location;
     }
 
     /**
      * @return ItemStack that will be dropped
      */
-    public ItemStack getItemStack() {
+    public @NotNull ItemStack getItemStack() {
         return itemStack;
     }
 
     /**
      * @param itemStack ItemStack to drop
      */
-    public void setItemStack(ItemStack itemStack) {
+    public void setItemStack(@NotNull ItemStack itemStack) {
         this.itemStack = itemStack;
     }
 
@@ -61,14 +73,14 @@ public class McMMOItemSpawnEvent extends Event implements Cancellable {
     }
 
     /** Rest of file is required boilerplate for custom events **/
-    private static final HandlerList handlers = new HandlerList();
+    private static final @NotNull HandlerList handlers = new HandlerList();
 
     @Override
     public @NotNull HandlerList getHandlers() {
         return handlers;
     }
 
-    public static HandlerList getHandlerList() {
+    public static @NotNull HandlerList getHandlerList() {
         return handlers;
     }
 }

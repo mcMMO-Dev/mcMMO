@@ -84,6 +84,45 @@ public class SuperAbilityManager {
          * Woodcutting & Axes need to be treated differently.
          * Basically the tool always needs to ready and we check to see if the cooldown is over when the user takes action
          */
+
+        /*
+         * Woodcutting & Axes need to be treated differently.
+         * Basically the tool always needs to ready and we check to see if the cooldown is over when the user takes action
+         */
+        //TODO: Convert this later
+        if (mmoPlayer.getAbilityActivationProcessor().isHoldingTool() && !isAbilityToolPrimed(tool)) {
+            if (skill != PrimarySkillType.WOODCUTTING && skill != PrimarySkillType.AXES) {
+                int timeRemaining = calculateTimeRemaining(ability);
+
+                if (isAbilityOnCooldown(ability)) {
+                    NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf(timeRemaining));
+                    return;
+                }
+            }
+
+            if (Config.getInstance().getAbilityMessagesEnabled()) {
+                /*
+                 *
+                 * IF THE TOOL IS AN AXE
+                 *
+                 */
+                if(tool == ToolType.AXE) {
+                    processAxeToolMessages();
+                } else {
+                    NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, tool.getRaiseTool());
+                }
+
+                //Send Sound
+                SoundManager.sendSound(player, player.getLocation(), SoundType.TOOL_READY);
+            }
+
+            setToolPreparationMode(tool, true);
+            new ToolLowerTask(this, tool).runTaskLater(mcMMO.p, 4 * Misc.TICK_CONVERSION_FACTOR);
+        }
+
+
+
+        //TODO: Older code below
         if (mmoPlayer.getAbilityActivationProcessor().isHoldingTool() && !isAbilityToolPrimed(tool)) {
             if (skill != PrimarySkillType.WOODCUTTING && skill != PrimarySkillType.AXES) {
                 int timeRemaining = calculateTimeRemaining(ability);

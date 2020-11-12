@@ -63,8 +63,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>3.8.1</version>
                 <configuration>
+                    <compilerArgs>
+                        <arg>-parameters</arg> <!-- used for ACF syntax stuff -->
+                    </compilerArgs>
                     <source>1.8</source>
                     <target>1.8</target>
                     <excludes>
@@ -91,7 +94,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.2.3</version>
                 <configuration>
                     <artifactSet>
                         <includes>
@@ -105,33 +108,45 @@
                             <include>net.kyori:adventure-platform-api</include>
                             <include>net.kyori:adventure-platform-common</include>
                             <include>net.kyori:adventure-platform-viaversion</include>
+                            <include>net.kyori:adventure-platform-facet</include>
                             <include>net.kyori:adventure-nbt</include>
                             <include>net.kyori:examination-api</include>
                             <include>net.kyori:examination-string</include>
                             <include>net.kyori:adventure-text-serializer-legacy</include>
                             <include>net.kyori:adventure-text-serializer-bungeecord</include>
+                            <include>net.kyori:adventure-text-serializer-craftbukkit</include>
+                            <include>co.aikar:acf-bukkit</include>
                         </includes>
                     </artifactSet>
+<!--                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>-->
                     <relocations>
                         <relocation>
+                            <pattern>co.aikar.commands</pattern>
+                            <shadedPattern>com.gmail.nossr50.mcmmo.acf</shadedPattern> <!-- Replace this -->
+                        </relocation>
+                        <relocation>
+                            <pattern>co.aikar.locales</pattern>
+                            <shadedPattern>com.gmail.nossr50.mcmmo.locales</shadedPattern> <!-- Replace this -->
+                        </relocation>
+                        <relocation>
                             <pattern>org.apache.commons.logging</pattern>
-                            <shadedPattern>com.gmail.nossr50.commons.logging</shadedPattern>
+                            <shadedPattern>com.gmail.nossr50.mcmmo.commons.logging</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.apache.juli</pattern>
-                            <shadedPattern>com.gmail.nossr50.database.tomcat.juli</shadedPattern>
+                            <shadedPattern>com.gmail.nossr50.mcmmo.database.tomcat.juli</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.apache.tomcat</pattern>
-                            <shadedPattern>com.gmail.nossr50.database.tomcat</shadedPattern>
+                            <shadedPattern>com.gmail.nossr50.mcmmo.database.tomcat</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>net.kyori.adventure</pattern>
-                            <shadedPattern>com.gmail.nossr50.kyori.adventure</shadedPattern>
+                            <shadedPattern>com.gmail.nossr50.mcmmo.kyori.adventure</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>com.gmail.nossr50.metrics.bstat</shadedPattern>
+                            <shadedPattern>com.gmail.nossr50.mcmmo.metrics.bstat</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -166,29 +181,38 @@
             <id>sk89q-repo</id>
             <url>https://maven.sk89q.com/repo/</url>
         </repository>
-            <!-- ... -->
-            <repository> <!-- for development builds -->
-                <id>sonatype-oss</id>
-                <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-            </repository>
-            <!-- ... -->
+        <repository>
+            <id>aikar</id>
+            <url>https://repo.aikar.co/content/groups/aikar/</url>
+        </repository>
+        <!-- ... -->
+        <repository> <!-- for development builds -->
+            <id>sonatype-oss</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+        <!-- ... -->
     </repositories>
     <dependencies>
+        <dependency>
+            <groupId>co.aikar</groupId>
+            <artifactId>acf-bukkit</artifactId> <!-- Don't forget to replace this -->
+            <version>0.5.0-SNAPSHOT</version> <!-- Replace this as well -->
+        </dependency>
 <!--        adventure-api, adventure-text-serializer-gson, adventure-platform-bukkit-->
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-gson</artifactId>
-            <version>4.0.0-SNAPSHOT</version>
+            <version>4.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-api</artifactId>
-            <version>4.0.0-SNAPSHOT</version>
+            <version>4.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-nbt</artifactId>
-            <version>4.0.0-SNAPSHOT</version>
+            <version>4.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
@@ -219,13 +243,21 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.2-R0.1-SNAPSHOT</version>
+            <version>1.16.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-core</artifactId>
             <version>7.0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <!-- We use jetbrains instead. Excluding this -->
+                    <!-- prevents us from using inconsistent annotations -->
+                    <groupId>com.google.code.findbugs</groupId>
+                    <artifactId>jsr305</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>

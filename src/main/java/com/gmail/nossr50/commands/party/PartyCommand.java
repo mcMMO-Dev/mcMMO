@@ -124,8 +124,6 @@ public class PartyCommand implements TabExecutor {
                 return partyInviteCommand.onCommand(sender, command, label, args);
             case TELEPORT:
                 return partyTeleportCommand.onCommand(sender, command, label, extractArgs(args));
-            case CHAT:
-                return partyChatCommand.onCommand(sender, command, label, extractArgs(args));
             default:
                 break;
         }

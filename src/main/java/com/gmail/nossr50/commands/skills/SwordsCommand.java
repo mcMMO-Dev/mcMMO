@@ -1,16 +1,19 @@
 package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.TextComponentFactory;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
+import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +36,7 @@ public class SwordsCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations(Player player, float skillValue) {
+    protected void dataCalculations(@NotNull McMMOPlayer mmoPlayer, float skillValue) {
         // SWORDS_COUNTER_ATTACK
         if (canCounter) {
             String[] counterStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.SWORDS_COUNTER_ATTACK);
@@ -43,7 +46,7 @@ public class SwordsCommand extends SkillCommand {
 
         // SWORDS_RUPTURE
         if (canBleed) {
-            bleedLength = mcMMO.getUserManager().getPlayer(player).getSwordsManager().getRuptureBleedTicks();
+            bleedLength = mmoPlayer.getSwordsManager().getRuptureBleedTicks();
 
             String[] bleedStrings = getAbilityDisplayValues(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, player, SubSkillType.SWORDS_RUPTURE);
             bleedChance = bleedStrings[0];
@@ -59,19 +62,19 @@ public class SwordsCommand extends SkillCommand {
     }
 
     @Override
-    protected void permissionsCheck(Player player) {
-        canBleed = canUseSubskill(player, SubSkillType.SWORDS_RUPTURE);
-        canCounter = canUseSubskill(player, SubSkillType.SWORDS_COUNTER_ATTACK);
-        canSerratedStrike = RankUtils.hasUnlockedSubskill(player, SubSkillType.SWORDS_SERRATED_STRIKES) && Permissions.serratedStrikes(player);
+    protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
+        canBleed = canUseSubskill(mmoPlayer, SubSkillType.SWORDS_RUPTURE);
+        canCounter = canUseSubskill(mmoPlayer, SubSkillType.SWORDS_COUNTER_ATTACK);
+        canSerratedStrike = RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.SWORDS_SERRATED_STRIKES) && Permissions.serratedStrikes(player);
     }
 
     @Override
-    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected List<String> statsDisplay(@NotNull McMMOPlayer mmoPlayer, Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
 
-        int ruptureTicks = mcMMO.getUserManager().getPlayer(player).getSwordsManager().getRuptureBleedTicks();
-        double ruptureDamagePlayers =  RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? AdvancedConfig.getInstance().getRuptureDamagePlayer() * 1.5D : AdvancedConfig.getInstance().getRuptureDamagePlayer();
-        double ruptureDamageMobs =  RankUtils.getRank(player, SubSkillType.SWORDS_RUPTURE) >= 3 ? AdvancedConfig.getInstance().getRuptureDamageMobs() * 1.5D : AdvancedConfig.getInstance().getRuptureDamageMobs();
+        int ruptureTicks = mmoPlayer.getSwordsManager().getRuptureBleedTicks();
+        double ruptureDamagePlayers =  RankUtils.getRank(mmoPlayer, SubSkillType.SWORDS_RUPTURE) >= 3 ? AdvancedConfig.getInstance().getRuptureDamagePlayer() * 1.5D : AdvancedConfig.getInstance().getRuptureDamagePlayer();
+        double ruptureDamageMobs =  RankUtils.getRank(mmoPlayer, SubSkillType.SWORDS_RUPTURE) >= 3 ? AdvancedConfig.getInstance().getRuptureDamageMobs() * 1.5D : AdvancedConfig.getInstance().getRuptureDamageMobs();
 
         if (canCounter) {
             messages.add(getStatMessage(SubSkillType.SWORDS_COUNTER_ATTACK, counterChance)
@@ -94,13 +97,13 @@ public class SwordsCommand extends SkillCommand {
                     + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", serratedStrikesLengthEndurance) : ""));
         }
 
-        if(canUseSubskill(player, SubSkillType.SWORDS_STAB))
+        if(canUseSubskill(mmoPlayer, SubSkillType.SWORDS_STAB))
         {
             messages.add(getStatMessage(SubSkillType.SWORDS_STAB,
-                    String.valueOf(mcMMO.getUserManager().getPlayer(player).getSwordsManager().getStabDamage())));
+                    String.valueOf(mmoPlayer.getSwordsManager().getStabDamage())));
         }
 
-        if(canUseSubskill(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK)) {
+        if(canUseSubskill(mmoPlayer, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK)) {
             messages.add(getStatMessage(SubSkillType.SWORDS_SWORDS_LIMIT_BREAK,
                     String.valueOf(CombatUtils.getLimitBreakDamageAgainstQuality(player, SubSkillType.SWORDS_SWORDS_LIMIT_BREAK, 1000))));
         }

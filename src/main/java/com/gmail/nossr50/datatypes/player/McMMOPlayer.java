@@ -1,10 +1,19 @@
 package com.gmail.nossr50.datatypes.player;
 
 import com.gmail.nossr50.config.WorldBlacklist;
-import com.gmail.nossr50.datatypes.chat.ChatMode;
+import com.gmail.nossr50.chat.author.PlayerAuthor;
+import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.ChatConfig;
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.chat.ChatChannel;
+import com.gmail.nossr50.datatypes.experience.XPGainSource;
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.datatypes.skills.interfaces.Toolable;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
@@ -30,7 +39,12 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.gmail.nossr50.util.input.AbilityActivationProcessor;
 import com.gmail.nossr50.util.input.SuperAbilityManager;
+import com.gmail.nossr50.util.player.NotificationManager;
+import com.gmail.nossr50.util.skills.RankUtils;
+import net.kyori.adventure.identity.Identified;
+import net.kyori.adventure.identity.Identity;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
@@ -39,10 +53,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
-public class McMMOPlayer extends PlayerProfile {
+public class McMMOPlayer extends PlayerProfile implements Identified {
     private final @NotNull Player player;
+    private final @NotNull Identity identity;
 
+    //Used in our chat systems for chat messages
+    private final @NotNull PlayerAuthor playerAuthor;
     private final @NotNull Map<PrimarySkillType, SkillManager> skillManagers = new HashMap<>();
     private final @NotNull MMOExperienceBarManager experienceBarManager;
 
@@ -54,6 +72,9 @@ public class McMMOPlayer extends PlayerProfile {
     private boolean adminChatMode;
     private boolean godMode;
     private boolean displaySkillNotifications = true;
+
+    private ChatChannel chatChannel;
+    private boolean chatSpy = false; //Off by default
 
     private int recentlyHurt;
     private int respawnATS;
@@ -76,6 +97,8 @@ public class McMMOPlayer extends PlayerProfile {
          * Player
          */
         super(player);
+        UUID uuid = player.getUniqueId();
+        identity = Identity.identity(uuid);
 
         this.player = player;
         playerMetadata = new FixedMetadataValue(mcMMO.p, player.getName());
@@ -83,6 +106,17 @@ public class McMMOPlayer extends PlayerProfile {
 
         superAbilityManager = new SuperAbilityManager(this);
         abilityActivationProcessor = new AbilityActivationProcessor(this);
+
+        debugMode = false; //Debug mode helps solve support issues, players can toggle it on or off
+
+        this.playerAuthor = new PlayerAuthor(player);
+
+        this.chatChannel = ChatChannel.NONE;
+
+        if(ChatConfig.getInstance().isSpyingAutomatic() && Permissions.adminChatSpy(getPlayer())) {
+            chatSpy = true;
+        }
+
 
         //Update last login
         updateLastLogin();
@@ -99,9 +133,10 @@ public class McMMOPlayer extends PlayerProfile {
          * Player
          */
         super(persistentPlayerData);
-
-        this.player = player;
+        UUID uuid = player.getUniqueId();
+        identity = Identity.identity(uuid);
         playerMetadata = new FixedMetadataValue(mcMMO.p, player.getName());
+        this.player = player;
 
         /*
          * I'm using this method because it makes code shorter and safer (we don't have to add all SkillTypes manually),
@@ -122,6 +157,16 @@ public class McMMOPlayer extends PlayerProfile {
         abilityActivationProcessor = new AbilityActivationProcessor(this);
         experienceBarManager = new MMOExperienceBarManager(this, persistentPlayerData.getBarStateMap());
 
+        debugMode = false; //Debug mode helps solve support issues, players can toggle it on or off
+
+        this.playerAuthor = new PlayerAuthor(player);
+
+        this.chatChannel = ChatChannel.NONE;
+
+        if(ChatConfig.getInstance().isSpyingAutomatic() && Permissions.adminChatSpy(getPlayer())) {
+            chatSpy = true;
+        }
+
         //Update last login
         updateLastLogin();
     }
@@ -131,6 +176,10 @@ public class McMMOPlayer extends PlayerProfile {
      */
     private void updateLastLogin() {
         getPersistentPlayerData().setLastLogin(System.currentTimeMillis());
+    }
+
+    public @NotNull String getPlayerName() {
+        return player.getName();
     }
 
     /**
@@ -422,77 +471,12 @@ public class McMMOPlayer extends PlayerProfile {
         return player;
     }
 
-    /*
-     * Chat modes
-     */
-
-    public boolean isChatEnabled(ChatMode mode) {
-        switch (mode) {
-            case ADMIN:
-                return adminChatMode;
-
-            case PARTY:
-                return partyChatMode;
-
-            default:
-                return false;
-        }
-    }
-
-    public void disableChat(ChatMode mode) {
-        switch (mode) {
-            case ADMIN:
-                adminChatMode = false;
-                return;
-
-            case PARTY:
-                partyChatMode = false;
-                return;
-
-            default:
-        }
-    }
-
-    public void enableChat(ChatMode mode) {
-        switch (mode) {
-            case ADMIN:
-                adminChatMode = true;
-                partyChatMode = false;
-                return;
-
-            case PARTY:
-                partyChatMode = true;
-                adminChatMode = false;
-                return;
-
-            default:
-        }
-
-    }
-
-    public void toggleChat(ChatMode mode) {
-        switch (mode) {
-            case ADMIN:
-                adminChatMode = !adminChatMode;
-                partyChatMode = !adminChatMode && partyChatMode;
-                return;
-
-            case PARTY:
-                partyChatMode = !partyChatMode;
-                adminChatMode = !partyChatMode && adminChatMode;
-                return;
-
-            default:
-        }
-    }
-
     /**
      * Update the experience bars for this player
      * @param primarySkillType target skill
      * @param plugin your {@link Plugin}
      */
-    public void updateXPBar(PrimarySkillType primarySkillType, Plugin plugin)
-    {
+    public void updateXPBar(PrimarySkillType primarySkillType, Plugin plugin) {
         //XP BAR UPDATES
         experienceBarManager.updateExperienceBar(primarySkillType, plugin);
     }
@@ -508,6 +492,13 @@ public class McMMOPlayer extends PlayerProfile {
         }
     }
 
+    public void checkParty() {
+        if (inParty() && !Permissions.party(player)) {
+            removeParty();
+            player.sendMessage(LocaleLoader.getString("Party.Forbidden"));
+        }
+    }
+
     /**
      * Calculate the time remaining until the superAbilityType's cooldown expires.
      *
@@ -515,7 +506,7 @@ public class McMMOPlayer extends PlayerProfile {
      *
      * @return the number of seconds remaining before the cooldown expires
      */
-    public int calculateTimeRemaining(SuperAbilityType superAbilityType) {
+    public int getCooldownSeconds(SuperAbilityType superAbilityType) {
         return superAbilityManager.calculateTimeRemaining(superAbilityType);
     }
 
@@ -570,8 +561,33 @@ public class McMMOPlayer extends PlayerProfile {
         getPersistentPlayerData().togglePartyChatSpying();
     }
 
-    //TODO: Rewrite this
-    public double getAttackStrength() {
-        return 1.0F;
+    /**
+     * For use with Adventure API (Kyori lib)
+     * @return this players identity
+     */
+    @Override
+    public @NotNull Identity identity() {
+        return identity;
+    }
+
+    /**
+     * The {@link com.gmail.nossr50.chat.author.Author} for this player, used by mcMMO chat
+     * @return the {@link com.gmail.nossr50.chat.author.Author} for this player
+     */
+    public @NotNull PlayerAuthor getPlayerAuthor() {
+        return playerAuthor;
+    }
+
+    public @NotNull ChatChannel getChatChannel() {
+        return chatChannel;
+    }
+
+    /**
+     * Change the chat channel for a player
+     * This does not inform the player
+     * @param chatChannel new chat channel
+     */
+    public void setChatMode(@NotNull ChatChannel chatChannel) {
+        this.chatChannel = chatChannel;
     }
 }

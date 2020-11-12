@@ -1,5 +1,6 @@
 package com.gmail.nossr50.listeners;
 
+import com.gmail.nossr50.api.ItemSpawnReason;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.WorldBlacklist;
@@ -19,10 +20,7 @@ import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
-import com.gmail.nossr50.util.BlockUtils;
-import com.gmail.nossr50.util.EventUtils;
-import com.gmail.nossr50.util.ItemUtils;
-import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
@@ -97,7 +95,7 @@ public class BlockListener implements Listener {
                     int bonusCount = bonusDropMeta.asInt();
 
                     for (int i = 0; i < bonusCount; i++) {
-                        event.getBlock().getWorld().dropItemNaturally(event.getBlockState().getLocation(), is);
+                        Misc.spawnItemNaturally(event.getBlockState().getLocation(), is, ItemSpawnReason.BONUS_DROPS);
                     }
                 }
             }
@@ -246,16 +244,16 @@ public class BlockListener implements Listener {
             mcMMO.getPlaceStore().setTrue(blockState);
         }
 
-        /* WORLD BLACKLIST CHECK */
-        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld())) {
-            return;
-        }
-
-        Player player = event.getPlayer();
-
-        if (!mcMMO.getUserManager().hasPlayerDataKey(player)) {
-            return;
-        }
+//        /* WORLD BLACKLIST CHECK */
+//        if(WorldBlacklist.isWorldBlacklisted(event.getBlock().getWorld())) {
+//            return;
+//        }
+//
+//        Player player = event.getPlayer();
+//
+//        if (!UserManager.hasPlayerDataKey(player)) {
+//            return;
+//        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -355,13 +353,17 @@ public class BlockListener implements Listener {
         }
 
         /* WOOD CUTTING */
-        else if (BlockUtils.isLog(blockState) && ItemUtils.isAxe(heldItem) && PrimarySkillType.WOODCUTTING.getPermissions(player) && !mcMMO.getPlaceStore().isTrue(blockState)) {
+        else if (BlockUtils.hasWoodcuttingXP(blockState) && ItemUtils.isAxe(heldItem) && PrimarySkillType.WOODCUTTING.getPermissions(player) && !mcMMO.getPlaceStore().isTrue(blockState)) {
             WoodcuttingManager woodcuttingManager = mmoPlayer.getWoodcuttingManager();
             if (woodcuttingManager.canUseTreeFeller(heldItem)) {
                 woodcuttingManager.processTreeFeller(blockState);
             }
             else {
-                woodcuttingManager.woodcuttingBlockCheck(blockState);
+                //Check for XP
+                woodcuttingManager.processWoodcuttingBlockXP(blockState);
+
+                //Check for bonus drops
+                woodcuttingManager.processHarvestLumber(blockState);
             }
         }
 
@@ -490,7 +492,7 @@ public class BlockListener implements Listener {
             if (mmoPlayer.getSuperAbilityManager().isAbilityToolPrimed(AbilityToolType.GREEN_TERRA_TOOL) && ItemUtils.isHoe(heldItem) && (BlockUtils.affectedByGreenTerra(blockState) || BlockUtils.canMakeMossy(blockState)) && Permissions.greenTerra(player)) {
                 mmoPlayer.getSuperAbilityManager().checkAbilityActivation(PrimarySkillType.HERBALISM);
             }
-            else if (mmoPlayer.getSuperAbilityManager().isAbilityToolPrimed(AbilityToolType.SKULL_SPLITTER_TOOL) && ItemUtils.isAxe(heldItem) && BlockUtils.isLog(blockState) && Permissions.treeFeller(player)) {
+            else if (mmoPlayer.getSuperAbilityManager().isAbilityToolPrimed(AbilityToolType.SKULL_SPLITTER_TOOL) && ItemUtils.isAxe(heldItem) && BlockUtils.hasWoodcuttingXP(blockState) && Permissions.treeFeller(player)) {
                 mmoPlayer.getSuperAbilityManager().checkAbilityActivation(PrimarySkillType.WOODCUTTING);
             }
             else if (mmoPlayer.getSuperAbilityManager().isAbilityToolPrimed(AbilityToolType.SUPER_BREAKER_TOOL) && ItemUtils.isPickaxe(heldItem) && BlockUtils.affectedBySuperBreaker(blockState) && Permissions.superBreaker(player)) {
@@ -524,7 +526,7 @@ public class BlockListener implements Listener {
          *
          * We don't need to check permissions here because they've already been checked for the ability to even activate.
          */
-        if (mmoPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.TREE_FELLER) && BlockUtils.isLog(blockState) && Config.getInstance().getTreeFellerSoundsEnabled()) {
+        if (mmoPlayer.getSuperAbilityManager().getAbilityMode(SuperAbilityType.TREE_FELLER) && BlockUtils.hasWoodcuttingXP(blockState) && Config.getInstance().getTreeFellerSoundsEnabled()) {
             SoundManager.sendSound(player, blockState.getLocation(), SoundType.FIZZ);
         }
     }
@@ -595,7 +597,7 @@ public class BlockListener implements Listener {
                 }
             }
         }
-        else if (mmoPlayer.getWoodcuttingManager().canUseLeafBlower(heldItem) && BlockUtils.isLeaves(blockState) && EventUtils.simulateBlockBreak(block, player, true)) {
+        else if (mmoPlayer.getWoodcuttingManager().canUseLeafBlower(heldItem) && BlockUtils.hasWoodcuttingXP(blockState) && EventUtils.simulateBlockBreak(block, player, true)) {
             event.setInstaBreak(true);
             SoundManager.sendSound(player, block.getLocation(), SoundType.POP);
         }

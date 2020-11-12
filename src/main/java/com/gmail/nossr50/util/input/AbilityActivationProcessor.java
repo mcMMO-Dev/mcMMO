@@ -1,10 +1,14 @@
 package com.gmail.nossr50.util.input;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.subskills.taming.CallOfTheWildType;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
@@ -12,6 +16,7 @@ import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.EventUtils;
+import com.gmail.nossr50.util.player.NotificationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -184,6 +189,53 @@ public class AbilityActivationProcessor {
         else if (type == Config.getInstance().getTamingCOTWMaterial(CallOfTheWildType.HORSE.getConfigEntityTypeEntry())) {
             tamingManager.summonHorse();
         }
+    }
+
+    public void processAxeToolMessages() {
+        Block rayCast = player.getTargetBlock(null, 100);
+
+        /*
+         * IF BOTH TREE FELLER & SKULL SPLITTER ARE ON CD
+         */
+        if(isAbilityOnCooldown(SuperAbilityType.TREE_FELLER) && isAbilityOnCooldown(SuperAbilityType.SKULL_SPLITTER)) {
+            tooTiredMultiple(PrimarySkillType.WOODCUTTING, SubSkillType.WOODCUTTING_TREE_FELLER, SuperAbilityType.TREE_FELLER, SubSkillType.AXES_SKULL_SPLITTER, SuperAbilityType.SKULL_SPLITTER);
+            /*
+             * IF TREE FELLER IS ON CD
+             * AND PLAYER IS LOOKING AT TREE
+             */
+        } else if(isAbilityOnCooldown(SuperAbilityType.TREE_FELLER)
+                && BlockUtils.isPartOfTree(rayCast)) {
+            raiseToolWithCooldowns(SubSkillType.WOODCUTTING_TREE_FELLER, SuperAbilityType.TREE_FELLER);
+
+            /*
+             * IF SKULL SPLITTER IS ON CD
+             */
+        } else if(isAbilityOnCooldown(SuperAbilityType.SKULL_SPLITTER)) {
+            raiseToolWithCooldowns(SubSkillType.AXES_SKULL_SPLITTER, SuperAbilityType.SKULL_SPLITTER);
+        } else {
+            NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, ToolType.AXE.getRaiseTool());
+        }
+    }
+
+    private void tooTiredMultiple(PrimarySkillType primarySkillType, SubSkillType aSubSkill, SuperAbilityType aSuperAbility, SubSkillType bSubSkill, SuperAbilityType bSuperAbility) {
+        String aSuperAbilityCD = LocaleLoader.getString("Skills.TooTired.Named", aSubSkill.getLocaleName(), String.valueOf(calculateTimeRemaining(aSuperAbility)));
+        String bSuperAbilityCD = LocaleLoader.getString("Skills.TooTired.Named", bSubSkill.getLocaleName(), String.valueOf(calculateTimeRemaining(bSuperAbility)));
+        String allCDStr = aSuperAbilityCD + ", " + bSuperAbilityCD;
+
+        NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, "Skills.TooTired.Extra",
+                primarySkillType.getName(),
+                allCDStr);
+    }
+
+    private void raiseToolWithCooldowns(SubSkillType subSkillType, SuperAbilityType superAbilityType) {
+        NotificationManager.sendPlayerInformation(player, NotificationType.TOOL,
+                "Axes.Ability.Ready.Extra",
+                subSkillType.getLocaleName(),
+                String.valueOf(calculateTimeRemaining(superAbilityType)));
+    }
+
+    public boolean isAbilityOnCooldown(SuperAbilityType ability) {
+        return !getAbilityMode(ability) && calculateTimeRemaining(ability) > 0;
     }
 
     private SuperAbilityManager getSuperAbilityManager() {

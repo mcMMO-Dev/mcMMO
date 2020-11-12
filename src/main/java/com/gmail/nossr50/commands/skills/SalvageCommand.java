@@ -1,14 +1,16 @@
 package com.gmail.nossr50.commands.skills;
 
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
-import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.skills.RankUtils;
+import com.gmail.nossr50.util.text.TextComponentFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,20 +30,20 @@ public class SalvageCommand extends SkillCommand {
     }
 
     @Override
-    protected void permissionsCheck(Player player) {
-        canScrapCollector = canUseSubskill(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR);
-        canArcaneSalvage = canUseSubskill(player, SubSkillType.SALVAGE_ARCANE_SALVAGE);
+    protected void permissionsCheck(@NotNull McMMOPlayer mmoPlayer) {
+        canScrapCollector = canUseSubskill(mmoPlayer, SubSkillType.SALVAGE_SCRAP_COLLECTOR);
+        canArcaneSalvage = canUseSubskill(mmoPlayer, SubSkillType.SALVAGE_ARCANE_SALVAGE);
     }
 
     @Override
-    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+    protected List<String> statsDisplay(@NotNull McMMOPlayer mmoPlayer, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<>();
-        SalvageManager salvageManager = mcMMO.getUserManager().getPlayer(player).getSalvageManager();
+        SalvageManager salvageManager = mmoPlayer.getSalvageManager();
 
         if (canScrapCollector) {
             messages.add(getStatMessage(false, true,
                     SubSkillType.SALVAGE_SCRAP_COLLECTOR,
-                    String.valueOf(RankUtils.getRank(player, SubSkillType.SALVAGE_SCRAP_COLLECTOR)),
+                    String.valueOf(RankUtils.getRank(mmoPlayer, SubSkillType.SALVAGE_SCRAP_COLLECTOR)),
                     RankUtils.getHighestRankStr(SubSkillType.SALVAGE_SCRAP_COLLECTOR)));
         }
 
@@ -63,10 +65,10 @@ public class SalvageCommand extends SkillCommand {
     }
 
     @Override
-    protected List<Component> getTextComponents(Player player) {
+    protected List<Component> getTextComponents(@NotNull McMMOPlayer mmoPlayer) {
         List<Component> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkillType.SALVAGE);
+        TextComponentFactory.getSubSkillTextComponents(mmoPlayer, textComponents, PrimarySkillType.SALVAGE);
 
         return textComponents;
     }

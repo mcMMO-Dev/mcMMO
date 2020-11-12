@@ -4,9 +4,7 @@ import com.gmail.nossr50.commands.*;
 import com.gmail.nossr50.commands.admin.CompatibilityCommand;
 import com.gmail.nossr50.commands.admin.McmmoReloadLocaleCommand;
 import com.gmail.nossr50.commands.admin.PlayerDebugCommand;
-import com.gmail.nossr50.commands.chat.AdminChatCommand;
 import com.gmail.nossr50.commands.chat.McChatSpy;
-import com.gmail.nossr50.commands.chat.PartyChatCommand;
 import com.gmail.nossr50.commands.database.McpurgeCommand;
 import com.gmail.nossr50.commands.database.DatabaseRemovePlayerCommand;
 import com.gmail.nossr50.commands.database.MmoshowdbCommand;
@@ -24,7 +22,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.command.PluginCommand;
 
 import java.util.ArrayList;
@@ -129,7 +127,7 @@ public final class CommandRegistrationManager {
         command.setDescription(LocaleLoader.getString("Commands.Description.addlevels"));
         command.setPermission("mcmmo.commands.addlevels;mcmmo.commands.addlevels.others");
         command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.3", "addlevels", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.Level") + ">"));
+        command.setUsage(LocaleLoader.getString("Commands.Usage.3.XP", "addlevels", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.Level") + ">"));
         command.setExecutor(new AddlevelsCommand());
     }
 
@@ -138,7 +136,7 @@ public final class CommandRegistrationManager {
         command.setDescription(LocaleLoader.getString("Commands.Description.addxp"));
         command.setPermission("mcmmo.commands.addxp;mcmmo.commands.addxp.others");
         command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.3", "addxp", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.XP") + ">"));
+        command.setUsage(LocaleLoader.getString("Commands.Usage.3.XP", "addxp", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.XP") + ">"));
         command.setExecutor(new AddxpCommand());
     }
 
@@ -192,7 +190,7 @@ public final class CommandRegistrationManager {
         command.setDescription(LocaleLoader.getString("Commands.Description.mmoedit"));
         command.setPermission("mcmmo.commands.mmoedit;mcmmo.commands.mmoedit.others");
         command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.3", "mmoedit", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.Level") + ">"));
+        command.setUsage(LocaleLoader.getString("Commands.Usage.3.XP", "mmoedit", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.Level") + ">"));
         command.setExecutor(new MmoeditCommand());
     }
 
@@ -320,27 +318,27 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McconvertCommand());
     }
 
-    private static void registerAdminChatCommand() {
-        PluginCommand command = mcMMO.p.getCommand("adminchat");
-        command.setDescription(LocaleLoader.getString("Commands.Description.adminchat"));
-        command.setPermission("mcmmo.chat.adminchat");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "adminchat"));
-        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "adminchat", "<on|off>"));
-        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "adminchat", "<" + LocaleLoader.getString("Commands.Usage.Message") + ">"));
-        command.setExecutor(new AdminChatCommand());
-    }
+//    private static void registerAdminChatCommand() {
+//        PluginCommand command = mcMMO.p.getCommand("adminchat");
+//        command.setDescription(LocaleLoader.getString("Commands.Description.adminchat"));
+//        command.setPermission("mcmmo.chat.adminchat");
+//        command.setPermissionMessage(permissionsMessage);
+//        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "adminchat"));
+//        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "adminchat", "<on|off>"));
+//        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "adminchat", "<" + LocaleLoader.getString("Commands.Usage.Message") + ">"));
+//        command.setExecutor(new AdminChatCommand());
+//    }
 
-    private static void registerPartyChatCommand() {
-        PluginCommand command = mcMMO.p.getCommand("partychat");
-        command.setDescription(LocaleLoader.getString("Commands.Description.partychat"));
-        command.setPermission("mcmmo.chat.partychat;mcmmo.commands.party");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "partychat"));
-        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "partychat", "<on|off>"));
-        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "partychat", "<" + LocaleLoader.getString("Commands.Usage.Message") + ">"));
-        command.setExecutor(new PartyChatCommand());
-    }
+//    private static void registerPartyChatCommand() {
+//        PluginCommand command = mcMMO.p.getCommand("partychat");
+//        command.setDescription(LocaleLoader.getString("Commands.Description.partychat"));
+//        command.setPermission("mcmmo.chat.partychat;mcmmo.commands.party");
+//        command.setPermissionMessage(permissionsMessage);
+//        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "partychat"));
+//        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "partychat", "<on|off>"));
+//        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "partychat", "<" + LocaleLoader.getString("Commands.Usage.Message") + ">"));
+//        command.setExecutor(new PartyChatCommand());
+//    }
 
     private static void registerPartyCommand() {
         PluginCommand command = mcMMO.p.getCommand("party");
@@ -459,10 +457,6 @@ public final class CommandRegistrationManager {
         registerMcscoreboardCommand();
         registerMHDCommand();
         registerXprateCommand();
-
-        // Chat Commands
-        registerPartyChatCommand();
-        registerAdminChatCommand();
 
         // Database Commands
         registerMcpurgeCommand();
