@@ -117,7 +117,7 @@ public class TextUtils {
 
     @NotNull
     private static LegacyComponentSerializer getSerializer() {
-        return LegacyComponentSerializer.builder().hexColors().useUnusualXRepeatedCharacterHexFormat().character('&').hexCharacter('#').build();
+        return LegacyComponentSerializer.builder().hexColors().useUnusualXRepeatedCharacterHexFormat().character('&').hexCharacter('#').extractUrls().build();
     }
 
     public static @NotNull String sanitizeForSerializer(@NotNull String string) {
