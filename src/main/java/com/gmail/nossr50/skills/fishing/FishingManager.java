@@ -247,8 +247,8 @@ public class FishingManager extends SkillManager {
         EventUtils.callFakeFishEvent(getPlayer(), hook);
     }
 
-    public void masterAngler(@NotNull FishHook hook) {
-        new MasterAnglerTask(hook, this).runTaskLater(mcMMO.p, 0); //We run later to get the lure bonus applied
+    public void masterAngler(@NotNull FishHook hook, int lureLevel) {
+        new MasterAnglerTask(hook, this, lureLevel).runTaskLater(mcMMO.p, 0); //We run later to get the lure bonus applied
     }
 
     /**
@@ -256,7 +256,7 @@ public class FishingManager extends SkillManager {
      * Reduced tick time on fish hook, etc
      * @param fishHook target fish hook
      */
-    public void processMasterAngler(@NotNull FishHook fishHook) {
+    public void processMasterAngler(@NotNull FishHook fishHook, int lureLevel) {
         MasterAnglerCompatibilityLayer masterAnglerCompatibilityLayer = (MasterAnglerCompatibilityLayer) mcMMO.getCompatibilityManager().getMasterAnglerCompatibilityLayer();
 
         if(masterAnglerCompatibilityLayer != null) {
@@ -264,10 +264,17 @@ public class FishingManager extends SkillManager {
             int minWaitTicks = masterAnglerCompatibilityLayer.getMinWaitTime(fishHook);
 
             int masterAnglerRank = RankUtils.getRank(mmoPlayer, SubSkillType.FISHING_MASTER_ANGLER);
+            int convertedLureBonus = 0;
+
+            //This avoids a Minecraft bug where lure levels above 3 break fishing
+            if(lureLevel > 3) {
+                masterAnglerCompatibilityLayer.setApplyLure(fishHook, false);
+                convertedLureBonus = lureLevel * 100;
+            }
 
             boolean boatBonus = isInBoat();
             int minWaitReduction = getMasterAnglerTickMinWaitReduction(masterAnglerRank, boatBonus);
-            int maxWaitReduction = getMasterAnglerTickMaxWaitReduction(masterAnglerRank, boatBonus);
+            int maxWaitReduction = getMasterAnglerTickMaxWaitReduction(masterAnglerRank, boatBonus, convertedLureBonus);
 
             //Ticks for minWait and maxWait never go below this value
             int bonusCapMin = AdvancedConfig.getInstance().getFishingReductionMinWaitCap();
@@ -276,8 +283,20 @@ public class FishingManager extends SkillManager {
             int reducedMinWaitTime = getReducedTicks(minWaitTicks, minWaitReduction, bonusCapMin);
             int reducedMaxWaitTime = getReducedTicks(maxWaitTicks, maxWaitReduction, bonusCapMax);
 
+            boolean badValuesFix = false;
+
+            //If we find bad values correct it
+            if(reducedMaxWaitTime < reducedMinWaitTime) {
+                reducedMaxWaitTime = reducedMinWaitTime + 100;
+                badValuesFix = true;
+            }
+
             if(mmoPlayer.isDebugMode()) {
                 mmoPlayer.getPlayer().sendMessage(ChatColor.GOLD + "Master Angler Debug");
+
+                if(badValuesFix) {
+                    mmoPlayer.getPlayer().sendMessage(ChatColor.RED + "Bad values were applied and corrected, check your configs, max wait should never be lower than min wait.");
+                }
 
                 mmoPlayer.getPlayer().sendMessage("ALLOW STACK WITH LURE: " + masterAnglerCompatibilityLayer.getApplyLure(fishHook));
                 mmoPlayer.getPlayer().sendMessage("MIN TICK REDUCTION: " + minWaitReduction);
@@ -321,12 +340,14 @@ public class FishingManager extends SkillManager {
         return mmoPlayer.getPlayer().isInsideVehicle() && mmoPlayer.getPlayer().getVehicle() instanceof Boat;
     }
 
-    public int getMasterAnglerTickMaxWaitReduction(int masterAnglerRank, boolean boatBonus) {
+    public int getMasterAnglerTickMaxWaitReduction(int masterAnglerRank, boolean boatBonus, int emulatedLureBonus) {
         int totalBonus = AdvancedConfig.getInstance().getFishingReductionMaxWaitTicks() * masterAnglerRank;
 
         if(boatBonus) {
             totalBonus += getFishingBoatMaxWaitReduction();
         }
+
+        totalBonus += emulatedLureBonus;
 
         return totalBonus;
     }

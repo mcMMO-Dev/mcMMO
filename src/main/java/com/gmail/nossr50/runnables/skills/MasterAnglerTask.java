@@ -8,14 +8,16 @@ import org.jetbrains.annotations.NotNull;
 public class MasterAnglerTask extends BukkitRunnable {
     private final @NotNull FishHook fishHook;
     private final @NotNull FishingManager fishingManager;
+    private final int lureLevel;
 
-    public MasterAnglerTask(@NotNull FishHook fishHook, @NotNull FishingManager fishingManager) {
+    public MasterAnglerTask(@NotNull FishHook fishHook, @NotNull FishingManager fishingManager, int lureLevel) {
         this.fishHook = fishHook;
         this.fishingManager = fishingManager;
+        this.lureLevel = lureLevel;
     }
 
     @Override
     public void run() {
-        fishingManager.processMasterAngler(fishHook);
+        fishingManager.processMasterAngler(fishHook, lureLevel);
     }
 }
