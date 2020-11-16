@@ -9,10 +9,12 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -27,10 +29,9 @@ public final class ShareHandler {
      * @param primarySkillType Skill being used
      * @return True is the xp has been shared
      */
-    public static boolean handleXpShare(float xp, McMMOPlayer mmoPlayer, PrimarySkillType primarySkillType, XPGainReason xpGainReason) {
-        Party party = mmoPlayer.getParty();
+    public static boolean handleXpShare(float xp, @NotNull McMMOPlayer mmoPlayer, @NotNull Party party, @NotNull PrimarySkillType primarySkillType, @NotNull XPGainReason xpGainReason) {
 
-        if (party.getXpShareMode() != ShareMode.EQUAL) {
+        if (party.getPartyExperienceManager().getXpShareMode() != ShareMode.EQUAL) {
             return false;
         }
 
@@ -46,14 +47,15 @@ public final class ShareHandler {
         double shareBonus = Math.min(Config.getInstance().getPartyShareBonusBase() + (partySize * Config.getInstance().getPartyShareBonusIncrease()), Config.getInstance().getPartyShareBonusCap());
         float splitXp = (float) (xp / partySize * shareBonus);
 
-        for (Player member : nearMembers) {
+        for (Player otherMember : nearMembers) {
+            McMMOPlayer partyMember = mcMMO.getUserManager().queryMcMMOPlayer(otherMember);
+
             //Profile not loaded
-            if(mcMMO.getUserManager().getPlayer(member) == null)
-            {
+            if(partyMember == null) {
                 continue;
             }
 
-            mcMMO.getUserManager().getPlayer(member).beginUnsharedXpGain(primarySkillType, splitXp, xpGainReason, XPGainSource.PARTY_MEMBERS);
+            partyMember.getExperienceManager().beginUnsharedXpGain(primarySkillType, splitXp, xpGainReason, XPGainSource.PARTY_MEMBERS);
         }
 
         return true;

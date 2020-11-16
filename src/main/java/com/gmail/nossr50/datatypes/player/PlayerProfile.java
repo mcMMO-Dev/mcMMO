@@ -137,8 +137,13 @@ public class PlayerProfile {
         return cooldownManager;
     }
 
+    /**
+     * Attempt to get a party for this PlayerProfile
+     * @return get a party for this PlayerProfile
+     */
     public @Nullable Party getParty(){
-        return mcMMO.getPartyManager().getParty(persistentPlayerData.getPlayerUUID());
+        //TODO: This can be optimized
+        return mcMMO.getPartyManager().queryParty(persistentPlayerData.getPlayerUUID());
     }
 
     /**

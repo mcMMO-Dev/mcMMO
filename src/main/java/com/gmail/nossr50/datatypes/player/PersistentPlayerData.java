@@ -16,6 +16,7 @@ import com.gmail.nossr50.datatypes.validation.NonNullRule;
 import com.gmail.nossr50.datatypes.validation.PositiveIntegerRule;
 import com.gmail.nossr50.datatypes.validation.Validator;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang.NullArgumentException;
 import org.jetbrains.annotations.NotNull;
 
@@ -452,5 +453,13 @@ public class PersistentPlayerData {
      */
     public void setLeaderBoardExclusion(boolean bool) {
         leaderBoardExclusion.getData(true).setBoolean(bool);
+    }
+
+    public ImmutableMap<PrimarySkillType, Integer> copyPrimarySkillLevelsMap() {
+        return ImmutableMap.copyOf(getSkillLevelsMap());
+    }
+
+    public ImmutableMap<PrimarySkillType, Float> copyPrimarySkillExperienceValuesMap() {
+        return ImmutableMap.copyOf(getSkillsExperienceMap());
     }
 }

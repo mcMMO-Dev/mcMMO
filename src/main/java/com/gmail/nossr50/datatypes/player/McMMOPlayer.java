@@ -9,6 +9,7 @@ import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
@@ -58,6 +59,7 @@ import java.util.UUID;
 public class McMMOPlayer extends PlayerProfile implements Identified {
     private final @NotNull Player player;
     private final @NotNull Identity identity;
+    private @Nullable Party playerPartyRef;
 
     //Used in our chat systems for chat messages
     private final @NotNull PlayerAuthor playerAuthor;
@@ -117,6 +119,8 @@ public class McMMOPlayer extends PlayerProfile implements Identified {
             chatSpy = true;
         }
 
+        assignParty();
+
 
         //Update last login
         updateLastLogin();
@@ -167,8 +171,16 @@ public class McMMOPlayer extends PlayerProfile implements Identified {
             chatSpy = true;
         }
 
+        assignParty();
+
         //Update last login
         updateLastLogin();
+    }
+
+    private void assignParty() {
+        if(mcMMO.getPartyManager() != null) {
+
+        }
     }
 
     /**
@@ -589,5 +601,13 @@ public class McMMOPlayer extends PlayerProfile implements Identified {
      */
     public void setChatMode(@NotNull ChatChannel chatChannel) {
         this.chatChannel = chatChannel;
+    }
+
+    /**
+     * Gets the {@link Party} for the player if it exists
+     * @return the player's party or null if one doesn't exist
+     */
+    public @Nullable Party getPlayerPartyRef() {
+        return playerPartyRef;
     }
 }

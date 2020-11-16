@@ -602,10 +602,12 @@ public final class SQLDatabaseManager extends AbstractDatabaseManager {
 
     @Override
     public @Nullable PlayerProfile queryPlayerDataByPlayer(@NotNull Player player) throws ProfileRetrievalException, NullArgumentException {
+        return loadPlayerProfile(player, player.getName(), player.getUniqueId());
     }
 
     @Override
     public @Nullable PlayerProfile queryPlayerDataByUUID(@NotNull UUID uuid, @NotNull String playerName) throws ProfileRetrievalException, NullArgumentException {
+        return loadPlayerProfile(null, playerName, uuid);
     }
 
     private @Nullable PlayerProfile loadPlayerProfile(@Nullable Player player, @NotNull String playerName, @Nullable UUID playerUUID) {

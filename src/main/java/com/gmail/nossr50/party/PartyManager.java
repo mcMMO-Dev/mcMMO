@@ -24,11 +24,18 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.*;
 import java.util.Map.Entry;
 
+/**
+ * About mcMMO parties
+ * Parties are identified by a {@link String} name
+ * Parties always have a party leader, if the party leader is not defined mcMMO will force party leadership onto someone in the party
+ */
+//TODO: Needs to be optimized, currently all parties are loaded into memory, it should be changed to as needed, but then we need to handle loading asynchronously and accommodate for that
 public final class PartyManager {
     private final @NotNull HashMap<String, Party> parties;
     private final @NotNull File partyFile;
@@ -36,12 +43,39 @@ public final class PartyManager {
     public PartyManager() {
         String partiesFilePath = mcMMO.getFlatFileDirectory() + "parties.yml";
         partyFile = new File(partiesFilePath);
-
         parties = new HashMap<>();
     }
 
     /**
+     * Attempts to find a party for a player by UUID
+     *
+     * @param playerUUID target uuid
+     * @return the party if it exists otherwise null
+     */
+    public @Nullable Party queryParty(@NotNull UUID playerUUID) {
+        for(Party party : parties.values()) {
+            if(party.hasMember(playerUUID)) {
+                return party;
+            }
+        }
+
+        return null; //No party
+    }
+
+    /**
+     * Attempts to find a party by party name
+     * Party names are not case sensitive
+     *
+     * @param partyName party name
+     * @return the party if it exists otherwise null
+     */
+    public @Nullable Party queryParty(@NotNull String partyName) {
+        return parties.get(partyName.toLowerCase());
+    }
+
+    /**
      * Get the level of a party
+     *
      * @param party target party
      * @return the level value of the target party
      */
@@ -55,17 +89,18 @@ public final class PartyManager {
      * @param partyName The name of the party to check
      * @return true if a party with that name exists, false otherwise
      */
-    public boolean checkPartyExistence(String partyName) {
+    public boolean isParty(@NotNull String partyName) {
         return getParty(partyName) != null;
     }
 
     /**
      * Checks if the player can join a party, parties can have a size limit, although there is a permission to bypass this
+     *
      * @param player player who is attempting to join the party
      * @param targetParty the target party
      * @return true if party is full and cannot be joined
      */
-    public boolean isPartyFull(Player player, Party targetParty)
+    public boolean isPartyFull(@NotNull Player player, @NotNull Party targetParty)
     {
         return !Permissions.partySizeBypass(player)
                 && targetParty.getPartyMembers().size() >= Config.getInstance().getPartyMaxSize();
@@ -78,7 +113,7 @@ public final class PartyManager {
      * @param newPartyName The name of the party being joined
      * @return true if the party was joined successfully, false otherwise
      */
-    public boolean changeOrJoinParty(McMMOPlayer mmoPlayer, String newPartyName) {
+    public boolean changeOrJoinParty(@NotNull McMMOPlayer mmoPlayer, @NotNull String newPartyName) {
         Player player = mmoPlayer.getPlayer();
 
         if (inParty(mmoPlayer)) {
@@ -149,7 +184,7 @@ public final class PartyManager {
         return nearMembers;
     }
 
-    public List<Player> getNearVisibleMembers(McMMOPlayer mmoPlayer) {
+    public List<Player> getNearVisibleMembers(@NotNull McMMOPlayer mmoPlayer) {
         List<Player> nearMembers = new ArrayList<>();
         Party party = mmoPlayer.getParty();
 
