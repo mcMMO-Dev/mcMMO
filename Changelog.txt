@@ -1,5 +1,6 @@
 Version 2.1.158
     Fixed a bug where Lure level 4 and above would break fishing with the new Master Angler
+    Updated nl locale (thanks xl3ehindTim)
 
     NOTES:
     Master Angler will emulate the effects of Lure if the level is higher than 3 instead of attempting to stack with it to avoid a vanilla Minecraft bug where fish are never caught
