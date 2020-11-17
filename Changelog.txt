@@ -2,11 +2,12 @@ Version 2.1.158
     Fixed a bug where Lure level 4 and above would break fishing with the new Master Angler
     URLs in party/admin chat work again (use https:// in front to make links clickable)
     Updated nl locale (thanks xl3ehindTim)
-    Added Crossbow to string repairables (Thanks Momshroom)
-    Added Shield to wood repairables, with oak planks as material (Thanks Momshroom)
-    Added Elytra and Trident to Other repairables, using phantom membrane and prismarine crystals respectively. (Thanks Momshroom)
+    * Added Crossbow to string repairables (Thanks Momshroom)
+    * Added Shield to wood repairables, with oak planks as material (Thanks Momshroom)
+    * Added Elytra and Trident to Other repairables, using phantom membrane and prismarine crystals respectively. (Thanks Momshroom)
 
     NOTES:
+    * You'll need to update repair.vanilla.yml yourself or delete the file and regenerate it (lazy easy way).
     Links in party/admin chat might not be clickable without https:// added in front of the url
     Added some stuff to Repair, a rework to Repair is coming in the future, this stuff will work for now as a placeholder.
     Master Angler will emulate the effects of Lure if the level is higher than 3 instead of attempting to stack with it to avoid a vanilla Minecraft bug where fish are never caught
