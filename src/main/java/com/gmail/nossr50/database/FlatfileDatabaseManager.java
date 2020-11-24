@@ -717,7 +717,6 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         return true;
     }
 
-    @Override
     public Collection<? extends Party> loadParties() {
         if (!partyFile.exists()) {
             return null;
@@ -779,7 +778,6 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         return parties;
     }
 
-    @Override
     public void saveParties(Collection<? extends Party> parties) {
         if (partyFile.exists()) {
             if (!partyFile.delete()) {
