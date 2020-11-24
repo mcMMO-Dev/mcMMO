@@ -49,6 +49,16 @@ public class ChatConfig extends AutoUpdateConfigLoader {
         return config.getBoolean(key, true);
     }
 
+    /**
+     * Whether or not to use the current party name of a players party {@link ChatChannel}
+     * @param chatChannel target chat channel
+     * @return true if party name should be used
+     */
+    public boolean useChannelNames(@NotNull ChatChannel chatChannel){
+        String key = "Chat.Channels." + StringUtils.getCapitalized(chatChannel.toString()) + ".Use_Channel_Names";
+        return config.getBoolean(key, false);
+    }
+
     public boolean isSpyingAutomatic() {
         return config.getBoolean("Chat.Channels.Party.Spies.Automatically_Enable_Spying", false);
     }
