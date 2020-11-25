@@ -922,13 +922,15 @@ public final class SQLDatabaseManager implements DatabaseManager {
             tryClose(resultSet);
 
             statement.setString(1, Config.getInstance().getMySQLDatabaseName());
-            statement.setString(2, tablePrefix + "mcmmo_parties");
+            statement.setString(2, tablePrefix + "parties");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
                 createStatement = connection.createStatement();
                 createStatement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "parties` ("
                         + "`id` INT(10) NOT NULL AUTO_INCREMENT, "
+                        + "`party_name` varchar(999) NOT NULL "
                         + "`owner_id` INT(10) NOT NULL, "
+                        + "`password` varchar(999) NULL DEFAULT NULL"
                         + "`locked` BIT NOT NULL DEFAULT b'0', "
                         + "`level` INT(11) NOT NULL DEFAULT '0', "
                         + "`xp` FLOAT NOT NULL DEFAULT '0', "
@@ -948,7 +950,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             tryClose(resultSet);
 
             statement.setString(1, Config.getInstance().getMySQLDatabaseName());
-            statement.setString(2, tablePrefix + "mcmmo_party_users");
+            statement.setString(2, tablePrefix + "party_users");
             resultSet = statement.executeQuery();
             if (!resultSet.next()) {
                 createStatement = connection.createStatement();
