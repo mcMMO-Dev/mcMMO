@@ -7,6 +7,7 @@ import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.database.UpgradeType;
+import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.player.UniqueDataType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
@@ -760,6 +761,15 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
+    public Collection<? extends Party> loadParties() {
+        //TODO load all parties and for each party load all users
+        return null;
+    }
+
+    public void saveParties(Collection<? extends Party> parties) {
+        //TODO check if a party is in the db if not add it then check if every user that should be in it is in it
+    }
+
     public List<String> getStoredUsers() {
         ArrayList<String> users = new ArrayList<>();
 
@@ -910,6 +920,49 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 tryClose(createStatement);
             }
             tryClose(resultSet);
+
+            statement.setString(1, Config.getInstance().getMySQLDatabaseName());
+            statement.setString(2, tablePrefix + "mcmmo_parties");
+            resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                createStatement = connection.createStatement();
+                createStatement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "parties` ("
+                        + "`id` INT(10) NOT NULL AUTO_INCREMENT, "
+                        + "`owner_id` INT(10) NOT NULL, "
+                        + "`locked` BIT NOT NULL DEFAULT b'0', "
+                        + "`level` INT(11) NOT NULL DEFAULT '0', "
+                        + "`xp` FLOAT NOT NULL DEFAULT '0', "
+                        + "`ally` INT(10) NULL DEFAULT NULL, "
+                        + "`exp_share_mode` TINYINT NOT NULL DEFAULT '0', "
+                        + "`item_share_mode` TINYINT NOT NULL DEFAULT '0', "
+                        + "`LOOT` BIT NOT NULL DEFAULT b'0', "
+                        + "`MINING` BIT NOT NULL DEFAULT b'0', "
+                        + "`HERBALISM` BIT NOT NULL DEFAULT b'0', "
+                        + "`WOODCUTTING` BIT NOT NULL DEFAULT b'0', "
+                        + "`MISC` BIT NOT NULL DEFAULT b'0', "
+                        + "PRIMARY KEY (`id`),"
+                        + "FOREIGN KEY (`owner_id`) REFERENCES `" + tablePrefix + "users`(`id`)) "
+                        + "DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
+                tryClose(createStatement);
+            }
+            tryClose(resultSet);
+
+            statement.setString(1, Config.getInstance().getMySQLDatabaseName());
+            statement.setString(2, tablePrefix + "mcmmo_party_users");
+            resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                createStatement = connection.createStatement();
+                createStatement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "party_users` ("
+                        + "`user_id` int(10) unsigned NOT NULL,"
+                        + "`party_id` int(10) unsigned NOT NULL,"
+                        + "`ptp` BIT NOT NULL DEFAULT b'0'"
+                        + "PRIMARY KEY (`user_id`),"
+                        + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users`(`id`)) "
+                        + "FOREIGN KEY (`party_id`) REFERENCES `" + tablePrefix + "parties`(`id`)) "
+                        + "DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
+                tryClose(createStatement);
+            }
+
             tryClose(statement);
 
             for (UpgradeType updateType : UpgradeType.values()) {
