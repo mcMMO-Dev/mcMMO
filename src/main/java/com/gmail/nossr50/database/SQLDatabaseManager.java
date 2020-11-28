@@ -7,19 +7,26 @@ import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.database.UpgradeType;
+import com.gmail.nossr50.datatypes.party.ItemShareType;
+import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.party.PartyLeader;
+import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.player.UniqueDataType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.sql.*;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
@@ -760,6 +767,476 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
+    public Collection<? extends Party> loadParties() {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        PreparedStatement statementAllies = null;
+        ResultSet resultSet = null;
+        ResultSet resultSetAllies = null;
+        final List<Party> parties = new ArrayList<>();
+
+        try{
+            connection = getConnection(PoolIdentifier.LOAD);
+            statement = connection.prepareStatement("SELECT * FROM " + tablePrefix + "parties");
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()){
+                Party party = getParty(resultSet, connection);
+
+                parties.add(party);
+            }
+
+            statementAllies = connection.prepareStatement(
+                    "SELECT A.party_name AS party_name, B.party_name AS ally_name "
+                            + "FROM `" + tablePrefix + "parties` A, `" + tablePrefix + "parties` B "
+                            + "WHERE A.ally IS NOT NULL "
+                            + "AND A.ally = B.id");
+            resultSetAllies = statementAllies.executeQuery();
+
+            while (resultSetAllies.next()){
+                Party party = PartyManager.getParty(resultSetAllies.getString("party_name"));
+                if (party != null) {
+                    party.setAlly(PartyManager.getParty(resultSetAllies.getString("ally_name")));
+                } else {
+                    mcMMO.p.getLogger().severe("Could not find party from database in loaded parties.");
+                }
+            }
+
+        } catch (SQLException ex) {
+            printErrors(ex);
+        }
+        finally {
+            tryClose(resultSet);
+            tryClose(resultSetAllies);
+            tryClose(statement);
+            tryClose(statementAllies);
+            tryClose(connection);
+        }
+
+        return parties;
+    }
+
+    private Party getParty(@NotNull ResultSet resultSetGetParty, @NotNull Connection connection){
+
+        Party party = null;
+
+        PreparedStatement statementGetUsers = null;
+        ResultSet resultSetGetUsers = null;
+        try{
+            party = new Party(resultSetGetParty.getString("party_name"));
+
+            PartyLeader partyLeader = getPartyLeaderById(resultSetGetParty.getString("owner_id"));
+
+            party.setLeader(partyLeader);
+            String password = resultSetGetParty.getString("password");
+            if (password != null){
+                party.setPassword(password);
+            }
+            party.setLocked(resultSetGetParty.getInt("locked") == 1);
+            party.setLevel(resultSetGetParty.getInt("level"));
+            party.setXp(resultSetGetParty.getFloat("xp"));
+
+            party.setXpShareMode(ShareMode.getShareMode(resultSetGetParty.getString("exp_share_mode")));
+            party.setItemShareMode(ShareMode.getShareMode(resultSetGetParty.getString("item_share_mode")));
+
+            for (ItemShareType itemShareType : ItemShareType.values()) {
+                party.setSharingDrops(itemShareType, resultSetGetParty.getInt(itemShareType.toString()) == 1);
+            }
+
+            statementGetUsers = connection.prepareStatement(
+                    "SELECT `" + tablePrefix + "`users.`uuid` AS uuid, `" + tablePrefix +  "users`.`user` AS user "
+                            + "FROM `" + tablePrefix + "party_users` "
+                            + "INNER JOIN `" + tablePrefix + "users`"
+                            + "ON `" + tablePrefix + "party_users`.`user_id` = `" + tablePrefix + "users`.`id`"
+                            + "WHERE " + tablePrefix + "party_users`.`party_id` = ?" );//TODO test this
+            statementGetUsers.setInt(1, resultSetGetParty.getInt("id"));
+            resultSetGetUsers = statementGetUsers.executeQuery();
+
+            LinkedHashMap<UUID, String> members = party.getMembers();
+
+            while (resultSetGetUsers.next()){
+                members.put(UUID.fromString(resultSetGetUsers.getString("uuid")), resultSetGetUsers.getString("user"));
+            }
+
+        } catch (SQLException ex) {
+            printErrors(ex);
+        }
+        finally {
+            tryClose(statementGetUsers);
+            tryClose(resultSetGetUsers);
+        }
+
+        return party;
+    }
+
+    private PartyLeader getPartyLeaderById(String owner_id) {
+
+        PartyLeader partyLeader = null;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = getConnection(PoolIdentifier.LOAD);
+            statement = connection.prepareStatement("SELECT uuid, user FROM `" + tablePrefix + "users` WHERE id = ?");
+
+            statement.setString(1, owner_id);
+
+            resultSet = statement.executeQuery();
+            partyLeader = new PartyLeader(UUID.fromString(resultSet.getString("uuid")), resultSet.getString("user"));
+        } catch (SQLException ex) {
+            printErrors(ex);
+        }
+        finally {
+            tryClose(resultSet);
+            tryClose(statement);
+            tryClose(connection);
+        }
+
+        return partyLeader;
+    }
+
+    public Party getParty(@NotNull String partyName){
+
+        Party party = null;
+
+        Connection connection = null;
+        PreparedStatement statementGetParty = null;
+        PreparedStatement statementGetAlly = null;
+        ResultSet resultSetGetParty = null;
+        ResultSet resultSetGetAlly = null;
+
+        try{
+            connection = getConnection(PoolIdentifier.LOAD);
+
+            statementGetParty = connection.prepareStatement("SELECT * FROM " + tablePrefix + "parties WHERE party_name = ?");
+            statementGetParty.setString(1, partyName);
+            resultSetGetParty = statementGetParty.executeQuery();
+
+            if (!resultSetGetParty.next()){
+                //TODO Error empty party
+                return null;
+            }
+
+            party = getParty(resultSetGetParty, connection);
+
+            statementGetAlly = connection.prepareStatement(
+                    "SELECT A.party_name AS party_name, B.party_name AS ally_name "
+                            + "FROM `" + tablePrefix + "parties` A, `" + tablePrefix + "parties` B "
+                            + "WHERE party_name = ?"
+                            + "AND A.ally = B.id");;
+            statementGetAlly.setString(1, partyName);
+            resultSetGetAlly = statementGetAlly.executeQuery();
+
+            if (resultSetGetAlly.next()){
+                party.setAlly(PartyManager.getParty(resultSetGetAlly.getString("ally")));
+            }
+
+        } catch (SQLException ex) {
+            printErrors(ex);
+        }
+        finally {
+            tryClose(statementGetParty);
+            tryClose(statementGetAlly);
+            tryClose(resultSetGetParty);
+            tryClose(resultSetGetAlly);
+            tryClose(connection);
+        }
+
+        return party;
+    }
+
+    /**
+     * This saves all parties in the given list, this runs a lot of queries and should only be used to import the parties.yml file into a database.
+     * Normally every change to a party other than xp is saved right away. Xp get's saved at intervals and on shutdown using TODO add function name here
+     * @param parties Parties to be saved
+     */
+    public void saveParties(Collection<? extends Party> parties) {
+        PreparedStatement statement = null;
+        Connection connection = null;
+        ResultSet resultSet = null;
+
+        try{
+            connection = getConnection(PoolIdentifier.LOAD); //We're only loading data here, the saving happens in separate functions with their own connections
+            statement = connection.prepareStatement("SELECT party_name FROM `" + tablePrefix + "parties`");
+            resultSet = statement.executeQuery();
+
+            ArrayList<String> partyList = new ArrayList<>();
+
+            while (resultSet.next()){
+                partyList.add(resultSet.getString("party_name"));
+            }
+
+            for (Party party : parties){
+                mcMMO.p.getLogger().info("Saving party: " + party.getName() + ".");
+
+                if (partyList.contains(party.getName())){
+                    mcMMO.p.getLogger().warning("There is already a party called " + party.getName() + " in the database so we won't add this to the database.");
+
+                } else {
+                    PartyLeader leader = party.getLeader();
+                    int userID = getUserID(connection, leader.getPlayerName(), leader.getUniqueId());
+                    if (userID == -1){
+                        mcMMO.p.getLogger().warning("Unable to save party " + party.getName() + " due to the parties leader not being in the database.");
+                        continue;
+                    }
+                    int id = createExistingParty(party, userID);
+                    if (id != -1) {
+                        addUsersToParty(party.getMembers(), id);
+                    } else {
+                        mcMMO.p.getLogger().severe("Unable to save party " + party.getName() + ".");
+                    }
+                }
+            }
+
+        } catch (SQLException ex) {
+            printErrors(ex);
+        }
+        finally {
+            tryClose(resultSet);
+            tryClose(statement);
+            tryClose(connection);
+        }
+    }
+
+    /**
+     * Inserts party into the database (assumes this party isn't already in the database, check that before calling this function
+     * @param party Party to be added to the database
+     * @param leaderId userId belonging to the party leader
+     * @return The id of the party after it's stored in the database on success and -1 on failure
+     */
+    private int createExistingParty(Party party, int leaderId) {
+        PreparedStatement statement = null;
+        Connection connection = null;
+
+        try{
+            connection = getConnection(PoolIdentifier.SAVE);
+
+            statement = connection.prepareStatement("INSERT INTO `" + tablePrefix + "parties` "
+                    + "(`party_name`, `owner_id`, `password`, `locked`, `level`, `xp`, `exp_share_mode`, `item_share_mode`, "
+                    + "`LOOT`, `MINING`, `HERBALISM`, `WOODCUTTING`, `MISC`) "
+                    + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);");
+
+            statement.setString(1, party.getName());
+            statement.setInt(2, leaderId);
+            statement.setString(3, party.getPassword());
+            statement.setInt(4, party.isLocked() ? 1 : 0);
+            statement.setInt(5, party.getLevel());
+            statement.setFloat(6, party.getXp());
+            statement.setString(7, party.getXpShareMode().name());
+            statement.setString(8, party.getItemShareMode().name());
+            statement.setInt(9, party.sharingDrops(ItemShareType.LOOT) ? 1 : 0);
+            statement.setInt(10, party.sharingDrops(ItemShareType.MINING) ? 1 : 0);
+            statement.setInt(11, party.sharingDrops(ItemShareType.HERBALISM) ? 1 : 0);
+            statement.setInt(12, party.sharingDrops(ItemShareType.WOODCUTTING) ? 1 : 0);
+            statement.setInt(13, party.sharingDrops(ItemShareType.MISC) ? 1 : 0);
+
+            statement.execute();
+            return getPartyId(party.getName());
+
+        } catch (SQLException ex) {
+            printErrors(ex);
+        }
+        finally {
+            tryClose(statement);
+            tryClose(connection);
+        }
+
+        return -1;
+    }
+
+    private int getPartyId(String partyName) {
+        ResultSet resultSet = null;
+        PreparedStatement statement = null;
+        Connection connection = null;
+        try {
+            connection = getConnection(PoolIdentifier.LOAD);
+
+            statement = connection.prepareStatement("SELECT id FROM `" + tablePrefix + "parties` WHERE party_name = ?");
+            statement.setString(1, partyName);
+
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()){
+                return resultSet.getInt("id");
+            }
+        } catch (SQLException ex) {
+            printErrors(ex);
+        } finally {
+            tryClose(resultSet);
+            tryClose(statement);
+            tryClose(connection);
+        }
+        return -1;
+    }
+
+    private void addUsersToParty(LinkedHashMap<UUID, String> members, int id) {
+        ArrayList<Integer> userIDs = getUsersIDsNotInParty(members);
+        StringBuilder query = new StringBuilder();
+        query.append("INSERT INTO `").append(tablePrefix).append("party_users` (user_id, party_id) VALUES ");
+
+        if (userIDs != null) {
+
+            if (userIDs.size() > 1){
+                for (int i = 0; i < userIDs.size() - 1; i++) {
+                    query.append("(?, ?), ");
+                }
+            }
+            query.append("(?, ?)");
+
+            PreparedStatement statement = null;
+            Connection connection = null;
+
+            try{
+                connection = getConnection(PoolIdentifier.LOAD);
+
+                statement = connection.prepareStatement(query.toString());
+
+                int b = 1;
+                for (Integer userID : userIDs) {
+                    statement.setInt(b, userID);
+                    b++;
+                    statement.setInt(b, id);
+                    b++;
+                }
+
+                statement.execute();
+
+            } catch (SQLException ex) {
+                printErrors(ex);
+            }
+            finally {
+                tryClose(statement);
+                tryClose(connection);
+            }
+        }
+    }
+
+    private ArrayList<Integer> getUsersIDsNotInParty(LinkedHashMap<UUID, String> members) {
+        ResultSet resultSet = null;
+        PreparedStatement statement = null;
+        Connection connection = null;
+
+        if (members.size() == 0){
+            return null;
+        }
+
+        try {
+            connection = getConnection(PoolIdentifier.LOAD);
+            StringBuilder query = new StringBuilder();
+            query.append("SELECT id FROM `").append(tablePrefix).append("users` WHERE ");
+
+            if (members.size() == 1){
+                query.append(" uuid = ? AND id NOT IN (SELECT user_id FROM `").append(tablePrefix).append("party_users`)");
+
+                statement = connection.prepareStatement(query.toString());
+                statement.setString(1, members.entrySet().iterator().next().getKey().toString());
+            } else {
+                for (int i = 0; i < members.size() -1; i++){
+                    query.append(" uuid = ? OR");
+                }
+                query.append(" uuid = ? AND id NOT IN (SELECT user_id FROM `").append(tablePrefix).append("party_users`)");
+
+                int i = 1;
+                statement = connection.prepareStatement(query.toString());
+
+                for (Map.Entry<UUID, String> entry : members.entrySet()){
+                    statement.setString(i, entry.getKey().toString());
+                    i++;
+                }
+            }
+
+            resultSet = statement.executeQuery();
+            ArrayList<Integer> userIds = new ArrayList<>();
+
+            while (resultSet.next()){
+                userIds.add(resultSet.getInt(1));
+            }
+
+            return userIds;
+        }
+        catch (SQLException ex) {
+            printErrors(ex);
+        }
+        finally {
+            tryClose(resultSet);
+            tryClose(statement);
+            tryClose(connection);
+        }
+
+        return null;
+    }
+
+    private void loadPartiesFromFileAndSave(File partyFile) {
+        if (!partyFile.exists()) {
+            return;
+        }
+
+        if (mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.ADD_UUIDS_PARTY)) {
+            PartyManager.loadAndUpgradeParties(partyFile);
+            return;
+        }
+
+        final List<Party> parties = new ArrayList<>();
+
+        try {
+            YamlConfiguration partiesFile;
+            partiesFile = YamlConfiguration.loadConfiguration(partyFile);
+
+            ArrayList<Party> hasAlly = new ArrayList<>();
+
+            for (String partyName : partiesFile.getConfigurationSection("").getKeys(false)) {
+                Party party = new Party(partyName);
+
+                String[] leaderSplit = partiesFile.getString(partyName + ".Leader").split("[|]");
+                party.setLeader(new PartyLeader(UUID.fromString(leaderSplit[0]), leaderSplit[1]));
+                party.setPassword(partiesFile.getString(partyName + ".Password"));
+                party.setLocked(partiesFile.getBoolean(partyName + ".Locked"));
+                party.setLevel(partiesFile.getInt(partyName + ".Level"));
+                party.setXp(partiesFile.getInt(partyName + ".Xp"));
+
+                if (partiesFile.getString(partyName + ".Ally") != null) {
+                    hasAlly.add(party);
+                }
+
+                party.setXpShareMode(ShareMode.getShareMode(partiesFile.getString(partyName + ".ExpShareMode", "NONE")));
+                party.setItemShareMode(ShareMode.getShareMode(partiesFile.getString(partyName + ".ItemShareMode", "NONE")));
+
+                for (ItemShareType itemShareType : ItemShareType.values()) {
+                    party.setSharingDrops(itemShareType, partiesFile.getBoolean(partyName + ".ItemShareType." + itemShareType.toString(), true));
+                }
+
+                LinkedHashMap<UUID, String> members = party.getMembers();
+
+                for (String memberEntry : partiesFile.getStringList(partyName + ".Members")) {
+                    String[] memberSplit = memberEntry.split("[|]");
+                    members.put(UUID.fromString(memberSplit[0]), memberSplit[1]);
+                }
+
+                parties.add(party);
+            }
+
+            mcMMO.p.debug("Loaded (" + parties.size() + ") Parties...");
+
+            for (Party party : hasAlly) {
+                party.setAlly(PartyManager.getParty(partiesFile.getString(party.getName() + ".Ally")));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (!parties.isEmpty()){
+            saveParties(parties);
+            mcMMO.p.getLogger().info("Moving parties.yml file to parties.yml.moved since all parties were saved.");
+            File newPartiesFile = new File(mcMMO.getPartyFilePath() + ".moved");
+            if (!partyFile.renameTo(newPartiesFile)){
+                mcMMO.p.getLogger().severe("Unable to rename parties.yml file after moving the content to the database!");
+            }
+        }
+
+    }
+
     public List<String> getStoredUsers() {
         ArrayList<String> users = new ArrayList<>();
 
@@ -910,11 +1387,62 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 tryClose(createStatement);
             }
             tryClose(resultSet);
+
+            statement.setString(1, Config.getInstance().getMySQLDatabaseName());
+            statement.setString(2, tablePrefix + "parties");
+            resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                createStatement = connection.createStatement();
+                createStatement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "parties` ("
+                        + "`id` int(10) unsigned NOT NULL AUTO_INCREMENT, "
+                        + "`party_name` varchar(256) NOT NULL, "
+                        + "`owner_id` int(10) unsigned NOT NULL, "
+                        + "`password` varchar(256) NULL DEFAULT NULL, "
+                        + "`locked` bit NOT NULL DEFAULT b'0', "
+                        + "`level` int(10) unsigned NOT NULL DEFAULT '0', "
+                        + "`xp` FLOAT unsigned NOT NULL DEFAULT '0', "
+                        + "`ally` int(10) unsigned NULL DEFAULT NULL, "
+                        + "`exp_share_mode` varchar(16) NOT NULL DEFAULT 'NONE', "
+                        + "`item_share_mode` varchar(16) NOT NULL DEFAULT 'NONE', "
+                        + "`LOOT` bit NOT NULL DEFAULT b'0', "
+                        + "`MINING` bit NOT NULL DEFAULT b'0', "
+                        + "`HERBALISM` bit NOT NULL DEFAULT b'0', "
+                        + "`WOODCUTTING` bit NOT NULL DEFAULT b'0', "
+                        + "`MISC` bit NOT NULL DEFAULT b'0', "
+                        + "PRIMARY KEY (`id`))"
+                        + "DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
+                tryClose(createStatement);
+            }
+            tryClose(resultSet);
+
+            statement.setString(1, Config.getInstance().getMySQLDatabaseName());
+            statement.setString(2, tablePrefix + "party_users");
+            resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                createStatement = connection.createStatement();
+                createStatement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "party_users` ("
+                        + "`user_id` int(10) unsigned NOT NULL,"
+                        + "`party_id` int(10) unsigned NOT NULL,"
+                        + "`ptp` BIT NOT NULL DEFAULT b'0',"
+                        + "PRIMARY KEY (`user_id`),"
+                        + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users`(`id`), "
+                        + "FOREIGN KEY (`party_id`) REFERENCES `" + tablePrefix + "parties`(`id`)) "
+                        + "DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
+                tryClose(createStatement);
+            }
+
             tryClose(statement);
 
             for (UpgradeType updateType : UpgradeType.values()) {
                 checkDatabaseStructure(connection, updateType);
             }
+
+            //TODO might need to move this into UpgradeType
+            File partyFile = new File(mcMMO.getPartyFilePath());
+            if (partyFile.exists()){
+                loadPartiesFromFileAndSave(partyFile);
+            }
+            //TODO end
 
             if (Config.getInstance().getTruncateSkills()) {
                 for (PrimarySkillType skill : PrimarySkillType.NON_CHILD_SKILLS) {

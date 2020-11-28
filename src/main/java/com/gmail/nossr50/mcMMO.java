@@ -98,6 +98,7 @@ public class mcMMO extends JavaPlugin {
     private static String localesDirectory;
     private static String flatFileDirectory;
     private static String usersFile;
+    private static String partiesFile;
     private static String modDirectory;
 
     public static mcMMO p;
@@ -381,6 +382,10 @@ public class mcMMO extends JavaPlugin {
         return flatFileDirectory;
     }
 
+    public static String getPartyFilePath() {
+        return partiesFile;
+    }
+
     public static String getUsersFilePath() {
         return usersFile;
     }
@@ -459,6 +464,7 @@ public class mcMMO extends JavaPlugin {
         localesDirectory = mainDirectory + "locales" + File.separator;
         flatFileDirectory = mainDirectory + "flatfile" + File.separator;
         usersFile = flatFileDirectory + "mcmmo.users";
+        partiesFile = flatFileDirectory + "parties.yml";
         modDirectory = mainDirectory + "mods" + File.separator;
         fixFilePaths();
     }

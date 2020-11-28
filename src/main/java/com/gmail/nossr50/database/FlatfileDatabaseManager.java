@@ -7,15 +7,21 @@ import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.database.UpgradeType;
+import com.gmail.nossr50.datatypes.party.ItemShareType;
+import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.party.PartyLeader;
+import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.player.UniqueDataType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,10 +35,13 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
     private final long UPDATE_WAIT_TIME = 600000L; // 10 minutes
     private final File usersFile;
+    private final File partyFile;
+
     private static final Object fileWritingLock = new Object();
 
     protected FlatfileDatabaseManager() {
         usersFile = new File(mcMMO.getUsersFilePath());
+        partyFile = new File(mcMMO.getPartyFilePath());
         checkStructure();
         updateLeaderboards();
 
@@ -706,6 +715,117 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         }
 
         return true;
+    }
+
+    public Collection<? extends Party> loadParties() {
+        if (!partyFile.exists()) {
+            return null;
+        }
+
+        if (mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.ADD_UUIDS_PARTY)) {
+            PartyManager.loadAndUpgradeParties(partyFile);
+            return null;
+        }
+
+        final List<Party> parties = new ArrayList<>();
+
+        try {
+            YamlConfiguration partiesFile;
+            partiesFile = YamlConfiguration.loadConfiguration(partyFile);
+
+            ArrayList<Party> hasAlly = new ArrayList<>();
+
+            for (String partyName : partiesFile.getConfigurationSection("").getKeys(false)) {
+                Party party = new Party(partyName);
+
+                String[] leaderSplit = partiesFile.getString(partyName + ".Leader").split("[|]");
+                party.setLeader(new PartyLeader(UUID.fromString(leaderSplit[0]), leaderSplit[1]));
+                party.setPassword(partiesFile.getString(partyName + ".Password"));
+                party.setLocked(partiesFile.getBoolean(partyName + ".Locked"));
+                party.setLevel(partiesFile.getInt(partyName + ".Level"));
+                party.setXp(partiesFile.getInt(partyName + ".Xp"));
+
+                if (partiesFile.getString(partyName + ".Ally") != null) {
+                    hasAlly.add(party);
+                }
+
+                party.setXpShareMode(ShareMode.getShareMode(partiesFile.getString(partyName + ".ExpShareMode", "NONE")));
+                party.setItemShareMode(ShareMode.getShareMode(partiesFile.getString(partyName + ".ItemShareMode", "NONE")));
+
+                for (ItemShareType itemShareType : ItemShareType.values()) {
+                    party.setSharingDrops(itemShareType, partiesFile.getBoolean(partyName + ".ItemShareType." + itemShareType.toString(), true));
+                }
+
+                LinkedHashMap<UUID, String> members = party.getMembers();
+
+                for (String memberEntry : partiesFile.getStringList(partyName + ".Members")) {
+                    String[] memberSplit = memberEntry.split("[|]");
+                    members.put(UUID.fromString(memberSplit[0]), memberSplit[1]);
+                }
+
+                parties.add(party);
+            }
+
+            mcMMO.p.debug("Loaded (" + parties.size() + ") Parties...");
+
+            for (Party party : hasAlly) {
+                party.setAlly(PartyManager.getParty(partiesFile.getString(party.getName() + ".Ally")));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return parties;
+    }
+
+    public void saveParties(Collection<? extends Party> parties) {
+        if (partyFile.exists()) {
+            if (!partyFile.delete()) {
+                mcMMO.p.getLogger().warning("Could not delete party file. Party saving failed!");
+                return;
+            }
+        }
+
+        YamlConfiguration partiesFile = new YamlConfiguration();
+
+        mcMMO.p.debug("Saving Parties... (" + parties.size() + ")");
+        for (Party party : parties) {
+            String partyName = party.getName();
+            PartyLeader leader = party.getLeader();
+
+            partiesFile.set(partyName + ".Leader", leader.getUniqueId().toString() + "|" + leader.getPlayerName());
+            partiesFile.set(partyName + ".Password", party.getPassword());
+            partiesFile.set(partyName + ".Locked", party.isLocked());
+            partiesFile.set(partyName + ".Level", party.getLevel());
+            partiesFile.set(partyName + ".Xp", (int) party.getXp());
+            partiesFile.set(partyName + ".Ally", (party.getAlly() != null) ? party.getAlly().getName() : "");
+            partiesFile.set(partyName + ".ExpShareMode", party.getXpShareMode().toString());
+            partiesFile.set(partyName + ".ItemShareMode", party.getItemShareMode().toString());
+
+            for (ItemShareType itemShareType : ItemShareType.values()) {
+                partiesFile.set(partyName + ".ItemShareType." + itemShareType.toString(), party.sharingDrops(itemShareType));
+            }
+
+            List<String> members = new ArrayList<>();
+
+            for (Map.Entry<UUID, String> memberEntry : party.getMembers().entrySet()) {
+                String memberUniqueId = memberEntry.getKey() == null ? "" : memberEntry.getKey().toString();
+                String memberName = memberEntry.getValue();
+
+                if (!members.contains(memberName)) {
+                    members.add(memberUniqueId + "|" + memberName);
+                }
+            }
+
+            partiesFile.set(partyName + ".Members", members);
+        }
+
+        try {
+            partiesFile.save(partyFile);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public List<String> getStoredUsers() {

@@ -33,9 +33,7 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 public final class PartyManager {
-    private static final String partiesFilePath = mcMMO.getFlatFileDirectory() + "parties.yml";
     private static final List<Party> parties = new ArrayList<>();
-    private static final File partyFile = new File(partiesFilePath);
 
     private PartyManager() {}
 
@@ -582,61 +580,8 @@ public final class PartyManager {
      * Load party file.
      */
     public static void loadParties() {
-        if (!partyFile.exists()) {
-            return;
-        }
 
-        if (mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.ADD_UUIDS_PARTY)) {
-            loadAndUpgradeParties();
-            return;
-        }
-
-        try {
-            YamlConfiguration partiesFile;
-            partiesFile = YamlConfiguration.loadConfiguration(partyFile);
-
-            ArrayList<Party> hasAlly = new ArrayList<>();
-
-            for (String partyName : partiesFile.getConfigurationSection("").getKeys(false)) {
-                Party party = new Party(partyName);
-
-                String[] leaderSplit = partiesFile.getString(partyName + ".Leader").split("[|]");
-                party.setLeader(new PartyLeader(UUID.fromString(leaderSplit[0]), leaderSplit[1]));
-                party.setPassword(partiesFile.getString(partyName + ".Password"));
-                party.setLocked(partiesFile.getBoolean(partyName + ".Locked"));
-                party.setLevel(partiesFile.getInt(partyName + ".Level"));
-                party.setXp(partiesFile.getInt(partyName + ".Xp"));
-
-                if (partiesFile.getString(partyName + ".Ally") != null) {
-                    hasAlly.add(party);
-                }
-
-                party.setXpShareMode(ShareMode.getShareMode(partiesFile.getString(partyName + ".ExpShareMode", "NONE")));
-                party.setItemShareMode(ShareMode.getShareMode(partiesFile.getString(partyName + ".ItemShareMode", "NONE")));
-
-                for (ItemShareType itemShareType : ItemShareType.values()) {
-                    party.setSharingDrops(itemShareType, partiesFile.getBoolean(partyName + ".ItemShareType." + itemShareType.toString(), true));
-                }
-
-                LinkedHashMap<UUID, String> members = party.getMembers();
-
-                for (String memberEntry : partiesFile.getStringList(partyName + ".Members")) {
-                    String[] memberSplit = memberEntry.split("[|]");
-                    members.put(UUID.fromString(memberSplit[0]), memberSplit[1]);
-                }
-
-                parties.add(party);
-            }
-
-            mcMMO.p.debug("Loaded (" + parties.size() + ") Parties...");
-
-            for (Party party : hasAlly) {
-                party.setAlly(PartyManager.getParty(partiesFile.getString(party.getName() + ".Ally")));
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        parties.addAll(mcMMO.getDatabaseManager().loadParties());
 
     }
 
@@ -644,56 +589,10 @@ public final class PartyManager {
      * Save party file.
      */
     public static void saveParties() {
-        if (partyFile.exists()) {
-            if (!partyFile.delete()) {
-                mcMMO.p.getLogger().warning("Could not delete party file. Party saving failed!");
-                return;
-            }
-        }
-
-        YamlConfiguration partiesFile = new YamlConfiguration();
-
-        mcMMO.p.debug("Saving Parties... (" + parties.size() + ")");
-        for (Party party : parties) {
-            String partyName = party.getName();
-            PartyLeader leader = party.getLeader();
-
-            partiesFile.set(partyName + ".Leader", leader.getUniqueId().toString() + "|" + leader.getPlayerName());
-            partiesFile.set(partyName + ".Password", party.getPassword());
-            partiesFile.set(partyName + ".Locked", party.isLocked());
-            partiesFile.set(partyName + ".Level", party.getLevel());
-            partiesFile.set(partyName + ".Xp", (int) party.getXp());
-            partiesFile.set(partyName + ".Ally", (party.getAlly() != null) ? party.getAlly().getName() : "");
-            partiesFile.set(partyName + ".ExpShareMode", party.getXpShareMode().toString());
-            partiesFile.set(partyName + ".ItemShareMode", party.getItemShareMode().toString());
-
-            for (ItemShareType itemShareType : ItemShareType.values()) {
-                partiesFile.set(partyName + ".ItemShareType." + itemShareType.toString(), party.sharingDrops(itemShareType));
-            }
-
-            List<String> members = new ArrayList<>();
-
-            for (Entry<UUID, String> memberEntry : party.getMembers().entrySet()) {
-                String memberUniqueId = memberEntry.getKey() == null ? "" : memberEntry.getKey().toString();
-                String memberName = memberEntry.getValue();
-
-                if (!members.contains(memberName)) {
-                    members.add(memberUniqueId + "|" + memberName);
-                }
-            }
-
-            partiesFile.set(partyName + ".Members", members);
-        }
-
-        try {
-            partiesFile.save(partyFile);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        mcMMO.getDatabaseManager().saveParties(parties);
     }
 
-    private static void loadAndUpgradeParties() {
+    public static void loadAndUpgradeParties(File partyFile) {
         YamlConfiguration partiesFile = YamlConfiguration.loadConfiguration(partyFile);
 
         if (!partyFile.renameTo(new File(mcMMO.getFlatFileDirectory() + "parties.yml.converted"))) {
