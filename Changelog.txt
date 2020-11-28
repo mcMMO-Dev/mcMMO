@@ -1,3 +1,6 @@
+Version 2.1.159
+    Fixed a memory leak involving renamed mobs
+
 Version 2.1.158
     Fixed a bug where Lure level 4 and above would break fishing with the new Master Angler
     URLs in party/admin chat work again (use https:// in front to make links clickable)

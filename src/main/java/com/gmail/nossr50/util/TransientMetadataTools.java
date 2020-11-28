@@ -4,6 +4,7 @@ import com.gmail.nossr50.mcMMO;
 import org.bukkit.entity.LivingEntity;
 
 public class TransientMetadataTools {
+    public static final String OLD_NAME_METAKEY = "mcMMO_oldName";
     private final mcMMO pluginRef;
 
     public TransientMetadataTools(mcMMO pluginRef) {
@@ -15,6 +16,10 @@ public class TransientMetadataTools {
         if (livingEntity.hasMetadata(mcMMO.customNameKey)) {
             livingEntity.setCustomName(livingEntity.getMetadata(mcMMO.customNameKey).get(0).asString());
             livingEntity.removeMetadata(mcMMO.customNameKey, pluginRef);
+        }
+
+        if(livingEntity.hasMetadata(OLD_NAME_METAKEY)) {
+            livingEntity.removeMetadata(OLD_NAME_METAKEY, pluginRef);
         }
 
         //Involved in changing mob names to hearts
