@@ -1,5 +1,6 @@
 Version 2.1.159
     Fixed a memory leak involving renamed mobs
+    Updated Adventure library (used in our chat code)
 
 Version 2.1.158
     Fixed a bug where Lure level 4 and above would break fishing with the new Master Angler

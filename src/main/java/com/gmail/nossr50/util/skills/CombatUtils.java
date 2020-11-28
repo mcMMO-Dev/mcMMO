@@ -448,7 +448,7 @@ public final class CombatUtils {
      */
     public static void fixNames(@NotNull LivingEntity entity)
     {
-        List<MetadataValue> metadataValue = entity.getMetadata("mcMMO_oldName");
+        List<MetadataValue> metadataValue = entity.getMetadata(TransientMetadataTools.OLD_NAME_METAKEY);
 
         if(metadataValue.size() <= 0)
             return;

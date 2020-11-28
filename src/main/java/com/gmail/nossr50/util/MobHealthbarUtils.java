@@ -56,8 +56,8 @@ public final class MobHealthbarUtils {
         /*
          * Store the name in metadata
          */
-        if(target.getMetadata("mcMMO_oldName").size() <= 0 && originalName != null)
-            target.setMetadata("mcMMO_oldName", new OldName(originalName, plugin));
+        if(target.getMetadata(TransientMetadataTools.OLD_NAME_METAKEY).size() <= 0 && originalName != null)
+            target.setMetadata(TransientMetadataTools.OLD_NAME_METAKEY, new OldName(originalName, plugin));
 
         if (oldName == null) {
             oldName = "";

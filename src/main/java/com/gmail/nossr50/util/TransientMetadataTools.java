@@ -4,7 +4,7 @@ import com.gmail.nossr50.mcMMO;
 import org.bukkit.entity.LivingEntity;
 
 public class TransientMetadataTools {
-    public static final String OLD_NAME_METAKEY = "mcMMO_oldName";
+    public static final String OLD_NAME_METAKEY = TransientMetadataTools.OLD_NAME_METAKEY;
     private final mcMMO pluginRef;
 
     public TransientMetadataTools(mcMMO pluginRef) {
