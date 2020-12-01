@@ -600,7 +600,7 @@ public final class CombatUtils {
         return processingNoInvulnDamage;
     }
 
-    public static void dealNoInvulnerabilityTickDamage(@NotNull LivingEntity target, double damage, Entity attacker) {
+    public static void dealNoInvulnerabilityTickDamage(@NotNull LivingEntity target, double damage, @Nullable Entity attacker) {
         if (target.isDead()) {
             return;
         }

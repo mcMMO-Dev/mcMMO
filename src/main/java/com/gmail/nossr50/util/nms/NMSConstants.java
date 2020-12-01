@@ -50,6 +50,8 @@ public class NMSConstants {
                 return "v1_15_R1";
             case NMS_1_16_1:
                 return "v1_16_R1";
+            case NMS_1_16_4:
+                return "v1_16_R3";
             case UNSUPPORTED:
                 break;
         }

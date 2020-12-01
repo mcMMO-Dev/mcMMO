@@ -1,3 +1,6 @@
+Version 2.1.160
+    Silenced a harmless "error" related to Rupture/Bleed often produced when using mcMMO and crazy enchantments together
+
 Version 2.1.159
     Fixed a memory leak involving renamed mobs
     Updated Adventure library (used in our chat code)
