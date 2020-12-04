@@ -1,4 +1,4 @@
-package com.gmail.nossr50.datatypes.player;
+package com.gmail.nossr50.datatypes.experience;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
@@ -7,6 +7,8 @@ import com.gmail.nossr50.datatypes.experience.SkillXpGain;
 import com.gmail.nossr50.datatypes.experience.XPGainReason;
 import com.gmail.nossr50.datatypes.experience.XPGainSource;
 import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.PersistentPlayerData;
 import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.ShareHandler;
@@ -26,17 +28,22 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
+import java.util.UUID;
 
 public class ExperienceManager {
 
     private boolean isUsingUnarmed = false;
 
     private final @NotNull PersistentPlayerData persistentPlayerDataRef;
-    private final @NotNull McMMOPlayer mmoPlayer;
+    private @Nullable McMMOPlayer mmoPlayer;
 
     public ExperienceManager(@NotNull McMMOPlayer mmoPlayer) {
         this.mmoPlayer = mmoPlayer;
         this.persistentPlayerDataRef = mmoPlayer.getPersistentPlayerData();
+    }
+
+    public ExperienceManager(@NotNull PersistentPlayerData persistentPlayerData) {
+        this.persistentPlayerDataRef = persistentPlayerData;
     }
 
     /**
@@ -60,7 +67,7 @@ public class ExperienceManager {
      * @param primarySkillType target skill
      * @return the value of raw XP for target skill
      */
-    public float getSkillXpLevelRaw(PrimarySkillType primarySkillType) {
+    public float getSkillXpLevelRaw(@NotNull PrimarySkillType primarySkillType) {
         return persistentPlayerDataRef.getSkillsExperienceMap().get(primarySkillType);
     }
 
@@ -289,7 +296,7 @@ public class ExperienceManager {
     public float getRegisteredXpGain(@NotNull PrimarySkillType primarySkillType) {
         float xp = 0F;
 
-        if (rollingSkillsXp.get(primarySkillType) != null) {
+        if (get(primarySkillType) != null) { //??
             xp = rollingSkillsXp.get(primarySkillType);
         }
 
@@ -359,15 +366,18 @@ public class ExperienceManager {
      * @param xp Experience amount to add
      */
     public void applyXpGain(@NotNull PrimarySkillType primarySkillType, float xp, @NotNull XPGainReason xpGainReason, @NotNull XPGainSource xpGainSource) {
-        if (!primarySkillType.getPermissions(mmoPlayer.getPlayer())) {
-            return;
+        //Only check for permissions if the player is online, otherwise just assume a command is being executed by an admin or some other means and add the XP
+        if(mmoPlayer != null) {
+            if (!primarySkillType.getPermissions(mmoPlayer.getPlayer())) {
+                return;
+            }
         }
 
         if (primarySkillType.isChildSkill()) {
             Set<PrimarySkillType> parentSkills = FamilyTree.getParents(primarySkillType);
 
             for (PrimarySkillType parentSkill : parentSkills) {
-                applyXpGain(mmoPlayer, parentSkill, xp / parentSkills.size(), xpGainReason, xpGainSource);
+                applyXpGain(parentSkill, xp / parentSkills.size(), xpGainReason, xpGainSource);
             }
 
             return;
@@ -377,16 +387,22 @@ public class ExperienceManager {
             return;
         }
 
-        mmoPlayer.getExperienceManager().setUsingUnarmed(primarySkillType == PrimarySkillType.UNARMED);
-        updateLevelStats(mmoPlayer, primarySkillType, xpGainReason, xpGainSource);
+        setUsingUnarmed(primarySkillType == PrimarySkillType.UNARMED);
+        updateLevelStats(primarySkillType, xpGainReason, xpGainSource);
     }
 
     public void processPostXpEvent(@NotNull PrimarySkillType primarySkillType, @NotNull Plugin plugin, @NotNull XPGainSource xpGainSource)
     {
+        /*
+         * Everything in this method requires an online player, so if they aren't online we don't waste our time
+         */
+        if(mmoPlayer == null)
+            return;
+
         //Check if they've reached the power level cap just now
-        if(mmoPlayer.getExperienceManager().hasReachedPowerLevelCap()) {
+        if(hasReachedPowerLevelCap()) {
             NotificationManager.sendPlayerInformationChatOnly(mmoPlayer.getPlayer(), "LevelCap.PowerLevel", String.valueOf(Config.getInstance().getPowerLevelCap()));
-        } else if(mmoPlayer.getExperienceManager().hasReachedLevelCap(primarySkillType)) {
+        } else if(hasReachedLevelCap(primarySkillType)) {
             NotificationManager.sendPlayerInformationChatOnly(mmoPlayer.getPlayer(), "LevelCap.Skill", String.valueOf(Config.getInstance().getLevelCap(primarySkillType)), primarySkillType.getName());
         }
 
@@ -407,25 +423,24 @@ public class ExperienceManager {
      * @param primarySkillType The skill to check
      */
     public void updateLevelStats(@NotNull PrimarySkillType primarySkillType, @NotNull XPGainReason xpGainReason, @NotNull XPGainSource xpGainSource) {
-        ExperienceManager em = mmoPlayer.getExperienceManager();
-        if(em.hasReachedLevelCap(primarySkillType))
+        if(hasReachedLevelCap(primarySkillType))
             return;
 
-        if (em.getSkillXpLevelRaw(primarySkillType) < em.getXpToLevel(primarySkillType)) {
-            processPostXpEvent(mmoPlayer, primarySkillType, mcMMO.p, xpGainSource);
+        if (getSkillXpLevelRaw(primarySkillType) < getXpToLevel(primarySkillType)) {
+            processPostXpEvent(primarySkillType, mcMMO.p, xpGainSource);
             return;
         }
 
         int levelsGained = 0;
         float xpRemoved = 0;
 
-        while (em.getSkillXpLevelRaw(primarySkillType) >= em.getXpToLevel(primarySkillType)) {
-            if (em.hasReachedLevelCap(primarySkillType)) {
-                em.setSkillXpValue(primarySkillType, 0);
+        while (getSkillXpLevelRaw(primarySkillType) >= getXpToLevel(primarySkillType)) {
+            if (hasReachedLevelCap(primarySkillType)) {
+                setSkillXpValue(primarySkillType, 0);
                 break;
             }
 
-            xpRemoved += em.levelUp(primarySkillType);
+            xpRemoved += levelUp(primarySkillType);
             levelsGained++;
         }
 
@@ -441,10 +456,10 @@ public class ExperienceManager {
          * Check to see if the player unlocked any new skills
          */
 
-        NotificationManager.sendPlayerLevelUpNotification(mmoPlayer, primarySkillType, levelsGained, em.getSkillLevel(primarySkillType));
+        NotificationManager.sendPlayerLevelUpNotification(mmoPlayer, primarySkillType, levelsGained, getSkillLevel(primarySkillType));
 
         //UPDATE XP BARS
-        processPostXpEvent(mmoPlayer, primarySkillType, mcMMO.p, xpGainSource);
+        processPostXpEvent(primarySkillType, mcMMO.p, xpGainSource);
     }
 
 

@@ -1,6 +1,7 @@
 package com.gmail.nossr50.datatypes.player;
 
 import com.gmail.nossr50.datatypes.MobHealthBarType;
+import com.gmail.nossr50.datatypes.experience.ExperienceManager;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.mcMMO;
 import org.bukkit.entity.Player;

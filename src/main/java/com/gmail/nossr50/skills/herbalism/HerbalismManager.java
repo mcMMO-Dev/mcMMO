@@ -258,7 +258,7 @@ public class HerbalismManager extends SkillManager {
     public void checkDoubleDropsOnBrokenPlants(Player player, Collection<Block> brokenPlants) {
 
         //Only proceed if skill unlocked and permission enabled
-        if (!RankUtils.hasUnlockedSubskill(player, SubSkillType.HERBALISM_DOUBLE_DROPS)
+        if (!RankUtils.hasUnlockedSubskill(mmoPlayer, SubSkillType.HERBALISM_DOUBLE_DROPS)
                 || !Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_DOUBLE_DROPS)) {
             return;
         }

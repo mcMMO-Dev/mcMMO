@@ -18,6 +18,9 @@ import org.jetbrains.annotations.Nullable;
  *
  * Skills with parents do not gain experience, and instead their intended effects will be based on the strength of the parent skill (its level)
  * Skills are registered, no two skills can share the same fully qualified name (in this case, a combination of the namespace and skill name)
+ *
+ * A fully qualified name is generated based on the namespace and skill name
+ * @see #genFullyQualifiedName()
  */
 public class SkillIdentity {
     @NotNull private final String nameSpace;

@@ -116,6 +116,8 @@
                             <include>net.kyori:adventure-text-serializer-bungeecord</include>
                             <include>net.kyori:adventure-text-serializer-craftbukkit</include>
                             <include>co.aikar:acf-bukkit</include>
+                            <include>com.neetgames:mcMMO-API</include>
+                            <include>com.neetgames:jmal</include>
                         </includes>
                     </artifactSet>
 <!--                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>-->
@@ -193,6 +195,16 @@
         <!-- ... -->
     </repositories>
     <dependencies>
+        <dependency>
+            <groupId>com.neetgames</groupId>
+            <artifactId>mcMMO-API</artifactId>
+            <version>0.01.00-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.neetgames</groupId>
+            <artifactId>jmal</artifactId>
+            <version>0.01.00-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>co.aikar</groupId>
             <artifactId>acf-bukkit</artifactId> <!-- Don't forget to replace this -->
