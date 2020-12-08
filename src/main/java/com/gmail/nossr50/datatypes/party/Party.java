@@ -1,21 +1,11 @@
 package com.gmail.nossr50.datatypes.party;
 
 import com.gmail.nossr50.chat.SamePartyPredicate;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.util.Misc;
-import com.google.common.base.Objects;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 import java.util.function.Predicate;
 
 public class Party {
@@ -29,7 +19,7 @@ public class Party {
 
         //Initialize Managers
         partyMemberManager = new PartyMemberManager(persistentPartyData);
-        partyExperienceManager = new PartyExperienceManager();
+        partyExperienceManager = new PartyExperienceManager(partyMemberManager, this);
         samePartyPredicate = new SamePartyPredicate<>(this);
     }
 
@@ -41,11 +31,11 @@ public class Party {
         return partyExperienceManager;
     }
 
-    public Set<PartyMember> getPartyMembers() {
+    public @NotNull Set<PartyMember> getPartyMembers() {
         return partyMemberManager.getPartyMembers();
     }
 
-    public String getPartyName() {
+    public @NotNull String getPartyName() {
         return persistentPartyData.getPartyName();
     }
 
@@ -67,12 +57,15 @@ public class Party {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Party party = (Party) o;
-        return Objects.equal(persistentPartyData, party.persistentPartyData);
+        return samePartyPredicate.equals(party.samePartyPredicate)
+                && persistentPartyData.equals(party.persistentPartyData)
+                && partyMemberManager.equals(party.partyMemberManager)
+                && partyExperienceManager.equals(party.partyExperienceManager);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(persistentPartyData);
+        return Objects.hash(samePartyPredicate, persistentPartyData, partyMemberManager, partyExperienceManager);
     }
 
     public @NotNull Predicate<CommandSender> getSamePartyPredicate() {

@@ -1,7 +1,6 @@
 package com.gmail.nossr50.database;
 
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.api.exceptions.ProfileRetrievalException;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.MobHealthBarType;

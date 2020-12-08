@@ -130,4 +130,8 @@ public class PartyMemberManager {
 
         return nearMembers;
     }
+
+    public @NotNull PartyMember getPartyLeader() {
+        return persistentPartyData.getPartyLeader();
+    }
 }

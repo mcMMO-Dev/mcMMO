@@ -17,7 +17,6 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.compat.layers.persistentdata.AbstractPersistentDataLayer;
 import com.gmail.nossr50.util.experience.MMOExperienceBarManager;
 import com.gmail.nossr50.util.player.NotificationManager;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.text.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

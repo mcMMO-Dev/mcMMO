@@ -17,13 +17,20 @@ public class PartyExperienceManager {
 
     private int partyLevel;
     private float partyExperience;
-    private ShareMode xpShareMode   = ShareMode.NONE;
+    private final @NotNull Party partyRef;
+    private final @NotNull PartyMemberManager partyMemberManagerRef;
+    private @NotNull ShareMode xpShareMode = ShareMode.NONE;
 
-    public void setXpShareMode(ShareMode xpShareMode) {
+    public PartyExperienceManager(@NotNull PartyMemberManager partyMemberManager, @NotNull Party party) {
+        this.partyRef = party;
+        this.partyMemberManagerRef = partyMemberManager;
+    }
+
+    public void setXpShareMode(@NotNull ShareMode xpShareMode) {
         this.xpShareMode = xpShareMode;
     }
 
-    public ShareMode getXpShareMode() {
+    public @NotNull ShareMode getXpShareMode() {
         return xpShareMode;
     }
 
@@ -33,7 +40,7 @@ public class PartyExperienceManager {
      * @param xp Experience amount to add
      */
     public void applyXpGain(float xp) {
-        if (!EventUtils.handlePartyXpGainEvent(this, xp)) {
+        if (!EventUtils.handlePartyXpGainEvent(partyRef, xp)) {
             return;
         }
 
@@ -54,12 +61,12 @@ public class PartyExperienceManager {
             levelsGained++;
         }
 
-        if (!EventUtils.handlePartyLevelChangeEvent(this, levelsGained, xpRemoved)) {
+        if (!EventUtils.handlePartyLevelChangeEvent(partyRef, levelsGained, xpRemoved)) {
             return;
         }
 
         if (!Config.getInstance().getPartyInformAllMembers()) {
-            Player leader = mcMMO.p.getServer().getPlayer(this.leader.getUniqueId());
+            Player leader = mcMMO.p.getServer().getPlayer(partyMemberManagerRef.getPartyLeader().getUniqueId());
 
             if (leader != null) {
                 leader.sendMessage(LocaleLoader.getString("Party.LevelUp", levelsGained, getLevel()));
@@ -68,10 +75,10 @@ public class PartyExperienceManager {
                     SoundManager.sendSound(leader, leader.getLocation(), SoundType.LEVEL_UP);
                 }
             }
-            return;
-        }
 
-        mcMMO.getPartyManager().informPartyMembersLevelUp(this, levelsGained, getLevel());
+        } else {
+            mcMMO.getPartyManager().informPartyMembersLevelUp(partyRef, levelsGained, getLevel());
+        }
     }
 
     public boolean hasReachedLevelCap() {
@@ -79,19 +86,19 @@ public class PartyExperienceManager {
     }
 
     public int getLevel() {
-        return level;
+        return partyLevel;
     }
 
     public void setLevel(int level) {
-        this.level = level;
+        partyLevel = level;
     }
 
     public float getXp() {
-        return xp;
+        return partyExperience;
     }
 
     public void setXp(float xp) {
-        this.xp = xp;
+        this.partyExperience = xp;
     }
 
     public void addXp(float xp) {
@@ -107,13 +114,18 @@ public class PartyExperienceManager {
         return xpRemoved;
     }
 
+    //TODO: Why is it based on the number of party members? seems dumb
     public int getXpToLevel() {
         FormulaType formulaType = ExperienceConfig.getInstance().getFormulaType();
-        return (mcMMO.getFormulaManager().getXPtoNextLevel(level, formulaType)) * (getPartyMembers().size() + Config.getInstance().getPartyXpCurveMultiplier());
+        return (mcMMO.getFormulaManager().getXPtoNextLevel(partyLevel, formulaType)) * (partyMemberManagerRef.getPartyMembers().size() + Config.getInstance().getPartyXpCurveMultiplier());
     }
 
     public @NotNull String getXpToLevelPercentage() {
         DecimalFormat percent = new DecimalFormat("##0.00%");
         return percent.format(this.getXp() / getXpToLevel());
+    }
+
+    public @NotNull Party getParty() {
+        return partyRef;
     }
 }

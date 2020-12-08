@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class PartyUtils {
     public static boolean isAllowed(@NotNull Party party, @NotNull PartyFeature partyFeature) {

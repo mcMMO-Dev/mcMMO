@@ -5,7 +5,6 @@ import com.gmail.nossr50.datatypes.dirtydata.DirtySet;
 import com.gmail.nossr50.datatypes.mutableprimitives.MutableBoolean;
 import com.gmail.nossr50.datatypes.mutableprimitives.MutableString;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -16,7 +15,7 @@ public class PersistentPartyData {
     private final @NotNull MutableBoolean dirtyFlag; //Dirty values in this class will change this flag as needed
     private final @NotNull DirtyData<MutableString> partyName;
     private final @NotNull DirtySet<PartyMember> partyMembers; //TODO: Add cache for subsets
-    private @Nullable PartyMember partyLeaderRef;
+    private @NotNull PartyMember partyLeaderRef;
 
     public PersistentPartyData(@NotNull String partyName,
                                @NotNull Set<PartyMember> partyMembers) {
@@ -33,11 +32,12 @@ public class PersistentPartyData {
             }
         }
 
+        //TODO: Make it impossible for the party leader to be null
         if(partyLeaderRef == null)
             throw new RuntimeException("Party leader is null!");
     }
 
-    public @Nullable PartyMember getPartyLeader() {
+    public @NotNull PartyMember getPartyLeader() {
         return partyLeaderRef;
     }
 
