@@ -47,7 +47,9 @@ public class PersistentPartyData {
         if(partyLeaderRef == null) {
             //The first player in a party is now the leader
             partyLeaderRef = (PartyMember) getPartyMembers().unwrapSet().toArray()[0];
+            partyLeaderRef.setPartyMemberRank(PartyMemberRank.LEADER);
         }
+
         return partyLeaderRef;
     }
 
