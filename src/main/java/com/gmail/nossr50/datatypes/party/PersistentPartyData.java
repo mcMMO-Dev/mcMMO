@@ -22,6 +22,7 @@ public class PersistentPartyData {
         dirtyFlag = new MutableBoolean(false);
         this.partyName = new DirtyData<>(new MutableString(partyName), dirtyFlag);
         this.partyMembers = new DirtySet<>(new HashSet<>(partyMembers), dirtyFlag);
+        initPartyLeaderRef();
     }
 
     private void initPartyLeaderRef() {
