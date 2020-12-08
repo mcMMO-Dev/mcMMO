@@ -446,18 +446,24 @@ Enchantment_Drop_Rates:
 #  If you are in retro mode, Drop_Level is multiplied by 10.
 ###
 Excavation:
-    CAKE:
+    GLOWSTONE_DUST:
         Amount: 1
-        XP: 3000
-        Drop_Chance: 0.05
-        Drop_Level: 75
-        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
+        XP: 80
+        Drop_Chance: 5.0
+        Drop_Level: 5
+        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Mycelium]
     GUNPOWDER:
         Amount: 1
         XP: 30
         Drop_Chance: 10.0
         Drop_Level: 10
         Drops_From: [Gravel]
+    SLIME_BALL:
+        Amount: 1
+        XP: 100
+        Drop_Chance: 5.0
+        Drop_Level: 15
+        Drops_From: [Clay]
     BONE:
         Amount: 1
         XP: 30
@@ -470,17 +476,89 @@ Excavation:
         Drop_Chance: 0.1
         Drop_Level: 25
         Drops_From: [Grass_Block, Mycelium]
-    SLIME_BALL:
+    EGG:
         Amount: 1
         XP: 100
+        Drop_Chance: 1.0
+        Drop_Level: 25
+        Drops_From: [Grass_Block]
+    MUSIC_DISC_CAT:
+        Amount: 1
+        XP: 3000
+        Drop_Chance: 0.05
+        Drop_Level: 25
+        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
+    MUSIC_DISC_13:
+        Amount: 1
+        XP: 3000
+        Drop_Chance: 0.05
+        Drop_Level: 25
+        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
+    NAME_TAG:
+        Amount: 1
+        XP: 3000
+        Drop_Chance: 0.05
+        Drop_Level: 25
+        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
+    STRING:
+        Amount: 1
+        XP: 200
         Drop_Chance: 5.0
-        Drop_Level: 15
+        Drop_Level: 25
         Drops_From: [Clay]
+    COCOA_BEANS:
+        Amount: 1
+        XP: 100
+        Drop_Chance: 1.33
+        Drop_Level: 35
+        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Mycelium]
+    DIAMOND:
+        Amount: 1
+        XP: 1000
+        Drop_Chance: 0.13
+        Drop_Level: 35
+        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
+    BROWN_MUSHROOM:
+        Amount: 1
+        XP: 80
+        Drop_Chance: 0.5
+        Drop_Level: 50
+        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Mycelium]
     BUCKET:
         Amount: 1
         XP: 100
         Drop_Chance: 0.1
         Drop_Level: 50
+        Drops_From: [Clay]
+    RED_MUSHROOM:
+        Amount: 1
+        XP: 80
+        Drop_Chance: 0.5
+        Drop_Level: 50
+        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Mycelium]
+    CLOCK:
+        Amount: 1
+        XP: 100
+        Drop_Chance: 0.1
+        Drop_Level: 50
+        Drops_From: [Clay]
+    SOUL_SAND:
+        Amount: 1
+        XP: 80
+        Drop_Chance: 0.5
+        Drop_Level: 65
+        Drops_From: [Sand, Red_Sand]
+    CAKE:
+        Amount: 1
+        XP: 3000
+        Drop_Chance: 0.05
+        Drop_Level: 75
+        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
+    COBWEB:
+        Amount: 1
+        XP: 150
+        Drop_Chance: 5.0
+        Drop_Level: 75
         Drops_From: [Clay]
     NETHERRACK:
         Amount: 1
@@ -488,138 +566,42 @@ Excavation:
         Drop_Chance: 0.5
         Drop_Level: 85
         Drops_From: [Gravel]
-    RED_MUSHROOM:
-        Amount: 1
-        XP: 80
-        Drop_Chance: 0.5
-        Drop_Level: 50
-        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Mycelium]
-    BROWN_MUSHROOM:
-        Amount: 1
-        XP: 80
-        Drop_Chance: 0.5
-        Drop_Level: 50
-        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Mycelium]
-    EGG:
-        Amount: 1
-        XP: 100
-        Drop_Chance: 1.0
-        Drop_Level: 25
-        Drops_From: [Grass_Block]
-    SOUL_SAND:
-        Amount: 1
-        XP: 80
-        Drop_Chance: 0.5
-        Drop_Level: 65
-        Drops_From: [Sand, Red_Sand]
-    CLOCK:
-        Amount: 1
-        XP: 100
-        Drop_Chance: 0.1
-        Drop_Level: 50
-        Drops_From: [Clay]
-    COBWEB:
-        Amount: 1
-        XP: 150
-        Drop_Chance: 5.0
-        Drop_Level: 75
-        Drops_From: [Clay]
-    STRING:
-        Amount: 1
-        XP: 200
-        Drop_Chance: 5.0
-        Drop_Level: 25
-        Drops_From: [Clay]
-    GLOWSTONE_DUST:
-        Amount: 1
-        XP: 80
-        Drop_Chance: 5.0
-        Drop_Level: 5
-        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Mycelium]
-    MUSIC_DISC_13:
-        Amount: 1
-        XP: 3000
-        Drop_Chance: 0.05
-        Drop_Level: 25
-        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
-    MUSIC_DISC_CAT:
-        Amount: 1
-        XP: 3000
-        Drop_Chance: 0.05
-        Drop_Level: 25
-        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
-    DIAMOND:
-        Amount: 1
-        XP: 1000
-        Drop_Chance: 0.13
-        Drop_Level: 35
-        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
-    COCOA_BEANS:
-        Amount: 1
-        XP: 100
-        Drop_Chance: 1.33
-        Drop_Level: 35
-        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Mycelium]
     QUARTZ:
         Amount: 1
         XP: 100
         Drop_Chance: 0.5
         Drop_Level: 85
         Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Mycelium, Soul_Sand, Soul_Soil]
-    NAME_TAG:
-        Amount: 1
-        XP: 3000
-        Drop_Chance: 0.05
-        Drop_Level: 25
-        Drops_From: [Dirt, Coarse_Dirt, Podzol, Grass_Block, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand, Soul_Soil]
 #
 #  Settings for Hylian Luck
 #  If you are in retro mode, Drop_Level is multiplied by 10.
 ###
 Hylian_Luck:
-    MELON_SEEDS:
-        Amount: 1
-        XP: 0
-        Drop_Chance: 100.0
-        Drop_Level: 0
-        Drops_From: [Bushes]
-    PUMPKIN_SEEDS:
-        Amount: 1
-        XP: 0
-        Drop_Chance: 100.0
-        Drop_Level: 0
-        Drops_From: [Bushes]
-    COCOA_BEANS:
-        Amount: 1
-        XP: 0
-        Drop_Chance: 100.0
-        Drop_Level: 0
-        Drops_From: [Bushes]
-    CARROT:
-        Amount: 1
-        XP: 0
-        Drop_Chance: 100.0
-        Drop_Level: 0
-        Drops_From: [Flowers]
-    POTATO:
-        Amount: 1
-        XP: 0
-        Drop_Chance: 100.0
-        Drop_Level: 0
-        Drops_From: [Flowers]
     APPLE:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
         Drop_Level: 0
         Drops_From: [Flowers]
-    EMERALD:
+    CARROT:
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From: [Flowers]
+    COCOA_BEANS:
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From: [Bushes]
+    DIAMOND:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
         Drop_Level: 0
         Drops_From: [Pots]
-    DIAMOND:
+    EMERALD:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
@@ -631,6 +613,25 @@ Hylian_Luck:
         Drop_Chance: 100.0
         Drop_Level: 0
         Drops_From: [Pots]
+    MELON_SEEDS:
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From: [Bushes]
+    POTATO:
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From: [Flowers]
+    PUMPKIN_SEEDS:
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From: [Bushes]
+
 #
 #  Settings for Shake
 #  If you are in retro mode, Drop_Level is multiplied by 10.
@@ -666,11 +667,6 @@ Shake:
             Drop_Chance: 1.0
             Drop_Level: 0
     CHICKEN:
-        FEATHER:
-            Amount: 1
-            XP: 0
-            Drop_Chance: 33.3
-            Drop_Level: 0
         CHICKEN:
             Amount: 1
             XP: 0
@@ -681,32 +677,37 @@ Shake:
             XP: 0
             Drop_Chance: 33.3
             Drop_Level: 0
-    COW:
-        MILK_BUCKET:
+        FEATHER:
             Amount: 1
             XP: 0
-            Drop_Chance: 2.0
+            Drop_Chance: 33.3
+            Drop_Level: 0
+    COW:
+        BEEF:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 49.0
             Drop_Level: 0
         LEATHER:
             Amount: 1
             XP: 0
             Drop_Chance: 49.0
             Drop_Level: 0
-        BEEF:
+        MILK_BUCKET:
             Amount: 1
             XP: 0
-            Drop_Chance: 49.0
+            Drop_Chance: 2.0
             Drop_Level: 0
     CREEPER:
-        CREEPER_HEAD:
-            Amount: 1
-            XP: 0
-            Drop_Chance: 1.0
-            Drop_Level: 0
         GUNPOWDER:
             Amount: 1
             XP: 0
             Drop_Chance: 99.0
+            Drop_Level: 0
+        CREEPER_HEAD:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 1.0
             Drop_Level: 0
     ENDERMAN:
         ENDER_PEARL:
@@ -715,12 +716,12 @@ Shake:
             Drop_Chance: 100.0
             Drop_Level: 0
     GHAST:
-        GUNPOWDER:
+        GHAST_TEAR:
             Amount: 1
             XP: 0
             Drop_Chance: 50.0
             Drop_Level: 0
-        GHAST_TEAR:
+        GUNPOWDER:
             Amount: 1
             XP: 0
             Drop_Chance: 50.0
@@ -737,20 +738,20 @@ Shake:
             Drop_Chance: 1.0
             Drop_Level: 0
     IRON_GOLEM:
-        PUMPKIN:
+        POPPY:
             Amount: 1
             XP: 0
-            Drop_Chance: 3.0
+            Drop_Chance: 85.0
             Drop_Level: 0
         IRON_INGOT:
             Amount: 1
             XP: 0
             Drop_Chance: 12.0
             Drop_Level: 0
-        POPPY:
+        PUMPKIN:
             Amount: 1
             XP: 0
-            Drop_Chance: 85.0
+            Drop_Chance: 3.0
             Drop_Level: 0
     MAGMA_CUBE:
         MAGMA_CREAM:
@@ -759,6 +760,21 @@ Shake:
             Drop_Chance: 100.0
             Drop_Level: 0
     MUSHROOM_COW:
+        BEEF:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 30.0
+            Drop_Level: 0
+        LEATHER:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 30.0
+            Drop_Level: 0
+        RED_MUSHROOM:
+            Amount: 2
+            XP: 0
+            Drop_Chance: 30.0
+            Drop_Level: 0
         MILK_BUCKET:
             Amount: 1
             XP: 0
@@ -769,21 +785,6 @@ Shake:
             XP: 0
             Drop_Chance: 5.0
             Drop_Level: 0
-        LEATHER:
-            Amount: 1
-            XP: 0
-            Drop_Chance: 30.0
-            Drop_Level: 0
-        BEEF:
-            Amount: 1
-            XP: 0
-            Drop_Chance: 30.0
-            Drop_Level: 0
-        RED_MUSHROOM:
-            Amount: 2
-            XP: 0
-            Drop_Chance: 30.0
-            Drop_Level: 0
     PIG:
         PORKCHOP:
             Amount: 1
@@ -791,12 +792,12 @@ Shake:
             Drop_Chance: 100.0
             Drop_Level: 0
     PIG_ZOMBIE:
-        ROTTEN_FLESH:
+        GOLD_NUGGET:
             Amount: 1
             XP: 0
             Drop_Chance: 50.0
             Drop_Level: 0
-        GOLD_NUGGET:
+        ROTTEN_FLESH:
             Amount: 1
             XP: 0
             Drop_Chance: 50.0
@@ -818,31 +819,31 @@ Shake:
             Drop_Chance: 100.0
             Drop_Level: 0
     SHULKER:
-        SHULKER_SHELL:
-            Amount: 1
-            XP: 0
-            Drop_Chance: 25.0
-            Drop_Level: 0
         PURPUR_BLOCK:
             Amount: 1
             XP: 0
             Drop_Chance: 75.0
             Drop_Level: 0
-    SKELETON:
-        SKELETON_SKULL:
+        SHULKER_SHELL:
             Amount: 1
             XP: 0
-            Drop_Chance: 2.0
+            Drop_Chance: 25.0
+            Drop_Level: 0
+    SKELETON:
+        ARROW:
+            Amount: 2
+            XP: 0
+            Drop_Chance: 49.0
             Drop_Level: 0
         BONE:
             Amount: 1
             XP: 0
             Drop_Chance: 49.0
             Drop_Level: 0
-        ARROW:
-            Amount: 2
+        SKELETON_SKULL:
+            Amount: 1
             XP: 0
-            Drop_Chance: 49.0
+            Drop_Chance: 2.0
             Drop_Level: 0
     SLIME:
         SLIME_BALL:
@@ -862,15 +863,15 @@ Shake:
             Drop_Chance: 50.0
             Drop_Level: 0
     SNOWMAN:
-        PUMPKIN:
-            Amount: 1
-            XP: 0
-            Drop_Chance: 3.0
-            Drop_Level: 0
         SNOWBALL:
             Amount: 2
             XP: 0
             Drop_Chance: 97.0
+            Drop_Level: 0
+        PUMPKIN:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 3.0
             Drop_Level: 0
     SQUID:
         INK_SAC:
@@ -879,32 +880,6 @@ Shake:
             Drop_Chance: 100.0
             Drop_Level: 0
     WITCH:
-        SPLASH_POTION|0|INSTANT_HEAL:
-            PotionData:
-                PotionType: INSTANT_HEAL
-            Amount: 1
-            XP: 0
-            Drop_Chance: 1.0
-            Drop_Level: 0
-        SPLASH_POTION|0|FIRE_RESISTANCE:
-            PotionData:
-                PotionType: FIRE_RESISTANCE
-            Amount: 1
-            XP: 0
-            Drop_Chance: 1.0
-            Drop_Level: 0
-        SPLASH_POTION|0|SPEED:
-            PotionData:
-                PotionType: SPEED
-            Amount: 1
-            XP: 0
-            Drop_Chance: 1.0
-            Drop_Level: 0
-        GLASS_BOTTLE:
-            Amount: 1
-            XP: 0
-            Drop_Chance: 7.0
-            Drop_Level: 0
         GLOWSTONE_DUST:
             Amount: 1
             XP: 0
@@ -935,12 +910,33 @@ Shake:
             XP: 0
             Drop_Chance: 15.0
             Drop_Level: 0
-    WITHER_SKELETON:
-        WITHER_SKELETON_SKULL:
+        GLASS_BOTTLE:
             Amount: 1
             XP: 0
-            Drop_Chance: 2.0
+            Drop_Chance: 7.0
             Drop_Level: 0
+        SPLASH_POTION|0|INSTANT_HEAL:
+            PotionData:
+                PotionType: INSTANT_HEAL
+            Amount: 1
+            XP: 0
+            Drop_Chance: 1.0
+            Drop_Level: 0
+        SPLASH_POTION|0|FIRE_RESISTANCE:
+            PotionData:
+                PotionType: FIRE_RESISTANCE
+            Amount: 1
+            XP: 0
+            Drop_Chance: 1.0
+            Drop_Level: 0
+        SPLASH_POTION|0|SPEED:
+            PotionData:
+                PotionType: SPEED
+            Amount: 1
+            XP: 0
+            Drop_Chance: 1.0
+            Drop_Level: 0
+    WITHER_SKELETON:
         BONE:
             Amount: 1
             XP: 0
@@ -951,14 +947,19 @@ Shake:
             XP: 0
             Drop_Chance: 49.0
             Drop_Level: 0
-    ZOMBIE:
-        ZOMBIE_HEAD:
+        WITHER_SKELETON_SKULL:
             Amount: 1
             XP: 0
             Drop_Chance: 2.0
             Drop_Level: 0
+    ZOMBIE:
         ROTTEN_FLESH:
             Amount: 1
             XP: 0
             Drop_Chance: 98.0
+            Drop_Level: 0
+        ZOMBIE_HEAD:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 2.0
             Drop_Level: 0
