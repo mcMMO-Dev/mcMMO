@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.dirtydata.DirtySet;
 import com.gmail.nossr50.datatypes.mutableprimitives.MutableBoolean;
 import com.gmail.nossr50.datatypes.mutableprimitives.MutableString;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -15,13 +16,14 @@ public class PersistentPartyData {
     private final @NotNull MutableBoolean dirtyFlag; //Dirty values in this class will change this flag as needed
     private final @NotNull DirtyData<MutableString> partyName;
     private final @NotNull DirtySet<PartyMember> partyMembers; //TODO: Add cache for subsets
-    private @NotNull PartyMember partyLeaderRef;
+    private @Nullable PartyMember partyLeaderRef;
 
     public PersistentPartyData(@NotNull String partyName,
-                               @NotNull Set<PartyMember> partyMembers) {
+                               @NotNull Set<PartyMember> partyMembers) throws RuntimeException {
         dirtyFlag = new MutableBoolean(false);
         this.partyName = new DirtyData<>(new MutableString(partyName), dirtyFlag);
         this.partyMembers = new DirtySet<>(new HashSet<>(partyMembers), dirtyFlag);
+
         initPartyLeaderRef();
     }
 
@@ -32,13 +34,20 @@ public class PersistentPartyData {
                 break;
             }
         }
-
-        //TODO: Make it impossible for the party leader to be null
-        if(partyLeaderRef == null)
-            throw new RuntimeException("Party leader is null!");
     }
 
+    /**
+     * Retrieves a party leader, if one doesn't exist a "random" player is forcibly promoted to leader
+     * Random being the first player in the set
+     *
+     * @see #partyMembers
+     * @return the party leader
+     */
     public @NotNull PartyMember getPartyLeader() {
+        if(partyLeaderRef == null) {
+            //The first player in a party is now the leader
+            partyLeaderRef = (PartyMember) getPartyMembers().unwrapSet().toArray()[0];
+        }
         return partyLeaderRef;
     }
 
@@ -47,7 +56,7 @@ public class PersistentPartyData {
         return partyName.getData().getImmutableCopy();
     }
 
-    public @NotNull Set<PartyMember> getPartyMembers() {
+    public @NotNull DirtySet<PartyMember> getPartyMembers() {
         return partyMembers;
     }
 
